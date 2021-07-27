@@ -1,0 +1,23 @@
+{
+  "name": "@subsquare/scan",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@polkadot/api": "^5.1.1",
+    "@polkadot/types": "^5.1.1",
+    "@polkadot/util": "^7.0.2",
+    "@polkadot/util-crypto": "^7.0.2",
+    "dotenv": "^8.2.0",
+    "log4js": "^6.3.0",
+    "mongodb": "^3.6.6"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3",
+    "pm2": "^4.5.1"
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!(@polkadot|@babel)/)"
+    ]
+  }
+}
