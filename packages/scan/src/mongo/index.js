@@ -6,6 +6,10 @@ function getDbName() {
 
   if (CHAINS.KARURA === chain) {
     return process.env.MONGO_DB_KAR_NAME || "subsquare-kar";
+  } else if (CHAINS.KUSAMA === chain) {
+    return process.env.MONGO_DB_KSM_NAME || "subsquare-ksm";
+  } else if (CHAINS.POLKADOT === chain) {
+    return process.env.MONGO_DB_DOT_NAME || "subsquare-dot";
   } else {
     return process.env.MONGO_DB_KAR_NAME || "subsquare-kar";
   }

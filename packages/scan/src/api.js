@@ -5,6 +5,8 @@ let provider = null;
 let api = null;
 
 const defaultKaruraEndPoint = "wss://karura.kusama.elara.patract.io";
+const defaultKusamaEndpoint = "wss://kusama.elara.patract.io";
+const defaultPolkadotEndpoint = "wss://polkadot.elara.patract.io/";
 
 async function getApi() {
   if (!api) {
@@ -13,6 +15,10 @@ async function getApi() {
     let wsEndpoint = process.env.KAR_WS_ENDPOINT || defaultKaruraEndPoint;
     if (chain === CHAINS.KARURA) {
       wsEndpoint = process.env.KAR_WS_ENDPOINT || defaultKaruraEndPoint;
+    } else if (chain === CHAINS.KUSAMA) {
+      wsEndpoint = process.env.KSM_WS_ENDPOINT || defaultKusamaEndpoint;
+    } else if (chain === CHAINS.POLKADOT) {
+      wsEndpoint = process.env.DOT_WS_ENDPOINT || defaultPolkadotEndpoint;
     }
 
     console.log(`Connect to endpoint:`, wsEndpoint);
