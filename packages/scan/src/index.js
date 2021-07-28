@@ -9,6 +9,7 @@ const { getRegistryByHeight } = require("./utils/registry");
 const { isHex } = require("./utils");
 const { GenericBlock } = require("@polkadot/types");
 const { hexToU8a } = require("@polkadot/util");
+const { logger } = require("./logger");
 
 let registry;
 
@@ -39,11 +40,17 @@ async function main() {
     }
 
     for (const block of blocks) {
-      // TODO: businesses
-      await handleOneBlockDataInDb(block);
-      await updateScanHeight(block.height);
-      scanHeight = block.height + 1;
+      // TODO: transactional
+      try {
+        await handleOneBlockDataInDb(block);
+        await updateScanHeight(block.height);
+        scanHeight = block.height + 1;
+      } catch (e) {
+        logger.error(`Error with block scan ${block.height}`, e);
+        await sleep(3000);
+      }
     }
+
     await sleep(1);
   }
 }
