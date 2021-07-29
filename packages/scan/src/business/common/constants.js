@@ -40,10 +40,21 @@ const MultisigMethods = Object.freeze({
   asMulti: "asMulti",
 });
 
+const UtilityMethods = Object.freeze({
+  batch: "batch",
+});
+
+const TimelineItemTypes = Object.freeze({
+  extrinsic: "extrinsic",
+  event: "event",
+});
+
 module.exports = {
   Modules,
   TipEvents,
   TipMethods,
   ProxyMethods,
   MultisigMethods,
+  UtilityMethods,
+  TimelineItemTypes,
 };

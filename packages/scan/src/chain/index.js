@@ -1,4 +1,4 @@
-const { getApi } = require("./api");
+const { getApi } = require("../api");
 
 let latestHeight = null;
 let unsubscribeNewHead = null;

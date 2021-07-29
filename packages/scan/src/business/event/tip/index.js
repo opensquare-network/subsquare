@@ -1,4 +1,5 @@
 const { Modules, TipEvents } = require("../../common/constants");
+const { saveNewTip } = require("./store");
 
 function isTipEvent(section, method) {
   if (![Modules.Treasury, Modules.Tips].includes(section)) {
@@ -14,8 +15,11 @@ async function handleTipEvent(registry, event, extrinsic, indexer) {
     return;
   }
 
-  const eventData = data.toJSON();
-  const [hash] = eventData;
   if (TipEvents.NewTip === method) {
+    await saveNewTip(registry, event, extrinsic, indexer);
   }
 }
+
+module.exports = {
+  handleTipEvent,
+};
