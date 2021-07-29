@@ -12,13 +12,19 @@ async function getTipByHash(hash) {
 
 async function updateTipByHash(hash, updates, timelineItem) {
   const tipCol = await getTipCollection();
-  await tipCol.updateOne(
-    { hash: hash, isClosedOrRetracted: false },
-    {
-      $set: updates,
+
+  let update = {
+    $set: updates,
+  };
+
+  if (timelineItem) {
+    update = {
+      ...update,
       $push: { timeline: timelineItem },
-    }
-  );
+    };
+  }
+
+  await tipCol.updateOne({ hash: hash, isClosedOrRetracted: false }, update);
 }
 
 module.exports = {

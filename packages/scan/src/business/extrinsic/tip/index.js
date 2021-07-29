@@ -3,15 +3,8 @@ const {
   Modules,
   TimelineItemTypes,
 } = require("../../common/constants");
-const {
-  getTipByHash,
-  updateTipByHash,
-} = require("../../../mongo/business/tip");
-const {
-  getTipMeta,
-  getTipFindersFee,
-  getTippersCount,
-} = require("../../common/tip/utils");
+const { updateTipByHash } = require("../../../mongo/business/tip");
+const { getTipCommonUpdates } = require("../../common/tip/updates");
 
 async function handleTipCall(call, author, extrinsicIndexer) {
   if (
@@ -25,21 +18,11 @@ async function handleTipCall(call, author, extrinsicIndexer) {
     args: { hash, tip_value: tipValue },
   } = call.toJSON();
 
-  const tipInDb = await getTipByHash(hash);
-  if (!tipInDb) {
-    throw new Error(`can not find tip in db. hash: ${hash}`);
-  }
-
-  const newMeta = await getTipMeta(extrinsicIndexer.blockHash, hash);
-  const meta = {
-    ...tipInDb.meta,
-    tips: newMeta.tips,
-    closes: newMeta.closes,
-  };
-  const tippersCount = getTippersCount(registry);
-  const tipFindersFee = getTipFindersFee(registry);
-
-  const updates = { meta, tippersCount, tipFindersFee };
+  const updates = await getTipCommonUpdates(
+    call.registry,
+    hash,
+    extrinsicIndexer.blockHash
+  );
   const timelineItem = {
     type: TimelineItemTypes.extrinsic,
     method: TipMethods.tip,

@@ -4,13 +4,14 @@ const {
   getTippersCount,
   getTipFindersFee,
 } = require("../../common/tip/utils");
+const { getTipCommonUpdates } = require("../../common/tip/updates");
 const { u8aToString } = require("@polkadot/util");
 const {
   TipMethods,
   TipEvents,
   TimelineItemTypes,
 } = require("../../common/constants");
-const { insertTip } = require("../../../mongo/business/tip");
+const { insertTip, updateTipByHash } = require("../../../mongo/business/tip");
 
 async function saveNewTip(registry, event, extrinsic, indexer) {
   const [hash] = event.data;
@@ -66,6 +67,12 @@ async function saveNewTip(registry, event, extrinsic, indexer) {
    */
 }
 
+async function updateTipWithClosing(registry, tipHash, blockHash) {
+  const updates = await getTipCommonUpdates(registry, tipHash, blockHash);
+  await updateTipByHash(tipHash, updates);
+}
+
 module.exports = {
   saveNewTip,
+  updateTipWithClosing,
 };
