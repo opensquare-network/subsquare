@@ -20,6 +20,7 @@ const ContentWrapper = styled.div`
 
 const Left = styled.div`
   width: 246px;
+  flex: 0 0 246px;
   margin-right: 32px;
   @media screen and (max-width: 900px) {
     display: none;
@@ -28,6 +29,7 @@ const Left = styled.div`
 
 const Right = styled.div`
   width: 246px;
+  flex: 0 0 246px;
   margin-left: 32px;
   > :not(:first-child) {
     margin-top: 16px;
