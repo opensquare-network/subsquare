@@ -1,4 +1,9 @@
-const { getTipMeta, getNewTipCall } = require("../../common/tip/utils");
+const {
+  getTipMeta,
+  getNewTipCall,
+  getTippersCount,
+  getTipFindersFee,
+} = require("../../common/tip/utils");
 const { u8aToString } = require("@polkadot/util");
 const {
   TipMethods,
@@ -24,6 +29,8 @@ async function saveNewTip(registry, event, extrinsic, indexer) {
   const beneficiary = newTipCall.args[1].toJSON();
   meta.findersFee = TipMethods.reportAwesome === method;
   const finder = meta.finder;
+  const tippersCount = getTippersCount(registry);
+  const tipFindersFee = getTipFindersFee(registry);
 
   const timelineItem = {
     type: TimelineItemTypes.extrinsic,
@@ -41,6 +48,8 @@ async function saveNewTip(registry, event, extrinsic, indexer) {
     hash: hash.toString(),
     reason,
     finder,
+    tippersCount,
+    tipFindersFee,
     meta,
     isClosedOrRetracted: false,
     state: {

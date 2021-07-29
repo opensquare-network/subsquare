@@ -7,7 +7,11 @@ const {
   getTipByHash,
   updateTipByHash,
 } = require("../../../mongo/business/tip");
-const { getTipMeta } = require("../../common/tip/utils");
+const {
+  getTipMeta,
+  getTipFindersFee,
+  getTippersCount,
+} = require("../../common/tip/utils");
 
 async function handleTipCall(call, author, extrinsicIndexer) {
   if (
@@ -32,8 +36,10 @@ async function handleTipCall(call, author, extrinsicIndexer) {
     tips: newMeta.tips,
     closes: newMeta.closes,
   };
+  const tippersCount = getTippersCount(registry);
+  const tipFindersFee = getTipFindersFee(registry);
 
-  const updates = { meta };
+  const updates = { meta, tippersCount, tipFindersFee };
   const timelineItem = {
     type: TimelineItemTypes.extrinsic,
     method: TipMethods.tip,

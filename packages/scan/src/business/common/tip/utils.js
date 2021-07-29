@@ -8,6 +8,10 @@ const {
 } = require("../constants");
 const { GenericCall } = require("@polkadot/types");
 const { blake2AsHex } = require("@polkadot/util-crypto");
+const {
+  getConstFromRegistry,
+  getConstsFromRegistry,
+} = require("../../../utils/index");
 
 async function getTipMeta(blockHash, tipHash) {
   const api = await getApi();
@@ -80,7 +84,44 @@ function getNewTipCall(registry, call, reasonHash) {
   return null;
 }
 
+function getTippersCount(registry) {
+  const oldModuleValue = getConstFromRegistry(
+    registry,
+    "ElectionsPhragmen",
+    "DesiredMembers"
+  );
+
+  if (oldModuleValue) {
+    return oldModuleValue.toNumber();
+  }
+
+  const newModuleValue = getConstFromRegistry(
+    registry,
+    "PhragmenElection",
+    "DesiredMembers"
+  );
+
+  return newModuleValue ? newModuleValue.toNumber() : newModuleValue;
+}
+
+function getTipFindersFee(registry) {
+  const constants = getConstsFromRegistry(registry, [
+    {
+      moduleName: "Tips",
+      constantName: "TipFindersFee",
+    },
+    {
+      moduleName: "Treasury",
+      constantName: "TipFindersFee",
+    },
+  ]);
+
+  return (constants[0] ?? constants[1])?.toJSON();
+}
+
 module.exports = {
   getTipMeta,
   getNewTipCall,
+  getTippersCount,
+  getTipFindersFee,
 };
