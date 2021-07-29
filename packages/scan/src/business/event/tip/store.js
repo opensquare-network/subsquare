@@ -1,10 +1,11 @@
-const { getTipMeta, getNewTipCall } = require("./utils");
+const { getTipMeta, getNewTipCall } = require("../../common/tip/utils");
 const { u8aToString } = require("@polkadot/util");
 const {
   TipMethods,
   TipEvents,
   TimelineItemTypes,
 } = require("../../common/constants");
+const { insertTip } = require("../../../mongo/business/tip");
 
 async function saveNewTip(registry, event, extrinsic, indexer) {
   const [hash] = event.data;
@@ -50,11 +51,10 @@ async function saveNewTip(registry, event, extrinsic, indexer) {
     timeline: [timelineItem],
   };
 
+  await insertTip(obj);
   /**
-   * TODO: store new tip to database and create corresponding post for this tip
+   * TODO: Think whether we need to create separate table for corresponding post for this tip
    */
-
-  console.log("obj", obj);
 }
 
 module.exports = {

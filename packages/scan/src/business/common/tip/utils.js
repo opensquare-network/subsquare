@@ -5,7 +5,7 @@ const {
   MultisigMethods,
   UtilityMethods,
   TipMethods,
-} = require("../../common/constants");
+} = require("../constants");
 const { GenericCall } = require("@polkadot/types");
 const { blake2AsHex } = require("@polkadot/util-crypto");
 
