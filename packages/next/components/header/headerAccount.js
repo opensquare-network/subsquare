@@ -85,7 +85,7 @@ export default function HeaderAccount() {
       {login && (
         <Wrapper ref={ref}>
           <AccountButton onClick={() => setShow(!show)}>
-            <img src="/imgs/icons/avatar.svg" />
+            <img src="/imgs/icons/avatar.svg" alt="" />
           </AccountButton>
           {show && (
             <Menu>
@@ -93,7 +93,7 @@ export default function HeaderAccount() {
                 <Fragment key={index}>
                   {index === accountMenu.length - 1 && <Divider />}
                   <Item onClick={() => handleAccountMenu(item.value)}>
-                    <img src={`/imgs/icons/${item.icon}`} />
+                    <img src={`/imgs/icons/${item.icon}`} alt="" />
                     <div>{item.name}</div>
                   </Item>
                 </Fragment>

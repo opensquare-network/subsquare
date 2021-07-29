@@ -107,9 +107,9 @@ export default function Header() {
                 setShow(true);
               }}
             >
-              <img src="/imgs/icons/menu-line.svg" />
+              <img src="/imgs/icons/menu-line.svg" alt="" />
             </MenuButton>
-            <img src="/imgs/logo.svg" />
+            <img src="/imgs/logo.svg" alt="" />
             <NodeButton
               onClick={() => {
                 setHiddenWidth(600);
@@ -118,7 +118,7 @@ export default function Header() {
                 setShow(true);
               }}
             >
-              <img src="/imgs/icons/kusama.svg" />
+              <img src="/imgs/icons/kusama.svg" alt="" />
             </NodeButton>
           </Left>
           <Right>

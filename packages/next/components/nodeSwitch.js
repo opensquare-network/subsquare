@@ -85,9 +85,9 @@ export default function NodeSwitch() {
   return (
     <Wrapper ref={ref}>
       <Select onClick={() => setShow(!show)}>
-        <img src={`/imgs/icons/${node.icon}`} className="logo" />
+        <img src={`/imgs/icons/${node.icon}`} alt="" className="logo" />
         <div>{node.name}</div>
-        <img src="/imgs/icons/caret-down.svg" />
+        <img src="/imgs/icons/caret-down.svg" alt="" />
       </Select>
       {show && (
         <Options>
@@ -100,7 +100,7 @@ export default function NodeSwitch() {
               }}
               active={node.value === nodes[index].value}
             >
-              <img src={`/imgs/icons/${item.icon}`} className="logo" />
+              <img src={`/imgs/icons/${item.icon}`} alt="" className="logo" />
               <div>{item.name}</div>
             </Item>
           ))}
