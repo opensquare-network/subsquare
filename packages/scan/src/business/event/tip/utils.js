@@ -18,7 +18,17 @@ async function getTipMeta(blockHash, tipHash) {
     rawMeta = await api.query.treasury.tips.at(blockHash, tipHash);
   }
 
-  return rawMeta.toJSON();
+  let meta = rawMeta.toJSON();
+  if (Array.isArray(meta.finder)) {
+    const [finder, deposit] = meta.finder;
+    meta = {
+      ...meta,
+      finder,
+      deposit,
+    };
+  }
+
+  return meta;
 }
 
 function findNewTipCallFromProxy(registry, proxyCall, reasonHash) {

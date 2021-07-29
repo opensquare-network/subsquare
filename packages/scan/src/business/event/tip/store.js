@@ -8,16 +8,7 @@ const {
 
 async function saveNewTip(registry, event, extrinsic, indexer) {
   const [hash] = event.data;
-  let meta = await getTipMeta(indexer.blockHash, hash);
-
-  if (Array.isArray(meta.finder)) {
-    const [finder, deposit] = meta.finder;
-    meta = {
-      ...meta,
-      finder,
-      deposit,
-    };
-  }
+  const meta = await getTipMeta(indexer.blockHash, hash);
 
   const reasonHash = meta.reason;
   const newTipCall = await getNewTipCall(
