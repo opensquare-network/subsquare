@@ -3,9 +3,11 @@ import { useState, useEffect } from "react";
 
 import NodeSwitch from "components/nodeSwitch";
 import Container from "components/container";
-import Account from "./account";
+import HeaderAccount from "./headerAccount";
 import Sidebar from "./sidebar";
 import { useWindowSize } from "utils/hooks";
+import Menu from "components/menu";
+import SidebarAccount from "./sidebarAccount";
 
 const Wrapper = styled.header`
   background: #ffffff;
@@ -81,24 +83,41 @@ const NodeButton = styled.div`
 
 export default function Header() {
   const [show, setShow] = useState(false);
+  const [hiddenWidth, setHiddenWidth] = useState();
+  const [position, setPosition] = useState("left");
+  const [content, setContent] = useState();
   const windowSize = useWindowSize();
 
   useEffect(() => {
-    if (windowSize.width && windowSize.width > 900) {
+    if (hiddenWidth && windowSize.width && windowSize.width > hiddenWidth) {
       setShow(false);
     }
-  }, [windowSize]);
+  }, [windowSize, hiddenWidth]);
 
   return (
     <Wrapper>
       <Container>
         <FlexWrapper>
           <Left>
-            <MenuButton onClick={() => setShow(true)}>
+            <MenuButton
+              onClick={() => {
+                setHiddenWidth(900);
+                setPosition("left");
+                setContent("menu");
+                setShow(true);
+              }}
+            >
               <img src="/imgs/icons/menu-line.svg" />
             </MenuButton>
             <img src="/imgs/logo.svg" />
-            <NodeButton onClick={() => setShow(true)}>
+            <NodeButton
+              onClick={() => {
+                setHiddenWidth(600);
+                setPosition("right");
+                setContent("account");
+                setShow(true);
+              }}
+            >
               <img src="/imgs/icons/kusama.svg" />
             </NodeButton>
           </Left>
@@ -106,11 +125,16 @@ export default function Header() {
             <NodeWrapper>
               <NodeSwitch />
             </NodeWrapper>
-            <Account />
+            <HeaderAccount />
           </Right>
         </FlexWrapper>
       </Container>
-      {show && <Sidebar onClose={() => setShow(false)} />}
+      {show && (
+        <Sidebar onClose={() => setShow(false)} position={position}>
+          {content === "menu" && <Menu />}
+          {content === "account" && <SidebarAccount />}
+        </Sidebar>
+      )}
     </Wrapper>
   );
 }

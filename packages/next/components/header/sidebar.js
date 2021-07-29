@@ -1,13 +1,10 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const Wrapper = styled.div`
   position: absolute;
   width: 100vw;
   height: 100vh;
   top: 0;
-  @media screen and (min-width: 901px) {
-    display: none;
-  }
 `;
 
 const Mask = styled.div`
@@ -28,6 +25,11 @@ const Content = styled.div`
   @media screen and (max-width: 600px) {
     min-width: 278px;
   }
+  ${(p) =>
+    p.position === "right" &&
+    css`
+      right: 0;
+    `}
 `;
 
 const CloseWrapper = styled.div`
@@ -35,6 +37,11 @@ const CloseWrapper = styled.div`
   border-bottom: 1px solid #ebeef4;
   display: flex;
   align-items: center;
+  ${(p) =>
+    p.position === "right" &&
+    css`
+      justify-content: flex-end;
+    `}
 `;
 
 const Container = styled.div`
@@ -42,7 +49,7 @@ const Container = styled.div`
     padding: 0 32px;
   }
   @media screen and (max-width: 600px) {
-    min-width: 0 16px;
+    padding: 0 16px;
   }
 `;
 
@@ -57,18 +64,25 @@ const CloseButton = styled.div`
   cursor: pointer;
 `;
 
-export default function Sidebar({ onClose }) {
+const ContentWrapper = styled.div`
+  margin-top: 16px;
+`;
+
+export default function Sidebar({ onClose, position, children }) {
   return (
     <Wrapper>
       <Mask onClick={onClose} />
-      <Content>
-        <CloseWrapper>
+      <Content position={position}>
+        <CloseWrapper position={position}>
           <Container>
-            <CloseButton>
-              <img src="/imgs/icons/close.svg" onClick={onClose} />
+            <CloseButton onClick={onClose}>
+              <img src="/imgs/icons/close.svg" />
             </CloseButton>
           </Container>
         </CloseWrapper>
+        <ContentWrapper>
+          <Container>{children}</Container>
+        </ContentWrapper>
       </Content>
     </Wrapper>
   );

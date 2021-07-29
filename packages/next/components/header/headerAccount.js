@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Fragment } from "react";
 
 import Button from "components/button";
 import { accountMenu } from "utils/constants";
@@ -59,7 +59,7 @@ const Divider = styled.div`
   margin: 8px 0;
 `;
 
-export default function Account() {
+export default function HeaderAccount() {
   const [login, setLogin] = useState(false);
   const [show, setShow] = useState(false);
   const ref = useRef();
@@ -90,16 +90,13 @@ export default function Account() {
           {show && (
             <Menu>
               {accountMenu.map((item, index) => (
-                <>
+                <Fragment key={index}>
                   {index === accountMenu.length - 1 && <Divider />}
-                  <Item
-                    key={index}
-                    onClick={() => handleAccountMenu(item.value)}
-                  >
+                  <Item onClick={() => handleAccountMenu(item.value)}>
                     <img src={`/imgs/icons/${item.icon}`} />
                     <div>{item.name}</div>
                   </Item>
-                </>
+                </Fragment>
               ))}
             </Menu>
           )}
