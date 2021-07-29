@@ -6,7 +6,7 @@ import Button from "components/button";
 import { accountMenu } from "utils/constants";
 
 const Wrapper = styled.div`
-  padding: 42px 0 0;
+  padding: 32px 0 0;
 `;
 
 const Title = styled.div`

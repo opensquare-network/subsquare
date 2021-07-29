@@ -5,6 +5,7 @@ const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   top: 0;
+  z-index: 99;
 `;
 
 const Mask = styled.div`
@@ -65,7 +66,7 @@ const CloseButton = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  margin-top: 16px;
+  margin-top: 26px;
 `;
 
 export default function Sidebar({ onClose, position, children }) {

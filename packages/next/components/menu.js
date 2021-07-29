@@ -4,7 +4,7 @@ import { useState } from "react";
 import { menu } from "utils/constants";
 
 const Wrapper = styled.div`
-  padding-top: 42px;
+  padding-top: 32px;
   > :not(:first-child) {
     margin-top: 24px;
   }
