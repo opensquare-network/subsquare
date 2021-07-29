@@ -85,7 +85,7 @@ export default function Account() {
       {login && (
         <Wrapper ref={ref}>
           <AccountButton onClick={() => setShow(!show)}>
-            <img src="/imgs/icons/avatar.svg" />
+            <img src="/imgs/icons/avatar.svg" alt="" />
           </AccountButton>
           {show && (
             <Menu>
@@ -96,7 +96,7 @@ export default function Account() {
                     key={index}
                     onClick={() => handleAccountMenu(item.value)}
                   >
-                    <img src={`/imgs/icons/${item.icon}`} />
+                    <img src={`/imgs/icons/${item.icon}`} alt="" />
                     <div>{item.name}</div>
                   </Item>
                 </>
