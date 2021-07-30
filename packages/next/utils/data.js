@@ -93,3 +93,13 @@ export const discussionData = {
     },
   ],
 };
+
+export const detailData = {
+  index: 12,
+  comments: 5,
+  title:
+    "Malesuada placerat vestibulum adipiscing vestibulum facilisis mauris. Lectus praesent in egestas dictumst ligula in est.",
+  author: "Sed accumsan",
+  type: "Council",
+  status: "Propose Bounty",
+};

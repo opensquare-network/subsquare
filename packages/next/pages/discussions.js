@@ -5,7 +5,11 @@ import Layout from "components/layout";
 export default function Discussions() {
   return (
     <Layout>
-      <List category={discussionData.category} items={discussionData.items} />
+      <List
+        category={discussionData.category}
+        items={discussionData.items}
+        pagination
+      />
     </Layout>
   );
 }
