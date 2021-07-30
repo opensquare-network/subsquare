@@ -104,8 +104,9 @@ export default function Post({ data }) {
   return (
     <Wrapper>
       <DividerWrapper>
-        <Index>{`#${data.index}`}</Index>
-        <Info>{`${data.comments} Comments`}</Info>
+        {data.index && <Index>{`#${data.index}`}</Index>}
+        {data.time && <Info>{`Posted ${data.time} ago`}</Info>}
+        {data.comments && <Info>{`${data.comments} Comments`}</Info>}
       </DividerWrapper>
       <Title>{data.title}</Title>
       <Divider />
@@ -115,11 +116,13 @@ export default function Post({ data }) {
             <img src="/imgs/icons/avatar.svg" />
             <div>{data.author}</div>
           </Author>
-          <div>
-            <TypeWrapper color={getTypeColor(data.type)}>
-              {data.type}
-            </TypeWrapper>
-          </div>
+          {data.type && (
+            <div>
+              <TypeWrapper color={getTypeColor(data.type)}>
+                {data.type}
+              </TypeWrapper>
+            </div>
+          )}
         </DividerWrapper>
         <StatusWrapper>{data.status}</StatusWrapper>
       </FooterWrapper>
