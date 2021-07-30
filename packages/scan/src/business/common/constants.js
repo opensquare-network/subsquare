@@ -49,6 +49,15 @@ const TimelineItemTypes = Object.freeze({
   event: "event",
 });
 
+const CouncilEvents = Object.freeze({
+  Proposed: "Proposed",
+  Voted: "Voted",
+  Approved: "Approved",
+  Disapproved: "Disapproved",
+  Executed: "Executed",
+  Closed: "Closed",
+});
+
 module.exports = {
   Modules,
   TipEvents,
@@ -57,4 +66,5 @@ module.exports = {
   MultisigMethods,
   UtilityMethods,
   TimelineItemTypes,
+  CouncilEvents,
 };
