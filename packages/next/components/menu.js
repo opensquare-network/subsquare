@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { useState } from "react";
+import { useRouter } from "next/router";
 
 import { menu } from "utils/constants";
 
@@ -52,7 +52,7 @@ const Item = styled.div`
 `;
 
 export default function Menu() {
-  const [current, setCurrent] = useState("overview");
+  const router = useRouter();
 
   return (
     <Wrapper>
@@ -61,8 +61,13 @@ export default function Menu() {
           {item.name && <Title>{item.name}</Title>}
           {item.items.map((item, index) => (
             <Item
-              active={current === item.value}
-              onClick={() => setCurrent(item.value)}
+              key={index}
+              active={router.pathname === item.pathname}
+              onClick={() => {
+                if (item.pathname) {
+                  router.push(item.pathname);
+                }
+              }}
             >
               <img src={`/imgs/icons/${item.icon}`} />
               <div>{item.name}</div>

@@ -36,11 +36,13 @@ export const menu = [
         value: "overview",
         name: "Overview",
         icon: "type-overview.svg",
+        pathname: "/",
       },
       {
         value: "discussions",
         name: "Discussions",
         icon: "type-discussions.svg",
+        pathname: "/discussions",
       },
     ],
   },

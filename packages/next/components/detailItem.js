@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import Link from "next/link";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -8,7 +7,11 @@ const Wrapper = styled.div`
     0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
     0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 4px;
-  padding: 24px;
+  padding: 48px;
+  @media screen and (max-width: 600px) {
+    padding: 24px;
+    margin: 0 -16px;
+  }
 `;
 
 const DividerWrapper = styled.div`
@@ -38,10 +41,6 @@ const Title = styled.div`
   font-weight: 500;
   font-size: 16px;
   margin-top: 8px;
-  cursor: pointer;
-  :hover {
-    text-decoration: underline;
-  }
 `;
 
 const Divider = styled.div`
@@ -95,6 +94,26 @@ const StatusWrapper = styled.div`
   color: #ffffff;
 `;
 
+const TextWrapper = styled.div`
+  height: 160px;
+  background: #f6f7fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+`;
+
+const DividerSecond = styled.div`
+  height: 1px;
+  background: #ebeef4;
+  margin: 48px 0;
+`;
+
+const Label = styled.div`
+  font-weight: bold;
+  font-size: 16px;
+`;
+
 const getTypeColor = (type) => {
   switch (type) {
     case "Council":
@@ -106,7 +125,7 @@ const getTypeColor = (type) => {
   }
 };
 
-export default function Post({ data }) {
+export default function DetailItem({ data }) {
   return (
     <Wrapper>
       <DividerWrapper>
@@ -114,9 +133,7 @@ export default function Post({ data }) {
         {data.time && <Info>{`Posted ${data.time} ago`}</Info>}
         {data.comments && <Info>{`${data.comments} Comments`}</Info>}
       </DividerWrapper>
-      <Link href="/detail">
-        <Title>{data.title}</Title>
-      </Link>
+      <Title>{data.title}</Title>
       <Divider />
       <FooterWrapper>
         <DividerWrapper>
@@ -134,6 +151,10 @@ export default function Post({ data }) {
         </DividerWrapper>
         <StatusWrapper>{data.status}</StatusWrapper>
       </FooterWrapper>
+      <TextWrapper>这里是文本</TextWrapper>
+      <DividerSecond />
+      <Label>On-chain Info</Label>
+      <TextWrapper>这里可能是 table</TextWrapper>
     </Wrapper>
   );
 }
