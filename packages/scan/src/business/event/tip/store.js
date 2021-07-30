@@ -72,7 +72,91 @@ async function updateTipWithClosing(registry, tipHash, blockHash) {
   await updateTipByHash(tipHash, updates);
 }
 
+async function updateTipWithTipClosed(registry, event, extrinsic, indexer) {
+  const eventData = event.data.toJSON();
+  const [hash, beneficiary, payout] = eventData;
+
+  let updates = await getTipCommonUpdates(registry, hash, indexer.blockHash);
+  const state = {
+    indexer,
+    state: TipEvents.TipClosed,
+    data: eventData,
+  };
+  updates = {
+    ...updates,
+    isClosedOrRetracted: true,
+    state,
+  };
+
+  const timelineItem = {
+    type: TimelineItemTypes.event,
+    method: TipEvents.TipClosed,
+    args: {
+      beneficiary,
+      payout,
+    },
+    indexer,
+  };
+  await updateTipByHash(hash, updates, timelineItem);
+}
+
+async function updateTipWithTipRetracted(registry, event, extrinsic, indexer) {
+  const eventData = event.data.toJSON();
+  const [hash] = eventData;
+
+  let updates = await getTipCommonUpdates(registry, hash, indexer.blockHash);
+  const state = {
+    indexer,
+    state: TipEvents.TipRetracted,
+    data: eventData,
+  };
+  updates = {
+    ...updates,
+    isClosedOrRetracted: true,
+    state,
+  };
+
+  const timelineItem = {
+    type: TimelineItemTypes.event,
+    method: TipEvents.TipRetracted,
+    args: {},
+    indexer,
+  };
+  await updateTipByHash(hash, updates, timelineItem);
+}
+
+async function updateTipWithTipSlashed(registry, event, extrinsic, indexer) {
+  const eventData = event.data.toJSON();
+  const [hash, finder, slashed] = eventData;
+
+  let updates = await getTipCommonUpdates(registry, hash, indexer.blockHash);
+  const state = {
+    indexer,
+    state: TipEvents.TipSlashed,
+    data: eventData,
+  };
+  updates = {
+    ...updates,
+    isClosedOrRetracted: true,
+    state,
+  };
+
+  const timelineItem = {
+    type: TimelineItemTypes.event,
+    method: TipEvents.TipSlashed,
+    args: {
+      finder,
+      slashed,
+    },
+    indexer,
+  };
+  await updateTipByHash(hash, updates, timelineItem);
+}
+
 module.exports = {
   saveNewTip,
   updateTipWithClosing,
+  updateTipWithTipClosed,
+  updateTipWithTipRetracted,
+  updateTipWithTipSlashed,
 };
