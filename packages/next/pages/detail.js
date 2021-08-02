@@ -4,6 +4,7 @@ import Layout from "components/layout";
 import Back from "components/back";
 import DetailItem from "components/detailItem";
 import { detailData } from "utils/data";
+import Timeline from "components/timeline";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -17,6 +18,7 @@ export default function Detail() {
       <Wrapper>
         <Back />
         <DetailItem data={detailData} />
+        <Timeline />
       </Wrapper>
     </Layout>
   );

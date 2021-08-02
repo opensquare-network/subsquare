@@ -103,3 +103,15 @@ export const detailData = {
   type: "Council",
   status: "Propose Bounty",
 };
+
+export const timelineData = [
+  {
+    time: "2020-12-12 09:43:41",
+    status: "Propose Bounty",
+    data: {
+      Proposer: "Sed accumsan",
+      Value: "50.00 KSM",
+      Title: "Eget at quisque nibh tellus id vulputate laoreet ornare in.",
+    },
+  },
+];
