@@ -1,10 +1,36 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import Links from "./links";
 import Voting from "./voting";
+import Account from "components/account";
 
 const Wrapper = styled.div`
   display: flex;
+  :last-child {
+    .bar {
+      display: none;
+    }
+  }
+  ${(p) =>
+    p.foldable &&
+    css`
+      :first-child {
+        .fold-button {
+          display: flex;
+        }
+      }
+    `}
+  ${(p) =>
+    p.foldable &&
+    p.isFold &&
+    css`
+      :not(:first-child) {
+        display: none;
+      }
+      .bar {
+        display: none;
+      }
+    `}
 `;
 
 const Left = styled.div`
@@ -43,7 +69,7 @@ const TitleWrapper = styled.div`
 `;
 
 const Status = styled.div`
-  background: #2196f3;
+  background: ${(p) => p.color};
   border-radius: 2px;
   padding: 0 8px;
   font-weight: 500;
@@ -52,6 +78,28 @@ const Status = styled.div`
   margin-left: auto;
   height: 20px;
   line-height: 20px;
+`;
+
+const FoldButton = styled.div`
+  display: none;
+  height: 20px;
+  width: 20px;
+  border: 1px solid #e0e4eb;
+  border-radius: 2px;
+  margin-left: 8px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  > div {
+    width: 14px;
+    height: 14px;
+    background: url("/imgs/icons/arrow-triangle-up.svg");
+    ${(p) =>
+      p.isFold &&
+      css`
+        background: url("/imgs/icons/arrow-triangle-down.svg");
+      `}
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -73,27 +121,70 @@ const ContentItem = styled.div`
   }
 `;
 
-export default function Item({ data }) {
+const VoteResultWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  > :last-child {
+    display: flex;
+    align-items: center;
+    > img {
+      width: 14px;
+      height: 14px;
+      margin-left: 4px;
+    }
+  }
+`;
+
+export default function Item({ data, foldable, isFold, setIsFold }) {
   return (
-    <Wrapper>
+    <Wrapper foldable={foldable} isFold={isFold}>
       <Left>
         <Cirtcle />
-        <Bar />
+        <Bar className="bar" />
       </Left>
       <Right>
         <TitleWrapper>
           <div>{data.time}</div>
-          <Status>{data.status}</Status>
+          <Status color={data.status.color}>{data.status.value}</Status>
+          <FoldButton
+            className="fold-button"
+            isFold={isFold}
+            onClick={() => setIsFold(!isFold)}
+          >
+            <div />
+          </FoldButton>
         </TitleWrapper>
         <ContentWrapper>
-          {Object.entries(data.data).map((item, index) => (
-            <ContentItem key={index}>
-              <div>{item[0]}</div>
-              <div>{item[1]}</div>
-            </ContentItem>
-          ))}
+          {data.data &&
+            Object.entries(data.data).map((item, index) => (
+              <ContentItem key={index}>
+                <div>{item[0]}</div>
+                {typeof item[1] === "string" ? (
+                  <div>{item[1]}</div>
+                ) : item[1].type === "account" ? (
+                  <Account name={item[1].name} />
+                ) : null}
+              </ContentItem>
+            ))}
         </ContentWrapper>
-        <Voting />
+        {data.voting && <Voting data={data.voting} />}
+        {data.voteResult && (
+          <VoteResultWrapper>
+            <Account name={data.voteResult.name} />
+            {data.voteResult.value ? (
+              <div>
+                Aye
+                <img src="/imgs/icons/approve.svg" />
+              </div>
+            ) : (
+              <div>
+                Nay
+                <img src="/imgs/icons/reject.svg" />
+              </div>
+            )}
+          </VoteResultWrapper>
+        )}
         <Links />
       </Right>
     </Wrapper>

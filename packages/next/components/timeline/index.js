@@ -1,7 +1,8 @@
 import styled from "styled-components";
+import { Fragment } from "react";
 
 import Item from "./item";
-import { timelineData } from "utils/data";
+import FoldableItem from "./foldableItem";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -11,6 +12,11 @@ const Wrapper = styled.div`
     0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 4px;
   padding: 48px;
+  @media screen and (max-width: 600px) {
+    padding: 24px;
+    margin: 0 -16px;
+    border-radius: 0;
+  }
 `;
 
 const TitleWrapper = styled.div`
@@ -28,15 +34,21 @@ const TitleWrapper = styled.div`
   }
 `;
 
-export default function Timeline() {
+export default function Timeline({ data }) {
   return (
     <Wrapper>
       <TitleWrapper>
         <div>Timeline</div>
         <div>Last active 8 days ago</div>
       </TitleWrapper>
-      {timelineData.map((item, index) => (
-        <Item key={index} data={item} />
+      {data.map((item, index) => (
+        <Fragment key={index}>
+          {Array.isArray(item) ? (
+            <FoldableItem data={item} />
+          ) : (
+            <Item data={item} />
+          )}
+        </Fragment>
       ))}
     </Wrapper>
   );
