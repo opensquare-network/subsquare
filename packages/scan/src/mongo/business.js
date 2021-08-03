@@ -24,6 +24,7 @@ function getDbName() {
 }
 
 const tipCollectionName = "tip";
+const motionCollectionName = "motion";
 
 let client = null;
 let db = null;
@@ -31,6 +32,7 @@ let db = null;
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017";
 
 let tipCol = null;
+let motionCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -39,6 +41,7 @@ async function initDb() {
 
   db = client.db(getDbName());
   tipCol = db.collection(tipCollectionName);
+  motionCol = db.collection(motionCollectionName);
 
   await _createIndexes();
 }
@@ -63,6 +66,12 @@ async function getTipCollection() {
   return tipCol;
 }
 
+async function getMotionCollection() {
+  await tryInit(motionCol);
+  return motionCol;
+}
+
 module.exports = {
   getBusinessTipCollection: getTipCollection,
+  getBusinessMotionCollection: getMotionCollection,
 };

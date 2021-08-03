@@ -16,6 +16,10 @@ const Modules = Object.freeze({
   Sudo: "sudo",
 });
 
+const KaruraModules = Object.freeze({
+  GeneralCouncil: "generalCouncil",
+});
+
 const TipEvents = Object.freeze({
   NewTip: "NewTip",
   TipClosing: "TipClosing",
@@ -67,4 +71,5 @@ module.exports = {
   UtilityMethods,
   TimelineItemTypes,
   CouncilEvents,
+  KaruraModules,
 };

@@ -1,9 +1,22 @@
-const { Modules, CouncilEvents } = require("../../common/constants");
+const {
+  Modules,
+  CouncilEvents,
+  KaruraModules,
+} = require("../../common/constants");
 const { handleProposed } = require("./store/proposed");
+const { isKarura } = require("../../../env");
+
+function isCouncilModule(section) {
+  if (isKarura()) {
+    return KaruraModules.GeneralCouncil === section;
+  }
+
+  return Modules.Council === section;
+}
 
 async function handleMotionEvent(registry, event, extrinsic, indexer) {
   const { section, method } = event;
-  if (Modules.Council !== section) {
+  if (!isCouncilModule(section)) {
     return;
   }
 
