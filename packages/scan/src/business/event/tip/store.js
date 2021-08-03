@@ -53,7 +53,7 @@ async function saveNewTip(registry, event, extrinsic, indexer) {
     tippersCount,
     tipFindersFee,
     meta,
-    isClosedOrRetracted: false,
+    isFinal: false,
     state: {
       indexer,
       state: TipEvents.NewTip,
@@ -86,7 +86,7 @@ async function updateTipWithTipClosed(registry, event, extrinsic, indexer) {
   };
   updates = {
     ...updates,
-    isClosedOrRetracted: true,
+    isFinal: true,
     state,
   };
 
@@ -115,7 +115,7 @@ async function updateTipWithTipRetracted(registry, event, extrinsic, indexer) {
   };
   updates = {
     ...updates,
-    isClosedOrRetracted: true,
+    isFinal: true,
     state,
   };
 
@@ -141,7 +141,7 @@ async function updateTipWithTipSlashed(registry, event, extrinsic, indexer) {
   };
   updates = {
     ...updates,
-    isClosedOrRetracted: true,
+    isFinal: true,
     state,
   };
 

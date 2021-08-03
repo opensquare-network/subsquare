@@ -24,7 +24,7 @@ async function updateTipByHash(hash, updates, timelineItem) {
     };
   }
 
-  await tipCol.updateOne({ hash: hash, isClosedOrRetracted: false }, update);
+  await tipCol.updateOne({ hash: hash, isFinal: false }, update);
 }
 
 module.exports = {
