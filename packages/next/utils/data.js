@@ -161,12 +161,12 @@ export const timelineData = [
       data: { Approved: "" },
     },
   ],
-  // {
-  //   time: "2020-12-12 09:43:41",
-  //   status: { value: "Bounty Rejected", color: "#F44336" },
-  //   data: {
-  //     "Closed by": { name: "OpenSquare", type: "account" },
-  //     "Proposer slashed": "50.00 KSM",
-  //   },
-  // },
+  {
+    time: "2020-12-12 09:43:41",
+    status: { value: "Bounty Rejected", color: "#F44336" },
+    data: {
+      "Closed by": { name: "OpenSquare", type: "account" },
+      "Proposer slashed": "50.00 KSM",
+    },
+  },
 ];

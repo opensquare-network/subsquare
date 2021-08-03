@@ -5,6 +5,15 @@ import Item from "./item";
 
 const Wrapper = styled.div`
   display: flex;
+  ${(p) =>
+    p.isFold &&
+    css`
+      :last-child {
+        .fold-bar {
+          display: none;
+        }
+      }
+    `}
 `;
 
 const Left = styled.div`
@@ -30,13 +39,6 @@ const Bar = styled.div`
     css`
       background-color: #ebeef4;
     `}
-  ${(p) =>
-    p.isFold &&
-    css`
-      :last-child {
-        display: none;
-      }
-    `}
 `;
 
 const Mid = styled.div`
@@ -54,7 +56,7 @@ export default function FoldableItem({ data }) {
   const [isFold, setIsFold] = useState(true);
 
   return (
-    <Wrapper>
+    <Wrapper isFold={isFold}>
       <Left>
         <Cirtcle />
         <Bar className="fold-bar" isFold={isFold} />
