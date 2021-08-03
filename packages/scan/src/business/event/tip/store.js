@@ -12,7 +12,7 @@ const {
   TimelineItemTypes,
 } = require("../../common/constants");
 const { getBlockHash } = require("../../common");
-const { insertTip, updateTipByHash } = require("../../../mongo/business/tip");
+const { insertTip, updateTipByHash } = require("../../../mongo/service/tip");
 
 async function saveNewTip(registry, event, extrinsic, indexer) {
   const [hash] = event.data;

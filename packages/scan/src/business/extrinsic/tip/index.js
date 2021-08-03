@@ -3,7 +3,7 @@ const {
   Modules,
   TimelineItemTypes,
 } = require("../../common/constants");
-const { updateTipByHash } = require("../../../mongo/business/tip");
+const { updateTipByHash } = require("../../../mongo/service/tip");
 const { getTipCommonUpdates } = require("../../common/tip/updates");
 
 async function handleTipCall(call, author, extrinsicIndexer) {

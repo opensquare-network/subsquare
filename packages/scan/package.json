@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "license": "Apache-2.0",
   "dependencies": {
+    "@acala-network/type-definitions": "^2.0.1",
     "@polkadot/api": "^5.1.1",
     "@polkadot/types": "^5.1.1",
     "@polkadot/util": "^7.0.2",

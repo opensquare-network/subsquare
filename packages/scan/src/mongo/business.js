@@ -5,28 +5,32 @@ function getDbName() {
   const chain = currentChain();
 
   if (CHAINS.KARURA === chain) {
-    return process.env.MONGO_DB_CHAIN_DATA_KAR_NAME || "subsquare-kar";
+    return (
+      process.env.MONGO_DB_BUSINESS_DATA_KAR_NAME || "subsquare-business-kar"
+    );
   } else if (CHAINS.KUSAMA === chain) {
-    return process.env.MONGO_DB_CHAIN_DATA_KSM_NAME || "subsquare-ksm";
+    return (
+      process.env.MONGO_DB_BUSINESS_DATA_KSM_NAME || "subsquare-business-ksm"
+    );
   } else if (CHAINS.POLKADOT === chain) {
-    return process.env.MONGO_DB_CHAIN_DATA_DOT_NAME || "subsquare-dot";
+    return (
+      process.env.MONGO_DB_BUSINESS_DATA_DOT_NAME || "subsquare-business-dot"
+    );
   } else {
-    return process.env.MONGO_DB_CHAIN_DATA_KAR_NAME || "subsquare-kar";
+    return (
+      process.env.MONGO_DB_BUSINESS_DATA_KAR_NAME || "subsquare-business-kar"
+    );
   }
 }
 
-const statusCollectionName = "status";
 const tipCollectionName = "tip";
-const motionCollectionName = "motion";
 
 let client = null;
 let db = null;
 
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017";
 
-let statusCol = null;
 let tipCol = null;
-let motionCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -34,9 +38,7 @@ async function initDb() {
   });
 
   db = client.db(getDbName());
-  statusCol = db.collection(statusCollectionName);
   tipCol = db.collection(tipCollectionName);
-  motionCol = db.collection(motionCollectionName);
 
   await _createIndexes();
 }
@@ -56,23 +58,11 @@ async function tryInit(col) {
   }
 }
 
-async function getStatusCollection() {
-  await tryInit(statusCol);
-  return statusCol;
-}
-
 async function getTipCollection() {
   await tryInit(tipCol);
   return tipCol;
 }
 
-async function getMotionCollection() {
-  await tryInit(motionCol);
-  return motionCol;
-}
-
 module.exports = {
-  getStatusCollection,
-  getTipCollection,
-  getMotionCollection,
+  getBusinessTipCollection: getTipCollection,
 };

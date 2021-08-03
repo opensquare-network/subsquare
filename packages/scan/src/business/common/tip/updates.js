@@ -1,4 +1,4 @@
-const { getTipByHash } = require("../../../mongo/business/tip");
+const { getTipByHash } = require("../../../mongo/service/tip");
 const { getTippersCount, getTipFindersFee, getTipMeta } = require("./utils");
 
 async function getTipCommonUpdates(registry, hash, blockHash) {
