@@ -1,9 +1,11 @@
-import styled from "styled-components";
+import Layout from "components/layout";
 
-const Wrapper = styled.div`
-  color: lightblue;
-`;
+import Overview from "components/overview";
 
 export default function Home() {
-  return <Wrapper>subsquare</Wrapper>;
+  return (
+    <Layout>
+      <Overview />
+    </Layout>
+  );
 }
