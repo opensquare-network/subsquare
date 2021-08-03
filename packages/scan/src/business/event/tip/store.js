@@ -13,9 +13,11 @@ const {
 } = require("../../common/constants");
 const { getBlockHash } = require("../../common");
 const { insertTip, updateTipByHash } = require("../../../mongo/service/tip");
+const { insertTipPost } = require("../../../mongo/service/business/tip");
 
 async function saveNewTip(registry, event, extrinsic, indexer) {
-  const [hash] = event.data;
+  const [rawHash] = event.data;
+  const hash = rawHash.toString();
   const meta = await getTipMeta(indexer.blockHash, hash);
 
   const reasonHash = meta.reason;
@@ -31,7 +33,7 @@ async function saveNewTip(registry, event, extrinsic, indexer) {
   const beneficiary = newTipCall.args[1].toJSON();
   meta.findersFee = TipMethods.reportAwesome === method;
   const finder = meta.finder;
-  const tippersCount = getTippersCount(registry);
+  const tippersCount = await getTippersCount(registry, indexer.blockHash);
   const tipFindersFee = getTipFindersFee(registry);
 
   const timelineItem = {
@@ -45,27 +47,27 @@ async function saveNewTip(registry, event, extrinsic, indexer) {
     indexer,
   };
 
+  const state = {
+    indexer,
+    state: TipEvents.NewTip,
+    data: event.data.toJSON(),
+  };
+
   const obj = {
     indexer,
-    hash: hash.toString(),
+    hash,
     reason,
     finder,
     tippersCount,
     tipFindersFee,
     meta,
     isFinal: false,
-    state: {
-      indexer,
-      state: TipEvents.NewTip,
-      data: event.data.toJSON(),
-    },
+    state,
     timeline: [timelineItem],
   };
 
   await insertTip(obj);
-  /**
-   * TODO: Think whether we need to create separate table for corresponding post for this tip
-   */
+  await insertTipPost(indexer, hash, reason, finder, state);
 }
 
 async function updateTipWithClosing(registry, tipHash, blockHash) {

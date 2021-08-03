@@ -1,3 +1,5 @@
+const { isKarura } = require("../env");
+
 function extractExtrinsicEvents(events, extrinsicIndex) {
   return events.filter((event) => {
     const { phase } = event;
@@ -20,6 +22,24 @@ function isHex(blockData) {
   }
 
   return blockData.startsWith("0x");
+}
+
+function getConstFromKaruraRegistry(registry, moduleName, constantName) {
+  const module = registry.metadata.modules.find(
+    (m) => m.name.toString() === moduleName
+  );
+  if (!module) {
+    return null;
+  }
+  const targetConst = module.constants.find(
+    (c) => c.name.toString() === constantName
+  );
+  if (!targetConst) {
+    return null;
+  }
+
+  const Type = registry.get(targetConst.type.toString());
+  return new Type(registry, targetConst.get("value"));
 }
 
 function getConstFromRegistry(registry, moduleName, constantName) {
@@ -49,14 +69,20 @@ function getConstFromRegistry(registry, moduleName, constantName) {
     }
 
     const typeName = targetConstant.type.toString();
-    const Type = registry.registry.get(typeName);
-    return new Type(registry.registry, targetConstant.value);
+    const Type = registry.get(typeName);
+    return new Type(registry, targetConstant.value);
   }
 
   return null;
 }
 
 function getConstsFromRegistry(registry, constants) {
+  if (isKarura()) {
+    return constants.map(({ moduleName, constantName }) => {
+      return getConstFromKaruraRegistry(registry, moduleName, constantName);
+    });
+  }
+
   return constants.map(({ moduleName, constantName }) =>
     getConstFromRegistry(registry, moduleName, constantName)
   );

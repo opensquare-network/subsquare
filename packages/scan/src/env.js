@@ -14,7 +14,12 @@ function currentChain() {
   }
 }
 
+function isKarura() {
+  return CHAINS.KARURA === currentChain();
+}
+
 module.exports = {
   currentChain,
   CHAINS,
+  isKarura,
 };

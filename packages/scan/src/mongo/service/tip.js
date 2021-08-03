@@ -2,6 +2,18 @@ const { getTipCollection } = require("../index");
 
 async function insertTip(tip) {
   const tipCol = await getTipCollection();
+  const {
+    indexer: { blockHeight },
+    hash,
+  } = tip;
+  const maybeInDb = await tipCol.findOne({
+    "indexer.blockHeight": blockHeight,
+    hash,
+  });
+  if (maybeInDb) {
+    return;
+  }
+
   await tipCol.insertOne(tip);
 }
 

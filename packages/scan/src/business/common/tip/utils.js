@@ -12,6 +12,7 @@ const {
   getConstFromRegistry,
   getConstsFromRegistry,
 } = require("../../../utils/index");
+const { currentChain, CHAINS } = require("../../../env");
 
 async function getTipMeta(blockHash, tipHash) {
   const api = await getApi();
@@ -84,7 +85,19 @@ function getNewTipCall(registry, call, reasonHash) {
   return null;
 }
 
-function getTippersCount(registry) {
+async function getTippersCountOfKarura(blockHash) {
+  const api = await getApi();
+  const members = await api.query.generalCouncil.members.at(blockHash);
+
+  return members.length;
+}
+
+async function getTippersCount(registry, blockHash) {
+  const chain = currentChain();
+  if (CHAINS.KARURA === chain) {
+    return await getTippersCountOfKarura(blockHash);
+  }
+
   const oldModuleValue = getConstFromRegistry(
     registry,
     "ElectionsPhragmen",
