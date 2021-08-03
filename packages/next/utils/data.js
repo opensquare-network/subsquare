@@ -107,11 +107,66 @@ export const detailData = {
 export const timelineData = [
   {
     time: "2020-12-12 09:43:41",
-    status: "Propose Bounty",
+    status: { value: "Propose Bounty", color: "#2196F3" },
     data: {
-      Proposer: "Sed accumsan",
+      Proposer: { name: "Sed accumsan", type: "account" },
       Value: "50.00 KSM",
       Title: "Eget at quisque nibh tellus id vulputate laoreet ornare in.",
     },
   },
+  [
+    {
+      time: "2020-12-12 09:43:41",
+      status: { value: "Motion #289", color: "#6848FF" },
+      voting: {
+        proposeCurator: "Kathryn",
+        curator: "Jaco",
+        fee: "22.22 KSM",
+        total: 12,
+        votes: [
+          true,
+          true,
+          true,
+          false,
+          false,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+        ],
+      },
+    },
+    {
+      time: "2020-12-12 09:43:41",
+      status: { value: "Vote", color: "#6848FF" },
+      voteResult: {
+        name: "Huntch",
+        value: true,
+      },
+    },
+    {
+      time: "2020-12-12 09:43:41",
+      status: { value: "Vote", color: "#6848FF" },
+      voteResult: {
+        name: "Kathryn",
+        value: false,
+      },
+    },
+    {
+      time: "2020-12-12 09:43:41",
+      status: { value: "Vote", color: "#6848FF" },
+      data: { Approved: "" },
+    },
+  ],
+  // {
+  //   time: "2020-12-12 09:43:41",
+  //   status: { value: "Bounty Rejected", color: "#F44336" },
+  //   data: {
+  //     "Closed by": { name: "OpenSquare", type: "account" },
+  //     "Proposer slashed": "50.00 KSM",
+  //   },
+  // },
 ];

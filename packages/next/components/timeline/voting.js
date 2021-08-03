@@ -38,7 +38,7 @@ export default function Voting({ data }) {
   return (
     <div>
       <TitleWrapper>
-        <Account name="Kathryn" />
+        <Account name={data.proposeCurator} />
         <div>
           <div>proposeCurator</div>
           <img src="/imgs/icons/approve.svg" />
@@ -47,30 +47,14 @@ export default function Voting({ data }) {
       <CuratorWrapper>
         <div>
           <div>Curator</div>
-          <Account name="Jaco" />
+          <Account name={data.curator} />
         </div>
         <div>
           <div>Fee</div>
-          <div>22.22 KSM</div>
+          <div>{data.fee}</div>
         </div>
       </CuratorWrapper>
-      <Progress
-        total={12}
-        data={[
-          true,
-          true,
-          true,
-          false,
-          false,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-        ]}
-      />
+      <Progress total={data.total} data={data.votes} />
     </div>
   );
 }

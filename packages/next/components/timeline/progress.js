@@ -44,8 +44,7 @@ const DetailWrapper = styled.div`
   }
 `;
 
-export default function Progress({ data }) {
-  const total = data.length;
+export default function Progress({ total, data }) {
   const [ayes, nays] = data.reduce(
     (pre, cur) => {
       if (cur === true) {

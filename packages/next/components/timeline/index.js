@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 import Item from "./item";
 import { timelineData } from "utils/data";
+import FoldableItem from "./foldableItem";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -36,7 +37,13 @@ export default function Timeline() {
         <div>Last active 8 days ago</div>
       </TitleWrapper>
       {timelineData.map((item, index) => (
-        <Item key={index} data={item} />
+        <>
+          {Array.isArray(item) ? (
+            <FoldableItem key={index} data={item} />
+          ) : (
+            <Item key={index} data={item} />
+          )}
+        </>
       ))}
     </Wrapper>
   );
