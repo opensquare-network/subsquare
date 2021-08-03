@@ -170,3 +170,27 @@ export const timelineData = [
     },
   },
 ];
+
+export const commentData = [
+  {
+    author: "Nulla at",
+    time: "2 hours ago",
+    content:
+      "Sollicitudin velit phasellus a nisi condimentum vitae. Ipsum hac maecenas mauris leo. Viverra blandit vel velit nibh. Mauris mus augue ante purus.",
+    up: 0,
+  },
+  {
+    author: "Mi vulputate",
+    time: "2 hours ago",
+    content:
+      "Mi cras arcu, nisi velit senectus eu ultricies. Hendrerit ipsum ornare fermentum tristique. Pellentesque laoreet odio et risus mauris arcu, cursus. Mattis ultricies ipsum pharetra eget mauris.",
+    up: 0,
+  },
+  {
+    author: "Etiam eget",
+    time: "2 hours ago",
+    content:
+      "Risus, ut varius elementum fames dis semper est massa aliquet. Lectus nec mi feugiat facilisis tincidunt turpis. Amet in enim mi donec vel nisi in consectetur ullamcorper. Interdum id vel vestibulum arcu.",
+    up: 0,
+  },
+];
