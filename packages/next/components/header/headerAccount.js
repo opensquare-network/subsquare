@@ -102,7 +102,11 @@ export default function HeaderAccount() {
           )}
         </Wrapper>
       )}
-      {!login && <Button onClick={() => setLogin(true)}>Login</Button>}
+      {!login && (
+        <Button secondary onClick={() => setLogin(true)}>
+          Login
+        </Button>
+      )}
     </>
   );
 }
