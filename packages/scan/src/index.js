@@ -86,7 +86,7 @@ async function scanNormalizedBlock(block, blockEvents) {
 }
 
 async function test() {
-  const height = 43249;
+  const height = 44075;
   const api = await getApi();
   registry = api.registry;
   const blockHash = await api.rpc.chain.getBlockHash(height);
