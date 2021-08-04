@@ -6,6 +6,7 @@ import Layout from "components/layout";
 import Agreement from "components/agreement";
 import Button from "components/button";
 import Input from "components/input";
+import AddressSelect from "components/addressSelect";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -91,6 +92,7 @@ const Redirect = styled.div`
 
 export default function Signup() {
   const [success, setSuccess] = useState(false);
+  const [web3, setWeb3] = useState(false);
 
   return (
     <Layout>
@@ -98,23 +100,45 @@ export default function Signup() {
         {!success && (
           <ContentWrapper>
             <Title>Signup</Title>
-            <InputWrapper>
-              <Label>Username</Label>
-              <Input placeholder="Please fill your name" />
-              <Label>Email</Label>
-              <Input placeholder="Please fill email" />
-              <Label>Password</Label>
-              <Input placeholder="Please fill password" type="password" />
-              <ForgetPassword>
-                <Link href="forget">Forget password?</Link>
-              </ForgetPassword>
-            </InputWrapper>
-            <ButtonWrapper>
-              <Button isFill secondary onClick={() => setSuccess(true)}>
-                Sign up
-              </Button>
-              <Button isFill>Sign up with web3 address</Button>
-            </ButtonWrapper>
+            {!web3 && (
+              <>
+                <InputWrapper>
+                  <Label>Username</Label>
+                  <Input placeholder="Please fill your name" />
+                  <Label>Email</Label>
+                  <Input placeholder="Please fill email" />
+                  <Label>Password</Label>
+                  <Input placeholder="Please fill password" type="password" />
+                  <ForgetPassword>
+                    <Link href="forget">Forget password?</Link>
+                  </ForgetPassword>
+                </InputWrapper>
+                <ButtonWrapper>
+                  <Button isFill secondary onClick={() => setSuccess(true)}>
+                    Sign up
+                  </Button>
+                  <Button isFill onClick={() => setWeb3(true)}>
+                    Sign up with web3 address
+                  </Button>
+                </ButtonWrapper>
+              </>
+            )}
+            {web3 && (
+              <>
+                <div>
+                  <Label>Choose linked address</Label>
+                  <AddressSelect />
+                </div>
+                <ButtonWrapper>
+                  <Button isFill secondary onClick={() => setSuccess(true)}>
+                    Sign up
+                  </Button>
+                  <Button isFill onClick={() => setWeb3(false)}>
+                    Sign up with username
+                  </Button>
+                </ButtonWrapper>
+              </>
+            )}
             <LinkWrapper>
               Already have a account? <Link href="/login">Login</Link>
             </LinkWrapper>

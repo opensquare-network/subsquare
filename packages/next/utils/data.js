@@ -194,3 +194,18 @@ export const commentData = [
     up: 0,
   },
 ];
+
+export const linkedAddressData = [
+  {
+    name: "Name",
+    address: "HUfz...prsX",
+  },
+  {
+    name: "Vitae id",
+    address: "HUfz...prsX",
+  },
+  {
+    name: "Tortor viverra",
+    address: "HUfz...prsX",
+  },
+];
