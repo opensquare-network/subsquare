@@ -1,6 +1,6 @@
 const { getBusinessTipCollection } = require("../../business");
 
-async function insertTipPost(indexer, hash, reason, finder, state) {
+async function insertTipPost(indexer, hash) {
   const col = await getBusinessTipCollection();
   const maybeInDb = await col.findOne({
     "indexer.blockHeight": indexer.blockHeight,
@@ -14,9 +14,6 @@ async function insertTipPost(indexer, hash, reason, finder, state) {
     height: indexer.blockHeight,
     indexer,
     hash,
-    finder,
-    reason,
-    state,
   });
 }
 

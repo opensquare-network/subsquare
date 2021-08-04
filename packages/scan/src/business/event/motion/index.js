@@ -4,6 +4,7 @@ const {
   KaruraModules,
 } = require("../../common/constants");
 const { handleProposed } = require("./store/proposed");
+const { handleVoted } = require("./store/voted");
 const { isKarura } = require("../../../env");
 
 function isCouncilModule(section) {
@@ -22,6 +23,8 @@ async function handleMotionEvent(registry, event, extrinsic, indexer) {
 
   if (CouncilEvents.Proposed === method) {
     await handleProposed(registry, event, extrinsic, indexer);
+  } else if (CouncilEvents.Voted === method) {
+    await handleVoted(registry, event, extrinsic, indexer);
   }
 }
 
