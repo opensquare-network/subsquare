@@ -94,7 +94,7 @@ export default function Login() {
             <Button isFill>Login with web3 address</Button>
           </ButtonWrapper>
           <LinkWrapper>
-            Don’t have a account? <Link href="signup">Sign up</Link>
+            Don’t have a account? <Link href="/signup">Sign up</Link>
           </LinkWrapper>
         </ContentWrapper>
         <Agreement />
