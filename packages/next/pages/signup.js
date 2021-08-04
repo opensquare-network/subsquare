@@ -116,7 +116,7 @@ export default function Signup() {
               <Button isFill>Sign up with web3 address</Button>
             </ButtonWrapper>
             <LinkWrapper>
-              Already have a account? <Link href="/login">Sign up</Link>
+              Already have a account? <Link href="/login">Login</Link>
             </LinkWrapper>
           </ContentWrapper>
         )}

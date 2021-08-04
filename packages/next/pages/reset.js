@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 
 import Layout from "components/layout";
+import Agreement from "components/agreement";
 import Button from "components/button";
 import Input from "components/input";
 
@@ -57,7 +58,16 @@ const InfoWrapper = styled.div`
   color: #506176;
 `;
 
-export default function Forget() {
+const Redirect = styled.div`
+  text-align: center;
+  color: #506176;
+  .sec {
+    font-weight: bold;
+    color: #6848ff;
+  }
+`;
+
+export default function Reset() {
   const [success, setSuccess] = useState(false);
 
   return (
@@ -67,8 +77,10 @@ export default function Forget() {
           <ContentWrapper>
             <Title>Reset Password</Title>
             <InputWrapper>
-              <Label>Email</Label>
-              <Input placeholder="Please fill email" />
+              <Label>New Password</Label>
+              <Input placeholder="Please fill new password" type="password" />
+              <Label>Repeat Password</Label>
+              <Input placeholder="Repeat new password" type="password" />
             </InputWrapper>
             <Button isFill secondary onClick={() => setSuccess(true)}>
               Confirm
@@ -77,16 +89,17 @@ export default function Forget() {
         )}
         {success && (
           <ContentWrapper>
-            <Title>Reset Password</Title>
-            <InfoWrapper>
-              The reset password link was sent to this email, if it exist in our
-              database.
-            </InfoWrapper>
+            <Title>Congrats</Title>
+            <InfoWrapper>Your password has been reset.</InfoWrapper>
             <Button isFill secondary onClick={() => setSuccess(false)}>
-              Confirm
+              Got it
             </Button>
+            <Redirect>
+              The page will be re-directed in <span className="sec">3s</span>
+            </Redirect>
           </ContentWrapper>
         )}
+        <Agreement />
       </Wrapper>
     </Layout>
   );

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useRouter } from "next/router";
 
 import Button from "./button";
 
@@ -36,12 +37,16 @@ const Info = styled.div`
 `;
 
 export default function Trends() {
+  const router = useRouter();
+
   return (
     <Wrapper>
       <Title>Trends</Title>
       <SignUp>
         <div>引导注册的文案</div>
-        <Button primary>Sign up</Button>
+        <Button primary isFill onClick={() => router.push("/signup")}>
+          Sign up
+        </Button>
       </SignUp>
       <Info>这里可以放一些次要信息</Info>
     </Wrapper>
