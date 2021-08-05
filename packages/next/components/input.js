@@ -28,6 +28,11 @@ const InputWrapper = styled.input`
     css`
       border-color: #f44336;
     `}
+  ${(p) =>
+    p.disabled &&
+    css`
+      background: #f6f7fa;
+    `}
 `;
 const Error = styled.div`
   font-size: 12px;
@@ -51,6 +56,12 @@ const ShowButton = styled.div`
   }
 `;
 
+const PostWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+`;
+
 export default function Input({ ...props }) {
   const [show, setShow] = useState(false);
 
@@ -68,6 +79,7 @@ export default function Input({ ...props }) {
         </ShowButton>
       )}
       {props.error && <Error>{props.error}</Error>}
+      {props.post && <PostWrapper>{props.post}</PostWrapper>}
     </Wrapper>
   );
 }

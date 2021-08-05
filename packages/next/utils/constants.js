@@ -91,4 +91,27 @@ export const menu = [
       },
     ],
   },
+  {
+    name: "SETTING",
+    items: [
+      {
+        value: "account",
+        name: "Account",
+        icon: "setting-account.svg",
+        pathname: "/setting/account",
+      },
+      {
+        value: "linked-address",
+        name: "Linked Address",
+        icon: "setting-linked-address.svg",
+        pathname: "/setting/linked-address",
+      },
+      {
+        value: "notification",
+        name: "Notification",
+        icon: "setting-notification.svg",
+        pathname: "/setting/notification",
+      },
+    ],
+  },
 ];

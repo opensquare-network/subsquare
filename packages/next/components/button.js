@@ -3,7 +3,6 @@ import styled, { css } from "styled-components";
 const Wrapper = styled.button`
   all: unset;
   padding: 0 12px;
-  font-weight: bold;
   height: 38px;
   border-radius: 4px;
   cursor: pointer;
@@ -12,12 +11,14 @@ const Wrapper = styled.button`
   text-align: center;
   display: inline-block;
   box-sizing: border-box;
+  font-weight: 500;
   ${(p) =>
     p.primary &&
     css`
       background: #6848ff;
       color: #ffffff;
       border: none;
+      font-weight: bold;
     `}
   ${(p) =>
     p.secondary &&
@@ -25,6 +26,13 @@ const Wrapper = styled.button`
       background: #1e2134;
       color: #ffffff;
       border: none;
+      font-weight: bold;
+    `}
+    ${(p) =>
+    p.danger &&
+    css`
+      color: #f44336;
+      border-color: #f44336;
     `}
   ${(p) =>
     p.isFill &&
