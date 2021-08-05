@@ -53,6 +53,17 @@ const InputWrapper = styled.div`
     width: 80px;
     margin-left: 16px;
   }
+  @media screen and (max-width: 600px) {
+    flex-direction: column;
+    align-items: stretch;
+    > :only-child {
+      margin-right: 0;
+    }
+    > :not(:only-child):last-child {
+      margin-left: 0;
+      margin-top: 8px;
+    }
+  }
 `;
 
 const Divider = styled.div`
@@ -75,7 +86,7 @@ const EmailVerify = styled.div`
 `;
 
 const ButtonWrapper = styled.div`
-  width: 240px;
+  max-width: 240px;
 `;
 
 export default function Account() {

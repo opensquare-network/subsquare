@@ -51,7 +51,7 @@ export default function DeleteAccount({ onClose }) {
   return (
     <Wrapper onClick={() => onClose()}>
       <ContentWrapper onClick={(event) => event.stopPropagation()}>
-        <Title>Delete</Title>
+        <Title>Delete Account</Title>
         <InfoWrapper>
           Once you delete your account, there is no going back. Please be
           certain.
