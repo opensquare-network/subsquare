@@ -17,3 +17,11 @@ a {
 * {
   box-sizing: border-box;
 }
+
+#nprogress .bar {
+  background: #6848ff;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px #6848ff, 0 0 5px #6848ff;
+}
