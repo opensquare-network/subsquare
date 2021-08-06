@@ -3,6 +3,8 @@ import styled, { css } from "styled-components";
 import Layout from "components/layout";
 import Button from "components/button";
 import { linkedAddressData } from "utils/data";
+import Menu from "components/menu";
+import { settingMenu } from "utils/constants";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -102,7 +104,7 @@ export default function LinkedAddress() {
   const current = linkedAddressData[0];
 
   return (
-    <Layout>
+    <Layout left={<Menu menu={settingMenu} />}>
       <Wrapper>
         <Title>Linked address</Title>
         <ContentWrapper>

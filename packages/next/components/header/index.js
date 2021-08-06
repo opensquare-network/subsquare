@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 import NodeSwitch from "components/nodeSwitch";
 import Container from "components/container";
 import HeaderAccount from "./headerAccount";
 import Sidebar from "./sidebar";
 import { useWindowSize } from "utils/hooks";
-import Menu from "components/menu";
 import SidebarAccount from "./sidebarAccount";
 
 const Wrapper = styled.header`
@@ -81,7 +81,13 @@ const NodeButton = styled.div`
   }
 `;
 
-export default function Header() {
+const LogoImg = styled.img`
+  cursor: pointer;
+  width: 161px;
+  height: 64px;
+`;
+
+export default function Header({ left }) {
   const [show, setShow] = useState(false);
   const [hiddenWidth, setHiddenWidth] = useState();
   const [position, setPosition] = useState("left");
@@ -103,18 +109,20 @@ export default function Header() {
               onClick={() => {
                 setHiddenWidth(900);
                 setPosition("left");
-                setContent("menu");
+                setContent("left");
                 setShow(true);
               }}
             >
               <img src="/imgs/icons/menu-line.svg" alt="" />
             </MenuButton>
-            <img src="/imgs/logo.svg" alt="" />
+            <Link href="/">
+              <LogoImg src="/imgs/logo.svg" alt="" />
+            </Link>
             <NodeButton
               onClick={() => {
                 setHiddenWidth(600);
                 setPosition("right");
-                setContent("account");
+                setContent("right");
                 setShow(true);
               }}
             >
@@ -131,8 +139,8 @@ export default function Header() {
       </Container>
       {show && (
         <Sidebar onClose={() => setShow(false)} position={position}>
-          {content === "menu" && <Menu />}
-          {content === "account" && <SidebarAccount />}
+          {content === "left" && <>{left}</>}
+          {content === "right" && <SidebarAccount />}
         </Sidebar>
       )}
     </Wrapper>

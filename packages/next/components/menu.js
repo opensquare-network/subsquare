@@ -1,8 +1,6 @@
 import styled, { css } from "styled-components";
 import { useRouter } from "next/router";
 
-import { menu } from "utils/constants";
-
 const Wrapper = styled.div`
   padding-top: 32px;
   > :not(:first-child) {
@@ -51,7 +49,7 @@ const Item = styled.div`
     `}
 `;
 
-export default function Menu() {
+export default function Menu({ menu }) {
   const router = useRouter();
 
   return (

@@ -29,7 +29,7 @@ const Left = styled.div`
 
 const Right = styled.div`
   width: 246px;
-  flex: 0 0 246px;
+  flex: 0 0 auto;
   margin-left: 32px;
   > :not(:first-child) {
     margin-top: 16px;
@@ -41,19 +41,14 @@ const Right = styled.div`
   }
 `;
 
-export default function Content({ children }) {
+export default function Content({ left, right, children }) {
   return (
     <Wrapper>
       <Container>
         <ContentWrapper>
-          <Left>
-            <Menu />
-          </Left>
+          <Left>{left}</Left>
           <Main>{children}</Main>
-          <Right>
-            <Trends />
-            <Footer />
-          </Right>
+          <Right>{right}</Right>
         </ContentWrapper>
       </Container>
     </Wrapper>

@@ -3,6 +3,8 @@ import styled from "styled-components";
 import Layout from "components/layout";
 import Toggle from "components/toggle";
 import Button from "components/button";
+import Menu from "components/menu";
+import { settingMenu } from "utils/constants";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -63,7 +65,7 @@ const ButtonWrapper = styled.div`
 
 export default function Notification() {
   return (
-    <Layout>
+    <Layout left={<Menu menu={settingMenu} />}>
       <Wrapper>
         <Title>Notification</Title>
         <ContentWrapper>

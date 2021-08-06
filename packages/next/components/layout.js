@@ -9,11 +9,13 @@ const Wrapper = styled.div`
   min-height: 100vh;
 `;
 
-export default function Layout({ children }) {
+export default function Layout({ left, right, children }) {
   return (
     <Wrapper>
-      <Header />
-      <Content>{children}</Content>
+      <Header left={left} />
+      <Content left={left} right={right}>
+        {children}
+      </Content>
     </Wrapper>
   );
 }
