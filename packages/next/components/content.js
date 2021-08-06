@@ -29,7 +29,7 @@ const Left = styled.div`
 
 const Right = styled.div`
   width: 246px;
-  flex: 0 0 246px;
+  flex: 0 0 auto;
   margin-left: 32px;
   > :not(:first-child) {
     margin-top: 16px;

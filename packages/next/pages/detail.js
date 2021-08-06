@@ -8,6 +8,7 @@ import Timeline from "components/timeline";
 import { timelineData } from "utils/data";
 import Comment from "components/comment";
 import { commentData } from "utils/data";
+import Position from "components/position";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -17,7 +18,7 @@ const Wrapper = styled.div`
 
 export default function Detail() {
   return (
-    <Layout>
+    <Layout right={<Position />}>
       <Wrapper>
         <Back />
         <DetailItem data={detailData} />

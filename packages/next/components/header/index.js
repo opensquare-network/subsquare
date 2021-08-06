@@ -83,6 +83,8 @@ const NodeButton = styled.div`
 
 const LogoImg = styled.img`
   cursor: pointer;
+  width: 161px;
+  height: 64px;
 `;
 
 export default function Header({ left }) {
