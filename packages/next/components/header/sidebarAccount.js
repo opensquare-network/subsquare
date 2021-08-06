@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import { useState } from "react";
+import { useReducer } from "react";
 
 import NodeSwitch from "components/nodeSwitch";
 import Button from "components/button";
 import { accountMenu } from "utils/constants";
+import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
   padding: 32px 0 0;
@@ -51,11 +53,14 @@ const Item = styled.div`
 `;
 
 export default function SidebarAccount() {
+  const router = useRouter();
   const [login, setLogin] = useState(false);
 
-  const handleAccountMenu = (value) => {
-    if (value === "logout") {
+  const handleAccountMenu = (item) => {
+    if (item.value === "logout") {
       setLogin(false);
+    } else if (item.pathname) {
+      router.push(item.pathname);
     }
   };
 
@@ -73,7 +78,7 @@ export default function SidebarAccount() {
       {login && (
         <div>
           {accountMenu.map((item, index) => (
-            <Item key={index} onClick={() => handleAccountMenu(item.value)}>
+            <Item key={index} onClick={() => handleAccountMenu(item)}>
               <img src={`/imgs/icons/${item.icon}`} />
               <div>{item.name}</div>
             </Item>

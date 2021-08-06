@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState, useRef, useEffect, Fragment } from "react";
+import { useRouter } from "next/router";
 
 import Button from "components/button";
 import { accountMenu } from "utils/constants";
@@ -60,6 +61,7 @@ const Divider = styled.div`
 `;
 
 export default function HeaderAccount() {
+  const router = useRouter();
   const [login, setLogin] = useState(false);
   const [show, setShow] = useState(false);
   const ref = useRef();
@@ -73,9 +75,11 @@ export default function HeaderAccount() {
     }
   }, [windowSize]);
 
-  const handleAccountMenu = (value) => {
-    if (value === "logout") {
+  const handleAccountMenu = (item) => {
+    if (item.value === "logout") {
       setLogin(false);
+    } else if (item.pathname) {
+      router.push(item.pathname);
     }
     setShow(false);
   };
@@ -92,7 +96,7 @@ export default function HeaderAccount() {
               {accountMenu.map((item, index) => (
                 <Fragment key={index}>
                   {index === accountMenu.length - 1 && <Divider />}
-                  <Item onClick={() => handleAccountMenu(item.value)}>
+                  <Item onClick={() => handleAccountMenu(item)}>
                     <img src={`/imgs/icons/${item.icon}`} alt="" />
                     <div>{item.name}</div>
                   </Item>

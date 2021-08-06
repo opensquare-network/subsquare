@@ -16,11 +16,13 @@ export const accountMenu = [
     value: "notifications",
     name: "Notifications",
     icon: "notifications.svg",
+    pathname: "/setting/notification",
   },
   {
     value: "settings",
     name: "Settings",
     icon: "settings.svg",
+    pathname: "/setting/account",
   },
   {
     value: "logout",
@@ -29,7 +31,7 @@ export const accountMenu = [
   },
 ];
 
-export const menu = [
+export const mainMenu = [
   {
     items: [
       {
@@ -47,37 +49,32 @@ export const menu = [
     ],
   },
   {
-    name: "ON-CHAIN",
+    name: "DEMOCRACY",
     items: [
-      {
-        value: "activity",
-        name: "On-chain Activity",
-        icon: "type-overview.svg",
-      },
-      {
-        value: "referenda",
-        name: "Referenda",
-        icon: "type-referenda.svg",
-      },
       {
         value: "proposals",
         name: "Proposals",
         icon: "type-proposals.svg",
       },
       {
-        value: "motions",
-        name: "Motions",
-        icon: "type-motions.svg",
+        value: "external",
+        name: "Externals",
+        icon: "type-proposals.svg",
       },
       {
-        value: "treasuryProposals",
-        name: "Treasury Proposals",
+        value: "referenda",
+        name: "Referenda",
+        icon: "type-referenda.svg",
+      },
+    ],
+  },
+  {
+    name: "TREASURY",
+    items: [
+      {
+        value: "proposals",
+        name: "Proposals",
         icon: "type-treasury-proposals.svg",
-      },
-      {
-        value: "tips",
-        name: "Tips",
-        icon: "type-tips.svg",
       },
       {
         value: "bounties",
@@ -85,9 +82,32 @@ export const menu = [
         icon: "type-bounties.svg",
       },
       {
-        value: "techCommProposals",
-        name: "Tech Comm Proposals",
-        icon: "type-tech-comm-proposals.svg",
+        value: "tips",
+        name: "Tips",
+        icon: "type-tips.svg",
+      },
+    ],
+  },
+  {
+    name: "COUNCIL",
+    items: [
+      {
+        value: "motions",
+        name: "Motions",
+        icon: "type-motions.svg",
+      },
+    ],
+  },
+];
+
+export const settingMenu = [
+  {
+    items: [
+      {
+        value: "overview",
+        name: "Back to Overview",
+        icon: "type-overview.svg",
+        pathname: "/",
       },
     ],
   },

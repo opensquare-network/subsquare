@@ -41,19 +41,14 @@ const Right = styled.div`
   }
 `;
 
-export default function Content({ children }) {
+export default function Content({ left, right, children }) {
   return (
     <Wrapper>
       <Container>
         <ContentWrapper>
-          <Left>
-            <Menu />
-          </Left>
+          <Left>{left}</Left>
           <Main>{children}</Main>
-          <Right>
-            <Trends />
-            <Footer />
-          </Right>
+          <Right>{right}</Right>
         </ContentWrapper>
       </Container>
     </Wrapper>

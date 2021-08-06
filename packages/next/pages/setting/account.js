@@ -5,6 +5,8 @@ import Layout from "components/layout";
 import Input from "components/input";
 import Button from "components/button";
 import DeleteAccount from "components/deleteAccount";
+import Menu from "components/menu";
+import { settingMenu } from "utils/constants";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -94,7 +96,7 @@ export default function Account() {
 
   return (
     <>
-      <Layout>
+      <Layout left={<Menu menu={settingMenu} />}>
         <Wrapper>
           <Title>Account</Title>
           <ContentWrapper>
