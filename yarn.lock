@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@acala-network/type-definitions@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.nlark.com/@acala-network/type-definitions/download/@acala-network/type-definitions-2.0.1.tgz#14dd211ea3192acd826a0834b851bc6c149dd615"
+  integrity sha1-FN0hHqMZKs2Cagg0uFG8bBSd1hU=
+  dependencies:
+    "@open-web3/orml-type-definitions" "^0.9.4-19"
+
 "@babel/code-frame@7.12.11":
   version "7.12.11"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.12.11.tgz#f4ad435aa263db935b8f10f2c552d23fb716a63f"
@@ -607,6 +614,13 @@
   version "11.0.1"
   resolved "https://registry.yarnpkg.com/@next/react-refresh-utils/-/react-refresh-utils-11.0.1.tgz#a7509f22b6f70c13101a26573afd295295f1c020"
   integrity sha512-K347DM6Z7gBSE+TfUaTTceWvbj0B6iNAsFZXbFZOlfg3uyz2sbKpzPYYFocCc27yjLaS8OfR8DEdS2mZXi8Saw==
+
+"@open-web3/orml-type-definitions@^0.9.4-19":
+  version "0.9.4-20"
+  resolved "https://registry.nlark.com/@open-web3/orml-type-definitions/download/@open-web3/orml-type-definitions-0.9.4-20.tgz#453f56257da869243347efbf8d15ab38a9dd25a3"
+  integrity sha1-RT9WJX2oaSQzR++/jRWrOKndJaM=
+  dependencies:
+    lodash.merge "^4.6.2"
 
 "@opencensus/core@0.0.9":
   version "0.0.9"
@@ -4253,6 +4267,11 @@ locate-path@^6.0.0:
   integrity sha1-VTIeswn+u8WcSAHZMackUqaB0oY=
   dependencies:
     p-locate "^5.0.0"
+
+lodash.merge@^4.6.2:
+  version "4.6.2"
+  resolved "https://registry.nlark.com/lodash.merge/download/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
+  integrity sha1-VYqlO0O2YeGSWgr9+japoQhf5Xo=
 
 lodash.sortby@^4.7.0:
   version "4.7.0"
