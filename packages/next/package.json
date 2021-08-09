@@ -9,10 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@alicloud/pop-core": "^1.7.10",
     "@koa/cors": "^3.1.0",
+    "@polkadot/util": "^7.1.1",
     "@reduxjs/toolkit": "^1.6.1",
     "argon2": "^0.28.2",
     "axios": "^0.21.1",
+    "handlebars": "^4.7.7",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
     "koa-helmet": "^6.1.0",
