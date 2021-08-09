@@ -8,6 +8,7 @@ const {
 const { HttpError } = require("../../exc");
 const mailService = require("../../services/mail.service");
 const { validateAddress, isValidSignature } = require("../../utils");
+const { SupportChains } = require("../../constants");
 
 class UserController {
 
@@ -18,6 +19,16 @@ class UserController {
       username: user.username,
       email: user.email,
       emailVerified: user.emailVerified,
+      addresses: SupportChains.reduce((addresses, chain) => {
+        const address = user[`${chain}Address`];
+        if (address) {
+          addresses.push({
+            chain,
+            address,
+          });
+        }
+        return addresses;
+      }, []),
     };
   }
 
