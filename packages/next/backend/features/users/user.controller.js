@@ -1,11 +1,13 @@
+const { ObjectId } = require("mongodb");
 const { randomBytes } = require("crypto");
 const argon2 = require("argon2");
 const validator = require("validator");
 const {
-  getUserCollection,
+  getUserCollection, getAttemptCollection,
 } = require("../../mongo/common");
 const { HttpError } = require("../../exc");
 const mailService = require("../../services/mail.service");
+const { validateAddress, isValidSignature } = require("../../utils");
 
 class UserController {
 
@@ -172,6 +174,135 @@ class UserController {
 
     ctx.body = true;
   }
+
+  async linkAddressStart(ctx) {
+    const { chain, address } = ctx.params;
+    const user = ctx.request.user;
+
+    validateAddress(address, chain);
+
+    const attemptCol = await getAttemptCollection();
+    const result = await attemptCol.insertOne({
+      type: "linkAddress",
+      userId: user._id,
+      address,
+      chain,
+      challenge: randomBytes(12).toString("hex"),
+      createdAt: new Date(),
+    });
+
+    if (!result.result.ok) {
+      throw new HttpError(500, "Db error: link address start.");
+    }
+
+    const attempt = result.ops[0];
+
+    ctx.body = {
+      attemptId: attempt._id,
+      challenge: attempt.challenge,
+    };
+  }
+
+  async linkAddressConfirm(ctx) {
+    const { attemptId } = ctx.params;
+    const { challengeAnswer } = ctx.request.body;
+    const user = ctx.request.user;
+
+    const attemptCol = await getAttemptCollection();
+    const attempt = await attemptCol.findOne({
+      _id: ObjectId(attemptId),
+      type: "linkAddress",
+      userId: user._id,
+    });
+
+    if (!attempt) {
+      throw new HttpError(400, "Incorrect link address attempt id");
+    }
+
+    const { chain, address, userId, challenge } = attempt;
+
+    const addressName = `${chain}Address`;
+
+    if (!challengeAnswer) {
+      throw new HttpError(400, {
+        challengeAnswer: ["Challenge answer is not provided."],
+      });
+    }
+
+    const success = isValidSignature(challenge, challengeAnswer, address);
+    if (!success) {
+      throw new HttpError(400, {
+        challengeAnswer: ["Incorrect challenge answer."],
+      });
+    }
+
+    if (user[addressName] === address) {
+      throw new HttpError(400, {
+        address: ["The address is already linked with this account."],
+      });
+    }
+
+    if (user[addressName]) {
+      throw new HttpError(
+        400,
+        `Only 1 ${chain} address is allow to be linked.`
+      );
+    }
+
+    const userCol = await getUserCollection();
+    const existing = await userCol.findOne({
+      [addressName]: address,
+      _id: { $ne: userId },
+    });
+    if (existing) {
+      throw new HttpError(400, {
+        address: ["The address is already used by another account."],
+      });
+    }
+
+    const result = await userCol.updateOne(
+      { _id: userId },
+      {
+        $set: {
+          [addressName]: address,
+        },
+      }
+    );
+
+    if (!result.result.ok) {
+      throw new HttpError(500, "Db error: save address.");
+    }
+
+    ctx.body = true;
+  }
+
+  async unlinkAddress(ctx) {
+    const { chain, address } = ctx.params;
+    const user = ctx.request.user;
+
+    validateAddress(address, chain);
+
+    const addressName = `${chain}Address`;
+
+    const userCol = await getUserCollection();
+    const result = await userCol.updateOne(
+      { _id: user._id },
+      {
+        $unset: { [addressName]: true },
+      }
+    );
+
+    if (!result.result.ok) {
+      throw new HttpError(500, "Db error, unlink address.");
+    }
+
+    if (result.result.nModified === 0) {
+      throw new HttpError(500, "Failed to unlink address.");
+    }
+
+    ctx.body = true;
+  }
+
 }
 
 module.exports = new UserController();
