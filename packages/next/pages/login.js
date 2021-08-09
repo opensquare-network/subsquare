@@ -102,7 +102,6 @@ export default function Login() {
       setLoading(true);
       const res = await nextApi.post("auth/login", formData);
       if (res.result) {
-        console.log(res.result);
         dispatch(setUser(res.result));
         router.replace("/");
       } else if (res.error) {

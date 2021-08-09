@@ -1,10 +1,14 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 import Layout from "components/layout";
 import Agreement from "components/agreement";
 import Button from "components/button";
 import Input from "components/input";
+import { useForm, useIsMounted } from "utils/hooks";
+import nextApi from "services/nextApi";
+import ErrorText from "components/ErrorText";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -64,11 +68,58 @@ const Redirect = styled.div`
   .sec {
     font-weight: bold;
     color: #6848ff;
+    margin-left: 8px;
+  }
+`;
+
+const FormWrapper = styled.form`
+  > :not(:first-child) {
+    margin-top: 24px;
   }
 `;
 
 export default function Reset() {
   const [success, setSuccess] = useState(false);
+  const [errors, setErrors] = useState();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const { email, token } = router.query;
+  const [countdown, setCountdown] = useState(3);
+  const isMounted = useIsMounted();
+
+  const { formData, handleInputChange, handleSubmit } = useForm(
+    {
+      newPassword: "",
+    },
+    async (formData) => {
+      setLoading(true);
+      const res = await nextApi.post("auth/reset", {
+        email,
+        token,
+        ...formData,
+      });
+      if (res.result) {
+        setSuccess(true);
+      } else if (res.error) {
+        setErrors(res.error);
+      }
+      setLoading(false);
+    }
+  );
+  const { newPassword } = formData;
+
+  useEffect(() => {
+    if (!success) return;
+    if (countdown !== 0) {
+      setTimeout(() => {
+        if (isMounted.current) {
+          setCountdown(countdown - 1);
+        }
+      }, 1000);
+    } else {
+      router.replace("/login");
+    }
+  }, [success, countdown]);
 
   return (
     <Layout>
@@ -76,26 +127,40 @@ export default function Reset() {
         {!success && (
           <ContentWrapper>
             <Title>Reset Password</Title>
-            <InputWrapper>
-              <Label>New Password</Label>
-              <Input placeholder="Please fill new password" type="password" />
-              <Label>Repeat Password</Label>
-              <Input placeholder="Repeat new password" type="password" />
-            </InputWrapper>
-            <Button isFill secondary onClick={() => setSuccess(true)}>
-              Confirm
-            </Button>
+            <FormWrapper onSubmit={handleSubmit}>
+              <InputWrapper>
+                <Label>New Password</Label>
+                <Input
+                  placeholder="Please fill new password"
+                  type="password"
+                  name="newPassword"
+                  value={newPassword}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                    setErrors(null);
+                  }}
+                  error={errors?.data?.newPassword}
+                />
+                {errors?.message && !errors?.data && (
+                  <ErrorText>{errors?.message}</ErrorText>
+                )}
+              </InputWrapper>
+              <Button isFill secondary type="submit" isLoading={loading}>
+                Confirm
+              </Button>
+            </FormWrapper>
           </ContentWrapper>
         )}
         {success && (
           <ContentWrapper>
             <Title>Congrats</Title>
             <InfoWrapper>Your password has been reset.</InfoWrapper>
-            <Button isFill secondary onClick={() => setSuccess(false)}>
+            <Button isFill secondary onClick={() => router.replace("/login")}>
               Got it
             </Button>
             <Redirect>
-              The page will be re-directed in <span className="sec">3s</span>
+              The page will be re-directed in
+              <span className="sec">{countdown}s</span>
             </Redirect>
           </ContentWrapper>
         )}
