@@ -1,12 +1,16 @@
 import styled from "styled-components";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 import Layout from "components/layout";
 import Agreement from "components/agreement";
 import Button from "components/button";
 import Input from "components/input";
 import AddressSelect from "components/addressSelect";
+import { useForm, useIsMounted } from "utils/hooks";
+import nextApi from "services/nextApi";
+import ErrorText from "components/ErrorText";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -87,12 +91,56 @@ const Redirect = styled.div`
   .sec {
     font-weight: bold;
     color: #6848ff;
+    margin-left: 8px;
+  }
+`;
+
+const FormWrapper = styled.form`
+  > :not(:first-child) {
+    margin-top: 24px;
   }
 `;
 
 export default function Signup() {
   const [success, setSuccess] = useState(false);
   const [web3, setWeb3] = useState(false);
+  const [errors, setErrors] = useState();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [countdown, setCountdown] = useState(3);
+  const isMounted = useIsMounted();
+
+  const { formData, handleInputChange, handleSubmit } = useForm(
+    {
+      username: "",
+      email: "",
+      password: "",
+    },
+    async (formData) => {
+      setLoading(true);
+      const res = await nextApi.post("auth/signup", formData);
+      if (res.result) {
+        setSuccess(true);
+      } else if (res.error) {
+        setErrors(res.error);
+      }
+      setLoading(false);
+    }
+  );
+  const { username, email, password } = formData;
+
+  useEffect(() => {
+    if (!success) return;
+    if (countdown !== 0) {
+      setTimeout(() => {
+        if (isMounted.current) {
+          setCountdown(countdown - 1);
+        }
+      }, 1000);
+    } else {
+      router.replace("/login");
+    }
+  }, [success, countdown]);
 
   return (
     <Layout>
@@ -101,27 +149,58 @@ export default function Signup() {
           <ContentWrapper>
             <Title>Signup</Title>
             {!web3 && (
-              <>
+              <FormWrapper onSubmit={handleSubmit}>
                 <InputWrapper>
                   <Label>Username</Label>
-                  <Input placeholder="Please fill your name" />
+                  <Input
+                    placeholder="Please fill your name"
+                    name="username"
+                    value={username}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                      setErrors(null);
+                    }}
+                    error={errors?.data?.username}
+                  />
                   <Label>Email</Label>
-                  <Input placeholder="Please fill email" />
+                  <Input
+                    placeholder="Please fill email"
+                    name="email"
+                    value={email}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                      setErrors(null);
+                    }}
+                    error={errors?.data?.email}
+                  />
                   <Label>Password</Label>
-                  <Input placeholder="Please fill password" type="password" />
+                  <Input
+                    placeholder="Please fill password"
+                    type="password"
+                    name="password"
+                    value={password}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                      setErrors(null);
+                    }}
+                    error={errors?.data?.password}
+                  />
+                  {errors?.message && !errors?.data && (
+                    <ErrorText>{errors?.message}</ErrorText>
+                  )}
                   <ForgetPassword>
-                    <Link href="forget">Forget password?</Link>
+                    <Link href="/forget">Forget password?</Link>
                   </ForgetPassword>
                 </InputWrapper>
                 <ButtonWrapper>
-                  <Button isFill secondary onClick={() => setSuccess(true)}>
+                  <Button isFill secondary type="submit" isLoading={loading}>
                     Sign up
                   </Button>
                   <Button isFill onClick={() => setWeb3(true)}>
                     Sign up with web3 address
                   </Button>
                 </ButtonWrapper>
-              </>
+              </FormWrapper>
             )}
             {web3 && (
               <>
@@ -151,11 +230,12 @@ export default function Signup() {
               We sent you an email to verify your address. Click on the link in
               the email.
             </InfoWrapper>
-            <Button isFill secondary onClick={() => setSuccess(false)}>
+            <Button isFill secondary onClick={() => router.replace("/login")}>
               Got it
             </Button>
             <Redirect>
-              The page will be re-directed in <span className="sec">3s</span>
+              The page will be re-directed in
+              <span className="sec">{countdown}s</span>
             </Redirect>
           </ContentWrapper>
         )}

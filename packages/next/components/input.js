@@ -1,6 +1,8 @@
 import styled, { css } from "styled-components";
 import { useState } from "react";
 
+import ErrorText from "./ErrorText";
+
 const Wrapper = styled.div`
   position: relative;
 `;
@@ -15,6 +17,9 @@ const InputWrapper = styled.input`
   font-size: 14px;
   border-radius: 4px;
   color: #1e2134;
+  :focus {
+    border-color: #c2c8d5;
+  }
   ::placeholder {
     color: #d7dee8;
   }
@@ -26,18 +31,13 @@ const InputWrapper = styled.input`
   ${(p) =>
     p.error &&
     css`
-      border-color: #f44336;
+      border-color: #f44336 !important;
     `}
   ${(p) =>
     p.disabled &&
     css`
       background: #f6f7fa;
     `}
-`;
-const Error = styled.div`
-  font-size: 12px;
-  color: #f44336;
-  margin-top: 8px;
 `;
 
 const ShowButton = styled.div`
@@ -78,7 +78,7 @@ export default function Input({ ...props }) {
           />
         </ShowButton>
       )}
-      {props.error && <Error>{props.error}</Error>}
+      {props.error && <ErrorText>{props.error}</ErrorText>}
       {props.post && <PostWrapper>{props.post}</PostWrapper>}
     </Wrapper>
   );

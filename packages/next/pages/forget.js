@@ -1,9 +1,13 @@
 import styled from "styled-components";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 import Layout from "components/layout";
 import Button from "components/button";
 import Input from "components/input";
+import { useForm } from "utils/hooks";
+import nextApi from "services/nextApi";
+import ErrorText from "components/ErrorText";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -57,8 +61,34 @@ const InfoWrapper = styled.div`
   color: #506176;
 `;
 
+const FormWrapper = styled.form`
+  > :not(:first-child) {
+    margin-top: 24px;
+  }
+`;
+
 export default function Forget() {
   const [success, setSuccess] = useState(false);
+  const [errors, setErrors] = useState();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const { formData, handleInputChange, handleSubmit } = useForm(
+    {
+      email: "",
+    },
+    async (formData) => {
+      setLoading(true);
+      const res = await nextApi.post("auth/forget", formData);
+      if (res.result) {
+        setSuccess(true);
+      } else if (res.error) {
+        setErrors(res.error);
+      }
+      setLoading(false);
+    }
+  );
+  const { email } = formData;
 
   return (
     <Layout>
@@ -66,13 +96,27 @@ export default function Forget() {
         {!success && (
           <ContentWrapper>
             <Title>Reset Password</Title>
-            <InputWrapper>
-              <Label>Email</Label>
-              <Input placeholder="Please fill email" />
-            </InputWrapper>
-            <Button isFill secondary onClick={() => setSuccess(true)}>
-              Confirm
-            </Button>
+            <FormWrapper onSubmit={handleSubmit}>
+              <InputWrapper>
+                <Label>Email</Label>
+                <Input
+                  placeholder="Please fill email"
+                  name="email"
+                  value={email}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                    setErrors(null);
+                  }}
+                  error={errors?.data?.email}
+                />
+              </InputWrapper>
+              {errors?.message && !errors?.data && (
+                <ErrorText>{errors?.message}</ErrorText>
+              )}
+              <Button isFill secondary type="submit" isLoading={loading}>
+                Confirm
+              </Button>
+            </FormWrapper>
           </ContentWrapper>
         )}
         {success && (
@@ -82,7 +126,7 @@ export default function Forget() {
               The reset password link was sent to this email, if it exist in our
               database.
             </InfoWrapper>
-            <Button isFill secondary onClick={() => setSuccess(false)}>
+            <Button isFill secondary onClick={() => router.replace("/")}>
               Confirm
             </Button>
           </ContentWrapper>

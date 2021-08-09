@@ -44,7 +44,7 @@ export default function Trends() {
       <Title>Trends</Title>
       <SignUp>
         <div>引导注册的文案</div>
-        <Button primary isFill onClick={() => router.push("/signup")}>
+        <Button primary isFill>
           Sign up
         </Button>
       </SignUp>
