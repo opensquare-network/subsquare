@@ -4,7 +4,10 @@ const router = new Router();
 
 const chainFeatureRouters = [];
 
-const commonFeatureRouters = [];
+const commonFeatureRouters = [
+  require("./features/auth/routes"),
+  require("./features/users/routes"),
+];
 
 module.exports = (app) => {
   for (const r of commonFeatureRouters) {

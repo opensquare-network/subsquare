@@ -29,6 +29,7 @@ async function _createIndexes() {
 
   userCol.createIndex({ username: 1 }, { unique: true });
   userCol.createIndex({ email: 1 }, { unique: true });
+
 }
 
 async function tryInit(col) {
@@ -42,6 +43,14 @@ async function getUserCollection() {
   return userCol;
 }
 
+function withTransaction(fn, options) {
+  return client.withSession((session) => {
+    return session.withTransaction(fn, options);
+  });
+}
+
 module.exports = {
+  initDb,
+  withTransaction,
   getUserCollection,
 };
