@@ -1,6 +1,9 @@
 const Router = require("koa-router");
 const userController = require("./user.controller");
 const requireAuth = require("../../middleware/require-auth");
+const { SupportChains } = require("../../constants");
+
+const routeChains = SupportChains.join("|");
 
 const router = new Router();
 
@@ -13,5 +16,21 @@ router.post(
 router.post("/user/changepassword", requireAuth, userController.changePassword);
 router.post("/user/changeemail", requireAuth, userController.changeEmail);
 router.post("/user/deleteaccount", requireAuth, userController.deleteAccount);
+
+router.get(
+  `/user/linkaddr/:chain(${routeChains})/:address`,
+  requireAuth,
+  userController.linkAddressStart
+);
+router.post(
+  "/user/linkaddr/:attemptId",
+  requireAuth,
+  userController.linkAddressConfirm
+);
+router.delete(
+  `/user/linkaddr/:chain(${routeChains})/:address`,
+  requireAuth,
+  userController.unlinkAddress
+);
 
 module.exports = router;
