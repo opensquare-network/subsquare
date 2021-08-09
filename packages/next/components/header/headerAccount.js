@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import { useState, useRef, useEffect, Fragment } from "react";
 import { useRouter } from "next/router";
+import { useSelector, useDispatch } from "react-redux";
 
 import Button from "components/button";
 import { accountMenu } from "utils/constants";
 import { useOnClickOutside, useWindowSize } from "utils/hooks";
+import { userSelector, logout } from "store/reducers/userSlice";
 
 const Wrapper = styled.div`
   position: relative;
@@ -66,6 +68,8 @@ export default function HeaderAccount() {
   const [show, setShow] = useState(false);
   const ref = useRef();
   const windowSize = useWindowSize();
+  const dispatch = useDispatch();
+  const user = useSelector(userSelector);
 
   useOnClickOutside(ref, () => setShow(false));
 
@@ -75,9 +79,13 @@ export default function HeaderAccount() {
     }
   }, [windowSize]);
 
+  useEffect(() => {
+    setLogin(!!user);
+  }, [user]);
+
   const handleAccountMenu = (item) => {
     if (item.value === "logout") {
-      setLogin(false);
+      dispatch(logout());
     } else if (item.pathname) {
       router.push(item.pathname);
     }
@@ -107,7 +115,7 @@ export default function HeaderAccount() {
         </Wrapper>
       )}
       {!login && (
-        <Button secondary onClick={() => setLogin(true)}>
+        <Button secondary onClick={() => router.push("/login")}>
           Login
         </Button>
       )}

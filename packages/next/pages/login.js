@@ -1,12 +1,18 @@
 import styled from "styled-components";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 
 import Layout from "components/layout";
 import Agreement from "components/agreement";
 import Button from "components/button";
 import Input from "components/input";
 import AddressSelect from "components/addressSelect";
+import { useForm } from "utils/hooks";
+import nextApi from "services/nextApi";
+import ErrorText from "components/ErrorText";
+import { setUser } from "store/reducers/userSlice";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -74,8 +80,38 @@ const ForgetPassword = styled.div`
   font-size: 12px;
 `;
 
+const FormWrapper = styled.form`
+  > :not(:first-child) {
+    margin-top: 24px;
+  }
+`;
+
 export default function Login() {
   const [web3, setWeb3] = useState(false);
+  const [errors, setErrors] = useState();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const { formData, handleInputChange, handleSubmit } = useForm(
+    {
+      usernameOrEmail: "",
+      password: "",
+    },
+    async (formData) => {
+      setLoading(true);
+      const res = await nextApi.post("auth/login", formData);
+      if (res.result) {
+        console.log(res.result);
+        dispatch(setUser(res.result));
+        router.replace("/");
+      } else if (res.error) {
+        setErrors(res.error);
+      }
+      setLoading(false);
+    }
+  );
+  const { usernameOrEmail, password } = formData;
 
   return (
     <Layout>
@@ -83,25 +119,47 @@ export default function Login() {
         <ContentWrapper>
           <Title>Login</Title>
           {!web3 && (
-            <>
+            <FormWrapper onSubmit={handleSubmit}>
               <InputWrapper>
                 <Label>Username</Label>
-                <Input placeholder="Please fill your name" />
+                <Input
+                  placeholder="Please fill your name or email"
+                  name="usernameOrEmail"
+                  value={usernameOrEmail}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                    setErrors(null);
+                  }}
+                  error={errors?.data?.usernameOrEmail}
+                />
                 <Label>Password</Label>
-                <Input placeholder="Please fill password" type="password" />
+                <Input
+                  placeholder="Please fill password"
+                  type="password"
+                  name="password"
+                  value={password}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                    setErrors(null);
+                  }}
+                  error={errors?.data?.password}
+                />
+                {errors?.message && !errors?.data && (
+                  <ErrorText>{errors?.message}</ErrorText>
+                )}
                 <ForgetPassword>
-                  <Link href="forget">Forget password?</Link>
+                  <Link href="/forget">Forget password?</Link>
                 </ForgetPassword>
               </InputWrapper>
               <ButtonWrapper>
-                <Button isFill secondary>
+                <Button isFill secondary type="submit" isLoading={loading}>
                   Login
                 </Button>
                 <Button isFill onClick={() => setWeb3(true)}>
                   Login with web3 address
                 </Button>
               </ButtonWrapper>
-            </>
+            </FormWrapper>
           )}
           {web3 && (
             <>
