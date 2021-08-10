@@ -70,6 +70,22 @@ class Api {
     );
     return result;
   };
+
+  authGet = async (path, authToken = null) => {
+    const result = await this.fetch(
+      path,
+      {},
+      {
+        method: "GET",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
+    );
+    return result;
+  };
 }
 
 export default Api;

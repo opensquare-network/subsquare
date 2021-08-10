@@ -18,10 +18,10 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, setUserProfile } = userSlice.actions;
 
-export const fetchUserProfile = () => async (dispatch) => {
-  const { result } = await nextApi.fetch("user/profile");
+export const fetchUserProfile = (authToken) => async (dispatch) => {
+  const { result } = await nextApi.authGet("user/profile", authToken);
   if (result) dispatch(setUserProfile(result));
 };
 

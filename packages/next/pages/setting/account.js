@@ -112,8 +112,6 @@ export default function Account() {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  console.log({ userProfile });
-
   const { formData, handleInputChange, handleSubmit } = useForm(
     {
       oldPassword: "",
@@ -136,9 +134,26 @@ export default function Account() {
   );
   const { oldPassword, newPassword } = formData;
 
+  const onResend = async () => {
+    setChangLoading(true);
+    const res = await nextApi.authPost(
+      "user/resendverifyemail",
+      null,
+      user.accessToken
+    );
+    if (res.result) {
+      console.log("resend success");
+    } else if (res.error) {
+      setChangeErrors(res.error);
+    }
+    setChangLoading(false);
+  };
+
   useEffect(() => {
-    dispatch(fetchUserProfile());
-  }, [dispatch]);
+    if (user) {
+      dispatch(fetchUserProfile(user.accessToken));
+    }
+  }, [dispatch, user]);
 
   return (
     <>
@@ -160,13 +175,28 @@ export default function Account() {
                   defaultValue={user?.email}
                   disabled
                   post={
-                    <EmailVerify>
-                      <img src="/imgs/icons/circle-check.svg" />
-                      <div>Verified</div>
-                    </EmailVerify>
+                    userProfile?.emailVerified ? (
+                      <EmailVerify>
+                        <img src="/imgs/icons/circle-check.svg" />
+                        <div>Verified</div>
+                      </EmailVerify>
+                    ) : (
+                      <EmailVerify>
+                        <img src="/imgs/icons/circle-warning.svg" />
+                        <div>Unverified</div>
+                      </EmailVerify>
+                    )
                   }
                 />
-                <Button secondary>Resend</Button>
+                {!userProfile?.emailVerified && (
+                  <Button
+                    secondary
+                    onClick={onResend}
+                    isLoading={resendLoading}
+                  >
+                    Resend
+                  </Button>
+                )}
               </InputWrapper>
             </div>
             <Divider />
