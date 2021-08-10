@@ -4,8 +4,7 @@ import { useRouter } from "next/router";
 
 import Layout from "components/layout";
 import Button from "components/button";
-import Input from "components/input";
-import { useForm, useIsMounted } from "utils/hooks";
+import { useIsMounted } from "utils/hooks";
 import nextApi from "services/nextApi";
 import ErrorText from "components/ErrorText";
 
@@ -41,17 +40,6 @@ const Title = styled.div`
   text-align: center;
 `;
 
-const InputWrapper = styled.div``;
-
-const Label = styled.div`
-  font-weight: bold;
-  font-size: 12px;
-  margin-bottom: 8px;
-  :not(:first-child) {
-    margin-top: 16px;
-  }
-`;
-
 const InfoWrapper = styled.div`
   padding: 12px 16px;
   background: #f6f7fa;
@@ -70,13 +58,7 @@ const Redirect = styled.div`
   }
 `;
 
-const FormWrapper = styled.form`
-  > :not(:first-child) {
-    margin-top: 24px;
-  }
-`;
-
-export default function Reset() {
+export default function Verify() {
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
@@ -85,26 +67,27 @@ export default function Reset() {
   const [countdown, setCountdown] = useState(3);
   const isMounted = useIsMounted();
 
-  const { formData, handleInputChange, handleSubmit } = useForm(
-    {
-      newPassword: "",
-    },
-    async (formData) => {
+  console.log({ email, token });
+
+  useEffect(() => {
+    if (email && token) {
       setLoading(true);
-      const res = await nextApi.post("auth/reset", {
-        email,
-        token,
-        ...formData,
-      });
-      if (res.result) {
-        setSuccess(true);
-      } else if (res.error) {
-        setErrors(res.error);
-      }
-      setLoading(false);
+      const doVerify = async (email, token) => {
+        const res = await nextApi.post("auth/verify", {
+          email,
+          token,
+        });
+        if (res.result) {
+          setSuccess(true);
+        } else if (res.error) {
+          setErrors(res.error);
+        }
+        setLoading(false);
+      };
+      doVerify(email, token);
+    } else {
     }
-  );
-  const { newPassword } = formData;
+  }, [email, token]);
 
   useEffect(() => {
     if (!success) return;
@@ -115,7 +98,7 @@ export default function Reset() {
         }
       }, 1000);
     } else {
-      router.replace("/login");
+      router.replace("/");
     }
   }, [success, countdown]);
 
@@ -124,36 +107,16 @@ export default function Reset() {
       <Wrapper>
         {!success && (
           <ContentWrapper>
-            <Title>Reset Password</Title>
-            <FormWrapper onSubmit={handleSubmit}>
-              <InputWrapper>
-                <Label>New Password</Label>
-                <Input
-                  placeholder="Please fill new password"
-                  type="password"
-                  name="newPassword"
-                  value={newPassword}
-                  onChange={(e) => {
-                    handleInputChange(e);
-                    setErrors(null);
-                  }}
-                  error={errors?.data?.newPassword}
-                />
-                {errors?.message && !errors?.data && (
-                  <ErrorText>{errors?.message}</ErrorText>
-                )}
-              </InputWrapper>
-              <Button isFill secondary type="submit" isLoading={loading}>
-                Confirm
-              </Button>
-            </FormWrapper>
+            <Title>Verify Email</Title>
+            {loading && <InfoWrapper>Please wait for a moment...</InfoWrapper>}
+            {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
           </ContentWrapper>
         )}
         {success && (
           <ContentWrapper>
             <Title>Congrats</Title>
-            <InfoWrapper>Your password has been reset.</InfoWrapper>
-            <Button isFill secondary onClick={() => router.replace("/login")}>
+            <InfoWrapper>Your email has been verified.</InfoWrapper>
+            <Button isFill secondary onClick={() => router.replace("/")}>
               Got it
             </Button>
             <Redirect>
