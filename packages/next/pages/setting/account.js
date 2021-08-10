@@ -1,5 +1,7 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 
 import Layout from "components/layout";
 import Input from "components/input";
@@ -7,6 +9,15 @@ import Button from "components/button";
 import DeleteAccount from "components/deleteAccount";
 import Menu from "components/menu";
 import { settingMenu } from "utils/constants";
+import {
+  userSelector,
+  logout,
+  fetchUserProfile,
+  userProfileSelector,
+} from "store/reducers/userSlice";
+import { useForm } from "utils/hooks";
+import ErrorText from "components/ErrorText";
+import nextApi from "services/nextApi";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -44,7 +55,7 @@ const Label = styled.div`
 const InputWrapper = styled.div`
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   > :first-child {
     flex-grow: 1;
   }
@@ -92,7 +103,42 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function Account() {
+  const user = useSelector(userSelector);
+  const userProfile = useSelector(userProfileSelector);
   const [show, setShow] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
+  const [changeLoading, setChangLoading] = useState(false);
+  const [changeErrors, setChangeErrors] = useState();
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  console.log({ userProfile });
+
+  const { formData, handleInputChange, handleSubmit } = useForm(
+    {
+      oldPassword: "",
+      newPassword: "",
+    },
+    async (formData) => {
+      setChangLoading(true);
+      const res = await nextApi.authPost(
+        "user/changepassword",
+        formData,
+        user.accessToken
+      );
+      if (res.result) {
+        console.log("change password success");
+      } else if (res.error) {
+        setChangeErrors(res.error);
+      }
+      setChangLoading(false);
+    }
+  );
+  const { oldPassword, newPassword } = formData;
+
+  useEffect(() => {
+    dispatch(fetchUserProfile());
+  }, [dispatch]);
 
   return (
     <>
@@ -103,7 +149,7 @@ export default function Account() {
             <div>
               <Label>Username</Label>
               <InputWrapper>
-                <Input defaultValue="Name XXX" disabled />
+                <Input defaultValue={user?.username} disabled />
               </InputWrapper>
             </div>
             <Divider />
@@ -111,7 +157,7 @@ export default function Account() {
               <Label>Email</Label>
               <InputWrapper>
                 <Input
-                  defaultValue="alcazarrr@outlook.com"
+                  defaultValue={user?.email}
                   disabled
                   post={
                     <EmailVerify>
@@ -124,25 +170,55 @@ export default function Account() {
               </InputWrapper>
             </div>
             <Divider />
-            <div>
+            <form onSubmit={handleSubmit}>
               <Label>Current password</Label>
               <InputWrapper>
                 <Input
                   placeholder="Please fill current password"
                   type="password"
+                  name="oldPassword"
+                  value={oldPassword}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                    setChangeErrors(null);
+                  }}
+                  error={changeErrors?.data?.oldPassword}
                 />
               </InputWrapper>
-              <Label>Current password</Label>
+              <Label>New password</Label>
               <InputWrapper>
-                <Input placeholder="Please fill new password" type="password" />
-                <Button secondary>Change</Button>
+                <Input
+                  placeholder="Please fill new password"
+                  type="password"
+                  name="newPassword"
+                  value={newPassword}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                    setChangeErrors(null);
+                  }}
+                  error={changeErrors?.data?.newPassword}
+                />
+                <Button secondary typt="submit" isLoading={changeLoading}>
+                  Change
+                </Button>
               </InputWrapper>
-            </div>
+              {changeErrors?.message && !changeErrors?.data && (
+                <ErrorText>{changeErrors?.message}</ErrorText>
+              )}
+            </form>
             <Divider />
             <div>
               <Label>Log out</Label>
               <ButtonWrapper>
-                <Button isFill>Logout my account</Button>
+                <Button
+                  isFill
+                  onClick={() => {
+                    dispatch(logout());
+                    router.replace("/");
+                  }}
+                >
+                  Logout my account
+                </Button>
               </ButtonWrapper>
             </div>
             <Divider />

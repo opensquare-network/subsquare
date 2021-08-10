@@ -1,7 +1,14 @@
 import styled from "styled-components";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import nextApi from "services/nextApi";
 
 import Input from "./input";
 import Button from "./button";
+import { useForm } from "utils/hooks";
+import { logout, userSelector } from "store/reducers/userSlice";
+import ErrorText from "./ErrorText";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -47,7 +54,41 @@ const Label = styled.div`
   margin-bottom: 8px;
 `;
 
+const FormWrapper = styled.form`
+  > :not(:first-child) {
+    margin-top: 24px;
+  }
+`;
+
 export default function DeleteAccount({ onClose }) {
+  const user = useSelector(userSelector);
+  const [errors, setErrors] = useState();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const { formData, handleInputChange, handleSubmit } = useForm(
+    {
+      password: "",
+    },
+    async (formData) => {
+      setLoading(true);
+      const res = await nextApi.authPost(
+        "user/deleteaccount",
+        formData,
+        user.accessToken
+      );
+      if (res.result) {
+        dispatch(logout());
+        router.replace("/");
+      } else if (res.error) {
+        setErrors(res.error);
+      }
+      setLoading(false);
+    }
+  );
+  const { password } = formData;
+
   return (
     <Wrapper onClick={() => onClose()}>
       <ContentWrapper onClick={(event) => event.stopPropagation()}>
@@ -56,13 +97,28 @@ export default function DeleteAccount({ onClose }) {
           Once you delete your account, there is no going back. Please be
           certain.
         </InfoWrapper>
-        <div>
-          <Label>Password</Label>
-          <Input placeholder="Please fill password" type="password" />
-        </div>
-        <Button danger isFill>
-          Delete my account
-        </Button>
+        <FormWrapper onSubmit={handleSubmit}>
+          <div>
+            <Label>Password</Label>
+            <Input
+              placeholder="Please fill password"
+              type="password"
+              name="password"
+              value={password}
+              onChange={(e) => {
+                handleInputChange(e);
+                setErrors(null);
+              }}
+              error={errors?.data?.password}
+            />
+          </div>
+          {errors?.message && !errors?.data && (
+            <ErrorText>{errors?.message}</ErrorText>
+          )}
+          <Button danger isFill type="submit" isLoading={loading}>
+            Delete my account
+          </Button>
+        </FormWrapper>
       </ContentWrapper>
     </Wrapper>
   );

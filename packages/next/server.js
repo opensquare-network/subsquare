@@ -19,33 +19,31 @@ if (!PORT) {
   process.exit();
 }
 
-app
-  .prepare()
-  .then(() => {
-    const httpServer = createServer((req, res) => {
-      const parsedUrl = parse(req.url, true);
-      const { pathname } = parsedUrl;
+app.prepare().then(() => {
+  const httpServer = createServer((req, res) => {
+    const parsedUrl = parse(req.url, true);
+    const { pathname } = parsedUrl;
 
-      if (pathname.startsWith("/api/")) {
-        req.url = req.url.replace(/^\/api/, "");
+    if (pathname.startsWith("/api/")) {
+      req.url = req.url.replace(/^\/api/, "");
 
-        koaHandler(req, res);
-      } else {
-        nextHandler(req, res, parsedUrl);
-      }
-    });
-
-    const io = require("socket.io")(httpServer, {
-      cors: {
-        origin: "*",
-        methods: ["GET", "POST"],
-      },
-    });
-
-    ioHandler(io);
-
-    httpServer.listen(PORT, (err) => {
-      if (err) throw err;
-      console.log(`> Ready on http://localhost:${PORT}`);
-    });
+      koaHandler(req, res);
+    } else {
+      nextHandler(req, res, parsedUrl);
+    }
   });
+
+  const io = require("socket.io")(httpServer, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+    },
+  });
+
+  ioHandler(io);
+
+  httpServer.listen(PORT, (err) => {
+    if (err) throw err;
+    console.log(`> Ready on http://localhost:${PORT}`);
+  });
+});
