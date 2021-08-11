@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   isWeb3Injected,
   web3Accounts,
@@ -14,7 +14,15 @@ import { settingMenu } from "utils/constants";
 import { useAuthPage } from "utils/hooks";
 import { useIsMounted } from "../../utils/hooks";
 import { userSelector } from "store/reducers/userSlice";
-import { encodeKusamaAddress, encodePolkadotAddress } from "services/chainApi";
+import {
+  encodeKusamaAddress,
+  encodePolkadotAddress,
+  signMessage,
+} from "services/chainApi";
+import { addressEllipsis } from "utils";
+import nextApi from "services/nextApi";
+import { fetchUserProfile } from "store/reducers/userSlice";
+import { addToast } from "store/reducers/toastSlice";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -81,7 +89,6 @@ const AddressItem = styled.div`
   align-items: center;
   border: 1px solid #e0e4eb;
   border-radius: 4px;
-  cursor: pointer;
   > :not(:first-child) {
     margin-left: 16px;
   }
@@ -108,6 +115,10 @@ const NameWrapper = styled.div`
 const LinkWrapper = styled.div`
   display: flex;
   color: #506176;
+  cursor: pointer;
+  :hover {
+    text-decoration: underline;
+  }
   > img {
     width: 14px;
     height: 14px;
@@ -123,8 +134,8 @@ export default function LinkedAddress() {
   const user = useSelector(userSelector);
   const [hasExtension, setHasExtension] = useState(true);
   const [accounts, setAccounts] = useState([]);
-
-  console.log({ user });
+  const [activeChain, setActiveChain] = useState("polkadot");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
@@ -147,7 +158,6 @@ export default function LinkedAddress() {
       return;
     }
     const extensionAccounts = await web3Accounts();
-    // console.log({ extensionAccounts });
     const accounts = extensionAccounts.map((item) => {
       const {
         address,
@@ -163,13 +173,94 @@ export default function LinkedAddress() {
 
     if (isMounted.current) {
       setAccounts(accounts);
-      console.log({ accounts });
+    }
+  };
+
+  const unlinkAddress = async (chain, account) => {
+    const address = account[`${chain}Address`];
+
+    const { error, result } = await nextApi.fetch(
+      `user/linkaddr/${chain}/${address}`,
+      {},
+      {
+        method: "DELETE",
+      }
+    );
+    dispatch(fetchUserProfile());
+
+    if (result) {
+      dispatch(
+        addToast({
+          type: "success",
+          message: "Unlink address successfully!",
+        })
+      );
+    }
+
+    if (error) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: error.message,
+        })
+      );
+    }
+  };
+
+  const linkAddress = async (chain, account) => {
+    const address = account[`${chain}Address`];
+
+    const { result, error } = await nextApi.fetch(
+      `user/linkaddr/${chain}/${address}`
+    );
+    if (result) {
+      const signature = await signMessage(result?.challenge, account.address);
+      const { error: confirmError, result: confirmResult } =
+        await nextApi.fetch(
+          `user/linkaddr/${result?.attemptId}`,
+          {},
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ challengeAnswer: signature }),
+          }
+        );
+
+      dispatch(fetchUserProfile());
+      if (confirmResult) {
+        dispatch(
+          addToast({
+            type: "success",
+            message: "Link address successfully!",
+          })
+        );
+      }
+
+      if (confirmError) {
+        dispatch(
+          addToast({
+            type: "error",
+            message: confirmError.message,
+          })
+        );
+      }
+    }
+
+    if (error) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: error.message,
+        })
+      );
     }
   };
 
   const mergedAccounts = [
     ...accounts,
-    ...(userProfile?.addresses || [])
+    ...(user?.addresses || [])
       .filter(
         (address) =>
           !accounts.some((acc) => acc.address === address.wildcardAddress)
@@ -214,23 +305,39 @@ export default function LinkedAddress() {
           <div>
             <Label>Address</Label>
             <AddressWrapper>
-              {accounts.map((item, index) => (
-                <AddressItem key={index}>
+              {availableAccounts.map((item, index) => (
+                <AddressItem
+                  key={index}
+                  linked={user?.addresses?.some(
+                    (i) => i.address === item[`${activeChain}Address`]
+                  )}
+                >
                   <img src="/imgs/icons/avatar.svg" />
                   <NameWrapper>
                     <div>{item.name}</div>
-                    <div>{item.address}</div>
+                    <div>{addressEllipsis(item.address)}</div>
                   </NameWrapper>
-                  <LinkWrapper>
-                    <img
-                      src={
-                        item.name === "???"
-                          ? "/imgs/icons/link-linked.svg"
-                          : "/imgs/icons/link-unlink.svg"
-                      }
-                    />
-                    <div>{item.name === "???" ? "Linked" : "Unlink"}</div>
-                  </LinkWrapper>
+                  {user?.addresses?.some(
+                    (i) => i.address === item[`${activeChain}Address`]
+                  ) ? (
+                    <LinkWrapper
+                      onClick={() => {
+                        unlinkAddress(activeChain, item);
+                      }}
+                    >
+                      <img src="/imgs/icons/link-unlink.svg" />
+                      <div>Unlink</div>
+                    </LinkWrapper>
+                  ) : (
+                    <LinkWrapper
+                      onClick={() => {
+                        linkAddress(activeChain, item);
+                      }}
+                    >
+                      <img src="/imgs/icons/link-linked.svg" />
+                      <div>Link</div>
+                    </LinkWrapper>
+                  )}
                 </AddressItem>
               ))}
             </AddressWrapper>

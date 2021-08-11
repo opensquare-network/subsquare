@@ -13,6 +13,7 @@ import { userSelector, logout } from "store/reducers/userSlice";
 import { useForm, useAuthPage } from "utils/hooks";
 import ErrorText from "components/ErrorText";
 import nextApi from "services/nextApi";
+import { addToast } from "store/reducers/toastSlice";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -116,7 +117,12 @@ export default function Account() {
       setChangLoading(true);
       const res = await nextApi.post("user/changepassword", formData);
       if (res.result) {
-        console.log("change password success");
+        dispatch(
+          addToast({
+            type: "success",
+            message: "Change password successfully!",
+          })
+        );
         reset();
       } else if (res.error) {
         setChangeErrors(res.error);
@@ -130,7 +136,12 @@ export default function Account() {
     setResendLoading(true);
     const res = await nextApi.post("user/resendverifyemail");
     if (res.result) {
-      console.log("resend success");
+      dispatch(
+        addToast({
+          type: "success",
+          message: "Resend email successfully!",
+        })
+      );
     } else if (res.error) {
       setChangeErrors(res.error);
     }

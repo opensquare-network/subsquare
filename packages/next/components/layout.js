@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 import Header from "./header";
 import Content from "./content";
+import Toast from "components/toast";
 
 const Wrapper = styled.div`
   display: flex;
@@ -16,6 +17,7 @@ export default function Layout({ left, right, children }) {
       <Content left={left} right={right}>
         {children}
       </Content>
+      <Toast />
     </Wrapper>
   );
 }
