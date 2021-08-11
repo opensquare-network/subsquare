@@ -35,6 +35,8 @@
     "validator": "^13.6.0"
   },
   "devDependencies": {
-    "@types/validator": "^13.6.3"
+    "@types/validator": "^13.6.3",
+    "eslint": "^7.31.0",
+    "eslint-config-next": "^11.0.1"
   }
 }
