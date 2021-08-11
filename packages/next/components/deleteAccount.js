@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import nextApi from "services/nextApi";
 
 import Input from "./input";
 import Button from "./button";
 import { useForm } from "utils/hooks";
-import { logout, userSelector } from "store/reducers/userSlice";
+import { logout } from "store/reducers/userSlice";
 import ErrorText from "./ErrorText";
 
 const Wrapper = styled.div`
@@ -61,7 +61,6 @@ const FormWrapper = styled.form`
 `;
 
 export default function DeleteAccount({ onClose }) {
-  const user = useSelector(userSelector);
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -73,11 +72,7 @@ export default function DeleteAccount({ onClose }) {
     },
     async (formData) => {
       setLoading(true);
-      const res = await nextApi.authPost(
-        "user/deleteaccount",
-        formData,
-        user.accessToken
-      );
+      const res = await nextApi.post("user/deleteaccount", formData);
       if (res.result) {
         dispatch(logout());
         router.replace("/");
