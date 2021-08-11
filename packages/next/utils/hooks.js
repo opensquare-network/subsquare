@@ -72,6 +72,7 @@ export function useIsMounted() {
 }
 
 export function useAuthPage(isAuth) {
+  return;
   const user = useSelector(userSelector);
   const router = useRouter();
 
