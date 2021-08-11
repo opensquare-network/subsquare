@@ -5,6 +5,7 @@ import Toggle from "components/toggle";
 import Button from "components/button";
 import Menu from "components/menu";
 import { settingMenu } from "utils/constants";
+import { useAuthPage } from "utils/hooks";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -64,6 +65,8 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function Notification() {
+  useAuthPage(true);
+
   return (
     <Layout left={<Menu menu={settingMenu} />}>
       <Wrapper>

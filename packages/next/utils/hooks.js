@@ -1,4 +1,8 @@
 import { useEffect, useState, useRef } from "react";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
+
+import { userSelector } from "store/reducers/userSlice";
 
 export function useOnClickOutside(ref, handler) {
   useEffect(() => {
@@ -48,7 +52,11 @@ export function useForm(initialState = {}, onSubmit) {
     onSubmit?.(formData);
   };
 
-  return { formData, handleInputChange, handleSubmit };
+  const reset = () => {
+    setFormData(initialState);
+  };
+
+  return { formData, handleInputChange, handleSubmit, reset };
 }
 
 export function useIsMounted() {
@@ -61,4 +69,15 @@ export function useIsMounted() {
   }, []);
 
   return isMounted;
+}
+
+export function useAuthPage(isAuth) {
+  const user = useSelector(userSelector);
+  const router = useRouter();
+
+  if (isAuth && !user) {
+    router.replace("/");
+  } else if (!isAuth && user) {
+    router.replace("/");
+  }
 }

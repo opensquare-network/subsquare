@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 
@@ -9,13 +9,8 @@ import Button from "components/button";
 import DeleteAccount from "components/deleteAccount";
 import Menu from "components/menu";
 import { settingMenu } from "utils/constants";
-import {
-  userSelector,
-  logout,
-  fetchUserProfile,
-  userProfileSelector,
-} from "store/reducers/userSlice";
-import { useForm } from "utils/hooks";
+import { userSelector, logout } from "store/reducers/userSlice";
+import { useForm, useAuthPage } from "utils/hooks";
 import ErrorText from "components/ErrorText";
 import nextApi from "services/nextApi";
 
@@ -103,8 +98,8 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function Account() {
+  useAuthPage(true);
   const user = useSelector(userSelector);
-  const userProfile = useSelector(userProfileSelector);
   const [show, setShow] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [changeLoading, setChangLoading] = useState(false);
@@ -112,20 +107,17 @@ export default function Account() {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const { formData, handleInputChange, handleSubmit } = useForm(
+  const { formData, handleInputChange, handleSubmit, reset } = useForm(
     {
       oldPassword: "",
       newPassword: "",
     },
     async (formData) => {
       setChangLoading(true);
-      const res = await nextApi.authPost(
-        "user/changepassword",
-        formData,
-        user.accessToken
-      );
+      const res = await nextApi.post("user/changepassword", formData);
       if (res.result) {
         console.log("change password success");
+        reset();
       } else if (res.error) {
         setChangeErrors(res.error);
       }
@@ -135,25 +127,15 @@ export default function Account() {
   const { oldPassword, newPassword } = formData;
 
   const onResend = async () => {
-    setChangLoading(true);
-    const res = await nextApi.authPost(
-      "user/resendverifyemail",
-      null,
-      user.accessToken
-    );
+    setResendLoading(true);
+    const res = await nextApi.post("user/resendverifyemail");
     if (res.result) {
       console.log("resend success");
     } else if (res.error) {
       setChangeErrors(res.error);
     }
-    setChangLoading(false);
+    setResendLoading(false);
   };
-
-  useEffect(() => {
-    if (user) {
-      dispatch(fetchUserProfile(user.accessToken));
-    }
-  }, [dispatch, user]);
 
   return (
     <>
@@ -175,7 +157,7 @@ export default function Account() {
                   defaultValue={user?.email}
                   disabled
                   post={
-                    userProfile?.emailVerified ? (
+                    user?.emailVerified ? (
                       <EmailVerify>
                         <img src="/imgs/icons/circle-check.svg" />
                         <div>Verified</div>
@@ -188,7 +170,7 @@ export default function Account() {
                     )
                   }
                 />
-                {!userProfile?.emailVerified && (
+                {!user?.emailVerified && (
                   <Button
                     secondary
                     onClick={onResend}

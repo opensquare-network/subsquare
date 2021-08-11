@@ -5,6 +5,7 @@ import Button from "components/button";
 import { linkedAddressData } from "utils/data";
 import Menu from "components/menu";
 import { settingMenu } from "utils/constants";
+import { useAuthPage } from "utils/hooks";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -101,6 +102,7 @@ const LinkWrapper = styled.div`
 `;
 
 export default function LinkedAddress() {
+  useAuthPage(true);
   const current = linkedAddressData[0];
 
   return (

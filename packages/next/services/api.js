@@ -53,39 +53,6 @@ class Api {
     );
     return result;
   };
-
-  authPost = async (path, body = null, authToken = null) => {
-    const result = await this.fetch(
-      path,
-      {},
-      {
-        method: "POST",
-        credentials: "same-origin",
-        body: body ? JSON.stringify(body) : null,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        },
-      }
-    );
-    return result;
-  };
-
-  authGet = async (path, authToken = null) => {
-    const result = await this.fetch(
-      path,
-      {},
-      {
-        method: "GET",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        },
-      }
-    );
-    return result;
-  };
 }
 
 export default Api;

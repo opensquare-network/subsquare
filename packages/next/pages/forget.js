@@ -8,6 +8,7 @@ import Input from "components/input";
 import { useForm } from "utils/hooks";
 import nextApi from "services/nextApi";
 import ErrorText from "components/ErrorText";
+import { useAuthPage } from "utils/hooks";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -68,6 +69,7 @@ const FormWrapper = styled.form`
 `;
 
 export default function Forget() {
+  useAuthPage(false);
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);

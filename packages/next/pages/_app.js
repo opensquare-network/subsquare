@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 
 import "../styles/globals.css";
 import { store } from "store";
+import Auth from "components/auth";
 
 NProgress.configure({
   minimum: 0.3,
@@ -24,6 +25,7 @@ function MyApp({ Component, pageProps }) {
         <title>Subsquare</title>
         <meta name="viewport" content="width=device-width, user-scalable=no" />
       </Head>
+      <Auth />
       <Component {...pageProps} />
     </Provider>
   );
