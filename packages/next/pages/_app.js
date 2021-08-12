@@ -3,6 +3,7 @@ import Router from "next/router";
 import NProgress from "nprogress";
 import { Provider } from "react-redux";
 
+import "nprogress/nprogress.css";
 import "../styles/globals.css";
 import { store } from "../store";
 import Auth from "components/auth";
