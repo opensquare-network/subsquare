@@ -20,7 +20,7 @@ const Content = styled.div`
   height: 100%;
   display: inline-block;
   position: absolute;
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 1000px) {
     min-width: 310px;
   }
   @media screen and (max-width: 600px) {
@@ -46,7 +46,7 @@ const CloseWrapper = styled.div`
 `;
 
 const Container = styled.div`
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 1000px) {
     padding: 0 32px;
   }
   @media screen and (max-width: 600px) {
