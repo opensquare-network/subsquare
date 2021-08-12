@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useRouter } from "next/router";
 
 import Button from "./button";
 
@@ -37,8 +36,6 @@ const Info = styled.div`
 `;
 
 export default function Trends() {
-  const router = useRouter();
-
   return (
     <Wrapper>
       <Title>Trends</Title>

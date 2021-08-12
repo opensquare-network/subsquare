@@ -104,6 +104,7 @@ export default function Account() {
   const [show, setShow] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [changeLoading, setChangLoading] = useState(false);
+  const [resendErrors, setResendErrors] = useState();
   const [changeErrors, setChangeErrors] = useState();
   const dispatch = useDispatch();
   const router = useRouter();
@@ -143,7 +144,7 @@ export default function Account() {
         })
       );
     } else if (res.error) {
-      setChangeErrors(res.error);
+      setResendErrors(res.error);
     }
     setResendLoading(false);
   };
@@ -191,6 +192,9 @@ export default function Account() {
                   </Button>
                 )}
               </InputWrapper>
+              {resendErrors?.message && !resendErrors?.data && (
+                <ErrorText>{resendErrors?.message}</ErrorText>
+              )}
             </div>
             <Divider />
             <form onSubmit={handleSubmit}>

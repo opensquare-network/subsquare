@@ -22,7 +22,7 @@ const Left = styled.div`
   width: 246px;
   flex: 0 0 246px;
   margin-right: 32px;
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 1000px) {
     display: none;
   }
 `;

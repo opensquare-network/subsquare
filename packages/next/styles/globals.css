@@ -19,9 +19,9 @@ a {
 }
 
 #nprogress .bar {
-  background: #6848ff;
+  background: #6848ff !important;
 }
 
 #nprogress .peg {
-  box-shadow: 0 0 10px #6848ff, 0 0 5px #6848ff;
+  box-shadow: 0 0 10px #6848ff, 0 0 5px #6848ff !important;
 }

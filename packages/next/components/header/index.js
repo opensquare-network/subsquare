@@ -58,7 +58,7 @@ const MenuButton = styled.div`
   justify-content: center;
   cursor: pointer;
   display: none;
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 1000px) {
     display: flex;
   }
 `;
@@ -107,7 +107,7 @@ export default function Header({ left }) {
           <Left>
             <MenuButton
               onClick={() => {
-                setHiddenWidth(900);
+                setHiddenWidth(1000);
                 setPosition("left");
                 setContent("left");
                 setShow(true);
