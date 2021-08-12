@@ -7,6 +7,7 @@ import Button from "components/button";
 import { useIsMounted } from "utils/hooks";
 import nextApi from "services/nextApi";
 import ErrorText from "components/ErrorText";
+import {withLoginUser, withLoginUserRedux} from "../lib";
 
 const Wrapper = styled.div`
   padding: 32px 0;
@@ -58,7 +59,9 @@ const Redirect = styled.div`
   }
 `;
 
-export default function Verify() {
+export default withLoginUserRedux(({
+  loginUser,
+}) => {
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
@@ -103,7 +106,7 @@ export default function Verify() {
   }, [success, countdown]);
 
   return (
-    <Layout>
+    <Layout user={loginUser}>
       <Wrapper>
         {!success && (
           <ContentWrapper>
@@ -128,4 +131,11 @@ export default function Verify() {
       </Wrapper>
     </Layout>
   );
-}
+});
+
+export const getServerSideProps = withLoginUser(async (context) => {
+  return {
+    props: {
+    },
+  };
+});

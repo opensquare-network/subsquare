@@ -9,6 +9,7 @@ import { timelineData } from "utils/data";
 import Comment from "components/comment";
 import { commentData } from "utils/data";
 import Position from "components/position";
+import {withLoginUser, withLoginUserRedux} from "../lib";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -16,9 +17,11 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function Detail() {
+export default withLoginUserRedux(({
+  loginUser,
+}) => {
   return (
-    <Layout right={<Position />}>
+    <Layout user={loginUser} right={<Position />}>
       <Wrapper>
         <Back />
         <DetailItem data={detailData} />
@@ -27,4 +30,11 @@ export default function Detail() {
       </Wrapper>
     </Layout>
   );
-}
+});
+
+export const getServerSideProps = withLoginUser(async (context) => {
+  return {
+    props: {
+    },
+  };
+});

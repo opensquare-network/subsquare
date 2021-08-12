@@ -14,6 +14,7 @@ import nextApi from "services/nextApi";
 import ErrorText from "components/ErrorText";
 import { setUser } from "store/reducers/userSlice";
 import { useAuthPage } from "utils/hooks";
+import {withLoginUser, withLoginUserRedux} from "../lib";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -87,7 +88,9 @@ const FormWrapper = styled.form`
   }
 `;
 
-export default function Login() {
+export default withLoginUserRedux(({
+  loginUser,
+}) => {
   useAuthPage(false);
   const [web3, setWeb3] = useState(false);
   const [errors, setErrors] = useState();
@@ -115,7 +118,7 @@ export default function Login() {
   const { usernameOrEmail, password } = formData;
 
   return (
-    <Layout>
+    <Layout user={loginUser}>
       <Wrapper>
         <ContentWrapper>
           <Title>Login</Title>
@@ -186,4 +189,11 @@ export default function Login() {
       </Wrapper>
     </Layout>
   );
-}
+});
+
+export const getServerSideProps = withLoginUser(async (context) => {
+  return {
+    props: {
+    },
+  };
+});

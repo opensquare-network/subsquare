@@ -12,6 +12,7 @@ import { useForm, useIsMounted } from "utils/hooks";
 import nextApi from "services/nextApi";
 import ErrorText from "components/ErrorText";
 import { useAuthPage } from "utils/hooks";
+import {withLoginUser, withLoginUserRedux} from "../lib";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -102,7 +103,9 @@ const FormWrapper = styled.form`
   }
 `;
 
-export default function Signup() {
+export default withLoginUserRedux(({
+  loginUser,
+}) => {
   useAuthPage(false);
   const [success, setSuccess] = useState(false);
   const [web3, setWeb3] = useState(false);
@@ -145,7 +148,7 @@ export default function Signup() {
   }, [success, countdown]);
 
   return (
-    <Layout>
+    <Layout user={loginUser}>
       <Wrapper>
         {!success && (
           <ContentWrapper>
@@ -245,4 +248,11 @@ export default function Signup() {
       </Wrapper>
     </Layout>
   );
-}
+});
+
+export const getServerSideProps = withLoginUser(async (context) => {
+  return {
+    props: {
+    },
+  };
+});
