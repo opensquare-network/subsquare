@@ -5,7 +5,7 @@ import nextApi from "services/nextApi";
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    user: null,
+    user: undefined,
   },
   reducers: {
     setUser: (state, { payload }) => {

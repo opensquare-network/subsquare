@@ -87,7 +87,7 @@ const LogoImg = styled.img`
   height: 64px;
 `;
 
-export default function Header({ left }) {
+export default function Header({ user, left }) {
   const [show, setShow] = useState(false);
   const [hiddenWidth, setHiddenWidth] = useState();
   const [position, setPosition] = useState("left");
@@ -133,7 +133,7 @@ export default function Header({ left }) {
             <NodeWrapper>
               <NodeSwitch />
             </NodeWrapper>
-            <HeaderAccount />
+            <HeaderAccount user={user} />
           </Right>
         </FlexWrapper>
       </Container>

@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import { useState, useRef, useEffect, Fragment } from "react";
 import { useRouter } from "next/router";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import Button from "components/button";
 import { accountMenu } from "utils/constants";
 import { useOnClickOutside, useWindowSize } from "utils/hooks";
-import { userSelector, logout } from "store/reducers/userSlice";
+import { logout } from "store/reducers/userSlice";
 
 const Wrapper = styled.div`
   position: relative;
@@ -62,14 +62,13 @@ const Divider = styled.div`
   margin: 8px 0;
 `;
 
-export default function HeaderAccount() {
+export default function HeaderAccount({ user }) {
   const router = useRouter();
   const [login, setLogin] = useState(false);
   const [show, setShow] = useState(false);
   const ref = useRef();
   const windowSize = useWindowSize();
   const dispatch = useDispatch();
-  const user = useSelector(userSelector);
 
   useOnClickOutside(ref, () => setShow(false));
 
