@@ -5,10 +5,14 @@ import Menu from "components/menu";
 import Trends from "components/trends";
 import Footer from "components/footer";
 import { mainMenu } from "utils/constants";
+import {withLoginUser, withLoginUserRedux} from "../lib";
 
-export default function Home() {
+export default withLoginUserRedux(({
+  loginUser,
+}) => {
   return (
     <Layout
+      user={loginUser}
       left={<Menu menu={mainMenu} />}
       right={
         <>
@@ -20,4 +24,11 @@ export default function Home() {
       <Overview />
     </Layout>
   );
-}
+});
+
+export const getServerSideProps = withLoginUser(async (context) => {
+  return {
+    props: {
+    },
+  };
+});
