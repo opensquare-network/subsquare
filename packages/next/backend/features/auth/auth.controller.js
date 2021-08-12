@@ -207,12 +207,6 @@ async function forgetPassword(ctx) {
     });
   }
 
-  if (!user.emailVerified) {
-    throw new HttpError(400, {
-      email: ["The email address is not verified yet."],
-    });
-  }
-
   if (user.reset?.expires.getTime() > Date.now()) {
     ctx.body = true;
     return;
