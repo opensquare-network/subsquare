@@ -17,7 +17,7 @@ class AliMail {
       'SingleSendMail',
       {
         "AccountName": process.env.ALI_MAIL_FROM,
-        "FromAlias": "dotreasury",
+        "FromAlias": "SubSquare",
         "AddressType": 1,
         "ReplyToAddress": false,
         "ToAddress": to,
