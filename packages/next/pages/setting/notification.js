@@ -6,6 +6,7 @@ import Button from "components/button";
 import Menu from "components/menu";
 import { settingMenu } from "utils/constants";
 import { useAuthPage } from "utils/hooks";
+import {withLoginUser, withLoginUserRedux} from "../../lib";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -64,11 +65,13 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-export default function Notification() {
+export default withLoginUserRedux(({
+  loginUser,
+}) => {
   useAuthPage(true);
 
   return (
-    <Layout left={<Menu menu={settingMenu} />}>
+    <Layout user={loginUser} left={<Menu menu={settingMenu} />}>
       <Wrapper>
         <Title>Notification</Title>
         <ContentWrapper>
@@ -99,4 +102,11 @@ export default function Notification() {
       </Wrapper>
     </Layout>
   );
-}
+});
+
+export const getServerSideProps = withLoginUser(async (context) => {
+  return {
+    props: {
+    },
+  };
+});

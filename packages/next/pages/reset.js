@@ -8,6 +8,7 @@ import Input from "components/input";
 import { useForm, useIsMounted } from "utils/hooks";
 import nextApi from "services/nextApi";
 import ErrorText from "components/ErrorText";
+import {withLoginUser, withLoginUserRedux} from "../lib";
 
 const Wrapper = styled.div`
   padding: 32px 0;
@@ -76,7 +77,9 @@ const FormWrapper = styled.form`
   }
 `;
 
-export default function Reset() {
+export default withLoginUserRedux(({
+  loginUser,
+}) => {
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
@@ -120,7 +123,7 @@ export default function Reset() {
   }, [success, countdown]);
 
   return (
-    <Layout>
+    <Layout user={loginUser}>
       <Wrapper>
         {!success && (
           <ContentWrapper>
@@ -165,4 +168,11 @@ export default function Reset() {
       </Wrapper>
     </Layout>
   );
-}
+});
+
+export const getServerSideProps = withLoginUser(async (context) => {
+  return {
+    props: {
+    },
+  };
+});

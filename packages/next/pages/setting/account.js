@@ -14,6 +14,7 @@ import { useForm, useAuthPage } from "utils/hooks";
 import ErrorText from "components/ErrorText";
 import nextApi from "services/nextApi";
 import { addToast } from "store/reducers/toastSlice";
+import {withLoginUser, withLoginUserRedux} from "../../lib";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -98,7 +99,9 @@ const ButtonWrapper = styled.div`
   max-width: 240px;
 `;
 
-export default function Account() {
+export default withLoginUserRedux(({
+  loginUser,
+}) => {
   useAuthPage(true);
   const user = useSelector(userSelector);
   const [show, setShow] = useState(false);
@@ -150,7 +153,7 @@ export default function Account() {
 
   return (
     <>
-      <Layout left={<Menu menu={settingMenu} />}>
+      <Layout user={loginUser} left={<Menu menu={settingMenu} />}>
         <Wrapper>
           <Title>Account</Title>
           <ContentWrapper>
@@ -259,4 +262,11 @@ export default function Account() {
       {show && <DeleteAccount onClose={() => setShow(false)} />}
     </>
   );
-}
+});
+
+export const getServerSideProps = withLoginUser(async (context) => {
+  return {
+    props: {
+    },
+  };
+});

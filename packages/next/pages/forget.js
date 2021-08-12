@@ -9,6 +9,7 @@ import { useForm } from "utils/hooks";
 import nextApi from "services/nextApi";
 import ErrorText from "components/ErrorText";
 import { useAuthPage } from "utils/hooks";
+import {withLoginUser, withLoginUserRedux} from "../lib";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -68,7 +69,9 @@ const FormWrapper = styled.form`
   }
 `;
 
-export default function Forget() {
+export default withLoginUserRedux(({
+  loginUser,
+}) => {
   useAuthPage(false);
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState();
@@ -93,7 +96,7 @@ export default function Forget() {
   const { email } = formData;
 
   return (
-    <Layout>
+    <Layout user={loginUser}>
       <Wrapper>
         {!success && (
           <ContentWrapper>
@@ -136,4 +139,11 @@ export default function Forget() {
       </Wrapper>
     </Layout>
   );
-}
+});
+
+export const getServerSideProps = withLoginUser(async (context) => {
+  return {
+    props: {
+    },
+  };
+});
