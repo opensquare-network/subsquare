@@ -177,6 +177,7 @@ async function login(ctx) {
 
 async function logout(ctx) {
   ctx.cookies.set("auth-token");
+  ctx.body = true;
 }
 
 async function refresh(ctx) {
