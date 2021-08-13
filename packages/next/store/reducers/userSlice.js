@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { encodeSubstrateAddress } from "services/address";
 
 import nextApi from "services/nextApi";
 
@@ -18,6 +19,12 @@ export const { setUser } = userSlice.actions;
 
 export const fetchUserProfile = () => async (dispatch) => {
   const { result } = await nextApi.fetch("user/profile");
+  if (result?.addresses?.length > 0) {
+    result.addresses = result.addresses.map((addr) => ({
+      ...addr,
+      wildcardAddress: encodeSubstrateAddress(addr.address),
+    }));
+  }
   if (result) dispatch(setUser(result));
 };
 

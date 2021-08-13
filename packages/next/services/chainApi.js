@@ -1,7 +1,7 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { isWeb3Injected, web3FromAddress } from "@polkadot/extension-dapp";
 import { stringToHex } from "@polkadot/util";
-import { encodeAddress } from "@polkadot/keyring";
+export * from "./address";
 
 import {
   DEFAULT_KUSAMA_NODE_URL,
@@ -97,36 +97,4 @@ export const estimateBlocksTime = async (chain, blocks) => {
   const api = await getApi(chain);
   const nsPerBlock = api.consts.babe.expectedBlockTime.toNumber();
   return nsPerBlock * blocks;
-};
-
-export const encodeKusamaAddress = (address) => {
-  try {
-    return encodeAddress(address, 2);
-  } catch {
-    return "";
-  }
-};
-
-export const encodePolkadotAddress = (address) => {
-  try {
-    return encodeAddress(address, 0);
-  } catch {
-    return "";
-  }
-};
-
-export const encodeSubstrateAddress = (address) => {
-  try {
-    return encodeAddress(address, 42);
-  } catch {
-    return "";
-  }
-};
-
-export const encodeKaruraAddress = (address) => {
-  try {
-    return encodeAddress(address, 8);
-  } catch {
-    return "";
-  }
 };
