@@ -97,7 +97,7 @@ export default function HeaderAccount({ user }) {
       {user && (
         <Wrapper ref={ref}>
           <AccountButton onClick={() => setShow(!show)}>
-            {user.addresses?.[0].address ? (
+            {user.addresses?.[0]?.address ? (
               <Avatar address={user.addresses[0].address} />
             ) : (
               <img src="/imgs/icons/avatar.svg" alt="" />
