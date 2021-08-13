@@ -11,6 +11,7 @@ import Button from "components/button";
 import { useAuthPage, useIsMounted } from "utils/hooks";
 import { userSelector } from "store/reducers/userSlice";
 import {
+  encodeKaruraAddress,
   encodeKusamaAddress,
   encodePolkadotAddress,
   signMessage,
@@ -130,7 +131,7 @@ export default function LinkedAddress() {
   const user = useSelector(userSelector);
   const [hasExtension, setHasExtension] = useState(true);
   const [accounts, setAccounts] = useState([]);
-  const [activeChain, setActiveChain] = useState("polkadot");
+  const [activeChain, setActiveChain] = useState("karura");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -163,6 +164,7 @@ export default function LinkedAddress() {
         address,
         kusamaAddress: encodeKusamaAddress(address),
         polkadotAddress: encodePolkadotAddress(address),
+        karuraAddress: encodeKaruraAddress(address),
         name,
       };
     });
@@ -265,6 +267,7 @@ export default function LinkedAddress() {
         address: address.wildcardAddress,
         kusamaAddress: address.chain === "kusama" ? address.address : null,
         polkadotAddress: address.chain === "polkadot" ? address.address : null,
+        karuraAddress: address.chain === "karura" ? address.address : null,
         name: "--",
       })),
   ];

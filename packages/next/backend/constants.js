@@ -7,6 +7,7 @@ const SupportChains = [
 const SS58Format = Object.freeze({
   Polkadot: 0,
   Kusama: 2,
+  Karura: 8,
   Substrate: 42,
 });
 
