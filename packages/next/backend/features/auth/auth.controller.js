@@ -371,6 +371,12 @@ async function addressLoginConfirm(ctx) {
   const accessToken = await authService.getSignedToken(user);
   const refreshToken = await authService.getRefreshToken(user);
 
+  ctx.cookies.set("auth-token", accessToken, {
+    httpOnly: true,
+    sameSite: "lax",
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+  });
+
   ctx.body = {
     username: user.username,
     email: user.email,
