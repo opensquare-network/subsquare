@@ -1,6 +1,7 @@
 const SupportChains = [
   "polkadot",
   "kusama",
+  "karura",
 ];
 
 const SS58Format = Object.freeze({
