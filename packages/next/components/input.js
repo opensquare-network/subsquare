@@ -24,11 +24,6 @@ const InputWrapper = styled.input`
     color: #d7dee8;
   }
   ${(p) =>
-    p.type === "password" &&
-    css`
-      padding-right: 38px;
-    `}
-  ${(p) =>
     p.error &&
     css`
       border-color: #f44336 !important;
