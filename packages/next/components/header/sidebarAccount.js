@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { useState } from "react";
-import { useReducer } from "react";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 
 import NodeSwitch from "components/nodeSwitch";
 import Button from "components/button";
 import { accountMenu } from "utils/constants";
-import { useRouter } from "next/router";
+import { logout } from "store/reducers/userSlice";
 
 const Wrapper = styled.div`
   padding: 32px 0 0;
@@ -52,13 +52,27 @@ const Item = styled.div`
   }
 `;
 
-export default function SidebarAccount() {
+const UserWrapper = styled.div`
+  border: 1px solid #e0e4eb;
+  border-radius: 4px;
+  padding: 0 12px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  margin-bottom: 8px;
+  > img {
+    margin-right: 8px;
+  }
+`;
+
+export default function SidebarAccount({ user }) {
   const router = useRouter();
-  const [login, setLogin] = useState(false);
+  const dispatch = useDispatch();
 
   const handleAccountMenu = (item) => {
     if (item.value === "logout") {
-      setLogin(false);
+      dispatch(logout());
     } else if (item.pathname) {
       router.push(item.pathname);
     }
@@ -69,14 +83,22 @@ export default function SidebarAccount() {
       <Title>NETWORK</Title>
       <NodeSwitch />
       <Title>ACCOUNT</Title>
-      {!login && (
+      {!user && (
         <ButtonWrapper>
-          <Button primary>Sign up</Button>
-          <Button onClick={() => setLogin(true)}>Login</Button>
+          <Button onClick={() => router.push("/signup")} primary>
+            Sign up
+          </Button>
+          <Button onClick={() => router.push("/login")} secondary>
+            Login
+          </Button>
         </ButtonWrapper>
       )}
-      {login && (
+      {user && (
         <div>
+          <UserWrapper>
+            <img src="/imgs/icons/avatar.svg" alt="" />
+            <div>{user.username}</div>
+          </UserWrapper>
           {accountMenu.map((item, index) => (
             <Item key={index} onClick={() => handleAccountMenu(item)}>
               <img src={`/imgs/icons/${item.icon}`} />

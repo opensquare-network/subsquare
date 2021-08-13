@@ -50,12 +50,6 @@ export const nodes = [
 
 export const accountMenu = [
   {
-    value: "notifications",
-    name: "Notifications",
-    icon: "notifications.svg",
-    pathname: "/setting/notification",
-  },
-  {
     value: "settings",
     name: "Settings",
     icon: "settings.svg",
