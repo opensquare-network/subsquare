@@ -1,8 +1,8 @@
 import styled, { css } from "styled-components";
 import { useState, useRef } from "react";
 
-import { linkedAddressData } from "utils/data";
 import { useOnClickOutside } from "utils/hooks";
+import { addressEllipsis } from "utils";
 
 const Wrapper = styled.div`
   position: relative;
@@ -29,6 +29,7 @@ const Select = styled.div`
     width: 14px;
     height: 14px;
     flex: 0 0 auto;
+    margin-left: auto;
   }
 `;
 
@@ -78,8 +79,12 @@ const Item = styled.div`
     `}
 `;
 
-export default function AddressSelect() {
-  const [selected, setSelected] = useState(linkedAddressData[0]);
+export default function AddressSelect({
+  chain,
+  accounts,
+  selectedAccount,
+  onSelect,
+}) {
   const [show, setShow] = useState(false);
   const ref = useRef();
 
@@ -88,30 +93,34 @@ export default function AddressSelect() {
   return (
     <Wrapper ref={ref}>
       <Select onClick={() => setShow(!show)}>
-        <img src="/imgs/icons/avatar.svg" />
-        <NameWrapper>
-          <div>{selected.name}</div>
-          <div>{selected.address}</div>
-        </NameWrapper>
+        {selectedAccount && (
+          <>
+            <img src="/imgs/icons/avatar.svg" />
+            <NameWrapper>
+              <div>{selectedAccount?.name}</div>
+              <div>{addressEllipsis(selectedAccount?.address)}</div>
+            </NameWrapper>
+          </>
+        )}
         <img
           src={show ? "/imgs/icons/caret-up.svg" : "/imgs/icons/caret-down.svg"}
         />
       </Select>
       {show && (
         <Options>
-          {linkedAddressData.map((item, index) => (
+          {(accounts || []).map((item, index) => (
             <Item
               key={index}
               onClick={() => {
-                setSelected(item);
+                onSelect(item);
                 setShow(false);
               }}
-              selected={item.name === selected.name}
+              selected={item.address === selectedAccount?.address}
             >
               <img src="/imgs/icons/avatar.svg" />
               <NameWrapper>
                 <div>{item.name}</div>
-                <div>{item.address}</div>
+                <div>{addressEllipsis(item.address)}</div>
               </NameWrapper>
             </Item>
           ))}

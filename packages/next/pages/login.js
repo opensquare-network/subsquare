@@ -3,18 +3,22 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
+import dynamic from "next/dynamic";
 
 import Layout from "components/layout";
 import Agreement from "components/agreement";
 import Button from "components/button";
 import Input from "components/input";
-import AddressSelect from "components/addressSelect";
 import { useForm } from "utils/hooks";
 import nextApi from "services/nextApi";
 import ErrorText from "components/ErrorText";
 import { setUser } from "store/reducers/userSlice";
 import { useAuthPage } from "utils/hooks";
-import {withLoginUser, withLoginUserRedux} from "../lib";
+import { withLoginUser, withLoginUserRedux } from "../lib";
+
+const AddressLogin = dynamic(() => import("components/addressLogin"), {
+  ssr: false,
+});
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -32,14 +36,13 @@ const ContentWrapper = styled.div`
     0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
     0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
-  min-width: 360px;
+  width: 360px;
   margin: 0 auto;
   padding: 48px;
   > :not(:first-child) {
     margin-top: 24px;
   }
   @media screen and (max-width: 392px) {
-    min-width: 0;
     width: 100%;
   }
 `;
@@ -88,9 +91,7 @@ const FormWrapper = styled.form`
   }
 `;
 
-export default withLoginUserRedux(({
-  loginUser,
-}) => {
+export default withLoginUserRedux(({ loginUser }) => {
   useAuthPage(false);
   const [web3, setWeb3] = useState(false);
   const [errors, setErrors] = useState();
@@ -165,22 +166,7 @@ export default withLoginUserRedux(({
               </ButtonWrapper>
             </FormWrapper>
           )}
-          {web3 && (
-            <>
-              <div>
-                <Label>Choose linked address</Label>
-                <AddressSelect />
-              </div>
-              <ButtonWrapper>
-                <Button isFill secondary>
-                  Login
-                </Button>
-                <Button isFill onClick={() => setWeb3(false)}>
-                  Login with username
-                </Button>
-              </ButtonWrapper>
-            </>
-          )}
+          {web3 && <AddressLogin onBack={() => setWeb3(false)} />}
           <LinkWrapper>
             Don’t have a account? <Link href="/signup">Sign up</Link>
           </LinkWrapper>
@@ -193,7 +179,6 @@ export default withLoginUserRedux(({
 
 export const getServerSideProps = withLoginUser(async (context) => {
   return {
-    props: {
-    },
+    props: {},
   };
 });

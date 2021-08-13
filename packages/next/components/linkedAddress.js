@@ -22,6 +22,7 @@ import { fetchUserProfile } from "store/reducers/userSlice";
 import { addToast } from "store/reducers/toastSlice";
 import { nodes } from "utils/constants";
 import Avatar from "./avatar";
+import DownloadExtension from "./downloadExtension";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -54,13 +55,6 @@ const InfoWrapper = styled.div`
   line-height: 150%;
   margin-bottom: 16px;
   color: #506176;
-`;
-
-const ExtensionLink = styled.a`
-  display: block;
-  color: #2196f3;
-  text-decoration: underline;
-  cursor: pointer;
 `;
 
 const AddressWrapper = styled.div`
@@ -308,17 +302,7 @@ export default function LinkedAddress() {
             </Button>
           </div>
         ) : (
-          <InfoWrapper>
-            Polkadot-js extension not detected. No web3 account could be found.
-            Visit this page on a computer with polkadot-js extension.
-            <ExtensionLink
-              href="https://polkadot.js.org/extension/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {`Download Polkadot{.js} extension`}
-            </ExtensionLink>
-          </InfoWrapper>
+          <DownloadExtension />
         )}
         <div>
           <NodesWrapper>
