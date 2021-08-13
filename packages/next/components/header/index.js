@@ -130,17 +130,17 @@ export default function Header({ user, left }) {
             </NodeButton>
           </Left>
           <Right>
+            <HeaderAccount user={user} />
             <NodeWrapper>
               <NodeSwitch />
             </NodeWrapper>
-            <HeaderAccount user={user} />
           </Right>
         </FlexWrapper>
       </Container>
       {show && (
         <Sidebar onClose={() => setShow(false)} position={position}>
           {content === "left" && <>{left}</>}
-          {content === "right" && <SidebarAccount />}
+          {content === "right" && <SidebarAccount user={user} />}
         </Sidebar>
       )}
     </Wrapper>

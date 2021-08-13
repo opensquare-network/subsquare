@@ -7,6 +7,7 @@ import Button from "components/button";
 import { accountMenu } from "utils/constants";
 import { useOnClickOutside, useWindowSize } from "utils/hooks";
 import { logout } from "store/reducers/userSlice";
+import Avatar from "components/avatar";
 
 const Wrapper = styled.div`
   position: relative;
@@ -15,12 +16,16 @@ const Wrapper = styled.div`
 const AccountButton = styled.div`
   border: 1px solid #e0e4eb;
   border-radius: 4px;
-  width: 38px;
+  padding: 0 12px;
   height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  font-weight: 500;
+  > :first-child {
+    margin-right: 8px;
+  }
 `;
 
 const Menu = styled.div`
@@ -64,7 +69,6 @@ const Divider = styled.div`
 
 export default function HeaderAccount({ user }) {
   const router = useRouter();
-  const [login, setLogin] = useState(false);
   const [show, setShow] = useState(false);
   const ref = useRef();
   const windowSize = useWindowSize();
@@ -78,10 +82,6 @@ export default function HeaderAccount({ user }) {
     }
   }, [windowSize]);
 
-  useEffect(() => {
-    setLogin(!!user);
-  }, [user]);
-
   const handleAccountMenu = (item) => {
     if (item.value === "logout") {
       dispatch(logout());
@@ -93,10 +93,15 @@ export default function HeaderAccount({ user }) {
 
   return (
     <>
-      {login && (
+      {user && (
         <Wrapper ref={ref}>
           <AccountButton onClick={() => setShow(!show)}>
-            <img src="/imgs/icons/avatar.svg" alt="" />
+            {user.addresses?.[0].address ? (
+              <Avatar address={user.addresses[0].address} />
+            ) : (
+              <img src="/imgs/icons/avatar.svg" alt="" />
+            )}
+            <div>{user.username}</div>
           </AccountButton>
           {show && (
             <Menu>
@@ -113,7 +118,7 @@ export default function HeaderAccount({ user }) {
           )}
         </Wrapper>
       )}
-      {!login && (
+      {!user && (
         <Button secondary onClick={() => router.push("/login")}>
           Login
         </Button>
