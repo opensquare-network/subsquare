@@ -38,6 +38,7 @@ const Menu = styled.div`
   margin-top: 4px;
   background: #ffffff;
   padding: 8px 0;
+  z-index: 999999;
 `;
 
 const Item = styled.div`
