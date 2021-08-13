@@ -20,6 +20,8 @@ import { addressEllipsis } from "utils";
 import nextApi from "services/nextApi";
 import { fetchUserProfile } from "store/reducers/userSlice";
 import { addToast } from "store/reducers/toastSlice";
+import { nodes } from "utils/constants";
+import Avatar from "./avatar";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -59,18 +61,6 @@ const ExtensionLink = styled.a`
   color: #2196f3;
   text-decoration: underline;
   cursor: pointer;
-`;
-
-const Label = styled.div`
-  margin-bottom: 16px;
-  font-weight: bold;
-  font-size: 12px;
-`;
-
-const Divider = styled.div`
-  background: #ebeef4;
-  height: 1px;
-  margin: 24px 0;
 `;
 
 const AddressWrapper = styled.div`
@@ -123,6 +113,35 @@ const LinkWrapper = styled.div`
     filter: invert(37%) sepia(13%) saturate(941%) hue-rotate(173deg)
       brightness(92%) contrast(86%);
   }
+`;
+
+const NodesWrapper = styled.div`
+  display: flex;
+  margin: 24px 0;
+  border-bottom: 1px solid #ebeef4;
+  > :not(:first-child) {
+    margin-left: 24px;
+  }
+`;
+
+const NodeItem = styled.div`
+  padding-bottom: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  position: relative;
+  ${(p) =>
+    p.selected &&
+    css`
+      ::after {
+        content: "";
+        background: #6848ff;
+        height: 3px;
+        position: absolute;
+        bottom: 0;
+        left: 8px;
+        right: 8px;
+      }
+    `}
 `;
 
 export default function LinkedAddress() {
@@ -259,9 +278,11 @@ export default function LinkedAddress() {
   const mergedAccounts = [
     ...accounts,
     ...(user?.addresses || [])
-      .filter(
-        (address) =>
-          !accounts.some((acc) => acc.address === address.wildcardAddress)
+      .filter((address) =>
+        accounts.every(
+          (acc) =>
+            address.wildcardAddress && acc.address !== address.wildcardAddress
+        )
       )
       .map((address) => ({
         address: address.wildcardAddress,
@@ -299,9 +320,18 @@ export default function LinkedAddress() {
             </ExtensionLink>
           </InfoWrapper>
         )}
-        <Divider />
         <div>
-          <Label>Address</Label>
+          <NodesWrapper>
+            {nodes.map((item, index) => (
+              <NodeItem
+                key={index}
+                onClick={() => setActiveChain(item.value)}
+                selected={item.value === activeChain}
+              >
+                {item.name}
+              </NodeItem>
+            ))}
+          </NodesWrapper>
           <AddressWrapper>
             {availableAccounts.map((item, index) => (
               <AddressItem
@@ -310,10 +340,14 @@ export default function LinkedAddress() {
                   (i) => i.address === item[`${activeChain}Address`]
                 )}
               >
-                <img src="/imgs/icons/avatar.svg" />
+                {item[`${activeChain}Address`] ? (
+                  <Avatar address={item[`${activeChain}Address`]} size={32} />
+                ) : (
+                  <img src="/imgs/icons/avatar.svg" alt="" />
+                )}
                 <NameWrapper>
                   <div>{item.name}</div>
-                  <div>{addressEllipsis(item.address)}</div>
+                  <div>{addressEllipsis(item[`${activeChain}Address`])}</div>
                 </NameWrapper>
                 {user?.addresses?.some(
                   (i) => i.address === item[`${activeChain}Address`]
@@ -323,8 +357,8 @@ export default function LinkedAddress() {
                       unlinkAddress(activeChain, item);
                     }}
                   >
-                    <img src="/imgs/icons/link-unlink.svg" />
-                    <div>Unlink</div>
+                    <img src="/imgs/icons/link-linked.svg" />
+                    <div>Linked</div>
                   </LinkWrapper>
                 ) : (
                   <LinkWrapper
@@ -332,8 +366,8 @@ export default function LinkedAddress() {
                       linkAddress(activeChain, item);
                     }}
                   >
-                    <img src="/imgs/icons/link-linked.svg" />
-                    <div>Link</div>
+                    <img src="/imgs/icons/link-unlink.svg" />
+                    <div>Unlink</div>
                   </LinkWrapper>
                 )}
               </AddressItem>
