@@ -122,3 +122,11 @@ export const encodeSubstrateAddress = (address) => {
     return "";
   }
 };
+
+export const encodeKaruraAddress = (address) => {
+  try {
+    return encodeAddress(address, 8);
+  } catch {
+    return "";
+  }
+};
