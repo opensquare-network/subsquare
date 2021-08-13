@@ -8,6 +8,7 @@ import HeaderAccount from "./headerAccount";
 import Sidebar from "./sidebar";
 import { useWindowSize } from "utils/hooks";
 import SidebarAccount from "./sidebarAccount";
+import { nodes } from "utils/constants";
 
 const Wrapper = styled.header`
   background: #ffffff;
@@ -93,6 +94,7 @@ export default function Header({ user, left }) {
   const [position, setPosition] = useState("left");
   const [content, setContent] = useState();
   const windowSize = useWindowSize();
+  const [node, setNode] = useState(nodes[0]);
 
   useEffect(() => {
     if (hiddenWidth && windowSize.width && windowSize.width > hiddenWidth) {
@@ -126,7 +128,7 @@ export default function Header({ user, left }) {
                 setShow(true);
               }}
             >
-              <img src="/imgs/icons/kusama.svg" alt="" />
+              <img src={`/imgs/icons/${node.icon}`} alt="" />
             </NodeButton>
           </Left>
           <Right>
