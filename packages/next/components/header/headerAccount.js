@@ -7,6 +7,7 @@ import Button from "components/button";
 import { accountMenu } from "utils/constants";
 import { useOnClickOutside, useWindowSize } from "utils/hooks";
 import { logout } from "store/reducers/userSlice";
+import Avatar from "components/avatar";
 
 const Wrapper = styled.div`
   position: relative;
@@ -22,7 +23,7 @@ const AccountButton = styled.div`
   justify-content: center;
   cursor: pointer;
   font-weight: 500;
-  > img {
+  > :first-child {
     margin-right: 8px;
   }
 `;
@@ -95,7 +96,11 @@ export default function HeaderAccount({ user }) {
       {user && (
         <Wrapper ref={ref}>
           <AccountButton onClick={() => setShow(!show)}>
-            <img src="/imgs/icons/avatar.svg" alt="" />
+            {user.addresses?.[0].address ? (
+              <Avatar address={user.addresses[0].address} />
+            ) : (
+              <img src="/imgs/icons/avatar.svg" alt="" />
+            )}
             <div>{user.username}</div>
           </AccountButton>
           {show && (

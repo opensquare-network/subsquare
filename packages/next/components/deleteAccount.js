@@ -106,10 +106,10 @@ export default function DeleteAccount({ onClose }) {
               }}
               error={errors?.data?.password}
             />
+            {errors?.message && !errors?.data && (
+              <ErrorText>{errors?.message}</ErrorText>
+            )}
           </div>
-          {errors?.message && !errors?.data && (
-            <ErrorText>{errors?.message}</ErrorText>
-          )}
           <Button danger isFill type="submit" isLoading={loading}>
             Delete my account
           </Button>

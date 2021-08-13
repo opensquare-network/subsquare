@@ -6,6 +6,7 @@ import NodeSwitch from "components/nodeSwitch";
 import Button from "components/button";
 import { accountMenu } from "utils/constants";
 import { logout } from "store/reducers/userSlice";
+import Avatar from "components/avatar";
 
 const Wrapper = styled.div`
   padding: 32px 0 0;
@@ -61,7 +62,7 @@ const UserWrapper = styled.div`
   align-items: center;
   font-weight: 500;
   margin-bottom: 8px;
-  > img {
+  > :first-child {
     margin-right: 8px;
   }
 `;
@@ -96,7 +97,11 @@ export default function SidebarAccount({ user }) {
       {user && (
         <div>
           <UserWrapper>
-            <img src="/imgs/icons/avatar.svg" alt="" />
+            {user.addresses?.[0].address ? (
+              <Avatar address={user.addresses[0].address} />
+            ) : (
+              <img src="/imgs/icons/avatar.svg" alt="" />
+            )}
             <div>{user.username}</div>
           </UserWrapper>
           {accountMenu.map((item, index) => (
