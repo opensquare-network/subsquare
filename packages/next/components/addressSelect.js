@@ -96,10 +96,10 @@ export default function AddressSelect({
       <Select onClick={() => setShow(!show)}>
         {selectedAccount && (
           <>
-            <Avatar address={selectedAccount?.address} />
+            <Avatar address={selectedAccount?.karuraAddress} />
             <NameWrapper>
               <div>{selectedAccount?.name}</div>
-              <div>{addressEllipsis(selectedAccount?.address)}</div>
+              <div>{addressEllipsis(selectedAccount?.karuraAddress)}</div>
             </NameWrapper>
           </>
         )}
@@ -118,10 +118,10 @@ export default function AddressSelect({
               }}
               selected={item.address === selectedAccount?.address}
             >
-              <Avatar address={item.address} />
+              <Avatar address={item.karuraAddress} />
               <NameWrapper>
                 <div>{item.name}</div>
-                <div>{addressEllipsis(item.address)}</div>
+                <div>{addressEllipsis(item.karuraAddress)}</div>
               </NameWrapper>
             </Item>
           ))}

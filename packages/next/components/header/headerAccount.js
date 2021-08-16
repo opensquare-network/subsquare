@@ -8,6 +8,7 @@ import { accountMenu } from "utils/constants";
 import { useOnClickOutside, useWindowSize } from "utils/hooks";
 import { logout } from "store/reducers/userSlice";
 import Avatar from "components/avatar";
+import Grvatar from "components/gravatar";
 
 const Wrapper = styled.div`
   position: relative;
@@ -100,7 +101,7 @@ export default function HeaderAccount({ user }) {
             {user.addresses?.[0]?.address ? (
               <Avatar address={user.addresses[0].address} />
             ) : (
-              <img src="/imgs/icons/avatar.svg" alt="" />
+              <Grvatar email={user.email} size={24} />
             )}
             <div>{user.username}</div>
           </AccountButton>
