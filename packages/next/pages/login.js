@@ -114,7 +114,8 @@ export default withLoginUserRedux(({ loginUser }) => {
         setErrors(res.error);
       }
       setLoading(false);
-    }
+    },
+    () => setErrors(null)
   );
   const { usernameOrEmail, password } = formData;
 
@@ -133,7 +134,6 @@ export default withLoginUserRedux(({ loginUser }) => {
                   value={usernameOrEmail}
                   onChange={(e) => {
                     handleInputChange(e);
-                    setErrors(null);
                   }}
                   error={errors?.data?.usernameOrEmail}
                 />
@@ -145,7 +145,6 @@ export default withLoginUserRedux(({ loginUser }) => {
                   value={password}
                   onChange={(e) => {
                     handleInputChange(e);
-                    setErrors(null);
                   }}
                   error={errors?.data?.password}
                 />

@@ -126,7 +126,8 @@ export default withLoginUserRedux(({ loginUser }) => {
         setErrors(res.error);
       }
       setLoading(false);
-    }
+    },
+    () => setErrors(null)
   );
   const { username, email, password } = formData;
 
@@ -158,7 +159,6 @@ export default withLoginUserRedux(({ loginUser }) => {
                   value={username}
                   onChange={(e) => {
                     handleInputChange(e);
-                    setErrors(null);
                   }}
                   error={errors?.data?.username}
                 />
@@ -169,7 +169,6 @@ export default withLoginUserRedux(({ loginUser }) => {
                   value={email}
                   onChange={(e) => {
                     handleInputChange(e);
-                    setErrors(null);
                   }}
                   error={errors?.data?.email}
                 />
@@ -181,7 +180,6 @@ export default withLoginUserRedux(({ loginUser }) => {
                   value={password}
                   onChange={(e) => {
                     handleInputChange(e);
-                    setErrors(null);
                   }}
                   error={errors?.data?.password}
                 />

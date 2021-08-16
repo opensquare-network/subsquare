@@ -40,11 +40,12 @@ export function useWindowSize() {
   return windowSize;
 }
 
-export function useForm(initialState = {}, onSubmit) {
+export function useForm(initialState = {}, onSubmit, clearError) {
   const [formData, setFormData] = useState(initialState);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (clearError) clearError();
   };
 
   const handleSubmit = (e) => {

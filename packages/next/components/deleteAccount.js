@@ -80,7 +80,8 @@ export default function DeleteAccount({ onClose }) {
         setErrors(res.error);
       }
       setLoading(false);
-    }
+    },
+    () => setErrors(null)
   );
   const { password } = formData;
 
@@ -102,7 +103,6 @@ export default function DeleteAccount({ onClose }) {
               value={password}
               onChange={(e) => {
                 handleInputChange(e);
-                setErrors(null);
               }}
               error={errors?.data?.password}
             />
