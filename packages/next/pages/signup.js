@@ -7,12 +7,11 @@ import Layout from "components/layout";
 import Agreement from "components/agreement";
 import Button from "components/button";
 import Input from "components/input";
-import AddressSelect from "components/addressSelect";
 import { useForm, useIsMounted } from "utils/hooks";
 import nextApi from "services/nextApi";
 import ErrorText from "components/ErrorText";
 import { useAuthPage } from "utils/hooks";
-import {withLoginUser, withLoginUserRedux} from "../lib";
+import { withLoginUser, withLoginUserRedux } from "../lib";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -103,12 +102,9 @@ const FormWrapper = styled.form`
   }
 `;
 
-export default withLoginUserRedux(({
-  loginUser,
-}) => {
+export default withLoginUserRedux(({ loginUser }) => {
   useAuthPage(false);
   const [success, setSuccess] = useState(false);
-  const [web3, setWeb3] = useState(false);
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -130,7 +126,8 @@ export default withLoginUserRedux(({
         setErrors(res.error);
       }
       setLoading(false);
-    }
+    },
+    () => setErrors(null)
   );
   const { username, email, password } = formData;
 
@@ -153,76 +150,52 @@ export default withLoginUserRedux(({
         {!success && (
           <ContentWrapper>
             <Title>Signup</Title>
-            {!web3 && (
-              <FormWrapper onSubmit={handleSubmit}>
-                <InputWrapper>
-                  <Label>Username</Label>
-                  <Input
-                    placeholder="Please fill your name"
-                    name="username"
-                    value={username}
-                    onChange={(e) => {
-                      handleInputChange(e);
-                      setErrors(null);
-                    }}
-                    error={errors?.data?.username}
-                  />
-                  <Label>Email</Label>
-                  <Input
-                    placeholder="Please fill email"
-                    name="email"
-                    value={email}
-                    onChange={(e) => {
-                      handleInputChange(e);
-                      setErrors(null);
-                    }}
-                    error={errors?.data?.email}
-                  />
-                  <Label>Password</Label>
-                  <Input
-                    placeholder="Please fill password"
-                    type="password"
-                    name="password"
-                    value={password}
-                    onChange={(e) => {
-                      handleInputChange(e);
-                      setErrors(null);
-                    }}
-                    error={errors?.data?.password}
-                  />
-                  {errors?.message && !errors?.data && (
-                    <ErrorText>{errors?.message}</ErrorText>
-                  )}
-                  <ForgetPassword>
-                    <Link href="/forget">Forget password?</Link>
-                  </ForgetPassword>
-                </InputWrapper>
-                <ButtonWrapper>
-                  <Button isFill secondary type="submit" isLoading={loading}>
-                    Sign up
-                  </Button>
-                  <Button isFill onClick={() => setWeb3(true)}>
-                    Sign up with web3 address
-                  </Button>
-                </ButtonWrapper>
-              </FormWrapper>
-            )}
-            {web3 && (
-              <>
-                <div>
-                  <Label>Choose linked address</Label>
-                  <AddressSelect />
-                </div>
-                <ButtonWrapper>
-                  <Button isFill secondary onClick={() => setSuccess(true)}>
-                    Sign up
-                  </Button>
-                  <Button isFill onClick={() => setWeb3(false)}>
-                    Sign up with username
-                  </Button>
-                </ButtonWrapper>
-              </>
-            )}
+            <FormWrapper onSubmit={handleSubmit}>
+              <InputWrapper>
+                <Label>Username</Label>
+                <Input
+                  placeholder="Please fill your name"
+                  name="username"
+                  value={username}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
+                  error={errors?.data?.username}
+                />
+                <Label>Email</Label>
+                <Input
+                  placeholder="Please fill email"
+                  name="email"
+                  value={email}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
+                  error={errors?.data?.email}
+                />
+                <Label>Password</Label>
+                <Input
+                  placeholder="Please fill password"
+                  type="password"
+                  name="password"
+                  value={password}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
+                  error={errors?.data?.password}
+                />
+                {errors?.message && !errors?.data && (
+                  <ErrorText>{errors?.message}</ErrorText>
+                )}
+                <ForgetPassword>
+                  <Link href="/forget">Forget password?</Link>
+                </ForgetPassword>
+              </InputWrapper>
+              <ButtonWrapper>
+                <Button isFill secondary type="submit" isLoading={loading}>
+                  Sign up
+                </Button>
+              </ButtonWrapper>
+            </FormWrapper>
             <LinkWrapper>
               Already have a account? <Link href="/login">Login</Link>
             </LinkWrapper>
@@ -252,7 +225,6 @@ export default withLoginUserRedux(({
 
 export const getServerSideProps = withLoginUser(async (context) => {
   return {
-    props: {
-    },
+    props: {},
   };
 });

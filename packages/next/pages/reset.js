@@ -8,7 +8,7 @@ import Input from "components/input";
 import { useForm, useIsMounted } from "utils/hooks";
 import nextApi from "services/nextApi";
 import ErrorText from "components/ErrorText";
-import {withLoginUser, withLoginUserRedux} from "../lib";
+import { withLoginUser, withLoginUserRedux } from "../lib";
 
 const Wrapper = styled.div`
   padding: 32px 0;
@@ -77,9 +77,7 @@ const FormWrapper = styled.form`
   }
 `;
 
-export default withLoginUserRedux(({
-  loginUser,
-}) => {
+export default withLoginUserRedux(({ loginUser }) => {
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
@@ -105,7 +103,8 @@ export default withLoginUserRedux(({
         setErrors(res.error);
       }
       setLoading(false);
-    }
+    },
+    () => setErrors(null)
   );
   const { newPassword } = formData;
 
@@ -138,7 +137,6 @@ export default withLoginUserRedux(({
                   value={newPassword}
                   onChange={(e) => {
                     handleInputChange(e);
-                    setErrors(null);
                   }}
                   error={errors?.data?.newPassword}
                 />
@@ -172,7 +170,6 @@ export default withLoginUserRedux(({
 
 export const getServerSideProps = withLoginUser(async (context) => {
   return {
-    props: {
-    },
+    props: {},
   };
 });

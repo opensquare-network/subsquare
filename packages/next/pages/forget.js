@@ -9,7 +9,7 @@ import { useForm } from "utils/hooks";
 import nextApi from "services/nextApi";
 import ErrorText from "components/ErrorText";
 import { useAuthPage } from "utils/hooks";
-import {withLoginUser, withLoginUserRedux} from "../lib";
+import { withLoginUser, withLoginUserRedux } from "../lib";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -69,9 +69,7 @@ const FormWrapper = styled.form`
   }
 `;
 
-export default withLoginUserRedux(({
-  loginUser,
-}) => {
+export default withLoginUserRedux(({ loginUser }) => {
   useAuthPage(false);
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState();
@@ -91,7 +89,8 @@ export default withLoginUserRedux(({
         setErrors(res.error);
       }
       setLoading(false);
-    }
+    },
+    () => setErrors(null)
   );
   const { email } = formData;
 
@@ -110,7 +109,6 @@ export default withLoginUserRedux(({
                   value={email}
                   onChange={(e) => {
                     handleInputChange(e);
-                    setErrors(null);
                   }}
                   error={errors?.data?.email}
                 />
@@ -143,7 +141,6 @@ export default withLoginUserRedux(({
 
 export const getServerSideProps = withLoginUser(async (context) => {
   return {
-    props: {
-    },
+    props: {},
   };
 });

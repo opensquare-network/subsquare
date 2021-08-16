@@ -7,6 +7,7 @@ import Button from "components/button";
 import { accountMenu } from "utils/constants";
 import { logout } from "store/reducers/userSlice";
 import Avatar from "components/avatar";
+import Grvatar from "components/gravatar";
 
 const Wrapper = styled.div`
   padding: 32px 0 0;
@@ -100,7 +101,7 @@ export default function SidebarAccount({ user }) {
             {user.addresses?.[0].address ? (
               <Avatar address={user.addresses[0].address} />
             ) : (
-              <img src="/imgs/icons/avatar.svg" alt="" />
+              <Grvatar email={user.email} size={24} />
             )}
             <div>{user.username}</div>
           </UserWrapper>

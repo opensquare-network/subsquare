@@ -3,6 +3,7 @@ import { useState, useRef } from "react";
 
 import { useOnClickOutside } from "utils/hooks";
 import { addressEllipsis } from "utils";
+import Avatar from "components/avatar";
 
 const Wrapper = styled.div`
   position: relative;
@@ -95,10 +96,10 @@ export default function AddressSelect({
       <Select onClick={() => setShow(!show)}>
         {selectedAccount && (
           <>
-            <img src="/imgs/icons/avatar.svg" />
+            <Avatar address={selectedAccount?.karuraAddress} />
             <NameWrapper>
               <div>{selectedAccount?.name}</div>
-              <div>{addressEllipsis(selectedAccount?.address)}</div>
+              <div>{addressEllipsis(selectedAccount?.karuraAddress)}</div>
             </NameWrapper>
           </>
         )}
@@ -117,10 +118,10 @@ export default function AddressSelect({
               }}
               selected={item.address === selectedAccount?.address}
             >
-              <img src="/imgs/icons/avatar.svg" />
+              <Avatar address={item.karuraAddress} />
               <NameWrapper>
                 <div>{item.name}</div>
-                <div>{addressEllipsis(item.address)}</div>
+                <div>{addressEllipsis(item.karuraAddress)}</div>
               </NameWrapper>
             </Item>
           ))}

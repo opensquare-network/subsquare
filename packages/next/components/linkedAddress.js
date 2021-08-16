@@ -341,8 +341,8 @@ export default function LinkedAddress() {
                       unlinkAddress(activeChain, item);
                     }}
                   >
-                    <img src="/imgs/icons/link-linked.svg" />
-                    <div>Linked</div>
+                    <img src="/imgs/icons/link-unlink.svg" />
+                    <div>Unlink</div>
                   </LinkWrapper>
                 ) : (
                   <LinkWrapper
@@ -350,8 +350,8 @@ export default function LinkedAddress() {
                       linkAddress(activeChain, item);
                     }}
                   >
-                    <img src="/imgs/icons/link-unlink.svg" />
-                    <div>Unlink</div>
+                    <img src="/imgs/icons/link-linked.svg" />
+                    <div>Link</div>
                   </LinkWrapper>
                 )}
               </AddressItem>
