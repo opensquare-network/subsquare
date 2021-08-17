@@ -75,60 +75,60 @@ export const mainMenu = [
         value: "discussions",
         name: "Discussions",
         icon: "type-discussions.svg",
-        pathname: "/discussions",
+        pathname: "/karura/discussions",
       },
     ],
   },
-  {
-    name: "DEMOCRACY",
-    items: [
-      {
-        value: "proposals",
-        name: "Proposals",
-        icon: "type-proposals.svg",
-      },
-      {
-        value: "external",
-        name: "Externals",
-        icon: "type-proposals.svg",
-      },
-      {
-        value: "referenda",
-        name: "Referenda",
-        icon: "type-referenda.svg",
-      },
-    ],
-  },
-  {
-    name: "TREASURY",
-    items: [
-      {
-        value: "proposals",
-        name: "Proposals",
-        icon: "type-treasury-proposals.svg",
-      },
-      {
-        value: "bounties",
-        name: "Bounties",
-        icon: "type-bounties.svg",
-      },
-      {
-        value: "tips",
-        name: "Tips",
-        icon: "type-tips.svg",
-      },
-    ],
-  },
-  {
-    name: "COUNCIL",
-    items: [
-      {
-        value: "motions",
-        name: "Motions",
-        icon: "type-motions.svg",
-      },
-    ],
-  },
+  // {
+  //   name: "DEMOCRACY",
+  //   items: [
+  //     {
+  //       value: "proposals",
+  //       name: "Proposals",
+  //       icon: "type-proposals.svg",
+  //     },
+  //     {
+  //       value: "external",
+  //       name: "Externals",
+  //       icon: "type-proposals.svg",
+  //     },
+  //     {
+  //       value: "referenda",
+  //       name: "Referenda",
+  //       icon: "type-referenda.svg",
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: "TREASURY",
+  //   items: [
+  //     {
+  //       value: "proposals",
+  //       name: "Proposals",
+  //       icon: "type-treasury-proposals.svg",
+  //     },
+  //     {
+  //       value: "bounties",
+  //       name: "Bounties",
+  //       icon: "type-bounties.svg",
+  //     },
+  //     {
+  //       value: "tips",
+  //       name: "Tips",
+  //       icon: "type-tips.svg",
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: "COUNCIL",
+  //   items: [
+  //     {
+  //       value: "motions",
+  //       name: "Motions",
+  //       icon: "type-motions.svg",
+  //     },
+  //   ],
+  // },
 ];
 
 export const settingMenu = [
