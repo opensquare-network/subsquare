@@ -257,6 +257,7 @@ async function updateComment(
       $set: {
         content: contentType === ContentType.Html ? safeHtml(content) : content,
         contentType,
+        updatedAt: new Date(),
       }
     }
   );
