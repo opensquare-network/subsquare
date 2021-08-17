@@ -21,6 +21,7 @@ const SignUp = styled.div`
   padding: 24px;
   display: flex;
   flex-direction: column;
+
   > :first-child {
     line-height: 150%;
     text-align: center;

@@ -5,7 +5,7 @@ import Menu from "components/menu";
 import Trends from "components/trends";
 import Footer from "components/footer";
 import { mainMenu } from "utils/constants";
-import { withLoginUser, withLoginUserRedux } from "../lib";
+import { withLoginUser, withLoginUserRedux } from "../../lib";
 
 export default withLoginUserRedux(({ loginUser }) => {
   return (

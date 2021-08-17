@@ -132,7 +132,7 @@ export default function DetailItem({ data }) {
       <DividerWrapper>
         {data.index && <Index>{`#${data.index}`}</Index>}
         {data.time && <Info>{`Posted ${data.time} ago`}</Info>}
-        {data.comments && <Info>{`${data.comments} Comments`}</Info>}
+        {data.comments > -1 && <Info>{`${data.comments} Comments`}</Info>}
       </DividerWrapper>
       <Title>{data.title}</Title>
       <Divider />
