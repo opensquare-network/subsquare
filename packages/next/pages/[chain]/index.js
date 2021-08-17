@@ -34,7 +34,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
       comments: post.commentsCount,
       title: post.title,
       author: post.author.username,
-      status: "Started",
+      authorEmailMd5: post.author.emailMd5,
+      status: null,
     };
   });
 
