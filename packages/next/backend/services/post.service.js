@@ -6,6 +6,7 @@ const { getPostCollection, getCommentCollection } = require("../mongo/common");
 const { HttpError } = require("../exc");
 const { ContentType } = require("../constants");
 const { lookupOne, lookupCount } = require("../utils/query");
+const { md5 } = require("../utils");
 
 const xssOptions = {
   whiteList: {
@@ -155,6 +156,7 @@ async function getPostsByChain(chain, page, pageSize) {
   }
 
   const posts = await postCol.find({ chain })
+    .sort({ lastActivityAt: -1 })
     .skip((page - 1) * pageSize)
     .limit(pageSize)
     .toArray();
@@ -165,8 +167,13 @@ async function getPostsByChain(chain, page, pageSize) {
       localField: "author",
       foreignField: "_id",
       projection: {
-        username: 1
-      }
+        username: 1,
+        email: 1
+      },
+      map: (item) => ({
+        username: item.username,
+        emailMd5: md5(item.email.trim().toLocaleLowerCase()),
+      }),
     }),
     lookupCount(posts, {
       from: "comment",
