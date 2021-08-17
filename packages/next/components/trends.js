@@ -20,6 +20,7 @@ const SignUp = styled.div`
   padding: 24px;
   display: flex;
   flex-direction: column;
+
   > :first-child {
     line-height: 150%;
     text-align: center;
@@ -35,16 +36,19 @@ const Info = styled.div`
   justify-content: center;
 `;
 
-export default function Trends() {
+export default function Trends({ loginUser }) {
   return (
     <Wrapper>
       <Title>Trends</Title>
-      <SignUp>
-        <div>引导注册的文案</div>
-        <Button primary isFill>
-          Sign up
-        </Button>
-      </SignUp>
+      {!loginUser && (
+        <SignUp>
+          <div>引导注册的文案</div>
+          <Button primary isFill>
+            Sign up
+          </Button>
+        </SignUp>
+      )}
+
       <Info>这里可以放一些次要信息</Info>
     </Wrapper>
   );

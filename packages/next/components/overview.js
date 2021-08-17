@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import List from "./list";
-import { OverviewData } from "utils/data";
+// import { OverviewData } from "utils/data";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function Overview() {
+export default function Overview({ OverviewData }) {
   return (
     <Wrapper>
       {OverviewData.map((item, index) => (
