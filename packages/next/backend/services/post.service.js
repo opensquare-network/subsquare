@@ -87,6 +87,8 @@ async function postComment(
   contentType,
   author,
 ) {
+  const postObjId = ObjectId(postId);
+
   if (!author.emailVerified) {
     throw new HttpError(
       403,
@@ -95,17 +97,17 @@ async function postComment(
   }
 
   const postCol = await getPostCollection();
-  const post = await postCol.findOne({_id: ObjectId(postId)});
+  const post = await postCol.findOne({_id: postObjId});
   if (!post) {
     throw new HttpError(400, "Post not found.");
   }
 
   const commentCol = await getCommentCollection();
-  const height = await commentCol.countDocuments({ post: ObjectId(postId) });
+  const height = await commentCol.countDocuments({ post: postObjId });
 
   const result = await commentCol.insertOne(
     {
-      post: ObjectId(postId),
+      post: postObjId,
       content: contentType === ContentType.Html ? safeHtml(content) : content,
       contentType,
       author: author._id,
@@ -120,7 +122,7 @@ async function postComment(
   const newCommentId = result.ops[0]._id;
 
   const updatePostResult = await postCol.updateOne(
-    { _id: postId },
+    { _id: postObjId },
     {
       $set: {
         lastActivityAt: new Date()
@@ -149,21 +151,22 @@ async function getPostsByChain(chain, page, pageSize) {
     .limit(pageSize)
     .toArray();
 
-  await lookupOne(posts, {
-    from: "user",
-    localField: "author",
-    foreignField: "_id",
-    projection: {
-      username: 1
-    }
-  });
-
-  await lookupCount(posts, {
-    from: "comment",
-    localField: "_id",
-    foreignField: "post",
-    as: "commentsCount",
-  });
+  await Promise.all([
+    lookupOne(posts, {
+      from: "user",
+      localField: "author",
+      foreignField: "_id",
+      projection: {
+        username: 1
+      }
+    }),
+    lookupCount(posts, {
+      from: "comment",
+      localField: "_id",
+      foreignField: "post",
+      as: "commentsCount",
+    }),
+  ]);
 
   return {
     items: posts,
