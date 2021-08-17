@@ -1,12 +1,11 @@
 const { ObjectId } = require("mongodb");
 const xss = require("xss");
-const { PostTitleLengthLimitation, SupportChains } = require("../constants");
+const { PostTitleLengthLimitation } = require("../constants");
 const { nextPostUid } = require("./status.service");
 const { getPostCollection, getCommentCollection } = require("../mongo/common");
 const { HttpError } = require("../exc");
 const { ContentType } = require("../constants");
-const { lookupOne, lookupCount } = require("../utils/query");
-const { md5 } = require("../utils");
+const { lookupCount, lookupUser } = require("../utils/query");
 
 const xssOptions = {
   whiteList: {
@@ -162,19 +161,7 @@ async function getPostsByChain(chain, page, pageSize) {
     .toArray();
 
   await Promise.all([
-    lookupOne(posts, {
-      from: "user",
-      localField: "author",
-      foreignField: "_id",
-      map: (item) => ({
-        username: item.username,
-        emailMd5: md5(item.email.trim().toLocaleLowerCase()),
-        addresses: SupportChains.map(chain => ({
-          chain,
-          address: item[`${chain}Address`]
-        })).filter(p => p.address),
-      }),
-    }),
+    lookupUser(posts, { localField: "author" }),
     lookupCount(posts, {
       from: "comment",
       localField: "_id",
@@ -201,15 +188,8 @@ async function getPostById(postId) {
 
   const postCol = await getPostCollection();
   const post = await postCol.findOne(q);
-  await lookupOne(post, {
-    from: "user",
-    localField: "author",
-    foreignField: "_id",
-    projection: {
-      email: 1,
-      username: 1,
-    }
-  });
+
+  await lookupUser(post, { localField: "author" });
 
   return post;
 }
@@ -231,15 +211,7 @@ async function getComments(postId, page, pageSize) {
     .limit(pageSize)
     .toArray();
 
-  await lookupOne(comments, {
-    from: "user",
-    localField: "author",
-    foreignField: "_id",
-    projection: {
-      email: 1,
-      username: 1,
-    }
-  });
+  await lookupUser(comments, { localField: "author" });
 
   return {
     items: comments,

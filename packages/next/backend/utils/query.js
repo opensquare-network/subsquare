@@ -1,4 +1,23 @@
 const { getDb } = require("../mongo/common");
+const { SupportChains } = require("../constants");
+const { md5 } = require("../utils");
+
+
+function lookupUser(result, { localField }) {
+  return lookupOne(result, {
+    from: "user",
+    localField,
+    foreignField: "_id",
+    map: (item) => ({
+      username: item.username,
+      emailMd5: md5(item.email.trim().toLocaleLowerCase()),
+      addresses: SupportChains.map(chain => ({
+        chain,
+        address: item[`${chain}Address`]
+      })).filter(p => p.address),
+    }),
+  });
+}
 
 async function lookupOne(result, { from, localField, foreignField, projection, map }) {
   if (result === null) {
@@ -16,6 +35,8 @@ async function lookupOne(result, { from, localField, foreignField, projection, m
     const relatedItem = itemsMap.get(item[localField].toString());
     if (relatedItem) {
       item[localField] = relatedItem;
+    } else {
+      item[localField] = null;
     }
   });
   return items;
@@ -56,4 +77,5 @@ async function lookupCount(result, { from, localField, foreignField, as }) {
 module.exports = {
   lookupOne,
   lookupCount,
+  lookupUser,
 };
