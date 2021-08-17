@@ -242,10 +242,46 @@ async function getComments(postId, page, pageSize) {
   };
 }
 
+async function updateComment(
+  commentId,
+  content,
+  contentType,
+  author,
+) {
+  const commentObjId = ObjectId(commentId);
+  const commentCol = await getCommentCollection();
+  const comment = await commentCol.findOne({ _id: commentObjId });
+  if (!comment) {
+    throw new HttpError(404, "Comment does not exists");
+  }
+
+  if (!comment.author.equals(author._id)) {
+    throw new HttpError(403, "You are not the comment author");
+  }
+
+  const result = await commentCol.updateOne(
+    { _id: commentObjId },
+    {
+      $set: {
+        content: contentType === ContentType.Html ? safeHtml(content) : content,
+        contentType,
+        updatedAt: new Date(),
+      }
+    }
+  );
+
+  if (!result.result.ok) {
+    throw new HttpError(500, "Failed to update comment");
+  }
+
+  return true;
+}
+
 module.exports = {
   createPost,
   postComment,
   getPostsByChain,
   getPostById,
   getComments,
+  updateComment,
 };
