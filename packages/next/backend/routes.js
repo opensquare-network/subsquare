@@ -1,12 +1,17 @@
 const Router = require("koa-router");
+const { SupportChains } = require("./constants");
+
+const routeChains = SupportChains.join("|");
 
 const router = new Router();
 
-const chainFeatureRouters = [];
+const chainFeatureRouters = [
+];
 
 const commonFeatureRouters = [
   require("./features/auth/routes"),
   require("./features/users/routes"),
+  require("./features/posts/routes"),
 ];
 
 module.exports = (app) => {
@@ -16,7 +21,7 @@ module.exports = (app) => {
 
   for (const r of chainFeatureRouters) {
     router.use(
-      "/:chain",
+      `/:chain(${routeChains})`,
       r.routes(),
       r.allowedMethods({ throw: true })
     );
