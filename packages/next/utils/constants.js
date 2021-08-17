@@ -76,7 +76,7 @@ export const getMainMenu = (params) => [
         name: "Discussions",
         icon: "type-discussions.svg",
         pathname: "/karura/discussions",
-        count: params.discussionsCount,
+        count: params?.discussionsCount,
       },
     ],
   },
