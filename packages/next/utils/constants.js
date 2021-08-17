@@ -62,20 +62,21 @@ export const accountMenu = [
   },
 ];
 
-export const mainMenu = [
+export const getMainMenu = (params) => [
   {
     items: [
       {
         value: "overview",
         name: "Overview",
         icon: "type-overview.svg",
-        pathname: "/",
+        pathname: "/karura",
       },
       {
         value: "discussions",
         name: "Discussions",
         icon: "type-discussions.svg",
         pathname: "/karura/discussions",
+        count: params.discussionsCount,
       },
     ],
   },
