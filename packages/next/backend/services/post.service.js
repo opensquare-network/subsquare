@@ -61,6 +61,8 @@ async function createPost(
 
   const postUid = await nextPostUid();
 
+  const now = new Date();
+
   const postCol = await getPostCollection();
   const result = await postCol.insertOne(
     {
@@ -71,6 +73,8 @@ async function createPost(
       contentType,
       author: author._id,
       lastActivityAt: new Date(),
+      createdAt: now,
+      updatedAt: now,
     }
   );
 
@@ -105,6 +109,8 @@ async function postComment(
   const commentCol = await getCommentCollection();
   const height = await commentCol.countDocuments({ post: postObjId });
 
+  const now = new Date();
+
   const result = await commentCol.insertOne(
     {
       post: postObjId,
@@ -112,6 +118,8 @@ async function postComment(
       contentType,
       author: author._id,
       height: height + 1,
+      createdAt: now,
+      updatedAt: now,
     },
   );
 
