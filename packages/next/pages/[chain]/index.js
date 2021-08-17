@@ -6,26 +6,46 @@ import Trends from "components/trends";
 import Footer from "components/footer";
 import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "../../lib";
+import nextApi from "../../services/nextApi";
 
-export default withLoginUserRedux(({ loginUser }) => {
+export default withLoginUserRedux(({ OverviewData, loginUser }) => {
   return (
     <Layout
       user={loginUser}
       left={<Menu menu={mainMenu} />}
       right={
         <>
-          <Trends />
+          <Trends loginUser={loginUser} />
           <Footer />
         </>
       }
     >
-      <Overview />
+      <Overview OverviewData={OverviewData} />
     </Layout>
   );
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
+  const { result: posts } = await nextApi.fetch("posts?chain=karura");
+
+  const discussions = posts?.items?.map((post) => {
+    return {
+      time: "just now",
+      comments: post.commentsCount,
+      title: post.title,
+      author: post.author.username,
+      status: "Started",
+    };
+  });
+
   return {
-    props: {},
+    props: {
+      OverviewData: [
+        {
+          category: "Discussions",
+          items: discussions,
+        },
+      ],
+    },
   };
 });
