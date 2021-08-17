@@ -43,7 +43,7 @@ async function createPost(ctx) {
 }
 
 async function getPosts(ctx) {
-  const { chain } = ctx.request.body;
+  const { chain } = ctx.query;
   if (!chain) {
     throw new HttpError(400, { chain: ["Chain is missing"] });
   }
