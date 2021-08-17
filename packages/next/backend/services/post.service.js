@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
 const xss = require("xss");
-const { PostTitleLengthLimitation } = require("../constants");
+const { PostTitleLengthLimitation, SupportChains } = require("../constants");
 const { nextPostUid } = require("./status.service");
 const { getPostCollection, getCommentCollection } = require("../mongo/common");
 const { HttpError } = require("../exc");
@@ -166,13 +166,13 @@ async function getPostsByChain(chain, page, pageSize) {
       from: "user",
       localField: "author",
       foreignField: "_id",
-      projection: {
-        username: 1,
-        email: 1
-      },
       map: (item) => ({
         username: item.username,
         emailMd5: md5(item.email.trim().toLocaleLowerCase()),
+        addresses: SupportChains.map(chain => ({
+          chain,
+          address: item[`${chain}Address`]
+        })).filter(p => p.address),
       }),
     }),
     lookupCount(posts, {
