@@ -1,6 +1,6 @@
 const SupportChains = [
-  "polkadot",
-  "kusama",
+  // "polkadot",
+  // "kusama",
   "karura",
 ];
 
@@ -11,7 +11,17 @@ const SS58Format = Object.freeze({
   Substrate: 42,
 });
 
+const ContentType = Object.freeze({
+  Markdown: "markdown",
+  Html: "html",
+});
+
+const PostTitleLengthLimitation = 120;
+
+
 module.exports = {
   SupportChains,
   SS58Format,
+  ContentType,
+  PostTitleLengthLimitation,
 };

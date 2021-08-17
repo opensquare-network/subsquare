@@ -13,7 +13,7 @@ function extractPage(ctx) {
 
   let pageSize;
   try {
-    pageSize = parseInt(queryPageSize);
+    pageSize = parseInt(queryPageSize || "");
     pageSize = isNaN(pageSize) ? 10 : Math.max(1, pageSize);
   } catch (e) {
     pageSize = 10;
@@ -24,8 +24,8 @@ function extractPage(ctx) {
     page = queryPage;
   } else {
     try {
-      page = parseInt(queryPage);
-      page = isNaN(page) ? 0 : Math.max(0, page);
+      page = parseInt(queryPage || "");
+      page = isNaN(page) ? 1 : Math.max(1, page);
     } catch (e) {
       page = 0;
     }
