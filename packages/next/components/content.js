@@ -46,7 +46,7 @@ export default function Content({ left, right, children }) {
     <Wrapper>
       <Container>
         <ContentWrapper>
-          <Left>{left}</Left>
+          {left && <Left>{left}</Left>}
           <Main>{children}</Main>
           {right && <Right>{right}</Right>}
         </ContentWrapper>
