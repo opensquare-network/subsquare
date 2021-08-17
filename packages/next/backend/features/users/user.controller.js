@@ -17,6 +17,11 @@ async function getUserProfile(ctx) {
     username: user.username,
     email: user.email,
     emailVerified: user.emailVerified,
+    notification: {
+      reply: user.notification?.reply ?? true,
+      mention: user.notification?.mention ?? true,
+      thumbsUp: user.notification?.thumbsUp ?? true,
+    },
     addresses: SupportChains.reduce((addresses, chain) => {
       const address = user[`${chain}Address`];
       if (address) {
@@ -312,6 +317,33 @@ async function unlinkAddress(ctx) {
   ctx.body = true;
 }
 
+async function setUserNotification(ctx) {
+  const { reply, mention, thumbsUp } = ctx.request.body;
+  const user = ctx.user;
+
+  const notification = {
+    reply: reply ?? user.notification?.reply ?? true,
+    mention: mention ?? user.notification?.mention ?? true,
+    thumbsUp: thumbsUp ?? user.notification?.thumbsUp ?? true,
+  };
+
+  const userCol = await getUserCollection();
+  const result = await userCol.updateOne(
+    { _id: user._id },
+    {
+      $set: {
+        notification,
+      },
+    }
+  );
+
+  if (!result.result.ok) {
+    throw new HttpError(500, "Db error, update notification setting");
+  }
+
+  ctx.body = true;
+}
+
 module.exports = {
   getUserProfile,
   changePassword,
@@ -321,4 +353,5 @@ module.exports = {
   linkAddressStart,
   linkAddressConfirm,
   unlinkAddress,
+  setUserNotification,
 }

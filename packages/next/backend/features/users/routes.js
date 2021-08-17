@@ -33,4 +33,10 @@ router.delete(
   userController.unlinkAddress
 );
 
+router.patch(
+  "/user/notification",
+  requireAuth,
+  userController.setUserNotification
+);
+
 module.exports = router;

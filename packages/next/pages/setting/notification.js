@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useState } from "react";
 
 import Layout from "components/layout";
 import Toggle from "components/toggle";
@@ -7,6 +8,10 @@ import Menu from "components/menu";
 import { settingMenu } from "utils/constants";
 import { useAuthPage } from "utils/hooks";
 import {withLoginUser, withLoginUserRedux} from "../../lib";
+import nextApi from "services/nextApi";
+import { addToast } from "store/reducers/toastSlice";
+import { useDispatch } from "react-redux";
+import { fetchUserProfile } from "store/reducers/userSlice";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -68,7 +73,45 @@ const ButtonWrapper = styled.div`
 export default withLoginUserRedux(({
   loginUser,
 }) => {
+  const dispatch = useDispatch();
   useAuthPage(true);
+
+  const [reply, setReply] = useState(!!loginUser?.notification?.reply);
+  const [mention, setMention] = useState(!!loginUser?.notification?.mention);
+  const [thumbsUp, setThumbsUp] = useState(!!loginUser?.notification?.thumbsUp);
+  const [saving, setSaving] = useState(false);
+
+  const changeGuard = (setter) => async (data) => {
+    if (saving) return;
+    setter(data);
+  };
+
+  const updateNotificationSetting = async () => {
+    if (saving) {
+      return;
+    }
+
+    setSaving(true);
+    const { result, error } = await nextApi.fetch("user/notification", {}, {
+      method: "PATCH",
+      credentials: "same-origin",
+      body: JSON.stringify(
+        {
+          reply,
+          mention,
+          thumbsUp,
+        }
+      ),
+      headers: { "Content-Type": "application/json" },
+    });
+    if (result) {
+      dispatch(fetchUserProfile());
+      dispatch(addToast({ type: "success", message: "Settings saved" }));
+    } else if (error) {
+      dispatch(addToast({ type: "error", message: error.message }));
+    }
+    setSaving(false);
+  }
 
   return (
     <Layout user={loginUser} left={<Menu menu={settingMenu} />}>
@@ -79,24 +122,20 @@ export default withLoginUserRedux(({
             <Lable>Email</Lable>
             <ToggleItem>
               <div>Notify me about comments on my posts</div>
-              <Toggle />
-            </ToggleItem>
-            <ToggleItem>
-              <div>Notify me about replies to my comments</div>
-              <Toggle />
+              <Toggle isOn={reply} onToggle={changeGuard(setReply)} />
             </ToggleItem>
             <ToggleItem>
               <div>Notify me about mentions</div>
-              <Toggle />
+              <Toggle isOn={mention} onToggle={changeGuard(setMention)} />
             </ToggleItem>
             <ToggleItem>
               <div>Notify me about supports on my comments</div>
-              <Toggle />
+              <Toggle isOn={thumbsUp} onToggle={changeGuard(setThumbsUp)} />
             </ToggleItem>
           </div>
           <Divider />
           <ButtonWrapper>
-            <Button secondary>Save</Button>
+            <Button secondary onClick={updateNotificationSetting}>Save</Button>
           </ButtonWrapper>
         </ContentWrapper>
       </Wrapper>
