@@ -74,7 +74,7 @@ export const OverviewData = [
 ];
 
 export const discussionData = {
-  category: "Proposals",
+  category: "Discussions",
   items: [
     {
       time: "6d",
