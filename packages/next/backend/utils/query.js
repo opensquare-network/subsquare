@@ -1,6 +1,6 @@
 const { getDb } = require("../mongo/common");
 
-async function lookupOne(result, { from, localField, foreignField, projection }) {
+async function lookupOne(result, { from, localField, foreignField, projection, map }) {
   if (result === null) {
     return [];
   }
@@ -10,7 +10,7 @@ async function lookupOne(result, { from, localField, foreignField, projection })
   const db = await getDb();
   const col = db.collection(from);
   const items = await col.find({ [foreignField]: { $in: vals } }, { projection }).toArray();
-  const itemsMap = new Map(items.map(item => [item[foreignField].toString(), item]));
+  const itemsMap = new Map(items.map(item => [item[foreignField].toString(), map ? map(item) : item]));
 
   records.forEach(item => {
     const relatedItem = itemsMap.get(item[localField].toString());
