@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import { useState } from "react";
 
 const Wrapper = styled.div`
   position: relative;
@@ -28,11 +27,9 @@ const Wrapper = styled.div`
     `}
 `;
 
-export default function Toggle() {
-  const [active, setActive] = useState(true);
-
+export default function Toggle({ isOn, onToggle }) {
   return (
-    <Wrapper active={active} onClick={() => setActive(!active)}>
+    <Wrapper active={isOn} onClick={() => onToggle(!isOn)}>
       <div />
     </Wrapper>
   );
