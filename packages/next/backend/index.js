@@ -3,6 +3,7 @@ const bodyParser = require("koa-bodyparser");
 const logger = require("koa-logger");
 const helmet = require("koa-helmet");
 const cors = require("@koa/cors");
+const i18n = require("./middleware/i18n");
 const { ioHandler } = require("./websocket");
 
 const app = new Koa();
@@ -23,6 +24,8 @@ app.use(async (ctx, next) => {
     };
   }
 });
+
+app.use(i18n);
 
 require("./routes")(app);
 
