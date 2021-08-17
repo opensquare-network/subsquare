@@ -21,7 +21,7 @@ export default withLoginUserRedux(({ loginUser }) => {
   return (
     <Layout user={loginUser} right={<Position />}>
       <Wrapper>
-        <Back />
+        <Back href="/" text="Back to Overview" />
         <DetailItem data={detailData} />
         <Timeline data={timelineData} />
         <Comment data={commentData} />
