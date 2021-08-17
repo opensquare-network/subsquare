@@ -5,18 +5,16 @@ import Menu from "components/menu";
 import Trends from "components/trends";
 import Footer from "components/footer";
 import { mainMenu } from "utils/constants";
-import {withLoginUser, withLoginUserRedux} from "../lib";
+import { withLoginUser, withLoginUserRedux } from "../lib";
 
-export default withLoginUserRedux(({
-  loginUser,
-}) => {
+export default withLoginUserRedux(({ loginUser }) => {
   return (
     <Layout
       user={loginUser}
       left={<Menu menu={mainMenu} />}
       right={
         <>
-          <Trends />
+          <Trends user={loginUser} />
           <Footer />
         </>
       }
@@ -28,7 +26,6 @@ export default withLoginUserRedux(({
 
 export const getServerSideProps = withLoginUser(async (context) => {
   return {
-    props: {
-    },
+    props: {},
   };
 });

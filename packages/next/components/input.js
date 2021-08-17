@@ -17,6 +17,9 @@ const InputWrapper = styled.input`
   font-size: 14px;
   border-radius: 4px;
   color: #1e2134;
+  :hover {
+    border-color: #c2c8d5;
+  }
   :focus {
     border-color: #c2c8d5;
   }

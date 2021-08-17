@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Link from "next/link";
 
 import Button from "./button";
 
@@ -35,16 +36,27 @@ const Info = styled.div`
   justify-content: center;
 `;
 
-export default function Trends() {
+export default function Trends({ user }) {
   return (
     <Wrapper>
       <Title>Trends</Title>
-      <SignUp>
-        <div>引导注册的文案</div>
-        <Button primary isFill>
-          Sign up
-        </Button>
-      </SignUp>
+      {user && (
+        <Link href="/post/create">
+          <Button primary isFill>
+            New Post
+          </Button>
+        </Link>
+      )}
+      {!user && (
+        <SignUp>
+          <div>引导注册的文案</div>
+          <Link href="/signup">
+            <Button primary isFill>
+              Sign up
+            </Button>
+          </Link>
+        </SignUp>
+      )}
       <Info>这里可以放一些次要信息</Info>
     </Wrapper>
   );

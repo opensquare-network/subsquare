@@ -1,10 +1,7 @@
 import styled from "styled-components";
 
 import Container from "./container";
-import Menu from "./menu";
 import Main from "./main";
-import Footer from "./footer";
-import Trends from "./trends";
 
 const Wrapper = styled.div`
   flex-grow: 1;

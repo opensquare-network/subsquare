@@ -15,12 +15,12 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function Back() {
+export default function Back({ href, text }) {
   return (
-    <Link href="/">
+    <Link href={href}>
       <Wrapper>
         <img src="/imgs/icons/arrow-left.svg" />
-        <div>Back to Overveiw</div>
+        <div>{text}</div>
       </Wrapper>
     </Link>
   );
