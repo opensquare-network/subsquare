@@ -5,7 +5,7 @@ const { nextPostUid } = require("./status.service");
 const { getPostCollection, getCommentCollection } = require("../mongo/common");
 const { HttpError } = require("../exc");
 const { ContentType } = require("../constants");
-const { populateOnlyOne } = require("../utils/query");
+const { lookupOne, lookupCount } = require("../utils/query");
 
 const xssOptions = {
   whiteList: {
@@ -149,6 +149,22 @@ async function getPostsByChain(chain, page, pageSize) {
     .limit(pageSize)
     .toArray();
 
+  await lookupOne(posts, {
+    from: "user",
+    localField: "author",
+    foreignField: "_id",
+    projection: {
+      username: 1
+    }
+  });
+
+  await lookupCount(posts, {
+    from: "comment",
+    localField: "_id",
+    foreignField: "post",
+    as: "commentsCount",
+  });
+
   return {
     items: posts,
     total,
@@ -167,7 +183,7 @@ async function getPostById(postId) {
 
   const postCol = await getPostCollection();
   const post = await postCol.findOne(q);
-  await populateOnlyOne(post, {
+  await lookupOne(post, {
     from: "user",
     localField: "author",
     foreignField: "_id",
@@ -199,7 +215,7 @@ async function getComments(postId, page, pageSize) {
     .toArray();
   console.log(comments);
 
-  await populateOnlyOne(comments, {
+  await lookupOne(comments, {
     from: "user",
     localField: "author",
     foreignField: "_id",
