@@ -198,7 +198,6 @@ async function getPostById(postId) {
 
 async function getComments(postId, page, pageSize) {
   const q = { post: ObjectId(postId) };
-  console.log(q);
 
   const commentCol = await getCommentCollection();
   const total = await commentCol.count(q);
@@ -213,7 +212,6 @@ async function getComments(postId, page, pageSize) {
     .skip((page - 1) * pageSize)
     .limit(pageSize)
     .toArray();
-  console.log(comments);
 
   await lookupOne(comments, {
     from: "user",
