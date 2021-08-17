@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import Link from "next/link";
+import Grvatar from "components/gravatar";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -121,7 +122,7 @@ export default function Post({ data }) {
       <FooterWrapper>
         <DividerWrapper>
           <Author>
-            <img src="/imgs/icons/avatar.svg" />
+            <Grvatar emailMD5={data.authorEmailMd5} />
             <div>{data.author}</div>
           </Author>
           {data.type && (
@@ -132,7 +133,7 @@ export default function Post({ data }) {
             </div>
           )}
         </DividerWrapper>
-        <StatusWrapper>{data.status}</StatusWrapper>
+        {data.status && <StatusWrapper>{data.status}</StatusWrapper>}
       </FooterWrapper>
     </Wrapper>
   );
