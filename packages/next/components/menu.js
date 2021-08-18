@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
-  padding-top: 32px;
+  padding-top: 40px;
   > :not(:first-child) {
     margin-top: 24px;
   }
@@ -69,11 +69,8 @@ export default function Menu({ menu }) {
                 }
               }}
             >
-              <>
-                <img src={`/imgs/icons/${item.icon}`} />
-                <div>{item.name}</div>
-              </>
-              {item.count > 0 && item.count}
+              <img src={`/imgs/icons/${item.icon}`} />
+              <div>{item.name}</div>
             </Item>
           ))}
         </div>
