@@ -1,5 +1,9 @@
 import styled, { css } from "styled-components";
 
+import { timeDuration } from "utils";
+import Author from "components/author";
+import Markdown from "components/markdown";
+
 const Wrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
@@ -55,16 +59,6 @@ const FooterWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-`;
-
-const Author = styled.div`
-  display: flex;
-  align-items: center;
-  > img {
-    height: 20px;
-    width: 20px;
-    margin-right: 8px;
-  }
 `;
 
 const TypeWrapper = styled.div`
@@ -130,18 +124,19 @@ export default function DetailItem({ data }) {
   return (
     <Wrapper>
       <DividerWrapper>
-        {data.index && <Index>{`#${data.index}`}</Index>}
-        {data.time && <Info>{`Posted ${data.time} ago`}</Info>}
+        {data.postUid && <Index>{`#${data.postUid}`}</Index>}
+        {data.createdAt && <Info>Created {timeDuration(data.createdAt)}</Info>}
         {data.comments > -1 && <Info>{`${data.comments} Comments`}</Info>}
       </DividerWrapper>
       <Title>{data.title}</Title>
       <Divider />
       <FooterWrapper>
         <DividerWrapper>
-          <Author>
-            <img src="/imgs/icons/avatar.svg" />
-            <div>{data.author}</div>
-          </Author>
+          <Author
+            username={data.author?.username}
+            emailMd5={data.author?.emailMd5}
+            address={data.author?.addresses?.[0]?.address}
+          />
           {data.type && (
             <div>
               <TypeWrapper color={getTypeColor(data.type)}>
@@ -150,9 +145,9 @@ export default function DetailItem({ data }) {
             </div>
           )}
         </DividerWrapper>
-        <StatusWrapper>{data.status}</StatusWrapper>
+        {data.status && <StatusWrapper>{data.status}</StatusWrapper>}
       </FooterWrapper>
-      <TextWrapper>这里是文本</TextWrapper>
+      {data.contentType === "markdown" && <Markdown md={data.content} />}
       <DividerSecond />
       <Label>On-chain Info</Label>
       <TextWrapper>这里可能是 table</TextWrapper>

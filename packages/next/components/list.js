@@ -11,6 +11,7 @@ const Wrapper = styled.div`
 
 const Title = styled.div`
   font-weight: bold;
+  font-size: 16px;
 `;
 
 export default function List({ category, items, pagination }) {

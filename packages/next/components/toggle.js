@@ -25,11 +25,33 @@ const Wrapper = styled.div`
         right: 4px;
       }
     `}
+  ${(p) =>
+    p.size === "small" &&
+    css`
+      width: 30px;
+      height: 18px;
+      > div {
+        width: 12px;
+        height: 12px;
+        top: 3px;
+        left: 3px;
+        border-radius: 6px;
+      }
+      ${(p) =>
+        p.active &&
+        css`
+          background: #6848ff;
+          > div {
+            left: auto;
+            right: 3px;
+          }
+        `}
+    `}
 `;
 
-export default function Toggle({ isOn, onToggle }) {
+export default function Toggle({ isOn, onToggle, size }) {
   return (
-    <Wrapper active={isOn} onClick={() => onToggle(!isOn)}>
+    <Wrapper active={isOn} onClick={() => onToggle(!isOn)} size={size}>
       <div />
     </Wrapper>
   );

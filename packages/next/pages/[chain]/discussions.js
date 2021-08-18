@@ -1,4 +1,3 @@
-import { discussionData } from "utils/data";
 import List from "components/list";
 import Layout from "components/layout";
 import Menu from "components/menu";
@@ -9,22 +8,22 @@ import { withLoginUser, withLoginUserRedux } from "../../lib";
 import nextApi from "../../services/nextApi";
 
 export default withLoginUserRedux(
-  ({ loginUser, OverviewData, page, discussionsCount }) => {
+  ({ loginUser, OverviewData, page, discussionsCount, chain }) => {
     return (
       <Layout
         user={loginUser}
         left={<Menu menu={getMainMenu({ discussionsCount })} />}
         right={
           <>
-            <Trends user={loginUser} />
+            <Trends user={loginUser} chain={chain} />
             <Footer />
           </>
         }
       >
-        {OverviewData.map((list) => {
+        {OverviewData.map((list, index) => {
           return (
             <List
-              key={list.categorygit}
+              key={index}
               category={list.category}
               items={list.items}
               pagination={{
@@ -41,7 +40,7 @@ export default withLoginUserRedux(
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { page } = context.query;
+  const { page, chain } = context.query;
 
   const [{ result: posts }] = await Promise.all([
     nextApi.fetch("posts?chain=karura", { page_size: 2, page }),
@@ -50,17 +49,21 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const discussions = posts?.items?.map((post) => {
     const { author } = post;
     return {
-      time: "just now",
+      time: post.lastActivityAt,
       comments: post.commentsCount,
       title: post.title,
       author: post.author.username,
       authorEmailMd5: post.author.emailMd5,
-      ...(author.addresses ? { address: author.addresses[0].address } : {}),
+      postUid: post.postUid,
+      ...(author.addresses
+        ? { address: author.addresses?.[0]?.address ?? null }
+        : {}),
     };
   });
 
   return {
     props: {
+      chain,
       OverviewData: [
         {
           category: "Discussions",

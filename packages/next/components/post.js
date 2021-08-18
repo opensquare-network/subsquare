@@ -1,7 +1,8 @@
 import styled, { css } from "styled-components";
 import Link from "next/link";
-import Grvatar from "components/gravatar";
-import Avatar from "./avatar";
+
+import Author from "components/author";
+import { timeDuration } from "utils";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -9,8 +10,13 @@ const Wrapper = styled.div`
   box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
     0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
     0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 24px;
+  :hover {
+    box-shadow: 0px 6px 22px rgba(30, 33, 52, 0.11),
+      0px 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
+      0px 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
+  }
 `;
 
 const DividerWrapper = styled.div`
@@ -61,20 +67,6 @@ const FooterWrapper = styled.div`
   flex-wrap: wrap;
 `;
 
-const Author = styled.div`
-  display: flex;
-  align-items: center;
-
-  > img {
-    height: 20px;
-    width: 20px;
-    margin-right: 8px;
-  }
-  div:first-child {
-    margin-right: 8px;
-  }
-`;
-
 const TypeWrapper = styled.div`
   display: inline-block;
   height: 20px;
@@ -119,23 +111,20 @@ export default function Post({ data }) {
     <Wrapper>
       <DividerWrapper>
         {data.index && <Index>{`#${data.index}`}</Index>}
-        {data.time && <Info>{`Posted ${data.time} ago`}</Info>}
+        {data.time && <Info>{`Updated ${timeDuration(data.time)}`}</Info>}
         {data.comments > -1 && <Info>{`${data.comments} Comments`}</Info>}
       </DividerWrapper>
-      <Link href="/detail">
+      <Link href={`/post/${data.postUid}`}>
         <Title>{data.title}</Title>
       </Link>
       <Divider />
       <FooterWrapper>
         <DividerWrapper>
-          <Author>
-            {data.address ? (
-              <Avatar address={data.address} size={20} />
-            ) : (
-              <Grvatar emailMD5={data.authorEmailMd5} size={20} />
-            )}
-            <div>{data.author}</div>
-          </Author>
+          <Author
+            username={data.author}
+            address={data.address}
+            emailMd5={data.authorEmailMd5}
+          />
           {data.type && (
             <div>
               <TypeWrapper color={getTypeColor(data.type)}>

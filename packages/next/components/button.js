@@ -18,7 +18,6 @@ const Wrapper = styled.button`
       background: #6848ff;
       color: #ffffff;
       border: none;
-      font-weight: bold;
     `}
   ${(p) =>
     p.secondary &&
@@ -26,7 +25,6 @@ const Wrapper = styled.button`
       background: #1e2134;
       color: #ffffff;
       border: none;
-      font-weight: bold;
     `}
     ${(p) =>
     p.danger &&

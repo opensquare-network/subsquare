@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 import Button from "./button";
 
@@ -17,7 +17,7 @@ const Title = styled.div`
 const SignUp = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -35,27 +35,26 @@ const Info = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 6px;
 `;
 
 export default function Trends({ user }) {
+  const router = useRouter();
+
   return (
     <Wrapper>
       <Title>Trends</Title>
       {user && (
-        <Link href="/post/create">
-          <Button primary isFill>
-            New Post
-          </Button>
-        </Link>
+        <Button primary isFill onClick={() => router.push("/post/create")}>
+          New Post
+        </Button>
       )}
       {!user && (
         <SignUp>
           <div>引导注册的文案</div>
-          <Link href="/signup">
-            <Button primary isFill>
-              Sign up
-            </Button>
-          </Link>
+          <Button primary isFill onClick={() => router.push("/signup")}>
+            Sign up
+          </Button>
         </SignUp>
       )}
       <Info>这里可以放一些次要信息</Info>
