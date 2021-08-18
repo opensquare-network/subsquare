@@ -29,13 +29,15 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { result: posts } = await nextApi.fetch("posts?chain=karura");
 
   const discussions = posts?.items?.map((post) => {
+    const { author } = post;
     return {
       time: "just now",
       comments: post.commentsCount,
       title: post.title,
-      author: post.author.username,
-      authorEmailMd5: post.author.emailMd5,
+      author: author.username,
+      authorEmailMd5: author.emailMd5,
       status: null,
+      ...(author.addresses ? { address: author.addresses[0].address } : {}),
     };
   });
 
