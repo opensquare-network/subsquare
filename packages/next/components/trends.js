@@ -17,7 +17,7 @@ const Title = styled.div`
 const SignUp = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -35,6 +35,7 @@ const Info = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 6px;
 `;
 
 export default function Trends({ user }) {

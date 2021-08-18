@@ -21,7 +21,8 @@ const Item = styled.div`
   display: flex;
   align-items: center;
   padding: 0 12px;
-  border-radius: 4px;
+  border-radius: 6px;
+  font-weight: 500;
   cursor: pointer;
   :hover {
     background: #ebeef4;
@@ -40,6 +41,7 @@ const Item = styled.div`
   ${(p) =>
     p.active &&
     css`
+      font-weight: 600;
       background: #ebeef4;
       color: #6848ff;
       > img {
