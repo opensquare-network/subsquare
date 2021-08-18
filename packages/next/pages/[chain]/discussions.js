@@ -9,7 +9,7 @@ import { withLoginUser, withLoginUserRedux } from "../../lib";
 import nextApi from "../../services/nextApi";
 
 export default withLoginUserRedux(
-  ({ loginUser, OverviewData, discussionsCount }) => {
+  ({ loginUser, OverviewData, page, discussionsCount }) => {
     return (
       <Layout
         user={loginUser}
@@ -27,7 +27,11 @@ export default withLoginUserRedux(
               key={list.categorygit}
               category={list.category}
               items={list.items}
-              pagination
+              pagination={{
+                page: parseInt(page) ?? 1,
+                pageSize: 2,
+                total: discussionsCount,
+              }}
             />
           );
         })}
@@ -37,8 +41,10 @@ export default withLoginUserRedux(
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
+  const { page } = context.query;
+
   const [{ result: posts }] = await Promise.all([
-    nextApi.fetch("posts?chain=karura"),
+    nextApi.fetch("posts?chain=karura", { page_size: 2, page }),
   ]);
 
   const discussions = posts?.items?.map((post) => {
@@ -62,6 +68,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
         },
       ],
       discussionsCount: posts.total,
+      page: page ?? 1,
     },
   };
 });
