@@ -1,7 +1,8 @@
 import styled, { css } from "styled-components";
 import Link from "next/link";
-import Grvatar from "components/gravatar";
-import Avatar from "./avatar";
+
+import Author from "components/author";
+import { timeDuration } from "utils";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -61,20 +62,6 @@ const FooterWrapper = styled.div`
   flex-wrap: wrap;
 `;
 
-const Author = styled.div`
-  display: flex;
-  align-items: center;
-
-  > img {
-    height: 20px;
-    width: 20px;
-    margin-right: 8px;
-  }
-  div:first-child {
-    margin-right: 8px;
-  }
-`;
-
 const TypeWrapper = styled.div`
   display: inline-block;
   height: 20px;
@@ -119,7 +106,7 @@ export default function Post({ data }) {
     <Wrapper>
       <DividerWrapper>
         {data.index && <Index>{`#${data.index}`}</Index>}
-        {data.time && <Info>{`Posted ${data.time} ago`}</Info>}
+        {data.time && <Info>{`Updated ${timeDuration(data.time)}`}</Info>}
         {data.comments > -1 && <Info>{`${data.comments} Comments`}</Info>}
       </DividerWrapper>
       <Link href={`/post/${data.postUid}`}>
@@ -128,14 +115,11 @@ export default function Post({ data }) {
       <Divider />
       <FooterWrapper>
         <DividerWrapper>
-          <Author>
-            {data.address ? (
-              <Avatar address={data.address} size={20} />
-            ) : (
-              <Grvatar emailMD5={data.authorEmailMd5} size={20} />
-            )}
-            <div>{data.author}</div>
-          </Author>
+          <Author
+            username={data.author}
+            address={data.address}
+            emailMd5={data.authorEmailMd5}
+          />
           {data.type && (
             <div>
               <TypeWrapper color={getTypeColor(data.type)}>

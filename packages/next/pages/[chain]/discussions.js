@@ -45,7 +45,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const discussions = posts?.items?.map((post) => {
     const { author } = post;
     return {
-      time: "just now",
+      time: post.lastActivityAt,
       comments: post.commentsCount,
       title: post.title,
       author: post.author.username,
