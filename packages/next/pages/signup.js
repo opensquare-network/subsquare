@@ -149,7 +149,7 @@ export default withLoginUserRedux(({ loginUser }) => {
       <Wrapper>
         {!success && (
           <ContentWrapper>
-            <Title>Signup</Title>
+            <Title>Sign up</Title>
             <FormWrapper onSubmit={handleSubmit}>
               <InputWrapper>
                 <Label>Username</Label>
