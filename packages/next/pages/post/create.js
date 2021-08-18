@@ -72,7 +72,7 @@ const PreviewWrapper = styled.div`
   min-height: 410px;
 `;
 
-export default withLoginUserRedux(({ loginUser, chain }) => {
+export default withLoginUserRedux(({ loginUser }) => {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -82,7 +82,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
   const onCreate = async () => {
     const result = await nextApi.post("posts", {
-      chain,
+      chain: "karura",
       title,
       content,
       contentType: "markdown",
@@ -90,7 +90,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
     if (result.error) {
       setErrors(result.error);
     } else {
-      router.push(`/${chain}/post/${result.result}`);
+      router.push(`/post/${result.result}`);
     }
   };
 
@@ -165,9 +165,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { chain } = context.query;
-
   return {
-    props: { chain },
+    props: {},
   };
 });

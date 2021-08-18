@@ -37,18 +37,14 @@ const Info = styled.div`
   justify-content: center;
 `;
 
-export default function Trends({ user, chain }) {
+export default function Trends({ user }) {
   const router = useRouter();
 
   return (
     <Wrapper>
       <Title>Trends</Title>
       {user && (
-        <Button
-          primary
-          isFill
-          onClick={() => router.push(`/${chain}/post/create`)}
-        >
+        <Button primary isFill onClick={() => router.push("/post/create")}>
           New Post
         </Button>
       )}

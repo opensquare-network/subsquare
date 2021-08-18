@@ -130,8 +130,8 @@ export default function DetailItem({ data }) {
   return (
     <Wrapper>
       <DividerWrapper>
-        {data.index && <Index>{`#${data.index}`}</Index>}
-        {data.time && <Info>{`Posted ${data.time} ago`}</Info>}
+        {data.postUid && <Index>{`#${data.postUid}`}</Index>}
+        {data.createdAt && <Info>{data.createdAt}</Info>}
         {data.comments > -1 && <Info>{`${data.comments} Comments`}</Info>}
       </DividerWrapper>
       <Title>{data.title}</Title>
@@ -140,7 +140,7 @@ export default function DetailItem({ data }) {
         <DividerWrapper>
           <Author>
             <img src="/imgs/icons/avatar.svg" />
-            <div>{data.author}</div>
+            <div>{data.author?.username}</div>
           </Author>
           {data.type && (
             <div>
@@ -150,7 +150,7 @@ export default function DetailItem({ data }) {
             </div>
           )}
         </DividerWrapper>
-        <StatusWrapper>{data.status}</StatusWrapper>
+        {data.status && <StatusWrapper>{data.status}</StatusWrapper>}
       </FooterWrapper>
       <TextWrapper>这里是文本</TextWrapper>
       <DividerSecond />
