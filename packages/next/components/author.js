@@ -10,7 +10,10 @@ const Wrapper = styled.div`
   > img {
     height: 20px;
     width: 20px;
-    margin-right: 8px;
+  }
+
+  > :not(:first-child) {
+    margin-left: 8px;
   }
 `;
 

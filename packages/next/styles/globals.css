@@ -8,6 +8,7 @@ body {
   color: #1e2134;
   font-size: 14px;
   -webkit-font-smoothing: antialiased;
+  transition: 0.3 ease;
 }
 
 a {
