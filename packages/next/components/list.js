@@ -21,7 +21,7 @@ export default function List({ category, items, pagination }) {
       {items.map((item, index) => (
         <Post key={index} data={item} />
       ))}
-      {pagination && <Pagination />}
+      {pagination && <Pagination {...pagination} />}
     </Wrapper>
   );
 }

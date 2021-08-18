@@ -1,11 +1,14 @@
 import styled, { css } from "styled-components";
+import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
   padding-top: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
+
   > :not(:first-child) {
     margin-left: 8px;
   }
@@ -19,21 +22,26 @@ const Nav = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
   > img {
     filter: invert(37%) sepia(45%) saturate(261%) hue-rotate(173deg)
       brightness(89%) contrast(90%);
   }
+
   :hover {
     background: #ebeef4;
   }
+
   ${(p) =>
     p.disabled &&
     css`
       cursor: auto;
+
       > img {
         filter: invert(82%) sepia(19%) saturate(265%) hue-rotate(177deg)
           brightness(81%) contrast(83%);
       }
+
       :hover {
         background: none;
       }
@@ -52,9 +60,11 @@ const Item = styled.a`
   font-size: 14px;
   font-weight: 500;
   color: #506176;
+
   :hover {
     background: #ebeef4;
   }
+
   ${(p) =>
     p.active &&
     css`
@@ -68,54 +78,68 @@ const Ellipsis = styled.div`
   font-size: 14px;
   font-weight: 500;
   color: #506176;
+
   & + & {
     display: none;
   }
 `;
+const PAGE_OFFSET = 1;
+const encodeURIQuery = (q) =>
+  Object.keys(q)
+    .map((k) => `${k}=${encodeURIComponent(q[k])}`)
+    .join("&");
 
-export default function Pagination() {
-  const total = 9;
-  const [page, setPage] = useState(1);
+export default function Pagination({ page, pageSize, total }) {
+  const router = useRouter();
+
+  const totalPages = Math.ceil(total / pageSize)
+    ? Math.ceil(total / pageSize)
+    : 1;
+
+  const prevPage = Math.max(1, page + 1 - 1 - PAGE_OFFSET);
+  const nextPage = Math.min(totalPages, page + 1 + 1 - PAGE_OFFSET);
 
   return (
     <Wrapper>
-      <Nav
-        disabled={page === 1}
-        onClick={() => {
-          if (page > 1) {
-            setPage(page - 1);
-          }
-        }}
-      >
-        <img src="/imgs/icons/caret-left.svg" />
+      <Nav disabled={page === 1}>
+        <Link
+          href={`${router.pathname}?${encodeURIQuery({
+            ...router.query,
+            page: prevPage,
+          })}`}
+          passHref
+        >
+          <img src="/imgs/icons/caret-left.svg" alt="" />
+        </Link>
       </Nav>
-      {Array.from(Array(total)).map((_, index) =>
+      {Array.from(Array(totalPages)).map((_, index) =>
         index + 1 > 2 &&
-        index + 1 < total - 1 &&
+        index + 1 < totalPages - 1 &&
         Math.abs(index + 1 - page) >= 2 ? (
           <Ellipsis key={index}>...</Ellipsis>
         ) : (
-          <Item
+          <Link
             key={index}
-            onClick={() => {
-              if (index + 1 === page) return;
-              setPage(index + 1);
-            }}
-            active={index + 1 === page}
+            href={`${router.pathname}?${encodeURIQuery({
+              ...router.query,
+              page: index + 1 + 1 - PAGE_OFFSET,
+            })}`}
+            passHref
           >
-            {index + 1}
-          </Item>
+            <Item active={page === index + 1}>{index + 1}</Item>
+          </Link>
         )
       )}
-      <Nav
-        disabled={page === total}
-        onClick={() => {
-          if (page < total) {
-            setPage(page + 1);
-          }
-        }}
-      >
-        <img src="/imgs/icons/caret-right.svg" />
+      <Nav disabled={page === totalPages}>
+        <Link
+          href={`${router.pathname}?${encodeURIQuery({
+            ...router.query,
+            page: nextPage,
+          })}`}
+          passHref
+        >
+          <img src="/imgs/icons/caret-right.svg" alt="" />
+        </Link>
       </Nav>
     </Wrapper>
   );
