@@ -6,7 +6,7 @@ export default function Root() {
 
   useEffect(() => {
     const chain = localStorage.getItem("chain") || "karura";
-    router.push(`/${chain}`);
+    router.push(`/${chain}/discussions`);
   }, [router]);
 
   return null;
