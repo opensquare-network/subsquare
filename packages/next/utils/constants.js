@@ -65,12 +65,12 @@ export const accountMenu = [
 export const getMainMenu = (params) => [
   {
     items: [
-      {
-        value: "overview",
-        name: "Overview",
-        icon: "type-overview.svg",
-        pathname: "/karura",
-      },
+      // {
+      //   value: "overview",
+      //   name: "Overview",
+      //   icon: "type-overview.svg",
+      //   pathname: "/karura",
+      // },
       {
         value: "discussions",
         name: "Discussions",
