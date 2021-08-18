@@ -10,6 +10,9 @@ import MarkdownEditor from "components/markdownEditor";
 import Button from "components/button";
 import nextApi from "services/nextApi";
 import { addToast } from "store/reducers/toastSlice";
+import PreviewMD from "components/create/previewMD";
+import Toggle from "components/toggle";
+import ErrorText from "components/ErrorText";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -49,10 +52,33 @@ const ButtonWrapper = styled.div`
   }
 `;
 
+const InputWrapper = styled.div`
+  position: relative;
+`;
+
+const InputSwitch = styled.div`
+  height: 24px;
+  top: 8px;
+  right: 16px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  > img {
+    margin-right: 12px;
+  }
+`;
+
+const PreviewWrapper = styled.div`
+  display: flex;
+  min-height: 410px;
+`;
+
 export default withLoginUserRedux(({ loginUser }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [showPreview, setShowPreview] = useState(false);
+  const [contentType, setContentType] = useState("html");
+  const [errors, setErrors] = useState();
   const dispatch = useDispatch();
 
   const onCreate = async () => {
@@ -62,9 +88,10 @@ export default withLoginUserRedux(({ loginUser }) => {
       content,
       contentType: "markdown",
     });
-    if (result) {
-      setTitle("");
-      setContent("");
+    if (result.error) {
+      console.log(result.error);
+      setErrors(result.error);
+    } else {
       dispatch(
         addToast({
           type: "success",
@@ -72,6 +99,17 @@ export default withLoginUserRedux(({ loginUser }) => {
         })
       );
     }
+  };
+
+  const onMarkdownSwitch = () => {
+    if (
+      content &&
+      !confirm(`切换编辑器会清空当前输入的内容，确定要继续切换吗？`)
+    ) {
+      return;
+    }
+    setContent("");
+    setContentType(contentType === "html" ? "markdown" : "html");
   };
 
   return (
@@ -86,15 +124,43 @@ export default withLoginUserRedux(({ loginUser }) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
+          {errors?.data?.title?.[0] && (
+            <ErrorText>{errors?.data?.title?.[0]}</ErrorText>
+          )}
           <Label>Issue</Label>
-          <MarkdownEditor
-            height={377}
-            content={content}
-            setContent={setContent}
-            visible={!showPreview}
-          />
+          <InputWrapper>
+            <MarkdownEditor
+              height={367}
+              content={content}
+              setContent={setContent}
+              visible={!showPreview}
+            />
+            {!showPreview && (
+              <InputSwitch>
+                <img src="/imgs/icons/markdown-mark.svg" />
+                <Toggle
+                  size="small"
+                  isOn={contentType === "markdown"}
+                  onToggle={onMarkdownSwitch}
+                />
+              </InputSwitch>
+            )}
+          </InputWrapper>
+          {showPreview && (
+            <PreviewWrapper>
+              <PreviewMD content={content} setContent={setContent} />
+            </PreviewWrapper>
+          )}
+          {errors?.data?.content?.[0] && (
+            <ErrorText>{errors?.data?.content?.[0]}</ErrorText>
+          )}
+          {errors?.message && !errors?.data && (
+            <ErrorText>{errors?.message}</ErrorText>
+          )}
           <ButtonWrapper>
-            <Button>Preview</Button>
+            <Button onClick={() => setShowPreview(!showPreview)}>
+              Preview
+            </Button>
             <Button secondary onClick={onCreate}>
               Create
             </Button>
