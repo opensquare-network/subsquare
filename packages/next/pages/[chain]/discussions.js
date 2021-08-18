@@ -48,6 +48,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       title: post.title,
       author: post.author.username,
       authorEmailMd5: post.author.emailMd5,
+      ...(author.addresses ? { address: author.addresses[0].address } : {}),
     };
   });
 

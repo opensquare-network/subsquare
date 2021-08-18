@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import Link from "next/link";
 import Grvatar from "components/gravatar";
+import Avatar from "./avatar";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -15,6 +16,7 @@ const Wrapper = styled.div`
 const DividerWrapper = styled.div`
   display: flex;
   align-items: center;
+
   > :not(:first-child) {
     ::before {
       content: "·";
@@ -40,6 +42,7 @@ const Title = styled.div`
   font-size: 16px;
   margin-top: 8px;
   cursor: pointer;
+
   :hover {
     text-decoration: underline;
   }
@@ -61,9 +64,13 @@ const FooterWrapper = styled.div`
 const Author = styled.div`
   display: flex;
   align-items: center;
+
   > img {
     height: 20px;
     width: 20px;
+    margin-right: 8px;
+  }
+  div:first-child {
     margin-right: 8px;
   }
 `;
@@ -122,7 +129,11 @@ export default function Post({ data }) {
       <FooterWrapper>
         <DividerWrapper>
           <Author>
-            <Grvatar emailMD5={data.authorEmailMd5} />
+            {data.address ? (
+              <Avatar address={data.address} size={20} />
+            ) : (
+              <Grvatar emailMD5={data.authorEmailMd5} size={20} />
+            )}
             <div>{data.author}</div>
           </Author>
           {data.type && (
