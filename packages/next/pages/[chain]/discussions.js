@@ -9,14 +9,14 @@ import { withLoginUser, withLoginUserRedux } from "../../lib";
 import nextApi from "../../services/nextApi";
 
 export default withLoginUserRedux(
-  ({ loginUser, OverviewData, discussionsCount }) => {
+  ({ loginUser, OverviewData, discussionsCount, chain }) => {
     return (
       <Layout
         user={loginUser}
         left={<Menu menu={getMainMenu({ discussionsCount })} />}
         right={
           <>
-            <Trends user={loginUser} />
+            <Trends user={loginUser} chain={chain} />
             <Footer />
           </>
         }
@@ -37,6 +37,8 @@ export default withLoginUserRedux(
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
+  const { chain } = context.query;
+
   const [{ result: posts }] = await Promise.all([
     nextApi.fetch("posts?chain=karura"),
   ]);
@@ -53,6 +55,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
+      chain,
       OverviewData: [
         {
           category: "Discussions",

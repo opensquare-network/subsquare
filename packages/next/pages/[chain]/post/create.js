@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 
 import Layout from "components/layout";
 import Back from "components/back";
@@ -9,7 +9,6 @@ import Input from "components/input";
 import MarkdownEditor from "components/markdownEditor";
 import Button from "components/button";
 import nextApi from "services/nextApi";
-import { addToast } from "store/reducers/toastSlice";
 import PreviewMD from "components/create/previewMD";
 import Toggle from "components/toggle";
 import ErrorText from "components/ErrorText";
@@ -73,31 +72,25 @@ const PreviewWrapper = styled.div`
   min-height: 410px;
 `;
 
-export default withLoginUserRedux(({ loginUser }) => {
+export default withLoginUserRedux(({ loginUser, chain }) => {
+  const router = useRouter();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [contentType, setContentType] = useState("html");
   const [errors, setErrors] = useState();
-  const dispatch = useDispatch();
 
   const onCreate = async () => {
     const result = await nextApi.post("posts", {
-      chain: "karura",
+      chain,
       title,
       content,
       contentType: "markdown",
     });
     if (result.error) {
-      console.log(result.error);
       setErrors(result.error);
     } else {
-      dispatch(
-        addToast({
-          type: "success",
-          message: "Create post successfully!",
-        })
-      );
+      router.push(`/${chain}/post/${result.result}`);
     }
   };
 
@@ -172,7 +165,9 @@ export default withLoginUserRedux(({ loginUser }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
+  const { chain } = context.query;
+
   return {
-    props: {},
+    props: { chain },
   };
 });
