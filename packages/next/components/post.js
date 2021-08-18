@@ -122,7 +122,7 @@ export default function Post({ data }) {
         {data.time && <Info>{`Posted ${data.time} ago`}</Info>}
         {data.comments > -1 && <Info>{`${data.comments} Comments`}</Info>}
       </DividerWrapper>
-      <Link href="/detail">
+      <Link href={`/post/${data.postUid}`}>
         <Title>{data.title}</Title>
       </Link>
       <Divider />

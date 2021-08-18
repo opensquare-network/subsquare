@@ -1,4 +1,3 @@
-import { discussionData } from "utils/data";
 import List from "components/list";
 import Layout from "components/layout";
 import Menu from "components/menu";
@@ -21,10 +20,10 @@ export default withLoginUserRedux(
           </>
         }
       >
-        {OverviewData.map((list) => {
+        {OverviewData.map((list, index) => {
           return (
             <List
-              key={list.categorygit}
+              key={index}
               category={list.category}
               items={list.items}
               pagination
@@ -51,7 +50,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
       title: post.title,
       author: post.author.username,
       authorEmailMd5: post.author.emailMd5,
-      ...(author.addresses ? { address: author.addresses[0].address } : {}),
+      postUid: post.postUid,
+      ...(author.addresses
+        ? { address: author.addresses?.[0]?.address ?? null }
+        : {}),
     };
   });
 
