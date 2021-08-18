@@ -72,7 +72,8 @@ export default function Input({ ...props }) {
       {props.type === "password" && (
         <ShowButton onClick={() => setShow(!show)}>
           <img
-            src={show ? "/imgs/icons/eye-slash.svg" : "/imgs/icons/eye.svg"}
+            alt=""
+            src={show ? "/imgs/icons/eye.svg" : "/imgs/icons/eye-slash.svg"}
           />
         </ShowButton>
       )}
