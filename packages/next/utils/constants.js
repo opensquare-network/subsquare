@@ -62,7 +62,7 @@ export const accountMenu = [
   },
 ];
 
-export const getMainMenu = (params) => [
+export const mainMenu = [
   {
     items: [
       // {
@@ -75,8 +75,7 @@ export const getMainMenu = (params) => [
         value: "discussions",
         name: "Discussions",
         icon: "type-discussions.svg",
-        pathname: "/karura/discussions",
-        count: params?.discussionsCount,
+        pathname: "/[chain]/discussions",
       },
     ],
   },

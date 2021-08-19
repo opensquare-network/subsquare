@@ -7,6 +7,7 @@ import "nprogress/nprogress.css";
 import "../styles/globals.css";
 import { store } from "../store";
 import Auth from "components/auth";
+import "../styles/richTextStyles.scss";
 
 NProgress.configure({
   minimum: 0.3,

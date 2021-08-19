@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
-  padding-top: 40px;
+  padding-top: 37px;
   > :not(:first-child) {
     margin-top: 24px;
   }
@@ -62,10 +62,17 @@ export default function Menu({ menu }) {
           {item.items.map((item, index) => (
             <Item
               key={index}
-              active={router.asPath === item.pathname}
+              active={router.pathname === item.pathname}
               onClick={() => {
                 if (item.pathname) {
-                  router.push(item.pathname);
+                  if (item.pathname.startsWith("/[chain]/")) {
+                    router.push({
+                      pathname: item.pathname,
+                      query: { chain: router.query.chain },
+                    });
+                  } else {
+                    router.push(item.pathname);
+                  }
                 }
               }}
             >

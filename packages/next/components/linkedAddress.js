@@ -138,6 +138,16 @@ const NodeItem = styled.div`
     `}
 `;
 
+const EmptyList = styled.div`
+padding: 18px 0;
+font-style: normal;
+font-weight: normal;
+font-size: 14px;
+line-height: 140%;
+text-align: center;
+color: #9DA9BB;
+`;
+
 export default function LinkedAddress() {
   useAuthPage(true);
   const isMounted = useIsMounted();
@@ -317,7 +327,12 @@ export default function LinkedAddress() {
             ))}
           </NodesWrapper>
           <AddressWrapper>
-            {availableAccounts.map((item, index) => (
+            {availableAccounts.length === 0 && (
+              <EmptyList>
+                No available addresses
+              </EmptyList>
+            )}
+            {availableAccounts.length > 0 && availableAccounts.map((item, index) => (
               <AddressItem
                 key={index}
                 linked={user?.addresses?.some(

@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import { useState } from "react";
-import { useRouter } from "next/router";
+import {useState} from "react";
+import {useRouter} from "next/router";
 
 import Layout from "components/layout";
 import Back from "components/back";
-import { withLoginUser, withLoginUserRedux } from "lib";
+import {withLoginUser, withLoginUserRedux} from "lib";
 import Input from "components/input";
 import MarkdownEditor from "components/markdownEditor";
 import Button from "components/button";
@@ -12,6 +12,7 @@ import nextApi from "services/nextApi";
 import PreviewMD from "components/create/previewMD";
 import Toggle from "components/toggle";
 import ErrorText from "components/ErrorText";
+import QuillEditor from "../../../components/editor/quillEditor";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -24,8 +25,8 @@ const ContentWrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
   box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
-    0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+  0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
 `;
 
@@ -46,6 +47,7 @@ const ButtonWrapper = styled.div`
   align-items: center;
   justify-content: flex-end;
   margin-top: 16px;
+
   > :not(:first-child) {
     margin-left: 12px;
   }
@@ -62,6 +64,7 @@ const InputSwitch = styled.div`
   position: absolute;
   display: flex;
   align-items: center;
+
   > img {
     margin-right: 12px;
   }
@@ -72,7 +75,7 @@ const PreviewWrapper = styled.div`
   min-height: 410px;
 `;
 
-export default withLoginUserRedux(({ loginUser }) => {
+export default withLoginUserRedux(({loginUser, chain}) => {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -82,10 +85,10 @@ export default withLoginUserRedux(({ loginUser }) => {
 
   const onCreate = async () => {
     const result = await nextApi.post("posts", {
-      chain: "karura",
+      chain,
       title,
       content,
-      contentType: "markdown",
+      contentType,
     });
     if (result.error) {
       setErrors(result.error);
@@ -106,9 +109,9 @@ export default withLoginUserRedux(({ loginUser }) => {
   };
 
   return (
-    <Layout user={loginUser} left={<div />} right={<div />}>
+    <Layout user={loginUser} left={<div/>} right={<div/>}>
       <Wrapper>
-        <Back href="/discussions" text="Back to Discussions" />
+        <Back href={`/${chain}/discussions`} text="Back to Discussions"/>
         <ContentWrapper>
           <Title>New Post</Title>
           <Label>Title</Label>
@@ -122,15 +125,30 @@ export default withLoginUserRedux(({ loginUser }) => {
           )}
           <Label>Issue</Label>
           <InputWrapper>
-            <MarkdownEditor
-              height={367}
-              content={content}
-              setContent={setContent}
-              visible={!showPreview}
-            />
+            {
+              contentType === "markdown" && <MarkdownEditor
+                height={367}
+                content={content}
+                setContent={setContent}
+                visible={!showPreview}
+              />
+            }
+            {
+              contentType === "html" && <QuillEditor
+                visible={true}
+                content={content}
+                setContent={setContent}
+                height={200}
+                setModalInsetImgFunc={()=>{}}
+              />
+            }
             {!showPreview && (
               <InputSwitch>
-                <img src="/imgs/icons/markdown-mark.svg" />
+                {
+                  contentType==="markdown" &&
+                  <img src="/imgs/icons/markdown-mark.svg" alt=""/>
+                }
+
                 <Toggle
                   size="small"
                   isOn={contentType === "markdown"}
@@ -141,7 +159,7 @@ export default withLoginUserRedux(({ loginUser }) => {
           </InputWrapper>
           {showPreview && (
             <PreviewWrapper>
-              <PreviewMD content={content} setContent={setContent} />
+              <PreviewMD content={content} setContent={setContent}/>
             </PreviewWrapper>
           )}
           {errors?.data?.content?.[0] && (
@@ -165,7 +183,11 @@ export default withLoginUserRedux(({ loginUser }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
+  const { chain } = context.query;
+
   return {
-    props: {},
+    props: {
+      chain
+    },
   };
 });
