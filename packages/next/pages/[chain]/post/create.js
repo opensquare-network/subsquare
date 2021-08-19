@@ -12,7 +12,7 @@ import nextApi from "services/nextApi";
 import PreviewMD from "components/create/previewMD";
 import Toggle from "components/toggle";
 import ErrorText from "components/ErrorText";
-import QuillEditor from "../../components/editor/quillEditor";
+import QuillEditor from "../../../components/editor/quillEditor";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -75,7 +75,7 @@ const PreviewWrapper = styled.div`
   min-height: 410px;
 `;
 
-export default withLoginUserRedux(({loginUser}) => {
+export default withLoginUserRedux(({loginUser, chain}) => {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -85,7 +85,7 @@ export default withLoginUserRedux(({loginUser}) => {
 
   const onCreate = async () => {
     const result = await nextApi.post("posts", {
-      chain: "karura",
+      chain,
       title,
       content,
       contentType,
@@ -111,7 +111,7 @@ export default withLoginUserRedux(({loginUser}) => {
   return (
     <Layout user={loginUser} left={<div/>} right={<div/>}>
       <Wrapper>
-        <Back href="/discussions" text="Back to Discussions"/>
+        <Back href={`/${chain}/discussions`} text="Back to Discussions"/>
         <ContentWrapper>
           <Title>New Post</Title>
           <Label>Title</Label>
@@ -183,7 +183,11 @@ export default withLoginUserRedux(({loginUser}) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
+  const { chain } = context.query;
+
   return {
-    props: {},
+    props: {
+      chain
+    },
   };
 });
