@@ -19,7 +19,6 @@ const Wrapper = styled.div`
     margin-top: 16px;
   }
 
-  min-width: 750px;
 `;
 
 const ContentWrapper = styled.div`
