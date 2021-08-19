@@ -114,7 +114,7 @@ export default function Post({ data }) {
         {data.time && <Info>{`Updated ${timeDuration(data.time)}`}</Info>}
         {data.comments > -1 && <Info>{`${data.comments} Comments`}</Info>}
       </DividerWrapper>
-      <Link href={`/post/${data.postUid}`}>
+      <Link href={`/${data.chain}/post/${data.postUid}`}>
         <Title>{data.title}</Title>
       </Link>
       <Divider />

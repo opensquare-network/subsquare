@@ -20,11 +20,29 @@ export default withLoginUserRedux(({ loginUser, posts, chain }) => {
       : {}),
   }));
 
+  const items = (posts.items || []).map((post) => ({
+    chain: post.chain,
+    time: post.lastActivityAt,
+    comments: post.commentsCount,
+    title: post.title,
+    author: post.author.username,
+    authorEmailMd5: post.author.emailMd5,
+    postUid: post.postUid,
+    ...(post.author.addresses
+      ? { address: post.author.addresses?.[0]?.address ?? null }
+      : {}),
+  }));
+
   return (
     <Layout
       user={loginUser}
       left={<Menu menu={mainMenu} />}
-      right={<Trends user={loginUser} chain={chain} />}
+      right={
+        <>
+          <Trends user={loginUser} chain={chain} />
+          <Footer />
+        </>
+      }
     >
       <List
         category={"Discussion"}
