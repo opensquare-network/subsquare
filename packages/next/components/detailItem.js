@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import { timeDuration } from "utils";
 import Author from "components/author";
 import Markdown from "components/markdown";
+import HtmlRender from "./post/htmlRender";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -148,6 +149,7 @@ export default function DetailItem({ data }) {
         {data.status && <StatusWrapper>{data.status}</StatusWrapper>}
       </FooterWrapper>
       {data.contentType === "markdown" && <Markdown md={data.content} />}
+      {data.contentType === "html" && <HtmlRender html={data.content} />}
       <DividerSecond />
       <Label>On-chain Info</Label>
       <TextWrapper>这里可能是 table</TextWrapper>
