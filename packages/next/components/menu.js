@@ -62,7 +62,7 @@ export default function Menu({ menu }) {
           {item.items.map((item, index) => (
             <Item
               key={index}
-              active={router.asPath === item.pathname}
+              active={router.asPath.includes(item.pathname)}
               onClick={() => {
                 if (item.pathname) {
                   router.push(item.pathname);
@@ -71,6 +71,7 @@ export default function Menu({ menu }) {
             >
               <img src={`/imgs/icons/${item.icon}`} />
               <div>{item.name}</div>
+              {item.count > 0 && item.count}
             </Item>
           ))}
         </div>
