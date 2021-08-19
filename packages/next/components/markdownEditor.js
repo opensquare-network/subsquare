@@ -118,6 +118,8 @@ export const StyledTextArea = styled.div`
       }
 
       .mde-header-group {
+        padding-right: 80px;
+
         .mde-header-item {
           display: inline-flex;
           align-items: center;
