@@ -1,9 +1,14 @@
 import styled from "styled-components";
 
-import Account from "components/account";
+import Author from "components/author";
+import { timeDuration } from "utils";
+import Markdown from "components/markdown";
 
 const Wrapper = styled.div`
   padding: 16px 0;
+  :not(:last-child) {
+    border-bottom: 1px solid #ebeef4;
+  }
 `;
 
 const InfoWrapper = styled.div`
@@ -18,7 +23,6 @@ const InfoWrapper = styled.div`
 
 const ContentWrapper = styled.div`
   margin: 8px 0 0 28px;
-  text-align: justify;
 `;
 
 const ActionWrapper = styled.div`
@@ -45,10 +49,16 @@ export default function Item({ data }) {
   return (
     <Wrapper>
       <InfoWrapper>
-        <Account name={data.author} />
-        <div>{data.time}</div>
+        <Author
+          username={data.author?.username}
+          emailMd5={data.author?.emailMd5}
+          address={data.author?.addresses?.[0]?.address}
+        />
+        <div>{timeDuration(data.createdAt)}</div>
       </InfoWrapper>
-      <ContentWrapper>{data.content}</ContentWrapper>
+      <ContentWrapper>
+        {data.contentType === "markdown" && <Markdown md={data.content} />}
+      </ContentWrapper>
       <ActionWrapper>
         <ActionItem>
           <img src="/imgs/icons/reply.svg" />
@@ -56,7 +66,7 @@ export default function Item({ data }) {
         </ActionItem>
         <ActionItem>
           <img src="/imgs/icons/thumb-up.svg" />
-          <div>{`Up (${data.up})`}</div>
+          <div>Up (0)</div>
         </ActionItem>
       </ActionWrapper>
     </Wrapper>

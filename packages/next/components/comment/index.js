@@ -5,7 +5,6 @@ import Pagination from "components/pagination";
 import NoComment from "./noComment";
 import LoginButtons from "./loginButtons";
 import Input from "./input";
-import nextApi from "services/nextApi";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -32,11 +31,21 @@ export default function Comment({ user, postId, data }) {
   return (
     <Wrapper>
       <Title>Comment</Title>
-      {data.map((item, index) => (
-        <Item key={index} data={item} />
-      ))}
-      <Pagination />
-      <NoComment />
+      {data?.items?.length > 0 && (
+        <>
+          <div>
+            {(data?.items || []).map((item, index) => (
+              <Item key={index} data={item} />
+            ))}
+          </div>
+          <Pagination
+            page={data.page}
+            pageSize={data.pageSize}
+            total={data.total}
+          />
+        </>
+      )}
+      {!data?.items?.length > 0 && <NoComment />}
       {!user && <LoginButtons />}
       {user && <Input postId={postId} />}
     </Wrapper>
