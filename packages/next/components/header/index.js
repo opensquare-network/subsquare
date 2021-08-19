@@ -27,15 +27,9 @@ const FlexWrapper = styled.div`
 const Left = styled.div`
   display: flex;
   align-items: center;
-  > :not(:first-child) {
-    margin-left: 12px;
-  }
   @media screen and (max-width: 600px) {
     flex-grow: 1;
     justify-content: space-between;
-    > :not(:first-child) {
-      margin-left: 0;
-    }
   }
 `;
 
