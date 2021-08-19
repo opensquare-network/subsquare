@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 import Post from "./post";
 import Pagination from "./pagination";
+import EmptyList from "./emptyList";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -18,9 +19,16 @@ export default function List({ category, items, pagination }) {
   return (
     <Wrapper>
       <Title>{category}</Title>
-      {items.map((item, index) => (
-        <Post key={index} data={item} />
-      ))}
+      {
+        items?.length > 0
+        ? (
+          items.map((item, index) => (
+            <Post key={index} data={item} />
+          ))
+        ) : (
+          <EmptyList />
+        )
+      }
       {pagination && <Pagination {...pagination} />}
     </Wrapper>
   );
