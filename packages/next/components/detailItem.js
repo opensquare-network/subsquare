@@ -152,7 +152,7 @@ export default function DetailItem({ data }) {
       {data.contentType === "html" && <HtmlRender html={data.content} />}
       <DividerSecond />
       <Label>On-chain Info</Label>
-      <TextWrapper>这里可能是 table</TextWrapper> */}
+      <TextWrapper>这里可能是 table</TextWrapper>
     </Wrapper>
   );
 }
