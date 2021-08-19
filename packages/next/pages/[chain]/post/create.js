@@ -18,6 +18,8 @@ const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
+
+  min-width: 750px;
 `;
 
 const ContentWrapper = styled.div`
@@ -139,7 +141,8 @@ export default withLoginUserRedux(({loginUser, chain}) => {
                 content={content}
                 setContent={setContent}
                 height={200}
-                setModalInsetImgFunc={()=>{}}
+                setModalInsetImgFunc={() => {
+                }}
               />
             }
             {!showPreview && (
@@ -179,7 +182,7 @@ export default withLoginUserRedux(({loginUser, chain}) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { chain } = context.query;
+  const {chain} = context.query;
 
   return {
     props: {
