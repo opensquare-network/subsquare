@@ -2,7 +2,6 @@ import List from "components/list";
 import Layout from "components/layout";
 import Menu from "components/menu";
 import Trends from "components/trends";
-import Footer from "components/footer";
 import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "../../lib";
 import nextApi from "../../services/nextApi";

@@ -150,9 +150,6 @@ export default function DetailItem({ data }) {
       </FooterWrapper>
       {data.contentType === "markdown" && <Markdown md={data.content} />}
       {data.contentType === "html" && <HtmlRender html={data.content} />}
-      <DividerSecond />
-      <Label>On-chain Info</Label>
-      <TextWrapper>这里可能是 table</TextWrapper>
     </Wrapper>
   );
 }
