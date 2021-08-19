@@ -62,10 +62,17 @@ export default function Menu({ menu }) {
           {item.items.map((item, index) => (
             <Item
               key={index}
-              active={router.asPath === item.pathname}
+              active={router.pathname === item.pathname}
               onClick={() => {
                 if (item.pathname) {
-                  router.push(item.pathname);
+                  if (item.pathname.startsWith("/[chain]/")) {
+                    router.push({
+                      pathname: item.pathname,
+                      query: { chain: router.query.chain },
+                    });
+                  } else {
+                    router.push(item.pathname);
+                  }
                 }
               }}
             >
