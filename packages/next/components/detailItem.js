@@ -45,7 +45,8 @@ const Info = styled.div`
 
 const Title = styled.div`
   font-weight: 500;
-  font-size: 16px;
+  font-size: 28px;
+  line-height: 140%;
   margin-top: 8px;
 `;
 

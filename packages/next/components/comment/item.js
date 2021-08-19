@@ -3,11 +3,17 @@ import styled from "styled-components";
 import Author from "components/author";
 import { timeDuration } from "utils";
 import Markdown from "components/markdown";
+import Edit from "./edit";
 
 const Wrapper = styled.div`
   padding: 16px 0;
   :not(:last-child) {
     border-bottom: 1px solid #ebeef4;
+  }
+  :hover {
+    .edit {
+      display: block;
+    }
   }
 `;
 
@@ -28,6 +34,8 @@ const ContentWrapper = styled.div`
 const ActionWrapper = styled.div`
   display: flex;
   margin: 16px 0 0 28px;
+  align-items: flex-start;
+  height: 22px;
 `;
 
 const ActionItem = styled.div`
@@ -68,6 +76,7 @@ export default function Item({ data }) {
           <img src="/imgs/icons/thumb-up.svg" />
           <div>Up (0)</div>
         </ActionItem>
+        <Edit />
       </ActionWrapper>
     </Wrapper>
   );
