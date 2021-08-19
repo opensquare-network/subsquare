@@ -6,14 +6,14 @@ async function nextPostUid() {
   const result = await statusCol.findOneAndUpdate(
     { name: "postUid" },
     { $inc: { value: 1 } },
-    { new: true, upsert: true }
+    { returnDocument: "after", upsert: true }
   );
 
-  if (!result.ok) {
+  if (!result.value) {
     throw new HttpError(500, "Cannot get next post uid");
   }
 
-  return result.value?.value.toString();
+  return result.value.value.toString();
 }
 
 module.exports = {
