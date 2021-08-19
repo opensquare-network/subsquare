@@ -19,7 +19,7 @@ const InputWrapper = styled.div`
 
 const InputSwitch = styled.div`
   height: 24px;
-  top: 8px;
+  top: 10px;
   right: 16px;
   position: absolute;
   display: flex;
