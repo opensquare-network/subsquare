@@ -38,14 +38,14 @@ const Info = styled.div`
   border-radius: 6px;
 `;
 
-export default function Trends({ user }) {
+export default function Trends({ user, chain }) {
   const router = useRouter();
 
   return (
     <Wrapper>
       <Title>Trends</Title>
       {user && (
-        <Button primary isFill onClick={() => router.push("/post/create")}>
+        <Button primary isFill onClick={() => router.push(`/${chain}/post/create`)}>
           New Post
         </Button>
       )}
