@@ -148,9 +148,9 @@ export default function DetailItem({ data }) {
         {data.status && <StatusWrapper>{data.status}</StatusWrapper>}
       </FooterWrapper>
       {data.contentType === "markdown" && <Markdown md={data.content} />}
-      <DividerSecond />
+      {/* <DividerSecond />
       <Label>On-chain Info</Label>
-      <TextWrapper>这里可能是 table</TextWrapper>
+      <TextWrapper>这里可能是 table</TextWrapper> */}
     </Wrapper>
   );
 }
