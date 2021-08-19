@@ -45,7 +45,8 @@ const Info = styled.div`
 
 const Title = styled.div`
   font-weight: 500;
-  font-size: 16px;
+  font-size: 28px;
+  line-height: 140%;
   margin-top: 8px;
 `;
 
@@ -150,9 +151,6 @@ export default function DetailItem({ data }) {
       </FooterWrapper>
       {data.contentType === "markdown" && <Markdown md={data.content} />}
       {data.contentType === "html" && <HtmlRender html={data.content} />}
-      <DividerSecond />
-      <Label>On-chain Info</Label>
-      <TextWrapper>这里可能是 table</TextWrapper>
     </Wrapper>
   );
 }
