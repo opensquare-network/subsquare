@@ -59,7 +59,7 @@ const InputWrapper = styled.div`
 
 const InputSwitch = styled.div`
   height: 24px;
-  top: 8px;
+  top: 10px;
   right: 16px;
   position: absolute;
   display: flex;
@@ -144,11 +144,7 @@ export default withLoginUserRedux(({loginUser, chain}) => {
             }
             {!showPreview && (
               <InputSwitch>
-                {
-                  contentType==="markdown" &&
-                  <img src="/imgs/icons/markdown-mark.svg" alt=""/>
-                }
-
+                <img src="/imgs/icons/markdown-mark.svg" alt=""/>
                 <Toggle
                   size="small"
                   isOn={contentType === "markdown"}
