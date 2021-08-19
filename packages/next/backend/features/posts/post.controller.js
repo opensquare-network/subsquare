@@ -16,7 +16,7 @@ async function createPost(ctx) {
   }
 
   if (!SupportChains.includes(chain)) {
-    throw new HttpError(400, { chain: ["Chain is not support"] })
+    throw new HttpError(400, { chain: ["Chain is not support"] });
   }
 
   if (!title) {
@@ -27,11 +27,17 @@ async function createPost(ctx) {
     throw new HttpError(400, { content: ["Post content is missing"] });
   }
 
-  if (paramContentType !== undefined && paramContentType !== ContentType.Markdown && paramContentType !== ContentType.Html) {
+  if (
+    paramContentType !== undefined &&
+    paramContentType !== ContentType.Markdown &&
+    paramContentType !== ContentType.Html
+  ) {
     throw new HttpError(400, { contentType: ["Unknown content type"] });
   }
 
-  const contentType = paramContentType ? paramContentType : ContentType.Markdown;
+  const contentType = paramContentType
+    ? paramContentType
+    : ContentType.Markdown;
 
   ctx.body = await postService.createPost(
     chain,
@@ -64,22 +70,30 @@ async function getPostById(ctx) {
 
 async function postComment(ctx) {
   const { postId } = ctx.params;
-  const {
-    content,
-    contentType: paramContentType,
-  } = ctx.request.body;
+  const { content, contentType: paramContentType } = ctx.request.body;
 
   if (!content) {
-    throw new HttpError(400, { content: [t("Comment content is missing")] });
+    throw new HttpError(400, { content: ["Comment content is missing"] });
   }
 
-  if (paramContentType !== undefined && paramContentType !== ContentType.Markdown && paramContentType !== ContentType.Html) {
+  if (
+    paramContentType !== undefined &&
+    paramContentType !== ContentType.Markdown &&
+    paramContentType !== ContentType.Html
+  ) {
     throw new HttpError(400, { contentType: ["Unknown content type"] });
   }
 
-  const contentType = paramContentType ? paramContentType : ContentType.Markdown;
+  const contentType = paramContentType
+    ? paramContentType
+    : ContentType.Markdown;
 
-  ctx.body = await postService.postComment(postId, content, contentType, ctx.user);
+  ctx.body = await postService.postComment(
+    postId,
+    content,
+    contentType,
+    ctx.user
+  );
 }
 
 async function getComments(ctx) {
@@ -89,13 +103,8 @@ async function getComments(ctx) {
     return;
   }
 
-
   const { postId } = ctx.params;
-  ctx.body = await postService.getComments(
-    postId,
-    page,
-    pageSize
-  );
+  ctx.body = await postService.getComments(postId, page, pageSize);
 }
 
 module.exports = {

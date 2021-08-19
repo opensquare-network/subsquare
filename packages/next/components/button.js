@@ -66,6 +66,14 @@ const LoadingImg = styled.img`
   }
 `;
 
+const ChildrenWrapper = styled.div`
+  ${(p) =>
+    p.isLoading &&
+    css`
+      opacity: 0;
+    `}
+`;
+
 export default function Button({ children, ...props }) {
   return (
     <Wrapper {...props}>
@@ -80,7 +88,7 @@ export default function Button({ children, ...props }) {
           />
         </LoadingWrapper>
       )}
-      {!props.isLoading && children}
+      <ChildrenWrapper isLoading={props.isLoading}>{children}</ChildrenWrapper>
     </Wrapper>
   );
 }

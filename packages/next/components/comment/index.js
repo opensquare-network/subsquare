@@ -2,6 +2,9 @@ import styled from "styled-components";
 
 import Item from "./item";
 import Pagination from "components/pagination";
+import NoComment from "./noComment";
+import LoginButtons from "./loginButtons";
+import Input from "./input";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -24,24 +27,27 @@ const Title = styled.div`
   margin-bottom: 16px;
 `;
 
-const Input = styled.div`
-  height: 160px;
-  background: #f6f7fa;
-  margin-top: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-export default function Comments({ data }) {
+export default function Comment({ user, postId, data }) {
   return (
     <Wrapper>
       <Title>Comment</Title>
-      {data.map((item, index) => (
-        <Item key={index} data={item} />
-      ))}
-      <Pagination />
-      <Input>Input</Input>
+      {data?.items?.length > 0 && (
+        <>
+          <div>
+            {(data?.items || []).map((item, index) => (
+              <Item key={index} data={item} />
+            ))}
+          </div>
+          <Pagination
+            page={data.page}
+            pageSize={data.pageSize}
+            total={data.total}
+          />
+        </>
+      )}
+      {!data?.items?.length > 0 && <NoComment />}
+      {!user && <LoginButtons />}
+      {user && <Input postId={postId} />}
     </Wrapper>
   );
 }

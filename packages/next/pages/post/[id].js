@@ -3,12 +3,7 @@ import styled from "styled-components";
 import Layout from "components/layout";
 import Back from "components/back";
 import DetailItem from "components/detailItem";
-import { detailData } from "utils/data";
-import Timeline from "components/timeline";
-import { timelineData } from "utils/data";
 import Comment from "components/comment";
-import { commentData } from "utils/data";
-import Position from "components/position";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
 
@@ -18,29 +13,36 @@ const Wrapper = styled.div`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser, detail }) => {
+export default withLoginUserRedux(({ loginUser, detail, comments }) => {
+  const postId = detail._id;
+
   return (
-    <Layout user={loginUser} right={<Position />}>
+    <Layout user={loginUser} right={<div />}>
       <Wrapper>
         <Back href="/" text="Back to Overview" />
         <DetailItem data={detail} />
-        <Timeline data={timelineData} />
-        <Comment data={commentData} />
+        {/* <Timeline data={timelineData} /> */}
+        <Comment data={comments} user={loginUser} postId={postId} />
       </Wrapper>
     </Layout>
   );
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { id } = context.query;
+  const { id, page } = context.query;
 
   const [{ result: detail }] = await Promise.all([
     nextApi.fetch(`posts/${id}`),
   ]);
 
+  const postId = detail._id;
+
+  const { result: comments } = await nextApi.fetch(`posts/${postId}/comments`);
+
   return {
     props: {
       detail,
+      comments,
     },
   };
 });
