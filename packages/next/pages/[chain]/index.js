@@ -15,7 +15,7 @@ export default withLoginUserRedux(({ OverviewData, loginUser }) => {
       left={<Menu menu={getMainMenu()} />}
       right={
         <>
-          <Trends loginUser={loginUser} />
+          <Trends user={loginUser} />
           <Footer />
         </>
       }
