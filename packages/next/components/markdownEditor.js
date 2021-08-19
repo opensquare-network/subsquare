@@ -118,6 +118,7 @@ export const StyledTextArea = styled.div`
       }
 
       .mde-header-group {
+        display: block;
         padding-right: 80px;
 
         .mde-header-item {
