@@ -89,6 +89,10 @@ export const StyledTextArea = styled.div`
       }
     }
 
+    .ql-toolbar.ql-snow {
+      padding-right: 80px;
+    }
+
     .ql-mention-list-container {
       width: auto;
       min-width: 180px;
