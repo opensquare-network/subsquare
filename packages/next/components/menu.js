@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
-  padding-top: 40px;
+  padding-top: 37px;
   > :not(:first-child) {
     margin-top: 24px;
   }
