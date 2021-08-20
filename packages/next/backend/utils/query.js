@@ -75,7 +75,7 @@ async function lookupCount(result, { from, localField, foreignField, as }) {
   });
 }
 
-async function lookupMulti(result, { from, localField, foreignField, projection, as, map }) {
+async function lookupMany(result, { from, localField, foreignField, projection, as, map }) {
   if (result === null) {
     return [];
   }
@@ -125,7 +125,7 @@ async function lookupMulti(result, { from, localField, foreignField, projection,
 
 module.exports = {
   lookupOne,
-  lookupMulti,
+  lookupMany,
   lookupCount,
   lookupUser,
 };
