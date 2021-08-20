@@ -21,7 +21,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments }) => {
       <Wrapper>
         <Back href="/" text="Back to Overview" />
         <DetailItem data={detail} />
-        {/* <Timeline data={timelineData} /> */}
         <Comments data={comments} user={loginUser} postId={postId} />
       </Wrapper>
     </Layout>
