@@ -9,6 +9,7 @@ import PreviewMD from "components/create/previewMD";
 import nextApi from "services/nextApi";
 import ErrorText from "components/ErrorText";
 import QuillEditor from "../editor/quillEditor";
+import HtmlRender from "../post/htmlRender";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -132,7 +133,12 @@ export default function Input({postId}) {
       </InputWrapper>
       {showPreview && (
         <PreviewWrapper>
-          <PreviewMD content={content} setContent={setContent}/>
+          {
+            contentType==="markdown" && <PreviewMD content={content} setContent={setContent}/>
+          }
+          {
+            contentType==="html" && <HtmlRender html={content}/>
+          }
         </PreviewWrapper>
       )}
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
