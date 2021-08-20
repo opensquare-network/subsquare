@@ -13,6 +13,7 @@ import PreviewMD from "components/create/previewMD";
 import Toggle from "components/toggle";
 import ErrorText from "components/ErrorText";
 import QuillEditor from "../../../components/editor/quillEditor";
+import HtmlRender from "../../../components/post/htmlRender";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -157,7 +158,12 @@ export default withLoginUserRedux(({loginUser, chain}) => {
           </InputWrapper>
           {showPreview && (
             <PreviewWrapper>
-              <PreviewMD content={content} setContent={setContent}/>
+              {
+                contentType === "markdown" && <PreviewMD content={content} setContent={setContent}/>
+              }
+              {
+                contentType === "html" && <HtmlRender html={content}/>
+              }
             </PreviewWrapper>
           )}
           {errors?.data?.content?.[0] && (
