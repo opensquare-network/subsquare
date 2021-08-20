@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { useState } from "react";
-import { useRouter } from "next/router";
+import {useState} from "react";
+import {useRouter} from "next/router";
 
 import MarkdownEditor from "components/markdownEditor";
 import Toggle from "components/toggle";
@@ -8,6 +8,8 @@ import Button from "components/button";
 import PreviewMD from "components/create/previewMD";
 import nextApi from "services/nextApi";
 import ErrorText from "components/ErrorText";
+import QuillEditor from "../editor/quillEditor";
+import HtmlRender from "../post/htmlRender";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -24,6 +26,7 @@ const InputSwitch = styled.div`
   position: absolute;
   display: flex;
   align-items: center;
+
   > img {
     margin-right: 12px;
   }
@@ -33,6 +36,7 @@ const ButtonWrapper = styled.div`
   margin-top: 16px;
   display: flex;
   justify-content: flex-end;
+
   > :not(:first-child) {
     margin-left: 12px;
   }
@@ -41,17 +45,18 @@ const ButtonWrapper = styled.div`
 const PreviewWrapper = styled.div`
   display: flex;
   min-height: 157px;
+
   > * {
     flex-grow: 1;
     min-height: 157px;
   }
 `;
 
-export default function Input({ postId }) {
+export default function Input({postId}) {
   const router = useRouter();
   const [content, setContent] = useState("");
   const [showPreview, setShowPreview] = useState(false);
-  const [contentType, setContentType] = useState("markdown");
+  const [contentType, setContentType] = useState("html");
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -69,7 +74,7 @@ export default function Input({ postId }) {
   const refreshData = () => {
     router.replace("/post/[id]", {
       pathname: `/post/${router.query.id}`,
-      query: { page: "last" },
+      query: {page: "last"},
     });
   };
 
@@ -97,15 +102,27 @@ export default function Input({ postId }) {
   return (
     <Wrapper>
       <InputWrapper>
-        <MarkdownEditor
-          height={114}
-          content={content}
-          setContent={onInputChange}
-          visible={!showPreview}
-        />
+        {
+          contentType === "markdown" && <MarkdownEditor
+            height={114}
+            content={content}
+            setContent={onInputChange}
+            visible={!showPreview}
+          />
+        }
+        {
+          contentType === "html" && <QuillEditor
+            visible={!showPreview}
+            content={content}
+            setContent={onInputChange}
+            height={114}
+            setModalInsetImgFunc={() => {
+            }}
+          />
+        }
         {!showPreview && (
           <InputSwitch>
-            <img src="/imgs/icons/markdown-mark.svg" />
+            <img src="/imgs/icons/markdown-mark.svg"/>
             <Toggle
               size="small"
               isOn={contentType === "markdown"}
@@ -116,7 +133,12 @@ export default function Input({ postId }) {
       </InputWrapper>
       {showPreview && (
         <PreviewWrapper>
-          <PreviewMD content={content} setContent={setContent} />
+          {
+            contentType==="markdown" && <PreviewMD content={content} setContent={setContent}/>
+          }
+          {
+            contentType==="html" && <HtmlRender html={content}/>
+          }
         </PreviewWrapper>
       )}
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
