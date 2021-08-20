@@ -130,9 +130,7 @@ export default function Input({
     if (error) {
       setErrors(error);
     } else if (result) {
-      if (onFinishedEdit) {
-        onFinishedEdit(true);
-      }
+      onFinishedEdit(true);
     }
   };
 
