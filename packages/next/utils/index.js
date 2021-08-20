@@ -61,3 +61,9 @@ export function timeDuration(time) {
   }
   return `${ss} sec${ss > 1 ? "s" : ""} ago`;
 }
+
+export function encodeURIQuery(q) {
+  Object.keys(q)
+    .map((k) => `${k}=${encodeURIComponent(q[k])}`)
+    .join("&");
+}

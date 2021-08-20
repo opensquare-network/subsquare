@@ -1,10 +1,12 @@
 import styled from "styled-components";
+import { useState } from "react";
 
 import Author from "components/author";
-import {timeDuration} from "utils";
+import { timeDuration } from "utils";
 import Markdown from "components/markdown";
 import Edit from "./edit";
 import HtmlRender from "../post/htmlRender";
+import Input from "./input";
 
 const Wrapper = styled.div`
   padding: 16px 0;
@@ -53,12 +55,16 @@ const ActionItem = styled.div`
   }
 
   > img {
-    filter: invert(67%) sepia(11%) saturate(448%) hue-rotate(177deg) brightness(99%) contrast(86%);
+    filter: invert(67%) sepia(11%) saturate(448%) hue-rotate(177deg)
+      brightness(99%) contrast(86%);
     margin-right: 8px;
   }
 `;
 
-export default function Item({data}) {
+export default function Item({ data, user }) {
+  const [isEdit, setIsEdit] = useState(false);
+  const commentId = data._id;
+
   return (
     <Wrapper>
       <InfoWrapper>
@@ -69,21 +75,37 @@ export default function Item({data}) {
         />
         <div>{timeDuration(data.createdAt)}</div>
       </InfoWrapper>
-      <ContentWrapper>
-        {data.contentType === "markdown" && <Markdown md={data.content}/>}
-        {data.contentType === "html" && <HtmlRender html={data.content}/>}
-      </ContentWrapper>
-      <ActionWrapper>
-        <ActionItem>
-          <img src="/imgs/icons/reply.svg" alt=""/>
-          <div>Reply</div>
-        </ActionItem>
-        <ActionItem>
-          <img src="/imgs/icons/thumb-up.svg" alt=""/>
-          <div>Up ({data?.thumbsUp?.length ?? 0})</div>
-        </ActionItem>
-        <Edit/>
-      </ActionWrapper>
+      {!isEdit && (
+        <>
+          <ContentWrapper>
+            {data.contentType === "markdown" && <Markdown md={data.content} />}
+            {data.contentType === "html" && <HtmlRender html={data.content} />}
+          </ContentWrapper>
+          <ActionWrapper>
+            <ActionItem>
+              <img src="/imgs/icons/reply.svg" alt="" />
+              <div>Reply</div>
+            </ActionItem>
+            <ActionItem>
+              <img src="/imgs/icons/thumb-up.svg" alt="" />
+              <div>Up ({data?.thumbsUp?.length ?? 0})</div>
+            </ActionItem>
+            <Edit
+              edit={user && user.username === data.author?.username}
+              setIsEdit={setIsEdit}
+            />
+          </ActionWrapper>
+        </>
+      )}
+      {isEdit && (
+        <Input
+          isEdit={true}
+          editContent={data.content}
+          editContentType={data.contentType}
+          setIsEdit={setIsEdit}
+          commentId={commentId}
+        />
+      )}
     </Wrapper>
   );
 }
