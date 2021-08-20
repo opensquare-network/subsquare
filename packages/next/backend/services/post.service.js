@@ -5,7 +5,7 @@ const { nextPostUid } = require("./status.service");
 const { getPostCollection, getCommentCollection, getReactionCollection } = require("../mongo/common");
 const { HttpError } = require("../exc");
 const { ContentType } = require("../constants");
-const { lookupCount, lookupUser, lookupMulti } = require("../utils/query");
+const { lookupCount, lookupUser, lookupMany } = require("../utils/query");
 
 const xssOptions = {
   whiteList: {
@@ -259,7 +259,7 @@ async function getComments(postId, page, pageSize) {
 
   const [, reactions] = await Promise.all([
     lookupUser(comments, { localField: "author" }),
-    lookupMulti(comments, {
+    lookupMany(comments, {
       from: "reaction",
       localField: "_id",
       foreignField: "comment",
@@ -373,6 +373,40 @@ async function setCommentReaction(commentId, reaction, user) {
   return true;
 }
 
+async function getComment(commentId) {
+  const commentObjId = ObjectId(commentId);
+
+  const commentCol = await getCommentCollection();
+  const comment = await commentCol.findOne({ _id: commentObjId });
+  if (!comment) {
+    throw new HttpError(400, "Comment does not exists");
+  }
+
+  const [, reactions] = await Promise.all([
+    lookupUser(comment, { localField: "author" }),
+    lookupMany(comment, {
+      from: "reaction",
+      localField: "_id",
+      foreignField: "comment",
+      as: "reactions",
+    })
+  ]);
+
+  await lookupUser(reactions, { localField: "user" });
+
+  return comment;
+}
+
+async function getCommentReactions(commentId) {
+  const commentObjId = ObjectId(commentId);
+
+  const reactionCol = await getReactionCollection();
+  const reactions = await reactionCol.findOne({ comment: commentObjId }).toArray();
+  await lookupUser(reactions, { localField: "user" });
+
+  return reactions;
+}
+
 module.exports = {
   createPost,
   postComment,
@@ -383,4 +417,6 @@ module.exports = {
   setCommentReaction,
   unsetCommentReaction,
   updatePost,
+  getComment,
+  getCommentReactions,
 };
