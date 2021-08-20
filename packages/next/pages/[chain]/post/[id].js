@@ -37,7 +37,9 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   const postId = detail._id;
 
-  const { result: comments } = await nextApi.fetch(`posts/${postId}/comments`);
+  const { result: comments } = await nextApi.fetch(`posts/${postId}/comments`, {
+    page,
+  });
 
   return {
     props: {

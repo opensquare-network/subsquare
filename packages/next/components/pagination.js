@@ -36,7 +36,7 @@ const Nav = styled.div`
     p.disabled &&
     css`
       cursor: auto;
-
+      pointer-events: none;
       > img {
         filter: invert(82%) sepia(19%) saturate(265%) hue-rotate(177deg)
           brightness(81%) contrast(83%);
@@ -71,6 +71,7 @@ const Item = styled.a`
       background: #ebeef4;
       color: #1e2134;
       cursor: auto;
+      pointer-events: none;
     `}
 `;
 
