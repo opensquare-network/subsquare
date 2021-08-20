@@ -64,6 +64,7 @@ export default function Input({
   editContentType,
   setIsEdit,
   commentId,
+  chain,
 }) {
   const router = useRouter();
   const [content, setContent] = useState(isEdit ? editContent : "");
@@ -86,9 +87,8 @@ export default function Input({
   };
 
   const refreshData = () => {
-    router.replace("/[chain]/post/[id]", {
-      pathname: `/${router.query.chain}/post/${router.query.id}`,
-      query: { page: "last" },
+    router.replace(`/[chain]/post/[id]`, {
+      pathname: `/${chain}/post/${router.query.id}`,
     });
   };
 
@@ -128,10 +128,7 @@ export default function Input({
       setErrors(error);
     } else if (result) {
       setIsEdit(false);
-      router.replace("/[chain]/post/[id]", {
-        pathname: `/${router.query.chain}/post/${router.query.id}`,
-        query: { page: router.query.page },
-      });
+      refreshData();
     }
   };
 
