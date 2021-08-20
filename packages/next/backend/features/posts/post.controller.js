@@ -48,6 +48,39 @@ async function createPost(ctx) {
   );
 }
 
+async function updatePost(ctx) {
+  const { postId } = ctx.params;
+  const {
+    title,
+    content,
+    contentType: paramContentType,
+  } = ctx.request.body;
+
+  if (!title) {
+    throw new HttpError(400, { title: ["Post title is missing"] });
+  }
+
+  if (!content) {
+    throw new HttpError(400, { content: ["Post content is missing"] });
+  }
+
+  if (
+    paramContentType !== undefined &&
+    paramContentType !== ContentType.Markdown &&
+    paramContentType !== ContentType.Html
+  ) {
+    throw new HttpError(400, { contentType: ["Unknown content type"] });
+  }
+
+  ctx.body = await postService.updatePost(
+    postId,
+    title,
+    content,
+    contentType,
+    ctx.user
+  );
+}
+
 async function getPosts(ctx) {
   const { chain } = ctx.query;
   if (!chain) {
@@ -109,6 +142,7 @@ async function getComments(ctx) {
 
 module.exports = {
   createPost,
+  updatePost,
   getPosts,
   getPostById,
   postComment,
