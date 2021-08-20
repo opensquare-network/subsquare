@@ -95,7 +95,7 @@ export default withLoginUserRedux(({loginUser, chain}) => {
     if (result.error) {
       setErrors(result.error);
     } else {
-      router.push(`/post/${result.result}`);
+      router.push(`/${chain}/post/${result.result}`);
     }
   };
 
