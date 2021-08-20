@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import {useState} from "react";
-import {useRouter} from "next/router";
+import styled, { css } from "styled-components";
+import { useState } from "react";
+import { useRouter } from "next/router";
 
 import MarkdownEditor from "components/markdownEditor";
 import Toggle from "components/toggle";
@@ -14,6 +14,11 @@ import UploadImgModal from "../editor/imageModal";
 
 const Wrapper = styled.div`
   margin-top: 48px;
+  ${(p) =>
+    p.isEdit &&
+    css`
+      margin-top: 8px;
+    `}
 `;
 
 const InputWrapper = styled.div`
@@ -53,13 +58,23 @@ const PreviewWrapper = styled.div`
   }
 `;
 
-export default function Input({postId}) {
+export default function Input({
+  postId,
+  isEdit,
+  editContent,
+  editContentType,
+  setIsEdit,
+  commentId,
+  chain,
+}) {
   const router = useRouter();
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(isEdit ? editContent : "");
   const [showPreview, setShowPreview] = useState(false);
-  const [contentType, setContentType] = useState("html");
   const [showImgModal, setShowImgModal] = useState(false);
   const [insetQuillImgFunc, setInsetQuillImgFunc] = useState(null);
+  const [contentType, setContentType] = useState(
+    isEdit ? editContentType : "html"
+  );
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -75,9 +90,8 @@ export default function Input({postId}) {
   };
 
   const refreshData = () => {
-    router.replace("/post/[id]", {
-      pathname: `/post/${router.query.id}`,
-      query: {page: "last"},
+    router.replace(`/[chain]/post/[id]`, {
+      pathname: `/${chain}/post/${router.query.id}`,
     });
   };
 
@@ -97,6 +111,30 @@ export default function Input({postId}) {
     }
   };
 
+  const updateComment = async () => {
+    setLoading(true);
+    const { result, error } = await nextApi.fetch(
+      `comments/${commentId}`,
+      {},
+      {
+        method: "PATCH",
+        credentials: "same-origin",
+        body: JSON.stringify({
+          content,
+          contentType,
+        }),
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    setLoading(false);
+    if (error) {
+      setErrors(error);
+    } else if (result) {
+      setIsEdit(false);
+      refreshData();
+    }
+  };
+
   const onInputChange = (value) => {
     setContent(value);
     setErrors(null);
@@ -110,16 +148,16 @@ export default function Input({postId}) {
                         insetQuillImgFunc={insetQuillImgFunc}/>
       }
       <InputWrapper>
-        {
-          contentType === "markdown" && <MarkdownEditor
+        {contentType === "markdown" && (
+          <MarkdownEditor
             height={114}
             content={content}
             setContent={onInputChange}
             visible={!showPreview}
           />
-        }
-        {
-          contentType === "html" && <QuillEditor
+        )}
+        {contentType === "html" && (
+          <QuillEditor
             visible={!showPreview}
             content={content}
             setContent={onInputChange}
@@ -129,7 +167,7 @@ export default function Input({postId}) {
               setInsetQuillImgFunc(insetImgFunc);
             }}
           />
-        }
+        )}
         {!showPreview && (
           <InputSwitch>
             <img src="/imgs/icons/markdown-mark.svg" alt=""/>
@@ -143,21 +181,26 @@ export default function Input({postId}) {
       </InputWrapper>
       {showPreview && (
         <PreviewWrapper>
-          {
-            contentType==="markdown" && <PreviewMD content={content} setContent={setContent}/>
-          }
-          {
-            contentType==="html" && <HtmlRender html={content}/>
-          }
+          {contentType === "markdown" && (
+            <PreviewMD content={content} setContent={setContent} />
+          )}
+          {contentType === "html" && <HtmlRender html={content} />}
         </PreviewWrapper>
       )}
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
       <ButtonWrapper>
-        <Button onClick={() => setShowPreview(!showPreview)}>
-          {showPreview ? "Write" : "Preview"}
-        </Button>
-        <Button isLoading={loading} secondary onClick={createComment}>
-          Comment
+        {!isEdit && (
+          <Button onClick={() => setShowPreview(!showPreview)}>
+            {showPreview ? "Write" : "Preview"}
+          </Button>
+        )}
+        {isEdit && <Button onClick={() => setIsEdit(false)}>Cancel</Button>}
+        <Button
+          isLoading={loading}
+          secondary
+          onClick={isEdit ? updateComment : createComment}
+        >
+          {isEdit ? "Update" : "Comment"}
         </Button>
       </ButtonWrapper>
     </Wrapper>

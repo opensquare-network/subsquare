@@ -2,10 +2,10 @@ const { ObjectId } = require("mongodb");
 const xss = require("xss");
 const { PostTitleLengthLimitation } = require("../constants");
 const { nextPostUid } = require("./status.service");
-const { getPostCollection, getCommentCollection } = require("../mongo/common");
+const { getPostCollection, getCommentCollection, getReactionCollection } = require("../mongo/common");
 const { HttpError } = require("../exc");
 const { ContentType } = require("../constants");
-const { lookupCount, lookupUser } = require("../utils/query");
+const { lookupCount, lookupUser, lookupMulti } = require("../utils/query");
 
 const xssOptions = {
   whiteList: {
@@ -83,6 +83,52 @@ async function createPost(
   }
 
   return postUid;
+}
+
+async function updatePost(
+  postId,
+  title,
+  content,
+  contentType,
+  author
+) {
+  const postObjId = ObjectId(postId);
+  const postCol = await getPostCollection();
+  const post = await postCol.findOne({ _id: postObjId });
+  if (!post) {
+    throw new HttpError(404, "Post does not exists");
+  }
+
+  if (!post.author.equals(author._id)) {
+    throw new HttpError(403, "You are not the post author");
+  }
+
+  if (title.length > PostTitleLengthLimitation) {
+    throw new HttpError(400, {
+      title: [ "Title must be no more than %d characters" ],
+    });
+  }
+
+  const now = new Date();
+
+  const result = await postCol.updateOne(
+    { _id: postObjId },
+    {
+      $set: {
+        title,
+        content: contentType === ContentType.Html ? safeHtml(content) : content,
+        contentType,
+        updatedAt: now,
+        lastActivityAt: now,
+      }
+    }
+  );
+
+  if (!result.result.ok) {
+    throw new HttpError(500, "Failed to update post");
+  }
+
+  return true;
 }
 
 async function postComment(
@@ -211,7 +257,17 @@ async function getComments(postId, page, pageSize) {
     .limit(pageSize)
     .toArray();
 
-  await lookupUser(comments, { localField: "author" });
+  const [, reactions] = await Promise.all([
+    lookupUser(comments, { localField: "author" }),
+    lookupMulti(comments, {
+      from: "reaction",
+      localField: "_id",
+      foreignField: "comment",
+      as: "reactions",
+    }),
+  ]);
+
+  await lookupUser(reactions, { localField: "user" });
 
   return {
     items: comments,
@@ -256,6 +312,67 @@ async function updateComment(
   return true;
 }
 
+
+async function unsetCommentReaction(commentId, user) {
+  const commmentObjId = ObjectId(commentId);
+
+  const reactionCol = await getReactionCollection();
+
+  const result = await reactionCol.deleteOne({
+    comment: commmentObjId,
+    user: user._id,
+  });
+
+  if (!result.result.ok) {
+    throw new HttpError(500, "Db error, clean reaction.");
+  }
+
+  if (result.result.nModified === 0) {
+    return false;
+  }
+
+  return true;
+}
+
+async function setCommentReaction(commentId, reaction, user) {
+  const commmentObjId = ObjectId(commentId);
+
+  const commentCol = await getCommentCollection();
+  const existing = await commentCol.countDocuments({
+    _id: commmentObjId,
+    author: { $ne: user._id },
+  });
+  if (existing === 0) {
+    throw new HttpError(400, "Cannot set reaction.");
+  }
+
+  const reactionCol = await getReactionCollection();
+
+  const now = new Date();
+  const result = await reactionCol.updateOne(
+    {
+      comment: commmentObjId,
+      user: user._id,
+    },
+    {
+      $set: {
+        reaction,
+        updatedAt: now,
+      },
+      $setOnInsert: {
+        createdAt: now,
+      },
+    },
+    { upsert: true }
+  );
+
+  if (!result.result.ok) {
+    throw new HttpError(500, "Db error, update reaction.");
+  }
+
+  return true;
+}
+
 module.exports = {
   createPost,
   postComment,
@@ -263,4 +380,7 @@ module.exports = {
   getPostById,
   getComments,
   updateComment,
+  setCommentReaction,
+  unsetCommentReaction,
+  updatePost,
 };

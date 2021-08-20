@@ -27,7 +27,7 @@ const Title = styled.div`
   margin-bottom: 16px;
 `;
 
-export default function Comments({ user, postId, data }) {
+export default function Comments({ user, postId, data, chain }) {
   return (
     <Wrapper>
       <Title>Comments</Title>
@@ -35,7 +35,7 @@ export default function Comments({ user, postId, data }) {
         <>
           <div>
             {(data?.items || []).map((item, index) => (
-              <Item key={index} data={item} />
+              <Item key={index} data={item} user={user} />
             ))}
           </div>
           <Pagination
@@ -47,7 +47,7 @@ export default function Comments({ user, postId, data }) {
       )}
       {!data?.items?.length > 0 && <NoComment />}
       {!user && <LoginButtons />}
-      {user && <Input postId={postId} />}
+      {user && <Input postId={postId} chain={chain} />}
     </Wrapper>
   );
 }

@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser, detail, comments }) => {
+export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const postId = detail._id;
 
   return (
@@ -21,14 +21,15 @@ export default withLoginUserRedux(({ loginUser, detail, comments }) => {
       <Wrapper>
         <Back href="/" text="Back to Overview" />
         <DetailItem data={detail} />
-        <Comments data={comments} user={loginUser} postId={postId} />
+        {/* <Timeline data={timelineData} /> */}
+        <Comments data={comments} user={loginUser} postId={postId} chain={chain} />
       </Wrapper>
     </Layout>
   );
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { id, page } = context.query;
+  const { chain, id, page } = context.query;
 
   const [{ result: detail }] = await Promise.all([
     nextApi.fetch(`posts/${id}`),
@@ -44,6 +45,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       detail,
       comments,
+      chain,
     },
   };
 });

@@ -7,6 +7,7 @@ const attemptCollectionName = "attempt";
 const postCollectionName = "post";
 const commentCollectionName = "comment";
 const statusCollectionName = "status";
+const reactionCollectionName = "reaction";
 
 let client = null;
 let db = null;
@@ -17,6 +18,7 @@ let attemptCol = null;
 let postCol = null;
 let commentCol = null;
 let statusCol = null;
+let reactionCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -29,6 +31,7 @@ async function initDb() {
   postCol = db.collection(postCollectionName);
   commentCol = db.collection(commentCollectionName);
   statusCol = db.collection(statusCollectionName);
+  reactionCol = db.collection(reactionCollectionName);
 
   await _createIndexes();
 }
@@ -83,6 +86,11 @@ async function getStatusCollection() {
   return statusCol;
 }
 
+async function getReactionCollection() {
+  await tryInit(reactionCol);
+  return reactionCol;
+}
+
 async function getDb() {
   if (!db) {
     await initDb();
@@ -99,4 +107,5 @@ module.exports = {
   getPostCollection,
   getCommentCollection,
   getStatusCollection,
+  getReactionCollection,
 };
