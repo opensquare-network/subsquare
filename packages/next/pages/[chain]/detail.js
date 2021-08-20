@@ -6,7 +6,7 @@ import DetailItem from "components/detailItem";
 import { detailData } from "utils/data";
 import Timeline from "components/timeline";
 import { timelineData } from "utils/data";
-import Comment from "components/comment";
+import Comments from "components/comment";
 import { commentData } from "utils/data";
 import Position from "components/position";
 import { withLoginUser, withLoginUserRedux } from "../../lib";
@@ -24,7 +24,7 @@ export default withLoginUserRedux(({ loginUser }) => {
         <Back href="/" text="Back to Overview" />
         <DetailItem data={detailData} />
         <Timeline data={timelineData} />
-        <Comment data={commentData} />
+        <Comments data={commentData} />
       </Wrapper>
     </Layout>
   );

@@ -27,10 +27,10 @@ const Title = styled.div`
   margin-bottom: 16px;
 `;
 
-export default function Comment({ user, postId, data }) {
+export default function Comments({ user, postId, data }) {
   return (
     <Wrapper>
-      <Title>Comment</Title>
+      <Title>Comments</Title>
       {data?.items?.length > 0 && (
         <>
           <div>

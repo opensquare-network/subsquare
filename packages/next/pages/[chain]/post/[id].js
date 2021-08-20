@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Layout from "components/layout";
 import Back from "components/back";
 import DetailItem from "components/detailItem";
-import Comment from "components/comment";
+import Comments from "components/comment";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
 
@@ -22,7 +22,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments }) => {
         <Back href="/" text="Back to Overview" />
         <DetailItem data={detail} />
         {/* <Timeline data={timelineData} /> */}
-        <Comment data={comments} user={loginUser} postId={postId} />
+        <Comments data={comments} user={loginUser} postId={postId} />
       </Wrapper>
     </Layout>
   );

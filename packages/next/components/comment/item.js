@@ -1,15 +1,18 @@
 import styled from "styled-components";
 
 import Author from "components/author";
-import { timeDuration } from "utils";
+import {timeDuration} from "utils";
 import Markdown from "components/markdown";
 import Edit from "./edit";
+import HtmlRender from "../post/htmlRender";
 
 const Wrapper = styled.div`
   padding: 16px 0;
+
   :not(:last-child) {
     border-bottom: 1px solid #ebeef4;
   }
+
   :hover {
     .edit {
       display: block;
@@ -22,6 +25,7 @@ const InfoWrapper = styled.div`
   min-height: 28px;
   align-items: center;
   justify-content: space-between;
+
   > :last-child {
     color: #9da9bb;
   }
@@ -43,17 +47,18 @@ const ActionItem = styled.div`
   display: flex;
   align-items: center;
   color: #9da9bb;
+
   :not(:first-child) {
     margin-left: 16px;
   }
+
   > img {
-    filter: invert(67%) sepia(11%) saturate(448%) hue-rotate(177deg)
-      brightness(99%) contrast(86%);
+    filter: invert(67%) sepia(11%) saturate(448%) hue-rotate(177deg) brightness(99%) contrast(86%);
     margin-right: 8px;
   }
 `;
 
-export default function Item({ data }) {
+export default function Item({data}) {
   return (
     <Wrapper>
       <InfoWrapper>
@@ -65,18 +70,19 @@ export default function Item({ data }) {
         <div>{timeDuration(data.createdAt)}</div>
       </InfoWrapper>
       <ContentWrapper>
-        {data.contentType === "markdown" && <Markdown md={data.content} />}
+        {data.contentType === "markdown" && <Markdown md={data.content}/>}
+        {data.contentType === "html" && <HtmlRender html={data.content}/>}
       </ContentWrapper>
       <ActionWrapper>
         <ActionItem>
-          <img src="/imgs/icons/reply.svg" />
+          <img src="/imgs/icons/reply.svg" alt=""/>
           <div>Reply</div>
         </ActionItem>
         <ActionItem>
-          <img src="/imgs/icons/thumb-up.svg" />
-          <div>Up (0)</div>
+          <img src="/imgs/icons/thumb-up.svg" alt=""/>
+          <div>Up ({data?.thumbsUp?.length ?? 0})</div>
         </ActionItem>
-        <Edit />
+        <Edit/>
       </ActionWrapper>
     </Wrapper>
   );
