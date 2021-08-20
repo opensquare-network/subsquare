@@ -137,7 +137,7 @@ export default withLoginUserRedux(({loginUser, chain}) => {
             }
             {
               contentType === "html" && <QuillEditor
-                visible={true}
+                visible={!showPreview}
                 content={content}
                 setContent={setContent}
                 height={200}
