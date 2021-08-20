@@ -72,6 +72,10 @@ async function updatePost(ctx) {
     throw new HttpError(400, { contentType: ["Unknown content type"] });
   }
 
+  const contentType = paramContentType
+    ? paramContentType
+    : ContentType.Markdown;
+
   ctx.body = await postService.updatePost(
     postId,
     title,

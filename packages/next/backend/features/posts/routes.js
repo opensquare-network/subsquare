@@ -10,7 +10,7 @@ router.get("/posts", postController.getPosts);
 
 router.get("/posts/:postId", postController.getPostById);
 
-router.patch("/posts/:postId", postController.updatePost);
+router.patch("/posts/:postId", requireAuth, postController.updatePost);
 
 router.post("/posts/:postId/comments", requireAuth, postController.postComment);
 
