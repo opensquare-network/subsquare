@@ -25,7 +25,7 @@ async function lookupOne(result, { from, localField, foreignField, projection, m
   }
 
   const records = Array.isArray(result) ? result : [result];
-  const vals = records.map(item => item[localField]);
+  const vals = Array.from(new Set(records.map(item => item[localField])));
   const db = await getDb();
   const col = db.collection(from);
   const items = await col.find({ [foreignField]: { $in: vals } }, { projection }).toArray();
@@ -39,16 +39,17 @@ async function lookupOne(result, { from, localField, foreignField, projection, m
       item[localField] = null;
     }
   });
+
   return items;
 }
 
 async function lookupCount(result, { from, localField, foreignField, as }) {
   if (result === null) {
-    return [];
+    return;
   }
 
   const records = Array.isArray(result) ? result : [result];
-  const vals = records.map(item => item[localField]);
+  const vals = Array.from(new Set(records.map(item => item[localField])));
   const db = await getDb();
   const col = db.collection(from);
   const items = await col.aggregate([
@@ -74,8 +75,57 @@ async function lookupCount(result, { from, localField, foreignField, as }) {
   });
 }
 
+async function lookupMulti(result, { from, localField, foreignField, projection, as, map }) {
+  if (result === null) {
+    return [];
+  }
+
+  const records = Array.isArray(result) ? result : [result];
+  const vals = Array.from(new Set(records.map(item => item[localField])));
+  const db = await getDb();
+  const col = db.collection(from);
+  const items = await col.aggregate([
+    { $limit: 1 },
+    {
+      $project: {
+        _id: 0,
+        key: vals,
+      }
+    },
+    { $unwind: "$key" },
+    {
+      $lookup: {
+        from,
+        localField: "key",
+        foreignField,
+        as: "values",
+      }
+    },
+    ...(
+      projection ? [
+        {
+          $project: projection
+        }
+      ] : []
+    )
+  ]).toArray();
+  const itemsMap = new Map(items.map(item => [item.key.toString(), map ? item.values.map(map) : item.values]));
+
+  records.forEach(item => {
+    const relatedItem = itemsMap.get(item[localField].toString());
+    if (relatedItem) {
+      item[as] = relatedItem;
+    } else {
+      item[as] = [];
+    }
+  });
+
+  return [].concat(...Array.from(itemsMap.values()));
+}
+
 module.exports = {
   lookupOne,
+  lookupMulti,
   lookupCount,
   lookupUser,
 };

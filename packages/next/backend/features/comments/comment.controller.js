@@ -22,6 +22,25 @@ async function updateComment(ctx) {
   ctx.body = await postService.updateComment(commentId, content, contentType, ctx.user);
 }
 
+async function setCommentReaction(ctx) {
+  const commentId = ctx.params.commentId;
+  const { reaction } = ctx.request.body;
+  const user = ctx.user;
+  ctx.body = await postService.setCommentReaction(
+    commentId,
+    reaction,
+    user
+  );
+}
+
+async function unsetCommentReaction(ctx) {
+  const commentId = ctx.params.commentId;
+  const user = ctx.user;
+  ctx.body = await postService.unsetCommentReaction(commentId, user);
+}
+
 module.exports = {
   updateComment,
+  setCommentReaction,
+  unsetCommentReaction,
 }
