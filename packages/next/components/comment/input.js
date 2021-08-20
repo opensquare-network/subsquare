@@ -52,7 +52,7 @@ const PreviewWrapper = styled.div`
   }
 `;
 
-export default function Input({postId}) {
+export default function Input({postId, chain}) {
   const router = useRouter();
   const [content, setContent] = useState("");
   const [showPreview, setShowPreview] = useState(false);
@@ -72,9 +72,8 @@ export default function Input({postId}) {
   };
 
   const refreshData = () => {
-    router.replace("/post/[id]", {
-      pathname: `/post/${router.query.id}`,
-      query: {page: "last"},
+    router.replace(`/[chain]/post/[id]`, {
+      pathname: `/${chain}/post/${router.query.id}`,
     });
   };
 
