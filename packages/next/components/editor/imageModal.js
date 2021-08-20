@@ -29,7 +29,7 @@ const Wrapper = styled.div`
 `
 const Title = styled.div`
   display: flex;
-  padding: 24px 16px 16px 16px;
+  padding: 24px 16px 12px 16px;
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
@@ -77,8 +77,8 @@ const TextArea = styled.textarea`
   font-family: Inter, serif;
   width: 100%;
   font-size: 14px;
-  line-height: 22px;
-  padding: 8px 12px;
+  line-height: 14px;
+  padding: 12px 16px;
   color: #34373C;
   resize: none;
   border: 1px solid #ddd;
@@ -102,7 +102,7 @@ const SubmitButtonWrapper = styled.div`
 const Uploading = styled.button`
   margin-right: 16px;
   padding-top: 4px;
-  width: 80px;
+  width: 82px;
   font-weight: 500;
   font-size: 14px;
   color: #FFFFFF;
@@ -202,14 +202,7 @@ const FileName = styled.p`
   }
 `
 
-const FileInfo = styled.p`
-  margin-top: 4px;
-  margin-bottom: 8px;
-  text-align: center;
-  width: 100%;
-  font-size: 13px;
-  color: #696D73;
-`
+
 
 function UploadImgModal({
                           showImgModal,
