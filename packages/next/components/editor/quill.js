@@ -90,9 +90,9 @@ function MyReactQuill({
           }
         }
       },
-      // ImageResize: {
-      //   modules: ['Resize', 'DisplaySize']
-      // },
+      ImageResize: {
+        modules: ['Resize', 'DisplaySize']
+      },
       mention: undefined,
       magicUrl: true,
     }

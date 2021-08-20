@@ -10,6 +10,7 @@ import nextApi from "services/nextApi";
 import ErrorText from "components/ErrorText";
 import QuillEditor from "../editor/quillEditor";
 import HtmlRender from "../post/htmlRender";
+import UploadImgModal from "../editor/imageModal";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -69,6 +70,8 @@ export default function Input({
   const router = useRouter();
   const [content, setContent] = useState(isEdit ? editContent : "");
   const [showPreview, setShowPreview] = useState(false);
+  const [showImgModal, setShowImgModal] = useState(false);
+  const [insetQuillImgFunc, setInsetQuillImgFunc] = useState(null);
   const [contentType, setContentType] = useState(
     isEdit ? editContentType : "html"
   );
@@ -138,7 +141,12 @@ export default function Input({
   };
 
   return (
-    <Wrapper isEdit={isEdit}>
+    <Wrapper>
+      {
+        contentType === "html" &&
+        <UploadImgModal showImgModal={showImgModal} setShowImgModal={setShowImgModal}
+                        insetQuillImgFunc={insetQuillImgFunc}/>
+      }
       <InputWrapper>
         {contentType === "markdown" && (
           <MarkdownEditor
@@ -154,12 +162,15 @@ export default function Input({
             content={content}
             setContent={onInputChange}
             height={114}
-            setModalInsetImgFunc={() => {}}
+            setModalInsetImgFunc={(insetImgFunc) => {
+              setShowImgModal(true);
+              setInsetQuillImgFunc(insetImgFunc);
+            }}
           />
         )}
         {!showPreview && (
           <InputSwitch>
-            <img src="/imgs/icons/markdown-mark.svg" />
+            <img src="/imgs/icons/markdown-mark.svg" alt=""/>
             <Toggle
               size="small"
               isOn={contentType === "markdown"}
