@@ -43,7 +43,7 @@ const OptionItem = styled.div`
   }
 `;
 
-export default function Edit() {
+export default function Edit({ edit, setIsEdit }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
 
@@ -54,7 +54,16 @@ export default function Edit() {
       <img src="/imgs/icons/more.svg" onClick={() => setShow(!show)} />
       {show && (
         <OptionWrapper>
-          <OptionItem onClick={() => setShow(false)}>Edit</OptionItem>
+          {edit && (
+            <OptionItem
+              onClick={() => {
+                setIsEdit(true);
+                setShow(false);
+              }}
+            >
+              Edit
+            </OptionItem>
+          )}
           <OptionItem onClick={() => setShow(false)}>Report</OptionItem>
         </OptionWrapper>
       )}

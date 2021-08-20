@@ -2,43 +2,7 @@ import React, {useState} from "react";
 import styled, {css} from "styled-components";
 import dynamic from "next/dynamic";
 
-
-// // import ReactQuill, {Quill} from "react-quill";
-// // import "quill-mention";
-// // import ImageResize from "quill-image-resize-module";
-// // import MagicUrl from 'quill-magic-url';
-// import 'quill-mention/dist/quill.mention.css';
-
 const MyReactQuill = dynamic(() => import("./quill").catch(e => console.error(e)), {ssr: false});
-
-
-// const Quill = dynamic(
-//   () => import("react-quill").then(mod => {
-//     mod.Quill.register("modules/ImageResize", ImageResize);
-//     mod.Quill.register('modules/magicUrl', MagicUrl)
-//     return mod.Quill;
-//   }),
-//   {ssr: false}
-// );
-//
-// console.log(Quill)
-//
-// const MyReactQuill = dynamic(
-//   () => import("react-quill").then(mod => {
-//     // import ImageResize from "quill-image-resize-module";
-//     // const ImageResize = dynamic(() => import("quill-image-resize-module"), {ssr: false})
-//     // mod.Quill.register("modules/ImageResize", ImageResize);
-//     // mod.Quill.register('modules/magicUrl', MagicUrl)
-//     return mod;
-//   }),
-//   {ssr: false}
-// );
-// import 'react-quill/dist/quill.snow.css';
-
-
-// const MagicUrl = dynamic(() => import("quill-magic-url"), {ssr: false})
-// dynamic(() => import("quill-mention"), {ssr: false})
-
 
 export const StyledTextArea = styled.div`
   ${(props) =>
