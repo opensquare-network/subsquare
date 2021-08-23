@@ -19,6 +19,8 @@ const Wrapper = styled.header`
 `;
 
 const FlexWrapper = styled.div`
+  max-width: 1080px;
+  margin: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
