@@ -97,6 +97,7 @@ const ActionItem = styled.div`
   }
 `;
 
+
 const SupporterWrapper = styled.div`
   display: flex;
   flex-flow: wrap;
@@ -121,7 +122,7 @@ const SupporterItem = styled.div`
   margin-right: 12px;
 `;
 
-export default function Item({ user, data, chain }) {
+export default function Item({ user, data, chain, onReply }) {
   const dispatch = useDispatch();
   const [comment, setComment] = useState(data);
   const [thumbupLoading, setThumbupLoading] = useState(false);
@@ -130,7 +131,7 @@ export default function Item({ user, data, chain }) {
   const commentId = comment._id;
   const isLoggedIn = !!user;
   const ownComment = isLoggedIn && comment.author?.username === user.username;
-  const thumbup = isLoggedIn && comment.reactions.findIndex(r => r.user?.username === user.username) > -1;
+  const thumbup = isLoggedIn && comment?.reactions?.findIndex(r => r.user?.username === user.username) > -1;
 
   const updateComment = async () => {
     const { result: updatedComment } = await nextApi.fetch(`comments/${comment._id}`);
@@ -193,7 +194,7 @@ export default function Item({ user, data, chain }) {
             {comment.contentType === "html" && <HtmlRender html={comment.content} />}
           </ContentWrapper>
           <ActionWrapper>
-            <ActionItem noHover={!isLoggedIn || ownComment}>
+            <ActionItem onClick={()=>onReply(user.username)} noHover={!isLoggedIn || ownComment}>
               <ReplyIcon />
               <div>Reply</div>
             </ActionItem>
@@ -211,7 +212,7 @@ export default function Item({ user, data, chain }) {
             />
           </ActionWrapper>
           {
-            comment.reactions.length > 0 && (
+            comment?.reactions?.length > 0 && (
               <SupporterWrapper>
                 <SupporterTitle>Supported By</SupporterTitle>
                 { comment.reactions.filter(r => r.user).map((r, index) => (
