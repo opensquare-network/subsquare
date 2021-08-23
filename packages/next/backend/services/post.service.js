@@ -73,7 +73,7 @@ async function processCommentMentions({
   content,
   contentType,
   author,
-  commentPosition,
+  commentHeight,
   mentions,
 }) {
   if (mentions.size === 0) {
@@ -97,7 +97,7 @@ async function processCommentMentions({
         contentType,
         mentionedUser: user.username,
         author,
-        commentPosition,
+        commentHeight,
       });
     }
   }
@@ -248,13 +248,22 @@ async function postComment(
     content: newComment.content,
     contentType: newComment.contentType,
     author: author.username,
-    commentPosition: newComment.height,
+    commentHeight: newComment.height,
     mentions,
   }).catch(console.error);
 
   if (!author._id.equals(post.author._id)) {
     if (post.author.emailVerified && (post.author.notification?.reply ?? true)) {
-      //TODO: send reply notification
+      mailService.sendReplyEmail({
+        email: post.author.email,
+        replyToUser: post.author.username,
+        chain: post.chain,
+        postUid: post.postUid,
+        content: newComment.content,
+        contentType: newComment.contentType,
+        author: author.username,
+        commentHeight: newComment.height,
+      });
     }
   }
 
@@ -406,15 +415,41 @@ async function unsetCommentReaction(commentId, user) {
   return true;
 }
 
+async function processThumbsUpNotification(comment, reactionUser) {
+  const postCol = await getPostCollection();
+  const userCol = await getUserCollection();
+  const [post, commentAuthor] = await Promise.all([
+    postCol.findOne({_id: comment.post}),
+    userCol.findOne({_id: comment.author}),
+  ]);
+
+  if (!post || !commentAuthor) {
+    return;
+  }
+
+  if (commentAuthor.emailVerified && (commentAuthor.notification?.thumbsUp ?? true)) {
+    mailService.sendCommentReactionEmail({
+      email: commentAuthor.email,
+      commentAuthor: commentAuthor.username,
+      chain: post.chain,
+      postUid: post.postUid,
+      commentHeight: comment.height,
+      content: comment.content,
+      contentType: comment.contentType,
+      reactionUser: reactionUser.username,
+    });
+  }
+}
+
 async function setCommentReaction(commentId, reaction, user) {
   const commmentObjId = ObjectId(commentId);
 
   const commentCol = await getCommentCollection();
-  const existing = await commentCol.countDocuments({
+  const comment = await commentCol.findOne({
     _id: commmentObjId,
     author: { $ne: user._id },
   });
-  if (existing === 0) {
+  if (!comment) {
     throw new HttpError(400, "Cannot set reaction.");
   }
 
@@ -441,6 +476,8 @@ async function setCommentReaction(commentId, reaction, user) {
   if (!result.result.ok) {
     throw new HttpError(500, "Db error, update reaction.");
   }
+
+  processThumbsUpNotification(comment, user).catch(console.error);
 
   return true;
 }
