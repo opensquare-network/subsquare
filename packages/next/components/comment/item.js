@@ -61,7 +61,7 @@ const ActionItem = styled.div`
   }
 `;
 
-export default function Item({ data, user }) {
+export default function Item({ data, user,onReply }) {
   const [isEdit, setIsEdit] = useState(false);
   const commentId = data._id;
 
@@ -82,7 +82,7 @@ export default function Item({ data, user }) {
             {data.contentType === "html" && <HtmlRender html={data.content} />}
           </ContentWrapper>
           <ActionWrapper>
-            <ActionItem>
+            <ActionItem onClick={()=>onReply(user.username)}>
               <img src="/imgs/icons/reply.svg" alt="" />
               <div>Reply</div>
             </ActionItem>
