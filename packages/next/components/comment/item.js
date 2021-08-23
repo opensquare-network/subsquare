@@ -123,6 +123,14 @@ const SupporterItem = styled.div`
   margin-right: 12px;
 `;
 
+const EditedLabel = styled.div`
+  margin-top: 8px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  color: #9DA9BB;
+`;
+
 export default function Item({ user, data, chain, onReply }) {
   const dispatch = useDispatch();
   const [comment, setComment] = useState(data);
@@ -193,6 +201,7 @@ export default function Item({ user, data, chain, onReply }) {
           <ContentWrapper>
             {comment.contentType === "markdown" && <Markdown md={comment.content} />}
             {comment.contentType === "html" && <HtmlRender html={comment.content} />}
+            {comment.createdAt !== comment.updatedAt && <EditedLabel>Edited</EditedLabel>}
           </ContentWrapper>
           <ActionWrapper>
             <ActionItem
