@@ -8,11 +8,12 @@ import HtmlRender from "../post/htmlRender";
 import nextApi from "services/nextApi";
 import { useState } from "react";
 import ReplyIcon from "public/imgs/icons/reply.svg"
-import ThumbupIcon from "public/imgs/icons/thumb-up.svg"
+import ThumbUpIcon from "public/imgs/icons/thumb-up.svg"
 import Input from "./input";
 import { useDispatch } from "react-redux";
 import { addToast } from "store/reducers/toastSlice";
 import User from "components/user";
+import EditInput from "./editInput";
 
 const Wrapper = styled.div`
   padding: 16px 0;
@@ -125,13 +126,13 @@ const SupporterItem = styled.div`
 export default function Item({ user, data, chain, onReply }) {
   const dispatch = useDispatch();
   const [comment, setComment] = useState(data);
-  const [thumbupLoading, setThumbupLoading] = useState(false);
+  const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
   const commentId = comment._id;
   const isLoggedIn = !!user;
   const ownComment = isLoggedIn && comment.author?.username === user.username;
-  const thumbup = isLoggedIn && comment?.reactions?.findIndex(r => r.user?.username === user.username) > -1;
+  const thumbUp = isLoggedIn && comment?.reactions?.findIndex(r => r.user?.username === user.username) > -1;
 
   const updateComment = async () => {
     const { result: updatedComment } = await nextApi.fetch(`comments/${comment._id}`);
@@ -140,13 +141,13 @@ export default function Item({ user, data, chain, onReply }) {
     }
   };
 
-  const toggleThumbup = async () => {
-    if (isLoggedIn && !ownComment && !thumbupLoading) {
-      setThumbupLoading(true);
+  const toggleThumbUp = async () => {
+    if (isLoggedIn && !ownComment && !thumbUpLoading) {
+      setThumbUpLoading(true);
       try {
         let result, error;
 
-        if (thumbup) {
+        if (thumbUp) {
           (
             { result, error } = await nextApi.fetch(`comments/${comment._id}/reaction`, {}, {
               method: "DELETE",
@@ -172,7 +173,7 @@ export default function Item({ user, data, chain, onReply }) {
           }));
         }
       } finally {
-        setThumbupLoading(false);
+        setThumbUpLoading(false);
       }
     }
   };
@@ -207,10 +208,10 @@ export default function Item({ user, data, chain, onReply }) {
             </ActionItem>
             <ActionItem
               noHover={!isLoggedIn || ownComment}
-              highlight={isLoggedIn && thumbup}
-              onClick={toggleThumbup}
+              highlight={isLoggedIn && thumbUp}
+              onClick={toggleThumbUp}
             >
-              <ThumbupIcon />
+              <ThumbUpIcon />
               <div>Up ({comment?.reactions?.length ?? 0})</div>
             </ActionItem>
             <Edit
@@ -233,8 +234,7 @@ export default function Item({ user, data, chain, onReply }) {
         </>
       )}
       {isEdit && (
-        <Input
-          isEdit={true}
+        <EditInput
           editContent={comment.content}
           editContentType={comment.contentType}
           onFinishedEdit={(reload) => {
