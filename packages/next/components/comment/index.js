@@ -38,7 +38,6 @@ export default function Comments({ user, postId, data, chain }) {
   const [content, setContent] = useState("");
 
   const onReply = (username) => {
-    console.log('fffff')
     let reply = '';
     if (contentType === "markdown") {
       reply = `[@${username}](/member/${username}) `;
@@ -68,7 +67,7 @@ export default function Comments({ user, postId, data, chain }) {
       };
       quillRef.current.getEditor().setContents(contents.ops.concat(reply.ops));
       setTimeout(() => {
-        quillRef.current.getEditor().setSelection(99999, 0, 'api');//always put caret to the end
+        quillRef.current.getEditor().setSelection(99999, 0, 'api'); //always put caret to the end
       }, 4)
     }
     editorWrapperRef.current?.scrollIntoView();
