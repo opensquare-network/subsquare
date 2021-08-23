@@ -38,7 +38,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const postId = detail._id;
 
   const { result: comments } = await nextApi.fetch(`posts/${postId}/comments`, {
-    page,
+    page: page ?? "last",
   });
 
   return {
