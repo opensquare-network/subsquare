@@ -35,7 +35,7 @@ export default function Comments({ user, postId, data, chain }) {
         <>
           <div>
             {(data?.items || []).map((item) => (
-              <Item key={item._id} data={item} user={user} />
+              <Item key={item._id} data={item} user={user} chain={chain} />
             ))}
           </div>
           <Pagination

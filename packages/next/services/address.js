@@ -1,4 +1,13 @@
 import { encodeAddress } from "@polkadot/keyring";
+import { SS58Prefix } from "../utils/constants";
+
+export const encodeAddressToChain = (address, chain) => {
+  try {
+    return encodeAddress(address, SS58Prefix[chain]);
+  } catch {
+    return "";
+  }
+}
 
 export const encodeKusamaAddress = (address) => {
   try {
