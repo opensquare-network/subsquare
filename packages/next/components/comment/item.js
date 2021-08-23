@@ -10,6 +10,8 @@ import { useState } from "react";
 import ReplyIcon from "public/imgs/icons/reply.svg"
 import ThumbupIcon from "public/imgs/icons/thumb-up.svg"
 import Input from "./input";
+import { useDispatch } from "react-redux";
+import { addToast } from "store/reducers/toastSlice";
 
 const Wrapper = styled.div`
   padding: 16px 0;
@@ -115,6 +117,7 @@ const SupporterItem = styled.span`
 `;
 
 export default function Item({ user, data }) {
+  const dispatch = useDispatch();
   const [comment, setComment] = useState(data);
   const [thumbupLoading, setThumbupLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -135,22 +138,36 @@ export default function Item({ user, data }) {
     if (isLoggedIn && !ownComment && !thumbupLoading) {
       setThumbupLoading(true);
       try {
+        let result, error;
+
         if (thumbup) {
-          await nextApi.fetch(`comments/${comment._id}/reaction`, {}, {
-            method: "DELETE",
-          });
+          (
+            { result, error } = await nextApi.fetch(`comments/${comment._id}/reaction`, {}, {
+              method: "DELETE",
+            })
+          );
         } else {
-          await nextApi.fetch(`comments/${comment._id}/reaction`, {}, {
-            method: "PUT",
-            body: JSON.stringify({ reaction: 1 }),
-            headers: { "Content-Type": "application/json" },
-          });
+          (
+            { result, error } = await nextApi.fetch(`comments/${comment._id}/reaction`, {}, {
+              method: "PUT",
+              body: JSON.stringify({ reaction: 1 }),
+              headers: { "Content-Type": "application/json" },
+            })
+          );
+        }
+
+        if (result) {
+          await updateComment();
+        }
+        if (error) {
+          dispatch(addToast({
+            type: "error",
+            message: error.message,
+          }));
         }
       } finally {
         setThumbupLoading(false);
       }
-
-      await updateComment();
     }
   };
 
