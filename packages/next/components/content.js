@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 import Container from "./container";
 import Main from "./main";
+import Footer from "./footer";
 
 const Wrapper = styled.div`
   flex-grow: 1;
@@ -22,30 +23,23 @@ const Left = styled.div`
   @media screen and (max-width: 1000px) {
     display: none;
   }
-`;
-
-const Right = styled.div`
-  width: 246px;
-  flex: 0 0 auto;
-  margin-left: 32px;
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-  @media screen and (max-width: 600px) {
-    margin-left: 0;
-    width: auto;
-    margin-bottom: 16px;
+  .footer{
+    position: absolute;
+    bottom: 0;
   }
 `;
 
-export default function Content({ left, right, children }) {
+
+export default function Content({ left, children }) {
   return (
     <Wrapper>
       <Container>
         <ContentWrapper>
-          {left && <Left>{left}</Left>}
+          {left && <Left>
+            {left}
+            <Footer/>
+          </Left>}
           <Main>{children}</Main>
-          {right && <Right>{right}</Right>}
         </ContentWrapper>
       </Container>
     </Wrapper>

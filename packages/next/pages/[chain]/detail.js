@@ -8,7 +8,6 @@ import Timeline from "components/timeline";
 import { timelineData } from "utils/data";
 import Comments from "components/comment";
 import { commentData } from "utils/data";
-import Position from "components/position";
 import { withLoginUser, withLoginUserRedux } from "../../lib";
 
 const Wrapper = styled.div`
@@ -19,7 +18,7 @@ const Wrapper = styled.div`
 
 export default withLoginUserRedux(({ loginUser }) => {
   return (
-    <Layout user={loginUser} right={<Position />}>
+    <Layout user={loginUser}>
       <Wrapper>
         <Back href="/" text="Back to Overview" />
         <DetailItem data={detailData} />
