@@ -5,6 +5,7 @@ import Pagination from "components/pagination";
 import NoComment from "./noComment";
 import LoginButtons from "./loginButtons";
 import Input from "./input";
+import {useRef, useState} from "react";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -28,14 +29,59 @@ const Title = styled.div`
 `;
 
 export default function Comments({ user, postId, data, chain }) {
+
+  const editorWrapperRef = useRef(null);
+  const [quillRef, setQuillRef] = useState(null);
+  const [contentType, setContentType] = useState(
+     "html"
+  );
+  const [content, setContent] = useState("");
+
+  const onReply = (username) => {
+    console.log('fffff')
+    let reply = '';
+    if (contentType === "markdown") {
+      reply = `[@${username}](/member/${username}) `;
+      const at = content ? `${reply}` : reply;
+      if (content === reply) {
+        setContent(``);
+      } else {
+        setContent(content + at);
+      }
+      editorWrapperRef.current?.querySelector("textarea")?.focus();
+    } else if (contentType === "html") {
+      const contents = quillRef.current.getEditor().getContents();
+      reply = {
+        "ops": [
+          {
+            "insert": {
+              "mention": {
+                "index": "0",
+                "denotationChar": "@",
+                "id": username,
+                "value": username + " &nbsp; "
+              }
+            }
+          },
+          {"insert": "\n"}
+        ]
+      };
+      quillRef.current.getEditor().setContents(contents.ops.concat(reply.ops));
+      setTimeout(() => {
+        quillRef.current.getEditor().setSelection(99999, 0, 'api');//always put caret to the end
+      }, 4)
+    }
+    editorWrapperRef.current?.scrollIntoView();
+  };
+
   return (
     <Wrapper>
       <Title>Comments</Title>
       {data?.items?.length > 0 && (
         <>
           <div>
-            {(data?.items || []).map((item) => (
-              <Item key={item._id} data={item} user={user} />
+            {(data?.items || []).map((item, index) => (
+              <Item key={index} data={item} user={user} onReply={onReply} />
             ))}
           </div>
           <Pagination
@@ -47,7 +93,12 @@ export default function Comments({ user, postId, data, chain }) {
       )}
       {!data?.items?.length > 0 && <NoComment />}
       {!user && <LoginButtons />}
-      {user && <Input postId={postId} chain={chain} />}
+      {user && <Input
+        postId={postId}
+        chain={chain}
+        setQuillRef={setQuillRef}
+        {...{contentType,setContentType,content, setContent}}
+      />}
     </Wrapper>
   );
 }

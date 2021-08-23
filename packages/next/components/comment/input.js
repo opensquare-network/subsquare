@@ -60,21 +60,24 @@ const PreviewWrapper = styled.div`
 
 export default function Input({
   postId,
+  setIsEdit,
   isEdit,
   editContent,
   editContentType,
   onFinishedEdit,
   commentId,
   chain,
+  isEdit,
+                                content, setContent,
+                                contentType,
+                                setContentType,
+                                setQuillRef=null,
 }) {
   const router = useRouter();
-  const [content, setContent] = useState(isEdit ? editContent : "");
   const [showPreview, setShowPreview] = useState(false);
   const [showImgModal, setShowImgModal] = useState(false);
   const [insetQuillImgFunc, setInsetQuillImgFunc] = useState(null);
-  const [contentType, setContentType] = useState(
-    isEdit ? editContentType : "html"
-  );
+
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -165,6 +168,7 @@ export default function Input({
               setShowImgModal(true);
               setInsetQuillImgFunc(insetImgFunc);
             }}
+            setQuillRef={setQuillRef}
           />
         )}
         {!showPreview && (

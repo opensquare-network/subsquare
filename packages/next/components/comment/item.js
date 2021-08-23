@@ -94,6 +94,7 @@ const ActionItem = styled.div`
   }
 `;
 
+
 const SupporterWrapper = styled.div`
   font-style: normal;
   font-weight: normal;
@@ -116,7 +117,7 @@ const SupporterItem = styled.span`
   margin-right: 12px;
 `;
 
-export default function Item({ user, data }) {
+export default function Item({ data, user,onReply }) {
   const dispatch = useDispatch();
   const [comment, setComment] = useState(data);
   const [thumbupLoading, setThumbupLoading] = useState(false);
@@ -188,7 +189,7 @@ export default function Item({ user, data }) {
             {comment.contentType === "html" && <HtmlRender html={comment.content} />}
           </ContentWrapper>
           <ActionWrapper>
-            <ActionItem noHover={!isLoggedIn || ownComment}>
+            <ActionItem onClick={()=>onReply(user.username)} noHover={!isLoggedIn || ownComment}>
               <ReplyIcon />
               <div>Reply</div>
             </ActionItem>

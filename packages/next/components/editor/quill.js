@@ -53,8 +53,9 @@ function handlePasteElement(node, delta) {
 
 
 function MyReactQuill({
-                                       // setQuillRef,
-                                       value, onChange, onFocus, onBlur, setModalInsetImgFunc, users = []}) {
+                                       value, onChange, onFocus, onBlur, setModalInsetImgFunc, users = [],
+                        setQuillRef=null,
+                      }) {
   const [modules] = useState(
     {
       clipboard: {
@@ -122,14 +123,14 @@ function MyReactQuill({
     }
   }
 
-  // const ref = useRef();
-  //
-  // useEffect(() => {
-  //   setQuillRef && setQuillRef(ref);
-  // }, [ref]);
+  const ref = useRef();
+
+  useEffect(() => {
+    setQuillRef && setQuillRef(ref);
+  }, [ref]);
 
   return <ReactQuill
-    // ref={ref}
+    ref={ref}
     modules={modules}
     theme="snow"
     value={value}
