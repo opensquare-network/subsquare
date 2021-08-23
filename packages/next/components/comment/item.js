@@ -12,6 +12,7 @@ import ThumbupIcon from "public/imgs/icons/thumb-up.svg"
 import Input from "./input";
 import { useDispatch } from "react-redux";
 import { addToast } from "store/reducers/toastSlice";
+import User from "components/user";
 
 const Wrapper = styled.div`
   padding: 16px 0;
@@ -50,6 +51,8 @@ const ActionWrapper = styled.div`
 `;
 
 const ActionItem = styled.div`
+  cursor: default;
+
   ${p => !p.noHover && css`
     cursor: pointer;
     :hover {
@@ -96,6 +99,8 @@ const ActionItem = styled.div`
 
 
 const SupporterWrapper = styled.div`
+  display: flex;
+  flex-flow: wrap;
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -106,18 +111,18 @@ const SupporterWrapper = styled.div`
   margin: 16px 0 0 28px;
 `;
 
-const SupporterTitle = styled.span`
+const SupporterTitle = styled.div`
   color: #9DA9BB;
   margin-right: 16px;
 `;
 
-const SupporterItem = styled.span`
+const SupporterItem = styled.div`
   display: inline-block;
   color: #506176;
   margin-right: 12px;
 `;
 
-export default function Item({ data, user,onReply }) {
+export default function Item({ user, data, chain, onReply }) {
   const dispatch = useDispatch();
   const [comment, setComment] = useState(data);
   const [thumbupLoading, setThumbupLoading] = useState(false);
@@ -211,7 +216,9 @@ export default function Item({ data, user,onReply }) {
               <SupporterWrapper>
                 <SupporterTitle>Supported By</SupporterTitle>
                 { comment.reactions.filter(r => r.user).map((r, index) => (
-                  <SupporterItem key={index}>{r.user.username}</SupporterItem>
+                  <SupporterItem key={index}>
+                    <User user={r.user} chain={chain} />
+                  </SupporterItem>
                 )) }
               </SupporterWrapper>
             )

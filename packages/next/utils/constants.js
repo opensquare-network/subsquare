@@ -45,6 +45,7 @@ export const nodes = [
     value: "karura",
     name: "Karura",
     icon: "karura.svg",
+    relay: "kusama",
   },
 ];
 
@@ -172,4 +173,11 @@ export const EmptyList = {
   page: 1,
   pageSize: 10,
   items: []
+};
+
+export const SS58Prefix = {
+  polkadot: 0,
+  kusama: 2,
+  karura: 8,
+  substract: 42,
 };
