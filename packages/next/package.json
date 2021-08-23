@@ -19,6 +19,7 @@
     "@svgr/webpack": "^5.5.0",
     "argon2": "^0.28.2",
     "axios": "^0.21.1",
+    "cheerio": "^1.0.0-rc.10",
     "handlebars": "^4.7.7",
     "html-react-parser": "^1.2.8",
     "http-proxy": "^1.18.1",
