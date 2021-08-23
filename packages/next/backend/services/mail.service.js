@@ -42,13 +42,75 @@ class MailService {
     );
   }
 
+  sendCommentReactionEmail({
+    email,
+    commentAuthor,
+    chain,
+    postUid,
+    commentHeight,
+    content,
+    contentType,
+    reactionUser,
+  }) {
+    const text = templates.commentReaction({
+      commentAuthor,
+      chain,
+      postUid,
+      commentHeight,
+      reactionUser,
+      siteUrl: process.env.SITE_URL,
+    });
+
+    const msg = {
+      html: text,
+      subject: "Someone support your comment",
+      text,
+      to: email,
+    };
+
+    aliMail.sendMail(msg).catch((e) =>
+      console.error("Thumbs up email not sent", e)
+    );
+  }
+
+  sendReplyEmail({
+    email,
+    replyToUser,
+    chain,
+    postUid,
+    content,
+    contentType,
+    author,
+    commentHeight,
+  }) {
+    const text = templates.postReply({
+      author,
+      replyToUser,
+      chain,
+      postUid,
+      commentHeight,
+      siteUrl: process.env.SITE_URL,
+    });
+
+    const msg = {
+      html: text,
+      subject: "Someone reply your post",
+      text,
+      to: email,
+    };
+
+    aliMail.sendMail(msg).catch((e) =>
+      console.error("Reply Email not sent", e)
+    );
+  }
+
   sendCommentMentionEmail({
     email,
     chain,
     postUid,
     content,
     contentType,
-    commentPosition,
+    commentHeight,
     author,
     mentionedUser,
   }) {
@@ -57,7 +119,7 @@ class MailService {
       mentionedUser,
       chain,
       postUid,
-      commentPosition,
+      commentHeight,
       siteUrl: process.env.SITE_URL,
     });
 
