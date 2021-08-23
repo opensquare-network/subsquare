@@ -11,6 +11,8 @@ const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
+  max-width: 848px;
+  margin: auto;
 `;
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {

@@ -11,14 +11,21 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.div`
+  display: flex;
+  justify-content: space-between;
   font-weight: bold;
   font-size: 16px;
 `;
 
-export default function List({ category, items, pagination }) {
+
+
+export default function List({ category, items, pagination , create=null }) {
   return (
     <Wrapper>
-      <Title>{category}</Title>
+      <Title>
+        {category}
+        {create && create}
+      </Title>
       {
         items?.length > 0
         ? (
