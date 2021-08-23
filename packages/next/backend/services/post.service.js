@@ -1,11 +1,13 @@
 const { ObjectId } = require("mongodb");
 const xss = require("xss");
+const cheerio = require("cheerio");
 const { PostTitleLengthLimitation } = require("../constants");
 const { nextPostUid } = require("./status.service");
-const { getPostCollection, getCommentCollection, getReactionCollection } = require("../mongo/common");
+const { getPostCollection, getCommentCollection, getReactionCollection, getUserCollection } = require("../mongo/common");
 const { HttpError } = require("../exc");
 const { ContentType } = require("../constants");
 const { lookupCount, lookupUser, lookupMany } = require("../utils/query");
+const mailService = require("./mail.service");
 
 const xssOptions = {
   whiteList: {
@@ -37,6 +39,68 @@ const xssOptions = {
 const myXss = new xss.FilterXSS(xssOptions);
 function safeHtml(html) {
   return myXss.process(html);
+}
+
+function extractMentions(content, contentType) {
+  const mentions = new Set();
+  if (contentType === ContentType.Markdown) {
+    const reMention = /\[@(\w+)\]\(\/member\/(\w+)\)/g;
+    let match;
+    while ((match = reMention.exec(content)) !== null) {
+      const [, u1, u2] = match;
+      if (u1 === u2) {
+        mentions.add(u1);
+      }
+    }
+  }
+
+  if (contentType === ContentType.Html) {
+    const $ = cheerio.load(content);
+    $(".mention").each((i, el) => {
+      const at = $(el).attr("data-id");
+      if (at) {
+        mentions.add(at);
+      }
+    });
+  }
+
+  return mentions;
+}
+
+async function processCommentMentions({
+  chain,
+  postUid,
+  content,
+  contentType,
+  author,
+  commentPosition,
+  mentions,
+}) {
+  if (mentions.size === 0) {
+    return;
+  }
+
+  const userCol = await getUserCollection();
+  const users = await userCol.find({
+    username: {
+      $in: Array.from(mentions),
+    },
+  }).toArray();
+
+  for (const user of users) {
+    if (user.emailVerified && (user.notification?.mention ?? true)) {
+      mailService.sendCommentMentionEmail({
+        email: user.email,
+        chain,
+        postUid,
+        content,
+        contentType,
+        mentionedUser: user.username,
+        author,
+        commentPosition,
+      });
+    }
+  }
 }
 
 async function createPost(
@@ -138,22 +202,25 @@ async function postComment(
     throw new HttpError(400, "Post not found.");
   }
 
+  const userCol = await getUserCollection();
+  const postAuthor = await userCol.findOne({ _id: post.author });
+  post.author = postAuthor;
+
   const commentCol = await getCommentCollection();
   const height = await commentCol.countDocuments({ post: postObjId });
 
   const now = new Date();
 
-  const result = await commentCol.insertOne(
-    {
-      post: postObjId,
-      content: contentType === ContentType.Html ? safeHtml(content) : content,
-      contentType,
-      author: author._id,
-      height: height + 1,
-      createdAt: now,
-      updatedAt: now,
-    },
-  );
+  const newComment = {
+    post: postObjId,
+    content: contentType === ContentType.Html ? safeHtml(content) : content,
+    contentType,
+    author: author._id,
+    height: height + 1,
+    createdAt: now,
+    updatedAt: now,
+  };
+  const result = await commentCol.insertOne(newComment);
 
   if (!result.result.ok) {
     throw new HttpError(500, "Failed to create comment");
@@ -172,6 +239,23 @@ async function postComment(
 
   if (!updatePostResult.result.ok) {
     throw new HttpError(500, "Unable to udpate post last activity time");
+  }
+
+  const mentions = extractMentions(content, contentType);
+  processCommentMentions({
+    chain: post.chain,
+    postUid: post.postUid,
+    content: newComment.content,
+    contentType: newComment.contentType,
+    author: author.username,
+    commentPosition: newComment.height,
+    mentions,
+  }).catch(console.error);
+
+  if (!author._id.equals(post.author._id)) {
+    if (post.author.emailVerified && (post.author.notification?.reply ?? true)) {
+      //TODO: send reply notification
+    }
   }
 
   return newCommentId;

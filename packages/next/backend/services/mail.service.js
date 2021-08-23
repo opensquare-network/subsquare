@@ -41,6 +41,38 @@ class MailService {
       console.error("Verification Email not sent", e)
     );
   }
+
+  sendCommentMentionEmail({
+    email,
+    chain,
+    postUid,
+    content,
+    contentType,
+    commentPosition,
+    author,
+    mentionedUser,
+  }) {
+    const text = templates.commentMention({
+      author,
+      mentionedUser,
+      chain,
+      postUid,
+      commentPosition,
+      siteUrl: process.env.SITE_URL,
+    });
+
+    const msg = {
+      html: text,
+      subject: "Someone mention you in comment",
+      text,
+      to: email,
+    };
+
+    aliMail.sendMail(msg).catch((e) =>
+      console.error("Comment metion Email not sent", e)
+    );
+  }
+
 }
 
 module.exports = new MailService();
