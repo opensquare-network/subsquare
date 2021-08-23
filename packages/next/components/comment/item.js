@@ -126,7 +126,7 @@ export default function Item({ data, user,onReply }) {
   const commentId = comment._id;
   const isLoggedIn = !!user;
   const ownComment = isLoggedIn && comment.author?.username === user.username;
-  const thumbup = isLoggedIn && comment.reactions.findIndex(r => r.user?.username === user.username) > -1;
+  const thumbup = isLoggedIn && comment?.reactions?.findIndex(r => r.user?.username === user.username) > -1;
 
   const updateComment = async () => {
     const { result: updatedComment } = await nextApi.fetch(`comments/${comment._id}`);
@@ -207,7 +207,7 @@ export default function Item({ data, user,onReply }) {
             />
           </ActionWrapper>
           {
-            comment.reactions.length > 0 && (
+            comment?.reactions?.length > 0 && (
               <SupporterWrapper>
                 <SupporterTitle>Supported By</SupporterTitle>
                 { comment.reactions.filter(r => r.user).map((r, index) => (
