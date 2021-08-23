@@ -1,54 +1,90 @@
+const _ = require("lodash");
 const { getDb } = require("../mongo/common");
 const { SupportChains } = require("../constants");
 const { md5 } = require("../utils");
 
-
-function lookupUser(result, { localField }) {
-  return lookupOne(result, {
-    from: "user",
-    localField,
-    foreignField: "_id",
-    map: (item) => ({
-      username: item.username,
-      emailMd5: md5(item.email.trim().toLocaleLowerCase()),
-      addresses: SupportChains.map(chain => ({
-        chain,
-        address: item[`${chain}Address`]
-      })).filter(p => p.address),
-    }),
-  });
-}
-
-async function lookupOne(result, { from, localField, foreignField, projection, map }) {
-  if (result === null) {
-    return [];
+class DeferredCall {
+  constructor(callback) {
+    this.promise = new Promise(resolve => {
+      process.nextTick(() => callback(this.params || []).then(resolve));
+    });
   }
 
-  const records = Array.isArray(result) ? result : [result];
-  const vals = Array.from(new Set(records.map(item => item[localField])));
-  const db = await getDb();
-  const col = db.collection(from);
-  const items = await col.find({ [foreignField]: { $in: vals } }, { projection }).toArray();
-  const itemsMap = new Map(items.map(item => [item[foreignField].toString(), map ? map(item) : item]));
-
-  records.forEach(item => {
-    const relatedItem = itemsMap.get(item[localField].toString());
-    if (relatedItem) {
-      item[localField] = relatedItem;
-    } else {
-      item[localField] = null;
-    }
-  });
-
-  return items;
+  addParams(params) {
+    this.params = this.params || [];
+    this.params.push(...params);
+    return this.promise;
+  }
 }
 
-async function lookupCount(result, { from, localField, foreignField, as }) {
-  if (result === null) {
+function lookupUser(lookupProps) {
+  if (!Array.isArray(lookupProps)) {
+    return lookupUser([lookupProps]);
+  }
+
+  return lookupOne(
+    {
+      from: "user",
+      foreignField: "_id",
+      map: (item) => ({
+        username: item.username,
+        emailMd5: md5(item.email.trim().toLocaleLowerCase()),
+        addresses: SupportChains.map(chain => ({
+          chain,
+          address: item[`${chain}Address`]
+        })).filter(p => p.address),
+      }),
+    },
+    lookupProps
+  );
+}
+
+async function lookupOne({ from, foreignField, projection, map }, lookupProps) {
+  if (lookupProps === undefined) {
+    const { for: for_, localField } =  arguments[0];
+    return lookupOne(
+      { from, foreignField, projection, map },
+      [{ for: for_, localField }]
+    );
+  }
+
+  const query = new DeferredCall(async (keys) => {
+    const db = await getDb();
+    const col = db.collection(from);
+    const items = await col.find({ [foreignField]: { $in: keys } }, { projection }).toArray();
+    const itemsMap = new Map(items.map(item => [item[foreignField].toString(), map ? map(item) : item]));
+    return itemsMap;
+  });
+
+  let itemsMap = new Set();
+
+  await Promise.all(
+    lookupProps.map(async ({ for: for_, localField }) => {
+      const records = Array.isArray(for_) ? for_ : [for_];
+      const vals = records.map(item => item[localField]);
+
+      itemsMap = await query.addParams(vals);
+
+      records.forEach(item => {
+        const relatedItem = itemsMap.get(item[localField].toString());
+        if (relatedItem) {
+          item[localField] = relatedItem;
+        } else {
+          item[localField] = null;
+        }
+      });
+    })
+  );
+
+  return Array.from(itemsMap.values());
+}
+
+async function lookupCount({ from, for: for_, as, localField, foreignField }) {
+  if (for_ === null) {
     return;
   }
 
-  const records = Array.isArray(result) ? result : [result];
+  const records = Array.isArray(for_) ? for_ : [for_];
   const vals = Array.from(new Set(records.map(item => item[localField])));
   const db = await getDb();
   const col = db.collection(from);
@@ -75,31 +111,18 @@ async function lookupCount(result, { from, localField, foreignField, as }) {
   });
 }
 
-async function lookupMulti(result, { from, localField, foreignField, projection, as, map }) {
-  if (result === null) {
+async function lookupMany({ from, for: for_, projection, as, localField, foreignField, map }) {
+  if (for_ === null) {
     return [];
   }
 
-  const records = Array.isArray(result) ? result : [result];
+  const records = Array.isArray(for_) ? for_ : [for_];
   const vals = Array.from(new Set(records.map(item => item[localField])));
   const db = await getDb();
   const col = db.collection(from);
   const items = await col.aggregate([
-    { $limit: 1 },
     {
-      $project: {
-        _id: 0,
-        key: vals,
-      }
-    },
-    { $unwind: "$key" },
-    {
-      $lookup: {
-        from,
-        localField: "key",
-        foreignField,
-        as: "values",
-      }
+      $match: { [foreignField]: { $in: vals } }
     },
     ...(
       projection ? [
@@ -107,9 +130,15 @@ async function lookupMulti(result, { from, localField, foreignField, projection,
           $project: projection
         }
       ] : []
-    )
+    ),
+    {
+      $group: {
+        _id: "$" + foreignField,
+        values: { $push: "$$ROOT" }
+      }
+    },
   ]).toArray();
-  const itemsMap = new Map(items.map(item => [item.key.toString(), map ? item.values.map(map) : item.values]));
+  const itemsMap = new Map(items.map(item => [item._id.toString(), map ? item.values.map(map) : item.values]));
 
   records.forEach(item => {
     const relatedItem = itemsMap.get(item[localField].toString());
@@ -120,12 +149,12 @@ async function lookupMulti(result, { from, localField, foreignField, projection,
     }
   });
 
-  return [].concat(...Array.from(itemsMap.values()));
+  return _.flatten(Array.from(itemsMap.values()));
 }
 
 module.exports = {
   lookupOne,
-  lookupMulti,
+  lookupMany,
   lookupCount,
   lookupUser,
 };

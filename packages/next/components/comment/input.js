@@ -61,6 +61,10 @@ const PreviewWrapper = styled.div`
 export default function Input({
   postId,
   setIsEdit,
+  isEdit,
+  editContent,
+  editContentType,
+  onFinishedEdit,
   commentId,
   chain,
   isEdit,
@@ -129,8 +133,7 @@ export default function Input({
     if (error) {
       setErrors(error);
     } else if (result) {
-      setIsEdit(false);
-      refreshData();
+      onFinishedEdit(true);
     }
   };
 
@@ -194,7 +197,7 @@ export default function Input({
             {showPreview ? "Write" : "Preview"}
           </Button>
         )}
-        {isEdit && <Button onClick={() => setIsEdit(false)}>Cancel</Button>}
+        {isEdit && <Button onClick={() => onFinishedEdit(false)}>Cancel</Button>}
         <Button
           isLoading={loading}
           secondary

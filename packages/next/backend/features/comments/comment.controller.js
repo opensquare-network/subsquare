@@ -2,6 +2,18 @@ const { HttpError } = require("../../exc");
 const postService = require("../../services/post.service");
 const { ContentType } = require("../../constants");
 
+async function getComment(ctx) {
+  const { commentId } = ctx.params;
+
+  ctx.body = await postService.getComment(commentId);
+}
+
+async function getCommentReactions(ctx) {
+  const { commentId } = ctx.params;
+
+  ctx.body = await postService.getCommentReactions(commentId);
+}
+
 async function updateComment(ctx) {
   const { commentId } = ctx.params;
   const {
@@ -23,8 +35,13 @@ async function updateComment(ctx) {
 }
 
 async function setCommentReaction(ctx) {
-  const commentId = ctx.params.commentId;
+  const { commentId } = ctx.params;
   const { reaction } = ctx.request.body;
+
+  if (reaction === undefined) {
+    throw new HttpError(400, "Reaction is missing");
+  }
+
   const user = ctx.user;
   ctx.body = await postService.setCommentReaction(
     commentId,
@@ -34,12 +51,14 @@ async function setCommentReaction(ctx) {
 }
 
 async function unsetCommentReaction(ctx) {
-  const commentId = ctx.params.commentId;
+  const { commentId } = ctx.params;
   const user = ctx.user;
   ctx.body = await postService.unsetCommentReaction(commentId, user);
 }
 
 module.exports = {
+  getComment,
+  getCommentReactions,
   updateComment,
   setCommentReaction,
   unsetCommentReaction,
