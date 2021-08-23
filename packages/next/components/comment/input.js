@@ -67,7 +67,6 @@ export default function Input({
   onFinishedEdit,
   commentId,
   chain,
-  isEdit,
                                 content, setContent,
                                 contentType,
                                 setContentType,
