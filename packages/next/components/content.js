@@ -6,7 +6,9 @@ import Footer from "./footer";
 
 const Wrapper = styled.div`
   flex-grow: 1;
-  margin: 26px 0;
+  width: 100%;
+  max-width: 1080px;
+  margin: 26px auto;
 `;
 
 const ContentWrapper = styled.div`
