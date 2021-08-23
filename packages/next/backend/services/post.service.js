@@ -202,7 +202,9 @@ async function postComment(
     throw new HttpError(400, "Post not found.");
   }
 
-  await lookupUser({ for: post, localField: "author" });
+  const userCol = await getUserCollection();
+  const postAuthor = await userCol.findOne({ _id: post.author });
+  post.author = postAuthor;
 
   const commentCol = await getCommentCollection();
   const height = await commentCol.countDocuments({ post: postObjId });
