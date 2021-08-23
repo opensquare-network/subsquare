@@ -194,7 +194,14 @@ export default function Item({ user, data, chain, onReply }) {
             {comment.contentType === "html" && <HtmlRender html={comment.content} />}
           </ContentWrapper>
           <ActionWrapper>
-            <ActionItem onClick={()=>onReply(user.username)} noHover={!isLoggedIn || ownComment}>
+            <ActionItem
+              onClick={() => {
+                if (isLoggedIn && !ownComment) {
+                  onReply(comment.author?.username);
+                }
+              }}
+              noHover={!isLoggedIn || ownComment}
+            >
               <ReplyIcon />
               <div>Reply</div>
             </ActionItem>
