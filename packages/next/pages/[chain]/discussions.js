@@ -1,7 +1,6 @@
 import List from "components/list";
 import Layout from "components/layout";
 import Menu from "components/menu";
-import Trends from "components/trends";
 import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "../../lib";
 import nextApi from "../../services/nextApi";
@@ -25,7 +24,6 @@ export default withLoginUserRedux(({ loginUser, posts, chain }) => {
     <Layout
       user={loginUser}
       left={<Menu menu={mainMenu} />}
-      right={<Trends user={loginUser} chain={chain} />}
     >
       <List
         category={"Discussion"}
