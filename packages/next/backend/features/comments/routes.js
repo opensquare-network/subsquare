@@ -1,6 +1,7 @@
 const Router = require("koa-router");
 const commentController = require("./comment.controller");
 const requireAuth = require("../../middleware/require-auth");
+const requireVerify = require("../../middleware/require-verify");
 
 const router = new Router();
 
@@ -13,6 +14,7 @@ router.patch("/comments/:commentId", requireAuth, commentController.updateCommen
 router.put(
   "/comments/:commentId/reaction",
   requireAuth,
+  requireVerify,
   commentController.setCommentReaction
 );
 
