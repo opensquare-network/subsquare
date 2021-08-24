@@ -30,7 +30,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { chain, id, page } = context.query;
+  const { chain, id, page, page_size: pageSize } = context.query;
 
   const [{ result: detail }] = await Promise.all([
     nextApi.fetch(`posts/${id}`),
@@ -40,6 +40,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   const { result: comments } = await nextApi.fetch(`posts/${postId}/comments`, {
     page: page ?? "last",
+    pageSize: Math.min(pageSize ?? 50, 100),
   });
 
   return {

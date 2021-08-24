@@ -29,7 +29,6 @@ const Title = styled.div`
 `;
 
 export default function Comments({ user, postId, data, chain }) {
-
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
   const [contentType, setContentType] = useState(

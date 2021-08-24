@@ -1,6 +1,8 @@
 const aliMail = require("./alimail.service");
 const templates = require("../templates");
 
+const pageSize = 50;
+
 class MailService {
   sendResetPasswordEmail({ username, email, token }) {
     const text = templates.resetPassword({
@@ -52,12 +54,15 @@ class MailService {
     contentType,
     reactionUser,
   }) {
+    const page = Math.ceil(commentHeight / pageSize);
+
     const text = templates.commentReaction({
       commentAuthor,
       chain,
       postUid,
       commentHeight,
       reactionUser,
+      page, pageSize,
       siteUrl: process.env.SITE_URL,
     });
 
@@ -83,12 +88,15 @@ class MailService {
     author,
     commentHeight,
   }) {
+    const page = Math.ceil(commentHeight / pageSize);
+
     const text = templates.postReply({
       author,
       replyToUser,
       chain,
       postUid,
       commentHeight,
+      page, pageSize,
       siteUrl: process.env.SITE_URL,
     });
 
@@ -114,12 +122,15 @@ class MailService {
     author,
     mentionedUser,
   }) {
+    const page = Math.ceil(commentHeight / pageSize);
+
     const text = templates.commentMention({
       author,
       mentionedUser,
       chain,
       postUid,
       commentHeight,
+      page, pageSize,
       siteUrl: process.env.SITE_URL,
     });
 
