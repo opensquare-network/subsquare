@@ -21,6 +21,12 @@ const Wrapper = styled.div`
   margin-left: -200px;
   padding-bottom: 16px;
   width: 400px;
+  @media screen and (max-width: 600px) {
+    width: 343px;
+    margin-top: -50px;
+    margin-left: -171px;
+    border-radius: 6px;
+  }
   background: #FFFFFF;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.04);
   border-radius: 8px;
@@ -38,22 +44,6 @@ const Title = styled.div`
   }
 `
 
-const TabWrapper = styled.div`
-  padding: 16px 16px 8px 16px;
-`
-
-const Tab = styled.button`
-  background: none;
-  outline: none;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-  padding: 0;
-
-  &:hover, &.active {
-    color: #E6007A;
-  }
-`
 
 const FormWrapper = styled.div`
   padding: 0 16px 16px 16px;
@@ -97,34 +87,6 @@ const SubmitButtonWrapper = styled.div`
   text-align: right;
 `
 
-const Uploading = styled.button`
-  margin-right: 16px;
-  padding-top: 4px;
-  width: 82px;
-  font-weight: 500;
-  font-size: 14px;
-  color: #FFFFFF;
-  background-color: #ddd;
-  border: none;
-  border-radius: 4px;
-  cursor: wait;
-  outline: none;
-
-  svg {
-    animation-name: spin;
-    animation-duration: 2000ms;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-    @keyframes spin {
-      from {
-        transform: rotate(0deg);
-      }
-      to {
-        transform: rotate(360deg);
-      }
-    }
-  }
-`
 
 
 const SubmitButton = styled.span`
@@ -136,7 +98,7 @@ const SubmitButton = styled.span`
   font-weight: 500;
   font-size: 14px;
   color: #FFFFFF;
-  background: #4B5057;
+  background: #1E2134;
   border-radius: 4px;
   cursor: pointer;
 `

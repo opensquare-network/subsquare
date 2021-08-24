@@ -7,6 +7,10 @@
     text-align: center;
   }
 
+  .ql-toolbar.ql-snow .ql-formats {
+    margin-right: 8px;
+  }
+
   div.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="1"]::before{
     font-size: 1.25em;
   }
@@ -142,12 +146,12 @@
 
   .ql-toolbar.ql-snow {
     border: none !important;
-    border-bottom: 1px solid #dddddd !important;
     padding: 9px 8px;
   }
 
   .ql-container.ql-snow {
     border: none !important;
+    border-top: 1px solid #dddddd !important;
   }
 
   .ql-indent-1:not(.ql-direction-rtl) {

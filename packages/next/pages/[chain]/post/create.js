@@ -31,6 +31,12 @@ const ContentWrapper = styled.div`
   0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
   0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
+  @media screen and (max-width: 600px) {
+    margin-left: -16px;
+    margin-right: -16px;
+    border-radius: 0;
+    padding: 24px;
+  }
 `;
 
 const Title = styled.div`
