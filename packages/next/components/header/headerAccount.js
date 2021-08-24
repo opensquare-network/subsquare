@@ -7,8 +7,7 @@ import Button from "components/button";
 import { accountMenu } from "utils/constants";
 import { useOnClickOutside, useWindowSize } from "utils/hooks";
 import { logout } from "store/reducers/userSlice";
-import Avatar from "components/avatar";
-import Grvatar from "components/gravatar";
+import User from "components/user";
 
 const Wrapper = styled.div`
   position: relative;
@@ -69,7 +68,7 @@ const Divider = styled.div`
   margin: 8px 0;
 `;
 
-export default function HeaderAccount({ user }) {
+export default function HeaderAccount({ user, chain }) {
   const router = useRouter();
   const [show, setShow] = useState(false);
   const ref = useRef();
@@ -98,12 +97,7 @@ export default function HeaderAccount({ user }) {
       {user && (
         <Wrapper ref={ref}>
           <AccountButton onClick={() => setShow(!show)}>
-            {user.addresses?.[0]?.address ? (
-              <Avatar address={user.addresses[0].address} />
-            ) : (
-              <Grvatar email={user.email} size={24} />
-            )}
-            <div>{user.username}</div>
+            <User user={user} chain={chain} />
           </AccountButton>
           {show && (
             <Menu>

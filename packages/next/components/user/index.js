@@ -4,16 +4,30 @@ import { fetchIdentity } from "services/identity";
 import { useEffect, useState } from "react";
 import { encodeAddressToChain } from "services/address";
 import { nodes } from "utils/constants";
+import Avatar from "components/avatar";
+import Grvatar from "components/gravatar";
 
-const Username = styled.div`
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Username = styled.span`
   word-break: break-all;
   cursor: default;
 `;
 
-export default function User({ user, chain }) {
+function addressEllipsis(address, start = 4, end = 4) {
+  if (!address) return;
+  if (address.length <= start + end) return address;
+  if (!address.slice) return address;
+  return `${address.slice(0, start)}...${address.slice(-end)}`;
+}
+
+export default function User({ user, chain, showAvatar = true }) {
   const [identity, setIdentity] = useState(null);
 
-  const address = user.addresses.find(addr => addr.chain === chain)?.address;
+  const address = user.addresses?.find(addr => addr.chain === chain)?.address;
 
   useEffect(() => {
     setIdentity(null);
@@ -28,13 +42,22 @@ export default function User({ user, chain }) {
     }
   }, [address]);
 
-  if (!identity) {
-    return (
-      <Username>{user.username}</Username>
-    );
-  }
-
   return (
-    <Identity identity={identity} />
-  );
+    <Wrapper>
+      {showAvatar && (
+        <div style={{ marginRight: "4px" }}>
+          {address ? (
+             <Avatar address={address} />
+          ) : (
+             <Grvatar email={user.email} size={24} />
+          )}
+        </div>
+      )}
+      {identity ? (
+        <Identity identity={identity} />
+      ) : (
+        <Username>{address ? addressEllipsis(address) : user.username}</Username>
+      )}
+    </Wrapper>
+  )
 }

@@ -130,8 +130,10 @@ const SupporterTitle = styled.div`
 
 const SupporterItem = styled.div`
   display: inline-block;
-  color: #506176;
   margin-right: 12px;
+  > .username {
+    color: #506176;
+  }
 `;
 
 const EditedLabel = styled.div`
@@ -290,7 +292,7 @@ export default function Item({ user, data, chain, onReply }) {
                 .filter((r) => r.user)
                 .map((r, index) => (
                   <SupporterItem key={index}>
-                    <User user={r.user} chain={chain} />
+                    <User user={r.user} chain={chain} showAvatar={false} />
                   </SupporterItem>
                 ))}
             </SupporterWrapper>

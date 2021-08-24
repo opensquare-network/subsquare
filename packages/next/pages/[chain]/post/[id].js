@@ -19,7 +19,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const postId = detail._id;
 
   return (
-    <Layout user={loginUser}>
+    <Layout user={loginUser} chain={chain}>
       <Wrapper>
         <Back href="/" text="Back to Overview" />
         <DetailItem data={detail} user={loginUser} />

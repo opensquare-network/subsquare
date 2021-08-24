@@ -114,7 +114,7 @@ export default withLoginUserRedux(({loginUser, chain}) => {
   };
 
   return (
-    <Layout user={loginUser}>
+    <Layout user={loginUser} chain={chain}>
       <Wrapper>
         <Back href={`/${chain}/discussions`} text="Back to Discussions"/>
         <ContentWrapper>

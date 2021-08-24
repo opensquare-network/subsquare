@@ -84,13 +84,14 @@ const LogoImg = styled.img`
   height: 64px;
 `;
 
-export default function Header({ user, left }) {
+export default function Header({ user, left, chain }) {
   const [show, setShow] = useState(false);
   const [hiddenWidth, setHiddenWidth] = useState();
   const [position, setPosition] = useState("left");
   const [content, setContent] = useState();
   const windowSize = useWindowSize();
-  const [node, setNode] = useState(nodes[0]);
+
+  const node = nodes.find(n => n.value === chain) || nodes[0];
 
   useEffect(() => {
     if (hiddenWidth && windowSize.width && windowSize.width > hiddenWidth) {
@@ -128,7 +129,7 @@ export default function Header({ user, left }) {
             </NodeButton>
           </Left>
           <Right>
-            <HeaderAccount user={user} />
+            <HeaderAccount user={user} chain={chain} />
             <NodeWrapper>
               <NodeSwitch />
             </NodeWrapper>
