@@ -54,7 +54,7 @@ class MailService {
     contentType,
     reactionUser,
   }) {
-    const page = parseInt(commentHeight / pageSize);
+    const page = Math.ceil(commentHeight / pageSize);
 
     const text = templates.commentReaction({
       commentAuthor,
@@ -88,7 +88,7 @@ class MailService {
     author,
     commentHeight,
   }) {
-    const page = parseInt(commentHeight / pageSize);
+    const page = Math.ceil(commentHeight / pageSize);
 
     const text = templates.postReply({
       author,
@@ -122,7 +122,7 @@ class MailService {
     author,
     mentionedUser,
   }) {
-    const page = parseInt(commentHeight / pageSize);
+    const page = Math.ceil(commentHeight / pageSize);
 
     const text = templates.commentMention({
       author,
