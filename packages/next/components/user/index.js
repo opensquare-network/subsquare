@@ -17,13 +17,6 @@ const Username = styled.span`
   cursor: default;
 `;
 
-function addressEllipsis(address, start = 4, end = 4) {
-  if (!address) return;
-  if (address.length <= start + end) return address;
-  if (!address.slice) return address;
-  return `${address.slice(0, start)}...${address.slice(-end)}`;
-}
-
 export default function User({ user, chain, showAvatar = true }) {
   const [identity, setIdentity] = useState(null);
 
@@ -56,7 +49,7 @@ export default function User({ user, chain, showAvatar = true }) {
       {identity ? (
         <Identity identity={identity} />
       ) : (
-        <Username>{address ? addressEllipsis(address) : user.username}</Username>
+        <Username>{user.username}</Username>
       )}
     </Wrapper>
   )
