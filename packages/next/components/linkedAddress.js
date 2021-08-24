@@ -14,6 +14,7 @@ import {
   encodeKaruraAddress,
   encodeKusamaAddress,
   encodePolkadotAddress,
+  encodeSubstrateAddress,
   signMessage,
 } from "services/chainApi";
 import { addressEllipsis } from "utils";
@@ -285,11 +286,11 @@ export default function LinkedAddress() {
       .filter((address) =>
         accounts.every(
           (acc) =>
-            address.wildcardAddress && acc.address !== address.wildcardAddress
+            acc[`${address.chain}Address`] !== address.address
         )
       )
       .map((address) => ({
-        address: address.wildcardAddress,
+        address: encodeSubstrateAddress(address.address),
         kusamaAddress: address.chain === "kusama" ? address.address : null,
         polkadotAddress: address.chain === "polkadot" ? address.address : null,
         karuraAddress: address.chain === "karura" ? address.address : null,
