@@ -1,6 +1,6 @@
-import styled, { css } from "styled-components";
-import { useState } from "react";
-import { useRouter } from "next/router";
+import styled, {css} from "styled-components";
+import React, {useState} from "react";
+import {useRouter} from "next/router";
 
 import MarkdownEditor from "components/markdownEditor";
 import Toggle from "components/toggle";
@@ -15,10 +15,10 @@ import UploadImgModal from "../editor/imageModal";
 const Wrapper = styled.div`
   margin-top: 48px;
   ${(p) =>
-    p.isEdit &&
-    css`
-      margin-top: 8px;
-    `}
+          p.isEdit &&
+          css`
+            margin-top: 8px;
+          `}
 `;
 
 const InputWrapper = styled.div`
@@ -58,20 +58,21 @@ const PreviewWrapper = styled.div`
   }
 `;
 
-export default function Input({
-  postId,
-  setIsEdit,
-  isEdit,
-  editContent,
-  editContentType,
-  onFinishedEdit,
-  commentId,
-  chain,
-                                content, setContent,
-                                contentType,
-                                setContentType,
-                                setQuillRef=null,
-}) {
+function Input({
+                 postId,
+                 setIsEdit,
+                 isEdit,
+                 editContent,
+                 editContentType,
+                 onFinishedEdit,
+                 commentId,
+                 chain,
+                 content, setContent,
+                 contentType,
+                 setContentType,
+                 setQuillRef = null,
+                 users=[],
+               }, ref) {
   const router = useRouter();
   const [showPreview, setShowPreview] = useState(false);
   const [showImgModal, setShowImgModal] = useState(false);
@@ -115,7 +116,7 @@ export default function Input({
 
   const updateComment = async () => {
     setLoading(true);
-    const { result, error } = await nextApi.fetch(
+    const {result, error} = await nextApi.fetch(
       `comments/${commentId}`,
       {},
       {
@@ -125,7 +126,7 @@ export default function Input({
           content,
           contentType,
         }),
-        headers: { "Content-Type": "application/json" },
+        headers: {"Content-Type": "application/json"},
       }
     );
     setLoading(false);
@@ -148,11 +149,11 @@ export default function Input({
         <UploadImgModal showImgModal={showImgModal} setShowImgModal={setShowImgModal}
                         insetQuillImgFunc={insetQuillImgFunc}/>
       }
-      <InputWrapper>
+      <InputWrapper ref={ref}>
         {contentType === "markdown" && (
           <MarkdownEditor
             height={114}
-            content={content}
+            {...{content,users}}
             setContent={onInputChange}
             visible={!showPreview}
           />
@@ -160,7 +161,7 @@ export default function Input({
         {contentType === "html" && (
           <QuillEditor
             visible={!showPreview}
-            content={content}
+            {...{content,users}}
             setContent={onInputChange}
             height={114}
             setModalInsetImgFunc={(insetImgFunc) => {
@@ -184,9 +185,9 @@ export default function Input({
       {showPreview && (
         <PreviewWrapper>
           {contentType === "markdown" && (
-            <PreviewMD content={content} setContent={setContent} />
+            <PreviewMD content={content} setContent={setContent}/>
           )}
-          {contentType === "html" && <HtmlRender html={content} />}
+          {contentType === "html" && <HtmlRender html={content}/>}
         </PreviewWrapper>
       )}
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
@@ -208,3 +209,5 @@ export default function Input({
     </Wrapper>
   );
 }
+
+export default React.forwardRef(Input);

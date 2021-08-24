@@ -6,16 +6,18 @@ import Markdown from "components/markdown";
 import Edit from "components/edit";
 import HtmlRender from "../post/htmlRender";
 import nextApi from "services/nextApi";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReplyIcon from "public/imgs/icons/reply.svg";
 import ThumbUpIcon from "public/imgs/icons/thumb-up.svg";
 import { useDispatch } from "react-redux";
 import { addToast } from "store/reducers/toastSlice";
 import User from "components/user";
-import EditInput from "../editInput";
+import EditInput from "components/editInput";
+import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
-  padding: 16px 0;
+  padding: 16px 48px;
+  margin: 0px -48px;
 
   :not(:last-child) {
     border-bottom: 1px solid #ebeef4;
@@ -26,6 +28,12 @@ const Wrapper = styled.div`
       display: block;
     }
   }
+
+  ${(p) =>
+    p.highlight &&
+    css`
+      background-color: #f6f7fa;
+    `}
 `;
 
 const InfoWrapper = styled.div`
@@ -136,9 +144,19 @@ const EditedLabel = styled.div`
 
 export default function Item({ user, data, chain, onReply }) {
   const dispatch = useDispatch();
+  const router = useRouter();
   const [comment, setComment] = useState(data);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [highlight, setHighlight] = useState(false);
+
+  useEffect(() => {
+    if (window?.location?.hash === "") {
+      return;
+    }
+    const height = parseInt(window.location.hash.substr(1));
+    setHighlight(height === comment.height);
+  }, [router]);
 
   const commentId = comment._id;
   const isLoggedIn = !!user;
@@ -218,7 +236,7 @@ export default function Item({ user, data, chain, onReply }) {
   };
 
   return (
-    <Wrapper>
+    <Wrapper id={comment.height} highlight={highlight}>
       <InfoWrapper>
         <Author
           username={comment.author?.username}

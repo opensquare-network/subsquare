@@ -1,7 +1,5 @@
-import {useDispatch} from "react-redux";
-// import {addToast} from "@/store/reducers/toastSlice";
 import styled from "styled-components";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
 
 const Shade = styled.div`
@@ -9,8 +7,8 @@ const Shade = styled.div`
   position: absolute;
   left: 0;
   right: 0;
-  top: -60px;
-  bottom: -60px;
+  top: 0;
+  bottom: 0;
   background-color: rgba(0, 0, 0, 0.6)
 `
 

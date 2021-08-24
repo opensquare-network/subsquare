@@ -29,13 +29,19 @@ const Title = styled.div`
 `;
 
 export default function Comments({ user, postId, data, chain }) {
-
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
   const [contentType, setContentType] = useState(
      "html"
   );
   const [content, setContent] = useState("");
+
+  function isUniqueInArray(value, index, self) {
+    return self.indexOf(value) === index;
+  }
+
+  const users = data?.items?.map(comment => comment.author.username).filter(isUniqueInArray) ?? [];
+
 
   const onReply = (username) => {
     let reply = '';
@@ -95,8 +101,9 @@ export default function Comments({ user, postId, data, chain }) {
       {user && <Input
         postId={postId}
         chain={chain}
+        ref={editorWrapperRef}
         setQuillRef={setQuillRef}
-        {...{contentType,setContentType,content, setContent}}
+        {...{contentType,setContentType,content, setContent,users}}
       />}
     </Wrapper>
   );
