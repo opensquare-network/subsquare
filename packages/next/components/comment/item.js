@@ -145,12 +145,11 @@ export default function Item({ user, data, chain, onReply }) {
   const [highlight, setHighlight] = useState(false);
 
   useEffect(() => {
-    if (window.location.hash) {
-      const height = parseInt(window.location.hash.substr(1));
-      if (height === comment.height) {
-        setHighlight(true);
-      }
+    if (window?.location?.hash === '') {
+      return;
     }
+    const height = parseInt(window.location.hash.substr(1));
+    setHighlight(height === comment.height);
   }, [router]);
 
   const commentId = comment._id;
