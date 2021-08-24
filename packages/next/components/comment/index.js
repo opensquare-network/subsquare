@@ -95,6 +95,7 @@ export default function Comments({ user, postId, data, chain }) {
       {user && <Input
         postId={postId}
         chain={chain}
+        ref={editorWrapperRef}
         setQuillRef={setQuillRef}
         {...{contentType,setContentType,content, setContent}}
       />}
