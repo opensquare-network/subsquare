@@ -1,7 +1,7 @@
 const aliMail = require("./alimail.service");
 const templates = require("../templates");
 
-const pageSize = 10;
+const pageSize = 50;
 
 class MailService {
   sendResetPasswordEmail({ username, email, token }) {
