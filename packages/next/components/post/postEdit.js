@@ -1,0 +1,60 @@
+import styled from "styled-components";
+import { useState } from "react";
+
+import Input from "components/input";
+import EditInput from "components/editInput";
+import nextApi from "services/nextApi";
+
+const Title = styled.div`
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 24px;
+`;
+
+const Label = styled.div`
+  font-weight: bold;
+  font-size: 12px;
+  margin: 16px 0 8px;
+`;
+
+export default function PostEdit({ postData, setIsEdit, updatePost }) {
+  const [title, setTitle] = useState(postData.title);
+
+  const editPost = async (content, contentType) => {
+    const result = await nextApi.fetch(
+      `posts/${postData._id}`,
+      {},
+      {
+        method: "PATCH",
+        credentials: "same-origin",
+        body: JSON.stringify({
+          title,
+          content,
+          contentType,
+        }),
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    return result;
+  };
+
+  return (
+    <div>
+      <Title>Edit</Title>
+      <Label>Title</Label>
+      <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+      <Label>Issue</Label>
+      <EditInput
+        editContent={postData.content}
+        editContentType={postData.contentType}
+        onFinishedEdit={(reload) => {
+          if (reload) {
+            updatePost();
+          }
+          setIsEdit(false);
+        }}
+        update={editPost}
+      />
+    </div>
+  );
+}

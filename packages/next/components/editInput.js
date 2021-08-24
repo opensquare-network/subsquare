@@ -5,19 +5,13 @@ import MarkdownEditor from "components/markdownEditor";
 import Toggle from "components/toggle";
 import Button from "components/button";
 import PreviewMD from "components/create/previewMD";
-import nextApi from "services/nextApi";
 import ErrorText from "components/ErrorText";
-import QuillEditor from "../editor/quillEditor";
-import HtmlRender from "../post/htmlRender";
-import UploadImgModal from "../editor/imageModal";
+import QuillEditor from "./editor/quillEditor";
+import HtmlRender from "./post/htmlRender";
+import UploadImgModal from "./editor/imageModal";
 
 const Wrapper = styled.div`
-  margin-top: 48px;
-  ${(p) =>
-    p.isEdit &&
-    css`
-      margin-top: 8px;
-    `}
+  margin-top: 8px;
 `;
 
 const InputWrapper = styled.div`
@@ -40,7 +34,7 @@ const InputSwitch = styled.div`
 const ButtonWrapper = styled.div`
   margin-top: 16px;
   display: flex;
-  justify-editContent: flex-end;
+  justify-content: flex-end;
 
   > :not(:first-child) {
     margin-left: 12px;
@@ -61,8 +55,8 @@ export default function EditInput({
   editContent,
   editContentType,
   onFinishedEdit,
-  commentId,
-  setQuillRef=null,
+  update,
+  setQuillRef = null,
 }) {
   const [content, setContent] = useState(editContent);
   const [contentType, setContentType] = useState(editContentType);
@@ -84,21 +78,9 @@ export default function EditInput({
     setContentType(contentType === "html" ? "markdown" : "html");
   };
 
-  const updateComment = async () => {
+  const onUpdate = async () => {
     setLoading(true);
-    const { result, error } = await nextApi.fetch(
-      `comments/${commentId}`,
-      {},
-      {
-        method: "PATCH",
-        credentials: "same-origin",
-        body: JSON.stringify({
-          content,
-          contentType,
-        }),
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    const { result, error } = await update(content, contentType);
     setLoading(false);
     if (error) {
       setErrors(error);
@@ -114,11 +96,13 @@ export default function EditInput({
 
   return (
     <Wrapper>
-      {
-        contentType === "html" &&
-        <UploadImgModal showImgModal={showImgModal} setShowImgModal={setShowImgModal}
-                        insetQuillImgFunc={insetQuillImgFunc}/>
-      }
+      {contentType === "html" && (
+        <UploadImgModal
+          showImgModal={showImgModal}
+          setShowImgModal={setShowImgModal}
+          insetQuillImgFunc={insetQuillImgFunc}
+        />
+      )}
       <InputWrapper>
         {contentType === "markdown" && (
           <MarkdownEditor
@@ -143,7 +127,7 @@ export default function EditInput({
         )}
         {!showPreview && (
           <InputSwitch>
-            <img src="/imgs/icons/markdown-mark.svg" alt=""/>
+            <img src="/imgs/icons/markdown-mark.svg" alt="" />
             <Toggle
               size="small"
               isOn={contentType === "markdown"}
@@ -155,7 +139,7 @@ export default function EditInput({
       {showPreview && (
         <PreviewWrapper>
           {contentType === "markdown" && (
-            <PreviewMD editContent={editContent} setEditContent={setEditContent} />
+            <PreviewMD content={content} setContent={setContent} />
           )}
           {contentType === "html" && <HtmlRender html={editContent} />}
         </PreviewWrapper>
@@ -163,11 +147,10 @@ export default function EditInput({
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
       <ButtonWrapper>
         <Button onClick={() => onFinishedEdit(false)}>Cancel</Button>
-        <Button
-          isLoading={loading}
-          secondary
-          onClick={updateComment}
-        >
+        <Button onClick={() => setShowPreview(!showPreview)}>
+          {showPreview ? "Write" : "Preview"}
+        </Button>
+        <Button isLoading={loading} secondary onClick={onUpdate}>
           Update
         </Button>
       </ButtonWrapper>

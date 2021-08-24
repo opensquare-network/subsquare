@@ -1,9 +1,13 @@
 import styled, { css } from "styled-components";
+import { useState } from "react";
 
 import { timeDuration } from "utils";
 import Author from "components/author";
 import Markdown from "components/markdown";
 import HtmlRender from "./post/htmlRender";
+import Actions from "components/actions";
+import PostEdit from "components/post/postEdit";
+import nextApi from "services/nextApi";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -17,6 +21,11 @@ const Wrapper = styled.div`
     padding: 24px;
     margin: 0 -16px;
     border-radius: 0;
+  }
+  :hover {
+    .edit {
+      display: block;
+    }
   }
 `;
 
@@ -100,15 +109,12 @@ const TextWrapper = styled.div`
   margin-top: 24px;
 `;
 
-const DividerSecond = styled.div`
-  height: 1px;
-  background: #ebeef4;
-  margin: 48px 0;
-`;
-
-const Label = styled.div`
-  font-weight: bold;
-  font-size: 16px;
+const EditedLabel = styled.div`
+  margin-top: 8px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  color: #9da9bb;
 `;
 
 const getTypeColor = (type) => {
@@ -122,35 +128,68 @@ const getTypeColor = (type) => {
   }
 };
 
-export default function DetailItem({ data }) {
+export default function DetailItem({ data, user }) {
+  const [post, setPost] = useState(data);
+  const [isEdit, setIsEdit] = useState(false);
+  const isLoggedIn = !!user;
+  const ownPost = isLoggedIn && post.author?.username === user.username;
+
+  const updatePost = async () => {
+    const { result: newPost } = await nextApi.fetch(`posts/${post._id}`);
+    if (newPost) {
+      setPost(newPost);
+    }
+  };
+
   return (
     <Wrapper>
-      <DividerWrapper>
-        {data.postUid && <Index>{`#${data.postUid}`}</Index>}
-        {data.createdAt && <Info>Created {timeDuration(data.createdAt)}</Info>}
-        {data.comments > -1 && <Info>{`${data.comments} Comments`}</Info>}
-      </DividerWrapper>
-      <Title>{data.title}</Title>
-      <Divider />
-      <FooterWrapper>
-        <DividerWrapper>
-          <Author
-            username={data.author?.username}
-            emailMd5={data.author?.emailMd5}
-            address={data.author?.addresses?.[0]?.address}
-          />
-          {data.type && (
-            <div>
-              <TypeWrapper color={getTypeColor(data.type)}>
-                {data.type}
-              </TypeWrapper>
-            </div>
+      {!isEdit && (
+        <>
+          <DividerWrapper>
+            {post.postUid && <Index>{`#${post.postUid}`}</Index>}
+            {post.createdAt && (
+              <Info>Created {timeDuration(post.createdAt)}</Info>
+            )}
+            {post.comments > -1 && <Info>{`${post.comments} Comments`}</Info>}
+          </DividerWrapper>
+          <Title>{post.title}</Title>
+          <Divider />
+          <FooterWrapper>
+            <DividerWrapper>
+              <Author
+                username={post.author?.username}
+                emailMd5={post.author?.emailMd5}
+                address={post.author?.addresses?.[0]?.address}
+              />
+              {post.type && (
+                <div>
+                  <TypeWrapper color={getTypeColor(post.type)}>
+                    {post.type}
+                  </TypeWrapper>
+                </div>
+              )}
+            </DividerWrapper>
+            {post.status && <StatusWrapper>{post.status}</StatusWrapper>}
+          </FooterWrapper>
+          {post.contentType === "markdown" && <Markdown md={post.content} />}
+          {post.contentType === "html" && <HtmlRender html={post.content} />}
+          {post.createdAt !== post.updatedAt && (
+            <EditedLabel>Edited</EditedLabel>
           )}
-        </DividerWrapper>
-        {data.status && <StatusWrapper>{data.status}</StatusWrapper>}
-      </FooterWrapper>
-      {data.contentType === "markdown" && <Markdown md={data.content} />}
-      {data.contentType === "html" && <HtmlRender html={data.content} />}
+          <Actions
+            noHover={!isLoggedIn || ownPost}
+            edit={user && user.username === post.author?.username}
+            setIsEdit={setIsEdit}
+          />
+        </>
+      )}
+      {isEdit && (
+        <PostEdit
+          postData={post}
+          setIsEdit={setIsEdit}
+          updatePost={updatePost}
+        />
+      )}
     </Wrapper>
   );
 }

@@ -22,8 +22,13 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     <Layout user={loginUser}>
       <Wrapper>
         <Back href="/" text="Back to Overview" />
-        <DetailItem data={detail} />
-        <Comments data={comments} user={loginUser} postId={postId} chain={chain} />
+        <DetailItem data={detail} user={loginUser} />
+        <Comments
+          data={comments}
+          user={loginUser}
+          postId={postId}
+          chain={chain}
+        />
       </Wrapper>
     </Layout>
   );
