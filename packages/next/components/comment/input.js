@@ -194,7 +194,7 @@ function Input({
       <ButtonWrapper>
         {!isEdit && (
           <Button onClick={() => setShowPreview(!showPreview)}>
-            {showPreview ? "Write" : "Preview"}
+            {showPreview ? "Edit" : "Preview"}
           </Button>
         )}
         {isEdit && <Button onClick={() => onFinishedEdit(false)}>Cancel</Button>}
