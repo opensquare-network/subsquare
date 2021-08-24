@@ -131,7 +131,7 @@ export default function Header({ user, left, chain }) {
           <Right>
             <HeaderAccount user={user} chain={chain} />
             <NodeWrapper>
-              <NodeSwitch />
+              <NodeSwitch activeNode={node} />
             </NodeWrapper>
           </Right>
         </FlexWrapper>
