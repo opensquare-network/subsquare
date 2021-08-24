@@ -6,11 +6,12 @@ import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "../../lib";
 import nextApi from "../../services/nextApi";
 
-export default withLoginUserRedux(({ OverviewData, loginUser }) => {
+export default withLoginUserRedux(({ OverviewData, loginUser, chain }) => {
   return (
     <Layout
       user={loginUser}
       left={<Menu menu={mainMenu} />}
+      chain={chain}
     >
       <Overview OverviewData={OverviewData} />
     </Layout>
@@ -38,6 +39,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
+      chain,
       OverviewData: [
         {
           category: "Discussions",

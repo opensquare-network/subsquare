@@ -16,9 +16,9 @@ const Wrapper = styled.div`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser }) => {
+export default withLoginUserRedux(({ loginUser, chain }) => {
   return (
-    <Layout user={loginUser}>
+    <Layout user={loginUser} chain={chain}>
       <Wrapper>
         <Back href="/" text="Back to Overview" />
         <DetailItem data={detailData} />
@@ -30,7 +30,10 @@ export default withLoginUserRedux(({ loginUser }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
+  const { chain } = context.query;
   return {
-    props: {},
+    props: {
+      chain
+    },
   };
 });

@@ -11,10 +11,10 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 
-export default function Layout({ user, left, children }) {
+export default function Layout({ user, left, children, chain }) {
   return (
     <Wrapper>
-      <Header user={user} left={left} />
+      <Header user={user} left={left} chain={chain} />
       <Content left={left}>
         {children}
       </Content>

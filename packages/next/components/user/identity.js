@@ -4,21 +4,9 @@ import IdentityIcon from "./identityIcon";
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  width: 100%;
-  height: 20px;
-
   svg {
     margin-right: 4px;
   }
-
-  a {
-    width: 20px;
-    height: 20px;
-    margin-left: 8px;
-  }
-
-  color: #111;
-  font-weight: 500;
 `;
 
 

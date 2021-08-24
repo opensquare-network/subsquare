@@ -39,6 +39,7 @@ export default withLoginUserRedux(({loginUser, posts, chain}) => {
     <Layout
       user={loginUser}
       left={<Menu menu={mainMenu}/>}
+      chain={chain}
     >
       <List
         category={"Discussion"}
