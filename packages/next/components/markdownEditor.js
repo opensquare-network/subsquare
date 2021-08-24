@@ -57,10 +57,7 @@ export const StyledTextArea = styled.div`
   .mde-tabs {
     display: none !important;
   }
-
-  .react-mde > .mde-header {
-    background: white !important;
-  }
+  
 
   .react-mde {
     border: none;
@@ -74,14 +71,26 @@ export const StyledTextArea = styled.div`
         margin-bottom: 1rem;
       }
     }
+    
+    .mde-textarea-wrapper {
+      border-top-style: solid;
+      border-top-width: 1px;
+      border-top-color: #e6e6e6;
+    }
 
     .mde-header {
       display: flex;
       justify-content: space-between;
-      background-color: #ffffff;
-      border-bottom-style: solid;
-      border-bottom-width: 1px;
-      border-bottom-color: #e6e6e6;
+      background: white !important;
+      border-bottom: none;
+      @media screen and (max-width: 600px) {
+        overflow-y: hidden;
+        white-space: nowrap;
+        margin-right: 90px;
+        ::-webkit-scrollbar {
+          display: none;
+        }
+      }
 
       .mde-tabs {
         margin: 0 0.5rem;

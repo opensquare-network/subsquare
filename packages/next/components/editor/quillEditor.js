@@ -52,9 +52,16 @@ export const StyledTextArea = styled.div`
         color: #0974CD;
       }
     }
-
+    
     .ql-toolbar.ql-snow {
-      padding-right: 80px;
+      @media screen and (max-width: 600px) {
+        overflow-y: hidden;
+        white-space: nowrap;
+        margin-right: 90px;
+        ::-webkit-scrollbar {
+          display: none;
+        } 
+      }
     }
 
     .ql-mention-list-container {
