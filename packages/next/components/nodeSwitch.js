@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 
 import { nodes } from "utils/constants";
 import { useOnClickOutside, useWindowSize } from "utils/hooks";
+import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
   position: relative;
@@ -69,8 +70,8 @@ const Item = styled.div`
     `}
 `;
 
-export default function NodeSwitch() {
-  const [node, setNode] = useState(nodes[0]);
+export default function NodeSwitch({ activeNode }) {
+  const router = useRouter();
   const [show, setShow] = useState(false);
   const ref = useRef();
   const windowSize = useWindowSize();
@@ -86,8 +87,8 @@ export default function NodeSwitch() {
   return (
     <Wrapper ref={ref}>
       <Select onClick={() => setShow(!show)}>
-        <img src={`/imgs/icons/${node.icon}`} alt="" className="logo" />
-        <div>{node.name}</div>
+        <img src={`/imgs/icons/${activeNode.icon}`} alt="" className="logo" />
+        <div>{activeNode.name}</div>
         <img src="/imgs/icons/caret-down.svg" alt="" />
       </Select>
       {show && (
@@ -96,10 +97,10 @@ export default function NodeSwitch() {
             <Item
               key={index}
               onClick={() => {
-                setNode(nodes[index]);
+                router.push(`/${item.value}`)
                 setShow(false);
               }}
-              active={node.value === nodes[index].value}
+              active={activeNode.value === nodes[index].value}
             >
               <img src={`/imgs/icons/${item.icon}`} alt="" className="logo" />
               <div>{item.name}</div>
