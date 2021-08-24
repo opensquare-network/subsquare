@@ -71,6 +71,7 @@ function Input({
                  contentType,
                  setContentType,
                  setQuillRef = null,
+                 users=[],
                }, ref) {
   const router = useRouter();
   const [showPreview, setShowPreview] = useState(false);
@@ -152,7 +153,7 @@ function Input({
         {contentType === "markdown" && (
           <MarkdownEditor
             height={114}
-            content={content}
+            {...{content,users}}
             setContent={onInputChange}
             visible={!showPreview}
           />
@@ -160,7 +161,7 @@ function Input({
         {contentType === "html" && (
           <QuillEditor
             visible={!showPreview}
-            content={content}
+            {...{content,users}}
             setContent={onInputChange}
             height={114}
             setModalInsetImgFunc={(insetImgFunc) => {
