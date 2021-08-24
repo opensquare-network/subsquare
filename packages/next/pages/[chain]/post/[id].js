@@ -46,7 +46,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       detail,
-      comments,
+      comments: comments ?? [],
       chain,
     },
   };
