@@ -5,7 +5,8 @@ import Pagination from "components/pagination";
 import NoComment from "./noComment";
 import LoginButtons from "./loginButtons";
 import Input from "./input";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
+import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -29,6 +30,10 @@ const Title = styled.div`
 `;
 
 export default function Comments({ user, postId, data, chain }) {
+  const router = useRouter();
+  useEffect(() => {
+    console.log(router);
+  }, []);
 
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
