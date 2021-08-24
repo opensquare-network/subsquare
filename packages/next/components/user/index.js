@@ -12,6 +12,11 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
+const AvatarWrapper = styled.div`
+  display: flex;
+  margin-right: 4px;
+`;
+
 const Username = styled.span`
   word-break: break-all;
   cursor: default;
@@ -38,13 +43,13 @@ export default function User({ user, chain, showAvatar = true }) {
   return (
     <Wrapper>
       {showAvatar && (
-        <div style={{ marginRight: "4px" }}>
+        <AvatarWrapper>
           {address ? (
              <Avatar address={address} />
           ) : (
              <Grvatar email={user.email} size={24} />
           )}
-        </div>
+        </AvatarWrapper>
       )}
       {identity ? (
         <Identity identity={identity} />
