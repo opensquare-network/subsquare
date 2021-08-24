@@ -3,17 +3,16 @@ import styled, { css } from "styled-components";
 import Author from "components/author";
 import { timeDuration } from "utils";
 import Markdown from "components/markdown";
-import Edit from "./edit";
+import Edit from "components/edit";
 import HtmlRender from "../post/htmlRender";
 import nextApi from "services/nextApi";
 import { useState } from "react";
-import ReplyIcon from "public/imgs/icons/reply.svg"
-import ThumbUpIcon from "public/imgs/icons/thumb-up.svg"
-import Input from "./input";
+import ReplyIcon from "public/imgs/icons/reply.svg";
+import ThumbUpIcon from "public/imgs/icons/thumb-up.svg";
 import { useDispatch } from "react-redux";
 import { addToast } from "store/reducers/toastSlice";
 import User from "components/user";
-import EditInput from "./editInput";
+import EditInput from "../editInput";
 
 const Wrapper = styled.div`
   padding: 16px 0;
@@ -54,33 +53,38 @@ const ActionWrapper = styled.div`
 const ActionItem = styled.div`
   cursor: default;
 
-  ${p => !p.noHover && css`
-    cursor: pointer;
-    :hover {
-      color: #506176;
-      > svg {
-        path {
-          fill: #506176;
+  ${(p) =>
+    !p.noHover &&
+    css`
+      cursor: pointer;
+      :hover {
+        color: #506176;
+        > svg {
+          path {
+            fill: #506176;
+          }
         }
       }
-    }
-  `}
+    `}
 
-  ${p => p.highlight ? css`
-    color: #506176;
-    > svg {
-      path {
-        fill: #506176;
-      }
-    }
-  ` : css`
-    color: #9da9bb;
-    > svg {
-      path {
-        fill: #9da9bb;
-      }
-    }
-  `}
+  ${(p) =>
+    p.highlight
+      ? css`
+          color: #506176;
+          > svg {
+            path {
+              fill: #506176;
+            }
+          }
+        `
+      : css`
+          color: #9da9bb;
+          > svg {
+            path {
+              fill: #9da9bb;
+            }
+          }
+        `}
 
   display: flex;
   align-items: center;
@@ -98,7 +102,6 @@ const ActionItem = styled.div`
   }
 `;
 
-
 const SupporterWrapper = styled.div`
   display: flex;
   flex-flow: wrap;
@@ -107,13 +110,13 @@ const SupporterWrapper = styled.div`
   font-size: 12px;
   line-height: 22px;
   padding: 8px 12px;
-  background: #F6F7FA;
+  background: #f6f7fa;
   border-radius: 4px;
   margin: 16px 0 0 28px;
 `;
 
 const SupporterTitle = styled.div`
-  color: #9DA9BB;
+  color: #9da9bb;
   margin-right: 16px;
 `;
 
@@ -128,7 +131,7 @@ const EditedLabel = styled.div`
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
-  color: #9DA9BB;
+  color: #9da9bb;
 `;
 
 export default function Item({ user, data, chain, onReply }) {
@@ -140,10 +143,15 @@ export default function Item({ user, data, chain, onReply }) {
   const commentId = comment._id;
   const isLoggedIn = !!user;
   const ownComment = isLoggedIn && comment.author?.username === user.username;
-  const thumbUp = isLoggedIn && comment?.reactions?.findIndex(r => r.user?.username === user.username) > -1;
+  const thumbUp =
+    isLoggedIn &&
+    comment?.reactions?.findIndex((r) => r.user?.username === user.username) >
+      -1;
 
   const updateComment = async () => {
-    const { result: updatedComment } = await nextApi.fetch(`comments/${comment._id}`);
+    const { result: updatedComment } = await nextApi.fetch(
+      `comments/${comment._id}`
+    );
     if (updatedComment) {
       setComment(updatedComment);
     }
@@ -156,34 +164,57 @@ export default function Item({ user, data, chain, onReply }) {
         let result, error;
 
         if (thumbUp) {
-          (
-            { result, error } = await nextApi.fetch(`comments/${comment._id}/reaction`, {}, {
+          ({ result, error } = await nextApi.fetch(
+            `comments/${comment._id}/reaction`,
+            {},
+            {
               method: "DELETE",
-            })
-          );
+            }
+          ));
         } else {
-          (
-            { result, error } = await nextApi.fetch(`comments/${comment._id}/reaction`, {}, {
+          ({ result, error } = await nextApi.fetch(
+            `comments/${comment._id}/reaction`,
+            {},
+            {
               method: "PUT",
               body: JSON.stringify({ reaction: 1 }),
               headers: { "Content-Type": "application/json" },
-            })
-          );
+            }
+          ));
         }
 
         if (result) {
           await updateComment();
         }
         if (error) {
-          dispatch(addToast({
-            type: "error",
-            message: error.message,
-          }));
+          dispatch(
+            addToast({
+              type: "error",
+              message: error.message,
+            })
+          );
         }
       } finally {
         setThumbUpLoading(false);
       }
     }
+  };
+
+  const editComment = async (content, contentType) => {
+    const result = await nextApi.fetch(
+      `comments/${commentId}`,
+      {},
+      {
+        method: "PATCH",
+        credentials: "same-origin",
+        body: JSON.stringify({
+          content,
+          contentType,
+        }),
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    return result;
   };
 
   return (
@@ -199,9 +230,15 @@ export default function Item({ user, data, chain, onReply }) {
       {!isEdit && (
         <>
           <ContentWrapper>
-            {comment.contentType === "markdown" && <Markdown md={comment.content} />}
-            {comment.contentType === "html" && <HtmlRender html={comment.content} />}
-            {comment.createdAt !== comment.updatedAt && <EditedLabel>Edited</EditedLabel>}
+            {comment.contentType === "markdown" && (
+              <Markdown md={comment.content} />
+            )}
+            {comment.contentType === "html" && (
+              <HtmlRender html={comment.content} />
+            )}
+            {comment.createdAt !== comment.updatedAt && (
+              <EditedLabel>Edited</EditedLabel>
+            )}
           </ContentWrapper>
           <ActionWrapper>
             <ActionItem
@@ -228,18 +265,18 @@ export default function Item({ user, data, chain, onReply }) {
               setIsEdit={setIsEdit}
             />
           </ActionWrapper>
-          {
-            comment?.reactions?.length > 0 && (
-              <SupporterWrapper>
-                <SupporterTitle>Supported By</SupporterTitle>
-                { comment.reactions.filter(r => r.user).map((r, index) => (
+          {comment?.reactions?.length > 0 && (
+            <SupporterWrapper>
+              <SupporterTitle>Supported By</SupporterTitle>
+              {comment.reactions
+                .filter((r) => r.user)
+                .map((r, index) => (
                   <SupporterItem key={index}>
                     <User user={r.user} chain={chain} />
                   </SupporterItem>
-                )) }
-              </SupporterWrapper>
-            )
-          }
+                ))}
+            </SupporterWrapper>
+          )}
         </>
       )}
       {isEdit && (
@@ -252,7 +289,7 @@ export default function Item({ user, data, chain, onReply }) {
             }
             setIsEdit(false);
           }}
-          commentId={commentId}
+          update={editComment}
         />
       )}
     </Wrapper>
