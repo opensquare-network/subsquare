@@ -142,18 +142,15 @@ export default function Item({ user, data, chain, onReply }) {
   const [comment, setComment] = useState(data);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const commentRef = useRef(null);
   const [highlight, setHighlight] = useState(false);
 
   useEffect(() => {
-    if (window.location.hash) {
-      const height = parseInt(window.location.hash.substr(1));
-      if (height === comment.height) {
-        commentRef.current.scrollIntoView();
-        setHighlight(true);
-      }
+    if (window?.location?.hash === '') {
+      return;
     }
-  }, [commentRef, router]);
+    const height = parseInt(window.location.hash.substr(1));
+    setHighlight(height === comment.height);
+  }, [router]);
 
   const commentId = comment._id;
   const isLoggedIn = !!user;
@@ -205,7 +202,7 @@ export default function Item({ user, data, chain, onReply }) {
   };
 
   return (
-    <Wrapper ref={commentRef} highlight={highlight}>
+    <Wrapper id={comment.height} highlight={highlight}>
       <InfoWrapper>
         <Author
           username={comment.author?.username}
