@@ -36,6 +36,13 @@ export default function Comments({ user, postId, data, chain }) {
   );
   const [content, setContent] = useState("");
 
+  function isUniqueInArray(value, index, self) {
+    return self.indexOf(value) === index;
+  }
+
+  const users = data?.items?.map(comment => comment.author.username).filter(isUniqueInArray) ?? [];
+
+
   const onReply = (username) => {
     let reply = '';
     if (contentType === "markdown") {
@@ -96,7 +103,7 @@ export default function Comments({ user, postId, data, chain }) {
         chain={chain}
         ref={editorWrapperRef}
         setQuillRef={setQuillRef}
-        {...{contentType,setContentType,content, setContent}}
+        {...{contentType,setContentType,content, setContent,users}}
       />}
     </Wrapper>
   );
