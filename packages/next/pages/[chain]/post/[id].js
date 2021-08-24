@@ -6,6 +6,7 @@ import DetailItem from "components/detailItem";
 import Comments from "components/comment";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
+import {EmptyList} from "../../../utils/constants";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -51,7 +52,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       detail,
-      comments: comments ?? [],
+      comments: comments ?? EmptyList,
       chain,
     },
   };
