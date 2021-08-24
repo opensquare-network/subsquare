@@ -139,7 +139,7 @@ export default function Header({ user, left, chain }) {
       {show && (
         <Sidebar onClose={() => setShow(false)} position={position}>
           {content === "left" && <>{left}</>}
-          {content === "right" && <SidebarAccount user={user} />}
+          {content === "right" && <SidebarAccount user={user} chain={chain}/>}
         </Sidebar>
       )}
     </Wrapper>

@@ -6,8 +6,8 @@ import NodeSwitch from "components/nodeSwitch";
 import Button from "components/button";
 import { accountMenu } from "utils/constants";
 import { logout } from "store/reducers/userSlice";
-import Avatar from "components/avatar";
-import Grvatar from "components/gravatar";
+import { nodes } from "utils/constants";
+import User from "components/user";
 
 const Wrapper = styled.div`
   padding: 32px 0 0;
@@ -68,9 +68,10 @@ const UserWrapper = styled.div`
   }
 `;
 
-export default function SidebarAccount({ user }) {
+export default function SidebarAccount({ user, chain }) {
   const router = useRouter();
   const dispatch = useDispatch();
+  const node = nodes.find(n => n.value === chain) || nodes[0];
 
   const handleAccountMenu = (item) => {
     if (item.value === "logout") {
@@ -83,7 +84,7 @@ export default function SidebarAccount({ user }) {
   return (
     <Wrapper>
       <Title>NETWORK</Title>
-      <NodeSwitch />
+      <NodeSwitch activeNode={node} />
       <Title>ACCOUNT</Title>
       {!user && (
         <ButtonWrapper>
@@ -98,12 +99,7 @@ export default function SidebarAccount({ user }) {
       {user && (
         <div>
           <UserWrapper>
-            {user.addresses?.[0].address ? (
-              <Avatar address={user.addresses[0].address} />
-            ) : (
-              <Grvatar email={user.email} size={24} />
-            )}
-            <div>{user.username}</div>
+            <User user={user} chain={chain} />
           </UserWrapper>
           {accountMenu.map((item, index) => (
             <Item key={index} onClick={() => handleAccountMenu(item)}>
