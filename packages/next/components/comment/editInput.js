@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
 import { useState } from "react";
-import { useRouter } from "next/router";
 
 import MarkdownEditor from "components/markdownEditor";
 import Toggle from "components/toggle";
@@ -75,7 +74,6 @@ export default function EditInput({
   const [loading, setLoading] = useState(false);
 
   const onMarkdownSwitch = () => {
-    // console.log(contentType)
     if (
       content &&
       !confirm(`切换编辑器会清空当前输入的内容，确定要继续切换吗？`)
@@ -117,12 +115,12 @@ export default function EditInput({
   return (
     <Wrapper>
       {
-        editContentType === "html" &&
+        contentType === "html" &&
         <UploadImgModal showImgModal={showImgModal} setShowImgModal={setShowImgModal}
                         insetQuillImgFunc={insetQuillImgFunc}/>
       }
       <InputWrapper>
-        {editContentType === "markdown" && (
+        {contentType === "markdown" && (
           <MarkdownEditor
             height={114}
             content={content}
@@ -130,7 +128,7 @@ export default function EditInput({
             visible={!showPreview}
           />
         )}
-        {editContentType === "html" && (
+        {contentType === "html" && (
           <QuillEditor
             visible={!showPreview}
             content={content}
