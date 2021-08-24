@@ -11,7 +11,6 @@ const Wrapper = styled.div`
 
 
 const Display = styled.span`
-  margin-right: 8px;
 `;
 
 export default function Identity({ identity }) {
