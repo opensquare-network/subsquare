@@ -16,7 +16,8 @@ import EditInput from "./editInput";
 import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
-  padding: 16px 0;
+  padding: 16px 48px;
+  margin: 0px -48px;
 
   :not(:last-child) {
     border-bottom: 1px solid #ebeef4;
@@ -29,7 +30,7 @@ const Wrapper = styled.div`
   }
 
   ${p => p.highlight && css`
-    background-color: inherit;
+    background-color: #F6F7FA;
   `}
 `;
 
