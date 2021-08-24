@@ -9,6 +9,7 @@ body {
   font-size: 14px;
   -webkit-font-smoothing: antialiased;
   transition: 0.3 ease;
+  position: relative;
 }
 
 a {
