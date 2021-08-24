@@ -97,7 +97,7 @@ export default function NodeSwitch({ activeNode }) {
             <Item
               key={index}
               onClick={() => {
-                router.push(`/${item.value}`)
+                router.push(`/${item.value}/discussions`)
                 setShow(false);
               }}
               active={activeNode.value === nodes[index].value}
