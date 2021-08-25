@@ -11,6 +11,7 @@ const Wrapper = styled.div`
   margin-top: 16px;
   align-items: flex-start;
   height: 22px;
+  flex-wrap: wrap;
 `;
 
 const Item = styled.div`
@@ -101,18 +102,12 @@ export default function Actions({
         <ThumbUpIcon />
         <div>Up ({count ?? 0})</div>
       </Item>
-      {
-        count > 0 && (
-          <UnfoldWrapper
-            onClick={() => setShowThumbsUpList(!showThumbsUpList)}
-          >
-            {showThumbsUpList ? <UnfoldIcon /> : <FoldIcon />}
-          </UnfoldWrapper>
-        )
-      }
-      { edit && (
-        <Edit edit={edit} setIsEdit={setIsEdit} />
+      {count > 0 && (
+        <UnfoldWrapper onClick={() => setShowThumbsUpList(!showThumbsUpList)}>
+          {showThumbsUpList ? <UnfoldIcon /> : <FoldIcon />}
+        </UnfoldWrapper>
       )}
+      {edit && <Edit edit={edit} setIsEdit={setIsEdit} />}
     </Wrapper>
   );
 }

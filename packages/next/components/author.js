@@ -6,6 +6,7 @@ import Avatar from "components/avatar";
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
+  word-break: break-word;
 
   > img {
     height: 20px;
