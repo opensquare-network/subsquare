@@ -45,4 +45,6 @@ RUN yarn install
 
 WORKDIR /usr/src/packages/next
 
-CMD yarn run dev
+RUN yarn build
+
+CMD yarn run start
