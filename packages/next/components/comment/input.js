@@ -92,25 +92,28 @@ function Input({
     setContentType(contentType === "html" ? "markdown" : "html");
   };
 
-  const refreshData = () => {
-    router.replace(`/[chain]/post/[id]`, {
-      pathname: `/${chain}/post/${router.query.id}`,
-    });
-  };
 
   const createComment = async () => {
-    setLoading(true);
-    const result = await nextApi.post(`posts/${postId}/comments`, {
-      content,
-      contentType,
-    });
-    setLoading(false);
-    if (result.error) {
-      setErrors(result.error);
-    } else {
-      setShowPreview(false);
-      setContent("");
-      refreshData();
+    try {
+      setLoading(true);
+      const result = await nextApi.post(`posts/${postId}/comments`, {
+        content,
+        contentType,
+      });
+      if (result.error) {
+        setErrors(result.error);
+      } else {
+        setShowPreview(false);
+        setContent("");
+        await router.replace(`/[chain]/post/[id]`, {
+          pathname: `/${chain}/post/${router.query.id}`,
+        });
+        setTimeout(() => {
+          window && window.scrollTo(0, document.body.scrollHeight);
+        }, 4);
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
