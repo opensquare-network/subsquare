@@ -132,11 +132,6 @@ const SupporterWrapper = styled.div`
   margin: 16px 0 0 0px;
 `;
 
-const SupporterTitle = styled.div`
-  color: #9da9bb;
-  margin-right: 16px;
-`;
-
 const SupporterItem = styled.div`
   display: inline-block;
   margin-right: 12px;
@@ -266,7 +261,6 @@ export default function DetailItem({ data, user, chain,onReply }) {
           />
           {showThumbsUpList && post?.reactions?.length > 0 && (
             <SupporterWrapper>
-              <SupporterTitle>Supported By</SupporterTitle>
               {post.reactions
                 .filter((r) => r.user)
                 .map((r, index) => (
