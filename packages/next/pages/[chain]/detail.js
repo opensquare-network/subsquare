@@ -21,7 +21,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
     <Layout user={loginUser} chain={chain}>
       <Wrapper>
         <Back href="/" text="Back to Overview" />
-        <DetailItem data={detailData} />
+        <DetailItem data={detailData} chain={chain} />
         <Timeline data={timelineData} />
         <Comments data={commentData} />
       </Wrapper>

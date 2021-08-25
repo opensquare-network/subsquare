@@ -144,6 +144,36 @@ async function getComments(ctx) {
   ctx.body = await postService.getComments(postId, page, pageSize);
 }
 
+async function setPostReaction(ctx) {
+  const { postId } = ctx.params;
+  const { reaction } = ctx.request.body;
+
+  if (reaction === undefined) {
+    throw new HttpError(400, "Reaction is missing");
+  }
+
+  const user = ctx.user;
+  ctx.body = await postService.setPostReaction(
+    postId,
+    reaction,
+    user
+  );
+}
+
+async function unsetPostReaction(ctx) {
+  const { postId } = ctx.params;
+  const user = ctx.user;
+  ctx.body = await postService.unsetPostReaction(postId, user);
+}
+
+
+async function getPostReactions(ctx) {
+  const { postId } = ctx.params;
+
+  ctx.body = await postService.getPostReactions(postId);
+}
+
+
 module.exports = {
   createPost,
   updatePost,
@@ -151,4 +181,7 @@ module.exports = {
   getPostById,
   postComment,
   getComments,
+  setPostReaction,
+  unsetPostReaction,
+  getPostReactions,
 };
