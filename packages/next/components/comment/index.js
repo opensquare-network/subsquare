@@ -5,7 +5,7 @@ import Pagination from "components/pagination";
 import NoComment from "./noComment";
 import LoginButtons from "./loginButtons";
 import Input from "./input";
-import {useRef, useState} from "react";
+import { useRef, useState } from "react";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
     0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
     0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 48px;
   @media screen and (max-width: 600px) {
     padding: 24px;
@@ -31,20 +31,20 @@ const Title = styled.div`
 export default function Comments({ user, postId, data, chain }) {
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
-  const [contentType, setContentType] = useState(
-     "html"
-  );
+  const [contentType, setContentType] = useState("html");
   const [content, setContent] = useState("");
 
   function isUniqueInArray(value, index, self) {
     return self.indexOf(value) === index;
   }
 
-  const users = data?.items?.map(comment => comment.author.username).filter(isUniqueInArray) ?? [];
-
+  const users =
+    data?.items
+      ?.map((comment) => comment.author.username)
+      .filter(isUniqueInArray) ?? [];
 
   const onReply = (username) => {
-    let reply = '';
+    let reply = "";
     if (contentType === "markdown") {
       reply = `[@${username}](/member/${username}) `;
       const at = content ? `${reply}` : reply;
@@ -57,24 +57,24 @@ export default function Comments({ user, postId, data, chain }) {
     } else if (contentType === "html") {
       const contents = quillRef.current.getEditor().getContents();
       reply = {
-        "ops": [
+        ops: [
           {
-            "insert": {
-              "mention": {
-                "index": "0",
-                "denotationChar": "@",
-                "id": username,
-                "value": username + " &nbsp; "
-              }
-            }
+            insert: {
+              mention: {
+                index: "0",
+                denotationChar: "@",
+                id: username,
+                value: username + " &nbsp; ",
+              },
+            },
           },
-          {"insert": "\n"}
-        ]
+          { insert: "\n" },
+        ],
       };
       quillRef.current.getEditor().setContents(contents.ops.concat(reply.ops));
       setTimeout(() => {
-        quillRef.current.getEditor().setSelection(99999, 0, 'api'); //always put caret to the end
-      }, 4)
+        quillRef.current.getEditor().setSelection(99999, 0, "api"); //always put caret to the end
+      }, 4);
     }
     editorWrapperRef.current?.scrollIntoView();
   };
@@ -86,7 +86,13 @@ export default function Comments({ user, postId, data, chain }) {
         <>
           <div>
             {(data?.items || []).map((item) => (
-              <Item key={item._id} data={item} user={user} chain={chain} onReply={onReply} />
+              <Item
+                key={item._id}
+                data={item}
+                user={user}
+                chain={chain}
+                onReply={onReply}
+              />
             ))}
           </div>
           <Pagination
@@ -98,13 +104,15 @@ export default function Comments({ user, postId, data, chain }) {
       )}
       {!data?.items?.length > 0 && <NoComment />}
       {!user && <LoginButtons />}
-      {user && <Input
-        postId={postId}
-        chain={chain}
-        ref={editorWrapperRef}
-        setQuillRef={setQuillRef}
-        {...{contentType,setContentType,content, setContent,users}}
-      />}
+      {user && (
+        <Input
+          postId={postId}
+          chain={chain}
+          ref={editorWrapperRef}
+          setQuillRef={setQuillRef}
+          {...{ contentType, setContentType, content, setContent, users }}
+        />
+      )}
     </Wrapper>
   );
 }
