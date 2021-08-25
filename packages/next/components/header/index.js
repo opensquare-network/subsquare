@@ -57,6 +57,7 @@ const MenuButton = styled.div`
   display: none;
   @media screen and (max-width: 1000px) {
     display: flex;
+    margin-right: 12px;
   }
 `;
 
@@ -91,7 +92,7 @@ export default function Header({ user, left, chain }) {
   const [content, setContent] = useState();
   const windowSize = useWindowSize();
 
-  const node = nodes.find(n => n.value === chain) || nodes[0];
+  const node = nodes.find((n) => n.value === chain) || nodes[0];
 
   useEffect(() => {
     if (hiddenWidth && windowSize.width && windowSize.width > hiddenWidth) {
@@ -104,16 +105,18 @@ export default function Header({ user, left, chain }) {
       <Container>
         <FlexWrapper>
           <Left>
-            <MenuButton
-              onClick={() => {
-                setHiddenWidth(1000);
-                setPosition("left");
-                setContent("left");
-                setShow(true);
-              }}
-            >
-              <img src="/imgs/icons/menu-line.svg" alt="" />
-            </MenuButton>
+            {left && (
+              <MenuButton
+                onClick={() => {
+                  setHiddenWidth(1000);
+                  setPosition("left");
+                  setContent("left");
+                  setShow(true);
+                }}
+              >
+                <img src="/imgs/icons/menu-line.svg" alt="" />
+              </MenuButton>
+            )}
             <Link href="/">
               <LogoImg src="/imgs/logo.svg" alt="" />
             </Link>
@@ -139,7 +142,7 @@ export default function Header({ user, left, chain }) {
       {show && (
         <Sidebar onClose={() => setShow(false)} position={position}>
           {content === "left" && <>{left}</>}
-          {content === "right" && <SidebarAccount user={user} chain={chain}/>}
+          {content === "right" && <SidebarAccount user={user} chain={chain} />}
         </Sidebar>
       )}
     </Wrapper>

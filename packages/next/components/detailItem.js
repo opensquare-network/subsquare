@@ -17,7 +17,7 @@ const Wrapper = styled.div`
   box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
     0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
     0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 48px;
   @media screen and (max-width: 600px) {
     padding: 24px;
@@ -164,8 +164,7 @@ export default function DetailItem({ data, user, chain }) {
   const ownPost = isLoggedIn && post.author?.username === user.username;
   const thumbUp =
     isLoggedIn &&
-    post?.reactions?.findIndex((r) => r.user?.username === user.username) >
-      -1;
+    post?.reactions?.findIndex((r) => r.user?.username === user.username) > -1;
 
   const updatePost = async () => {
     const { result: newPost } = await nextApi.fetch(`posts/${post._id}`);
