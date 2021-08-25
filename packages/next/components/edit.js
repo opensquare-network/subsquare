@@ -64,7 +64,7 @@ export default function Edit({ edit, setIsEdit }) {
               Edit
             </OptionItem>
           )}
-          <OptionItem onClick={() => setShow(false)}>Report</OptionItem>
+          {/* <OptionItem onClick={() => setShow(false)}>Report</OptionItem> */}
         </OptionWrapper>
       )}
     </Wrapper>
