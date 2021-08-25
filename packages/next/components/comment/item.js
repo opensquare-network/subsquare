@@ -50,6 +50,7 @@ const InfoWrapper = styled.div`
   min-height: 28px;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
 
   > :last-child {
     color: #9da9bb;
@@ -65,10 +66,12 @@ const ActionWrapper = styled.div`
   margin: 16px 0 0 28px;
   align-items: flex-start;
   height: 22px;
+  flex-wrap: wrap;
 `;
 
 const ActionItem = styled.div`
   cursor: default;
+  white-space: nowrap;
 
   ${(p) =>
     !p.noHover &&
@@ -294,21 +297,14 @@ export default function Item({ user, data, chain, onReply }) {
               <ThumbUpIcon />
               <div>Up ({comment?.reactions?.length ?? 0})</div>
             </ActionItem>
-            {
-              comment?.reactions?.length > 0 && (
-                <UnfoldWrapper
-                  onClick={() => setShowThumbsUpList(!showThumbsUpList)}
-                >
-                  {showThumbsUpList ? <UnfoldIcon /> : <FoldIcon />}
-                </UnfoldWrapper>
-              )
-            }
-            { ownComment && (
-              <Edit
-                edit={ownComment}
-                setIsEdit={setIsEdit}
-              />
+            {comment?.reactions?.length > 0 && (
+              <UnfoldWrapper
+                onClick={() => setShowThumbsUpList(!showThumbsUpList)}
+              >
+                {showThumbsUpList ? <UnfoldIcon /> : <FoldIcon />}
+              </UnfoldWrapper>
             )}
+            {ownComment && <Edit edit={ownComment} setIsEdit={setIsEdit} />}
           </ActionWrapper>
           {showThumbsUpList && comment?.reactions?.length > 0 && (
             <SupporterWrapper>

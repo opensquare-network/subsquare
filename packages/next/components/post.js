@@ -22,7 +22,7 @@ const Wrapper = styled.div`
 const DividerWrapper = styled.div`
   display: flex;
   align-items: center;
-
+  flex-wrap: wrap;
   > :not(:first-child) {
     ::before {
       content: "·";
