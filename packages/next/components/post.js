@@ -49,6 +49,7 @@ const Title = styled.div`
   margin-top: 8px;
   cursor: pointer;
   display: inline-block;
+  line-height: 140%;
   :hover {
     text-decoration: underline;
   }

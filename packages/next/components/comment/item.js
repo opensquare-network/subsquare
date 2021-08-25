@@ -18,11 +18,18 @@ import EditInput from "components/editInput";
 import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
+  position: relative;
   padding: 16px 48px;
   margin: 0px -48px;
 
-  :not(:last-child) {
-    border-bottom: 1px solid #ebeef4;
+  :not(:last-child)::after {
+    content: "";
+    height: 1px;
+    position: absolute;
+    bottom: 0;
+    left: 76px;
+    width: calc(100% - 124px);
+    background-color: #ebeef4;
   }
 
   :hover {

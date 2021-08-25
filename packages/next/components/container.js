@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
   padding: 0 60px;
-  max-width: 1080px;
+  max-width: 1140px;
   margin: 0 auto;
   @media screen and (max-width: 1000px) {
     padding: 0 32px;
