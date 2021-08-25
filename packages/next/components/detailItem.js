@@ -156,7 +156,7 @@ const getTypeColor = (type) => {
   }
 };
 
-export default function DetailItem({ data, user, chain }) {
+export default function DetailItem({ data, user, chain,onReply }) {
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
@@ -262,7 +262,7 @@ export default function DetailItem({ data, user, chain }) {
             count={post?.reactions?.length}
             showThumbsUpList={showThumbsUpList}
             setShowThumbsUpList={setShowThumbsUpList}
-            onReply={()=>{window && window.scrollTo(0,document.body.scrollHeight)}}
+            onReply={onReply}
           />
           {showThumbsUpList && post?.reactions?.length > 0 && (
             <SupporterWrapper>

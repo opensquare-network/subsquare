@@ -238,7 +238,7 @@ export default function Item({ user, data, chain, onReply }) {
   };
 
   const editComment = async (content, contentType) => {
-    const result = await nextApi.fetch(
+    return await nextApi.fetch(
       `comments/${commentId}`,
       {},
       {
@@ -251,7 +251,6 @@ export default function Item({ user, data, chain, onReply }) {
         headers: { "Content-Type": "application/json" },
       }
     );
-    return result;
   };
 
   return (
