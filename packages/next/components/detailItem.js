@@ -178,7 +178,7 @@ export default function DetailItem({ data, user }) {
           )}
           <Actions
             noHover={!isLoggedIn || ownPost}
-            edit={user && user.username === post.author?.username}
+            edit={ownPost}
             setIsEdit={setIsEdit}
           />
         </>

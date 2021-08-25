@@ -93,7 +93,9 @@ export default function Actions({
         <ThumbUpIcon />
         <div>Up ({count ?? 0})</div>
       </Item>
-      <Edit edit={edit} setIsEdit={setIsEdit} />
+      { edit && (
+        <Edit edit={edit} setIsEdit={setIsEdit} />
+      )}
     </Wrapper>
   );
 }

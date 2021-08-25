@@ -280,10 +280,12 @@ export default function Item({ user, data, chain, onReply }) {
               <ThumbUpIcon />
               <div>Up ({comment?.reactions?.length ?? 0})</div>
             </ActionItem>
-            <Edit
-              edit={user && user.username === comment.author?.username}
-              setIsEdit={setIsEdit}
-            />
+            { ownComment && (
+              <Edit
+                edit={ownComment}
+                setIsEdit={setIsEdit}
+              />
+            )}
           </ActionWrapper>
           {comment?.reactions?.length > 0 && (
             <SupporterWrapper>
