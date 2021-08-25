@@ -160,6 +160,8 @@ export default function DetailItem({ data, user, chain }) {
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
+  const [showThumbsUpList, setShowThumbsUpList] = useState(false);
+
   const isLoggedIn = !!user;
   const ownPost = isLoggedIn && post.author?.username === user.username;
   const thumbUp =
@@ -259,8 +261,10 @@ export default function DetailItem({ data, user, chain }) {
             setIsEdit={setIsEdit}
             toggleThumbUp={toggleThumbUp}
             count={post?.reactions?.length}
+            showThumbsUpList={showThumbsUpList}
+            setShowThumbsUpList={setShowThumbsUpList}
           />
-          {post?.reactions?.length > 0 && (
+          {showThumbsUpList && post?.reactions?.length > 0 && (
             <SupporterWrapper>
               <SupporterTitle>Supported By</SupporterTitle>
               {post.reactions

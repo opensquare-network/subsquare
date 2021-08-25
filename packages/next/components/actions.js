@@ -3,6 +3,8 @@ import styled, { css } from "styled-components";
 import ReplyIcon from "public/imgs/icons/reply.svg";
 import ThumbUpIcon from "public/imgs/icons/thumb-up.svg";
 import Edit from "components/edit";
+import UnfoldIcon from "public/imgs/icons/unfold.svg";
+import FoldIcon from "public/imgs/icons/fold.svg";
 
 const Wrapper = styled.div`
   display: flex;
@@ -63,6 +65,10 @@ display: flex;
   }
 `;
 
+const UnfoldWrapper = styled(Item)`
+  margin-left: 7px !important;
+`;
+
 export default function Actions({
   onReply,
   noHover,
@@ -71,6 +77,8 @@ export default function Actions({
   count,
   edit,
   setIsEdit,
+  showThumbsUpList,
+  setShowThumbsUpList,
 }) {
   return (
     <Wrapper>
@@ -93,6 +101,15 @@ export default function Actions({
         <ThumbUpIcon />
         <div>Up ({count ?? 0})</div>
       </Item>
+      {
+        count > 0 && (
+          <UnfoldWrapper
+            onClick={() => setShowThumbsUpList(!showThumbsUpList)}
+          >
+            {showThumbsUpList ? <UnfoldIcon /> : <FoldIcon />}
+          </UnfoldWrapper>
+        )
+      }
       { edit && (
         <Edit edit={edit} setIsEdit={setIsEdit} />
       )}
