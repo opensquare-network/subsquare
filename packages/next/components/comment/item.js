@@ -9,6 +9,8 @@ import nextApi from "services/nextApi";
 import { useEffect, useState } from "react";
 import ReplyIcon from "public/imgs/icons/reply.svg";
 import ThumbUpIcon from "public/imgs/icons/thumb-up.svg";
+import UnfoldIcon from "public/imgs/icons/unfold.svg";
+import FoldIcon from "public/imgs/icons/fold.svg";
 import { useDispatch } from "react-redux";
 import { addToast } from "store/reducers/toastSlice";
 import User from "components/user";
@@ -117,6 +119,10 @@ const ActionItem = styled.div`
   }
 `;
 
+const UnfoldWrapper = styled(ActionItem)`
+  margin-left: 7px !important;
+`;
+
 const SupporterWrapper = styled.div`
   display: flex;
   flex-flow: wrap;
@@ -158,6 +164,7 @@ export default function Item({ user, data, chain, onReply }) {
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [highlight, setHighlight] = useState(false);
+  const [showThumbsUpList, setShowThumbsUpList] = useState(false);
 
   useEffect(() => {
     if (window?.location?.hash === "") {
@@ -287,9 +294,23 @@ export default function Item({ user, data, chain, onReply }) {
               <ThumbUpIcon />
               <div>Up ({comment?.reactions?.length ?? 0})</div>
             </ActionItem>
-            {ownComment && <Edit edit={ownComment} setIsEdit={setIsEdit} />}
+            {
+              comment?.reactions?.length > 0 && (
+                <UnfoldWrapper
+                  onClick={() => setShowThumbsUpList(!showThumbsUpList)}
+                >
+                  {showThumbsUpList ? <UnfoldIcon /> : <FoldIcon />}
+                </UnfoldWrapper>
+              )
+            }
+            { ownComment && (
+              <Edit
+                edit={ownComment}
+                setIsEdit={setIsEdit}
+              />
+            )}
           </ActionWrapper>
-          {comment?.reactions?.length > 0 && (
+          {showThumbsUpList && comment?.reactions?.length > 0 && (
             <SupporterWrapper>
               <SupporterTitle>Supported By</SupporterTitle>
               {comment.reactions
