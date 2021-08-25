@@ -8,6 +8,8 @@ import HtmlRender from "./post/htmlRender";
 import Actions from "components/actions";
 import PostEdit from "components/post/postEdit";
 import nextApi from "services/nextApi";
+import { addToast } from "store/reducers/toastSlice";
+import User from "components/user";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -117,6 +119,32 @@ const EditedLabel = styled.div`
   color: #9da9bb;
 `;
 
+const SupporterWrapper = styled.div`
+  display: flex;
+  flex-flow: wrap;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 22px;
+  padding: 8px 12px;
+  background: #f6f7fa;
+  border-radius: 4px;
+  margin: 16px 0 0 0px;
+`;
+
+const SupporterTitle = styled.div`
+  color: #9da9bb;
+  margin-right: 16px;
+`;
+
+const SupporterItem = styled.div`
+  display: inline-block;
+  margin-right: 12px;
+  > .username {
+    color: #506176;
+  }
+`;
+
 const getTypeColor = (type) => {
   switch (type) {
     case "Council":
@@ -128,16 +156,64 @@ const getTypeColor = (type) => {
   }
 };
 
-export default function DetailItem({ data, user }) {
+export default function DetailItem({ data, user, chain }) {
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
+  const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const isLoggedIn = !!user;
   const ownPost = isLoggedIn && post.author?.username === user.username;
+  const thumbUp =
+    isLoggedIn &&
+    post?.reactions?.findIndex((r) => r.user?.username === user.username) >
+      -1;
 
   const updatePost = async () => {
     const { result: newPost } = await nextApi.fetch(`posts/${post._id}`);
     if (newPost) {
       setPost(newPost);
+    }
+  };
+
+  const toggleThumbUp = async () => {
+    if (isLoggedIn && !ownPost && !thumbUpLoading) {
+      setThumbUpLoading(true);
+      try {
+        let result, error;
+
+        if (thumbUp) {
+          ({ result, error } = await nextApi.fetch(
+            `posts/${post._id}/reaction`,
+            {},
+            {
+              method: "DELETE",
+            }
+          ));
+        } else {
+          ({ result, error } = await nextApi.fetch(
+            `posts/${post._id}/reaction`,
+            {},
+            {
+              method: "PUT",
+              body: JSON.stringify({ reaction: 1 }),
+              headers: { "Content-Type": "application/json" },
+            }
+          ));
+        }
+
+        if (result) {
+          await updatePost();
+        }
+        if (error) {
+          dispatch(
+            addToast({
+              type: "error",
+              message: error.message,
+            })
+          );
+        }
+      } finally {
+        setThumbUpLoading(false);
+      }
     }
   };
 
@@ -177,10 +253,25 @@ export default function DetailItem({ data, user }) {
             <EditedLabel>Edited</EditedLabel>
           )}
           <Actions
+            highlight={isLoggedIn && thumbUp}
             noHover={!isLoggedIn || ownPost}
             edit={ownPost}
             setIsEdit={setIsEdit}
+            toggleThumbUp={toggleThumbUp}
+            count={post?.reactions?.length}
           />
+          {post?.reactions?.length > 0 && (
+            <SupporterWrapper>
+              <SupporterTitle>Supported By</SupporterTitle>
+              {post.reactions
+                .filter((r) => r.user)
+                .map((r, index) => (
+                  <SupporterItem key={index}>
+                    <User user={r.user} chain={chain} showAvatar={false} />
+                  </SupporterItem>
+                ))}
+            </SupporterWrapper>
+          )}
         </>
       )}
       {isEdit && (

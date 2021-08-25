@@ -315,7 +315,18 @@ async function getPostById(postId) {
   const postCol = await getPostCollection();
   const post = await postCol.findOne(q);
 
-  await lookupUser({ for: post, localField: "author" });
+  const reaction = await lookupMany({
+    for: post,
+    from: "reaction",
+    as: "reactions",
+    localField: "_id",
+    foreignField: "post"
+  });
+
+  await lookupUser([
+    { for: post, localField: "author" },
+    { for: reaction, localField: "user" }
+  ]);
 
   return post;
 }
@@ -517,6 +528,78 @@ async function getCommentReactions(commentId) {
   return reactions;
 }
 
+async function setPostReaction(postId, reaction, user) {
+  const postObjId = ObjectId(postId);
+
+  const postCol = await getPostCollection();
+  const post = await postCol.findOne({
+    _id: postObjId,
+    author: { $ne: user._id },
+  });
+  if (!post) {
+    throw new HttpError(400, "Cannot set reaction.");
+  }
+
+  const reactionCol = await getReactionCollection();
+
+  const now = new Date();
+  const result = await reactionCol.updateOne(
+    {
+      post: postObjId,
+      user: user._id,
+    },
+    {
+      $set: {
+        reaction,
+        updatedAt: now,
+      },
+      $setOnInsert: {
+        createdAt: now,
+      },
+    },
+    { upsert: true }
+  );
+
+  if (!result.result.ok) {
+    throw new HttpError(500, "Db error, update reaction.");
+  }
+
+  // processThumbsUpNotification(comment, user).catch(console.error);
+
+  return true;
+}
+
+async function unsetPostReaction(postId, user) {
+  const postObjId = ObjectId(postId);
+
+  const reactionCol = await getReactionCollection();
+
+  const result = await reactionCol.deleteOne({
+    post: postObjId,
+    user: user._id,
+  });
+
+  if (!result.result.ok) {
+    throw new HttpError(500, "Db error, clean reaction.");
+  }
+
+  if (result.result.nModified === 0) {
+    return false;
+  }
+
+  return true;
+}
+
+async function getPostReactions(postId) {
+  const postObjId = ObjectId(postId);
+
+  const reactionCol = await getReactionCollection();
+  const reactions = await reactionCol.findOne({ post: postObjId }).toArray();
+  await lookupUser({ for: reactions, localField: "user" });
+
+  return reactions;
+}
+
 module.exports = {
   createPost,
   postComment,
@@ -529,4 +612,7 @@ module.exports = {
   updatePost,
   getComment,
   getCommentReactions,
+  setPostReaction,
+  unsetPostReaction,
+  getPostReactions,
 };

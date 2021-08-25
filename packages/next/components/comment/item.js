@@ -6,7 +6,7 @@ import Markdown from "components/markdown";
 import Edit from "components/edit";
 import HtmlRender from "../post/htmlRender";
 import nextApi from "services/nextApi";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import ReplyIcon from "public/imgs/icons/reply.svg";
 import ThumbUpIcon from "public/imgs/icons/thumb-up.svg";
 import { useDispatch } from "react-redux";
