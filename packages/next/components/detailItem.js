@@ -262,6 +262,7 @@ export default function DetailItem({ data, user, chain }) {
             count={post?.reactions?.length}
             showThumbsUpList={showThumbsUpList}
             setShowThumbsUpList={setShowThumbsUpList}
+            onReply={()=>{window && window.scrollTo(0,document.body.scrollHeight)}}
           />
           {showThumbsUpList && post?.reactions?.length > 0 && (
             <SupporterWrapper>
