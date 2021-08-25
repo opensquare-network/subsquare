@@ -1,7 +1,5 @@
 const CHAINS = {
   KARURA: "karura",
-  KUSAMA: "kusama",
-  POLKADOT: "polkadot",
 };
 
 function currentChain() {

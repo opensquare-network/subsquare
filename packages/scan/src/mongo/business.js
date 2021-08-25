@@ -8,14 +8,6 @@ function getDbName() {
     return (
       process.env.MONGO_DB_BUSINESS_DATA_KAR_NAME || "subsquare-business-kar"
     );
-  } else if (CHAINS.KUSAMA === chain) {
-    return (
-      process.env.MONGO_DB_BUSINESS_DATA_KSM_NAME || "subsquare-business-ksm"
-    );
-  } else if (CHAINS.POLKADOT === chain) {
-    return (
-      process.env.MONGO_DB_BUSINESS_DATA_DOT_NAME || "subsquare-business-dot"
-    );
   } else {
     return (
       process.env.MONGO_DB_BUSINESS_DATA_KAR_NAME || "subsquare-business-kar"
