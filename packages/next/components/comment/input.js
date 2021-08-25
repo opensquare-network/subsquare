@@ -26,6 +26,7 @@ const InputWrapper = styled.div`
 `;
 
 const InputSwitch = styled.div`
+  background-color: white;
   height: 24px;
   top: 10px;
   right: 16px;

@@ -39,6 +39,7 @@ export const StyledTextArea = styled.div`
   }
 
   .quill {
+    overflow: hidden;
     .ql-editor {
       min-height: ${(props) => props.height}px !important;
       max-height: 300px;
@@ -55,7 +56,6 @@ export const StyledTextArea = styled.div`
     
     .ql-toolbar.ql-snow {
       @media screen and (max-width: 600px) {
-        overflow-y: hidden;
         white-space: nowrap;
         margin-right: 90px;
         ::-webkit-scrollbar {
