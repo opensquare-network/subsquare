@@ -9,6 +9,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   min-height: 100vh;
   justify-content: center;
+  padding-top: 64px;
 `;
 
 export default function Layout({ user, left, children, chain }) {
