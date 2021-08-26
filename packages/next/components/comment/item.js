@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
 
-import Author from "components/author";
 import { timeDuration } from "utils";
 import Markdown from "components/markdown";
 import Edit from "components/edit";
@@ -252,11 +251,7 @@ export default function Item({ user, data, chain, onReply }) {
   return (
     <Wrapper id={comment.height} highlight={highlight}>
       <InfoWrapper>
-        <Author
-          username={comment.author?.username}
-          emailMd5={comment.author?.emailMd5}
-          address={comment.author?.addresses?.[0]?.address}
-        />
+        <User user={comment.author} chain={chain} />
         <div>{timeDuration(comment.createdAt)}</div>
       </InfoWrapper>
       {!isEdit && (

@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import Link from "next/link";
 
-import Author from "components/author";
+import User from "components/user";
 import { timeDuration } from "utils";
 
 const Wrapper = styled.div`
@@ -107,7 +107,7 @@ const getTypeColor = (type) => {
   }
 };
 
-export default function Post({ data }) {
+export default function Post({ data, chain }) {
   return (
     <Wrapper>
       <Link href={`/${data.chain}/post/${data.postUid}`}>
@@ -121,11 +121,7 @@ export default function Post({ data }) {
       <Divider />
       <FooterWrapper>
         <DividerWrapper>
-          <Author
-            username={data.author}
-            address={data.address}
-            emailMd5={data.authorEmailMd5}
-          />
+          <User user={data.author} chain={chain} />
           {data.type && (
             <div>
               <TypeWrapper color={getTypeColor(data.type)}>
