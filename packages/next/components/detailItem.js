@@ -10,6 +10,7 @@ import PostEdit from "components/post/postEdit";
 import nextApi from "services/nextApi";
 import { addToast } from "store/reducers/toastSlice";
 import User from "components/user";
+import { useDispatch } from "react-redux";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -151,7 +152,8 @@ const getTypeColor = (type) => {
   }
 };
 
-export default function DetailItem({ data, user, chain,onReply }) {
+export default function DetailItem({ data, user, chain, onReply }) {
+  const dispatch = useDispatch();
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
@@ -164,7 +166,7 @@ export default function DetailItem({ data, user, chain,onReply }) {
     post?.reactions?.findIndex((r) => r.user?.username === user.username) > -1;
 
   const updatePost = async () => {
-    const { result: newPost } = await nextApi.fetch(`posts/${post._id}`);
+    const { result: newPost } = await nextApi.fetch(`${chain}/posts/${post._id}`);
     if (newPost) {
       setPost(newPost);
     }
@@ -178,7 +180,7 @@ export default function DetailItem({ data, user, chain,onReply }) {
 
         if (thumbUp) {
           ({ result, error } = await nextApi.fetch(
-            `posts/${post._id}/reaction`,
+            `${chain}/posts/${post._id}/reaction`,
             {},
             {
               method: "DELETE",
@@ -186,7 +188,7 @@ export default function DetailItem({ data, user, chain,onReply }) {
           ));
         } else {
           ({ result, error } = await nextApi.fetch(
-            `posts/${post._id}/reaction`,
+            `${chain}/posts/${post._id}/reaction`,
             {},
             {
               method: "PUT",
@@ -274,6 +276,7 @@ export default function DetailItem({ data, user, chain,onReply }) {
       )}
       {isEdit && (
         <PostEdit
+          chain={chain}
           postData={post}
           setIsEdit={setIsEdit}
           updatePost={updatePost}

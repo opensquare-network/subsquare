@@ -1,23 +1,15 @@
 const { HttpError } = require("../../exc");
 const postService = require("../../services/post.service");
-const { ContentType, SupportChains } = require("../../constants");
+const { ContentType } = require("../../constants");
 const { extractPage } = require("../../utils");
 
 async function createPost(ctx) {
+  const { chain } = ctx.params;
   const {
-    chain,
     title,
     content,
     contentType: paramContentType,
   } = ctx.request.body;
-
-  if (!chain) {
-    throw new HttpError(400, { chain: ["Chain is missing"] });
-  }
-
-  if (!SupportChains.includes(chain)) {
-    throw new HttpError(400, { chain: ["Chain is not support"] });
-  }
 
   if (!title) {
     throw new HttpError(400, { title: ["Post title is missing"] });
@@ -49,7 +41,7 @@ async function createPost(ctx) {
 }
 
 async function updatePost(ctx) {
-  const { postId } = ctx.params;
+  const { chain, postId } = ctx.params;
   const {
     title,
     content,
@@ -77,6 +69,7 @@ async function updatePost(ctx) {
     : ContentType.Markdown;
 
   ctx.body = await postService.updatePost(
+    chain,
     postId,
     title,
     content,
@@ -86,10 +79,7 @@ async function updatePost(ctx) {
 }
 
 async function getPosts(ctx) {
-  const { chain } = ctx.query;
-  if (!chain) {
-    throw new HttpError(400, { chain: ["Chain is missing"] });
-  }
+  const { chain } = ctx.params;
 
   const { page, pageSize } = extractPage(ctx);
   if (pageSize === 0 || page < 1) {
@@ -101,12 +91,13 @@ async function getPosts(ctx) {
 }
 
 async function getPostById(ctx) {
-  const { postId } = ctx.params;
-  ctx.body = await postService.getPostById(postId);
+  const { chain, postId } = ctx.params;
+
+  ctx.body = await postService.getPostById(chain, postId);
 }
 
 async function postComment(ctx) {
-  const { postId } = ctx.params;
+  const { chain, postId } = ctx.params;
   const { content, contentType: paramContentType } = ctx.request.body;
 
   if (!content) {
@@ -126,6 +117,7 @@ async function postComment(ctx) {
     : ContentType.Markdown;
 
   ctx.body = await postService.postComment(
+    chain,
     postId,
     content,
     contentType,
@@ -140,12 +132,12 @@ async function getComments(ctx) {
     return;
   }
 
-  const { postId } = ctx.params;
-  ctx.body = await postService.getComments(postId, page, pageSize);
+  const { chain, postId } = ctx.params;
+  ctx.body = await postService.getComments(chain, postId, page, pageSize);
 }
 
 async function setPostReaction(ctx) {
-  const { postId } = ctx.params;
+  const { chain, postId } = ctx.params;
   const { reaction } = ctx.request.body;
 
   if (reaction === undefined) {
@@ -154,6 +146,7 @@ async function setPostReaction(ctx) {
 
   const user = ctx.user;
   ctx.body = await postService.setPostReaction(
+    chain,
     postId,
     reaction,
     user
@@ -161,16 +154,9 @@ async function setPostReaction(ctx) {
 }
 
 async function unsetPostReaction(ctx) {
-  const { postId } = ctx.params;
+  const { chain, postId } = ctx.params;
   const user = ctx.user;
-  ctx.body = await postService.unsetPostReaction(postId, user);
-}
-
-
-async function getPostReactions(ctx) {
-  const { postId } = ctx.params;
-
-  ctx.body = await postService.getPostReactions(postId);
+  ctx.body = await postService.unsetPostReaction(chain, postId, user);
 }
 
 
@@ -183,5 +169,4 @@ module.exports = {
   getComments,
   setPostReaction,
   unsetPostReaction,
-  getPostReactions,
 };

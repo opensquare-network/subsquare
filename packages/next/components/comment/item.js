@@ -183,7 +183,7 @@ export default function Item({ user, data, chain, onReply }) {
 
   const updateComment = async () => {
     const { result: updatedComment } = await nextApi.fetch(
-      `comments/${comment._id}`
+      `${chain}/comments/${comment._id}`
     );
     if (updatedComment) {
       setComment(updatedComment);
@@ -198,7 +198,7 @@ export default function Item({ user, data, chain, onReply }) {
 
         if (thumbUp) {
           ({ result, error } = await nextApi.fetch(
-            `comments/${comment._id}/reaction`,
+            `${chain}/comments/${comment._id}/reaction`,
             {},
             {
               method: "DELETE",
@@ -206,7 +206,7 @@ export default function Item({ user, data, chain, onReply }) {
           ));
         } else {
           ({ result, error } = await nextApi.fetch(
-            `comments/${comment._id}/reaction`,
+            `${chain}/comments/${comment._id}/reaction`,
             {},
             {
               method: "PUT",
@@ -235,7 +235,7 @@ export default function Item({ user, data, chain, onReply }) {
 
   const editComment = async (content, contentType) => {
     return await nextApi.fetch(
-      `comments/${commentId}`,
+      `${chain}/comments/${commentId}`,
       {},
       {
         method: "PATCH",

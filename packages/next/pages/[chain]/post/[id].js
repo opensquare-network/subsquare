@@ -137,12 +137,12 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { chain, id, page, page_size: pageSize } = context.query;
 
   const [{ result: detail }] = await Promise.all([
-    nextApi.fetch(`posts/${id}`),
+    nextApi.fetch(`${chain}/posts/${id}`),
   ]);
 
   const postId = detail._id;
 
-  const { result: comments } = await nextApi.fetch(`posts/${postId}/comments`, {
+  const { result: comments } = await nextApi.fetch(`${chain}/posts/${postId}/comments`, {
     page: page ?? "last",
     pageSize: Math.min(pageSize ?? 50, 100),
   });
