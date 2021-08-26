@@ -81,7 +81,7 @@ const InputSwitch = styled.div`
 
 const PreviewWrapper = styled.div`
   display: flex;
-  min-height: 410px;
+  min-height: 244px;
 `;
 
 export default withLoginUserRedux(({loginUser, chain}) => {
@@ -164,7 +164,7 @@ export default withLoginUserRedux(({loginUser, chain}) => {
                 visible={!showPreview}
                 content={content}
                 setContent={setContent}
-                height={200}
+                height={201}
                 setModalInsetImgFunc={(insetImgFunc) => {
                   setShowImgModal(true);
                   setInsetQuillImgFunc(insetImgFunc);
