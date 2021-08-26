@@ -53,13 +53,13 @@ export function timeDuration(time) {
     return `${hh} hr${hh > 1 ? "s" : ""} ago`;
   }
   if (mm) {
-    ss %= 60;
-    if (ss) {
-      return `${mm} min${mm > 1 ? "s" : ""} ${ss} sec${ss > 1 ? "s" : ""} ago`;
-    }
+    // ss %= 60;
+    // if (ss) {
+    //   return `${mm} min${mm > 1 ? "s" : ""} ${ss} sec${ss > 1 ? "s" : ""} ago`;
+    // }
     return `${mm} min${mm > 1 ? "s" : ""} ago`;
   }
-  return `${ss} sec${ss > 1 ? "s" : ""} ago`;
+  return `just now`;
 }
 
 export function encodeURIQuery(q) {
