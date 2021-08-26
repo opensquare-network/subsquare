@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "license": "Apache-2.0",
   "dependencies": {
-    "@acala-network/type-definitions": "^2.0.1",
-    "@polkadot/api": "^5.3.2",
-    "@polkadot/types": "^5.3.2",
-    "@polkadot/util": "^7.1.1",
-    "@polkadot/util-crypto": "^7.1.1",
+    "@acala-network/type-definitions": "^2.1.1",
+    "@polkadot/api": "^5.6.1",
+    "@polkadot/types": "^5.6.1",
+    "@polkadot/util": "^7.2.1",
+    "@polkadot/util-crypto": "^7.2.1",
     "dotenv": "^8.2.0",
     "log4js": "^6.3.0",
     "mongodb": "^3.6.6"
