@@ -11,6 +11,7 @@ const { GenericBlock } = require("@polkadot/types");
 const { hexToU8a } = require("@polkadot/util");
 const { logger } = require("./logger");
 const { handleEvents } = require("./business/event");
+const { handleExtrinsics } = require("./business/extrinsic");
 const { getBlockIndexer } = require("./utils/block/getBlockIndexer");
 const { getApi } = require("./api");
 
@@ -82,13 +83,24 @@ async function handleOneBlockDataInDb(blockInDb) {
 async function scanNormalizedBlock(block, blockEvents) {
   // handle the business
   const blockIndexer = getBlockIndexer(block);
-  await handleEvents(registry, blockEvents, block.extrinsics, blockIndexer);
+  await handleEvents(
+    registry.registry,
+    blockEvents,
+    block.extrinsics,
+    blockIndexer
+  );
+  await handleExtrinsics(
+    registry.registry,
+    block.extrinsics,
+    blockEvents,
+    blockIndexer
+  );
 }
 
 async function test() {
-  const height = 44075;
+  const height = 5379799;
   const api = await getApi();
-  registry = api.registry;
+  registry = await getRegistryByHeight(height);
   const blockHash = await api.rpc.chain.getBlockHash(height);
   const block = await api.rpc.chain.getBlock(blockHash);
   const allEvents = await api.query.system.events.at(blockHash);
@@ -96,11 +108,11 @@ async function test() {
   await scanNormalizedBlock(block.block, allEvents);
 }
 
-test();
-// main()
-//   .then(() => console.log("Scan finished"))
-//   .catch(console.error)
-//   .finally(cleanUp);
+// test();
+main()
+  .then(() => console.log("Scan finished"))
+  .catch(console.error)
+  .finally(cleanUp);
 
 async function cleanUp() {
   await disconnect();
