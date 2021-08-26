@@ -25,13 +25,6 @@ ENV ALI_MAIL_KEY=${aliMailKey}
 ENV ALI_MAIL_SECRET=${aliMailSecret}
 ENV ALI_MAIL_FROM=${aliMailFrom}
 
-# install Python
-#RUN apk add g++ make python
-ENV PYTHONUNBUFFERED=1
-RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
-RUN python3 -m ensurepip
-RUN pip3 install --no-cache --upgrade pip setuptools
-RUN apk add g++ make
 
 # create & set working directory
 RUN mkdir -p /usr/src
