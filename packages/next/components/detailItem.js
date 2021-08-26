@@ -2,7 +2,6 @@ import styled, { css } from "styled-components";
 import { useState } from "react";
 
 import { timeDuration } from "utils";
-import Author from "components/author";
 import Markdown from "components/markdown";
 import HtmlRender from "./post/htmlRender";
 import Actions from "components/actions";
@@ -10,6 +9,7 @@ import PostEdit from "components/post/postEdit";
 import nextApi from "services/nextApi";
 import { addToast } from "store/reducers/toastSlice";
 import User from "components/user";
+import { useDispatch } from "react-redux";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -151,7 +151,8 @@ const getTypeColor = (type) => {
   }
 };
 
-export default function DetailItem({ data, user, chain,onReply }) {
+export default function DetailItem({ data, user, chain, onReply }) {
+  const dispatch = useDispatch();
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
@@ -164,7 +165,7 @@ export default function DetailItem({ data, user, chain,onReply }) {
     post?.reactions?.findIndex((r) => r.user?.username === user.username) > -1;
 
   const updatePost = async () => {
-    const { result: newPost } = await nextApi.fetch(`posts/${post._id}`);
+    const { result: newPost } = await nextApi.fetch(`${chain}/posts/${post._id}`);
     if (newPost) {
       setPost(newPost);
     }
@@ -178,7 +179,7 @@ export default function DetailItem({ data, user, chain,onReply }) {
 
         if (thumbUp) {
           ({ result, error } = await nextApi.fetch(
-            `posts/${post._id}/reaction`,
+            `${chain}/posts/${post._id}/reaction`,
             {},
             {
               method: "DELETE",
@@ -186,7 +187,7 @@ export default function DetailItem({ data, user, chain,onReply }) {
           ));
         } else {
           ({ result, error } = await nextApi.fetch(
-            `posts/${post._id}/reaction`,
+            `${chain}/posts/${post._id}/reaction`,
             {},
             {
               method: "PUT",
@@ -219,7 +220,6 @@ export default function DetailItem({ data, user, chain,onReply }) {
         <>
           <Title>{post.title}</Title>
           <DividerWrapper>
-            {post.postUid && <Index>{`#${post.postUid}`}</Index>}
             {post.createdAt && (
               <Info>Created {timeDuration(post.createdAt)}</Info>
             )}
@@ -228,11 +228,7 @@ export default function DetailItem({ data, user, chain,onReply }) {
           <Divider />
           <FooterWrapper>
             <DividerWrapper>
-              <Author
-                username={post.author?.username}
-                emailMd5={post.author?.emailMd5}
-                address={post.author?.addresses?.[0]?.address}
-              />
+              <User user={post?.author} chain={chain} />
               {post.type && (
                 <div>
                   <TypeWrapper color={getTypeColor(post.type)}>
@@ -274,6 +270,7 @@ export default function DetailItem({ data, user, chain,onReply }) {
       )}
       {isEdit && (
         <PostEdit
+          chain={chain}
           postData={post}
           setIsEdit={setIsEdit}
           updatePost={updatePost}

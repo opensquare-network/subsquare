@@ -20,7 +20,7 @@ export default withLoginUserRedux(({ OverviewData, loginUser, chain }) => {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { chain } = context.query;
-  const { result: posts } = await nextApi.fetch("posts", { chain });
+  const { result: posts } = await nextApi.fetch(`${chain}/posts`);
 
   const discussions = posts?.items?.map((post) => {
     const { author } = post;

@@ -26,12 +26,8 @@ export default withLoginUserRedux(({ loginUser, posts, chain }) => {
     time: post.lastActivityAt,
     comments: post.commentsCount,
     title: post.title,
-    author: post.author.username,
-    authorEmailMd5: post.author.emailMd5,
+    author: post.author,
     postUid: post.postUid,
-    ...(post.author.addresses
-      ? { address: post.author.addresses?.[0]?.address ?? null }
-      : {}),
   }));
 
   const create = (
@@ -44,6 +40,7 @@ export default withLoginUserRedux(({ loginUser, posts, chain }) => {
   return (
     <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
       <List
+        chain={chain}
         category={"Discussion"}
         create={create}
         items={items}
@@ -61,7 +58,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { page, chain, page_size: pageSize } = context.query;
 
   const [{ result: posts }] = await Promise.all([
-    nextApi.fetch(`posts`, { chain, page, pageSize: pageSize ?? 50 }),
+    nextApi.fetch(`${chain}/posts`, { page, pageSize: pageSize ?? 50 }),
   ]);
 
   return {

@@ -1,111 +1,65 @@
-const { MongoClient } = require("mongodb");
+const { connectDb } = require("../../utils/db");
+const { SupportChains } = require("../../constants");
+const { md5 } = require("../../utils");
 
-const dbName = process.env.MONGO_DB_COMMON_NAME || "subsquare-common";
-
-const userCollectionName = "user";
-const attemptCollectionName = "attempt";
-const postCollectionName = "post";
-const commentCollectionName = "comment";
-const statusCollectionName = "status";
-const reactionCollectionName = "reaction";
-
-let client = null;
 let db = null;
 
-const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017";
-let userCol = null;
-let attemptCol = null;
-let postCol = null;
-let commentCol = null;
-let statusCol = null;
-let reactionCol = null;
-
-async function initDb() {
-  client = await MongoClient.connect(mongoUrl, {
-    useUnifiedTopology: true,
-  });
-
-  db = client.db(dbName);
-  userCol = db.collection(userCollectionName);
-  attemptCol = db.collection(attemptCollectionName);
-  postCol = db.collection(postCollectionName);
-  commentCol = db.collection(commentCollectionName);
-  statusCol = db.collection(statusCollectionName);
-  reactionCol = db.collection(reactionCollectionName);
-
-  await _createIndexes();
-}
-
-async function _createIndexes() {
-  if (!db) {
-    console.error("Please call initDb first");
-    process.exit(1);
-  }
-
+async function createIndex(db) {
+  const userCol = db.getCollection("user");
   userCol.createIndex({ username: 1 }, { unique: true });
   userCol.createIndex({ email: 1 }, { unique: true });
 
+  const attemptCol = db.getCollection("attempt");
   attemptCol.createIndex({ createdAt: 1 }, { expireAfterSeconds: 3600 });
-
 }
 
-async function tryInit(col) {
-  if (!col) {
-    await initDb();
+async function initDb() {
+  if (!db) {
+    db = await connectDb(process.env.MONGO_DB_COMMON_NAME || "subsquare-common");
+    await createIndex(db);
   }
-}
-
-function withTransaction(fn, options) {
-  return client.withSession((session) => {
-    return session.withTransaction(fn, options);
-  });
-}
-
-async function getUserCollection() {
-  await tryInit(userCol);
-  return userCol;
-}
-
-async function getAttemptCollection() {
-  await tryInit(attemptCol);
-  return attemptCol;
-}
-
-async function getPostCollection() {
-  await tryInit(postCol);
-  return postCol;
-}
-
-async function getCommentCollection() {
-  await tryInit(commentCol);
-  return commentCol;
-}
-
-async function getStatusCollection() {
-  await tryInit(statusCol);
-  return statusCol;
-}
-
-async function getReactionCollection() {
-  await tryInit(reactionCol);
-  return reactionCol;
 }
 
 async function getDb() {
   if (!db) {
     await initDb();
   }
-  return db
+  return db;
+}
+
+async function getCollection(colName) {
+  const db = await getDb();
+  return db?.getCollection(colName);
+}
+
+async function lookupUser(lookupProps) {
+  const db = await getDb();
+
+  if (!Array.isArray(lookupProps)) {
+    return lookupUser([lookupProps]);
+  }
+
+  return db.lookupOne(
+    {
+      from: "user",
+      foreignField: "_id",
+      map: (item) => ({
+        username: item.username,
+        emailMd5: md5(item.email.trim().toLocaleLowerCase()),
+        addresses: SupportChains.map(chain => ({
+          chain,
+          address: item[`${chain}Address`]
+        })).filter(p => p.address),
+      }),
+    },
+    lookupProps
+  );
 }
 
 module.exports = {
   initDb,
   getDb,
-  withTransaction,
-  getUserCollection,
-  getAttemptCollection,
-  getPostCollection,
-  getCommentCollection,
-  getStatusCollection,
-  getReactionCollection,
-};
+  lookupUser,
+  getUserCollection: () => getCollection("user"),
+  getAttemptCollection: () => getCollection("attempt"),
+}

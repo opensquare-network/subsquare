@@ -35,7 +35,7 @@ const PostWrapper = styled.div`
 `
 
 
-export default function List({category, items, pagination, create = null}) {
+export default function List({ chain, category, items, pagination , create=null }) {
   return (
     <Wrapper>
       <Title>

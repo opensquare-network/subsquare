@@ -3,10 +3,15 @@ const xss = require("xss");
 const cheerio = require("cheerio");
 const { PostTitleLengthLimitation } = require("../constants");
 const { nextPostUid } = require("./status.service");
-const { getPostCollection, getCommentCollection, getReactionCollection, getUserCollection } = require("../mongo/common");
+const {
+  getPostCollection,
+  getCommentCollection,
+  getReactionCollection,
+  getDb: getBusinessDb
+} = require("../mongo/business");
+const { getUserCollection, lookupUser } = require("../mongo/common");
 const { HttpError } = require("../exc");
 const { ContentType } = require("../constants");
-const { lookupCount, lookupUser, lookupMany } = require("../utils/query");
 const mailService = require("./mail.service");
 
 const xssOptions = {
@@ -116,11 +121,11 @@ async function createPost(
     });
   }
 
-  const postUid = await nextPostUid();
+  const postUid = await nextPostUid(chain);
 
   const now = new Date();
 
-  const postCol = await getPostCollection();
+  const postCol = await getPostCollection(chain);
   const result = await postCol.insertOne(
     {
       chain,
@@ -143,6 +148,7 @@ async function createPost(
 }
 
 async function updatePost(
+  chain,
   postId,
   title,
   content,
@@ -150,7 +156,7 @@ async function updatePost(
   author
 ) {
   const postObjId = ObjectId(postId);
-  const postCol = await getPostCollection();
+  const postCol = await getPostCollection(chain);
   const post = await postCol.findOne({ _id: postObjId });
   if (!post) {
     throw new HttpError(404, "Post does not exists");
@@ -189,6 +195,7 @@ async function updatePost(
 }
 
 async function postComment(
+  chain,
   postId,
   content,
   contentType,
@@ -196,7 +203,7 @@ async function postComment(
 ) {
   const postObjId = ObjectId(postId);
 
-  const postCol = await getPostCollection();
+  const postCol = await getPostCollection(chain);
   const post = await postCol.findOne({_id: postObjId});
   if (!post) {
     throw new HttpError(400, "Post not found.");
@@ -206,7 +213,7 @@ async function postComment(
   const postAuthor = await userCol.findOne({ _id: post.author });
   post.author = postAuthor;
 
-  const commentCol = await getCommentCollection();
+  const commentCol = await getCommentCollection(chain);
   const height = await commentCol.countDocuments({ post: postObjId });
 
   const now = new Date();
@@ -243,7 +250,7 @@ async function postComment(
 
   const mentions = extractMentions(content, contentType);
   processCommentMentions({
-    chain: post.chain,
+    chain,
     postUid: post.postUid,
     content: newComment.content,
     contentType: newComment.contentType,
@@ -257,7 +264,7 @@ async function postComment(
       mailService.sendReplyEmail({
         email: post.author.email,
         replyToUser: post.author.username,
-        chain: post.chain,
+        chain,
         postUid: post.postUid,
         content: newComment.content,
         contentType: newComment.contentType,
@@ -271,23 +278,24 @@ async function postComment(
 }
 
 async function getPostsByChain(chain, page, pageSize) {
-  const postCol = await getPostCollection();
-  const total = await postCol.countDocuments({ chain });
+  const postCol = await getPostCollection(chain);
+  const total = await postCol.countDocuments();
 
   if (page === "last") {
     const totalPages = Math.ceil(total / pageSize);
     page = totalPages;
   }
 
-  const posts = await postCol.find({ chain })
+  const posts = await postCol.find({})
     .sort({ lastActivityAt: -1 })
     .skip((page - 1) * pageSize)
     .limit(pageSize)
     .toArray();
 
+  const businessDb = await getBusinessDb(chain);
   await Promise.all([
     lookupUser({ for: posts, localField: "author" }),
-    lookupCount({
+    businessDb.lookupCount({
       from: "comment",
       for: posts,
       as: "commentsCount",
@@ -304,7 +312,7 @@ async function getPostsByChain(chain, page, pageSize) {
   };
 }
 
-async function getPostById(postId) {
+async function getPostById(chain, postId) {
   const q = {};
   if (ObjectId.isValid(postId)) {
     q._id = ObjectId(postId);
@@ -312,10 +320,11 @@ async function getPostById(postId) {
     q.postUid = postId;
   }
 
-  const postCol = await getPostCollection();
+  const postCol = await getPostCollection(chain);
   const post = await postCol.findOne(q);
 
-  const reaction = await lookupMany({
+  const businessDb = await getBusinessDb(chain);
+  const reaction = await businessDb.lookupMany({
     for: post,
     from: "reaction",
     as: "reactions",
@@ -331,10 +340,10 @@ async function getPostById(postId) {
   return post;
 }
 
-async function getComments(postId, page, pageSize) {
+async function getComments(chain, postId, page, pageSize) {
   const q = { post: ObjectId(postId) };
 
-  const commentCol = await getCommentCollection();
+  const commentCol = await getCommentCollection(chain);
   const total = await commentCol.count(q);
 
   if (page === "last") {
@@ -348,7 +357,8 @@ async function getComments(postId, page, pageSize) {
     .limit(pageSize)
     .toArray();
 
-  const reactions = await lookupMany({
+  const businessDb = await getBusinessDb(chain);
+  const reactions = await businessDb.lookupMany({
     from: "reaction",
     for: comments,
     as: "reactions",
@@ -370,13 +380,14 @@ async function getComments(postId, page, pageSize) {
 }
 
 async function updateComment(
+  chain,
   commentId,
   content,
   contentType,
   author,
 ) {
   const commentObjId = ObjectId(commentId);
-  const commentCol = await getCommentCollection();
+  const commentCol = await getCommentCollection(chain);
   const comment = await commentCol.findOne({ _id: commentObjId });
   if (!comment) {
     throw new HttpError(404, "Comment does not exists");
@@ -405,10 +416,10 @@ async function updateComment(
 }
 
 
-async function unsetCommentReaction(commentId, user) {
+async function unsetCommentReaction(chain, commentId, user) {
   const commmentObjId = ObjectId(commentId);
 
-  const reactionCol = await getReactionCollection();
+  const reactionCol = await getReactionCollection(chain);
 
   const result = await reactionCol.deleteOne({
     comment: commmentObjId,
@@ -426,8 +437,8 @@ async function unsetCommentReaction(commentId, user) {
   return true;
 }
 
-async function processCommentThumbsUpNotification(comment, reactionUser) {
-  const postCol = await getPostCollection();
+async function processCommentThumbsUpNotification(chain, comment, reactionUser) {
+  const postCol = await getPostCollection(chain);
   const userCol = await getUserCollection();
   const [post, commentAuthor] = await Promise.all([
     postCol.findOne({_id: comment.post}),
@@ -442,7 +453,7 @@ async function processCommentThumbsUpNotification(comment, reactionUser) {
     mailService.sendCommentThumbsupEmail({
       email: commentAuthor.email,
       commentAuthor: commentAuthor.username,
-      chain: post.chain,
+      chain,
       postUid: post.postUid,
       commentHeight: comment.height,
       content: comment.content,
@@ -452,10 +463,29 @@ async function processCommentThumbsUpNotification(comment, reactionUser) {
   }
 }
 
-async function setCommentReaction(commentId, reaction, user) {
+async function processPostThumbsUpNotification(chain, post, reactionUser) {
+  const userCol = await getUserCollection();
+  const postAuthor = await userCol.findOne({_id: post.author});
+
+  if (!postAuthor) {
+    return;
+  }
+
+  if (postAuthor.emailVerified && (postAuthor.notification?.thumbsUp ?? true)) {
+    mailService.sendPostThumbsupEmail({
+      email: postAuthor.email,
+      postAuthor: postAuthor.username,
+      chain,
+      postUid: post.postUid,
+      reactionUser: reactionUser.username,
+    });
+  }
+}
+
+async function setCommentReaction(chain, commentId, reaction, user) {
   const commmentObjId = ObjectId(commentId);
 
-  const commentCol = await getCommentCollection();
+  const commentCol = await getCommentCollection(chain);
   const comment = await commentCol.findOne({
     _id: commmentObjId,
     author: { $ne: user._id },
@@ -464,7 +494,7 @@ async function setCommentReaction(commentId, reaction, user) {
     throw new HttpError(400, "Cannot set reaction.");
   }
 
-  const reactionCol = await getReactionCollection();
+  const reactionCol = await getReactionCollection(chain);
 
   const now = new Date();
   const result = await reactionCol.updateOne(
@@ -488,21 +518,22 @@ async function setCommentReaction(commentId, reaction, user) {
     throw new HttpError(500, "Db error, update reaction.");
   }
 
-  processCommentThumbsUpNotification(comment, user).catch(console.error);
+  processCommentThumbsUpNotification(chain, comment, user).catch(console.error);
 
   return true;
 }
 
-async function getComment(commentId) {
+async function getComment(chain, commentId) {
   const commentObjId = ObjectId(commentId);
 
-  const commentCol = await getCommentCollection();
+  const commentCol = await getCommentCollection(chain);
   const comment = await commentCol.findOne({ _id: commentObjId });
   if (!comment) {
     throw new HttpError(400, "Comment does not exists");
   }
 
-  const reactions = await lookupMany({
+  const businessDb = await getBusinessDb(chain);
+  const reactions = await businessDb.lookupMany({
     from: "reaction",
     for: comment,
     as: "reactions",
@@ -518,20 +549,10 @@ async function getComment(commentId) {
   return comment;
 }
 
-async function getCommentReactions(commentId) {
-  const commentObjId = ObjectId(commentId);
-
-  const reactionCol = await getReactionCollection();
-  const reactions = await reactionCol.findOne({ comment: commentObjId }).toArray();
-  await lookupUser({ for: reactions, localField: "user" });
-
-  return reactions;
-}
-
-async function setPostReaction(postId, reaction, user) {
+async function setPostReaction(chain, postId, reaction, user) {
   const postObjId = ObjectId(postId);
 
-  const postCol = await getPostCollection();
+  const postCol = await getPostCollection(chain);
   const post = await postCol.findOne({
     _id: postObjId,
     author: { $ne: user._id },
@@ -540,7 +561,7 @@ async function setPostReaction(postId, reaction, user) {
     throw new HttpError(400, "Cannot set reaction.");
   }
 
-  const reactionCol = await getReactionCollection();
+  const reactionCol = await getReactionCollection(chain);
 
   const now = new Date();
   const result = await reactionCol.updateOne(
@@ -564,15 +585,15 @@ async function setPostReaction(postId, reaction, user) {
     throw new HttpError(500, "Db error, update reaction.");
   }
 
-  processPostThumbsUpNotification(post, user).catch(console.error);
+  processPostThumbsUpNotification(chain, post, user).catch(console.error);
 
   return true;
 }
 
-async function unsetPostReaction(postId, user) {
+async function unsetPostReaction(chain, postId, user) {
   const postObjId = ObjectId(postId);
 
-  const reactionCol = await getReactionCollection();
+  const reactionCol = await getReactionCollection(chain);
 
   const result = await reactionCol.deleteOne({
     post: postObjId,
@@ -590,35 +611,6 @@ async function unsetPostReaction(postId, user) {
   return true;
 }
 
-async function getPostReactions(postId) {
-  const postObjId = ObjectId(postId);
-
-  const reactionCol = await getReactionCollection();
-  const reactions = await reactionCol.findOne({ post: postObjId }).toArray();
-  await lookupUser({ for: reactions, localField: "user" });
-
-  return reactions;
-}
-
-async function processPostThumbsUpNotification(post, reactionUser) {
-  const userCol = await getUserCollection();
-  const postAuthor = await userCol.findOne({_id: post.author});
-
-  if (!postAuthor) {
-    return;
-  }
-
-  if (postAuthor.emailVerified && (postAuthor.notification?.thumbsUp ?? true)) {
-    mailService.sendPostThumbsupEmail({
-      email: postAuthor.email,
-      postAuthor: postAuthor.username,
-      chain: post.chain,
-      postUid: post.postUid,
-      reactionUser: reactionUser.username,
-    });
-  }
-}
-
 module.exports = {
   createPost,
   postComment,
@@ -630,8 +622,6 @@ module.exports = {
   unsetCommentReaction,
   updatePost,
   getComment,
-  getCommentReactions,
   setPostReaction,
   unsetPostReaction,
-  getPostReactions,
 };

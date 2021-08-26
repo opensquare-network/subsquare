@@ -6,13 +6,13 @@ const routeChains = SupportChains.join("|");
 const router = new Router();
 
 const chainFeatureRouters = [
+  require("./features/posts/routes"),
+  require("./features/comments/routes"),
 ];
 
 const commonFeatureRouters = [
   require("./features/auth/routes"),
   require("./features/users/routes"),
-  require("./features/posts/routes"),
-  require("./features/comments/routes"),
 ];
 
 module.exports = (app) => {

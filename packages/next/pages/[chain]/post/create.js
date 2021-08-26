@@ -104,7 +104,7 @@ export default withLoginUserRedux(({loginUser, chain}) => {
   },[]);
 
   const onCreate = async () => {
-    const result = await nextApi.post("posts", {
+    const result = await nextApi.post(`${chain}/posts`, {
       chain,
       title,
       content,

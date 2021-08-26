@@ -17,8 +17,6 @@ router.post("/posts/:postId/comments", requireAuth, requireVerify, postControlle
 
 router.get("/posts/:postId/comments", postController.getComments);
 
-router.get("/posts/:postId/reactions", postController.getPostReactions);
-
 router.put(
   "/posts/:postId/reaction",
   requireAuth,
