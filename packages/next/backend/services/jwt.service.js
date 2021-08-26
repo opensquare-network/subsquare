@@ -2,6 +2,7 @@ const { ObjectId } = require("mongodb");
 const jwt = require("jsonwebtoken");
 const { getUserCollection } = require("../mongo/common");
 const { HttpError } = require("../exc");
+const { t } = require("./i18n.service");
 
 const jwtSecretKey = process.env.JWT_SECRET_KEY || "";
 if (!jwtSecretKey) {
@@ -14,7 +15,7 @@ async function validate(accessToken) {
   try {
     decoded = jwt.verify(accessToken, jwtSecretKey);
   } catch (e) {
-    throw new HttpError(401, e.message);
+    throw new HttpError(401, t(e.message));
   }
 
   const userCol = await getUserCollection();

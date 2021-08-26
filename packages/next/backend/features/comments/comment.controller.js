@@ -3,19 +3,13 @@ const postService = require("../../services/post.service");
 const { ContentType } = require("../../constants");
 
 async function getComment(ctx) {
-  const { commentId } = ctx.params;
+  const { chain, commentId } = ctx.params;
 
-  ctx.body = await postService.getComment(commentId);
-}
-
-async function getCommentReactions(ctx) {
-  const { commentId } = ctx.params;
-
-  ctx.body = await postService.getCommentReactions(commentId);
+  ctx.body = await postService.getComment(chain, commentId);
 }
 
 async function updateComment(ctx) {
-  const { commentId } = ctx.params;
+  const { chain, commentId } = ctx.params;
   const {
     content,
     contentType: paramContentType,
@@ -31,11 +25,11 @@ async function updateComment(ctx) {
 
   const contentType = paramContentType ? paramContentType : ContentType.Markdown;
 
-  ctx.body = await postService.updateComment(commentId, content, contentType, ctx.user);
+  ctx.body = await postService.updateComment(chain, commentId, content, contentType, ctx.user);
 }
 
 async function setCommentReaction(ctx) {
-  const { commentId } = ctx.params;
+  const { chain, commentId } = ctx.params;
   const { reaction } = ctx.request.body;
 
   if (reaction === undefined) {
@@ -44,6 +38,7 @@ async function setCommentReaction(ctx) {
 
   const user = ctx.user;
   ctx.body = await postService.setCommentReaction(
+    chain,
     commentId,
     reaction,
     user
@@ -51,14 +46,13 @@ async function setCommentReaction(ctx) {
 }
 
 async function unsetCommentReaction(ctx) {
-  const { commentId } = ctx.params;
+  const { chain, commentId } = ctx.params;
   const user = ctx.user;
-  ctx.body = await postService.unsetCommentReaction(commentId, user);
+  ctx.body = await postService.unsetCommentReaction(chain, commentId, user);
 }
 
 module.exports = {
   getComment,
-  getCommentReactions,
   updateComment,
   setCommentReaction,
   unsetCommentReaction,

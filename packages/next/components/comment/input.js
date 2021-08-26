@@ -97,7 +97,7 @@ function Input({
   const createComment = async () => {
     try {
       setLoading(true);
-      const result = await nextApi.post(`posts/${postId}/comments`, {
+      const result = await nextApi.post(`${chain}/posts/${postId}/comments`, {
         content,
         contentType,
       });
@@ -121,7 +121,7 @@ function Input({
   const updateComment = async () => {
     setLoading(true);
     const {result, error} = await nextApi.fetch(
-      `comments/${commentId}`,
+      `${chain}/comments/${commentId}`,
       {},
       {
         method: "PATCH",

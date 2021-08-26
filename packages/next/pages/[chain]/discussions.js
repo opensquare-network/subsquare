@@ -61,7 +61,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { page, chain } = context.query;
 
   const [{ result: posts }] = await Promise.all([
-    nextApi.fetch(`posts`, { chain, page, pageSize: 2 }),
+    nextApi.fetch(`${chain}/posts`, { page, pageSize: 2 }),
   ]);
 
   return {

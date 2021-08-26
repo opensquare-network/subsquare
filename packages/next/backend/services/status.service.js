@@ -1,8 +1,8 @@
 const { HttpError } = require("../exc");
-const { getStatusCollection } = require("../mongo/common");
+const { getStatusCollection } = require("../mongo/business");
 
-async function nextPostUid() {
-  const statusCol = await getStatusCollection();
+async function nextPostUid(chain) {
+  const statusCol = await getStatusCollection(chain);
   const result = await statusCol.findOneAndUpdate(
     { name: "postUid" },
     { $inc: { value: 1 } },
