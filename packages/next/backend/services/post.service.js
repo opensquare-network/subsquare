@@ -426,7 +426,7 @@ async function unsetCommentReaction(commentId, user) {
   return true;
 }
 
-async function processThumbsUpNotification(comment, reactionUser) {
+async function processCommentThumbsUpNotification(comment, reactionUser) {
   const postCol = await getPostCollection();
   const userCol = await getUserCollection();
   const [post, commentAuthor] = await Promise.all([
@@ -439,7 +439,7 @@ async function processThumbsUpNotification(comment, reactionUser) {
   }
 
   if (commentAuthor.emailVerified && (commentAuthor.notification?.thumbsUp ?? true)) {
-    mailService.sendCommentReactionEmail({
+    mailService.sendCommentThumbsupEmail({
       email: commentAuthor.email,
       commentAuthor: commentAuthor.username,
       chain: post.chain,
@@ -488,7 +488,7 @@ async function setCommentReaction(commentId, reaction, user) {
     throw new HttpError(500, "Db error, update reaction.");
   }
 
-  processThumbsUpNotification(comment, user).catch(console.error);
+  processCommentThumbsUpNotification(comment, user).catch(console.error);
 
   return true;
 }
@@ -564,7 +564,7 @@ async function setPostReaction(postId, reaction, user) {
     throw new HttpError(500, "Db error, update reaction.");
   }
 
-  // processThumbsUpNotification(comment, user).catch(console.error);
+  processPostThumbsUpNotification(post, user).catch(console.error);
 
   return true;
 }
@@ -598,6 +598,25 @@ async function getPostReactions(postId) {
   await lookupUser({ for: reactions, localField: "user" });
 
   return reactions;
+}
+
+async function processPostThumbsUpNotification(post, reactionUser) {
+  const userCol = await getUserCollection();
+  const postAuthor = await userCol.findOne({_id: post.author});
+
+  if (!postAuthor) {
+    return;
+  }
+
+  if (postAuthor.emailVerified && (postAuthor.notification?.thumbsUp ?? true)) {
+    mailService.sendPostThumbsupEmail({
+      email: postAuthor.email,
+      postAuthor: postAuthor.username,
+      chain: post.chain,
+      postUid: post.postUid,
+      reactionUser: reactionUser.username,
+    });
+  }
 }
 
 module.exports = {

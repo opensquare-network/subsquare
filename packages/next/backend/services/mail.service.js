@@ -44,7 +44,7 @@ class MailService {
     );
   }
 
-  sendCommentReactionEmail({
+  sendCommentThumbsupEmail({
     email,
     commentAuthor,
     chain,
@@ -56,7 +56,7 @@ class MailService {
   }) {
     const page = Math.ceil(commentHeight / pageSize);
 
-    const text = templates.commentReaction({
+    const text = templates.commentThumbsup({
       commentAuthor,
       chain,
       postUid,
@@ -74,7 +74,34 @@ class MailService {
     };
 
     aliMail.sendMail(msg).catch((e) =>
-      console.error("Thumbs up email not sent", e)
+      console.error("Comment thumbs up email not sent", e)
+    );
+  }
+
+  sendPostThumbsupEmail({
+    email,
+    postAuthor,
+    chain,
+    postUid,
+    reactionUser,
+  }) {
+    const text = templates.postThumbsup({
+      postAuthor,
+      chain,
+      postUid,
+      reactionUser,
+      siteUrl: process.env.SITE_URL,
+    });
+
+    const msg = {
+      html: text,
+      subject: "Someone support your post",
+      text,
+      to: email,
+    };
+
+    aliMail.sendMail(msg).catch((e) =>
+      console.error("Post thumbs up email not sent", e)
     );
   }
 
