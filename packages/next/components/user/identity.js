@@ -11,6 +11,7 @@ const Wrapper = styled.div`
 
 
 const Display = styled.span`
+  font-size: 14px;
 `;
 
 export default function Identity({ identity }) {
