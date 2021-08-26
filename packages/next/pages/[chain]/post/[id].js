@@ -98,7 +98,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   return (
     <Layout user={loginUser} chain={chain}>
-      <Wrapper>
+      <Wrapper className="post-content">
         <Back href="/" text="Back to Overview" />
         <DetailItem data={detail} user={loginUser} chain={chain} onReply={focusEditor} />
         <CommentsWrapper>

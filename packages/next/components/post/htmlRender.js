@@ -3,6 +3,7 @@ import styled from "styled-components";
 import sanitizeHtml from "sanitize-html";
 
 const Wrapper = styled.div`
+  padding-top: 1rem;
   color: #000;
   max-width: 48.5rem;
   word-break: break-all;
@@ -58,6 +59,9 @@ const Wrapper = styled.div`
     font-size: 0.875rem;
   }
 
+  p {
+    margin-top: 0;
+  }
   p,
   li {
     max-width: 48.5rem;

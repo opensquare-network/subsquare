@@ -53,6 +53,7 @@ const InfoWrapper = styled.div`
   flex-wrap: wrap;
 
   > :last-child {
+    font-size: 14px;
     color: #9da9bb;
   }
 `;
