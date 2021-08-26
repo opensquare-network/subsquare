@@ -26,37 +26,44 @@ const ContentWrapper = styled.div`
     0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
     0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
-  padding: 48px;
+  padding: 24px;
   width: 360px;
   margin: 122px auto 0;
   > :not(:first-child) {
-    margin-top: 24px;
+    margin-top: 16px;
   }
 `;
 
 const Title = styled.div`
   font-weight: bold;
-  font-size: 20px;
-  text-align: center;
+  font-size: 14px;
+  text-align: left;
 `;
 
 const InfoWrapper = styled.div`
+  width: 312px;
   padding: 12px 16px;
   background: #fff1f0;
   border-radius: 4px;
   line-height: 150%;
   color: #f44336;
+  font-size: 14px;
 `;
 
 const Label = styled.div`
   font-weight: bold;
   font-size: 12px;
   margin-bottom: 8px;
+  text-align: left;
 `;
 
 const FormWrapper = styled.form`
   > :not(:first-child) {
-    margin-top: 24px;
+    margin-top: 16px;
+  }
+  text-align: right;
+  input{
+    text-align: left;
   }
 `;
 
@@ -110,8 +117,8 @@ export default function DeleteAccount({ onClose }) {
               <ErrorText>{errors?.message}</ErrorText>
             )}
           </div>
-          <Button danger isFill type="submit" isLoading={loading}>
-            Delete my account
+          <Button danger isFill={false} type="submit" isLoading={loading}>
+            Delete
           </Button>
         </FormWrapper>
       </ContentWrapper>

@@ -34,7 +34,8 @@ const Menu = styled.div`
     0px 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
   border-radius: 4px;
   position: absolute;
-  right: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
   margin-top: 4px;
   background: #ffffff;
   padding: 8px 0;
@@ -49,6 +50,7 @@ const Item = styled.div`
   cursor: pointer;
   padding: 0 12px;
   height: 36px;
+  font-size:14px;
   :hover {
     background: #f6f7fa;
   }

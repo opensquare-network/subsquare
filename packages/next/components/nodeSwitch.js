@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
   position: relative;
+  font-size: 14px;
 `;
 
 const Select = styled.div`

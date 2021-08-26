@@ -12,6 +12,7 @@ const Wrapper = styled.button`
   display: inline-block;
   box-sizing: border-box;
   font-weight: 500;
+  font-size: 14px;
   ${(p) =>
     p.primary &&
     css`

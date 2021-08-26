@@ -18,6 +18,7 @@ const AvatarWrapper = styled.div`
 `;
 
 const Username = styled.span`
+  font-size: 14px;
   word-break: break-all;
   cursor: default;
 `;
