@@ -128,7 +128,6 @@ async function createPost(
   const postCol = await getPostCollection(chain);
   const result = await postCol.insertOne(
     {
-      chain,
       postUid,
       title,
       content: contentType === ContentType.Html ? safeHtml(content) : content,

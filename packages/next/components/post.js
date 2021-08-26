@@ -110,7 +110,7 @@ const getTypeColor = (type) => {
 export default function Post({ data, chain }) {
   return (
     <Wrapper>
-      <Link href={`/${data.chain}/post/${data.postUid}`}>
+      <Link href={`/${chain}/post/${data.postUid}`}>
         <Title>{data.title}</Title>
       </Link>
       <DividerWrapper>
