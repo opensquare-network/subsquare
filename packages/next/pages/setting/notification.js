@@ -25,6 +25,8 @@ const Title = styled.div`
 `;
 
 const ContentWrapper = styled.div`
+  font-size: 14px;
+  color: #1e2134;
   background: #ffffff;
   border: 1px solid #ebeef4;
   box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
@@ -37,9 +39,11 @@ const ContentWrapper = styled.div`
   }
 `;
 
-const Lable = styled.div`
+const Label = styled.div`
+  font-size: 14px;
   font-weight: bold;
   margin-bottom: 16px;
+  color: #1E2134;
 `;
 
 const ToggleItem = styled.div`
@@ -119,7 +123,7 @@ export default withLoginUserRedux(({
         <Title>Notification</Title>
         <ContentWrapper>
           <div>
-            <Lable>Email</Lable>
+            <Label>Email</Label>
             <ToggleItem>
               <div>Notify me about comments on my posts</div>
               <Toggle isOn={reply} onToggle={changeGuard(setReply)} />

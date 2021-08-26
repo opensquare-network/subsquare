@@ -93,6 +93,7 @@ const SubmitButton = styled.span`
   margin-right: 16px;
   display: inline-block;
   text-align: center;
+  all: unset;
   width: 80px;
   line-height: 30px;
   font-weight: 500;

@@ -54,6 +54,7 @@ const InfoWrapper = styled.div`
   border-radius: 4px;
   padding: 12px 16px;
   line-height: 150%;
+  font-size: 14px;
   margin-bottom: 16px;
   color: #506176;
 `;
@@ -90,14 +91,17 @@ const NameWrapper = styled.div`
   flex-grow: 1;
   > :last-child {
     margin-top: 4px;
+    font-size: 12px;
     color: #9da9bb;
   }
 `;
 
 const LinkWrapper = styled.div`
   display: flex;
+  font-size: 14px;
   color: #506176;
   cursor: pointer;
+  align-items: center;
   :hover {
     text-decoration: underline;
   }
@@ -121,6 +125,7 @@ const NodesWrapper = styled.div`
 
 const NodeItem = styled.div`
   padding-bottom: 16px;
+  font-size: 14px;
   font-weight: bold;
   cursor: pointer;
   position: relative;

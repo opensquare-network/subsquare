@@ -88,6 +88,7 @@ const EmailVerify = styled.div`
   color: #9da9bb;
   height: 38px;
   padding-right: 16px;
+  font-size: 14px;
   > img {
     width: 14px;
     height: 14px;

@@ -24,6 +24,7 @@ const Item = styled.div`
   border-radius: 6px;
   font-weight: 500;
   cursor: pointer;
+  font-size: 14px;
   :hover {
     background: #ebeef4;
   }
