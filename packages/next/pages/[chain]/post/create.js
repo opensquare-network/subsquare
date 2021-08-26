@@ -120,7 +120,7 @@ export default withLoginUserRedux(({loginUser, chain}) => {
   const onMarkdownSwitch = () => {
     if (
       content &&
-      !confirm(`切换编辑器会清空当前输入的内容，确定要继续切换吗？`)
+      !confirm(`Togging editor will empty all typed contents, are you sure ?`)
     ) {
       return;
     }
