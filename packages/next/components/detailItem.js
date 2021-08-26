@@ -221,7 +221,6 @@ export default function DetailItem({ data, user, chain, onReply }) {
         <>
           <Title>{post.title}</Title>
           <DividerWrapper>
-            {post.postUid && <Index>{`#${post.postUid}`}</Index>}
             {post.createdAt && (
               <Info>Created {timeDuration(post.createdAt)}</Info>
             )}
