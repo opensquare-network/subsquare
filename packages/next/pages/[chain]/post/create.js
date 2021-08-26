@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 
 import Layout from "components/layout";
@@ -89,10 +89,19 @@ export default withLoginUserRedux(({loginUser, chain}) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [showPreview, setShowPreview] = useState(false);
-  const [contentType, setContentType] = useState("html");
+  const [contentType, setContentType] = useState("markdown");
   const [showImgModal, setShowImgModal] = useState(false);
   const [insetQuillImgFunc, setInsetQuillImgFunc] = useState(null);
   const [errors, setErrors] = useState();
+
+  useEffect(()=> {
+    if (!localStorage.getItem("contentType")) {
+      return localStorage.setItem("contentType", contentType);
+    }
+    if (contentType !== localStorage.getItem("contentType")) {
+      setContentType(localStorage.getItem("contentType"));
+    }
+  },[]);
 
   const onCreate = async () => {
     const result = await nextApi.post("posts", {
@@ -117,6 +126,7 @@ export default withLoginUserRedux(({loginUser, chain}) => {
     }
     setContent("");
     setContentType(contentType === "html" ? "markdown" : "html");
+    localStorage.setItem("contentType", contentType === "html" ? "markdown" : "html");
   };
 
   return (
