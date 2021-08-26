@@ -7,6 +7,7 @@ const Wrapper = styled.div`
   color: #000;
   max-width: 48.5rem;
   word-break: break-all;
+  border-left: 0.25rem solid #f2f2f2;
 
   h1,
   h2,
