@@ -2,7 +2,6 @@ import styled, { css } from "styled-components";
 import { useState } from "react";
 
 import { timeDuration } from "utils";
-import Author from "components/author";
 import Markdown from "components/markdown";
 import HtmlRender from "./post/htmlRender";
 import Actions from "components/actions";
@@ -230,11 +229,7 @@ export default function DetailItem({ data, user, chain, onReply }) {
           <Divider />
           <FooterWrapper>
             <DividerWrapper>
-              <Author
-                username={post.author?.username}
-                emailMd5={post.author?.emailMd5}
-                address={post.author?.addresses?.[0]?.address}
-              />
+              <User user={post?.author} chain={chain} />
               {post.type && (
                 <div>
                   <TypeWrapper color={getTypeColor(post.type)}>

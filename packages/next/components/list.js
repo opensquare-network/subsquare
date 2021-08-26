@@ -19,7 +19,7 @@ const Title = styled.div`
 
 
 
-export default function List({ category, items, pagination , create=null }) {
+export default function List({ chain, category, items, pagination , create=null }) {
   return (
     <Wrapper>
       <Title>
@@ -30,7 +30,7 @@ export default function List({ category, items, pagination , create=null }) {
         items?.length > 0
         ? (
           items.map((item, index) => (
-            <Post key={index} data={item} />
+            <Post key={index} data={item} chain={chain} />
           ))
         ) : (
           <EmptyList />
