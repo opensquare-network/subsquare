@@ -33,12 +33,11 @@ async function getCollection(colName) {
 }
 
 async function lookupUser(lookupProps) {
-  const db = await getDb();
-
   if (!Array.isArray(lookupProps)) {
     return lookupUser([lookupProps]);
   }
 
+  const db = await getDb();
   return db.lookupOne(
     {
       from: "user",
