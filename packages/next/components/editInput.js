@@ -149,7 +149,7 @@ export default function EditInput({
       <ButtonWrapper>
         <Button onClick={() => onFinishedEdit(false)}>Cancel</Button>
         <Button onClick={() => setShowPreview(!showPreview)}>
-          {showPreview ? "Write" : "Preview"}
+          {showPreview ? "Edit" : "Preview"}
         </Button>
         <Button isLoading={loading} secondary onClick={onUpdate}>
           Update
