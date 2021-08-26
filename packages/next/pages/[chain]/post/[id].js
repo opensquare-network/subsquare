@@ -8,7 +8,7 @@ import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
 import {EmptyList} from "../../../utils/constants";
 import Input from "../../../components/comment/input";
-import {useState, useRef} from "react";
+import {useState, useRef, useEffect} from "react";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -41,7 +41,16 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState("html");
+  const [contentType, setContentType] = useState("markdown");
+
+  useEffect(()=> {
+    if (!localStorage.getItem("contentType")) {
+      return localStorage.setItem("contentType", contentType);
+    }
+    if (contentType !== localStorage.getItem("contentType")) {
+      setContentType(localStorage.getItem("contentType"));
+    }
+  },[]);
 
   function isUniqueInArray(value, index, self) {
     return self.indexOf(value) === index;
@@ -98,7 +107,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   return (
     <Layout user={loginUser} chain={chain}>
-      <Wrapper>
+      <Wrapper className="post-content">
         <Back href="/" text="Back to Overview" />
         <DetailItem data={detail} user={loginUser} chain={chain} onReply={focusEditor} />
         <CommentsWrapper>

@@ -11,6 +11,11 @@ import SidebarAccount from "./sidebarAccount";
 import { nodes } from "utils/constants";
 
 const Wrapper = styled.header`
+  position: fixed;
+  top:0;
+  left: 0;
+  right: 0;
+  z-index: 1;
   background: #ffffff;
   box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
     0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),

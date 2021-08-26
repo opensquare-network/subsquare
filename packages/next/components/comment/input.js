@@ -91,6 +91,7 @@ function Input({
     }
     setContent("");
     setContentType(contentType === "html" ? "markdown" : "html");
+    localStorage.setItem("contentType", contentType === "html" ? "markdown" : "html");
   };
 
 
