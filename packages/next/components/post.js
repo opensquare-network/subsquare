@@ -44,9 +44,9 @@ const Info = styled.div`
 `;
 
 const Title = styled.div`
+  margin-bottom: 12px;
   font-weight: 500;
   font-size: 16px;
-  margin-top: 8px;
   cursor: pointer;
   display: inline-block;
   line-height: 140%;
@@ -110,14 +110,14 @@ const getTypeColor = (type) => {
 export default function Post({ data }) {
   return (
     <Wrapper>
+      <Link href={`/${data.chain}/post/${data.postUid}`}>
+        <Title>{data.title}</Title>
+      </Link>
       <DividerWrapper>
         {data.index && <Index>{`#${data.index}`}</Index>}
         {data.time && <Info>{`Updated ${timeDuration(data.time)}`}</Info>}
         {data.comments > -1 && <Info>{`${data.comments} Comments`}</Info>}
       </DividerWrapper>
-      <Link href={`/${data.chain}/post/${data.postUid}`}>
-        <Title>{data.title}</Title>
-      </Link>
       <Divider />
       <FooterWrapper>
         <DividerWrapper>

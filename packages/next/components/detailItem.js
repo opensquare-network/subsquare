@@ -58,7 +58,7 @@ const Title = styled.div`
   font-weight: 500;
   font-size: 28px;
   line-height: 140%;
-  margin-top: 8px;
+  margin-bottom: 12px;
 `;
 
 const Divider = styled.div`
@@ -217,6 +217,7 @@ export default function DetailItem({ data, user, chain,onReply }) {
     <Wrapper>
       {!isEdit && (
         <>
+          <Title>{post.title}</Title>
           <DividerWrapper>
             {post.postUid && <Index>{`#${post.postUid}`}</Index>}
             {post.createdAt && (
@@ -224,7 +225,6 @@ export default function DetailItem({ data, user, chain,onReply }) {
             )}
             {post.comments > -1 && <Info>{`${post.comments} Comments`}</Info>}
           </DividerWrapper>
-          <Title>{post.title}</Title>
           <Divider />
           <FooterWrapper>
             <DividerWrapper>
