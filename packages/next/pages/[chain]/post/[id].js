@@ -9,6 +9,7 @@ import nextApi from "services/nextApi";
 import { EmptyList } from "../../../utils/constants";
 import Input from "../../../components/comment/input";
 import { useState, useRef, useEffect } from "react";
+import LayoutFixedHeader from "../../../components/layoutFixedHeader";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -103,7 +104,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   };
 
   return (
-    <Layout user={loginUser} chain={chain}>
+    <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">
         <Back href={`/${chain}/discussions`} text="Back to Discussions" />
         <DetailItem
@@ -131,7 +132,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           )}
         </CommentsWrapper>
       </Wrapper>
-    </Layout>
+    </LayoutFixedHeader>
   );
 });
 
