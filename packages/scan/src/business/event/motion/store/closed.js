@@ -13,7 +13,10 @@ async function handleClosed(registry, event, extrinsic, indexer) {
   const eventData = event.data.toJSON();
   const [hash, yesVotes, noVotes] = eventData;
 
-  const voting = await getVotingFromStorageByHeight(hash, indexer.blockHeight);
+  const voting = await getVotingFromStorageByHeight(
+    hash,
+    indexer.blockHeight - 1
+  );
 
   const state = {
     state: CouncilEvents.Closed,
