@@ -1,5 +1,5 @@
 const {
-  getVotingFromStorage,
+  getVotingFromStorageByHeight,
 } = require("../../../common/motion/votingStorage");
 const {
   TimelineItemTypes,
@@ -13,7 +13,7 @@ async function handleClosed(registry, event, extrinsic, indexer) {
   const eventData = event.data.toJSON();
   const [hash, yesVotes, noVotes] = eventData;
 
-  const voting = await getVotingFromStorage(hash, indexer.blockHash);
+  const voting = await getVotingFromStorageByHeight(hash, indexer.blockHeight);
 
   const state = {
     state: CouncilEvents.Closed,
