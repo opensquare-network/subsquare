@@ -6,7 +6,7 @@ async function handleEvents(registry, events, extrinsics, blockIndexer) {
     const { event, phase } = events[sort];
 
     if (phase.isNull) {
-      return;
+      continue;
     }
 
     const extrinsicIndex = phase.value.toNumber();
