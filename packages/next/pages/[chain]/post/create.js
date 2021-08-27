@@ -200,7 +200,7 @@ export default withLoginUserRedux(({loginUser, chain}) => {
           )}
           <ButtonWrapper>
             <Button onClick={() => setShowPreview(!showPreview)}>
-              Preview
+              {showPreview ? "Edit" : "Preview"}
             </Button>
             <Button secondary onClick={onCreate}>
               Create
