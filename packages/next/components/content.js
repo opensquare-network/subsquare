@@ -14,13 +14,11 @@ const Wrapper = styled.div`
 const ContentWrapper = styled.div`
   display: flex;
   position: relative;
-  padding-left: 232px;
   @media screen and (max-width: 1080px) {
     padding: 0 60px;
   }
   @media screen and (max-width: 600px) {
     flex-direction: column-reverse;
-    padding: 0;
   }
 `;
 
@@ -39,6 +37,10 @@ const Left = styled.div`
   }
 `;
 
+const LeftPlaceHolder = styled.div`
+width: 232px;
+`
+
 export default function Content({ left, children }) {
   return (
     <Wrapper>
@@ -50,6 +52,9 @@ export default function Content({ left, children }) {
               <Footer />
             </Left>
           )}
+          {
+            left && <LeftPlaceHolder/>
+          }
           <Main>{children}</Main>
         </ContentWrapper>
       </Container>

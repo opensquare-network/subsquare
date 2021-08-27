@@ -5,6 +5,9 @@ import Pagination from "./pagination";
 import EmptyList from "./emptyList";
 
 const Wrapper = styled.div`
+  > :not(:first-child) {
+    margin-top: 16px;
+  }
 `;
 
 const Title = styled.div`
@@ -14,26 +17,6 @@ const Title = styled.div`
   font-size: 16px;
 `;
 
-const PostWrapper = styled.div`
-  margin-top: 16px;
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-
-  max-height: calc(100vh - 268px);
-  @media screen and (max-width: 600px) {
-    max-height: calc(100vh - 178px);
-  }
-  overflow-y: scroll;
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
-
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-`
-
 
 export default function List({ chain, category, items, pagination , create=null }) {
   return (
@@ -42,7 +25,6 @@ export default function List({ chain, category, items, pagination , create=null 
         {category}
         {create && create}
       </Title>
-      <PostWrapper>
         {
           items?.length > 0
             ? (
@@ -53,7 +35,6 @@ export default function List({ chain, category, items, pagination , create=null 
               <EmptyList/>
             )
         }
-      </PostWrapper>
       {pagination && <Pagination {...pagination} />}
     </Wrapper>
   );
