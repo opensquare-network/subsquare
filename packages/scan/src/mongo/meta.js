@@ -16,9 +16,11 @@ function getDbName() {
 
 const blockCollectionName = "block";
 const statusCollectionName = "status";
+const versionCollectionName = "version";
 
 let client = null;
 let db = null;
+let versionCol = null;
 
 const mongoUrl = process.env.MONGO_DB_META_URL || "mongodb://localhost:27017";
 
@@ -33,6 +35,7 @@ async function initDb() {
   db = client.db(getDbName());
   statusCol = db.collection(statusCollectionName);
   blockCol = db.collection(blockCollectionName);
+  versionCol = db.collection(versionCollectionName);
 
   await _createIndexes();
 }
@@ -63,6 +66,11 @@ async function getBlockCollection() {
   return blockCol;
 }
 
+async function getVersionCollection() {
+  await tryInit(versionCol);
+  return versionCol;
+}
+
 async function getBlocks(startHeight, endHeight) {
   const col = await getBlockCollection();
   return await col
@@ -76,8 +84,15 @@ async function getBlocks(startHeight, endHeight) {
     .toArray();
 }
 
+async function getAllVersionChangeHeights() {
+  const col = await getVersionCollection();
+  const versions = await col.find({}).sort({ height: 1 }).toArray();
+  return (versions || []).map((v) => v.height);
+}
+
 module.exports = {
   getStatusCollection,
   getBlockCollection,
   getBlocks,
+  getAllVersionChangeHeights,
 };

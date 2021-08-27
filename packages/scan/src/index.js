@@ -1,5 +1,10 @@
 require("dotenv").config();
 
+const {
+  findRegistry,
+  updateSpecs,
+  getSpecHeights,
+} = require("./mongo/service/specs");
 const { disconnect } = require("./api");
 const { updateHeight, getLatestHeight } = require("./chain");
 const { getNextScanHeight, updateScanHeight } = require("./mongo/scanHeight");
@@ -14,12 +19,17 @@ const { handleEvents } = require("./business/event");
 const { handleExtrinsics } = require("./business/extrinsic");
 const { getBlockIndexer } = require("./utils/block/getBlockIndexer");
 const { getApi } = require("./api");
-
-let registry;
+const last = require("lodash.last");
 
 async function main() {
   await updateHeight();
   let scanHeight = await getNextScanHeight();
+  await updateSpecs();
+  const specHeights = getSpecHeights();
+  if (specHeights.length <= 0 || specHeights[0] > 1) {
+    logger.error("No specHeights or invalid");
+    return;
+  }
 
   while (true) {
     // chainHeight is the current on-chain last block height
@@ -37,6 +47,11 @@ async function main() {
       targetHeight = scanHeight + 100;
     }
 
+    const specHeights = getSpecHeights();
+    if (targetHeight > last(specHeights)) {
+      await updateSpecs();
+    }
+
     const blocks = await getBlocks(scanHeight, targetHeight);
     if ((blocks || []).length <= 0) {
       await sleep(1000);
@@ -48,64 +63,57 @@ async function main() {
       try {
         await handleOneBlockDataInDb(block);
         await updateScanHeight(block.height);
-        scanHeight = block.height + 1;
+        logger.debug(`${block.height} done`);
       } catch (e) {
         logger.error(`Error with block scan ${block.height}`, e);
         await sleep(3000);
       }
     }
 
+    const startHeight = blocks[0].height;
+    const destHeight = blocks[(blocks || []).length - 1].height;
+    logger.info(`blocks ${startHeight}-${destHeight} done`);
+
+    scanHeight = destHeight + 1;
     await sleep(1);
   }
 }
 
 async function handleOneBlockDataInDb(blockInDb) {
-  if (!registry || registry.specVersion.toNumber() !== blockInDb.specVersion) {
-    registry = await getRegistryByHeight(blockInDb.height);
-  }
+  const registry = await findRegistry(blockInDb.height);
 
   let block;
   if (isHex(blockInDb.block)) {
-    block = new GenericBlock(registry.registry, hexToU8a(blockInDb.block));
+    block = new GenericBlock(registry, hexToU8a(blockInDb.block));
   } else {
-    block = new GenericBlock(registry.registry, blockInDb.block.block);
+    block = new GenericBlock(registry, blockInDb.block.block);
   }
 
-  const blockEvents = registry.registry.createType(
+  const blockEvents = registry.createType(
     "Vec<EventRecord>",
     blockInDb.events,
     true
   );
 
-  await scanNormalizedBlock(block, blockEvents);
+  await scanNormalizedBlock(registry, block, blockEvents);
 }
 
-async function scanNormalizedBlock(block, blockEvents) {
+async function scanNormalizedBlock(registry, block, blockEvents) {
   // handle the business
   const blockIndexer = getBlockIndexer(block);
-  await handleEvents(
-    registry.registry,
-    blockEvents,
-    block.extrinsics,
-    blockIndexer
-  );
-  await handleExtrinsics(
-    registry.registry,
-    block.extrinsics,
-    blockEvents,
-    blockIndexer
-  );
+  await handleEvents(registry, blockEvents, block.extrinsics, blockIndexer);
+  await handleExtrinsics(registry, block.extrinsics, blockEvents, blockIndexer);
 }
 
 async function test() {
   const height = 5379799;
   const api = await getApi();
-  registry = await getRegistryByHeight(height);
+  const registry = await getRegistryByHeight(height);
   const blockHash = await api.rpc.chain.getBlockHash(height);
   const block = await api.rpc.chain.getBlock(blockHash);
   const allEvents = await api.query.system.events.at(blockHash);
 
-  await scanNormalizedBlock(block.block, allEvents);
+  await scanNormalizedBlock(registry, block.block, allEvents);
 }
 
 // test();
