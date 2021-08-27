@@ -29,7 +29,7 @@ async function getDb() {
 
 async function getCollection(colName) {
   const db = await getDb();
-  return db?.getCollection(colName);
+  return db.getCollection(colName);
 }
 
 async function lookupUser(lookupProps) {

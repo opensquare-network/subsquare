@@ -22,7 +22,7 @@ async function initDb() {
 
 async function getCollection(chain, colName) {
   const db = await getDb(chain);
-  return db?.getCollection(colName);
+  return db.getCollection(colName);
 }
 
 module.exports = {

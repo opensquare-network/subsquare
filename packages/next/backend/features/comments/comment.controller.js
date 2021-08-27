@@ -1,11 +1,11 @@
 const { HttpError } = require("../../exc");
-const postService = require("../../services/post.service");
+const commentService = require("../../services/comment.service");
 const { ContentType } = require("../../constants");
 
 async function getComment(ctx) {
   const { chain, commentId } = ctx.params;
 
-  ctx.body = await postService.getComment(chain, commentId);
+  ctx.body = await commentService.getComment(chain, commentId);
 }
 
 async function updateComment(ctx) {
@@ -25,7 +25,7 @@ async function updateComment(ctx) {
 
   const contentType = paramContentType ? paramContentType : ContentType.Markdown;
 
-  ctx.body = await postService.updateComment(chain, commentId, content, contentType, ctx.user);
+  ctx.body = await commentService.updateComment(chain, commentId, content, contentType, ctx.user);
 }
 
 async function setCommentReaction(ctx) {
@@ -37,7 +37,7 @@ async function setCommentReaction(ctx) {
   }
 
   const user = ctx.user;
-  ctx.body = await postService.setCommentReaction(
+  ctx.body = await commentService.setCommentReaction(
     chain,
     commentId,
     reaction,
@@ -48,7 +48,7 @@ async function setCommentReaction(ctx) {
 async function unsetCommentReaction(ctx) {
   const { chain, commentId } = ctx.params;
   const user = ctx.user;
-  ctx.body = await postService.unsetCommentReaction(chain, commentId, user);
+  ctx.body = await commentService.unsetCommentReaction(chain, commentId, user);
 }
 
 module.exports = {
