@@ -2,12 +2,12 @@
 # yarn lockfile v1
 
 
-"@acala-network/type-definitions@^2.1.1":
-  version "2.1.1"
-  resolved "https://registry.nlark.com/@acala-network/type-definitions/download/@acala-network/type-definitions-2.1.1.tgz#2a54b1c68962407ece42924e5fe53381c6d00e16"
-  integrity sha1-KlSxxoliQH7OQpJOX+UzgcbQDhY=
+"@acala-network/type-definitions@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.nlark.com/@acala-network/type-definitions/download/@acala-network/type-definitions-2.2.1.tgz#031faac650e5e62184a441c233ee16fc70d77e79"
+  integrity sha1-Ax+qxlDl5iGEpEHCM+4W/HDXfnk=
   dependencies:
-    "@open-web3/orml-type-definitions" "^0.9.4-33"
+    "@open-web3/orml-type-definitions" "^0.9.4-34"
 
 "@alicloud/pop-core@^1.7.10":
   version "1.7.10"
@@ -1394,7 +1394,7 @@
   resolved "https://registry.yarnpkg.com/@next/react-refresh-utils/-/react-refresh-utils-11.0.1.tgz#a7509f22b6f70c13101a26573afd295295f1c020"
   integrity sha512-K347DM6Z7gBSE+TfUaTTceWvbj0B6iNAsFZXbFZOlfg3uyz2sbKpzPYYFocCc27yjLaS8OfR8DEdS2mZXi8Saw==
 
-"@open-web3/orml-type-definitions@^0.9.4-33":
+"@open-web3/orml-type-definitions@^0.9.4-34":
   version "0.9.4-34"
   resolved "https://registry.nlark.com/@open-web3/orml-type-definitions/download/@open-web3/orml-type-definitions-0.9.4-34.tgz#5aeeb7690db5aed1bb51e8e161bd61384c13c787"
   integrity sha1-Wu63aQ21rtG7UejhYb1hOEwTx4c=
@@ -1593,7 +1593,7 @@
     "@polkadot/x-ws" "^7.2.1"
     eventemitter3 "^4.0.7"
 
-"@polkadot/types-known@5.6.1":
+"@polkadot/types-known@5.6.1", "@polkadot/types-known@^5.6.1":
   version "5.6.1"
   resolved "https://registry.nlark.com/@polkadot/types-known/download/@polkadot/types-known-5.6.1.tgz#aed3771dcfdfb81462455af2d727e65147446b97"
   integrity sha1-rtN3Hc/fuBRiRVry1yfmUUdEa5c=
@@ -6040,6 +6040,11 @@ lodash.debounce@^4.0.8:
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
   integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
 
+lodash.findlast@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.nlark.com/lodash.findlast/download/lodash.findlast-4.6.0.tgz#ea8bb78cf2e7e7804fc8aeb7d1953e07fe31fbc8"
+  integrity sha1-6ou3jPLn54BPyK630ZU+B/4x+8g=
+
 lodash.includes@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.includes/-/lodash.includes-4.3.0.tgz#60bb98a87cb923c68ca1e51325483314849f553f"
@@ -6069,6 +6074,11 @@ lodash.isstring@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/lodash.isstring/-/lodash.isstring-4.0.1.tgz#d527dfb5456eca7cc9bb95d5daeaf88ba54a5451"
   integrity sha1-1SfftUVuynzJu5XV2ur4i6VKVFE=
+
+lodash.last@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npm.taobao.org/lodash.last/download/lodash.last-3.0.0.tgz#242f663112dd4c6e63728c60a3c909d1bdadbd4c"
+  integrity sha1-JC9mMRLdTG5jcoxgo8kJ0b2tvUw=
 
 lodash.merge@^4.6.2:
   version "4.6.2"

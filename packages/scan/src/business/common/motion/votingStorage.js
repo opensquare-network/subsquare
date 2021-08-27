@@ -18,6 +18,13 @@ async function getVotingFromStorage(hash, blockHash) {
   return voting.value.toJSON();
 }
 
+async function getVotingFromStorageByHeight(motionHash, blockHeight) {
+  const api = await getApi();
+  const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
+  return await getVotingFromStorage(motionHash, blockHash);
+}
+
 module.exports = {
   getVotingFromStorage,
+  getVotingFromStorageByHeight,
 };
