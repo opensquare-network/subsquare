@@ -15,6 +15,8 @@ import ErrorText from "components/ErrorText";
 import UploadImgModal from "components/editor/imageModal";
 import QuillEditor from "../../../components/editor/quillEditor";
 import HtmlRender from "../../../components/post/htmlRender";
+import { useDispatch } from "react-redux";
+import { addToast } from "store/reducers/toastSlice";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -86,6 +88,7 @@ const PreviewWrapper = styled.div`
 
 export default withLoginUserRedux(({loginUser, chain}) => {
   const router = useRouter();
+  const dispath = useDispatch();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [showPreview, setShowPreview] = useState(false);
@@ -111,7 +114,14 @@ export default withLoginUserRedux(({loginUser, chain}) => {
       contentType,
     });
     if (result.error) {
-      setErrors(result.error);
+      if (result.error.data) {
+        setErrors(result.error);
+      } else {
+        dispath(addToast({
+          type: "error",
+          message: result.error.message
+        }));
+      }
     } else {
       router.push(`/${chain}/post/${result.result}`);
     }
@@ -194,9 +204,6 @@ export default withLoginUserRedux(({loginUser, chain}) => {
           )}
           {errors?.data?.content?.[0] && (
             <ErrorText>{errors?.data?.content?.[0]}</ErrorText>
-          )}
-          {errors?.message && !errors?.data && (
-            <ErrorText>{errors?.message}</ErrorText>
           )}
           <ButtonWrapper>
             <Button onClick={() => setShowPreview(!showPreview)}>
