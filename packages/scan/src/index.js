@@ -48,13 +48,18 @@ async function main() {
       try {
         await handleOneBlockDataInDb(block);
         await updateScanHeight(block.height);
-        scanHeight = block.height + 1;
+        logger.debug(`${block.height} done`);
       } catch (e) {
         logger.error(`Error with block scan ${block.height}`, e);
         await sleep(3000);
       }
     }
 
+    const startHeight = blocks[0].height;
+    const destHeight = blocks[(blocks || []).length - 1].height;
+    logger.info(`blocks ${startHeight}-${destHeight} done`);
+
+    scanHeight = destHeight + 1;
     await sleep(1);
   }
 }
