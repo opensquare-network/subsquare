@@ -1,4 +1,8 @@
-const { saveNewTreasuryProposal } = require("./store");
+const {
+  saveNewTreasuryProposal,
+  handleTreasuryProposalAwarded,
+  handleTreasuryProposalRejected,
+} = require("./store");
 const { Modules, TreasuryProposalEvents } = require("../../common/constants");
 
 function isTreasuryProposalEvent(section, method) {
@@ -15,20 +19,34 @@ async function handleTreasuryProposalEvent(
   extrinsic,
   indexer
 ) {
-  const { section, method, data } = event;
+  const { section, method } = event;
   if (!isTreasuryProposalEvent(section, method)) {
     return;
   }
 
   if (TreasuryProposalEvents.Proposed === method) {
     await saveNewTreasuryProposal(...arguments);
-  } else if (TreasuryProposalEvents.Awarded === method) {
-    //  Handle awarded
   } else if (TreasuryProposalEvents.Rejected === method) {
-    //  Handle rejected
+    await handleTreasuryProposalRejected(...arguments);
+  }
+}
+
+async function handleTreasuryProposalEventWithoutExtrinsic(
+  registry,
+  event,
+  indexer // this indexer don't have extrinsic index
+) {
+  const { section, method } = event;
+  if (!isTreasuryProposalEvent(section, method)) {
+    return;
+  }
+
+  if (TreasuryProposalEvents.Awarded === method) {
+    await handleTreasuryProposalAwarded(...arguments);
   }
 }
 
 module.exports = {
   handleTreasuryProposalEvent,
+  handleTreasuryProposalEventWithoutExtrinsic,
 };

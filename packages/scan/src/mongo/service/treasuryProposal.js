@@ -11,6 +11,23 @@ async function insertProposal(proposalObj) {
   await col.insertOne(proposalObj);
 }
 
+async function updateProposal(proposalIndex, updates, timelineItem) {
+  const col = await getTreasuryProposalCollection();
+  let update = {
+    $set: updates,
+  };
+
+  if (timelineItem) {
+    update = {
+      ...update,
+      $push: { timeline: timelineItem },
+    };
+  }
+
+  await col.updateOne({ proposalIndex }, update);
+}
+
 module.exports = {
   insertTreasuryProposal: insertProposal,
+  updateTreasuryProposal: updateProposal,
 };
