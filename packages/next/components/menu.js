@@ -72,6 +72,9 @@ export default function Menu({ menu }) {
                       query: { chain: router.query.chain },
                     });
                   } else {
+                    if(item.pathname === "/[chain]"){
+                     return  router.push("/");
+                    }
                     router.push(item.pathname);
                   }
                 }

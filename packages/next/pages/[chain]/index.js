@@ -5,37 +5,43 @@ import Menu from "components/menu";
 import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "../../lib";
 import nextApi from "../../services/nextApi";
+import { addressEllipsis } from "../../utils";
 
-export default withLoginUserRedux(({ OverviewData, loginUser, chain }) => {
+export default withLoginUserRedux(({OverviewData, loginUser, chain}) => {
+
+  OverviewData.forEach(list => {
+    if (list.category === "Tips") {
+      list.items.forEach(tip => {
+        tip.author = tip.author ?? {username: addressEllipsis(tip.finder), addresses: [{chain, address: tip.finder}]};
+      })
+    }
+  })
+
+
   return (
     <Layout
       user={loginUser}
-      left={<Menu menu={mainMenu} />}
+      left={<Menu menu={mainMenu}/>}
       chain={chain}
     >
-      <Overview OverviewData={OverviewData} />
+      <Overview OverviewData={OverviewData}/>
     </Layout>
   );
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { chain } = context.query;
-  const { result: posts } = await nextApi.fetch(`${chain}/posts`);
+  const {chain} = context.query;
 
-  const discussions = posts?.items?.map((post) => {
-    const { author } = post;
-    return {
-      time: "just now",
-      comments: post.commentsCount,
-      title: post.title,
-      author: author.username,
-      authorEmailMd5: author.emailMd5,
-      status: null,
-      ...(author.addresses
-        ? { address: author.addresses?.[0]?.address ?? null }
-        : {}),
-    };
-  });
+  const page = 1;
+  const pageSize = 3;
+
+  const [
+    {result: discussions},
+    {result: tips}
+  ] = await Promise.all([
+    nextApi.fetch(`${chain}/posts`, {page, pageSize}),
+    nextApi.fetch(`${chain}/tips`, {page, pageSize}),
+  ]);
 
   return {
     props: {
@@ -43,7 +49,11 @@ export const getServerSideProps = withLoginUser(async (context) => {
       OverviewData: [
         {
           category: "Discussions",
-          items: discussions,
+          items: discussions?.items ?? [],
+        },
+        {
+          category: "Tips",
+          items: tips?.items ?? [],
         },
       ],
     },
