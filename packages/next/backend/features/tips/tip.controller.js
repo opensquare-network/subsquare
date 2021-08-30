@@ -1,6 +1,6 @@
 const { HttpError } = require("../../exc");
 const postService = require("../../services/post.service")("tip");
-const onchainPostService = require("../../services/onchain-post.service")("tip");
+const tipPostService = require("../../services/tip.service");
 const { ContentType } = require("../../constants");
 const { extractPage } = require("../../utils");
 
@@ -32,7 +32,7 @@ async function updatePost(ctx) {
     ? paramContentType
     : ContentType.Markdown;
 
-  ctx.body = await onchainPostService.updatePost(
+  ctx.body = await tipPostService.updatePost(
     chain,
     postId,
     title,
@@ -51,7 +51,7 @@ async function getPosts(ctx) {
     return;
   }
 
-  ctx.body = await postService.getPostsByChain(chain, page, pageSize);
+  ctx.body = await tipPostService.getPostsByChain(chain, page, pageSize);
 }
 
 async function getPostById(ctx) {

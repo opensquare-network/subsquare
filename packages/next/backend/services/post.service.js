@@ -152,8 +152,8 @@ function createService(postType) {
 
     const businessDb = await getBusinessDb(chain);
     const reaction = await businessDb.lookupMany({
-      for: post,
       from: "reaction",
+      for: post,
       as: "reactions",
       localField: "_id",
       foreignField: postType,
