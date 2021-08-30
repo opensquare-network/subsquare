@@ -1,25 +1,62 @@
 const { handleTipEvent } = require("./tip");
 const { handleMotionEvent } = require("./motion");
+const {
+  handleTreasuryProposalEvent,
+  handleTreasuryProposalEventWithoutExtrinsic,
+} = require("./treasuryProposal");
+
+async function handleEventWithExtrinsic(
+  registry,
+  blockIndexer,
+  event,
+  eventSort,
+  extrinsic,
+  extrinsicIndex
+) {
+  const indexer = {
+    ...blockIndexer,
+    eventIndex: eventSort,
+    extrinsicIndex,
+  };
+
+  await handleTipEvent(registry, event, extrinsic, indexer);
+  await handleTreasuryProposalEvent(registry, event, extrinsic, indexer);
+  await handleMotionEvent(registry, event, extrinsic, indexer);
+}
+
+async function handleEventWithoutExtrinsic(
+  registry,
+  blockIndexer,
+  event,
+  eventSort
+) {
+  const indexer = {
+    ...blockIndexer,
+    eventIndex: eventSort,
+  };
+
+  await handleTreasuryProposalEventWithoutExtrinsic(registry, event, indexer);
+}
 
 async function handleEvents(registry, events, extrinsics, blockIndexer) {
   for (let sort = 0; sort < events.length; sort++) {
     const { event, phase } = events[sort];
 
     if (phase.isNull) {
+      await handleEventWithoutExtrinsic(registry, blockIndexer, event, sort);
       continue;
     }
 
     const extrinsicIndex = phase.value.toNumber();
     const extrinsic = extrinsics[extrinsicIndex];
-    const indexer = {
-      ...blockIndexer,
-      eventIndex: sort,
-      extrinsicIndex,
-    };
-
-    // TODO: handle business with events
-    await handleTipEvent(registry, event, extrinsic, indexer);
-    await handleMotionEvent(registry, event, extrinsic, indexer);
+    await handleEventWithExtrinsic(
+      registry,
+      blockIndexer,
+      event,
+      sort,
+      extrinsic,
+      extrinsicIndex
+    );
   }
 }
 

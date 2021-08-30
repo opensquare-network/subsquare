@@ -62,6 +62,12 @@ const CouncilEvents = Object.freeze({
   Closed: "Closed",
 });
 
+const TreasuryProposalEvents = Object.freeze({
+  Proposed: "Proposed",
+  Awarded: "Awarded",
+  Rejected: "Rejected",
+});
+
 module.exports = {
   Modules,
   TipEvents,
@@ -72,4 +78,5 @@ module.exports = {
   TimelineItemTypes,
   CouncilEvents,
   KaruraModules,
+  TreasuryProposalEvents,
 };
