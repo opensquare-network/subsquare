@@ -66,12 +66,12 @@ export const accountMenu = [
 export const mainMenu = [
   {
     items: [
-      // {
-      //   value: "overview",
-      //   name: "Overview",
-      //   icon: "type-overview.svg",
-      //   pathname: "/karura",
-      // },
+      {
+        value: "overview",
+        name: "Overview",
+        icon: "type-overview.svg",
+        pathname: "/[chain]",
+      },
       {
         value: "discussions",
         name: "Discussions",
@@ -100,26 +100,27 @@ export const mainMenu = [
   //     },
   //   ],
   // },
-  // {
-  //   name: "TREASURY",
-  //   items: [
-  //     {
-  //       value: "proposals",
-  //       name: "Proposals",
-  //       icon: "type-treasury-proposals.svg",
-  //     },
-  //     {
-  //       value: "bounties",
-  //       name: "Bounties",
-  //       icon: "type-bounties.svg",
-  //     },
-  //     {
-  //       value: "tips",
-  //       name: "Tips",
-  //       icon: "type-tips.svg",
-  //     },
-  //   ],
-  // },
+  {
+    name: "TREASURY",
+    items: [
+      // {
+      //   value: "proposals",
+      //   name: "Proposals",
+      //   icon: "type-treasury-proposals.svg",
+      // },
+      // {
+      //   value: "bounties",
+      //   name: "Bounties",
+      //   icon: "type-bounties.svg",
+      // },
+      {
+        value: "tips",
+        name: "Tips",
+        icon: "type-tips.svg",
+        pathname: "/[chain]/tips",
+      },
+    ],
+  },
   // {
   //   name: "COUNCIL",
   //   items: [
