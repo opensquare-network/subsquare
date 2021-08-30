@@ -150,8 +150,12 @@ function createService(postType) {
     const postCol = await getPostCollection(chain);
     const post = await postCol.findOne(q);
 
+    if (!post) {
+      throw new HttpError(404, "Post not found");
+    }
+
     const businessDb = await getBusinessDb(chain);
-    const reaction = await businessDb.lookupMany({
+    const reactions = await businessDb.lookupMany({
       from: "reaction",
       for: post,
       as: "reactions",
@@ -161,7 +165,7 @@ function createService(postType) {
 
     await lookupUser([
       { for: post, localField: "author" },
-      { for: reaction, localField: "user" }
+      { for: reactions, localField: "user" }
     ]);
 
     return post;

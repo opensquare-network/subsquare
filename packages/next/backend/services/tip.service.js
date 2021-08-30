@@ -1,11 +1,9 @@
 const { ObjectId } = require("mongodb");
 const { safeHtml } = require("../utils/post");
 const { PostTitleLengthLimitation } = require("../constants");
-const {
-  getTipCollection,
-  getDb: getBusinessDb
-} = require("../mongo/business");
-const { getDb: getCommonDb } = require("../mongo/common");
+const { getDb: getBusinessDb, getTipCollection } = require("../mongo/business");
+const { getTipCollection: getChainTipCollection } = require("../mongo/chain");
+const { getDb: getCommonDb, lookupUser } = require("../mongo/common");
 const { HttpError } = require("../exc");
 const { ContentType } = require("../constants");
 const { toUserPublicInfo } = require("../utils/user");
@@ -100,7 +98,62 @@ async function getPostsByChain(chain, page, pageSize) {
   };
 }
 
+async function getPostById(chain, postId) {
+  const q = {};
+  if (ObjectId.isValid(postId)) {
+    q._id = ObjectId(postId);
+  } else {
+    const m = postId.match(/^(\d+)_(.+)$/);
+    if (m) {
+      q.height = parseInt(m[1]);
+      q.hash = m[2];
+    } else {
+      q.hash = postId;
+    }
+  }
+
+  const postCol = await getTipCollection(chain);
+  const post = await postCol.findOne(q);
+
+  if (!post) {
+    throw new HttpError(404, "Post not found");
+  }
+
+  const commonDb = await getCommonDb(chain);
+  const businessDb = await getBusinessDb(chain);
+  const chainTipCol = await getChainTipCollection(chain);
+  const [, reactions, tipData] = await Promise.all([
+    commonDb.lookupOne({
+      from: "user",
+      for: post,
+      as: "author",
+      localField: "finder",
+      foreignField: `${chain}Address`,
+      map: toUserPublicInfo,
+    }),
+    businessDb.lookupMany({
+      from: "reaction",
+      for: post,
+      as: "reactions",
+      localField: "_id",
+      foreignField: "tip",
+    }),
+    chainTipCol.findOne({
+      "indexer.blockHeight": post.height,
+      hash: post.hash
+    }),
+  ]);
+
+  await lookupUser({ for: reactions, localField: "user" });
+
+  return {
+    ...post,
+    onchainData: tipData,
+  };
+}
+
 module.exports =  {
   updatePost,
   getPostsByChain,
+  getPostById,
 };
