@@ -143,11 +143,68 @@ async function connectDb(dbName) {
     return _.flatten(Array.from(itemsMap.values()));
   }
 
+  async function compoundLookupOne({ from, compoundForeignFields, projection, map, for: for_, compoundLocalFields, as }) {
+    const records = Array.isArray(for_) ? for_ : [for_];
+    const vals = records.map(item => compoundLocalFields.map(localField => item[localField]));
+
+    const q = [
+      { $limit: 1 },
+      {
+        $project: {
+          _id: 0,
+          keys: vals.map(val => Object.fromEntries(val.map((v, i) => ["field" + i, v]))),
+        }
+      },
+      { $unwind: "$keys" },
+      {
+        $lookup: {
+          from,
+          let: Object.fromEntries(compoundForeignFields.map(
+            (foreignField, i) => ["field" + i, "$keys.field" + i]
+          )),
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: compoundForeignFields.map(
+                    (foreignField, i) => ({ $eq: ["$" + foreignField, "$$field" + i] })
+                  ),
+                }
+              }
+            },
+            ...(projection ? [{ $project: projection }] : []),
+          ],
+          as: "result",
+        }
+      },
+      { $addFields: { result: { $first: "$result" } } }
+    ];
+
+    const col = getCollection(from);
+    const items = await col.aggregate(q).toArray();
+    const itemsMap = new Map(items.map(item =>
+      [
+        JSON.stringify(Object.values(item.keys)),
+        map ? map(item) : item,
+      ]
+    ));
+
+    records.forEach(item => {
+      const relatedItem = itemsMap.get(JSON.stringify(compoundLocalFields.map(localField => item[localField])));
+      if (relatedItem) {
+        item[as] = relatedItem.result;
+      } else {
+        item[as] = null;
+      }
+    });
+  }
+
   return {
     getCollection,
     lookupOne,
     lookupMany,
     lookupCount,
+    compoundLookupOne,
   };
 }
 

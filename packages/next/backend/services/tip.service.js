@@ -2,7 +2,7 @@ const { ObjectId } = require("mongodb");
 const { safeHtml } = require("../utils/post");
 const { PostTitleLengthLimitation } = require("../constants");
 const { getDb: getBusinessDb, getTipCollection } = require("../mongo/business");
-const { getTipCollection: getChainTipCollection } = require("../mongo/chain");
+const { getDb: getChainDb, getTipCollection: getChainTipCollection } = require("../mongo/chain");
 const { getDb: getCommonDb, lookupUser } = require("../mongo/common");
 const { HttpError } = require("../exc");
 const { ContentType } = require("../constants");
@@ -72,6 +72,7 @@ async function getPostsByChain(chain, page, pageSize) {
 
   const commonDb = await getCommonDb(chain);
   const businessDb = await getBusinessDb(chain);
+  const chainDb = await getChainDb(chain);
   await Promise.all([
     commonDb.lookupOne({
       from: "user",
@@ -87,6 +88,14 @@ async function getPostsByChain(chain, page, pageSize) {
       as: "commentsCount",
       localField: "_id",
       foreignField: "tip",
+    }),
+    chainDb.compoundLookupOne({
+      from: "tip",
+      for: posts,
+      as: "onchainData",
+      compoundLocalFields: ["height", "hash"],
+      compoundForeignFields: ["indexer.blockHeight", "hash"],
+      projection: { state: 1 }
     }),
   ]);
 
