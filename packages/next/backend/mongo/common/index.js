@@ -1,6 +1,5 @@
 const { connectDb } = require("../../utils/db");
-const { SupportChains } = require("../../constants");
-const { md5 } = require("../../utils");
+const { toUserPublicInfo } = require("../../utils/user");
 
 let db = null;
 
@@ -29,7 +28,7 @@ async function getDb() {
 
 async function getCollection(colName) {
   const db = await getDb();
-  return db?.getCollection(colName);
+  return db.getCollection(colName);
 }
 
 async function lookupUser(lookupProps) {
@@ -42,14 +41,7 @@ async function lookupUser(lookupProps) {
     {
       from: "user",
       foreignField: "_id",
-      map: (item) => ({
-        username: item.username,
-        emailMd5: md5(item.email.trim().toLocaleLowerCase()),
-        addresses: SupportChains.map(chain => ({
-          chain,
-          address: item[`${chain}Address`]
-        })).filter(p => p.address),
-      }),
+      map: toUserPublicInfo,
     },
     lookupProps
   );

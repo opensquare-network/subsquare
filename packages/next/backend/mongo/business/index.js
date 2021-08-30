@@ -22,13 +22,14 @@ async function initDb() {
 
 async function getCollection(chain, colName) {
   const db = await getDb(chain);
-  return db?.getCollection(colName);
+  return db.getCollection(colName);
 }
 
 module.exports = {
   initDb,
   getDb,
   getPostCollection: (chain) => getCollection(chain, "post"),
+  getTipCollection: (chain) => getCollection(chain, "tip"),
   getCommentCollection: (chain) => getCollection(chain, "comment"),
   getReactionCollection: (chain) => getCollection(chain, "reaction"),
   getStatusCollection: (chain) => getCollection(chain, "status"),

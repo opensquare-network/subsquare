@@ -1,44 +1,8 @@
 const { HttpError } = require("../../exc");
-const postService = require("../../services/post.service")("post");
+const postService = require("../../services/post.service")("tip");
+const tipPostService = require("../../services/tip.service");
 const { ContentType } = require("../../constants");
 const { extractPage } = require("../../utils");
-
-async function createPost(ctx) {
-  const { chain } = ctx.params;
-  const {
-    title,
-    content,
-    contentType: paramContentType,
-  } = ctx.request.body;
-
-  if (!title) {
-    throw new HttpError(400, { title: ["Post title is missing"] });
-  }
-
-  if (!content) {
-    throw new HttpError(400, { content: ["Post content is missing"] });
-  }
-
-  if (
-    paramContentType !== undefined &&
-    paramContentType !== ContentType.Markdown &&
-    paramContentType !== ContentType.Html
-  ) {
-    throw new HttpError(400, { contentType: ["Unknown content type"] });
-  }
-
-  const contentType = paramContentType
-    ? paramContentType
-    : ContentType.Markdown;
-
-  ctx.body = await postService.createPost(
-    chain,
-    title,
-    content,
-    contentType,
-    ctx.user
-  );
-}
 
 async function updatePost(ctx) {
   const { chain, postId } = ctx.params;
@@ -68,7 +32,7 @@ async function updatePost(ctx) {
     ? paramContentType
     : ContentType.Markdown;
 
-  ctx.body = await postService.updatePost(
+  ctx.body = await tipPostService.updatePost(
     chain,
     postId,
     title,
@@ -87,7 +51,7 @@ async function getPosts(ctx) {
     return;
   }
 
-  ctx.body = await postService.getPostsByChain(chain, page, pageSize);
+  ctx.body = await tipPostService.getPostsByChain(chain, page, pageSize);
 }
 
 async function getPostById(ctx) {
@@ -161,7 +125,6 @@ async function unsetPostReaction(ctx) {
 
 
 module.exports = {
-  createPost,
   updatePost,
   getPosts,
   getPostById,

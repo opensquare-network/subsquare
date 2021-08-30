@@ -35,10 +35,10 @@ async function connectDb(dbName) {
 
   async function lookupOne({ from, foreignField, projection, map }, lookupProps) {
     if (lookupProps === undefined) {
-      const { for: for_, localField } =  arguments[0];
+      const { for: for_, localField, as } =  arguments[0];
       return lookupOne(
         { from, foreignField, projection, map },
-        [{ for: for_, localField }]
+        [{ for: for_, localField, as }]
       );
     }
 
@@ -52,7 +52,7 @@ async function connectDb(dbName) {
     let itemsMap = new Set();
 
     await Promise.all(
-      lookupProps.map(async ({ for: for_, localField }) => {
+      lookupProps.map(async ({ for: for_, localField, as }) => {
         const records = Array.isArray(for_) ? for_ : [for_];
         const vals = records.map(item => item[localField]);
 
@@ -61,9 +61,9 @@ async function connectDb(dbName) {
         records.forEach(item => {
           const relatedItem = itemsMap.get(item[localField].toString());
           if (relatedItem) {
-            item[localField] = relatedItem;
+            item[as ?? localField] = relatedItem;
           } else {
-            item[localField] = null;
+            item[as ?? localField] = null;
           }
         });
       })
