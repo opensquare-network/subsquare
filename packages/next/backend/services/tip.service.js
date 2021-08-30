@@ -92,10 +92,11 @@ async function getPostsByChain(chain, page, pageSize) {
     chainDb.compoundLookupOne({
       from: "tip",
       for: posts,
-      as: "onchainData",
+      as: "state",
       compoundLocalFields: ["height", "hash"],
       compoundForeignFields: ["indexer.blockHeight", "hash"],
-      projection: { state: 1 }
+      projection: { state: 1 },
+      map: (data) => data.state.state,
     }),
   ]);
 

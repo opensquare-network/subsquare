@@ -185,14 +185,14 @@ async function connectDb(dbName) {
     const itemsMap = new Map(items.map(item =>
       [
         JSON.stringify(Object.values(item.keys)),
-        map ? map(item) : item,
+        map ? map(item.result) : item.result,
       ]
     ));
 
     records.forEach(item => {
       const relatedItem = itemsMap.get(JSON.stringify(compoundLocalFields.map(localField => item[localField])));
       if (relatedItem) {
-        item[as] = relatedItem.result;
+        item[as] = relatedItem;
       } else {
         item[as] = null;
       }
