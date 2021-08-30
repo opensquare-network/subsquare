@@ -102,11 +102,11 @@ async function scanNormalizedBlock(registry, block, blockEvents) {
   // handle the business
   const blockIndexer = getBlockIndexer(block);
   await handleEvents(registry, blockEvents, block.extrinsics, blockIndexer);
-  await handleExtrinsics(registry, block.extrinsics, blockEvents, blockIndexer);
+  // await handleExtrinsics(registry, block.extrinsics, blockEvents, blockIndexer);
 }
 
 async function test() {
-  const height = 5379799;
+  const height = 8655116;
   const api = await getApi();
   const registry = await getRegistryByHeight(height);
   const blockHash = await api.rpc.chain.getBlockHash(height);
@@ -116,11 +116,11 @@ async function test() {
   await scanNormalizedBlock(registry, block.block, allEvents);
 }
 
-// test();
-main()
-  .then(() => console.log("Scan finished"))
-  .catch(console.error)
-  .finally(cleanUp);
+test();
+// main()
+//   .then(() => console.log("Scan finished"))
+//   .catch(console.error)
+//   .finally(cleanUp);
 
 async function cleanUp() {
   await disconnect();

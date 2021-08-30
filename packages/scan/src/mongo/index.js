@@ -18,6 +18,7 @@ function getDbName() {
 const statusCollectionName = "status";
 const tipCollectionName = "tip";
 const motionCollectionName = "motion";
+const treasuryProposalCollectionName = "treasuryProposal";
 
 let client = null;
 let db = null;
@@ -27,6 +28,7 @@ const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017";
 let statusCol = null;
 let tipCol = null;
 let motionCol = null;
+let treasuryProposalCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -37,6 +39,7 @@ async function initDb() {
   statusCol = db.collection(statusCollectionName);
   tipCol = db.collection(tipCollectionName);
   motionCol = db.collection(motionCollectionName);
+  treasuryProposalCol = db.collection(treasuryProposalCollectionName);
 
   await _createIndexes();
 }
@@ -71,8 +74,14 @@ async function getMotionCollection() {
   return motionCol;
 }
 
+async function getTreasuryProposalCollection() {
+  await tryInit(treasuryProposalCol);
+  return treasuryProposalCol;
+}
+
 module.exports = {
   getStatusCollection,
   getTipCollection,
   getMotionCollection,
+  getTreasuryProposalCollection,
 };

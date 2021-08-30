@@ -1,5 +1,6 @@
 const { handleTipEvent } = require("./tip");
 const { handleMotionEvent } = require("./motion");
+const { handleTreasuryProposalEvent } = require("./treasuryProposal");
 
 async function handleEvents(registry, events, extrinsics, blockIndexer) {
   for (let sort = 0; sort < events.length; sort++) {
@@ -19,6 +20,7 @@ async function handleEvents(registry, events, extrinsics, blockIndexer) {
 
     // TODO: handle business with events
     await handleTipEvent(registry, event, extrinsic, indexer);
+    await handleTreasuryProposalEvent(registry, event, extrinsic, indexer);
     await handleMotionEvent(registry, event, extrinsic, indexer);
   }
 }
