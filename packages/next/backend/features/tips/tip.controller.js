@@ -57,7 +57,7 @@ async function getPosts(ctx) {
 async function getPostById(ctx) {
   const { chain, postId } = ctx.params;
 
-  ctx.body = await postService.getPostById(chain, postId);
+  ctx.body = await tipPostService.getPostById(chain, postId);
 }
 
 async function postComment(ctx) {
