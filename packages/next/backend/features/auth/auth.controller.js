@@ -1,4 +1,5 @@
 const { ObjectId } = require("mongodb");
+const Cookies = require("cookies");
 const argon2 = require("argon2");
 const { randomBytes } = require("crypto");
 const validator = require("validator");
@@ -161,16 +162,10 @@ async function login(ctx) {
   const accessToken = await authService.getSignedToken(user);
   const refreshToken = await authService.getRefreshToken(user);
 
-  ctx.cookies.set("auth-token", accessToken, {
+  const cookies = new Cookies(ctx.req, ctx.res, { secure: true });
+  cookies.set("auth-token", accessToken, {
     httpOnly: true,
-    ...(
-      process.env.NODE_ENV === "production" ? {
-        sameSite: "lax",
-      } : {
-        sameSite: "none",
-        secure: true,
-      }
-    ),
+    sameSite: process.env.NODE_ENV === "production" ?  "lax" : "none",
     maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 
@@ -378,16 +373,10 @@ async function addressLoginConfirm(ctx) {
   const accessToken = await authService.getSignedToken(user);
   const refreshToken = await authService.getRefreshToken(user);
 
-  ctx.cookies.set("auth-token", accessToken, {
+  const cookies = new Cookies(ctx.req, ctx.res, { secure: true });
+  cookies.set("auth-token", accessToken, {
     httpOnly: true,
-    ...(
-      process.env.NODE_ENV === "production" ? {
-        sameSite: "lax",
-      } : {
-        sameSite: "none",
-        secure: true,
-      }
-    ),
+    sameSite: process.env.NODE_ENV === "production" ?  "lax" : "none",
     maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 
