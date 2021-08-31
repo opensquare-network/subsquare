@@ -177,7 +177,11 @@ async function connectDb(dbName) {
           as: "result",
         }
       },
-      { $addFields: { result: { $first: "$result" } } }
+      {
+        $addFields: {
+          result: { $first: "$result" }
+        }
+      }
     ];
 
     const col = getCollection(from);
@@ -197,6 +201,8 @@ async function connectDb(dbName) {
         item[as] = null;
       }
     });
+
+    return Array.from(itemsMap.values());
   }
 
   return {
