@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { encodeSubstrateAddress } from "services/address";
+import Cookies from "js-cookie";
 
 import nextApi from "services/nextApi";
 
@@ -24,6 +24,9 @@ export const fetchUserProfile = () => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
   await nextApi.post("auth/logout");
+  if (process.env.MODE !== "cors-api-server") {
+    Cookies.set("auth-token");
+  }
   dispatch(setUser(null));
 };
 

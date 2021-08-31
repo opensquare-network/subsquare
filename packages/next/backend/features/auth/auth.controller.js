@@ -178,7 +178,12 @@ async function login(ctx) {
 }
 
 async function logout(ctx) {
-  ctx.cookies.set("auth-token");
+  const cookies = new Cookies(ctx.req, ctx.res, { secure: true });
+  cookies.set("auth-token", null, {
+    httpOnly: true,
+    sameSite: process.env.MODE === "cors-api-server" ? "none" : "lax",
+    maxAge: 0,
+  });
   ctx.body = true;
 }
 
