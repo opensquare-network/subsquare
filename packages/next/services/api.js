@@ -15,7 +15,7 @@ class Api {
     }
 
     return new Promise((resolve, reject) =>
-      fetch(url, options)
+      fetch(url, { credentials: 'include', ...options })
         .then((resp) =>
           resp.status !== 200
             ? resp.json().then((data) =>
@@ -40,7 +40,7 @@ class Api {
     );
   };
 
-  post = async (path, body = null) => {
+  post = async (path, body = null, options) => {
     const result = await this.fetch(
       path,
       {},

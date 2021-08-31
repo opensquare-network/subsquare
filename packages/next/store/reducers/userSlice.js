@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { encodeSubstrateAddress } from "services/address";
+import Cookies from "cookies";
 
 import nextApi from "services/nextApi";
 
@@ -18,7 +18,17 @@ const userSlice = createSlice({
 export const { setUser } = userSlice.actions;
 
 export const fetchUserProfile = () => async (dispatch) => {
-  const { result } = await nextApi.fetch("user/profile");
+  const authToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMTQ4OGUzOTAwZTU5NTI4YWM4MzJmZSIsImVtYWlsIjoiNjM0NTU0ODE1QHFxLmNvbSIsInVzZXJuYW1lIjoieW9zaGl5dWtpIiwiaWF0IjoxNjMwMzk5MjU3LCJleHAiOjE2MzEwMDQwNTd9.tF0unQYwDz-XgMiP8BQYPeYtaWPKbN94UT9aaPZvOYQ`;
+  let options = {}
+  if (authToken) {
+    options = {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+      credentials:"include",
+    };
+  }
+  const { result } = await nextApi.fetch("user/profile", {}, options);
   if (result) dispatch(setUser(result));
 };
 
