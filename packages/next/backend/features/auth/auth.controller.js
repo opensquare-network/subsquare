@@ -163,7 +163,14 @@ async function login(ctx) {
 
   ctx.cookies.set("auth-token", accessToken, {
     httpOnly: true,
-    sameSite: process.env.NODE_ENV === "production" ? "lax" : "none",
+    ...(
+      process.env.NODE_ENV === "production" ? {
+        sameSite: "lax",
+      } : {
+        sameSite: "none",
+        secure: true,
+      }
+    ),
     maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 
@@ -373,7 +380,14 @@ async function addressLoginConfirm(ctx) {
 
   ctx.cookies.set("auth-token", accessToken, {
     httpOnly: true,
-    sameSite: "lax",
+    ...(
+      process.env.NODE_ENV === "production" ? {
+        sameSite: "lax",
+      } : {
+        sameSite: "none",
+        secure: true,
+      }
+    ),
     maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 
