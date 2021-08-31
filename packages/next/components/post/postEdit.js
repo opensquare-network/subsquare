@@ -17,12 +17,19 @@ const Label = styled.div`
   margin: 16px 0 8px;
 `;
 
-export default function PostEdit({ chain, postData, setIsEdit, updatePost }) {
+export default function PostEdit({
+  chain,
+  postData,
+  setIsEdit,
+  updatePost,
+  type,
+}) {
   const [title, setTitle] = useState(postData.title);
 
   const editPost = async (content, contentType) => {
+    const url = `${chain}/${type}s/${postData._id}`;
     const result = await nextApi.fetch(
-      `${chain}/posts/${postData._id}`,
+      url,
       {},
       {
         method: "PATCH",
