@@ -14,14 +14,13 @@ import { useDispatch } from "react-redux";
 const Wrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
-  box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
-    0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow:0 6px 7px rgba(30, 33, 52, 0.02),
+   0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+   0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
   padding: 48px;
   @media screen and (max-width: 600px) {
     padding: 24px;
-    margin: 0 -16px;
     border-radius: 0;
   }
   :hover {
@@ -57,6 +56,7 @@ const Info = styled.div`
 const Title = styled.div`
   max-width: 750px;
   overflow: hidden;
+  word-break: break-all;
   font-weight: 500;
   font-size: 28px;
   line-height: 140%;
@@ -131,7 +131,7 @@ const SupporterWrapper = styled.div`
   padding: 8px 12px;
   background: #f6f7fa;
   border-radius: 4px;
-  margin: 16px 0 0 0px;
+  margin: 16px 0 00;
 `;
 
 const SupporterItem = styled.div`

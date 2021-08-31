@@ -44,7 +44,10 @@ async function connectDb(dbName) {
 
     const query = new DeferredCall(async (keys) => {
       const col = getCollection(from);
-      const items = await col.find({ [foreignField]: { $in: keys } }, { projection: {...projection, [foreignField]: 1 } }).toArray();
+      const items = await col.find(
+        { [foreignField]: { $in: keys } },
+        projection ? { projection: {...projection, [foreignField]: 1 } } : {}
+      ).toArray();
       const itemsMap = new Map(items.map(item => [item[foreignField].toString(), map ? map(item) : item]));
       return itemsMap;
     });

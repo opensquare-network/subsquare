@@ -28,7 +28,7 @@ const Wrapper = styled.div`
     border-radius: 6px;
   }
   background: #FFFFFF;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.04);
+  box-shadow:0 2px 4px rgba(0, 0, 0, 0.04);
   border-radius: 8px;
 `
 const Title = styled.div`
