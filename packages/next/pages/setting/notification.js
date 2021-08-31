@@ -96,18 +96,14 @@ export default withLoginUserRedux(({
     }
 
     setSaving(true);
-    const { result, error } = await nextApi.fetch("user/notification", {}, {
-      method: "PATCH",
-      credentials: "same-origin",
-      body: JSON.stringify(
-        {
-          reply,
-          mention,
-          thumbsUp,
-        }
-      ),
-      headers: { "Content-Type": "application/json" },
-    });
+    const { result, error } = await nextApi.patch(
+      "user/notification",
+      {
+        reply,
+        mention,
+        thumbsUp,
+      }
+    );
     if (result) {
       dispatch(fetchUserProfile());
       dispatch(addToast({ type: "success", message: "Settings saved" }));

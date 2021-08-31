@@ -21,18 +21,12 @@ export default function PostEdit({ chain, postData, setIsEdit, updatePost }) {
   const [title, setTitle] = useState(postData.title);
 
   const editPost = async (content, contentType) => {
-    const result = await nextApi.fetch(
+    const result = await nextApi.patch(
       `${chain}/posts/${postData._id}`,
-      {},
       {
-        method: "PATCH",
-        credentials: "same-origin",
-        body: JSON.stringify({
-          title,
-          content,
-          contentType,
-        }),
-        headers: { "Content-Type": "application/json" },
+        title,
+        content,
+        contentType,
       }
     );
     return result;
