@@ -15,7 +15,7 @@ class Api {
     }
 
     return new Promise((resolve, reject) =>
-      fetch(url, options ? {...options, credentials: "include"} : {credentials: "include"})
+      fetch(url, { credentials: 'include', ...options })
         .then((resp) =>
           resp.status !== 200
             ? resp.json().then((data) =>
