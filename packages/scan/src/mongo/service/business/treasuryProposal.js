@@ -11,6 +11,9 @@ async function insertProposalPost(proposal) {
     indexer: proposal.indexer,
     proposalIndex: proposal.proposalIndex,
     proposer: proposal.proposer,
+    title: `Untitled - treasury proposal #${proposal.proposalIndex}`,
+    content: "",
+    contentType: "markdown",
   });
 }
 
