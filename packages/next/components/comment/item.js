@@ -196,22 +196,13 @@ export default function Item({ user, data, chain, onReply }) {
         let result, error;
 
         if (thumbUp) {
-          ({ result, error } = await nextApi.fetch(
+          ({ result, error } = await nextApi.delete(
             `${chain}/comments/${comment._id}/reaction`,
-            {},
-            {
-              method: "DELETE",
-            }
           ));
         } else {
-          ({ result, error } = await nextApi.fetch(
+          ({ result, error } = await nextApi.put(
             `${chain}/comments/${comment._id}/reaction`,
-            {},
-            {
-              method: "PUT",
-              body: JSON.stringify({ reaction: 1 }),
-              headers: { "Content-Type": "application/json" },
-            }
+            { reaction: 1 }
           ));
         }
 
@@ -233,17 +224,11 @@ export default function Item({ user, data, chain, onReply }) {
   };
 
   const editComment = async (content, contentType) => {
-    return await nextApi.fetch(
+    return await nextApi.patch(
       `${chain}/comments/${commentId}`,
-      {},
       {
-        method: "PATCH",
-        credentials: "same-origin",
-        body: JSON.stringify({
-          content,
-          contentType,
-        }),
-        headers: { "Content-Type": "application/json" },
+        content,
+        contentType,
       }
     );
   };

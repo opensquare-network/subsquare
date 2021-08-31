@@ -59,16 +59,9 @@ export default function AddressLogin({ onBack }) {
         result?.challenge,
         selectedAccount.address
       );
-      const { result: loginResult, error: loginError } = await nextApi.fetch(
+      const { result: loginResult, error: loginError } = await nextApi.post(
         `auth/login/${result?.attemptId}`,
-        {},
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ challengeAnswer: signature }),
-        }
+        { challengeAnswer: signature }
       );
       if (loginResult) {
         dispatch(setUser(loginResult));

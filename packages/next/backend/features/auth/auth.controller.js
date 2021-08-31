@@ -165,7 +165,7 @@ async function login(ctx) {
   const cookies = new Cookies(ctx.req, ctx.res, { secure: true });
   cookies.set("auth-token", accessToken, {
     httpOnly: true,
-    sameSite: process.env.NODE_ENV === "production" ?  "lax" : "none",
+    sameSite: process.env.MODE === "cors-api-server" ? "none" : "lax",
     maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 
@@ -376,7 +376,7 @@ async function addressLoginConfirm(ctx) {
   const cookies = new Cookies(ctx.req, ctx.res, { secure: true });
   cookies.set("auth-token", accessToken, {
     httpOnly: true,
-    sameSite: process.env.NODE_ENV === "production" ?  "lax" : "none",
+    sameSite: process.env.MODE === "cors-api-server" ? "none" : "lax",
     maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 

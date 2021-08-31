@@ -32,14 +32,18 @@ const delayQuery = debounce(() => {
   for (const chain in chainAddresses) {
     const addresses = chainAddresses[chain];
 
-    const headers = {"accept": "application/json, text/plain, */*", "content-type": "application/json;charset=UTF-8",};
+    const headers = {
+      "accept": "application/json, text/plain, */*",
+      "content-type": "application/json;charset=UTF-8",
+    };
 
-    fetch
-    (`${process.env.NEXT_PUBLIC_IDENTITY_SERVER_HOST}/${chain}/identities`, {
-      headers,
-      method: "POST",
-      body: JSON.stringify({addresses})
-    })
+    fetch(
+      `${process.env.NEXT_PUBLIC_IDENTITY_SERVER_HOST}/${chain}/identities`,
+      {
+        headers,
+        method: "POST",
+        body: JSON.stringify({addresses})
+      })
       .then(res => res.json())
       .then((data) => {
         const identities = new Map(data.map(item => [item.address, item]));
