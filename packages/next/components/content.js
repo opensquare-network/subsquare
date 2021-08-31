@@ -19,6 +19,7 @@ const ContentWrapper = styled.div`
   }
   @media screen and (max-width: 600px) {
     flex-direction: column-reverse;
+    padding: 0;
   }
 `;
 

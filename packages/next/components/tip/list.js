@@ -8,6 +8,10 @@ const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
+  @media screen and (max-width: 600px) {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
 `;
 
 const Title = styled.div`

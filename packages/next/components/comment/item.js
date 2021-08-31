@@ -19,7 +19,7 @@ import { useRouter } from "next/router";
 const Wrapper = styled.div`
   position: relative;
   padding: 16px 48px;
-  margin: 0px -48px;
+  margin:0 -48px;
 
   :not(:last-child)::after {
     content: "";
