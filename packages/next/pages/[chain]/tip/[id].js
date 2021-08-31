@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-import Layout from "components/layout";
 import Back from "components/back";
 import DetailItem from "components/detailItem";
 import Comments from "components/comment";
@@ -10,8 +9,6 @@ import { EmptyList } from "../../../utils/constants";
 import Input from "../../../components/comment/input";
 import { useState, useRef, useEffect } from "react";
 import LayoutFixedHeader from "../../../components/layoutFixedHeader";
-import { timelineData } from "../../../utils/data";
-import Timeline from "../../../components/timeline";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -25,14 +22,13 @@ const Wrapper = styled.div`
 const CommentsWrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
-  box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
-  0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-  0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow:0 6px 7px rgba(30, 33, 52, 0.02),
+ 0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+ 0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
   padding: 48px;
   @media screen and (max-width: 600px) {
     padding: 24px;
-    margin: 0 -16px;
     border-radius: 0;
   }
 `;
@@ -119,7 +115,6 @@ export default withLoginUserRedux(({loginUser, detail, comments, chain}) => {
           chain={chain}
           onReply={focusEditor}
         />
-        <Timeline data={timelineData} />
         <CommentsWrapper>
           <Comments
             data={comments}

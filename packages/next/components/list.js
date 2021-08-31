@@ -6,6 +6,10 @@ import Pagination from "./pagination";
 import EmptyList from "./emptyList";
 
 const Wrapper = styled.div`
+  @media screen and (max-width: 600px) {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
   > :not(:first-child) {
     margin-top: 16px;
   }

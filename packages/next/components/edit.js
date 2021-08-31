@@ -27,9 +27,9 @@ const OptionWrapper = styled.div`
   width: 96px;
   padding: 8px 0;
   border-radius: 4px;
-  box-shadow: 0px 6px 22px rgba(30, 33, 52, 0.11),
-    0px 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
-    0px 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
+  box-shadow:0 6px 22px rgba(30, 33, 52, 0.11),
+   0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
+   0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
 `;
 
 const OptionItem = styled.div`

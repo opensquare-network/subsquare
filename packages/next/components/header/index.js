@@ -22,9 +22,9 @@ const Wrapper = styled.header`
             z-index: 1;
     `}
   background: #ffffff;
-  box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
-    0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow:0 6px 7px rgba(30, 33, 52, 0.02),
+   0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+   0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   height: 64px;
 `;
 
@@ -42,6 +42,8 @@ const Left = styled.div`
   @media screen and (max-width: 600px) {
     flex-grow: 1;
     justify-content: space-between;
+    margin-left: 16px;
+    margin-right: 16px;
   }
 `;
 
