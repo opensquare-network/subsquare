@@ -1,6 +1,6 @@
 const SupportChains = [
   // "polkadot",
-  // "kusama",
+  "kusama",
   "karura",
 ];
 

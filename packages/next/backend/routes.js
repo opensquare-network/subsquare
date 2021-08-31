@@ -8,6 +8,7 @@ const router = new Router();
 const chainFeatureRouters = [
   require("./features/posts/routes"),
   require("./features/tips/routes"),
+  require("./features/proposals/routes"),
   require("./features/comments/routes"),
 ];
 

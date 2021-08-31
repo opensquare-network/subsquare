@@ -55,7 +55,7 @@ async function saveNewTreasuryProposal(
   };
 
   await insertTreasuryProposal(obj);
-  await insertTreasuryProposalPost(proposalIndex);
+  await insertTreasuryProposalPost(obj);
   logger.info(`Treasury proposal ${proposalIndex} saved`);
 }
 

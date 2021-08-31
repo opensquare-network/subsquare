@@ -31,11 +31,12 @@ export const DEFAULT_POLKADOT_NODES = [
 ];
 
 export const nodes = [
-  // {
-  //   value: "kusama",
-  //   name: "Kusama",
-  //   icon: "kusama.svg",
-  // },
+  {
+    value: "kusama",
+    name: "Kusama",
+    icon: "kusama.svg",
+    relay: "kusama",
+  },
   // {
   //   value: "polkadot",
   //   name: "Polkadot",
