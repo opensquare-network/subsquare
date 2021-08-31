@@ -109,7 +109,7 @@ export default withLoginUserRedux(({ loginUser }) => {
       setLoading(true);
       const res = await nextApi.post("auth/login", formData);
       if (res.result) {
-        if (process.env.NODE_ENV !== "production") {
+        if (process.env.MODE !== "cors-api-server") {
           Cookies.set("auth-token", res.result.accessToken, {
             sameSite: "lax",
             expires: 30,
