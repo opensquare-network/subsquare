@@ -10,6 +10,8 @@ import { EmptyList } from "../../../utils/constants";
 import Input from "../../../components/comment/input";
 import { useState, useRef, useEffect } from "react";
 import LayoutFixedHeader from "../../../components/layoutFixedHeader";
+import { timelineData } from "../../../utils/data";
+import Timeline from "../../../components/timeline";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -117,6 +119,7 @@ export default withLoginUserRedux(({loginUser, detail, comments, chain}) => {
           chain={chain}
           onReply={focusEditor}
         />
+        <Timeline data={timelineData} />
         <CommentsWrapper>
           <Comments
             data={comments}
