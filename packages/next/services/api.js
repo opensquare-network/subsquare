@@ -46,7 +46,7 @@ class Api {
       {},
       {
         method: "POST",
-        credentials: "same-origin",
+        credentials: "include",
         body: body ? JSON.stringify(body) : null,
         headers: { "Content-Type": "application/json" },
       }

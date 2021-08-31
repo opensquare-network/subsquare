@@ -8,7 +8,7 @@ const { ioHandler } = require("./websocket");
 
 const app = new Koa();
 
-app.use(cors());
+app.use(cors({ credentials: true }));
 app.use(logger());
 app.use(bodyParser());
 app.use(helmet());
