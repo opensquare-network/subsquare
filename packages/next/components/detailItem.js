@@ -153,7 +153,7 @@ const getTypeColor = (type) => {
   }
 };
 
-export default function DetailItem({ data, user, chain, onReply }) {
+export default function DetailItem({ data, user, chain, onReply, type }) {
   const dispatch = useDispatch();
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
@@ -161,13 +161,21 @@ export default function DetailItem({ data, user, chain, onReply }) {
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
 
   const isLoggedIn = !!user;
-  const ownPost = isLoggedIn && post.author?.username === user.username;
+  let ownPost = false;
+  if (type === "tip") {
+    ownPost =
+      isLoggedIn &&
+      !!(user.addresses || []).find((item) => item.address === post.finder);
+  } else if (type === "post") {
+    ownPost = isLoggedIn && post.author?.username === user.username;
+  }
   const thumbUp =
     isLoggedIn &&
     post?.reactions?.findIndex((r) => r.user?.username === user.username) > -1;
 
   const updatePost = async () => {
-    const { result: newPost } = await nextApi.fetch(`${chain}/posts/${post._id}`);
+    const url = `${chain}/${type}s/${post._id}`;
+    const { result: newPost } = await nextApi.fetch(url);
     if (newPost) {
       setPost(newPost);
     }
@@ -276,6 +284,7 @@ export default function DetailItem({ data, user, chain, onReply }) {
           postData={post}
           setIsEdit={setIsEdit}
           updatePost={updatePost}
+          type={type}
         />
       )}
     </Wrapper>
