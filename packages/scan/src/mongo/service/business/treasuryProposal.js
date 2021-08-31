@@ -1,14 +1,16 @@
 const { getBusinessTreasuryProposalCollection } = require("../../business");
 
-async function insertProposalPost(proposalIndex) {
+async function insertProposalPost(proposal) {
   const col = await getBusinessTreasuryProposalCollection();
-  const maybeInDb = await col.findOne({ proposalIndex });
+  const maybeInDb = await col.findOne({ proposalIndex: proposal.proposalIndex });
   if (maybeInDb) {
     return;
   }
 
   await col.insertOne({
-    proposalIndex,
+    indexer: proposal.indexer,
+    proposalIndex: proposal.proposalIndex,
+    proposer: proposal.proposer,
   });
 }
 
