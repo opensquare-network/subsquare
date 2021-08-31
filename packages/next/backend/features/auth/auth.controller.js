@@ -163,7 +163,7 @@ async function login(ctx) {
 
   ctx.cookies.set("auth-token", accessToken, {
     httpOnly: true,
-    sameSite: "lax",
+    sameSite: process.env.NODE_ENV === "production" ? "lax" : "none",
     maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 
