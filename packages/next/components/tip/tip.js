@@ -44,6 +44,8 @@ const Info = styled.div`
 `;
 
 const Title = styled.div`
+  overflow: hidden;
+  max-width: 750px;
   margin-bottom: 12px;
   font-weight: 500;
   font-size: 16px;
@@ -110,7 +112,7 @@ const getTypeColor = (type) => {
 export default function Tip({ data, chain }) {
   return (
     <Wrapper>
-      <Link href={`/${chain}/tip/${data.height}`}>
+      <Link href={`/${chain}/tip/${data.height}_${data.hash}`}>
         <Title>{data.title}</Title>
       </Link>
       <DividerWrapper>

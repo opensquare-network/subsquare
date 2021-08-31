@@ -14,8 +14,9 @@ export default withLoginUserRedux(({loginUser, tips, chain}) => {
     title: tip.title,
     author: tip.author ?? {username: addressEllipsis(tip.finder), addresses: [{chain, address: tip.finder}]},
     tipUid: tip.tipUid,
+    height: tip.indexer.blockHeight,
+    hash: tip.indexer.blockHash,
   }));
-
 
   return (
     <Layout user={loginUser} left={<Menu menu={mainMenu}/>} chain={chain}>

@@ -55,6 +55,8 @@ const Info = styled.div`
 `;
 
 const Title = styled.div`
+  max-width: 750px;
+  overflow: hidden;
   font-weight: 500;
   font-size: 28px;
   line-height: 140%;
