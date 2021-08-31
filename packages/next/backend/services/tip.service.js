@@ -23,7 +23,7 @@ async function updatePost(
     throw new HttpError(404, "Post does not exists");
   }
 
-  if (!post.finder.equals(author[`${chain}Address`])) {
+  if (post.finder !== author[`${chain}Address`]) {
     throw new HttpError(403, "You are not the post author");
   }
 
@@ -92,11 +92,11 @@ async function getPostsByChain(chain, page, pageSize) {
     chainDb.compoundLookupOne({
       from: "tip",
       for: posts,
+      projection: { state: 1 },
+      map: (data) => data.state.state,
       as: "state",
       compoundLocalFields: ["height", "hash"],
       compoundForeignFields: ["indexer.blockHeight", "hash"],
-      projection: { state: 1 },
-      map: (data) => data.state.state,
     }),
   ]);
 

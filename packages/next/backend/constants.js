@@ -16,7 +16,7 @@ const ContentType = Object.freeze({
   Html: "html",
 });
 
-const PostTitleLengthLimitation = 120;
+const PostTitleLengthLimitation = 160;
 
 
 module.exports = {
