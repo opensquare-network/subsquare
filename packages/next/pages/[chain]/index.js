@@ -24,7 +24,7 @@ export default withLoginUserRedux(({OverviewData, loginUser, chain}) => {
       left={<Menu menu={mainMenu}/>}
       chain={chain}
     >
-      <Overview OverviewData={OverviewData}/>
+      <Overview OverviewData={OverviewData} chain={chain}/>
     </Layout>
   );
 });
