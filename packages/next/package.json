@@ -24,6 +24,7 @@
     "handlebars": "^4.7.7",
     "html-react-parser": "^1.2.8",
     "http-proxy": "^1.18.1",
+    "js-cookie": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
