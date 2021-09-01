@@ -1,4 +1,5 @@
 const { ObjectId } = require("mongodb");
+const Cookies = require("cookies");
 const argon2 = require("argon2");
 const { randomBytes } = require("crypto");
 const validator = require("validator");
@@ -161,9 +162,10 @@ async function login(ctx) {
   const accessToken = await authService.getSignedToken(user);
   const refreshToken = await authService.getRefreshToken(user);
 
-  ctx.cookies.set("auth-token", accessToken, {
+  const cookies = new Cookies(ctx.req, ctx.res, { secure: true });
+  cookies.set("auth-token", accessToken, {
     httpOnly: true,
-    sameSite: "lax",
+    sameSite: process.env.MODE === "cors-api-server" ? "none" : "lax",
     maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 
@@ -176,7 +178,12 @@ async function login(ctx) {
 }
 
 async function logout(ctx) {
-  ctx.cookies.set("auth-token");
+  const cookies = new Cookies(ctx.req, ctx.res, { secure: true });
+  cookies.set("auth-token", null, {
+    httpOnly: true,
+    sameSite: process.env.MODE === "cors-api-server" ? "none" : "lax",
+    maxAge: 0,
+  });
   ctx.body = true;
 }
 
@@ -371,9 +378,10 @@ async function addressLoginConfirm(ctx) {
   const accessToken = await authService.getSignedToken(user);
   const refreshToken = await authService.getRefreshToken(user);
 
-  ctx.cookies.set("auth-token", accessToken, {
+  const cookies = new Cookies(ctx.req, ctx.res, { secure: true });
+  cookies.set("auth-token", accessToken, {
     httpOnly: true,
-    sameSite: "lax",
+    sameSite: process.env.MODE === "cors-api-server" ? "none" : "lax",
     maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 

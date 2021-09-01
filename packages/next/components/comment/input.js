@@ -121,17 +121,11 @@ function Input({
 
   const updateComment = async () => {
     setLoading(true);
-    const {result, error} = await nextApi.fetch(
+    const {result, error} = await nextApi.patch(
       `${chain}/comments/${commentId}`,
-      {},
       {
-        method: "PATCH",
-        credentials: "same-origin",
-        body: JSON.stringify({
-          content,
-          contentType,
-        }),
-        headers: {"Content-Type": "application/json"},
+        content,
+        contentType,
       }
     );
     setLoading(false);

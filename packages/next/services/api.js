@@ -46,8 +46,49 @@ class Api {
       {},
       {
         method: "POST",
-        credentials: "same-origin",
+        credentials: "include",
         body: body ? JSON.stringify(body) : null,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    return result;
+  };
+
+  put = async (path, body = null) => {
+    const result = await this.fetch(
+      path,
+      {},
+      {
+        method: "PUT",
+        credentials: "include",
+        body: body ? JSON.stringify(body) : null,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    return result;
+  };
+
+  patch = async (path, body = null) => {
+    const result = await this.fetch(
+      path,
+      {},
+      {
+        method: "PATCH",
+        credentials: "include",
+        body: body ? JSON.stringify(body) : null,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    return result;
+  };
+
+  delete = async (path) => {
+    const result = await this.fetch(
+      path,
+      {},
+      {
+        method: "DELETE",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
       }
     );

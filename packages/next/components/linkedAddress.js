@@ -206,12 +206,8 @@ export default function LinkedAddress() {
   const unlinkAddress = async (chain, account) => {
     const address = account[`${chain}Address`];
 
-    const { error, result } = await nextApi.fetch(
+    const { error, result } = await nextApi.delete(
       `user/linkaddr/${chain}/${address}`,
-      {},
-      {
-        method: "DELETE",
-      }
     );
     dispatch(fetchUserProfile());
 
@@ -243,16 +239,9 @@ export default function LinkedAddress() {
     if (result) {
       const signature = await signMessage(result?.challenge, account.address);
       const { error: confirmError, result: confirmResult } =
-        await nextApi.fetch(
+        await nextApi.post(
           `user/linkaddr/${result?.attemptId}`,
-          {},
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ challengeAnswer: signature }),
-          }
+          { challengeAnswer: signature }
         );
 
       dispatch(fetchUserProfile());
