@@ -194,11 +194,11 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
 
         if (thumbUp) {
           ({ result, error } = await nextApi.delete(
-            `${chain}/posts/${post._id}/reaction`
+            `${chain}/${type}s/${post._id}/reaction`
           ));
         } else {
           ({ result, error } = await nextApi.put(
-            `${chain}/posts/${post._id}/reaction`,
+            `${chain}/${type}s/${post._id}/reaction`,
             { reaction: 1 }
           ));
         }
