@@ -2,10 +2,21 @@ const { createServer } = require("http");
 const { parse } = require("url");
 const next = require("next");
 const { loadEnvConfig } = require("@next/env");
+const httpProxy = require("http-proxy");
 
 // Load next env
 const projectDir = process.cwd();
 loadEnvConfig(projectDir);
+
+const ssrUrl = new URL(process.env.NEXT_PUBLIC_SSR_API_END_POINT);
+const proxy = httpProxy.createProxyServer({
+  target: {
+    protocol: ssrUrl.protocol,
+    host: ssrUrl.host,
+    port: ssrUrl.port,
+  },
+  changeOrigin: true,
+});
 
 const { koaHandler, ioHandler } = require("./backend");
 
@@ -25,9 +36,12 @@ app.prepare().then(() => {
     const { pathname } = parsedUrl;
 
     if (pathname.startsWith("/api/")) {
-      req.url = req.url.replace(/^\/api/, "");
-
-      koaHandler(req, res);
+      if (process.env.MODE === "cors-api-server") {
+        proxy.web(req, res, { autoRewrite: false });
+      } else {
+        req.url = req.url.replace(/^\/api/, "");
+        koaHandler(req, res);
+      }
     } else {
       nextHandler(req, res, parsedUrl);
     }

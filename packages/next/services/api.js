@@ -15,7 +15,7 @@ class Api {
     }
 
     return new Promise((resolve, reject) =>
-      fetch(url, options ? {...options, credentials: "include"} : {credentials: "include"})
+      fetch(url, options)
         .then((resp) =>
           resp.status !== 200
             ? resp.json().then((data) =>
@@ -46,7 +46,7 @@ class Api {
       {},
       {
         method: "POST",
-        credentials: "include",
+        credentials: "same-origin",
         body: body ? JSON.stringify(body) : null,
         headers: { "Content-Type": "application/json" },
       }
@@ -60,7 +60,7 @@ class Api {
       {},
       {
         method: "PUT",
-        credentials: "include",
+        credentials: "same-origin",
         body: body ? JSON.stringify(body) : null,
         headers: { "Content-Type": "application/json" },
         ...(options ?? {}),
@@ -75,7 +75,7 @@ class Api {
       {},
       {
         method: "PATCH",
-        credentials: "include",
+        credentials: "same-origin",
         body: body ? JSON.stringify(body) : null,
         headers: { "Content-Type": "application/json" },
       }
@@ -89,7 +89,7 @@ class Api {
       {},
       {
         method: "DELETE",
-        credentials: "include",
+        credentials: "same-origin",
         headers: { "Content-Type": "application/json" },
       }
     );
