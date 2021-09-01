@@ -34,4 +34,5 @@ module.exports = {
   getDb,
   getTipCollection: (chain) => getCollection(chain, "tip"),
   getTreasuryProposalCollection: (chain) => getCollection(chain, "treasuryProposal"),
-}
+  getBountyCollection: (chain) => getCollection(chain, "bounty"),
+};
