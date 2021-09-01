@@ -29,6 +29,8 @@ const Title = styled.div`
 
 const Row = styled.div`
   display: flex;
+  flex-wrap: nowrap;
+  justify-content: left;
   align-items: start;
   padding-top: 12px;
   padding-bottom: 12px;
@@ -41,11 +43,11 @@ const Header = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 140%;
+  flex: none;
 `
 
 const Content = styled.div`
   display: flex;
-  max-width: 620px;
   font-family: Inter;
   font-style: normal;
   font-weight: normal;
