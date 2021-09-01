@@ -71,15 +71,12 @@ export default function Menu({menu}) {
               active={router.pathname === item.pathname || (router.pathname === '/[chain]' && item.pathname === '/')}
               onClick={() => {
                 if (item.pathname) {
-                  if (item.pathname.startsWith("/[chain]/")) {
+                  if (item.pathname.startsWith("/[chain]")) {
                     router.push({
                       pathname: item.pathname,
                       query: {chain: router.query.chain},
                     });
                   } else {
-                    if (item.pathname === "/") {
-                      return router.push(`/${router.query.chain}`);
-                    }
                     router.push(item.pathname);
                   }
                 }
