@@ -71,7 +71,7 @@ export const mainMenu = [
         value: "overview",
         name: "Overview",
         icon: "type-overview.svg",
-        pathname: "/[chain]",
+        pathname: "/",
       },
       {
         value: "discussions",
