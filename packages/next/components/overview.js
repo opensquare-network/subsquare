@@ -12,7 +12,12 @@ export default function Overview({ OverviewData, chain }) {
   return (
     <Wrapper>
       {OverviewData.map((item, index) => (
-        <List chain={chain} key={index} category={item.category} items={item.items}/>
+        <List
+          chain={chain}
+          key={index}
+          category={item.category}
+          items={item.items}
+        />
       ))}
     </Wrapper>
   );

@@ -7,41 +7,39 @@ import { withLoginUser, withLoginUserRedux } from "../../lib";
 import nextApi from "../../services/nextApi";
 import { addressEllipsis } from "../../utils";
 
-export default withLoginUserRedux(({OverviewData, loginUser, chain}) => {
+export default withLoginUserRedux(({ OverviewData, loginUser, chain }) => {
+  console.log({ OverviewData });
 
-  OverviewData.forEach(list => {
+  OverviewData.forEach((list) => {
     if (list.category === "Tips") {
-      list.items.forEach(tip => {
-        tip.author = tip.author ?? {username: addressEllipsis(tip.finder), addresses: [{chain, address: tip.finder}]};
-      })
+      list.items.forEach((tip) => {
+        tip.author = tip.author ?? {
+          username: addressEllipsis(tip.finder),
+          addresses: [{ chain, address: tip.finder }],
+        };
+      });
     }
-  })
-
+  });
 
   return (
-    <Layout
-      user={loginUser}
-      left={<Menu menu={mainMenu}/>}
-      chain={chain}
-    >
-      <Overview OverviewData={OverviewData} chain={chain}/>
+    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+      <Overview OverviewData={OverviewData} chain={chain} />
     </Layout>
   );
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const {chain} = context.query;
+  const { chain } = context.query;
 
   const page = 1;
   const pageSize = 3;
 
-  const [
-    {result: discussions},
-    {result: tips}
-  ] = await Promise.all([
-    nextApi.fetch(`${chain}/posts`, {page, pageSize}),
-    nextApi.fetch(`${chain}/tips`, {page, pageSize}),
-  ]);
+  const [{ result: discussions }, { result: tips }, { result: proposals }] =
+    await Promise.all([
+      nextApi.fetch(`${chain}/posts`, { page, pageSize }),
+      nextApi.fetch(`${chain}/tips`, { page, pageSize }),
+      nextApi.fetch(`${chain}/proposals`, { page, pageSize }),
+    ]);
 
   return {
     props: {
@@ -54,6 +52,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
         {
           category: "Tips",
           items: tips?.items ?? [],
+        },
+        {
+          category: "Proposals",
+          items: proposals?.items ?? [],
         },
       ],
     },

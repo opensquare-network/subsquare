@@ -22,30 +22,48 @@ const Title = styled.div`
   font-size: 16px;
 `;
 
-
-export default function List({chain, category, items, pagination, create = null}) {
+export default function List({
+  chain,
+  category,
+  items,
+  pagination,
+  create = null,
+}) {
   return (
     <Wrapper>
       <Title>
         {category}
         {create && create}
       </Title>
-      {
-        items?.length > 0
-          ? (
-            items.map((item, index) => {
-                if (category === "Discussions") {
-                  return <Post key={index} data={item} chain={chain}/>
-                }
-                if (category === "Tips") {
-                  return <Tip key={index} data={item} chain={chain}/>
-                }
-              }
-            )
-          ) : (
-            <EmptyList/>
-          )
-      }
+      {items?.length > 0 ? (
+        items.map((item, index) => {
+          if (category === "Discussions") {
+            return (
+              <Post
+                key={index}
+                data={item}
+                chain={chain}
+                href={`/${chain}/post/${item.postUid}`}
+              />
+            );
+          }
+          if (category === "Tips") {
+            return <Tip key={index} data={item} chain={chain} />;
+          }
+          if (category === "Proposals") {
+            return (
+              <Post
+                key={index}
+                data={item}
+                chain={chain}
+                href={`/${chain}/proposal/${item.proposalIndex}`}
+              />
+            );
+          }
+        })
+      ) : (
+        <EmptyList />
+      )}
       {pagination && <Pagination {...pagination} />}
     </Wrapper>
   );

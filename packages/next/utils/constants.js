@@ -81,26 +81,27 @@ export const mainMenu = [
       },
     ],
   },
-  // {
-  //   name: "DEMOCRACY",
-  //   items: [
-  //     {
-  //       value: "proposals",
-  //       name: "Proposals",
-  //       icon: "type-proposals.svg",
-  //     },
-  //     {
-  //       value: "external",
-  //       name: "Externals",
-  //       icon: "type-proposals.svg",
-  //     },
-  //     {
-  //       value: "referenda",
-  //       name: "Referenda",
-  //       icon: "type-referenda.svg",
-  //     },
-  //   ],
-  // },
+  {
+    name: "DEMOCRACY",
+    items: [
+      {
+        value: "proposals",
+        name: "Proposals",
+        icon: "type-proposals.svg",
+        pathname: "/[chain]/proposals",
+      },
+      // {
+      //   value: "external",
+      //   name: "Externals",
+      //   icon: "type-proposals.svg",
+      // },
+      // {
+      //   value: "referenda",
+      //   name: "Referenda",
+      //   icon: "type-referenda.svg",
+      // },
+    ],
+  },
   {
     name: "TREASURY",
     items: [
@@ -174,7 +175,7 @@ export const EmptyList = {
   total: 0,
   page: 1,
   pageSize: 10,
-  items: []
+  items: [],
 };
 
 export const SS58Prefix = {
