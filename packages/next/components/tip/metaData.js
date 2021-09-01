@@ -38,7 +38,6 @@ const Row = styled.div`
 `
 const Header = styled.div`
   width: 128px;
-  font-family: Inter;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -48,7 +47,6 @@ const Header = styled.div`
 
 const Content = styled.div`
   display: flex;
-  font-family: Inter;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
