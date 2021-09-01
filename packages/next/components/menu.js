@@ -1,5 +1,10 @@
 import styled, { css } from "styled-components";
 import { useRouter } from "next/router";
+import OverviewIcon from "../public/imgs/icons/overview.svg";
+import DiscussionIcon from "../public/imgs/icons/discussions.svg";
+import TipIcon from "../public/imgs/icons/tips.svg";
+import ProposalIcon from "../public/imgs/icons/proposals.svg";
+import Tip from "./tip/tip";
 
 const Wrapper = styled.div`
   padding-top: 37px;
@@ -30,11 +35,7 @@ const Item = styled.div`
   :hover {
     background: #ebeef4;
   }
-
-  > img {
-    filter: invert(33%) sepia(28%) saturate(431%) hue-rotate(173deg) brightness(100%) contrast(86%);
-    flex: 0 0 20px;
-  }
+  
 
   > div {
     flex: 1 1 auto;
@@ -51,14 +52,23 @@ const Item = styled.div`
             background: #ebeef4;
             color: #6848ff;
 
-            > img {
-              filter: invert(26%) sepia(72%) saturate(2255%) hue-rotate(237deg) brightness(109%) contrast(117%);
+            > svg {
+              *{
+                fill: #6848FF;
+              }
             }
           `}
 `;
 
 export default function Menu({menu}) {
   const router = useRouter();
+
+  const iconMap = new Map([
+    ['Overview', <OverviewIcon/>],
+    ['Discussions', <DiscussionIcon/>],
+    ['Tips', <TipIcon/>],
+    ['Proposals', <ProposalIcon/>],
+  ]);
 
   return (
     <Wrapper>
@@ -82,7 +92,7 @@ export default function Menu({menu}) {
                 }
               }}
             >
-              <img src={`/imgs/icons/${item.icon}`} alt=""/>
+              {iconMap.get(item.name)}
               <div>{item.name}</div>
             </Item>
           ))}
