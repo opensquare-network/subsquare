@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import Cookies from "cookies";
+import Cookies from "js-cookie";
 
 import nextApi from "services/nextApi";
 
