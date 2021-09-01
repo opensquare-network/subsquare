@@ -18,16 +18,16 @@ const userSlice = createSlice({
 export const { setUser } = userSlice.actions;
 
 export const fetchUserProfile = () => async (dispatch) => {
-  const authToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMTQ4OGUzOTAwZTU5NTI4YWM4MzJmZSIsImVtYWlsIjoiNjM0NTU0ODE1QHFxLmNvbSIsInVzZXJuYW1lIjoieW9zaGl5dWtpIiwiaWF0IjoxNjMwMzk5MjU3LCJleHAiOjE2MzEwMDQwNTd9.tF0unQYwDz-XgMiP8BQYPeYtaWPKbN94UT9aaPZvOYQ`;
+  // const authToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMTQ4OGUzOTAwZTU5NTI4YWM4MzJmZSIsImVtYWlsIjoiNjM0NTU0ODE1QHFxLmNvbSIsInVzZXJuYW1lIjoieW9zaGl5dWtpIiwiaWF0IjoxNjMwMzk5MjU3LCJleHAiOjE2MzEwMDQwNTd9.tF0unQYwDz-XgMiP8BQYPeYtaWPKbN94UT9aaPZvOYQ`;
   let options = {}
-  if (authToken) {
+  // if (authToken) {
     options = {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-      },
-      credentials:"include",
+      // headers: {
+      //   Authorization: `Bearer ${authToken}`,
+      // },
+      credentials: "include",
     };
-  }
+  // }
   const { result } = await nextApi.fetch("user/profile", {}, options);
   if (result) dispatch(setUser(result));
 };
@@ -35,7 +35,7 @@ export const fetchUserProfile = () => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   await nextApi.post("auth/logout");
   if (process.env.MODE !== "cors-api-server") {
-    Cookies.remove("auth-token");
+    Cookies.remove && Cookies?.remove("auth-token");
   }
   dispatch(setUser(null));
 };

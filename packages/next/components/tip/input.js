@@ -103,7 +103,7 @@ function Input({
         contentType,
       },
         {
-
+          credentials: "include",
         });
       if (result.error) {
         setErrors(result.error);

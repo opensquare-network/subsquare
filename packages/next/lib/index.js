@@ -13,7 +13,7 @@ export function withLoginUser(getServerSideProps) {
 
     let options = undefined;
     const cookies = new Cookies(context.req, context.res);
-    const authToken = cookies.get("auth-token") ?? `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMTQ4OGUzOTAwZTU5NTI4YWM4MzJmZSIsImVtYWlsIjoiNjM0NTU0ODE1QHFxLmNvbSIsInVzZXJuYW1lIjoieW9zaGl5dWtpIiwiaWF0IjoxNjMwMzk5MjU3LCJleHAiOjE2MzEwMDQwNTd9.tF0unQYwDz-XgMiP8BQYPeYtaWPKbN94UT9aaPZvOYQ`;
+    const authToken = cookies.get("auth-token");
     if (authToken) {
       options = {
         headers: {
