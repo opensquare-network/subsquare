@@ -7,7 +7,6 @@ import {
   web3Enable,
 } from "@polkadot/extension-dapp";
 import { useRouter } from "next/router";
-import Cookies from "js-cookie";
 
 import AddressSelect from "components/addressSelect";
 import Button from "./button";
@@ -65,13 +64,6 @@ export default function AddressLogin({ onBack }) {
         { challengeAnswer: signature }
       );
       if (loginResult) {
-        if (process.env.MODE !== "cors-api-server") {
-          Cookies.set("auth-token", loginResult.accessToken, {
-            sameSite: "lax",
-            expires: 30,
-          });
-        }
-
         dispatch(setUser(loginResult));
         router.replace("/");
       }

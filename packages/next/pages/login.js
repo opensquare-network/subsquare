@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import dynamic from "next/dynamic";
-import Cookies from "js-cookie";
 
 import Layout from "components/layout";
 import Agreement from "components/agreement";
@@ -109,13 +108,6 @@ export default withLoginUserRedux(({ loginUser }) => {
       setLoading(true);
       const res = await nextApi.post("auth/login", formData);
       if (res.result) {
-        if (process.env.MODE !== "cors-api-server") {
-          Cookies.set("auth-token", res.result.accessToken, {
-            sameSite: "lax",
-            expires: 30,
-          });
-        }
-
         dispatch(setUser(res.result));
         router.replace("/");
       } else if (res.error) {
