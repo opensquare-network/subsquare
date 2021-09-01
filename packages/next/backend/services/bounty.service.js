@@ -23,8 +23,8 @@ async function updatePost(
     throw new HttpError(404, "Post does not exists");
   }
 
-  if (!post.proposer.equals(author[`${chain}Address`])) {
-    throw new HttpError(403, "You are not the post author");
+  if (!post.proposer === author[`${chain}Address`]) {
+    throw new HttpError(403, "You are not the proposer");
   }
 
   if (title.length > PostTitleLengthLimitation) {
