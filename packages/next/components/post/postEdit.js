@@ -28,9 +28,8 @@ export default function PostEdit({
 
   const editPost = async (content, contentType) => {
     const url = `${chain}/${type}s/${postData._id}`;
-    const result = await nextApi.fetch(
+    const result = await nextApi.patch(
       url,
-      {},
       {
         title,
         content,
