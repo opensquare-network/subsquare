@@ -148,7 +148,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   const { result: comments } = await nextApi.fetch(
-    `${chain}/tips/${detail._id}/comments`,
+    `${chain}/proposals/${detail._id}/comments`,
     {
       page: page ?? "last",
       pageSize: Math.min(pageSize ?? 50, 100),
