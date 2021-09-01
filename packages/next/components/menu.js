@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
   padding-top: 37px;
+
   > :not(:first-child) {
     margin-top: 24px;
   }
@@ -25,34 +26,38 @@ const Item = styled.div`
   font-weight: 500;
   cursor: pointer;
   font-size: 14px;
+
   :hover {
     background: #ebeef4;
   }
+
   > img {
-    filter: invert(33%) sepia(28%) saturate(431%) hue-rotate(173deg)
-      brightness(100%) contrast(86%);
+    filter: invert(33%) sepia(28%) saturate(431%) hue-rotate(173deg) brightness(100%) contrast(86%);
     flex: 0 0 20px;
   }
+
   > div {
     flex: 1 1 auto;
   }
+
   > :not(:first-child) {
     margin-left: 8px;
   }
+
   ${(p) =>
-    p.active &&
-    css`
-      font-weight: 600;
-      background: #ebeef4;
-      color: #6848ff;
-      > img {
-        filter: invert(26%) sepia(72%) saturate(2255%) hue-rotate(237deg)
-          brightness(109%) contrast(117%);
-      }
-    `}
+          p.active &&
+          css`
+            font-weight: 600;
+            background: #ebeef4;
+            color: #6848ff;
+
+            > img {
+              filter: invert(26%) sepia(72%) saturate(2255%) hue-rotate(237deg) brightness(109%) contrast(117%);
+            }
+          `}
 `;
 
-export default function Menu({ menu }) {
+export default function Menu({menu}) {
   const router = useRouter();
 
   return (
@@ -63,24 +68,24 @@ export default function Menu({ menu }) {
           {item.items.map((item, index) => (
             <Item
               key={index}
-              active={router.pathname === item.pathname}
+              active={router.pathname === item.pathname || (router.pathname === '/[chain]' && item.pathname === '/')}
               onClick={() => {
                 if (item.pathname) {
                   if (item.pathname.startsWith("/[chain]/")) {
                     router.push({
                       pathname: item.pathname,
-                      query: { chain: router.query.chain },
+                      query: {chain: router.query.chain},
                     });
                   } else {
-                    if(item.pathname === "/[chain]"){
-                     return  router.push("/");
+                    if (item.pathname === "/") {
+                      return router.push(`/${router.query.chain}`);
                     }
                     router.push(item.pathname);
                   }
                 }
               }}
             >
-              <img src={`/imgs/icons/${item.icon}`} />
+              <img src={`/imgs/icons/${item.icon}`} alt=""/>
               <div>{item.name}</div>
             </Item>
           ))}
