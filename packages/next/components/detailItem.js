@@ -188,22 +188,13 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
         let result, error;
 
         if (thumbUp) {
-          ({ result, error } = await nextApi.fetch(
+          ({ result, error } = await nextApi.delete(
             `${chain}/posts/${post._id}/reaction`,
-            {},
-            {
-              method: "DELETE",
-            }
           ));
         } else {
-          ({ result, error } = await nextApi.fetch(
+          ({ result, error } = await nextApi.put(
             `${chain}/posts/${post._id}/reaction`,
-            {},
-            {
-              method: "PUT",
-              body: JSON.stringify({ reaction: 1 }),
-              headers: { "Content-Type": "application/json" },
-            }
+            { reaction: 1 }
           ));
         }
 
