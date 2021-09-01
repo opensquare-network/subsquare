@@ -358,7 +358,7 @@ function createService(postType) {
       mentions,
     }).catch(console.error);
 
-    if (!author._id.equals(post.author._id)) {
+    if (post.author && !author._id.equals(post.author._id)) {
       if (post.author.emailVerified && (post.author.notification?.reply ?? true)) {
         mailService.sendReplyEmail({
           email: post.author.email,
