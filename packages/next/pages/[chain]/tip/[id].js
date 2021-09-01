@@ -9,6 +9,7 @@ import { EmptyList } from "../../../utils/constants";
 import Input from "../../../components/tip/input";
 import { useState, useRef, useEffect } from "react";
 import LayoutFixedHeader from "../../../components/layoutFixedHeader";
+import MetaData from "../../../components/tip/metaData";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -23,8 +24,8 @@ const CommentsWrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
   box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
-    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+  0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
   padding: 48px;
   @media screen and (max-width: 600px) {
@@ -33,7 +34,7 @@ const CommentsWrapper = styled.div`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+export default withLoginUserRedux(({loginUser, detail, comments, chain}) => {
   if (!detail) {
     return "404"; //todo improve this
   }
@@ -97,18 +98,18 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
               },
             },
           },
-          { insert: "\n" },
+          {insert: "\n"},
         ],
       };
       quillRef.current.getEditor().setContents(contents.ops.concat(reply.ops));
     }
     focusEditor();
   };
-
+  console.log(detail)
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">
-        <Back href={`/${chain}/tips`} text="Back to Tips" />
+        <Back href={`/${chain}/tips`} text="Back to Tips"/>
         <DetailItem
           data={detail}
           user={loginUser}
@@ -116,6 +117,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           onReply={focusEditor}
           type="tip"
         />
+        <MetaData metadata={{...detail?.onchainData?.meta, hash: detail.onchainData.hash}} chain={chain}/>
         <CommentsWrapper>
           <Comments
             data={comments}
@@ -130,7 +132,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
               chain={chain}
               ref={editorWrapperRef}
               setQuillRef={setQuillRef}
-              {...{ contentType, setContentType, content, setContent, users }}
+              {...{contentType, setContentType, content, setContent, users}}
             />
           )}
         </CommentsWrapper>
@@ -140,13 +142,13 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { chain, id, page, page_size: pageSize } = context.query;
+  const {chain, id, page, page_size: pageSize} = context.query;
 
-  const [{ result: detail }] = await Promise.all([
+  const [{result: detail}] = await Promise.all([
     nextApi.fetch(`${chain}/tips/${id}`),
   ]);
 
-  const { result: comments } = await nextApi.fetch(
+  const {result: comments} = await nextApi.fetch(
     `${chain}/tips/${detail._id}/comments`,
     {
       page: page ?? "last",

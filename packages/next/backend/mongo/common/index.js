@@ -53,4 +53,4 @@ module.exports = {
   lookupUser,
   getUserCollection: () => getCollection("user"),
   getAttemptCollection: () => getCollection("attempt"),
-}
+};
