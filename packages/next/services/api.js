@@ -40,7 +40,7 @@ class Api {
     );
   };
 
-  post = async (path, body = null) => {
+  post = async (path, body = null, options = null) => {
     const result = await this.fetch(
       path,
       {},
@@ -63,6 +63,7 @@ class Api {
         credentials: "include",
         body: body ? JSON.stringify(body) : null,
         headers: { "Content-Type": "application/json" },
+        ...(options ?? {}),
       }
     );
     return result;

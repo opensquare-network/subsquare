@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
 import Back from "components/back";
-import DetailItem from "components/detailItem";
+import DetailItem from "components/tip/detail";
 import Comments from "components/comment";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
 import { EmptyList } from "../../../utils/constants";
-import Input from "../../../components/comment/input";
+import Input from "../../../components/tip/input";
 import { useState, useRef, useEffect } from "react";
 import LayoutFixedHeader from "../../../components/layoutFixedHeader";
 
