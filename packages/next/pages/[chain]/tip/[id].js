@@ -146,10 +146,18 @@ export const getServerSideProps = withLoginUser(async (context) => {
     nextApi.fetch(`${chain}/tips/${id}`),
   ]);
 
+  const { result: comments } = await nextApi.fetch(
+    `${chain}/tips/${detail._id}/comments`,
+    {
+      page: page ?? "last",
+      pageSize: Math.min(pageSize ?? 50, 100),
+    }
+  );
+
   return {
     props: {
       detail: detail ?? null,
-      comments: EmptyList,
+      comments: comments ?? EmptyList,
       chain,
     },
   };

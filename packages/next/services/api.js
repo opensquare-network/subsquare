@@ -54,7 +54,7 @@ class Api {
     return result;
   };
 
-  put = async (path, body = null) => {
+  put = async (path, body = null, options = null) => {
     const result = await this.fetch(
       path,
       {},
