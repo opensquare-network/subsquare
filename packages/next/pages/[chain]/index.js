@@ -8,14 +8,20 @@ import nextApi from "../../services/nextApi";
 import { addressEllipsis } from "../../utils";
 
 export default withLoginUserRedux(({ OverviewData, loginUser, chain }) => {
-  console.log({ OverviewData });
-
   OverviewData.forEach((list) => {
     if (list.category === "Tips") {
       list.items.forEach((tip) => {
         tip.author = tip.author ?? {
           username: addressEllipsis(tip.finder),
-          addresses: [{ chain, address: tip.finder }],
+          addresses: [{chain, address: tip.finder}],
+        };
+      });
+    }
+    if (list.category === "Proposals") {
+      list.items.forEach((p) => {
+        p.author = p.author ?? {
+          username: addressEllipsis(p.proposer),
+          addresses: [{chain, address: p.proposer}],
         };
       });
     }
