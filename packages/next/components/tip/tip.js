@@ -119,7 +119,7 @@ export default function Tip({ data, chain }) {
       <DividerWrapper>
         {data.index && <Index>{`#${data.index}`}</Index>}
         {data.time && <Info>{`Updated ${timeDuration(data.time)}`}</Info>}
-        {data.comments > -1 && <Info>{`${data.comments} Comments`}</Info>}
+        {data.commentsCount > -1 && <Info>{`${data.commentsCount} Comments`}</Info>}
       </DividerWrapper>
       <Divider />
       <FooterWrapper>

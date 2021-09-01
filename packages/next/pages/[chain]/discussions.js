@@ -23,7 +23,7 @@ const Create = styled.a`
 export default withLoginUserRedux(({ loginUser, posts, chain }) => {
   const items = (posts.items || []).map((post) => ({
     time: post.lastActivityAt,
-    comments: post.commentsCount,
+    commentsCount: post.commentsCount,
     title: post.title,
     author: post.author,
     postUid: post.postUid,

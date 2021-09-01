@@ -15,6 +15,9 @@ export default withLoginUserRedux(({ OverviewData, loginUser, chain }) => {
           username: addressEllipsis(tip.finder),
           addresses: [{chain, address: tip.finder}],
         };
+        tip.status =  tip.state ?? "Unknown";
+        tip.time = tip.indexer.blockTime;
+
       });
     }
     if (list.category === "Proposals") {
@@ -23,6 +26,8 @@ export default withLoginUserRedux(({ OverviewData, loginUser, chain }) => {
           username: addressEllipsis(p.proposer),
           addresses: [{chain, address: p.proposer}],
         };
+        p.status = p.state ?? "Unknown";
+        p.time = p.indexer.blockTime;
       });
     }
   });
