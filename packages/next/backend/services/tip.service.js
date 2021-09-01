@@ -24,7 +24,7 @@ async function updatePost(
   }
 
   if (post.finder !== author[`${chain}Address`]) {
-    throw new HttpError(403, "You are not the post author");
+    throw new HttpError(403, "You are not the tip finder");
   }
 
   if (title.length > PostTitleLengthLimitation) {
