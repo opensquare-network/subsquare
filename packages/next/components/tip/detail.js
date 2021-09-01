@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { useState } from "react";
 
-import { timeDuration } from "utils";
+import { addressEllipsis, timeDuration } from "utils";
 import Markdown from "components/markdown";
 import HtmlRender from "../post/htmlRender";
 import Actions from "components/actions";
@@ -230,7 +230,7 @@ export default function DetailItem({ data, user, chain, onReply }) {
           <Divider />
           <FooterWrapper>
             <DividerWrapper>
-              <User user={post?.author} chain={chain} />
+              <User user={ post.author ?? {username: addressEllipsis(post.finder), addresses: [{chain, address: post.finder}]}} chain={chain} />
               {post.type && (
                 <div>
                   <TypeWrapper color={getTypeColor(post.type)}>
