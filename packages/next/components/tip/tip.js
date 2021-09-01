@@ -7,15 +7,15 @@ import { timeDuration } from "utils";
 const Wrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
-  box-shadow:0 6px 7px rgba(30, 33, 52, 0.02),
-   0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-   0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
+    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
   padding: 24px;
   :hover {
-    box-shadow:0 6px 22px rgba(30, 33, 52, 0.11),
-     0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
-     0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
+    box-shadow: 0 6px 22px rgba(30, 33, 52, 0.11),
+      0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
+      0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
   }
 `;
 
@@ -82,8 +82,8 @@ const TypeWrapper = styled.div`
   font-size: 12px;
   padding: 0 8px;
   ${(p) =>
-  p.color &&
-  css`
+    p.color &&
+    css`
       background: ${p.color};
     `}
 `;

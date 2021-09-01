@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-import Layout from "components/layout";
 import Back from "components/back";
 import DetailItem from "components/detailItem";
 import Comments from "components/comment";
@@ -15,6 +14,7 @@ const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
+
   max-width: 848px;
   margin: auto;
 `;
@@ -34,6 +34,9 @@ const CommentsWrapper = styled.div`
 `;
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+  if (!detail) {
+    return "404"; //todo improve this
+  }
   const postId = detail._id;
 
   const editorWrapperRef = useRef(null);
@@ -105,13 +108,13 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">
-        <Back href={`/${chain}/discussions`} text="Back to Discussions" />
+        <Back href={`/${chain}/proposals`} text="Back to Proposals" />
         <DetailItem
           data={detail}
           user={loginUser}
           chain={chain}
           onReply={focusEditor}
-          type="post"
+          type="proposal"
         />
         <CommentsWrapper>
           <Comments
@@ -128,7 +131,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
               ref={editorWrapperRef}
               setQuillRef={setQuillRef}
               {...{ contentType, setContentType, content, setContent, users }}
-              type="post"
+              type="proposal"
             />
           )}
         </CommentsWrapper>
@@ -141,13 +144,11 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { chain, id, page, page_size: pageSize } = context.query;
 
   const [{ result: detail }] = await Promise.all([
-    nextApi.fetch(`${chain}/posts/${id}`),
+    nextApi.fetch(`${chain}/proposals/${id}`),
   ]);
 
-  const postId = detail._id;
-
   const { result: comments } = await nextApi.fetch(
-    `${chain}/posts/${postId}/comments`,
+    `${chain}/tips/${detail._id}/comments`,
     {
       page: page ?? "last",
       pageSize: Math.min(pageSize ?? 50, 100),
@@ -156,7 +157,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      detail,
+      detail: detail ?? null,
       comments: comments ?? EmptyList,
       chain,
     },

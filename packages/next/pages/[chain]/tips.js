@@ -7,12 +7,15 @@ import nextApi from "../../services/nextApi";
 import { EmptyList } from "../../utils/constants";
 import { addressEllipsis } from "../../utils";
 
-export default withLoginUserRedux(({loginUser, tips, chain}) => {
+export default withLoginUserRedux(({ loginUser, tips, chain }) => {
   const items = (tips.items || []).map((tip) => ({
     time: tip.indexer.blockTime,
     comments: tip.commentsCount,
     title: tip.title,
-    author: tip.author ?? {username: addressEllipsis(tip.finder), addresses: [{chain, address: tip.finder}]},
+    author: tip.author ?? {
+      username: addressEllipsis(tip.finder),
+      addresses: [{ chain, address: tip.finder }],
+    },
     tipUid: tip.tipUid,
     height: tip.height,
     hash: tip.hash,
@@ -20,7 +23,7 @@ export default withLoginUserRedux(({loginUser, tips, chain}) => {
   }));
 
   return (
-    <Layout user={loginUser} left={<Menu menu={mainMenu}/>} chain={chain}>
+    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
       <List
         chain={chain}
         category={"Tips"}
@@ -37,10 +40,10 @@ export default withLoginUserRedux(({loginUser, tips, chain}) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const {page, chain, page_size: pageSize} = context.query;
+  const { page, chain, page_size: pageSize } = context.query;
 
-  const [{result: tips}] = await Promise.all([
-    nextApi.fetch(`${chain}/tips`, {page, pageSize: pageSize ?? 50}),
+  const [{ result: tips }] = await Promise.all([
+    nextApi.fetch(`${chain}/tips`, { page, pageSize: pageSize ?? 50 }),
   ]);
 
   return {

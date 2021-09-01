@@ -14,9 +14,9 @@ import { useDispatch } from "react-redux";
 const Wrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
-  box-shadow:0 6px 7px rgba(30, 33, 52, 0.02),
-   0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-   0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
+    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
   padding: 48px;
   @media screen and (max-width: 600px) {
@@ -87,8 +87,8 @@ const TypeWrapper = styled.div`
   font-size: 12px;
   padding: 0 8px;
   ${(p) =>
-  p.color &&
-  css`
+    p.color &&
+    css`
       background: ${p.color};
     `}
 `;
@@ -167,7 +167,9 @@ export default function DetailItem({ data, user, chain, onReply }) {
     post?.reactions?.findIndex((r) => r.user?.username === user.username) > -1;
 
   const updatePost = async () => {
-    const { result: newPost } = await nextApi.fetch(`${chain}/tips/${post._id}`);
+    const { result: newPost } = await nextApi.fetch(
+      `${chain}/tips/${post._id}`
+    );
     if (newPost) {
       setPost(newPost);
     }
@@ -230,7 +232,15 @@ export default function DetailItem({ data, user, chain, onReply }) {
           <Divider />
           <FooterWrapper>
             <DividerWrapper>
-              <User user={ post.author ?? {username: addressEllipsis(post.finder), addresses: [{chain, address: post.finder}]}} chain={chain} />
+              <User
+                user={
+                  post.author ?? {
+                    username: addressEllipsis(post.finder),
+                    addresses: [{ chain, address: post.finder }],
+                  }
+                }
+                chain={chain}
+              />
               {post.type && (
                 <div>
                   <TypeWrapper color={getTypeColor(post.type)}>

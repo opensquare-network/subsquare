@@ -14,9 +14,9 @@ import { useDispatch } from "react-redux";
 const Wrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
-  box-shadow:0 6px 7px rgba(30, 33, 52, 0.02),
-   0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-   0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
+    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
   padding: 48px;
   @media screen and (max-width: 600px) {
@@ -168,7 +168,12 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
       !!(user.addresses || []).find((item) => item.address === post.finder);
   } else if (type === "post") {
     ownPost = isLoggedIn && post.author?.username === user.username;
+  } else if (type === "proposal") {
+    ownPost =
+      isLoggedIn &&
+      !!(user.addresses || []).find((item) => item.address === post.proposer);
   }
+
   const thumbUp =
     isLoggedIn &&
     post?.reactions?.findIndex((r) => r.user?.username === user.username) > -1;
@@ -189,7 +194,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
 
         if (thumbUp) {
           ({ result, error } = await nextApi.delete(
-            `${chain}/posts/${post._id}/reaction`,
+            `${chain}/posts/${post._id}/reaction`
           ));
         } else {
           ({ result, error } = await nextApi.put(
@@ -229,7 +234,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
           <Divider />
           <FooterWrapper>
             <DividerWrapper>
-              <User user={post?.author} chain={chain} />
+              <User user={post?.author} add={post.proposer} chain={chain} />
               {post.type && (
                 <div>
                   <TypeWrapper color={getTypeColor(post.type)}>

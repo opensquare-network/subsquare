@@ -1,6 +1,6 @@
-import styled, {css} from "styled-components";
-import React, {useState} from "react";
-import {useRouter} from "next/router";
+import styled, { css } from "styled-components";
+import React, { useState } from "react";
+import { useRouter } from "next/router";
 
 import MarkdownEditor from "components/markdownEditor";
 import Toggle from "components/toggle";
@@ -15,10 +15,10 @@ import UploadImgModal from "../editor/imageModal";
 const Wrapper = styled.div`
   margin-top: 48px;
   ${(p) =>
-          p.isEdit &&
-          css`
-            margin-top: 8px;
-          `}
+    p.isEdit &&
+    css`
+      margin-top: 8px;
+    `}
 `;
 
 const InputWrapper = styled.div`
@@ -59,21 +59,23 @@ const PreviewWrapper = styled.div`
   }
 `;
 
-function Input({
-                 postId,
-                 setIsEdit,
-                 isEdit,
-                 editContent,
-                 editContentType,
-                 onFinishedEdit,
-                 commentId,
-                 chain,
-                 content, setContent,
-                 contentType,
-                 setContentType,
-                 setQuillRef = null,
-                 users=[],
-               }, ref) {
+function Input(
+  {
+    postId,
+    isEdit,
+    onFinishedEdit,
+    commentId,
+    chain,
+    content,
+    setContent,
+    contentType,
+    setContentType,
+    setQuillRef = null,
+    users = [],
+    type,
+  },
+  ref
+) {
   const router = useRouter();
   const [showPreview, setShowPreview] = useState(false);
   const [showImgModal, setShowImgModal] = useState(false);
@@ -91,24 +93,29 @@ function Input({
     }
     setContent("");
     setContentType(contentType === "html" ? "markdown" : "html");
-    localStorage.setItem("contentType", contentType === "html" ? "markdown" : "html");
+    localStorage.setItem(
+      "contentType",
+      contentType === "html" ? "markdown" : "html"
+    );
   };
-
 
   const createComment = async () => {
     try {
       setLoading(true);
-      const result = await nextApi.post(`${chain}/posts/${postId}/comments`, {
-        content,
-        contentType,
-      });
+      const result = await nextApi.post(
+        `${chain}/${type}s/${postId}/comments`,
+        {
+          content,
+          contentType,
+        }
+      );
       if (result.error) {
         setErrors(result.error);
       } else {
         setShowPreview(false);
         setContent("");
-        await router.replace(`/[chain]/post/[id]`, {
-          pathname: `/${chain}/post/${router.query.id}`,
+        await router.replace(`/[chain]/${type}/[id]`, {
+          pathname: `/${chain}/${type}/${router.query.id}`,
         });
         setTimeout(() => {
           window && window.scrollTo(0, document.body.scrollHeight);
@@ -121,7 +128,7 @@ function Input({
 
   const updateComment = async () => {
     setLoading(true);
-    const {result, error} = await nextApi.patch(
+    const { result, error } = await nextApi.patch(
       `${chain}/comments/${commentId}`,
       {
         content,
@@ -143,16 +150,18 @@ function Input({
 
   return (
     <Wrapper>
-      {
-        contentType === "html" &&
-        <UploadImgModal showImgModal={showImgModal} setShowImgModal={setShowImgModal}
-                        insetQuillImgFunc={insetQuillImgFunc}/>
-      }
+      {contentType === "html" && (
+        <UploadImgModal
+          showImgModal={showImgModal}
+          setShowImgModal={setShowImgModal}
+          insetQuillImgFunc={insetQuillImgFunc}
+        />
+      )}
       <InputWrapper ref={ref}>
         {contentType === "markdown" && (
           <MarkdownEditor
             height={114}
-            {...{content,users}}
+            {...{ content, users }}
             setContent={onInputChange}
             visible={!showPreview}
           />
@@ -160,7 +169,7 @@ function Input({
         {contentType === "html" && (
           <QuillEditor
             visible={!showPreview}
-            {...{content,users}}
+            {...{ content, users }}
             setContent={onInputChange}
             height={114}
             setModalInsetImgFunc={(insetImgFunc) => {
@@ -172,7 +181,7 @@ function Input({
         )}
         {!showPreview && (
           <InputSwitch>
-            <img src="/imgs/icons/markdown-mark.svg" alt=""/>
+            <img src="/imgs/icons/markdown-mark.svg" alt="" />
             <Toggle
               size="small"
               isOn={contentType === "markdown"}
@@ -184,9 +193,9 @@ function Input({
       {showPreview && (
         <PreviewWrapper className="preview">
           {contentType === "markdown" && (
-            <PreviewMD content={content} setContent={setContent}/>
+            <PreviewMD content={content} setContent={setContent} />
           )}
-          {contentType === "html" && <HtmlRender html={content}/>}
+          {contentType === "html" && <HtmlRender html={content} />}
         </PreviewWrapper>
       )}
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
@@ -196,7 +205,9 @@ function Input({
             {showPreview ? "Edit" : "Preview"}
           </Button>
         )}
-        {isEdit && <Button onClick={() => onFinishedEdit(false)}>Cancel</Button>}
+        {isEdit && (
+          <Button onClick={() => onFinishedEdit(false)}>Cancel</Button>
+        )}
         <Button
           isLoading={loading}
           secondary

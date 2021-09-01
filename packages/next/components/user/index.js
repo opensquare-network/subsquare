@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import Identity from "./identity";
-import {fetchIdentity} from "services/identity";
-import {useEffect, useState} from "react";
-import {encodeAddressToChain} from "services/address";
-import {nodes} from "utils/constants";
+import { fetchIdentity } from "services/identity";
+import { useEffect, useState } from "react";
+import { encodeAddressToChain } from "services/address";
+import { nodes } from "utils/constants";
 import Avatar from "components/avatar";
 import Grvatar from "components/gravatar";
 
@@ -23,21 +23,21 @@ const Username = styled.span`
   cursor: default;
 `;
 
-export default function User({user, chain, showAvatar = true}) {
+export default function User({ user, chain, add, showAvatar = true }) {
   const [identity, setIdentity] = useState(null);
 
-  const address = user?.addresses?.find(addr => addr.chain === chain)?.address;
+  const address =
+    add ?? user?.addresses?.find((addr) => addr.chain === chain)?.address;
 
   useEffect(() => {
     setIdentity(null);
     if (address) {
-      const relayChain = nodes.find(n => n.value === chain)?.relay;
+      const relayChain = nodes.find((n) => n.value === chain)?.relay;
       if (!relayChain) return;
 
-      fetchIdentity(
-        relayChain,
-        encodeAddressToChain(address, relayChain)
-      ).then(identity => setIdentity(identity));
+      fetchIdentity(relayChain, encodeAddressToChain(address, relayChain)).then(
+        (identity) => setIdentity(identity)
+      );
     }
   }, [address]);
 
@@ -46,17 +46,17 @@ export default function User({user, chain, showAvatar = true}) {
       {showAvatar && (
         <AvatarWrapper>
           {address ? (
-            <Avatar address={address}/>
+            <Avatar address={address} />
           ) : (
-            <Grvatar email={user?.email} size={24}/>
+            <Grvatar email={user?.email} size={24} />
           )}
         </AvatarWrapper>
       )}
       {identity ? (
-        <Identity identity={identity}/>
+        <Identity identity={identity} />
       ) : (
         <Username>{user?.username}</Username>
       )}
     </Wrapper>
-  )
+  );
 }
