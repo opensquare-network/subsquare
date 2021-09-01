@@ -229,7 +229,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             {post.createdAt && (
               <Info>Created {timeDuration(post.createdAt)}</Info>
             )}
-            {post.comments > -1 && <Info>{`${post.comments} Comments`}</Info>}
+            {post.commentsCount > -1 && <Info>{`${post.commentsCount} Comments`}</Info>}
           </DividerWrapper>
           <Divider />
           <FooterWrapper>

@@ -10,7 +10,7 @@ import { addressEllipsis } from "../../utils";
 export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
   const items = (proposals.items || []).map((proposal) => ({
     time: proposal.indexer.blockTime,
-    comments: proposal.commentsCount,
+    commentsCount: proposal.commentsCount,
     title: proposal.title,
     author: proposal.author ?? {
       username: addressEllipsis(proposal.proposer),

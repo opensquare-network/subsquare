@@ -10,7 +10,7 @@ import { addressEllipsis } from "../../utils";
 export default withLoginUserRedux(({ loginUser, tips, chain }) => {
   const items = (tips.items || []).map((tip) => ({
     time: tip.indexer.blockTime,
-    comments: tip.commentsCount,
+    commentsCount: tip.commentsCount,
     title: tip.title,
     author: tip.author ?? {
       username: addressEllipsis(tip.finder),
