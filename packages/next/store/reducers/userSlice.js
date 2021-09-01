@@ -35,7 +35,7 @@ export const fetchUserProfile = () => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   await nextApi.post("auth/logout");
   if (process.env.MODE !== "cors-api-server") {
-    Cookies.set("auth-token");
+    Cookies.remove("auth-token");
   }
   dispatch(setUser(null));
 };
