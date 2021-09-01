@@ -4,7 +4,6 @@ import OverviewIcon from "../public/imgs/icons/overview.svg";
 import DiscussionIcon from "../public/imgs/icons/discussions.svg";
 import TipIcon from "../public/imgs/icons/tips.svg";
 import ProposalIcon from "../public/imgs/icons/proposals.svg";
-import Tip from "./tip/tip";
 
 const Wrapper = styled.div`
   padding-top: 37px;

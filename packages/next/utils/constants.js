@@ -81,15 +81,9 @@ export const mainMenu = [
       },
     ],
   },
-  {
-    name: "DEMOCRACY",
-    items: [
-      {
-        value: "proposals",
-        name: "Proposals",
-        icon: "type-proposals.svg",
-        pathname: "/[chain]/proposals",
-      },
+  // {
+  //   name: "DEMOCRACY",
+  //   items: [
       // {
       //   value: "external",
       //   name: "Externals",
@@ -100,16 +94,17 @@ export const mainMenu = [
       //   name: "Referenda",
       //   icon: "type-referenda.svg",
       // },
-    ],
-  },
+    // ],
+  // },
   {
     name: "TREASURY",
     items: [
-      // {
-      //   value: "proposals",
-      //   name: "Proposals",
-      //   icon: "type-treasury-proposals.svg",
-      // },
+      {
+        value: "proposals",
+        name: "Proposals",
+        icon: "type-proposals.svg",
+        pathname: "/[chain]/proposals",
+      },
       // {
       //   value: "bounties",
       //   name: "Bounties",
