@@ -30,6 +30,24 @@ async function getTipMetaFromStorage(api, tipHash, { blockHeight, blockHash }) {
   return rawMeta.toJSON();
 }
 
+async function getTipReason(reasonHash, indexer) {
+  const metadata = await findMetadata(indexer.blockHeight);
+  const decorated = expandMetadata(metadata.registry, metadata);
+
+  const api = await getApi();
+  let key;
+  if (decorated.query.treasury?.reasons) {
+    key = [decorated.query.treasury.reasons, reasonHash];
+  } else if (decorated.query.tips?.reasons) {
+    key = [decorated.query.tips.reasons, reasonHash];
+  } else {
+    return null;
+  }
+
+  const raw = await api.rpc.state.getStorage(key, indexer.blockHash);
+  return raw.toHuman();
+}
+
 function findNewTipCallFromProxy(registry, proxyCall, reasonHash) {
   const [, , innerCall] = proxyCall.args;
   return getNewTipCall(registry, innerCall, reasonHash);
@@ -131,4 +149,5 @@ module.exports = {
   getTippersCount,
   getTipFindersFee,
   getTipMetaFromStorage,
+  getTipReason,
 };

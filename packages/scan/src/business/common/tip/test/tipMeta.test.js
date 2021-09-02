@@ -1,3 +1,5 @@
+const { setApi } = require("../../../../api");
+const { getTipReason } = require("../utils");
 const { getTipMetaFromStorage } = require("../utils");
 jest.setTimeout(3000000);
 
@@ -15,6 +17,8 @@ describe("test get tip", () => {
       provider,
       typesBundle: { ...typesBundleForPolkadot },
     });
+
+    setApi(api);
   });
 
   afterAll(async () => {
@@ -42,5 +46,22 @@ describe("test get tip", () => {
       tips: [],
       findersFee: true,
     });
+  });
+
+  test("reason works", async () => {
+    const height = 89001;
+    setSpecHeights([height]);
+    const blockHash = await api.rpc.chain.getBlockHash(height);
+
+    const reason = await getTipReason(
+      "0xb6d3c6af46ec04565e8aead8ee77f605547069eb69aad8e92a719c0c13490e5e",
+      {
+        blockHeight: height,
+        blockHash,
+      }
+    );
+    expect(reason).toEqual(
+      "https://yungbeefbigbags.medium.com/acala-and-karura-the-overlords-of-defi-e2a29e66c423"
+    );
   });
 });

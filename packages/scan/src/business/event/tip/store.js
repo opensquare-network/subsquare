@@ -1,3 +1,4 @@
+const { getTipReason } = require("../../common/tip/utils");
 const { getTipMetaFromStorage } = require("../../common/tip/utils");
 const {
   getNewTipCall,
@@ -5,7 +6,6 @@ const {
   getTipFindersFee,
 } = require("../../common/tip/utils");
 const { getTipCommonUpdates } = require("../../common/tip/updates");
-const { u8aToString } = require("@polkadot/util");
 const {
   TipMethods,
   TipEvents,
@@ -30,7 +30,7 @@ async function saveNewTip(registry, event, extrinsic, indexer) {
   );
   const method = newTipCall.method;
 
-  const reason = u8aToString(newTipCall.args[0]);
+  const reason = await getTipReason(reasonHash, indexer);
   meta.reason = reason;
   const beneficiary = newTipCall.args[1].toJSON();
   meta.findersFee = TipMethods.reportAwesome === method;
