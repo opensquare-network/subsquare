@@ -12,6 +12,7 @@ import LayoutFixedHeader from "../../../components/layoutFixedHeader";
 import Metadata from "components/metadata";
 import User from "components/user";
 import { getNode, toPrecision } from "utils";
+import Links from "../../../components/timeline/links";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -35,6 +36,11 @@ const CommentsWrapper = styled.div`
     border-radius: 0;
   }
 `;
+
+const Flex = styled.div`
+  display: flex;
+  align-items: center;;
+`
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   if (!detail) {
@@ -122,13 +128,18 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     switch (item[0]) {
       case "proposer":
       case "beneficiary":
-        item[1] = <User chain={chain} add={item[1]} />;
+        item[1] = <Flex>
+          <User chain={chain} add={item[1]} />
+          <Links chain={chain} address={item[1]} style={{marginLeft: 8}}/>
+        </Flex>;
         break;
       case "value":
       case "bond":
         item[1] = `${toPrecision(item[1] ?? 0, decimals)} ${symbol}`;
     }
   });
+
+  console.log(metadata)
 
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
