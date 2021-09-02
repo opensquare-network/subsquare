@@ -10,6 +10,13 @@ const {
 } = require("@polkadot/types-known");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
 
+async function getMetadataByHeight(height) {
+  const api = await getApi();
+  const blockHash = await api.rpc.chain.getBlockHash(height);
+
+  return api.rpc.state.getMetadata(blockHash);
+}
+
 async function getRegistryByHeight(height) {
   const api = await getApi();
   const blockHash = await api.rpc.chain.getBlockHash(height);
@@ -58,4 +65,5 @@ async function getRegistryByHeight(height) {
 
 module.exports = {
   getRegistryByHeight,
+  getMetadataByHeight,
 };

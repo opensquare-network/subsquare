@@ -1,12 +1,19 @@
 const { getAllVersionChangeHeights } = require("../meta");
 const { getRegistryByHeight } = require("../../utils/registry");
 const findLast = require("lodash.findlast");
+const { getMetadataByHeight } = require("../../utils/registry");
 
 let versionChangedHeights = [];
 let registryMap = {};
+let metadataMap = {};
 
 async function updateSpecs() {
   versionChangedHeights = await getAllVersionChangeHeights();
+}
+
+// For test
+function setSpecHeights(heights = []) {
+  versionChangedHeights = heights;
 }
 
 function getSpecHeights() {
@@ -31,8 +38,28 @@ async function findRegistry(height) {
   return registry;
 }
 
+async function findMetadata(height) {
+  const mostRecentChangeHeight = findLast(
+    versionChangedHeights,
+    (h) => h <= height
+  );
+  if (!mostRecentChangeHeight) {
+    throw new Error(`Can not find height ${height}`);
+  }
+
+  let metadata = metadataMap[mostRecentChangeHeight];
+  if (!metadata) {
+    metadata = await getMetadataByHeight(height);
+    metadataMap[height] = metadata;
+  }
+
+  return metadata;
+}
+
 module.exports = {
   updateSpecs,
   getSpecHeights,
   findRegistry,
+  findMetadata,
+  setSpecHeights,
 };

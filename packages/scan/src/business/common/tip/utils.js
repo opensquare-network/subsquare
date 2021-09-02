@@ -1,3 +1,4 @@
+const { findMetadata } = require("../../../mongo/service/specs");
 const { getApi } = require("../../../api");
 const {
   Modules,
@@ -13,27 +14,20 @@ const {
   getConstsFromRegistry,
 } = require("../../../utils/index");
 const { currentChain, CHAINS } = require("../../../env");
+const { expandMetadata } = require("@polkadot/types");
 
-async function getTipMeta(blockHash, tipHash) {
-  const api = await getApi();
-  let rawMeta;
-  if (api.query.tips) {
-    rawMeta = await api.query.tips.tips.at(blockHash, tipHash);
+async function getTipMetaFromStorage(api, tipHash, { blockHeight, blockHash }) {
+  const metadata = await findMetadata(blockHeight);
+  const decorated = expandMetadata(metadata.registry, metadata);
+  let key;
+  if (decorated.query.treasury?.tips) {
+    key = [decorated.query.treasury.tips, tipHash];
   } else {
-    rawMeta = await api.query.treasury.tips.at(blockHash, tipHash);
+    key = [decorated.query.tips.tips, tipHash];
   }
 
-  let meta = rawMeta.toJSON();
-  if (Array.isArray(meta.finder)) {
-    const [finder, deposit] = meta.finder;
-    meta = {
-      ...meta,
-      finder,
-      deposit,
-    };
-  }
-
-  return meta;
+  const rawMeta = await api.rpc.state.getStorage(key, blockHash);
+  return rawMeta.toJSON();
 }
 
 function findNewTipCallFromProxy(registry, proxyCall, reasonHash) {
@@ -133,8 +127,8 @@ function getTipFindersFee(registry) {
 }
 
 module.exports = {
-  getTipMeta,
   getNewTipCall,
   getTippersCount,
   getTipFindersFee,
+  getTipMetaFromStorage,
 };
