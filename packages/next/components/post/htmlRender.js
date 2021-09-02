@@ -3,7 +3,7 @@ import styled from "styled-components";
 import sanitizeHtml from "sanitize-html";
 
 const Wrapper = styled.div`
-  padding-top: 1rem;
+  //padding-top: 1rem;
   color: #000;
   max-width: 48.5rem;
   word-break: break-all;x
