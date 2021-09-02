@@ -9,6 +9,8 @@ import { EmptyList } from "../../../utils/constants";
 import Input from "../../../components/comment/input";
 import { useState, useRef, useEffect } from "react";
 import LayoutFixedHeader from "../../../components/layoutFixedHeader";
+import Metadata from "components/metadata";
+import User from "components/user";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -105,6 +107,18 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     focusEditor();
   };
 
+  const metadata = detail.onchainData?.meta
+    ? Object.entries(detail.onchainData?.meta)
+    : [];
+  metadata.forEach((item) => {
+    switch (item[0]) {
+      case "proposer":
+      case "beneficiary":
+        item[1] = <User chain={chain} add={item[1]} />;
+        break;
+    }
+  });
+
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">
@@ -116,6 +130,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           onReply={focusEditor}
           type="proposal"
         />
+        {detail.onchainData?.meta && <Metadata data={metadata} />}
         <CommentsWrapper>
           <Comments
             data={comments}

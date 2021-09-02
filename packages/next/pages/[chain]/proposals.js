@@ -25,7 +25,11 @@ export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
   }));
 
   return (
-    <LayoutFixedHeader user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+    <LayoutFixedHeader
+      user={loginUser}
+      left={<Menu menu={mainMenu} />}
+      chain={chain}
+    >
       <List
         chain={chain}
         category={"Proposals"}
