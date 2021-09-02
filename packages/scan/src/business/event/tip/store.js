@@ -22,6 +22,14 @@ async function saveNewTip(registry, event, extrinsic, indexer) {
   const api = await getApi();
   const meta = await getTipMetaFromStorage(api, hash, indexer);
 
+  const signer = extrinsic.signer.toString();
+  const authorSet = new Set();
+  authorSet.add(signer);
+  if (meta.finder) {
+    authorSet.add(meta.finder);
+  }
+  const authors = [...authorSet];
+
   const reasonHash = meta.reason;
   const newTipCall = await getNewTipCall(
     registry,
@@ -58,6 +66,7 @@ async function saveNewTip(registry, event, extrinsic, indexer) {
   const obj = {
     indexer,
     hash,
+    authors,
     reason,
     finder,
     tippersCount,
