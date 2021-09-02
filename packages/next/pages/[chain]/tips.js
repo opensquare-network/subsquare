@@ -21,7 +21,7 @@ export default withLoginUserRedux(({ loginUser, tips, chain }) => {
     hash: tip.hash,
     status: tip.state
       ? tip.state.state === "Tipping"
-      ? `Tipping (${tip.state.tippersCount})`
+      ? `Tipping (${tip.state.tipsCount})`
       : tip.state.state
       : "Unknown",
   }));

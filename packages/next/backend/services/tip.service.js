@@ -92,10 +92,10 @@ async function getPostsByChain(chain, page, pageSize) {
     chainDb.compoundLookupOne({
       from: "tip",
       for: posts,
-      projection: { tippersCount: 1, state: 1 },
+      projection: { meta: 1, state: 1 },
       map: (data) => ({
         state: TipStateMap[data.state.state] || data.state.state,
-        tippersCount: data.tippersCount || 0,
+        tipsCount: (data.meta.tips || []).length,
       }),
       as: "state",
       compoundLocalFields: ["height", "hash"],
