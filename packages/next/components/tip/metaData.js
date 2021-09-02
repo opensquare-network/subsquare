@@ -48,6 +48,7 @@ const Header = styled.div`
 
 const Content = styled.div`
   display: flex;
+  align-items: center;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
