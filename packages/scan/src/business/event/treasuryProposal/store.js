@@ -22,10 +22,7 @@ async function saveNewTreasuryProposal(
 ) {
   const [proposalIndex] = event.data.toJSON();
 
-  const meta = await getTreasuryProposalMeta(
-    eventIndexer.blockHash,
-    proposalIndex
-  );
+  const meta = await getTreasuryProposalMeta(proposalIndex, eventIndexer);
   const { proposer, value, beneficiary } = meta;
 
   const timelineItem = {
