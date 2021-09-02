@@ -44,7 +44,7 @@ const Info = styled.div`
 `;
 
 const Title = styled.div`
-  margin-bottom: 12px;
+  //margin-bottom: 12px;
   font-weight: 500;
   font-size: 16px;
   cursor: pointer;
@@ -58,7 +58,7 @@ const Title = styled.div`
 const Divider = styled.div`
   height: 1px;
   background: #ebeef4;
-  margin: 16px 0;
+  margin: 12px 0;
 `;
 
 const FooterWrapper = styled.div`
@@ -113,11 +113,9 @@ export default function Post({ data, chain, href }) {
       <Link href={href}>
         <Title>{data.title}</Title>
       </Link>
-      <DividerWrapper>
+      {/*<DividerWrapper>*/}
         {data.index && <Index>{`#${data.index}`}</Index>}
-        {data.time && <Info>{`Updated ${timeDuration(data.time)}`}</Info>}
-        {data.commentsCount > -1 && <Info>{`${data.commentsCount} Comments`}</Info>}
-      </DividerWrapper>
+      {/*</DividerWrapper>*/}
       <Divider />
       <FooterWrapper>
         <DividerWrapper>
@@ -129,6 +127,8 @@ export default function Post({ data, chain, href }) {
               </TypeWrapper>
             </div>
           )}
+          {data.time && <Info>{`Updated ${timeDuration(data.time)}`}</Info>}
+          {data.commentsCount > -1 && <Info>{`${data.commentsCount} Comments`}</Info>}
         </DividerWrapper>
         {data.status && <StatusWrapper>{data.status}</StatusWrapper>}
       </FooterWrapper>

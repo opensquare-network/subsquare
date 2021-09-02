@@ -7,6 +7,7 @@ import nextApi from "../../services/nextApi";
 import { EmptyList } from "../../utils/constants";
 import styled from "styled-components";
 import PlusIcon from "../../public/imgs/icons/plusInCircle.svg";
+import LayoutFixedHeader from "../../components/layoutFixedHeader";
 
 const Create = styled.a`
   display: flex;
@@ -37,7 +38,7 @@ export default withLoginUserRedux(({ loginUser, posts, chain }) => {
   );
 
   return (
-    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+    <LayoutFixedHeader user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
       <List
         chain={chain}
         category={"Discussions"}
@@ -49,7 +50,7 @@ export default withLoginUserRedux(({ loginUser, posts, chain }) => {
           total: posts.total,
         }}
       />
-    </Layout>
+    </LayoutFixedHeader>
   );
 });
 

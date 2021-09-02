@@ -9,12 +9,13 @@ const Wrapper = styled.div`
   flex-direction: column;
   min-height: 100vh;
   justify-content: center;
+  padding-top: 64px;
 `;
 
 export default function LayoutFixedHeader({ user, left, children, chain }) {
   return (
     <Wrapper>
-      <Header user={user} left={left} chain={chain} fixedTop={false} />
+      <Header user={user} left={left} chain={chain} fixedTop={true} />
       <Content left={left}>
         {children}
       </Content>

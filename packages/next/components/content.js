@@ -39,7 +39,10 @@ const Left = styled.div`
 `;
 
 const LeftPlaceHolder = styled.div`
-width: 232px;
+  width: 232px;
+  @media screen and (max-width: 1080px) {
+    display: none;
+  }
 `
 
 export default function Content({ left, children }) {

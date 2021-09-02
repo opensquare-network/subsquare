@@ -67,7 +67,7 @@ const MenuButton = styled.div`
   justify-content: center;
   cursor: pointer;
   display: none;
-  @media screen and (max-width: 1000px) {
+  @media screen and (max-width: 1080px) {
     display: flex;
     margin-right: 12px;
   }
@@ -97,7 +97,7 @@ const LogoImg = styled.img`
   height: 64px;
 `;
 
-export default function Header({ user, left, chain , fixedTop = true }) {
+export default function Header({ user, left, chain , fixedTop = false }) {
   const [show, setShow] = useState(false);
   const [hiddenWidth, setHiddenWidth] = useState();
   const [position, setPosition] = useState("left");

@@ -6,9 +6,15 @@ import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "../../lib";
 import nextApi from "../../services/nextApi";
 import { addressEllipsis } from "../../utils";
+import LayoutFixedHeader from "../../components/layoutFixedHeader";
 
 export default withLoginUserRedux(({ OverviewData, loginUser, chain }) => {
   OverviewData.forEach((list) => {
+    if (list.category === "Discussions") {
+      list.items.forEach((post) => {
+        post.time = post.lastActivityAt;
+      });
+    }
     if (list.category === "Tips") {
       list.items.forEach((tip) => {
         tip.author = tip.author ?? {
@@ -33,9 +39,9 @@ export default withLoginUserRedux(({ OverviewData, loginUser, chain }) => {
   });
 
   return (
-    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+    <LayoutFixedHeader user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
       <Overview OverviewData={OverviewData} chain={chain} />
-    </Layout>
+    </LayoutFixedHeader>
   );
 });
 

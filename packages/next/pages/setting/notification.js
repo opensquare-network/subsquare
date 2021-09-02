@@ -12,6 +12,7 @@ import nextApi from "services/nextApi";
 import { addToast } from "store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import { fetchUserProfile } from "store/reducers/userSlice";
+import LayoutFixedHeader from "../../components/layoutFixedHeader";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -114,7 +115,7 @@ export default withLoginUserRedux(({
   }
 
   return (
-    <Layout user={loginUser} left={<Menu menu={settingMenu} />}>
+    <LayoutFixedHeader user={loginUser} left={<Menu menu={settingMenu} />}>
       <Wrapper>
         <Title>Notification</Title>
         <ContentWrapper>
@@ -139,7 +140,7 @@ export default withLoginUserRedux(({
           </ButtonWrapper>
         </ContentWrapper>
       </Wrapper>
-    </Layout>
+    </LayoutFixedHeader>
   );
 });
 
