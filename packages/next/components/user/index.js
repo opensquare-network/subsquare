@@ -46,9 +46,9 @@ export default function User({ user, chain, add, showAvatar = true }) {
       {showAvatar && (
         <AvatarWrapper>
           {address ? (
-            <Avatar address={address} />
+            <Avatar address={address} size={20} />
           ) : (
-            <Grvatar email={user?.email} size={24} />
+            <Grvatar email={user?.email} size={20} />
           )}
         </AvatarWrapper>
       )}

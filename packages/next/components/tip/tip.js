@@ -47,7 +47,6 @@ const Title = styled.div`
   overflow: hidden;
   max-width: 750px;
   word-break: break-all;
-  margin-bottom: 12px;
   font-weight: 500;
   font-size: 16px;
   cursor: pointer;
@@ -61,7 +60,8 @@ const Title = styled.div`
 const Divider = styled.div`
   height: 1px;
   background: #ebeef4;
-  margin: 16px 0;
+  margin-bottom: 12px;
+  margin-top: 12px;
 `;
 
 const FooterWrapper = styled.div`
@@ -116,11 +116,6 @@ export default function Tip({ data, chain }) {
       <Link href={`/${chain}/tip/${data.height}_${data.hash}`}>
         <Title>{data.title}</Title>
       </Link>
-      <DividerWrapper>
-        {data.index && <Index>{`#${data.index}`}</Index>}
-        {data.time && <Info>{`Updated ${timeDuration(data.time)}`}</Info>}
-        {data.commentsCount > -1 && <Info>{`${data.commentsCount} Comments`}</Info>}
-      </DividerWrapper>
       <Divider />
       <FooterWrapper>
         <DividerWrapper>
@@ -132,6 +127,8 @@ export default function Tip({ data, chain }) {
               </TypeWrapper>
             </div>
           )}
+          {data.time && <Info>{`Updated ${timeDuration(data.time)}`}</Info>}
+          {data.commentsCount > -1 && <Info>{`${data.commentsCount} Comments`}</Info>}
         </DividerWrapper>
         {data.status && <StatusWrapper>{data.status}</StatusWrapper>}
       </FooterWrapper>

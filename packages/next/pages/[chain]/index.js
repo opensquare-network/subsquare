@@ -9,6 +9,11 @@ import { addressEllipsis } from "../../utils";
 
 export default withLoginUserRedux(({ OverviewData, loginUser, chain }) => {
   OverviewData.forEach((list) => {
+    if (list.category === "Discussions") {
+      list.items.forEach((post) => {
+        post.time = post.lastActivityAt;
+      });
+    }
     if (list.category === "Tips") {
       list.items.forEach((tip) => {
         tip.author = tip.author ?? {
