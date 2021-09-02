@@ -1,4 +1,6 @@
-const { getProposalFromStorage } = require("../../../common/motion/utils");
+const {
+  getMotionProposalCall,
+} = require("../../../common/motion/proposalStorage");
 const {
   getVotingFromStorage,
 } = require("../../../common/motion/votingStorage");
@@ -15,7 +17,7 @@ async function handleProposed(registry, event, extrinsic, indexer) {
   const eventData = event.data.toJSON();
   const [proposer, motionIndex, hash, memberCount] = eventData;
 
-  const proposal = await getProposalFromStorage(hash, indexer.blockHash);
+  const proposal = await getMotionProposalCall(hash, indexer);
   const voting = await getVotingFromStorage(hash, indexer);
 
   const timelineItem = {
