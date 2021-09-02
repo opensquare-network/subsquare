@@ -20,6 +20,19 @@ const ksmTargetCall = {
   ],
 };
 
+const dotMotionCallByProxy = {
+  callIndex: "0x1301",
+  section: "treasury",
+  method: "rejectProposal",
+  args: [
+    {
+      name: "proposal_id",
+      type: "Compact<ProposalIndex>",
+      value: 33,
+    },
+  ],
+};
+
 const targetCall = {
   callIndex: "0x3c01",
   section: "authority",
@@ -150,5 +163,48 @@ describe("test get kusama motion proposal", () => {
 
     const normalizedProposal = await getMotionProposalCall(motionHash, indexer);
     expect(normalizedProposal).toEqual(ksmTargetCall);
+  });
+
+  test("by proxy works", async () => {
+    const blockHeight = 3543099;
+    setSpecHeights([blockHeight]);
+    const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
+    const indexer = { blockHash, blockHeight };
+    const motionHash =
+      "0xc117d365995214adfdd5ae55e3de4dc52dc4082e882fe2df371bf2230e01fd50";
+
+    const normalizedProposal = await getMotionProposalCall(motionHash, indexer);
+    expect(normalizedProposal).toEqual(ksmTargetCall);
+  });
+});
+
+describe("test get polkadot motion proposal", () => {
+  let api;
+  let provider;
+
+  beforeAll(async () => {
+    provider = new WsProvider(
+      "wss://polkadot.api.onfinality.io/public-ws",
+      1000
+    );
+    api = await ApiPromise.create({ provider });
+    setApi(api);
+    setChain(CHAINS.POLKADOT);
+  });
+
+  afterAll(async () => {
+    await provider.disconnect();
+  });
+
+  test("by proxy works", async () => {
+    const blockHeight = 3543099;
+    setSpecHeights([blockHeight]);
+    const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
+    const indexer = { blockHash, blockHeight };
+    const motionHash =
+      "0xc117d365995214adfdd5ae55e3de4dc52dc4082e882fe2df371bf2230e01fd50";
+
+    const normalizedProposal = await getMotionProposalCall(motionHash, indexer);
+    expect(normalizedProposal).toEqual(dotMotionCallByProxy);
   });
 });
