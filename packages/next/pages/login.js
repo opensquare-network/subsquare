@@ -60,6 +60,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const LinkWrapper = styled.div`
+  font-size: 14px;
   color: #506176;
   text-align: center;
   a {
