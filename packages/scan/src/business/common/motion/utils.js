@@ -1,5 +1,3 @@
-const { getApi } = require("../../../api");
-const { isKarura } = require("../../../env");
 const { u8aToHex } = require("@polkadot/util");
 
 function normalizeCall(call) {
@@ -37,21 +35,6 @@ function normalizeCall(call) {
   };
 }
 
-async function getProposalFromStorage(hash, blockHash) {
-  const api = await getApi();
-  let proposal;
-  if (isKarura()) {
-    proposal = await api.query.generalCouncil.proposalOf.at(blockHash, hash);
-  } else {
-    proposal = await api.query.council.proposalOf.at(blockHash, hash);
-  }
-  if (!proposal.isSome) {
-    return null;
-  }
-
-  return normalizeCall(proposal.value);
-}
-
 module.exports = {
-  getProposalFromStorage,
+  normalizeCall,
 };
