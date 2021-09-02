@@ -10,19 +10,21 @@ import nextApi from "services/nextApi";
 import { addToast } from "store/reducers/toastSlice";
 import User from "components/user";
 import { useDispatch } from "react-redux";
+import EditIcon from "../public/imgs/icons/edit.svg";
 
 const Wrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
   box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
-    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+  0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
   padding: 48px;
   @media screen and (max-width: 600px) {
     padding: 24px;
     border-radius: 0;
   }
+
   :hover {
     .edit {
       display: block;
@@ -33,6 +35,7 @@ const Wrapper = styled.div`
 const DividerWrapper = styled.div`
   display: flex;
   align-items: center;
+
   > :not(:first-child) {
     ::before {
       content: "·";
@@ -87,10 +90,10 @@ const TypeWrapper = styled.div`
   font-size: 12px;
   padding: 0 8px;
   ${(p) =>
-    p.color &&
-    css`
-      background: ${p.color};
-    `}
+          p.color &&
+          css`
+            background: ${p.color};
+          `}
 `;
 
 const StatusWrapper = styled.div`
@@ -121,7 +124,7 @@ const EditedLabel = styled.div`
   color: #9da9bb;
 `;
 
-const SupporterWrapper = styled.div`
+const GreyWrapper = styled.div`
   display: flex;
   flex-flow: wrap;
   font-style: normal;
@@ -131,16 +134,47 @@ const SupporterWrapper = styled.div`
   padding: 8px 12px;
   background: #f6f7fa;
   border-radius: 4px;
-  margin: 16px 0 00;
+  margin: 16px 0;
 `;
 
-const SupporterItem = styled.div`
+const GreyItem = styled.div`
   display: inline-block;
   margin-right: 12px;
+
   > .username {
     color: #506176;
   }
 `;
+
+const PlaceHolder = styled.div`
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 140%;
+  text-align: center;
+  color: #9DA9BB;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const Edit = styled.div`
+  cursor: pointer;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 140%;
+  text-align: center;
+  color: #506176;
+  display: flex;
+  align-items: center;
+
+  svg {
+    margin-left: 8px;
+    margin-right: 4px;
+  }
+`
 
 const getTypeColor = (type) => {
   switch (type) {
@@ -153,7 +187,7 @@ const getTypeColor = (type) => {
   }
 };
 
-export default function DetailItem({ data, user, chain, onReply, type }) {
+export default function DetailItem({data, user, chain, onReply, type}) {
   const dispatch = useDispatch();
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
@@ -180,7 +214,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
 
   const updatePost = async () => {
     const url = `${chain}/${type}s/${post._id}`;
-    const { result: newPost } = await nextApi.fetch(url);
+    const {result: newPost} = await nextApi.fetch(url);
     if (newPost) {
       setPost(newPost);
     }
@@ -193,13 +227,13 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
         let result, error;
 
         if (thumbUp) {
-          ({ result, error } = await nextApi.delete(
+          ({result, error} = await nextApi.delete(
             `${chain}/${type}s/${post._id}/reaction`
           ));
         } else {
-          ({ result, error } = await nextApi.put(
+          ({result, error} = await nextApi.put(
             `${chain}/${type}s/${post._id}/reaction`,
-            { reaction: 1 }
+            {reaction: 1}
           ));
         }
 
@@ -226,7 +260,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
         <>
           <Title>{post.title}</Title>
           <DividerWrapper>
-            <User user={post?.author} add={post.proposer} chain={chain} />
+            <User user={post?.author} add={post.proposer} chain={chain}/>
             {post.type && (
               <div>
                 <TypeWrapper color={getTypeColor(post.type)}>
@@ -240,9 +274,32 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             {post.commentsCount > -1 && <Info>{`${post.commentsCount} Comments`}</Info>}
             {post.status && <StatusWrapper>{post.status}</StatusWrapper>}
           </DividerWrapper>
-          <Divider />
-          {post.contentType === "markdown" && <Markdown md={post.content} />}
-          {post.contentType === "html" && <HtmlRender html={post.content} />}
+          <Divider/>
+          {
+            post.content === '' &&
+            <PlaceHolder>
+              {`The ${type} has not been edited by creator.`}
+              {ownPost && <Edit onClick={() => {
+                setIsEdit(true)
+              }}>
+                <EditIcon/>
+                Edit
+              </Edit>}
+            </PlaceHolder>
+          }
+          {
+            post.content === '' && <GreyWrapper>
+              <span style={{marginRight: 12,}}>Who can edit?</span>
+              {post.finder && <GreyItem>
+                <User add={post.finder} chain={chain} showAvatar={false}/>
+              </GreyItem>}
+              {post.proposer && <GreyItem>
+                <User add={post.proposer} chain={chain} showAvatar={false}/>
+              </GreyItem>}
+            </GreyWrapper>
+          }
+          {post.contentType === "markdown" && <Markdown md={post.content}/>}
+          {post.contentType === "html" && <HtmlRender html={post.content}/>}
           {post.createdAt !== post.updatedAt && (
             <EditedLabel>Edited</EditedLabel>
           )}
@@ -258,15 +315,15 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             onReply={onReply}
           />
           {showThumbsUpList && post?.reactions?.length > 0 && (
-            <SupporterWrapper>
+            <GreyWrapper>
               {post.reactions
                 .filter((r) => r.user)
                 .map((r, index) => (
-                  <SupporterItem key={index}>
-                    <User user={r.user} chain={chain} showAvatar={false} />
-                  </SupporterItem>
+                  <GreyItem key={index}>
+                    <User user={r.user} chain={chain} showAvatar={false}/>
+                  </GreyItem>
                 ))}
-            </SupporterWrapper>
+            </GreyWrapper>
           )}
         </>
       )}
