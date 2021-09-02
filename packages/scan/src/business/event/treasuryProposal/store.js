@@ -24,6 +24,7 @@ async function saveNewTreasuryProposal(
 
   const meta = await getTreasuryProposalMeta(proposalIndex, eventIndexer);
   const { proposer, value, beneficiary } = meta;
+  const authors = [...new Set([proposer, extrinsic.signer.toString()])];
 
   const timelineItem = {
     type: TimelineItemTypes.extrinsic,
@@ -43,6 +44,7 @@ async function saveNewTreasuryProposal(
   const obj = {
     indexer: eventIndexer,
     proposalIndex,
+    authors,
     proposer,
     value,
     beneficiary,
