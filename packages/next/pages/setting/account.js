@@ -15,6 +15,7 @@ import ErrorText from "components/ErrorText";
 import nextApi from "services/nextApi";
 import { addToast } from "store/reducers/toastSlice";
 import {withLoginUser, withLoginUserRedux} from "../../lib";
+import LayoutFixedHeader from "../../components/layoutFixedHeader";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -155,7 +156,7 @@ export default withLoginUserRedux(({
 
   return (
     <>
-      <Layout user={loginUser} left={<Menu menu={settingMenu} />}>
+      <LayoutFixedHeader user={loginUser} left={<Menu menu={settingMenu} />}>
         <Wrapper>
           <Title>Account</Title>
           <ContentWrapper>
@@ -263,7 +264,7 @@ export default withLoginUserRedux(({
             </div>
           </ContentWrapper>
         </Wrapper>
-      </Layout>
+      </LayoutFixedHeader>
       {show && <DeleteAccount onClose={() => setShow(false)} />}
     </>
   );

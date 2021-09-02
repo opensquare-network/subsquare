@@ -6,6 +6,7 @@ import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "../../lib";
 import nextApi from "../../services/nextApi";
 import { addressEllipsis } from "../../utils";
+import LayoutFixedHeader from "../../components/layoutFixedHeader";
 
 export default withLoginUserRedux(({ OverviewData, loginUser, chain }) => {
   OverviewData.forEach((list) => {
@@ -38,9 +39,9 @@ export default withLoginUserRedux(({ OverviewData, loginUser, chain }) => {
   });
 
   return (
-    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+    <LayoutFixedHeader user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
       <Overview OverviewData={OverviewData} chain={chain} />
-    </Layout>
+    </LayoutFixedHeader>
   );
 });
 

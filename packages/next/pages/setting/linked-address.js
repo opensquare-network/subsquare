@@ -3,6 +3,7 @@ import Menu from "components/menu";
 import { settingMenu } from "utils/constants";
 import dynamic from "next/dynamic";
 import {withLoginUser, withLoginUserRedux} from "../../lib";
+import LayoutFixedHeader from "../../components/layoutFixedHeader";
 
 const LinkedAddressComp = dynamic(() => import("components/linkedAddress"), {
   ssr: false,
@@ -12,9 +13,9 @@ export default withLoginUserRedux(({
   loginUser,
 }) => {
   return (
-    <Layout user={loginUser} left={<Menu menu={settingMenu} />}>
+    <LayoutFixedHeader user={loginUser} left={<Menu menu={settingMenu} />}>
       <LinkedAddressComp />
-    </Layout>
+    </LayoutFixedHeader>
   );
 });
 

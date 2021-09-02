@@ -97,7 +97,7 @@ const LogoImg = styled.img`
   height: 64px;
 `;
 
-export default function Header({ user, left, chain , fixedTop = true }) {
+export default function Header({ user, left, chain , fixedTop = false }) {
   const [show, setShow] = useState(false);
   const [hiddenWidth, setHiddenWidth] = useState();
   const [position, setPosition] = useState("left");

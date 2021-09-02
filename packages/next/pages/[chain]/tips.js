@@ -6,6 +6,7 @@ import { withLoginUser, withLoginUserRedux } from "../../lib";
 import nextApi from "../../services/nextApi";
 import { EmptyList } from "../../utils/constants";
 import { addressEllipsis } from "../../utils";
+import LayoutFixedHeader from "../../components/layoutFixedHeader";
 
 export default withLoginUserRedux(({ loginUser, tips, chain }) => {
   const items = (tips.items || []).map((tip) => ({
@@ -23,7 +24,7 @@ export default withLoginUserRedux(({ loginUser, tips, chain }) => {
   }));
 
   return (
-    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+    <LayoutFixedHeader user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
       <List
         chain={chain}
         category={"Tips"}
@@ -35,7 +36,7 @@ export default withLoginUserRedux(({ loginUser, tips, chain }) => {
           total: tips.total,
         }}
       />
-    </Layout>
+    </LayoutFixedHeader>
   );
 });
 
