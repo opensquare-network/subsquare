@@ -224,33 +224,28 @@ export default function DetailItem({ data, user, chain, onReply }) {
         <>
           <Title>{post.title}</Title>
           <DividerWrapper>
+            <User
+              user={
+                post.author ?? {
+                  username: addressEllipsis(post.finder),
+                  addresses: [{ chain, address: post.finder }],
+                }
+              }
+              chain={chain}
+            />
+            {post.type && (
+              <div>
+                <TypeWrapper color={getTypeColor(post.type)}>
+                  {post.type}
+                </TypeWrapper>
+              </div>
+            )}
             {post.createdAt && (
               <Info>Created {timeDuration(post.createdAt)}</Info>
             )}
             {post.commentsCount > -1 && <Info>{`${post.commentsCount} Comments`}</Info>}
           </DividerWrapper>
           <Divider />
-          <FooterWrapper>
-            <DividerWrapper>
-              <User
-                user={
-                  post.author ?? {
-                    username: addressEllipsis(post.finder),
-                    addresses: [{ chain, address: post.finder }],
-                  }
-                }
-                chain={chain}
-              />
-              {post.type && (
-                <div>
-                  <TypeWrapper color={getTypeColor(post.type)}>
-                    {post.type}
-                  </TypeWrapper>
-                </div>
-              )}
-            </DividerWrapper>
-            {post.status && <StatusWrapper>{post.status}</StatusWrapper>}
-          </FooterWrapper>
           {post.contentType === "markdown" && <Markdown md={post.content} />}
           {post.contentType === "html" && <HtmlRender html={post.content} />}
           {post.createdAt !== post.updatedAt && (

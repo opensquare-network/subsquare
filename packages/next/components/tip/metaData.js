@@ -55,12 +55,13 @@ const Content = styled.div`
   word-break: break-all;
 
   svg:first-child {
-    margin-right: 8px;
+    margin-right: 4px;
   }
 `
 
 const Username = styled.span`
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: 600;
   word-break: break-all;
   cursor: default;
 `;
@@ -119,7 +120,7 @@ function MetaData({metadata, chain}) {
         Finder
       </Header>
       <Content>
-        <Avatar address={metadata.finder}/>
+        <Avatar address={metadata.finder} size={20}/>
         {finderIdentity ? (
           <Identity identity={finderIdentity}/>
         ) : (
@@ -132,7 +133,7 @@ function MetaData({metadata, chain}) {
         Beneficiary
       </Header>
       <Content>
-        <Avatar address={metadata.who}/>
+        <Avatar address={metadata.who} size={20}/>
         {beneficiryIdentity ? (
           <Identity identity={beneficiryIdentity}/>
         ) : (
