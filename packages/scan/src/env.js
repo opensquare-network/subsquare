@@ -4,11 +4,21 @@ const CHAINS = {
   POLKADOT: "polkadot",
 };
 
-function currentChain() {
-  const allChains = Object.values(CHAINS);
+let chain = null;
 
+function setChain(targetChain) {
+  chain = targetChain;
+}
+
+function currentChain() {
+  if (chain) {
+    return chain;
+  }
+
+  const allChains = Object.values(CHAINS);
   if (allChains.includes(process.env.CHAIN)) {
-    return process.env.CHAIN;
+    setChain(process.env.CHAIN);
+    return chain;
   } else {
     return CHAINS.KARURA;
   }
@@ -22,4 +32,5 @@ module.exports = {
   currentChain,
   CHAINS,
   isKarura,
+  setChain,
 };

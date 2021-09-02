@@ -1,30 +1,31 @@
+const { expandMetadata } = require("@polkadot/types");
+const { findMetadata } = require("../../../mongo/service/specs");
 const { getApi } = require("../../../api");
 const { isKarura } = require("../../../env");
 
-async function getVotingFromStorage(hash, blockHash) {
-  const api = await getApi();
-
-  let voting;
+async function getMotionVoting(motionHash, indexer) {
+  const metadata = await findMetadata(indexer.blockHeight);
+  const decorated = expandMetadata(metadata.registry, metadata);
+  let key;
   if (isKarura()) {
-    voting = await api.query.generalCouncil.voting.at(blockHash, hash);
+    key = [decorated.query.generalCouncil.voting, motionHash];
   } else {
-    voting = await api.query.council.voting.at(blockHash, hash);
+    key = [decorated.query.council.voting, motionHash];
   }
 
-  if (!voting.isSome) {
-    return null;
-  }
-
-  return voting.value.toJSON();
+  const api = await getApi();
+  const raw = await api.rpc.state.getStorage(key, indexer.blockHash);
+  return raw.toJSON();
 }
 
 async function getVotingFromStorageByHeight(motionHash, blockHeight) {
   const api = await getApi();
   const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
-  return await getVotingFromStorage(motionHash, blockHash);
+  return await getMotionVoting(motionHash, { blockHash, blockHeight });
 }
 
 module.exports = {
-  getVotingFromStorage,
+  getVotingFromStorage: getMotionVoting,
   getVotingFromStorageByHeight,
+  getMotionVoting,
 };
