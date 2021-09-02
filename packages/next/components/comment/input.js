@@ -15,10 +15,10 @@ import UploadImgModal from "../editor/imageModal";
 const Wrapper = styled.div`
   margin-top: 48px;
   ${(p) =>
-    p.isEdit &&
-    css`
-      margin-top: 8px;
-    `}
+          p.isEdit &&
+          css`
+            margin-top: 8px;
+          `}
 `;
 
 const InputWrapper = styled.div`
@@ -107,7 +107,8 @@ function Input(
         {
           content,
           contentType,
-        }
+        },
+        {credentials: "include"},
       );
       if (result.error) {
         setErrors(result.error);
@@ -128,7 +129,7 @@ function Input(
 
   const updateComment = async () => {
     setLoading(true);
-    const { result, error } = await nextApi.patch(
+    const {result, error} = await nextApi.patch(
       `${chain}/comments/${commentId}`,
       {
         content,
@@ -161,7 +162,7 @@ function Input(
         {contentType === "markdown" && (
           <MarkdownEditor
             height={114}
-            {...{ content, users }}
+            {...{content, users}}
             setContent={onInputChange}
             visible={!showPreview}
           />
@@ -169,7 +170,7 @@ function Input(
         {contentType === "html" && (
           <QuillEditor
             visible={!showPreview}
-            {...{ content, users }}
+            {...{content, users}}
             setContent={onInputChange}
             height={114}
             setModalInsetImgFunc={(insetImgFunc) => {
@@ -181,7 +182,7 @@ function Input(
         )}
         {!showPreview && (
           <InputSwitch>
-            <img src="/imgs/icons/markdown-mark.svg" alt="" />
+            <img src="/imgs/icons/markdown-mark.svg" alt=""/>
             <Toggle
               size="small"
               isOn={contentType === "markdown"}
@@ -193,9 +194,9 @@ function Input(
       {showPreview && (
         <PreviewWrapper className="preview">
           {contentType === "markdown" && (
-            <PreviewMD content={content} setContent={setContent} />
+            <PreviewMD content={content} setContent={setContent}/>
           )}
-          {contentType === "html" && <HtmlRender html={content} />}
+          {contentType === "html" && <HtmlRender html={content}/>}
         </PreviewWrapper>
       )}
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}

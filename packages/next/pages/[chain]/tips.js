@@ -1,4 +1,4 @@
-import List from "components/tip/list";
+import List from "components/list";
 import Menu from "components/menu";
 import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "../../lib";

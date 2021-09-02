@@ -1,15 +1,15 @@
 import styled from "styled-components";
 
 import Back from "components/back";
-import DetailItem from "components/tip/detail";
+import DetailItem from "components/detailItem";
 import Comments from "components/comment";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
 import { EmptyList } from "../../../utils/constants";
-import Input from "../../../components/tip/input";
+import Input from "components/comment/input";
 import { useState, useRef, useEffect } from "react";
 import LayoutFixedHeader from "../../../components/layoutFixedHeader";
-import MetaData from "../../../components/tip/metaData";
+import MetaData from "components/tip/metaData";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -35,9 +35,6 @@ const CommentsWrapper = styled.div`
 `;
 
 export default withLoginUserRedux(({loginUser, detail, comments, chain}) => {
-  if (!detail) {
-    return "404"; //todo improve this
-  }
   const postId = detail._id;
 
   const editorWrapperRef = useRef(null);
@@ -105,7 +102,7 @@ export default withLoginUserRedux(({loginUser, detail, comments, chain}) => {
     }
     focusEditor();
   };
-  console.log(detail)
+
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">
@@ -126,15 +123,17 @@ export default withLoginUserRedux(({loginUser, detail, comments, chain}) => {
             chain={chain}
             onReply={onReply}
           />
-          {loginUser && (
-            <Input
-              postId={postId}
-              chain={chain}
-              ref={editorWrapperRef}
-              setQuillRef={setQuillRef}
-              {...{contentType, setContentType, content, setContent, users}}
-            />
-          )}
+          {
+            loginUser && (
+              <Input
+                postId={postId}
+                chain={chain}
+                ref={editorWrapperRef}
+                setQuillRef={setQuillRef}
+                {...{contentType, setContentType, content, setContent, users}}
+                type="tip"
+              />)
+          }
         </CommentsWrapper>
       </Wrapper>
     </LayoutFixedHeader>

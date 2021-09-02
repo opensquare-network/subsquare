@@ -19,6 +19,7 @@ const Title = styled.div`
 
 const Item = styled.div`
   display: flex;
+  align-items: center;
   :not(:last-child) {
     border-bottom: 1px solid #ebeef4;
   }
