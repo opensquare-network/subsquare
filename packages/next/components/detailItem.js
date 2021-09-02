@@ -58,7 +58,7 @@ const Title = styled.div`
   overflow: hidden;
   word-break: break-all;
   font-weight: 500;
-  font-size: 28px;
+  font-size: 20px;
   line-height: 140%;
   margin-bottom: 12px;
 `;
