@@ -1,4 +1,6 @@
 import moment from "moment";
+import BigNumber from "bignumber.js";
+import { nodes } from "./constants";
 
 export function addressEllipsis(address, start = 4, end = 4) {
   if (!address) return;
@@ -66,4 +68,12 @@ export function encodeURIQuery(q) {
   Object.keys(q)
     .map((k) => `${k}=${encodeURIComponent(q[k])}`)
     .join("&");
+}
+
+export function getNode(chain) {
+  return nodes.find(n => n.value === chain);
+}
+
+export function toPrecision(value, decimals) {
+  return new BigNumber(value).dividedBy(Math.pow(10, decimals)).toString();
 }

@@ -11,6 +11,7 @@ import { useState, useRef, useEffect } from "react";
 import LayoutFixedHeader from "../../../components/layoutFixedHeader";
 import Metadata from "components/metadata";
 import User from "components/user";
+import { getNode, toPrecision } from "utils";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -107,6 +108,13 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     focusEditor();
   };
 
+  const node = getNode(chain);
+  if (!node) {
+    return null;
+  }
+  const decimals = node.decimals;
+  const symbol = node.symbol;
+
   const metadata = detail.onchainData?.meta
     ? Object.entries(detail.onchainData?.meta)
     : [];
@@ -116,6 +124,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       case "beneficiary":
         item[1] = <User chain={chain} add={item[1]} />;
         break;
+      case "value":
+      case "bond":
+        item[1] = `${toPrecision(item[1] ?? 0, decimals)} ${symbol}`;
     }
   });
 
