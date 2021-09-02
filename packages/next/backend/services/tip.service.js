@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { safeHtml } = require("../utils/post");
-const { PostTitleLengthLimitation } = require("../constants");
+const { PostTitleLengthLimitation, TipStateMap } = require("../constants");
 const { getDb: getBusinessDb, getTipCollection } = require("../mongo/business");
 const { getDb: getChainDb, getTipCollection: getChainTipCollection } = require("../mongo/chain");
 const { getDb: getCommonDb, lookupUser } = require("../mongo/common");
@@ -92,8 +92,11 @@ async function getPostsByChain(chain, page, pageSize) {
     chainDb.compoundLookupOne({
       from: "tip",
       for: posts,
-      projection: { state: 1 },
-      map: (data) => data.state.state,
+      projection: { tippersCount: 1, state: 1 },
+      map: (data) => ({
+        state: TipStateMap[data.state.state] || data.state.state,
+        tippersCount: data.tippersCount || 0,
+      }),
       as: "state",
       compoundLocalFields: ["height", "hash"],
       compoundForeignFields: ["indexer.blockHeight", "hash"],

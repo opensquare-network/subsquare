@@ -1,5 +1,3 @@
-import Layout from "components/layout";
-
 import Overview from "components/overview";
 import Menu from "components/menu";
 import { mainMenu } from "utils/constants";
@@ -21,9 +19,12 @@ export default withLoginUserRedux(({ OverviewData, loginUser, chain }) => {
           username: addressEllipsis(tip.finder),
           addresses: [{chain, address: tip.finder}],
         };
-        tip.status =  tip.state ?? "Unknown";
+        tip.status = tip.state
+          ? tip.state.state === "Tipping"
+          ? `Tipping (${tip.state.tippersCount})`
+          : tip.state.state
+          : "Unknown";
         tip.time = tip.indexer.blockTime;
-
       });
     }
     if (list.category === "Proposals") {

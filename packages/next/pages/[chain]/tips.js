@@ -1,5 +1,4 @@
 import List from "components/tip/list";
-import Layout from "components/layout";
 import Menu from "components/menu";
 import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "../../lib";
@@ -20,7 +19,11 @@ export default withLoginUserRedux(({ loginUser, tips, chain }) => {
     tipUid: tip.tipUid,
     height: tip.height,
     hash: tip.hash,
-    status: tip.state ?? "Unknown",
+    status: tip.state
+      ? tip.state.state === "Tipping"
+      ? `Tipping (${tip.state.tippersCount})`
+      : tip.state.state
+      : "Unknown",
   }));
 
   return (
