@@ -36,7 +36,7 @@ export default function List({ chain, category, items, pagination , create=null 
               <Tip key={index} data={item} chain={chain}/>
             ))
           ) : (
-            <EmptyList/>
+            <EmptyList type={category}/>
           )
       }
       {pagination && <Pagination {...pagination} />}

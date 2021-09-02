@@ -62,7 +62,7 @@ export default function List({
           }
         })
       ) : (
-        <EmptyList />
+        <EmptyList type={category} />
       )}
       {pagination && <Pagination {...pagination} />}
     </Wrapper>
