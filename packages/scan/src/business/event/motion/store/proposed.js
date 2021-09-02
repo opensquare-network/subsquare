@@ -16,7 +16,7 @@ async function handleProposed(registry, event, extrinsic, indexer) {
   const [proposer, motionIndex, hash, memberCount] = eventData;
 
   const proposal = await getProposalFromStorage(hash, indexer.blockHash);
-  const voting = await getVotingFromStorage(hash, indexer.blockHash);
+  const voting = await getVotingFromStorage(hash, indexer);
 
   const timelineItem = {
     type: TimelineItemTypes.event,
