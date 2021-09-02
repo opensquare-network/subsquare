@@ -6,6 +6,7 @@ import { fetchIdentity } from "../../services/identity";
 import { encodeAddressToChain } from "../../services/address";
 import Identity from "../user/identity";
 import { addressEllipsis } from "../../utils";
+import Links from "../timeline/links";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -125,6 +126,7 @@ function MetaData({metadata, chain}) {
         ) : (
           <Username>{addressEllipsis(metadata.finder)}</Username>
         )}
+        <Links chain={chain} address={metadata.finder} style={{marginLeft: 8}}/>
       </Content>
     </Row>
     <Row>
@@ -138,6 +140,7 @@ function MetaData({metadata, chain}) {
         ) : (
           <Username>{addressEllipsis(metadata.who)}</Username>
         )}
+        <Links chain={chain} address={metadata.who} style={{marginLeft: 8}}/>
       </Content>
     </Row>
   </Wrapper>
