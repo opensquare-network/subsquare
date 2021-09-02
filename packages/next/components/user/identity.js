@@ -6,12 +6,14 @@ const Wrapper = styled.div`
   align-items: center;
   svg {
     margin-right: 4px;
+    margin-left: 4px;
   }
 `;
 
 
 const Display = styled.span`
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: 600;
 `;
 
 export default function Identity({ identity }) {
