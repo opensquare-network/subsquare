@@ -25,7 +25,7 @@ async function handleTipEvent(registry, event, extrinsic, indexer) {
     await saveNewTip(registry, event, extrinsic, indexer);
   } else if (TipEvents.TipClosing === method) {
     const [hash] = data;
-    await updateTipWithClosing(registry, hash.toString(), indexer.blockHash);
+    await updateTipWithClosing(registry, hash.toString(), indexer);
   } else if (TipEvents.TipClosed === method) {
     await updateTipWithTipClosed(registry, event, extrinsic, indexer);
   } else if (TipEvents.TipRetracted === method) {

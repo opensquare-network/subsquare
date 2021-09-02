@@ -21,7 +21,7 @@ async function handleTipCall(registry, call, author, extrinsicIndexer) {
   const updates = await getTipCommonUpdates(
     call.registry,
     hash,
-    extrinsicIndexer.blockHash
+    extrinsicIndexer
   );
   const timelineItem = {
     type: TimelineItemTypes.extrinsic,
