@@ -36,6 +36,8 @@ export const nodes = [
     name: "Kusama",
     icon: "kusama.svg",
     relay: "kusama",
+    symbol: "KSM",
+    decimals: 12,
   },
   // {
   //   value: "polkadot",
@@ -47,6 +49,8 @@ export const nodes = [
     name: "Karura",
     icon: "karura.svg",
     relay: "kusama",
+    symbol: "KAR",
+    decimals: 12,
   },
 ];
 
