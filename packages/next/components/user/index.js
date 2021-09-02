@@ -6,6 +6,7 @@ import { encodeAddressToChain } from "services/address";
 import { nodes } from "utils/constants";
 import Avatar from "components/avatar";
 import Grvatar from "components/gravatar";
+import { addressEllipsis } from "../../utils";
 
 const Wrapper = styled.div`
   display: flex;
@@ -56,7 +57,7 @@ export default function User({ user, chain, add, showAvatar = true }) {
       {identity ? (
         <Identity identity={identity} />
       ) : (
-        <Username>{user?.username}</Username>
+        <Username>{user?.username ?? addressEllipsis(add)}</Username>
       )}
     </Wrapper>
   );

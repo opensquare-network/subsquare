@@ -49,6 +49,7 @@ class Api {
         credentials: "same-origin",
         body: body ? JSON.stringify(body) : null,
         headers: { "Content-Type": "application/json" },
+        ...options,
       }
     );
     return result;
