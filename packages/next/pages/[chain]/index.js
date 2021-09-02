@@ -21,7 +21,7 @@ export default withLoginUserRedux(({ OverviewData, loginUser, chain }) => {
         };
         tip.status = tip.state
           ? tip.state.state === "Tipping"
-          ? `Tipping (${tip.state.tippersCount})`
+          ? `Tipping (${tip.state.tipsCount})`
           : tip.state.state
           : "Unknown";
         tip.time = tip.indexer.blockTime;
