@@ -233,7 +233,8 @@ export default function DetailItem({data, user, chain, onReply, type}) {
         } else {
           ({result, error} = await nextApi.put(
             `${chain}/${type}s/${post._id}/reaction`,
-            {reaction: 1}
+            {reaction: 1},
+            {credentials: "include"},
           ));
         }
 
