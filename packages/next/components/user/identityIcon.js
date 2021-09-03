@@ -18,7 +18,9 @@ export default function IdentityIcon({ identity }) {
   const isAuthorized = judgements.some(
     ([, judgement]) =>
       typeof judgement === "object" &&
-      Object.keys(judgement).some((key) => key === "reasonable")
+      Object.keys(judgement).some((key) =>
+        ["reasonable", "knownGood"].includes(key)
+      )
   );
 
   const isBad = judgements.some(
@@ -30,7 +32,7 @@ export default function IdentityIcon({ identity }) {
 
   let status = "unauthorized";
 
-  if (isAuthorized && !identity?.info?.displayParent) {
+  if (isAuthorized) {
     status = "authorized";
     if (identity?.info?.displayParent) {
       status += "-sub";
