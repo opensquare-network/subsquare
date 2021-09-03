@@ -1,3 +1,4 @@
+const { handleBusinessWhenMotionApproved } = require("./hooks/approved");
 const {
   TimelineItemTypes,
   CouncilEvents,
@@ -27,6 +28,7 @@ async function handleApproved(registry, event, extrinsic, indexer) {
 
   const updates = { state };
   await updateMotionByHash(hash, updates, timelineItem);
+  await handleBusinessWhenMotionApproved(hash, indexer);
 }
 
 module.exports = {
