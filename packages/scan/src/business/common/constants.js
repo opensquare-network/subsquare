@@ -68,6 +68,12 @@ const TreasuryProposalEvents = Object.freeze({
   Rejected: "Rejected",
 });
 
+const TreasuryProposalMethods = Object.freeze({
+  proposeSpend: "proposeSpend",
+  rejectProposal: "rejectProposal",
+  approveProposal: "approveProposal",
+});
+
 module.exports = {
   Modules,
   TipEvents,
@@ -79,4 +85,5 @@ module.exports = {
   CouncilEvents,
   KaruraModules,
   TreasuryProposalEvents,
+  TreasuryProposalMethods,
 };

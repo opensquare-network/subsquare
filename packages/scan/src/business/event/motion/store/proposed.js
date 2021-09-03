@@ -1,4 +1,8 @@
 const {
+  Modules,
+  TreasuryProposalMethods,
+} = require("../../../common/constants");
+const {
   getMotionProposalCall,
 } = require("../../../common/motion/proposalStorage");
 const {
@@ -12,6 +16,25 @@ const { insertMotion } = require("../../../../mongo/service/onchain/motion");
 const {
   insertMotionPost,
 } = require("../../../../mongo/service/business/motion");
+
+function extractBusinessFields(proposal = {}) {
+  const { section, method, args } = proposal;
+  const isTreasury =
+    Modules.Treasury === section &&
+    [
+      TreasuryProposalMethods.approveProposal,
+      TreasuryProposalMethods.rejectProposal,
+    ].includes(method);
+
+  if (!isTreasury) {
+    return {};
+  }
+
+  return {
+    isTreasury,
+    treasuryProposalIndex: args[0].value,
+  };
+}
 
 async function handleProposed(registry, event, extrinsic, indexer) {
   const eventData = event.data.toJSON();
@@ -44,6 +67,7 @@ async function handleProposed(registry, event, extrinsic, indexer) {
     proposer,
     index: motionIndex,
     memberCount,
+    ...extractBusinessFields,
     proposal,
     voting,
     isFinal: false,
@@ -56,5 +80,6 @@ async function handleProposed(registry, event, extrinsic, indexer) {
 }
 
 module.exports = {
+  extractBusinessFields,
   handleProposed,
 };
