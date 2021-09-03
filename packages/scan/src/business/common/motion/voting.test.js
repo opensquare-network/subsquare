@@ -3,7 +3,7 @@ const {
   getMotionVoting,
   getVotingFromStorageByHeight,
 } = require("./votingStorage");
-const { setSpecHeights } = require("../../../mongo/service/specs");
+const { setSpecHeights } = require("../../../specs");
 const { setApi } = require("../../../api");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
