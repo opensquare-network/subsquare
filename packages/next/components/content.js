@@ -14,8 +14,11 @@ const Wrapper = styled.div`
 const ContentWrapper = styled.div`
   display: flex;
   position: relative;
-  @media screen and (max-width: 1080px) {
-    padding: 0 60px;
+  @media screen and (max-width: 1140px) {
+    //padding: 0 32px;
+  }
+  @media screen and (max-width: 1000px) {
+    padding: 0;
   }
   @media screen and (max-width: 600px) {
     flex-direction: column-reverse;
