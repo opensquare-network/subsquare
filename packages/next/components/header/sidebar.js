@@ -77,8 +77,8 @@ export default function Sidebar({ onClose, position, children }) {
       <Content position={position}>
         <CloseWrapper position={position}>
           <Container>
-            <CloseButton>
-              <img src="/imgs/icons/close.svg" alt="" onClick={onClose} />
+            <CloseButton onClick={onClose} >
+              <img src="/imgs/icons/close.svg" alt="" />
             </CloseButton>
           </Container>
         </CloseWrapper>
