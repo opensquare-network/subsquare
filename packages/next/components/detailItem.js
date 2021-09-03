@@ -292,10 +292,10 @@ export default function DetailItem({data, user, chain, onReply, type}) {
             post.content === '' && <GreyWrapper>
               <span style={{marginRight: 12,}}>Who can edit?</span>
               {post.finder && <GreyItem>
-                <User add={post.finder} chain={chain} showAvatar={false}/>
+                <User add={post.finder} chain={chain} showAvatar={false} fontSize={12}/>
               </GreyItem>}
               {post.proposer && <GreyItem>
-                <User add={post.proposer} chain={chain} showAvatar={false}/>
+                <User add={post.proposer} chain={chain} showAvatar={false} fontSize={12}/>
               </GreyItem>}
             </GreyWrapper>
           }

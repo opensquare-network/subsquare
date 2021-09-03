@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Identity from "./identity";
 import { fetchIdentity } from "services/identity";
 import { useEffect, useState } from "react";
@@ -7,10 +7,17 @@ import { nodes } from "utils/constants";
 import Avatar from "components/avatar";
 import Grvatar from "components/gravatar";
 import { addressEllipsis } from "../../utils";
+import ExternalLink from "../externalLink";
 
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
+
+  a {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 `;
 
 const AvatarWrapper = styled.div`
@@ -19,13 +26,12 @@ const AvatarWrapper = styled.div`
 `;
 
 const Username = styled.span`
-  font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   word-break: break-all;
-  cursor: default;
+  font-size: ${(props) => props.fontSize}px;
 `;
 
-export default function User({ user, chain, add, showAvatar = true }) {
+export default function User({user, chain, add, showAvatar = true, fontSize = 14}) {
   const [identity, setIdentity] = useState(null);
 
   const address =
@@ -48,17 +54,19 @@ export default function User({ user, chain, add, showAvatar = true }) {
       {showAvatar && (
         <AvatarWrapper>
           {address ? (
-            <Avatar address={address} size={20} />
+            <Avatar address={address} size={20}/>
           ) : (
-            <Grvatar email={user?.email} size={20} />
+            <Grvatar email={user?.email} size={20}/>
           )}
         </AvatarWrapper>
       )}
-      {identity ? (
-        <Identity identity={identity} />
-      ) : (
-        <Username>{user?.username ?? addressEllipsis(add)}</Username>
-      )}
+      <ExternalLink href={`https://${chain}.subscan.io/account/${address}`}>
+        {identity ? (
+          <Identity identity={identity} fontSize={fontSize}/>
+        ) : (
+          <Username fontSize={fontSize}>{user?.username ?? addressEllipsis(add)}</Username>
+        )}
+      </ExternalLink>
     </Wrapper>
   );
 }
