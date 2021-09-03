@@ -1,3 +1,7 @@
+const {
+  saveNewPublicProposal,
+  handlePublicProposalTabled,
+} = require("./democracy/publicProposal/store");
 const { handleTipEvent } = require("./tip");
 const { handleMotionEvent } = require("./motion");
 const {
@@ -19,6 +23,7 @@ async function handleEventWithExtrinsic(
     extrinsicIndex,
   };
 
+  await saveNewPublicProposal(event, extrinsic, indexer);
   await handleTipEvent(registry, event, extrinsic, indexer);
   await handleTreasuryProposalEvent(registry, event, extrinsic, indexer);
   await handleMotionEvent(registry, event, extrinsic, indexer);
@@ -44,6 +49,7 @@ async function handleEvents(registry, events, extrinsics, blockIndexer) {
 
     if (phase.isNull) {
       await handleEventWithoutExtrinsic(registry, blockIndexer, event, sort);
+      await handlePublicProposalTabled(blockIndexer, event, sort, events);
       continue;
     }
 
