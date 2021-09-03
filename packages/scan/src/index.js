@@ -16,6 +16,7 @@ const { handleExtrinsics } = require("./business/extrinsic");
 const { getBlockIndexer } = require("./utils/block/getBlockIndexer");
 const { getApi } = require("./api");
 const last = require("lodash.last");
+const { setSpecHeights } = require("./specs");
 
 async function main() {
   await updateHeight();
@@ -102,7 +103,9 @@ async function scanNormalizedBlock(registry, block, blockEvents) {
 }
 
 async function test() {
-  const height = 7068328;
+  const height = 135713;
+  setSpecHeights([height]);
+
   const api = await getApi();
   const registry = await getRegistryByHeight(height);
   const blockHash = await api.rpc.chain.getBlockHash(height);

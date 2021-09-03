@@ -79,6 +79,19 @@ const MotionState = Object.freeze({
   RejectVoting: "RejectVoting",
 });
 
+const DemocracyPublicProposalEvents = Object.freeze({
+  Proposed: "Proposed",
+  Tabled: "Tabled",
+});
+
+const ReferendumEvents = Object.freeze({
+  Started: "Started",
+  Passed: "Passed",
+  NotPassed: "NotPassed",
+  Cancelled: "Cancelled",
+  Executed: "Executed",
+});
+
 module.exports = {
   Modules,
   TipEvents,
@@ -92,4 +105,6 @@ module.exports = {
   TreasuryProposalEvents,
   TreasuryProposalMethods,
   MotionState,
+  DemocracyPublicProposalEvents,
+  ReferendumEvents,
 };
