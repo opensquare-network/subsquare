@@ -1,7 +1,7 @@
 const { normalizeCall } = require("./utils");
-const { findRegistry } = require("../../../mongo/service/specs");
+const { findRegistry } = require("../../../specs");
 const { expandMetadata } = require("@polkadot/types");
-const { findMetadata } = require("../../../mongo/service/specs");
+const { findMetadata } = require("../../../specs");
 const { getApi } = require("../../../api");
 const { isKarura } = require("../../../env");
 const { GenericCall } = require("@polkadot/types");

@@ -1,10 +1,6 @@
 require("dotenv").config();
 
-const {
-  findRegistry,
-  updateSpecs,
-  getSpecHeights,
-} = require("./mongo/service/specs");
+const { findRegistry, updateSpecs, getSpecHeights } = require("./specs");
 const { disconnect } = require("./api");
 const { updateHeight, getLatestHeight } = require("./chain");
 const { getNextScanHeight, updateScanHeight } = require("./mongo/scanHeight");

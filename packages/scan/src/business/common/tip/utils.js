@@ -1,4 +1,4 @@
-const { findMetadata } = require("../../../mongo/service/specs");
+const { findMetadata } = require("../../../specs");
 const { getApi } = require("../../../api");
 const {
   Modules,

@@ -2,7 +2,7 @@ const { setApi } = require("../../../api");
 jest.setTimeout(3000000);
 
 const { getTreasuryProposalMeta } = require("./meta");
-const { setSpecHeights } = require("../../../mongo/service/specs");
+const { setSpecHeights } = require("../../../specs");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 
 describe("test get treasury proposal", () => {
