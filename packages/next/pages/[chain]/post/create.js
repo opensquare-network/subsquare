@@ -22,7 +22,8 @@ const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
-
+  max-width: 848px;
+  margin: auto;
 `;
 
 const ContentWrapper = styled.div`
