@@ -20,11 +20,12 @@ const Content = styled.div`
   height: 100%;
   display: inline-block;
   position: absolute;
-  @media screen and (max-width: 1000px) {
-    min-width: 310px;
-  }
+  min-width: 264px;
+  padding-left: 32px;
+  padding-right: 32px;
   @media screen and (max-width: 600px) {
-    min-width: 278px;
+    padding: 0;
+    min-width: 200px;
   }
   ${(p) =>
     p.position === "right" &&
@@ -47,7 +48,7 @@ const CloseWrapper = styled.div`
 
 const Container = styled.div`
   @media screen and (max-width: 1000px) {
-    padding: 0 32px;
+    padding: 0;
   }
   @media screen and (max-width: 600px) {
     padding: 0 16px;
