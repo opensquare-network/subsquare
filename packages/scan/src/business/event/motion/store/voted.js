@@ -1,3 +1,4 @@
+const { handleBusinessWhenMotionVoted } = require("./hooks/voted");
 const {
   getVotingFromStorage,
 } = require("../../../common/motion/votingStorage");
@@ -29,6 +30,7 @@ async function handleVoted(registry, event, extrinsic, indexer) {
   };
 
   await updateMotionByHash(hash, updates, timelineItem);
+  await handleBusinessWhenMotionVoted(hash, voting, indexer);
 }
 
 module.exports = {
