@@ -9,7 +9,9 @@ async function insertProposalPost(proposal) {
     return;
   }
 
-  await col.insertOne(proposal);
+  await col.insertOne({
+    proposalIndex: proposal.proposalIndex,
+  });
 }
 
 module.exports = {

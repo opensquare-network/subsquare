@@ -1,6 +1,10 @@
 const {
-  insertDemocracyPublicProposalPost,
-} = require("../../../../mongo/service/business/democracyPublicProposal");
+  insertDemocracyReferendumPost,
+} = require("../../../../mongo/service/business/democracyReferendum");
+const {
+  insertDemocracyReferendum,
+} = require("../../../../mongo/service/onchain/democracyReferendum");
+const { getReferendumInfoFromStorage } = require("./storage");
 const {
   insertDemocracyPublicProposal,
   updateDemocracyPublicProposal,
@@ -79,7 +83,6 @@ async function saveNewPublicProposal(event, extrinsic, indexer) {
   };
 
   await insertDemocracyPublicProposal(obj);
-  await insertDemocracyPublicProposalPost(obj);
 }
 
 function extractReferendumIndex(event) {
@@ -107,6 +110,17 @@ async function handlePublicProposalTabled(
     return;
   }
 
+  await handleProposal(...arguments);
+  const referendumStartedEvent = allEvents[sort + 1].event;
+  await handleReferendum(
+    blockIndexer,
+    referendumStartedEvent,
+    sort + 1,
+    allEvents
+  );
+}
+
+async function handleProposal(blockIndexer, event, sort, allEvents) {
   const eventData = event.data.toJSON();
   const [proposalIndex, deposit, depositors] = eventData;
   const referendumIndex = extractReferendumIndex(allEvents[sort + 1]);
@@ -136,6 +150,48 @@ async function handlePublicProposalTabled(
     },
     timelineTime
   );
+}
+
+async function handleReferendum(blockIndexer, event, sort, allEvents) {
+  const eventData = event.data.toJSON();
+  const [referendumIndex, voteThreshold] = eventData;
+
+  const proposalTabledEvent = allEvents[sort - 1].event;
+  const [proposalIndex] = proposalTabledEvent.data.toJSON();
+
+  const referendumInfo = await getReferendumInfoFromStorage(
+    referendumIndex,
+    blockIndexer
+  );
+
+  const state = {
+    indexer: blockIndexer,
+    state: ReferendumEvents.Started,
+    data: eventData,
+  };
+
+  const timelineItem = {
+    type: TimelineItemTypes.event,
+    method: ReferendumEvents.Started,
+    args: {
+      proposalIndex,
+      referendumIndex,
+      voteThreshold,
+    },
+    indexer: blockIndexer,
+  };
+
+  const obj = {
+    indexer: blockIndexer,
+    referendumIndex,
+    info: referendumInfo,
+    state,
+    timeline: [timelineItem],
+  };
+
+  await insertDemocracyReferendum(obj);
+  // FIXME: maybe we need referendum post or we use the same one with the proposal
+  await insertDemocracyReferendumPost(obj);
 }
 
 module.exports = {

@@ -9,7 +9,9 @@ async function insertReferendumPost(referendumObj) {
     return;
   }
 
-  await col.insertOne(referendumObj);
+  await col.insertOne({
+    referendumIndex: referendumObj.referendumIndex,
+  });
 }
 
 module.exports = {
