@@ -1,5 +1,5 @@
 jest.setTimeout(3000000);
-const { getPublicProposalFromStorage } = require("./store");
+const { getPublicProposalFromStorage } = require("./storage");
 const { setApi } = require("../../../../api");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");

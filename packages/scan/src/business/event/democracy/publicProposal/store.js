@@ -1,3 +1,4 @@
+const { getPublicProposalFromStorage } = require("./storage");
 const {
   insertDemocracyReferendumPost,
 } = require("../../../../mongo/service/business/democracyReferendum");
@@ -15,9 +16,6 @@ const {
   DemocracyPublicProposalEvents,
   ReferendumEvents,
 } = require("../../../common/constants");
-const { getApi } = require("../../../../api");
-const { expandMetadata } = require("@polkadot/types");
-const { findMetadata } = require("../../../../specs");
 
 function isPublicProposalEvent(section, method) {
   if (![Modules.Democracy].includes(section)) {
@@ -25,17 +23,6 @@ function isPublicProposalEvent(section, method) {
   }
 
   return DemocracyPublicProposalEvents.hasOwnProperty(method);
-}
-
-async function getPublicProposalFromStorage(proposalIndex, indexer) {
-  const metadata = await findMetadata(indexer.blockHeight);
-  const decorated = expandMetadata(metadata.registry, metadata);
-  const key = [decorated.query.democracy.publicProps];
-
-  const api = await getApi();
-  const rawMeta = await api.rpc.state.getStorage(key, indexer.blockHash);
-  const allProposals = rawMeta.toJSON() || [];
-  return allProposals.find(([index]) => index === proposalIndex);
 }
 
 async function saveNewPublicProposal(event, extrinsic, indexer) {
@@ -197,5 +184,4 @@ async function handleReferendum(blockIndexer, event, sort, allEvents) {
 module.exports = {
   saveNewPublicProposal,
   handlePublicProposalTabled,
-  getPublicProposalFromStorage,
 };
