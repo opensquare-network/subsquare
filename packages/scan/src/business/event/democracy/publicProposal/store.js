@@ -3,12 +3,24 @@ const {
 } = require("../../../../mongo/service/business/democracyPublicProposal");
 const {
   insertDemocracyPublicProposal,
+  updateDemocracyPublicProposal,
 } = require("../../../../mongo/service/onchain/democracyPublicProposal");
 const { TimelineItemTypes } = require("../../../common/constants");
-const { DemocracyPublicProposalEvents } = require("../../../common/constants");
+const {
+  Modules,
+  DemocracyPublicProposalEvents,
+} = require("../../../common/constants");
 const { getApi } = require("../../../../api");
 const { expandMetadata } = require("@polkadot/types");
 const { findMetadata } = require("../../../../specs");
+
+function isPublicProposalEvent(section, method) {
+  if (![Modules.Democracy].includes(section)) {
+    return false;
+  }
+
+  return DemocracyPublicProposalEvents.hasOwnProperty(method);
+}
 
 async function getPublicProposalFromStorage(proposalIndex, indexer) {
   const metadata = await findMetadata(indexer.blockHeight);
@@ -22,6 +34,14 @@ async function getPublicProposalFromStorage(proposalIndex, indexer) {
 }
 
 async function saveNewPublicProposal(event, extrinsic, indexer) {
+  const { section, method } = event;
+  if (!isPublicProposalEvent(section, method)) {
+    return;
+  }
+  if (DemocracyPublicProposalEvents.Proposed !== method) {
+    return;
+  }
+
   const eventData = event.data.toJSON();
   const [proposalIndex] = eventData;
   const [, hash, proposer] = await getPublicProposalFromStorage(
@@ -61,8 +81,63 @@ async function saveNewPublicProposal(event, extrinsic, indexer) {
   await insertDemocracyPublicProposalPost(obj);
 }
 
-async function handlePublicProposalTabled(event, extrinsic, indexer) {
-  //TODO: handle the Tabled event
+function extractReferendumIndex(event) {
+  const { section, method, data } = event.event || {};
+  if (
+    !isPublicProposalEvent(section, method) ||
+    DemocracyPublicProposalEvents.Started !== method
+  ) {
+    throw new Error("can not get referendum index when tabled");
+  }
+
+  const [referendumIndex] = data.toJSON();
+  return referendumIndex;
+}
+
+async function handlePublicProposalTabled(
+  blockIndexer,
+  event,
+  sort,
+  allEvents
+) {
+  const { section, method } = event;
+  if (!isPublicProposalEvent(section, method)) {
+    return;
+  }
+
+  if (DemocracyPublicProposalEvents.Tabled !== method) {
+    return;
+  }
+
+  const eventData = event.data.toJSON();
+  const [proposalIndex, deposit, depositors] = eventData;
+  const referendumIndex = extractReferendumIndex(allEvents[sort + 1]);
+
+  const state = {
+    indexer: blockIndexer,
+    state: DemocracyPublicProposalEvents.Tabled,
+    data: eventData,
+  };
+
+  const timelineTime = {
+    type: TimelineItemTypes.event,
+    method: DemocracyPublicProposalEvents.Tabled,
+    args: {
+      referendumIndex,
+      deposit,
+      depositors,
+    },
+    indexer: blockIndexer,
+  };
+
+  await updateDemocracyPublicProposal(
+    proposalIndex,
+    {
+      referendumIndex,
+      state,
+    },
+    timelineTime
+  );
 }
 
 module.exports = {

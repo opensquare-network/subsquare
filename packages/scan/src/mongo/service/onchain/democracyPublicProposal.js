@@ -11,6 +11,23 @@ async function insertProposal(proposalObj) {
   await col.insertOne(proposalObj);
 }
 
+async function updateProposalByIndex(proposalIndex, updates, timelineItem) {
+  let update = {
+    $set: updates,
+  };
+
+  if (timelineItem) {
+    update = {
+      ...update,
+      $push: { timeline: timelineItem },
+    };
+  }
+
+  const col = await getDemocracyPublicProposalCollection();
+  await col.updateOne({ proposalIndex }, update);
+}
+
 module.exports = {
   insertDemocracyPublicProposal: insertProposal,
+  updateDemocracyPublicProposal: updateProposalByIndex,
 };
