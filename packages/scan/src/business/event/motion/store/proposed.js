@@ -1,3 +1,4 @@
+const { handleBusinessWhenMotionProposed } = require("./hooks/proposed");
 const {
   Modules,
   TreasuryProposalMethods,
@@ -67,7 +68,7 @@ async function handleProposed(registry, event, extrinsic, indexer) {
     proposer,
     index: motionIndex,
     memberCount,
-    ...extractBusinessFields,
+    ...extractBusinessFields(proposal),
     proposal,
     voting,
     isFinal: false,
@@ -77,6 +78,7 @@ async function handleProposed(registry, event, extrinsic, indexer) {
 
   await insertMotion(obj);
   await insertMotionPost(indexer, hash, proposer, voting, state);
+  await handleBusinessWhenMotionProposed(obj, indexer);
 }
 
 module.exports = {
