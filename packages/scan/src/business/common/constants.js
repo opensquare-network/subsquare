@@ -82,7 +82,6 @@ const MotionState = Object.freeze({
 const DemocracyPublicProposalEvents = Object.freeze({
   Proposed: "Proposed",
   Tabled: "Tabled",
-  Started: "Started",
 });
 
 const ReferendumEvents = Object.freeze({

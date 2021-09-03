@@ -9,6 +9,7 @@ const { TimelineItemTypes } = require("../../../common/constants");
 const {
   Modules,
   DemocracyPublicProposalEvents,
+  ReferendumEvents,
 } = require("../../../common/constants");
 const { getApi } = require("../../../../api");
 const { expandMetadata } = require("@polkadot/types");
@@ -83,10 +84,7 @@ async function saveNewPublicProposal(event, extrinsic, indexer) {
 
 function extractReferendumIndex(event) {
   const { section, method, data } = event.event || {};
-  if (
-    !isPublicProposalEvent(section, method) ||
-    DemocracyPublicProposalEvents.Started !== method
-  ) {
+  if (Modules.Democracy !== section || ReferendumEvents.Started !== method) {
     throw new Error("can not get referendum index when tabled");
   }
 
