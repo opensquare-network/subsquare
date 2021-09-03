@@ -113,13 +113,11 @@ export default function Post({ data, chain, href }) {
       <Link href={href}>
         <Title>{data.title}</Title>
       </Link>
-      {/*<DividerWrapper>*/}
         {data.index && <Index>{`#${data.index}`}</Index>}
-      {/*</DividerWrapper>*/}
       <Divider />
       <FooterWrapper>
         <DividerWrapper>
-          <User user={data.author} chain={chain} />
+          <User user={data.author} chain={chain} fontSize={12} />
           {data.type && (
             <div>
               <TypeWrapper color={getTypeColor(data.type)}>

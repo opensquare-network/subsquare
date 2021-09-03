@@ -10,6 +10,7 @@ const Wrapper = styled.div`
     margin-left: 16px;
     margin-right: 16px;
   }
+
   > :not(:first-child) {
     margin-top: 16px;
   }
@@ -23,12 +24,12 @@ const Title = styled.div`
 `;
 
 export default function List({
-  chain,
-  category,
-  items,
-  pagination,
-  create = null,
-}) {
+                               chain,
+                               category,
+                               items,
+                               pagination,
+                               create = null,
+                             }) {
   return (
     <Wrapper>
       <Title>
@@ -37,32 +38,22 @@ export default function List({
       </Title>
       {items?.length > 0 ? (
         items.map((item, index) => {
-          if (category === "Discussions") {
-            return (
-              <Post
-                key={index}
-                data={item}
-                chain={chain}
-                href={`/${chain}/post/${item.postUid}`}
-              />
-            );
-          }
           if (category === "Tips") {
-            return <Tip key={index} data={item} chain={chain} />;
+            return <Tip key={index} data={item} chain={chain}/>;
           }
+          let href = `/${chain}/post/${item.postUid}`;
           if (category === "Proposals") {
-            return (
-              <Post
-                key={index}
-                data={item}
-                chain={chain}
-                href={`/${chain}/proposal/${item.proposalIndex}`}
-              />
-            );
+            href = `/${chain}/proposal/${item.proposalIndex}`;
           }
+          return <Post
+            key={index}
+            data={item}
+            chain={chain}
+            href={href}
+          />;
         })
       ) : (
-        <EmptyList type={category} />
+        <EmptyList type={category}/>
       )}
       {pagination && <Pagination {...pagination} />}
     </Wrapper>

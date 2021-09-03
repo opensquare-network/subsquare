@@ -1,12 +1,6 @@
 import styled from "styled-components";
-import Avatar from "../avatar";
-import { useEffect, useState } from "react";
-import { nodes } from "../../utils/constants";
-import { fetchIdentity } from "../../services/identity";
-import { encodeAddressToChain } from "../../services/address";
-import Identity from "../user/identity";
-import { addressEllipsis } from "../../utils";
 import Links from "../timeline/links";
+import User from "../user";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -61,43 +55,11 @@ const Content = styled.div`
   }
 `
 
-const Username = styled.span`
-  font-size: 12px;
-  font-weight: 600;
-  word-break: break-all;
-  cursor: default;
-`;
-
 
 function MetaData({metadata, chain}) {
   if (!metadata) {
     return null;
   }
-
-  const [finderIdentity, setIdentity] = useState(null);
-  const [beneficiryIdentity, setBeneficiryIdentity] = useState(null);
-
-  useEffect(() => {
-    setIdentity(null);
-    if (metadata.finder) {
-      const relayChain = nodes.find(n => n.value === chain)?.relay;
-      if (!relayChain) return;
-
-      fetchIdentity(
-        relayChain,
-        encodeAddressToChain(metadata.finder, relayChain)
-      ).then(identity => setIdentity(identity));
-    }
-    if (metadata.who) {
-      const relayChain = nodes.find(n => n.value === chain)?.relay;
-      if (!relayChain) return;
-
-      fetchIdentity(
-        relayChain,
-        encodeAddressToChain(metadata.who, relayChain)
-      ).then(identity => setBeneficiryIdentity(identity));
-    }
-  }, [metadata]);
 
   return <Wrapper>
     <Title>Metadata</Title>
@@ -122,12 +84,7 @@ function MetaData({metadata, chain}) {
         Finder
       </Header>
       <Content>
-        <Avatar address={metadata.finder} size={20}/>
-        {finderIdentity ? (
-          <Identity identity={finderIdentity}/>
-        ) : (
-          <Username>{addressEllipsis(metadata.finder)}</Username>
-        )}
+        <User add={metadata.finder} fontSize={12}/>
         <Links chain={chain} address={metadata.finder} style={{marginLeft: 8}}/>
       </Content>
     </Row>
@@ -136,12 +93,7 @@ function MetaData({metadata, chain}) {
         Beneficiary
       </Header>
       <Content>
-        <Avatar address={metadata.who} size={20}/>
-        {beneficiryIdentity ? (
-          <Identity identity={beneficiryIdentity}/>
-        ) : (
-          <Username>{addressEllipsis(metadata.who)}</Username>
-        )}
+        <User add={metadata.who} fontSize={12}/>
         <Links chain={chain} address={metadata.who} style={{marginLeft: 8}}/>
       </Content>
     </Row>

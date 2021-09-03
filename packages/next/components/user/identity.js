@@ -1,9 +1,10 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import IdentityIcon from "./identityIcon";
 
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
+
   svg {
     margin-right: 4px;
     margin-left: 4px;
@@ -12,11 +13,12 @@ const Wrapper = styled.div`
 
 
 const Display = styled.span`
-  font-size: 12px;
-  font-weight: 600;
+  font-size: ${(props) => props.fontSize}px;
+  font-weight: 500;
+  word-break: break-all;
 `;
 
-export default function Identity({ identity }) {
+export default function Identity({identity, fontSize = 14}) {
   if (!identity) {
     return null;
   }
@@ -27,8 +29,8 @@ export default function Identity({ identity }) {
 
   return (
     <Wrapper>
-      <IdentityIcon identity={identity} />
-      <Display>{displayName}</Display>
+      <IdentityIcon identity={identity}/>
+      <Display fontSize={fontSize}>{displayName}</Display>
     </Wrapper>
   );
 }
