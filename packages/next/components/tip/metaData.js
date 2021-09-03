@@ -48,10 +48,6 @@ const Content = styled.div`
   line-height: 140%;
   color: #1E2134;
   word-break: break-all;
-
-  svg:first-child {
-    margin-right: 4px;
-  }
 `
 
 

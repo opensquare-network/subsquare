@@ -22,7 +22,7 @@ const Wrapper = styled.div`
 
 const AvatarWrapper = styled.div`
   display: flex;
-  margin-right: 4px;
+  margin-right: 8px;
 `;
 
 const Username = styled.span`

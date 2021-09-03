@@ -7,7 +7,6 @@ const Wrapper = styled.div`
 
   svg {
     margin-right: 4px;
-    margin-left: 4px;
   }
 `;
 
