@@ -1,4 +1,7 @@
 const {
+  handleReferendumEventWithExtrinsic,
+} = require("./democracy/referendum");
+const {
   saveNewPublicProposal,
   handlePublicProposalTabled,
 } = require("./democracy/publicProposal/store");
@@ -27,20 +30,27 @@ async function handleEventWithExtrinsic(
   await handleTipEvent(registry, event, extrinsic, indexer);
   await handleTreasuryProposalEvent(registry, event, extrinsic, indexer);
   await handleMotionEvent(registry, event, extrinsic, indexer);
+  await handleReferendumEventWithExtrinsic(event, extrinsic, indexer);
 }
 
 async function handleEventWithoutExtrinsic(
   registry,
   blockIndexer,
   event,
-  eventSort
+  eventSort,
+  blockEvents
 ) {
   const indexer = {
     ...blockIndexer,
     eventIndex: eventSort,
   };
 
-  await handleTreasuryProposalEventWithoutExtrinsic(registry, event, indexer);
+  await handleTreasuryProposalEventWithoutExtrinsic(
+    registry,
+    event,
+    indexer,
+    blockEvents
+  );
 }
 
 async function handleEvents(registry, events, extrinsics, blockIndexer) {
@@ -48,7 +58,13 @@ async function handleEvents(registry, events, extrinsics, blockIndexer) {
     const { event, phase } = events[sort];
 
     if (phase.isNull) {
-      await handleEventWithoutExtrinsic(registry, blockIndexer, event, sort);
+      await handleEventWithoutExtrinsic(
+        registry,
+        blockIndexer,
+        event,
+        sort,
+        events
+      );
       await handlePublicProposalTabled(blockIndexer, event, sort, events);
       continue;
     }
