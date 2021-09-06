@@ -287,7 +287,7 @@ export default function Item({ user, data, chain, onReply }) {
                 .filter((r) => r.user)
                 .map((r, index) => (
                   <SupporterItem key={index}>
-                    <User user={r.user} chain={chain} showAvatar={false} />
+                    <User user={r.user} chain={chain} showAvatar={false} fontSize={12} />
                   </SupporterItem>
                 ))}
             </SupporterWrapper>
