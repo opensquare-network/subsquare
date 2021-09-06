@@ -170,6 +170,7 @@ async function handleReferendum(blockIndexer, event, sort, allEvents) {
 
   const obj = {
     indexer: blockIndexer,
+    proposalIndex,
     referendumIndex,
     info: referendumInfo,
     state,

@@ -1,3 +1,4 @@
+const { handleCancelled } = require("./cancelled");
 const { Modules, ReferendumEvents } = require("../../../common/constants");
 
 function isReferendumEvent(section, method) {
@@ -13,7 +14,10 @@ async function handleReferendumEventWithExtrinsic(event, extrinsic, indexer) {
   if (!isReferendumEvent(section, method)) {
     return;
   }
-  // TODO: handle the business
+
+  if (ReferendumEvents.Cancelled === method) {
+    await handleCancelled(...arguments);
+  }
 }
 
 async function handleReferendumEventWithoutExtrinsic(

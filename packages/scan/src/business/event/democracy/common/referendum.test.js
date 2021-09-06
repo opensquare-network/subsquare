@@ -1,4 +1,4 @@
-const { getReferendumInfoFromStorage } = require("./storage");
+const { getReferendumInfoFromStorage } = require("./referendumStorage");
 const { setSpecHeights } = require("../../../../specs");
 const { CHAINS } = require("../../../../env");
 const { setChain } = require("../../../../env");
