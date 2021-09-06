@@ -32,7 +32,7 @@ const Item = styled.div`
   font-size: 14px;
 
   :hover {
-    color: #6848f≠f;
+    color: #6848ff;
 
     > svg {
       *{
