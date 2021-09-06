@@ -80,7 +80,7 @@ function MetaData({metadata, chain}) {
         Finder
       </Header>
       <Content>
-        <User add={metadata.finder} fontSize={12}/>
+        <User add={metadata.finder} fontSize={14}/>
         <Links chain={chain} address={metadata.finder} style={{marginLeft: 8}}/>
       </Content>
     </Row>
@@ -89,7 +89,7 @@ function MetaData({metadata, chain}) {
         Beneficiary
       </Header>
       <Content>
-        <User add={metadata.who} fontSize={12}/>
+        <User add={metadata.who} fontSize={14}/>
         <Links chain={chain} address={metadata.who} style={{marginLeft: 8}}/>
       </Content>
     </Row>
