@@ -1,6 +1,6 @@
 const {
-  updateMotionByHash,
-} = require("../../../../../mongo/service/onchain/motion");
+  updateTreasuryProposal,
+} = require("../../../../../mongo/service/treasuryProposal");
 const {
   CouncilEvents,
   TreasuryProposalMethods,
@@ -14,7 +14,7 @@ async function handleBusinessWhenMotionApproved(motionHash, indexer) {
     return;
   }
 
-  const { isTreasury } = motion;
+  const { isTreasury, treasuryProposalIndex } = motion;
   if (!isTreasury) {
     return;
   }
@@ -30,7 +30,7 @@ async function handleBusinessWhenMotionApproved(motionHash, indexer) {
     state: CouncilEvents.Approved,
   };
 
-  await updateMotionByHash(hash, { state });
+  await updateTreasuryProposal(treasuryProposalIndex, { state });
 }
 
 module.exports = {
