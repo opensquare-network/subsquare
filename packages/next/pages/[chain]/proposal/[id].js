@@ -139,8 +139,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     }
   });
 
-  console.log(metadata)
-
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">
