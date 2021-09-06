@@ -16,6 +16,12 @@ const Modules = Object.freeze({
   Sudo: "sudo",
 });
 
+const DemocracyMethods = Object.freeze({
+  externalPropose: "externalPropose",
+  externalProposeMajority: "externalProposeMajority",
+  externalProposeDefault: "externalProposeDefault",
+});
+
 const KaruraModules = Object.freeze({
   GeneralCouncil: "generalCouncil",
 });
@@ -107,4 +113,5 @@ module.exports = {
   MotionState,
   DemocracyPublicProposalEvents,
   ReferendumEvents,
+  DemocracyMethods,
 };

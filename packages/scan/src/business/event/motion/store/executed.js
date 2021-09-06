@@ -28,6 +28,8 @@ async function handleExecuted(registry, event, extrinsic, indexer) {
 
   const updates = { state };
   await updateMotionByHash(hash, updates, timelineItem);
+
+  // execute hooks here
 }
 
 module.exports = {
