@@ -1,10 +1,8 @@
+const { findDecorated } = require("../../../../specs");
 const { getApi } = require("../../../../api");
-const { expandMetadata } = require("@polkadot/types");
-const { findMetadata } = require("../../../../specs");
 
 async function getPublicProposalFromStorage(proposalIndex, indexer) {
-  const metadata = await findMetadata(indexer.blockHeight);
-  const decorated = expandMetadata(metadata.registry, metadata);
+  const decorated = await findDecorated(indexer.blockHeight);
   const key = [decorated.query.democracy.publicProps];
 
   const api = await getApi();
