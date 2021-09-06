@@ -321,7 +321,7 @@ export default function DetailItem({data, user, chain, onReply, type}) {
                 .filter((r) => r.user)
                 .map((r, index) => (
                   <GreyItem key={index}>
-                    <User user={r.user} chain={chain} showAvatar={false}/>
+                    <User user={r.user} fontSize={12} chain={chain} showAvatar={false}/>
                   </GreyItem>
                 ))}
             </GreyWrapper>
