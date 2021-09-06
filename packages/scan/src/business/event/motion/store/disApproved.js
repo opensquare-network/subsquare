@@ -1,3 +1,4 @@
+const { handleBusinessWhenMotionDisApproved } = require("./hooks/disApproved");
 const {
   TimelineItemTypes,
   CouncilEvents,
@@ -27,6 +28,7 @@ async function handleDisApproved(registry, event, extrinsic, indexer) {
 
   const updates = { state };
   await updateMotionByHash(hash, updates, timelineItem);
+  await handleBusinessWhenMotionDisApproved(hash, indexer);
 }
 
 module.exports = {
