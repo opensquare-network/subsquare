@@ -134,7 +134,7 @@ const GreyWrapper = styled.div`
   padding: 8px 12px;
   background: #f6f7fa;
   border-radius: 4px;
-  margin: 16px 0;
+  margin-top: 16px;
 `;
 
 const GreyItem = styled.div`
