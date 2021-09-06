@@ -4,6 +4,7 @@ import Post from "./post";
 import Tip from "./tip/tip";
 import Pagination from "./pagination";
 import EmptyList from "./emptyList";
+import Motion from "./motion/motion";
 
 const Wrapper = styled.div`
   @media screen and (max-width: 600px) {
@@ -38,6 +39,9 @@ export default function List({
       </Title>
       {items?.length > 0 ? (
         items.map((item, index) => {
+          if (category === "On-chain Motions") {
+            return <Motion key={index} data={item} chain={chain}/>;
+          }
           if (category === "Tips") {
             return <Tip key={index} data={item} chain={chain}/>;
           }

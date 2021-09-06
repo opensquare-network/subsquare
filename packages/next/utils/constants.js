@@ -122,16 +122,17 @@ export const mainMenu = [
       },
     ],
   },
-  // {
-  //   name: "COUNCIL",
-  //   items: [
-  //     {
-  //       value: "motions",
-  //       name: "Motions",
-  //       icon: "type-motions.svg",
-  //     },
-  //   ],
-  // },
+  {
+    name: "COUNCIL",
+    items: [
+      {
+        value: "motions",
+        name: "Motions",
+        icon: "type-motions.svg",
+        pathname: "/[chain]/motions",
+      },
+    ],
+  },
 ];
 
 export const settingMenu = [

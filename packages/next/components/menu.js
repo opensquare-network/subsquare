@@ -4,6 +4,7 @@ import OverviewIcon from "../public/imgs/icons/overview.svg";
 import DiscussionIcon from "../public/imgs/icons/discussions.svg";
 import TipIcon from "../public/imgs/icons/tips.svg";
 import ProposalIcon from "../public/imgs/icons/proposals.svg";
+import MotionIcon from "../public/imgs/icons/type-motions.svg";
 
 const Wrapper = styled.div`
   padding-top: 37px;
@@ -73,6 +74,7 @@ export default function Menu({menu}) {
     ['Discussions', <DiscussionIcon/>],
     ['Tips', <TipIcon/>],
     ['Proposals', <ProposalIcon/>],
+    ['Motions', <MotionIcon/>],
   ]);
 
   return (
