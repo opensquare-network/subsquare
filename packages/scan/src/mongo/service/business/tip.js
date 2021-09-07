@@ -21,6 +21,7 @@ async function insertTipPost(indexer, hash, reason, finder) {
     finder,
     createdAt: now,
     updatedAt: now,
+    lastActivityAt: now,
   });
 }
 

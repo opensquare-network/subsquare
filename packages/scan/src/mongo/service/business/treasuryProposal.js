@@ -7,6 +7,7 @@ async function insertProposalPost(proposal) {
     return;
   }
 
+  const now = new Date();
   await col.insertOne({
     indexer: proposal.indexer,
     proposalIndex: proposal.proposalIndex,
@@ -14,6 +15,9 @@ async function insertProposalPost(proposal) {
     title: `Untitled - treasury proposal #${proposal.proposalIndex}`,
     content: "",
     contentType: "markdown",
+    createdAt: now,
+    updatedAt: now,
+    lastActivityAt: now,
   });
 }
 

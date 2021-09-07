@@ -1,6 +1,6 @@
 const { getBusinessMotionCollection } = require("../../business");
 
-async function insertMotionPost(indexer, hash) {
+async function insertMotionPost(indexer, hash, motionIndex, proposer) {
   const col = await getBusinessMotionCollection();
   const maybeInDb = await col.findOne({
     "indexer.blockHeight": indexer.blockHeight,
@@ -10,10 +10,19 @@ async function insertMotionPost(indexer, hash) {
     return;
   }
 
+  const now = new Date();
   await col.insertOne({
     height: indexer.blockHeight,
     indexer,
     hash,
+    motionIndex,
+    proposer,
+    title: `Untitled - motion #${proposal.proposalIndex}`,
+    content: "",
+    contentType: "markdown",
+    createdAt: now,
+    updatedAt: now,
+    lastActivityAt: now,
   });
 }
 

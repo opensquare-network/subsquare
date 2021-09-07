@@ -10,6 +10,7 @@ const chainFeatureRouters = [
   require("./features/tips/routes"),
   require("./features/proposals/routes"),
   require("./features/bounties/routes"),
+  require("./features/motions/routes"),
   require("./features/comments/routes"),
 ];
 
