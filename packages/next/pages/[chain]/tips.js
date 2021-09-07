@@ -16,7 +16,6 @@ export default withLoginUserRedux(({ loginUser, tips, chain }) => {
       username: addressEllipsis(tip.finder),
       addresses: [{ chain, address: tip.finder }],
     },
-    tipUid: tip.tipUid,
     height: tip.height,
     hash: tip.hash,
     status: tip.state
