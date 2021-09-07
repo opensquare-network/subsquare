@@ -2,6 +2,7 @@ const { handleBusinessWhenMotionProposed } = require("./hooks/proposed");
 const {
   Modules,
   TreasuryProposalMethods,
+  DemocracyMethods,
 } = require("../../../common/constants");
 const {
   getMotionProposalCall,
@@ -20,26 +21,43 @@ const {
 
 function extractBusinessFields(proposal = {}) {
   const { section, method, args } = proposal;
-  const isTreasury =
+  if (
     Modules.Treasury === section &&
     [
       TreasuryProposalMethods.approveProposal,
       TreasuryProposalMethods.rejectProposal,
-    ].includes(method);
-
-  if (!isTreasury) {
-    return {};
+    ].includes(method)
+  ) {
+    return {
+      isTreasury: true,
+      treasuryProposalIndex: args[0].value,
+    };
   }
 
-  return {
-    isTreasury,
-    treasuryProposalIndex: args[0].value,
-  };
+  if (Modules.Democracy) {
+    const fields = {
+      isDemocracy: true,
+    };
+
+    if (
+      [
+        DemocracyMethods.externalPropose,
+        DemocracyMethods.externalProposeMajority,
+        DemocracyMethods.externalProposeDefault,
+      ].includes(method)
+    ) {
+      fields["proposalHash"] = args[0].value;
+    }
+
+    return fields;
+  }
+
+  return {};
 }
 
 async function handleProposed(registry, event, extrinsic, indexer) {
   const eventData = event.data.toJSON();
-  const [proposer, motionIndex, hash, memberCount] = eventData;
+  const [proposer, motionIndex, hash, threshold] = eventData;
 
   const proposal = await getMotionProposalCall(hash, indexer);
   const voting = await getVotingFromStorage(hash, indexer);
@@ -51,7 +69,7 @@ async function handleProposed(registry, event, extrinsic, indexer) {
       proposer,
       index: motionIndex,
       hash,
-      memberCount,
+      threshold,
     },
     indexer,
   };
@@ -67,7 +85,7 @@ async function handleProposed(registry, event, extrinsic, indexer) {
     hash,
     proposer,
     index: motionIndex,
-    memberCount,
+    threshold,
     ...extractBusinessFields(proposal),
     proposal,
     voting,

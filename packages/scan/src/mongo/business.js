@@ -36,6 +36,7 @@ let motionCol = null;
 let treasuryProposalCol = null;
 let democracyPublicProposalCol = null;
 let democracyReferendumCol = null;
+let democracyExternalCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -48,6 +49,7 @@ async function initDb() {
   treasuryProposalCol = db.collection("treasuryProposal");
   democracyPublicProposalCol = db.collection("democracyPublicProposal");
   democracyReferendumCol = db.collection("democracyReferendum");
+  democracyExternalCol = db.collection("democracyExternal");
 
   await _createIndexes();
 }
@@ -92,10 +94,16 @@ async function getDemocracyReferendumCollection() {
   return democracyReferendumCol;
 }
 
+async function getDemocracyExternalCollection() {
+  await tryInit(democracyExternalCol);
+  return democracyExternalCol;
+}
+
 module.exports = {
   getBusinessTipCollection: getTipCollection,
   getBusinessMotionCollection: getMotionCollection,
   getBusinessTreasuryProposalCollection: getTreasuryProposalCollection,
   getBusinessDemocracyPublicProposalCol: getDemocracyPublicProposalCol,
   getBusinessDemocracyReferendumCollection: getDemocracyReferendumCollection,
+  getBusinessDemocracyExternalCollection: getDemocracyExternalCollection,
 };
