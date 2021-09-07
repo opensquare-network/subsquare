@@ -57,7 +57,7 @@ function extractBusinessFields(proposal = {}) {
 
 async function handleProposed(registry, event, extrinsic, indexer) {
   const eventData = event.data.toJSON();
-  const [proposer, motionIndex, hash, memberCount] = eventData;
+  const [proposer, motionIndex, hash, threshold] = eventData;
 
   const proposal = await getMotionProposalCall(hash, indexer);
   const voting = await getVotingFromStorage(hash, indexer);
@@ -69,7 +69,7 @@ async function handleProposed(registry, event, extrinsic, indexer) {
       proposer,
       index: motionIndex,
       hash,
-      memberCount,
+      threshold,
     },
     indexer,
   };
@@ -85,7 +85,7 @@ async function handleProposed(registry, event, extrinsic, indexer) {
     hash,
     proposer,
     index: motionIndex,
-    memberCount,
+    threshold,
     ...extractBusinessFields(proposal),
     proposal,
     voting,

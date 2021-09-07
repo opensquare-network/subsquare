@@ -14,6 +14,7 @@ const Modules = Object.freeze({
   Session: "session",
   Balances: "balances",
   Sudo: "sudo",
+  TechnicalCommittee: "technicalCommittee",
 });
 
 const DemocracyMethods = Object.freeze({
@@ -68,6 +69,10 @@ const CouncilEvents = Object.freeze({
   Closed: "Closed",
 });
 
+const TechnicalCommitteeEvents = Object.freeze({
+  ...CouncilEvents,
+});
+
 const TreasuryProposalEvents = Object.freeze({
   Proposed: "Proposed",
   Awarded: "Awarded",
@@ -119,4 +124,5 @@ module.exports = {
   ReferendumEvents,
   DemocracyMethods,
   DemocracyExternalStates,
+  TechnicalCommitteeEvents,
 };
