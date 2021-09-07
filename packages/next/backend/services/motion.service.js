@@ -1,114 +1,53 @@
 const { ObjectId } = require("mongodb");
-const { safeHtml } = require("../utils/post");
-const { PostTitleLengthLimitation } = require("../constants");
-const { getDb: getBusinessDb, getMotionCollection } = require("../mongo/business");
-const { getDb: getChainDb, getMotionCollection: getChainMotionCollection } = require("../mongo/chain");
-const { getDb: getCommonDb, lookupUser } = require("../mongo/common");
-const { HttpError } = require("../exc");
-const { ContentType } = require("../constants");
 const { toUserPublicInfo } = require("../utils/user");
+const { getMotionCollection } = require("../mongo/chain");
+const { getDb: getBusinessDb, getTreasuryProposalCollection } = require("../mongo/business");
+const { getDb: getCommonDb, getUserCollection } = require("../mongo/common");
 
-async function updatePost(
-  chain,
-  postId,
-  title,
-  content,
-  contentType,
-  author
-) {
-  const postObjId = ObjectId(postId);
-  const postCol = await getMotionCollection(chain);
-  const post = await postCol.findOne({ _id: postObjId });
-  if (!post) {
-    throw new HttpError(404, "Post does not exists");
-  }
-
-  if (!post.proposer !== author[`${chain}Address`]) {
-    throw new HttpError(403, "You cannot edit");
-  }
-
-  if (title.length > PostTitleLengthLimitation) {
-    throw new HttpError(400, {
-      title: [ "Title must be no more than %d characters" ],
-    });
-  }
-
-  const now = new Date();
-
-  const result = await postCol.updateOne(
-    { _id: postObjId },
-    {
-      $set: {
-        title,
-        content: contentType === ContentType.Html ? safeHtml(content) : content,
-        contentType,
-        updatedAt: now,
-        lastActivityAt: now,
-      }
-    }
-  );
-
-  if (!result.result.ok) {
-    throw new HttpError(500, "Failed to update post");
-  }
-
-  return true;
-}
-
-async function getPostsByChain(chain, page, pageSize) {
-  const postCol = await getMotionCollection(chain);
-  const total = await postCol.countDocuments();
+async function getMotionsByChain(chain, page, pageSize) {
+  const motionCol = await getMotionCollection(chain);
+  const total = await motionCol.countDocuments();
 
   if (page === "last") {
     const totalPages = Math.ceil(total / pageSize);
     page = totalPages;
   }
 
-  const posts = await postCol.find({})
+  const motions = await motionCol.find({}, { projection: { timeline: 0 } })
     .sort({ lastActivityAt: -1 })
     .skip((page - 1) * pageSize)
     .limit(pageSize)
     .toArray();
 
-  const commonDb = await getCommonDb(chain);
-  const businessDb = await getBusinessDb(chain);
-  const chainDb = await getChainDb(chain);
-  await Promise.all([
-    commonDb.lookupOne({
-      from: "user",
-      for: posts,
-      as: "author",
-      localField: "proposer",
-      foreignField: `${chain}Address`,
-      map: toUserPublicInfo,
-    }),
-    businessDb.lookupCount({
-      from: "comment",
-      for: posts,
-      as: "commentsCount",
-      localField: "_id",
-      foreignField: "motion",
-    }),
-    chainDb.lookupOne({
-      from: "motion",
-      for: posts,
-      as: "state",
-      localField: "motionIndex",
-      foreignField: "index",
-      projection: { state: 1 },
-      map: (data) => data.state?.state,
-    }),
-  ]);
+    const commonDb = await getCommonDb(chain);
+    const businessDb = await getBusinessDb(chain);
+    await Promise.all([
+      commonDb.lookupOne({
+        from: "user",
+        for: motions,
+        as: "author",
+        localField: "proposer",
+        foreignField: `${chain}Address`,
+        map: toUserPublicInfo,
+      }),
+      businessDb.lookupOne({
+        from: "treasuryProposal",
+        for: motions,
+        as: "treasuryProposal",
+        localField: "treasuryProposalIndex",
+        foreignField: "proposalIndex",
+      }),
+    ]);
 
   return {
-    items: posts,
+    items: motions,
     total,
     page,
     pageSize,
   };
 }
 
-async function getPostById(chain, postId) {
+async function getMotionById(chain, postId) {
   const q = {};
   if (ObjectId.isValid(postId)) {
     q._id = ObjectId(postId);
@@ -116,45 +55,27 @@ async function getPostById(chain, postId) {
     q.motionIndex = parseInt(postId);
   }
 
-  const postCol = await getMotionCollection(chain);
-  const post = await postCol.findOne(q);
+  const motionCol = await getMotionCollection(chain);
+  const motion = await motionCol.findOne(q);
 
-  if (!post) {
-    throw new HttpError(404, "Post not found");
+  if (!motion) {
+    throw new HttpError(404, "Motion not found");
   }
 
-  const commonDb = await getCommonDb(chain);
-  const businessDb = await getBusinessDb(chain);
-  const chainMotionCollection = await getChainMotionCollection(chain);
-  const [, reactions, motionData] = await Promise.all([
-    commonDb.lookupOne({
-      from: "user",
-      for: post,
-      as: "author",
-      localField: "proposer",
-      foreignField: `${chain}Address`,
-      map: toUserPublicInfo,
-    }),
-    businessDb.lookupMany({
-      from: "reaction",
-      for: post,
-      as: "reactions",
-      localField: "_id",
-      foreignField: "motion",
-    }),
-    chainMotionCollection.findOne({ index: post.motionIndex }),
-  ]);
+  const userCol = await getUserCollection();
+  const author = userCol.findOne({ [`${chain}Address`]: motion.proposer });
 
-  await lookupUser({ for: reactions, localField: "user" });
+  const treasuryProposalCol = await getTreasuryProposalCollection(chain);
+  const treasuryProposal = await treasuryProposalCol.findOne({ proposalIndex: motion.treasuryProposalIndex });
 
   return {
-    ...post,
-    onchainData: motionData,
+    ...motion,
+    author,
+    treasuryProposal,
   };
 }
 
 module.exports =  {
-  updatePost,
-  getPostsByChain,
-  getPostById,
+  getMotionsByChain,
+  getMotionById,
 };

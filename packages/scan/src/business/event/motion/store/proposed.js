@@ -15,9 +15,6 @@ const {
   CouncilEvents,
 } = require("../../../common/constants");
 const { insertMotion } = require("../../../../mongo/service/onchain/motion");
-const {
-  insertMotionPost,
-} = require("../../../../mongo/service/business/motion");
 
 function extractBusinessFields(proposal = {}) {
   const { section, method, args } = proposal;
@@ -95,7 +92,6 @@ async function handleProposed(registry, event, extrinsic, indexer) {
   };
 
   await insertMotion(obj);
-  await insertMotionPost(indexer, hash, motionIndex, proposer, voting, state);
   await handleBusinessWhenMotionProposed(obj, indexer);
 }
 
