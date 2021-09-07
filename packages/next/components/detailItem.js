@@ -194,23 +194,23 @@ export default function DetailItem({data, user, chain, onReply, type}) {
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
 
+  if (!post) {
+    return null;
+  }
+
   const isLoggedIn = !!user;
   let ownPost = false;
-  if (type === "tip") {
-    ownPost =
-      isLoggedIn &&
-      !!(user.addresses || []).find((item) => item.address === post.finder);
-  } else if (type === "post") {
+  if (type === "post") {
     ownPost = isLoggedIn && post.author?.username === user.username;
-  } else if (type === "proposal") {
+  } else {
     ownPost =
       isLoggedIn &&
-      !!(user.addresses || []).find((item) => item.address === post.proposer);
+      !!(user.addresses || []).find((item) => post.onchainData?.authors.includes(item.address));
   }
 
   const thumbUp =
     isLoggedIn &&
-    post?.reactions?.findIndex((r) => r.user?.username === user.username) > -1;
+    post.reactions?.findIndex((r) => r.user?.username === user.username) > -1;
 
   const updatePost = async () => {
     const url = `${chain}/${type}s/${post._id}`;
@@ -261,7 +261,7 @@ export default function DetailItem({data, user, chain, onReply, type}) {
         <>
           <Title>{post.title}</Title>
           <DividerWrapper>
-            <User user={post?.author} add={post.proposer} chain={chain}/>
+            <User user={post.author} add={post.proposer} chain={chain}/>
             {post.type && (
               <div>
                 <TypeWrapper color={getTypeColor(post.type)}>
@@ -289,15 +289,18 @@ export default function DetailItem({data, user, chain, onReply, type}) {
             </PlaceHolder>
           }
           {
-            post.content === '' && <GreyWrapper>
-              <span style={{marginRight: 12,}}>Who can edit?</span>
-              {post.finder && <GreyItem>
-                <User add={post.finder} chain={chain} showAvatar={false} fontSize={12}/>
-              </GreyItem>}
-              {post.proposer && <GreyItem>
-                <User add={post.proposer} chain={chain} showAvatar={false} fontSize={12}/>
-              </GreyItem>}
-            </GreyWrapper>
+            post.content === '' && (
+              <GreyWrapper>
+                <span style={{marginRight: 12,}}>Who can edit?</span>
+                {
+                  (post.onchainData?.authors || []).map(author => (
+                    <GreyItem key={author}>
+                      <User add={author} chain={chain} showAvatar={false} fontSize={12}/>
+                    </GreyItem>
+                  ))
+                }
+              </GreyWrapper>
+            )
           }
           {post.contentType === "markdown" && <Markdown md={post.content}/>}
           {post.contentType === "html" && <HtmlRender html={post.content}/>}
@@ -310,12 +313,12 @@ export default function DetailItem({data, user, chain, onReply, type}) {
             edit={ownPost}
             setIsEdit={setIsEdit}
             toggleThumbUp={toggleThumbUp}
-            count={post?.reactions?.length}
+            count={post.reactions?.length}
             showThumbsUpList={showThumbsUpList}
             setShowThumbsUpList={setShowThumbsUpList}
             onReply={onReply}
           />
-          {showThumbsUpList && post?.reactions?.length > 0 && (
+          {showThumbsUpList && post.reactions?.length > 0 && (
             <GreyWrapper>
               {post.reactions
                 .filter((r) => r.user)

@@ -35,6 +35,10 @@ const CommentsWrapper = styled.div`
 `;
 
 export default withLoginUserRedux(({loginUser, detail, comments, chain}) => {
+  if (!detail) {
+    return "404"; //TODO: improve
+  }
+
   const postId = detail._id;
 
   const editorWrapperRef = useRef(null);
@@ -114,7 +118,7 @@ export default withLoginUserRedux(({loginUser, detail, comments, chain}) => {
           onReply={focusEditor}
           type="tip"
         />
-        <MetaData metadata={{...detail?.onchainData?.meta, hash: detail.onchainData.hash}} chain={chain}/>
+        <MetaData metadata={{...detail.onchainData?.meta, hash: detail.onchainData?.hash}} chain={chain}/>
         <CommentsWrapper>
           <Comments
             data={comments}
@@ -143,9 +147,21 @@ export default withLoginUserRedux(({loginUser, detail, comments, chain}) => {
 export const getServerSideProps = withLoginUser(async (context) => {
   const {chain, id, page, page_size: pageSize} = context.query;
 
-  const [{result: detail}] = await Promise.all([
+  const [
+    {result: detail}
+  ] = await Promise.all([
     nextApi.fetch(`${chain}/tips/${id}`),
   ]);
+
+  if (!detail) {
+    return {
+      props: {
+        detail: null,
+        comments: EmptyList,
+        chain,
+      },
+    };
+  }
 
   const {result: comments} = await nextApi.fetch(
     `${chain}/tips/${detail._id}/comments`,
@@ -157,7 +173,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      detail: detail ?? null,
+      detail,
       comments: comments ?? EmptyList,
       chain,
     },

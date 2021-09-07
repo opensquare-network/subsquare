@@ -23,8 +23,18 @@ async function updatePost(
     throw new HttpError(404, "Post does not exists");
   }
 
-  if (post.finder !== author[`${chain}Address`]) {
-    throw new HttpError(403, "You are not the tip finder");
+  const chainTipCol = await getChainTipCollection(chain);
+  const chainTip = await chainTipCol.findOne({
+    hash: post.hash,
+    "indexer.blockHeight": post.height
+  });
+
+  if (!chainTip) {
+    throw new HttpError(403, "On-chain data is not found");
+  }
+
+  if (!chainTip.authors.includes(author[`${chain}Address`])) {
+    throw new HttpError(403, "You cannot edit");
   }
 
   if (title.length > PostTitleLengthLimitation) {
@@ -94,8 +104,8 @@ async function getPostsByChain(chain, page, pageSize) {
       for: posts,
       projection: { meta: 1, state: 1 },
       map: (data) => ({
-        state: TipStateMap[data.state.state] || data.state.state,
-        tipsCount: (data.meta.tips || []).length,
+        state: TipStateMap[data.state?.state] || data.state?.state,
+        tipsCount: (data.meta?.tips || []).length,
       }),
       as: "state",
       compoundLocalFields: ["height", "hash"],
