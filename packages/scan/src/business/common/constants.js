@@ -14,6 +14,13 @@ const Modules = Object.freeze({
   Session: "session",
   Balances: "balances",
   Sudo: "sudo",
+  TechnicalCommittee: "technicalCommittee",
+});
+
+const DemocracyMethods = Object.freeze({
+  externalPropose: "externalPropose",
+  externalProposeMajority: "externalProposeMajority",
+  externalProposeDefault: "externalProposeDefault",
 });
 
 const KaruraModules = Object.freeze({
@@ -62,6 +69,10 @@ const CouncilEvents = Object.freeze({
   Closed: "Closed",
 });
 
+const TechnicalCommitteeEvents = Object.freeze({
+  ...CouncilEvents,
+});
+
 const TreasuryProposalEvents = Object.freeze({
   Proposed: "Proposed",
   Awarded: "Awarded",
@@ -92,6 +103,10 @@ const ReferendumEvents = Object.freeze({
   Executed: "Executed",
 });
 
+const DemocracyExternalStates = Object.freeze({
+  Proposed: "Proposed",
+});
+
 module.exports = {
   Modules,
   TipEvents,
@@ -107,4 +122,7 @@ module.exports = {
   MotionState,
   DemocracyPublicProposalEvents,
   ReferendumEvents,
+  DemocracyMethods,
+  DemocracyExternalStates,
+  TechnicalCommitteeEvents,
 };
