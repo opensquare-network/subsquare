@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const { toUserPublicInfo } = require("../utils/user");
 const { getMotionCollection } = require("../mongo/chain");
 const { getDb: getBusinessDb, getTreasuryProposalCollection } = require("../mongo/business");
@@ -12,7 +13,7 @@ async function getMotionsByChain(chain, page, pageSize) {
     page = totalPages;
   }
 
-  const motions = await motionCol.find({})
+  const motions = await motionCol.find({}, { projection: { timeline: 0 } })
     .sort({ lastActivityAt: -1 })
     .skip((page - 1) * pageSize)
     .limit(pageSize)
