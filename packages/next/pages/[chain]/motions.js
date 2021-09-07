@@ -1,5 +1,4 @@
 import List from "components/list";
-import Layout from "components/layout";
 import Menu from "components/menu";
 import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "../../lib";
@@ -8,6 +7,7 @@ import { EmptyList } from "../../utils/constants";
 import styled from "styled-components";
 import PlusIcon from "../../public/imgs/icons/plusInCircle.svg";
 import LayoutFixedHeader from "../../components/layoutFixedHeader";
+import { addressEllipsis } from "utils";
 
 const Create = styled.a`
   display: flex;
@@ -23,13 +23,19 @@ const Create = styled.a`
   cursor: pointer;
 `;
 
-export default withLoginUserRedux(({loginUser, posts, chain}) => {
-  const items = (posts.items || []).map((post) => ({
-    title: "batchAll",
+export default withLoginUserRedux(({loginUser, motions, chain}) => {
+  const items = (motions.items || []).map((motion) => ({
+    time: motion.indexer.blockTime,
+    title: `Motion #${motion.index}: ${motion.proposal.section}.${motion.proposal.method}`,
     type: "Democracy",
-    status: "Proposed",
-    author: post.author,
-    postUid: post.postUid,
+    author: motion.author ?? {
+      username: addressEllipsis(motion.proposer),
+      addresses: [{ chain, address: motion.proposer }],
+    },
+    height: motion.height,
+    hash: motion.hash,
+    status: motion.state?.state ?? "Unknown",
+    motionIndex: motion.index,
   }));
 
   const create = (
@@ -47,9 +53,9 @@ export default withLoginUserRedux(({loginUser, posts, chain}) => {
         create={create}
         items={items}
         pagination={{
-          page: posts.page,
-          pageSize: posts.pageSize,
-          total: posts.total,
+          page: motions.page,
+          pageSize: motions.pageSize,
+          total: motions.total,
         }}
       />
     </LayoutFixedHeader>
@@ -59,14 +65,14 @@ export default withLoginUserRedux(({loginUser, posts, chain}) => {
 export const getServerSideProps = withLoginUser(async (context) => {
   const {page, chain, page_size: pageSize} = context.query;
 
-  const [{result: posts}] = await Promise.all([
-    nextApi.fetch(`${chain}/posts`, {page, pageSize: pageSize ?? 50}),
+  const [{result: motions}] = await Promise.all([
+    nextApi.fetch(`${chain}/motions`, {page, pageSize: pageSize ?? 50}),
   ]);
 
   return {
     props: {
       chain,
-      posts: posts ?? EmptyList,
+      motions: motions ?? EmptyList,
     },
   };
 });

@@ -17,7 +17,6 @@ export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
       username: addressEllipsis(proposal.proposer),
       addresses: [{ chain, address: proposal.proposer }],
     },
-    tipUid: proposal.tipUid,
     height: proposal.height,
     hash: proposal.hash,
     status: proposal.state ?? "Unknown",

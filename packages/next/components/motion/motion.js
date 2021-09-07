@@ -112,7 +112,7 @@ const getTypeColor = (type) => {
 export default function Motion({ data, chain }) {
   return (
     <Wrapper>
-      <Link href={`/${chain}/motion/${data.postUid}`}>
+      <Link href={`/${chain}/motion/${data.motionIndex}`}>
         <Title>{data.title}</Title>
       </Link>
       <Divider />
@@ -127,7 +127,6 @@ export default function Motion({ data, chain }) {
             </div>
           )}
           {data.time && <Info>{`Updated ${timeDuration(data.time)}`}</Info>}
-          {data.commentsCount > -1 && <Info>{`${data.commentsCount} Comments`}</Info>}
         </DividerWrapper>
         {data.status && <StatusWrapper>{data.status}</StatusWrapper>}
       </FooterWrapper>

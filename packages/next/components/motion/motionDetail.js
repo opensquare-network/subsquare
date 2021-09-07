@@ -106,17 +106,20 @@ const FlexWrapper = styled.div`
   justify-content: space-between;
 `
 
-export default function MotionDetail({data, user, chain, onReply, type}) {
+export default function MotionDetail({data, chain}) {
+  if (!data) {
+    return null;
+  }
 
   return (
     <div>
       <Wrapper>
         <div>
           <DividerWrapper style={{marginBottom: 12}}>
-            {data.index && <Index>{`#${data.index}`}</Index>}
-            <span style={{fontSize: 12, color: "#506176"}}>setCode</span>
+            {data.motionIndex && <Index>{`#${data.motionIndex}`}</Index>}
+            <span style={{fontSize: 12, color: "#506176"}}>{data.proposal.method}</span>
           </DividerWrapper>
-          <Title>{data.title}</Title>
+          <Title>{`Motion #${data.index}: ${data.proposal.section}.${data.proposal.method}`}</Title>
           <FlexWrapper>
             <DividerWrapper>
               <User user={data?.author} add={data.proposer} chain={chain}/>
