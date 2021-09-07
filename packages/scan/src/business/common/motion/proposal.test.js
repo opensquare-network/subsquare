@@ -104,7 +104,7 @@ const targetCall = {
   ],
 };
 
-describe("test get karura motion proposal", () => {
+describe("test get karura ", () => {
   let api;
   let provider;
 
@@ -123,7 +123,7 @@ describe("test get karura motion proposal", () => {
     await provider.disconnect();
   });
 
-  test("works", async () => {
+  test("motion proposal works", async () => {
     const height = 43249;
     setSpecHeights([height]);
     const blockHash = await api.rpc.chain.getBlockHash(height);
@@ -134,6 +134,31 @@ describe("test get karura motion proposal", () => {
 
     const proposalRaw = await getMotionProposalCall(motionHash, indexer);
     expect(proposalRaw).toEqual(targetCall);
+  });
+
+  test("6th motion proposal works", async () => {
+    const height = 160502;
+    setSpecHeights([height]);
+    const blockHash = await api.rpc.chain.getBlockHash(height);
+    const indexer = { blockHash, blockHeight: height };
+
+    const motionHash =
+      "0x55b6298907985f2ad4ff2cf6fafb2ed65390aca0a24b5bc0c276a4b0d70e8abc";
+
+    const proposalRaw = await getMotionProposalCall(motionHash, indexer);
+    expect(proposalRaw).toEqual({
+      callIndex: "0x4505",
+      section: "democracy",
+      method: "externalProposeMajority",
+      args: [
+        {
+          name: "proposal_hash",
+          type: "Hash",
+          value:
+            "0x9e1c6ea3654eba6226ff60b4d2751064f88c46f1022d3f8422cc1ed23dfe8d91",
+        },
+      ],
+    });
   });
 });
 
