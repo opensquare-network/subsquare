@@ -196,16 +196,12 @@ export default function DetailItem({data, user, chain, onReply, type}) {
 
   const isLoggedIn = !!user;
   let ownPost = false;
-  if (type === "tip") {
-    ownPost =
-      isLoggedIn &&
-      !!(user.addresses || []).find((item) => item.address === post.finder);
-  } else if (type === "post") {
+  if (type === "post") {
     ownPost = isLoggedIn && post.author?.username === user.username;
-  } else if (type === "proposal") {
+  } else {
     ownPost =
       isLoggedIn &&
-      !!(user.addresses || []).find((item) => item.address === post.proposer);
+      !!(user.addresses || []).find((item) => post.onchainData.authors.includes(item.address));
   }
 
   const thumbUp =
