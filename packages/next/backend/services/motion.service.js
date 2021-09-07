@@ -113,7 +113,7 @@ async function getPostById(chain, postId) {
   if (ObjectId.isValid(postId)) {
     q._id = ObjectId(postId);
   } else {
-    q.motionIndex = parseInt(postId);
+    q.index = parseInt(postId);
   }
 
   const postCol = await getMotionCollection(chain);
