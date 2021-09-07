@@ -27,6 +27,7 @@ describe("test get karura external", () => {
   });
 
   test("works", async () => {
+    // This external is created at 160503, when the 6th motion passed
     const height = 160545;
     const preHeight = height - 1;
     setSpecHeights([preHeight]);
