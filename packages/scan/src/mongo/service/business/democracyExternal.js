@@ -11,5 +11,5 @@ async function insertExternalPost(proposalHash) {
 }
 
 module.exports = {
-  insertDemocracyExternalPost: insertExternalPost(),
+  insertDemocracyExternalPost: insertExternalPost,
 };

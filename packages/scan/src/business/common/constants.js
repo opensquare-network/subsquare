@@ -98,6 +98,10 @@ const ReferendumEvents = Object.freeze({
   Executed: "Executed",
 });
 
+const DemocracyExternalStates = Object.freeze({
+  Proposed: "Proposed",
+});
+
 module.exports = {
   Modules,
   TipEvents,
@@ -114,4 +118,5 @@ module.exports = {
   DemocracyPublicProposalEvents,
   ReferendumEvents,
   DemocracyMethods,
+  DemocracyExternalStates,
 };

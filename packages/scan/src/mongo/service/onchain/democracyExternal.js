@@ -28,6 +28,6 @@ async function updateExternalByHash(proposalHash, updates, timelineItem) {
 }
 
 module.exports = {
-  insertExternal,
-  updateExternalByHash,
+  insertDemocracyExternal: insertExternal,
+  updateDemocracyExternalByHash: updateExternalByHash,
 };
