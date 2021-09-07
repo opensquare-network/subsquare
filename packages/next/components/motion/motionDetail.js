@@ -3,6 +3,10 @@ import KVList from "components/kvList";
 
 import User from "components/user";
 import ExternalLink from "../externalLink";
+import InnerDataTable from "../table/innerDataTable";
+import Links from "../timeline/links";
+import Timeline from "../timeline";
+import { timelineData } from "../../utils/data";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -49,11 +53,6 @@ const Title = styled.div`
   margin-bottom: 12px;
 `;
 
-const Divider = styled.div`
-  height: 1px;
-  background: #ebeef4;
-  margin: 16px 0;
-`;
 
 
 const TypeWrapper = styled.div`
@@ -144,11 +143,19 @@ export default function MotionDetail({data, user, chain, onReply, type}) {
       ]}/>
 
       <KVList title={"Metadata"} data={[
-        ["Link to", <ExternalLink href="/">Treasury Proposal #123</ExternalLink>],
+        ["Proposer", <>
+          <User add={`sLB7WSuhgzkn9wkPLCobzf6YjqvJVnnCAZmXtYF4GYcZ6cw`} fontSize={14}/>
+          <Links chain={chain} address={`sLB7WSuhgzkn9wkPLCobzf6YjqvJVnnCAZmXtYF4GYcZ6cw`} style={{marginLeft: 8}}/>
+        </>],
         ["Beneficiary", "12"],
         ["Value", "38.66 KSM"],
         ["Bond", "1.933 KSM"],
+        ["Call", ""],
+        [ <InnerDataTable data={data.author} padding={24}/>],
       ]}/>
+
+      <Timeline data={timelineData}/>
+
     </div>
 
   );
