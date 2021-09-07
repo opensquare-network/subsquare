@@ -192,7 +192,7 @@ async function connectDb(dbName) {
     const itemsMap = new Map(items.map(item =>
       [
         JSON.stringify(Object.values(item.keys)),
-        map ? map(item.result) : item.result,
+        map && item.result ? map(item.result) : item.result,
       ]
     ));
 
