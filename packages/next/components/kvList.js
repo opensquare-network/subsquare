@@ -31,6 +31,7 @@ const Row = styled.div`
   padding-top: 12px;
   padding-bottom: 12px;
   border-bottom: 1px solid #EBEEF4;
+  background-color: white;
 `
 const Header = styled.div`
   width: 128px;
@@ -63,55 +64,25 @@ function KVList({data, title, chain}) {
       {
         data.map(row => (
           <Row>
-            <Header>
-              {row[0]}
-            </Header>
-            <Content>
-              {row[1]}
-            </Content>
+            {
+              row.length === 1 && row[0]
+            }
+            {
+              row.length === 2 &&
+              <>
+                <Header>
+                  {row[0]}
+                </Header>
+                <Content>
+                  {row[1]}
+                </Content>
+              </>
+            }
           </Row>
         ))
       }
     </Wrapper>
   )
-
-  return <Wrapper>
-    <Title>Metadata</Title>
-    <Row>
-      <Header>
-        Reason
-      </Header>
-      <Content>
-        {metadata.reason}
-      </Content>
-    </Row>
-    <Row>
-      <Header>
-        Hash
-      </Header>
-      <Content>
-        {metadata.hash}
-      </Content>
-    </Row>
-    <Row>
-      <Header>
-        Finder
-      </Header>
-      <Content>
-        <User add={metadata.finder} fontSize={14}/>
-        <Links chain={chain} address={metadata.finder} style={{marginLeft: 8}}/>
-      </Content>
-    </Row>
-    <Row>
-      <Header>
-        Beneficiary
-      </Header>
-      <Content>
-        <User add={metadata.who} fontSize={14}/>
-        <Links chain={chain} address={metadata.who} style={{marginLeft: 8}}/>
-      </Content>
-    </Row>
-  </Wrapper>
 }
 
 export default KVList;
