@@ -289,15 +289,18 @@ export default function DetailItem({data, user, chain, onReply, type}) {
             </PlaceHolder>
           }
           {
-            post.content === '' && <GreyWrapper>
-              <span style={{marginRight: 12,}}>Who can edit?</span>
-              {post.finder && <GreyItem>
-                <User add={post.finder} chain={chain} showAvatar={false} fontSize={12}/>
-              </GreyItem>}
-              {post.proposer && <GreyItem>
-                <User add={post.proposer} chain={chain} showAvatar={false} fontSize={12}/>
-              </GreyItem>}
-            </GreyWrapper>
+            post.content === '' && (
+              <GreyWrapper>
+                <span style={{marginRight: 12,}}>Who can edit?</span>
+                {
+                  (post.onchainData.authors || []).map(author => (
+                    <GreyItem key={author}>
+                      <User add={author} chain={chain} showAvatar={false} fontSize={12}/>
+                    </GreyItem>
+                  ))
+                }
+              </GreyWrapper>
+            )
           }
           {post.contentType === "markdown" && <Markdown md={post.content}/>}
           {post.contentType === "html" && <HtmlRender html={post.content}/>}

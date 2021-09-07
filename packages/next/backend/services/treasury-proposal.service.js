@@ -23,8 +23,17 @@ async function updatePost(
     throw new HttpError(404, "Post does not exists");
   }
 
-  if (!post.proposer === author[`${chain}Address`]) {
-    throw new HttpError(403, "You are not the proposer");
+  const chainProposalCol = await getChainTreasuryProposalCollection(chain);
+  const chainProposal = await chainProposalCol.findOne({
+    proposalIndex: post.proposalIndex,
+  });
+
+  if (!chainProposal) {
+    throw new HttpError(403, "On-chain data is not found");
+  }
+
+  if (!chainProposal.authors.includes(author[`${chain}Address`])) {
+    throw new HttpError(403, "You cannot edit");
   }
 
   if (title.length > PostTitleLengthLimitation) {
@@ -96,7 +105,7 @@ async function getPostsByChain(chain, page, pageSize) {
       localField: "proposalIndex",
       foreignField: "proposalIndex",
       projection: { state: 1 },
-      map: (data) => data.state.state,
+      map: (data) => data.state?.state,
     }),
   ]);
 
