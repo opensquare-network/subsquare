@@ -15,7 +15,7 @@ const { getMotionCollection } = require("../../../../../mongo");
 
 async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
   const col = await getMotionCollection();
-  const motion = await col.findOne({ hash: motionHash });
+  const motion = await col.findOne({ hash: motionHash, isFinal: false });
   if (!motion) {
     return;
   }
