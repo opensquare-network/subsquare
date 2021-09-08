@@ -36,10 +36,11 @@ export default withLoginUserRedux(({loginUser, motions, chain}) => {
       username: addressEllipsis(motion.proposer),
       addresses: [{ chain, address: motion.proposer }],
     },
+    proposal: motion.proposal,
     height: motion.height,
     hash: motion.hash,
     status: motion.state?.state ?? "Unknown",
-    motionIndex: motion.index,
+    index: motion.index,
   }));
 
   const create = (

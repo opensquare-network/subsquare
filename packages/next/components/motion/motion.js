@@ -115,10 +115,10 @@ export default function Motion({ data, chain }) {
       <div>
         <DividerWrapper style={{marginBottom: 12}}>
           {data.index && <Index>{`#${data.index}`}</Index>}
-          <span style={{fontSize: 12, color: "#506176"}}>setCode</span>
+          <span style={{fontSize: 12, color: "#506176"}}>{data.proposal.method}</span>
         </DividerWrapper>
       </div>
-      <Link href={`/${chain}/motion/${data.motionIndex}`}>
+      <Link href={`/${chain}/motion/${data.index}`}>
         <Title>{data.title}</Title>
       </Link>
       <Divider />
