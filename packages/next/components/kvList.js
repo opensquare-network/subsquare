@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import Links from "./timeline/links";
-import User from "./user";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -54,7 +52,7 @@ const Content = styled.div`
 `
 
 
-function KVList({data, title, chain}) {
+function KVList({data, title}) {
   if (!data) {
     return null;
   }
