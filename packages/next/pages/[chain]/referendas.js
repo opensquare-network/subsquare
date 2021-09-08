@@ -32,6 +32,7 @@ export default withLoginUserRedux(({loginUser, posts, chain}) => {
     postUid: post.postUid,
     commentsCount: 1,
     remaining: 3661,
+    index: 1,
   }));
 
   const create = (

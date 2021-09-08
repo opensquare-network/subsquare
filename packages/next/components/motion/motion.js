@@ -112,6 +112,12 @@ const getTypeColor = (type) => {
 export default function Motion({ data, chain }) {
   return (
     <Wrapper>
+      <div>
+        <DividerWrapper style={{marginBottom: 12}}>
+          {data.index && <Index>{`#${data.index}`}</Index>}
+          <span style={{fontSize: 12, color: "#506176"}}>setCode</span>
+        </DividerWrapper>
+      </div>
       <Link href={`/${chain}/motion/${data.motionIndex}`}>
         <Title>{data.title}</Title>
       </Link>
