@@ -42,7 +42,18 @@ async function updateOrCreatePostByReferendumWithProposal(
   );
 }
 
+async function insertDemocracyPostByExternal(externalProposalHash) {
+  const col = await getBusinessDemocracy();
+  const maybeInDb = await col.findOne({ externalProposalHash });
+  if (maybeInDb) {
+    return;
+  }
+
+  await col.insertOne({ externalProposalHash });
+}
+
 module.exports = {
   insertDemocracyPostByProposal,
   updateOrCreatePostByReferendumWithProposal,
+  insertDemocracyPostByExternal,
 };

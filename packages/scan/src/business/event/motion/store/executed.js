@@ -1,3 +1,4 @@
+const { handleBusinessWhenMotionExecuted } = require("./hooks/executed");
 const {
   TimelineItemTypes,
   CouncilEvents,
@@ -28,8 +29,7 @@ async function handleExecuted(registry, event, extrinsic, indexer) {
 
   const updates = { state };
   await updateMotionByHash(hash, updates, timelineItem);
-
-  // execute hooks here
+  await handleBusinessWhenMotionExecuted(hash, indexer);
 }
 
 module.exports = {

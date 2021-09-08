@@ -1,6 +1,6 @@
 const {
-  insertDemocracyExternalPost,
-} = require("../../../../../mongo/service/business/democracyExternal");
+  insertDemocracyPostByExternal,
+} = require("../../../../../mongo/service/business/democracy");
 const {
   insertDemocracyExternal,
 } = require("../../../../../mongo/service/onchain/democracyExternal");
@@ -57,8 +57,7 @@ async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
   };
 
   await insertDemocracyExternal(externalObj);
-  // FIXME: We may reuse the post of the motion if external is proposed by council#motion
-  await insertDemocracyExternalPost(proposalHash);
+  await insertDemocracyPostByExternal(proposalHash);
 }
 
 module.exports = {

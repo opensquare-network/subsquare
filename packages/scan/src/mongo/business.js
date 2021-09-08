@@ -34,7 +34,6 @@ const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017";
 let tipCol = null;
 let motionCol = null;
 let treasuryProposalCol = null;
-let democracyExternalCol = null;
 // For democracy posts
 let democracyCol = null;
 
@@ -47,7 +46,6 @@ async function initDb() {
   tipCol = db.collection(tipCollectionName);
   motionCol = db.collection(motionCollectionName);
   treasuryProposalCol = db.collection("treasuryProposal");
-  democracyExternalCol = db.collection("democracyExternal");
   democracyCol = db.collection("democracy");
 
   await _createIndexes();
@@ -83,11 +81,6 @@ async function getTreasuryProposalCollection() {
   return treasuryProposalCol;
 }
 
-async function getDemocracyExternalCollection() {
-  await tryInit(democracyExternalCol);
-  return democracyExternalCol;
-}
-
 async function getDemocracy() {
   await tryInit(democracyCol);
   return democracyCol;
@@ -97,6 +90,5 @@ module.exports = {
   getBusinessTipCollection: getTipCollection,
   getBusinessMotionCollection: getMotionCollection,
   getBusinessTreasuryProposalCollection: getTreasuryProposalCollection,
-  getBusinessDemocracyExternalCollection: getDemocracyExternalCollection,
   getBusinessDemocracy: getDemocracy,
 };
