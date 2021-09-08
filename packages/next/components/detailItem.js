@@ -16,8 +16,8 @@ const Wrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
   box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
-  0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-  0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
   padding: 48px;
   @media screen and (max-width: 600px) {
@@ -58,7 +58,6 @@ const Info = styled.div`
 
 const Title = styled.div`
   max-width: 750px;
-  overflow: hidden;
   word-break: break-all;
   font-weight: 500;
   font-size: 20px;
@@ -90,10 +89,10 @@ const TypeWrapper = styled.div`
   font-size: 12px;
   padding: 0 8px;
   ${(p) =>
-          p.color &&
-          css`
-            background: ${p.color};
-          `}
+    p.color &&
+    css`
+      background: ${p.color};
+    `}
 `;
 
 const StatusWrapper = styled.div`
@@ -152,12 +151,12 @@ const PlaceHolder = styled.div`
   font-size: 14px;
   line-height: 140%;
   text-align: center;
-  color: #9DA9BB;
+  color: #9da9bb;
   height: 68px;
   display: flex;
   align-items: center;
   justify-content: center;
-`
+`;
 
 const Edit = styled.div`
   cursor: pointer;
@@ -174,7 +173,7 @@ const Edit = styled.div`
     margin-left: 8px;
     margin-right: 4px;
   }
-`
+`;
 
 const getTypeColor = (type) => {
   switch (type) {
@@ -187,7 +186,7 @@ const getTypeColor = (type) => {
   }
 };
 
-export default function DetailItem({data, user, chain, onReply, type}) {
+export default function DetailItem({ data, user, chain, onReply, type }) {
   const dispatch = useDispatch();
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
@@ -205,7 +204,9 @@ export default function DetailItem({data, user, chain, onReply, type}) {
   } else {
     ownPost =
       isLoggedIn &&
-      !!(user.addresses || []).find((item) => post.onchainData?.authors.includes(item.address));
+      !!(user.addresses || []).find((item) =>
+        post.onchainData?.authors.includes(item.address)
+      );
   }
 
   const thumbUp =
@@ -214,7 +215,7 @@ export default function DetailItem({data, user, chain, onReply, type}) {
 
   const updatePost = async () => {
     const url = `${chain}/${type}s/${post._id}`;
-    const {result: newPost} = await nextApi.fetch(url);
+    const { result: newPost } = await nextApi.fetch(url);
     if (newPost) {
       setPost(newPost);
     }
@@ -227,14 +228,14 @@ export default function DetailItem({data, user, chain, onReply, type}) {
         let result, error;
 
         if (thumbUp) {
-          ({result, error} = await nextApi.delete(
+          ({ result, error } = await nextApi.delete(
             `${chain}/${type}s/${post._id}/reaction`
           ));
         } else {
-          ({result, error} = await nextApi.put(
+          ({ result, error } = await nextApi.put(
             `${chain}/${type}s/${post._id}/reaction`,
-            {reaction: 1},
-            {credentials: "include"},
+            { reaction: 1 },
+            { credentials: "include" }
           ));
         }
 
@@ -261,7 +262,7 @@ export default function DetailItem({data, user, chain, onReply, type}) {
         <>
           <Title>{post.title}</Title>
           <DividerWrapper>
-            <User user={post.author} add={post.proposer} chain={chain}/>
+            <User user={post.author} add={post.proposer} chain={chain} />
             {post.type && (
               <div>
                 <TypeWrapper color={getTypeColor(post.type)}>
@@ -272,38 +273,44 @@ export default function DetailItem({data, user, chain, onReply, type}) {
             {post.createdAt && (
               <Info>Created {timeDurationFromNow(post.createdAt)}</Info>
             )}
-            {post.commentsCount > -1 && <Info>{`${post.commentsCount} Comments`}</Info>}
+            {post.commentsCount > -1 && (
+              <Info>{`${post.commentsCount} Comments`}</Info>
+            )}
             {post.status && <StatusWrapper>{post.status}</StatusWrapper>}
           </DividerWrapper>
-          <Divider/>
-          {
-            post.content === '' &&
+          <Divider />
+          {post.content === "" && (
             <PlaceHolder>
               {`The ${type} has not been edited by creator.`}
-              {ownPost && <Edit onClick={() => {
-                setIsEdit(true)
-              }}>
-                <EditIcon/>
-                Edit
-              </Edit>}
+              {ownPost && (
+                <Edit
+                  onClick={() => {
+                    setIsEdit(true);
+                  }}
+                >
+                  <EditIcon />
+                  Edit
+                </Edit>
+              )}
             </PlaceHolder>
-          }
-          {
-            post.content === '' && (
-              <GreyWrapper>
-                <span style={{marginRight: 12,}}>Who can edit?</span>
-                {
-                  (post.onchainData?.authors || []).map(author => (
-                    <GreyItem key={author}>
-                      <User add={author} chain={chain} showAvatar={false} fontSize={12}/>
-                    </GreyItem>
-                  ))
-                }
-              </GreyWrapper>
-            )
-          }
-          {post.contentType === "markdown" && <Markdown md={post.content}/>}
-          {post.contentType === "html" && <HtmlRender html={post.content}/>}
+          )}
+          {post.content === "" && (
+            <GreyWrapper>
+              <span style={{ marginRight: 12 }}>Who can edit?</span>
+              {(post.onchainData?.authors || []).map((author) => (
+                <GreyItem key={author}>
+                  <User
+                    add={author}
+                    chain={chain}
+                    showAvatar={false}
+                    fontSize={12}
+                  />
+                </GreyItem>
+              ))}
+            </GreyWrapper>
+          )}
+          {post.contentType === "markdown" && <Markdown md={post.content} />}
+          {post.contentType === "html" && <HtmlRender html={post.content} />}
           {post.createdAt !== post.updatedAt && (
             <EditedLabel>Edited</EditedLabel>
           )}
@@ -324,7 +331,12 @@ export default function DetailItem({data, user, chain, onReply, type}) {
                 .filter((r) => r.user)
                 .map((r, index) => (
                   <GreyItem key={index}>
-                    <User user={r.user} fontSize={12} chain={chain} showAvatar={false}/>
+                    <User
+                      user={r.user}
+                      fontSize={12}
+                      chain={chain}
+                      showAvatar={false}
+                    />
                   </GreyItem>
                 ))}
             </GreyWrapper>
