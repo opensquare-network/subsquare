@@ -117,9 +117,9 @@ export default function MotionDetail({data, chain}) {
         <div>
           <DividerWrapper style={{marginBottom: 12}}>
             {data.motionIndex && <Index>{`#${data.motionIndex}`}</Index>}
-            <span style={{fontSize: 12, color: "#506176"}}>{data.proposal.method}</span>
+            <span style={{fontSize: 12, color: "#506176"}}>{data?.proposal?.method}</span>
           </DividerWrapper>
-          <Title>{`Motion #${data.index}: ${data.proposal.section}.${data.proposal.method}`}</Title>
+          <Title>{`Motion #${data.index}: ${data?.proposal?.section}.${data?.proposal?.method}`}</Title>
           <FlexWrapper>
             <DividerWrapper>
               <User user={data?.author} add={data.proposer} chain={chain}/>
