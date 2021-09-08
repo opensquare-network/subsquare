@@ -12,6 +12,7 @@ const Wrapper = styled.div`
     0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
   padding: 24px;
+
   :hover {
     box-shadow: 0 6px 22px rgba(30, 33, 52, 0.11),
       0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
@@ -23,6 +24,7 @@ const DividerWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+
   > :not(:first-child) {
     ::before {
       content: "·";
@@ -50,6 +52,7 @@ const Title = styled.div`
   cursor: pointer;
   display: inline-block;
   line-height: 140%;
+
   :hover {
     text-decoration: underline;
   }
@@ -73,15 +76,15 @@ const TypeWrapper = styled.div`
   height: 20px;
   line-height: 20px;
   border-radius: 10px;
-  background: linear-gradient(0deg, #FEF4F7, #FEF4F7), #E81F66;
+  background: linear-gradient(0deg, #fef4f7, #fef4f7), #e81f66;
   font-weight: 500;
   font-size: 12px;
   padding: 0 8px;
   ${(p) =>
-          p.color &&
-          css`
-            color: ${p.color};
-          `}
+    p.color &&
+    css`
+      color: ${p.color};
+    `}
 `;
 
 const StatusWrapper = styled.div`
@@ -109,10 +112,15 @@ const getTypeColor = (type) => {
 export default function Post({ data, chain, href }) {
   return (
     <Wrapper>
-      <DividerWrapper>
-        {data.index && <Index>{`#${data.index}`}</Index>}
-        <span style={{fontSize: 12, color: "#506176"}}>{data?.proposal?.method}</span>
-      </DividerWrapper>
+      {data?.index && (
+        <DividerWrapper style={{ marginBottom: 8 }}>
+          {data.index && <Index>{`#${data.index}`}</Index>}
+          <span style={{ fontSize: 12, color: "#506176" }}>
+            {data?.proposal?.method}
+          </span>
+        </DividerWrapper>
+      )}
+
       <Link href={href}>
         <Title>{data.title}</Title>
       </Link>
@@ -127,9 +135,13 @@ export default function Post({ data, chain, href }) {
               </TypeWrapper>
             </div>
           )}
-          {data.time && <Info>{`Updated ${timeDurationFromNow(data.time)}`}</Info>}
+          {data.time && (
+            <Info>{`Updated ${timeDurationFromNow(data.time)}`}</Info>
+          )}
           {data.remaining && <Info>{`${timeDuration(data.remaining)}`}</Info>}
-          {data.commentsCount > -1 && <Info>{`${data.commentsCount} Comments`}</Info>}
+          {data.commentsCount > -1 && (
+            <Info>{`${data.commentsCount} Comments`}</Info>
+          )}
         </DividerWrapper>
         {data.status && <StatusWrapper>{data.status}</StatusWrapper>}
       </FooterWrapper>

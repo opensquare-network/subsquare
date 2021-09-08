@@ -80,7 +80,6 @@ const TypeWrapper = styled.div`
   height: 20px;
   line-height: 20px;
   border-radius: 10px;
-  background: linear-gradient(0deg, #fef4f7, #fef4f7), #e81f66;
   font-weight: 500;
   font-size: 12px;
   padding: 0 8px;
@@ -88,6 +87,7 @@ const TypeWrapper = styled.div`
     p.color &&
     css`
       color: ${p.color};
+      background: ${p.bg};
     `}
 `;
 
@@ -113,6 +113,17 @@ const getTypeColor = (type) => {
   }
 };
 
+const getTypeBgColor = (type) => {
+  switch (type) {
+    case "Democracy":
+      return `linear-gradient(0deg, #FEF4F7, #FEF4F7), #E81F66`;
+    case "Treasury":
+      return `linear-gradient(0deg, #FFF5E5, #FFF5E5), #FF9800`;
+    default:
+      return null;
+  }
+};
+
 export default function Motion({ data, chain }) {
   return (
     <Wrapper>
@@ -133,7 +144,10 @@ export default function Motion({ data, chain }) {
           <User user={data.author} chain={chain} fontSize={12} />
           {data.type && (
             <div>
-              <TypeWrapper color={getTypeColor(data.type)}>
+              <TypeWrapper
+                color={getTypeColor(data.type)}
+                bg={getTypeBgColor(data.type)}
+              >
                 {data.type}
               </TypeWrapper>
             </div>
