@@ -1,12 +1,13 @@
 import styled, { css } from "styled-components";
 import KVList from "components/kvList";
+import Link from "next/link";
+import dayjs from "dayjs";
 
 import User from "components/user";
-import ExternalLink from "../externalLink";
 import InnerDataTable from "../table/innerDataTable";
 import Links from "../timeline/links";
 import Timeline from "../timeline";
-import { timelineData } from "../../utils/data";
+import { getNode, toPrecision } from "utils";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -106,58 +107,132 @@ const FlexWrapper = styled.div`
   justify-content: space-between;
 `
 
-export default function MotionDetail({data, chain}) {
-  if (!data) {
+const Flex = styled.div`
+  display: flex;
+  align-items: center;;
+`
+
+function getMotionType(motion) {
+  return motion.isTreasury ? "Treasury" : "";
+}
+
+function createMotionTimelineData(motion) {
+  return (motion.timeline || []).map(
+    item => {
+      switch(item.method) {
+        case "Proposed": {
+          return {
+            time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+            status: { value: `Motion #${motion.index}`, color: "#6848FF" },
+            voting: {
+              proposer: motion.proposer,
+              method: motion.proposal.method,
+              args: motion.proposal.args,
+              total: 12,
+              votes: [
+                true,
+                true,
+                true,
+                false,
+                false,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+              ],
+            },
+          };
+        }
+        case "Voted": {
+          return {
+            time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+            status: { value: "Vote", color: "#6848FF" },
+            voteResult: {
+              name: item.args.voter,
+              value: item.args.approve,
+            },
+          };
+        }
+      }
+    }
+  )
+}
+
+export default function MotionDetail({motion, chain}) {
+  if (!motion) {
     return null;
   }
+
+  const node = getNode(chain);
+  if (!node) {
+    return null;
+  }
+  const decimals = node.decimals;
+  const symbol = node.symbol;
+
+  const type = getMotionType(motion);
+
+  const treasuryProposalMeta = motion.treasuryProposal?.meta;
+
+  const timelineData = createMotionTimelineData(motion);
 
   return (
     <div>
       <Wrapper>
         <div>
           <DividerWrapper style={{marginBottom: 12}}>
-            {data.motionIndex && <Index>{`#${data.motionIndex}`}</Index>}
-            <span style={{fontSize: 12, color: "#506176"}}>{data?.proposal?.method}</span>
+            <Index>{`#${motion.index}`}</Index>
+            <span style={{fontSize: 12, color: "#506176"}}>{motion.proposal.method}</span>
           </DividerWrapper>
-          <Title>{`Motion #${data.index}: ${data?.proposal?.section}.${data?.proposal?.method}`}</Title>
+          <Title>{`${motion.proposal.section}.${motion.proposal.method}`}</Title>
           <FlexWrapper>
             <DividerWrapper>
-              <User user={data?.author} add={data.proposer} chain={chain}/>
-              {data.type && (
+              <User user={motion?.author} add={motion.proposer} chain={chain}/>
+              {type && (
                 <div>
-                  <TypeWrapper color={getTypeColor(data.type)}>
-                    {data.type}
+                  <TypeWrapper color={getTypeColor(type)}>
+                    {type}
                   </TypeWrapper>
                 </div>
               )}
             </DividerWrapper>
-            {data.status && <StatusWrapper>{data.status}</StatusWrapper>}
+            {motion.status && <StatusWrapper>{motion.status}</StatusWrapper>}
           </FlexWrapper>
         </div>
-
       </Wrapper>
 
-
-      <KVList title={"Business"} data={[
-        ["Link to", <ExternalLink href="/">Treasury Proposal #123</ExternalLink>],
-        ["Beneficiary", "12"],
-        ["Value", "38.66 KSM"],
-        ["Bond", "1.933 KSM"],
-      ]}/>
+      {
+        treasuryProposalMeta && (
+          <KVList title={"Business"} data={[
+            ["Link to", <Link href={`/${chain}/proposal/${motion.treasuryProposalIndex}`}>{`Treasury Proposal #${motion.treasuryProposalIndex}`}</Link>],
+            ["Beneficiary", (
+              <Flex>
+                <User chain={chain} add={treasuryProposalMeta.beneficiary} fontSize={12} />
+                <Links chain={chain} address={treasuryProposalMeta.beneficiary} style={{marginLeft: 8}}/>
+              </Flex>
+            )],
+            ["Value", `${toPrecision(treasuryProposalMeta.value ?? 0, decimals)} ${symbol}`],
+            ["Bond", `${toPrecision(treasuryProposalMeta.bond ?? 0, decimals)} ${symbol}`],
+          ]}/>
+        )
+      }
 
       <KVList title={"Metadata"} data={[
         ["Proposer", <>
-          <User add={`sLB7WSuhgzkn9wkPLCobzf6YjqvJVnnCAZmXtYF4GYcZ6cw`} fontSize={14}/>
-          <Links chain={chain} address={`sLB7WSuhgzkn9wkPLCobzf6YjqvJVnnCAZmXtYF4GYcZ6cw`} style={{marginLeft: 8}}/>
+          <User add={motion.proposer} fontSize={14}/>
+          <Links chain={chain} address={motion.proposer} style={{marginLeft: 8}}/>
         </>],
-        ["Beneficiary", "12"],
-        ["Value", "38.66 KSM"],
-        ["Bond", "1.933 KSM"],
+        ["Index", motion.index],
+        ["Threshold", motion.threshold],
+        ["Hash", motion.hash],
         ["Call", ""],
-        [ <InnerDataTable data={data.author} padding={24}/>],
+        [ <InnerDataTable data={motion.proposal} />],
       ]}/>
 
-      <Timeline data={timelineData}/>
+      <Timeline data={timelineData} chain={chain} />
 
     </div>
 

@@ -120,6 +120,54 @@ export const detailData = {
   status: "Propose Bounty",
 };
 
+export const motionTimelineData = [
+  {
+    time: "2020-12-12 09:43:41",
+    status: { value: "Motion #289", color: "#6848FF" },
+    voting: {
+      proposeCurator: "Kathryn",
+      curator: "Jaco",
+      fee: "22.22 KSM",
+      total: 12,
+      votes: [
+        true,
+        true,
+        true,
+        false,
+        false,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+      ],
+    },
+  },
+  {
+    time: "2020-12-12 09:43:41",
+    status: { value: "Vote", color: "#6848FF" },
+    voteResult: {
+      name: "Huntch",
+      value: true,
+    },
+  },
+  {
+    time: "2020-12-12 09:43:41",
+    status: { value: "Vote", color: "#6848FF" },
+    voteResult: {
+      name: "Kathryn",
+      value: false,
+    },
+  },
+  {
+    time: "2020-12-12 09:43:41",
+    status: { value: "Vote", color: "#6848FF" },
+    data: { Approved: "" },
+  },
+];
+
 export const timelineData = [
   {
     time: "2020-12-12 09:43:41",

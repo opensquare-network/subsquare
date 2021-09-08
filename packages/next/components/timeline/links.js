@@ -54,7 +54,7 @@ export default function Links({
   }
   return (
     <Wrapper style={style}>
-      <PolkascanLink href={`https://polkascan.io/kusama/account/${address}`} target="_blank" rel="noreferrer"/>
+      <PolkascanLink href={`https://polkascan.io/${chain}/account/${address}`} target="_blank" rel="noreferrer"/>
       <SubscanLink href={`https://${chain}.subscan.io/account/${address}`} target="_blank" rel="noreferrer"/>
     </Wrapper>
   );

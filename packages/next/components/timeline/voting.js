@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import Account from "components/account";
+import User from "components/user";
 import Progress from "./progress";
 
 const TitleWrapper = styled.div`
@@ -18,7 +18,7 @@ const TitleWrapper = styled.div`
   }
 `;
 
-const CuratorWrapper = styled.div`
+const ArgsWrapper = styled.div`
   margin: 4px 0;
   background: #f6f7fa;
   padding: 12px 28px;
@@ -34,26 +34,26 @@ const CuratorWrapper = styled.div`
   }
 `;
 
-export default function Voting({ data }) {
+export default function Voting({ data, chain }) {
   return (
     <div>
       <TitleWrapper>
-        <Account name={data.proposeCurator} />
+        <User chain={chain} add={data.proposer} fontSize={12} />
         <div>
-          <div>proposeCurator</div>
+          <div>{data.method}</div>
           <img src="/imgs/icons/approve.svg" />
         </div>
       </TitleWrapper>
-      <CuratorWrapper>
-        <div>
-          <div>Curator</div>
-          <Account name={data.curator} />
-        </div>
-        <div>
-          <div>Fee</div>
-          <div>{data.fee}</div>
-        </div>
-      </CuratorWrapper>
+      <ArgsWrapper>
+        {
+          data.args.map((item, index) => (
+            <div key={index}>
+              <div>{item.name}</div>
+              <div>{item.value}</div>
+            </div>
+          ))
+        }
+      </ArgsWrapper>
       <Progress total={data.total} data={data.votes} />
     </div>
   );
