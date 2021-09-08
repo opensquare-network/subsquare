@@ -44,7 +44,6 @@ const Info = styled.div`
 `;
 
 const Title = styled.div`
-  overflow: hidden;
   max-width: 750px;
   word-break: break-all;
   font-weight: 500;
@@ -127,8 +126,12 @@ export default function Tip({ data, chain }) {
               </TypeWrapper>
             </div>
           )}
-          {data.time && <Info>{`Updated ${timeDurationFromNow(data.time)}`}</Info>}
-          {data.commentsCount > -1 && <Info>{`${data.commentsCount} Comments`}</Info>}
+          {data.time && (
+            <Info>{`Updated ${timeDurationFromNow(data.time)}`}</Info>
+          )}
+          {data.commentsCount > -1 && (
+            <Info>{`${data.commentsCount} Comments`}</Info>
+          )}
         </DividerWrapper>
         {data.status && <StatusWrapper>{data.status}</StatusWrapper>}
       </FooterWrapper>

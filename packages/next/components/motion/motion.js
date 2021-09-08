@@ -19,7 +19,7 @@ const Wrapper = styled.div`
       0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
       0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
   }
-  >div {
+  > div {
     width: 100%;
   }
 `;
@@ -49,7 +49,6 @@ const Info = styled.div`
 `;
 
 const Title = styled.div`
-  overflow: hidden;
   max-width: 750px;
   word-break: break-all;
   font-weight: 500;
@@ -81,14 +80,14 @@ const TypeWrapper = styled.div`
   height: 20px;
   line-height: 20px;
   border-radius: 10px;
-  background: linear-gradient(0deg, #FEF4F7, #FEF4F7), #E81F66;
   font-weight: 500;
   font-size: 12px;
   padding: 0 8px;
   ${(p) =>
-  p.color &&
-  css`
+    p.color &&
+    css`
       color: ${p.color};
+      background: ${p.bg};
     `}
 `;
 
@@ -114,13 +113,26 @@ const getTypeColor = (type) => {
   }
 };
 
+const getTypeBgColor = (type) => {
+  switch (type) {
+    case "Democracy":
+      return `linear-gradient(0deg, #FEF4F7, #FEF4F7), #E81F66`;
+    case "Treasury":
+      return `linear-gradient(0deg, #FFF5E5, #FFF5E5), #FF9800`;
+    default:
+      return null;
+  }
+};
+
 export default function Motion({ data, chain }) {
   return (
     <Wrapper>
       <div>
-        <DividerWrapper style={{marginBottom: 8}}>
+        <DividerWrapper style={{ marginBottom: 8 }}>
           <Index>{`#${data.index}`}</Index>
-          <span style={{fontSize: 12, color: "#506176"}}>{data?.proposal?.method}</span>
+          <span style={{ fontSize: 12, color: "#506176" }}>
+            {data?.proposal?.method}
+          </span>
         </DividerWrapper>
       </div>
       <Link href={`/${chain}/motion/${data.index}`}>
@@ -132,14 +144,21 @@ export default function Motion({ data, chain }) {
           <User user={data.author} chain={chain} fontSize={12} />
           {data.type && (
             <div>
-              <TypeWrapper color={getTypeColor(data.type)}>
+              <TypeWrapper
+                color={getTypeColor(data.type)}
+                bg={getTypeBgColor(data.type)}
+              >
                 {data.type}
               </TypeWrapper>
             </div>
           )}
-          {data.time && <Info>{`Updated ${timeDurationFromNow(data.time)}`}</Info>}
+          {data.time && (
+            <Info>{`Updated ${timeDurationFromNow(data.time)}`}</Info>
+          )}
           {data.remaining && <Info>{`${timeDuration(data.remaining)}`}</Info>}
-          {data.commentsCount > -1 && <Info>{`${data.commentsCount} Comments`}</Info>}
+          {data.commentsCount > -1 && (
+            <Info>{`${data.commentsCount} Comments`}</Info>
+          )}
         </DividerWrapper>
         {data.status && <StatusWrapper>{data.status}</StatusWrapper>}
       </FooterWrapper>
