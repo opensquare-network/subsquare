@@ -7,6 +7,7 @@ import EmptyList from "./emptyList";
 import Motion from "./motion/motion";
 
 const Wrapper = styled.div`
+  max-width: 848px;
   @media screen and (max-width: 600px) {
     margin-left: 16px;
     margin-right: 16px;
@@ -25,13 +26,13 @@ const Title = styled.div`
 `;
 
 export default function List({
-                               chain,
-                               category,
-                               items,
-                               pagination,
-                               type,
-                               create = null,
-                             }) {
+  chain,
+  category,
+  items,
+  pagination,
+  type,
+  create = null,
+}) {
   return (
     <Wrapper>
       <Title>
@@ -42,32 +43,22 @@ export default function List({
         items.map((item, index) => {
           if (category === "Referenda") {
             const href = `/${chain}/referenda/${item.index}`;
-            return <Post
-              key={index}
-              data={item}
-              chain={chain}
-              href={href}
-            />;
+            return <Post key={index} data={item} chain={chain} href={href} />;
           }
           if (category === "On-chain Motions") {
-            return <Motion key={index} data={item} chain={chain}/>;
+            return <Motion key={index} data={item} chain={chain} />;
           }
           if (category === "Tips") {
-            return <Tip key={index} data={item} chain={chain}/>;
+            return <Tip key={index} data={item} chain={chain} />;
           }
           let href = `/${chain}/post/${item.postUid}`;
           if (category === "Proposals") {
             href = `/${chain}/proposal/${item.proposalIndex}`;
           }
-          return <Post
-            key={index}
-            data={item}
-            chain={chain}
-            href={href}
-          />;
+          return <Post key={index} data={item} chain={chain} href={href} />;
         })
       ) : (
-        <EmptyList type={category}/>
+        <EmptyList type={category} />
       )}
       {pagination && <Pagination {...pagination} />}
     </Wrapper>

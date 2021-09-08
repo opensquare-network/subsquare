@@ -122,6 +122,7 @@ function createMotionTimelineData(motion) {
           voting: {
             proposer: motion.proposer,
             method: motion.proposal.method,
+            args: motion.proposal.args,
             total: motion.voting.threshold,
             ayes: motion.voting.ayes.length,
             nays: motion.voting.nays.length,
@@ -181,7 +182,12 @@ export default function MotionDetail({ motion, chain }) {
           <Title>{`${motion.proposal.section}.${motion.proposal.method}`}</Title>
           <FlexWrapper>
             <DividerWrapper>
-              <User user={motion?.author} add={motion.proposer} chain={chain} />
+              <User
+                user={motion?.author}
+                add={motion.proposer}
+                chain={chain}
+                fontSize={12}
+              />
               {type && (
                 <div>
                   <TypeWrapper color={getTypeColor(type)}>{type}</TypeWrapper>
@@ -209,7 +215,7 @@ export default function MotionDetail({ motion, chain }) {
                 <User
                   chain={chain}
                   add={treasuryProposalMeta.beneficiary}
-                  fontSize={12}
+                  fontSize={14}
                 />
                 <Links
                   chain={chain}
@@ -236,16 +242,26 @@ export default function MotionDetail({ motion, chain }) {
         />
       )}
 
-      <KVList title={"Metadata"} data={[
-        ["Proposer", <>
-          <User add={motion.proposer} fontSize={14}/>
-          <Links chain={chain} address={motion.proposer} style={{marginLeft: 8}}/>
-        </>],
-        ["Index", motion.index],
-        ["Threshold", motion.threshold],
-        ["Hash", motion.hash],
-        [<MotionProposal motion={motion} chain={chain} />],
-      ]}/>
+      <KVList
+        title={"Metadata"}
+        data={[
+          [
+            "Proposer",
+            <>
+              <User add={motion.proposer} fontSize={14} />
+              <Links
+                chain={chain}
+                address={motion.proposer}
+                style={{ marginLeft: 8 }}
+              />
+            </>,
+          ],
+          ["Index", motion.index],
+          ["Threshold", motion.threshold],
+          ["Hash", motion.hash],
+          [<MotionProposal motion={motion} chain={chain} />],
+        ]}
+      />
 
       <Timeline data={timelineData} chain={chain} />
     </div>
