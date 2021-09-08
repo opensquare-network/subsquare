@@ -1,10 +1,8 @@
 const {
   insertDemocracyPostByProposal,
+  updateOrCreatePostByReferendumWithProposal,
 } = require("../../../../mongo/service/business/democracy");
 const { getPublicProposalFromStorage } = require("./storage");
-const {
-  insertDemocracyReferendumPost,
-} = require("../../../../mongo/service/business/democracyReferendum");
 const {
   insertDemocracyReferendum,
 } = require("../../../../mongo/service/onchain/democracyReferendum");
@@ -73,7 +71,7 @@ async function saveNewPublicProposal(event, extrinsic, indexer) {
   };
 
   await insertDemocracyPublicProposal(obj);
-  await insertDemocracyPostByProposal(proposalIndex, indexer);
+  await insertDemocracyPostByProposal(proposalIndex);
 }
 
 function extractReferendumIndex(event) {
@@ -182,8 +180,10 @@ async function handleReferendum(blockIndexer, event, sort, allEvents) {
   };
 
   await insertDemocracyReferendum(obj);
-  // FIXME: maybe we need referendum post or we use the same one with the proposal
-  await insertDemocracyReferendumPost(obj);
+  await updateOrCreatePostByReferendumWithProposal(
+    proposalIndex,
+    referendumIndex
+  );
 }
 
 module.exports = {
