@@ -17,6 +17,10 @@ const Modules = Object.freeze({
   TechnicalCommittee: "technicalCommittee",
 });
 
+const SudoMethods = Object.freeze({
+  sudo: "sudo",
+});
+
 const DemocracyMethods = Object.freeze({
   externalPropose: "externalPropose",
   externalProposeMajority: "externalProposeMajority",
@@ -125,4 +129,5 @@ module.exports = {
   DemocracyMethods,
   DemocracyExternalStates,
   TechnicalCommitteeEvents,
+  SudoMethods,
 };

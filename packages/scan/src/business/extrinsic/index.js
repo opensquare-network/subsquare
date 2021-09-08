@@ -1,3 +1,4 @@
+const { handleExternalPropose } = require("./democracy/external");
 const { calcMultisigAddress } = require("../../utils/call");
 const { extractExtrinsicEvents, isExtrinsicSuccess } = require("../../utils");
 const {
@@ -5,12 +6,14 @@ const {
   MultisigMethods,
   ProxyMethods,
   UtilityMethods,
+  SudoMethods,
 } = require("../common/constants");
 const { GenericCall } = require("@polkadot/types");
 const { handleTipCall } = require("../extrinsic/tip");
 
 async function handleCall(registry, call, author, extrinsicIndexer) {
   await handleTipCall(...arguments);
+  await handleExternalPropose(call, author, extrinsicIndexer);
 }
 
 async function unwrapProxy(registry, call, signer, extrinsicIndexer) {
@@ -40,6 +43,11 @@ async function unwrapBatch(registry, call, signer, extrinsicIndexer) {
   }
 }
 
+async function unwrapSudo(registry, call, signer, extrinsicIndexer) {
+  const innerCall = call.args[0];
+  await handleWrappedCall(registry, innerCall, signer, extrinsicIndexer);
+}
+
 async function handleWrappedCall(registry, call, signer, extrinsicIndexer) {
   const { section, method } = call;
 
@@ -52,6 +60,8 @@ async function handleWrappedCall(registry, call, signer, extrinsicIndexer) {
     await handleMultisig(registry, call, signer, extrinsicIndexer);
   } else if (Modules.Utility === section && UtilityMethods.batch === method) {
     await unwrapBatch(registry, call, signer, extrinsicIndexer);
+  } else if (Modules.Sudo === section && SudoMethods.sudo) {
+    await unwrapSudo(registry, call, signer, extrinsicIndexer);
   }
 
   await handleCall(registry, call, signer, extrinsicIndexer);
