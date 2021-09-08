@@ -29,6 +29,7 @@ export default function List({
                                category,
                                items,
                                pagination,
+                               type,
                                create = null,
                              }) {
   return (
@@ -40,7 +41,13 @@ export default function List({
       {items?.length > 0 ? (
         items.map((item, index) => {
           if (category === "Referenda") {
-            return <Motion key={index} data={item} chain={chain}/>;
+            const href = `/${chain}/referenda/${item.index}`;
+            return <Post
+              key={index}
+              data={item}
+              chain={chain}
+              href={href}
+            />;
           }
           if (category === "On-chain Motions") {
             return <Motion key={index} data={item} chain={chain}/>;

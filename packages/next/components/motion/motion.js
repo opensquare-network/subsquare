@@ -5,6 +5,8 @@ import User from "components/user";
 import { timeDurationFromNow, timeDuration } from "utils";
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
   background: #ffffff;
   border: 1px solid #ebeef4;
   box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
@@ -16,6 +18,9 @@ const Wrapper = styled.div`
     box-shadow: 0 6px 22px rgba(30, 33, 52, 0.11),
       0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
       0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
+  }
+  >div {
+    width: 100%;
   }
 `;
 
@@ -113,9 +118,9 @@ export default function Motion({ data, chain }) {
   return (
     <Wrapper>
       <div>
-        <DividerWrapper style={{marginBottom: 12}}>
+        <DividerWrapper style={{marginBottom: 8}}>
           <Index>{`#${data.index}`}</Index>
-          <span style={{fontSize: 12, color: "#506176"}}>{data.proposal.method}</span>
+          <span style={{fontSize: 12, color: "#506176"}}>{data?.proposal?.method}</span>
         </DividerWrapper>
       </div>
       <Link href={`/${chain}/motion/${data.index}`}>

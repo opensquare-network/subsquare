@@ -178,7 +178,6 @@ export default function MotionDetail({motion, chain}) {
   const treasuryProposalMeta = motion.treasuryProposal?.meta;
 
   const timelineData = createMotionTimelineData(motion);
-  console.log(timelineData);
 
   return (
     <div>
@@ -203,7 +202,6 @@ export default function MotionDetail({motion, chain}) {
             {motion.status && <StatusWrapper>{motion.status}</StatusWrapper>}
           </FlexWrapper>
         </div>
-
       </Wrapper>
 
       {

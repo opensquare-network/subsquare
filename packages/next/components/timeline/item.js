@@ -186,7 +186,7 @@ export default function Item({ data, foldable, isFold, setIsFold, chain }) {
             )}
           </VoteResultWrapper>
         )}
-        <Links />
+        <Links chain={chain} />
       </Right>
     </Wrapper>
   );

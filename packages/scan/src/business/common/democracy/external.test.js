@@ -35,6 +35,7 @@ describe("test get karura external", () => {
     const indexer = { blockHash, blockHeight: preHeight };
 
     const external = await getExternalFromStorage(indexer);
+    // Fast tracked by sudo(sudo)
     expect(external).toEqual([
       "0x9e1c6ea3654eba6226ff60b4d2751064f88c46f1022d3f8422cc1ed23dfe8d91",
       "Simplemajority",

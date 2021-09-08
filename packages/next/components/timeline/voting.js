@@ -46,8 +46,8 @@ export default function Voting({ data, chain }) {
       </TitleWrapper>
       <ArgsWrapper>
         {
-          data.args.map(item => (
-            <div>
+          data.args.map((item, index) => (
+            <div key={index}>
               <div>{item.name}</div>
               <div>{item.value}</div>
             </div>

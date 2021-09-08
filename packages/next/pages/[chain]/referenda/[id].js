@@ -33,7 +33,7 @@ export default withLoginUserRedux(({loginUser, detail, comments, chain}) => {
           }}
           user={loginUser}
           chain={chain}
-          type="post"
+          type="referenda"
         />
       </Wrapper>
     </LayoutFixedHeader>
