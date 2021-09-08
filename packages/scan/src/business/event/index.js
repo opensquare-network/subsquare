@@ -1,4 +1,7 @@
 const {
+  handleReferendumEventWithoutExtrinsic,
+} = require("./democracy/referendum");
+const {
   handleReferendumEventWithExtrinsic,
 } = require("./democracy/referendum");
 const {
@@ -51,6 +54,9 @@ async function handleEventWithoutExtrinsic(
     indexer,
     blockEvents
   );
+
+  await handlePublicProposalTabled(event, indexer, blockEvents);
+  await handleReferendumEventWithoutExtrinsic(event, indexer, blockEvents);
 }
 
 async function handleEvents(registry, events, extrinsics, blockIndexer) {
@@ -65,7 +71,6 @@ async function handleEvents(registry, events, extrinsics, blockIndexer) {
         sort,
         events
       );
-      await handlePublicProposalTabled(blockIndexer, event, sort, events);
       continue;
     }
 

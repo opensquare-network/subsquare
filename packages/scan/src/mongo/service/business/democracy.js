@@ -25,7 +25,7 @@ async function updateOrCreatePostByReferendumWithProposal(
   const maybeInDb = await col.findOne({
     proposalIndex: proposalIndex,
   });
-  if (maybeInDb) {
+  if (!maybeInDb) {
     await col.insertOne({
       proposalIndex,
       referendumIndex,
@@ -52,8 +52,20 @@ async function insertDemocracyPostByExternal(externalProposalHash) {
   await col.insertOne({ externalProposalHash });
 }
 
+// Will executed when previous public or external proposal not detected
+async function insertReferendumPostSolo(referendumIndex) {
+  const col = await getBusinessDemocracy();
+  const maybeInDb = await col.findOne({ referendumIndex });
+  if (maybeInDb) {
+    return;
+  }
+
+  await col.insertOne({ referendumIndex });
+}
+
 module.exports = {
   insertDemocracyPostByProposal,
   updateOrCreatePostByReferendumWithProposal,
   insertDemocracyPostByExternal,
+  insertReferendumPostSolo,
 };

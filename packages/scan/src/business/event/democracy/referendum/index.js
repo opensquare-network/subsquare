@@ -1,3 +1,4 @@
+const { handleStarted } = require("./started");
 const { handleExecuted } = require("./executed");
 const { handleNotPassed } = require("./notPassed");
 const { handlePassed } = require("./passed");
@@ -18,7 +19,9 @@ async function handleReferendumEventWithExtrinsic(event, extrinsic, indexer) {
     return;
   }
 
-  if (ReferendumEvents.Cancelled === method) {
+  if (ReferendumEvents.Started === method) {
+    await handleStarted(event, indexer);
+  } else if (ReferendumEvents.Cancelled === method) {
     await handleCancelled(...arguments);
   } else if (ReferendumEvents.Executed === method) {
     // executed can be triggered by either extrinsic or block execution
@@ -36,7 +39,9 @@ async function handleReferendumEventWithoutExtrinsic(
     return;
   }
 
-  if (ReferendumEvents.Passed === method) {
+  if (ReferendumEvents.Started === method) {
+    await handleStarted(...arguments);
+  } else if (ReferendumEvents.Passed === method) {
     await handlePassed(...arguments);
   } else if (ReferendumEvents.NotPassed === method) {
     await handleNotPassed(...arguments);
