@@ -26,9 +26,9 @@ async function handleDisApproved(registry, event, extrinsic, indexer) {
     indexer,
   };
 
+  await handleBusinessWhenMotionDisApproved(hash, indexer);
   const updates = { state, isFinal: true };
   await updateMotionByHash(hash, updates, timelineItem);
-  await handleBusinessWhenMotionDisApproved(hash, indexer);
 }
 
 module.exports = {
