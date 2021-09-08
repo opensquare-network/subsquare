@@ -187,11 +187,7 @@ export default function Item({ data, foldable, isFold, setIsFold, chain }) {
             )}
           </VoteResultWrapper>
         )}
-        {
-          (data.voting?.proposer || data.voteResult?.name) && (
-            <Links chain={chain} address={data.voting?.proposer || data.voteResult?.name} />
-          )
-        }
+        <Links chain={chain} indexer={data.indexer} />
       </Right>
     </Wrapper>
   );
