@@ -1,7 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { toUserPublicInfo } = require("../utils/user");
-const { getMotionCollection } = require("../mongo/chain");
-const { getDb: getBusinessDb, getTreasuryProposalCollection } = require("../mongo/business");
+const { getDb: getChainDb, getMotionCollection, getTreasuryProposalCollection } = require("../mongo/chain");
 const { getDb: getCommonDb, getUserCollection } = require("../mongo/common");
 
 async function getMotionsByChain(chain, page, pageSize) {
@@ -20,7 +19,7 @@ async function getMotionsByChain(chain, page, pageSize) {
     .toArray();
 
     const commonDb = await getCommonDb(chain);
-    const businessDb = await getBusinessDb(chain);
+    const chainDb = await getChainDb(chain);
     await Promise.all([
       commonDb.lookupOne({
         from: "user",
@@ -30,7 +29,7 @@ async function getMotionsByChain(chain, page, pageSize) {
         foreignField: `${chain}Address`,
         map: toUserPublicInfo,
       }),
-      businessDb.lookupOne({
+      chainDb.lookupOne({
         from: "treasuryProposal",
         for: motions,
         as: "treasuryProposal",

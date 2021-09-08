@@ -1,8 +1,8 @@
 import styled, { css } from "styled-components";
 import KVList from "components/kvList";
+import Link from "next/link";
 
 import User from "components/user";
-import ExternalLink from "../externalLink";
 import InnerDataTable from "../table/innerDataTable";
 import Links from "../timeline/links";
 import Timeline from "../timeline";
@@ -106,27 +106,38 @@ const FlexWrapper = styled.div`
   justify-content: space-between;
 `
 
+const Flex = styled.div`
+  display: flex;
+  align-items: center;;
+`
+
+function getMotionType(motion) {
+  return motion.isTreasury ? "Treasury" : "";
+}
+
 export default function MotionDetail({data, chain}) {
   if (!data) {
     return null;
   }
+
+  const type = getMotionType(data);
 
   return (
     <div>
       <Wrapper>
         <div>
           <DividerWrapper style={{marginBottom: 12}}>
-            {data.motionIndex && <Index>{`#${data.motionIndex}`}</Index>}
+            <Index>{`#${data.index}`}</Index>
             <span style={{fontSize: 12, color: "#506176"}}>{data.proposal.method}</span>
           </DividerWrapper>
-          <Title>{`Motion #${data.index}: ${data.proposal.section}.${data.proposal.method}`}</Title>
+          <Title>{`${data.proposal.section}.${data.proposal.method}`}</Title>
           <FlexWrapper>
             <DividerWrapper>
               <User user={data?.author} add={data.proposer} chain={chain}/>
-              {data.type && (
+              {type && (
                 <div>
-                  <TypeWrapper color={getTypeColor(data.type)}>
-                    {data.type}
+                  <TypeWrapper color={getTypeColor(type)}>
+                    {type}
                   </TypeWrapper>
                 </div>
               )}
@@ -137,14 +148,21 @@ export default function MotionDetail({data, chain}) {
 
       </Wrapper>
 
-
-      <KVList title={"Business"} data={[
-        ["Link to", <ExternalLink href="/">Treasury Proposal #123</ExternalLink>],
-        ["Beneficiary", "12"],
-        ["Value", "38.66 KSM"],
-        ["Bond", "1.933 KSM"],
-      ]}/>
-
+      {
+        data.treasuryProposal && (
+          <KVList title={"Business"} data={[
+            ["Link to", <Link href={`/${chain}/proposal/${data.treasuryProposalIndex}`}>{`Treasury Proposal #${data.treasuryProposalIndex}`}</Link>],
+            ["Beneficiary", (
+              <Flex>
+                <User chain={chain} add={data.treasuryProposal.meta.beneficiary} fontSize={12} />
+                <Links chain={chain} address={data.treasuryProposal.meta.beneficiary} style={{marginLeft: 8}}/>
+              </Flex>
+            )],
+            ["Value", "38.66 KSM"],
+            ["Bond", "1.933 KSM"],
+          ]}/>
+        )
+      }
       <KVList title={"Metadata"} data={[
         ["Proposer", <>
           <User add={`sLB7WSuhgzkn9wkPLCobzf6YjqvJVnnCAZmXtYF4GYcZ6cw`} fontSize={14}/>
