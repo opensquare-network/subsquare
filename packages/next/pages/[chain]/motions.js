@@ -23,11 +23,15 @@ const Create = styled.a`
   cursor: pointer;
 `;
 
+function getMotionType(motion) {
+  return motion.isTreasury ? "Treasury" : "";
+}
+
 export default withLoginUserRedux(({loginUser, motions, chain}) => {
   const items = (motions.items || []).map((motion) => ({
     time: motion.indexer.blockTime,
     title: `Motion #${motion.index}: ${motion.proposal.section}.${motion.proposal.method}`,
-    type: "Democracy",
+    type: getMotionType(motion),
     author: motion.author ?? {
       username: addressEllipsis(motion.proposer),
       addresses: [{ chain, address: motion.proposer }],
