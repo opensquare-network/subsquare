@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { useState } from "react";
 
-import { timeDuration } from "utils";
+import { timeDurationFromNow } from "utils";
 import Markdown from "components/markdown";
 import HtmlRender from "./post/htmlRender";
 import Actions from "components/actions";
@@ -270,7 +270,7 @@ export default function DetailItem({data, user, chain, onReply, type}) {
               </div>
             )}
             {post.createdAt && (
-              <Info>Created {timeDuration(post.createdAt)}</Info>
+              <Info>Created {timeDurationFromNow(post.createdAt)}</Info>
             )}
             {post.commentsCount > -1 && <Info>{`${post.commentsCount} Comments`}</Info>}
             {post.status && <StatusWrapper>{post.status}</StatusWrapper>}

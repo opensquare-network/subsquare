@@ -85,21 +85,6 @@ export const mainMenu = [
       },
     ],
   },
-  // {
-  //   name: "DEMOCRACY",
-  //   items: [
-      // {
-      //   value: "external",
-      //   name: "Externals",
-      //   icon: "type-proposals.svg",
-      // },
-      // {
-      //   value: "referenda",
-      //   name: "Referenda",
-      //   icon: "type-referenda.svg",
-      // },
-    // ],
-  // },
   {
     name: "TREASURY",
     items: [
@@ -130,6 +115,22 @@ export const mainMenu = [
         name: "Motions",
         icon: "type-motions.svg",
         pathname: "/[chain]/motions",
+      },
+    ],
+  },
+  {
+    name: "DEMOCRACY",
+    items: [
+      // {
+      //   value: "external",
+      //   name: "Externals",
+      //   icon: "type-proposals.svg",
+      // },
+      {
+        value: "referenda",
+        name: "Referenda",
+        icon: "type-referenda.svg",
+        pathname: "/[chain]/referendas",
       },
     ],
   },

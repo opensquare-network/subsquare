@@ -5,6 +5,7 @@ import DiscussionIcon from "../public/imgs/icons/discussions.svg";
 import TipIcon from "../public/imgs/icons/tips.svg";
 import ProposalIcon from "../public/imgs/icons/proposals.svg";
 import MotionIcon from "../public/imgs/icons/type-motions.svg";
+import ReferendaIcon from "../public/imgs/icons/type-referenda.svg";
 
 const Wrapper = styled.div`
   padding-top: 37px;
@@ -36,12 +37,12 @@ const Item = styled.div`
     color: #6848ff;
 
     > svg {
-      *{
+      * {
         fill: #6848FF;
       }
     }
   }
-  
+
 
   > div {
     flex: 1 1 auto;
@@ -59,7 +60,7 @@ const Item = styled.div`
             color: #6848ff;
 
             > svg {
-              *{
+              * {
                 fill: #6848FF;
               }
             }
@@ -75,6 +76,7 @@ export default function Menu({menu}) {
     ['Tips', <TipIcon/>],
     ['Proposals', <ProposalIcon/>],
     ['Motions', <MotionIcon/>],
+    ['Referenda', <ReferendaIcon/>],
   ]);
 
   return (

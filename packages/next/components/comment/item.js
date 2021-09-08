@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 
-import { timeDuration } from "utils";
+import { timeDurationFromNow } from "utils";
 import Markdown from "components/markdown";
 import Edit from "components/edit";
 import HtmlRender from "../post/htmlRender";
@@ -237,7 +237,7 @@ export default function Item({ user, data, chain, onReply }) {
     <Wrapper id={comment.height} highlight={highlight}>
       <InfoWrapper>
         <User user={comment.author} chain={chain} />
-        <div>{timeDuration(comment.createdAt)}</div>
+        <div>{timeDurationFromNow(comment.createdAt)}</div>
       </InfoWrapper>
       {!isEdit && (
         <>

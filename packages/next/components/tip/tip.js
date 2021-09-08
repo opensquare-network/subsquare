@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import Link from "next/link";
 
 import User from "components/user";
-import { timeDuration } from "utils";
+import { timeDurationFromNow } from "utils";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -127,7 +127,7 @@ export default function Tip({ data, chain }) {
               </TypeWrapper>
             </div>
           )}
-          {data.time && <Info>{`Updated ${timeDuration(data.time)}`}</Info>}
+          {data.time && <Info>{`Updated ${timeDurationFromNow(data.time)}`}</Info>}
           {data.commentsCount > -1 && <Info>{`${data.commentsCount} Comments`}</Info>}
         </DividerWrapper>
         {data.status && <StatusWrapper>{data.status}</StatusWrapper>}
