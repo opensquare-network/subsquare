@@ -16,14 +16,14 @@ const Wrapper = styled.div`
 `;
 
 
-export default withLoginUserRedux(({loginUser, detail, chain}) => {
+export default withLoginUserRedux(({loginUser, motion, chain}) => {
 
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">
         <Back href={`/${chain}/motions`} text="Back to Motions"/>
         <MotionDetail
-          data={detail}
+          motion={motion}
           user={loginUser}
           chain={chain}
           type="motion"
@@ -36,13 +36,13 @@ export default withLoginUserRedux(({loginUser, detail, chain}) => {
 export const getServerSideProps = withLoginUser(async (context) => {
   const {chain, id } = context.query;
 
-  const [{result: detail}] = await Promise.all([
+  const [{result: motion}] = await Promise.all([
     nextApi.fetch(`${chain}/motions/${id}`),
   ]);
 
   return {
     props: {
-      detail: detail ?? null,
+      motion: motion ?? null,
       chain,
     },
   };

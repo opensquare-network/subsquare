@@ -7,6 +7,7 @@ import InnerDataTable from "../table/innerDataTable";
 import Links from "../timeline/links";
 import Timeline from "../timeline";
 import { timelineData } from "../../utils/data";
+import { getNode, toPrecision } from "utils";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -115,25 +116,34 @@ function getMotionType(motion) {
   return motion.isTreasury ? "Treasury" : "";
 }
 
-export default function MotionDetail({data, chain}) {
-  if (!data) {
+export default function MotionDetail({motion, chain}) {
+  if (!motion) {
     return null;
   }
 
-  const type = getMotionType(data);
+  const node = getNode(chain);
+  if (!node) {
+    return null;
+  }
+  const decimals = node.decimals;
+  const symbol = node.symbol;
+
+  const type = getMotionType(motion);
+
+  const treasuryProposalMeta = motion.treasuryProposal?.meta;
 
   return (
     <div>
       <Wrapper>
         <div>
           <DividerWrapper style={{marginBottom: 12}}>
-            <Index>{`#${data.index}`}</Index>
-            <span style={{fontSize: 12, color: "#506176"}}>{data.proposal.method}</span>
+            <Index>{`#${motion.index}`}</Index>
+            <span style={{fontSize: 12, color: "#506176"}}>{motion.proposal.method}</span>
           </DividerWrapper>
-          <Title>{`${data.proposal.section}.${data.proposal.method}`}</Title>
+          <Title>{`${motion.proposal.section}.${motion.proposal.method}`}</Title>
           <FlexWrapper>
             <DividerWrapper>
-              <User user={data?.author} add={data.proposer} chain={chain}/>
+              <User user={motion?.author} add={motion.proposer} chain={chain}/>
               {type && (
                 <div>
                   <TypeWrapper color={getTypeColor(type)}>
@@ -142,37 +152,38 @@ export default function MotionDetail({data, chain}) {
                 </div>
               )}
             </DividerWrapper>
-            {data.status && <StatusWrapper>{data.status}</StatusWrapper>}
+            {motion.status && <StatusWrapper>{motion.status}</StatusWrapper>}
           </FlexWrapper>
         </div>
 
       </Wrapper>
 
       {
-        data.treasuryProposal && (
+        treasuryProposalMeta && (
           <KVList title={"Business"} data={[
-            ["Link to", <Link href={`/${chain}/proposal/${data.treasuryProposalIndex}`}>{`Treasury Proposal #${data.treasuryProposalIndex}`}</Link>],
+            ["Link to", <Link href={`/${chain}/proposal/${motion.treasuryProposalIndex}`}>{`Treasury Proposal #${motion.treasuryProposalIndex}`}</Link>],
             ["Beneficiary", (
               <Flex>
-                <User chain={chain} add={data.treasuryProposal.meta.beneficiary} fontSize={12} />
-                <Links chain={chain} address={data.treasuryProposal.meta.beneficiary} style={{marginLeft: 8}}/>
+                <User chain={chain} add={treasuryProposalMeta.beneficiary} fontSize={12} />
+                <Links chain={chain} address={treasuryProposalMeta.beneficiary} style={{marginLeft: 8}}/>
               </Flex>
             )],
-            ["Value", "38.66 KSM"],
-            ["Bond", "1.933 KSM"],
+            ["Value", `${toPrecision(treasuryProposalMeta.value ?? 0, decimals)} ${symbol}`],
+            ["Bond", `${toPrecision(treasuryProposalMeta.bond ?? 0, decimals)} ${symbol}`],
           ]}/>
         )
       }
+
       <KVList title={"Metadata"} data={[
         ["Proposer", <>
-          <User add={`sLB7WSuhgzkn9wkPLCobzf6YjqvJVnnCAZmXtYF4GYcZ6cw`} fontSize={14}/>
-          <Links chain={chain} address={`sLB7WSuhgzkn9wkPLCobzf6YjqvJVnnCAZmXtYF4GYcZ6cw`} style={{marginLeft: 8}}/>
+          <User add={motion.proposer} fontSize={14}/>
+          <Links chain={chain} address={motion.proposer} style={{marginLeft: 8}}/>
         </>],
-        ["Beneficiary", "12"],
-        ["Value", "38.66 KSM"],
-        ["Bond", "1.933 KSM"],
+        ["Index", motion.index],
+        ["Threshold", motion.threshold],
+        ["Hash", motion.hash],
         ["Call", ""],
-        [ <InnerDataTable data={data.author} padding={24}/>],
+        [ <InnerDataTable data={motion.proposal} />],
       ]}/>
 
       <Timeline data={timelineData}/>

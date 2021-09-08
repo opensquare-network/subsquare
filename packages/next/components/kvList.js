@@ -62,8 +62,8 @@ function KVList({data, title, chain}) {
     <Wrapper>
       <Title>{title}</Title>
       {
-        data.map(row => (
-          <Row>
+        data.map((row, index) => (
+          <Row key={index}>
             {
               row.length === 1 && row[0]
             }
