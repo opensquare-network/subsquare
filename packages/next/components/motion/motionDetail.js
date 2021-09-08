@@ -128,21 +128,9 @@ function createMotionTimelineData(motion) {
               proposer: motion.proposer,
               method: motion.proposal.method,
               args: motion.proposal.args,
-              total: 12,
-              votes: [
-                true,
-                true,
-                true,
-                false,
-                false,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-              ],
+              total: motion.voting.threshold,
+              ayes: motion.voting.ayes.length,
+              nays: motion.voting.nays.length,
             },
           };
         }
@@ -154,6 +142,12 @@ function createMotionTimelineData(motion) {
               name: item.args.voter,
               value: item.args.approve,
             },
+          };
+        }
+        default: {
+          return {
+            time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+            status: { value: item.method, color: "#6848FF" },
           };
         }
       }

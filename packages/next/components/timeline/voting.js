@@ -54,7 +54,7 @@ export default function Voting({ data, chain }) {
           ))
         }
       </ArgsWrapper>
-      <Progress total={data.total} data={data.votes} />
+      <Progress total={data.total} ayes={data.ayes} nays={data.nays} />
     </div>
   );
 }

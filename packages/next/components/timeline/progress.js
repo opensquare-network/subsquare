@@ -44,18 +44,11 @@ const DetailWrapper = styled.div`
   }
 `;
 
-export default function Progress({ total, data }) {
-  const [ayes, nays] = data.reduce(
-    (pre, cur) => {
-      if (cur === true) {
-        pre[0]++;
-      } else if (cur === false) {
-        pre[1]++;
-      }
-      return pre;
-    },
-    [0, 0]
-  );
+export default function Progress({ total, ayes, nays }) {
+  const data = [];
+  for (let i = 0; i < ayes; i++) data.push(true);
+  for (let j = 0; j < nays; j++) data.push(false);
+  for (let k = data.length; k < total; k++) data.push(undefined);
 
   return (
     <Wrapper>
