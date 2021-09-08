@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import Link from "next/link";
 
 import User from "components/user";
-import { timeDuration } from "utils";
+import { timeDurationFromNow, timeDuration } from "utils";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -112,6 +112,12 @@ const getTypeColor = (type) => {
 export default function Motion({ data, chain }) {
   return (
     <Wrapper>
+      <div>
+        <DividerWrapper style={{marginBottom: 12}}>
+          {data.index && <Index>{`#${data.index}`}</Index>}
+          <span style={{fontSize: 12, color: "#506176"}}>setCode</span>
+        </DividerWrapper>
+      </div>
       <Link href={`/${chain}/motion/${data.motionIndex}`}>
         <Title>{data.title}</Title>
       </Link>
@@ -126,7 +132,9 @@ export default function Motion({ data, chain }) {
               </TypeWrapper>
             </div>
           )}
-          {data.time && <Info>{`Updated ${timeDuration(data.time)}`}</Info>}
+          {data.time && <Info>{`Updated ${timeDurationFromNow(data.time)}`}</Info>}
+          {data.remaining && <Info>{`${timeDuration(data.remaining)}`}</Info>}
+          {data.commentsCount > -1 && <Info>{`${data.commentsCount} Comments`}</Info>}
         </DividerWrapper>
         {data.status && <StatusWrapper>{data.status}</StatusWrapper>}
       </FooterWrapper>

@@ -51,7 +51,7 @@ function createService(postType) {
     );
 
     if (!result.result.ok) {
-      throw new HttpError(500, "Failed to create post");getComments
+      throw new HttpError(500, "Failed to create post");
     }
 
     return postUid;

@@ -9,7 +9,20 @@ export function addressEllipsis(address, start = 4, end = 4) {
   return `${address.slice(0, start)}...${address.slice(-end)}`;
 }
 
-export function timeDuration(time) {
+export function timeDuration(seconds) {
+  if (!seconds) {
+    return "Unknown time";
+  }
+  // return moment.duration(seconds * 1000);
+  let duration = moment.duration(seconds, "seconds");
+  return duration.toString()
+    .replace("PT", "")
+    .replace("H", "h ")
+    .replace("M", "m ")
+    .replace("S", "s ") + "remaining";
+}
+
+export function timeDurationFromNow(time) {
   if (!time) {
     return "Unknown time";
   }

@@ -39,6 +39,9 @@ export default function List({
       </Title>
       {items?.length > 0 ? (
         items.map((item, index) => {
+          if (category === "Referenda") {
+            return <Motion key={index} data={item} chain={chain}/>;
+          }
           if (category === "On-chain Motions") {
             return <Motion key={index} data={item} chain={chain}/>;
           }
