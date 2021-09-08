@@ -1,3 +1,6 @@
+const {
+  insertDemocracyPostByProposal,
+} = require("../../../../mongo/service/business/democracy");
 const { getPublicProposalFromStorage } = require("./storage");
 const {
   insertDemocracyReferendumPost,
@@ -70,6 +73,7 @@ async function saveNewPublicProposal(event, extrinsic, indexer) {
   };
 
   await insertDemocracyPublicProposal(obj);
+  await insertDemocracyPostByProposal(proposalIndex, indexer);
 }
 
 function extractReferendumIndex(event) {
