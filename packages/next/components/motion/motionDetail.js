@@ -4,7 +4,7 @@ import Link from "next/link";
 import dayjs from "dayjs";
 
 import User from "components/user";
-import InnerDataTable from "../table/innerDataTable";
+import MotionProposal from "./motionProposal";
 import Links from "../timeline/links";
 import Timeline from "../timeline";
 import { getNode, toPrecision } from "utils";
@@ -222,8 +222,7 @@ export default function MotionDetail({motion, chain}) {
         ["Index", motion.index],
         ["Threshold", motion.threshold],
         ["Hash", motion.hash],
-        ["Call", ""],
-        [ <InnerDataTable data={motion.proposal} />],
+        [<MotionProposal motion={motion} chain={chain} />],
       ]}/>
 
       <Timeline data={timelineData} chain={chain} />
