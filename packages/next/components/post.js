@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import Link from "next/link";
 
 import User from "components/user";
-import { timeDurationFromNow } from "utils";
+import { timeDuration, timeDurationFromNow } from "utils";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -73,16 +73,15 @@ const TypeWrapper = styled.div`
   height: 20px;
   line-height: 20px;
   border-radius: 10px;
-  background: #1e2134;
-  color: #ffffff;
+  background: linear-gradient(0deg, #FEF4F7, #FEF4F7), #E81F66;
   font-weight: 500;
   font-size: 12px;
   padding: 0 8px;
   ${(p) =>
-    p.color &&
-    css`
-      background: ${p.color};
-    `}
+          p.color &&
+          css`
+            color: ${p.color};
+          `}
 `;
 
 const StatusWrapper = styled.div`
@@ -98,7 +97,7 @@ const StatusWrapper = styled.div`
 
 const getTypeColor = (type) => {
   switch (type) {
-    case "Council":
+    case "Democracy":
       return "#E81F66";
     case "Treasury":
       return "#FF9800";
@@ -110,10 +109,13 @@ const getTypeColor = (type) => {
 export default function Post({ data, chain, href }) {
   return (
     <Wrapper>
+      <DividerWrapper>
+        {data.index && <Index>{`#${data.index}`}</Index>}
+        <span style={{fontSize: 12, color: "#506176"}}>{data?.proposal?.method}</span>
+      </DividerWrapper>
       <Link href={href}>
         <Title>{data.title}</Title>
       </Link>
-        {data.index && <Index>{`#${data.index}`}</Index>}
       <Divider />
       <FooterWrapper>
         <DividerWrapper>
@@ -126,6 +128,7 @@ export default function Post({ data, chain, href }) {
             </div>
           )}
           {data.time && <Info>{`Updated ${timeDurationFromNow(data.time)}`}</Info>}
+          {data.remaining && <Info>{`${timeDuration(data.remaining)}`}</Info>}
           {data.commentsCount > -1 && <Info>{`${data.commentsCount} Comments`}</Info>}
         </DividerWrapper>
         {data.status && <StatusWrapper>{data.status}</StatusWrapper>}
