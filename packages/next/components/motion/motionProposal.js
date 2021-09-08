@@ -20,7 +20,7 @@ const ArgsWrapper = styled.div`
   line-height: 20px;
   word-wrap: break-word;
   white-space: pre-wrap;
-  overflow-x: scroll;
+  overflow-x: auto;
 `;
 
 const Wrapper = styled.div`
