@@ -1,12 +1,12 @@
 import styled, { css } from "styled-components";
 import KVList from "components/kvList";
 import Link from "next/link";
+import dayjs from "dayjs";
 
 import User from "components/user";
 import InnerDataTable from "../table/innerDataTable";
 import Links from "../timeline/links";
 import Timeline from "../timeline";
-import { timelineData } from "../../utils/data";
 import { getNode, toPrecision } from "utils";
 
 const Wrapper = styled.div`
@@ -116,6 +116,51 @@ function getMotionType(motion) {
   return motion.isTreasury ? "Treasury" : "";
 }
 
+function createMotionTimelineData(motion) {
+  return (motion.timeline || []).map(
+    item => {
+      switch(item.method) {
+        case "Proposed": {
+          return {
+            time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+            status: { value: `Motion #${motion.index}`, color: "#6848FF" },
+            voting: {
+              proposer: motion.proposer,
+              method: motion.proposal.method,
+              args: motion.proposal.args,
+              total: 12,
+              votes: [
+                true,
+                true,
+                true,
+                false,
+                false,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+              ],
+            },
+          };
+        }
+        case "Voted": {
+          return {
+            time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+            status: { value: "Vote", color: "#6848FF" },
+            voteResult: {
+              name: item.args.voter,
+              value: item.args.approve,
+            },
+          };
+        }
+      }
+    }
+  )
+}
+
 export default function MotionDetail({motion, chain}) {
   if (!motion) {
     return null;
@@ -131,6 +176,9 @@ export default function MotionDetail({motion, chain}) {
   const type = getMotionType(motion);
 
   const treasuryProposalMeta = motion.treasuryProposal?.meta;
+
+  const timelineData = createMotionTimelineData(motion);
+  console.log(timelineData);
 
   return (
     <div>
@@ -186,7 +234,7 @@ export default function MotionDetail({motion, chain}) {
         [ <InnerDataTable data={motion.proposal} />],
       ]}/>
 
-      <Timeline data={timelineData}/>
+      <Timeline data={timelineData} chain={chain} />
 
     </div>
 

@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import Links from "./links";
 import Voting from "./voting";
 import Account from "components/account";
+import User from "components/user";
 
 const Wrapper = styled.div`
   display: flex;
@@ -136,7 +137,7 @@ const VoteResultWrapper = styled.div`
   }
 `;
 
-export default function Item({ data, foldable, isFold, setIsFold }) {
+export default function Item({ data, foldable, isFold, setIsFold, chain }) {
   return (
     <Wrapper foldable={foldable} isFold={isFold}>
       <Left>
@@ -168,10 +169,10 @@ export default function Item({ data, foldable, isFold, setIsFold }) {
               </ContentItem>
             ))}
         </ContentWrapper>
-        {data.voting && <Voting data={data.voting} />}
+        {data.voting && <Voting data={data.voting} chain={chain} />}
         {data.voteResult && (
           <VoteResultWrapper>
-            <Account name={data.voteResult.name} />
+            <User chain={chain} add={data.voteResult.name} fontSize={12} />
             {data.voteResult.value ? (
               <div>
                 Aye

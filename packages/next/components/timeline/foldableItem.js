@@ -52,7 +52,7 @@ const Right = styled.div`
   flex-grow: 1;
 `;
 
-export default function FoldableItem({ data }) {
+export default function FoldableItem({ data, chain }) {
   const [isFold, setIsFold] = useState(true);
 
   return (
@@ -70,6 +70,7 @@ export default function FoldableItem({ data }) {
             foldable
             isFold={isFold}
             setIsFold={setIsFold}
+            chain={chain}
           />
         ))}
       </Right>
