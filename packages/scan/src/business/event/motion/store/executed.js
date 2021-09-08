@@ -27,7 +27,7 @@ async function handleExecuted(registry, event, extrinsic, indexer) {
     indexer,
   };
 
-  const updates = { state };
+  const updates = { state, isFinal: true };
   await updateMotionByHash(hash, updates, timelineItem);
   await handleBusinessWhenMotionExecuted(hash, indexer);
 }
