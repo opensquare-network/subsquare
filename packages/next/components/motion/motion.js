@@ -114,7 +114,7 @@ export default function Motion({ data, chain }) {
     <Wrapper>
       <div>
         <DividerWrapper style={{marginBottom: 12}}>
-          {data.index && <Index>{`#${data.index}`}</Index>}
+          <Index>{`#${data.index}`}</Index>
           <span style={{fontSize: 12, color: "#506176"}}>{data.proposal.method}</span>
         </DividerWrapper>
       </div>
