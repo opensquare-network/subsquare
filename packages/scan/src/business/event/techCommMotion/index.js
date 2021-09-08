@@ -1,3 +1,4 @@
+const { handleProposed } = require("./service/proposed");
 const { Modules, TechnicalCommitteeEvents } = require("../../common/constants");
 
 function isTechCommModule(section) {
@@ -10,6 +11,9 @@ async function handleTechCommMotionEvent(event, extrinsic, indexer) {
     return;
   }
 
+  if (TechnicalCommitteeEvents.Proposed === method) {
+    await handleProposed(...arguments);
+  }
   // TODO: handle related business
 }
 
