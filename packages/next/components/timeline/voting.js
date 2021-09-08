@@ -18,22 +18,6 @@ const TitleWrapper = styled.div`
   }
 `;
 
-const ArgsWrapper = styled.div`
-  margin: 4px 0;
-  background: #f6f7fa;
-  padding: 12px 28px;
-  > div {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 28px;
-    > :first-child {
-      color: #506176;
-      min-width: 120px;
-    }
-  }
-`;
-
 export default function Voting({ data, chain }) {
   return (
     <div>
@@ -44,20 +28,6 @@ export default function Voting({ data, chain }) {
           <img src="/imgs/icons/approve.svg" />
         </div>
       </TitleWrapper>
-      <ArgsWrapper>
-        {
-          data.args.map((item, index) => (
-            <div key={index}>
-              <div>{item.name}</div>
-              <div>{
-                item.type === "AccountId" ? (
-                  <User chain={chain} add={item.value} fontSize={12} />
-                ) : item.value.toString()
-              }</div>
-            </div>
-          ))
-        }
-      </ArgsWrapper>
       <Progress total={data.total} ayes={data.ayes} nays={data.nays} />
     </div>
   );

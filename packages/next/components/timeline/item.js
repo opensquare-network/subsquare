@@ -126,6 +126,7 @@ const VoteResultWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 8px;
   > :last-child {
     display: flex;
     align-items: center;
@@ -186,7 +187,11 @@ export default function Item({ data, foldable, isFold, setIsFold, chain }) {
             )}
           </VoteResultWrapper>
         )}
-        <Links chain={chain} />
+        {
+          (data.voting?.proposer || data.voteResult?.name) && (
+            <Links chain={chain} address={data.voting?.proposer || data.voteResult?.name} />
+          )
+        }
       </Right>
     </Wrapper>
   );

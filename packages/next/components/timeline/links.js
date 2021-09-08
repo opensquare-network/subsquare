@@ -45,7 +45,7 @@ export default function Links({
                                 address = '',
                                 style = {},
                               }) {
-  if(chain === "karura"){
+  if (chain === "karura") {
     return (
       <Wrapper style={style}>
         <SubscanLink href={`https://${chain}.subscan.io/account/${address}`} target="_blank" rel="noreferrer"/>

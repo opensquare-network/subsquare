@@ -121,7 +121,6 @@ function createMotionTimelineData(motion) {
           voting: {
             proposer: motion.proposer,
             method: motion.proposal.method,
-            args: motion.proposal.args,
             total: motion.voting.threshold,
             ayes: motion.voting.ayes.length,
             nays: motion.voting.nays.length,
