@@ -18,6 +18,24 @@ async function insertMotion(motion) {
   await motionCol.insertOne(motion);
 }
 
+async function updateMotionByHash(hash, updates, timelineItem) {
+  const col = await getTechCommMotionCollection();
+
+  let update = {
+    $set: updates,
+  };
+
+  if (timelineItem) {
+    update = {
+      ...update,
+      $push: { timeline: timelineItem },
+    };
+  }
+
+  await col.updateOne({ hash: hash, isFinal: false }, update);
+}
+
 module.exports = {
   insertTechCommMotion: insertMotion,
+  updateTechCommMotionByHash: updateMotionByHash,
 };
