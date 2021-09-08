@@ -3,6 +3,7 @@ import { Fragment } from "react";
 
 import Item from "./item";
 import FoldableItem from "./foldableItem";
+import { timeDurationFromNow } from "utils";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -39,7 +40,7 @@ export default function Timeline({ data, chain }) {
     <Wrapper>
       <TitleWrapper>
         <div>Timeline</div>
-        <div>Last active 8 days ago</div>
+        <div>{`Last active ${timeDurationFromNow(data[data.length - 1].indexer.blockTime)}`}</div>
       </TitleWrapper>
       {data.map((item, index) => (
         <Fragment key={index}>
