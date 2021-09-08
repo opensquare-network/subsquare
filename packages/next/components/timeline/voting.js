@@ -49,7 +49,11 @@ export default function Voting({ data, chain }) {
           data.args.map((item, index) => (
             <div key={index}>
               <div>{item.name}</div>
-              <div>{item.value}</div>
+              <div>{
+                item.type === "AccountId" ? (
+                  <User chain={chain} add={item.value} fontSize={12} />
+                ) : item.value.toString()
+              }</div>
             </div>
           ))
         }
