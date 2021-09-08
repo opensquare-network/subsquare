@@ -1,3 +1,4 @@
+const { getReferendumInfoFromStorage } = require("../common/referendumStorage");
 const {
   insertDemocracyPostByProposal,
   updateOrCreatePostByReferendumWithProposal,
@@ -6,7 +7,6 @@ const { getPublicProposalFromStorage } = require("./storage");
 const {
   insertDemocracyReferendum,
 } = require("../../../../mongo/service/onchain/democracyReferendum");
-const { getReferendumInfoFromStorage } = require("./storage");
 const {
   insertDemocracyPublicProposal,
   updateDemocracyPublicProposal,
@@ -84,12 +84,7 @@ function extractReferendumIndex(event) {
   return referendumIndex;
 }
 
-async function handlePublicProposalTabled(
-  blockIndexer,
-  event,
-  sort,
-  allEvents
-) {
+async function handlePublicProposalTabled(event, indexer, allEvents) {
   const { section, method } = event;
   if (!isPublicProposalEvent(section, method)) {
     return;
@@ -99,14 +94,10 @@ async function handlePublicProposalTabled(
     return;
   }
 
+  const { eventIndex: sort } = indexer;
   await handleProposal(...arguments);
   const referendumStartedEvent = allEvents[sort + 1].event;
-  await handleReferendum(
-    blockIndexer,
-    referendumStartedEvent,
-    sort + 1,
-    allEvents
-  );
+  await handleReferendum(indexer, referendumStartedEvent, sort + 1, allEvents);
 }
 
 async function handleProposal(blockIndexer, event, sort, allEvents) {

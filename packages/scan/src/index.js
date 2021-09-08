@@ -103,7 +103,7 @@ async function scanNormalizedBlock(registry, block, blockEvents) {
 }
 
 async function test() {
-  const height = 135713;
+  const height = 120323;
   setSpecHeights([height]);
 
   const api = await getApi();
