@@ -90,20 +90,22 @@ async function updateExternal(call, signer, extrinsicIndexer, events) {
     signer,
     extrinsicIndexer
   );
-  await updateDemocracyExternalByHash(
-    args.proposalHash,
-    { state },
-    timelineItem
-  );
 
   if (!hasReferendumStarted(events)) {
+    await updateDemocracyExternalByHash(
+      args.proposalHash,
+      { state },
+      timelineItem
+    );
     return;
   }
+
   const referendumStartedEvent = events.find(
     ({ event }) =>
       event.section === Modules.Democracy &&
       event.method === ReferendumEvents.Started
   );
+
   await insertReferendum(
     referendumStartedEvent,
     extrinsicIndexer,
@@ -186,6 +188,9 @@ async function insertReferendum(event, extrinsicIndexer, externalProposalHash) {
   };
 
   await insertDemocracyReferendum(obj);
+  await updateDemocracyExternalByHash(externalProposalHash, {
+    referendumIndex,
+  });
   await updateOrCreatePostByReferendumWithExternal(
     externalProposalHash,
     referendumIndex
