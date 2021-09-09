@@ -2,7 +2,7 @@ const { ObjectId } = require("mongodb");
 const { safeHtml } = require("../utils/post");
 const { PostTitleLengthLimitation } = require("../constants");
 const { getDb: getBusinessDb, getTreasuryProposalCollection } = require("../mongo/business");
-const { getDb: getChainDb, getTreasuryProposalCollection: getChainTreasuryProposalCollection } = require("../mongo/chain");
+const { getDb: getChainDb, getTreasuryProposalCollection: getChainTreasuryProposalCollection, getMotionCollection } = require("../mongo/chain");
 const { getDb: getCommonDb, lookupUser } = require("../mongo/common");
 const { HttpError } = require("../exc");
 const { ContentType } = require("../constants");
@@ -135,7 +135,8 @@ async function getPostById(chain, postId) {
   const commonDb = await getCommonDb(chain);
   const businessDb = await getBusinessDb(chain);
   const chainTreasuryProposalCol = await getChainTreasuryProposalCollection(chain);
-  const [, reactions, treasuryProposalData] = await Promise.all([
+  const chainMotionCol = await getMotionCollection(chain);
+  const [, reactions, treasuryProposalData, motions] = await Promise.all([
     commonDb.lookupOne({
       from: "user",
       for: post,
@@ -152,6 +153,7 @@ async function getPostById(chain, postId) {
       foreignField: "treasuryProposal",
     }),
     chainTreasuryProposalCol.findOne({ proposalIndex: post.proposalIndex }),
+    chainMotionCol.find({ treasuryProposalIndex: post.proposalIndex }).toArray(),
   ]);
 
   await lookupUser({ for: reactions, localField: "user" });
@@ -159,6 +161,7 @@ async function getPostById(chain, postId) {
   return {
     ...post,
     onchainData: treasuryProposalData,
+    motions,
   };
 }
 
