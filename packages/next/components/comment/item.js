@@ -19,7 +19,7 @@ import { useRouter } from "next/router";
 const Wrapper = styled.div`
   position: relative;
   padding: 16px 48px;
-  margin:0 -48px;
+  margin: 0 -48px;
 
   :not(:last-child)::after {
     content: "";
@@ -136,7 +136,7 @@ const SupporterWrapper = styled.div`
   padding: 8px 12px;
   background: #f6f7fa;
   border-radius: 4px;
-  margin: 16px 0 0 28px;
+  margin: 10px 0 0 28px;
 `;
 
 const SupporterItem = styled.div`
@@ -197,7 +197,7 @@ export default function Item({ user, data, chain, onReply }) {
 
         if (thumbUp) {
           ({ result, error } = await nextApi.delete(
-            `${chain}/comments/${comment._id}/reaction`,
+            `${chain}/comments/${comment._id}/reaction`
           ));
         } else {
           ({ result, error } = await nextApi.put(
@@ -224,13 +224,10 @@ export default function Item({ user, data, chain, onReply }) {
   };
 
   const editComment = async (content, contentType) => {
-    return await nextApi.patch(
-      `${chain}/comments/${commentId}`,
-      {
-        content,
-        contentType,
-      }
-    );
+    return await nextApi.patch(`${chain}/comments/${commentId}`, {
+      content,
+      contentType,
+    });
   };
 
   return (
@@ -287,7 +284,12 @@ export default function Item({ user, data, chain, onReply }) {
                 .filter((r) => r.user)
                 .map((r, index) => (
                   <SupporterItem key={index}>
-                    <User user={r.user} chain={chain} showAvatar={false} fontSize={12} />
+                    <User
+                      user={r.user}
+                      chain={chain}
+                      showAvatar={false}
+                      fontSize={12}
+                    />
                   </SupporterItem>
                 ))}
             </SupporterWrapper>

@@ -24,7 +24,14 @@ const DividerWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  max-height: 20px;
 
+  > span {
+    display: inline-block;
+    height: 12px;
+    position: relative;
+    top: -3px;
+  }
   > :not(:first-child) {
     ::before {
       content: "·";
@@ -38,6 +45,7 @@ const DividerWrapper = styled.div`
 const Index = styled.div`
   font-weight: bold;
   font-size: 12px;
+  line-height: 12px;
 `;
 
 const Info = styled.div`

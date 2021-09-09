@@ -13,6 +13,10 @@ const Wrapper = styled.div`
     border-radius: 0;
   }
   margin: 16px 0;
+
+  div:last-child {
+    border-bottom: none;
+  }
 `;
 
 const Title = styled.div`
