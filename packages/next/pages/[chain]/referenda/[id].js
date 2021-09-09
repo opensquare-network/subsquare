@@ -5,7 +5,7 @@ import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
 import { EmptyList } from "../../../utils/constants";
 import LayoutFixedHeader from "../../../components/layoutFixedHeader";
-import MotionDetail from "../../../components/motion/motionDetail";
+import ReferendaDetail from "../../../components/referenda/referendaDetail";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -16,20 +16,19 @@ const Wrapper = styled.div`
   margin: auto;
 `;
 
-
-export default withLoginUserRedux(({loginUser, detail, comments, chain}) => {
-
+export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">
-        <Back href={`/${chain}/motions`} text="Back to Motions"/>
-        <MotionDetail
+        <Back href={`/${chain}/referendas`} text="Back to Referendas" />
+        <ReferendaDetail
           data={{
             type: "Democracy",
             status: "Started",
             index: 18,
             remaining: 3661,
-            ...detail
+            ...detail,
+            commentsCount: 12450,
           }}
           user={loginUser}
           chain={chain}
@@ -41,15 +40,15 @@ export default withLoginUserRedux(({loginUser, detail, comments, chain}) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const {chain, id, page, page_size: pageSize} = context.query;
+  const { chain, id, page, page_size: pageSize } = context.query;
 
-  const [{result: detail}] = await Promise.all([
+  const [{ result: detail }] = await Promise.all([
     nextApi.fetch(`${chain}/posts/${id}`),
   ]);
 
   const postId = detail._id;
 
-  const {result: comments} = await nextApi.fetch(
+  const { result: comments } = await nextApi.fetch(
     `${chain}/posts/${postId}/comments`,
     {
       page: page ?? "last",
