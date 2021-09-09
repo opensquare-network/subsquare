@@ -15,11 +15,14 @@ export function timeDuration(seconds) {
   }
   // return moment.duration(seconds * 1000);
   let duration = moment.duration(seconds, "seconds");
-  return duration.toString()
-    .replace("PT", "")
-    .replace("H", "h ")
-    .replace("M", "m ")
-    .replace("S", "s ") + "remaining";
+  return (
+    duration
+      .toString()
+      .replace("PT", "")
+      .replace("H", "h ")
+      .replace("M", "m ")
+      .replace("S", "s ") + "remaining"
+  );
 }
 
 export function timeDurationFromNow(time) {
@@ -84,9 +87,23 @@ export function encodeURIQuery(q) {
 }
 
 export function getNode(chain) {
-  return nodes.find(n => n.value === chain);
+  return nodes.find((n) => n.value === chain);
 }
 
 export function toPrecision(value, decimals) {
   return new BigNumber(value).dividedBy(Math.pow(10, decimals)).toString();
+}
+
+export function getTimelineStatus(type, method) {
+  const defaultColor = "#0F6FFF";
+  switch (type) {
+    case "tip":
+      switch (method) {
+        case "reportAwesome":
+          return { value: "Report Awesome", color: "#6848FF" };
+        case "TipRetracted":
+          return { value: "Tip Retracted", color: defaultColor };
+      }
+  }
+  return { value: method, color: defaultColor };
 }
