@@ -1,5 +1,5 @@
 const Router = require("koa-router");
-const proposalController = require("./public-proposals.controller");
+const proposalController = require("./public-proposal.controller");
 const requireAuth = require("../../middleware/require-auth");
 const requireVerify = require("../../middleware/require-verify");
 
