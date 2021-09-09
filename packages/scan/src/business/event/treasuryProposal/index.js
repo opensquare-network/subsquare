@@ -13,12 +13,7 @@ function isTreasuryProposalEvent(section, method) {
   return TreasuryProposalEvents.hasOwnProperty(method);
 }
 
-async function handleTreasuryProposalEvent(
-  registry,
-  event,
-  extrinsic,
-  indexer
-) {
+async function handleTreasuryProposalEvent(event, extrinsic, indexer) {
   const { section, method } = event;
   if (!isTreasuryProposalEvent(section, method)) {
     return;
@@ -32,7 +27,6 @@ async function handleTreasuryProposalEvent(
 }
 
 async function handleTreasuryProposalEventWithoutExtrinsic(
-  registry,
   event,
   indexer // this indexer don't have extrinsic index
 ) {

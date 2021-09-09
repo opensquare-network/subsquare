@@ -14,12 +14,7 @@ const {
 } = require("../../common/treasuryProposal/meta");
 const { logger } = require("../../../logger");
 
-async function saveNewTreasuryProposal(
-  registry,
-  event,
-  extrinsic,
-  eventIndexer
-) {
+async function saveNewTreasuryProposal(event, extrinsic, eventIndexer) {
   const [proposalIndex] = event.data.toJSON();
 
   const meta = await getTreasuryProposalMeta(proposalIndex, eventIndexer);
@@ -58,7 +53,7 @@ async function saveNewTreasuryProposal(
   logger.info(`Treasury proposal ${proposalIndex} saved`);
 }
 
-async function handleAwarded(registry, event, eventIndexer) {
+async function handleAwarded(event, eventIndexer) {
   const eventData = event.data.toJSON();
   const [proposalIndex, award, beneficiary] = eventData;
 
@@ -82,7 +77,7 @@ async function handleAwarded(registry, event, eventIndexer) {
   logger.info(`Treasury proposal ${proposalIndex} awarded`);
 }
 
-async function handleRejected(registry, event, extrinsic, eventIndexer) {
+async function handleRejected(event, extrinsic, eventIndexer) {
   const eventData = event.data.toJSON();
   const [proposalIndex, slashed] = eventData;
 
