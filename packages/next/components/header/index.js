@@ -41,7 +41,6 @@ const FlexWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  
 `;
 
 const Left = styled.div`
@@ -105,18 +104,18 @@ const LogoImg = styled.img`
 
 export default function Header({ user, left, chain, fixedTop = false }) {
   const [show, setShow] = useState(false);
-  const [hiddenWidth, setHiddenWidth] = useState();
+  // const [hiddenWidth, setHiddenWidth] = useState(0);
   const [position, setPosition] = useState("left");
   const [content, setContent] = useState();
-  const windowSize = useWindowSize();
+  // const windowSize = useWindowSize();
 
   const node = nodes.find((n) => n.value === chain) || nodes[0];
 
-  useEffect(() => {
-    if (hiddenWidth && windowSize.width && windowSize.width > hiddenWidth) {
-      setShow(false);
-    }
-  }, [windowSize, hiddenWidth]);
+  // useEffect(() => {
+  //   if (hiddenWidth && windowSize.width && windowSize.width > hiddenWidth) {
+  //     setShow(false);
+  //   }
+  // }, [windowSize, hiddenWidth]);
 
   return (
     <Wrapper fixedTop={fixedTop}>
@@ -126,7 +125,7 @@ export default function Header({ user, left, chain, fixedTop = false }) {
             {left && (
               <MenuButton
                 onClick={() => {
-                  setHiddenWidth(1000);
+                  // setHiddenWidth(1024);
                   setPosition("left");
                   setContent("left");
                   setShow(true);
@@ -140,7 +139,7 @@ export default function Header({ user, left, chain, fixedTop = false }) {
             </Link>
             <NodeButton
               onClick={() => {
-                setHiddenWidth(600);
+                // setHiddenWidth(768);
                 setPosition("right");
                 setContent("right");
                 setShow(true);
