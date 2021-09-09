@@ -23,7 +23,7 @@ const Create = styled.a`
   cursor: pointer;
 `;
 
-export default withLoginUserRedux(({loginUser, posts, chain}) => {
+export default withLoginUserRedux(({ loginUser, posts, chain }) => {
   const items = (posts.items || []).map((post) => ({
     title: "batchAll",
     type: "Democracy",
@@ -35,19 +35,16 @@ export default withLoginUserRedux(({loginUser, posts, chain}) => {
     index: 1,
   }));
 
-  const create = (
-    <Create href="post/create">
-      <PlusIcon/>
-      New Post
-    </Create>
-  );
-
   return (
-    <LayoutFixedHeader user={loginUser} left={<Menu menu={mainMenu}/>} chain={chain}>
+    <LayoutFixedHeader
+      user={loginUser}
+      left={<Menu menu={mainMenu} />}
+      chain={chain}
+    >
       <List
         chain={chain}
         category={"Referenda"}
-        create={create}
+        create={null}
         items={items}
         pagination={{
           page: posts.page,
@@ -60,10 +57,10 @@ export default withLoginUserRedux(({loginUser, posts, chain}) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const {page, chain, page_size: pageSize} = context.query;
+  const { page, chain, page_size: pageSize } = context.query;
 
-  const [{result: posts}] = await Promise.all([
-    nextApi.fetch(`${chain}/posts`, {page, pageSize: pageSize ?? 50}),
+  const [{ result: posts }] = await Promise.all([
+    nextApi.fetch(`${chain}/posts`, { page, pageSize: pageSize ?? 50 }),
   ]);
 
   return {

@@ -12,7 +12,7 @@ const Wrapper = styled.div`
     margin-top: 16px;
   }
 
-  max-width: 848px;
+  max-width: min(848px, calc(100vw - 64px));
   margin: auto;
 `;
 
@@ -46,7 +46,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     nextApi.fetch(`${chain}/posts/${id}`),
   ]);
 
-  const postId = detail._id;
+  const postId = detail?._id;
 
   const { result: comments } = await nextApi.fetch(
     `${chain}/posts/${postId}/comments`,
@@ -58,7 +58,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      detail,
+      detail: detail ?? {},
       comments: comments ?? EmptyList,
       chain,
     },

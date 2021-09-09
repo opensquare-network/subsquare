@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
   padding: 48px;
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 768px) {
     padding: 24px;
     border-radius: 0;
   }

@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   margin-left: -200px;
   padding-bottom: 16px;
   width: 400px;
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 768px) {
     width: 343px;
     margin-top: -50px;
     margin-left: -171px;

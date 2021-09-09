@@ -1,16 +1,17 @@
 import styled from "styled-components";
 
 import Post from "./post";
-import Tip from "./tip/tip";
 import Pagination from "./pagination";
 import EmptyList from "./emptyList";
-import Motion from "./motion/motion";
 
 const Wrapper = styled.div`
   max-width: 848px;
-  @media screen and (max-width: 600px) {
-    margin-left: 16px;
-    margin-right: 16px;
+  @media screen and (max-width: 1024px) {
+    max-width: 960px;
+  }
+  margin: auto;
+  @media screen and (min-width: 1080px) {
+    padding-bottom: 16px;
   }
 
   > :not(:first-child) {
@@ -30,7 +31,6 @@ export default function List({
   category,
   items,
   pagination,
-  type,
   create = null,
 }) {
   return (
@@ -41,17 +41,16 @@ export default function List({
       </Title>
       {items?.length > 0 ? (
         items.map((item, index) => {
+          let href = `/${chain}/post/${item.postUid}`;
           if (category === "Referenda") {
-            const href = `/${chain}/referenda/${item.index}`;
-            return <Post key={index} data={item} chain={chain} href={href} />;
+            href = `/${chain}/referenda/${item.index}`;
           }
           if (category === "On-chain Motions") {
-            return <Motion key={index} data={item} chain={chain} />;
+            href = `/${chain}/motion/${item.index}`;
           }
           if (category === "Tips") {
-            return <Tip key={index} data={item} chain={chain} />;
+            href = `/${chain}/tip/${item.height}_${item.hash}`;
           }
-          let href = `/${chain}/post/${item.postUid}`;
           if (category === "Proposals") {
             href = `/${chain}/proposal/${item.proposalIndex}`;
           }

@@ -13,6 +13,10 @@ const Mask = styled.div`
   height: 100%;
   background: rgba(0, 0, 0, 0.24);
   position: absolute;
+  left: -32px;
+  @media screen and (max-width: 768px) {
+    left: -16px;
+  }
 `;
 
 const Content = styled.div`
@@ -23,9 +27,10 @@ const Content = styled.div`
   min-width: 264px;
   padding-left: 32px;
   padding-right: 32px;
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 768px) {
     padding: 0;
     min-width: 200px;
+    left: -16px;
   }
   ${(p) =>
     p.position === "right" &&
@@ -50,7 +55,7 @@ const Container = styled.div`
   @media screen and (max-width: 1000px) {
     padding: 0;
   }
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 768px) {
     padding: 0 16px;
   }
 `;

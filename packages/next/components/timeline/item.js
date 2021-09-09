@@ -111,6 +111,7 @@ const ContentItem = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  word-wrap: break-word;
   > :first-child {
     color: #506176;
     min-width: 120px;
@@ -148,7 +149,9 @@ export default function Item({ data, foldable, isFold, setIsFold, chain }) {
       <Right>
         <TitleWrapper>
           <div>{data.time}</div>
-          <Status color={data.status.color}>{data.status.value}</Status>
+          {data.status && data.status.value && (
+            <Status color={data.status.color}>{data.status.value}</Status>
+          )}
           <FoldButton
             className="fold-button"
             isFold={isFold}
@@ -162,11 +165,11 @@ export default function Item({ data, foldable, isFold, setIsFold, chain }) {
             Object.entries(data.data).map((item, index) => (
               <ContentItem key={index}>
                 <div>{item[0]}</div>
-                {typeof item[1] === "string" ? (
-                  <div>{item[1]}</div>
-                ) : item[1].type === "account" ? (
+                {/* {typeof item[1] === "string" ? ( */}
+                <div>{item[1]}</div>
+                {/* ) : item[1].type === "account" ? (
                   <Account name={item[1].name} />
-                ) : null}
+                ) : null} */}
               </ContentItem>
             ))}
         </ContentWrapper>

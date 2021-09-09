@@ -55,7 +55,7 @@ export const StyledTextArea = styled.div`
     }
     
     .ql-toolbar.ql-snow {
-      @media screen and (max-width: 600px) {
+      @media screen and (max-width: 768px) {
         white-space: nowrap;
         margin-right: 90px;
         ::-webkit-scrollbar {

@@ -20,7 +20,7 @@ const Wrapper = styled.div`
     0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
   padding: 48px;
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 768px) {
     padding: 24px;
     border-radius: 0;
   }
@@ -326,7 +326,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             onReply={onReply}
           />
           {showThumbsUpList && post.reactions?.length > 0 && (
-            <GreyWrapper>
+            <GreyWrapper style={{ marginTop: 10 }}>
               {post.reactions
                 .filter((r) => r.user)
                 .map((r, index) => (

@@ -95,7 +95,7 @@ async function handlePublicProposalTabled(event, indexer, allEvents) {
   }
 
   const { eventIndex: sort } = indexer;
-  await handleProposal(...arguments);
+  await handleProposal(indexer, event, sort, allEvents);
   const referendumStartedEvent = allEvents[sort + 1].event;
   await handleReferendum(indexer, referendumStartedEvent, sort + 1, allEvents);
 }
