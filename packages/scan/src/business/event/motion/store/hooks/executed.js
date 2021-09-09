@@ -1,4 +1,7 @@
 const {
+  getExternalFromStorageByHeight,
+} = require("../../../../common/democracy/external");
+const {
   insertDemocracyPostByExternal,
 } = require("../../../../../mongo/service/business/democracy");
 const {
@@ -8,9 +11,6 @@ const {
   DemocracyExternalStates,
   TimelineItemTypes,
 } = require("../../../../common/constants");
-const {
-  getExternalFromStorage,
-} = require("../../../../common/democracy/external");
 const { getMotionCollection } = require("../../../../../mongo");
 
 async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
@@ -25,7 +25,9 @@ async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
     return;
   }
 
-  const [hash, voteThreshold] = await getExternalFromStorage(indexer);
+  const [hash, voteThreshold] = await getExternalFromStorageByHeight(
+    indexer.blockHeight - 1
+  );
   if (hash !== proposalHash) {
     throw new Error("Not matched external hash");
   }
