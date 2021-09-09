@@ -1,10 +1,8 @@
 import styled from "styled-components";
 
 import Post from "./post";
-import Tip from "./tip/tip";
 import Pagination from "./pagination";
 import EmptyList from "./emptyList";
-import Motion from "./motion/motion";
 
 const Wrapper = styled.div`
   max-width: 848px;
