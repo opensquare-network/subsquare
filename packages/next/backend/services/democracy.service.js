@@ -136,7 +136,7 @@ function createService(proposalType, indexField) {
     const commonDb = await getCommonDb(chain);
     const businessDb = await getBusinessDb(chain);
     const chainProposalCol = await getChainDemocracyCollection(chain);
-    const [, reactions, chanProposalData] = await Promise.all([
+    const [reactions, chanProposalData] = await Promise.all([
       businessDb.lookupMany({
         from: "reaction",
         for: post,
