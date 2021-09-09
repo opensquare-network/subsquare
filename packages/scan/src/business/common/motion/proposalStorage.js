@@ -29,5 +29,6 @@ async function getMotionProposalCall(motionHash, indexer) {
 }
 
 module.exports = {
+  getMotionProposal,
   getMotionProposalCall,
 };
