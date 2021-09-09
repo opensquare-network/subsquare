@@ -10,7 +10,7 @@ import Input from "components/comment/input";
 import { useState, useRef, useEffect } from "react";
 import LayoutFixedHeader from "../../../components/layoutFixedHeader";
 import MetaData from "components/tip/metaData";
-import { getTimelineStatus } from "utils";
+import { getTimelineStatus, getNode, toPrecision } from "utils";
 import Timeline from "components/timeline";
 import dayjs from "dayjs";
 import User from "components/user";
@@ -44,11 +44,19 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   }
 
   const postId = detail._id;
+  console.log({ detail });
 
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
   const [contentType, setContentType] = useState("markdown");
+
+  const node = getNode(chain);
+  if (!node) {
+    return null;
+  }
+  const decimals = node.decimals;
+  const symbol = node.symbol;
 
   const getTimelineData = (args, method) => {
     switch (method) {
@@ -57,6 +65,16 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           Finder: <User chain={chain} add={args.finder} />,
           Beneficiary: <User chain={chain} add={args.beneficiary} />,
           Reason: args.reason,
+        };
+      case "tip":
+        return {
+          Tipper: <User chain={chain} add={args.tipper} />,
+          Value: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
+        };
+      case "TipClosed":
+        return {
+          Beneficiary: <User chain={chain} add={args.beneficiary} />,
+          Payout: `${toPrecision(args.payout ?? 0, decimals)} ${symbol}`,
         };
     }
     return args;

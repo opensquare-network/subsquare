@@ -103,6 +103,10 @@ export function getTimelineStatus(type, method) {
           return { value: "Report Awesome", color: "#6848FF" };
         case "TipRetracted":
           return { value: "Tip Retracted", color: defaultColor };
+        case "tip":
+          return { value: "Tip", color: defaultColor };
+        case "TipClosed":
+          return { value: "Tip Closed", color: defaultColor };
       }
   }
   return { value: method, color: defaultColor };
