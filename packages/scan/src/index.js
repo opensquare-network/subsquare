@@ -99,7 +99,7 @@ async function scanNormalizedBlock(registry, block, blockEvents) {
   // handle the business
   const blockIndexer = getBlockIndexer(block);
   await handleExtrinsics(block.extrinsics, blockEvents, blockIndexer);
-  await handleEvents(registry, blockEvents, block.extrinsics, blockIndexer);
+  await handleEvents(blockEvents, block.extrinsics, blockIndexer);
 }
 
 async function test() {
