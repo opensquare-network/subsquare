@@ -28,6 +28,8 @@ async function main() {
     return;
   }
 
+  let counter = 0;
+
   while (true) {
     // chainHeight is the current on-chain last block height
     const chainHeight = getLatestHeight();
@@ -71,12 +73,13 @@ async function main() {
     const destHeight = blocks[(blocks || []).length - 1].height;
     logger.info(`blocks ${startHeight}-${destHeight} done`);
 
-    if (destHeight % 50000 === 0) {
+    if (counter % 200 === 0) {
       // FIXME: this code is for memory leak
       process.exit(0);
     }
 
     scanHeight = destHeight + 1;
+    counter++;
     await sleep(1);
   }
 }
