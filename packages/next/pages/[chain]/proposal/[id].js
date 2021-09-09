@@ -52,16 +52,30 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   const postId = detail._id;
 
+  console.log(detail);
+
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
   const [contentType, setContentType] = useState("markdown");
+
+  const node = getNode(chain);
+  if (!node) {
+    return null;
+  }
+  const decimals = node.decimals;
+  const symbol = node.symbol;
 
   const getTimelineData = (args, method) => {
     switch (method) {
       case "Proposed":
         return {
           Index: `#${args.index}`,
+        };
+      case "Awarded":
+        return {
+          Beneficiary: <User chain={chain} add={args.beneficiary} />,
+          Award: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
         };
     }
     return args;
@@ -71,8 +85,8 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     return {
       time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
       indexer: item.indexer,
-      status: getTimelineStatus("proposal", item.method),
-      data: getTimelineData(item.args, item.method),
+      status: getTimelineStatus("proposal", item.method ?? item.name),
+      data: getTimelineData(item.args, item.method ?? item.name),
     };
   });
 
@@ -136,13 +150,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     }
     focusEditor();
   };
-
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
 
   const metadata = detail.onchainData?.meta
     ? Object.entries(detail.onchainData?.meta)

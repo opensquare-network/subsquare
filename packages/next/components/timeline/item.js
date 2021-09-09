@@ -149,7 +149,9 @@ export default function Item({ data, foldable, isFold, setIsFold, chain }) {
       <Right>
         <TitleWrapper>
           <div>{data.time}</div>
-          <Status color={data.status.color}>{data.status.value}</Status>
+          {data.status && data.status.value && (
+            <Status color={data.status.color}>{data.status.value}</Status>
+          )}
           <FoldButton
             className="fold-button"
             isFold={isFold}
