@@ -71,7 +71,7 @@ async function saveNewPublicProposal(event, extrinsic, indexer) {
   };
 
   await insertDemocracyPublicProposal(obj);
-  await insertDemocracyPostByProposal(proposalIndex);
+  await insertDemocracyPostByProposal(proposalIndex, indexer, proposer);
 }
 
 function extractReferendumIndex(event) {
