@@ -6,7 +6,7 @@ const {
 const { updateTipByHash } = require("../../../mongo/service/tip");
 const { getTipCommonUpdates } = require("../../common/tip/updates");
 
-async function handleTipCall(registry, call, author, extrinsicIndexer) {
+async function handleTipCall(call, author, extrinsicIndexer) {
   if (
     ![Modules.Treasury, Modules.Tips].includes(call.section) ||
     TipMethods.tip !== call.method

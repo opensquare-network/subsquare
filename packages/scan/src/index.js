@@ -98,7 +98,7 @@ async function handleOneBlockDataInDb(blockInDb) {
 async function scanNormalizedBlock(registry, block, blockEvents) {
   // handle the business
   const blockIndexer = getBlockIndexer(block);
-  await handleExtrinsics(registry, block.extrinsics, blockEvents, blockIndexer);
+  await handleExtrinsics(block.extrinsics, blockEvents, blockIndexer);
   await handleEvents(registry, blockEvents, block.extrinsics, blockIndexer);
 }
 
