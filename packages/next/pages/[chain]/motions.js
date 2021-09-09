@@ -27,7 +27,7 @@ function getMotionType(motion) {
   return motion.isTreasury ? "Treasury" : "";
 }
 
-export default withLoginUserRedux(({loginUser, motions, chain}) => {
+export default withLoginUserRedux(({ loginUser, motions, chain }) => {
   const items = (motions.items || []).map((motion) => ({
     time: motion.indexer.blockTime,
     title: `Motion #${motion.index}: ${motion.proposal.section}.${motion.proposal.method}`,
@@ -43,19 +43,16 @@ export default withLoginUserRedux(({loginUser, motions, chain}) => {
     index: motion.index,
   }));
 
-  const create = (
-    <Create href="post/create">
-      <PlusIcon/>
-      New Post
-    </Create>
-  );
-
   return (
-    <LayoutFixedHeader user={loginUser} left={<Menu menu={mainMenu}/>} chain={chain}>
+    <LayoutFixedHeader
+      user={loginUser}
+      left={<Menu menu={mainMenu} />}
+      chain={chain}
+    >
       <List
         chain={chain}
         category={"On-chain Motions"}
-        create={create}
+        create={null}
         items={items}
         pagination={{
           page: motions.page,
@@ -68,10 +65,10 @@ export default withLoginUserRedux(({loginUser, motions, chain}) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const {page, chain, page_size: pageSize} = context.query;
+  const { page, chain, page_size: pageSize } = context.query;
 
-  const [{result: motions}] = await Promise.all([
-    nextApi.fetch(`${chain}/motions`, {page, pageSize: pageSize ?? 50}),
+  const [{ result: motions }] = await Promise.all([
+    nextApi.fetch(`${chain}/motions`, { page, pageSize: pageSize ?? 50 }),
   ]);
 
   return {
