@@ -26,7 +26,7 @@ async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
   }
 
   const [hash, voteThreshold] = await getExternalFromStorageByHeight(
-    indexer.blockHeight - 1
+    indexer.blockHeight + 1 // external will exist in storage after executed
   );
   if (hash !== proposalHash) {
     throw new Error("Not matched external hash");

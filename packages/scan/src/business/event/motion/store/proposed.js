@@ -52,7 +52,7 @@ function extractBusinessFields(proposal = {}) {
   return {};
 }
 
-async function handleProposed(registry, event, extrinsic, indexer) {
+async function handleProposed(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();
   const [proposer, motionIndex, hash, threshold] = eventData;
 

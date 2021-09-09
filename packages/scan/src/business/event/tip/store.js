@@ -1,3 +1,4 @@
+const { findRegistry } = require("../../../specs");
 const { getTipReason } = require("../../common/tip/utils");
 const { getTipMetaFromStorage } = require("../../common/tip/utils");
 const {
@@ -16,7 +17,7 @@ const { insertTip, updateTipByHash } = require("../../../mongo/service/tip");
 const { insertTipPost } = require("../../../mongo/service/business/tip");
 const { getApi } = require("../../../api");
 
-async function saveNewTip(registry, event, extrinsic, indexer) {
+async function saveNewTip(event, extrinsic, indexer) {
   const [rawHash] = event.data;
   const hash = rawHash.toString();
   const api = await getApi();
@@ -31,6 +32,7 @@ async function saveNewTip(registry, event, extrinsic, indexer) {
   const authors = [...authorSet];
 
   const reasonHash = meta.reason;
+  const registry = await findRegistry(indexer.blockHeight);
   const newTipCall = await getNewTipCall(
     registry,
     extrinsic.method,
@@ -81,17 +83,17 @@ async function saveNewTip(registry, event, extrinsic, indexer) {
   await insertTipPost(indexer, hash, reason, finder, state);
 }
 
-async function updateTipWithClosing(registry, tipHash, indexer) {
-  const updates = await getTipCommonUpdates(registry, tipHash, indexer);
+async function updateTipWithClosing(tipHash, indexer) {
+  const updates = await getTipCommonUpdates(tipHash, indexer);
   await updateTipByHash(tipHash, updates);
 }
 
-async function updateTipWithTipClosed(registry, event, extrinsic, indexer) {
+async function updateTipWithTipClosed(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();
   const [hash, beneficiary, payout] = eventData;
 
   const blockHash = await getBlockHash(indexer.blockHeight - 1);
-  let updates = await getTipCommonUpdates(registry, hash, {
+  let updates = await getTipCommonUpdates(hash, {
     blockHeight: indexer.blockHeight - 1,
     blockHash,
   });
@@ -118,12 +120,12 @@ async function updateTipWithTipClosed(registry, event, extrinsic, indexer) {
   await updateTipByHash(hash, updates, timelineItem);
 }
 
-async function updateTipWithTipRetracted(registry, event, extrinsic, indexer) {
+async function updateTipWithTipRetracted(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();
   const [hash] = eventData;
 
   const blockHash = await getBlockHash(indexer.blockHeight - 1);
-  let updates = await getTipCommonUpdates(registry, hash, {
+  let updates = await getTipCommonUpdates(hash, {
     blockHeight: indexer.blockHeight - 1,
     blockHash,
   });
@@ -147,12 +149,12 @@ async function updateTipWithTipRetracted(registry, event, extrinsic, indexer) {
   await updateTipByHash(hash, updates, timelineItem);
 }
 
-async function updateTipWithTipSlashed(registry, event, extrinsic, indexer) {
+async function updateTipWithTipSlashed(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();
   const [hash, finder, slashed] = eventData;
 
   const blockHash = await getBlockHash(indexer.blockHeight - 1);
-  let updates = await getTipCommonUpdates(registry, hash, {
+  let updates = await getTipCommonUpdates(hash, {
     blockHeight: indexer.blockHeight - 1,
     blockHash,
   });

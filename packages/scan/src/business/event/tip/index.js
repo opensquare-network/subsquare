@@ -15,23 +15,23 @@ function isTipEvent(section, method) {
   return TipEvents.hasOwnProperty(method);
 }
 
-async function handleTipEvent(registry, event, extrinsic, indexer) {
+async function handleTipEvent(event, extrinsic, indexer) {
   const { section, method, data } = event;
   if (!isTipEvent(section, method)) {
     return;
   }
 
   if (TipEvents.NewTip === method) {
-    await saveNewTip(registry, event, extrinsic, indexer);
+    await saveNewTip(event, extrinsic, indexer);
   } else if (TipEvents.TipClosing === method) {
     const [hash] = data;
-    await updateTipWithClosing(registry, hash.toString(), indexer);
+    await updateTipWithClosing(hash.toString(), indexer);
   } else if (TipEvents.TipClosed === method) {
-    await updateTipWithTipClosed(registry, event, extrinsic, indexer);
+    await updateTipWithTipClosed(event, extrinsic, indexer);
   } else if (TipEvents.TipRetracted === method) {
-    await updateTipWithTipRetracted(registry, event, extrinsic, indexer);
+    await updateTipWithTipRetracted(event, extrinsic, indexer);
   } else if (TipEvents.TipSlashed === method) {
-    await updateTipWithTipSlashed(registry, event, extrinsic, indexer);
+    await updateTipWithTipSlashed(event, extrinsic, indexer);
   }
 }
 

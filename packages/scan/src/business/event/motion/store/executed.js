@@ -7,7 +7,7 @@ const {
   updateMotionByHash,
 } = require("../../../../mongo/service/onchain/motion");
 
-async function handleExecuted(registry, event, extrinsic, indexer) {
+async function handleExecuted(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();
   const [hash, dispatchResult] = eventData;
 
