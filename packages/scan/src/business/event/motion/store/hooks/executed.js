@@ -48,6 +48,7 @@ async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
     args: {
       proposalHash,
     },
+    indexer,
   };
 
   const externalObj = {

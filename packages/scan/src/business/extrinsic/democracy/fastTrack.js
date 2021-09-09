@@ -70,6 +70,7 @@ function extractMetadata(call, signer, extrinsicIndexer) {
       votingPeriod,
       delay,
     },
+    indexer: extrinsicIndexer,
   };
 
   return {
@@ -99,8 +100,9 @@ async function updateExternal(call, signer, extrinsicIndexer, events) {
     return;
   }
   const referendumStartedEvent = events.find(
-    (e) =>
-      e.section === Modules.Democracy && e.method === ReferendumEvents.Started
+    ({ event }) =>
+      event.section === Modules.Democracy &&
+      event.method === ReferendumEvents.Started
   );
   await insertReferendum(
     referendumStartedEvent,
