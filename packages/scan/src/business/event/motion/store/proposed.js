@@ -31,7 +31,7 @@ function extractBusinessFields(proposal = {}) {
     };
   }
 
-  if (Modules.Democracy) {
+  if (Modules.Democracy === section) {
     const fields = {
       isDemocracy: true,
     };
