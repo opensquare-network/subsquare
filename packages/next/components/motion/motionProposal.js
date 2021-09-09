@@ -34,7 +34,11 @@ function convertProposal(proposal, chain) {
       switch (arg.type) {
         case "Call":
         case "CallOf": {
-          return [arg.name, convertProposal(arg.value)];
+          return [arg.name, convertProposal(arg.value, chain)];
+        }
+        case "Vec<Call>":
+        case "Vec<CallOf>": {
+          return [arg.name, arg.value.map(v => convertProposal(v, chain))];
         }
         default: {
           return [arg.name, arg.value];
