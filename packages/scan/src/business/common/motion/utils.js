@@ -11,11 +11,20 @@ function normalizeCall(call) {
     const argMeta = call.meta.args[index];
     const name = argMeta.name.toString();
     const type = argMeta.type.toString();
-    if (type === "CallOf") {
+    if (type === "Call" || type === "CallOf") {
       args.push({
         name,
         type,
         value: normalizeCall(arg),
+      });
+      continue;
+    }
+
+    if (type === "Vec<Call>" || type === "Vec<CallOf>") {
+      args.push({
+        name,
+        type,
+        value: arg.map(normalizeCall),
       });
       continue;
     }
