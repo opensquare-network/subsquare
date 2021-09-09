@@ -71,6 +71,11 @@ async function main() {
     const destHeight = blocks[(blocks || []).length - 1].height;
     logger.info(`blocks ${startHeight}-${destHeight} done`);
 
+    if (destHeight % 50000 === 0) {
+      // FIXME: this code is for memory leak
+      process.exit(0);
+    }
+
     scanHeight = destHeight + 1;
     await sleep(1);
   }
