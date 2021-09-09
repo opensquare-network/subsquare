@@ -25,6 +25,7 @@ const DemocracyMethods = Object.freeze({
   externalPropose: "externalPropose",
   externalProposeMajority: "externalProposeMajority",
   externalProposeDefault: "externalProposeDefault",
+  fastTrack: "fastTrack",
 });
 
 const KaruraModules = Object.freeze({
@@ -109,6 +110,7 @@ const ReferendumEvents = Object.freeze({
 
 const DemocracyExternalStates = Object.freeze({
   Proposed: "Proposed",
+  Tabled: "Tabled",
 });
 
 module.exports = {
