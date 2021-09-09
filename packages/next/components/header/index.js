@@ -1,4 +1,4 @@
-import styled, {css} from "styled-components";
+import styled, { css } from "styled-components";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
@@ -12,20 +12,21 @@ import { nodes } from "utils/constants";
 
 const Wrapper = styled.header`
   ${(props) =>
-          props &&
-          props.fixedTop &&
-          css`
-            position: fixed;
-            top:0;
-            left: 0;
-            right: 0;
-            z-index: 1;
+    props &&
+    props.fixedTop &&
+    css`
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1;
     `}
   background: #ffffff;
-  box-shadow:0 6px 7px rgba(30, 33, 52, 0.02),
-   0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-   0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
+    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   height: 64px;
+  border-bottom: 1px solid #ebeef4;
 `;
 
 const FlexWrapper = styled.div`
@@ -97,7 +98,7 @@ const LogoImg = styled.img`
   height: 64px;
 `;
 
-export default function Header({ user, left, chain , fixedTop = false }) {
+export default function Header({ user, left, chain, fixedTop = false }) {
   const [show, setShow] = useState(false);
   const [hiddenWidth, setHiddenWidth] = useState();
   const [position, setPosition] = useState("left");
