@@ -104,16 +104,8 @@ async function scanNormalizedBlock(registry, block, blockEvents) {
 
 async function test() {
   const blockHeights = [
-    126165,
-    126209,
-    126300,
-    126518,
-    126854,
-    128032,
-    128493,
-    134394,
-    151800,
-    172800,
+    9010268, 9017523, 9018116, 9018788, 9019722, 9022031, 9024634, 9118619,
+    9120454, 9120477, 9122688, 9133899, 9146824,
   ];
 
   for (const height of blockHeights) {
