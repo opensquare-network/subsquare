@@ -160,8 +160,10 @@ async function getPostById(chain, postId) {
 
   return {
     ...post,
-    onchainData: treasuryProposalData,
-    motions,
+    onchainData: {
+      ...treasuryProposalData,
+      motions,
+    },
   };
 }
 
