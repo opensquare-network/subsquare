@@ -72,15 +72,17 @@ function createService(proposalType, indexField) {
   }
 
   async function getPostsByChain(chain, page, pageSize) {
+    const q = { [indexField]: {$ne: null} };
+
     const postCol = await getDemocracyCollection(chain);
-    const total = await postCol.countDocuments();
+    const total = await postCol.countDocuments(q);
 
     if (page === "last") {
       const totalPages = Math.ceil(total / pageSize);
       page = totalPages;
     }
 
-    const posts = await postCol.find({ [indexField]: {$ne: null} })
+    const posts = await postCol.find(q)
       .sort({ lastActivityAt: -1 })
       .skip((page - 1) * pageSize)
       .limit(pageSize)
