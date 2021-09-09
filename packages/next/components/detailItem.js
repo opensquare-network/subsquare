@@ -326,7 +326,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             onReply={onReply}
           />
           {showThumbsUpList && post.reactions?.length > 0 && (
-            <GreyWrapper>
+            <GreyWrapper style={{ marginTop: 10 }}>
               {post.reactions
                 .filter((r) => r.user)
                 .map((r, index) => (

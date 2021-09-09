@@ -8,6 +8,9 @@ import Motion from "./motion/motion";
 
 const Wrapper = styled.div`
   max-width: 848px;
+  @media screen and (min-width: 1080px) {
+    padding-bottom: 16px;
+  }
   @media screen and (max-width: 600px) {
     margin-left: 16px;
     margin-right: 16px;
