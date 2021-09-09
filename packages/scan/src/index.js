@@ -73,13 +73,13 @@ async function main() {
     const destHeight = blocks[(blocks || []).length - 1].height;
     logger.info(`blocks ${startHeight}-${destHeight} done`);
 
+    scanHeight = destHeight + 1;
+    counter++;
+
     if (counter % 200 === 0) {
       // FIXME: this code is for memory leak
       process.exit(0);
     }
-
-    scanHeight = destHeight + 1;
-    counter++;
     await sleep(1);
   }
 }
