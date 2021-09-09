@@ -19,7 +19,7 @@ function isCouncilModule(section) {
   return Modules.Council === section;
 }
 
-async function handleMotionEvent(registry, event, extrinsic, indexer) {
+async function handleMotionEvent(event, extrinsic, indexer) {
   const { section, method } = event;
   if (!isCouncilModule(section)) {
     return;

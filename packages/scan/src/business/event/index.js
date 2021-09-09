@@ -33,7 +33,7 @@ async function handleEventWithExtrinsic(
   await saveNewPublicProposal(event, extrinsic, indexer);
   await handleTipEvent(registry, event, extrinsic, indexer);
   await handleTreasuryProposalEvent(event, extrinsic, indexer);
-  await handleMotionEvent(registry, event, extrinsic, indexer);
+  await handleMotionEvent(event, extrinsic, indexer);
   await handleReferendumEventWithExtrinsic(event, extrinsic, indexer);
   await handleTechCommMotionEvent(event, extrinsic, indexer);
 }

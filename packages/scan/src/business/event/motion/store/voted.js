@@ -10,7 +10,7 @@ const {
   updateMotionByHash,
 } = require("../../../../mongo/service/onchain/motion");
 
-async function handleVoted(registry, event, extrinsic, indexer) {
+async function handleVoted(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();
   const [voter, hash, approve, yesVotes, noVotes] = eventData;
 

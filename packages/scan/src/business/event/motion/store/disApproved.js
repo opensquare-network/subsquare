@@ -7,7 +7,7 @@ const {
   updateMotionByHash,
 } = require("../../../../mongo/service/onchain/motion");
 
-async function handleDisApproved(registry, event, extrinsic, indexer) {
+async function handleDisApproved(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();
   const [hash] = eventData;
 
