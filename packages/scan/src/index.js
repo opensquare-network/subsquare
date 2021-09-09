@@ -103,16 +103,30 @@ async function scanNormalizedBlock(registry, block, blockEvents) {
 }
 
 async function test() {
-  const height = 160545;
-  setSpecHeights([height - 1]);
+  const blockHeights = [
+    126165,
+    126209,
+    126300,
+    126518,
+    126854,
+    128032,
+    128493,
+    134394,
+    151800,
+    172800,
+  ];
 
-  const api = await getApi();
-  const registry = await getRegistryByHeight(height);
-  const blockHash = await api.rpc.chain.getBlockHash(height);
-  const block = await api.rpc.chain.getBlock(blockHash);
-  const allEvents = await api.query.system.events.at(blockHash);
+  for (const height of blockHeights) {
+    setSpecHeights([height - 1]);
 
-  await scanNormalizedBlock(registry, block.block, allEvents);
+    const api = await getApi();
+    const registry = await getRegistryByHeight(height);
+    const blockHash = await api.rpc.chain.getBlockHash(height);
+    const block = await api.rpc.chain.getBlock(blockHash);
+    const allEvents = await api.query.system.events.at(blockHash);
+
+    await scanNormalizedBlock(registry, block.block, allEvents);
+  }
 }
 
 // test();
