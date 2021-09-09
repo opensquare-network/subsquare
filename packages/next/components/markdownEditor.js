@@ -83,7 +83,7 @@ export const StyledTextArea = styled.div`
       justify-content: space-between;
       background: white !important;
       border-bottom: none;
-      @media screen and (max-width: 600px) {
+      @media screen and (max-width: 768px) {
         overflow-y: hidden;
         white-space: nowrap;
         margin-right: 90px;

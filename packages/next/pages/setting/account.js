@@ -36,7 +36,7 @@ const ContentWrapper = styled.div`
    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 4px;
   padding: 48px;
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 768px) {
     padding: 24px;
   }
 `;
@@ -64,7 +64,7 @@ const InputWrapper = styled.div`
     width: 80px;
     margin-left: 16px;
   }
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 768px) {
     flex-direction: column;
     align-items: stretch;
     > :only-child {
