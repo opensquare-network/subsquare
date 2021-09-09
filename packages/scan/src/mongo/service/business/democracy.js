@@ -5,7 +5,7 @@ const { getBusinessDemocracy } = require("../../business");
  * @param proposalIndex
  * @returns {Promise<void>}
  */
-async function insertDemocracyPostByProposal(proposalIndex) {
+async function insertDemocracyPostByProposal(proposalIndex, indexer, proposer) {
   const col = await getBusinessDemocracy();
   const maybeInDb = await col.findOne({
     proposalIndex: proposalIndex,
@@ -14,7 +14,18 @@ async function insertDemocracyPostByProposal(proposalIndex) {
     return;
   }
 
-  await col.insertOne({ proposalIndex });
+  const now = new Date();
+  await col.insertOne({
+    proposalIndex,
+    indexer,
+    proposer,
+    title: `Untitled - public proposal #${proposalIndex}`,
+    content: "",
+    contentType: "markdown",
+    createdAt: now,
+    updatedAt: now,
+    lastActivityAt: now,
+  });
 }
 
 async function updateOrCreatePostByReferendumWithProposal(
@@ -49,7 +60,16 @@ async function insertDemocracyPostByExternal(externalProposalHash) {
     return;
   }
 
-  await col.insertOne({ externalProposalHash });
+  const now = new Date();
+  await col.insertOne({
+    externalProposalHash,
+    title: `Untitled - external proposal ${externalProposalHash}`,
+    content: "",
+    contentType: "markdown",
+    createdAt: now,
+    updatedAt: now,
+    lastActivityAt: now,
+  });
 }
 
 async function updateOrCreatePostByReferendumWithExternal(
