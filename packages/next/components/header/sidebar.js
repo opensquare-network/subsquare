@@ -27,15 +27,21 @@ const Content = styled.div`
   min-width: 264px;
   padding-left: 32px;
   padding-right: 32px;
+  left: -32px;
   @media screen and (max-width: 768px) {
     padding: 0;
     min-width: 200px;
     left: -16px;
+    ${(p) =>
+      p.position === "right" &&
+      css`
+        right: 16px;
+      `}
   }
   ${(p) =>
     p.position === "right" &&
     css`
-      right: 0;
+      right: 32px;
     `}
 `;
 
@@ -82,7 +88,7 @@ export default function Sidebar({ onClose, position, children }) {
       <Content position={position}>
         <CloseWrapper position={position}>
           <Container>
-            <CloseButton onClick={onClose} >
+            <CloseButton onClick={onClose}>
               <img src="/imgs/icons/close.svg" alt="" />
             </CloseButton>
           </Container>
