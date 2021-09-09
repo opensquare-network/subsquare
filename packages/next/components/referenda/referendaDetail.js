@@ -7,6 +7,7 @@ import User from "components/user";
 import Links from "../timeline/links";
 import Timeline from "../timeline";
 import { getNode, timeDuration, toPrecision } from "utils";
+import Vote from "./vote";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -249,6 +250,8 @@ export default function MotionDetail({ data, chain }) {
           </FlexWrapper>
         </div>
       </Wrapper>
+
+      <Vote />
 
       {treasuryProposalMeta && (
         <KVList
