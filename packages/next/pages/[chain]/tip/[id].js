@@ -43,8 +43,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     return "404"; //TODO: improve
   }
 
-  console.log({ detail });
-
   const postId = detail._id;
 
   const editorWrapperRef = useRef(null);
@@ -65,7 +63,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   };
 
   const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
-    console.log(Object.entries(item.args));
     return {
       time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
       indexer: item.indexer,
@@ -153,7 +150,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           }}
           chain={chain}
         />
-        <Timeline data={timelineData} chain={chain} />
+        {timelineData && timelineData.length > 0 && (
+          <Timeline data={timelineData} chain={chain} />
+        )}
         <CommentsWrapper>
           <Comments
             data={comments}
