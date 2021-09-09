@@ -11,6 +11,12 @@ import SidebarAccount from "./sidebarAccount";
 import { nodes } from "utils/constants";
 
 const Wrapper = styled.header`
+  padding-left: 32px;
+  padding-right: 32px;
+  @media screen and (max-width: 768px) {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
   ${(props) =>
     props &&
     props.fixedTop &&
@@ -35,16 +41,15 @@ const FlexWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  
 `;
 
 const Left = styled.div`
   display: flex;
   align-items: center;
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 768px) {
     flex-grow: 1;
     justify-content: space-between;
-    margin-left: 16px;
-    margin-right: 16px;
   }
 `;
 
@@ -54,7 +59,7 @@ const Right = styled.div`
   > :not(:first-child) {
     margin-left: 12px;
   }
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 768px) {
     display: none;
   }
 `;
@@ -87,7 +92,7 @@ const NodeButton = styled.div`
   justify-content: center;
   cursor: pointer;
   display: none;
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 768px) {
     display: flex;
   }
 `;
