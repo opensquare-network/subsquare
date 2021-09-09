@@ -43,37 +43,23 @@ function getConstFromKaruraRegistry(registry, moduleName, constantName) {
 }
 
 function getConstFromRegistry(registry, moduleName, constantName) {
-  let iterVersion = 0;
-  const metadata = registry.metadata.get("metadata");
-
-  while (iterVersion < 1000) {
-    if (!metadata[`isV${iterVersion}`]) {
-      iterVersion++;
-      continue;
-    }
-
-    const modules = metadata[`asV${iterVersion}`].get("modules");
-    const targetModule = modules.find(
-      (module) => module.name.toString() === moduleName
-    );
-    if (!targetModule) {
-      // TODO: should throw error
-      break;
-    }
-
-    const targetConstant = targetModule.constants.find(
-      (constant) => constant.name.toString() === constantName
-    );
-    if (!targetConstant) {
-      break;
-    }
-
-    const typeName = targetConstant.type.toString();
-    const Type = registry.get(typeName);
-    return new Type(registry, targetConstant.value);
+  const module = registry.metadata.modules.find(
+    (m) => m.name.toString() === moduleName
+  );
+  if (!module) {
+    return null;
   }
 
-  return null;
+  const targetConst = module.constants.find(
+    (c) => c.name.toString() === constantName
+  );
+  if (!targetConst) {
+    return null;
+  }
+
+  const typeName = targetConst.type.toString();
+  const Type = registry.get(typeName);
+  return new Type(registry, targetConst.value);
 }
 
 function getConstsFromRegistry(registry, constants) {
