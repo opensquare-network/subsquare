@@ -11,10 +11,10 @@
   "dependencies": {
     "@alicloud/pop-core": "^1.7.10",
     "@koa/cors": "^3.1.0",
-    "@polkadot/api": "^5.7.1",
+    "@polkadot/api": "5.7.1",
     "@polkadot/extension-dapp": "^0.39.3",
     "@polkadot/react-identicon": "^0.85.3",
-    "@polkadot/util": "^7.3.1",
+    "@polkadot/util": "7.3.1",
     "@reduxjs/toolkit": "^1.6.1",
     "@svgr/webpack": "^5.5.0",
     "argon2": "^0.28.2",
