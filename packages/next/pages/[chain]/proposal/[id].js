@@ -13,6 +13,9 @@ import Metadata from "components/metadata";
 import User from "components/user";
 import { getNode, toPrecision } from "utils";
 import Links from "../../../components/timeline/links";
+import dayjs from "dayjs";
+import Timeline from "components/timeline";
+import { getTimelineStatus } from "utils";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -39,8 +42,8 @@ const CommentsWrapper = styled.div`
 
 const Flex = styled.div`
   display: flex;
-  align-items: center;;
-`
+  align-items: center; ;
+`;
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   if (!detail) {
@@ -49,10 +52,43 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   const postId = detail._id;
 
+  console.log(detail);
+
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
   const [contentType, setContentType] = useState("markdown");
+
+  const node = getNode(chain);
+  if (!node) {
+    return null;
+  }
+  const decimals = node.decimals;
+  const symbol = node.symbol;
+
+  const getTimelineData = (args, method) => {
+    switch (method) {
+      case "Proposed":
+        return {
+          Index: `#${args.index}`,
+        };
+      case "Awarded":
+        return {
+          Beneficiary: <User chain={chain} add={args.beneficiary} />,
+          Award: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
+        };
+    }
+    return args;
+  };
+
+  const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
+    return {
+      time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+      indexer: item.indexer,
+      status: getTimelineStatus("proposal", item.method ?? item.name),
+      data: getTimelineData(item.args, item.method ?? item.name),
+    };
+  });
 
   useEffect(() => {
     if (!localStorage.getItem("contentType")) {
@@ -115,13 +151,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     focusEditor();
   };
 
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
-
   const metadata = detail.onchainData?.meta
     ? Object.entries(detail.onchainData?.meta)
     : [];
@@ -129,10 +158,12 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     switch (item[0]) {
       case "proposer":
       case "beneficiary":
-        item[1] = <Flex>
-          <User chain={chain} add={item[1]} fontSize={12} />
-          <Links chain={chain} address={item[1]} style={{marginLeft: 8}}/>
-        </Flex>;
+        item[1] = (
+          <Flex>
+            <User chain={chain} add={item[1]} fontSize={12} />
+            <Links chain={chain} address={item[1]} style={{ marginLeft: 8 }} />
+          </Flex>
+        );
         break;
       case "value":
       case "bond":
@@ -152,6 +183,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           type="proposal"
         />
         {detail.onchainData?.meta && <Metadata data={metadata} />}
+        {timelineData && timelineData.length > 0 && (
+          <Timeline data={timelineData} chain={chain} />
+        )}
         <CommentsWrapper>
           <Comments
             data={comments}
@@ -179,9 +213,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 export const getServerSideProps = withLoginUser(async (context) => {
   const { chain, id, page, page_size: pageSize } = context.query;
 
-  const [
-    { result: detail }
-  ] = await Promise.all([
+  const [{ result: detail }] = await Promise.all([
     nextApi.fetch(`${chain}/proposals/${id}`),
   ]);
 
