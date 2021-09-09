@@ -98,13 +98,13 @@ async function handleOneBlockDataInDb(blockInDb) {
 async function scanNormalizedBlock(registry, block, blockEvents) {
   // handle the business
   const blockIndexer = getBlockIndexer(block);
-  await handleEvents(registry, blockEvents, block.extrinsics, blockIndexer);
   await handleExtrinsics(registry, block.extrinsics, blockEvents, blockIndexer);
+  await handleEvents(registry, blockEvents, block.extrinsics, blockIndexer);
 }
 
 async function test() {
-  const height = 120323;
-  setSpecHeights([height]);
+  const height = 160545;
+  setSpecHeights([height - 1]);
 
   const api = await getApi();
   const registry = await getRegistryByHeight(height);
