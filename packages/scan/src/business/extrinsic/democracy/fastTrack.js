@@ -91,13 +91,14 @@ async function updateExternal(call, signer, extrinsicIndexer, events) {
     extrinsicIndexer
   );
 
+  await updateDemocracyExternalByHash(
+    args.proposalHash,
+    { state },
+    timelineItem
+  );
+
   if (!hasReferendumStarted(events)) {
-    await updateDemocracyExternalByHash(
-      args.proposalHash,
-      { state, isFinal: true },
-      timelineItem
-    );
-    return;
+    throw new Error("Sudo(fastTrack) not table external proposal");
   }
 
   const referendumStartedEvent = events.find(
@@ -109,8 +110,7 @@ async function updateExternal(call, signer, extrinsicIndexer, events) {
   await insertReferendum(
     referendumStartedEvent,
     extrinsicIndexer,
-    args.proposalHash,
-    state
+    args.proposalHash
   );
 }
 
@@ -151,17 +151,11 @@ async function insertExternal(call, signer, extrinsicIndexer, events) {
   await insertReferendum(
     referendumStartedEvent,
     extrinsicIndexer,
-    args.proposalHash,
-    state
+    args.proposalHash
   );
 }
 
-async function insertReferendum(
-  event,
-  extrinsicIndexer,
-  externalProposalHash,
-  externalState
-) {
+async function insertReferendum(event, extrinsicIndexer, externalProposalHash) {
   const eventData = event.event.data.toJSON();
   const [referendumIndex, threshold] = eventData;
 
@@ -198,7 +192,6 @@ async function insertReferendum(
   await insertDemocracyReferendum(obj);
   await updateDemocracyExternalByHash(externalProposalHash, {
     isFinal: true,
-    state: externalState,
     referendumIndex,
   });
   await updateOrCreatePostByReferendumWithExternal(
