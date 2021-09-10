@@ -5,7 +5,6 @@ import { withLoginUser, withLoginUserRedux } from "../../lib";
 import nextApi from "../../services/nextApi";
 import { EmptyList } from "../../utils/constants";
 import styled from "styled-components";
-import PlusIcon from "../../public/imgs/icons/plusInCircle.svg";
 import LayoutFixedHeader from "../../components/layoutFixedHeader";
 import { addressEllipsis } from "utils";
 
@@ -30,7 +29,7 @@ function getMotionType(motion) {
 export default withLoginUserRedux(({ loginUser, motions, chain }) => {
   const items = (motions.items || []).map((motion) => ({
     time: motion.indexer.blockTime,
-    title: `Motion #${motion.index}: ${motion.proposal.section}.${motion.proposal.method}`,
+    title: `${motion.proposal.section}.${motion.proposal.method}`,
     type: getMotionType(motion),
     author: motion.author ?? {
       username: addressEllipsis(motion.proposer),
