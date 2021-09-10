@@ -206,7 +206,7 @@ export default function MotionDetail({ motion, chain }) {
             [
               "Link to",
               <Link
-                href={`/${chain}/proposal/${motion.treasuryProposalIndex}`}
+                href={`/${chain}/treasury/proposal/${motion.treasuryProposalIndex}`}
               >{`Treasury Proposal #${motion.treasuryProposalIndex}`}</Link>,
             ],
             [
