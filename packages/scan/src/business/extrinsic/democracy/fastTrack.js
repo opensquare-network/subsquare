@@ -109,7 +109,8 @@ async function updateExternal(call, signer, extrinsicIndexer, events) {
   await insertReferendum(
     referendumStartedEvent,
     extrinsicIndexer,
-    args.proposalHash
+    args.proposalHash,
+    state
   );
 }
 
@@ -150,11 +151,17 @@ async function insertExternal(call, signer, extrinsicIndexer, events) {
   await insertReferendum(
     referendumStartedEvent,
     extrinsicIndexer,
-    args.proposalHash
+    args.proposalHash,
+    state
   );
 }
 
-async function insertReferendum(event, extrinsicIndexer, externalProposalHash) {
+async function insertReferendum(
+  event,
+  extrinsicIndexer,
+  externalProposalHash,
+  externalState
+) {
   const eventData = event.event.data.toJSON();
   const [referendumIndex, threshold] = eventData;
 
@@ -191,6 +198,7 @@ async function insertReferendum(event, extrinsicIndexer, externalProposalHash) {
   await insertDemocracyReferendum(obj);
   await updateDemocracyExternalByHash(externalProposalHash, {
     isFinal: true,
+    state: externalState,
     referendumIndex,
   });
   await updateOrCreatePostByReferendumWithExternal(
