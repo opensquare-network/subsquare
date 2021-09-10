@@ -41,6 +41,20 @@ const DividerWrapper = styled.div`
   }
 `;
 
+const Footer = styled(DividerWrapper)`
+  @media screen and (max-width: 768px) {
+    > :nth-child(3) {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 375px) {
+    > :nth-child(2) {
+      display: none;
+    }
+  }
+`;
+
 const Index = styled.div`
   font-weight: bold;
   font-size: 12px;
@@ -59,7 +73,7 @@ const AutHideInfo = styled(Info)`
 `;
 
 const Title = styled.div`
-  word-break: break-word;
+  word-break: break-all;
   font-weight: 500;
   font-size: 16px;
   cursor: pointer;
@@ -141,7 +155,7 @@ export default function Post({ data, chain, href }) {
       </Link>
       <Divider />
       <FooterWrapper>
-        <DividerWrapper>
+        <Footer>
           <User user={data.author} chain={chain} fontSize={12} />
           {data.type && (
             <div>
@@ -157,7 +171,7 @@ export default function Post({ data, chain, href }) {
           {data.commentsCount > -1 && (
             <AutHideInfo>{`${data.commentsCount} Comments`}</AutHideInfo>
           )}
-        </DividerWrapper>
+        </Footer>
         {data.status && <StatusWrapper>{data.status}</StatusWrapper>}
       </FooterWrapper>
     </Wrapper>
