@@ -114,7 +114,6 @@ const ContentItem = styled.div`
   word-wrap: break-word;
   > :first-child {
     color: #506176;
-    min-width: 120px;
     padding: 7px 0;
   }
   > :last-child {

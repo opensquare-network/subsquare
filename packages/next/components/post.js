@@ -51,8 +51,14 @@ const Info = styled.div`
   color: #506176;
 `;
 
+const AutHideInfo = styled(Info)`
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
 const Title = styled.div`
-  //margin-bottom: 12px;
+  word-break: break-word;
   font-weight: 500;
   font-size: 16px;
   cursor: pointer;
@@ -74,7 +80,7 @@ const FooterWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 `;
 
 const TypeWrapper = styled.div`
@@ -146,7 +152,7 @@ export default function Post({ data, chain, href }) {
           )}
           {data.remaining && <Info>{`${timeDuration(data.remaining)}`}</Info>}
           {data.commentsCount > -1 && (
-            <Info>{`${data.commentsCount} Comments`}</Info>
+            <AutHideInfo>{`${data.commentsCount} Comments`}</AutHideInfo>
           )}
         </DividerWrapper>
         {data.status && <StatusWrapper>{data.status}</StatusWrapper>}

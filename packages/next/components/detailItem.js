@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { useState } from "react";
 
-import { timeDurationFromNow, addressEllipsis } from "utils";
+import { timeDurationFromNow } from "utils";
 import Markdown from "components/markdown";
 import HtmlRender from "./post/htmlRender";
 import Actions from "components/actions";
