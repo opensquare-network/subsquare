@@ -1,12 +1,11 @@
 import List from "components/list";
-import Layout from "components/layout";
 import Menu from "components/menu";
 import { mainMenu } from "utils/constants";
-import { withLoginUser, withLoginUserRedux } from "../../lib";
-import nextApi from "../../services/nextApi";
-import { EmptyList } from "../../utils/constants";
-import { addressEllipsis } from "../../utils";
-import LayoutFixedHeader from "../../components/layoutFixedHeader";
+import { withLoginUser, withLoginUserRedux } from "lib";
+import nextApi from "services/nextApi";
+import { EmptyList } from "utils/constants";
+import { addressEllipsis } from "utils";
+import LayoutFixedHeader from "components/layoutFixedHeader";
 
 export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
   const items = (proposals.items || []).map((proposal) => ({
@@ -48,7 +47,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { page, chain, page_size: pageSize } = context.query;
 
   const [{ result: proposals }] = await Promise.all([
-    nextApi.fetch(`${chain}/proposals`, { page, pageSize: pageSize ?? 50 }),
+    nextApi.fetch(`${chain}/treasury/proposals`, { page: page ?? 1, pageSize: pageSize ?? 50 }),
   ]);
 
   return {

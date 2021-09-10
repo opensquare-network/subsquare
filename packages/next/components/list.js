@@ -43,16 +43,16 @@ export default function List({
         items.map((item, index) => {
           let href = `/${chain}/post/${item.postUid}`;
           if (category === "Referenda") {
-            href = `/${chain}/referenda/${item.index}`;
+            href = `/${chain}/democracy/referendum/${item.index}`;
           }
           if (category === "On-chain Motions") {
             href = `/${chain}/motion/${item.index}`;
           }
           if (category === "Tips") {
-            href = `/${chain}/tip/${item.height}_${item.hash}`;
+            href = `/${chain}/treasury/tip/${item.height}_${item.hash}`;
           }
           if (category === "Proposals") {
-            href = `/${chain}/proposal/${item.proposalIndex}`;
+            href = `/${chain}/treasury/proposal/${item.proposalIndex}`;
           }
           return <Post key={index} data={item} chain={chain} href={href} />;
         })

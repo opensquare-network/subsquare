@@ -5,14 +5,14 @@ import DetailItem from "components/detailItem";
 import Comments from "components/comment";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
-import { EmptyList } from "../../../utils/constants";
-import Input from "../../../components/comment/input";
+import { EmptyList } from "utils/constants";
+import Input from "components/comment/input";
 import { useState, useRef, useEffect } from "react";
-import LayoutFixedHeader from "../../../components/layoutFixedHeader";
+import LayoutFixedHeader from "components/layoutFixedHeader";
 import Metadata from "components/metadata";
 import User from "components/user";
 import { getNode, toPrecision } from "utils";
-import Links from "../../../components/timeline/links";
+import Links from "components/timeline/links";
 import dayjs from "dayjs";
 import Timeline from "components/timeline";
 import { getTimelineStatus } from "utils";
@@ -51,8 +51,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   }
 
   const postId = detail._id;
-
-  console.log(detail);
 
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
@@ -174,13 +172,13 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">
-        <Back href={`/${chain}/proposals`} text="Back to Proposals" />
+        <Back href={`/${chain}/treasury/proposals`} text="Back to Proposals" />
         <DetailItem
           data={detail}
           user={loginUser}
           chain={chain}
           onReply={focusEditor}
-          type="proposal"
+          type="treasury/proposal"
         />
         {detail.onchainData?.meta && <Metadata data={metadata} />}
         {timelineData && timelineData.length > 0 && (
@@ -201,7 +199,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
               ref={editorWrapperRef}
               setQuillRef={setQuillRef}
               {...{ contentType, setContentType, content, setContent, users }}
-              type="proposal"
+              type="treasury/proposal"
             />
           )}
         </CommentsWrapper>
@@ -214,7 +212,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { chain, id, page, page_size: pageSize } = context.query;
 
   const [{ result: detail }] = await Promise.all([
-    nextApi.fetch(`${chain}/proposals/${id}`),
+    nextApi.fetch(`${chain}/treasury/proposals/${id}`),
   ]);
 
   if (!detail) {
@@ -228,7 +226,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   }
 
   const { result: comments } = await nextApi.fetch(
-    `${chain}/proposals/${detail._id}/comments`,
+    `${chain}/treasury/proposals/${detail._id}/comments`,
     {
       page: page ?? "last",
       pageSize: Math.min(pageSize ?? 50, 100),

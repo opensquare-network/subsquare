@@ -5,25 +5,25 @@ const requireVerify = require("../../middleware/require-verify");
 
 const router = new Router();
 
-router.get("/tips", tipController.getPosts);
+router.get("/treasury/tips", tipController.getPosts);
 
-router.get("/tips/:postId", tipController.getPostById);
+router.get("/treasury/tips/:postId", tipController.getPostById);
 
-router.patch("/tips/:postId", requireAuth, tipController.updatePost);
+router.patch("/treasury/tips/:postId", requireAuth, tipController.updatePost);
 
-router.post("/tips/:postId/comments", requireAuth, requireVerify, tipController.postComment);
+router.post("/treasury/tips/:postId/comments", requireAuth, requireVerify, tipController.postComment);
 
-router.get("/tips/:postId/comments", tipController.getComments);
+router.get("/treasury/tips/:postId/comments", tipController.getComments);
 
 router.put(
-  "/tips/:postId/reaction",
+  "/treasury/tips/:postId/reaction",
   requireAuth,
   requireVerify,
   tipController.setPostReaction
 );
 
 router.delete(
-  "/tips/:postId/reaction",
+  "/treasury/tips/:postId/reaction",
   requireAuth,
   tipController.unsetPostReaction
 );

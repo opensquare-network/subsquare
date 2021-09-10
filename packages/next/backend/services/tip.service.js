@@ -71,7 +71,7 @@ async function getPostsByChain(chain, page, pageSize) {
 
   if (page === "last") {
     const totalPages = Math.ceil(total / pageSize);
-    page = totalPages;
+    page = Math.max(totalPages, 1);
   }
 
   const posts = await postCol.find({})
