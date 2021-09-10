@@ -52,10 +52,12 @@ async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
   };
 
   const externalObj = {
+    indexer,
     proposalHash,
     voteThreshold,
     motionHash,
     state,
+    isFinal: false,
     timeline: [timelineItem],
   };
 

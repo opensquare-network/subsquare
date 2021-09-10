@@ -46,6 +46,7 @@ async function handleBusinessWhenTechCommMotionProposed(
     proposalHash: hash,
     voteThreshold,
     state,
+    isFinal: true,
     timeline: [],
   };
 
