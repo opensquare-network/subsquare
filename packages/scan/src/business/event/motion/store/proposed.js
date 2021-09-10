@@ -77,9 +77,11 @@ async function handleProposed(event, extrinsic, indexer) {
     data: eventData,
   };
 
+  const authors = [...new Set([proposer, extrinsic.signer.toString()])];
   const obj = {
     indexer,
     hash,
+    authors,
     proposer,
     index: motionIndex,
     threshold,

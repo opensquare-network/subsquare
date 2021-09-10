@@ -55,7 +55,7 @@ async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
     indexer,
     proposalHash,
     voteThreshold,
-    motionHash,
+    motionIndex: motion.index,
     state,
     isFinal: false,
     timeline: [timelineItem],
