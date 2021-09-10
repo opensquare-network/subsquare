@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { useState } from "react";
 
-import { timeDurationFromNow } from "utils";
+import { timeDurationFromNow, addressEllipsis } from "utils";
 import Markdown from "components/markdown";
 import HtmlRender from "./post/htmlRender";
 import Actions from "components/actions";
@@ -262,7 +262,11 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
         <>
           <Title>{post.title}</Title>
           <DividerWrapper>
-            <User user={post.author} add={post.proposer} chain={chain} />
+            <User
+              user={post.author}
+              add={post.proposer || post.finder}
+              chain={chain}
+            />
             {post.type && (
               <div>
                 <TypeWrapper color={getTypeColor(post.type)}>
