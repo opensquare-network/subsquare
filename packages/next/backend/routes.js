@@ -13,7 +13,7 @@ const chainFeatureRouters = [
   require("./features/motions/routes"),
   require("./features/public-proposals/routes"),
   require("./features/external-proposals/routes"),
-  require("./features/referendum/routes"),
+  require("./features/referendums/routes"),
   require("./features/comments/routes"),
 ];
 

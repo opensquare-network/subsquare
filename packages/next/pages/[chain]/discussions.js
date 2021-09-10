@@ -1,13 +1,12 @@
 import List from "components/list";
-import Layout from "components/layout";
 import Menu from "components/menu";
 import { mainMenu } from "utils/constants";
-import { withLoginUser, withLoginUserRedux } from "../../lib";
-import nextApi from "../../services/nextApi";
-import { EmptyList } from "../../utils/constants";
+import { withLoginUser, withLoginUserRedux } from "lib";
+import nextApi from "services/nextApi";
+import { EmptyList } from "utils/constants";
 import styled from "styled-components";
-import PlusIcon from "../../public/imgs/icons/plusInCircle.svg";
-import LayoutFixedHeader from "../../components/layoutFixedHeader";
+import PlusIcon from "public/imgs/icons/plusInCircle.svg";
+import LayoutFixedHeader from "components/layoutFixedHeader";
 
 const Create = styled.a`
   display: flex;
@@ -58,7 +57,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { page, chain, page_size: pageSize } = context.query;
 
   const [{ result: posts }] = await Promise.all([
-    nextApi.fetch(`${chain}/posts`, { page, pageSize: pageSize ?? 50 }),
+    nextApi.fetch(`${chain}/posts`, { page: page ?? 1, pageSize: pageSize ?? 50 }),
   ]);
 
   return {

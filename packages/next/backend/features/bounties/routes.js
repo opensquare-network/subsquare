@@ -5,25 +5,25 @@ const requireVerify = require("../../middleware/require-verify");
 
 const router = new Router();
 
-router.get("/bounties", bountyController.getPosts);
+router.get("/treasury/bounties", bountyController.getPosts);
 
-router.get("/bounties/:postId", bountyController.getPostById);
+router.get("/treasury/bounties/:postId", bountyController.getPostById);
 
-router.patch("/bounties/:postId", requireAuth, bountyController.updatePost);
+router.patch("/treasury/bounties/:postId", requireAuth, bountyController.updatePost);
 
-router.post("/bounties/:postId/comments", requireAuth, requireVerify, bountyController.postComment);
+router.post("/treasury/bounties/:postId/comments", requireAuth, requireVerify, bountyController.postComment);
 
-router.get("/bounties/:postId/comments", bountyController.getComments);
+router.get("/treasury/bounties/:postId/comments", bountyController.getComments);
 
 router.put(
-  "/bounties/:postId/reaction",
+  "/treasury/bounties/:postId/reaction",
   requireAuth,
   requireVerify,
   bountyController.setPostReaction
 );
 
 router.delete(
-  "/bounties/:postId/reaction",
+  "/treasury/bounties/:postId/reaction",
   requireAuth,
   bountyController.unsetPostReaction
 );

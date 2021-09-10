@@ -5,10 +5,10 @@ import DetailItem from "components/detailItem";
 import Comments from "components/comment";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
-import { EmptyList } from "../../../utils/constants";
+import { EmptyList } from "utils/constants";
 import Input from "components/comment/input";
 import { useState, useRef, useEffect } from "react";
-import LayoutFixedHeader from "../../../components/layoutFixedHeader";
+import LayoutFixedHeader from "components/layoutFixedHeader";
 import MetaData from "components/tip/metaData";
 import { getTimelineStatus, getNode, toPrecision } from "utils";
 import Timeline from "components/timeline";
@@ -152,13 +152,13 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">
-        <Back href={`/${chain}/tips`} text="Back to Tips" />
+        <Back href={`/${chain}/treasury/tips`} text="Back to Tips" />
         <DetailItem
           data={detail}
           user={loginUser}
           chain={chain}
           onReply={focusEditor}
-          type="tip"
+          type="treasury/tip"
         />
         <MetaData
           metadata={{
@@ -185,7 +185,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
               ref={editorWrapperRef}
               setQuillRef={setQuillRef}
               {...{ contentType, setContentType, content, setContent, users }}
-              type="tip"
+              type="treasury/tip"
             />
           )}
         </CommentsWrapper>
@@ -198,7 +198,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { chain, id, page, page_size: pageSize } = context.query;
 
   const [{ result: detail }] = await Promise.all([
-    nextApi.fetch(`${chain}/tips/${id}`),
+    nextApi.fetch(`${chain}/treasury/tips/${id}`),
   ]);
 
   if (!detail) {
@@ -212,7 +212,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   }
 
   const { result: comments } = await nextApi.fetch(
-    `${chain}/tips/${detail._id}/comments`,
+    `${chain}/treasury/tips/${detail._id}/comments`,
     {
       page: page ?? "last",
       pageSize: Math.min(pageSize ?? 50, 100),
