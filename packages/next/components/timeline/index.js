@@ -8,9 +8,9 @@ import { timeDurationFromNow } from "utils";
 const Wrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
-  box-shadow:0 6px 7px rgba(30, 33, 52, 0.02),
-   0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-   0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
+    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 4px;
   padding: 48px;
   @media screen and (max-width: 768px) {
@@ -40,7 +40,9 @@ export default function Timeline({ data, chain }) {
     <Wrapper>
       <TitleWrapper>
         <div>Timeline</div>
-        <div>{`Last active ${timeDurationFromNow(data[data.length - 1].indexer.blockTime)}`}</div>
+        <div>{`Last active ${timeDurationFromNow(
+          data[data.length - 1]?.indexer?.blockTime
+        )}`}</div>
       </TitleWrapper>
       {data.map((item, index) => (
         <Fragment key={index}>

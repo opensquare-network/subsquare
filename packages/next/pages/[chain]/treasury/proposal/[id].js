@@ -52,6 +52,8 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   const postId = detail._id;
 
+  console.log({ detail });
+
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
@@ -75,10 +77,49 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           Beneficiary: <User chain={chain} add={args.beneficiary} />,
           Award: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
         };
-      // case ""
     }
     return args;
   };
+
+  function createMotionTimelineData(motion) {
+    return (motion.timeline || []).map((item) => {
+      switch (item.method) {
+        case "Proposed": {
+          return {
+            indexer: item.indexer,
+            time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+            status: { value: `Motion #${motion.index}`, color: "#6848FF" },
+            voting: {
+              proposer: motion.proposer,
+              method: motion.proposal.method,
+              args: motion.proposal.args,
+              total: motion.voting.threshold,
+              ayes: motion.voting.ayes.length,
+              nays: motion.voting.nays.length,
+            },
+          };
+        }
+        case "Voted": {
+          return {
+            indexer: item.indexer,
+            time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+            status: { value: "Vote", color: "#6848FF" },
+            voteResult: {
+              name: item.args.voter,
+              value: item.args.approve,
+            },
+          };
+        }
+        default: {
+          return {
+            indexer: item.indexer,
+            time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+            status: { value: item.method, color: "#6848FF" },
+          };
+        }
+      }
+    });
+  }
 
   const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
     return {
@@ -89,16 +130,23 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     };
   });
 
-  const motionTimelineData = (detail?.onchainData?.motions?.timeline || []).map(
-    (item) => {
-      return {
-        time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-        indexer: item.indexer,
-        status: getTimelineStatus("proposal", item.method ?? item.name),
-        data: getTimelineData(item.args, item.method ?? item.name),
-      };
-    }
+  const motionTimelineData = createMotionTimelineData(
+    detail?.onchainData?.motions?.[0]
   );
+
+  if (motionTimelineData && motionTimelineData.length > 0) {
+    timelineData.push(motionTimelineData);
+  }
+
+  timelineData.sort((a, b) => {
+    if (Array.isArray(a)) {
+      a = a[0];
+    }
+    if (Array.isArray(b)) {
+      b = b[0];
+    }
+    return a.indexer.blockTime - b.indexer.blockTime;
+  });
 
   useEffect(() => {
     if (!localStorage.getItem("contentType")) {
