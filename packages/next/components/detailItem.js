@@ -256,20 +256,17 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
     }
   };
 
-  const author =
-    post.author ??
-    (type === "treasury/tip" && {
-      username: addressEllipsis(post.finder),
-      addresses: [{ chain, address: post.finder }],
-    });
-
   return (
     <Wrapper>
       {!isEdit && (
         <>
           <Title>{post.title}</Title>
           <DividerWrapper>
-            <User user={author} add={post.proposer} chain={chain} />
+            <User
+              user={post.author}
+              add={post.proposer || post.finder}
+              chain={chain}
+            />
             {post.type && (
               <div>
                 <TypeWrapper color={getTypeColor(post.type)}>
