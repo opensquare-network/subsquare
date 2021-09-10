@@ -120,9 +120,9 @@ const getTypeColor = (type) => {
 export default function Post({ data, chain, href }) {
   return (
     <Wrapper>
-      {data?.index && (
+      {data?.index !== undefined && (
         <DividerWrapper style={{ marginBottom: 8 }}>
-          {data.index && <Index>{`#${data.index}`}</Index>}
+          <Index>{`#${data.index}`}</Index>
           <span style={{ fontSize: 12, color: "#506176" }}>
             {data?.proposal?.method}
           </span>
