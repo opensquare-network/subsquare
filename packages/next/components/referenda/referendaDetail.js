@@ -196,7 +196,9 @@ export default function MotionDetail({ data, chain }) {
       <Wrapper>
         <div>
           <GreyWrapper>
-            <Link href={`/${node}/proposals`}>Proposal #17</Link>
+            <Link
+              href={`/${chain}/democracy/proposal/${data.proposalIndex}`}
+            >{`Proposal #${data.proposalIndex}`}</Link>
             <svg
               width="14"
               height="14"
