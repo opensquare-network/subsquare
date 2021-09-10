@@ -1,4 +1,7 @@
 const {
+  handleBusinessWhenTechCommMotionExecuted,
+} = require("./hooks/executed");
+const {
   updateTechCommMotionByHash,
 } = require("../../../../mongo/service/onchain/techCommMotion");
 const {
@@ -6,7 +9,7 @@ const {
   TechnicalCommitteeEvents,
 } = require("../../../common/constants");
 
-async function handleExecuted(event, extrinsic, indexer) {
+async function handleExecuted(event, extrinsic, indexer, extrinsicEvents) {
   const eventData = event.data.toJSON();
   const [hash, dispatchResult] = eventData;
 
@@ -25,6 +28,14 @@ async function handleExecuted(event, extrinsic, indexer) {
     },
     indexer,
   };
+
+  if (Object.keys(dispatchResult).includes("ok")) {
+    await handleBusinessWhenTechCommMotionExecuted(
+      hash,
+      indexer,
+      extrinsicEvents
+    );
+  }
 
   const updates = { state, isFinal: true };
   await updateTechCommMotionByHash(hash, updates, timelineItem);

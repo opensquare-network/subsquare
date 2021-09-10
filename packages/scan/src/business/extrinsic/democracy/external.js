@@ -48,6 +48,7 @@ async function handleExternalPropose(call, signer, extrinsicIndexer) {
     proposalHash: hash,
     voteThreshold,
     state,
+    isFinal: false,
     timeline: [timelineItem],
   };
 

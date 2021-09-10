@@ -10,7 +10,12 @@ function isTechCommModule(section) {
   return Modules.TechnicalCommittee === section;
 }
 
-async function handleTechCommMotionEvent(event, extrinsic, indexer) {
+async function handleTechCommMotionEvent(
+  event,
+  extrinsic,
+  indexer,
+  extrinsicEvents
+) {
   const { section, method } = event;
   if (!isTechCommModule(section)) {
     return;

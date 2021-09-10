@@ -1,3 +1,4 @@
+const { handleDemocracyExternalEvent } = require("./democracy/external");
 const { handleTechCommMotionEvent } = require("./techCommMotion");
 const {
   handleReferendumEventWithoutExtrinsic,
@@ -21,7 +22,8 @@ async function handleEventWithExtrinsic(
   event,
   eventSort,
   extrinsic,
-  extrinsicIndex
+  extrinsicIndex,
+  extrinsicEvents
 ) {
   const indexer = {
     ...blockIndexer,
@@ -34,7 +36,13 @@ async function handleEventWithExtrinsic(
   await handleTreasuryProposalEvent(event, extrinsic, indexer);
   await handleMotionEvent(event, extrinsic, indexer);
   await handleReferendumEventWithExtrinsic(event, extrinsic, indexer);
-  await handleTechCommMotionEvent(event, extrinsic, indexer);
+  await handleTechCommMotionEvent(event, extrinsic, indexer, extrinsicEvents);
+  await handleDemocracyExternalEvent(
+    event,
+    extrinsic,
+    indexer,
+    extrinsicEvents
+  );
 }
 
 async function handleEventWithoutExtrinsic(
@@ -59,6 +67,12 @@ async function handleEventWithoutExtrinsic(
 }
 
 async function handleEvents(events, extrinsics, blockIndexer) {
+  const extrinsicEvents = extrinsics.map((extrinsic, index) =>
+    events.filter(
+      ({ phase }) => !phase.isNull && phase.value.toNumber() === index
+    )
+  );
+
   for (let sort = 0; sort < events.length; sort++) {
     const { event, phase } = events[sort];
 
@@ -69,12 +83,14 @@ async function handleEvents(events, extrinsics, blockIndexer) {
 
     const extrinsicIndex = phase.value.toNumber();
     const extrinsic = extrinsics[extrinsicIndex];
+    const relatedEvents = extrinsicEvents[extrinsicIndex];
     await handleEventWithExtrinsic(
       blockIndexer,
       event,
       sort,
       extrinsic,
-      extrinsicIndex
+      extrinsicIndex,
+      relatedEvents
     );
   }
 }

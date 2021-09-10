@@ -94,7 +94,7 @@ async function updateExternal(call, signer, extrinsicIndexer, events) {
   if (!hasReferendumStarted(events)) {
     await updateDemocracyExternalByHash(
       args.proposalHash,
-      { state },
+      { state, isFinal: true },
       timelineItem
     );
     return;
@@ -132,6 +132,7 @@ async function insertExternal(call, signer, extrinsicIndexer, events) {
     voteThreshold,
     authors: [signer],
     state,
+    isFinal: true,
     timeline: [timelineItem],
   };
 

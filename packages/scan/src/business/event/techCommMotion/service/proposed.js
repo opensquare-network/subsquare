@@ -1,9 +1,14 @@
 const {
+  handleBusinessWhenTechCommMotionProposed,
+} = require("./hooks/proposed");
+const {
   insertTechCommMotion,
 } = require("../../../../mongo/service/onchain/techCommMotion");
 const {
+  Modules,
   TimelineItemTypes,
   CouncilEvents,
+  DemocracyMethods,
 } = require("../../../common/constants");
 const {
   getTechCommMotionVotingFromStorage,
@@ -11,6 +16,24 @@ const {
 const {
   getTechCommMotionProposalCall,
 } = require("../../../common/techComm/proposalStorage");
+
+function extractBusinessFields(proposal = {}) {
+  const { section, method, args } = proposal;
+
+  if (Modules.Democracy === section) {
+    const fields = {
+      isDemocracy: true,
+    };
+
+    if ([DemocracyMethods.fastTrack].includes(method)) {
+      fields["externalProposalHash"] = args[0].value;
+    }
+
+    return fields;
+  }
+
+  return {};
+}
 
 async function handleProposed(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();
@@ -45,7 +68,7 @@ async function handleProposed(event, extrinsic, indexer) {
     index: motionIndex,
     threshold,
     authors,
-    // ...extractBusinessFields(proposal),
+    ...extractBusinessFields(proposal),
     proposal,
     voting,
     isFinal: false,
@@ -53,6 +76,7 @@ async function handleProposed(event, extrinsic, indexer) {
     timeline: [timelineItem],
   };
 
+  await handleBusinessWhenTechCommMotionProposed(obj, indexer);
   await insertTechCommMotion(obj);
 }
 
