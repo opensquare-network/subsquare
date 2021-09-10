@@ -51,7 +51,7 @@ const Content = styled.div`
   word-break: break-all;
 `;
 
-function MetaData({ metadata, chain, indexer }) {
+function MetaData({ metadata, chain }) {
   if (!metadata) {
     return null;
   }
@@ -73,14 +73,22 @@ function MetaData({ metadata, chain, indexer }) {
         <Header>Finder</Header>
         <Content>
           <User chain={chain} add={metadata.finder} fontSize={14} />
-          <Links chain={chain} indexer={indexer} style={{ marginLeft: 8 }} />
+          <Links
+            chain={chain}
+            address={metadata.finder}
+            style={{ marginLeft: 8 }}
+          />
         </Content>
       </Row>
       <Row>
         <Header>Beneficiary</Header>
         <Content>
           <User chain={chain} add={metadata.who} fontSize={14} />
-          <Links chain={chain} indexer={indexer} style={{ marginLeft: 8 }} />
+          <Links
+            chain={chain}
+            address={metadata.who}
+            style={{ marginLeft: 8 }}
+          />
         </Content>
       </Row>
     </Wrapper>

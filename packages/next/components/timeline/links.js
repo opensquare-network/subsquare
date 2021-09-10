@@ -40,15 +40,23 @@ const PolkassemblyLink = styled.a`
   }
 `;
 
-export default function Links({ chain = "", indexer = "", style = {} }) {
-  console.log({ indexer });
+export default function Links({
+  chain = "",
+  indexer = "",
+  style = {},
+  address,
+}) {
   if (chain === "karura") {
     return (
       <Wrapper style={style}>
         <SubscanLink
-          href={`https://${chain}.subscan.io/extrinsic/${indexer.blockHeight}-${
-            indexer.extrinsicIndex ?? indexer.index
-          }`}
+          href={
+            address
+              ? `https://${chain}.subscan.io/account/${address}`
+              : `https://${chain}.subscan.io/extrinsic/${indexer.blockHeight}-${
+                  indexer.extrinsicIndex ?? indexer.index
+                }`
+          }
           target="_blank"
           rel="noreferrer"
         />
@@ -58,16 +66,24 @@ export default function Links({ chain = "", indexer = "", style = {} }) {
   return (
     <Wrapper style={style}>
       <PolkascanLink
-        href={`https://polkascan.io/${chain}/extrinsic/${indexer.blockHeight}-${
-          indexer.extrinsicIndex ?? indexer.index
-        }`}
+        href={
+          address
+            ? `https://polkascan.io/${chain}/account/${address}`
+            : `https://polkascan.io/${chain}/extrinsic/${indexer.blockHeight}-${
+                indexer.extrinsicIndex ?? indexer.index
+              }`
+        }
         target="_blank"
         rel="noreferrer"
       />
       <SubscanLink
-        href={`https://${chain}.subscan.io/extrinsic/${indexer.blockHeight}-${
-          indexer.extrinsicIndex ?? indexer.index
-        }`}
+        href={
+          address
+            ? `https://${chain}.subscan.io/account/${address}`
+            : `https://${chain}.subscan.io/extrinsic/${indexer.blockHeight}-${
+                indexer.extrinsicIndex ?? indexer.index
+              }`
+        }
         target="_blank"
         rel="noreferrer"
       />

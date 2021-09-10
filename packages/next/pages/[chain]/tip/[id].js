@@ -44,7 +44,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   }
 
   const postId = detail._id;
-  console.log({ detail });
 
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
@@ -166,7 +165,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
             ...detail.onchainData?.meta,
             hash: detail.onchainData?.hash,
           }}
-          indexer={detail.indexer}
           chain={chain}
         />
         {timelineData && timelineData.length > 0 && (

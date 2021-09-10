@@ -52,7 +52,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   const postId = detail._id;
 
-  console.log(detail);
+  console.log({ detail });
 
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
