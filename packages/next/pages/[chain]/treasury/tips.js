@@ -20,13 +20,17 @@ export default withLoginUserRedux(({ loginUser, tips, chain }) => {
     hash: tip.hash,
     status: tip.state
       ? tip.state.state === "Tipping"
-      ? `Tipping (${tip.state.tipsCount})`
-      : tip.state.state
+        ? `Tipping (${tip.state.tipsCount})`
+        : tip.state.state
       : "Unknown",
   }));
 
   return (
-    <LayoutFixedHeader user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+    <LayoutFixedHeader
+      user={loginUser}
+      left={<Menu menu={mainMenu} />}
+      chain={chain}
+    >
       <List
         chain={chain}
         category={"Tips"}
@@ -46,7 +50,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { page, chain, page_size: pageSize } = context.query;
 
   const [{ result: tips }] = await Promise.all([
-    nextApi.fetch(`${chain}/treasury/tips`, { page: page ?? 1, pageSize: pageSize ?? 50 }),
+    nextApi.fetch(`${chain}/treasury/tips`, {
+      page: page ?? 1,
+      pageSize: pageSize ?? 50,
+    }),
   ]);
 
   return {
