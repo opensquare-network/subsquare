@@ -29,8 +29,6 @@ const DividerWrapper = styled.div`
   > span {
     display: inline-block;
     height: 12px;
-    position: relative;
-    top: -3px;
   }
   > :not(:first-child) {
     ::before {
