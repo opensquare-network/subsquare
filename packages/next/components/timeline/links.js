@@ -54,7 +54,7 @@ export default function Links({
             address
               ? `https://${chain}.subscan.io/account/${address}`
               : `https://${chain}.subscan.io/extrinsic/${indexer.blockHeight}-${
-                  indexer.extrinsicIndex ?? indexer.index
+                  indexer.extrinsicIndex ?? indexer.index ?? 0
                 }`
           }
           target="_blank"
@@ -70,7 +70,7 @@ export default function Links({
           address
             ? `https://polkascan.io/${chain}/account/${address}`
             : `https://polkascan.io/${chain}/extrinsic/${indexer.blockHeight}-${
-                indexer.extrinsicIndex ?? indexer.index
+                indexer.extrinsicIndex ?? indexer.index ?? 0
               }`
         }
         target="_blank"
@@ -81,7 +81,7 @@ export default function Links({
           address
             ? `https://${chain}.subscan.io/account/${address}`
             : `https://${chain}.subscan.io/extrinsic/${indexer.blockHeight}-${
-                indexer.extrinsicIndex ?? indexer.index
+                indexer.extrinsicIndex ?? indexer.index ?? 0
               }`
         }
         target="_blank"

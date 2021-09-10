@@ -32,6 +32,7 @@ export default function List({
   items,
   pagination,
   create = null,
+  type = null,
 }) {
   return (
     <Wrapper>
@@ -52,7 +53,11 @@ export default function List({
             href = `/${chain}/treasury/tip/${item.height}_${item.hash}`;
           }
           if (category === "Proposals") {
-            href = `/${chain}/treasury/proposal/${item.proposalIndex}`;
+            if (type === "democracy") {
+              href = `/${chain}/democracy/proposal/${item.proposalIndex}`;
+            } else {
+              href = `/${chain}/treasury/proposal/${item.proposalIndex}`;
+            }
           }
           return <Post key={index} data={item} chain={chain} href={href} />;
         })
