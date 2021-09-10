@@ -204,7 +204,7 @@ export default function MotionDetail({ data, chain }) {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <g clip-path="url(#clip0)">
+              <g clipPath="url(#clip0)">
                 <path
                   d="M5.2002 3.46671C5.2002 3.05175 5.66997 2.84393 5.94472 3.13736L8.94472 6.34129C9.28536 6.70509 9.28535 7.29491 8.94472 7.65871L5.94472 10.8626C5.66997 11.1561 5.2002 10.9483 5.2002 10.5333L5.2002 3.46671Z"
                   fill="#9DA9BB"
@@ -219,13 +219,12 @@ export default function MotionDetail({ data, chain }) {
             <span>Referenda #{data.index}</span>
           </GreyWrapper>
           <DividerWrapper style={{ marginBottom: 12 }}>
-            <Index>{`#${data.index}`}</Index>
-            <span style={{ fontSize: 12, color: "#506176" }}>Method</span>
+            {data.index && <Index>{`#${data.index}`}</Index>}
+            {data.method && (
+              <span style={{ fontSize: 12, color: "#506176" }}>Method</span>
+            )}
           </DividerWrapper>
-          <Title>
-            Malesuada placerat vestibulum adipiscing vestibulum facilisis
-            mauris. Lectus praesent in egestas dictumst ligula in est.
-          </Title>
+          <Title>{data.title}</Title>
           <FlexWrapper>
             <DividerWrapper>
               <User

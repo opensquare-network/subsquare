@@ -30,6 +30,7 @@ const DividerWrapper = styled.div`
     display: inline-block;
     height: 12px;
   }
+
   > :not(:first-child) {
     ::before {
       content: "·";
@@ -127,9 +128,11 @@ export default function Post({ data, chain, href }) {
       {data?.index !== undefined && (
         <DividerWrapper style={{ marginBottom: 8 }}>
           <Index>{`#${data.index}`}</Index>
-          <span style={{ fontSize: 12, color: "#506176" }}>
-            {data?.proposal?.method}
-          </span>
+          {data?.proposal?.method && (
+            <span style={{ fontSize: 12, color: "#506176" }}>
+              {data?.proposal?.method}
+            </span>
+          )}
         </DividerWrapper>
       )}
 

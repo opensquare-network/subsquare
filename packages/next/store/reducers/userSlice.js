@@ -17,7 +17,13 @@ const userSlice = createSlice({
 export const { setUser } = userSlice.actions;
 
 export const fetchUserProfile = () => async (dispatch) => {
-  const { result } = await nextApi.fetch("user/profile");
+  const { result } = await nextApi.fetch(
+    "user/profile",
+    {},
+    {
+      credentials: true,
+    }
+  );
   if (result) dispatch(setUser(result));
 };
 

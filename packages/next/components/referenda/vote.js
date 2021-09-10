@@ -136,9 +136,9 @@ function Vote() {
             <path
               d="M12.4933 3.1543L5.16868 10.8452L1.50635 6.99991"
               stroke="#4CAF50"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
           Aye
@@ -158,8 +158,8 @@ function Vote() {
             <path
               d="M2.50439 2.50391L7.00023 6.99975M7.00023 6.99975L11.4961 11.4956M7.00023 6.99975L11.4961 2.50391M7.00023 6.99975L2.50439 11.4956"
               stroke="#F44336"
-              stroke-width="1.5"
-              stroke-linecap="round"
+              strokeWidth="1.5"
+              strokeLinecap="round"
             />
           </svg>
           Nay
