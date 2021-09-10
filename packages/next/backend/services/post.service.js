@@ -110,7 +110,7 @@ function createService(postType) {
 
     if (page === "last") {
       const totalPages = Math.ceil(total / pageSize);
-      page = totalPages;
+      page = Math.max(totalPages, 1);
     }
 
     const posts = await postCol.find({})
@@ -385,7 +385,7 @@ function createService(postType) {
 
     if (page === "last") {
       const totalPages = Math.ceil(total / pageSize);
-      page = totalPages;
+      page = Math.max(totalPages, 1);
     }
 
     const comments = await commentCol.find(q)

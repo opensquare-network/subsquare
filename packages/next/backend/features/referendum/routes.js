@@ -5,25 +5,25 @@ const requireVerify = require("../../middleware/require-verify");
 
 const router = new Router();
 
-router.get("/referendum", proposalController.getPosts);
+router.get("/democracy/referendum", proposalController.getPosts);
 
-router.get("/referendum/:postId", proposalController.getPostById);
+router.get("/democracy/referendum/:postId", proposalController.getPostById);
 
-router.patch("/referendum/:postId", requireAuth, proposalController.updatePost);
+router.patch("/democracy/referendum/:postId", requireAuth, proposalController.updatePost);
 
-router.post("/referendum/:postId/comments", requireAuth, requireVerify, proposalController.postComment);
+router.post("/democracy/referendum/:postId/comments", requireAuth, requireVerify, proposalController.postComment);
 
-router.get("/referendum/:postId/comments", proposalController.getComments);
+router.get("/democracy/referendum/:postId/comments", proposalController.getComments);
 
 router.put(
-  "/referendum/:postId/reaction",
+  "/democracy/referendum/:postId/reaction",
   requireAuth,
   requireVerify,
   proposalController.setPostReaction
 );
 
 router.delete(
-  "/referendum/:postId/reaction",
+  "/democracy/referendum/:postId/reaction",
   requireAuth,
   proposalController.unsetPostReaction
 );

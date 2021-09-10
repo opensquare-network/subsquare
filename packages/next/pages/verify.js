@@ -70,8 +70,6 @@ export default withLoginUserRedux(({
   const [countdown, setCountdown] = useState(3);
   const isMounted = useIsMounted();
 
-  console.log({ email, token });
-
   useEffect(() => {
     if (email && token) {
       setLoading(true);

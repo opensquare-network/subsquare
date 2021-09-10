@@ -55,8 +55,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const [{ result: discussions }, { result: tips }, { result: proposals }] =
     await Promise.all([
       nextApi.fetch(`${chain}/posts`, { page, pageSize }),
-      nextApi.fetch(`${chain}/tips`, { page, pageSize }),
-      nextApi.fetch(`${chain}/proposals`, { page, pageSize }),
+      nextApi.fetch(`${chain}/treasury/tips`, { page, pageSize }),
+      nextApi.fetch(`${chain}/treasury/proposals`, { page, pageSize }),
     ]);
 
   return {
