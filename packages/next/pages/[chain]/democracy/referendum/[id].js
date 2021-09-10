@@ -44,6 +44,7 @@ const CommentsWrapper = styled.div`
 `;
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+  console.log(detail);
   const node = getNode(chain);
   if (!node) {
     return null;
@@ -120,7 +121,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           type="democracy/referenda"
         />
 
-        <Vote />
+        <Vote referendum={detail.democracyReferendum} />
 
         <KVList
           title={"Metadata"}

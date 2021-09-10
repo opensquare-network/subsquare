@@ -45,13 +45,12 @@ const Button = styled.button`
   border-radius: 4px;
   font-size: 14px;
   font-weight: 500;
-  cursor: pointer;
+  cursor: default;
 `;
 
 const PassButton = styled(Button)`
   color: #4caf50;
   background: #edf7ed;
-  margin-bottom: 16px;
 `;
 
 const RejectButton = styled(Button)`
@@ -82,7 +81,7 @@ const Header = styled.span`
   }
 `;
 
-function Vote() {
+function Vote({ referendum }) {
   return (
     <Wrapper>
       <Title>Votes</Title>
@@ -166,9 +165,10 @@ function Vote() {
         </Header>
         <span>232 KSM</span>
       </Row>
-
-      <PassButton>Passing</PassButton>
-      <RejectButton>Reject</RejectButton>
+      {referendum?.info?.finished?.approved && <PassButton>Passing</PassButton>}
+      {referendum?.info?.finished?.approved === false && (
+        <RejectButton>Reject</RejectButton>
+      )}
     </Wrapper>
   );
 }
