@@ -92,6 +92,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
             insert: {
               mention: {
                 index: "0",
+
                 denotationChar: "@",
                 id: username,
                 value: username + " &nbsp; ",

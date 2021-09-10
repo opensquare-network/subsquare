@@ -5,13 +5,13 @@ import { setUser, userSelector } from "../store/reducers/userSlice";
 import { useEffect, useLayoutEffect } from "react";
 
 const useIsomorphicLayoutEffect =
-  typeof window !== 'undefined' ? useLayoutEffect : useEffect
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 export function withLoginUser(getServerSideProps) {
   return async function (context) {
     const propsPromise = getServerSideProps(context);
 
-    let options = undefined;
+    let options = { credentials: true };
     const cookies = new Cookies(context.req, context.res);
     const authToken = cookies.get("auth-token");
     if (authToken) {
@@ -47,7 +47,7 @@ export function withLoginUserRedux(fnComponent) {
     const storeUser = useSelector(userSelector);
     return fnComponent({
       loginUser: storeUser === undefined ? loginUser : storeUser,
-      ...props
+      ...props,
     });
   };
 }

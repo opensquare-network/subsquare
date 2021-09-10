@@ -5,17 +5,19 @@ import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import LayoutFixedHeader from "components/layoutFixedHeader";
+import { addressEllipsis } from "../../../utils";
 
 export default withLoginUserRedux(({ loginUser, posts, chain }) => {
   const items = (posts.items || []).map((post) => ({
-    title: "batchAll",
+    title: post.title,
     type: "Democracy",
-    status: "Proposed",
-    author: post.author,
-    postUid: post.postUid,
-    commentsCount: 1,
-    remaining: 3661,
-    index: 1,
+    status: post.state,
+    commentsCount: post.commentsCount,
+    index: post.referendumIndex,
+    author: post.author ?? {
+      username: addressEllipsis(post.proposer),
+      addresses: [{ chain, address: post.proposer }],
+    },
   }));
 
   return (
@@ -43,7 +45,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { page, chain, page_size: pageSize } = context.query;
 
   const [{ result: posts }] = await Promise.all([
-    nextApi.fetch(`${chain}/posts`, { page: page ?? 1, pageSize: pageSize ?? 50 }),
+    nextApi.fetch(`${chain}/democracy/referendums`, {
+      page: page ?? 1,
+      pageSize: pageSize ?? 50,
+    }),
   ]);
 
   return {
