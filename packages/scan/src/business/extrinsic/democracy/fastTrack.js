@@ -190,6 +190,7 @@ async function insertReferendum(event, extrinsicIndexer, externalProposalHash) {
 
   await insertDemocracyReferendum(obj);
   await updateDemocracyExternalByHash(externalProposalHash, {
+    isFinal: true,
     referendumIndex,
   });
   await updateOrCreatePostByReferendumWithExternal(
