@@ -8,7 +8,8 @@ const { HttpError } = require("../exc");
 const { ContentType } = require("../constants");
 const { toUserPublicInfo } = require("../utils/user");
 
-function createService(proposalType, indexField) {
+function createService(proposalType, indexField, localField) {
+  localField = localField || indexField;
 
   async function getChainDemocracyCollection(chain) {
     const chainDb = await getChainDb(chain);
@@ -32,7 +33,7 @@ function createService(proposalType, indexField) {
 
     const chainProposalCol = await getChainDemocracyCollection(chain);
     const chainProposal = await chainProposalCol.findOne({
-      [indexField]: post[indexField],
+      [indexField]: post[localField],
     });
 
     if (!chainProposal) {
@@ -72,7 +73,7 @@ function createService(proposalType, indexField) {
   }
 
   async function getPostsByChain(chain, page, pageSize) {
-    const q = { [indexField]: {$ne: null} };
+    const q = { [localField]: {$ne: null} };
 
     const postCol = await getDemocracyCollection(chain);
     const total = await postCol.countDocuments(q);
@@ -111,7 +112,7 @@ function createService(proposalType, indexField) {
         from: proposalType,
         for: posts,
         as: "state",
-        localField: indexField,
+        localField: localField,
         foreignField: indexField,
         projection: { state: 1 },
         map: (data) => data.state?.state,
@@ -130,8 +131,12 @@ function createService(proposalType, indexField) {
     const q = {};
     if (ObjectId.isValid(postId)) {
       q._id = ObjectId(postId);
+    } else if (postId.startsWith("0x")) {
+      q[localField] = postId;
+    } else if (!isNaN(postId)) {
+      q[localField] = parseInt(postId);
     } else {
-      q[indexField] = parseInt(postId);
+      q[localField] = postId;
     }
 
     const postCol = await getDemocracyCollection(chain);
@@ -153,7 +158,7 @@ function createService(proposalType, indexField) {
         localField: "_id",
         foreignField: "democracy",
       }),
-      chainProposalCol.findOne({ [indexField]: post[indexField] }),
+      chainProposalCol.findOne({ [indexField]: post[localField] }),
     ]);
 
     await lookupUser({ for: reactions, localField: "user" });
