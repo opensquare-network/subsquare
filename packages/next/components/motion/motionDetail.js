@@ -8,6 +8,7 @@ import MotionProposal from "./motionProposal";
 import Links from "../timeline/links";
 import Timeline from "../timeline";
 import { getNode, toPrecision } from "utils";
+import AccountLinks from "../timeline/accountLinks";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -249,7 +250,7 @@ export default function MotionDetail({ motion, chain }) {
             "Proposer",
             <>
               <User add={motion.proposer} fontSize={14} />
-              <Links
+              <AccountLinks
                 chain={chain}
                 address={motion.proposer}
                 style={{ marginLeft: 8 }}
