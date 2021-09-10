@@ -86,7 +86,7 @@ const TypeWrapper = styled.div`
   line-height: 20px;
   border-radius: 10px;
   background: #1e2134;
-  color: #ffffff;
+  color: #e81f66;
   font-weight: 500;
   font-size: 12px;
   padding: 0 8px;
@@ -190,7 +190,7 @@ const ReferendaWrapper = styled.div`
   > svg {
     fill: #9da9bb;
   }
-  > :last-child {
+  a {
     color: #1f70c7;
   }
   > :not(:first-child) {
@@ -200,6 +200,8 @@ const ReferendaWrapper = styled.div`
 
 const getTypeColor = (type) => {
   switch (type) {
+    case "Democracy":
+      return "linear-gradient(0deg, #FEF4F7, #FEF4F7), #E81F66";
     case "Council":
       return "#E81F66";
     case "Treasury":
@@ -293,6 +295,19 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                 >
                   {`Referenda #${post.referendumIndex}`}
                 </Link>
+              </div>
+            </ReferendaWrapper>
+          )}
+          {type === "democracy/referenda" && (
+            <ReferendaWrapper>
+              <Link
+                href={`/${chain}/democracy/proposal/${post.referendumIndex}`}
+              >
+                {`Proposal #${post.referendumIndex}`}
+              </Link>
+              <TriangleRight />
+              <div>
+                <div>{`Referenda #${post.proposalIndex}`}</div>
               </div>
             </ReferendaWrapper>
           )}

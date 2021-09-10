@@ -5,10 +5,20 @@ import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import LayoutFixedHeader from "components/layoutFixedHeader";
-import ReferendaDetail from "components/referenda/referendaDetail";
 import Comments from "../../../../components/comment";
 import Input from "../../../../components/comment/input";
 import { useRef, useState } from "react";
+import DetailItem from "../../../../components/detailItem";
+import KVList from "../../../../components/kvList";
+import User from "../../../../components/user";
+import Links from "../../../../components/timeline/links";
+import { getNode, toPrecision } from "../../../../utils";
+import Vote from "../../../../components/referenda/vote";
+
+const Flex = styled.div`
+  display: flex;
+  align-items: center; ;
+`;
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -34,6 +44,12 @@ const CommentsWrapper = styled.div`
 `;
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+  const node = getNode(chain);
+  if (!node) {
+    return null;
+  }
+  const decimals = node.decimals;
+  const symbol = node.symbol;
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
@@ -71,23 +87,61 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     focusEditor();
   };
 
+  const focusEditor = () => {
+    if (contentType === "markdown") {
+      editorWrapperRef.current?.querySelector("textarea")?.focus();
+    } else if (contentType === "html") {
+      setTimeout(() => {
+        quillRef.current.getEditor().setSelection(99999, 0, "api"); //always put caret to the end
+      }, 4);
+    }
+    editorWrapperRef.current?.scrollIntoView();
+  };
+
+  console.log(detail);
+
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">
-        <Back href={`/${chain}/referendas`} text="Back to Referendas" />
-        <ReferendaDetail
+        <Back
+          href={`/${chain}/democracy/referendums`}
+          text="Back to Referendas"
+        />
+        <DetailItem
           data={{
             type: "Democracy",
-            status: "Started",
             index: detail.referendumIndex,
-            remaining: 3661,
             ...detail,
             commentsCount: comments.total,
           }}
+          onReply={focusEditor}
           user={loginUser}
           chain={chain}
-          type="referenda"
+          type="democracy/referenda"
         />
+
+        <Vote />
+
+        <KVList
+          title={"Metadata"}
+          data={[
+            [
+              "Proposer",
+              <>
+                <User add={detail.proposer} fontSize={14} />
+                <Links
+                  chain={chain}
+                  address={detail.proposer}
+                  style={{ marginLeft: 8 }}
+                />
+              </>,
+            ],
+            ["Index", detail.index],
+            ["Threshold", detail.threshold],
+            ["Hash", detail.hash],
+          ]}
+        />
+
         <CommentsWrapper>
           <Comments
             data={comments}
