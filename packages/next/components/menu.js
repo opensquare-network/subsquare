@@ -6,6 +6,7 @@ import TipIcon from "../public/imgs/icons/tips.svg";
 import ProposalIcon from "../public/imgs/icons/proposals.svg";
 import MotionIcon from "../public/imgs/icons/type-motions.svg";
 import ReferendaIcon from "../public/imgs/icons/type-referenda.svg";
+import DemocracyProposalIcon from "../public/imgs/icons/type-proposals.svg";
 
 const Wrapper = styled.div`
   padding-top: 37px;
@@ -38,11 +39,10 @@ const Item = styled.div`
 
     > svg {
       * {
-        fill: #6848FF;
+        fill: #6848ff;
       }
     }
   }
-
 
   > div {
     flex: 1 1 auto;
@@ -53,30 +53,31 @@ const Item = styled.div`
   }
 
   ${(p) =>
-          p.active &&
-          css`
-            font-weight: 600;
-            background: #ebeef4;
-            color: #6848ff;
+    p.active &&
+    css`
+      font-weight: 600;
+      background: #ebeef4;
+      color: #6848ff;
 
-            > svg {
-              * {
-                fill: #6848FF;
-              }
-            }
-          `}
+      > svg {
+        * {
+          fill: #6848ff;
+        }
+      }
+    `}
 `;
 
-export default function Menu({menu}) {
+export default function Menu({ menu }) {
   const router = useRouter();
 
   const iconMap = new Map([
-    ['Overview', <OverviewIcon/>],
-    ['Discussions', <DiscussionIcon/>],
-    ['Tips', <TipIcon/>],
-    ['Proposals', <ProposalIcon/>],
-    ['Motions', <MotionIcon/>],
-    ['Referenda', <ReferendaIcon/>],
+    ["overview", <OverviewIcon />],
+    ["discussions", <DiscussionIcon />],
+    ["tips", <TipIcon />],
+    ["proposals", <ProposalIcon />],
+    ["motions", <MotionIcon />],
+    ["referenda", <ReferendaIcon />],
+    ["democracyProposals", <DemocracyProposalIcon />],
   ]);
 
   return (
@@ -87,13 +88,16 @@ export default function Menu({menu}) {
           {item.items.map((item, index) => (
             <Item
               key={index}
-              active={router.pathname === item.pathname || (router.pathname === '/[chain]' && item.pathname === '/')}
+              active={
+                router.pathname === item.pathname ||
+                (router.pathname === "/[chain]" && item.pathname === "/")
+              }
               onClick={() => {
                 if (item.pathname) {
                   if (item.pathname.startsWith("/[chain]")) {
                     router.push({
                       pathname: item.pathname,
-                      query: {chain: router.query.chain},
+                      query: { chain: router.query.chain },
                     });
                   } else {
                     router.push(item.pathname);
@@ -101,7 +105,7 @@ export default function Menu({menu}) {
                 }
               }}
             >
-              {iconMap.get(item.name)}
+              {iconMap.get(item.value)}
               <div>{item.name}</div>
             </Item>
           ))}

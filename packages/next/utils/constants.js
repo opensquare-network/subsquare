@@ -121,11 +121,12 @@ export const mainMenu = [
   {
     name: "DEMOCRACY",
     items: [
-      // {
-      //   value: "external",
-      //   name: "Externals",
-      //   icon: "type-proposals.svg",
-      // },
+      {
+        value: "democracyProposals",
+        name: "Proposals",
+        icon: "type-proposals.svg",
+        pathname: "/[chain]/democracy/proposals",
+      },
       {
         value: "referenda",
         name: "Referenda",

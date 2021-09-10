@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import { useState } from "react";
+import Link from "next/link";
 
 import { timeDurationFromNow, addressEllipsis } from "utils";
 import Markdown from "components/markdown";
@@ -11,6 +12,7 @@ import { addToast } from "store/reducers/toastSlice";
 import User from "components/user";
 import { useDispatch } from "react-redux";
 import EditIcon from "../public/imgs/icons/edit.svg";
+import TriangleRight from "../public/imgs/icons/arrow-triangle-right.svg";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -175,6 +177,27 @@ const Edit = styled.div`
   }
 `;
 
+const ReferendaWrapper = styled.div`
+  padding: 12px;
+  background: #f6f7fa;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  color: #506176;
+  > svg {
+    fill: #9da9bb;
+  }
+  > :last-child {
+    color: #1f70c7;
+  }
+  > :not(:first-child) {
+    margin-left: 8px;
+  }
+`;
+
 const getTypeColor = (type) => {
   switch (type) {
     case "Council":
@@ -260,6 +283,19 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
     <Wrapper>
       {!isEdit && (
         <>
+          {type === "democracy/proposal" && (
+            <ReferendaWrapper>
+              <div>{`Proposal #${post.proposalIndex}`}</div>
+              <TriangleRight />
+              <div>
+                <Link
+                  href={`/${chain}/democracy/referendum/${post.referendumIndex}`}
+                >
+                  {`Referenda #${post.referendumIndex}`}
+                </Link>
+              </div>
+            </ReferendaWrapper>
+          )}
           <Title>{post.title}</Title>
           <DividerWrapper>
             <User
