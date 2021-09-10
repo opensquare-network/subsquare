@@ -165,11 +165,7 @@ export default function Item({ data, foldable, isFold, setIsFold, chain }) {
             Object.entries(data.data).map((item, index) => (
               <ContentItem key={index}>
                 <div>{item[0]}</div>
-                {/* {typeof item[1] === "string" ? ( */}
                 <div>{item[1]}</div>
-                {/* ) : item[1].type === "account" ? (
-                  <Account name={item[1].name} />
-                ) : null} */}
               </ContentItem>
             ))}
         </ContentWrapper>
