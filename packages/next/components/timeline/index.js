@@ -14,8 +14,8 @@ const Wrapper = styled.div`
   border-radius: 4px;
   padding: 48px;
   @media screen and (max-width: 768px) {
+    max-width: 100%;
     padding: 24px;
-    margin: 0 -16px;
     border-radius: 0;
   }
 `;
