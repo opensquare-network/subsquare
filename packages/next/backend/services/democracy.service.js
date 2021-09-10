@@ -3,7 +3,7 @@ const { safeHtml } = require("../utils/post");
 const { PostTitleLengthLimitation } = require("../constants");
 const { getDb: getBusinessDb, getDemocracyCollection } = require("../mongo/business");
 const { getDb: getChainDb } = require("../mongo/chain");
-const { getDb: getCommonDb, lookupUser } = require("../mongo/common");
+const { getDb: getCommonDb, lookupUser, getUserCollection } = require("../mongo/common");
 const { HttpError } = require("../exc");
 const { ContentType } = require("../constants");
 const { toUserPublicInfo } = require("../utils/user");
@@ -92,6 +92,14 @@ function createService(proposalType, indexField) {
     const businessDb = await getBusinessDb(chain);
     const chainDb = await getChainDb(chain);
     await Promise.all([
+      commonDb.lookupOne({
+        from: "user",
+        for: posts,
+        as: "author",
+        localField: "proposer",
+        foreignField: `${chain}Address`,
+        map: toUserPublicInfo,
+      }),
       businessDb.lookupCount({
         from: "comment",
         for: posts,
@@ -133,10 +141,11 @@ function createService(proposalType, indexField) {
       throw new HttpError(404, "Post not found");
     }
 
-    const commonDb = await getCommonDb(chain);
+    const userCol = await getUserCollection(chain);
     const businessDb = await getBusinessDb(chain);
     const chainProposalCol = await getChainDemocracyCollection(chain);
-    const [reactions, chanProposalData] = await Promise.all([
+    const [author, reactions, chanProposalData] = await Promise.all([
+      post.proposer ? userCol.findOne({ [`${chain}Address`]: post.proposer }) : null,
       businessDb.lookupMany({
         from: "reaction",
         for: post,
@@ -151,6 +160,7 @@ function createService(proposalType, indexField) {
 
     return {
       ...post,
+      author,
       [proposalType]: chanProposalData,
     };
   }
