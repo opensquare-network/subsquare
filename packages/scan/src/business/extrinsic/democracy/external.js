@@ -45,9 +45,11 @@ async function handleExternalPropose(call, signer, extrinsicIndexer) {
   };
 
   const externalObj = {
+    indexer: extrinsicIndexer,
     proposalHash: hash,
     voteThreshold,
     state,
+    authors: [signer],
     isFinal: false,
     timeline: [timelineItem],
   };

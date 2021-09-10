@@ -34,8 +34,9 @@ async function handleBusinessWhenTechCommMotionExecuted(
   }
 
   if (!hasReferendumStarted(extrinsicEvents)) {
-    // TODO: here we should throw exception
-    return;
+    throw new Error(
+      "Tech. Comm. motion to fastTrack not table externalProposal"
+    );
   }
 
   const referendumStartedEvent = extrinsicEvents.find(
@@ -93,7 +94,7 @@ async function handleBusinessWhenTechCommMotionExecuted(
     indexer,
     referendumIndex,
     info: referendumInfo,
-    externalProposalHash,
+    externalProposalHash, // FIXME: external hash is not unique, we should find another id.
     state,
     timeline: [referendumTimelineItem],
   };
