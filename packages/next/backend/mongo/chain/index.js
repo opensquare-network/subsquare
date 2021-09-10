@@ -36,6 +36,7 @@ module.exports = {
   getTreasuryProposalCollection: (chain) => getCollection(chain, "treasuryProposal"),
   getBountyCollection: (chain) => getCollection(chain, "bounty"),
   getMotionCollection: (chain) => getCollection(chain, "motion"),
+  getTechCommMotionCollection: (chain) => getCollection(chain, "techCommMotion"),
   getPublicProposalCollection: (chain) => getCollection(chain, "democracyPublicProposal"),
   getReferendumCollection: (chain) => getCollection(chain, "democracyReferendum"),
   getExternalCollection: (chain) => getCollection(chain, "democracyExternal"),
