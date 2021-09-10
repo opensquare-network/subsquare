@@ -77,6 +77,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           Beneficiary: <User chain={chain} add={args.beneficiary} />,
           Award: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
         };
+      // case ""
     }
     return args;
   };
@@ -89,6 +90,17 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       data: getTimelineData(item.args, item.method ?? item.name),
     };
   });
+
+  const motionTimelineData = (detail?.onchainData?.motions?.timeline || []).map(
+    (item) => {
+      return {
+        time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+        indexer: item.indexer,
+        status: getTimelineStatus("proposal", item.method ?? item.name),
+        data: getTimelineData(item.args, item.method ?? item.name),
+      };
+    }
+  );
 
   useEffect(() => {
     if (!localStorage.getItem("contentType")) {

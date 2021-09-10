@@ -56,8 +56,6 @@ function MetaData({ metadata, chain }) {
     return null;
   }
 
-  console.log({ metadata });
-
   return (
     <Wrapper>
       <Title>Metadata</Title>
