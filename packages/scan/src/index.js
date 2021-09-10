@@ -18,6 +18,8 @@ const { getApi } = require("./api");
 const last = require("lodash.last");
 const { setSpecHeights } = require("./specs");
 
+const scanStep = parseInt(process.env.SCAN_STEP) || 100;
+
 async function main() {
   await updateHeight();
   let scanHeight = await getNextScanHeight();
@@ -27,8 +29,6 @@ async function main() {
     logger.error("No specHeights or invalid");
     return;
   }
-
-  let counter = 0;
 
   while (true) {
     // chainHeight is the current on-chain last block height
@@ -42,8 +42,8 @@ async function main() {
 
     let targetHeight = chainHeight;
     // Retrieve & Scan no more than 100 blocks at a time
-    if (scanHeight + 100 < chainHeight) {
-      targetHeight = scanHeight + 100;
+    if (scanHeight + scanStep < chainHeight) {
+      targetHeight = scanHeight + scanStep;
     }
 
     const specHeights = getSpecHeights();
@@ -63,6 +63,10 @@ async function main() {
         await handleOneBlockDataInDb(block);
         await updateScanHeight(block.height);
         logger.debug(`${block.height} done`);
+
+        if (block.height % 20000 === 0) {
+          process.exit(0);
+        }
       } catch (e) {
         logger.error(`Error with block scan ${block.height}`, e);
         await sleep(3000);
@@ -74,12 +78,6 @@ async function main() {
     logger.info(`blocks ${startHeight}-${destHeight} done`);
 
     scanHeight = destHeight + 1;
-    counter++;
-
-    if (counter % 200 === 0) {
-      // FIXME: this code is for memory leak
-      process.exit(0);
-    }
     await sleep(1);
   }
 }
