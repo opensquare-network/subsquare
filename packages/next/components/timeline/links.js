@@ -40,22 +40,37 @@ const PolkassemblyLink = styled.a`
   }
 `;
 
-export default function Links({
-                                chain ='',
-                                indexer = '',
-                                style = {},
-                              }) {
+export default function Links({ chain = "", indexer = "", style = {} }) {
+  console.log({ indexer });
   if (chain === "karura") {
     return (
       <Wrapper style={style}>
-        <SubscanLink href={`https://${chain}.subscan.io/extrinsic/${indexer.blockHeight}-${indexer.extrinsicIndex}`} target="_blank" rel="noreferrer"/>
+        <SubscanLink
+          href={`https://${chain}.subscan.io/extrinsic/${indexer.blockHeight}-${
+            indexer.extrinsicIndex ?? indexer.index
+          }`}
+          target="_blank"
+          rel="noreferrer"
+        />
       </Wrapper>
     );
   }
   return (
     <Wrapper style={style}>
-      <PolkascanLink href={`https://polkascan.io/${chain}/extrinsic/${indexer.blockHeight}-${indexer.extrinsicIndex}`} target="_blank" rel="noreferrer"/>
-      <SubscanLink href={`https://${chain}.subscan.io/extrinsic/${indexer.blockHeight}-${indexer.extrinsicIndex}`} target="_blank" rel="noreferrer"/>
+      <PolkascanLink
+        href={`https://polkascan.io/${chain}/extrinsic/${indexer.blockHeight}-${
+          indexer.extrinsicIndex ?? indexer.index
+        }`}
+        target="_blank"
+        rel="noreferrer"
+      />
+      <SubscanLink
+        href={`https://${chain}.subscan.io/extrinsic/${indexer.blockHeight}-${
+          indexer.extrinsicIndex ?? indexer.index
+        }`}
+        target="_blank"
+        rel="noreferrer"
+      />
     </Wrapper>
   );
 }

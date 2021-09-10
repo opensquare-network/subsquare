@@ -166,6 +166,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
             ...detail.onchainData?.meta,
             hash: detail.onchainData?.hash,
           }}
+          indexer={detail.indexer}
           chain={chain}
         />
         {timelineData && timelineData.length > 0 && (
