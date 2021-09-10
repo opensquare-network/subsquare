@@ -3,7 +3,7 @@ const { getDemocracyExternalCollection } = require("../../index");
 async function insertExternal(externalObj) {
   const col = await getDemocracyExternalCollection();
   const { proposalHash } = externalObj;
-  const maybeInDb = await col.findOne({ proposalHash });
+  const maybeInDb = await col.findOne({ proposalHash, isFinal: false });
   if (maybeInDb) {
     return;
   }
@@ -11,7 +11,7 @@ async function insertExternal(externalObj) {
   await col.insertOne(externalObj);
 }
 
-async function updateExternalByHash(proposalHash, updates, timelineItem) {
+function extractUpdate(updates, timelineItem) {
   let update = {
     $set: updates,
   };
@@ -23,8 +23,14 @@ async function updateExternalByHash(proposalHash, updates, timelineItem) {
     };
   }
 
+  return update;
+}
+
+async function updateExternalByHash(proposalHash, updates, timelineItem) {
+  const update = extractUpdate(updates, timelineItem);
+
   const col = await getDemocracyExternalCollection();
-  await col.updateOne({ proposalHash }, update);
+  await col.updateOne({ proposalHash, isFinal: false }, update);
 }
 
 module.exports = {
