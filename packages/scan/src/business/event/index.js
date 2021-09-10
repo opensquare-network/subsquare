@@ -1,3 +1,4 @@
+const { handleDemocracyExternalEvent } = require("./democracy/external");
 const { handleTechCommMotionEvent } = require("./techCommMotion");
 const {
   handleReferendumEventWithoutExtrinsic,
@@ -36,6 +37,12 @@ async function handleEventWithExtrinsic(
   await handleMotionEvent(event, extrinsic, indexer);
   await handleReferendumEventWithExtrinsic(event, extrinsic, indexer);
   await handleTechCommMotionEvent(event, extrinsic, indexer, extrinsicEvents);
+  await handleDemocracyExternalEvent(
+    event,
+    extrinsic,
+    indexer,
+    extrinsicEvents
+  );
 }
 
 async function handleEventWithoutExtrinsic(
