@@ -37,7 +37,7 @@ export default function List({
     <Wrapper>
       <Title>
         {category}
-        {create && create}
+        {create}
       </Title>
       {items?.length > 0 ? (
         items.map((item, index) => {
