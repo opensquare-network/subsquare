@@ -1,11 +1,11 @@
 import List from "components/list";
 import Menu from "components/menu";
 import { mainMenu } from "utils/constants";
-import { withLoginUser, withLoginUserRedux } from "../../lib";
-import nextApi from "../../services/nextApi";
-import { EmptyList } from "../../utils/constants";
-import { addressEllipsis } from "../../utils";
-import LayoutFixedHeader from "../../components/layoutFixedHeader";
+import { withLoginUser, withLoginUserRedux } from "../../../lib";
+import nextApi from "../../../services/nextApi";
+import { EmptyList } from "../../../utils/constants";
+import LayoutFixedHeader from "../../../components/layoutFixedHeader";
+import { addressEllipsis } from "../../../utils";
 
 export default withLoginUserRedux(({ loginUser, tips, chain }) => {
   const items = (tips.items || []).map((tip) => ({
@@ -20,13 +20,17 @@ export default withLoginUserRedux(({ loginUser, tips, chain }) => {
     hash: tip.hash,
     status: tip.state
       ? tip.state.state === "Tipping"
-      ? `Tipping (${tip.state.tipsCount})`
-      : tip.state.state
+        ? `Tipping (${tip.state.tipsCount})`
+        : tip.state.state
       : "Unknown",
   }));
 
   return (
-    <LayoutFixedHeader user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+    <LayoutFixedHeader
+      user={loginUser}
+      left={<Menu menu={mainMenu} />}
+      chain={chain}
+    >
       <List
         chain={chain}
         category={"Tips"}

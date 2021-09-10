@@ -1,12 +1,11 @@
 import List from "components/list";
-import Layout from "components/layout";
 import Menu from "components/menu";
 import { mainMenu } from "utils/constants";
-import { withLoginUser, withLoginUserRedux } from "../../lib";
-import nextApi from "../../services/nextApi";
-import { EmptyList } from "../../utils/constants";
-import { addressEllipsis } from "../../utils";
-import LayoutFixedHeader from "../../components/layoutFixedHeader";
+import { withLoginUser, withLoginUserRedux } from "../../../lib";
+import nextApi from "../../../services/nextApi";
+import { EmptyList } from "../../../utils/constants";
+import LayoutFixedHeader from "../../../components/layoutFixedHeader";
+import { addressEllipsis } from "../../../utils";
 
 export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
   const items = (proposals.items || []).map((proposal) => ({
