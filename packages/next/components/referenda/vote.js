@@ -165,9 +165,9 @@ function Vote({ referendum }) {
         </Header>
         <span>232 KSM</span>
       </Row>
-      {referendum?.info?.finished?.approved && <PassButton>Passing</PassButton>}
+      {referendum?.info?.finished?.approved && <PassButton>Passed</PassButton>}
       {referendum?.info?.finished?.approved === false && (
-        <RejectButton>Reject</RejectButton>
+        <RejectButton>Rejected</RejectButton>
       )}
     </Wrapper>
   );
