@@ -33,7 +33,24 @@ async function updateExternalByHash(proposalHash, updates, timelineItem) {
   await col.updateOne({ proposalHash, isFinal: false }, update);
 }
 
+async function getUnFinishedExternal(hash) {
+  const col = await getDemocracyExternalCollection();
+  return col.findOne({ proposalHash: hash, isFinal: false });
+}
+
+async function finishExternalByHash(hash) {
+  const col = await getDemocracyExternalCollection();
+  await col.updateOne(
+    { proposalHash: hash, isFinal: false },
+    {
+      $set: { isFinal: true },
+    }
+  );
+}
+
 module.exports = {
   insertDemocracyExternal: insertExternal,
   updateDemocracyExternalByHash: updateExternalByHash,
+  getDemocracyExternalUnFinished: getUnFinishedExternal,
+  finishExternalByHash,
 };

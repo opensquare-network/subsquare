@@ -43,6 +43,7 @@ async function handleBusinessWhenTechCommMotionProposed(
   };
 
   const externalObj = {
+    indexer,
     proposalHash: hash,
     voteThreshold,
     state,
@@ -52,7 +53,7 @@ async function handleBusinessWhenTechCommMotionProposed(
   };
 
   await insertDemocracyExternal(externalObj);
-  await insertDemocracyPostByExternal(externalProposalHash);
+  await insertDemocracyPostByExternal(externalProposalHash, indexer);
 }
 
 module.exports = {

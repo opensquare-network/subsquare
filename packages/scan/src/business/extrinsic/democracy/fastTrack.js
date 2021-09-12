@@ -1,8 +1,8 @@
 const {
-  updateOrCreatePostByReferendumWithExternal,
-} = require("../../../mongo/service/business/democracy");
-const {
+  insertDemocracyExternal,
   updateDemocracyExternalByHash,
+  finishExternalByHash,
+  getDemocracyExternalUnFinished,
 } = require("../../../mongo/service/onchain/democracyExternal");
 const {
   insertDemocracyReferendum,
@@ -10,20 +10,19 @@ const {
 const {
   getReferendumInfoFromStorage,
 } = require("../../event/democracy/common/referendumStorage");
-const { ReferendumEvents } = require("../../common/constants");
 const {
   insertDemocracyPostByExternal,
 } = require("../../../mongo/service/business/democracy");
 const {
-  insertDemocracyExternal,
-} = require("../../../mongo/service/onchain/democracyExternal");
-const {
   getExternalFromStorageByHeight,
 } = require("../../common/democracy/external");
 const { TimelineItemTypes } = require("../../common/constants");
-const { DemocracyExternalStates } = require("../../common/constants");
-const { getDemocracyExternalCollection } = require("../../../mongo");
-const { Modules, DemocracyMethods } = require("../../common/constants");
+const {
+  Modules,
+  DemocracyMethods,
+  DemocracyExternalStates,
+  ReferendumEvents,
+} = require("../../common/constants");
 
 function isFastTrackCall(call) {
   return (
@@ -41,14 +40,26 @@ async function handleFastTrack(call, signer, extrinsicIndexer, events) {
     args: { proposal_hash: proposalHash },
   } = call.toJSON();
 
-  const col = await getDemocracyExternalCollection();
-  const maybeInDb = await col.findOne({ proposalHash });
+  const maybeInDb = await getDemocracyExternalUnFinished(proposalHash);
   if (!maybeInDb) {
     await insertExternal(call, signer, extrinsicIndexer, events);
-    return;
+  } else {
+    await updateExternal(call, signer, extrinsicIndexer, events);
   }
 
-  await updateExternal(call, signer, extrinsicIndexer, events);
+  if (hasReferendumStarted(events)) {
+    const referendumStartedEvent = events.find(
+      (e) =>
+        e.event.section === Modules.Democracy &&
+        e.event.method === ReferendumEvents.Started
+    );
+    await insertReferendum(
+      referendumStartedEvent,
+      extrinsicIndexer,
+      proposalHash
+    );
+  }
+  await finishExternalByHash(proposalHash);
 }
 
 function extractMetadata(call, signer, extrinsicIndexer) {
@@ -84,7 +95,7 @@ function extractMetadata(call, signer, extrinsicIndexer) {
   };
 }
 
-async function updateExternal(call, signer, extrinsicIndexer, events) {
+async function updateExternal(call, signer, extrinsicIndexer) {
   const { args, state, timelineItem } = extractMetadata(
     call,
     signer,
@@ -96,25 +107,9 @@ async function updateExternal(call, signer, extrinsicIndexer, events) {
     { state },
     timelineItem
   );
-
-  if (!hasReferendumStarted(events)) {
-    throw new Error("Sudo(fastTrack) not table external proposal");
-  }
-
-  const referendumStartedEvent = events.find(
-    ({ event }) =>
-      event.section === Modules.Democracy &&
-      event.method === ReferendumEvents.Started
-  );
-
-  await insertReferendum(
-    referendumStartedEvent,
-    extrinsicIndexer,
-    args.proposalHash
-  );
 }
 
-async function insertExternal(call, signer, extrinsicIndexer, events) {
+async function insertExternal(call, signer, extrinsicIndexer) {
   const { args, state, timelineItem } = extractMetadata(
     call,
     signer,
@@ -129,30 +124,17 @@ async function insertExternal(call, signer, extrinsicIndexer, events) {
   }
 
   const externalObj = {
+    indexer: extrinsicIndexer,
     proposalHash: args.proposalHash,
     voteThreshold,
     authors: [signer],
     state,
-    isFinal: true,
+    isFinal: false,
     timeline: [timelineItem],
   };
 
   await insertDemocracyExternal(externalObj);
-  await insertDemocracyPostByExternal(args.proposalHash);
-
-  if (!hasReferendumStarted(events)) {
-    return;
-  }
-  const referendumStartedEvent = events.find(
-    (e) =>
-      e.event.section === Modules.Democracy &&
-      e.event.method === ReferendumEvents.Started
-  );
-  await insertReferendum(
-    referendumStartedEvent,
-    extrinsicIndexer,
-    args.proposalHash
-  );
+  await insertDemocracyPostByExternal(args.proposalHash, extrinsicIndexer);
 }
 
 async function insertReferendum(event, extrinsicIndexer, externalProposalHash) {
@@ -180,11 +162,13 @@ async function insertReferendum(event, extrinsicIndexer, externalProposalHash) {
     indexer: extrinsicIndexer,
   };
 
+  const external = await getDemocracyExternalUnFinished(externalProposalHash);
   const obj = {
     indexer: extrinsicIndexer,
     referendumIndex,
     info: referendumInfo,
     externalProposalHash,
+    externalProposalIndexer: external.indexer,
     state,
     timeline: [timelineItem],
   };
@@ -194,10 +178,6 @@ async function insertReferendum(event, extrinsicIndexer, externalProposalHash) {
     isFinal: true,
     referendumIndex,
   });
-  await updateOrCreatePostByReferendumWithExternal(
-    externalProposalHash,
-    referendumIndex
-  );
 }
 
 function hasReferendumStarted(events) {

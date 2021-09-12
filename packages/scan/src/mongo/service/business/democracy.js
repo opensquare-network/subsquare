@@ -1,10 +1,5 @@
 const { getBusinessDemocracy } = require("../../business");
 
-/**
- *
- * @param proposalIndex
- * @returns {Promise<void>}
- */
 async function insertDemocracyPostByProposal(proposalIndex, indexer, proposer) {
   const col = await getBusinessDemocracy();
   const maybeInDb = await col.findOne({
@@ -53,9 +48,9 @@ async function updateOrCreatePostByReferendumWithProposal(
   );
 }
 
-async function insertDemocracyPostByExternal(externalProposalHash) {
+async function insertDemocracyPostByExternal(externalProposalHash, indexer) {
   const col = await getBusinessDemocracy();
-  const maybeInDb = await col.findOne({ externalProposalHash });
+  const maybeInDb = await col.findOne({ externalProposalHash, indexer });
   if (maybeInDb) {
     return;
   }
@@ -63,6 +58,7 @@ async function insertDemocracyPostByExternal(externalProposalHash) {
   const now = new Date();
   await col.insertOne({
     externalProposalHash,
+    indexer,
     title: `Untitled - external proposal ${externalProposalHash}`,
     content: "",
     contentType: "markdown",
@@ -70,29 +66,6 @@ async function insertDemocracyPostByExternal(externalProposalHash) {
     updatedAt: now,
     lastActivityAt: now,
   });
-}
-
-async function updateOrCreatePostByReferendumWithExternal(
-  externalProposalHash,
-  referendumIndex
-) {
-  const col = await getBusinessDemocracy();
-  const maybeInDb = await col.findOne({ externalProposalHash });
-  if (!maybeInDb) {
-    await col.insertOne({
-      externalProposalHash,
-      referendumIndex,
-    });
-
-    return;
-  }
-
-  await col.updateOne(
-    { externalProposalHash },
-    {
-      $set: { referendumIndex },
-    }
-  );
 }
 
 // Will executed when previous public or external proposal not detected
@@ -111,5 +84,4 @@ module.exports = {
   updateOrCreatePostByReferendumWithProposal,
   insertDemocracyPostByExternal,
   insertReferendumPostSolo,
-  updateOrCreatePostByReferendumWithExternal,
 };

@@ -5,6 +5,7 @@ const {
   getReferendumInfoFromStorage,
 } = require("../../../democracy/common/referendumStorage");
 const {
+  getDemocracyExternalUnFinished,
   updateDemocracyExternalByHash,
 } = require("../../../../../mongo/service/onchain/democracyExternal");
 const {
@@ -60,6 +61,8 @@ async function handleBusinessWhenTechCommMotionExecuted(
     indexer,
   };
 
+  const external = await getDemocracyExternalUnFinished(externalProposalHash);
+
   await updateDemocracyExternalByHash(
     externalProposalHash,
     {
@@ -94,7 +97,8 @@ async function handleBusinessWhenTechCommMotionExecuted(
     indexer,
     referendumIndex,
     info: referendumInfo,
-    externalProposalHash, // FIXME: external hash is not unique, we should find another id.
+    externalProposalHash,
+    externalProposalIndexer: external.indexer,
     state,
     timeline: [referendumTimelineItem],
   };
