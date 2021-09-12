@@ -62,7 +62,7 @@ async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
   };
 
   await insertDemocracyExternal(externalObj);
-  await insertDemocracyPostByExternal(proposalHash);
+  await insertDemocracyPostByExternal(proposalHash, indexer);
 }
 
 module.exports = {

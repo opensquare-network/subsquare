@@ -55,7 +55,7 @@ async function handleExternalPropose(call, signer, extrinsicIndexer) {
   };
 
   await insertDemocracyExternal(externalObj);
-  await insertDemocracyPostByExternal(hash);
+  await insertDemocracyPostByExternal(hash, extrinsicIndexer);
 }
 
 module.exports = {
