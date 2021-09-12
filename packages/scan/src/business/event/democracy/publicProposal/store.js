@@ -1,12 +1,10 @@
-const { getReferendumInfoFromStorage } = require("../common/referendumStorage");
+const {
+  insertReferendumWithPublicProposal,
+} = require("../../../common/democracy/referendum/insert");
 const {
   insertDemocracyPostByProposal,
-  updateOrCreatePostByReferendumWithProposal,
 } = require("../../../../mongo/service/business/democracy");
 const { getPublicProposalFromStorage } = require("./storage");
-const {
-  insertDemocracyReferendum,
-} = require("../../../../mongo/service/onchain/democracyReferendum");
 const {
   insertDemocracyPublicProposal,
   updateDemocracyPublicProposal,
@@ -133,48 +131,9 @@ async function handleProposal(blockIndexer, event, sort, allEvents) {
 }
 
 async function handleReferendum(blockIndexer, event, sort, allEvents) {
-  const eventData = event.data.toJSON();
-  const [referendumIndex, voteThreshold] = eventData;
-
   const proposalTabledEvent = allEvents[sort - 1].event;
   const [proposalIndex] = proposalTabledEvent.data.toJSON();
-
-  const referendumInfo = await getReferendumInfoFromStorage(
-    referendumIndex,
-    blockIndexer
-  );
-
-  const state = {
-    indexer: blockIndexer,
-    state: ReferendumEvents.Started,
-    data: eventData,
-  };
-
-  const timelineItem = {
-    type: TimelineItemTypes.event,
-    method: ReferendumEvents.Started,
-    args: {
-      proposalIndex,
-      referendumIndex,
-      voteThreshold,
-    },
-    indexer: blockIndexer,
-  };
-
-  const obj = {
-    indexer: blockIndexer,
-    proposalIndex,
-    referendumIndex,
-    info: referendumInfo,
-    state,
-    timeline: [timelineItem],
-  };
-
-  await insertDemocracyReferendum(obj);
-  await updateOrCreatePostByReferendumWithProposal(
-    proposalIndex,
-    referendumIndex
-  );
+  await insertReferendumWithPublicProposal(event, blockIndexer, proposalIndex);
 }
 
 module.exports = {

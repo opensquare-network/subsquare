@@ -1,7 +1,9 @@
 const {
   updateDemocracyReferendum,
 } = require("../../../../mongo/service/onchain/democracyReferendum");
-const { getReferendumInfoByHeight } = require("../common/referendumStorage");
+const {
+  getReferendumInfoByHeight,
+} = require("../../../common/democracy/referendum/referendumStorage");
 const {
   ReferendumEvents,
   TimelineItemTypes,

@@ -1,9 +1,6 @@
 const {
-  insertDemocracyReferendum,
-} = require("../../../../../mongo/service/onchain/democracyReferendum");
-const {
-  getReferendumInfoFromStorage,
-} = require("../../../democracy/common/referendumStorage");
+  insertReferendumWithExternal,
+} = require("../../../../common/democracy/referendum/insert");
 const {
   getDemocracyExternalUnFinished,
   updateDemocracyExternalByHash,
@@ -46,9 +43,6 @@ async function handleBusinessWhenTechCommMotionExecuted(
       event.method === ReferendumEvents.Started
   );
 
-  const eventData = referendumStartedEvent.event.data.toJSON();
-  const [referendumIndex, threshold] = eventData;
-
   const externalState = {
     indexer,
     state: DemocracyExternalStates.Tabled,
@@ -62,48 +56,21 @@ async function handleBusinessWhenTechCommMotionExecuted(
   };
 
   const external = await getDemocracyExternalUnFinished(externalProposalHash);
+  await insertReferendumWithExternal(
+    referendumStartedEvent,
+    indexer,
+    externalProposalHash,
+    external.indexer
+  );
 
   await updateDemocracyExternalByHash(
     externalProposalHash,
     {
       state: externalState,
       isFinal: true,
-      referendumIndex,
     },
     timelineItem
   );
-
-  const referendumInfo = await getReferendumInfoFromStorage(
-    referendumIndex,
-    indexer
-  );
-  const state = {
-    indexer,
-    state: ReferendumEvents.Started,
-    data: eventData,
-  };
-
-  const referendumTimelineItem = {
-    type: TimelineItemTypes.extrinsic,
-    method: ReferendumEvents.Started,
-    args: {
-      referendumIndex,
-      voteThreshold: threshold,
-    },
-    indexer,
-  };
-
-  const obj = {
-    indexer,
-    referendumIndex,
-    info: referendumInfo,
-    externalProposalHash,
-    externalProposalIndexer: external.indexer,
-    state,
-    timeline: [referendumTimelineItem],
-  };
-
-  await insertDemocracyReferendum(obj);
 }
 
 function hasReferendumStarted(events) {
