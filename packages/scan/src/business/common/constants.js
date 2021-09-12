@@ -110,6 +110,7 @@ const ReferendumEvents = Object.freeze({
 
 const DemocracyExternalEvents = Object.freeze({
   Vetoed: "Vetoed",
+  ExternalTabled: "ExternalTabled",
 });
 
 const DemocracyExternalStates = Object.freeze({
