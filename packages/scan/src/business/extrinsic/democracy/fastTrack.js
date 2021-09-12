@@ -1,27 +1,24 @@
 const {
+  insertReferendumWithExternal,
+} = require("../../common/democracy/referendum/insert");
+const {
   insertDemocracyExternal,
   updateDemocracyExternalByHash,
   finishExternalByHash,
   getDemocracyExternalUnFinished,
 } = require("../../../mongo/service/onchain/democracyExternal");
 const {
-  insertDemocracyReferendum,
-} = require("../../../mongo/service/onchain/democracyReferendum");
-const {
-  getReferendumInfoFromStorage,
-} = require("../../common/democracy/referendum/referendumStorage");
-const {
   insertDemocracyPostByExternal,
 } = require("../../../mongo/service/business/democracy");
 const {
   getExternalFromStorageByHeight,
 } = require("../../common/democracy/external");
-const { TimelineItemTypes } = require("../../common/constants");
 const {
   Modules,
   DemocracyMethods,
   DemocracyExternalStates,
   ReferendumEvents,
+  TimelineItemTypes,
 } = require("../../common/constants");
 
 function isFastTrackCall(call) {
@@ -53,12 +50,15 @@ async function handleFastTrack(call, signer, extrinsicIndexer, events) {
         e.event.section === Modules.Democracy &&
         e.event.method === ReferendumEvents.Started
     );
-    await insertReferendum(
+    const external = await getDemocracyExternalUnFinished(proposalHash);
+    await insertReferendumWithExternal(
       referendumStartedEvent,
       extrinsicIndexer,
-      proposalHash
+      proposalHash,
+      external.indexer
     );
   }
+
   await finishExternalByHash(proposalHash);
 }
 
@@ -135,49 +135,6 @@ async function insertExternal(call, signer, extrinsicIndexer) {
 
   await insertDemocracyExternal(externalObj);
   await insertDemocracyPostByExternal(args.proposalHash, extrinsicIndexer);
-}
-
-async function insertReferendum(event, extrinsicIndexer, externalProposalHash) {
-  const eventData = event.event.data.toJSON();
-  const [referendumIndex, threshold] = eventData;
-
-  const referendumInfo = await getReferendumInfoFromStorage(
-    referendumIndex,
-    extrinsicIndexer
-  );
-
-  const state = {
-    indexer: extrinsicIndexer,
-    state: ReferendumEvents.Started,
-    data: eventData,
-  };
-
-  const timelineItem = {
-    type: TimelineItemTypes.extrinsic,
-    method: ReferendumEvents.Started,
-    args: {
-      referendumIndex,
-      voteThreshold: threshold,
-    },
-    indexer: extrinsicIndexer,
-  };
-
-  const external = await getDemocracyExternalUnFinished(externalProposalHash);
-  const obj = {
-    indexer: extrinsicIndexer,
-    referendumIndex,
-    info: referendumInfo,
-    externalProposalHash,
-    externalProposalIndexer: external.indexer,
-    state,
-    timeline: [timelineItem],
-  };
-
-  await insertDemocracyReferendum(obj);
-  await updateDemocracyExternalByHash(externalProposalHash, {
-    isFinal: true,
-    referendumIndex,
-  });
 }
 
 function hasReferendumStarted(events) {
