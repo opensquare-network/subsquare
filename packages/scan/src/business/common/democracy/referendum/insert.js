@@ -1,7 +1,5 @@
 const {
   insertReferendumPostSolo,
-} = require("../../../../mongo/service/business/democracy");
-const {
   updateOrCreatePostByReferendumWithProposal,
 } = require("../../../../mongo/service/business/democracy");
 const {
