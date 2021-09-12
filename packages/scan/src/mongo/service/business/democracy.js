@@ -50,7 +50,10 @@ async function updateOrCreatePostByReferendumWithProposal(
 
 async function insertDemocracyPostByExternal(externalProposalHash, indexer) {
   const col = await getBusinessDemocracy();
-  const maybeInDb = await col.findOne({ externalProposalHash, indexer });
+  const maybeInDb = await col.findOne({
+    externalProposalHash,
+    "indexer.blockHeight": indexer.blockHeight,
+  });
   if (maybeInDb) {
     return;
   }
@@ -66,6 +69,31 @@ async function insertDemocracyPostByExternal(externalProposalHash, indexer) {
     updatedAt: now,
     lastActivityAt: now,
   });
+}
+
+async function updateDemocracyExternalPostWithReferendumIndex(
+  externalProposalHash,
+  height,
+  referendumIndex
+) {
+  const col = await getBusinessDemocracy();
+
+  const maybeInDb = await col.findOne({ referendumIndex });
+  if (maybeInDb) {
+    return;
+  }
+
+  await col.updateOne(
+    {
+      externalProposalHash,
+      "indexer.blockHeight": height,
+    },
+    {
+      $set: {
+        referendumIndex,
+      },
+    }
+  );
 }
 
 // Will executed when previous public or external proposal not detected
@@ -84,4 +112,5 @@ module.exports = {
   updateOrCreatePostByReferendumWithProposal,
   insertDemocracyPostByExternal,
   insertReferendumPostSolo,
+  updateDemocracyExternalPostWithReferendumIndex,
 };

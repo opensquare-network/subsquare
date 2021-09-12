@@ -1,8 +1,7 @@
 const {
   insertReferendumPostSolo,
-} = require("../../../../mongo/service/business/democracy");
-const {
   updateOrCreatePostByReferendumWithProposal,
+  updateDemocracyExternalPostWithReferendumIndex,
 } = require("../../../../mongo/service/business/democracy");
 const {
   updateDemocracyPublicProposal,
@@ -89,6 +88,11 @@ async function insertReferendumWithExternal(
   await updateDemocracyExternalByHash(externalProposalHash, {
     referendumIndex: commonObj.referendumIndex,
   });
+  await updateDemocracyExternalPostWithReferendumIndex(
+    externalProposalHash,
+    externalProposalIndexer.blockHeight,
+    commonObj.referendumIndex
+  );
 }
 
 async function insertSoloReferendum(referendumStartedEvent, indexer) {
