@@ -1,4 +1,6 @@
-const { getReferendumInfoFromStorage } = require("../common/referendumStorage");
+const {
+  getReferendumInfoFromStorage,
+} = require("../../../common/democracy/referendum/referendumStorage");
 const {
   insertDemocracyPostByProposal,
   updateOrCreatePostByReferendumWithProposal,

@@ -5,7 +5,9 @@ const {
   ReferendumEvents,
   TimelineItemTypes,
 } = require("../../../common/constants");
-const { getReferendumInfoByHeight } = require("../common/referendumStorage");
+const {
+  getReferendumInfoByHeight,
+} = require("../../../common/democracy/referendum/referendumStorage");
 
 async function handlePassed(event, indexer) {
   const eventData = event.data.toJSON();

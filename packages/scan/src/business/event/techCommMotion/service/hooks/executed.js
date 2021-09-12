@@ -3,7 +3,7 @@ const {
 } = require("../../../../../mongo/service/onchain/democracyReferendum");
 const {
   getReferendumInfoFromStorage,
-} = require("../../../democracy/common/referendumStorage");
+} = require("../../../../common/democracy/referendum/referendumStorage");
 const {
   getDemocracyExternalUnFinished,
   updateDemocracyExternalByHash,

@@ -4,7 +4,9 @@ const {
 const {
   insertDemocracyReferendum,
 } = require("../../../../mongo/service/onchain/democracyReferendum");
-const { getReferendumInfoFromStorage } = require("../common/referendumStorage");
+const {
+  getReferendumInfoFromStorage,
+} = require("../../../common/democracy/referendum/referendumStorage");
 const {
   ReferendumEvents,
   TimelineItemTypes,

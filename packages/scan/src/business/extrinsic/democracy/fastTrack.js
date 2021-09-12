@@ -9,7 +9,7 @@ const {
 } = require("../../../mongo/service/onchain/democracyReferendum");
 const {
   getReferendumInfoFromStorage,
-} = require("../../event/democracy/common/referendumStorage");
+} = require("../../common/democracy/referendum/referendumStorage");
 const {
   insertDemocracyPostByExternal,
 } = require("../../../mongo/service/business/democracy");
