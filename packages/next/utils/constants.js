@@ -135,6 +135,17 @@ export const mainMenu = [
       },
     ],
   },
+  {
+    name: "TECH.COMM.",
+    items: [
+      {
+        value: "techCommProposals",
+        name: "Proposals",
+        icon: "type-proposals.svg",
+        pathname: "/[chain]/tech-comm/proposals",
+      },
+    ],
+  },
 ];
 
 export const settingMenu = [

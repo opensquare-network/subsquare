@@ -55,8 +55,10 @@ export default function List({
           if (category === "Proposals") {
             if (type === "democracy") {
               href = `/${chain}/democracy/proposal/${item.proposalIndex}`;
-            } else {
+            } else if (type === "treasury") {
               href = `/${chain}/treasury/proposal/${item.proposalIndex}`;
+            } else if (type === "tech-comm") {
+              href = `/${chain}/tech-comm/proposal/${item.proposalIndex}`;
             }
           }
           return <Post key={index} data={item} chain={chain} href={href} />;

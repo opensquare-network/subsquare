@@ -79,6 +79,7 @@ export default function Menu({ menu }) {
     ["referenda", <ReferendaIcon />],
     ["democracyProposals", <DemocracyProposalIcon />],
     ["external", <DemocracyProposalIcon />],
+    ["techCommProposals", <DemocracyProposalIcon />],
   ]);
 
   return (
