@@ -1,4 +1,8 @@
 const {
+  handleDemocracyPublicProposalEvent,
+  handleDemocracyPublicProposalEventWithoutExtrinsic,
+} = require("./democracy/publicProposal");
+const {
   handleDemocracyExternalEvent,
   handleDemocracyExternalEventNoExtrinsic,
 } = require("./democracy/external");
@@ -9,10 +13,6 @@ const {
 const {
   handleReferendumEventWithExtrinsic,
 } = require("./democracy/referendum");
-const {
-  saveNewPublicProposal,
-  handlePublicProposalTabled,
-} = require("./democracy/publicProposal/store");
 const { handleTipEvent } = require("./tip");
 const { handleMotionEvent } = require("./motion");
 const {
@@ -34,7 +34,12 @@ async function handleEventWithExtrinsic(
     extrinsicIndex,
   };
 
-  await saveNewPublicProposal(event, extrinsic, indexer);
+  await handleDemocracyPublicProposalEvent(
+    event,
+    extrinsic,
+    indexer,
+    blockEvents
+  );
   await handleTipEvent(event, extrinsic, indexer);
   await handleTreasuryProposalEvent(event, extrinsic, indexer);
   await handleMotionEvent(event, extrinsic, indexer);
@@ -65,7 +70,11 @@ async function handleEventWithoutExtrinsic(
     blockEvents
   );
 
-  await handlePublicProposalTabled(event, indexer, blockEvents);
+  await handleDemocracyPublicProposalEventWithoutExtrinsic(
+    event,
+    indexer,
+    blockEvents
+  );
   await handleReferendumEventWithoutExtrinsic(event, indexer, blockEvents);
   await handleDemocracyExternalEventNoExtrinsic(event, indexer, blockEvents);
 }
