@@ -217,7 +217,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
   const [isEdit, setIsEdit] = useState(false);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
-
+  const userFontSize = type === "democracy/proposal" ? 12 : 14;
   if (!post) {
     return null;
   }
@@ -317,6 +317,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
               user={post.author}
               add={post.proposer || post.finder}
               chain={chain}
+              fontSize={userFontSize}
             />
             {post.type && (
               <div>
