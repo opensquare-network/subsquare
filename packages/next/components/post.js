@@ -127,7 +127,7 @@ const getTypeColor = (type) => {
   }
 };
 
-export default function Post({ data, chain, href, type, category }) {
+export default function Post({ data, chain, href }) {
   return (
     <Wrapper>
       {data?.index !== undefined && (
@@ -163,9 +163,7 @@ export default function Post({ data, chain, href, type, category }) {
             <AutHideInfo>{`${data.commentsCount} Comments`}</AutHideInfo>
           )}
         </Footer>
-        {data.status && (
-          <Tag name={data.status} type={type} category={category} />
-        )}
+        {data.status && <Tag name={data.status} />}
       </FooterWrapper>
     </Wrapper>
   );
