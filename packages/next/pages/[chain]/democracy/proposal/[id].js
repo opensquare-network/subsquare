@@ -142,7 +142,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     });
   }
 
-  const timelineData = (detail?.democracyPublicProposal?.timeline || []).map(
+  const timelineData = (detail?.onchainData?.timeline || []).map(
     (item) => {
       return {
         time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
@@ -154,7 +154,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   );
 
   const motionTimelineData = createMotionTimelineData(
-    detail?.democracyPublicProposal?.motions?.[0]
+    detail?.onchainData?.motions?.[0]
   );
 
   if (motionTimelineData && motionTimelineData.length > 0) {
@@ -232,8 +232,8 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     focusEditor();
   };
 
-  const metadata = detail.democracyPublicProposal?.meta
-    ? Object.entries(detail.democracyPublicProposal?.meta)
+  const metadata = detail.onchainData?.meta
+    ? Object.entries(detail.onchainData?.meta)
     : [];
   metadata.forEach((item) => {
     switch (item[0]) {
@@ -263,7 +263,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           onReply={focusEditor}
           type="democracy/proposal"
         />
-        {detail.democracyPublicProposal?.meta && <Metadata data={metadata} />}
+        {detail.onchainData?.meta && <Metadata data={metadata} />}
         {timelineData && timelineData.length > 0 && (
           <Timeline data={timelineData} chain={chain} />
         )}
