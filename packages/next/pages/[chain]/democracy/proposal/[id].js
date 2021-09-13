@@ -59,8 +59,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     return "404"; //todo improve this
   }
 
-  console.log({ detail });
-
   const postId = detail._id;
 
   const editorWrapperRef = useRef(null);
@@ -142,16 +140,14 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     });
   }
 
-  const timelineData = (detail?.onchainData?.timeline || []).map(
-    (item) => {
-      return {
-        time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-        indexer: item.indexer,
-        status: getTimelineStatus("proposal", item.method ?? item.name),
-        data: getTimelineData(item.args, item.method ?? item.name),
-      };
-    }
-  );
+  const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
+    return {
+      time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+      indexer: item.indexer,
+      status: getTimelineStatus("proposal", item.method ?? item.name),
+      data: getTimelineData(item.args, item.method ?? item.name),
+    };
+  });
 
   const motionTimelineData = createMotionTimelineData(
     detail?.onchainData?.motions?.[0]
@@ -232,25 +228,18 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     focusEditor();
   };
 
-  const metadata = detail.onchainData?.meta
-    ? Object.entries(detail.onchainData?.meta)
-    : [];
-  metadata.forEach((item) => {
-    switch (item[0]) {
-      case "proposer":
-      case "beneficiary":
-        item[1] = (
-          <Flex>
-            <User chain={chain} add={item[1]} fontSize={12} />
-            <Links chain={chain} address={item[1]} style={{ marginLeft: 8 }} />
-          </Flex>
-        );
-        break;
-      case "value":
-      case "bond":
-        item[1] = `${toPrecision(item[1] ?? 0, decimals)} ${symbol}`;
-    }
-  });
+  const metadata = [
+    ["hash", detail.onchainData?.hash],
+    [
+      "diposit",
+      `${toPrecision(
+        detail.onchainData?.timeline?.find((item) => item.method === "Tabled")
+          ?.args?.deposit ?? 0,
+        decimals
+      )} ${symbol}`,
+    ],
+    ["proposer", <User chain={chain} add={detail.onchainData?.proposer} />],
+  ];
 
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
@@ -263,7 +252,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           onReply={focusEditor}
           type="democracy/proposal"
         />
-        {detail.onchainData?.meta && <Metadata data={metadata} />}
+        {metadata && <Metadata data={metadata} />}
         {timelineData && timelineData.length > 0 && (
           <Timeline data={timelineData} chain={chain} />
         )}
