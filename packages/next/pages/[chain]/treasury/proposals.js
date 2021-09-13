@@ -38,6 +38,7 @@ export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
           pageSize: proposals.pageSize,
           total: proposals.total,
         }}
+        type="treasury"
       />
     </LayoutFixedHeader>
   );
@@ -47,7 +48,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { page, chain, page_size: pageSize } = context.query;
 
   const [{ result: proposals }] = await Promise.all([
-    nextApi.fetch(`${chain}/treasury/proposals`, { page: page ?? 1, pageSize: pageSize ?? 50 }),
+    nextApi.fetch(`${chain}/treasury/proposals`, {
+      page: page ?? 1,
+      pageSize: pageSize ?? 50,
+    }),
   ]);
 
   return {

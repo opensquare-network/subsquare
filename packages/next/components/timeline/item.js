@@ -4,6 +4,7 @@ import Links from "./links";
 import Voting from "./voting";
 import Account from "components/account";
 import User from "components/user";
+import Tag from "components/tag";
 
 const Wrapper = styled.div`
   display: flex;
@@ -69,16 +70,8 @@ const TitleWrapper = styled.div`
   }
 `;
 
-const Status = styled.div`
-  background: ${(p) => p.color};
-  border-radius: 2px;
-  padding: 0 8px;
-  font-weight: 500;
-  font-size: 12px;
-  color: #ffffff;
+const TagWrapper = styled.div`
   margin-left: auto;
-  height: 20px;
-  line-height: 20px;
 `;
 
 const FoldButton = styled.div`
@@ -149,7 +142,9 @@ export default function Item({ data, foldable, isFold, setIsFold, chain }) {
         <TitleWrapper>
           <div>{data.time}</div>
           {data.status && data.status.value && (
-            <Status color={data.status.color}>{data.status.value}</Status>
+            <TagWrapper>
+              <Tag name={data.status.value} />
+            </TagWrapper>
           )}
           <FoldButton
             className="fold-button"
