@@ -43,6 +43,9 @@ export default function List({
       {items?.length > 0 ? (
         items.map((item, index) => {
           let href = `/${chain}/post/${item.postUid}`;
+          if (category === "Externals") {
+            href = `/${chain}/democracy/external/${item.hash}`;
+          }
           if (category === "Referenda") {
             href = `/${chain}/democracy/referendum/${item.index}`;
           }
