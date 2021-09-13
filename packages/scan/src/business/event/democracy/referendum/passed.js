@@ -7,15 +7,21 @@ const {
 } = require("../../../common/constants");
 const {
   getReferendumInfoByHeight,
+  getReferendumInfoFromStorage,
 } = require("../../../common/democracy/referendum/referendumStorage");
 
 async function handlePassed(event, indexer) {
   const eventData = event.data.toJSON();
   const [referendumIndex] = eventData;
 
-  const referendumInfo = await getReferendumInfoByHeight(
+  const ongoingInfo = await getReferendumInfoByHeight(
     referendumIndex,
     indexer.blockHeight - 1
+  );
+
+  const finishedInfo = await getReferendumInfoFromStorage(
+    referendumIndex,
+    indexer
   );
 
   const state = {
@@ -36,7 +42,8 @@ async function handlePassed(event, indexer) {
   await updateDemocracyReferendum(
     referendumIndex,
     {
-      info: referendumInfo,
+      status: ongoingInfo,
+      info: finishedInfo,
       state,
     },
     timelineItem
