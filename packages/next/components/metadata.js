@@ -31,10 +31,14 @@ const Label = styled.div`
   line-height: 140%;
   padding: 12px 0;
   width: 128px;
+  flex: 0 0 128px;
+  text-transform: capitalize;
 `;
 
 const Content = styled.div`
   padding: 12px 0;
+  word-break: break-all;
+  flex: 1 1 auto;
 `;
 
 export default function Metadata({ data }) {
