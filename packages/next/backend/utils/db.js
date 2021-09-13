@@ -2,7 +2,7 @@ const { MongoClient } = require("mongodb");
 const _ = require("lodash");
 
 function getField(data, fieldName) {
-  return fieldName.split(".").reduce((data, field) => data[field], data);
+  return fieldName.split(".").reduce((data, field) => data?.[field], data);
 }
 
 class DeferredCall {
