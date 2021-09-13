@@ -232,15 +232,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   };
 
   const metadata = [
-    ["hash", detail.onchainData?.hash],
-    [
-      "diposit",
-      `${toPrecision(
-        detail.onchainData?.timeline?.find((item) => item.method === "Tabled")
-          ?.args?.deposit ?? 0,
-        decimals
-      )} ${symbol}`,
-    ],
     [
       "proposer",
       <MetadataProposerWrapper>
@@ -253,7 +244,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">
-        <Back href={`/${chain}/democracy/proposals`} text="Back to Proposals" />
+        <Back href={`/${chain}/democracy/externals`} text="Back to Externals" />
         <DetailItem
           data={detail}
           user={loginUser}
@@ -262,9 +253,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           type="democracy/external"
         />
         {metadata && <Metadata data={metadata} />}
-        {timelineData && timelineData.length > 0 && (
-          <Timeline data={timelineData} chain={chain} />
-        )}
+        {/*{timelineData && timelineData.length > 0 && (*/}
+        {/*  <Timeline data={timelineData} chain={chain} />*/}
+        {/*)}*/}
         <CommentsWrapper>
           <Comments
             data={comments}
