@@ -25,6 +25,7 @@ const DividerWrapper = styled.div`
   align-items: center;
   flex-wrap: wrap;
   max-height: 20px;
+  line-height: 12px;
 
   > span {
     display: inline-block;
