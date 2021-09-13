@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 import { timeDurationFromNow } from "utils";
@@ -222,6 +222,8 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
     return null;
   }
 
+  const onchainData = post.onchainData ?? post.democracyPublicProposal;
+
   const isLoggedIn = !!user;
   let ownPost = false;
   if (type === "post") {
@@ -230,7 +232,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
     ownPost =
       isLoggedIn &&
       !!(user.addresses || []).find((item) =>
-        post.onchainData?.authors.includes(item.address)
+        onchainData?.authors.includes(item.address)
       );
   }
 
@@ -352,7 +354,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
           {post.content === "" && (
             <GreyWrapper>
               <span style={{ marginRight: 12 }}>Who can edit?</span>
-              {(post.onchainData?.authors || []).map((author) => (
+              {(onchainData?.authors || []).map((author) => (
                 <GreyItem key={author}>
                   <User
                     add={author}
