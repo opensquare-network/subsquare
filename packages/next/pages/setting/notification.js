@@ -7,7 +7,7 @@ import Button from "components/button";
 import Menu from "components/menu";
 import { settingMenu } from "utils/constants";
 import { useAuthPage } from "utils/hooks";
-import {withLoginUser, withLoginUserRedux} from "../../lib";
+import { withLoginUser, withLoginUserRedux } from "../../lib";
 import nextApi from "services/nextApi";
 import { addToast } from "store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
@@ -15,6 +15,14 @@ import { fetchUserProfile } from "store/reducers/userSlice";
 import LayoutFixedHeader from "../../components/layoutFixedHeader";
 
 const Wrapper = styled.div`
+  max-width: 848px;
+  @media screen and (max-width: 1024px) {
+    max-width: 960px;
+  }
+  margin: auto;
+  @media screen and (min-width: 1080px) {
+    padding-bottom: 16px;
+  }
   > :not(:first-child) {
     margin-top: 16px;
   }
@@ -30,9 +38,9 @@ const ContentWrapper = styled.div`
   color: #1e2134;
   background: #ffffff;
   border: 1px solid #ebeef4;
-  box-shadow:0 6px 7px rgba(30, 33, 52, 0.02),
-   0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-   0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
+    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 4px;
   padding: 48px;
   @media screen and (max-width: 768px) {
@@ -44,7 +52,7 @@ const Label = styled.div`
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 16px;
-  color: #1E2134;
+  color: #1e2134;
 `;
 
 const ToggleItem = styled.div`
@@ -75,9 +83,7 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-export default withLoginUserRedux(({
-  loginUser,
-}) => {
+export default withLoginUserRedux(({ loginUser }) => {
   const dispatch = useDispatch();
   useAuthPage(true);
 
@@ -97,14 +103,11 @@ export default withLoginUserRedux(({
     }
 
     setSaving(true);
-    const { result, error } = await nextApi.patch(
-      "user/notification",
-      {
-        reply,
-        mention,
-        thumbsUp,
-      }
-    );
+    const { result, error } = await nextApi.patch("user/notification", {
+      reply,
+      mention,
+      thumbsUp,
+    });
     if (result) {
       dispatch(fetchUserProfile());
       dispatch(addToast({ type: "success", message: "Settings saved" }));
@@ -112,7 +115,7 @@ export default withLoginUserRedux(({
       dispatch(addToast({ type: "error", message: error.message }));
     }
     setSaving(false);
-  }
+  };
 
   return (
     <LayoutFixedHeader user={loginUser} left={<Menu menu={settingMenu} />}>
@@ -136,7 +139,9 @@ export default withLoginUserRedux(({
           </div>
           <Divider />
           <ButtonWrapper>
-            <Button secondary onClick={updateNotificationSetting}>Save</Button>
+            <Button secondary onClick={updateNotificationSetting}>
+              Save
+            </Button>
           </ButtonWrapper>
         </ContentWrapper>
       </Wrapper>
@@ -146,7 +151,6 @@ export default withLoginUserRedux(({
 
 export const getServerSideProps = withLoginUser(async (context) => {
   return {
-    props: {
-    },
+    props: {},
   };
 });
