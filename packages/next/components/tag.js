@@ -17,6 +17,7 @@ const NEGATIVE = "#F44336";
 const END = "#C2C8D5";
 
 const getTagColor = (name) => {
+  if (name && name.startsWith("Tipping")) return ACTIVE;
   switch (name) {
     case "Proposed":
     case "Extended":
@@ -34,7 +35,7 @@ const getTagColor = (name) => {
     case "Retracted":
     case "Slashed":
     case "Disapproved":
-    case "Not Passed":
+    case "NotPassed":
     case "Cancelled":
       return NEGATIVE;
   }
