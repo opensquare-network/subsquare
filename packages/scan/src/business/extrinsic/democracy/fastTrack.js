@@ -52,7 +52,7 @@ async function handleFastTrack(call, signer, extrinsicIndexer, events) {
     );
     const external = await getDemocracyExternalUnFinished(proposalHash);
     await insertReferendumWithExternal(
-      referendumStartedEvent,
+      referendumStartedEvent.event,
       extrinsicIndexer,
       proposalHash,
       external.indexer
@@ -134,7 +134,11 @@ async function insertExternal(call, signer, extrinsicIndexer) {
   };
 
   await insertDemocracyExternal(externalObj);
-  await insertDemocracyPostByExternal(args.proposalHash, extrinsicIndexer, signer);
+  await insertDemocracyPostByExternal(
+    args.proposalHash,
+    extrinsicIndexer,
+    signer
+  );
 }
 
 function hasReferendumStarted(events) {
