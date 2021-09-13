@@ -64,7 +64,16 @@ export default function List({
               href = `/${chain}/techcomm/proposal/${item.proposalIndex}`;
             }
           }
-          return <Post key={index} data={item} chain={chain} href={href} />;
+          return (
+            <Post
+              key={index}
+              data={item}
+              chain={chain}
+              href={href}
+              type={type}
+              category={category}
+            />
+          );
         })
       ) : (
         <EmptyList type={category} />
