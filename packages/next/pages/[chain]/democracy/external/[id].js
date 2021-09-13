@@ -43,6 +43,7 @@ const CommentsWrapper = styled.div`
 const MetadataProposerWrapper = styled.div`
   display: flex;
   align-items: center;
+
   > :not(:first-child) {
     margin-left: 8px;
   }
@@ -52,6 +53,7 @@ const DepositorsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+
   > :not(:first-child) {
     margin-top: 4px;
   }
@@ -240,13 +242,13 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       </MetadataProposerWrapper>,
     ],
   ];
-
+  console.log(detail);
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">
         <Back href={`/${chain}/democracy/externals`} text="Back to Externals" />
         <DetailItem
-          data={detail}
+          data={{ ...detail, status: detail?.onchainData?.state?.state }}
           user={loginUser}
           chain={chain}
           onReply={focusEditor}

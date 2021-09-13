@@ -13,6 +13,7 @@ import User from "components/user";
 import { useDispatch } from "react-redux";
 import EditIcon from "../public/imgs/icons/edit.svg";
 import TriangleRight from "../public/imgs/icons/arrow-triangle-right.svg";
+import Tag from "./tag";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -73,7 +74,7 @@ const Divider = styled.div`
   margin: 16px 0;
 `;
 
-const FooterWrapper = styled.div`
+const FlexWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -343,28 +344,30 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             </ReferendaWrapper>
           )}
           <Title>{post.title}</Title>
-          <DividerWrapper>
-            <User
-              user={post.author}
-              add={post.proposer || post.finder}
-              chain={chain}
-              fontSize={userFontSize}
-            />
-            {post.type && (
-              <div>
-                <TypeWrapper color={getTypeColor(post.type)}>
-                  {post.type}
-                </TypeWrapper>
-              </div>
-            )}
-            {post.createdAt && (
-              <Info>Created {timeDurationFromNow(post.createdAt)}</Info>
-            )}
-            {post.commentsCount > -1 && (
-              <Info>{`${post.commentsCount} Comments`}</Info>
-            )}
-            {post.status && <StatusWrapper>{post.status}</StatusWrapper>}
-          </DividerWrapper>
+          <FlexWrapper>
+            <DividerWrapper>
+              <User
+                user={post.author}
+                add={post.proposer || post.finder}
+                chain={chain}
+                fontSize={userFontSize}
+              />
+              {post.type && (
+                <div>
+                  <TypeWrapper color={getTypeColor(post.type)}>
+                    {post.type}
+                  </TypeWrapper>
+                </div>
+              )}
+              {post.createdAt && (
+                <Info>Created {timeDurationFromNow(post.createdAt)}</Info>
+              )}
+              {post.commentsCount > -1 && (
+                <Info>{`${post.commentsCount} Comments`}</Info>
+              )}
+            </DividerWrapper>
+            {post.status && <Tag name={post.status} />}
+          </FlexWrapper>
           <Divider />
           {post.content === "" && (
             <PlaceHolder>
