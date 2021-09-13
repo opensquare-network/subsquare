@@ -166,7 +166,7 @@ function createService(proposalType, indexField, localField) {
     return {
       ...post,
       author,
-      [proposalType]: chanProposalData,
+      onchainData: chanProposalData,
     };
   }
 
