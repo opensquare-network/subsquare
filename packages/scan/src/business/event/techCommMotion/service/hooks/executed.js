@@ -57,7 +57,7 @@ async function handleBusinessWhenTechCommMotionExecuted(
 
   const external = await getDemocracyExternalUnFinished(externalProposalHash);
   await insertReferendumWithExternal(
-    referendumStartedEvent,
+    referendumStartedEvent.event,
     indexer,
     externalProposalHash,
     external.indexer
