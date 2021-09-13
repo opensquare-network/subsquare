@@ -3,6 +3,40 @@ const { toUserPublicInfo } = require("../utils/user");
 const { getDb: getChainDb, getMotionCollection, getTreasuryProposalCollection } = require("../mongo/chain");
 const { getDb: getCommonDb, getUserCollection } = require("../mongo/common");
 
+
+async function getActiveMotionsOverview(chain) {
+  const motionCol = await getMotionCollection(chain);
+  const motions = await motionCol.find(
+    {
+      "state.state": { $nin: ["Approved", "Disapproved", "Executed"] }
+    })
+    .sort({ "indexer.blockHeight": -1 })
+    .limit(3)
+    .toArray();
+
+  const commonDb = await getCommonDb(chain);
+  const chainDb = await getChainDb(chain);
+  await Promise.all([
+    commonDb.lookupOne({
+      from: "user",
+      for: motions,
+      as: "author",
+      localField: "proposer",
+      foreignField: `${chain}Address`,
+      map: toUserPublicInfo,
+    }),
+    chainDb.lookupOne({
+      from: "treasuryProposal",
+      for: motions,
+      as: "treasuryProposal",
+      localField: "treasuryProposalIndex",
+      foreignField: "proposalIndex",
+    }),
+  ]);
+
+  return motions;
+}
+
 async function getMotionsByChain(chain, page, pageSize) {
   const motionCol = await getMotionCollection(chain);
   const total = await motionCol.countDocuments();
@@ -18,25 +52,25 @@ async function getMotionsByChain(chain, page, pageSize) {
     .limit(pageSize)
     .toArray();
 
-    const commonDb = await getCommonDb(chain);
-    const chainDb = await getChainDb(chain);
-    await Promise.all([
-      commonDb.lookupOne({
-        from: "user",
-        for: motions,
-        as: "author",
-        localField: "proposer",
-        foreignField: `${chain}Address`,
-        map: toUserPublicInfo,
-      }),
-      chainDb.lookupOne({
-        from: "treasuryProposal",
-        for: motions,
-        as: "treasuryProposal",
-        localField: "treasuryProposalIndex",
-        foreignField: "proposalIndex",
-      }),
-    ]);
+  const commonDb = await getCommonDb(chain);
+  const chainDb = await getChainDb(chain);
+  await Promise.all([
+    commonDb.lookupOne({
+      from: "user",
+      for: motions,
+      as: "author",
+      localField: "proposer",
+      foreignField: `${chain}Address`,
+      map: toUserPublicInfo,
+    }),
+    chainDb.lookupOne({
+      from: "treasuryProposal",
+      for: motions,
+      as: "treasuryProposal",
+      localField: "treasuryProposalIndex",
+      foreignField: "proposalIndex",
+    }),
+  ]);
 
   return {
     items: motions,
@@ -77,4 +111,5 @@ async function getMotionById(chain, postId) {
 module.exports =  {
   getMotionsByChain,
   getMotionById,
+  getActiveMotionsOverview,
 };

@@ -64,6 +64,52 @@ async function updatePost(
   return true;
 }
 
+async function getActivePostsOverview(chain) {
+  const chainProposalCol = await getChainTreasuryProposalCollection(chain);
+  const proposals = await chainProposalCol.find(
+    {
+      "state.state": { $nin: ["Awarded", "Approved", "Rejected"] }
+    })
+    .sort({ "indexer.blockHeight": -1 })
+    .limit(3)
+    .toArray();
+
+  const commonDb = await getCommonDb(chain);
+  const businessDb = await getBusinessDb(chain);
+  const posts = await businessDb.lookupOne({
+    from: "treasuryProposal",
+    for: proposals,
+    as: "post",
+    localField: "proposalIndex",
+    foreignField: "proposalIndex",
+  });
+
+  await Promise.all([
+    commonDb.lookupOne({
+      from: "user",
+      for: posts,
+      as: "author",
+      localField: "proposer",
+      foreignField: `${chain}Address`,
+      map: toUserPublicInfo,
+    }),
+    businessDb.lookupCount({
+      from: "comment",
+      for: posts,
+      as: "commentsCount",
+      localField: "_id",
+      foreignField: "treasuryProposal",
+    }),
+  ]);
+
+  return proposals.map(proposal => {
+    const post = proposal.post;
+    proposal.post = undefined;
+    post.onchainData = proposal;
+    return post;
+  });
+}
+
 async function getPostsByChain(chain, page, pageSize) {
   const postCol = await getTreasuryProposalCollection(chain);
   const total = await postCol.countDocuments();
@@ -171,4 +217,5 @@ module.exports =  {
   updatePost,
   getPostsByChain,
   getPostById,
+  getActivePostsOverview,
 };

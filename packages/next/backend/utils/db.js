@@ -1,6 +1,10 @@
 const { MongoClient } = require("mongodb");
 const _ = require("lodash");
 
+function getField(data, fieldName) {
+  return fieldName.split(".").reduce((data, field) => data[field], data);
+}
+
 class DeferredCall {
   constructor(callback) {
     this.promise = new Promise(resolve => {
@@ -48,7 +52,7 @@ async function connectDb(dbName) {
         { [foreignField]: { $in: keys } },
         projection ? { projection: {...projection, [foreignField]: 1 } } : {}
       ).toArray();
-      const itemsMap = new Map(items.map(item => [item[foreignField].toString(), map ? map(item) : item]));
+      const itemsMap = new Map(items.map(item => [getField(item, foreignField).toString(), map ? map(item) : item]));
       return itemsMap;
     });
 
@@ -57,12 +61,12 @@ async function connectDb(dbName) {
     await Promise.all(
       lookupProps.map(async ({ for: for_, localField, as }) => {
         const records = Array.isArray(for_) ? for_ : [for_];
-        const vals = records.map(item => item[localField]).filter(val => val !== null && val !== undefined);
+        const vals = records.map(item => getField(item, localField)).filter(val => val !== null && val !== undefined);
 
         itemsMap = await query.addParams(vals);
 
         records.forEach(item => {
-          const relatedItem = itemsMap.get(item[localField]?.toString());
+          const relatedItem = itemsMap.get(getField(item, localField)?.toString());
           if (relatedItem) {
             item[as ?? localField] = relatedItem;
           } else {
@@ -81,7 +85,7 @@ async function connectDb(dbName) {
     }
 
     const records = Array.isArray(for_) ? for_ : [for_];
-    const vals = Array.from(new Set(records.map(item => item[localField])));
+    const vals = Array.from(new Set(records.map(item => getField(item, localField))));
     const col = getCollection(from);
     const items = await col.aggregate([
       {
@@ -97,7 +101,7 @@ async function connectDb(dbName) {
     const countsMap = new Map(items.map(item => [item._id.toString(), item]));
 
     records.forEach(item => {
-      const relatedItem = countsMap.get(item[localField]?.toString());
+      const relatedItem = countsMap.get(getField(item, localField)?.toString());
       if (relatedItem) {
         item[as] = relatedItem.count;
       } else {
@@ -112,7 +116,7 @@ async function connectDb(dbName) {
     }
 
     const records = Array.isArray(for_) ? for_ : [for_];
-    const vals = Array.from(new Set(records.map(item => item[localField]).filter(val => val !== null && val !== undefined)));
+    const vals = Array.from(new Set(records.map(item => getField(item, localField)).filter(val => val !== null && val !== undefined)));
     const col = getCollection(from);
     const items = await col.aggregate([
       {
@@ -135,7 +139,7 @@ async function connectDb(dbName) {
     const itemsMap = new Map(items.map(item => [item._id.toString(), map ? item.values.map(map) : item.values]));
 
     records.forEach(item => {
-      const relatedItem = itemsMap.get(item[localField]?.toString());
+      const relatedItem = itemsMap.get(getField(item, localField)?.toString());
       if (relatedItem) {
         item[as] = relatedItem;
       } else {
@@ -148,7 +152,7 @@ async function connectDb(dbName) {
 
   async function compoundLookupOne({ from, compoundForeignFields, projection, map, for: for_, compoundLocalFields, as }) {
     const records = Array.isArray(for_) ? for_ : [for_];
-    const vals = records.map(item => compoundLocalFields.map(localField => item[localField]));
+    const vals = records.map(item => compoundLocalFields.map(localField => getField(item, localField)));
 
     const q = [
       { $limit: 1 },
@@ -197,7 +201,7 @@ async function connectDb(dbName) {
     ));
 
     records.forEach(item => {
-      const relatedItem = itemsMap.get(JSON.stringify(compoundLocalFields.map(localField => item[localField])));
+      const relatedItem = itemsMap.get(JSON.stringify(compoundLocalFields.map(localField => getField(item, localField))));
       if (relatedItem) {
         item[as] = relatedItem;
       } else {

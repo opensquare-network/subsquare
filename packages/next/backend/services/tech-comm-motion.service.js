@@ -3,6 +3,40 @@ const { toUserPublicInfo } = require("../utils/user");
 const { getDb: getChainDb, getTechCommMotionCollection, getExternalCollection } = require("../mongo/chain");
 const { getDb: getCommonDb, getUserCollection } = require("../mongo/common");
 
+
+async function getActiveMotionsOverview(chain) {
+  const motionCol = await getTechCommMotionCollection(chain);
+  const motions = await motionCol.find(
+    {
+      "state.state": { $nin: ["Approved", "Disapproved", "Executed"] }
+    })
+    .sort({ "indexer.blockHeight": -1 })
+    .limit(3)
+    .toArray();
+
+  const commonDb = await getCommonDb(chain);
+  const chainDb = await getChainDb(chain);
+  await Promise.all([
+    commonDb.lookupOne({
+      from: "user",
+      for: motions,
+      as: "author",
+      localField: "proposer",
+      foreignField: `${chain}Address`,
+      map: toUserPublicInfo,
+    }),
+    chainDb.lookupOne({
+      from: "democracyExternal",
+      for: motions,
+      as: "democracyExternal",
+      localField: "proposalHash",
+      foreignField: "proposalHash",
+    }),
+  ]);
+
+  return motions;
+}
+
 async function getMotionsByChain(chain, page, pageSize) {
   const motionCol = await getTechCommMotionCollection(chain);
   const total = await motionCol.countDocuments();
@@ -77,4 +111,5 @@ async function getMotionById(chain, postId) {
 module.exports =  {
   getMotionsByChain,
   getMotionById,
+  getActiveMotionsOverview,
 };
