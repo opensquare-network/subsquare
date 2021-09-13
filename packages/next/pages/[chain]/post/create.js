@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import {useEffect, useState} from "react";
-import {useRouter} from "next/router";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 import Layout from "components/layout";
 import Back from "components/back";
-import {withLoginUser, withLoginUserRedux} from "lib";
+import { withLoginUser, withLoginUserRedux } from "lib";
 import Input from "components/input";
 import MarkdownEditor from "components/markdownEditor";
 import Button from "components/button";
@@ -30,9 +30,9 @@ const ContentWrapper = styled.div`
   padding: 48px;
   background: #ffffff;
   border: 1px solid #ebeef4;
-  box-shadow:0 6px 7px rgba(30, 33, 52, 0.02),
- 0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
- 0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
+    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
   @media screen and (max-width: 768px) {
     margin-left: -16px;
@@ -87,7 +87,7 @@ const PreviewWrapper = styled.div`
   min-height: 244px;
 `;
 
-export default withLoginUserRedux(({loginUser, chain}) => {
+export default withLoginUserRedux(({ loginUser, chain }) => {
   const router = useRouter();
   const dispath = useDispatch();
   const [title, setTitle] = useState("");
@@ -98,14 +98,14 @@ export default withLoginUserRedux(({loginUser, chain}) => {
   const [insetQuillImgFunc, setInsetQuillImgFunc] = useState(null);
   const [errors, setErrors] = useState();
 
-  useEffect(()=> {
+  useEffect(() => {
     if (!localStorage.getItem("contentType")) {
       return localStorage.setItem("contentType", contentType);
     }
     if (contentType !== localStorage.getItem("contentType")) {
       setContentType(localStorage.getItem("contentType"));
     }
-  },[]);
+  }, []);
 
   const onCreate = async () => {
     const result = await nextApi.post(`${chain}/posts`, {
@@ -118,10 +118,12 @@ export default withLoginUserRedux(({loginUser, chain}) => {
       if (result.error.data) {
         setErrors(result.error);
       } else {
-        dispath(addToast({
-          type: "error",
-          message: result.error.message
-        }));
+        dispath(
+          addToast({
+            type: "error",
+            message: result.error.message,
+          })
+        );
       }
     } else {
       router.push(`/${chain}/post/${result.result}`);
@@ -137,13 +139,16 @@ export default withLoginUserRedux(({loginUser, chain}) => {
     }
     setContent("");
     setContentType(contentType === "html" ? "markdown" : "html");
-    localStorage.setItem("contentType", contentType === "html" ? "markdown" : "html");
+    localStorage.setItem(
+      "contentType",
+      contentType === "html" ? "markdown" : "html"
+    );
   };
 
   return (
     <Layout user={loginUser} chain={chain}>
       <Wrapper>
-        <Back href={`/${chain}/discussions`} text="Back to Discussions"/>
+        <Back href={`/${chain}/discussions`} text="Back to Discussions" />
         <ContentWrapper>
           <Title>New Post</Title>
           <Label>Title</Label>
@@ -155,23 +160,25 @@ export default withLoginUserRedux(({loginUser, chain}) => {
           {errors?.data?.title?.[0] && (
             <ErrorText>{errors?.data?.title?.[0]}</ErrorText>
           )}
-          {
-            contentType === "html" &&
-            <UploadImgModal showImgModal={showImgModal} setShowImgModal={setShowImgModal}
-                            insetQuillImgFunc={insetQuillImgFunc}/>
-          }
+          {contentType === "html" && (
+            <UploadImgModal
+              showImgModal={showImgModal}
+              setShowImgModal={setShowImgModal}
+              insetQuillImgFunc={insetQuillImgFunc}
+            />
+          )}
           <Label>Issue</Label>
           <InputWrapper>
-            {
-              contentType === "markdown" && <MarkdownEditor
+            {contentType === "markdown" && (
+              <MarkdownEditor
                 height={200}
                 content={content}
                 setContent={setContent}
                 visible={!showPreview}
               />
-            }
-            {
-              contentType === "html" && <QuillEditor
+            )}
+            {contentType === "html" && (
+              <QuillEditor
                 visible={!showPreview}
                 content={content}
                 setContent={setContent}
@@ -181,10 +188,10 @@ export default withLoginUserRedux(({loginUser, chain}) => {
                   setInsetQuillImgFunc(insetImgFunc);
                 }}
               />
-            }
+            )}
             {!showPreview && (
               <InputSwitch>
-                <img src="/imgs/icons/markdown-mark.svg" alt=""/>
+                <img src="/imgs/icons/markdown-mark.svg" alt="" />
                 <Toggle
                   size="small"
                   isOn={contentType === "markdown"}
@@ -194,13 +201,11 @@ export default withLoginUserRedux(({loginUser, chain}) => {
             )}
           </InputWrapper>
           {showPreview && (
-            <PreviewWrapper>
-              {
-                contentType === "markdown" && <PreviewMD content={content} setContent={setContent}/>
-              }
-              {
-                contentType === "html" && <HtmlRender html={content}/>
-              }
+            <PreviewWrapper className="preview">
+              {contentType === "markdown" && (
+                <PreviewMD content={content} setContent={setContent} />
+              )}
+              {contentType === "html" && <HtmlRender html={content} />}
             </PreviewWrapper>
           )}
           {errors?.data?.content?.[0] && (
@@ -221,11 +226,11 @@ export default withLoginUserRedux(({loginUser, chain}) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const {chain} = context.query;
+  const { chain } = context.query;
 
   return {
     props: {
-      chain
+      chain,
     },
   };
 });
