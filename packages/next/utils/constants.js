@@ -124,8 +124,12 @@ export const mainMenu = [
       {
         value: "democracyProposals",
         name: "Proposals",
-        icon: "type-proposals.svg",
         pathname: "/[chain]/democracy/proposals",
+      },
+      {
+        value: "democracyExternals",
+        name: "External",
+        pathname: "/[chain]/democracy/externals",
       },
       {
         value: "referenda",
