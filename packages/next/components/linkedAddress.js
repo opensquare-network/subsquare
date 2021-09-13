@@ -26,6 +26,14 @@ import Avatar from "./avatar";
 import DownloadExtension from "./downloadExtension";
 
 const Wrapper = styled.div`
+  max-width: 848px;
+  @media screen and (max-width: 1024px) {
+    max-width: 960px;
+  }
+  margin: auto;
+  @media screen and (min-width: 1080px) {
+    padding-bottom: 16px;
+  }
   > :not(:first-child) {
     margin-top: 16px;
   }
@@ -39,9 +47,9 @@ const Title = styled.div`
 const ContentWrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
-  box-shadow:0 6px 7px rgba(30, 33, 52, 0.02),
-   0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-   0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
+    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 4px;
   padding: 48px;
   @media screen and (max-width: 768px) {
@@ -145,13 +153,13 @@ const NodeItem = styled.div`
 `;
 
 const EmptyList = styled.div`
-padding: 18px 0;
-font-style: normal;
-font-weight: normal;
-font-size: 14px;
-line-height: 140%;
-text-align: center;
-color: #9DA9BB;
+  padding: 18px 0;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 140%;
+  text-align: center;
+  color: #9da9bb;
 `;
 
 export default function LinkedAddress() {
@@ -207,7 +215,7 @@ export default function LinkedAddress() {
     const address = account[`${chain}Address`];
 
     const { error, result } = await nextApi.delete(
-      `user/linkaddr/${chain}/${address}`,
+      `user/linkaddr/${chain}/${address}`
     );
     dispatch(fetchUserProfile());
 
@@ -238,11 +246,10 @@ export default function LinkedAddress() {
     );
     if (result) {
       const signature = await signMessage(result?.challenge, account.address);
-      const { error: confirmError, result: confirmResult } =
-        await nextApi.post(
-          `user/linkaddr/${result?.attemptId}`,
-          { challengeAnswer: signature }
-        );
+      const { error: confirmError, result: confirmResult } = await nextApi.post(
+        `user/linkaddr/${result?.attemptId}`,
+        { challengeAnswer: signature }
+      );
 
       dispatch(fetchUserProfile());
       if (confirmResult) {
@@ -279,8 +286,7 @@ export default function LinkedAddress() {
     ...(user?.addresses || [])
       .filter((address) =>
         accounts.every(
-          (acc) =>
-            acc[`${address.chain}Address`] !== address.address
+          (acc) => acc[`${address.chain}Address`] !== address.address
         )
       )
       .map((address) => ({
@@ -323,49 +329,48 @@ export default function LinkedAddress() {
           </NodesWrapper>
           <AddressWrapper>
             {availableAccounts.length === 0 && (
-              <EmptyList>
-                No available addresses
-              </EmptyList>
+              <EmptyList>No available addresses</EmptyList>
             )}
-            {availableAccounts.length > 0 && availableAccounts.map((item, index) => (
-              <AddressItem
-                key={index}
-                linked={user?.addresses?.some(
-                  (i) => i.address === item[`${activeChain}Address`]
-                )}
-              >
-                {item[`${activeChain}Address`] ? (
-                  <Avatar address={item[`${activeChain}Address`]} size={32} />
-                ) : (
-                  <img src="/imgs/icons/avatar.svg" alt="" />
-                )}
-                <NameWrapper>
-                  <div>{item.name}</div>
-                  <div>{addressEllipsis(item[`${activeChain}Address`])}</div>
-                </NameWrapper>
-                {user?.addresses?.some(
-                  (i) => i.address === item[`${activeChain}Address`]
-                ) ? (
-                  <LinkWrapper
-                    onClick={() => {
-                      unlinkAddress(activeChain, item);
-                    }}
-                  >
-                    <img src="/imgs/icons/link-unlink.svg" />
-                    <div>Unlink</div>
-                  </LinkWrapper>
-                ) : (
-                  <LinkWrapper
-                    onClick={() => {
-                      linkAddress(activeChain, item);
-                    }}
-                  >
-                    <img src="/imgs/icons/link-linked.svg" />
-                    <div>Link</div>
-                  </LinkWrapper>
-                )}
-              </AddressItem>
-            ))}
+            {availableAccounts.length > 0 &&
+              availableAccounts.map((item, index) => (
+                <AddressItem
+                  key={index}
+                  linked={user?.addresses?.some(
+                    (i) => i.address === item[`${activeChain}Address`]
+                  )}
+                >
+                  {item[`${activeChain}Address`] ? (
+                    <Avatar address={item[`${activeChain}Address`]} size={32} />
+                  ) : (
+                    <img src="/imgs/icons/avatar.svg" alt="" />
+                  )}
+                  <NameWrapper>
+                    <div>{item.name}</div>
+                    <div>{addressEllipsis(item[`${activeChain}Address`])}</div>
+                  </NameWrapper>
+                  {user?.addresses?.some(
+                    (i) => i.address === item[`${activeChain}Address`]
+                  ) ? (
+                    <LinkWrapper
+                      onClick={() => {
+                        unlinkAddress(activeChain, item);
+                      }}
+                    >
+                      <img src="/imgs/icons/link-unlink.svg" />
+                      <div>Unlink</div>
+                    </LinkWrapper>
+                  ) : (
+                    <LinkWrapper
+                      onClick={() => {
+                        linkAddress(activeChain, item);
+                      }}
+                    >
+                      <img src="/imgs/icons/link-linked.svg" />
+                      <div>Link</div>
+                    </LinkWrapper>
+                  )}
+                </AddressItem>
+              ))}
           </AddressWrapper>
         </div>
       </ContentWrapper>
