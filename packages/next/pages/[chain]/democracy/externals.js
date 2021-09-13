@@ -7,19 +7,19 @@ import { EmptyList } from "utils/constants";
 import { addressEllipsis } from "utils";
 import LayoutFixedHeader from "components/layoutFixedHeader";
 
-export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
-  const items = (proposals.items || []).map((proposal) => ({
-    time: proposal.indexer.blockTime,
-    commentsCount: proposal.commentsCount,
-    title: proposal.title,
-    author: proposal.author ?? {
-      username: addressEllipsis(proposal.proposer),
-      addresses: [{ chain, address: proposal.proposer }],
+export default withLoginUserRedux(({ loginUser, externals, chain }) => {
+  const items = (externals.items || []).map((external) => ({
+    commentsCount: external.commentsCount,
+    title: external.title,
+    author: external.author ?? {
+      username: addressEllipsis(external.proposer),
+      addresses: [{ chain, address: external.proposer }],
     },
-    height: proposal.height,
-    hash: proposal.hash,
-    status: proposal.state ?? "Unknown",
-    proposalIndex: proposal.proposalIndex,
+    height: external.height,
+    hash: external.externalProposalHash,
+    status: external.state ?? "Unknown",
+    externalIndex: external.externalIndex,
+    type: "Democracy",
   }));
 
   return (
@@ -30,15 +30,15 @@ export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
     >
       <List
         chain={chain}
-        category={"Proposals"}
+        category={"Externals"}
         create={null}
         items={items}
         pagination={{
-          page: proposals.page,
-          pageSize: proposals.pageSize,
-          total: proposals.total,
+          page: externals.page,
+          pageSize: externals.pageSize,
+          total: externals.total,
         }}
-        type="treasury"
+        type="democracy"
       />
     </LayoutFixedHeader>
   );
@@ -47,8 +47,8 @@ export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
 export const getServerSideProps = withLoginUser(async (context) => {
   const { page, chain, page_size: pageSize } = context.query;
 
-  const [{ result: proposals }] = await Promise.all([
-    nextApi.fetch(`${chain}/treasury/proposals`, {
+  const [{ result: externals }] = await Promise.all([
+    nextApi.fetch(`${chain}/democracy/externals`, {
       page: page ?? 1,
       pageSize: pageSize ?? 50,
     }),
@@ -57,7 +57,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       chain,
-      proposals: proposals ?? EmptyList,
+      externals: externals ?? EmptyList,
     },
   };
 });

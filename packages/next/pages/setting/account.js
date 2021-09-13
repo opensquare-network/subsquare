@@ -14,10 +14,18 @@ import { useForm, useAuthPage } from "utils/hooks";
 import ErrorText from "components/ErrorText";
 import nextApi from "services/nextApi";
 import { addToast } from "store/reducers/toastSlice";
-import {withLoginUser, withLoginUserRedux} from "../../lib";
+import { withLoginUser, withLoginUserRedux } from "../../lib";
 import LayoutFixedHeader from "../../components/layoutFixedHeader";
 
 const Wrapper = styled.div`
+  max-width: 848px;
+  @media screen and (max-width: 1024px) {
+    max-width: 960px;
+  }
+  margin: auto;
+  @media screen and (min-width: 1080px) {
+    padding-bottom: 16px;
+  }
   > :not(:first-child) {
     margin-top: 16px;
   }
@@ -31,9 +39,9 @@ const Title = styled.div`
 const ContentWrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
-  box-shadow:0 6px 7px rgba(30, 33, 52, 0.02),
-   0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-   0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
+    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 4px;
   padding: 48px;
   @media screen and (max-width: 768px) {
@@ -101,9 +109,7 @@ const ButtonWrapper = styled.div`
   max-width: 240px;
 `;
 
-export default withLoginUserRedux(({
-  loginUser,
-}) => {
+export default withLoginUserRedux(({ loginUser }) => {
   useAuthPage(true);
   const user = useSelector(userSelector);
   const [show, setShow] = useState(false);
@@ -272,7 +278,6 @@ export default withLoginUserRedux(({
 
 export const getServerSideProps = withLoginUser(async (context) => {
   return {
-    props: {
-    },
+    props: {},
   };
 });

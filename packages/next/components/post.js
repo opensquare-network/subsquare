@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import User from "components/user";
 import { timeDuration, timeDurationFromNow } from "utils";
+import Tag from "./tag";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -25,6 +26,7 @@ const DividerWrapper = styled.div`
   align-items: center;
   flex-wrap: wrap;
   max-height: 20px;
+  line-height: 12px;
 
   > span {
     display: inline-block;
@@ -114,17 +116,6 @@ const TypeWrapper = styled.div`
     `}
 `;
 
-const StatusWrapper = styled.div`
-  background: #2196f3;
-  border-radius: 2px;
-  font-weight: 500;
-  font-size: 12px;
-  height: 20px;
-  line-height: 20px;
-  padding: 0 8px;
-  color: #ffffff;
-`;
-
 const getTypeColor = (type) => {
   switch (type) {
     case "Democracy":
@@ -172,7 +163,7 @@ export default function Post({ data, chain, href }) {
             <AutHideInfo>{`${data.commentsCount} Comments`}</AutHideInfo>
           )}
         </Footer>
-        {data.status && <StatusWrapper>{data.status}</StatusWrapper>}
+        {data.status && <Tag name={data.status} />}
       </FooterWrapper>
     </Wrapper>
   );

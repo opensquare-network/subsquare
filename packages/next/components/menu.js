@@ -12,12 +12,12 @@ const Wrapper = styled.div`
   padding-top: 37px;
 
   > :not(:first-child) {
-    margin-top: 24px;
+    margin-top: 16px;
   }
 `;
 
 const Title = styled.div`
-  padding: 0 12px 16px;
+  padding: 0 12px 12px;
   font-weight: bold;
   font-size: 12px;
   letter-spacing: 0.16em;
@@ -78,6 +78,8 @@ export default function Menu({ menu }) {
     ["motions", <MotionIcon />],
     ["referenda", <ReferendaIcon />],
     ["democracyProposals", <DemocracyProposalIcon />],
+    ["democracyExternals", <DemocracyProposalIcon />],
+    ["techCommProposals", <DemocracyProposalIcon />],
   ]);
 
   return (

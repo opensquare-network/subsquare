@@ -3,8 +3,8 @@ import styled from "styled-components";
 import Back from "components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
-import LayoutFixedHeader from "../../../components/layoutFixedHeader";
-import MotionDetail from "../../../components/motion/motionDetail";
+import LayoutFixedHeader from "components/layoutFixedHeader";
+import MotionDetail from "components/motion/motionDetail";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -15,12 +15,11 @@ const Wrapper = styled.div`
   margin: auto;
 `;
 
-
-export default withLoginUserRedux(({loginUser, motion, chain}) => {
+export default withLoginUserRedux(({ loginUser, motion, chain }) => {
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">
-        <Back href={`/${chain}/motions`} text="Back to Motions"/>
+        <Back href={`/${chain}/council/motions`} text="Back to Motions" />
         <MotionDetail
           motion={motion}
           user={loginUser}
@@ -33,9 +32,9 @@ export default withLoginUserRedux(({loginUser, motion, chain}) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const {chain, id } = context.query;
+  const { chain, id } = context.query;
 
-  const [{result: motion}] = await Promise.all([
+  const [{ result: motion }] = await Promise.all([
     nextApi.fetch(`${chain}/motions/${id}`),
   ]);
 

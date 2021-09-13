@@ -7,19 +7,26 @@ import { EmptyList } from "utils/constants";
 import { addressEllipsis } from "utils";
 import LayoutFixedHeader from "components/layoutFixedHeader";
 
+function getMotionType(motion) {
+  return motion.isTreasury ? "Treasury" : "";
+}
+
 export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
-  const items = (proposals.items || []).map((proposal) => ({
-    time: proposal.indexer.blockTime,
-    commentsCount: proposal.commentsCount,
-    title: proposal.title,
-    author: proposal.author ?? {
-      username: addressEllipsis(proposal.proposer),
-      addresses: [{ chain, address: proposal.proposer }],
+  const items = (proposals.items || []).map((item) => ({
+    time: item.indexer.blockTime,
+    commentsCount: item.commentsCount,
+    title: `${item.proposal.section}.${item.proposal.method}`,
+    type: getMotionType(item),
+    author: item.author ?? {
+      username: addressEllipsis(item.proposer),
+      addresses: [{ chain, address: item.proposer }],
     },
-    height: proposal.height,
-    hash: proposal.hash,
-    status: proposal.state ?? "Unknown",
-    proposalIndex: proposal.proposalIndex,
+    proposal: item.proposal,
+    height: item.indexer.blockHeight,
+    hash: item.hash,
+    status: item.state.state ?? "Unknown",
+    index: item.index,
+    proposalIndex: item.index,
   }));
 
   return (
@@ -38,7 +45,7 @@ export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
           pageSize: proposals.pageSize,
           total: proposals.total,
         }}
-        type="treasury"
+        type="techcomm"
       />
     </LayoutFixedHeader>
   );
@@ -48,7 +55,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { page, chain, page_size: pageSize } = context.query;
 
   const [{ result: proposals }] = await Promise.all([
-    nextApi.fetch(`${chain}/treasury/proposals`, {
+    nextApi.fetch(`${chain}/tech-comm/motions`, {
       page: page ?? 1,
       pageSize: pageSize ?? 50,
     }),

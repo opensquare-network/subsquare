@@ -108,30 +108,45 @@ export const mainMenu = [
     ],
   },
   {
-    name: "COUNCIL",
-    items: [
-      {
-        value: "motions",
-        name: "Motions",
-        icon: "type-motions.svg",
-        pathname: "/[chain]/motions",
-      },
-    ],
-  },
-  {
     name: "DEMOCRACY",
     items: [
       {
         value: "democracyProposals",
         name: "Proposals",
-        icon: "type-proposals.svg",
         pathname: "/[chain]/democracy/proposals",
+      },
+      {
+        value: "democracyExternals",
+        name: "External",
+        pathname: "/[chain]/democracy/externals",
       },
       {
         value: "referenda",
         name: "Referenda",
         icon: "type-referenda.svg",
         pathname: "/[chain]/democracy/referendums",
+      },
+    ],
+  },
+  {
+    name: "COUNCIL",
+    items: [
+      {
+        value: "motions",
+        name: "Motions",
+        icon: "type-motions.svg",
+        pathname: "/[chain]/council/motions",
+      },
+    ],
+  },
+  {
+    name: "TECH.COMM.",
+    items: [
+      {
+        value: "techCommProposals",
+        name: "Proposals",
+        icon: "type-proposals.svg",
+        pathname: "/[chain]/techcomm/proposals",
       },
     ],
   },

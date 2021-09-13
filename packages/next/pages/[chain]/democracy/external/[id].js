@@ -232,15 +232,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   };
 
   const metadata = [
-    ["hash", detail.onchainData?.hash],
-    [
-      "diposit",
-      `${toPrecision(
-        detail.onchainData?.timeline?.find((item) => item.method === "Tabled")
-          ?.args?.deposit ?? 0,
-        decimals
-      )} ${symbol}`,
-    ],
     [
       "proposer",
       <MetadataProposerWrapper>
@@ -253,18 +244,18 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">
-        <Back href={`/${chain}/democracy/proposals`} text="Back to Proposals" />
+        <Back href={`/${chain}/democracy/externals`} text="Back to Externals" />
         <DetailItem
           data={detail}
           user={loginUser}
           chain={chain}
           onReply={focusEditor}
-          type="democracy/proposal"
+          type="democracy/external"
         />
         {metadata && <Metadata data={metadata} />}
-        {timelineData && timelineData.length > 0 && (
-          <Timeline data={timelineData} chain={chain} />
-        )}
+        {/*{timelineData && timelineData.length > 0 && (*/}
+        {/*  <Timeline data={timelineData} chain={chain} />*/}
+        {/*)}*/}
         <CommentsWrapper>
           <Comments
             data={comments}
@@ -293,7 +284,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { chain, id, page, page_size: pageSize } = context.query;
 
   const [{ result: detail }] = await Promise.all([
-    nextApi.fetch(`${chain}/democracy/proposals/${id}`),
+    nextApi.fetch(`${chain}/democracy/externals/${id}`),
   ]);
 
   if (!detail) {
@@ -307,7 +298,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   }
 
   const { result: comments } = await nextApi.fetch(
-    `${chain}/democracy/proposals/${detail._id}/comments`,
+    `${chain}/democracy/externals/${detail._id}/comments`,
     {
       page: page ?? "last",
       pageSize: Math.min(pageSize ?? 50, 100),

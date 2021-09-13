@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { add } from "cheerio/lib/api/traversing";
 
 const Wrapper = styled.div`
   height: 20px;
@@ -46,6 +47,9 @@ export default function Links({
   style = {},
   address,
 }) {
+  if (!address) {
+    return null;
+  }
   if (chain === "karura") {
     return (
       <Wrapper style={style}>

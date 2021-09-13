@@ -183,16 +183,26 @@ const ReferendaWrapper = styled.div`
   border-radius: 4px;
   margin-bottom: 16px;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   font-weight: 500;
   color: #506176;
-  > svg {
+
+  > div {
+    display: flex;
+    align-items: center;
+  }
+
+  > div > svg {
+    margin-right: 8px;
     fill: #9da9bb;
   }
+
   a {
     color: #1f70c7;
   }
+
   > :not(:first-child) {
     margin-left: 8px;
   }
@@ -217,7 +227,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
   const [isEdit, setIsEdit] = useState(false);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
-
+  const userFontSize = type === "democracy/proposal" ? 12 : 14;
   if (!post) {
     return null;
   }
@@ -230,7 +240,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
     ownPost =
       isLoggedIn &&
       !!(user.addresses || []).find((item) =>
-        post.onchainData?.authors.includes(item.address)
+        post?.onchainData?.authors?.includes(item.address)
       );
   }
 
@@ -285,6 +295,29 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
     <Wrapper>
       {!isEdit && (
         <>
+          {type === "democracy/external" && (
+            <ReferendaWrapper>
+              <div>{`External`}</div>
+              <div>
+                <TriangleRight />
+                <Link
+                  href={`/${chain}/tech-comm/proposal/${post?.onchainData?.techCommMotionIndex}`}
+                >
+                  {`Proposal #${post?.onchainData?.techCommMotionIndex}`}
+                </Link>
+              </div>
+              {post?.onchainData?.referendumIndex > -1 && (
+                <div>
+                  <TriangleRight />
+                  <Link
+                    href={`/${chain}/democracy/referenda/${post?.onchainData?.referendumIndex}`}
+                  >
+                    {`Referenda #${post?.onchainData?.referendumIndex}`}
+                  </Link>
+                </div>
+              )}
+            </ReferendaWrapper>
+          )}
           {type === "democracy/proposal" && (
             <ReferendaWrapper>
               <div>{`Proposal #${post.proposalIndex}`}</div>
@@ -317,6 +350,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
               user={post.author}
               add={post.proposer || post.finder}
               chain={chain}
+              fontSize={userFontSize}
             />
             {post.type && (
               <div>

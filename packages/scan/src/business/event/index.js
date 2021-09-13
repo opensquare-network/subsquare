@@ -26,7 +26,7 @@ async function handleEventWithExtrinsic(
   eventSort,
   extrinsic,
   extrinsicIndex,
-  extrinsicEvents
+  blockEvents
 ) {
   const indexer = {
     ...blockIndexer,
@@ -38,14 +38,14 @@ async function handleEventWithExtrinsic(
   await handleTipEvent(event, extrinsic, indexer);
   await handleTreasuryProposalEvent(event, extrinsic, indexer);
   await handleMotionEvent(event, extrinsic, indexer);
-  await handleReferendumEventWithExtrinsic(event, extrinsic, indexer);
-  await handleTechCommMotionEvent(event, extrinsic, indexer, extrinsicEvents);
-  await handleDemocracyExternalEvent(
+  await handleReferendumEventWithExtrinsic(
     event,
     extrinsic,
     indexer,
-    extrinsicEvents
+    blockEvents
   );
+  await handleTechCommMotionEvent(event, extrinsic, indexer, blockEvents);
+  await handleDemocracyExternalEvent(event, extrinsic, indexer, blockEvents);
 }
 
 async function handleEventWithoutExtrinsic(
@@ -87,14 +87,13 @@ async function handleEvents(events, extrinsics, blockIndexer) {
 
     const extrinsicIndex = phase.value.toNumber();
     const extrinsic = extrinsics[extrinsicIndex];
-    const relatedEvents = extrinsicEvents[extrinsicIndex];
     await handleEventWithExtrinsic(
       blockIndexer,
       event,
       sort,
       extrinsic,
       extrinsicIndex,
-      relatedEvents
+      events
     );
   }
 }

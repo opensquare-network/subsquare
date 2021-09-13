@@ -138,7 +138,7 @@ export default function EditInput({
         )}
       </InputWrapper>
       {showPreview && (
-        <PreviewWrapper>
+        <PreviewWrapper className="preview">
           {contentType === "markdown" && (
             <PreviewMD content={content} setContent={setContent} />
           )}
