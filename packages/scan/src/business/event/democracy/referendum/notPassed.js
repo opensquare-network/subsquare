@@ -14,7 +14,7 @@ async function handleNotPassed(event, indexer) {
   const eventData = event.data.toJSON();
   const [referendumIndex] = eventData;
 
-  const ongoingInfo = await getReferendumInfoByHeight(
+  const { ongoing } = await getReferendumInfoByHeight(
     referendumIndex,
     indexer.blockHeight - 1
   );
@@ -42,7 +42,7 @@ async function handleNotPassed(event, indexer) {
   await updateDemocracyReferendum(
     referendumIndex,
     {
-      status: ongoingInfo,
+      status: ongoing,
       info: finishedInfo,
       state,
     },
