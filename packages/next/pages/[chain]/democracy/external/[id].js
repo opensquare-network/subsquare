@@ -101,49 +101,16 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
             </DepositorsWrapper>
           ),
         };
+      case "fastTrack":
+        return {
+          proposalHash: args.find((arg) => arg.name === "proposal_hash").value,
+          votingPeriod:
+            args.find((arg) => arg.name === "voting_period").value + ` blocks`,
+          delay: args.find((arg) => arg.name === "delay").value + ` blocks`,
+        };
     }
     return args;
   };
-
-  function createMotionTimelineData(motion) {
-    return (motion?.timeline || []).map((item) => {
-      switch (item.method) {
-        case "Proposed": {
-          return {
-            indexer: item.indexer,
-            time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-            status: { value: `Motion #${motion.index}`, color: "#6848FF" },
-            voting: {
-              proposer: motion.proposer,
-              method: motion.proposal.method,
-              args: motion.proposal.args,
-              total: motion.voting.threshold,
-              ayes: motion.voting.ayes.length,
-              nays: motion.voting.nays.length,
-            },
-          };
-        }
-        case "Voted": {
-          return {
-            indexer: item.indexer,
-            time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-            status: { value: "Vote", color: "#6848FF" },
-            voteResult: {
-              name: item.args.voter,
-              value: item.args.approve,
-            },
-          };
-        }
-        default: {
-          return {
-            indexer: item.indexer,
-            time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-            status: { value: item.method, color: "#6848FF" },
-          };
-        }
-      }
-    });
-  }
 
   const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
     return {
@@ -153,14 +120,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       data: getTimelineData(item.args, item.method ?? item.name),
     };
   });
-
-  const motionTimelineData = createMotionTimelineData(
-    detail?.onchainData?.motions?.[0]
-  );
-
-  if (motionTimelineData && motionTimelineData.length > 0) {
-    timelineData.push(motionTimelineData);
-  }
 
   timelineData.sort((a, b) => {
     if (Array.isArray(a)) {
@@ -242,7 +201,8 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       </MetadataProposerWrapper>,
     ],
   ];
-  console.log(detail);
+
+  console.log(detail.onchainData.timeline, timelineData);
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">
@@ -255,9 +215,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           type="democracy/external"
         />
         {metadata && <Metadata data={metadata} />}
-        {/*{timelineData && timelineData.length > 0 && (*/}
-        {/*  <Timeline data={timelineData} chain={chain} />*/}
-        {/*)}*/}
+        {timelineData && timelineData.length > 0 && (
+          <Timeline data={timelineData} chain={chain} />
+        )}
         <CommentsWrapper>
           <Comments
             data={comments}
