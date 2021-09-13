@@ -134,7 +134,7 @@ async function insertExternal(call, signer, extrinsicIndexer) {
   };
 
   await insertDemocracyExternal(externalObj);
-  await insertDemocracyPostByExternal(args.proposalHash, extrinsicIndexer);
+  await insertDemocracyPostByExternal(args.proposalHash, extrinsicIndexer, signer);
 }
 
 function hasReferendumStarted(events) {
