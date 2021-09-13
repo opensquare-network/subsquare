@@ -310,7 +310,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                 <div>
                   <TriangleRight />
                   <Link
-                    href={`/${chain}/democracy/referenda/${post?.onchainData?.referendumIndex}`}
+                    href={`/${chain}/democracy/referendum/${post?.onchainData?.referendumIndex}`}
                   >
                     {`Referenda #${post?.onchainData?.referendumIndex}`}
                   </Link>
@@ -321,26 +321,24 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
           {type === "democracy/proposal" && (
             <ReferendaWrapper>
               <div>{`Proposal #${post.proposalIndex}`}</div>
-              <TriangleRight />
               <div>
+                <TriangleRight />
                 <Link
                   href={`/${chain}/democracy/referendum/${post.referendumIndex}`}
                 >
-                  {`Referenda #${post.referendumIndex}`}
+                  {`Referenda #${post?.referendumIndex}`}
                 </Link>
               </div>
             </ReferendaWrapper>
           )}
           {type === "democracy/referenda" && (
             <ReferendaWrapper>
-              <Link
-                href={`/${chain}/democracy/proposal/${post.referendumIndex}`}
-              >
-                {`Proposal #${post.referendumIndex}`}
+              <Link href={`/${chain}/democracy/proposal/${post.proposalIndex}`}>
+                {`Proposal #${post.proposalIndex}`}
               </Link>
-              <TriangleRight />
               <div>
-                <div>{`Referenda #${post.proposalIndex}`}</div>
+                <TriangleRight />
+                <div>{`Referenda #${post?.referendumIndex}`}</div>
               </div>
             </ReferendaWrapper>
           )}
