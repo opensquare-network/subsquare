@@ -45,7 +45,7 @@ export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
           pageSize: proposals.pageSize,
           total: proposals.total,
         }}
-        type="tech-comm"
+        type="techcomm"
       />
     </LayoutFixedHeader>
   );

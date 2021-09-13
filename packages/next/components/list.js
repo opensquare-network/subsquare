@@ -47,7 +47,7 @@ export default function List({
             href = `/${chain}/democracy/referendum/${item.index}`;
           }
           if (category === "On-chain Motions") {
-            href = `/${chain}/motion/${item.index}`;
+            href = `/${chain}/council/motion/${item.index}`;
           }
           if (category === "Tips") {
             href = `/${chain}/treasury/tip/${item.height}_${item.hash}`;
@@ -57,8 +57,8 @@ export default function List({
               href = `/${chain}/democracy/proposal/${item.proposalIndex}`;
             } else if (type === "treasury") {
               href = `/${chain}/treasury/proposal/${item.proposalIndex}`;
-            } else if (type === "tech-comm") {
-              href = `/${chain}/tech-comm/proposal/${item.proposalIndex}`;
+            } else if (type === "techcomm") {
+              href = `/${chain}/techcomm/proposal/${item.proposalIndex}`;
             }
           }
           return <Post key={index} data={item} chain={chain} href={href} />;

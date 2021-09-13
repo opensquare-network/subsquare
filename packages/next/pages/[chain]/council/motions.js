@@ -1,11 +1,11 @@
 import List from "components/list";
 import Menu from "components/menu";
 import { mainMenu } from "utils/constants";
-import { withLoginUser, withLoginUserRedux } from "../../lib";
-import nextApi from "../../services/nextApi";
-import { EmptyList } from "../../utils/constants";
+import { withLoginUser, withLoginUserRedux } from "lib";
+import nextApi from "services/nextApi";
+import { EmptyList } from "utils/constants";
 import styled from "styled-components";
-import LayoutFixedHeader from "../../components/layoutFixedHeader";
+import LayoutFixedHeader from "components/layoutFixedHeader";
 import { addressEllipsis } from "utils";
 
 const Create = styled.a`
@@ -67,7 +67,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { page, chain, page_size: pageSize } = context.query;
 
   const [{ result: motions }] = await Promise.all([
-    nextApi.fetch(`${chain}/motions`, { page: page ?? 1, pageSize: pageSize ?? 50 }),
+    nextApi.fetch(`${chain}/motions`, {
+      page: page ?? 1,
+      pageSize: pageSize ?? 50,
+    }),
   ]);
 
   return {
