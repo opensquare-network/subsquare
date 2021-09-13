@@ -40,9 +40,12 @@ const CommentsWrapper = styled.div`
   }
 `;
 
-const Flex = styled.div`
+const MetadataProposerWrapper = styled.div`
   display: flex;
-  align-items: center; ;
+  align-items: center;
+  > :not(:first-child) {
+    margin-left: 8px;
+  }
 `;
 
 const DepositorsWrapper = styled.div`
@@ -238,7 +241,13 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
         decimals
       )} ${symbol}`,
     ],
-    ["proposer", <User chain={chain} add={detail.onchainData?.proposer} />],
+    [
+      "proposer",
+      <MetadataProposerWrapper>
+        <User chain={chain} add={detail.onchainData?.proposer} />
+        <Links chain={chain} address={detail.onchainData?.proposer} />
+      </MetadataProposerWrapper>,
+    ],
   ];
 
   return (
