@@ -1,5 +1,5 @@
-const motionService = require("../../../services/tech-comm-motion.service");
 const { extractPage } = require("../../../utils");
+const motionService = require("../../../services/tech-comm-motion.service");
 
 async function getMotions(ctx) {
   const { chain } = ctx.params;

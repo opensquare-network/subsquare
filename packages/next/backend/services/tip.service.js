@@ -65,6 +65,52 @@ async function updatePost(
   return true;
 }
 
+async function getActivePostsOverview(chain) {
+  const chainTipCol = await getChainTipCollection(chain);
+  const tips = await chainTipCol.find(
+    {
+      "state.state": { $in: ["NewTip", "tip"] }
+    })
+    .sort({ "indexer.blockHeight": -1 })
+    .limit(3)
+    .toArray();
+
+  const commonDb = await getCommonDb(chain);
+  const businessDb = await getBusinessDb(chain);
+  const posts = await businessDb.compoundLookupOne({
+    from: "tip",
+    for: tips,
+    as: "post",
+    compoundLocalFields: ["indexer.blockHeight", "hash"],
+    compoundForeignFields: ["height", "hash"],
+  });
+
+  await Promise.all([
+    commonDb.lookupOne({
+      from: "user",
+      for: posts,
+      as: "author",
+      localField: "finder",
+      foreignField: `${chain}Address`,
+      map: toUserPublicInfo,
+    }),
+    businessDb.lookupCount({
+      from: "comment",
+      for: posts,
+      as: "commentsCount",
+      localField: "_id",
+      foreignField: "tip",
+    }),
+  ]);
+
+  return tips.map(tip => {
+    const post = tip.post;
+    tip.post = undefined;
+    post.onchainData = tip;
+    return post;
+  });
+}
+
 async function getPostsByChain(chain, page, pageSize) {
   const postCol = await getTipCollection(chain);
   const total = await postCol.countDocuments();
@@ -179,4 +225,5 @@ module.exports =  {
   updatePost,
   getPostsByChain,
   getPostById,
+  getActivePostsOverview,
 };

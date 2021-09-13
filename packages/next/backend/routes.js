@@ -16,6 +16,7 @@ const chainFeatureRouters = [
   require("./features/referendums/routes"),
   require("./features/tech-comm/motions/routes"),
   require("./features/comments/routes"),
+  require("./features/overview/routes"),
 ];
 
 const commonFeatureRouters = [
