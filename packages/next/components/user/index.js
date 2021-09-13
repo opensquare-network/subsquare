@@ -31,7 +31,16 @@ const Username = styled.span`
   font-size: ${(props) => props.fontSize}px;
 `;
 
-export default function User({user, chain, add, showAvatar = true, fontSize = 14}) {
+export default function User({
+  user,
+  chain,
+  add,
+  showAvatar = true,
+  fontSize = 14,
+}) {
+  if (!user && !add) {
+    return null;
+  }
   const [identity, setIdentity] = useState(null);
 
   const address =
@@ -54,17 +63,19 @@ export default function User({user, chain, add, showAvatar = true, fontSize = 14
       {showAvatar && (
         <AvatarWrapper>
           {address ? (
-            <Avatar address={address} size={20}/>
+            <Avatar address={address} size={20} />
           ) : (
-            <Grvatar email={user?.email} size={20}/>
+            <Grvatar email={user?.email} size={20} />
           )}
         </AvatarWrapper>
       )}
       <ExternalLink href={`https://${chain}.subscan.io/account/${address}`}>
         {identity ? (
-          <Identity identity={identity} fontSize={fontSize}/>
+          <Identity identity={identity} fontSize={fontSize} />
         ) : (
-          <Username fontSize={fontSize}>{user?.username ?? addressEllipsis(add)}</Username>
+          <Username fontSize={fontSize}>
+            {user?.username ?? addressEllipsis(add)}
+          </Username>
         )}
       </ExternalLink>
     </Wrapper>
