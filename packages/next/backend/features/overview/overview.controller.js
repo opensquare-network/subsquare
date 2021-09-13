@@ -9,13 +9,23 @@ const techCommMotionService = require("../../services/tech-comm-motion.service")
 async function getOverview(ctx) {
   const { chain } = ctx.params;
 
-  const tips = await tipPostService.getActivePostsOverview(chain);
-  const treasuryProposals = await treasuryProposalPostService.getActivePostsOverview(chain);
-  const motions = await motionService.getActiveMotionsOverview(chain);
-  const externals = await externalProposalPostService.getActivePostsOverview(chain);
-  const publicProposals = await publicProposalPostService.getActivePostsOverview(chain);
-  const referendums = await referendumPostService.getActivePostsOverview(chain);
-  const techCommMotions = await techCommMotionService.getActiveMotionsOverview(chain);
+  const [
+    tips,
+    treasuryProposals,
+    motions,
+    externals,
+    publicProposals,
+    referendums,
+    techCommMotions,
+  ] = await Promise.all([
+    tipPostService.getActivePostsOverview(chain),
+    treasuryProposalPostService.getActivePostsOverview(chain),
+    motionService.getActiveMotionsOverview(chain),
+    externalProposalPostService.getActivePostsOverview(chain),
+    publicProposalPostService.getActivePostsOverview(chain),
+    referendumPostService.getActivePostsOverview(chain),
+    techCommMotionService.getActiveMotionsOverview(chain),
+  ]);
 
   ctx.body = {
     treasury: {
