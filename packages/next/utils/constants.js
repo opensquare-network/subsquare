@@ -108,17 +108,6 @@ export const mainMenu = [
     ],
   },
   {
-    name: "COUNCIL",
-    items: [
-      {
-        value: "motions",
-        name: "Motions",
-        icon: "type-motions.svg",
-        pathname: "/[chain]/council/motions",
-      },
-    ],
-  },
-  {
     name: "DEMOCRACY",
     items: [
       {
@@ -136,6 +125,17 @@ export const mainMenu = [
         name: "Referenda",
         icon: "type-referenda.svg",
         pathname: "/[chain]/democracy/referendums",
+      },
+    ],
+  },
+  {
+    name: "COUNCIL",
+    items: [
+      {
+        value: "motions",
+        name: "Motions",
+        icon: "type-motions.svg",
+        pathname: "/[chain]/council/motions",
       },
     ],
   },
