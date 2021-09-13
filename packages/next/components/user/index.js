@@ -65,7 +65,7 @@ export default function User({
           {address ? (
             <Avatar address={address} size={20} />
           ) : (
-            <Grvatar email={user?.email} size={20} />
+            <Grvatar email={user?.email} emailMd5={user.emailMd5} size={20} />
           )}
         </AvatarWrapper>
       )}
