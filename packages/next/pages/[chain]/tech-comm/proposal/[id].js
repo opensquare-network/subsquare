@@ -19,7 +19,7 @@ export default withLoginUserRedux(({ loginUser, motion, chain }) => {
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">
-        <Back href={`/${chain}/motions`} text="Back to Motions" />
+        <Back href={`/${chain}/tech-comm/proposals`} text="Back to Proposals" />
         <MotionDetail
           motion={motion}
           user={loginUser}
