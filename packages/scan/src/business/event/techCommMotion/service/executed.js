@@ -9,7 +9,7 @@ const {
   TechnicalCommitteeEvents,
 } = require("../../../common/constants");
 
-async function handleExecuted(event, extrinsic, indexer, extrinsicEvents) {
+async function handleExecuted(event, extrinsic, indexer, blockEvents) {
   const eventData = event.data.toJSON();
   const [hash, dispatchResult] = eventData;
 
@@ -30,11 +30,7 @@ async function handleExecuted(event, extrinsic, indexer, extrinsicEvents) {
   };
 
   if (Object.keys(dispatchResult).includes("ok")) {
-    await handleBusinessWhenTechCommMotionExecuted(
-      hash,
-      indexer,
-      extrinsicEvents
-    );
+    await handleBusinessWhenTechCommMotionExecuted(hash, indexer, blockEvents);
   }
 
   const updates = { state, isFinal: true };

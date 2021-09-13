@@ -16,7 +16,7 @@ const { getTechCommMotionCollection } = require("../../../../../mongo");
 async function handleBusinessWhenTechCommMotionExecuted(
   motionHash,
   indexer,
-  extrinsicEvents
+  blockEvents
 ) {
   const col = await getTechCommMotionCollection();
   const motion = await col.findOne({ hash: motionHash, isFinal: false });
@@ -31,13 +31,13 @@ async function handleBusinessWhenTechCommMotionExecuted(
     return;
   }
 
-  if (!hasReferendumStarted(extrinsicEvents)) {
+  if (!hasReferendumStarted(blockEvents)) {
     throw new Error(
       "Tech. Comm. motion to fastTrack not table externalProposal"
     );
   }
 
-  const referendumStartedEvent = extrinsicEvents.find(
+  const referendumStartedEvent = blockEvents.find(
     ({ event }) =>
       event.section === Modules.Democracy &&
       event.method === ReferendumEvents.Started

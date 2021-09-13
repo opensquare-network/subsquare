@@ -13,14 +13,19 @@ function isReferendumEvent(section, method) {
   return ReferendumEvents.hasOwnProperty(method);
 }
 
-async function handleReferendumEventWithExtrinsic(event, extrinsic, indexer) {
+async function handleReferendumEventWithExtrinsic(
+  event,
+  extrinsic,
+  indexer,
+  blockEvents
+) {
   const { section, method } = event;
   if (!isReferendumEvent(section, method)) {
     return;
   }
 
   if (ReferendumEvents.Started === method) {
-    await handleStarted(event, indexer);
+    await handleStarted(event, indexer, blockEvents);
   } else if (ReferendumEvents.Cancelled === method) {
     await handleCancelled(...arguments);
   } else if (ReferendumEvents.Executed === method) {
