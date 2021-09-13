@@ -259,7 +259,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           user={loginUser}
           chain={chain}
           onReply={focusEditor}
-          type="democracy/proposal"
+          type="democracy/external"
         />
         {metadata && <Metadata data={metadata} />}
         {timelineData && timelineData.length > 0 && (

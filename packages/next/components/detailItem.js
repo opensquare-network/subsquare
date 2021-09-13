@@ -187,12 +187,15 @@ const ReferendaWrapper = styled.div`
   justify-content: center;
   font-weight: 500;
   color: #506176;
+
   > svg {
     fill: #9da9bb;
   }
+
   a {
     color: #1f70c7;
   }
+
   > :not(:first-child) {
     margin-left: 8px;
   }
@@ -285,6 +288,29 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
     <Wrapper>
       {!isEdit && (
         <>
+          {type === "democracy/external" && (
+            <ReferendaWrapper>
+              <div>{`External`}</div>
+              <TriangleRight />
+              <div>
+                <Link
+                  href={`/${chain}/tech-comm/proposal/${post?.onchainData?.techCommMotionIndex}`}
+                >
+                  {`Proposal #${post?.onchainData?.techCommMotionIndex}`}
+                </Link>
+              </div>
+              {post?.onchainData?.referendumIndex > -1 && <TriangleRight />}
+              {post?.onchainData?.referendumIndex > -1 && (
+                <div>
+                  <Link
+                    href={`/${chain}/democracy/referenda/${post?.onchainData?.referendumIndex}`}
+                  >
+                    {`Referenda #${post?.onchainData?.referendumIndex}`}
+                  </Link>
+                </div>
+              )}
+            </ReferendaWrapper>
+          )}
           {type === "democracy/proposal" && (
             <ReferendaWrapper>
               <div>{`Proposal #${post.proposalIndex}`}</div>
