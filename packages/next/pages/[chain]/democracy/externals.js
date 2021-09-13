@@ -9,7 +9,6 @@ import LayoutFixedHeader from "components/layoutFixedHeader";
 
 export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
   const items = (proposals.items || []).map((proposal) => ({
-    time: proposal.indexer.blockTime,
     commentsCount: proposal.commentsCount,
     title: proposal.title,
     author: proposal.author ?? {
@@ -20,6 +19,7 @@ export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
     hash: proposal.hash,
     status: proposal.state ?? "Unknown",
     proposalIndex: proposal.proposalIndex,
+    type: "Democracy",
   }));
 
   return (
@@ -48,7 +48,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { page, chain, page_size: pageSize } = context.query;
 
   const [{ result: proposals }] = await Promise.all([
-    nextApi.fetch(`${chain}/democracy/proposals`, {
+    nextApi.fetch(`${chain}/democracy/externals`, {
       page: page ?? 1,
       pageSize: pageSize ?? 50,
     }),
