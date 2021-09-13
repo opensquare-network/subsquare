@@ -230,7 +230,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
     ownPost =
       isLoggedIn &&
       !!(user.addresses || []).find((item) =>
-        post.onchainData?.authors.includes(item.address)
+        post?.onchainData?.authors?.includes(item.address)
       );
   }
 
