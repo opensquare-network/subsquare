@@ -102,12 +102,16 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           ),
         };
       case "fastTrack":
-        return {
-          proposalHash: args.find((arg) => arg.name === "proposal_hash").value,
-          votingPeriod:
-            args.find((arg) => arg.name === "voting_period").value + ` blocks`,
-          delay: args.find((arg) => arg.name === "delay").value + ` blocks`,
-        };
+        if (Array.isArray(args)) {
+          return {
+            proposalHash: args.find((arg) => arg.name === "proposal_hash")
+              .value,
+            votingPeriod:
+              args.find((arg) => arg.name === "voting_period").value +
+              ` blocks`,
+            delay: args.find((arg) => arg.name === "delay").value + ` blocks`,
+          };
+        }
     }
     return args;
   };
