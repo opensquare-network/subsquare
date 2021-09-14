@@ -164,7 +164,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           type="democracy/referenda"
         />
 
-        <Vote referendum={detail.democracyReferendum} />
+        <Vote referendum={detail.onchainData} chain={chain} />
 
         <KVList
           title={"Metadata"}
