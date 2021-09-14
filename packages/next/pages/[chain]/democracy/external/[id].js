@@ -202,7 +202,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     ],
   ];
 
-  console.log(detail.onchainData.timeline, timelineData);
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">

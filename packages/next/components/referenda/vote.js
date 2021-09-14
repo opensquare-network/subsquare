@@ -96,8 +96,6 @@ const Header = styled.span`
 `;
 
 function Vote({ referendum, chain }) {
-  console.log(referendum?.status?.tally?.ayes);
-
   const node = getNode(chain);
   if (!node) {
     return null;
