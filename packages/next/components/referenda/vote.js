@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import styled from "styled-components";
 import { getNode, toPrecision } from "../../utils";
 
@@ -95,6 +96,25 @@ const Header = styled.span`
   }
 `;
 
+const BarContainer = styled.div`
+  display: flex;
+  gap: 2px;
+  height: 8px;
+  width: 100%;
+`;
+
+const AyesBar = styled.div`
+  background-color: #4CAF50;
+  width: ${p=>p.precent}%;
+  height: 100%;
+`;
+
+const NaysBar = styled.div`
+  background-color: #F44336;
+  width: ${p=>p.precent}%;
+  height: 100%;
+`;
+
 function Vote({ referendum, chain }) {
   const node = getNode(chain);
   if (!node) {
@@ -103,29 +123,32 @@ function Vote({ referendum, chain }) {
   const decimals = node.decimals;
   const symbol = node.symbol;
 
+  const nAyes = toPrecision(referendum?.status?.tally?.ayes ?? 0, decimals);
+  const nNays = toPrecision(referendum?.status?.tally?.nays ?? 0, decimals);
+  const nTurnout = toPrecision(referendum?.status?.tally?.turnout ?? 0, decimals);
+
+  let nAyesPrecent = 0;
+  let nNaysPrecent = 0;
+  const nTotal = new BigNumber(nAyes).plus(nNays);
+  if (nTotal.gt(0)) {
+    nAyesPrecent = Math.round(new BigNumber(nAyes).div(nTotal).toNumber() * 100);
+    nNaysPrecent = 100 - nAyesPrecent;
+  }
+
   return (
     <Wrapper>
       <Title>Votes</Title>
-      <svg
-        width="751"
-        height="24"
-        viewBox="0 0 751 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <rect
-          width="729"
-          height="8"
-          transform="translate(0 8)"
-          fill="#4CAF50"
-        />
-        <rect
-          width="18"
-          height="8"
-          transform="translate(733 8)"
-          fill="#F44336"
-        />
-      </svg>
+
+      <BarContainer>
+        { nAyesPrecent > 0 && <AyesBar precent={nAyesPrecent} /> }
+        { nNaysPrecent > 0 && <NaysBar precent={nNaysPrecent} /> }
+        { nAyesPrecent === 0 && nNaysPrecent === 0 && (
+          <>
+            <AyesBar precent={50} />
+            <NaysBar precent={50} />
+          </>
+        )}
+      </BarContainer>
 
       <Headers>
         <span>Aye</span>
@@ -135,19 +158,18 @@ function Vote({ referendum, chain }) {
 
       <Contents>
         <span>
-          {toPrecision(referendum?.status?.tally?.ayes ?? 0, decimals)} {symbol}
+          {nAyesPrecent}%
         </span>
         <span>{referendum?.status?.threshold}</span>
         <span>
-          {toPrecision(referendum?.status?.tally?.nays ?? 0, decimals)} {symbol}
+          {nNaysPrecent}%
         </span>
       </Contents>
 
       <BorderedRow>
         <Header>Turnout</Header>
         <span>
-          {toPrecision(referendum?.status?.tally?.turnout ?? 0, decimals)}{" "}
-          {symbol}
+          {nTurnout}{" "}{symbol}
         </span>
       </BorderedRow>
 
@@ -171,7 +193,7 @@ function Vote({ referendum, chain }) {
           Aye
         </Header>
         <span>
-          {toPrecision(referendum?.status?.tally?.ayes ?? 0, decimals)} {symbol}
+          {nAyes} {symbol}
         </span>
       </BorderedRow>
 
@@ -194,7 +216,7 @@ function Vote({ referendum, chain }) {
           Nay
         </Header>
         <span>
-          {toPrecision(referendum?.status?.tally?.nays ?? 0, decimals)} {symbol}
+          {nNays} {symbol}
         </span>
       </Row>
       {referendum?.info?.finished?.approved && <PassButton>Passed</PassButton>}
