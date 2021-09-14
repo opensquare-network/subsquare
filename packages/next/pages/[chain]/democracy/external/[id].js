@@ -193,16 +193,10 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   };
 
   const metadata = [
-    [
-      "proposer",
-      <MetadataProposerWrapper>
-        <User chain={chain} add={detail.onchainData?.proposer} />
-        <Links chain={chain} address={detail.onchainData?.proposer} />
-      </MetadataProposerWrapper>,
-    ],
+    ["hash", detail.onchainData.proposalHash],
+    ["voteThreshould", detail.onchainData.voteThreshold],
   ];
 
-  console.log(detail.onchainData.timeline, timelineData);
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">
