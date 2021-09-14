@@ -23,15 +23,12 @@ const AccountButton = styled.div`
   justify-content: center;
   cursor: pointer;
   font-weight: 500;
-  > :first-child {
-    margin-right: 8px;
-  }
 `;
 
 const Menu = styled.div`
-  box-shadow:0 6px 22px rgba(30, 33, 52, 0.11),
-   0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
-   0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
+  box-shadow: 0 6px 22px rgba(30, 33, 52, 0.11),
+    0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
+    0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
   border-radius: 4px;
   position: absolute;
   left: 50%;
@@ -50,7 +47,7 @@ const Item = styled.div`
   cursor: pointer;
   padding: 0 12px;
   height: 36px;
-  font-size:14px;
+  font-size: 14px;
   :hover {
     background: #f6f7fa;
   }
@@ -99,7 +96,7 @@ export default function HeaderAccount({ user, chain }) {
       {user && (
         <Wrapper ref={ref}>
           <AccountButton onClick={() => setShow(!show)}>
-            <User user={user} chain={chain} />
+            <User user={user} chain={chain} noEvent />
           </AccountButton>
           {show && (
             <Menu>
