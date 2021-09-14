@@ -18,25 +18,33 @@ const END = "#C2C8D5";
 
 const getTagColor = (name) => {
   if (name && name.startsWith("Tipping")) return ACTIVE;
+  if (name && name.startsWith("Motion")) return START;
   switch (name) {
     case "Proposed":
     case "Extended":
     case "Opened":
     case "Started":
+    case "externalProposeMajority":
+    case "Report Awesome":
       return START;
     case "Tipping":
+    case "fastTrack":
+    case "Tip":
+    case "Vote":
       return ACTIVE;
     case "Passed":
     case "Claimed":
     case "Executed":
     case "Tabled":
+    case "Awarded":
+    case "Approved":
       return POSITIVE;
     case "Rejected":
     case "Retracted":
     case "Slashed":
     case "Disapproved":
     case "NotPassed":
-    case "Cancelled":
+    case "Tip Retracted":
       return NEGATIVE;
   }
   return END;
