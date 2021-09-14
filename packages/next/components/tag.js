@@ -25,8 +25,8 @@ const getTagColor = (name) => {
     case "Started":
       return START;
     case "Tipping":
-    case "Passed":
       return ACTIVE;
+    case "Passed":
     case "Claimed":
     case "Executed":
     case "Tabled":
