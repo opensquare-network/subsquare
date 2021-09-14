@@ -43,6 +43,20 @@ const DividerWrapper = styled.div`
   }
 `;
 
+const TitleWrapper = styled.div`
+  margin-bottom: 8px;
+  overflow: hidden;
+  > :not(:first-child) {
+    ::before {
+      content: "·";
+      font-size: 20px;
+      line-height: 28px;
+      color: #9da9bb;
+      margin: 0 8px;
+    }
+  }
+`;
+
 const Title = styled.div`
   max-width: 750px;
   word-break: break-all;
@@ -93,8 +107,10 @@ const getTypeColor = (type) => {
 };
 
 const Index = styled.div`
-  font-weight: bold;
-  font-size: 12px;
+  float: left;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 140%;
 `;
 
 const FlexWrapper = styled.div`
@@ -173,13 +189,12 @@ export default function MotionDetail({ motion, chain }) {
     <div>
       <Wrapper>
         <div>
-          <DividerWrapper style={{ marginBottom: 12 }}>
-            <Index>{`#${motion.index}`}</Index>
-            <span style={{ fontSize: 12, color: "#506176" }}>
-              {motion.proposal.method}
-            </span>
-          </DividerWrapper>
-          <Title>{`${motion.proposal.section}.${motion.proposal.method}`}</Title>
+          <TitleWrapper>
+            {motion?.index !== undefined && <Index>{`#${motion.index}`}</Index>}
+            <Title>
+              {motion?.proposal?.section} {motion?.proposal?.method}
+            </Title>
+          </TitleWrapper>
           <FlexWrapper>
             <DividerWrapper>
               <User
