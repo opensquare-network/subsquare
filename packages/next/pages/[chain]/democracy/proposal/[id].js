@@ -43,6 +43,7 @@ const CommentsWrapper = styled.div`
 const MetadataProposerWrapper = styled.div`
   display: flex;
   align-items: center;
+
   > :not(:first-child) {
     margin-left: 8px;
   }
@@ -52,6 +53,7 @@ const DepositorsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+
   > :not(:first-child) {
     margin-top: 4px;
   }
@@ -59,6 +61,7 @@ const DepositorsWrapper = styled.div`
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   if (!detail) {
+    console.log(detail);
     return "404"; //todo improve this
   }
 
@@ -297,13 +300,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   if (!detail) {
-    return {
-      props: {
-        detail: null,
-        comments: EmptyList,
-        chain,
-      },
-    };
+    const { res } = context;
+    res.statusCode = 302;
+    res.setHeader("Location", `/404`);
+    res.end();
   }
 
   const { result: comments } = await nextApi.fetch(

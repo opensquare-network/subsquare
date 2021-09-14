@@ -38,6 +38,13 @@ export const getServerSideProps = withLoginUser(async (context) => {
     nextApi.fetch(`${chain}/tech-comm/motions/${id}`),
   ]);
 
+  if (!motion) {
+    const { res } = context;
+    res.statusCode = 302;
+    res.setHeader("Location", `/404`);
+    res.end();
+  }
+
   return {
     props: {
       motion: motion ?? null,

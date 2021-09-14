@@ -149,6 +149,13 @@ export const getServerSideProps = withLoginUser(async (context) => {
     nextApi.fetch(`${chain}/posts/${id}`),
   ]);
 
+  if (!detail) {
+    const { res } = context;
+    res.statusCode = 302;
+    res.setHeader("Location", `/404`);
+    res.end();
+  }
+
   const postId = detail._id;
 
   const { result: comments } = await nextApi.fetch(
