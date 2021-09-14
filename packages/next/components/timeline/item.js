@@ -103,14 +103,16 @@ const ContentItem = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  word-wrap: break-word;
+  word-break: break-all;
   > :first-child {
     color: #506176;
     padding: 7px 0;
+    flex: 0 0 120px;
   }
   > :last-child {
     padding: 7px 0;
     text-align: right;
+    flex: 1 1 auto;
   }
 `;
 
