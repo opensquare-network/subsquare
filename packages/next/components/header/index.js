@@ -72,7 +72,7 @@ const MenuButton = styled.div`
   justify-content: center;
   cursor: pointer;
   display: none;
-  @media screen and (max-width: 1080px) {
+  @media screen and (max-width: 1024px) {
     display: flex;
     margin-right: 12px;
   }
