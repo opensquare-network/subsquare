@@ -52,7 +52,7 @@ const DividerWrapper = styled.div`
 const Index = styled.div`
   float: left;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 20px;
   line-height: 140%;
 `;
 
@@ -65,7 +65,7 @@ const Title = styled.div`
   max-width: 750px;
   word-break: break-all;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 20px;
   line-height: 140%;
   margin-bottom: 12px;
 `;
@@ -76,7 +76,8 @@ const TitleWrapper = styled.div`
   > :not(:first-child) {
     ::before {
       content: "·";
-      font-size: 12px;
+      font-size: 20px;
+      line-height: 28px;
       color: #9da9bb;
       margin: 0 8px;
     }
@@ -351,34 +352,33 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
               )}
             </ReferendaWrapper>
           )}
-          {type === "democracy/referenda" && post.externalProposalHash !== undefined && (
-            <ReferendaWrapper>
-              <Link
-                href={`/${chain}/democracy/external/${post.externalProposalHash}`}
-              >
-                {`External`}
-              </Link>
-              {post?.onchainData?.techCommMotionIndex !== undefined && (
+          {type === "democracy/referenda" &&
+            post.externalProposalHash !== undefined && (
+              <ReferendaWrapper>
+                <Link
+                  href={`/${chain}/democracy/external/${post.externalProposalHash}`}
+                >
+                  {`External`}
+                </Link>
+                {post?.onchainData?.techCommMotionIndex !== undefined && (
+                  <div>
+                    <TriangleRight />
+                    <Link
+                      href={`/${chain}/techcomm/proposal/${post?.onchainData?.techCommMotionIndex}`}
+                    >
+                      {`Proposal #${post?.onchainData?.techCommMotionIndex}`}
+                    </Link>
+                  </div>
+                )}
                 <div>
                   <TriangleRight />
-                  <Link
-                    href={`/${chain}/techcomm/proposal/${post?.onchainData?.techCommMotionIndex}`}
-                  >
-                    {`Proposal #${post?.onchainData?.techCommMotionIndex}`}
-                  </Link>
+                  <div>{`Referenda #${post?.referendumIndex}`}</div>
                 </div>
-              )}
-              <div>
-                <TriangleRight />
-                <div>{`Referenda #${post?.referendumIndex}`}</div>
-              </div>
-            </ReferendaWrapper>
-          )}
+              </ReferendaWrapper>
+            )}
           {type === "democracy/referenda" && post.proposalIndex !== undefined && (
             <ReferendaWrapper>
-              <Link
-                href={`/${chain}/democracy/proposal/${post.proposalIndex}`}
-              >
+              <Link href={`/${chain}/democracy/proposal/${post.proposalIndex}`}>
                 {`Proposal #${post.proposalIndex}`}
               </Link>
               <div>
