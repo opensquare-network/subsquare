@@ -125,6 +125,7 @@ async function insertExternal(call, signer, extrinsicIndexer) {
 
   const externalObj = {
     indexer: extrinsicIndexer,
+    proposer: signer,
     proposalHash: args.proposalHash,
     voteThreshold,
     authors: [signer],

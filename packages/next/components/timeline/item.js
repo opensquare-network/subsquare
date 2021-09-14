@@ -2,7 +2,6 @@ import styled, { css } from "styled-components";
 
 import Links from "./links";
 import Voting from "./voting";
-import Account from "components/account";
 import User from "components/user";
 import Tag from "components/tag";
 

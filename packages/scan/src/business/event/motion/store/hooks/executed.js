@@ -51,9 +51,10 @@ async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
     indexer,
   };
 
-  const { index: motionIndex, authors } = motion;
+  const { index: motionIndex, authors, proposer } = motion;
   const externalObj = {
     indexer,
+    proposer,
     proposalHash,
     voteThreshold,
     motionIndex,

@@ -46,6 +46,7 @@ async function handleExternalPropose(call, signer, extrinsicIndexer) {
 
   const externalObj = {
     indexer: extrinsicIndexer,
+    proposer: signer,
     proposalHash: hash,
     voteThreshold,
     state,
