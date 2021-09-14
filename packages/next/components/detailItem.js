@@ -299,7 +299,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
           {type === "democracy/external" && (
             <ReferendaWrapper>
               <div>{`External`}</div>
-              {post?.onchainData?.techCommMotionIndex > -1 && (
+              {post?.onchainData?.techCommMotionIndex !== undefined && (
                 <div>
                   <TriangleRight />
                   <Link
@@ -309,13 +309,13 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                   </Link>
                 </div>
               )}
-              {post?.onchainData?.referendumIndex > -1 && (
+              {post?.referendumIndex !== undefined && (
                 <div>
                   <TriangleRight />
                   <Link
-                    href={`/${chain}/democracy/referendum/${post?.onchainData?.referendumIndex}`}
+                    href={`/${chain}/democracy/referendum/${post?.referendumIndex}`}
                   >
-                    {`Referenda #${post?.onchainData?.referendumIndex}`}
+                    {`Referenda #${post?.referendumIndex}`}
                   </Link>
                 </div>
               )}
@@ -324,27 +324,50 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
           {type === "democracy/proposal" && (
             <ReferendaWrapper>
               <div>{`Proposal #${post.proposalIndex}`}</div>
+              {post?.referendumIndex !== undefined && (
+                <div>
+                  <TriangleRight />
+                  <Link
+                    href={`/${chain}/democracy/referendum/${post.referendumIndex}`}
+                  >
+                    {`Referenda #${post?.referendumIndex}`}
+                  </Link>
+                </div>
+              )}
+            </ReferendaWrapper>
+          )}
+          {type === "democracy/referenda" && post.externalProposalHash !== undefined && (
+            <ReferendaWrapper>
+              <Link
+                href={`/${chain}/democracy/external/${post.externalProposalHash}`}
+              >
+                {`External`}
+              </Link>
+              {post?.onchainData?.techCommMotionIndex !== undefined && (
+                <div>
+                  <TriangleRight />
+                  <Link
+                    href={`/${chain}/techcomm/proposal/${post?.onchainData?.techCommMotionIndex}`}
+                  >
+                    {`Proposal #${post?.onchainData?.techCommMotionIndex}`}
+                  </Link>
+                </div>
+              )}
               <div>
                 <TriangleRight />
-                <Link
-                  href={`/${chain}/democracy/referendum/${post.referendumIndex}`}
-                >
-                  {`Referenda #${post?.referendumIndex}`}
-                </Link>
+                <div>{`Referenda #${post?.referendumIndex}`}</div>
               </div>
             </ReferendaWrapper>
           )}
-          {type === "democracy/referenda" && (
+          {type === "democracy/referenda" && post.proposalIndex !== undefined && (
             <ReferendaWrapper>
-              {post.proposalIndex > -1 && (
-                <Link
-                  href={`/${chain}/democracy/proposal/${post.proposalIndex}`}
-                >
-                  {`Proposal #${post.proposalIndex}`}
-                </Link>
-              )}
+              <Link
+                href={`/${chain}/democracy/proposal/${post.proposalIndex}`}
+              >
+                {`Proposal #${post.proposalIndex}`}
+              </Link>
               <div>
-                {post.proposalIndex > -1 && <TriangleRight />}
+                <TriangleRight />
                 <div>{`Referenda #${post?.referendumIndex}`}</div>
               </div>
             </ReferendaWrapper>

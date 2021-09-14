@@ -223,6 +223,7 @@ function createService(proposalType, indexField, localField) {
         const col = await getChainExternalCollection(chain);
         const democracyExternal = await col.findOne({ proposalHash: chanProposalData.externalProposalHash });
         chanProposalData.authors = democracyExternal.authors;
+        chanProposalData.techCommMotionIndex =  democracyExternal.techCommMotionIndex;
       } else if (chanProposalData.publicProposalIndex !== undefined) {
         const col = await getChainPublicProposalCollection(chain);
         const democracyPublicProposal = await col.findOne({ proposalIndex: chanProposalData.publicProposalIndex });
