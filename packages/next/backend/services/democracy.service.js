@@ -232,6 +232,10 @@ function createService(proposalType, indexField, localField) {
       const col = await getPreImageCollection(chain);
       const preImage = await col.findOne({ hash: chanProposalData.hash });
       chanProposalData.preImage = preImage;
+    } else if (proposalType === "democracyExternal") {
+      const col = await getPreImageCollection(chain);
+      const preImage = await col.findOne({ hash: chanProposalData.proposalHash });
+      chanProposalData.preImage = preImage;
     }
 
     await lookupUser({ for: reactions, localField: "user" });
