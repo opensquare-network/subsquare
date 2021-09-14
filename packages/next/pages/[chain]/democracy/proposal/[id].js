@@ -237,7 +237,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const metadata = [
     ["hash", detail.onchainData?.hash],
     [
-      "diposit",
+      "deposit",
       `${toPrecision(
         detail.onchainData?.timeline?.find((item) => item.method === "Tabled")
           ?.args?.deposit ?? 0,
