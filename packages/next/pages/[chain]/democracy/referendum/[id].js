@@ -180,9 +180,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
                 />
               </>,
             ],
-            ["Delay", detail?.onchainData?.info?.ongoing?.delay],
-            ["End", detail?.onchainData?.info?.ongoing?.end],
-            ["Threshold", detail?.onchainData?.info?.ongoing?.threshold],
+            ["Delay", detail?.onchainData?.status?.delay],
+            ["End", detail?.onchainData?.status?.end],
+            ["Threshold", detail?.onchainData?.status?.threshold],
           ]}
         />
 
