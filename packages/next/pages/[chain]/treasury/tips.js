@@ -23,7 +23,6 @@ export default withLoginUserRedux(({ loginUser, tips, chain }) => {
         ? `Tipping (${tip.state.tipsCount})`
         : tip.state.state
       : "Unknown",
-    index: 1,
   }));
 
   return (
