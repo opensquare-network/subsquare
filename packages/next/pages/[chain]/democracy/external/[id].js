@@ -288,13 +288,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   if (!detail) {
-    return {
-      props: {
-        detail: null,
-        comments: EmptyList,
-        chain,
-      },
-    };
+    const { res } = context;
+    res.statusCode = 302;
+    res.setHeader("Location", `/404`);
+    res.end();
   }
 
   const { result: comments } = await nextApi.fetch(
