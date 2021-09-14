@@ -129,10 +129,11 @@ const getTypeColor = (type) => {
 const TitleWrapper = styled.div`
   margin-bottom: 8px;
   overflow: hidden;
-  > :not(:first-child) {
-    ::before {
+  > :not(:last-child) {
+    ::after {
       content: "·";
-      font-size: 12px;
+      font-size: 16px;
+      line-height: 22.4px;
       color: #9da9bb;
       margin: 0 8px;
     }
