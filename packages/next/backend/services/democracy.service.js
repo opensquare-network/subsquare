@@ -5,7 +5,8 @@ const { getDb: getBusinessDb, getDemocracyCollection } = require("../mongo/busin
 const {
   getDb: getChainDb,
   getPublicProposalCollection: getChainPublicProposalCollection,
-  getExternalCollection: getChainExternalCollection
+  getExternalCollection: getChainExternalCollection,
+  getPreImageCollection,
 } = require("../mongo/chain");
 const { getDb: getCommonDb, lookupUser, getUserCollection } = require("../mongo/common");
 const { HttpError } = require("../exc");
@@ -227,6 +228,10 @@ function createService(proposalType, indexField, localField) {
         const democracyPublicProposal = await col.findOne({ proposalIndex: chanProposalData.proposalIndex });
         chanProposalData.authors = democracyPublicProposal.authors;
       }
+    } else if (proposalType === "democracyPublicProposal") {
+      const col = await getPreImageCollection(chain);
+      const preImage = await col.findOne({ hash: chanProposalData.hash });
+      chanProposalData.preImage = preImage;
     }
 
     await lookupUser({ for: reactions, localField: "user" });

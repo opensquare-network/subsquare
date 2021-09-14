@@ -40,4 +40,5 @@ module.exports = {
   getPublicProposalCollection: (chain) => getCollection(chain, "democracyPublicProposal"),
   getReferendumCollection: (chain) => getCollection(chain, "democracyReferendum"),
   getExternalCollection: (chain) => getCollection(chain, "democracyExternal"),
+  getPreImageCollection: (chain) => getCollection(chain, "democracyPreImage"),
 };
