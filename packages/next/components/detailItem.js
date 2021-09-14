@@ -299,14 +299,16 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
           {type === "democracy/external" && (
             <ReferendaWrapper>
               <div>{`External`}</div>
-              <div>
-                <TriangleRight />
-                <Link
-                  href={`/${chain}/techcomm/proposal/${post?.onchainData?.techCommMotionIndex}`}
-                >
-                  {`Proposal #${post?.onchainData?.techCommMotionIndex}`}
-                </Link>
-              </div>
+              {post?.onchainData?.techCommMotionIndex > -1 && (
+                <div>
+                  <TriangleRight />
+                  <Link
+                    href={`/${chain}/techcomm/proposal/${post?.onchainData?.techCommMotionIndex}`}
+                  >
+                    {`Proposal #${post?.onchainData?.techCommMotionIndex}`}
+                  </Link>
+                </div>
+              )}
               {post?.onchainData?.referendumIndex > -1 && (
                 <div>
                   <TriangleRight />
