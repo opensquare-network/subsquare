@@ -58,7 +58,7 @@ async function handleAwarded(event, eventIndexer) {
   const [proposalIndex, award, beneficiary] = eventData;
 
   const state = {
-    name: TreasuryProposalEvents.Awarded,
+    state: TreasuryProposalEvents.Awarded,
     data: eventData,
     indexer: eventIndexer,
   };
@@ -82,7 +82,7 @@ async function handleRejected(event, extrinsic, eventIndexer) {
   const [proposalIndex, slashed] = eventData;
 
   const state = {
-    name: TreasuryProposalEvents.Rejected,
+    state: TreasuryProposalEvents.Rejected,
     data: eventData,
     indexer: eventIndexer,
   };
