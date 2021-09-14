@@ -50,8 +50,10 @@ const DividerWrapper = styled.div`
 `;
 
 const Index = styled.div`
-  font-weight: bold;
-  font-size: 12px;
+  float: left;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 140%;
 `;
 
 const Info = styled.div`
@@ -63,9 +65,22 @@ const Title = styled.div`
   max-width: 750px;
   word-break: break-all;
   font-weight: 500;
-  font-size: 20px;
+  font-size: 16px;
   line-height: 140%;
   margin-bottom: 12px;
+`;
+
+const TitleWrapper = styled.div`
+  margin-bottom: 8px;
+  overflow: hidden;
+  > :not(:first-child) {
+    ::before {
+      content: "·";
+      font-size: 12px;
+      color: #9da9bb;
+      margin: 0 8px;
+    }
+  }
 `;
 
 const Divider = styled.div`
@@ -349,7 +364,10 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
               </div>
             </ReferendaWrapper>
           )}
-          <Title>{post.title}</Title>
+          <TitleWrapper>
+            {data?.index !== undefined && <Index>{`#${data.index}`}</Index>}
+            <Title>{data.title}</Title>
+          </TitleWrapper>
           <FlexWrapper>
             <DividerWrapper>
               <User

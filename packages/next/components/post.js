@@ -58,7 +58,7 @@ const Footer = styled(DividerWrapper)`
 
 const Index = styled.div`
   float: left;
-  font-weight: bold;
+  font-weight: 500;
   font-size: 16px;
   line-height: 140%;
 `;
