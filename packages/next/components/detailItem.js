@@ -302,7 +302,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
               <div>
                 <TriangleRight />
                 <Link
-                  href={`/${chain}/tech-comm/proposal/${post?.onchainData?.techCommMotionIndex}`}
+                  href={`/${chain}/techcomm/proposal/${post?.onchainData?.techCommMotionIndex}`}
                 >
                   {`Proposal #${post?.onchainData?.techCommMotionIndex}`}
                 </Link>
