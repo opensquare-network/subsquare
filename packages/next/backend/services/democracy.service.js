@@ -225,7 +225,7 @@ function createService(proposalType, indexField, localField) {
         chanProposalData.authors = democracyExternal.authors;
       } else if (chanProposalData.proposalIndex) {
         const col = await getChainPublicProposalCollection(chain);
-        const democracyPublicProposal = await col.findOne({ proposalIndex: chanProposalData.proposalIndex });
+        const democracyPublicProposal = await col.findOne({ proposalIndex: chanProposalData.publicProposalIndex });
         chanProposalData.authors = democracyPublicProposal.authors;
       }
     } else if (proposalType === "democracyPublicProposal") {
