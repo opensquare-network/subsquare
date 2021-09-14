@@ -10,13 +10,16 @@ export default withLoginUserRedux(({ OverviewData, loginUser, chain }) => {
   function getMotionType(motion) {
     return motion.isTreasury ? "Treasury" : "";
   }
-  OverviewData.forEach((list) => {
+  (OverviewData || []).forEach((list) => {
     if (list.category === "Discussions") {
       list.items.forEach((post) => {
         post.time = post.lastActivityAt;
       });
     }
-    if (list.category === "Motions") {
+    if (
+      list.category === "On-chain Motions" ||
+      (list.category === "Proposals" && list.type === "techcomm")
+    ) {
       list.items.forEach((motion) => {
         motion.time = motion.indexer.blockTime;
         motion.title = `${motion.proposal.section}.${motion.proposal.method}`;
@@ -52,6 +55,26 @@ export default withLoginUserRedux(({ OverviewData, loginUser, chain }) => {
         p.time = p.indexer.blockTime;
       });
     }
+    if (list.category === "Externals") {
+      list.items.forEach((external) => {
+        external.author = external.author ?? {
+          username: addressEllipsis(external.proposer),
+          addresses: [{ chain, address: external.proposer }],
+        };
+        external.hash = external.externalProposalHash;
+        external.status = external.state ?? "Unknown";
+      });
+    }
+    if (list.category === "Referenda") {
+      list.items.forEach((item) => {
+        item.status = item.state;
+        item.index = item.referendumIndex;
+        item.author = post.author ?? {
+          username: addressEllipsis(post.proposer),
+          addresses: [{ chain, address: post.proposer }],
+        };
+      });
+    }
   });
 
   return (
@@ -68,55 +91,42 @@ export default withLoginUserRedux(({ OverviewData, loginUser, chain }) => {
 export const getServerSideProps = withLoginUser(async (context) => {
   const { chain } = context.query;
 
-  const page = 1;
-  const pageSize = 3;
-
-  const [
-    { result: discussions },
-    { result: tips },
-    { result: motions },
-    { result: treasuryProposals },
-    { result: democracyProposals },
-  ] = await Promise.all([
-    nextApi.fetch(`${chain}/posts`, { page, pageSize }),
-    nextApi.fetch(`${chain}/treasury/tips`, { page, pageSize }),
-    nextApi.fetch(`${chain}/motions`, {
-      page: page ?? 1,
-      pageSize: pageSize ?? 50,
-    }),
-    nextApi.fetch(`${chain}/treasury/proposals`, {
-      page: page ?? 1,
-      pageSize: pageSize ?? 50,
-    }),
-    nextApi.fetch(`${chain}/democracy/proposals`, {
-      page: page ?? 1,
-      pageSize: pageSize ?? 50,
-    }),
-  ]);
+  const { result } = await nextApi.fetch(`${chain}/overview`);
 
   return {
     props: {
       chain,
       OverviewData: [
         {
-          category: "Discussions",
-          items: discussions?.items ?? [],
-        },
-        {
           category: "Tips",
-          items: tips?.items ?? [],
+          items: result?.treasury?.tips ?? [],
         },
         {
-          category: "Motions",
-          items: motions?.items ?? [],
+          category: "Proposals",
+          type: "treasury",
+          items: result?.treasury?.proposals ?? [],
         },
         {
-          category: "TreasuryProposals",
-          items: treasuryProposals?.items ?? [],
+          category: "On-chain Motions",
+          items: result?.council?.motions ?? [],
         },
         {
-          category: "DemocracyProposals",
-          items: democracyProposals?.items ?? [],
+          category: "Proposals",
+          type: "democracy",
+          items: result?.democracy?.proposals ?? [],
+        },
+        {
+          category: "Externals",
+          items: result?.democracy?.externals ?? [],
+        },
+        {
+          category: "Referenda",
+          items: result?.democracy?.referensums ?? [],
+        },
+        {
+          category: "Proposals",
+          type: "techcomm",
+          items: result?.techComm?.motions ?? [],
         },
       ],
     },

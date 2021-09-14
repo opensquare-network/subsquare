@@ -17,6 +17,7 @@ export default function Overview({ OverviewData, chain }) {
           key={index}
           category={item.category}
           items={item.items}
+          type={item.type}
         />
       ))}
     </Wrapper>
