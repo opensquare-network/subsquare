@@ -1,6 +1,9 @@
 import styled from "styled-components";
 
 const Wrapper = styled.footer`
+  @media (max-height: 750px) {
+    display: none;
+  }
   color: #9da9bb;
   font-size: 12px;
   margin-bottom: 32px;
