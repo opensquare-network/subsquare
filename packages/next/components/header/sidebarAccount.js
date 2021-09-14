@@ -71,7 +71,7 @@ const UserWrapper = styled.div`
 export default function SidebarAccount({ user, chain }) {
   const router = useRouter();
   const dispatch = useDispatch();
-  const node = nodes.find(n => n.value === chain) || nodes[0];
+  const node = nodes.find((n) => n.value === chain) || nodes[0];
 
   const handleAccountMenu = (item) => {
     if (item.value === "logout") {
@@ -99,7 +99,7 @@ export default function SidebarAccount({ user, chain }) {
       {user && (
         <div>
           <UserWrapper>
-            <User user={user} chain={chain} />
+            <User user={user} chain={chain} noEvent />
           </UserWrapper>
           {accountMenu.map((item, index) => (
             <Item key={index} onClick={() => handleAccountMenu(item)}>

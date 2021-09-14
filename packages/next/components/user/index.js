@@ -18,6 +18,11 @@ const Wrapper = styled.div`
       text-decoration: underline;
     }
   }
+  ${(p) =>
+    p.noEvent &&
+    css`
+      pointer-events: none;
+    `}
 `;
 
 const AvatarWrapper = styled.div`
@@ -37,6 +42,7 @@ export default function User({
   add,
   showAvatar = true,
   fontSize = 14,
+  noEvent = false,
 }) {
   if (!user && !add) {
     return null;
@@ -59,7 +65,7 @@ export default function User({
   }, [address]);
 
   return (
-    <Wrapper>
+    <Wrapper noEvent={noEvent}>
       {showAvatar && (
         <AvatarWrapper>
           {address ? (
