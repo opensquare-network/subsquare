@@ -336,11 +336,11 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
           )}
           {type === "democracy/referenda" && (
             <ReferendaWrapper>
-              {post.proposalIndex > -1 && (
+              {post.externalProposalHash > -1 && (
                 <Link
-                  href={`/${chain}/democracy/proposal/${post.proposalIndex}`}
+                  href={`/${chain}/democracy/proposal/${post.externalProposalHash}`}
                 >
-                  {`Proposal #${post.proposalIndex}`}
+                  {`Proposal #${post.externalProposalHash}`}
                 </Link>
               )}
               <div>
