@@ -41,12 +41,13 @@ const Left = styled.div`
 
 const LeftPlaceHolder = styled.div`
   width: 232px;
+  flex: 0 0 232px;
   @media screen and (max-width: 1024px) {
     display: none;
   }
-`
+`;
 
-export default function Content({left, children}) {
+export default function Content({ left, children }) {
   return (
     <Wrapper>
       <Container>
@@ -54,12 +55,10 @@ export default function Content({left, children}) {
           {left && (
             <Left>
               {left}
-              <Footer/>
+              <Footer />
             </Left>
           )}
-          {
-            left && <LeftPlaceHolder/>
-          }
+          {left && <LeftPlaceHolder />}
           <Main>{children}</Main>
         </ContentWrapper>
       </Container>
