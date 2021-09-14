@@ -97,6 +97,7 @@ const Header = styled.span`
 `;
 
 const BarContainer = styled.div`
+  margin-bottom: 1rem;
   display: flex;
   gap: ${(p) => p.gap}px;
   height: 8px;
