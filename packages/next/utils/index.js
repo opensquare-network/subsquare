@@ -52,13 +52,12 @@ export function timeDurationFromNow(time) {
     //todo 讨论当客户端时间不准时应当如何处理
     return moment(time).fromNow();
   }
-  let ss = now.diff(time, "seconds");
   let mm = now.diff(time, "minutes");
   let hh = now.diff(time, "hours");
   let dd = now.diff(time, "days");
   if (dd) {
     hh %= 24;
-    if (hh) {
+    if (dd < 3 && hh) {
       return `${dd} day${dd > 1 ? "s" : ""} ${hh} hr${hh > 1 ? "s" : ""} ago`;
     }
     return `${dd} day${dd > 1 ? "s" : ""} ago`;
@@ -71,10 +70,6 @@ export function timeDurationFromNow(time) {
     return `${hh} hr${hh > 1 ? "s" : ""} ago`;
   }
   if (mm) {
-    // ss %= 60;
-    // if (ss) {
-    //   return `${mm} min${mm > 1 ? "s" : ""} ${ss} sec${ss > 1 ? "s" : ""} ago`;
-    // }
     return `${mm} min${mm > 1 ? "s" : ""} ago`;
   }
   return `just now`;
