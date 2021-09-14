@@ -1,3 +1,4 @@
+const { handlePreImageEvent } = require("./democracy/preimage");
 const {
   handleDemocracyPublicProposalEvent,
   handleDemocracyPublicProposalEventWithoutExtrinsic,
@@ -51,6 +52,7 @@ async function handleEventWithExtrinsic(
   );
   await handleTechCommMotionEvent(event, extrinsic, indexer, blockEvents);
   await handleDemocracyExternalEvent(event, extrinsic, indexer, blockEvents);
+  await handlePreImageEvent(event, extrinsic, indexer, blockEvents);
 }
 
 async function handleEventWithoutExtrinsic(

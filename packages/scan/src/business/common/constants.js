@@ -118,6 +118,14 @@ const DemocracyExternalStates = Object.freeze({
   Tabled: "Tabled",
 });
 
+const PreImageEvents = Object.freeze({
+  PreimageNoted: "PreimageNoted",
+  PreimageUsed: "PreimageUsed",
+  PreimageInvalid: "PreimageInvalid",
+  PreimageMissing: "PreimageMissing",
+  PreimageReaped: "PreimageReaped",
+});
+
 module.exports = {
   Modules,
   TipEvents,
@@ -138,4 +146,5 @@ module.exports = {
   TechnicalCommitteeEvents,
   SudoMethods,
   DemocracyExternalEvents,
+  PreImageEvents,
 };
