@@ -10,7 +10,6 @@ import { addressEllipsis } from "../../../utils";
 export default withLoginUserRedux(({ loginUser, posts, chain }) => {
   const items = (posts.items || []).map((post) => ({
     title: post.title,
-    type: "Democracy",
     status: post.state,
     commentsCount: post.commentsCount,
     index: post.referendumIndex,

@@ -19,7 +19,6 @@ export default withLoginUserRedux(({ loginUser, externals, chain }) => {
     hash: external.externalProposalHash,
     status: external.state ?? "Unknown",
     externalIndex: external.externalIndex,
-    type: "Democracy",
   }));
 
   return (
