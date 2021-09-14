@@ -25,8 +25,7 @@ const DividerWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  max-height: 20px;
-  line-height: 12px;
+  line-height: 16px;
 
   > span {
     display: inline-block;
@@ -58,9 +57,10 @@ const Footer = styled(DividerWrapper)`
 `;
 
 const Index = styled.div`
+  float: left;
   font-weight: bold;
-  font-size: 12px;
-  line-height: 12px;
+  font-size: 16px;
+  line-height: 140%;
 `;
 
 const Info = styled.div`
@@ -79,7 +79,6 @@ const Title = styled.div`
   font-weight: 500;
   font-size: 16px;
   cursor: pointer;
-  display: inline-block;
   line-height: 140%;
 
   :hover {
@@ -127,23 +126,29 @@ const getTypeColor = (type) => {
   }
 };
 
+const TitleWrapper = styled.div`
+  margin-bottom: 8px;
+  overflow: hidden;
+  > :not(:first-child) {
+    ::before {
+      content: "·";
+      font-size: 12px;
+      color: #9da9bb;
+      margin: 0 8px;
+    }
+  }
+`;
+
 export default function Post({ data, chain, href }) {
   return (
     <Wrapper>
-      {data?.index !== undefined && (
-        <DividerWrapper style={{ marginBottom: 8 }}>
-          <Index>{`#${data.index}`}</Index>
-          {data?.proposal?.method && (
-            <span style={{ fontSize: 12, color: "#506176" }}>
-              {data?.proposal?.method}
-            </span>
-          )}
-        </DividerWrapper>
-      )}
+      <TitleWrapper>
+        {data?.index !== undefined && <Index>{`#${data.index}`}</Index>}
+        <Link href={href}>
+          <Title>{data.title}</Title>
+        </Link>
+      </TitleWrapper>
 
-      <Link href={href}>
-        <Title>{data.title}</Title>
-      </Link>
       <Divider />
       <FooterWrapper>
         <Footer>
