@@ -74,7 +74,7 @@ const AutHideInfo = styled(Info)`
   }
 `;
 
-const Title = styled.div`
+const Title = styled.a`
   word-break: break-all;
   font-weight: 500;
   font-size: 16px;
@@ -141,7 +141,7 @@ export default function Post({ data, chain, href }) {
         </DividerWrapper>
       )}
 
-      <Link href={href}>
+      <Link href={href} passHref>
         <Title>{data.title}</Title>
       </Link>
       <Divider />

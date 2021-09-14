@@ -111,11 +111,13 @@ export const getServerSideProps = withLoginUser(async (context) => {
           items: motions?.items ?? [],
         },
         {
-          category: "TreasuryProposals",
+          category: "Proposals",
+          type: "treasury",
           items: treasuryProposals?.items ?? [],
         },
         {
-          category: "DemocracyProposals",
+          category: "Proposals",
+          type: "democracy",
           items: democracyProposals?.items ?? [],
         },
       ],
