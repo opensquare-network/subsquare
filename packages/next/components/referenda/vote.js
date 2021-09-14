@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { getNode, toPrecision } from "../../utils";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -30,6 +31,19 @@ const Headers = styled(Flex)`
   justify-content: space-between;
   font-size: 12px;
   color: #506176;
+
+  span {
+    display: inline-block;
+    width: 33.33%;
+  }
+
+  span:nth-child(2) {
+    text-align: center;
+  }
+
+  span:nth-child(3) {
+    text-align: right;
+  }
 `;
 
 const Contents = styled(Headers)`
@@ -81,7 +95,16 @@ const Header = styled.span`
   }
 `;
 
-function Vote({ referendum }) {
+function Vote({ referendum, chain }) {
+  console.log(referendum?.status?.tally?.ayes);
+
+  const node = getNode(chain);
+  if (!node) {
+    return null;
+  }
+  const decimals = node.decimals;
+  const symbol = node.symbol;
+
   return (
     <Wrapper>
       <Title>Votes</Title>
@@ -113,14 +136,21 @@ function Vote({ referendum }) {
       </Headers>
 
       <Contents>
-        <span>1,000.00</span>
-        <span>2,000,000.00</span>
-        <span>10.00</span>
+        <span>
+          {toPrecision(referendum?.status?.tally?.ayes ?? 0, decimals)} {symbol}
+        </span>
+        <span>{referendum?.status?.threshold}</span>
+        <span>
+          {toPrecision(referendum?.status?.tally?.nays ?? 0, decimals)} {symbol}
+        </span>
       </Contents>
 
       <BorderedRow>
         <Header>Turnout</Header>
-        <span>4,232 KSM</span>
+        <span>
+          {toPrecision(referendum?.status?.tally?.turnout ?? 0, decimals)}{" "}
+          {symbol}
+        </span>
       </BorderedRow>
 
       <BorderedRow>
@@ -142,7 +172,9 @@ function Vote({ referendum }) {
           </svg>
           Aye
         </Header>
-        <span>4000 KSM</span>
+        <span>
+          {toPrecision(referendum?.status?.tally?.ayes ?? 0, decimals)} {symbol}
+        </span>
       </BorderedRow>
 
       <Row>
@@ -163,7 +195,9 @@ function Vote({ referendum }) {
           </svg>
           Nay
         </Header>
-        <span>232 KSM</span>
+        <span>
+          {toPrecision(referendum?.status?.tally?.nays ?? 0, decimals)} {symbol}
+        </span>
       </Row>
       {referendum?.info?.finished?.approved && <PassButton>Passed</PassButton>}
       {referendum?.info?.finished?.approved === false && (
