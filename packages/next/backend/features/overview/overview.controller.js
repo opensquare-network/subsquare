@@ -13,7 +13,7 @@ const myCache = new NodeCache( { stdTTL: 30, checkperiod: 36 } );
 async function getOverview(ctx) {
   const { chain } = ctx.params;
 
-  const cachedOverview = myCache.get("overview");
+  const cachedOverview = myCache.get(`${chain}/overview`);
   if (cachedOverview) {
     ctx.body = cachedOverview;
     return;
@@ -58,7 +58,7 @@ async function getOverview(ctx) {
     }
   };
 
-  myCache.set("overview", overview, 30);
+  myCache.set(`${chain}/overview`, overview, 30);
 
   ctx.body = overview;
 }
