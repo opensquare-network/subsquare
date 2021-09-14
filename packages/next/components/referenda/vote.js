@@ -101,17 +101,18 @@ const BarContainer = styled.div`
   gap: 2px;
   height: 8px;
   width: 100%;
+  border-radius: 4px;
 `;
 
 const AyesBar = styled.div`
-  background-color: #4CAF50;
-  width: ${p=>p.precent}%;
+  background-color: #4caf50;
+  width: ${(p) => p.precent}%;
   height: 100%;
 `;
 
 const NaysBar = styled.div`
-  background-color: #F44336;
-  width: ${p=>p.precent}%;
+  background-color: #f44336;
+  width: ${(p) => p.precent}%;
   height: 100%;
 `;
 
@@ -125,29 +126,30 @@ function Vote({ referendum, chain }) {
 
   const nAyes = toPrecision(referendum?.status?.tally?.ayes ?? 0, decimals);
   const nNays = toPrecision(referendum?.status?.tally?.nays ?? 0, decimals);
-  const nTurnout = toPrecision(referendum?.status?.tally?.turnout ?? 0, decimals);
+  const nTurnout = toPrecision(
+    referendum?.status?.tally?.turnout ?? 0,
+    decimals
+  );
 
   let nAyesPrecent = 0;
   let nNaysPrecent = 0;
   const nTotal = new BigNumber(nAyes).plus(nNays);
   if (nTotal.gt(0)) {
-    nAyesPrecent = Math.round(new BigNumber(nAyes).div(nTotal).toNumber() * 100);
+    nAyesPrecent = Math.round(
+      new BigNumber(nAyes).div(nTotal).toNumber() * 100
+    );
     nNaysPrecent = 100 - nAyesPrecent;
   }
-
+  if ((nAyesPrecent === nNaysPrecent) === 0) {
+    nAyesPrecent = nNaysPrecent = 50;
+  }
   return (
     <Wrapper>
       <Title>Votes</Title>
 
       <BarContainer>
-        { nAyesPrecent > 0 && <AyesBar precent={nAyesPrecent} /> }
-        { nNaysPrecent > 0 && <NaysBar precent={nNaysPrecent} /> }
-        { nAyesPrecent === 0 && nNaysPrecent === 0 && (
-          <>
-            <AyesBar precent={50} />
-            <NaysBar precent={50} />
-          </>
-        )}
+        <AyesBar precent={nAyesPrecent} />
+        <NaysBar precent={nNaysPrecent} />
       </BarContainer>
 
       <Headers>
@@ -157,19 +159,15 @@ function Vote({ referendum, chain }) {
       </Headers>
 
       <Contents>
-        <span>
-          {nAyesPrecent}%
-        </span>
+        <span>{nAyesPrecent}%</span>
         <span>{referendum?.status?.threshold}</span>
-        <span>
-          {nNaysPrecent}%
-        </span>
+        <span>{nNaysPrecent}%</span>
       </Contents>
 
       <BorderedRow>
         <Header>Turnout</Header>
         <span>
-          {nTurnout}{" "}{symbol}
+          {nTurnout} {symbol}
         </span>
       </BorderedRow>
 
