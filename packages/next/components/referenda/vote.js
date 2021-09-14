@@ -96,6 +96,10 @@ const Header = styled.span`
   }
 `;
 
+const BarWrapper = styled.div`
+  position: relative;
+`;
+
 const BarContainer = styled.div`
   margin-bottom: 1rem;
   display: flex;
@@ -116,6 +120,14 @@ const NaysBar = styled.div`
   background-color: #f44336;
   width: ${(p) => p.precent}%;
   height: 100%;
+`;
+
+const Threshold = styled.div`
+  position: absolute;
+  left: 50%;
+  width: 2px;
+  height: 1rem;
+  background-color: #c2c8d5;
 `;
 
 function Vote({ referendum, chain }) {
@@ -150,10 +162,13 @@ function Vote({ referendum, chain }) {
     <Wrapper>
       <Title>Votes</Title>
 
-      <BarContainer gap={gap}>
-        <AyesBar precent={nAyesPrecent} />
-        <NaysBar precent={nNaysPrecent} />
-      </BarContainer>
+      <BarWrapper>
+        <BarContainer gap={gap}>
+          <AyesBar precent={nAyesPrecent} />
+          <NaysBar precent={nNaysPrecent} />
+          {referendum?.status?.threshold === "Simplemajority" && <Threshold />}
+        </BarContainer>
+      </BarWrapper>
 
       <Headers>
         <span>Aye</span>
