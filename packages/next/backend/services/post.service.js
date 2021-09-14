@@ -104,6 +104,28 @@ function createService(postType) {
     return true;
   }
 
+  async function getPostsOverview(chain) {
+    const postCol = await getPostCollection(chain);
+    const posts = await postCol.find({})
+      .sort({ lastActivityAt: -1 })
+      .limit(3)
+      .toArray();
+
+    const businessDb = await getBusinessDb(chain);
+    await Promise.all([
+      lookupUser({ for: posts, localField: "author" }),
+      businessDb.lookupCount({
+        from: "comment",
+        for: posts,
+        as: "commentsCount",
+        localField: "_id",
+        foreignField: postType,
+      }),
+    ]);
+
+    return posts;
+  }
+
   async function getPostsByChain(chain, page, pageSize) {
     const postCol = await getPostCollection(chain);
     const total = await postCol.countDocuments();
@@ -425,6 +447,7 @@ function createService(postType) {
     unsetPostReaction,
     postComment,
     getComments,
+    getPostsOverview,
   };
 }
 

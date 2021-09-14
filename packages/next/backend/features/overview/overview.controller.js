@@ -1,4 +1,5 @@
 const NodeCache = require( "node-cache" );
+const discussionPostService = require("../../services/post.service")("post");
 const tipPostService = require("../../services/tip.service");
 const treasuryProposalPostService = require("../../services/treasury-proposal.service");
 const motionService = require("../../services/motion.service");
@@ -19,6 +20,7 @@ async function getOverview(ctx) {
   }
 
   const [
+    discussions,
     tips,
     treasuryProposals,
     motions,
@@ -27,6 +29,7 @@ async function getOverview(ctx) {
     referendums,
     techCommMotions,
   ] = await Promise.all([
+    discussionPostService.getPostsOverview(chain),
     tipPostService.getActivePostsOverview(chain),
     treasuryProposalPostService.getActivePostsOverview(chain),
     motionService.getActiveMotionsOverview(chain),
@@ -37,6 +40,7 @@ async function getOverview(ctx) {
   ]);
 
   const overview = {
+    discussions,
     treasury: {
       tips,
       proposals: treasuryProposals,

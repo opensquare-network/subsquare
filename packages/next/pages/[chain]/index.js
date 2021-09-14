@@ -98,6 +98,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
       chain,
       OverviewData: [
         {
+          category: "Discussions",
+          items: result?.discussions ?? [],
+        },
+        {
           category: "Tips",
           items: result?.treasury?.tips ?? [],
         },
