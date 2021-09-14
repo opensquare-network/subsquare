@@ -19,6 +19,7 @@ async function handleBusinessWhenTechCommMotionProposed(
     isDemocracy,
     externalProposalHash,
     index: techCommMotionIndex,
+    authors,
   } = motionObj;
   if (!isDemocracy) {
     return;
@@ -47,13 +48,13 @@ async function handleBusinessWhenTechCommMotionProposed(
     proposalHash: hash,
     voteThreshold,
     state,
-    authors: motionObj.authors,
+    authors,
     isFinal: true,
     timeline: [],
   };
 
   await insertDemocracyExternal(externalObj);
-  await insertDemocracyPostByExternal(externalProposalHash, indexer);
+  await insertDemocracyPostByExternal(externalProposalHash, indexer, authors[0]);
 }
 
 module.exports = {

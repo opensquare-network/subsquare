@@ -2,7 +2,11 @@ const { ObjectId } = require("mongodb");
 const { safeHtml } = require("../utils/post");
 const { PostTitleLengthLimitation } = require("../constants");
 const { getDb: getBusinessDb, getDemocracyCollection } = require("../mongo/business");
-const { getDb: getChainDb } = require("../mongo/chain");
+const {
+  getDb: getChainDb,
+  getPublicProposalCollection: getChainPublicProposalCollection,
+  getExternalCollection: getChainExternalCollection
+} = require("../mongo/chain");
 const { getDb: getCommonDb, lookupUser, getUserCollection } = require("../mongo/common");
 const { HttpError } = require("../exc");
 const { ContentType } = require("../constants");
@@ -211,6 +215,18 @@ function createService(proposalType, indexField, localField) {
       }),
       chainProposalCol.findOne({ [indexField]: post[localField] }),
     ]);
+
+    if (proposalType === "democracyReferendum") {
+      if (chanProposalData.externalProposalHash) {
+        const col = await getChainExternalCollection(chain);
+        const democracyExternal = await col.findOne({ proposalHash: chanProposalData.externalProposalHash });
+        chanProposalData.authors = democracyExternal.authors;
+      } else if (chanProposalData.proposalIndex) {
+        const col = await getChainPublicProposalCollection(chain);
+        const democracyPublicProposal = await col.findOne({ proposalIndex: chanProposalData.proposalIndex });
+        chanProposalData.authors = democracyPublicProposal.authors;
+      }
+    }
 
     await lookupUser({ for: reactions, localField: "user" });
 
