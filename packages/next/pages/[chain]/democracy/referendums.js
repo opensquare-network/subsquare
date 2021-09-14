@@ -9,6 +9,7 @@ import { addressEllipsis } from "../../../utils";
 
 export default withLoginUserRedux(({ loginUser, posts, chain }) => {
   const items = (posts.items || []).map((post) => ({
+    time: post.indexer.blockTime,
     title: post.title,
     status: post.state,
     commentsCount: post.commentsCount,
