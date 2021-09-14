@@ -9,6 +9,7 @@ import LayoutFixedHeader from "components/layoutFixedHeader";
 
 export default withLoginUserRedux(({ loginUser, externals, chain }) => {
   const items = (externals.items || []).map((external) => ({
+    time: external.indexer.blockTime,
     commentsCount: external.commentsCount,
     title: external.title,
     author: external.author ?? {
