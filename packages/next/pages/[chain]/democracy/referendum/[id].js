@@ -46,7 +46,6 @@ const CommentsWrapper = styled.div`
 `;
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
-  console.log(detail);
   const node = getNode(chain);
   if (!node) {
     return null;
@@ -153,7 +152,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
         />
         <DetailItem
           data={{
-            type: "Democracy",
             index: detail.referendumIndex,
             ...detail,
             commentsCount: comments.total,

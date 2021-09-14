@@ -334,11 +334,15 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
           )}
           {type === "democracy/referenda" && (
             <ReferendaWrapper>
-              <Link href={`/${chain}/democracy/proposal/${post.proposalIndex}`}>
-                {`Proposal #${post.proposalIndex}`}
-              </Link>
+              {post.proposalIndex && (
+                <Link
+                  href={`/${chain}/democracy/proposal/${post.proposalIndex}`}
+                >
+                  {`Proposal #${post.proposalIndex}`}
+                </Link>
+              )}
               <div>
-                <TriangleRight />
+                {post.proposalIndex && <TriangleRight />}
                 <div>{`Referenda #${post?.referendumIndex}`}</div>
               </div>
             </ReferendaWrapper>

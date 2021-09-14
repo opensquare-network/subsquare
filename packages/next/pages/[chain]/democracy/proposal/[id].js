@@ -61,7 +61,6 @@ const DepositorsWrapper = styled.div`
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   if (!detail) {
-    console.log(detail);
     return "404"; //todo improve this
   }
 
