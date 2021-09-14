@@ -123,6 +123,7 @@ function createService(proposalType, indexField, localField) {
       const post = proposal.post;
       proposal.post = undefined;
       post.onchainData = proposal;
+      post.state = proposal.state?.state;
       return post;
     });
   }
