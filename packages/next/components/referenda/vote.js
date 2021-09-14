@@ -98,10 +98,11 @@ const Header = styled.span`
 
 const BarContainer = styled.div`
   display: flex;
-  gap: 2px;
+  gap: ${(p) => p.gap}px;
   height: 8px;
   width: 100%;
   border-radius: 4px;
+  overflow: hidden;
 `;
 
 const AyesBar = styled.div`
@@ -131,23 +132,24 @@ function Vote({ referendum, chain }) {
     decimals
   );
 
-  let nAyesPrecent = 0;
-  let nNaysPrecent = 0;
+  let nAyesPrecent = 50;
+  let nNaysPrecent = 50;
+  let gap = 2;
   const nTotal = new BigNumber(nAyes).plus(nNays);
   if (nTotal.gt(0)) {
     nAyesPrecent = Math.round(
       new BigNumber(nAyes).div(nTotal).toNumber() * 100
     );
     nNaysPrecent = 100 - nAyesPrecent;
-  }
-  if ((nAyesPrecent === nNaysPrecent) === 0) {
-    nAyesPrecent = nNaysPrecent = 50;
+    if (nAyesPrecent === 100 || nNaysPrecent === 100) {
+      gap = 0;
+    }
   }
   return (
     <Wrapper>
       <Title>Votes</Title>
 
-      <BarContainer>
+      <BarContainer gap={gap}>
         <AyesBar precent={nAyesPrecent} />
         <NaysBar precent={nNaysPrecent} />
       </BarContainer>
