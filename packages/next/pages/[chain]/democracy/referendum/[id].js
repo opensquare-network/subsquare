@@ -12,8 +12,10 @@ import DetailItem from "../../../../components/detailItem";
 import KVList from "../../../../components/kvList";
 import User from "../../../../components/user";
 import Links from "../../../../components/timeline/links";
-import { getNode, toPrecision } from "../../../../utils";
+import { getNode, getTimelineStatus, toPrecision } from "../../../../utils";
 import Vote from "../../../../components/referenda/vote";
+import dayjs from "dayjs";
+import Timeline from "../../../../components/timeline";
 
 const Flex = styled.div`
   display: flex;
@@ -99,7 +101,48 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     editorWrapperRef.current?.scrollIntoView();
   };
 
-  console.log(detail);
+  const getTimelineData = (args, method) => {
+    switch (method) {
+      case "Proposed":
+        return {
+          Index: `#${args.index}`,
+        };
+      case "Awarded":
+        return {
+          Beneficiary: <User chain={chain} add={args.beneficiary} />,
+          Award: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
+        };
+      case "Tabled":
+        return {
+          "Referenda Index": `#${args.referendumIndex}`,
+          Deposit: `${toPrecision(args.deposit ?? 0, decimals)} ${symbol}`,
+          Depositors: (
+            <DepositorsWrapper>
+              {(args.depositors || []).map((item, index) => (
+                <User add={item} key={index} />
+              ))}
+            </DepositorsWrapper>
+          ),
+        };
+      case "fastTrack":
+        return {
+          proposalHash: args.find((arg) => arg.name === "proposal_hash").value,
+          votingPeriod:
+            args.find((arg) => arg.name === "voting_period").value + ` blocks`,
+          delay: args.find((arg) => arg.name === "delay").value + ` blocks`,
+        };
+    }
+    return args;
+  };
+
+  const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
+    return {
+      time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+      indexer: item.indexer,
+      status: getTimelineStatus("proposal", item.method ?? item.name),
+      data: getTimelineData(item.args, item.method ?? item.name),
+    };
+  });
 
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
@@ -142,6 +185,10 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
             ["Threshold", detail?.onchainData?.info?.ongoing?.threshold],
           ]}
         />
+
+        {timelineData && timelineData.length > 0 && (
+          <Timeline data={timelineData} chain={chain} />
+        )}
 
         <CommentsWrapper>
           <Comments
