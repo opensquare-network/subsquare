@@ -45,7 +45,7 @@ export default function User({
   noEvent = false,
 }) {
   if (!user && !add) {
-    return <div>[Deleted Account]</div>;
+    return <Username fontSize={fontSize}>[Deleted Account]</Username>;
   }
   const [identity, setIdentity] = useState(null);
 
