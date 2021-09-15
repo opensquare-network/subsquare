@@ -37,7 +37,7 @@ export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
     >
       <List
         chain={chain}
-        category={"Proposals"}
+        category={"Technical Committee Proposals"}
         create={null}
         items={items}
         pagination={{

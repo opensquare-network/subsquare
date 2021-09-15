@@ -6,76 +6,122 @@ import nextApi from "../../services/nextApi";
 import { addressEllipsis } from "../../utils";
 import LayoutFixedHeader from "../../components/layoutFixedHeader";
 
-export default withLoginUserRedux(({ OverviewData, loginUser, chain }) => {
-  function getMotionType(motion) {
-    return motion.isTreasury ? "Treasury" : "";
-  }
-  (OverviewData || []).forEach((list) => {
-    if (list.category === "Discussions") {
-      list.items.forEach((post) => {
-        post.time = post.lastActivityAt;
-      });
-    }
-    if (
-      list.category === "On-chain Motions" ||
-      (list.category === "Proposals" && list.type === "techcomm")
-    ) {
-      list.items.forEach((motion) => {
-        motion.time = motion.indexer.blockTime;
-        motion.title = `${motion.proposal.section}.${motion.proposal.method}`;
-        motion.type = getMotionType(motion);
-        motion.author = motion.author ?? {
-          username: addressEllipsis(motion.proposer),
-          addresses: [{ chain, address: motion.proposer }],
-        };
-        motion.status = motion.state?.state ?? "Unknown";
-      });
-    }
-    if (list.category === "Tips") {
-      list.items.forEach((tip) => {
-        tip.author = tip.author ?? {
-          username: addressEllipsis(tip.finder),
-          addresses: [{ chain, address: tip.finder }],
-        };
-        tip.status = tip.state
-          ? tip.state.state === "Tipping"
-            ? `Tipping (${tip.state.tipsCount})`
-            : tip.state.state
-          : "Unknown";
-        tip.time = tip.indexer.blockTime;
-      });
-    }
-    if (list.category.includes("Proposals")) {
-      list.items.forEach((p) => {
-        p.author = p.author ?? {
-          username: addressEllipsis(p.proposer),
-          addresses: [{ chain, address: p.proposer }],
-        };
-        p.status = p.state ?? "Unknown";
-        p.time = p.indexer.blockTime;
-      });
-    }
-    if (list.category === "Externals") {
-      list.items.forEach((external) => {
-        external.author = external.author ?? {
-          username: addressEllipsis(external.proposer),
-          addresses: [{ chain, address: external.proposer }],
-        };
-        external.hash = external.externalProposalHash;
-        external.status = external.state ?? "Unknown";
-      });
-    }
-    if (list.category === "Referenda") {
-      list.items.forEach((item) => {
-        item.status = item.state;
-        item.index = item.referendumIndex;
-        item.author = post.author ?? {
-          username: addressEllipsis(post.proposer),
-          addresses: [{ chain, address: post.proposer }],
-        };
-      });
-    }
-  });
+function getMotionType(motion) {
+  return motion.isTreasury ? "Treasury" : "";
+}
+
+export default withLoginUserRedux(({ overview, loginUser, chain }) => {
+  const overviewData = [
+    {
+      category: "Discussions",
+      type: "discussion",
+      items: (overview?.discussions ?? []).map(item => ({
+        ...item,
+        time: item.lastActivityAt,
+      })),
+    },
+    {
+      category: "Tips",
+      type: "treasury",
+      items: (overview?.treasury?.tips ?? []).map(item => ({
+        ...item,
+        author: item.author ?? {
+          username: addressEllipsis(item.finder),
+          addresses: [{ chain, address: item.finder }],
+        },
+        status: item.state
+          ? item.state.state === "Tipping"
+            ? `Tipping (${item.state.tipsCount})`
+            : item.state.state
+          : "Unknown",
+        time: item.indexer.blockTime,
+
+      })),
+    },
+    {
+      category: "Treasury Proposals",
+      type: "treasury",
+      items: (overview?.treasury?.proposals ?? []).map(item => ({
+        ...item,
+        author: item.author ?? {
+          username: addressEllipsis(item.proposer),
+          addresses: [{ chain, address: item.proposer }],
+        },
+        status: item.state ?? "Unknown",
+        time: item.indexer.blockTime,
+      })),
+    },
+    {
+      category: "Council Motions",
+      type: "council",
+      items: (overview?.council?.motions ?? []).map(item => ({
+        ...item,
+        time: item.indexer.blockTime,
+        title: `${item.proposal.section}.${item.proposal.method}`,
+        type: getMotionType(item),
+        author: item.author ?? {
+          username: addressEllipsis(item.proposer),
+          addresses: [{ chain, address: item.proposer }],
+        },
+        status: item.state?.state ?? "Unknown",
+      })),
+    },
+    {
+      category: "Public Proposals",
+      type: "democracy",
+      items: (overview?.democracy?.proposals ?? []).map(item => ({
+        ...item,
+        author: item.author ?? {
+          username: addressEllipsis(item.proposer),
+          addresses: [{ chain, address: item.proposer }],
+        },
+        status: item.state ?? "Unknown",
+        time: item.indexer.blockTime,
+
+      })),
+    },
+    {
+      category: "External Proposals",
+      type: "democracy",
+      items: (overview?.democracy?.externals ?? []).map(item => ({
+        ...item,
+        author: item.author ?? {
+          username: addressEllipsis(item.proposer),
+          addresses: [{ chain, address: item.proposer }],
+        },
+        hash: item.externalProposalHash,
+        status: item.state ?? "Unknown",
+      })),
+    },
+    {
+      category: "Referenda",
+      type: "democracy",
+      items: (overview?.democracy?.referensums ?? []).map(item => ({
+        ...item,
+        status: item.state,
+        index: item.referendumIndex,
+        author: item.author ?? {
+          username: addressEllipsis(item.proposer),
+          addresses: [{ chain, address: item.proposer }],
+        },
+      })),
+    },
+    {
+      category: "Technical Committee Proposals",
+      type: "techcomm",
+      items: (overview?.techComm?.motions ?? []).map(item => ({
+        ...item,
+        time: item.indexer.blockTime,
+        title: `${item.proposal.section}.${item.proposal.method}`,
+        type: getMotionType(item),
+        author: item.author ?? {
+          username: addressEllipsis(item.proposer),
+          addresses: [{ chain, address: item.proposer }],
+        },
+        status: item.state?.state ?? "Unknown",
+      })),
+    },
+  ];
 
   return (
     <LayoutFixedHeader
@@ -83,7 +129,7 @@ export default withLoginUserRedux(({ OverviewData, loginUser, chain }) => {
       left={<Menu menu={mainMenu} />}
       chain={chain}
     >
-      <Overview OverviewData={OverviewData} chain={chain} />
+      <Overview overviewData={overviewData} chain={chain} />
     </LayoutFixedHeader>
   );
 });
@@ -96,43 +142,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       chain,
-      OverviewData: [
-        {
-          category: "Discussions",
-          items: result?.discussions ?? [],
-        },
-        {
-          category: "Tips",
-          items: result?.treasury?.tips ?? [],
-        },
-        {
-          category: "Proposals",
-          type: "treasury",
-          items: result?.treasury?.proposals ?? [],
-        },
-        {
-          category: "On-chain Motions",
-          items: result?.council?.motions ?? [],
-        },
-        {
-          category: "Proposals",
-          type: "democracy",
-          items: result?.democracy?.proposals ?? [],
-        },
-        {
-          category: "Externals",
-          items: result?.democracy?.externals ?? [],
-        },
-        {
-          category: "Referenda",
-          items: result?.democracy?.referensums ?? [],
-        },
-        {
-          category: "Proposals",
-          type: "techcomm",
-          items: result?.techComm?.motions ?? [],
-        },
-      ],
+      overview: result ?? null,
     },
   };
 });

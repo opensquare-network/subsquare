@@ -1,12 +1,11 @@
 import styled, { css } from "styled-components";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 
 import NodeSwitch from "components/nodeSwitch";
 import Container from "components/container";
 import HeaderAccount from "./headerAccount";
 import Sidebar from "./sidebar";
-import { useWindowSize } from "utils/hooks";
 import SidebarAccount from "./sidebarAccount";
 import { nodes } from "utils/constants";
 
@@ -104,18 +103,10 @@ const LogoImg = styled.img`
 
 export default function Header({ user, left, chain, fixedTop = false }) {
   const [show, setShow] = useState(false);
-  // const [hiddenWidth, setHiddenWidth] = useState(0);
   const [position, setPosition] = useState("left");
   const [content, setContent] = useState();
-  // const windowSize = useWindowSize();
 
   const node = nodes.find((n) => n.value === chain) || nodes[0];
-
-  // useEffect(() => {
-  //   if (hiddenWidth && windowSize.width && windowSize.width > hiddenWidth) {
-  //     setShow(false);
-  //   }
-  // }, [windowSize, hiddenWidth]);
 
   return (
     <Wrapper fixedTop={fixedTop}>
@@ -125,7 +116,6 @@ export default function Header({ user, left, chain, fixedTop = false }) {
             {left && (
               <MenuButton
                 onClick={() => {
-                  // setHiddenWidth(1024);
                   setPosition("left");
                   setContent("left");
                   setShow(true);
@@ -134,12 +124,11 @@ export default function Header({ user, left, chain, fixedTop = false }) {
                 <img src="/imgs/icons/menu-line.svg" alt="" />
               </MenuButton>
             )}
-            <Link href="/">
+            <Link href={`/${chain}`}>
               <LogoImg src="/imgs/logo.svg" alt="" />
             </Link>
             <NodeButton
               onClick={() => {
-                // setHiddenWidth(768);
                 setPosition("right");
                 setContent("right");
                 setShow(true);

@@ -8,10 +8,10 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function Overview({ OverviewData, chain }) {
+export default function Overview({ overviewData, chain }) {
   return (
     <Wrapper>
-      {OverviewData.map((item, index) => (
+      {overviewData.map((item, index) => (
         <List
           chain={chain}
           key={index}
