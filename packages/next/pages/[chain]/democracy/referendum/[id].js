@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import Back from "components/back";
-import { withLoginUser, withLoginUserRedux } from "lib";
+import { useIsomorphicLayoutEffect, withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import LayoutFixedHeader from "components/layoutFixedHeader";
@@ -56,6 +56,15 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
   const [contentType, setContentType] = useState("markdown");
+
+  useIsomorphicLayoutEffect(() => {
+    if (!localStorage.getItem("contentType")) {
+      return localStorage.setItem("contentType", contentType);
+    }
+    if (contentType !== localStorage.getItem("contentType")) {
+      setContentType(localStorage.getItem("contentType"));
+    }
+  }, []);
 
   const onReply = (username) => {
     let reply = "";
