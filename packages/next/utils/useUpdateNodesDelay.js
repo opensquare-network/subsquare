@@ -45,6 +45,7 @@ const useUpdateNodesDelay = () => {
   const currentNode = useSelector(currentNodeSelector);
   const dispatch = useDispatch();
   useEffect(() => {
+    if (!chain) return;
     const updateNodeDelay = async (url) => {
       try {
         const api = await getApi(chain, url);

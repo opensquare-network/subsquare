@@ -87,7 +87,7 @@ export default function SidebarAccount({ user, chain }) {
       <Title>NETWORK</Title>
       <NetworkSwitch activeNode={node} />
       <Title>NODE</Title>
-      <NodeSwitch />
+      <NodeSwitch chain={chain} />
       <Title>ACCOUNT</Title>
       {!user && (
         <ButtonWrapper>

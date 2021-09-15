@@ -1,7 +1,13 @@
 import styled, { css } from "styled-components";
 import { useState, useRef, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 import { useOnClickOutside, useWindowSize } from "utils/hooks";
+import {
+  currentNodeSelector,
+  setCurrentNode,
+  nodesSelector,
+} from "store/reducers/nodeSlice";
 
 const Wrapper = styled.div`
   position: relative;
@@ -55,7 +61,8 @@ const Options = styled.div`
   ${(p) =>
     p.small &&
     css`
-      width: 180px;
+      width: auto;
+      min-width: 180px;
     `}
 `;
 
@@ -67,6 +74,7 @@ const Item = styled.div`
   font-size: 14px;
   line-height: 100%;
   cursor: pointer;
+  white-space: nowrap;
   :hover {
     background: #f6f7fa;
   }
@@ -75,12 +83,21 @@ const Item = styled.div`
     height: 24px;
     margin-right: 8px;
   }
+  ${(p) =>
+    p.active &&
+    css`
+      background: #f6f7fa;
+    `}
 `;
 
-export default function NodeSwitch({ small }) {
+export default function NodeSwitch({ small, chain }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
   const windowSize = useWindowSize();
+  const currentNode = useSelector(currentNodeSelector);
+  const nodes = useSelector(nodesSelector);
+  const [currentNodeSetting, setCurrentNodeSetting] = useState();
+  const dispatch = useDispatch();
 
   useOnClickOutside(ref, () => setShow(false));
 
@@ -90,38 +107,68 @@ export default function NodeSwitch({ small }) {
     }
   }, [windowSize]);
 
+  useEffect(() => {
+    if (chain) {
+      const url = currentNode[chain];
+      if (url) {
+        const nodeSetting = (nodes?.[chain] || []).find(
+          (item) => item.url === url
+        );
+        setCurrentNodeSetting(nodeSetting);
+      }
+    }
+  }, [currentNode, nodes, chain]);
+
+  const getSignalImg = (delay) => {
+    if (!delay || isNaN(delay)) return "signal-default.svg";
+    if (delay >= 300) return "signal-slow.svg";
+    if (delay >= 100) return "signal-medium.svg";
+    return "signal-fast.svg";
+  };
+
   return (
     <Wrapper ref={ref}>
       {small && (
         <SmallSelect onClick={() => setShow(!show)}>
-          <img src="/imgs/icons/signal-default.svg" />
+          <img src={`/imgs/icons/${getSignalImg(currentNodeSetting?.delay)}`} />
         </SmallSelect>
       )}
       {!small && (
         <Select onClick={() => setShow(!show)}>
           <img
-            src={`/imgs/icons/signal-default.svg`}
+            src={`/imgs/icons/${getSignalImg(currentNodeSetting?.delay)}`}
             alt=""
             className="signal"
           />
-          <div>Parity</div>
+          <div>{currentNodeSetting?.name}</div>
           <img src="/imgs/icons/caret-down.svg" alt="" />
         </Select>
       )}
       {show && (
         <Options small={small}>
-          <Item onClick={() => setShow(false)}>
-            <img src="/imgs/icons/signal-default.svg" />
-            <div>via Parity</div>
-          </Item>
-          <Item onClick={() => setShow(false)}>
-            <img src="/imgs/icons/signal-default.svg" />
-            <div>via OnFinality</div>
-          </Item>
-          <Item onClick={() => setShow(false)}>
-            <img src="/imgs/icons/signal-default.svg" />
-            <div>via Patract Elara</div>
-          </Item>
+          {(nodes?.[chain] || []).map((item, index) => (
+            <Item
+              key={index}
+              onClick={() => {
+                if (item.url === currentNodeSetting.url) {
+                  setShow(false);
+                  return;
+                }
+                dispatch(
+                  setCurrentNode({
+                    chain,
+                    url: item.url,
+                    refresh: true,
+                  })
+                );
+                setShow(false);
+              }}
+              active={item.url === currentNodeSetting.url}
+            >
+              <img src={`/imgs/icons/${getSignalImg(item?.delay)}`} />
+              <div>{`via ${item?.name}`}</div>
+            </Item>
+          ))}
         </Options>
       )}
     </Wrapper>

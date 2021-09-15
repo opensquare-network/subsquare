@@ -143,7 +143,7 @@ export default function Header({ user, left, chain, fixedTop = false }) {
             <NetworkWrapper>
               <NetworkSwitch activeNode={node} />
             </NetworkWrapper>
-            <NodeSwitch small />
+            <NodeSwitch small chain={chain} />
           </Right>
         </FlexWrapper>
       </Container>
