@@ -1,4 +1,4 @@
-export const DEFAULT_KUSAMA_NODE_URL = "wss://kusama.elara.patract.io";
+export const DEFAULT_KUSAMA_NODE_URL = "wss://pub.elara.patract.io/kusama";
 export const DEFAULT_KUSAMA_NODES = [
   {
     name: "Parity",
@@ -10,7 +10,7 @@ export const DEFAULT_KUSAMA_NODES = [
   },
   {
     name: "Patract Elara",
-    url: "wss://kusama.elara.patract.io",
+    url: "wss://pub.elara.patract.io/kusama",
   },
 ];
 
