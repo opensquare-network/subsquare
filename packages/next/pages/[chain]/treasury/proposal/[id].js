@@ -3,7 +3,11 @@ import styled from "styled-components";
 import Back from "components/back";
 import DetailItem from "components/detailItem";
 import Comments from "components/comment";
-import { useIsomorphicLayoutEffect, withLoginUser, withLoginUserRedux } from "lib";
+import {
+  useIsomorphicLayoutEffect,
+  withLoginUser,
+  withLoginUserRedux,
+} from "lib";
 import nextApi from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Input from "components/comment/input";
@@ -55,7 +59,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(loginUser?.preference.editor || "markdown");
+  const [contentType, setContentType] = useState(
+    loginUser?.preference.editor || "markdown"
+  );
 
   const node = getNode(chain);
   if (!node) {
@@ -223,7 +229,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       <Wrapper className="post-content">
         <Back href={`/${chain}/treasury/proposals`} text="Back to Proposals" />
         <DetailItem
-          data={detail}
+          data={{ ...detail, index: detail.proposalIndex }}
           user={loginUser}
           chain={chain}
           onReply={focusEditor}
