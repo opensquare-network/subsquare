@@ -23,7 +23,7 @@ async function getUserProfile(ctx) {
     notification: {
       reply: user.notification?.reply ?? true,
       mention: user.notification?.mention ?? true,
-      thumbsUp: user.notification?.thumbsUp ?? true,
+      thumbsUp: user.notification?.thumbsUp ?? false,
     },
     addresses: SupportChains.reduce((addresses, chain) => {
       const address = user[`${chain}Address`];
@@ -327,7 +327,7 @@ async function setUserNotification(ctx) {
   const notification = {
     reply: reply ?? user.notification?.reply ?? true,
     mention: mention ?? user.notification?.mention ?? true,
-    thumbsUp: thumbsUp ?? user.notification?.thumbsUp ?? true,
+    thumbsUp: thumbsUp ?? user.notification?.thumbsUp ?? false,
   };
 
   const userCol = await getUserCollection();
