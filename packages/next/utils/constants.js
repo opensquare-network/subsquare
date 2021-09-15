@@ -193,5 +193,5 @@ export const SS58Prefix = {
   polkadot: 0,
   kusama: 2,
   karura: 8,
-  substract: 42,
+  substrate: 42,
 };
