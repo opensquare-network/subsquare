@@ -103,9 +103,13 @@ export default function Menu({ menu }) {
               onClick={() => {
                 if (item.pathname) {
                   if (item.pathname.startsWith("/[chain]")) {
+                    let currChain = router.query.chain;
+                    if (!currChain) {
+                      currChain = localStorage.getItem("chain") || "karura";
+                    }
                     router.push({
                       pathname: item.pathname,
-                      query: { chain: router.query.chain },
+                      query: { chain: currChain },
                     });
                   } else {
                     router.push(item.pathname);
