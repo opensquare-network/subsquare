@@ -140,13 +140,13 @@ async function changeEmail(ctx) {
     throw new HttpError(500, "Failed to change email.");
   }
 
-  mailService.sendVerificationEmail({
+  const isSent = await mailService.sendVerificationEmail({
     username: user.username,
     email: newEmail,
     token: verifyToken,
   });
 
-  ctx.body = true;
+  ctx.body = isSent;
 }
 
 async function deleteAccount(ctx) {
@@ -183,13 +183,13 @@ async function resendVerifyEmail(ctx) {
     throw new HttpError(400, "Email is already verified.");
   }
 
-  mailService.sendVerificationEmail({
+  const isSent = await mailService.sendVerificationEmail({
     username: user.username,
     email: user.email,
     token: user.verifyToken,
   });
 
-  ctx.body = true;
+  ctx.body = isSent;
 }
 
 async function linkAddressStart(ctx) {
