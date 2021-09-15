@@ -10,9 +10,6 @@ const Wrapper = styled.div`
     max-width: 960px;
   }
   margin: auto;
-  @media screen and (min-width: 1080px) {
-    padding-bottom: 16px;
-  }
 
   > :not(:first-child) {
     margin-top: 16px;
