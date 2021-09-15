@@ -3,17 +3,22 @@ import styled from "styled-components";
 import Back from "components/back";
 import DetailItem from "components/detailItem";
 import Comments from "components/comment";
-import { useIsomorphicLayoutEffect, withLoginUser, withLoginUserRedux } from "lib";
+import {
+  useIsomorphicLayoutEffect,
+  withLoginUser,
+  withLoginUserRedux,
+} from "lib";
 import nextApi from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Input from "components/comment/input";
 import { useState, useRef } from "react";
 import LayoutFixedHeader from "components/layoutFixedHeader";
-import MetaData from "components/tip/metaData";
 import { getTimelineStatus, getNode, toPrecision } from "utils";
 import Timeline from "components/timeline";
 import dayjs from "dayjs";
 import User from "components/user";
+import KVList from "../../../../components/kvList";
+import Links from "../../../../components/timeline/links";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -48,7 +53,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(loginUser?.preference.editor || "markdown");
+  const [contentType, setContentType] = useState(
+    loginUser?.preference.editor || "markdown"
+  );
 
   const node = getNode(chain);
   if (!node) {
@@ -151,12 +158,43 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           onReply={focusEditor}
           type="treasury/tip"
         />
-        <MetaData
-          metadata={{
-            ...detail.onchainData?.meta,
-            hash: detail.onchainData?.hash,
-          }}
-          chain={chain}
+
+        <KVList
+          title="Metadata"
+          data={[
+            ["Reason", detail.onchainData?.meta?.reason],
+            ["Hash", detail.onchainData?.hash],
+            [
+              "Finder",
+              <>
+                <User
+                  chain={chain}
+                  add={detail.onchainData?.meta?.finder}
+                  fontSize={14}
+                />
+                <Links
+                  chain={chain}
+                  address={detail.onchainData?.meta?.finder}
+                  style={{ marginLeft: 8 }}
+                />
+              </>,
+            ],
+            [
+              "Beneficiary",
+              <>
+                <User
+                  chain={chain}
+                  add={detail.onchainData?.meta?.who}
+                  fontSize={14}
+                />
+                <Links
+                  chain={chain}
+                  address={detail.onchainData?.meta?.who}
+                  style={{ marginLeft: 8 }}
+                />
+              </>,
+            ],
+          ]}
         />
         {timelineData && timelineData.length > 0 && (
           <Timeline data={timelineData} chain={chain} />
