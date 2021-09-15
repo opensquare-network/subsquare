@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import dynamic from "next/dynamic";
+import { ApiPromise, WsProvider } from "@polkadot/api";
 
 import {
   nodesSelector,
@@ -10,9 +10,18 @@ import {
 } from "../store/reducers/nodeSlice";
 import { sleep } from "./index";
 
-const { getApi } = dynamic(() => import("services/chainApi"), {
-  ssr: false,
-});
+const apiInstanceMap = new Map();
+
+const getApi = async (chain, queryUrl) => {
+  const url = queryUrl || nodeUrl?.[chain];
+  if (!apiInstanceMap.has(url)) {
+    apiInstanceMap.set(
+      url,
+      ApiPromise.create({ provider: new WsProvider(url) })
+    );
+  }
+  return apiInstanceMap.get(url);
+};
 
 const TIMEOUT = 10000;
 let count = 0;
