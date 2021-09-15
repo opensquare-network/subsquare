@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import InnerDataTable from "../table/innerDataTable";
-import User from "components/user";
+import { getNode, toPrecision } from "utils";
 
 const Header = styled.div`
   width: 128px;
@@ -39,6 +39,16 @@ function convertProposal(proposal, chain) {
         case "Vec<Call>":
         case "Vec<CallOf>": {
           return [arg.name, arg.value.map(v => convertProposal(v, chain))];
+        }
+        case "Balance": {
+          const node = getNode(chain);
+          if (!node) {
+            return [arg.name, arg.value];
+          }
+
+          const decimals = node.decimals;
+          const symbol = node.symbol;
+          return [arg.name, `${toPrecision(arg.value ?? 0, decimals)} ${symbol}`];
         }
         default: {
           return [arg.name, arg.value];
