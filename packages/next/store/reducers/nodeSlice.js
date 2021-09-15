@@ -75,8 +75,8 @@ const nodeSlice = createSlice({
   },
 });
 
-export const currentNodeSelector = (state) => state.node.currentNode;
-export const nodesSelector = (state) => state.node.nodes;
+export const currentNodeSelector = (state) => state.node?.currentNode;
+export const nodesSelector = (state) => state.node?.nodes;
 
 export const { setCurrentNode, setNodesDelay } = nodeSlice.actions;
 
