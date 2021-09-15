@@ -69,7 +69,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState("markdown");
+  const [contentType, setContentType] = useState(loginUser?.preference.editor || "markdown");
 
   const node = getNode(chain);
   if (!node) {
@@ -134,15 +134,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     }
     return a.indexer.blockTime - b.indexer.blockTime;
   });
-
-  useIsomorphicLayoutEffect(() => {
-    if (!localStorage.getItem("contentType")) {
-      return localStorage.setItem("contentType", contentType);
-    }
-    if (contentType !== localStorage.getItem("contentType")) {
-      setContentType(localStorage.getItem("contentType"));
-    }
-  }, []);
 
   function isUniqueInArray(value, index, self) {
     return self.indexOf(value) === index;

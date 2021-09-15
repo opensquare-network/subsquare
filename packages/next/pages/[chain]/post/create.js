@@ -17,6 +17,7 @@ import QuillEditor from "../../../components/editor/quillEditor";
 import HtmlRender from "../../../components/post/htmlRender";
 import { useDispatch } from "react-redux";
 import { addToast } from "store/reducers/toastSlice";
+import { fetchUserProfile } from "store/reducers/userSlice";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -89,23 +90,14 @@ const PreviewWrapper = styled.div`
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const router = useRouter();
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [showPreview, setShowPreview] = useState(false);
-  const [contentType, setContentType] = useState("markdown");
+  const [contentType, setContentType] = useState(loginUser?.preference.editor || "markdown");
   const [showImgModal, setShowImgModal] = useState(false);
   const [insetQuillImgFunc, setInsetQuillImgFunc] = useState(null);
   const [errors, setErrors] = useState();
-
-  useIsomorphicLayoutEffect(() => {
-    if (!localStorage.getItem("contentType")) {
-      return localStorage.setItem("contentType", contentType);
-    }
-    if (contentType !== localStorage.getItem("contentType")) {
-      setContentType(localStorage.getItem("contentType"));
-    }
-  }, []);
 
   const onCreate = async () => {
     const result = await nextApi.post(`${chain}/posts`, {
@@ -118,7 +110,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       if (result.error.data) {
         setErrors(result.error);
       } else {
-        dispath(
+        dispatch(
           addToast({
             type: "error",
             message: result.error.message,
@@ -137,12 +129,19 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
     ) {
       return;
     }
+
+    const newContentType = contentType === "html" ? "markdown" : "html";
     setContent("");
-    setContentType(contentType === "html" ? "markdown" : "html");
-    localStorage.setItem(
-      "contentType",
-      contentType === "html" ? "markdown" : "html"
-    );
+    setContentType(newContentType);
+
+    // Save to user preference
+    nextApi.patch("user/preference", {
+      editor: newContentType,
+    }).then(({ result }) => {
+      if (result) {
+        dispatch(fetchUserProfile());
+      }
+    });
   };
 
   return (

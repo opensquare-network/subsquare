@@ -39,4 +39,10 @@ router.patch(
   userController.setUserNotification
 );
 
+router.patch(
+  "/user/preference",
+  requireAuth,
+  userController.setUserPreference
+);
+
 module.exports = router;

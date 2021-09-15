@@ -17,6 +17,9 @@ async function getUserProfile(ctx) {
     username: user.username,
     email: user.email,
     emailVerified: user.emailVerified,
+    preference: {
+      editor: user.preference?.editor ?? "markdown",
+    },
     notification: {
       reply: user.notification?.reply ?? true,
       mention: user.notification?.mention ?? true,
@@ -344,6 +347,31 @@ async function setUserNotification(ctx) {
   ctx.body = true;
 }
 
+async function setUserPreference(ctx) {
+  const { editor } = ctx.request.body;
+  const user = ctx.user;
+
+  const preference = {
+    editor: editor ?? user.preference?.editor ?? "markdown",
+  };
+
+  const userCol = await getUserCollection();
+  const result = await userCol.updateOne(
+    { _id: user._id },
+    {
+      $set: {
+        preference,
+      },
+    }
+  );
+
+  if (!result.result.ok) {
+    throw new HttpError(500, "Db error, update notification setting");
+  }
+
+  ctx.body = true;
+}
+
 module.exports = {
   getUserProfile,
   changePassword,
@@ -354,4 +382,5 @@ module.exports = {
   linkAddressConfirm,
   unlinkAddress,
   setUserNotification,
+  setUserPreference,
 }
