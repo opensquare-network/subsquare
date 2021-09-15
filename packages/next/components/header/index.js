@@ -150,9 +150,13 @@ export default function Header({ user, left, chain, fixedTop = false }) {
           </Left>
           <Right>
             <HeaderAccount user={user} chain={chain} />
-            <NodeWrapper>
-              <NodeSwitch activeNode={node} />
-            </NodeWrapper>
+            {
+              router.pathname.startsWith("/[chain]") && (
+                <NodeWrapper>
+                  <NodeSwitch activeNode={node} />
+                </NodeWrapper>
+              )
+            }
           </Right>
         </FlexWrapper>
       </Container>
