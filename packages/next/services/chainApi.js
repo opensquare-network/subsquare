@@ -29,33 +29,15 @@ let nodeUrl = (() => {
   };
 })();
 
-export const getNodeUrl = () => nodeUrl;
-
-export const getNodes = () => ({
-  kusama: DEFAULT_KUSAMA_NODES,
-  karura: DEFAULT_KARURA_NODES,
-});
-
 export const getApi = async (chain, queryUrl) => {
   const url = queryUrl || nodeUrl?.[chain];
   if (!apiInstanceMap.has(url)) {
     apiInstanceMap.set(
       url,
-      ApiPromise.create({ provider: new WsProvider(url) })
+      ApiPromise.create({ provider: new WsProvider(url, 1000) })
     );
   }
   return apiInstanceMap.get(url);
-};
-
-export const getIndentity = async (chain, address) => {
-  const api = await getApi(chain);
-  const { identity } = await api.derive.accounts.info(address);
-  return identity;
-};
-
-export const getTipCountdown = async (chain) => {
-  const api = await getApi(chain);
-  return api.consts.tips.tipCountdown.toNumber();
 };
 
 export const signMessage = async (text, address) => {
@@ -73,28 +55,4 @@ export const signMessage = async (text, address) => {
   });
 
   return result.signature;
-};
-
-const extractBlockTime = (extrinsics) => {
-  const setTimeExtrinsic = extrinsics.find(
-    (ex) => ex.method.section === "timestamp" && ex.method.method === "set"
-  );
-  if (setTimeExtrinsic) {
-    const { args } = setTimeExtrinsic.method.toJSON();
-    return args.now;
-  }
-};
-
-export const getBlockTime = async (chain, number) => {
-  const api = await getApi(chain);
-  const hash = await api.rpc.chain.getBlockHash(number);
-  const block = await api.rpc.chain.getBlock(hash);
-  const time = extractBlockTime(block.block.extrinsics);
-  return time;
-};
-
-export const estimateBlocksTime = async (chain, blocks) => {
-  const api = await getApi(chain);
-  const nsPerBlock = api.consts.babe.expectedBlockTime.toNumber();
-  return nsPerBlock * blocks;
 };
