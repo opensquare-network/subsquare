@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 
 import Layout from "components/layout";
 import Back from "components/back";
-import { withLoginUser, withLoginUserRedux } from "lib";
+import { useIsomorphicLayoutEffect, withLoginUser, withLoginUserRedux } from "lib";
 import Input from "components/input";
 import MarkdownEditor from "components/markdownEditor";
 import Button from "components/button";
@@ -98,7 +98,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const [insetQuillImgFunc, setInsetQuillImgFunc] = useState(null);
   const [errors, setErrors] = useState();
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!localStorage.getItem("contentType")) {
       return localStorage.setItem("contentType", contentType);
     }

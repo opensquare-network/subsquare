@@ -3,11 +3,11 @@ import styled from "styled-components";
 import Back from "components/back";
 import DetailItem from "components/detailItem";
 import Comments from "components/comment";
-import { withLoginUser, withLoginUserRedux } from "lib";
+import { useIsomorphicLayoutEffect, withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Input from "components/comment/input";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import LayoutFixedHeader from "components/layoutFixedHeader";
 import Metadata from "components/metadata";
 import User from "components/user";
@@ -135,7 +135,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     return a.indexer.blockTime - b.indexer.blockTime;
   });
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!localStorage.getItem("contentType")) {
       return localStorage.setItem("contentType", contentType);
     }
