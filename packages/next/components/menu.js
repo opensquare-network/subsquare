@@ -7,6 +7,9 @@ import ProposalIcon from "../public/imgs/icons/proposals.svg";
 import MotionIcon from "../public/imgs/icons/type-motions.svg";
 import ReferendaIcon from "../public/imgs/icons/type-referenda.svg";
 import DemocracyProposalIcon from "../public/imgs/icons/type-proposals.svg";
+import UserIcon from "../public/imgs/icons/user.svg";
+import AddressIcon from "../public/imgs/icons/address.svg";
+import BellIcon from "../public/imgs/icons/bell.svg";
 
 const Wrapper = styled.div`
   padding-top: 37px;
@@ -80,6 +83,9 @@ export default function Menu({ menu }) {
     ["democracyProposals", <DemocracyProposalIcon />],
     ["democracyExternals", <DemocracyProposalIcon />],
     ["techCommProposals", <DemocracyProposalIcon />],
+    ["account", <UserIcon />],
+    ["linked-address", <AddressIcon />],
+    ["notification", <BellIcon />],
   ]);
 
   return (
