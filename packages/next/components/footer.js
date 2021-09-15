@@ -1,4 +1,8 @@
 import styled from "styled-components";
+import ElementIcon from "../public/imgs/icons/element.svg";
+import MailIcon from "../public/imgs/icons/mail.svg";
+import FooterLogo from "../public/imgs/icons/footerLogo.svg";
+import ExternalLink from "./externalLink";
 
 const Wrapper = styled.footer`
   @media (max-height: 750px) {
@@ -7,9 +11,22 @@ const Wrapper = styled.footer`
   color: #9da9bb;
   font-size: 12px;
   margin-bottom: 32px;
-  > svg {
-    margin-bottom: 24px;
+
+  > a:first-child {
+    margin-right: 8px;
   }
+
+  > a svg:hover {
+    * {
+      fill: #9da9bb;
+    }
+  }
+
+  > svg {
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+
   > img {
     margin-top: 8px;
   }
@@ -18,6 +35,13 @@ const Wrapper = styled.footer`
 export default function Footer() {
   return (
     <Wrapper className="footer">
+      <ExternalLink href="https://app.element.io/#/room/#opensquare:matrix.org">
+        <ElementIcon />
+      </ExternalLink>
+      <ExternalLink href="mailto:hi@opensquare.network">
+        <MailIcon />
+      </ExternalLink>
+      <br />
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="80"
@@ -28,7 +52,7 @@ export default function Footer() {
         <rect width="80" height="1" fill="#E0E4EB" />
       </svg>
       <div>{`© ${new Date().getFullYear()} SubSquare · Powered by`}</div>
-      <img src="/imgs/logo-opensquare.svg" />
+      <FooterLogo />
     </Wrapper>
   );
 }
