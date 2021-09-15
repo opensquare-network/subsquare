@@ -124,7 +124,7 @@ export default function Header({ user, left, chain, fixedTop = false }) {
                 <img src="/imgs/icons/menu-line.svg" alt="" />
               </MenuButton>
             )}
-            <Link href={`/${chain}`}>
+            <Link href={chain ? `/${chain}` : "/"}>
               <LogoImg src="/imgs/logo.svg" alt="" />
             </Link>
             <NodeButton
