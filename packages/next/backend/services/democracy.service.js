@@ -224,10 +224,20 @@ function createService(proposalType, indexField, localField) {
         const democracyExternal = await col.findOne({ proposalHash: chanProposalData.externalProposalHash });
         chanProposalData.authors = democracyExternal.authors;
         chanProposalData.techCommMotionIndex =  democracyExternal.techCommMotionIndex;
+
+        const preImageCol = await getPreImageCollection(chain);
+        const preImage = await preImageCol.findOne({ hash: chanProposalData.externalProposalHash });
+        chanProposalData.preImage = preImage;
+
       } else if (chanProposalData.publicProposalIndex !== undefined) {
         const col = await getChainPublicProposalCollection(chain);
         const democracyPublicProposal = await col.findOne({ proposalIndex: chanProposalData.publicProposalIndex });
         chanProposalData.authors = democracyPublicProposal.authors;
+
+        const preImageCol = await getPreImageCollection(chain);
+        const preImage = await preImageCol.findOne({ hash: democracyPublicProposal.hash });
+        chanProposalData.preImage = preImage;
+
       }
     } else if (proposalType === "democracyPublicProposal") {
       const col = await getPreImageCollection(chain);
