@@ -147,11 +147,18 @@ export default withLoginUserRedux(({ loginUser }) => {
   const onResend = async () => {
     setResendLoading(true);
     const res = await nextApi.post("user/resendverifyemail");
-    if (res.result) {
+    if (res.result === true) {
       dispatch(
         addToast({
           type: "success",
           message: "Resend email successfully!",
+        })
+      );
+    } else if (res.result === false) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Email is not sent!",
         })
       );
     } else if (res.error) {

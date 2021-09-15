@@ -235,13 +235,13 @@ async function forgetPassword(ctx) {
     throw new HttpError(500, "Failed to request password reset.");
   }
 
-  mailService.sendResetPasswordEmail({
+  const isSent = await mailService.sendResetPasswordEmail({
     username: user.username,
     email: user.email,
     token,
   });
 
-  ctx.body = true;
+  ctx.body = isSent;
 }
 
 async function resetPassword(ctx) {

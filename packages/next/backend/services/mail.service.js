@@ -4,7 +4,7 @@ const templates = require("../templates");
 const pageSize = 50;
 
 class MailService {
-  sendResetPasswordEmail({ username, email, token }) {
+  async sendResetPasswordEmail({ username, email, token }) {
     const text = templates.resetPassword({
       username,
       email,
@@ -19,12 +19,16 @@ class MailService {
       to: email,
     };
 
-    aliMail.sendMail(msg).catch((e) =>
-      console.error("Reset password Email not sent", e)
-    );
+    try {
+      await aliMail.sendMail(msg);
+      return true;
+    } catch (e) {
+      console.error("sendResetPasswordEmail", e)
+      return false;
+    }
   }
 
-  sendVerificationEmail({ username, email, token }) {
+  async sendVerificationEmail({ username, email, token }) {
     const text = templates.emailVerification({
       username,
       email,
@@ -39,9 +43,13 @@ class MailService {
       to: email,
     };
 
-    aliMail.sendMail(msg).catch((e) =>
-      console.error("Verification Email not sent", e)
-    );
+    try {
+      await aliMail.sendMail(msg);
+      return true;
+    } catch (e) {
+      console.error("sendVerificationEmail", e)
+      return false;
+    }
   }
 
   sendCommentThumbsupEmail({
