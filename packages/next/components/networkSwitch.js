@@ -71,7 +71,7 @@ const Item = styled.div`
     `}
 `;
 
-export default function NodeSwitch({ activeNode }) {
+export default function NetworkSwitch({ activeNode }) {
   const router = useRouter();
   const [show, setShow] = useState(false);
   const ref = useRef();
@@ -80,7 +80,7 @@ export default function NodeSwitch({ activeNode }) {
   useOnClickOutside(ref, () => setShow(false));
 
   useEffect(() => {
-    if (windowSize.width && windowSize.width <= 600) {
+    if (windowSize.width && windowSize.width <= 768) {
       setShow(false);
     }
   }, [windowSize]);

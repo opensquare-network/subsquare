@@ -8,6 +8,7 @@ import { accountMenu } from "utils/constants";
 import { logout } from "store/reducers/userSlice";
 import { nodes } from "utils/constants";
 import User from "components/user";
+import NodeSwitch from "components/nodeSwitch";
 
 const Wrapper = styled.div`
   padding: 32px 0 0;
@@ -85,6 +86,8 @@ export default function SidebarAccount({ user, chain }) {
     <Wrapper>
       <Title>NETWORK</Title>
       <NetworkSwitch activeNode={node} />
+      <Title>NODE</Title>
+      <NodeSwitch />
       <Title>ACCOUNT</Title>
       {!user && (
         <ButtonWrapper>

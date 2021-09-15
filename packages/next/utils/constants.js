@@ -14,19 +14,23 @@ export const DEFAULT_KUSAMA_NODES = [
   },
 ];
 
-export const DEFAULT_POLKADOT_NODE_URL = "wss://rpc.polkadot.io/";
-export const DEFAULT_POLKADOT_NODES = [
+export const DEFAULT_KARURA_NODE_URL = "wss://pub.elara.patract.io/karura";
+export const DEFAULT_KARURA_NODES = [
   {
-    name: "Parity",
-    url: "wss://rpc.polkadot.io/",
+    name: "Patract Elara",
+    url: "wss://pub.elara.patract.io/karura",
   },
   {
     name: "OnFinality",
-    url: "wss://polkadot.api.onfinality.io/public-ws",
+    url: "wss://karura.api.onfinality.io/public-ws",
   },
   {
-    name: "Patract Elara",
-    url: "wss://polkadot.elara.patract.io/",
+    name: "Polkawallet",
+    url: "wss://karura.polkawallet.io",
+  },
+  {
+    name: "Acala Foundation",
+    url: "wss://karura-rpc-0.aca-api.network",
   },
 ];
 
@@ -39,11 +43,6 @@ export const nodes = [
     symbol: "KSM",
     decimals: 12,
   },
-  // {
-  //   value: "polkadot",
-  //   name: "Polkadot",
-  //   icon: "polkadot.svg",
-  // },
   {
     value: "karura",
     name: "Karura",
@@ -94,11 +93,6 @@ export const mainMenu = [
         icon: "type-proposals.svg",
         pathname: "/[chain]/treasury/proposals",
       },
-      // {
-      //   value: "bounties",
-      //   name: "Bounties",
-      //   icon: "type-bounties.svg",
-      // },
       {
         value: "tips",
         name: "Tips",

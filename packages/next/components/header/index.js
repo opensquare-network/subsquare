@@ -1,14 +1,14 @@
 import styled, { css } from "styled-components";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 
 import NetworkSwitch from "components/networkSwitch";
 import Container from "components/container";
 import HeaderAccount from "./headerAccount";
 import Sidebar from "./sidebar";
-import { useWindowSize } from "utils/hooks";
 import SidebarAccount from "./sidebarAccount";
 import { nodes } from "utils/constants";
+import NodeSwitch from "components/nodeSwitch";
 
 const Wrapper = styled.header`
   padding-left: 32px;
@@ -78,7 +78,7 @@ const MenuButton = styled.div`
   }
 `;
 
-const NodeWrapper = styled.div`
+const NetworkWrapper = styled.div`
   width: 144px;
 `;
 
@@ -104,18 +104,10 @@ const LogoImg = styled.img`
 
 export default function Header({ user, left, chain, fixedTop = false }) {
   const [show, setShow] = useState(false);
-  // const [hiddenWidth, setHiddenWidth] = useState(0);
   const [position, setPosition] = useState("left");
   const [content, setContent] = useState();
-  // const windowSize = useWindowSize();
 
   const node = nodes.find((n) => n.value === chain) || nodes[0];
-
-  // useEffect(() => {
-  //   if (hiddenWidth && windowSize.width && windowSize.width > hiddenWidth) {
-  //     setShow(false);
-  //   }
-  // }, [windowSize, hiddenWidth]);
 
   return (
     <Wrapper fixedTop={fixedTop}>
@@ -125,7 +117,6 @@ export default function Header({ user, left, chain, fixedTop = false }) {
             {left && (
               <MenuButton
                 onClick={() => {
-                  // setHiddenWidth(1024);
                   setPosition("left");
                   setContent("left");
                   setShow(true);
@@ -139,7 +130,6 @@ export default function Header({ user, left, chain, fixedTop = false }) {
             </Link>
             <NodeButton
               onClick={() => {
-                // setHiddenWidth(768);
                 setPosition("right");
                 setContent("right");
                 setShow(true);
@@ -150,9 +140,10 @@ export default function Header({ user, left, chain, fixedTop = false }) {
           </Left>
           <Right>
             <HeaderAccount user={user} chain={chain} />
-            <NodeWrapper>
+            <NetworkWrapper>
               <NetworkSwitch activeNode={node} />
-            </NodeWrapper>
+            </NetworkWrapper>
+            <NodeSwitch small />
           </Right>
         </FlexWrapper>
       </Container>
