@@ -6,8 +6,8 @@ export * from "./address";
 import {
   DEFAULT_KUSAMA_NODE_URL,
   DEFAULT_KUSAMA_NODES,
-  DEFAULT_POLKADOT_NODE_URL,
-  DEFAULT_POLKADOT_NODES,
+  DEFAULT_KARURA_NODE_URL,
+  DEFAULT_KARURA_NODES,
 } from "utils/constants";
 
 const apiInstanceMap = new Map();
@@ -23,9 +23,9 @@ let nodeUrl = (() => {
     kusama:
       DEFAULT_KUSAMA_NODES.find((item) => item.url === localNodeUrl?.kusama)
         ?.url || DEFAULT_KUSAMA_NODE_URL,
-    polkadot:
-      DEFAULT_POLKADOT_NODES.find((item) => item.url === localNodeUrl?.polkadot)
-        ?.url || DEFAULT_POLKADOT_NODE_URL,
+    karura:
+      DEFAULT_KARURA_NODES.find((item) => item.url === localNodeUrl?.karura)
+        ?.url || DEFAULT_KARURA_NODE_URL,
   };
 })();
 
@@ -33,7 +33,7 @@ export const getNodeUrl = () => nodeUrl;
 
 export const getNodes = () => ({
   kusama: DEFAULT_KUSAMA_NODES,
-  polkadot: DEFAULT_POLKADOT_NODES,
+  karura: DEFAULT_KARURA_NODES,
 });
 
 export const getApi = async (chain, queryUrl) => {

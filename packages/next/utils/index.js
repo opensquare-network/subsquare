@@ -106,3 +106,9 @@ export function getTimelineStatus(type, method) {
   }
   return { value: method, color: defaultColor };
 }
+
+export const sleep = (time) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, time);
+  });
+};

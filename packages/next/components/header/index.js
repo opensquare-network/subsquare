@@ -2,12 +2,13 @@ import styled, { css } from "styled-components";
 import { useState } from "react";
 import Link from "next/link";
 
-import NodeSwitch from "components/nodeSwitch";
+import NetworkSwitch from "components/networkSwitch";
 import Container from "components/container";
 import HeaderAccount from "./headerAccount";
 import Sidebar from "./sidebar";
 import SidebarAccount from "./sidebarAccount";
 import { nodes } from "utils/constants";
+import NodeSwitch from "components/nodeSwitch";
 import { useRouter } from "next/router";
 
 const Wrapper = styled.header`
@@ -78,7 +79,7 @@ const MenuButton = styled.div`
   }
 `;
 
-const NodeWrapper = styled.div`
+const NetworkWrapper = styled.div`
   width: 144px;
 `;
 
@@ -126,8 +127,10 @@ export default function Header({ user, left, chain, fixedTop = false }) {
                 <img src="/imgs/icons/menu-line.svg" alt="" />
               </MenuButton>
             )}
-            <LogoImg src="/imgs/logo.svg" alt="" onClick={
-              () => {
+            <LogoImg
+              src="/imgs/logo.svg"
+              alt=""
+              onClick={() => {
                 let currChain = chain;
                 if (!currChain) {
                   currChain = localStorage.getItem("chain") || "karura";
@@ -136,8 +139,8 @@ export default function Header({ user, left, chain, fixedTop = false }) {
                   pathname: "/[chain]",
                   query: { chain: currChain },
                 });
-              }
-            }/>
+              }}
+            />
             <NodeButton
               onClick={() => {
                 setPosition("right");
@@ -150,13 +153,14 @@ export default function Header({ user, left, chain, fixedTop = false }) {
           </Left>
           <Right>
             <HeaderAccount user={user} chain={chain} />
-            {
-              router.pathname.startsWith("/[chain]") && (
+            {router.pathname.startsWith("/[chain]") && (
+              <>
                 <NodeWrapper>
                   <NodeSwitch activeNode={node} />
                 </NodeWrapper>
-              )
-            }
+                <NodeSwitch small chain={chain} />
+              </>
+            )}
           </Right>
         </FlexWrapper>
       </Container>

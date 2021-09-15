@@ -2,12 +2,13 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 
-import NodeSwitch from "components/nodeSwitch";
+import NetworkSwitch from "components/networkSwitch";
 import Button from "components/button";
 import { accountMenu } from "utils/constants";
 import { logout } from "store/reducers/userSlice";
 import { nodes } from "utils/constants";
 import User from "components/user";
+import NodeSwitch from "components/nodeSwitch";
 
 const Wrapper = styled.div`
   padding: 32px 0 0;
@@ -84,7 +85,9 @@ export default function SidebarAccount({ user, chain }) {
   return (
     <Wrapper>
       <Title>NETWORK</Title>
-      <NodeSwitch activeNode={node} />
+      <NetworkSwitch activeNode={node} />
+      <Title>NODE</Title>
+      <NodeSwitch chain={chain} />
       <Title>ACCOUNT</Title>
       {!user && (
         <ButtonWrapper>
