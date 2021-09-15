@@ -16,6 +16,8 @@ import Links from "components/timeline/links";
 import dayjs from "dayjs";
 import Timeline from "components/timeline";
 import { getTimelineStatus } from "utils";
+import KVList from "../../../../components/kvList";
+import MotionProposal from "../../../../components/motion/motionProposal";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -252,6 +254,15 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     ],
   ];
 
+  if (detail?.onchainData?.preImage) {
+    metadata.push([
+      <MotionProposal
+        motion={{ proposal: detail.onchainData.preImage.call }}
+        chain={chain}
+      />,
+    ]);
+  }
+
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">
@@ -263,7 +274,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           onReply={focusEditor}
           type="democracy/proposal"
         />
-        {metadata && <Metadata data={metadata} />}
+        {metadata && <KVList title="Metadata" data={metadata} />}
         {timelineData && timelineData.length > 0 && (
           <Timeline data={timelineData} chain={chain} />
         )}

@@ -16,6 +16,7 @@ import { getNode, getTimelineStatus, toPrecision } from "../../../../utils";
 import Vote from "../../../../components/referenda/vote";
 import dayjs from "dayjs";
 import Timeline from "../../../../components/timeline";
+import MotionProposal from "../../../../components/motion/motionProposal";
 
 const Flex = styled.div`
   display: flex;
@@ -143,6 +144,32 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     };
   });
 
+  const metadata = [
+    [
+      "Proposer",
+      <>
+        <User add={detail.proposer} fontSize={14} />
+        <Links
+          chain={chain}
+          address={detail.proposer}
+          style={{ marginLeft: 8 }}
+        />
+      </>,
+    ],
+    ["Delay", detail?.onchainData?.status?.delay],
+    ["End", detail?.onchainData?.status?.end],
+    ["Threshold", detail?.onchainData?.status?.threshold],
+  ];
+
+  if (detail?.onchainData?.preImage) {
+    metadata.push([
+      <MotionProposal
+        motion={{ proposal: detail.onchainData.preImage.call }}
+        chain={chain}
+      />,
+    ]);
+  }
+
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">
@@ -164,25 +191,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
         <Vote referendum={detail.onchainData} chain={chain} />
 
-        <KVList
-          title={"Metadata"}
-          data={[
-            [
-              "Proposer",
-              <>
-                <User add={detail.proposer} fontSize={14} />
-                <Links
-                  chain={chain}
-                  address={detail.proposer}
-                  style={{ marginLeft: 8 }}
-                />
-              </>,
-            ],
-            ["Delay", detail?.onchainData?.status?.delay],
-            ["End", detail?.onchainData?.status?.end],
-            ["Threshold", detail?.onchainData?.status?.threshold],
-          ]}
-        />
+        <KVList title={"Metadata"} data={metadata} />
 
         {timelineData && timelineData.length > 0 && (
           <Timeline data={timelineData} chain={chain} />
