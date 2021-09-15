@@ -4,23 +4,22 @@ import { useRouter } from "next/router";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 
 import {
+  currentNodeSelector,
   nodesSelector,
   setNodesDelay,
-  currentNodeSelector,
 } from "../store/reducers/nodeSlice";
 import { sleep } from "./index";
 
 const apiInstanceMap = new Map();
 
 const getApi = async (chain, queryUrl) => {
-  const url = queryUrl || nodeUrl?.[chain];
-  if (!apiInstanceMap.has(url)) {
+  if (!apiInstanceMap.has(queryUrl)) {
     apiInstanceMap.set(
-      url,
-      ApiPromise.create({ provider: new WsProvider(url) })
+      queryUrl,
+      ApiPromise.create({ provider: new WsProvider(queryUrl) })
     );
   }
-  return apiInstanceMap.get(url);
+  return apiInstanceMap.get(queryUrl);
 };
 
 const TIMEOUT = 10000;
