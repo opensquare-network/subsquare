@@ -21,6 +21,10 @@ const Bar = styled.div`
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
   }
+  :last-child {
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+  }
 `;
 
 const DetailWrapper = styled.div`
