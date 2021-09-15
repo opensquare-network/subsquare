@@ -1,14 +1,12 @@
 import styled from "styled-components";
-
-import Layout from "components/layout";
 import Back from "components/back";
 import DetailItem from "components/detailItem";
 import Comments from "components/comment";
-import { withLoginUser, withLoginUserRedux } from "lib";
+import { withLoginUser, withLoginUserRedux, useIsomorphicLayoutEffect } from "lib";
 import nextApi from "services/nextApi";
 import { EmptyList } from "../../../utils/constants";
 import Input from "../../../components/comment/input";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import LayoutFixedHeader from "../../../components/layoutFixedHeader";
 
 const Wrapper = styled.div`
@@ -45,7 +43,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const [content, setContent] = useState("");
   const [contentType, setContentType] = useState("markdown");
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!localStorage.getItem("contentType")) {
       return localStorage.setItem("contentType", contentType);
     }

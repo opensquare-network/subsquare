@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUser, userSelector } from "../store/reducers/userSlice";
 import { useEffect, useLayoutEffect } from "react";
 
-const useIsomorphicLayoutEffect =
+export const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 export function withLoginUser(getServerSideProps) {
