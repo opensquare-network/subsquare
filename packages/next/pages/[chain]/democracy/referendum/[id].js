@@ -55,16 +55,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState("markdown");
-
-  useIsomorphicLayoutEffect(() => {
-    if (!localStorage.getItem("contentType")) {
-      return localStorage.setItem("contentType", contentType);
-    }
-    if (contentType !== localStorage.getItem("contentType")) {
-      setContentType(localStorage.getItem("contentType"));
-    }
-  }, []);
+  const [contentType, setContentType] = useState(loginUser?.preference.editor || "markdown");
 
   const onReply = (username) => {
     let reply = "";

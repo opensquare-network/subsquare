@@ -11,6 +11,8 @@ import ErrorText from "components/ErrorText";
 import QuillEditor from "../editor/quillEditor";
 import HtmlRender from "../post/htmlRender";
 import UploadImgModal from "../editor/imageModal";
+import { fetchUserProfile } from "store/reducers/userSlice";
+import { useDispatch } from "react-redux";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -76,6 +78,7 @@ function Input(
   },
   ref
 ) {
+  const dispatch = useDispatch();
   const router = useRouter();
   const [showPreview, setShowPreview] = useState(false);
   const [showImgModal, setShowImgModal] = useState(false);
@@ -91,12 +94,19 @@ function Input(
     ) {
       return;
     }
+
+    const newContentType = contentType === "html" ? "markdown" : "html";
     setContent("");
-    setContentType(contentType === "html" ? "markdown" : "html");
-    localStorage.setItem(
-      "contentType",
-      contentType === "html" ? "markdown" : "html"
-    );
+    setContentType(newContentType);
+
+    // Save to user preference
+    nextApi.patch("user/preference", {
+      editor: newContentType,
+    }).then(({ result }) => {
+      if (result) {
+        dispatch(fetchUserProfile());
+      }
+    });
   };
 
   const createComment = async () => {

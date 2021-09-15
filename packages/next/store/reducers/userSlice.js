@@ -21,7 +21,9 @@ export const fetchUserProfile = () => async (dispatch) => {
     "user/profile",
     {},
     {
-      credentials: true,
+      method: "GET",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
     }
   );
   if (result) dispatch(setUser(result));
