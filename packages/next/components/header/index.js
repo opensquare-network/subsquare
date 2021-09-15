@@ -155,9 +155,9 @@ export default function Header({ user, left, chain, fixedTop = false }) {
             <HeaderAccount user={user} chain={chain} />
             {router.pathname.startsWith("/[chain]") && (
               <>
-                <NodeWrapper>
-                  <NodeSwitch activeNode={node} />
-                </NodeWrapper>
+                <NetworkWrapper>
+                  <NetworkSwitch activeNode={node} />
+                </NetworkWrapper>
                 <NodeSwitch small chain={chain} />
               </>
             )}
