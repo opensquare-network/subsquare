@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 
-import NodeSwitch from "components/nodeSwitch";
+import NetworkSwitch from "components/networkSwitch";
 import Button from "components/button";
 import { accountMenu } from "utils/constants";
 import { logout } from "store/reducers/userSlice";
@@ -84,7 +84,7 @@ export default function SidebarAccount({ user, chain }) {
   return (
     <Wrapper>
       <Title>NETWORK</Title>
-      <NodeSwitch activeNode={node} />
+      <NetworkSwitch activeNode={node} />
       <Title>ACCOUNT</Title>
       {!user && (
         <ButtonWrapper>

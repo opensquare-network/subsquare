@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
-import NodeSwitch from "components/nodeSwitch";
+import NetworkSwitch from "components/networkSwitch";
 import Container from "components/container";
 import HeaderAccount from "./headerAccount";
 import Sidebar from "./sidebar";
@@ -151,7 +151,7 @@ export default function Header({ user, left, chain, fixedTop = false }) {
           <Right>
             <HeaderAccount user={user} chain={chain} />
             <NodeWrapper>
-              <NodeSwitch activeNode={node} />
+              <NetworkSwitch activeNode={node} />
             </NodeWrapper>
           </Right>
         </FlexWrapper>
