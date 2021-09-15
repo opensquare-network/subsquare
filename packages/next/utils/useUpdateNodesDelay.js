@@ -38,6 +38,15 @@ const testNet = async (api) => {
   return await Promise.race([fetchApiTime(api), timeout(TIMEOUT)]);
 };
 
+const updateNodeDelay = async (chain, url) => {
+  try {
+    const api = await getApi(chain, url);
+    return await testNet(api);
+  } catch {
+    return "";
+  }
+};
+
 const useUpdateNodesDelay = () => {
   const router = useRouter();
   const nodesSetting = useSelector(nodesSelector);
@@ -45,27 +54,24 @@ const useUpdateNodesDelay = () => {
   const currentNode = useSelector(currentNodeSelector);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!chain) return;
-    const updateNodeDelay = async (url) => {
-      try {
-        const api = await getApi(chain, url);
-        const delay = await testNet(api);
-        return delay;
-      } catch {
-        return "";
-      }
-    };
+    if (!chain) {
+      return;
+    }
+
     const intervalId = setInterval(async () => {
       const updateNodes = (nodesSetting[chain] || []).filter(
         (item) => item.url === currentNode?.[chain] || item.update
       );
+
       if (updateNodes && updateNodes.length > 0) {
         const updateNode = updateNodes[count % updateNodes.length];
-        const delay = await updateNodeDelay(updateNode.url);
+        const delay = await updateNodeDelay(chain, updateNode.url);
         dispatch(setNodesDelay([{ chain, url: updateNode.url, delay }]));
       }
+
       count++;
     }, 5000);
+
     return () => clearInterval(intervalId);
   }, [dispatch, nodesSetting, chain, currentNode]);
 };
