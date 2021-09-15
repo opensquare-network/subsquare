@@ -134,7 +134,7 @@ function getMotionType(data) {
 }
 
 function createMotionTimelineData(data) {
-  return (data.timeline || []).map((item) => {
+  return (data?.timeline || []).map((item) => {
     switch (item?.method) {
       case "Proposed": {
         return {
