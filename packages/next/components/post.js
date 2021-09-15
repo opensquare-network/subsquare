@@ -74,7 +74,7 @@ const AutHideInfo = styled(Info)`
   }
 `;
 
-const Title = styled.div`
+const Title = styled.a`
   word-break: break-all;
   font-weight: 500;
   font-size: 16px;
@@ -145,7 +145,7 @@ export default function Post({ data, chain, href }) {
     <Wrapper>
       <TitleWrapper>
         {data?.index !== undefined && <Index>{`#${data.index}`}</Index>}
-        <Link href={href}>
+        <Link href={href} passHref>
           <Title>{data.title}</Title>
         </Link>
       </TitleWrapper>
