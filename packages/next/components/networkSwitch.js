@@ -99,10 +99,8 @@ export default function NetworkSwitch({ activeNode }) {
               key={index}
               onClick={() => {
                 localStorage.setItem("chain", item.value);
-                router.push(
-                  router.asPath.replace(activeNode.value, item.value)
-                );
                 setShow(false);
+                router.push(`/${item.value}`);
               }}
               active={activeNode.value === nodes[index].value}
             >

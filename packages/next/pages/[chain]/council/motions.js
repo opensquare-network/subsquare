@@ -50,7 +50,7 @@ export default withLoginUserRedux(({ loginUser, motions, chain }) => {
     >
       <List
         chain={chain}
-        category={"On-chain Motions"}
+        category={"Council Motions"}
         create={null}
         items={items}
         pagination={{

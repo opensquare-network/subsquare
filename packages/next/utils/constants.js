@@ -153,7 +153,7 @@ export const settingMenu = [
         value: "overview",
         name: "Back to Overview",
         icon: "type-overview.svg",
-        pathname: "/",
+        pathname: "/[chain]",
       },
     ],
   },

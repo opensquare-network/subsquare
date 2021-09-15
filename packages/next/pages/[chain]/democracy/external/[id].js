@@ -9,13 +9,13 @@ import { EmptyList } from "utils/constants";
 import Input from "components/comment/input";
 import { useState, useRef } from "react";
 import LayoutFixedHeader from "components/layoutFixedHeader";
-import Metadata from "components/metadata";
 import User from "components/user";
 import { getNode, toPrecision } from "utils";
-import Links from "components/timeline/links";
 import dayjs from "dayjs";
 import Timeline from "components/timeline";
 import { getTimelineStatus } from "utils";
+import MotionProposal from "../../../../components/motion/motionProposal";
+import KVList from "../../../../components/kvList";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -191,6 +191,14 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     ["hash", detail.onchainData.proposalHash],
     ["voteThreshould", detail.onchainData.voteThreshold],
   ];
+  if (detail?.onchainData?.preImage) {
+    metadata.push([
+      <MotionProposal
+        motion={{ proposal: detail.onchainData.preImage.call }}
+        chain={chain}
+      />,
+    ]);
+  }
 
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
@@ -203,7 +211,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           onReply={focusEditor}
           type="democracy/external"
         />
-        {metadata && <Metadata data={metadata} />}
+        {metadata && <KVList title="Metadata" data={metadata} />}
         {timelineData && timelineData.length > 0 && (
           <Timeline data={timelineData} chain={chain} />
         )}

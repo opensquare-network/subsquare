@@ -9,6 +9,7 @@ import Sidebar from "./sidebar";
 import SidebarAccount from "./sidebarAccount";
 import { nodes } from "utils/constants";
 import NodeSwitch from "components/nodeSwitch";
+import { useRouter } from "next/router";
 
 const Wrapper = styled.header`
   padding-left: 32px;
@@ -103,6 +104,7 @@ const LogoImg = styled.img`
 `;
 
 export default function Header({ user, left, chain, fixedTop = false }) {
+  const router = useRouter();
   const [show, setShow] = useState(false);
   const [position, setPosition] = useState("left");
   const [content, setContent] = useState();
@@ -125,9 +127,20 @@ export default function Header({ user, left, chain, fixedTop = false }) {
                 <img src="/imgs/icons/menu-line.svg" alt="" />
               </MenuButton>
             )}
-            <Link href="/">
-              <LogoImg src="/imgs/logo.svg" alt="" />
-            </Link>
+            <LogoImg
+              src="/imgs/logo.svg"
+              alt=""
+              onClick={() => {
+                let currChain = chain;
+                if (!currChain) {
+                  currChain = localStorage.getItem("chain") || "karura";
+                }
+                router.push({
+                  pathname: "/[chain]",
+                  query: { chain: currChain },
+                });
+              }}
+            />
             <NodeButton
               onClick={() => {
                 setPosition("right");
@@ -140,10 +153,14 @@ export default function Header({ user, left, chain, fixedTop = false }) {
           </Left>
           <Right>
             <HeaderAccount user={user} chain={chain} />
-            <NetworkWrapper>
-              <NetworkSwitch activeNode={node} />
-            </NetworkWrapper>
-            <NodeSwitch small chain={chain} />
+            {router.pathname.startsWith("/[chain]") && (
+              <>
+                <NodeWrapper>
+                  <NodeSwitch activeNode={node} />
+                </NodeWrapper>
+                <NodeSwitch small chain={chain} />
+              </>
+            )}
           </Right>
         </FlexWrapper>
       </Container>

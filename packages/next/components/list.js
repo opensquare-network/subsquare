@@ -10,9 +10,6 @@ const Wrapper = styled.div`
     max-width: 960px;
   }
   margin: auto;
-  @media screen and (min-width: 1080px) {
-    padding-bottom: 16px;
-  }
 
   > :not(:first-child) {
     margin-top: 16px;
@@ -43,27 +40,28 @@ export default function List({
       {items?.length > 0 ? (
         items.map((item, index) => {
           let href = `/${chain}/post/${item.postUid}`;
-          if (category === "Externals") {
+          if (category === "External Proposals") {
             href = `/${chain}/democracy/external/${item.hash}`;
           }
-          if (category === "Referenda") {
+          else if (category === "Referenda") {
             href = `/${chain}/democracy/referendum/${item.index}`;
           }
-          if (category === "On-chain Motions") {
+          else if (category === "Council Motions") {
             href = `/${chain}/council/motion/${item.index}`;
           }
-          if (category === "Tips") {
+          else if (category === "Tips") {
             href = `/${chain}/treasury/tip/${item.height}_${item.hash}`;
           }
-          if (category === "Proposals") {
-            if (type === "democracy") {
-              href = `/${chain}/democracy/proposal/${item.proposalIndex}`;
-            } else if (type === "treasury") {
-              href = `/${chain}/treasury/proposal/${item.proposalIndex}`;
-            } else if (type === "techcomm") {
-              href = `/${chain}/techcomm/proposal/${item.proposalIndex}`;
-            }
+          else if (category === "Public Proposals") {
+            href = `/${chain}/democracy/proposal/${item.proposalIndex}`;
           }
+          else if (category === "Treasury Proposals") {
+            href = `/${chain}/treasury/proposal/${item.proposalIndex}`;
+          }
+          else if (category === "Technical Committee Proposals") {
+            href = `/${chain}/techcomm/proposal/${item.proposalIndex}`;
+          }
+
           return <Post key={index} data={item} chain={chain} href={href} />;
         })
       ) : (
