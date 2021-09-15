@@ -45,7 +45,7 @@ export default function User({
   noEvent = false,
 }) {
   if (!user && !add) {
-    return null;
+    return <div>[Deleted Account]</div>;
   }
   const [identity, setIdentity] = useState(null);
 
@@ -71,7 +71,7 @@ export default function User({
           {address ? (
             <Avatar address={address} size={20} />
           ) : (
-            <Grvatar email={user?.email} emailMd5={user.emailMd5} size={20} />
+            <Grvatar email={user?.email} emailMd5={user?.emailMd5} size={20} />
           )}
         </AvatarWrapper>
       )}

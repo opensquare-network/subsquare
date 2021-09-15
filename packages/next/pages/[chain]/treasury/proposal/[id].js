@@ -161,7 +161,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   const users =
     comments?.items
-      ?.map((comment) => comment.author.username)
+      ?.map((comment) => comment.author?.username)
       .filter(isUniqueInArray) ?? [];
 
   const focusEditor = () => {
