@@ -158,7 +158,6 @@ export default function NodeSwitch({ small, chain }) {
                   setCurrentNode({
                     chain,
                     url: item.url,
-                    refresh: true,
                   })
                 );
                 setShow(false);
