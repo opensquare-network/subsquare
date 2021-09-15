@@ -158,7 +158,7 @@ export default withLoginUserRedux(({ loginUser }) => {
       dispatch(
         addToast({
           type: "error",
-          message: "Email is not sent!",
+          message: "Fail to send the email!",
         })
       );
     } else if (res.error) {
