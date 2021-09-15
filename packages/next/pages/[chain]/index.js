@@ -15,15 +15,71 @@ export default withLoginUserRedux(({ overview, loginUser, chain }) => {
     {
       category: "Discussions",
       type: "discussion",
-      items: (overview?.discussions ?? []).map(item => ({
+      items: (overview?.discussions ?? []).map((item) => ({
         ...item,
         time: item.lastActivityAt,
       })),
     },
     {
+      category: "Council Motions",
+      type: "council",
+      items: (overview?.council?.motions ?? []).map((item) => ({
+        ...item,
+        time: item.indexer.blockTime,
+        title: `${item.proposal.section}.${item.proposal.method}`,
+        type: getMotionType(item),
+        author: item.author ?? {
+          username: addressEllipsis(item.proposer),
+          addresses: [{ chain, address: item.proposer }],
+        },
+        status: item.state?.state ?? "Unknown",
+      })),
+    },
+    {
+      category: "Tech. Comm. Proposals",
+      type: "techcomm",
+      items: (overview?.techComm?.motions ?? []).map((item) => ({
+        ...item,
+        time: item.indexer.blockTime,
+        title: `${item.proposal.section}.${item.proposal.method}`,
+        type: getMotionType(item),
+        author: item.author ?? {
+          username: addressEllipsis(item.proposer),
+          addresses: [{ chain, address: item.proposer }],
+        },
+        status: item.state?.state ?? "Unknown",
+      })),
+    },
+    {
+      category: "Treasury Proposals",
+      type: "treasury",
+      items: (overview?.treasury?.proposals ?? []).map((item) => ({
+        ...item,
+        author: item.author ?? {
+          username: addressEllipsis(item.proposer),
+          addresses: [{ chain, address: item.proposer }],
+        },
+        status: item.state ?? "Unknown",
+        time: item.indexer.blockTime,
+      })),
+    },
+    {
+      category: "Referenda",
+      type: "democracy",
+      items: (overview?.democracy?.referensums ?? []).map((item) => ({
+        ...item,
+        status: item.state,
+        index: item.referendumIndex,
+        author: item.author ?? {
+          username: addressEllipsis(item.proposer),
+          addresses: [{ chain, address: item.proposer }],
+        },
+      })),
+    },
+    {
       category: "Tips",
       type: "treasury",
-      items: (overview?.treasury?.tips ?? []).map(item => ({
+      items: (overview?.treasury?.tips ?? []).map((item) => ({
         ...item,
         author: item.author ?? {
           username: addressEllipsis(item.finder),
@@ -35,13 +91,12 @@ export default withLoginUserRedux(({ overview, loginUser, chain }) => {
             : item.state.state
           : "Unknown",
         time: item.indexer.blockTime,
-
       })),
     },
     {
-      category: "Treasury Proposals",
-      type: "treasury",
-      items: (overview?.treasury?.proposals ?? []).map(item => ({
+      category: "Democracy Public Proposals",
+      type: "democracy",
+      items: (overview?.democracy?.proposals ?? []).map((item) => ({
         ...item,
         author: item.author ?? {
           username: addressEllipsis(item.proposer),
@@ -52,38 +107,9 @@ export default withLoginUserRedux(({ overview, loginUser, chain }) => {
       })),
     },
     {
-      category: "Council Motions",
-      type: "council",
-      items: (overview?.council?.motions ?? []).map(item => ({
-        ...item,
-        time: item.indexer.blockTime,
-        title: `${item.proposal.section}.${item.proposal.method}`,
-        type: getMotionType(item),
-        author: item.author ?? {
-          username: addressEllipsis(item.proposer),
-          addresses: [{ chain, address: item.proposer }],
-        },
-        status: item.state?.state ?? "Unknown",
-      })),
-    },
-    {
-      category: "Public Proposals",
+      category: "Democracy External Proposals",
       type: "democracy",
-      items: (overview?.democracy?.proposals ?? []).map(item => ({
-        ...item,
-        author: item.author ?? {
-          username: addressEllipsis(item.proposer),
-          addresses: [{ chain, address: item.proposer }],
-        },
-        status: item.state ?? "Unknown",
-        time: item.indexer.blockTime,
-
-      })),
-    },
-    {
-      category: "External Proposals",
-      type: "democracy",
-      items: (overview?.democracy?.externals ?? []).map(item => ({
+      items: (overview?.democracy?.externals ?? []).map((item) => ({
         ...item,
         author: item.author ?? {
           username: addressEllipsis(item.proposer),
@@ -91,34 +117,6 @@ export default withLoginUserRedux(({ overview, loginUser, chain }) => {
         },
         hash: item.externalProposalHash,
         status: item.state ?? "Unknown",
-      })),
-    },
-    {
-      category: "Referenda",
-      type: "democracy",
-      items: (overview?.democracy?.referensums ?? []).map(item => ({
-        ...item,
-        status: item.state,
-        index: item.referendumIndex,
-        author: item.author ?? {
-          username: addressEllipsis(item.proposer),
-          addresses: [{ chain, address: item.proposer }],
-        },
-      })),
-    },
-    {
-      category: "Technical Committee Proposals",
-      type: "techcomm",
-      items: (overview?.techComm?.motions ?? []).map(item => ({
-        ...item,
-        time: item.indexer.blockTime,
-        title: `${item.proposal.section}.${item.proposal.method}`,
-        type: getMotionType(item),
-        author: item.author ?? {
-          username: addressEllipsis(item.proposer),
-          addresses: [{ chain, address: item.proposer }],
-        },
-        status: item.state?.state ?? "Unknown",
       })),
     },
   ];
