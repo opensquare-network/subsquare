@@ -42,23 +42,17 @@ export default function List({
           let href = `/${chain}/post/${item.postUid}`;
           if (category === "External Proposals") {
             href = `/${chain}/democracy/external/${item.hash}`;
-          }
-          else if (category === "Referenda") {
+          } else if (category === "Referenda") {
             href = `/${chain}/democracy/referendum/${item.index}`;
-          }
-          else if (category === "Council Motions") {
+          } else if (category === "Council Motions") {
             href = `/${chain}/council/motion/${item.index}`;
-          }
-          else if (category === "Tips") {
+          } else if (category === "Tips") {
             href = `/${chain}/treasury/tip/${item.height}_${item.hash}`;
-          }
-          else if (category === "Public Proposals") {
+          } else if (category === "Public Proposals") {
             href = `/${chain}/democracy/proposal/${item.proposalIndex}`;
-          }
-          else if (category === "Treasury Proposals") {
-            href = `/${chain}/treasury/proposal/${item.proposalIndex}`;
-          }
-          else if (category === "Technical Committee Proposals") {
+          } else if (category === "Treasury Proposals") {
+            href = `/${chain}/treasury/proposal/${item.index}`;
+          } else if (category === "Technical Committee Proposals") {
             href = `/${chain}/techcomm/proposal/${item.proposalIndex}`;
           }
 

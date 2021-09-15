@@ -19,7 +19,7 @@ export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
     height: proposal.height,
     hash: proposal.hash,
     status: proposal.state ?? "Unknown",
-    proposalIndex: proposal.proposalIndex,
+    index: proposal.proposalIndex,
   }));
 
   return (
