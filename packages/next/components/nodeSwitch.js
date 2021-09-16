@@ -187,7 +187,7 @@ export default function NodeSwitch({ small, chain }) {
               color={getSignalColor(item?.delay)}
             >
               <img src={`/imgs/icons/${getSignalImg(item?.delay)}`} />
-              <div>{`via ${item?.name}`}</div>
+              <div>{`${item?.name}`}</div>
               <div class="delay">
                 {item?.delay && !isNaN(item?.delay) ? `${item.delay} ms` : ""}
               </div>
