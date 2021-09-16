@@ -21,7 +21,7 @@ const delayQuery = debounce(() => {
 
   const chainAddresses = {};
   const idNames = [...pending.keys()];
-  const idNameSplits = idNames.map(item => item.split("/"));
+  const idNameSplits = idNames.map((item) => item.split("/"));
   for (const [chain, address] of idNameSplits) {
     if (!chainAddresses[chain]) {
       chainAddresses[chain] = [];
@@ -33,20 +33,21 @@ const delayQuery = debounce(() => {
     const addresses = chainAddresses[chain];
 
     const headers = {
-      "accept": "application/json, text/plain, */*",
+      accept: "application/json, text/plain, */*",
       "content-type": "application/json;charset=UTF-8",
     };
 
     fetch(
-      `${process.env.NEXT_PUBLIC_IDENTITY_SERVER_HOST}/${chain}/identities`,
+      `${process.env.NEXT_PUBLIC_IDENTITY_SERVER_HOST}/${chain}/short-ids`,
       {
         headers,
         method: "POST",
-        body: JSON.stringify({addresses})
-      })
-      .then(res => res.json())
+        body: JSON.stringify({ addresses }),
+      }
+    )
+      .then((res) => res.json())
       .then((data) => {
-        const identities = new Map(data.map(item => [item.address, item]));
+        const identities = new Map(data.map((item) => [item.address, item]));
 
         for (const [idName, { resolve }] of pending) {
           const [chainOfIdName, addrOfIdName] = idName.split("/");
