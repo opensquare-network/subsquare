@@ -32,6 +32,7 @@ const Wrapper = styled.div`
 const DividerWrapper = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 
   > :not(:first-child) {
     ::before {
@@ -116,6 +117,7 @@ const Index = styled.div`
 const FlexWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  flex-wrap: nowrap;
 `;
 
 const Flex = styled.div`
