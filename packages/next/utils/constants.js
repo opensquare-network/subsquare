@@ -9,7 +9,7 @@ export const DEFAULT_KUSAMA_NODES = [
     url: "wss://kusama.api.onfinality.io/public-ws",
   },
   {
-    name: "Patract Elara",
+    name: "Patract",
     url: "wss://pub.elara.patract.io/kusama",
   },
 ];
@@ -17,7 +17,7 @@ export const DEFAULT_KUSAMA_NODES = [
 export const DEFAULT_KARURA_NODE_URL = "wss://pub.elara.patract.io/karura";
 export const DEFAULT_KARURA_NODES = [
   {
-    name: "Patract Elara",
+    name: "Patract",
     url: "wss://pub.elara.patract.io/karura",
   },
   {
@@ -29,7 +29,7 @@ export const DEFAULT_KARURA_NODES = [
     url: "wss://karura.polkawallet.io",
   },
   {
-    name: "Acala Foundation",
+    name: "Acala",
     url: "wss://karura-rpc-0.aca-api.network",
   },
 ];
