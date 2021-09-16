@@ -22,9 +22,13 @@ const Wrapper = styled.footer`
     }
   }
 
-  > svg {
-    margin-top: 16px;
+  > svg:nth-child(4) {
+    margin-top: 12px;
     margin-bottom: 16px;
+  }
+
+  > svg:nth-child(6) {
+    margin-top: 4px;
   }
 
   > img {
