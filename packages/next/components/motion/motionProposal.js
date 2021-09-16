@@ -10,12 +10,14 @@ const Header = styled.div`
   line-height: 140%;
   flex: none;
   margin-bottom: 12px;
-`
+`;
 
 const ArgsWrapper = styled.div`
-  background: #F6F7FA;
+  background: #f6f7fa;
   border-radius: 4px;
-  padding: 32px;
+  > table {
+    border: 32px solid #f6f7fa;
+  }
   font-size: 14px;
   line-height: 20px;
   word-wrap: break-word;
@@ -28,34 +30,39 @@ const Wrapper = styled.div`
 `;
 
 function convertProposal(proposal, chain) {
-  return ({
+  return {
     ...proposal,
-    args: Object.fromEntries(proposal.args.map(arg => {
-      switch (arg.type) {
-        case "Call":
-        case "CallOf": {
-          return [arg.name, convertProposal(arg.value, chain)];
-        }
-        case "Vec<Call>":
-        case "Vec<CallOf>": {
-          return [arg.name, arg.value.map(v => convertProposal(v, chain))];
-        }
-        case "Balance": {
-          const node = getNode(chain);
-          if (!node) {
+    args: Object.fromEntries(
+      proposal.args.map((arg) => {
+        switch (arg.type) {
+          case "Call":
+          case "CallOf": {
+            return [arg.name, convertProposal(arg.value, chain)];
+          }
+          case "Vec<Call>":
+          case "Vec<CallOf>": {
+            return [arg.name, arg.value.map((v) => convertProposal(v, chain))];
+          }
+          case "Balance": {
+            const node = getNode(chain);
+            if (!node) {
+              return [arg.name, arg.value];
+            }
+
+            const decimals = node.decimals;
+            const symbol = node.symbol;
+            return [
+              arg.name,
+              `${toPrecision(arg.value ?? 0, decimals)} ${symbol}`,
+            ];
+          }
+          default: {
             return [arg.name, arg.value];
           }
-
-          const decimals = node.decimals;
-          const symbol = node.symbol;
-          return [arg.name, `${toPrecision(arg.value ?? 0, decimals)} ${symbol}`];
         }
-        default: {
-          return [arg.name, arg.value];
-        }
-      }
-    }))
-  })
+      })
+    ),
+  };
 }
 
 export default function MotionProposal({ motion, chain }) {
