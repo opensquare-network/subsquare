@@ -15,7 +15,7 @@ const LogoLink = styled.a`
 const Logo = styled.img`
   cursor: pointer;
   position: relative;
-  top: 5px;
+  top: 4px;
 `;
 
 export default function ReasonList({ text, hideText = false }) {
