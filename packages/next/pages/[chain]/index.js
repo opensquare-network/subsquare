@@ -3,121 +3,51 @@ import Menu from "components/menu";
 import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "../../lib";
 import nextApi from "../../services/nextApi";
-import { addressEllipsis } from "../../utils";
 import LayoutFixedHeader from "../../components/layoutFixedHeader";
-
-function getMotionType(motion) {
-  return motion.isTreasury ? "Treasury" : "";
-}
+import {
+  toCouncilMotionListItem,
+  toDiscussionListItem,
+  toExternalProposalListItem,
+  toPublicProposalListItem,
+  toReferendaListItem,
+  toTechCommMotionListItem,
+  toTipListItem,
+  toTreasuryProposalListItem,
+} from "utils/viewfuncs"
 
 export default withLoginUserRedux(({ overview, loginUser, chain }) => {
   const overviewData = [
     {
       category: "Discussions",
-      type: "discussion",
-      items: (overview?.discussions ?? []).map((item) => ({
-        ...item,
-        time: item.lastActivityAt,
-      })),
+      items: (overview?.discussions ?? []).map(item => toDiscussionListItem(chain, item)),
     },
     {
       category: "Council Motions",
-      type: "council",
-      items: (overview?.council?.motions ?? []).map((item) => ({
-        ...item,
-        time: item.indexer.blockTime,
-        title: `${item.proposal.section}.${item.proposal.method}`,
-        type: getMotionType(item),
-        author: item.author ?? {
-          username: addressEllipsis(item.proposer),
-          addresses: [{ chain, address: item.proposer }],
-        },
-        status: item.state?.state ?? "Unknown",
-      })),
+      items: (overview?.council?.motions ?? []).map(item => toCouncilMotionListItem(chain, item)),
     },
     {
       category: "Tech. Comm. Proposals",
-      type: "techcomm",
-      items: (overview?.techComm?.motions ?? []).map((item) => ({
-        ...item,
-        time: item.indexer.blockTime,
-        title: `${item.proposal.section}.${item.proposal.method}`,
-        type: getMotionType(item),
-        author: item.author ?? {
-          username: addressEllipsis(item.proposer),
-          addresses: [{ chain, address: item.proposer }],
-        },
-        status: item.state?.state ?? "Unknown",
-      })),
+      items: (overview?.techComm?.motions ?? []).map(item => toTechCommMotionListItem(chain, item)),
     },
     {
       category: "Treasury Proposals",
-      type: "treasury",
-      items: (overview?.treasury?.proposals ?? []).map((item) => ({
-        ...item,
-        author: item.author ?? {
-          username: addressEllipsis(item.proposer),
-          addresses: [{ chain, address: item.proposer }],
-        },
-        status: item.state ?? "Unknown",
-        time: item.indexer.blockTime,
-      })),
+      items: (overview?.treasury?.proposals ?? []).map(item => toTreasuryProposalListItem(chain, item)),
     },
     {
       category: "Referenda",
-      type: "democracy",
-      items: (overview?.democracy?.referensums ?? []).map((item) => ({
-        ...item,
-        status: item.state,
-        index: item.referendumIndex,
-        author: item.author ?? {
-          username: addressEllipsis(item.proposer),
-          addresses: [{ chain, address: item.proposer }],
-        },
-      })),
+      items: (overview?.democracy?.referensums ?? []).map(item => toReferendaListItem(chain, item)),
     },
     {
       category: "Tips",
-      type: "treasury",
-      items: (overview?.treasury?.tips ?? []).map((item) => ({
-        ...item,
-        author: item.author ?? {
-          username: addressEllipsis(item.finder),
-          addresses: [{ chain, address: item.finder }],
-        },
-        status: item.state
-          ? item.state.state === "Tipping"
-            ? `Tipping (${item.state.tipsCount})`
-            : item.state.state
-          : "Unknown",
-        time: item.indexer.blockTime,
-      })),
+      items: (overview?.treasury?.tips ?? []).map(item => toTipListItem(chain, item)),
     },
     {
       category: "Democracy Public Proposals",
-      type: "democracy",
-      items: (overview?.democracy?.proposals ?? []).map((item) => ({
-        ...item,
-        author: item.author ?? {
-          username: addressEllipsis(item.proposer),
-          addresses: [{ chain, address: item.proposer }],
-        },
-        status: item.state ?? "Unknown",
-        time: item.indexer.blockTime,
-      })),
+      items: (overview?.democracy?.proposals ?? []).map(item => toPublicProposalListItem(chain, item)),
     },
     {
       category: "Democracy External Proposals",
-      type: "democracy",
-      items: (overview?.democracy?.externals ?? []).map((item) => ({
-        ...item,
-        author: item.author ?? {
-          username: addressEllipsis(item.proposer),
-          addresses: [{ chain, address: item.proposer }],
-        },
-        hash: item.externalProposalHash,
-        status: item.state ?? "Unknown",
-      })),
+      items: (overview?.democracy?.externals ?? []).map(item => toExternalProposalListItem(chain, item)),
     },
   ];
 

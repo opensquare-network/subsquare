@@ -7,6 +7,7 @@ import { EmptyList } from "utils/constants";
 import styled from "styled-components";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
 import LayoutFixedHeader from "components/layoutFixedHeader";
+import { toDiscussionListItem } from "utils/viewfuncs";
 
 const Create = styled.a`
   display: flex;
@@ -21,13 +22,7 @@ const Create = styled.a`
 `;
 
 export default withLoginUserRedux(({ loginUser, posts, chain }) => {
-  const items = (posts.items || []).map((post) => ({
-    time: post.lastActivityAt,
-    commentsCount: post.commentsCount,
-    title: post.title,
-    author: post.author,
-    postUid: post.postUid,
-  }));
+  const items = (posts.items || []).map(item => toDiscussionListItem(chain, item));
 
   const create = (
     <Create href="post/create">

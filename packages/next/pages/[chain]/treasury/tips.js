@@ -4,26 +4,11 @@ import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
 import { EmptyList } from "utils/constants";
-import { addressEllipsis } from "utils";
 import LayoutFixedHeader from "components/layoutFixedHeader";
+import { toTipListItem } from "utils/viewfuncs";
 
 export default withLoginUserRedux(({ loginUser, tips, chain }) => {
-  const items = (tips.items || []).map((tip) => ({
-    time: tip.indexer.blockTime,
-    commentsCount: tip.commentsCount,
-    title: tip.title,
-    author: tip.author ?? {
-      username: addressEllipsis(tip.finder),
-      addresses: [{ chain, address: tip.finder }],
-    },
-    height: tip.height,
-    hash: tip.hash,
-    status: tip.state
-      ? tip.state.state === "Tipping"
-        ? `Tipping (${tip.state.tipsCount})`
-        : tip.state.state
-      : "Unknown",
-  }));
+  const items = (tips.items || []).map(item => toTipListItem(chain, item));
 
   return (
     <LayoutFixedHeader
