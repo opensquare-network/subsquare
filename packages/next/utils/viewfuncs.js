@@ -4,6 +4,17 @@ function getMotionType(motion) {
   return motion.isTreasury ? "Treasury" : "";
 }
 
+const TipStateMap = {
+  NewTip: "Tipping",
+  tip: "Tipping",
+  TipRetracted: "Retracted",
+  TipClosed: "Closed",
+};
+
+export function getTipState(state) {
+  return TipStateMap[state.state] === "Tipping" ? `Tipping (${state.tipsCount})` : TipStateMap[state.state];
+}
+
 export const toDiscussionListItem = (chain, item) => ({
   ...item,
   time: item.lastActivityAt,
@@ -33,7 +44,7 @@ export const toTechCommMotionListItem = (chain, item) => ({
     addresses: [{ chain, address: item.proposer }],
   },
   status: item.state?.state ?? "Unknown",
-  detailLink: `/${chain}/techcomm/proposal/${item.proposalIndex}`,
+  detailLink: `/${chain}/techcomm/proposal/${item.index}`,
 });
 
 export const toTreasuryProposalListItem = (chain, item) => ({
@@ -65,9 +76,7 @@ export const toTipListItem = (chain, item) => ({
     addresses: [{ chain, address: item.finder }],
   },
   status: item.state
-    ? item.state.state === "Tipping"
-      ? `Tipping (${item.state.tipsCount})`
-      : item.state.state
+    ? getTipState(item.state)
     : "Unknown",
   time: item.indexer.blockTime,
   detailLink: `/${chain}/treasury/tip/${item.height}_${item.hash}`,
@@ -79,6 +88,7 @@ export const toPublicProposalListItem = (chain, item) => ({
     username: addressEllipsis(item.proposer),
     addresses: [{ chain, address: item.proposer }],
   },
+  index: item.proposalIndex,
   status: item.state ?? "Unknown",
   time: item.indexer.blockTime,
   detailLink: `/${chain}/democracy/proposal/${item.proposalIndex}`,

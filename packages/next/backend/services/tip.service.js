@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { safeHtml } = require("../utils/post");
-const { PostTitleLengthLimitation, TipStateMap } = require("../constants");
+const { PostTitleLengthLimitation } = require("../constants");
 const { getDb: getBusinessDb, getTipCollection } = require("../mongo/business");
 const { getDb: getChainDb, getTipCollection: getChainTipCollection } = require("../mongo/chain");
 const { getDb: getCommonDb, lookupUser } = require("../mongo/common");
@@ -154,7 +154,7 @@ async function getPostsByChain(chain, page, pageSize) {
       for: posts,
       projection: { meta: 1, state: 1 },
       map: (data) => ({
-        state: TipStateMap[data.state?.state] || data.state?.state,
+        state: data.state?.state,
         tipsCount: (data.meta?.tips || []).length,
       }),
       as: "state",

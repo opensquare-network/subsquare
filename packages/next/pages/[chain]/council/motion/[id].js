@@ -16,6 +16,8 @@ const Wrapper = styled.div`
 `;
 
 export default withLoginUserRedux(({ loginUser, motion, chain }) => {
+  motion.status = motion.state?.state;
+
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">

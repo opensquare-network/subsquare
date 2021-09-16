@@ -19,6 +19,7 @@ import User from "components/user";
 import KVList from "components/kvList";
 import Links from "components/timeline/links";
 import ReasonLink from "components/reasonLink";
+import { getTipState } from "utils/viewfuncs";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -166,6 +167,11 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     }
     focusEditor();
   };
+
+  detail.status = getTipState({
+    state: detail.onchainData?.state?.state,
+    tipsCount: detail.onchainData?.meta?.tips?.length
+  });
 
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
