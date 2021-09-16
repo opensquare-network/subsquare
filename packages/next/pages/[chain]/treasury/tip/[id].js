@@ -42,6 +42,10 @@ const CommentsWrapper = styled.div`
     border-radius: 0;
   }
 `;
+const FlexEnd = styled.div`
+  display: flex;
+  justify-content: right;
+`;
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   if (!detail) {
@@ -68,18 +72,34 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     switch (method) {
       case "reportAwesome":
         return {
-          Finder: <User chain={chain} add={args.finder} />,
-          Beneficiary: <User chain={chain} add={args.beneficiary} />,
+          Finder: (
+            <FlexEnd>
+              <User chain={chain} add={args.finder} />
+            </FlexEnd>
+          ),
+          Beneficiary: (
+            <FlexEnd>
+              <User chain={chain} add={args.beneficiary} />
+            </FlexEnd>
+          ),
           Reason: args.reason,
         };
       case "tip":
         return {
-          Tipper: <User chain={chain} add={args.tipper} />,
+          Tipper: (
+            <FlexEnd>
+              <User chain={chain} add={args.tipper} />
+            </FlexEnd>
+          ),
           Value: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
         };
       case "TipClosed":
         return {
-          Beneficiary: <User chain={chain} add={args.beneficiary} />,
+          Beneficiary: (
+            <FlexEnd>
+              <User chain={chain} add={args.beneficiary} />
+            </FlexEnd>
+          ),
           Payout: `${toPrecision(args.payout ?? 0, decimals)} ${symbol}`,
         };
     }
