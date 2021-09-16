@@ -35,7 +35,7 @@ const TitleWrapper = styled.div`
   }
 `;
 
-export default function Timeline({ data, chain }) {
+export default function Timeline({ data, chain, indent = true }) {
   return (
     <Wrapper>
       <TitleWrapper>
@@ -47,7 +47,7 @@ export default function Timeline({ data, chain }) {
       {data.map((item, index) => (
         <Fragment key={index}>
           {Array.isArray(item) ? (
-            <FoldableItem data={item} chain={chain} />
+            <FoldableItem data={item} chain={chain} indent={indent} />
           ) : (
             <Item data={item} chain={chain} />
           )}

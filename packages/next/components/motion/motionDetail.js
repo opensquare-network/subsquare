@@ -143,6 +143,7 @@ function createMotionTimelineData(motion) {
             ayes: motion.voting.ayes.length,
             nays: motion.voting.nays.length,
           },
+          method: item.method,
         };
       }
       case "Voted": {
@@ -154,6 +155,7 @@ function createMotionTimelineData(motion) {
             name: item.args.voter,
             value: item.args.approve,
           },
+          method: item.method,
         };
       }
       default: {
@@ -161,11 +163,52 @@ function createMotionTimelineData(motion) {
           indexer: item.indexer,
           time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
           status: { value: item.method, color: "#6848FF" },
+          method: item.method,
         };
       }
     }
   });
 }
+
+const isClosed = (timeline) => {
+  return (timeline || []).find((item) => item.method === "Closed");
+};
+
+const getClosedTimelineData = (timeline) => {
+  let firstTipIndex = -1;
+  let lastTipIndex = -1;
+  (timeline || []).forEach((item, index) => {
+    if (item.method === "Voted") {
+      if (firstTipIndex === -1) {
+        firstTipIndex = index;
+      }
+      if (lastTipIndex < index) {
+        lastTipIndex = index;
+      }
+    }
+  });
+  if (firstTipIndex > 0) {
+    firstTipIndex--;
+  }
+  if (firstTipIndex >= lastTipIndex) {
+    return timeline;
+  } else {
+    const rv = [];
+    const fd = [];
+    (timeline || []).forEach((item, index) => {
+      if (index === firstTipIndex) {
+        rv.push(fd);
+      }
+      if (index >= firstTipIndex && index <= lastTipIndex) {
+        fd.push(item);
+      } else {
+        rv.push(item);
+      }
+    });
+    return rv;
+  }
+  return timeline;
+};
 
 export default function MotionDetail({ motion, chain }) {
   if (!motion) {
@@ -183,7 +226,15 @@ export default function MotionDetail({ motion, chain }) {
 
   const treasuryProposalMeta = motion.treasuryProposal?.meta;
 
-  const timelineData = createMotionTimelineData(motion);
+  const timeline = createMotionTimelineData(motion);
+
+  let timelineData;
+
+  if (isClosed(timeline)) {
+    timelineData = getClosedTimelineData(timeline);
+  } else {
+    timelineData = timeline;
+  }
 
   return (
     <div>
@@ -278,7 +329,7 @@ export default function MotionDetail({ motion, chain }) {
         ]}
       />
 
-      <Timeline data={timelineData} chain={chain} />
+      <Timeline data={timelineData} chain={chain} indent={false} />
     </div>
   );
 }
