@@ -107,7 +107,7 @@ export default function Actions({
           {showThumbsUpList ? <UnfoldIcon /> : <FoldIcon />}
         </UnfoldWrapper>
       )}
-      {edit && <Edit edit={edit} setIsEdit={setIsEdit} />}
+      {edit && <Edit edit={edit} setIsEdit={setIsEdit} alwaysShow />}
     </Wrapper>
   );
 }
