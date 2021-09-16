@@ -27,9 +27,9 @@ const OptionWrapper = styled.div`
   width: 96px;
   padding: 8px 0;
   border-radius: 4px;
-  box-shadow:0 6px 22px rgba(30, 33, 52, 0.11),
-   0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
-   0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
+  box-shadow: 0 6px 22px rgba(30, 33, 52, 0.11),
+    0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
+    0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
 `;
 
 const OptionItem = styled.div`
@@ -43,14 +43,14 @@ const OptionItem = styled.div`
   }
 `;
 
-export default function Edit({ edit, setIsEdit }) {
+export default function Edit({ edit, setIsEdit, alwaysShow }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
 
   useOnClickOutside(ref, () => setShow(false));
 
   return (
-    <Wrapper className="edit" active={show} ref={ref}>
+    <Wrapper className="edit" active={show || alwaysShow} ref={ref}>
       <img src="/imgs/icons/more.svg" onClick={() => setShow(!show)} />
       {show && (
         <OptionWrapper>
@@ -64,7 +64,6 @@ export default function Edit({ edit, setIsEdit }) {
               Edit
             </OptionItem>
           )}
-          {/* <OptionItem onClick={() => setShow(false)}>Report</OptionItem> */}
         </OptionWrapper>
       )}
     </Wrapper>
