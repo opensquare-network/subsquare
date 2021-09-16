@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
 
-import Layout from "components/layout";
 import Toggle from "components/toggle";
 import Button from "components/button";
 import Menu from "components/menu";

@@ -2,7 +2,7 @@ import List from "components/list";
 import Menu from "components/menu";
 import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import nextApi from "services/nextApi";
+import { ssrNextApi as nextApi} from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import LayoutFixedHeader from "components/layoutFixedHeader";
 import { toTipListItem } from "utils/viewfuncs";

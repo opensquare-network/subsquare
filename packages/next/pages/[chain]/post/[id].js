@@ -3,7 +3,7 @@ import Back from "components/back";
 import DetailItem from "components/detailItem";
 import Comments from "components/comment";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import nextApi from "services/nextApi";
+import { ssrNextApi as nextApi} from "services/nextApi";
 import { EmptyList } from "../../../utils/constants";
 import Input from "../../../components/comment/input";
 import { useState, useRef } from "react";

@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import Back from "components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import nextApi from "services/nextApi";
+import { ssrNextApi as nextApi} from "services/nextApi";
 import LayoutFixedHeader from "components/layoutFixedHeader";
 import MotionDetail from "components/motion/motionDetail";
 
