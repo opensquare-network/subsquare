@@ -8,6 +8,7 @@ const Wrapper = styled.div`
   font-weight: 500;
   font-size: 12px;
   line-height: 100%;
+  white-space: nowrap;
 `;
 
 const START = "#2196F3";
