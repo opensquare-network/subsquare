@@ -4,6 +4,7 @@ import Link from "next/link";
 import User from "components/user";
 import { timeDuration, timeDurationFromNow } from "utils";
 import Tag from "./tag";
+import ReasonLink from "components/reasonLink";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -129,15 +130,6 @@ const getTypeColor = (type) => {
 const TitleWrapper = styled.div`
   margin-bottom: 8px;
   overflow: hidden;
-  > :not(:last-child) {
-    ::after {
-      content: "·";
-      font-size: 16px;
-      line-height: 22.4px;
-      color: #9da9bb;
-      margin: 0 8px;
-    }
-  }
 `;
 
 export default function Post({ data, chain, href }) {
@@ -148,6 +140,7 @@ export default function Post({ data, chain, href }) {
         <Link href={href} passHref>
           <Title>{data.title}</Title>
         </Link>
+        <ReasonLink text={data.title} hideText={true} />
       </TitleWrapper>
 
       <Divider />

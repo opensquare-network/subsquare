@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import Back from "components/back";
-import { useIsomorphicLayoutEffect, withLoginUser, withLoginUserRedux } from "lib";
+import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import LayoutFixedHeader from "components/layoutFixedHeader";

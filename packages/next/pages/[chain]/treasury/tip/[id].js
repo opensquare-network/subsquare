@@ -4,7 +4,6 @@ import Back from "components/back";
 import DetailItem from "components/detailItem";
 import Comments from "components/comment";
 import {
-  useIsomorphicLayoutEffect,
   withLoginUser,
   withLoginUserRedux,
 } from "lib";
@@ -17,8 +16,9 @@ import { getTimelineStatus, getNode, toPrecision } from "utils";
 import Timeline from "components/timeline";
 import dayjs from "dayjs";
 import User from "components/user";
-import KVList from "../../../../components/kvList";
-import Links from "../../../../components/timeline/links";
+import KVList from "components/kvList";
+import Links from "components/timeline/links";
+import ReasonLink from "components/reasonLink";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -182,7 +182,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
         <KVList
           title="Metadata"
           data={[
-            ["Reason", detail.onchainData?.meta?.reason],
+            ["Reason", <ReasonLink text={detail.onchainData?.meta?.reason} />],
             ["Hash", detail.onchainData?.hash],
             [
               "Finder",
