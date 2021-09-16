@@ -4,23 +4,11 @@ import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
 import { EmptyList } from "utils/constants";
-import { addressEllipsis } from "utils";
 import LayoutFixedHeader from "components/layoutFixedHeader";
+import { toPublicProposalListItem } from "utils/viewfuncs";
 
 export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
-  const items = (proposals.items || []).map((proposal) => ({
-    time: proposal.indexer.blockTime,
-    commentsCount: proposal.commentsCount,
-    title: proposal.title,
-    author: proposal.author ?? {
-      username: addressEllipsis(proposal.proposer),
-      addresses: [{ chain, address: proposal.proposer }],
-    },
-    height: proposal.height,
-    hash: proposal.hash,
-    status: proposal.state ?? "Unknown",
-    proposalIndex: proposal.proposalIndex,
-  }));
+  const items = (proposals.items || []).map(item => toPublicProposalListItem(chain, item));
 
   return (
     <LayoutFixedHeader
@@ -38,7 +26,6 @@ export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
           pageSize: proposals.pageSize,
           total: proposals.total,
         }}
-        type="democracy"
       />
     </LayoutFixedHeader>
   );

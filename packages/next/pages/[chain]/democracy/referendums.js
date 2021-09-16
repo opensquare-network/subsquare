@@ -5,20 +5,10 @@ import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import LayoutFixedHeader from "components/layoutFixedHeader";
-import { addressEllipsis } from "../../../utils";
+import { toReferendaListItem } from "utils/viewfuncs";
 
 export default withLoginUserRedux(({ loginUser, posts, chain }) => {
-  const items = (posts.items || []).map((post) => ({
-    time: post.indexer.blockTime,
-    title: post.title,
-    status: post.state,
-    commentsCount: post.commentsCount,
-    index: post.referendumIndex,
-    author: post.author ?? {
-      username: addressEllipsis(post.proposer),
-      addresses: [{ chain, address: post.proposer }],
-    },
-  }));
+  const items = (posts.items || []).map(item => toReferendaListItem(chain, item));
 
   return (
     <LayoutFixedHeader

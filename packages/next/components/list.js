@@ -29,7 +29,6 @@ export default function List({
   items,
   pagination,
   create = null,
-  type = null,
 }) {
   return (
     <Wrapper>
@@ -38,26 +37,7 @@ export default function List({
         {create}
       </Title>
       {items?.length > 0 ? (
-        items.map((item, index) => {
-          let href = `/${chain}/post/${item.postUid}`;
-          if (category === "External Proposals") {
-            href = `/${chain}/democracy/external/${item.hash}`;
-          } else if (category === "Referenda") {
-            href = `/${chain}/democracy/referendum/${item.index}`;
-          } else if (category === "Council Motions") {
-            href = `/${chain}/council/motion/${item.index}`;
-          } else if (category === "Tips") {
-            href = `/${chain}/treasury/tip/${item.height}_${item.hash}`;
-          } else if (category === "Public Proposals") {
-            href = `/${chain}/democracy/proposal/${item.proposalIndex}`;
-          } else if (category === "Treasury Proposals") {
-            href = `/${chain}/treasury/proposal/${item.index}`;
-          } else if (category === "Technical Committee Proposals") {
-            href = `/${chain}/techcomm/proposal/${item.proposalIndex}`;
-          }
-
-          return <Post key={index} data={item} chain={chain} href={href} />;
-        })
+        items.map((item, index) => <Post key={index} data={item} chain={chain} href={item.detailLink} />)
       ) : (
         <EmptyList type={category} />
       )}

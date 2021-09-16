@@ -6,7 +6,7 @@ import nextApi from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import styled from "styled-components";
 import LayoutFixedHeader from "components/layoutFixedHeader";
-import { addressEllipsis } from "utils";
+import { toCouncilMotionListItem } from "utils/viewfuncs";
 
 const Create = styled.a`
   display: flex;
@@ -22,25 +22,8 @@ const Create = styled.a`
   cursor: pointer;
 `;
 
-function getMotionType(motion) {
-  return motion.isTreasury ? "Treasury" : "";
-}
-
 export default withLoginUserRedux(({ loginUser, motions, chain }) => {
-  const items = (motions.items || []).map((motion) => ({
-    time: motion.indexer.blockTime,
-    title: `${motion.proposal.section}.${motion.proposal.method}`,
-    type: getMotionType(motion),
-    author: motion.author ?? {
-      username: addressEllipsis(motion.proposer),
-      addresses: [{ chain, address: motion.proposer }],
-    },
-    proposal: motion.proposal,
-    height: motion.height,
-    hash: motion.hash,
-    status: motion.state?.state ?? "Unknown",
-    index: motion.index,
-  }));
+  const items = (motions.items || []).map(item => toCouncilMotionListItem(chain, item));
 
   return (
     <LayoutFixedHeader

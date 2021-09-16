@@ -4,30 +4,11 @@ import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
 import { EmptyList } from "utils/constants";
-import { addressEllipsis } from "utils";
 import LayoutFixedHeader from "components/layoutFixedHeader";
-
-function getMotionType(motion) {
-  return motion.isTreasury ? "Treasury" : "";
-}
+import { toTechCommMotionListItem } from "utils/viewfuncs";
 
 export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
-  const items = (proposals.items || []).map((item) => ({
-    time: item.indexer.blockTime,
-    commentsCount: item.commentsCount,
-    title: `${item.proposal.section}.${item.proposal.method}`,
-    type: getMotionType(item),
-    author: item.author ?? {
-      username: addressEllipsis(item.proposer),
-      addresses: [{ chain, address: item.proposer }],
-    },
-    proposal: item.proposal,
-    height: item.indexer.blockHeight,
-    hash: item.hash,
-    status: item.state.state ?? "Unknown",
-    index: item.index,
-    proposalIndex: item.index,
-  }));
+  const items = (proposals.items || []).map(item => toTechCommMotionListItem(chain, item));
 
   return (
     <LayoutFixedHeader
@@ -45,7 +26,6 @@ export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
           pageSize: proposals.pageSize,
           total: proposals.total,
         }}
-        type="techcomm"
       />
     </LayoutFixedHeader>
   );

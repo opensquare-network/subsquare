@@ -4,23 +4,11 @@ import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
 import { EmptyList } from "utils/constants";
-import { addressEllipsis } from "utils";
 import LayoutFixedHeader from "components/layoutFixedHeader";
+import { toExternalProposalListItem } from "utils/viewfuncs";
 
 export default withLoginUserRedux(({ loginUser, externals, chain }) => {
-  const items = (externals.items || []).map((external) => ({
-    time: external.indexer.blockTime,
-    commentsCount: external.commentsCount,
-    title: external.title,
-    author: external.author ?? {
-      username: addressEllipsis(external.proposer),
-      addresses: [{ chain, address: external.proposer }],
-    },
-    height: external.height,
-    hash: external.externalProposalHash,
-    status: external.state ?? "Unknown",
-    externalIndex: external.externalIndex,
-  }));
+  const items = (externals.items || []).map(item => toExternalProposalListItem(chain, item));
 
   return (
     <LayoutFixedHeader
@@ -38,7 +26,6 @@ export default withLoginUserRedux(({ loginUser, externals, chain }) => {
           pageSize: externals.pageSize,
           total: externals.total,
         }}
-        type="democracy"
       />
     </LayoutFixedHeader>
   );
