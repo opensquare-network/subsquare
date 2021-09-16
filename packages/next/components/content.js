@@ -13,7 +13,8 @@ const Wrapper = styled.div`
     padding-left: 16px;
     padding-right: 16px;
   }
-  margin: 26px auto;
+  margin-top: 26px;
+  margin-bottom: 32px;
 `;
 
 const ContentWrapper = styled.div`
