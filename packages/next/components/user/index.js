@@ -30,10 +30,24 @@ const AvatarWrapper = styled.div`
   margin-right: 8px;
 `;
 
-const Username = styled.span`
+const Username = styled.div`
   font-weight: 500;
   word-break: break-all;
   font-size: ${(props) => props.fontSize}px;
+`;
+
+const DeleteAccount = styled.div`
+  font-weight: 500;
+  word-break: break-all;
+  font-size: ${(props) => props.fontSize}px;
+  color: #9da9bb;
+  display: flex;
+  align-items: center;
+  > img {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+  }
 `;
 
 export default function User({
@@ -45,7 +59,12 @@ export default function User({
   noEvent = false,
 }) {
   if (!user && !add) {
-    return <Username fontSize={fontSize}>[Deleted Account]</Username>;
+    return (
+      <DeleteAccount fontSize={fontSize}>
+        <img src="/imgs/icons/avatar-deleted.svg" />
+        [Deleted Account]
+      </DeleteAccount>
+    );
   }
   const [identity, setIdentity] = useState(null);
 
