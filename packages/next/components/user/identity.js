@@ -17,7 +17,7 @@ const Display = styled.span`
 `;
 
 export default function Identity({ identity, fontSize = 14 }) {
-  if (!identity || identity?.info?.status) {
+  if (!identity || identity?.info?.status === "NO_ID") {
     return null;
   }
 
