@@ -1,7 +1,5 @@
-import { ApiPromise, WsProvider } from "@polkadot/api";
 import { isWeb3Injected, web3FromAddress } from "@polkadot/extension-dapp";
 import { stringToHex } from "@polkadot/util";
-import { typesBundleForPolkadot } from "@acala-network/type-definitions";
 
 export * from "./address";
 
@@ -30,20 +28,6 @@ let nodeUrl = (() => {
         ?.url || DEFAULT_KARURA_NODE_URL,
   };
 })();
-
-export const getApi = async (chain, queryUrl) => {
-  const url = queryUrl || nodeUrl?.[chain];
-  if (!apiInstanceMap.has(url)) {
-    const provider = new WsProvider(url, 1000);
-    const options = { provider };
-    if (chain === "karura") {
-      options.typesBundle = { ...typesBundleForPolkadot };
-    }
-
-    apiInstanceMap.set(url, ApiPromise.create(options));
-  }
-  return apiInstanceMap.get(url);
-};
 
 export const signMessage = async (text, address) => {
   if (!isWeb3Injected || !address) {
