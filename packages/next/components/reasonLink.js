@@ -7,7 +7,7 @@ const ReasonText = styled.span`
 const LogoLink = styled.a`
 `;
 
-const LinkLogo = styled.img`
+const Logo = styled.img`
   margin-left: 9px;
   cursor: pointer;
 `;
@@ -25,7 +25,7 @@ export default function ReasonList({ text, hideText = false }) {
         const [name, logo] = getLinkNameAndLogo(link);
         return (
           <LogoLink key={index} href={link} target="_blank">
-            <LinkLogo src={logo} alt={name} />
+            <Logo src={logo} alt={name} />
           </LogoLink>
         );
       })}
