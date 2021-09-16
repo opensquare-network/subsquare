@@ -1,15 +1,21 @@
 import styled from "styled-components";
 import { extractLinks, getLinkNameAndLogo } from "utils/viewfuncs";
 
+const Wrapper = styled.div`
+  display: inline-block;
+`;
+
 const ReasonText = styled.span`
 `;
 
 const LogoLink = styled.a`
+  margin-left: 9px;
 `;
 
 const Logo = styled.img`
-  margin-left: 9px;
   cursor: pointer;
+  position: relative;
+  top: 5px;
 `;
 
 export default function ReasonList({ text, hideText = false }) {
@@ -19,7 +25,7 @@ export default function ReasonList({ text, hideText = false }) {
 
   const links = extractLinks(text);
   return (
-    <>
+    <Wrapper>
       {!hideText && <ReasonText>{text}</ReasonText>}
       {links.map((link, index) => {
         const [name, logo] = getLinkNameAndLogo(link);
@@ -29,6 +35,6 @@ export default function ReasonList({ text, hideText = false }) {
           </LogoLink>
         );
       })}
-    </>
+    </Wrapper>
   )
 }
