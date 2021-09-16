@@ -22,6 +22,10 @@ const SmallSelect = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  > img {
+    width: 24px;
+    height: 24px;
+  }
 `;
 
 const Select = styled.div`
@@ -42,6 +46,8 @@ const Select = styled.div`
     flex-grow: 1;
   }
   > img.signal {
+    width: 24px;
+    height: 24px;
     flex: 0 0 24px;
   }
 `;
@@ -62,7 +68,7 @@ const Options = styled.div`
     p.small &&
     css`
       width: auto;
-      min-width: 180px;
+      min-width: 192px;
     `}
 `;
 
@@ -75,17 +81,25 @@ const Item = styled.div`
   line-height: 100%;
   cursor: pointer;
   white-space: nowrap;
+  color: #506176;
   :hover {
     background: #f6f7fa;
   }
   > img {
     width: 24px;
     height: 24px;
+  }
+  > :not(:last-child) {
     margin-right: 8px;
+  }
+  .delay {
+    margin-left: auto;
+    color: ${(p) => p.color};
   }
   ${(p) =>
     p.active &&
     css`
+      color: #1e2134;
       background: #f6f7fa;
     `}
 `;
@@ -120,10 +134,17 @@ export default function NodeSwitch({ small, chain }) {
   }, [currentNode, nodes, chain]);
 
   const getSignalImg = (delay) => {
-    if (!delay || isNaN(delay)) return "signal-default.svg";
-    if (delay >= 300) return "signal-slow.svg";
-    if (delay >= 100) return "signal-medium.svg";
-    return "signal-fast.svg";
+    if (!delay || isNaN(delay)) return "signal-default.png";
+    if (delay >= 300) return "signal-slow.png";
+    if (delay >= 100) return "signal-medium.png";
+    return "signal-fast.png";
+  };
+
+  const getSignalColor = (delay) => {
+    if (!delay || isNaN(delay)) return "#C2C8D5";
+    if (delay >= 300) return "#F44336";
+    if (delay >= 100) return "#FF9800";
+    return "#4CAF50";
   };
 
   return (
@@ -163,9 +184,13 @@ export default function NodeSwitch({ small, chain }) {
                 setShow(false);
               }}
               active={item.url === currentNodeSetting.url}
+              color={getSignalColor(item?.delay)}
             >
               <img src={`/imgs/icons/${getSignalImg(item?.delay)}`} />
-              <div>{`via ${item?.name}`}</div>
+              <div>{`${item?.name}`}</div>
+              <div class="delay">
+                {item?.delay && !isNaN(item?.delay) ? `${item.delay} ms` : ""}
+              </div>
             </Item>
           ))}
         </Options>
