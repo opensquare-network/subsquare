@@ -175,11 +175,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           text="Back to Referendas"
         />
         <DetailItem
-          data={{
-            index: detail.referendumIndex,
-            ...detail,
-            commentsCount: comments.total,
-          }}
+          data={detail}
           onReply={focusEditor}
           user={loginUser}
           chain={chain}
