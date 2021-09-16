@@ -230,7 +230,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       <Wrapper className="post-content">
         <Back href={`/${chain}/treasury/proposals`} text="Back to Proposals" />
         <DetailItem
-          data={{ ...detail, index: detail.proposalIndex }}
+          data={detail}
           user={loginUser}
           chain={chain}
           onReply={focusEditor}

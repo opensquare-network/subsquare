@@ -207,7 +207,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       <Wrapper className="post-content">
         <Back href={`/${chain}/democracy/externals`} text="Back to Externals" />
         <DetailItem
-          data={{ ...detail, status: detail?.onchainData?.state?.state }}
+          data={detail}
           user={loginUser}
           chain={chain}
           onReply={focusEditor}

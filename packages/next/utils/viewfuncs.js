@@ -23,7 +23,6 @@ export const toDiscussionListItem = (chain, item) => ({
 
 export const toCouncilMotionListItem = (chain, item) => ({
   ...item,
-  time: item.indexer.blockTime,
   title: `${item.proposal.section}.${item.proposal.method}`,
   type: getMotionType(item),
   author: item.author ?? {
@@ -36,7 +35,6 @@ export const toCouncilMotionListItem = (chain, item) => ({
 
 export const toTechCommMotionListItem = (chain, item) => ({
   ...item,
-  time: item.indexer.blockTime,
   title: `${item.proposal.section}.${item.proposal.method}`,
   type: getMotionType(item),
   author: item.author ?? {
@@ -54,12 +52,13 @@ export const toTreasuryProposalListItem = (chain, item) => ({
     addresses: [{ chain, address: item.proposer }],
   },
   status: item.state ?? "Unknown",
-  time: item.indexer.blockTime,
+  time: item.lastActivityAt,
   detailLink: `/${chain}/treasury/proposal/${item.proposalIndex}`,
 });
 
 export const toReferendaListItem = (chain, item) => ({
   ...item,
+  time: item.lastActivityAt,
   status: item.state,
   index: item.referendumIndex,
   author: item.author ?? {
@@ -78,7 +77,7 @@ export const toTipListItem = (chain, item) => ({
   status: item.state
     ? getTipState(item.state)
     : "Unknown",
-  time: item.indexer.blockTime,
+  time: item.lastActivityAt,
   detailLink: `/${chain}/treasury/tip/${item.height}_${item.hash}`,
 });
 
@@ -90,7 +89,7 @@ export const toPublicProposalListItem = (chain, item) => ({
   },
   index: item.proposalIndex,
   status: item.state ?? "Unknown",
-  time: item.indexer.blockTime,
+  time: item.lastActivityAt,
   detailLink: `/${chain}/democracy/proposal/${item.proposalIndex}`,
 });
 
@@ -100,6 +99,7 @@ export const toExternalProposalListItem = (chain, item) => ({
     username: addressEllipsis(item.proposer),
     addresses: [{ chain, address: item.proposer }],
   },
+  time: item.lastActivityAt,
   hash: item.externalProposalHash,
   status: item.state ?? "Unknown",
   detailLink: `/${chain}/democracy/external/${item.externalProposalHash}`,

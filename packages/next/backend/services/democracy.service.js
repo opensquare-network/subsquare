@@ -116,7 +116,7 @@ function createService(proposalType, indexField, localField) {
         for: posts,
         as: "commentsCount",
         localField: "_id",
-        foreignField: "treasuryProposal",
+        foreignField: "democracy",
       }),
     ]);
 
