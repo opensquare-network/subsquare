@@ -23,6 +23,11 @@ const Wrapper = styled.div`
     color: #fff;
     border: none;
     cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+      Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+      sans-serif;
   }
 `;
 
