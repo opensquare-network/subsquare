@@ -5,12 +5,22 @@ import Item from "./item";
 
 const Wrapper = styled.div`
   display: flex;
+
   ${(p) =>
     p.isFold &&
     css`
       :last-child {
         .fold-bar {
           display: none;
+        }
+      }
+    `}
+  ${(p) =>
+    !p.indent &&
+    css`
+      :not(:last-child) {
+        .bar {
+          display: block !important;
         }
       }
     `}
@@ -52,16 +62,20 @@ const Right = styled.div`
   flex-grow: 1;
 `;
 
-export default function FoldableItem({ data, chain }) {
+export default function FoldableItem({ data, chain, indent = true }) {
   const [isFold, setIsFold] = useState(true);
 
   return (
-    <Wrapper isFold={isFold}>
-      <Left>
-        <Cirtcle />
-        <Bar className="fold-bar" isFold={isFold} />
-      </Left>
-      <Mid />
+    <Wrapper isFold={isFold} indent={indent}>
+      {indent && (
+        <>
+          <Left>
+            <Cirtcle />
+            <Bar className="fold-bar" isFold={isFold} />
+          </Left>
+          <Mid />
+        </>
+      )}
       <Right>
         {data.map((item, index) => (
           <Item

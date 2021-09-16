@@ -3,10 +3,7 @@ import styled from "styled-components";
 import Back from "components/back";
 import DetailItem from "components/detailItem";
 import Comments from "components/comment";
-import {
-  withLoginUser,
-  withLoginUserRedux,
-} from "lib";
+import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Input from "components/comment/input";
@@ -46,6 +43,46 @@ const FlexEnd = styled.div`
   display: flex;
   justify-content: right;
 `;
+
+const isClosed = (timeline) => {
+  return (timeline || []).find((item) => item.method === "TipClosed");
+};
+
+const getClosedTimelineData = (timeline) => {
+  let firstTipIndex = -1;
+  let lastTipIndex = -1;
+  (timeline || []).forEach((item, index) => {
+    if (item.method === "tip") {
+      if (firstTipIndex === -1) {
+        firstTipIndex = index;
+      }
+      if (lastTipIndex < index) {
+        lastTipIndex = index;
+      }
+    }
+  });
+  if (firstTipIndex > 0) {
+    firstTipIndex--;
+  }
+  if (firstTipIndex >= lastTipIndex) {
+    return timeline;
+  } else {
+    const rv = [];
+    const fd = [];
+    (timeline || []).forEach((item, index) => {
+      if (index === firstTipIndex) {
+        rv.push(fd);
+      }
+      if (index >= firstTipIndex && index <= lastTipIndex) {
+        fd.push(item);
+      } else {
+        rv.push(item);
+      }
+    });
+    return rv;
+  }
+  return timeline;
+};
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   if (!detail) {
@@ -106,14 +143,23 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     return args;
   };
 
-  const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
+  const timeline = (detail?.onchainData?.timeline || []).map((item) => {
     return {
       time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
       indexer: item.indexer,
       status: getTimelineStatus("tip", item.method),
       data: getTimelineData(item.args, item.method),
+      method: item.method,
     };
   });
+
+  let timelineData;
+
+  if (isClosed(timeline)) {
+    timelineData = getClosedTimelineData(timeline);
+  } else {
+    timelineData = timeline;
+  }
 
   function isUniqueInArray(value, index, self) {
     return self.indexOf(value) === index;
@@ -217,7 +263,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           ]}
         />
         {timelineData && timelineData.length > 0 && (
-          <Timeline data={timelineData} chain={chain} />
+          <Timeline data={timelineData} chain={chain} indent={false} />
         )}
         <CommentsWrapper>
           <Comments
