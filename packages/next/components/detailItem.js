@@ -388,8 +388,8 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             </ReferendaWrapper>
           )}
           <TitleWrapper>
-            {data?.index !== undefined && <Index>{`#${data.index}`}</Index>}
-            <Title>{data.title}</Title>
+            {post?.index !== undefined && <Index>{`#${post.index}`}</Index>}
+            <Title>{post.title}</Title>
           </TitleWrapper>
           <FlexWrapper>
             <DividerWrapper>
