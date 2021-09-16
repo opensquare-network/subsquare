@@ -15,7 +15,7 @@ const apiInstanceMap = new Map();
 
 const getApi = async (chain, queryUrl) => {
   if (!apiInstanceMap.has(queryUrl)) {
-    const provider = new WsProvider(url, 1000);
+    const provider = new WsProvider(queryUrl, 1000);
     const options = { provider };
     if (chain === "karura") {
       options.typesBundle = { ...typesBundleForPolkadot };
@@ -54,8 +54,9 @@ const updateNodeDelay = async (chain, url) => {
   try {
     const api = await getApi(chain, url);
     return await testNet(api);
-  } catch {
-    return "";
+  } catch (e) {
+    console.error("we have a error to test network", e);
+    return "timeout";
   }
 };
 
