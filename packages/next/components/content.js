@@ -36,7 +36,7 @@ const Left = styled.div`
   }
   .footer {
     position: absolute;
-    bottom: 32px;
+    bottom: 54px;
   }
 `;
 
