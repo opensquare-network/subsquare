@@ -10,12 +10,14 @@ const ReasonText = styled.span`
 
 const LogoLink = styled.a`
   margin-left: 9px;
+  position: relative;
 `;
 
 const Logo = styled.img`
   cursor: pointer;
-  position: relative;
-  top: 4px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 `;
 
 export default function ReasonList({ text, hideText = false }) {
