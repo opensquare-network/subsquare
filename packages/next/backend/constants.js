@@ -18,18 +18,10 @@ const ContentType = Object.freeze({
 
 const PostTitleLengthLimitation = 160;
 
-const TipStateMap = {
-  NewTip: "Tipping",
-  tip: "Tipping",
-  TipRetracted: "Retracted",
-  TipClosed: "Closed",
-};
-
 
 module.exports = {
   SupportChains,
   SS58Format,
   ContentType,
   PostTitleLengthLimitation,
-  TipStateMap,
 };

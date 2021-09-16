@@ -62,6 +62,13 @@ const Index = styled.div`
   font-weight: 500;
   font-size: 16px;
   line-height: 140%;
+  ::after {
+      content: "·";
+      font-size: 16px;
+      line-height: 22.4px;
+      color: #9da9bb;
+      margin: 0 8px;
+    }
 `;
 
 const Info = styled.div`

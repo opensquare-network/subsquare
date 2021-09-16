@@ -200,6 +200,8 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     ]);
   }
 
+  detail.status = detail.onchainData?.state?.state;
+
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">

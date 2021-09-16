@@ -18,11 +18,6 @@ import dayjs from "dayjs";
 import Timeline from "../../../../components/timeline";
 import MotionProposal from "../../../../components/motion/motionProposal";
 
-const Flex = styled.div`
-  display: flex;
-  align-items: center; ;
-`;
-
 const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
@@ -169,6 +164,8 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       />,
     ]);
   }
+
+  detail.status = detail.onchainData?.state?.state;
 
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
