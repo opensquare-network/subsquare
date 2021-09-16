@@ -1,6 +1,8 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { isWeb3Injected, web3FromAddress } from "@polkadot/extension-dapp";
 import { stringToHex } from "@polkadot/util";
+import { typesBundleForPolkadot } from "@acala-network/type-definitions";
+
 export * from "./address";
 
 import {
@@ -32,10 +34,13 @@ let nodeUrl = (() => {
 export const getApi = async (chain, queryUrl) => {
   const url = queryUrl || nodeUrl?.[chain];
   if (!apiInstanceMap.has(url)) {
-    apiInstanceMap.set(
-      url,
-      ApiPromise.create({ provider: new WsProvider(url, 1000) })
-    );
+    const provider = new WsProvider(url, 1000);
+    const options = { provider };
+    if (chain === "karura") {
+      options.typesBundle = { ...typesBundleForPolkadot };
+    }
+
+    apiInstanceMap.set(url, ApiPromise.create(options));
   }
   return apiInstanceMap.get(url);
 };
