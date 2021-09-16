@@ -7,46 +7,13 @@ import SubGreyIcon from "./icons/sub-grey.svg";
 export default function IdentityIcon({ identity }) {
   const statusIconMap = new Map([
     ["authorized", AuthIcon],
-    ["authorized-sub", SubIcon],
+    ["LINKED", SubIcon],
     ["error", ErrorIcon],
     ["unauthorized", UnauthorizedIcon],
     ["unauthorized-sub", SubGreyIcon],
   ]);
 
-  const judgements = identity?.info?.judgements ?? [];
-
-  const isAuthorized = judgements.some(
-    ([, judgement]) =>
-      typeof judgement === "object" &&
-      Object.keys(judgement).some((key) =>
-        ["reasonable", "knownGood"].includes(key)
-      )
-  );
-
-  const isBad = judgements.some(
-    ([, judgement]) =>
-      typeof judgement === "object" &&
-      (Object.keys(judgement).some((key) => key === "erroneous") ||
-        Object.keys(judgement).some((key) => key === "lowQuality"))
-  );
-
-  let status = "unauthorized";
-
-  if (isAuthorized) {
-    status = "authorized";
-    if (identity?.info?.displayParent) {
-      status += "-sub";
-    }
-  }
-
-  if (isBad) {
-    status = "error";
-    if (identity?.info?.displayParent) {
-      status += "-sub";
-    }
-  }
-
-  const StatusIcon = statusIconMap.get(status) ?? ErrorIcon;
+  const StatusIcon = statusIconMap.get(identity?.info?.status) ?? ErrorIcon;
 
   return <StatusIcon />;
 }
