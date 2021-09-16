@@ -108,7 +108,7 @@ async function getActivePostsOverview(chain) {
     tip.post = undefined;
     post.onchainData = tip;
     post.state = {
-      state: TipStateMap[tip.state?.state] || tip.state?.state,
+      state: tip.state?.state,
       tipsCount: (tip.meta?.tips || []).length,
     };
     return post;

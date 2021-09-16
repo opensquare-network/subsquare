@@ -170,7 +170,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   detail.status = getTipState({
     state: detail.onchainData?.state?.state,
-    tipsCount: detail.onchainData?.meta?.tips?.length
+    tipsCount: (detail.onchainData?.meta?.tips || []).length
   });
 
   return (
