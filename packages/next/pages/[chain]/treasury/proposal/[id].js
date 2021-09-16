@@ -4,7 +4,6 @@ import Back from "components/back";
 import DetailItem from "components/detailItem";
 import Comments from "components/comment";
 import {
-  useIsomorphicLayoutEffect,
   withLoginUser,
   withLoginUserRedux,
 } from "lib";
