@@ -10,15 +10,14 @@ const Wrapper = styled.div`
   }
 `;
 
-
 const Display = styled.span`
   font-size: ${(props) => props.fontSize}px;
   font-weight: 500;
   word-break: break-all;
 `;
 
-export default function Identity({identity, fontSize = 14}) {
-  if (!identity) {
+export default function Identity({ identity, fontSize = 14 }) {
+  if (!identity || identity?.info?.status) {
     return null;
   }
 
@@ -28,7 +27,7 @@ export default function Identity({identity, fontSize = 14}) {
 
   return (
     <Wrapper>
-      <IdentityIcon identity={identity}/>
+      <IdentityIcon identity={identity} />
       <Display fontSize={fontSize}>{displayName}</Display>
     </Wrapper>
   );
