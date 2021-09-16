@@ -7,7 +7,6 @@ import { nodes } from "utils/constants";
 import Avatar from "components/avatar";
 import Grvatar from "components/gravatar";
 import { addressEllipsis } from "../../utils";
-import ExternalLink from "../externalLink";
 
 const Wrapper = styled.div`
   display: flex;
@@ -47,6 +46,13 @@ const DeleteAccount = styled.div`
     width: 20px;
     height: 20px;
     margin-right: 8px;
+  }
+`;
+
+const LinkWrapper = styled.div`
+  :hover {
+    text-decoration: underline;
+    cursor: pointer;
   }
 `;
 
@@ -94,7 +100,14 @@ export default function User({
           )}
         </AvatarWrapper>
       )}
-      <ExternalLink href={`https://${chain}.subscan.io/account/${address}`}>
+      <LinkWrapper
+        onClick={() =>
+          window.open(
+            `https://${chain}.subscan.io/account/${address}`,
+            "_blank"
+          )
+        }
+      >
         {identity ? (
           <Identity identity={identity} fontSize={fontSize} />
         ) : (
@@ -102,7 +115,7 @@ export default function User({
             {user?.username ?? addressEllipsis(add)}
           </Username>
         )}
-      </ExternalLink>
+      </LinkWrapper>
     </Wrapper>
   );
 }
