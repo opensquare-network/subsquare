@@ -16,7 +16,7 @@ const ArgsWrapper = styled.div`
   background: #f6f7fa;
   border-radius: 4px;
   > table {
-    border: 32px solid #f6f7fa;
+    border: 24px solid #f6f7fa;
   }
   font-size: 14px;
   line-height: 20px;
