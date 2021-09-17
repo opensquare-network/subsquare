@@ -7,13 +7,13 @@ const Wrapper = styled.div`
   border-radius: 4px;
   padding: 12px 16px;
   color: #506176;
+  font-size: 14px;
   line-height: 140%;
 `;
 
 const StyledLink = styled.div`
   cursor: pointer;
   text-decoration: underline;
-  line-height: 24px;
   color: #2196f3;
 `;
 
