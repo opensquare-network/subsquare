@@ -234,7 +234,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
         <KVList
           title="Metadata"
           data={[
-            ["Reason", <ReasonLink text={detail.onchainData?.meta?.reason} />],
+            ["Reason", <div><ReasonLink text={detail.onchainData?.meta?.reason} /></div>],
             ["Hash", detail.onchainData?.hash],
             [
               "Finder",
