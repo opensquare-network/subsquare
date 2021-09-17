@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import KVList from "components/kvList";
 import Link from "next/link";
 import dayjs from "dayjs";
@@ -8,6 +8,7 @@ import MotionProposal from "./motionProposal";
 import Links from "../timeline/links";
 import Timeline from "../timeline";
 import { getNode, toPrecision } from "utils";
+import SectionTag from "components/sectionTag";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -67,22 +68,6 @@ const Title = styled.div`
   margin-bottom: 12px;
 `;
 
-const TypeWrapper = styled.div`
-  display: inline-block;
-  height: 20px;
-  line-height: 20px;
-  border-radius: 10px;
-  background: linear-gradient(0deg, #fef4f7, #fef4f7), #e81f66;
-  font-weight: 500;
-  font-size: 12px;
-  padding: 0 8px;
-  ${(p) =>
-    p.color &&
-    css`
-      color: ${p.color};
-    `}
-`;
-
 const StatusWrapper = styled.div`
   background: #2196f3;
   border-radius: 2px;
@@ -93,19 +78,6 @@ const StatusWrapper = styled.div`
   padding: 0 8px;
   color: #ffffff;
 `;
-
-const getTypeColor = (type) => {
-  switch (type) {
-    case "Democracy":
-      return "#E81F66";
-    case "Council":
-      return "#E81F66";
-    case "Treasury":
-      return "#FF9800";
-    default:
-      return null;
-  }
-};
 
 const Index = styled.div`
   float: left;
@@ -124,10 +96,6 @@ const Flex = styled.div`
   display: flex;
   align-items: center; ;
 `;
-
-function getMotionType(motion) {
-  return motion.isTreasury ? "Treasury" : "";
-}
 
 function createMotionTimelineData(motion) {
   return (motion?.timeline || []).map((item) => {
@@ -224,8 +192,6 @@ export default function MotionDetail({ motion, chain }) {
   const decimals = node.decimals;
   const symbol = node.symbol;
 
-  const type = getMotionType(motion);
-
   const treasuryProposalMeta = motion.treasuryProposal?.meta;
 
   const timeline = createMotionTimelineData(motion);
@@ -256,10 +222,11 @@ export default function MotionDetail({ motion, chain }) {
                 chain={chain}
                 fontSize={12}
               />
-              {type && (
-                <div>
-                  <TypeWrapper color={getTypeColor(type)}>{type}</TypeWrapper>
-                </div>
+              {motion.isTreasury && (
+                <SectionTag name={"Treasury"} />
+              )}
+              {motion.isDemocracy && (
+                <SectionTag name={"Democracy"} />
               )}
             </DividerWrapper>
             {motion.status && <StatusWrapper>{motion.status}</StatusWrapper>}

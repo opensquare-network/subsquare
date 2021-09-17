@@ -3,8 +3,9 @@ import Link from "next/link";
 
 import User from "components/user";
 import { timeDuration, timeDurationFromNow } from "utils";
-import Tag from "./tag";
+import Tag from "components/tag";
 import ReasonLink from "components/reasonLink";
+import SectionTag from "components/sectionTag";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -167,6 +168,12 @@ export default function Post({ data, chain, href }) {
           {data.remaining && <Info>{`${timeDuration(data.remaining)}`}</Info>}
           {data.commentsCount > -1 && (
             <AutHideInfo>{`${data.commentsCount} Comments`}</AutHideInfo>
+          )}
+          {data.isTreasury && (
+            <SectionTag name={"Treasury"} />
+          )}
+          {data.isDemocracy && (
+            <SectionTag name={"Democracy"} />
           )}
         </Footer>
         {data.status && <Tag name={data.status} />}
