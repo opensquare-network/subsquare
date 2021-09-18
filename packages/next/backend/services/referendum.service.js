@@ -212,26 +212,26 @@ async function getPostById(chain, postId) {
     chainProposalCol.findOne({ referendumIndex: post.referendumIndex }),
   ]);
 
-  if (chanProposalData.externalProposalHash) {
+  if (chanProposalData?.externalProposalHash) {
     const col = await getChainExternalCollection(chain);
     const democracyExternal = await col.findOne({
       proposalHash: chanProposalData.externalProposalHash,
       "indexer.blockHeight": chanProposalData.externalProposalIndexer.blockHeight,
     });
-    chanProposalData.authors = democracyExternal.authors;
-    chanProposalData.techCommMotionIndex =  democracyExternal.techCommMotionIndex;
+    chanProposalData.authors = democracyExternal?.authors;
+    chanProposalData.techCommMotionIndex =  democracyExternal?.techCommMotionIndex;
 
     const preImageCol = await getPreImageCollection(chain);
     const preImage = await preImageCol.findOne({ hash: chanProposalData.externalProposalHash });
     chanProposalData.preImage = preImage;
 
-  } else if (chanProposalData.publicProposalIndex !== undefined) {
+  } else if (chanProposalData?.publicProposalIndex !== undefined) {
     const col = await getChainPublicProposalCollection(chain);
     const democracyPublicProposal = await col.findOne({ proposalIndex: chanProposalData.publicProposalIndex });
-    chanProposalData.authors = democracyPublicProposal.authors;
+    chanProposalData.authors = democracyPublicProposal?.authors;
 
     const preImageCol = await getPreImageCollection(chain);
-    const preImage = await preImageCol.findOne({ hash: democracyPublicProposal.hash });
+    const preImage = await preImageCol.findOne({ hash: democracyPublicProposal?.hash });
     chanProposalData.preImage = preImage;
 
   }
