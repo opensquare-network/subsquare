@@ -47,7 +47,7 @@ export default function Links({
   style = {},
   address,
 }) {
-  if (!address) {
+  if (!indexer && !address) {
     return null;
   }
   if (chain === "karura") {
