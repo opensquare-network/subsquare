@@ -35,14 +35,18 @@ export const DEFAULT_KARURA_NODES = [
 ];
 
 export const nodes = [
-  {
-    value: "kusama",
-    name: "Kusama",
-    icon: "kusama.svg",
-    relay: "kusama",
-    symbol: "KSM",
-    decimals: 12,
-  },
+  ...(process.env.NEXT_PUBLIC_SHOW_KUSAMA === "true"
+    ? [
+        {
+          value: "kusama",
+          name: "Kusama",
+          icon: "kusama.svg",
+          relay: "kusama",
+          symbol: "KSM",
+          decimals: 12,
+        },
+      ]
+    : []),
   {
     value: "karura",
     name: "Karura",
