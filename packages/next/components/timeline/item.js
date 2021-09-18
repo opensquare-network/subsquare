@@ -106,11 +106,15 @@ const ContentItem = styled.div`
   word-break: break-all;
   > :first-child {
     color: #506176;
-    padding: 7px 0;
+    line-height: 28px;
     flex: 0 0 120px;
   }
   > :last-child {
-    padding: 7px 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-height: 28px;
+    line-height: 19.6px;
     text-align: right;
     flex: 1 1 auto;
   }
