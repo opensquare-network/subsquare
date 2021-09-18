@@ -1,3 +1,4 @@
+import React from "react";
 import styled, { css } from "styled-components";
 
 import Links from "./links";
@@ -165,7 +166,7 @@ export default function Item({ data, foldable, isFold, setIsFold, chain }) {
               <ContentItem key={index}>
                 <div>{item[0]}</div>
                 <div>
-                  {["boolean", "number", "string"].includes(typeof item[1])
+                  {["boolean", "number", "string"].includes(typeof item[1]) || React.isValidElement(item[1])
                     ? item[1]
                     : JSON.stringify(item[1])}
                 </div>
