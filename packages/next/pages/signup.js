@@ -40,6 +40,10 @@ const ContentWrapper = styled.div`
     margin-top: 24px;
   }
 
+  > :last-child {
+    margin-top: 12px;
+  }
+
   @media screen and (max-width: 392px) {
     width: 100%;
   }
@@ -132,7 +136,7 @@ export default withLoginUserRedux(({ loginUser }) => {
       const res = await nextApi.post("auth/signup", formData);
       if (res.result) {
         setSuccess(true);
-        window.location.reload(); //jumping to the sending verify email page
+        sendVerifyEmail();
       } else if (res.error) {
         setErrors(res.error);
       }
@@ -172,11 +176,13 @@ export default withLoginUserRedux(({ loginUser }) => {
     if (loginUser?.emailVerified) {
       toastError("You have already verified email address.");
       return setTimeout(() => {
-        router.replace("/");
+        // router.replace("/");
       }, 1000);
     }
     //send a verify Email when page loaded with a un-verified loginUser
-    sendVerifyEmail();
+    if (loginUser) {
+      sendVerifyEmail();
+    }
   }, []);
 
   useEffect(() => {
@@ -260,7 +266,7 @@ export default withLoginUserRedux(({ loginUser }) => {
             <Button isFill secondary onClick={() => router.replace("/login")}>
               Got it
             </Button>
-            <Button isFill secondary onClick={sendVerifyEmail}>
+            <Button isFill onClick={sendVerifyEmail}>
               Resend
             </Button>
             {sendEmailState && (
