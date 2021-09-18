@@ -1,6 +1,6 @@
 const { HttpError } = require("../../exc");
 const postService = require("../../services/post.service")("democracy");
-const referendumPostService = require("../../services/democracy.service")("democracyReferendum", "referendumIndex");
+const referendumPostService = require("../../services/referendum.service");
 const { ContentType } = require("../../constants");
 const { extractPage } = require("../../utils");
 
