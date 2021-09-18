@@ -80,10 +80,8 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           Beneficiary: <User chain={chain} add={args.beneficiary} />,
           Award: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
         };
-      default: {
-        return {};
-      }
     }
+    return args;
   };
 
   function createMotionTimelineData(motion) {

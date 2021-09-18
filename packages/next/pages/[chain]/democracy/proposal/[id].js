@@ -102,10 +102,8 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
             </DepositorsWrapper>
           ),
         };
-      default: {
-        return {};
-      }
     }
+    return args;
   };
 
   function createMotionTimelineData(motion) {
