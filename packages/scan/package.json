@@ -3,15 +3,12 @@
   "version": "1.0.0",
   "license": "Apache-2.0",
   "scripts": {
-    "test": "jest src"
+    "test": "jest src",
+    "scan": "node src/index.js"
   },
   "dependencies": {
-    "@acala-network/type-definitions": "^2.2.1",
+    "@acala-network/type-definitions": "2.2.1",
     "@polkadot/api": "5.7.1",
-    "@polkadot/types": "5.7.1",
-    "@polkadot/types-known": "5.7.1",
-    "@polkadot/util": "7.3.1",
-    "@polkadot/util-crypto": "7.3.1",
     "dotenv": "^8.2.0",
     "lodash.findlast": "^4.6.0",
     "lodash.last": "^3.0.0",
