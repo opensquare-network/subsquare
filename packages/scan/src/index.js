@@ -63,6 +63,10 @@ async function main() {
         await handleOneBlockDataInDb(block);
         await updateScanHeight(block.height);
         logger.debug(`${block.height} done`);
+
+        if (block.height % 20000 === 0) {
+          process.exit(0);
+        }
       } catch (e) {
         logger.error(`Error with block scan ${block.height}`, e);
         await sleep(3000);
