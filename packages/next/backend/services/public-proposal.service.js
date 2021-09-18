@@ -198,7 +198,7 @@ async function getPostById(chain, postId) {
   const businessDb = await getBusinessDb(chain);
   const chainProposalCol = await getChainPublicProposalCollection(chain);
   const preImageCol = await getPreImageCollection(chain);
-  const [author, reactions, chanProposalData, preImage] = await Promise.all([
+  const [author, reactions, chanProposalData] = await Promise.all([
     post.proposer ? userCol.findOne({ [`${chain}Address`]: post.proposer }) : null,
     businessDb.lookupMany({
       from: "reaction",
@@ -208,9 +208,9 @@ async function getPostById(chain, postId) {
       foreignField: "democracy",
     }),
     chainProposalCol.findOne({ proposalIndex: post.proposalIndex }),
-    preImageCol.findOne({ hash: chanProposalData.hash }),
   ]);
 
+  const preImage = await preImageCol.findOne({ hash: chanProposalData.hash });
   await lookupUser({ for: reactions, localField: "user" });
 
   return {
