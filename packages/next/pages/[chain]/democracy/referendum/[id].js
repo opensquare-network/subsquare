@@ -100,17 +100,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   const getTimelineData = (args, method) => {
     switch (method) {
-      case "Proposed":
-        return {
-          Index: `#${args.index}`,
-        };
-      case "fastTrack":
-        return {
-          proposalHash: args.find((arg) => arg.name === "proposal_hash").value,
-          votingPeriod:
-            args.find((arg) => arg.name === "voting_period").value + ` blocks`,
-          delay: args.find((arg) => arg.name === "delay").value + ` blocks`,
-        };
       case "Executed":
         const rawResult = args.result;
         let result;
