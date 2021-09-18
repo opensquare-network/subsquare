@@ -240,7 +240,11 @@ async function forgetPassword(ctx) {
     token,
   });
 
-  ctx.body = isSent;
+  if (!isSent) {
+    throw new HttpError(500, "Failed to send email");
+  }
+
+  ctx.body = true;
 }
 
 async function resetPassword(ctx) {

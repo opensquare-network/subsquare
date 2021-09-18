@@ -189,7 +189,11 @@ async function resendVerifyEmail(ctx) {
     token: user.verifyToken,
   });
 
-  ctx.body = isSent;
+  if (!isSent) {
+    throw new HttpError(500, "Failed to send email");
+  }
+
+  ctx.body = true;
 }
 
 async function linkAddressStart(ctx) {
