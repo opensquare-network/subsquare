@@ -27,7 +27,7 @@ const ContentWrapper = styled.div`
 
 const Left = styled.div`
   position: fixed;
-  @media screen and (max-height: 750px) {
+  @media screen and (max-height: 750px) and (max-width: 1140px) {
     position: initial;
   }
   left: max(calc((100vw - 1080px) / 2), 32px);
@@ -49,7 +49,7 @@ const LeftPlaceHolder = styled.div`
   @media screen and (max-width: 1024px) {
     display: none;
   }
-  @media screen and (max-height: 750px) {
+  @media screen and (max-height: 750px) and (max-width: 1140px) {
     display: none;
   }
 `;
