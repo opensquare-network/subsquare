@@ -14,7 +14,6 @@ router.post(
   userController.resendVerifyEmail
 );
 router.post("/user/changepassword", requireAuth, userController.changePassword);
-router.post("/user/changeemail", requireAuth, userController.changeEmail);
 router.post("/user/deleteaccount", requireAuth, userController.deleteAccount);
 
 router.get(
