@@ -82,12 +82,6 @@ async function handleEventWithoutExtrinsic(
 }
 
 async function handleEvents(events, extrinsics, blockIndexer) {
-  const extrinsicEvents = extrinsics.map((extrinsic, index) =>
-    events.filter(
-      ({ phase }) => !phase.isNull && phase.value.toNumber() === index
-    )
-  );
-
   for (let sort = 0; sort < events.length; sort++) {
     const { event, phase } = events[sort];
 
