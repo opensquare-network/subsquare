@@ -190,7 +190,7 @@ async function getPostById(chain, postId) {
   }
 
   const postCol = await getDemocracyCollection(chain);
-  const post = await postCol.findOne(q);
+  const post = await postCol.findOne(q, { sort: {"indexer.blockHeight": -1} });
 
   if (!post) {
     throw new HttpError(404, "Post not found");
