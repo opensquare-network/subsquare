@@ -96,7 +96,7 @@ export const toExternalProposalListItem = (chain, item) => ({
   time: item.lastActivityAt,
   hash: item.externalProposalHash,
   status: item.state ?? "Unknown",
-  detailLink: `/${chain}/democracy/external/${item.externalProposalHash}`,
+  detailLink: `/${chain}/democracy/external/${item.indexer.blockHeight}_${item.externalProposalHash}`,
 });
 
 export const extractLinks = (text) => [...text.matchAll(/(https?:\/\/[^ ]+)/g)].map(item => item[0]);

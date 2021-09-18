@@ -357,7 +357,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             post.externalProposalHash !== undefined && (
               <ReferendaWrapper>
                 <Link
-                  href={`/${chain}/democracy/external/${post.externalProposalHash}`}
+                  href={`/${chain}/democracy/external/${post.indexer.blockHeight}_${post.externalProposalHash}`}
                 >
                   {`External`}
                 </Link>
