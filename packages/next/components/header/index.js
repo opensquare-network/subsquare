@@ -18,6 +18,9 @@ const Wrapper = styled.header`
     padding-left: 16px;
     padding-right: 16px;
   }
+  @media screen and (max-height: 750px) {
+    position: initial;
+  }
   ${(props) =>
     props &&
     props.fixedTop &&
