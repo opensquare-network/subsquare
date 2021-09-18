@@ -164,7 +164,11 @@ export default function Item({ data, foldable, isFold, setIsFold, chain }) {
             Object.entries(data.data).map((item, index) => (
               <ContentItem key={index}>
                 <div>{item[0]}</div>
-                <div>{item[1]}</div>
+                <div>
+                  {["boolean", "number", "string"].includes(typeof item[1])
+                    ? item[1]
+                    : JSON.stringify(item[1])}
+                </div>
               </ContentItem>
             ))}
         </ContentWrapper>
