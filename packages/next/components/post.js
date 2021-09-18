@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import Link from "next/link";
 
 import User from "components/user";
@@ -108,33 +108,6 @@ const FooterWrapper = styled.div`
   flex-wrap: nowrap;
 `;
 
-const TypeWrapper = styled.div`
-  display: inline-block;
-  height: 20px;
-  line-height: 20px;
-  border-radius: 10px;
-  background: linear-gradient(0deg, #fef4f7, #fef4f7), #e81f66;
-  font-weight: 500;
-  font-size: 12px;
-  padding: 0 8px;
-  ${(p) =>
-    p.color &&
-    css`
-      color: ${p.color};
-    `}
-`;
-
-const getTypeColor = (type) => {
-  switch (type) {
-    case "Democracy":
-      return "#E81F66";
-    case "Treasury":
-      return "#FF9800";
-    default:
-      return null;
-  }
-};
-
 const TitleWrapper = styled.div`
   margin-bottom: 8px;
   overflow: hidden;
@@ -155,12 +128,11 @@ export default function Post({ data, chain, href }) {
       <FooterWrapper>
         <Footer>
           <User user={data.author} chain={chain} fontSize={12} />
-          {data.type && (
-            <div>
-              <TypeWrapper color={getTypeColor(data.type)}>
-                {data.type}
-              </TypeWrapper>
-            </div>
+          {data.isTreasury && (
+            <SectionTag name={"Treasury"} />
+          )}
+          {data.isDemocracy && (
+            <SectionTag name={"Democracy"} />
           )}
           {data.time && (
             <Info>{`Updated ${timeDurationFromNow(data.time)}`}</Info>
@@ -168,12 +140,6 @@ export default function Post({ data, chain, href }) {
           {data.remaining && <Info>{`${timeDuration(data.remaining)}`}</Info>}
           {data.commentsCount > -1 && (
             <AutHideInfo>{`${data.commentsCount} Comments`}</AutHideInfo>
-          )}
-          {data.isTreasury && (
-            <SectionTag name={"Treasury"} />
-          )}
-          {data.isDemocracy && (
-            <SectionTag name={"Democracy"} />
           )}
         </Footer>
         {data.status && <Tag name={data.status} />}
