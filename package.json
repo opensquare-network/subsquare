@@ -1,12 +1,14 @@
 {
-  "name": "dotreasury",
+  "name": "subsquare",
   "private": true,
   "workspaces": [
     "packages/*"
   ],
   "repository": "git@github.com:opensquare-network/subsquare.git",
   "author": "OpenSquare <https://www.opensquare.network/>",
-  "license": "Apache-2.0",
+  "scripts": {
+    "scan": "yarn workspace @subsquare/scan scan"
+  },
   "devDependencies": {
     "husky": "^4.3.5",
     "pretty-quick": "^3.1.0"
