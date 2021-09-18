@@ -210,7 +210,7 @@ async function getPostById(chain, postId) {
     chainProposalCol.findOne({ proposalIndex: post.proposalIndex }),
   ]);
 
-  const preImage = await preImageCol.findOne({ hash: chanProposalData.hash });
+  const preImage = await preImageCol.findOne({ hash: chanProposalData?.hash });
   await lookupUser({ for: reactions, localField: "user" });
 
   return {
