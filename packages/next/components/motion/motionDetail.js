@@ -177,7 +177,6 @@ const getClosedTimelineData = (timeline) => {
     });
     return rv;
   }
-  return timeline;
 };
 
 export default function MotionDetail({ motion, chain }) {

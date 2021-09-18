@@ -140,8 +140,10 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           ),
           Payout: `${toPrecision(args.payout ?? 0, decimals)} ${symbol}`,
         };
+      default: {
+        return {};
+      }
     }
-    return args;
   };
 
   const timeline = (detail?.onchainData?.timeline || []).map((item) => {

@@ -112,8 +112,10 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
             delay: args.find((arg) => arg.name === "delay").value + ` blocks`,
           };
         }
+      default: {
+        return {};
+      }
     }
-    return args;
   };
 
   const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
