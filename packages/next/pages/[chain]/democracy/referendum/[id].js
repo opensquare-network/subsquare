@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import Back from "components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import { ssrNextApi as nextApi} from "services/nextApi";
+import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import LayoutFixedHeader from "components/layoutFixedHeader";
 import Comments from "../../../../components/comment";
@@ -51,7 +51,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(loginUser?.preference.editor || "markdown");
+  const [contentType, setContentType] = useState(
+    loginUser?.preference.editor || "markdown"
+  );
 
   const onReply = (username) => {
     let reply = "";
@@ -102,23 +104,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
         return {
           Index: `#${args.index}`,
         };
-      case "Awarded":
-        return {
-          Beneficiary: <User chain={chain} add={args.beneficiary} />,
-          Award: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
-        };
-      case "Tabled":
-        return {
-          "Referenda Index": `#${args.referendumIndex}`,
-          Deposit: `${toPrecision(args.deposit ?? 0, decimals)} ${symbol}`,
-          Depositors: (
-            <DepositorsWrapper>
-              {(args.depositors || []).map((item, index) => (
-                <User add={item} key={index} />
-              ))}
-            </DepositorsWrapper>
-          ),
-        };
       case "fastTrack":
         return {
           proposalHash: args.find((arg) => arg.name === "proposal_hash").value,
@@ -126,6 +111,18 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
             args.find((arg) => arg.name === "voting_period").value + ` blocks`,
           delay: args.find((arg) => arg.name === "delay").value + ` blocks`,
         };
+      case "Executed":
+        const rawResult = args.result;
+        let result;
+        if (typeof rawResult === "boolean") {
+          result = rawResult;
+        } else if (typeof args.result === "object") {
+          result = Object.keys(rawResult)[0];
+        } else {
+          result = JSON.stringify(rawResult);
+        }
+
+        return { result };
     }
     return args;
   };
