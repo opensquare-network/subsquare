@@ -53,7 +53,7 @@ export const toTreasuryProposalListItem = (chain, item) => ({
 export const toReferendaListItem = (chain, item) => ({
   ...item,
   time: item.lastActivityAt,
-  status: item.state,
+  status: item.state ?? "Unknown",
   index: item.referendumIndex,
   author: item.author ?? {
     username: addressEllipsis(item.proposer),
