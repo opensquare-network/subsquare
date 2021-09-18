@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 import Layout from "components/layout";
 import Back from "components/back";
-import { useIsomorphicLayoutEffect, withLoginUser, withLoginUserRedux } from "lib";
+import { withLoginUser, withLoginUserRedux } from "lib";
 import Input from "components/input";
 import MarkdownEditor from "components/markdownEditor";
 import Button from "components/button";
