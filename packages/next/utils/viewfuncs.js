@@ -1,9 +1,5 @@
 import { addressEllipsis } from ".";
 
-function getMotionType(motion) {
-  return motion.isTreasury ? "Treasury" : "";
-}
-
 const TipStateMap = {
   NewTip: "Tipping",
   tip: "Tipping",
@@ -24,7 +20,6 @@ export const toDiscussionListItem = (chain, item) => ({
 export const toCouncilMotionListItem = (chain, item) => ({
   ...item,
   title: `${item.proposal.section}.${item.proposal.method}`,
-  type: getMotionType(item),
   author: item.author ?? {
     username: addressEllipsis(item.proposer),
     addresses: [{ chain, address: item.proposer }],
@@ -36,7 +31,6 @@ export const toCouncilMotionListItem = (chain, item) => ({
 export const toTechCommMotionListItem = (chain, item) => ({
   ...item,
   title: `${item.proposal.section}.${item.proposal.method}`,
-  type: getMotionType(item),
   author: item.author ?? {
     username: addressEllipsis(item.proposer),
     addresses: [{ chain, address: item.proposer }],
