@@ -126,8 +126,14 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
             args.find((arg) => arg.name === "voting_period").value + ` blocks`,
           delay: args.find((arg) => arg.name === "delay").value + ` blocks`,
         };
+      case "Executed":
+        return {
+          result: Object.keys(args.result)[0],
+        };
+      default: {
+        return {};
+      }
     }
-    return args;
   };
 
   const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
