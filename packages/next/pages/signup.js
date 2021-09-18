@@ -12,6 +12,8 @@ import nextApi from "services/nextApi";
 import ErrorText from "components/ErrorText";
 import { useAuthPage } from "utils/hooks";
 import { withLoginUser, withLoginUserRedux } from "../lib";
+import { useDispatch } from "react-redux";
+import { addToast } from "store/reducers/toastSlice";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -33,9 +35,11 @@ const ContentWrapper = styled.div`
   width: 360px;
   margin: 0 auto;
   padding: 48px;
+
   > :not(:first-child) {
     margin-top: 24px;
   }
+
   @media screen and (max-width: 392px) {
     width: 100%;
   }
@@ -56,6 +60,7 @@ const ButtonWrapper = styled.div`
 const LinkWrapper = styled.div`
   color: #506176;
   text-align: center;
+
   a {
     font-weight: bold;
     color: #6848ff;
@@ -68,6 +73,7 @@ const Label = styled.div`
   font-weight: bold;
   font-size: 12px;
   margin-bottom: 8px;
+
   :not(:first-child) {
     margin-top: 16px;
   }
@@ -90,6 +96,7 @@ const InfoWrapper = styled.div`
 const Redirect = styled.div`
   text-align: center;
   color: #506176;
+
   .sec {
     font-weight: bold;
     color: #6848ff;
@@ -105,10 +112,12 @@ const FormWrapper = styled.form`
 
 export default withLoginUserRedux(({ loginUser }) => {
   useAuthPage(false);
-  const [success, setSuccess] = useState(false);
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const [success, setSuccess] = useState(!!loginUser);
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const [sendEmailState, setSendEmailState] = useState(false);
   const [countdown, setCountdown] = useState(3);
   const isMounted = useIsMounted();
 
@@ -123,6 +132,7 @@ export default withLoginUserRedux(({ loginUser }) => {
       const res = await nextApi.post("auth/signup", formData);
       if (res.result) {
         setSuccess(true);
+        window.location.reload(); //jumping to the sending verify email page
       } else if (res.error) {
         setErrors(res.error);
       }
@@ -132,8 +142,45 @@ export default withLoginUserRedux(({ loginUser }) => {
   );
   const { username, email, password } = formData;
 
+  const toastError = (message) => {
+    dispatch(
+      addToast({
+        type: "error",
+        message: message,
+      })
+    );
+  };
+
+  const sendVerifyEmail = () => {
+    setSendEmailState(false);
+    nextApi
+      .post("user/resendverifyemail")
+      .then(({ result, error }) => {
+        if (result) {
+          return setSendEmailState(true);
+        }
+        toastError(
+          error?.message ?? "some error occured when sending an Email"
+        );
+      })
+      .catch((err) => {
+        toastError("some error occured when sending an Email");
+      });
+  };
+
   useEffect(() => {
-    if (!success) return;
+    if (loginUser?.emailVerified) {
+      toastError("You have already verified email address.");
+      return setTimeout(() => {
+        router.replace("/");
+      }, 1000);
+    }
+    //send a verify Email when page loaded with a un-verified loginUser
+    sendVerifyEmail();
+  }, []);
+
+  useEffect(() => {
+    if (!sendEmailState) return;
     if (countdown !== 0) {
       setTimeout(() => {
         if (isMounted.current) {
@@ -143,7 +190,7 @@ export default withLoginUserRedux(({ loginUser }) => {
     } else {
       router.replace("/login");
     }
-  }, [success, countdown]);
+  }, [sendEmailState, countdown]);
 
   return (
     <Layout user={loginUser}>
@@ -204,18 +251,24 @@ export default withLoginUserRedux(({ loginUser }) => {
         )}
         {success && (
           <ContentWrapper>
-            <Title>Congrats</Title>
+            <Title>{sendEmailState ? "Congrats." : "Sending..."}</Title>
             <InfoWrapper>
-              We sent you an email to verify your address. Click on the link in
-              the email.
+              {sendEmailState
+                ? "We sent you an email to verify your address. Click on the link in the email."
+                : "Sending an email to verify your address."}
             </InfoWrapper>
             <Button isFill secondary onClick={() => router.replace("/login")}>
               Got it
             </Button>
-            <Redirect>
-              The page will be re-directed in
-              <span className="sec">{countdown}s</span>
-            </Redirect>
+            <Button isFill secondary onClick={sendVerifyEmail}>
+              Resend
+            </Button>
+            {sendEmailState && (
+              <Redirect>
+                The page will be re-directed in
+                <span className="sec">{countdown}s</span>
+              </Redirect>
+            )}
           </ContentWrapper>
         )}
         <Agreement />
