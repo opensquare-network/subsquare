@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@acala-network/type-definitions@2.3.2-0":
+  version "2.3.2-0"
+  resolved "https://registry.npmjs.org/@acala-network/type-definitions/-/type-definitions-2.3.2-0.tgz#9b35bf0780ee13c47fe08ba40522bbe865c6a269"
+  integrity sha512-OeNWNcSY/Pw9Fv37jqw+W4dELa7LiDffg9XmP5hiJKrgX62c58wBVOaRdOUPHIc4Falgx9DzTGU6sUjrL15Gxw==
+  dependencies:
+    "@open-web3/orml-type-definitions" "^0.9.4-38"
+
 "@acala-network/type-definitions@^2.2.1":
   version "2.2.1"
   resolved "https://registry.npmjs.org/@acala-network/type-definitions/-/type-definitions-2.2.1.tgz#031faac650e5e62184a441c233ee16fc70d77e79"
@@ -1313,6 +1320,13 @@
   version "0.9.4-34"
   resolved "https://registry.npmjs.org/@open-web3/orml-type-definitions/-/orml-type-definitions-0.9.4-34.tgz#5aeeb7690db5aed1bb51e8e161bd61384c13c787"
   integrity sha512-KYxPH0gc86mHXlpAqQ8KOaD53SpI7HS3J25hf/4fm33rBS76u/gxooqAogB10cVxL7S6lNo8Jd4davvCSc56Lg==
+  dependencies:
+    lodash.merge "^4.6.2"
+
+"@open-web3/orml-type-definitions@^0.9.4-38":
+  version "0.9.4-38"
+  resolved "https://registry.npmjs.org/@open-web3/orml-type-definitions/-/orml-type-definitions-0.9.4-38.tgz#fc7642f6a518da2618ae39fa76fe046ee57c1e80"
+  integrity sha512-kV0++JlRLEf7Z1y+Jm+792zqx6Q7dzpGP73rJJmQrBaeTML5mQzu4veZ24TVtcLV6hsGjUU/ixrJODNj6CCuZQ==
   dependencies:
     lodash.merge "^4.6.2"
 
