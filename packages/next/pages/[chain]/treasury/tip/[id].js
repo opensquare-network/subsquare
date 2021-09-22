@@ -46,7 +46,7 @@ const FlexEnd = styled.div`
 `;
 
 const isClosed = (timeline) => {
-  return (timeline || []).find((item) => item.method === "TipClosed");
+  return (timeline || []).some((item) => item.method === "TipClosed");
 };
 
 const getClosedTimelineData = (timeline) => {
