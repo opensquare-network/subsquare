@@ -101,7 +101,8 @@ export default withLoginUserRedux(({ loginUser }) => {
   const dispatch = useDispatch();
 
   if (loginUser) {
-    return router.replace("/");
+    const chain = localStorage.getItem("chain") || "karura";
+    return router.replace(`/${chain}`);
   }
 
   const { formData, handleInputChange, handleSubmit } = useForm(
