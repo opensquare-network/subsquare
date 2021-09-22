@@ -40,7 +40,7 @@ const ContentWrapper = styled.div`
     margin-top: 24px;
   }
 
-  > :last-child {
+  > button:last-child {
     margin-top: 12px;
   }
 
@@ -178,10 +178,6 @@ export default withLoginUserRedux(({ loginUser }) => {
       return setTimeout(() => {
         // router.replace("/");
       }, 1000);
-    }
-    //send a verify Email when page loaded with a un-verified loginUser
-    if (loginUser) {
-      sendVerifyEmail();
     }
   }, []);
 
