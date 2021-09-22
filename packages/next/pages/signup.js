@@ -168,7 +168,7 @@ export default withLoginUserRedux(({ loginUser }) => {
         );
       })
       .catch((err) => {
-        toastError("some error occured when sending an Email");
+        toastError("some error occurred when sending an Email");
       });
   };
 

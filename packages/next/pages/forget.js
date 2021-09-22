@@ -10,6 +10,8 @@ import nextApi from "services/nextApi";
 import ErrorText from "components/ErrorText";
 import { useAuthPage } from "utils/hooks";
 import { withLoginUser, withLoginUserRedux } from "../lib";
+import { useDispatch } from "react-redux";
+import { addToast } from "../store/reducers/toastSlice";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -72,24 +74,39 @@ const FormWrapper = styled.form`
 
 export default withLoginUserRedux(({ loginUser }) => {
   useAuthPage(false);
+  const dispatch = useDispatch();
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const toastError = (message) => {
+    dispatch(
+      addToast({
+        type: "error",
+        message: message,
+      })
+    );
+  };
 
   const { formData, handleInputChange, handleSubmit } = useForm(
     {
       email: "",
     },
     async (formData) => {
-      setLoading(true);
-      const res = await nextApi.post("auth/forget", formData);
-      if (res.result) {
-        setSuccess(true);
-      } else if (res.error) {
-        setErrors(res.error);
+      try {
+        setLoading(true);
+        const { result, error } = await nextApi.post("auth/forget", formData);
+        if (result) {
+          setSuccess(true);
+        } else if (error) {
+          setErrors(res.error);
+        }
+      } catch (e) {
+        toastError("some error occurred when sending an Email");
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     },
     () => setErrors(null)
   );
@@ -127,8 +144,8 @@ export default withLoginUserRedux(({ loginUser }) => {
           <ContentWrapper>
             <Title>Reset Password</Title>
             <InfoWrapper>
-              The reset password link was sent to this email, if it exist in our
-              database.
+              The reset password link was sent to this email, if it exists in
+              our database.
             </InfoWrapper>
             <Button isFill secondary onClick={() => router.replace("/")}>
               Confirm
