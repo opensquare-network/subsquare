@@ -259,7 +259,7 @@ export default withLoginUserRedux(({ loginUser }) => {
                 ? "We sent you an email to verify your address. Click on the link in the email."
                 : "Sending an email to verify your address."}
             </InfoWrapper>
-            <Button isFill secondary onClick={() => router.replace("/login")}>
+            <Button isFill secondary onClick={() => router.replace("/")}>
               Got it
             </Button>
             <Button isFill onClick={sendVerifyEmail}>
