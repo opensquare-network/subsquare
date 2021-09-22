@@ -406,8 +406,8 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                   </TypeWrapper>
                 </div>
               )}
-              {post.createdAt && (
-                <Info>Created {timeDurationFromNow(post.createdAt)}</Info>
+              {(post.indexer?.blockTime || post.createdAt) && (
+                <Info>Created {timeDurationFromNow(post.indexer?.blockTime || post.createdAt)}</Info>
               )}
               {post.commentsCount > -1 && (
                 <Info>{`${post.commentsCount} Comments`}</Info>
