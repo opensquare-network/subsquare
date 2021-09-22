@@ -22,6 +22,7 @@ import {
   getMentionList,
   getOnReply,
 } from "../../../../utils/post";
+import findLastIndex from "lodash.findlastindex";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -54,39 +55,28 @@ const isClosed = (timeline) => {
   return (timeline || []).some((item) => item.method === "TipClosed");
 };
 
-const getClosedTimelineData = (timeline) => {
-  let firstTipIndex = -1;
-  let lastTipIndex = -1;
-  (timeline || []).forEach((item, index) => {
-    if (item.method === "tip") {
-      if (firstTipIndex === -1) {
-        firstTipIndex = index;
-      }
-      if (lastTipIndex < index) {
-        lastTipIndex = index;
-      }
-    }
-  });
+const getClosedTimelineData = (timeline = []) => {
+  let firstTipIndex = timeline.findIndex((item) => item?.method === "tip");
+  const lastTipIndex = findLastIndex(
+    timeline,
+    (item) => item?.method === "tip"
+  );
   if (firstTipIndex > 0) {
     firstTipIndex--;
   }
+
   if (firstTipIndex >= lastTipIndex) {
     return timeline;
-  } else {
-    const rv = [];
-    const fd = [];
-    (timeline || []).forEach((item, index) => {
-      if (index === firstTipIndex) {
-        rv.push(fd);
-      }
-      if (index >= firstTipIndex && index <= lastTipIndex) {
-        fd.push(item);
-      } else {
-        rv.push(item);
-      }
-    });
-    return rv;
   }
+
+  const foldItems = timeline.filter(
+    (item, idx) => idx >= firstTipIndex && idx <= lastTipIndex
+  );
+  const notFoldItems = timeline.filter(
+    (item, idx) => idx < firstTipIndex || idx > lastTipIndex
+  );
+  const fd = [...foldItems];
+  return [fd, ...notFoldItems];
 };
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
