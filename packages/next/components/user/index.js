@@ -100,22 +100,22 @@ export default function User({
           )}
         </AvatarWrapper>
       )}
-      <LinkWrapper
-        onClick={() =>
-          window.open(
-            `https://${chain}.subscan.io/account/${address}`,
-            "_blank"
-          )
-        }
-      >
-        {identity ? (
+      {identity ? (
+        <LinkWrapper
+          onClick={() =>
+            window.open(
+              `https://${chain}.subscan.io/account/${address}`,
+              "_blank"
+            )
+          }
+        >
           <Identity identity={identity} fontSize={fontSize} />
-        ) : (
-          <Username fontSize={fontSize}>
-            {user?.username ?? addressEllipsis(add)}
-          </Username>
-        )}
-      </LinkWrapper>
+        </LinkWrapper>
+      ) : (
+        <Username fontSize={fontSize}>
+          {user?.username ?? addressEllipsis(add)}
+        </Username>
+      )}
     </Wrapper>
   );
 }
