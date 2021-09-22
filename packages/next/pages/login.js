@@ -32,9 +32,9 @@ const Wrapper = styled.div`
 const ContentWrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
-  box-shadow:0 6px 7px rgba(30, 33, 52, 0.02),
-   0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-   0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
+    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
   width: 360px;
   margin: 0 auto;
@@ -99,6 +99,10 @@ export default withLoginUserRedux(({ loginUser }) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
+
+  if (loginUser) {
+    return router.replace("/");
+  }
 
   const { formData, handleInputChange, handleSubmit } = useForm(
     {
