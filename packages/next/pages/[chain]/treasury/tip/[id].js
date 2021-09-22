@@ -148,7 +148,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     return args;
   };
 
-  const timeline = (detail?.onchainData?.timeline || []).map((item) => {
+  let timeline = (detail?.onchainData?.timeline || []).map((item) => {
     return {
       time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
       indexer: item.indexer,
@@ -158,12 +158,8 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     };
   });
 
-  let timelineData;
-
   if (isClosed(timeline)) {
-    timelineData = getClosedTimelineData(timeline);
-  } else {
-    timelineData = timeline;
+    timeline = getClosedTimelineData(timeline);
   }
 
   const users = getMentionList(comments);
@@ -183,6 +179,42 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     tipsCount: (detail.onchainData?.meta?.tips || []).length,
   });
 
+  const metadata = [
+    [
+      "Reason",
+      <div>
+        <ReasonLink text={detail.onchainData?.meta?.reason} />
+      </div>,
+    ],
+    ["Hash", detail.onchainData?.hash],
+    [
+      "Finder",
+      <>
+        <User
+          chain={chain}
+          add={detail.onchainData?.meta?.finder}
+          fontSize={14}
+        />
+        <Links
+          chain={chain}
+          address={detail.onchainData?.meta?.finder}
+          style={{ marginLeft: 8 }}
+        />
+      </>,
+    ],
+    [
+      "Beneficiary",
+      <>
+        <User chain={chain} add={detail.onchainData?.meta?.who} fontSize={14} />
+        <Links
+          chain={chain}
+          address={detail.onchainData?.meta?.who}
+          style={{ marginLeft: 8 }}
+        />
+      </>,
+    ],
+  ];
+
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
       <Wrapper className="post-content">
@@ -195,50 +227,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           type="treasury/tip"
         />
 
-        <KVList
-          title="Metadata"
-          data={[
-            [
-              "Reason",
-              <div>
-                <ReasonLink text={detail.onchainData?.meta?.reason} />
-              </div>,
-            ],
-            ["Hash", detail.onchainData?.hash],
-            [
-              "Finder",
-              <>
-                <User
-                  chain={chain}
-                  add={detail.onchainData?.meta?.finder}
-                  fontSize={14}
-                />
-                <Links
-                  chain={chain}
-                  address={detail.onchainData?.meta?.finder}
-                  style={{ marginLeft: 8 }}
-                />
-              </>,
-            ],
-            [
-              "Beneficiary",
-              <>
-                <User
-                  chain={chain}
-                  add={detail.onchainData?.meta?.who}
-                  fontSize={14}
-                />
-                <Links
-                  chain={chain}
-                  address={detail.onchainData?.meta?.who}
-                  style={{ marginLeft: 8 }}
-                />
-              </>,
-            ],
-          ]}
-        />
-        {timelineData && timelineData.length > 0 && (
-          <Timeline data={timelineData} chain={chain} indent={false} />
+        <KVList title="Metadata" data={metadata} />
+        {timeline?.length > 0 && (
+          <Timeline data={timeline} chain={chain} indent={false} />
         )}
         <CommentsWrapper>
           <Comments
