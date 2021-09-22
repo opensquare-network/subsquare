@@ -16,7 +16,11 @@ import Links from "components/timeline/links";
 import dayjs from "dayjs";
 import Timeline from "components/timeline";
 import { getTimelineStatus } from "utils";
-import { getOnReply } from "../../../../utils/post";
+import {
+  getFocusEditor,
+  getMentionList,
+  getOnReply,
+} from "../../../../utils/post";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -149,25 +153,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     return a.indexer.blockTime - b.indexer.blockTime;
   });
 
-  function isUniqueInArray(value, index, self) {
-    return self.indexOf(value) === index;
-  }
+  const users = getMentionList(comments);
 
-  const users =
-    comments?.items
-      ?.map((comment) => comment.author?.username)
-      .filter(isUniqueInArray) ?? [];
-
-  const focusEditor = () => {
-    if (contentType === "markdown") {
-      editorWrapperRef.current?.querySelector("textarea")?.focus();
-    } else if (contentType === "html") {
-      setTimeout(() => {
-        quillRef.current.getEditor().setSelection(99999, 0, "api"); //always put caret to the end
-      }, 4);
-    }
-    editorWrapperRef.current?.scrollIntoView();
-  };
+  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
   const onReply = getOnReply(
     contentType,
