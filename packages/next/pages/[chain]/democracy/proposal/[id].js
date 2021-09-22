@@ -17,6 +17,7 @@ import Timeline from "components/timeline";
 import { getTimelineStatus } from "utils";
 import KVList from "../../../../components/kvList";
 import MotionProposal from "../../../../components/motion/motionProposal";
+import { getOnReply } from "../../../../utils/post";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -142,37 +143,13 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     editorWrapperRef.current?.scrollIntoView();
   };
 
-  const onReply = (username) => {
-    let reply = "";
-    if (contentType === "markdown") {
-      reply = `[@${username}](/member/${username}) `;
-      const at = content ? `${reply}` : reply;
-      if (content === reply) {
-        setContent(``);
-      } else {
-        setContent(content + at);
-      }
-    } else if (contentType === "html") {
-      const contents = quillRef.current.getEditor().getContents();
-      reply = {
-        ops: [
-          {
-            insert: {
-              mention: {
-                index: "0",
-                denotationChar: "@",
-                id: username,
-                value: username + " &nbsp; ",
-              },
-            },
-          },
-          { insert: "\n" },
-        ],
-      };
-      quillRef.current.getEditor().setContents(contents.ops.concat(reply.ops));
-    }
-    focusEditor();
-  };
+  const onReply = getOnReply(
+    contentType,
+    content,
+    setContent,
+    quillRef,
+    focusEditor
+  );
 
   const metadata = [
     ["hash", detail.onchainData?.hash],
