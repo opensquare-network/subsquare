@@ -9,6 +9,7 @@ import Links from "../timeline/links";
 import Timeline from "../timeline";
 import { getNode, toPrecision } from "utils";
 import SectionTag from "components/sectionTag";
+import findLastIndex from "lodash.findlastindex";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -48,6 +49,7 @@ const DividerWrapper = styled.div`
 const TitleWrapper = styled.div`
   margin-bottom: 8px;
   overflow: hidden;
+
   > :not(:first-child) {
     ::before {
       content: "·";
@@ -144,39 +146,28 @@ const isClosed = (timeline) => {
   return (timeline || []).some((item) => item.method === "Closed");
 };
 
-const getClosedTimelineData = (timeline) => {
-  let firstTipIndex = -1;
-  let lastTipIndex = -1;
-  (timeline || []).forEach((item, index) => {
-    if (item.method === "Voted") {
-      if (firstTipIndex === -1) {
-        firstTipIndex = index;
-      }
-      if (lastTipIndex < index) {
-        lastTipIndex = index;
-      }
-    }
-  });
-  if (firstTipIndex > 0) {
-    firstTipIndex--;
+const getClosedTimelineData = (timeline = []) => {
+  let firstFoldIndex = timeline.findIndex((item) => item?.method === "Voted");
+  const lastFoldIndex = findLastIndex(
+    timeline,
+    (item) => item?.method === "Voted"
+  );
+  if (firstFoldIndex > 0) {
+    firstFoldIndex--;
   }
-  if (firstTipIndex >= lastTipIndex) {
+
+  if (firstFoldIndex >= lastFoldIndex) {
     return timeline;
-  } else {
-    const rv = [];
-    const fd = [];
-    (timeline || []).forEach((item, index) => {
-      if (index === firstTipIndex) {
-        rv.push(fd);
-      }
-      if (index >= firstTipIndex && index <= lastTipIndex) {
-        fd.push(item);
-      } else {
-        rv.push(item);
-      }
-    });
-    return rv;
   }
+
+  const foldItems = timeline.filter(
+    (item, idx) => idx >= firstFoldIndex && idx <= lastFoldIndex
+  );
+  const notFoldItems = timeline.filter(
+    (item, idx) => idx < firstFoldIndex || idx > lastFoldIndex
+  );
+  const fd = [...foldItems];
+  return [fd, ...notFoldItems];
 };
 
 export default function MotionDetail({ motion, chain }) {
