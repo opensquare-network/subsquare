@@ -141,7 +141,7 @@ function createMotionTimelineData(motion) {
 }
 
 const isClosed = (timeline) => {
-  return (timeline || []).find((item) => item.method === "Closed");
+  return (timeline || []).some((item) => item.method === "Closed");
 };
 
 const getClosedTimelineData = (timeline) => {
