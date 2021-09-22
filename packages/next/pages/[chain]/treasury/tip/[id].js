@@ -4,7 +4,7 @@ import Back from "components/back";
 import DetailItem from "components/detailItem";
 import Comments from "components/comment";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import { ssrNextApi as nextApi} from "services/nextApi";
+import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Input from "components/comment/input";
 import { useState, useRef } from "react";
@@ -82,7 +82,6 @@ const getClosedTimelineData = (timeline) => {
     });
     return rv;
   }
-  return timeline;
 };
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
@@ -216,7 +215,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   detail.status = getTipState({
     state: detail.onchainData?.state?.state,
-    tipsCount: (detail.onchainData?.meta?.tips || []).length
+    tipsCount: (detail.onchainData?.meta?.tips || []).length,
   });
 
   return (
@@ -234,7 +233,12 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
         <KVList
           title="Metadata"
           data={[
-            ["Reason", <div><ReasonLink text={detail.onchainData?.meta?.reason} /></div>],
+            [
+              "Reason",
+              <div>
+                <ReasonLink text={detail.onchainData?.meta?.reason} />
+              </div>,
+            ],
             ["Hash", detail.onchainData?.hash],
             [
               "Finder",
