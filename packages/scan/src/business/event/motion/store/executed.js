@@ -6,6 +6,7 @@ const {
 const {
   updateMotionByHash,
 } = require("../../../../mongo/service/onchain/motion");
+const { logger } = require("../../../../logger");
 
 async function handleExecuted(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();
@@ -27,11 +28,16 @@ async function handleExecuted(event, extrinsic, indexer) {
     indexer,
   };
 
-  if (Object.keys(dispatchResult).includes("ok")) {
-    await handleBusinessWhenMotionExecuted(hash, indexer);
+  try {
+    if (Object.keys(dispatchResult).includes("ok")) {
+      await handleBusinessWhenMotionExecuted(hash, indexer);
+    }
+  } catch (e) {
+    logger.error("Handle motion executed hooks failed", e);
+  } finally {
+    const updates = { state, isFinal: true };
+    await updateMotionByHash(hash, updates, timelineItem);
   }
-  const updates = { state, isFinal: true };
-  await updateMotionByHash(hash, updates, timelineItem);
 }
 
 module.exports = {

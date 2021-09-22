@@ -4,7 +4,7 @@ import Back from "components/back";
 import DetailItem from "components/detailItem";
 import Comments from "components/comment";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import { ssrNextApi as nextApi} from "services/nextApi";
+import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Input from "components/comment/input";
 import { useState, useRef } from "react";
@@ -17,6 +17,12 @@ import KVList from "components/kvList";
 import Links from "components/timeline/links";
 import ReasonLink from "components/reasonLink";
 import { getTipState } from "utils/viewfuncs";
+import {
+  getFocusEditor,
+  getMentionList,
+  getOnReply,
+} from "../../../../utils/post";
+import findLastIndex from "lodash.findlastindex";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -46,50 +52,34 @@ const FlexEnd = styled.div`
 `;
 
 const isClosed = (timeline) => {
-  return (timeline || []).find((item) => item.method === "TipClosed");
+  return (timeline || []).some((item) => item.method === "TipClosed");
 };
 
-const getClosedTimelineData = (timeline) => {
-  let firstTipIndex = -1;
-  let lastTipIndex = -1;
-  (timeline || []).forEach((item, index) => {
-    if (item.method === "tip") {
-      if (firstTipIndex === -1) {
-        firstTipIndex = index;
-      }
-      if (lastTipIndex < index) {
-        lastTipIndex = index;
-      }
-    }
-  });
+const getClosedTimelineData = (timeline = []) => {
+  let firstTipIndex = timeline.findIndex((item) => item?.method === "tip");
+  const lastTipIndex = findLastIndex(
+    timeline,
+    (item) => item?.method === "tip"
+  );
   if (firstTipIndex > 0) {
     firstTipIndex--;
   }
+
   if (firstTipIndex >= lastTipIndex) {
     return timeline;
-  } else {
-    const rv = [];
-    const fd = [];
-    (timeline || []).forEach((item, index) => {
-      if (index === firstTipIndex) {
-        rv.push(fd);
-      }
-      if (index >= firstTipIndex && index <= lastTipIndex) {
-        fd.push(item);
-      } else {
-        rv.push(item);
-      }
-    });
-    return rv;
   }
-  return timeline;
+
+  const foldItems = timeline.filter(
+    (item, idx) => idx >= firstTipIndex && idx <= lastTipIndex
+  );
+  const notFoldItems = timeline.filter(
+    (item, idx) => idx < firstTipIndex || idx > lastTipIndex
+  );
+  const fd = [...foldItems];
+  return [fd, ...notFoldItems];
 };
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
-  if (!detail) {
-    return "404"; //TODO: improve
-  }
-
   const postId = detail._id;
 
   const editorWrapperRef = useRef(null);
@@ -144,7 +134,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     return args;
   };
 
-  const timeline = (detail?.onchainData?.timeline || []).map((item) => {
+  let timeline = (detail?.onchainData?.timeline || []).map((item) => {
     return {
       time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
       indexer: item.indexer,
@@ -154,70 +144,62 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     };
   });
 
-  let timelineData;
-
   if (isClosed(timeline)) {
-    timelineData = getClosedTimelineData(timeline);
-  } else {
-    timelineData = timeline;
+    timeline = getClosedTimelineData(timeline);
   }
 
-  function isUniqueInArray(value, index, self) {
-    return self.indexOf(value) === index;
-  }
+  const users = getMentionList(comments);
 
-  const users =
-    comments?.items
-      ?.map((comment) => comment.author?.username)
-      .filter(isUniqueInArray) ?? [];
+  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
-  const focusEditor = () => {
-    if (contentType === "markdown") {
-      editorWrapperRef.current?.querySelector("textarea")?.focus();
-    } else if (contentType === "html") {
-      setTimeout(() => {
-        quillRef.current.getEditor().setSelection(99999, 0, "api"); //always put caret to the end
-      }, 4);
-    }
-    editorWrapperRef.current?.scrollIntoView();
-  };
-
-  const onReply = (username) => {
-    let reply = "";
-    if (contentType === "markdown") {
-      reply = `[@${username}](/member/${username}) `;
-      const at = content ? `${reply}` : reply;
-      if (content === reply) {
-        setContent(``);
-      } else {
-        setContent(content + at);
-      }
-    } else if (contentType === "html") {
-      const contents = quillRef.current.getEditor().getContents();
-      reply = {
-        ops: [
-          {
-            insert: {
-              mention: {
-                index: "0",
-                denotationChar: "@",
-                id: username,
-                value: username + " &nbsp; ",
-              },
-            },
-          },
-          { insert: "\n" },
-        ],
-      };
-      quillRef.current.getEditor().setContents(contents.ops.concat(reply.ops));
-    }
-    focusEditor();
-  };
+  const onReply = getOnReply(
+    contentType,
+    content,
+    setContent,
+    quillRef,
+    focusEditor
+  );
 
   detail.status = getTipState({
     state: detail.onchainData?.state?.state,
-    tipsCount: (detail.onchainData?.meta?.tips || []).length
+    tipsCount: (detail.onchainData?.meta?.tips || []).length,
   });
+
+  const metadata = [
+    [
+      "Reason",
+      <div>
+        <ReasonLink text={detail.onchainData?.meta?.reason} />
+      </div>,
+    ],
+    ["Hash", detail.onchainData?.hash],
+    [
+      "Finder",
+      <>
+        <User
+          chain={chain}
+          add={detail.onchainData?.meta?.finder}
+          fontSize={14}
+        />
+        <Links
+          chain={chain}
+          address={detail.onchainData?.meta?.finder}
+          style={{ marginLeft: 8 }}
+        />
+      </>,
+    ],
+    [
+      "Beneficiary",
+      <>
+        <User chain={chain} add={detail.onchainData?.meta?.who} fontSize={14} />
+        <Links
+          chain={chain}
+          address={detail.onchainData?.meta?.who}
+          style={{ marginLeft: 8 }}
+        />
+      </>,
+    ],
+  ];
 
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
@@ -231,45 +213,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           type="treasury/tip"
         />
 
-        <KVList
-          title="Metadata"
-          data={[
-            ["Reason", <div><ReasonLink text={detail.onchainData?.meta?.reason} /></div>],
-            ["Hash", detail.onchainData?.hash],
-            [
-              "Finder",
-              <>
-                <User
-                  chain={chain}
-                  add={detail.onchainData?.meta?.finder}
-                  fontSize={14}
-                />
-                <Links
-                  chain={chain}
-                  address={detail.onchainData?.meta?.finder}
-                  style={{ marginLeft: 8 }}
-                />
-              </>,
-            ],
-            [
-              "Beneficiary",
-              <>
-                <User
-                  chain={chain}
-                  add={detail.onchainData?.meta?.who}
-                  fontSize={14}
-                />
-                <Links
-                  chain={chain}
-                  address={detail.onchainData?.meta?.who}
-                  style={{ marginLeft: 8 }}
-                />
-              </>,
-            ],
-          ]}
-        />
-        {timelineData && timelineData.length > 0 && (
-          <Timeline data={timelineData} chain={chain} indent={false} />
+        <KVList title="Metadata" data={metadata} />
+        {timeline?.length > 0 && (
+          <Timeline data={timeline} chain={chain} indent={false} />
         )}
         <CommentsWrapper>
           <Comments

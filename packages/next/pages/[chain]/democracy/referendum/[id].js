@@ -17,6 +17,11 @@ import Vote from "../../../../components/referenda/vote";
 import dayjs from "dayjs";
 import Timeline from "../../../../components/timeline";
 import MotionProposal from "../../../../components/motion/motionProposal";
+import {
+  getFocusEditor,
+  getMentionList,
+  getOnReply,
+} from "../../../../utils/post";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -46,8 +51,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   if (!node) {
     return null;
   }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
@@ -55,62 +58,18 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     loginUser?.preference.editor || "markdown"
   );
 
-  const onReply = (username) => {
-    let reply = "";
-    if (contentType === "markdown") {
-      reply = `[@${username}](/member/${username}) `;
-      const at = content ? `${reply}` : reply;
-      if (content === reply) {
-        setContent(``);
-      } else {
-        setContent(content + at);
-      }
-    } else if (contentType === "html") {
-      const contents = quillRef.current.getEditor().getContents();
-      reply = {
-        ops: [
-          {
-            insert: {
-              mention: {
-                index: "0",
-                denotationChar: "@",
-                id: username,
-                value: username + " &nbsp; ",
-              },
-            },
-          },
-          { insert: "\n" },
-        ],
-      };
-      quillRef.current.getEditor().setContents(contents.ops.concat(reply.ops));
-    }
-    focusEditor();
-  };
+  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
-  const focusEditor = () => {
-    if (contentType === "markdown") {
-      editorWrapperRef.current?.querySelector("textarea")?.focus();
-    } else if (contentType === "html") {
-      setTimeout(() => {
-        quillRef.current.getEditor().setSelection(99999, 0, "api"); //always put caret to the end
-      }, 4);
-    }
-    editorWrapperRef.current?.scrollIntoView();
-  };
+  const onReply = getOnReply(
+    contentType,
+    content,
+    setContent,
+    quillRef,
+    focusEditor
+  );
 
   const getTimelineData = (args, method) => {
     switch (method) {
-      case "Proposed":
-        return {
-          Index: `#${args.index}`,
-        };
-      case "fastTrack":
-        return {
-          proposalHash: args.find((arg) => arg.name === "proposal_hash").value,
-          votingPeriod:
-            args.find((arg) => arg.name === "voting_period").value + ` blocks`,
-          delay: args.find((arg) => arg.name === "delay").value + ` blocks`,
-        };
       case "Executed":
         const rawResult = args.result;
         let result;
@@ -206,7 +165,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
                 setContentType,
                 content,
                 setContent,
-                users: [],
+                users: getMentionList(comments),
               }}
               type="democracy/referendum"
             />

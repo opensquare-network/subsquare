@@ -2,28 +2,15 @@ import List from "components/list";
 import Menu from "components/menu";
 import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import { ssrNextApi as nextApi} from "services/nextApi";
+import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
-import styled from "styled-components";
 import LayoutFixedHeader from "components/layoutFixedHeader";
 import { toCouncilMotionListItem } from "utils/viewfuncs";
 
-const Create = styled.a`
-  display: flex;
-  align-items: center;
-  color: #6848ff;
-  font-size: 14px;
-  white-space: nowrap;
-
-  svg {
-    margin-right: 8px;
-  }
-
-  cursor: pointer;
-`;
-
 export default withLoginUserRedux(({ loginUser, motions, chain }) => {
-  const items = (motions.items || []).map(item => toCouncilMotionListItem(chain, item));
+  const items = (motions.items || []).map((item) =>
+    toCouncilMotionListItem(chain, item)
+  );
 
   return (
     <LayoutFixedHeader
