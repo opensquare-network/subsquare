@@ -1,3 +1,28 @@
+export function getMentionList(comments) {
+  function isUniqueInArray(value, index, self) {
+    return self.indexOf(value) === index;
+  }
+
+  return (
+    comments?.items
+      ?.map((comment) => comment.author?.username)
+      .filter(isUniqueInArray) ?? []
+  );
+}
+
+export function getFocusEditor(contentType, editorWrapperRef, quillRef) {
+  return () => {
+    if (contentType === "markdown") {
+      editorWrapperRef.current?.querySelector("textarea")?.focus();
+    } else if (contentType === "html") {
+      setTimeout(() => {
+        quillRef.current.getEditor().setSelection(99999, 0, "api"); //always put caret to the end
+      }, 4);
+    }
+    editorWrapperRef.current?.scrollIntoView();
+  };
+}
+
 export function getOnReply(
   contentType,
   content,

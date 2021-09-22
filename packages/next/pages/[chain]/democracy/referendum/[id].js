@@ -17,7 +17,11 @@ import Vote from "../../../../components/referenda/vote";
 import dayjs from "dayjs";
 import Timeline from "../../../../components/timeline";
 import MotionProposal from "../../../../components/motion/motionProposal";
-import { getOnReply } from "../../../../utils/post";
+import {
+  getFocusEditor,
+  getMentionList,
+  getOnReply,
+} from "../../../../utils/post";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -54,6 +58,8 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     loginUser?.preference.editor || "markdown"
   );
 
+  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
+
   const onReply = getOnReply(
     contentType,
     content,
@@ -61,17 +67,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     quillRef,
     focusEditor
   );
-
-  const focusEditor = () => {
-    if (contentType === "markdown") {
-      editorWrapperRef.current?.querySelector("textarea")?.focus();
-    } else if (contentType === "html") {
-      setTimeout(() => {
-        quillRef.current.getEditor().setSelection(99999, 0, "api"); //always put caret to the end
-      }, 4);
-    }
-    editorWrapperRef.current?.scrollIntoView();
-  };
 
   const getTimelineData = (args, method) => {
     switch (method) {
@@ -170,7 +165,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
                 setContentType,
                 content,
                 setContent,
-                users: [],
+                users: getMentionList(comments),
               }}
               type="democracy/referendum"
             />
