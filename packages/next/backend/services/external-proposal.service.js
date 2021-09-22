@@ -75,7 +75,7 @@ async function getActivePostsOverview(chain) {
     {
       "state.state": {
         $nin: [
-          "ExternalTabled", "fastTrack", "Vetoed",
+          "Tabled", "ExternalTabled", "fastTrack", "Vetoed",
         ]
       }
     })
