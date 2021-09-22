@@ -8,8 +8,6 @@ const {
   getDb: getChainDb,
 } = require("../mongo/chain");
 
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
 async function updateTip(chain) {
   const chainDb = await getChainDb(chain)
 
@@ -209,20 +207,18 @@ async function updateExternalProposal(chain) {
 async function main() {
   const chain = process.env.CHAIN;
 
-  while (true) {
-    try {
-      await updateTip(chain);
-      await updateTreasuryProposal(chain);
-      await updatePublicProposal(chain);
-      await updateExternalProposal(chain);
+  try {
+    await updateTip(chain);
+    await updateTreasuryProposal(chain);
+    await updatePublicProposal(chain);
+    await updateExternalProposal(chain);
 
-      console.log(`Last run at`, new Date());
-    } catch (e) {
-      console.log(e);
-    }
-
-    await sleep(30*1000);
+    console.log(`Last run at`, new Date());
+  } catch (e) {
+    console.log(e);
   }
+
+  process.exit(0);
 }
 
 main();
