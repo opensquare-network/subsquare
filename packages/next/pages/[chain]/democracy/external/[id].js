@@ -232,7 +232,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
               ref={editorWrapperRef}
               setQuillRef={setQuillRef}
               {...{ contentType, setContentType, content, setContent, users }}
-              type="democracy/proposal"
+              type="democracy/external"
             />
           )}
         </CommentsWrapper>
