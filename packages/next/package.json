@@ -6,7 +6,8 @@
     "dev": "node server.js",
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
-    "lint": "next lint"
+    "lint": "next lint",
+    "timeupdater:karura": "pm2 start ecosystem.config.js --only subsquare-time-updater-karura --env production"
   },
   "dependencies": {
     "@acala-network/type-definitions": "2.2.1",
@@ -22,6 +23,7 @@
     "bignumber.js": "^9.0.1",
     "cheerio": "^1.0.0-rc.10",
     "cookies": "^0.8.0",
+    "dotenv": "^10.0.0",
     "dayjs": "^1.10.7",
     "handlebars": "^4.7.7",
     "html-react-parser": "^1.2.8",
