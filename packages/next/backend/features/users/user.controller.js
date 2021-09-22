@@ -88,67 +88,6 @@ async function changePassword(ctx) {
   ctx.body = true;
 }
 
-async function changeEmail(ctx) {
-  const { password, newEmail } = ctx.request.body;
-  const user = ctx.user;
-
-  if (!password) {
-    throw new HttpError(400, { password: ["Password must be provided."] });
-  }
-
-  if (newEmail === user.email) {
-    throw new HttpError(400, {
-      newEmail: ["The new email address must be different from the old one."],
-    });
-  }
-
-  if (!validator.isEmail(newEmail)) {
-    throw new HttpError(400, { newEmail: ["Invalid email"] });
-  }
-
-  const correct = await argon2.verify(user.hashedPassword, password);
-  if (!correct) {
-    throw new HttpError(401, { password: ["Incorrect password."] });
-  }
-
-  const userCol = await getUserCollection();
-
-  const existing = await userCol.findOne({ email: newEmail });
-  if (existing) {
-    throw new HttpError(409, {
-      newEmail: ["The email address has been used by another account."],
-    });
-  }
-
-  const verifyToken = randomBytes(12).toString("hex");
-  const result = await userCol.updateOne(
-    { _id: user._id },
-    {
-      $set: {
-        email: newEmail,
-        emailVerified: false,
-        verifyToken,
-      },
-    }
-  );
-
-  if (!result.result.ok) {
-    throw new HttpError(500, "DB error: change email.");
-  }
-
-  if (result.result.nModified === 0) {
-    throw new HttpError(500, "Failed to change email.");
-  }
-
-  const isSent = await mailService.sendVerificationEmail({
-    username: user.username,
-    email: newEmail,
-    token: verifyToken,
-  });
-
-  ctx.body = isSent;
-}
-
 async function deleteAccount(ctx) {
   const { password } = ctx.request.body;
   const user = ctx.user;
@@ -189,7 +128,11 @@ async function resendVerifyEmail(ctx) {
     token: user.verifyToken,
   });
 
-  ctx.body = isSent;
+  if (!isSent) {
+    throw new HttpError(500, "Failed to send email");
+  }
+
+  ctx.body = true;
 }
 
 async function linkAddressStart(ctx) {
@@ -375,7 +318,6 @@ async function setUserPreference(ctx) {
 module.exports = {
   getUserProfile,
   changePassword,
-  changeEmail,
   resendVerifyEmail,
   deleteAccount,
   linkAddressStart,

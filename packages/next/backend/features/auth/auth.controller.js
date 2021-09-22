@@ -70,11 +70,15 @@ async function signup(ctx) {
     throw new HttpError(500, "Signup error, cannot create user.");
   }
 
-  mailService.sendVerificationEmail({ username, email, token: verifyToken });
-
   const insertedUser = result.ops[0];
   const accessToken = await authService.getSignedToken(insertedUser);
   const refreshToken = await authService.getRefreshToken(insertedUser);
+
+  ctx.cookies.set("auth-token", accessToken, {
+    httpOnly: true,
+    sameSite: "lax",
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+  });
 
   ctx.body = {
     username: insertedUser.username,
@@ -236,7 +240,11 @@ async function forgetPassword(ctx) {
     token,
   });
 
-  ctx.body = isSent;
+  if (!isSent) {
+    throw new HttpError(500, "Failed to send email");
+  }
+
+  ctx.body = true;
 }
 
 async function resetPassword(ctx) {
