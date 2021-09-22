@@ -3,11 +3,12 @@ import Back from "components/back";
 import DetailItem from "components/detailItem";
 import Comments from "components/comment";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import { ssrNextApi as nextApi} from "services/nextApi";
+import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "../../../utils/constants";
 import Input from "../../../components/comment/input";
 import { useState, useRef } from "react";
 import LayoutFixedHeader from "../../../components/layoutFixedHeader";
+import { getOnReply } from "../../../utils/post";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -41,7 +42,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(loginUser?.preference.editor || "markdown");
+  const [contentType, setContentType] = useState(
+    loginUser?.preference.editor || "markdown"
+  );
 
   function isUniqueInArray(value, index, self) {
     return self.indexOf(value) === index;
@@ -63,38 +66,13 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     editorWrapperRef.current?.scrollIntoView();
   };
 
-  const onReply = (username) => {
-    let reply = "";
-    if (contentType === "markdown") {
-      reply = `[@${username}](/member/${username}) `;
-      const at = content ? `${reply}` : reply;
-      if (content === reply) {
-        setContent(``);
-      } else {
-        setContent(content + at);
-      }
-    } else if (contentType === "html") {
-      const contents = quillRef.current.getEditor().getContents();
-      reply = {
-        ops: [
-          {
-            insert: {
-              mention: {
-                index: "0",
-
-                denotationChar: "@",
-                id: username,
-                value: username + " &nbsp; ",
-              },
-            },
-          },
-          { insert: "\n" },
-        ],
-      };
-      quillRef.current.getEditor().setContents(contents.ops.concat(reply.ops));
-    }
-    focusEditor();
-  };
+  const onReply = getOnReply(
+    contentType,
+    content,
+    setContent,
+    quillRef,
+    focusEditor
+  );
 
   return (
     <LayoutFixedHeader user={loginUser} chain={chain}>
