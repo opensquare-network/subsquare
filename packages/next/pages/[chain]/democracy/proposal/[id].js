@@ -66,10 +66,6 @@ const DepositorsWrapper = styled.div`
 `;
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
-  if (!detail) {
-    return "404"; //todo improve this
-  }
-
   const postId = detail._id;
 
   const editorWrapperRef = useRef(null);

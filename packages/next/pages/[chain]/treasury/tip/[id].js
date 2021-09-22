@@ -90,10 +90,6 @@ const getClosedTimelineData = (timeline) => {
 };
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
-  if (!detail) {
-    return "404"; //TODO: improve
-  }
-
   const postId = detail._id;
 
   const editorWrapperRef = useRef(null);
