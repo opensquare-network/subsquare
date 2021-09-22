@@ -177,7 +177,6 @@ const getClosedTimelineData = (timeline) => {
     });
     return rv;
   }
-  return timeline;
 };
 
 export default function MotionDetail({ motion, chain }) {
@@ -222,12 +221,8 @@ export default function MotionDetail({ motion, chain }) {
                 chain={chain}
                 fontSize={12}
               />
-              {motion.isTreasury && (
-                <SectionTag name={"Treasury"} />
-              )}
-              {motion.isDemocracy && (
-                <SectionTag name={"Democracy"} />
-              )}
+              {motion.isTreasury && <SectionTag name={"Treasury"} />}
+              {motion.isDemocracy && <SectionTag name={"Democracy"} />}
             </DividerWrapper>
             {motion.status && <StatusWrapper>{motion.status}</StatusWrapper>}
           </FlexWrapper>
