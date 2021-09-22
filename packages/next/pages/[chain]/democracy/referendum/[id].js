@@ -46,8 +46,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   if (!node) {
     return null;
   }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
