@@ -7,6 +7,13 @@ const TipStateMap = {
   TipClosed: "Closed",
 };
 
+export function getPostUpdatedAt(post) {
+  if (post.createdAt === post.lastActivityAt) {
+    return post.indexer.blockTime;
+  }
+  return post.lastActivityAt;
+}
+
 export function getTipState(state) {
   return TipStateMap[state.state] === "Tipping" ? `Tipping (${state.tipsCount})` : TipStateMap[state.state];
 }
@@ -46,13 +53,13 @@ export const toTreasuryProposalListItem = (chain, item) => ({
     addresses: [{ chain, address: item.proposer }],
   },
   status: item.state ?? "Unknown",
-  time: item.lastActivityAt,
+  time: getPostUpdatedAt(item),
   detailLink: `/${chain}/treasury/proposal/${item.proposalIndex}`,
 });
 
 export const toReferendaListItem = (chain, item) => ({
   ...item,
-  time: item.lastActivityAt,
+  time: getPostUpdatedAt(item),
   status: item.state ?? "Unknown",
   index: item.referendumIndex,
   author: item.author ?? {
@@ -71,7 +78,7 @@ export const toTipListItem = (chain, item) => ({
   status: item.state
     ? getTipState(item.state)
     : "Unknown",
-  time: item.lastActivityAt,
+  time: getPostUpdatedAt(item),
   detailLink: `/${chain}/treasury/tip/${item.height}_${item.hash}`,
 });
 
@@ -83,7 +90,7 @@ export const toPublicProposalListItem = (chain, item) => ({
   },
   index: item.proposalIndex,
   status: item.state ?? "Unknown",
-  time: item.lastActivityAt,
+  time: getPostUpdatedAt(item),
   detailLink: `/${chain}/democracy/proposal/${item.proposalIndex}`,
 });
 
@@ -93,7 +100,7 @@ export const toExternalProposalListItem = (chain, item) => ({
     username: addressEllipsis(item.proposer),
     addresses: [{ chain, address: item.proposer }],
   },
-  time: item.lastActivityAt,
+  time: getPostUpdatedAt(item),
   hash: item.externalProposalHash,
   status: item.state ?? "Unknown",
   detailLink: `/${chain}/democracy/external/${item.indexer.blockHeight}_${item.externalProposalHash}`,
