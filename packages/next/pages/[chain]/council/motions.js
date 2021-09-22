@@ -4,7 +4,6 @@ import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
-import styled from "styled-components";
 import LayoutFixedHeader from "components/layoutFixedHeader";
 import { toCouncilMotionListItem } from "utils/viewfuncs";
 
