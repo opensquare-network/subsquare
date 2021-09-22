@@ -74,8 +74,7 @@ async function getActivePostsOverview(chain) {
     {
       "state.state": {
         $nin: [
-          "Disapproved", "Approved", "Executed",
-          "NotPassed", "Passed",
+          "Tabled",
         ]
       }
     })
