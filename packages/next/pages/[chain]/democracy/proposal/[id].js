@@ -4,7 +4,7 @@ import Back from "components/back";
 import DetailItem from "components/detailItem";
 import Comments from "components/comment";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import { ssrNextApi as nextApi} from "services/nextApi";
+import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Input from "components/comment/input";
 import { useState, useRef } from "react";
@@ -70,7 +70,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(loginUser?.preference.editor || "markdown");
+  const [contentType, setContentType] = useState(
+    loginUser?.preference.editor || "markdown"
+  );
 
   const node = getNode(chain);
   if (!node) {
@@ -84,11 +86,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       case "Proposed":
         return {
           Index: `#${args.index}`,
-        };
-      case "Awarded":
-        return {
-          Beneficiary: <User chain={chain} add={args.beneficiary} />,
-          Award: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
         };
       case "Tabled":
         return {
@@ -106,46 +103,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     return args;
   };
 
-  function createMotionTimelineData(motion) {
-    return (motion?.timeline || []).map((item) => {
-      switch (item.method) {
-        case "Proposed": {
-          return {
-            indexer: item.indexer,
-            time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-            status: { value: `Motion #${motion.index}`, color: "#6848FF" },
-            voting: {
-              proposer: motion.proposer,
-              method: motion.proposal.method,
-              args: motion.proposal.args,
-              total: motion.voting.threshold,
-              ayes: motion.voting.ayes.length,
-              nays: motion.voting.nays.length,
-            },
-          };
-        }
-        case "Voted": {
-          return {
-            indexer: item.indexer,
-            time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-            status: { value: "Vote", color: "#6848FF" },
-            voteResult: {
-              name: item.args.voter,
-              value: item.args.approve,
-            },
-          };
-        }
-        default: {
-          return {
-            indexer: item.indexer,
-            time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-            status: { value: item.method, color: "#6848FF" },
-          };
-        }
-      }
-    });
-  }
-
   const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
     return {
       time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
@@ -154,14 +111,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       data: getTimelineData(item.args, item.method ?? item.name),
     };
   });
-
-  const motionTimelineData = createMotionTimelineData(
-    detail?.onchainData?.motions?.[0]
-  );
-
-  if (motionTimelineData && motionTimelineData.length > 0) {
-    timelineData.push(motionTimelineData);
-  }
 
   timelineData.sort((a, b) => {
     if (Array.isArray(a)) {
