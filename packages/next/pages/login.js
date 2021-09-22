@@ -99,9 +99,9 @@ export default withLoginUserRedux(({ loginUser }) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
+  const chain = localStorage.getItem("chain") || "karura";
 
   if (loginUser) {
-    const chain = localStorage.getItem("chain") || "karura";
     return router.replace(`/${chain}`);
   }
 
@@ -115,7 +115,7 @@ export default withLoginUserRedux(({ loginUser }) => {
       const res = await nextApi.post("auth/login", formData);
       if (res.result) {
         dispatch(setUser(res.result));
-        router.replace("/");
+        router.replace(`/${chain}`);
       } else if (res.error) {
         setErrors(res.error);
       }
