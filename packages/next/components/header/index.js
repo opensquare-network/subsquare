@@ -9,7 +9,7 @@ import SidebarAccount from "./sidebarAccount";
 import { nodes } from "utils/constants";
 import NodeSwitch from "components/nodeSwitch";
 import { useRouter } from "next/router";
-import Flex from "../common/flex";
+import Flex from "../styled/flex";
 
 const Wrapper = styled.header`
   padding-left: 32px;

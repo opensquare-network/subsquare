@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Flex from "./common/flex";
+import Flex from "./styled/flex";
 
 const Wrapper = styled(Flex)`
   justify-content: center;

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Post from "./post";
 import Pagination from "./pagination";
 import EmptyList from "./emptyList";
-import Flex from "./common/flex";
+import Flex from "./styled/flex";
 
 const Wrapper = styled.div`
   max-width: 848px;

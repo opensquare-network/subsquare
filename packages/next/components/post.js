@@ -6,7 +6,7 @@ import { timeDuration, timeDurationFromNow } from "utils";
 import Tag from "components/tag";
 import ReasonLink from "components/reasonLink";
 import SectionTag from "components/sectionTag";
-import Flex from "./common/flex";
+import Flex from "./styled/flex";
 
 const Wrapper = styled.div`
   background: #ffffff;

@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import EditIcon from "../public/imgs/icons/edit.svg";
 import TriangleRight from "../public/imgs/icons/arrow-triangle-right.svg";
 import Tag from "./tag";
-import Flex from "./common/flex";
+import Flex from "./styled/flex";
 
 const Wrapper = styled.div`
   background: #ffffff;
