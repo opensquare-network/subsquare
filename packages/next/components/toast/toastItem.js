@@ -4,19 +4,19 @@ import styled from "styled-components";
 
 import { removeToast } from "store/reducers/toastSlice";
 import { useIsMounted } from "utils/hooks";
+import Flex from "../styled/flex";
 
-const Wrapper = styled.div`
+const Wrapper = styled(Flex)`
+  align-items: flex-start;
   padding: 16px 16px;
   background: #ffffff;
-  box-shadow:0 6px 22px rgba(30, 33, 52, 0.11),
-   0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
-   0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
+  box-shadow: 0 6px 22px rgba(30, 33, 52, 0.11),
+    0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
+    0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
   border-radius: 6px;
   border: 1px solid #ebeef4;
   font-size: 14px;
   line-height: 140%;
-  display: flex;
-  align-items: flex-start;
   width: 246px;
   > img:first-child {
     width: 20px;

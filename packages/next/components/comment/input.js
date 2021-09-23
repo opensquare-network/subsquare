@@ -13,37 +13,32 @@ import HtmlRender from "../post/htmlRender";
 import UploadImgModal from "../editor/imageModal";
 import { fetchUserProfile } from "store/reducers/userSlice";
 import { useDispatch } from "react-redux";
+import Relative from "components/styled/relative";
+import Flex from "../styled/flex";
 
 const Wrapper = styled.div`
   margin-top: 48px;
   ${(p) =>
-          p.isEdit &&
-          css`
-            margin-top: 8px;
-          `}
+    p.isEdit &&
+    css`
+      margin-top: 8px;
+    `}
 `;
 
-const InputWrapper = styled.div`
-  position: relative;
-`;
-
-const InputSwitch = styled.div`
+const InputSwitch = styled(Flex)`
   background-color: white;
   height: 24px;
   top: 10px;
   right: 16px;
   position: absolute;
-  display: flex;
-  align-items: center;
 
   > img {
     margin-right: 12px;
   }
 `;
 
-const ButtonWrapper = styled.div`
+const ButtonWrapper = styled(Flex)`
   margin-top: 16px;
-  display: flex;
   justify-content: flex-end;
 
   > :not(:first-child) {
@@ -100,13 +95,15 @@ function Input(
     setContentType(newContentType);
 
     // Save to user preference
-    nextApi.patch("user/preference", {
-      editor: newContentType,
-    }).then(({ result }) => {
-      if (result) {
-        dispatch(fetchUserProfile());
-      }
-    });
+    nextApi
+      .patch("user/preference", {
+        editor: newContentType,
+      })
+      .then(({ result }) => {
+        if (result) {
+          dispatch(fetchUserProfile());
+        }
+      });
   };
 
   const createComment = async () => {
@@ -118,7 +115,7 @@ function Input(
           content,
           contentType,
         },
-        {credentials: "include"},
+        { credentials: "include" }
       );
       if (result.error) {
         setErrors(result.error);
@@ -139,7 +136,7 @@ function Input(
 
   const updateComment = async () => {
     setLoading(true);
-    const {result, error} = await nextApi.patch(
+    const { result, error } = await nextApi.patch(
       `${chain}/comments/${commentId}`,
       {
         content,
@@ -168,11 +165,11 @@ function Input(
           insetQuillImgFunc={insetQuillImgFunc}
         />
       )}
-      <InputWrapper ref={ref}>
+      <Relative ref={ref}>
         {contentType === "markdown" && (
           <MarkdownEditor
             height={114}
-            {...{content, users}}
+            {...{ content, users }}
             setContent={onInputChange}
             visible={!showPreview}
           />
@@ -180,7 +177,7 @@ function Input(
         {contentType === "html" && (
           <QuillEditor
             visible={!showPreview}
-            {...{content, users}}
+            {...{ content, users }}
             setContent={onInputChange}
             height={114}
             setModalInsetImgFunc={(insetImgFunc) => {
@@ -192,7 +189,7 @@ function Input(
         )}
         {!showPreview && (
           <InputSwitch>
-            <img src="/imgs/icons/markdown-mark.svg" alt=""/>
+            <img src="/imgs/icons/markdown-mark.svg" alt="" />
             <Toggle
               size="small"
               isOn={contentType === "markdown"}
@@ -200,13 +197,13 @@ function Input(
             />
           </InputSwitch>
         )}
-      </InputWrapper>
+      </Relative>
       {showPreview && (
         <PreviewWrapper className="preview">
           {contentType === "markdown" && (
-            <PreviewMD content={content} setContent={setContent}/>
+            <PreviewMD content={content} setContent={setContent} />
           )}
-          {contentType === "html" && <HtmlRender html={content}/>}
+          {contentType === "html" && <HtmlRender html={content} />}
         </PreviewWrapper>
       )}
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}

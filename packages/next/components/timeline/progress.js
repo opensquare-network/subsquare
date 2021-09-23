@@ -1,13 +1,11 @@
 import styled from "styled-components";
+import Flex from "../styled/flex";
 
 const Wrapper = styled.div`
   padding: 10px 0;
 `;
 
-const BarWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
+const BarWrapper = styled(Flex)``;
 
 const Bar = styled.div`
   height: 4px;
@@ -27,9 +25,7 @@ const Bar = styled.div`
   }
 `;
 
-const DetailWrapper = styled.div`
-  display: flex;
-  align-items: center;
+const DetailWrapper = styled(Flex)`
   min-height: 14px;
   margin-top: 8px;
   color: #506176;

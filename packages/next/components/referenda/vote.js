@@ -1,13 +1,13 @@
 import BigNumber from "bignumber.js";
 import styled from "styled-components";
 import { getNode, toPrecision } from "../../utils";
+import Flex from "../styled/flex";
+import { shadow_100 } from "../../styles/componentCss";
 
 const Wrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
-  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
-    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  ${shadow_100};
   border-radius: 6px;
   padding: 48px;
   @media screen and (max-width: 768px) {
@@ -21,11 +21,6 @@ const Title = styled.div`
   font-weight: bold;
   font-size: 16px;
   margin-bottom: 16px;
-`;
-
-const Flex = styled.div`
-  display: flex;
-  align-items: center;
 `;
 
 const Headers = styled(Flex)`

@@ -10,13 +10,13 @@ import Timeline from "../timeline";
 import { getNode, toPrecision } from "utils";
 import SectionTag from "components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
+import Flex from "../styled/flex";
+import { shadow_100 } from "../../styles/componentCss";
 
 const Wrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
-  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
-    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  ${shadow_100};
   border-radius: 6px;
   padding: 48px;
   @media screen and (max-width: 768px) {
@@ -31,9 +31,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const DividerWrapper = styled.div`
-  display: flex;
-  align-items: center;
+const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
 
   > :not(:first-child) {
@@ -92,11 +90,6 @@ const FlexWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: nowrap;
-`;
-
-const Flex = styled.div`
-  display: flex;
-  align-items: center; ;
 `;
 
 function createMotionTimelineData(motion) {

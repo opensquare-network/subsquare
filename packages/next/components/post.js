@@ -6,13 +6,13 @@ import { timeDuration, timeDurationFromNow } from "utils";
 import Tag from "components/tag";
 import ReasonLink from "components/reasonLink";
 import SectionTag from "components/sectionTag";
+import Flex from "./styled/flex";
+import { shadow_100 } from "../styles/componentCss";
 
 const Wrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
-  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
-    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  ${shadow_100};
   border-radius: 6px;
   padding: 24px;
 
@@ -23,9 +23,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const DividerWrapper = styled.div`
-  display: flex;
-  align-items: center;
+const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
   min-height: 20px;
 
@@ -64,12 +62,12 @@ const Index = styled.div`
   font-size: 16px;
   line-height: 140%;
   ::after {
-      content: "·";
-      font-size: 16px;
-      line-height: 22.4px;
-      color: #9da9bb;
-      margin: 0 8px;
-    }
+    content: "·";
+    font-size: 16px;
+    line-height: 22.4px;
+    color: #9da9bb;
+    margin: 0 8px;
+  }
 `;
 
 const Info = styled.div`
@@ -101,9 +99,7 @@ const Divider = styled.div`
   margin: 12px 0;
 `;
 
-const FooterWrapper = styled.div`
-  display: flex;
-  align-items: center;
+const FooterWrapper = styled(Flex)`
   justify-content: space-between;
   flex-wrap: nowrap;
 `;
@@ -128,12 +124,8 @@ export default function Post({ data, chain, href }) {
       <FooterWrapper>
         <Footer>
           <User user={data.author} chain={chain} fontSize={12} />
-          {data.isTreasury && (
-            <SectionTag name={"Treasury"} />
-          )}
-          {data.isDemocracy && (
-            <SectionTag name={"Democracy"} />
-          )}
+          {data.isTreasury && <SectionTag name={"Treasury"} />}
+          {data.isDemocracy && <SectionTag name={"Democracy"} />}
           {data.time && (
             <Info>{`Updated ${timeDurationFromNow(data.time)}`}</Info>
           )}

@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import Link from "next/link";
+import Flex from "./styled/flex";
 
-const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
+const Wrapper = styled(Flex)`
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
@@ -19,11 +18,11 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function Back({href, text}) {
+export default function Back({ href, text }) {
   return (
     <Link href={href}>
       <Wrapper>
-        <img src="/imgs/icons/arrow-left.svg"/>
+        <img src="/imgs/icons/arrow-left.svg" />
         <div>{text}</div>
       </Wrapper>
     </Link>

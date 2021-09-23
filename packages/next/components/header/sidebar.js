@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import Flex from "../styled/flex";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -66,14 +67,12 @@ const Container = styled.div`
   }
 `;
 
-const CloseButton = styled.div`
+const CloseButton = styled(Flex)`
+  justify-content: center;
   width: 38px;
   height: 38px;
   border: 1px solid #e0e4eb;
   border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
 `;
 

@@ -2,10 +2,9 @@ import styled from "styled-components";
 
 import Grvatar from "components/gravatar";
 import Avatar from "components/avatar";
+import Flex from "./styled/flex";
 
-const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
+const Wrapper = styled(Flex)`
   word-break: break-word;
 
   > img {

@@ -4,11 +4,6 @@ import Item from "./item";
 import Pagination from "components/pagination";
 import NoComment from "./noComment";
 import LoginButtons from "./loginButtons";
-import Input from "./input";
-import { useRef, useState } from "react";
-
-const Wrapper = styled.div`
-`;
 
 const Title = styled.div`
   font-weight: bold;
@@ -16,9 +11,9 @@ const Title = styled.div`
   margin-bottom: 16px;
 `;
 
-export default function Comments({ user, postId, data, chain,onReply }) {
+export default function Comments({ user, postId, data, chain, onReply }) {
   return (
-    <Wrapper>
+    <div>
       <Title>Comments</Title>
       {data?.items?.length > 0 && (
         <>
@@ -42,6 +37,6 @@ export default function Comments({ user, postId, data, chain,onReply }) {
       )}
       {!data?.items?.length > 0 && <NoComment />}
       {!user && <LoginButtons />}
-    </Wrapper>
+    </div>
   );
 }

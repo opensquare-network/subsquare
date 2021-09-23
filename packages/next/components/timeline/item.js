@@ -5,6 +5,7 @@ import Links from "./links";
 import Voting from "./voting";
 import User from "components/user";
 import Tag from "components/tag";
+import Flex from "../styled/flex";
 
 const Wrapper = styled.div`
   display: flex;
@@ -61,9 +62,7 @@ const Right = styled.div`
   flex-grow: 1;
 `;
 
-const TitleWrapper = styled.div`
-  display: flex;
-  align-items: center;
+const TitleWrapper = styled(Flex)`
   > :first-child {
     font-weight: 500;
     font-size: 12px;
@@ -100,8 +99,7 @@ const ContentWrapper = styled.div`
   margin-top: 4px;
 `;
 
-const ContentItem = styled.div`
-  display: flex;
+const ContentItem = styled(Flex)`
   align-items: flex-start;
   justify-content: space-between;
   word-break: break-all;
@@ -121,9 +119,7 @@ const ContentItem = styled.div`
   }
 `;
 
-const VoteResultWrapper = styled.div`
-  display: flex;
-  align-items: center;
+const VoteResultWrapper = styled(Flex)`
   justify-content: space-between;
   margin-bottom: 8px;
   > :last-child {
@@ -166,7 +162,8 @@ export default function Item({ data, foldable, isFold, setIsFold, chain }) {
               <ContentItem key={index}>
                 <div>{item[0]}</div>
                 <div>
-                  {["boolean", "number", "string"].includes(typeof item[1]) || React.isValidElement(item[1])
+                  {["boolean", "number", "string"].includes(typeof item[1]) ||
+                  React.isValidElement(item[1])
                     ? item[1]
                     : JSON.stringify(item[1])}
                 </div>

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 
 import ToastItem from "./toastItem";
 import { toastsSelector } from "store/reducers/toastSlice";
+import Flex from "../styled/flex";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -13,12 +14,10 @@ const Wrapper = styled.div`
   z-index: 999;
 `;
 
-const ToastList = styled.div`
+const ToastList = styled(Flex)`
+  flex-direction: column-reverse;
   margin: 78px 32px auto auto;
   width: fit-content;
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: center;
   > :not(:last-child) {
     margin-top: 16px;
   }

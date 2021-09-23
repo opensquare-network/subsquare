@@ -5,16 +5,16 @@ import ThumbUpIcon from "public/imgs/icons/thumb-up.svg";
 import Edit from "components/edit";
 import UnfoldIcon from "public/imgs/icons/unfold.svg";
 import FoldIcon from "public/imgs/icons/fold.svg";
+import Flex from "./styled/flex";
 
-const Wrapper = styled.div`
-  display: flex;
-  margin-top: 16px;
+const Wrapper = styled(Flex)`
   align-items: flex-start;
-  height: 22px;
   flex-wrap: wrap;
+  margin-top: 16px;
+  height: 22px;
 `;
 
-const Item = styled.div`
+const Item = styled(Flex)`
   cursor: default;
 
   ${(p) =>
@@ -50,8 +50,6 @@ const Item = styled.div`
           }
         `}
 
-display: flex;
-  align-items: center;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;

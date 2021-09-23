@@ -18,6 +18,7 @@ import HtmlRender from "../../../components/post/htmlRender";
 import { useDispatch } from "react-redux";
 import { addToast } from "store/reducers/toastSlice";
 import { fetchUserProfile } from "store/reducers/userSlice";
+import { shadow_100 } from "../../../styles/componentCss";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -31,9 +32,7 @@ const ContentWrapper = styled.div`
   padding: 48px;
   background: #ffffff;
   border: 1px solid #ebeef4;
-  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
-    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  ${shadow_100};
   border-radius: 6px;
   @media screen and (max-width: 768px) {
     margin-left: -16px;
@@ -94,7 +93,9 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [showPreview, setShowPreview] = useState(false);
-  const [contentType, setContentType] = useState(loginUser?.preference.editor || "markdown");
+  const [contentType, setContentType] = useState(
+    loginUser?.preference.editor || "markdown"
+  );
   const [showImgModal, setShowImgModal] = useState(false);
   const [insetQuillImgFunc, setInsetQuillImgFunc] = useState(null);
   const [errors, setErrors] = useState();
@@ -135,13 +136,15 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
     setContentType(newContentType);
 
     // Save to user preference
-    nextApi.patch("user/preference", {
-      editor: newContentType,
-    }).then(({ result }) => {
-      if (result) {
-        dispatch(fetchUserProfile());
-      }
-    });
+    nextApi
+      .patch("user/preference", {
+        editor: newContentType,
+      })
+      .then(({ result }) => {
+        if (result) {
+          dispatch(fetchUserProfile());
+        }
+      });
   };
 
   return (

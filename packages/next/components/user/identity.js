@@ -1,7 +1,8 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import IdentityIcon from "./identityIcon";
+import Flex from "../styled/flex";
 
-const Wrapper = styled.div`
+const Wrapper = styled(Flex)`
   display: flex;
   align-items: center;
 

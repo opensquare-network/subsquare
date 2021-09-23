@@ -4,15 +4,13 @@ import { useState, useRef } from "react";
 import { useOnClickOutside } from "utils/hooks";
 import { addressEllipsis } from "utils";
 import Avatar from "components/avatar";
+import Flex from "./styled/flex";
+import Relative from "./styled/relative";
 
-const Wrapper = styled.div`
-  position: relative;
-`;
+const Wrapper = Relative;
 
-const Select = styled.div`
+const Select = styled(Flex)`
   background: #ffffff;
-  display: flex;
-  align-items: center;
   border: 1px solid #e0e4eb;
   border-radius: 4px;
   height: 56px;
@@ -49,16 +47,14 @@ const Options = styled.div`
   margin-top: 4px;
   padding: 8px 0;
   background: #ffffff;
-  box-shadow:0 6px 22px rgba(30, 33, 52, 0.11),
-   0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
-   0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
+  box-shadow: 0 6px 22px rgba(30, 33, 52, 0.11),
+    0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
+    0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
   border-radius: 4px;
 `;
 
-const Item = styled.div`
+const Item = styled(Flex)`
   background: #ffffff;
-  display: flex;
-  align-items: center;
   height: 56px;
   padding: 0 16px;
   cursor: pointer;
@@ -80,12 +76,7 @@ const Item = styled.div`
     `}
 `;
 
-export default function AddressSelect({
-  chain,
-  accounts,
-  selectedAccount,
-  onSelect,
-}) {
+export default function AddressSelect({ accounts, selectedAccount, onSelect }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
 
@@ -104,6 +95,7 @@ export default function AddressSelect({
           </>
         )}
         <img
+          alt=""
           src={show ? "/imgs/icons/caret-up.svg" : "/imgs/icons/caret-down.svg"}
         />
       </Select>

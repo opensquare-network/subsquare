@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import {useState} from "react";
-
+import { useState } from "react";
+import Flex from "../styled/flex";
 
 const Shade = styled.div`
   z-index: 10;
@@ -9,8 +9,8 @@ const Shade = styled.div`
   right: 0;
   top: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6)
-`
+  background-color: rgba(0, 0, 0, 0.6);
+`;
 
 const Wrapper = styled.div`
   z-index: 11;
@@ -27,23 +27,20 @@ const Wrapper = styled.div`
     margin-left: -171px;
     border-radius: 6px;
   }
-  background: #FFFFFF;
-  box-shadow:0 2px 4px rgba(0, 0, 0, 0.04);
+  background: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
   border-radius: 8px;
-`
-const Title = styled.div`
-  display: flex;
+`;
+const Title = styled(Flex)`
   padding: 24px 16px 12px 16px;
   justify-content: space-between;
-  align-items: center;
   font-size: 14px;
   font-weight: bold;
 
   svg {
     cursor: pointer;
   }
-`
-
+`;
 
 const FormWrapper = styled.div`
   padding: 0 16px 16px 16px;
@@ -59,7 +56,7 @@ const FormWrapper = styled.div`
     border: 1px solid #ddd;
     width: 96px;
   }
-`
+`;
 
 const TextArea = styled.textarea`
   font-family: Inter, serif;
@@ -67,27 +64,26 @@ const TextArea = styled.textarea`
   font-size: 14px;
   line-height: 14px;
   padding: 12px 16px;
-  color: #34373C;
+  color: #34373c;
   resize: none;
   border: 1px solid #ddd;
   border-radius: 4px;
 
-  &:focus, &:active {
+  &:focus,
+  &:active {
     border: 1px solid #aaa;
     outline: none;
   }
 
   ::placeholder {
-    color: #D7DEE8;
+    color: #d7dee8;
     opacity: 1;
   }
-`
+`;
 
 const SubmitButtonWrapper = styled.div`
   text-align: right;
-`
-
-
+`;
 
 const SubmitButton = styled.span`
   margin-right: 16px;
@@ -98,16 +94,16 @@ const SubmitButton = styled.span`
   line-height: 30px;
   font-weight: 500;
   font-size: 14px;
-  color: #FFFFFF;
-  background: #1E2134;
+  color: #ffffff;
+  background: #1e2134;
   border-radius: 4px;
   cursor: pointer;
-`
+`;
 
 const FileUpload = styled.input`
   visibility: hidden;
   position: absolute;
-`
+`;
 
 const Label = styled.div`
   padding: 18px;
@@ -117,16 +113,15 @@ const Label = styled.div`
   flex-wrap: wrap;
   width: 368px;
   border-radius: 4px;
-  background: #F8F8F8;
+  background: #f8f8f8;
 
   span {
     font-size: 13px;
     line-height: 16px;
     text-align: center;
-    color: #696D73;
+    color: #696d73;
   }
-`
-
+`;
 
 const Hint = styled.p`
   margin-top: 0.5rem;
@@ -135,14 +130,14 @@ const Hint = styled.p`
   font-weight: normal;
   font-size: 13px;
   line-height: 16px;
-  color: #C8CBD0;
-`
+  color: #c8cbd0;
+`;
 
 const FileName = styled.p`
   text-align: center;
   width: 80%;
   font-size: 14px;
-  color: #34373C;
+  color: #34373c;
 
   span {
     white-space: nowrap;
@@ -161,24 +156,21 @@ const FileName = styled.p`
     width: calc(30% - 1.2em);
     justify-content: flex-end;
   }
-`
-
-
+`;
 
 function UploadImgModal({
-                          showImgModal,
-                          setShowImgModal,
-                          insetQuillImgFunc: resolveInsertImgPromise,
-                        }) {
+  showImgModal,
+  setShowImgModal,
+  insetQuillImgFunc: resolveInsertImgPromise,
+}) {
   const [source, setSource] = useState("remote");
   const [link, setLink] = useState("");
 
   const onChange = (e) => {
     if (source === "remote") {
-      setLink(e.target.value)
+      setLink(e.target.value);
     }
-  }
-
+  };
 
   const onInset = () => {
     try {
@@ -199,40 +191,49 @@ function UploadImgModal({
     } catch (e) {
       setLink("");
     }
-  }
+  };
 
   const onClose = () => {
     setShowImgModal(false);
-  }
+  };
   if (!showImgModal) {
     return null;
   }
 
-  return <Shade>
-    <Wrapper>
-      <Title>
-        <span>Paste image URL</span>
-        <svg onClick={onClose} width="16" height="16" viewBox="0 0 16 16" fill="none"
-             xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M8.00007 7.0574L12.0072 3.05029L12.9498 3.99296L8.94273 8.00007L12.9498 12.0072L12.0072 12.9498L8.00007 8.94273L3.99296 12.9498L3.05029 12.0072L7.0574 8.00007L3.05029 3.99296L3.99296 3.05029L8.00007 7.0574Z"
-            fill="#C8CBD0"/>
-        </svg>
-      </Title>
+  return (
+    <Shade>
+      <Wrapper>
+        <Title>
+          <span>Paste image URL</span>
+          <svg
+            onClick={onClose}
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M8.00007 7.0574L12.0072 3.05029L12.9498 3.99296L8.94273 8.00007L12.9498 12.0072L12.0072 12.9498L8.00007 8.94273L3.99296 12.9498L3.05029 12.0072L7.0574 8.00007L3.05029 3.99296L3.99296 3.05029L8.00007 7.0574Z"
+              fill="#C8CBD0"
+            />
+          </svg>
+        </Title>
 
-      <FormWrapper>
+        <FormWrapper>
+          <TextArea
+            value={link}
+            placeholder="Please fill available URL..."
+            onChange={onChange}
+          />
+        </FormWrapper>
 
-        <TextArea value={link} placeholder="Please fill available URL..." onChange={onChange}/>
-
-      </FormWrapper>
-
-      <SubmitButtonWrapper>
-        <SubmitButton onClick={onInset}>Confirm</SubmitButton>
-      </SubmitButtonWrapper>
-
-    </Wrapper>
-  </Shade>
-
+        <SubmitButtonWrapper>
+          <SubmitButton onClick={onInset}>Confirm</SubmitButton>
+        </SubmitButtonWrapper>
+      </Wrapper>
+    </Shade>
+  );
 }
 
 export default UploadImgModal;

@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import Flex from "./styled/flex";
 
-const Wrapper = styled.div`
+const Wrapper = styled(Flex)`
   display: flex;
   align-items: center;
   > img {
@@ -13,7 +14,7 @@ const Wrapper = styled.div`
 export default function Account({ name }) {
   return (
     <Wrapper>
-      <img src="/imgs/icons/avatar.svg" />
+      <img src="/imgs/icons/avatar.svg" alt="" />
       <div>{name}</div>
     </Wrapper>
   );
