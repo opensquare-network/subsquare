@@ -19,10 +19,7 @@ import {
 } from "../../../../utils/post";
 import { shadow_100 } from "../../../../styles/componentCss";
 import { to404 } from "../../../../utils/serverSideUtil";
-import {
-  makeExternalTimelineData,
-  sortByIndexerBlockTime,
-} from "../../../../utils/dataWrappers/makeTimelineData";
+import { makeExternalTimelineData } from "../../../../utils/dataWrappers/makeTimelineData";
 import { makeExternalMetadata } from "../../../../utils/dataWrappers/makeMetadata";
 
 const Wrapper = styled.div`
