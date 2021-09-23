@@ -62,7 +62,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   }
 
   const timelineData = makeExternalTimelineData(detail?.onchainData?.timeline);
-  timelineData.sort(sortByIndexerBlockTime);
 
   const users = getMentionList(comments);
 
