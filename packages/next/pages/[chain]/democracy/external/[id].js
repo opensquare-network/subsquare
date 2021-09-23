@@ -21,6 +21,7 @@ import {
   getOnReply,
 } from "../../../../utils/post";
 import { shadow_100 } from "../../../../styles/componentCss";
+import { to404 } from "../../../../utils/serverSideUtil";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -167,12 +168,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     nextApi.fetch(`${chain}/democracy/externals/${id}`),
   ]);
 
-  if (!detail) {
-    const { res } = context;
-    res.statusCode = 302;
-    res.setHeader("Location", `/404`);
-    res.end();
-  }
+  !detail && to404(context);
 
   const { result: comments } = await nextApi.fetch(
     `${chain}/democracy/externals/${detail._id}/comments`,
