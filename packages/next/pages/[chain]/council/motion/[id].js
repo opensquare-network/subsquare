@@ -37,15 +37,15 @@ export default withLoginUserRedux(({ loginUser, motion, chain }) => {
 export const getServerSideProps = withLoginUser(async (context) => {
   const { chain, id } = context.query;
 
-  const [{ result: motion }] = await Promise.all([
-    nextApi.fetch(`${chain}/motions/${id}`),
-  ]);
+  const { result: detail } = await nextApi.fetch(`${chain}/motions/${id}`);
 
-  !motion && to404(context);
+  if (!detail) {
+    to404(context);
+  }
 
   return {
     props: {
-      motion: motion ?? null,
+      motion: detail ?? null,
       chain,
     },
   };
