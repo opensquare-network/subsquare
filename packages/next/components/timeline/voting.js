@@ -2,12 +2,11 @@ import styled from "styled-components";
 
 import User from "components/user";
 import Progress from "./progress";
+import Flex from "../styled/flex";
 
-const TitleWrapper = styled.div`
-  min-height: 28px;
-  display: flex;
-  align-items: center;
+const TitleWrapper = styled(Flex)`
   justify-content: space-between;
+  min-height: 28px;
   > :last-child {
     display: flex;
     align-items: center;

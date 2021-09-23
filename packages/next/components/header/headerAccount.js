@@ -8,19 +8,17 @@ import { accountMenu } from "utils/constants";
 import { useOnClickOutside, useWindowSize } from "utils/hooks";
 import { logout } from "store/reducers/userSlice";
 import User from "components/user";
+import Relative from "../styled/relative";
+import Flex from "../styled/flex";
 
-const Wrapper = styled.div`
-  position: relative;
-`;
+const Wrapper = Relative;
 
-const AccountButton = styled.div`
+const AccountButton = styled(Flex)`
+  justify-content: center;
   border: 1px solid #e0e4eb;
   border-radius: 4px;
   padding: 0 12px;
   height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
   font-weight: 500;
 `;
@@ -39,10 +37,8 @@ const Menu = styled.div`
   z-index: 999999;
 `;
 
-const Item = styled.div`
+const Item = styled(Flex)`
   min-width: 160px;
-  display: flex;
-  align-items: center;
   color: #506176;
   cursor: pointer;
   padding: 0 12px;

@@ -15,6 +15,7 @@ import { addToast } from "store/reducers/toastSlice";
 import User from "components/user";
 import EditInput from "components/editInput";
 import { useRouter } from "next/router";
+import Flex from "../styled/flex";
 
 const Wrapper = styled.div`
   position: relative;
@@ -44,10 +45,8 @@ const Wrapper = styled.div`
     `}
 `;
 
-const InfoWrapper = styled.div`
-  display: flex;
+const InfoWrapper = styled(Flex)`
   min-height: 28px;
-  align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
 
@@ -61,15 +60,14 @@ const ContentWrapper = styled.div`
   margin: 8px 0 0 28px;
 `;
 
-const ActionWrapper = styled.div`
-  display: flex;
+const ActionWrapper = styled(Flex)`
   margin: 16px 0 0 28px;
   align-items: flex-start;
   height: 22px;
   flex-wrap: wrap;
 `;
 
-const ActionItem = styled.div`
+const ActionItem = styled(Flex)`
   cursor: default;
   white-space: nowrap;
 
@@ -106,8 +104,6 @@ const ActionItem = styled.div`
           }
         `}
 
-  display: flex;
-  align-items: center;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -126,8 +122,8 @@ const UnfoldWrapper = styled(ActionItem)`
   margin-left: 7px !important;
 `;
 
-const SupporterWrapper = styled.div`
-  display: flex;
+const SupporterWrapper = styled(Flex)`
+  align-items: initial;
   flex-flow: wrap;
   font-style: normal;
   font-weight: normal;

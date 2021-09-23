@@ -5,9 +5,9 @@ import dayjs from "dayjs";
 
 import User from "components/user";
 import Links from "../timeline/links";
-import Timeline from "../timeline";
 import { getNode, timeDuration, toPrecision } from "utils";
 import Vote from "./vote";
+import Flex from "../styled/flex";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -29,10 +29,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const DividerWrapper = styled.div`
-  display: flex;
-  align-items: center;
-
+const DividerWrapper = styled(Flex)`
   > :not(:first-child) {
     ::before {
       content: "·";
@@ -105,11 +102,6 @@ const Index = styled.div`
 const FlexWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-`;
-
-const Flex = styled.div`
-  display: flex;
-  align-items: center; ;
 `;
 
 const GreyWrapper = styled(Flex)`

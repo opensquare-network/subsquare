@@ -7,11 +7,9 @@ import { nodes } from "utils/constants";
 import Avatar from "components/avatar";
 import Grvatar from "components/gravatar";
 import { addressEllipsis } from "../../utils";
+import Flex from "../styled/flex";
 
-const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
-
+const Wrapper = styled(Flex)`
   a {
     &:hover {
       text-decoration: underline;
@@ -24,7 +22,7 @@ const Wrapper = styled.div`
     `}
 `;
 
-const AvatarWrapper = styled.div`
+const AvatarWrapper = styled(Flex)`
   display: flex;
   margin-right: 8px;
 `;
@@ -35,13 +33,11 @@ const Username = styled.div`
   font-size: ${(props) => props.fontSize}px;
 `;
 
-const DeleteAccount = styled.div`
+const DeleteAccount = styled(Flex)`
   font-weight: 500;
   word-break: break-all;
   font-size: ${(props) => props.fontSize}px;
   color: #9da9bb;
-  display: flex;
-  align-items: center;
   > img {
     width: 20px;
     height: 20px;

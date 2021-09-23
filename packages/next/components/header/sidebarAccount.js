@@ -9,6 +9,7 @@ import { logout } from "store/reducers/userSlice";
 import { nodes } from "utils/constants";
 import User from "components/user";
 import NodeSwitch from "components/nodeSwitch";
+import Flex from "../styled/flex";
 
 const Wrapper = styled.div`
   padding: 32px 0 0;
@@ -34,9 +35,7 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const Item = styled.div`
-  display: flex;
-  align-items: center;
+const Item = styled(Flex)`
   color: #506176;
   cursor: pointer;
   padding: 0 12px;
@@ -55,13 +54,11 @@ const Item = styled.div`
   }
 `;
 
-const UserWrapper = styled.div`
+const UserWrapper = styled(Flex)`
   border: 1px solid #e0e4eb;
   border-radius: 4px;
   padding: 0 12px;
   height: 38px;
-  display: flex;
-  align-items: center;
   font-weight: 500;
   margin-bottom: 8px;
   > :first-child {
@@ -106,7 +103,7 @@ export default function SidebarAccount({ user, chain }) {
           </UserWrapper>
           {accountMenu.map((item, index) => (
             <Item key={index} onClick={() => handleAccountMenu(item)}>
-              <img src={`/imgs/icons/${item.icon}`} />
+              <img src={`/imgs/icons/${item.icon}`} alt="icon" />
               <div>{item.name}</div>
             </Item>
           ))}

@@ -18,7 +18,7 @@ const ImgRender = (img) => {
   }
   return (
     <ImgWrapper>
-      <img width={userSetWidth ? userSetWidth : "auto"} {...img} />
+      <img width={userSetWidth ? userSetWidth : "auto"} {...img} alt="" />
     </ImgWrapper>
   );
 };

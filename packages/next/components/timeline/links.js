@@ -1,10 +1,8 @@
 import styled from "styled-components";
-import { add } from "cheerio/lib/api/traversing";
+import Flex from "../styled/flex";
 
-const Wrapper = styled.div`
+const Wrapper = styled(Flex())`
   height: 20px;
-  display: flex;
-  align-items: center;
 
   > :not(:first-child) {
     margin-left: 8px;
@@ -28,16 +26,6 @@ const SubscanLink = styled.a`
 
   :hover {
     background: url("/imgs/icons/link-subscan-active.svg");
-  }
-`;
-
-const PolkassemblyLink = styled.a`
-  width: 20px;
-  height: 20px;
-  background: url("/imgs/icons/link-polkassembly.svg");
-
-  :hover {
-    background: url("/imgs/icons/link-polkassembly-active.svg");
   }
 `;
 

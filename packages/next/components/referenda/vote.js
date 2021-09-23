@@ -1,6 +1,7 @@
 import BigNumber from "bignumber.js";
 import styled from "styled-components";
 import { getNode, toPrecision } from "../../utils";
+import Flex from "../styled/flex";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -21,11 +22,6 @@ const Title = styled.div`
   font-weight: bold;
   font-size: 16px;
   margin-bottom: 16px;
-`;
-
-const Flex = styled.div`
-  display: flex;
-  align-items: center;
 `;
 
 const Headers = styled(Flex)`

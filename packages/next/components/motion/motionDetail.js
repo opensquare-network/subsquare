@@ -10,6 +10,7 @@ import Timeline from "../timeline";
 import { getNode, toPrecision } from "utils";
 import SectionTag from "components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
+import Flex from "../styled/flex";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -31,9 +32,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const DividerWrapper = styled.div`
-  display: flex;
-  align-items: center;
+const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
 
   > :not(:first-child) {
@@ -92,11 +91,6 @@ const FlexWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: nowrap;
-`;
-
-const Flex = styled.div`
-  display: flex;
-  align-items: center; ;
 `;
 
 function createMotionTimelineData(motion) {
