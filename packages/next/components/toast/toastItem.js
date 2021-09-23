@@ -5,14 +5,13 @@ import styled from "styled-components";
 import { removeToast } from "store/reducers/toastSlice";
 import { useIsMounted } from "utils/hooks";
 import Flex from "../styled/flex";
+import { shadow_200 } from "../../styles/componentCss";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
   padding: 16px 16px;
   background: #ffffff;
-  box-shadow: 0 6px 22px rgba(30, 33, 52, 0.11),
-    0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
-    0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
+  ${shadow_200};
   border-radius: 6px;
   border: 1px solid #ebeef4;
   font-size: 14px;
