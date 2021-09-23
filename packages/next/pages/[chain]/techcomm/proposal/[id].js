@@ -2,9 +2,10 @@ import styled from "styled-components";
 
 import Back from "components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import { ssrNextApi as nextApi} from "services/nextApi";
+import { ssrNextApi as nextApi } from "services/nextApi";
 import LayoutFixedHeader from "components/layoutFixedHeader";
 import MotionDetail from "components/motion/motionDetail";
+import { to404 } from "../../../../utils/serverSideUtil";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -41,10 +42,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   if (!motion) {
-    const { res } = context;
-    res.statusCode = 302;
-    res.setHeader("Location", `/404`);
-    res.end();
+    to404(context);
   }
 
   return {

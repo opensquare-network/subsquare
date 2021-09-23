@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Flex from "../styled/flex";
 
-const Wrapper = styled(Flex())`
+const Wrapper = styled(Flex)`
   height: 20px;
 
   > :not(:first-child) {

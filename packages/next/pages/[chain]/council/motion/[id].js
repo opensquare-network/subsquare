@@ -2,9 +2,10 @@ import styled from "styled-components";
 
 import Back from "components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import { ssrNextApi as nextApi} from "services/nextApi";
+import { ssrNextApi as nextApi } from "services/nextApi";
 import LayoutFixedHeader from "components/layoutFixedHeader";
 import MotionDetail from "components/motion/motionDetail";
+import { to404 } from "../../../../utils/serverSideUtil";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -36,13 +37,15 @@ export default withLoginUserRedux(({ loginUser, motion, chain }) => {
 export const getServerSideProps = withLoginUser(async (context) => {
   const { chain, id } = context.query;
 
-  const [{ result: motion }] = await Promise.all([
-    nextApi.fetch(`${chain}/motions/${id}`),
-  ]);
+  const { result: detail } = await nextApi.fetch(`${chain}/motions/${id}`);
+
+  if (!detail) {
+    to404(context);
+  }
 
   return {
     props: {
-      motion: motion ?? null,
+      motion: detail ?? null,
       chain,
     },
   };

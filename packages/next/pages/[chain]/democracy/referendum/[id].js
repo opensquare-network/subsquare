@@ -23,6 +23,7 @@ import {
   getOnReply,
 } from "../../../../utils/post";
 import { shadow_100 } from "../../../../styles/componentCss";
+import { to404 } from "../../../../utils/serverSideUtil";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -183,10 +184,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   if (!detail) {
-    const { res } = context;
-    res.statusCode = 302;
-    res.setHeader("Location", `/404`);
-    res.end();
+    to404(context);
   }
 
   const postId = detail?._id;
