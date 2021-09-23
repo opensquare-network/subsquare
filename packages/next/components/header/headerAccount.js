@@ -10,6 +10,7 @@ import { logout } from "store/reducers/userSlice";
 import User from "components/user";
 import Relative from "../styled/relative";
 import Flex from "../styled/flex";
+import { shadow_200 } from "../../styles/componentCss";
 
 const Wrapper = Relative;
 
@@ -24,9 +25,7 @@ const AccountButton = styled(Flex)`
 `;
 
 const Menu = styled.div`
-  box-shadow: 0 6px 22px rgba(30, 33, 52, 0.11),
-    0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
-    0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
+  ${shadow_200};
   border-radius: 4px;
   position: absolute;
   left: 50%;

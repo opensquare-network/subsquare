@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 import { useState, useRef } from "react";
 
 import { useOnClickOutside } from "utils/hooks";
+import { shadow_200 } from "../styles/componentCss";
 
 const Wrapper = styled.div`
   margin-left: auto;
@@ -27,9 +28,7 @@ const OptionWrapper = styled.div`
   width: 96px;
   padding: 8px 0;
   border-radius: 4px;
-  box-shadow: 0 6px 22px rgba(30, 33, 52, 0.11),
-    0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
-    0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
+  ${shadow_200};
 `;
 
 const OptionItem = styled.div`

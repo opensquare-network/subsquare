@@ -6,6 +6,7 @@ import { addressEllipsis } from "utils";
 import Avatar from "components/avatar";
 import Flex from "./styled/flex";
 import Relative from "./styled/relative";
+import { shadow_200 } from "../styles/componentCss";
 
 const Wrapper = Relative;
 
@@ -47,9 +48,7 @@ const Options = styled.div`
   margin-top: 4px;
   padding: 8px 0;
   background: #ffffff;
-  box-shadow: 0 6px 22px rgba(30, 33, 52, 0.11),
-    0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
-    0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
+  ${shadow_200};
   border-radius: 4px;
 `;
 
