@@ -9,11 +9,8 @@ import { EmptyList } from "utils/constants";
 import Input from "components/comment/input";
 import { useState, useRef } from "react";
 import LayoutFixedHeader from "components/layoutFixedHeader";
-import { getNode, toPrecision } from "utils";
-import dayjs from "dayjs";
+import { getNode } from "utils";
 import Timeline from "components/timeline";
-import { getTimelineStatus } from "utils";
-import MotionProposal from "../../../../components/motion/motionProposal";
 import KVList from "../../../../components/kvList";
 import {
   getFocusEditor,
@@ -22,6 +19,11 @@ import {
 } from "../../../../utils/post";
 import { shadow_100 } from "../../../../styles/componentCss";
 import { to404 } from "../../../../utils/serverSideUtil";
+import {
+  makeExternalTimelineData,
+  sortByIndexerBlockTime,
+} from "../../../../utils/dataWrappers/makeTimelineData";
+import { makeExternalMetadata } from "../../../../utils/dataWrappers/makeMetadata";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -59,41 +61,8 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     return null;
   }
 
-  const getTimelineData = (args, method) => {
-    switch (method) {
-      case "fastTrack":
-        if (Array.isArray(args)) {
-          return {
-            proposalHash: args.find((arg) => arg.name === "proposal_hash")
-              .value,
-            votingPeriod:
-              args.find((arg) => arg.name === "voting_period").value +
-              ` blocks`,
-            delay: args.find((arg) => arg.name === "delay").value + ` blocks`,
-          };
-        }
-    }
-    return args;
-  };
-
-  const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
-    return {
-      time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-      indexer: item.indexer,
-      status: getTimelineStatus("proposal", item.method ?? item.name),
-      data: getTimelineData(item.args, item.method ?? item.name),
-    };
-  });
-
-  timelineData.sort((a, b) => {
-    if (Array.isArray(a)) {
-      a = a[0];
-    }
-    if (Array.isArray(b)) {
-      b = b[0];
-    }
-    return a.indexer.blockTime - b.indexer.blockTime;
-  });
+  const timelineData = makeExternalTimelineData(detail?.onchainData?.timeline);
+  timelineData.sort(sortByIndexerBlockTime);
 
   const users = getMentionList(comments);
 
@@ -107,18 +76,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     focusEditor
   );
 
-  const metadata = [
-    ["hash", detail.onchainData.proposalHash],
-    ["voteThreshould", detail.onchainData.voteThreshold],
-  ];
-  if (detail?.onchainData?.preImage) {
-    metadata.push([
-      <MotionProposal
-        motion={{ proposal: detail.onchainData.preImage.call }}
-        chain={chain}
-      />,
-    ]);
-  }
+  const metadata = makeExternalMetadata(detail, chain);
 
   detail.status = detail.onchainData?.state?.state;
 
@@ -134,7 +92,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           type="democracy/external"
         />
         {metadata && <KVList title="Metadata" data={metadata} />}
-        {timelineData && timelineData.length > 0 && (
+        {timelineData?.length > 0 && (
           <Timeline data={timelineData} chain={chain} />
         )}
         <CommentsWrapper>
