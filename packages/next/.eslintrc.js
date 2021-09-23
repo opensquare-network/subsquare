@@ -13,6 +13,7 @@ module.exports = {
   },
   plugins: ["react"],
   rules: {
+    "react/react-in-jsx-scope": "off",
     "accessor-pairs": "error",
     "array-bracket-newline": "off",
     "array-bracket-spacing": ["error", "never"],
