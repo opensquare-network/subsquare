@@ -12,6 +12,7 @@ import { useAuthPage } from "utils/hooks";
 import { withLoginUser, withLoginUserRedux } from "../lib";
 import { useDispatch } from "react-redux";
 import { addToast } from "../store/reducers/toastSlice";
+import { shadow_100 } from "../styles/componentCss";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -26,9 +27,7 @@ const Wrapper = styled.div`
 const ContentWrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
-  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
-    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  ${shadow_100};
   border-radius: 6px;
   width: 360px;
   margin: 0 auto;

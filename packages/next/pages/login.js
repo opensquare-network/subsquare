@@ -15,6 +15,7 @@ import ErrorText from "components/ErrorText";
 import { setUser } from "store/reducers/userSlice";
 import { useAuthPage } from "utils/hooks";
 import { withLoginUser, withLoginUserRedux } from "../lib";
+import { shadow_100 } from "../styles/componentCss";
 
 const AddressLogin = dynamic(() => import("components/addressLogin"), {
   ssr: false,
@@ -32,9 +33,7 @@ const Wrapper = styled.div`
 const ContentWrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
-  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
-    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  ${shadow_100};
   border-radius: 6px;
   width: 360px;
   margin: 0 auto;

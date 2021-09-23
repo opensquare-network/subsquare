@@ -10,6 +10,7 @@ import { nodes } from "utils/constants";
 import NodeSwitch from "components/nodeSwitch";
 import { useRouter } from "next/router";
 import Flex from "../styled/flex";
+import { shadow_100 } from "../../styles/componentCss";
 
 const Wrapper = styled.header`
   padding-left: 32px;
@@ -32,9 +33,7 @@ const Wrapper = styled.header`
       z-index: 1;
     `}
   background: #ffffff;
-  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
-    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  ${shadow_100};
   height: 64px;
   border-bottom: 1px solid #ebeef4;
 `;

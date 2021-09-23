@@ -24,6 +24,7 @@ import { addToast } from "store/reducers/toastSlice";
 import { nodes } from "utils/constants";
 import Avatar from "./avatar";
 import DownloadExtension from "./downloadExtension";
+import { shadow_100 } from "../styles/componentCss";
 
 const Wrapper = styled.div`
   max-width: 848px;
@@ -47,9 +48,7 @@ const Title = styled.div`
 const ContentWrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
-  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
-    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  ${shadow_100};
   border-radius: 4px;
   padding: 48px;
   @media screen and (max-width: 768px) {
