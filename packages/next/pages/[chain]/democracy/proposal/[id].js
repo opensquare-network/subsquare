@@ -211,7 +211,9 @@ export const getServerSideProps = withLoginUser(async (context) => {
     nextApi.fetch(`${chain}/democracy/proposals/${id}`),
   ]);
 
-  !detail && to404(context);
+  if (!detail) {
+    to404(context);
+  }
 
   const { result: comments } = await nextApi.fetch(
     `${chain}/democracy/proposals/${detail._id}/comments`,

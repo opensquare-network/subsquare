@@ -104,7 +104,9 @@ export const getServerSideProps = withLoginUser(async (context) => {
     nextApi.fetch(`${chain}/posts/${id}`),
   ]);
 
-  !detail && to404(context);
+  if (!detail) {
+    to404(context);
+  }
 
   const postId = detail._id;
 
