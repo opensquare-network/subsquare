@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
 import { useState } from "react";
-import Link from "next/link";
 
 import NetworkSwitch from "components/networkSwitch";
 import Container from "components/container";
@@ -10,6 +9,7 @@ import SidebarAccount from "./sidebarAccount";
 import { nodes } from "utils/constants";
 import NodeSwitch from "components/nodeSwitch";
 import { useRouter } from "next/router";
+import Flex from "../common/flex";
 
 const Wrapper = styled.header`
   padding-left: 32px;
@@ -39,26 +39,20 @@ const Wrapper = styled.header`
   border-bottom: 1px solid #ebeef4;
 `;
 
-const FlexWrapper = styled.div`
+const FlexWrapper = styled(Flex)`
   max-width: 1080px;
   margin: auto;
-  display: flex;
-  align-items: center;
   justify-content: space-between;
 `;
 
-const Left = styled.div`
-  display: flex;
-  align-items: center;
+const Left = styled(Flex)`
   @media screen and (max-width: 768px) {
     flex-grow: 1;
     justify-content: space-between;
   }
 `;
 
-const Right = styled.div`
-  display: flex;
-  align-items: center;
+const Right = styled(Flex)`
   > :not(:first-child) {
     margin-left: 12px;
   }
@@ -67,15 +61,14 @@ const Right = styled.div`
   }
 `;
 
-const MenuButton = styled.div`
+const MenuButton = styled(Flex)`
+  display: none;
   border: 1px solid #e0e4eb;
   border-radius: 4px;
   width: 38px;
   height: 38px;
-  align-items: center;
   justify-content: center;
   cursor: pointer;
-  display: none;
   @media screen and (max-width: 1024px) {
     display: flex;
     margin-right: 12px;
@@ -86,15 +79,14 @@ const NetworkWrapper = styled.div`
   width: 144px;
 `;
 
-const NodeButton = styled.div`
+const NodeButton = styled(Flex)`
+  display: none;
   border: 1px solid #e0e4eb;
   border-radius: 4px;
   width: 38px;
   height: 38px;
-  align-items: center;
   justify-content: center;
   cursor: pointer;
-  display: none;
   @media screen and (max-width: 768px) {
     display: flex;
   }

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Post from "./post";
 import Pagination from "./pagination";
 import EmptyList from "./emptyList";
+import Flex from "./common/flex";
 
 const Wrapper = styled.div`
   max-width: 848px;
@@ -16,8 +17,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const Title = styled.div`
-  display: flex;
+const Title = styled(Flex)`
   justify-content: space-between;
   font-weight: bold;
   font-size: 16px;
@@ -37,7 +37,9 @@ export default function List({
         {create}
       </Title>
       {items?.length > 0 ? (
-        items.map((item, index) => <Post key={index} data={item} chain={chain} href={item.detailLink} />)
+        items.map((item, index) => (
+          <Post key={index} data={item} chain={chain} href={item.detailLink} />
+        ))
       ) : (
         <EmptyList type={category} />
       )}

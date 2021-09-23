@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import EditIcon from "../public/imgs/icons/edit.svg";
 import TriangleRight from "../public/imgs/icons/arrow-triangle-right.svg";
 import Tag from "./tag";
+import Flex from "./common/flex";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -35,9 +36,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const DividerWrapper = styled.div`
-  display: flex;
-  align-items: center;
+const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
 
   > :not(:first-child) {
@@ -91,9 +90,7 @@ const Divider = styled.div`
   margin: 16px 0;
 `;
 
-const FlexWrapper = styled.div`
-  display: flex;
-  align-items: center;
+const FlexWrapper = styled(Flex)`
   justify-content: space-between;
   flex-wrap: nowrap;
 `;
@@ -113,26 +110,6 @@ const TypeWrapper = styled.div`
     css`
       background: ${p.color};
     `}
-`;
-
-const StatusWrapper = styled.div`
-  background: #2196f3;
-  border-radius: 2px;
-  font-weight: 500;
-  font-size: 12px;
-  height: 20px;
-  line-height: 20px;
-  padding: 0 8px;
-  color: #ffffff;
-`;
-
-const TextWrapper = styled.div`
-  height: 160px;
-  background: #f6f7fa;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 24px;
 `;
 
 const EditedLabel = styled.div`
@@ -195,15 +172,13 @@ const Edit = styled.div`
   }
 `;
 
-const ReferendaWrapper = styled.div`
+const ReferendaWrapper = styled(Flex)`
+  justify-content: center;
+  flex-wrap: wrap;
   padding: 12px;
   background: #f6f7fa;
   border-radius: 4px;
   margin-bottom: 16px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
   font-weight: 500;
   color: #506176;
 
@@ -407,7 +382,12 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                 </div>
               )}
               {(post.indexer?.blockTime || post.createdAt) && (
-                <Info>Created {timeDurationFromNow(post.indexer?.blockTime || post.createdAt)}</Info>
+                <Info>
+                  Created{" "}
+                  {timeDurationFromNow(
+                    post.indexer?.blockTime || post.createdAt
+                  )}
+                </Info>
               )}
               {post.commentsCount > -1 && (
                 <Info>{`${post.commentsCount} Comments`}</Info>

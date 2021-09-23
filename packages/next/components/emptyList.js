@@ -1,8 +1,7 @@
 import styled from "styled-components";
+import Flex from "./common/flex";
 
-const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
+const Wrapper = styled(Flex)`
   justify-content: center;
   background: #ffffff;
   border: 1px solid #ebeef4;
