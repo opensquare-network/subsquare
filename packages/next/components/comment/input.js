@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-
+import Image from "next/image";
 import MarkdownEditor from "components/markdownEditor";
 import Toggle from "components/toggle";
 import Button from "components/button";
@@ -189,7 +189,7 @@ function Input(
         )}
         {!showPreview && (
           <InputSwitch>
-            <img src="/imgs/icons/markdown-mark.svg" alt="" />
+            <Image src="/imgs/icons/markdown-mark.svg" alt="" />
             <Toggle
               size="small"
               isOn={contentType === "markdown"}

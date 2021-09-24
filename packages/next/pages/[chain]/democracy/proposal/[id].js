@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import styled from "styled-components";
 
 import Back from "components/back";

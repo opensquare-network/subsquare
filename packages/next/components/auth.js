@@ -9,6 +9,6 @@ export default function Auth() {
   useUpdateNodesDelay();
   useEffect(() => {
     dispatch(fetchUserProfile());
-  }, []);
+  });
   return null;
 }

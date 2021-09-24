@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import styled from "styled-components";
 
 import Back from "components/back";
@@ -12,7 +13,7 @@ import DetailItem from "../../../../components/detailItem";
 import KVList from "../../../../components/kvList";
 import User from "../../../../components/user";
 import Links from "../../../../components/timeline/links";
-import { getNode, getTimelineStatus, toPrecision } from "../../../../utils";
+import { getNode, getTimelineStatus } from "../../../../utils";
 import Vote from "../../../../components/referenda/vote";
 import dayjs from "dayjs";
 import Timeline from "../../../../components/timeline";

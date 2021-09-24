@@ -166,7 +166,7 @@ export default function Item({ user, data, chain, onReply }) {
     }
     const height = parseInt(window.location.hash.substr(1));
     setHighlight(height === comment.height);
-  }, [router]);
+  }, [router, comment.height]);
 
   const commentId = comment._id;
   const isLoggedIn = !!user;

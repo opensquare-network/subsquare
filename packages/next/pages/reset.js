@@ -119,7 +119,7 @@ export default withLoginUserRedux(({ loginUser }) => {
     } else {
       router.replace("/login");
     }
-  }, [success, countdown]);
+  }, [success, countdown, isMounted, router]);
 
   return (
     <Layout user={loginUser}>

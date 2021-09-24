@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Link from "next/link";
 import Flex from "./styled/flex";
-
+import Image from "next/image";
 const Wrapper = styled(Flex)`
   font-size: 16px;
   font-weight: bold;
@@ -20,9 +20,9 @@ const Wrapper = styled(Flex)`
 
 export default function Back({ href, text }) {
   return (
-    <Link href={href}>
+    <Link href={href} passHref>
       <Wrapper>
-        <img src="/imgs/icons/arrow-left.svg" />
+        <Image alt="" src="/imgs/icons/arrow-left.svg" />
         <div>{text}</div>
       </Wrapper>
     </Link>
