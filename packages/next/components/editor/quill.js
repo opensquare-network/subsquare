@@ -137,7 +137,7 @@ function MyReactQuill({
 
   useEffect(() => {
     setQuillRef && setQuillRef(ref);
-  }, [ref]);
+  }, [ref, setQuillRef]);
 
   return (
     <ReactQuill

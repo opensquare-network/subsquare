@@ -6,7 +6,7 @@ import {
   web3Accounts,
   web3Enable,
 } from "@polkadot/extension-dapp";
-
+import Image from "next/image";
 import Button from "components/button";
 import { useAuthPage, useIsMounted } from "utils/hooks";
 import { userSelector } from "store/reducers/userSlice";
@@ -341,7 +341,7 @@ export default function LinkedAddress() {
                   {item[`${activeChain}Address`] ? (
                     <Avatar address={item[`${activeChain}Address`]} size={32} />
                   ) : (
-                    <img src="/imgs/icons/avatar.svg" alt="" />
+                    <Image alt="" src="/imgs/icons/avatar.svg" />
                   )}
                   <NameWrapper>
                     <div>{item.name}</div>
@@ -355,7 +355,7 @@ export default function LinkedAddress() {
                         unlinkAddress(activeChain, item);
                       }}
                     >
-                      <img src="/imgs/icons/link-unlink.svg" />
+                      <Image alt="" src="/imgs/icons/link-unlink.svg" />
                       <div>Unlink</div>
                     </LinkWrapper>
                   ) : (
@@ -364,7 +364,7 @@ export default function LinkedAddress() {
                         linkAddress(activeChain, item);
                       }}
                     >
-                      <img src="/imgs/icons/link-linked.svg" />
+                      <Image alt="" src="/imgs/icons/link-linked.svg" />
                       <div>Link</div>
                     </LinkWrapper>
                   )}

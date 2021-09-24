@@ -2,6 +2,7 @@ import { useState } from "react";
 import ZoomIn from "../../public/imgs/icons/zoom-in.svg";
 import ZoomOut from "../../public/imgs/icons/zoom-out.svg";
 import styled from "styled-components";
+import Image from "next/image";
 
 const ImgWrapper = styled.div`
   position: relative;
@@ -75,7 +76,7 @@ const ImgRender = ({ md, setContent }) => {
     };
     return (
       <ImgWrapper>
-        <img onLoad={onImageLoad} width={width ? width : "auto"} {...img} />
+        <Image alt="" onLoad={onImageLoad} width={width ? width : "auto"} {...img} />
         <ZoomIn className="in" onClick={zoom(+100)} />
         <ZoomOut className="out" onClick={zoom(-100)} />
       </ImgWrapper>
