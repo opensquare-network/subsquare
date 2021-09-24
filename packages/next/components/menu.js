@@ -73,20 +73,19 @@ const Item = styled.div`
 export default function Menu({ menu }) {
   const router = useRouter();
 
-  const iconMap = new Map([
-    ["overview", <OverviewIcon />],
-    ["discussions", <DiscussionIcon />],
-    ["tips", <TipIcon />],
-    ["proposals", <ProposalIcon />],
-    ["motions", <MotionIcon />],
-    ["referenda", <ReferendaIcon />],
-    ["democracyProposals", <DemocracyProposalIcon />],
-    ["democracyExternals", <DemocracyProposalIcon />],
-    ["techCommProposals", <DemocracyProposalIcon />],
-    ["account", <UserIcon />],
-    ["linked-address", <AddressIcon />],
-    ["notification", <BellIcon />],
-  ]);
+  const iconMap = new Map();
+  iconMap.set("overview", <OverviewIcon />);
+  iconMap.set("discussions", <DiscussionIcon />);
+  iconMap.set("tips", <TipIcon />);
+  iconMap.set("proposals", <ProposalIcon />);
+  iconMap.set("motions", <MotionIcon />);
+  iconMap.set("referenda", <ReferendaIcon />);
+  iconMap.set("democracyProposals", <DemocracyProposalIcon />);
+  iconMap.set("democracyExternals", <DemocracyProposalIcon />);
+  iconMap.set("techCommProposals", <DemocracyProposalIcon />);
+  iconMap.set("account", <UserIcon />);
+  iconMap.set("linked-address", <AddressIcon />);
+  iconMap.set("notification", <BellIcon />);
 
   return (
     <Wrapper>
