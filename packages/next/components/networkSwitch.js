@@ -87,9 +87,9 @@ export default function NetworkSwitch({ activeNode }) {
   return (
     <Wrapper ref={ref}>
       <Select onClick={() => setShow(!show)}>
-        <Image  src={`/imgs/icons/${activeNode.icon}`} alt="" className="logo" />
+        <Image  width={24} height={24}  src={`/imgs/icons/${activeNode.icon}`} alt="" className="logo"/>
         <div>{activeNode.name}</div>
-        <Image  src="/imgs/icons/caret-down.svg" alt="" />
+        <Image  width={14} height={14}  src="/imgs/icons/caret-down.svg" alt=""/>
       </Select>
       {show && (
         <Options>
@@ -103,7 +103,7 @@ export default function NetworkSwitch({ activeNode }) {
               }}
               active={activeNode.value === nodes[index].value}
             >
-              <Image  src={`/imgs/icons/${item.icon}`} alt="" className="logo" />
+              <Image  width={24} height={24}   src={`/imgs/icons/${item.icon}`} alt="" className="logo"/>
               <div>{item.name}</div>
             </Item>
           ))}
