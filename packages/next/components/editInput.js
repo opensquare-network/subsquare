@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useState } from "react";
-import Image from "next/image";
 import MarkdownEditor from "components/markdownEditor";
 import Toggle from "components/toggle";
 import Button from "components/button";
@@ -128,7 +127,7 @@ export default function EditInput({
         )}
         {!showPreview && (
           <InputSwitch>
-            <Image src="/imgs/icons/markdown-mark.svg" alt="" />
+            <img src="/imgs/icons/markdown-mark.svg" alt="" width={26} height={16} />
             <Toggle
               size="small"
               isOn={contentType === "markdown"}

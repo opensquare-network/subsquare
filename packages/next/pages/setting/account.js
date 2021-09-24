@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import Image from "next/image";
 import Input from "components/input";
 import Button from "components/button";
 import DeleteAccount from "components/deleteAccount";
@@ -180,12 +179,12 @@ export default withLoginUserRedux(({ loginUser }) => {
                   post={
                     user?.emailVerified ? (
                       <EmailVerify>
-                        <Image alt="" src="/imgs/icons/circle-check.svg" />
+                        <img alt="" src="/imgs/icons/circle-check.svg" />
                         <div>Verified</div>
                       </EmailVerify>
                     ) : (
                       <EmailVerify>
-                        <Image alt="" src="/imgs/icons/circle-warning.svg" />
+                        <img alt="" src="/imgs/icons/circle-warning.svg" />
                         <div>Unverified</div>
                       </EmailVerify>
                     )

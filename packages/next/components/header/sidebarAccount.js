@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import Image from "next/image";
 import NetworkSwitch from "components/networkSwitch";
 import Button from "components/button";
 import { accountMenu } from "utils/constants";
@@ -103,7 +102,7 @@ export default function SidebarAccount({ user, chain }) {
           </UserWrapper>
           {accountMenu.map((item, index) => (
             <Item key={index} onClick={() => handleAccountMenu(item)}>
-              <Image src={`/imgs/icons/${item.icon}`} alt="icon"  width={24} height={24}  />
+              <img src={`/imgs/icons/${item.icon}`} alt="icon"  width={24} height={24}  />
               <div>{item.name}</div>
             </Item>
           ))}

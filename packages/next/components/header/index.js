@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
 import { useState } from "react";
-import Image from "next/image";
 import NetworkSwitch from "components/networkSwitch";
 import Container from "components/container";
 import HeaderAccount from "./headerAccount";
@@ -118,7 +117,7 @@ export default function Header({ user, left, chain, fixedTop = false }) {
                   setShow(true);
                 }}
               >
-                <Image src="/imgs/icons/menu-line.svg" alt="" width={20} height={20} />
+                <img src="/imgs/icons/menu-line.svg" alt="" width={20} height={20} />
               </MenuButton>
             )}
             <LogoImg
@@ -142,7 +141,7 @@ export default function Header({ user, left, chain, fixedTop = false }) {
                 setShow(true);
               }}
             >
-              <Image src={`/imgs/icons/${node.icon}`} alt=""  width={24} height={24}  />
+              <img src={`/imgs/icons/${node.icon}`} alt=""  width={24} height={24}  />
             </NodeButton>
           </Left>
           <Right>

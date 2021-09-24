@@ -8,7 +8,6 @@ import Avatar from "components/avatar";
 import Grvatar from "components/gravatar";
 import { addressEllipsis } from "../../utils";
 import Flex from "../styled/flex";
-import Image from "next/image";
 
 const Wrapper = styled(Flex)`
   a {
@@ -79,7 +78,7 @@ export default function User({
   if (!user && !add) {
     return (
       <DeleteAccount fontSize={fontSize}>
-        <Image src="/imgs/icons/avatar-deleted.svg" alt=""/>
+        <img src="/imgs/icons/avatar-deleted.svg" alt=""/>
         [Deleted Account]
       </DeleteAccount>
     );

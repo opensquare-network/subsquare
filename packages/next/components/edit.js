@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
 import { useState, useRef } from "react";
-import Image from "next/image";
 import { useOnClickOutside } from "utils/hooks";
 import { shadow_200 } from "../styles/componentCss";
 
@@ -50,7 +49,7 @@ export default function Edit({ edit, setIsEdit, alwaysShow }) {
 
   return (
     <Wrapper className="edit" active={show || alwaysShow} ref={ref}>
-      <Image alt="" src="/imgs/icons/more.svg" onClick={() => setShow(!show)} />
+      <img alt="" src="/imgs/icons/more.svg" onClick={() => setShow(!show)} width={24} height={24}/>
       {show && (
         <OptionWrapper>
           {edit && (

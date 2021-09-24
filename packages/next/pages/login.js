@@ -98,10 +98,13 @@ export default withLoginUserRedux(({ loginUser }) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
-  const chain = localStorage.getItem("chain") || "karura";
+  let chain = "karura";
+  if(typeof window !== "undefined"){
+    chain = localStorage.getItem("chain") || "karura";
+  }
 
   if (loginUser) {
-    return router.replace(`/${chain}`);
+    router.replace(`/${chain}`);
   }
 
   const { formData, handleInputChange, handleSubmit } = useForm(

@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
 import Flex from "../styled/flex";
-import Image from "next/image";
 const Wrapper = styled.div`
   position: fixed;
   width: 100vw;
@@ -88,7 +87,7 @@ export default function Sidebar({ onClose, position, children }) {
         <CloseWrapper position={position}>
           <Container>
             <CloseButton onClick={onClose}>
-              <Image src="/imgs/icons/close.svg" alt="" />
+              <img src="/imgs/icons/close.svg" alt="" />
             </CloseButton>
           </Container>
         </CloseWrapper>
