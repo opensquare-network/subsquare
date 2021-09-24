@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-
+import Image from "next/image";
 import Links from "./links";
 import Voting from "./voting";
 import User from "components/user";
@@ -177,12 +177,12 @@ export default function Item({ data, foldable, isFold, setIsFold, chain }) {
             {data.voteResult.value ? (
               <div>
                 Aye
-                <img src="/imgs/icons/approve.svg" />
+                <Image src="/imgs/icons/approve.svg" alt="" />
               </div>
             ) : (
               <div>
                 Nay
-                <img src="/imgs/icons/reject.svg" />
+                <Image src="/imgs/icons/reject.svg" alt=""/>
               </div>
             )}
           </VoteResultWrapper>

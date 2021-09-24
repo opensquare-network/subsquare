@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 const Wrapper = styled.div`
   padding-top: 8px;
@@ -109,7 +110,7 @@ export default function Pagination({ page, pageSize, total }) {
           })}`}
           passHref
         >
-          <img src="/imgs/icons/caret-left.svg" alt="" />
+          <Image  src="/imgs/icons/caret-left.svg" alt="" />
         </Link>
       </Nav>
       {Array.from(Array(totalPages)).map((_, index) =>
@@ -138,7 +139,7 @@ export default function Pagination({ page, pageSize, total }) {
           })}`}
           passHref
         >
-          <img src="/imgs/icons/caret-right.svg" alt="" />
+          <Image  src="/imgs/icons/caret-right.svg" alt="" />
         </Link>
       </Nav>
     </Wrapper>
