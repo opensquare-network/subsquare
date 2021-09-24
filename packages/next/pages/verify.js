@@ -85,7 +85,7 @@ export default withLoginUserRedux(({ loginUser }) => {
       doVerify(email, token);
     } else {
     }
-  }, [email, token]);
+  }, [email, token, isMounted, router]);
 
   useEffect(() => {
     if (!success) return;
@@ -98,7 +98,7 @@ export default withLoginUserRedux(({ loginUser }) => {
     } else {
       router.replace("/");
     }
-  }, [success, countdown]);
+  }, [success, countdown, isMounted, router]);
 
   return (
     <Layout user={loginUser}>

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { useRouter } from "next/router";
-
+import Image from "next/image";
 import Layout from "components/layout";
 import Back from "components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
@@ -193,7 +193,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
             )}
             {!showPreview && (
               <InputSwitch>
-                <img src="/imgs/icons/markdown-mark.svg" alt="" />
+                <Image src="/imgs/icons/markdown-mark.svg" alt="" />
                 <Toggle
                   size="small"
                   isOn={contentType === "markdown"}

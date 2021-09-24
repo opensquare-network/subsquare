@@ -178,7 +178,7 @@ export default withLoginUserRedux(({ loginUser }) => {
         // router.replace("/");
       }, 1000);
     }
-  }, []);
+  });
 
   useEffect(() => {
     if (!sendEmailState) return;
@@ -191,7 +191,7 @@ export default withLoginUserRedux(({ loginUser }) => {
     } else {
       router.replace("/login");
     }
-  }, [sendEmailState, countdown]);
+  }, [sendEmailState, countdown, isMounted, router]);
 
   return (
     <Layout user={loginUser}>

@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { useState } from "react";
-
+import Image from "next/image";
 import ErrorText from "./ErrorText";
 
 const Wrapper = styled.div`
@@ -71,7 +71,7 @@ export default function Input({ ...props }) {
       />
       {props.type === "password" && (
         <ShowButton onClick={() => setShow(!show)}>
-          <img
+          <Image
             alt=""
             src={show ? "/imgs/icons/eye.svg" : "/imgs/icons/eye-slash.svg"}
           />
