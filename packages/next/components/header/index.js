@@ -118,7 +118,7 @@ export default function Header({ user, left, chain, fixedTop = false }) {
                   setShow(true);
                 }}
               >
-                <Image src="/imgs/icons/menu-line.svg" alt="" />
+                <Image src="/imgs/icons/menu-line.svg" alt="" width={20} height={20} />
               </MenuButton>
             )}
             <LogoImg
@@ -142,7 +142,7 @@ export default function Header({ user, left, chain, fixedTop = false }) {
                 setShow(true);
               }}
             >
-              <Image src={`/imgs/icons/${node.icon}`} alt="" />
+              <Image src={`/imgs/icons/${node.icon}`} alt=""  width={24} height={24}  />
             </NodeButton>
           </Left>
           <Right>

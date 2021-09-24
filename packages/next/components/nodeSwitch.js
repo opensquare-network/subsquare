@@ -151,7 +151,7 @@ export default function NodeSwitch({ small, chain }) {
     <Wrapper ref={ref}>
       {small && (
         <SmallSelect onClick={() => setShow(!show)}>
-          <Image alt="" src={`/imgs/icons/${getSignalImg(currentNodeSetting?.delay)}`} />
+          <Image alt="" src={`/imgs/icons/${getSignalImg(currentNodeSetting?.delay)}`} width={24} height={24} />
         </SmallSelect>
       )}
       {!small && (
@@ -159,6 +159,7 @@ export default function NodeSwitch({ small, chain }) {
           <Image alt=""
             src={`/imgs/icons/${getSignalImg(currentNodeSetting?.delay)}`}
             className="signal"
+            width={24} height={24}
           />
           <div>{currentNodeSetting?.name}</div>
           <Image src="/imgs/icons/caret-down.svg" alt="" />
