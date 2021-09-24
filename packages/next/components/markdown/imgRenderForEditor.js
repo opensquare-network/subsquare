@@ -34,7 +34,7 @@ const ImgWrapper = styled.div`
 `;
 
 const ImgRender = ({ md, setContent }) => {
-  return (img) => {
+  const RenderImg = (img) => {
     const hasUserWidth = img.src.includes("#/w");
     let userSetWidth = 0;
     const onImageLoad = ({ target: img }) => {
@@ -82,6 +82,8 @@ const ImgRender = ({ md, setContent }) => {
       </ImgWrapper>
     );
   };
+  RenderImg.dispalyName = "RenderImg";
+  return RenderImg;
 };
 
 export default ImgRender;

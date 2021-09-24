@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import styled from "styled-components";
 import KVList from "components/kvList";
 import Link from "next/link";

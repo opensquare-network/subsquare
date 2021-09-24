@@ -10,20 +10,19 @@ import Quote from "../public/imgs/md-icons/quote.svg";
 import OrderedList from "../public/imgs/md-icons/ordered-list.svg";
 import UnorderedList from "../public/imgs/md-icons/unordered-list.svg";
 import Link from "../public/imgs/md-icons/link.svg";
-import Image from "../public/imgs/md-icons/image.svg";
+import ImageIcon from "../public/imgs/md-icons/image.svg";
 import Code from "../public/imgs/md-icons/code.svg";
 
-const icons = new Map([
-  ["header", <Header />],
-  ["bold", <Bold />],
-  ["italic", <Italic />],
-  ["quote", <Quote />],
-  ["ordered-list", <OrderedList />],
-  ["unordered-list", <UnorderedList />],
-  ["link", <Link />],
-  ["image", <Image />],
-  ["code", <Code />],
-]);
+const icons = new Map();
+icons.set("header", <Header />);
+icons.set("bold", <Bold />);
+icons.set("italic", <Italic />);
+icons.set("quote", <Quote />);
+icons.set("ordered-list", <OrderedList />);
+icons.set("unordered-list", <UnorderedList />);
+icons.set("link", <Link />);
+icons.set("image", <ImageIcon/>);
+icons.set("code", <Code />);
 
 export const StyledTextArea = styled.div`
   ${(props) =>
