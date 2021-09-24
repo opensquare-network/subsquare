@@ -8,6 +8,7 @@ import Avatar from "components/avatar";
 import Grvatar from "components/gravatar";
 import { addressEllipsis } from "../../utils";
 import Flex from "../styled/flex";
+import Image from "next/image";
 
 const Wrapper = styled(Flex)`
   a {
@@ -60,19 +61,7 @@ export default function User({
   fontSize = 14,
   noEvent = false,
 }) {
-  if (!user && !add) {
-    return (
-      <DeleteAccount fontSize={fontSize}>
-        <img src="/imgs/icons/avatar-deleted.svg" />
-        [Deleted Account]
-      </DeleteAccount>
-    );
-  }
   const [identity, setIdentity] = useState(null);
-
-  const address =
-    add ?? user?.addresses?.find((addr) => addr.chain === chain)?.address;
-
   useEffect(() => {
     setIdentity(null);
     if (address) {
@@ -83,7 +72,20 @@ export default function User({
         (identity) => setIdentity(identity)
       );
     }
-  }, [address]);
+  }, [address, chain]);
+
+  if (!user && !add) {
+    return (
+      <DeleteAccount fontSize={fontSize}>
+        <Image src="/imgs/icons/avatar-deleted.svg" alt=""/>
+        [Deleted Account]
+      </DeleteAccount>
+    );
+  }
+
+  const address =
+    add ?? user?.addresses?.find((addr) => addr.chain === chain)?.address;
+
 
   return (
     <Wrapper noEvent={noEvent}>

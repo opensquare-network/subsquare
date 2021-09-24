@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { useState, useRef, useEffect } from "react";
-
+import Image from "next/image";
 import { nodes } from "utils/constants";
 import { useOnClickOutside, useWindowSize } from "utils/hooks";
 import { useRouter } from "next/router";
@@ -87,9 +87,9 @@ export default function NetworkSwitch({ activeNode }) {
   return (
     <Wrapper ref={ref}>
       <Select onClick={() => setShow(!show)}>
-        <img src={`/imgs/icons/${activeNode.icon}`} alt="" className="logo" />
+        <Image  src={`/imgs/icons/${activeNode.icon}`} alt="" className="logo" />
         <div>{activeNode.name}</div>
-        <img src="/imgs/icons/caret-down.svg" alt="" />
+        <Image  src="/imgs/icons/caret-down.svg" alt="" />
       </Select>
       {show && (
         <Options>
@@ -103,7 +103,7 @@ export default function NetworkSwitch({ activeNode }) {
               }}
               active={activeNode.value === nodes[index].value}
             >
-              <img src={`/imgs/icons/${item.icon}`} alt="" className="logo" />
+              <Image  src={`/imgs/icons/${item.icon}`} alt="" className="logo" />
               <div>{item.name}</div>
             </Item>
           ))}

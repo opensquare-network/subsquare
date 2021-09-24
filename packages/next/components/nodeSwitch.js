@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-
+import Image from "next/image";
 import { useOnClickOutside, useWindowSize } from "utils/hooks";
 import {
   currentNodeSelector,
@@ -119,7 +119,7 @@ export default function NodeSwitch({ small, chain }) {
     if (small && windowSize.width && windowSize.width <= 768) {
       setShow(false);
     }
-  }, [windowSize]);
+  }, [small, windowSize]);
 
   useEffect(() => {
     if (chain) {
@@ -151,18 +151,17 @@ export default function NodeSwitch({ small, chain }) {
     <Wrapper ref={ref}>
       {small && (
         <SmallSelect onClick={() => setShow(!show)}>
-          <img src={`/imgs/icons/${getSignalImg(currentNodeSetting?.delay)}`} />
+          <Image alt="" src={`/imgs/icons/${getSignalImg(currentNodeSetting?.delay)}`} />
         </SmallSelect>
       )}
       {!small && (
         <Select onClick={() => setShow(!show)}>
-          <img
+          <Image alt=""
             src={`/imgs/icons/${getSignalImg(currentNodeSetting?.delay)}`}
-            alt=""
             className="signal"
           />
           <div>{currentNodeSetting?.name}</div>
-          <img src="/imgs/icons/caret-down.svg" alt="" />
+          <Image src="/imgs/icons/caret-down.svg" alt="" />
         </Select>
       )}
       {show && (
@@ -186,9 +185,9 @@ export default function NodeSwitch({ small, chain }) {
               active={item.url === currentNodeSetting.url}
               color={getSignalColor(item?.delay)}
             >
-              <img src={`/imgs/icons/${getSignalImg(item?.delay)}`} />
+              <Image alt="" src={`/imgs/icons/${getSignalImg(item?.delay)}`} />
               <div>{`${item?.name}`}</div>
-              <div class="delay">
+              <div className="delay">
                 {item?.delay && !isNaN(item?.delay) ? `${item.delay} ms` : ""}
               </div>
             </Item>

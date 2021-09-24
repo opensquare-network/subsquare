@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-
+import Image from "next/image";
 import { removeToast } from "store/reducers/toastSlice";
 import { useIsMounted } from "utils/hooks";
 import Flex from "../styled/flex";
@@ -68,13 +68,14 @@ const ToastItem = ({ type, message, id }) => {
 
   return (
     <Wrapper className={tranClass}>
-      <img src={`/imgs/icons/toast-${type}.svg`} />
+      <Image src={`/imgs/icons/toast-${type}.svg`} alt=""/>
       <div>{message}</div>
-      <img
+      <Image
         src={`/imgs/icons/toast-reject.svg`}
         onClick={() => {
           dispatch(removeToast(id));
         }}
+        alt=""
       />
     </Wrapper>
   );
