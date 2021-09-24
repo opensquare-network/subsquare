@@ -21,7 +21,7 @@ icons.set("quote", <Quote />);
 icons.set("ordered-list", <OrderedList />);
 icons.set("unordered-list", <UnorderedList />);
 icons.set("link", <Link />);
-icons.set("image", <imgIcon/>);
+icons.set("image", <ImageIcon/>);
 icons.set("code", <Code />);
 
 export const StyledTextArea = styled.div`
