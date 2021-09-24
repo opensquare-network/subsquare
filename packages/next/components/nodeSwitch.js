@@ -162,7 +162,7 @@ export default function NodeSwitch({ small, chain }) {
             width={24} height={24}
           />
           <div>{currentNodeSetting?.name}</div>
-          <Image src="/imgs/icons/caret-down.svg" alt="" />
+          <Image src="/imgs/icons/caret-down.svg" alt="" width={14} height={14} />
         </Select>
       )}
       {show && (
@@ -186,7 +186,7 @@ export default function NodeSwitch({ small, chain }) {
               active={item.url === currentNodeSetting.url}
               color={getSignalColor(item?.delay)}
             >
-              <Image alt="" src={`/imgs/icons/${getSignalImg(item?.delay)}`} />
+              <Image alt="" src={`/imgs/icons/${getSignalImg(item?.delay)}`} width={24} height={24} />
               <div>{`${item?.name}`}</div>
               <div className="delay">
                 {item?.delay && !isNaN(item?.delay) ? `${item.delay} ms` : ""}
