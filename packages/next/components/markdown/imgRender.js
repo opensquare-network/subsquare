@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Image from "next/image";
 
 const ImgWrapper = styled.div`
   position: relative;
@@ -19,7 +18,7 @@ const ImgRender = (img) => {
   }
   return (
     <ImgWrapper>
-      <Image width={userSetWidth ? userSetWidth : "auto"} {...img} alt="" />
+      <img width={userSetWidth ? userSetWidth : "auto"} {...img} alt="" />
     </ImgWrapper>
   );
 };

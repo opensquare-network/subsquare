@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Image from "next/image";
 import User from "components/user";
 import Progress from "./progress";
 import Flex from "../styled/flex";
@@ -24,7 +23,7 @@ export default function Voting({ data, chain }) {
         <User chain={chain} add={data.proposer} fontSize={12} />
         <div>
           <div>{data.method}</div>
-          <Image src="/imgs/icons/approve.svg" alt=""/>
+          <img src="/imgs/icons/approve.svg" alt=""/>
         </div>
       </TitleWrapper>
       <Progress total={data.total} ayes={data.ayes} nays={data.nays} />

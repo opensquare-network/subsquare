@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { useState, useRef, useEffect, Fragment } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import Image from "next/image";
 import Button from "components/button";
 import { accountMenu } from "utils/constants";
 import { useOnClickOutside, useWindowSize } from "utils/hooks";
@@ -99,7 +98,7 @@ export default function HeaderAccount({ user, chain }) {
                 <Fragment key={index}>
                   {index === accountMenu.length - 1 && <Divider />}
                   <Item onClick={() => handleAccountMenu(item)}>
-                    <Image src={`/imgs/icons/${item.icon}`} alt=""  width={24} height={24}  />
+                    <img src={`/imgs/icons/${item.icon}`} alt=""  width={24} height={24}  />
                     <div>{item.name}</div>
                   </Item>
                 </Fragment>

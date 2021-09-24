@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
 import { useState, useRef } from "react";
-import Image from "next/image";
 import { useOnClickOutside } from "utils/hooks";
 import { addressEllipsis } from "utils";
 import Avatar from "components/avatar";
@@ -93,7 +92,7 @@ export default function AddressSelect({ accounts, selectedAccount, onSelect }) {
             </NameWrapper>
           </>
         )}
-        <Image
+        <img
           alt=""
           src={show ? "/imgs/icons/caret-up.svg" : "/imgs/icons/caret-down.svg"}
         />
