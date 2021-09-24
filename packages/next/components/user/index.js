@@ -61,6 +61,8 @@ export default function User({
   fontSize = 14,
   noEvent = false,
 }) {
+  const address =
+    add ?? user?.addresses?.find((addr) => addr.chain === chain)?.address;
   const [identity, setIdentity] = useState(null);
   useEffect(() => {
     setIdentity(null);
@@ -83,8 +85,6 @@ export default function User({
     );
   }
 
-  const address =
-    add ?? user?.addresses?.find((addr) => addr.chain === chain)?.address;
 
 
   return (
