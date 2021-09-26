@@ -4,14 +4,14 @@ import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi} from "services/nextApi";
 import { EmptyList } from "utils/constants";
-import LayoutFixedHeader from "components/layoutFixedHeader";
+import Layout from "packages/next/components/layout";
 import { toTechCommMotionListItem } from "utils/viewfuncs";
 
 export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
   const items = (proposals.items || []).map(item => toTechCommMotionListItem(chain, item));
 
   return (
-    <LayoutFixedHeader
+    <Layout
       user={loginUser}
       left={<Menu menu={mainMenu} />}
       chain={chain}
@@ -27,7 +27,7 @@ export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
           total: proposals.total,
         }}
       />
-    </LayoutFixedHeader>
+    </Layout>
   );
 });
 

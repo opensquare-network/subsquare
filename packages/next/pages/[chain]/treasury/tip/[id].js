@@ -9,7 +9,7 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Input from "components/comment/input";
 import { useState, useRef } from "react";
-import LayoutFixedHeader from "components/layoutFixedHeader";
+import Layout from "packages/next/components/layout";
 import { getTimelineStatus, getNode, toPrecision } from "utils";
 import Timeline from "components/timeline";
 import dayjs from "dayjs";
@@ -203,7 +203,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   ];
 
   return (
-    <LayoutFixedHeader user={loginUser} chain={chain}>
+    <Layout user={loginUser} chain={chain}>
       <Wrapper className="post-content">
         <Back href={`/${chain}/treasury/tips`} text="Back to Tips" />
         <DetailItem
@@ -238,7 +238,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           )}
         </CommentsWrapper>
       </Wrapper>
-    </LayoutFixedHeader>
+    </Layout>
   );
 });
 

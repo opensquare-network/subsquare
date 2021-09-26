@@ -13,7 +13,9 @@ import BellIcon from "../public/imgs/icons/bell.svg";
 
 const Wrapper = styled.div`
   padding-top: 37px;
-
+  padding-bottom: 32px;
+  height: calc(100vh - 96px);
+  overflow-y: scroll;
   > :not(:first-child) {
     margin-top: 16px;
   }

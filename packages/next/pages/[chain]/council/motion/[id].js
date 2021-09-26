@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Back from "components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
-import LayoutFixedHeader from "components/layoutFixedHeader";
+import Layout from "packages/next/components/layout";
 import MotionDetail from "components/motion/motionDetail";
 import { to404 } from "../../../../utils/serverSideUtil";
 
@@ -20,7 +20,7 @@ export default withLoginUserRedux(({ loginUser, motion, chain }) => {
   motion.status = motion.state?.state;
 
   return (
-    <LayoutFixedHeader user={loginUser} chain={chain}>
+    <Layout user={loginUser} chain={chain}>
       <Wrapper className="post-content">
         <Back href={`/${chain}/council/motions`} text="Back to Motions" />
         <MotionDetail
@@ -30,7 +30,7 @@ export default withLoginUserRedux(({ loginUser, motion, chain }) => {
           type="motion"
         />
       </Wrapper>
-    </LayoutFixedHeader>
+    </Layout>
   );
 });
 

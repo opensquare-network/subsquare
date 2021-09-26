@@ -27,19 +27,17 @@ const ContentWrapper = styled.div`
 
 const Left = styled.div`
   position: fixed;
-  @media screen and (max-height: 750px) and (max-width: 1140px) {
-    position: initial;
-  }
   left: max(calc((100vw - 1080px) / 2), 32px);
-  height: calc(100vh - 64px);
+  padding-bottom: 32px;
+  height: calc(100vh - 96px);
+  overflow-y: scroll;
   width: 200px;
   flex: 0 0 200px;
   @media screen and (max-width: 1024px) {
     display: none;
   }
   .footer {
-    position: absolute;
-    bottom: 54px;
+    margin-top: 40px;
   }
 `;
 
@@ -47,9 +45,6 @@ const LeftPlaceHolder = styled.div`
   width: 232px;
   flex: 0 0 232px;
   @media screen and (max-width: 1024px) {
-    display: none;
-  }
-  @media screen and (max-height: 750px) and (max-width: 1140px) {
     display: none;
   }
 `;

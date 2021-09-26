@@ -7,7 +7,7 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "../../../utils/constants";
 import Input from "../../../components/comment/input";
 import { useState, useRef } from "react";
-import LayoutFixedHeader from "../../../components/layoutFixedHeader";
+import Layout from "../../../components/layout";
 import {
   getFocusEditor,
   getMentionList,
@@ -63,7 +63,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   );
 
   return (
-    <LayoutFixedHeader user={loginUser} chain={chain}>
+    <Layout user={loginUser} chain={chain}>
       <Wrapper className="post-content">
         <Back href={`/${chain}/discussions`} text="Back to Discussions" />
         <DetailItem
@@ -93,7 +93,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           )}
         </CommentsWrapper>
       </Wrapper>
-    </LayoutFixedHeader>
+    </Layout>
   );
 });
 

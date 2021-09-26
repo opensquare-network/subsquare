@@ -8,7 +8,7 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Input from "components/comment/input";
 import { useState, useRef } from "react";
-import LayoutFixedHeader from "components/layoutFixedHeader";
+import Layout from "packages/next/components/layout";
 import Metadata from "components/metadata";
 import User from "components/user";
 import { getNode, toPrecision } from "utils";
@@ -184,7 +184,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   detail.status = detail.onchainData?.state?.state;
 
   return (
-    <LayoutFixedHeader user={loginUser} chain={chain}>
+    <Layout user={loginUser} chain={chain}>
       <Wrapper className="post-content">
         <Back href={`/${chain}/treasury/proposals`} text="Back to Proposals" />
         <DetailItem
@@ -218,7 +218,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           )}
         </CommentsWrapper>
       </Wrapper>
-    </LayoutFixedHeader>
+    </Layout>
   );
 });
 

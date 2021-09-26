@@ -1,13 +1,11 @@
 import styled from "styled-components";
+import Flex from "./styled/flex";
 import ElementIcon from "../public/imgs/icons/element.svg";
 import MailIcon from "../public/imgs/icons/mail.svg";
 import FooterLogo from "../public/imgs/icons/footerLogo.svg";
 import ExternalLink from "./externalLink";
 
 const Wrapper = styled.footer`
-  @media (max-height: 750px) {
-    display: none;
-  }
   color: #9da9bb;
   font-size: 12px;
 
@@ -20,9 +18,11 @@ const Wrapper = styled.footer`
   }
 `;
 
-const Flex = styled.div`
-  display: flex;
-  align-items: center;
+const FlexWrapper = styled(Flex)`
+  a{
+    display: flex;
+    align-items: center;
+  }
 
   > svg:nth-child(1) {
     margin-right: 16px;
@@ -54,7 +54,7 @@ export default function Footer() {
       <div
         style={{ marginBottom: 8 }}
       >{`© ${new Date().getFullYear()} SubSquare · Powered by`}</div>
-      <Flex>
+      <FlexWrapper>
         <FooterLogo />
         <ExternalLink href="https://app.element.io/#/room/#opensquare:matrix.org">
           <ElementIcon />
@@ -62,7 +62,7 @@ export default function Footer() {
         <ExternalLink href="mailto:hi@opensquare.network">
           <MailIcon />
         </ExternalLink>
-      </Flex>
+      </FlexWrapper>
     </Wrapper>
   );
 }

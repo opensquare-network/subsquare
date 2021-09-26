@@ -6,7 +6,7 @@ import { ssrNextApi as nextApi} from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import styled from "styled-components";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
-import LayoutFixedHeader from "components/layoutFixedHeader";
+import Layout from "packages/next/components/layout";
 import { toDiscussionListItem } from "utils/viewfuncs";
 
 const Create = styled.a`
@@ -32,7 +32,7 @@ export default withLoginUserRedux(({ loginUser, posts, chain }) => {
   );
 
   return (
-    <LayoutFixedHeader user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
       <List
         chain={chain}
         category={"Discussions"}
@@ -44,7 +44,7 @@ export default withLoginUserRedux(({ loginUser, posts, chain }) => {
           total: posts.total,
         }}
       />
-    </LayoutFixedHeader>
+    </Layout>
   );
 });
 

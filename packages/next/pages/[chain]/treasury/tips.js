@@ -4,14 +4,14 @@ import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi} from "services/nextApi";
 import { EmptyList } from "utils/constants";
-import LayoutFixedHeader from "components/layoutFixedHeader";
+import Layout from "packages/next/components/layout";
 import { toTipListItem } from "utils/viewfuncs";
 
 export default withLoginUserRedux(({ loginUser, tips, chain }) => {
   const items = (tips.items || []).map(item => toTipListItem(chain, item));
 
   return (
-    <LayoutFixedHeader
+    <Layout
       user={loginUser}
       left={<Menu menu={mainMenu} />}
       chain={chain}
@@ -27,7 +27,7 @@ export default withLoginUserRedux(({ loginUser, tips, chain }) => {
           total: tips.total,
         }}
       />
-    </LayoutFixedHeader>
+    </Layout>
   );
 });
 
