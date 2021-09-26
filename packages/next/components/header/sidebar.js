@@ -76,6 +76,8 @@ const CloseButton = styled(Flex)`
 `;
 
 const ContentWrapper = styled.div`
+  height: calc(100vh - 90px);
+  overflow-y: scroll;
   margin-top: 26px;
 `;
 
