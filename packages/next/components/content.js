@@ -29,15 +29,12 @@ const Left = styled.div`
   position: fixed;
   left: max(calc((100vw - 1080px) / 2), 32px);
   padding-bottom: 32px;
-  height: calc(100vh - 96px);
+  height: calc(100vh - 90px);
   overflow-y: scroll;
   width: 200px;
   flex: 0 0 200px;
   @media screen and (max-width: 1024px) {
     display: none;
-  }
-  .footer {
-    margin-top: 40px;
   }
 `;
 
