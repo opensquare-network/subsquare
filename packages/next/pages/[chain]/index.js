@@ -3,7 +3,7 @@ import Menu from "components/menu";
 import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "../../lib";
 import { ssrNextApi as nextApi} from "services/nextApi";
-import LayoutFixedHeader from "../../components/layoutFixedHeader";
+import Layout from "../../components/layout";
 import {
   toCouncilMotionListItem,
   toDiscussionListItem,
@@ -52,13 +52,13 @@ export default withLoginUserRedux(({ overview, loginUser, chain }) => {
   ];
 
   return (
-    <LayoutFixedHeader
+    <Layout
       user={loginUser}
       left={<Menu menu={mainMenu} />}
       chain={chain}
     >
       <Overview overviewData={overviewData} chain={chain} />
-    </LayoutFixedHeader>
+    </Layout>
   );
 });
 

@@ -5,7 +5,7 @@ import Back from "components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
-import LayoutFixedHeader from "components/layoutFixedHeader";
+import Layout from "packages/next/components/layout";
 import Comments from "../../../../components/comment";
 import Input from "../../../../components/comment/input";
 import { useRef, useState } from "react";
@@ -125,7 +125,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   detail.status = detail.onchainData?.state?.state;
 
   return (
-    <LayoutFixedHeader user={loginUser} chain={chain}>
+    <Layout user={loginUser} chain={chain}>
       <Wrapper className="post-content">
         <Back
           href={`/${chain}/democracy/referendums`}
@@ -173,7 +173,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           )}
         </CommentsWrapper>
       </Wrapper>
-    </LayoutFixedHeader>
+    </Layout>
   );
 });
 

@@ -9,15 +9,14 @@ const Wrapper = styled.div`
   flex-direction: column;
   min-height: 100vh;
   justify-content: center;
+  padding-top: 64px;
 `;
 
 export default function Layout({ user, left, children, chain }) {
   return (
     <Wrapper>
       <Header user={user} left={left} chain={chain} />
-      <Content left={left}>
-        {children}
-      </Content>
+      <Content left={left}>{children}</Content>
       <Toast />
     </Wrapper>
   );

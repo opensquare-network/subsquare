@@ -18,19 +18,11 @@ const Wrapper = styled.header`
     padding-left: 16px;
     padding-right: 16px;
   }
-  @media screen and (max-height: 750px) {
-    position: initial;
-  }
-  ${(props) =>
-    props &&
-    props.fixedTop &&
-    css`
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1;
-    `}
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
   background: #ffffff;
   ${shadow_100};
   height: 64px;
@@ -96,7 +88,7 @@ const LogoImg = styled.img`
   height: 64px;
 `;
 
-export default function Header({ user, left, chain, fixedTop = false }) {
+export default function Header({ user, left, chain}) {
   const router = useRouter();
   const [show, setShow] = useState(false);
   const [position, setPosition] = useState("left");
@@ -105,7 +97,7 @@ export default function Header({ user, left, chain, fixedTop = false }) {
   const node = nodes.find((n) => n.value === chain) || nodes[0];
 
   return (
-    <Wrapper fixedTop={fixedTop}>
+    <Wrapper>
       <Container>
         <FlexWrapper>
           <Left>
