@@ -27,15 +27,15 @@ export default function PostEdit({
   const [title, setTitle] = useState(postData.title);
 
   const editPost = async (content, contentType) => {
-    const url = `${chain}/${type}s/${postData._id}`;
-    const result = await nextApi.patch(
-      url,
-      {
-        title,
-        content,
-        contentType,
-      }
-    );
+    const apiUrl =
+      type === "democracy/referenda" ? "democracy/referendum" : type;
+
+    const url = `${chain}/${apiUrl}s/${postData._id}`;
+    const result = await nextApi.patch(url, {
+      title,
+      content,
+      contentType,
+    });
     return result;
   };
 
