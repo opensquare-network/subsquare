@@ -8,7 +8,7 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Input from "components/comment/input";
 import { useState, useRef } from "react";
-import Layout from "packages/next/components/layout";
+import Layout from "components/layout";
 import Metadata from "components/metadata";
 import User from "components/user";
 import { getNode, toPrecision } from "utils";

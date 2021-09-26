@@ -6,7 +6,7 @@ import { ssrNextApi as nextApi} from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import styled from "styled-components";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
-import Layout from "packages/next/components/layout";
+import Layout from "components/layout";
 import { toDiscussionListItem } from "utils/viewfuncs";
 
 const Create = styled.a`

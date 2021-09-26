@@ -4,7 +4,7 @@ import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi} from "services/nextApi";
 import { EmptyList } from "utils/constants";
-import Layout from "packages/next/components/layout";
+import Layout from "components/layout";
 import { toTreasuryProposalListItem } from "utils/viewfuncs";
 
 export default withLoginUserRedux(({ loginUser, proposals, chain }) => {

@@ -9,7 +9,7 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Input from "components/comment/input";
 import { useState, useRef } from "react";
-import Layout from "packages/next/components/layout";
+import Layout from "components/layout";
 import { getTimelineStatus, getNode, toPrecision } from "utils";
 import Timeline from "components/timeline";
 import dayjs from "dayjs";
