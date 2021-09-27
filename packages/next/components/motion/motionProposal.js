@@ -105,7 +105,7 @@ function convertProposal(proposal, chain) {
 }
 
 export default function MotionProposal({ motion, chain }) {
-  const [callType, setCallType] = useState("callType", "table");
+  const [callType, setCallType] = useState("table");
 
   useEffect(() => {
     const item = window.localStorage.getItem("callType");
