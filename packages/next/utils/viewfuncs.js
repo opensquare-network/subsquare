@@ -15,7 +15,9 @@ export function getPostUpdatedAt(post) {
 }
 
 export function getTipState(state) {
-  return TipStateMap[state.state] === "Tipping" ? `Tipping (${state.tipsCount})` : TipStateMap[state.state];
+  return TipStateMap[state.state] === "Tipping"
+    ? `Tipping (${state.tipsCount})`
+    : TipStateMap[state.state];
 }
 
 export const toDiscussionListItem = (chain, item) => ({
@@ -29,7 +31,7 @@ export const toCouncilMotionListItem = (chain, item) => ({
   title: `${item.proposal.section}.${item.proposal.method}`,
   author: item.author ?? {
     username: addressEllipsis(item.proposer),
-    addresses: [{chain, address: item.proposer}],
+    addresses: [{ chain, address: item.proposer }],
   },
   status: item.state?.state ?? "Unknown",
   detailLink: `/${chain}/council/motion/${item.index}`,
@@ -40,7 +42,7 @@ export const toTechCommMotionListItem = (chain, item) => ({
   title: `${item.proposal.section}.${item.proposal.method}`,
   author: item.author ?? {
     username: addressEllipsis(item.proposer),
-    addresses: [{chain, address: item.proposer}],
+    addresses: [{ chain, address: item.proposer }],
   },
   status: item.state?.state ?? "Unknown",
   detailLink: `/${chain}/techcomm/proposal/${item.index}`,
@@ -50,7 +52,7 @@ export const toTreasuryProposalListItem = (chain, item) => ({
   ...item,
   author: item.author ?? {
     username: addressEllipsis(item.proposer),
-    addresses: [{chain, address: item.proposer}],
+    addresses: [{ chain, address: item.proposer }],
   },
   status: item.state ?? "Unknown",
   time: getPostUpdatedAt(item),
@@ -64,7 +66,7 @@ export const toReferendaListItem = (chain, item) => ({
   index: item.referendumIndex,
   author: item.author ?? {
     username: addressEllipsis(item.proposer),
-    addresses: [{chain, address: item.proposer}],
+    addresses: [{ chain, address: item.proposer }],
   },
   detailLink: `/${chain}/democracy/referendum/${item.referendumIndex}`,
 });
@@ -73,11 +75,9 @@ export const toTipListItem = (chain, item) => ({
   ...item,
   author: item.author ?? {
     username: addressEllipsis(item.finder),
-    addresses: [{chain, address: item.finder}],
+    addresses: [{ chain, address: item.finder }],
   },
-  status: item.state
-    ? getTipState(item.state)
-    : "Unknown",
+  status: item.state ? getTipState(item.state) : "Unknown",
   time: getPostUpdatedAt(item),
   detailLink: `/${chain}/treasury/tip/${item.height}_${item.hash}`,
 });
@@ -86,7 +86,7 @@ export const toPublicProposalListItem = (chain, item) => ({
   ...item,
   author: item.author ?? {
     username: addressEllipsis(item.proposer),
-    addresses: [{chain, address: item.proposer}],
+    addresses: [{ chain, address: item.proposer }],
   },
   index: item.proposalIndex,
   status: item.state ?? "Unknown",
@@ -98,7 +98,7 @@ export const toExternalProposalListItem = (chain, item) => ({
   ...item,
   author: item.author ?? {
     username: addressEllipsis(item.proposer),
-    addresses: [{chain, address: item.proposer}],
+    addresses: [{ chain, address: item.proposer }],
   },
   time: getPostUpdatedAt(item),
   hash: item.externalProposalHash,
@@ -106,7 +106,8 @@ export const toExternalProposalListItem = (chain, item) => ({
   detailLink: `/${chain}/democracy/external/${item.indexer.blockHeight}_${item.externalProposalHash}`,
 });
 
-export const extractLinks = (text) => [...text.matchAll(/(https?:\/\/[^ ]+)/g)].map(item => item[0]);
+export const extractLinks = (text) =>
+  [...text.matchAll(/(https?:\/\/[^ ]+)/g)].map((item) => item[0]);
 
 export const getLinkNameAndLogo = (link) => {
   try {
@@ -175,17 +176,3 @@ export const getLinkNameAndLogo = (link) => {
 export function toApiType(type) {
   return `${type}s`;
 }
-
-export const TYPE_DEMOCRACY_REFERENDUM = "democracy/referendum";
-
-export const TYPE_MOTION = "motion";
-
-export const TYPE_DEMOCRACY_EXTERNAL = "democracy/external";
-
-export const TYPE_DEMOCRACY_PROPOSAL = "democracy/proposal";
-
-export const TYPE_POST = "post";
-
-export const TYPE_TREASURY_PROPOSAL = "treasury/proposal";
-
-export const TYPE_TREASURY_TIP = "treasury/tip";

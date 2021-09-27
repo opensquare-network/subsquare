@@ -25,7 +25,7 @@ import {
 } from "../../../../utils/post";
 import { shadow_100 } from "../../../../styles/componentCss";
 import { to404 } from "../../../../utils/serverSideUtil";
-import { TYPE_DEMOCRACY_PROPOSAL } from "../../../../utils/viewfuncs";
+import { TYPE_DEMOCRACY_PROPOSAL } from "../../../../utils/viewConstants";
 
 const Wrapper = styled.div`
   > :not(:first-child) {

@@ -21,7 +21,7 @@ import { shadow_100 } from "../../../../styles/componentCss";
 import { to404 } from "../../../../utils/serverSideUtil";
 import { makeExternalTimelineData } from "../../../../utils/dataWrappers/makeTimelineData";
 import { makeExternalMetadata } from "../../../../utils/dataWrappers/makeMetadata";
-import { TYPE_DEMOCRACY_EXTERNAL } from "../../../../utils/viewfuncs";
+import { TYPE_DEMOCRACY_EXTERNAL } from "../../../../utils/viewConstants";
 
 const Wrapper = styled.div`
   > :not(:first-child) {

@@ -17,7 +17,7 @@ import User from "components/user";
 import KVList from "components/kvList";
 import Links from "components/timeline/links";
 import ReasonLink from "components/reasonLink";
-import { getTipState, TYPE_TREASURY_TIP } from "utils/viewfuncs";
+import { getTipState, TYPE_TREASURY_TIP } from "utils/viewConstants";
 import {
   getFocusEditor,
   getMentionList,
