@@ -67,17 +67,8 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   useEffect(
     () => {
-      if (!detail?.onchainData) {
-        return;
-      }
-
-      // Check if referendum is ended
-      if ([
-        "Executed",
-        "NotPassed",
-        "Passed",
-        "Cancelled",
-      ].includes(detail.onchainData.state?.state)) {
+      // Already has the last ongoging status
+      if (referendumStatus) {
         return;
       }
 
@@ -86,7 +77,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
         const referendumInfo = await api.query.democracy.referendumInfoOf(detail.referendumIndex);
         const referendumInfoData = referendumInfo.toJSON();
         if (isMounted.current) {
-          setReferendumStatus(referendumInfoData?.ongoing || detail?.onchainData?.status);
+          setReferendumStatus(referendumInfoData?.ongoing);
         }
       });
     },
