@@ -1,21 +1,21 @@
-.preview .post-content{
+.preview .post-content {
   border-left: 0.25rem solid #f2f2f2;
   padding: 12px 15px;
 }
 .post-content {
   caret-color: #000;
   font-size: 14px;
-  color: #34373C;
+  color: #34373c;
 
-  p{
+  p {
     margin-bottom: 0;
   }
 
-  ul > li::before{
+  ul > li::before {
     margin-right: 4px;
   }
 
-  .ql-align-center{
+  .ql-align-center {
     text-align: center;
   }
 
@@ -23,48 +23,54 @@
     margin-right: 8px;
   }
 
-  div.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="1"]::before{
+  div.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="1"]::before {
     font-size: 1.25em;
   }
 
-  div.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="2"]::before{
+  div.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="2"]::before {
     font-size: 1.1875em;
   }
 
-  div.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before{
+  div.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
     font-size: 1.125em;
   }
 
-  div.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="4"]::before{
+  div.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="4"]::before {
     font-size: 1em;
   }
 
-  div.ql-snow .ql-editor h1, h1 {
+  div.ql-snow .ql-editor h1,
+  h1 {
     line-height: 2rem;
     font-size: 1.25rem;
   }
 
-  div.ql-snow .ql-editor h2, h2 {
+  div.ql-snow .ql-editor h2,
+  h2 {
     line-height: 1.875rem;
     font-size: 1.1875rem;
   }
 
-  div.ql-snow .ql-editor h3, h3 {
+  div.ql-snow .ql-editor h3,
+  h3 {
     line-height: 1.75rem;
     font-size: 1.125rem;
   }
 
-  div.ql-snow .ql-editor h4, h4 {
+  div.ql-snow .ql-editor h4,
+  h4 {
     line-height: 1.625rem;
     font-size: 1rem;
   }
 
-  div.ql-snow .ql-editor h5, h5 {
+  div.ql-snow .ql-editor h5,
+  h5 {
     line-height: 1.5rem;
     font-size: 0.9375rem;
   }
 
-  div.ql-snow .ql-editor h6, h6 {
+  div.ql-snow .ql-editor h6,
+  h6 {
     line-height: 1.375rem;
     font-size: 0.875rem;
   }
@@ -84,8 +90,8 @@
 
   div.ql-snow.ql-toolbar .ql-picker-item,
   div.ql-snow .ql-picker.ql-expanded .ql-picker-label {
-    stroke: #696D73;
-    color: #696D73;
+    stroke: #696d73;
+    color: #696d73;
   }
 
   div.ql-snow.ql-toolbar button:hover .ql-stroke,
@@ -94,20 +100,20 @@
   div.ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke,
   div.ql-snow.ql-toolbar .ql-picker-item:hover {
     /* 不hover时的颜色 #696D73*/
-    stroke: #34373C;
-    color: #34373C;
+    stroke: #34373c;
+    color: #34373c;
   }
 
   div.ql-snow.ql-toolbar button path {
-    fill: #696D73;
+    fill: #696d73;
   }
 
   div.ql-snow.ql-toolbar button:hover path {
-    fill: #34373C;
+    fill: #34373c;
   }
 
   div.ql-snow.ql-toolbar .ql-active path {
-    fill: #34373C;
+    fill: #34373c;
   }
 
   div.ql-snow .ql-picker-options {
@@ -124,7 +130,7 @@
   }
 
   div.ql-snow.ql-toolbar button:hover .ql-fill {
-    fill: #34373C !important;
+    fill: #34373c !important;
   }
 
   pre {
@@ -132,7 +138,8 @@
     color: #000 !important;
   }
 
-  ol, ul {
+  ol,
+  ul {
     padding-inline-start: 20px;
   }
 
@@ -144,7 +151,8 @@
     list-style-type: none;
   }
 
-  .ql-editor ol, .ql-editor ul {
+  .ql-editor ol,
+  .ql-editor ul {
     padding-left: 20px !important;
   }
 
@@ -152,7 +160,8 @@
   /*    list-style-type: inherit;*/
   /*}*/
 
-  div.ql-editor ol li:not(.ql-direction-rtl), div.ql-editor ul li:not(.ql-direction-rtl) {
+  div.ql-editor ol li:not(.ql-direction-rtl),
+  div.ql-editor ul li:not(.ql-direction-rtl) {
     //padding-left: 0;
   }
 
@@ -671,12 +680,13 @@
   }
 
   ol li {
-    counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+    counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8
+      list-9;
     counter-increment: list-0;
   }
 
   ol li:before {
-    content: counter(list-0, decimal) '. ';
+    content: counter(list-0, decimal) ". ";
   }
 
   ol li.ql-indent-1 {
@@ -684,7 +694,7 @@
   }
 
   ol li.ql-indent-1:before {
-    content: counter(list-1, lower-alpha) '. ';
+    content: counter(list-1, lower-alpha) ". ";
   }
 
   ol li.ql-indent-1 {
@@ -696,7 +706,7 @@
   }
 
   ol li.ql-indent-2:before {
-    content: counter(list-2, lower-roman) '. ';
+    content: counter(list-2, lower-roman) ". ";
   }
 
   ol li.ql-indent-2 {
@@ -708,7 +718,7 @@
   }
 
   ol li.ql-indent-3:before {
-    content: counter(list-3, decimal) '. ';
+    content: counter(list-3, decimal) ". ";
   }
 
   ol li.ql-indent-3 {
@@ -720,7 +730,7 @@
   }
 
   ol li.ql-indent-4:before {
-    content: counter(list-4, lower-alpha) '. ';
+    content: counter(list-4, lower-alpha) ". ";
   }
 
   ol li.ql-indent-4 {
@@ -732,7 +742,7 @@
   }
 
   ol li.ql-indent-5:before {
-    content: counter(list-5, lower-roman) '. ';
+    content: counter(list-5, lower-roman) ". ";
   }
 
   ol li.ql-indent-5 {
@@ -744,7 +754,7 @@
   }
 
   ol li.ql-indent-6:before {
-    content: counter(list-6, decimal) '. ';
+    content: counter(list-6, decimal) ". ";
   }
 
   ol li.ql-indent-6 {
@@ -756,7 +766,7 @@
   }
 
   ol li.ql-indent-7:before {
-    content: counter(list-7, lower-alpha) '. ';
+    content: counter(list-7, lower-alpha) ". ";
   }
 
   ol li.ql-indent-7 {
@@ -768,7 +778,7 @@
   }
 
   ol li.ql-indent-8:before {
-    content: counter(list-8, lower-roman) '. ';
+    content: counter(list-8, lower-roman) ". ";
   }
 
   ol li.ql-indent-8 {
@@ -780,9 +790,8 @@
   }
 
   ol li.ql-indent-9:before {
-    content: counter(list-9, decimal) '. ';
+    content: counter(list-9, decimal) ". ";
   }
-
 
   blockquote {
     margin-left: 0;
@@ -799,24 +808,26 @@
   }
 
   ul > li::before {
-    content: '\2022';
+    content: "\2022";
   }
 
-  span.mention, span.mention span {
+  span.mention,
+  span.mention span {
     background-color: #fff;
-    color: #0974CD;
+    color: #0974cd;
   }
 }
 
 /*markdown*/
 .mde-header ul.mde-header-group li.mde-header-item button:hover svg path {
-  fill: #34373C;
+  fill: #34373c;
 }
 
-ul.mde-header-group > li::before, ul.mde-suggestions > li::before {
+ul.mde-header-group > li::before,
+ul.mde-suggestions > li::before {
   content: none;
 }
 
-p{
+p {
   margin-bottom: 0;
 }
