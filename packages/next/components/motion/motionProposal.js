@@ -1,32 +1,72 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+
 import InnerDataTable from "../table/innerDataTable";
 import { getNode, toPrecision } from "utils";
 
+const JsonView = dynamic(
+  () => import("components/jsonView").catch((e) => console.error(e)),
+  { ssr: false }
+);
+
 const Header = styled.div`
-  width: 128px;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 140%;
   flex: none;
-  margin-bottom: 12px;
+  flex: 0 0 128px;
 `;
 
 const ArgsWrapper = styled.div`
   background: #f6f7fa;
   border-radius: 4px;
-  > table {
-    border: 24px solid #f6f7fa;
-  }
+  border: 24px solid #f6f7fa;
+  overflow: scroll;
+  padding-bottom: 24px;
   font-size: 14px;
   line-height: 20px;
   word-wrap: break-word;
   white-space: pre-wrap;
-  overflow-x: auto;
+  width: 100%;
 `;
 
 const Wrapper = styled.div`
-  max-width: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const HeaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+`;
+
+const TagWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  > :not(:first-child) {
+    margin-left: 8px;
+  }
+`;
+
+const TagItem = styled.div`
+  padding: 4px 8px;
+  background: #f6f7fa;
+  border-radius: 2px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 100%;
+  color: #506176;
+  cursor: pointer;
+  ${(p) =>
+    p.active &&
+    css`
+      background: #f5f2ff;
+      color: #6848ff;
+    `}
 `;
 
 function convertProposal(proposal, chain) {
@@ -66,12 +106,48 @@ function convertProposal(proposal, chain) {
 }
 
 export default function MotionProposal({ motion, chain }) {
+  const [callType, setCallType] = useState("callType", "table");
+
+  useEffect(() => {
+    const item = window.localStorage.getItem("callType");
+    if (item) {
+      setCallType(JSON.parse(item));
+    }
+  });
+
+  const onClick = (value) => {
+    window.localStorage.setItem("callType", JSON.stringify(value));
+    setCallType(value);
+  };
+
+  console.log({ motion });
+
   return (
     <Wrapper>
-      <Header>Call</Header>
-      <ArgsWrapper>
-        <InnerDataTable data={convertProposal(motion.proposal, chain)} />
-      </ArgsWrapper>
+      <HeaderWrapper>
+        <Header>Call</Header>
+        <TagWrapper>
+          <TagItem
+            active={callType === "table"}
+            onClick={() => onClick("table")}
+          >
+            Table
+          </TagItem>
+          <TagItem active={callType === "json"} onClick={() => onClick("json")}>
+            Json
+          </TagItem>
+        </TagWrapper>
+      </HeaderWrapper>
+      {callType === "table" && (
+        <ArgsWrapper>
+          <InnerDataTable data={convertProposal(motion.proposal, chain)} />
+        </ArgsWrapper>
+      )}
+      {callType === "json" && (
+        <ArgsWrapper>
+          <JsonView src={motion.proposal} />
+        </ArgsWrapper>
+      )}
     </Wrapper>
   );
 }
