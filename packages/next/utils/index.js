@@ -2,6 +2,8 @@ import moment from "moment";
 import BigNumber from "bignumber.js";
 import { nodes } from "./constants";
 
+BigNumber.config({ EXPONENTIAL_AT: 36 });
+
 export function addressEllipsis(address, start = 4, end = 4) {
   if (!address) return;
   if (address.length <= start + end) return address;
