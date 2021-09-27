@@ -1,6 +1,6 @@
 import styled from "styled-components";
+import BigNumber from "bignumber.js";
 import InnerDataTable from "../table/innerDataTable";
-import { getNode, toPrecision } from "utils";
 
 const Header = styled.div`
   width: 128px;
@@ -44,16 +44,10 @@ function convertProposal(proposal, chain) {
             return [arg.name, arg.value.map((v) => convertProposal(v, chain))];
           }
           case "Balance": {
-            const node = getNode(chain);
-            if (!node) {
-              return [arg.name, arg.value];
-            }
-
-            const decimals = node.decimals;
-            const symbol = node.symbol;
+            const value = new BigNumber(arg.value).toString();
             return [
               arg.name,
-              `${toPrecision(arg.value ?? 0, decimals)} ${symbol}`,
+              value,
             ];
           }
           default: {
