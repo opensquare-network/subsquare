@@ -47,7 +47,7 @@ async function updatePost(
       "indexer.blockHeight": chainProposal.externalProposalIndexer.blockHeight,
     });
     authors = democracyExternal?.authors || [];
-  } else if (chainProposal.publicProposalIndex) {
+  } else if (chainProposal.publicProposalIndex !== undefined) {
     const col = await getChainPublicProposalCollection(chain);
     const democracyPublicProposal = await col.findOne({ proposalIndex: chainProposal.publicProposalIndex });
     authors = democracyPublicProposal?.authors || [];
