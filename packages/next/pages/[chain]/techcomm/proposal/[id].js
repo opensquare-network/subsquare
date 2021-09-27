@@ -27,7 +27,7 @@ export default withLoginUserRedux(({ loginUser, motion, chain }) => {
           motion={motion}
           user={loginUser}
           chain={chain}
-          type={TYPE_MOTION}
+          type="motion"
         />
       </Wrapper>
     </Layout>

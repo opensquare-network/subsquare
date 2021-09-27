@@ -110,7 +110,7 @@ function Input(
     try {
       setLoading(true);
       const result = await nextApi.post(
-        `${chain}/${toApiType(type)}/${postId}/comments`,
+        `${chain}/${toApiType(type)}s/${postId}/comments`,
         {
           content,
           contentType,

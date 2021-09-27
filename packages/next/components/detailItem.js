@@ -241,7 +241,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
     post.reactions?.findIndex((r) => r.user?.username === user.username) > -1;
 
   const updatePost = async () => {
-    const url = `${chain}/${toApiType(type)}/${post._id}`;
+    const url = `${chain}/${toApiType(type)}s/${post._id}`;
     const { result: newPost } = await nextApi.fetch(url);
     if (newPost) {
       setPost(newPost);
@@ -249,6 +249,9 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
   };
 
   const toggleThumbUp = async () => {
+    const apiUrl =
+      type === "democracy/referenda" ? "democracy/referendum" : type;
+
     if (isLoggedIn && !ownPost && !thumbUpLoading) {
       setThumbUpLoading(true);
       try {
@@ -256,11 +259,11 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
 
         if (thumbUp) {
           ({ result, error } = await nextApi.delete(
-            `${chain}/${toApiType(type)}/${post._id}/reaction`
+            `${chain}/${toApiType(type)}s/${post._id}/reaction`
           ));
         } else {
           ({ result, error } = await nextApi.put(
-            `${chain}/${toApiType(type)}/${post._id}/reaction`,
+            `${chain}/${toApiType(type)}s/${post._id}/reaction`,
             { reaction: 1 },
             { credentials: "include" }
           ));
@@ -327,7 +330,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
               )}
             </ReferendaWrapper>
           )}
-          {type === "democracy/referendum" &&
+          {type === "democracy/referenda" &&
             post.externalProposalHash !== undefined && (
               <ReferendaWrapper>
                 <Link
@@ -351,7 +354,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                 </div>
               </ReferendaWrapper>
             )}
-          {type === "democracy/referendum" && post.proposalIndex !== undefined && (
+          {type === "democracy/referenda" && post.proposalIndex !== undefined && (
             <ReferendaWrapper>
               <Link href={`/${chain}/democracy/proposal/${post.proposalIndex}`}>
                 {`Proposal #${post.proposalIndex}`}

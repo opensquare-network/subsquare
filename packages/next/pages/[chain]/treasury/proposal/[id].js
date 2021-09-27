@@ -23,7 +23,6 @@ import {
 } from "../../../../utils/post";
 import { shadow_100 } from "../../../../styles/componentCss";
 import { to404 } from "../../../../utils/serverSideUtil";
-import { TYPE_TREASURY_PROPOSAL } from "../../../../utils/viewfuncs";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -193,10 +192,12 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           user={loginUser}
           chain={chain}
           onReply={focusEditor}
-          type={TYPE_TREASURY_PROPOSAL}
+          type="treasury/proposal"
         />
-        <Metadata data={metadata} />
-        <Timeline data={timelineData} chain={chain} />
+        {detail.onchainData?.meta && <Metadata data={metadata} />}
+        {timelineData && timelineData.length > 0 && (
+          <Timeline data={timelineData} chain={chain} />
+        )}
         <CommentsWrapper>
           <Comments
             data={comments}
@@ -212,7 +213,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
               ref={editorWrapperRef}
               setQuillRef={setQuillRef}
               {...{ contentType, setContentType, content, setContent, users }}
-              type={TYPE_TREASURY_PROPOSAL}
+              type="treasury/proposal"
             />
           )}
         </CommentsWrapper>

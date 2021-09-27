@@ -25,7 +25,6 @@ import {
 } from "../../../../utils/post";
 import { shadow_100 } from "../../../../styles/componentCss";
 import { to404 } from "../../../../utils/serverSideUtil";
-import {TYPE_DEMOCRACY_REFERENDUM} from "../../../../utils/viewfuncs";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -137,14 +136,16 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           onReply={focusEditor}
           user={loginUser}
           chain={chain}
-          type={TYPE_DEMOCRACY_REFERENDUM}
+          type="democracy/referenda"
         />
 
         <Vote referendum={detail.onchainData} chain={chain} />
 
         <KVList title={"Metadata"} data={metadata} />
 
-        <Timeline data={timelineData} chain={chain} />
+        {timelineData && timelineData.length > 0 && (
+          <Timeline data={timelineData} chain={chain} />
+        )}
 
         <CommentsWrapper>
           <Comments
@@ -167,7 +168,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
                 setContent,
                 users: getMentionList(comments),
               }}
-              type={TYPE_DEMOCRACY_REFERENDUM}
+              type="democracy/referendum"
             />
           )}
         </CommentsWrapper>

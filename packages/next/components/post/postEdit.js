@@ -28,7 +28,7 @@ export default function PostEdit({
   const [title, setTitle] = useState(postData.title);
 
   const editPost = async (content, contentType) => {
-    const url = `${chain}/${toApiType(type)}/${postData._id}`;
+    const url = `${chain}/${toApiType(type)}s/${postData._id}`;
     const result = await nextApi.patch(url, {
       title,
       content,
