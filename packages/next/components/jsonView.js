@@ -4,7 +4,7 @@ import styled from "styled-components";
 const Wrapper = styled.div`
   background-color: #ffffff;
   padding: 8px;
-  overflow: scroll;
+  overflow-x: scroll;
 `;
 
 export default function JsonView({ src }) {

@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 const Wrapper = styled.div`
-  overflow: scroll;
+  overflow-x: scroll;
 `;
 
 const BreakText = styled.span`
