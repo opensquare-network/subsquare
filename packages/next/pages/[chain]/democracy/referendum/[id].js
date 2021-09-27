@@ -136,7 +136,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           onReply={focusEditor}
           user={loginUser}
           chain={chain}
-          type="democracy/referenda"
+          type="democracy/referendum"
         />
 
         <Vote referendum={detail.onchainData} chain={chain} />

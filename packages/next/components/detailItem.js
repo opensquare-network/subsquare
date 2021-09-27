@@ -249,9 +249,6 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
   };
 
   const toggleThumbUp = async () => {
-    const apiUrl =
-      type === "democracy/referenda" ? "democracy/referendum" : type;
-
     if (isLoggedIn && !ownPost && !thumbUpLoading) {
       setThumbUpLoading(true);
       try {
@@ -330,7 +327,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
               )}
             </ReferendaWrapper>
           )}
-          {type === "democracy/referenda" &&
+          {type === "democracy/referendum" &&
             post.externalProposalHash !== undefined && (
               <ReferendaWrapper>
                 <Link
@@ -354,7 +351,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                 </div>
               </ReferendaWrapper>
             )}
-          {type === "democracy/referenda" && post.proposalIndex !== undefined && (
+          {type === "democracy/referendum" && post.proposalIndex !== undefined && (
             <ReferendaWrapper>
               <Link href={`/${chain}/democracy/proposal/${post.proposalIndex}`}>
                 {`Proposal #${post.proposalIndex}`}
