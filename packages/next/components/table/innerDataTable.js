@@ -1,6 +1,10 @@
 import React from "react";
 import styled, { css } from "styled-components";
 
+const Wrapper = styled.div`
+  overflow-x: auto;
+`;
+
 const BreakText = styled.span`
   word-break: break-all;
 `;
@@ -69,7 +73,6 @@ const StyledTd = styled.td`
 `;
 
 export default function InnerDataTable({ data, nested = false }) {
-
   if (React.isValidElement(data)) {
     return data;
   }
@@ -127,27 +130,29 @@ export default function InnerDataTable({ data, nested = false }) {
 
     return (
       entries.length > 0 && (
-        <StyledTable>
-          <tbody>
-            {entries.map(([fieldName, fieldValue], index) => {
-              return (
-                <StyledTr key={index} nested={nested}>
-                  <StyledTd
-                    style={{
-                      whiteSpace: "nowrap",
-                      width,
-                      minWidth: width,
-                      padding: "10px 24px",
-                    }}
-                  >
-                    {fieldName}
-                  </StyledTd>
-                  {formatValue(fieldValue)}
-                </StyledTr>
-              );
-            })}
-          </tbody>
-        </StyledTable>
+        <Wrapper>
+          <StyledTable>
+            <tbody>
+              {entries.map(([fieldName, fieldValue], index) => {
+                return (
+                  <StyledTr key={index} nested={nested}>
+                    <StyledTd
+                      style={{
+                        whiteSpace: "nowrap",
+                        width,
+                        minWidth: width,
+                        padding: "10px 24px",
+                      }}
+                    >
+                      {fieldName}
+                    </StyledTd>
+                    {formatValue(fieldValue)}
+                  </StyledTr>
+                );
+              })}
+            </tbody>
+          </StyledTable>
+        </Wrapper>
       )
     );
   }
