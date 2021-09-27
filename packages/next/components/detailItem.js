@@ -241,7 +241,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
     post.reactions?.findIndex((r) => r.user?.username === user.username) > -1;
 
   const updatePost = async () => {
-    const url = `${chain}/${toApiType(type)}s/${post._id}`;
+    const url = `${chain}/${toApiType(type)}/${post._id}`;
     const { result: newPost } = await nextApi.fetch(url);
     if (newPost) {
       setPost(newPost);
@@ -256,11 +256,11 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
 
         if (thumbUp) {
           ({ result, error } = await nextApi.delete(
-            `${chain}/${toApiType(type)}s/${post._id}/reaction`
+            `${chain}/${toApiType(type)}/${post._id}/reaction`
           ));
         } else {
           ({ result, error } = await nextApi.put(
-            `${chain}/${toApiType(type)}s/${post._id}/reaction`,
+            `${chain}/${toApiType(type)}/${post._id}/reaction`,
             { reaction: 1 },
             { credentials: "include" }
           ));

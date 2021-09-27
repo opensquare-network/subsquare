@@ -54,7 +54,7 @@ const Content = styled.div`
   word-break: break-all;
 `;
 
-function KVList({ data, title, chain }) {
+function KVList({ data, title}) {
   if (!data) {
     return null;
   }
