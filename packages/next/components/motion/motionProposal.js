@@ -120,8 +120,6 @@ export default function MotionProposal({ motion, chain }) {
     setCallType(value);
   };
 
-  console.log({ motion });
-
   return (
     <Wrapper>
       <HeaderWrapper>
