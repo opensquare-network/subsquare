@@ -4,6 +4,7 @@ import { useState } from "react";
 import Input from "components/input";
 import EditInput from "components/editInput";
 import nextApi from "services/nextApi";
+import { toApiType } from "utils/viewfuncs";
 
 const Title = styled.div`
   font-weight: bold;
@@ -27,10 +28,7 @@ export default function PostEdit({
   const [title, setTitle] = useState(postData.title);
 
   const editPost = async (content, contentType) => {
-    const apiUrl =
-      type === "democracy/referenda" ? "democracy/referendum" : type;
-
-    const url = `${chain}/${apiUrl}s/${postData._id}`;
+    const url = `${chain}/${toApiType(type)}s/${postData._id}`;
     const result = await nextApi.patch(url, {
       title,
       content,

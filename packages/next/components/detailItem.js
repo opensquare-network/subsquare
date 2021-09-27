@@ -16,6 +16,7 @@ import TriangleRight from "../public/imgs/icons/arrow-triangle-right.svg";
 import Tag from "./tag";
 import Flex from "./styled/flex";
 import { shadow_100 } from "../styles/componentCss";
+import { toApiType } from "utils/viewfuncs";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -240,9 +241,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
     post.reactions?.findIndex((r) => r.user?.username === user.username) > -1;
 
   const updatePost = async () => {
-    const apiUrl =
-      type === "democracy/referenda" ? "democracy/referendum" : type;
-    const url = `${chain}/${apiUrl}s/${post._id}`;
+    const url = `${chain}/${toApiType(type)}s/${post._id}`;
     const { result: newPost } = await nextApi.fetch(url);
     if (newPost) {
       setPost(newPost);
@@ -260,11 +259,11 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
 
         if (thumbUp) {
           ({ result, error } = await nextApi.delete(
-            `${chain}/${apiUrl}s/${post._id}/reaction`
+            `${chain}/${toApiType(type)}s/${post._id}/reaction`
           ));
         } else {
           ({ result, error } = await nextApi.put(
-            `${chain}/${apiUrl}s/${post._id}/reaction`,
+            `${chain}/${toApiType(type)}s/${post._id}/reaction`,
             { reaction: 1 },
             { credentials: "include" }
           ));
