@@ -7,6 +7,10 @@
   font-size: 14px;
   color: #34373C;
 
+  ul > li::before{
+    margin-right: 4px;
+  }
+
   .ql-align-center{
     text-align: center;
   }

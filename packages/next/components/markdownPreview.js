@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   .markdown-content {
     color: #000;
     max-width: 48.5rem;
-    word-break: break-all;
+    word-break: normal;
     h1,
     h2,
     h3,
