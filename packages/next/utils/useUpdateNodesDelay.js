@@ -1,30 +1,14 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { ApiPromise, WsProvider } from "@polkadot/api";
-import { typesBundleForPolkadot } from "@acala-network/type-definitions";
 
+import { getApi } from "../services/polkadotApi";
 import {
   currentNodeSelector,
   nodesSelector,
   setNodesDelay,
 } from "../store/reducers/nodeSlice";
 import { sleep } from "./index";
-
-const apiInstanceMap = new Map();
-
-const getApi = async (chain, queryUrl) => {
-  if (!apiInstanceMap.has(queryUrl)) {
-    const provider = new WsProvider(queryUrl, 1000);
-    const options = { provider };
-    if (chain === "karura") {
-      options.typesBundle = { ...typesBundleForPolkadot };
-    }
-
-    apiInstanceMap.set(queryUrl, ApiPromise.create(options));
-  }
-  return apiInstanceMap.get(queryUrl);
-};
 
 const TIMEOUT = 10000;
 let count = 0;

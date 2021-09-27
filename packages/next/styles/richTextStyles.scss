@@ -7,10 +7,6 @@
   font-size: 14px;
   color: #34373c;
 
-  p {
-    margin-bottom: 0;
-  }
-
   ul > li::before {
     margin-right: 4px;
   }
@@ -826,8 +822,4 @@
 ul.mde-header-group > li::before,
 ul.mde-suggestions > li::before {
   content: none;
-}
-
-p {
-  margin-bottom: 0;
 }

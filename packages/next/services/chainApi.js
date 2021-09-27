@@ -3,32 +3,6 @@ import { stringToHex } from "@polkadot/util";
 
 export * from "./address";
 
-import {
-  DEFAULT_KUSAMA_NODE_URL,
-  DEFAULT_KUSAMA_NODES,
-  DEFAULT_KARURA_NODE_URL,
-  DEFAULT_KARURA_NODES,
-} from "utils/constants";
-
-const apiInstanceMap = new Map();
-
-let nodeUrl = (() => {
-  let localNodeUrl = null;
-  try {
-    localNodeUrl = JSON.parse(localStorage.getItem("nodeUrl"));
-  } catch (e) {
-    // ignore parse error
-  }
-  return {
-    kusama:
-      DEFAULT_KUSAMA_NODES.find((item) => item.url === localNodeUrl?.kusama)
-        ?.url || DEFAULT_KUSAMA_NODE_URL,
-    karura:
-      DEFAULT_KARURA_NODES.find((item) => item.url === localNodeUrl?.karura)
-        ?.url || DEFAULT_KARURA_NODE_URL,
-  };
-})();
-
 export const signMessage = async (text, address) => {
   if (!isWeb3Injected || !address) {
     return "";

@@ -8,7 +8,7 @@ import { EmptyList } from "utils/constants";
 import Layout from "components/layout";
 import Comments from "../../../../components/comment";
 import Input from "../../../../components/comment/input";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DetailItem from "../../../../components/detailItem";
 import KVList from "../../../../components/kvList";
 import User from "../../../../components/user";
@@ -26,6 +26,10 @@ import {
 import { shadow_100 } from "../../../../styles/componentCss";
 import { to404 } from "../../../../utils/serverSideUtil";
 import { TYPE_DEMOCRACY_REFERENDUM } from "../../../../utils/viewConstants";
+import { getApi } from "../../../../services/polkadotApi";
+import { currentNodeSelector } from "store/reducers/nodeSlice";
+import { useSelector } from "react-redux";
+import { useIsMounted } from "utils/hooks";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -49,6 +53,7 @@ const CommentsWrapper = styled.div`
 `;
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+  const nodeUrl = useSelector(currentNodeSelector);
   const node = getNode(chain);
   if (!node) {
     return null;
@@ -58,6 +63,27 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const [content, setContent] = useState("");
   const [contentType, setContentType] = useState(
     loginUser?.preference.editor || "markdown"
+  );
+  const [referendumStatus, setReferendumStatus] = useState(detail?.onchainData?.status);
+  const isMounted = useIsMounted();
+
+  useEffect(
+    () => {
+      // Already has the last ongoging status
+      if (referendumStatus) {
+        return;
+      }
+
+      const apiUrl = nodeUrl[chain];
+      getApi(chain, apiUrl).then(async (api) => {
+        const referendumInfo = await api.query.democracy.referendumInfoOf(detail.referendumIndex);
+        const referendumInfoData = referendumInfo.toJSON();
+        if (isMounted.current) {
+          setReferendumStatus(referendumInfoData?.ongoing);
+        }
+      });
+    },
+    [detail, isMounted]
   );
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
@@ -109,9 +135,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
         />
       </>,
     ],
-    ["Delay", detail?.onchainData?.status?.delay],
-    ["End", detail?.onchainData?.status?.end],
-    ["Threshold", detail?.onchainData?.status?.threshold],
+    ["Delay", referendumStatus?.delay],
+    ["End", referendumStatus?.end],
+    ["Threshold", referendumStatus?.threshold],
   ];
 
   if (detail?.onchainData?.preImage) {
@@ -140,7 +166,11 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           type={TYPE_DEMOCRACY_REFERENDUM}
         />
 
-        <Vote referendum={detail.onchainData} chain={chain} />
+        <Vote
+          referendumInfo={detail?.onchainData?.info}
+          referendumStatus={referendumStatus}
+          chain={chain}
+        />
 
         <KVList title={"Metadata"} data={metadata} />
 
