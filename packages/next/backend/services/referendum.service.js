@@ -91,7 +91,7 @@ async function getActivePostsOverview(chain) {
     {
       "state.state": {
         $nin: [
-          "Executed", "NotPassed", "Passed",
+          "Executed", "NotPassed", "Passed", "Cancelled",
         ]
       }
     })
@@ -126,6 +126,7 @@ async function getActivePostsOverview(chain) {
       foreignField: "democracy",
     }),
   ]);
+  console.log(proposals);
 
   return proposals.map(proposal => {
     const post = proposal.post;

@@ -35,7 +35,7 @@ export default withLoginUserRedux(({ overview, loginUser, chain }) => {
     },
     {
       category: "Referenda",
-      items: (overview?.democracy?.referensums ?? []).map(item => toReferendaListItem(chain, item)),
+      items: (overview?.democracy?.referendums ?? []).map(item => toReferendaListItem(chain, item)),
     },
     {
       category: "Tips",
