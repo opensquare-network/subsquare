@@ -15,7 +15,9 @@ export function getPostUpdatedAt(post) {
 }
 
 export function getTipState(state) {
-  return TipStateMap[state.state] === "Tipping" ? `Tipping (${state.tipsCount})` : TipStateMap[state.state];
+  return TipStateMap[state.state] === "Tipping"
+    ? `Tipping (${state.tipsCount})`
+    : TipStateMap[state.state];
 }
 
 export const toDiscussionListItem = (chain, item) => ({
@@ -75,9 +77,7 @@ export const toTipListItem = (chain, item) => ({
     username: addressEllipsis(item.finder),
     addresses: [{ chain, address: item.finder }],
   },
-  status: item.state
-    ? getTipState(item.state)
-    : "Unknown",
+  status: item.state ? getTipState(item.state) : "Unknown",
   time: getPostUpdatedAt(item),
   detailLink: `/${chain}/treasury/tip/${item.height}_${item.hash}`,
 });
@@ -106,7 +106,8 @@ export const toExternalProposalListItem = (chain, item) => ({
   detailLink: `/${chain}/democracy/external/${item.indexer.blockHeight}_${item.externalProposalHash}`,
 });
 
-export const extractLinks = (text) => [...text.matchAll(/(https?:\/\/[^ ]+)/g)].map(item => item[0]);
+export const extractLinks = (text) =>
+  [...text.matchAll(/(https?:\/\/[^ ]+)/g)].map((item) => item[0]);
 
 export const getLinkNameAndLogo = (link) => {
   try {
@@ -173,5 +174,5 @@ export const getLinkNameAndLogo = (link) => {
 };
 
 export function toApiType(type) {
-  return type === "democracy/referenda" ? "democracy/referendum" : type;
+  return `${type}s`;
 }

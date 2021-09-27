@@ -25,6 +25,7 @@ import {
 } from "../../../../utils/post";
 import { shadow_100 } from "../../../../styles/componentCss";
 import { to404 } from "../../../../utils/serverSideUtil";
+import { TYPE_DEMOCRACY_PROPOSAL } from "../../../../utils/viewConstants";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -175,12 +176,10 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           user={loginUser}
           chain={chain}
           onReply={focusEditor}
-          type="democracy/proposal"
+          type={TYPE_DEMOCRACY_PROPOSAL}
         />
-        {metadata && <KVList title="Metadata" data={metadata} />}
-        {timelineData && timelineData.length > 0 && (
-          <Timeline data={timelineData} chain={chain} />
-        )}
+        <KVList title="Metadata" data={metadata} />
+        <Timeline data={timelineData} chain={chain} />
         <CommentsWrapper>
           <Comments
             data={comments}
@@ -196,7 +195,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
               ref={editorWrapperRef}
               setQuillRef={setQuillRef}
               {...{ contentType, setContentType, content, setContent, users }}
-              type="democracy/proposal"
+              type={TYPE_DEMOCRACY_PROPOSAL}
             />
           )}
         </CommentsWrapper>
