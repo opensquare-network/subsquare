@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
 import InnerDataTable from "../table/innerDataTable";
-import { getNode, toPrecision } from "utils";
+import BigNumber from "bignumber.js";
 
 const JsonView = dynamic(
   () => import("components/jsonView").catch((e) => console.error(e)),
@@ -83,16 +83,10 @@ function convertProposal(proposal, chain) {
             return [arg.name, arg.value.map((v) => convertProposal(v, chain))];
           }
           case "Balance": {
-            const node = getNode(chain);
-            if (!node) {
-              return [arg.name, arg.value];
-            }
-
-            const decimals = node.decimals;
-            const symbol = node.symbol;
+            const value = new BigNumber(arg.value).toString();
             return [
               arg.name,
-              `${toPrecision(arg.value ?? 0, decimals)} ${symbol}`,
+              value,
             ];
           }
           default: {
