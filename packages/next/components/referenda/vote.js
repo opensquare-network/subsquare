@@ -130,7 +130,7 @@ const Threshold = styled.div`
   background-color: #c2c8d5;
 `;
 
-function Vote({ referendum, chain }) {
+function Vote({ referendumInfo, referendumStatus, chain }) {
   const node = getNode(chain);
   if (!node) {
     return null;
@@ -138,10 +138,10 @@ function Vote({ referendum, chain }) {
   const decimals = node.decimals;
   const symbol = node.symbol;
 
-  const nAyes = toPrecision(referendum?.status?.tally?.ayes ?? 0, decimals);
-  const nNays = toPrecision(referendum?.status?.tally?.nays ?? 0, decimals);
+  const nAyes = toPrecision(referendumStatus?.tally?.ayes ?? 0, decimals);
+  const nNays = toPrecision(referendumStatus?.tally?.nays ?? 0, decimals);
   const nTurnout = toPrecision(
-    referendum?.status?.tally?.turnout ?? 0,
+    referendumStatus?.tally?.turnout ?? 0,
     decimals
   );
 
@@ -166,7 +166,7 @@ function Vote({ referendum, chain }) {
         <BarContainer gap={gap}>
           <AyesBar precent={nAyesPrecent} />
           <NaysBar precent={nNaysPrecent} />
-          {referendum?.status?.threshold === "Simplemajority" && <Threshold />}
+          {referendumStatus?.threshold === "Simplemajority" && <Threshold />}
         </BarContainer>
       </BarWrapper>
 
@@ -178,7 +178,7 @@ function Vote({ referendum, chain }) {
 
       <Contents>
         <span>{nAyesPrecent}%</span>
-        <span>{referendum?.status?.threshold}</span>
+        <span>{referendumStatus?.threshold}</span>
         <span>{nNaysPrecent}%</span>
       </Contents>
 
@@ -252,8 +252,8 @@ function Vote({ referendum, chain }) {
           {nTurnout} {symbol}
         </span>
       </Row>
-      {referendum?.info?.finished?.approved && <PassButton>Passed</PassButton>}
-      {referendum?.info?.finished?.approved === false && (
+      {referendumInfo?.finished?.approved && <PassButton>Passed</PassButton>}
+      {referendumInfo?.finished?.approved === false && (
         <RejectButton>Rejected</RejectButton>
       )}
     </Wrapper>
