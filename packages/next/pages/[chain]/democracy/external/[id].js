@@ -21,6 +21,7 @@ import { shadow_100 } from "../../../../styles/componentCss";
 import { to404 } from "../../../../utils/serverSideUtil";
 import { makeExternalTimelineData } from "../../../../utils/dataWrappers/makeTimelineData";
 import { makeExternalMetadata } from "../../../../utils/dataWrappers/makeMetadata";
+import { TYPE_DEMOCRACY_EXTERNAL } from "../../../../utils/viewfuncs";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -85,12 +86,10 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           user={loginUser}
           chain={chain}
           onReply={focusEditor}
-          type="democracy/external"
+          type={TYPE_DEMOCRACY_EXTERNAL}
         />
-        {metadata && <KVList title="Metadata" data={metadata} />}
-        {timelineData?.length > 0 && (
-          <Timeline data={timelineData} chain={chain} />
-        )}
+        <KVList title="Metadata" data={metadata} />
+        <Timeline data={timelineData} chain={chain} />
         <CommentsWrapper>
           <Comments
             data={comments}
@@ -106,7 +105,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
               ref={editorWrapperRef}
               setQuillRef={setQuillRef}
               {...{ contentType, setContentType, content, setContent, users }}
-              type="democracy/external"
+              type={TYPE_DEMOCRACY_EXTERNAL}
             />
           )}
         </CommentsWrapper>

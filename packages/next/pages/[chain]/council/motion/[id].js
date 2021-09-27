@@ -6,6 +6,7 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import Layout from "components/layout";
 import MotionDetail from "components/motion/motionDetail";
 import { to404 } from "../../../../utils/serverSideUtil";
+import { TYPE_MOTION } from "../../../../utils/viewfuncs";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -27,7 +28,7 @@ export default withLoginUserRedux(({ loginUser, motion, chain }) => {
           motion={motion}
           user={loginUser}
           chain={chain}
-          type="motion"
+          type={TYPE_MOTION}
         />
       </Wrapper>
     </Layout>

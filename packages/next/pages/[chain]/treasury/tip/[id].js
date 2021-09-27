@@ -17,7 +17,7 @@ import User from "components/user";
 import KVList from "components/kvList";
 import Links from "components/timeline/links";
 import ReasonLink from "components/reasonLink";
-import { getTipState } from "utils/viewfuncs";
+import { getTipState, TYPE_TREASURY_TIP } from "utils/viewfuncs";
 import {
   getFocusEditor,
   getMentionList,
@@ -211,13 +211,11 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           user={loginUser}
           chain={chain}
           onReply={focusEditor}
-          type="treasury/tip"
+          type={TYPE_TREASURY_TIP}
         />
 
         <KVList title="Metadata" data={metadata} />
-        {timeline?.length > 0 && (
-          <Timeline data={timeline} chain={chain} indent={false} />
-        )}
+        <Timeline data={timeline} chain={chain} indent={false} />
         <CommentsWrapper>
           <Comments
             data={comments}
@@ -233,7 +231,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
               ref={editorWrapperRef}
               setQuillRef={setQuillRef}
               {...{ contentType, setContentType, content, setContent, users }}
-              type="treasury/tip"
+              type={TYPE_TREASURY_TIP}
             />
           )}
         </CommentsWrapper>
