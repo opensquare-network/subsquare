@@ -3,6 +3,11 @@ import styled, { css } from "styled-components";
 
 const Wrapper = styled.div`
   overflow-x: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const BreakText = styled.span`

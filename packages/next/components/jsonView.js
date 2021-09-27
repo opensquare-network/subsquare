@@ -5,6 +5,11 @@ const Wrapper = styled.div`
   background-color: #ffffff;
   padding: 8px;
   overflow-x: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export default function JsonView({ src }) {
