@@ -25,6 +25,7 @@ import {
 import { getApi } from "../../../../services/polkadotApi";
 import { currentNodeSelector } from "store/reducers/nodeSlice";
 import { useSelector } from "react-redux";
+import { useIsMounted } from "utils/hooks";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -62,6 +63,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     loginUser?.preference.editor || "markdown"
   );
   const [referendumStatus, setReferendumStatus] = useState(detail?.onchainData?.status);
+  const isMounted = useIsMounted();
 
   useEffect(
     () => {
@@ -81,12 +83,14 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
       const apiUrl = nodeUrl[chain];
       getApi(chain, apiUrl).then(async (api) => {
-        const referendumInfo = await api.query.democracy.referendumInfoOf.at("0x438ffc07f4cebc6adf9a27729c0dad7bd0c84c221776aaa1a5433eb67e6c769d", detail.referendumIndex);
+        const referendumInfo = await api.query.democracy.referendumInfoOf(detail.referendumIndex);
         const referendumInfoData = referendumInfo.toJSON();
-        setReferendumStatus(referendumInfoData?.ongoing || detail?.onchainData?.status);
+        if (isMounted.current) {
+          setReferendumStatus(referendumInfoData?.ongoing || detail?.onchainData?.status);
+        }
       });
     },
-    [detail]
+    [detail, isMounted]
   );
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
