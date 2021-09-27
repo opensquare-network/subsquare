@@ -39,7 +39,21 @@ async function updatePost(
     throw new HttpError(403, "On-chain data is not found");
   }
 
-  if (!chainProposal.authors.includes(author[`${chain}Address`])) {
+  let authors = [];
+  if (chainProposal.externalProposalHash) {
+    const col = await getChainExternalCollection(chain);
+    const democracyExternal = await col.findOne({
+      proposalHash: chainProposal.externalProposalHash,
+      "indexer.blockHeight": chainProposal.externalProposalIndexer.blockHeight,
+    });
+    authors = democracyExternal?.authors || [];
+  } else if (chainProposal.publicProposalIndex) {
+    const col = await getChainPublicProposalCollection(chain);
+    const democracyPublicProposal = await col.findOne({ proposalIndex: chainProposal.publicProposalIndex });
+    authors = democracyPublicProposal?.authors || [];
+  }
+
+  if (!authors.includes(author[`${chain}Address`])) {
     throw new HttpError(403, "You cannot edit");
   }
 
