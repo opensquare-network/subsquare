@@ -13,6 +13,7 @@ import HtmlRender from "../post/htmlRender";
 import UploadImgModal from "../editor/imageModal";
 import { fetchUserProfile } from "store/reducers/userSlice";
 import { useDispatch } from "react-redux";
+import { toApiType } from "utils/viewfuncs";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -113,7 +114,7 @@ function Input(
     try {
       setLoading(true);
       const result = await nextApi.post(
-        `${chain}/${type}s/${postId}/comments`,
+        `${chain}/${toApiType(type)}s/${postId}/comments`,
         {
           content,
           contentType,

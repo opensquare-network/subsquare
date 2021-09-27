@@ -171,3 +171,7 @@ export const getLinkNameAndLogo = (link) => {
     return [];
   }
 };
+
+export function toApiType(type) {
+  return type === "democracy/referenda" ? "democracy/referendum" : type;
+}
