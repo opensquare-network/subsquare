@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { no_scroll_bar } from "../../styles/componentCss";
 import Flex from "../styled/flex";
 const Wrapper = styled.div`
   position: fixed;
@@ -78,6 +79,7 @@ const CloseButton = styled(Flex)`
 const ContentWrapper = styled.div`
   height: calc(100vh - 90px);
   overflow-y: scroll;
+  ${no_scroll_bar};
   margin-top: 26px;
 `;
 
