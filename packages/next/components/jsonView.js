@@ -16,6 +16,7 @@ export default function JsonView({ src }) {
         iconStyle="circle"
         enableClipboard={false}
         collapseStringsAfterLength={false}
+        displayDataTypes={false}
       />
     </Wrapper>
   );
