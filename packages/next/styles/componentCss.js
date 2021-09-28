@@ -21,3 +21,12 @@ export const shadow_200_right = css`
 export const text_primary = css`
   color: #1e2134;
 `;
+
+export const no_scroll_bar = css`
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`;

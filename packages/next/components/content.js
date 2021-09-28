@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import { no_scroll_bar } from "../styles/componentCss";
 import Container from "./container";
 import Main from "./main";
 import Footer from "./footer";
@@ -31,6 +31,7 @@ const Left = styled.div`
   padding-bottom: 32px;
   height: calc(100vh - 90px);
   overflow-y: scroll;
+  ${no_sroll_bar};
   width: 200px;
   flex: 0 0 200px;
   @media screen and (max-width: 1024px) {
