@@ -64,27 +64,28 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const [contentType, setContentType] = useState(
     loginUser?.preference.editor || "markdown"
   );
-  const [referendumStatus, setReferendumStatus] = useState(detail?.onchainData?.status);
+  const [referendumStatus, setReferendumStatus] = useState(
+    detail?.onchainData?.status
+  );
   const isMounted = useIsMounted();
 
-  useEffect(
-    () => {
-      // Already has the last ongoging status
-      if (referendumStatus) {
-        return;
-      }
+  useEffect(() => {
+    // Already has the last ongoging status
+    if (referendumStatus) {
+      return;
+    }
 
-      const apiUrl = nodeUrl[chain];
-      getApi(chain, apiUrl).then(async (api) => {
-        const referendumInfo = await api.query.democracy.referendumInfoOf(detail.referendumIndex);
-        const referendumInfoData = referendumInfo.toJSON();
-        if (isMounted.current) {
-          setReferendumStatus(referendumInfoData?.ongoing);
-        }
-      });
-    },
-    [detail, isMounted]
-  );
+    const apiUrl = nodeUrl[chain];
+    getApi(chain, apiUrl).then(async (api) => {
+      const referendumInfo = await api.query.democracy.referendumInfoOf(
+        detail.referendumIndex
+      );
+      const referendumInfoData = referendumInfo.toJSON();
+      if (isMounted.current) {
+        setReferendumStatus(referendumInfoData?.ongoing);
+      }
+    });
+  }, [chain, detail, isMounted, nodeUrl, referendumStatus]);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
