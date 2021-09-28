@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 
 import InnerDataTable from "../table/innerDataTable";
 import BigNumber from "bignumber.js";
+import { hexToString } from "@polkadot/util";
 
 const JsonView = dynamic(
   () => import("components/jsonView").catch((e) => console.error(e)),
@@ -68,7 +69,7 @@ const TagItem = styled.div`
     `}
 `;
 
-function convertProposal(proposal, chain) {
+function convertProposalForTableView(proposal, chain) {
   return {
     ...proposal,
     args: Object.fromEntries(
@@ -76,18 +77,18 @@ function convertProposal(proposal, chain) {
         switch (arg.type) {
           case "Call":
           case "CallOf": {
-            return [arg.name, convertProposal(arg.value, chain)];
+            return [arg.name, convertProposalForTableView(arg.value, chain)];
           }
           case "Vec<Call>":
           case "Vec<CallOf>": {
-            return [arg.name, arg.value.map((v) => convertProposal(v, chain))];
+            return [arg.name, arg.value.map((v) => convertProposalForTableView(v, chain))];
+          }
+          case "Bytes": {
+            return [arg.name, hexToString(arg.value)];
           }
           case "Balance": {
             const value = new BigNumber(arg.value).toString();
-            return [
-              arg.name,
-              value,
-            ];
+            return [arg.name, value];
           }
           default: {
             return [arg.name, arg.value];
@@ -95,6 +96,33 @@ function convertProposal(proposal, chain) {
         }
       })
     ),
+  };
+}
+
+function convertProposalForJsonView(proposal, chain) {
+  return {
+    ...proposal,
+    args: proposal.args.map((arg) => ({
+      ...arg,
+      value: (() => {
+        switch (arg.type) {
+          case "Call":
+          case "CallOf": {
+            return convertProposalForJsonView(arg.value, chain);
+          }
+          case "Vec<Call>":
+          case "Vec<CallOf>": {
+            return arg.value.map((v) => convertProposalForJsonView(v, chain));
+          }
+          case "Bytes": {
+            return hexToString(arg.value);
+          }
+          default: {
+            return arg.value;
+          }
+        }
+      })(),
+    })),
   };
 }
 
@@ -131,12 +159,12 @@ export default function MotionProposal({ motion, chain }) {
       </HeaderWrapper>
       {callType === "table" && (
         <ArgsWrapper>
-          <InnerDataTable data={convertProposal(motion.proposal, chain)} />
+          <InnerDataTable data={convertProposalForTableView(motion.proposal, chain)} />
         </ArgsWrapper>
       )}
       {callType === "json" && (
         <ArgsWrapper>
-          <JsonView src={motion.proposal} />
+          <JsonView src={convertProposalForJsonView(motion.proposal, chain)} />
         </ArgsWrapper>
       )}
     </Wrapper>
