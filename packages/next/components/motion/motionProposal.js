@@ -81,7 +81,10 @@ function convertProposalForTableView(proposal, chain) {
           }
           case "Vec<Call>":
           case "Vec<CallOf>": {
-            return [arg.name, arg.value.map((v) => convertProposalForTableView(v, chain))];
+            return [
+              arg.name,
+              arg.value.map((v) => convertProposalForTableView(v, chain)),
+            ];
           }
           case "Bytes": {
             return [arg.name, hexToString(arg.value)];
@@ -134,7 +137,7 @@ export default function MotionProposal({ motion, chain }) {
     if (item) {
       setCallType(JSON.parse(item));
     }
-  });
+  }, []);
 
   const onClick = (value) => {
     window.localStorage.setItem("callType", JSON.stringify(value));
@@ -159,7 +162,9 @@ export default function MotionProposal({ motion, chain }) {
       </HeaderWrapper>
       {callType === "table" && (
         <ArgsWrapper>
-          <InnerDataTable data={convertProposalForTableView(motion.proposal, chain)} />
+          <InnerDataTable
+            data={convertProposalForTableView(motion.proposal, chain)}
+          />
         </ArgsWrapper>
       )}
       {callType === "json" && (

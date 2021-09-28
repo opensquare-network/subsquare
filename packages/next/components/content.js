@@ -31,7 +31,7 @@ const Left = styled.div`
   padding-bottom: 32px;
   height: calc(100vh - 90px);
   overflow-y: scroll;
-  ${no_sroll_bar};
+  ${no_scroll_bar};
   width: 200px;
   flex: 0 0 200px;
   @media screen and (max-width: 1024px) {
