@@ -18,11 +18,7 @@ async function handleTipCall(call, author, extrinsicIndexer) {
     args: { hash, tip_value: tipValue },
   } = call.toJSON();
 
-  const updates = await getTipCommonUpdates(
-    call.registry,
-    hash,
-    extrinsicIndexer
-  );
+  const updates = await getTipCommonUpdates(hash, extrinsicIndexer);
   const timelineItem = {
     type: TimelineItemTypes.extrinsic,
     method: TipMethods.tip,
