@@ -29,7 +29,7 @@ async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
     indexer.blockHeight + 1 // external will exist in storage after executed
   );
   if (hash !== proposalHash) {
-    throw new Error("Not matched external hash");
+    throw new Error(`Not matched external hash, ${JSON.stringify(indexer)}`);
   }
 
   const state = {

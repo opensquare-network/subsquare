@@ -41,4 +41,19 @@ describe("test get karura external", () => {
       "Simplemajority",
     ]);
   });
+
+  test("at 653005 works", async () => {
+    // This external is created at 160503, when the 6th motion passed
+    const height = 653005;
+    setSpecHeights([height]);
+    const blockHash = await api.rpc.chain.getBlockHash(height);
+    const indexer = { blockHash, blockHeight: height };
+
+    const external = await getExternalFromStorage(indexer);
+    // Fast tracked by sudo(sudo)
+    expect(external).toEqual([
+      "0x3dfe99860fe5d3431f30ccc8fc062509f583bf65f3084b09d4e1c1f66e162260",
+      "Simplemajority",
+    ]);
+  });
 });
