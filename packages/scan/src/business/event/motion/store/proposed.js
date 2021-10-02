@@ -1,3 +1,4 @@
+const { busLogger } = require("../../../../logger");
 const { handleBusinessWhenMotionProposed } = require("./hooks/proposed");
 const {
   Modules,
@@ -16,7 +17,7 @@ const {
 } = require("../../../common/constants");
 const { insertMotion } = require("../../../../mongo/service/onchain/motion");
 
-function extractBusinessFields(proposal = {}) {
+function extractBusinessFields(proposal = {}, indexer) {
   const { section, method, args } = proposal;
   if (
     Modules.Treasury === section &&
@@ -45,6 +46,12 @@ function extractBusinessFields(proposal = {}) {
     ) {
       fields["proposalHash"] = args[0].value;
     }
+    busLogger.info(
+      "Democracy motion found at",
+      indexer.blockHeight,
+      "method:",
+      method
+    );
 
     return fields;
   }
@@ -85,7 +92,7 @@ async function handleProposed(event, extrinsic, indexer) {
     proposer,
     index: motionIndex,
     threshold,
-    ...extractBusinessFields(proposal),
+    ...extractBusinessFields(proposal, indexer),
     proposal,
     voting,
     isFinal: false,

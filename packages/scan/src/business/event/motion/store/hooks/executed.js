@@ -1,3 +1,4 @@
+const { busLogger } = require("../../../../../logger");
 const {
   getExternalFromStorageByHeight,
 } = require("../../../../common/democracy/external");
@@ -66,6 +67,7 @@ async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
 
   await insertDemocracyExternal(externalObj);
   await insertDemocracyPostByExternal(proposalHash, indexer, authors[0]);
+  busLogger.info("External created at", indexer.blockHeight, externalObj);
 }
 
 module.exports = {
