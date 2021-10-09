@@ -3,10 +3,9 @@ import styled from "styled-components";
 import sanitizeHtml from "sanitize-html";
 
 const Wrapper = styled.div`
-  //padding-top: 1rem;
   color: #000;
-  max-width: 48.5rem;
-  word-break: break-all;x
+  max-width: min(48.5rem, calc(100vw - 50px));
+  word-break: break-word;
 
   h1,
   h2,
@@ -64,8 +63,8 @@ const Wrapper = styled.div`
   }
   p,
   li {
-    max-width: 48.5rem;
-    word-break: normal;
+    max-width: min(48.5rem, calc(100vw - 50px));
+    word-break: break-word;
     font-size: 0.875rem;
     line-height: 1.375rem;
   }
@@ -104,6 +103,7 @@ const Wrapper = styled.div`
     padding: 0 0.25rem;
     background: #eee;
     border-radius: 0.25rem;
+    word-break: break-all;
   }
 
   a {
@@ -125,7 +125,7 @@ const Wrapper = styled.div`
   }
 `;
 
-function HtmlRender({html}) {
+function HtmlRender({ html }) {
   const r =
     /<span[^<>]*><span class="ql-mention-denotation-char">@<\/span>(\w+)<\/span>/;
   while (html.match(r)) {
