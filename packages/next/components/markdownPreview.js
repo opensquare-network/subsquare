@@ -64,6 +64,7 @@ const Wrapper = styled.div`
     li {
       font-size: 0.875rem;
       line-height: 1.375rem;
+      word-break: break-word;
     }
 
     ol,
@@ -97,6 +98,7 @@ const Wrapper = styled.div`
       padding: 0 0.25rem;
       background: #eee;
       border-radius: 0.25rem;
+      word-break: break-all;
     }
 
     a {
