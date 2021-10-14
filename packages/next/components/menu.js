@@ -10,6 +10,7 @@ import DemocracyProposalIcon from "../public/imgs/icons/type-proposals.svg";
 import UserIcon from "../public/imgs/icons/user.svg";
 import AddressIcon from "../public/imgs/icons/address.svg";
 import BellIcon from "../public/imgs/icons/bell.svg";
+import MembersIcon from "../public/imgs/icons/members.svg";
 
 const Wrapper = styled.div`
   padding-top: 37px;
@@ -86,6 +87,8 @@ export default function Menu({ menu }) {
   iconMap.set("account", <UserIcon />);
   iconMap.set("linked-address", <AddressIcon />);
   iconMap.set("notification", <BellIcon />);
+  iconMap.set("councilMembers", <MembersIcon />);
+  iconMap.set("techCommMembers", <MembersIcon />);
 
   return (
     <Wrapper>

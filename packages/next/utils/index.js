@@ -114,3 +114,13 @@ export const sleep = (time) => {
     setTimeout(resolve, time);
   });
 };
+
+export function bigNumber2Locale(x) {
+  let result = "";
+  const [Int, Decimals] = x.split(".");
+  result += Int.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  if (Decimals) {
+    result += `.${Decimals}`;
+  }
+  return result;
+}

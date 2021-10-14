@@ -77,13 +77,13 @@ export const mainMenu = [
       {
         value: "overview",
         name: "Overview",
-        icon: "type-overview.svg",
+        icon: "overview.svg",
         pathname: "/[chain]",
       },
       {
         value: "discussions",
         name: "Discussions",
-        icon: "type-discussions.svg",
+        icon: "discussions.svg",
         pathname: "/[chain]/discussions",
       },
     ],
@@ -100,7 +100,7 @@ export const mainMenu = [
       {
         value: "tips",
         name: "Tips",
-        icon: "type-tips.svg",
+        icon: "tips.svg",
         pathname: "/[chain]/treasury/tips",
       },
     ],
@@ -111,11 +111,13 @@ export const mainMenu = [
       {
         value: "democracyProposals",
         name: "Proposals",
+        icon: "proposals.svg",
         pathname: "/[chain]/democracy/proposals",
       },
       {
         value: "democracyExternals",
         name: "External",
+        icon: "proposals.svg",
         pathname: "/[chain]/democracy/externals",
       },
       {
@@ -135,6 +137,12 @@ export const mainMenu = [
         icon: "type-motions.svg",
         pathname: "/[chain]/council/motions",
       },
+      {
+        value: "councilMembers",
+        name: "Members",
+        icon: "members.svg",
+        pathname: "/[chain]/council/members",
+      },
     ],
   },
   {
@@ -143,8 +151,14 @@ export const mainMenu = [
       {
         value: "techCommProposals",
         name: "Proposals",
-        icon: "type-proposals.svg",
+        icon: "proposals.svg",
         pathname: "/[chain]/techcomm/proposals",
+      },
+      {
+        value: "techCommMembers",
+        name: "Members",
+        icon: "members.svg",
+        pathname: "/[chain]/techcomm/members",
       },
     ],
   },
