@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
 import { userSelector } from "store/reducers/userSlice";
+import { currentNodeSelector } from "store/reducers/nodeSlice";
+import { getApi } from "services/polkadotApi";
 
 export function useOnClickOutside(ref, handler) {
   useEffect(() => {
@@ -82,4 +84,26 @@ export function useAuthPage(isAuth) {
   } else if (!isAuth && user) {
     router.replace("/");
   }
+}
+
+export function useCall(fn, params) {
+  const [result, setResult] = useState();
+  const isMounted = useIsMounted();
+  useEffect(() => {
+    if (fn) {
+      fn(...params).then(value => {
+        if (isMounted.current) {
+          setResult(value);
+        }
+      });
+    }
+  }, [fn, ...params]);
+  return result;
+}
+
+export function useApi(chain) {
+  const nodeUrl = useSelector(currentNodeSelector);
+  const apiUrl = nodeUrl[chain];
+  const api = useCall(getApi, [chain, apiUrl]);
+  return api;
 }

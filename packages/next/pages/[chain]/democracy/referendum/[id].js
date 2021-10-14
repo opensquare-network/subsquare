@@ -26,10 +26,7 @@ import {
 import { shadow_100 } from "../../../../styles/componentCss";
 import { to404 } from "../../../../utils/serverSideUtil";
 import { TYPE_DEMOCRACY_REFERENDUM } from "../../../../utils/viewConstants";
-import { getApi } from "../../../../services/polkadotApi";
-import { currentNodeSelector } from "store/reducers/nodeSlice";
-import { useSelector } from "react-redux";
-import { useIsMounted } from "utils/hooks";
+import { useApi, useIsMounted } from "utils/hooks";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -53,7 +50,7 @@ const CommentsWrapper = styled.div`
 `;
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
-  const nodeUrl = useSelector(currentNodeSelector);
+  const api = useApi(chain);
   const node = getNode(chain);
   if (!node) {
     return null;
@@ -75,17 +72,15 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       return;
     }
 
-    const apiUrl = nodeUrl[chain];
-    getApi(chain, apiUrl).then(async (api) => {
-      const referendumInfo = await api.query.democracy.referendumInfoOf(
-        detail.referendumIndex
-      );
+    api.query.democracy.referendumInfoOf(
+      detail.referendumIndex
+    ).then(referendumInfo => {
       const referendumInfoData = referendumInfo.toJSON();
       if (isMounted.current) {
         setReferendumStatus(referendumInfoData?.ongoing);
       }
     });
-  }, [chain, detail, isMounted, nodeUrl, referendumStatus]);
+  }, [api, detail, isMounted, referendumStatus]);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 

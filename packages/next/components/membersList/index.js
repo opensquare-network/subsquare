@@ -4,7 +4,7 @@ import EmptyList from "../emptyList";
 import Flex from "../styled/flex";
 import { getNode, toPrecision, bigNumber2Locale } from "utils";
 import User from "components/user";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 
 const Wrapper = styled.div`
   max-width: 848px;
@@ -90,6 +90,7 @@ export default function MembersList({
   chain,
   category,
   items,
+  hasElections = false,
 }) {
   const [hideColumn, setHideColumn] = useState("votes");
 
@@ -108,48 +109,56 @@ export default function MembersList({
           <thead>
             <StyledTr>
               <StyledTh style={{textAlign: "left"}}>MEMBERS</StyledTh>
-              <StyledTh
-                className={hideColumn === "backing"? "autohide" : "clickable"}
-                style={{textAlign: "right"}}
-                onClick={() => setHideColumn("backing")}
-              >
-                BACKING
-              </StyledTh>
-              <StyledTh
-                className={hideColumn === "votes"? "autohide" : "clickable"}
-                style={{textAlign: "right"}}
-                onClick={() => setHideColumn("votes")}
-              >
-                VOTES
-              </StyledTh>
+              {hasElections && (
+                <>
+                  <StyledTh
+                    className={hideColumn === "backing"? "autohide" : "clickable"}
+                    style={{textAlign: "right"}}
+                    onClick={() => setHideColumn("backing")}
+                  >
+                    BACKING
+                  </StyledTh>
+                  <StyledTh
+                    className={hideColumn === "votes"? "autohide" : "clickable"}
+                    style={{textAlign: "right"}}
+                    onClick={() => setHideColumn("votes")}
+                  >
+                    VOTES
+                  </StyledTh>
+                </>
+              )}
             </StyledTr>
             <RowSpliter backgroundColor={"#EBEEF4"} padding={"16px 0 4px 0"} />
           </thead>
           <tbody>
           {
             items.map((item, index) => (
-              <>
-                <StyledTr key={"row" + index}>
+              <Fragment key={index}>
+                <StyledTr>
                   <StyledTd style={{textAlign: "left"}}>
                     <User add={item.address} chain={chain} fontSize={14} />
                   </StyledTd>
-                  <StyledTd
-                    className={hideColumn === "backing"? "autohide" : ""}
-                    style={{textAlign: "right"}}
-                  >
-                    <Balance value={item.backing} node={node} />
-                  </StyledTd>
-                  <StyledTd
-                    className={hideColumn === "votes"? "autohide" : ""}
-                    style={{textAlign: "right"}}
-                  >
-                    {item.votes}
-                  </StyledTd>
+                  {hasElections && (
+                    <>
+                      <StyledTd
+                        className={hideColumn === "backing"? "autohide" : ""}
+                        style={{textAlign: "right"}}
+                      >
+                        <Balance value={item.backing} node={node} />
+                      </StyledTd>
+                      <StyledTd
+                        className={hideColumn === "votes"? "autohide" : ""}
+                        style={{textAlign: "right"}}
+                      >
+                        {item.votes}
+                      </StyledTd>
+                    </>
+                  )}
                 </StyledTr>
                 {index !== items.length - 1
-                  && <RowSpliter key={"spl" + index} backgroundColor={"#F6F7FA"} />
+                  && <RowSpliter backgroundColor={"#F6F7FA"} />
                 }
-              </>
+              </Fragment>
             ))
           }
           </tbody>
