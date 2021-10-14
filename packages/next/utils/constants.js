@@ -44,6 +44,7 @@ export const nodes = [
           relay: "kusama",
           symbol: "KSM",
           decimals: 12,
+          hasElections: true,
         },
       ]
     : []),
@@ -54,6 +55,7 @@ export const nodes = [
     relay: "kusama",
     symbol: "KAR",
     decimals: 12,
+    hasElections: false,
   },
 ];
 
