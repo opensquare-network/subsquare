@@ -13,7 +13,7 @@ import DetailItem from "../../../../components/detailItem";
 import KVList from "../../../../components/kvList";
 import User from "../../../../components/user";
 import Links from "../../../../components/timeline/links";
-import { getNode, getTimelineStatus } from "../../../../utils";
+import { getTimelineStatus } from "../../../../utils";
 import Vote from "../../../../components/referenda/vote";
 import dayjs from "dayjs";
 import Timeline from "../../../../components/timeline";
@@ -26,10 +26,7 @@ import {
 import { shadow_100 } from "../../../../styles/componentCss";
 import { to404 } from "../../../../utils/serverSideUtil";
 import { TYPE_DEMOCRACY_REFERENDUM } from "../../../../utils/viewConstants";
-import { getApi } from "../../../../services/polkadotApi";
-import { currentNodeSelector } from "store/reducers/nodeSlice";
-import { useSelector } from "react-redux";
-import { useIsMounted } from "utils/hooks";
+import { useApi, useIsMounted } from "utils/hooks";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -53,11 +50,7 @@ const CommentsWrapper = styled.div`
 `;
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
-  const nodeUrl = useSelector(currentNodeSelector);
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
+  const api = useApi(chain);
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
@@ -75,17 +68,15 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       return;
     }
 
-    const apiUrl = nodeUrl[chain];
-    getApi(chain, apiUrl).then(async (api) => {
-      const referendumInfo = await api.query.democracy.referendumInfoOf(
-        detail.referendumIndex
-      );
-      const referendumInfoData = referendumInfo.toJSON();
-      if (isMounted.current) {
-        setReferendumStatus(referendumInfoData?.ongoing);
-      }
-    });
-  }, [chain, detail, isMounted, nodeUrl, referendumStatus]);
+    api?.query.democracy
+      .referendumInfoOf(detail.referendumIndex)
+      .then((referendumInfo) => {
+        const referendumInfoData = referendumInfo.toJSON();
+        if (isMounted.current) {
+          setReferendumStatus(referendumInfoData?.ongoing);
+        }
+      });
+  }, [api, detail, isMounted, referendumStatus]);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 

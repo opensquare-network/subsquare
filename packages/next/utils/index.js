@@ -91,6 +91,10 @@ export function toPrecision(value, decimals) {
   return new BigNumber(value).dividedBy(Math.pow(10, decimals)).toString();
 }
 
+export function decimalPlaces(value, n) {
+  return new BigNumber(value).dp(n).toString();
+}
+
 export function getTimelineStatus(type, method) {
   const defaultColor = "#0F6FFF";
   switch (type) {
@@ -114,3 +118,13 @@ export const sleep = (time) => {
     setTimeout(resolve, time);
   });
 };
+
+export function bigNumber2Locale(x) {
+  let result = "";
+  const [Int, Decimals] = x.split(".");
+  result += Int.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  if (Decimals) {
+    result += `.${Decimals}`;
+  }
+  return result;
+}
