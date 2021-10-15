@@ -6,17 +6,12 @@ const { updateHeight, getLatestHeight } = require("./chain");
 const { getNextScanHeight, updateScanHeight } = require("./mongo/scanHeight");
 const { sleep } = require("./utils/sleep");
 const { getBlocks } = require("./mongo/meta");
-const { getRegistryByHeight } = require("./utils/registry");
 const { isHex } = require("./utils");
 const { GenericBlock } = require("@polkadot/types");
 const { hexToU8a } = require("@polkadot/util");
 const { logger } = require("./logger");
-const { handleEvents } = require("./business/event");
-const { handleExtrinsics } = require("./business/extrinsic");
-const { getBlockIndexer } = require("./utils/block/getBlockIndexer");
-const { getApi } = require("./api");
 const last = require("lodash.last");
-const { setSpecHeights } = require("./specs");
+const { scanNormalizedBlock } = require("./scan/block");
 
 const scanStep = parseInt(process.env.SCAN_STEP) || 100;
 
@@ -101,30 +96,6 @@ async function handleOneBlockDataInDb(blockInDb) {
   await scanNormalizedBlock(registry, block, blockEvents);
 }
 
-async function scanNormalizedBlock(registry, block, blockEvents) {
-  // handle the business
-  const blockIndexer = getBlockIndexer(block);
-  await handleExtrinsics(block.extrinsics, blockEvents, blockIndexer);
-  await handleEvents(blockEvents, block.extrinsics, blockIndexer);
-}
-
-async function test() {
-  const blockHeights = [160545];
-
-  for (const height of blockHeights) {
-    setSpecHeights([height - 1]);
-
-    const api = await getApi();
-    const registry = await getRegistryByHeight(height);
-    const blockHash = await api.rpc.chain.getBlockHash(height);
-    const block = await api.rpc.chain.getBlock(blockHash);
-    const allEvents = await api.query.system.events.at(blockHash);
-
-    await scanNormalizedBlock(registry, block.block, allEvents);
-  }
-}
-
-// test();
 main()
   .then(() => console.log("Scan finished"))
   .catch(console.error)
