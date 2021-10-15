@@ -13,7 +13,7 @@ const ksmTargetCall = {
   method: "approveProposal",
   args: [
     {
-      name: "proposal_id",
+      name: "proposalId",
       type: "Compact<ProposalIndex>",
       value: 0,
     },
@@ -26,7 +26,7 @@ const dotMotionCallByProxy = {
   method: "rejectProposal",
   args: [
     {
-      name: "proposal_id",
+      name: "proposalId",
       type: "Compact<ProposalIndex>",
       value: 33,
     },
@@ -51,7 +51,7 @@ const targetCall = {
       value: 254,
     },
     {
-      name: "with_delayed_origin",
+      name: "withDelayedOrigin",
       type: "bool",
       value: true,
     },
@@ -64,7 +64,7 @@ const targetCall = {
         method: "dispatchAs",
         args: [
           {
-            name: "as_origin",
+            name: "asOrigin",
             type: "AsOriginId",
             value: "Root",
           },
@@ -152,7 +152,7 @@ describe("test get karura ", () => {
       method: "externalProposeMajority",
       args: [
         {
-          name: "proposal_hash",
+          name: "proposalHash",
           type: "Hash",
           value:
             "0x9e1c6ea3654eba6226ff60b4d2751064f88c46f1022d3f8422cc1ed23dfe8d91",
@@ -185,18 +185,6 @@ describe("test get kusama motion proposal", () => {
 
     const motionHash =
       "0x59fe7bd64951667f91f36db33077b1ada93b093b363a32cf869d2a833d72ce08";
-
-    const normalizedProposal = await getMotionProposalCall(motionHash, indexer);
-    expect(normalizedProposal).toEqual(ksmTargetCall);
-  });
-
-  test("by proxy works", async () => {
-    const blockHeight = 3543099;
-    setSpecHeights([blockHeight]);
-    const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
-    const indexer = { blockHash, blockHeight };
-    const motionHash =
-      "0xc117d365995214adfdd5ae55e3de4dc52dc4082e882fe2df371bf2230e01fd50";
 
     const normalizedProposal = await getMotionProposalCall(motionHash, indexer);
     expect(normalizedProposal).toEqual(ksmTargetCall);
