@@ -1,3 +1,4 @@
+const { onFinalityKarura } = require("../../../utils/constants");
 const { setChain, CHAINS } = require("../../../env");
 const {
   getMotionVoting,
@@ -23,7 +24,7 @@ describe("test get karura motion", () => {
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider("wss://pub.elara.patract.io/karura", 1000);
+    provider = new WsProvider(onFinalityKarura, 1000);
     api = await ApiPromise.create({
       provider,
       typesBundle: { ...typesBundleForPolkadot },

@@ -1,3 +1,4 @@
+const { karuraEndpoint } = require("../../../utils/constants");
 const { setChain, CHAINS } = require("../../../env");
 const { getTechCommMotionVotingFromStorage } = require("./votingStorage");
 const { setApi } = require("../../../api");
@@ -11,7 +12,7 @@ describe("test get karura Tech.Comm. voting", () => {
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider("wss://karura.kusama.elara.patract.io", 1000);
+    provider = new WsProvider(karuraEndpoint, 1000);
     api = await ApiPromise.create({
       provider,
       typesBundle: { ...typesBundleForPolkadot },

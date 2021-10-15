@@ -1,3 +1,4 @@
+const { karuraEndpoint } = require("../../../../utils/constants");
 jest.setTimeout(3000000);
 const { getPublicProposalFromStorage } = require("./storage");
 const { setApi } = require("../../../../api");
@@ -9,7 +10,7 @@ describe("test democracy public proposals", () => {
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider("wss://karura.kusama.elara.patract.io", 1000);
+    provider = new WsProvider(karuraEndpoint, 1000);
     api = await ApiPromise.create({
       provider,
       typesBundle: { ...typesBundleForPolkadot },

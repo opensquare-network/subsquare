@@ -1,3 +1,4 @@
+const { karuraEndpoint } = require("../../../../utils/constants");
 const { CHAINS } = require("../../../../env");
 const { setChain } = require("../../../../env");
 const { getTippersCount } = require("../utils");
@@ -12,7 +13,7 @@ describe("test get tip", () => {
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider("wss://karura.kusama.elara.patract.io", 1000);
+    provider = new WsProvider(karuraEndpoint, 1000);
     api = await ApiPromise.create({
       provider,
       typesBundle: { ...typesBundleForPolkadot },

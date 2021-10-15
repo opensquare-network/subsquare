@@ -1,3 +1,4 @@
+const { onFinalityKarura } = require("../../../../utils/constants");
 const { getPreImageFromStorage } = require("./storage");
 const { setSpecHeights } = require("../../../../specs");
 const { CHAINS } = require("../../../../env");
@@ -13,7 +14,7 @@ describe("test get karura 1st proposal image", () => {
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider("wss://pub.elara.patract.io/karura", 1000);
+    provider = new WsProvider(onFinalityKarura, 1000);
     api = await ApiPromise.create({
       provider,
       typesBundle: { ...typesBundleForPolkadot },

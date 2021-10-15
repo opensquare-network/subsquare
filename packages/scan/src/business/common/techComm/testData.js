@@ -4,7 +4,7 @@ const testTechCommProposal = {
   method: "fastTrackScheduledDispatch",
   args: [
     {
-      name: "initial_origin",
+      name: "initialOrigin",
       type: "PalletsOrigin",
       value: {
         authority: {
@@ -18,7 +18,7 @@ const testTechCommProposal = {
       },
     },
     {
-      name: "task_id",
+      name: "taskId",
       type: "ScheduleTaskIndex",
       value: 2,
     },

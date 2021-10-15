@@ -1,3 +1,4 @@
+const { onFinalityKarura } = require("../../../../utils/constants");
 const {
   getReferendumInfoFromStorage,
   getReferendumInfoByHeight,
@@ -15,7 +16,7 @@ describe("test get karura referendum 1th info", () => {
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider("wss://pub.elara.patract.io/karura", 1000);
+    provider = new WsProvider(onFinalityKarura, 1000);
     api = await ApiPromise.create({
       provider,
       typesBundle: { ...typesBundleForPolkadot },

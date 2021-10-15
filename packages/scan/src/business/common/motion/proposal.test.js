@@ -1,3 +1,6 @@
+const { onFinalityPolkadot } = require("../../../utils/constants");
+const { onFinalityKusama } = require("../../../utils/constants");
+const { onFinalityKarura } = require("../../../utils/constants");
 const { getMotionProposalCall } = require("./proposalStorage");
 const { setSpecHeights } = require("../../../specs");
 const { setApi } = require("../../../api");
@@ -109,7 +112,7 @@ describe("test get karura ", () => {
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider("wss://pub.elara.patract.io/karura", 1000);
+    provider = new WsProvider(onFinalityKarura, 1000);
     api = await ApiPromise.create({
       provider,
       typesBundle: { ...typesBundleForPolkadot },
@@ -167,7 +170,7 @@ describe("test get kusama motion proposal", () => {
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider("wss://kusama.api.onfinality.io/public-ws", 1000);
+    provider = new WsProvider(onFinalityKusama, 1000);
     api = await ApiPromise.create({ provider });
     setApi(api);
     setChain(CHAINS.KUSAMA);
@@ -196,10 +199,7 @@ describe("test get polkadot motion proposal", () => {
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider(
-      "wss://polkadot.api.onfinality.io/public-ws",
-      1000
-    );
+    provider = new WsProvider(onFinalityPolkadot, 1000);
     api = await ApiPromise.create({ provider });
     setApi(api);
     setChain(CHAINS.POLKADOT);
