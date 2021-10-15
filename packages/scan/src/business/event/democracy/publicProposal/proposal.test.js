@@ -3,7 +3,6 @@ const { getPublicProposalFromStorage } = require("./storage");
 const { setApi } = require("../../../../api");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
-const { setSpecHeights } = require("../../../../specs");
 
 describe("test democracy public proposals", () => {
   let api;
@@ -25,7 +24,6 @@ describe("test democracy public proposals", () => {
 
   test("works", async () => {
     const blockHeight = 135713;
-    setSpecHeights([blockHeight]);
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
 
     const proposalIndex = 0;
