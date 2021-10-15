@@ -68,7 +68,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       return;
     }
 
-    api.query.democracy
+    api?.query.democracy
       .referendumInfoOf(detail.referendumIndex)
       .then((referendumInfo) => {
         const referendumInfoData = referendumInfo.toJSON();

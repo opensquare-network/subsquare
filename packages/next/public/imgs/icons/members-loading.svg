@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Keyshape -->
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+    <style>
+@keyframes a0_t { 0% { transform: translate(10px,10px) rotate(0deg) translate(-10px,-10px); } 100% { transform: translate(10px,10px) rotate(360deg) translate(-10px,-10px); } }
+    </style>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M10,3.5C6.41015,3.5,3.5,6.41015,3.5,10C3.5,13.5899,6.41015,16.5,10,16.5C13.5899,16.5,16.5,13.5899,16.5,10C16.5,6.41015,13.5899,3.5,10,3.5ZM0.5,10C0.5,4.75329,4.75329,0.5,10,0.5C15.2467,0.5,19.5,4.75329,19.5,10C19.5,15.2467,15.2467,19.5,10,19.5C4.75329,19.5,0.5,15.2467,0.5,10Z" fill="#EBEEF4" transform="translate(10,10) translate(-10,-10)"/>
+    <g transform="translate(10,10) translate(-10,-10)" style="animation: 1s linear infinite both a0_t;">
+        <rect width="20" height="20" fill="white" fill-opacity="0.01" transform="translate(10,10) translate(-10,-10)"/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5,10C16.5,6.41015,13.5899,3.5,10,3.5L10,0.5C15.2467,0.5,19.5,4.75329,19.5,10L16.5,10Z" fill="#C2C8D5" transform="translate(14.75,5.25) translate(-14.75,-5.25)"/>
+    </g>
+</svg>

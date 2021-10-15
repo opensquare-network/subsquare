@@ -4,6 +4,7 @@ import Flex from "../styled/flex";
 import { getNode, toPrecision, bigNumber2Locale, decimalPlaces } from "utils";
 import User from "components/user";
 import { Fragment, useState } from "react";
+import LoadingSvg from "public/imgs/icons/members-loading.svg";
 
 const Wrapper = styled.div`
   max-width: 848px;
@@ -73,7 +74,7 @@ const EmptyTd = styled.td`
   font-weight: normal;
   font-size: 14px;
   line-height: 140%;
-  text-align: left;
+  text-align: center;
   color: #9da9bb;
 `;
 
@@ -100,6 +101,7 @@ export default function MembersList({
   chain,
   category,
   items,
+  loading = false,
   hasElections = false,
 }) {
   const [hideColumn, setHideColumn] = useState("votes");
@@ -171,7 +173,9 @@ export default function MembersList({
             ))
           ) : (
             <StyledTr>
-              <EmptyTd>No current members</EmptyTd>
+              <EmptyTd colSpan="3">
+                {loading ? <LoadingSvg /> : "No current members"}
+              </EmptyTd>
             </StyledTr>
           )}
         </tbody>

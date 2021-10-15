@@ -9,6 +9,7 @@ import { getNode } from "utils";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const api = useApi(chain);
   const node = getNode(chain);
   const electionsInfo = useCall(api?.derive.elections.info, []);
@@ -32,6 +33,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
         };
       });
       setData(data);
+      setLoading(false);
     }
   }, [electionsInfo, allVotes]);
 
@@ -41,6 +43,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
         chain={chain}
         category={"Council Members"}
         items={data}
+        loading={loading}
         hasElections={node?.hasElections}
       />
     </Layout>
