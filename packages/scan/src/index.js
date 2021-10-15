@@ -1,16 +1,13 @@
 require("dotenv").config();
 
-const { findRegistry, updateSpecs, getSpecHeights } = require("./specs");
+const { updateSpecs, getSpecHeights } = require("./specs");
 const { disconnect } = require("./api");
 const { updateHeight, getLatestHeight } = require("./chain");
 const { getNextScanHeight, updateScanHeight } = require("./mongo/scanHeight");
 const { sleep } = require("./utils/sleep");
-const { getBlocks } = require("./mongo/meta");
-const { isHex } = require("./utils");
-const { GenericBlock } = require("@polkadot/types");
-const { hexToU8a } = require("@polkadot/util");
 const { logger } = require("./logger");
 const last = require("lodash.last");
+const { fetchBlocks } = require("./service/fetchBlocks");
 const { scanNormalizedBlock } = require("./scan/block");
 
 const scanStep = parseInt(process.env.SCAN_STEP) || 100;
@@ -46,7 +43,12 @@ async function main() {
       await updateSpecs();
     }
 
-    const blocks = await getBlocks(scanHeight, targetHeight);
+    const heights = [];
+    for (let i = scanHeight; i <= targetHeight; i++) {
+      heights.push(i);
+    }
+
+    const blocks = await fetchBlocks(heights);
     if ((blocks || []).length <= 0) {
       await sleep(1000);
       continue;
@@ -55,7 +57,7 @@ async function main() {
     for (const block of blocks) {
       // TODO: transactional
       try {
-        await handleOneBlockDataInDb(block);
+        await scanNormalizedBlock(block.block, block.events);
         await updateScanHeight(block.height);
         logger.debug(`${block.height} done`);
 
@@ -75,25 +77,6 @@ async function main() {
     scanHeight = destHeight + 1;
     await sleep(1);
   }
-}
-
-async function handleOneBlockDataInDb(blockInDb) {
-  const registry = await findRegistry(blockInDb.height);
-
-  let block;
-  if (isHex(blockInDb.block)) {
-    block = new GenericBlock(registry, hexToU8a(blockInDb.block));
-  } else {
-    block = new GenericBlock(registry, blockInDb.block.block);
-  }
-
-  const blockEvents = registry.createType(
-    "Vec<EventRecord>",
-    blockInDb.events,
-    true
-  );
-
-  await scanNormalizedBlock(registry, block, blockEvents);
 }
 
 main()

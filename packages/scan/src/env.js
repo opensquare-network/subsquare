@@ -1,3 +1,4 @@
+const useMetaDb = !!process.env.USE_META_DB;
 const CHAINS = {
   KARURA: "karura",
   KUSAMA: "kusama",
@@ -28,9 +29,14 @@ function isKarura() {
   return CHAINS.KARURA === currentChain();
 }
 
+function isUseMetaDb() {
+  return useMetaDb;
+}
+
 module.exports = {
   currentChain,
   CHAINS,
   isKarura,
   setChain,
+  isUseMetaDb,
 };
