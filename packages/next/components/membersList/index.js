@@ -1,8 +1,7 @@
 import styled from "styled-components";
 
-import EmptyList from "../emptyList";
 import Flex from "../styled/flex";
-import { getNode, toPrecision, bigNumber2Locale } from "utils";
+import { getNode, toPrecision, bigNumber2Locale, decimalPlaces } from "utils";
 import User from "components/user";
 import { Fragment, useState } from "react";
 
@@ -26,10 +25,12 @@ const Title = styled(Flex)`
 
 const StyledTable = styled.table`
   width: 100%;
-  background: #FFFFFF;
-  border: 1px solid #EBEEF4;
+  background: #ffffff;
+  border: 1px solid #ebeef4;
   box-sizing: border-box;
-  box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02), 0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221), 0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
+    0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+    0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
   padding: 24px;
 
@@ -45,8 +46,7 @@ const StyledTable = styled.table`
   }
 `;
 
-const StyledTr = styled.tr`
-`;
+const StyledTr = styled.tr``;
 
 const StyledTh = styled.th`
   font-style: normal;
@@ -54,7 +54,7 @@ const StyledTh = styled.th`
   font-size: 12px;
   line-height: 100%;
   letter-spacing: 0.16em;
-  color: #9DA9BB;
+  color: #9da9bb;
   pointer-events: none;
 `;
 
@@ -64,7 +64,17 @@ const StyledTd = styled.td`
   font-weight: normal;
   font-size: 14px;
   line-height: 100%;
-  color: #1E2134;
+  color: #1e2134;
+`;
+
+const EmptyTd = styled.td`
+  padding: 12px 0 12px 0;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 140%;
+  text-align: left;
+  color: #9da9bb;
 `;
 
 const RowSpliter = ({ backgroundColor, padding }) => (
@@ -77,12 +87,12 @@ const RowSpliter = ({ backgroundColor, padding }) => (
 
 const Balance = ({ value, node }) => (
   <div>
-    <span style={{color: "#1E2134"}}>
-      {bigNumber2Locale(toPrecision(value ?? 0, node.decimals))}
+    <span style={{ color: "#1E2134" }}>
+      {bigNumber2Locale(
+        decimalPlaces(toPrecision(value ?? 0, node.decimals), 4)
+      )}
     </span>
-    <span style={{color: "#9DA9BB", marginLeft: "8px"}}>
-      {node.symbol}
-    </span>
+    <span style={{ color: "#9DA9BB", marginLeft: "8px" }}>{node.symbol}</span>
   </div>
 );
 
@@ -101,71 +111,71 @@ export default function MembersList({
 
   return (
     <Wrapper>
-      <Title>
-        {category}
-      </Title>
-      {items?.length > 0 ? (
-        <StyledTable>
-          <thead>
-            <StyledTr>
-              <StyledTh style={{textAlign: "left"}}>MEMBERS</StyledTh>
-              {hasElections && (
-                <>
-                  <StyledTh
-                    className={hideColumn === "backing"? "autohide" : "clickable"}
-                    style={{textAlign: "right"}}
-                    onClick={() => setHideColumn("backing")}
-                  >
-                    BACKING
-                  </StyledTh>
-                  <StyledTh
-                    className={hideColumn === "votes"? "autohide" : "clickable"}
-                    style={{textAlign: "right"}}
-                    onClick={() => setHideColumn("votes")}
-                  >
-                    VOTES
-                  </StyledTh>
-                </>
-              )}
-            </StyledTr>
-            <RowSpliter backgroundColor={"#EBEEF4"} padding={"16px 0 4px 0"} />
-          </thead>
-          <tbody>
-          {
+      <Title>{category}</Title>
+      <StyledTable>
+        <thead>
+          <StyledTr>
+            <StyledTh style={{ textAlign: "left" }}>MEMBERS</StyledTh>
+            {hasElections && (
+              <>
+                <StyledTh
+                  className={
+                    hideColumn === "backing" ? "autohide" : "clickable"
+                  }
+                  style={{ textAlign: "right" }}
+                  onClick={() => setHideColumn("backing")}
+                >
+                  BACKING
+                </StyledTh>
+                <StyledTh
+                  className={hideColumn === "votes" ? "autohide" : "clickable"}
+                  style={{ textAlign: "right" }}
+                  onClick={() => setHideColumn("votes")}
+                >
+                  VOTES
+                </StyledTh>
+              </>
+            )}
+          </StyledTr>
+          <RowSpliter backgroundColor={"#EBEEF4"} padding={"16px 0 4px 0"} />
+        </thead>
+        <tbody>
+          {items?.length > 0 ? (
             items.map((item, index) => (
               <Fragment key={index}>
                 <StyledTr>
-                  <StyledTd style={{textAlign: "left"}}>
+                  <StyledTd style={{ textAlign: "left" }}>
                     <User add={item.address} chain={chain} fontSize={14} />
                   </StyledTd>
                   {hasElections && (
                     <>
                       <StyledTd
-                        className={hideColumn === "backing"? "autohide" : ""}
-                        style={{textAlign: "right"}}
+                        className={hideColumn === "backing" ? "autohide" : ""}
+                        style={{ textAlign: "right" }}
                       >
                         <Balance value={item.backing} node={node} />
                       </StyledTd>
                       <StyledTd
-                        className={hideColumn === "votes"? "autohide" : ""}
-                        style={{textAlign: "right"}}
+                        className={hideColumn === "votes" ? "autohide" : ""}
+                        style={{ textAlign: "right" }}
                       >
                         {item.votes}
                       </StyledTd>
                     </>
                   )}
                 </StyledTr>
-                {index !== items.length - 1
-                  && <RowSpliter backgroundColor={"#F6F7FA"} />
-                }
+                {index !== items.length - 1 && (
+                  <RowSpliter backgroundColor={"#F6F7FA"} />
+                )}
               </Fragment>
             ))
-          }
-          </tbody>
-        </StyledTable>
-      ) : (
-        <EmptyList type={category} />
-      )}
+          ) : (
+            <StyledTr>
+              <EmptyTd>No current members</EmptyTd>
+            </StyledTr>
+          )}
+        </tbody>
+      </StyledTable>
     </Wrapper>
   );
 }

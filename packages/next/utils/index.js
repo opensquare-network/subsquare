@@ -91,6 +91,10 @@ export function toPrecision(value, decimals) {
   return new BigNumber(value).dividedBy(Math.pow(10, decimals)).toString();
 }
 
+export function decimalPlaces(value, n) {
+  return new BigNumber(value).dp(n).toString();
+}
+
 export function getTimelineStatus(type, method) {
   const defaultColor = "#0F6FFF";
   switch (type) {

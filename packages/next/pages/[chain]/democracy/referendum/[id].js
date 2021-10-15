@@ -13,7 +13,7 @@ import DetailItem from "../../../../components/detailItem";
 import KVList from "../../../../components/kvList";
 import User from "../../../../components/user";
 import Links from "../../../../components/timeline/links";
-import { getNode, getTimelineStatus } from "../../../../utils";
+import { getTimelineStatus } from "../../../../utils";
 import Vote from "../../../../components/referenda/vote";
 import dayjs from "dayjs";
 import Timeline from "../../../../components/timeline";
@@ -51,10 +51,6 @@ const CommentsWrapper = styled.div`
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const api = useApi(chain);
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
@@ -72,14 +68,14 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       return;
     }
 
-    api.query.democracy.referendumInfoOf(
-      detail.referendumIndex
-    ).then(referendumInfo => {
-      const referendumInfoData = referendumInfo.toJSON();
-      if (isMounted.current) {
-        setReferendumStatus(referendumInfoData?.ongoing);
-      }
-    });
+    api.query.democracy
+      .referendumInfoOf(detail.referendumIndex)
+      .then((referendumInfo) => {
+        const referendumInfoData = referendumInfo.toJSON();
+        if (isMounted.current) {
+          setReferendumStatus(referendumInfoData?.ongoing);
+        }
+      });
   }, [api, detail, isMounted, referendumStatus]);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);

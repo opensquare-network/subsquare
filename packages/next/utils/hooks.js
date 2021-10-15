@@ -86,12 +86,12 @@ export function useAuthPage(isAuth) {
   }
 }
 
-export function useCall(fn, params) {
+export function useCall(fn, params = []) {
   const [result, setResult] = useState();
   const isMounted = useIsMounted();
   useEffect(() => {
     if (fn) {
-      fn(...params).then(value => {
+      fn(...params).then((value) => {
         if (isMounted.current) {
           setResult(value);
         }
