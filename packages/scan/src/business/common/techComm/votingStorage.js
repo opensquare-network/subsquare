@@ -1,14 +1,9 @@
-const { expandMetadata } = require("@polkadot/types");
-const { findMetadata } = require("../../../specs");
+const { findBlockApi } = require("../../../chain/blockApi");
 const { getApi } = require("../../../api");
 
 async function getTechCommMotionVoting(motionHash, indexer) {
-  const metadata = await findMetadata(indexer.blockHeight);
-  const decorated = expandMetadata(metadata.registry, metadata);
-  const key = [decorated.query.technicalCommittee.voting, motionHash];
-
-  const api = await getApi();
-  const raw = await api.rpc.state.getStorage(key, indexer.blockHash);
+  const blockApi = await findBlockApi(indexer.blockHash);
+  const raw = await blockApi.query.technicalCommittee.voting(motionHash);
   return raw.toJSON();
 }
 

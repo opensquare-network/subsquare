@@ -1,6 +1,5 @@
 const { setChain, CHAINS } = require("../../../env");
 const { getTechCommMotionVotingFromStorage } = require("./votingStorage");
-const { setSpecHeights } = require("../../../specs");
 const { setApi } = require("../../../api");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
@@ -28,7 +27,6 @@ describe("test get karura Tech.Comm. voting", () => {
 
   test("works", async () => {
     const height = 50556;
-    setSpecHeights([height]);
     const blockHash = await api.rpc.chain.getBlockHash(height);
     const indexer = { blockHash, blockHeight: height };
 
