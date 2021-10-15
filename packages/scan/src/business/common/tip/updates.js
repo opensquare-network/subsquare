@@ -21,8 +21,8 @@ async function getTipCommonUpdates(hash, { blockHeight, blockHash }) {
     closes: newMeta.closes,
   };
   const registry = await findRegistry(blockHeight);
-  const tippersCount = await getTippersCount(registry, blockHash);
-  const tipFindersFee = getTipFindersFee(registry);
+  const tippersCount = await getTippersCount(blockHash);
+  const tipFindersFee = await getTipFindersFee(blockHash);
 
   return { meta, tippersCount, tipFindersFee };
 }

@@ -1,5 +1,4 @@
-const { findMetadata } = require("../../../specs");
-const { getApi } = require("../../../api");
+const { findBlockApi } = require("../../../chain/blockApi");
 const {
   Modules,
   ProxyMethods,
@@ -9,42 +8,33 @@ const {
 } = require("../constants");
 const { GenericCall } = require("@polkadot/types");
 const { blake2AsHex } = require("@polkadot/util-crypto");
-const {
-  getConstFromRegistry,
-  getConstsFromRegistry,
-} = require("../../../utils/index");
 const { currentChain, CHAINS } = require("../../../env");
-const { expandMetadata } = require("@polkadot/types");
 
 async function getTipMetaFromStorage(api, tipHash, { blockHeight, blockHash }) {
-  const metadata = await findMetadata(blockHeight);
-  const decorated = expandMetadata(metadata.registry, metadata);
-  let key;
-  if (decorated.query.treasury?.tips) {
-    key = [decorated.query.treasury.tips, tipHash];
+  const blockApi = await findBlockApi(blockHash);
+
+  let raw;
+  if (blockApi.query.treasury?.tips) {
+    raw = await blockApi.query.treasury.tips(tipHash);
   } else {
-    key = [decorated.query.tips.tips, tipHash];
+    raw = await blockApi.query.tips.tips(tipHash);
   }
 
-  const rawMeta = await api.rpc.state.getStorage(key, blockHash);
-  return rawMeta.toJSON();
+  return raw.toJSON();
 }
 
 async function getTipReason(reasonHash, indexer) {
-  const metadata = await findMetadata(indexer.blockHeight);
-  const decorated = expandMetadata(metadata.registry, metadata);
+  const blockApi = await findBlockApi(indexer.blockHash);
 
-  const api = await getApi();
-  let key;
-  if (decorated.query.treasury?.reasons) {
-    key = [decorated.query.treasury.reasons, reasonHash];
-  } else if (decorated.query.tips?.reasons) {
-    key = [decorated.query.tips.reasons, reasonHash];
+  let raw;
+  if (blockApi.query.treasury?.reasons) {
+    raw = await blockApi.query.treasury.reasons(reasonHash);
+  } else if (blockApi.query.tips?.reasons) {
+    raw = await blockApi.query.tips.reasons(reasonHash);
   } else {
     return null;
   }
 
-  const raw = await api.rpc.state.getStorage(key, indexer.blockHash);
   return raw.toHuman();
 }
 
@@ -98,50 +88,37 @@ function getNewTipCall(registry, call, reasonHash) {
 }
 
 async function getTippersCountOfKarura(blockHash) {
-  const api = await getApi();
-  const members = await api.query.generalCouncil.members.at(blockHash);
+  const blockApi = await findBlockApi(blockHash);
+  const members = await blockApi.query.generalCouncil.members();
 
   return members.length;
 }
 
-async function getTippersCount(registry, blockHash) {
+async function getTippersCount(blockHash) {
   const chain = currentChain();
   if (CHAINS.KARURA === chain) {
     return await getTippersCountOfKarura(blockHash);
   }
 
-  const oldModuleValue = getConstFromRegistry(
-    registry,
-    "ElectionsPhragmen",
-    "DesiredMembers"
-  );
-
-  if (oldModuleValue) {
-    return oldModuleValue.toNumber();
+  const blockApi = await findBlockApi(blockHash);
+  if (blockApi.consts.electionsPhragmen?.desiredMembers) {
+    return blockApi.consts.electionsPhragmen?.desiredMembers.toNumber();
+  } else if (blockApi.consts.phragmenElection?.desiredMembers) {
+    return blockApi.consts.phragmenElection?.desiredMembers.toNumber();
   }
 
-  const newModuleValue = getConstFromRegistry(
-    registry,
-    "PhragmenElection",
-    "DesiredMembers"
-  );
-
-  return newModuleValue ? newModuleValue.toNumber() : newModuleValue;
+  throw new Error("can not get elections desired members");
 }
 
-function getTipFindersFee(registry) {
-  const constants = getConstsFromRegistry(registry, [
-    {
-      moduleName: "Tips",
-      constantName: "TipFindersFee",
-    },
-    {
-      moduleName: "Treasury",
-      constantName: "TipFindersFee",
-    },
-  ]);
+async function getTipFindersFee(blockHash) {
+  const blockApi = await findBlockApi(blockHash);
+  if (blockApi.consts.tips?.tipFindersFee) {
+    return blockApi.consts.tips?.tipFindersFee.toNumber();
+  } else if (blockApi.consts.treasury?.tipFindersFee) {
+    return blockApi.consts.treasury?.tipFindersFee.toNumber();
+  }
 
-  return (constants[0] ?? constants[1])?.toJSON();
+  return null;
 }
 
 module.exports = {
