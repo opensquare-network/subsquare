@@ -5,9 +5,9 @@ const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
 let provider = null;
 let api = null;
 
-const defaultKaruraEndPoint = "wss://karura.kusama.elara.patract.io";
-const defaultKusamaEndpoint = "wss://kusama.elara.patract.io";
-const defaultPolkadotEndpoint = "wss://polkadot.elara.patract.io/";
+const defaultKaruraEndPoint = "wss://pub.elara.patract.io/karura";
+const defaultKusamaEndpoint = "wss://pub.elara.patract.io/kusama";
+const defaultPolkadotEndpoint = "wss://pub.elara.patract.io/polkadot";
 
 async function getApi() {
   if (!api) {
