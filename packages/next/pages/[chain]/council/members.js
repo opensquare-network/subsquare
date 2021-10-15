@@ -1,4 +1,4 @@
-import MembersList from "components/membersList";
+import MembersList from "components/membersList/councilMembersList";
 import Menu from "components/menu";
 import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
@@ -15,7 +15,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const electionsInfo = useCall(api?.derive.elections.info, []);
   const allVotes = useCall(api?.derive.council.votes, []);
   useEffect(() => {
-    if (electionsInfo?.members.length) {
+    if (electionsInfo) {
       const votesMap = {};
       (allVotes || []).forEach((item) => {
         const votes = item[1].votes.toJSON();
@@ -24,7 +24,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
         }
       });
 
-      const data = (electionsInfo?.members || []).map((item) => {
+      const data = (electionsInfo.members || []).map((item) => {
         const address = item[0]?.toJSON();
         return {
           address,
