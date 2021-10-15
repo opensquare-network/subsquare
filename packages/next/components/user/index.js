@@ -78,13 +78,11 @@ export default function User({
   if (!user && !add) {
     return (
       <DeleteAccount fontSize={fontSize}>
-        <img src="/imgs/icons/avatar-deleted.svg" alt=""/>
+        <img src="/imgs/icons/avatar-deleted.svg" alt="" />
         [Deleted Account]
       </DeleteAccount>
     );
   }
-
-
 
   return (
     <Wrapper noEvent={noEvent}>
@@ -97,22 +95,22 @@ export default function User({
           )}
         </AvatarWrapper>
       )}
-      {identity ? (
-        <LinkWrapper
-          onClick={() =>
-            window.open(
-              `https://${chain}.subscan.io/account/${address}`,
-              "_blank"
-            )
-          }
-        >
+      <LinkWrapper
+        onClick={() =>
+          window.open(
+            `https://${chain}.subscan.io/account/${address}`,
+            "_blank"
+          )
+        }
+      >
+        {identity ? (
           <Identity identity={identity} fontSize={fontSize} />
-        </LinkWrapper>
-      ) : (
-        <Username fontSize={fontSize}>
-          {user?.username ?? addressEllipsis(add)}
-        </Username>
-      )}
+        ) : (
+          <Username fontSize={fontSize}>
+            {user?.username ?? addressEllipsis(add)}
+          </Username>
+        )}
+      </LinkWrapper>
     </Wrapper>
   );
 }
