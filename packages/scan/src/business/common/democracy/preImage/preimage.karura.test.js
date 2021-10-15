@@ -13,7 +13,7 @@ describe("test get karura 1st proposal image", () => {
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider("wss://karura.kusama.elara.patract.io", 1000);
+    provider = new WsProvider("wss://pub.elara.patract.io/karura", 1000);
     api = await ApiPromise.create({
       provider,
       typesBundle: { ...typesBundleForPolkadot },
@@ -49,7 +49,7 @@ describe("test get karura 1st proposal image", () => {
         method: "authorizeUpgrade",
         args: [
           {
-            name: "code_hash",
+            name: "codeHash",
             type: "Hash",
             value:
               "0xbc30ed7c6618cab42b2cc94a62e4c576be7f733c1f53b692f6ae37305edd6eeb",

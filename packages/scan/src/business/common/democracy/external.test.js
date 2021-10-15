@@ -1,6 +1,5 @@
 const { getExternalFromStorage } = require("./external");
 const { setChain, CHAINS } = require("../../../env");
-const { setSpecHeights } = require("../../../specs");
 const { setApi } = require("../../../api");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
@@ -12,7 +11,7 @@ describe("test get karura external", () => {
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider("wss://karura.kusama.elara.patract.io", 1000);
+    provider = new WsProvider("wss://pub.elara.patract.io/karura", 1000);
     api = await ApiPromise.create({
       provider,
       typesBundle: { ...typesBundleForPolkadot },
@@ -30,7 +29,6 @@ describe("test get karura external", () => {
     // This external is created at 160503, when the 6th motion passed
     const height = 160545;
     const preHeight = height - 1;
-    setSpecHeights([preHeight]);
     const blockHash = await api.rpc.chain.getBlockHash(preHeight);
     const indexer = { blockHash, blockHeight: preHeight };
 
@@ -38,14 +36,13 @@ describe("test get karura external", () => {
     // Fast tracked by sudo(sudo)
     expect(external).toEqual([
       "0x9e1c6ea3654eba6226ff60b4d2751064f88c46f1022d3f8422cc1ed23dfe8d91",
-      "Simplemajority",
+      "SimpleMajority",
     ]);
   });
 
   test("at 653005 works", async () => {
     // This external is created at 160503, when the 6th motion passed
     const height = 653005;
-    setSpecHeights([height]);
     const blockHash = await api.rpc.chain.getBlockHash(height);
     const indexer = { blockHash, blockHeight: height };
 
@@ -53,7 +50,7 @@ describe("test get karura external", () => {
     // Fast tracked by sudo(sudo)
     expect(external).toEqual([
       "0x3dfe99860fe5d3431f30ccc8fc062509f583bf65f3084b09d4e1c1f66e162260",
-      "Simplemajority",
+      "SimpleMajority",
     ]);
   });
 });

@@ -1,12 +1,9 @@
-const { findDecorated } = require("../../../../specs");
+const { findBlockApi } = require("../../../../chain/blockApi");
 const { getApi } = require("../../../../api");
 
 async function getReferendumInfoFromStorage(referendumIndex, indexer) {
-  const decorated = await findDecorated(indexer.blockHeight);
-  const key = [decorated.query.democracy.referendumInfoOf, referendumIndex];
-
-  const api = await getApi();
-  const raw = await api.rpc.state.getStorage(key, indexer.blockHash);
+  const blockApi = await findBlockApi(indexer.blockHash);
+  const raw = await blockApi.query.democracy.referendumInfoOf(referendumIndex);
   return raw.toJSON();
 }
 
