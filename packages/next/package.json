@@ -10,10 +10,10 @@
     "timeupdater:karura": "pm2 start ecosystem.config.js --only subsquare-time-updater-karura --env production"
   },
   "dependencies": {
-    "@acala-network/type-definitions": "2.2.1",
+    "@acala-network/type-definitions": "3.0.1",
     "@alicloud/pop-core": "^1.7.10",
     "@koa/cors": "^3.1.0",
-    "@polkadot/api": "6.3.1",
+    "@polkadot/api": "6.3.2-14",
     "@polkadot/extension-dapp": "^0.40.3",
     "@polkadot/react-identicon": "^0.85.5",
     "@reduxjs/toolkit": "^1.6.1",
