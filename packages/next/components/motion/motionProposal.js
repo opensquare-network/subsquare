@@ -70,6 +70,9 @@ const TagItem = styled.div`
 `;
 
 function convertProposalForTableView(proposal, chain) {
+  if (!proposal) {
+    return {};
+  }
   return {
     ...proposal,
     args: Object.fromEntries(
@@ -103,6 +106,9 @@ function convertProposalForTableView(proposal, chain) {
 }
 
 function convertProposalForJsonView(proposal, chain) {
+  if (!proposal) {
+    return {};
+  }
   return {
     ...proposal,
     args: proposal.args.map((arg) => ({
