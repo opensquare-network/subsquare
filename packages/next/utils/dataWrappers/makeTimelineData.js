@@ -17,9 +17,13 @@ export function makeSingleExternalTimelineData(args, method) {
     case "fastTrack":
       if (Array.isArray(args)) {
         return {
-          proposalHash: args.find((arg) => arg.name === "proposal_hash").value,
+          proposalHash: args.find((arg) =>
+            ["proposal_hash", "proposalHash"].includes(arg.name)
+          ).value,
           votingPeriod:
-            args.find((arg) => arg.name === "voting_period").value + ` blocks`,
+            args.find((arg) =>
+              ["voting_period", "votingPeriod"].includes(arg.name)
+            ).value + ` blocks`,
           delay: args.find((arg) => arg.name === "delay").value + ` blocks`,
         };
       }
