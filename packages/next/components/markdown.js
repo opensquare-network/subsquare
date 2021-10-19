@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   .markdown-content {
     color: #000;
     max-width: 48.5rem;
-    word-break:  normal;
+    word-break: normal;
 
     h1,
     h2,
@@ -64,9 +64,9 @@ const Wrapper = styled.div`
     p,
     li {
       max-width: 48.5rem;
-      word-break: normal;
       font-size: 0.875rem;
       line-height: 1.375rem;
+      word-break: break-word;
     }
 
     ol,
@@ -102,6 +102,7 @@ const Wrapper = styled.div`
       padding: 0 0.25rem;
       background: #eee;
       border-radius: 0.25rem;
+      word-break: break-all;
     }
 
     a {

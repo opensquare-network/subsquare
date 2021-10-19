@@ -32,8 +32,7 @@ const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
-
-  max-width: min(848px, calc(100vw - 64px));
+  max-width: 848px;
   margin: auto;
 `;
 
