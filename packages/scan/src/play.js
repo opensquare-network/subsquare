@@ -4,7 +4,7 @@ const { getRegistryByHeight } = require("./utils/registry");
 const { setSpecHeights } = require("./specs");
 
 async function test() {
-  const blockHeights = [160545];
+  const blockHeights = [231979];
 
   for (const height of blockHeights) {
     setSpecHeights([height - 1]);

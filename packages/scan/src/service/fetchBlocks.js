@@ -7,11 +7,14 @@ const { GenericBlock } = require("@polkadot/types");
 const { logger, blockLogger } = require("../logger");
 
 async function fetchBlocks(heights = []) {
+  let blocks;
   if (isUseMetaDb()) {
-    return await fetchBlocksFromDb(heights);
+    blocks = await fetchBlocksFromDb(heights);
   } else {
-    return await fetchBlocksFromNode(heights);
+    blocks = await fetchBlocksFromNode(heights);
   }
+
+  return blocks.filter((b) => b !== null);
 }
 
 async function constructBlockFromDbData(blockInDb) {
