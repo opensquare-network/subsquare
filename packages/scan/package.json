@@ -7,7 +7,7 @@
     "scan": "node src/index.js"
   },
   "dependencies": {
-    "@acala-network/type-definitions": "3.0.1",
+    "@acala-network/type-definitions": "3.0.2-1",
     "@polkadot/api": "6.3.2-14",
     "dotenv": "^8.2.0",
     "lodash.findlast": "^4.6.0",

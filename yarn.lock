@@ -9,6 +9,13 @@
   dependencies:
     "@open-web3/orml-type-definitions" "^1.0.1"
 
+"@acala-network/type-definitions@3.0.2-1":
+  version "3.0.2-1"
+  resolved "https://registry.npmjs.org/@acala-network/type-definitions/-/type-definitions-3.0.2-1.tgz#edfccfd78491aef64d5da03bd2c89ad215c7cce7"
+  integrity sha512-b9XN6VzLQmP+TKw4VL+xiDp3Lwy/qccv07qz1SS2BhoX7wZPytrP5NasfEITR95vNBwWFY5sxuTuhwkFhbPPNA==
+  dependencies:
+    "@open-web3/orml-type-definitions" "^1.0.2-0"
+
 "@alicloud/pop-core@^1.7.10":
   version "1.7.10"
   resolved "https://registry.npmjs.org/@alicloud/pop-core/-/pop-core-1.7.10.tgz#d0e221036dbb0ccde453dd09b1cfabd8341b7a69"
@@ -1378,6 +1385,13 @@
   version "1.0.1"
   resolved "https://registry.npmjs.org/@open-web3/orml-type-definitions/-/orml-type-definitions-1.0.1.tgz#497a708ae658dd7c7fed024306c2a3015ebc7b4b"
   integrity sha512-FGSeVaQv6DcQSa3E0YX20ymJpqtD8XJmLukCuC4AhVfSgLqT6roI2SfrRhUiYVbe1PQph7ptxx1EhEV/PNcnEw==
+  dependencies:
+    lodash.merge "^4.6.2"
+
+"@open-web3/orml-type-definitions@^1.0.2-0":
+  version "1.0.2-0"
+  resolved "https://registry.npmjs.org/@open-web3/orml-type-definitions/-/orml-type-definitions-1.0.2-0.tgz#1b9b7a4942c08c7d42cc605c867baa5e2d482836"
+  integrity sha512-HwSWh4BwF/U3Fo6G2ZuQn6tNxoFfnBLtLyX0Z73eeII0g7OlYfWGr7bNzflO26Jb8EfBtZE5UNhPzZXTQUY1cw==
   dependencies:
     lodash.merge "^4.6.2"
 
