@@ -135,10 +135,7 @@ function Vote({ referendumInfo, referendumStatus, chain }) {
 
   const nAyes = toPrecision(referendumStatus?.tally?.ayes ?? 0, decimals);
   const nNays = toPrecision(referendumStatus?.tally?.nays ?? 0, decimals);
-  const nTurnout = toPrecision(
-    referendumStatus?.tally?.turnout ?? 0,
-    decimals
-  );
+  const nTurnout = toPrecision(referendumStatus?.tally?.turnout ?? 0, decimals);
 
   let nAyesPrecent = 50;
   let nNaysPrecent = 50;
@@ -161,7 +158,8 @@ function Vote({ referendumInfo, referendumStatus, chain }) {
         <BarContainer gap={gap}>
           <AyesBar precent={nAyesPrecent} />
           <NaysBar precent={nNaysPrecent} />
-          {referendumStatus?.threshold === "Simplemajority" && <Threshold />}
+          {(referendumStatus?.threshold || "").toLowerCase() ===
+            "simplemajority" && <Threshold />}
         </BarContainer>
       </BarWrapper>
 
