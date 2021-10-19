@@ -1,9 +1,10 @@
+const { findBlockApi } = require("../chain/blockApi");
 const { isUseMetaDb } = require("../env");
 const { getBlocksByHeights } = require("../mongo/meta");
 const { findRegistry } = require("../specs");
 const { getApi } = require("../api");
 const { GenericBlock } = require("@polkadot/types");
-const { logger } = require("../logger");
+const { logger, blockLogger } = require("../logger");
 
 async function fetchBlocks(heights = []) {
   if (isUseMetaDb()) {
@@ -42,7 +43,7 @@ async function fetchBlocksFromDb(heights = []) {
         `can not construct block from db data at ${blockInDb.height}`,
         e
       );
-      block = await fetchOneBlockFromNode(blockInDb.height);
+      block = await makeSureFetch(blockInDb.height);
     }
 
     blocks.push(block);
@@ -54,22 +55,38 @@ async function fetchBlocksFromDb(heights = []) {
 async function fetchBlocksFromNode(heights = []) {
   const allPromises = [];
   for (const height of heights) {
-    allPromises.push(fetchOneBlockFromNode(height));
+    allPromises.push(makeSureFetch(height));
   }
 
   return await Promise.all(allPromises);
 }
 
+async function makeSureFetch(height) {
+  try {
+    return await fetchOneBlockFromNode(height);
+  } catch (e) {
+    blockLogger.error(`error fetch block ${height}`, e);
+    return null;
+  }
+}
+
 async function fetchOneBlockFromNode(height) {
   const api = await getApi();
   const blockHash = await api.rpc.chain.getBlockHash(height);
-  const block = await api.rpc.chain.getBlock(blockHash);
-  const allEvents = await api.query.system.events.at(blockHash);
+
+  const blockApi = await findBlockApi(blockHash);
+
+  const promises = [
+    api.rpc.chain.getBlock(blockHash),
+    blockApi.query.system.events(),
+  ];
+
+  const [block, events] = await Promise.all(promises);
 
   return {
     height,
     block: block.block,
-    events: allEvents,
+    events,
   };
 }
 
