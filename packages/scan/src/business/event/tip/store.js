@@ -45,8 +45,8 @@ async function saveNewTip(event, extrinsic, indexer) {
   const beneficiary = newTipCall.args[1].toJSON();
   meta.findersFee = TipMethods.reportAwesome === method;
   const finder = meta.finder;
-  const tippersCount = await getTippersCount(registry, indexer.blockHash);
-  const tipFindersFee = getTipFindersFee(registry);
+  const tippersCount = await getTippersCount(indexer.blockHash);
+  const tipFindersFee = await getTipFindersFee(indexer.blockHash);
 
   const timelineItem = {
     type: TimelineItemTypes.extrinsic,

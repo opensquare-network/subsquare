@@ -1,9 +1,9 @@
+const { onFinalityKarura } = require("../../../utils/constants");
 const { setChain, CHAINS } = require("../../../env");
 const {
   getMotionVoting,
   getVotingFromStorageByHeight,
 } = require("./votingStorage");
-const { setSpecHeights } = require("../../../specs");
 const { setApi } = require("../../../api");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
@@ -24,7 +24,7 @@ describe("test get karura motion", () => {
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider("wss://karura.kusama.elara.patract.io", 1000);
+    provider = new WsProvider(onFinalityKarura, 1000);
     api = await ApiPromise.create({
       provider,
       typesBundle: { ...typesBundleForPolkadot },
@@ -40,7 +40,6 @@ describe("test get karura motion", () => {
 
   test("works", async () => {
     const height = 43249;
-    setSpecHeights([height]);
     const blockHash = await api.rpc.chain.getBlockHash(height);
     const indexer = { blockHash, blockHeight: height };
 
@@ -75,17 +74,18 @@ describe("test get kusama motion", () => {
 
   test("works", async () => {
     const blockHeight = 126209;
-    setSpecHeights([blockHeight]);
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
     const indexer = { blockHash, blockHeight };
 
-    const voting = await getMotionVoting(targetKsmMotion, indexer);
+    const voting = await getMotionVoting(
+      "0x59fe7bd64951667f91f36db33077b1ada93b093b363a32cf869d2a833d72ce08",
+      indexer
+    );
     expect(voting).toEqual(targetKsmMotion);
   });
 
   test("at height works", async () => {
     const blockHeight = 126209;
-    setSpecHeights([blockHeight]);
 
     const voting = await getVotingFromStorageByHeight(
       ksmTestMotionHash,

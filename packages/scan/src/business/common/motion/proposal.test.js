@@ -1,3 +1,6 @@
+const { onFinalityPolkadot } = require("../../../utils/constants");
+const { onFinalityKusama } = require("../../../utils/constants");
+const { onFinalityKarura } = require("../../../utils/constants");
 const { getMotionProposalCall } = require("./proposalStorage");
 const { setSpecHeights } = require("../../../specs");
 const { setApi } = require("../../../api");
@@ -13,7 +16,7 @@ const ksmTargetCall = {
   method: "approveProposal",
   args: [
     {
-      name: "proposal_id",
+      name: "proposalId",
       type: "Compact<ProposalIndex>",
       value: 0,
     },
@@ -26,7 +29,7 @@ const dotMotionCallByProxy = {
   method: "rejectProposal",
   args: [
     {
-      name: "proposal_id",
+      name: "proposalId",
       type: "Compact<ProposalIndex>",
       value: 33,
     },
@@ -51,7 +54,7 @@ const targetCall = {
       value: 254,
     },
     {
-      name: "with_delayed_origin",
+      name: "withDelayedOrigin",
       type: "bool",
       value: true,
     },
@@ -64,7 +67,7 @@ const targetCall = {
         method: "dispatchAs",
         args: [
           {
-            name: "as_origin",
+            name: "asOrigin",
             type: "AsOriginId",
             value: "Root",
           },
@@ -109,7 +112,7 @@ describe("test get karura ", () => {
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider("wss://karura.kusama.elara.patract.io", 1000);
+    provider = new WsProvider(onFinalityKarura, 1000);
     api = await ApiPromise.create({
       provider,
       typesBundle: { ...typesBundleForPolkadot },
@@ -152,7 +155,7 @@ describe("test get karura ", () => {
       method: "externalProposeMajority",
       args: [
         {
-          name: "proposal_hash",
+          name: "proposalHash",
           type: "Hash",
           value:
             "0x9e1c6ea3654eba6226ff60b4d2751064f88c46f1022d3f8422cc1ed23dfe8d91",
@@ -167,7 +170,7 @@ describe("test get kusama motion proposal", () => {
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider("wss://kusama.api.onfinality.io/public-ws", 1000);
+    provider = new WsProvider(onFinalityKusama, 1000);
     api = await ApiPromise.create({ provider });
     setApi(api);
     setChain(CHAINS.KUSAMA);
@@ -189,18 +192,6 @@ describe("test get kusama motion proposal", () => {
     const normalizedProposal = await getMotionProposalCall(motionHash, indexer);
     expect(normalizedProposal).toEqual(ksmTargetCall);
   });
-
-  test("by proxy works", async () => {
-    const blockHeight = 3543099;
-    setSpecHeights([blockHeight]);
-    const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
-    const indexer = { blockHash, blockHeight };
-    const motionHash =
-      "0xc117d365995214adfdd5ae55e3de4dc52dc4082e882fe2df371bf2230e01fd50";
-
-    const normalizedProposal = await getMotionProposalCall(motionHash, indexer);
-    expect(normalizedProposal).toEqual(ksmTargetCall);
-  });
 });
 
 describe("test get polkadot motion proposal", () => {
@@ -208,10 +199,7 @@ describe("test get polkadot motion proposal", () => {
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider(
-      "wss://polkadot.api.onfinality.io/public-ws",
-      1000
-    );
+    provider = new WsProvider(onFinalityPolkadot, 1000);
     api = await ApiPromise.create({ provider });
     setApi(api);
     setChain(CHAINS.POLKADOT);

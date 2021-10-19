@@ -1,5 +1,4 @@
 const { getReferendumInfoFromStorage } = require("./referendumStorage");
-const { setSpecHeights } = require("../../../../specs");
 const { CHAINS } = require("../../../../env");
 const { setChain } = require("../../../../env");
 const { setApi } = require("../../../../api");
@@ -24,7 +23,6 @@ describe("test get kusama referendum 8th info", () => {
 
   test("works", async () => {
     const blockHeight = 100800;
-    setSpecHeights([blockHeight]);
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
     const indexer = { blockHash, blockHeight };
 
@@ -37,7 +35,7 @@ describe("test get kusama referendum 8th info", () => {
       end: 201600,
       proposalHash:
         "0x1c0a116889e9584b6709bf01235ece86c285597801c40826dbccd67f187739fe",
-      threshold: "Supermajorityapproval",
+      threshold: "SuperMajorityApprove",
       delay: 115200,
     });
   });

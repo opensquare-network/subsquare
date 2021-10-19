@@ -7,11 +7,13 @@ const chain = process.env.CHAIN || CHAINS.KARURA;
 
 const scanFileCategory = "block-scan";
 const businessCategory = "business";
+const blockFileCategory = "block";
 
 log4js.configure({
   appenders: {
     [scanFileCategory]: { type: "file", filename: `log/${chain}/scan.log` },
     [businessCategory]: { type: "file", filename: `log/${chain}/bus.log` },
+    [blockFileCategory]: { type: "file", filename: `log/${chain}/block.log` },
     errorFile: {
       type: "file",
       filename: `log/${chain}/errors.log`,
@@ -32,13 +34,22 @@ log4js.configure({
       appenders: [isProduction ? businessCategory : "out", "errors"],
       level: logLevel,
     },
+    [blockFileCategory]: {
+      appenders: [
+        isProduction ? blockFileCategory : "out",
+        isProduction ? blockFileCategory : "errors",
+      ],
+      level: logLevel,
+    },
   },
 });
 
 const logger = log4js.getLogger(scanFileCategory);
 const busLogger = log4js.getLogger(businessCategory);
+const blockLogger = log4js.getLogger(blockFileCategory);
 
 module.exports = {
   logger,
   busLogger,
+  blockLogger,
 };

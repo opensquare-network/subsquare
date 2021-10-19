@@ -1,25 +1,20 @@
+const { findBlockApi } = require("../../../chain/blockApi");
 const { normalizeCall } = require("./utils");
 const { findRegistry } = require("../../../specs");
-const { expandMetadata } = require("@polkadot/types");
-const { findMetadata } = require("../../../specs");
-const { getApi } = require("../../../api");
 const { isKarura } = require("../../../env");
 const { GenericCall } = require("@polkadot/types");
 
 async function getMotionProposal(motionHash, indexer) {
-  const metadata = await findMetadata(indexer.blockHeight);
-  const decorated = expandMetadata(metadata.registry, metadata);
-  let key;
+  const blockApi = await findBlockApi(indexer.blockHash);
+
+  let raw = null;
   if (isKarura()) {
-    key = [decorated.query.generalCouncil.proposalOf, motionHash];
-  } else if (decorated.query.council.proposalOf) {
-    key = [decorated.query.council.proposalOf, motionHash];
-  } else {
-    return null;
+    raw = await blockApi.query.generalCouncil.proposalOf(motionHash);
+  } else if (blockApi.query.council.proposalOf) {
+    raw = await blockApi.query.council.proposalOf(motionHash);
   }
 
-  const api = await getApi();
-  return api.rpc.state.getStorage(key, indexer.blockHash);
+  return raw;
 }
 
 async function getMotionProposalCall(motionHash, indexer) {

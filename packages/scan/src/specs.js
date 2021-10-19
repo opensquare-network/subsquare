@@ -1,13 +1,9 @@
 const { getAllVersionChangeHeights } = require("./mongo/meta");
 const { getRegistryByHeight } = require("./utils/registry");
 const findLast = require("lodash.findlast");
-const { expandMetadata } = require("@polkadot/types");
-const { getMetadataByHeight } = require("./utils/registry");
 
 let versionChangedHeights = [];
 let registryMap = {};
-let metadataMap = {};
-let decoratedMap = {};
 
 async function updateSpecs() {
   versionChangedHeights = await getAllVersionChangeHeights();
@@ -40,48 +36,9 @@ async function findRegistry(height) {
   return registry;
 }
 
-async function findMetadata(height) {
-  const mostRecentChangeHeight = findLast(
-    versionChangedHeights,
-    (h) => h <= height
-  );
-  if (!mostRecentChangeHeight) {
-    throw new Error(`Can not find height ${height}`);
-  }
-
-  let metadata = metadataMap[mostRecentChangeHeight];
-  if (!metadata) {
-    metadata = await getMetadataByHeight(height);
-    metadataMap[height] = metadata;
-  }
-
-  return metadata;
-}
-
-async function findDecorated(height) {
-  const mostRecentChangeHeight = findLast(
-    versionChangedHeights,
-    (h) => h <= height
-  );
-  if (!mostRecentChangeHeight) {
-    throw new Error(`Can not find height ${height}`);
-  }
-
-  let decorated = decoratedMap[mostRecentChangeHeight];
-  if (!decorated) {
-    const metadata = await getMetadataByHeight(height);
-    decorated = expandMetadata(metadata.registry, metadata);
-    decoratedMap[height] = decorated;
-  }
-
-  return decorated;
-}
-
 module.exports = {
   updateSpecs,
   getSpecHeights,
   findRegistry,
-  findMetadata,
-  findDecorated,
   setSpecHeights,
 };

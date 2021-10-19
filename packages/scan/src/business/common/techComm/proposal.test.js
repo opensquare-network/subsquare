@@ -1,10 +1,11 @@
+const { setSpecHeights } = require("../../../specs");
+const { karuraEndpoint } = require("../../../utils/constants");
 const { testTechCommProposal } = require("./testData");
 const { getTechCommMotionProposalCall } = require("./proposalStorage");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
 const { setApi } = require("../../../api");
 const { setChain, CHAINS } = require("../../../env");
-const { setSpecHeights } = require("../../../specs");
 
 jest.setTimeout(3000000);
 
@@ -13,7 +14,7 @@ describe("test get karura Tech Comm", () => {
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider("wss://karura.kusama.elara.patract.io", 1000);
+    provider = new WsProvider(karuraEndpoint, 1000);
     api = await ApiPromise.create({
       provider,
       typesBundle: { ...typesBundleForPolkadot },

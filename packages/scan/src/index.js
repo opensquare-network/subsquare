@@ -1,22 +1,14 @@
 require("dotenv").config();
 
-const { findRegistry, updateSpecs, getSpecHeights } = require("./specs");
+const { updateSpecs, getSpecHeights } = require("./specs");
 const { disconnect } = require("./api");
 const { updateHeight, getLatestHeight } = require("./chain");
 const { getNextScanHeight, updateScanHeight } = require("./mongo/scanHeight");
 const { sleep } = require("./utils/sleep");
-const { getBlocks } = require("./mongo/meta");
-const { getRegistryByHeight } = require("./utils/registry");
-const { isHex } = require("./utils");
-const { GenericBlock } = require("@polkadot/types");
-const { hexToU8a } = require("@polkadot/util");
 const { logger } = require("./logger");
-const { handleEvents } = require("./business/event");
-const { handleExtrinsics } = require("./business/extrinsic");
-const { getBlockIndexer } = require("./utils/block/getBlockIndexer");
-const { getApi } = require("./api");
 const last = require("lodash.last");
-const { setSpecHeights } = require("./specs");
+const { fetchBlocks } = require("./service/fetchBlocks");
+const { scanNormalizedBlock } = require("./scan/block");
 
 const scanStep = parseInt(process.env.SCAN_STEP) || 100;
 
@@ -51,7 +43,12 @@ async function main() {
       await updateSpecs();
     }
 
-    const blocks = await getBlocks(scanHeight, targetHeight);
+    const heights = [];
+    for (let i = scanHeight; i <= targetHeight; i++) {
+      heights.push(i);
+    }
+
+    const blocks = await fetchBlocks(heights);
     if ((blocks || []).length <= 0) {
       await sleep(1000);
       continue;
@@ -60,7 +57,7 @@ async function main() {
     for (const block of blocks) {
       // TODO: transactional
       try {
-        await handleOneBlockDataInDb(block);
+        await scanNormalizedBlock(block.block, block.events);
         await updateScanHeight(block.height);
         logger.debug(`${block.height} done`);
 
@@ -82,49 +79,6 @@ async function main() {
   }
 }
 
-async function handleOneBlockDataInDb(blockInDb) {
-  const registry = await findRegistry(blockInDb.height);
-
-  let block;
-  if (isHex(blockInDb.block)) {
-    block = new GenericBlock(registry, hexToU8a(blockInDb.block));
-  } else {
-    block = new GenericBlock(registry, blockInDb.block.block);
-  }
-
-  const blockEvents = registry.createType(
-    "Vec<EventRecord>",
-    blockInDb.events,
-    true
-  );
-
-  await scanNormalizedBlock(registry, block, blockEvents);
-}
-
-async function scanNormalizedBlock(registry, block, blockEvents) {
-  // handle the business
-  const blockIndexer = getBlockIndexer(block);
-  await handleExtrinsics(block.extrinsics, blockEvents, blockIndexer);
-  await handleEvents(blockEvents, block.extrinsics, blockIndexer);
-}
-
-async function test() {
-  const blockHeights = [160545];
-
-  for (const height of blockHeights) {
-    setSpecHeights([height - 1]);
-
-    const api = await getApi();
-    const registry = await getRegistryByHeight(height);
-    const blockHash = await api.rpc.chain.getBlockHash(height);
-    const block = await api.rpc.chain.getBlock(blockHash);
-    const allEvents = await api.query.system.events.at(blockHash);
-
-    await scanNormalizedBlock(registry, block.block, allEvents);
-  }
-}
-
-// test();
 main()
   .then(() => console.log("Scan finished"))
   .catch(console.error)

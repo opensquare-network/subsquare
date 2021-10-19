@@ -2,7 +2,6 @@ const { setApi } = require("../../../api");
 jest.setTimeout(3000000);
 
 const { getTreasuryProposalMeta } = require("./meta");
-const { setSpecHeights } = require("../../../specs");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 
 describe("test get treasury proposal", () => {
@@ -21,7 +20,6 @@ describe("test get treasury proposal", () => {
 
   test("meta works", async () => {
     const height = 126165;
-    setSpecHeights([height]);
     const blockHash = await api.rpc.chain.getBlockHash(height);
 
     const meta = await getTreasuryProposalMeta(0, {

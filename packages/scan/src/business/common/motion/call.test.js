@@ -1,3 +1,4 @@
+const { onFinalityKarura } = require("../../../utils/constants");
 const { GenericCall } = require("@polkadot/types");
 const { findRegistry } = require("../../../specs");
 const { normalizeCall } = require("./utils");
@@ -15,7 +16,7 @@ describe("Normalize call", () => {
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider("wss://karura.kusama.elara.patract.io", 1000);
+    provider = new WsProvider(onFinalityKarura, 1000);
     api = await ApiPromise.create({
       provider,
       typesBundle: { ...typesBundleForPolkadot },

@@ -1,20 +1,16 @@
-const { expandMetadata } = require("@polkadot/types");
-const { findMetadata } = require("../../../specs");
+const { findBlockApi } = require("../../../chain/blockApi");
 const { getApi } = require("../../../api");
 const { isKarura } = require("../../../env");
 
 async function getMotionVoting(motionHash, indexer) {
-  const metadata = await findMetadata(indexer.blockHeight);
-  const decorated = expandMetadata(metadata.registry, metadata);
-  let key;
-  if (isKarura()) {
-    key = [decorated.query.generalCouncil.voting, motionHash];
-  } else {
-    key = [decorated.query.council.voting, motionHash];
-  }
+  const blockApi = await findBlockApi(indexer.blockHash);
 
-  const api = await getApi();
-  const raw = await api.rpc.state.getStorage(key, indexer.blockHash);
+  let raw;
+  if (isKarura()) {
+    raw = await blockApi.query.generalCouncil.voting(motionHash);
+  } else {
+    raw = await blockApi.query.council.voting(motionHash);
+  }
   return raw.toJSON();
 }
 

@@ -1,8 +1,8 @@
+const { onFinalityKarura } = require("../../../../utils/constants");
 const {
   getReferendumInfoFromStorage,
   getReferendumInfoByHeight,
 } = require("./referendumStorage");
-const { setSpecHeights } = require("../../../../specs");
 const { CHAINS } = require("../../../../env");
 const { setChain } = require("../../../../env");
 const { setApi } = require("../../../../api");
@@ -16,7 +16,7 @@ describe("test get karura referendum 1th info", () => {
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider("wss://karura.kusama.elara.patract.io", 1000);
+    provider = new WsProvider(onFinalityKarura, 1000);
     api = await ApiPromise.create({
       provider,
       typesBundle: { ...typesBundleForPolkadot },
@@ -32,7 +32,6 @@ describe("test get karura referendum 1th info", () => {
 
   test(" when passed works", async () => {
     const blockHeight = 127523;
-    setSpecHeights([blockHeight]);
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
     const indexer = { blockHash, blockHeight };
 
@@ -51,7 +50,6 @@ describe("test get karura referendum 1th info", () => {
 
   test(" before passed works", async () => {
     const blockHeight = 127523;
-    setSpecHeights([blockHeight - 1]);
 
     const referendumIndex = 0;
     const referendumInfo = await getReferendumInfoByHeight(
@@ -63,7 +61,7 @@ describe("test get karura referendum 1th info", () => {
         end: 127523,
         proposalHash:
           "0x8e70a75aefd616389767cb02f5c900edaf2f7b645b2a7db01c525ac6d3b26a8a",
-        threshold: "Simplemajority",
+        threshold: "SimpleMajority",
         delay: 20,
         tally: {
           ayes: 763267690000000,
