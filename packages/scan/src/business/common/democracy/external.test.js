@@ -1,3 +1,4 @@
+const { getExternalFromStorageByHeight } = require("./external");
 const { onFinalityKarura } = require("../../../utils/constants");
 const { getExternalFromStorage } = require("./external");
 const { setChain, CHAINS } = require("../../../env");
@@ -51,6 +52,18 @@ describe("test get karura external", () => {
     // Fast tracked by sudo(sudo)
     expect(external).toEqual([
       "0x3dfe99860fe5d3431f30ccc8fc062509f583bf65f3084b09d4e1c1f66e162260",
+      "SimpleMajority",
+    ]);
+  });
+
+  test("at 611909 works", async () => {
+    // This external is created at 160503, when the 6th motion passed
+    const height = 611909;
+
+    const external = await getExternalFromStorageByHeight(height);
+    // Fast tracked by sudo(sudo)
+    expect(external).toEqual([
+      "0x9041c5b570aa07440e9f406af7969798ca0e6bf3c0dfccb4b0076fe484a4de16",
       "SimpleMajority",
     ]);
   });

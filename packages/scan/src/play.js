@@ -3,7 +3,7 @@ const { getApi } = require("./api");
 const { setSpecHeights } = require("./specs");
 
 async function test() {
-  const blockHeights = [231979, 233248, 233286, 237665];
+  const blockHeights = [652093, 652864, 652944];
 
   for (const height of blockHeights) {
     setSpecHeights([height - 1]);
