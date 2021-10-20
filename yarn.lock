@@ -9,6 +9,13 @@
   dependencies:
     "@open-web3/orml-type-definitions" "^1.0.2-0"
 
+"@acala-network/type-definitions@3.0.2-3":
+  version "3.0.2-3"
+  resolved "https://registry.npmjs.org/@acala-network/type-definitions/-/type-definitions-3.0.2-3.tgz#3446b332ecc79b381537da1702d7ac555894024d"
+  integrity sha512-VN5vXnbq9J8hIBUdwrw2i0z1wxdoWVo00637/AzCICa9WOp2XPh9HPWFcZHlIIt1yW7R0Ts8uHO6cEYb73v1hw==
+  dependencies:
+    "@open-web3/orml-type-definitions" "^1.0.2-0"
+
 "@alicloud/pop-core@^1.7.10":
   version "1.7.10"
   resolved "https://registry.npmjs.org/@alicloud/pop-core/-/pop-core-1.7.10.tgz#d0e221036dbb0ccde453dd09b1cfabd8341b7a69"
