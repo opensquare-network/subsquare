@@ -22,7 +22,13 @@ async function findBlockApi(blockHash) {
   return blockApi;
 }
 
+async function findRegistryByHash(blockHash) {
+  const blockApi = await findBlockApi(blockHash);
+  return blockApi.registry;
+}
+
 module.exports = {
   findBlockApi,
   removeBlockApi,
+  findRegistryByHash,
 };

@@ -1,4 +1,4 @@
-const { findRegistry } = require("../../../specs");
+const { findRegistryByHash } = require("../../../chain/blockApi");
 const { getTipReason } = require("../../common/tip/utils");
 const { getTipMetaFromStorage } = require("../../common/tip/utils");
 const {
@@ -32,7 +32,7 @@ async function saveNewTip(event, extrinsic, indexer) {
   const authors = [...authorSet];
 
   const reasonHash = meta.reason;
-  const registry = await findRegistry(indexer.blockHeight);
+  const registry = await findRegistryByHash(indexer.blockHash);
   const newTipCall = await getNewTipCall(
     registry,
     extrinsic.method,

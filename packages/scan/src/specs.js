@@ -1,6 +1,7 @@
 const { getAllVersionChangeHeights } = require("./mongo/meta");
-const { getRegistryByHeight } = require("./utils/registry");
 const findLast = require("lodash.findlast");
+const { findRegistryByHash } = require("./chain/blockApi");
+const { getApi } = require("./api");
 
 let versionChangedHeights = [];
 let registryMap = {};
@@ -29,7 +30,11 @@ async function findRegistry(height) {
 
   let registry = registryMap[mostRecentChangeHeight];
   if (!registry) {
-    registry = await getRegistryByHeight(mostRecentChangeHeight);
+    const api = await getApi();
+    const blockHash = await api.rpc.chain.getBlockHash(
+      mostRecentChangeHeight()
+    );
+    registry = await findRegistryByHash(blockHash);
     registryMap[mostRecentChangeHeight] = registry;
   }
 

@@ -1,6 +1,7 @@
 const useMetaDb = !!process.env.USE_META_DB;
 const CHAINS = {
   KARURA: "karura",
+  KHALA: "khala",
   KUSAMA: "kusama",
   POLKADOT: "polkadot",
 };
