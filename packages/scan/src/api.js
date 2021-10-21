@@ -32,7 +32,7 @@ async function getApi() {
     const options = { provider };
     if (chain === CHAINS.KARURA) {
       options.typesBundle = { ...typesBundleForPolkadot };
-    } else if (chain === CHAINS.KARURA) {
+    } else if (chain === CHAINS.KHALA) {
       options.typesBundle = {
         spec: {
           khala: versionedKhala,
