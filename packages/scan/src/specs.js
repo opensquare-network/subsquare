@@ -31,9 +31,7 @@ async function findRegistry(height) {
   let registry = registryMap[mostRecentChangeHeight];
   if (!registry) {
     const api = await getApi();
-    const blockHash = await api.rpc.chain.getBlockHash(
-      mostRecentChangeHeight()
-    );
+    const blockHash = await api.rpc.chain.getBlockHash(mostRecentChangeHeight);
     registry = await findRegistryByHash(blockHash);
     registryMap[mostRecentChangeHeight] = registry;
   }
