@@ -4,7 +4,7 @@ const { getBlocksByHeights } = require("../mongo/meta");
 const { findRegistry } = require("../specs");
 const { getApi } = require("../api");
 const { GenericBlock } = require("@polkadot/types");
-const { logger, blockLogger, metaLogger } = require("../logger");
+const { blockLogger, metaLogger } = require("../logger");
 
 async function fetchBlocks(heights = []) {
   let blocks;
