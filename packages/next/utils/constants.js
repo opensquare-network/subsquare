@@ -34,6 +34,14 @@ export const DEFAULT_KARURA_NODES = [
   },
 ];
 
+export const DEFAULT_KHALA_NODE_URL = "wss://khala.api.onfinality.io/public-ws";
+export const DEFAULT_KHALA_NODES = [
+  {
+    name: "OnFinality",
+    url: "wss://khala.api.onfinality.io/public-ws",
+  },
+];
+
 export const nodes = [
   ...(process.env.NEXT_PUBLIC_SHOW_KUSAMA === "true"
     ? [

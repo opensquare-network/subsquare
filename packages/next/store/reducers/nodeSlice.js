@@ -4,7 +4,7 @@ import {
   DEFAULT_KUSAMA_NODE_URL,
   DEFAULT_KUSAMA_NODES,
   DEFAULT_KARURA_NODE_URL,
-  DEFAULT_KARURA_NODES,
+  DEFAULT_KARURA_NODES, DEFAULT_KHALA_NODE_URL, DEFAULT_KHALA_NODES,
 } from "utils/constants";
 
 let nodeUrl = (() => {
@@ -21,6 +21,9 @@ let nodeUrl = (() => {
     karura:
       DEFAULT_KARURA_NODES.find((item) => item.url === localNodeUrl?.karura)
         ?.url || DEFAULT_KARURA_NODE_URL,
+    khala:
+      DEFAULT_KARURA_NODES.find((item) => item.url === localNodeUrl?.khala)
+        ?.url || DEFAULT_KHALA_NODE_URL,
   };
 })();
 
@@ -29,6 +32,7 @@ export const getNodeUrl = () => nodeUrl;
 export const getNodes = () => ({
   kusama: DEFAULT_KUSAMA_NODES,
   karura: DEFAULT_KARURA_NODES,
+  khala: DEFAULT_KHALA_NODES,
 });
 
 const nodeSlice = createSlice({
