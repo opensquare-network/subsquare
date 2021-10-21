@@ -57,6 +57,15 @@ export const nodes = [
     decimals: 12,
     hasElections: false,
   },
+  {
+    value: "khala",
+    name: "Khala",
+    icon: "khala.svg",
+    relay: "kusama",
+    symbol: "KHA",
+    decimals: 12,
+    hasElections: true,
+  },
 ];
 
 export const accountMenu = [
