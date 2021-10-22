@@ -22,6 +22,7 @@ import {
 import nextApi from "services/nextApi";
 import ErrorText from "./ErrorText";
 import { setUser } from "store/reducers/userSlice";
+import { addToast } from "../store/reducers/toastSlice";
 
 const Label = styled.div`
   font-weight: bold;
@@ -52,30 +53,43 @@ export default function AddressLogin({ onBack }) {
   const doWeb3Login = async () => {
     setLoading(true);
     const address = selectedAccount[`${chain}Address`];
-    const { result, error } = await nextApi.fetch(
+    const {result, error} = await nextApi.fetch(
       `auth/login/${chain}/${address}`
     );
-    if (result?.challenge) {
-      const signature = await signMessage(
-        result?.challenge,
-        selectedAccount.address
-      );
-      const { result: loginResult, error: loginError } = await nextApi.post(
-        `auth/login/${result?.attemptId}`,
-        { challengeAnswer: signature }
-      );
-      if (loginResult) {
-        dispatch(setUser(loginResult));
-        router.replace("/");
-      }
-      if (loginError) {
-        setWeb3Error(loginError.message);
-      }
-    }
     if (error) {
       setWeb3Error(error.message);
     }
-    setLoading(false);
+    if (result?.challenge) {
+      try {
+        const signature = await signMessage(
+          result?.challenge,
+          selectedAccount.address
+        );
+        const {result: loginResult, error: loginError} = await nextApi.post(
+          `auth/login/${result?.attemptId}`,
+          {challengeAnswer: signature}
+        );
+        if (loginResult) {
+          dispatch(setUser(loginResult));
+          router.replace("/");
+        }
+        if (loginError) {
+          setWeb3Error(loginError.message);
+        }
+      } catch (e) {
+        if (e.toString() === "Error: Cancelled") {
+          return;
+        }
+        dispatch(
+          addToast({
+            type: "error",
+            message: e.toString(),
+          })
+        );
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   useEffect(() => {
