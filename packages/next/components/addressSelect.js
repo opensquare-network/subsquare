@@ -34,6 +34,9 @@ const Select = styled(Flex)`
 
 const NameWrapper = styled.div`
   flex-grow: 1;
+  > :first-child {
+    font-size: 14px;
+  }
   > :last-child {
     margin-top: 4px;
     font-size: 12px;
@@ -108,10 +111,10 @@ export default function AddressSelect({ chain, accounts, selectedAccount, onSele
               }}
               selected={item.address === selectedAccount?.address}
             >
-              <Avatar address={item.karuraAddress} />
+              <Avatar address={item[`${chain}Address`]} />
               <NameWrapper>
                 <div>{item.name}</div>
-                <div>{addressEllipsis(item.karuraAddress)}</div>
+                <div>{addressEllipsis(item[`${chain}Address`])}</div>
               </NameWrapper>
             </Item>
           ))}
