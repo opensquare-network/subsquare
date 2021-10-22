@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import dynamic from "next/dynamic";
@@ -98,14 +98,17 @@ export default withLoginUserRedux(({ loginUser }) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
+
   let chain = "karura";
   if(typeof window !== "undefined"){
     chain = localStorage.getItem("chain") || "karura";
   }
 
-  if (loginUser) {
-    router.replace(`/${chain}`);
-  }
+  useEffect(() => {
+    if (loginUser) {
+      router.replace(`/${chain}`);
+    }
+  }, []);
 
   const { formData, handleInputChange, handleSubmit } = useForm(
     {
@@ -128,7 +131,7 @@ export default withLoginUserRedux(({ loginUser }) => {
   const { usernameOrEmail, password } = formData;
 
   return (
-    <Layout user={loginUser}>
+    <Layout user={loginUser} chain={chain} isWeb3Login={web3}>
       <Wrapper>
         <ContentWrapper>
           <Title>Login</Title>

@@ -46,9 +46,13 @@ export default function AddressLogin({ onBack }) {
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [web3Error, setWeb3Error] = useState();
   const [loading, setLoading] = useState(false);
-  const chain = "karura";
   const dispatch = useDispatch();
   const router = useRouter();
+
+  let chain = "karura";
+  if(typeof window !== "undefined"){
+    chain = localStorage.getItem("chain") || "karura";
+  }
 
   const doWeb3Login = async () => {
     setLoading(true);
@@ -77,19 +81,17 @@ export default function AddressLogin({ onBack }) {
           setWeb3Error(loginError.message);
         }
       } catch (e) {
-        if (e.toString() === "Error: Cancelled") {
-          return;
+        if (e.toString() !== "Error: Cancelled") {
+          dispatch(
+            addToast({
+              type: "error",
+              message: e.toString(),
+            })
+          );
         }
-        dispatch(
-          addToast({
-            type: "error",
-            message: e.toString(),
-          })
-        );
-      } finally {
-        setLoading(false);
       }
     }
+    setLoading(false);
   };
 
   useEffect(() => {

@@ -88,7 +88,7 @@ const LogoImg = styled.img`
   height: 64px;
 `;
 
-export default function Header({ user, left, chain}) {
+export default function Header({ user, left, chain, isWeb3Login }) {
   const router = useRouter();
   const [show, setShow] = useState(false);
   const [position, setPosition] = useState("left");
@@ -138,12 +138,12 @@ export default function Header({ user, left, chain}) {
           </Left>
           <Right>
             <HeaderAccount user={user} chain={chain} />
-            {router.pathname.startsWith("/[chain]") && (
+            {(router.pathname.startsWith("/[chain]") || isWeb3Login) && (
               <>
                 <NetworkWrapper>
-                  <NetworkSwitch activeNode={node} />
+                  <NetworkSwitch activeNode={node} isWeb3Login={isWeb3Login} />
                 </NetworkWrapper>
-                <NodeSwitch small chain={chain} />
+                {!isWeb3Login && <NodeSwitch small chain={chain} />}
               </>
             )}
           </Right>

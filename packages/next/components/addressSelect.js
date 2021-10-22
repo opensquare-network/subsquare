@@ -74,7 +74,7 @@ const Item = styled(Flex)`
     `}
 `;
 
-export default function AddressSelect({ accounts, selectedAccount, onSelect }) {
+export default function AddressSelect({ chain, accounts, selectedAccount, onSelect }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
 
@@ -85,10 +85,10 @@ export default function AddressSelect({ accounts, selectedAccount, onSelect }) {
       <Select onClick={() => setShow(!show)}>
         {selectedAccount && (
           <>
-            <Avatar address={selectedAccount?.karuraAddress} />
+            <Avatar address={selectedAccount?.[`${chain}Address`]} />
             <NameWrapper>
               <div>{selectedAccount?.name}</div>
-              <div>{addressEllipsis(selectedAccount?.karuraAddress)}</div>
+              <div>{addressEllipsis(selectedAccount?.[`${chain}Address`])}</div>
             </NameWrapper>
           </>
         )}

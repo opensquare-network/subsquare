@@ -12,10 +12,10 @@ const Wrapper = styled.div`
   padding-top: 64px;
 `;
 
-export default function Layout({ user, left, children, chain }) {
+export default function Layout({ user, left, children, chain, isWeb3Login }) {
   return (
     <Wrapper>
-      <Header user={user} left={left} chain={chain} />
+      <Header user={user} left={left} chain={chain} isWeb3Login={isWeb3Login} />
       <Content left={left}>{children}</Content>
       <Toast />
     </Wrapper>

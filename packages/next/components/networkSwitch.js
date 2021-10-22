@@ -69,7 +69,7 @@ const Item = styled.div`
     `}
 `;
 
-export default function NetworkSwitch({ activeNode }) {
+export default function NetworkSwitch({ activeNode, isWeb3Login }) {
   const router = useRouter();
   const [show, setShow] = useState(false);
   const ref = useRef();
@@ -98,7 +98,11 @@ export default function NetworkSwitch({ activeNode }) {
               onClick={() => {
                 localStorage.setItem("chain", item.value);
                 setShow(false);
-                router.push(`/${item.value}`);
+                if (isWeb3Login) {
+                  router.replace(router.asPath, undefined, { shallow: true });
+                } else {
+                  router.push(`/${item.value}`);
+                }
               }}
               active={activeNode.value === nodes[index].value}
             >
