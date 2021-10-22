@@ -66,10 +66,10 @@ export default function User({
   useEffect(() => {
     setIdentity(null);
     if (address) {
-      const relayChain = nodes.find((n) => n.value === chain)?.relay;
-      if (!relayChain) return;
+      const identity = nodes.find((n) => n.value === chain)?.identity;
+      if (!identity) return;
 
-      fetchIdentity(relayChain, encodeAddressToChain(address, relayChain)).then(
+      fetchIdentity(identity, encodeAddressToChain(address, identity)).then(
         (identity) => setIdentity(identity)
       );
     }
