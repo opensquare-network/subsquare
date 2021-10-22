@@ -14,6 +14,7 @@ import { useIsMounted } from "utils/hooks";
 import DownloadExtension from "components/downloadExtension";
 import {
   encodeKaruraAddress,
+  encodeKhalaAddress,
   encodeKusamaAddress,
   encodePolkadotAddress,
   signMessage,
@@ -21,6 +22,7 @@ import {
 import nextApi from "services/nextApi";
 import ErrorText from "./ErrorText";
 import { setUser } from "store/reducers/userSlice";
+import { addToast } from "../store/reducers/toastSlice";
 
 const Label = styled.div`
   font-weight: bold;
@@ -44,9 +46,13 @@ export default function AddressLogin({ onBack }) {
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [web3Error, setWeb3Error] = useState();
   const [loading, setLoading] = useState(false);
-  const chain = "karura";
   const dispatch = useDispatch();
   const router = useRouter();
+
+  let chain = "karura";
+  if (typeof window !== "undefined") {
+    chain = localStorage.getItem("chain") || "karura";
+  }
 
   const doWeb3Login = async () => {
     setLoading(true);
@@ -54,25 +60,36 @@ export default function AddressLogin({ onBack }) {
     const { result, error } = await nextApi.fetch(
       `auth/login/${chain}/${address}`
     );
-    if (result?.challenge) {
-      const signature = await signMessage(
-        result?.challenge,
-        selectedAccount.address
-      );
-      const { result: loginResult, error: loginError } = await nextApi.post(
-        `auth/login/${result?.attemptId}`,
-        { challengeAnswer: signature }
-      );
-      if (loginResult) {
-        dispatch(setUser(loginResult));
-        router.replace("/");
-      }
-      if (loginError) {
-        setWeb3Error(loginError.message);
-      }
-    }
     if (error) {
       setWeb3Error(error.message);
+    }
+    if (result?.challenge) {
+      try {
+        const signature = await signMessage(
+          result?.challenge,
+          selectedAccount.address
+        );
+        const { result: loginResult, error: loginError } = await nextApi.post(
+          `auth/login/${result?.attemptId}`,
+          { challengeAnswer: signature }
+        );
+        if (loginResult) {
+          dispatch(setUser(loginResult));
+          router.replace("/");
+        }
+        if (loginError) {
+          setWeb3Error(loginError.message);
+        }
+      } catch (e) {
+        if (e.toString() !== "Error: Cancelled") {
+          dispatch(
+            addToast({
+              type: "error",
+              message: e.toString(),
+            })
+          );
+        }
+      }
     }
     setLoading(false);
   };
@@ -97,6 +114,7 @@ export default function AddressLogin({ onBack }) {
           kusamaAddress: encodeKusamaAddress(address),
           polkadotAddress: encodePolkadotAddress(address),
           karuraAddress: encodeKaruraAddress(address),
+          khalaAddress: encodeKhalaAddress(address),
           name,
         };
       });

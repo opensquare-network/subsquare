@@ -34,6 +34,14 @@ export const DEFAULT_KARURA_NODES = [
   },
 ];
 
+export const DEFAULT_KHALA_NODE_URL = "wss://khala.api.onfinality.io/public-ws";
+export const DEFAULT_KHALA_NODES = [
+  {
+    name: "OnFinality",
+    url: "wss://khala.api.onfinality.io/public-ws",
+  },
+];
+
 export const nodes = [
   ...(process.env.NEXT_PUBLIC_SHOW_KUSAMA === "true"
     ? [
@@ -41,7 +49,7 @@ export const nodes = [
           value: "kusama",
           name: "Kusama",
           icon: "kusama.svg",
-          relay: "kusama",
+          identity: "kusama",
           symbol: "KSM",
           decimals: 12,
           hasElections: true,
@@ -52,10 +60,19 @@ export const nodes = [
     value: "karura",
     name: "Karura",
     icon: "karura.svg",
-    relay: "kusama",
+    identity: "kusama",
     symbol: "KAR",
     decimals: 12,
     hasElections: false,
+  },
+  {
+    value: "khala",
+    name: "Khala",
+    icon: "khala.svg",
+    identity: "khala",
+    symbol: "PHA",
+    decimals: 12,
+    hasElections: true,
   },
 ];
 
@@ -213,5 +230,6 @@ export const SS58Prefix = {
   polkadot: 0,
   kusama: 2,
   karura: 8,
+  khala: 30,
   substrate: 42,
 };

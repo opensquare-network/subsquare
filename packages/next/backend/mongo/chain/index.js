@@ -15,12 +15,22 @@ async function createIndex(db) {
 
 async function initDb() {
   if (!dbs["karura"]) {
-    dbs["karura"] = await connectDb(process.env.MONGO_DB_CHAIN_DATA_KAR_NAME || "subsquare-kar");
+    dbs["karura"] = await connectDb(
+      process.env.MONGO_DB_CHAIN_DATA_KAR_NAME || "subsquare-kar"
+    );
     await createIndex(dbs["karura"]);
   }
   if (!dbs["kusama"]) {
-    dbs["kusama"] = await connectDb(process.env.MONGO_DB_CHAIN_DATA_KSM_NAME || "subsquare-ksm");
+    dbs["kusama"] = await connectDb(
+      process.env.MONGO_DB_CHAIN_DATA_KSM_NAME || "subsquare-ksm"
+    );
     await createIndex(dbs["kusama"]);
+  }
+  if (!dbs["khala"]) {
+    dbs["khala"] = await connectDb(
+      process.env.MONGO_DB_CHAIN_DATA_KHA_NAME || "subsquare-kha"
+    );
+    await createIndex(dbs["khala"]);
   }
 }
 
@@ -33,12 +43,16 @@ module.exports = {
   initDb,
   getDb,
   getTipCollection: (chain) => getCollection(chain, "tip"),
-  getTreasuryProposalCollection: (chain) => getCollection(chain, "treasuryProposal"),
+  getTreasuryProposalCollection: (chain) =>
+    getCollection(chain, "treasuryProposal"),
   getBountyCollection: (chain) => getCollection(chain, "bounty"),
   getMotionCollection: (chain) => getCollection(chain, "motion"),
-  getTechCommMotionCollection: (chain) => getCollection(chain, "techCommMotion"),
-  getPublicProposalCollection: (chain) => getCollection(chain, "democracyPublicProposal"),
-  getReferendumCollection: (chain) => getCollection(chain, "democracyReferendum"),
+  getTechCommMotionCollection: (chain) =>
+    getCollection(chain, "techCommMotion"),
+  getPublicProposalCollection: (chain) =>
+    getCollection(chain, "democracyPublicProposal"),
+  getReferendumCollection: (chain) =>
+    getCollection(chain, "democracyReferendum"),
   getExternalCollection: (chain) => getCollection(chain, "democracyExternal"),
   getPreImageCollection: (chain) => getCollection(chain, "democracyPreImage"),
 };

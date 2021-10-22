@@ -7,7 +7,7 @@ export const encodeAddressToChain = (address, chain) => {
   } catch {
     return "";
   }
-}
+};
 
 export const encodeKusamaAddress = (address) => {
   try {
@@ -36,6 +36,14 @@ export const encodeSubstrateAddress = (address) => {
 export const encodeKaruraAddress = (address) => {
   try {
     return encodeAddress(address, 8);
+  } catch {
+    return "";
+  }
+};
+
+export const encodeKhalaAddress = (address) => {
+  try {
+    return encodeAddress(address, 30);
   } catch {
     return "";
   }

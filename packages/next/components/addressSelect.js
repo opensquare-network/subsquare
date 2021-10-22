@@ -34,6 +34,9 @@ const Select = styled(Flex)`
 
 const NameWrapper = styled.div`
   flex-grow: 1;
+  > :first-child {
+    font-size: 14px;
+  }
   > :last-child {
     margin-top: 4px;
     font-size: 12px;
@@ -74,7 +77,12 @@ const Item = styled(Flex)`
     `}
 `;
 
-export default function AddressSelect({ accounts, selectedAccount, onSelect }) {
+export default function AddressSelect({
+  chain,
+  accounts,
+  selectedAccount,
+  onSelect,
+}) {
   const [show, setShow] = useState(false);
   const ref = useRef();
 
@@ -85,10 +93,10 @@ export default function AddressSelect({ accounts, selectedAccount, onSelect }) {
       <Select onClick={() => setShow(!show)}>
         {selectedAccount && (
           <>
-            <Avatar address={selectedAccount?.karuraAddress} />
+            <Avatar address={selectedAccount?.[`${chain}Address`]} />
             <NameWrapper>
               <div>{selectedAccount?.name}</div>
-              <div>{addressEllipsis(selectedAccount?.karuraAddress)}</div>
+              <div>{addressEllipsis(selectedAccount?.[`${chain}Address`])}</div>
             </NameWrapper>
           </>
         )}
@@ -108,10 +116,10 @@ export default function AddressSelect({ accounts, selectedAccount, onSelect }) {
               }}
               selected={item.address === selectedAccount?.address}
             >
-              <Avatar address={item.karuraAddress} />
+              <Avatar address={item[`${chain}Address`]} />
               <NameWrapper>
                 <div>{item.name}</div>
-                <div>{addressEllipsis(item.karuraAddress)}</div>
+                <div>{addressEllipsis(item[`${chain}Address`])}</div>
               </NameWrapper>
             </Item>
           ))}

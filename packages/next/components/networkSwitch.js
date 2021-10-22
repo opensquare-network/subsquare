@@ -69,7 +69,7 @@ const Item = styled.div`
     `}
 `;
 
-export default function NetworkSwitch({ activeNode }) {
+export default function NetworkSwitch({ activeNode, isWeb3Login }) {
   const router = useRouter();
   const [show, setShow] = useState(false);
   const ref = useRef();
@@ -86,9 +86,15 @@ export default function NetworkSwitch({ activeNode }) {
   return (
     <Wrapper ref={ref}>
       <Select onClick={() => setShow(!show)}>
-        <img  width={24} height={24}  src={`/imgs/icons/${activeNode.icon}`} alt="" className="logo"/>
+        <img
+          width={24}
+          height={24}
+          src={`/imgs/icons/${activeNode.icon}`}
+          alt=""
+          className="logo"
+        />
         <div>{activeNode.name}</div>
-        <img  width={14} height={14}  src="/imgs/icons/caret-down.svg" alt=""/>
+        <img width={14} height={14} src="/imgs/icons/caret-down.svg" alt="" />
       </Select>
       {show && (
         <Options>
@@ -98,11 +104,21 @@ export default function NetworkSwitch({ activeNode }) {
               onClick={() => {
                 localStorage.setItem("chain", item.value);
                 setShow(false);
-                router.push(`/${item.value}`);
+                if (isWeb3Login) {
+                  router.replace(router.asPath, undefined, { shallow: true });
+                } else {
+                  router.push(`/${item.value}`);
+                }
               }}
               active={activeNode.value === nodes[index].value}
             >
-              <img  width={24} height={24}   src={`/imgs/icons/${item.icon}`} alt="" className="logo"/>
+              <img
+                width={24}
+                height={24}
+                src={`/imgs/icons/${item.icon}`}
+                alt=""
+                className="logo"
+              />
               <div>{item.name}</div>
             </Item>
           ))}
