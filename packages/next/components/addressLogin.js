@@ -53,7 +53,6 @@ export default function AddressLogin({ onBack }) {
   if(typeof window !== "undefined"){
     chain = localStorage.getItem("chain") || "karura";
   }
-  console.log(`Show ${chain} address`);
 
   const doWeb3Login = async () => {
     setLoading(true);
