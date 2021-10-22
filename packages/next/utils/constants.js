@@ -70,7 +70,7 @@ export const nodes = [
     name: "Khala",
     icon: "khala.svg",
     identity: "khala",
-    symbol: "KHA",
+    symbol: "PHA",
     decimals: 12,
     hasElections: true,
   },
