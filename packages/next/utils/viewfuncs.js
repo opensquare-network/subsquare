@@ -37,6 +37,14 @@ export const toCouncilMotionListItem = (chain, item) => ({
   detailLink: `/${chain}/council/motion/${item.index}`,
 });
 
+function getTechCommMotionId(motion) {
+  if (motion.index !== null && motion.index !== undefined) {
+    return motion.index;
+  }
+
+  return `${motion.indexer.blockHeight}_${motion.hash}`;
+}
+
 export const toTechCommMotionListItem = (chain, item) => ({
   ...item,
   title: `${item.proposal.section}.${item.proposal.method}`,
@@ -45,7 +53,7 @@ export const toTechCommMotionListItem = (chain, item) => ({
     addresses: [{ chain, address: item.proposer }],
   },
   status: item.state?.state ?? "Unknown",
-  detailLink: `/${chain}/techcomm/proposal/${item.index}`,
+  detailLink: `/${chain}/techcomm/proposal/${getTechCommMotionId(item)}`,
 });
 
 export const toTreasuryProposalListItem = (chain, item) => ({
