@@ -68,6 +68,8 @@ export default function HeaderAccount({ user, chain }) {
   const windowSize = useWindowSize();
   const dispatch = useDispatch();
 
+  const isLoginPage = router.pathname === "/login";
+
   useOnClickOutside(ref, () => setShow(false));
 
   useEffect(() => {
@@ -107,7 +109,7 @@ export default function HeaderAccount({ user, chain }) {
           )}
         </Wrapper>
       )}
-      {!user && (
+      {!user && !isLoginPage && (
         <Button secondary onClick={() => router.push("/login")}>
           Login
         </Button>
