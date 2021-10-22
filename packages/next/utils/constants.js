@@ -69,7 +69,6 @@ export const nodes = [
     value: "khala",
     name: "Khala",
     icon: "khala.svg",
-    relay: "kusama",
     identity: "khala",
     symbol: "KHA",
     decimals: 12,
