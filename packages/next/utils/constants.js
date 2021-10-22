@@ -69,7 +69,7 @@ export const nodes = [
     value: "khala",
     name: "Khala",
     icon: "khala.svg",
-    relay: "kusama",
+    relay: "khala",
     symbol: "KHA",
     decimals: 12,
     hasElections: true,
