@@ -6,7 +6,7 @@ jest.setTimeout(3000000);
 
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
-const { setSpecHeights } = require("../../../../specs");
+const { setSpecHeights } = require("../../../../chain/specs");
 
 describe("test get tip", () => {
   let api;

@@ -1,4 +1,4 @@
-const { findRegistryByHash } = require("../../../../chain/blockApi");
+const { findRegistry } = require("../../../../chain/specs");
 const { findBlockApi } = require("../../../../chain/blockApi");
 const { normalizeCall } = require("../../motion/utils");
 const { hexToU8a } = require("@polkadot/util");
@@ -11,7 +11,7 @@ async function getPreImageFromStorage(hash, indexer) {
   }
 
   const availableImage = raw.unwrap().asAvailable.toJSON();
-  const registry = await findRegistryByHash(indexer.blockHash);
+  const registry = await findRegistry(indexer.blockHeight);
   try {
     const call = registry.createType("Proposal", hexToU8a(availableImage.data));
     return {

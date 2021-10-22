@@ -1,9 +1,9 @@
-const { findRegistryByHash } = require("../../../chain/blockApi");
+const { findRegistry } = require("../../../chain/specs");
 const { onFinalityKarura } = require("../../../utils/constants");
 const { GenericCall } = require("@polkadot/types");
 const { normalizeCall } = require("./utils");
 const { getMotionProposal } = require("./proposalStorage");
-const { setSpecHeights } = require("../../../specs");
+const { setSpecHeights } = require("../../../chain/specs");
 const { setApi } = require("../../../api");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { setChain, CHAINS } = require("../../../env");
@@ -39,7 +39,7 @@ describe("Normalize call", () => {
       "0xd82dbe78317f125e2dbbc8420e6a1b478ac11da25f8014031653f32a773e4952";
 
     const proposal = await getMotionProposal(motionHash, indexer);
-    const registry = await findRegistryByHash(indexer.blockHash);
+    const registry = await findRegistry(indexer.blockHeight);
     const call = normalizeCall(new GenericCall(registry, proposal.toHex()));
     expect(call).toEqual({
       callIndex: "0x0300",

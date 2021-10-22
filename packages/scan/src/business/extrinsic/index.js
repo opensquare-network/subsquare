@@ -1,4 +1,4 @@
-const { findRegistryByHash } = require("../../chain/blockApi");
+const { findRegistry } = require("../../chain/specs");
 const { handleFastTrack } = require("./democracy/fastTrack");
 const { handleExternalPropose } = require("./democracy/external");
 const { calcMultisigAddress } = require("../../utils/call");
@@ -26,7 +26,7 @@ async function unwrapProxy(call, signer, extrinsicIndexer, events) {
 }
 
 async function handleMultisig(call, signer, extrinsicIndexer, events) {
-  const registry = await findRegistryByHash(extrinsicIndexer.blockHash);
+  const registry = await findRegistry(extrinsicIndexer.blockHeight);
   const callHex = call.args[3];
   const threshold = call.args[0].toNumber();
   const otherSignatories = call.args[1].toJSON();
