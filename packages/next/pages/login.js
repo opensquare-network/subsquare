@@ -108,7 +108,7 @@ export default withLoginUserRedux(({ loginUser }) => {
     if (loginUser) {
       router.replace(`/${chain}`);
     }
-  }, []);
+  }, [router, chain, loginUser]);
 
   const { formData, handleInputChange, handleSubmit } = useForm(
     {
