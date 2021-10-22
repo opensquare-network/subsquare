@@ -9,6 +9,7 @@ const SS58Format = Object.freeze({
   Polkadot: 0,
   Kusama: 2,
   Karura: 8,
+  Khala: 30,
   Substrate: 42,
 });
 

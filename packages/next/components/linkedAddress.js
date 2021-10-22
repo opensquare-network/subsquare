@@ -11,6 +11,7 @@ import { useAuthPage, useIsMounted } from "utils/hooks";
 import { userSelector } from "store/reducers/userSlice";
 import {
   encodeKaruraAddress,
+  encodeKhalaAddress,
   encodeKusamaAddress,
   encodePolkadotAddress,
   encodeSubstrateAddress,
@@ -200,6 +201,7 @@ export default function LinkedAddress() {
         kusamaAddress: encodeKusamaAddress(address),
         polkadotAddress: encodePolkadotAddress(address),
         karuraAddress: encodeKaruraAddress(address),
+        khalaAddress: encodeKhalaAddress(address),
         name,
       };
     });
@@ -292,6 +294,7 @@ export default function LinkedAddress() {
         kusamaAddress: address.chain === "kusama" ? address.address : null,
         polkadotAddress: address.chain === "polkadot" ? address.address : null,
         karuraAddress: address.chain === "karura" ? address.address : null,
+        khalaAddress: address.chain === "khala" ? address.address : null,
         name: "--",
       })),
   ];

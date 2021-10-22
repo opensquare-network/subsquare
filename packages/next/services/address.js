@@ -40,3 +40,11 @@ export const encodeKaruraAddress = (address) => {
     return "";
   }
 };
+
+export const encodeKhalaAddress = (address) => {
+  try {
+    return encodeAddress(address, 30);
+  } catch {
+    return "";
+  }
+};
