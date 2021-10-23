@@ -84,7 +84,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const decimals = node.decimals;
   const symbol = node.symbol;
 
-  const getTimelineData = (args, method) => {
+  const getTimelineData = (args, method, chain) => {
     switch (method) {
       case "Proposed":
         return {
@@ -97,7 +97,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           Depositors: (
             <DepositorsWrapper>
               {(args.depositors || []).map((item, index) => (
-                <User add={item} key={index} />
+                <User add={item} key={index} chain={chain} />
               ))}
             </DepositorsWrapper>
           ),
@@ -111,7 +111,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
       indexer: item.indexer,
       status: getTimelineStatus("proposal", item.method ?? item.name),
-      data: getTimelineData(item.args, item.method ?? item.name),
+      data: getTimelineData(item.args, item.method ?? item.name, chain),
     };
   });
 
