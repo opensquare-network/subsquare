@@ -96,6 +96,9 @@ const AddressItem = styled.div`
 
 const NameWrapper = styled.div`
   flex-grow: 1;
+  > :first-child{
+    font-size: 14px;
+  }
   > :last-child {
     margin-top: 4px;
     font-size: 12px;
