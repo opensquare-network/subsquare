@@ -129,7 +129,8 @@ export default function AddressLogin({ onBack }) {
     if (accounts && accounts.length > 0 && !selectedAccount) {
       setSelectedAccount(accounts[0]);
     }
-  }, [accounts, selectedAccount]);
+    setWeb3Error();
+  }, [chain, accounts, selectedAccount]);
 
   return (
     <>
