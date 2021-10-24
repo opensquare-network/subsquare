@@ -1,12 +1,13 @@
 require("dotenv").config();
 
-const { updateSpecs, getSpecHeights } = require("./specs");
+const { updateSpecs, getSpecHeights } = require("./chain/specs");
 const { disconnect } = require("./api");
 const { updateHeight, getLatestHeight } = require("./chain");
 const { getNextScanHeight, updateScanHeight } = require("./mongo/scanHeight");
 const { sleep } = require("./utils/sleep");
 const { logger } = require("./logger");
 const last = require("lodash.last");
+const { isUseMetaDb } = require("./env");
 const { fetchBlocks } = require("./service/fetchBlocks");
 const { scanNormalizedBlock } = require("./scan/block");
 
@@ -15,12 +16,7 @@ const scanStep = parseInt(process.env.SCAN_STEP) || 100;
 async function main() {
   await updateHeight();
   let scanHeight = await getNextScanHeight();
-  await updateSpecs();
-  const specHeights = getSpecHeights();
-  if (specHeights.length <= 0 || specHeights[0] > 1) {
-    logger.error("No specHeights or invalid");
-    return;
-  }
+  await updateSpecs(scanHeight);
 
   while (true) {
     // chainHeight is the current on-chain last block height
@@ -39,7 +35,7 @@ async function main() {
     }
 
     const specHeights = getSpecHeights();
-    if (targetHeight > last(specHeights)) {
+    if (targetHeight > last(specHeights) && isUseMetaDb()) {
       await updateSpecs();
     }
 
@@ -61,7 +57,7 @@ async function main() {
         await updateScanHeight(block.height);
         logger.debug(`${block.height} done`);
 
-        if (block.height % 20000 === 0) {
+        if (block.height % 80000 === 0) {
           process.exit(0);
         }
       } catch (e) {

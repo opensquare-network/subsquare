@@ -1,9 +1,9 @@
+const { findRegistry } = require("../../../chain/specs");
 const { onFinalityKarura } = require("../../../utils/constants");
 const { GenericCall } = require("@polkadot/types");
-const { findRegistry } = require("../../../specs");
 const { normalizeCall } = require("./utils");
 const { getMotionProposal } = require("./proposalStorage");
-const { setSpecHeights } = require("../../../specs");
+const { setSpecHeights } = require("../../../chain/specs");
 const { setApi } = require("../../../api");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { setChain, CHAINS } = require("../../../env");

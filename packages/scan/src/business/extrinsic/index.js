@@ -1,4 +1,5 @@
-const { findRegistry } = require("../../specs");
+const { handleTechCommPropose } = require("./techComm/propose");
+const { findRegistry } = require("../../chain/specs");
 const { handleFastTrack } = require("./democracy/fastTrack");
 const { handleExternalPropose } = require("./democracy/external");
 const { calcMultisigAddress } = require("../../utils/call");
@@ -17,6 +18,7 @@ async function handleCall(call, author, extrinsicIndexer, events) {
   await handleTipCall(call, author, extrinsicIndexer, events);
   await handleExternalPropose(call, author, extrinsicIndexer, events);
   await handleFastTrack(call, author, extrinsicIndexer, events);
+  await handleTechCommPropose(...arguments);
 }
 
 async function unwrapProxy(call, signer, extrinsicIndexer, events) {

@@ -16,6 +16,8 @@ async function handleBusinessWhenTechCommMotionProposed(
   indexer
 ) {
   const {
+    indexer: techCommMotionIndexer,
+    hash: techCommMotionHash,
     isDemocracy,
     externalProposalHash,
     index: techCommMotionIndex,
@@ -34,6 +36,8 @@ async function handleBusinessWhenTechCommMotionProposed(
   if (maybeInDb) {
     await updateDemocracyExternalByHash(externalProposalHash, {
       techCommMotionIndex,
+      techCommMotionHash,
+      techCommMotionIndexer,
     });
     return;
   }

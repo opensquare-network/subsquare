@@ -82,4 +82,5 @@ async function handleProposed(event, extrinsic, indexer) {
 
 module.exports = {
   handleProposed,
+  extractBusinessFields,
 };

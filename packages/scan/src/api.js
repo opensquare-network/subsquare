@@ -1,11 +1,13 @@
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { currentChain, CHAINS } = require("./env");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
+const { versionedKhala, typesChain } = require("@phala/typedefs");
 
 let provider = null;
 let api = null;
 
 const defaultKaruraEndPoint = "wss://pub.elara.patract.io/karura";
+const defaultKhalaEndpoint = "wss://khala.api.onfinality.io/public-ws";
 const defaultKusamaEndpoint = "wss://pub.elara.patract.io/kusama";
 const defaultPolkadotEndpoint = "wss://pub.elara.patract.io/polkadot";
 
@@ -16,6 +18,8 @@ async function getApi() {
     let wsEndpoint = process.env.KAR_WS_ENDPOINT || defaultKaruraEndPoint;
     if (chain === CHAINS.KARURA) {
       wsEndpoint = process.env.KAR_WS_ENDPOINT || defaultKaruraEndPoint;
+    } else if (chain === CHAINS.KHALA) {
+      wsEndpoint = process.env.KHA_WS_ENDPOINT || defaultKhalaEndpoint;
     } else if (chain === CHAINS.KUSAMA) {
       wsEndpoint = process.env.KSM_WS_ENDPOINT || defaultKusamaEndpoint;
     } else if (chain === CHAINS.POLKADOT) {
@@ -28,7 +32,15 @@ async function getApi() {
     const options = { provider };
     if (chain === CHAINS.KARURA) {
       options.typesBundle = { ...typesBundleForPolkadot };
+    } else if (chain === CHAINS.KHALA) {
+      options.typesBundle = {
+        spec: {
+          khala: versionedKhala,
+        },
+      };
+      options.typesChain = typesChain;
     }
+
     api = await ApiPromise.create(options);
   }
 

@@ -1,7 +1,7 @@
+const { findRegistry } = require("../../../chain/specs");
 const { findBlockApi } = require("../../../chain/blockApi");
 const { GenericCall } = require("@polkadot/types");
 const { normalizeCall } = require("../motion/utils");
-const { findRegistry } = require("../../../specs");
 
 async function getTechCommMotionProposal(motionHash, indexer) {
   const blockApi = await findBlockApi(indexer.blockHash);

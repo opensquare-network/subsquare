@@ -9,13 +9,7 @@ const {
   getSpecExtensions,
 } = require("@polkadot/types-known");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
-
-async function getMetadataByHeight(height) {
-  const api = await getApi();
-  const blockHash = await api.rpc.chain.getBlockHash(height);
-
-  return api.rpc.state.getMetadata(blockHash);
-}
+const { versionedKhala, typesChain } = require("@phala/typedefs");
 
 async function getRegistryByHeight(height) {
   const api = await getApi();
@@ -36,6 +30,15 @@ async function getRegistryByHeight(height) {
   const nowChain = currentChain();
   if (CHAINS.KARURA === nowChain) {
     registry.setKnownTypes({ typesBundle: typesBundleForPolkadot });
+  } else if (CHAINS.KHALA === nowChain) {
+    registry.setKnownTypes({
+      typesBundle: {
+        spec: {
+          khala: versionedKhala,
+        },
+      },
+      typesChain,
+    });
   }
 
   registry.register(
@@ -65,5 +68,4 @@ async function getRegistryByHeight(height) {
 
 module.exports = {
   getRegistryByHeight,
-  getMetadataByHeight,
 };

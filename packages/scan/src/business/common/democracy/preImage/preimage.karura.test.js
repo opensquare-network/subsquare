@@ -1,6 +1,6 @@
 const { onFinalityKarura } = require("../../../../utils/constants");
 const { getPreImageFromStorage } = require("./storage");
-const { setSpecHeights } = require("../../../../specs");
+const { setSpecHeights } = require("../../../../chain/specs");
 const { CHAINS } = require("../../../../env");
 const { setChain } = require("../../../../env");
 const { setApi } = require("../../../../api");

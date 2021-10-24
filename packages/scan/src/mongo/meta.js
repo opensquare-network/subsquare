@@ -5,6 +5,8 @@ function getDbName() {
   const chain = currentChain();
   if (CHAINS.KARURA === chain) {
     return process.env.MONGO_DB_META_KAR_NAME || "meta-karura";
+  } else if (CHAINS.KHALA === chain) {
+    return process.env.MONGO_DB_META_KHA_NAME || "meta-khala";
   } else if (CHAINS.KUSAMA === chain) {
     return process.env.MONGO_DB_META_KSM_NAME || "meta-ksm";
   } else if (CHAINS.POLKADOT === chain) {

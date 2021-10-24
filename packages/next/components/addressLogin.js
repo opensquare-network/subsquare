@@ -50,14 +50,14 @@ export default function AddressLogin({ onBack }) {
   const router = useRouter();
 
   let chain = "karura";
-  if(typeof window !== "undefined"){
+  if (typeof window !== "undefined") {
     chain = localStorage.getItem("chain") || "karura";
   }
 
   const doWeb3Login = async () => {
     setLoading(true);
     const address = selectedAccount[`${chain}Address`];
-    const {result, error} = await nextApi.fetch(
+    const { result, error } = await nextApi.fetch(
       `auth/login/${chain}/${address}`
     );
     if (error) {
@@ -69,9 +69,9 @@ export default function AddressLogin({ onBack }) {
           result?.challenge,
           selectedAccount.address
         );
-        const {result: loginResult, error: loginError} = await nextApi.post(
+        const { result: loginResult, error: loginError } = await nextApi.post(
           `auth/login/${result?.attemptId}`,
-          {challengeAnswer: signature}
+          { challengeAnswer: signature }
         );
         if (loginResult) {
           dispatch(setUser(loginResult));

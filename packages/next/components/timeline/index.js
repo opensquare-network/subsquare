@@ -36,9 +36,10 @@ const TitleWrapper = styled.div`
 `;
 
 export default function Timeline({ data, chain, indent = true }) {
-  if(!timelineData || timelineData?.length === 0) {
+  if (!timelineData || timelineData?.length === 0) {
     return null;
   }
+
   return (
     <Wrapper>
       <TitleWrapper>

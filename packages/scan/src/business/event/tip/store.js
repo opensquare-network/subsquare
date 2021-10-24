@@ -1,4 +1,4 @@
-const { findRegistry } = require("../../../specs");
+const { findRegistry } = require("../../../chain/specs");
 const { getTipReason } = require("../../common/tip/utils");
 const { getTipMetaFromStorage } = require("../../common/tip/utils");
 const {

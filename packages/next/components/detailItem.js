@@ -214,6 +214,37 @@ const getTypeColor = (type) => {
   }
 };
 
+function hasTechComm(external) {
+  if (external.techCommMotionHash) {
+    return true;
+  }
+
+  return (
+    external.techCommMotionIndex !== undefined &&
+    external.techCommMotionIndex !== null
+  );
+}
+
+function getTechCommId(external) {
+  if (external.techCommMotionIndex) {
+    return external.techCommMotionIndex;
+  } else if (external.techCommMotionHash) {
+    return `${external.techCommMotionIndexer.blockHeight}_${external.techCommMotionHash}`;
+  }
+
+  return null;
+}
+
+function shortTechId(external) {
+  if (external.techCommMotionIndex) {
+    return external.techCommMotionIndex;
+  } else if (external.techCommMotionHash) {
+    return `${external.techCommMotionHash.slice(0, 6)}`;
+  }
+
+  return null;
+}
+
 export default function DetailItem({ data, user, chain, onReply, type }) {
   const dispatch = useDispatch();
   const [post, setPost] = useState(data);
@@ -290,13 +321,15 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
           {type === "democracy/external" && (
             <ReferendaWrapper>
               <div>{`External`}</div>
-              {post?.onchainData?.techCommMotionIndex !== undefined && (
+              {hasTechComm(post?.onchainData) && (
                 <div>
                   <TriangleRight />
                   <Link
-                    href={`/${chain}/techcomm/proposal/${post?.onchainData?.techCommMotionIndex}`}
+                    href={`/${chain}/techcomm/proposal/${getTechCommId(
+                      post?.onchainData
+                    )}`}
                   >
-                    {`Proposal #${post?.onchainData?.techCommMotionIndex}`}
+                    {`Tech. Comm. #${shortTechId(post?.onchainData)}`}
                   </Link>
                 </div>
               )}
@@ -335,13 +368,15 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                 >
                   {`External`}
                 </Link>
-                {post?.onchainData?.techCommMotionIndex !== undefined && (
+                {hasTechComm(post?.onchainData) && (
                   <div>
                     <TriangleRight />
                     <Link
-                      href={`/${chain}/techcomm/proposal/${post?.onchainData?.techCommMotionIndex}`}
+                      href={`/${chain}/techcomm/proposal/${getTechCommId(
+                        post?.onchainData
+                      )}`}
                     >
-                      {`Proposal #${post?.onchainData?.techCommMotionIndex}`}
+                      {`Proposal #${shortTechId(post?.onchainData)}`}
                     </Link>
                   </div>
                 )}

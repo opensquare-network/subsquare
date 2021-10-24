@@ -1,6 +1,6 @@
+const { findRegistry } = require("../../../chain/specs");
 const { findBlockApi } = require("../../../chain/blockApi");
 const { normalizeCall } = require("./utils");
-const { findRegistry } = require("../../../specs");
 const { isKarura } = require("../../../env");
 const { GenericCall } = require("@polkadot/types");
 

@@ -1,11 +1,11 @@
+const { findRegistry } = require("../../../../chain/specs");
 const { findBlockApi } = require("../../../../chain/blockApi");
 const { normalizeCall } = require("../../motion/utils");
-const { findRegistry } = require("../../../../specs");
 const { hexToU8a } = require("@polkadot/util");
 
 async function getPreImageFromStorage(hash, indexer) {
   const blockApi = await findBlockApi(indexer.blockHash);
-  const raw = await await blockApi.query.democracy.preimages(hash);
+  const raw = await blockApi.query.democracy.preimages(hash);
   if (!raw.isSome) {
     return {};
   }
