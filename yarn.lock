@@ -9779,8 +9779,7 @@ typedarray-to-buffer@^3.1.5:
 
 ua-parser-js@^0.7.18:
   version "0.7.29"
-  resolved "https://registry.npmjs.org/ua-parser-js/-/ua-parser-js-0.7.29.tgz#aad8d679f15a721ed79454d553e3473f9f0536f1"
-  integrity sha512-EdEWUP3Dk9oyycRzMBbVHYW3GLbq5KPWHLKpXSNwD5F6u0s1x12mmP4KIzqSSzpngv8/8pE3f49/qGBG8VgqCg==
+  resolved "https://registry.npmjs.org/ua-parser-js/-/ua-parser-js-0.7.30.tgz"
 
 uglify-js@^3.1.4:
   version "3.14.2"
