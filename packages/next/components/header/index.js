@@ -65,9 +65,7 @@ const MenuButton = styled(Flex)`
   }
 `;
 
-const NetworkWrapper = styled.div`
-  width: 144px;
-`;
+const NetworkWrapper = styled.div``;
 
 const NodeButton = styled(Flex)`
   display: none;
