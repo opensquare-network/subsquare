@@ -132,10 +132,7 @@ function convertProposalForJsonView(proposal, chain) {
           }
           case "Bytes": {
             if (proposal.section === "system" && proposal.method === "setCode") {
-              if (arg.value?.length <= 200) {
-                return (arg.value);
-              }
-              return hexEllipsis(arg.value);
+              return arg.value?.length <= 200 ? arg.value : hexEllipsis(arg.value);
             }
             return hexToString(arg.value);
           }
