@@ -1,9 +1,18 @@
 import styled, { css } from "styled-components";
 import { useState } from "react";
 import ErrorText from "./ErrorText";
+import EyeIcon from "public/imgs/icons/eye.svg";
+import EyeSlashIcon from "public/imgs/icons/eye-slash.svg";
 
 const Wrapper = styled.div`
   position: relative;
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    box-shadow: 0 0 0 30px white inset !important;
+  }
 `;
 
 const InputWrapper = styled.input`
@@ -47,9 +56,15 @@ const ShowButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  img {
-    filter: invert(87%) sepia(9%) saturate(589%) hue-rotate(180deg)
-      brightness(78%) contrast(84%);
+  > svg {
+    width: 14px;
+    height: 14px;
+    fill: #d7dee8;
+  }
+  :hover {
+    > svg {
+      fill: #9da9bb;
+    }
   }
 `;
 
@@ -67,15 +82,11 @@ export default function Input({ ...props }) {
       <InputWrapper
         {...props}
         type={props.type === "password" && show ? "text" : props.type ?? "auto"}
+        autocomplete="off"
       />
       {props.type === "password" && (
         <ShowButton onClick={() => setShow(!show)}>
-          <img
-            alt=""
-            src={show ? "/imgs/icons/eye.svg" : "/imgs/icons/eye-slash.svg"}
-            width={20}
-            height={20}
-          />
+          {show ? <EyeIcon /> : <EyeSlashIcon />}
         </ShowButton>
       )}
       {props.error && <ErrorText>{props.error}</ErrorText>}
