@@ -6,7 +6,7 @@ import InnerDataTable from "../table/innerDataTable";
 import BigNumber from "bignumber.js";
 import { hexToString } from "@polkadot/util";
 import { addressEllipsis } from "../../utils";
-const DownloadText = dynamic(() => import("../downloadText"),{ ssr: false })
+const LongText = dynamic(() => import("../longText"),{ ssr: false })
 
 const JsonView = dynamic(
   () => import("components/jsonView").catch((e) => console.error(e)),
@@ -71,10 +71,7 @@ const TagItem = styled.div`
     `}
 `;
 
-const Between = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
+
 
 function convertProposalForTableView(proposal, chain) {
   if (!proposal) {
@@ -97,13 +94,10 @@ function convertProposalForTableView(proposal, chain) {
             ];
           }
           case "Bytes": {
-            if(arg.value?.length <= 200){
-              return [arg.name, addressEllipsis(arg.value)];
+            if (proposal.section === "system" && proposal.method === "setCode") {
+              return [arg.name, <LongText text={arg.value} key="0"/>];
             }
-            return [arg.name, <Between key="0">
-              {addressEllipsis(arg.value)}
-              <DownloadText text={arg.value}/>
-            </Between>];
+            return [arg.name, hexToString(arg.value)];
           }
           case "Balance": {
             const value = new BigNumber(arg.value).toString();
@@ -137,10 +131,13 @@ function convertProposalForJsonView(proposal, chain) {
             return arg.value.map((v) => convertProposalForJsonView(v, chain));
           }
           case "Bytes": {
-            if(arg.value?.length <= 200){
-              return (arg.value);
+            if (proposal.section === "system" && proposal.method === "setCode") {
+              if (arg.value?.length <= 200) {
+                return (arg.value);
+              }
+              return addressEllipsis(arg.value);
             }
-            return addressEllipsis(arg.value);
+            return hexToString(arg.value);
           }
           default: {
             return arg.value;
