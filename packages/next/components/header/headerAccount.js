@@ -100,7 +100,12 @@ export default function HeaderAccount({ user, chain }) {
                 <Fragment key={index}>
                   {index === accountMenu.length - 1 && <Divider />}
                   <Item onClick={() => handleAccountMenu(item)}>
-                    <img src={`/imgs/icons/${item.icon}`} alt=""  width={24} height={24}  />
+                    <img
+                      src={`/imgs/icons/${item.icon}`}
+                      alt=""
+                      width={24}
+                      height={24}
+                    />
                     <div>{item.name}</div>
                   </Item>
                 </Fragment>

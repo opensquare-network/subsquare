@@ -1,7 +1,10 @@
 const { ObjectId } = require("mongodb");
 const { safeHtml } = require("../utils/post");
 const { PostTitleLengthLimitation } = require("../constants");
-const { getDb: getBusinessDb, getDemocracyCollection } = require("../mongo/business");
+const {
+  getDb: getBusinessDb,
+  getDemocracyCollection,
+} = require("../mongo/business");
 const {
   getDb: getChainDb,
   getPublicProposalCollection: getChainPublicProposalCollection,
@@ -9,20 +12,16 @@ const {
   getReferendumCollection: getChainReferendumCollection,
   getPreImageCollection,
 } = require("../mongo/chain");
-const { getDb: getCommonDb, lookupUser, getUserCollection } = require("../mongo/common");
+const {
+  getDb: getCommonDb,
+  lookupUser,
+  getUserCollection,
+} = require("../mongo/common");
 const { HttpError } = require("../exc");
 const { ContentType } = require("../constants");
 const { toUserPublicInfo } = require("../utils/user");
 
-
-async function updatePost(
-  chain,
-  postId,
-  title,
-  content,
-  contentType,
-  author
-) {
+async function updatePost(chain, postId, title, content, contentType, author) {
   const postObjId = ObjectId(postId);
   const postCol = await getDemocracyCollection(chain);
   const post = await postCol.findOne({ _id: postObjId });
@@ -49,7 +48,9 @@ async function updatePost(
     authors = democracyExternal?.authors || [];
   } else if (chainProposal.publicProposalIndex !== undefined) {
     const col = await getChainPublicProposalCollection(chain);
-    const democracyPublicProposal = await col.findOne({ proposalIndex: chainProposal.publicProposalIndex });
+    const democracyPublicProposal = await col.findOne({
+      proposalIndex: chainProposal.publicProposalIndex,
+    });
     authors = democracyPublicProposal?.authors || [];
   }
 
@@ -59,7 +60,7 @@ async function updatePost(
 
   if (title.length > PostTitleLengthLimitation) {
     throw new HttpError(400, {
-      title: [ "Title must be no more than %d characters" ],
+      title: ["Title must be no more than %d characters"],
     });
   }
 
@@ -74,7 +75,7 @@ async function updatePost(
         contentType,
         updatedAt: now,
         lastActivityAt: now,
-      }
+      },
     }
   );
 
@@ -87,13 +88,11 @@ async function updatePost(
 
 async function getActivePostsOverview(chain) {
   const chainDemocracyCol = await getChainReferendumCollection(chain);
-  const proposals = await chainDemocracyCol.find(
-    {
+  const proposals = await chainDemocracyCol
+    .find({
       "state.state": {
-        $nin: [
-          "Executed", "NotPassed", "Passed", "Cancelled",
-        ]
-      }
+        $nin: ["Executed", "NotPassed", "Passed", "Cancelled"],
+      },
     })
     .sort({ "indexer.blockHeight": -1 })
     .limit(3)
@@ -127,7 +126,7 @@ async function getActivePostsOverview(chain) {
     }),
   ]);
 
-  return proposals.map(proposal => {
+  return proposals.map((proposal) => {
     const post = proposal.post;
     proposal.post = undefined;
     post.onchainData = proposal;
@@ -137,7 +136,7 @@ async function getActivePostsOverview(chain) {
 }
 
 async function getPostsByChain(chain, page, pageSize) {
-  const q = { referendumIndex: {$ne: null} };
+  const q = { referendumIndex: { $ne: null } };
 
   const postCol = await getDemocracyCollection(chain);
   const total = await postCol.countDocuments(q);
@@ -147,7 +146,8 @@ async function getPostsByChain(chain, page, pageSize) {
     page = Math.max(totalPages, 1);
   }
 
-  const posts = await postCol.find(q)
+  const posts = await postCol
+    .find(q)
     .sort({ lastActivityAt: -1 })
     .skip((page - 1) * pageSize)
     .limit(pageSize)
@@ -214,7 +214,9 @@ async function getPostById(chain, postId) {
   const businessDb = await getBusinessDb(chain);
   const chainProposalCol = await getChainReferendumCollection(chain);
   const [author, reactions, chanProposalData] = await Promise.all([
-    post.proposer ? userCol.findOne({ [`${chain}Address`]: post.proposer }) : null,
+    post.proposer
+      ? userCol.findOne({ [`${chain}Address`]: post.proposer })
+      : null,
     businessDb.lookupMany({
       from: "reaction",
       for: post,
@@ -229,24 +231,33 @@ async function getPostById(chain, postId) {
     const col = await getChainExternalCollection(chain);
     const democracyExternal = await col.findOne({
       proposalHash: chanProposalData.externalProposalHash,
-      "indexer.blockHeight": chanProposalData.externalProposalIndexer.blockHeight,
+      "indexer.blockHeight":
+        chanProposalData.externalProposalIndexer.blockHeight,
     });
     chanProposalData.authors = democracyExternal?.authors;
-    chanProposalData.techCommMotionIndex =  democracyExternal?.techCommMotionIndex;
+    chanProposalData.techCommMotionIndex =
+      democracyExternal?.techCommMotionIndex;
+    chanProposalData.techCommMotionHash = democracyExternal?.techCommMotionHash;
+    chanProposalData.techCommMotionIndexer =
+      democracyExternal?.techCommMotionIndexer;
 
     const preImageCol = await getPreImageCollection(chain);
-    const preImage = await preImageCol.findOne({ hash: chanProposalData.externalProposalHash });
+    const preImage = await preImageCol.findOne({
+      hash: chanProposalData.externalProposalHash,
+    });
     chanProposalData.preImage = preImage;
-
   } else if (chanProposalData?.publicProposalIndex !== undefined) {
     const col = await getChainPublicProposalCollection(chain);
-    const democracyPublicProposal = await col.findOne({ proposalIndex: chanProposalData.publicProposalIndex });
+    const democracyPublicProposal = await col.findOne({
+      proposalIndex: chanProposalData.publicProposalIndex,
+    });
     chanProposalData.authors = democracyPublicProposal?.authors;
 
     const preImageCol = await getPreImageCollection(chain);
-    const preImage = await preImageCol.findOne({ hash: democracyPublicProposal?.hash });
+    const preImage = await preImageCol.findOne({
+      hash: democracyPublicProposal?.hash,
+    });
     chanProposalData.preImage = preImage;
-
   }
 
   await lookupUser({ for: reactions, localField: "user" });
@@ -258,7 +269,7 @@ async function getPostById(chain, postId) {
   };
 }
 
-module.exports =  {
+module.exports = {
   updatePost,
   getPostsByChain,
   getPostById,

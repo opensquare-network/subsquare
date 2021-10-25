@@ -1,4 +1,4 @@
-const { setSpecHeights } = require("../../../specs");
+const { setSpecHeights } = require("../../../chain/specs");
 const { karuraEndpoint } = require("../../../utils/constants");
 const { testTechCommProposal } = require("./testData");
 const { getTechCommMotionProposalCall } = require("./proposalStorage");

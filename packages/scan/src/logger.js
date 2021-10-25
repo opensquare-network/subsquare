@@ -8,12 +8,14 @@ const chain = process.env.CHAIN || CHAINS.KARURA;
 const scanFileCategory = "block-scan";
 const businessCategory = "business";
 const blockFileCategory = "block";
+const metaFileCategory = "meta";
 
 log4js.configure({
   appenders: {
     [scanFileCategory]: { type: "file", filename: `log/${chain}/scan.log` },
     [businessCategory]: { type: "file", filename: `log/${chain}/bus.log` },
     [blockFileCategory]: { type: "file", filename: `log/${chain}/block.log` },
+    [metaFileCategory]: { type: "file", filename: `log/${chain}/meta.log` },
     errorFile: {
       type: "file",
       filename: `log/${chain}/errors.log`,
@@ -41,15 +43,24 @@ log4js.configure({
       ],
       level: logLevel,
     },
+    [metaFileCategory]: {
+      appenders: [
+        isProduction ? metaFileCategory : "out",
+        isProduction ? metaFileCategory : "errors",
+      ],
+      level: logLevel,
+    },
   },
 });
 
 const logger = log4js.getLogger(scanFileCategory);
 const busLogger = log4js.getLogger(businessCategory);
 const blockLogger = log4js.getLogger(blockFileCategory);
+const metaLogger = log4js.getLogger(metaFileCategory);
 
 module.exports = {
   logger,
   busLogger,
   blockLogger,
+  metaLogger,
 };

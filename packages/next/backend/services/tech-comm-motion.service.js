@@ -1,14 +1,17 @@
 const { ObjectId } = require("mongodb");
 const { toUserPublicInfo } = require("../utils/user");
-const { getDb: getChainDb, getTechCommMotionCollection, getExternalCollection } = require("../mongo/chain");
+const {
+  getDb: getChainDb,
+  getTechCommMotionCollection,
+  getExternalCollection,
+} = require("../mongo/chain");
 const { getDb: getCommonDb, getUserCollection } = require("../mongo/common");
-
 
 async function getActiveMotionsOverview(chain) {
   const motionCol = await getTechCommMotionCollection(chain);
-  const motions = await motionCol.find(
-    {
-      "state.state": { $nin: ["Approved", "Disapproved", "Executed"] }
+  const motions = await motionCol
+    .find({
+      "state.state": { $nin: ["Approved", "Disapproved", "Executed"] },
     })
     .sort({ "indexer.blockHeight": -1 })
     .limit(3)
@@ -46,31 +49,32 @@ async function getMotionsByChain(chain, page, pageSize) {
     page = Math.max(totalPages, 1);
   }
 
-  const motions = await motionCol.find({}, { projection: { timeline: 0 } })
+  const motions = await motionCol
+    .find({}, { projection: { timeline: 0 } })
     .sort({ index: -1 })
     .skip((page - 1) * pageSize)
     .limit(pageSize)
     .toArray();
 
-    const commonDb = await getCommonDb(chain);
-    const chainDb = await getChainDb(chain);
-    await Promise.all([
-      commonDb.lookupOne({
-        from: "user",
-        for: motions,
-        as: "author",
-        localField: "proposer",
-        foreignField: `${chain}Address`,
-        map: toUserPublicInfo,
-      }),
-      chainDb.lookupOne({
-        from: "democracyExternal",
-        for: motions,
-        as: "democracyExternal",
-        localField: "proposalHash",
-        foreignField: "proposalHash",
-      }),
-    ]);
+  const commonDb = await getCommonDb(chain);
+  const chainDb = await getChainDb(chain);
+  await Promise.all([
+    commonDb.lookupOne({
+      from: "user",
+      for: motions,
+      as: "author",
+      localField: "proposer",
+      foreignField: `${chain}Address`,
+      map: toUserPublicInfo,
+    }),
+    chainDb.lookupOne({
+      from: "democracyExternal",
+      for: motions,
+      as: "democracyExternal",
+      localField: "proposalHash",
+      foreignField: "proposalHash",
+    }),
+  ]);
 
   return {
     items: motions,
@@ -84,6 +88,10 @@ async function getMotionById(chain, postId) {
   const q = {};
   if (ObjectId.isValid(postId)) {
     q._id = ObjectId(postId);
+  } else if (typeof postId === "string" && postId.indexOf("_") > 0) {
+    const [blockHeight, hash] = postId.split("_");
+    q["indexer.blockHeight"] = parseInt(blockHeight);
+    q.hash = hash;
   } else {
     q.index = parseInt(postId);
   }
@@ -99,7 +107,9 @@ async function getMotionById(chain, postId) {
   const author = userCol.findOne({ [`${chain}Address`]: motion.proposer });
 
   const externalCol = await getExternalCollection(chain);
-  const democracyExternal = await externalCol.findOne({ proposalHash: motion.proposalHash });
+  const democracyExternal = await externalCol.findOne({
+    proposalHash: motion.proposalHash,
+  });
 
   return {
     ...motion,
@@ -108,7 +118,7 @@ async function getMotionById(chain, postId) {
   };
 }
 
-module.exports =  {
+module.exports = {
   getMotionsByChain,
   getMotionById,
   getActiveMotionsOverview,

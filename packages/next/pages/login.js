@@ -100,7 +100,7 @@ export default withLoginUserRedux(({ loginUser }) => {
   const dispatch = useDispatch();
 
   let chain = "karura";
-  if(typeof window !== "undefined"){
+  if (typeof window !== "undefined") {
     chain = localStorage.getItem("chain") || "karura";
   }
 

@@ -5,6 +5,8 @@ import dynamic from "next/dynamic";
 import InnerDataTable from "../table/innerDataTable";
 import BigNumber from "bignumber.js";
 import { hexToString } from "@polkadot/util";
+import { hexEllipsis } from "../../utils";
+const LongText = dynamic(() => import("../longText"),{ ssr: false })
 
 const JsonView = dynamic(
   () => import("components/jsonView").catch((e) => console.error(e)),
@@ -69,6 +71,8 @@ const TagItem = styled.div`
     `}
 `;
 
+
+
 function convertProposalForTableView(proposal, chain) {
   if (!proposal) {
     return {};
@@ -90,6 +94,9 @@ function convertProposalForTableView(proposal, chain) {
             ];
           }
           case "Bytes": {
+            if (proposal.section === "system" && proposal.method === "setCode") {
+              return [arg.name, <LongText text={arg.value} key="0"/>];
+            }
             return [arg.name, hexToString(arg.value)];
           }
           case "Balance": {
@@ -124,6 +131,9 @@ function convertProposalForJsonView(proposal, chain) {
             return arg.value.map((v) => convertProposalForJsonView(v, chain));
           }
           case "Bytes": {
+            if (proposal.section === "system" && proposal.method === "setCode") {
+              return arg.value?.length <= 200 ? arg.value : hexEllipsis(arg.value);
+            }
             return hexToString(arg.value);
           }
           default: {

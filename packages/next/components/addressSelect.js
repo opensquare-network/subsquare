@@ -77,7 +77,12 @@ const Item = styled(Flex)`
     `}
 `;
 
-export default function AddressSelect({ chain, accounts, selectedAccount, onSelect }) {
+export default function AddressSelect({
+  chain,
+  accounts,
+  selectedAccount,
+  onSelect,
+}) {
   const [show, setShow] = useState(false);
   const ref = useRef();
 
