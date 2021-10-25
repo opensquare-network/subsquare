@@ -24,7 +24,7 @@ let nodeUrl = (() => {
       DEFAULT_KARURA_NODES.find((item) => item.url === localNodeUrl?.karura)
         ?.url || DEFAULT_KARURA_NODE_URL,
     khala:
-      DEFAULT_KARURA_NODES.find((item) => item.url === localNodeUrl?.khala)
+      DEFAULT_KHALA_NODES.find((item) => item.url === localNodeUrl?.khala)
         ?.url || DEFAULT_KHALA_NODE_URL,
   };
 })();
