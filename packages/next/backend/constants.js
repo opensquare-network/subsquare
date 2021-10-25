@@ -5,6 +5,8 @@ const SupportChains = [
   "khala",
 ];
 
+const chainStatusRoom = "CHAIN_STATUS_ROOM";
+
 const SS58Format = Object.freeze({
   Polkadot: 0,
   Kusama: 2,
@@ -25,4 +27,6 @@ module.exports = {
   SS58Format,
   ContentType,
   PostTitleLengthLimitation,
+  chainStatusRoom,
+  FEED_INTERVAL: 6000,
 };

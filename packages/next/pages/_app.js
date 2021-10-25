@@ -8,6 +8,9 @@ import "../styles/globals.css";
 import { store } from "../store";
 import Auth from "components/auth";
 import "../styles/richTextStyles.scss";
+import { connect } from "../services/websocket";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 NProgress.configure({
   minimum: 0.3,
@@ -30,6 +33,14 @@ Router.events.on(
 );
 
 function MyApp({ Component, pageProps }) {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.query.chain) {
+      connect(router.query.chain);
+    }
+  }, [router]);
+
   return (
     <Provider store={store}>
       <Head>

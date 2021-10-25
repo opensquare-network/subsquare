@@ -42,6 +42,7 @@ async function getCollection(chain, colName) {
 module.exports = {
   initDb,
   getDb,
+  getStatusCollection: (chain) => getCollection(chain, "status"),
   getTipCollection: (chain) => getCollection(chain, "tip"),
   getTreasuryProposalCollection: (chain) =>
     getCollection(chain, "treasuryProposal"),
