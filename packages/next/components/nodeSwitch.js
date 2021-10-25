@@ -150,15 +150,22 @@ export default function NodeSwitch({ small, chain }) {
     <Wrapper ref={ref}>
       {small && (
         <SmallSelect onClick={() => setShow(!show)}>
-          <img alt="" src={`/imgs/icons/${getSignalImg(currentNodeSetting?.delay)}`} width={24} height={24} />
+          <img
+            alt=""
+            src={`/imgs/icons/${getSignalImg(currentNodeSetting?.delay)}`}
+            width={24}
+            height={24}
+          />
         </SmallSelect>
       )}
       {!small && (
         <Select onClick={() => setShow(!show)}>
-          <img alt=""
+          <img
+            alt=""
             src={`/imgs/icons/${getSignalImg(currentNodeSetting?.delay)}`}
             className="signal"
-            width={24} height={24}
+            width={24}
+            height={24}
           />
           <div>{currentNodeSetting?.name}</div>
           <img src="/imgs/icons/caret-down.svg" alt="" width={14} height={14} />
@@ -185,7 +192,12 @@ export default function NodeSwitch({ small, chain }) {
               active={item.url === currentNodeSetting.url}
               color={getSignalColor(item?.delay)}
             >
-              <img alt="" src={`/imgs/icons/${getSignalImg(item?.delay)}`} width={24} height={24} />
+              <img
+                alt=""
+                src={`/imgs/icons/${getSignalImg(item?.delay)}`}
+                width={24}
+                height={24}
+              />
               <div>{`${item?.name}`}</div>
               <div className="delay">
                 {item?.delay && !isNaN(item?.delay) ? `${item.delay} ms` : ""}

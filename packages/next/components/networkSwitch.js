@@ -4,6 +4,8 @@ import { nodes } from "utils/constants";
 import { useOnClickOutside, useWindowSize } from "utils/hooks";
 import { useRouter } from "next/router";
 import { shadow_200 } from "../styles/componentCss";
+import { useSelector } from "react-redux";
+import { nodesHeightSelector } from "store/reducers/nodeSlice";
 
 const Wrapper = styled.div`
   position: relative;
@@ -18,12 +20,20 @@ const Select = styled.div`
   align-items: center;
   padding: 0 12px;
   cursor: pointer;
-  font-weight: 500;
   > :not(:first-child) {
     margin-left: 8px;
   }
   > div {
     flex-grow: 1;
+    display: flex;
+    > :first-child {
+      color: #9da9bb;
+      margin-right: 4px;
+    }
+    > :last-child {
+      font-weight: 500;
+      color: #1e2134;
+    }
   }
   > img.logo {
     flex: 0 0 24px;
@@ -74,6 +84,7 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
   const windowSize = useWindowSize();
+  const nodesHeight = useSelector(nodesHeightSelector);
 
   useOnClickOutside(ref, () => setShow(false));
 
@@ -93,7 +104,14 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
           alt=""
           className="logo"
         />
-        <div>{activeNode.name}</div>
+        <div>
+          <div>Blocks</div>
+          {nodesHeight[activeNode.value] ? (
+            <div>{`#${nodesHeight[activeNode.value]}`}</div>
+          ) : (
+            <div />
+          )}
+        </div>
         <img width={14} height={14} src="/imgs/icons/caret-down.svg" alt="" />
       </Select>
       {show && (
@@ -102,8 +120,9 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
             <Item
               key={index}
               onClick={() => {
-                localStorage.setItem("chain", item.value);
                 setShow(false);
+                if (activeNode.value === item.value) return;
+                localStorage.setItem("chain", item.value);
                 if (isWeb3Login) {
                   router.replace(router.asPath, undefined, { shallow: true });
                 } else {

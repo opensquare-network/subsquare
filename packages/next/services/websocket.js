@@ -1,5 +1,8 @@
 import io from "socket.io-client";
 
+import { store } from "../store";
+import { setNodeBlockHeight } from "../store/reducers/nodeSlice";
+
 const chainStatusRoom = "CHAIN_STATUS_ROOM";
 
 export let socket = null;
@@ -10,7 +13,8 @@ export function connect(chain) {
     socket.disconnect();
   }
 
-  const socketUrl = new URL(`/${chain}`, process.env.NEXT_PUBLIC_API_END_POINT).href;
+  const socketUrl = new URL(`/${chain}`, process.env.NEXT_PUBLIC_API_END_POINT)
+    .href;
   socket = io(socketUrl);
   socket.connect();
 
@@ -18,9 +22,7 @@ export function connect(chain) {
     socket.emit("subscribe", chainStatusRoom);
 
     socket.on("scanStatus", ({ height }) => {
-      //TODO: set height to redux store
-      console.log(height);
-      // store.dispatch(setScanHeight(height));
+      store.dispatch(setNodeBlockHeight({ chain, height }));
     });
   });
 }
