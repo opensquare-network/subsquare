@@ -4,11 +4,19 @@ import { nodes } from "./constants";
 
 BigNumber.config({ EXPONENTIAL_AT: 36 });
 
+export function textEllipsis(text, start, end) {
+  if (!text) return;
+  if (text.length <= start + end) return text;
+  if (!text.slice) return text;
+  return `${text.slice(0, start)}...${text.slice(-end)}`;
+}
+
+export function hexEllipsis(hex, start = 6, end = 4) {
+  return textEllipsis(hex, start, end);
+}
+
 export function addressEllipsis(address, start = 4, end = 4) {
-  if (!address) return;
-  if (address.length <= start + end) return address;
-  if (!address.slice) return address;
-  return `${address.slice(0, start)}...${address.slice(-end)}`;
+  return textEllipsis(address, start, end);
 }
 
 export function timeDuration(seconds) {

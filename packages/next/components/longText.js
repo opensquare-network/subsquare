@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { addressEllipsis } from "../utils";
+import { hexEllipsis } from "../utils";
 
 const Between = styled.div`
   display: flex;
@@ -17,7 +17,7 @@ export default function LongText({text, threshold = 200, fileName = "hex"}) {
   const blob = new Blob([text], {type: "text/plain"});
   const url = window.URL.createObjectURL(blob);
   return <Between>
-    <span>{addressEllipsis(text)}</span>
+    <span>{hexEllipsis(text)}</span>
     <A href={url} download={fileName}>download</A>
   </Between>;
 }
