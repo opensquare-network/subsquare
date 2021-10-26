@@ -7,6 +7,7 @@ import {
   setCurrentNode,
   nodesSelector,
 } from "store/reducers/nodeSlice";
+import { DEFAULT_NODES } from "../utils/constants";
 
 const Wrapper = styled.div`
   position: relative;
@@ -109,7 +110,9 @@ export default function NodeSwitch({ small, chain }) {
   const windowSize = useWindowSize();
   const currentNode = useSelector(currentNodeSelector);
   const nodes = useSelector(nodesSelector);
-  const [currentNodeSetting, setCurrentNodeSetting] = useState();
+  const [currentNodeSetting, setCurrentNodeSetting] = useState(
+    DEFAULT_NODES[chain]
+  );
   const dispatch = useDispatch();
 
   useOnClickOutside(ref, () => setShow(false));

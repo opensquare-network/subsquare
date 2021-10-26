@@ -122,7 +122,7 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
           className="logo"
         />
         <NetworkBlock>
-          <div>Blocks</div>
+          <div>Block</div>
           {nodesHeight[activeNode.value] ? (
             <span>{`#${nodesHeight[activeNode.value]}`}</span>
           ) : (

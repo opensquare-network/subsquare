@@ -42,6 +42,12 @@ export const DEFAULT_KHALA_NODES = [
   },
 ];
 
+export const DEFAULT_NODES = {
+  kusama: DEFAULT_KUSAMA_NODE_URL,
+  karura: DEFAULT_KARURA_NODE_URL,
+  khala: DEFAULT_KHALA_NODE_URL,
+};
+
 export const nodes = [
   ...(process.env.NEXT_PUBLIC_SHOW_KUSAMA === "true"
     ? [
