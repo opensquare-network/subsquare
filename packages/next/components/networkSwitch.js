@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { shadow_200 } from "../styles/componentCss";
 import { useSelector } from "react-redux";
 import { nodesHeightSelector } from "store/reducers/nodeSlice";
+import LoadingSvg from "public/imgs/icons/members-loading.svg";
 
 const Wrapper = styled.div`
   position: relative;
@@ -28,7 +29,6 @@ const Select = styled.div`
     display: flex;
     > :first-child {
       color: #9da9bb;
-      margin-right: 4px;
     }
     > :last-child {
       font-weight: 500;
@@ -79,6 +79,23 @@ const Item = styled.div`
     `}
 `;
 
+const NetworkBlock = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 12px;
+  > div {
+
+  }
+  > span {
+    margin-left: 4px;
+    margin-right: 12px;
+  }
+  > svg {
+    margin-left: 7px;
+    margin-right: 15px;
+  }
+`;
+
 export default function NetworkSwitch({ activeNode, isWeb3Login }) {
   const router = useRouter();
   const [show, setShow] = useState(false);
@@ -104,14 +121,14 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
           alt=""
           className="logo"
         />
-        <div>
+        <NetworkBlock>
           <div>Blocks</div>
           {nodesHeight[activeNode.value] ? (
-            <div>{`#${nodesHeight[activeNode.value]}`}</div>
+            <span>{`#${nodesHeight[activeNode.value]}`}</span>
           ) : (
-            <div />
+            <LoadingSvg />
           )}
-        </div>
+        </NetworkBlock>
         <img width={14} height={14} src="/imgs/icons/caret-down.svg" alt="" />
       </Select>
       {show && (
