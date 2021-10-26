@@ -5,8 +5,8 @@ import dynamic from "next/dynamic";
 import InnerDataTable from "../table/innerDataTable";
 import BigNumber from "bignumber.js";
 import { hexToString } from "@polkadot/util";
-import { hexEllipsis } from "../../utils";
-const LongText = dynamic(() => import("../longText"),{ ssr: false })
+import { getNode, hexEllipsis, toPrecision } from "../../utils";
+const LongText = dynamic(() => import("../longText"), { ssr: false });
 
 const JsonView = dynamic(
   () => import("components/jsonView").catch((e) => console.error(e)),
@@ -71,12 +71,13 @@ const TagItem = styled.div`
     `}
 `;
 
-
-
 function convertProposalForTableView(proposal, chain) {
   if (!proposal) {
     return {};
   }
+  const node = getNode(chain);
+  const decimals = node.decimals;
+  const symbol = node.symbol;
   return {
     ...proposal,
     args: Object.fromEntries(
@@ -94,14 +95,21 @@ function convertProposalForTableView(proposal, chain) {
             ];
           }
           case "Bytes": {
-            if (proposal.section === "system" && proposal.method === "setCode") {
-              return [arg.name, <LongText text={arg.value} key="0"/>];
+            if (
+              proposal.section === "system" &&
+              proposal.method === "setCode"
+            ) {
+              return [arg.name, <LongText text={arg.value} key="0" />];
             }
             return [arg.name, hexToString(arg.value)];
           }
           case "Balance": {
             const value = new BigNumber(arg.value).toString();
             return [arg.name, value];
+          }
+          case "Compact<Balance>": {
+            const value = new BigNumber(arg.value).toString();
+            return [arg.name, `${toPrecision(value, decimals)} ${symbol}`];
           }
           default: {
             return [arg.name, arg.value];
@@ -131,10 +139,19 @@ function convertProposalForJsonView(proposal, chain) {
             return arg.value.map((v) => convertProposalForJsonView(v, chain));
           }
           case "Bytes": {
-            if (proposal.section === "system" && proposal.method === "setCode") {
-              return arg.value?.length <= 200 ? arg.value : hexEllipsis(arg.value);
+            if (
+              proposal.section === "system" &&
+              proposal.method === "setCode"
+            ) {
+              return arg.value?.length <= 200
+                ? arg.value
+                : hexEllipsis(arg.value);
             }
             return hexToString(arg.value);
+          }
+          case "Compact<Balance>": {
+            const value = new BigNumber(arg.value).toString();
+            return [arg.name, value];
           }
           default: {
             return arg.value;
