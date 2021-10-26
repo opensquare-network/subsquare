@@ -36,8 +36,9 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (router.query.chain) {
-      connect(router.query.chain);
+    const chain = router.query.chain || localStorage.getItem("chain") || "karura";
+    if (chain) {
+      connect(chain);
     }
   }, [router]);
 
