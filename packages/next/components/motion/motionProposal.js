@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import InnerDataTable from "../table/innerDataTable";
 import BigNumber from "bignumber.js";
 import { hexToString } from "@polkadot/util";
-import { getNode, hexEllipsis, toPrecision } from "../../utils";
+import { hexEllipsis } from "../../utils";
 const LongText = dynamic(() => import("../longText"), { ssr: false });
 
 const JsonView = dynamic(
@@ -75,9 +75,6 @@ function convertProposalForTableView(proposal, chain) {
   if (!proposal) {
     return {};
   }
-  const node = getNode(chain);
-  const decimals = node.decimals;
-  const symbol = node.symbol;
   return {
     ...proposal,
     args: Object.fromEntries(
@@ -109,7 +106,7 @@ function convertProposalForTableView(proposal, chain) {
           }
           case "Compact<Balance>": {
             const value = new BigNumber(arg.value).toString();
-            return [arg.name, `${toPrecision(value, decimals)} ${symbol}`];
+            return [arg.name, value];
           }
           default: {
             return [arg.name, arg.value];
