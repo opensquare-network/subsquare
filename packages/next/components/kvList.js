@@ -52,9 +52,17 @@ const Content = styled.div`
   line-height: 140%;
   color: #1e2134;
   word-break: break-all;
+  a {
+    color: #1f70c7;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 `;
 
-function KVList({ data, title}) {
+function KVList({ data, title }) {
   if (!data) {
     return null;
   }
