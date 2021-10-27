@@ -136,8 +136,39 @@ function createMotionTimelineData(motion) {
   });
 }
 
+function createMotionBusinessData(motion, chain) {
+  const height = motion.state.indexer.blockHeight;
+  return [
+    [
+      "Link to",
+      <Link
+        href={`/${chain}/democracy/external/${height}_${motion.proposalHash}`}
+      >{`External proposal ${motion.proposalHash.slice(0, 8)}`}</Link>,
+    ],
+  ];
+}
+
 const isClosed = (timeline) => {
   return (timeline || []).some((item) => item.method === "Closed");
+};
+
+const isMotionCompleted = (motion) => {
+  if (motion.status !== "Executed") {
+    return false;
+  }
+  if (!motion.proposalHash) {
+    return false;
+  }
+  const ok = motion.state.data.some((data) =>
+    Object.keys(data).some((rawData) => rawData === "ok")
+  );
+  if (!ok) {
+    return false;
+  }
+  const error = motion.state.data.some((data) =>
+    Object.keys(data).some((rawData) => rawData === "error")
+  );
+  return !error;
 };
 
 const getClosedTimelineData = (timeline = []) => {
@@ -165,10 +196,6 @@ const getClosedTimelineData = (timeline = []) => {
 };
 
 export default function MotionDetail({ motion, chain }) {
-  if (!motion) {
-    return null;
-  }
-
   const node = getNode(chain);
   if (!node) {
     return null;
@@ -186,6 +213,48 @@ export default function MotionDetail({ motion, chain }) {
     timelineData = getClosedTimelineData(timeline);
   } else {
     timelineData = timeline;
+  }
+
+  let business = null;
+
+  const motionCompleted = isMotionCompleted(motion);
+
+  if (motionCompleted) {
+    business = createMotionBusinessData(motion, chain);
+  }
+
+  if (treasuryProposalMeta) {
+    business = [
+      [
+        "Link to",
+        <Link
+          href={`/${chain}/treasury/proposal/${motion.treasuryProposalIndex}`}
+        >{`Treasury Proposal #${motion.treasuryProposalIndex}`}</Link>,
+      ],
+      [
+        "Beneficiary",
+        <Flex>
+          <User
+            chain={chain}
+            add={treasuryProposalMeta.beneficiary}
+            fontSize={14}
+          />
+          <Links
+            chain={chain}
+            address={treasuryProposalMeta.beneficiary}
+            style={{ marginLeft: 8 }}
+          />
+        </Flex>,
+      ],
+      [
+        "Value",
+        `${toPrecision(treasuryProposalMeta.value ?? 0, decimals)} ${symbol}`,
+      ],
+      [
+        "Bond",
+        `${toPrecision(treasuryProposalMeta.bond ?? 0, decimals)} ${symbol}`,
+      ],
+    ];
   }
 
   return (
@@ -214,48 +283,7 @@ export default function MotionDetail({ motion, chain }) {
         </div>
       </Wrapper>
 
-      {treasuryProposalMeta && (
-        <KVList
-          title={"Business"}
-          data={[
-            [
-              "Link to",
-              <Link
-                href={`/${chain}/treasury/proposal/${motion.treasuryProposalIndex}`}
-              >{`Treasury Proposal #${motion.treasuryProposalIndex}`}</Link>,
-            ],
-            [
-              "Beneficiary",
-              <Flex>
-                <User
-                  chain={chain}
-                  add={treasuryProposalMeta.beneficiary}
-                  fontSize={14}
-                />
-                <Links
-                  chain={chain}
-                  address={treasuryProposalMeta.beneficiary}
-                  style={{ marginLeft: 8 }}
-                />
-              </Flex>,
-            ],
-            [
-              "Value",
-              `${toPrecision(
-                treasuryProposalMeta.value ?? 0,
-                decimals
-              )} ${symbol}`,
-            ],
-            [
-              "Bond",
-              `${toPrecision(
-                treasuryProposalMeta.bond ?? 0,
-                decimals
-              )} ${symbol}`,
-            ],
-          ]}
-        />
-      )}
+      <KVList title="Business" data={business} />
 
       <KVList
         title={"Metadata"}
