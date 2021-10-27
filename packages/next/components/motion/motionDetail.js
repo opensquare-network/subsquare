@@ -156,6 +156,9 @@ const isMotionCompleted = (motion) => {
   if (motion.status !== "Executed") {
     return false;
   }
+  if (!motion.proposalHash) {
+    return false;
+  }
   const ok = motion.state.data.some((data) =>
     Object.keys(data).some((rawData) => rawData === "ok")
   );
