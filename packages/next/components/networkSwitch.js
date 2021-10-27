@@ -84,7 +84,6 @@ const NetworkBlock = styled.div`
   align-items: center;
   margin-left: 12px;
   > div {
-
   }
   > span {
     margin-left: 4px;
@@ -124,7 +123,7 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
         <NetworkBlock>
           <div>Block</div>
           {nodesHeight[activeNode.value] ? (
-            <span>{`#${nodesHeight[activeNode.value]}`}</span>
+            <span>{`#${nodesHeight[activeNode.value.toLocaleString()]}`}</span>
           ) : (
             <LoadingSvg />
           )}
