@@ -115,13 +115,14 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           Reason: args.reason,
         };
       case "tip":
+        const value = args.award ? args.award : args.value;
         return {
           Tipper: (
             <FlexEnd>
               <User chain={chain} add={args.tipper} />
             </FlexEnd>
           ),
-          Value: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
+          Value: `${toPrecision(value ?? 0, decimals)} ${symbol}`,
         };
       case "TipClosed":
         return {
