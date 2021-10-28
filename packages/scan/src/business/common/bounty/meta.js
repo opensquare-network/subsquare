@@ -1,3 +1,4 @@
+const { getApi } = require("../../../api");
 const { findBlockApi } = require("../../../chain/blockApi");
 
 async function getBountyMeta(bountyIndex, { blockHeight, blockHash }) {
@@ -13,6 +14,13 @@ async function getBountyMeta(bountyIndex, { blockHeight, blockHash }) {
   return rawMeta.toJSON();
 }
 
+async function getBountyMetaByHeight(bountyIndex, blockHeight) {
+  const api = await getApi();
+  const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
+  return await getBountyMeta(bountyIndex, { blockHeight, blockHash });
+}
+
 module.exports = {
   getBountyMeta,
+  getBountyMetaByHeight,
 };

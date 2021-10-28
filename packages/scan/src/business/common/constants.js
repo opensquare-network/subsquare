@@ -145,6 +145,7 @@ const BountyStatus = Object.freeze({
   Approved: "Approved",
   Funded: "Funded",
   Active: "Active",
+  Rejected: "Rejected",
 });
 
 const BountyMethods = Object.freeze({
