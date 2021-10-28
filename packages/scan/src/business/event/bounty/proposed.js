@@ -7,6 +7,7 @@ const {
 } = require("../../common/constants");
 const { getBountyDescription } = require("../../common/bounty/description");
 const { getBountyMeta } = require("../../common/bounty/meta");
+const { busLogger } = require("../../../logger");
 
 async function handleProposed(event, indexer, extrinsic) {
   const eventData = event.data.toJSON();
@@ -57,6 +58,7 @@ async function handleProposed(event, indexer, extrinsic) {
 
   await insertBounty(obj);
   await insertBountyPost(bountyIndex, description);
+  busLogger.info(`Bounty #${bountyIndex} created`, indexer);
 }
 
 module.exports = {
