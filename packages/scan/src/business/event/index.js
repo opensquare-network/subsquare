@@ -1,3 +1,4 @@
+const { handleBountyEvent } = require("./bounty");
 const { handlePreImageEvent } = require("./democracy/preimage");
 const {
   handleDemocracyPublicProposalEvent,
@@ -85,21 +86,29 @@ async function handleEvents(events, extrinsics, blockIndexer) {
   for (let sort = 0; sort < events.length; sort++) {
     const { event, phase } = events[sort];
 
+    const indexer = {
+      ...blockIndexer,
+      eventIndex: sort,
+    };
+    let extrinsic;
     if (phase.isNull) {
       await handleEventWithoutExtrinsic(blockIndexer, event, sort, events);
-      continue;
+    } else {
+      const extrinsicIndex = phase.value.toNumber();
+      indexer.extrinsicIndex = extrinsicIndex;
+
+      extrinsic = extrinsics[extrinsicIndex];
+      await handleEventWithExtrinsic(
+        blockIndexer,
+        event,
+        sort,
+        extrinsic,
+        extrinsicIndex,
+        events
+      );
     }
 
-    const extrinsicIndex = phase.value.toNumber();
-    const extrinsic = extrinsics[extrinsicIndex];
-    await handleEventWithExtrinsic(
-      blockIndexer,
-      event,
-      sort,
-      extrinsic,
-      extrinsicIndex,
-      events
-    );
+    await handleBountyEvent(event, indexer, extrinsic);
   }
 }
 
