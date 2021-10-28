@@ -36,6 +36,7 @@ let democracyPublicProposalCol = null;
 let democracyReferendumCol = null;
 let democracyExternalCol = null;
 let preImageCol = null;
+let bountyCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -52,6 +53,8 @@ async function initDb() {
   democracyReferendumCol = db.collection("democracyReferendum");
   democracyExternalCol = db.collection("democracyExternal");
   preImageCol = db.collection("democracyPreImage");
+
+  bountyCol = db.collection("bounty");
 
   await _createIndexes();
 }
@@ -116,6 +119,11 @@ async function getDemocracyPreImageCollection() {
   return preImageCol;
 }
 
+async function getBountyCollection() {
+  await tryInit(bountyCol);
+  return bountyCol;
+}
+
 module.exports = {
   getStatusCollection,
   getTipCollection,
@@ -126,4 +134,5 @@ module.exports = {
   getDemocracyExternalCollection,
   getTechCommMotionCollection,
   getDemocracyPreImageCollection,
+  getBountyCollection,
 };
