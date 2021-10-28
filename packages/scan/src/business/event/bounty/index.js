@@ -1,3 +1,4 @@
+const { handleCanceled } = require("./canceled");
 const { handleRejected } = require("./rejected");
 const { handleBecameActive } = require("./becameActive");
 const { handleProposed } = require("./proposed");
@@ -19,6 +20,8 @@ async function handleBountyEvent(event, indexer, extrinsic) {
 
   if (method === BountyEvents.BountyProposed) {
     await handleProposed(...arguments);
+  } else if (method === BountyEvents.BountyCanceled) {
+    await handleCanceled(...arguments);
   } else if (method === BountyEvents.BountyRejected) {
     await handleRejected(...arguments);
   } else if (method === BountyEvents.BountyBecameActive) {
