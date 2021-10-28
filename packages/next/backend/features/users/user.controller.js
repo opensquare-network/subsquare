@@ -77,11 +77,11 @@ async function changePassword(ctx) {
     }
   );
 
-  if (!result.result.ok) {
+  if (!result.acknowledged) {
     throw new HttpError(500, "DB error: change password.");
   }
 
-  if (result.result.nModified === 0) {
+  if (result.modifiedCount === 0) {
     throw new HttpError(500, "Failed to change password.");
   }
 
@@ -104,11 +104,11 @@ async function deleteAccount(ctx) {
   const userCol = await getUserCollection();
   const result = await userCol.deleteOne({ _id: user._id });
 
-  if (!result.result.ok) {
+  if (!result.acknowledged) {
     throw new HttpError(500, "DB error: delete account.");
   }
 
-  if (result.result.n === 0) {
+  if (result.deletedCount === 0) {
     throw new HttpError(500, "Failed to delete account.");
   }
 
@@ -141,25 +141,24 @@ async function linkAddressStart(ctx) {
 
   validateAddress(address, chain);
 
-  const attemptCol = await getAttemptCollection();
-  const result = await attemptCol.insertOne({
+  const newAttempt = {
     type: "linkAddress",
     userId: user._id,
     address,
     chain,
     challenge: randomBytes(12).toString("hex"),
     createdAt: new Date(),
-  });
+  };
+  const attemptCol = await getAttemptCollection();
+  const result = await attemptCol.insertOne(newAttempt);
 
-  if (!result.result.ok) {
+  if (!result.acknowledged) {
     throw new HttpError(500, "Db error: link address start.");
   }
 
-  const attempt = result.ops[0];
-
   ctx.body = {
-    attemptId: attempt._id,
-    challenge: attempt.challenge,
+    attemptId: newAttempt._id,
+    challenge: newAttempt.challenge,
   };
 }
 
@@ -229,7 +228,7 @@ async function linkAddressConfirm(ctx) {
     }
   );
 
-  if (!result.result.ok) {
+  if (!result.acknowledged) {
     throw new HttpError(500, "Db error: save address.");
   }
 
@@ -252,11 +251,11 @@ async function unlinkAddress(ctx) {
     }
   );
 
-  if (!result.result.ok) {
+  if (!result.acknowledged) {
     throw new HttpError(500, "Db error, unlink address.");
   }
 
-  if (result.result.nModified === 0) {
+  if (result.modifiedCount === 0) {
     throw new HttpError(500, "Failed to unlink address.");
   }
 
@@ -283,7 +282,7 @@ async function setUserNotification(ctx) {
     }
   );
 
-  if (!result.result.ok) {
+  if (!result.acknowledged) {
     throw new HttpError(500, "Db error, update notification setting");
   }
 
@@ -308,7 +307,7 @@ async function setUserPreference(ctx) {
     }
   );
 
-  if (!result.result.ok) {
+  if (!result.acknowledged) {
     throw new HttpError(500, "Db error, update notification setting");
   }
 

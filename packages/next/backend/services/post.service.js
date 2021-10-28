@@ -50,7 +50,7 @@ function createService(postType) {
       }
     );
 
-    if (!result.result.ok) {
+    if (!result.acknowledged) {
       throw new HttpError(500, "Failed to create post");
     }
 
@@ -97,7 +97,7 @@ function createService(postType) {
       }
     );
 
-    if (!result.result.ok) {
+    if (!result.acknowledged) {
       throw new HttpError(500, "Failed to update post");
     }
 
@@ -245,7 +245,7 @@ function createService(postType) {
       { upsert: true }
     );
 
-    if (!result.result.ok) {
+    if (!result.acknowledged) {
       throw new HttpError(500, "Db error, update reaction.");
     }
 
@@ -264,11 +264,11 @@ function createService(postType) {
       user: user._id,
     });
 
-    if (!result.result.ok) {
+    if (!result.acknowledged) {
       throw new HttpError(500, "Db error, clean reaction.");
     }
 
-    if (result.result.nModified === 0) {
+    if (result.modifiedCount === 0) {
       return false;
     }
 
@@ -349,11 +349,11 @@ function createService(postType) {
     };
     const result = await commentCol.insertOne(newComment);
 
-    if (!result.result.ok) {
+    if (!result.acknowledged) {
       throw new HttpError(500, "Failed to create comment");
     }
 
-    const newCommentId = result.ops[0]._id;
+    const newCommentId = result.insertedId;
 
     const updatePostResult = await postCol.updateOne(
       { _id: postObjId },
@@ -364,7 +364,7 @@ function createService(postType) {
       },
     );
 
-    if (!updatePostResult.result.ok) {
+    if (!updatePostResult.acknowledged) {
       throw new HttpError(500, "Unable to udpate post last activity time");
     }
 

@@ -39,7 +39,7 @@ async function updateComment(
     }
   );
 
-  if (!result.result.ok) {
+  if (!result.acknowledged) {
     throw new HttpError(500, "Failed to update comment");
   }
 
@@ -57,11 +57,11 @@ async function unsetCommentReaction(chain, commentId, user) {
     user: user._id,
   });
 
-  if (!result.result.ok) {
+  if (!result.acknowledged) {
     throw new HttpError(500, "Db error, clean reaction.");
   }
 
-  if (result.result.nModified === 0) {
+  if (result.deletedCount === 0) {
     return false;
   }
 
@@ -132,7 +132,7 @@ async function setCommentReaction(chain, commentId, reaction, user) {
     { upsert: true }
   );
 
-  if (!result.result.ok) {
+  if (!result.acknowledged) {
     throw new HttpError(500, "Db error, update reaction.");
   }
 
