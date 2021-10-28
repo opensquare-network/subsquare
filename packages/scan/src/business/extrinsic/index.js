@@ -1,3 +1,4 @@
+const { handleAcceptCurator } = require("./bounty/acceptCurator");
 const { handleTechCommPropose } = require("./techComm/propose");
 const { findRegistry } = require("../../chain/specs");
 const { handleFastTrack } = require("./democracy/fastTrack");
@@ -19,6 +20,7 @@ async function handleCall(call, author, extrinsicIndexer, events) {
   await handleExternalPropose(call, author, extrinsicIndexer, events);
   await handleFastTrack(call, author, extrinsicIndexer, events);
   await handleTechCommPropose(...arguments);
+  await handleAcceptCurator(...arguments);
 }
 
 async function unwrapProxy(call, signer, extrinsicIndexer, events) {
