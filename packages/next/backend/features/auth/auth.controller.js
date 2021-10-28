@@ -57,22 +57,23 @@ async function signup(ctx) {
   const verifyToken = randomBytes(12).toString("hex");
 
   const now = new Date();
-  const result = await userCol.insertOne({
+  const newUser = {
     userid,
     username,
     email,
     hashedPassword,
     verifyToken,
     createdAt: now,
-  });
+  };
 
-  if (!result.result.ok) {
+  const result = await userCol.insertOne(newUser);
+
+  if (!result.acknowledged) {
     throw new HttpError(500, "Signup error, cannot create user.");
   }
 
-  const insertedUser = result.ops[0];
-  const accessToken = await authService.getSignedToken(insertedUser);
-  const refreshToken = await authService.getRefreshToken(insertedUser);
+  const accessToken = await authService.getSignedToken(newUser);
+  const refreshToken = await authService.getRefreshToken(newUser);
 
   ctx.cookies.set("auth-token", accessToken, {
     httpOnly: true,
@@ -81,8 +82,8 @@ async function signup(ctx) {
   });
 
   ctx.body = {
-    username: insertedUser.username,
-    email: insertedUser.email,
+    username: newUser.username,
+    email: newUser.email,
     accessToken,
     refreshToken,
   };
@@ -123,11 +124,11 @@ async function verify(ctx) {
     }
   );
 
-  if (!result.result.ok) {
+  if (!result.acknowledged) {
     throw new HttpError(500, "Db error: email verification.");
   }
 
-  if (result.result.nModified === 0) {
+  if (result.modifiedCount === 0) {
     throw new HttpError(500, "Failed to verify email.");
   }
 
@@ -226,11 +227,11 @@ async function forgetPassword(ctx) {
     }
   );
 
-  if (!result.result.ok) {
+  if (!result.acknowledged) {
     throw new HttpError(500, "Db error: request password reset.");
   }
 
-  if (result.result.nModified === 0) {
+  if (result.modifiedCount === 0) {
     throw new HttpError(500, "Failed to request password reset.");
   }
 
@@ -291,11 +292,11 @@ async function resetPassword(ctx) {
     }
   );
 
-  if (!result.result.ok) {
+  if (!result.acknowledged) {
     throw new HttpError(500, "Db error: request password reset.");
   }
 
-  if (result.result.nModified === 0) {
+  if (result.modifiedCount === 0) {
     throw new HttpError(500, "Failed to reset password.");
   }
 
@@ -318,24 +319,23 @@ async function addressLoginStart(ctx) {
     });
   }
 
-  const attemptCol = await getAttemptCollection();
-  const result = await attemptCol.insertOne({
+  const newAttempt = {
     type: "login",
     userId: user._id,
     address,
     challenge: randomBytes(12).toString("hex"),
     createdAt: new Date(),
-  });
+  };
+  const attemptCol = await getAttemptCollection();
+  const result = await attemptCol.insertOne(newAttempt);
 
-  if (!result.result.ok) {
+  if (!result.acknowledged) {
     throw new HttpError(500, "Db error: start address login.");
   }
 
-  const attempt = result.ops[0];
-
   ctx.body = {
-    attemptId: attempt._id,
-    challenge: attempt.challenge,
+    attemptId: newAttempt._id,
+    challenge: newAttempt.challenge,
   };
 }
 
