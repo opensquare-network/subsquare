@@ -143,6 +143,8 @@ const BountyEvents = Object.freeze({
 const BountyStatus = Object.freeze({
   Proposed: "Proposed",
   Approved: "Approved",
+  Funded: "Funded",
+  Active: "Active",
 });
 
 const BountyMethods = Object.freeze({
