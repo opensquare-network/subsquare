@@ -1,3 +1,4 @@
+const { handleExtended } = require("./extended");
 const { handleAwarded } = require("./awared");
 const { handleClaimed } = require("./claimed");
 const { handleCanceled } = require("./canceled");
@@ -6,7 +7,7 @@ const { handleBecameActive } = require("./becameActive");
 const { handleProposed } = require("./proposed");
 const { Modules, BountyEvents } = require("../../common/constants");
 
-function isTipEvent(section, method) {
+function isBountyEvent(section, method) {
   if (![Modules.Treasury, Modules.Bounties].includes(section)) {
     return false;
   }
@@ -15,13 +16,15 @@ function isTipEvent(section, method) {
 }
 
 async function handleBountyEvent(event, indexer, extrinsic) {
-  const { section, method, data } = event;
-  if (!isTipEvent(section, method)) {
+  const { section, method } = event;
+  if (!isBountyEvent(section, method)) {
     return;
   }
 
   if (method === BountyEvents.BountyProposed) {
     await handleProposed(...arguments);
+  } else if (method === BountyEvents.BountyExtended) {
+    await handleExtended(...arguments);
   } else if (method === BountyEvents.BountyAwarded) {
     await handleAwarded(...arguments);
   } else if (method === BountyEvents.BountyClaimed) {
