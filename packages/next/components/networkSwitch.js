@@ -123,7 +123,7 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
         <NetworkBlock>
           <div>Block</div>
           {nodesHeight[activeNode.value] ? (
-            <span>{`#${nodesHeight[activeNode.value.toLocaleString()]}`}</span>
+            <span>{`#${nodesHeight[activeNode.value]?.toLocaleString()}`}</span>
           ) : (
             <LoadingSvg />
           )}
