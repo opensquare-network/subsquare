@@ -4,6 +4,12 @@ import { nodes } from "./constants";
 
 BigNumber.config({ EXPONENTIAL_AT: 36 });
 
+export function stringUpperFirst (value) {
+  return value
+    ? value.charAt(0).toUpperCase() + value.slice(1)
+    : '';
+}
+
 export function textEllipsis(text, start, end) {
   if (!text) return;
   if (text.length <= start + end) return text;

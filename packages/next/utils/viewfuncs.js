@@ -1,4 +1,4 @@
-import { addressEllipsis } from ".";
+import { addressEllipsis, stringUpperFirst } from ".";
 
 const TipStateMap = {
   NewTip: "Tipping",
