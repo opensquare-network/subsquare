@@ -2,6 +2,7 @@ const NodeCache = require( "node-cache" );
 const discussionPostService = require("../../services/post.service")("post");
 const tipPostService = require("../../services/tip.service");
 const treasuryProposalPostService = require("../../services/treasury-proposal.service");
+const bountyPostService = require("../../services/bounty.service");
 const motionService = require("../../services/motion.service");
 const externalProposalPostService = require("../../services/external-proposal.service");
 const publicProposalPostService = require("../../services/public-proposal.service");
@@ -23,6 +24,7 @@ async function getOverview(ctx) {
     discussions,
     tips,
     treasuryProposals,
+    bounties,
     motions,
     externals,
     publicProposals,
@@ -32,6 +34,7 @@ async function getOverview(ctx) {
     discussionPostService.getPostsOverview(chain),
     tipPostService.getActivePostsOverview(chain),
     treasuryProposalPostService.getActivePostsOverview(chain),
+    bountyPostService.getActivePostsOverview(chain),
     motionService.getActiveMotionsOverview(chain),
     externalProposalPostService.getActivePostsOverview(chain),
     publicProposalPostService.getActivePostsOverview(chain),
@@ -44,6 +47,7 @@ async function getOverview(ctx) {
     treasury: {
       tips,
       proposals: treasuryProposals,
+      bounties,
     },
     democracy: {
       proposals: publicProposals,

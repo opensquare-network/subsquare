@@ -2,7 +2,7 @@ const { ObjectId } = require("mongodb");
 const { safeHtml } = require("../utils/post");
 const { PostTitleLengthLimitation } = require("../constants");
 const { getDb: getBusinessDb, getBountyCollection } = require("../mongo/business");
-const { getDb: getChainDb, getBountyCollection: getChainBountyCollection } = require("../mongo/chain");
+const { getDb: getChainDb, getBountyCollection: getChainBountyCollection, getMotionCollection } = require("../mongo/chain");
 const { getDb: getCommonDb, lookupUser } = require("../mongo/common");
 const { HttpError } = require("../exc");
 const { ContentType } = require("../constants");
@@ -62,6 +62,53 @@ async function updatePost(
   }
 
   return true;
+}
+
+async function getActivePostsOverview(chain) {
+  const chainBountyCol = await getChainBountyCollection(chain);
+  const bounties = await chainBountyCol.find(
+    {
+      "state.state": { $nin: ["Awarded", "Approved", "Rejected"] } //TODO:
+    })
+    .sort({ "indexer.blockHeight": -1 })
+    .limit(3)
+    .toArray();
+
+  const commonDb = await getCommonDb(chain);
+  const businessDb = await getBusinessDb(chain);
+  const posts = await businessDb.lookupOne({
+    from: "bounty",
+    for: bounties,
+    as: "post",
+    localField: "bountyIndex",
+    foreignField: "bountyIndex",
+  });
+
+  await Promise.all([
+    commonDb.lookupOne({
+      from: "user",
+      for: posts,
+      as: "author",
+      localField: "proposer",
+      foreignField: `${chain}Address`,
+      map: toUserPublicInfo,
+    }),
+    businessDb.lookupCount({
+      from: "comment",
+      for: posts,
+      as: "commentsCount",
+      localField: "_id",
+      foreignField: "bounty",
+    }),
+  ]);
+
+  return bounties.map(bounty => {
+    const post = bounty.post;
+    bounty.post = undefined;
+    post.onchainData = bounty;
+    post.state = bounty.state?.state;
+    return post;
+  });
 }
 
 async function getPostsByChain(chain, page, pageSize) {
@@ -135,7 +182,8 @@ async function getPostById(chain, postId) {
   const commonDb = await getCommonDb(chain);
   const businessDb = await getBusinessDb(chain);
   const chainBountyCol = await getChainBountyCollection(chain);
-  const [, reactions, bountyData] = await Promise.all([
+  const chainMotionCol = await getMotionCollection(chain);
+  const [, reactions, bountyData, motions] = await Promise.all([
     commonDb.lookupOne({
       from: "user",
       for: post,
@@ -152,13 +200,17 @@ async function getPostById(chain, postId) {
       foreignField: "bounty",
     }),
     chainBountyCol.findOne({ bountyIndex: post.bountyIndex }),
+    chainMotionCol.find({ bountyIndex: post.bountyIndex }).toArray(),
   ]);
 
   await lookupUser({ for: reactions, localField: "user" });
 
   return {
     ...post,
-    onchainData: bountyData,
+    onchainData: {
+      ...bountyData,
+      motions,
+    },
   };
 }
 
@@ -166,4 +218,5 @@ module.exports =  {
   updatePost,
   getPostsByChain,
   getPostById,
+  getActivePostsOverview,
 };
