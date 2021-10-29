@@ -130,10 +130,46 @@ const PreImageEvents = Object.freeze({
   PreimageReaped: "PreimageReaped",
 });
 
+const BountyEvents = Object.freeze({
+  BountyProposed: "BountyProposed",
+  BountyRejected: "BountyRejected",
+  BountyBecameActive: "BountyBecameActive",
+  BountyAwarded: "BountyAwarded",
+  BountyClaimed: "BountyClaimed",
+  BountyCanceled: "BountyCanceled",
+  BountyExtended: "BountyExtended",
+});
+
+const BountyStatus = Object.freeze({
+  Proposed: "Proposed",
+  Approved: "Approved",
+  Funded: "Funded",
+  Active: "Active",
+  PendingPayout: "PendingPayout",
+  Rejected: "Rejected",
+  Canceled: "Canceled",
+  Claimed: "Claimed",
+});
+
+const BountyMethods = Object.freeze({
+  proposeBounty: "proposeBounty",
+  approveBounty: "approveBounty",
+  proposeCurator: "proposeCurator",
+  unassignCurator: "unassignCurator",
+  acceptCurator: "acceptCurator",
+  awardBounty: "awardBounty",
+  claimBounty: "claimBounty",
+  closeBounty: "closeBounty",
+  extendBountyExpiry: "extendBountyExpiry",
+});
+
 module.exports = {
   Modules,
   TipEvents,
   TipMethods,
+  BountyMethods,
+  BountyEvents,
+  BountyStatus,
   ProxyMethods,
   MultisigMethods,
   UtilityMethods,

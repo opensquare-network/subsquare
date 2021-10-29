@@ -40,6 +40,7 @@ let motionCol = null;
 let treasuryProposalCol = null;
 // For democracy posts
 let democracyCol = null;
+let bountyCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -51,6 +52,7 @@ async function initDb() {
   motionCol = db.collection(motionCollectionName);
   treasuryProposalCol = db.collection("treasuryProposal");
   democracyCol = db.collection("democracy");
+  bountyCol = db.collection("bounty");
 
   await _createIndexes();
 }
@@ -90,9 +92,15 @@ async function getDemocracy() {
   return democracyCol;
 }
 
+async function getBountyCollection() {
+  await tryInit(bountyCol);
+  return bountyCol;
+}
+
 module.exports = {
   getBusinessTipCollection: getTipCollection,
   getBusinessMotionCollection: getMotionCollection,
   getBusinessTreasuryProposalCollection: getTreasuryProposalCollection,
   getBusinessDemocracy: getDemocracy,
+  getBusinessBountyCollection: getBountyCollection,
 };
