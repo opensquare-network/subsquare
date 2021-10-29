@@ -1,5 +1,5 @@
 const { handleExtended } = require("./extended");
-const { handleAwarded } = require("./awared");
+const { handleAwarded } = require("./awarded");
 const { handleClaimed } = require("./claimed");
 const { handleCanceled } = require("./canceled");
 const { handleRejected } = require("./rejected");
