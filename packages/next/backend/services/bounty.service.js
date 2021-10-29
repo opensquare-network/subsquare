@@ -68,7 +68,9 @@ async function getActivePostsOverview(chain) {
   const chainBountyCol = await getChainBountyCollection(chain);
   const bounties = await chainBountyCol.find(
     {
-      "state.state": { $nin: ["Awarded", "Approved", "Rejected"] } //TODO:
+      //TODO: Not sure what state to be shown:
+      // Proposed, Approved, Funded, CuratorProposed, Active, PendingPayout
+      "state.state": { $nin: ["Active", "PendingPayout", "Rejected"] }
     })
     .sort({ "indexer.blockHeight": -1 })
     .limit(3)
