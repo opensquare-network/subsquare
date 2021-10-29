@@ -103,7 +103,7 @@ export default function User({
           )
         }
       >
-        {identity ? (
+        {(identity && identity?.info?.status !== "NO_ID") ? (
           <Identity identity={identity} fontSize={fontSize} />
         ) : (
           <Username fontSize={fontSize}>
