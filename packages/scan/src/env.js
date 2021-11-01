@@ -4,6 +4,7 @@ const CHAINS = {
   KHALA: "khala",
   KUSAMA: "kusama",
   POLKADOT: "polkadot",
+  BASILISK: "basilisk",
 };
 
 let chain = null;
