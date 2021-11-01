@@ -22,7 +22,10 @@ describe("test get ", () => {
     const height = 4501546;
     const blockHash = await api.rpc.chain.getBlockHash(height);
 
-    const description = await getBountyDescription(0, blockHash);
+    const description = await getBountyDescription(0, {
+      blockHash,
+      blockHeight: height,
+    });
     expect(description).toEqual("Kusama network UI Bounty");
   });
 });

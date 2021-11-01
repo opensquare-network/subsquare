@@ -1,8 +1,8 @@
-const { findBlockApi } = require("../../../../chain/blockApi");
+const { findBlockApi } = require("../../../../chain/specs");
 const { getApi } = require("../../../../api");
 
 async function getReferendumInfoFromStorage(referendumIndex, indexer) {
-  const blockApi = await findBlockApi(indexer.blockHash);
+  const blockApi = await findBlockApi(indexer);
   const raw = await blockApi.query.democracy.referendumInfoOf(referendumIndex);
   return raw.toJSON();
 }

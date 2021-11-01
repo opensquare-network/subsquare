@@ -28,7 +28,7 @@ async function getApi() {
 
     console.log(`Connect to endpoint:`, wsEndpoint);
 
-    provider = new WsProvider(wsEndpoint);
+    provider = new WsProvider(wsEndpoint, 1000);
     const options = { provider };
     if (chain === CHAINS.KARURA) {
       options.typesBundle = { ...typesBundleForPolkadot };

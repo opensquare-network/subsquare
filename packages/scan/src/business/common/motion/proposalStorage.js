@@ -1,11 +1,11 @@
+const { findBlockApi } = require("../../../chain/specs");
 const { findRegistry } = require("../../../chain/specs");
-const { findBlockApi } = require("../../../chain/blockApi");
 const { normalizeCall } = require("./utils");
 const { isKarura } = require("../../../env");
 const { GenericCall } = require("@polkadot/types");
 
 async function getMotionProposal(motionHash, indexer) {
-  const blockApi = await findBlockApi(indexer.blockHash);
+  const blockApi = await findBlockApi(indexer);
 
   let raw = null;
   if (isKarura()) {

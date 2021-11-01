@@ -1,4 +1,4 @@
-const { findBlockApi } = require("../../../chain/blockApi");
+const { findBlockApi } = require("../../../chain/specs");
 const {
   Modules,
   ProxyMethods,
@@ -10,8 +10,8 @@ const { GenericCall } = require("@polkadot/types");
 const { blake2AsHex } = require("@polkadot/util-crypto");
 const { currentChain, CHAINS } = require("../../../env");
 
-async function getTipMetaFromStorage(api, tipHash, { blockHeight, blockHash }) {
-  const blockApi = await findBlockApi(blockHash);
+async function getTipMetaFromStorage(api, tipHash, indexer) {
+  const blockApi = await findBlockApi(indexer);
 
   let raw;
   if (blockApi.query.treasury?.tips) {
@@ -24,7 +24,7 @@ async function getTipMetaFromStorage(api, tipHash, { blockHeight, blockHash }) {
 }
 
 async function getTipReason(reasonHash, indexer) {
-  const blockApi = await findBlockApi(indexer.blockHash);
+  const blockApi = await findBlockApi(indexer);
 
   let raw;
   if (blockApi.query.treasury?.reasons) {
@@ -87,20 +87,20 @@ function getNewTipCall(registry, call, reasonHash) {
   return null;
 }
 
-async function getTippersCountOfKarura(blockHash) {
-  const blockApi = await findBlockApi(blockHash);
+async function getTippersCountOfKarura(indexer) {
+  const blockApi = await findBlockApi(indexer);
   const members = await blockApi.query.generalCouncil.members();
 
   return members.length;
 }
 
-async function getTippersCount(blockHash) {
+async function getTippersCount(indexer) {
   const chain = currentChain();
   if (CHAINS.KARURA === chain) {
-    return await getTippersCountOfKarura(blockHash);
+    return await getTippersCountOfKarura(indexer);
   }
 
-  const blockApi = await findBlockApi(blockHash);
+  const blockApi = await findBlockApi(indexer);
   if (blockApi.consts.electionsPhragmen?.desiredMembers) {
     return blockApi.consts.electionsPhragmen?.desiredMembers.toNumber();
   } else if (blockApi.consts.phragmenElection?.desiredMembers) {
@@ -110,8 +110,8 @@ async function getTippersCount(blockHash) {
   throw new Error("can not get elections desired members");
 }
 
-async function getTipFindersFee(blockHash) {
-  const blockApi = await findBlockApi(blockHash);
+async function getTipFindersFee(indexer) {
+  const blockApi = await findBlockApi(indexer);
   if (blockApi.consts.tips?.tipFindersFee) {
     return blockApi.consts.tips?.tipFindersFee.toNumber();
   } else if (blockApi.consts.treasury?.tipFindersFee) {

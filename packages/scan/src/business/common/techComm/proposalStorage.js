@@ -1,10 +1,10 @@
+const { findBlockApi } = require("../../../chain/specs");
 const { findRegistry } = require("../../../chain/specs");
-const { findBlockApi } = require("../../../chain/blockApi");
 const { GenericCall } = require("@polkadot/types");
 const { normalizeCall } = require("../motion/utils");
 
 async function getTechCommMotionProposal(motionHash, indexer) {
-  const blockApi = await findBlockApi(indexer.blockHash);
+  const blockApi = await findBlockApi(indexer);
   return blockApi.query.technicalCommittee.proposalOf(motionHash);
 }
 

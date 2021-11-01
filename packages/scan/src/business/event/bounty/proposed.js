@@ -24,10 +24,7 @@ async function handleProposed(event, indexer, extrinsic) {
   const meta = await getBountyMeta(bountyIndex, indexer);
   const { proposer, value } = meta;
   const authors = [...new Set([proposer, extrinsic.signer.toString()])];
-  const description = await getBountyDescription(
-    bountyIndex,
-    indexer.blockHash
-  );
+  const description = await getBountyDescription(bountyIndex, indexer);
 
   const timelineItem = {
     type: TimelineItemTypes.extrinsic,
