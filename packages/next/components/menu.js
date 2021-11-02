@@ -11,6 +11,7 @@ import UserIcon from "../public/imgs/icons/user.svg";
 import AddressIcon from "../public/imgs/icons/address.svg";
 import BellIcon from "../public/imgs/icons/bell.svg";
 import MembersIcon from "../public/imgs/icons/members.svg";
+import BountyIcon from "../public/imgs/icons/bounties.svg";
 
 const Wrapper = styled.div`
   padding-top: 37px;
@@ -79,6 +80,7 @@ export default function Menu({ menu }) {
   iconMap.set("discussions", <DiscussionIcon />);
   iconMap.set("tips", <TipIcon />);
   iconMap.set("proposals", <ProposalIcon />);
+  iconMap.set("bounties", <BountyIcon />);
   iconMap.set("motions", <MotionIcon />);
   iconMap.set("referenda", <ReferendaIcon />);
   iconMap.set("democracyProposals", <DemocracyProposalIcon />);

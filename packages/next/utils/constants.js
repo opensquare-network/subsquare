@@ -123,6 +123,12 @@ export const mainMenu = [
         pathname: "/[chain]/treasury/proposals",
       },
       {
+        value: "bounties",
+        name: "Bounties",
+        icon: "bounties.svg",
+        pathname: "/[chain]/treasury/bounties",
+      },
+      {
         value: "tips",
         name: "Tips",
         icon: "tips.svg",
