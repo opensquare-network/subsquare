@@ -69,6 +69,7 @@ export const toTreasuryProposalListItem = (chain, item) => ({
 
 export const toTreasuryBountyListItem = (chain, item) => ({
   ...item,
+  index: item.bountyIndex,
   author: item.author ?? {
     username: addressEllipsis(item.proposer),
     addresses: [{ chain, address: item.proposer }],
