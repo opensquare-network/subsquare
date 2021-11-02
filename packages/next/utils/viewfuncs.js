@@ -65,6 +65,7 @@ export const toTreasuryProposalListItem = (chain, item) => ({
   status: item.state ?? "Unknown",
   time: getPostUpdatedAt(item),
   detailLink: `/${chain}/treasury/proposal/${item.proposalIndex}`,
+  value: item.onchainData.value,
 });
 
 export const toTreasuryBountyListItem = (chain, item) => ({
@@ -77,6 +78,7 @@ export const toTreasuryBountyListItem = (chain, item) => ({
   status: item.state ?? "Unknown",
   time: getPostUpdatedAt(item),
   detailLink: `/${chain}/treasury/bounty/${item.bountyIndex}`,
+  value: item.onchainData.value,
 });
 
 export const toReferendaListItem = (chain, item) => ({
