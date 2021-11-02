@@ -48,9 +48,19 @@ async function connectDb(dbName) {
 
     const query = new DeferredCall(async (keys) => {
       const col = getCollection(from);
+
+      projection = projection && {
+        ...projection,
+        ...(
+          Object.entries(projection).some(([,v]) => v === 0)
+          ? {}
+          : { [foreignField]: 1 }
+        ),
+      };
+
       const items = await col.find(
         { [foreignField]: { $in: keys } },
-        projection ? { projection: {...projection, [foreignField]: 1 } } : {}
+        projection ? { projection } : {}
       ).toArray();
       const itemsMap = new Map(items.map(item => [getField(item, foreignField).toString(), map ? map(item) : item]));
       return itemsMap;
@@ -118,6 +128,17 @@ async function connectDb(dbName) {
     const records = Array.isArray(for_) ? for_ : [for_];
     const vals = Array.from(new Set(records.map(item => getField(item, localField)).filter(val => val !== null && val !== undefined)));
     const col = getCollection(from);
+
+    projection = projection && {
+      ...projection,
+      ...(
+        Object.entries(projection).some(([,v]) => v === 0)
+        ? {}
+        : { [foreignField]: 1 }
+      ),
+    };
+
+
     const items = await col.aggregate([
       {
         $match: { [foreignField]: { $in: vals } }
@@ -125,7 +146,7 @@ async function connectDb(dbName) {
       ...(
         projection ? [
           {
-            $project: {...projection, [foreignField]: 1 }
+            $project: projection
           }
         ] : []
       ),
