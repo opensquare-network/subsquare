@@ -57,7 +57,7 @@ async function handleProposed(event, indexer, extrinsic) {
   };
 
   await insertBounty(obj);
-  await insertBountyPost(bountyIndex, description);
+  await insertBountyPost(bountyIndex, description, proposer);
   busLogger.info(`Bounty #${bountyIndex} created`, indexer);
 }
 
