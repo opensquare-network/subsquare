@@ -17,6 +17,16 @@ import Tag from "./tag";
 import Flex from "./styled/flex";
 import { shadow_100 } from "../styles/componentCss";
 import { toApiType } from "utils/viewfuncs";
+import {
+  TYPE_POST,
+  TYPE_MOTION,
+  TYPE_DEMOCRACY_REFERENDUM,
+  TYPE_DEMOCRACY_EXTERNAL,
+  TYPE_DEMOCRACY_PROPOSAL,
+  TYPE_TREASURY_PROPOSAL,
+  TYPE_TREASURY_BOUNTY,
+  TYPE_TREASURY_TIP,
+} from "utils/viewConstants";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -318,7 +328,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
     <Wrapper>
       {!isEdit && (
         <>
-          {type === "democracy/external" && (
+          {type === TYPE_DEMOCRACY_EXTERNAL && (
             <ReferendaWrapper>
               <div>{`External`}</div>
               {hasTechComm(post?.onchainData) && (
@@ -345,7 +355,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
               )}
             </ReferendaWrapper>
           )}
-          {type === "democracy/proposal" && (
+          {type === TYPE_DEMOCRACY_PROPOSAL && (
             <ReferendaWrapper>
               <div>{`Proposal #${post.proposalIndex}`}</div>
               {post?.referendumIndex !== undefined && (
@@ -360,7 +370,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
               )}
             </ReferendaWrapper>
           )}
-          {type === "democracy/referendum" &&
+          {type === TYPE_DEMOCRACY_REFERENDUM &&
             post.externalProposalHash !== undefined && (
               <ReferendaWrapper>
                 <Link
@@ -386,17 +396,20 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                 </div>
               </ReferendaWrapper>
             )}
-          {type === "democracy/referendum" && post.proposalIndex !== undefined && (
-            <ReferendaWrapper>
-              <Link href={`/${chain}/democracy/proposal/${post.proposalIndex}`}>
-                {`Proposal #${post.proposalIndex}`}
-              </Link>
-              <div>
-                <TriangleRight />
-                <div>{`Referenda #${post?.referendumIndex}`}</div>
-              </div>
-            </ReferendaWrapper>
-          )}
+          {type === TYPE_DEMOCRACY_REFERENDUM &&
+            post.proposalIndex !== undefined && (
+              <ReferendaWrapper>
+                <Link
+                  href={`/${chain}/democracy/proposal/${post.proposalIndex}`}
+                >
+                  {`Proposal #${post.proposalIndex}`}
+                </Link>
+                <div>
+                  <TriangleRight />
+                  <div>{`Referenda #${post?.referendumIndex}`}</div>
+                </div>
+              </ReferendaWrapper>
+            )}
           <TitleWrapper>
             {post?.index !== undefined && <Index>{`#${post.index}`}</Index>}
             <Title>{post.title}</Title>
