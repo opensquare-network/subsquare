@@ -71,7 +71,7 @@ async function getActivePostsOverview(chain) {
       "state.state": { $nin: ["Awarded", "Approved", "Rejected"] }
     },
     {
-      projection: { timeline: -1 }
+      projection: { timeline: 0 }
     })
     .sort({ "indexer.blockHeight": -1 })
     .limit(3)
@@ -154,7 +154,7 @@ async function getPostsByChain(chain, page, pageSize) {
       as: "onchainData",
       localField: "proposalIndex",
       foreignField: "proposalIndex",
-      projection: { timeline: -1  },
+      projection: { timeline: 0  },
     }),
   ]);
 

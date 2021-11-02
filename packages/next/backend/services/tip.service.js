@@ -72,7 +72,7 @@ async function getActivePostsOverview(chain) {
       "state.state": { $in: ["NewTip", "tip"] }
     },
     {
-      projection: { timeline: -1 }
+      projection: { timeline: 0 }
     })
     .sort({ "indexer.blockHeight": -1 })
     .limit(3)
@@ -155,7 +155,7 @@ async function getPostsByChain(chain, page, pageSize) {
     chainDb.compoundLookupOne({
       from: "tip",
       for: posts,
-      projection: { timeline: -1 },
+      projection: { timeline: 0 },
       as: "onchainData",
       compoundLocalFields: ["height", "hash"],
       compoundForeignFields: ["indexer.blockHeight", "hash"],

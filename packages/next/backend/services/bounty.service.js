@@ -73,7 +73,7 @@ async function getActivePostsOverview(chain) {
       "state.state": { $nin: ["Active", "PendingPayout", "Rejected"] }
     },
     {
-      projection: { timeline: -1 }
+      projection: { timeline: 0 }
     })
     .sort({ "indexer.blockHeight": -1 })
     .limit(3)
@@ -156,7 +156,7 @@ async function getPostsByChain(chain, page, pageSize) {
       as: "onchainData",
       localField: "bountyIndex",
       foreignField: "bountyIndex",
-      projection: { timeline: -1 },
+      projection: { timeline: 0 },
     }),
   ]);
 
