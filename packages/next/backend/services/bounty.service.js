@@ -71,6 +71,9 @@ async function getActivePostsOverview(chain) {
       //TODO: Not sure what state to be shown:
       // Proposed, Approved, Funded, CuratorProposed, Active, PendingPayout
       "state.state": { $nin: ["Active", "PendingPayout", "Rejected"] }
+    },
+    {
+      projection: { timeline: -1 }
     })
     .sort({ "indexer.blockHeight": -1 })
     .limit(3)
@@ -150,16 +153,18 @@ async function getPostsByChain(chain, page, pageSize) {
     chainDb.lookupOne({
       from: "bounty",
       for: posts,
-      as: "state",
+      as: "onchainData",
       localField: "bountyIndex",
       foreignField: "bountyIndex",
-      projection: { state: 1 },
-      map: (data) => data.state?.state,
+      projection: { timeline: -1 },
     }),
   ]);
 
   return {
-    items: posts,
+    items: posts.map(p => ({
+      ...p,
+      state: p.onchainData?.state?.state
+    })),
     total,
     page,
     pageSize,

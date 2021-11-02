@@ -69,6 +69,9 @@ async function getActivePostsOverview(chain) {
   const proposals = await chainProposalCol.find(
     {
       "state.state": { $nin: ["Awarded", "Approved", "Rejected"] }
+    },
+    {
+      projection: { timeline: -1 }
     })
     .sort({ "indexer.blockHeight": -1 })
     .limit(3)
@@ -148,16 +151,18 @@ async function getPostsByChain(chain, page, pageSize) {
     chainDb.lookupOne({
       from: "treasuryProposal",
       for: posts,
-      as: "state",
+      as: "onchainData",
       localField: "proposalIndex",
       foreignField: "proposalIndex",
-      projection: { state: 1 },
-      map: (data) => data.state?.state,
+      projection: { timeline: -1  },
     }),
   ]);
 
   return {
-    items: posts,
+    items: posts.map(p => ({
+      ...p,
+      state: p.onchainData?.state?.state
+    })),
     total,
     page,
     pageSize,

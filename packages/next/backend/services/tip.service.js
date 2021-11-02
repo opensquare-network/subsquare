@@ -70,6 +70,9 @@ async function getActivePostsOverview(chain) {
   const tips = await chainTipCol.find(
     {
       "state.state": { $in: ["NewTip", "tip"] }
+    },
+    {
+      projection: { timeline: -1 }
     })
     .sort({ "indexer.blockHeight": -1 })
     .limit(3)
@@ -152,19 +155,19 @@ async function getPostsByChain(chain, page, pageSize) {
     chainDb.compoundLookupOne({
       from: "tip",
       for: posts,
-      projection: { meta: 1, state: 1 },
-      map: (data) => ({
-        state: data.state?.state,
-        tipsCount: (data.meta?.tips || []).length,
-      }),
-      as: "state",
+      projection: { timeline: -1 },
+      as: "onchainData",
       compoundLocalFields: ["height", "hash"],
       compoundForeignFields: ["indexer.blockHeight", "hash"],
     }),
   ]);
 
   return {
-    items: posts,
+    items: posts.map(p => ({
+      ...p,
+      state: p.onchainData?.state?.state,
+      tipsCount: (p.onchainData?.meta?.tips || []).length,
+    })),
     total,
     page,
     pageSize,
