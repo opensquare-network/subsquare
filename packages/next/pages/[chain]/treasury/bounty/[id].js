@@ -134,13 +134,10 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     };
   });
 
-  const motionTimelineData = createMotionTimelineData(
-    detail?.onchainData?.motions?.[0]
-  );
-
-  if (motionTimelineData && motionTimelineData.length > 0) {
+  detail?.onchainData?.motions?.forEach((motion) => {
+    const motionTimelineData = createMotionTimelineData(motion);
     timelineData.push(motionTimelineData);
-  }
+  });
 
   timelineData.sort((a, b) => {
     if (Array.isArray(a)) {
