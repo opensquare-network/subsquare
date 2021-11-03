@@ -128,7 +128,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     return {
       indexer,
       time: dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-      status: getTimelineStatus("bounty", item.method ?? item.name),
+      status: getTimelineStatus("proposalgit", item.method ?? item.name),
       data: getTimelineData(item.args, item.method ?? item.name),
     };
   });
