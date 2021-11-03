@@ -173,7 +173,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       case "beneficiary":
         item[1] = (
           <Flex>
-            <User chain={chain} add={item[1]} fontSize={12} />
+            <User chain={chain} add={item[1]} fontSize={14} />
             <Links chain={chain} address={item[1]} style={{ marginLeft: 8 }} />
           </Flex>
         );
