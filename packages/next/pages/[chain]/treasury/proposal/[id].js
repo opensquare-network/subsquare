@@ -124,21 +124,19 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   }
 
   const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
+    const indexer = item.extrinsicIndexer ?? item.indexer;
     return {
-      time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-      indexer: item.indexer,
-      status: getTimelineStatus("proposal", item.method ?? item.name),
+      indexer,
+      time: dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+      status: getTimelineStatus("bounty", item.method ?? item.name),
       data: getTimelineData(item.args, item.method ?? item.name),
     };
   });
 
-  const motionTimelineData = createMotionTimelineData(
-    detail?.onchainData?.motions?.[0]
-  );
-
-  if (motionTimelineData && motionTimelineData.length > 0) {
+  detail?.onchainData?.motions?.forEach((motion) => {
+    const motionTimelineData = createMotionTimelineData(motion);
     timelineData.push(motionTimelineData);
-  }
+  });
 
   timelineData.sort((a, b) => {
     if (Array.isArray(a)) {
