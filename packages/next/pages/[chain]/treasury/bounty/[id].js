@@ -125,9 +125,10 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   }
 
   const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
+    const indexer = item.extrinsicIndexer ?? item.indexer;
     return {
-      time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-      indexer: item.indexer,
+      indexer,
+      time: dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
       status: getTimelineStatus("bounty", item.method ?? item.name),
       data: getTimelineData(item.args, item.method ?? item.name),
     };
@@ -173,7 +174,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       case "beneficiary":
         item[1] = (
           <Flex>
-            <User chain={chain} add={item[1]} fontSize={12} />
+            <User chain={chain} add={item[1]} fontSize={14} />
             <Links chain={chain} address={item[1]} style={{ marginLeft: 8 }} />
           </Flex>
         );
