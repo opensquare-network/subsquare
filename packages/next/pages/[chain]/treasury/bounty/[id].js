@@ -126,8 +126,8 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
     return {
-      time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-      indexer: item.indexer,
+      time: dayjs(item?.indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+      indexer: item.extrinsicIndexer ?? item.indexer,
       status: getTimelineStatus("bounty", item.method ?? item.name),
       data: getTimelineData(item.args, item.method ?? item.name),
     };
