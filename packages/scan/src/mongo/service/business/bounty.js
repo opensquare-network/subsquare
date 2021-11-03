@@ -1,6 +1,6 @@
 const { getBusinessBountyCollection } = require("../../business");
 
-async function insertBountyPost(bountyIndex, description) {
+async function insertBountyPost(bountyIndex, description, proposer) {
   const col = await getBusinessBountyCollection();
   const maybeInDb = await col.findOne({ bountyIndex });
   if (maybeInDb) {
@@ -11,6 +11,7 @@ async function insertBountyPost(bountyIndex, description) {
   await col.insertOne({
     bountyIndex,
     title: description,
+    proposer,
     content: "",
     contentType: "markdown",
     createdAt: now,

@@ -18,8 +18,20 @@ export const shadow_200_right = css`
     0.4px 0 1.46302px rgba(30, 33, 52, 0.0444282);
 `;
 
+export const p_14_medium = css`
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 100%;
+`;
+
 export const text_primary = css`
   color: #1e2134;
+`;
+
+export const text_accessory = css`
+  color: #9da9bb;
 `;
 
 export const no_scroll_bar = css`

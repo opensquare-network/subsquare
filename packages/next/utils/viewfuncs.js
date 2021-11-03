@@ -9,7 +9,7 @@ const TipStateMap = {
 
 export function getPostUpdatedAt(post) {
   if (post.createdAt === post.lastActivityAt) {
-    return post.indexer.blockTime;
+    return post?.indexer?.blockTime ?? post.createdAt;
   }
   return post.lastActivityAt;
 }
@@ -65,6 +65,20 @@ export const toTreasuryProposalListItem = (chain, item) => ({
   status: item.state ?? "Unknown",
   time: getPostUpdatedAt(item),
   detailLink: `/${chain}/treasury/proposal/${item.proposalIndex}`,
+  value: item.onchainData.value,
+});
+
+export const toTreasuryBountyListItem = (chain, item) => ({
+  ...item,
+  index: item.bountyIndex,
+  author: item.author ?? {
+    username: addressEllipsis(item.proposer),
+    addresses: [{ chain, address: item.proposer }],
+  },
+  status: item.state ?? "Unknown",
+  time: getPostUpdatedAt(item),
+  detailLink: `/${chain}/treasury/bounty/${item.bountyIndex}`,
+  value: item.onchainData.value,
 });
 
 export const toReferendaListItem = (chain, item) => ({

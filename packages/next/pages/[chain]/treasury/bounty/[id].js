@@ -23,7 +23,9 @@ import {
 } from "../../../../utils/post";
 import { shadow_100 } from "../../../../styles/componentCss";
 import { to404 } from "../../../../utils/serverSideUtil";
-import { TYPE_TREASURY_PROPOSAL } from "../../../../utils/viewConstants";
+import { TYPE_TREASURY_BOUNTY } from "../../../../utils/viewConstants";
+import { hexToString } from "@polkadot/util";
+import BigNumber from "bignumber.js";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -70,6 +72,16 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   const getTimelineData = (args, method) => {
     switch (method) {
+      case "proposeBounty":
+        return {
+          ...args,
+          value: `${toPrecision(args.value ?? 0, decimals)} ${symbol}`,
+        };
+      case "BountyRejected":
+        return {
+          ...args,
+          slashed: `${toPrecision(args.slashed ?? 0, decimals)} ${symbol}`,
+        };
       case "Proposed":
         return {
           Index: `#${args.index}`,
@@ -101,17 +113,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
             },
           };
         }
-        case "Voted": {
-          return {
-            indexer: item.indexer,
-            time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-            status: { value: "Vote", color: "#6848FF" },
-            voteResult: {
-              name: item.args.voter,
-              value: item.args.approve,
-            },
-          };
-        }
         default: {
           return {
             indexer: item.indexer,
@@ -128,7 +129,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     return {
       indexer,
       time: dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-      status: getTimelineStatus("proposal", item.method ?? item.name),
+      status: getTimelineStatus("bounty", item.method ?? item.name),
       data: getTimelineData(item.args, item.method ?? item.name),
     };
   });
@@ -163,13 +164,14 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const metadata = detail.onchainData?.meta
     ? Object.entries(detail.onchainData?.meta)
     : [];
+
   metadata.forEach((item) => {
     switch (item[0]) {
       case "proposer":
       case "beneficiary":
         item[1] = (
           <Flex>
-            <User chain={chain} add={item[1]} fontSize={12} />
+            <User chain={chain} add={item[1]} fontSize={14} />
             <Links chain={chain} address={item[1]} style={{ marginLeft: 8 }} />
           </Flex>
         );
@@ -177,6 +179,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       case "value":
       case "bond":
         item[1] = `${toPrecision(item[1] ?? 0, decimals)} ${symbol}`;
+        break;
+      case "status":
+        item[1] = Object.keys(item[1])[0];
     }
   });
 
@@ -185,13 +190,13 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   return (
     <Layout user={loginUser} chain={chain}>
       <Wrapper className="post-content">
-        <Back href={`/${chain}/treasury/proposals`} text="Back to Proposals" />
+        <Back href={`/${chain}/treasury/bounties`} text="Back to Bounties" />
         <DetailItem
           data={detail}
           user={loginUser}
           chain={chain}
           onReply={focusEditor}
-          type={TYPE_TREASURY_PROPOSAL}
+          type={TYPE_TREASURY_BOUNTY}
         />
         <Metadata data={metadata} />
         <Timeline data={timelineData} chain={chain} />
@@ -210,7 +215,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
               ref={editorWrapperRef}
               setQuillRef={setQuillRef}
               {...{ contentType, setContentType, content, setContent, users }}
-              type={TYPE_TREASURY_PROPOSAL}
+              type={TYPE_TREASURY_BOUNTY}
             />
           )}
         </CommentsWrapper>
@@ -223,7 +228,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { chain, id, page, page_size: pageSize } = context.query;
 
   const [{ result: detail }] = await Promise.all([
-    nextApi.fetch(`${chain}/treasury/proposals/${id}`),
+    nextApi.fetch(`${chain}/treasury/bounties/${id}`),
   ]);
 
   if (!detail) {
@@ -231,7 +236,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   }
 
   const { result: comments } = await nextApi.fetch(
-    `${chain}/treasury/proposals/${detail._id}/comments`,
+    `${chain}/treasury/bounties/${detail._id}/comments`,
     {
       page: page ?? "last",
       pageSize: Math.min(pageSize ?? 50, 100),
