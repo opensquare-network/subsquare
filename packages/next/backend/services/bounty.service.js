@@ -70,7 +70,7 @@ async function getActivePostsOverview(chain) {
     {
       //TODO: Not sure what state to be shown:
       // Proposed, Approved, Funded, CuratorProposed, Active, PendingPayout
-      "state.state": { $nin: ["Active", "PendingPayout", "Rejected"] }
+      "state.state": { $nin: ["Active", "PendingPayout", "Rejected", "Claimed"] }
     },
     {
       projection: { timeline: 0 }
