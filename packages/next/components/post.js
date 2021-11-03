@@ -2,12 +2,17 @@ import styled from "styled-components";
 import Link from "next/link";
 
 import User from "components/user";
-import { timeDuration, timeDurationFromNow } from "utils";
+import { getNode, timeDuration, timeDurationFromNow, toPrecision } from "utils";
 import Tag from "components/tag";
 import ReasonLink from "components/reasonLink";
 import SectionTag from "components/sectionTag";
 import Flex from "./styled/flex";
-import { shadow_100 } from "../styles/componentCss";
+import {
+  p_14_medium,
+  shadow_100,
+  text_accessory,
+  text_primary,
+} from "../styles/componentCss";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -109,16 +114,58 @@ const TitleWrapper = styled.div`
   overflow: hidden;
 `;
 
+const HeadWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  > span {
+    display: block;
+    ${p_14_medium};
+    ${text_primary};
+    white-space: nowrap;
+    flex-basis: 120px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .symbol {
+    ${text_accessory};
+  }
+
+  @media screen and (max-width: 768px) {
+    flex-wrap: wrap;
+    > span {
+      flex-basis: 100%;
+    }
+  }
+`;
+
 export default function Post({ data, chain, href }) {
+  const node = getNode(chain);
+  if (!node) {
+    return null;
+  }
+  const decimals = node.decimals;
+  const symbol = node.symbol;
+
   return (
     <Wrapper>
-      <TitleWrapper>
-        {data?.index !== undefined && <Index>{`#${data.index}`}</Index>}
-        <Link href={href} passHref>
-          <Title>{data.title}</Title>
-        </Link>
-        <ReasonLink text={data.title} hideText={true} />
-      </TitleWrapper>
+      <HeadWrapper>
+        <TitleWrapper>
+          {data?.index !== undefined && <Index>{`#${data.index}`}</Index>}
+          <Link href={href} passHref>
+            <Title>{data.title}</Title>
+          </Link>
+          <ReasonLink text={data.title} hideText={true} />
+        </TitleWrapper>
+        {data.value && (
+          <span>
+            {toPrecision(data.value, decimals)}{" "}
+            <span className="symbol">{symbol}</span>
+          </span>
+        )}
+      </HeadWrapper>
 
       <Divider />
       <FooterWrapper>

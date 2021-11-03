@@ -73,10 +73,14 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const getTimelineData = (args, method) => {
     switch (method) {
       case "proposeBounty":
-        console.log(new BigNumber(args.value).toString());
         return {
           ...args,
           value: `${toPrecision(args.value ?? 0, decimals)} ${symbol}`,
+        };
+      case "BountyRejected":
+        return {
+          ...args,
+          slashed: `${toPrecision(args.slashed ?? 0, decimals)} ${symbol}`,
         };
       case "Proposed":
         return {
