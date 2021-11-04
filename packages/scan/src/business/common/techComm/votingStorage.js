@@ -1,8 +1,8 @@
-const { findBlockApi } = require("../../../chain/blockApi");
+const { findBlockApi } = require("../../../chain/specs");
 const { getApi } = require("../../../api");
 
 async function getTechCommMotionVoting(motionHash, indexer) {
-  const blockApi = await findBlockApi(indexer.blockHash);
+  const blockApi = await findBlockApi(indexer);
   const raw = await blockApi.query.technicalCommittee.voting(motionHash);
   return raw.toJSON();
 }

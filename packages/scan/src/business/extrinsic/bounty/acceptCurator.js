@@ -28,7 +28,7 @@ async function handleAcceptCurator(call, caller, extrinsicIndexer) {
     args: {
       curator: caller,
     },
-    extrinsicIndexer,
+    indexer: extrinsicIndexer,
   };
 
   const state = {

@@ -1,10 +1,7 @@
-const { findBlockApi } = require("../../../chain/blockApi");
+const { findBlockApi } = require("../../../chain/specs");
 
-async function getTreasuryProposalMeta(
-  proposalIndex,
-  { blockHeight, blockHash }
-) {
-  const blockApi = await findBlockApi(blockHash);
+async function getTreasuryProposalMeta(proposalIndex, indexer) {
+  const blockApi = await findBlockApi(indexer);
   const raw = await blockApi.query.treasury.proposals(proposalIndex);
   return raw.toJSON();
 }

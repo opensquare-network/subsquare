@@ -1,4 +1,4 @@
-const { findBlockApi } = require("../chain/blockApi");
+const { findBlockApi } = require("../chain/specs");
 const { isUseMetaDb } = require("../env");
 const { getBlocksByHeights } = require("../mongo/meta");
 const { findRegistry } = require("../chain/specs");
@@ -78,7 +78,7 @@ async function fetchOneBlockFromNode(height) {
   const api = await getApi();
   const blockHash = await api.rpc.chain.getBlockHash(height);
 
-  const blockApi = await findBlockApi(blockHash);
+  const blockApi = await findBlockApi({ blockHeight: height, blockHash });
 
   const promises = [
     api.rpc.chain.getBlock(blockHash),

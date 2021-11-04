@@ -31,7 +31,7 @@ describe("test get tip", () => {
     const height = 89001;
     const blockHash = await api.rpc.chain.getBlockHash(height);
 
-    const fee = await getTipFindersFee(blockHash);
+    const fee = await getTipFindersFee({ blockHash, blockHeight: height });
     expect(fee).toEqual(5);
   });
 
@@ -39,7 +39,7 @@ describe("test get tip", () => {
     const height = 89001;
     const blockHash = await api.rpc.chain.getBlockHash(height);
 
-    const count = await getTippersCount(blockHash);
+    const count = await getTippersCount({ blockHash, blockHeight: height });
     expect(count).toEqual(6);
   });
 });

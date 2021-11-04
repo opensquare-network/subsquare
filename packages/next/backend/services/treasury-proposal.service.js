@@ -1,21 +1,21 @@
 const { ObjectId } = require("mongodb");
 const { safeHtml } = require("../utils/post");
 const { PostTitleLengthLimitation } = require("../constants");
-const { getDb: getBusinessDb, getTreasuryProposalCollection } = require("../mongo/business");
-const { getDb: getChainDb, getTreasuryProposalCollection: getChainTreasuryProposalCollection, getMotionCollection } = require("../mongo/chain");
+const {
+  getDb: getBusinessDb,
+  getTreasuryProposalCollection,
+} = require("../mongo/business");
+const {
+  getDb: getChainDb,
+  getTreasuryProposalCollection: getChainTreasuryProposalCollection,
+  getMotionCollection,
+} = require("../mongo/chain");
 const { getDb: getCommonDb, lookupUser } = require("../mongo/common");
 const { HttpError } = require("../exc");
 const { ContentType } = require("../constants");
 const { toUserPublicInfo } = require("../utils/user");
 
-async function updatePost(
-  chain,
-  postId,
-  title,
-  content,
-  contentType,
-  author
-) {
+async function updatePost(chain, postId, title, content, contentType, author) {
   const postObjId = ObjectId(postId);
   const postCol = await getTreasuryProposalCollection(chain);
   const post = await postCol.findOne({ _id: postObjId });
@@ -38,7 +38,7 @@ async function updatePost(
 
   if (title.length > PostTitleLengthLimitation) {
     throw new HttpError(400, {
-      title: [ "Title must be no more than %d characters" ],
+      title: ["Title must be no more than %d characters"],
     });
   }
 
@@ -53,7 +53,7 @@ async function updatePost(
         contentType,
         updatedAt: now,
         lastActivityAt: now,
-      }
+      },
     }
   );
 
@@ -66,13 +66,15 @@ async function updatePost(
 
 async function getActivePostsOverview(chain) {
   const chainProposalCol = await getChainTreasuryProposalCollection(chain);
-  const proposals = await chainProposalCol.find(
-    {
-      "state.state": { $nin: ["Awarded", "Approved", "Rejected"] }
-    },
-    {
-      projection: { timeline: 0 }
-    })
+  const proposals = await chainProposalCol
+    .find(
+      {
+        "state.state": { $nin: ["Awarded", "Approved", "Rejected"] },
+      },
+      {
+        projection: { timeline: 0 },
+      }
+    )
     .sort({ "indexer.blockHeight": -1 })
     .limit(3)
     .toArray();
@@ -105,7 +107,7 @@ async function getActivePostsOverview(chain) {
     }),
   ]);
 
-  return proposals.map(proposal => {
+  return proposals.map((proposal) => {
     const post = proposal.post;
     proposal.post = undefined;
     post.onchainData = proposal;
@@ -123,7 +125,8 @@ async function getPostsByChain(chain, page, pageSize) {
     page = Math.max(totalPages, 1);
   }
 
-  const posts = await postCol.find({})
+  const posts = await postCol
+    .find({})
     .sort({ lastActivityAt: -1 })
     .skip((page - 1) * pageSize)
     .limit(pageSize)
@@ -154,14 +157,14 @@ async function getPostsByChain(chain, page, pageSize) {
       as: "onchainData",
       localField: "proposalIndex",
       foreignField: "proposalIndex",
-      projection: { timeline: 0  },
+      projection: { timeline: 0 },
     }),
   ]);
 
   return {
-    items: posts.map(p => ({
+    items: posts.map((p) => ({
       ...p,
-      state: p.onchainData?.state?.state
+      state: p.onchainData?.state?.state,
     })),
     total,
     page,
@@ -186,7 +189,9 @@ async function getPostById(chain, postId) {
 
   const commonDb = await getCommonDb(chain);
   const businessDb = await getBusinessDb(chain);
-  const chainTreasuryProposalCol = await getChainTreasuryProposalCollection(chain);
+  const chainTreasuryProposalCol = await getChainTreasuryProposalCollection(
+    chain
+  );
   const chainMotionCol = await getMotionCollection(chain);
   const [, reactions, treasuryProposalData, motions] = await Promise.all([
     commonDb.lookupOne({
@@ -205,7 +210,9 @@ async function getPostById(chain, postId) {
       foreignField: "treasuryProposal",
     }),
     chainTreasuryProposalCol.findOne({ proposalIndex: post.proposalIndex }),
-    chainMotionCol.find({ treasuryProposalIndex: post.proposalIndex }).toArray(),
+    chainMotionCol
+      .find({ treasuryProposalIndex: post.proposalIndex })
+      .toArray(),
   ]);
 
   await lookupUser({ for: reactions, localField: "user" });
@@ -219,7 +226,7 @@ async function getPostById(chain, postId) {
   };
 }
 
-module.exports =  {
+module.exports = {
   updatePost,
   getPostsByChain,
   getPostById,

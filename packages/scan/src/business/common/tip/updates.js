@@ -21,24 +21,21 @@ function computeTipValue(tipMeta) {
   return median(tipValues);
 }
 
-async function getTipCommonUpdates(hash, { blockHeight, blockHash }) {
+async function getTipCommonUpdates(hash, indexer) {
   const tipInDb = await getTipByHash(hash);
   if (!tipInDb) {
     throw new Error(`can not find tip in db. hash: ${hash}`);
   }
 
   const api = await getApi();
-  const newMeta = await getTipMetaFromStorage(api, hash, {
-    blockHeight,
-    blockHash,
-  });
+  const newMeta = await getTipMetaFromStorage(api, hash, indexer);
   const meta = {
     ...tipInDb.meta,
     tips: newMeta.tips,
     closes: newMeta.closes,
   };
-  const tippersCount = await getTippersCount(blockHash);
-  const tipFindersFee = await getTipFindersFee(blockHash);
+  const tippersCount = await getTippersCount(indexer);
+  const tipFindersFee = await getTipFindersFee(indexer);
   const medianValue = computeTipValue(newMeta);
 
   return { meta, tippersCount, tipFindersFee, medianValue };

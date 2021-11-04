@@ -1,4 +1,4 @@
-const { removeBlockApi } = require("../chain/blockApi");
+const { removeBlockApi } = require("../chain/specs");
 const { handleEvents } = require("../business/event");
 const { handleExtrinsics } = require("../business/extrinsic");
 const { getBlockIndexer } = require("../utils/block/getBlockIndexer");

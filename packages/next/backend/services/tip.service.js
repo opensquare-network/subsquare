@@ -2,20 +2,16 @@ const { ObjectId } = require("mongodb");
 const { safeHtml } = require("../utils/post");
 const { PostTitleLengthLimitation } = require("../constants");
 const { getDb: getBusinessDb, getTipCollection } = require("../mongo/business");
-const { getDb: getChainDb, getTipCollection: getChainTipCollection } = require("../mongo/chain");
+const {
+  getDb: getChainDb,
+  getTipCollection: getChainTipCollection,
+} = require("../mongo/chain");
 const { getDb: getCommonDb, lookupUser } = require("../mongo/common");
 const { HttpError } = require("../exc");
 const { ContentType } = require("../constants");
 const { toUserPublicInfo } = require("../utils/user");
 
-async function updatePost(
-  chain,
-  postId,
-  title,
-  content,
-  contentType,
-  author
-) {
+async function updatePost(chain, postId, title, content, contentType, author) {
   const postObjId = ObjectId(postId);
   const postCol = await getTipCollection(chain);
   const post = await postCol.findOne({ _id: postObjId });
@@ -26,7 +22,7 @@ async function updatePost(
   const chainTipCol = await getChainTipCollection(chain);
   const chainTip = await chainTipCol.findOne({
     hash: post.hash,
-    "indexer.blockHeight": post.height
+    "indexer.blockHeight": post.height,
   });
 
   if (!chainTip) {
@@ -39,7 +35,7 @@ async function updatePost(
 
   if (title.length > PostTitleLengthLimitation) {
     throw new HttpError(400, {
-      title: [ "Title must be no more than %d characters" ],
+      title: ["Title must be no more than %d characters"],
     });
   }
 
@@ -54,7 +50,7 @@ async function updatePost(
         contentType,
         updatedAt: now,
         lastActivityAt: now,
-      }
+      },
     }
   );
 
@@ -67,13 +63,15 @@ async function updatePost(
 
 async function getActivePostsOverview(chain) {
   const chainTipCol = await getChainTipCollection(chain);
-  const tips = await chainTipCol.find(
-    {
-      "state.state": { $in: ["NewTip", "tip"] }
-    },
-    {
-      projection: { timeline: 0 }
-    })
+  const tips = await chainTipCol
+    .find(
+      {
+        "state.state": { $in: ["NewTip", "tip"] },
+      },
+      {
+        projection: { timeline: 0 },
+      }
+    )
     .sort({ "indexer.blockHeight": -1 })
     .limit(3)
     .toArray();
@@ -106,7 +104,7 @@ async function getActivePostsOverview(chain) {
     }),
   ]);
 
-  return tips.map(tip => {
+  return tips.map((tip) => {
     const post = tip.post;
     tip.post = undefined;
     post.onchainData = tip;
@@ -127,7 +125,8 @@ async function getPostsByChain(chain, page, pageSize) {
     page = Math.max(totalPages, 1);
   }
 
-  const posts = await postCol.find({})
+  const posts = await postCol
+    .find({})
     .sort({ lastActivityAt: -1 })
     .skip((page - 1) * pageSize)
     .limit(pageSize)
@@ -163,7 +162,7 @@ async function getPostsByChain(chain, page, pageSize) {
   ]);
 
   return {
-    items: posts.map(p => ({
+    items: posts.map((p) => ({
       ...p,
       state: {
         state: p.onchainData?.state?.state,
@@ -218,7 +217,7 @@ async function getPostById(chain, postId) {
     }),
     chainTipCol.findOne({
       "indexer.blockHeight": post.height,
-      hash: post.hash
+      hash: post.hash,
     }),
   ]);
 
@@ -230,7 +229,7 @@ async function getPostById(chain, postId) {
   };
 }
 
-module.exports =  {
+module.exports = {
   updatePost,
   getPostsByChain,
   getPostById,

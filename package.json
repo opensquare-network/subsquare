@@ -7,7 +7,8 @@
   "repository": "git@github.com:opensquare-network/subsquare.git",
   "author": "OpenSquare <https://www.opensquare.network/>",
   "scripts": {
-    "scan": "yarn workspace @subsquare/scan scan"
+    "scan": "yarn workspace @subsquare/scan scan",
+    "test": "yarn workspace @subsquare/scan test"
   },
   "devDependencies": {
     "husky": "^4.3.5",
