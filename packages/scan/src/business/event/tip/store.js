@@ -6,7 +6,7 @@ const {
   getTippersCount,
   getTipFindersFee,
 } = require("../../common/tip/utils");
-const { getTipCommonUpdates } = require("../../common/tip/updates");
+const { getTipCommonUpdates, computeTipValue } = require("../../common/tip/updates");
 const {
   TipMethods,
   TipEvents,
@@ -47,6 +47,7 @@ async function saveNewTip(event, extrinsic, indexer) {
   const finder = meta.finder;
   const tippersCount = await getTippersCount(indexer.blockHash);
   const tipFindersFee = await getTipFindersFee(indexer.blockHash);
+  const medianValue = computeTipValue(meta);
 
   const timelineItem = {
     type: TimelineItemTypes.extrinsic,
@@ -73,6 +74,7 @@ async function saveNewTip(event, extrinsic, indexer) {
     finder,
     tippersCount,
     tipFindersFee,
+    medianValue,
     meta,
     isFinal: false,
     state,

@@ -46,4 +46,5 @@ async function getTipCommonUpdates(hash, { blockHeight, blockHash }) {
 
 module.exports = {
   getTipCommonUpdates,
+  computeTipValue,
 };
