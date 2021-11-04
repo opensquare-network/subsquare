@@ -45,7 +45,8 @@ const DeleteAccount = styled(Flex)`
   }
 `;
 
-const LinkWrapper = styled.div`
+const LinkWrapper = styled.a`
+  display: block;
   :hover {
     text-decoration: underline;
     cursor: pointer;
@@ -96,14 +97,10 @@ export default function User({
         </AvatarWrapper>
       )}
       <LinkWrapper
-        onClick={() =>
-          window.open(
-            `https://${chain}.subscan.io/account/${address}`,
-            "_blank"
-          )
-        }
+        href={`https://${chain}.subscan.io/account/${address}`}
+        target="_blank"
       >
-        {(identity && identity?.info?.status !== "NO_ID") ? (
+        {identity && identity?.info?.status !== "NO_ID" ? (
           <Identity identity={identity} fontSize={fontSize} />
         ) : (
           <Username fontSize={fontSize}>
