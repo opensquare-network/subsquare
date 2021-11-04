@@ -15,9 +15,9 @@ export function getPostUpdatedAt(post) {
 }
 
 export function getTipState(state) {
-  return TipStateMap[state.state] === "Tipping"
+  return TipStateMap[state.state ?? state] === "Tipping"
     ? `Tipping (${state.tipsCount})`
-    : TipStateMap[state.state];
+    : TipStateMap[state.state ?? state];
 }
 
 export const toDiscussionListItem = (chain, item) => ({
@@ -102,6 +102,7 @@ export const toTipListItem = (chain, item) => ({
   status: item.state ? getTipState(item.state) : "Unknown",
   time: getPostUpdatedAt(item),
   detailLink: `/${chain}/treasury/tip/${item.height}_${item.hash}`,
+  value: item?.onchainData?.medianValue,
 });
 
 export const toPublicProposalListItem = (chain, item) => ({
