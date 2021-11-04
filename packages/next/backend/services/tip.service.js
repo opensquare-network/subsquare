@@ -165,8 +165,10 @@ async function getPostsByChain(chain, page, pageSize) {
   return {
     items: posts.map(p => ({
       ...p,
-      state: p.onchainData?.state?.state,
-      tipsCount: (p.onchainData?.meta?.tips || []).length,
+      state: {
+        state: p.onchainData?.state?.state,
+        tipsCount: (p.onchainData?.meta?.tips || []).length,
+      },
     })),
     total,
     page,
