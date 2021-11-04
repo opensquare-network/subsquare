@@ -108,6 +108,7 @@ async function updateTipWithTipClosed(event, extrinsic, indexer) {
     ...updates,
     isFinal: true,
     state,
+    medianValue: payout,
   };
 
   const timelineItem = {
