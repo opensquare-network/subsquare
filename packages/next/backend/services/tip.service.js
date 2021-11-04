@@ -58,7 +58,7 @@ async function updatePost(
     }
   );
 
-  if (!result.result.ok) {
+  if (!result.acknowledged) {
     throw new HttpError(500, "Failed to update post");
   }
 
