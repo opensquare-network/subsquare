@@ -197,5 +197,8 @@ export const getLinkNameAndLogo = (link) => {
 };
 
 export function toApiType(type) {
+  if (type === "bounty") {
+    return "bounties";
+  }
   return `${type}s`;
 }
