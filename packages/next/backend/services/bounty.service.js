@@ -57,7 +57,7 @@ async function updatePost(chain, postId, title, content, contentType, author) {
     }
   );
 
-  if (!result.result.ok) {
+  if (!result.acknowledged) {
     throw new HttpError(500, "Failed to update post");
   }
 
