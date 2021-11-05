@@ -121,6 +121,7 @@ const HeadWrapper = styled.div`
   > span {
     display: block;
     ${p_14_medium};
+    line-height: 22.4px;
     ${text_primary};
     white-space: nowrap;
     flex-basis: 120px;
@@ -136,6 +137,7 @@ const HeadWrapper = styled.div`
   @media screen and (max-width: 768px) {
     flex-wrap: wrap;
     > span {
+      line-height: 21px;
       flex-basis: 100%;
     }
   }
