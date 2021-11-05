@@ -76,10 +76,6 @@ function findRecentHeight(blockHeight) {
 }
 
 async function findBlockApi({ blockHeight, blockHash }) {
-  if (isUseMetaDb()) {
-    return findBlockApiByHeight(blockHeight);
-  }
-
   const maybe = blockApiMap[blockHash];
   if (maybe) {
     return maybe;

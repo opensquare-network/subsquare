@@ -23,6 +23,7 @@
   "jest": {
     "transformIgnorePatterns": [
       "node_modules/(?!(@polkadot|@babel)/)"
-    ]
+    ],
+    "testEnvironment": "./test/custom-test-env.js"
   }
 }
