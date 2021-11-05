@@ -21,6 +21,7 @@ const getTagColor = (name) => {
   if (name && name.startsWith("Tipping")) return ACTIVE;
   if (name && name.startsWith("Motion")) return START;
   switch (name) {
+    case "Propose Bounty":
     case "Proposed":
     case "Extended":
     case "Opened":
