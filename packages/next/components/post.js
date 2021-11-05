@@ -173,7 +173,9 @@ export default function Post({ data, chain, href }) {
       <FooterWrapper>
         <Footer>
           <User user={data.author} chain={chain} fontSize={12} />
-          {data.isTreasury && <SectionTag name={"Treasury"} />}
+          {(data.isTreasury || data.isBounty) && (
+            <SectionTag name={"Treasury"} />
+          )}
           {data.isDemocracy && <SectionTag name={"Democracy"} />}
           {data.time && (
             <Info>{`Updated ${timeDurationFromNow(data.time)}`}</Info>
