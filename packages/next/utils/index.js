@@ -4,10 +4,8 @@ import { nodes } from "./constants";
 
 BigNumber.config({ EXPONENTIAL_AT: 36 });
 
-export function stringUpperFirst (value) {
-  return value
-    ? value.charAt(0).toUpperCase() + value.slice(1)
-    : '';
+export function stringUpperFirst(value) {
+  return value ? value.charAt(0).toUpperCase() + value.slice(1) : "";
 }
 
 export function textEllipsis(text, start, end) {
@@ -112,6 +110,12 @@ export function decimalPlaces(value, n) {
 export function getTimelineStatus(type, method) {
   const defaultColor = "#0F6FFF";
   switch (type) {
+    case "bounty":
+      switch (method) {
+        case "proposeBounty":
+          return { value: "Propose Bounty", color: "#6848FF" };
+      }
+      break;
     case "tip":
       switch (method) {
         case "reportAwesome":

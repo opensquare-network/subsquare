@@ -113,6 +113,17 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
             },
           };
         }
+        case "Voted": {
+          return {
+            indexer: item.indexer,
+            time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+            status: { value: "Vote", color: "#6848FF" },
+            voteResult: {
+              name: item.args.voter,
+              value: item.args.approve,
+            },
+          };
+        }
         default: {
           return {
             indexer: item.indexer,

@@ -93,8 +93,9 @@ function convertProposalForTableView(proposal, chain) {
           }
           case "Bytes": {
             if (
-              proposal.section === "system" &&
-              proposal.method === "setCode"
+              (proposal.section === "phalaRegistry" &&
+                proposal.method === "addPruntime") ||
+              (proposal.section === "system" && proposal.method === "setCode")
             ) {
               return [arg.name, <LongText text={arg.value} key="0" />];
             }
@@ -137,8 +138,9 @@ function convertProposalForJsonView(proposal, chain) {
           }
           case "Bytes": {
             if (
-              proposal.section === "system" &&
-              proposal.method === "setCode"
+              (proposal.section === "phalaRegistry" &&
+                proposal.method === "addPruntime") ||
+              (proposal.section === "system" && proposal.method === "setCode")
             ) {
               return arg.value?.length <= 200
                 ? arg.value
