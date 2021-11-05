@@ -5,7 +5,7 @@ const { getApi } = require("./api");
 const { setSpecHeights } = require("./chain/specs");
 
 async function test() {
-  const blockHeights = [319715];
+  const blockHeights = [411735];
 
   for (const height of blockHeights) {
     setSpecHeights([height - 1]);

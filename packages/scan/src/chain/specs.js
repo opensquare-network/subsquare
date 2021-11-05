@@ -13,6 +13,7 @@ async function updateSpecs(height) {
   if (isUseMetaDb()) {
     await updateSpecsFromMetaDb();
   } else {
+    versionChangedHeights.splice(0, versionChangedHeights.length);
     versionChangedHeights.push(height);
   }
 }
