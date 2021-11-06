@@ -11,7 +11,7 @@
     "timeupdater:khala": "pm2 start ecosystem.config.js --only subsquare-time-updater-khala --env production"
   },
   "dependencies": {
-    "@acala-network/type-definitions": "3.0.2-9",
+    "@acala-network/type-definitions": "3.0.3-2",
     "@alicloud/pop-core": "^1.7.10",
     "@koa/cors": "^3.1.0",
     "@phala/typedefs": "^0.2.29",

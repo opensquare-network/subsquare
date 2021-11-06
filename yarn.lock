@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@acala-network/type-definitions@3.0.2-9":
-  version "3.0.2-9"
-  resolved "https://registry.npmjs.org/@acala-network/type-definitions/-/type-definitions-3.0.2-9.tgz#c414ffc2449bfcc50e6802cc7b9c28ab795e4c23"
-  integrity sha512-0T+NMe+a1bPNci5nGL/TTXb+27iDzVg8dBfDpsiej10J7lsCmAZaIHkE31njF7/jZRO6QQE2hulm570pFGM/Ig==
+"@acala-network/type-definitions@3.0.3-2":
+  version "3.0.3-2"
+  resolved "https://registry.npmjs.org/@acala-network/type-definitions/-/type-definitions-3.0.3-2.tgz#ec77958defdfe03adf737b0f7d0cc6b081c61467"
+  integrity sha512-1FmOV+iPLpJQtjDmWcXBpKbPyOEjFuA87Dj9hnAMOBCSNgV549OJF/k9SAUXS7jxQcNJ28bDjPCMoX+mjwOknQ==
   dependencies:
     "@open-web3/orml-type-definitions" "^1.0.2-0"
 
