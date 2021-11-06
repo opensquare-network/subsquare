@@ -96,4 +96,5 @@ async function fetchOneBlockFromNode(height) {
 
 module.exports = {
   fetchBlocks,
+  fetchBlocksFromNode,
 };

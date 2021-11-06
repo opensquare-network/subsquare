@@ -1,4 +1,6 @@
 const useMetaDb = !!process.env.USE_META_DB;
+const scanKnownFirst = !!process.env.SCAN_KNOWN_HEIGHTS_FIRST;
+
 const CHAINS = {
   KARURA: "karura",
   KHALA: "khala",
@@ -35,10 +37,15 @@ function isUseMetaDb() {
   return useMetaDb;
 }
 
+function doScanKnownFirst() {
+  return scanKnownFirst;
+}
+
 module.exports = {
   currentChain,
   CHAINS,
   isKarura,
   setChain,
   isUseMetaDb,
+  doScanKnownFirst,
 };
