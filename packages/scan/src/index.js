@@ -7,6 +7,8 @@ const { getNextScanHeight, updateScanHeight } = require("./mongo/scanHeight");
 const { sleep } = require("./utils/sleep");
 const { logger } = require("./logger");
 const last = require("lodash.last");
+const { scanKnownHeights } = require("./scan/known");
+const { doScanKnownFirst } = require("./env");
 const { isUseMetaDb } = require("./env");
 const { fetchBlocks } = require("./service/fetchBlocks");
 const { scanNormalizedBlock } = require("./scan/block");
@@ -17,6 +19,10 @@ async function main() {
   await updateHeight();
   let scanHeight = await getNextScanHeight();
   await updateSpecs(scanHeight);
+
+  if (doScanKnownFirst()) {
+    await scanKnownHeights();
+  }
 
   while (true) {
     // chainHeight is the current on-chain last block height
