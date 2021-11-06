@@ -26,6 +26,7 @@ const DemocracyMethods = Object.freeze({
   externalProposeMajority: "externalProposeMajority",
   externalProposeDefault: "externalProposeDefault",
   fastTrack: "fastTrack",
+  vetoExternal: "vetoExternal",
 });
 
 const KaruraModules = Object.freeze({

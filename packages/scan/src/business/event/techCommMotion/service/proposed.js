@@ -25,7 +25,11 @@ function extractBusinessFields(proposal = {}) {
       isDemocracy: true,
     };
 
-    if ([DemocracyMethods.fastTrack].includes(method)) {
+    if (
+      [DemocracyMethods.fastTrack, DemocracyMethods.vetoExternal].includes(
+        method
+      )
+    ) {
       fields["externalProposalHash"] = args[0].value;
     }
 

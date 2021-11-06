@@ -55,7 +55,11 @@ async function updateOrCreatePostByReferendumWithProposal(
   );
 }
 
-async function insertDemocracyPostByExternal(externalProposalHash, indexer, proposer) {
+async function insertDemocracyPostByExternal(
+  externalProposalHash,
+  indexer,
+  proposer
+) {
   const col = await getBusinessDemocracy();
   const maybeInDb = await col.findOne({
     externalProposalHash,
@@ -70,7 +74,7 @@ async function insertDemocracyPostByExternal(externalProposalHash, indexer, prop
     externalProposalHash,
     indexer,
     proposer,
-    title: `Untitled - external proposal ${externalProposalHash.substr(0, 8)}`,
+    title: `Untitled - external proposal ${externalProposalHash?.substr(0, 8)}`,
     content: "",
     contentType: "markdown",
     createdAt: now,
