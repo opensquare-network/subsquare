@@ -22,7 +22,8 @@ async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
   }
 
   const { isDemocracy, proposalHash } = motion;
-  if (!isDemocracy) {
+  if (!isDemocracy || !proposalHash) {
+    // no proposalHash means it's not a external proposal related motion, so just ignore it
     return;
   }
 
