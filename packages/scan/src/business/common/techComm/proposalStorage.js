@@ -10,7 +10,7 @@ async function getTechCommMotionProposal(motionHash, indexer) {
 
 async function getTechCommMotionProposalCall(motionHash, indexer) {
   const raw = await getTechCommMotionProposal(motionHash, indexer);
-  const registry = await findRegistry(indexer.blockHeight);
+  const registry = await findRegistry(indexer);
   return normalizeCall(new GenericCall(registry, raw.toHex()));
 }
 

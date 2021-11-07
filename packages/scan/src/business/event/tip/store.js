@@ -35,7 +35,7 @@ async function saveNewTip(event, extrinsic, indexer) {
   const authors = [...authorSet];
 
   const reasonHash = meta.reason;
-  const registry = await findRegistry(indexer.blockHeight);
+  const registry = await findRegistry(indexer);
   const newTipCall = await getNewTipCall(
     registry,
     extrinsic.method,

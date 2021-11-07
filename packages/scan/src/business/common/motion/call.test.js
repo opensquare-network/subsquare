@@ -39,7 +39,7 @@ describe("Normalize call", () => {
       "0xd82dbe78317f125e2dbbc8420e6a1b478ac11da25f8014031653f32a773e4952";
 
     const proposal = await getMotionProposal(motionHash, indexer);
-    const registry = await findRegistry(indexer.blockHeight);
+    const registry = await findRegistry(indexer);
     const call = normalizeCall(new GenericCall(registry, proposal.toHex()));
     expect(call).toEqual({
       callIndex: "0x0300",

@@ -11,7 +11,7 @@ async function getPreImageFromStorage(hash, indexer) {
   }
 
   const availableImage = raw.unwrap().asAvailable.toJSON();
-  const registry = await findRegistry(indexer.blockHeight);
+  const registry = await findRegistry(indexer);
   try {
     const call = registry.createType("Proposal", hexToU8a(availableImage.data));
     return {

@@ -1,12 +1,9 @@
 const { getAllVersionChangeHeights } = require("../mongo/meta");
-const findLast = require("lodash.findlast");
-const { getRegistryByHeight } = require("./registry");
 const { getApi } = require("../api");
 const { isUseMetaDb } = require("../env");
 const { logger } = require("../logger");
 
 let versionChangedHeights = [];
-let registryMap = {};
 let blockApiMap = {};
 
 async function updateSpecs(height) {
@@ -36,28 +33,9 @@ function getSpecHeights() {
   return versionChangedHeights;
 }
 
-async function findRegistry(height) {
-  const mostRecentChangeHeight = findRecentHeight(height);
-
-  let registry = registryMap[mostRecentChangeHeight];
-  if (!registry) {
-    registry = await getRegistryByHeight(mostRecentChangeHeight);
-    registryMap[mostRecentChangeHeight] = registry;
-  }
-
-  return registry;
-}
-
-function findRecentHeight(blockHeight) {
-  const mostRecentChangeHeight = findLast(
-    versionChangedHeights,
-    (h) => h <= blockHeight
-  );
-  if (!mostRecentChangeHeight) {
-    throw new Error(`Can not find registry for height ${blockHeight}`);
-  }
-
-  return mostRecentChangeHeight;
+async function findRegistry({ blockHeight, blockHash }) {
+  const blockApi = await findBlockApi({ blockHeight, blockHash });
+  return blockApi.registry;
 }
 
 async function findBlockApi({ blockHeight, blockHash }) {
