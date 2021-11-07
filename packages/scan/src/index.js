@@ -24,6 +24,7 @@ async function main() {
     await scanKnownHeights();
   }
 
+  scanHeight = await getNextScanHeight();
   while (true) {
     // chainHeight is the current on-chain last block height
     const chainHeight = getLatestHeight();
