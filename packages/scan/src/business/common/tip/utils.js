@@ -9,6 +9,7 @@ const {
 const { GenericCall } = require("@polkadot/types");
 const { blake2AsHex } = require("@polkadot/util-crypto");
 const { currentChain, CHAINS } = require("../../../env");
+const { hexToString, isHex } = require("@polkadot/util");
 
 async function getTipMetaFromStorage(api, tipHash, indexer) {
   const blockApi = await findBlockApi(indexer);
@@ -35,7 +36,12 @@ async function getTipReason(reasonHash, indexer) {
     return null;
   }
 
-  return raw.toHuman();
+  let reason = raw.toHuman();
+  if (isHex(reason)) {
+    return hexToString(reason);
+  } else {
+    return reason;
+  }
 }
 
 function findNewTipCallFromProxy(registry, proxyCall, reasonHash) {
