@@ -1,5 +1,5 @@
 const { ApiPromise, WsProvider } = require("@polkadot/api");
-const { currentChain, CHAINS } = require("./env");
+const { CHAINS, currentChain } = require("./env");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
 const { versionedKhala, typesChain } = require("@phala/typedefs");
 const { basilisk } = require("./chain/bundle/basilisk");
@@ -7,49 +7,34 @@ const { basilisk } = require("./chain/bundle/basilisk");
 let provider = null;
 let api = null;
 
-const defaultKaruraEndPoint = "wss://pub.elara.patract.io/karura";
-const defaultKhalaEndpoint = "wss://khala.api.onfinality.io/public-ws";
-const defaultKusamaEndpoint = "wss://pub.elara.patract.io/kusama";
-const defaultPolkadotEndpoint = "wss://pub.elara.patract.io/polkadot";
-const defaultBasiliskEndpoint = "wss://basilisk.api.onfinality.io/public-ws";
-
 async function getApi() {
-  if (!api) {
-    const chain = currentChain();
-
-    let wsEndpoint = process.env.KAR_WS_ENDPOINT || defaultKaruraEndPoint;
-    if (chain === CHAINS.KARURA) {
-      wsEndpoint = process.env.KAR_WS_ENDPOINT || defaultKaruraEndPoint;
-    } else if (chain === CHAINS.KHALA) {
-      wsEndpoint = process.env.KHA_WS_ENDPOINT || defaultKhalaEndpoint;
-    } else if (chain === CHAINS.KUSAMA) {
-      wsEndpoint = process.env.KSM_WS_ENDPOINT || defaultKusamaEndpoint;
-    } else if (chain === CHAINS.BASILISK) {
-      wsEndpoint = process.env.BAS_WS_ENDPOINT || defaultBasiliskEndpoint;
-    } else if (chain === CHAINS.POLKADOT) {
-      wsEndpoint = process.env.DOT_WS_ENDPOINT || defaultPolkadotEndpoint;
-    }
-
-    console.log(`Connect to endpoint:`, wsEndpoint);
-
-    provider = new WsProvider(wsEndpoint, 1000);
-    const options = { provider };
-    if (chain === CHAINS.KARURA) {
-      options.typesBundle = { ...typesBundleForPolkadot };
-    } else if (chain === CHAINS.KHALA) {
-      options.typesBundle = {
-        spec: {
-          khala: versionedKhala,
-        },
-      };
-      options.typesChain = typesChain;
-    } else if (chain === CHAINS.BASILISK) {
-      options.typesBundle = { spec: { basilisk } };
-    }
-
-    api = await ApiPromise.create(options);
+  if (api) {
+    return api;
   }
 
+  const wsEndpoint = process.env.WS_ENDPOINT;
+  if (!wsEndpoint) {
+    throw new Error("WS_ENDPOINT not set");
+  }
+
+  provider = new WsProvider(wsEndpoint, 1000);
+  const chain = currentChain();
+  const options = { provider };
+  if (chain === CHAINS.KARURA) {
+    options.typesBundle = { ...typesBundleForPolkadot };
+  } else if (chain === CHAINS.KHALA) {
+    options.typesBundle = {
+      spec: {
+        khala: versionedKhala,
+      },
+    };
+    options.typesChain = typesChain;
+  } else if (chain === CHAINS.BASILISK) {
+    options.typesBundle = { spec: { basilisk } };
+  }
+
+  api = await ApiPromise.create(options);
+  console.log(`Connected to endpoint:`, wsEndpoint);
   return api;
 }
 

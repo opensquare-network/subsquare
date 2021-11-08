@@ -1,19 +1,13 @@
 const { MongoClient } = require("mongodb");
-const { currentChain, CHAINS } = require("../env");
+const omit = require("lodash.omit");
 
 function getDbName() {
-  const chain = currentChain();
-  if (CHAINS.KARURA === chain) {
-    return process.env.MONGO_DB_META_KAR_NAME || "meta-karura";
-  } else if (CHAINS.KHALA === chain) {
-    return process.env.MONGO_DB_META_KHA_NAME || "meta-khala";
-  } else if (CHAINS.KUSAMA === chain) {
-    return process.env.MONGO_DB_META_KSM_NAME || "meta-ksm";
-  } else if (CHAINS.POLKADOT === chain) {
-    return process.env.MONGO_DB_META_DOT_NAME || "meta-dot";
+  const dbName = process.env.MONGO_DB_META_NAME;
+  if (!dbName) {
+    throw new Error("MONGO_DB_META_NAME not set");
   }
 
-  throw new Error("Not find metadata database");
+  return dbName;
 }
 
 const blockCollectionName = "block";
@@ -103,13 +97,19 @@ async function getBlocksByHeights(heights = []) {
 async function getAllVersionChangeHeights() {
   const col = await getVersionCollection();
   const versions = await col.find({}).sort({ height: 1 }).toArray();
-  return (versions || []).map((v) => v.height);
+
+  return (versions || []).map((v) => {
+    return {
+      height: v.height,
+      runtimeVersion: {
+        ...omit(v.runtimeVersion, ["apis"]),
+      },
+    };
+  });
 }
 
 module.exports = {
   getStatusCollection,
-  getBlockCollection,
-  getBlocks,
   getAllVersionChangeHeights,
   getBlocksByHeights,
 };

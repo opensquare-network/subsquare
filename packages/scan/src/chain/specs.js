@@ -1,3 +1,4 @@
+const findLast = require("lodash.findlast");
 const { getAllVersionChangeHeights } = require("../mongo/meta");
 const { getApi } = require("../api");
 const { isUseMetaDb } = require("../env");
@@ -34,8 +35,18 @@ function getSpecHeights() {
 }
 
 async function findRegistry({ blockHeight, blockHash }) {
-  const blockApi = await findBlockApi({ blockHeight, blockHash });
-  return blockApi.registry;
+  const spec = findMostRecentSpec(blockHeight);
+  const api = await getApi();
+  return (await api.getBlockRegistry(blockHash, spec.runtimeVersion)).registry;
+}
+
+function findMostRecentSpec(height) {
+  const spec = findLast(versionChangedHeights, (h) => h.height <= height);
+  if (!spec) {
+    throw new Error(`Can not find height ${height}`);
+  }
+
+  return spec;
 }
 
 async function findBlockApi({ blockHeight, blockHash }) {
