@@ -48,3 +48,11 @@ export const encodeKhalaAddress = (address) => {
     return "";
   }
 };
+
+export const encodeBasiliskAddress = (address) => {
+  try {
+    return encodeAddress(address, 10041);
+  } catch {
+    return "";
+  }
+};

@@ -62,7 +62,8 @@ const delayQuery = debounce(() => {
             resolve(identity);
           }
         }
-      });
+      })
+      .catch(() => {});
   }
 }, 0);
 
