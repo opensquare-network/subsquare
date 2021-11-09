@@ -42,7 +42,7 @@ async function main() {
     }
 
     const specHeights = getSpecHeights();
-    if (targetHeight > last(specHeights) && isUseMetaDb()) {
+    if (targetHeight > last(specHeights).height && isUseMetaDb()) {
       await updateSpecs();
     }
 

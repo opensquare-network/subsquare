@@ -1,9 +1,7 @@
 const log4js = require("log4js");
-const { CHAINS } = require("./env");
 
 const logLevel = process.env.LOG_LEVEL || "debug";
 const isProduction = process.env.NODE_ENV === "production";
-const chain = process.env.CHAIN || CHAINS.KARURA;
 
 const scanFileCategory = "block-scan";
 const businessCategory = "business";
@@ -12,13 +10,13 @@ const metaFileCategory = "meta";
 
 log4js.configure({
   appenders: {
-    [scanFileCategory]: { type: "file", filename: `log/${chain}/scan.log` },
-    [businessCategory]: { type: "file", filename: `log/${chain}/bus.log` },
-    [blockFileCategory]: { type: "file", filename: `log/${chain}/block.log` },
-    [metaFileCategory]: { type: "file", filename: `log/${chain}/meta.log` },
+    [scanFileCategory]: { type: "file", filename: `log/scan.log` },
+    [businessCategory]: { type: "file", filename: `log/bus.log` },
+    [blockFileCategory]: { type: "file", filename: `log/block.log` },
+    [metaFileCategory]: { type: "file", filename: `log/meta.log` },
     errorFile: {
       type: "file",
-      filename: `log/${chain}/errors.log`,
+      filename: `log/errors.log`,
     },
     errors: {
       type: "logLevelFilter",

@@ -8,7 +8,7 @@ const {
 } = require("../constants");
 const { GenericCall } = require("@polkadot/types");
 const { blake2AsHex } = require("@polkadot/util-crypto");
-const { currentChain, CHAINS } = require("../../../env");
+const { isKarura } = require("../../../env");
 const { hexToString, isHex } = require("@polkadot/util");
 
 async function getTipMetaFromStorage(api, tipHash, indexer) {
@@ -101,8 +101,7 @@ async function getTippersCountOfKarura(indexer) {
 }
 
 async function getTippersCount(indexer) {
-  const chain = currentChain();
-  if (CHAINS.KARURA === chain) {
+  if (isKarura()) {
     return await getTippersCountOfKarura(indexer);
   }
 
