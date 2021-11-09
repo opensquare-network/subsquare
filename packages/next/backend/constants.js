@@ -3,6 +3,7 @@ const SupportChains = [
   "kusama",
   "karura",
   "khala",
+  "basilisk",
 ];
 
 const chainStatusRoom = "CHAIN_STATUS_ROOM";
@@ -12,6 +13,7 @@ const SS58Format = Object.freeze({
   Kusama: 2,
   Karura: 8,
   Khala: 30,
+  Basilisk: 10041,
   Substrate: 42,
 });
 

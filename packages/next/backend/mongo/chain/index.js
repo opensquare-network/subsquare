@@ -32,6 +32,12 @@ async function initDb() {
     );
     await createIndex(dbs["khala"]);
   }
+  if (!dbs["basilisk"]) {
+    dbs["basilisk"] = await connectDb(
+      process.env.MONGO_DB_CHAIN_DATA_BSX_NAME || "subsquare-bsx"
+    );
+    await createIndex(dbs["basilisk"]);
+  }
 }
 
 async function getCollection(chain, colName) {
