@@ -17,6 +17,7 @@ import {
   encodeKhalaAddress,
   encodeKusamaAddress,
   encodePolkadotAddress,
+  encodeBasiliskAddress,
   signMessage,
 } from "services/chainApi";
 import nextApi from "services/nextApi";
@@ -115,6 +116,7 @@ export default function AddressLogin({ onBack }) {
           polkadotAddress: encodePolkadotAddress(address),
           karuraAddress: encodeKaruraAddress(address),
           khalaAddress: encodeKhalaAddress(address),
+          basiliskAddress: encodeBasiliskAddress(address),
           name,
         };
       });

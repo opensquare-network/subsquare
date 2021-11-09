@@ -101,7 +101,7 @@ export const nodes = [
     identity: "basilisk",
     symbol: "BSX",
     decimals: 12,
-    hasElections: false,
+    hasElections: true,
   },
 ];
 
@@ -267,4 +267,5 @@ export const SS58Prefix = {
   karura: 8,
   khala: 30,
   substrate: 42,
+  basilisk: 10041,
 };

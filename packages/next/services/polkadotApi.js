@@ -1,6 +1,7 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { typesBundleForPolkadot } from "@acala-network/type-definitions";
 const { khala } = require("@phala/typedefs");
+const { basilisk } = require("./bundle/basilisk");
 
 const apiInstanceMap = new Map();
 
@@ -13,6 +14,9 @@ export const getApi = async (chain, queryUrl) => {
     }
     if (chain === "khala") {
       options.types = khala;
+    }
+    if (chain === "basilisk") {
+      options.typesBundle = { spec: { basilisk } };
     }
 
     apiInstanceMap.set(queryUrl, ApiPromise.create(options));
