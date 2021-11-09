@@ -31,5 +31,17 @@ module.exports = {
         CHAIN: "khala",
       },
     },
+    {
+      name: "subsquare-time-updater-basilisk",
+      ...common,
+      env: {
+        NODE_ENV: "development",
+        CHAIN: "basilisk",
+      },
+      env_production: {
+        NODE_ENV: "production",
+        CHAIN: "basilisk",
+      },
+    },
   ],
 };
