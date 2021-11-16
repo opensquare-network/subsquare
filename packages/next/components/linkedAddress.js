@@ -15,6 +15,7 @@ import {
   encodeKusamaAddress,
   encodePolkadotAddress,
   encodeSubstrateAddress,
+  encodeBasiliskAddress,
   signMessage,
 } from "services/chainApi";
 import { addressEllipsis } from "utils";
@@ -96,7 +97,7 @@ const AddressItem = styled.div`
 
 const NameWrapper = styled.div`
   flex-grow: 1;
-  > :first-child{
+  > :first-child {
     font-size: 14px;
   }
   > :last-child {
@@ -205,6 +206,7 @@ export default function LinkedAddress() {
         polkadotAddress: encodePolkadotAddress(address),
         karuraAddress: encodeKaruraAddress(address),
         khalaAddress: encodeKhalaAddress(address),
+        basiliskAddress: encodeBasiliskAddress(address),
         name,
       };
     });
@@ -298,6 +300,7 @@ export default function LinkedAddress() {
         polkadotAddress: address.chain === "polkadot" ? address.address : null,
         karuraAddress: address.chain === "karura" ? address.address : null,
         khalaAddress: address.chain === "khala" ? address.address : null,
+        basiliskAddress: address.chain === "basilisk" ? address.address : null,
         name: "--",
       })),
   ];

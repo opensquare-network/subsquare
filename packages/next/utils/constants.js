@@ -42,10 +42,24 @@ export const DEFAULT_KHALA_NODES = [
   },
 ];
 
+export const DEFAULT_BASILISK_NODE_URL =
+  "wss://basilisk.api.onfinality.io/public-ws";
+export const DEFAULT_BASILISK_NODES = [
+  {
+    name: "OnFinality",
+    url: "wss://basilisk.api.onfinality.io/public-ws",
+  },
+  {
+    name: "HydraDX",
+    url: "wss://rpc-01.basilisk.hydradx.io",
+  },
+];
+
 export const DEFAULT_NODES = {
   kusama: DEFAULT_KUSAMA_NODE_URL,
   karura: DEFAULT_KARURA_NODE_URL,
   khala: DEFAULT_KHALA_NODE_URL,
+  basilisk: DEFAULT_BASILISK_NODE_URL,
 };
 
 export const nodes = [
@@ -77,6 +91,15 @@ export const nodes = [
     icon: "khala.svg",
     identity: "khala",
     symbol: "PHA",
+    decimals: 12,
+    hasElections: true,
+  },
+  {
+    value: "basilisk",
+    name: "Basilisk",
+    icon: "basilisk.png",
+    identity: "basilisk",
+    symbol: "BSX",
     decimals: 12,
     hasElections: true,
   },
@@ -244,4 +267,5 @@ export const SS58Prefix = {
   karura: 8,
   khala: 30,
   substrate: 42,
+  basilisk: 10041,
 };
