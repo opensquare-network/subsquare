@@ -1,19 +1,19 @@
 const findLast = require("lodash.findlast");
-const { getAllVersionChangeHeights } = require("../mongo/meta");
+const { getAllVersionChangeHeights, getScanHeight } = require("../mongo/meta");
 const { getApi } = require("../api");
 const { isUseMetaDb } = require("../env");
 const { logger } = require("../logger");
 
 let versionChangedHeights = [];
 let blockApiMap = {};
+let metaScanHeight = 1;
 
-async function updateSpecs(height) {
-  if (isUseMetaDb()) {
-    await updateSpecsFromMetaDb();
-  } else {
-    versionChangedHeights.splice(0, versionChangedHeights.length);
-    versionChangedHeights.push(height);
-  }
+function getMetaScanHeight() {
+  return metaScanHeight;
+}
+
+async function updateSpecs() {
+  await updateSpecsFromMetaDb();
 }
 
 async function updateSpecsFromMetaDb() {
@@ -23,6 +23,8 @@ async function updateSpecsFromMetaDb() {
     logger.error("No specHeights or invalid");
     process.exit(1);
   }
+
+  metaScanHeight = await getScanHeight();
 }
 
 // For test
@@ -30,11 +32,12 @@ function setSpecHeights(heights = []) {
   versionChangedHeights = heights;
 }
 
-function getSpecHeights() {
-  return versionChangedHeights;
-}
-
 async function findRegistry({ blockHeight, blockHash }) {
+  if (!isUseMetaDb()) {
+    const blockApi = await findBlockApi({ blockHeight, blockHash });
+    return blockApi.registry;
+  }
+
   const spec = findMostRecentSpec(blockHeight);
   const api = await getApi();
   return (await api.getBlockRegistry(blockHash, spec.runtimeVersion)).registry;
@@ -72,9 +75,9 @@ function removeBlockApi(blockHash) {
 
 module.exports = {
   updateSpecs,
-  getSpecHeights,
   findRegistry,
   setSpecHeights,
   findBlockApi,
   removeBlockApi,
+  getMetaScanHeight,
 };
