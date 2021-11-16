@@ -1,6 +1,6 @@
 const { findBlockApi } = require("../chain/specs");
 const { isUseMetaDb } = require("../env");
-const { getBlocksByHeights } = require("../mongo/meta");
+const { getBlocks } = require("../mongo/meta");
 const { findRegistry } = require("../chain/specs");
 const { getApi } = require("../api");
 const { GenericBlock } = require("@polkadot/types");
@@ -37,7 +37,7 @@ async function constructBlockFromDbData(blockInDb) {
 }
 
 async function fetchBlocksFromDb(heights = []) {
-  const blocksInDb = await getBlocksByHeights(heights);
+  const blocksInDb = await getBlocks(heights[0], heights[heights.length - 1]);
 
   const blocks = [];
   for (const blockInDb of blocksInDb) {
