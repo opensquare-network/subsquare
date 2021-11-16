@@ -1,12 +1,11 @@
 require("dotenv").config();
 
-const { updateSpecs, getSpecHeights } = require("./chain/specs");
+const { updateSpecs, getMetaScanHeight } = require("./chain/specs");
 const { disconnect } = require("./api");
 const { updateHeight, getLatestHeight } = require("./chain");
 const { getNextScanHeight, updateScanHeight } = require("./mongo/scanHeight");
 const { sleep } = require("./utils/sleep");
 const { logger } = require("./logger");
-const last = require("lodash.last");
 const { scanKnownHeights } = require("./scan/known");
 const { doScanKnownFirst } = require("./env");
 const { isUseMetaDb } = require("./env");
@@ -36,14 +35,14 @@ async function main() {
     }
 
     let targetHeight = chainHeight;
-    // Retrieve & Scan no more than 100 blocks at a time
     if (scanHeight + scanStep < chainHeight) {
       targetHeight = scanHeight + scanStep;
     }
 
-    const specHeights = getSpecHeights();
-    if (targetHeight > last(specHeights).height && isUseMetaDb()) {
-      await updateSpecs();
+    if (isUseMetaDb()) {
+      if (targetHeight > getMetaScanHeight()) {
+        await updateSpecs();
+      }
     }
 
     const heights = [];
