@@ -6,13 +6,13 @@ import Button from "components/button";
 import Menu from "components/menu";
 import { settingMenu } from "utils/constants";
 import { useAuthPage } from "utils/hooks";
-import { withLoginUser, withLoginUserRedux } from "../../lib";
+import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
 import { addToast } from "store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import { fetchUserProfile } from "store/reducers/userSlice";
-import Layout from "../../components/layout";
-import { shadow_100 } from "../../styles/componentCss";
+import Layout from "components/layout";
+import { shadow_100 } from "styles/componentCss";
 
 const Wrapper = styled.div`
   max-width: 848px;
@@ -81,7 +81,7 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser }) => {
+export default withLoginUserRedux(({ loginUser, chain }) => {
   const dispatch = useDispatch();
   useAuthPage(true);
 
@@ -116,7 +116,7 @@ export default withLoginUserRedux(({ loginUser }) => {
   };
 
   return (
-    <Layout user={loginUser} left={<Menu menu={settingMenu} />}>
+    <Layout chain={chain} user={loginUser} left={<Menu menu={settingMenu} />}>
       <Wrapper>
         <Title>Notification</Title>
         <ContentWrapper>
@@ -148,7 +148,11 @@ export default withLoginUserRedux(({ loginUser }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
+  const chain = process.env.CHAIN;
+
   return {
-    props: {},
+    props: {
+      chain,
+    },
   };
 });

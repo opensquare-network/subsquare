@@ -33,14 +33,9 @@ Router.events.on(
 );
 
 function MyApp({ Component, pageProps }) {
-  const router = useRouter();
-
   useEffect(() => {
-    const chain = router.query.chain || localStorage.getItem("chain") || "karura";
-    if (chain) {
-      connect(chain);
-    }
-  }, [router]);
+    connect();
+  }, []);
 
   return (
     <Provider store={store}>

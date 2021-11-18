@@ -178,7 +178,7 @@ export default function Item({ user, data, chain, onReply }) {
 
   const updateComment = async () => {
     const { result: updatedComment } = await nextApi.fetch(
-      `${chain}/comments/${comment._id}`
+      `comments/${comment._id}`
     );
     if (updatedComment) {
       setComment(updatedComment);
@@ -193,11 +193,11 @@ export default function Item({ user, data, chain, onReply }) {
 
         if (thumbUp) {
           ({ result, error } = await nextApi.delete(
-            `${chain}/comments/${comment._id}/reaction`
+            `comments/${comment._id}/reaction`
           ));
         } else {
           ({ result, error } = await nextApi.put(
-            `${chain}/comments/${comment._id}/reaction`,
+            `comments/${comment._id}/reaction`,
             { reaction: 1 }
           ));
         }
@@ -220,7 +220,7 @@ export default function Item({ user, data, chain, onReply }) {
   };
 
   const editComment = async (content, contentType) => {
-    return await nextApi.patch(`${chain}/comments/${commentId}`, {
+    return await nextApi.patch(`comments/${commentId}`, {
       content,
       contentType,
     });

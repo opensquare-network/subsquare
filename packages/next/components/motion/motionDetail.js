@@ -142,7 +142,7 @@ function createMotionBusinessData(motion, chain) {
     [
       "Link to",
       <Link
-        href={`/${chain}/democracy/external/${height}_${motion.proposalHash}`}
+        href={`/democracy/external/${height}_${motion.proposalHash}`}
       >{`External proposal ${motion.proposalHash.slice(0, 8)}`}</Link>,
     ],
   ];
@@ -228,7 +228,7 @@ export default function MotionDetail({ motion, chain }) {
       [
         "Link to",
         <Link
-          href={`/${chain}/treasury/proposal/${motion.treasuryProposalIndex}`}
+          href={`/treasury/proposal/${motion.treasuryProposalIndex}`}
         >{`Treasury Proposal #${motion.treasuryProposalIndex}`}</Link>,
       ],
       [

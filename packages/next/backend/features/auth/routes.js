@@ -16,7 +16,7 @@ router.post("/auth/forget", authController.forgetPassword);
 router.post("/auth/reset", authController.resetPassword);
 
 router.get(
-  `/auth/login/:chain(${routeChains})/:address`,
+  `/auth/login/:address`,
   authController.addressLoginStart
 );
 router.post("/auth/login/:attemptId", authController.addressLoginConfirm);

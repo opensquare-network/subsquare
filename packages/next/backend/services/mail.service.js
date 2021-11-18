@@ -55,7 +55,6 @@ class MailService {
   sendCommentThumbsupEmail({
     email,
     commentAuthor,
-    chain,
     postType,
     postUid,
     commentHeight,
@@ -67,7 +66,6 @@ class MailService {
 
     const text = templates.commentThumbsup({
       commentAuthor,
-      chain,
       postType,
       postUid,
       commentHeight,
@@ -91,14 +89,12 @@ class MailService {
   sendPostThumbsupEmail({
     email,
     postAuthor,
-    chain,
     postType,
     postUid,
     reactionUser,
   }) {
     const text = templates.postThumbsup({
       postAuthor,
-      chain,
       postType,
       postUid,
       reactionUser,
@@ -120,7 +116,6 @@ class MailService {
   sendReplyEmail({
     email,
     replyToUser,
-    chain,
     postType,
     postUid,
     content,
@@ -133,7 +128,6 @@ class MailService {
     const text = templates.postReply({
       author,
       replyToUser,
-      chain,
       postType,
       postUid,
       commentHeight,
@@ -155,7 +149,6 @@ class MailService {
 
   sendCommentMentionEmail({
     email,
-    chain,
     postType,
     postUid,
     content,
@@ -169,7 +162,6 @@ class MailService {
     const text = templates.commentMention({
       author,
       mentionedUser,
-      chain,
       postType,
       postUid,
       commentHeight,

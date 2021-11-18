@@ -17,7 +17,7 @@ router.post("/user/changepassword", requireAuth, userController.changePassword);
 router.post("/user/deleteaccount", requireAuth, userController.deleteAccount);
 
 router.get(
-  `/user/linkaddr/:chain(${routeChains})/:address`,
+  `/user/linkaddr/:address`,
   requireAuth,
   userController.linkAddressStart
 );
@@ -27,7 +27,7 @@ router.post(
   userController.linkAddressConfirm
 );
 router.delete(
-  `/user/linkaddr/:chain(${routeChains})/:address`,
+  `/user/linkaddr/:address`,
   requireAuth,
   userController.unlinkAddress
 );

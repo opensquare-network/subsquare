@@ -23,7 +23,7 @@ export function getTipState(state) {
 export const toDiscussionListItem = (chain, item) => ({
   ...item,
   time: item.lastActivityAt,
-  detailLink: `/${chain}/post/${item.postUid}`,
+  detailLink: `/post/${item.postUid}`,
 });
 
 export const toCouncilMotionListItem = (chain, item) => ({
@@ -34,7 +34,7 @@ export const toCouncilMotionListItem = (chain, item) => ({
     addresses: [{ chain, address: item.proposer }],
   },
   status: item.state?.state ?? "Unknown",
-  detailLink: `/${chain}/council/motion/${item.index}`,
+  detailLink: `/council/motion/${item.index}`,
 });
 
 function getTechCommMotionId(motion) {
@@ -53,7 +53,7 @@ export const toTechCommMotionListItem = (chain, item) => ({
     addresses: [{ chain, address: item.proposer }],
   },
   status: item.state?.state ?? "Unknown",
-  detailLink: `/${chain}/techcomm/proposal/${getTechCommMotionId(item)}`,
+  detailLink: `/techcomm/proposal/${getTechCommMotionId(item)}`,
 });
 
 export const toTreasuryProposalListItem = (chain, item) => ({
@@ -64,7 +64,7 @@ export const toTreasuryProposalListItem = (chain, item) => ({
   },
   status: item.state ?? "Unknown",
   time: getPostUpdatedAt(item),
-  detailLink: `/${chain}/treasury/proposal/${item.proposalIndex}`,
+  detailLink: `/treasury/proposal/${item.proposalIndex}`,
   value: item.onchainData.value,
 });
 
@@ -77,7 +77,7 @@ export const toTreasuryBountyListItem = (chain, item) => ({
   },
   status: item.state ?? "Unknown",
   time: getPostUpdatedAt(item),
-  detailLink: `/${chain}/treasury/bounty/${item.bountyIndex}`,
+  detailLink: `/treasury/bounty/${item.bountyIndex}`,
   value: item.onchainData.value,
 });
 
@@ -90,7 +90,7 @@ export const toReferendaListItem = (chain, item) => ({
     username: addressEllipsis(item.proposer),
     addresses: [{ chain, address: item.proposer }],
   },
-  detailLink: `/${chain}/democracy/referendum/${item.referendumIndex}`,
+  detailLink: `/democracy/referendum/${item.referendumIndex}`,
 });
 
 export const toTipListItem = (chain, item) => ({
@@ -101,7 +101,7 @@ export const toTipListItem = (chain, item) => ({
   },
   status: item.state ? getTipState(item.state) : "Unknown",
   time: getPostUpdatedAt(item),
-  detailLink: `/${chain}/treasury/tip/${item.height}_${item.hash}`,
+  detailLink: `/treasury/tip/${item.height}_${item.hash}`,
   value: item?.onchainData?.medianValue,
 });
 
@@ -114,7 +114,7 @@ export const toPublicProposalListItem = (chain, item) => ({
   index: item.proposalIndex,
   status: item.state ?? "Unknown",
   time: getPostUpdatedAt(item),
-  detailLink: `/${chain}/democracy/proposal/${item.proposalIndex}`,
+  detailLink: `/democracy/proposal/${item.proposalIndex}`,
 });
 
 export const toExternalProposalListItem = (chain, item) => ({
@@ -126,7 +126,7 @@ export const toExternalProposalListItem = (chain, item) => ({
   time: getPostUpdatedAt(item),
   hash: item.externalProposalHash,
   status: item.state ?? "Unknown",
-  detailLink: `/${chain}/democracy/external/${item.indexer.blockHeight}_${item.externalProposalHash}`,
+  detailLink: `/democracy/external/${item.indexer.blockHeight}_${item.externalProposalHash}`,
 });
 
 export const extractLinks = (text) =>

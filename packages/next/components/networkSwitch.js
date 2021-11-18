@@ -96,7 +96,6 @@ const NetworkBlock = styled.div`
 `;
 
 export default function NetworkSwitch({ activeNode, isWeb3Login }) {
-  const router = useRouter();
   const [show, setShow] = useState(false);
   const ref = useRef();
   const windowSize = useWindowSize();
@@ -122,8 +121,8 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
         />
         <NetworkBlock>
           <div>Block</div>
-          {nodesHeight[activeNode.value] ? (
-            <span>{`#${nodesHeight[activeNode.value]?.toLocaleString()}`}</span>
+          {nodesHeight ? (
+            <span>{`#${nodesHeight?.toLocaleString()}`}</span>
           ) : (
             <LoadingSvg />
           )}
@@ -138,11 +137,10 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
               onClick={() => {
                 setShow(false);
                 if (activeNode.value === item.value) return;
-                localStorage.setItem("chain", item.value);
                 if (isWeb3Login) {
-                  router.replace(router.asPath, undefined, { shallow: true });
+                  window.location.href = `https://${item.value}.opensquare.io/login`;
                 } else {
-                  router.push(`/${item.value}`);
+                  window.location.href = `https://${item.value}.opensquare.io`;
                 }
               }}
               active={activeNode.value === nodes[index].value}

@@ -50,16 +50,13 @@ export default function AddressLogin({ onBack }) {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  let chain = "karura";
-  if (typeof window !== "undefined") {
-    chain = localStorage.getItem("chain") || "karura";
-  }
+  const chain = process.env.CHAIN;
 
   const doWeb3Login = async () => {
     setLoading(true);
     const address = selectedAccount[`${chain}Address`];
     const { result, error } = await nextApi.fetch(
-      `auth/login/${chain}/${address}`
+      `auth/login/${address}`
     );
     if (error) {
       setWeb3Error(error.message);

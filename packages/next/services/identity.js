@@ -38,7 +38,7 @@ const delayQuery = debounce(() => {
     };
 
     fetch(
-      `${process.env.NEXT_PUBLIC_IDENTITY_SERVER_HOST}/${chain}/short-ids`,
+      `${process.env.NEXT_PUBLIC_IDENTITY_SERVER_HOST}/short-ids`,
       {
         headers,
         method: "POST",

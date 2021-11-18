@@ -1,12 +1,18 @@
 const { connectDb } = require("../../utils/db");
 
-const dbs = {};
+const defaultDbNames = {
+  kusama: "subsquare-business-ksm",
+  karura: "subsquare-business-kar",
+  khala: "subsquare-business-kha",
+}
 
-async function getDb(chain) {
-  if (!dbs[chain]) {
+let db = null;
+
+async function getDb() {
+  if (!db) {
     await initDb();
   }
-  return dbs[chain];
+  return db;
 }
 
 async function createIndex(db) {
@@ -14,47 +20,29 @@ async function createIndex(db) {
 }
 
 async function initDb() {
-  if (!dbs["karura"]) {
-    dbs["karura"] = await connectDb(
-      process.env.MONGO_DB_BUSINESS_DATA_KAR_NAME || "subsquare-business-kar"
+  if (!db) {
+    db = await connectDb(
+      process.env.MONGO_DB_BUSINESS_DATA_NAME || defaultDbNames[process.env.CHAIN]
     );
-    await createIndex(dbs["karura"]);
-  }
-  if (!dbs["kusama"]) {
-    dbs["kusama"] = await connectDb(
-      process.env.MONGO_DB_BUSINESS_DATA_KSM_NAME || "subsquare-business-ksm"
-    );
-    await createIndex(dbs["kusama"]);
-  }
-  if (!dbs["khala"]) {
-    dbs["khala"] = await connectDb(
-      process.env.MONGO_DB_BUSINESS_DATA_KHA_NAME || "subsquare-business-kha"
-    );
-    await createIndex(dbs["khala"]);
-  }
-  if (!dbs["basilisk"]) {
-    dbs["basilisk"] = await connectDb(
-      process.env.MONGO_DB_BUSINESS_DATA_BSX_NAME || "subsquare-business-bsx"
-    );
-    await createIndex(dbs["basilisk"]);
+    await createIndex(db);
   }
 }
 
-async function getCollection(chain, colName) {
-  const db = await getDb(chain);
+async function getCollection(colName) {
+  const db = await getDb();
   return db.getCollection(colName);
 }
 
 module.exports = {
   initDb,
   getDb,
-  getPostCollection: (chain) => getCollection(chain, "post"),
-  getTipCollection: (chain) => getCollection(chain, "tip"),
-  getTreasuryProposalCollection: (chain) =>
-    getCollection(chain, "treasuryProposal"),
-  getBountyCollection: (chain) => getCollection(chain, "bounty"),
-  getDemocracyCollection: (chain) => getCollection(chain, "democracy"),
-  getCommentCollection: (chain) => getCollection(chain, "comment"),
-  getReactionCollection: (chain) => getCollection(chain, "reaction"),
-  getStatusCollection: (chain) => getCollection(chain, "status"),
+  getPostCollection: () => getCollection("post"),
+  getTipCollection: () => getCollection("tip"),
+  getTreasuryProposalCollection: () =>
+    getCollection("treasuryProposal"),
+  getBountyCollection: () => getCollection("bounty"),
+  getDemocracyCollection: () => getCollection("democracy"),
+  getCommentCollection: () => getCollection("comment"),
+  getReactionCollection: () => getCollection("reaction"),
+  getStatusCollection: () => getCollection("status"),
 };

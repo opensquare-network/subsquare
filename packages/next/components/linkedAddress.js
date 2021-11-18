@@ -220,7 +220,7 @@ export default function LinkedAddress() {
     const address = account[`${chain}Address`];
 
     const { error, result } = await nextApi.delete(
-      `user/linkaddr/${chain}/${address}`
+      `user/linkaddr/${address}`
     );
     dispatch(fetchUserProfile());
 
@@ -247,7 +247,7 @@ export default function LinkedAddress() {
     const address = account[`${chain}Address`];
 
     const { result, error } = await nextApi.fetch(
-      `user/linkaddr/${chain}/${address}`
+      `user/linkaddr/${address}`
     );
     if (result) {
       const signature = await signMessage(result?.challenge, account.address);
@@ -324,7 +324,7 @@ export default function LinkedAddress() {
         )}
         <div>
           <NodesWrapper>
-            {nodes.map((item, index) => (
+            {nodes.filter(node => node.value === activeChain).map((item, index) => (
               <NodeItem
                 key={index}
                 onClick={() => setActiveChain(item.value)}

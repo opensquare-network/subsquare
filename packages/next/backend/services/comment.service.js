@@ -11,14 +11,13 @@ const { ContentType } = require("../constants");
 const mailService = require("./mail.service");
 
 async function updateComment(
-  chain,
   commentId,
   content,
   contentType,
   author,
 ) {
   const commentObjId = ObjectId(commentId);
-  const commentCol = await getCommentCollection(chain);
+  const commentCol = await getCommentCollection();
   const comment = await commentCol.findOne({ _id: commentObjId });
   if (!comment) {
     throw new HttpError(404, "Comment does not exists");
@@ -47,10 +46,10 @@ async function updateComment(
 }
 
 
-async function unsetCommentReaction(chain, commentId, user) {
+async function unsetCommentReaction(commentId, user) {
   const commmentObjId = ObjectId(commentId);
 
-  const reactionCol = await getReactionCollection(chain);
+  const reactionCol = await getReactionCollection();
 
   const result = await reactionCol.deleteOne({
     comment: commmentObjId,
@@ -68,12 +67,12 @@ async function unsetCommentReaction(chain, commentId, user) {
   return true;
 }
 
-async function processCommentThumbsUpNotification(chain, comment, reactionUser) {
+async function processCommentThumbsUpNotification(comment, reactionUser) {
   let postType = "post";
   if (comment.tip) {
     postType = "tip";
   }
-  const businessDb = await getBusinessDb(chain);
+  const businessDb = await getBusinessDb();
   const postCol = businessDb.getCollection(postType);
   const userCol = await getUserCollection();
   const [post, commentAuthor] = await Promise.all([
@@ -89,7 +88,6 @@ async function processCommentThumbsUpNotification(chain, comment, reactionUser) 
     mailService.sendCommentThumbsupEmail({
       email: commentAuthor.email,
       commentAuthor: commentAuthor.username,
-      chain,
       postType,
       postUid: post.postUid,
       commentHeight: comment.height,
@@ -100,10 +98,10 @@ async function processCommentThumbsUpNotification(chain, comment, reactionUser) 
   }
 }
 
-async function setCommentReaction(chain, commentId, reaction, user) {
+async function setCommentReaction(commentId, reaction, user) {
   const commmentObjId = ObjectId(commentId);
 
-  const commentCol = await getCommentCollection(chain);
+  const commentCol = await getCommentCollection();
   const comment = await commentCol.findOne({
     _id: commmentObjId,
     author: { $ne: user._id },
@@ -112,7 +110,7 @@ async function setCommentReaction(chain, commentId, reaction, user) {
     throw new HttpError(400, "Cannot set reaction.");
   }
 
-  const reactionCol = await getReactionCollection(chain);
+  const reactionCol = await getReactionCollection();
 
   const now = new Date();
   const result = await reactionCol.updateOne(
@@ -136,21 +134,21 @@ async function setCommentReaction(chain, commentId, reaction, user) {
     throw new HttpError(500, "Db error, update reaction.");
   }
 
-  processCommentThumbsUpNotification(chain, comment, user).catch(console.error);
+  processCommentThumbsUpNotification(comment, user).catch(console.error);
 
   return true;
 }
 
-async function getComment(chain, commentId) {
+async function getComment(commentId) {
   const commentObjId = ObjectId(commentId);
 
-  const commentCol = await getCommentCollection(chain);
+  const commentCol = await getCommentCollection();
   const comment = await commentCol.findOne({ _id: commentObjId });
   if (!comment) {
     throw new HttpError(400, "Comment does not exists");
   }
 
-  const businessDb = await getBusinessDb(chain);
+  const businessDb = await getBusinessDb();
   const reactions = await businessDb.lookupMany({
     from: "reaction",
     for: comment,

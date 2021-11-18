@@ -1,12 +1,18 @@
 const { connectDb } = require("../../utils/db");
 
-const dbs = {};
+const defaultDbNames = {
+  kusama: "subsquare-ksm",
+  karura: "subsquare-kar",
+  khala: "subsquare-kha",
+}
 
-async function getDb(chain) {
-  if (!dbs[chain]) {
+let db = null;
+
+async function getDb() {
+  if (!db) {
     await initDb();
   }
-  return dbs[chain];
+  return db;
 }
 
 async function createIndex(db) {
@@ -14,52 +20,34 @@ async function createIndex(db) {
 }
 
 async function initDb() {
-  if (!dbs["karura"]) {
-    dbs["karura"] = await connectDb(
-      process.env.MONGO_DB_CHAIN_DATA_KAR_NAME || "subsquare-kar"
+  if (!db) {
+    db = await connectDb(
+      process.env.MONGO_DB_CHAIN_DATA_NAME || defaultDbNames[process.env.CHAIN]
     );
-    await createIndex(dbs["karura"]);
-  }
-  if (!dbs["kusama"]) {
-    dbs["kusama"] = await connectDb(
-      process.env.MONGO_DB_CHAIN_DATA_KSM_NAME || "subsquare-ksm"
-    );
-    await createIndex(dbs["kusama"]);
-  }
-  if (!dbs["khala"]) {
-    dbs["khala"] = await connectDb(
-      process.env.MONGO_DB_CHAIN_DATA_KHA_NAME || "subsquare-kha"
-    );
-    await createIndex(dbs["khala"]);
-  }
-  if (!dbs["basilisk"]) {
-    dbs["basilisk"] = await connectDb(
-      process.env.MONGO_DB_CHAIN_DATA_BSX_NAME || "subsquare-bsx"
-    );
-    await createIndex(dbs["basilisk"]);
+    await createIndex(db);
   }
 }
 
-async function getCollection(chain, colName) {
-  const db = await getDb(chain);
+async function getCollection(colName) {
+  const db = await getDb();
   return db.getCollection(colName);
 }
 
 module.exports = {
   initDb,
   getDb,
-  getStatusCollection: (chain) => getCollection(chain, "status"),
-  getTipCollection: (chain) => getCollection(chain, "tip"),
-  getTreasuryProposalCollection: (chain) =>
-    getCollection(chain, "treasuryProposal"),
-  getBountyCollection: (chain) => getCollection(chain, "bounty"),
-  getMotionCollection: (chain) => getCollection(chain, "motion"),
-  getTechCommMotionCollection: (chain) =>
-    getCollection(chain, "techCommMotion"),
-  getPublicProposalCollection: (chain) =>
-    getCollection(chain, "democracyPublicProposal"),
-  getReferendumCollection: (chain) =>
-    getCollection(chain, "democracyReferendum"),
-  getExternalCollection: (chain) => getCollection(chain, "democracyExternal"),
-  getPreImageCollection: (chain) => getCollection(chain, "democracyPreImage"),
+  getStatusCollection: () => getCollection("status"),
+  getTipCollection: () => getCollection("tip"),
+  getTreasuryProposalCollection: () =>
+    getCollection("treasuryProposal"),
+  getBountyCollection: () => getCollection("bounty"),
+  getMotionCollection: () => getCollection("motion"),
+  getTechCommMotionCollection: () =>
+    getCollection("techCommMotion"),
+  getPublicProposalCollection: () =>
+    getCollection("democracyPublicProposal"),
+  getReferendumCollection: () =>
+    getCollection("democracyReferendum"),
+  getExternalCollection: () => getCollection("democracyExternal"),
+  getPreImageCollection: () => getCollection("democracyPreImage"),
 };

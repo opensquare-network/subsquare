@@ -136,7 +136,8 @@ async function resendVerifyEmail(ctx) {
 }
 
 async function linkAddressStart(ctx) {
-  const { chain, address } = ctx.params;
+  const chain = process.env.CHAIN;
+  const { address } = ctx.params;
   const user = ctx.user;
 
   validateAddress(address, chain);
@@ -236,7 +237,8 @@ async function linkAddressConfirm(ctx) {
 }
 
 async function unlinkAddress(ctx) {
-  const { chain, address } = ctx.params;
+  const chain = process.env.CHAIN;
+  const { address } = ctx.params;
   const user = ctx.user;
 
   validateAddress(address, chain);

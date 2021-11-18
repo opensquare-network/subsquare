@@ -48,7 +48,7 @@ const nodeSlice = createSlice({
   initialState: {
     currentNode: getNodeUrl(),
     nodes: getNodes(),
-    nodesHeight: {},
+    nodesHeight: 0,
   },
   reducers: {
     setCurrentNode(state, { payload }) {
@@ -74,7 +74,7 @@ const nodeSlice = createSlice({
       state.currentNode = nodeUrl;
 
       if (refresh) {
-        window.location.href = `/${chain}`;
+        window.location.href = `https://${chain}.opensquare.io`;
       }
     },
     setNodesDelay(state, { payload }) {
@@ -86,7 +86,7 @@ const nodeSlice = createSlice({
       });
     },
     setNodeBlockHeight(state, { payload }) {
-      state.nodesHeight[payload.chain] = payload.height;
+      state.nodesHeight = payload;
     },
   },
 });

@@ -45,9 +45,8 @@ const updateNodeDelay = async (chain, url) => {
 };
 
 const useUpdateNodesDelay = () => {
-  const router = useRouter();
   const nodesSetting = useSelector(nodesSelector);
-  const { chain } = router.query;
+  const chain = process.env.CHAIN;
   const currentNode = useSelector(currentNodeSelector);
   const dispatch = useDispatch();
   useEffect(() => {

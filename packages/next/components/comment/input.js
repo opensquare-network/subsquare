@@ -110,7 +110,7 @@ function Input(
     try {
       setLoading(true);
       const result = await nextApi.post(
-        `${chain}/${toApiType(type)}/${postId}/comments`,
+        `${toApiType(type)}/${postId}/comments`,
         {
           content,
           contentType,
@@ -122,8 +122,8 @@ function Input(
       } else {
         setShowPreview(false);
         setContent("");
-        await router.replace(`/[chain]/${type}/[id]`, {
-          pathname: `/${chain}/${type}/${router.query.id}`,
+        await router.replace(`/${type}/[id]`, {
+          pathname: `/${type}/${router.query.id}`,
         });
         setTimeout(() => {
           window && window.scrollTo(0, document.body.scrollHeight);
@@ -137,7 +137,7 @@ function Input(
   const updateComment = async () => {
     setLoading(true);
     const { result, error } = await nextApi.patch(
-      `${chain}/comments/${commentId}`,
+      `comments/${commentId}`,
       {
         content,
         contentType,
