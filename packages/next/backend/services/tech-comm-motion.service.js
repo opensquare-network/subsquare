@@ -107,7 +107,7 @@ async function getMotionById(postId) {
   }
 
   const userCol = await getUserCollection();
-  const author = userCol.findOne({ [`${chain}Address`]: motion.proposer });
+  const author = await userCol.findOne({ [`${chain}Address`]: motion.proposer });
 
   const externalCol = await getExternalCollection();
   const democracyExternal = await externalCol.findOne({
