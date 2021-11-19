@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Header from "./header";
 import Content from "./content";
 import Toast from "components/toast";
+import Auth from "components/auth";
 
 const Wrapper = styled.div`
   display: flex;
@@ -15,6 +16,7 @@ const Wrapper = styled.div`
 export default function Layout({ user, left, children, chain, isWeb3Login }) {
   return (
     <Wrapper>
+      <Auth chain={chain} />
       <Header user={user} left={left} chain={chain} isWeb3Login={isWeb3Login} />
       <Content left={left}>{children}</Content>
       <Toast />

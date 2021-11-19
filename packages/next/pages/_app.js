@@ -6,11 +6,9 @@ import { Provider } from "react-redux";
 import "nprogress/nprogress.css";
 import "../styles/globals.css";
 import { store } from "../store";
-import Auth from "components/auth";
 import "../styles/richTextStyles.scss";
 import { connect } from "../services/websocket";
 import { useEffect } from "react";
-import { useRouter } from "next/router";
 
 NProgress.configure({
   minimum: 0.3,
@@ -43,7 +41,6 @@ function MyApp({ Component, pageProps }) {
         <title>SubSquare</title>
         <meta name="viewport" content="width=device-width, user-scalable=no" />
       </Head>
-      <Auth />
       <Component {...pageProps} />
     </Provider>
   );
