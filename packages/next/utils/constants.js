@@ -94,15 +94,15 @@ export const nodes = [
     decimals: 12,
     hasElections: true,
   },
-  {
-    value: "basilisk",
-    name: "Basilisk",
-    icon: "basilisk.png",
-    identity: "basilisk",
-    symbol: "BSX",
-    decimals: 12,
-    hasElections: true,
-  },
+  // {
+  //   value: "basilisk",
+  //   name: "Basilisk",
+  //   icon: "basilisk.png",
+  //   identity: "basilisk",
+  //   symbol: "BSX",
+  //   decimals: 12,
+  //   hasElections: true,
+  // },
 ];
 
 export const accountMenu = [
