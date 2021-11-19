@@ -66,11 +66,7 @@ export default function Custom404() {
       <P>This page could not be found.</P>
       <button
         onClick={() => {
-          const currChain = localStorage.getItem("chain") || "karura";
-          router.push({
-            pathname: "/[chain]",
-            query: { chain: currChain },
-          });
+          router.push("/");
         }}
       >
         {" "}

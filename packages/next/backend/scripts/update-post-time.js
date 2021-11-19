@@ -8,10 +8,10 @@ const {
   getDb: getChainDb,
 } = require("../mongo/chain");
 
-async function updateTip(chain) {
-  const chainDb = await getChainDb(chain)
+async function updateTip() {
+  const chainDb = await getChainDb()
 
-  const col = await getTipCollection(chain);
+  const col = await getTipCollection();
   const items = await col.find({}).toArray();
   await chainDb.compoundLookupOne({
     from: "tip",
@@ -47,10 +47,10 @@ async function updateTip(chain) {
   }
 }
 
-async function updateTreasuryProposal(chain) {
-  const chainDb = await getChainDb(chain)
+async function updateTreasuryProposal() {
+  const chainDb = await getChainDb()
 
-  const col = await getTreasuryProposalCollection(chain);
+  const col = await getTreasuryProposalCollection();
   const items = await col.find({}).toArray();
   const onchainDatas = await chainDb.lookupOne({
     from: "treasuryProposal",
@@ -94,10 +94,10 @@ async function updateTreasuryProposal(chain) {
   }
 }
 
-async function updatePublicProposal(chain) {
-  const chainDb = await getChainDb(chain)
+async function updatePublicProposal() {
+  const chainDb = await getChainDb()
 
-  const col = await getDemocracyCollection(chain);
+  const col = await getDemocracyCollection();
   const items = await col.find({
     proposalIndex: { $ne: null }
   }).toArray();
@@ -143,10 +143,10 @@ async function updatePublicProposal(chain) {
   }
 }
 
-async function updateExternalProposal(chain) {
-  const chainDb = await getChainDb(chain)
+async function updateExternalProposal() {
+  const chainDb = await getChainDb()
 
-  const col = await getDemocracyCollection(chain);
+  const col = await getDemocracyCollection();
   const items = await col.find({
     externalProposalHash: { $ne: null }
   }).toArray();
@@ -205,13 +205,11 @@ async function updateExternalProposal(chain) {
 }
 
 async function main() {
-  const chain = process.env.CHAIN;
-
   try {
-    await updateTip(chain);
-    await updateTreasuryProposal(chain);
-    await updatePublicProposal(chain);
-    await updateExternalProposal(chain);
+    await updateTip();
+    await updateTreasuryProposal();
+    await updatePublicProposal();
+    await updateExternalProposal();
 
     console.log(`Last run at`, new Date());
   } catch (e) {

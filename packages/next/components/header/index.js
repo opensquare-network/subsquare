@@ -119,14 +119,7 @@ export default function Header({ user, left, chain, isWeb3Login }) {
               src="/imgs/logo.svg"
               alt=""
               onClick={() => {
-                let currChain = chain;
-                if (!currChain) {
-                  currChain = localStorage.getItem("chain") || "karura";
-                }
-                router.push({
-                  pathname: "/[chain]",
-                  query: { chain: currChain },
-                });
+                router.push("/");
               }}
             />
             <NodeButton
@@ -146,14 +139,14 @@ export default function Header({ user, left, chain, isWeb3Login }) {
           </Left>
           <Right>
             <HeaderAccount user={user} chain={chain} />
-            {(router.pathname.startsWith("/[chain]") || isWeb3Login) && (
+            {
               <>
                 <NetworkWrapper>
                   <NetworkSwitch activeNode={node} isWeb3Login={isWeb3Login} />
                 </NetworkWrapper>
-                {!isWeb3Login && <NodeSwitch small chain={chain} />}
+                <NodeSwitch small chain={chain} />
               </>
-            )}
+            }
           </Right>
         </FlexWrapper>
       </Container>

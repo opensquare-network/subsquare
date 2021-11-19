@@ -4,7 +4,6 @@ const { ContentType } = require("../../constants");
 const { extractPage } = require("../../utils");
 
 async function createPost(ctx) {
-  const { chain } = ctx.params;
   const {
     title,
     content,
@@ -32,7 +31,6 @@ async function createPost(ctx) {
     : ContentType.Markdown;
 
   ctx.body = await postService.createPost(
-    chain,
     title,
     content,
     contentType,
@@ -41,7 +39,7 @@ async function createPost(ctx) {
 }
 
 async function updatePost(ctx) {
-  const { chain, postId } = ctx.params;
+  const { postId } = ctx.params;
   const {
     title,
     content,
@@ -69,7 +67,6 @@ async function updatePost(ctx) {
     : ContentType.Markdown;
 
   ctx.body = await postService.updatePost(
-    chain,
     postId,
     title,
     content,
@@ -79,25 +76,23 @@ async function updatePost(ctx) {
 }
 
 async function getPosts(ctx) {
-  const { chain } = ctx.params;
-
   const { page, pageSize } = extractPage(ctx);
   if (pageSize === 0 || page < 1) {
     ctx.status = 400;
     return;
   }
 
-  ctx.body = await postService.getPostsByChain(chain, page, pageSize);
+  ctx.body = await postService.getPostsByChain(page, pageSize);
 }
 
 async function getPostById(ctx) {
-  const { chain, postId } = ctx.params;
+  const { postId } = ctx.params;
 
-  ctx.body = await postService.getPostById(chain, postId);
+  ctx.body = await postService.getPostById(postId);
 }
 
 async function postComment(ctx) {
-  const { chain, postId } = ctx.params;
+  const { postId } = ctx.params;
   const { content, contentType: paramContentType } = ctx.request.body;
 
   if (!content) {
@@ -117,7 +112,6 @@ async function postComment(ctx) {
     : ContentType.Markdown;
 
   ctx.body = await postService.postComment(
-    chain,
     postId,
     content,
     contentType,
@@ -132,12 +126,12 @@ async function getComments(ctx) {
     return;
   }
 
-  const { chain, postId } = ctx.params;
-  ctx.body = await postService.getComments(chain, postId, page, pageSize);
+  const { postId } = ctx.params;
+  ctx.body = await postService.getComments(postId, page, pageSize);
 }
 
 async function setPostReaction(ctx) {
-  const { chain, postId } = ctx.params;
+  const { postId } = ctx.params;
   const { reaction } = ctx.request.body;
 
   if (reaction === undefined) {
@@ -146,7 +140,6 @@ async function setPostReaction(ctx) {
 
   const user = ctx.user;
   ctx.body = await postService.setPostReaction(
-    chain,
     postId,
     reaction,
     user
@@ -154,9 +147,9 @@ async function setPostReaction(ctx) {
 }
 
 async function unsetPostReaction(ctx) {
-  const { chain, postId } = ctx.params;
+  const { postId } = ctx.params;
   const user = ctx.user;
-  ctx.body = await postService.unsetPostReaction(chain, postId, user);
+  ctx.body = await postService.unsetPostReaction(postId, user);
 }
 
 

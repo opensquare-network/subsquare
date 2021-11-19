@@ -24,7 +24,7 @@ export default function Trends({ user, chain }) {
         <Button
           primary
           isFill
-          onClick={() => router.push(`/${chain}/post/create`)}
+          onClick={() => router.push(`/post/create`)}
         >
           New Post
         </Button>

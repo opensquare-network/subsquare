@@ -12,9 +12,7 @@ const techCommMotionService = require("../../services/tech-comm-motion.service")
 const myCache = new NodeCache( { stdTTL: 30, checkperiod: 36 } );
 
 async function getOverview(ctx) {
-  const { chain } = ctx.params;
-
-  const cachedOverview = myCache.get(`${chain}/overview`);
+  const cachedOverview = myCache.get(`overview`);
   if (cachedOverview) {
     ctx.body = cachedOverview;
     return;
@@ -31,15 +29,15 @@ async function getOverview(ctx) {
     referendums,
     techCommMotions,
   ] = await Promise.all([
-    discussionPostService.getPostsOverview(chain),
-    tipPostService.getActivePostsOverview(chain),
-    treasuryProposalPostService.getActivePostsOverview(chain),
-    bountyPostService.getActivePostsOverview(chain),
-    motionService.getActiveMotionsOverview(chain),
-    externalProposalPostService.getActivePostsOverview(chain),
-    publicProposalPostService.getActivePostsOverview(chain),
-    referendumPostService.getActivePostsOverview(chain),
-    techCommMotionService.getActiveMotionsOverview(chain),
+    discussionPostService.getPostsOverview(),
+    tipPostService.getActivePostsOverview(),
+    treasuryProposalPostService.getActivePostsOverview(),
+    bountyPostService.getActivePostsOverview(),
+    motionService.getActiveMotionsOverview(),
+    externalProposalPostService.getActivePostsOverview(),
+    publicProposalPostService.getActivePostsOverview(),
+    referendumPostService.getActivePostsOverview(),
+    techCommMotionService.getActiveMotionsOverview(),
   ]);
 
   const overview = {
@@ -62,7 +60,7 @@ async function getOverview(ctx) {
     }
   };
 
-  myCache.set(`${chain}/overview`, overview, 30);
+  myCache.set(`overview`, overview, 30);
 
   ctx.body = overview;
 }

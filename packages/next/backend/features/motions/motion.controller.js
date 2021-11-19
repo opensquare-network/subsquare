@@ -2,21 +2,19 @@ const motionService = require("../../services/motion.service");
 const { extractPage } = require("../../utils");
 
 async function getMotions(ctx) {
-  const { chain } = ctx.params;
-
   const { page, pageSize } = extractPage(ctx);
   if (pageSize === 0 || page < 1) {
     ctx.status = 400;
     return;
   }
 
-  ctx.body = await motionService.getMotionsByChain(chain, page, pageSize);
+  ctx.body = await motionService.getMotionsByChain(page, pageSize);
 }
 
 async function getMotionById(ctx) {
-  const { chain, motionId } = ctx.params;
+  const { motionId } = ctx.params;
 
-  ctx.body = await motionService.getMotionById(chain, motionId);
+  ctx.body = await motionService.getMotionById(motionId);
 }
 
 module.exports = {

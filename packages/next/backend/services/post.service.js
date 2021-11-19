@@ -14,13 +14,12 @@ const mailService = require("./mail.service");
 
 function createService(postType) {
 
-  async function getPostCollection(chain) {
-    const db = await getBusinessDb(chain);
+  async function getPostCollection() {
+    const db = await getBusinessDb();
     return db.getCollection(postType);
   }
 
   async function createPost(
-    chain,
     title,
     content,
     contentType,
@@ -32,11 +31,11 @@ function createService(postType) {
       });
     }
 
-    const postUid = await nextPostUid(chain);
+    const postUid = await nextPostUid();
 
     const now = new Date();
 
-    const postCol = await getPostCollection(chain);
+    const postCol = await getPostCollection();
     const result = await postCol.insertOne(
       {
         postUid,
@@ -58,7 +57,6 @@ function createService(postType) {
   }
 
   async function updatePost(
-    chain,
     postId,
     title,
     content,
@@ -66,7 +64,7 @@ function createService(postType) {
     author
   ) {
     const postObjId = ObjectId(postId);
-    const postCol = await getPostCollection(chain);
+    const postCol = await getPostCollection();
     const post = await postCol.findOne({ _id: postObjId });
     if (!post) {
       throw new HttpError(404, "Post does not exists");
@@ -104,14 +102,14 @@ function createService(postType) {
     return true;
   }
 
-  async function getPostsOverview(chain) {
-    const postCol = await getPostCollection(chain);
+  async function getPostsOverview() {
+    const postCol = await getPostCollection();
     const posts = await postCol.find({})
       .sort({ lastActivityAt: -1 })
       .limit(3)
       .toArray();
 
-    const businessDb = await getBusinessDb(chain);
+    const businessDb = await getBusinessDb();
     await Promise.all([
       lookupUser({ for: posts, localField: "author" }),
       businessDb.lookupCount({
@@ -126,8 +124,8 @@ function createService(postType) {
     return posts;
   }
 
-  async function getPostsByChain(chain, page, pageSize) {
-    const postCol = await getPostCollection(chain);
+  async function getPostsByChain(page, pageSize) {
+    const postCol = await getPostCollection();
     const total = await postCol.countDocuments();
 
     if (page === "last") {
@@ -141,7 +139,7 @@ function createService(postType) {
       .limit(pageSize)
       .toArray();
 
-    const businessDb = await getBusinessDb(chain);
+    const businessDb = await getBusinessDb();
     await Promise.all([
       lookupUser({ for: posts, localField: "author" }),
       businessDb.lookupCount({
@@ -161,7 +159,7 @@ function createService(postType) {
     };
   }
 
-  async function getPostById(chain, postId) {
+  async function getPostById(postId) {
     const q = {};
     if (ObjectId.isValid(postId)) {
       q._id = ObjectId(postId);
@@ -169,14 +167,14 @@ function createService(postType) {
       q.postUid = postId;
     }
 
-    const postCol = await getPostCollection(chain);
+    const postCol = await getPostCollection();
     const post = await postCol.findOne(q);
 
     if (!post) {
       throw new HttpError(404, "Post not found");
     }
 
-    const businessDb = await getBusinessDb(chain);
+    const businessDb = await getBusinessDb();
     const reactions = await businessDb.lookupMany({
       from: "reaction",
       for: post,
@@ -193,7 +191,7 @@ function createService(postType) {
     return post;
   }
 
-  async function processPostThumbsUpNotification(chain, post, reactionUser) {
+  async function processPostThumbsUpNotification(post, reactionUser) {
     const userCol = await getUserCollection();
     const postAuthor = await userCol.findOne({_id: post.author});
 
@@ -205,7 +203,6 @@ function createService(postType) {
       mailService.sendPostThumbsupEmail({
         email: postAuthor.email,
         postAuthor: postAuthor.username,
-        chain,
         postType,
         postUid: post.postUid,
         reactionUser: reactionUser.username,
@@ -213,10 +210,10 @@ function createService(postType) {
     }
   }
 
-  async function setPostReaction(chain, postId, reaction, user) {
+  async function setPostReaction(postId, reaction, user) {
     const postObjId = ObjectId(postId);
 
-    const postCol = await getPostCollection(chain);
+    const postCol = await getPostCollection();
     const post = await postCol.findOne({
       _id: postObjId,
       author: { $ne: user._id },
@@ -225,7 +222,7 @@ function createService(postType) {
       throw new HttpError(400, "Cannot set reaction.");
     }
 
-    const reactionCol = await getReactionCollection(chain);
+    const reactionCol = await getReactionCollection();
 
     const now = new Date();
     const result = await reactionCol.updateOne(
@@ -249,15 +246,15 @@ function createService(postType) {
       throw new HttpError(500, "Db error, update reaction.");
     }
 
-    processPostThumbsUpNotification(chain, post, user).catch(console.error);
+    processPostThumbsUpNotification(post, user).catch(console.error);
 
     return true;
   }
 
-  async function unsetPostReaction(chain, postId, user) {
+  async function unsetPostReaction(postId, user) {
     const postObjId = ObjectId(postId);
 
-    const reactionCol = await getReactionCollection(chain);
+    const reactionCol = await getReactionCollection();
 
     const result = await reactionCol.deleteOne({
       [postType]: postObjId,
@@ -276,7 +273,6 @@ function createService(postType) {
   }
 
   async function processCommentMentions({
-    chain,
     postType,
     postUid,
     content,
@@ -300,7 +296,6 @@ function createService(postType) {
       if (user.emailVerified && (user.notification?.mention ?? true)) {
         mailService.sendCommentMentionEmail({
           email: user.email,
-          chain,
           postType,
           postUid,
           content,
@@ -314,7 +309,6 @@ function createService(postType) {
   }
 
   async function postComment(
-    chain,
     postId,
     content,
     contentType,
@@ -322,7 +316,7 @@ function createService(postType) {
   ) {
     const postObjId = ObjectId(postId);
 
-    const businessDb = await getBusinessDb(chain);
+    const businessDb = await getBusinessDb();
     const postCol = businessDb.getCollection(postType);
     const post = await postCol.findOne({_id: postObjId});
     if (!post) {
@@ -333,7 +327,7 @@ function createService(postType) {
     const postAuthor = await userCol.findOne({ _id: post.author });
     post.author = postAuthor;
 
-    const commentCol = await getCommentCollection(chain);
+    const commentCol = await getCommentCollection();
     const height = await commentCol.countDocuments({ post: postObjId });
 
     const now = new Date();
@@ -370,7 +364,6 @@ function createService(postType) {
 
     const mentions = extractMentions(content, contentType);
     processCommentMentions({
-      chain,
       postType,
       postUid: post.postUid,
       content: newComment.content,
@@ -385,7 +378,6 @@ function createService(postType) {
         mailService.sendReplyEmail({
           email: post.author.email,
           replyToUser: post.author.username,
-          chain,
           postType,
           postUid: post.postUid,
           content: newComment.content,
@@ -399,10 +391,10 @@ function createService(postType) {
     return newCommentId;
   }
 
-  async function getComments(chain, postId, page, pageSize) {
+  async function getComments(postId, page, pageSize) {
     const q = { [postType]: ObjectId(postId) };
 
-    const commentCol = await getCommentCollection(chain);
+    const commentCol = await getCommentCollection();
     const total = await commentCol.count(q);
 
     if (page === "last") {
@@ -416,7 +408,7 @@ function createService(postType) {
       .limit(pageSize)
       .toArray();
 
-    const businessDb = await getBusinessDb(chain);
+    const businessDb = await getBusinessDb();
     const reactions = await businessDb.lookupMany({
       from: "reaction",
       for: comments,

@@ -91,24 +91,13 @@ const FormWrapper = styled.form`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser }) => {
+export default withLoginUserRedux(({ loginUser, chain }) => {
   useAuthPage(false);
   const [web3, setWeb3] = useState(false);
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
-
-  let chain = "karura";
-  if (typeof window !== "undefined") {
-    chain = localStorage.getItem("chain") || "karura";
-  }
-
-  useEffect(() => {
-    if (loginUser) {
-      router.replace(`/${chain}`);
-    }
-  }, [router, chain, loginUser]);
 
   const { formData, handleInputChange, handleSubmit } = useForm(
     {
@@ -120,7 +109,7 @@ export default withLoginUserRedux(({ loginUser }) => {
       const res = await nextApi.post("auth/login", formData);
       if (res.result) {
         dispatch(setUser(res.result));
-        router.replace(`/${chain}`);
+        router.replace(`/`);
       } else if (res.error) {
         setErrors(res.error);
       }
@@ -176,7 +165,7 @@ export default withLoginUserRedux(({ loginUser }) => {
               </ButtonWrapper>
             </FormWrapper>
           )}
-          {web3 && <AddressLogin onBack={() => setWeb3(false)} />}
+          {web3 && <AddressLogin chain={chain} onBack={() => setWeb3(false)} />}
           <LinkWrapper>
             Don’t have a account? <Link href="/signup">Sign up</Link>
           </LinkWrapper>
@@ -188,7 +177,11 @@ export default withLoginUserRedux(({ loginUser }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
+  const chain = process.env.CHAIN;
+
   return {
-    props: {},
+    props: {
+      chain
+    },
   };
 });

@@ -4,9 +4,9 @@ import { useDispatch } from "react-redux";
 import { fetchUserProfile } from "store/reducers/userSlice";
 import useUpdateNodesDelay from "utils/useUpdateNodesDelay";
 
-export default function Auth() {
+export default function Auth({ chain }) {
   const dispatch = useDispatch();
-  useUpdateNodesDelay();
+  useUpdateNodesDelay(chain);
   useEffect(() => {
     dispatch(fetchUserProfile());
   });

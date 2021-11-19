@@ -4,8 +4,9 @@ const { getDb: getChainDb, getMotionCollection, getTreasuryProposalCollection } 
 const { getDb: getCommonDb, getUserCollection } = require("../mongo/common");
 
 
-async function getActiveMotionsOverview(chain) {
-  const motionCol = await getMotionCollection(chain);
+async function getActiveMotionsOverview() {
+  const chain = process.env.CHAIN;
+  const motionCol = await getMotionCollection();
   const motions = await motionCol.find(
     {
       "state.state": { $nin: ["Approved", "Disapproved", "Executed"] }
@@ -14,8 +15,8 @@ async function getActiveMotionsOverview(chain) {
     .limit(3)
     .toArray();
 
-  const commonDb = await getCommonDb(chain);
-  const chainDb = await getChainDb(chain);
+  const commonDb = await getCommonDb();
+  const chainDb = await getChainDb();
   await Promise.all([
     commonDb.lookupOne({
       from: "user",
@@ -37,8 +38,9 @@ async function getActiveMotionsOverview(chain) {
   return motions;
 }
 
-async function getMotionsByChain(chain, page, pageSize) {
-  const motionCol = await getMotionCollection(chain);
+async function getMotionsByChain(page, pageSize) {
+  const chain = process.env.CHAIN;
+  const motionCol = await getMotionCollection();
   const total = await motionCol.countDocuments();
 
   if (page === "last") {
@@ -52,8 +54,8 @@ async function getMotionsByChain(chain, page, pageSize) {
     .limit(pageSize)
     .toArray();
 
-  const commonDb = await getCommonDb(chain);
-  const chainDb = await getChainDb(chain);
+  const commonDb = await getCommonDb();
+  const chainDb = await getChainDb();
   await Promise.all([
     commonDb.lookupOne({
       from: "user",
@@ -80,7 +82,8 @@ async function getMotionsByChain(chain, page, pageSize) {
   };
 }
 
-async function getMotionById(chain, postId) {
+async function getMotionById(postId) {
+  const chain = process.env.CHAIN;
   const q = {};
   if (ObjectId.isValid(postId)) {
     q._id = ObjectId(postId);
@@ -88,7 +91,7 @@ async function getMotionById(chain, postId) {
     q.index = parseInt(postId);
   }
 
-  const motionCol = await getMotionCollection(chain);
+  const motionCol = await getMotionCollection();
   const motion = await motionCol.findOne(q);
 
   if (!motion) {
@@ -96,9 +99,9 @@ async function getMotionById(chain, postId) {
   }
 
   const userCol = await getUserCollection();
-  const author = userCol.findOne({ [`${chain}Address`]: motion.proposer });
+  const author = await userCol.findOne({ [`${chain}Address`]: motion.proposer });
 
-  const treasuryProposalCol = await getTreasuryProposalCollection(chain);
+  const treasuryProposalCol = await getTreasuryProposalCollection();
   const treasuryProposal = await treasuryProposalCol.findOne({ proposalIndex: motion.treasuryProposalIndex });
 
   return {

@@ -304,7 +304,8 @@ async function resetPassword(ctx) {
 }
 
 async function addressLoginStart(ctx) {
-  const { chain, address } = ctx.params;
+  const chain = process.env.CHAIN;
+  const { address } = ctx.params;
 
   validateAddress(address, chain);
 

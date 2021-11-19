@@ -1,18 +1,13 @@
-const { SupportChains } = require("../constants");
+const data = {
+  scanHeight: 0,
+};
 
-const data = SupportChains.reduce((result, chain) => {
-  result[chain] = {
-    scanHeight: 0,
-  };
-  return result;
-}, {});
-
-function setScanHeight(chain, height) {
-  data[chain].scanHeight = height;
+function setScanHeight(height) {
+  data.scanHeight = height;
 }
 
-function getScanHeight(chain) {
-  return data[chain].scanHeight;
+function getScanHeight() {
+  return data.scanHeight;
 }
 
 module.exports = {

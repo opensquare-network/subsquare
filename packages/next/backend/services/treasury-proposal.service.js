@@ -15,15 +15,16 @@ const { HttpError } = require("../exc");
 const { ContentType } = require("../constants");
 const { toUserPublicInfo } = require("../utils/user");
 
-async function updatePost(chain, postId, title, content, contentType, author) {
+async function updatePost(postId, title, content, contentType, author) {
+  const chain = process.env.CHAIN;
   const postObjId = ObjectId(postId);
-  const postCol = await getTreasuryProposalCollection(chain);
+  const postCol = await getTreasuryProposalCollection();
   const post = await postCol.findOne({ _id: postObjId });
   if (!post) {
     throw new HttpError(404, "Post does not exists");
   }
 
-  const chainProposalCol = await getChainTreasuryProposalCollection(chain);
+  const chainProposalCol = await getChainTreasuryProposalCollection();
   const chainProposal = await chainProposalCol.findOne({
     proposalIndex: post.proposalIndex,
   });
@@ -64,8 +65,9 @@ async function updatePost(chain, postId, title, content, contentType, author) {
   return true;
 }
 
-async function getActivePostsOverview(chain) {
-  const chainProposalCol = await getChainTreasuryProposalCollection(chain);
+async function getActivePostsOverview() {
+  const chain = process.env.CHAIN;
+  const chainProposalCol = await getChainTreasuryProposalCollection();
   const proposals = await chainProposalCol
     .find(
       {
@@ -79,8 +81,8 @@ async function getActivePostsOverview(chain) {
     .limit(3)
     .toArray();
 
-  const commonDb = await getCommonDb(chain);
-  const businessDb = await getBusinessDb(chain);
+  const commonDb = await getCommonDb();
+  const businessDb = await getBusinessDb();
   const posts = await businessDb.lookupOne({
     from: "treasuryProposal",
     for: proposals,
@@ -116,8 +118,9 @@ async function getActivePostsOverview(chain) {
   });
 }
 
-async function getPostsByChain(chain, page, pageSize) {
-  const postCol = await getTreasuryProposalCollection(chain);
+async function getPostsByChain(page, pageSize) {
+  const chain = process.env.CHAIN;
+  const postCol = await getTreasuryProposalCollection();
   const total = await postCol.countDocuments();
 
   if (page === "last") {
@@ -132,9 +135,9 @@ async function getPostsByChain(chain, page, pageSize) {
     .limit(pageSize)
     .toArray();
 
-  const commonDb = await getCommonDb(chain);
-  const businessDb = await getBusinessDb(chain);
-  const chainDb = await getChainDb(chain);
+  const commonDb = await getCommonDb();
+  const businessDb = await getBusinessDb();
+  const chainDb = await getChainDb();
   await Promise.all([
     commonDb.lookupOne({
       from: "user",
@@ -172,7 +175,8 @@ async function getPostsByChain(chain, page, pageSize) {
   };
 }
 
-async function getPostById(chain, postId) {
+async function getPostById(postId) {
+  const chain = process.env.CHAIN;
   const q = {};
   if (ObjectId.isValid(postId)) {
     q._id = ObjectId(postId);
@@ -180,19 +184,17 @@ async function getPostById(chain, postId) {
     q.proposalIndex = parseInt(postId);
   }
 
-  const postCol = await getTreasuryProposalCollection(chain);
+  const postCol = await getTreasuryProposalCollection();
   const post = await postCol.findOne(q);
 
   if (!post) {
     throw new HttpError(404, "Post not found");
   }
 
-  const commonDb = await getCommonDb(chain);
-  const businessDb = await getBusinessDb(chain);
-  const chainTreasuryProposalCol = await getChainTreasuryProposalCollection(
-    chain
-  );
-  const chainMotionCol = await getMotionCollection(chain);
+  const commonDb = await getCommonDb();
+  const businessDb = await getBusinessDb();
+  const chainTreasuryProposalCol = await getChainTreasuryProposalCollection();
+  const chainMotionCol = await getMotionCollection();
   const [, reactions, treasuryProposalData, motions] = await Promise.all([
     commonDb.lookupOne({
       from: "user",

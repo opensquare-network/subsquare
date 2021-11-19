@@ -282,7 +282,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
     post.reactions?.findIndex((r) => r.user?.username === user.username) > -1;
 
   const updatePost = async () => {
-    const url = `${chain}/${toApiType(type)}/${post._id}`;
+    const url = `${toApiType(type)}/${post._id}`;
     const { result: newPost } = await nextApi.fetch(url);
     if (newPost) {
       setPost(newPost);
@@ -297,11 +297,11 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
 
         if (thumbUp) {
           ({ result, error } = await nextApi.delete(
-            `${chain}/${toApiType(type)}/${post._id}/reaction`
+            `${toApiType(type)}/${post._id}/reaction`
           ));
         } else {
           ({ result, error } = await nextApi.put(
-            `${chain}/${toApiType(type)}/${post._id}/reaction`,
+            `${toApiType(type)}/${post._id}/reaction`,
             { reaction: 1 },
             { credentials: "include" }
           ));
@@ -335,7 +335,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                 <div>
                   <TriangleRight />
                   <Link
-                    href={`/${chain}/techcomm/proposal/${getTechCommId(
+                    href={`/techcomm/proposal/${getTechCommId(
                       post?.onchainData
                     )}`}
                   >
@@ -347,7 +347,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                 <div>
                   <TriangleRight />
                   <Link
-                    href={`/${chain}/democracy/referendum/${post?.referendumIndex}`}
+                    href={`/democracy/referendum/${post?.referendumIndex}`}
                   >
                     {`Referenda #${post?.referendumIndex}`}
                   </Link>
@@ -362,7 +362,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                 <div>
                   <TriangleRight />
                   <Link
-                    href={`/${chain}/democracy/referendum/${post.referendumIndex}`}
+                    href={`/democracy/referendum/${post.referendumIndex}`}
                   >
                     {`Referenda #${post?.referendumIndex}`}
                   </Link>
@@ -374,7 +374,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             post.externalProposalHash !== undefined && (
               <ReferendaWrapper>
                 <Link
-                  href={`/${chain}/democracy/external/${post.indexer.blockHeight}_${post.externalProposalHash}`}
+                  href={`/democracy/external/${post.indexer.blockHeight}_${post.externalProposalHash}`}
                 >
                   {`External`}
                 </Link>
@@ -382,7 +382,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                   <div>
                     <TriangleRight />
                     <Link
-                      href={`/${chain}/techcomm/proposal/${getTechCommId(
+                      href={`/techcomm/proposal/${getTechCommId(
                         post?.onchainData
                       )}`}
                     >
@@ -400,7 +400,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             post.proposalIndex !== undefined && (
               <ReferendaWrapper>
                 <Link
-                  href={`/${chain}/democracy/proposal/${post.proposalIndex}`}
+                  href={`/democracy/proposal/${post.proposalIndex}`}
                 >
                   {`Proposal #${post.proposalIndex}`}
                 </Link>
