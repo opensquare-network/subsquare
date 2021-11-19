@@ -171,7 +171,7 @@ export default function LinkedAddress() {
   const user = useSelector(userSelector);
   const [hasExtension, setHasExtension] = useState(true);
   const [accounts, setAccounts] = useState([]);
-  const [activeChain, setActiveChain] = useState("karura");
+  const [activeChain, setActiveChain] = useState(process.env.CHAIN);
   const dispatch = useDispatch();
 
   useEffect(() => {
