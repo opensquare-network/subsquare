@@ -58,7 +58,7 @@ const Redirect = styled.div`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser }) => {
+export default withLoginUserRedux(({ loginUser, chain }) => {
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
@@ -101,7 +101,7 @@ export default withLoginUserRedux(({ loginUser }) => {
   }, [success, countdown, isMounted, router]);
 
   return (
-    <Layout user={loginUser}>
+    <Layout user={loginUser} chain={chain}>
       <Wrapper>
         {!success && (
           <ContentWrapper>
@@ -129,7 +129,11 @@ export default withLoginUserRedux(({ loginUser }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
+  const chain = process.env.CHAIN;
+
   return {
-    props: {},
+    props: {
+      chain
+    },
   };
 });
