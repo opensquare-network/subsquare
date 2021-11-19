@@ -74,7 +74,7 @@ const nodeSlice = createSlice({
       state.currentNode = nodeUrl;
 
       if (refresh) {
-        window.location.href = `https://${chain}.opensquare.io`;
+        window.location.href = `https://${chain}.subsquare.io`;
       }
     },
     setNodesDelay(state, { payload }) {
