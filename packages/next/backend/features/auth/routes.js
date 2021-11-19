@@ -2,8 +2,6 @@ const Router = require("koa-router");
 const authController = require("./auth.controller");
 const { SupportChains } = require("../../constants");
 
-const routeChains = SupportChains.join("|");
-
 const router = new Router();
 
 router.post("/auth/signup", authController.signup);

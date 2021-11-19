@@ -3,8 +3,6 @@ const userController = require("./user.controller");
 const requireAuth = require("../../middleware/require-auth");
 const { SupportChains } = require("../../constants");
 
-const routeChains = SupportChains.join("|");
-
 const router = new Router();
 
 router.get("/user/profile", requireAuth, userController.getUserProfile);
