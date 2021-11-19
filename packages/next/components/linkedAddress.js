@@ -165,13 +165,13 @@ const EmptyList = styled.div`
   color: #9da9bb;
 `;
 
-export default function LinkedAddress() {
+export default function LinkedAddress({ chain }) {
   useAuthPage(true);
   const isMounted = useIsMounted();
   const user = useSelector(userSelector);
   const [hasExtension, setHasExtension] = useState(true);
   const [accounts, setAccounts] = useState([]);
-  const [activeChain, setActiveChain] = useState(process.env.CHAIN);
+  const [activeChain, setActiveChain] = useState(chain);
   const dispatch = useDispatch();
 
   useEffect(() => {

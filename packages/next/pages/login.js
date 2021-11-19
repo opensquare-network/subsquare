@@ -165,7 +165,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
               </ButtonWrapper>
             </FormWrapper>
           )}
-          {web3 && <AddressLogin onBack={() => setWeb3(false)} />}
+          {web3 && <AddressLogin chain={chain} onBack={() => setWeb3(false)} />}
           <LinkWrapper>
             Don’t have a account? <Link href="/signup">Sign up</Link>
           </LinkWrapper>

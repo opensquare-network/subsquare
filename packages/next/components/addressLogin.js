@@ -40,7 +40,7 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-export default function AddressLogin({ onBack }) {
+export default function AddressLogin({ chain, onBack }) {
   const isMounted = useIsMounted();
   const [accounts, setAccounts] = useState([]);
   const [hasExtension, setHasExtension] = useState(true);
@@ -49,8 +49,6 @@ export default function AddressLogin({ onBack }) {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
-
-  const chain = process.env.CHAIN;
 
   const doWeb3Login = async () => {
     setLoading(true);

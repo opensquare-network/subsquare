@@ -14,7 +14,7 @@ export default withLoginUserRedux(({
 }) => {
   return (
     <Layout chain={chain} user={loginUser} left={<Menu menu={settingMenu} />}>
-      <LinkedAddressComp />
+      <LinkedAddressComp chain={chain} />
     </Layout>
   );
 });
