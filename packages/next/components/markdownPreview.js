@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 
 import CodeBlock from "components/codeBlock";
 import ImgRender from "components/markdown/imgRenderForEditor";
+import { matchMdLink } from "utils/index";
 
 const Wrapper = styled.div`
   .markdown-content {
@@ -112,14 +113,15 @@ const Wrapper = styled.div`
 `;
 
 const Markdown = ({ md, setContent }) => {
+  const matchLinkMd = matchMdLink(md);
   return (
     <Wrapper>
       <ReactMarkdown
         className="markdown-content"
-        source={md}
+        source={matchLinkMd}
         renderers={{
           code: CodeBlock,
-          image: ImgRender({ md, setContent }),
+          image: ImgRender({ matchLinkMd, setContent }),
         }}
         linkTarget="_blank"
       />
