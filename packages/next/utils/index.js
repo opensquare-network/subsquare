@@ -150,5 +150,5 @@ export function bigNumber2Locale(x) {
 export function matchMdLink(t) {
   const expression =
     /(?<!\]\()((?:https?|ftp):\/\/[^\s\]\)]*)(?:[\s\]\)](?!\()|$)/gi;
-  return t.replace(expression, "[$&]($&)");
+  return t.replace(expression, "[$1]($1) ");
 }
