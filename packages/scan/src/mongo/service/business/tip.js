@@ -18,6 +18,7 @@ async function insertTipPost(indexer, hash, reason, finder) {
     title: reason,
     content: "",
     contentType: "markdown",
+    contentVersion: "2",
     finder,
     createdAt: now,
     updatedAt: now,

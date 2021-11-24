@@ -15,6 +15,7 @@ async function insertProposalPost(proposal) {
     title: `Untitled - treasury proposal #${proposal.proposalIndex}`,
     content: "",
     contentType: "markdown",
+    contentVersion: "2",
     createdAt: now,
     updatedAt: now,
     lastActivityAt: now,

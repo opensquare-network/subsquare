@@ -20,6 +20,7 @@ async function insertMotionPost(indexer, hash, motionIndex, proposer) {
     title: `Untitled - motion #${motionIndex}`,
     content: "",
     contentType: "markdown",
+    contentVersion: "2",
     createdAt: now,
     updatedAt: now,
     lastActivityAt: now,

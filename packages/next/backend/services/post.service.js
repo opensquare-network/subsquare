@@ -336,6 +336,7 @@ function createService(postType) {
       [postType]: postObjId,
       content: contentType === ContentType.Html ? safeHtml(content) : content,
       contentType,
+      contentVersion: "2",
       author: author._id,
       height: height + 1,
       createdAt: now,
