@@ -14,7 +14,6 @@ async function insertBountyPost(bountyIndex, description, proposer) {
     proposer,
     content: "",
     contentType: "markdown",
-    contentVersion: "2",
     createdAt: now,
     updatedAt: now,
     lastActivityAt: now,

@@ -33,6 +33,7 @@ async function updateComment(
       $set: {
         content: contentType === ContentType.Html ? safeHtml(content) : content,
         contentType,
+        contentVersion: comment.contentVersion ?? "2",
         updatedAt: new Date(),
       }
     }

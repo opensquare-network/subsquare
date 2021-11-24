@@ -42,6 +42,7 @@ function createService(postType) {
         title,
         content: contentType === ContentType.Html ? safeHtml(content) : content,
         contentType,
+        contentVersion: "2",
         author: author._id,
         lastActivityAt: new Date(),
         createdAt: now,
@@ -89,6 +90,7 @@ function createService(postType) {
           title,
           content: contentType === ContentType.Html ? safeHtml(content) : content,
           contentType,
+          contentVersion: post.contentVersion ?? "2",
           updatedAt: now,
           lastActivityAt: now,
         }
