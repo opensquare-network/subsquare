@@ -122,10 +122,10 @@ const Markdown = ({ md, setContent }) => {
     <Wrapper>
       <ReactMarkdown
         className="markdown-content"
-        source={matchLinkMd}
+        source={displayContent}
         renderers={{
           code: CodeBlock,
-          image: ImgRender({ displayContent, setContent }),
+          image: ImgRender({ md: displayContent, setContent }),
         }}
         linkTarget="_blank"
       />
