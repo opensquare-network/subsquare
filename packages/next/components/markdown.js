@@ -121,13 +121,20 @@ const Wrapper = styled.div`
   }
 `;
 
-const Markdown = ({ md }) => {
+const Markdown = ({ md, contentVersion = "" }) => {
   const matchLinkMd = matchMdLink(md);
+  let displayContent = matchLinkMd;
+  if (contentVersion === "2") {
+    displayContent = md.replace(/\n+/g, function (ns) {
+      if (ns.length === 1) return "  " + ns;
+      return ns;
+    });
+  }
   return (
     <Wrapper>
       <ReactMarkdown
         className="markdown-content"
-        source={matchLinkMd}
+        source={displayContent}
         renderers={{
           code: CodeBlock,
           image: ImgRender,
