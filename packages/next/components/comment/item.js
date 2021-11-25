@@ -236,7 +236,10 @@ export default function Item({ user, data, chain, onReply }) {
         <>
           <ContentWrapper>
             {comment.contentType === "markdown" && (
-              <Markdown md={comment.content} />
+              <Markdown
+                md={comment.content}
+                contentVersion={comment.contentVersion}
+              />
             )}
             {comment.contentType === "html" && (
               <HtmlRender html={comment.content} />

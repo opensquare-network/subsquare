@@ -346,9 +346,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
               {post?.referendumIndex !== undefined && (
                 <div>
                   <TriangleRight />
-                  <Link
-                    href={`/democracy/referendum/${post?.referendumIndex}`}
-                  >
+                  <Link href={`/democracy/referendum/${post?.referendumIndex}`}>
                     {`Referenda #${post?.referendumIndex}`}
                   </Link>
                 </div>
@@ -361,9 +359,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
               {post?.referendumIndex !== undefined && (
                 <div>
                   <TriangleRight />
-                  <Link
-                    href={`/democracy/referendum/${post.referendumIndex}`}
-                  >
+                  <Link href={`/democracy/referendum/${post.referendumIndex}`}>
                     {`Referenda #${post?.referendumIndex}`}
                   </Link>
                 </div>
@@ -399,9 +395,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
           {type === TYPE_DEMOCRACY_REFERENDUM &&
             post.proposalIndex !== undefined && (
               <ReferendaWrapper>
-                <Link
-                  href={`/democracy/proposal/${post.proposalIndex}`}
-                >
+                <Link href={`/democracy/proposal/${post.proposalIndex}`}>
                   {`Proposal #${post.proposalIndex}`}
                 </Link>
                 <div>
@@ -474,7 +468,9 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
               ))}
             </GreyWrapper>
           )}
-          {post.contentType === "markdown" && <Markdown md={post.content} />}
+          {post.contentType === "markdown" && (
+            <Markdown md={post.content} contentVersion={post.contentVersion} />
+          )}
           {post.contentType === "html" && <HtmlRender html={post.content} />}
           {post.createdAt !== post.updatedAt && (
             <EditedLabel>Edited</EditedLabel>
