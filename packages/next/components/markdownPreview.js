@@ -114,6 +114,10 @@ const Wrapper = styled.div`
 
 const Markdown = ({ md, setContent }) => {
   const matchLinkMd = matchMdLink(md);
+  const displayContent = matchLinkMd.replace(/\n+/g, function (ns) {
+    if (ns.length === 1) return "  " + ns;
+    return ns;
+  });
   return (
     <Wrapper>
       <ReactMarkdown
@@ -121,7 +125,7 @@ const Markdown = ({ md, setContent }) => {
         source={matchLinkMd}
         renderers={{
           code: CodeBlock,
-          image: ImgRender({ matchLinkMd, setContent }),
+          image: ImgRender({ displayContent, setContent }),
         }}
         linkTarget="_blank"
       />

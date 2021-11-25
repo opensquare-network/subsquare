@@ -15,13 +15,9 @@ const Wrapper = styled.div`
 `;
 
 export default function PreviewMD({ content, setContent }) {
-  const displayContent = content.replace(/\n+/g, function (ns) {
-    if (ns.length === 1) return "  " + ns;
-    return ns;
-  });
   return (
     <Wrapper>
-      <Markdown md={displayContent} setContent={setContent} />
+      <Markdown md={content} setContent={setContent} />
     </Wrapper>
   );
 }
