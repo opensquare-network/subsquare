@@ -97,7 +97,7 @@ export default function User({
         </AvatarWrapper>
       )}
       <LinkWrapper
-        href={`https://${chain}.subscan.io/account/${address}`}
+        href={address ? `https://${chain}.subscan.io/account/${address}` : null}
         target="_blank"
       >
         {identity && identity?.info?.status !== "NO_ID" ? (
