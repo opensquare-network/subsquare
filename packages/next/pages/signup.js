@@ -113,7 +113,7 @@ const FormWrapper = styled.form`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser }) => {
+export default withLoginUserRedux(({ loginUser, chain }) => {
   useAuthPage(false);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -194,7 +194,7 @@ export default withLoginUserRedux(({ loginUser }) => {
   }, [sendEmailState, countdown, isMounted, router]);
 
   return (
-    <Layout user={loginUser}>
+    <Layout user={loginUser} chain={chain}>
       <Wrapper>
         {!success && (
           <ContentWrapper>
@@ -279,7 +279,11 @@ export default withLoginUserRedux(({ loginUser }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
+  const chain = process.env.CHAIN;
+
   return {
-    props: {},
+    props: {
+      chain
+    },
   };
 });

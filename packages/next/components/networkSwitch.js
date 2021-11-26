@@ -138,9 +138,9 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
                 setShow(false);
                 if (activeNode.value === item.value) return;
                 if (isWeb3Login) {
-                  window.location.href = `https://${item.value}.opensquare.io/login`;
+                  window.location.href = `https://${item.value}.subsquare.io/login`;
                 } else {
-                  window.location.href = `https://${item.value}.opensquare.io`;
+                  window.location.href = `https://${item.value}.subsquare.io`;
                 }
               }}
               active={activeNode.value === nodes[index].value}
