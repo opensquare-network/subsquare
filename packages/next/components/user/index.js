@@ -96,18 +96,22 @@ export default function User({
           )}
         </AvatarWrapper>
       )}
-      <LinkWrapper
-        href={address ? `https://${chain}.subscan.io/account/${address}` : null}
-        target="_blank"
-      >
-        {identity && identity?.info?.status !== "NO_ID" ? (
-          <Identity identity={identity} fontSize={fontSize} />
-        ) : (
-          <Username fontSize={fontSize}>
-            {user?.username ?? addressEllipsis(add)}
-          </Username>
-        )}
-      </LinkWrapper>
+      {address ? (
+        <LinkWrapper
+          href={`https://${chain}.subscan.io/account/${address}`}
+          target="_blank"
+        >
+          {identity && identity?.info?.status !== "NO_ID" ? (
+            <Identity identity={identity} fontSize={fontSize} />
+          ) : (
+            <Username fontSize={fontSize}>
+              {user?.username ?? addressEllipsis(add)}
+            </Username>
+          )}
+        </LinkWrapper>
+      ) : (
+        <Username fontSize={fontSize}>{user?.username}</Username>
+      )}
     </Wrapper>
   );
 }
