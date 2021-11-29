@@ -13,6 +13,8 @@ import SectionTag from "components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
 import Flex from "../styled/flex";
 import { shadow_100 } from "../../styles/componentCss";
+import ArticleContent from "../articleContent";
+import { isMotionCompleted } from "../../utils/viewfuncs";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -136,7 +138,7 @@ function createMotionTimelineData(motion) {
   });
 }
 
-function createMotionBusinessData(motion, chain) {
+function createMotionBusinessData(motion) {
   const height = motion.state.indexer.blockHeight;
   return [
     [
@@ -150,25 +152,6 @@ function createMotionBusinessData(motion, chain) {
 
 const isClosed = (timeline) => {
   return (timeline || []).some((item) => item.method === "Closed");
-};
-
-const isMotionCompleted = (motion) => {
-  if (motion.status !== "Executed") {
-    return false;
-  }
-  if (!motion.proposalHash) {
-    return false;
-  }
-  const ok = motion.state.data.some((data) =>
-    Object.keys(data).some((rawData) => rawData === "ok")
-  );
-  if (!ok) {
-    return false;
-  }
-  const error = motion.state.data.some((data) =>
-    Object.keys(data).some((rawData) => rawData === "error")
-  );
-  return !error;
 };
 
 const getClosedTimelineData = (timeline = []) => {
@@ -280,6 +263,7 @@ export default function MotionDetail({ motion, chain }) {
             </DividerWrapper>
             {motion.status && <StatusWrapper>{motion.status}</StatusWrapper>}
           </FlexWrapper>
+          <ArticleContent data={motion.external} user={motion.author} />
         </div>
       </Wrapper>
 

@@ -27,6 +27,7 @@ import {
   TYPE_TREASURY_BOUNTY,
   TYPE_TREASURY_TIP,
 } from "utils/viewConstants";
+import ArticleContent from "./articleContent";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -438,70 +439,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             {post.status && <Tag name={post.status} />}
           </FlexWrapper>
           <Divider />
-          {post.content === "" && (
-            <PlaceHolder>
-              {`The ${type} has not been edited by creator.`}
-              {ownPost && (
-                <Edit
-                  onClick={() => {
-                    setIsEdit(true);
-                  }}
-                >
-                  <EditIcon />
-                  Edit
-                </Edit>
-              )}
-            </PlaceHolder>
-          )}
-          {post.content === "" && (
-            <GreyWrapper>
-              <span style={{ marginRight: 12 }}>Who can edit?</span>
-              {(post.onchainData?.authors || []).map((author) => (
-                <GreyItem key={author}>
-                  <User
-                    add={author}
-                    chain={chain}
-                    showAvatar={false}
-                    fontSize={12}
-                  />
-                </GreyItem>
-              ))}
-            </GreyWrapper>
-          )}
-          {post.contentType === "markdown" && (
-            <Markdown md={post.content} contentVersion={post.contentVersion} />
-          )}
-          {post.contentType === "html" && <HtmlRender html={post.content} />}
-          {post.createdAt !== post.updatedAt && (
-            <EditedLabel>Edited</EditedLabel>
-          )}
-          <Actions
-            highlight={isLoggedIn && thumbUp}
-            noHover={!isLoggedIn || ownPost}
-            edit={ownPost}
-            setIsEdit={setIsEdit}
-            toggleThumbUp={toggleThumbUp}
-            count={post.reactions?.length}
-            showThumbsUpList={showThumbsUpList}
-            setShowThumbsUpList={setShowThumbsUpList}
-            onReply={onReply}
-          />
-          {showThumbsUpList && post.reactions?.length > 0 && (
-            <GreyWrapper style={{ marginTop: 10 }}>
-              {post.reactions
-                .filter((r) => r.user)
-                .map((r, index) => (
-                  <GreyItem key={index}>
-                    <User
-                      user={r.user}
-                      fontSize={12}
-                      chain={chain}
-                      showAvatar={false}
-                    />
-                  </GreyItem>
-                ))}
-            </GreyWrapper>
-          )}
+          <ArticleContent data={data} user={user} />
         </>
       )}
       {isEdit && (

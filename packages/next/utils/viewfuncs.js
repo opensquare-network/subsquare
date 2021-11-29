@@ -202,3 +202,22 @@ export function toApiType(type) {
   }
   return `${type}s`;
 }
+
+export const isMotionCompleted = (motion) => {
+  if (motion?.state?.state !== "Executed") {
+    return false;
+  }
+  if (!motion.proposalHash) {
+    return false;
+  }
+  const ok = motion.state.data.some((data) =>
+    Object.keys(data).some((rawData) => rawData === "ok")
+  );
+  if (!ok) {
+    return false;
+  }
+  const error = motion.state.data.some((data) =>
+    Object.keys(data).some((rawData) => rawData === "error")
+  );
+  return !error;
+};

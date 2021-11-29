@@ -7,6 +7,7 @@ import Layout from "components/layout";
 import MotionDetail from "components/motion/motionDetail";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_MOTION } from "utils/viewConstants";
+import { isMotionCompleted } from "../../../utils/viewfuncs";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -40,15 +41,22 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   const { id } = context.query;
 
-  const { result: detail } = await nextApi.fetch(`motions/${id}`);
+  const { result: motion } = await nextApi.fetch(`motions/${id}`);
+  let external = null;
 
-  if (!detail) {
+  if (isMotionCompleted(motion)) {
+    const motionId = `${motion.state.indexer.blockHeight}_${motion.proposalHash}`;
+    const res = await nextApi.fetch(`democracy/externals/${motionId}`);
+    external = res.result;
+  }
+
+  if (!motion) {
     to404(context);
   }
 
   return {
     props: {
-      motion: detail ?? null,
+      motion: motion ? { ...motion, external } : null,
       chain,
     },
   };
