@@ -1,3 +1,4 @@
+const { insertMotionPost } = require("../../../mongo/service/business/motion");
 const {
   handleBusinessWhenMotionProposed,
 } = require("../../event/motion/store/hooks/proposed");
@@ -65,6 +66,7 @@ async function handleCouncilPropose(
   };
 
   await insertMotion(obj);
+  await insertMotionPost(extrinsicIndexer, motionHash, null, signer);
   await handleBusinessWhenMotionProposed(obj, extrinsicIndexer);
 
   busLogger.info(`motion ${motionHash} created`, extrinsicIndexer);

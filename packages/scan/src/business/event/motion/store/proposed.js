@@ -1,3 +1,6 @@
+const {
+  insertMotionPost,
+} = require("../../../../mongo/service/business/motion");
 const { busLogger } = require("../../../../logger");
 const { handleBusinessWhenMotionProposed } = require("./hooks/proposed");
 const {
@@ -137,6 +140,7 @@ async function handleProposed(event, extrinsic, indexer) {
   };
 
   await insertMotion(obj);
+  await insertMotionPost(indexer, hash, motionIndex, proposer);
   await handleBusinessWhenMotionProposed(obj, indexer);
 }
 
