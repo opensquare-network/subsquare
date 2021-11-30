@@ -4,6 +4,7 @@ const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { versionedKhala, typesChain } = require("@phala/typedefs");
 const { setChain, CHAINS } = require("../../../../env");
 const { setApi } = require("../../../../api");
+jest.setTimeout(3000000);
 
 describe("test get khala tip reason", () => {
   let api;
