@@ -200,7 +200,7 @@ async function getPostById(postId) {
   const businessDb = await getBusinessDb();
   const chainBountyCol = await getChainBountyCollection();
   const chainMotionCol = await getMotionCollection();
-  const [, reactions, bountyData, motions] = await Promise.all([
+  const [, reactions, bountyData] = await Promise.all([
     commonDb.lookupOne({
       from: "user",
       for: post,
@@ -217,10 +217,18 @@ async function getPostById(postId) {
       foreignField: "bounty",
     }),
     chainBountyCol.findOne({ bountyIndex: post.bountyIndex }),
-    chainMotionCol.find({ bountyIndex: post.bountyIndex }).toArray(),
   ]);
 
-  await lookupUser({ for: reactions, localField: "user" });
+  const [, motions] = await Promise.all([
+    lookupUser({ for: reactions, localField: "user" }),
+    chainMotionCol
+      .find({
+        index: {
+          $in: (bountyData?.motions?.map(m => m.index) || [])
+        }
+      })
+      .toArray(),
+  ]);
 
   return {
     ...post,
