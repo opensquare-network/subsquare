@@ -1,4 +1,4 @@
-const { findBlockApi } = require("../../../chain/specs");
+const { findBlockApi, findRegistry } = require("../../../chain/specs");
 const { normalizeCall } = require("./utils");
 const { isKarura } = require("../../../env");
 const { GenericCall } = require("@polkadot/types");
@@ -16,6 +16,12 @@ async function getMotionProposal(motionHash, indexer) {
   return raw;
 }
 
+async function getMotionCall(motionHash, indexer) {
+  const raw = await getMotionProposal(indexer.blockHash, motionHash);
+  const registry = await findRegistry(indexer);
+  return new GenericCall(registry, raw.toHex());
+}
+
 async function getMotionProposalCall(motionHash, indexer) {
   const raw = await getMotionProposal(motionHash, indexer);
   const blockApi = await findBlockApi(indexer);
@@ -23,6 +29,7 @@ async function getMotionProposalCall(motionHash, indexer) {
 }
 
 module.exports = {
+  getMotionCall,
   getMotionProposal,
   getMotionProposalCall,
 };

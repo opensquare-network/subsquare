@@ -1,3 +1,6 @@
+const {
+  updateTreasuryProposal,
+} = require("../../../../../mongo/service/treasuryProposal");
 const { busLogger } = require("../../../../../logger");
 const {
   getExternalFromStorageByHeight,
@@ -11,14 +14,37 @@ const {
 const {
   DemocracyExternalStates,
   TimelineItemTypes,
+  TreasuryProposalMethods,
+  TreasuryProposalEvents,
 } = require("../../../../common/constants");
 const { getMotionCollection } = require("../../../../../mongo");
+const { logger } = require("../../../../../logger");
+
+async function handleRejectTreasuryProposal(proposalInfo, indexer) {
+  const { index: proposalIndex, method } = proposalInfo;
+
+  if (method !== TreasuryProposalMethods.rejectProposal) {
+    return;
+  }
+
+  const state = {
+    state: TreasuryProposalEvents.Rejected,
+    indexer,
+  };
+
+  logger.info(`treasury proposal ${proposalIndex} rejected`, indexer);
+  await updateTreasuryProposal(proposalIndex, { state });
+}
 
 async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
   const col = await getMotionCollection();
   const motion = await col.findOne({ hash: motionHash, isFinal: false });
   if (!motion) {
     return;
+  }
+
+  for (const proposalInfo of motion.treasuryProposals || []) {
+    await handleRejectTreasuryProposal(proposalInfo, indexer);
   }
 
   const { isDemocracy, proposalHash } = motion;

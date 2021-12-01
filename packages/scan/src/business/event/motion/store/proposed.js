@@ -1,3 +1,8 @@
+const { isTreasuryProposalMotionCall } = require("../../../common/call/utils");
+const { normalizeCall } = require("../../../common/motion/utils");
+const { findRegistry } = require("../../../../chain/specs");
+const { getMotionProposal } = require("../../../common/motion/proposalStorage");
+const { handleWrappedCall } = require("../../../common/call/handle");
 const {
   insertMotionPost,
 } = require("../../../../mongo/service/business/motion");
@@ -5,13 +10,9 @@ const { busLogger } = require("../../../../logger");
 const { handleBusinessWhenMotionProposed } = require("./hooks/proposed");
 const {
   Modules,
-  TreasuryProposalMethods,
   DemocracyMethods,
   BountyMethods,
 } = require("../../../common/constants");
-const {
-  getMotionProposalCall,
-} = require("../../../common/motion/proposalStorage");
 const {
   getVotingFromStorage,
 } = require("../../../common/motion/votingStorage");
@@ -20,6 +21,7 @@ const {
   CouncilEvents,
 } = require("../../../common/constants");
 const { insertMotion } = require("../../../../mongo/service/onchain/motion");
+const { GenericCall } = require("@polkadot/types");
 
 function extractBountyBusinessFields(proposal = {}, indexer) {
   const { section, method, args } = proposal;
@@ -58,19 +60,6 @@ function extractBusinessFields(proposal = {}, indexer) {
   }
 
   const { section, method, args } = proposal;
-  if (
-    Modules.Treasury === section &&
-    [
-      TreasuryProposalMethods.approveProposal,
-      TreasuryProposalMethods.rejectProposal,
-    ].includes(method)
-  ) {
-    return {
-      isTreasury: true,
-      treasuryProposalIndex: args[0].value,
-    };
-  }
-
   if (Modules.Democracy === section) {
     const fields = {
       isDemocracy: true,
@@ -98,11 +87,15 @@ function extractBusinessFields(proposal = {}, indexer) {
   return {};
 }
 
-async function handleProposed(event, extrinsic, indexer) {
+async function handleProposed(event, extrinsic, indexer, blockEvents) {
   const eventData = event.data.toJSON();
   const [proposer, motionIndex, hash, threshold] = eventData;
 
-  const proposal = await getMotionProposalCall(hash, indexer);
+  const raw = await getMotionProposal(indexer.blockHash, hash);
+  const registry = await findRegistry(indexer);
+  const call = new GenericCall(registry, raw.toHex());
+  const proposal = normalizeCall(call);
+
   const voting = await getVotingFromStorage(hash, indexer);
 
   const timelineItem = {
@@ -124,6 +117,19 @@ async function handleProposed(event, extrinsic, indexer) {
   };
 
   const authors = [...new Set([proposer, extrinsic.signer.toString()])];
+
+  const treasuryProposals = [];
+  await handleWrappedCall(call, proposer, indexer, blockEvents, (call) => {
+    const { section, method, args } = call;
+    if (isTreasuryProposalMotionCall(section, method)) {
+      const treasuryProposalIndex = args[0].toJSON();
+      treasuryProposals.push({
+        index: treasuryProposalIndex,
+        method,
+      });
+    }
+  });
+
   const obj = {
     indexer,
     hash,
@@ -137,6 +143,7 @@ async function handleProposed(event, extrinsic, indexer) {
     isFinal: false,
     state,
     timeline: [timelineItem],
+    treasuryProposals,
   };
 
   await insertMotion(obj);

@@ -6,20 +6,10 @@ const {
   updateTreasuryProposal,
 } = require("../../../../../mongo/service/treasuryProposal");
 const { getMotionCollection } = require("../../../../../mongo");
+const { logger } = require("../../../../../logger");
 
-async function handleBusinessWhenMotionVoted(motionHash, voting, indexer) {
-  const col = await getMotionCollection();
-  const motion = await col.findOne({ hash: motionHash });
-  if (!motion) {
-    return;
-  }
-
-  const { isTreasury, treasuryProposalIndex } = motion;
-  if (!isTreasury) {
-    return;
-  }
-
-  const { method } = motion.proposal;
+async function updateProposalState(proposalInfo, motion, voting, indexer) {
+  const { index: proposalIndex, method } = proposalInfo;
   const stateName =
     method === TreasuryProposalMethods.approveProposal
       ? MotionState.ApproveVoting
@@ -34,7 +24,24 @@ async function handleBusinessWhenMotionVoted(motionHash, voting, indexer) {
     },
   };
 
-  await updateTreasuryProposal(treasuryProposalIndex, { state });
+  logger.info("proposal state updated by motion voted", indexer);
+  await updateTreasuryProposal(proposalIndex, { state });
+}
+
+async function handleBusinessWhenMotionVoted(motionHash, voting, indexer) {
+  const col = await getMotionCollection();
+  const motion = await col.findOne({ hash: motionHash });
+  if (!motion) {
+    logger.error(
+      `can not find motion when handle motion voted business, hash: ${motionHash}`,
+      indexer
+    );
+    return;
+  }
+
+  for (const proposalInfo of motion.treasuryProposals || []) {
+    await updateProposalState(proposalInfo, motion, voting, indexer);
+  }
 }
 
 module.exports = {
