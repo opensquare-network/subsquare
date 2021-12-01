@@ -148,7 +148,7 @@ async function handleProposed(event, extrinsic, indexer, blockEvents) {
 
   await insertMotion(obj);
   await insertMotionPost(indexer, hash, motionIndex, proposer);
-  await handleBusinessWhenMotionProposed(obj, indexer);
+  await handleBusinessWhenMotionProposed(obj, call, indexer, blockEvents);
 }
 
 module.exports = {
