@@ -13,8 +13,5 @@ const ksmTargetCall = {
 };
 
 test("test extractBusinessFields works", () => {
-  expect(extractBusinessFields(ksmTargetCall)).toEqual({
-    isTreasury: true,
-    treasuryProposalIndex: 0,
-  });
+  expect(extractBusinessFields(ksmTargetCall)).toEqual({});
 });

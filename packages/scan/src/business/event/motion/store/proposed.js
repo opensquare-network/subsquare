@@ -1,17 +1,15 @@
 const {
+  extractMotionCalls,
+} = require("../../../common/call/extractMotionCalls");
+const { normalizeCall } = require("../../../common/motion/utils");
+const { findRegistry } = require("../../../../chain/specs");
+const { getMotionProposal } = require("../../../common/motion/proposalStorage");
+const {
   insertMotionPost,
 } = require("../../../../mongo/service/business/motion");
 const { busLogger } = require("../../../../logger");
 const { handleBusinessWhenMotionProposed } = require("./hooks/proposed");
-const {
-  Modules,
-  TreasuryProposalMethods,
-  DemocracyMethods,
-  BountyMethods,
-} = require("../../../common/constants");
-const {
-  getMotionProposalCall,
-} = require("../../../common/motion/proposalStorage");
+const { Modules, DemocracyMethods } = require("../../../common/constants");
 const {
   getVotingFromStorage,
 } = require("../../../common/motion/votingStorage");
@@ -20,57 +18,10 @@ const {
   CouncilEvents,
 } = require("../../../common/constants");
 const { insertMotion } = require("../../../../mongo/service/onchain/motion");
-
-function extractBountyBusinessFields(proposal = {}, indexer) {
-  const { section, method, args } = proposal;
-  if (![Modules.Treasury, Modules.Bounties].includes(section)) {
-    return;
-  }
-
-  if (
-    ![
-      BountyMethods.approveBounty,
-      BountyMethods.proposeCurator,
-      BountyMethods.unassignCurator,
-      BountyMethods.closeBounty,
-    ].includes(method)
-  ) {
-    return;
-  }
-
-  busLogger.info(
-    `Bounty #${args[0].value} motion found at`,
-    indexer.blockHeight,
-    "method:",
-    method
-  );
-
-  return {
-    isBounty: true,
-    bountyIndex: args[0].value,
-  };
-}
+const { GenericCall } = require("@polkadot/types");
 
 function extractBusinessFields(proposal = {}, indexer) {
-  const maybeBountyFields = extractBountyBusinessFields(proposal, indexer);
-  if (maybeBountyFields) {
-    return maybeBountyFields;
-  }
-
   const { section, method, args } = proposal;
-  if (
-    Modules.Treasury === section &&
-    [
-      TreasuryProposalMethods.approveProposal,
-      TreasuryProposalMethods.rejectProposal,
-    ].includes(method)
-  ) {
-    return {
-      isTreasury: true,
-      treasuryProposalIndex: args[0].value,
-    };
-  }
-
   if (Modules.Democracy === section) {
     const fields = {
       isDemocracy: true,
@@ -98,11 +49,15 @@ function extractBusinessFields(proposal = {}, indexer) {
   return {};
 }
 
-async function handleProposed(event, extrinsic, indexer) {
+async function handleProposed(event, extrinsic, indexer, blockEvents) {
   const eventData = event.data.toJSON();
   const [proposer, motionIndex, hash, threshold] = eventData;
 
-  const proposal = await getMotionProposalCall(hash, indexer);
+  const raw = await getMotionProposal(hash, indexer);
+  const registry = await findRegistry(indexer);
+  const call = new GenericCall(registry, raw.toHex());
+  const proposal = normalizeCall(call);
+
   const voting = await getVotingFromStorage(hash, indexer);
 
   const timelineItem = {
@@ -124,6 +79,14 @@ async function handleProposed(event, extrinsic, indexer) {
   };
 
   const authors = [...new Set([proposer, extrinsic.signer.toString()])];
+
+  const { treasuryProposals, treasuryBounties } = await extractMotionCalls(
+    call,
+    proposer,
+    indexer,
+    blockEvents
+  );
+
   const obj = {
     indexer,
     hash,
@@ -137,11 +100,13 @@ async function handleProposed(event, extrinsic, indexer) {
     isFinal: false,
     state,
     timeline: [timelineItem],
+    treasuryProposals,
+    treasuryBounties,
   };
 
   await insertMotion(obj);
   await insertMotionPost(indexer, hash, motionIndex, proposer);
-  await handleBusinessWhenMotionProposed(obj, indexer);
+  await handleBusinessWhenMotionProposed(obj, call, indexer, blockEvents);
 }
 
 module.exports = {
