@@ -9,11 +9,7 @@ const {
 } = require("../../../../mongo/service/business/motion");
 const { busLogger } = require("../../../../logger");
 const { handleBusinessWhenMotionProposed } = require("./hooks/proposed");
-const {
-  Modules,
-  DemocracyMethods,
-  BountyMethods,
-} = require("../../../common/constants");
+const { Modules, DemocracyMethods } = require("../../../common/constants");
 const {
   getVotingFromStorage,
 } = require("../../../common/motion/votingStorage");
@@ -24,42 +20,7 @@ const {
 const { insertMotion } = require("../../../../mongo/service/onchain/motion");
 const { GenericCall } = require("@polkadot/types");
 
-function extractBountyBusinessFields(proposal = {}, indexer) {
-  const { section, method, args } = proposal;
-  if (![Modules.Treasury, Modules.Bounties].includes(section)) {
-    return;
-  }
-
-  if (
-    ![
-      BountyMethods.approveBounty,
-      BountyMethods.proposeCurator,
-      BountyMethods.unassignCurator,
-      BountyMethods.closeBounty,
-    ].includes(method)
-  ) {
-    return;
-  }
-
-  busLogger.info(
-    `Bounty #${args[0].value} motion found at`,
-    indexer.blockHeight,
-    "method:",
-    method
-  );
-
-  return {
-    isBounty: true,
-    bountyIndex: args[0].value,
-  };
-}
-
 function extractBusinessFields(proposal = {}, indexer) {
-  const maybeBountyFields = extractBountyBusinessFields(proposal, indexer);
-  if (maybeBountyFields) {
-    return maybeBountyFields;
-  }
-
   const { section, method, args } = proposal;
   if (Modules.Democracy === section) {
     const fields = {
