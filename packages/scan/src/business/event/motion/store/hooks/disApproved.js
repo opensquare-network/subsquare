@@ -1,9 +1,30 @@
 const {
+  isStateChangeBountyMotionCall,
+} = require("../../../../common/call/utils");
+const { updateBounty } = require("../../../../../mongo/service/onchain/bounty");
+const { getBountyMeta } = require("../../../../common/bounty/meta");
+const {
   updateTreasuryProposal,
 } = require("../../../../../mongo/service/treasuryProposal");
-const { TreasuryProposalEvents } = require("../../../../common/constants");
+const {
+  TreasuryProposalEvents,
+  BountyStatus,
+} = require("../../../../common/constants");
 const { getMotionCollection } = require("../../../../../mongo");
 const { logger } = require("../../../../../logger");
+
+async function handleBounty(bountyIndex, indexer) {
+  const state = {
+    indexer,
+    // If a bounty proposal(close or approve) motion is not passed, we reset the treasury bounty state to `Proposed`
+    state: BountyStatus.Proposed,
+  };
+
+  const meta = await getBountyMeta(bountyIndex, indexer);
+  if (meta) {
+    await updateBounty(bountyIndex, { meta, state });
+  }
+}
 
 async function handleProposal(treasuryProposalIndex, indexer) {
   const state = {
@@ -28,6 +49,12 @@ async function handleBusinessWhenMotionDisApproved(motionHash, indexer) {
 
   for (const { index } of motion.treasuryProposals || []) {
     await handleProposal(index, indexer);
+  }
+
+  for (const { index, method } of motion.treasuryBounties || []) {
+    if (isStateChangeBountyMotionCall(method)) {
+      await handleBounty(index, indexer);
+    }
   }
 }
 

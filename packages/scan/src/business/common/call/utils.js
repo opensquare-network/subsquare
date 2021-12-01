@@ -26,7 +26,14 @@ function isBountyMotionCall(section, method) {
   );
 }
 
+function isStateChangeBountyMotionCall(method) {
+  return [BountyMethods.approveBounty, BountyMethods.closeBounty].includes(
+    method
+  );
+}
+
 module.exports = {
   isTreasuryProposalMotionCall,
   isBountyMotionCall,
+  isStateChangeBountyMotionCall,
 };

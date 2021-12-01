@@ -1,8 +1,9 @@
-const { isTreasuryProposalMotionCall } = require("../../../common/call/utils");
+const {
+  extractMotionCalls,
+} = require("../../../common/call/extractMotionCalls");
 const { normalizeCall } = require("../../../common/motion/utils");
 const { findRegistry } = require("../../../../chain/specs");
 const { getMotionProposal } = require("../../../common/motion/proposalStorage");
-const { handleWrappedCall } = require("../../../common/call/handle");
 const {
   insertMotionPost,
 } = require("../../../../mongo/service/business/motion");
@@ -118,17 +119,12 @@ async function handleProposed(event, extrinsic, indexer, blockEvents) {
 
   const authors = [...new Set([proposer, extrinsic.signer.toString()])];
 
-  const treasuryProposals = [];
-  await handleWrappedCall(call, proposer, indexer, blockEvents, (call) => {
-    const { section, method, args } = call;
-    if (isTreasuryProposalMotionCall(section, method)) {
-      const treasuryProposalIndex = args[0].toJSON();
-      treasuryProposals.push({
-        index: treasuryProposalIndex,
-        method,
-      });
-    }
-  });
+  const { treasuryProposals, treasuryBounties } = await extractMotionCalls(
+    call,
+    proposer,
+    indexer,
+    blockEvents
+  );
 
   const obj = {
     indexer,
@@ -144,6 +140,7 @@ async function handleProposed(event, extrinsic, indexer, blockEvents) {
     state,
     timeline: [timelineItem],
     treasuryProposals,
+    treasuryBounties,
   };
 
   await insertMotion(obj);

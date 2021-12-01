@@ -11,7 +11,7 @@ async function insertBounty(bountyObj) {
   await col.insertOne(bountyObj);
 }
 
-async function updateBounty(bountyIndex, updates, timelineItem) {
+async function updateBounty(bountyIndex, updates, timelineItem, motionInfo) {
   const col = await getBountyCollection();
   let update = {
     $set: updates,
@@ -21,6 +21,13 @@ async function updateBounty(bountyIndex, updates, timelineItem) {
     update = {
       ...update,
       $push: { timeline: timelineItem },
+    };
+  }
+
+  if (motionInfo) {
+    update = {
+      ...update,
+      $push: { motions: motionInfo },
     };
   }
 

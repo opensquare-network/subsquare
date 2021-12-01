@@ -1,3 +1,4 @@
+const { extractMotionCalls } = require("../../common/call/extractMotionCalls");
 const { insertMotionPost } = require("../../../mongo/service/business/motion");
 const {
   handleBusinessWhenMotionProposed,
@@ -51,7 +52,16 @@ async function handleCouncilPropose(
   );
 
   const [motionHash] = executedEvent.event.data.toJSON();
-  const proposal = normalizeCall(call.args[1]);
+
+  const proposalCall = call.args[1];
+  const proposal = normalizeCall(proposalCall);
+
+  const { treasuryProposals, treasuryBounties } = await extractMotionCalls(
+    proposalCall,
+    signer,
+    extrinsicIndexer,
+    extrinsicEvents
+  );
 
   const obj = {
     indexer: extrinsicIndexer,
@@ -63,11 +73,18 @@ async function handleCouncilPropose(
     proposal,
     isFinal: false,
     timeline: [],
+    treasuryProposals,
+    treasuryBounties,
   };
 
   await insertMotion(obj);
   await insertMotionPost(extrinsicIndexer, motionHash, null, signer);
-  await handleBusinessWhenMotionProposed(obj, extrinsicIndexer);
+  await handleBusinessWhenMotionProposed(
+    obj,
+    proposalCall,
+    extrinsicIndexer,
+    extrinsicEvents
+  );
 
   busLogger.info(`motion ${motionHash} created`, extrinsicIndexer);
 }
