@@ -91,7 +91,7 @@ async function handleProposed(event, extrinsic, indexer, blockEvents) {
   const eventData = event.data.toJSON();
   const [proposer, motionIndex, hash, threshold] = eventData;
 
-  const raw = await getMotionProposal(indexer.blockHash, hash);
+  const raw = await getMotionProposal(hash, indexer);
   const registry = await findRegistry(indexer);
   const call = new GenericCall(registry, raw.toHex());
   const proposal = normalizeCall(call);
