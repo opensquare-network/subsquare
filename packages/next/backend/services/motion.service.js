@@ -331,21 +331,12 @@ async function setPostReaction(postId, reaction, user) {
     throw new HttpError(404, "Motion does not found");
   }
 
-  const [postCol, post, postType] = await findMotionPost(chainMotion);
+  const [, post, postType] = await findMotionPost(chainMotion);
   if (!post) {
     throw new HttpError(404, "Post does not found");
   }
 
   const postObjId = post._id;
-
-  const postCol = await getPostCollection();
-  const post = await postCol.findOne({
-    _id: postObjId,
-    author: { $ne: user._id },
-  });
-  if (!post) {
-    throw new HttpError(400, "Cannot set reaction.");
-  }
 
   const reactionCol = await getReactionCollection();
 
@@ -382,7 +373,7 @@ async function unsetPostReaction(postId, user) {
     throw new HttpError(404, "Motion does not found");
   }
 
-  const [postCol, post, postType] = await findMotionPost(chainMotion);
+  const [, post, postType] = await findMotionPost(chainMotion);
   if (!post) {
     throw new HttpError(404, "Post does not found");
   }
