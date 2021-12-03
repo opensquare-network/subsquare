@@ -31,7 +31,7 @@ async function updatePost(ctx) {
     ? paramContentType
     : ContentType.Markdown;
 
-  ctx.body = await motionPostService.updatePost(
+  ctx.body = await motionService.updatePost(
     postId,
     title,
     content,
@@ -51,9 +51,9 @@ async function getMotions(ctx) {
 }
 
 async function getMotionById(ctx) {
-  const { motionId } = ctx.params;
+  const { postId } = ctx.params;
 
-  ctx.body = await motionService.getMotionById(motionId);
+  ctx.body = await motionService.getMotionById(postId);
 }
 
 async function postComment(ctx) {

@@ -330,7 +330,7 @@ function createService(postType) {
     post.author = postAuthor;
 
     const commentCol = await getCommentCollection();
-    const height = await commentCol.countDocuments({ post: postObjId });
+    const height = await commentCol.countDocuments({ [postType]: postObjId });
 
     const now = new Date();
 

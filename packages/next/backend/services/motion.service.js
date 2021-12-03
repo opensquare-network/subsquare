@@ -1,29 +1,82 @@
 const { ObjectId } = require("mongodb");
+const { HttpError } = require("../exc");
+const { ContentType } = require("../constants");
+const { PostTitleLengthLimitation } = require("../constants");
+const { safeHtml } = require("../utils/post");
 const { toUserPublicInfo } = require("../utils/user");
 const {
   getDb: getChainDb,
   getMotionCollection: getChainMotionCollection,
   getTreasuryProposalCollection: getChainTreasuryProposalCollection
 } = require("../mongo/chain");
-const { getDb: getCommonDb, getUserCollection } = require("../mongo/common");
-const { getDb: getBusinessDb, getMotionCollection } = require("../mongo/business");
+const {
+  getDb: getCommonDb,
+  getUserCollection,
+  lookupUser,
+} = require("../mongo/common");
+const {
+  getDb: getBusinessDb,
+  getMotionCollection,
+  getTreasuryProposalCollection,
+  getBountyCollection,
+  getReactionCollection,
+} = require("../mongo/business");
 
-async function updatePost(postId, title, content, contentType, author) {
-  const chain = process.env.CHAIN;
-  const postObjId = ObjectId(postId);
-  const postCol = await getMotionCollection();
-  const post = await postCol.findOne({ _id: postObjId });
-  if (!post) {
-    throw new HttpError(404, "Post does not exists");
+async function findMotion(postId) {
+  const q = {};
+  if (ObjectId.isValid(postId)) {
+    q._id = ObjectId(postId);
+  } else {
+    q.index = parseInt(postId);
   }
 
   const chainMotionCol = await getChainMotionCollection();
-  const chainMotion = await chainMotionCol.findOne({
-    proposalIndex: post.proposalIndex,
-  });
+  const chainMotion = await chainMotionCol.findOne(q);
+  return chainMotion;
+}
+
+async function findMotionPost(chainMotion) {
+  let postCol = null;
+  let post = null;
+  let postType = null;
+
+  if (chainMotion.treasuryBounties?.length === 1 && chainMotion.treasuryProposals?.length === 0) {
+    const proposalIndex = chainMotion.treasuryProposals[0].index;
+
+    postCol = await getTreasuryProposalCollection();
+    post = await proposalCol.findOne({ proposalIndex });
+    postType = "treasuryProposal";
+  } else if (chainMotion.treasuryBounties?.length === 0 && chainMotion.treasuryProposals?.length === 1) {
+    const bountyIndex = chainMotion.treasuryBounties[0].index;
+
+    postCol = await getBountyCollection();
+    post = await bountyCol.findOne({ bountyIndex });
+    postType = "bounty";
+  } else {
+    const motionIndex = chainMotion.index;
+
+    postCol = await getMotionCollection();
+    post = await motionCol.findOne({ motionIndex });
+    postType = "motion";
+  }
+
+  return [postCol, post, postType];
+}
+
+async function updatePost(postId, title, content, contentType, author) {
+  const chain = process.env.CHAIN;
+  const q = {};
+  if (ObjectId.isValid(postId)) {
+    q._id = ObjectId(postId);
+  } else {
+    q.index = parseInt(postId);
+  }
+
+  const chainMotionCol = await getChainMotionCollection();
+  const chainMotion = await chainMotionCol.findOne(q);
 
   if (!chainMotion) {
-    throw new HttpError(403, "On-chain data is not found");
+    throw new HttpError(403, "Motion is not found");
   }
 
   if (!chainMotion.authors.includes(author[`${chain}Address`])) {
@@ -34,6 +87,11 @@ async function updatePost(postId, title, content, contentType, author) {
     throw new HttpError(400, {
       title: ["Title must be no more than %d characters"],
     });
+  }
+
+  const [postCol, post] = await findMotionPost(chainMotion);
+  if (!post) {
+    throw new HttpError(404, "Post does not exists");
   }
 
   const now = new Date();
@@ -59,8 +117,91 @@ async function updatePost(postId, title, content, contentType, author) {
   return true;
 }
 
-async function getActiveMotionsOverview() {
+async function loadPostForMotions(chainMotions) {
   const chain = process.env.CHAIN;
+  for (const motion of chainMotions) {
+    if (motion.treasuryProposals?.length === 1 && motion.treasuryBounties?.length === 0) {
+      motion.treasuryProposalPost = motion.treasuryProposals[0].index;
+    } else if (motion.treasuryBounties?.length === 1 && motion.treasuryProposals?.length === 0) {
+      motion.bountyPost = motion.treasuryBounties[0].index;
+    }
+  }
+
+  const commonDb = await getCommonDb();
+  const businessDb = await getBusinessDb();
+
+  const [, treasuryProposalPosts, bountyPosts, motionPosts] = await Promise.all([
+    commonDb.lookupOne({
+      from: "user",
+      for: chainMotions,
+      as: "author",
+      localField: "proposer",
+      foreignField: `${chain}Address`,
+      map: toUserPublicInfo,
+    }),
+    businessDb.lookupOne({
+      from: "treasuryProposal",
+      for: chainMotions,
+      as: "treasuryProposalPost",
+      localField: "treasuryProposalPost",
+      foreignField: "proposalIndex",
+    }),
+    businessDb.lookupOne({
+      from: "bounty",
+      for: chainMotions,
+      as: "bountyPost",
+      localField: "bountyPost",
+      foreignField: "bountyIndex",
+    }),
+    businessDb.lookupOne({
+      from: "motion",
+      for: chainMotions,
+      as: "motionPost",
+      localField: "index",
+      foreignField: "motionIndex",
+    }),
+  ]);
+
+  await Promise.all([
+    businessDb.lookupCount({
+      from: "comment",
+      for: treasuryProposalPosts,
+      as: "commentsCount",
+      localField: "_id",
+      foreignField: "treasuryProposal",
+    }),
+    businessDb.lookupCount({
+      from: "comment",
+      for: bountyPosts,
+      as: "commentsCount",
+      localField: "_id",
+      foreignField: "bounty",
+    }),
+    businessDb.lookupCount({
+      from: "comment",
+      for: motionPosts,
+      as: "commentsCount",
+      localField: "_id",
+      foreignField: "motion",
+    }),
+  ]);
+
+  return chainMotions.map((motion) => {
+    const post = motion.treasuryProposalPost ?? motion.bountyPost ?? motion.motionPost;
+    motion.treasuryProposalPost = undefined;
+    motion.bountyPost = undefined;
+    motion.motionPost = undefined;
+    post._id = motion._id,
+    post.motionIndex = motion.index,
+    post.proposer = motion.proposer,
+    post.author = motion.author,
+    post.onchainData = motion;
+    post.state = motion.state?.state;
+    return post;
+  });
+}
+
+async function getActiveMotionsOverview() {
   const motionCol = await getChainMotionCollection();
   const motions = await motionCol.find(
     {
@@ -70,113 +211,29 @@ async function getActiveMotionsOverview() {
     .limit(3)
     .toArray();
 
-  const commonDb = await getCommonDb();
-  const businessDb = await getBusinessDb();
-  const chainDb = await getChainDb();
-
-  const [posts, ] = await Promise.all([
-    businessDb.lookupOne({
-      from: "motion",
-      for: motions,
-      as: "post",
-      localField: "index",
-      foreignField: "motionIndex",
-    }),
-    chainDb.lookupOne({
-      from: "treasuryProposal",
-      for: motions,
-      as: "treasuryProposal",
-      localField: "treasuryProposalIndex",
-      foreignField: "proposalIndex",
-    }),
-  ]);
-
-  await Promise.all([
-    commonDb.lookupOne({
-      from: "user",
-      for: posts,
-      as: "author",
-      localField: "proposer",
-      foreignField: `${chain}Address`,
-      map: toUserPublicInfo,
-    }),
-    businessDb.lookupCount({
-      from: "comment",
-      for: posts,
-      as: "commentsCount",
-      localField: "_id",
-      foreignField: "motion",
-    }),
-  ]);
-
-  return motions.map((motion) => {
-    const post = motion.post;
-    motion.post = undefined;
-    post.onchainData = motion;
-    post.state = motion.state?.state;
-    return post;
-  });
+  return await loadPostForMotions(motions);
 }
 
 async function getMotionsByChain(page, pageSize) {
-  const chain = process.env.CHAIN;
-  const postCol = await getMotionCollection();
-  const total = await postCol.countDocuments();
+  const chainMotionCol = await getChainMotionCollection();
+  const total = await chainMotionCol.countDocuments();
 
   if (page === "last") {
     const totalPages = Math.ceil(total / pageSize);
     page = Math.max(totalPages, 1);
   }
 
-  const posts = await postCol
+  const chainMotions = await chainMotionCol
     .find({})
-    .sort({ lastActivityAt: -1 })
+    .sort({ "indexer.blockHeight": -1 })
     .skip((page - 1) * pageSize)
     .limit(pageSize)
     .toArray();
 
-  const commonDb = await getCommonDb();
-  const businessDb = await getBusinessDb();
-  const chainDb = await getChainDb();
-  const [, , chainMotions] = await Promise.all([
-    commonDb.lookupOne({
-      from: "user",
-      for: posts,
-      as: "author",
-      localField: "proposer",
-      foreignField: `${chain}Address`,
-      map: toUserPublicInfo,
-    }),
-    businessDb.lookupCount({
-      from: "comment",
-      for: posts,
-      as: "commentsCount",
-      localField: "_id",
-      foreignField: "motion",
-    }),
-    chainDb.lookupOne({
-      from: "motion",
-      for: posts,
-      as: "onchainData",
-      localField: "motionIndex",
-      foreignField: "index",
-      projection: { timeline: 0 },
-    }),
-  ]);
-
-  await chainDb.lookupOne({
-    from: "treasuryProposal",
-    for: chainMotions,
-    as: "treasuryProposal",
-    localField: "treasuryProposalIndex",
-    foreignField: "proposalIndex",
-  });
+  const posts = await loadPostForMotions(chainMotions);
 
   return {
-    items: posts.map((p) => ({
-      ...p,
-      state: p.onchainData?.state?.state,
-    })),
+    items: posts,
     total,
     page,
     pageSize,
@@ -192,49 +249,327 @@ async function getMotionById(postId) {
     q.index = parseInt(postId);
   }
 
-  const postCol = await getMotionCollection();
-  const post = await postCol.findOne(q);
+  const chainMotionCol = await getChainMotionCollection();
+  const chainMotion = await chainMotionCol.findOne(q);
 
-  if (!post) {
+  if (!chainMotion) {
     throw new HttpError(404, "Post not found");
   }
 
-  const commonDb = await getCommonDb();
-  const businessDb = await getBusinessDb();
-  const chainMotionCol = await getChainMotionCollection();
-  const [, reactions, motionData] = await Promise.all([
-    commonDb.lookupOne({
-      from: "user",
-      for: post,
-      as: "author",
-      localField: "proposer",
-      foreignField: `${chain}Address`,
-      map: toUserPublicInfo,
-    }),
-    businessDb.lookupMany({
-      from: "reaction",
-      for: post,
-      as: "reactions",
-      localField: "_id",
-      foreignField: "motion",
-    }),
-    chainMotionCol.findOne({ index: post.motionIndex }),
-  ]);
+  const reactionCol = await getReactionCollection();
+  const userCol = await getUserCollection();
 
-  const treasuryProposalCol = await getChainTreasuryProposalCollection();
+  let post = null;
+  let reactions = null;
 
-  const [, treasuryProposal] = await Promise.all([
+  if (chainMotion.treasuryProposals?.length === 1 && chainMotion.treasuryBounties?.length === 0) {
+    const proposalIndex = chainMotion.treasuryProposals[0].index;
+
+    const proposalCol = await getTreasuryProposalCollection();
+    post = await proposalCol.findOne({ proposalIndex });
+
+    reactions = await reactionCol.find({ treasuryProposal: post._id }).toArray();
+
+  } else if (chainMotion.treasuryBounties?.length === 1 && chainMotion.treasuryProposals?.length === 0) {
+    const bountyIndex = chainMotion.treasuryBounties[0].index;
+
+    const bountyCol = await getBountyCollection();
+    post = await bountyCol.findOne({ bountyIndex });
+
+    reactions = await reactionCol.find({ bounty: post._id }).toArray();
+
+  } else {
+    const motionIndex = chainMotion.index;
+
+    const motionCol = await getMotionCollection();
+    post = await motionCol.findOne({ motionIndex });
+
+    reactions = await reactionCol.find({ motion: post._id }).toArray();
+  }
+
+  const [, author] = await Promise.all([
     lookupUser({ for: reactions, localField: "user" }),
-    treasuryProposalCol.findOne({ proposalIndex: motionData.treasuryProposalIndex })
-  ])
-
+    userCol.findOne({ [`${chain}Address`]: chainMotion.proposer }),
+  ]);
 
   return {
     ...post,
+    reactions,
+    _id: chainMotion._id,
+    proposer: chainMotion.proposer,
+    motionIndex: chainMotion.index,
+    author,
     onchainData: {
-      ...motionData,
-      treasuryProposal,
+      ...chainMotion,
+      author,
     },
+  };
+}
+
+async function processPostThumbsUpNotification(post, postType, reactionUser) {
+  const userCol = await getUserCollection();
+  const postAuthor = await userCol.findOne({_id: post.author});
+
+  if (!postAuthor) {
+    return;
+  }
+
+  if (postAuthor.emailVerified && (postAuthor.notification?.thumbsUp ?? true)) {
+    mailService.sendPostThumbsupEmail({
+      email: postAuthor.email,
+      postAuthor: postAuthor.username,
+      postType,
+      postUid: post.postUid,
+      reactionUser: reactionUser.username,
+    });
+  }
+}
+
+async function setPostReaction(postId, reaction, user) {
+  const chainMotion = await findMotion(postId);
+  if (!chainMotion) {
+    throw new HttpError(404, "Motion does not found");
+  }
+
+  const [postCol, post, postType] = await findMotionPost(chainMotion);
+  if (!post) {
+    throw new HttpError(404, "Post does not found");
+  }
+
+  const postObjId = post._id;
+
+  const postCol = await getPostCollection();
+  const post = await postCol.findOne({
+    _id: postObjId,
+    author: { $ne: user._id },
+  });
+  if (!post) {
+    throw new HttpError(400, "Cannot set reaction.");
+  }
+
+  const reactionCol = await getReactionCollection();
+
+  const now = new Date();
+  const result = await reactionCol.updateOne(
+    {
+      [postType]: postObjId,
+      user: user._id,
+    },
+    {
+      $set: {
+        reaction,
+        updatedAt: now,
+      },
+      $setOnInsert: {
+        createdAt: now,
+      },
+    },
+    { upsert: true }
+  );
+
+  if (!result.acknowledged) {
+    throw new HttpError(500, "Db error, update reaction.");
+  }
+
+  processPostThumbsUpNotification(post, postType, user).catch(console.error);
+
+  return true;
+}
+
+async function unsetPostReaction(postId, user) {
+  const chainMotion = await findMotion(postId);
+  if (!chainMotion) {
+    throw new HttpError(404, "Motion does not found");
+  }
+
+  const [postCol, post, postType] = await findMotionPost(chainMotion);
+  if (!post) {
+    throw new HttpError(404, "Post does not found");
+  }
+
+  const postObjId = post._id;
+
+  const reactionCol = await getReactionCollection();
+
+  const result = await reactionCol.deleteOne({
+    [postType]: postObjId,
+    user: user._id,
+  });
+
+  if (!result.acknowledged) {
+    throw new HttpError(500, "Db error, clean reaction.");
+  }
+
+  if (result.modifiedCount === 0) {
+    return false;
+  }
+
+  return true;
+}
+
+async function processCommentMentions({
+  postType,
+  postUid,
+  content,
+  contentType,
+  author,
+  commentHeight,
+  mentions,
+}) {
+  if (mentions.size === 0) {
+    return;
+  }
+
+  const userCol = await getUserCollection();
+  const users = await userCol.find({
+    username: {
+      $in: Array.from(mentions),
+    },
+  }).toArray();
+
+  for (const user of users) {
+    if (user.emailVerified && (user.notification?.mention ?? true)) {
+      mailService.sendCommentMentionEmail({
+        email: user.email,
+        postType,
+        postUid,
+        content,
+        contentType,
+        mentionedUser: user.username,
+        author,
+        commentHeight,
+      });
+    }
+  }
+}
+
+async function postComment(
+  postId,
+  content,
+  contentType,
+  author,
+) {
+  const chainMotion = await findMotion(postId);
+  if (!chainMotion) {
+    throw new HttpError(404, "Motion does not found");
+  }
+
+  const [postCol, post, postType] = await findMotionPost(chainMotion);
+  if (!post) {
+    throw new HttpError(404, "Post does not found");
+  }
+
+  const userCol = await getUserCollection();
+  const postAuthor = await userCol.findOne({ _id: post.author });
+  post.author = postAuthor;
+
+  const commentCol = await getCommentCollection();
+  const height = await commentCol.countDocuments({ [postType]: postObjId });
+
+  const now = new Date();
+
+  const newComment = {
+    [postType]: postObjId,
+    content: contentType === ContentType.Html ? safeHtml(content) : content,
+    contentType,
+    contentVersion: "2",
+    author: author._id,
+    height: height + 1,
+    createdAt: now,
+    updatedAt: now,
+  };
+  const result = await commentCol.insertOne(newComment);
+
+  if (!result.acknowledged) {
+    throw new HttpError(500, "Failed to create comment");
+  }
+
+  const newCommentId = result.insertedId;
+
+  const updatePostResult = await postCol.updateOne(
+    { _id: postObjId },
+    {
+      $set: {
+        lastActivityAt: new Date()
+      }
+    },
+  );
+
+  if (!updatePostResult.acknowledged) {
+    throw new HttpError(500, "Unable to udpate post last activity time");
+  }
+
+  const mentions = extractMentions(content, contentType);
+  processCommentMentions({
+    postType,
+    postUid: post.postUid,
+    content: newComment.content,
+    contentType: newComment.contentType,
+    author: author.username,
+    commentHeight: newComment.height,
+    mentions,
+  }).catch(console.error);
+
+  if (post.author && !author._id.equals(post.author._id)) {
+    if (post.author.emailVerified && (post.author.notification?.reply ?? true)) {
+      mailService.sendReplyEmail({
+        email: post.author.email,
+        replyToUser: post.author.username,
+        postType,
+        postUid: post.postUid,
+        content: newComment.content,
+        contentType: newComment.contentType,
+        author: author.username,
+        commentHeight: newComment.height,
+      });
+    }
+  }
+
+  return newCommentId;
+}
+
+async function getComments(postId, page, pageSize) {
+  const chainMotion = await findMotion(postId);
+  if (!chainMotion) {
+    throw new HttpError(404, "Motion does not found");
+  }
+
+  const [, post, postType] = await findMotionPost(chainMotion);
+  const q = { [postType]: post._id }
+
+  const commentCol = await getCommentCollection();
+  const total = await commentCol.count(q);
+
+  if (page === "last") {
+    const totalPages = Math.ceil(total / pageSize);
+    page = Math.max(totalPages, 1);
+  }
+
+  const comments = await commentCol.find(q)
+    .sort({ createdAt: 1 })
+    .skip((page - 1) * pageSize)
+    .limit(pageSize)
+    .toArray();
+
+  const businessDb = await getBusinessDb();
+  const reactions = await businessDb.lookupMany({
+    from: "reaction",
+    for: comments,
+    as: "reactions",
+    localField: "_id",
+    foreignField: "comment",
+  });
+
+  await lookupUser([
+    { for: comments, localField: "author" },
+    { for: reactions, localField: "user" },
+  ]);
+
+  return {
+    items: comments,
+    total,
+    page,
+    pageSize,
   };
 }
 
@@ -243,4 +578,8 @@ module.exports =  {
   getMotionsByChain,
   getMotionById,
   getActiveMotionsOverview,
+  setPostReaction,
+  unsetPostReaction,
+  postComment,
+  getComments,
 };
