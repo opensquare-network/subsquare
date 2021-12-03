@@ -1,4 +1,5 @@
 const { getDemocracyReferendumCollection } = require("../../index");
+const isEmpty = require("lodash.isempty");
 
 async function insertReferendum(referendumObj) {
   const col = await getDemocracyReferendumCollection();
@@ -12,15 +13,17 @@ async function insertReferendum(referendumObj) {
 }
 
 async function updateReferendumByIndex(referendumIndex, updates, timelineItem) {
-  let update = {
-    $set: updates,
-  };
+  let update = isEmpty(updates) ? null : { $set: updates };
 
   if (timelineItem) {
     update = {
       ...update,
       $push: { timeline: timelineItem },
     };
+  }
+
+  if (isEmpty(update)) {
+    return;
   }
 
   const col = await getDemocracyReferendumCollection();

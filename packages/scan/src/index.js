@@ -16,14 +16,13 @@ const scanStep = parseInt(process.env.SCAN_STEP) || 100;
 
 async function main() {
   await updateHeight();
-  let scanHeight = await getNextScanHeight();
-  await updateSpecs(scanHeight);
+  await updateSpecs();
 
   if (doScanKnownFirst()) {
     await scanKnownHeights();
   }
 
-  scanHeight = await getNextScanHeight();
+  let scanHeight = await getNextScanHeight();
   while (true) {
     // chainHeight is the current on-chain last block height
     const chainHeight = getLatestHeight();

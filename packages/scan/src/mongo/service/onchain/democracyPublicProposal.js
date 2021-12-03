@@ -1,4 +1,5 @@
 const { getDemocracyPublicProposalCollection } = require("../../index");
+const isEmpty = require("lodash.isempty");
 
 async function insertProposal(proposalObj) {
   const col = await getDemocracyPublicProposalCollection();
@@ -12,15 +13,17 @@ async function insertProposal(proposalObj) {
 }
 
 async function updateProposalByIndex(proposalIndex, updates, timelineItem) {
-  let update = {
-    $set: updates,
-  };
+  let update = isEmpty(updates) ? null : { $set: updates };
 
   if (timelineItem) {
     update = {
       ...update,
       $push: { timeline: timelineItem },
     };
+  }
+
+  if (isEmpty(update)) {
+    return;
   }
 
   const col = await getDemocracyPublicProposalCollection();

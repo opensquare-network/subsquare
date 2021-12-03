@@ -46,6 +46,7 @@ async function saveNewTreasuryProposal(event, extrinsic, eventIndexer) {
     meta,
     state,
     timeline: [timelineItem],
+    motions: [],
   };
 
   await insertTreasuryProposal(obj);

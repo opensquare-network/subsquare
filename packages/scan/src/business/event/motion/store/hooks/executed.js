@@ -1,3 +1,8 @@
+const { updateBounty } = require("../../../../../mongo/service/onchain/bounty");
+const { getBountyMeta } = require("../../../../common/bounty/meta");
+const {
+  updateTreasuryProposal,
+} = require("../../../../../mongo/service/treasuryProposal");
 const { busLogger } = require("../../../../../logger");
 const {
   getExternalFromStorageByHeight,
@@ -11,14 +16,65 @@ const {
 const {
   DemocracyExternalStates,
   TimelineItemTypes,
+  TreasuryProposalMethods,
+  TreasuryProposalEvents,
+  BountyMethods,
+  BountyStatus,
 } = require("../../../../common/constants");
 const { getMotionCollection } = require("../../../../../mongo");
+const { logger } = require("../../../../../logger");
+
+async function handleRejectTreasuryProposal(proposalInfo, indexer) {
+  const { index: proposalIndex, method } = proposalInfo;
+
+  if (method !== TreasuryProposalMethods.rejectProposal) {
+    return;
+  }
+
+  const state = {
+    state: TreasuryProposalEvents.Rejected,
+    indexer,
+  };
+
+  logger.info(`treasury proposal ${proposalIndex} rejected`, indexer);
+  await updateTreasuryProposal(proposalIndex, { state });
+}
+
+async function handleBounty(bountyInfo, indexer) {
+  const { index: bountyIndex, method } = bountyInfo;
+
+  let updates = {};
+
+  const meta = await getBountyMeta(bountyIndex, indexer);
+  if (meta) {
+    updates.meta = meta;
+  }
+
+  if (BountyMethods.approveBounty === method) {
+    updates.state = {
+      indexer,
+      state: BountyStatus.Approved,
+    };
+  }
+
+  if (updates.meta || updates.state) {
+    await updateBounty(bountyIndex, updates);
+  }
+}
 
 async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
   const col = await getMotionCollection();
   const motion = await col.findOne({ hash: motionHash, isFinal: false });
   if (!motion) {
     return;
+  }
+
+  for (const proposalInfo of motion.treasuryProposals || []) {
+    await handleRejectTreasuryProposal(proposalInfo, indexer);
+  }
+
+  for (const bountyInfo of motion.treasuryBounties || []) {
+    await handleBounty(bountyInfo, indexer);
   }
 
   const { isDemocracy, proposalHash } = motion;

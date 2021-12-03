@@ -49,6 +49,7 @@ async function updatePost(postId, title, content, contentType, author) {
         title,
         content: contentType === ContentType.Html ? safeHtml(content) : content,
         contentType,
+        contentVersion: post.contentVersion ?? "2",
         updatedAt: now,
         lastActivityAt: now,
       },

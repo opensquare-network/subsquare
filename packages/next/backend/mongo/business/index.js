@@ -42,6 +42,7 @@ module.exports = {
     getCollection("treasuryProposal"),
   getBountyCollection: () => getCollection("bounty"),
   getDemocracyCollection: () => getCollection("democracy"),
+  getMotionCollection: () => getCollection("motion"),
   getCommentCollection: () => getCollection("comment"),
   getReactionCollection: () => getCollection("reaction"),
   getStatusCollection: () => getCollection("status"),

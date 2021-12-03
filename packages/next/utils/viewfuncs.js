@@ -35,6 +35,8 @@ export const toCouncilMotionListItem = (chain, item) => ({
   },
   status: item.state?.state ?? "Unknown",
   detailLink: `/council/motion/${item.index}`,
+  isTreasury:
+    (item.treasuryProposals || item.treasuryBounties || []).length > 0,
 });
 
 function getTechCommMotionId(motion) {

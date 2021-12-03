@@ -1,4 +1,5 @@
 const { getTechCommMotionCollection } = require("../../index");
+const isEmpty = require("lodash.isempty");
 
 async function insertMotion(motion) {
   const {
@@ -20,16 +21,17 @@ async function insertMotion(motion) {
 
 async function updateMotionByHash(hash, updates, timelineItem) {
   const col = await getTechCommMotionCollection();
-
-  let update = {
-    $set: updates,
-  };
+  let update = isEmpty(updates) ? null : { $set: updates };
 
   if (timelineItem) {
     update = {
       ...update,
       $push: { timeline: timelineItem },
     };
+  }
+
+  if (isEmpty(update)) {
+    return;
   }
 
   await col.updateOne({ hash: hash, isFinal: false }, update);

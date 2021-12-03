@@ -2,7 +2,6 @@ const findLast = require("lodash.findlast");
 const { getAllVersionChangeHeights, getScanHeight } = require("../mongo/meta");
 const { getApi } = require("../api");
 const { isUseMetaDb } = require("../env");
-const { logger } = require("../logger");
 
 let versionChangedHeights = [];
 let blockApiMap = {};
@@ -18,12 +17,6 @@ async function updateSpecs() {
 
 async function updateSpecsFromMetaDb() {
   versionChangedHeights = await getAllVersionChangeHeights();
-
-  if (versionChangedHeights.length <= 0 || versionChangedHeights[0] > 1) {
-    logger.error("No specHeights or invalid");
-    process.exit(1);
-  }
-
   metaScanHeight = await getScanHeight();
 }
 

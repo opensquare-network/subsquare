@@ -52,6 +52,7 @@ async function updatePost(postId, title, content, contentType, author) {
         title,
         content: contentType === ContentType.Html ? safeHtml(content) : content,
         contentType,
+        contentVersion: post.contentVersion ?? "2",
         updatedAt: now,
         lastActivityAt: now,
       },
@@ -195,7 +196,7 @@ async function getPostById(postId) {
   const businessDb = await getBusinessDb();
   const chainTreasuryProposalCol = await getChainTreasuryProposalCollection();
   const chainMotionCol = await getMotionCollection();
-  const [, reactions, treasuryProposalData, motions] = await Promise.all([
+  const [, reactions, treasuryProposalData] = await Promise.all([
     commonDb.lookupOne({
       from: "user",
       for: post,
@@ -212,12 +213,18 @@ async function getPostById(postId) {
       foreignField: "treasuryProposal",
     }),
     chainTreasuryProposalCol.findOne({ proposalIndex: post.proposalIndex }),
-    chainMotionCol
-      .find({ treasuryProposalIndex: post.proposalIndex })
-      .toArray(),
   ]);
 
-  await lookupUser({ for: reactions, localField: "user" });
+  const [, motions] = await Promise.all([
+    lookupUser({ for: reactions, localField: "user" }),
+    chainMotionCol
+      .find({
+        index: {
+          $in: (treasuryProposalData?.motions?.map(m => m.index) || [])
+        }
+      })
+      .toArray(),
+  ]);
 
   return {
     ...post,
