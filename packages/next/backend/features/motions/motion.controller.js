@@ -1,5 +1,4 @@
 const motionService = require("../../services/motion.service");
-const motionPostService = require("../../services/post.service")("motion");
 const { ContentType } = require("../../constants");
 const { extractPage } = require("../../utils");
 
@@ -76,7 +75,7 @@ async function postComment(ctx) {
     ? paramContentType
     : ContentType.Markdown;
 
-  ctx.body = await motionPostService.postComment(
+  ctx.body = await motionService.postComment(
     postId,
     content,
     contentType,
@@ -92,7 +91,7 @@ async function getComments(ctx) {
   }
 
   const { postId } = ctx.params;
-  ctx.body = await motionPostService.getComments(postId, page, pageSize);
+  ctx.body = await motionService.getComments(postId, page, pageSize);
 }
 
 async function setPostReaction(ctx) {
@@ -104,7 +103,7 @@ async function setPostReaction(ctx) {
   }
 
   const user = ctx.user;
-  ctx.body = await motionPostService.setPostReaction(
+  ctx.body = await motionService.setPostReaction(
     postId,
     reaction,
     user
@@ -114,7 +113,7 @@ async function setPostReaction(ctx) {
 async function unsetPostReaction(ctx) {
   const { postId } = ctx.params;
   const user = ctx.user;
-  ctx.body = await motionPostService.unsetPostReaction(postId, user);
+  ctx.body = await motionService.unsetPostReaction(postId, user);
 }
 
 
