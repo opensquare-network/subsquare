@@ -15,8 +15,10 @@ const {
   getMotionCollection,
   getTreasuryProposalCollection,
   getBountyCollection,
+  getCommentCollection,
   getReactionCollection,
 } = require("../mongo/business");
+const mailService = require("./mail.service");
 
 async function findMotion(postId) {
   const q = {};
