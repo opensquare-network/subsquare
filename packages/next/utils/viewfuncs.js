@@ -34,7 +34,7 @@ export const toCouncilMotionListItem = (chain, item) => ({
     username: addressEllipsis(item.proposer),
     addresses: [{ chain, address: item.proposer }],
   },
-  status: item.state?.state ?? "Unknown",
+  status: item.state ?? "Unknown",
   detailLink: `/council/motion/${item.motionIndex}`,
   isTreasury:
     (item.treasuryProposals || item.treasuryBounties || []).length > 0,
