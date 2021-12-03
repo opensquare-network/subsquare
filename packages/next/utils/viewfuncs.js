@@ -28,13 +28,14 @@ export const toDiscussionListItem = (chain, item) => ({
 
 export const toCouncilMotionListItem = (chain, item) => ({
   ...item,
-  title: `${item.proposal.section}.${item.proposal.method}`,
+  index: item.motionIndex,
+  title: `${item?.title}`,
   author: item.author ?? {
     username: addressEllipsis(item.proposer),
     addresses: [{ chain, address: item.proposer }],
   },
   status: item.state?.state ?? "Unknown",
-  detailLink: `/council/motion/${item.index}`,
+  detailLink: `/council/motion/${item.motionIndex}`,
   isTreasury:
     (item.treasuryProposals || item.treasuryBounties || []).length > 0,
 });

@@ -204,7 +204,7 @@ export default withLoginUserRedux(({ loginUser, motion, chain }) => {
 
   const treasuryProposalMeta = motion.treasuryProposal?.meta;
 
-  const timeline = createMotionTimelineData(motion);
+  const timeline = createMotionTimelineData(motion.onchainData);
 
   let timelineData;
 
@@ -261,10 +261,10 @@ export default withLoginUserRedux(({ loginUser, motion, chain }) => {
       <Wrapper>
         <div>
           <TitleWrapper>
-            {motion?.index !== undefined && <Index>{`#${motion.index}`}</Index>}
-            <Title>
-              {motion?.proposal?.section} {motion?.proposal?.method}
-            </Title>
+            {motion?.motionIndex !== undefined && (
+              <Index>{`#${motion.motionIndex}`}</Index>
+            )}
+            <Title>{motion?.title}</Title>
           </TitleWrapper>
           <FlexWrapper>
             <DividerWrapper>
@@ -279,7 +279,7 @@ export default withLoginUserRedux(({ loginUser, motion, chain }) => {
             </DividerWrapper>
             {motion.status && <StatusWrapper>{motion.status}</StatusWrapper>}
           </FlexWrapper>
-          <ArticleContent data={motion.external} user={motion.author} />
+          <ArticleContent data={motion} user={loginUser} type="motion" />
         </div>
       </Wrapper>
 
@@ -299,10 +299,10 @@ export default withLoginUserRedux(({ loginUser, motion, chain }) => {
               />
             </>,
           ],
-          ["Index", motion.index],
-          ["Threshold", motion.threshold],
-          ["Hash", motion.hash],
-          [<MotionProposal motion={motion} chain={chain} />],
+          ["Index", motion?.motionIndex],
+          ["Threshold", motion?.onchainData?.threshold],
+          ["Hash", motion?.onchainData?.hash],
+          [<MotionProposal motion={motion.onchainData} chain={chain} />],
         ]}
       />
 
