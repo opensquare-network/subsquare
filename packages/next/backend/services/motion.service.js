@@ -4,11 +4,7 @@ const { ContentType } = require("../constants");
 const { PostTitleLengthLimitation } = require("../constants");
 const { safeHtml } = require("../utils/post");
 const { toUserPublicInfo } = require("../utils/user");
-const {
-  getDb: getChainDb,
-  getMotionCollection: getChainMotionCollection,
-  getTreasuryProposalCollection: getChainTreasuryProposalCollection
-} = require("../mongo/chain");
+const { getMotionCollection: getChainMotionCollection } = require("../mongo/chain");
 const {
   getDb: getCommonDb,
   getUserCollection,
@@ -26,8 +22,16 @@ async function findMotion(postId) {
   const q = {};
   if (ObjectId.isValid(postId)) {
     q._id = ObjectId(postId);
-  } else {
+  } else if (/^\d+$/.test(postId)) {
     q.index = parseInt(postId);
+  } else {
+    const m = postId.match(/^(\d+)_(.+)$/);
+    if (m) {
+      q["indexer.blockHeight"] = parseInt(m[1]);
+      q.hash = m[2];
+    } else {
+      q.hash = postId;
+    }
   }
 
   const chainMotionCol = await getChainMotionCollection();
@@ -40,23 +44,23 @@ async function findMotionPost(chainMotion) {
   let post = null;
   let postType = null;
 
-  if (chainMotion.treasuryBounties?.length === 1 && chainMotion.treasuryProposals?.length === 0) {
+  if (chainMotion.treasuryBounties?.length === 0 && chainMotion.treasuryProposals?.length === 1) {
     const proposalIndex = chainMotion.treasuryProposals[0].index;
 
     postCol = await getTreasuryProposalCollection();
-    post = await proposalCol.findOne({ proposalIndex });
+    post = await postCol.findOne({ proposalIndex });
     postType = "treasuryProposal";
-  } else if (chainMotion.treasuryBounties?.length === 0 && chainMotion.treasuryProposals?.length === 1) {
+  } else if (chainMotion.treasuryBounties?.length === 1 && chainMotion.treasuryProposals?.length === 0) {
     const bountyIndex = chainMotion.treasuryBounties[0].index;
 
     postCol = await getBountyCollection();
-    post = await bountyCol.findOne({ bountyIndex });
+    post = await postCol.findOne({ bountyIndex });
     postType = "bounty";
   } else {
     const motionIndex = chainMotion.index;
 
     postCol = await getMotionCollection();
-    post = await motionCol.findOne({ motionIndex });
+    post = await postCol.findOne({ motionIndex });
     postType = "motion";
   }
 
@@ -65,16 +69,8 @@ async function findMotionPost(chainMotion) {
 
 async function updatePost(postId, title, content, contentType, author) {
   const chain = process.env.CHAIN;
-  const q = {};
-  if (ObjectId.isValid(postId)) {
-    q._id = ObjectId(postId);
-  } else {
-    q.index = parseInt(postId);
-  }
 
-  const chainMotionCol = await getChainMotionCollection();
-  const chainMotion = await chainMotionCol.findOne(q);
-
+  const chainMotion = await findMotion(postId);
   if (!chainMotion) {
     throw new HttpError(403, "Motion is not found");
   }
@@ -191,10 +187,13 @@ async function loadPostForMotions(chainMotions) {
     motion.treasuryProposalPost = undefined;
     motion.bountyPost = undefined;
     motion.motionPost = undefined;
-    post._id = motion._id,
-    post.motionIndex = motion.index,
-    post.proposer = motion.proposer,
-    post.author = motion.author,
+    post._id = motion._id;
+    post.proposer = motion.proposer;
+    post.motionIndex = motion.index;
+    post.hash = motion.hash;
+    post.height = motion.indexer.blockHeight;
+    post.indexer = motion.indexer;
+    post.author = motion.author;
     post.onchainData = motion;
     post.state = motion.state?.state;
     return post;
@@ -242,16 +241,8 @@ async function getMotionsByChain(page, pageSize) {
 
 async function getMotionById(postId) {
   const chain = process.env.CHAIN;
-  const q = {};
-  if (ObjectId.isValid(postId)) {
-    q._id = ObjectId(postId);
-  } else {
-    q.index = parseInt(postId);
-  }
 
-  const chainMotionCol = await getChainMotionCollection();
-  const chainMotion = await chainMotionCol.findOne(q);
-
+  const chainMotion = await findMotion(postId);
   if (!chainMotion) {
     throw new HttpError(404, "Post not found");
   }
@@ -298,7 +289,11 @@ async function getMotionById(postId) {
     _id: chainMotion._id,
     proposer: chainMotion.proposer,
     motionIndex: chainMotion.index,
+    hash: chainMotion.hash,
+    height: chainMotion.indexer.blockHeight,
+    indexer: chainMotion.indexer,
     author,
+    state: chainMotion.state?.state,
     onchainData: {
       ...chainMotion,
       author,
