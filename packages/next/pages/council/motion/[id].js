@@ -39,7 +39,7 @@ export default withLoginUserRedux(({ loginUser, motion, chain }) => {
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
 
-  const { id } = context.query;
+  const { id, page, page_size: pageSize } = context.query;
 
   const { result: motion } = await nextApi.fetch(`motions/${id}`);
   let external = null;
@@ -47,7 +47,14 @@ export const getServerSideProps = withLoginUser(async (context) => {
   if (isMotionCompleted(motion)) {
     const motionId = `${motion.state.indexer.blockHeight}_${motion.proposalHash}`;
     const res = await nextApi.fetch(`democracy/externals/${motionId}`);
-    external = res.result;
+    const { result: comments } = await nextApi.fetch(
+      `democracy/externals/${res.result._id}/comments`,
+      {
+        page: page ?? "last",
+        pageSize: Math.min(pageSize ?? 50, 100),
+      }
+    );
+    external = { ...res.result, comments };
   }
 
   if (!motion) {

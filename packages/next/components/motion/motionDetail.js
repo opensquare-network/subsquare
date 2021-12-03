@@ -15,6 +15,10 @@ import Flex from "../styled/flex";
 import { shadow_100 } from "../../styles/componentCss";
 import ArticleContent from "../articleContent";
 import { isMotionCompleted } from "../../utils/viewfuncs";
+import Comments from "../comment";
+import Input from "../comment/input";
+import { TYPE_DEMOCRACY_EXTERNAL } from "../../utils/viewConstants";
+import { withLoginUserRedux } from "../../lib";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -93,6 +97,18 @@ const FlexWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: nowrap;
+`;
+
+const CommentsWrapper = styled.div`
+  background: #ffffff;
+  border: 1px solid #ebeef4;
+  ${shadow_100};
+  border-radius: 6px;
+  padding: 48px;
+  @media screen and (max-width: 768px) {
+    padding: 24px;
+    border-radius: 0;
+  }
 `;
 
 function createMotionTimelineData(motion) {
@@ -178,7 +194,7 @@ const getClosedTimelineData = (timeline = []) => {
   return [fd, ...notFoldItems];
 };
 
-export default function MotionDetail({ motion, chain }) {
+export default withLoginUserRedux(({ loginUser, motion, chain }) => {
   const node = getNode(chain);
   if (!node) {
     return null;
@@ -291,6 +307,17 @@ export default function MotionDetail({ motion, chain }) {
       />
 
       <Timeline data={timelineData} chain={chain} indent={false} />
+
+      {motion?.external?.comments && (
+        <CommentsWrapper>
+          <Comments
+            data={motion?.external?.comments}
+            user={loginUser}
+            postId={motion?.external?._id}
+            chain={chain}
+          />
+        </CommentsWrapper>
+      )}
     </div>
   );
-}
+});
