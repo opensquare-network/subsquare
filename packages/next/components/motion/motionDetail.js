@@ -277,7 +277,7 @@ export default withLoginUserRedux(({ loginUser, motion, chain }) => {
               {motion.isTreasury && <SectionTag name={"Treasury"} />}
               {motion.isDemocracy && <SectionTag name={"Democracy"} />}
             </DividerWrapper>
-            {motion.status && <StatusWrapper>{motion.status}</StatusWrapper>}
+            {motion.state && <StatusWrapper>{motion.state}</StatusWrapper>}
           </FlexWrapper>
           <ArticleContent data={motion} user={loginUser} type="motion" />
         </div>

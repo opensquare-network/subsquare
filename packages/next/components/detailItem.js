@@ -439,7 +439,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             {post.status && <Tag name={post.status} />}
           </FlexWrapper>
           <Divider />
-          <ArticleContent data={data} user={user} />
+          <ArticleContent data={data} user={user} type={type} />
         </>
       )}
       {isEdit && (
