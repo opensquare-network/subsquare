@@ -112,6 +112,10 @@ const CommentsWrapper = styled.div`
   }
 `;
 
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function createMotionTimelineData(motion) {
   return (motion?.timeline || []).map((item) => {
     switch (item.method) {
@@ -221,7 +225,10 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
     business = createMotionBusinessData(motion, chain);
   }
 
-  if (motion.onchainData.treasuryProposals?.length > 0) {
+  if (
+    motion.onchainData.treasuryProposals?.length > 0 ||
+    motion.onchainData.treasuryBounties?.length > 0
+  ) {
     business = [];
     for (const proposal of motion.onchainData.treasuryProposals) {
       business.push([
@@ -255,6 +262,50 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
           `${toPrecision(proposal.meta.bond ?? 0, decimals)} ${symbol}`,
         ],
       ]);
+    }
+
+    for (const bounty of motion.onchainData.treasuryBounties) {
+      const kvData = [];
+
+      kvData.push([
+        "Link to",
+        <Link
+          href={`/treasury/bounty/${bounty.bountyIndex}`}
+        >{`Treasury Bounty #${bounty.bountyIndex}`}</Link>,
+      ]);
+
+      const metadata = bounty.meta ? Object.entries(bounty.meta) : [];
+      metadata.forEach((item) => {
+        switch (item[0]) {
+          case "proposer":
+          case "beneficiary":
+            kvData.push([
+              capitalizeFirstLetter(item[0]),
+              <Flex>
+                <User
+                  chain={chain}
+                  add={item[1]}
+                  fontSize={14}
+                />
+                <Links
+                  chain={chain}
+                  address={item[1]}
+                  style={{ marginLeft: 8 }}
+                />
+              </Flex>,
+            ]);
+            break;
+          case "value":
+          case "bond":
+            kvData.push([
+              capitalizeFirstLetter(item[0]),
+              `${toPrecision(item[1] ?? 0, decimals)} ${symbol}`,
+            ]);
+            break;
+        }
+      });
+
+      business.push(kvData);
     }
   }
 
