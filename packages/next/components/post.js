@@ -146,7 +146,7 @@ const HeadWrapper = styled.div`
 const Method = styled.span`
   font-size: 12px;
   font-weight: 400 !important;
-  ${text_accessory} !important;
+  color: #9da9bb !important;
 `;
 
 export default function Post({ data, chain, href }) {
