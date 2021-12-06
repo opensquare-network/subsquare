@@ -448,6 +448,8 @@ async function postComment(
     throw new HttpError(404, "Post does not found");
   }
 
+  const postObjId = post._id;
+
   const userCol = await getUserCollection();
   const postAuthor = await userCol.findOne({ _id: post.author });
   post.author = postAuthor;
