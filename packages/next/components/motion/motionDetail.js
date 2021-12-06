@@ -16,11 +16,9 @@ import Flex from "../styled/flex";
 import { shadow_100 } from "../../styles/componentCss";
 import ArticleContent from "../articleContent";
 import { isMotionCompleted } from "../../utils/viewfuncs";
-import Comments from "../comment";
-import Input from "../comment/input";
-import { TYPE_DEMOCRACY_EXTERNAL } from "../../utils/viewConstants";
 import { withLoginUserRedux } from "../../lib";
 import { useState } from "react";
+import CapitalText from "../capitalText";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -223,7 +221,10 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
     business = createMotionBusinessData(motion, chain);
   }
 
-  if (motion.onchainData.treasuryProposals?.length > 0) {
+  if (
+    motion.onchainData.treasuryProposals?.length > 0 ||
+    motion.onchainData.treasuryBounties?.length > 0
+  ) {
     business = [];
     for (const proposal of motion.onchainData.treasuryProposals) {
       business.push([
@@ -250,6 +251,46 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
         ],
         ["Bond", `${toPrecision(proposal.meta.bond ?? 0, decimals)} ${symbol}`],
       ]);
+    }
+
+    for (const bounty of motion.onchainData.treasuryBounties) {
+      const kvData = [];
+
+      kvData.push([
+        "Link to",
+        <Link
+          href={`/treasury/bounty/${bounty.bountyIndex}`}
+        >{`Treasury Bounty #${bounty.bountyIndex}`}</Link>,
+      ]);
+
+      const metadata = bounty.meta ? Object.entries(bounty.meta) : [];
+      metadata.forEach((item) => {
+        switch (item[0]) {
+          case "proposer":
+          case "beneficiary":
+            kvData.push([
+              <CapitalText>{item[0]}</CapitalText>,
+              <Flex>
+                <User chain={chain} add={item[1]} fontSize={14} />
+                <Links
+                  chain={chain}
+                  address={item[1]}
+                  style={{ marginLeft: 8 }}
+                />
+              </Flex>,
+            ]);
+            break;
+          case "value":
+          case "bond":
+            kvData.push([
+              <CapitalText>{item[0]}</CapitalText>,
+              `${toPrecision(item[1] ?? 0, decimals)} ${symbol}`,
+            ]);
+            break;
+        }
+      });
+
+      business.push(kvData);
     }
   }
 
