@@ -16,11 +16,7 @@ import Links from "components/timeline/links";
 import dayjs from "dayjs";
 import Timeline from "components/timeline";
 import { getTimelineStatus } from "utils";
-import {
-  getFocusEditor,
-  getMentionList,
-  getOnReply,
-} from "utils/post";
+import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_TREASURY_PROPOSAL } from "utils/viewConstants";
@@ -169,7 +165,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       case "beneficiary":
         item[1] = (
           <Flex>
-            <User chain={chain} add={item[1]} fontSize={12} />
+            <User chain={chain} add={item[1]} fontSize={14} />
             <Links chain={chain} address={item[1]} style={{ marginLeft: 8 }} />
           </Flex>
         );
