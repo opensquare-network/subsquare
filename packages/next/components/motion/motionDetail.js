@@ -16,10 +16,8 @@ import Flex from "../styled/flex";
 import { shadow_100 } from "../../styles/componentCss";
 import ArticleContent from "../articleContent";
 import { isMotionCompleted } from "../../utils/viewfuncs";
-import Comments from "../comment";
-import Input from "../comment/input";
-import { TYPE_DEMOCRACY_EXTERNAL } from "../../utils/viewConstants";
 import { withLoginUserRedux } from "../../lib";
+import CapitalText from "../capitalText";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -111,10 +109,6 @@ const CommentsWrapper = styled.div`
     border-radius: 0;
   }
 `;
-
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
 
 function createMotionTimelineData(motion) {
   return (motion?.timeline || []).map((item) => {
@@ -241,11 +235,7 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
         [
           "Beneficiary",
           <Flex>
-            <User
-              chain={chain}
-              add={proposal.meta.beneficiary}
-              fontSize={14}
-            />
+            <User chain={chain} add={proposal.meta.beneficiary} fontSize={14} />
             <Links
               chain={chain}
               address={proposal.meta.beneficiary}
@@ -257,10 +247,7 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
           "Value",
           `${toPrecision(proposal.meta.value ?? 0, decimals)} ${symbol}`,
         ],
-        [
-          "Bond",
-          `${toPrecision(proposal.meta.bond ?? 0, decimals)} ${symbol}`,
-        ],
+        ["Bond", `${toPrecision(proposal.meta.bond ?? 0, decimals)} ${symbol}`],
       ]);
     }
 
@@ -280,13 +267,9 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
           case "proposer":
           case "beneficiary":
             kvData.push([
-              capitalizeFirstLetter(item[0]),
+              <CapitalText>{item[0]}</CapitalText>,
               <Flex>
-                <User
-                  chain={chain}
-                  add={item[1]}
-                  fontSize={14}
-                />
+                <User chain={chain} add={item[1]} fontSize={14} />
                 <Links
                   chain={chain}
                   address={item[1]}
@@ -298,7 +281,7 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
           case "value":
           case "bond":
             kvData.push([
-              capitalizeFirstLetter(item[0]),
+              <CapitalText>{item[0]}</CapitalText>,
               `${toPrecision(item[1] ?? 0, decimals)} ${symbol}`,
             ]);
             break;
