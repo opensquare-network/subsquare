@@ -9,7 +9,7 @@ import User from "components/user";
 import MotionProposal from "./motionProposal";
 import Links from "../timeline/links";
 import Timeline from "../timeline";
-import { getNode, toPrecision } from "utils";
+import { getNode, timeDurationFromNow, toPrecision } from "utils";
 import SectionTag from "components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
 import Flex from "../styled/flex";
@@ -99,16 +99,9 @@ const FlexWrapper = styled.div`
   flex-wrap: nowrap;
 `;
 
-const CommentsWrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 6px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-    border-radius: 0;
-  }
+const Info = styled.div`
+  font-size: 12px;
+  color: #506176;
 `;
 
 function createMotionTimelineData(motion) {
@@ -314,6 +307,14 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
               />
               {motion.isTreasury && <SectionTag name={"Treasury"} />}
               {motion.isDemocracy && <SectionTag name={"Democracy"} />}
+              {(motion.indexer?.blockTime || motion.createdAt) && (
+                <Info>
+                  Created{" "}
+                  {timeDurationFromNow(
+                    motion.indexer?.blockTime || motion.createdAt
+                  )}
+                </Info>
+              )}
             </DividerWrapper>
             {motion.state && <StatusWrapper>{motion.state}</StatusWrapper>}
           </FlexWrapper>
