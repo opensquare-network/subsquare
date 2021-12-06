@@ -39,6 +39,7 @@ export const toCouncilMotionListItem = (chain, item) => ({
   isTreasury:
     item?.onchainData?.treasuryProposals?.length > 0 ||
     item?.onchainData?.treasuryBounties?.length > 0,
+  isDemocracy: item?.onchainData?.isDemocracy,
   time: item?.updatedAt,
 });
 
