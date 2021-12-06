@@ -20,6 +20,7 @@ import Comments from "../comment";
 import Input from "../comment/input";
 import { TYPE_DEMOCRACY_EXTERNAL } from "../../utils/viewConstants";
 import { withLoginUserRedux } from "../../lib";
+import { useState } from "react";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -200,6 +201,7 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
   if (!node) {
     return null;
   }
+  const [post, setPost] = useState(motion);
   const decimals = node.decimals;
   const symbol = node.symbol;
 
@@ -234,11 +236,7 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
         [
           "Beneficiary",
           <Flex>
-            <User
-              chain={chain}
-              add={proposal.meta.beneficiary}
-              fontSize={14}
-            />
+            <User chain={chain} add={proposal.meta.beneficiary} fontSize={14} />
             <Links
               chain={chain}
               address={proposal.meta.beneficiary}
@@ -250,10 +248,7 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
           "Value",
           `${toPrecision(proposal.meta.value ?? 0, decimals)} ${symbol}`,
         ],
-        [
-          "Bond",
-          `${toPrecision(proposal.meta.bond ?? 0, decimals)} ${symbol}`,
-        ],
+        ["Bond", `${toPrecision(proposal.meta.bond ?? 0, decimals)} ${symbol}`],
       ]);
     }
   }
@@ -266,7 +261,7 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
             {motion?.motionIndex !== undefined && (
               <Index>{`#${motion.motionIndex}`}</Index>
             )}
-            <Title>{motion?.title}</Title>
+            <Title>{post?.title}</Title>
           </TitleWrapper>
           <FlexWrapper>
             <DividerWrapper>
@@ -282,7 +277,8 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
             {motion.state && <StatusWrapper>{motion.state}</StatusWrapper>}
           </FlexWrapper>
           <ArticleContent
-            data={motion}
+            post={post}
+            setPost={setPost}
             user={loginUser}
             onReply={onReply}
             type="motion"

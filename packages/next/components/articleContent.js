@@ -165,9 +165,15 @@ const Index = styled.div`
   line-height: 140%;
 `;
 
-export default function ArticleContent({ data, user, chain, onReply, type }) {
+export default function ArticleContent({
+  user,
+  post,
+  setPost,
+  chain,
+  onReply,
+  type,
+}) {
   const dispatch = useDispatch();
-  const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
