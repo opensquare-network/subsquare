@@ -261,7 +261,6 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
-  const [showThumbsUpList, setShowThumbsUpList] = useState(false);
   if (!post) {
     return null;
   }
@@ -439,7 +438,13 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             {post.status && <Tag name={post.status} />}
           </FlexWrapper>
           <Divider />
-          <ArticleContent data={data} user={user} type={type} />
+          <ArticleContent
+            post={post}
+            setPost={setPost}
+            user={user}
+            type={type}
+            onReply={onReply}
+          />
         </>
       )}
       {isEdit && (
