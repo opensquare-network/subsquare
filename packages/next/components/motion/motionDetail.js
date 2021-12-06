@@ -195,7 +195,7 @@ const getClosedTimelineData = (timeline = []) => {
   return [fd, ...notFoldItems];
 };
 
-export default withLoginUserRedux(({ loginUser, motion, chain }) => {
+export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
   const node = getNode(chain);
   if (!node) {
     return null;
@@ -281,7 +281,12 @@ export default withLoginUserRedux(({ loginUser, motion, chain }) => {
             </DividerWrapper>
             {motion.state && <StatusWrapper>{motion.state}</StatusWrapper>}
           </FlexWrapper>
-          <ArticleContent data={motion} user={loginUser} type="motion" />
+          <ArticleContent
+            data={motion}
+            user={loginUser}
+            onReply={onReply}
+            type="motion"
+          />
         </div>
       </Wrapper>
 
@@ -309,17 +314,6 @@ export default withLoginUserRedux(({ loginUser, motion, chain }) => {
       />
 
       <Timeline data={timelineData} chain={chain} indent={false} />
-
-      {motion?.external?.comments && (
-        <CommentsWrapper>
-          <Comments
-            data={motion?.external?.comments}
-            user={loginUser}
-            postId={motion?.external?._id}
-            chain={chain}
-          />
-        </CommentsWrapper>
-      )}
     </div>
   );
 });
