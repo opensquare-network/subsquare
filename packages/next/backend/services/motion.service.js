@@ -4,7 +4,11 @@ const { ContentType } = require("../constants");
 const { PostTitleLengthLimitation } = require("../constants");
 const { safeHtml } = require("../utils/post");
 const { toUserPublicInfo } = require("../utils/user");
-const { getMotionCollection: getChainMotionCollection } = require("../mongo/chain");
+const {
+  getMotionCollection: getChainMotionCollection,
+  getTreasuryProposalCollection: getChainTreasuryProposalCollection,
+  getBountyCollection: getChainBountyCollection,
+} = require("../mongo/chain");
 const {
   getDb: getCommonDb,
   getUserCollection,
@@ -250,8 +254,13 @@ async function getMotionById(postId) {
     throw new HttpError(404, "Post not found");
   }
 
+  const motionCol = await getMotionCollection();
+  const proposalCol = await getTreasuryProposalCollection();
+  const bountyCol = await getBountyCollection();
   const reactionCol = await getReactionCollection();
   const userCol = await getUserCollection();
+  const chainProposalCol = await getChainTreasuryProposalCollection();
+  const chainBountyCol = await getChainBountyCollection();
 
   let post = null;
   let reactions = null;
@@ -259,31 +268,41 @@ async function getMotionById(postId) {
   if (chainMotion.treasuryProposals?.length === 1 && chainMotion.treasuryBounties?.length === 0) {
     const proposalIndex = chainMotion.treasuryProposals[0].index;
 
-    const proposalCol = await getTreasuryProposalCollection();
     post = await proposalCol.findOne({ proposalIndex });
-
     reactions = await reactionCol.find({ treasuryProposal: post._id }).toArray();
 
   } else if (chainMotion.treasuryBounties?.length === 1 && chainMotion.treasuryProposals?.length === 0) {
     const bountyIndex = chainMotion.treasuryBounties[0].index;
 
-    const bountyCol = await getBountyCollection();
     post = await bountyCol.findOne({ bountyIndex });
-
     reactions = await reactionCol.find({ bounty: post._id }).toArray();
 
   } else {
     const motionIndex = chainMotion.index;
 
-    const motionCol = await getMotionCollection();
     post = await motionCol.findOne({ motionIndex });
-
     reactions = await reactionCol.find({ motion: post._id }).toArray();
   }
 
-  const [, author] = await Promise.all([
+  const [, author, chainProposals, chainBounties] = await Promise.all([
     lookupUser({ for: reactions, localField: "user" }),
     userCol.findOne({ [`${chain}Address`]: chainMotion.proposer }),
+    chainProposalCol
+      .find({
+        proposalIndex: {
+          $in: chainMotion.treasuryProposals.map(p => p.index)
+        }
+      })
+      .sort({"indexer.blockHeight": 1})
+      .toArray(),
+    chainBountyCol
+      .find({
+        bountyIndex: {
+          $in: chainMotion.treasuryBounties.map(p => p.index)
+        }
+      })
+      .sort({"indexer.blockHeight": 1})
+      .toArray(),
   ]);
 
   return {
@@ -300,6 +319,8 @@ async function getMotionById(postId) {
     onchainData: {
       ...chainMotion,
       author,
+      treasuryProposals: chainProposals,
+      treasuryBounties: chainBounties,
     },
   };
 }
