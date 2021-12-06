@@ -92,6 +92,7 @@ async function updatePost(postId, title, content, contentType, author) {
     throw new HttpError(404, "Post does not exists");
   }
 
+  const postObjId = post._id;
   const now = new Date();
 
   const result = await postCol.updateOne(
