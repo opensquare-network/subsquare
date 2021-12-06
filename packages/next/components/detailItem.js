@@ -3,29 +3,20 @@ import { useState } from "react";
 import Link from "next/link";
 
 import { timeDurationFromNow } from "utils";
-import Markdown from "components/markdown";
-import HtmlRender from "./post/htmlRender";
-import Actions from "components/actions";
 import PostEdit from "components/post/postEdit";
 import nextApi from "services/nextApi";
 import { addToast } from "store/reducers/toastSlice";
 import User from "components/user";
 import { useDispatch } from "react-redux";
-import EditIcon from "../public/imgs/icons/edit.svg";
 import TriangleRight from "../public/imgs/icons/arrow-triangle-right.svg";
 import Tag from "./tag";
 import Flex from "./styled/flex";
 import { shadow_100 } from "../styles/componentCss";
 import { toApiType } from "utils/viewfuncs";
 import {
-  TYPE_POST,
-  TYPE_MOTION,
   TYPE_DEMOCRACY_REFERENDUM,
   TYPE_DEMOCRACY_EXTERNAL,
   TYPE_DEMOCRACY_PROPOSAL,
-  TYPE_TREASURY_PROPOSAL,
-  TYPE_TREASURY_BOUNTY,
-  TYPE_TREASURY_TIP,
 } from "utils/viewConstants";
 import ArticleContent from "./articleContent";
 
@@ -93,12 +84,6 @@ const TitleWrapper = styled.div`
       margin: 0 8px;
     }
   }
-`;
-
-const Divider = styled.div`
-  height: 1px;
-  background: #ebeef4;
-  margin: 16px 0;
 `;
 
 const FlexWrapper = styled(Flex)`
@@ -437,7 +422,6 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             </DividerWrapper>
             {post.status && <Tag name={post.status} />}
           </FlexWrapper>
-          <Divider />
           <ArticleContent
             post={post}
             setPost={setPost}
