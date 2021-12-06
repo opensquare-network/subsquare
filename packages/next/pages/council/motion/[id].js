@@ -67,6 +67,7 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
           user={loginUser}
           chain={chain}
           type={TYPE_MOTION}
+          onReply={onReply}
         />
         <CommentsWrapper>
           <Comments

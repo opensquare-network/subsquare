@@ -31,6 +31,9 @@ export function getOnReply(
   focusEditor
 ) {
   return (username) => {
+    if (!username) {
+      return focusEditor();
+    }
     let reply = "";
     if (contentType === "markdown") {
       reply = `[@${username}](/member/${username}) `;
