@@ -190,7 +190,7 @@ async function loadPostForMotions(chainMotions) {
   ]);
 
   return chainMotions.map((motion) => {
-    const post = motion.treasuryProposalPost ?? motion.bountyPost ?? motion.motionPost;
+    const post = {...(motion.treasuryProposalPost ?? motion.bountyPost ?? motion.motionPost)};
     motion.treasuryProposalPost = undefined;
     motion.bountyPost = undefined;
     motion.motionPost = undefined;
