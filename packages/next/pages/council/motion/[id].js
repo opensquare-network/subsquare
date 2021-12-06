@@ -84,7 +84,7 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
               ref={editorWrapperRef}
               setQuillRef={setQuillRef}
               {...{ contentType, setContentType, content, setContent, users }}
-              type={TYPE_POST}
+              type={TYPE_MOTION}
             />
           )}
         </CommentsWrapper>
