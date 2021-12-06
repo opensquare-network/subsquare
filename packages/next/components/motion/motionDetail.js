@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-key */
 import styled from "styled-components";
 import KVList from "components/kvList";
+import MultiKVList from "components/multiKVList";
 import Link from "next/link";
 import dayjs from "dayjs";
 
@@ -202,8 +203,6 @@ export default withLoginUserRedux(({ loginUser, motion, chain }) => {
   const decimals = node.decimals;
   const symbol = node.symbol;
 
-  const treasuryProposalMeta = motion.treasuryProposal?.meta;
-
   const timeline = createMotionTimelineData(motion.onchainData);
 
   let timelineData;
@@ -222,38 +221,41 @@ export default withLoginUserRedux(({ loginUser, motion, chain }) => {
     business = createMotionBusinessData(motion, chain);
   }
 
-  if (treasuryProposalMeta) {
-    business = [
-      [
-        "Link to",
-        <Link
-          href={`/treasury/proposal/${motion.treasuryProposalIndex}`}
-        >{`Treasury Proposal #${motion.treasuryProposalIndex}`}</Link>,
-      ],
-      [
-        "Beneficiary",
-        <Flex>
-          <User
-            chain={chain}
-            add={treasuryProposalMeta.beneficiary}
-            fontSize={14}
-          />
-          <Links
-            chain={chain}
-            address={treasuryProposalMeta.beneficiary}
-            style={{ marginLeft: 8 }}
-          />
-        </Flex>,
-      ],
-      [
-        "Value",
-        `${toPrecision(treasuryProposalMeta.value ?? 0, decimals)} ${symbol}`,
-      ],
-      [
-        "Bond",
-        `${toPrecision(treasuryProposalMeta.bond ?? 0, decimals)} ${symbol}`,
-      ],
-    ];
+  if (motion.onchainData.treasuryProposals?.length > 0) {
+    business = [];
+    for (const proposal of motion.onchainData.treasuryProposals) {
+      business.push([
+        [
+          "Link to",
+          <Link
+            href={`/treasury/proposal/${proposal.proposalIndex}`}
+          >{`Treasury Proposal #${proposal.proposalIndex}`}</Link>,
+        ],
+        [
+          "Beneficiary",
+          <Flex>
+            <User
+              chain={chain}
+              add={proposal.meta.beneficiary}
+              fontSize={14}
+            />
+            <Links
+              chain={chain}
+              address={proposal.meta.beneficiary}
+              style={{ marginLeft: 8 }}
+            />
+          </Flex>,
+        ],
+        [
+          "Value",
+          `${toPrecision(proposal.meta.value ?? 0, decimals)} ${symbol}`,
+        ],
+        [
+          "Bond",
+          `${toPrecision(proposal.meta.bond ?? 0, decimals)} ${symbol}`,
+        ],
+      ]);
+    }
   }
 
   return (
@@ -283,7 +285,7 @@ export default withLoginUserRedux(({ loginUser, motion, chain }) => {
         </div>
       </Wrapper>
 
-      <KVList title="Business" data={business} />
+      <MultiKVList title="Business" data={business} />
 
       <KVList
         title={"Metadata"}
