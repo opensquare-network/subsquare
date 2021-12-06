@@ -122,8 +122,8 @@ function Input(
       } else {
         setShowPreview(false);
         setContent("");
-        await router.replace(`/${type}/[id]`, {
-          pathname: `/${type}/${router.query.id}`,
+        await router.replace(`[id]`, {
+          pathname: `${router.query.id}`,
         });
         setTimeout(() => {
           window && window.scrollTo(0, document.body.scrollHeight);
@@ -136,13 +136,10 @@ function Input(
 
   const updateComment = async () => {
     setLoading(true);
-    const { result, error } = await nextApi.patch(
-      `comments/${commentId}`,
-      {
-        content,
-        contentType,
-      }
-    );
+    const { result, error } = await nextApi.patch(`comments/${commentId}`, {
+      content,
+      contentType,
+    });
     setLoading(false);
     if (error) {
       setErrors(error);
@@ -189,7 +186,12 @@ function Input(
         )}
         {!showPreview && (
           <InputSwitch>
-            <img src="/imgs/icons/markdown-mark.svg" alt="" width={26} height={16} />
+            <img
+              src="/imgs/icons/markdown-mark.svg"
+              alt=""
+              width={26}
+              height={16}
+            />
             <Toggle
               size="small"
               isOn={contentType === "markdown"}
