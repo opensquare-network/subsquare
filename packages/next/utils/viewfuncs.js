@@ -37,11 +37,8 @@ export const toCouncilMotionListItem = (chain, item) => ({
   status: item.state ?? "Unknown",
   detailLink: `/council/motion/${item.motionIndex}`,
   isTreasury:
-    (
-      item.onchainData.treasuryProposals ||
-      item.onchainData.treasuryBounties ||
-      []
-    ).length > 0,
+    item?.onchainData?.treasuryProposals?.length > 0 ||
+    item?.onchainData?.treasuryBounties?.length > 0,
   time: item?.updatedAt,
 });
 
