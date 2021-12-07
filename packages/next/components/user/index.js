@@ -46,6 +46,8 @@ const DeleteAccount = styled(Flex)`
 `;
 
 const LinkWrapper = styled.a`
+  color: #1e2134 !important;
+  text-decoration-color: #1e2134 !important;
   display: block;
   :hover {
     text-decoration: underline;

@@ -143,6 +143,12 @@ const HeadWrapper = styled.div`
   }
 `;
 
+const Method = styled.span`
+  font-size: 12px;
+  font-weight: 400 !important;
+  color: #9da9bb !important;
+`;
+
 export default function Post({ data, chain, href }) {
   const node = getNode(chain);
   if (!node) {
@@ -150,7 +156,7 @@ export default function Post({ data, chain, href }) {
   }
   const decimals = node.decimals;
   const symbol = node.symbol;
-
+  const method = data?.onchainData?.proposal?.method;
   return (
     <Wrapper>
       <HeadWrapper>
@@ -167,6 +173,7 @@ export default function Post({ data, chain, href }) {
             <span className="symbol">{symbol}</span>
           </span>
         )}
+        {method && <Method>{method}</Method>}
       </HeadWrapper>
 
       <Divider />

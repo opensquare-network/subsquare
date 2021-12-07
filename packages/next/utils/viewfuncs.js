@@ -28,15 +28,19 @@ export const toDiscussionListItem = (chain, item) => ({
 
 export const toCouncilMotionListItem = (chain, item) => ({
   ...item,
-  title: `${item.proposal.section}.${item.proposal.method}`,
+  index: item.motionIndex,
+  title: `${item?.title}`,
   author: item.author ?? {
     username: addressEllipsis(item.proposer),
     addresses: [{ chain, address: item.proposer }],
   },
-  status: item.state?.state ?? "Unknown",
-  detailLink: `/council/motion/${item.index}`,
+  status: item.state ?? "Unknown",
+  detailLink: `/council/motion/${item.motionIndex}`,
   isTreasury:
-    (item.treasuryProposals || item.treasuryBounties || []).length > 0,
+    item?.onchainData?.treasuryProposals?.length > 0 ||
+    item?.onchainData?.treasuryBounties?.length > 0,
+  isDemocracy: item?.onchainData?.isDemocracy,
+  time: item?.updatedAt,
 });
 
 function getTechCommMotionId(motion) {
@@ -204,3 +208,22 @@ export function toApiType(type) {
   }
   return `${type}s`;
 }
+
+export const isMotionCompleted = (motion) => {
+  if (motion?.state?.state !== "Executed") {
+    return false;
+  }
+  if (!motion.proposalHash) {
+    return false;
+  }
+  const ok = motion.state.data.some((data) =>
+    Object.keys(data).some((rawData) => rawData === "ok")
+  );
+  if (!ok) {
+    return false;
+  }
+  const error = motion.state.data.some((data) =>
+    Object.keys(data).some((rawData) => rawData === "error")
+  );
+  return !error;
+};

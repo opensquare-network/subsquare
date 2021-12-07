@@ -3,30 +3,22 @@ import { useState } from "react";
 import Link from "next/link";
 
 import { timeDurationFromNow } from "utils";
-import Markdown from "components/markdown";
-import HtmlRender from "./post/htmlRender";
-import Actions from "components/actions";
 import PostEdit from "components/post/postEdit";
 import nextApi from "services/nextApi";
 import { addToast } from "store/reducers/toastSlice";
 import User from "components/user";
 import { useDispatch } from "react-redux";
-import EditIcon from "../public/imgs/icons/edit.svg";
 import TriangleRight from "../public/imgs/icons/arrow-triangle-right.svg";
 import Tag from "./tag";
 import Flex from "./styled/flex";
 import { shadow_100 } from "../styles/componentCss";
 import { toApiType } from "utils/viewfuncs";
 import {
-  TYPE_POST,
-  TYPE_MOTION,
   TYPE_DEMOCRACY_REFERENDUM,
   TYPE_DEMOCRACY_EXTERNAL,
   TYPE_DEMOCRACY_PROPOSAL,
-  TYPE_TREASURY_PROPOSAL,
-  TYPE_TREASURY_BOUNTY,
-  TYPE_TREASURY_TIP,
 } from "utils/viewConstants";
+import ArticleContent from "./articleContent";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -92,12 +84,6 @@ const TitleWrapper = styled.div`
       margin: 0 8px;
     }
   }
-`;
-
-const Divider = styled.div`
-  height: 1px;
-  background: #ebeef4;
-  margin: 16px 0;
 `;
 
 const FlexWrapper = styled(Flex)`
@@ -260,7 +246,6 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
-  const [showThumbsUpList, setShowThumbsUpList] = useState(false);
   if (!post) {
     return null;
   }
@@ -437,71 +422,13 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             </DividerWrapper>
             {post.status && <Tag name={post.status} />}
           </FlexWrapper>
-          <Divider />
-          {post.content === "" && (
-            <PlaceHolder>
-              {`The ${type} has not been edited by creator.`}
-              {ownPost && (
-                <Edit
-                  onClick={() => {
-                    setIsEdit(true);
-                  }}
-                >
-                  <EditIcon />
-                  Edit
-                </Edit>
-              )}
-            </PlaceHolder>
-          )}
-          {post.content === "" && (
-            <GreyWrapper>
-              <span style={{ marginRight: 12 }}>Who can edit?</span>
-              {(post.onchainData?.authors || []).map((author) => (
-                <GreyItem key={author}>
-                  <User
-                    add={author}
-                    chain={chain}
-                    showAvatar={false}
-                    fontSize={12}
-                  />
-                </GreyItem>
-              ))}
-            </GreyWrapper>
-          )}
-          {post.contentType === "markdown" && (
-            <Markdown md={post.content} contentVersion={post.contentVersion} />
-          )}
-          {post.contentType === "html" && <HtmlRender html={post.content} />}
-          {post.createdAt !== post.updatedAt && (
-            <EditedLabel>Edited</EditedLabel>
-          )}
-          <Actions
-            highlight={isLoggedIn && thumbUp}
-            noHover={!isLoggedIn || ownPost}
-            edit={ownPost}
-            setIsEdit={setIsEdit}
-            toggleThumbUp={toggleThumbUp}
-            count={post.reactions?.length}
-            showThumbsUpList={showThumbsUpList}
-            setShowThumbsUpList={setShowThumbsUpList}
+          <ArticleContent
+            post={post}
+            setPost={setPost}
+            user={user}
+            type={type}
             onReply={onReply}
           />
-          {showThumbsUpList && post.reactions?.length > 0 && (
-            <GreyWrapper style={{ marginTop: 10 }}>
-              {post.reactions
-                .filter((r) => r.user)
-                .map((r, index) => (
-                  <GreyItem key={index}>
-                    <User
-                      user={r.user}
-                      fontSize={12}
-                      chain={chain}
-                      showAvatar={false}
-                    />
-                  </GreyItem>
-                ))}
-            </GreyWrapper>
-          )}
         </>
       )}
       {isEdit && (
