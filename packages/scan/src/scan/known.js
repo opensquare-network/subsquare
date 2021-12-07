@@ -17,8 +17,9 @@ async function scanKnownHeights() {
         await scanNormalizedBlock(block.block, block.events);
         await updateScanHeight(block.height);
       } catch (e) {
-        await sleep(0);
         logger.error(`Error with block scan ${block?.height}`, e);
+        console.error(`Error with block scan ${block?.height}`, e);
+        process.exit(1);
       }
     }
 

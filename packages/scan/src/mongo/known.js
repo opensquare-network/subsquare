@@ -45,7 +45,8 @@ async function getHeightCollection() {
 }
 
 async function getNextKnownHeights(beginHeight) {
-  const step = parseInt(process.env.SCAN_STEP) || 100;
+  // const step = parseInt(process.env.SCAN_STEP) || 100;
+  const step = 1;
   const col = await getHeightCollection();
   const records = await col
     .find({
