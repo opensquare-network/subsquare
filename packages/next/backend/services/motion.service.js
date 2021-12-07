@@ -41,22 +41,27 @@ async function findMotion(postId) {
   }
 
   const chainMotionCol = await getChainMotionCollection();
-  const chainMotion = await chainMotionCol.findOne(q);
-  return chainMotion;
+  return await chainMotionCol.findOne(q);
 }
 
 async function findMotionPost(chainMotion) {
-  let postCol = null;
-  let post = null;
-  let postType = null;
+  let postCol;
+  let post;
+  let postType;
 
-  if (chainMotion.treasuryBounties?.length === 0 && chainMotion.treasuryProposals?.length === 1) {
+  if (
+    chainMotion.treasuryBounties?.length === 0 &&
+    chainMotion.treasuryProposals?.length === 1
+  ) {
     const proposalIndex = chainMotion.treasuryProposals[0].index;
 
     postCol = await getTreasuryProposalCollection();
     post = await postCol.findOne({ proposalIndex });
     postType = "treasuryProposal";
-  } else if (chainMotion.treasuryBounties?.length === 1 && chainMotion.treasuryProposals?.length === 0) {
+  } else if (
+    chainMotion.treasuryBounties?.length === 1 &&
+    chainMotion.treasuryProposals?.length === 0
+  ) {
     const bountyIndex = chainMotion.treasuryBounties[0].index;
 
     postCol = await getBountyCollection();
@@ -123,9 +128,15 @@ async function updatePost(postId, title, content, contentType, author) {
 async function loadPostForMotions(chainMotions) {
   const chain = process.env.CHAIN;
   for (const motion of chainMotions) {
-    if (motion.treasuryProposals?.length === 1 && motion.treasuryBounties?.length === 0) {
+    if (
+      motion.treasuryProposals?.length === 1 &&
+      motion.treasuryBounties?.length === 0
+    ) {
       motion.treasuryProposalPost = motion.treasuryProposals[0].index;
-    } else if (motion.treasuryBounties?.length === 1 && motion.treasuryProposals?.length === 0) {
+    } else if (
+      motion.treasuryBounties?.length === 1 &&
+      motion.treasuryProposals?.length === 0
+    ) {
       motion.bountyPost = motion.treasuryBounties[0].index;
     }
   }
@@ -133,37 +144,39 @@ async function loadPostForMotions(chainMotions) {
   const commonDb = await getCommonDb();
   const businessDb = await getBusinessDb();
 
-  const [, treasuryProposalPosts, bountyPosts, motionPosts] = await Promise.all([
-    commonDb.lookupOne({
-      from: "user",
-      for: chainMotions,
-      as: "author",
-      localField: "proposer",
-      foreignField: `${chain}Address`,
-      map: toUserPublicInfo,
-    }),
-    businessDb.lookupOne({
-      from: "treasuryProposal",
-      for: chainMotions,
-      as: "treasuryProposalPost",
-      localField: "treasuryProposalPost",
-      foreignField: "proposalIndex",
-    }),
-    businessDb.lookupOne({
-      from: "bounty",
-      for: chainMotions,
-      as: "bountyPost",
-      localField: "bountyPost",
-      foreignField: "bountyIndex",
-    }),
-    businessDb.lookupOne({
-      from: "motion",
-      for: chainMotions,
-      as: "motionPost",
-      localField: "index",
-      foreignField: "motionIndex",
-    }),
-  ]);
+  const [, treasuryProposalPosts, bountyPosts, motionPosts] = await Promise.all(
+    [
+      commonDb.lookupOne({
+        from: "user",
+        for: chainMotions,
+        as: "author",
+        localField: "proposer",
+        foreignField: `${chain}Address`,
+        map: toUserPublicInfo,
+      }),
+      businessDb.lookupOne({
+        from: "treasuryProposal",
+        for: chainMotions,
+        as: "treasuryProposalPost",
+        localField: "treasuryProposalPost",
+        foreignField: "proposalIndex",
+      }),
+      businessDb.lookupOne({
+        from: "bounty",
+        for: chainMotions,
+        as: "bountyPost",
+        localField: "bountyPost",
+        foreignField: "bountyIndex",
+      }),
+      businessDb.lookupOne({
+        from: "motion",
+        for: chainMotions,
+        as: "motionPost",
+        localField: "index",
+        foreignField: "motionIndex",
+      }),
+    ]
+  );
 
   await Promise.all([
     businessDb.lookupCount({
@@ -190,7 +203,11 @@ async function loadPostForMotions(chainMotions) {
   ]);
 
   return chainMotions.map((motion) => {
-    const post = {...(motion.treasuryProposalPost ?? motion.bountyPost ?? motion.motionPost)};
+    const post = {
+      ...(motion.treasuryProposalPost ??
+        motion.bountyPost ??
+        motion.motionPost),
+    };
     motion.treasuryProposalPost = undefined;
     motion.bountyPost = undefined;
     motion.motionPost = undefined;
@@ -209,9 +226,9 @@ async function loadPostForMotions(chainMotions) {
 
 async function getActiveMotionsOverview() {
   const motionCol = await getChainMotionCollection();
-  const motions = await motionCol.find(
-    {
-      "state.state": { $nin: ["Approved", "Disapproved", "Executed"] }
+  const motions = await motionCol
+    .find({
+      "state.state": { $nin: ["Approved", "Disapproved", "Executed"] },
     })
     .sort({ "indexer.blockHeight": -1 })
     .limit(3)
@@ -262,21 +279,27 @@ async function getMotionById(postId) {
   const chainProposalCol = await getChainTreasuryProposalCollection();
   const chainBountyCol = await getChainBountyCollection();
 
-  let post = null;
-  let reactions = null;
+  let post;
+  let reactions;
 
-  if (chainMotion.treasuryProposals?.length === 1 && chainMotion.treasuryBounties?.length === 0) {
+  if (
+    chainMotion.treasuryProposals?.length === 1 &&
+    chainMotion.treasuryBounties?.length === 0
+  ) {
     const proposalIndex = chainMotion.treasuryProposals[0].index;
 
     post = await proposalCol.findOne({ proposalIndex });
-    reactions = await reactionCol.find({ treasuryProposal: post._id }).toArray();
-
-  } else if (chainMotion.treasuryBounties?.length === 1 && chainMotion.treasuryProposals?.length === 0) {
+    reactions = await reactionCol
+      .find({ treasuryProposal: post._id })
+      .toArray();
+  } else if (
+    chainMotion.treasuryBounties?.length === 1 &&
+    chainMotion.treasuryProposals?.length === 0
+  ) {
     const bountyIndex = chainMotion.treasuryBounties[0].index;
 
     post = await bountyCol.findOne({ bountyIndex });
     reactions = await reactionCol.find({ bounty: post._id }).toArray();
-
   } else {
     const motionIndex = chainMotion.index;
 
@@ -290,18 +313,18 @@ async function getMotionById(postId) {
     chainProposalCol
       .find({
         proposalIndex: {
-          $in: chainMotion.treasuryProposals.map(p => p.index)
-        }
+          $in: chainMotion.treasuryProposals.map((p) => p.index),
+        },
       })
-      .sort({"indexer.blockHeight": 1})
+      .sort({ "indexer.blockHeight": 1 })
       .toArray(),
     chainBountyCol
       .find({
         bountyIndex: {
-          $in: chainMotion.treasuryBounties.map(p => p.index)
-        }
+          $in: chainMotion.treasuryBounties.map((p) => p.index),
+        },
       })
-      .sort({"indexer.blockHeight": 1})
+      .sort({ "indexer.blockHeight": 1 })
       .toArray(),
   ]);
 
@@ -327,7 +350,7 @@ async function getMotionById(postId) {
 
 async function processPostThumbsUpNotification(post, postType, reactionUser) {
   const userCol = await getUserCollection();
-  const postAuthor = await userCol.findOne({_id: post.author});
+  const postAuthor = await userCol.findOne({ _id: post.author });
 
   if (!postAuthor) {
     return;
@@ -431,11 +454,13 @@ async function processCommentMentions({
   }
 
   const userCol = await getUserCollection();
-  const users = await userCol.find({
-    username: {
-      $in: Array.from(mentions),
-    },
-  }).toArray();
+  const users = await userCol
+    .find({
+      username: {
+        $in: Array.from(mentions),
+      },
+    })
+    .toArray();
 
   for (const user of users) {
     if (user.emailVerified && (user.notification?.mention ?? true)) {
@@ -453,12 +478,7 @@ async function processCommentMentions({
   }
 }
 
-async function postComment(
-  postId,
-  content,
-  contentType,
-  author,
-) {
+async function postComment(postId, content, contentType, author) {
   const chainMotion = await findMotion(postId);
   if (!chainMotion) {
     throw new HttpError(404, "Motion does not found");
@@ -502,9 +522,9 @@ async function postComment(
     { _id: postObjId },
     {
       $set: {
-        lastActivityAt: new Date()
-      }
-    },
+        lastActivityAt: new Date(),
+      },
+    }
   );
 
   if (!updatePostResult.acknowledged) {
@@ -523,7 +543,10 @@ async function postComment(
   }).catch(console.error);
 
   if (post.author && !author._id.equals(post.author._id)) {
-    if (post.author.emailVerified && (post.author.notification?.reply ?? true)) {
+    if (
+      post.author.emailVerified &&
+      (post.author.notification?.reply ?? true)
+    ) {
       mailService.sendReplyEmail({
         email: post.author.email,
         replyToUser: post.author.username,
@@ -547,7 +570,7 @@ async function getComments(postId, page, pageSize) {
   }
 
   const [, post, postType] = await findMotionPost(chainMotion);
-  const q = { [postType]: post._id }
+  const q = { [postType]: post._id };
 
   const commentCol = await getCommentCollection();
   const total = await commentCol.count(q);
@@ -557,7 +580,8 @@ async function getComments(postId, page, pageSize) {
     page = Math.max(totalPages, 1);
   }
 
-  const comments = await commentCol.find(q)
+  const comments = await commentCol
+    .find(q)
     .sort({ createdAt: 1 })
     .skip((page - 1) * pageSize)
     .limit(pageSize)
@@ -585,7 +609,7 @@ async function getComments(postId, page, pageSize) {
   };
 }
 
-module.exports =  {
+module.exports = {
   updatePost,
   getMotionsByChain,
   getMotionById,

@@ -6,7 +6,7 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import Layout from "components/layout";
 import MotionDetail from "components/motion/motionDetail";
 import { to404 } from "utils/serverSideUtil";
-import { TYPE_MOTION, TYPE_POST } from "utils/viewConstants";
+import { TYPE_MOTION } from "utils/viewConstants";
 import { isMotionCompleted } from "../../../utils/viewfuncs";
 import { EmptyList } from "../../../utils/constants";
 import Comments from "../../../components/comment";
