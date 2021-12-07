@@ -36,6 +36,7 @@ async function handleEventWithExtrinsic(
     extrinsicIndex,
   };
 
+  await handlePreImageEvent(event, extrinsic, indexer, blockEvents);
   await handleDemocracyPublicProposalEvent(
     event,
     extrinsic,
@@ -53,7 +54,6 @@ async function handleEventWithExtrinsic(
   );
   await handleTechCommMotionEvent(event, extrinsic, indexer, blockEvents);
   await handleDemocracyExternalEvent(event, extrinsic, indexer, blockEvents);
-  await handlePreImageEvent(event, extrinsic, indexer, blockEvents);
 }
 
 async function handleEventWithoutExtrinsic(
