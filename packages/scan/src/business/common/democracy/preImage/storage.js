@@ -1,3 +1,4 @@
+const { busLogger } = require("../../../../logger");
 const { findBlockApi } = require("../../../../chain/specs");
 const { findRegistry } = require("../../../../chain/specs");
 const { normalizeCall } = require("../../motion/utils");
@@ -14,12 +15,14 @@ async function getPreImageFromStorage(hash, indexer) {
   const registry = await findRegistry(indexer);
   try {
     const call = registry.createType("Proposal", hexToU8a(availableImage.data));
+    busLogger.info(`new valid preimage detected at ${indexer.blockHeight}`);
     return {
       ...availableImage,
       imageValid: true,
       call: normalizeCall(call),
     };
   } catch (e) {
+    busLogger.info(`invalid preimage detected at ${indexer.blockHeight}`);
     return {
       ...availableImage,
       imageValid: false,
