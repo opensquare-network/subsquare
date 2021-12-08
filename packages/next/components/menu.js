@@ -12,6 +12,7 @@ import AddressIcon from "../public/imgs/icons/address.svg";
 import BellIcon from "../public/imgs/icons/bell.svg";
 import MembersIcon from "../public/imgs/icons/members.svg";
 import BountyIcon from "../public/imgs/icons/bounties.svg";
+import Link from "next/link";
 
 const Wrapper = styled.div`
   padding-top: 37px;
@@ -92,38 +93,39 @@ export default function Menu({ menu }) {
   iconMap.set("councilMembers", <MembersIcon />);
   iconMap.set("techCommMembers", <MembersIcon />);
 
+  function getHref(pathname) {
+    let href = "";
+    if (pathname.startsWith("/[chain]")) {
+      let currChain = router.query.chain;
+      if (!currChain) {
+        currChain = localStorage.getItem("chain") || "karura";
+      }
+      href = `${pathname}?chain=${currChain}`;
+    } else {
+      href = pathname;
+    }
+    return href;
+  }
+
   return (
     <Wrapper>
       {menu.map((item, index) => (
         <div key={index}>
           {item.name && <Title>{item.name}</Title>}
           {item.items.map((item, index) => (
-            <Item
-              key={index}
-              active={
-                router.pathname === item.pathname ||
-                (router.pathname === "/[chain]" && item.pathname === "/")
-              }
-              onClick={() => {
-                if (item.pathname) {
-                  if (item.pathname.startsWith("/[chain]")) {
-                    let currChain = router.query.chain;
-                    if (!currChain) {
-                      currChain = localStorage.getItem("chain") || "karura";
-                    }
-                    router.push({
-                      pathname: item.pathname,
-                      query: { chain: currChain },
-                    });
-                  } else {
-                    router.push(item.pathname);
+            <Link href={getHref(item?.pathname)} key={index}>
+              <a>
+                <Item
+                  active={
+                    router.pathname === item.pathname ||
+                    (router.pathname === "/[chain]" && item.pathname === "/")
                   }
-                }
-              }}
-            >
-              {iconMap.get(item.value)}
-              <div>{item.name}</div>
-            </Item>
+                >
+                  {iconMap.get(item.value)}
+                  <div>{item.name}</div>
+                </Item>
+              </a>
+            </Link>
           ))}
         </div>
       ))}
