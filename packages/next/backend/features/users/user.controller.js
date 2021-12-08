@@ -1,9 +1,9 @@
 const { ObjectId } = require("mongodb");
 const { randomBytes } = require("crypto");
 const argon2 = require("argon2");
-const validator = require("validator");
 const {
-  getUserCollection, getAttemptCollection,
+  getUserCollection,
+  getAttemptCollection,
 } = require("../../mongo/common");
 const { HttpError } = require("../../exc");
 const mailService = require("../../services/mail.service");
@@ -203,10 +203,7 @@ async function linkAddressConfirm(ctx) {
   }
 
   if (user[addressName]) {
-    throw new HttpError(
-      400,
-      `Only 1 ${chain} address is allow to be linked.`
-    );
+    throw new HttpError(400, `Only 1 ${chain} address is allow to be linked.`);
   }
 
   const userCol = await getUserCollection();
@@ -326,4 +323,4 @@ module.exports = {
   unlinkAddress,
   setUserNotification,
   setUserPreference,
-}
+};
