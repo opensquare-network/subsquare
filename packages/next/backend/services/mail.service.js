@@ -7,7 +7,7 @@ class MailService {
   async sendResetPasswordEmail({ username, email, token }) {
     const text = templates.resetPassword({
       username,
-      email,
+      email: encodeURIComponent(email),
       token,
       siteUrl: process.env.SITE_URL,
     });
@@ -23,7 +23,7 @@ class MailService {
       await aliMail.sendMail(msg);
       return true;
     } catch (e) {
-      console.error("sendResetPasswordEmail", e)
+      console.error("sendResetPasswordEmail", e);
       return false;
     }
   }
@@ -31,7 +31,7 @@ class MailService {
   async sendVerificationEmail({ username, email, token }) {
     const text = templates.emailVerification({
       username,
-      email,
+      email: encodeURIComponent(email),
       token,
       siteUrl: process.env.SITE_URL,
     });
@@ -47,7 +47,7 @@ class MailService {
       await aliMail.sendMail(msg);
       return true;
     } catch (e) {
-      console.error("sendVerificationEmail", e)
+      console.error("sendVerificationEmail", e);
       return false;
     }
   }
@@ -70,7 +70,8 @@ class MailService {
       postUid,
       commentHeight,
       reactionUser,
-      page, pageSize,
+      page,
+      pageSize,
       siteUrl: process.env.SITE_URL,
     });
 
@@ -81,9 +82,9 @@ class MailService {
       to: email,
     };
 
-    aliMail.sendMail(msg).catch((e) =>
-      console.error("Comment thumbs up email not sent", e)
-    );
+    aliMail
+      .sendMail(msg)
+      .catch((e) => console.error("Comment thumbs up email not sent", e));
   }
 
   sendPostThumbsupEmail({
@@ -108,9 +109,9 @@ class MailService {
       to: email,
     };
 
-    aliMail.sendMail(msg).catch((e) =>
-      console.error("Post thumbs up email not sent", e)
-    );
+    aliMail
+      .sendMail(msg)
+      .catch((e) => console.error("Post thumbs up email not sent", e));
   }
 
   sendReplyEmail({
@@ -131,7 +132,8 @@ class MailService {
       postType,
       postUid,
       commentHeight,
-      page, pageSize,
+      page,
+      pageSize,
       siteUrl: process.env.SITE_URL,
     });
 
@@ -142,9 +144,9 @@ class MailService {
       to: email,
     };
 
-    aliMail.sendMail(msg).catch((e) =>
-      console.error("Reply Email not sent", e)
-    );
+    aliMail
+      .sendMail(msg)
+      .catch((e) => console.error("Reply Email not sent", e));
   }
 
   sendCommentMentionEmail({
@@ -165,7 +167,8 @@ class MailService {
       postType,
       postUid,
       commentHeight,
-      page, pageSize,
+      page,
+      pageSize,
       siteUrl: process.env.SITE_URL,
     });
 
@@ -176,11 +179,10 @@ class MailService {
       to: email,
     };
 
-    aliMail.sendMail(msg).catch((e) =>
-      console.error("Comment metion Email not sent", e)
-    );
+    aliMail
+      .sendMail(msg)
+      .catch((e) => console.error("Comment metion Email not sent", e));
   }
-
 }
 
 module.exports = new MailService();
