@@ -10,6 +10,7 @@ import NodeSwitch from "components/nodeSwitch";
 import { useRouter } from "next/router";
 import Flex from "../styled/flex";
 import { shadow_100 } from "../../styles/componentCss";
+import Link from "next/link";
 
 const Wrapper = styled.header`
   padding-left: 32px;
@@ -115,13 +116,11 @@ export default function Header({ user, left, chain, isWeb3Login }) {
                 />
               </MenuButton>
             )}
-            <LogoImg
-              src="/imgs/logo.svg"
-              alt=""
-              onClick={() => {
-                router.push("/");
-              }}
-            />
+            <Link href="/">
+              <a>
+                <LogoImg src="/imgs/logo.svg" alt="" />
+              </a>
+            </Link>
             <NodeButton
               onClick={() => {
                 setPosition("right");
