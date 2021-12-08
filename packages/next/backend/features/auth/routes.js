@@ -1,6 +1,5 @@
 const Router = require("koa-router");
 const authController = require("./auth.controller");
-const { SupportChains } = require("../../constants");
 
 const router = new Router();
 
@@ -13,10 +12,7 @@ router.post("/auth/verify", authController.verify);
 router.post("/auth/forget", authController.forgetPassword);
 router.post("/auth/reset", authController.resetPassword);
 
-router.get(
-  `/auth/login/:address`,
-  authController.addressLoginStart
-);
+router.get(`/auth/login/:address`, authController.addressLoginStart);
 router.post("/auth/login/:attemptId", authController.addressLoginConfirm);
 
 module.exports = router;
