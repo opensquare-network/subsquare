@@ -31,14 +31,18 @@ const getTagColor = (name) => {
       return START;
     case "Tipping":
     case "fastTrack":
+    case "acceptCurator":
     case "Tip":
     case "Vote":
+    case "BountyBecameActive":
       return ACTIVE;
     case "Passed":
     case "Claimed":
+    case "BountyClaimed":
     case "Executed":
     case "Tabled":
     case "Awarded":
+    case "BountyAwarded":
     case "Approved":
     case "ApproveVoting":
       return POSITIVE;
