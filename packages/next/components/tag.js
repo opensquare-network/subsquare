@@ -40,6 +40,7 @@ const getTagColor = (name) => {
     case "Tabled":
     case "Awarded":
     case "Approved":
+    case "ApproveVoting":
       return POSITIVE;
     case "Rejected":
     case "Retracted":
