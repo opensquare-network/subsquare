@@ -1,6 +1,6 @@
 import Overview from "components/overview";
 import Menu from "components/menu";
-import { mainMenu } from "utils/constants";
+import { getMainMenu } from "../utils";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import Layout from "components/layout";
@@ -75,7 +75,11 @@ export default withLoginUserRedux(({ overview, loginUser, chain }) => {
   ];
 
   return (
-    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+    <Layout
+      user={loginUser}
+      left={<Menu menu={getMainMenu(chain)} />}
+      chain={chain}
+    >
       <Overview overviewData={overviewData} chain={chain} />
     </Layout>
   );

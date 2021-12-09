@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { Fragment } from "react";
 import { useRouter } from "next/router";
 import OverviewIcon from "../public/imgs/icons/overview.svg";
 import DiscussionIcon from "../public/imgs/icons/discussions.svg";
@@ -94,7 +95,7 @@ export default function Menu({ menu }) {
   iconMap.set("techCommMembers", <MembersIcon />);
 
   function getHref(pathname) {
-    let href = "";
+    let href;
     if (pathname.startsWith("/[chain]")) {
       let currChain = router.query.chain;
       if (!currChain) {
@@ -113,19 +114,21 @@ export default function Menu({ menu }) {
         <div key={index}>
           {item.name && <Title>{item.name}</Title>}
           {item.items.map((item, index) => (
-            <Link href={getHref(item?.pathname)} key={index}>
-              <a>
-                <Item
-                  active={
-                    router.pathname === item.pathname ||
-                    (router.pathname === "/[chain]" && item.pathname === "/")
-                  }
-                >
-                  {iconMap.get(item.value)}
-                  <div>{item.name}</div>
-                </Item>
-              </a>
-            </Link>
+            <Fragment key={index}>
+              <Link href={getHref(item?.pathname)}>
+                <a>
+                  <Item
+                    active={
+                      router.pathname === item.pathname ||
+                      (router.pathname === "/[chain]" && item.pathname === "/")
+                    }
+                  >
+                    {iconMap.get(item.value)}
+                    <div>{item.name}</div>
+                  </Item>
+                </a>
+              </Link>
+            </Fragment>
           ))}
         </div>
       ))}

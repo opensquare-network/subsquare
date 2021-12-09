@@ -1,19 +1,21 @@
 import List from "components/list";
 import Menu from "components/menu";
-import { mainMenu } from "utils/constants";
+import { getMainMenu } from "utils";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import { ssrNextApi as nextApi} from "services/nextApi";
+import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Layout from "components/layout";
 import { toExternalProposalListItem } from "utils/viewfuncs";
 
 export default withLoginUserRedux(({ loginUser, externals, chain }) => {
-  const items = (externals.items || []).map(item => toExternalProposalListItem(chain, item));
+  const items = (externals.items || []).map((item) =>
+    toExternalProposalListItem(chain, item)
+  );
 
   return (
     <Layout
       user={loginUser}
-      left={<Menu menu={mainMenu} />}
+      left={<Menu menu={getMainMenu(chain)} />}
       chain={chain}
     >
       <List

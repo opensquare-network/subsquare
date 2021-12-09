@@ -1,19 +1,21 @@
 import List from "components/list";
 import Menu from "components/menu";
-import { mainMenu } from "utils/constants";
+import { getMainMenu } from "utils";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import { ssrNextApi as nextApi} from "services/nextApi";
+import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Layout from "components/layout";
 import { toTechCommMotionListItem } from "utils/viewfuncs";
 
 export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
-  const items = (proposals.items || []).map(item => toTechCommMotionListItem(chain, item));
+  const items = (proposals.items || []).map((item) =>
+    toTechCommMotionListItem(chain, item)
+  );
 
   return (
     <Layout
       user={loginUser}
-      left={<Menu menu={mainMenu} />}
+      left={<Menu menu={getMainMenu(chain)} />}
       chain={chain}
     >
       <List
