@@ -144,14 +144,15 @@ const Markdown = ({ md, contentVersion = "" }) => {
     <Wrapper>
       <ReactMarkdown
         className="markdown-content"
-        children={displayContent}
         renderers={{
           code: CodeBlock,
           image: ImgRender,
         }}
         linkTarget="_blank"
         remarkPlugins={[remarkGfm]}
-      />
+      >
+        {displayContent}
+      </ReactMarkdown>
     </Wrapper>
   );
 };
