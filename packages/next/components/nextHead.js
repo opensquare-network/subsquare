@@ -18,6 +18,10 @@ export default function NextHead({
       {type === "post" && <meta property="og:site_name" content="CoinAsk" />}
       {type === "post" && <meta property="og:title" content={title} />}
       {type === "post" && <meta property="og:description" content={desc} />}
+      <meta
+        property="og:image"
+        content="https://karura.subsquare.io/imgs/logo.svg"
+      />
     </Head>
   );
 }
