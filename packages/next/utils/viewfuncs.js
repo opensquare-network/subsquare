@@ -227,3 +227,16 @@ export const isMotionCompleted = (motion) => {
   );
   return !error;
 };
+
+export const getMetaDesc = (post) => {
+  let contentDesc = "";
+  const maxDescLength = 60;
+  if (post.content) {
+    if (post.content.length > maxDescLength) {
+      contentDesc = post.content.substr(0, maxDescLength) + "...";
+    } else {
+      contentDesc = post.content;
+    }
+  }
+  return `${post.category?.name} - @${post.author?.username} - ${contentDesc}`;
+};
