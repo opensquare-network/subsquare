@@ -6,6 +6,7 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Layout from "components/layout";
 import { toCouncilMotionListItem } from "utils/viewfuncs";
+import NextHead from "../../components/nextHead";
 
 export default withLoginUserRedux(({ loginUser, motions, chain }) => {
   const items = (motions.items || []).map((item) =>
@@ -13,11 +14,8 @@ export default withLoginUserRedux(({ loginUser, motions, chain }) => {
   );
 
   return (
-    <Layout
-      user={loginUser}
-      left={<Menu menu={mainMenu} />}
-      chain={chain}
-    >
+    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+      <NextHead title={`Council motions`} desc={`Council motions`} />
       <List
         chain={chain}
         category={"Council Motions"}

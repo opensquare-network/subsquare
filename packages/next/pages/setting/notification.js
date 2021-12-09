@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { fetchUserProfile } from "store/reducers/userSlice";
 import Layout from "components/layout";
 import { shadow_100 } from "styles/componentCss";
+import NextHead from "../../components/nextHead";
 
 const Wrapper = styled.div`
   max-width: 848px;
@@ -117,6 +118,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
   return (
     <Layout chain={chain} user={loginUser} left={<Menu menu={settingMenu} />}>
+      <NextHead title={`Settings`} desc={``} />
       <Wrapper>
         <Title>Notification</Title>
         <ContentWrapper>

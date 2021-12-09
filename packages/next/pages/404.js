@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
+import NextHead from "../components/nextHead";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -43,6 +44,7 @@ export default function Custom404() {
   const router = useRouter();
   return (
     <Wrapper>
+      <NextHead title={`Not Found`} desc={``} />
       <svg
         width="150"
         height="60"

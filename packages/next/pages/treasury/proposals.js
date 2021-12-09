@@ -2,20 +2,20 @@ import List from "components/list";
 import Menu from "components/menu";
 import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import { ssrNextApi as nextApi} from "services/nextApi";
+import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Layout from "components/layout";
 import { toTreasuryProposalListItem } from "utils/viewfuncs";
+import NextHead from "../../components/nextHead";
 
 export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
-  const items = (proposals.items || []).map(item => toTreasuryProposalListItem(chain, item));
+  const items = (proposals.items || []).map((item) =>
+    toTreasuryProposalListItem(chain, item)
+  );
 
   return (
-    <Layout
-      user={loginUser}
-      left={<Menu menu={mainMenu} />}
-      chain={chain}
-    >
+    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+      <NextHead title={`Treasury Proposals`} desc={`Treasury Proposals`} />
       <List
         chain={chain}
         category={"Treasury Proposals"}

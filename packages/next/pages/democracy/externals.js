@@ -2,20 +2,23 @@ import List from "components/list";
 import Menu from "components/menu";
 import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import { ssrNextApi as nextApi} from "services/nextApi";
+import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Layout from "components/layout";
 import { toExternalProposalListItem } from "utils/viewfuncs";
+import NextHead from "../../components/nextHead";
 
 export default withLoginUserRedux(({ loginUser, externals, chain }) => {
-  const items = (externals.items || []).map(item => toExternalProposalListItem(chain, item));
+  const items = (externals.items || []).map((item) =>
+    toExternalProposalListItem(chain, item)
+  );
 
   return (
-    <Layout
-      user={loginUser}
-      left={<Menu menu={mainMenu} />}
-      chain={chain}
-    >
+    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+      <NextHead
+        title={`Democracy External Proposals`}
+        desc={`Democracy External Proposals`}
+      />
       <List
         chain={chain}
         category={"Democracy External Proposals"}

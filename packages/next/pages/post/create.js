@@ -18,6 +18,7 @@ import { useDispatch } from "react-redux";
 import { addToast } from "store/reducers/toastSlice";
 import { fetchUserProfile } from "store/reducers/userSlice";
 import { shadow_100 } from "styles/componentCss";
+import NextHead from "../../components/nextHead";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -148,6 +149,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
   return (
     <Layout user={loginUser} chain={chain}>
+      <NextHead title={`Create post`} desc={``} />
       <Wrapper>
         <Back href={`/discussions`} text="Back to Discussions" />
         <ContentWrapper>
@@ -192,7 +194,12 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
             )}
             {!showPreview && (
               <InputSwitch>
-                <img src="/imgs/icons/markdown-mark.svg" alt="" width={26} height={16} />
+                <img
+                  src="/imgs/icons/markdown-mark.svg"
+                  alt=""
+                  width={26}
+                  height={16}
+                />
                 <Toggle
                   size="small"
                   isOn={contentType === "markdown"}

@@ -9,6 +9,7 @@ import nextApi from "services/nextApi";
 import ErrorText from "components/ErrorText";
 import { withLoginUser, withLoginUserRedux } from "../lib";
 import { shadow_100 } from "../styles/componentCss";
+import NextHead from "../components/nextHead";
 
 const Wrapper = styled.div`
   padding: 32px 0;
@@ -102,6 +103,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
   return (
     <Layout user={loginUser} chain={chain}>
+      <NextHead title={`Verify email`} desc={`Verify email`} />
       <Wrapper>
         {!success && (
           <ContentWrapper>
@@ -133,7 +135,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      chain
+      chain,
     },
   };
 });
