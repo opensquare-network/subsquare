@@ -18,15 +18,13 @@ import Vote from "components/referenda/vote";
 import dayjs from "dayjs";
 import Timeline from "components/timeline";
 import MotionProposal from "components/motion/motionProposal";
-import {
-  getFocusEditor,
-  getMentionList,
-  getOnReply,
-} from "utils/post";
+import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_DEMOCRACY_REFERENDUM } from "utils/viewConstants";
 import { useApi, useIsMounted } from "utils/hooks";
+import { getMetaDesc } from "../../../utils/viewfuncs";
+import NextHead from "../../../components/nextHead";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -142,13 +140,16 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   detail.status = detail.onchainData?.state?.state;
 
+  const desc = getMetaDesc(detail);
   return (
     <Layout user={loginUser} chain={chain}>
+      <NextHead
+        title={`${detail.title ?? "Subsquare"}`}
+        desc={desc}
+        type={"Referendum"}
+      />
       <Wrapper className="post-content">
-        <Back
-          href={`/democracy/referendums`}
-          text="Back to Referendas"
-        />
+        <Back href={`/democracy/referendums`} text="Back to Referendas" />
         <DetailItem
           data={detail}
           onReply={focusEditor}

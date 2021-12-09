@@ -23,6 +23,8 @@ import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
 import sortTimeline from "../../../utils/timeline/sort";
+import { getMetaDesc } from "../../../utils/viewfuncs";
+import NextHead from "../../../components/nextHead";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -155,8 +157,14 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   detail.status = detail.onchainData?.state?.state;
 
+  const desc = getMetaDesc(detail);
   return (
     <Layout user={loginUser} chain={chain}>
+      <NextHead
+        title={`${detail.title ?? "Subsquare"}`}
+        desc={desc}
+        type={"Proposal"}
+      />
       <Wrapper className="post-content">
         <Back href={`/democracy/proposals`} text="Back to Proposals" />
         <DetailItem

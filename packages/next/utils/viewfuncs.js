@@ -228,7 +228,7 @@ export const isMotionCompleted = (motion) => {
   return !error;
 };
 
-export const getMetaDesc = (post) => {
+export const getMetaDesc = (post, type = "Discussion") => {
   let contentDesc = "";
   const maxDescLength = 60;
   if (post.content) {
@@ -238,5 +238,5 @@ export const getMetaDesc = (post) => {
       contentDesc = post.content;
     }
   }
-  return `${post.category?.name} - @${post.author?.username} - ${contentDesc}`;
+  return `${type} - @${post.author?.username} - ${contentDesc}`;
 };

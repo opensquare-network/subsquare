@@ -12,16 +12,14 @@ import Layout from "components/layout";
 import { getNode } from "utils";
 import Timeline from "components/timeline";
 import KVList from "components/kvList";
-import {
-  getFocusEditor,
-  getMentionList,
-  getOnReply,
-} from "utils/post";
+import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";
 import { makeExternalTimelineData } from "utils/dataWrappers/makeTimelineData";
 import { makeExternalMetadata } from "utils/dataWrappers/makeMetadata";
 import { TYPE_DEMOCRACY_EXTERNAL } from "utils/viewConstants";
+import { getMetaDesc } from "../../../utils/viewfuncs";
+import NextHead from "../../../components/nextHead";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -77,8 +75,14 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   detail.status = detail.onchainData?.state?.state;
 
+  const desc = getMetaDesc(detail);
   return (
     <Layout user={loginUser} chain={chain}>
+      <NextHead
+        title={`${detail.title ?? "Subsquare"}`}
+        desc={desc}
+        type={"External"}
+      />
       <Wrapper className="post-content">
         <Back href={`/democracy/externals`} text="Back to Externals" />
         <DetailItem

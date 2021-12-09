@@ -18,15 +18,12 @@ import KVList from "components/kvList";
 import Links from "components/timeline/links";
 import ReasonLink from "components/reasonLink";
 import { TYPE_TREASURY_TIP } from "utils/viewConstants";
-import { getTipState } from "utils/viewfuncs";
-import {
-  getFocusEditor,
-  getMentionList,
-  getOnReply,
-} from "utils/post";
+import { getMetaDesc, getTipState } from "utils/viewfuncs";
+import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import findLastIndex from "lodash.findlastindex";
 import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";
+import NextHead from "../../../components/nextHead";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -204,8 +201,14 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     ],
   ];
 
+  const desc = getMetaDesc(detail);
   return (
     <Layout user={loginUser} chain={chain}>
+      <NextHead
+        title={`${detail.title ?? "Subsquare"}`}
+        desc={desc}
+        type={"Tip"}
+      />
       <Wrapper className="post-content">
         <Back href={`/treasury/tips`} text="Back to Tips" />
         <DetailItem
