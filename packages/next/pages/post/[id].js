@@ -8,11 +8,7 @@ import { EmptyList } from "utils/constants";
 import Input from "components/comment/input";
 import { useState, useRef } from "react";
 import Layout from "components/layout";
-import {
-  getFocusEditor,
-  getMentionList,
-  getOnReply,
-} from "utils/post";
+import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_POST } from "utils/viewConstants";
@@ -113,13 +109,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   const postId = detail._id;
 
-  const { result: comments } = await nextApi.fetch(
-    `posts/${postId}/comments`,
-    {
-      page: page ?? "last",
-      pageSize: Math.min(pageSize ?? 50, 100),
-    }
-  );
+  const { result: comments } = await nextApi.fetch(`posts/${postId}/comments`, {
+    page: page ?? "last",
+    pageSize: Math.min(pageSize ?? 50, 100),
+  });
 
   return {
     props: {
