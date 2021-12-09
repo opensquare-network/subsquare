@@ -109,7 +109,7 @@ export default function Menu({ menu, chain }) {
     return href;
   }
 
-  const noMenu = nodes.find((item) => item.value === chain)?.noMenu;
+  const noMenu = nodes.find((item) => item.value === chain)?.noMenu || [];
 
   return (
     <Wrapper>
