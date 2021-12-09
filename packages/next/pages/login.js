@@ -16,6 +16,7 @@ import { setUser } from "store/reducers/userSlice";
 import { useAuthPage } from "utils/hooks";
 import { withLoginUser, withLoginUserRedux } from "../lib";
 import { shadow_100 } from "../styles/componentCss";
+import NextHead from "../components/nextHead";
 
 const AddressLogin = dynamic(() => import("components/addressLogin"), {
   ssr: false,
@@ -121,6 +122,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
   return (
     <Layout user={loginUser} chain={chain} isWeb3Login={web3}>
+      <NextHead title={`Login`} desc={`Login`} />
       <Wrapper>
         <ContentWrapper>
           <Title>Login</Title>
@@ -181,7 +183,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      chain
+      chain,
     },
   };
 });

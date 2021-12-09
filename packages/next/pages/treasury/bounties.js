@@ -6,6 +6,7 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Layout from "components/layout";
 import { toTreasuryBountyListItem } from "utils/viewfuncs";
+import NextHead from "../../components/nextHead";
 
 export default withLoginUserRedux(({ loginUser, bounties, chain }) => {
   const items = (bounties.items || []).map((item) =>
@@ -14,6 +15,7 @@ export default withLoginUserRedux(({ loginUser, bounties, chain }) => {
 
   return (
     <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+      <NextHead title={`Treasury Bounties`} desc={`Treasury Bounties`} />
       <List
         chain={chain}
         category={"Treasury Bounties"}

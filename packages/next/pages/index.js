@@ -15,6 +15,7 @@ import {
   toTreasuryBountyListItem,
   toTreasuryProposalListItem,
 } from "utils/viewfuncs";
+import NextHead from "../components/nextHead";
 
 export default withLoginUserRedux(({ overview, loginUser, chain }) => {
   const overviewData = [
@@ -76,6 +77,7 @@ export default withLoginUserRedux(({ overview, loginUser, chain }) => {
 
   return (
     <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+      <NextHead title={`Subsquare`} desc={`Subsquare`} />
       <Overview overviewData={overviewData} chain={chain} />
     </Layout>
   );

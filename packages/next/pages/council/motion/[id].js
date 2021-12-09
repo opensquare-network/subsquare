@@ -7,7 +7,7 @@ import Layout from "components/layout";
 import MotionDetail from "components/motion/councilMotionDetail";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_MOTION } from "utils/viewConstants";
-import { isMotionCompleted } from "../../../utils/viewfuncs";
+import { getMetaDesc, isMotionCompleted } from "../../../utils/viewfuncs";
 import { EmptyList } from "../../../utils/constants";
 import Comments from "../../../components/comment";
 import Input from "../../../components/comment/input";
@@ -18,6 +18,7 @@ import {
   getOnReply,
 } from "../../../utils/post";
 import { useRef, useState } from "react";
+import NextHead from "../../../components/nextHead";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -58,8 +59,14 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
     focusEditor
   );
 
+  const desc = getMetaDesc(motion, "Motion");
   return (
     <Layout user={loginUser} chain={chain}>
+      <NextHead
+        title={`${motion.title ?? "Subsquare"}`}
+        desc={desc}
+        type={"post"}
+      />
       <Wrapper className="post-content">
         <Back href={`/council/motions`} text="Back to Motions" />
         <MotionDetail

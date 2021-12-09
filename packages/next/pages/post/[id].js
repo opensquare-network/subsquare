@@ -12,6 +12,8 @@ import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_POST } from "utils/viewConstants";
+import NextHead from "../../components/nextHead";
+import { getMetaDesc } from "../../utils/viewfuncs";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -58,9 +60,14 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     quillRef,
     focusEditor
   );
-
+  const desc = getMetaDesc(detail, "Discussion");
   return (
     <Layout user={loginUser} chain={chain}>
+      <NextHead
+        title={`${detail.title ?? "Subsquare"}`}
+        desc={desc}
+        type={"post"}
+      />
       <Wrapper className="post-content">
         <Back href={`/discussions`} text="Back to Discussions" />
         <DetailItem

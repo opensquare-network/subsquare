@@ -227,3 +227,18 @@ export const isMotionCompleted = (motion) => {
   );
   return !error;
 };
+
+export const getMetaDesc = (post, type = "Discussion") => {
+  let contentDesc = "";
+  const maxDescLength = 60;
+  if (post.content) {
+    if (post.content.length > maxDescLength) {
+      contentDesc = post.content.substr(0, maxDescLength) + "...";
+    } else {
+      contentDesc = post.content;
+    }
+  }
+  return `${type} ${
+    post.author?.username ? ` - @${post.author?.username}` : ``
+  } - ${contentDesc}`;
+};

@@ -6,6 +6,7 @@ import Layout from "components/layout";
 import { useApi, useCall } from "utils/hooks";
 import { useEffect, useState } from "react";
 import { getNode } from "utils";
+import NextHead from "../../components/nextHead";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const [data, setData] = useState([]);
@@ -39,6 +40,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
   return (
     <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+      <NextHead title={`Council members`} desc={`Council members`} />
       <MembersList
         chain={chain}
         category={"Council Members"}
