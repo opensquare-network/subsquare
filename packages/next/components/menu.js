@@ -14,7 +14,6 @@ import BellIcon from "../public/imgs/icons/bell.svg";
 import MembersIcon from "../public/imgs/icons/members.svg";
 import BountyIcon from "../public/imgs/icons/bounties.svg";
 import Link from "next/link";
-import { nodes } from "utils/constants";
 
 const Wrapper = styled.div`
   padding-top: 37px;
@@ -75,7 +74,7 @@ const Item = styled.div`
     `}
 `;
 
-export default function Menu({ menu, chain }) {
+export default function Menu({ menu }) {
   const router = useRouter();
 
   const iconMap = new Map();
@@ -96,7 +95,7 @@ export default function Menu({ menu, chain }) {
   iconMap.set("techCommMembers", <MembersIcon />);
 
   function getHref(pathname) {
-    let href = "";
+    let href;
     if (pathname.startsWith("/[chain]")) {
       let currChain = router.query.chain;
       if (!currChain) {
@@ -109,8 +108,6 @@ export default function Menu({ menu, chain }) {
     return href;
   }
 
-  const noMenu = nodes.find((item) => item.value === chain)?.noMenu || [];
-
   return (
     <Wrapper>
       {menu.map((item, index) => (
@@ -118,22 +115,19 @@ export default function Menu({ menu, chain }) {
           {item.name && <Title>{item.name}</Title>}
           {item.items.map((item, index) => (
             <Fragment key={index}>
-              {!noMenu.includes(item?.value) && (
-                <Link href={getHref(item?.pathname)}>
-                  <a>
-                    <Item
-                      active={
-                        router.pathname === item.pathname ||
-                        (router.pathname === "/[chain]" &&
-                          item.pathname === "/")
-                      }
-                    >
-                      {iconMap.get(item.value)}
-                      <div>{item.name}</div>
-                    </Item>
-                  </a>
-                </Link>
-              )}
+              <Link href={getHref(item?.pathname)}>
+                <a>
+                  <Item
+                    active={
+                      router.pathname === item.pathname ||
+                      (router.pathname === "/[chain]" && item.pathname === "/")
+                    }
+                  >
+                    {iconMap.get(item.value)}
+                    <div>{item.name}</div>
+                  </Item>
+                </a>
+              </Link>
             </Fragment>
           ))}
         </div>

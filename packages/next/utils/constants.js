@@ -102,7 +102,7 @@ export const nodes = [
     symbol: "BSX",
     decimals: 12,
     hasElections: true,
-    noMenu: ["bounties"],
+    excludeMenus: ["bounties"],
   },
 ];
 

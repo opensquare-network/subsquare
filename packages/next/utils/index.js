@@ -1,6 +1,6 @@
 import moment from "moment";
 import BigNumber from "bignumber.js";
-import { nodes } from "./constants";
+import { mainMenu, nodes } from "./constants";
 
 BigNumber.config({ EXPONENTIAL_AT: 36 });
 
@@ -151,4 +151,16 @@ export function matchMdLink(t) {
   const expression =
     /(?<!\]\()((?:https?|ftp):\/\/[^\s\]\)]*)(?:[\s\]\)](?!\()|$)/gi;
   return t.replace(expression, "[$1]($1) ");
+}
+
+export function getMainMenu(chain) {
+  const excludeMenus =
+    nodes.find((item) => item.value === chain)?.excludeMenus ?? [];
+
+  return mainMenu.map((subMenu) => {
+    return {
+      ...subMenu,
+      items: subMenu.items.filter((menu) => !excludeMenus.includes(menu.value)),
+    };
+  });
 }
