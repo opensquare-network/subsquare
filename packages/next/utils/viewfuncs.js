@@ -238,5 +238,7 @@ export const getMetaDesc = (post, type = "Discussion") => {
       contentDesc = post.content;
     }
   }
-  return `${type} - @${post.author?.username} - ${contentDesc}`;
+  return `${type} ${
+    post.author?.username ? ` - @${post.author?.username}` : ``
+  } - ${contentDesc}`;
 };
