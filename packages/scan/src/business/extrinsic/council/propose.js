@@ -10,13 +10,22 @@ const {
   Modules,
   CollectiveMethods,
   CouncilEvents,
+  KaruraModules,
 } = require("../../common/constants");
 const { busLogger } = require("../../../logger");
 
 function isCouncilProposeCall(call) {
   return (
-    Modules.Council === call.section &&
+    [KaruraModules.GeneralCouncil, Modules.Council].includes(call.section) &&
     CollectiveMethods.propose === call.method
+  );
+}
+
+function hasProposedEvent(extrinsicEvents) {
+  return extrinsicEvents.some(
+    ({ event }) =>
+      [KaruraModules.GeneralCouncil, Modules.Council].includes(event.section) &&
+      CouncilEvents.Proposed === event.method
   );
 }
 
@@ -35,12 +44,7 @@ async function handleCouncilPropose(
     return;
   }
 
-  const proposedEvent = extrinsicEvents.find(
-    ({ event }) =>
-      Modules.Council === event.section &&
-      CouncilEvents.Proposed === event.method
-  );
-  if (proposedEvent) {
+  if (hasProposedEvent(extrinsicEvents)) {
     // If there is proposed event, we just handle it in event business handling, not here.
     return;
   }
