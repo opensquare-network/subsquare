@@ -4,7 +4,7 @@ import Back from "components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import Layout from "components/layout";
-import MotionDetail from "components/motion/motionDetail";
+import MotionDetail from "components/motion/councilMotionDetail";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_MOTION } from "utils/viewConstants";
 import { isMotionCompleted } from "../../../utils/viewfuncs";
