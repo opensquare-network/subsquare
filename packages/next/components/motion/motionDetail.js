@@ -3,7 +3,6 @@ import styled from "styled-components";
 import KVList from "components/kvList";
 import MultiKVList from "components/multiKVList";
 import Link from "next/link";
-import dayjs from "dayjs";
 
 import User from "components/user";
 import MotionProposal from "./motionProposal";
@@ -19,6 +18,7 @@ import { isMotionCompleted } from "../../utils/viewfuncs";
 import { withLoginUserRedux } from "../../lib";
 import { useState } from "react";
 import CapitalText from "../capitalText";
+import { createMotionTimelineData } from "./utils";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -104,49 +104,6 @@ const Info = styled.div`
   color: #506176;
 `;
 
-function createMotionTimelineData(motion) {
-  return (motion?.timeline || []).map((item) => {
-    switch (item.method) {
-      case "Proposed": {
-        return {
-          indexer: item.indexer,
-          time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-          status: { value: `Motion #${motion.index}`, color: "#6848FF" },
-          voting: {
-            proposer: motion.proposer,
-            method: motion.proposal.method,
-            args: motion.proposal.args,
-            total: motion.voting.threshold,
-            ayes: motion.voting.ayes.length,
-            nays: motion.voting.nays.length,
-          },
-          method: item.method,
-        };
-      }
-      case "Voted": {
-        return {
-          indexer: item.indexer,
-          time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-          status: { value: "Vote", color: "#6848FF" },
-          voteResult: {
-            name: item.args.voter,
-            value: item.args.approve,
-          },
-          method: item.method,
-        };
-      }
-      default: {
-        return {
-          indexer: item.indexer,
-          time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-          status: { value: item.method, color: "#6848FF" },
-          method: item.method,
-        };
-      }
-    }
-  });
-}
-
 function createMotionBusinessData(motion) {
   const height = motion.state.indexer.blockHeight;
   return [
@@ -183,8 +140,7 @@ const getClosedTimelineData = (timeline = []) => {
   const notFoldItems = timeline.filter(
     (item, idx) => idx < firstFoldIndex || idx > lastFoldIndex
   );
-  const fd = [...foldItems];
-  return [fd, ...notFoldItems];
+  return [foldItems, ...notFoldItems];
 };
 
 export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
@@ -199,7 +155,6 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
   const timeline = createMotionTimelineData(motion.onchainData);
 
   let timelineData;
-
   if (isClosed(timeline)) {
     timelineData = getClosedTimelineData(timeline);
   } else {
@@ -209,7 +164,6 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
   let business = null;
 
   const motionCompleted = isMotionCompleted(motion);
-
   if (motionCompleted) {
     business = createMotionBusinessData(motion, chain);
   }
