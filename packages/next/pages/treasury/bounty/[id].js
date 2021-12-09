@@ -16,14 +16,11 @@ import Links from "components/timeline/links";
 import dayjs from "dayjs";
 import Timeline from "components/timeline";
 import { getTimelineStatus } from "utils";
-import {
-  getFocusEditor,
-  getMentionList,
-  getOnReply,
-} from "utils/post";
+import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_TREASURY_BOUNTY } from "utils/viewConstants";
+import { createMotionTimelineData } from "../../../utils/timeline/motion";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -92,46 +89,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     }
     return args;
   };
-
-  function createMotionTimelineData(motion) {
-    return (motion?.timeline || []).map((item) => {
-      switch (item.method) {
-        case "Proposed": {
-          return {
-            indexer: item.indexer,
-            time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-            status: { value: `Motion #${motion.index}`, color: "#6848FF" },
-            voting: {
-              proposer: motion.proposer,
-              method: motion.proposal.method,
-              args: motion.proposal.args,
-              total: motion.voting.threshold,
-              ayes: motion.voting.ayes.length,
-              nays: motion.voting.nays.length,
-            },
-          };
-        }
-        case "Voted": {
-          return {
-            indexer: item.indexer,
-            time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-            status: { value: "Vote", color: "#6848FF" },
-            voteResult: {
-              name: item.args.voter,
-              value: item.args.approve,
-            },
-          };
-        }
-        default: {
-          return {
-            indexer: item.indexer,
-            time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-            status: { value: item.method, color: "#6848FF" },
-          };
-        }
-      }
-    });
-  }
 
   const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
     const indexer = item.extrinsicIndexer ?? item.indexer;
