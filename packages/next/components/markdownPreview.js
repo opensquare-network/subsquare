@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import CodeBlock from "components/codeBlock";
 import ImgRender from "components/markdown/imgRenderForEditor";
 import { matchMdLink } from "utils/index";
+import remarkGfm from "remark-gfm";
 
 const Wrapper = styled.div`
   .markdown-content {
@@ -109,6 +110,15 @@ const Wrapper = styled.div`
     img {
       max-width: 100%;
     }
+
+    table,
+    th,
+    td {
+      border: 1px solid black !important;
+    }
+    table {
+      border-collapse: collapse;
+    }
   }
 `;
 
@@ -122,12 +132,13 @@ const Markdown = ({ md, setContent }) => {
     <Wrapper>
       <ReactMarkdown
         className="markdown-content"
-        source={displayContent}
+        children={displayContent}
         renderers={{
           code: CodeBlock,
           image: ImgRender({ md: displayContent, setContent }),
         }}
         linkTarget="_blank"
+        remarkPlugins={[remarkGfm]}
       />
     </Wrapper>
   );
