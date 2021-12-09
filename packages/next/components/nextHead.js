@@ -18,9 +18,7 @@ export default function NextHead({
       {type === "post" && <meta property="og:site_name" content="SubSquare" />}
       {type === "post" && <meta property="og:title" content={title} />}
       {type === "post" && <meta property="og:description" content={desc} />}
-      {type === "post" && (
-        <meta property="twitter:card" content="summary_large_image" />
-      )}
+      {type === "post" && <meta property="twitter:card" content="summary" />}
       <meta
         property="og:image"
         content="https://test.subsquare.io/imgs/logo.png"
