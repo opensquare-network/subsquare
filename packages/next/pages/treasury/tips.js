@@ -2,18 +2,18 @@ import List from "components/list";
 import Menu from "components/menu";
 import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import { ssrNextApi as nextApi} from "services/nextApi";
+import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Layout from "components/layout";
 import { toTipListItem } from "utils/viewfuncs";
 
 export default withLoginUserRedux(({ loginUser, tips, chain }) => {
-  const items = (tips.items || []).map(item => toTipListItem(chain, item));
+  const items = (tips.items || []).map((item) => toTipListItem(chain, item));
 
   return (
     <Layout
       user={loginUser}
-      left={<Menu menu={mainMenu} />}
+      left={<Menu menu={mainMenu} chain={chain} />}
       chain={chain}
     >
       <List

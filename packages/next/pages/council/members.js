@@ -38,7 +38,11 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   }, [electionsInfo, allVotes]);
 
   return (
-    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+    <Layout
+      user={loginUser}
+      left={<Menu menu={mainMenu} chain={chain} />}
+      chain={chain}
+    >
       <MembersList
         chain={chain}
         category={"Council Members"}

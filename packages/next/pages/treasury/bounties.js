@@ -13,7 +13,11 @@ export default withLoginUserRedux(({ loginUser, bounties, chain }) => {
   );
 
   return (
-    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+    <Layout
+      user={loginUser}
+      left={<Menu menu={mainMenu} chain={chain} />}
+      chain={chain}
+    >
       <List
         chain={chain}
         category={"Treasury Bounties"}

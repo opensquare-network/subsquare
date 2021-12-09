@@ -2,18 +2,20 @@ import List from "components/list";
 import Menu from "components/menu";
 import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import { ssrNextApi as nextApi} from "services/nextApi";
+import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Layout from "components/layout";
 import { toReferendaListItem } from "utils/viewfuncs";
 
 export default withLoginUserRedux(({ loginUser, posts, chain }) => {
-  const items = (posts.items || []).map(item => toReferendaListItem(chain, item));
+  const items = (posts.items || []).map((item) =>
+    toReferendaListItem(chain, item)
+  );
 
   return (
     <Layout
       user={loginUser}
-      left={<Menu menu={mainMenu} />}
+      left={<Menu menu={mainMenu} chain={chain} />}
       chain={chain}
     >
       <List

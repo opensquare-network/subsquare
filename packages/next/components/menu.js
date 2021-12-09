@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { Fragment } from "react";
 import { useRouter } from "next/router";
 import OverviewIcon from "../public/imgs/icons/overview.svg";
 import DiscussionIcon from "../public/imgs/icons/discussions.svg";
@@ -13,6 +14,7 @@ import BellIcon from "../public/imgs/icons/bell.svg";
 import MembersIcon from "../public/imgs/icons/members.svg";
 import BountyIcon from "../public/imgs/icons/bounties.svg";
 import Link from "next/link";
+import { nodes } from "utils/constants";
 
 const Wrapper = styled.div`
   padding-top: 37px;
@@ -73,7 +75,7 @@ const Item = styled.div`
     `}
 `;
 
-export default function Menu({ menu }) {
+export default function Menu({ menu, chain }) {
   const router = useRouter();
 
   const iconMap = new Map();
@@ -107,25 +109,32 @@ export default function Menu({ menu }) {
     return href;
   }
 
+  const noMenu = nodes.find((item) => item.value === chain)?.noMenu;
+
   return (
     <Wrapper>
       {menu.map((item, index) => (
         <div key={index}>
           {item.name && <Title>{item.name}</Title>}
           {item.items.map((item, index) => (
-            <Link href={getHref(item?.pathname)} key={index}>
-              <a>
-                <Item
-                  active={
-                    router.pathname === item.pathname ||
-                    (router.pathname === "/[chain]" && item.pathname === "/")
-                  }
-                >
-                  {iconMap.get(item.value)}
-                  <div>{item.name}</div>
-                </Item>
-              </a>
-            </Link>
+            <Fragment key={index}>
+              {!noMenu.includes(item?.value) && (
+                <Link href={getHref(item?.pathname)}>
+                  <a>
+                    <Item
+                      active={
+                        router.pathname === item.pathname ||
+                        (router.pathname === "/[chain]" &&
+                          item.pathname === "/")
+                      }
+                    >
+                      {iconMap.get(item.value)}
+                      <div>{item.name}</div>
+                    </Item>
+                  </a>
+                </Link>
+              )}
+            </Fragment>
           ))}
         </div>
       ))}

@@ -15,7 +15,7 @@ export default withLoginUserRedux(({ loginUser, motions, chain }) => {
   return (
     <Layout
       user={loginUser}
-      left={<Menu menu={mainMenu} />}
+      left={<Menu menu={mainMenu} chain={chain} />}
       chain={chain}
     >
       <List
