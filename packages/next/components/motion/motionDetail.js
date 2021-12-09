@@ -18,7 +18,7 @@ import { isMotionCompleted } from "../../utils/viewfuncs";
 import { withLoginUserRedux } from "../../lib";
 import { useState } from "react";
 import CapitalText from "../capitalText";
-import { createMotionTimelineData } from "./utils";
+import { createMotionTimelineData } from "../../utils/timeline/motion";
 
 const Wrapper = styled.div`
   background: #ffffff;

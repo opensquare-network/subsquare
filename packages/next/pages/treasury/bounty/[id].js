@@ -20,7 +20,7 @@ import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_TREASURY_BOUNTY } from "utils/viewConstants";
-import { createMotionTimelineData } from "../../../components/motion/utils";
+import { createMotionTimelineData } from "../../../utils/timeline/motion";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
