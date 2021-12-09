@@ -21,6 +21,7 @@ import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_TREASURY_BOUNTY } from "utils/viewConstants";
 import { createMotionTimelineData } from "../../../utils/timeline/motion";
+import sortTimeline from "../../../utils/timeline/sort";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -104,16 +105,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     const motionTimelineData = createMotionTimelineData(motion);
     timelineData.push(motionTimelineData);
   });
-
-  timelineData.sort((a, b) => {
-    if (Array.isArray(a)) {
-      a = a[0];
-    }
-    if (Array.isArray(b)) {
-      b = b[0];
-    }
-    return a.indexer.blockTime - b.indexer.blockTime;
-  });
+  sortTimeline(timelineData);
 
   const users = getMentionList(comments);
 

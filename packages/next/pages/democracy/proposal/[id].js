@@ -18,14 +18,11 @@ import Timeline from "components/timeline";
 import { getTimelineStatus } from "utils";
 import KVList from "components/kvList";
 import MotionProposal from "components/motion/motionProposal";
-import {
-  getFocusEditor,
-  getMentionList,
-  getOnReply,
-} from "utils/post";
+import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
+import sortTimeline from "../../../utils/timeline/sort";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -114,16 +111,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       data: getTimelineData(item.args, item.method ?? item.name, chain),
     };
   });
-
-  timelineData.sort((a, b) => {
-    if (Array.isArray(a)) {
-      a = a[0];
-    }
-    if (Array.isArray(b)) {
-      b = b[0];
-    }
-    return a.indexer.blockTime - b.indexer.blockTime;
-  });
+  sortTimeline(timelineData);
 
   const users = getMentionList(comments);
 
