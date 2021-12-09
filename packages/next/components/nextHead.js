@@ -25,7 +25,7 @@ export default function NextHead({
       />
       <meta
         property="twitter:image"
-        content="https://test.subsquare.io/imgs/logo.png"
+        content="https://test.subsquare.io/imgs/logo4twitter.png"
       />
     </Head>
   );
