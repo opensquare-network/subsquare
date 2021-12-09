@@ -23,11 +23,11 @@ export default function NextHead({
       )}
       <meta
         property="og:image"
-        content="https://karura.subsquare.io/imgs/logo.svg"
+        content="https://test.subsquare.io/imgs/logo.png"
       />
       <meta
         property="twitter:image"
-        content="https://karura.subsquare.io/imgs/logo.svg"
+        content="https://test.subsquare.io/imgs/logo.png"
       />
     </Head>
   );
