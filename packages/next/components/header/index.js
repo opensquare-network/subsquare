@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useState } from "react";
 import NetworkSwitch from "components/networkSwitch";
 import Container from "components/container";
@@ -7,7 +7,6 @@ import Sidebar from "./sidebar";
 import SidebarAccount from "./sidebarAccount";
 import { nodes } from "utils/constants";
 import NodeSwitch from "components/nodeSwitch";
-import { useRouter } from "next/router";
 import Flex from "../styled/flex";
 import { shadow_100 } from "../../styles/componentCss";
 import Link from "next/link";
@@ -88,7 +87,6 @@ const LogoImg = styled.img`
 `;
 
 export default function Header({ user, left, chain, isWeb3Login }) {
-  const router = useRouter();
   const [show, setShow] = useState(false);
   const [position, setPosition] = useState("left");
   const [content, setContent] = useState();
