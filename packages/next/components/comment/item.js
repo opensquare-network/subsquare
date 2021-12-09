@@ -1,7 +1,6 @@
 import styled, { css } from "styled-components";
 
 import { timeDurationFromNow } from "utils";
-import Markdown from "components/markdown";
 import Edit from "components/edit";
 import HtmlRender from "../post/htmlRender";
 import nextApi from "services/nextApi";
@@ -16,6 +15,12 @@ import User from "components/user";
 import EditInput from "components/editInput";
 import { useRouter } from "next/router";
 import Flex from "../styled/flex";
+import dynamic from "next/dynamic";
+
+const Markdown = dynamic(
+  () => import("components/markdown").catch((e) => console.error(e)),
+  { ssr: false }
+);
 
 const Wrapper = styled.div`
   position: relative;
