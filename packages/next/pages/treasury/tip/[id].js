@@ -201,13 +201,13 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     ],
   ];
 
-  const desc = getMetaDesc(detail);
+  const desc = getMetaDesc(detail, "Tip");
   return (
     <Layout user={loginUser} chain={chain}>
       <NextHead
         title={`${detail.title ?? "Subsquare"}`}
         desc={desc}
-        type={"Tip"}
+        type={"post"}
       />
       <Wrapper className="post-content">
         <Back href={`/treasury/tips`} text="Back to Tips" />

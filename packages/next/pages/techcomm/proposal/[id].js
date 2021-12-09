@@ -22,13 +22,13 @@ const Wrapper = styled.div`
 export default withLoginUserRedux(({ loginUser, motion, chain }) => {
   motion.status = motion.state?.state;
 
-  const desc = getMetaDesc(motion);
+  const desc = getMetaDesc(motion, "Proposal");
   return (
     <Layout user={loginUser} chain={chain}>
       <NextHead
         title={`${motion.title ?? "Subsquare"}`}
         desc={desc}
-        type={"Motion"}
+        type={"post"}
       />
       <Wrapper className="post-content">
         <Back href={`/techcomm/proposals`} text="Back to Proposals" />

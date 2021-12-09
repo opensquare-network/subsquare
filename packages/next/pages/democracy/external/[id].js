@@ -75,13 +75,13 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   detail.status = detail.onchainData?.state?.state;
 
-  const desc = getMetaDesc(detail);
+  const desc = getMetaDesc(detail, "External");
   return (
     <Layout user={loginUser} chain={chain}>
       <NextHead
         title={`${detail.title ?? "Subsquare"}`}
         desc={desc}
-        type={"External"}
+        type={"post"}
       />
       <Wrapper className="post-content">
         <Back href={`/democracy/externals`} text="Back to Externals" />

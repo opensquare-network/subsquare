@@ -60,7 +60,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     quillRef,
     focusEditor
   );
-  const desc = getMetaDesc(detail);
+  const desc = getMetaDesc(detail, "Discussion");
   return (
     <Layout user={loginUser} chain={chain}>
       <NextHead

@@ -59,13 +59,13 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
     focusEditor
   );
 
-  const desc = getMetaDesc(motion);
+  const desc = getMetaDesc(motion, "Motion");
   return (
     <Layout user={loginUser} chain={chain}>
       <NextHead
         title={`${motion.title ?? "Subsquare"}`}
         desc={desc}
-        type={"Motion"}
+        type={"post"}
       />
       <Wrapper className="post-content">
         <Back href={`/council/motions`} text="Back to Motions" />
