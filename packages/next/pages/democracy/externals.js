@@ -1,6 +1,6 @@
 import List from "components/list";
 import Menu from "components/menu";
-import { mainMenu } from "utils/constants";
+import { getMainMenu } from "utils";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
@@ -15,7 +15,7 @@ export default withLoginUserRedux(({ loginUser, externals, chain }) => {
   return (
     <Layout
       user={loginUser}
-      left={<Menu menu={mainMenu} chain={chain} />}
+      left={<Menu menu={getMainMenu(chain)} />}
       chain={chain}
     >
       <List
