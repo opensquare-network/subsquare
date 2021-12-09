@@ -14,12 +14,17 @@ import User from "./user";
 import { timeDurationFromNow } from "../utils";
 import Tag from "./tag";
 import EditIcon from "../public/imgs/icons/edit.svg";
-import Markdown from "./markdown";
 import HtmlRender from "./post/htmlRender";
 import Actions from "./actions";
 import PostEdit from "./post/postEdit";
 import styled, { css } from "styled-components";
 import Flex from "./styled/flex";
+import dynamic from "next/dynamic";
+
+const Markdown = dynamic(
+  () => import("./markdown").catch((e) => console.error(e)),
+  { ssr: false }
+);
 
 const Wrapper = styled.div`
   :hover {
