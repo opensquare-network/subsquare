@@ -18,6 +18,9 @@ export default function NextHead({
       {type === "post" && <meta property="og:site_name" content="CoinAsk" />}
       {type === "post" && <meta property="og:title" content={title} />}
       {type === "post" && <meta property="og:description" content={desc} />}
+      {type === "post" && (
+        <meta property="twitter:card" content="summary_large_image" />
+      )}
       <meta
         property="og:image"
         content="https://karura.subsquare.io/imgs/logo.svg"
