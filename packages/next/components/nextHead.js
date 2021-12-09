@@ -22,6 +22,10 @@ export default function NextHead({
         property="og:image"
         content="https://karura.subsquare.io/imgs/logo.svg"
       />
+      <meta
+        property="twitter:image"
+        content="https://karura.subsquare.io/imgs/logo.svg"
+      />
     </Head>
   );
 }
