@@ -136,9 +136,10 @@ function HtmlRender({ html }) {
     );
   }
   const cleanHtml = sanitizeHtml(html, {
-    allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img", "iframe"]),
     allowedAttributes: {
       img: ["src", "size", "width", "height"],
+      iframe: ["src"],
       a: ["href", "rel", "target"],
       "*": ["class"],
     },

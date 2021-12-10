@@ -24,6 +24,7 @@ const xssOptions = {
     h5: ["class"],
     h6: ["class"],
     img: ["src", "width", "class"],
+    iframe: ["src"],
   },
   stripIgnoreTag: true,
   stripIgnoreTagBody: ["script"],
