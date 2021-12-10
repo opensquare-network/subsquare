@@ -145,7 +145,7 @@ const Markdown = ({ md, setContent }) => {
     <Wrapper>
       <ReactMarkdown
         className="markdown-content"
-        renderers={{
+        components={{
           code: CodeBlock,
           image: ImgRender({ md: displayContent, setContent }),
         }}
