@@ -139,7 +139,7 @@ function HtmlRender({ html }) {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img", "iframe"]),
     allowedAttributes: {
       img: ["src", "size", "width", "height"],
-      iframe: ["src"],
+      iframe: ["src", "width", "height"],
       a: ["href", "rel", "target"],
       "*": ["class"],
     },
