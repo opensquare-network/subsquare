@@ -123,10 +123,23 @@ const Wrapper = styled.div`
     table,
     th,
     td {
-      border: 1px solid black !important;
+      border: 1px solid #e0e4eb;
     }
     table {
       border-collapse: collapse;
+    }
+    th {
+      padding: 10px 16px;
+      background: #f6f7fa;
+      font-weight: bold;
+      font-size: 14px;
+      color: #1e2134;
+      min-width: 100px;
+    }
+    td {
+      padding: 10px 16px;
+      font-size: 14px;
+      color: #1e2134;
     }
   }
 `;
