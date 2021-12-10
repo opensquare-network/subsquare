@@ -100,6 +100,8 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
+  const { redirect } = router.query;
+
   const { formData, handleInputChange, handleSubmit } = useForm(
     {
       usernameOrEmail: "",
@@ -110,7 +112,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       const res = await nextApi.post("auth/login", formData);
       if (res.result) {
         dispatch(setUser(res.result));
-        router.replace(`/`);
+        router.replace(redirect || `/`);
       } else if (res.error) {
         setErrors(res.error);
       }
