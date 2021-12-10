@@ -1,5 +1,5 @@
 import Cookies from "cookies";
-import { ssrNextApi as nextApi} from "services/nextApi";
+import { ssrNextApi as nextApi } from "services/nextApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser, userSelector } from "../store/reducers/userSlice";
 import { useEffect, useLayoutEffect } from "react";
@@ -27,6 +27,17 @@ export function withLoginUser(getServerSideProps) {
       propsPromise,
       profilePromise,
     ]);
+
+    if (context.resolvedUrl?.startsWith("/setting/") && !user) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: `/login?redirect=${context.resolvedUrl}`,
+        },
+        props: {},
+      };
+    }
+
     return {
       ...props,
       props: {
