@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown";
 
 import CodeBlock from "components/codeBlock";
 import ImgRender from "components/markdown/imgRender";
-import { matchMdLink } from "utils/index";
+import { matchMdLink } from "utils";
 import remarkGfm from "remark-gfm";
 
 const Wrapper = styled.div`

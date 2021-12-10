@@ -43,7 +43,7 @@ const Title = styled(Flex)`
 `;
 
 const FormWrapper = styled.div`
-  padding: 0 16px 16px 16px;
+  padding: 0 24px 24px 24px;
 
   label {
     display: flex;
@@ -82,18 +82,20 @@ const TextArea = styled.textarea`
 `;
 
 const SubmitButtonWrapper = styled.div`
-  text-align: right;
+  padding-right: 24px;
+  display: flex;
+  justify-content: end;
 `;
 
-const SubmitButton = styled.span`
-  margin-right: 16px;
-  display: inline-block;
+const SubmitButton = styled.button`
+  display: flex;
+  justify-content: center;
   text-align: center;
   all: unset;
-  width: 80px;
-  line-height: 30px;
+  padding: 12px;
   font-weight: 500;
   font-size: 14px;
+  line-height: 14px;
   color: #ffffff;
   background: #1e2134;
   border-radius: 4px;
@@ -204,7 +206,7 @@ function UploadImgModal({
     <Shade>
       <Wrapper>
         <Title>
-          <span>Paste image URL</span>
+          <span>Paste URL</span>
           <svg
             onClick={onClose}
             width="16"
