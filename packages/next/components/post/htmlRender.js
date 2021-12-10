@@ -6,7 +6,11 @@ const Wrapper = styled.div`
   color: #000;
   max-width: min(48.5rem, calc(100vw - 50px));
   word-break: break-word;
-
+  iframe {
+    width: 480px;
+    height: 300px;
+    max-width: 100%;
+  }
   h1,
   h2,
   h3,

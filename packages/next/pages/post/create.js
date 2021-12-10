@@ -94,7 +94,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const [content, setContent] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "html"
+    loginUser?.preference.editor || "markdown"
   );
   const [showImgModal, setShowImgModal] = useState(false);
   const [insetQuillImgFunc, setInsetQuillImgFunc] = useState(null);
