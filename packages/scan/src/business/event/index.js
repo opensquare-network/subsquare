@@ -17,10 +17,7 @@ const {
 } = require("./democracy/referendum");
 const { handleTipEvent } = require("./tip");
 const { handleMotionEvent } = require("./motion");
-const {
-  handleTreasuryProposalEvent,
-  handleTreasuryProposalEventWithoutExtrinsic,
-} = require("./treasuryProposal");
+const { handleTreasuryEvent } = require("./treasuryProposal");
 
 async function handleEventWithExtrinsic(
   blockIndexer,
@@ -44,7 +41,6 @@ async function handleEventWithExtrinsic(
     blockEvents
   );
   await handleTipEvent(event, extrinsic, indexer);
-  await handleTreasuryProposalEvent(event, extrinsic, indexer);
   await handleMotionEvent(event, extrinsic, indexer, blockEvents);
   await handleReferendumEventWithExtrinsic(
     event,
@@ -67,12 +63,6 @@ async function handleEventWithoutExtrinsic(
     eventIndex: eventSort,
   };
 
-  await handleTreasuryProposalEventWithoutExtrinsic(
-    event,
-    indexer,
-    blockEvents
-  );
-
   await handleDemocracyPublicProposalEventWithoutExtrinsic(
     event,
     indexer,
@@ -86,11 +76,23 @@ async function handleEvents(events, extrinsics, blockIndexer) {
   for (let sort = 0; sort < events.length; sort++) {
     const { event, phase } = events[sort];
 
-    const indexer = {
+    let indexer = {
       ...blockIndexer,
       eventIndex: sort,
     };
     let extrinsic;
+    if (!phase.isNull) {
+      const extrinsicIndex = phase.value.toNumber();
+      indexer = {
+        ...indexer,
+        extrinsicIndex,
+      };
+
+      extrinsic = extrinsics[extrinsicIndex];
+    }
+
+    await handleTreasuryEvent(event, indexer, events, extrinsic);
+
     if (phase.isNull) {
       await handleEventWithoutExtrinsic(blockIndexer, event, sort, events);
     } else {

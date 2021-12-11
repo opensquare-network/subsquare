@@ -14,12 +14,12 @@ const {
 } = require("../../common/treasuryProposal/meta");
 const { logger } = require("../../../logger");
 
-async function saveNewTreasuryProposal(event, extrinsic, eventIndexer) {
+async function saveNewTreasuryProposal(event, indexer, events, extrinsic) {
   const [proposalIndex] = event.data.toJSON();
 
-  const meta = await getTreasuryProposalMeta(proposalIndex, eventIndexer);
+  const meta = await getTreasuryProposalMeta(proposalIndex, indexer);
   const { proposer, value, beneficiary } = meta;
-  const authors = [...new Set([proposer, extrinsic.signer.toString()])];
+  const authors = [...new Set([proposer, extrinsic?.signer.toString()])];
 
   const timelineItem = {
     type: TimelineItemTypes.extrinsic,
@@ -27,17 +27,17 @@ async function saveNewTreasuryProposal(event, extrinsic, eventIndexer) {
     args: {
       index: proposalIndex,
     },
-    indexer: eventIndexer,
+    indexer,
   };
 
   const state = {
-    indexer: eventIndexer,
+    indexer,
     state: TreasuryProposalEvents.Proposed,
     data: event.data.toJSON(),
   };
 
   const obj = {
-    indexer: eventIndexer,
+    indexer,
     proposalIndex,
     authors,
     proposer,
@@ -54,14 +54,14 @@ async function saveNewTreasuryProposal(event, extrinsic, eventIndexer) {
   logger.info(`Treasury proposal ${proposalIndex} saved`);
 }
 
-async function handleAwarded(event, eventIndexer) {
+async function handleAwarded(event, indexer) {
   const eventData = event.data.toJSON();
   const [proposalIndex, award, beneficiary] = eventData;
 
   const state = {
     state: TreasuryProposalEvents.Awarded,
     data: eventData,
-    indexer: eventIndexer,
+    indexer,
   };
 
   const timelineItem = {
@@ -71,21 +71,21 @@ async function handleAwarded(event, eventIndexer) {
       award,
       beneficiary,
     },
-    indexer: eventIndexer,
+    indexer,
   };
 
   await updateTreasuryProposal(proposalIndex, { state }, timelineItem);
   logger.info(`Treasury proposal ${proposalIndex} awarded`);
 }
 
-async function handleRejected(event, extrinsic, eventIndexer) {
+async function handleRejected(event, indexer) {
   const eventData = event.data.toJSON();
   const [proposalIndex, slashed] = eventData;
 
   const state = {
     state: TreasuryProposalEvents.Rejected,
     data: eventData,
-    indexer: eventIndexer,
+    indexer,
   };
 
   const timelineItem = {
@@ -94,7 +94,7 @@ async function handleRejected(event, extrinsic, eventIndexer) {
     args: {
       slashed,
     },
-    indexer: eventIndexer,
+    indexer,
   };
 
   await updateTreasuryProposal(proposalIndex, { state }, timelineItem);
