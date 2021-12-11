@@ -53,16 +53,11 @@ async function handleEventWithExtrinsic(
 }
 
 async function handleEventWithoutExtrinsic(
-  blockIndexer,
+  indexer,
   event,
   eventSort,
   blockEvents
 ) {
-  const indexer = {
-    ...blockIndexer,
-    eventIndex: eventSort,
-  };
-
   await handleDemocracyPublicProposalEventWithoutExtrinsic(
     event,
     indexer,
@@ -94,7 +89,7 @@ async function handleEvents(events, extrinsics, blockIndexer) {
     await handleTreasuryEvent(event, indexer, events, extrinsic);
 
     if (phase.isNull) {
-      await handleEventWithoutExtrinsic(blockIndexer, event, sort, events);
+      await handleEventWithoutExtrinsic(indexer, event, sort, events);
     } else {
       const extrinsicIndex = phase.value.toNumber();
       indexer.extrinsicIndex = extrinsicIndex;
