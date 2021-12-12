@@ -15,5 +15,6 @@ async function getTechCommMotionProposalCall(motionHash, indexer) {
 }
 
 module.exports = {
+  getTechCommMotionProposal,
   getTechCommMotionProposalCall,
 };
