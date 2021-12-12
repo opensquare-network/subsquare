@@ -2,7 +2,12 @@ const { isBountyMotionCall } = require("./utils");
 const { isTreasuryProposalMotionCall } = require("./utils");
 const { handleWrappedCall } = require("./handle");
 
-async function extractMotionCalls(motionProposalCall, signer, indexer, events) {
+async function extractCouncilMotionBusiness(
+  motionProposalCall,
+  signer,
+  indexer,
+  events
+) {
   const treasuryProposals = [];
   const treasuryBounties = [];
   await handleWrappedCall(
@@ -35,5 +40,5 @@ async function extractMotionCalls(motionProposalCall, signer, indexer, events) {
 }
 
 module.exports = {
-  extractMotionCalls,
+  extractCouncilMotionBusiness,
 };

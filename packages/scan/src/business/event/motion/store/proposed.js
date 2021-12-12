@@ -1,5 +1,5 @@
 const {
-  extractMotionCalls,
+  extractCouncilMotionBusiness,
 } = require("../../../common/call/extractMotionCalls");
 const { normalizeCall } = require("../../../common/motion/utils");
 const { findRegistry } = require("../../../../chain/specs");
@@ -80,12 +80,8 @@ async function handleProposed(event, extrinsic, indexer, blockEvents) {
 
   const authors = [...new Set([proposer, extrinsic.signer.toString()])];
 
-  const { treasuryProposals, treasuryBounties } = await extractMotionCalls(
-    call,
-    proposer,
-    indexer,
-    blockEvents
-  );
+  const { treasuryProposals, treasuryBounties } =
+    await extractCouncilMotionBusiness(call, proposer, indexer, blockEvents);
 
   const obj = {
     indexer,

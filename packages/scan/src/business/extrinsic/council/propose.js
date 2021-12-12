@@ -1,4 +1,6 @@
-const { extractMotionCalls } = require("../../common/call/extractMotionCalls");
+const {
+  extractCouncilMotionBusiness,
+} = require("../../common/call/extractMotionCalls");
 const { insertMotionPost } = require("../../../mongo/service/business/motion");
 const {
   handleBusinessWhenMotionProposed,
@@ -60,12 +62,13 @@ async function handleCouncilPropose(
   const proposalCall = call.args[1];
   const proposal = normalizeCall(proposalCall);
 
-  const { treasuryProposals, treasuryBounties } = await extractMotionCalls(
-    proposalCall,
-    signer,
-    extrinsicIndexer,
-    extrinsicEvents
-  );
+  const { treasuryProposals, treasuryBounties } =
+    await extractCouncilMotionBusiness(
+      proposalCall,
+      signer,
+      extrinsicIndexer,
+      extrinsicEvents
+    );
 
   const obj = {
     indexer: extrinsicIndexer,
