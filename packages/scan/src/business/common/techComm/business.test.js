@@ -1,4 +1,3 @@
-const { findRegistry } = require("../../../chain/specs");
 const { extractTechCommMotionBusiness } = require("./extractBusiness");
 const { getTechCommMotionProposal } = require("./proposalStorage");
 const { setSpecHeights } = require("../../../chain/specs");
@@ -7,7 +6,6 @@ const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
 const { setChain, CHAINS } = require("../../../env");
 const { setApi } = require("../../../api");
-const { GenericCall } = require("@polkadot/types");
 
 jest.setTimeout(3000000);
 
@@ -39,10 +37,7 @@ describe("test extract karura Tech Comm", () => {
     const motionHash =
       "0x389bfec2679b2f640b726614192f9359ecb52797a993373d482d39e6582315d0";
 
-    const proposal = await getTechCommMotionProposal(motionHash, indexer);
-    const registry = await findRegistry(indexer);
-    const call = new GenericCall(registry, proposal.toHex());
-
+    const call = await getTechCommMotionProposal(motionHash, indexer);
     const singer = "ouJX1WJQ9s4RMukAx5zvMwPY2zJZ9Xr5euzRG97Ne6UTNG9";
     const business = await extractTechCommMotionBusiness(
       call,

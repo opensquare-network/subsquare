@@ -1,4 +1,7 @@
 const {
+  extractTechCommMotionBusiness,
+} = require("../../common/techComm/extractBusiness");
+const {
   insertTechCommMotion,
 } = require("../../../mongo/service/onchain/techCommMotion");
 const {
@@ -55,6 +58,13 @@ async function handleTechCommPropose(
   const [motionHash] = executedEvent.event.data.toJSON();
   const proposal = normalizeCall(call.args[1]);
 
+  const { externalProposals } = await extractTechCommMotionBusiness(
+    call.args[1],
+    signer,
+    extrinsicIndexer,
+    extrinsicEvents
+  );
+
   const obj = {
     indexer: extrinsicIndexer,
     hash: motionHash,
@@ -65,6 +75,7 @@ async function handleTechCommPropose(
     proposal,
     isFinal: false,
     timeline: [],
+    externalProposals,
   };
 
   await handleBusinessWhenTechCommMotionProposed(obj, extrinsicIndexer);

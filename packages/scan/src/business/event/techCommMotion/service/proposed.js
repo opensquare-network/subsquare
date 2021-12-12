@@ -1,4 +1,8 @@
 const {
+  extractTechCommMotionBusiness,
+} = require("../../../common/techComm/extractBusiness");
+const { normalizeCall } = require("../../../common/motion/utils");
+const {
   handleBusinessWhenTechCommMotionProposed,
 } = require("./hooks/proposed");
 const {
@@ -14,7 +18,7 @@ const {
   getTechCommMotionVotingFromStorage,
 } = require("../../../common/techComm/votingStorage");
 const {
-  getTechCommMotionProposalCall,
+  getTechCommMotionProposal,
 } = require("../../../common/techComm/proposalStorage");
 
 function extractBusinessFields(proposal = {}) {
@@ -39,12 +43,13 @@ function extractBusinessFields(proposal = {}) {
   return {};
 }
 
-async function handleProposed(event, extrinsic, indexer) {
+async function handleProposed(event, extrinsic, indexer, extrinsicEvents) {
   const eventData = event.data.toJSON();
   const [proposer, motionIndex, hash, threshold] = eventData;
   const authors = [...new Set([proposer, extrinsic.signer.toString()])];
 
-  const proposal = await getTechCommMotionProposalCall(hash, indexer);
+  const rawProposal = await getTechCommMotionProposal(hash, indexer);
+  const proposal = normalizeCall(rawProposal);
   const voting = await getTechCommMotionVotingFromStorage(hash, indexer);
 
   const timelineItem = {
@@ -65,6 +70,13 @@ async function handleProposed(event, extrinsic, indexer) {
     data: eventData,
   };
 
+  const { externalProposals } = await extractTechCommMotionBusiness(
+    rawProposal,
+    proposer,
+    indexer,
+    extrinsicEvents
+  );
+
   const obj = {
     indexer,
     hash,
@@ -78,6 +90,7 @@ async function handleProposed(event, extrinsic, indexer) {
     isFinal: false,
     state,
     timeline: [timelineItem],
+    externalProposals,
   };
 
   await handleBusinessWhenTechCommMotionProposed(obj, indexer);
