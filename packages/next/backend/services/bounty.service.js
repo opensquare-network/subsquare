@@ -70,15 +70,6 @@ async function updatePost(postId, title, content, contentType, author) {
 async function getActivePostsOverview() {
   const chain = process.env.CHAIN;
 
-  const bountyCol = await getBountyCollection();
-  const activePosts = await bountyCol
-    .distinct(
-      "bountyIndex",
-      {
-        lastActivityAt: { $gte: new Date(Date.now() - 7 * Day) },
-      }
-    );
-
   const chainBountyCol = await getChainBountyCollection();
   const bounties = await chainBountyCol
     .find(
@@ -88,14 +79,12 @@ async function getActivePostsOverview() {
         "state.state": {
           $nin: ["Active", "PendingPayout", "Rejected", "Claimed"],
         },
-        bountyIndex: { $in: activePosts },
       },
       {
         projection: { timeline: 0 },
       }
     )
     .sort({ "indexer.blockHeight": -1 })
-    .limit(3)
     .toArray();
 
   const commonDb = await getCommonDb();
@@ -126,13 +115,15 @@ async function getActivePostsOverview() {
     }),
   ]);
 
-  return bounties.map((bounty) => {
+  const posts = bounties.map((bounty) => {
     const post = bounty.post;
     bounty.post = undefined;
     post.onchainData = bounty;
     post.state = bounty.state?.state;
     return post;
   });
+
+  return posts.filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day).slice(0, 3);
 }
 
 async function getPostsByChain(page, pageSize) {

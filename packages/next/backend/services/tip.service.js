@@ -66,28 +66,17 @@ async function updatePost(postId, title, content, contentType, author) {
 async function getActivePostsOverview() {
   const chain = process.env.CHAIN;
 
-  const tipCol = await getTipCollection();
-  const activePosts = await tipCol
-    .distinct(
-      "hash",
-      {
-        lastActivityAt: { $gte: new Date(Date.now() - 7 * Day) },
-      }
-    );
-
   const chainTipCol = await getChainTipCollection();
   const tips = await chainTipCol
     .find(
       {
         "state.state": { $in: ["NewTip", "tip"] },
-        hash: { $in: activePosts },
       },
       {
         projection: { timeline: 0 },
       }
     )
     .sort({ "indexer.blockHeight": -1 })
-    .limit(3)
     .toArray();
 
   const commonDb = await getCommonDb();
@@ -118,7 +107,7 @@ async function getActivePostsOverview() {
     }),
   ]);
 
-  return tips.map((tip) => {
+  const posts = tips.map((tip) => {
     const post = tip.post;
     tip.post = undefined;
     post.onchainData = tip;
@@ -128,6 +117,8 @@ async function getActivePostsOverview() {
     };
     return post;
   });
+
+  return posts.filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day).slice(0, 3);
 }
 
 async function getPostsByChain(page, pageSize) {
