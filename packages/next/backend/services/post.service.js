@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { safeHtml, extractMentions } = require("../utils/post");
-const { PostTitleLengthLimitation } = require("../constants");
+const { PostTitleLengthLimitation, Day } = require("../constants");
 const { nextPostUid } = require("./status.service");
 const {
   getCommentCollection,
@@ -106,7 +106,9 @@ function createService(postType) {
 
   async function getPostsOverview() {
     const postCol = await getPostCollection();
-    const posts = await postCol.find({})
+    const posts = await postCol.find({
+        lastActivityAt: { $gte: new Date(Date.now() - 7 * Day) },
+      })
       .sort({ lastActivityAt: -1 })
       .limit(3)
       .toArray();

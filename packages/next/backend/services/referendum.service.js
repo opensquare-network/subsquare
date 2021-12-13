@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { safeHtml } = require("../utils/post");
-const { PostTitleLengthLimitation } = require("../constants");
+const { PostTitleLengthLimitation, Day } = require("../constants");
 const {
   getDb: getBusinessDb,
   getDemocracyCollection,
@@ -90,12 +90,23 @@ async function updatePost(postId, title, content, contentType, author) {
 
 async function getActivePostsOverview() {
   const chain = process.env.CHAIN;
+
+  const democracyCol = await getDemocracyCollection();
+  const activePosts = await democracyCol
+    .distinct(
+      "referendumIndex",
+      {
+        lastActivityAt: { $gte: new Date(Date.now() - 7 * Day) },
+      }
+    );
+
   const chainDemocracyCol = await getChainReferendumCollection();
   const proposals = await chainDemocracyCol
     .find({
       "state.state": {
         $nin: ["Executed", "NotPassed", "Passed", "Cancelled"],
       },
+      referendumIndex: { $in: activePosts },
     })
     .sort({ "indexer.blockHeight": -1 })
     .limit(3)

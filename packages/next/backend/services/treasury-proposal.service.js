@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { safeHtml } = require("../utils/post");
-const { PostTitleLengthLimitation } = require("../constants");
+const { PostTitleLengthLimitation, Day } = require("../constants");
 const {
   getDb: getBusinessDb,
   getTreasuryProposalCollection,
@@ -68,11 +68,22 @@ async function updatePost(postId, title, content, contentType, author) {
 
 async function getActivePostsOverview() {
   const chain = process.env.CHAIN;
+
+  const treasuryProposalCol = await getTreasuryProposalCollection();
+  const activePosts = await treasuryProposalCol
+    .distinct(
+      "proposalIndex",
+      {
+        lastActivityAt: { $gte: new Date(Date.now() - 7 * Day) },
+      }
+    );
+
   const chainProposalCol = await getChainTreasuryProposalCollection();
   const proposals = await chainProposalCol
     .find(
       {
         "state.state": { $nin: ["Awarded", "Approved", "Rejected"] },
+        proposalIndex: { $in: activePosts },
       },
       {
         projection: { timeline: 0 },
