@@ -4,7 +4,7 @@ import Flex from "../styled/flex";
 
 const Shade = styled.div`
   z-index: 10;
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   top: 0;
@@ -126,13 +126,16 @@ const Label = styled.div`
 `;
 
 const Hint = styled.p`
-  margin-top: 0.5rem;
+  margin: 16px 24px;
+  padding: 12px 16px;
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: normal;
-  font-size: 13px;
-  line-height: 16px;
-  color: #c8cbd0;
+  font-size: 14px;
+  line-height: 19.6px;
+  color: #6848FF;
+  background: #F5F2FF;
+  border-radius: 4px;
 `;
 
 const FileName = styled.p`
@@ -160,11 +163,13 @@ const FileName = styled.p`
   }
 `;
 
-function UploadImgModal({
-  showImgModal,
-  setShowImgModal,
-  insetQuillImgFunc: resolveInsertImgPromise,
-}) {
+
+function InsertContentsModal({
+                               showModal,
+                               setShowModal,
+                               insetQuillContentsFunc: resolveInsertPromise,
+                               type="image",
+                             }) {
   const [source, setSource] = useState("remote");
   const [link, setLink] = useState("");
 
@@ -178,8 +183,8 @@ function UploadImgModal({
     try {
       if (source === "remote") {
         if (link) {
-          resolveInsertImgPromise(link);
-          setShowImgModal(false);
+          resolveInsertPromise(link);
+          setShowModal(false);
           setLink("");
         } else {
           // dispatch(
@@ -196,9 +201,9 @@ function UploadImgModal({
   };
 
   const onClose = () => {
-    setShowImgModal(false);
+    setShowModal(false);
   };
-  if (!showImgModal) {
+  if (!showModal) {
     return null;
   }
 
@@ -222,10 +227,12 @@ function UploadImgModal({
           </svg>
         </Title>
 
+        {type==="video" && <Hint>Embedding Youtube video only</Hint>}
+
         <FormWrapper>
           <TextArea
             value={link}
-            placeholder="Please fill available URL..."
+            placeholder={`Please fill available ${type} URL...`}
             onChange={onChange}
           />
         </FormWrapper>
@@ -238,4 +245,4 @@ function UploadImgModal({
   );
 }
 
-export default UploadImgModal;
+export default InsertContentsModal;

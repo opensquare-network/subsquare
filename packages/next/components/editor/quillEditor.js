@@ -87,7 +87,7 @@ export const StyledTextArea = styled.div`
 const QuillEditor = ({
                        content,
                        setContent,
-                       setModalInsetImgFunc,
+                       setModalInsetFunc,
                        users = [],
                        height = 100,
                        visible = true,
@@ -114,7 +114,7 @@ const QuillEditor = ({
           setFocused(false);
         }}
         users={users}
-        setModalInsetImgFunc={setModalInsetImgFunc}
+        setModalInsetFunc={setModalInsetFunc}
       />
     </StyledTextArea>
   );

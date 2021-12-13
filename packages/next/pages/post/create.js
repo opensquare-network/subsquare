@@ -11,7 +11,7 @@ import nextApi from "services/nextApi";
 import PreviewMD from "components/create/previewMD";
 import Toggle from "components/toggle";
 import ErrorText from "components/ErrorText";
-import UploadImgModal from "components/editor/imageModal";
+import InsertContentsModal from "components/editor/modal";
 import QuillEditor from "components/editor/quillEditor";
 import HtmlRender from "components/post/htmlRender";
 import { useDispatch } from "react-redux";
@@ -96,8 +96,9 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const [contentType, setContentType] = useState(
     loginUser?.preference.editor || "markdown"
   );
-  const [showImgModal, setShowImgModal] = useState(false);
-  const [insetQuillImgFunc, setInsetQuillImgFunc] = useState(null);
+  const [modalType, setModalType] = useState("image");
+  const [showModal, setShowModal] = useState(false);
+  const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
   const [errors, setErrors] = useState();
 
   const onCreate = async () => {
@@ -164,10 +165,11 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
             <ErrorText>{errors?.data?.title?.[0]}</ErrorText>
           )}
           {contentType === "html" && (
-            <UploadImgModal
-              showImgModal={showImgModal}
-              setShowImgModal={setShowImgModal}
-              insetQuillImgFunc={insetQuillImgFunc}
+            <InsertContentsModal
+              showModal={showModal}
+              setShowModal={setShowModal}
+              insetQuillContentsFunc={insetQuillContentsFunc}
+              type={modalType}
             />
           )}
           <Label>Issue</Label>
@@ -186,9 +188,10 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
                 content={content}
                 setContent={setContent}
                 height={201}
-                setModalInsetImgFunc={(insetImgFunc) => {
-                  setShowImgModal(true);
-                  setInsetQuillImgFunc(insetImgFunc);
+                setModalInsetFunc={(insetQuillContentFunc, type = "image") => {
+                  setModalType(type);
+                  setShowModal(true);
+                  setInsetQuillContentsFunc(insetQuillContentFunc);
                 }}
               />
             )}
