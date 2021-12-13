@@ -15,12 +15,7 @@ import User from "components/user";
 import EditInput from "components/editInput";
 import { useRouter } from "next/router";
 import Flex from "../styled/flex";
-import dynamic from "next/dynamic";
-
-const Markdown = dynamic(
-  () => import("components/markdown").catch((e) => console.error(e)),
-  { ssr: false }
-);
+import Markdown from "components/markdown";
 
 const Wrapper = styled.div`
   position: relative;

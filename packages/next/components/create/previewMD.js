@@ -1,10 +1,5 @@
 import styled from "styled-components";
-import dynamic from "next/dynamic";
-
-const Markdown = dynamic(
-  () => import("components/markdownPreview").catch((e) => console.error(e)),
-  { ssr: false }
-);
+import Markdown from "components/markdownPreview";
 
 const Wrapper = styled.div`
   min-height: 245px;
