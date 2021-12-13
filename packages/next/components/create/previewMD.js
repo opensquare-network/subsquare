@@ -1,10 +1,5 @@
 import styled from "styled-components";
-import dynamic from "next/dynamic";
-
-const Markdown = dynamic(
-  () => import("components/markdownPreview").catch((e) => console.error(e)),
-  { ssr: false }
-);
+import Markdown from "components/micromarkMd";
 
 const Wrapper = styled.div`
   min-height: 245px;
@@ -18,10 +13,10 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function PreviewMD({ content, setContent }) {
+export default function PreviewMD({ content }) {
   return (
     <Wrapper>
-      <Markdown md={content} setContent={setContent} />
+      <Markdown md={content} contentVersion="2" />
     </Wrapper>
   );
 }
