@@ -167,6 +167,7 @@ export default function MicromarkMd({ md = "", contentVersion = "" }) {
       a: ["href", "rel", "target"],
       "*": ["class"],
       td: ["align"],
+      th: ["align"],
     },
   });
 
