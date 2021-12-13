@@ -1,11 +1,12 @@
 const { ObjectId } = require("mongodb");
 const { safeHtml } = require("../utils/post");
-const { PostTitleLengthLimitation } = require("../constants");
+const { PostTitleLengthLimitation, Day } = require("../constants");
 const { getDb: getBusinessDb, getDemocracyCollection } = require("../mongo/business");
 const {
   getDb: getChainDb,
   getPublicProposalCollection: getChainPublicProposalCollection,
   getPreImageCollection,
+  getPublicProposalCollection,
 } = require("../mongo/chain");
 const { getDb: getCommonDb, lookupUser, getUserCollection } = require("../mongo/common");
 const { HttpError } = require("../exc");
@@ -71,6 +72,16 @@ async function updatePost(
 
 async function getActivePostsOverview() {
   const chain = process.env.CHAIN;
+
+  const publicProposalCol = await getPublicProposalCollection();
+  const activePosts = await publicProposalCol
+    .distinct(
+      "proposalIndex",
+      {
+        lastActivityAt: { $gte: new Date(Date.now() - 7 * Day) },
+      }
+    );
+
   const chainDemocracyCol = await getChainPublicProposalCollection();
   const proposals = await chainDemocracyCol.find(
     {
@@ -78,7 +89,8 @@ async function getActivePostsOverview() {
         $nin: [
           "Tabled",
         ]
-      }
+      },
+      proposalIndex: { $in: activePosts },
     })
     .sort({ "indexer.blockHeight": -1 })
     .limit(3)

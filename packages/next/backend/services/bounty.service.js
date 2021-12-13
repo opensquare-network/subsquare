@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { safeHtml } = require("../utils/post");
-const { PostTitleLengthLimitation } = require("../constants");
+const { PostTitleLengthLimitation, Day } = require("../constants");
 const {
   getDb: getBusinessDb,
   getBountyCollection,
@@ -69,6 +69,16 @@ async function updatePost(postId, title, content, contentType, author) {
 
 async function getActivePostsOverview() {
   const chain = process.env.CHAIN;
+
+  const bountyCol = await getBountyCollection();
+  const activePosts = await bountyCol
+    .distinct(
+      "bountyIndex",
+      {
+        lastActivityAt: { $gte: new Date(Date.now() - 7 * Day) },
+      }
+    );
+
   const chainBountyCol = await getChainBountyCollection();
   const bounties = await chainBountyCol
     .find(
@@ -78,6 +88,7 @@ async function getActivePostsOverview() {
         "state.state": {
           $nin: ["Active", "PendingPayout", "Rejected", "Claimed"],
         },
+        bountyIndex: { $in: activePosts },
       },
       {
         projection: { timeline: 0 },

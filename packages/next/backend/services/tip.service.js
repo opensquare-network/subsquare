@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { safeHtml } = require("../utils/post");
-const { PostTitleLengthLimitation } = require("../constants");
+const { PostTitleLengthLimitation, Day } = require("../constants");
 const { getDb: getBusinessDb, getTipCollection } = require("../mongo/business");
 const {
   getDb: getChainDb,
@@ -65,11 +65,22 @@ async function updatePost(postId, title, content, contentType, author) {
 
 async function getActivePostsOverview() {
   const chain = process.env.CHAIN;
+
+  const tipCol = await getTipCollection();
+  const activePosts = await tipCol
+    .distinct(
+      "hash",
+      {
+        lastActivityAt: { $gte: new Date(Date.now() - 7 * Day) },
+      }
+    );
+
   const chainTipCol = await getChainTipCollection();
   const tips = await chainTipCol
     .find(
       {
         "state.state": { $in: ["NewTip", "tip"] },
+        hash: { $in: activePosts },
       },
       {
         projection: { timeline: 0 },
