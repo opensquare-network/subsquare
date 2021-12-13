@@ -134,7 +134,11 @@ async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
   }
 
   if ((motion.externalProposals || []).length > 0) {
-    await handleExternalProposal(externalInfo.hash, motion, indexer);
+    await handleExternalProposal(
+      motion.externalProposals[0].hash,
+      motion,
+      indexer
+    );
   }
 }
 

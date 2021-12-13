@@ -18,7 +18,6 @@ async function handleBusinessWhenTechCommMotionProposed(
   const {
     indexer: techCommMotionIndexer,
     hash: techCommMotionHash,
-    externalProposalHash,
     index: techCommMotionIndex,
     authors,
     proposer,
@@ -28,6 +27,7 @@ async function handleBusinessWhenTechCommMotionProposed(
     return;
   }
 
+  const { hash: externalProposalHash } = externalProposals[0];
   const col = await getDemocracyExternalCollection();
   const maybeInDb = await col.findOne({
     proposalHash: externalProposalHash,
