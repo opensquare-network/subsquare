@@ -62,11 +62,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const isMounted = useIsMounted();
 
   useEffect(() => {
-    // Already has the last ongoging status
-    if (referendumStatus) {
-      return;
-    }
-
     api?.query.democracy
       .referendumInfoOf(detail.referendumIndex)
       .then((referendumInfo) => {
