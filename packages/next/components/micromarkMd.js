@@ -118,13 +118,15 @@ const Wrapper = styled.div`
       color: inherit;
     }
 
-    table,
     th,
     td {
       border: 1px solid #e0e4eb;
     }
     table {
       border-collapse: collapse;
+      max-width: 100%;
+      overflow: auto;
+      display: block;
     }
     th {
       padding: 10px 16px;
@@ -164,6 +166,7 @@ export default function MicromarkMd({ md = "", contentVersion = "" }) {
       iframe: ["src", "width", "height"],
       a: ["href", "rel", "target"],
       "*": ["class"],
+      td: ["align"],
     },
   });
 
