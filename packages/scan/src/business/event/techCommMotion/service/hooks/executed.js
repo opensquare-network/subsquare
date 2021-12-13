@@ -26,8 +26,8 @@ async function handleBusinessWhenTechCommMotionExecuted(
     );
   }
 
-  const { isDemocracy, externalProposalHash, proposal } = motion;
-  if (!isDemocracy) {
+  const { externalProposals, proposal } = motion;
+  if ((externalProposals || []).length <= 0) {
     return;
   }
 
@@ -37,6 +37,7 @@ async function handleBusinessWhenTechCommMotionExecuted(
     );
   }
 
+  const { hash: externalProposalHash } = externalProposals[0];
   const referendumStartedEvent = blockEvents.find(
     ({ event }) =>
       event.section === Modules.Democracy &&

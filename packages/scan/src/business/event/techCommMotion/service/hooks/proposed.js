@@ -18,13 +18,13 @@ async function handleBusinessWhenTechCommMotionProposed(
   const {
     indexer: techCommMotionIndexer,
     hash: techCommMotionHash,
-    isDemocracy,
     externalProposalHash,
     index: techCommMotionIndex,
     authors,
     proposer,
+    externalProposals,
   } = motionObj;
-  if (!isDemocracy) {
+  if ((externalProposals || []).length <= 0) {
     return;
   }
 
