@@ -19,12 +19,7 @@ import Actions from "./actions";
 import PostEdit from "./post/postEdit";
 import styled, { css } from "styled-components";
 import Flex from "./styled/flex";
-import dynamic from "next/dynamic";
-
-const Markdown = dynamic(
-  () => import("./markdown").catch((e) => console.error(e)),
-  { ssr: false }
-);
+import Markdown from "./markdown";
 
 const Wrapper = styled.div`
   :hover {
