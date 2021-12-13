@@ -111,6 +111,13 @@ async function handleExternalProposal(proposalHash, motion, indexer) {
     isFinal: false,
     timeline: [timelineItem],
     techCommMotions: [],
+    motions: [
+      {
+        index: motionIndex,
+        hash: motion.hash,
+        indexer: motion.indexer,
+      },
+    ],
   };
 
   await insertDemocracyExternal(externalObj);

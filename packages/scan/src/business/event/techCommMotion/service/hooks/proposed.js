@@ -64,6 +64,7 @@ async function handleBusinessWhenTechCommMotionProposed(
         indexer: techCommMotionIndexer,
       },
     ],
+    motions: [],
   };
 
   await insertDemocracyExternal(externalObj);
