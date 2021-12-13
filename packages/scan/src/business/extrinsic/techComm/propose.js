@@ -1,4 +1,7 @@
 const {
+  insertTechCommMotionPost,
+} = require("../../../mongo/service/business/techCommMotion");
+const {
   extractTechCommMotionBusiness,
 } = require("../../common/techComm/extractBusiness");
 const {
@@ -80,6 +83,7 @@ async function handleTechCommPropose(
 
   await handleBusinessWhenTechCommMotionProposed(obj, extrinsicIndexer);
   await insertTechCommMotion(obj);
+  await insertTechCommMotionPost(extrinsicIndexer, motionHash, null, signer);
 }
 
 module.exports = {
