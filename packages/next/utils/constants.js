@@ -12,7 +12,7 @@ export const DEFAULT_KUSAMA_NODES = [
     url: "wss://pub.elara.patract.io/kusama",
   },
 ];
-export const DEFAULT_KUSAMA_NODE_URL = DEFAULT_KUSAMA_NODES[0].url;
+export const DEFAULT_KUSAMA_NODE_URL = DEFAULT_KUSAMA_NODES[0]?.url;
 
 export const DEFAULT_KARURA_NODES = [
   {
