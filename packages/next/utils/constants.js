@@ -1,4 +1,3 @@
-export const DEFAULT_KUSAMA_NODE_URL = "wss://pub.elara.patract.io/kusama";
 export const DEFAULT_KUSAMA_NODES = [
   {
     name: "Parity",
@@ -13,13 +12,9 @@ export const DEFAULT_KUSAMA_NODES = [
     url: "wss://pub.elara.patract.io/kusama",
   },
 ];
+export const DEFAULT_KUSAMA_NODE_URL = DEFAULT_KUSAMA_NODES[0].url;
 
-export const DEFAULT_KARURA_NODE_URL = "wss://pub.elara.patract.io/karura";
 export const DEFAULT_KARURA_NODES = [
-  {
-    name: "Patract",
-    url: "wss://pub.elara.patract.io/karura",
-  },
   {
     name: "OnFinality",
     url: "wss://karura.api.onfinality.io/public-ws",
@@ -29,21 +24,32 @@ export const DEFAULT_KARURA_NODES = [
     url: "wss://karura.polkawallet.io",
   },
   {
-    name: "Acala",
+    name: "Acala Foundation 0",
     url: "wss://karura-rpc-0.aca-api.network",
   },
+  {
+    name: "Acala Foundation 1",
+    url: "wss://karura-rpc-1.aca-api.network",
+  },
+  {
+    name: "Acala Foundation 2",
+    url: "wss://karura-rpc-2.aca-api.network",
+  },
+  {
+    name: "Acala Foundation 3",
+    url: "wss://karura-rpc-3.aca-api.network",
+  },
 ];
+export const DEFAULT_KARURA_NODE_URL = DEFAULT_KARURA_NODES[0]?.url;
 
-export const DEFAULT_KHALA_NODE_URL = "wss://khala.api.onfinality.io/public-ws";
 export const DEFAULT_KHALA_NODES = [
   {
     name: "OnFinality",
     url: "wss://khala.api.onfinality.io/public-ws",
   },
 ];
+export const DEFAULT_KHALA_NODE_URL = DEFAULT_KHALA_NODES[0]?.url;
 
-export const DEFAULT_BASILISK_NODE_URL =
-  "wss://basilisk.api.onfinality.io/public-ws";
 export const DEFAULT_BASILISK_NODES = [
   {
     name: "OnFinality",
@@ -54,6 +60,7 @@ export const DEFAULT_BASILISK_NODES = [
     url: "wss://rpc-01.basilisk.hydradx.io",
   },
 ];
+export const DEFAULT_BASILISK_NODE_URL = DEFAULT_BASILISK_NODES[0]?.url;
 
 export const DEFAULT_NODES = {
   kusama: DEFAULT_KUSAMA_NODE_URL,
