@@ -129,7 +129,7 @@ async function getActivePostsOverview() {
     }),
   ]);
 
-  const posts = proposals.map((proposal) => {
+  const result = proposals.map((proposal) => {
     const post = proposal.post;
     proposal.post = undefined;
     post.onchainData = proposal;
@@ -137,7 +137,7 @@ async function getActivePostsOverview() {
     return post;
   });
 
-  return posts.filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day).slice(0, 3);
+  return result.filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day).slice(0, 3);
 }
 
 async function getPostsByChain(page, pageSize) {

@@ -115,7 +115,7 @@ async function getActivePostsOverview() {
     }),
   ]);
 
-  const posts = bounties.map((bounty) => {
+  const result = bounties.map((bounty) => {
     const post = bounty.post;
     bounty.post = undefined;
     post.onchainData = bounty;
@@ -123,7 +123,7 @@ async function getActivePostsOverview() {
     return post;
   });
 
-  return posts.filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day).slice(0, 3);
+  return result.filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day).slice(0, 3);
 }
 
 async function getPostsByChain(page, pageSize) {
