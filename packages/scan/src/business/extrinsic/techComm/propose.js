@@ -10,9 +10,6 @@ const {
 const {
   handleBusinessWhenTechCommMotionProposed,
 } = require("../../event/techCommMotion/service/hooks/proposed");
-const {
-  extractBusinessFields,
-} = require("../../event/techCommMotion/service/proposed");
 const { normalizeCall } = require("../../common/motion/utils");
 const {
   Modules,
@@ -74,7 +71,6 @@ async function handleTechCommPropose(
     proposer: signer,
     threshold,
     authors: [signer],
-    ...extractBusinessFields(proposal),
     proposal,
     isFinal: false,
     timeline: [],
