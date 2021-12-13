@@ -4,7 +4,6 @@ import ReactMarkdown from "react-markdown";
 import CodeBlock from "components/codeBlock";
 import ImgRender from "components/markdown/imgRenderForEditor";
 import { matchMdLink } from "utils/index";
-import remarkGfm from "remark-gfm";
 
 const Wrapper = styled.div`
   .markdown-content {
@@ -150,7 +149,6 @@ const Markdown = ({ md, setContent }) => {
           image: ImgRender({ md: displayContent, setContent }),
         }}
         linkTarget="_blank"
-        remarkPlugins={[remarkGfm]}
       >
         {displayContent}
       </ReactMarkdown>
