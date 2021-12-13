@@ -242,7 +242,6 @@ export default function ArticleContent({
 
   return (
     <Wrapper>
-      <MicromarkMd />
       {!isEdit && (
         <>
           <Divider />
