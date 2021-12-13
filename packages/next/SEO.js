@@ -1,15 +1,12 @@
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 
-export default function SEO({title, desc, type = "page"}){
-  const route = useRouter()
-
-  // console.log(`${process.env.SITE_URL}${route.asPath}`)
+export default function SEO({title, desc, url, type = "page"}){
   return <NextSeo
     title={`${title ?? "Subsquare"}`}
     description={desc}
     openGraph={{
-      url: `${process.env.SITE_URL}${route.asPath}`,
+      url,
       title: title,
       description: desc,
       images: [

@@ -42,7 +42,7 @@ const CommentsWrapper = styled.div`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+export default withLoginUserRedux(({ loginUser, detail, comments,url, chain }) => {
   const postId = detail._id;
 
   const editorWrapperRef = useRef(null);
@@ -66,7 +66,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const desc = getMetaDesc(detail, "Discussion");
   return (
     <Layout user={loginUser} chain={chain}>
-      <SEO title={detail?.title} desc={desc}/>
+      <SEO title={detail?.title} desc={desc} url={url}/>
       <Wrapper className="post-content">
         <Back href={`/discussions`} text="Back to Discussions" />
         <DetailItem
