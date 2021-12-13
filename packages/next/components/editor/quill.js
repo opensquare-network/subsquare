@@ -79,11 +79,10 @@ function MyReactQuill({
         [{ header: [1, 2, 3, false] }],
         [{ align: "center" }],
         ["bold", "italic", "underline", "strike"],
-        ["link", "image"],
+        ["link", "image", "video",],
         ["blockquote", "code-block"],
         [{ list: "ordered" }, { list: "bullet" }],
         [{ indent: "-1" }, { indent: "+1" }],
-        ["video"],
       ],
       handlers: {
         //must be an async func so you can pass img link from other component later

@@ -130,7 +130,7 @@ const Hint = styled.p`
   margin: 16px 24px;
   margin-top: 0;
   padding: 12px 16px;
-  font-family: PingFang SC, sans-serif;
+  font-family: Inter, sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
