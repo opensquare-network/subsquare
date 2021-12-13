@@ -1,16 +1,15 @@
 import styled from "styled-components";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-
-import CodeBlock from "components/codeBlock";
-import ImgRender from "components/markdown/imgRenderForEditor";
-import { matchMdLink } from "utils/index";
+import { micromark } from "micromark";
+import { gfm, gfmHtml } from "micromark-extension-gfm";
+import { matchMdLink } from "utils";
+import sanitizeHtml from "sanitize-html";
 
 const Wrapper = styled.div`
-  .markdown-content {
+  &.markdown-content {
     color: #000;
     max-width: 48.5rem;
     word-break: normal;
+
     h1,
     h2,
     h3,
@@ -64,6 +63,7 @@ const Wrapper = styled.div`
 
     p,
     li {
+      max-width: 48.5rem;
       font-size: 0.875rem;
       line-height: 1.375rem;
       word-break: break-word;
@@ -89,10 +89,12 @@ const Wrapper = styled.div`
       padding: 0 0.75rem;
       background: #eee !important;
       border-radius: 0.25rem;
+      white-space: pre-wrap !important;
 
       > code {
         padding: 0 !important;
         background: transparent !important;
+        white-space: pre-wrap !important;
       }
     }
 
@@ -109,6 +111,11 @@ const Wrapper = styled.div`
 
     img {
       max-width: 100%;
+    }
+
+    p a::selection {
+      background-color: transparent !important;
+      color: inherit;
     }
 
     table,
@@ -135,27 +142,35 @@ const Wrapper = styled.div`
   }
 `;
 
-const Markdown = ({ md, setContent }) => {
+export default function MicromarkMd({ md = "", contentVersion = "" }) {
   const matchLinkMd = matchMdLink(md);
-  const displayContent = matchLinkMd.replace(/\n+/g, function (ns) {
-    if (ns.length === 1) return "  " + ns;
-    return ns;
-  });
-  return (
-    <Wrapper>
-      <ReactMarkdown
-        className="markdown-content"
-        components={{
-          code: CodeBlock,
-          image: ImgRender({ md: displayContent, setContent }),
-        }}
-        linkTarget="_blank"
-        remarkPlugins={[remarkGfm]}
-      >
-        {displayContent}
-      </ReactMarkdown>
-    </Wrapper>
-  );
-};
+  let displayContent = matchLinkMd;
+  if (contentVersion === "2") {
+    displayContent = md.replace(/\n+/g, function (ns) {
+      if (ns.length === 1) return "  " + ns;
+      return ns;
+    });
+  }
 
-export default Markdown;
+  const html = micromark(displayContent, {
+    allowDangerousHtml: true,
+    extensions: [gfm()],
+    htmlExtensions: [gfmHtml()],
+  });
+  const cleanHtml = sanitizeHtml(html, {
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img", "iframe"]),
+    allowedAttributes: {
+      img: ["src", "size", "width", "height"],
+      iframe: ["src", "width", "height"],
+      a: ["href", "rel", "target"],
+      "*": ["class"],
+    },
+  });
+
+  return (
+    <Wrapper
+      className="markdown-content"
+      dangerouslySetInnerHTML={{ __html: cleanHtml }}
+    ></Wrapper>
+  );
+}

@@ -7347,7 +7347,7 @@ micromark-util-types@^1.0.0, micromark-util-types@^1.0.1:
   resolved "https://registry.npmjs.org/micromark-util-types/-/micromark-util-types-1.0.2.tgz#f4220fdb319205812f99c40f8c87a9be83eded20"
   integrity sha512-DCfg/T8fcrhrRKTPjRrw/5LLvdGV7BHySf/1LOZx7TzWZdYRjogNtyNq885z3nNallwr3QUKARjqvHqX1/7t+w==
 
-micromark@^3.0.0:
+micromark@^3.0.0, micromark@^3.0.10:
   version "3.0.10"
   resolved "https://registry.npmjs.org/micromark/-/micromark-3.0.10.tgz#1eac156f0399d42736458a14b0ca2d86190b457c"
   integrity sha512-ryTDy6UUunOXy2HPjelppgJ2sNfcPz1pLlMdA6Rz9jPzhLikWXv/irpWV/I2jd68Uhmny7hHxAlAhk4+vWggpg==

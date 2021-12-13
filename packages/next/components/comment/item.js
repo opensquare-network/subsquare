@@ -15,7 +15,7 @@ import User from "components/user";
 import EditInput from "components/editInput";
 import { useRouter } from "next/router";
 import Flex from "../styled/flex";
-import Markdown from "components/markdown";
+import MicromarkMd from "components/micromarkMd";
 
 const Wrapper = styled.div`
   position: relative;
@@ -236,7 +236,7 @@ export default function Item({ user, data, chain, onReply }) {
         <>
           <ContentWrapper>
             {comment.contentType === "markdown" && (
-              <Markdown
+              <MicromarkMd
                 md={comment.content}
                 contentVersion={comment.contentVersion}
               />
