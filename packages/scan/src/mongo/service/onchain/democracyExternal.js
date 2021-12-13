@@ -1,4 +1,5 @@
 const { getDemocracyExternalCollection } = require("../../index");
+const isEmpty = require("lodash.isempty");
 
 async function insertExternal(externalObj) {
   const col = await getDemocracyExternalCollection();
@@ -11,10 +12,8 @@ async function insertExternal(externalObj) {
   await col.insertOne(externalObj);
 }
 
-function extractUpdate(updates, timelineItem) {
-  let update = {
-    $set: updates,
-  };
+function extractUpdate(updates, timelineItem, techCommMotion) {
+  let update = isEmpty(updates) ? null : { $set: updates };
 
   if (timelineItem) {
     update = {
@@ -23,12 +22,27 @@ function extractUpdate(updates, timelineItem) {
     };
   }
 
+  if (techCommMotion) {
+    update = {
+      ...update,
+      $push: { techCommMotions: techCommMotion },
+    };
+  }
+
   return update;
 }
 
-async function updateExternalByHash(proposalHash, updates, timelineItem) {
-  const update = extractUpdate(updates, timelineItem);
+async function updateExternalByHash(
+  proposalHash,
+  updates,
+  timelineItem,
+  techCommMotion
+) {
+  if (isEmpty(updates) && isEmpty(timelineItem) && isEmpty(techCommMotion)) {
+    return;
+  }
 
+  const update = extractUpdate(updates, timelineItem, techCommMotion);
   const col = await getDemocracyExternalCollection();
   await col.updateOne({ proposalHash, isFinal: false }, update);
 }

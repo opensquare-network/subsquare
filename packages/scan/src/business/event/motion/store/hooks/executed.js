@@ -130,6 +130,7 @@ async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
     state,
     isFinal: false,
     timeline: [timelineItem],
+    techCommMotions: [],
   };
 
   await insertDemocracyExternal(externalObj);

@@ -34,10 +34,10 @@ async function handleBusinessWhenTechCommMotionProposed(
     isFinal: false,
   });
   if (maybeInDb) {
-    await updateDemocracyExternalByHash(externalProposalHash, {
-      techCommMotionIndex,
-      techCommMotionHash,
-      techCommMotionIndexer,
+    await updateDemocracyExternalByHash(externalProposalHash, null, null, {
+      index: techCommMotionIndex,
+      hash: techCommMotionHash,
+      indexer: techCommMotionIndexer,
     });
     return;
   }
@@ -57,6 +57,13 @@ async function handleBusinessWhenTechCommMotionProposed(
     authors,
     isFinal: true,
     timeline: [],
+    techCommMotions: [
+      {
+        index: techCommMotionIndex,
+        hash: techCommMotionHash,
+        indexer: techCommMotionIndexer,
+      },
+    ],
   };
 
   await insertDemocracyExternal(externalObj);
