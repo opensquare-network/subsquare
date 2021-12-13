@@ -14,6 +14,9 @@ import { to404 } from "utils/serverSideUtil";
 import { TYPE_POST } from "utils/viewConstants";
 import NextHead from "../../components/nextHead";
 import { getMetaDesc } from "../../utils/viewfuncs";
+import { NextSeo } from "next-seo";
+import SEO from "../../SEO";
+import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -63,11 +66,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const desc = getMetaDesc(detail, "Discussion");
   return (
     <Layout user={loginUser} chain={chain}>
-      <NextHead
-        title={`${detail.title ?? "Subsquare"}`}
-        desc={desc}
-        type={"post"}
-      />
+      <SEO title={detail?.title} desc={desc}/>
       <Wrapper className="post-content">
         <Back href={`/discussions`} text="Back to Discussions" />
         <DetailItem
@@ -103,7 +102,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-
+  const url = `${process.env.SITE_URL}${context.req.url}`;
   const { id, page, page_size: pageSize } = context.query;
 
   const [{ result: detail }] = await Promise.all([
@@ -126,6 +125,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
+      url,
     },
   };
 });
