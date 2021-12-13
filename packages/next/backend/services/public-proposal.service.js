@@ -1,11 +1,12 @@
 const { ObjectId } = require("mongodb");
 const { safeHtml } = require("../utils/post");
-const { PostTitleLengthLimitation } = require("../constants");
+const { PostTitleLengthLimitation, Day } = require("../constants");
 const { getDb: getBusinessDb, getDemocracyCollection } = require("../mongo/business");
 const {
   getDb: getChainDb,
   getPublicProposalCollection: getChainPublicProposalCollection,
   getPreImageCollection,
+  getPublicProposalCollection,
 } = require("../mongo/chain");
 const { getDb: getCommonDb, lookupUser, getUserCollection } = require("../mongo/common");
 const { HttpError } = require("../exc");
@@ -71,6 +72,7 @@ async function updatePost(
 
 async function getActivePostsOverview() {
   const chain = process.env.CHAIN;
+
   const chainDemocracyCol = await getChainPublicProposalCollection();
   const proposals = await chainDemocracyCol.find(
     {
@@ -78,10 +80,9 @@ async function getActivePostsOverview() {
         $nin: [
           "Tabled",
         ]
-      }
+      },
     })
     .sort({ "indexer.blockHeight": -1 })
-    .limit(3)
     .toArray();
 
   const commonDb = await getCommonDb();
@@ -112,13 +113,15 @@ async function getActivePostsOverview() {
     }),
   ]);
 
-  return proposals.map(proposal => {
+  const result = proposals.map(proposal => {
     const post = proposal.post;
     proposal.post = undefined;
     post.onchainData = proposal;
     post.state = proposal.state?.state;
     return post;
   });
+
+  return result.filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day).slice(0, 3);
 }
 
 async function getPostsByChain(page, pageSize) {

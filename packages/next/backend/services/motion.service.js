@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { HttpError } = require("../exc");
-const { ContentType } = require("../constants");
+const { ContentType, Day } = require("../constants");
 const { PostTitleLengthLimitation } = require("../constants");
 const { safeHtml, extractMentions } = require("../utils/post");
 const { toUserPublicInfo } = require("../utils/user");
@@ -231,10 +231,11 @@ async function getActiveMotionsOverview() {
       "state.state": { $nin: ["Approved", "Disapproved", "Executed"] },
     })
     .sort({ "indexer.blockHeight": -1 })
-    .limit(3)
     .toArray();
 
-  return await loadPostForMotions(motions);
+  const result = await loadPostForMotions(motions);
+
+  return result.filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day).slice(0, 3);
 }
 
 async function getMotionsByChain(page, pageSize) {

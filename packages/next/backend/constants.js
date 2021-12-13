@@ -24,6 +24,8 @@ const ContentType = Object.freeze({
 
 const PostTitleLengthLimitation = 160;
 
+const Day = 24 * 60 * 60 * 1000;
+
 module.exports = {
   SupportChains,
   SS58Format,
@@ -31,4 +33,5 @@ module.exports = {
   PostTitleLengthLimitation,
   chainStatusRoom,
   FEED_INTERVAL: 6000,
+  Day,
 };
