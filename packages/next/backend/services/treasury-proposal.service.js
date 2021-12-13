@@ -69,28 +69,17 @@ async function updatePost(postId, title, content, contentType, author) {
 async function getActivePostsOverview() {
   const chain = process.env.CHAIN;
 
-  const treasuryProposalCol = await getTreasuryProposalCollection();
-  const activePosts = await treasuryProposalCol
-    .distinct(
-      "proposalIndex",
-      {
-        lastActivityAt: { $gte: new Date(Date.now() - 7 * Day) },
-      }
-    );
-
   const chainProposalCol = await getChainTreasuryProposalCollection();
   const proposals = await chainProposalCol
     .find(
       {
         "state.state": { $nin: ["Awarded", "Approved", "Rejected"] },
-        proposalIndex: { $in: activePosts },
       },
       {
         projection: { timeline: 0 },
       }
     )
     .sort({ "indexer.blockHeight": -1 })
-    .limit(3)
     .toArray();
 
   const commonDb = await getCommonDb();
@@ -121,13 +110,15 @@ async function getActivePostsOverview() {
     }),
   ]);
 
-  return proposals.map((proposal) => {
+  const posts = proposals.map((proposal) => {
     const post = proposal.post;
     proposal.post = undefined;
     post.onchainData = proposal;
     post.state = proposal.state?.state;
     return post;
   });
+
+  return posts.filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day).slice(0, 3);
 }
 
 async function getPostsByChain(page, pageSize) {

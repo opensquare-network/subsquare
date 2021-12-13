@@ -91,25 +91,14 @@ async function updatePost(postId, title, content, contentType, author) {
 async function getActivePostsOverview() {
   const chain = process.env.CHAIN;
 
-  const democracyCol = await getDemocracyCollection();
-  const activePosts = await democracyCol
-    .distinct(
-      "referendumIndex",
-      {
-        lastActivityAt: { $gte: new Date(Date.now() - 7 * Day) },
-      }
-    );
-
   const chainDemocracyCol = await getChainReferendumCollection();
   const proposals = await chainDemocracyCol
     .find({
       "state.state": {
         $nin: ["Executed", "NotPassed", "Passed", "Cancelled"],
       },
-      referendumIndex: { $in: activePosts },
     })
     .sort({ "indexer.blockHeight": -1 })
-    .limit(3)
     .toArray();
 
   const commonDb = await getCommonDb();
@@ -140,13 +129,15 @@ async function getActivePostsOverview() {
     }),
   ]);
 
-  return proposals.map((proposal) => {
+  const posts = proposals.map((proposal) => {
     const post = proposal.post;
     proposal.post = undefined;
     post.onchainData = proposal;
     post.state = proposal.state?.state;
     return post;
   });
+
+  return posts.filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day).slice(0, 3);
 }
 
 async function getPostsByChain(page, pageSize) {
