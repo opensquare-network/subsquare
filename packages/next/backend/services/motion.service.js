@@ -233,9 +233,9 @@ async function getActiveMotionsOverview() {
     .sort({ "indexer.blockHeight": -1 })
     .toArray();
 
-  const posts = await loadPostForMotions(motions);
+  const result = await loadPostForMotions(motions);
 
-  return posts.filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day).slice(0, 3);
+  return result.filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day).slice(0, 3);
 }
 
 async function getMotionsByChain(page, pageSize) {
