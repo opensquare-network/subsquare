@@ -33,11 +33,11 @@ export const DEFAULT_KARURA_NODES = [
   },
   {
     name: "Acala Foundation 2",
-    url: "wss://karura-rpc-2.aca-api.network",
+    url: "wss://karura-rpc-2.aca-api.network/ws",
   },
   {
     name: "Acala Foundation 3",
-    url: "wss://karura-rpc-3.aca-api.network",
+    url: "wss://karura-rpc-3.aca-api.network/ws",
   },
 ];
 export const DEFAULT_KARURA_NODE_URL = DEFAULT_KARURA_NODES[0]?.url;
