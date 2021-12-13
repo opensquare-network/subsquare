@@ -19,7 +19,7 @@ import Actions from "./actions";
 import PostEdit from "./post/postEdit";
 import styled, { css } from "styled-components";
 import Flex from "./styled/flex";
-import Markdown from "./markdown";
+import MicromarkMd from "./micromarkMd";
 
 const Wrapper = styled.div`
   :hover {
@@ -242,6 +242,7 @@ export default function ArticleContent({
 
   return (
     <Wrapper>
+      <MicromarkMd />
       {!isEdit && (
         <>
           <Divider />
@@ -276,7 +277,10 @@ export default function ArticleContent({
             </GreyWrapper>
           )}
           {post.contentType === "markdown" && (
-            <Markdown md={post.content} contentVersion={post.contentVersion} />
+            <MicromarkMd
+              md={post.content}
+              contentVersion={post.contentVersion}
+            />
           )}
           {post.contentType === "html" && <HtmlRender html={post.content} />}
           {post.createdAt !== post.updatedAt && (
