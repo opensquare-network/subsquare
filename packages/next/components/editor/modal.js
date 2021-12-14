@@ -19,8 +19,8 @@ const Wrapper = styled.div`
   left: 50%;
   margin-top: -200px;
   margin-left: -200px;
-  padding-bottom: 16px;
-  width: 400px;
+  padding-bottom: 24px;
+  width: 360px;
   @media screen and (max-width: 768px) {
     width: 343px;
     margin-top: -50px;
@@ -32,7 +32,7 @@ const Wrapper = styled.div`
   border-radius: 8px;
 `;
 const Title = styled(Flex)`
-  padding: 24px 16px 12px 16px;
+  padding: 24px 24px 16px 24px;
   justify-content: space-between;
   font-size: 14px;
   font-weight: bold;
@@ -43,7 +43,7 @@ const Title = styled(Flex)`
 `;
 
 const FormWrapper = styled.div`
-  padding: 0 24px 24px 24px;
+  padding: 0 24px 12px 24px;
 
   label {
     display: flex;
@@ -61,6 +61,7 @@ const FormWrapper = styled.div`
 const TextArea = styled.textarea`
   font-family: Inter, serif;
   width: 100%;
+  min-height: 66px;
   font-size: 14px;
   line-height: 14px;
   padding: 12px 16px;
@@ -127,8 +128,9 @@ const Label = styled.div`
 
 const Hint = styled.p`
   margin: 16px 24px;
+  margin-top: 0;
   padding: 12px 16px;
-  font-family: PingFang SC, sans-serif;
+  font-family: Inter, sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;

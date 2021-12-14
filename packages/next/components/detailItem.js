@@ -5,14 +5,12 @@ import Link from "next/link";
 import { timeDurationFromNow } from "utils";
 import PostEdit from "components/post/postEdit";
 import nextApi from "services/nextApi";
-import { addToast } from "store/reducers/toastSlice";
 import User from "components/user";
-import { useDispatch } from "react-redux";
 import TriangleRight from "../public/imgs/icons/arrow-triangle-right.svg";
 import Tag from "./tag";
 import Flex from "./styled/flex";
 import { shadow_100 } from "../styles/componentCss";
-import { toApiType } from "utils/viewfuncs";
+import { getPostUpdatedAt, toApiType } from "utils/viewfuncs";
 import {
   TYPE_DEMOCRACY_REFERENDUM,
   TYPE_DEMOCRACY_EXTERNAL,
@@ -256,6 +254,8 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
     }
   };
 
+  const postUpdatedTime = getPostUpdatedAt(post);
+
   return (
     <Wrapper>
       {!isEdit && (
@@ -355,12 +355,10 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                   </TypeWrapper>
                 </div>
               )}
-              {(post.indexer?.blockTime || post.createdAt) && (
+              {postUpdatedTime && (
                 <Info>
-                  Created{" "}
-                  {timeDurationFromNow(
-                    post.indexer?.blockTime || post.createdAt
-                  )}
+                  Updated{" "}
+                  {timeDurationFromNow(postUpdatedTime)}
                 </Info>
               )}
               {post.commentsCount > -1 && (
