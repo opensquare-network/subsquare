@@ -66,7 +66,7 @@ function MyReactQuill({
   onChange,
   onFocus,
   onBlur,
-  setModalInsetImgFunc,
+  setModalInsetFunc,
   users = [],
   setQuillRef = null,
 }) {
@@ -79,18 +79,17 @@ function MyReactQuill({
         [{ header: [1, 2, 3, false] }],
         [{ align: "center" }],
         ["bold", "italic", "underline", "strike"],
-        ["link", "image"],
+        ["link", "image", "video",],
         ["blockquote", "code-block"],
         [{ list: "ordered" }, { list: "bullet" }],
         [{ indent: "-1" }, { indent: "+1" }],
-        ["video"],
       ],
       handlers: {
         //must be an async func so you can pass img link from other component later
         image: async function () {
           const that = this;
           new Promise((resolve) => {
-            setModalInsetImgFunc(function () {
+            setModalInsetFunc(function () {
               //pass resolve to ImgModal component so it can be called as resolve(link) in ImgModal, see in ImgModal.txs line 84
               return resolve;
             });
@@ -103,10 +102,10 @@ function MyReactQuill({
         video: async function () {
           const that = this;
           new Promise((resolve) => {
-            setModalInsetImgFunc(function () {
+            setModalInsetFunc(function () {
               //pass resolve to ImgModal component so it can be called as resolve(link) in ImgModal, see in ImgModal.txs line 84
               return resolve;
-            });
+            }, "video");
           }).then((link) => {
             const videoLink = link?.replace("watch?v=", "embed/");
             that.quill.focus();

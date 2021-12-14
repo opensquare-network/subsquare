@@ -9,7 +9,7 @@ import nextApi from "services/nextApi";
 import ErrorText from "components/ErrorText";
 import QuillEditor from "../editor/quillEditor";
 import HtmlRender from "../post/htmlRender";
-import UploadImgModal from "../editor/imageModal";
+import InsertContentsModal from "../editor/modal";
 import { fetchUserProfile } from "store/reducers/userSlice";
 import { useDispatch } from "react-redux";
 import Relative from "components/styled/relative";
@@ -76,8 +76,9 @@ function Input(
   const dispatch = useDispatch();
   const router = useRouter();
   const [showPreview, setShowPreview] = useState(false);
-  const [showImgModal, setShowImgModal] = useState(false);
-  const [insetQuillImgFunc, setInsetQuillImgFunc] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState("image");
+  const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
 
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
@@ -156,10 +157,11 @@ function Input(
   return (
     <Wrapper>
       {contentType === "html" && (
-        <UploadImgModal
-          showImgModal={showImgModal}
-          setShowImgModal={setShowImgModal}
-          insetQuillImgFunc={insetQuillImgFunc}
+        <InsertContentsModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          insetQuillContentsFunc={insetQuillContentsFunc}
+          type={modalType}
         />
       )}
       <Relative ref={ref}>
@@ -177,9 +179,10 @@ function Input(
             {...{ content, users }}
             setContent={onInputChange}
             height={114}
-            setModalInsetImgFunc={(insetImgFunc) => {
-              setShowImgModal(true);
-              setInsetQuillImgFunc(insetImgFunc);
+            setModalInsetFunc={(insetFunc, type) => {
+              setModalType(type);
+              setShowModal(true);
+              setInsetQuillContentsFunc(insetFunc);
             }}
             setQuillRef={setQuillRef}
           />

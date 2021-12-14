@@ -4,7 +4,7 @@ import Flex from "../styled/flex";
 
 const Shade = styled.div`
   z-index: 10;
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   top: 0;
@@ -19,8 +19,8 @@ const Wrapper = styled.div`
   left: 50%;
   margin-top: -200px;
   margin-left: -200px;
-  padding-bottom: 16px;
-  width: 400px;
+  padding-bottom: 24px;
+  width: 360px;
   @media screen and (max-width: 768px) {
     width: 343px;
     margin-top: -50px;
@@ -32,7 +32,7 @@ const Wrapper = styled.div`
   border-radius: 8px;
 `;
 const Title = styled(Flex)`
-  padding: 24px 16px 12px 16px;
+  padding: 24px 24px 16px 24px;
   justify-content: space-between;
   font-size: 14px;
   font-weight: bold;
@@ -43,7 +43,7 @@ const Title = styled(Flex)`
 `;
 
 const FormWrapper = styled.div`
-  padding: 0 24px 24px 24px;
+  padding: 0 24px 12px 24px;
 
   label {
     display: flex;
@@ -61,6 +61,7 @@ const FormWrapper = styled.div`
 const TextArea = styled.textarea`
   font-family: Inter, serif;
   width: 100%;
+  min-height: 66px;
   font-size: 14px;
   line-height: 14px;
   padding: 12px 16px;
@@ -126,13 +127,17 @@ const Label = styled.div`
 `;
 
 const Hint = styled.p`
-  margin-top: 0.5rem;
-  font-family: PingFang SC, sans-serif;
+  margin: 16px 24px;
+  margin-top: 0;
+  padding: 12px 16px;
+  font-family: Inter, sans-serif;
   font-style: normal;
   font-weight: normal;
-  font-size: 13px;
-  line-height: 16px;
-  color: #c8cbd0;
+  font-size: 14px;
+  line-height: 19.6px;
+  color: #6848FF;
+  background: #F5F2FF;
+  border-radius: 4px;
 `;
 
 const FileName = styled.p`
@@ -160,11 +165,13 @@ const FileName = styled.p`
   }
 `;
 
-function UploadImgModal({
-  showImgModal,
-  setShowImgModal,
-  insetQuillImgFunc: resolveInsertImgPromise,
-}) {
+
+function InsertContentsModal({
+                               showModal,
+                               setShowModal,
+                               insetQuillContentsFunc: resolveInsertPromise,
+                               type="image",
+                             }) {
   const [source, setSource] = useState("remote");
   const [link, setLink] = useState("");
 
@@ -178,8 +185,8 @@ function UploadImgModal({
     try {
       if (source === "remote") {
         if (link) {
-          resolveInsertImgPromise(link);
-          setShowImgModal(false);
+          resolveInsertPromise(link);
+          setShowModal(false);
           setLink("");
         } else {
           // dispatch(
@@ -196,9 +203,9 @@ function UploadImgModal({
   };
 
   const onClose = () => {
-    setShowImgModal(false);
+    setShowModal(false);
   };
-  if (!showImgModal) {
+  if (!showModal) {
     return null;
   }
 
@@ -222,10 +229,12 @@ function UploadImgModal({
           </svg>
         </Title>
 
+        {type==="video" && <Hint>Embedding Youtube video only</Hint>}
+
         <FormWrapper>
           <TextArea
             value={link}
-            placeholder="Please fill available URL..."
+            placeholder={`Please fill available ${type} URL...`}
             onChange={onChange}
           />
         </FormWrapper>
@@ -238,4 +247,4 @@ function UploadImgModal({
   );
 }
 
-export default UploadImgModal;
+export default InsertContentsModal;

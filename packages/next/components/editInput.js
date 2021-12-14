@@ -7,7 +7,7 @@ import PreviewMD from "components/create/previewMD";
 import ErrorText from "components/ErrorText";
 import QuillEditor from "./editor/quillEditor";
 import HtmlRender from "./post/htmlRender";
-import UploadImgModal from "./editor/imageModal";
+import InsertContentsModal from "./editor/modal";
 
 const Wrapper = styled.div`
   margin-top: 8px;
@@ -61,8 +61,9 @@ export default function EditInput({
   const [content, setContent] = useState(editContent);
   const [contentType, setContentType] = useState(editContentType);
   const [showPreview, setShowPreview] = useState(false);
-  const [showImgModal, setShowImgModal] = useState(false);
-  const [insetQuillImgFunc, setInsetQuillImgFunc] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState("image");
+  const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
 
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
@@ -97,10 +98,11 @@ export default function EditInput({
   return (
     <Wrapper>
       {contentType === "html" && (
-        <UploadImgModal
-          showImgModal={showImgModal}
-          setShowImgModal={setShowImgModal}
-          insetQuillImgFunc={insetQuillImgFunc}
+        <InsertContentsModal
+          showModal={showModal}
+          type={modalType}
+          setShowModal={setShowModal}
+          insetQuillContentsFunc={insetQuillContentsFunc}
         />
       )}
       <InputWrapper>
@@ -118,9 +120,10 @@ export default function EditInput({
             content={content}
             setContent={onInputChange}
             height={114}
-            setModalInsetImgFunc={(insetImgFunc) => {
-              setShowImgModal(true);
-              setInsetQuillImgFunc(insetImgFunc);
+            setModalInsetFunc={(insetImgFunc, type) => {
+              setModalType(type);
+              setShowModal(true);
+              setInsetQuillContentsFunc(insetImgFunc);
             }}
             setQuillRef={setQuillRef}
           />

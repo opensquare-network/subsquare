@@ -242,70 +242,17 @@ function shortTechId(external) {
 }
 
 export default function DetailItem({ data, user, chain, onReply, type }) {
-  const dispatch = useDispatch();
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
-  const [thumbUpLoading, setThumbUpLoading] = useState(false);
   if (!post) {
     return null;
   }
-
-  const isLoggedIn = !!user;
-  let ownPost = false;
-  if (type === "post") {
-    ownPost = isLoggedIn && post.author?.username === user.username;
-  } else {
-    ownPost =
-      isLoggedIn &&
-      !!(user.addresses || []).find((item) =>
-        post?.onchainData?.authors?.includes(item.address)
-      );
-  }
-
-  const thumbUp =
-    isLoggedIn &&
-    post.reactions?.findIndex((r) => r.user?.username === user.username) > -1;
 
   const updatePost = async () => {
     const url = `${toApiType(type)}/${post._id}`;
     const { result: newPost } = await nextApi.fetch(url);
     if (newPost) {
       setPost(newPost);
-    }
-  };
-
-  const toggleThumbUp = async () => {
-    if (isLoggedIn && !ownPost && !thumbUpLoading) {
-      setThumbUpLoading(true);
-      try {
-        let result, error;
-
-        if (thumbUp) {
-          ({ result, error } = await nextApi.delete(
-            `${toApiType(type)}/${post._id}/reaction`
-          ));
-        } else {
-          ({ result, error } = await nextApi.put(
-            `${toApiType(type)}/${post._id}/reaction`,
-            { reaction: 1 },
-            { credentials: "include" }
-          ));
-        }
-
-        if (result) {
-          await updatePost();
-        }
-        if (error) {
-          dispatch(
-            addToast({
-              type: "error",
-              message: error.message,
-            })
-          );
-        }
-      } finally {
-        setThumbUpLoading(false);
-      }
     }
   };
 

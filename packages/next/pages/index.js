@@ -75,6 +75,9 @@ export default withLoginUserRedux(({ overview, loginUser, chain }) => {
     },
   ];
 
+  // Sort the items with length = 0 to the end of the list
+  overviewData.sort((a, b) => (a.items.length > 0 && b.items.length > 0) ? 0 : b.items.length - a.items.length);
+
   return (
     <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
       <NextHead title={`Subsquare`} desc={`Subsquare`} />
