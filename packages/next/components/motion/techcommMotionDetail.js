@@ -258,7 +258,7 @@ export default function TechcommMotionDetail({ motion, chain,onReply, loginUser 
             setPost={setPost}
             user={loginUser}
             onReply={onReply}
-            type="motion"
+            type={TYPE_TECH_COMM_MOTION}
           />
         </div>
       </Wrapper>
