@@ -1,10 +1,11 @@
-const { extractMotionCalls } = require("../../common/call/extractMotionCalls");
+const {
+  extractCouncilMotionBusiness,
+} = require("../../common/call/extractMotionCalls");
 const { insertMotionPost } = require("../../../mongo/service/business/motion");
 const {
   handleBusinessWhenMotionProposed,
 } = require("../../event/motion/store/hooks/proposed");
 const { insertMotion } = require("../../../mongo/service/onchain/motion");
-const { extractBusinessFields } = require("../../event/motion/store/proposed");
 const { normalizeCall } = require("../../common/motion/utils");
 const {
   Modules,
@@ -60,12 +61,13 @@ async function handleCouncilPropose(
   const proposalCall = call.args[1];
   const proposal = normalizeCall(proposalCall);
 
-  const { treasuryProposals, treasuryBounties } = await extractMotionCalls(
-    proposalCall,
-    signer,
-    extrinsicIndexer,
-    extrinsicEvents
-  );
+  const { treasuryProposals, treasuryBounties, externalProposals } =
+    await extractCouncilMotionBusiness(
+      proposalCall,
+      signer,
+      extrinsicIndexer,
+      extrinsicEvents
+    );
 
   const obj = {
     indexer: extrinsicIndexer,
@@ -73,12 +75,12 @@ async function handleCouncilPropose(
     proposer: signer,
     threshold,
     authors: [signer],
-    ...extractBusinessFields(proposal),
     proposal,
     isFinal: false,
     timeline: [],
     treasuryProposals,
     treasuryBounties,
+    externalProposals,
   };
 
   await insertMotion(obj);

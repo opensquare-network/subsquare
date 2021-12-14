@@ -24,6 +24,8 @@ let treasuryProposalCol = null;
 let democracyCol = null;
 let bountyCol = null;
 
+let techCommMotion = null;
+
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
     useUnifiedTopology: true,
@@ -35,6 +37,8 @@ async function initDb() {
   treasuryProposalCol = db.collection("treasuryProposal");
   democracyCol = db.collection("democracy");
   bountyCol = db.collection("bounty");
+
+  techCommMotion = db.collection("techCommMotion");
 
   await _createIndexes();
 }
@@ -79,10 +83,16 @@ async function getBountyCollection() {
   return bountyCol;
 }
 
+async function getTechCommCollection() {
+  await tryInit(techCommMotion);
+  return techCommMotion;
+}
+
 module.exports = {
   getBusinessTipCollection: getTipCollection,
   getBusinessMotionCollection: getMotionCollection,
   getBusinessTreasuryProposalCollection: getTreasuryProposalCollection,
   getBusinessDemocracy: getDemocracy,
   getBusinessBountyCollection: getBountyCollection,
+  getBusinessTechCommMotionCollection: getTechCommCollection,
 };

@@ -1,6 +1,6 @@
+const { karuraEndpoint } = require("../../../utils/constants");
 const { onFinalityPolkadot } = require("../../../utils/constants");
 const { onFinalityKusama } = require("../../../utils/constants");
-const { onFinalityKarura } = require("../../../utils/constants");
 const { getMotionProposalCall } = require("./proposalStorage");
 const { setSpecHeights } = require("../../../chain/specs");
 const { setApi } = require("../../../api");
@@ -112,7 +112,7 @@ describe("test get karura ", () => {
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider(onFinalityKarura, 1000);
+    provider = new WsProvider(karuraEndpoint, 1000);
     api = await ApiPromise.create({
       provider,
       typesBundle: { ...typesBundleForPolkadot },
