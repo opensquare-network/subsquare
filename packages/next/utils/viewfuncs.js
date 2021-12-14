@@ -53,13 +53,14 @@ function getTechCommMotionId(motion) {
 
 export const toTechCommMotionListItem = (chain, item) => ({
   ...item,
-  title: `${item.proposal.section}.${item.proposal.method}`,
+  title: `${item?.onchainData?.proposal?.section}.${item?.onchainData?.proposal?.method}`,
   author: item.author ?? {
     username: addressEllipsis(item.proposer),
     addresses: [{ chain, address: item.proposer }],
   },
-  status: item.state?.state ?? "Unknown",
+  status: item?.state ?? "Unknown",
   detailLink: `/techcomm/proposal/${getTechCommMotionId(item)}`,
+  time: getPostUpdatedAt(item),
 });
 
 export const toTreasuryProposalListItem = (chain, item) => ({
