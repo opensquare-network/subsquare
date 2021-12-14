@@ -278,7 +278,7 @@ export default function TechcommMotionDetail({ motion, chain,onReply, loginUser 
               />
             </>,
           ],
-          ["Index", motion?.onchainData?.externalProposals?.motionIndex],
+          ...[ Number.isInteger(motion?.motionIndex) ?  ["Index", motion?.motionIndex] : null ],
           ["Threshold", motion?.onchainData?.threshold],
           ["Hash", motion.hash],
           [<MotionProposal motion={motion?.onchainData} chain={chain} />],
