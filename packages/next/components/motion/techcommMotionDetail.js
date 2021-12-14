@@ -253,6 +253,7 @@ export default function TechcommMotionDetail({ motion, chain,onReply, loginUser 
             {motion.status && <StatusWrapper>{motion.status}</StatusWrapper>}
           </FlexWrapper>
           <ArticleContent
+            chain={chain}
             post={post}
             setPost={setPost}
             user={loginUser}
