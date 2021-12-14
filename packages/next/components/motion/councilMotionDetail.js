@@ -14,7 +14,7 @@ import findLastIndex from "lodash.findlastindex";
 import Flex from "../styled/flex";
 import { shadow_100 } from "../../styles/componentCss";
 import ArticleContent from "../articleContent";
-import { isMotionCompleted } from "../../utils/viewfuncs";
+import { getPostUpdatedAt, isMotionCompleted } from "../../utils/viewfuncs";
 import { withLoginUserRedux } from "../../lib";
 import { useState } from "react";
 import CapitalText from "../capitalText";
@@ -152,6 +152,7 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
   const decimals = node.decimals;
   const symbol = node.symbol;
 
+  const postUpdateTime = getPostUpdatedAt(post);
   const timeline = createMotionTimelineData(motion.onchainData);
 
   let timelineData;
@@ -261,12 +262,10 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
               />
               {motion.isTreasury && <SectionTag name={"Treasury"} />}
               {motion.isDemocracy && <SectionTag name={"Democracy"} />}
-              {(motion.indexer?.blockTime || motion.createdAt) && (
+              {postUpdateTime && (
                 <Info>
-                  Created{" "}
-                  {timeDurationFromNow(
-                    motion.indexer?.blockTime || motion.createdAt
-                  )}
+                  Updated{" "}
+                  {timeDurationFromNow(postUpdateTime)}
                 </Info>
               )}
             </DividerWrapper>
