@@ -9,19 +9,19 @@ router.get("/tech-comm/motions", motionsController.getMotions);
 
 router.get("/tech-comm/motions/:postId", motionsController.getMotionById);
 
-router.post("/motions/:postId/comments", requireAuth, requireVerify, motionsController.postComment);
+router.post("/tech-comm/motions/:postId/comments", requireAuth, requireVerify, motionsController.postComment);
 
-router.get("/motions/:postId/comments", motionsController.getComments);
+router.get("/tech-comm/motions/:postId/comments", motionsController.getComments);
 
 router.put(
-  "/motions/:postId/reaction",
+  "/tech-comm/motions/:postId/reaction",
   requireAuth,
   requireVerify,
   motionsController.setPostReaction
 );
 
 router.delete(
-  "/motions/:postId/reaction",
+  "/tech-comm/motions/:postId/reaction",
   requireAuth,
   motionsController.unsetPostReaction
 );
