@@ -12,11 +12,14 @@ const {
 const {
   getDb: getCommonDb,
   getUserCollection,
+  lookupUser,
 } = require("../mongo/common");
 const {
   getDb: getBusinessDb,
   getDemocracyCollection,
   getTechCommMotionCollection,
+  getCommentCollection,
+  getReactionCollection,
 } = require("../mongo/business");
 const mailService = require("./mail.service");
 
@@ -264,7 +267,7 @@ async function getMotionById(postId) {
     chainExternalCol
       .find({
         proposalHash: {
-          $in: chainMotion.externalProposals.map((p) => p.proposalHash),
+          $in: chainMotion.externalProposals.map((p) => p.hash),
         },
       })
       .sort({ "indexer.blockHeight": 1 })
@@ -279,10 +282,12 @@ async function getMotionById(postId) {
     hash: chainMotion.hash,
     height: chainMotion.indexer.blockHeight,
     indexer: chainMotion.indexer,
-    onchainData: chainMotion,
+    onchainData: {
+      ...chainMotion,
+      externalProposals,
+    },
     state: chainMotion.state?.state,
     author,
-    externalProposals,
   };
 }
 
