@@ -288,6 +288,7 @@ async function getMotionById(postId) {
     },
     state: chainMotion.state?.state,
     author,
+    reactions,
   };
 }
 
