@@ -47,17 +47,17 @@ async function findMotionPost(chainMotion) {
   let postType;
 
   if (chainMotion.externalProposals?.length === 0) {
-    const externalProposalHash = chainMotion.externalProposals[0].proposalHash;
-    const height = chainMotion.externalProposals[0].height;
+    const externalProposalHash = chainMotion.externalProposals[0].hash;
 
     postCol = await getDemocracyCollection();
-    post = await postCol.findOne({ proposalHash: externalProposalHash, height });
+    post = await postCol.findOne({ externalProposalHash });
     postType = "democracy";
   } else {
-    const motionIndex = chainMotion.index;
+    const hash = chainMotion.hash;
+    const height = chainMotion.indexer.blockHeight;
 
     postCol = await getTechCommMotionCollection();
-    post = await postCol.findOne({ motionIndex });
+    post = await postCol.findOne({ hash, height });
     postType = "techCommMotion";
   }
 
@@ -68,8 +68,7 @@ async function loadPostForMotions(chainMotions) {
   const chain = process.env.CHAIN;
   for (const motion of chainMotions) {
     if (motion.externalProposals?.length === 1) {
-      motion.externalProposalHash = motion.externalProposals[0].proposalHash;
-      motion.height = motion.externalProposals[0].height;
+      motion.externalProposalHash = motion.externalProposals[0].hash;
     }
   }
 
@@ -86,19 +85,19 @@ async function loadPostForMotions(chainMotions) {
         foreignField: `${chain}Address`,
         map: toUserPublicInfo,
       }),
-      businessDb.compoundLookupOne({
+      businessDb.lookupOne({
         from: "democracy",
         for: chainMotions,
         as: "democracyPost",
-        compoundLocalFields: ["externalProposalHash", "height"],
-        compoundForeignFields: ["proposalHash", "height"],
+        localField: "externalProposalHash",
+        foreignField: "externalProposalHash",
       }),
-      businessDb.lookupOne({
+      businessDb.compoundLookupOne({
         from: "techCommMotion",
         for: chainMotions,
         as: "motionPost",
-        localField: "index",
-        foreignField: "motionIndex",
+        compoundLocalFields: ["hash", "indexer.blockHeight"],
+        compoundForeignFields: ["hash", "height"],
       }),
     ]
   );
@@ -129,9 +128,9 @@ async function loadPostForMotions(chainMotions) {
     post._id = motion._id;
     post.proposer = motion.proposer;
     post.motionIndex = motion.index;
-    post.motionHash = motion.hash;
-    post.motionHeight = motion.indexer.blockHeight;
-    post.motionIndexer = motion.indexer;
+    post.hash = motion.hash;
+    post.height = motion.indexer.blockHeight;
+    post.indexer = motion.indexer;
     post.author = motion.author;
     post.onchainData = motion;
     post.state = motion.state?.state;
@@ -196,7 +195,9 @@ async function getActiveMotionsOverview() {
     .limit(3)
     .toArray();
 
-  return await loadPostForMotions(motions);
+  const result = await loadPostForMotions(motions);
+
+  return result.filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day).slice(0, 3);
 }
 
 async function getMotionsByChain(page, pageSize) {
@@ -243,17 +244,17 @@ async function getMotionById(postId) {
   let reactions;
 
   if (chainMotion.externalProposals?.length === 1) {
-    const externalProposalHash = chainMotion.externalProposals[0].proposalHash;
-    const height = chainMotion.externalProposals[0].height;
+    const externalProposalHash = chainMotion.externalProposals[0].hash;
 
-    post = await democracyCol.findOne({ proposalHash: externalProposalHash, height });
+    post = await democracyCol.findOne({ externalProposalHash });
     reactions = await reactionCol
       .find({ democracy: post._id })
       .toArray();
   } else {
-    const motionIndex = chainMotion.index;
+    const hash = chainMotion.hash;
+    const height = chainMotion.indexer.blockHeight;
 
-    post = await techCommMotionCol.findOne({ motionIndex });
+    post = await techCommMotionCol.findOne({ hash, height });
     reactions = await reactionCol.find({ techCommMotion: post._id }).toArray();
   }
 
@@ -270,11 +271,16 @@ async function getMotionById(postId) {
       .toArray(),
   ]);
 
-  const userCol = await getUserCollection();
-  const author = await userCol.findOne({ [`${chain}Address`]: chainMotion.proposer });
-
   return {
-    ...chainMotion,
+    ...post,
+    _id: chainMotion._id,
+    proposer: chainMotion.proposer,
+    motionIndex: chainMotion.index,
+    hash: chainMotion.hash,
+    height: chainMotion.indexer.blockHeight,
+    indexer: chainMotion.indexer,
+    onchainData: chainMotion,
+    state: chainMotion.state?.state,
     author,
     externalProposals,
   };
