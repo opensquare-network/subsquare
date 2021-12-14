@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { HttpError } = require("../exc");
-const { ContentType } = require("../constants");
+const { ContentType, Day } = require("../constants");
 const { PostTitleLengthLimitation } = require("../constants");
 const { safeHtml, extractMentions } = require("../utils/post");
 const { toUserPublicInfo } = require("../utils/user");
