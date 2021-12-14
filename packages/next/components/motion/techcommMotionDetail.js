@@ -2,8 +2,6 @@
 import styled from "styled-components";
 import KVList from "components/kvList";
 import Link from "next/link";
-import dayjs from "dayjs";
-
 import User from "components/user";
 import MotionProposal from "./motionProposal";
 import Links from "../timeline/links";
@@ -17,6 +15,7 @@ import ArticleContent from "../articleContent";
 import { useState } from "react";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
 import { getPostUpdatedAt } from "../../utils/viewfuncs";
+import { TYPE_TECH_COMM_MOTION } from "../../utils/viewConstants";
 
 const Wrapper = styled.div`
   background: #ffffff;
