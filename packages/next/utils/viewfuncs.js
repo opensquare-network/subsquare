@@ -53,7 +53,7 @@ function getTechCommMotionId(motion) {
 
 export const toTechCommMotionListItem = (chain, item) => ({
   ...item,
-  title: `${item?.onchainData?.proposal?.section}.${item?.onchainData?.proposal?.method}`,
+  title: item.title,
   author: item.author ?? {
     username: addressEllipsis(item.proposer),
     addresses: [{ chain, address: item.proposer }],
