@@ -8,7 +8,7 @@ import User from "components/user";
 import MotionProposal from "./motionProposal";
 import Links from "../timeline/links";
 import Timeline from "../timeline";
-import { getNode, toPrecision } from "utils";
+import { getNode, timeDurationFromNow, toPrecision } from "utils";
 import SectionTag from "components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
 import Flex from "../styled/flex";
@@ -16,6 +16,7 @@ import { shadow_100 } from "../../styles/componentCss";
 import ArticleContent from "../articleContent";
 import { useState } from "react";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
+import { getPostUpdatedAt } from "../../utils/viewfuncs";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -96,48 +97,11 @@ const FlexWrapper = styled.div`
   flex-wrap: nowrap;
 `;
 
-// function createMotionTimelineData(motion) {
-//   return (motion?.timeline || []).map((item) => {
-//     switch (item.method) {
-//       case "Proposed": {
-//         return {
-//           indexer: item.indexer,
-//           time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-//           status: { value: `Motion #${motion.index}`, color: "#6848FF" },
-//           voting: {
-//             proposer: motion.proposer,
-//             method: motion.proposal.method,
-//             args: motion.proposal.args,
-//             total: motion.voting.threshold,
-//             ayes: motion.voting.ayes.length,
-//             nays: motion.voting.nays.length,
-//           },
-//           method: item.method,
-//         };
-//       }
-//       case "Voted": {
-//         return {
-//           indexer: item.indexer,
-//           time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-//           status: { value: "Vote", color: "#6848FF" },
-//           voteResult: {
-//             name: item.args.voter,
-//             value: item.args.approve,
-//           },
-//           method: item.method,
-//         };
-//       }
-//       default: {
-//         return {
-//           indexer: item.indexer,
-//           time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-//           status: { value: item.method, color: "#6848FF" },
-//           method: item.method,
-//         };
-//       }
-//     }
-//   });
-// }
+const Info = styled.div`
+  font-size: 12px;
+  color: #506176;
+`;
+
 
 function createMotionBusinessData(motion, chain) {
   const height = motion.state.indexer.blockHeight;
@@ -207,7 +171,7 @@ export default function TechcommMotionDetail({ motion, chain,onReply, loginUser 
   const decimals = node.decimals;
   const symbol = node.symbol;
   const treasuryProposalMeta = motion.treasuryProposal?.meta;
-
+  const postUpdateTime = getPostUpdatedAt(post);
   const timeline = createMotionTimelineData(motion.onchainData);
 
   let timelineData;
@@ -280,6 +244,12 @@ export default function TechcommMotionDetail({ motion, chain,onReply, loginUser 
               />
               {motion.isTreasury && <SectionTag name={"Treasury"} />}
               {motion.isDemocracy && <SectionTag name={"Democracy"} />}
+              {postUpdateTime && (
+                <Info>
+                  Updated{" "}
+                  {timeDurationFromNow(postUpdateTime)}
+                </Info>
+              )}
             </DividerWrapper>
             {motion.status && <StatusWrapper>{motion.status}</StatusWrapper>}
           </FlexWrapper>

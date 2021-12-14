@@ -60,6 +60,7 @@ export const toTechCommMotionListItem = (chain, item) => ({
   },
   status: item?.state ?? "Unknown",
   detailLink: `/techcomm/proposal/${getTechCommMotionId(item)}`,
+  time: getPostUpdatedAt(item),
 });
 
 export const toTreasuryProposalListItem = (chain, item) => ({
