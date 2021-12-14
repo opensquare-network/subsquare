@@ -65,38 +65,40 @@ export default withLoginUserRedux(({ loginUser, detail, comments,url, chain }) =
   );
   const desc = getMetaDesc(detail, "Discussion");
   return (
-    <Layout user={loginUser} chain={chain}>
+    <>
       <SEO title={detail?.title} desc={desc} url={url}/>
-      <Wrapper className="post-content">
-        <Back href={`/discussions`} text="Back to Discussions" />
-        <DetailItem
-          data={detail}
-          user={loginUser}
-          chain={chain}
-          onReply={focusEditor}
-          type={TYPE_POST}
-        />
-        <CommentsWrapper>
-          <Comments
-            data={comments}
+      <Layout user={loginUser} chain={chain}>
+        <Wrapper className="post-content">
+          <Back href={`/discussions`} text="Back to Discussions" />
+          <DetailItem
+            data={detail}
             user={loginUser}
-            postId={postId}
             chain={chain}
-            onReply={onReply}
+            onReply={focusEditor}
+            type={TYPE_POST}
           />
-          {loginUser && (
-            <Input
+          <CommentsWrapper>
+            <Comments
+              data={comments}
+              user={loginUser}
               postId={postId}
               chain={chain}
-              ref={editorWrapperRef}
-              setQuillRef={setQuillRef}
-              {...{ contentType, setContentType, content, setContent, users }}
-              type={TYPE_POST}
+              onReply={onReply}
             />
-          )}
-        </CommentsWrapper>
-      </Wrapper>
-    </Layout>
+            {loginUser && (
+              <Input
+                postId={postId}
+                chain={chain}
+                ref={editorWrapperRef}
+                setQuillRef={setQuillRef}
+                {...{ contentType, setContentType, content, setContent, users }}
+                type={TYPE_POST}
+              />
+            )}
+          </CommentsWrapper>
+        </Wrapper>
+      </Layout>
+    </>
   );
 });
 
