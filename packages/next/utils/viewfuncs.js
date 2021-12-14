@@ -40,7 +40,7 @@ export const toCouncilMotionListItem = (chain, item) => ({
     item?.onchainData?.treasuryProposals?.length > 0 ||
     item?.onchainData?.treasuryBounties?.length > 0,
   isDemocracy: item?.onchainData?.isDemocracy,
-  time: item?.updatedAt,
+  time: getPostUpdatedAt(item),
 });
 
 function getTechCommMotionId(motion) {
