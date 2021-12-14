@@ -1,5 +1,5 @@
 const {
-  extractMotionCalls,
+  extractCouncilMotionBusiness,
 } = require("../../../common/call/extractMotionCalls");
 const { normalizeCall } = require("../../../common/motion/utils");
 const { findRegistry } = require("../../../../chain/specs");
@@ -7,9 +7,7 @@ const { getMotionProposal } = require("../../../common/motion/proposalStorage");
 const {
   insertMotionPost,
 } = require("../../../../mongo/service/business/motion");
-const { busLogger } = require("../../../../logger");
 const { handleBusinessWhenMotionProposed } = require("./hooks/proposed");
-const { Modules, DemocracyMethods } = require("../../../common/constants");
 const {
   getVotingFromStorage,
 } = require("../../../common/motion/votingStorage");
@@ -19,35 +17,6 @@ const {
 } = require("../../../common/constants");
 const { insertMotion } = require("../../../../mongo/service/onchain/motion");
 const { GenericCall } = require("@polkadot/types");
-
-function extractBusinessFields(proposal = {}, indexer) {
-  const { section, method, args } = proposal;
-  if (Modules.Democracy === section) {
-    const fields = {
-      isDemocracy: true,
-    };
-
-    if (
-      [
-        DemocracyMethods.externalPropose,
-        DemocracyMethods.externalProposeMajority,
-        DemocracyMethods.externalProposeDefault,
-      ].includes(method)
-    ) {
-      fields["proposalHash"] = args[0].value;
-    }
-    busLogger.info(
-      "Democracy motion found at",
-      indexer.blockHeight,
-      "method:",
-      method
-    );
-
-    return fields;
-  }
-
-  return {};
-}
 
 async function handleProposed(event, extrinsic, indexer, blockEvents) {
   const eventData = event.data.toJSON();
@@ -80,12 +49,8 @@ async function handleProposed(event, extrinsic, indexer, blockEvents) {
 
   const authors = [...new Set([proposer, extrinsic.signer.toString()])];
 
-  const { treasuryProposals, treasuryBounties } = await extractMotionCalls(
-    call,
-    proposer,
-    indexer,
-    blockEvents
-  );
+  const { treasuryProposals, treasuryBounties, externalProposals } =
+    await extractCouncilMotionBusiness(call, proposer, indexer, blockEvents);
 
   const obj = {
     indexer,
@@ -94,7 +59,6 @@ async function handleProposed(event, extrinsic, indexer, blockEvents) {
     proposer,
     index: motionIndex,
     threshold,
-    ...extractBusinessFields(proposal, indexer),
     proposal,
     voting,
     isFinal: false,
@@ -102,6 +66,7 @@ async function handleProposed(event, extrinsic, indexer, blockEvents) {
     timeline: [timelineItem],
     treasuryProposals,
     treasuryBounties,
+    externalProposals,
   };
 
   await insertMotion(obj);
@@ -110,6 +75,5 @@ async function handleProposed(event, extrinsic, indexer, blockEvents) {
 }
 
 module.exports = {
-  extractBusinessFields,
   handleProposed,
 };

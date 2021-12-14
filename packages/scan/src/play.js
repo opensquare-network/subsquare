@@ -5,7 +5,7 @@ const { getApi } = require("./api");
 const { setSpecHeights } = require("./chain/specs");
 
 async function test() {
-  const blockHeights = [858376, 864000];
+  const blockHeights = [1064927];
 
   for (const height of blockHeights) {
     setSpecHeights([height - 1]);
@@ -17,6 +17,8 @@ async function test() {
 
     await scanNormalizedBlock(block.block, allEvents);
   }
+
+  console.log("finished");
 }
 
 test();
