@@ -49,7 +49,7 @@ async function findMotionPost(chainMotion) {
   let post;
   let postType;
 
-  if (chainMotion.externalProposals?.length === 0) {
+  if (chainMotion.externalProposals?.length === 1) {
     const externalProposalHash = chainMotion.externalProposals[0].hash;
 
     postCol = await getDemocracyCollection();
