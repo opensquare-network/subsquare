@@ -38,9 +38,6 @@ const CommentsWrapper = styled.div`
 `;
 
 export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
-  if(motion){
-    motion.status = motion?.state?.state;
-  }
   const users = getMentionList(comments);
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
