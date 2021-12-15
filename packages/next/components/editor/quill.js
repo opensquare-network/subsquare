@@ -69,6 +69,7 @@ function MyReactQuill({
   setModalInsetFunc,
   users = [],
   setQuillRef = null,
+  readOnly = false,
 }) {
   const [modules] = useState({
     clipboard: {
@@ -163,6 +164,7 @@ function MyReactQuill({
       onChange={onChange}
       onFocus={onFocus}
       onBlur={onBlur}
+      readOnly={readOnly}
     />
   );
 }
