@@ -230,7 +230,7 @@ export default function TechcommMotionDetail({ motion, chain,onReply, loginUser 
           <TitleWrapper>
             {motion?.index !== undefined && <Index>{`#${motion.index}`}</Index>}
             <Title>
-              {motion?.title}
+              {post?.title}
             </Title>
           </TitleWrapper>
           <FlexWrapper>
@@ -250,7 +250,7 @@ export default function TechcommMotionDetail({ motion, chain,onReply, loginUser 
                 </Info>
               )}
             </DividerWrapper>
-            {motion.status && <StatusWrapper>{motion.status}</StatusWrapper>}
+            {motion.state && <StatusWrapper>{motion.state}</StatusWrapper>}
           </FlexWrapper>
           <ArticleContent
             chain={chain}
