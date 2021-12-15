@@ -208,6 +208,7 @@ const MarkdownEditor = ({
   users = [],
   height = 100,
   visible = true,
+  readOnly = false,
 }) => {
   const loadSuggestions = async (text) => {
     return new Promise((accept) => {
@@ -229,6 +230,7 @@ const MarkdownEditor = ({
       visible={visible}
     >
       <ReactMde
+        readOnly={readOnly}
         initialEditorHeight={height}
         value={content}
         onChange={(targetValue) => setContent(targetValue)}

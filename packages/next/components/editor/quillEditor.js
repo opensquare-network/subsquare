@@ -91,7 +91,8 @@ const QuillEditor = ({
                        users = [],
                        height = 100,
                        visible = true,
-                       setQuillRef = null
+                       setQuillRef = null,
+                        readOnly = false,
                      }) => {
   const [focused, setFocused] = useState(false);
 
@@ -115,6 +116,7 @@ const QuillEditor = ({
         }}
         users={users}
         setModalInsetFunc={setModalInsetFunc}
+        readOnly={readOnly}
       />
     </StyledTextArea>
   );

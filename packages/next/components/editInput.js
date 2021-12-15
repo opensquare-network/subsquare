@@ -57,6 +57,8 @@ export default function EditInput({
   onFinishedEdit,
   update,
   setQuillRef = null,
+  loading,
+  setLoading,
 }) {
   const [content, setContent] = useState(editContent);
   const [contentType, setContentType] = useState(editContentType);
@@ -64,11 +66,12 @@ export default function EditInput({
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState("image");
   const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
-
   const [errors, setErrors] = useState();
-  const [loading, setLoading] = useState(false);
 
   const onMarkdownSwitch = () => {
+    if(loading){
+      return;
+    }
     if (
       content &&
       !confirm(`Togging editor will empty all typed contents, are you sure ?`)
@@ -80,13 +83,21 @@ export default function EditInput({
   };
 
   const onUpdate = async () => {
-    setLoading(true);
-    const { result, error } = await update(content, contentType);
-    setLoading(false);
-    if (error) {
-      setErrors(error);
-    } else if (result) {
-      onFinishedEdit(true);
+    try {
+      setLoading(true);
+      const { result, error } = await update(content, contentType);
+      if (error) {
+        setErrors(error);
+      }
+      else if (result) {
+        await onFinishedEdit(true, setLoading);
+      }
+    }catch (e) {
+      if (e) {
+        setErrors(e);
+      }
+    }finally {
+      setLoading(false);
     }
   };
 
@@ -112,6 +123,7 @@ export default function EditInput({
             content={content}
             setContent={onInputChange}
             visible={!showPreview}
+            readOnly={loading}
           />
         )}
         {contentType === "html" && (
@@ -126,6 +138,7 @@ export default function EditInput({
               setInsetQuillContentsFunc(insetImgFunc);
             }}
             setQuillRef={setQuillRef}
+            readOnly={loading}
           />
         )}
         {!showPreview && (
@@ -149,10 +162,10 @@ export default function EditInput({
       )}
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
       <ButtonWrapper>
-        <Button onClick={() => onFinishedEdit(false)}>Cancel</Button>
-        <Button onClick={() => setShowPreview(!showPreview)}>
+        {!loading && <Button onClick={() => onFinishedEdit(false)}>Cancel</Button>}
+        {!loading && <Button onClick={() => setShowPreview(!showPreview)}>
           {showPreview ? "Edit" : "Preview"}
-        </Button>
+        </Button>}
         <Button isLoading={loading} secondary onClick={onUpdate}>
           Update
         </Button>
