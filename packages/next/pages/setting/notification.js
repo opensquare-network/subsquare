@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Toggle from "components/toggle";
 import Button from "components/button";
@@ -90,6 +90,12 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const [mention, setMention] = useState(!!loginUser?.notification?.mention);
   const [thumbsUp, setThumbsUp] = useState(!!loginUser?.notification?.thumbsUp);
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    setReply(!!loginUser?.notification?.reply);
+    setMention(!!loginUser?.notification?.mention);
+    setThumbsUp(!!loginUser?.notification?.thumbsUp);
+  }, [loginUser]);
 
   const changeGuard = (setter) => async (data) => {
     if (saving) return;
