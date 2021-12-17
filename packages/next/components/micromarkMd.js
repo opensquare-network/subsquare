@@ -3,6 +3,7 @@ import { micromark } from "micromark";
 import { gfm, gfmHtml } from "micromark-extension-gfm";
 import { matchMdLink } from "utils";
 import sanitizeHtml from "sanitize-html";
+import highlight from "highlight-syntax/all";
 
 const Wrapper = styled.div`
   &.markdown-content {
@@ -90,19 +91,26 @@ const Wrapper = styled.div`
       background: #eee !important;
       border-radius: 0.25rem;
       white-space: pre-wrap !important;
+      overflow-x: scroll;
 
       > code {
         padding: 0 !important;
         background: transparent !important;
         white-space: pre-wrap !important;
+        span.identifier{
+          white-space: nowrap !important;
+        }
       }
     }
 
     code {
+      max-width: 100%;
       padding: 0 0.25rem;
       background: #eee;
       border-radius: 0.25rem;
-      word-break: break-all;
+      white-space: nowrap !important;
+      word-break: keep-all;
+      overflow-x: scroll;
     }
 
     a {
@@ -122,12 +130,14 @@ const Wrapper = styled.div`
     td {
       border: 1px solid #e0e4eb;
     }
+
     table {
       border-collapse: collapse;
       max-width: 100%;
       overflow: auto;
       display: block;
     }
+
     th {
       padding: 10px 16px;
       background: #f6f7fa;
@@ -136,6 +146,7 @@ const Wrapper = styled.div`
       color: #1e2134;
       min-width: 100px;
     }
+
     td {
       padding: 10px 16px;
       font-size: 14px;
@@ -144,7 +155,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function MicromarkMd({ md = "", contentVersion = "" }) {
+export default function MicromarkMd({md = "", contentVersion = ""}) {
   const matchLinkMd = matchMdLink(md);
   let displayContent = matchLinkMd;
   if (contentVersion === "2") {
@@ -157,10 +168,43 @@ export default function MicromarkMd({ md = "", contentVersion = "" }) {
   const html = micromark(displayContent, {
     allowDangerousHtml: true,
     extensions: [gfm()],
-    htmlExtensions: [gfmHtml()],
+    htmlExtensions: [
+      {
+        enter:{
+          codeIndented(){
+            this.tag('<code title="');
+          },
+          codeFenced() {
+            this.tag('<pre title="');
+          },
+        },
+        exit: {
+          codeIndented(token) {
+            this.raw('">');
+            let codes = this.sliceSerialize(token).replaceAll('`', '');
+            console.log(111)
+            codes = (highlight(codes, {lang: "js"}))
+            this.raw(codes);
+            this.tag('</code>');
+          },
+          codeFenced(token) {
+            this.raw('">');
+            let codes = this.sliceSerialize(token).replaceAll('```', '');
+            codes = (highlight(codes, {lang: "js"}))
+            this.raw(codes);
+            this.tag('</pre>');
+          },
+        }
+      },
+      gfmHtml(),
+
+    ],
   });
+
+
+  // console.log(gfmHtml())
   const cleanHtml = sanitizeHtml(html, {
-    allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img", "iframe"]),
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img", "iframe", "br"]),
     allowedAttributes: {
       img: ["src", "size", "width", "height"],
       iframe: ["src", "width", "height"],
@@ -171,10 +215,8 @@ export default function MicromarkMd({ md = "", contentVersion = "" }) {
     },
   });
 
-  return (
-    <Wrapper
-      className="markdown-content"
-      dangerouslySetInnerHTML={{ __html: cleanHtml }}
-    ></Wrapper>
-  );
+  return (<Wrapper
+    className="markdown-content"
+    dangerouslySetInnerHTML={{__html: html}}
+  />);
 }
