@@ -64,7 +64,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, siteUrl, chain
   const desc = getMetaDesc(detail, "Discussion");
   return (
     <Layout user={loginUser} chain={chain}>
-      <SEO title={detail?.title} desc={desc} siteUrl={siteUrl}/>
+      <SEO title={detail?.title} desc={desc} siteUrl={siteUrl} chain={chain} />
       <Wrapper className="post-content">
         <Back href={`/discussions`} text="Back to Discussions" />
         <DetailItem

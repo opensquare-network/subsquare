@@ -6,16 +6,16 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Layout from "components/layout";
 import { toCouncilMotionListItem } from "utils/viewfuncs";
-import NextHead from "../../components/nextHead";
+import SEO from "components/SEO";
 
-export default withLoginUserRedux(({ loginUser, motions, chain }) => {
+export default withLoginUserRedux(({ loginUser, motions, chain, siteUrl }) => {
   const items = (motions.items || []).map((item) =>
     toCouncilMotionListItem(chain, item)
   );
 
   return (
     <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
-      <NextHead title={`Council motions`} desc={`Council motions`} />
+      <SEO title={`Council motions`} desc={`Council motions`} siteUrl={siteUrl} chain={chain} />
       <List
         chain={chain}
         category={"Council Motions"}
@@ -46,6 +46,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       chain,
       motions: motions ?? EmptyList,
+      siteUrl: process.env.SITE_URL,
     },
   };
 });

@@ -62,7 +62,7 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain, siteUrl
   const desc = getMetaDesc(motion, "Motion");
   return (
     <Layout user={loginUser} chain={chain}>
-      <SEO title={motion?.title} desc={desc} siteUrl={siteUrl} />
+      <SEO title={motion?.title} desc={desc} siteUrl={siteUrl} chain={chain} />
       <Wrapper className="post-content">
         <Back href={`/council/motions`} text="Back to Motions" />
         <MotionDetail

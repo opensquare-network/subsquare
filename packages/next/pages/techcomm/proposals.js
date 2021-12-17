@@ -6,19 +6,16 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Layout from "components/layout";
 import { toTechCommMotionListItem } from "utils/viewfuncs";
-import NextHead from "../../components/nextHead";
+import SEO from "components/SEO";
 
-export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
+export default withLoginUserRedux(({ loginUser, proposals, chain, siteUrl }) => {
   const items = (proposals.items || []).map((item) =>
     toTechCommMotionListItem(chain, item)
   );
 
   return (
     <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
-      <NextHead
-        title={`Technical Committee Proposals`}
-        desc={`Technical Committee Proposals`}
-      />
+      <SEO title={`Technical Committee Proposals`} desc={`Technical Committee Proposals`} siteUrl={siteUrl} chain={chain} />
       <List
         chain={chain}
         category={"Tech. Comm. Proposals"}
@@ -50,6 +47,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       chain,
       proposals: proposals ?? EmptyList,
+      siteUrl: process.env.SITE_URL,
     },
   };
 });
