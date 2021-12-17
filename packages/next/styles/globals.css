@@ -1,53 +1,76 @@
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    padding: 0;
+    margin: 0;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
     Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  background: #f6f7fa;
-  color: #1e2134;
-  font-size: 16px;
-  -webkit-font-smoothing: antialiased;
-  transition: 0.3 ease;
-  position: relative;
+    background: #f6f7fa;
+    color: #1e2134;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    transition: 0.3 ease;
+    position: relative;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+    color: inherit;
+    text-decoration: none;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 #nprogress .bar {
-  background: #6848ff !important;
+    background: #6848ff !important;
 }
 
 #nprogress .peg {
-  box-shadow: 0 0 10px #6848ff, 0 0 5px #6848ff !important;
+    box-shadow: 0 0 10px #6848ff, 0 0 5px #6848ff !important;
 }
 
 .kw0, .operator {
-  font-weight: bold;
-  color: darkorange;
+    color: darkorange;
 }
+
 .kw1, .regex, .command-substitution, .template-expr {
-  font-weight: bold;
-  color: red;
+    color: red;
 }
+
 .kw2, .open-square, .close-square, .open-curly, .close-curly,
 .area-comment, .area-comment-continue, .line-comment {
-  font-weight: bold;
-  color: blue;
+    color: #cf222e;
 }
+
 .number, .quote, .single-quote, .double-quote, .char,
 .template-string, .heredoc {
-  color: darkred;
-  font-weight: bold;
+    color: darkred;
 }
+
 .directive, .shebang, .variable {
-  color: purple;
-  font-weight: bold;
+    color: purple;
+}
+
+.kw-null {
+    color: #0550ae;
+}
+
+.double-quote {
+    color: #0a3069;
+}
+
+.number {
+    color: #0550ae;
+}
+
+.pl-kos,.open-curly, .identifier, .operator, .template-expr, .text {
+    color: #24292f;
+}
+
+.line-comment {
+    color: #6e7781;
+}
+
+.kw-export, .kw-return, .kw-if {
+    color: #cf222e;
 }

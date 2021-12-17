@@ -86,9 +86,9 @@ const Wrapper = styled.div`
     }
 
     pre {
-      margin: 0;
+      margin: 8px 0;
       padding: 0 0.75rem;
-      background: #eee !important;
+      background: #f5f8fa !important;
       border-radius: 0.25rem;
       white-space: pre-wrap !important;
       overflow-x: scroll;
@@ -105,12 +105,14 @@ const Wrapper = styled.div`
 
     code {
       max-width: 100%;
+      margin: 8px 0;
       padding: 0 0.25rem;
-      background: #eee;
+      background: #f5f8fa !important;
       border-radius: 0.25rem;
       white-space: nowrap !important;
       word-break: keep-all;
       overflow-x: scroll;
+      display: block;
     }
 
     a {
@@ -132,6 +134,7 @@ const Wrapper = styled.div`
     }
 
     table {
+      margin: 8px 0;
       border-collapse: collapse;
       max-width: 100%;
       overflow: auto;
@@ -182,7 +185,6 @@ export default function MicromarkMd({md = "", contentVersion = ""}) {
           codeIndented(token) {
             this.raw('">');
             let codes = this.sliceSerialize(token).replaceAll('`', '');
-            console.log(111)
             codes = (highlight(codes, {lang: "js"}))
             this.raw(codes);
             this.tag('</code>');
@@ -201,8 +203,6 @@ export default function MicromarkMd({md = "", contentVersion = ""}) {
     ],
   });
 
-
-  // console.log(gfmHtml())
   const cleanHtml = sanitizeHtml(html, {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img", "iframe", "br"]),
     allowedAttributes: {
