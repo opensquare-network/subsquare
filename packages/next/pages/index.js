@@ -80,7 +80,6 @@ export default withLoginUserRedux(({ overview, loginUser, chain }) => {
 
   return (
     <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
-      <div>TODO:</div>
       <NextHead title={`Subsquare`} desc={`Subsquare`} />
       <Overview overviewData={overviewData} chain={chain} />
     </Layout>
