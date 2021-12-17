@@ -6,16 +6,16 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Layout from "components/layout";
 import { toTreasuryBountyListItem } from "utils/viewfuncs";
-import NextHead from "../../components/nextHead";
+import SEO from "components/SEO";
 
-export default withLoginUserRedux(({ loginUser, bounties, chain }) => {
+export default withLoginUserRedux(({ loginUser, bounties, chain, siteUrl }) => {
   const items = (bounties.items || []).map((item) =>
     toTreasuryBountyListItem(chain, item)
   );
 
   return (
     <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
-      <NextHead title={`Treasury Bounties`} desc={`Treasury Bounties`} />
+      <SEO title={`Treasury Bounties`} desc={`Treasury Bounties`} siteUrl={siteUrl} chain={chain} />
       <List
         chain={chain}
         category={"Treasury Bounties"}
@@ -47,6 +47,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       chain,
       bounties: bounties ?? EmptyList,
+      siteUrl: process.env.SITE_URL,
     },
   };
 });

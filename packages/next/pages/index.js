@@ -15,9 +15,9 @@ import {
   toTreasuryBountyListItem,
   toTreasuryProposalListItem,
 } from "utils/viewfuncs";
-import NextHead from "../components/nextHead";
+import SEO from "components/SEO";
 
-export default withLoginUserRedux(({ overview, loginUser, chain }) => {
+export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
   const overviewData = [
     {
       category: "Discussions",
@@ -80,7 +80,7 @@ export default withLoginUserRedux(({ overview, loginUser, chain }) => {
 
   return (
     <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
-      <NextHead title={`Subsquare`} desc={`Subsquare`} />
+      <SEO title={`SubSquare`} desc={`SubSquare`} siteUrl={siteUrl} chain={chain} />
       <Overview overviewData={overviewData} chain={chain} />
     </Layout>
   );
@@ -95,6 +95,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       chain,
       overview: result ?? null,
+      siteUrl: process.env.SITE_URL,
     },
   };
 });

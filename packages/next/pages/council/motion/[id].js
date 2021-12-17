@@ -18,7 +18,7 @@ import {
   getOnReply,
 } from "../../../utils/post";
 import { useRef, useState } from "react";
-import NextHead from "../../../components/nextHead";
+import SEO from "components/SEO";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -41,7 +41,7 @@ const CommentsWrapper = styled.div`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
+export default withLoginUserRedux(({ loginUser, motion, comments, chain, siteUrl }) => {
   const users = getMentionList(comments);
   motion.status = motion.state?.state;
   const editorWrapperRef = useRef(null);
@@ -62,11 +62,7 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
   const desc = getMetaDesc(motion, "Motion");
   return (
     <Layout user={loginUser} chain={chain}>
-      <NextHead
-        title={`${motion.title ?? "Subsquare"}`}
-        desc={desc}
-        type={"post"}
-      />
+      <SEO title={motion?.title} desc={desc} siteUrl={siteUrl} chain={chain} />
       <Wrapper className="post-content">
         <Back href={`/council/motions`} text="Back to Motions" />
         <MotionDetail
@@ -140,6 +136,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       motion: motion ? { ...motion, external } : null,
       comments: comments ?? EmptyList,
       chain,
+      siteUrl: process.env.SITE_URL,
     },
   };
 });

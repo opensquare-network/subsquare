@@ -8,7 +8,7 @@ import styled from "styled-components";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
 import Layout from "components/layout";
 import { toDiscussionListItem } from "utils/viewfuncs";
-import NextHead from "../components/nextHead";
+import SEO from "components/SEO";
 
 const Create = styled.a`
   display: flex;
@@ -22,7 +22,7 @@ const Create = styled.a`
   cursor: pointer;
 `;
 
-export default withLoginUserRedux(({ loginUser, posts, chain }) => {
+export default withLoginUserRedux(({ loginUser, posts, chain, siteUrl }) => {
   const items = (posts.items || []).map((item) =>
     toDiscussionListItem(chain, item)
   );
@@ -36,7 +36,7 @@ export default withLoginUserRedux(({ loginUser, posts, chain }) => {
 
   return (
     <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
-      <NextHead title={`Discussions`} desc={`Discussions`} />
+      <SEO title={`Discussions`} desc={`Discussions`} siteUrl={siteUrl} chain={chain} />
       <List
         chain={chain}
         category={"Discussions"}
@@ -64,6 +64,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       chain,
       posts: posts ?? EmptyList,
+      siteUrl: process.env.SITE_URL,
     },
   };
 });

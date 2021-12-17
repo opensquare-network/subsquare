@@ -6,19 +6,16 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Layout from "components/layout";
 import { toExternalProposalListItem } from "utils/viewfuncs";
-import NextHead from "../../components/nextHead";
+import SEO from "components/SEO";
 
-export default withLoginUserRedux(({ loginUser, externals, chain }) => {
+export default withLoginUserRedux(({ loginUser, externals, chain, siteUrl }) => {
   const items = (externals.items || []).map((item) =>
     toExternalProposalListItem(chain, item)
   );
 
   return (
     <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
-      <NextHead
-        title={`Democracy External Proposals`}
-        desc={`Democracy External Proposals`}
-      />
+      <SEO title={`Democracy External Proposals`} desc={`Democracy External Proposals`} siteUrl={siteUrl} chain={chain} />
       <List
         chain={chain}
         category={"Democracy External Proposals"}
@@ -50,6 +47,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       chain,
       externals: externals ?? EmptyList,
+      siteUrl: process.env.SITE_URL,
     },
   };
 });

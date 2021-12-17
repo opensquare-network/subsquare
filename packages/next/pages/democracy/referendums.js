@@ -6,16 +6,16 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Layout from "components/layout";
 import { toReferendaListItem } from "utils/viewfuncs";
-import NextHead from "../../components/nextHead";
+import SEO from "components/SEO";
 
-export default withLoginUserRedux(({ loginUser, posts, chain }) => {
+export default withLoginUserRedux(({ loginUser, posts, chain, siteUrl }) => {
   const items = (posts.items || []).map((item) =>
     toReferendaListItem(chain, item)
   );
 
   return (
     <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
-      <NextHead title={`Democracy Referenda`} desc={`Democracy Referenda`} />
+      <SEO title={`Democracy Referenda`} desc={`Democracy Referenda`} siteUrl={siteUrl} chain={chain} />
       <List
         chain={chain}
         category={"Referenda"}
@@ -47,6 +47,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       chain,
       posts: posts ?? EmptyList,
+      siteUrl: process.env.SITE_URL,
     },
   };
 });

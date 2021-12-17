@@ -19,7 +19,7 @@ import { makeExternalTimelineData } from "utils/dataWrappers/makeTimelineData";
 import { makeExternalMetadata } from "utils/dataWrappers/makeMetadata";
 import { TYPE_DEMOCRACY_EXTERNAL } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-import NextHead from "../../../components/nextHead";
+import SEO from "components/SEO";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -42,7 +42,7 @@ const CommentsWrapper = styled.div`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+export default withLoginUserRedux(({ loginUser, detail, comments, chain, siteUrl }) => {
   const postId = detail._id;
 
   const editorWrapperRef = useRef(null);
@@ -78,11 +78,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const desc = getMetaDesc(detail, "External");
   return (
     <Layout user={loginUser} chain={chain}>
-      <NextHead
-        title={`${detail.title ?? "Subsquare"}`}
-        desc={desc}
-        type={"post"}
-      />
+      <SEO title={detail?.title} desc={desc} siteUrl={siteUrl} chain={chain} />
       <Wrapper className="post-content">
         <Back href={`/democracy/externals`} text="Back to Externals" />
         <DetailItem
@@ -144,6 +140,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
+      siteUrl: process.env.SITE_URL,
     },
   };
 });

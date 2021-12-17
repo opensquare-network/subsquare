@@ -12,8 +12,8 @@ import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_POST } from "utils/viewConstants";
-import NextHead from "../../components/nextHead";
-import { getMetaDesc } from "../../utils/viewfuncs";
+import { getMetaDesc } from "utils/viewfuncs";
+import SEO from "components/SEO";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -39,7 +39,7 @@ const CommentsWrapper = styled.div`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+export default withLoginUserRedux(({ loginUser, detail, comments, siteUrl, chain }) => {
   const postId = detail._id;
 
   const editorWrapperRef = useRef(null);
@@ -60,14 +60,11 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     quillRef,
     focusEditor
   );
+
   const desc = getMetaDesc(detail, "Discussion");
   return (
     <Layout user={loginUser} chain={chain}>
-      <NextHead
-        title={`${detail.title ?? "Subsquare"}`}
-        desc={desc}
-        type={"post"}
-      />
+      <SEO title={detail?.title} desc={desc} siteUrl={siteUrl} chain={chain} />
       <Wrapper className="post-content">
         <Back href={`/discussions`} text="Back to Discussions" />
         <DetailItem
@@ -103,7 +100,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-
   const { id, page, page_size: pageSize } = context.query;
 
   const [{ result: detail }] = await Promise.all([
@@ -126,6 +122,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
+      siteUrl: process.env.SITE_URL,
     },
   };
 });

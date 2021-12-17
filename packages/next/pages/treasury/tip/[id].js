@@ -23,7 +23,7 @@ import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import findLastIndex from "lodash.findlastindex";
 import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";
-import NextHead from "../../../components/nextHead";
+import SEO from "components/SEO";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -78,7 +78,7 @@ const getClosedTimelineData = (timeline = []) => {
   return [fd, ...notFoldItems];
 };
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+export default withLoginUserRedux(({ loginUser, detail, comments, chain, siteUrl }) => {
   const postId = detail._id;
 
   const editorWrapperRef = useRef(null);
@@ -204,11 +204,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const desc = getMetaDesc(detail, "Tip");
   return (
     <Layout user={loginUser} chain={chain}>
-      <NextHead
-        title={`${detail.title ?? "Subsquare"}`}
-        desc={desc}
-        type={"post"}
-      />
+      <SEO title={detail?.title} desc={desc} siteUrl={siteUrl} chain={chain} />
       <Wrapper className="post-content">
         <Back href={`/treasury/tips`} text="Back to Tips" />
         <DetailItem
@@ -271,6 +267,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
+      siteUrl: process.env.SITE_URL,
     },
   };
 });
