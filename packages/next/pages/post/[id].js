@@ -12,11 +12,8 @@ import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_POST } from "utils/viewConstants";
-import NextHead from "../../components/nextHead";
-import { getMetaDesc } from "../../utils/viewfuncs";
-import { NextSeo } from "next-seo";
-import SEO from "../../SEO";
-import { useRouter } from "next/router";
+import { getMetaDesc } from "utils/viewfuncs";
+import SEO from "components/SEO";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -42,7 +39,7 @@ const CommentsWrapper = styled.div`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser, detail, comments,url, chain }) => {
+export default withLoginUserRedux(({ loginUser, detail, comments, siteUrl, chain }) => {
   const postId = detail._id;
 
   const editorWrapperRef = useRef(null);
@@ -63,48 +60,46 @@ export default withLoginUserRedux(({ loginUser, detail, comments,url, chain }) =
     quillRef,
     focusEditor
   );
+
   const desc = getMetaDesc(detail, "Discussion");
   return (
-    <>
-      <SEO title={detail?.title} desc={desc} url={url}/>
-      <Layout user={loginUser} chain={chain}>
-        <Wrapper className="post-content">
-          <Back href={`/discussions`} text="Back to Discussions" />
-          <DetailItem
-            data={detail}
+    <Layout user={loginUser} chain={chain}>
+      <SEO title={detail?.title} desc={desc} siteUrl={siteUrl}/>
+      <Wrapper className="post-content">
+        <Back href={`/discussions`} text="Back to Discussions" />
+        <DetailItem
+          data={detail}
+          user={loginUser}
+          chain={chain}
+          onReply={focusEditor}
+          type={TYPE_POST}
+        />
+        <CommentsWrapper>
+          <Comments
+            data={comments}
             user={loginUser}
+            postId={postId}
             chain={chain}
-            onReply={focusEditor}
-            type={TYPE_POST}
+            onReply={onReply}
           />
-          <CommentsWrapper>
-            <Comments
-              data={comments}
-              user={loginUser}
+          {loginUser && (
+            <Input
               postId={postId}
               chain={chain}
-              onReply={onReply}
+              ref={editorWrapperRef}
+              setQuillRef={setQuillRef}
+              {...{ contentType, setContentType, content, setContent, users }}
+              type={TYPE_POST}
             />
-            {loginUser && (
-              <Input
-                postId={postId}
-                chain={chain}
-                ref={editorWrapperRef}
-                setQuillRef={setQuillRef}
-                {...{ contentType, setContentType, content, setContent, users }}
-                type={TYPE_POST}
-              />
-            )}
-          </CommentsWrapper>
-        </Wrapper>
-      </Layout>
-    </>
+          )}
+        </CommentsWrapper>
+      </Wrapper>
+    </Layout>
   );
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-  const url = `${process.env.SITE_URL}${context.req.url}`;
   const { id, page, page_size: pageSize } = context.query;
 
   const [{ result: detail }] = await Promise.all([
@@ -127,7 +122,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
-      url,
+      siteUrl: process.env.SITE_URL,
     },
   };
 });

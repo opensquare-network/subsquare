@@ -1,24 +1,26 @@
-import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
+import NextSeo from "components/nextSeo";
 
-export default function SEO({title, desc, url, type = "page"}){
+export default function SEO({ title, desc, siteUrl }){
+  const route = useRouter()
+
   return <NextSeo
     title={`${title ?? "Subsquare"}`}
     description={desc}
     openGraph={{
-      url,
+      url: `${siteUrl}${route.asPath}`,
       title: title,
       description: desc,
       images: [
         {
-          url: 'https://test.subsquare.io/imgs/logo.png',
+          url: `${siteUrl}/imgs/logo.png`,
           width: 1200,
           height: 628,
           alt: 'Og Image Alt',
           type: 'image/jpeg',
         },
         {
-          url: 'https://test.subsquare.io/imgs/logo4twitter.png',
+          url: `${siteUrl}/imgs/logo4twitter.png`,
           width: 129,
           height: 129,
           alt: 'Og Image Alt Second',

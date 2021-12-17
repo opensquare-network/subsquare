@@ -23,7 +23,7 @@ import { TYPE_TREASURY_BOUNTY } from "utils/viewConstants";
 import { createMotionTimelineData } from "../../../utils/timeline/motion";
 import sortTimeline from "../../../utils/timeline/sort";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-import NextHead from "../../../components/nextHead";
+import SEO from "components/SEO";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -51,7 +51,7 @@ const Flex = styled.div`
   align-items: center; ;
 `;
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+export default withLoginUserRedux(({ loginUser, detail, comments, chain, siteUrl }) => {
   const postId = detail._id;
 
   const editorWrapperRef = useRef(null);
@@ -150,11 +150,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const desc = getMetaDesc(detail, "Bounty");
   return (
     <Layout user={loginUser} chain={chain}>
-      <NextHead
-        title={`${detail.title ?? "Subsquare"}`}
-        desc={desc}
-        type={"post"}
-      />
+      <SEO title={detail?.title} desc={desc} siteUrl={siteUrl} />
       <Wrapper className="post-content">
         <Back href={`/treasury/bounties`} text="Back to Bounties" />
         <DetailItem
@@ -216,6 +212,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
+      siteUrl: process.env.SITE_URL,
     },
   };
 });

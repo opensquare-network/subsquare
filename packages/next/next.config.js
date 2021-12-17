@@ -4,18 +4,11 @@ module.exports = {
       test: /\.svg$/,
       use: ["@svgr/webpack"],
     });
-
-    // config.module.rules.push({
-    //   test: /\.scss$/,
-    //   use: ["@svgr/webpack"],
-    // });
-
     config.plugins.push(
       new webpack.ProvidePlugin({
         'window.Quill': 'quill'
       })
     )
-
     return config;
   },
 };

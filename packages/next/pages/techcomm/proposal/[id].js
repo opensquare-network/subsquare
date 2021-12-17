@@ -8,7 +8,7 @@ import TechcommMotionDetail from "components/motion/techcommMotionDetail";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_MOTION } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-import NextHead from "../../../components/nextHead";
+import SEO from "components/SEO";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -19,17 +19,13 @@ const Wrapper = styled.div`
   margin: auto;
 `;
 
-export default withLoginUserRedux(({ loginUser, motion, chain }) => {
+export default withLoginUserRedux(({ loginUser, motion, chain, siteUrl }) => {
   motion.status = motion.state?.state;
 
   const desc = getMetaDesc(motion, "Proposal");
   return (
     <Layout user={loginUser} chain={chain}>
-      <NextHead
-        title={`${motion.title ?? "Subsquare"}`}
-        desc={desc}
-        type={"post"}
-      />
+      <SEO title={motion?.title} desc={desc} siteUrl={siteUrl} />
       <Wrapper className="post-content">
         <Back href={`/techcomm/proposals`} text="Back to Proposals" />
         <TechcommMotionDetail
@@ -60,6 +56,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       motion: motion ?? null,
       chain,
+      siteUrl: process.env.SITE_URL,
     },
   };
 });
