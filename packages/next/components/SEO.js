@@ -10,11 +10,6 @@ export default function SEO({ title, desc, chain, siteUrl }){
       width: 1200,
       height: 628,
     },
-    {
-      url: `${siteUrl}/imgs/${chain}/129x129-subsquare-${chain}-twitter.jpg`,
-      width: 129,
-      height: 129,
-    },
   ];
 
   return <NextSeo
