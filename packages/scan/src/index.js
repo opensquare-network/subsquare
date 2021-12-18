@@ -4,13 +4,15 @@ const { updateSpecs, getMetaScanHeight } = require("./chain/specs");
 const { disconnect } = require("./api");
 const { updateHeight, getLatestHeight } = require("./chain");
 const { getNextScanHeight, updateScanHeight } = require("./mongo/scanHeight");
-const { sleep } = require("./utils/sleep");
 const { logger } = require("./logger");
 const { scanKnownHeights } = require("./scan/known");
 const { doScanKnownFirst } = require("./env");
 const { isUseMetaDb } = require("./env");
 const { fetchBlocks } = require("./service/fetchBlocks");
 const { scanNormalizedBlock } = require("./scan/block");
+const {
+  utils: { sleep },
+} = require("@subsquare/scan-common");
 
 const scanStep = parseInt(process.env.SCAN_STEP) || 100;
 

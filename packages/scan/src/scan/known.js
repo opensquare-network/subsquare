@@ -1,6 +1,5 @@
 const { getNextScanHeight } = require("../mongo/scanHeight");
 const { scanNormalizedBlock } = require("./block");
-const { sleep } = require("../utils/sleep");
 const { updateScanHeight } = require("../mongo/scanHeight");
 const { logger } = require("../logger");
 const last = require("lodash.last");
