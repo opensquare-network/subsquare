@@ -13,7 +13,9 @@ const {
   MotionState,
   BountyMethods,
 } = require("../../../../common/constants");
-const { logger } = require("../../../../../logger");
+const {
+  log: { logger },
+} = require("@subsquare/scan-common");
 
 async function handleProposalCall(motion, call, author, indexer) {
   const { section, method, args } = call;

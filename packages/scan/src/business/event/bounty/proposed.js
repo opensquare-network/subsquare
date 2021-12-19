@@ -7,7 +7,9 @@ const {
 } = require("../../common/constants");
 const { getBountyDescription } = require("../../common/bounty/description");
 const { getBountyMeta } = require("../../common/bounty/meta");
-const { busLogger } = require("../../../logger");
+const {
+  log: { busLogger },
+} = require("@subsquare/scan-common");
 
 async function handleProposed(event, indexer, extrinsic) {
   const eventData = event.data.toJSON();

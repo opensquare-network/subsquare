@@ -12,7 +12,9 @@ const {
   CouncilEvents,
   KaruraModules,
 } = require("../../common/constants");
-const { busLogger } = require("../../../logger");
+const {
+  log: { busLogger },
+} = require("@subsquare/scan-common");
 
 function isCouncilProposeCall(call) {
   return (

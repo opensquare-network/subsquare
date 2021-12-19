@@ -3,7 +3,6 @@ const { getBountyMeta } = require("../../../../common/bounty/meta");
 const {
   updateTreasuryProposal,
 } = require("../../../../../mongo/service/treasuryProposal");
-const { busLogger } = require("../../../../../logger");
 const {
   getExternalFromStorageByHeight,
 } = require("../../../../common/democracy/external");
@@ -22,7 +21,9 @@ const {
   BountyStatus,
 } = require("../../../../common/constants");
 const { getMotionCollection } = require("../../../../../mongo");
-const { logger } = require("../../../../../logger");
+const {
+  log: { logger, busLogger },
+} = require("@subsquare/scan-common");
 
 async function handleRejectTreasuryProposal(proposalInfo, indexer) {
   const { index: proposalIndex, method } = proposalInfo;

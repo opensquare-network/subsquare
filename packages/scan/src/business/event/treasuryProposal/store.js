@@ -12,7 +12,9 @@ const {
 const {
   getTreasuryProposalMeta,
 } = require("../../common/treasuryProposal/meta");
-const { logger } = require("../../../logger");
+const {
+  log: { logger },
+} = require("@subsquare/scan-common");
 
 async function saveNewTreasuryProposal(event, indexer, events, extrinsic) {
   const [proposalIndex] = event.data.toJSON();

@@ -6,7 +6,9 @@ const {
   TreasuryProposalMethods,
 } = require("../../../../common/constants");
 const { getMotionCollection } = require("../../../../../mongo");
-const { logger } = require("../../../../../logger");
+const {
+  log: { logger },
+} = require("@subsquare/scan-common");
 
 async function handleProposal(proposalInfo, indexer) {
   const { index: treasuryProposalIndex, method } = proposalInfo;

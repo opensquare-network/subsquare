@@ -11,7 +11,9 @@ const {
   updateTreasuryProposal,
 } = require("../../../../../mongo/service/treasuryProposal");
 const { getMotionCollection } = require("../../../../../mongo");
-const { logger } = require("../../../../../logger");
+const {
+  log: { logger },
+} = require("@subsquare/scan-common");
 
 function getState(name, motion, voting, indexer) {
   return {

@@ -1,4 +1,3 @@
-const { busLogger } = require("../../../../logger");
 const { normalizeCall } = require("../../motion/utils");
 const { hexToU8a } = require("@polkadot/util");
 const {
@@ -6,6 +5,7 @@ const {
     findBlockApi,
     specs: { findRegistry },
   },
+  log: { busLogger },
 } = require("@subsquare/scan-common");
 
 async function getPreImageFromStorage(hash, indexer) {

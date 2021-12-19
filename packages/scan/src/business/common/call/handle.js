@@ -7,11 +7,11 @@ const {
 } = require("../constants");
 const { calcMultisigAddress } = require("../../../utils/call");
 const { GenericCall } = require("@polkadot/types");
-const { logger } = require("../../../logger");
 const {
   chain: {
     specs: { findRegistry },
   },
+  log: { logger },
 } = require("@subsquare/scan-common");
 
 async function unwrapProxy(call, signer, indexer, events, cb) {

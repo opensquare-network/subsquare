@@ -6,7 +6,6 @@ const { getMotionProposal } = require("../../../common/motion/proposalStorage");
 const {
   insertMotionPost,
 } = require("../../../../mongo/service/business/motion");
-const { busLogger } = require("../../../../logger");
 const { handleBusinessWhenMotionProposed } = require("./hooks/proposed");
 const { Modules, DemocracyMethods } = require("../../../common/constants");
 const {
@@ -22,6 +21,7 @@ const {
   chain: {
     specs: { findRegistry },
   },
+  log: { busLogger },
 } = require("@subsquare/scan-common");
 
 function extractBusinessFields(proposal = {}, indexer) {

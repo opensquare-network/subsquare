@@ -11,7 +11,9 @@ const {
   BountyStatus,
 } = require("../../../../common/constants");
 const { getMotionCollection } = require("../../../../../mongo");
-const { logger } = require("../../../../../logger");
+const {
+  log: { logger },
+} = require("@subsquare/scan-common");
 
 async function handleBounty(bountyIndex, indexer) {
   const state = {

@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 const { getNextScanHeight, updateScanHeight } = require("./mongo/scanHeight");
-const { logger } = require("./logger");
 const { scanKnownHeights } = require("./scan/known");
 const { fetchBlocks } = require("./service/fetchBlocks");
 const { scanNormalizedBlock } = require("./scan/block");
@@ -14,6 +13,7 @@ const {
     specs: { updateSpecs, getMetaScanHeight },
   },
   env: { isUseMetaDb, doScanKnownFirst },
+  log: { logger },
 } = require("@subsquare/scan-common");
 
 const scanStep = parseInt(process.env.SCAN_STEP) || 100;
