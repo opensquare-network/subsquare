@@ -1,5 +1,4 @@
 const { updateBounty } = require("../../../../../mongo/service/onchain/bounty");
-const { getBountyMeta } = require("../../../../common/bounty/meta");
 const {
   updateTreasuryProposal,
 } = require("../../../../../mongo/service/treasuryProposal");
@@ -16,6 +15,7 @@ const { getMotionCollection } = require("../../../../../mongo");
 const {
   log: { logger, busLogger },
   business: {
+    getBountyMeta,
     consts: {
       DemocracyExternalStates,
       TimelineItemTypes,

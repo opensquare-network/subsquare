@@ -1,8 +1,8 @@
 const { updateBounty } = require("../../../mongo/service/onchain/bounty");
-const { getBountyMetaByHeight } = require("../../common/bounty/meta");
 const {
   business: {
     consts: { TimelineItemTypes, BountyStatus, BountyEvents },
+    getBountyMetaByHeight,
   },
 } = require("@subsquare/scan-common");
 

@@ -1,5 +1,4 @@
 const { updateBounty } = require("../../../../../mongo/service/onchain/bounty");
-const { getBountyMeta } = require("../../../../common/bounty/meta");
 const {
   updateTreasuryProposal,
 } = require("../../../../../mongo/service/treasuryProposal");
@@ -8,6 +7,7 @@ const {
   log: { logger },
   business: {
     consts: { TreasuryProposalEvents, BountyStatus },
+    getBountyMeta,
   },
   isStateChangeBountyMotionCall,
 } = require("@subsquare/scan-common");

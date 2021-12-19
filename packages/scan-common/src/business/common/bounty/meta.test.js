@@ -1,9 +1,7 @@
+const { setKusama, disconnect } = require("../../../test");
+const { getApi } = require("../../../chain");
 const { getBountyMeta } = require("./meta");
 jest.setTimeout(3000000);
-const {
-  chain: { getApi },
-  test: { setKusama, disconnect },
-} = require("@subsquare/scan-common");
 
 describe("test get ", () => {
   beforeAll(async () => {

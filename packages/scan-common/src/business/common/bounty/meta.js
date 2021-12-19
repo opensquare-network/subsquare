@@ -1,6 +1,4 @@
-const {
-  chain: { getApi, findBlockApi },
-} = require("@subsquare/scan-common");
+const { findBlockApi, getApi } = require("../../../chain");
 
 async function getBountyMeta(bountyIndex, indexer) {
   const blockApi = await findBlockApi(indexer.blockHash);
