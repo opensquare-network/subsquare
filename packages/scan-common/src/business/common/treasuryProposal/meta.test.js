@@ -1,8 +1,5 @@
-const {
-  chain: { getApi },
-  test: { setKusama, disconnect },
-} = require("@subsquare/scan-common");
-
+const { setKusama, disconnect } = require("../../../test");
+const { getApi } = require("../../../chain");
 jest.setTimeout(3000000);
 
 const { getTreasuryProposalMeta } = require("./meta");

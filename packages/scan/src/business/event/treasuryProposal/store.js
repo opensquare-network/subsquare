@@ -6,12 +6,10 @@ const {
   updateTreasuryProposal,
 } = require("../../../mongo/service/treasuryProposal");
 const {
-  getTreasuryProposalMeta,
-} = require("../../common/treasuryProposal/meta");
-const {
   log: { logger },
   business: {
     consts: { TimelineItemTypes, TreasuryProposalEvents },
+    getTreasuryProposalMeta,
   },
 } = require("@subsquare/scan-common");
 
