@@ -1,10 +1,14 @@
-const { findBlockApi } = require("../chain/specs");
-const { isUseMetaDb } = require("../env");
 const { getBlocks } = require("../mongo/meta");
-const { findRegistry } = require("../chain/specs");
-const { getApi } = require("../api");
 const { GenericBlock } = require("@polkadot/types");
 const { blockLogger, metaLogger } = require("../logger");
+const {
+  chain: {
+    specs: { findRegistry },
+    findBlockApi,
+    getApi,
+  },
+  env: { isUseMetaDb },
+} = require("@subsquare/scan-common");
 
 async function fetchBlocks(heights = []) {
   let blocks;
@@ -62,7 +66,7 @@ async function fetchBlocksFromDb(heights = []) {
 async function fetchBlocksFromNode(heights = []) {
   const allPromises = [];
   for (const height of heights) {
-    allPromises.push(makeSureFetch(height));
+    allPromises.push(fetchOneBlockFromNode(height));
   }
 
   return await Promise.all(allPromises);
@@ -80,8 +84,7 @@ async function makeSureFetch(height) {
 async function fetchOneBlockFromNode(height) {
   const api = await getApi();
   const blockHash = await api.rpc.chain.getBlockHash(height);
-
-  const blockApi = await findBlockApi({ blockHeight: height, blockHash });
+  const blockApi = await findBlockApi(blockHash);
 
   const promises = [
     api.rpc.chain.getBlock(blockHash),

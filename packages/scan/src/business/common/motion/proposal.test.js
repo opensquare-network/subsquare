@@ -2,11 +2,16 @@ const { onFinalityPolkadot } = require("../../../utils/constants");
 const { onFinalityKusama } = require("../../../utils/constants");
 const { onFinalityKarura } = require("../../../utils/constants");
 const { getMotionProposalCall } = require("./proposalStorage");
-const { setSpecHeights } = require("../../../chain/specs");
-const { setApi } = require("../../../api");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
-const { setChain, CHAINS } = require("../../../env");
+const {
+  chain: {
+    setApi,
+    setProvider,
+    specs: { setSpecHeights },
+  },
+  env: { setChain, CHAINS },
+} = require("@subsquare/scan-common");
 
 jest.setTimeout(3000000);
 
@@ -118,6 +123,7 @@ describe("test get karura ", () => {
       typesBundle: { ...typesBundleForPolkadot },
     });
 
+    setProvider(provider);
     setApi(api);
     setChain(CHAINS.KARURA);
   });
@@ -128,7 +134,7 @@ describe("test get karura ", () => {
 
   test("motion proposal works", async () => {
     const height = 43249;
-    setSpecHeights([height]);
+    await setSpecHeights([height]);
     const blockHash = await api.rpc.chain.getBlockHash(height);
     const indexer = { blockHash, blockHeight: height };
 
@@ -141,7 +147,7 @@ describe("test get karura ", () => {
 
   test("6th motion proposal works", async () => {
     const height = 160502;
-    setSpecHeights([height]);
+    await setSpecHeights([height]);
     const blockHash = await api.rpc.chain.getBlockHash(height);
     const indexer = { blockHash, blockHeight: height };
 
@@ -172,6 +178,7 @@ describe("test get kusama motion proposal", () => {
   beforeAll(async () => {
     provider = new WsProvider(onFinalityKusama, 1000);
     api = await ApiPromise.create({ provider });
+    setProvider(provider);
     setApi(api);
     setChain(CHAINS.KUSAMA);
   });
@@ -182,7 +189,7 @@ describe("test get kusama motion proposal", () => {
 
   test("works", async () => {
     const blockHeight = 126209;
-    setSpecHeights([blockHeight]);
+    await setSpecHeights([blockHeight]);
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
     const indexer = { blockHash, blockHeight };
 
@@ -201,6 +208,7 @@ describe("test get polkadot motion proposal", () => {
   beforeAll(async () => {
     provider = new WsProvider(onFinalityPolkadot, 1000);
     api = await ApiPromise.create({ provider });
+    setProvider(provider);
     setApi(api);
     setChain(CHAINS.POLKADOT);
   });
@@ -211,7 +219,7 @@ describe("test get polkadot motion proposal", () => {
 
   test("by proxy works", async () => {
     const blockHeight = 3543099;
-    setSpecHeights([blockHeight]);
+    await setSpecHeights([blockHeight]);
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
     const indexer = { blockHash, blockHeight };
     const motionHash =

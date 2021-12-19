@@ -1,9 +1,11 @@
 const { karuraEndpoint } = require("../../../../utils/constants");
 jest.setTimeout(3000000);
 const { getPublicProposalFromStorage } = require("./storage");
-const { setApi } = require("../../../../api");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
+const {
+  chain: { setApi, setProvider },
+} = require("@subsquare/scan-common");
 
 describe("test democracy public proposals", () => {
   let api;
@@ -16,6 +18,7 @@ describe("test democracy public proposals", () => {
       typesBundle: { ...typesBundleForPolkadot },
     });
 
+    setProvider(provider);
     setApi(api);
   });
 

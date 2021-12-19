@@ -1,9 +1,11 @@
 const { karuraEndpoint } = require("../../../utils/constants");
-const { setChain, CHAINS } = require("../../../env");
 const { getTechCommMotionVotingFromStorage } = require("./votingStorage");
-const { setApi } = require("../../../api");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
+const {
+  chain: { setApi, setProvider },
+  env: { setChain, CHAINS },
+} = require("@subsquare/scan-common");
 
 jest.setTimeout(3000000);
 
@@ -18,6 +20,7 @@ describe("test get karura Tech.Comm. voting", () => {
       typesBundle: { ...typesBundleForPolkadot },
     });
 
+    setProvider(provider);
     setApi(api);
     setChain(CHAINS.KARURA);
   });

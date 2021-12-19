@@ -3,10 +3,12 @@ const {
   getReferendumInfoFromStorage,
   getReferendumInfoByHeight,
 } = require("./referendumStorage");
-const { CHAINS } = require("../../../../env");
-const { setChain } = require("../../../../env");
-const { setApi } = require("../../../../api");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
+const {
+  chain: { setApi, setProvider },
+  env: { setChain, CHAINS },
+} = require("@subsquare/scan-common");
+
 jest.setTimeout(3000000);
 
 const { ApiPromise, WsProvider } = require("@polkadot/api");
@@ -22,6 +24,7 @@ describe("test get karura referendum 1th info", () => {
       typesBundle: { ...typesBundleForPolkadot },
     });
 
+    setProvider(provider);
     setApi(api);
     setChain(CHAINS.KARURA);
   });

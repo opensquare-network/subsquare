@@ -1,8 +1,8 @@
-const { getApi } = require("../api");
+const { getApi } = require("./api");
 
 let latestHeight = null;
 
-async function updateHeight() {
+async function subscribeFinalizedHead() {
   const api = await getApi();
 
   await new Promise((resolve) => {
@@ -13,11 +13,11 @@ async function updateHeight() {
   });
 }
 
-function getLatestHeight() {
+function getChainLatestHeight() {
   return latestHeight;
 }
 
 module.exports = {
-  updateHeight,
-  getLatestHeight,
+  subscribeFinalizedHead,
+  getChainLatestHeight,
 };

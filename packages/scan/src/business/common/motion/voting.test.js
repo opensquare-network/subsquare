@@ -1,12 +1,14 @@
 const { onFinalityKarura } = require("../../../utils/constants");
-const { setChain, CHAINS } = require("../../../env");
 const {
   getMotionVoting,
   getVotingFromStorageByHeight,
 } = require("./votingStorage");
-const { setApi } = require("../../../api");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
+const {
+  chain: { setApi, setProvider },
+  env: { setChain, CHAINS },
+} = require("@subsquare/scan-common");
 
 jest.setTimeout(3000000);
 
@@ -30,6 +32,7 @@ describe("test get karura motion", () => {
       typesBundle: { ...typesBundleForPolkadot },
     });
 
+    setProvider(provider);
     setApi(api);
     setChain(CHAINS.KARURA);
   });
@@ -64,6 +67,7 @@ describe("test get kusama motion", () => {
   beforeAll(async () => {
     provider = new WsProvider("wss://kusama.api.onfinality.io/public-ws", 1000);
     api = await ApiPromise.create({ provider });
+    setProvider(provider);
     setApi(api);
     setChain(CHAINS.KUSAMA);
   });

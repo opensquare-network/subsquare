@@ -1,11 +1,15 @@
 const { getMotionProposalCall } = require("../proposalStorage");
-const { setSpecHeights } = require("../../../../chain/specs");
-const { CHAINS } = require("../../../../env");
-const { setChain } = require("../../../../env");
-const { setApi } = require("../../../../api");
 const { khalaEndpoint } = require("../../../../utils/constants");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { versionedKhala, typesChain } = require("@phala/typedefs");
+const {
+  chain: {
+    setApi,
+    setProvider,
+    specs: { setSpecHeights },
+  },
+  env: { setChain, CHAINS },
+} = require("@subsquare/scan-common");
 
 jest.setTimeout(3000000);
 
@@ -26,6 +30,7 @@ describe("test get khala motion proposal", () => {
     };
 
     api = await ApiPromise.create(options);
+    setProvider(provider);
     setApi(api);
     setChain(CHAINS.KHALA);
   });
@@ -36,7 +41,7 @@ describe("test get khala motion proposal", () => {
 
   test("works", async () => {
     const blockHeight = 411735;
-    setSpecHeights([411139]);
+    await setSpecHeights([411139]);
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
     const indexer = { blockHash, blockHeight };
     const motionHash =

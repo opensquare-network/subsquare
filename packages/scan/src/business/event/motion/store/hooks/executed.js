@@ -134,7 +134,7 @@ async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
 
   await insertDemocracyExternal(externalObj);
   await insertDemocracyPostByExternal(proposalHash, indexer, authors[0]);
-  busLogger.info("External created at", indexer.blockHeight, externalObj);
+  busLogger.info(`External ${hash} created at`, indexer.blockHeight);
 }
 
 module.exports = {

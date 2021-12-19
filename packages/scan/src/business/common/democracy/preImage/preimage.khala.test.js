@@ -1,9 +1,14 @@
 const { khalaEndpoint } = require("../../../../utils/constants");
 const { getPreImageFromStorage } = require("./storage");
-const { setSpecHeights } = require("../../../../chain/specs");
-const { CHAINS } = require("../../../../env");
-const { setChain } = require("../../../../env");
-const { setApi } = require("../../../../api");
+const {
+  chain: {
+    setApi,
+    setProvider,
+    specs: { setSpecHeights },
+  },
+  env: { setChain, CHAINS },
+} = require("@subsquare/scan-common");
+
 const { versionedKhala, typesChain } = require("@phala/typedefs");
 jest.setTimeout(3000000);
 
@@ -26,6 +31,7 @@ describe("test get khala democracy image", () => {
       provider,
     });
 
+    setProvider(provider);
     setApi(api);
     setChain(CHAINS.KHALA);
   });
@@ -36,7 +42,7 @@ describe("test get khala democracy image", () => {
 
   test(" works", async () => {
     const blockHeight = 319291;
-    setSpecHeights([blockHeight]);
+    await setSpecHeights([blockHeight]);
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
     const indexer = { blockHash, blockHeight };
 

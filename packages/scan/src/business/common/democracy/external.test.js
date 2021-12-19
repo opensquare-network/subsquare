@@ -1,8 +1,11 @@
 const { getExternalFromStorageByHeight } = require("./external");
 const { onFinalityKarura } = require("../../../utils/constants");
 const { getExternalFromStorage } = require("./external");
-const { setChain, CHAINS } = require("../../../env");
-const { setApi } = require("../../../api");
+const {
+  chain: { setApi, setProvider },
+  env: { setChain, CHAINS },
+} = require("@subsquare/scan-common");
+
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
 
@@ -19,6 +22,7 @@ describe("test get karura external", () => {
       typesBundle: { ...typesBundleForPolkadot },
     });
 
+    setProvider(provider);
     setApi(api);
     setChain(CHAINS.KARURA);
   });

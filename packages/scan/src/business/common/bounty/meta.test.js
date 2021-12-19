@@ -1,6 +1,8 @@
 const { getBountyMeta } = require("./meta");
-const { setApi } = require("../../../api");
 jest.setTimeout(3000000);
+const {
+  chain: { setApi, setProvider },
+} = require("@subsquare/scan-common");
 
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 
@@ -11,6 +13,7 @@ describe("test get ", () => {
   beforeAll(async () => {
     provider = new WsProvider("wss://kusama.api.onfinality.io/public-ws", 1000);
     api = await ApiPromise.create({ provider });
+    setProvider(provider);
     setApi(api);
   });
 

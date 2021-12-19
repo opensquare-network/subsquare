@@ -1,8 +1,8 @@
 const { ApiPromise, WsProvider } = require("@polkadot/api");
-const { CHAINS, currentChain } = require("./env");
+const { CHAINS, currentChain } = require("../env");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
 const { versionedKhala, typesChain } = require("@phala/typedefs");
-const { basilisk } = require("./chain/bundle/basilisk");
+const { basilisk } = require("./bundle/basilisk");
 
 let provider = null;
 let api = null;
@@ -49,8 +49,20 @@ function setApi(targetApi) {
   api = targetApi;
 }
 
+// for test
+function setProvider(p) {
+  provider = p;
+}
+
+// for test
+function getProvider() {
+  return provider;
+}
+
 module.exports = {
   getApi,
   disconnect,
   setApi,
+  getProvider,
+  setProvider,
 };

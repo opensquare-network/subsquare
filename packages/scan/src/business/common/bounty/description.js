@@ -1,7 +1,9 @@
-const { findBlockApi } = require("../../../chain/specs");
+const {
+  chain: { findBlockApi },
+} = require("@subsquare/scan-common");
 
 async function getBountyDescription(bountyIndex, indexer) {
-  const blockApi = await findBlockApi(indexer);
+  const blockApi = await findBlockApi(indexer.blockHash);
 
   let rawMeta;
   if (blockApi.query.treasury?.bountyDescriptions) {

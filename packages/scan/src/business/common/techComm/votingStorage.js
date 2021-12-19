@@ -1,8 +1,9 @@
-const { findBlockApi } = require("../../../chain/specs");
-const { getApi } = require("../../../api");
+const {
+  chain: { getApi, findBlockApi },
+} = require("@subsquare/scan-common");
 
 async function getTechCommMotionVoting(motionHash, indexer) {
-  const blockApi = await findBlockApi(indexer);
+  const blockApi = await findBlockApi(indexer.blockHash);
   const raw = await blockApi.query.technicalCommittee.voting(motionHash);
   return raw.toJSON();
 }

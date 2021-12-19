@@ -1,10 +1,15 @@
-const { findBlockApi, findRegistry } = require("../../../chain/specs");
 const { normalizeCall } = require("./utils");
-const { isKarura } = require("../../../env");
 const { GenericCall } = require("@polkadot/types");
+const {
+  chain: {
+    findBlockApi,
+    specs: { findRegistry },
+  },
+  env: { isKarura },
+} = require("@subsquare/scan-common");
 
 async function getMotionProposal(motionHash, indexer) {
-  const blockApi = await findBlockApi(indexer);
+  const blockApi = await findBlockApi(indexer.blockHash);
 
   let raw = null;
   if (isKarura()) {
@@ -24,7 +29,7 @@ async function getMotionCall(motionHash, indexer) {
 
 async function getMotionProposalCall(motionHash, indexer) {
   const raw = await getMotionProposal(motionHash, indexer);
-  const blockApi = await findBlockApi(indexer);
+  const blockApi = await findBlockApi(indexer.blockHash);
   return normalizeCall(new GenericCall(blockApi.registry, raw.toHex()));
 }
 

@@ -1,9 +1,10 @@
-const { findBlockApi } = require("../../../chain/specs");
-const { getApi } = require("../../../api");
-const { isKarura } = require("../../../env");
+const {
+  chain: { getApi, findBlockApi },
+  env: { isKarura },
+} = require("@subsquare/scan-common");
 
 async function getMotionVoting(motionHash, indexer) {
-  const blockApi = await findBlockApi(indexer);
+  const blockApi = await findBlockApi(indexer.blockHash);
 
   let raw;
   if (isKarura()) {

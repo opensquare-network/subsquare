@@ -2,9 +2,11 @@ const { getTipReason } = require("../utils");
 const { khalaEndpoint } = require("../../../../utils/constants");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { versionedKhala, typesChain } = require("@phala/typedefs");
-const { setChain, CHAINS } = require("../../../../env");
-const { setApi } = require("../../../../api");
 jest.setTimeout(3000000);
+const {
+  chain: { setApi, setProvider },
+  env: { setChain, CHAINS },
+} = require("@subsquare/scan-common");
 
 describe("test get khala tip reason", () => {
   let api;
@@ -23,6 +25,7 @@ describe("test get khala tip reason", () => {
     };
 
     api = await ApiPromise.create(options);
+    setProvider(provider);
     setApi(api);
     setChain(CHAINS.KHALA);
   });

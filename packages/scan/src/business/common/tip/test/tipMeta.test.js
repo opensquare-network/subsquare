@@ -1,12 +1,18 @@
 const { onFinalityKarura } = require("../../../../utils/constants");
-const { setApi } = require("../../../../api");
 const { getTipReason } = require("../utils");
 const { getTipMetaFromStorage } = require("../utils");
+const {
+  chain: {
+    setProvider,
+    setApi,
+    specs: { setSpecHeights },
+  },
+} = require("@subsquare/scan-common");
+
 jest.setTimeout(3000000);
 
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
-const { setSpecHeights } = require("../../../../chain/specs");
 
 describe("test get tip", () => {
   let api;
@@ -19,6 +25,7 @@ describe("test get tip", () => {
       typesBundle: { ...typesBundleForPolkadot },
     });
 
+    setProvider(provider);
     setApi(api);
   });
 
@@ -28,7 +35,7 @@ describe("test get tip", () => {
 
   test("meta works", async () => {
     const height = 89001;
-    setSpecHeights([height]);
+    await setSpecHeights([height]);
     const blockHash = await api.rpc.chain.getBlockHash(height);
 
     const tipHash =
@@ -51,7 +58,7 @@ describe("test get tip", () => {
 
   test("reason works", async () => {
     const height = 89001;
-    setSpecHeights([height]);
+    await setSpecHeights([height]);
     const blockHash = await api.rpc.chain.getBlockHash(height);
 
     const reason = await getTipReason(

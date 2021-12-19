@@ -1,11 +1,12 @@
 const { karuraEndpoint } = require("../../../../utils/constants");
-const { CHAINS } = require("../../../../env");
-const { setChain } = require("../../../../env");
 const { getTippersCount } = require("../utils");
 const { getTipFindersFee } = require("../utils");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
-const { setApi } = require("../../../../api");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
+const {
+  chain: { setApi, setProvider },
+  env: { setChain, CHAINS },
+} = require("@subsquare/scan-common");
 jest.setTimeout(3000000);
 
 describe("test get tip", () => {
@@ -20,6 +21,7 @@ describe("test get tip", () => {
     });
 
     setChain(CHAINS.KARURA);
+    setProvider(provider);
     setApi(api);
   });
 

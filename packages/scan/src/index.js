@@ -1,23 +1,25 @@
 require("dotenv").config();
 
-const { updateSpecs, getMetaScanHeight } = require("./chain/specs");
-const { disconnect } = require("./api");
-const { updateHeight, getLatestHeight } = require("./chain");
 const { getNextScanHeight, updateScanHeight } = require("./mongo/scanHeight");
 const { logger } = require("./logger");
 const { scanKnownHeights } = require("./scan/known");
-const { doScanKnownFirst } = require("./env");
-const { isUseMetaDb } = require("./env");
 const { fetchBlocks } = require("./service/fetchBlocks");
 const { scanNormalizedBlock } = require("./scan/block");
 const {
   utils: { sleep },
+  chain: {
+    disconnect,
+    subscribeFinalizedHead,
+    getChainLatestHeight,
+    specs: { updateSpecs, getMetaScanHeight },
+  },
+  env: { isUseMetaDb, doScanKnownFirst },
 } = require("@subsquare/scan-common");
 
 const scanStep = parseInt(process.env.SCAN_STEP) || 100;
 
 async function main() {
-  await updateHeight();
+  await subscribeFinalizedHead();
   await updateSpecs();
 
   if (doScanKnownFirst()) {
@@ -27,7 +29,7 @@ async function main() {
   let scanHeight = await getNextScanHeight();
   while (true) {
     // chainHeight is the current on-chain last block height
-    const chainHeight = getLatestHeight();
+    const chainHeight = getChainLatestHeight();
 
     if (scanHeight > chainHeight) {
       // Just wait if the to scan height greater than current chain height

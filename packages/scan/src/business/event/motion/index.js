@@ -9,7 +9,9 @@ const { handleClosed } = require("./store/closed");
 const { handleApproved } = require("./store/approved");
 const { handleDisApproved } = require("./store/disApproved");
 const { handleExecuted } = require("./store/executed");
-const { isKarura } = require("../../../env");
+const {
+  env: { isKarura },
+} = require("@subsquare/scan-common");
 
 function isCouncilModule(section) {
   if (isKarura()) {

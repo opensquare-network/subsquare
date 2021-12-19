@@ -1,11 +1,16 @@
-const { setSpecHeights } = require("../../../chain/specs");
 const { karuraEndpoint } = require("../../../utils/constants");
 const { testTechCommProposal } = require("./testData");
 const { getTechCommMotionProposalCall } = require("./proposalStorage");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
-const { setApi } = require("../../../api");
-const { setChain, CHAINS } = require("../../../env");
+const {
+  chain: {
+    setApi,
+    setProvider,
+    specs: { setSpecHeights },
+  },
+  env: { setChain, CHAINS },
+} = require("@subsquare/scan-common");
 
 jest.setTimeout(3000000);
 
@@ -20,6 +25,7 @@ describe("test get karura Tech Comm", () => {
       typesBundle: { ...typesBundleForPolkadot },
     });
 
+    setProvider(provider);
     setApi(api);
     setChain(CHAINS.KARURA);
   });
@@ -30,7 +36,7 @@ describe("test get karura Tech Comm", () => {
 
   test("motion proposal works", async () => {
     const blockHeight = 212454;
-    setSpecHeights([blockHeight]);
+    await setSpecHeights([blockHeight]);
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
     const indexer = { blockHash, blockHeight };
 
