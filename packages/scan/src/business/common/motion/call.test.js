@@ -1,5 +1,4 @@
 const { GenericCall } = require("@polkadot/types");
-const { normalizeCall } = require("./utils");
 const { getMotionProposal } = require("./proposalStorage");
 const {
   chain: {
@@ -7,6 +6,7 @@ const {
     specs: { setSpecHeights, findRegistry },
   },
   test: { setKarura, disconnect },
+  business: { normalizeCall },
 } = require("@subsquare/scan-common");
 jest.setTimeout(3000000);
 

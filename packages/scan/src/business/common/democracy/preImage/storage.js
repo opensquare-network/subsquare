@@ -1,4 +1,3 @@
-const { normalizeCall } = require("../../motion/utils");
 const { hexToU8a } = require("@polkadot/util");
 const {
   chain: {
@@ -6,6 +5,7 @@ const {
     specs: { findRegistry },
   },
   log: { busLogger },
+  business: { normalizeCall },
 } = require("@subsquare/scan-common");
 
 async function getPreImageFromStorage(hash, indexer) {

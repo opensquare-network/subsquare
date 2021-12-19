@@ -1,8 +1,8 @@
 const { handleEvents } = require("../business/event");
 const { handleExtrinsics } = require("../business/extrinsic");
-const { getBlockIndexer } = require("../utils/block/getBlockIndexer");
 const {
   chain: { removeBlockApi },
+  utils: { getBlockIndexer },
 } = require("@subsquare/scan-common");
 
 async function scanNormalizedBlock(block, blockEvents) {

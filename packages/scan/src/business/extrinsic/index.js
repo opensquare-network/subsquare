@@ -3,8 +3,6 @@ const { handleAcceptCurator } = require("./bounty/acceptCurator");
 const { handleTechCommPropose } = require("./techComm/propose");
 const { handleFastTrack } = require("./democracy/fastTrack");
 const { handleExternalPropose } = require("./democracy/external");
-const { calcMultisigAddress } = require("../../utils/call");
-const { extractExtrinsicEvents, isExtrinsicSuccess } = require("../../utils");
 const { GenericCall } = require("@polkadot/types");
 const { handleTipCall } = require("../extrinsic/tip");
 const {
@@ -20,6 +18,7 @@ const {
       SudoMethods,
     },
   },
+  utils: { calcMultisigAddress, isExtrinsicSuccess, extractExtrinsicEvents },
 } = require("@subsquare/scan-common");
 
 async function handleCall(call, author, extrinsicIndexer, events) {

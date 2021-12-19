@@ -1,8 +1,8 @@
 const {
-  business: {
-    consts: { Modules, TreasuryProposalMethods, BountyMethods },
-  },
-} = require("@subsquare/scan-common");
+  Modules,
+  TreasuryProposalMethods,
+  BountyMethods,
+} = require("../../common/constants");
 
 function isTreasuryProposalMotionCall(section, method) {
   return (

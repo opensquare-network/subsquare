@@ -1,4 +1,3 @@
-const { normalizeCall } = require("./utils");
 const { GenericCall } = require("@polkadot/types");
 const {
   chain: {
@@ -6,6 +5,7 @@ const {
     specs: { findRegistry },
   },
   env: { isKarura },
+  business: { normalizeCall },
 } = require("@subsquare/scan-common");
 
 async function getMotionProposal(motionHash, indexer) {

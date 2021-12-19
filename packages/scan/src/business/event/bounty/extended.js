@@ -1,11 +1,11 @@
 const { updateBounty } = require("../../../mongo/service/onchain/bounty");
-const { findCallInSections } = require("../../common/call/findCall");
-const { getRealCaller } = require("../../common/call/getRealCaller");
 const { getBountyMeta } = require("../../common/bounty/meta");
 const { hexToString } = require("@polkadot/util");
 const {
   business: {
     consts: { Modules, BountyMethods, TimelineItemTypes },
+    findCallInSections,
+    getRealCaller,
   },
 } = require("@subsquare/scan-common");
 

@@ -7,10 +7,10 @@ const {
 const {
   extractBusinessFields,
 } = require("../../event/techCommMotion/service/proposed");
-const { normalizeCall } = require("../../common/motion/utils");
 const {
   business: {
     consts: { Modules, TechnicalCommitteeMethods, TechnicalCommitteeEvents },
+    normalizeCall,
   },
 } = require("@subsquare/scan-common");
 

@@ -1,7 +1,3 @@
-const {
-  extractMotionCalls,
-} = require("../../../common/call/extractMotionCalls");
-const { normalizeCall } = require("../../../common/motion/utils");
 const { getMotionProposal } = require("../../../common/motion/proposalStorage");
 const {
   insertMotionPost,
@@ -19,6 +15,8 @@ const {
   log: { busLogger },
   business: {
     consts: { Modules, DemocracyMethods, TimelineItemTypes, CouncilEvents },
+    normalizeCall,
+    extractMotionCalls,
   },
 } = require("@subsquare/scan-common");
 

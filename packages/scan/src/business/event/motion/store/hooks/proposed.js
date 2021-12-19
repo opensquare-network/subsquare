@@ -1,10 +1,4 @@
 const { updateBounty } = require("../../../../../mongo/service/onchain/bounty");
-const { handleWrappedCall } = require("../../../../common/call/handle");
-const {
-  isTreasuryProposalMotionCall,
-  isBountyMotionCall,
-  isStateChangeBountyMotionCall,
-} = require("../../../../common/call/utils");
 const {
   updateTreasuryProposal,
 } = require("../../../../../mongo/service/treasuryProposal");
@@ -12,6 +6,10 @@ const {
   log: { logger },
   business: {
     consts: { TreasuryProposalMethods, MotionState, BountyMethods },
+    handleWrappedCall,
+    isTreasuryProposalMotionCall,
+    isBountyMotionCall,
+    isStateChangeBountyMotionCall,
   },
 } = require("@subsquare/scan-common");
 

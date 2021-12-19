@@ -1,8 +1,6 @@
+const { setKusama, disconnect } = require("../../../test");
 const { getRealCaller } = require("./getRealCaller");
-const {
-  chain: { getApi },
-  test: { setKusama, disconnect },
-} = require("@subsquare/scan-common");
+const { getApi } = require("../../../chain");
 
 jest.setTimeout(3000000);
 

@@ -1,10 +1,10 @@
 const { GenericCall } = require("@polkadot/types");
-const { normalizeCall } = require("../motion/utils");
 const {
   chain: {
     findBlockApi,
     specs: { findRegistry },
   },
+  business: { normalizeCall },
 } = require("@subsquare/scan-common");
 
 async function getTechCommMotionProposal(motionHash, indexer) {

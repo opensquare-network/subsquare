@@ -1,18 +1,14 @@
-const {
-  isStateChangeBountyMotionCall,
-} = require("../../../../common/call/utils");
 const { updateBounty } = require("../../../../../mongo/service/onchain/bounty");
-const {
-  business: {
-    consts: { TreasuryProposalMethods, MotionState, BountyMethods },
-  },
-} = require("@subsquare/scan-common");
 const {
   updateTreasuryProposal,
 } = require("../../../../../mongo/service/treasuryProposal");
 const { getMotionCollection } = require("../../../../../mongo");
 const {
   log: { logger },
+  business: {
+    isStateChangeBountyMotionCall,
+    consts: { TreasuryProposalMethods, MotionState, BountyMethods },
+  },
 } = require("@subsquare/scan-common");
 
 function getState(name, motion, voting, indexer) {
