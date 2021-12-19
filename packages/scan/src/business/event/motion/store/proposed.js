@@ -7,14 +7,9 @@ const {
   insertMotionPost,
 } = require("../../../../mongo/service/business/motion");
 const { handleBusinessWhenMotionProposed } = require("./hooks/proposed");
-const { Modules, DemocracyMethods } = require("../../../common/constants");
 const {
   getVotingFromStorage,
 } = require("../../../common/motion/votingStorage");
-const {
-  TimelineItemTypes,
-  CouncilEvents,
-} = require("../../../common/constants");
 const { insertMotion } = require("../../../../mongo/service/onchain/motion");
 const { GenericCall } = require("@polkadot/types");
 const {
@@ -22,6 +17,9 @@ const {
     specs: { findRegistry },
   },
   log: { busLogger },
+  business: {
+    consts: { Modules, DemocracyMethods, TimelineItemTypes, CouncilEvents },
+  },
 } = require("@subsquare/scan-common");
 
 function extractBusinessFields(proposal = {}, indexer) {

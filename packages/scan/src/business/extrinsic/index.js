@@ -5,18 +5,20 @@ const { handleFastTrack } = require("./democracy/fastTrack");
 const { handleExternalPropose } = require("./democracy/external");
 const { calcMultisigAddress } = require("../../utils/call");
 const { extractExtrinsicEvents, isExtrinsicSuccess } = require("../../utils");
-const {
-  Modules,
-  MultisigMethods,
-  ProxyMethods,
-  UtilityMethods,
-  SudoMethods,
-} = require("../common/constants");
 const { GenericCall } = require("@polkadot/types");
 const { handleTipCall } = require("../extrinsic/tip");
 const {
   chain: {
     specs: { findRegistry },
+  },
+  business: {
+    consts: {
+      Modules,
+      MultisigMethods,
+      ProxyMethods,
+      UtilityMethods,
+      SudoMethods,
+    },
   },
 } = require("@subsquare/scan-common");
 

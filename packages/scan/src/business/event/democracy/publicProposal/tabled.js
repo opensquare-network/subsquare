@@ -4,12 +4,16 @@ const {
 const {
   updateDemocracyPublicProposal,
 } = require("../../../../mongo/service/onchain/democracyPublicProposal");
-const { TimelineItemTypes } = require("../../../common/constants");
 const {
-  Modules,
-  DemocracyPublicProposalEvents,
-  ReferendumEvents,
-} = require("../../../common/constants");
+  business: {
+    consts: {
+      Modules,
+      DemocracyPublicProposalEvents,
+      ReferendumEvents,
+      TimelineItemTypes,
+    },
+  },
+} = require("@subsquare/scan-common");
 
 function extractReferendumIndex(event) {
   const { section, method, data } = event.event || {};

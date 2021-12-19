@@ -1,10 +1,3 @@
-const {
-  Modules,
-  MultisigMethods,
-  ProxyMethods,
-  UtilityMethods,
-  SudoMethods,
-} = require("../constants");
 const { calcMultisigAddress } = require("../../../utils/call");
 const { GenericCall } = require("@polkadot/types");
 const {
@@ -12,6 +5,15 @@ const {
     specs: { findRegistry },
   },
   log: { logger },
+  business: {
+    consts: {
+      Modules,
+      MultisigMethods,
+      ProxyMethods,
+      UtilityMethods,
+      SudoMethods,
+    },
+  },
 } = require("@subsquare/scan-common");
 
 async function unwrapProxy(call, signer, indexer, events, cb) {

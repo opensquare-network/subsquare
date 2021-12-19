@@ -14,12 +14,16 @@ const {
   getExternalFromStorageByHeight,
 } = require("../../common/democracy/external");
 const {
-  Modules,
-  DemocracyMethods,
-  DemocracyExternalStates,
-  ReferendumEvents,
-  TimelineItemTypes,
-} = require("../../common/constants");
+  business: {
+    consts: {
+      Modules,
+      DemocracyMethods,
+      DemocracyExternalStates,
+      ReferendumEvents,
+      TimelineItemTypes,
+    },
+  },
+} = require("@subsquare/scan-common");
 
 function isFastTrackCall(call) {
   return (

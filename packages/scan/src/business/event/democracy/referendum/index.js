@@ -3,7 +3,11 @@ const { handleExecuted } = require("./executed");
 const { handleNotPassed } = require("./notPassed");
 const { handlePassed } = require("./passed");
 const { handleCancelled } = require("./cancelled");
-const { Modules, ReferendumEvents } = require("../../../common/constants");
+const {
+  business: {
+    consts: { Modules, ReferendumEvents },
+  },
+} = require("@subsquare/scan-common");
 
 function isReferendumEvent(section, method) {
   if (![Modules.Democracy].includes(section)) {

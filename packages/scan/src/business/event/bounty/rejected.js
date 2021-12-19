@@ -1,10 +1,10 @@
 const { updateBounty } = require("../../../mongo/service/onchain/bounty");
-const {
-  TimelineItemTypes,
-  BountyStatus,
-  BountyEvents,
-} = require("../../common/constants");
 const { getBountyMetaByHeight } = require("../../common/bounty/meta");
+const {
+  business: {
+    consts: { TimelineItemTypes, BountyStatus, BountyEvents },
+  },
+} = require("@subsquare/scan-common");
 
 async function handleRejected(event, indexer) {
   const [bountyIndex, slashed] = event.data.toJSON();

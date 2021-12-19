@@ -6,14 +6,13 @@ const {
   updateTreasuryProposal,
 } = require("../../../mongo/service/treasuryProposal");
 const {
-  TimelineItemTypes,
-  TreasuryProposalEvents,
-} = require("../../common/constants");
-const {
   getTreasuryProposalMeta,
 } = require("../../common/treasuryProposal/meta");
 const {
   log: { logger },
+  business: {
+    consts: { TimelineItemTypes, TreasuryProposalEvents },
+  },
 } = require("@subsquare/scan-common");
 
 async function saveNewTreasuryProposal(event, indexer, events, extrinsic) {

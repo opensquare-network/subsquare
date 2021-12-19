@@ -1,14 +1,12 @@
 const { insertBountyPost } = require("../../../mongo/service/business/bounty");
 const { insertBounty } = require("../../../mongo/service/onchain/bounty");
-const {
-  TimelineItemTypes,
-  BountyMethods,
-  BountyStatus,
-} = require("../../common/constants");
 const { getBountyDescription } = require("../../common/bounty/description");
 const { getBountyMeta } = require("../../common/bounty/meta");
 const {
   log: { busLogger },
+  business: {
+    consts: { TimelineItemTypes, BountyMethods, BountyStatus },
+  },
 } = require("@subsquare/scan-common");
 
 async function handleProposed(event, indexer, extrinsic) {

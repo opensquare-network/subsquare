@@ -6,11 +6,15 @@ const {
   updateDemocracyExternalByHash,
 } = require("../../../../../mongo/service/onchain/democracyExternal");
 const {
-  Modules,
-  ReferendumEvents,
-  DemocracyExternalStates,
-  TimelineItemTypes,
-} = require("../../../../common/constants");
+  business: {
+    consts: {
+      Modules,
+      ReferendumEvents,
+      DemocracyExternalStates,
+      TimelineItemTypes,
+    },
+  },
+} = require("@subsquare/scan-common");
 const { getTechCommMotionCollection } = require("../../../../../mongo");
 
 async function handleBusinessWhenTechCommMotionExecuted(

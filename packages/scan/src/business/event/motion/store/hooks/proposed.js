@@ -9,12 +9,10 @@ const {
   updateTreasuryProposal,
 } = require("../../../../../mongo/service/treasuryProposal");
 const {
-  TreasuryProposalMethods,
-  MotionState,
-  BountyMethods,
-} = require("../../../../common/constants");
-const {
   log: { logger },
+  business: {
+    consts: { TreasuryProposalMethods, MotionState, BountyMethods },
+  },
 } = require("@subsquare/scan-common");
 
 async function handleProposalCall(motion, call, author, indexer) {

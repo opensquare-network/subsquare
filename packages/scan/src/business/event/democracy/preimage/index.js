@@ -1,5 +1,9 @@
 const { handleNoted } = require("./noted");
-const { Modules, PreImageEvents } = require("../../../common/constants");
+const {
+  business: {
+    consts: { Modules, PreImageEvents },
+  },
+} = require("@subsquare/scan-common");
 
 async function handlePreImageEvent(event, extrinsic, indexer) {
   const { section, method } = event;

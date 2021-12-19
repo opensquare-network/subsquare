@@ -10,10 +10,10 @@ const {
   computeTipValue,
 } = require("../../common/tip/updates");
 const {
-  TipMethods,
-  TipEvents,
-  TimelineItemTypes,
-} = require("../../common/constants");
+  business: {
+    consts: { TipMethods, TipEvents, TimelineItemTypes },
+  },
+} = require("@subsquare/scan-common");
 const { getBlockHash } = require("../../common");
 const { insertTip, updateTipByHash } = require("../../../mongo/service/tip");
 const { insertTipPost } = require("../../../mongo/service/business/tip");

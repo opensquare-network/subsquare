@@ -2,9 +2,10 @@ const {
   updateTreasuryProposal,
 } = require("../../../../../mongo/service/treasuryProposal");
 const {
-  CouncilEvents,
-  TreasuryProposalMethods,
-} = require("../../../../common/constants");
+  business: {
+    consts: { CouncilEvents, TreasuryProposalMethods },
+  },
+} = require("@subsquare/scan-common");
 const { getMotionCollection } = require("../../../../../mongo");
 const {
   log: { logger },

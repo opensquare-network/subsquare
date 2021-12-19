@@ -1,11 +1,12 @@
 const { handleBusinessWhenMotionApproved } = require("./hooks/approved");
 const {
-  TimelineItemTypes,
-  CouncilEvents,
-} = require("../../../common/constants");
-const {
   updateMotionByHash,
 } = require("../../../../mongo/service/onchain/motion");
+const {
+  business: {
+    consts: { TimelineItemTypes, CouncilEvents },
+  },
+} = require("@subsquare/scan-common");
 
 async function handleApproved(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();

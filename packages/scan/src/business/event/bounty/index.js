@@ -5,7 +5,11 @@ const { handleCanceled } = require("./canceled");
 const { handleRejected } = require("./rejected");
 const { handleBecameActive } = require("./becameActive");
 const { handleProposed } = require("./proposed");
-const { Modules, BountyEvents } = require("../../common/constants");
+const {
+  business: {
+    consts: { Modules, BountyEvents },
+  },
+} = require("@subsquare/scan-common");
 
 function isBountyEvent(section, method) {
   if (![Modules.Treasury, Modules.Bounties].includes(section)) {

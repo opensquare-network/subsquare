@@ -7,13 +7,10 @@ const { insertMotion } = require("../../../mongo/service/onchain/motion");
 const { extractBusinessFields } = require("../../event/motion/store/proposed");
 const { normalizeCall } = require("../../common/motion/utils");
 const {
-  Modules,
-  CollectiveMethods,
-  CouncilEvents,
-  KaruraModules,
-} = require("../../common/constants");
-const {
   log: { busLogger },
+  business: {
+    consts: { Modules, CollectiveMethods, CouncilEvents, KaruraModules },
+  },
 } = require("@subsquare/scan-common");
 
 function isCouncilProposeCall(call) {

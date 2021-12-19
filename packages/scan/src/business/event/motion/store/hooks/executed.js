@@ -12,17 +12,19 @@ const {
 const {
   insertDemocracyExternal,
 } = require("../../../../../mongo/service/onchain/democracyExternal");
-const {
-  DemocracyExternalStates,
-  TimelineItemTypes,
-  TreasuryProposalMethods,
-  TreasuryProposalEvents,
-  BountyMethods,
-  BountyStatus,
-} = require("../../../../common/constants");
 const { getMotionCollection } = require("../../../../../mongo");
 const {
   log: { logger, busLogger },
+  business: {
+    consts: {
+      DemocracyExternalStates,
+      TimelineItemTypes,
+      TreasuryProposalMethods,
+      TreasuryProposalEvents,
+      BountyMethods,
+      BountyStatus,
+    },
+  },
 } = require("@subsquare/scan-common");
 
 async function handleRejectTreasuryProposal(proposalInfo, indexer) {

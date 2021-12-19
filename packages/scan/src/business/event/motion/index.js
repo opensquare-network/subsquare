@@ -1,8 +1,3 @@
-const {
-  Modules,
-  CouncilEvents,
-  KaruraModules,
-} = require("../../common/constants");
 const { handleProposed } = require("./store/proposed");
 const { handleVoted } = require("./store/voted");
 const { handleClosed } = require("./store/closed");
@@ -11,6 +6,9 @@ const { handleDisApproved } = require("./store/disApproved");
 const { handleExecuted } = require("./store/executed");
 const {
   env: { isKarura },
+  business: {
+    consts: { Modules, CouncilEvents, KaruraModules },
+  },
 } = require("@subsquare/scan-common");
 
 function isCouncilModule(section) {

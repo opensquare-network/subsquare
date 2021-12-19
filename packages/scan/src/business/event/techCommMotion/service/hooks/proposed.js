@@ -4,7 +4,11 @@ const {
 const {
   insertDemocracyPostByExternal,
 } = require("../../../../../mongo/service/business/democracy");
-const { DemocracyExternalStates } = require("../../../../common/constants");
+const {
+  business: {
+    consts: { DemocracyExternalStates },
+  },
+} = require("@subsquare/scan-common");
 const {
   insertDemocracyExternal,
   updateDemocracyExternalByHash,

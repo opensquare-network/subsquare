@@ -1,16 +1,18 @@
-const {
-  Modules,
-  ProxyMethods,
-  MultisigMethods,
-  UtilityMethods,
-  TipMethods,
-} = require("../constants");
 const { GenericCall } = require("@polkadot/types");
 const { blake2AsHex } = require("@polkadot/util-crypto");
 const { hexToString, isHex } = require("@polkadot/util");
 const {
   chain: { findBlockApi },
   env: { isKarura },
+  business: {
+    consts: {
+      Modules,
+      ProxyMethods,
+      MultisigMethods,
+      UtilityMethods,
+      TipMethods,
+    },
+  },
 } = require("@subsquare/scan-common");
 
 async function getTipMetaFromStorage(api, tipHash, indexer) {

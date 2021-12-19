@@ -2,12 +2,13 @@ const {
   getVotingFromStorageByHeight,
 } = require("../../../common/motion/votingStorage");
 const {
-  TimelineItemTypes,
-  CouncilEvents,
-} = require("../../../common/constants");
-const {
   updateMotionByHash,
 } = require("../../../../mongo/service/onchain/motion");
+const {
+  business: {
+    consts: { TimelineItemTypes, CouncilEvents },
+  },
+} = require("@subsquare/scan-common");
 
 async function handleClosed(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();

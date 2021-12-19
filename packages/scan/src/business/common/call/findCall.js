@@ -1,9 +1,8 @@
 const {
-  ProxyMethods,
-  MultisigMethods,
-  Modules,
-  UtilityMethods,
-} = require("../constants");
+  business: {
+    consts: { ProxyMethods, MultisigMethods, Modules, UtilityMethods },
+  },
+} = require("@subsquare/scan-common");
 const { GenericCall } = require("@polkadot/types");
 
 function findTargetCallFromProxy(proxyCall, targetSection, targetMethod) {

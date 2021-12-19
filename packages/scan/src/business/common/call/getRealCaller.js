@@ -1,7 +1,9 @@
 const { calcMultisigAddress } = require("../../../utils/call");
-const { MultisigMethods } = require("../constants");
-const { ProxyMethods } = require("../constants");
-const { Modules } = require("../constants");
+const {
+  business: {
+    consts: { Modules, MultisigMethods, ProxyMethods },
+  },
+} = require("@subsquare/scan-common");
 
 function getRealCaller(call, caller) {
   const { section, method } = call;

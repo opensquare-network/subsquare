@@ -5,11 +5,10 @@ const {
   insertTechCommMotion,
 } = require("../../../../mongo/service/onchain/techCommMotion");
 const {
-  Modules,
-  TimelineItemTypes,
-  CouncilEvents,
-  DemocracyMethods,
-} = require("../../../common/constants");
+  business: {
+    consts: { CouncilEvents, DemocracyMethods, Modules, TimelineItemTypes },
+  },
+} = require("@subsquare/scan-common");
 const {
   getTechCommMotionVotingFromStorage,
 } = require("../../../common/techComm/votingStorage");

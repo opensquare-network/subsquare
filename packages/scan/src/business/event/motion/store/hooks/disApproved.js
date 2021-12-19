@@ -6,13 +6,12 @@ const { getBountyMeta } = require("../../../../common/bounty/meta");
 const {
   updateTreasuryProposal,
 } = require("../../../../../mongo/service/treasuryProposal");
-const {
-  TreasuryProposalEvents,
-  BountyStatus,
-} = require("../../../../common/constants");
 const { getMotionCollection } = require("../../../../../mongo");
 const {
   log: { logger },
+  business: {
+    consts: { TreasuryProposalEvents, BountyStatus },
+  },
 } = require("@subsquare/scan-common");
 
 async function handleBounty(bountyIndex, indexer) {

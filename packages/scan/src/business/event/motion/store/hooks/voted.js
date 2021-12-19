@@ -3,10 +3,10 @@ const {
 } = require("../../../../common/call/utils");
 const { updateBounty } = require("../../../../../mongo/service/onchain/bounty");
 const {
-  TreasuryProposalMethods,
-  MotionState,
-  BountyMethods,
-} = require("../../../../common/constants");
+  business: {
+    consts: { TreasuryProposalMethods, MotionState, BountyMethods },
+  },
+} = require("@subsquare/scan-common");
 const {
   updateTreasuryProposal,
 } = require("../../../../../mongo/service/treasuryProposal");
