@@ -1,30 +1,25 @@
 const { getReferendumInfoFromStorage } = require("./referendumStorage");
 const {
-  chain: { setApi, setProvider },
-  env: { setChain, CHAINS },
+  chain: { getApi },
+  test: { setKusama, disconnect },
 } = require("@subsquare/scan-common");
 jest.setTimeout(3000000);
-
-const { ApiPromise, WsProvider } = require("@polkadot/api");
 
 describe("test get kusama referendum 8th info", () => {
   let api;
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider("wss://kusama.api.onfinality.io/public-ws", 1000);
-    api = await ApiPromise.create({ provider });
-    setProvider(provider);
-    setApi(api);
-    setChain(CHAINS.KUSAMA);
+    await setKusama();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test("works", async () => {
     const blockHeight = 100800;
+    const api = await getApi();
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
     const indexer = { blockHash, blockHeight };
 

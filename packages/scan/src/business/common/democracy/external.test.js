@@ -1,40 +1,26 @@
 const { getExternalFromStorageByHeight } = require("./external");
-const { onFinalityKarura } = require("../../../utils/constants");
 const { getExternalFromStorage } = require("./external");
 const {
-  chain: { setApi, setProvider },
-  env: { setChain, CHAINS },
+  chain: { getApi },
+  test: { setKarura, disconnect },
 } = require("@subsquare/scan-common");
-
-const { ApiPromise, WsProvider } = require("@polkadot/api");
-const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
 
 jest.setTimeout(3000000);
 
 describe("test get karura external", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
-    provider = new WsProvider(onFinalityKarura, 1000);
-    api = await ApiPromise.create({
-      provider,
-      typesBundle: { ...typesBundleForPolkadot },
-    });
-
-    setProvider(provider);
-    setApi(api);
-    setChain(CHAINS.KARURA);
+    await setKarura();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test("works", async () => {
     // This external is created at 160503, when the 6th motion passed
     const height = 160545;
     const preHeight = height - 1;
+    const api = await getApi();
     const blockHash = await api.rpc.chain.getBlockHash(preHeight);
     const indexer = { blockHash, blockHeight: preHeight };
 
@@ -49,6 +35,7 @@ describe("test get karura external", () => {
   test("at 653005 works", async () => {
     // This external is created at 160503, when the 6th motion passed
     const height = 653005;
+    const api = await getApi();
     const blockHash = await api.rpc.chain.getBlockHash(height);
     const indexer = { blockHash, blockHeight: height };
 

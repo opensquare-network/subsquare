@@ -1,29 +1,23 @@
 const { getRealCaller } = require("./getRealCaller");
 const {
-  chain: { setApi, setProvider },
+  chain: { getApi },
+  test: { setKusama, disconnect },
 } = require("@subsquare/scan-common");
 
 jest.setTimeout(3000000);
 
-const { ApiPromise, WsProvider } = require("@polkadot/api");
-
 describe("test get ", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
-    provider = new WsProvider("wss://kusama.api.onfinality.io/public-ws", 1000);
-    api = await ApiPromise.create({ provider });
-    setProvider(provider);
-    setApi(api);
+    await setKusama();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test("real caller of proxy works", async () => {
     const height = 9849609;
+    const api = await getApi();
     const blockHash = await api.rpc.chain.getBlockHash(height);
 
     const block = await api.rpc.chain.getBlock(blockHash);
@@ -35,6 +29,7 @@ describe("test get ", () => {
 
   test("real caller of multisig works", async () => {
     const height = 9764791;
+    const api = await getApi();
     const blockHash = await api.rpc.chain.getBlockHash(height);
 
     const block = await api.rpc.chain.getBlock(blockHash);

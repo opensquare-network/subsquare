@@ -1,37 +1,16 @@
 const { getTipReason } = require("../utils");
-const { khalaEndpoint } = require("../../../../utils/constants");
-const { ApiPromise, WsProvider } = require("@polkadot/api");
-const { versionedKhala, typesChain } = require("@phala/typedefs");
 jest.setTimeout(3000000);
 const {
-  chain: { setApi, setProvider },
-  env: { setChain, CHAINS },
+  test: { setKhala, disconnect },
 } = require("@subsquare/scan-common");
 
 describe("test get khala tip reason", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
-    provider = new WsProvider(khalaEndpoint, 1000);
-    const options = {
-      typesBundle: {
-        spec: {
-          khala: versionedKhala,
-        },
-      },
-      typesChain,
-      provider,
-    };
-
-    api = await ApiPromise.create(options);
-    setProvider(provider);
-    setApi(api);
-    setChain(CHAINS.KHALA);
+    await setKhala();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test("works", async () => {

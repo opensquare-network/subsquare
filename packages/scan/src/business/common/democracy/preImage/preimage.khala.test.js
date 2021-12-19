@@ -1,48 +1,26 @@
-const { khalaEndpoint } = require("../../../../utils/constants");
 const { getPreImageFromStorage } = require("./storage");
 const {
   chain: {
-    setApi,
-    setProvider,
+    getApi,
     specs: { setSpecHeights },
   },
-  env: { setChain, CHAINS },
+  test: { setKhala, disconnect },
 } = require("@subsquare/scan-common");
-
-const { versionedKhala, typesChain } = require("@phala/typedefs");
 jest.setTimeout(3000000);
 
-const { ApiPromise, WsProvider } = require("@polkadot/api");
-
 describe("test get khala democracy image", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
-    provider = new WsProvider(khalaEndpoint, 1000);
-
-    api = await ApiPromise.create({
-      typesBundle: {
-        spec: {
-          khala: versionedKhala,
-        },
-      },
-      typesChain,
-      provider,
-    });
-
-    setProvider(provider);
-    setApi(api);
-    setChain(CHAINS.KHALA);
+    await setKhala();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test(" works", async () => {
     const blockHeight = 319291;
     await setSpecHeights([blockHeight]);
+    const api = await getApi();
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
     const indexer = { blockHash, blockHeight };
 

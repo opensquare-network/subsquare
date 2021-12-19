@@ -1,29 +1,24 @@
 const {
-  chain: { setApi, setProvider },
+  chain: { getApi },
+  test: { setKusama, disconnect },
 } = require("@subsquare/scan-common");
 
 jest.setTimeout(3000000);
 
 const { getTreasuryProposalMeta } = require("./meta");
-const { ApiPromise, WsProvider } = require("@polkadot/api");
 
 describe("test get treasury proposal", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
-    provider = new WsProvider("wss://kusama.api.onfinality.io/public-ws", 1000);
-    api = await ApiPromise.create({ provider });
-    setProvider(provider);
-    setApi(api);
+    await setKusama();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test("meta works", async () => {
     const height = 126165;
+    const api = await getApi();
     const blockHash = await api.rpc.chain.getBlockHash(height);
 
     const meta = await getTreasuryProposalMeta(0, {
