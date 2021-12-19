@@ -5,4 +5,5 @@ module.exports = {
   ...require("./api"),
   ...require("./height"),
   specs,
+  ...require("./fetchBlocks"),
 };

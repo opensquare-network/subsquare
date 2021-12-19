@@ -2,7 +2,6 @@ require("dotenv").config();
 
 const { getNextScanHeight, updateScanHeight } = require("./mongo/scanHeight");
 const { scanKnownHeights } = require("./scan/known");
-const { fetchBlocks } = require("./service/fetchBlocks");
 const { scanNormalizedBlock } = require("./scan/block");
 const {
   utils: { sleep },
@@ -11,6 +10,7 @@ const {
     subscribeFinalizedHead,
     getChainLatestHeight,
     specs: { updateSpecs, getMetaScanHeight },
+    fetchBlocks,
   },
   env: { isUseMetaDb, doScanKnownFirst },
   log: { logger },

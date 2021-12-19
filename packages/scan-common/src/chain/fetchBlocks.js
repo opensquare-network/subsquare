@@ -1,14 +1,10 @@
+const { findBlockApi } = require("./blockApi");
+const { getApi } = require("./api");
+const { metaLogger, blockLogger } = require("../logger");
+const { findRegistry } = require("./specs");
+const { isUseMetaDb } = require("../env");
 const { getBlocks } = require("../mongo/meta");
 const { GenericBlock } = require("@polkadot/types");
-const {
-  chain: {
-    specs: { findRegistry },
-    findBlockApi,
-    getApi,
-  },
-  env: { isUseMetaDb },
-  log: { blockLogger, metaLogger },
-} = require("@subsquare/scan-common");
 
 async function fetchBlocks(heights = []) {
   let blocks;
