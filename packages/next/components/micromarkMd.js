@@ -86,8 +86,9 @@ const Wrapper = styled.div`
     }
 
     pre {
+      font-family: i-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
       margin: 8px 0;
-      padding: 0 0.75rem;
+      padding: 0 1rem;
       background: #f5f8fa !important;
       border-radius: 0.25rem;
       white-space: pre-wrap !important;
