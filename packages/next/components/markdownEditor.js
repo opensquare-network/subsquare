@@ -228,18 +228,7 @@ const MarkdownEditor = ({
 
   const [focused, setFocused] = useState(false);
 
-  useEffect(() => {
-    const textareas = document.getElementsByClassName('mde-text');
-    function auto_grow(element) {
-      element.style.height = "5px";
-      element.style.height = (element.scrollHeight) + "px";
-    }
-    for (let textarea of textareas) {
-      textarea.oninput = function () {
-        auto_grow(this);
-      }
-    }
-  }, []);
+  const ref = useRef();
 
   return (
     <StyledTextArea
@@ -247,10 +236,18 @@ const MarkdownEditor = ({
       visible={visible}
     >
       <ReactMde
+        ref={ref}
         readOnly={readOnly}
         initialEditorHeight={height}
         value={content}
-        onChange={(targetValue) => setContent(targetValue)}
+        onChange={(content)=>{
+          const textarea = ref?.current?.finalRefs?.textarea?.current;
+          if(textarea){
+            textarea.style.height = "200px";
+            textarea.style.height = textarea.scrollHeight + 'px';
+          }
+          setContent(content)
+        }}
         loadSuggestions={loadSuggestions}
         toolbarCommands={[
           [
