@@ -26,12 +26,12 @@ icons.set("code", <Code />);
 
 export const StyledTextArea = styled.div`
   ${(props) =>
-    props &&
-    !props.visible &&
-    css`
-      visibility: hidden;
-      height: 0 !important;
-    `}
+          props &&
+          !props.visible &&
+          css`
+            visibility: hidden;
+            height: 0 !important;
+          `}
 
   border: 1px solid #dddddd;
   border-radius: 0.25rem;
@@ -206,13 +206,13 @@ export const StyledTextArea = styled.div`
 `;
 
 const MarkdownEditor = ({
-  content,
-  setContent,
-  users = [],
-  height = 100,
-  visible = true,
-  readOnly = false,
-}) => {
+                          content,
+                          setContent,
+                          users = [],
+                          height = 100,
+                          visible = true,
+                          readOnly = false,
+                        }) => {
   const loadSuggestions = async (text) => {
     return new Promise((accept) => {
       const suggestions = (users || [])
