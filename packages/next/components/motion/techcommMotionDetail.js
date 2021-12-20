@@ -271,10 +271,10 @@ export default function TechcommMotionDetail({ motion, chain,onReply, loginUser 
           [
             "Proposer",
             <>
-              <User add={motion.proposer} fontSize={14} />
+              <User add={motion?.onchainData?.proposer} fontSize={14} />
               <Links
                 chain={chain}
-                address={motion.proposer}
+                address={motion?.onchainData?.proposer}
                 style={{ marginLeft: 8 }}
               />
             </>,
