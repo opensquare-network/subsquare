@@ -80,14 +80,6 @@ async function loadPostForMotions(chainMotions) {
 
   const [, democracyPosts, motionPosts] = await Promise.all(
     [
-      commonDb.lookupOne({
-        from: "user",
-        for: chainMotions,
-        as: "author",
-        localField: "proposer",
-        foreignField: `${chain}Address`,
-        map: toUserPublicInfo,
-      }),
       businessDb.lookupOne({
         from: "democracy",
         for: chainMotions,
@@ -120,6 +112,25 @@ async function loadPostForMotions(chainMotions) {
       localField: "_id",
       foreignField: "techCommMotion",
     }),
+    commonDb.lookupOne(
+      {
+        from: "user",
+        foreignField: `${chain}Address`,
+        map: toUserPublicInfo,
+      },
+      [
+        {
+          for: democracyPosts,
+          as: "author",
+          localField: "proposer",
+        },
+        {
+          for: motionPosts,
+          as: "author",
+          localField: "proposer",
+        },
+      ]
+    ),
   ]);
 
   return chainMotions.map((motion) => {
@@ -129,12 +140,10 @@ async function loadPostForMotions(chainMotions) {
     motion.democracyPost = undefined;
     motion.motionPost = undefined;
     post._id = motion._id;
-    post.proposer = motion.proposer;
     post.motionIndex = motion.index;
     post.hash = motion.hash;
     post.height = motion.indexer.blockHeight;
     post.indexer = motion.indexer;
-    post.author = motion.author;
     post.onchainData = motion;
     post.state = motion.state?.state;
     return post;
@@ -146,22 +155,38 @@ async function updatePost(postId, title, content, contentType, author) {
 
   const chainMotion = await findMotion(postId);
   if (!chainMotion) {
-    throw new HttpError(403, "Motion is not found");
+    throw new HttpError(404, "Motion is not found");
   }
 
-  if (!chainMotion.authors.includes(author[`${chain}Address`])) {
-    throw new HttpError(403, "You cannot edit");
+  const [postCol, post, postType] = await findMotionPost(chainMotion);
+  if (!post) {
+    throw new HttpError(404, "Post does not exists");
+  }
+
+  // Check if author is allow to edit
+  if (postType === "democracy") {
+    const chainExternalCol = await getChainExternalCollection();
+    const chainExternal = await chainExternalCol.findOne({
+      proposalHash: post.externalProposalHash,
+    });
+
+    if (!chainExternal) {
+      throw new HttpError(404, "On-chain external proposal data is not found");
+    }
+
+    if (!chainExternal.authors.includes(author[`${chain}Address`])) {
+      throw new HttpError(403, "You cannot edit");
+    }
+  } else {
+    if (!chainMotion.authors.includes(author[`${chain}Address`])) {
+      throw new HttpError(403, "You cannot edit");
+    }
   }
 
   if (title.length > PostTitleLengthLimitation) {
     throw new HttpError(400, {
       title: ["Title must be no more than %d characters"],
     });
-  }
-
-  const [postCol, post] = await findMotionPost(chainMotion);
-  if (!post) {
-    throw new HttpError(404, "Post does not exists");
   }
 
   const postObjId = post._id;
@@ -245,6 +270,7 @@ async function getMotionById(postId) {
 
   let post;
   let reactions;
+  let postType;
 
   if (chainMotion.externalProposals?.length === 1) {
     const externalProposalHash = chainMotion.externalProposals[0].hash;
@@ -253,17 +279,19 @@ async function getMotionById(postId) {
     reactions = await reactionCol
       .find({ democracy: post._id })
       .toArray();
-  } else {
+    postType = "democracy";
+    } else {
     const hash = chainMotion.hash;
     const height = chainMotion.indexer.blockHeight;
 
     post = await techCommMotionCol.findOne({ hash, height });
     reactions = await reactionCol.find({ techCommMotion: post._id }).toArray();
+    postType = "techCommMotion";
   }
 
   const [, author, externalProposals] = await Promise.all([
     lookupUser({ for: reactions, localField: "user" }),
-    userCol.findOne({ [`${chain}Address`]: chainMotion.proposer }),
+    userCol.findOne({ [`${chain}Address`]: post.proposer }),
     chainExternalCol
       .find({
         proposalHash: {
@@ -277,11 +305,13 @@ async function getMotionById(postId) {
   return {
     ...post,
     _id: chainMotion._id,
-    proposer: chainMotion.proposer,
     motionIndex: chainMotion.index,
     hash: chainMotion.hash,
     height: chainMotion.indexer.blockHeight,
     indexer: chainMotion.indexer,
+    authors: (postType === "democracy")
+      ? externalProposals[0].authors
+      : chainMotion.authors,
     onchainData: {
       ...chainMotion,
       externalProposals,
