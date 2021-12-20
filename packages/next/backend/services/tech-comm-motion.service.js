@@ -300,15 +300,17 @@ async function getMotionById(postId) {
   const [, author, externalProposals] = await Promise.all([
     lookupUser({ for: reactions, localField: "user" }),
     userCol.findOne({ [`${chain}Address`]: post.proposer }),
-    chainExternalCol
-      .find({
-        $or: chainMotion.externalProposals.map((p) => ({
-          proposalHash: p.hash,
-          "indexer.blockHeight": p.indexer?.blockHeight,
-        })),
-      })
-      .sort({ "indexer.blockHeight": 1 })
-      .toArray(),
+    chainMotion.externalProposals?.length > 0
+      ? chainExternalCol
+          .find({
+            $or: chainMotion.externalProposals.map((p) => ({
+              proposalHash: p.hash,
+              "indexer.blockHeight": p.indexer?.blockHeight,
+            })),
+          })
+          .sort({ "indexer.blockHeight": 1 })
+          .toArray()
+      : [],
   ]);
 
   return {
