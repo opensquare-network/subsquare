@@ -280,7 +280,7 @@ async function getMotionById(postId) {
 
   if (chainMotion.externalProposals?.length === 1) {
     const externalProposalHash = chainMotion.externalProposals[0].hash;
-    const blockHeight = chainMotion.externalProposals[0].indexer.blockHeight;
+    const blockHeight = chainMotion.externalProposals[0].indexer?.blockHeight;
 
     post = await democracyCol.findOne({
       externalProposalHash,
@@ -304,7 +304,7 @@ async function getMotionById(postId) {
       .find({
         $or: chainMotion.externalProposals.map((p) => ({
           proposalHash: p.hash,
-          "indexer.blockHeight": p.indexer.blockHeight,
+          "indexer.blockHeight": p.indexer?.blockHeight,
         })),
       })
       .sort({ "indexer.blockHeight": 1 })
