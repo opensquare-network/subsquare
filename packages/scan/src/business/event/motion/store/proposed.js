@@ -1,6 +1,3 @@
-const {
-  extractCouncilMotionBusiness,
-} = require("../../../common/call/extractMotionCalls");
 const { getMotionProposal } = require("../../../common/motion/proposalStorage");
 const {
   insertMotionPost,
@@ -18,6 +15,7 @@ const {
   business: {
     consts: { TimelineItemTypes, CouncilEvents },
     normalizeCall,
+    extractCouncilMotionBusiness,
   },
 } = require("@subsquare/scan-common");
 

@@ -4,7 +4,6 @@ const {
 const {
   extractTechCommMotionBusiness,
 } = require("../../../common/techComm/extractBusiness");
-const { normalizeCall } = require("../../../common/motion/utils");
 const {
   handleBusinessWhenTechCommMotionProposed,
 } = require("./hooks/proposed");
@@ -14,6 +13,7 @@ const {
 const {
   business: {
     consts: { CouncilEvents, TimelineItemTypes },
+    normalizeCall,
   },
 } = require("@subsquare/scan-common");
 const {
