@@ -3,7 +3,6 @@ import { micromark } from "micromark";
 import { gfm, gfmHtml } from "micromark-extension-gfm";
 import { matchMdLink } from "utils";
 import sanitizeHtml from "sanitize-html";
-import highlight from "highlight-syntax/all";
 
 const Wrapper = styled.div`
   &.markdown-content {
@@ -86,7 +85,9 @@ const Wrapper = styled.div`
     }
 
     pre {
-      font-family: i-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+      * {
+        font-family: i-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace !important;
+      }
       margin: 8px 0;
       padding: 0 1rem;
       background: #f5f8fa !important;
@@ -159,7 +160,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function MicromarkMd({md = "", contentVersion = ""}) {
+export default function MicromarkMd({ md = "", contentVersion = "" }) {
   const matchLinkMd = matchMdLink(md);
   let displayContent = matchLinkMd;
   if (contentVersion === "2") {
@@ -174,28 +175,20 @@ export default function MicromarkMd({md = "", contentVersion = ""}) {
     extensions: [gfm()],
     htmlExtensions: [
       {
-        enter:{
-          codeIndented(){
-            this.tag('<code title="');
+        enter: {
+          codeIndented() {
+            this.tag('<pre>');
           },
           codeFenced() {
-            this.tag('<pre title="');
+            this.tag('<pre><code class="language-js"');
           },
         },
         exit: {
-          codeIndented(token) {
-            this.raw('">');
-            let codes = this.sliceSerialize(token).replaceAll('`', '');
-            codes = (highlight(codes, {lang: "js"}))
-            this.raw(codes);
-            this.tag('</code>');
-          },
-          codeFenced(token) {
-            this.raw('">');
-            let codes = this.sliceSerialize(token).replaceAll('```', '');
-            codes = (highlight(codes, {lang: "js"}))
-            this.raw(codes);
+          codeIndented() {
             this.tag('</pre>');
+          },
+          codeFenced() {
+            this.tag('</code></pre>');
           },
         }
       },
@@ -218,6 +211,6 @@ export default function MicromarkMd({md = "", contentVersion = ""}) {
 
   return (<Wrapper
     className="markdown-content"
-    dangerouslySetInnerHTML={{__html: html}}
+    dangerouslySetInnerHTML={{ __html: cleanHtml }}
   />);
 }
