@@ -109,6 +109,7 @@ const Wrapper = styled.div`
     }
 
     code {
+      font-family: i-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace !important;
       ${no_scroll_bar};
       max-width: 100%;
       margin: 16px 0;
