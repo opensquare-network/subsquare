@@ -43,6 +43,7 @@ module.exports = {
   getBountyCollection: () => getCollection("bounty"),
   getDemocracyCollection: () => getCollection("democracy"),
   getMotionCollection: () => getCollection("motion"),
+  getTechCommMotionCollection: () => getCollection("techCommMotion"),
   getCommentCollection: () => getCollection("comment"),
   getReactionCollection: () => getCollection("reaction"),
   getStatusCollection: () => getCollection("status"),

@@ -53,6 +53,8 @@ async function handleExternalPropose(call, signer, extrinsicIndexer) {
     authors: [signer],
     isFinal: false,
     timeline: [timelineItem],
+    techCommMotions: [],
+    motions: [],
   };
 
   await insertDemocracyExternal(externalObj);

@@ -1,10 +1,20 @@
-const { isBountyMotionCall } = require("./utils");
-const { isTreasuryProposalMotionCall } = require("./utils");
+const {
+  isBountyMotionCall,
+  isDemocracyExternalCall,
+  isTreasuryProposalMotionCall,
+} = require("./utils");
 const { handleWrappedCall } = require("./handle");
 
-async function extractMotionCalls(motionProposalCall, signer, indexer, events) {
+async function extractCouncilMotionBusiness(
+  motionProposalCall,
+  signer,
+  indexer,
+  events
+) {
   const treasuryProposals = [];
   const treasuryBounties = [];
+  const externalProposals = [];
+
   await handleWrappedCall(
     motionProposalCall,
     signer,
@@ -24,6 +34,12 @@ async function extractMotionCalls(motionProposalCall, signer, indexer, events) {
           index: treasuryBountyIndex,
           method,
         });
+      } else if (isDemocracyExternalCall(section, method)) {
+        const externalProposalHash = args[0].toJSON();
+        externalProposals.push({
+          hash: externalProposalHash,
+          method,
+        });
       }
     }
   );
@@ -31,9 +47,10 @@ async function extractMotionCalls(motionProposalCall, signer, indexer, events) {
   return {
     treasuryProposals,
     treasuryBounties,
+    externalProposals,
   };
 }
 
 module.exports = {
-  extractMotionCalls,
+  extractCouncilMotionBusiness,
 };

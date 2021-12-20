@@ -1,14 +1,22 @@
 const { ObjectId } = require("mongodb");
 const { safeHtml } = require("../utils/post");
 const { PostTitleLengthLimitation, Day } = require("../constants");
-const { getDb: getBusinessDb, getDemocracyCollection } = require("../mongo/business");
+const {
+  getDb: getBusinessDb,
+  getDemocracyCollection,
+} = require("../mongo/business");
 const {
   getDb: getChainDb,
   getExternalCollection: getChainExternalCollection,
   getPreImageCollection,
-  getExternalCollection,
+  getMotionCollection: getChainMotionCollection,
+  getTechCommMotionCollection: getChainTechCommMotionCollection,
 } = require("../mongo/chain");
-const { getDb: getCommonDb, lookupUser, getUserCollection } = require("../mongo/common");
+const {
+  getDb: getCommonDb,
+  lookupUser,
+  getUserCollection,
+} = require("../mongo/common");
 const { HttpError } = require("../exc");
 const { ContentType } = require("../constants");
 const { toUserPublicInfo } = require("../utils/user");
@@ -28,8 +36,8 @@ async function updatePost(
     throw new HttpError(404, "Post does not exists");
   }
 
-  const chainProposalCol = await getChainExternalCollection();
-  const chainProposal = await chainProposalCol.findOne({
+  const chainExternalCol = await getChainExternalCollection();
+  const chainProposal = await chainExternalCol.findOne({
     proposalHash: post.externalProposalHash,
     "indexer.blockHeight": post.indexer.blockHeight,
   });
@@ -205,9 +213,12 @@ async function getPostById(postId) {
 
   const userCol = await getUserCollection();
   const businessDb = await getBusinessDb();
-  const chainProposalCol = await getChainExternalCollection();
   const preImageCol = await getPreImageCollection();
-  const [author, reactions, chanProposalData, preImage] = await Promise.all([
+  const chainExternalCol = await getChainExternalCollection();
+  const chainMotionCol = await getChainMotionCollection();
+  const chainTechCommMotionCol = await getChainTechCommMotionCollection();
+
+  const [author, reactions, chainExternalProposal, preImage] = await Promise.all([
     post.proposer ? userCol.findOne({ [`${chain}Address`]: post.proposer }) : null,
     businessDb.lookupMany({
       from: "reaction",
@@ -216,21 +227,37 @@ async function getPostById(postId) {
       localField: "_id",
       foreignField: "democracy",
     }),
-    chainProposalCol.findOne({
+    chainExternalCol.findOne({
       proposalHash: post.externalProposalHash,
       "indexer.blockHeight": post.indexer.blockHeight,
     }),
     preImageCol.findOne({ hash: post.externalProposalHash })
   ]);
 
-  await lookupUser({ for: reactions, localField: "user" });
+  const [, motions, techCommMotions] = await Promise.all([
+    lookupUser({ for: reactions, localField: "user" }),
+    chainMotionCol.find({
+      $or: chainExternalProposal.motions.map(motion => ({
+        hash: motion.hash,
+        "indexer.blockHeight": motion.indexer.blockHeight,
+      })),
+    }).toArray(),
+    chainTechCommMotionCol.find({
+      $or: chainExternalProposal.techCommMotions.map(motion => ({
+        hash: motion.hash,
+        "indexer.blockHeight": motion.indexer.blockHeight,
+      })),
+    }).toArray(),
+  ]);
 
   return {
     ...post,
     author,
     onchainData: {
-      ...chanProposalData,
+      ...chainExternalProposal,
       preImage,
+      motions,
+      techCommMotions,
     },
   };
 }
