@@ -78,7 +78,7 @@ async function loadPostForMotions(chainMotions) {
   const commonDb = await getCommonDb();
   const businessDb = await getBusinessDb();
 
-  const [, democracyPosts, motionPosts] = await Promise.all(
+  const [democracyPosts, motionPosts] = await Promise.all(
     [
       businessDb.lookupOne({
         from: "democracy",
