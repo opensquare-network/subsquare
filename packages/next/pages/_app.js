@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Script from 'next/script'
 import Router from "next/router";
 import NProgress from "nprogress";
 import { Provider } from "react-redux";
@@ -37,7 +38,11 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <Provider store={store}>
+      <Head>
+        <link href="/prism.css" rel="stylesheet" />
+      </Head>
       <Component {...pageProps} />
+      <Script src="/prism.js"/>
     </Provider>
   );
 }
