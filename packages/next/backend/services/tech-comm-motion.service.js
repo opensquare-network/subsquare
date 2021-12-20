@@ -51,9 +51,13 @@ async function findMotionPost(chainMotion) {
 
   if (chainMotion.externalProposals?.length === 1) {
     const externalProposalHash = chainMotion.externalProposals[0].hash;
+    const blockHeight = chainMotion.externalProposals[0].indexer.blockHeight;
 
     postCol = await getDemocracyCollection();
-    post = await postCol.findOne({ externalProposalHash });
+    post = await postCol.findOne({
+      externalProposalHash,
+      "indexer.blockHeight": blockHeight,
+    });
     postType = "democracy";
   } else {
     const hash = chainMotion.hash;
@@ -72,6 +76,7 @@ async function loadPostForMotions(chainMotions) {
   for (const motion of chainMotions) {
     if (motion.externalProposals?.length === 1) {
       motion.externalProposalHash = motion.externalProposals[0].hash;
+      motion.externalProposalIndexer = motion.externalProposals[0].indexer;
     }
   }
 
@@ -80,12 +85,12 @@ async function loadPostForMotions(chainMotions) {
 
   const [democracyPosts, motionPosts] = await Promise.all(
     [
-      businessDb.lookupOne({
+      businessDb.compoundLookupOne({
         from: "democracy",
         for: chainMotions,
         as: "democracyPost",
-        localField: "externalProposalHash",
-        foreignField: "externalProposalHash",
+        compoundLocalFields: ["externalProposalHash", "externalProposalIndexer.blockHeight"],
+        compoundForeignFields: ["externalProposalHash", "indexer.blockHeight"],
       }),
       businessDb.compoundLookupOne({
         from: "techCommMotion",
@@ -274,7 +279,7 @@ async function getMotionById(postId) {
 
   if (chainMotion.externalProposals?.length === 1) {
     const externalProposalHash = chainMotion.externalProposals[0].hash;
-    const blockHeight = chainMotion.externalProposals[0].blockHeight;
+    const blockHeight = chainMotion.externalProposals[0].indexer.blockHeight;
 
     post = await democracyCol.findOne({
       externalProposalHash,
@@ -298,9 +303,10 @@ async function getMotionById(postId) {
     userCol.findOne({ [`${chain}Address`]: post.proposer }),
     chainExternalCol
       .find({
-        proposalHash: {
-          $in: chainMotion.externalProposals.map((p) => p.hash),
-        },
+        $or: chainMotion.externalProposals.map((p) => ({
+          proposalHash: p.hash,
+          "indexer.blockHeight": p.indexer.blockHeight,
+        }))
       })
       .sort({ "indexer.blockHeight": 1 })
       .toArray(),
