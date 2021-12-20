@@ -3,6 +3,8 @@ import { micromark } from "micromark";
 import { gfm, gfmHtml } from "micromark-extension-gfm";
 import { matchMdLink } from "utils";
 import sanitizeHtml from "sanitize-html";
+import { useEffect } from "react";
+import { no_scroll_bar } from "../styles/componentCss";
 
 const Wrapper = styled.div`
   &.markdown-content {
@@ -85,6 +87,7 @@ const Wrapper = styled.div`
     }
 
     pre {
+      ${no_scroll_bar};
       * {
         font-family: i-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace !important;
       }
@@ -106,6 +109,7 @@ const Wrapper = styled.div`
     }
 
     code {
+      ${no_scroll_bar};
       max-width: 100%;
       margin: 16px 0;
       padding: 0 0.25rem;
@@ -163,6 +167,13 @@ const Wrapper = styled.div`
 export default function MicromarkMd({ md = "", contentVersion = "" }) {
   const matchLinkMd = matchMdLink(md);
   let displayContent = matchLinkMd;
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = '/prism.js';
+    document.body.appendChild(script);
+  }, []);
+
   if (contentVersion === "2") {
     displayContent = md.replace(/\n+/g, function (ns) {
       if (ns.length === 1) return "  " + ns;
