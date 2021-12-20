@@ -1,36 +1,28 @@
 const { extractTechCommMotionBusiness } = require("./extractBusiness");
 const { getTechCommMotionProposal } = require("./proposalStorage");
-const { setSpecHeights } = require("../../../chain/specs");
-const { karuraEndpoint } = require("../../../utils/constants");
-const { ApiPromise, WsProvider } = require("@polkadot/api");
-const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
-const { setChain, CHAINS } = require("../../../env");
-const { setApi } = require("../../../api");
+const {
+  chain: {
+    getApi,
+    specs: { setSpecHeights },
+  },
+  test: { setKarura, disconnect },
+} = require("@subsquare/scan-common");
 
 jest.setTimeout(3000000);
 
 xdescribe("test extract karura Tech Comm", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
-    provider = new WsProvider(karuraEndpoint, 1000);
-    api = await ApiPromise.create({
-      provider,
-      typesBundle: { ...typesBundleForPolkadot },
-    });
-
-    setApi(api);
-    setChain(CHAINS.KARURA);
+    await setKarura();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test("motion business works", async () => {
     const blockHeight = 1064927;
-    setSpecHeights([blockHeight]);
+    await setSpecHeights([blockHeight]);
+    const api = await getApi();
     const blockHash = (await api.rpc.chain.getBlockHash(blockHeight)).toHex();
     const indexer = { blockHash, blockHeight };
 

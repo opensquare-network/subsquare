@@ -1,3 +1,4 @@
+const { getMotionProposalCall } = require("./proposalStorage");
 const {
   chain: {
     getApi,
