@@ -38,7 +38,7 @@ const CommentsWrapper = styled.div`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
+export default withLoginUserRedux(({ loginUser, motion, comments, chain, siteUrl }) => {
   const users = getMentionList(comments);
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
