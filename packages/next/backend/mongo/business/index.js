@@ -4,7 +4,7 @@ const defaultDbNames = {
   kusama: "subsquare-business-ksm",
   karura: "subsquare-business-kar",
   khala: "subsquare-business-kha",
-}
+};
 
 let db = null;
 
@@ -22,7 +22,8 @@ async function createIndex(db) {
 async function initDb() {
   if (!db) {
     db = await connectDb(
-      process.env.MONGO_DB_BUSINESS_DATA_NAME || defaultDbNames[process.env.CHAIN]
+      process.env.MONGO_DB_BUSINESS_DATA_NAME ||
+        defaultDbNames[process.env.CHAIN]
     );
     await createIndex(db);
   }
@@ -38,11 +39,11 @@ module.exports = {
   getDb,
   getPostCollection: () => getCollection("post"),
   getTipCollection: () => getCollection("tip"),
-  getTreasuryProposalCollection: () =>
-    getCollection("treasuryProposal"),
+  getTreasuryProposalCollection: () => getCollection("treasuryProposal"),
   getBountyCollection: () => getCollection("bounty"),
   getDemocracyCollection: () => getCollection("democracy"),
   getMotionCollection: () => getCollection("motion"),
+  getTechCommMotionCollection: () => getCollection("techCommMotion"),
   getCommentCollection: () => getCollection("comment"),
   getReactionCollection: () => getCollection("reaction"),
   getStatusCollection: () => getCollection("status"),

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import ReactMde from "react-mde";
 
@@ -21,7 +21,7 @@ icons.set("quote", <Quote />);
 icons.set("ordered-list", <OrderedList />);
 icons.set("unordered-list", <UnorderedList />);
 icons.set("link", <Link />);
-icons.set("image", <ImageIcon/>);
+icons.set("image", <ImageIcon />);
 icons.set("code", <Code />);
 
 export const StyledTextArea = styled.div`
@@ -46,6 +46,10 @@ export const StyledTextArea = styled.div`
   }
 
   textarea {
+    resize: none;
+    overflow-y: scroll;
+    min-height: 200px;
+    max-height: 300px;
     color: #000 !important;
     padding: 0.75rem 1rem !important;
     line-height: 1.375 !important;
@@ -56,7 +60,6 @@ export const StyledTextArea = styled.div`
   .mde-tabs {
     display: none !important;
   }
-  
 
   .react-mde {
     border: none;
@@ -70,7 +73,7 @@ export const StyledTextArea = styled.div`
         margin-bottom: 1rem;
       }
     }
-    
+
     .mde-textarea-wrapper {
       border-top-style: solid;
       border-top-width: 1px;
@@ -208,6 +211,7 @@ const MarkdownEditor = ({
   users = [],
   height = 100,
   visible = true,
+  readOnly = false,
 }) => {
   const loadSuggestions = async (text) => {
     return new Promise((accept) => {
@@ -223,15 +227,26 @@ const MarkdownEditor = ({
 
   const [focused, setFocused] = useState(false);
 
+  const ref = useRef();
+
   return (
     <StyledTextArea
       className={focused ? "container focused" : "container"}
       visible={visible}
     >
       <ReactMde
+        ref={ref}
+        readOnly={readOnly}
         initialEditorHeight={height}
         value={content}
-        onChange={(targetValue) => setContent(targetValue)}
+        onChange={(content) => {
+          const textarea = ref?.current?.finalRefs?.textarea?.current;
+          if (textarea) {
+            textarea.style.height = "200px";
+            textarea.style.height = textarea.scrollHeight + "px";
+          }
+          setContent(content);
+        }}
         loadSuggestions={loadSuggestions}
         toolbarCommands={[
           [

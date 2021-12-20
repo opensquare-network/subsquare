@@ -1,25 +1,27 @@
 const { ObjectId } = require("mongodb");
 const { safeHtml } = require("../utils/post");
 const { PostTitleLengthLimitation, Day } = require("../constants");
-const { getDb: getBusinessDb, getDemocracyCollection } = require("../mongo/business");
+const {
+  getDb: getBusinessDb,
+  getDemocracyCollection,
+} = require("../mongo/business");
 const {
   getDb: getChainDb,
   getExternalCollection: getChainExternalCollection,
   getPreImageCollection,
-  getExternalCollection,
+  getMotionCollection: getChainMotionCollection,
+  getTechCommMotionCollection: getChainTechCommMotionCollection,
 } = require("../mongo/chain");
-const { getDb: getCommonDb, lookupUser, getUserCollection } = require("../mongo/common");
+const {
+  getDb: getCommonDb,
+  lookupUser,
+  getUserCollection,
+} = require("../mongo/common");
 const { HttpError } = require("../exc");
 const { ContentType } = require("../constants");
 const { toUserPublicInfo } = require("../utils/user");
 
-async function updatePost(
-  postId,
-  title,
-  content,
-  contentType,
-  author
-) {
+async function updatePost(postId, title, content, contentType, author) {
   const chain = process.env.CHAIN;
   const postObjId = ObjectId(postId);
   const postCol = await getDemocracyCollection();
@@ -28,14 +30,14 @@ async function updatePost(
     throw new HttpError(404, "Post does not exists");
   }
 
-  const chainProposalCol = await getChainExternalCollection();
-  const chainProposal = await chainProposalCol.findOne({
+  const chainExternalCol = await getChainExternalCollection();
+  const chainProposal = await chainExternalCol.findOne({
     proposalHash: post.externalProposalHash,
     "indexer.blockHeight": post.indexer.blockHeight,
   });
 
   if (!chainProposal) {
-    throw new HttpError(403, "On-chain data is not found");
+    throw new HttpError(404, "On-chain data is not found");
   }
 
   if (!chainProposal.authors.includes(author[`${chain}Address`])) {
@@ -44,7 +46,7 @@ async function updatePost(
 
   if (title.length > PostTitleLengthLimitation) {
     throw new HttpError(400, {
-      title: [ "Title must be no more than %d characters" ],
+      title: ["Title must be no more than %d characters"],
     });
   }
 
@@ -60,7 +62,7 @@ async function updatePost(
         contentVersion: post.contentVersion ?? "2",
         updatedAt: now,
         lastActivityAt: now,
-      }
+      },
     }
   );
 
@@ -75,12 +77,10 @@ async function getActivePostsOverview() {
   const chain = process.env.CHAIN;
 
   const chainDemocracyCol = await getChainExternalCollection();
-  const proposals = await chainDemocracyCol.find(
-    {
+  const proposals = await chainDemocracyCol
+    .find({
       "state.state": {
-        $nin: [
-          "Tabled", "ExternalTabled", "fastTrack", "Vetoed",
-        ]
+        $nin: ["Tabled", "ExternalTabled", "fastTrack", "Vetoed"],
       },
     })
     .sort({ "indexer.blockHeight": -1 })
@@ -114,7 +114,7 @@ async function getActivePostsOverview() {
     }),
   ]);
 
-  const result = proposals.map(proposal => {
+  const result = proposals.map((proposal) => {
     const post = proposal.post;
     proposal.post = undefined;
     post.onchainData = proposal;
@@ -122,12 +122,14 @@ async function getActivePostsOverview() {
     return post;
   });
 
-  return result.filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day).slice(0, 3);
+  return result
+    .filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day)
+    .slice(0, 3);
 }
 
 async function getPostsByChain(page, pageSize) {
   const chain = process.env.CHAIN;
-  const q = { externalProposalHash: {$ne: null} };
+  const q = { externalProposalHash: { $ne: null } };
 
   const postCol = await getDemocracyCollection();
   const total = await postCol.countDocuments(q);
@@ -137,7 +139,8 @@ async function getPostsByChain(page, pageSize) {
     page = Math.max(totalPages, 1);
   }
 
-  const posts = await postCol.find(q)
+  const posts = await postCol
+    .find(q)
     .sort({ lastActivityAt: -1 })
     .skip((page - 1) * pageSize)
     .limit(pageSize)
@@ -197,7 +200,9 @@ async function getPostById(postId) {
   }
 
   const postCol = await getDemocracyCollection();
-  const post = await postCol.findOne(q, { sort: {"indexer.blockHeight": -1} });
+  const post = await postCol.findOne(q, {
+    sort: { "indexer.blockHeight": -1 },
+  });
 
   if (!post) {
     throw new HttpError(404, "Post not found");
@@ -205,32 +210,59 @@ async function getPostById(postId) {
 
   const userCol = await getUserCollection();
   const businessDb = await getBusinessDb();
-  const chainProposalCol = await getChainExternalCollection();
   const preImageCol = await getPreImageCollection();
-  const [author, reactions, chanProposalData, preImage] = await Promise.all([
-    post.proposer ? userCol.findOne({ [`${chain}Address`]: post.proposer }) : null,
-    businessDb.lookupMany({
-      from: "reaction",
-      for: post,
-      as: "reactions",
-      localField: "_id",
-      foreignField: "democracy",
-    }),
-    chainProposalCol.findOne({
-      proposalHash: post.externalProposalHash,
-      "indexer.blockHeight": post.indexer.blockHeight,
-    }),
-    preImageCol.findOne({ hash: post.externalProposalHash })
-  ]);
+  const chainExternalCol = await getChainExternalCollection();
+  const chainMotionCol = await getChainMotionCollection();
+  const chainTechCommMotionCol = await getChainTechCommMotionCollection();
 
-  await lookupUser({ for: reactions, localField: "user" });
+  const [author, reactions, chainExternalProposal, preImage] =
+    await Promise.all([
+      post.proposer
+        ? userCol.findOne({ [`${chain}Address`]: post.proposer })
+        : null,
+      businessDb.lookupMany({
+        from: "reaction",
+        for: post,
+        as: "reactions",
+        localField: "_id",
+        foreignField: "democracy",
+      }),
+      chainExternalCol.findOne({
+        proposalHash: post.externalProposalHash,
+        "indexer.blockHeight": post.indexer.blockHeight,
+      }),
+      preImageCol.findOne({ hash: post.externalProposalHash }),
+    ]);
+
+  const [, motions, techCommMotions] = await Promise.all([
+    lookupUser({ for: reactions, localField: "user" }),
+    chainMotionCol
+      .find({
+        $or: chainExternalProposal.motions.map((motion) => ({
+          hash: motion.hash,
+          "indexer.blockHeight": motion.indexer.blockHeight,
+        })),
+      })
+      .toArray(),
+    chainTechCommMotionCol
+      .find({
+        $or: chainExternalProposal.techCommMotions.map((motion) => ({
+          hash: motion.hash,
+          "indexer.blockHeight": motion.indexer.blockHeight,
+        })),
+      })
+      .toArray(),
+  ]);
 
   return {
     ...post,
     author,
+    authors: chainExternalProposal.authors,
     onchainData: {
-      ...chanProposalData,
+      ...chainExternalProposal,
       preImage,
+      motions,
+      techCommMotions,
     },
   };
 }

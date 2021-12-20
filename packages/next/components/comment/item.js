@@ -157,6 +157,7 @@ export default function Item({ user, data, chain, onReply }) {
   const [comment, setComment] = useState(data);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [highlight, setHighlight] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
 
@@ -299,13 +300,15 @@ export default function Item({ user, data, chain, onReply }) {
         <EditInput
           editContent={comment.content}
           editContentType={comment.contentType}
-          onFinishedEdit={(reload) => {
+          onFinishedEdit={async (reload) => {
             if (reload) {
-              updateComment();
+              await updateComment();
             }
             setIsEdit(false);
           }}
           update={editComment}
+          loading={loading}
+          setLoading={setLoading}
         />
       )}
     </Wrapper>

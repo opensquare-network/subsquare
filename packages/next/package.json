@@ -29,7 +29,6 @@
     "dayjs": "^1.10.7",
     "dotenv": "^10.0.0",
     "handlebars": "^4.7.7",
-    "highlight-syntax": "^3.0.2",
     "html-react-parser": "^1.2.8",
     "http-proxy": "^1.18.1",
     "jsonwebtoken": "^8.5.1",

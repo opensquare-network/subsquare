@@ -9,15 +9,16 @@ const {
 
 async function getTechCommMotionProposal(motionHash, indexer) {
   const blockApi = await findBlockApi(indexer.blockHash);
-  return blockApi.query.technicalCommittee.proposalOf(motionHash);
+  const raw = await blockApi.query.technicalCommittee.proposalOf(motionHash);
+  const registry = await findRegistry(indexer);
+  return new GenericCall(registry, raw.toHex());
 }
 
 async function getTechCommMotionProposalCall(motionHash, indexer) {
-  const raw = await getTechCommMotionProposal(motionHash, indexer);
-  const registry = await findRegistry(indexer);
-  return normalizeCall(new GenericCall(registry, raw.toHex()));
+  return normalizeCall(await getTechCommMotionProposal(motionHash, indexer));
 }
 
 module.exports = {
+  getTechCommMotionProposal,
   getTechCommMotionProposalCall,
 };

@@ -6,6 +6,13 @@ import EditInput from "components/editInput";
 import nextApi from "services/nextApi";
 import { toApiType } from "utils/viewfuncs";
 
+const Wrapper = styled.div`
+  textarea:read-only,
+  div.ql-disabled {
+    background-color: #f6f7fa !important;
+  }
+`;
+
 const Title = styled.div`
   font-weight: bold;
   font-size: 16px;
@@ -26,7 +33,7 @@ export default function PostEdit({
   type,
 }) {
   const [title, setTitle] = useState(postData.title);
-
+  const [updating, setUpdating] = useState(false);
   const editPost = async (content, contentType) => {
     const url = `${toApiType(type)}/${postData._id}`;
     const result = await nextApi.patch(url, {
@@ -38,22 +45,28 @@ export default function PostEdit({
   };
 
   return (
-    <div>
+    <Wrapper>
       <Title>Edit</Title>
       <Label>Title</Label>
-      <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+      <Input
+        disabled={updating}
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
       <Label>Issue</Label>
       <EditInput
         editContent={postData.content}
         editContentType={postData.contentType}
-        onFinishedEdit={(reload) => {
+        onFinishedEdit={async (reload) => {
           if (reload) {
-            updatePost();
+            await updatePost();
           }
           setIsEdit(false);
         }}
+        loading={updating}
+        setLoading={setUpdating}
         update={editPost}
       />
-    </div>
+    </Wrapper>
   );
 }

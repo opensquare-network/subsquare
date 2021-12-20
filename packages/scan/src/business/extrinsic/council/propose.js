@@ -3,13 +3,12 @@ const {
   handleBusinessWhenMotionProposed,
 } = require("../../event/motion/store/hooks/proposed");
 const { insertMotion } = require("../../../mongo/service/onchain/motion");
-const { extractBusinessFields } = require("../../event/motion/store/proposed");
 const {
   log: { busLogger },
   business: {
     consts: { Modules, CollectiveMethods, CouncilEvents, KaruraModules },
     normalizeCall,
-    extractMotionCalls,
+    extractCouncilMotionBusiness,
   },
 } = require("@subsquare/scan-common");
 
@@ -59,12 +58,13 @@ async function handleCouncilPropose(
   const proposalCall = call.args[1];
   const proposal = normalizeCall(proposalCall);
 
-  const { treasuryProposals, treasuryBounties } = await extractMotionCalls(
-    proposalCall,
-    signer,
-    extrinsicIndexer,
-    extrinsicEvents
-  );
+  const { treasuryProposals, treasuryBounties, externalProposals } =
+    await extractCouncilMotionBusiness(
+      proposalCall,
+      signer,
+      extrinsicIndexer,
+      extrinsicEvents
+    );
 
   const obj = {
     indexer: extrinsicIndexer,
@@ -72,12 +72,12 @@ async function handleCouncilPropose(
     proposer: signer,
     threshold,
     authors: [signer],
-    ...extractBusinessFields(proposal),
     proposal,
     isFinal: false,
     timeline: [],
     treasuryProposals,
     treasuryBounties,
+    externalProposals,
   };
 
   await insertMotion(obj);

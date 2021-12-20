@@ -9,7 +9,7 @@ const {
 } = require("@subsquare/scan-common");
 
 async function test() {
-  const blockHeights = [858376, 864000];
+  const blockHeights = [1064927];
 
   for (const height of blockHeights) {
     await setSpecHeights([height - 1]);
@@ -21,6 +21,8 @@ async function test() {
 
     await scanNormalizedBlock(block.block, allEvents);
   }
+
+  console.log("finished");
 }
 
 test();

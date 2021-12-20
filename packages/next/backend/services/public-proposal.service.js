@@ -1,25 +1,26 @@
 const { ObjectId } = require("mongodb");
 const { safeHtml } = require("../utils/post");
 const { PostTitleLengthLimitation, Day } = require("../constants");
-const { getDb: getBusinessDb, getDemocracyCollection } = require("../mongo/business");
+const {
+  getDb: getBusinessDb,
+  getDemocracyCollection,
+} = require("../mongo/business");
 const {
   getDb: getChainDb,
   getPublicProposalCollection: getChainPublicProposalCollection,
   getPreImageCollection,
   getPublicProposalCollection,
 } = require("../mongo/chain");
-const { getDb: getCommonDb, lookupUser, getUserCollection } = require("../mongo/common");
+const {
+  getDb: getCommonDb,
+  lookupUser,
+  getUserCollection,
+} = require("../mongo/common");
 const { HttpError } = require("../exc");
 const { ContentType } = require("../constants");
 const { toUserPublicInfo } = require("../utils/user");
 
-async function updatePost(
-  postId,
-  title,
-  content,
-  contentType,
-  author
-) {
+async function updatePost(postId, title, content, contentType, author) {
   const chain = process.env.CHAIN;
   const postObjId = ObjectId(postId);
   const postCol = await getDemocracyCollection();
@@ -34,7 +35,7 @@ async function updatePost(
   });
 
   if (!chainProposal) {
-    throw new HttpError(403, "On-chain data is not found");
+    throw new HttpError(404, "On-chain data is not found");
   }
 
   if (!chainProposal.authors.includes(author[`${chain}Address`])) {
@@ -43,7 +44,7 @@ async function updatePost(
 
   if (title.length > PostTitleLengthLimitation) {
     throw new HttpError(400, {
-      title: [ "Title must be no more than %d characters" ],
+      title: ["Title must be no more than %d characters"],
     });
   }
 
@@ -59,7 +60,7 @@ async function updatePost(
         contentVersion: post.contentVersion ?? "2",
         updatedAt: now,
         lastActivityAt: now,
-      }
+      },
     }
   );
 
@@ -74,12 +75,10 @@ async function getActivePostsOverview() {
   const chain = process.env.CHAIN;
 
   const chainDemocracyCol = await getChainPublicProposalCollection();
-  const proposals = await chainDemocracyCol.find(
-    {
+  const proposals = await chainDemocracyCol
+    .find({
       "state.state": {
-        $nin: [
-          "Tabled",
-        ]
+        $nin: ["Tabled"],
       },
     })
     .sort({ "indexer.blockHeight": -1 })
@@ -113,7 +112,7 @@ async function getActivePostsOverview() {
     }),
   ]);
 
-  const result = proposals.map(proposal => {
+  const result = proposals.map((proposal) => {
     const post = proposal.post;
     proposal.post = undefined;
     post.onchainData = proposal;
@@ -121,12 +120,14 @@ async function getActivePostsOverview() {
     return post;
   });
 
-  return result.filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day).slice(0, 3);
+  return result
+    .filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day)
+    .slice(0, 3);
 }
 
 async function getPostsByChain(page, pageSize) {
   const chain = process.env.CHAIN;
-  const q = { proposalIndex: {$ne: null} };
+  const q = { proposalIndex: { $ne: null } };
 
   const postCol = await getDemocracyCollection();
   const total = await postCol.countDocuments(q);
@@ -136,7 +137,8 @@ async function getPostsByChain(page, pageSize) {
     page = Math.max(totalPages, 1);
   }
 
-  const posts = await postCol.find(q)
+  const posts = await postCol
+    .find(q)
     .sort({ lastActivityAt: -1 })
     .skip((page - 1) * pageSize)
     .limit(pageSize)
@@ -205,7 +207,9 @@ async function getPostById(postId) {
   const chainProposalCol = await getChainPublicProposalCollection();
   const preImageCol = await getPreImageCollection();
   const [author, reactions, chanProposalData] = await Promise.all([
-    post.proposer ? userCol.findOne({ [`${chain}Address`]: post.proposer }) : null,
+    post.proposer
+      ? userCol.findOne({ [`${chain}Address`]: post.proposer })
+      : null,
     businessDb.lookupMany({
       from: "reaction",
       for: post,
@@ -222,6 +226,7 @@ async function getPostById(postId) {
   return {
     ...post,
     author,
+    authors: chanProposalData.authors,
     onchainData: {
       ...chanProposalData,
       preImage,
@@ -229,7 +234,7 @@ async function getPostById(postId) {
   };
 }
 
-module.exports =  {
+module.exports = {
   updatePost,
   getPostsByChain,
   getPostById,

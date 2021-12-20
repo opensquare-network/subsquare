@@ -83,22 +83,51 @@ async function updatePost(postId, title, content, contentType, author) {
 
   const chainMotion = await findMotion(postId);
   if (!chainMotion) {
-    throw new HttpError(403, "Motion is not found");
+    throw new HttpError(404, "Motion is not found");
   }
 
-  if (!chainMotion.authors.includes(author[`${chain}Address`])) {
-    throw new HttpError(403, "You cannot edit");
+  const [postCol, post, postType] = await findMotionPost(chainMotion);
+  if (!post) {
+    throw new HttpError(404, "Post does not exists");
+  }
+
+  // Check if author is allow to edit
+  if (postType === "treasuryProposal") {
+    const chainProposalCol = await getChainTreasuryProposalCollection();
+    const chainProposal = await chainProposalCol.findOne({
+      proposalIndex: post.proposalIndex,
+    });
+
+    if (!chainProposal) {
+      throw new HttpError(404, "On-chain treasury proposal data is not found");
+    }
+
+    if (!chainProposal.authors.includes(author[`${chain}Address`])) {
+      throw new HttpError(403, "You cannot edit");
+    }
+  } else if (postType === "bounty") {
+    const chainBountyCol = await getChainBountyCollection();
+    const chainBounty = await chainBountyCol.findOne({
+      bountyIndex: post.bountyIndex,
+    });
+
+    if (!chainBounty) {
+      throw new HttpError(404, "On-chain bounty data is not found");
+    }
+
+    if (!chainBounty.authors.includes(author[`${chain}Address`])) {
+      throw new HttpError(403, "You cannot edit");
+    }
+  } else {
+    if (!chainMotion.authors.includes(author[`${chain}Address`])) {
+      throw new HttpError(403, "You cannot edit");
+    }
   }
 
   if (title.length > PostTitleLengthLimitation) {
     throw new HttpError(400, {
       title: ["Title must be no more than %d characters"],
     });
-  }
-
-  const [postCol, post] = await findMotionPost(chainMotion);
-  if (!post) {
-    throw new HttpError(404, "Post does not exists");
   }
 
   const postObjId = post._id;
@@ -144,39 +173,29 @@ async function loadPostForMotions(chainMotions) {
   const commonDb = await getCommonDb();
   const businessDb = await getBusinessDb();
 
-  const [, treasuryProposalPosts, bountyPosts, motionPosts] = await Promise.all(
-    [
-      commonDb.lookupOne({
-        from: "user",
-        for: chainMotions,
-        as: "author",
-        localField: "proposer",
-        foreignField: `${chain}Address`,
-        map: toUserPublicInfo,
-      }),
-      businessDb.lookupOne({
-        from: "treasuryProposal",
-        for: chainMotions,
-        as: "treasuryProposalPost",
-        localField: "treasuryProposalPost",
-        foreignField: "proposalIndex",
-      }),
-      businessDb.lookupOne({
-        from: "bounty",
-        for: chainMotions,
-        as: "bountyPost",
-        localField: "bountyPost",
-        foreignField: "bountyIndex",
-      }),
-      businessDb.lookupOne({
-        from: "motion",
-        for: chainMotions,
-        as: "motionPost",
-        localField: "index",
-        foreignField: "motionIndex",
-      }),
-    ]
-  );
+  const [treasuryProposalPosts, bountyPosts, motionPosts] = await Promise.all([
+    businessDb.lookupOne({
+      from: "treasuryProposal",
+      for: chainMotions,
+      as: "treasuryProposalPost",
+      localField: "treasuryProposalPost",
+      foreignField: "proposalIndex",
+    }),
+    businessDb.lookupOne({
+      from: "bounty",
+      for: chainMotions,
+      as: "bountyPost",
+      localField: "bountyPost",
+      foreignField: "bountyIndex",
+    }),
+    businessDb.lookupOne({
+      from: "motion",
+      for: chainMotions,
+      as: "motionPost",
+      localField: "index",
+      foreignField: "motionIndex",
+    }),
+  ]);
 
   await Promise.all([
     businessDb.lookupCount({
@@ -200,6 +219,30 @@ async function loadPostForMotions(chainMotions) {
       localField: "_id",
       foreignField: "motion",
     }),
+    commonDb.lookupOne(
+      {
+        from: "user",
+        foreignField: `${chain}Address`,
+        map: toUserPublicInfo,
+      },
+      [
+        {
+          for: treasuryProposalPosts,
+          as: "author",
+          localField: "proposer",
+        },
+        {
+          for: bountyPosts,
+          as: "author",
+          localField: "proposer",
+        },
+        {
+          for: motionPosts,
+          as: "author",
+          localField: "proposer",
+        },
+      ]
+    ),
   ]);
 
   return chainMotions.map((motion) => {
@@ -212,12 +255,10 @@ async function loadPostForMotions(chainMotions) {
     motion.bountyPost = undefined;
     motion.motionPost = undefined;
     post._id = motion._id;
-    post.proposer = motion.proposer;
     post.motionIndex = motion.index;
     post.hash = motion.hash;
     post.height = motion.indexer.blockHeight;
     post.indexer = motion.indexer;
-    post.author = motion.author;
     post.onchainData = motion;
     post.state = motion.state?.state;
     return post;
@@ -235,7 +276,9 @@ async function getActiveMotionsOverview() {
 
   const result = await loadPostForMotions(motions);
 
-  return result.filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day).slice(0, 3);
+  return result
+    .filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day)
+    .slice(0, 3);
 }
 
 async function getMotionsByChain(page, pageSize) {
@@ -282,6 +325,7 @@ async function getMotionById(postId) {
 
   let post;
   let reactions;
+  let postType;
 
   if (
     chainMotion.treasuryProposals?.length === 1 &&
@@ -293,6 +337,7 @@ async function getMotionById(postId) {
     reactions = await reactionCol
       .find({ treasuryProposal: post._id })
       .toArray();
+    postType = "treasuryProposal";
   } else if (
     chainMotion.treasuryBounties?.length === 1 &&
     chainMotion.treasuryProposals?.length === 0
@@ -301,16 +346,18 @@ async function getMotionById(postId) {
 
     post = await bountyCol.findOne({ bountyIndex });
     reactions = await reactionCol.find({ bounty: post._id }).toArray();
+    postType = "bounty";
   } else {
     const motionIndex = chainMotion.index;
 
     post = await motionCol.findOne({ motionIndex });
     reactions = await reactionCol.find({ motion: post._id }).toArray();
+    postType = "motion";
   }
 
   const [, author, chainProposals, chainBounties] = await Promise.all([
     lookupUser({ for: reactions, localField: "user" }),
-    userCol.findOne({ [`${chain}Address`]: chainMotion.proposer }),
+    userCol.findOne({ [`${chain}Address`]: post.proposer }),
     chainProposalCol
       .find({
         proposalIndex: {
@@ -333,16 +380,20 @@ async function getMotionById(postId) {
     ...post,
     reactions,
     _id: chainMotion._id,
-    proposer: chainMotion.proposer,
     motionIndex: chainMotion.index,
     hash: chainMotion.hash,
     height: chainMotion.indexer.blockHeight,
     indexer: chainMotion.indexer,
     author,
     state: chainMotion.state?.state,
+    authors:
+      postType === "treasuryProposal"
+        ? chainProposals[0].authors
+        : postType === "bounty"
+        ? chainBounties[0].authors
+        : chainMotion.authors,
     onchainData: {
       ...chainMotion,
-      author,
       treasuryProposals: chainProposals,
       treasuryBounties: chainBounties,
     },

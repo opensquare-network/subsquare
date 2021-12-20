@@ -44,6 +44,8 @@ async function _insertExternal(eventIndexer, proposalHash, voteThreshold) {
     state,
     isFinal: false,
     timeline: [timelineItem],
+    techCommMotions: [],
+    motions: [],
   };
 
   await insertDemocracyExternal(externalObj);

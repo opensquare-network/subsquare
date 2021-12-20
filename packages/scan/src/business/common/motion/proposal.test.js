@@ -1,10 +1,9 @@
-const { getMotionProposalCall } = require("./proposalStorage");
 const {
   chain: {
     getApi,
     specs: { setSpecHeights },
   },
-  test: { setPolkadot, setKusama, setKarura, disconnect },
+  test: { setKarura, disconnect, setKusama, setPolkadot },
 } = require("@subsquare/scan-common");
 jest.setTimeout(3000000);
 

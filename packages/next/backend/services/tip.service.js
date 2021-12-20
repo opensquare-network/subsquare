@@ -27,7 +27,7 @@ async function updatePost(postId, title, content, contentType, author) {
   });
 
   if (!chainTip) {
-    throw new HttpError(403, "On-chain data is not found");
+    throw new HttpError(404, "On-chain data is not found");
   }
 
   if (!chainTip.authors.includes(author[`${chain}Address`])) {
@@ -118,7 +118,9 @@ async function getActivePostsOverview() {
     return post;
   });
 
-  return result.filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day).slice(0, 3);
+  return result
+    .filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day)
+    .slice(0, 3);
 }
 
 async function getPostsByChain(page, pageSize) {
@@ -232,6 +234,7 @@ async function getPostById(postId) {
 
   return {
     ...post,
+    authors: tipData.authors,
     onchainData: tipData,
   };
 }

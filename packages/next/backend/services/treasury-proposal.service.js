@@ -30,7 +30,7 @@ async function updatePost(postId, title, content, contentType, author) {
   });
 
   if (!chainProposal) {
-    throw new HttpError(403, "On-chain data is not found");
+    throw new HttpError(404, "On-chain data is not found");
   }
 
   if (!chainProposal.authors.includes(author[`${chain}Address`])) {
@@ -118,7 +118,9 @@ async function getActivePostsOverview() {
     return post;
   });
 
-  return result.filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day).slice(0, 3);
+  return result
+    .filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day)
+    .slice(0, 3);
 }
 
 async function getPostsByChain(page, pageSize) {
@@ -222,14 +224,15 @@ async function getPostById(postId) {
     chainMotionCol
       .find({
         index: {
-          $in: (treasuryProposalData?.motions?.map(m => m.index) || [])
-        }
+          $in: treasuryProposalData?.motions?.map((m) => m.index) || [],
+        },
       })
       .toArray(),
   ]);
 
   return {
     ...post,
+    authors: treasuryProposalData.authors,
     onchainData: {
       ...treasuryProposalData,
       motions,

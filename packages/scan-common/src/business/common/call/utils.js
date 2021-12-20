@@ -2,6 +2,7 @@ const {
   Modules,
   TreasuryProposalMethods,
   BountyMethods,
+  DemocracyMethods,
 } = require("../../common/constants");
 
 function isTreasuryProposalMotionCall(section, method) {
@@ -32,8 +33,20 @@ function isStateChangeBountyMotionCall(method) {
   );
 }
 
+function isDemocracyExternalCall(section, method) {
+  return (
+    Modules.Democracy === section &&
+    [
+      DemocracyMethods.externalPropose,
+      DemocracyMethods.externalProposeMajority,
+      DemocracyMethods.externalProposeDefault,
+    ].includes(method)
+  );
+}
+
 module.exports = {
   isTreasuryProposalMotionCall,
   isBountyMotionCall,
   isStateChangeBountyMotionCall,
+  isDemocracyExternalCall,
 };

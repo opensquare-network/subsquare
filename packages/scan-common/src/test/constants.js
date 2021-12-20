@@ -4,9 +4,10 @@ const onFinalityKarura = "wss://karura.api.onfinality.io/public-ws";
 const onFinalityKusama = "wss://kusama.api.onfinality.io/public-ws";
 const onFinalityPolkadot = "wss://polkadot.api.onfinality.io/public-ws";
 const acalaKarura0 = "wss://karura-rpc-0.aca-api.network";
+const acalaKarura3 = "wss://karura-rpc-3.aca-api.network/ws";
 const onFinalityKhala = "wss://khala.api.onfinality.io/public-ws";
 
-const karuraEndpoint = onFinalityKarura;
+const karuraEndpoint = acalaKarura3;
 const khalaEndpoint = onFinalityKhala;
 
 module.exports = {
