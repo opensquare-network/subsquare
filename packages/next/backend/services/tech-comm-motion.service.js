@@ -274,13 +274,17 @@ async function getMotionById(postId) {
 
   if (chainMotion.externalProposals?.length === 1) {
     const externalProposalHash = chainMotion.externalProposals[0].hash;
+    const blockHeight = chainMotion.externalProposals[0].blockHeight;
 
-    post = await democracyCol.findOne({ externalProposalHash });
+    post = await democracyCol.findOne({
+      externalProposalHash,
+      "indexer.blockHeight": blockHeight,
+    });
     reactions = await reactionCol
       .find({ democracy: post._id })
       .toArray();
     postType = "democracy";
-    } else {
+  } else {
     const hash = chainMotion.hash;
     const height = chainMotion.indexer.blockHeight;
 
