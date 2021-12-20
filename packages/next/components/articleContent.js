@@ -189,7 +189,7 @@ export default function ArticleContent({
     ownPost =
       isLoggedIn &&
       !!(user.addresses || []).find((item) =>
-        post?.onchainData?.authors?.includes(item.address)
+        post?.authors?.includes(item.address)
       );
   }
 
@@ -263,7 +263,7 @@ export default function ArticleContent({
           {post.content === "" && (
             <GreyWrapper>
               <span style={{ marginRight: 12 }}>Who can edit?</span>
-              {(post.onchainData?.authors || []).map((author) => (
+              {(post.authors || []).map((author) => (
                 <GreyItem key={author}>
                   <User
                     add={author}

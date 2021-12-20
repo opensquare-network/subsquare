@@ -30,7 +30,7 @@ async function updatePost(postId, title, content, contentType, author) {
   });
 
   if (!chainProposal) {
-    throw new HttpError(403, "On-chain data is not found");
+    throw new HttpError(404, "On-chain data is not found");
   }
 
   if (!chainProposal.authors.includes(author[`${chain}Address`])) {
@@ -230,6 +230,7 @@ async function getPostById(postId) {
 
   return {
     ...post,
+    authors: treasuryProposalData.authors,
     onchainData: {
       ...treasuryProposalData,
       motions,

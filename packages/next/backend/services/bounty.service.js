@@ -31,7 +31,7 @@ async function updatePost(postId, title, content, contentType, author) {
   });
 
   if (!chainBounty) {
-    throw new HttpError(403, "On-chain data is not found");
+    throw new HttpError(404, "On-chain data is not found");
   }
 
   if (!chainBounty.authors.includes(author[`${chain}Address`])) {
@@ -235,6 +235,7 @@ async function getPostById(postId) {
 
   return {
     ...post,
+    authors: bountyData.authors,
     onchainData: {
       ...bountyData,
       motions,
