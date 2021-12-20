@@ -107,7 +107,7 @@ const Wrapper = styled.div`
 
     code {
       max-width: 100%;
-      margin: 8px 0;
+      margin: 16px 0;
       padding: 0 0.25rem;
       background: #f5f8fa !important;
       border-radius: 0.25rem;
