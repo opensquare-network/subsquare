@@ -9,7 +9,7 @@ const { setApi } = require("../../../api");
 
 jest.setTimeout(3000000);
 
-describe("test extract karura Tech Comm", () => {
+xdescribe("test extract karura Tech Comm", () => {
   let api;
   let provider;
 

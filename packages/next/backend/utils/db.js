@@ -269,7 +269,7 @@ async function connectDb(dbName) {
     const col = getCollection(from);
     const items = await col.aggregate(q).toArray();
     const itemsMap = new Map(
-      items.map((item) => [
+      items.filter(item => item.result).map((item) => [
         JSON.stringify(Object.values(item.keys)),
         map && item.result ? map(item.result) : item.result,
       ])

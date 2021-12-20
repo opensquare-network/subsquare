@@ -122,7 +122,7 @@ async function handleExternalProposal(proposalHash, motion, indexer) {
 
   await insertDemocracyExternal(externalObj);
   await insertDemocracyPostByExternal(proposalHash, indexer, authors[0]);
-  busLogger.info("External created at", indexer.blockHeight, externalObj);
+  busLogger.info(`External ${proposalHash} created at`, indexer.blockHeight);
 }
 
 async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
