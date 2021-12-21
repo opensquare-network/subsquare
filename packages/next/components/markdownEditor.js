@@ -26,12 +26,12 @@ icons.set("code", <Code />);
 
 export const StyledTextArea = styled.div`
   ${(props) =>
-    props &&
-    !props.visible &&
-    css`
-      visibility: hidden;
-      height: 0 !important;
-    `}
+          props &&
+          !props.visible &&
+          css`
+            visibility: hidden;
+            height: 0 !important;
+          `}
 
   border: 1px solid #dddddd;
   border-radius: 0.25rem;
@@ -206,13 +206,14 @@ export const StyledTextArea = styled.div`
 `;
 
 const MarkdownEditor = ({
-  content,
-  setContent,
-  users = [],
-  height = 100,
-  visible = true,
-  readOnly = false,
-}) => {
+                          content,
+                          setContent,
+                          setEditorHeight,
+                          users = [],
+                          height = 100,
+                          visible = true,
+                          readOnly = false,
+                        }) => {
   const loadSuggestions = async (text) => {
     return new Promise((accept) => {
       const suggestions = (users || [])
@@ -226,8 +227,21 @@ const MarkdownEditor = ({
   };
 
   const [focused, setFocused] = useState(false);
+  const [userResized, setUserResized]= useState(false);
 
   const ref = useRef();
+
+  useEffect(()=>{
+    const textarea = ref?.current?.finalRefs?.textarea?.current;
+    if(textarea && !document.getElementsByTagName('body')[0].onmouseup) {
+      document.getElementsByTagName('body')[0].onmouseup = function () {
+        if (textarea?.style?.height !== `${height}px`) {
+          setUserResized(true);
+        }
+        setEditorHeight(parseInt(textarea?.style?.height));
+      }
+    }
+  }, [ref?.current?.finalRefs?.textarea?.current]);
 
   return (
     <StyledTextArea
@@ -241,9 +255,10 @@ const MarkdownEditor = ({
         value={content}
         onChange={(content) => {
           const textarea = ref?.current?.finalRefs?.textarea?.current;
-          if (textarea) {
+          if(textarea && !userResized){
             textarea.style.height = "200px";
-            textarea.style.height = textarea.scrollHeight + "px";
+            textarea.style.height = textarea.scrollHeight + 'px';
+            setEditorHeight(textarea.scrollHeight);
           }
           setContent(content);
         }}
