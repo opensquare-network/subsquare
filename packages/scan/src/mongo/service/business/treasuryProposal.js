@@ -7,7 +7,7 @@ async function insertProposalPost(proposal) {
     return;
   }
 
-  const blockTime = new Date(indexer.blockTime);
+  const blockTime = new Date(proposal.indexer.blockTime);
   await col.insertOne({
     indexer: proposal.indexer,
     proposalIndex: proposal.proposalIndex,
