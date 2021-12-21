@@ -2,10 +2,14 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const {
-  getTipCollection, getTreasuryProposalCollection, getDemocracyCollection,
+  getTipCollection,
+  getTreasuryProposalCollection,
+  getBountyCollection,
+  getDemocracyCollection,
 } = require("../mongo/business");
 const {
   getDb: getChainDb,
+  getTechCommMotionCollection: getChainTechCommMotionCollection,
 } = require("../mongo/chain");
 
 async function updateTip() {
@@ -57,7 +61,7 @@ async function updateTreasuryProposal() {
     for: items,
     as: "onchainData",
     localField: "proposalIndex",
-    foreighField: "proposalIndex",
+    foreignField: "proposalIndex",
   });
 
   await chainDb.lookupMany({
@@ -65,7 +69,7 @@ async function updateTreasuryProposal() {
     for: onchainDatas,
     as: "motions",
     localField: "proposalIndex",
-    foreighField: "treasuryProposalIndex",
+    foreignField: "treasuryProposals.index",
   });
 
   if (items.length > 0) {
@@ -108,7 +112,7 @@ async function updatePublicProposal() {
       for: items,
       as: "democracyPublicProposal",
       localField: "proposalIndex",
-      foreighField: "proposalIndex",
+      foreignField: "proposalIndex",
     }),
     chainDb.lookupOne({
       from: "democracyReferendum",
@@ -168,13 +172,22 @@ async function updateExternalProposal() {
     }),
   ]);
 
-  await chainDb.lookupOne({
-    from: "techCommMotion",
-    for: democracyExternals,
-    as: "techCommMotion",
-    localField: "techCommMotionIndex",
-    foreignField: "techCommMotionIndex",
-  });
+  const chainTechCommMotionsCol = await getChainTechCommMotionCollection();
+  for (const external of democracyExternals) {
+    const hash = external.proposalHash;
+    const height = external.indexer.blockHeight;
+
+    const techCommMotions = await chainTechCommMotionsCol.find({
+      externalProposals: {
+        $elemMatch: {
+          hash,
+          "indexer.blockHeight": height,
+        }
+      }
+    }).toArray();
+
+    external.techCommMotions = techCommMotions;
+  }
 
   if (items.length > 0) {
     const bulk = col.initializeUnorderedBulkOp();
@@ -187,8 +200,10 @@ async function updateExternalProposal() {
             : [item.lastActivityAt.getTime()]
           ),
           item.democracyExternal?.state?.indexer?.blockTime || 0,
+          ...(
+            (item.democracyExternal?.techCommMotions || []).map(m => m.state?.indexer?.blockTime || 0)
+          ),
           item.democracyReferendum?.state?.indexer?.blockTime || 0,
-          item.democracyExternal?.techCommMotion?.state?.indexer?.blockTime || 0,
         )
       );
       bulk.find({
@@ -204,12 +219,60 @@ async function updateExternalProposal() {
   }
 }
 
+async function updateBounty() {
+  const chainDb = await getChainDb()
+
+  const col = await getBountyCollection();
+  const items = await col.find({}).toArray();
+  const onchainDatas = await chainDb.lookupOne({
+    from: "bounty",
+    for: items,
+    as: "onchainData",
+    localField: "bountyIndex",
+    foreignField: "bountyIndex",
+  });
+
+  await chainDb.lookupMany({
+    from: "motion",
+    for: onchainDatas,
+    as: "motions",
+    localField: "bountyIndex",
+    foreignField: "treasuryBounties.index",
+  });
+
+  if (items.length > 0) {
+    const bulk = col.initializeUnorderedBulkOp();
+    for (const item of items) {
+      const lastActivityAt = new Date(
+        Math.max(
+          ...(
+            item.lastActivityAt.getTime() === item.createdAt.getTime()
+            ? []
+            : [item.lastActivityAt.getTime()]
+          ),
+          item.onchainData?.state?.indexer?.blockTime || 0,
+          ...(
+            (item.motions || []).map(m => m.state?.indexer?.blockTime || 0)
+          )
+        )
+      );
+      bulk.find({proposalIndex: item.proposalIndex}).updateOne({
+        $set: {
+          lastActivityAt
+        }
+      });
+    }
+    await bulk.execute();
+  }
+}
+
 async function main() {
   try {
     await updateTip();
     await updateTreasuryProposal();
     await updatePublicProposal();
     await updateExternalProposal();
+    await updateBounty();
 
     console.log(`Last run at`, new Date());
   } catch (e) {
