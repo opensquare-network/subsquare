@@ -136,7 +136,7 @@ const Wrapper = styled.div`
   }
 `;
 
-function HtmlRender({ html, maxHeight = 300 }) {
+function HtmlRender({ html, maxHeight = null }) {
   const r =
     /<span[^<>]*><span class="ql-mention-denotation-char">@<\/span>(\w+)<\/span>/;
   while (html.match(r)) {
