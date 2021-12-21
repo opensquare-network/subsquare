@@ -101,7 +101,7 @@ const ContentWrapper = styled.div`
 const ContentItem = styled(Flex)`
   align-items: flex-start;
   justify-content: space-between;
-  word-break: break-all;
+  word-break: break-word;
   > :first-child {
     color: #506176;
     line-height: 28px;
