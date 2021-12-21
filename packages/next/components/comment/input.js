@@ -79,7 +79,7 @@ function Input(
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState("image");
   const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
-  const [editorHeight, setEditorHeight] = useState(114);
+  const [editorHeight, setEditorHeight] = useState(100);
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
 

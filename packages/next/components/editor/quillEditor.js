@@ -19,7 +19,7 @@ export const StyledTextArea = styled.div`
     props &&
     props.visible &&
     css`
-      min-height: 114px;
+      min-height: 100px;
     `}
   border: 1px solid #dddddd;
   border-radius: 0.25rem;
