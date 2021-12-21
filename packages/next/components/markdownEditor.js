@@ -48,7 +48,7 @@ export const StyledTextArea = styled.div`
   textarea {
     resize: none;
     overflow-y: scroll;
-    min-height: 200px;
+    min-height: 100px;
     max-height: 300px;
     color: #000 !important;
     padding: 0.75rem 1rem !important;
