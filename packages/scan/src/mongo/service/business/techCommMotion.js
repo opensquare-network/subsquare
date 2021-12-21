@@ -13,7 +13,7 @@ async function insertTechCommMotionPost(indexer, hash, motionIndex, proposer) {
     return;
   }
 
-  const now = new Date();
+  const blockTime = new Date(indexer.blockTime);
   await col.insertOne({
     height: indexer.blockHeight,
     indexer,
@@ -23,9 +23,9 @@ async function insertTechCommMotionPost(indexer, hash, motionIndex, proposer) {
     title: getMotionPostDefaultTitle(hash, motionIndex),
     content: "",
     contentType: "markdown",
-    createdAt: now,
-    updatedAt: now,
-    lastActivityAt: now,
+    createdAt: blockTime,
+    updatedAt: blockTime,
+    lastActivityAt: blockTime,
   });
 }
 
