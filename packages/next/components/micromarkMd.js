@@ -186,26 +186,7 @@ export default function MicromarkMd({ md = "", contentVersion = "" }) {
     allowDangerousHtml: true,
     extensions: [gfm()],
     htmlExtensions: [
-      {
-        enter: {
-          codeIndented() {
-            this.tag('<pre>');
-          },
-          codeFenced() {
-            this.tag('<pre><code class="language-js"');
-          },
-        },
-        exit: {
-          codeIndented() {
-            this.tag('</pre>');
-          },
-          codeFenced() {
-            this.tag('</code></pre>');
-          },
-        }
-      },
       gfmHtml(),
-
     ],
   });
 
