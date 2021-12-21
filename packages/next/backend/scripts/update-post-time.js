@@ -84,7 +84,7 @@ async function updateTreasuryProposal() {
           ),
           item.onchainData?.state?.indexer?.blockTime || 0,
           ...(
-            (item.motions || []).map(m => m.state?.indexer?.blockTime || 0)
+            (item.onchainData?.motions || []).map(m => m.state?.indexer?.blockTime || 0)
           )
         )
       );
@@ -256,7 +256,7 @@ async function updateBounty() {
           )
         )
       );
-      bulk.find({proposalIndex: item.proposalIndex}).updateOne({
+      bulk.find({bountyIndex: item.bountyIndex}).updateOne({
         $set: {
           lastActivityAt
         }
