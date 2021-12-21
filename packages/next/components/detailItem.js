@@ -368,6 +368,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             {post.status && <Tag name={post.status} />}
           </FlexWrapper>
           <ArticleContent
+            chain={chain}
             post={post}
             setPost={setPost}
             user={user}
