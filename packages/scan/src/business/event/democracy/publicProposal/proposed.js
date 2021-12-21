@@ -1,14 +1,15 @@
 const { getPublicProposalFromStorage } = require("./storage");
 const {
-  DemocracyPublicProposalEvents,
-  TimelineItemTypes,
-} = require("../../../common/constants");
-const {
   insertDemocracyPublicProposal,
 } = require("../../../../mongo/service/onchain/democracyPublicProposal");
 const {
   insertDemocracyPostByProposal,
 } = require("../../../../mongo/service/business/democracy");
+const {
+  business: {
+    consts: { DemocracyPublicProposalEvents, TimelineItemTypes },
+  },
+} = require("@subsquare/scan-common");
 
 async function saveNewPublicProposal(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();

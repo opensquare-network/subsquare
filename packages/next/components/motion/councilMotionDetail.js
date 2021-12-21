@@ -263,10 +263,7 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
               {motion.isTreasury && <SectionTag name={"Treasury"} />}
               {motion.isDemocracy && <SectionTag name={"Democracy"} />}
               {postUpdateTime && (
-                <Info>
-                  Updated{" "}
-                  {timeDurationFromNow(postUpdateTime)}
-                </Info>
+                <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
               )}
             </DividerWrapper>
             {motion.state && <StatusWrapper>{motion.state}</StatusWrapper>}

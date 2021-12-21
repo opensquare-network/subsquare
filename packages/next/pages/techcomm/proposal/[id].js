@@ -9,8 +9,12 @@ import { TYPE_TECH_COMM_MOTION } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import SEO from "components/SEO";
 import NextHead from "../../../components/nextHead";
-import { getFocusEditor, getMentionList, getOnReply } from "../../../utils/post";
-import { useRef,useState } from "react";
+import {
+  getFocusEditor,
+  getMentionList,
+  getOnReply,
+} from "../../../utils/post";
+import { useRef, useState } from "react";
 import Comments from "../../../components/comment";
 import Input from "../../../components/comment/input";
 import { shadow_100 } from "../../../styles/componentCss";
@@ -38,59 +42,66 @@ const CommentsWrapper = styled.div`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser, motion, comments, chain, siteUrl }) => {
-  const users = getMentionList(comments);
-  const editorWrapperRef = useRef(null);
-  const [quillRef, setQuillRef] = useState(null);
-  const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown"
-  );
-  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
-  const onReply = getOnReply(
-    contentType,
-    content,
-    setContent,
-    quillRef,
-    focusEditor
-  );
+export default withLoginUserRedux(
+  ({ loginUser, motion, comments, chain, siteUrl }) => {
+    const users = getMentionList(comments);
+    const editorWrapperRef = useRef(null);
+    const [quillRef, setQuillRef] = useState(null);
+    const [content, setContent] = useState("");
+    const [contentType, setContentType] = useState(
+      loginUser?.preference.editor || "markdown"
+    );
+    const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
+    const onReply = getOnReply(
+      contentType,
+      content,
+      setContent,
+      quillRef,
+      focusEditor
+    );
 
-  const desc = getMetaDesc(motion, "Proposal");
-  return (
-    <Layout user={loginUser} chain={chain}>
-      <SEO title={motion?.title} desc={desc} siteUrl={siteUrl} chain={chain} />
-      <Wrapper className="post-content">
-        <Back href={`/techcomm/proposals`} text="Back to Proposals" />
-        <TechcommMotionDetail
-          motion={motion}
-          loginUser={loginUser}
+    const desc = getMetaDesc(motion, "Proposal");
+    return (
+      <Layout user={loginUser} chain={chain}>
+        <SEO
+          title={motion?.title}
+          desc={desc}
+          siteUrl={siteUrl}
           chain={chain}
-          onReply={onReply}
-          type={TYPE_TECH_COMM_MOTION}
         />
-        <CommentsWrapper>
-          <Comments
-            data={comments}
-            user={loginUser}
-            postId={motion._id}
+        <Wrapper className="post-content">
+          <Back href={`/techcomm/proposals`} text="Back to Proposals" />
+          <TechcommMotionDetail
+            motion={motion}
+            loginUser={loginUser}
             chain={chain}
             onReply={onReply}
+            type={TYPE_TECH_COMM_MOTION}
           />
-          {loginUser && (
-            <Input
+          <CommentsWrapper>
+            <Comments
+              data={comments}
+              user={loginUser}
               postId={motion._id}
               chain={chain}
-              ref={editorWrapperRef}
-              setQuillRef={setQuillRef}
-              {...{ contentType, setContentType, content, setContent, users }}
-              type={TYPE_TECH_COMM_MOTION}
+              onReply={onReply}
             />
-          )}
-        </CommentsWrapper>
-      </Wrapper>
-    </Layout>
-  );
-});
+            {loginUser && (
+              <Input
+                postId={motion._id}
+                chain={chain}
+                ref={editorWrapperRef}
+                setQuillRef={setQuillRef}
+                {...{ contentType, setContentType, content, setContent, users }}
+                type={TYPE_TECH_COMM_MOTION}
+              />
+            )}
+          </CommentsWrapper>
+        </Wrapper>
+      </Layout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;

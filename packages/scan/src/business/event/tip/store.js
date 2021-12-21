@@ -1,4 +1,3 @@
-const { findRegistry } = require("../../../chain/specs");
 const { getTipReason } = require("../../common/tip/utils");
 const { getTipMetaFromStorage } = require("../../common/tip/utils");
 const {
@@ -11,14 +10,19 @@ const {
   computeTipValue,
 } = require("../../common/tip/updates");
 const {
-  TipMethods,
-  TipEvents,
-  TimelineItemTypes,
-} = require("../../common/constants");
+  business: {
+    consts: { TipMethods, TipEvents, TimelineItemTypes },
+  },
+} = require("@subsquare/scan-common");
 const { getBlockHash } = require("../../common");
 const { insertTip, updateTipByHash } = require("../../../mongo/service/tip");
 const { insertTipPost } = require("../../../mongo/service/business/tip");
-const { getApi } = require("../../../api");
+const {
+  chain: {
+    getApi,
+    specs: { findRegistry },
+  },
+} = require("@subsquare/scan-common");
 
 async function saveNewTip(event, extrinsic, indexer) {
   const [rawHash] = event.data;

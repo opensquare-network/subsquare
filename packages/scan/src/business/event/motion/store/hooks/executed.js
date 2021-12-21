@@ -1,9 +1,7 @@
 const { updateBounty } = require("../../../../../mongo/service/onchain/bounty");
-const { getBountyMeta } = require("../../../../common/bounty/meta");
 const {
   updateTreasuryProposal,
 } = require("../../../../../mongo/service/treasuryProposal");
-const { busLogger } = require("../../../../../logger");
 const {
   getExternalFromStorageByHeight,
 } = require("../../../../common/democracy/external");
@@ -13,16 +11,21 @@ const {
 const {
   insertDemocracyExternal,
 } = require("../../../../../mongo/service/onchain/democracyExternal");
-const {
-  DemocracyExternalStates,
-  TimelineItemTypes,
-  TreasuryProposalMethods,
-  TreasuryProposalEvents,
-  BountyMethods,
-  BountyStatus,
-} = require("../../../../common/constants");
 const { getMotionCollection } = require("../../../../../mongo");
-const { logger } = require("../../../../../logger");
+const {
+  log: { logger, busLogger },
+  business: {
+    getBountyMeta,
+    consts: {
+      DemocracyExternalStates,
+      TimelineItemTypes,
+      TreasuryProposalMethods,
+      TreasuryProposalEvents,
+      BountyMethods,
+      BountyStatus,
+    },
+  },
+} = require("@subsquare/scan-common");
 
 async function handleRejectTreasuryProposal(proposalInfo, indexer) {
   const { index: proposalIndex, method } = proposalInfo;

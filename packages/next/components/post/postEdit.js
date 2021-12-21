@@ -7,10 +7,11 @@ import nextApi from "services/nextApi";
 import { toApiType } from "utils/viewfuncs";
 
 const Wrapper = styled.div`
-  textarea:read-only, div.ql-disabled{
-    background-color:  #F6F7FA !important;;
+  textarea:read-only,
+  div.ql-disabled {
+    background-color: #f6f7fa !important;
   }
-`
+`;
 
 const Title = styled.div`
   font-weight: bold;
@@ -47,7 +48,11 @@ export default function PostEdit({
     <Wrapper>
       <Title>Edit</Title>
       <Label>Title</Label>
-      <Input disabled={updating} value={title} onChange={(e) => setTitle(e.target.value)} />
+      <Input
+        disabled={updating}
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
       <Label>Issue</Label>
       <EditInput
         editContent={postData.content}

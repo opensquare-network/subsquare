@@ -1,8 +1,3 @@
-const {
-  extractCouncilMotionBusiness,
-} = require("../../../common/call/extractMotionCalls");
-const { normalizeCall } = require("../../../common/motion/utils");
-const { findRegistry } = require("../../../../chain/specs");
 const { getMotionProposal } = require("../../../common/motion/proposalStorage");
 const {
   insertMotionPost,
@@ -11,12 +6,18 @@ const { handleBusinessWhenMotionProposed } = require("./hooks/proposed");
 const {
   getVotingFromStorage,
 } = require("../../../common/motion/votingStorage");
-const {
-  TimelineItemTypes,
-  CouncilEvents,
-} = require("../../../common/constants");
 const { insertMotion } = require("../../../../mongo/service/onchain/motion");
 const { GenericCall } = require("@polkadot/types");
+const {
+  chain: {
+    specs: { findRegistry },
+  },
+  business: {
+    consts: { TimelineItemTypes, CouncilEvents },
+    normalizeCall,
+    extractCouncilMotionBusiness,
+  },
+} = require("@subsquare/scan-common");
 
 async function handleProposed(event, extrinsic, indexer, blockEvents) {
   const eventData = event.data.toJSON();

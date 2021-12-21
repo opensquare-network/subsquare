@@ -2,11 +2,14 @@ const {
   updateTreasuryProposal,
 } = require("../../../../../mongo/service/treasuryProposal");
 const {
-  CouncilEvents,
-  TreasuryProposalMethods,
-} = require("../../../../common/constants");
+  business: {
+    consts: { CouncilEvents, TreasuryProposalMethods },
+  },
+} = require("@subsquare/scan-common");
 const { getMotionCollection } = require("../../../../../mongo");
-const { logger } = require("../../../../../logger");
+const {
+  log: { logger },
+} = require("@subsquare/scan-common");
 
 async function handleProposal(proposalInfo, indexer) {
   const { index: treasuryProposalIndex, method } = proposalInfo;

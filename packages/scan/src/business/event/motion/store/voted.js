@@ -3,9 +3,10 @@ const {
   getVotingFromStorage,
 } = require("../../../common/motion/votingStorage");
 const {
-  TimelineItemTypes,
-  CouncilEvents,
-} = require("../../../common/constants");
+  business: {
+    consts: { TimelineItemTypes, CouncilEvents },
+  },
+} = require("@subsquare/scan-common");
 const {
   updateMotionByHash,
 } = require("../../../../mongo/service/onchain/motion");

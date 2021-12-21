@@ -101,7 +101,6 @@ const Info = styled.div`
   color: #506176;
 `;
 
-
 function createMotionBusinessData(motion, chain) {
   const height = motion.state.indexer.blockHeight;
   return [
@@ -161,7 +160,12 @@ const getClosedTimelineData = (timeline = []) => {
   return [fd, ...notFoldItems];
 };
 
-export default function TechcommMotionDetail({ motion, chain,onReply, loginUser }) {
+export default function TechcommMotionDetail({
+  motion,
+  chain,
+  onReply,
+  loginUser,
+}) {
   const node = getNode(chain);
   const [post, setPost] = useState(motion);
   if (!node) {
@@ -229,9 +233,7 @@ export default function TechcommMotionDetail({ motion, chain,onReply, loginUser 
         <div>
           <TitleWrapper>
             {motion?.index !== undefined && <Index>{`#${motion.index}`}</Index>}
-            <Title>
-              {post?.title}
-            </Title>
+            <Title>{post?.title}</Title>
           </TitleWrapper>
           <FlexWrapper>
             <DividerWrapper>
@@ -244,10 +246,7 @@ export default function TechcommMotionDetail({ motion, chain,onReply, loginUser 
               {motion.isTreasury && <SectionTag name={"Treasury"} />}
               {motion.isDemocracy && <SectionTag name={"Democracy"} />}
               {postUpdateTime && (
-                <Info>
-                  Updated{" "}
-                  {timeDurationFromNow(postUpdateTime)}
-                </Info>
+                <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
               )}
             </DividerWrapper>
             {motion.state && <StatusWrapper>{motion.state}</StatusWrapper>}
@@ -279,7 +278,11 @@ export default function TechcommMotionDetail({ motion, chain,onReply, loginUser 
               />
             </>,
           ],
-          ...[ Number.isInteger(motion?.motionIndex) ?  ["Index", motion?.motionIndex] : null ],
+          ...[
+            Number.isInteger(motion?.motionIndex)
+              ? ["Index", motion?.motionIndex]
+              : null,
+          ],
           ["Threshold", motion?.onchainData?.threshold],
           ["Hash", motion.hash],
           [<MotionProposal motion={motion?.onchainData} chain={chain} />],

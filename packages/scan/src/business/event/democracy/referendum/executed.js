@@ -5,9 +5,10 @@ const {
   getReferendumInfoByHeight,
 } = require("../../../common/democracy/referendum/referendumStorage");
 const {
-  ReferendumEvents,
-  TimelineItemTypes,
-} = require("../../../common/constants");
+  business: {
+    consts: { ReferendumEvents, TimelineItemTypes },
+  },
+} = require("@subsquare/scan-common");
 
 async function handleExecuted(event, indexer) {
   const eventData = event.data.toJSON();

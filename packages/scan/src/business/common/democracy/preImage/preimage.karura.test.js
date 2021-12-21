@@ -1,36 +1,26 @@
-const { onFinalityKarura } = require("../../../../utils/constants");
 const { getPreImageFromStorage } = require("./storage");
-const { setSpecHeights } = require("../../../../chain/specs");
-const { CHAINS } = require("../../../../env");
-const { setChain } = require("../../../../env");
-const { setApi } = require("../../../../api");
-const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
+const {
+  chain: {
+    getApi,
+    specs: { setSpecHeights },
+  },
+  test: { setKarura, disconnect },
+} = require("@subsquare/scan-common");
 jest.setTimeout(3000000);
 
-const { ApiPromise, WsProvider } = require("@polkadot/api");
-
 describe("test get karura 1st proposal image", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
-    provider = new WsProvider(onFinalityKarura, 1000);
-    api = await ApiPromise.create({
-      provider,
-      typesBundle: { ...typesBundleForPolkadot },
-    });
-
-    setApi(api);
-    setChain(CHAINS.KARURA);
+    await setKarura();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test(" works", async () => {
     const blockHeight = 120301;
-    setSpecHeights([blockHeight]);
+    await setSpecHeights([blockHeight]);
+    const api = await getApi();
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
     const indexer = { blockHash, blockHeight };
 

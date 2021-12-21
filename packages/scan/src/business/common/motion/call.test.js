@@ -1,38 +1,28 @@
-const { findRegistry } = require("../../../chain/specs");
-const { onFinalityKarura } = require("../../../utils/constants");
 const { GenericCall } = require("@polkadot/types");
-const { normalizeCall } = require("./utils");
 const { getMotionProposal } = require("./proposalStorage");
-const { setSpecHeights } = require("../../../chain/specs");
-const { setApi } = require("../../../api");
-const { ApiPromise, WsProvider } = require("@polkadot/api");
-const { setChain, CHAINS } = require("../../../env");
-const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
-
+const {
+  chain: {
+    getApi,
+    specs: { setSpecHeights, findRegistry },
+  },
+  test: { setKarura, disconnect },
+  business: { normalizeCall },
+} = require("@subsquare/scan-common");
 jest.setTimeout(3000000);
 
 describe("Normalize call", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
-    provider = new WsProvider(onFinalityKarura, 1000);
-    api = await ApiPromise.create({
-      provider,
-      typesBundle: { ...typesBundleForPolkadot },
-    });
-
-    setApi(api);
-    setChain(CHAINS.KARURA);
+    await setKarura();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test("works", async () => {
     const blockHeight = 256518;
-    setSpecHeights([blockHeight]);
+    await setSpecHeights([blockHeight]);
+    const api = await getApi();
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
     const indexer = { blockHash, blockHeight };
     const motionHash =

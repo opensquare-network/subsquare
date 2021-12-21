@@ -1,8 +1,12 @@
 const {
   getDemocracyExternalUnFinished,
 } = require("../../../mongo/service/onchain/democracyExternal");
-const { Modules, DemocracyMethods } = require("../constants");
-const { handleWrappedCall } = require("../call/handle");
+const {
+  business: {
+    consts: { Modules, DemocracyMethods },
+    handleWrappedCall,
+  },
+} = require("@subsquare/scan-common");
 
 async function extractTechCommMotionBusiness(
   proposalCall,

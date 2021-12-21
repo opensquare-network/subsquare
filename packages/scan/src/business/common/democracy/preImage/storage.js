@@ -1,11 +1,15 @@
-const { busLogger } = require("../../../../logger");
-const { findBlockApi } = require("../../../../chain/specs");
-const { findRegistry } = require("../../../../chain/specs");
-const { normalizeCall } = require("../../motion/utils");
 const { hexToU8a } = require("@polkadot/util");
+const {
+  chain: {
+    findBlockApi,
+    specs: { findRegistry },
+  },
+  log: { busLogger },
+  business: { normalizeCall },
+} = require("@subsquare/scan-common");
 
 async function getPreImageFromStorage(hash, indexer) {
-  const blockApi = await findBlockApi(indexer);
+  const blockApi = await findBlockApi(indexer.blockHash);
   const raw = await blockApi.query.democracy.preimages(hash);
   if (!raw.isSome) {
     return {};

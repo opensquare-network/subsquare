@@ -1,8 +1,9 @@
-const { findBlockApi } = require("../../../chain/specs");
-const { getApi } = require("../../../api");
+const {
+  chain: { getApi, findBlockApi },
+} = require("@subsquare/scan-common");
 
 async function getExternalFromStorage(indexer) {
-  const blockApi = await findBlockApi(indexer);
+  const blockApi = await findBlockApi(indexer.blockHash);
   const raw = await blockApi.query.democracy.nextExternal();
   return raw.toJSON();
 }

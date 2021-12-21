@@ -1,18 +1,22 @@
-const { findBlockApi } = require("../../../chain/specs");
-const {
-  Modules,
-  ProxyMethods,
-  MultisigMethods,
-  UtilityMethods,
-  TipMethods,
-} = require("../constants");
 const { GenericCall } = require("@polkadot/types");
 const { blake2AsHex } = require("@polkadot/util-crypto");
-const { isKarura } = require("../../../env");
 const { hexToString, isHex } = require("@polkadot/util");
+const {
+  chain: { findBlockApi },
+  env: { isKarura },
+  business: {
+    consts: {
+      Modules,
+      ProxyMethods,
+      MultisigMethods,
+      UtilityMethods,
+      TipMethods,
+    },
+  },
+} = require("@subsquare/scan-common");
 
 async function getTipMetaFromStorage(api, tipHash, indexer) {
-  const blockApi = await findBlockApi(indexer);
+  const blockApi = await findBlockApi(indexer.blockHash);
 
   let raw;
   if (blockApi.query.treasury?.tips) {
@@ -25,7 +29,7 @@ async function getTipMetaFromStorage(api, tipHash, indexer) {
 }
 
 async function getTipReason(reasonHash, indexer) {
-  const blockApi = await findBlockApi(indexer);
+  const blockApi = await findBlockApi(indexer.blockHash);
 
   let raw;
   if (blockApi.query.treasury?.reasons) {
@@ -94,7 +98,7 @@ function getNewTipCall(registry, call, reasonHash) {
 }
 
 async function getTippersCountOfKarura(indexer) {
-  const blockApi = await findBlockApi(indexer);
+  const blockApi = await findBlockApi(indexer.blockHash);
   const members = await blockApi.query.generalCouncil.members();
 
   return members.length;
@@ -105,7 +109,7 @@ async function getTippersCount(indexer) {
     return await getTippersCountOfKarura(indexer);
   }
 
-  const blockApi = await findBlockApi(indexer);
+  const blockApi = await findBlockApi(indexer.blockHash);
   if (blockApi.consts.electionsPhragmen?.desiredMembers) {
     return blockApi.consts.electionsPhragmen?.desiredMembers.toNumber();
   } else if (blockApi.consts.phragmenElection?.desiredMembers) {
@@ -116,7 +120,7 @@ async function getTippersCount(indexer) {
 }
 
 async function getTipFindersFee(indexer) {
-  const blockApi = await findBlockApi(indexer);
+  const blockApi = await findBlockApi(indexer.blockHash);
   if (blockApi.consts.tips?.tipFindersFee) {
     return blockApi.consts.tips?.tipFindersFee.toNumber();
   } else if (blockApi.consts.treasury?.tipFindersFee) {

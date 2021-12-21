@@ -1,23 +1,26 @@
-import React, {useState} from "react";
-import styled, {css} from "styled-components";
+import React, { useState } from "react";
+import styled, { css } from "styled-components";
 import dynamic from "next/dynamic";
 
-const MyReactQuill = dynamic(() => import("./quill").catch(e => console.error(e)), {ssr: false});
+const MyReactQuill = dynamic(
+  () => import("./quill").catch((e) => console.error(e)),
+  { ssr: false }
+);
 
 export const StyledTextArea = styled.div`
   ${(props) =>
-          props &&
-          !props.visible &&
-          css`
-            visibility: hidden;
-            height: 0 !important;
-          `}
+    props &&
+    !props.visible &&
+    css`
+      visibility: hidden;
+      height: 0 !important;
+    `}
   ${(props) =>
-          props &&
-          props.visible &&
-          css`
-            min-height: 114px;
-          `}
+    props &&
+    props.visible &&
+    css`
+      min-height: 114px;
+    `}
   border: 1px solid #dddddd;
   border-radius: 0.25rem;
 
@@ -48,19 +51,20 @@ export const StyledTextArea = styled.div`
       overflow-x: auto;
       word-break: break-all;
 
-      span.mention, span.mention span {
+      span.mention,
+      span.mention span {
         background-color: #fff;
-        color: #0974CD;
+        color: #0974cd;
       }
     }
-    
+
     .ql-toolbar.ql-snow {
       @media screen and (max-width: 768px) {
         white-space: nowrap;
         margin-right: 90px;
         ::-webkit-scrollbar {
           display: none;
-        } 
+        }
       }
     }
 
@@ -85,20 +89,22 @@ export const StyledTextArea = styled.div`
 `;
 
 const QuillEditor = ({
-                       content,
-                       setContent,
-                       setModalInsetFunc,
-                       users = [],
-                       height = 100,
-                       visible = true,
-                       setQuillRef = null,
-                        readOnly = false,
-                     }) => {
+  content,
+  setContent,
+  setModalInsetFunc,
+  users = [],
+  height = 100,
+  visible = true,
+  setQuillRef = null,
+  readOnly = false,
+}) => {
   const [focused, setFocused] = useState(false);
 
   return (
     <StyledTextArea
-      className={"post-content " + (focused ? "container focused" : "container")}
+      className={
+        "post-content " + (focused ? "container focused" : "container")
+      }
       visible={visible}
       height={height}
     >
@@ -106,7 +112,7 @@ const QuillEditor = ({
         setQuillRef={setQuillRef}
         value={content}
         onChange={(content, delta, source, editor) => {
-          setContent(content)
+          setContent(content);
         }}
         onFocus={() => {
           setFocused(true);

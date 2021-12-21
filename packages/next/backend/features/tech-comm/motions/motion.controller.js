@@ -5,11 +5,7 @@ const { HttpError } = require("../../../exc");
 
 async function updatePost(ctx) {
   const { postId } = ctx.params;
-  const {
-    title,
-    content,
-    contentType: paramContentType,
-  } = ctx.request.body;
+  const { title, content, contentType: paramContentType } = ctx.request.body;
 
   if (!title) {
     throw new HttpError(400, { title: ["Post title is missing"] });
@@ -104,11 +100,7 @@ async function setPostReaction(ctx) {
   }
 
   const user = ctx.user;
-  ctx.body = await motionService.setPostReaction(
-    postId,
-    reaction,
-    user
-  );
+  ctx.body = await motionService.setPostReaction(postId, reaction, user);
 }
 
 async function unsetPostReaction(ctx) {

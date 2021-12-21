@@ -9,11 +9,23 @@ router.get("/tech-comm/motions", motionsController.getMotions);
 
 router.get("/tech-comm/motions/:postId", motionsController.getMotionById);
 
-router.patch("/tech-comm/motions/:postId", requireAuth, motionsController.updatePost);
+router.patch(
+  "/tech-comm/motions/:postId",
+  requireAuth,
+  motionsController.updatePost
+);
 
-router.post("/tech-comm/motions/:postId/comments", requireAuth, requireVerify, motionsController.postComment);
+router.post(
+  "/tech-comm/motions/:postId/comments",
+  requireAuth,
+  requireVerify,
+  motionsController.postComment
+);
 
-router.get("/tech-comm/motions/:postId/comments", motionsController.getComments);
+router.get(
+  "/tech-comm/motions/:postId/comments",
+  motionsController.getComments
+);
 
 router.put(
   "/tech-comm/motions/:postId/reaction",

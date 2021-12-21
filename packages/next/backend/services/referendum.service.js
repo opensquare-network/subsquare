@@ -137,7 +137,9 @@ async function getActivePostsOverview() {
     return post;
   });
 
-  return result.filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day).slice(0, 3);
+  return result
+    .filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day)
+    .slice(0, 3);
 }
 
 async function getPostsByChain(page, pageSize) {

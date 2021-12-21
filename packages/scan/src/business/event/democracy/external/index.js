@@ -1,9 +1,10 @@
 const { handleExternalTabled } = require("./externalTabled");
 const { handleVetoed } = require("./vetoed");
 const {
-  Modules,
-  DemocracyExternalEvents,
-} = require("../../../common/constants");
+  business: {
+    consts: { Modules, DemocracyExternalEvents },
+  },
+} = require("@subsquare/scan-common");
 
 async function handleDemocracyExternalEvent(event, extrinsic, indexer) {
   const { section, method } = event;

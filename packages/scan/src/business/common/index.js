@@ -1,4 +1,6 @@
-const { getApi } = require("../../api");
+const {
+  chain: { getApi },
+} = require("@subsquare/scan-common");
 
 async function getBlockHash(height) {
   const api = await getApi();

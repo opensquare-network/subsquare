@@ -10,12 +10,12 @@ const {
 const {
   handleBusinessWhenTechCommMotionProposed,
 } = require("../../event/techCommMotion/service/hooks/proposed");
-const { normalizeCall } = require("../../common/motion/utils");
 const {
-  Modules,
-  TechnicalCommitteeMethods,
-  TechnicalCommitteeEvents,
-} = require("../../common/constants");
+  business: {
+    consts: { Modules, TechnicalCommitteeMethods, TechnicalCommitteeEvents },
+    normalizeCall,
+  },
+} = require("@subsquare/scan-common");
 
 function isTechCommProposeCall(call) {
   return (

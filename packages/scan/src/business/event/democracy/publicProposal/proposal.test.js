@@ -1,30 +1,25 @@
-const { karuraEndpoint } = require("../../../../utils/constants");
 jest.setTimeout(3000000);
 const { getPublicProposalFromStorage } = require("./storage");
-const { setApi } = require("../../../../api");
-const { ApiPromise, WsProvider } = require("@polkadot/api");
-const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
+const {
+  chain: { getApi },
+  test: { setKarura, disconnect },
+} = require("@subsquare/scan-common");
 
 describe("test democracy public proposals", () => {
   let api;
   let provider;
 
   beforeAll(async () => {
-    provider = new WsProvider(karuraEndpoint, 1000);
-    api = await ApiPromise.create({
-      provider,
-      typesBundle: { ...typesBundleForPolkadot },
-    });
-
-    setApi(api);
+    await setKarura();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test("works", async () => {
     const blockHeight = 135713;
+    const api = await getApi();
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
 
     const proposalIndex = 0;

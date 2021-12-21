@@ -3,7 +3,11 @@ const {
   handleTreasuryProposalAwarded,
   handleTreasuryProposalRejected,
 } = require("./store");
-const { Modules, TreasuryProposalEvents } = require("../../common/constants");
+const {
+  business: {
+    consts: { Modules, TreasuryProposalEvents },
+  },
+} = require("@subsquare/scan-common");
 
 function isTreasuryProposalEvent(section, method) {
   if (![Modules.Treasury].includes(section)) {

@@ -1,12 +1,11 @@
-const { onFinalityKarura } = require("../../../utils/constants");
-const { setChain, CHAINS } = require("../../../env");
 const {
   getMotionVoting,
   getVotingFromStorageByHeight,
 } = require("./votingStorage");
-const { setApi } = require("../../../api");
-const { ApiPromise, WsProvider } = require("@polkadot/api");
-const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
+const {
+  chain: { getApi },
+  test: { setKarura, disconnect, setKusama },
+} = require("@subsquare/scan-common");
 
 jest.setTimeout(3000000);
 
@@ -20,26 +19,17 @@ const targetKsmMotion = {
 };
 
 describe("test get karura motion", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
-    provider = new WsProvider(onFinalityKarura, 1000);
-    api = await ApiPromise.create({
-      provider,
-      typesBundle: { ...typesBundleForPolkadot },
-    });
-
-    setApi(api);
-    setChain(CHAINS.KARURA);
+    await setKarura();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test("works", async () => {
     const height = 43249;
+    const api = await getApi();
     const blockHash = await api.rpc.chain.getBlockHash(height);
     const indexer = { blockHash, blockHeight: height };
 
@@ -58,22 +48,17 @@ describe("test get karura motion", () => {
 });
 
 describe("test get kusama motion", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
-    provider = new WsProvider("wss://kusama.api.onfinality.io/public-ws", 1000);
-    api = await ApiPromise.create({ provider });
-    setApi(api);
-    setChain(CHAINS.KUSAMA);
+    await setKusama();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test("works", async () => {
     const blockHeight = 126209;
+    const api = await getApi();
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
     const indexer = { blockHash, blockHeight };
 

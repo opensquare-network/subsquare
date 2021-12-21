@@ -1,7 +1,9 @@
 const { getTipMetaFromStorage } = require("./utils");
 const { getTipByHash } = require("../../../mongo/service/tip");
 const { getTippersCount, getTipFindersFee } = require("./utils");
-const { getApi } = require("../../../api");
+const {
+  chain: { getApi },
+} = require("@subsquare/scan-common");
 
 function median(values) {
   if (!Array.isArray(values)) {

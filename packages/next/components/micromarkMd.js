@@ -89,7 +89,8 @@ const Wrapper = styled.div`
     pre {
       ${no_scroll_bar};
       * {
-        font-family: i-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace !important;
+        font-family: i-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
+          Liberation Mono, monospace !important;
       }
       margin: 8px 0;
       padding: 0 1rem;
@@ -102,14 +103,15 @@ const Wrapper = styled.div`
         padding: 0 !important;
         background: transparent !important;
         white-space: pre-wrap !important;
-        span.identifier{
+        span.identifier {
           white-space: nowrap !important;
         }
       }
     }
 
     code {
-      font-family: i-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace !important;
+      font-family: i-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
+        Liberation Mono, monospace !important;
       ${no_scroll_bar};
       max-width: 100%;
       margin: 16px 0;
@@ -170,8 +172,8 @@ export default function MicromarkMd({ md = "", contentVersion = "" }) {
   let displayContent = matchLinkMd;
 
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = '/prism.js';
+    const script = document.createElement("script");
+    script.src = "/prism.js";
     document.body.appendChild(script);
   }, []);
 
@@ -191,7 +193,11 @@ export default function MicromarkMd({ md = "", contentVersion = "" }) {
   });
 
   const cleanHtml = sanitizeHtml(html, {
-    allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img", "iframe", "br"]),
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+      "img",
+      "iframe",
+      "br",
+    ]),
     allowedAttributes: {
       img: ["src", "size", "width", "height"],
       iframe: ["src", "width", "height"],
@@ -202,8 +208,10 @@ export default function MicromarkMd({ md = "", contentVersion = "" }) {
     },
   });
 
-  return (<Wrapper
-    className="markdown-content"
-    dangerouslySetInnerHTML={{ __html: cleanHtml }}
-  />);
+  return (
+    <Wrapper
+      className="markdown-content"
+      dangerouslySetInnerHTML={{ __html: cleanHtml }}
+    />
+  );
 }

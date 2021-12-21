@@ -1,8 +1,8 @@
 const {
-  TipMethods,
-  Modules,
-  TimelineItemTypes,
-} = require("../../common/constants");
+  business: {
+    consts: { TipMethods, Modules, TimelineItemTypes },
+  },
+} = require("@subsquare/scan-common");
 const { updateTipByHash } = require("../../../mongo/service/tip");
 const { getTipCommonUpdates } = require("../../common/tip/updates");
 

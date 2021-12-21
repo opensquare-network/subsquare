@@ -1,12 +1,15 @@
 const { handleBusinessWhenMotionExecuted } = require("./hooks/executed");
 const {
-  TimelineItemTypes,
-  CouncilEvents,
-} = require("../../../common/constants");
-const {
   updateMotionByHash,
 } = require("../../../../mongo/service/onchain/motion");
-const { logger } = require("../../../../logger");
+const {
+  log: { logger },
+} = require("@subsquare/scan-common");
+const {
+  business: {
+    consts: { TimelineItemTypes, CouncilEvents },
+  },
+} = require("@subsquare/scan-common");
 
 async function handleExecuted(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();

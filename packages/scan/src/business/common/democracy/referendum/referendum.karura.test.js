@@ -1,37 +1,26 @@
-const { onFinalityKarura } = require("../../../../utils/constants");
 const {
   getReferendumInfoFromStorage,
   getReferendumInfoByHeight,
 } = require("./referendumStorage");
-const { CHAINS } = require("../../../../env");
-const { setChain } = require("../../../../env");
-const { setApi } = require("../../../../api");
-const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
+const {
+  chain: { getApi },
+  test: { setKarura, disconnect },
+} = require("@subsquare/scan-common");
+
 jest.setTimeout(3000000);
 
-const { ApiPromise, WsProvider } = require("@polkadot/api");
-
 describe("test get karura referendum 1th info", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
-    provider = new WsProvider(onFinalityKarura, 1000);
-    api = await ApiPromise.create({
-      provider,
-      typesBundle: { ...typesBundleForPolkadot },
-    });
-
-    setApi(api);
-    setChain(CHAINS.KARURA);
+    await setKarura();
   });
 
   afterAll(async () => {
-    await provider.disconnect();
+    await disconnect();
   });
 
   test(" when passed works", async () => {
     const blockHeight = 127523;
+    const api = await getApi();
     const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
     const indexer = { blockHash, blockHeight };
 

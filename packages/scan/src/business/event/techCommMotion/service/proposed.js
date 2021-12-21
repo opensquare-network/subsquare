@@ -4,7 +4,6 @@ const {
 const {
   extractTechCommMotionBusiness,
 } = require("../../../common/techComm/extractBusiness");
-const { normalizeCall } = require("../../../common/motion/utils");
 const {
   handleBusinessWhenTechCommMotionProposed,
 } = require("./hooks/proposed");
@@ -12,9 +11,11 @@ const {
   insertTechCommMotion,
 } = require("../../../../mongo/service/onchain/techCommMotion");
 const {
-  TimelineItemTypes,
-  CouncilEvents,
-} = require("../../../common/constants");
+  business: {
+    consts: { CouncilEvents, TimelineItemTypes },
+    normalizeCall,
+  },
+} = require("@subsquare/scan-common");
 const {
   getTechCommMotionVotingFromStorage,
 } = require("../../../common/techComm/votingStorage");

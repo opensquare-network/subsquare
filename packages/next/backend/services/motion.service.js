@@ -173,31 +173,29 @@ async function loadPostForMotions(chainMotions) {
   const commonDb = await getCommonDb();
   const businessDb = await getBusinessDb();
 
-  const [treasuryProposalPosts, bountyPosts, motionPosts] = await Promise.all(
-    [
-      businessDb.lookupOne({
-        from: "treasuryProposal",
-        for: chainMotions,
-        as: "treasuryProposalPost",
-        localField: "treasuryProposalPost",
-        foreignField: "proposalIndex",
-      }),
-      businessDb.lookupOne({
-        from: "bounty",
-        for: chainMotions,
-        as: "bountyPost",
-        localField: "bountyPost",
-        foreignField: "bountyIndex",
-      }),
-      businessDb.lookupOne({
-        from: "motion",
-        for: chainMotions,
-        as: "motionPost",
-        localField: "index",
-        foreignField: "motionIndex",
-      }),
-    ]
-  );
+  const [treasuryProposalPosts, bountyPosts, motionPosts] = await Promise.all([
+    businessDb.lookupOne({
+      from: "treasuryProposal",
+      for: chainMotions,
+      as: "treasuryProposalPost",
+      localField: "treasuryProposalPost",
+      foreignField: "proposalIndex",
+    }),
+    businessDb.lookupOne({
+      from: "bounty",
+      for: chainMotions,
+      as: "bountyPost",
+      localField: "bountyPost",
+      foreignField: "bountyIndex",
+    }),
+    businessDb.lookupOne({
+      from: "motion",
+      for: chainMotions,
+      as: "motionPost",
+      localField: "index",
+      foreignField: "motionIndex",
+    }),
+  ]);
 
   await Promise.all([
     businessDb.lookupCount({
@@ -278,7 +276,9 @@ async function getActiveMotionsOverview() {
 
   const result = await loadPostForMotions(motions);
 
-  return result.filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day).slice(0, 3);
+  return result
+    .filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day)
+    .slice(0, 3);
 }
 
 async function getMotionsByChain(page, pageSize) {
@@ -386,11 +386,12 @@ async function getMotionById(postId) {
     indexer: chainMotion.indexer,
     author,
     state: chainMotion.state?.state,
-    authors: (postType === "treasuryProposal")
-      ? chainProposals[0].authors
-      : (postType === "bounty")
-      ? chainBounties[0].authors
-      : chainMotion.authors,
+    authors:
+      postType === "treasuryProposal"
+        ? chainProposals[0].authors
+        : postType === "bounty"
+        ? chainBounties[0].authors
+        : chainMotion.authors,
     onchainData: {
       ...chainMotion,
       treasuryProposals: chainProposals,

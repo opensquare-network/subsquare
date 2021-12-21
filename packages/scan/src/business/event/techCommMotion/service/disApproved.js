@@ -2,9 +2,10 @@ const {
   updateTechCommMotionByHash,
 } = require("../../../../mongo/service/onchain/techCommMotion");
 const {
-  TimelineItemTypes,
-  TechnicalCommitteeEvents,
-} = require("../../../common/constants");
+  business: {
+    consts: { TimelineItemTypes, TechnicalCommitteeEvents },
+  },
+} = require("@subsquare/scan-common");
 
 async function handleDisApproved(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();

@@ -1,19 +1,16 @@
-const {
-  extractCouncilMotionBusiness,
-} = require("../../common/call/extractMotionCalls");
 const { insertMotionPost } = require("../../../mongo/service/business/motion");
 const {
   handleBusinessWhenMotionProposed,
 } = require("../../event/motion/store/hooks/proposed");
 const { insertMotion } = require("../../../mongo/service/onchain/motion");
-const { normalizeCall } = require("../../common/motion/utils");
 const {
-  Modules,
-  CollectiveMethods,
-  CouncilEvents,
-  KaruraModules,
-} = require("../../common/constants");
-const { busLogger } = require("../../../logger");
+  log: { busLogger },
+  business: {
+    consts: { Modules, CollectiveMethods, CouncilEvents, KaruraModules },
+    normalizeCall,
+    extractCouncilMotionBusiness,
+  },
+} = require("@subsquare/scan-common");
 
 function isCouncilProposeCall(call) {
   return (

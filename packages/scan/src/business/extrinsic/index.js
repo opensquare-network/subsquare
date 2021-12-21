@@ -1,20 +1,25 @@
 const { handleCouncilPropose } = require("./council/propose");
 const { handleAcceptCurator } = require("./bounty/acceptCurator");
 const { handleTechCommPropose } = require("./techComm/propose");
-const { findRegistry } = require("../../chain/specs");
 const { handleFastTrack } = require("./democracy/fastTrack");
 const { handleExternalPropose } = require("./democracy/external");
-const { calcMultisigAddress } = require("../../utils/call");
-const { extractExtrinsicEvents, isExtrinsicSuccess } = require("../../utils");
-const {
-  Modules,
-  MultisigMethods,
-  ProxyMethods,
-  UtilityMethods,
-  SudoMethods,
-} = require("../common/constants");
 const { GenericCall } = require("@polkadot/types");
 const { handleTipCall } = require("../extrinsic/tip");
+const {
+  chain: {
+    specs: { findRegistry },
+  },
+  business: {
+    consts: {
+      Modules,
+      MultisigMethods,
+      ProxyMethods,
+      UtilityMethods,
+      SudoMethods,
+    },
+  },
+  utils: { calcMultisigAddress, isExtrinsicSuccess, extractExtrinsicEvents },
+} = require("@subsquare/scan-common");
 
 async function handleCall(call, author, extrinsicIndexer, events) {
   await handleTipCall(call, author, extrinsicIndexer, events);

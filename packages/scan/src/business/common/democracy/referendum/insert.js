@@ -12,8 +12,12 @@ const {
 const {
   insertDemocracyReferendum,
 } = require("../../../../mongo/service/onchain/democracyReferendum");
-const { ReferendumEvents, TimelineItemTypes } = require("../../constants");
 const { getReferendumInfoFromStorage } = require("./referendumStorage");
+const {
+  business: {
+    consts: { ReferendumEvents, TimelineItemTypes },
+  },
+} = require("@subsquare/scan-common");
 
 async function _extractCommonData(referendumStartedEvent, indexer) {
   const eventData = referendumStartedEvent.data.toJSON();

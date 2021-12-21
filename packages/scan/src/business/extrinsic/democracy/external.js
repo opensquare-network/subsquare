@@ -6,11 +6,15 @@ const {
 } = require("../../../mongo/service/onchain/democracyExternal");
 const { getExternalFromStorage } = require("../../common/democracy/external");
 const {
-  Modules,
-  TimelineItemTypes,
-  DemocracyMethods,
-  DemocracyExternalStates,
-} = require("../../common/constants");
+  business: {
+    consts: {
+      Modules,
+      TimelineItemTypes,
+      DemocracyMethods,
+      DemocracyExternalStates,
+    },
+  },
+} = require("@subsquare/scan-common");
 
 function isExternalProposeCall(call) {
   return (

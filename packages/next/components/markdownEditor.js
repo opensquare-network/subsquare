@@ -14,24 +14,24 @@ import ImageIcon from "../public/imgs/md-icons/image.svg";
 import Code from "../public/imgs/md-icons/code.svg";
 
 const icons = new Map();
-icons.set("header", <Header/>);
-icons.set("bold", <Bold/>);
-icons.set("italic", <Italic/>);
-icons.set("quote", <Quote/>);
-icons.set("ordered-list", <OrderedList/>);
-icons.set("unordered-list", <UnorderedList/>);
-icons.set("link", <Link/>);
-icons.set("image", <ImageIcon/>);
-icons.set("code", <Code/>);
+icons.set("header", <Header />);
+icons.set("bold", <Bold />);
+icons.set("italic", <Italic />);
+icons.set("quote", <Quote />);
+icons.set("ordered-list", <OrderedList />);
+icons.set("unordered-list", <UnorderedList />);
+icons.set("link", <Link />);
+icons.set("image", <ImageIcon />);
+icons.set("code", <Code />);
 
 export const StyledTextArea = styled.div`
   ${(props) =>
-          props &&
-          !props.visible &&
-          css`
-            visibility: hidden;
-            height: 0 !important;
-          `}
+    props &&
+    !props.visible &&
+    css`
+      visibility: hidden;
+      height: 0 !important;
+    `}
 
   border: 1px solid #dddddd;
   border-radius: 0.25rem;
@@ -60,7 +60,6 @@ export const StyledTextArea = styled.div`
   .mde-tabs {
     display: none !important;
   }
-
 
   .react-mde {
     border: none;
@@ -207,13 +206,13 @@ export const StyledTextArea = styled.div`
 `;
 
 const MarkdownEditor = ({
-                          content,
-                          setContent,
-                          users = [],
-                          height = 100,
-                          visible = true,
-                          readOnly = false,
-                        }) => {
+  content,
+  setContent,
+  users = [],
+  height = 100,
+  visible = true,
+  readOnly = false,
+}) => {
   const loadSuggestions = async (text) => {
     return new Promise((accept) => {
       const suggestions = (users || [])
@@ -240,13 +239,13 @@ const MarkdownEditor = ({
         readOnly={readOnly}
         initialEditorHeight={height}
         value={content}
-        onChange={(content)=>{
+        onChange={(content) => {
           const textarea = ref?.current?.finalRefs?.textarea?.current;
-          if(textarea){
+          if (textarea) {
             textarea.style.height = "200px";
-            textarea.style.height = textarea.scrollHeight + 'px';
+            textarea.style.height = textarea.scrollHeight + "px";
           }
-          setContent(content)
+          setContent(content);
         }}
         loadSuggestions={loadSuggestions}
         toolbarCommands={[
