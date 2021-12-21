@@ -231,14 +231,11 @@ const MarkdownEditor = ({
 
   const ref = useRef();
 
-  useEffect(()=>{
+  useEffect(()=> {
     const textarea = ref?.current?.finalRefs?.textarea?.current;
-    if(textarea) {
-      textarea.style.height = textarea.scrollHeight + 'px';
-      setEditorHeight(textarea.scrollHeight);
-    }
-    if(textarea && !document.getElementsByTagName('body')[0].onmouseup) {
-      document.getElementsByTagName('body')[0].onmouseup = function () {
+    const body = document.getElementsByTagName('body')[0];
+    if (textarea && !body.onmouseup) {
+      body.onmouseup = function () {
         if (textarea?.style?.height !== `${height}px`) {
           setUserResized(true);
         }
