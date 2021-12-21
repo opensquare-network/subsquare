@@ -257,7 +257,7 @@ const MarkdownEditor = ({
         onChange={(content) => {
           const textarea = ref?.current?.finalRefs?.textarea?.current;
           if(textarea && !userResized){
-            textarea.style.height = `${height}px`;
+            textarea.style.height = `${100}px`;
             textarea.style.height = textarea.scrollHeight + 'px';
             setEditorHeight(textarea.scrollHeight);
           }
