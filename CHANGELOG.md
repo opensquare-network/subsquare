@@ -2,7 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
-## v1.6.3 - v1.6.3
+## v1.6.4
+
+### Added
+- Loading effect for comments submission
+- Markdown code fenced block syntax high-light
+- Editors height adapts to the contents
+- New package `scan-common`
+
+### Fixed
+- Tech-comm motion display issues
+- Improve word-break style
+- Correct post time(use a block time if available)
+- Invalid sub-scan external link 
+
+## v1.6.3
 
 ### Added
 
