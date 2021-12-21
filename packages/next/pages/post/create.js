@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Layout from "components/layout";
 import Back from "components/back";
@@ -100,6 +100,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const [showModal, setShowModal] = useState(false);
   const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
   const [errors, setErrors] = useState();
+  const [editorHeight, setEditorHeight] = useState(200);
 
   const onCreate = async () => {
     const result = await nextApi.post(`posts`, {
@@ -176,7 +177,8 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
           <InputWrapper>
             {contentType === "markdown" && (
               <MarkdownEditor
-                height={200}
+                height={editorHeight}
+                setEditorHeight={setEditorHeight}
                 content={content}
                 setContent={setContent}
                 visible={!showPreview}
@@ -187,7 +189,8 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
                 visible={!showPreview}
                 content={content}
                 setContent={setContent}
-                height={201}
+                height={editorHeight}
+                setEditorHeight={setEditorHeight}
                 setModalInsetFunc={(insetQuillContentFunc, type = "image") => {
                   setModalType(type);
                   setShowModal(true);
@@ -214,9 +217,9 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
           {showPreview && (
             <PreviewWrapper className="preview">
               {contentType === "markdown" && (
-                <PreviewMD content={content} setContent={setContent} />
+                <PreviewMD content={content} setContent={setContent} maxHeight={editorHeight} />
               )}
-              {contentType === "html" && <HtmlRender html={content} />}
+              {contentType === "html" && <HtmlRender html={content} maxHeight={editorHeight} />}
             </PreviewWrapper>
           )}
           {errors?.data?.content?.[0] && (
