@@ -197,6 +197,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
                   setShowModal(true);
                   setInsetQuillContentsFunc(insetQuillContentFunc);
                 }}
+                isCreate={true}
               />
             )}
             {!showPreview && (
