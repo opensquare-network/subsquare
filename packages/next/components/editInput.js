@@ -65,7 +65,7 @@ export default function EditInput({
   const [showPreview, setShowPreview] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState("image");
-  const [editorHeight, setEditorHeight] = useState(114);
+  const [editorHeight, setEditorHeight] = useState(100);
   const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
   const [errors, setErrors] = useState();
 
