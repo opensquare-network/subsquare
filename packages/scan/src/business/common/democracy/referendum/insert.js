@@ -71,7 +71,8 @@ async function insertReferendumWithPublicProposal(
 
   await updateOrCreatePostByReferendumWithProposal(
     publicProposalIndex,
-    commonObj.referendumIndex
+    commonObj.referendumIndex,
+    indexer,
   );
 }
 

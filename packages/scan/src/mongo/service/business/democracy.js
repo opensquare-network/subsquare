@@ -25,23 +25,24 @@ async function insertDemocracyPostByProposal(proposalIndex, indexer, proposer) {
 
 async function updateOrCreatePostByReferendumWithProposal(
   proposalIndex,
-  referendumIndex
+  referendumIndex,
+  indexer,
 ) {
   const col = await getBusinessDemocracy();
   const maybeInDb = await col.findOne({
     proposalIndex: proposalIndex,
   });
   if (!maybeInDb) {
-    const now = new Date();
+    const blockTime = new Date(indexer.blockTime);
     await col.insertOne({
       proposalIndex,
       referendumIndex,
       title: `Untitled - public proposal #${proposalIndex}`,
       content: "",
       contentType: "markdown",
-      createdAt: now,
-      updatedAt: now,
-      lastActivityAt: now,
+      createdAt: blockTime,
+      updatedAt: blockTime,
+      lastActivityAt: blockTime,
     });
 
     return;
@@ -69,7 +70,7 @@ async function insertDemocracyPostByExternal(
     return;
   }
 
-  const now = new Date();
+  const blockTime = new Date(indexer.blockTime);
   await col.insertOne({
     externalProposalHash,
     indexer,
@@ -77,9 +78,9 @@ async function insertDemocracyPostByExternal(
     title: `Untitled - external proposal ${externalProposalHash?.substr(0, 8)}`,
     content: "",
     contentType: "markdown",
-    createdAt: now,
-    updatedAt: now,
-    lastActivityAt: now,
+    createdAt: blockTime,
+    updatedAt: blockTime,
+    lastActivityAt: blockTime,
   });
 }
 
