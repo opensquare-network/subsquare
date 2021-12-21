@@ -241,7 +241,7 @@ const MarkdownEditor = ({
         setEditorHeight(parseInt(textarea?.style?.height));
       }
     }
-  }, [ref?.current?.finalRefs?.textarea?.current]);
+  }, [height, setEditorHeight]);
 
   return (
     <StyledTextArea
