@@ -7,6 +7,7 @@ async function insertProposalPost(proposal) {
     return;
   }
 
+  const blockTime = new Date(indexer.blockTime);
   await col.insertOne({
     indexer: proposal.indexer,
     proposalIndex: proposal.proposalIndex,
@@ -14,9 +15,9 @@ async function insertProposalPost(proposal) {
     title: `Untitled - treasury proposal #${proposal.proposalIndex}`,
     content: "",
     contentType: "markdown",
-    createdAt: indexer.blockTime,
-    updatedAt: indexer.blockTime,
-    lastActivityAt: indexer.blockTime,
+    createdAt: blockTime,
+    updatedAt: blockTime,
+    lastActivityAt: blockTime,
   });
 }
 

@@ -7,15 +7,16 @@ async function insertBountyPost(bountyIndex, description, proposer, indexer) {
     return;
   }
 
+  const blockTime = new Date(indexer.blockTime);
   await col.insertOne({
     bountyIndex,
     title: description,
     proposer,
     content: "",
     contentType: "markdown",
-    createdAt: indexer.blockTime,
-    updatedAt: indexer.blockTime,
-    lastActivityAt: indexer.blockTime,
+    createdAt: blockTime,
+    updatedAt: blockTime,
+    lastActivityAt: blockTime,
   });
 }
 

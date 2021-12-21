@@ -10,6 +10,7 @@ async function insertTipPost(indexer, hash, reason, finder) {
     return;
   }
 
+  const blockTime = new Date(indexer.blockTime);
   await col.insertOne({
     height: indexer.blockHeight,
     indexer,
@@ -18,9 +19,9 @@ async function insertTipPost(indexer, hash, reason, finder) {
     content: "",
     contentType: "markdown",
     finder,
-    createdAt: indexer.blockTime,
-    updatedAt: indexer.blockTime,
-    lastActivityAt: indexer.blockTime,
+    createdAt: blockTime,
+    updatedAt: blockTime,
+    lastActivityAt: blockTime,
   });
 }
 

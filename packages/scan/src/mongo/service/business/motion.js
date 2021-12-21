@@ -13,6 +13,7 @@ async function insertMotionPost(indexer, hash, motionIndex, proposer) {
     return;
   }
 
+  const blockTime = new Date(indexer.blockTime);
   await col.insertOne({
     height: indexer.blockHeight,
     indexer,
@@ -22,9 +23,9 @@ async function insertMotionPost(indexer, hash, motionIndex, proposer) {
     title: getMotionPostDefaultTitle(hash, motionIndex),
     content: "",
     contentType: "markdown",
-    createdAt: indexer.blockTime,
-    updatedAt: indexer.blockTime,
-    lastActivityAt: indexer.blockTime,
+    createdAt: blockTime,
+    updatedAt: blockTime,
+    lastActivityAt: blockTime,
   });
 }
 
