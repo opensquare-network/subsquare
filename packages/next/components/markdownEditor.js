@@ -213,6 +213,7 @@ const MarkdownEditor = ({
                           height = 100,
                           visible = true,
                           readOnly = false,
+                          isCreate = false,
                         }) => {
   const loadSuggestions = async (text) => {
     return new Promise((accept) => {
@@ -256,8 +257,11 @@ const MarkdownEditor = ({
         value={content}
         onChange={(content) => {
           const textarea = ref?.current?.finalRefs?.textarea?.current;
-          if(textarea && !userResized){
+          if (textarea && !userResized) {
             textarea.style.height = `${100}px`;
+            if (isCreate) {
+              textarea.style.height = `${200}px`;
+            }
             textarea.style.height = textarea.scrollHeight + 'px';
             setEditorHeight(textarea.scrollHeight);
           }

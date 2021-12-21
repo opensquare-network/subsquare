@@ -182,6 +182,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
                 content={content}
                 setContent={setContent}
                 visible={!showPreview}
+                isCreate={true}
               />
             )}
             {contentType === "html" && (
