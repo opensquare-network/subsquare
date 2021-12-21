@@ -9,7 +9,6 @@ async function insertDemocracyPostByProposal(proposalIndex, indexer, proposer) {
     return;
   }
 
-  const now = new Date();
   await col.insertOne({
     proposalIndex,
     indexer,
@@ -17,9 +16,9 @@ async function insertDemocracyPostByProposal(proposalIndex, indexer, proposer) {
     title: `Untitled - public proposal #${proposalIndex}`,
     content: "",
     contentType: "markdown",
-    createdAt: now,
-    updatedAt: now,
-    lastActivityAt: now,
+    createdAt: indexer.blockTime,
+    updatedAt: indexer.blockTime,
+    lastActivityAt: indexer.blockTime,
   });
 }
 
