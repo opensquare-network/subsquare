@@ -65,6 +65,7 @@ export default function EditInput({
   const [showPreview, setShowPreview] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState("image");
+  const [editorHeight, setEditorHeight] = useState(114);
   const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
   const [errors, setErrors] = useState();
 
@@ -118,7 +119,8 @@ export default function EditInput({
       <InputWrapper>
         {contentType === "markdown" && (
           <MarkdownEditor
-            height={114}
+            height={editorHeight}
+            setEditorHeight={setEditorHeight}
             content={content}
             setContent={onInputChange}
             visible={!showPreview}
@@ -130,7 +132,8 @@ export default function EditInput({
             visible={!showPreview}
             content={content}
             setContent={onInputChange}
-            height={114}
+            setEditorHeight={setEditorHeight}
+            height={editorHeight}
             setModalInsetFunc={(insetImgFunc, type) => {
               setModalType(type);
               setShowModal(true);
@@ -159,9 +162,9 @@ export default function EditInput({
       {showPreview && (
         <PreviewWrapper className="preview">
           {contentType === "markdown" && (
-            <PreviewMD content={content} setContent={setContent} />
+            <PreviewMD content={content} setContent={setContent} maxHeight={editorHeight}/>
           )}
-          {contentType === "html" && <HtmlRender html={editContent} />}
+          {contentType === "html" && <HtmlRender html={content} maxHeight={editorHeight} />}
         </PreviewWrapper>
       )}
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}

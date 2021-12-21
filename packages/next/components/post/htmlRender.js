@@ -1,9 +1,16 @@
 import parse from "html-react-parser";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import sanitizeHtml from "sanitize-html";
 
 const Wrapper = styled.div`
+  ${(p) =>
+          p.maxHeight &&
+          css`
+            max-height: ${p.maxHeight + 43}px;
+            overflow-y: scroll;
+          `}
   color: #000;
+  width: 100%;
   max-width: min(48.5rem, calc(100vw - 50px));
   word-break: break-word;
   iframe {
@@ -129,7 +136,7 @@ const Wrapper = styled.div`
   }
 `;
 
-function HtmlRender({ html }) {
+function HtmlRender({ html, maxHeight = 300 }) {
   const r =
     /<span[^<>]*><span class="ql-mention-denotation-char">@<\/span>(\w+)<\/span>/;
   while (html.match(r)) {
@@ -148,7 +155,7 @@ function HtmlRender({ html }) {
       "*": ["class"],
     },
   });
-  return <Wrapper className="post-content">{parse(cleanHtml)}</Wrapper>;
+  return <Wrapper maxHeight={maxHeight >= 300 ? 300 : maxHeight} className="post-content">{parse(cleanHtml)}</Wrapper>;
 }
 
 export default HtmlRender;

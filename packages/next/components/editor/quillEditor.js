@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import dynamic from "next/dynamic";
 
@@ -94,11 +94,13 @@ const QuillEditor = ({
   setModalInsetFunc,
   users = [],
   height = 100,
+  setEditorHeight = null,
   visible = true,
   setQuillRef = null,
   readOnly = false,
 }) => {
   const [focused, setFocused] = useState(false);
+  const [ref, setRef] = useState(null);
 
   return (
     <StyledTextArea
@@ -106,13 +108,19 @@ const QuillEditor = ({
         "post-content " + (focused ? "container focused" : "container")
       }
       visible={visible}
-      height={height}
+      height={height >= 300 ? 300 : height}
     >
       <MyReactQuill
-        setQuillRef={setQuillRef}
+        setQuillRef={(ref) => {
+          setQuillRef && setQuillRef(ref);
+          setRef(ref);
+        }}
         value={content}
         onChange={(content, delta, source, editor) => {
           setContent(content);
+          if (ref?.current?.editingArea) {
+            setEditorHeight(ref?.current?.editingArea.children[0].scrollHeight);
+          }
         }}
         onFocus={() => {
           setFocused(true);

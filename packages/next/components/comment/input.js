@@ -79,7 +79,7 @@ function Input(
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState("image");
   const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
-
+  const [editorHeight, setEditorHeight] = useState(114);
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -167,7 +167,8 @@ function Input(
       <Relative ref={ref}>
         {contentType === "markdown" && (
           <MarkdownEditor
-            height={114}
+            height={editorHeight}
+            setEditorHeight={setEditorHeight}
             {...{ content, users }}
             setContent={onInputChange}
             visible={!showPreview}
@@ -178,13 +179,14 @@ function Input(
             visible={!showPreview}
             {...{ content, users }}
             setContent={onInputChange}
-            height={114}
+            height={editorHeight}
             setModalInsetFunc={(insetFunc, type) => {
               setModalType(type);
               setShowModal(true);
               setInsetQuillContentsFunc(insetFunc);
             }}
             setQuillRef={setQuillRef}
+            setEditorHeight={setEditorHeight}
           />
         )}
         {!showPreview && (
@@ -206,9 +208,9 @@ function Input(
       {showPreview && (
         <PreviewWrapper className="preview">
           {contentType === "markdown" && (
-            <PreviewMD content={content} setContent={setContent} />
+            <PreviewMD content={content} setContent={setContent} maxHeight={editorHeight} />
           )}
-          {contentType === "html" && <HtmlRender html={content} />}
+          {contentType === "html" && <HtmlRender html={content} maxHeight={editorHeight} />}
         </PreviewWrapper>
       )}
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
