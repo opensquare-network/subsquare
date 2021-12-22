@@ -245,7 +245,7 @@ async function getMotionsByChain(page, pageSize) {
 
   const motions = await chainMotionCol
     .find({}, { projection: { timeline: 0 } })
-    .sort({ "index.blockHeight": -1 })
+    .sort({ "indexer.blockHeight": -1 })
     .skip((page - 1) * pageSize)
     .limit(pageSize)
     .toArray();
