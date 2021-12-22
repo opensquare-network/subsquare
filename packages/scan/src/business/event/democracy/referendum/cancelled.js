@@ -4,11 +4,9 @@ const {
 const {
   business: {
     consts: { ReferendumEvents, TimelineItemTypes },
+    getReferendumInfoByHeight,
   },
 } = require("@subsquare/scan-common");
-const {
-  getReferendumInfoByHeight,
-} = require("../../../common/democracy/referendum/referendumStorage");
 
 async function handleCancelled(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();
