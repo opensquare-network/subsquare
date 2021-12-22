@@ -20,7 +20,7 @@ const Wrapper = styled.div`
   margin-top: -200px;
   margin-left: -200px;
   padding-bottom: 24px;
-  width: 360px;
+  width: 400px;
   @media screen and (max-width: 768px) {
     width: 343px;
     margin-top: -50px;
@@ -135,8 +135,8 @@ const Hint = styled.p`
   font-weight: normal;
   font-size: 14px;
   line-height: 19.6px;
-  color: #6848FF;
-  background: #F5F2FF;
+  color: #6848ff;
+  background: #f5f2ff;
   border-radius: 4px;
 `;
 
@@ -165,13 +165,12 @@ const FileName = styled.p`
   }
 `;
 
-
 function InsertContentsModal({
-                               showModal,
-                               setShowModal,
-                               insetQuillContentsFunc: resolveInsertPromise,
-                               type="image",
-                             }) {
+  showModal,
+  setShowModal,
+  insetQuillContentsFunc: resolveInsertPromise,
+  type = "image",
+}) {
   const [source, setSource] = useState("remote");
   const [link, setLink] = useState("");
 
@@ -229,7 +228,7 @@ function InsertContentsModal({
           </svg>
         </Title>
 
-        {type==="video" && <Hint>Embedding Youtube video only</Hint>}
+        {type === "video" && <Hint>Embedding Youtube video only</Hint>}
 
         <FormWrapper>
           <TextArea

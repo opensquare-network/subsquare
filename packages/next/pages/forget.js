@@ -30,7 +30,7 @@ const ContentWrapper = styled.div`
   border: 1px solid #ebeef4;
   ${shadow_100};
   border-radius: 6px;
-  width: 360px;
+  width: 400px;
   margin: 0 auto;
   padding: 48px;
   > :not(:first-child) {
