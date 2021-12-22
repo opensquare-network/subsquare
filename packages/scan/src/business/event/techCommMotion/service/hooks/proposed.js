@@ -1,12 +1,10 @@
 const {
-  getExternalFromStorage,
-} = require("../../../../common/democracy/external");
-const {
   insertDemocracyPostByExternal,
 } = require("../../../../../mongo/service/business/democracy");
 const {
   business: {
     consts: { DemocracyExternalStates },
+    getExternalFromStorage,
   },
 } = require("@subsquare/scan-common");
 const {

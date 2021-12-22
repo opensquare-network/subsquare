@@ -11,10 +11,8 @@ const {
   updateDemocracyExternalByHash,
 } = require("../../../../mongo/service/onchain/democracyExternal");
 const {
-  getExternalFromStorageByHeight,
-} = require("../../../common/democracy/external");
-const {
   business: {
+    getExternalFromStorageByHeight,
     consts: {
       TimelineItemTypes,
       DemocracyExternalEvents,

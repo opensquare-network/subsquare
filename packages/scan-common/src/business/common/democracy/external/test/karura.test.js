@@ -1,9 +1,9 @@
-const { getExternalFromStorageByHeight } = require("./external");
-const { getExternalFromStorage } = require("./external");
+const { setKarura } = require("../../../../../test/kar");
+const { getApi, disconnect } = require("../../../../../chain");
 const {
-  chain: { getApi },
-  test: { setKarura, disconnect },
-} = require("@subsquare/scan-common");
+  getExternalFromStorageByHeight,
+  getExternalFromStorage,
+} = require("../storage");
 
 jest.setTimeout(3000000);
 

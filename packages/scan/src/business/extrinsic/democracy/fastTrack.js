@@ -11,10 +11,8 @@ const {
   insertDemocracyPostByExternal,
 } = require("../../../mongo/service/business/democracy");
 const {
-  getExternalFromStorageByHeight,
-} = require("../../common/democracy/external");
-const {
   business: {
+    getExternalFromStorageByHeight,
     consts: {
       Modules,
       DemocracyMethods,

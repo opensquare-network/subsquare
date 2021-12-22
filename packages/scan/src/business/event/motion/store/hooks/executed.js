@@ -3,9 +3,6 @@ const {
   updateTreasuryProposal,
 } = require("../../../../../mongo/service/treasuryProposal");
 const {
-  getExternalFromStorageByHeight,
-} = require("../../../../common/democracy/external");
-const {
   insertDemocracyPostByExternal,
 } = require("../../../../../mongo/service/business/democracy");
 const {
@@ -15,6 +12,7 @@ const { getMotionCollection } = require("../../../../../mongo");
 const {
   log: { logger, busLogger },
   business: {
+    getExternalFromStorageByHeight,
     getBountyMeta,
     consts: {
       DemocracyExternalStates,
