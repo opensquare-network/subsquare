@@ -39,7 +39,7 @@ export const toCouncilMotionListItem = (chain, item) => ({
   isTreasury:
     item?.onchainData?.treasuryProposals?.length > 0 ||
     item?.onchainData?.treasuryBounties?.length > 0,
-  isDemocracy: item?.onchainData?.isDemocracy,
+  isDemocracy: item?.onchainData?.externalProposals?.length > 0 ,
   time: getPostUpdatedAt(item),
 });
 
@@ -61,6 +61,7 @@ export const toTechCommMotionListItem = (chain, item) => ({
   status: item?.state ?? "Unknown",
   detailLink: `/techcomm/proposal/${getTechCommMotionId(item)}`,
   time: getPostUpdatedAt(item),
+  isDemocracy: item?.onchainData?.externalProposals?.length > 0 ,
 });
 
 export const toTreasuryProposalListItem = (chain, item) => ({

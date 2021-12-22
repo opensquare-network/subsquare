@@ -208,35 +208,12 @@ const getTypeColor = (type) => {
   }
 };
 
-function hasTechComm(external) {
-  if (external.techCommMotionHash) {
-    return true;
-  }
-
-  return (
-    external.techCommMotionIndex !== undefined &&
-    external.techCommMotionIndex !== null
-  );
+function getTechCommId(techCommMotion) {
+  return `${techCommMotion?.indexer?.blockHeight}_${techCommMotion?.hash}`;
 }
 
-function getTechCommId(external) {
-  if (external.techCommMotionIndex) {
-    return external.techCommMotionIndex;
-  } else if (external.techCommMotionHash) {
-    return `${external.techCommMotionIndexer.blockHeight}_${external.techCommMotionHash}`;
-  }
-
-  return null;
-}
-
-function shortTechId(external) {
-  if (external.techCommMotionIndex) {
-    return external.techCommMotionIndex;
-  } else if (external.techCommMotionHash) {
-    return `${external.techCommMotionHash.slice(0, 6)}`;
-  }
-
-  return null;
+function shortTechId(techCommMotion) {
+  return techCommMotion.hash.slice(0, 6);
 }
 
 export default function DetailItem({ data, user, chain, onReply, type }) {
@@ -263,18 +240,18 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
           {type === TYPE_DEMOCRACY_EXTERNAL && (
             <ReferendaWrapper>
               <div>{`External`}</div>
-              {hasTechComm(post?.onchainData) && (
-                <div>
-                  <TriangleRight />
-                  <Link
-                    href={`/techcomm/proposal/${getTechCommId(
-                      post?.onchainData
-                    )}`}
-                  >
-                    {`Tech. Comm. #${shortTechId(post?.onchainData)}`}
-                  </Link>
-                </div>
-              )}
+              {
+                post?.onchainData?.techCommMotions?.map((techCommMotion, key) => (
+                  <div key={key}>
+                    <TriangleRight />
+                    <Link
+                      href={`/techcomm/proposal/${getTechCommId(techCommMotion)}`}
+                    >
+                      {`Tech. Comm. #${shortTechId(techCommMotion)}`}
+                    </Link>
+                  </div>
+                ))
+              }
               {post?.referendumIndex !== undefined && (
                 <div>
                   <TriangleRight />
@@ -306,18 +283,18 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                 >
                   {`External`}
                 </Link>
-                {hasTechComm(post?.onchainData) && (
-                  <div>
-                    <TriangleRight />
-                    <Link
-                      href={`/techcomm/proposal/${getTechCommId(
-                        post?.onchainData
-                      )}`}
-                    >
-                      {`Proposal #${shortTechId(post?.onchainData)}`}
-                    </Link>
-                  </div>
-                )}
+                {
+                  post?.onchainData?.techCommMotions?.map((techCommMotion, key) => (
+                    <div key={key}>
+                      <TriangleRight />
+                      <Link
+                        href={`/techcomm/proposal/${getTechCommId(techCommMotion)}`}
+                      >
+                        {`Tech. Comm. #${shortTechId(techCommMotion)}`}
+                      </Link>
+                    </div>
+                  ))
+                }
                 <div>
                   <TriangleRight />
                   <div>{`Referenda #${post?.referendumIndex}`}</div>
