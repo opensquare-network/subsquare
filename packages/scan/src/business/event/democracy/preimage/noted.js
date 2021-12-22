@@ -2,8 +2,8 @@ const {
   insertPreImage,
 } = require("../../../../mongo/service/onchain/democracyPreImage");
 const {
-  getPreImageFromStorage,
-} = require("../../../common/democracy/preImage/storage");
+  business: { getPreImageFromStorage },
+} = require("@subsquare/scan-common");
 
 async function handleNoted(event, indexer) {
   const eventData = event.data.toJSON();

@@ -1,12 +1,8 @@
+const { busLogger } = require("../../../../logger");
+const { normalizeCall } = require("../../call/normalize");
+const { findRegistry } = require("../../../../chain/specs");
+const { findBlockApi } = require("../../../../chain/blockApi");
 const { hexToU8a } = require("@polkadot/util");
-const {
-  chain: {
-    findBlockApi,
-    specs: { findRegistry },
-  },
-  log: { busLogger },
-  business: { normalizeCall },
-} = require("@subsquare/scan-common");
 
 async function getPreImageFromStorage(hash, indexer) {
   const blockApi = await findBlockApi(indexer.blockHash);

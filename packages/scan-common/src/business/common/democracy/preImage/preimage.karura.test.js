@@ -1,11 +1,7 @@
+const { setKarura } = require("../../../../test/kar");
+const { setSpecHeights } = require("../../../../chain/specs");
 const { getPreImageFromStorage } = require("./storage");
-const {
-  chain: {
-    getApi,
-    specs: { setSpecHeights },
-  },
-  test: { setKarura, disconnect },
-} = require("@subsquare/scan-common");
+const { getApi, disconnect } = require("../../../../chain");
 jest.setTimeout(3000000);
 
 describe("test get karura 1st proposal image", () => {
