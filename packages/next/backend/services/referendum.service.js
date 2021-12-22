@@ -10,7 +10,6 @@ const {
   getPublicProposalCollection: getChainPublicProposalCollection,
   getExternalCollection: getChainExternalCollection,
   getReferendumCollection: getChainReferendumCollection,
-  getTechCommMotionCollection: getChainTechCommMotionCollection,
   getPreImageCollection,
 } = require("../mongo/chain");
 const {
@@ -246,22 +245,7 @@ async function getPostById(postId) {
     });
 
     chainReferendum.authors = chainExternal?.authors;
-
-    const chainTechCommMotionCol = await getChainTechCommMotionCollection();
-    const [techCommMotions] = await Promise.all([
-      chainExternal.techCommMotions?.length > 0
-        ? chainTechCommMotionCol
-          .find({
-            $or: chainExternal.techCommMotions.map((motion) => ({
-              hash: motion.hash,
-              "indexer.blockHeight": motion.indexer.blockHeight,
-            })),
-          })
-          .toArray()
-        : [],
-    ]);
-
-    chainReferendum.techCommMotions = techCommMotions;
+    chainReferendum.techCommMotions = chainExternal?.techCommMotions;
 
     const preImageCol = await getPreImageCollection();
     const preImage = await preImageCol.findOne({
