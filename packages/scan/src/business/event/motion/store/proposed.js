@@ -1,4 +1,4 @@
-const { getMotionProposal } = require("../../../common/motion/proposalStorage");
+const { getMotionCall } = require("../../../common/motion/proposalStorage");
 const {
   insertMotionPost,
 } = require("../../../../mongo/service/business/motion");
@@ -7,15 +7,11 @@ const {
   getVotingFromStorage,
 } = require("../../../common/motion/votingStorage");
 const { insertMotion } = require("../../../../mongo/service/onchain/motion");
-const { GenericCall } = require("@polkadot/types");
 const {
-  chain: {
-    specs: { findRegistry },
-  },
   business: {
     consts: { TimelineItemTypes, CouncilEvents },
-    normalizeCall,
     extractCouncilMotionBusiness,
+    normalizeCall,
   },
 } = require("@subsquare/scan-common");
 
@@ -23,9 +19,7 @@ async function handleProposed(event, extrinsic, indexer, blockEvents) {
   const eventData = event.data.toJSON();
   const [proposer, motionIndex, hash, threshold] = eventData;
 
-  const raw = await getMotionProposal(hash, indexer);
-  const registry = await findRegistry(indexer);
-  const call = new GenericCall(registry, raw.toHex());
+  const call = await getMotionCall(hash, indexer);
   const proposal = normalizeCall(call);
 
   const voting = await getVotingFromStorage(hash, indexer);
