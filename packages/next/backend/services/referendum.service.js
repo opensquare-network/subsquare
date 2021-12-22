@@ -10,6 +10,7 @@ const {
   getPublicProposalCollection: getChainPublicProposalCollection,
   getExternalCollection: getChainExternalCollection,
   getReferendumCollection: getChainReferendumCollection,
+  getTechCommMotionCollection: getChainTechCommMotionCollection,
   getPreImageCollection,
 } = require("../mongo/chain");
 const {
@@ -30,29 +31,29 @@ async function updatePost(postId, title, content, contentType, author) {
     throw new HttpError(404, "Post does not exists");
   }
 
-  const chainProposalCol = await getChainReferendumCollection();
-  const chainProposal = await chainProposalCol.findOne({
+  const chainReferendumCol = await getChainReferendumCollection();
+  const chainReferendum = await chainReferendumCol.findOne({
     referendumIndex: post.referendumIndex,
   });
 
-  if (!chainProposal) {
+  if (!chainReferendum) {
     throw new HttpError(404, "On-chain data is not found");
   }
 
   let authors = [];
-  if (chainProposal.externalProposalHash) {
+  if (chainReferendum.externalProposalHash) {
     const col = await getChainExternalCollection();
-    const democracyExternal = await col.findOne({
-      proposalHash: chainProposal.externalProposalHash,
-      "indexer.blockHeight": chainProposal.externalProposalIndexer.blockHeight,
+    const chainExternal = await col.findOne({
+      proposalHash: chainReferendum.externalProposalHash,
+      "indexer.blockHeight": chainReferendum.externalProposalIndexer.blockHeight,
     });
-    authors = democracyExternal?.authors || [];
-  } else if (chainProposal.publicProposalIndex !== undefined) {
+    authors = chainExternal?.authors || [];
+  } else if (chainReferendum.publicProposalIndex !== undefined) {
     const col = await getChainPublicProposalCollection();
-    const democracyPublicProposal = await col.findOne({
-      proposalIndex: chainProposal.publicProposalIndex,
+    const chainPublicProposal = await col.findOne({
+      proposalIndex: chainReferendum.publicProposalIndex,
     });
-    authors = democracyPublicProposal?.authors || [];
+    authors = chainPublicProposal?.authors || [];
   }
 
   if (!authors.includes(author[`${chain}Address`])) {
@@ -221,8 +222,8 @@ async function getPostById(postId) {
 
   const userCol = await getUserCollection();
   const businessDb = await getBusinessDb();
-  const chainProposalCol = await getChainReferendumCollection();
-  const [author, reactions, chanProposalData] = await Promise.all([
+  const chainReferendumCol = await getChainReferendumCollection();
+  const [author, reactions, chainReferendum] = await Promise.all([
     post.proposer
       ? userCol.findOne({ [`${chain}Address`]: post.proposer })
       : null,
@@ -233,40 +234,53 @@ async function getPostById(postId) {
       localField: "_id",
       foreignField: "democracy",
     }),
-    chainProposalCol.findOne({ referendumIndex: post.referendumIndex }),
+    chainReferendumCol.findOne({ referendumIndex: post.referendumIndex }),
   ]);
 
-  if (chanProposalData?.externalProposalHash) {
+  if (chainReferendum?.externalProposalHash) {
     const col = await getChainExternalCollection();
-    const democracyExternal = await col.findOne({
-      proposalHash: chanProposalData.externalProposalHash,
+    const chainExternal = await col.findOne({
+      proposalHash: chainReferendum.externalProposalHash,
       "indexer.blockHeight":
-        chanProposalData.externalProposalIndexer.blockHeight,
+        chainReferendum.externalProposalIndexer.blockHeight,
     });
-    chanProposalData.authors = democracyExternal?.authors;
-    chanProposalData.techCommMotionIndex =
-      democracyExternal?.techCommMotionIndex;
-    chanProposalData.techCommMotionHash = democracyExternal?.techCommMotionHash;
-    chanProposalData.techCommMotionIndexer =
-      democracyExternal?.techCommMotionIndexer;
+
+    chainReferendum.authors = chainExternal?.authors;
+
+    const chainTechCommMotionCol = await getChainTechCommMotionCollection();
+    const [techCommMotions] = await Promise.all([
+      chainExternal.techCommMotions?.length > 0
+        ? chainTechCommMotionCol
+          .find({
+            $or: chainExternal.techCommMotions.map((motion) => ({
+              hash: motion.hash,
+              "indexer.blockHeight": motion.indexer.blockHeight,
+            })),
+          })
+          .toArray()
+        : [],
+    ]);
+
+    chainReferendum.techCommMotions = techCommMotions;
 
     const preImageCol = await getPreImageCollection();
     const preImage = await preImageCol.findOne({
-      hash: chanProposalData.externalProposalHash,
+      hash: chainReferendum.externalProposalHash,
     });
-    chanProposalData.preImage = preImage;
-  } else if (chanProposalData?.publicProposalIndex !== undefined) {
+
+    chainReferendum.preImage = preImage;
+  } else if (chainReferendum?.publicProposalIndex !== undefined) {
     const col = await getChainPublicProposalCollection();
-    const democracyPublicProposal = await col.findOne({
-      proposalIndex: chanProposalData.publicProposalIndex,
+    const chainPublicProposal = await col.findOne({
+      proposalIndex: chainReferendum.publicProposalIndex,
     });
-    chanProposalData.authors = democracyPublicProposal?.authors;
+    chainReferendum.authors = chainPublicProposal?.authors;
 
     const preImageCol = await getPreImageCollection();
     const preImage = await preImageCol.findOne({
-      hash: democracyPublicProposal?.hash,
+      hash: chainPublicProposal?.hash,
     });
-    chanProposalData.preImage = preImage;
+    chainReferendum.preImage = preImage;
   }
 
   await lookupUser({ for: reactions, localField: "user" });
@@ -274,8 +288,8 @@ async function getPostById(postId) {
   return {
     ...post,
     author,
-    authors: chanProposalData.authors,
-    onchainData: chanProposalData,
+    authors: chainReferendum.authors,
+    onchainData: chainReferendum,
   };
 }
 
