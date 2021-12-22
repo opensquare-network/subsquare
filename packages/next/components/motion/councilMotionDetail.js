@@ -261,7 +261,7 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
                 fontSize={12}
               />
               {motion.isTreasury && <SectionTag name={"Treasury"} />}
-              {motion.isDemocracy && <SectionTag name={"Democracy"} />}
+              {motion?.onchainData?.externalProposals?.length > 0 && <SectionTag name={"Democracy"} />}
               {postUpdateTime && (
                 <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
               )}
