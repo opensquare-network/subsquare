@@ -15,11 +15,9 @@ const {
     consts: { CouncilEvents, TimelineItemTypes, Modules },
     normalizeCall,
     getCollectiveMotionCall,
+    getCollectiveVoting,
   },
 } = require("@subsquare/scan-common");
-const {
-  getTechCommMotionVotingFromStorage,
-} = require("../../../common/techComm/votingStorage");
 
 async function handleProposed(event, extrinsic, indexer, extrinsicEvents) {
   const eventData = event.data.toJSON();
@@ -32,7 +30,11 @@ async function handleProposed(event, extrinsic, indexer, extrinsicEvents) {
     Modules.TechnicalCommittee
   );
   const proposal = normalizeCall(rawProposal);
-  const voting = await getTechCommMotionVotingFromStorage(hash, indexer);
+  const voting = await getCollectiveVoting(
+    hash,
+    indexer,
+    Modules.TechnicalCommittee
+  );
 
   const timelineItem = {
     type: TimelineItemTypes.event,
