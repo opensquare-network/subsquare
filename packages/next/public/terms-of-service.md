@@ -1,7 +1,5 @@
 # Terms of Service
 
-> Last update in December 22, 2021
-
 ## Welcome to SubSquare
 
 Please read on to learn the rules and restrictions that govern your use of our website(s), products, services and applications (the “Services”). These Terms of Service (the “Terms”) are a binding contract between you and SubSquare. (“SubSquare,” “we” and “us”). Your use of the Services in any way means that you agree to all of these Terms, and these Terms will remain in effect while you use the Services. These Terms include the provisions in this document as well as those in the [Privacy Policy](/privacy).
@@ -32,7 +30,7 @@ You will not share your SubSquare User ID, account or password with anyone, and 
 
 ## What about messaging?
 
-As part of the Services, you may receive communications through the Services, including messages that SubSquare sends you (for example, via email). When signing up for the Services, you will receive a welcome message and instructions on how to stop receiving messages.
+As part of the Services, you may receive communications through the Services, including messages that SubSquare sends you (for example, via email). When signing up for the Services, you will receive a welcome message and instructions on how to stop receiving messages. 
 
 ## Are there restrictions in how I can use the Services?
 
@@ -87,4 +85,6 @@ Provisions that, by their nature, should survive termination of these Terms shal
 
 If you have any questions, comments, or concerns regarding these terms or the Services, please contact us at:
 
-- Email address: [hi@opensquare.network](mailto:hi@opensquare.network)
+* Email address: [hi@opensquare.network](mailto:hi@opensquare.network)
+
+> OpenSquare Team · Last update in December 22, 2021

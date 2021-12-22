@@ -37,27 +37,6 @@ const Content = styled.div`
     0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
   padding: 48px;
-
-  * {
-    color: #506176 !important;
-    line-height: 140% !important;
-    h1,
-    h2,
-    p,
-    li {
-      margin: 8px 0 !important;
-    }
-    h1,
-    h2 {
-      color: #1e2134 !important;
-    }
-    h2 {
-      font-size: 19px !important;
-    }
-    a {
-      color: #1f70c7 !important;
-    }
-  }
 `;
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
