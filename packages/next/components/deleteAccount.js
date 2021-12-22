@@ -22,12 +22,12 @@ const Wrapper = styled.div`
 const ContentWrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
-  box-shadow:0 6px 7px rgba(30, 33, 52, 0.02),
-   0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-   0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
+    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
   padding: 24px;
-  width: 360px;
+  width: 400px;
   margin: 122px auto 0;
   > :not(:first-child) {
     margin-top: 16px;
@@ -41,7 +41,6 @@ const Title = styled.div`
 `;
 
 const InfoWrapper = styled.div`
-  width: 312px;
   padding: 12px 16px;
   background: #fff1f0;
   border-radius: 4px;
@@ -62,7 +61,7 @@ const FormWrapper = styled.form`
     margin-top: 16px;
   }
   text-align: right;
-  input{
+  input {
     text-align: left;
   }
 `;

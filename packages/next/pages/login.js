@@ -1,12 +1,11 @@
 import styled from "styled-components";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import dynamic from "next/dynamic";
 
 import Layout from "components/layout";
-import Agreement from "components/agreement";
 import Button from "components/button";
 import Input from "components/input";
 import { useForm } from "utils/hooks";
@@ -36,7 +35,7 @@ const ContentWrapper = styled.div`
   border: 1px solid #ebeef4;
   ${shadow_100};
   border-radius: 6px;
-  width: 360px;
+  width: 400px;
   margin: 0 auto;
   padding: 48px;
   > :not(:first-child) {
@@ -51,6 +50,7 @@ const Title = styled.div`
   font-weight: bold;
   font-size: 20px;
   text-align: center;
+  line-height: 20px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -75,6 +75,7 @@ const Label = styled.div`
   font-weight: bold;
   font-size: 12px;
   margin-bottom: 8px;
+  line-height: 12px;
   :not(:first-child) {
     margin-top: 16px;
   }
@@ -174,7 +175,6 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
             Don’t have a account? <Link href="/signup">Sign up</Link>
           </LinkWrapper>
         </ContentWrapper>
-        <Agreement />
       </Wrapper>
     </Layout>
   );

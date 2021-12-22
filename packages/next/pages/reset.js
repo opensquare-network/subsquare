@@ -26,7 +26,7 @@ const ContentWrapper = styled.div`
     0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
     0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
-  width: 360px;
+  width: 400px;
   margin: 0 auto;
   padding: 48px;
   > :not(:first-child) {
@@ -41,6 +41,7 @@ const Title = styled.div`
   font-weight: bold;
   font-size: 20px;
   text-align: center;
+  line-height: 20px;
 `;
 
 const InputWrapper = styled.div``;
@@ -49,6 +50,7 @@ const Label = styled.div`
   font-weight: bold;
   font-size: 12px;
   margin-bottom: 8px;
+  line-height: 12px;
   :not(:first-child) {
     margin-top: 16px;
   }
