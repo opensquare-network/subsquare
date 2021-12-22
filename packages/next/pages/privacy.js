@@ -39,6 +39,14 @@ const Content = styled.div`
   padding: 48px;
 `;
 
+const Title = styled.h1`
+  font-size: 1.5rem;
+  line-height: 100%;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  margin-top: 0;
+`;
+
 export default withLoginUserRedux(({ loginUser, chain }) => {
   return (
     <Layout user={loginUser} chain={chain}>
@@ -51,6 +59,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
           </BackButton>
         </Link>
         <Content>
+          <Title>Privacy Policy</Title>
           <Markdown md={privacyMd} />
         </Content>
       </Wrapper>
