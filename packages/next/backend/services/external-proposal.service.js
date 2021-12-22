@@ -236,22 +236,26 @@ async function getPostById(postId) {
 
   const [, motions, techCommMotions] = await Promise.all([
     lookupUser({ for: reactions, localField: "user" }),
-    chainMotionCol
-      .find({
-        $or: chainExternalProposal.motions.map((motion) => ({
-          hash: motion.hash,
-          "indexer.blockHeight": motion.indexer.blockHeight,
-        })),
-      })
-      .toArray(),
-    chainTechCommMotionCol
-      .find({
-        $or: chainExternalProposal.techCommMotions.map((motion) => ({
-          hash: motion.hash,
-          "indexer.blockHeight": motion.indexer.blockHeight,
-        })),
-      })
-      .toArray(),
+    chainExternalProposal.motions?.length > 0
+      ? chainMotionCol
+          .find({
+            $or: chainExternalProposal.motions.map((motion) => ({
+              hash: motion.hash,
+              "indexer.blockHeight": motion.indexer.blockHeight,
+            })),
+          })
+          .toArray()
+      : [],
+    chainExternalProposal.techCommMotions?.length > 0
+      ? chainTechCommMotionCol
+        .find({
+          $or: chainExternalProposal.techCommMotions.map((motion) => ({
+            hash: motion.hash,
+            "indexer.blockHeight": motion.indexer.blockHeight,
+          })),
+        })
+        .toArray()
+      : [],
   ]);
 
   return {
