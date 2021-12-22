@@ -4,13 +4,13 @@ import Link from "next/link";
 import ErrorText from "components/ErrorText";
 
 const Wrapper = styled.div`
+  margin-top: 16px !important;
   > :not(:first-child) {
     margin-top: 8px;
   }
 `;
 
 const ClickWrapper = styled.div`
-  margin-top: 16px !important;
   display: flex;
   align-items: flex-start;
 `;

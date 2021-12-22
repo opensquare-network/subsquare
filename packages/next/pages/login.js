@@ -50,6 +50,7 @@ const Title = styled.div`
   font-weight: bold;
   font-size: 20px;
   text-align: center;
+  line-height: 20px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -74,6 +75,7 @@ const Label = styled.div`
   font-weight: bold;
   font-size: 12px;
   margin-bottom: 8px;
+  line-height: 12px;
   :not(:first-child) {
     margin-top: 16px;
   }
