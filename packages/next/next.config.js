@@ -1,4 +1,7 @@
+const withTM = require("next-transpile-modules")(["@subsquare/next-common"]);
+
 module.exports = {
+  ...withTM(),
   webpack(config, { webpack }) {
     config.module.rules.push(
       {
