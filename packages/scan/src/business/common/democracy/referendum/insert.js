@@ -12,10 +12,10 @@ const {
 const {
   insertDemocracyReferendum,
 } = require("../../../../mongo/service/onchain/democracyReferendum");
-const { getReferendumInfoFromStorage } = require("./referendumStorage");
 const {
   business: {
     consts: { ReferendumEvents, TimelineItemTypes },
+    getReferendumInfoFromStorage,
   },
 } = require("@subsquare/scan-common");
 
@@ -72,7 +72,7 @@ async function insertReferendumWithPublicProposal(
   await updateOrCreatePostByReferendumWithProposal(
     publicProposalIndex,
     commonObj.referendumIndex,
-    indexer,
+    indexer
   );
 }
 

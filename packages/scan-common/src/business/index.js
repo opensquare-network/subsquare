@@ -6,4 +6,7 @@ module.exports = {
   ...require("./common/call"),
   ...require("./common/bounty/meta"),
   ...require("./common/bounty/description"),
+  ...require("./common/democracy"),
+  ...require("./common/collective/proposal"),
+  ...require("./common/collective/voting"),
 };

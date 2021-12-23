@@ -4,9 +4,9 @@ const {
 const {
   insertDemocracyExternal,
 } = require("../../../mongo/service/onchain/democracyExternal");
-const { getExternalFromStorage } = require("../../common/democracy/external");
 const {
   business: {
+    getExternalFromStorage,
     consts: {
       Modules,
       TimelineItemTypes,

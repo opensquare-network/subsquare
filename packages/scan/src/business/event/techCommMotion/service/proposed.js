@@ -12,25 +12,29 @@ const {
 } = require("../../../../mongo/service/onchain/techCommMotion");
 const {
   business: {
-    consts: { CouncilEvents, TimelineItemTypes },
+    consts: { CouncilEvents, TimelineItemTypes, Modules },
     normalizeCall,
+    getCollectiveMotionCall,
+    getCollectiveVoting,
   },
 } = require("@subsquare/scan-common");
-const {
-  getTechCommMotionVotingFromStorage,
-} = require("../../../common/techComm/votingStorage");
-const {
-  getTechCommMotionProposal,
-} = require("../../../common/techComm/proposalStorage");
 
 async function handleProposed(event, extrinsic, indexer, extrinsicEvents) {
   const eventData = event.data.toJSON();
   const [proposer, motionIndex, hash, threshold] = eventData;
   const authors = [...new Set([proposer, extrinsic.signer.toString()])];
 
-  const rawProposal = await getTechCommMotionProposal(hash, indexer);
+  const rawProposal = getCollectiveMotionCall(
+    hash,
+    indexer,
+    Modules.TechnicalCommittee
+  );
   const proposal = normalizeCall(rawProposal);
-  const voting = await getTechCommMotionVotingFromStorage(hash, indexer);
+  const voting = await getCollectiveVoting(
+    hash,
+    indexer,
+    Modules.TechnicalCommittee
+  );
 
   const timelineItem = {
     type: TimelineItemTypes.event,

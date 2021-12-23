@@ -1,6 +1,5 @@
-const {
-  chain: { getApi, findBlockApi },
-} = require("@subsquare/scan-common");
+const { findBlockApi } = require("../../../../chain/blockApi");
+const { getApi } = require("../../../../chain");
 
 async function getReferendumInfoFromStorage(referendumIndex, indexer) {
   const blockApi = await findBlockApi(indexer.blockHash);

@@ -1,14 +1,9 @@
-const { getReferendumInfoFromStorage } = require("./referendumStorage");
-const {
-  chain: { getApi },
-  test: { setKusama, disconnect },
-} = require("@subsquare/scan-common");
+const { setKusama } = require("../../../../../test/ksm");
+const { getApi, disconnect } = require("../../../../../chain");
+const { getReferendumInfoFromStorage } = require("../storage");
 jest.setTimeout(3000000);
 
 describe("test get kusama referendum 8th info", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
     await setKusama();
   });

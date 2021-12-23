@@ -1,11 +1,9 @@
+const { setKarura } = require("../../../../../test/kar");
 const {
   getReferendumInfoFromStorage,
   getReferendumInfoByHeight,
-} = require("./referendumStorage");
-const {
-  chain: { getApi },
-  test: { setKarura, disconnect },
-} = require("@subsquare/scan-common");
+} = require("../storage");
+const { getApi, disconnect } = require("../../../../../chain");
 
 jest.setTimeout(3000000);
 

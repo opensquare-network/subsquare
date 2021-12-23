@@ -2,12 +2,10 @@ const {
   updateDemocracyReferendum,
 } = require("../../../../mongo/service/onchain/democracyReferendum");
 const {
-  getReferendumInfoByHeight,
-  getReferendumInfoFromStorage,
-} = require("../../../common/democracy/referendum/referendumStorage");
-const {
   business: {
     consts: { ReferendumEvents, TimelineItemTypes },
+    getReferendumInfoFromStorage,
+    getReferendumInfoByHeight,
   },
 } = require("@subsquare/scan-common");
 

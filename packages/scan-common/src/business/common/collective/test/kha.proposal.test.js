@@ -1,11 +1,7 @@
-const { getMotionProposalCall } = require("../proposalStorage");
-const {
-  chain: {
-    getApi,
-    specs: { setSpecHeights },
-  },
-  test: { setKhala, disconnect },
-} = require("@subsquare/scan-common");
+const { getCollectiveNormalizedCall } = require("../proposal");
+const { setKhala } = require("../../../../test/kha");
+const { getApi, disconnect } = require("../../../../chain");
+const { setSpecHeights } = require("../../../../chain/specs");
 
 jest.setTimeout(3000000);
 
@@ -27,7 +23,10 @@ describe("test get khala motion proposal", () => {
     const motionHash =
       "0x29d8886d0c896479185b813e9f3ddbbbe09e18aea1bd1e7dd67a51f49f8fadba";
 
-    const normalizedProposal = await getMotionProposalCall(motionHash, indexer);
+    const normalizedProposal = await getCollectiveNormalizedCall(
+      motionHash,
+      indexer
+    );
     expect(normalizedProposal).toEqual({
       callIndex: "0x0302",
       section: "utility",

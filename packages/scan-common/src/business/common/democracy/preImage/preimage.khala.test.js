@@ -1,11 +1,7 @@
+const { setKhala } = require("../../../../test/kha");
+const { setSpecHeights } = require("../../../../chain/specs");
 const { getPreImageFromStorage } = require("./storage");
-const {
-  chain: {
-    getApi,
-    specs: { setSpecHeights },
-  },
-  test: { setKhala, disconnect },
-} = require("@subsquare/scan-common");
+const { getApi, disconnect } = require("../../../../chain");
 jest.setTimeout(3000000);
 
 describe("test get khala democracy image", () => {
