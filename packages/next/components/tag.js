@@ -57,7 +57,16 @@ const getTagColor = (name) => {
   return END;
 };
 
-export default function Tag({ name }) {
+const isMotion = (data) => {
+  return data?.status?.value?.includes("Motion");
+};
+
+export default function Tag({ name, data }) {
+  let tag = name;
+  if (isMotion(data)) {
+    const motionIndex = data?.status?.value?.replace(/^\D+/g, "");
+    tag = <a href={`/council/motion/${motionIndex}`}>{name}</a>;
+  }
   const color = getTagColor(name);
-  return <Wrapper color={color}>{name}</Wrapper>;
+  return <Wrapper color={color}>{tag}</Wrapper>;
 }
