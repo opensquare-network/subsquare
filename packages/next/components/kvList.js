@@ -63,7 +63,7 @@ const Content = styled.div`
 `;
 
 function KVList({ data, title }) {
-  if (!data) {
+  if (!data || data?.length === 0) {
     return null;
   }
   return (

@@ -16,6 +16,7 @@ import { useState } from "react";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
 import { getPostUpdatedAt } from "../../utils/viewfuncs";
 import { TYPE_TECH_COMM_MOTION } from "../../utils/viewConstants";
+import MultiKVList from "../multiKVList";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -185,16 +186,16 @@ export default function TechcommMotionDetail({
     timelineData = timeline;
   }
 
-  let business = null;
+  let business = [];
 
   const motionCompleted = isMotionCompleted(motion);
 
   if (motionCompleted) {
-    business = createMotionBusinessData(motion, chain);
+    business.push(createMotionBusinessData(motion, chain));
   }
 
   if (treasuryProposalMeta) {
-    business = [
+    business.push([
       [
         "Link to",
         <Link
@@ -224,7 +225,25 @@ export default function TechcommMotionDetail({
         "Bond",
         `${toPrecision(treasuryProposalMeta.bond ?? 0, decimals)} ${symbol}`,
       ],
-    ];
+    ]);
+  }
+
+  if (motion?.onchainData?.externalProposals?.length > 0) {
+    motion?.onchainData?.externalProposals?.forEach((external) => {
+      business.push([
+        [
+          "Link to",
+          <Link
+            href={`/democracy/external/${external?.indexer?.blockHeight}_${external?.proposalHash}`}
+          >{`Democracy External #${external?.proposalHash?.slice(
+            0,
+            6
+          )}`}</Link>,
+        ],
+        ["hash", external.proposalHash],
+        ["voteThreshould", external.voteThreshold],
+      ]);
+    });
   }
 
   return (
@@ -244,7 +263,9 @@ export default function TechcommMotionDetail({
                 fontSize={12}
               />
               {motion.isTreasury && <SectionTag name={"Treasury"} />}
-              {motion?.onchainData?.externalProposals?.length > 0 && <SectionTag name={"Democracy"} />}
+              {motion?.onchainData?.externalProposals?.length > 0 && (
+                <SectionTag name={"Democracy"} />
+              )}
               {postUpdateTime && (
                 <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
               )}
@@ -262,7 +283,7 @@ export default function TechcommMotionDetail({
         </div>
       </Wrapper>
 
-      <KVList title="Business" data={business} />
+      <MultiKVList title="Business" data={business} />
 
       <KVList
         title={"Metadata"}
