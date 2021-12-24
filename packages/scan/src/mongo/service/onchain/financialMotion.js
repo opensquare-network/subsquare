@@ -1,4 +1,5 @@
 const { getFinancialMotionCollection } = require("../../index");
+const isEmpty = require("lodash.isempty");
 
 async function insertFinancialMotion(motion) {
   const {

@@ -28,7 +28,7 @@ async function handleMotionEvent(event, extrinsic, indexer, blockEvents) {
   if (CouncilEvents.Proposed === method) {
     await handleProposed(...arguments);
   } else if (CouncilEvents.Voted === method) {
-    await handleVoted(...arguments);
+    await handleVoted(event, indexer);
   } else if (CouncilEvents.Closed === method) {
     await handleClosed(...arguments);
   } else if (CouncilEvents.Approved === method) {
