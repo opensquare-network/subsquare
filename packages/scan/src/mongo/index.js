@@ -1,4 +1,7 @@
 const { MongoClient } = require("mongodb");
+const {
+  env: { isKarura },
+} = require("@subsquare/scan-common");
 
 function getDbName() {
   const dbName = process.env.MONGO_DB_CHAIN_DATA_NAME;
@@ -29,6 +32,7 @@ let democracyReferendumCol = null;
 let democracyExternalCol = null;
 let preImageCol = null;
 let bountyCol = null;
+let financialMotionCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -47,6 +51,10 @@ async function initDb() {
   preImageCol = db.collection("democracyPreImage");
 
   bountyCol = db.collection("bounty");
+
+  if (isKarura()) {
+    financialMotionCol = db.collection("financialMotion");
+  }
 
   await _createIndexes();
 }
@@ -116,6 +124,11 @@ async function getBountyCollection() {
   return bountyCol;
 }
 
+async function getFinancialMotionCollection() {
+  await tryInit(financialMotionCol);
+  return financialMotionCol;
+}
+
 module.exports = {
   getStatusCollection,
   getTipCollection,
@@ -127,4 +140,5 @@ module.exports = {
   getTechCommMotionCollection,
   getDemocracyPreImageCollection,
   getBountyCollection,
+  ...(isKarura() ? { getFinancialMotionCollection } : {}),
 };

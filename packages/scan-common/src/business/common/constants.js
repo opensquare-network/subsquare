@@ -31,6 +31,7 @@ const DemocracyMethods = Object.freeze({
 
 const KaruraModules = Object.freeze({
   GeneralCouncil: "generalCouncil",
+  FinancialCouncil: "financialCouncil",
 });
 
 const TipEvents = Object.freeze({
@@ -73,6 +74,10 @@ const CouncilEvents = Object.freeze({
   Disapproved: "Disapproved",
   Executed: "Executed",
   Closed: "Closed",
+});
+
+const CollectiveEvents = Object.freeze({
+  ...CouncilEvents,
 });
 
 const TechnicalCommitteeEvents = Object.freeze({
@@ -194,4 +199,5 @@ module.exports = {
   PreImageEvents,
   TechnicalCommitteeMethods,
   CollectiveMethods,
+  CollectiveEvents,
 };

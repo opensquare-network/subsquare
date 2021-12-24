@@ -9,7 +9,7 @@ const {
 } = require("@subsquare/scan-common");
 
 async function test() {
-  const blockHeights = [1064927];
+  const blockHeights = [284936];
 
   for (const height of blockHeights) {
     await setSpecHeights([height - 1]);

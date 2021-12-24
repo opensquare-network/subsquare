@@ -24,7 +24,7 @@ async function handleProposed(event, extrinsic, indexer, extrinsicEvents) {
   const [proposer, motionIndex, hash, threshold] = eventData;
   const authors = [...new Set([proposer, extrinsic.signer.toString()])];
 
-  const rawProposal = getCollectiveMotionCall(
+  const rawProposal = await getCollectiveMotionCall(
     hash,
     indexer,
     Modules.TechnicalCommittee
