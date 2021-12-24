@@ -185,16 +185,16 @@ export default function TechcommMotionDetail({
     timelineData = timeline;
   }
 
-  let business = null;
+  let business = [];
 
   const motionCompleted = isMotionCompleted(motion);
 
   if (motionCompleted) {
-    business = createMotionBusinessData(motion, chain);
+    business = business.concat(createMotionBusinessData(motion, chain));
   }
 
   if (treasuryProposalMeta) {
-    business = [
+    business = business.concat([
       [
         "Link to",
         <Link
@@ -224,7 +224,26 @@ export default function TechcommMotionDetail({
         "Bond",
         `${toPrecision(treasuryProposalMeta.bond ?? 0, decimals)} ${symbol}`,
       ],
-    ];
+    ]);
+  }
+
+  if (motion?.onchainData?.externalProposals?.length > 0) {
+    motion?.onchainData?.externalProposals?.map(
+      (external) =>
+        (business = business.concat([
+          [
+            "Link to",
+            <Link
+              href={`/democracy/external/${external?.indexer?.blockHeight}_${external?.proposalHash}`}
+            >{`Democracy External #${external?.proposalHash?.slice(
+              0,
+              6
+            )}`}</Link>,
+          ],
+          ["hash", external.proposalHash],
+          ["voteThreshould", external.voteThreshold],
+        ]))
+    );
   }
 
   return (
@@ -244,7 +263,9 @@ export default function TechcommMotionDetail({
                 fontSize={12}
               />
               {motion.isTreasury && <SectionTag name={"Treasury"} />}
-              {motion?.onchainData?.externalProposals?.length > 0 && <SectionTag name={"Democracy"} />}
+              {motion?.onchainData?.externalProposals?.length > 0 && (
+                <SectionTag name={"Democracy"} />
+              )}
               {postUpdateTime && (
                 <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
               )}
