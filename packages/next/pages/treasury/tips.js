@@ -7,18 +7,25 @@ import { EmptyList } from "utils/constants";
 import Layout from "components/layout";
 import { toTipListItem } from "utils/viewfuncs";
 import SEO from "components/SEO";
+import Summary from "components/summary";
 
 export default withLoginUserRedux(({ loginUser, tips, chain, siteUrl }) => {
   const items = (tips.items || []).map((item) => toTipListItem(chain, item));
 
   return (
     <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
-      <SEO title={`Treasury Tips`} desc={`Treasury Tips`} siteUrl={siteUrl} chain={chain} />
+      <SEO
+        title={`Treasury Tips`}
+        desc={`Treasury Tips`}
+        siteUrl={siteUrl}
+        chain={chain}
+      />
       <List
         chain={chain}
         category={"Tips"}
         create={null}
         items={items}
+        summary={<Summary />}
         pagination={{
           page: tips.page,
           pageSize: tips.pageSize,

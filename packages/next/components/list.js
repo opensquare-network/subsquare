@@ -33,6 +33,7 @@ export default function List({
   items,
   pagination,
   create = null,
+  summary,
 }) {
   return (
     <Wrapper>
@@ -40,6 +41,7 @@ export default function List({
         {category}
         {create}
       </Title>
+      {summary}
       {items?.length > 0 ? (
         items.map((item, index) => (
           <Post key={index} data={item} chain={chain} href={item.detailLink} />

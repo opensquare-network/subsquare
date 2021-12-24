@@ -7,29 +7,38 @@ import { EmptyList } from "utils/constants";
 import Layout from "components/layout";
 import { toTreasuryProposalListItem } from "utils/viewfuncs";
 import SEO from "components/SEO";
+import Summary from "components/summary";
 
-export default withLoginUserRedux(({ loginUser, proposals, chain, siteUrl }) => {
-  const items = (proposals.items || []).map((item) =>
-    toTreasuryProposalListItem(chain, item)
-  );
+export default withLoginUserRedux(
+  ({ loginUser, proposals, chain, siteUrl }) => {
+    const items = (proposals.items || []).map((item) =>
+      toTreasuryProposalListItem(chain, item)
+    );
 
-  return (
-    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
-      <SEO title={`Treasury Proposals`} desc={`Treasury Proposals`} siteUrl={siteUrl} chain={chain} />
-      <List
-        chain={chain}
-        category={"Treasury Proposals"}
-        create={null}
-        items={items}
-        pagination={{
-          page: proposals.page,
-          pageSize: proposals.pageSize,
-          total: proposals.total,
-        }}
-      />
-    </Layout>
-  );
-});
+    return (
+      <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+        <SEO
+          title={`Treasury Proposals`}
+          desc={`Treasury Proposals`}
+          siteUrl={siteUrl}
+          chain={chain}
+        />
+        <List
+          chain={chain}
+          category={"Treasury Proposals"}
+          create={null}
+          items={items}
+          summary={<Summary />}
+          pagination={{
+            page: proposals.page,
+            pageSize: proposals.pageSize,
+            total: proposals.total,
+          }}
+        />
+      </Layout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;

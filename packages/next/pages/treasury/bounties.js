@@ -7,6 +7,7 @@ import { EmptyList } from "utils/constants";
 import Layout from "components/layout";
 import { toTreasuryBountyListItem } from "utils/viewfuncs";
 import SEO from "components/SEO";
+import Summary from "components/summary";
 
 export default withLoginUserRedux(({ loginUser, bounties, chain, siteUrl }) => {
   const items = (bounties.items || []).map((item) =>
@@ -15,12 +16,18 @@ export default withLoginUserRedux(({ loginUser, bounties, chain, siteUrl }) => {
 
   return (
     <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
-      <SEO title={`Treasury Bounties`} desc={`Treasury Bounties`} siteUrl={siteUrl} chain={chain} />
+      <SEO
+        title={`Treasury Bounties`}
+        desc={`Treasury Bounties`}
+        siteUrl={siteUrl}
+        chain={chain}
+      />
       <List
         chain={chain}
         category={"Treasury Bounties"}
         create={null}
         items={items}
+        summary={<Summary />}
         pagination={{
           page: bounties.page,
           pageSize: bounties.pageSize,

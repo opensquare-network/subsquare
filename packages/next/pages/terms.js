@@ -52,9 +52,9 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
     <Layout user={loginUser} chain={chain}>
       <NextHead title="Terms of Service" desc="Terms of Service" />
       <Wrapper>
-        <Link href="/signup">
+        <Link href="/signup" passHref>
           <BackButton>
-            <img src="/imgs/icons/arrow-left.svg" />
+            <img src="/imgs/icons/arrow-left.svg" alt="" />
             <div>Back</div>
           </BackButton>
         </Link>
