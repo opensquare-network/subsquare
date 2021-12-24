@@ -12,15 +12,15 @@ const {
 } = require("@subsquare/scan-common");
 
 async function handleProposed(event, indexer, extrinsicEvents, extrinsic) {
-  const commonObj = await getCollectiveMotionCommonFields(
+  const { common } = await getCollectiveMotionCommonFields(
     event,
     indexer,
     extrinsic,
     KaruraModules.FinancialCouncil
   );
-  const { proposer, index, hash } = commonObj;
+  const { proposer, index, hash } = common;
 
-  await insertFinancialMotion(commonObj);
+  await insertFinancialMotion(common);
   await insertFinancialMotionPost(indexer, hash, index, proposer);
 }
 

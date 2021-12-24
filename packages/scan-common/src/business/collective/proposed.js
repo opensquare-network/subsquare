@@ -35,7 +35,7 @@ async function getCollectiveMotionCommonFields(
     data: eventData,
   };
 
-  return {
+  const common = {
     indexer,
     hash,
     proposer,
@@ -47,6 +47,11 @@ async function getCollectiveMotionCommonFields(
     isFinal: false,
     state,
     timeline: [timelineItem],
+  };
+
+  return {
+    common,
+    rawProposal,
   };
 }
 

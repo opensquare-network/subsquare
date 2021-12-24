@@ -1,12 +1,15 @@
 const {
   env: { isKarura },
+  business: {
+    consts: { KaruraModules, Modules },
+  },
 } = require("@subsquare/scan-common");
 
 function getCouncilName() {
   if (isKarura()) {
-    return "generalCouncil";
+    return KaruraModules.GeneralCouncil;
   } else {
-    return "council";
+    return Modules.Council;
   }
 }
 
