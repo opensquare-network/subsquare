@@ -16,6 +16,7 @@ import { useState } from "react";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
 import { getPostUpdatedAt } from "../../utils/viewfuncs";
 import { TYPE_TECH_COMM_MOTION } from "../../utils/viewConstants";
+import MultiKVList from "../multiKVList";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -190,11 +191,11 @@ export default function TechcommMotionDetail({
   const motionCompleted = isMotionCompleted(motion);
 
   if (motionCompleted) {
-    business = business.concat(createMotionBusinessData(motion, chain));
+    business.push(createMotionBusinessData(motion, chain));
   }
 
   if (treasuryProposalMeta) {
-    business = business.concat([
+    business.push([
       [
         "Link to",
         <Link
@@ -228,22 +229,21 @@ export default function TechcommMotionDetail({
   }
 
   if (motion?.onchainData?.externalProposals?.length > 0) {
-    motion?.onchainData?.externalProposals?.map(
-      (external) =>
-        (business = business.concat([
-          [
-            "Link to",
-            <Link
-              href={`/democracy/external/${external?.indexer?.blockHeight}_${external?.proposalHash}`}
-            >{`Democracy External #${external?.proposalHash?.slice(
-              0,
-              6
-            )}`}</Link>,
-          ],
-          ["hash", external.proposalHash],
-          ["voteThreshould", external.voteThreshold],
-        ]))
-    );
+    motion?.onchainData?.externalProposals?.forEach((external) => {
+      business.push([
+        [
+          "Link to",
+          <Link
+            href={`/democracy/external/${external?.indexer?.blockHeight}_${external?.proposalHash}`}
+          >{`Democracy External #${external?.proposalHash?.slice(
+            0,
+            6
+          )}`}</Link>,
+        ],
+        ["hash", external.proposalHash],
+        ["voteThreshould", external.voteThreshold],
+      ]);
+    });
   }
 
   return (
@@ -283,7 +283,7 @@ export default function TechcommMotionDetail({
         </div>
       </Wrapper>
 
-      <KVList title="Business" data={business} />
+      <MultiKVList title="Business" data={business} />
 
       <KVList
         title={"Metadata"}
