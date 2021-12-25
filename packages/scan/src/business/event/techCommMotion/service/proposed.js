@@ -12,73 +12,35 @@ const {
 } = require("../../../../mongo/service/onchain/techCommMotion");
 const {
   business: {
-    consts: { CouncilEvents, TimelineItemTypes, Modules },
-    normalizeCall,
-    getCollectiveMotionCall,
-    getCollectiveVoting,
+    consts: { Modules },
+    getCollectiveMotionCommonFields,
   },
 } = require("@subsquare/scan-common");
 
 async function handleProposed(event, extrinsic, indexer, extrinsicEvents) {
-  const eventData = event.data.toJSON();
-  const [proposer, motionIndex, hash, threshold] = eventData;
-  const authors = [...new Set([proposer, extrinsic.signer.toString()])];
-
-  const rawProposal = getCollectiveMotionCall(
-    hash,
+  const { common, rawProposal } = await getCollectiveMotionCommonFields(
+    event,
     indexer,
+    extrinsic,
     Modules.TechnicalCommittee
   );
-  const proposal = normalizeCall(rawProposal);
-  const voting = await getCollectiveVoting(
-    hash,
-    indexer,
-    Modules.TechnicalCommittee
-  );
-
-  const timelineItem = {
-    type: TimelineItemTypes.event,
-    method: CouncilEvents.Proposed,
-    args: {
-      proposer,
-      index: motionIndex,
-      hash,
-      threshold,
-    },
-    indexer,
-  };
-
-  const state = {
-    indexer,
-    state: CouncilEvents.Proposed,
-    data: eventData,
-  };
 
   const { externalProposals } = await extractTechCommMotionBusiness(
     rawProposal,
-    proposer,
+    common.proposer,
     indexer,
     extrinsicEvents
   );
 
   const obj = {
-    indexer,
-    hash,
-    proposer,
-    index: motionIndex,
-    threshold,
-    authors,
-    proposal,
-    voting,
-    isFinal: false,
-    state,
-    timeline: [timelineItem],
+    ...common,
     externalProposals,
   };
 
   await handleBusinessWhenTechCommMotionProposed(obj, indexer);
   await insertTechCommMotion(obj);
-  await insertTechCommMotionPost(indexer, hash, motionIndex, proposer);
+  const { proposer, index, hash } = common;
+  await insertTechCommMotionPost(indexer, hash, index, proposer);
 }
 
 module.exports = {

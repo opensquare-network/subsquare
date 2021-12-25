@@ -1,72 +1,48 @@
-const { getMotionCall } = require("../../../common/motion/proposalStorage");
+const { getCouncilName } = require("../../../common/motion/utils");
+const {
+  getCollectiveMotionCommonFields,
+} = require("@subsquare/scan-common/src/business/collective/proposed");
 const {
   insertMotionPost,
 } = require("../../../../mongo/service/business/motion");
 const { handleBusinessWhenMotionProposed } = require("./hooks/proposed");
-const {
-  getVotingFromStorage,
-} = require("../../../common/motion/votingStorage");
 const { insertMotion } = require("../../../../mongo/service/onchain/motion");
 const {
-  business: {
-    consts: { TimelineItemTypes, CouncilEvents },
-    extractCouncilMotionBusiness,
-    normalizeCall,
-  },
+  business: { extractCouncilMotionBusiness },
 } = require("@subsquare/scan-common");
 
 async function handleProposed(event, extrinsic, indexer, blockEvents) {
-  const eventData = event.data.toJSON();
-  const [proposer, motionIndex, hash, threshold] = eventData;
-
-  const call = await getMotionCall(hash, indexer);
-  const proposal = normalizeCall(call);
-
-  const voting = await getVotingFromStorage(hash, indexer);
-
-  const timelineItem = {
-    type: TimelineItemTypes.event,
-    method: CouncilEvents.Proposed,
-    args: {
-      proposer,
-      index: motionIndex,
-      hash,
-      threshold,
-    },
+  const { common, rawProposal } = await getCollectiveMotionCommonFields(
+    event,
     indexer,
-  };
-
-  const state = {
-    indexer,
-    state: CouncilEvents.Proposed,
-    data: eventData,
-  };
-
-  const authors = [...new Set([proposer, extrinsic.signer.toString()])];
+    extrinsic,
+    getCouncilName()
+  );
 
   const { treasuryProposals, treasuryBounties, externalProposals } =
-    await extractCouncilMotionBusiness(call, proposer, indexer, blockEvents);
+    await extractCouncilMotionBusiness(
+      rawProposal,
+      common.proposer,
+      indexer,
+      blockEvents
+    );
 
   const obj = {
-    indexer,
-    hash,
-    authors,
-    proposer,
-    index: motionIndex,
-    threshold,
-    proposal,
-    voting,
-    isFinal: false,
-    state,
-    timeline: [timelineItem],
+    ...common,
     treasuryProposals,
     treasuryBounties,
     externalProposals,
   };
 
   await insertMotion(obj);
-  await insertMotionPost(indexer, hash, motionIndex, proposer);
-  await handleBusinessWhenMotionProposed(obj, call, indexer, blockEvents);
+  const { proposer, index, hash } = common;
+  await insertMotionPost(indexer, hash, index, proposer);
+  await handleBusinessWhenMotionProposed(
+    obj,
+    rawProposal,
+    indexer,
+    blockEvents
+  );
 }
 
 module.exports = {

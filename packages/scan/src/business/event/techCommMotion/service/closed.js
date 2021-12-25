@@ -3,32 +3,18 @@ const {
 } = require("../../../../mongo/service/onchain/techCommMotion");
 const {
   business: {
-    consts: { TimelineItemTypes, TechnicalCommitteeEvents },
+    getCollectiveClosedCommonFields,
+    consts: { Modules },
   },
 } = require("@subsquare/scan-common");
 
 async function handleClosed(event, extrinsic, indexer) {
-  const eventData = event.data.toJSON();
-  const [hash, yesVotes, noVotes] = eventData;
-
-  const state = {
-    state: TechnicalCommitteeEvents.Closed,
-    data: eventData,
+  const { hash, updates, timelineItem } = await getCollectiveClosedCommonFields(
+    event,
     indexer,
-  };
+    Modules.TechnicalCommittee
+  );
 
-  const timelineItem = {
-    type: TimelineItemTypes.event,
-    method: TechnicalCommitteeEvents.Closed,
-    args: {
-      hash,
-      yesVotes,
-      noVotes,
-    },
-    indexer,
-  };
-
-  const updates = { state };
   await updateTechCommMotionByHash(hash, updates, timelineItem);
 }
 

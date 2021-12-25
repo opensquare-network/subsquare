@@ -1,42 +1,18 @@
-const {
-  getVotingFromStorageByHeight,
-} = require("../../../common/motion/votingStorage");
+const { getCouncilName } = require("../../../common/motion/utils");
 const {
   updateMotionByHash,
 } = require("../../../../mongo/service/onchain/motion");
 const {
-  business: {
-    consts: { TimelineItemTypes, CouncilEvents },
-  },
+  business: { getCollectiveClosedCommonFields },
 } = require("@subsquare/scan-common");
 
 async function handleClosed(event, extrinsic, indexer) {
-  const eventData = event.data.toJSON();
-  const [hash, yesVotes, noVotes] = eventData;
-
-  const voting = await getVotingFromStorageByHeight(
-    hash,
-    indexer.blockHeight - 1
+  const { hash, updates, timelineItem } = await getCollectiveClosedCommonFields(
+    event,
+    indexer,
+    getCouncilName()
   );
 
-  const state = {
-    state: CouncilEvents.Closed,
-    data: eventData,
-    indexer,
-  };
-
-  const timelineItem = {
-    type: TimelineItemTypes.event,
-    method: CouncilEvents.Closed,
-    args: {
-      hash,
-      yesVotes,
-      noVotes,
-    },
-    indexer,
-  };
-
-  const updates = { voting, state };
   await updateMotionByHash(hash, updates, timelineItem);
 }
 

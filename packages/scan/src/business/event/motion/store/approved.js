@@ -1,33 +1,16 @@
+const { getCouncilName } = require("../../../common/motion/utils");
 const { handleBusinessWhenMotionApproved } = require("./hooks/approved");
 const {
   updateMotionByHash,
 } = require("../../../../mongo/service/onchain/motion");
 const {
-  business: {
-    consts: { TimelineItemTypes, CouncilEvents },
-  },
+  business: { getCollectiveApprovedCommonFields },
 } = require("@subsquare/scan-common");
 
 async function handleApproved(event, extrinsic, indexer) {
-  const eventData = event.data.toJSON();
-  const [hash] = eventData;
+  const { hash, updates, timelineItem } =
+    await getCollectiveApprovedCommonFields(event, indexer, getCouncilName());
 
-  const state = {
-    state: CouncilEvents.Approved,
-    data: eventData,
-    indexer,
-  };
-
-  const timelineItem = {
-    type: TimelineItemTypes.event,
-    method: CouncilEvents.Approved,
-    args: {
-      hash,
-    },
-    indexer,
-  };
-
-  const updates = { state };
   await updateMotionByHash(hash, updates, timelineItem);
   await handleBusinessWhenMotionApproved(hash, indexer);
 }

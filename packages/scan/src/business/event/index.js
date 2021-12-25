@@ -1,3 +1,4 @@
+const { handleFinancialMotionEvent } = require("./financialMotion");
 const { handleBountyEvent } = require("./bounty");
 const { handlePreImageEvent } = require("./democracy/preimage");
 const {
@@ -87,6 +88,7 @@ async function handleEvents(events, extrinsics, blockIndexer) {
     }
 
     await handleTreasuryEvent(event, indexer, events, extrinsic);
+    await handleFinancialMotionEvent(event, indexer, events, extrinsic);
 
     if (phase.isNull) {
       await handleEventWithoutExtrinsic(indexer, event, sort, events);

@@ -1,22 +1,22 @@
 const {
-  updateTechCommMotionByHash,
-} = require("../../../../mongo/service/onchain/techCommMotion");
+  updateFinancialMotionByHash,
+} = require("../../../../mongo/service/onchain/financialMotion");
 const {
   business: {
     getCollectiveDisApprovedCommonFields,
-    consts: { Modules },
+    consts: { KaruraModules },
   },
 } = require("@subsquare/scan-common");
 
-async function handleDisApproved(event, extrinsic, indexer) {
+async function handleDisApproved(event, indexer) {
   const { hash, updates, timelineItem } =
     await getCollectiveDisApprovedCommonFields(
       event,
       indexer,
-      Modules.TechnicalCommittee
+      KaruraModules.FinancialCouncil
     );
 
-  await updateTechCommMotionByHash(hash, updates, timelineItem);
+  await updateFinancialMotionByHash(hash, updates, timelineItem);
 }
 
 module.exports = {

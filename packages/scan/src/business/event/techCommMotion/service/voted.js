@@ -3,33 +3,17 @@ const {
 } = require("../../../../mongo/service/onchain/techCommMotion");
 const {
   business: {
-    consts: { Modules, TimelineItemTypes, TechnicalCommitteeEvents },
-    getCollectiveVoting,
+    getCollectiveVotedCommonFields,
+    consts: { Modules },
   },
 } = require("@subsquare/scan-common");
 
 async function handleVoted(event, extrinsic, indexer) {
-  const eventData = event.data.toJSON();
-  const [voter, hash, approve, yesVotes, noVotes] = eventData;
-
-  const voting = await getCollectiveVoting(
-    hash,
+  const { hash, updates, timelineItem } = await getCollectiveVotedCommonFields(
+    event,
     indexer,
     Modules.TechnicalCommittee
   );
-  const updates = { voting };
-  const timelineItem = {
-    type: TimelineItemTypes.event,
-    method: TechnicalCommitteeEvents.Voted,
-    args: {
-      voter,
-      hash,
-      approve,
-      yesVotes,
-      noVotes,
-    },
-    indexer,
-  };
 
   await updateTechCommMotionByHash(hash, updates, timelineItem);
 }

@@ -1,12 +1,18 @@
-const { getAllVersionChangeHeights, getScanHeight } = require("../mongo/meta");
+const {
+  getAllVersionChangeHeights,
+  getScanHeight,
+  getBlockByHeight,
+} = require("../mongo/meta");
 const findLast = require("lodash.findlast");
 const { findBlockApi } = require("./blockApi");
 const { isUseMetaDb: isUseMeta } = require("../env");
 const { getProvider, getApi } = require("./api");
-const { hexToU8a, isHex } = require("@polkadot/util");
+const { hexToU8a } = require("@polkadot/util");
 
 let versionChangedHeights = [];
 let metaScanHeight = 1;
+let specHeightToHashMap = {};
+const heightToRegistryMap = {};
 
 async function updateSpecs() {
   if (!isUseMeta()) {
@@ -49,14 +55,25 @@ async function findRegistry({ blockHash, blockHeight: height }) {
     return blockApi.registry;
   }
 
-  const spec = findMostRecentSpec(height);
-  const api = await getApi();
-
-  let u8aHash = blockHash;
-  if (isHex(blockHash)) {
-    u8aHash = hexToU8a(u8aHash);
+  try {
+    return getRegistryFromSpec(height);
+  } catch (e) {
+    console.log("hhhhh");
+    const blockApi = await findBlockApi(blockHash);
+    return blockApi.registry;
   }
+}
 
+async function getRegistryFromSpec(height) {
+  const spec = findMostRecentSpec(height);
+  let specHash = specHeightToHashMap[height];
+  if (!specHash) {
+    const block = await getBlockByHeight(spec.height);
+    specHash = block?.blockHash;
+  }
+  const u8aHash = hexToU8a(specHash);
+
+  const api = await getApi();
   return (await api.getBlockRegistry(u8aHash, spec.runtimeVersion)).registry;
 }
 

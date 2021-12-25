@@ -1,6 +1,7 @@
 {
   "name": "@dotreasury/known",
   "version": "1.0.0",
+  "private": true,
   "engines": {
     "node": ">=15.0.0"
   },

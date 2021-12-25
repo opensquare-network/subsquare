@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "license": "Apache-2.0",
   "main": "src/index.js",
+  "private": true,
   "scripts": {
     "test": "jest src",
     "scan": "node src/index.js"
