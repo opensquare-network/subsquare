@@ -2,6 +2,7 @@
   "name": "@subsquare/kintsugi-scan",
   "version": "1.0.0",
   "license": "Apache-2.0",
+  "private": true,
   "scripts": {
     "test": "jest src",
     "scan": "node src/index.js"
