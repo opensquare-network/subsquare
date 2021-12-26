@@ -1,4 +1,3 @@
-const { getPublicProposalFromStorage } = require("./storage");
 const {
   insertDemocracyPublicProposal,
 } = require("../../../../mongo/service/onchain/democracyPublicProposal");
@@ -8,6 +7,7 @@ const {
 const {
   business: {
     consts: { DemocracyPublicProposalEvents, TimelineItemTypes },
+    getPublicProposalFromStorage,
   },
 } = require("@subsquare/scan-common");
 
