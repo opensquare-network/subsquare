@@ -9,10 +9,5 @@ module.exports = {
   ...require("./common/democracy"),
   ...require("./common/collective/proposal"),
   ...require("./common/collective/voting"),
-  ...require("./collective/proposed"),
-  ...require("./collective/voted"),
-  ...require("./collective/closed"),
-  ...require("./collective/appvroved"),
-  ...require("./collective/disApproved"),
-  ...require("./collective/executed"),
+  ...require("./collective"),
 };

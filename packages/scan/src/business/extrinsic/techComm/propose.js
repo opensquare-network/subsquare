@@ -12,8 +12,9 @@ const {
 } = require("../../event/techCommMotion/service/hooks/proposed");
 const {
   business: {
-    consts: { Modules, TechnicalCommitteeMethods, TechnicalCommitteeEvents },
-    normalizeCall,
+    consts: { Modules, TechnicalCommitteeMethods },
+    isSingleMemberCollectivePropose,
+    extractCommonFieldsFromSinglePropose,
   },
 } = require("@subsquare/scan-common");
 
@@ -34,29 +35,17 @@ async function handleTechCommPropose(
     return;
   }
 
-  const threshold = call.args[0].toNumber();
-  if (threshold >= 2) {
+  if (!isSingleMemberCollectivePropose(call, extrinsicEvents)) {
     return;
   }
 
-  const proposedEvent = extrinsicEvents.find(
-    ({ event }) =>
-      Modules.TechnicalCommittee === event.section &&
-      TechnicalCommitteeEvents.Proposed === event.method
+  const fields = extractCommonFieldsFromSinglePropose(
+    call,
+    signer,
+    extrinsicIndexer,
+    extrinsicEvents,
+    Modules.TechnicalCommittee
   );
-  if (proposedEvent) {
-    // If there is proposed event, we just handle it in event business handling, not here.
-    return;
-  }
-
-  const executedEvent = extrinsicEvents.find(
-    ({ event }) =>
-      Modules.TechnicalCommittee === event.section &&
-      TechnicalCommitteeEvents.Executed === event.method
-  );
-
-  const [motionHash] = executedEvent.event.data.toJSON();
-  const proposal = normalizeCall(call.args[1]);
 
   const { externalProposals } = await extractTechCommMotionBusiness(
     call.args[1],
@@ -66,14 +55,7 @@ async function handleTechCommPropose(
   );
 
   const obj = {
-    indexer: extrinsicIndexer,
-    hash: motionHash,
-    proposer: signer,
-    threshold,
-    authors: [signer],
-    proposal,
-    isFinal: false,
-    timeline: [],
+    ...fields,
     externalProposals,
   };
 

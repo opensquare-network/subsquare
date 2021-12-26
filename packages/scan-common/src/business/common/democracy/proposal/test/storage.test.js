@@ -1,14 +1,9 @@
+const { getApi, disconnect } = require("../../../../../chain");
+const { setKarura } = require("../../../../../test/kar");
+const { getPublicProposalFromStorage } = require("../storage");
 jest.setTimeout(3000000);
-const { getPublicProposalFromStorage } = require("./storage");
-const {
-  chain: { getApi },
-  test: { setKarura, disconnect },
-} = require("@subsquare/scan-common");
 
 describe("test democracy public proposals", () => {
-  let api;
-  let provider;
-
   beforeAll(async () => {
     await setKarura();
   });

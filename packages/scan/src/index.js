@@ -9,14 +9,13 @@ const {
     disconnect,
     subscribeFinalizedHead,
     getChainLatestHeight,
-    specs: { updateSpecs, getMetaScanHeight },
+    specs: { updateSpecs },
     fetchBlocks,
   },
-  env: { isUseMetaDb, doScanKnownFirst },
+  env: { doScanKnownFirst },
   log: { logger },
+  scan: { getHeights, getTargetHeight, checkAndUpdateSpecs },
 } = require("@subsquare/scan-common");
-
-const scanStep = parseInt(process.env.SCAN_STEP) || 100;
 
 async function main() {
   await subscribeFinalizedHead();
@@ -37,22 +36,10 @@ async function main() {
       continue;
     }
 
-    let targetHeight = chainHeight;
-    if (scanHeight + scanStep < chainHeight) {
-      targetHeight = scanHeight + scanStep;
-    }
+    const targetHeight = getTargetHeight(scanHeight);
+    await checkAndUpdateSpecs(targetHeight);
 
-    if (isUseMetaDb()) {
-      if (targetHeight > getMetaScanHeight()) {
-        await updateSpecs();
-      }
-    }
-
-    const heights = [];
-    for (let i = scanHeight; i <= targetHeight; i++) {
-      heights.push(i);
-    }
-
+    const heights = getHeights(scanHeight, targetHeight);
     const blocks = await fetchBlocks(heights);
     if ((blocks || []).length <= 0) {
       await sleep(1000);

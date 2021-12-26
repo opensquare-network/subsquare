@@ -1,6 +1,4 @@
-const {
-  chain: { findBlockApi },
-} = require("@subsquare/scan-common");
+const { findBlockApi } = require("../../../../chain/blockApi");
 
 async function getPublicProposalFromStorage(proposalIndex, indexer) {
   const blockApi = await findBlockApi(indexer.blockHash);

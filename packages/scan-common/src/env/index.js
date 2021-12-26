@@ -1,5 +1,6 @@
 const useMetaDb = !!process.env.USE_META_DB;
 const scanKnownFirst = !!process.env.SCAN_KNOWN_HEIGHTS_FIRST;
+const scanStep = parseInt(process.env.SCAN_STEP) || 100;
 
 const CHAINS = {
   KARURA: "karura",
@@ -41,6 +42,10 @@ function doScanKnownFirst() {
   return scanKnownFirst;
 }
 
+function getScanStep() {
+  return scanStep;
+}
+
 module.exports = {
   currentChain,
   CHAINS,
@@ -48,4 +53,5 @@ module.exports = {
   setChain,
   isUseMetaDb,
   doScanKnownFirst,
+  getScanStep,
 };

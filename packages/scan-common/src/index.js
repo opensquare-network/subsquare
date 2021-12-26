@@ -3,6 +3,7 @@ const chain = require("./chain");
 const log = require("./logger");
 const business = require("./business");
 const test = require("./test");
+const scan = require("./scan");
 
 module.exports = {
   utils,
@@ -11,4 +12,5 @@ module.exports = {
   log,
   business,
   test,
+  scan,
 };
