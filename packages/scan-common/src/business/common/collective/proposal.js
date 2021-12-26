@@ -1,5 +1,4 @@
 const { normalizeCall } = require("../call/normalize");
-const { findRegistry } = require("../../../chain/specs");
 const { findBlockApi } = require("../../../chain/blockApi");
 const { GenericCall } = require("@polkadot/types");
 
@@ -24,8 +23,8 @@ async function getCollectiveMotionCall(
   moduleName = "council"
 ) {
   const raw = await getCollectiveProposal(...arguments);
-  const registry = await findRegistry(indexer);
-  return new GenericCall(registry, raw.toHex());
+  const blockApi = await findBlockApi(indexer.blockHash);
+  return new GenericCall(blockApi.registry, raw.toHex());
 }
 
 async function getCollectiveNormalizedCall(

@@ -2,6 +2,7 @@ const { getTipReason } = require("../utils");
 const { getTipMetaFromStorage } = require("../utils");
 const {
   chain: {
+    findBlockApi,
     getApi,
     specs: { setSpecHeights },
   },
@@ -27,7 +28,8 @@ describe("test get tip", () => {
 
     const tipHash =
       "0xc2851d861936fc5e3239fb90b1bdd2b2c2ca2e8823fff145468cf19bc0148740";
-    const meta = await getTipMetaFromStorage(api, tipHash, {
+    const blockApi = await findBlockApi(blockHash);
+    const meta = await getTipMetaFromStorage(blockApi, tipHash, {
       blockHeight: height,
       blockHash,
     });

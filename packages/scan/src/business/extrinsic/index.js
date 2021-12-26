@@ -7,9 +7,7 @@ const { handleExternalPropose } = require("./democracy/external");
 const { GenericCall } = require("@polkadot/types");
 const { handleTipCall } = require("../extrinsic/tip");
 const {
-  chain: {
-    specs: { findRegistry },
-  },
+  chain: { findBlockApi },
   business: {
     consts: {
       Modules,
@@ -39,17 +37,17 @@ async function unwrapProxy(call, signer, extrinsicIndexer, events) {
 }
 
 async function handleMultisig(call, signer, extrinsicIndexer, events) {
-  const registry = await findRegistry(extrinsicIndexer);
+  const blockApi = await findBlockApi(extrinsicIndexer.blockHash);
   const callHex = call.args[3];
   const threshold = call.args[0].toNumber();
   const otherSignatories = call.args[1].toJSON();
   const multisigAddr = calcMultisigAddress(
     [signer, ...otherSignatories],
     threshold,
-    registry.chainSS58
+    blockApi.registry.chainSS58
   );
 
-  const innerCall = new GenericCall(registry, callHex);
+  const innerCall = new GenericCall(blockApi.registry, callHex);
   await handleWrappedCall(innerCall, multisigAddr, extrinsicIndexer);
 }
 

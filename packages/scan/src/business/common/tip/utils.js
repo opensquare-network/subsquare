@@ -15,9 +15,7 @@ const {
   },
 } = require("@subsquare/scan-common");
 
-async function getTipMetaFromStorage(api, tipHash, indexer) {
-  const blockApi = await findBlockApi(indexer.blockHash);
-
+async function getTipMetaFromStorage(blockApi, tipHash) {
   let raw;
   if (blockApi.query.treasury?.tips) {
     raw = await blockApi.query.treasury.tips(tipHash);

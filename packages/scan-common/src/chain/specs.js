@@ -64,10 +64,11 @@ async function findRegistry({ blockHash, blockHeight: height }) {
 
 async function getRegistryFromSpec(height) {
   const spec = findMostRecentSpec(height);
-  let specHash = specHeightToHashMap[height];
+  let specHash = specHeightToHashMap[spec.height + 1];
   if (!specHash) {
-    const block = await getBlockByHeight(spec.height);
+    const block = await getBlockByHeight(spec.height + 1);
     specHash = block?.blockHash;
+    specHeightToHashMap[spec.height + 1] = specHash;
   }
   const u8aHash = hexToU8a(specHash);
 

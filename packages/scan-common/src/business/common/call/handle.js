@@ -1,3 +1,4 @@
+const { findBlockApi } = require("../../../chain/blockApi");
 const {
   Modules,
   MultisigMethods,
@@ -6,7 +7,6 @@ const {
   ProxyMethods,
 } = require("../../common/constants");
 const { calcMultisigAddress } = require("../../../utils/multisig");
-const { findRegistry } = require("../../../chain/specs");
 const { GenericCall } = require("@polkadot/types");
 const { logger } = require("../../../logger");
 
@@ -17,14 +17,14 @@ async function unwrapProxy(call, signer, indexer, events, cb) {
 }
 
 async function handleMultisig(call, signer, indexer, events, cb) {
-  const registry = await findRegistry(indexer);
+  const blockApi = await findBlockApi(indexer.blockHash);
   const callHex = call.args[3];
   const threshold = call.args[0].toNumber();
   const otherSignatories = call.args[1].toJSON();
   const multisigAddr = calcMultisigAddress(
     [signer, ...otherSignatories],
     threshold,
-    registry.chainSS58
+    blockApi.registry.chainSS58
   );
 
   let innerCall;
