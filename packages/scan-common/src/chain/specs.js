@@ -12,7 +12,6 @@ const { hexToU8a } = require("@polkadot/util");
 let versionChangedHeights = [];
 let metaScanHeight = 1;
 let specHeightToHashMap = {};
-const heightToRegistryMap = {};
 
 async function updateSpecs() {
   if (!isUseMeta()) {
@@ -58,7 +57,6 @@ async function findRegistry({ blockHash, blockHeight: height }) {
   try {
     return getRegistryFromSpec(height);
   } catch (e) {
-    console.log("hhhhh");
     const blockApi = await findBlockApi(blockHash);
     return blockApi.registry;
   }
