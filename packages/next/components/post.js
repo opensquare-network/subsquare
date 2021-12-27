@@ -110,7 +110,6 @@ const FooterWrapper = styled(Flex)`
 `;
 
 const TitleWrapper = styled.div`
-  margin-bottom: 8px;
   overflow: hidden;
 `;
 

@@ -8,28 +8,35 @@ import Layout from "components/layout";
 import { toTechCommMotionListItem } from "utils/viewfuncs";
 import SEO from "components/SEO";
 
-export default withLoginUserRedux(({ loginUser, proposals, chain, siteUrl }) => {
-  const items = (proposals.items || []).map((item) =>
-    toTechCommMotionListItem(chain, item)
-  );
+export default withLoginUserRedux(
+  ({ loginUser, proposals, chain, siteUrl }) => {
+    const items = (proposals.items || []).map((item) =>
+      toTechCommMotionListItem(chain, item)
+    );
 
-  return (
-    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
-      <SEO title={`Technical Committee Proposals`} desc={`Technical Committee Proposals`} siteUrl={siteUrl} chain={chain} />
-      <List
-        chain={chain}
-        category={"Tech. Comm. Proposals"}
-        create={null}
-        items={items}
-        pagination={{
-          page: proposals.page,
-          pageSize: proposals.pageSize,
-          total: proposals.total,
-        }}
-      />
-    </Layout>
-  );
-});
+    return (
+      <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+        <SEO
+          title={`Technical Committee Proposals`}
+          desc={`Technical Committee Proposals`}
+          siteUrl={siteUrl}
+          chain={chain}
+        />
+        <List
+          chain={chain}
+          category={"Tech. Comm. Proposals"}
+          create={null}
+          items={items}
+          pagination={{
+            page: proposals.page,
+            pageSize: proposals.pageSize,
+            total: proposals.total,
+          }}
+        />
+      </Layout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
