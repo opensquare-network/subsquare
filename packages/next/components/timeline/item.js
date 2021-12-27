@@ -144,7 +144,7 @@ export default function Item({ data, foldable, isFold, setIsFold, chain }) {
           <div>{data.time}</div>
           {data.status && data.status.value && (
             <TagWrapper>
-              <Tag name={data.status.value} />
+              <Tag name={data.status.value} data={data} />
             </TagWrapper>
           )}
           <FoldButton
@@ -181,7 +181,7 @@ export default function Item({ data, foldable, isFold, setIsFold, chain }) {
             ) : (
               <div>
                 Nay
-                <img src="/imgs/icons/reject.svg" alt=""/>
+                <img src="/imgs/icons/reject.svg" alt="" />
               </div>
             )}
           </VoteResultWrapper>
