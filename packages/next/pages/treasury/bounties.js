@@ -27,7 +27,7 @@ export default withLoginUserRedux(({ loginUser, bounties, chain, siteUrl }) => {
         category={"Treasury Bounties"}
         create={null}
         items={items}
-        summary={<Summary />}
+        summary={<Summary chain={chain} />}
         pagination={{
           page: bounties.page,
           pageSize: bounties.pageSize,

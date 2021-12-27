@@ -25,7 +25,7 @@ export default withLoginUserRedux(({ loginUser, tips, chain, siteUrl }) => {
         category={"Tips"}
         create={null}
         items={items}
-        summary={<Summary />}
+        summary={<Summary chain={chain} />}
         pagination={{
           page: tips.page,
           pageSize: tips.pageSize,
