@@ -44,6 +44,7 @@ module.exports = {
   getMotionCollection: () => getCollection("motion"),
   getTechCommMotionCollection: () =>
     getCollection("techCommMotion"),
+  getFinancialMotionCollection: () => getCollection("financialMotion"),
   getPublicProposalCollection: () =>
     getCollection("democracyPublicProposal"),
   getReferendumCollection: () =>
