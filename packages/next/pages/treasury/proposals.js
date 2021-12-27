@@ -28,7 +28,7 @@ export default withLoginUserRedux(
           category={"Treasury Proposals"}
           create={null}
           items={items}
-          summary={<Summary />}
+          summary={<Summary chain={chain} />}
           pagination={{
             page: proposals.page,
             pageSize: proposals.pageSize,

@@ -276,3 +276,6 @@ export const SS58Prefix = {
   substrate: 42,
   basilisk: 10041,
 };
+
+export const TreasuryAccount =
+  "F3opxRbN5ZbjJNU511Kj2TLuzFcDq9BGduA9TgiECafpg29";

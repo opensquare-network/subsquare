@@ -1,6 +1,11 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import CountDown from "./countDown";
+import { toPrecision } from "utils/index";
+import { TreasuryAccount } from "utils/constants";
+import { useApi } from "utils/hooks";
+import { getNode } from "utils";
 
 const Wrapper = styled.div`
   display: flex;
@@ -57,21 +62,62 @@ const CountDownWrapper = styled.div`
   right: 24px;
 `;
 
-export default function Summary() {
+export default function Summary({ chain }) {
+  const api = useApi(chain);
+  const node = getNode(chain);
+  const decimals = node.decimals;
+  const symbol = node.symbol;
+  const [available, setAvailable] = useState(0);
+  const [nextBurn, setNextBurn] = useState(0);
+  const [spendPeriod, setSpendPeriod] = useState();
+
+  useEffect(() => {
+    api?.query.system.account(TreasuryAccount).then((response) => {
+      const account = response.toJSON();
+      const free = account ? toPrecision(account.data.free, decimals) : 0;
+      const burnPercent = toPrecision(api.consts.treasury.burn, decimals) ?? 0;
+      setAvailable(Number(free).toFixed(2));
+      setNextBurn(Number(free * burnPercent).toFixed(2));
+    });
+  }, [api, chain, decimals]);
+
+  useEffect(() => {
+    const estimateBlocksTime = async (blocks) => {
+      const nsPerBlock = api.consts.babe?.expectedBlockTime.toNumber();
+      return nsPerBlock * blocks;
+    };
+
+    const getSpendPeriod = async function () {
+      if (api) {
+        const bestNumber = await api.derive.chain.bestNumber();
+        const spendPeriod = api.consts.treasury.spendPeriod;
+        const goneBlocks = bestNumber.mod(spendPeriod);
+        setSpendPeriod({
+          blockNumber: spendPeriod.toNumber(),
+          periodTime: await estimateBlocksTime(spendPeriod),
+          restBlocks: spendPeriod.sub(goneBlocks).toNumber(),
+          restTime: await estimateBlocksTime(spendPeriod.sub(goneBlocks)),
+          progress: goneBlocks.muln(100).div(spendPeriod).toNumber(),
+        });
+      }
+    };
+    getSpendPeriod();
+  }, [api, chain]);
+
   return (
     <Wrapper>
       <Card>
         <Title>AVAILABLE</Title>
         <Content>
-          <span>292993.444</span>
-          <span className="unit">KAR</span>
+          <span>{available}</span>
+          <span className="unit">{symbol}</span>
         </Content>
       </Card>
       <Card>
         <Title>NEXT BURN</Title>
         <Content>
-          <span>993.9696</span>
-          <span className="unit">KAR</span>
+          <span>{nextBurn}</span>
+          <span className="unit">{symbol}</span>
         </Content>
       </Card>
       <Card>
@@ -83,7 +129,7 @@ export default function Summary() {
           <span className="unit">hrs</span>
         </Content>
         <CountDownWrapper>
-          <CountDown percent={25} />
+          <CountDown percent={spendPeriod?.progress} />
         </CountDownWrapper>
       </Card>
     </Wrapper>
