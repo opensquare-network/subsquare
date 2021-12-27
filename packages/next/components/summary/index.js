@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { BN, BN_THOUSAND, BN_TWO, bnToBn, extractTime } from "@polkadot/util";
 
 import CountDown from "./countDown";
 import { toPrecision } from "utils/index";
@@ -62,6 +63,9 @@ const CountDownWrapper = styled.div`
   right: 24px;
 `;
 
+const DEFAULT_TIME = new BN(6_000);
+const THRESHOLD = BN_THOUSAND.div(BN_TWO);
+
 export default function Summary({ chain }) {
   const api = useApi(chain);
   const node = getNode(chain);
@@ -70,6 +74,7 @@ export default function Summary({ chain }) {
   const [available, setAvailable] = useState(0);
   const [nextBurn, setNextBurn] = useState(0);
   const [spendPeriod, setSpendPeriod] = useState();
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     api?.query.system.account(TreasuryAccount).then((response) => {
@@ -83,8 +88,38 @@ export default function Summary({ chain }) {
 
   useEffect(() => {
     const estimateBlocksTime = async (blocks) => {
-      const nsPerBlock = api.consts.babe?.expectedBlockTime.toNumber();
-      return nsPerBlock * blocks;
+      if (api) {
+        const blockTime =
+          // Babe
+          api.consts.babe?.expectedBlockTime ||
+          // POW, eg. Kulupu
+          api.consts.difficulty?.targetBlockTime ||
+          // Subspace
+          api.consts.subspace?.expectedBlockTime ||
+          // Check against threshold to determine value validity
+          (api.consts.timestamp?.minimumPeriod.gte(THRESHOLD)
+            ? // Default minimum period config
+              api.consts.timestamp.minimumPeriod.mul(BN_TWO)
+            : api.query.parachainSystem
+            ? // default guess for a parachain
+              DEFAULT_TIME.mul(BN_TWO)
+            : // default guess for others
+              DEFAULT_TIME);
+        const value = blockTime.mul(bnToBn(blocks)).toNumber();
+        const time = extractTime(Math.abs(value));
+        const { days, hours, minutes, seconds } = time;
+        const timeArray = [
+          days ? (days > 1 ? `${days} days` : "1 day") : null,
+          hours ? (hours > 1 ? `${hours} hrs` : "1 hr") : null,
+          minutes ? (minutes > 1 ? `${minutes} mins` : "1 min") : null,
+          seconds ? (seconds > 1 ? `${seconds} s` : "1 s") : null,
+        ]
+          .filter((s) => !!s)
+          .slice(0, 2)
+          .join(" ")
+          .split(" ");
+        setSpendPeriod(timeArray);
+      }
     };
 
     const getSpendPeriod = async function () {
@@ -92,13 +127,8 @@ export default function Summary({ chain }) {
         const bestNumber = await api.derive.chain.bestNumber();
         const spendPeriod = api.consts.treasury.spendPeriod;
         const goneBlocks = bestNumber.mod(spendPeriod);
-        setSpendPeriod({
-          blockNumber: spendPeriod.toNumber(),
-          periodTime: await estimateBlocksTime(spendPeriod),
-          restBlocks: spendPeriod.sub(goneBlocks).toNumber(),
-          restTime: await estimateBlocksTime(spendPeriod.sub(goneBlocks)),
-          progress: goneBlocks.muln(100).div(spendPeriod).toNumber(),
-        });
+        setProgress(goneBlocks.muln(100).div(spendPeriod).toNumber());
+        estimateBlocksTime(spendPeriod.sub(goneBlocks).toNumber());
       }
     };
     getSpendPeriod();
@@ -123,13 +153,14 @@ export default function Summary({ chain }) {
       <Card>
         <Title>SPEND PERIOD</Title>
         <Content>
-          <span>24</span>
-          <span className="unit">days</span>
-          <span>24</span>
-          <span className="unit">hrs</span>
+          {(spendPeriod || []).map((item, index) => (
+            <span className={index % 2 === 1 ? "unit" : ""} key={index}>
+              {item}
+            </span>
+          ))}
         </Content>
         <CountDownWrapper>
-          <CountDown percent={spendPeriod?.progress} />
+          <CountDown percent={progress} />
         </CountDownWrapper>
       </Card>
     </Wrapper>
