@@ -7,7 +7,7 @@ import CountDown from "./countDown";
 import { toPrecision } from "utils/index";
 import { TreasuryAccount } from "utils/constants";
 import { useApi } from "utils/hooks";
-import { getNode } from "utils";
+import { getNode, abbreviateBigNumber } from "utils";
 import { summarySelector, setSummary } from "store/reducers/summarySlice";
 
 const Wrapper = styled.div`
@@ -82,8 +82,8 @@ export default function Summary({ chain }) {
       const account = response.toJSON();
       const free = account ? toPrecision(account.data.free, decimals) : 0;
       const burnPercent = toPrecision(api.consts.treasury.burn, decimals) ?? 0;
-      const available = Number(free).toFixed(2);
-      const nextBurn = Number(free * burnPercent).toFixed(2);
+      const available = Number(free);
+      const nextBurn = Number(free) * Number(burnPercent);
       dispatch(setSummary({ available, nextBurn }));
     });
   }, [api, chain, decimals, dispatch]);
@@ -144,14 +144,14 @@ export default function Summary({ chain }) {
       <Card>
         <Title>AVAILABLE</Title>
         <Content>
-          <span>{summary?.available ?? 0}</span>
+          <span>{abbreviateBigNumber(summary?.available ?? 0)}</span>
           <span className="unit">{symbol}</span>
         </Content>
       </Card>
       <Card>
         <Title>NEXT BURN</Title>
         <Content>
-          <span>{summary?.nextBurn ?? 0}</span>
+          <span>{abbreviateBigNumber(summary?.nextBurn ?? 0)}</span>
           <span className="unit">{symbol}</span>
         </Content>
       </Card>
