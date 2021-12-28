@@ -92,6 +92,7 @@ export default function Menu({ menu }) {
   iconMap.set("notification", <BellIcon />);
   iconMap.set("councilMembers", <MembersIcon />);
   iconMap.set("techCommMembers", <MembersIcon />);
+  iconMap.set("financialMotions", <MotionIcon />);
 
   function getHref(pathname) {
     let href = "";
