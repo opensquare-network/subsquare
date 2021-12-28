@@ -121,7 +121,7 @@ export const toFinancialMotionsListItem = (chain, item) => ({
   },
   status: item.state ? getTipState(item.state) : "Unknown",
   time: getPostUpdatedAt(item),
-  detailLink: `/treasury/financialMotions/${item.height}_${item.hash}`,
+  detailLink: `/treasury/financialMotion/${item.height}_${item.hash}`,
   value: item?.onchainData?.medianValue,
 });
 
