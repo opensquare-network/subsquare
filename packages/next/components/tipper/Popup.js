@@ -1,0 +1,93 @@
+import styled, { css } from "styled-components";
+import { useRef } from "react";
+
+import { useOnClickOutside } from "utils/hooks";
+import AddressSelect from "components/addressSelect";
+import Button from "components/button";
+import TipInput from "./tipInput";
+
+const Wrapper = styled.div`
+  position: fixed;
+  top: 260px;
+  left: 50%;
+  margin-top: 0 !important;
+  width: 400px;
+  padding: 24px;
+  transform: translateX(-50%);
+  background: #ffffff;
+  border: 1px solid #ebeef4;
+  box-shadow: 0px 6px 22px rgba(30, 33, 52, 0.11),
+    0px 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
+    0px 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
+  border-radius: 6px;
+  > :not(:first-child) {
+    margin-top: 16px;
+  }
+`;
+
+const TopWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 100%;
+  > img {
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+  }
+`;
+
+const Info = styled.div`
+  background: #f6f7fa;
+  border-radius: 4px;
+  padding: 12px 16px;
+  color: #506176;
+  font-size: 14px;
+  line-height: 140%;
+  ${(p) =>
+    p.danger &&
+    css`
+      color: #f44336;
+      background: #fff1f0;
+    `}
+`;
+
+const Label = styled.div`
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 100%;
+  margin-bottom: 8px;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+export default function Popup({ onClose }) {
+  const ref = useRef();
+  useOnClickOutside(ref, () => onClose());
+
+  return (
+    <Wrapper ref={ref}>
+      <TopWrapper>
+        <div>Tip</div>
+        <img onClick={onClose} src="/imgs/icons/close.svg" alt="" />
+      </TopWrapper>
+      <Info>Only council members can tip.</Info>
+      <div>
+        <Label>Address</Label>
+        <AddressSelect />
+      </div>
+      <div>
+        <Label>Tip Value</Label>
+        <TipInput />
+      </div>
+      <ButtonWrapper>
+        <Button secondary>Endorse</Button>
+      </ButtonWrapper>
+    </Wrapper>
+  );
+}

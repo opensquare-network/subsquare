@@ -14,7 +14,7 @@ const Wrapper = styled.div`
     padding-right: 16px;
     padding: 0;
   }
-  margin-top: 26px;
+  margin-top: 24px;
   margin-bottom: 32px;
 `;
 
