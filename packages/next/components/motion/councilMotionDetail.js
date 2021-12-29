@@ -162,18 +162,17 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
     timelineData = timeline;
   }
 
-  let business = null;
+  let business = [];
 
   const motionCompleted = isMotionCompleted(motion);
   if (motionCompleted) {
-    business = createMotionBusinessData(motion, chain);
+    business.push(createMotionBusinessData(motion, chain));
   }
 
   if (
     motion.onchainData.treasuryProposals?.length > 0 ||
     motion.onchainData.treasuryBounties?.length > 0
   ) {
-    business = [];
     for (const proposal of motion.onchainData.treasuryProposals) {
       business.push([
         [
@@ -242,6 +241,20 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
     }
   }
 
+  if (motion?.onchainData?.externalProposals?.length > 0) {
+    motion?.onchainData?.externalProposals?.forEach((external) => {
+      business.push([
+        [
+          "Link to",
+          <Link
+            href={`/democracy/external/${external?.hash}`}
+          >{`Democracy External #${external?.hash?.slice(0, 6)}`}</Link>,
+        ],
+        ["hash", external.hash],
+      ]);
+    });
+  }
+
   return (
     <div>
       <Wrapper>
@@ -261,7 +274,9 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
                 fontSize={12}
               />
               {motion.isTreasury && <SectionTag name={"Treasury"} />}
-              {motion?.onchainData?.externalProposals?.length > 0 && <SectionTag name={"Democracy"} />}
+              {motion?.onchainData?.externalProposals?.length > 0 && (
+                <SectionTag name={"Democracy"} />
+              )}
               {postUpdateTime && (
                 <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
               )}
