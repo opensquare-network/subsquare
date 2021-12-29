@@ -7,7 +7,7 @@ import Layout from "components/layout";
 import MotionDetail from "components/motion/councilMotionDetail";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_MOTION } from "utils/viewConstants";
-import { getMetaDesc, isMotionCompleted } from "../../../utils/viewfuncs";
+import { getMetaDesc } from "../../../utils/viewfuncs";
 import { EmptyList } from "../../../utils/constants";
 import Comments from "../../../components/comment";
 import Input from "../../../components/comment/input";
@@ -109,20 +109,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { id, page, page_size: pageSize } = context.query;
 
   const { result: motion } = await nextApi.fetch(`financial-motions/${id}`);
-  let external = null;
-
-  if (isMotionCompleted(motion)) {
-    const motionId = `${motion.state.indexer.blockHeight}_${motion.proposalHash}`;
-    const res = await nextApi.fetch(`democracy/externals/${motionId}`);
-    const { result: comments } = await nextApi.fetch(
-      `democracy/externals/${res.result._id}/comments`,
-      {
-        page: page ?? "last",
-        pageSize: Math.min(pageSize ?? 50, 100),
-      }
-    );
-    external = { ...res.result, comments };
-  }
 
   if (!motion) {
     to404(context);
@@ -140,7 +126,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      motion: motion ? { ...motion, external } : null,
+      motion,
       comments: comments ?? EmptyList,
       chain,
       siteUrl: process.env.SITE_URL,
