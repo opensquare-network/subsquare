@@ -39,8 +39,25 @@ export const toCouncilMotionListItem = (chain, item) => ({
   isTreasury:
     item?.onchainData?.treasuryProposals?.length > 0 ||
     item?.onchainData?.treasuryBounties?.length > 0,
-  isDemocracy: item?.onchainData?.isDemocracy,
-  time: item?.updatedAt,
+  isDemocracy: item?.onchainData?.externalProposals?.length > 0,
+  time: getPostUpdatedAt(item),
+});
+
+export const toFinancialMotionsListItem = (chain, item) => ({
+  ...item,
+  index: item.motionIndex,
+  title: `${item?.title}`,
+  author: item.author ?? {
+    username: addressEllipsis(item.proposer),
+    addresses: [{ chain, address: item.proposer }],
+  },
+  status: item.state ?? "Unknown",
+  detailLink: `/financial-council/motion/${item.motionIndex}`,
+  isTreasury:
+    item?.onchainData?.treasuryProposals?.length > 0 ||
+    item?.onchainData?.treasuryBounties?.length > 0,
+  isDemocracy: item?.onchainData?.externalProposals?.length > 0,
+  time: getPostUpdatedAt(item),
 });
 
 function getTechCommMotionId(motion) {
@@ -53,13 +70,15 @@ function getTechCommMotionId(motion) {
 
 export const toTechCommMotionListItem = (chain, item) => ({
   ...item,
-  title: `${item.proposal.section}.${item.proposal.method}`,
+  title: item.title,
   author: item.author ?? {
     username: addressEllipsis(item.proposer),
     addresses: [{ chain, address: item.proposer }],
   },
-  status: item.state?.state ?? "Unknown",
+  status: item?.state ?? "Unknown",
   detailLink: `/techcomm/proposal/${getTechCommMotionId(item)}`,
+  time: getPostUpdatedAt(item),
+  isDemocracy: item?.onchainData?.externalProposals?.length > 0,
 });
 
 export const toTreasuryProposalListItem = (chain, item) => ({
@@ -226,4 +245,17 @@ export const isMotionCompleted = (motion) => {
     Object.keys(data).some((rawData) => rawData === "error")
   );
   return !error;
+};
+
+export const getMetaDesc = (post, type = "Discussion") => {
+  let contentDesc = "";
+  const maxDescLength = 60;
+  if (post.content) {
+    if (post.content.length > maxDescLength) {
+      contentDesc = post.content.substr(0, maxDescLength) + "...";
+    } else {
+      contentDesc = post.content;
+    }
+  }
+  return contentDesc;
 };

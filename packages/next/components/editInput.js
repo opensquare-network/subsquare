@@ -7,7 +7,7 @@ import PreviewMD from "components/create/previewMD";
 import ErrorText from "components/ErrorText";
 import QuillEditor from "./editor/quillEditor";
 import HtmlRender from "./post/htmlRender";
-import UploadImgModal from "./editor/imageModal";
+import InsertContentsModal from "./editor/modal";
 
 const Wrapper = styled.div`
   margin-top: 8px;
@@ -57,17 +57,22 @@ export default function EditInput({
   onFinishedEdit,
   update,
   setQuillRef = null,
+  loading,
+  setLoading,
 }) {
   const [content, setContent] = useState(editContent);
   const [contentType, setContentType] = useState(editContentType);
   const [showPreview, setShowPreview] = useState(false);
-  const [showImgModal, setShowImgModal] = useState(false);
-  const [insetQuillImgFunc, setInsetQuillImgFunc] = useState(null);
-
+  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState("image");
+  const [editorHeight, setEditorHeight] = useState(100);
+  const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
   const [errors, setErrors] = useState();
-  const [loading, setLoading] = useState(false);
 
   const onMarkdownSwitch = () => {
+    if (loading) {
+      return;
+    }
     if (
       content &&
       !confirm(`Togging editor will empty all typed contents, are you sure ?`)
@@ -79,13 +84,20 @@ export default function EditInput({
   };
 
   const onUpdate = async () => {
-    setLoading(true);
-    const { result, error } = await update(content, contentType);
-    setLoading(false);
-    if (error) {
-      setErrors(error);
-    } else if (result) {
-      onFinishedEdit(true);
+    try {
+      setLoading(true);
+      const { result, error } = await update(content, contentType);
+      if (error) {
+        setErrors(error);
+      } else if (result) {
+        await onFinishedEdit(true, setLoading);
+      }
+    } catch (e) {
+      if (e) {
+        setErrors(e);
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -97,19 +109,22 @@ export default function EditInput({
   return (
     <Wrapper>
       {contentType === "html" && (
-        <UploadImgModal
-          showImgModal={showImgModal}
-          setShowImgModal={setShowImgModal}
-          insetQuillImgFunc={insetQuillImgFunc}
+        <InsertContentsModal
+          showModal={showModal}
+          type={modalType}
+          setShowModal={setShowModal}
+          insetQuillContentsFunc={insetQuillContentsFunc}
         />
       )}
       <InputWrapper>
         {contentType === "markdown" && (
           <MarkdownEditor
-            height={114}
+            height={editorHeight}
+            setEditorHeight={setEditorHeight}
             content={content}
             setContent={onInputChange}
             visible={!showPreview}
+            readOnly={loading}
           />
         )}
         {contentType === "html" && (
@@ -117,17 +132,25 @@ export default function EditInput({
             visible={!showPreview}
             content={content}
             setContent={onInputChange}
-            height={114}
-            setModalInsetImgFunc={(insetImgFunc) => {
-              setShowImgModal(true);
-              setInsetQuillImgFunc(insetImgFunc);
+            setEditorHeight={setEditorHeight}
+            height={editorHeight}
+            setModalInsetFunc={(insetImgFunc, type) => {
+              setModalType(type);
+              setShowModal(true);
+              setInsetQuillContentsFunc(insetImgFunc);
             }}
             setQuillRef={setQuillRef}
+            readOnly={loading}
           />
         )}
         {!showPreview && (
           <InputSwitch>
-            <img src="/imgs/icons/markdown-mark.svg" alt="" width={26} height={16} />
+            <img
+              src="/imgs/icons/markdown-mark.svg"
+              alt=""
+              width={26}
+              height={16}
+            />
             <Toggle
               size="small"
               isOn={contentType === "markdown"}
@@ -139,17 +162,27 @@ export default function EditInput({
       {showPreview && (
         <PreviewWrapper className="preview">
           {contentType === "markdown" && (
-            <PreviewMD content={content} setContent={setContent} />
+            <PreviewMD
+              content={content}
+              setContent={setContent}
+              maxHeight={editorHeight}
+            />
           )}
-          {contentType === "html" && <HtmlRender html={editContent} />}
+          {contentType === "html" && (
+            <HtmlRender html={content} maxHeight={editorHeight} />
+          )}
         </PreviewWrapper>
       )}
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
       <ButtonWrapper>
-        <Button onClick={() => onFinishedEdit(false)}>Cancel</Button>
-        <Button onClick={() => setShowPreview(!showPreview)}>
-          {showPreview ? "Edit" : "Preview"}
-        </Button>
+        {!loading && (
+          <Button onClick={() => onFinishedEdit(false)}>Cancel</Button>
+        )}
+        {!loading && (
+          <Button onClick={() => setShowPreview(!showPreview)}>
+            {showPreview ? "Edit" : "Preview"}
+          </Button>
+        )}
         <Button isLoading={loading} secondary onClick={onUpdate}>
           Update
         </Button>

@@ -1,28 +1,29 @@
 const { updateBounty } = require("../../../../../mongo/service/onchain/bounty");
-const { getBountyMeta } = require("../../../../common/bounty/meta");
 const {
   updateTreasuryProposal,
 } = require("../../../../../mongo/service/treasuryProposal");
-const { busLogger } = require("../../../../../logger");
-const {
-  getExternalFromStorageByHeight,
-} = require("../../../../common/democracy/external");
 const {
   insertDemocracyPostByExternal,
 } = require("../../../../../mongo/service/business/democracy");
 const {
   insertDemocracyExternal,
 } = require("../../../../../mongo/service/onchain/democracyExternal");
-const {
-  DemocracyExternalStates,
-  TimelineItemTypes,
-  TreasuryProposalMethods,
-  TreasuryProposalEvents,
-  BountyMethods,
-  BountyStatus,
-} = require("../../../../common/constants");
 const { getMotionCollection } = require("../../../../../mongo");
-const { logger } = require("../../../../../logger");
+const {
+  log: { logger, busLogger },
+  business: {
+    getExternalFromStorageByHeight,
+    getBountyMeta,
+    consts: {
+      DemocracyExternalStates,
+      TimelineItemTypes,
+      TreasuryProposalMethods,
+      TreasuryProposalEvents,
+      BountyMethods,
+      BountyStatus,
+    },
+  },
+} = require("@subsquare/scan-common");
 
 async function handleRejectTreasuryProposal(proposalInfo, indexer) {
   const { index: proposalIndex, method } = proposalInfo;
@@ -62,27 +63,7 @@ async function handleBounty(bountyInfo, indexer) {
   }
 }
 
-async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
-  const col = await getMotionCollection();
-  const motion = await col.findOne({ hash: motionHash, isFinal: false });
-  if (!motion) {
-    return;
-  }
-
-  for (const proposalInfo of motion.treasuryProposals || []) {
-    await handleRejectTreasuryProposal(proposalInfo, indexer);
-  }
-
-  for (const bountyInfo of motion.treasuryBounties || []) {
-    await handleBounty(bountyInfo, indexer);
-  }
-
-  const { isDemocracy, proposalHash } = motion;
-  if (!isDemocracy || !proposalHash) {
-    // no proposalHash means it's not a external proposal related motion, so just ignore it
-    return;
-  }
-
+async function handleExternalProposal(proposalHash, motion, indexer) {
   const nextExternal = await getExternalFromStorageByHeight(
     indexer.blockHeight
   );
@@ -130,11 +111,43 @@ async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
     state,
     isFinal: false,
     timeline: [timelineItem],
+    techCommMotions: [],
+    motions: [
+      {
+        index: motionIndex,
+        hash: motion.hash,
+        indexer: motion.indexer,
+      },
+    ],
   };
 
   await insertDemocracyExternal(externalObj);
   await insertDemocracyPostByExternal(proposalHash, indexer, authors[0]);
-  busLogger.info("External created at", indexer.blockHeight, externalObj);
+  busLogger.info(`External ${proposalHash} created at`, indexer.blockHeight);
+}
+
+async function handleBusinessWhenMotionExecuted(motionHash, indexer) {
+  const col = await getMotionCollection();
+  const motion = await col.findOne({ hash: motionHash, isFinal: false });
+  if (!motion) {
+    return;
+  }
+
+  for (const proposalInfo of motion.treasuryProposals || []) {
+    await handleRejectTreasuryProposal(proposalInfo, indexer);
+  }
+
+  for (const bountyInfo of motion.treasuryBounties || []) {
+    await handleBounty(bountyInfo, indexer);
+  }
+
+  if ((motion.externalProposals || []).length > 0) {
+    await handleExternalProposal(
+      motion.externalProposals[0].hash,
+      motion,
+      indexer
+    );
+  }
 }
 
 module.exports = {

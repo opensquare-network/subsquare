@@ -14,7 +14,7 @@ import findLastIndex from "lodash.findlastindex";
 import Flex from "../styled/flex";
 import { shadow_100 } from "../../styles/componentCss";
 import ArticleContent from "../articleContent";
-import { isMotionCompleted } from "../../utils/viewfuncs";
+import { getPostUpdatedAt, isMotionCompleted } from "../../utils/viewfuncs";
 import { withLoginUserRedux } from "../../lib";
 import { useState } from "react";
 import CapitalText from "../capitalText";
@@ -152,6 +152,7 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
   const decimals = node.decimals;
   const symbol = node.symbol;
 
+  const postUpdateTime = getPostUpdatedAt(post);
   const timeline = createMotionTimelineData(motion.onchainData);
 
   let timelineData;
@@ -161,18 +162,17 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
     timelineData = timeline;
   }
 
-  let business = null;
+  let business = [];
 
   const motionCompleted = isMotionCompleted(motion);
   if (motionCompleted) {
-    business = createMotionBusinessData(motion, chain);
+    business.push(createMotionBusinessData(motion, chain));
   }
 
   if (
     motion.onchainData.treasuryProposals?.length > 0 ||
     motion.onchainData.treasuryBounties?.length > 0
   ) {
-    business = [];
     for (const proposal of motion.onchainData.treasuryProposals) {
       business.push([
         [
@@ -241,6 +241,20 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
     }
   }
 
+  if (motion?.onchainData?.externalProposals?.length > 0) {
+    motion?.onchainData?.externalProposals?.forEach((external) => {
+      business.push([
+        [
+          "Link to",
+          <Link
+            href={`/democracy/external/${external?.hash}`}
+          >{`Democracy External #${external?.hash?.slice(0, 6)}`}</Link>,
+        ],
+        ["hash", external.hash],
+      ]);
+    });
+  }
+
   return (
     <div>
       <Wrapper>
@@ -260,19 +274,17 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
                 fontSize={12}
               />
               {motion.isTreasury && <SectionTag name={"Treasury"} />}
-              {motion.isDemocracy && <SectionTag name={"Democracy"} />}
-              {(motion.indexer?.blockTime || motion.createdAt) && (
-                <Info>
-                  Created{" "}
-                  {timeDurationFromNow(
-                    motion.indexer?.blockTime || motion.createdAt
-                  )}
-                </Info>
+              {motion?.onchainData?.externalProposals?.length > 0 && (
+                <SectionTag name={"Democracy"} />
+              )}
+              {postUpdateTime && (
+                <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
               )}
             </DividerWrapper>
             {motion.state && <StatusWrapper>{motion.state}</StatusWrapper>}
           </FlexWrapper>
           <ArticleContent
+            chain={chain}
             post={post}
             setPost={setPost}
             user={loginUser}
@@ -290,10 +302,10 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
           [
             "Proposer",
             <>
-              <User add={motion.proposer} fontSize={14} />
+              <User add={motion?.onchainData?.proposer} fontSize={14} />
               <Links
                 chain={chain}
-                address={motion.proposer}
+                address={motion?.onchainData?.proposer}
                 style={{ marginLeft: 8 }}
               />
             </>,

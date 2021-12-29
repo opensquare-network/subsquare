@@ -4,7 +4,11 @@ const { handleApproved } = require("./service/approved");
 const { handleClosed } = require("./service/closed");
 const { handleVoted } = require("./service/voted");
 const { handleProposed } = require("./service/proposed");
-const { Modules, TechnicalCommitteeEvents } = require("../../common/constants");
+const {
+  business: {
+    consts: { Modules, TechnicalCommitteeEvents },
+  },
+} = require("@subsquare/scan-common");
 
 function isTechCommModule(section) {
   return Modules.TechnicalCommittee === section;

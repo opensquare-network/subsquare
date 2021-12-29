@@ -5,14 +5,12 @@ import Link from "next/link";
 import { timeDurationFromNow } from "utils";
 import PostEdit from "components/post/postEdit";
 import nextApi from "services/nextApi";
-import { addToast } from "store/reducers/toastSlice";
 import User from "components/user";
-import { useDispatch } from "react-redux";
 import TriangleRight from "../public/imgs/icons/arrow-triangle-right.svg";
 import Tag from "./tag";
 import Flex from "./styled/flex";
 import { shadow_100 } from "../styles/componentCss";
-import { toApiType } from "utils/viewfuncs";
+import { getPostUpdatedAt, toApiType } from "utils/viewfuncs";
 import {
   TYPE_DEMOCRACY_REFERENDUM,
   TYPE_DEMOCRACY_EXTERNAL,
@@ -210,61 +208,20 @@ const getTypeColor = (type) => {
   }
 };
 
-function hasTechComm(external) {
-  if (external.techCommMotionHash) {
-    return true;
-  }
-
-  return (
-    external.techCommMotionIndex !== undefined &&
-    external.techCommMotionIndex !== null
-  );
+function getTechCommId(techCommMotion) {
+  return `${techCommMotion?.indexer?.blockHeight}_${techCommMotion?.hash}`;
 }
 
-function getTechCommId(external) {
-  if (external.techCommMotionIndex) {
-    return external.techCommMotionIndex;
-  } else if (external.techCommMotionHash) {
-    return `${external.techCommMotionIndexer.blockHeight}_${external.techCommMotionHash}`;
-  }
-
-  return null;
-}
-
-function shortTechId(external) {
-  if (external.techCommMotionIndex) {
-    return external.techCommMotionIndex;
-  } else if (external.techCommMotionHash) {
-    return `${external.techCommMotionHash.slice(0, 6)}`;
-  }
-
-  return null;
+function shortTechId(techCommMotion) {
+  return techCommMotion.hash.slice(0, 6);
 }
 
 export default function DetailItem({ data, user, chain, onReply, type }) {
-  const dispatch = useDispatch();
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
-  const [thumbUpLoading, setThumbUpLoading] = useState(false);
   if (!post) {
     return null;
   }
-
-  const isLoggedIn = !!user;
-  let ownPost = false;
-  if (type === "post") {
-    ownPost = isLoggedIn && post.author?.username === user.username;
-  } else {
-    ownPost =
-      isLoggedIn &&
-      !!(user.addresses || []).find((item) =>
-        post?.onchainData?.authors?.includes(item.address)
-      );
-  }
-
-  const thumbUp =
-    isLoggedIn &&
-    post.reactions?.findIndex((r) => r.user?.username === user.username) > -1;
 
   const updatePost = async () => {
     const url = `${toApiType(type)}/${post._id}`;
@@ -274,40 +231,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
     }
   };
 
-  const toggleThumbUp = async () => {
-    if (isLoggedIn && !ownPost && !thumbUpLoading) {
-      setThumbUpLoading(true);
-      try {
-        let result, error;
-
-        if (thumbUp) {
-          ({ result, error } = await nextApi.delete(
-            `${toApiType(type)}/${post._id}/reaction`
-          ));
-        } else {
-          ({ result, error } = await nextApi.put(
-            `${toApiType(type)}/${post._id}/reaction`,
-            { reaction: 1 },
-            { credentials: "include" }
-          ));
-        }
-
-        if (result) {
-          await updatePost();
-        }
-        if (error) {
-          dispatch(
-            addToast({
-              type: "error",
-              message: error.message,
-            })
-          );
-        }
-      } finally {
-        setThumbUpLoading(false);
-      }
-    }
-  };
+  const postUpdatedTime = getPostUpdatedAt(post);
 
   return (
     <Wrapper>
@@ -316,17 +240,19 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
           {type === TYPE_DEMOCRACY_EXTERNAL && (
             <ReferendaWrapper>
               <div>{`External`}</div>
-              {hasTechComm(post?.onchainData) && (
-                <div>
-                  <TriangleRight />
-                  <Link
-                    href={`/techcomm/proposal/${getTechCommId(
-                      post?.onchainData
-                    )}`}
-                  >
-                    {`Tech. Comm. #${shortTechId(post?.onchainData)}`}
-                  </Link>
-                </div>
+              {post?.onchainData?.techCommMotions?.map(
+                (techCommMotion, key) => (
+                  <div key={key}>
+                    <TriangleRight />
+                    <Link
+                      href={`/techcomm/proposal/${getTechCommId(
+                        techCommMotion
+                      )}`}
+                    >
+                      {`Tech. Comm. #${shortTechId(techCommMotion)}`}
+                    </Link>
+                  </div>
+                )
               )}
               {post?.referendumIndex !== undefined && (
                 <div>
@@ -359,17 +285,19 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                 >
                   {`External`}
                 </Link>
-                {hasTechComm(post?.onchainData) && (
-                  <div>
-                    <TriangleRight />
-                    <Link
-                      href={`/techcomm/proposal/${getTechCommId(
-                        post?.onchainData
-                      )}`}
-                    >
-                      {`Proposal #${shortTechId(post?.onchainData)}`}
-                    </Link>
-                  </div>
+                {post?.onchainData?.techCommMotions?.map(
+                  (techCommMotion, key) => (
+                    <div key={key}>
+                      <TriangleRight />
+                      <Link
+                        href={`/techcomm/proposal/${getTechCommId(
+                          techCommMotion
+                        )}`}
+                      >
+                        {`Tech. Comm. #${shortTechId(techCommMotion)}`}
+                      </Link>
+                    </div>
+                  )
                 )}
                 <div>
                   <TriangleRight />
@@ -408,13 +336,8 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                   </TypeWrapper>
                 </div>
               )}
-              {(post.indexer?.blockTime || post.createdAt) && (
-                <Info>
-                  Created{" "}
-                  {timeDurationFromNow(
-                    post.indexer?.blockTime || post.createdAt
-                  )}
-                </Info>
+              {postUpdatedTime && (
+                <Info>Updated {timeDurationFromNow(postUpdatedTime)}</Info>
               )}
               {post.commentsCount > -1 && (
                 <Info>{`${post.commentsCount} Comments`}</Info>
@@ -423,6 +346,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             {post.status && <Tag name={post.status} />}
           </FlexWrapper>
           <ArticleContent
+            chain={chain}
             post={post}
             setPost={setPost}
             user={user}

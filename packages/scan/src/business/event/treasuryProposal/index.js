@@ -3,7 +3,11 @@ const {
   handleTreasuryProposalAwarded,
   handleTreasuryProposalRejected,
 } = require("./store");
-const { Modules, TreasuryProposalEvents } = require("../../common/constants");
+const {
+  business: {
+    consts: { Modules, TreasuryProposalEvents },
+  },
+} = require("@subsquare/scan-common");
 
 function isTreasuryProposalEvent(section, method) {
   if (![Modules.Treasury].includes(section)) {
@@ -13,7 +17,7 @@ function isTreasuryProposalEvent(section, method) {
   return TreasuryProposalEvents.hasOwnProperty(method);
 }
 
-async function handleTreasuryProposalEvent(event, extrinsic, indexer) {
+async function handleTreasuryEvent(event, indexer, events, extrinsic) {
   const { section, method } = event;
   if (!isTreasuryProposalEvent(section, method)) {
     return;
@@ -23,24 +27,11 @@ async function handleTreasuryProposalEvent(event, extrinsic, indexer) {
     await saveNewTreasuryProposal(...arguments);
   } else if (TreasuryProposalEvents.Rejected === method) {
     await handleTreasuryProposalRejected(...arguments);
-  }
-}
-
-async function handleTreasuryProposalEventWithoutExtrinsic(
-  event,
-  indexer // this indexer don't have extrinsic index
-) {
-  const { section, method } = event;
-  if (!isTreasuryProposalEvent(section, method)) {
-    return;
-  }
-
-  if (TreasuryProposalEvents.Awarded === method) {
+  } else if (TreasuryProposalEvents.Awarded === method) {
     await handleTreasuryProposalAwarded(...arguments);
   }
 }
 
 module.exports = {
-  handleTreasuryProposalEvent,
-  handleTreasuryProposalEventWithoutExtrinsic,
+  handleTreasuryEvent,
 };

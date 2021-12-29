@@ -1,21 +1,24 @@
 require("dotenv").config();
 
-const { updateSpecs, getMetaScanHeight } = require("./chain/specs");
-const { disconnect } = require("./api");
-const { updateHeight, getLatestHeight } = require("./chain");
 const { getNextScanHeight, updateScanHeight } = require("./mongo/scanHeight");
-const { sleep } = require("./utils/sleep");
-const { logger } = require("./logger");
 const { scanKnownHeights } = require("./scan/known");
-const { doScanKnownFirst } = require("./env");
-const { isUseMetaDb } = require("./env");
-const { fetchBlocks } = require("./service/fetchBlocks");
 const { scanNormalizedBlock } = require("./scan/block");
-
-const scanStep = parseInt(process.env.SCAN_STEP) || 100;
+const {
+  utils: { sleep },
+  chain: {
+    disconnect,
+    subscribeFinalizedHead,
+    getChainLatestHeight,
+    specs: { updateSpecs },
+    fetchBlocks,
+  },
+  env: { doScanKnownFirst },
+  log: { logger },
+  scan: { getHeights, getTargetHeight, checkAndUpdateSpecs },
+} = require("@subsquare/scan-common");
 
 async function main() {
-  await updateHeight();
+  await subscribeFinalizedHead();
   await updateSpecs();
 
   if (doScanKnownFirst()) {
@@ -25,7 +28,7 @@ async function main() {
   let scanHeight = await getNextScanHeight();
   while (true) {
     // chainHeight is the current on-chain last block height
-    const chainHeight = getLatestHeight();
+    const chainHeight = getChainLatestHeight();
 
     if (scanHeight > chainHeight) {
       // Just wait if the to scan height greater than current chain height
@@ -33,22 +36,10 @@ async function main() {
       continue;
     }
 
-    let targetHeight = chainHeight;
-    if (scanHeight + scanStep < chainHeight) {
-      targetHeight = scanHeight + scanStep;
-    }
+    const targetHeight = getTargetHeight(scanHeight);
+    await checkAndUpdateSpecs(targetHeight);
 
-    if (isUseMetaDb()) {
-      if (targetHeight > getMetaScanHeight()) {
-        await updateSpecs();
-      }
-    }
-
-    const heights = [];
-    for (let i = scanHeight; i <= targetHeight; i++) {
-      heights.push(i);
-    }
-
+    const heights = getHeights(scanHeight, targetHeight);
     const blocks = await fetchBlocks(heights);
     if ((blocks || []).length <= 0) {
       await sleep(1000);

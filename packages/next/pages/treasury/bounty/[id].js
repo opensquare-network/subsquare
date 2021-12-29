@@ -22,6 +22,8 @@ import { to404 } from "utils/serverSideUtil";
 import { TYPE_TREASURY_BOUNTY } from "utils/viewConstants";
 import { createMotionTimelineData } from "../../../utils/timeline/motion";
 import sortTimeline from "../../../utils/timeline/sort";
+import { getMetaDesc } from "../../../utils/viewfuncs";
+import SEO from "components/SEO";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -49,138 +51,156 @@ const Flex = styled.div`
   align-items: center; ;
 `;
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
-  const postId = detail._id;
+export default withLoginUserRedux(
+  ({ loginUser, detail, comments, chain, siteUrl }) => {
+    const postId = detail._id;
 
-  const editorWrapperRef = useRef(null);
-  const [quillRef, setQuillRef] = useState(null);
-  const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown"
-  );
+    const editorWrapperRef = useRef(null);
+    const [quillRef, setQuillRef] = useState(null);
+    const [content, setContent] = useState("");
+    const [contentType, setContentType] = useState(
+      loginUser?.preference.editor || "markdown"
+    );
 
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
-
-  const getTimelineData = (args, method) => {
-    switch (method) {
-      case "proposeBounty":
-        return {
-          ...args,
-          value: `${toPrecision(args.value ?? 0, decimals)} ${symbol}`,
-        };
-      case "BountyRejected":
-        return {
-          ...args,
-          slashed: `${toPrecision(args.slashed ?? 0, decimals)} ${symbol}`,
-        };
-      case "Proposed":
-        return {
-          Index: `#${args.index}`,
-        };
-      case "Awarded":
-        return {
-          Beneficiary: <User chain={chain} add={args.beneficiary} />,
-          Award: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
-        };
+    const node = getNode(chain);
+    if (!node) {
+      return null;
     }
-    return args;
-  };
+    const decimals = node.decimals;
+    const symbol = node.symbol;
 
-  const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
-    const indexer = item.extrinsicIndexer ?? item.indexer;
-    return {
-      indexer,
-      time: dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-      status: getTimelineStatus("bounty", item.method ?? item.name),
-      data: getTimelineData(item.args, item.method ?? item.name),
+    const getTimelineData = (args, method) => {
+      switch (method) {
+        case "proposeBounty":
+          return {
+            ...args,
+            value: `${toPrecision(args.value ?? 0, decimals)} ${symbol}`,
+          };
+        case "BountyRejected":
+          return {
+            ...args,
+            slashed: `${toPrecision(args.slashed ?? 0, decimals)} ${symbol}`,
+          };
+        case "Proposed":
+          return {
+            Index: `#${args.index}`,
+          };
+        case "Awarded":
+          return {
+            Beneficiary: <User chain={chain} add={args.beneficiary} />,
+            Award: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
+          };
+        case "BountyClaimed":
+          return {
+            Beneficiary: args.beneficiary,
+            Payout: `${toPrecision(args.payout ?? 0, decimals)} ${symbol}`,
+          };
+      }
+      return args;
     };
-  });
 
-  detail?.onchainData?.motions?.forEach((motion) => {
-    const motionTimelineData = createMotionTimelineData(motion);
-    timelineData.push(motionTimelineData);
-  });
-  sortTimeline(timelineData);
+    const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
+      const indexer = item.extrinsicIndexer ?? item.indexer;
+      return {
+        indexer,
+        time: dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+        status: getTimelineStatus("bounty", item.method ?? item.name),
+        data: getTimelineData(item.args, item.method ?? item.name),
+      };
+    });
 
-  const users = getMentionList(comments);
+    detail?.onchainData?.motions?.forEach((motion) => {
+      const motionTimelineData = createMotionTimelineData(motion);
+      timelineData.push(motionTimelineData);
+    });
+    sortTimeline(timelineData);
 
-  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
+    const users = getMentionList(comments);
 
-  const onReply = getOnReply(
-    contentType,
-    content,
-    setContent,
-    quillRef,
-    focusEditor
-  );
+    const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
-  const metadata = detail.onchainData?.meta
-    ? Object.entries(detail.onchainData?.meta)
-    : [];
+    const onReply = getOnReply(
+      contentType,
+      content,
+      setContent,
+      quillRef,
+      focusEditor
+    );
 
-  metadata.forEach((item) => {
-    switch (item[0]) {
-      case "proposer":
-      case "beneficiary":
-        item[1] = (
-          <Flex>
-            <User chain={chain} add={item[1]} fontSize={14} />
-            <Links chain={chain} address={item[1]} style={{ marginLeft: 8 }} />
-          </Flex>
-        );
-        break;
-      case "value":
-      case "bond":
-        item[1] = `${toPrecision(item[1] ?? 0, decimals)} ${symbol}`;
-        break;
-      case "status":
-        item[1] = Object.keys(item[1])[0];
-    }
-  });
+    const metadata = detail.onchainData?.meta
+      ? Object.entries(detail.onchainData?.meta)
+      : [];
 
-  detail.status = detail.onchainData?.state?.state;
+    metadata.forEach((item) => {
+      switch (item[0]) {
+        case "proposer":
+        case "beneficiary":
+          item[1] = (
+            <Flex>
+              <User chain={chain} add={item[1]} fontSize={14} />
+              <Links
+                chain={chain}
+                address={item[1]}
+                style={{ marginLeft: 8 }}
+              />
+            </Flex>
+          );
+          break;
+        case "value":
+        case "bond":
+          item[1] = `${toPrecision(item[1] ?? 0, decimals)} ${symbol}`;
+          break;
+        case "status":
+          item[1] = Object.keys(item[1])[0];
+      }
+    });
 
-  return (
-    <Layout user={loginUser} chain={chain}>
-      <Wrapper className="post-content">
-        <Back href={`/treasury/bounties`} text="Back to Bounties" />
-        <DetailItem
-          data={detail}
-          user={loginUser}
+    detail.status = detail.onchainData?.state?.state;
+
+    const desc = getMetaDesc(detail, "Bounty");
+    return (
+      <Layout user={loginUser} chain={chain}>
+        <SEO
+          title={detail?.title}
+          desc={desc}
+          siteUrl={siteUrl}
           chain={chain}
-          onReply={focusEditor}
-          type={TYPE_TREASURY_BOUNTY}
         />
-        <Metadata data={metadata} />
-        <Timeline data={timelineData} chain={chain} />
-        <CommentsWrapper>
-          <Comments
-            data={comments}
+        <Wrapper className="post-content">
+          <Back href={`/treasury/bounties`} text="Back to Bounties" />
+          <DetailItem
+            data={detail}
             user={loginUser}
-            postId={postId}
             chain={chain}
-            onReply={onReply}
+            onReply={focusEditor}
+            type={TYPE_TREASURY_BOUNTY}
           />
-          {loginUser && (
-            <Input
+          <Metadata data={metadata} />
+          <Timeline data={timelineData} chain={chain} />
+          <CommentsWrapper>
+            <Comments
+              data={comments}
+              user={loginUser}
               postId={postId}
               chain={chain}
-              ref={editorWrapperRef}
-              setQuillRef={setQuillRef}
-              {...{ contentType, setContentType, content, setContent, users }}
-              type={TYPE_TREASURY_BOUNTY}
+              onReply={onReply}
             />
-          )}
-        </CommentsWrapper>
-      </Wrapper>
-    </Layout>
-  );
-});
+            {loginUser && (
+              <Input
+                postId={postId}
+                chain={chain}
+                ref={editorWrapperRef}
+                setQuillRef={setQuillRef}
+                {...{ contentType, setContentType, content, setContent, users }}
+                type={TYPE_TREASURY_BOUNTY}
+              />
+            )}
+          </CommentsWrapper>
+        </Wrapper>
+      </Layout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
@@ -208,6 +228,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
+      siteUrl: process.env.SITE_URL,
     },
   };
 });

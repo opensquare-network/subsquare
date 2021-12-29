@@ -1,12 +1,11 @@
 import styled from "styled-components";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import dynamic from "next/dynamic";
 
 import Layout from "components/layout";
-import Agreement from "components/agreement";
 import Button from "components/button";
 import Input from "components/input";
 import { useForm } from "utils/hooks";
@@ -16,6 +15,7 @@ import { setUser } from "store/reducers/userSlice";
 import { useAuthPage } from "utils/hooks";
 import { withLoginUser, withLoginUserRedux } from "../lib";
 import { shadow_100 } from "../styles/componentCss";
+import NextHead from "../components/nextHead";
 
 const AddressLogin = dynamic(() => import("components/addressLogin"), {
   ssr: false,
@@ -35,7 +35,7 @@ const ContentWrapper = styled.div`
   border: 1px solid #ebeef4;
   ${shadow_100};
   border-radius: 6px;
-  width: 360px;
+  width: 400px;
   margin: 0 auto;
   padding: 48px;
   > :not(:first-child) {
@@ -50,6 +50,7 @@ const Title = styled.div`
   font-weight: bold;
   font-size: 20px;
   text-align: center;
+  line-height: 20px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -74,6 +75,7 @@ const Label = styled.div`
   font-weight: bold;
   font-size: 12px;
   margin-bottom: 8px;
+  line-height: 12px;
   :not(:first-child) {
     margin-top: 16px;
   }
@@ -99,6 +101,8 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
+  const { redirect } = router.query;
+
   const { formData, handleInputChange, handleSubmit } = useForm(
     {
       usernameOrEmail: "",
@@ -109,7 +113,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       const res = await nextApi.post("auth/login", formData);
       if (res.result) {
         dispatch(setUser(res.result));
-        router.replace(`/`);
+        router.replace(redirect || `/`);
       } else if (res.error) {
         setErrors(res.error);
       }
@@ -121,6 +125,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
   return (
     <Layout user={loginUser} chain={chain} isWeb3Login={web3}>
+      <NextHead title={`Login`} desc={`Login`} />
       <Wrapper>
         <ContentWrapper>
           <Title>Login</Title>
@@ -170,7 +175,6 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
             Don’t have a account? <Link href="/signup">Sign up</Link>
           </LinkWrapper>
         </ContentWrapper>
-        <Agreement />
       </Wrapper>
     </Layout>
   );
@@ -181,7 +185,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      chain
+      chain,
     },
   };
 });

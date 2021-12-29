@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Layout from "components/layout";
 import Back from "components/back";
@@ -11,13 +11,14 @@ import nextApi from "services/nextApi";
 import PreviewMD from "components/create/previewMD";
 import Toggle from "components/toggle";
 import ErrorText from "components/ErrorText";
-import UploadImgModal from "components/editor/imageModal";
+import InsertContentsModal from "components/editor/modal";
 import QuillEditor from "components/editor/quillEditor";
 import HtmlRender from "components/post/htmlRender";
 import { useDispatch } from "react-redux";
 import { addToast } from "store/reducers/toastSlice";
 import { fetchUserProfile } from "store/reducers/userSlice";
 import { shadow_100 } from "styles/componentCss";
+import NextHead from "../../components/nextHead";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -95,9 +96,11 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const [contentType, setContentType] = useState(
     loginUser?.preference.editor || "markdown"
   );
-  const [showImgModal, setShowImgModal] = useState(false);
-  const [insetQuillImgFunc, setInsetQuillImgFunc] = useState(null);
+  const [modalType, setModalType] = useState("image");
+  const [showModal, setShowModal] = useState(false);
+  const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
   const [errors, setErrors] = useState();
+  const [editorHeight, setEditorHeight] = useState(200);
 
   const onCreate = async () => {
     const result = await nextApi.post(`posts`, {
@@ -148,6 +151,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
   return (
     <Layout user={loginUser} chain={chain}>
+      <NextHead title={`Create post`} desc={``} />
       <Wrapper>
         <Back href={`/discussions`} text="Back to Discussions" />
         <ContentWrapper>
@@ -162,20 +166,23 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
             <ErrorText>{errors?.data?.title?.[0]}</ErrorText>
           )}
           {contentType === "html" && (
-            <UploadImgModal
-              showImgModal={showImgModal}
-              setShowImgModal={setShowImgModal}
-              insetQuillImgFunc={insetQuillImgFunc}
+            <InsertContentsModal
+              showModal={showModal}
+              setShowModal={setShowModal}
+              insetQuillContentsFunc={insetQuillContentsFunc}
+              type={modalType}
             />
           )}
           <Label>Issue</Label>
           <InputWrapper>
             {contentType === "markdown" && (
               <MarkdownEditor
-                height={200}
+                height={editorHeight}
+                setEditorHeight={setEditorHeight}
                 content={content}
                 setContent={setContent}
                 visible={!showPreview}
+                isCreate={true}
               />
             )}
             {contentType === "html" && (
@@ -183,16 +190,24 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
                 visible={!showPreview}
                 content={content}
                 setContent={setContent}
-                height={201}
-                setModalInsetImgFunc={(insetImgFunc) => {
-                  setShowImgModal(true);
-                  setInsetQuillImgFunc(insetImgFunc);
+                height={editorHeight}
+                setEditorHeight={setEditorHeight}
+                setModalInsetFunc={(insetQuillContentFunc, type = "image") => {
+                  setModalType(type);
+                  setShowModal(true);
+                  setInsetQuillContentsFunc(insetQuillContentFunc);
                 }}
+                isCreate={true}
               />
             )}
             {!showPreview && (
               <InputSwitch>
-                <img src="/imgs/icons/markdown-mark.svg" alt="" width={26} height={16} />
+                <img
+                  src="/imgs/icons/markdown-mark.svg"
+                  alt=""
+                  width={26}
+                  height={16}
+                />
                 <Toggle
                   size="small"
                   isOn={contentType === "markdown"}
@@ -204,9 +219,15 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
           {showPreview && (
             <PreviewWrapper className="preview">
               {contentType === "markdown" && (
-                <PreviewMD content={content} setContent={setContent} />
+                <PreviewMD
+                  content={content}
+                  setContent={setContent}
+                  maxHeight={editorHeight}
+                />
               )}
-              {contentType === "html" && <HtmlRender html={content} />}
+              {contentType === "html" && (
+                <HtmlRender html={content} maxHeight={editorHeight} />
+              )}
             </PreviewWrapper>
           )}
           {errors?.data?.content?.[0] && (

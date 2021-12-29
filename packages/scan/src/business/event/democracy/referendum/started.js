@@ -1,10 +1,11 @@
 const {
-  Modules,
-  TechnicalCommitteeEvents,
-} = require("../../../common/constants");
-const {
   insertSoloReferendum,
 } = require("../../../common/democracy/referendum/insert");
+const {
+  business: {
+    consts: { Modules, TechnicalCommitteeEvents },
+  },
+} = require("@subsquare/scan-common");
 
 async function handleStarted(event, indexer, blockEvents = []) {
   const { eventIndex } = indexer;

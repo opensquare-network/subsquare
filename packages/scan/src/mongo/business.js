@@ -1,4 +1,7 @@
 const { MongoClient } = require("mongodb");
+const {
+  env: { isKarura },
+} = require("@subsquare/scan-common");
 
 function getDbName() {
   const dbName = process.env.MONGO_DB_BUSINESS_DATA_NAME;
@@ -24,6 +27,9 @@ let treasuryProposalCol = null;
 let democracyCol = null;
 let bountyCol = null;
 
+let techCommMotion = null;
+let financialMotion = null;
+
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
     useUnifiedTopology: true,
@@ -35,6 +41,11 @@ async function initDb() {
   treasuryProposalCol = db.collection("treasuryProposal");
   democracyCol = db.collection("democracy");
   bountyCol = db.collection("bounty");
+
+  techCommMotion = db.collection("techCommMotion");
+  if (isKarura()) {
+    financialMotion = db.collection("financialMotion");
+  }
 
   await _createIndexes();
 }
@@ -79,10 +90,26 @@ async function getBountyCollection() {
   return bountyCol;
 }
 
+async function getTechCommCollection() {
+  await tryInit(techCommMotion);
+  return techCommMotion;
+}
+
+async function getFinancialMotionCollection() {
+  await tryInit(financialMotion);
+  return financialMotion;
+}
+
 module.exports = {
   getBusinessTipCollection: getTipCollection,
   getBusinessMotionCollection: getMotionCollection,
   getBusinessTreasuryProposalCollection: getTreasuryProposalCollection,
   getBusinessDemocracy: getDemocracy,
   getBusinessBountyCollection: getBountyCollection,
+  getBusinessTechCommMotionCollection: getTechCommCollection,
+  ...(isKarura()
+    ? {
+        getBusinessFinancialMotionCollection: getFinancialMotionCollection,
+      }
+    : {}),
 };

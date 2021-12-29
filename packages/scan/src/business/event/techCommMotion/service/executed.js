@@ -5,35 +5,23 @@ const {
   updateTechCommMotionByHash,
 } = require("../../../../mongo/service/onchain/techCommMotion");
 const {
-  TimelineItemTypes,
-  TechnicalCommitteeEvents,
-} = require("../../../common/constants");
+  business: {
+    getCollectiveExecutedCommonFields,
+    consts: { Modules },
+  },
+} = require("@subsquare/scan-common");
 
 async function handleExecuted(event, extrinsic, indexer, blockEvents) {
-  const eventData = event.data.toJSON();
-  const [hash, dispatchResult] = eventData;
+  const { hash, isOk, updates, timelineItem } =
+    await getCollectiveExecutedCommonFields(
+      event,
+      indexer,
+      Modules.TechnicalCommittee
+    );
 
-  const state = {
-    state: TechnicalCommitteeEvents.Executed,
-    data: eventData,
-    indexer,
-  };
-
-  const timelineItem = {
-    type: TimelineItemTypes.event,
-    method: TechnicalCommitteeEvents.Executed,
-    args: {
-      hash,
-      dispatchResult,
-    },
-    indexer,
-  };
-
-  if (Object.keys(dispatchResult).includes("ok")) {
+  if (isOk) {
     await handleBusinessWhenTechCommMotionExecuted(hash, indexer, blockEvents);
   }
-
-  const updates = { state, isFinal: true };
   await updateTechCommMotionByHash(hash, updates, timelineItem);
 }
 

@@ -1,33 +1,15 @@
+const { getCouncilName } = require("../../../common/motion/utils");
 const { handleBusinessWhenMotionVoted } = require("./hooks/voted");
-const {
-  getVotingFromStorage,
-} = require("../../../common/motion/votingStorage");
-const {
-  TimelineItemTypes,
-  CouncilEvents,
-} = require("../../../common/constants");
 const {
   updateMotionByHash,
 } = require("../../../../mongo/service/onchain/motion");
+const {
+  business: { getCollectiveVotedCommonFields },
+} = require("@subsquare/scan-common");
 
-async function handleVoted(event, extrinsic, indexer) {
-  const eventData = event.data.toJSON();
-  const [voter, hash, approve, yesVotes, noVotes] = eventData;
-
-  const voting = await getVotingFromStorage(hash, indexer);
-  const updates = { voting };
-  const timelineItem = {
-    type: TimelineItemTypes.event,
-    method: CouncilEvents.Voted,
-    args: {
-      voter,
-      hash,
-      approve,
-      yesVotes,
-      noVotes,
-    },
-    indexer,
-  };
+async function handleVoted(event, indexer) {
+  const { hash, updates, timelineItem, voting } =
+    await getCollectiveVotedCommonFields(event, indexer, getCouncilName());
 
   await updateMotionByHash(hash, updates, timelineItem);
   await handleBusinessWhenMotionVoted(hash, voting, indexer);

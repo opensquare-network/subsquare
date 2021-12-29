@@ -9,7 +9,7 @@ import nextApi from "services/nextApi";
 import ErrorText from "components/ErrorText";
 import QuillEditor from "../editor/quillEditor";
 import HtmlRender from "../post/htmlRender";
-import UploadImgModal from "../editor/imageModal";
+import InsertContentsModal from "../editor/modal";
 import { fetchUserProfile } from "store/reducers/userSlice";
 import { useDispatch } from "react-redux";
 import Relative from "components/styled/relative";
@@ -76,9 +76,10 @@ function Input(
   const dispatch = useDispatch();
   const router = useRouter();
   const [showPreview, setShowPreview] = useState(false);
-  const [showImgModal, setShowImgModal] = useState(false);
-  const [insetQuillImgFunc, setInsetQuillImgFunc] = useState(null);
-
+  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState("image");
+  const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
+  const [editorHeight, setEditorHeight] = useState(100);
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -156,16 +157,18 @@ function Input(
   return (
     <Wrapper>
       {contentType === "html" && (
-        <UploadImgModal
-          showImgModal={showImgModal}
-          setShowImgModal={setShowImgModal}
-          insetQuillImgFunc={insetQuillImgFunc}
+        <InsertContentsModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          insetQuillContentsFunc={insetQuillContentsFunc}
+          type={modalType}
         />
       )}
       <Relative ref={ref}>
         {contentType === "markdown" && (
           <MarkdownEditor
-            height={114}
+            height={editorHeight}
+            setEditorHeight={setEditorHeight}
             {...{ content, users }}
             setContent={onInputChange}
             visible={!showPreview}
@@ -176,12 +179,14 @@ function Input(
             visible={!showPreview}
             {...{ content, users }}
             setContent={onInputChange}
-            height={114}
-            setModalInsetImgFunc={(insetImgFunc) => {
-              setShowImgModal(true);
-              setInsetQuillImgFunc(insetImgFunc);
+            height={editorHeight}
+            setModalInsetFunc={(insetFunc, type) => {
+              setModalType(type);
+              setShowModal(true);
+              setInsetQuillContentsFunc(insetFunc);
             }}
             setQuillRef={setQuillRef}
+            setEditorHeight={setEditorHeight}
           />
         )}
         {!showPreview && (
@@ -203,9 +208,15 @@ function Input(
       {showPreview && (
         <PreviewWrapper className="preview">
           {contentType === "markdown" && (
-            <PreviewMD content={content} setContent={setContent} />
+            <PreviewMD
+              content={content}
+              setContent={setContent}
+              maxHeight={editorHeight}
+            />
           )}
-          {contentType === "html" && <HtmlRender html={content} />}
+          {contentType === "html" && (
+            <HtmlRender html={content} maxHeight={editorHeight} />
+          )}
         </PreviewWrapper>
       )}
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}

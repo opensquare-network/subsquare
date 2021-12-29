@@ -1,4 +1,8 @@
-const { Modules, TipEvents } = require("../../common/constants");
+const {
+  business: {
+    consts: { Modules, TipEvents },
+  },
+} = require("@subsquare/scan-common");
 const { saveNewTip } = require("./store");
 const {
   updateTipWithClosing,

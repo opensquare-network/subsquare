@@ -5,19 +5,21 @@ const {
   insertDemocracyPostByExternal,
 } = require("../../../../mongo/service/business/democracy");
 const {
-  TimelineItemTypes,
-  DemocracyExternalEvents,
-  DemocracyExternalStates,
-} = require("../../../common/constants");
-const {
   getDemocracyExternalUnFinished,
   insertDemocracyExternal,
   finishExternalByHash,
   updateDemocracyExternalByHash,
 } = require("../../../../mongo/service/onchain/democracyExternal");
 const {
-  getExternalFromStorageByHeight,
-} = require("../../../common/democracy/external");
+  business: {
+    getExternalFromStorageByHeight,
+    consts: {
+      TimelineItemTypes,
+      DemocracyExternalEvents,
+      DemocracyExternalStates,
+    },
+  },
+} = require("@subsquare/scan-common");
 
 async function _insertExternal(eventIndexer, proposalHash, voteThreshold) {
   const state = {
@@ -40,6 +42,8 @@ async function _insertExternal(eventIndexer, proposalHash, voteThreshold) {
     state,
     isFinal: false,
     timeline: [timelineItem],
+    techCommMotions: [],
+    motions: [],
   };
 
   await insertDemocracyExternal(externalObj);

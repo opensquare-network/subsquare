@@ -1,21 +1,23 @@
+const withTM = require("next-transpile-modules")(["@subsquare/next-common"]);
+
 module.exports = {
-  webpack(config,{ webpack }) {
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ["@svgr/webpack"],
-    });
-
-    // config.module.rules.push({
-    //   test: /\.scss$/,
-    //   use: ["@svgr/webpack"],
-    // });
-
+  ...withTM(),
+  webpack(config, { webpack }) {
+    config.module.rules.push(
+      {
+        test: /\.svg$/,
+        use: ["@svgr/webpack"],
+      },
+      {
+        test: /\.md$/,
+        use: "raw-loader",
+      }
+    );
     config.plugins.push(
       new webpack.ProvidePlugin({
-        'window.Quill': 'quill'
+        "window.Quill": "quill",
       })
-    )
-
+    );
     return config;
   },
 };

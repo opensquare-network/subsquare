@@ -1,7 +1,9 @@
 const { getTipMetaFromStorage } = require("./utils");
 const { getTipByHash } = require("../../../mongo/service/tip");
 const { getTippersCount, getTipFindersFee } = require("./utils");
-const { getApi } = require("../../../api");
+const {
+  chain: { findBlockApi },
+} = require("@subsquare/scan-common");
 
 function median(values) {
   if (!Array.isArray(values)) {
@@ -27,8 +29,8 @@ async function getTipCommonUpdates(hash, indexer) {
     throw new Error(`can not find tip in db. hash: ${hash}`);
   }
 
-  const api = await getApi();
-  const newMeta = await getTipMetaFromStorage(api, hash, indexer);
+  const blockApi = await findBlockApi(indexer.blockHash);
+  const newMeta = await getTipMetaFromStorage(blockApi, hash, indexer);
   const meta = {
     ...tipInDb.meta,
     tips: newMeta.tips,

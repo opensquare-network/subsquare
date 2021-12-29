@@ -6,11 +6,15 @@ const {
   updateDemocracyExternalByHash,
 } = require("../../../../../mongo/service/onchain/democracyExternal");
 const {
-  Modules,
-  ReferendumEvents,
-  DemocracyExternalStates,
-  TimelineItemTypes,
-} = require("../../../../common/constants");
+  business: {
+    consts: {
+      Modules,
+      ReferendumEvents,
+      DemocracyExternalStates,
+      TimelineItemTypes,
+    },
+  },
+} = require("@subsquare/scan-common");
 const { getTechCommMotionCollection } = require("../../../../../mongo");
 
 async function handleBusinessWhenTechCommMotionExecuted(
@@ -26,8 +30,8 @@ async function handleBusinessWhenTechCommMotionExecuted(
     );
   }
 
-  const { isDemocracy, externalProposalHash, proposal } = motion;
-  if (!isDemocracy) {
+  const { externalProposals, proposal } = motion;
+  if ((externalProposals || []).length <= 0) {
     return;
   }
 
@@ -37,6 +41,7 @@ async function handleBusinessWhenTechCommMotionExecuted(
     );
   }
 
+  const { hash: externalProposalHash } = externalProposals[0];
   const referendumStartedEvent = blockEvents.find(
     ({ event }) =>
       event.section === Modules.Democracy &&

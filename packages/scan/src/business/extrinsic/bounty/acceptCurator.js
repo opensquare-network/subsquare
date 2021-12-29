@@ -1,11 +1,10 @@
 const { updateBounty } = require("../../../mongo/service/onchain/bounty");
-const { getBountyMeta } = require("../../common/bounty/meta");
 const {
-  Modules,
-  BountyMethods,
-  TimelineItemTypes,
-  BountyStatus,
-} = require("../../common/constants");
+  business: {
+    getBountyMeta,
+    consts: { Modules, BountyMethods, TimelineItemTypes, BountyStatus },
+  },
+} = require("@subsquare/scan-common");
 
 function isBountyModule(section) {
   return [Modules.Treasury, Modules.Bounties].includes(section);

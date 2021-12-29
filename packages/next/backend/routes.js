@@ -12,6 +12,7 @@ const chainFeatureRouters = [
   require("./features/external-proposals/routes"),
   require("./features/referendums/routes"),
   require("./features/tech-comm/motions/routes"),
+  require("./features/financial-motions/routes"),
   require("./features/comments/routes"),
   require("./features/overview/routes"),
 ];
@@ -27,10 +28,7 @@ module.exports = (app) => {
   }
 
   for (const r of chainFeatureRouters) {
-    router.use(
-      r.routes(),
-      r.allowedMethods({ throw: true })
-    );
+    router.use(r.routes(), r.allowedMethods({ throw: true }));
   }
   app.use(router.routes());
 };

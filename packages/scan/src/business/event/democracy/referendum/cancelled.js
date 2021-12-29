@@ -2,12 +2,11 @@ const {
   updateDemocracyReferendum,
 } = require("../../../../mongo/service/onchain/democracyReferendum");
 const {
-  ReferendumEvents,
-  TimelineItemTypes,
-} = require("../../../common/constants");
-const {
-  getReferendumInfoByHeight,
-} = require("../../../common/democracy/referendum/referendumStorage");
+  business: {
+    consts: { ReferendumEvents, TimelineItemTypes },
+    getReferendumInfoByHeight,
+  },
+} = require("@subsquare/scan-common");
 
 async function handleCancelled(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();

@@ -15,8 +15,9 @@ import {
   toTreasuryBountyListItem,
   toTreasuryProposalListItem,
 } from "utils/viewfuncs";
+import SEO from "components/SEO";
 
-export default withLoginUserRedux(({ overview, loginUser, chain }) => {
+export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
   const overviewData = [
     {
       category: "Discussions",
@@ -74,12 +75,21 @@ export default withLoginUserRedux(({ overview, loginUser, chain }) => {
     },
   ];
 
+  // Sort the items with length = 0 to the end of the list
+  overviewData.sort((a, b) =>
+    a.items.length > 0 && b.items.length > 0
+      ? 0
+      : b.items.length - a.items.length
+  );
+
   return (
-    <Layout
-      user={loginUser}
-      left={<Menu menu={getMainMenu(chain)} />}
-      chain={chain}
-    >
+    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+      <SEO
+        title={`SubSquare`}
+        desc={`SubSquare`}
+        siteUrl={siteUrl}
+        chain={chain}
+      />
       <Overview overviewData={overviewData} chain={chain} />
     </Layout>
   );
@@ -94,6 +104,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       chain,
       overview: result ?? null,
+      siteUrl: process.env.SITE_URL,
     },
   };
 });

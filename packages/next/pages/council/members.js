@@ -6,8 +6,9 @@ import Layout from "components/layout";
 import { useApi, useCall } from "utils/hooks";
 import { useEffect, useState } from "react";
 import { getNode } from "utils";
+import SEO from "components/SEO";
 
-export default withLoginUserRedux(({ loginUser, chain }) => {
+export default withLoginUserRedux(({ loginUser, chain, siteUrl }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const api = useApi(chain);
@@ -38,11 +39,13 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   }, [electionsInfo, allVotes]);
 
   return (
-    <Layout
-      user={loginUser}
-      left={<Menu menu={getMainMenu(chain)} />}
-      chain={chain}
-    >
+    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+      <SEO
+        title={`Council members`}
+        desc={`Council members`}
+        siteUrl={siteUrl}
+        chain={chain}
+      />
       <MembersList
         chain={chain}
         category={"Council Members"}
@@ -60,6 +63,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       chain,
+      siteUrl: process.env.SITE_URL,
     },
   };
 });

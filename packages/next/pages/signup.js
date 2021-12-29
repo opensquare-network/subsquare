@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
 import Layout from "components/layout";
-import Agreement from "components/agreement";
 import Button from "components/button";
 import Input from "components/input";
 import { useForm, useIsMounted } from "utils/hooks";
@@ -15,6 +14,8 @@ import { withLoginUser, withLoginUserRedux } from "../lib";
 import { useDispatch } from "react-redux";
 import { addToast } from "store/reducers/toastSlice";
 import { shadow_100 } from "../styles/componentCss";
+import NextHead from "../components/nextHead";
+import UserPolicy from "components/userPolicy";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -31,7 +32,7 @@ const ContentWrapper = styled.div`
   border: 1px solid #ebeef4;
   ${shadow_100};
   border-radius: 6px;
-  width: 360px;
+  width: 400px;
   margin: 0 auto;
   padding: 48px;
 
@@ -52,6 +53,7 @@ const Title = styled.div`
   font-weight: bold;
   font-size: 20px;
   text-align: center;
+  line-height: 20px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -76,16 +78,11 @@ const Label = styled.div`
   font-weight: bold;
   font-size: 12px;
   margin-bottom: 8px;
+  line-height: 12px;
 
   :not(:first-child) {
     margin-top: 16px;
   }
-`;
-
-const ForgetPassword = styled.div`
-  margin-top: 8px;
-  color: #9da9bb;
-  font-size: 12px;
 `;
 
 const InfoWrapper = styled.div`
@@ -122,6 +119,8 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const [loading, setLoading] = useState(false);
   const [sendEmailState, setSendEmailState] = useState(false);
   const [countdown, setCountdown] = useState(3);
+  const [checked, setChecked] = useState(false);
+  const [agreeError, setAgreeError] = useState();
   const isMounted = useIsMounted();
 
   const { formData, handleInputChange, handleSubmit } = useForm(
@@ -131,6 +130,10 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       password: "",
     },
     async (formData) => {
+      if (!checked) {
+        setAgreeError("You must accept our terms");
+        return;
+      }
       setLoading(true);
       const res = await nextApi.post("auth/signup", formData);
       if (res.result) {
@@ -195,6 +198,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
   return (
     <Layout user={loginUser} chain={chain}>
+      <NextHead title={`Signup`} desc={`Signup`} />
       <Wrapper>
         {!success && (
           <ContentWrapper>
@@ -235,10 +239,13 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
                 {errors?.message && !errors?.data && (
                   <ErrorText>{errors?.message}</ErrorText>
                 )}
-                <ForgetPassword>
-                  <Link href="/forget">Forget password?</Link>
-                </ForgetPassword>
               </InputWrapper>
+              <UserPolicy
+                checked={checked}
+                setChecked={setChecked}
+                agreeError={agreeError}
+                setAgreeError={setAgreeError}
+              />
               <ButtonWrapper>
                 <Button isFill secondary type="submit" isLoading={loading}>
                   Sign up
@@ -272,7 +279,6 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
             )}
           </ContentWrapper>
         )}
-        <Agreement />
       </Wrapper>
     </Layout>
   );
@@ -283,7 +289,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      chain
+      chain,
     },
   };
 });

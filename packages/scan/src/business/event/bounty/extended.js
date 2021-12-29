@@ -1,13 +1,13 @@
 const { updateBounty } = require("../../../mongo/service/onchain/bounty");
-const {
-  Modules,
-  BountyMethods,
-  TimelineItemTypes,
-} = require("../../common/constants");
-const { findCallInSections } = require("../../common/call/findCall");
-const { getRealCaller } = require("../../common/call/getRealCaller");
-const { getBountyMeta } = require("../../common/bounty/meta");
 const { hexToString } = require("@polkadot/util");
+const {
+  business: {
+    consts: { Modules, BountyMethods, TimelineItemTypes },
+    findCallInSections,
+    getRealCaller,
+    getBountyMeta,
+  },
+} = require("@subsquare/scan-common");
 
 async function handleExtended(event, indexer, extrinsic) {
   const eventData = event.data.toJSON();

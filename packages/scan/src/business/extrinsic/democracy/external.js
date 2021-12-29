@@ -4,13 +4,17 @@ const {
 const {
   insertDemocracyExternal,
 } = require("../../../mongo/service/onchain/democracyExternal");
-const { getExternalFromStorage } = require("../../common/democracy/external");
 const {
-  Modules,
-  TimelineItemTypes,
-  DemocracyMethods,
-  DemocracyExternalStates,
-} = require("../../common/constants");
+  business: {
+    getExternalFromStorage,
+    consts: {
+      Modules,
+      TimelineItemTypes,
+      DemocracyMethods,
+      DemocracyExternalStates,
+    },
+  },
+} = require("@subsquare/scan-common");
 
 function isExternalProposeCall(call) {
   return (
@@ -53,6 +57,8 @@ async function handleExternalPropose(call, signer, extrinsicIndexer) {
     authors: [signer],
     isFinal: false,
     timeline: [timelineItem],
+    techCommMotions: [],
+    motions: [],
   };
 
   await insertDemocracyExternal(externalObj);

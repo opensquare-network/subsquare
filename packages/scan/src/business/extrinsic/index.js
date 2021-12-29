@@ -1,20 +1,24 @@
+const { handleFinancialCouncilPropose } = require("./financialCouncil/propose");
 const { handleCouncilPropose } = require("./council/propose");
 const { handleAcceptCurator } = require("./bounty/acceptCurator");
 const { handleTechCommPropose } = require("./techComm/propose");
-const { findRegistry } = require("../../chain/specs");
 const { handleFastTrack } = require("./democracy/fastTrack");
 const { handleExternalPropose } = require("./democracy/external");
-const { calcMultisigAddress } = require("../../utils/call");
-const { extractExtrinsicEvents, isExtrinsicSuccess } = require("../../utils");
-const {
-  Modules,
-  MultisigMethods,
-  ProxyMethods,
-  UtilityMethods,
-  SudoMethods,
-} = require("../common/constants");
 const { GenericCall } = require("@polkadot/types");
 const { handleTipCall } = require("../extrinsic/tip");
+const {
+  chain: { findBlockApi },
+  business: {
+    consts: {
+      Modules,
+      MultisigMethods,
+      ProxyMethods,
+      UtilityMethods,
+      SudoMethods,
+    },
+  },
+  utils: { calcMultisigAddress, isExtrinsicSuccess, extractExtrinsicEvents },
+} = require("@subsquare/scan-common");
 
 async function handleCall(call, author, extrinsicIndexer, events) {
   await handleTipCall(call, author, extrinsicIndexer, events);
@@ -23,6 +27,7 @@ async function handleCall(call, author, extrinsicIndexer, events) {
   await handleTechCommPropose(...arguments);
   await handleAcceptCurator(...arguments);
   await handleCouncilPropose(...arguments);
+  await handleFinancialCouncilPropose(...arguments);
 }
 
 async function unwrapProxy(call, signer, extrinsicIndexer, events) {
@@ -32,17 +37,17 @@ async function unwrapProxy(call, signer, extrinsicIndexer, events) {
 }
 
 async function handleMultisig(call, signer, extrinsicIndexer, events) {
-  const registry = await findRegistry(extrinsicIndexer);
+  const blockApi = await findBlockApi(extrinsicIndexer.blockHash);
   const callHex = call.args[3];
   const threshold = call.args[0].toNumber();
   const otherSignatories = call.args[1].toJSON();
   const multisigAddr = calcMultisigAddress(
     [signer, ...otherSignatories],
     threshold,
-    registry.chainSS58
+    blockApi.registry.chainSS58
   );
 
-  const innerCall = new GenericCall(registry, callHex);
+  const innerCall = new GenericCall(blockApi.registry, callHex);
   await handleWrappedCall(innerCall, multisigAddr, extrinsicIndexer);
 }
 

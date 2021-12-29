@@ -15,12 +15,7 @@ import User from "components/user";
 import EditInput from "components/editInput";
 import { useRouter } from "next/router";
 import Flex from "../styled/flex";
-import dynamic from "next/dynamic";
-
-const Markdown = dynamic(
-  () => import("components/markdown").catch((e) => console.error(e)),
-  { ssr: false }
-);
+import MicromarkMd from "components/micromarkMd";
 
 const Wrapper = styled.div`
   position: relative;
@@ -162,6 +157,7 @@ export default function Item({ user, data, chain, onReply }) {
   const [comment, setComment] = useState(data);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [highlight, setHighlight] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
 
@@ -241,7 +237,7 @@ export default function Item({ user, data, chain, onReply }) {
         <>
           <ContentWrapper>
             {comment.contentType === "markdown" && (
-              <Markdown
+              <MicromarkMd
                 md={comment.content}
                 contentVersion={comment.contentVersion}
               />
@@ -304,13 +300,15 @@ export default function Item({ user, data, chain, onReply }) {
         <EditInput
           editContent={comment.content}
           editContentType={comment.contentType}
-          onFinishedEdit={(reload) => {
+          onFinishedEdit={async (reload) => {
             if (reload) {
-              updateComment();
+              await updateComment();
             }
             setIsEdit(false);
           }}
           update={editComment}
+          loading={loading}
+          setLoading={setLoading}
         />
       )}
     </Wrapper>

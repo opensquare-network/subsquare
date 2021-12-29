@@ -1,10 +1,12 @@
 const {
-  getExternalFromStorage,
-} = require("../../../../common/democracy/external");
-const {
   insertDemocracyPostByExternal,
 } = require("../../../../../mongo/service/business/democracy");
-const { DemocracyExternalStates } = require("../../../../common/constants");
+const {
+  business: {
+    consts: { DemocracyExternalStates },
+    getExternalFromStorage,
+  },
+} = require("@subsquare/scan-common");
 const {
   insertDemocracyExternal,
   updateDemocracyExternalByHash,
@@ -18,26 +20,26 @@ async function handleBusinessWhenTechCommMotionProposed(
   const {
     indexer: techCommMotionIndexer,
     hash: techCommMotionHash,
-    isDemocracy,
-    externalProposalHash,
     index: techCommMotionIndex,
     authors,
     proposer,
+    externalProposals,
   } = motionObj;
-  if (!isDemocracy) {
+  if ((externalProposals || []).length <= 0) {
     return;
   }
 
+  const { hash: externalProposalHash } = externalProposals[0];
   const col = await getDemocracyExternalCollection();
   const maybeInDb = await col.findOne({
     proposalHash: externalProposalHash,
     isFinal: false,
   });
   if (maybeInDb) {
-    await updateDemocracyExternalByHash(externalProposalHash, {
-      techCommMotionIndex,
-      techCommMotionHash,
-      techCommMotionIndexer,
+    await updateDemocracyExternalByHash(externalProposalHash, null, null, {
+      index: techCommMotionIndex,
+      hash: techCommMotionHash,
+      indexer: techCommMotionIndexer,
     });
     return;
   }
@@ -57,6 +59,14 @@ async function handleBusinessWhenTechCommMotionProposed(
     authors,
     isFinal: true,
     timeline: [],
+    techCommMotions: [
+      {
+        index: techCommMotionIndex,
+        hash: techCommMotionHash,
+        indexer: techCommMotionIndexer,
+      },
+    ],
+    motions: [],
   };
 
   await insertDemocracyExternal(externalObj);

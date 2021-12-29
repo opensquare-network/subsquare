@@ -2,30 +2,20 @@ const {
   updateTechCommMotionByHash,
 } = require("../../../../mongo/service/onchain/techCommMotion");
 const {
-  TimelineItemTypes,
-  TechnicalCommitteeEvents,
-} = require("../../../common/constants");
+  business: {
+    getCollectiveDisApprovedCommonFields,
+    consts: { Modules },
+  },
+} = require("@subsquare/scan-common");
 
 async function handleDisApproved(event, extrinsic, indexer) {
-  const eventData = event.data.toJSON();
-  const [hash] = eventData;
+  const { hash, updates, timelineItem } =
+    await getCollectiveDisApprovedCommonFields(
+      event,
+      indexer,
+      Modules.TechnicalCommittee
+    );
 
-  const state = {
-    state: TechnicalCommitteeEvents.Disapproved,
-    data: eventData,
-    indexer,
-  };
-
-  const timelineItem = {
-    type: TimelineItemTypes.event,
-    method: TechnicalCommitteeEvents.Disapproved,
-    args: {
-      hash,
-    },
-    indexer,
-  };
-
-  const updates = { state, isFinal: true };
   await updateTechCommMotionByHash(hash, updates, timelineItem);
 }
 

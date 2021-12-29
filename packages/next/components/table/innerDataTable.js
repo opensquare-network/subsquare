@@ -1,5 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import Placeholder from "./placeholder";
 
 const Wrapper = styled.div`
   overflow-x: auto;
@@ -73,6 +74,9 @@ const StyledTd = styled.td`
 `;
 
 export default function InnerDataTable({ data, nested = false }) {
+  if (Object.keys(data)?.length === 0) {
+    return <Placeholder />;
+  }
   if (React.isValidElement(data)) {
     return data;
   }

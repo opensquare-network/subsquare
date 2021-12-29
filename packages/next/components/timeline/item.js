@@ -101,7 +101,7 @@ const ContentWrapper = styled.div`
 const ContentItem = styled(Flex)`
   align-items: flex-start;
   justify-content: space-between;
-  word-break: break-all;
+  word-break: break-word;
   > :first-child {
     color: #506176;
     line-height: 28px;
@@ -144,7 +144,7 @@ export default function Item({ data, foldable, isFold, setIsFold, chain }) {
           <div>{data.time}</div>
           {data.status && data.status.value && (
             <TagWrapper>
-              <Tag name={data.status.value} />
+              <Tag name={data.status.value} data={data} />
             </TagWrapper>
           )}
           <FoldButton
@@ -181,7 +181,7 @@ export default function Item({ data, foldable, isFold, setIsFold, chain }) {
             ) : (
               <div>
                 Nay
-                <img src="/imgs/icons/reject.svg" alt=""/>
+                <img src="/imgs/icons/reject.svg" alt="" />
               </div>
             )}
           </VoteResultWrapper>

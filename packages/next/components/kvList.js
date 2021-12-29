@@ -63,23 +63,26 @@ const Content = styled.div`
 `;
 
 function KVList({ data, title }) {
-  if (!data) {
+  if (!data || data?.length === 0) {
     return null;
   }
   return (
     <Wrapper>
       <Title>{title}</Title>
-      {data.map((row, index) => (
-        <Row key={index}>
-          {row.length === 1 && row[0]}
-          {row.length === 2 && (
-            <>
-              <Header>{row[0]}</Header>
-              <Content>{row[1]}</Content>
-            </>
-          )}
-        </Row>
-      ))}
+      {data.map(
+        (row, index) =>
+          row && (
+            <Row key={index}>
+              {row.length === 1 && row[0]}
+              {row.length === 2 && (
+                <>
+                  <Header>{row[0]}</Header>
+                  <Content>{row[1]}</Content>
+                </>
+              )}
+            </Row>
+          )
+      )}
     </Wrapper>
   );
 }

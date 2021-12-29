@@ -12,6 +12,8 @@ import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_POST } from "utils/viewConstants";
+import { getMetaDesc } from "utils/viewfuncs";
+import SEO from "components/SEO";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -37,66 +39,74 @@ const CommentsWrapper = styled.div`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
-  const postId = detail._id;
+export default withLoginUserRedux(
+  ({ loginUser, detail, comments, siteUrl, chain }) => {
+    const postId = detail._id;
 
-  const editorWrapperRef = useRef(null);
-  const [quillRef, setQuillRef] = useState(null);
-  const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown"
-  );
+    const editorWrapperRef = useRef(null);
+    const [quillRef, setQuillRef] = useState(null);
+    const [content, setContent] = useState("");
+    const [contentType, setContentType] = useState(
+      loginUser?.preference.editor || "markdown"
+    );
 
-  const users = getMentionList(comments);
+    const users = getMentionList(comments);
 
-  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
+    const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
-  const onReply = getOnReply(
-    contentType,
-    content,
-    setContent,
-    quillRef,
-    focusEditor
-  );
+    const onReply = getOnReply(
+      contentType,
+      content,
+      setContent,
+      quillRef,
+      focusEditor
+    );
 
-  return (
-    <Layout user={loginUser} chain={chain}>
-      <Wrapper className="post-content">
-        <Back href={`/discussions`} text="Back to Discussions" />
-        <DetailItem
-          data={detail}
-          user={loginUser}
+    const desc = getMetaDesc(detail, "Discussion");
+    return (
+      <Layout user={loginUser} chain={chain}>
+        <SEO
+          title={detail?.title}
+          desc={desc}
+          siteUrl={siteUrl}
           chain={chain}
-          onReply={focusEditor}
-          type={TYPE_POST}
         />
-        <CommentsWrapper>
-          <Comments
-            data={comments}
+        <Wrapper className="post-content">
+          <Back href={`/discussions`} text="Back to Discussions" />
+          <DetailItem
+            data={detail}
             user={loginUser}
-            postId={postId}
             chain={chain}
-            onReply={onReply}
+            onReply={focusEditor}
+            type={TYPE_POST}
           />
-          {loginUser && (
-            <Input
+          <CommentsWrapper>
+            <Comments
+              data={comments}
+              user={loginUser}
               postId={postId}
               chain={chain}
-              ref={editorWrapperRef}
-              setQuillRef={setQuillRef}
-              {...{ contentType, setContentType, content, setContent, users }}
-              type={TYPE_POST}
+              onReply={onReply}
             />
-          )}
-        </CommentsWrapper>
-      </Wrapper>
-    </Layout>
-  );
-});
+            {loginUser && (
+              <Input
+                postId={postId}
+                chain={chain}
+                ref={editorWrapperRef}
+                setQuillRef={setQuillRef}
+                {...{ contentType, setContentType, content, setContent, users }}
+                type={TYPE_POST}
+              />
+            )}
+          </CommentsWrapper>
+        </Wrapper>
+      </Layout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-
   const { id, page, page_size: pageSize } = context.query;
 
   const [{ result: detail }] = await Promise.all([
@@ -119,6 +129,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
+      siteUrl: process.env.SITE_URL,
     },
   };
 });

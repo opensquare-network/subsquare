@@ -11,15 +11,17 @@ const {
   insertDemocracyPostByExternal,
 } = require("../../../mongo/service/business/democracy");
 const {
-  getExternalFromStorageByHeight,
-} = require("../../common/democracy/external");
-const {
-  Modules,
-  DemocracyMethods,
-  DemocracyExternalStates,
-  ReferendumEvents,
-  TimelineItemTypes,
-} = require("../../common/constants");
+  business: {
+    getExternalFromStorageByHeight,
+    consts: {
+      Modules,
+      DemocracyMethods,
+      DemocracyExternalStates,
+      ReferendumEvents,
+      TimelineItemTypes,
+    },
+  },
+} = require("@subsquare/scan-common");
 
 function isFastTrackCall(call) {
   return (
@@ -132,6 +134,8 @@ async function insertExternal(call, signer, extrinsicIndexer) {
     state,
     isFinal: false,
     timeline: [timelineItem],
+    techCommMotions: [],
+    motions: [],
   };
 
   await insertDemocracyExternal(externalObj);

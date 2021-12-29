@@ -2,9 +2,10 @@ const {
   updateDemocracyExternalByHash,
 } = require("../../../../mongo/service/onchain/democracyExternal");
 const {
-  TimelineItemTypes,
-  DemocracyExternalEvents,
-} = require("../../../common/constants");
+  business: {
+    consts: { TimelineItemTypes, DemocracyExternalEvents },
+  },
+} = require("@subsquare/scan-common");
 
 async function handleVetoed(event, extrinsic, indexer) {
   const eventData = event.data.toJSON();

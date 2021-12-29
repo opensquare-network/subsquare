@@ -6,21 +6,26 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
 import Layout from "components/layout";
 import { toTipListItem } from "utils/viewfuncs";
+import SEO from "components/SEO";
+import Summary from "components/summary";
 
-export default withLoginUserRedux(({ loginUser, tips, chain }) => {
+export default withLoginUserRedux(({ loginUser, tips, chain, siteUrl }) => {
   const items = (tips.items || []).map((item) => toTipListItem(chain, item));
 
   return (
-    <Layout
-      user={loginUser}
-      left={<Menu menu={getMainMenu(chain)} />}
-      chain={chain}
-    >
+    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+      <SEO
+        title={`Treasury Tips`}
+        desc={`Treasury Tips`}
+        siteUrl={siteUrl}
+        chain={chain}
+      />
       <List
         chain={chain}
         category={"Tips"}
         create={null}
         items={items}
+        summary={<Summary chain={chain} />}
         pagination={{
           page: tips.page,
           pageSize: tips.pageSize,
@@ -47,6 +52,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       chain,
       tips: tips ?? EmptyList,
+      siteUrl: process.env.SITE_URL,
     },
   };
 });

@@ -1,10 +1,12 @@
 const { getNextScanHeight } = require("../mongo/scanHeight");
 const { scanNormalizedBlock } = require("./block");
 const { updateScanHeight } = require("../mongo/scanHeight");
-const { logger } = require("../logger");
 const last = require("lodash.last");
-const { fetchBlocksFromNode } = require("../service/fetchBlocks");
 const { getNextKnownHeights } = require("../mongo/known");
+const {
+  log: { logger },
+  chain: { fetchBlocksFromNode },
+} = require("@subsquare/scan-common");
 
 async function scanKnownHeights() {
   const toScanHeight = await getNextScanHeight();

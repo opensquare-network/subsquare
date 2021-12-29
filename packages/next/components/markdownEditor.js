@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import ReactMde from "react-mde";
 
@@ -21,7 +21,7 @@ icons.set("quote", <Quote />);
 icons.set("ordered-list", <OrderedList />);
 icons.set("unordered-list", <UnorderedList />);
 icons.set("link", <Link />);
-icons.set("image", <ImageIcon/>);
+icons.set("image", <ImageIcon />);
 icons.set("code", <Code />);
 
 export const StyledTextArea = styled.div`
@@ -46,6 +46,10 @@ export const StyledTextArea = styled.div`
   }
 
   textarea {
+    resize: none;
+    overflow-y: scroll;
+    min-height: 100px;
+    max-height: 300px;
     color: #000 !important;
     padding: 0.75rem 1rem !important;
     line-height: 1.375 !important;
@@ -56,7 +60,6 @@ export const StyledTextArea = styled.div`
   .mde-tabs {
     display: none !important;
   }
-  
 
   .react-mde {
     border: none;
@@ -70,7 +73,7 @@ export const StyledTextArea = styled.div`
         margin-bottom: 1rem;
       }
     }
-    
+
     .mde-textarea-wrapper {
       border-top-style: solid;
       border-top-width: 1px;
@@ -205,9 +208,12 @@ export const StyledTextArea = styled.div`
 const MarkdownEditor = ({
   content,
   setContent,
+  setEditorHeight,
   users = [],
   height = 100,
   visible = true,
+  readOnly = false,
+  isCreate = false,
 }) => {
   const loadSuggestions = async (text) => {
     return new Promise((accept) => {
@@ -222,6 +228,22 @@ const MarkdownEditor = ({
   };
 
   const [focused, setFocused] = useState(false);
+  const [userResized, setUserResized] = useState(false);
+
+  const ref = useRef();
+
+  useEffect(() => {
+    const textarea = ref?.current?.finalRefs?.textarea?.current;
+    const body = document.getElementsByTagName("body")[0];
+    if (textarea && !body.onmouseup) {
+      body.onmouseup = function () {
+        if (textarea?.style?.height !== `${height}px`) {
+          setUserResized(true);
+        }
+        setEditorHeight(parseInt(textarea?.style?.height));
+      };
+    }
+  }, [height, setEditorHeight]);
 
   return (
     <StyledTextArea
@@ -229,9 +251,22 @@ const MarkdownEditor = ({
       visible={visible}
     >
       <ReactMde
+        ref={ref}
+        readOnly={readOnly}
         initialEditorHeight={height}
         value={content}
-        onChange={(targetValue) => setContent(targetValue)}
+        onChange={(content) => {
+          const textarea = ref?.current?.finalRefs?.textarea?.current;
+          if (textarea && !userResized) {
+            textarea.style.height = `${100}px`;
+            if (isCreate) {
+              textarea.style.height = `${200}px`;
+            }
+            textarea.style.height = textarea.scrollHeight + "px";
+            setEditorHeight(textarea.scrollHeight);
+          }
+          setContent(content);
+        }}
         loadSuggestions={loadSuggestions}
         toolbarCommands={[
           [

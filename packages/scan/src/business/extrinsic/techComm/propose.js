@@ -1,18 +1,22 @@
 const {
+  insertTechCommMotionPost,
+} = require("../../../mongo/service/business/techCommMotion");
+const {
+  extractTechCommMotionBusiness,
+} = require("../../common/techComm/extractBusiness");
+const {
   insertTechCommMotion,
 } = require("../../../mongo/service/onchain/techCommMotion");
 const {
   handleBusinessWhenTechCommMotionProposed,
 } = require("../../event/techCommMotion/service/hooks/proposed");
 const {
-  extractBusinessFields,
-} = require("../../event/techCommMotion/service/proposed");
-const { normalizeCall } = require("../../common/motion/utils");
-const {
-  Modules,
-  TechnicalCommitteeMethods,
-  TechnicalCommitteeEvents,
-} = require("../../common/constants");
+  business: {
+    consts: { Modules, TechnicalCommitteeMethods },
+    isSingleMemberCollectivePropose,
+    extractCommonFieldsFromSinglePropose,
+  },
+} = require("@subsquare/scan-common");
 
 function isTechCommProposeCall(call) {
   return (
@@ -31,44 +35,33 @@ async function handleTechCommPropose(
     return;
   }
 
-  const threshold = call.args[0].toNumber();
-  if (threshold >= 2) {
+  if (!isSingleMemberCollectivePropose(call, extrinsicEvents)) {
     return;
   }
 
-  const proposedEvent = extrinsicEvents.find(
-    ({ event }) =>
-      Modules.TechnicalCommittee === event.section &&
-      TechnicalCommitteeEvents.Proposed === event.method
-  );
-  if (proposedEvent) {
-    // If there is proposed event, we just handle it in event business handling, not here.
-    return;
-  }
-
-  const executedEvent = extrinsicEvents.find(
-    ({ event }) =>
-      Modules.TechnicalCommittee === event.section &&
-      TechnicalCommitteeEvents.Executed === event.method
+  const fields = extractCommonFieldsFromSinglePropose(
+    call,
+    signer,
+    extrinsicIndexer,
+    extrinsicEvents,
+    Modules.TechnicalCommittee
   );
 
-  const [motionHash] = executedEvent.event.data.toJSON();
-  const proposal = normalizeCall(call.args[1]);
+  const { externalProposals } = await extractTechCommMotionBusiness(
+    call.args[1],
+    signer,
+    extrinsicIndexer,
+    extrinsicEvents
+  );
 
   const obj = {
-    indexer: extrinsicIndexer,
-    hash: motionHash,
-    proposer: signer,
-    threshold,
-    authors: [signer],
-    ...extractBusinessFields(proposal),
-    proposal,
-    isFinal: false,
-    timeline: [],
+    ...fields,
+    externalProposals,
   };
 
   await handleBusinessWhenTechCommMotionProposed(obj, extrinsicIndexer);
   await insertTechCommMotion(obj);
+  await insertTechCommMotionPost(extrinsicIndexer, motionHash, null, signer);
 }
 
 module.exports = {

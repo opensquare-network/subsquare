@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { safeHtml } = require("../utils/post");
-const { PostTitleLengthLimitation } = require("../constants");
+const { PostTitleLengthLimitation, Day } = require("../constants");
 const {
   getDb: getBusinessDb,
   getTreasuryProposalCollection,
@@ -30,7 +30,7 @@ async function updatePost(postId, title, content, contentType, author) {
   });
 
   if (!chainProposal) {
-    throw new HttpError(403, "On-chain data is not found");
+    throw new HttpError(404, "On-chain data is not found");
   }
 
   if (!chainProposal.authors.includes(author[`${chain}Address`])) {
@@ -68,6 +68,7 @@ async function updatePost(postId, title, content, contentType, author) {
 
 async function getActivePostsOverview() {
   const chain = process.env.CHAIN;
+
   const chainProposalCol = await getChainTreasuryProposalCollection();
   const proposals = await chainProposalCol
     .find(
@@ -79,7 +80,6 @@ async function getActivePostsOverview() {
       }
     )
     .sort({ "indexer.blockHeight": -1 })
-    .limit(3)
     .toArray();
 
   const commonDb = await getCommonDb();
@@ -110,13 +110,17 @@ async function getActivePostsOverview() {
     }),
   ]);
 
-  return proposals.map((proposal) => {
+  const result = proposals.map((proposal) => {
     const post = proposal.post;
     proposal.post = undefined;
     post.onchainData = proposal;
     post.state = proposal.state?.state;
     return post;
   });
+
+  return result
+    .filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day)
+    .slice(0, 3);
 }
 
 async function getPostsByChain(page, pageSize) {
@@ -220,14 +224,15 @@ async function getPostById(postId) {
     chainMotionCol
       .find({
         index: {
-          $in: (treasuryProposalData?.motions?.map(m => m.index) || [])
-        }
+          $in: treasuryProposalData?.motions?.map((m) => m.index) || [],
+        },
       })
       .toArray(),
   ]);
 
   return {
     ...post,
+    authors: treasuryProposalData.authors,
     onchainData: {
       ...treasuryProposalData,
       motions,

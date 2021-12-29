@@ -1,23 +1,26 @@
-import React, {useState} from "react";
-import styled, {css} from "styled-components";
+import React, { useEffect, useState } from "react";
+import styled, { css } from "styled-components";
 import dynamic from "next/dynamic";
 
-const MyReactQuill = dynamic(() => import("./quill").catch(e => console.error(e)), {ssr: false});
+const MyReactQuill = dynamic(
+  () => import("./quill").catch((e) => console.error(e)),
+  { ssr: false }
+);
 
 export const StyledTextArea = styled.div`
   ${(props) =>
-          props &&
-          !props.visible &&
-          css`
-            visibility: hidden;
-            height: 0 !important;
-          `}
+    props &&
+    !props.visible &&
+    css`
+      visibility: hidden;
+      height: 0 !important;
+    `}
   ${(props) =>
-          props &&
-          props.visible &&
-          css`
-            min-height: 114px;
-          `}
+    props &&
+    props.visible &&
+    css`
+      min-height: 100px;
+    `}
   border: 1px solid #dddddd;
   border-radius: 0.25rem;
 
@@ -41,26 +44,33 @@ export const StyledTextArea = styled.div`
   .quill {
     overflow: hidden;
     .ql-editor {
-      min-height: ${(props) => props.height}px !important;
-      max-height: 300px;
+      min-height: 100px;
+      ${(props) =>
+        props &&
+        props.isCreate &&
+        css`
+          min-height: 200px;
+        `}
+      max-height: ${(props) => props.height}px;
       overflow: hidden;
       overflow-y: auto;
       overflow-x: auto;
       word-break: break-all;
 
-      span.mention, span.mention span {
+      span.mention,
+      span.mention span {
         background-color: #fff;
-        color: #0974CD;
+        color: #0974cd;
       }
     }
-    
+
     .ql-toolbar.ql-snow {
       @media screen and (max-width: 768px) {
         white-space: nowrap;
         margin-right: 90px;
         ::-webkit-scrollbar {
           display: none;
-        } 
+        }
       }
     }
 
@@ -85,27 +95,41 @@ export const StyledTextArea = styled.div`
 `;
 
 const QuillEditor = ({
-                       content,
-                       setContent,
-                       setModalInsetImgFunc,
-                       users = [],
-                       height = 100,
-                       visible = true,
-                       setQuillRef = null
-                     }) => {
+  content,
+  setContent,
+  setModalInsetFunc,
+  users = [],
+  height = 100,
+  setEditorHeight = null,
+  visible = true,
+  setQuillRef = null,
+  readOnly = false,
+  isCreate = false,
+}) => {
   const [focused, setFocused] = useState(false);
+  const [ref, setRef] = useState(null);
 
   return (
     <StyledTextArea
-      className={"post-content " + (focused ? "container focused" : "container")}
+      className={
+        "post-content " + (focused ? "container focused" : "container")
+      }
       visible={visible}
-      height={height}
+      height={height >= 300 ? 300 : height}
+      isCreate={isCreate}
     >
       <MyReactQuill
-        setQuillRef={setQuillRef}
+        setQuillRef={(ref) => {
+          setQuillRef && setQuillRef(ref);
+          setRef(ref);
+        }}
         value={content}
         onChange={(content, delta, source, editor) => {
-          setContent(content)
+          setContent(content);
+          if (ref?.current?.editingArea) {
+            console.log(ref?.current?.editingArea.children[0].scrollHeight);
+            setEditorHeight(ref?.current?.editingArea.children[0].scrollHeight);
+          }
         }}
         onFocus={() => {
           setFocused(true);
@@ -114,7 +138,8 @@ const QuillEditor = ({
           setFocused(false);
         }}
         users={users}
-        setModalInsetImgFunc={setModalInsetImgFunc}
+        setModalInsetFunc={setModalInsetFunc}
+        readOnly={readOnly}
       />
     </StyledTextArea>
   );

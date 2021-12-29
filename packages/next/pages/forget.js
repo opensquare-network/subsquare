@@ -13,6 +13,7 @@ import { withLoginUser, withLoginUserRedux } from "../lib";
 import { useDispatch } from "react-redux";
 import { addToast } from "../store/reducers/toastSlice";
 import { shadow_100 } from "../styles/componentCss";
+import NextHead from "../components/nextHead";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -29,7 +30,7 @@ const ContentWrapper = styled.div`
   border: 1px solid #ebeef4;
   ${shadow_100};
   border-radius: 6px;
-  width: 360px;
+  width: 400px;
   margin: 0 auto;
   padding: 48px;
   > :not(:first-child) {
@@ -44,6 +45,7 @@ const Title = styled.div`
   font-weight: bold;
   font-size: 20px;
   text-align: center;
+  line-height: 20px;
 `;
 
 const InputWrapper = styled.div``;
@@ -52,6 +54,7 @@ const Label = styled.div`
   font-weight: bold;
   font-size: 12px;
   margin-bottom: 8px;
+  line-height: 12px;
   :not(:first-child) {
     margin-top: 16px;
   }
@@ -113,6 +116,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
   return (
     <Layout user={loginUser} chain={chain}>
+      <NextHead title={`Forget password`} desc={`Forget password`} />
       <Wrapper>
         {!success && (
           <ContentWrapper>
@@ -161,7 +165,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      chain
+      chain,
     },
   };
 });

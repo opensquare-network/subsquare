@@ -1,4 +1,3 @@
-const { findRegistry } = require("../../../chain/specs");
 const { getTipReason } = require("../../common/tip/utils");
 const { getTipMetaFromStorage } = require("../../common/tip/utils");
 const {
@@ -11,20 +10,22 @@ const {
   computeTipValue,
 } = require("../../common/tip/updates");
 const {
-  TipMethods,
-  TipEvents,
-  TimelineItemTypes,
-} = require("../../common/constants");
+  business: {
+    consts: { TipMethods, TipEvents, TimelineItemTypes },
+  },
+} = require("@subsquare/scan-common");
 const { getBlockHash } = require("../../common");
 const { insertTip, updateTipByHash } = require("../../../mongo/service/tip");
 const { insertTipPost } = require("../../../mongo/service/business/tip");
-const { getApi } = require("../../../api");
+const {
+  chain: { findBlockApi },
+} = require("@subsquare/scan-common");
 
 async function saveNewTip(event, extrinsic, indexer) {
   const [rawHash] = event.data;
   const hash = rawHash.toString();
-  const api = await getApi();
-  const meta = await getTipMetaFromStorage(api, hash, indexer);
+  const blockApi = await findBlockApi(indexer.blockHash);
+  const meta = await getTipMetaFromStorage(blockApi, hash, indexer);
 
   const signer = extrinsic.signer.toString();
   const authorSet = new Set();
@@ -35,9 +36,8 @@ async function saveNewTip(event, extrinsic, indexer) {
   const authors = [...authorSet];
 
   const reasonHash = meta.reason;
-  const registry = await findRegistry(indexer);
   const newTipCall = await getNewTipCall(
-    registry,
+    blockApi.registry,
     extrinsic.method,
     reasonHash
   );

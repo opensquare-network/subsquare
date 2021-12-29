@@ -9,6 +9,7 @@ import { useForm, useIsMounted } from "utils/hooks";
 import nextApi from "services/nextApi";
 import ErrorText from "components/ErrorText";
 import { withLoginUser, withLoginUserRedux } from "../lib";
+import NextHead from "../components/nextHead";
 
 const Wrapper = styled.div`
   padding: 32px 0;
@@ -21,11 +22,11 @@ const Wrapper = styled.div`
 const ContentWrapper = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
-  box-shadow:0 6px 7px rgba(30, 33, 52, 0.02),
-   0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-   0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
+    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
-  width: 360px;
+  width: 400px;
   margin: 0 auto;
   padding: 48px;
   > :not(:first-child) {
@@ -40,6 +41,7 @@ const Title = styled.div`
   font-weight: bold;
   font-size: 20px;
   text-align: center;
+  line-height: 20px;
 `;
 
 const InputWrapper = styled.div``;
@@ -48,6 +50,7 @@ const Label = styled.div`
   font-weight: bold;
   font-size: 12px;
   margin-bottom: 8px;
+  line-height: 12px;
   :not(:first-child) {
     margin-top: 16px;
   }
@@ -122,7 +125,8 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   }, [success, countdown, isMounted, router]);
 
   return (
-    <Layout user={loginUser} chain={chain} >
+    <Layout user={loginUser} chain={chain}>
+      <NextHead title={`Reset password`} desc={`Reset password`} />
       <Wrapper>
         {!success && (
           <ContentWrapper>
@@ -173,7 +177,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      chain
+      chain,
     },
   };
 });

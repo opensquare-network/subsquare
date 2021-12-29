@@ -153,14 +153,27 @@ export function matchMdLink(t) {
   return t.replace(expression, "[$1]($1) ");
 }
 
-export function getMainMenu(chain) {
-  const excludeMenus =
-    nodes.find((item) => item.value === chain)?.excludeMenus ?? [];
-
-  return mainMenu.map((subMenu) => {
-    return {
-      ...subMenu,
-      items: subMenu.items.filter((menu) => !excludeMenus.includes(menu.value)),
-    };
+export function abbreviateBigNumber(x, fixed = 2) {
+  const n = new BigNumber(x);
+  const fmt = {
+    decimalSeparator: ".",
+    groupSeparator: ",",
+    groupSize: 3,
+  };
+  let divideBy = new BigNumber("1");
+  const bigNumbers = [
+    { bigNumber: new BigNumber("1000"), abbr: "K" },
+    { bigNumber: new BigNumber("1000000"), abbr: "M" },
+    { bigNumber: new BigNumber("1000000000"), abbr: "B" },
+    { bigNumber: new BigNumber("1000000000000"), abbr: "T" },
+    { bigNumber: new BigNumber("1000000000000000"), abbr: "Q" },
+  ];
+  bigNumbers.forEach((data) => {
+    if (n.isGreaterThan(data.bigNumber)) {
+      divideBy = data.bigNumber;
+      fmt.suffix = data.abbr;
+    }
   });
+  BigNumber.config({ FORMAT: fmt });
+  return new BigNumber(n.dividedBy(divideBy).toFixed(fixed)).toFormat();
 }

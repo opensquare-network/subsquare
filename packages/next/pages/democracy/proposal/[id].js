@@ -23,6 +23,8 @@ import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
 import sortTimeline from "../../../utils/timeline/sort";
+import { getMetaDesc } from "../../../utils/viewfuncs";
+import SEO from "components/SEO";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -64,133 +66,142 @@ const DepositorsWrapper = styled.div`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
-  const postId = detail._id;
+export default withLoginUserRedux(
+  ({ loginUser, detail, comments, chain, siteUrl }) => {
+    const postId = detail._id;
 
-  const editorWrapperRef = useRef(null);
-  const [quillRef, setQuillRef] = useState(null);
-  const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown"
-  );
+    const editorWrapperRef = useRef(null);
+    const [quillRef, setQuillRef] = useState(null);
+    const [content, setContent] = useState("");
+    const [contentType, setContentType] = useState(
+      loginUser?.preference.editor || "markdown"
+    );
 
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
-
-  const getTimelineData = (args, method, chain) => {
-    switch (method) {
-      case "Proposed":
-        return {
-          Index: `#${args.index}`,
-        };
-      case "Tabled":
-        return {
-          "Referenda Index": `#${args.referendumIndex}`,
-          Deposit: `${toPrecision(args.deposit ?? 0, decimals)} ${symbol}`,
-          Depositors: (
-            <DepositorsWrapper>
-              {(args.depositors || []).map((item, index) => (
-                <User add={item} key={index} chain={chain} />
-              ))}
-            </DepositorsWrapper>
-          ),
-        };
+    const node = getNode(chain);
+    if (!node) {
+      return null;
     }
-    return args;
-  };
+    const decimals = node.decimals;
+    const symbol = node.symbol;
 
-  const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
-    return {
-      time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-      indexer: item.indexer,
-      status: getTimelineStatus("proposal", item.method ?? item.name),
-      data: getTimelineData(item.args, item.method ?? item.name, chain),
+    const getTimelineData = (args, method, chain) => {
+      switch (method) {
+        case "Proposed":
+          return {
+            Index: `#${args.index}`,
+          };
+        case "Tabled":
+          return {
+            "Referenda Index": `#${args.referendumIndex}`,
+            Deposit: `${toPrecision(args.deposit ?? 0, decimals)} ${symbol}`,
+            Depositors: (
+              <DepositorsWrapper>
+                {(args.depositors || []).map((item, index) => (
+                  <User add={item} key={index} chain={chain} />
+                ))}
+              </DepositorsWrapper>
+            ),
+          };
+      }
+      return args;
     };
-  });
-  sortTimeline(timelineData);
 
-  const users = getMentionList(comments);
+    const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
+      return {
+        time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+        indexer: item.indexer,
+        status: getTimelineStatus("proposal", item.method ?? item.name),
+        data: getTimelineData(item.args, item.method ?? item.name, chain),
+      };
+    });
+    sortTimeline(timelineData);
 
-  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
+    const users = getMentionList(comments);
 
-  const onReply = getOnReply(
-    contentType,
-    content,
-    setContent,
-    quillRef,
-    focusEditor
-  );
+    const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
-  const metadata = [
-    ["hash", detail.onchainData?.hash],
-    [
-      "deposit",
-      `${toPrecision(
-        detail.onchainData?.timeline?.find((item) => item.method === "Tabled")
-          ?.args?.deposit ?? 0,
-        decimals
-      )} ${symbol}`,
-    ],
-    [
-      "proposer",
-      <MetadataProposerWrapper>
-        <User chain={chain} add={detail.onchainData?.proposer} />
-        <Links chain={chain} address={detail.onchainData?.proposer} />
-      </MetadataProposerWrapper>,
-    ],
-  ];
+    const onReply = getOnReply(
+      contentType,
+      content,
+      setContent,
+      quillRef,
+      focusEditor
+    );
 
-  if (detail?.onchainData?.preImage) {
-    metadata.push([
-      <MotionProposal
-        motion={{ proposal: detail.onchainData.preImage.call }}
-        chain={chain}
-      />,
-    ]);
-  }
+    const metadata = [
+      ["hash", detail.onchainData?.hash],
+      [
+        "deposit",
+        `${toPrecision(
+          detail.onchainData?.timeline?.find((item) => item.method === "Tabled")
+            ?.args?.deposit ?? 0,
+          decimals
+        )} ${symbol}`,
+      ],
+      [
+        "proposer",
+        <MetadataProposerWrapper>
+          <User chain={chain} add={detail.onchainData?.proposer} />
+          <Links chain={chain} address={detail.onchainData?.proposer} />
+        </MetadataProposerWrapper>,
+      ],
+    ];
 
-  detail.status = detail.onchainData?.state?.state;
-
-  return (
-    <Layout user={loginUser} chain={chain}>
-      <Wrapper className="post-content">
-        <Back href={`/democracy/proposals`} text="Back to Proposals" />
-        <DetailItem
-          data={detail}
-          user={loginUser}
+    if (detail?.onchainData?.preImage) {
+      metadata.push([
+        <MotionProposal
+          motion={{ proposal: detail.onchainData.preImage.call }}
           chain={chain}
-          onReply={focusEditor}
-          type={TYPE_DEMOCRACY_PROPOSAL}
+        />,
+      ]);
+    }
+
+    detail.status = detail.onchainData?.state?.state;
+
+    const desc = getMetaDesc(detail, "Proposal");
+    return (
+      <Layout user={loginUser} chain={chain}>
+        <SEO
+          title={detail?.title}
+          desc={desc}
+          siteUrl={siteUrl}
+          chain={chain}
         />
-        <KVList title="Metadata" data={metadata} />
-        <Timeline data={timelineData} chain={chain} />
-        <CommentsWrapper>
-          <Comments
-            data={comments}
+        <Wrapper className="post-content">
+          <Back href={`/democracy/proposals`} text="Back to Proposals" />
+          <DetailItem
+            data={detail}
             user={loginUser}
-            postId={postId}
             chain={chain}
-            onReply={onReply}
+            onReply={focusEditor}
+            type={TYPE_DEMOCRACY_PROPOSAL}
           />
-          {loginUser && (
-            <Input
+          <KVList title="Metadata" data={metadata} />
+          <Timeline data={timelineData} chain={chain} />
+          <CommentsWrapper>
+            <Comments
+              data={comments}
+              user={loginUser}
               postId={postId}
               chain={chain}
-              ref={editorWrapperRef}
-              setQuillRef={setQuillRef}
-              {...{ contentType, setContentType, content, setContent, users }}
-              type={TYPE_DEMOCRACY_PROPOSAL}
+              onReply={onReply}
             />
-          )}
-        </CommentsWrapper>
-      </Wrapper>
-    </Layout>
-  );
-});
+            {loginUser && (
+              <Input
+                postId={postId}
+                chain={chain}
+                ref={editorWrapperRef}
+                setQuillRef={setQuillRef}
+                {...{ contentType, setContentType, content, setContent, users }}
+                type={TYPE_DEMOCRACY_PROPOSAL}
+              />
+            )}
+          </CommentsWrapper>
+        </Wrapper>
+      </Layout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
@@ -218,6 +229,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
+      siteUrl: process.env.SITE_URL,
     },
   };
 });

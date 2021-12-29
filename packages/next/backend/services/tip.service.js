@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { safeHtml } = require("../utils/post");
-const { PostTitleLengthLimitation } = require("../constants");
+const { PostTitleLengthLimitation, Day } = require("../constants");
 const { getDb: getBusinessDb, getTipCollection } = require("../mongo/business");
 const {
   getDb: getChainDb,
@@ -27,7 +27,7 @@ async function updatePost(postId, title, content, contentType, author) {
   });
 
   if (!chainTip) {
-    throw new HttpError(403, "On-chain data is not found");
+    throw new HttpError(404, "On-chain data is not found");
   }
 
   if (!chainTip.authors.includes(author[`${chain}Address`])) {
@@ -65,6 +65,7 @@ async function updatePost(postId, title, content, contentType, author) {
 
 async function getActivePostsOverview() {
   const chain = process.env.CHAIN;
+
   const chainTipCol = await getChainTipCollection();
   const tips = await chainTipCol
     .find(
@@ -76,7 +77,6 @@ async function getActivePostsOverview() {
       }
     )
     .sort({ "indexer.blockHeight": -1 })
-    .limit(3)
     .toArray();
 
   const commonDb = await getCommonDb();
@@ -107,7 +107,7 @@ async function getActivePostsOverview() {
     }),
   ]);
 
-  return tips.map((tip) => {
+  const result = tips.map((tip) => {
     const post = tip.post;
     tip.post = undefined;
     post.onchainData = tip;
@@ -117,6 +117,10 @@ async function getActivePostsOverview() {
     };
     return post;
   });
+
+  return result
+    .filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day)
+    .slice(0, 3);
 }
 
 async function getPostsByChain(page, pageSize) {
@@ -230,6 +234,7 @@ async function getPostById(postId) {
 
   return {
     ...post,
+    authors: tipData.authors,
     onchainData: tipData,
   };
 }

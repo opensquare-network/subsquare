@@ -87,7 +87,7 @@ const AutHideInfo = styled(Info)`
 `;
 
 const Title = styled.a`
-  word-break: break-all;
+  word-break: break-word;
   font-weight: 500;
   font-size: 16px;
   cursor: pointer;
@@ -110,7 +110,6 @@ const FooterWrapper = styled(Flex)`
 `;
 
 const TitleWrapper = styled.div`
-  margin-bottom: 8px;
   overflow: hidden;
 `;
 

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import Input from "components/input";
@@ -15,6 +15,7 @@ import { addToast } from "store/reducers/toastSlice";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import Layout from "components/layout";
 import { shadow_100 } from "styles/componentCss";
+import NextHead from "../../components/nextHead";
 
 const Wrapper = styled.div`
   max-width: 848px;
@@ -160,6 +161,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   return (
     <>
       <Layout chain={chain} user={loginUser} left={<Menu menu={settingMenu} />}>
+        <NextHead title={`Settings`} desc={``} />
         <Wrapper>
           <Title>Account</Title>
           <ContentWrapper>

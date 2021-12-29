@@ -1,22 +1,31 @@
 require("dotenv").config();
 
 const { scanNormalizedBlock } = require("./scan/block");
-const { getApi } = require("./api");
-const { setSpecHeights } = require("./chain/specs");
+const {
+  chain: {
+    getApi,
+    specs: { setSpecHeights },
+    fetchBlocks,
+  },
+} = require("@subsquare/scan-common");
 
 async function test() {
-  const blockHeights = [319291];
+  const blockHeights = [408662];
 
   for (const height of blockHeights) {
-    setSpecHeights([height - 1]);
+    await setSpecHeights([height - 1]);
 
     const api = await getApi();
     const blockHash = await api.rpc.chain.getBlockHash(height);
     const block = await api.rpc.chain.getBlock(blockHash);
     const allEvents = await api.query.system.events.at(blockHash);
 
+    await fetchBlocks();
+
     await scanNormalizedBlock(block.block, allEvents);
   }
+
+  console.log("finished");
 }
 
 test();

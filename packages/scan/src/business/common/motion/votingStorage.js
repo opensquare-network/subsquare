@@ -1,23 +1,20 @@
-const { findBlockApi } = require("../../../chain/specs");
-const { getApi } = require("../../../api");
-const { isKarura } = require("../../../env");
+const { getCouncilName } = require("./utils");
+const {
+  business: { getCollectiveVoting, getCollectiveVotingByHeight },
+} = require("@subsquare/scan-common");
 
 async function getMotionVoting(motionHash, indexer) {
-  const blockApi = await findBlockApi(indexer);
-
-  let raw;
-  if (isKarura()) {
-    raw = await blockApi.query.generalCouncil.voting(motionHash);
-  } else {
-    raw = await blockApi.query.council.voting(motionHash);
-  }
-  return raw.toJSON();
+  const councilModuleName = getCouncilName();
+  return getCollectiveVoting(motionHash, indexer, councilModuleName);
 }
 
 async function getVotingFromStorageByHeight(motionHash, blockHeight) {
-  const api = await getApi();
-  const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
-  return await getMotionVoting(motionHash, { blockHash, blockHeight });
+  const councilModuleName = getCouncilName();
+  return getCollectiveVotingByHeight(
+    motionHash,
+    blockHeight,
+    councilModuleName
+  );
 }
 
 module.exports = {

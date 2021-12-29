@@ -1,10 +1,11 @@
-import Head from "next/head";
+import Script from "next/script";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { Provider } from "react-redux";
 
 import "nprogress/nprogress.css";
 import "../styles/globals.css";
+import "public/prism.css";
 import { store } from "../store";
 import "../styles/richTextStyles.scss";
 import { connect } from "../services/websocket";
@@ -37,11 +38,8 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <Provider store={store}>
-      <Head>
-        <title>SubSquare</title>
-        <meta name="viewport" content="width=device-width, user-scalable=no" />
-      </Head>
       <Component {...pageProps} />
+      <Script src="/prism.js" />
     </Provider>
   );
 }

@@ -1,9 +1,10 @@
 const { handlePublicProposalTabled } = require("./tabled");
 const { saveNewPublicProposal } = require("./proposed");
 const {
-  Modules,
-  DemocracyPublicProposalEvents,
-} = require("../../../common/constants");
+  business: {
+    consts: { Modules, DemocracyPublicProposalEvents },
+  },
+} = require("@subsquare/scan-common");
 
 function isPublicProposalEvent(section, method) {
   if (![Modules.Democracy].includes(section)) {

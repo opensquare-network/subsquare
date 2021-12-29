@@ -19,12 +19,7 @@ import Actions from "./actions";
 import PostEdit from "./post/postEdit";
 import styled, { css } from "styled-components";
 import Flex from "./styled/flex";
-import dynamic from "next/dynamic";
-
-const Markdown = dynamic(
-  () => import("./markdown").catch((e) => console.error(e)),
-  { ssr: false }
-);
+import MicromarkMd from "./micromarkMd";
 
 const Wrapper = styled.div`
   :hover {
@@ -194,7 +189,7 @@ export default function ArticleContent({
     ownPost =
       isLoggedIn &&
       !!(user.addresses || []).find((item) =>
-        post?.onchainData?.authors?.includes(item.address)
+        post?.authors?.includes(item.address)
       );
   }
 
@@ -268,7 +263,7 @@ export default function ArticleContent({
           {post.content === "" && (
             <GreyWrapper>
               <span style={{ marginRight: 12 }}>Who can edit?</span>
-              {(post.onchainData?.authors || []).map((author) => (
+              {(post.authors || []).map((author) => (
                 <GreyItem key={author}>
                   <User
                     add={author}
@@ -281,7 +276,10 @@ export default function ArticleContent({
             </GreyWrapper>
           )}
           {post.contentType === "markdown" && (
-            <Markdown md={post.content} contentVersion={post.contentVersion} />
+            <MicromarkMd
+              md={post.content}
+              contentVersion={post.contentVersion}
+            />
           )}
           {post.contentType === "html" && <HtmlRender html={post.content} />}
           {post.createdAt !== post.updatedAt && (

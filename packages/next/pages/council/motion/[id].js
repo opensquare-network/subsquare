@@ -7,7 +7,7 @@ import Layout from "components/layout";
 import MotionDetail from "components/motion/councilMotionDetail";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_MOTION } from "utils/viewConstants";
-import { isMotionCompleted } from "../../../utils/viewfuncs";
+import { getMetaDesc, isMotionCompleted } from "../../../utils/viewfuncs";
 import { EmptyList } from "../../../utils/constants";
 import Comments from "../../../components/comment";
 import Input from "../../../components/comment/input";
@@ -18,6 +18,7 @@ import {
   getOnReply,
 } from "../../../utils/post";
 import { useRef, useState } from "react";
+import SEO from "components/SEO";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -40,58 +41,67 @@ const CommentsWrapper = styled.div`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
-  const users = getMentionList(comments);
-  motion.status = motion.state?.state;
-  const editorWrapperRef = useRef(null);
-  const [quillRef, setQuillRef] = useState(null);
-  const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown"
-  );
-  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
-  const onReply = getOnReply(
-    contentType,
-    content,
-    setContent,
-    quillRef,
-    focusEditor
-  );
+export default withLoginUserRedux(
+  ({ loginUser, motion, comments, chain, siteUrl }) => {
+    const users = getMentionList(comments);
+    motion.status = motion.state?.state;
+    const editorWrapperRef = useRef(null);
+    const [quillRef, setQuillRef] = useState(null);
+    const [content, setContent] = useState("");
+    const [contentType, setContentType] = useState(
+      loginUser?.preference.editor || "markdown"
+    );
+    const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
+    const onReply = getOnReply(
+      contentType,
+      content,
+      setContent,
+      quillRef,
+      focusEditor
+    );
 
-  return (
-    <Layout user={loginUser} chain={chain}>
-      <Wrapper className="post-content">
-        <Back href={`/council/motions`} text="Back to Motions" />
-        <MotionDetail
-          motion={motion}
-          user={loginUser}
+    const desc = getMetaDesc(motion, "Motion");
+    return (
+      <Layout user={loginUser} chain={chain}>
+        <SEO
+          title={motion?.title}
+          desc={desc}
+          siteUrl={siteUrl}
           chain={chain}
-          type={TYPE_MOTION}
-          onReply={onReply}
         />
-        <CommentsWrapper>
-          <Comments
-            data={comments}
+        <Wrapper className="post-content">
+          <Back href={`/council/motions`} text="Back to Motions" />
+          <MotionDetail
+            motion={motion}
             user={loginUser}
-            postId={motion._id}
             chain={chain}
+            type={TYPE_MOTION}
             onReply={onReply}
           />
-          {loginUser && (
-            <Input
+          <CommentsWrapper>
+            <Comments
+              data={comments}
+              user={loginUser}
               postId={motion._id}
               chain={chain}
-              ref={editorWrapperRef}
-              setQuillRef={setQuillRef}
-              {...{ contentType, setContentType, content, setContent, users }}
-              type={TYPE_MOTION}
+              onReply={onReply}
             />
-          )}
-        </CommentsWrapper>
-      </Wrapper>
-    </Layout>
-  );
-});
+            {loginUser && (
+              <Input
+                postId={motion._id}
+                chain={chain}
+                ref={editorWrapperRef}
+                setQuillRef={setQuillRef}
+                {...{ contentType, setContentType, content, setContent, users }}
+                type={TYPE_MOTION}
+              />
+            )}
+          </CommentsWrapper>
+        </Wrapper>
+      </Layout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
@@ -99,6 +109,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { id, page, page_size: pageSize } = context.query;
 
   const { result: motion } = await nextApi.fetch(`motions/${id}`);
+  if (!motion) {
+    to404(context);
+  }
+
   let external = null;
 
   if (isMotionCompleted(motion)) {
@@ -112,10 +126,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       }
     );
     external = { ...res.result, comments };
-  }
-
-  if (!motion) {
-    to404(context);
   }
 
   const motionId = motion._id;
@@ -133,6 +143,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       motion: motion ? { ...motion, external } : null,
       comments: comments ?? EmptyList,
       chain,
+      siteUrl: process.env.SITE_URL,
     },
   };
 });

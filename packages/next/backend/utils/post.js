@@ -23,7 +23,8 @@ const xssOptions = {
     h4: ["class"],
     h5: ["class"],
     h6: ["class"],
-    img: ["src", "width", "class"],
+    img: ["src", "width", "height", "class"],
+    iframe: ["src", "width", "height"],
   },
   stripIgnoreTag: true,
   stripIgnoreTagBody: ["script"],
@@ -33,7 +34,6 @@ const myXss = new xss.FilterXSS(xssOptions);
 function safeHtml(html) {
   return myXss.process(html);
 }
-
 
 function extractMentions(content, contentType) {
   const mentions = new Set();

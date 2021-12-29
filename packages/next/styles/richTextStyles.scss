@@ -16,7 +16,12 @@
   }
 
   .ql-toolbar.ql-snow .ql-formats {
-    margin-right: 8px;
+    margin-right: 0;
+  }
+
+  .ql-editor p {
+    margin-bottom: 1rem;
+    line-height: 1.375rem;
   }
 
   div.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="1"]::before {

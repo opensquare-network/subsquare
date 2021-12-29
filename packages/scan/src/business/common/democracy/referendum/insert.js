@@ -12,8 +12,12 @@ const {
 const {
   insertDemocracyReferendum,
 } = require("../../../../mongo/service/onchain/democracyReferendum");
-const { ReferendumEvents, TimelineItemTypes } = require("../../constants");
-const { getReferendumInfoFromStorage } = require("./referendumStorage");
+const {
+  business: {
+    consts: { ReferendumEvents, TimelineItemTypes },
+    getReferendumInfoFromStorage,
+  },
+} = require("@subsquare/scan-common");
 
 async function _extractCommonData(referendumStartedEvent, indexer) {
   const eventData = referendumStartedEvent.data.toJSON();
@@ -67,7 +71,8 @@ async function insertReferendumWithPublicProposal(
 
   await updateOrCreatePostByReferendumWithProposal(
     publicProposalIndex,
-    commonObj.referendumIndex
+    commonObj.referendumIndex,
+    indexer
   );
 }
 
