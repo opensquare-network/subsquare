@@ -53,10 +53,6 @@ export const toFinancialMotionsListItem = (chain, item) => ({
   },
   status: item.state ?? "Unknown",
   detailLink: `/financial-council/motion/${item.motionIndex}`,
-  isTreasury:
-    item?.onchainData?.treasuryProposals?.length > 0 ||
-    item?.onchainData?.treasuryBounties?.length > 0,
-  isDemocracy: item?.onchainData?.externalProposals?.length > 0,
   time: getPostUpdatedAt(item),
 });
 
