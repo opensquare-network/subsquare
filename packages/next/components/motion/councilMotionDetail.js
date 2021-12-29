@@ -243,7 +243,6 @@ export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
 
   if (motion?.onchainData?.externalProposals?.length > 0) {
     motion?.onchainData?.externalProposals?.forEach((external) => {
-      console.log(external);
       business.push([
         [
           "Link to",
