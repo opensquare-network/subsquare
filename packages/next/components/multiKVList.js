@@ -69,7 +69,7 @@ const Content = styled.div`
 `;
 
 function MultiKVList({ data, title }) {
-  if (!data) {
+  if (!data || data?.length === 0) {
     return null;
   }
   return (
