@@ -248,13 +248,13 @@ async function getPostById(postId) {
       : [],
     chainExternalProposal.techCommMotions?.length > 0
       ? chainTechCommMotionCol
-        .find({
-          $or: chainExternalProposal.techCommMotions.map((motion) => ({
-            hash: motion.hash,
-            "indexer.blockHeight": motion.indexer.blockHeight,
-          })),
-        })
-        .toArray()
+          .find({
+            $or: chainExternalProposal.techCommMotions.map((motion) => ({
+              hash: motion.hash,
+              "indexer.blockHeight": motion.indexer.blockHeight,
+            })),
+          })
+          .toArray()
       : [],
   ]);
 

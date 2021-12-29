@@ -5,7 +5,7 @@ const { nextPostUid } = require("./status.service");
 const {
   getCommentCollection,
   getReactionCollection,
-  getDb: getBusinessDb
+  getDb: getBusinessDb,
 } = require("../mongo/business");
 const { getUserCollection, lookupUser } = require("../mongo/common");
 const { HttpError } = require("../exc");
@@ -13,21 +13,15 @@ const { ContentType } = require("../constants");
 const mailService = require("./mail.service");
 
 function createService(postType) {
-
   async function getPostCollection() {
     const db = await getBusinessDb();
     return db.getCollection(postType);
   }
 
-  async function createPost(
-    title,
-    content,
-    contentType,
-    author,
-  ) {
+  async function createPost(title, content, contentType, author) {
     if (title.length > PostTitleLengthLimitation) {
       throw new HttpError(400, {
-        title: [ "Title must be no more than %d characters" ],
+        title: ["Title must be no more than %d characters"],
       });
     }
 
@@ -36,19 +30,17 @@ function createService(postType) {
     const now = new Date();
 
     const postCol = await getPostCollection();
-    const result = await postCol.insertOne(
-      {
-        postUid,
-        title,
-        content: contentType === ContentType.Html ? safeHtml(content) : content,
-        contentType,
-        contentVersion: "2",
-        author: author._id,
-        lastActivityAt: new Date(),
-        createdAt: now,
-        updatedAt: now,
-      }
-    );
+    const result = await postCol.insertOne({
+      postUid,
+      title,
+      content: contentType === ContentType.Html ? safeHtml(content) : content,
+      contentType,
+      contentVersion: "2",
+      author: author._id,
+      lastActivityAt: new Date(),
+      createdAt: now,
+      updatedAt: now,
+    });
 
     if (!result.acknowledged) {
       throw new HttpError(500, "Failed to create post");
@@ -57,13 +49,7 @@ function createService(postType) {
     return postUid;
   }
 
-  async function updatePost(
-    postId,
-    title,
-    content,
-    contentType,
-    author
-  ) {
+  async function updatePost(postId, title, content, contentType, author) {
     const postObjId = ObjectId(postId);
     const postCol = await getPostCollection();
     const post = await postCol.findOne({ _id: postObjId });
@@ -77,7 +63,7 @@ function createService(postType) {
 
     if (title.length > PostTitleLengthLimitation) {
       throw new HttpError(400, {
-        title: [ "Title must be no more than %d characters" ],
+        title: ["Title must be no more than %d characters"],
       });
     }
 
@@ -88,12 +74,13 @@ function createService(postType) {
       {
         $set: {
           title,
-          content: contentType === ContentType.Html ? safeHtml(content) : content,
+          content:
+            contentType === ContentType.Html ? safeHtml(content) : content,
           contentType,
           contentVersion: post.contentVersion ?? "2",
           updatedAt: now,
           lastActivityAt: now,
-        }
+        },
       }
     );
 
@@ -106,7 +93,8 @@ function createService(postType) {
 
   async function getPostsOverview() {
     const postCol = await getPostCollection();
-    const posts = await postCol.find({
+    const posts = await postCol
+      .find({
         lastActivityAt: { $gte: new Date(Date.now() - 7 * Day) },
       })
       .sort({ lastActivityAt: -1 })
@@ -137,7 +125,8 @@ function createService(postType) {
       page = Math.max(totalPages, 1);
     }
 
-    const posts = await postCol.find({})
+    const posts = await postCol
+      .find({})
       .sort({ lastActivityAt: -1 })
       .skip((page - 1) * pageSize)
       .limit(pageSize)
@@ -189,7 +178,7 @@ function createService(postType) {
 
     await lookupUser([
       { for: post, localField: "author" },
-      { for: reactions, localField: "user" }
+      { for: reactions, localField: "user" },
     ]);
 
     return post;
@@ -197,13 +186,16 @@ function createService(postType) {
 
   async function processPostThumbsUpNotification(post, reactionUser) {
     const userCol = await getUserCollection();
-    const postAuthor = await userCol.findOne({_id: post.author});
+    const postAuthor = await userCol.findOne({ _id: post.author });
 
     if (!postAuthor) {
       return;
     }
 
-    if (postAuthor.emailVerified && (postAuthor.notification?.thumbsUp ?? true)) {
+    if (
+      postAuthor.emailVerified &&
+      (postAuthor.notification?.thumbsUp ?? true)
+    ) {
       mailService.sendPostThumbsupEmail({
         email: postAuthor.email,
         postAuthor: postAuthor.username,
@@ -290,11 +282,13 @@ function createService(postType) {
     }
 
     const userCol = await getUserCollection();
-    const users = await userCol.find({
-      username: {
-        $in: Array.from(mentions),
-      },
-    }).toArray();
+    const users = await userCol
+      .find({
+        username: {
+          $in: Array.from(mentions),
+        },
+      })
+      .toArray();
 
     for (const user of users) {
       if (user.emailVerified && (user.notification?.mention ?? true)) {
@@ -312,17 +306,12 @@ function createService(postType) {
     }
   }
 
-  async function postComment(
-    postId,
-    content,
-    contentType,
-    author,
-  ) {
+  async function postComment(postId, content, contentType, author) {
     const postObjId = ObjectId(postId);
 
     const businessDb = await getBusinessDb();
     const postCol = businessDb.getCollection(postType);
-    const post = await postCol.findOne({_id: postObjId});
+    const post = await postCol.findOne({ _id: postObjId });
     if (!post) {
       throw new HttpError(400, "Post not found.");
     }
@@ -358,9 +347,9 @@ function createService(postType) {
       { _id: postObjId },
       {
         $set: {
-          lastActivityAt: new Date()
-        }
-      },
+          lastActivityAt: new Date(),
+        },
+      }
     );
 
     if (!updatePostResult.acknowledged) {
@@ -379,7 +368,10 @@ function createService(postType) {
     }).catch(console.error);
 
     if (post.author && !author._id.equals(post.author._id)) {
-      if (post.author.emailVerified && (post.author.notification?.reply ?? true)) {
+      if (
+        post.author.emailVerified &&
+        (post.author.notification?.reply ?? true)
+      ) {
         mailService.sendReplyEmail({
           email: post.author.email,
           replyToUser: post.author.username,
@@ -407,7 +399,8 @@ function createService(postType) {
       page = Math.max(totalPages, 1);
     }
 
-    const comments = await commentCol.find(q)
+    const comments = await commentCol
+      .find(q)
       .sort({ createdAt: 1 })
       .skip((page - 1) * pageSize)
       .limit(pageSize)

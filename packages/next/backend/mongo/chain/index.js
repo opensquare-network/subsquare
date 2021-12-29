@@ -4,7 +4,7 @@ const defaultDbNames = {
   kusama: "subsquare-ksm",
   karura: "subsquare-kar",
   khala: "subsquare-kha",
-}
+};
 
 let db = null;
 
@@ -38,17 +38,13 @@ module.exports = {
   getDb,
   getStatusCollection: () => getCollection("status"),
   getTipCollection: () => getCollection("tip"),
-  getTreasuryProposalCollection: () =>
-    getCollection("treasuryProposal"),
+  getTreasuryProposalCollection: () => getCollection("treasuryProposal"),
   getBountyCollection: () => getCollection("bounty"),
   getMotionCollection: () => getCollection("motion"),
-  getTechCommMotionCollection: () =>
-    getCollection("techCommMotion"),
+  getTechCommMotionCollection: () => getCollection("techCommMotion"),
   getFinancialMotionCollection: () => getCollection("financialMotion"),
-  getPublicProposalCollection: () =>
-    getCollection("democracyPublicProposal"),
-  getReferendumCollection: () =>
-    getCollection("democracyReferendum"),
+  getPublicProposalCollection: () => getCollection("democracyPublicProposal"),
+  getReferendumCollection: () => getCollection("democracyReferendum"),
   getExternalCollection: () => getCollection("democracyExternal"),
   getPreImageCollection: () => getCollection("democracyPreImage"),
 };

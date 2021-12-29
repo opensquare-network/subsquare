@@ -1,6 +1,6 @@
 import Overview from "components/overview";
 import Menu from "components/menu";
-import { mainMenu } from "utils/constants";
+import { getMainMenu } from "../utils";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import Layout from "components/layout";
@@ -76,11 +76,20 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
   ];
 
   // Sort the items with length = 0 to the end of the list
-  overviewData.sort((a, b) => (a.items.length > 0 && b.items.length > 0) ? 0 : b.items.length - a.items.length);
+  overviewData.sort((a, b) =>
+    a.items.length > 0 && b.items.length > 0
+      ? 0
+      : b.items.length - a.items.length
+  );
 
   return (
     <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
-      <SEO title={`SubSquare`} desc={`SubSquare`} siteUrl={siteUrl} chain={chain} />
+      <SEO
+        title={`SubSquare`}
+        desc={`SubSquare`}
+        siteUrl={siteUrl}
+        chain={chain}
+      />
       <Overview overviewData={overviewData} chain={chain} />
     </Layout>
   );

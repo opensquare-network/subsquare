@@ -240,18 +240,20 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
           {type === TYPE_DEMOCRACY_EXTERNAL && (
             <ReferendaWrapper>
               <div>{`External`}</div>
-              {
-                post?.onchainData?.techCommMotions?.map((techCommMotion, key) => (
+              {post?.onchainData?.techCommMotions?.map(
+                (techCommMotion, key) => (
                   <div key={key}>
                     <TriangleRight />
                     <Link
-                      href={`/techcomm/proposal/${getTechCommId(techCommMotion)}`}
+                      href={`/techcomm/proposal/${getTechCommId(
+                        techCommMotion
+                      )}`}
                     >
                       {`Tech. Comm. #${shortTechId(techCommMotion)}`}
                     </Link>
                   </div>
-                ))
-              }
+                )
+              )}
               {post?.referendumIndex !== undefined && (
                 <div>
                   <TriangleRight />
@@ -283,18 +285,20 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                 >
                   {`External`}
                 </Link>
-                {
-                  post?.onchainData?.techCommMotions?.map((techCommMotion, key) => (
+                {post?.onchainData?.techCommMotions?.map(
+                  (techCommMotion, key) => (
                     <div key={key}>
                       <TriangleRight />
                       <Link
-                        href={`/techcomm/proposal/${getTechCommId(techCommMotion)}`}
+                        href={`/techcomm/proposal/${getTechCommId(
+                          techCommMotion
+                        )}`}
                       >
                         {`Tech. Comm. #${shortTechId(techCommMotion)}`}
                       </Link>
                     </div>
-                  ))
-                }
+                  )
+                )}
                 <div>
                   <TriangleRight />
                   <div>{`Referenda #${post?.referendumIndex}`}</div>
@@ -333,10 +337,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                 </div>
               )}
               {postUpdatedTime && (
-                <Info>
-                  Updated{" "}
-                  {timeDurationFromNow(postUpdatedTime)}
-                </Info>
+                <Info>Updated {timeDurationFromNow(postUpdatedTime)}</Info>
               )}
               {post.commentsCount > -1 && (
                 <Info>{`${post.commentsCount} Comments`}</Info>

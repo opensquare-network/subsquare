@@ -78,168 +78,179 @@ const getClosedTimelineData = (timeline = []) => {
   return [fd, ...notFoldItems];
 };
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain, siteUrl }) => {
-  const postId = detail._id;
+export default withLoginUserRedux(
+  ({ loginUser, detail, comments, chain, siteUrl }) => {
+    const postId = detail._id;
 
-  const editorWrapperRef = useRef(null);
-  const [quillRef, setQuillRef] = useState(null);
-  const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown"
-  );
+    const editorWrapperRef = useRef(null);
+    const [quillRef, setQuillRef] = useState(null);
+    const [content, setContent] = useState("");
+    const [contentType, setContentType] = useState(
+      loginUser?.preference.editor || "markdown"
+    );
 
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
-
-  const getTimelineData = (args, method) => {
-    switch (method) {
-      case "reportAwesome":
-        return {
-          Finder: (
-            <FlexEnd>
-              <User chain={chain} add={args.finder} />
-            </FlexEnd>
-          ),
-          Beneficiary: (
-            <FlexEnd>
-              <User chain={chain} add={args.beneficiary} />
-            </FlexEnd>
-          ),
-          Reason: args.reason,
-        };
-      case "tip":
-        const value = args.award ? args.award : args.value;
-        return {
-          Tipper: (
-            <FlexEnd>
-              <User chain={chain} add={args.tipper} />
-            </FlexEnd>
-          ),
-          Value: `${toPrecision(value ?? 0, decimals)} ${symbol}`,
-        };
-      case "TipClosed":
-        return {
-          Beneficiary: (
-            <FlexEnd>
-              <User chain={chain} add={args.beneficiary} />
-            </FlexEnd>
-          ),
-          Payout: `${toPrecision(args.payout ?? 0, decimals)} ${symbol}`,
-        };
+    const node = getNode(chain);
+    if (!node) {
+      return null;
     }
-    return args;
-  };
+    const decimals = node.decimals;
+    const symbol = node.symbol;
 
-  let timeline = (detail?.onchainData?.timeline || []).map((item) => {
-    return {
-      time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-      indexer: item.indexer,
-      status: getTimelineStatus("tip", item.method),
-      data: getTimelineData(item.args, item.method),
-      method: item.method,
+    const getTimelineData = (args, method) => {
+      switch (method) {
+        case "reportAwesome":
+          return {
+            Finder: (
+              <FlexEnd>
+                <User chain={chain} add={args.finder} />
+              </FlexEnd>
+            ),
+            Beneficiary: (
+              <FlexEnd>
+                <User chain={chain} add={args.beneficiary} />
+              </FlexEnd>
+            ),
+            Reason: args.reason,
+          };
+        case "tip":
+          const value = args.award ? args.award : args.value;
+          return {
+            Tipper: (
+              <FlexEnd>
+                <User chain={chain} add={args.tipper} />
+              </FlexEnd>
+            ),
+            Value: `${toPrecision(value ?? 0, decimals)} ${symbol}`,
+          };
+        case "TipClosed":
+          return {
+            Beneficiary: (
+              <FlexEnd>
+                <User chain={chain} add={args.beneficiary} />
+              </FlexEnd>
+            ),
+            Payout: `${toPrecision(args.payout ?? 0, decimals)} ${symbol}`,
+          };
+      }
+      return args;
     };
-  });
 
-  if (isClosed(timeline)) {
-    timeline = getClosedTimelineData(timeline);
-  }
+    let timeline = (detail?.onchainData?.timeline || []).map((item) => {
+      return {
+        time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+        indexer: item.indexer,
+        status: getTimelineStatus("tip", item.method),
+        data: getTimelineData(item.args, item.method),
+        method: item.method,
+      };
+    });
 
-  const users = getMentionList(comments);
+    if (isClosed(timeline)) {
+      timeline = getClosedTimelineData(timeline);
+    }
 
-  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
+    const users = getMentionList(comments);
 
-  const onReply = getOnReply(
-    contentType,
-    content,
-    setContent,
-    quillRef,
-    focusEditor
-  );
+    const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
-  detail.status = getTipState({
-    state: detail.onchainData?.state?.state,
-    tipsCount: (detail.onchainData?.meta?.tips || []).length,
-  });
+    const onReply = getOnReply(
+      contentType,
+      content,
+      setContent,
+      quillRef,
+      focusEditor
+    );
 
-  const metadata = [
-    [
-      "Reason",
-      <div>
-        <ReasonLink text={detail.onchainData?.meta?.reason} />
-      </div>,
-    ],
-    ["Hash", detail.onchainData?.hash],
-    [
-      "Finder",
-      <>
-        <User
-          chain={chain}
-          add={detail.onchainData?.meta?.finder}
-          fontSize={14}
-        />
-        <Links
-          chain={chain}
-          address={detail.onchainData?.meta?.finder}
-          style={{ marginLeft: 8 }}
-        />
-      </>,
-    ],
-    [
-      "Beneficiary",
-      <>
-        <User chain={chain} add={detail.onchainData?.meta?.who} fontSize={14} />
-        <Links
-          chain={chain}
-          address={detail.onchainData?.meta?.who}
-          style={{ marginLeft: 8 }}
-        />
-      </>,
-    ],
-  ];
+    detail.status = getTipState({
+      state: detail.onchainData?.state?.state,
+      tipsCount: (detail.onchainData?.meta?.tips || []).length,
+    });
 
-  const desc = getMetaDesc(detail, "Tip");
-  return (
-    <Layout user={loginUser} chain={chain}>
-      <SEO title={detail?.title} desc={desc} siteUrl={siteUrl} chain={chain} />
-      <Wrapper className="post-content">
-        <Back href={`/treasury/tips`} text="Back to Tips" />
-        <DetailItem
-          data={detail}
-          user={loginUser}
-          chain={chain}
-          onReply={focusEditor}
-          type={TYPE_TREASURY_TIP}
-        />
-
-        <KVList title="Metadata" data={metadata} />
-        <Timeline data={timeline} chain={chain} indent={false} />
-        <CommentsWrapper>
-          <Comments
-            data={comments}
-            user={loginUser}
-            postId={postId}
+    const metadata = [
+      [
+        "Reason",
+        <div>
+          <ReasonLink text={detail.onchainData?.meta?.reason} />
+        </div>,
+      ],
+      ["Hash", detail.onchainData?.hash],
+      [
+        "Finder",
+        <>
+          <User
             chain={chain}
-            onReply={onReply}
+            add={detail.onchainData?.meta?.finder}
+            fontSize={14}
           />
-          {loginUser && (
-            <Input
+          <Links
+            chain={chain}
+            address={detail.onchainData?.meta?.finder}
+            style={{ marginLeft: 8 }}
+          />
+        </>,
+      ],
+      [
+        "Beneficiary",
+        <>
+          <User
+            chain={chain}
+            add={detail.onchainData?.meta?.who}
+            fontSize={14}
+          />
+          <Links
+            chain={chain}
+            address={detail.onchainData?.meta?.who}
+            style={{ marginLeft: 8 }}
+          />
+        </>,
+      ],
+    ];
+
+    const desc = getMetaDesc(detail, "Tip");
+    return (
+      <Layout user={loginUser} chain={chain}>
+        <SEO
+          title={detail?.title}
+          desc={desc}
+          siteUrl={siteUrl}
+          chain={chain}
+        />
+        <Wrapper className="post-content">
+          <Back href={`/treasury/tips`} text="Back to Tips" />
+          <DetailItem
+            data={detail}
+            user={loginUser}
+            chain={chain}
+            onReply={focusEditor}
+            type={TYPE_TREASURY_TIP}
+          />
+
+          <KVList title="Metadata" data={metadata} />
+          <Timeline data={timeline} chain={chain} indent={false} />
+          <CommentsWrapper>
+            <Comments
+              data={comments}
+              user={loginUser}
               postId={postId}
               chain={chain}
-              ref={editorWrapperRef}
-              setQuillRef={setQuillRef}
-              {...{ contentType, setContentType, content, setContent, users }}
-              type={TYPE_TREASURY_TIP}
+              onReply={onReply}
             />
-          )}
-        </CommentsWrapper>
-      </Wrapper>
-    </Layout>
-  );
-});
+            {loginUser && (
+              <Input
+                postId={postId}
+                chain={chain}
+                ref={editorWrapperRef}
+                setQuillRef={setQuillRef}
+                {...{ contentType, setContentType, content, setContent, users }}
+                type={TYPE_TREASURY_TIP}
+              />
+            )}
+          </CommentsWrapper>
+        </Wrapper>
+      </Layout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;

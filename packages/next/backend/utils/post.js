@@ -35,7 +35,6 @@ function safeHtml(html) {
   return myXss.process(html);
 }
 
-
 function extractMentions(content, contentType) {
   const mentions = new Set();
   if (contentType === ContentType.Markdown) {

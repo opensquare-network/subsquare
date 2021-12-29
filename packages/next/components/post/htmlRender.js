@@ -4,11 +4,11 @@ import sanitizeHtml from "sanitize-html";
 
 const Wrapper = styled.div`
   ${(p) =>
-          p.maxHeight &&
-          css`
-            max-height: ${p.maxHeight + 43}px;
-            overflow-y: scroll;
-          `}
+    p.maxHeight &&
+    css`
+      max-height: ${p.maxHeight + 43}px;
+      overflow-y: scroll;
+    `}
   color: #000;
   width: 100%;
   max-width: min(48.5rem, calc(100vw - 50px));
@@ -155,7 +155,14 @@ function HtmlRender({ html, maxHeight = null }) {
       "*": ["class"],
     },
   });
-  return <Wrapper maxHeight={maxHeight >= 300 ? 300 : maxHeight} className="post-content">{parse(cleanHtml)}</Wrapper>;
+  return (
+    <Wrapper
+      maxHeight={maxHeight >= 300 ? 300 : maxHeight}
+      className="post-content"
+    >
+      {parse(cleanHtml)}
+    </Wrapper>
+  );
 }
 
 export default HtmlRender;

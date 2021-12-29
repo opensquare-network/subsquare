@@ -1,6 +1,6 @@
 import List from "components/list";
 import Menu from "components/menu";
-import { mainMenu } from "utils/constants";
+import { getMainMenu } from "utils";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "utils/constants";
@@ -8,28 +8,35 @@ import Layout from "components/layout";
 import { toPublicProposalListItem } from "utils/viewfuncs";
 import SEO from "components/SEO";
 
-export default withLoginUserRedux(({ loginUser, proposals, chain, siteUrl }) => {
-  const items = (proposals.items || []).map((item) =>
-    toPublicProposalListItem(chain, item)
-  );
+export default withLoginUserRedux(
+  ({ loginUser, proposals, chain, siteUrl }) => {
+    const items = (proposals.items || []).map((item) =>
+      toPublicProposalListItem(chain, item)
+    );
 
-  return (
-    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
-      <SEO title={`Democracy Public Proposals`} desc={`Democracy Public Proposals`} siteUrl={siteUrl} chain={chain} />
-      <List
-        chain={chain}
-        category={"Democracy Public Proposals"}
-        create={null}
-        items={items}
-        pagination={{
-          page: proposals.page,
-          pageSize: proposals.pageSize,
-          total: proposals.total,
-        }}
-      />
-    </Layout>
-  );
-});
+    return (
+      <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+        <SEO
+          title={`Democracy Public Proposals`}
+          desc={`Democracy Public Proposals`}
+          siteUrl={siteUrl}
+          chain={chain}
+        />
+        <List
+          chain={chain}
+          category={"Democracy Public Proposals"}
+          create={null}
+          items={items}
+          pagination={{
+            page: proposals.page,
+            pageSize: proposals.pageSize,
+            total: proposals.total,
+          }}
+        />
+      </Layout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;

@@ -26,7 +26,7 @@ async function insertDemocracyPostByProposal(proposalIndex, indexer, proposer) {
 async function updateOrCreatePostByReferendumWithProposal(
   proposalIndex,
   referendumIndex,
-  indexer,
+  indexer
 ) {
   const col = await getBusinessDemocracy();
   const maybeInDb = await col.findOne({

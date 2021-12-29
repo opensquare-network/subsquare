@@ -187,9 +187,7 @@ export default function MicromarkMd({ md = "", contentVersion = "" }) {
   const html = micromark(displayContent, {
     allowDangerousHtml: true,
     extensions: [gfm()],
-    htmlExtensions: [
-      gfmHtml(),
-    ],
+    htmlExtensions: [gfmHtml()],
   });
 
   const cleanHtml = sanitizeHtml(html, {

@@ -42,77 +42,86 @@ const CommentsWrapper = styled.div`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain, siteUrl }) => {
-  const postId = detail._id;
+export default withLoginUserRedux(
+  ({ loginUser, detail, comments, chain, siteUrl }) => {
+    const postId = detail._id;
 
-  const editorWrapperRef = useRef(null);
-  const [quillRef, setQuillRef] = useState(null);
-  const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown"
-  );
+    const editorWrapperRef = useRef(null);
+    const [quillRef, setQuillRef] = useState(null);
+    const [content, setContent] = useState("");
+    const [contentType, setContentType] = useState(
+      loginUser?.preference.editor || "markdown"
+    );
 
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
+    const node = getNode(chain);
+    if (!node) {
+      return null;
+    }
 
-  const timelineData = makeExternalTimelineData(detail?.onchainData?.timeline);
+    const timelineData = makeExternalTimelineData(
+      detail?.onchainData?.timeline
+    );
 
-  const users = getMentionList(comments);
+    const users = getMentionList(comments);
 
-  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
+    const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
-  const onReply = getOnReply(
-    contentType,
-    content,
-    setContent,
-    quillRef,
-    focusEditor
-  );
+    const onReply = getOnReply(
+      contentType,
+      content,
+      setContent,
+      quillRef,
+      focusEditor
+    );
 
-  const metadata = makeExternalMetadata(detail, chain);
+    const metadata = makeExternalMetadata(detail, chain);
 
-  detail.status = detail.onchainData?.state?.state;
+    detail.status = detail.onchainData?.state?.state;
 
-  const desc = getMetaDesc(detail, "External");
-  return (
-    <Layout user={loginUser} chain={chain}>
-      <SEO title={detail?.title} desc={desc} siteUrl={siteUrl} chain={chain} />
-      <Wrapper className="post-content">
-        <Back href={`/democracy/externals`} text="Back to Externals" />
-        <DetailItem
-          data={detail}
-          user={loginUser}
+    const desc = getMetaDesc(detail, "External");
+    return (
+      <Layout user={loginUser} chain={chain}>
+        <SEO
+          title={detail?.title}
+          desc={desc}
+          siteUrl={siteUrl}
           chain={chain}
-          onReply={focusEditor}
-          type={TYPE_DEMOCRACY_EXTERNAL}
         />
-        <KVList title="Metadata" data={metadata} />
-        <Timeline data={timelineData} chain={chain} />
-        <CommentsWrapper>
-          <Comments
-            data={comments}
+        <Wrapper className="post-content">
+          <Back href={`/democracy/externals`} text="Back to Externals" />
+          <DetailItem
+            data={detail}
             user={loginUser}
-            postId={postId}
             chain={chain}
-            onReply={onReply}
+            onReply={focusEditor}
+            type={TYPE_DEMOCRACY_EXTERNAL}
           />
-          {loginUser && (
-            <Input
+          <KVList title="Metadata" data={metadata} />
+          <Timeline data={timelineData} chain={chain} />
+          <CommentsWrapper>
+            <Comments
+              data={comments}
+              user={loginUser}
               postId={postId}
               chain={chain}
-              ref={editorWrapperRef}
-              setQuillRef={setQuillRef}
-              {...{ contentType, setContentType, content, setContent, users }}
-              type={TYPE_DEMOCRACY_EXTERNAL}
+              onReply={onReply}
             />
-          )}
-        </CommentsWrapper>
-      </Wrapper>
-    </Layout>
-  );
-});
+            {loginUser && (
+              <Input
+                postId={postId}
+                chain={chain}
+                ref={editorWrapperRef}
+                setQuillRef={setQuillRef}
+                {...{ contentType, setContentType, content, setContent, users }}
+                type={TYPE_DEMOCRACY_EXTERNAL}
+              />
+            )}
+          </CommentsWrapper>
+        </Wrapper>
+      </Layout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;

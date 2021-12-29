@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import NextSeo from "components/nextSeo";
 
-export default function SEO({ title, desc, chain, siteUrl }){
-  const route = useRouter()
+export default function SEO({ title, desc, chain, siteUrl }) {
+  const route = useRouter();
 
   const images = [
     {
@@ -12,19 +12,21 @@ export default function SEO({ title, desc, chain, siteUrl }){
     },
   ];
 
-  return <NextSeo
-    title={`${title ?? "SubSquare"}`}
-    description={desc}
-    openGraph={{
-      url: `${siteUrl}${route.asPath}`,
-      title: title ?? "SubSquare",
-      description: desc,
-      images,
-    }}
-    twitter={{
-      handle: '@handle',
-      site: '@site',
-      cardType: 'summary_large_image',
-    }}
-  />;
+  return (
+    <NextSeo
+      title={`${title ?? "SubSquare"}`}
+      description={desc}
+      openGraph={{
+        url: `${siteUrl}${route.asPath}`,
+        title: title ?? "SubSquare",
+        description: desc,
+        images,
+      }}
+      twitter={{
+        handle: "@handle",
+        site: "@site",
+        cardType: "summary_large_image",
+      }}
+    />
+  );
 }

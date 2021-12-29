@@ -13,7 +13,7 @@ const {
 } = require("../mongo/chain");
 
 async function updateTip() {
-  const chainDb = await getChainDb()
+  const chainDb = await getChainDb();
 
   const col = await getTipCollection();
   const items = await col.find({}).toArray();
@@ -30,29 +30,29 @@ async function updateTip() {
     for (const item of items) {
       const lastActivityAt = new Date(
         Math.max(
-          ...(
-            item.lastActivityAt.getTime() === item.createdAt.getTime()
+          ...(item.lastActivityAt.getTime() === item.createdAt.getTime()
             ? []
-            : [item.lastActivityAt.getTime()]
-          ),
-          item.onchainData?.state?.indexer?.blockTime || 0,
+            : [item.lastActivityAt.getTime()]),
+          item.onchainData?.state?.indexer?.blockTime || 0
         )
       );
-      bulk.find({
-        "indexer.blockHeight": item.indexer.blockHeight,
-        hash: item.hash
-      }).updateOne({
-        $set: {
-          lastActivityAt
-        }
-      });
+      bulk
+        .find({
+          "indexer.blockHeight": item.indexer.blockHeight,
+          hash: item.hash,
+        })
+        .updateOne({
+          $set: {
+            lastActivityAt,
+          },
+        });
     }
     await bulk.execute();
   }
 }
 
 async function updateTreasuryProposal() {
-  const chainDb = await getChainDb()
+  const chainDb = await getChainDb();
 
   const col = await getTreasuryProposalCollection();
   const items = await col.find({}).toArray();
@@ -77,21 +77,19 @@ async function updateTreasuryProposal() {
     for (const item of items) {
       const lastActivityAt = new Date(
         Math.max(
-          ...(
-            item.lastActivityAt.getTime() === item.createdAt.getTime()
+          ...(item.lastActivityAt.getTime() === item.createdAt.getTime()
             ? []
-            : [item.lastActivityAt.getTime()]
-          ),
+            : [item.lastActivityAt.getTime()]),
           item.onchainData?.state?.indexer?.blockTime || 0,
-          ...(
-            (item.onchainData?.motions || []).map(m => m.state?.indexer?.blockTime || 0)
+          ...(item.onchainData?.motions || []).map(
+            (m) => m.state?.indexer?.blockTime || 0
           )
         )
       );
-      bulk.find({proposalIndex: item.proposalIndex}).updateOne({
+      bulk.find({ proposalIndex: item.proposalIndex }).updateOne({
         $set: {
-          lastActivityAt
-        }
+          lastActivityAt,
+        },
       });
     }
     await bulk.execute();
@@ -99,12 +97,14 @@ async function updateTreasuryProposal() {
 }
 
 async function updatePublicProposal() {
-  const chainDb = await getChainDb()
+  const chainDb = await getChainDb();
 
   const col = await getDemocracyCollection();
-  const items = await col.find({
-    proposalIndex: { $ne: null }
-  }).toArray();
+  const items = await col
+    .find({
+      proposalIndex: { $ne: null },
+    })
+    .toArray();
 
   await Promise.all([
     chainDb.lookupOne({
@@ -128,19 +128,17 @@ async function updatePublicProposal() {
     for (const item of items) {
       const lastActivityAt = new Date(
         Math.max(
-          ...(
-            item.lastActivityAt.getTime() === item.createdAt.getTime()
+          ...(item.lastActivityAt.getTime() === item.createdAt.getTime()
             ? []
-            : [item.lastActivityAt.getTime()]
-          ),
+            : [item.lastActivityAt.getTime()]),
           item.democracyPublicProposal?.state?.indexer?.blockTime || 0,
-          item.democracyReferendum?.state?.indexer?.blockTime || 0,
+          item.democracyReferendum?.state?.indexer?.blockTime || 0
         )
       );
-      bulk.find({proposalIndex: item.proposalIndex}).updateOne({
+      bulk.find({ proposalIndex: item.proposalIndex }).updateOne({
         $set: {
-          lastActivityAt
-        }
+          lastActivityAt,
+        },
       });
     }
     await bulk.execute();
@@ -148,12 +146,14 @@ async function updatePublicProposal() {
 }
 
 async function updateExternalProposal() {
-  const chainDb = await getChainDb()
+  const chainDb = await getChainDb();
 
   const col = await getDemocracyCollection();
-  const items = await col.find({
-    externalProposalHash: { $ne: null }
-  }).toArray();
+  const items = await col
+    .find({
+      externalProposalHash: { $ne: null },
+    })
+    .toArray();
 
   const [democracyExternals] = await Promise.all([
     chainDb.compoundLookupOne({
@@ -177,14 +177,16 @@ async function updateExternalProposal() {
     const hash = external.proposalHash;
     const height = external.indexer.blockHeight;
 
-    const techCommMotions = await chainTechCommMotionsCol.find({
-      externalProposals: {
-        $elemMatch: {
-          hash,
-          "indexer.blockHeight": height,
-        }
-      }
-    }).toArray();
+    const techCommMotions = await chainTechCommMotionsCol
+      .find({
+        externalProposals: {
+          $elemMatch: {
+            hash,
+            "indexer.blockHeight": height,
+          },
+        },
+      })
+      .toArray();
 
     external.techCommMotions = techCommMotions;
   }
@@ -194,33 +196,33 @@ async function updateExternalProposal() {
     for (const item of items) {
       const lastActivityAt = new Date(
         Math.max(
-          ...(
-            item.lastActivityAt.getTime() === item.createdAt.getTime()
+          ...(item.lastActivityAt.getTime() === item.createdAt.getTime()
             ? []
-            : [item.lastActivityAt.getTime()]
-          ),
+            : [item.lastActivityAt.getTime()]),
           item.democracyExternal?.state?.indexer?.blockTime || 0,
-          ...(
-            (item.democracyExternal?.techCommMotions || []).map(m => m.state?.indexer?.blockTime || 0)
+          ...(item.democracyExternal?.techCommMotions || []).map(
+            (m) => m.state?.indexer?.blockTime || 0
           ),
-          item.democracyReferendum?.state?.indexer?.blockTime || 0,
+          item.democracyReferendum?.state?.indexer?.blockTime || 0
         )
       );
-      bulk.find({
-        "indexer.blockHeight": item.indexer.blockHeight,
-        externalProposalHash: item.externalProposalHash
-      }).updateOne({
-        $set: {
-          lastActivityAt
-        }
-      });
+      bulk
+        .find({
+          "indexer.blockHeight": item.indexer.blockHeight,
+          externalProposalHash: item.externalProposalHash,
+        })
+        .updateOne({
+          $set: {
+            lastActivityAt,
+          },
+        });
     }
     await bulk.execute();
   }
 }
 
 async function updateBounty() {
-  const chainDb = await getChainDb()
+  const chainDb = await getChainDb();
 
   const col = await getBountyCollection();
   const items = await col.find({}).toArray();
@@ -245,21 +247,17 @@ async function updateBounty() {
     for (const item of items) {
       const lastActivityAt = new Date(
         Math.max(
-          ...(
-            item.lastActivityAt.getTime() === item.createdAt.getTime()
+          ...(item.lastActivityAt.getTime() === item.createdAt.getTime()
             ? []
-            : [item.lastActivityAt.getTime()]
-          ),
+            : [item.lastActivityAt.getTime()]),
           item.onchainData?.state?.indexer?.blockTime || 0,
-          ...(
-            (item.motions || []).map(m => m.state?.indexer?.blockTime || 0)
-          )
+          ...(item.motions || []).map((m) => m.state?.indexer?.blockTime || 0)
         )
       );
-      bulk.find({bountyIndex: item.bountyIndex}).updateOne({
+      bulk.find({ bountyIndex: item.bountyIndex }).updateOne({
         $set: {
-          lastActivityAt
-        }
+          lastActivityAt,
+        },
       });
     }
     await bulk.execute();

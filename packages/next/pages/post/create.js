@@ -219,9 +219,15 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
           {showPreview && (
             <PreviewWrapper className="preview">
               {contentType === "markdown" && (
-                <PreviewMD content={content} setContent={setContent} maxHeight={editorHeight} />
+                <PreviewMD
+                  content={content}
+                  setContent={setContent}
+                  maxHeight={editorHeight}
+                />
               )}
-              {contentType === "html" && <HtmlRender html={content} maxHeight={editorHeight} />}
+              {contentType === "html" && (
+                <HtmlRender html={content} maxHeight={editorHeight} />
+              )}
             </PreviewWrapper>
           )}
           {errors?.data?.content?.[0] && (

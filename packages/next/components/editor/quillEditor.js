@@ -46,11 +46,11 @@ export const StyledTextArea = styled.div`
     .ql-editor {
       min-height: 100px;
       ${(props) =>
-              props &&
-              props.isCreate &&
-              css`
-                min-height: 200px;
-          `}
+        props &&
+        props.isCreate &&
+        css`
+          min-height: 200px;
+        `}
       max-height: ${(props) => props.height}px;
       overflow: hidden;
       overflow-y: auto;
@@ -127,7 +127,7 @@ const QuillEditor = ({
         onChange={(content, delta, source, editor) => {
           setContent(content);
           if (ref?.current?.editingArea) {
-            console.log(ref?.current?.editingArea.children[0].scrollHeight)
+            console.log(ref?.current?.editingArea.children[0].scrollHeight);
             setEditorHeight(ref?.current?.editingArea.children[0].scrollHeight);
           }
         }}

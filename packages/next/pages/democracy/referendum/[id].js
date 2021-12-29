@@ -46,153 +46,160 @@ const CommentsWrapper = styled.div`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain, siteUrl }) => {
-  const api = useApi(chain);
-  const editorWrapperRef = useRef(null);
-  const [quillRef, setQuillRef] = useState(null);
-  const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown"
-  );
-  const [referendumStatus, setReferendumStatus] = useState(
-    detail?.onchainData?.status
-  );
-  const isMounted = useIsMounted();
+export default withLoginUserRedux(
+  ({ loginUser, detail, comments, chain, siteUrl }) => {
+    const api = useApi(chain);
+    const editorWrapperRef = useRef(null);
+    const [quillRef, setQuillRef] = useState(null);
+    const [content, setContent] = useState("");
+    const [contentType, setContentType] = useState(
+      loginUser?.preference.editor || "markdown"
+    );
+    const [referendumStatus, setReferendumStatus] = useState(
+      detail?.onchainData?.status
+    );
+    const isMounted = useIsMounted();
 
-  useEffect(() => {
-    // Already has the last ongoging status
-    if (referendumStatus) {
-      return;
-    }
+    useEffect(() => {
+      // Already has the last ongoging status
+      if (referendumStatus) {
+        return;
+      }
 
-    api?.query.democracy
-      .referendumInfoOf(detail.referendumIndex)
-      .then((referendumInfo) => {
-        const referendumInfoData = referendumInfo.toJSON();
-        if (isMounted.current) {
-          setReferendumStatus(referendumInfoData?.ongoing);
-        }
-      });
-  }, [api, detail, isMounted, referendumStatus]);
+      api?.query.democracy
+        .referendumInfoOf(detail.referendumIndex)
+        .then((referendumInfo) => {
+          const referendumInfoData = referendumInfo.toJSON();
+          if (isMounted.current) {
+            setReferendumStatus(referendumInfoData?.ongoing);
+          }
+        });
+    }, [api, detail, isMounted, referendumStatus]);
 
-  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
+    const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
-  const onReply = getOnReply(
-    contentType,
-    content,
-    setContent,
-    quillRef,
-    focusEditor
-  );
+    const onReply = getOnReply(
+      contentType,
+      content,
+      setContent,
+      quillRef,
+      focusEditor
+    );
 
-  const getTimelineData = (args, method) => {
-    switch (method) {
-      case "Executed":
-        const rawResult = args.result;
-        let result;
-        if (typeof rawResult === "boolean") {
-          result = rawResult;
-        } else if (typeof args.result === "object") {
-          result = Object.keys(rawResult)[0];
-        } else {
-          result = JSON.stringify(rawResult);
-        }
+    const getTimelineData = (args, method) => {
+      switch (method) {
+        case "Executed":
+          const rawResult = args.result;
+          let result;
+          if (typeof rawResult === "boolean") {
+            result = rawResult;
+          } else if (typeof args.result === "object") {
+            result = Object.keys(rawResult)[0];
+          } else {
+            result = JSON.stringify(rawResult);
+          }
 
-        return { result };
-    }
-    return args;
-  };
-
-  const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
-    return {
-      time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-      indexer: item.indexer,
-      status: getTimelineStatus("proposal", item.method ?? item.name),
-      data: getTimelineData(item.args, item.method ?? item.name),
+          return { result };
+      }
+      return args;
     };
-  });
 
-  const metadata = [
-    [
-      "Proposer",
-      <>
-        <User add={detail.proposer} fontSize={14} />
-        <Links
-          chain={chain}
-          address={detail.proposer}
-          style={{ marginLeft: 8 }}
-        />
-      </>,
-    ],
-    ["Delay", referendumStatus?.delay],
-    ["End", referendumStatus?.end],
-    ["Threshold", referendumStatus?.threshold],
-  ];
+    const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
+      return {
+        time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+        indexer: item.indexer,
+        status: getTimelineStatus("proposal", item.method ?? item.name),
+        data: getTimelineData(item.args, item.method ?? item.name),
+      };
+    });
 
-  if (detail?.onchainData?.preImage) {
-    metadata.push([
-      <MotionProposal
-        motion={{ proposal: detail.onchainData.preImage.call }}
-        chain={chain}
-      />,
-    ]);
-  }
-
-  detail.status = detail.onchainData?.state?.state;
-
-  const desc = getMetaDesc(detail, "Referendum");
-  return (
-    <Layout user={loginUser} chain={chain}>
-      <SEO title={detail?.title} desc={desc} siteUrl={siteUrl} chain={chain} />
-      <Wrapper className="post-content">
-        <Back href={`/democracy/referendums`} text="Back to Referendas" />
-        <DetailItem
-          data={detail}
-          onReply={focusEditor}
-          user={loginUser}
-          chain={chain}
-          type={TYPE_DEMOCRACY_REFERENDUM}
-        />
-
-        <Vote
-          referendumInfo={detail?.onchainData?.info}
-          referendumStatus={referendumStatus}
-          chain={chain}
-        />
-
-        <KVList title={"Metadata"} data={metadata} />
-
-        <Timeline data={timelineData} chain={chain} />
-
-        <CommentsWrapper>
-          <Comments
-            data={comments}
-            user={loginUser}
-            postId={detail._id}
+    const metadata = [
+      [
+        "Proposer",
+        <>
+          <User add={detail.proposer} fontSize={14} />
+          <Links
             chain={chain}
-            onReply={onReply}
+            address={detail.proposer}
+            style={{ marginLeft: 8 }}
           />
-          {loginUser && (
-            <Input
+        </>,
+      ],
+      ["Delay", referendumStatus?.delay],
+      ["End", referendumStatus?.end],
+      ["Threshold", referendumStatus?.threshold],
+    ];
+
+    if (detail?.onchainData?.preImage) {
+      metadata.push([
+        <MotionProposal
+          motion={{ proposal: detail.onchainData.preImage.call }}
+          chain={chain}
+        />,
+      ]);
+    }
+
+    detail.status = detail.onchainData?.state?.state;
+
+    const desc = getMetaDesc(detail, "Referendum");
+    return (
+      <Layout user={loginUser} chain={chain}>
+        <SEO
+          title={detail?.title}
+          desc={desc}
+          siteUrl={siteUrl}
+          chain={chain}
+        />
+        <Wrapper className="post-content">
+          <Back href={`/democracy/referendums`} text="Back to Referendas" />
+          <DetailItem
+            data={detail}
+            onReply={focusEditor}
+            user={loginUser}
+            chain={chain}
+            type={TYPE_DEMOCRACY_REFERENDUM}
+          />
+
+          <Vote
+            referendumInfo={detail?.onchainData?.info}
+            referendumStatus={referendumStatus}
+            chain={chain}
+          />
+
+          <KVList title={"Metadata"} data={metadata} />
+
+          <Timeline data={timelineData} chain={chain} />
+
+          <CommentsWrapper>
+            <Comments
+              data={comments}
+              user={loginUser}
               postId={detail._id}
               chain={chain}
-              ref={editorWrapperRef}
-              setQuillRef={setQuillRef}
-              {...{
-                contentType,
-                setContentType,
-                content,
-                setContent,
-                users: getMentionList(comments),
-              }}
-              type={TYPE_DEMOCRACY_REFERENDUM}
+              onReply={onReply}
             />
-          )}
-        </CommentsWrapper>
-      </Wrapper>
-    </Layout>
-  );
-});
+            {loginUser && (
+              <Input
+                postId={detail._id}
+                chain={chain}
+                ref={editorWrapperRef}
+                setQuillRef={setQuillRef}
+                {...{
+                  contentType,
+                  setContentType,
+                  content,
+                  setContent,
+                  users: getMentionList(comments),
+                }}
+                type={TYPE_DEMOCRACY_REFERENDUM}
+              />
+            )}
+          </CommentsWrapper>
+        </Wrapper>
+      </Layout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
