@@ -43,6 +43,23 @@ export const toCouncilMotionListItem = (chain, item) => ({
   time: getPostUpdatedAt(item),
 });
 
+export const toFinancialMotionsListItem = (chain, item) => ({
+  ...item,
+  index: item.motionIndex,
+  title: `${item?.title}`,
+  author: item.author ?? {
+    username: addressEllipsis(item.proposer),
+    addresses: [{ chain, address: item.proposer }],
+  },
+  status: item.state ?? "Unknown",
+  detailLink: `/financial-council/motion/${item.motionIndex}`,
+  isTreasury:
+    item?.onchainData?.treasuryProposals?.length > 0 ||
+    item?.onchainData?.treasuryBounties?.length > 0,
+  isDemocracy: item?.onchainData?.externalProposals?.length > 0,
+  time: getPostUpdatedAt(item),
+});
+
 function getTechCommMotionId(motion) {
   if (motion.index !== null && motion.index !== undefined) {
     return motion.index;
@@ -110,18 +127,6 @@ export const toTipListItem = (chain, item) => ({
   status: item.state ? getTipState(item.state) : "Unknown",
   time: getPostUpdatedAt(item),
   detailLink: `/treasury/tip/${item.height}_${item.hash}`,
-  value: item?.onchainData?.medianValue,
-});
-
-export const toFinancialMotionsListItem = (chain, item) => ({
-  ...item,
-  author: item.author ?? {
-    username: addressEllipsis(item.finder),
-    addresses: [{ chain, address: item.finder }],
-  },
-  status: item.state ? getTipState(item.state) : "Unknown",
-  time: getPostUpdatedAt(item),
-  detailLink: `/treasury/financialMotion/${item.height}_${item.hash}`,
   value: item?.onchainData?.medianValue,
 });
 

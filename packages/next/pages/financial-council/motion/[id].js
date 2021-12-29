@@ -60,7 +60,7 @@ export default withLoginUserRedux(
       focusEditor
     );
 
-    const desc = getMetaDesc(motion, "Motion");
+    const desc = getMetaDesc(motion, "Financial Motion");
     return (
       <Layout user={loginUser} chain={chain}>
         <SEO
@@ -70,7 +70,7 @@ export default withLoginUserRedux(
           chain={chain}
         />
         <Wrapper className="post-content">
-          <Back href={`/council/motions`} text="Back to Motions" />
+          <Back href={`/financial-council/motions`} text="Back to Motions" />
           <MotionDetail
             motion={motion}
             user={loginUser}

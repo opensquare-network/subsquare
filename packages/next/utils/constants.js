@@ -164,12 +164,6 @@ export const mainMenu = [
         icon: "tips.svg",
         pathname: "/treasury/tips",
       },
-      {
-        value: "financialMotions",
-        name: "Financial Motions",
-        icon: "type-motions.svg",
-        pathname: "/treasury/financialMotions",
-      },
     ],
   },
   {
@@ -209,6 +203,17 @@ export const mainMenu = [
         name: "Members",
         icon: "members.svg",
         pathname: "/council/members",
+      },
+    ],
+  },
+  {
+    name: "FINANCIAL COUNCIL",
+    items: [
+      {
+        value: "financialMotions",
+        name: "Motions",
+        icon: "type-motions.svg",
+        pathname: "/financial-council/motions",
       },
     ],
   },

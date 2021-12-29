@@ -8,16 +8,16 @@ import Layout from "components/layout";
 import { toFinancialMotionsListItem } from "utils/viewfuncs";
 import SEO from "components/SEO";
 
-export default withLoginUserRedux(({ loginUser, tips, chain, siteUrl }) => {
-  const items = (tips.items || []).map((item) =>
+export default withLoginUserRedux(({ loginUser, motions, chain, siteUrl }) => {
+  const items = (motions.items || []).map((item) =>
     toFinancialMotionsListItem(chain, item)
   );
 
   return (
     <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
       <SEO
-        title={`Financial Motions`}
-        desc={`Financial Motions`}
+        title={`Financial motions`}
+        desc={`Financial motions`}
         siteUrl={siteUrl}
         chain={chain}
       />
@@ -27,9 +27,9 @@ export default withLoginUserRedux(({ loginUser, tips, chain, siteUrl }) => {
         create={null}
         items={items}
         pagination={{
-          page: tips.page,
-          pageSize: tips.pageSize,
-          total: tips.total,
+          page: motions.page,
+          pageSize: motions.pageSize,
+          total: motions.total,
         }}
       />
     </Layout>
@@ -38,10 +38,9 @@ export default withLoginUserRedux(({ loginUser, tips, chain, siteUrl }) => {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-
   const { page, page_size: pageSize } = context.query;
 
-  const [{ result: tips }] = await Promise.all([
+  const [{ result: motions }] = await Promise.all([
     nextApi.fetch(`financial-motions`, {
       page: page ?? 1,
       pageSize: pageSize ?? 50,
@@ -51,7 +50,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       chain,
-      tips: tips ?? EmptyList,
+      motions: motions ?? EmptyList,
       siteUrl: process.env.SITE_URL,
     },
   };
