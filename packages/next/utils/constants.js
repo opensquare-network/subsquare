@@ -207,6 +207,17 @@ export const mainMenu = [
     ],
   },
   {
+    name: "FINANCIAL COUNCIL",
+    items: [
+      {
+        value: "financialMotions",
+        name: "Motions",
+        icon: "type-motions.svg",
+        pathname: "/financial-council/motions",
+      },
+    ],
+  },
+  {
     name: "TECH.COMM.",
     items: [
       {
