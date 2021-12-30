@@ -8,6 +8,7 @@ import {
   toCouncilMotionListItem,
   toDiscussionListItem,
   toExternalProposalListItem,
+  toFinancialMotionsListItem,
   toPublicProposalListItem,
   toReferendaListItem,
   toTechCommMotionListItem,
@@ -35,6 +36,12 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
       category: "Tech. Comm. Proposals",
       items: (overview?.techComm?.motions ?? []).map((item) =>
         toTechCommMotionListItem(chain, item)
+      ),
+    },
+    {
+      category: "Financial Council Motions",
+      items: (overview?.financialMotions?.motions ?? []).map((item) =>
+        toFinancialMotionsListItem(chain, item)
       ),
     },
     {
