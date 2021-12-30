@@ -80,7 +80,6 @@ export const nodes = [
           symbol: "KSM",
           decimals: 12,
           hasElections: true,
-          excludeMenus: ["FINANCIAL COUNCIL"],
         },
       ]
     : []),
@@ -101,7 +100,6 @@ export const nodes = [
     symbol: "PHA",
     decimals: 12,
     hasElections: true,
-    excludeMenus: ["FINANCIAL COUNCIL"],
   },
   // {
   //   value: "basilisk",
@@ -111,7 +109,6 @@ export const nodes = [
   //   symbol: "BSX",
   //   decimals: 12,
   //   hasElections: true,
-  //   excludeMenus: ["bounties", "FINANCIAL COUNCIL"],
   // },
 ];
 
@@ -160,6 +157,7 @@ export const mainMenu = [
         name: "Bounties",
         icon: "bounties.svg",
         pathname: "/treasury/bounties",
+        excludeToChains: ["basilisk"],
       },
       {
         value: "tips",
@@ -219,6 +217,7 @@ export const mainMenu = [
         pathname: "/financial-council/motions",
       },
     ],
+    excludeToChains: ["khala", "kusamu", "basilisk"],
   },
   {
     name: "TECH.COMM.",
