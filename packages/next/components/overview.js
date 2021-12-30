@@ -11,15 +11,19 @@ const Wrapper = styled.div`
 export default function Overview({ overviewData, chain }) {
   return (
     <Wrapper>
-      {overviewData.map((item, index) => (
-        <List
-          chain={chain}
-          key={index}
-          category={item.category}
-          items={item.items}
-          type={item.type}
-        />
-      ))}
+      {overviewData.map((item, index) => {
+        if (item) {
+          return (
+            <List
+              chain={chain}
+              key={index}
+              category={item.category}
+              items={item.items}
+              type={item.type}
+            />
+          );
+        }
+      })}
     </Wrapper>
   );
 }

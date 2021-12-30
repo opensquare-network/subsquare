@@ -13,6 +13,8 @@ const financialMotionService = require("../../services/financial-motion.service"
 const myCache = new NodeCache( { stdTTL: 30, checkperiod: 36 } );
 
 async function getOverview(ctx) {
+  const chain = process.env.CHAIN;
+
   const cachedOverview = myCache.get(`overview`);
   if (cachedOverview) {
     ctx.body = cachedOverview;
@@ -29,6 +31,7 @@ async function getOverview(ctx) {
     publicProposals,
     referendums,
     techCommMotions,
+    financialMotions,
   ] = await Promise.all([
     discussionPostService.getPostsOverview(),
     tipPostService.getActivePostsOverview(),
@@ -39,7 +42,9 @@ async function getOverview(ctx) {
     publicProposalPostService.getActivePostsOverview(),
     referendumPostService.getActivePostsOverview(),
     techCommMotionService.getActiveMotionsOverview(),
-    financialMotionService.getActiveMotionsOverview(),
+    chain === "karura"
+      ? financialMotionService.getActiveMotionsOverview()
+      : undefined,
   ]);
 
   const overview = {
@@ -59,8 +64,14 @@ async function getOverview(ctx) {
     },
     techComm: {
       motions: techCommMotions,
-    }
+    },
   };
+
+  if (chain === "karura") {
+    overview.financialCouncil = {
+      motions: financialMotions,
+    };
+  }
 
   myCache.set(`overview`, overview, 30);
 
