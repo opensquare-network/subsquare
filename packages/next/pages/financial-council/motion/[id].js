@@ -93,7 +93,7 @@ export default withLoginUserRedux(
                 ref={editorWrapperRef}
                 setQuillRef={setQuillRef}
                 {...{ contentType, setContentType, content, setContent, users }}
-                type={TYPE_MOTION}
+                type={TYPE_FINANCIAL_MOTION}
               />
             )}
           </CommentsWrapper>
