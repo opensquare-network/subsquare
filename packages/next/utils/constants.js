@@ -75,6 +75,7 @@ export const nodes = [
         {
           value: "kusama",
           name: "Kusama",
+          icon: "kusama.svg",
           identity: "kusama",
           symbol: "KSM",
           decimals: 12,
@@ -85,6 +86,7 @@ export const nodes = [
   {
     value: "karura",
     name: "Karura",
+    icon: "karura.svg",
     identity: "kusama",
     symbol: "KAR",
     decimals: 12,
@@ -93,6 +95,7 @@ export const nodes = [
   {
     value: "khala",
     name: "Khala",
+    icon: "khala.svg",
     identity: "khala",
     symbol: "PHA",
     decimals: 12,
@@ -101,6 +104,7 @@ export const nodes = [
   // {
   //   value: "basilisk",
   //   name: "Basilisk",
+  //   icon: "basilisk.svg",
   //   identity: "basilisk",
   //   symbol: "BSX",
   //   decimals: 12,
