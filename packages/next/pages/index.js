@@ -38,12 +38,14 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
         toTechCommMotionListItem(chain, item)
       ),
     },
-    {
-      category: "Financial Council Motions",
-      items: (overview?.financialMotions?.motions ?? []).map((item) =>
-        toFinancialMotionsListItem(chain, item)
-      ),
-    },
+    chain === "karura"
+      ? {
+          category: "Financial Council Motions",
+          items: (overview?.financialCouncil?.motions ?? []).map((item) =>
+            toFinancialMotionsListItem(chain, item)
+          ),
+        }
+      : null,
     {
       category: "Treasury Proposals",
       items: (overview?.treasury?.proposals ?? []).map((item) =>
@@ -84,9 +86,9 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
 
   // Sort the items with length = 0 to the end of the list
   overviewData.sort((a, b) =>
-    a.items.length > 0 && b.items.length > 0
+    a?.items?.length > 0 && b?.items?.length > 0
       ? 0
-      : b.items.length - a.items.length
+      : b?.items?.length - a?.items?.length
   );
 
   return (
