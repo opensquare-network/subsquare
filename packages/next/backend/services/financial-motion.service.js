@@ -33,7 +33,7 @@ async function findMotionPost(postId) {
   if (ObjectId.isValid(postId)) {
     q._id = ObjectId(postId);
   } else if (/^\d+$/.test(postId)) {
-    q.index = parseInt(postId);
+    q.motionIndex = parseInt(postId);
   } else {
     const m = postId.match(/^(\d+)_(.+)$/);
     if (m) {
