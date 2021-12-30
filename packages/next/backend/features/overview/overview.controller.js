@@ -29,6 +29,7 @@ async function getOverview(ctx) {
     publicProposals,
     referendums,
     techCommMotions,
+    financialMotions,
   ] = await Promise.all([
     discussionPostService.getPostsOverview(),
     tipPostService.getActivePostsOverview(),
@@ -59,6 +60,9 @@ async function getOverview(ctx) {
     },
     techComm: {
       motions: techCommMotions,
+    },
+    financialCouncil: {
+      motions: financialMotions,
     }
   };
 
