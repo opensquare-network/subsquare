@@ -80,6 +80,7 @@ export const nodes = [
           symbol: "KSM",
           decimals: 12,
           hasElections: true,
+          excludeMenus: ["FINANCIAL COUNCIL"],
         },
       ]
     : []),
@@ -100,17 +101,18 @@ export const nodes = [
     symbol: "PHA",
     decimals: 12,
     hasElections: true,
+    excludeMenus: ["FINANCIAL COUNCIL"],
   },
-  {
-    value: "basilisk",
-    name: "Basilisk",
-    icon: "basilisk.png",
-    identity: "basilisk",
-    symbol: "BSX",
-    decimals: 12,
-    hasElections: true,
-    excludeMenus: ["bounties"],
-  },
+  // {
+  //   value: "basilisk",
+  //   name: "Basilisk",
+  //   icon: "basilisk.png",
+  //   identity: "basilisk",
+  //   symbol: "BSX",
+  //   decimals: 12,
+  //   hasElections: true,
+  //   excludeMenus: ["bounties", "FINANCIAL COUNCIL"],
+  // },
 ];
 
 export const accountMenu = [

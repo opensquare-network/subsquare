@@ -13,7 +13,11 @@ export default withLoginUserRedux(({ loginUser, tips, chain, siteUrl }) => {
   const items = (tips.items || []).map((item) => toTipListItem(chain, item));
 
   return (
-    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+    <Layout
+      user={loginUser}
+      left={<Menu menu={getMainMenu(chain)} />}
+      chain={chain}
+    >
       <SEO
         title={`Treasury Tips`}
         desc={`Treasury Tips`}

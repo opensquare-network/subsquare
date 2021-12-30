@@ -177,3 +177,19 @@ export function abbreviateBigNumber(x, fixed = 2) {
   BigNumber.config({ FORMAT: fmt });
   return new BigNumber(n.dividedBy(divideBy).toFixed(fixed)).toFormat();
 }
+
+export function getMainMenu(chain) {
+  const excludeMenus =
+    nodes.find((item) => item.value === chain)?.excludeMenus ?? [];
+
+  const menu = mainMenu.filter((subMenu) => {
+    return !excludeMenus.includes(subMenu.name);
+  });
+
+  return menu.map((subMenu) => {
+    return {
+      ...subMenu,
+      items: subMenu.items.filter((menu) => !excludeMenus.includes(menu.value)),
+    };
+  });
+}

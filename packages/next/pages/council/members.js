@@ -39,7 +39,11 @@ export default withLoginUserRedux(({ loginUser, chain, siteUrl }) => {
   }, [electionsInfo, allVotes]);
 
   return (
-    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+    <Layout
+      user={loginUser}
+      left={<Menu menu={getMainMenu(chain)} />}
+      chain={chain}
+    >
       <SEO
         title={`Council members`}
         desc={`Council members`}

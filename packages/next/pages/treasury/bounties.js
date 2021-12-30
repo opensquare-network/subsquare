@@ -15,7 +15,11 @@ export default withLoginUserRedux(({ loginUser, bounties, chain, siteUrl }) => {
   );
 
   return (
-    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+    <Layout
+      user={loginUser}
+      left={<Menu menu={getMainMenu(chain)} />}
+      chain={chain}
+    >
       <SEO
         title={`Treasury Bounties`}
         desc={`Treasury Bounties`}
