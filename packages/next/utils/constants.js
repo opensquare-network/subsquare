@@ -101,16 +101,15 @@ export const nodes = [
     decimals: 12,
     hasElections: true,
   },
-  {
-    value: "basilisk",
-    name: "Basilisk",
-    icon: "basilisk.png",
-    identity: "basilisk",
-    symbol: "BSX",
-    decimals: 12,
-    hasElections: true,
-    excludeMenus: ["bounties"],
-  },
+  // {
+  //   value: "basilisk",
+  //   name: "Basilisk",
+  //   icon: "basilisk.png",
+  //   identity: "basilisk",
+  //   symbol: "BSX",
+  //   decimals: 12,
+  //   hasElections: true,
+  // },
 ];
 
 export const accountMenu = [
@@ -158,6 +157,7 @@ export const mainMenu = [
         name: "Bounties",
         icon: "bounties.svg",
         pathname: "/treasury/bounties",
+        excludeToChains: ["basilisk"],
       },
       {
         value: "tips",
@@ -217,6 +217,7 @@ export const mainMenu = [
         pathname: "/financial-council/motions",
       },
     ],
+    excludeToChains: ["khala", "kusamu", "basilisk"],
   },
   {
     name: "TECH.COMM.",

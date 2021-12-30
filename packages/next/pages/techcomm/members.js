@@ -1,6 +1,6 @@
 import MembersList from "components/membersList/techCommMembersList";
 import Menu from "components/menu";
-import { getMainMenu } from "utils";
+import { mainMenu } from "utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import Layout from "components/layout";
 import { useApi, useCall } from "utils/hooks";
@@ -20,7 +20,11 @@ export default withLoginUserRedux(({ loginUser, chain, siteUrl }) => {
   }, [members]);
 
   return (
-    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+    <Layout
+      user={loginUser}
+      left={<Menu menu={mainMenu} chain={chain} />}
+      chain={chain}
+    >
       <SEO
         title={`Technical Committee Members`}
         desc={`Technical Committee Members`}
