@@ -75,7 +75,6 @@ export const nodes = [
         {
           value: "kusama",
           name: "Kusama",
-          icon: "kusama.svg",
           identity: "kusama",
           symbol: "KSM",
           decimals: 12,
@@ -86,7 +85,6 @@ export const nodes = [
   {
     value: "karura",
     name: "Karura",
-    icon: "karura.svg",
     identity: "kusama",
     symbol: "KAR",
     decimals: 12,
@@ -95,7 +93,6 @@ export const nodes = [
   {
     value: "khala",
     name: "Khala",
-    icon: "khala.svg",
     identity: "khala",
     symbol: "PHA",
     decimals: 12,
@@ -104,7 +101,6 @@ export const nodes = [
   // {
   //   value: "basilisk",
   //   name: "Basilisk",
-  //   icon: "basilisk.png",
   //   identity: "basilisk",
   //   symbol: "BSX",
   //   decimals: 12,
@@ -116,13 +112,11 @@ export const accountMenu = [
   {
     value: "settings",
     name: "Settings",
-    icon: "settings.svg",
     pathname: "/setting/account",
   },
   {
     value: "logout",
     name: "Logout",
-    icon: "logout.svg",
   },
 ];
 
@@ -132,13 +126,11 @@ export const mainMenu = [
       {
         value: "overview",
         name: "Overview",
-        icon: "overview.svg",
         pathname: "/",
       },
       {
         value: "discussions",
         name: "Discussions",
-        icon: "discussions.svg",
         pathname: "/discussions",
       },
     ],
@@ -149,20 +141,17 @@ export const mainMenu = [
       {
         value: "proposals",
         name: "Proposals",
-        icon: "type-proposals.svg",
         pathname: "/treasury/proposals",
       },
       {
         value: "bounties",
         name: "Bounties",
-        icon: "bounties.svg",
         pathname: "/treasury/bounties",
         excludeToChains: ["basilisk"],
       },
       {
         value: "tips",
         name: "Tips",
-        icon: "tips.svg",
         pathname: "/treasury/tips",
       },
     ],
@@ -173,19 +162,16 @@ export const mainMenu = [
       {
         value: "democracyProposals",
         name: "Proposals",
-        icon: "proposals.svg",
         pathname: "/democracy/proposals",
       },
       {
         value: "democracyExternals",
         name: "External",
-        icon: "proposals.svg",
         pathname: "/democracy/externals",
       },
       {
         value: "referenda",
         name: "Referenda",
-        icon: "type-referenda.svg",
         pathname: "/democracy/referendums",
       },
     ],
@@ -196,14 +182,27 @@ export const mainMenu = [
       {
         value: "motions",
         name: "Motions",
-        icon: "type-motions.svg",
         pathname: "/council/motions",
       },
       {
         value: "councilMembers",
         name: "Members",
-        icon: "members.svg",
         pathname: "/council/members",
+      },
+    ],
+  },
+  {
+    name: "TECH.COMM.",
+    items: [
+      {
+        value: "techCommProposals",
+        name: "Proposals",
+        pathname: "/techcomm/proposals",
+      },
+      {
+        value: "techCommMembers",
+        name: "Members",
+        pathname: "/techcomm/members",
       },
     ],
   },
@@ -213,28 +212,15 @@ export const mainMenu = [
       {
         value: "financialMotions",
         name: "Motions",
-        icon: "type-motions.svg",
         pathname: "/financial-council/motions",
+      },
+      {
+        value: "financialCouncilMembers",
+        name: "Members",
+        pathname: "/financial-council/members",
       },
     ],
     excludeToChains: ["khala", "kusamu", "basilisk"],
-  },
-  {
-    name: "TECH.COMM.",
-    items: [
-      {
-        value: "techCommProposals",
-        name: "Proposals",
-        icon: "proposals.svg",
-        pathname: "/techcomm/proposals",
-      },
-      {
-        value: "techCommMembers",
-        name: "Members",
-        icon: "members.svg",
-        pathname: "/techcomm/members",
-      },
-    ],
   },
 ];
 
@@ -244,7 +230,6 @@ export const settingMenu = [
       {
         value: "overview",
         name: "Back to Overview",
-        icon: "type-overview.svg",
         pathname: "/",
       },
     ],
@@ -255,19 +240,16 @@ export const settingMenu = [
       {
         value: "account",
         name: "Account",
-        icon: "setting-account.svg",
         pathname: "/setting/account",
       },
       {
         value: "linked-address",
         name: "Linked Address",
-        icon: "setting-linked-address.svg",
         pathname: "/setting/linked-address",
       },
       {
         value: "notification",
         name: "Notification",
-        icon: "setting-notification.svg",
         pathname: "/setting/notification",
       },
     ],

@@ -93,6 +93,7 @@ export default function Menu({ menu, chain }) {
   iconMap.set("notification", <BellIcon />);
   iconMap.set("councilMembers", <MembersIcon />);
   iconMap.set("techCommMembers", <MembersIcon />);
+  iconMap.set("financialCouncilMembers", <MembersIcon />);
   iconMap.set("financialMotions", <MotionIcon />);
 
   return (
