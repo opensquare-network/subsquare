@@ -20,7 +20,15 @@ const {
 } = require("../mongo/business");
 const mailService = require("./mail.service");
 
-async function findMotion(postId) {
+async function findMotion(post) {
+  const chainMotionCol = await getChainFinancialMotionCollection();
+  return await chainMotionCol.findOne({
+    hash: post.hash,
+    "indexer.blockHeight": post.height,
+  });
+}
+
+async function findMotionPost(postId) {
   const q = {};
   if (ObjectId.isValid(postId)) {
     q._id = ObjectId(postId);
@@ -29,39 +37,31 @@ async function findMotion(postId) {
   } else {
     const m = postId.match(/^(\d+)_(.+)$/);
     if (m) {
-      q["indexer.blockHeight"] = parseInt(m[1]);
+      q.height = parseInt(m[1]);
       q.hash = m[2];
     } else {
       q.hash = postId;
     }
   }
 
-  const chainMotionCol = await getChainFinancialMotionCollection();
-  return await chainMotionCol.findOne(q);
-}
-
-async function findMotionPost(chainMotion) {
-  const hash = chainMotion.hash;
-  const height = chainMotion.indexer.height;
-
-  const postCol = await getFinancialMotionCollection();
-  const post = await postCol.findOne({ hash, height });
+  const motionCol = await getFinancialMotionCollection();
+  const post = await motionCol.findOne(q);
   const postType = "financialMotion";
 
-  return [postCol, post, postType];
+  return [motionCol, post, postType];
 }
 
 async function updatePost(postId, title, content, contentType, author) {
   const chain = process.env.CHAIN;
 
-  const chainMotion = await findMotion(postId);
-  if (!chainMotion) {
-    throw new HttpError(404, "Motion is not found");
-  }
-
-  const [postCol, post] = await findMotionPost(chainMotion);
+  const [postCol, post, postType] = await findMotionPost(postId);
   if (!post) {
     throw new HttpError(404, "Post does not exists");
+  }
+
+  const chainMotion = await findMotion(post);
+  if (!chainMotion) {
+    throw new HttpError(404, "Motion is not found");
   }
 
   // Check if author is allow to edit
@@ -109,7 +109,7 @@ async function loadPostForMotions(chainMotions) {
     businessDb.compoundLookupOne({
       from: "financialMotion",
       for: chainMotions,
-      as: "motionPost",
+      as: "post",
       compoundLocalFields: ["hash", "indexer.blockHeight"],
       compoundForeignFields: ["hash", "height"],
     }),
@@ -135,9 +135,9 @@ async function loadPostForMotions(chainMotions) {
 
   return chainMotions.map((motion) => {
     const post = {
-      ...motion.motionPost,
+      ...motion.post,
     };
-    motion.motionPost = undefined;
+    motion.post = undefined;
     post.onchainData = motion;
     post.state = motion.state?.state;
     return post;
@@ -189,19 +189,19 @@ async function getMotionsByChain(page, pageSize) {
 async function getMotionById(postId) {
   const chain = process.env.CHAIN;
 
-  const chainMotion = await findMotion(postId);
-  if (!chainMotion) {
-    throw new HttpError(404, "Post not found");
+  const [postCol, post, postType] = await findMotionPost(postId);
+  if (!post) {
+    throw new HttpError(404, "Post does not exists");
   }
 
-  const motionCol = await getFinancialMotionCollection();
+  const chainMotion = await findMotion(post);
+  if (!chainMotion) {
+    throw new HttpError(404, "Motion is not found");
+  }
+
   const reactionCol = await getReactionCollection();
   const userCol = await getUserCollection();
 
-  const hash = chainMotion.hash;
-  const height = chainMotion.indexer.blockHeight;
-
-  const post = await motionCol.findOne({ hash, height });
   const reactions = await reactionCol.find({ motion: post._id }).toArray();
 
   const [, author] = await Promise.all([
@@ -239,14 +239,9 @@ async function processPostThumbsUpNotification(post, postType, reactionUser) {
 }
 
 async function setPostReaction(postId, reaction, user) {
-  const chainMotion = await findMotion(postId);
-  if (!chainMotion) {
-    throw new HttpError(404, "Motion does not found");
-  }
-
-  const [, post, postType] = await findMotionPost(chainMotion);
+  const [postCol, post, postType] = await findMotionPost(postId);
   if (!post) {
-    throw new HttpError(404, "Post does not found");
+    throw new HttpError(404, "Post does not exists");
   }
 
   const postObjId = post._id;
@@ -281,14 +276,9 @@ async function setPostReaction(postId, reaction, user) {
 }
 
 async function unsetPostReaction(postId, user) {
-  const chainMotion = await findMotion(postId);
-  if (!chainMotion) {
-    throw new HttpError(404, "Motion does not found");
-  }
-
-  const [, post, postType] = await findMotionPost(chainMotion);
+  const [postCol, post, postType] = await findMotionPost(postId);
   if (!post) {
-    throw new HttpError(404, "Post does not found");
+    throw new HttpError(404, "Post does not exists");
   }
 
   const postObjId = post._id;
@@ -350,14 +340,9 @@ async function processCommentMentions({
 }
 
 async function postComment(postId, content, contentType, author) {
-  const chainMotion = await findMotion(postId);
-  if (!chainMotion) {
-    throw new HttpError(404, "Motion does not found");
-  }
-
-  const [postCol, post, postType] = await findMotionPost(chainMotion);
+  const [postCol, post, postType] = await findMotionPost(postId);
   if (!post) {
-    throw new HttpError(404, "Post does not found");
+    throw new HttpError(404, "Post does not exists");
   }
 
   const postObjId = post._id;
@@ -435,12 +420,10 @@ async function postComment(postId, content, contentType, author) {
 }
 
 async function getComments(postId, page, pageSize) {
-  const chainMotion = await findMotion(postId);
-  if (!chainMotion) {
-    throw new HttpError(404, "Motion does not found");
+  const [postCol, post, postType] = await findMotionPost(postId);
+  if (!post) {
+    throw new HttpError(404, "Post does not exists");
   }
-
-  const [, post, postType] = await findMotionPost(chainMotion);
   const q = { [postType]: post._id };
 
   const commentCol = await getCommentCollection();
