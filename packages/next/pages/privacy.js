@@ -13,7 +13,6 @@ const Wrapper = styled.div`
 `;
 
 const BackButton = styled.div`
-  display: inline-block;
   margin-top: 8px;
   display: flex;
   font-weight: bold;
@@ -52,11 +51,13 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
     <Layout user={loginUser} chain={chain}>
       <NextHead title="Privacy Policy" desc="Privacy Policy" />
       <Wrapper>
-        <Link href="/signup">
-          <BackButton>
-            <img src="/imgs/icons/arrow-left.svg" />
-            <div>Back</div>
-          </BackButton>
+        <Link passHref={true} href="/signup">
+          <a>
+            <BackButton>
+              <img src="/imgs/icons/arrow-left.svg" alt="" />
+              <div>Back</div>
+            </BackButton>
+          </a>
         </Link>
         <Content>
           <Title>Privacy Policy</Title>
