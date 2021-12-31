@@ -14,6 +14,13 @@ const Wrapper = styled.button`
   font-weight: 500;
   font-size: 14px;
   ${(p) =>
+    p.disabled &&
+    css`
+      background: #c2c8d4;
+      color: #ffffff;
+      border: none;
+    `}
+  ${(p) =>
     p.primary &&
     css`
       background: #6848ff;
@@ -27,7 +34,7 @@ const Wrapper = styled.button`
       color: #ffffff;
       border: none;
     `}
-    ${(p) =>
+  ${(p) =>
     p.danger &&
     css`
       color: #f44336;
@@ -38,7 +45,7 @@ const Wrapper = styled.button`
     css`
       width: 100%;
     `}
-    ${(p) =>
+  ${(p) =>
     p.isLoading &&
     css`
       pointer-events: none;

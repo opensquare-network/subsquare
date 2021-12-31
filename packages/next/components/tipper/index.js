@@ -82,7 +82,8 @@ export default function Tipper({
   tipIsFinal = false,
   userIsTipper = false,
   loading = true,
-  tips = []
+  tips = [],
+  councilTippers = [],
 }) {
   const [showPopup, setShowPopup] = useState(false);
 
@@ -154,7 +155,7 @@ export default function Tipper({
         </Content>
         {!loading && action}
       </Wrapper>
-      {showPopup && <Popup chain={chain} onClose={() => setShowPopup(false)} />}
+      {showPopup && <Popup chain={chain} councilTippers={councilTippers} onClose={() => setShowPopup(false)} />}
     </>
   );
 }

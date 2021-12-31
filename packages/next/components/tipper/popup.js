@@ -11,7 +11,6 @@ import {
   encodeKusamaAddress,
   encodePolkadotAddress,
   encodeBasiliskAddress,
-  signMessage,
 } from "services/chainApi";
 
 import { useOnClickOutside, useIsMounted } from "utils/hooks";
@@ -79,7 +78,7 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-export default function Popup({ chain, onClose }) {
+export default function Popup({ chain, councilTippers, onClose }) {
   const ref = useRef();
   useOnClickOutside(ref, () => onClose());
   const isMounted = useIsMounted();
@@ -87,6 +86,9 @@ export default function Popup({ chain, onClose }) {
   const [hasExtension, setHasExtension] = useState(true);
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [web3Error, setWeb3Error] = useState();
+  const [tipValue, setTipValue] = useState();
+
+  const selectedAccountIsTipper = councilTippers.includes(selectedAccount?.[`${chain}Address`]);
 
   useEffect(() => {
     (async () => {
@@ -127,13 +129,17 @@ export default function Popup({ chain, onClose }) {
     setWeb3Error();
   }, [chain, accounts, selectedAccount]);
 
+  const doEndorse = () => {
+    //TODO: submit tip with the selected account
+  };
+
   return (
     <Wrapper ref={ref}>
       <TopWrapper>
         <div>Tip</div>
         <img onClick={onClose} src="/imgs/icons/close.svg" alt="" />
       </TopWrapper>
-      <Info>Only council members can tip.</Info>
+      <Info danger={!selectedAccountIsTipper}>Only council members can tip.</Info>
       <div>
         <Label>Address</Label>
         <AddressSelect
@@ -147,10 +153,15 @@ export default function Popup({ chain, onClose }) {
       </div>
       <div>
         <Label>Tip Value</Label>
-        <TipInput />
+        <TipInput value={tipValue} setValue={setTipValue} />
       </div>
       <ButtonWrapper>
-        <Button secondary>Endorse</Button>
+        {(selectedAccountIsTipper && tipValue) ? (
+          <Button secondary onClick={doEndorse}>Endorse</Button>
+        ) : (
+          <Button disabled>Endorse</Button>
+        )}
+
       </ButtonWrapper>
     </Wrapper>
   );

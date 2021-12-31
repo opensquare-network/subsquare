@@ -23,10 +23,10 @@ const Unit = styled.div`
   border-left: 1px solid #e0e4eb;
 `;
 
-export default function TipInput() {
+export default function TipInput({ value, setValue = ()=>{} }) {
   return (
     <Wrapper>
-      <Input type="number" placeholder="0.00" />
+      <Input type="number" placeholder="0.00" value={value} onChange={(e) => setValue(e.target.value)} />
       <Unit>PHA</Unit>
     </Wrapper>
   );

@@ -285,6 +285,7 @@ export default withLoginUserRedux(
               userIsTipper={userIsTipper}
               loading={loading}
               tips={tips}
+              councilTippers={councilTippers}
             />
             <Timeline data={timeline} chain={chain} indent={false} />
             <CommentsWrapper>
