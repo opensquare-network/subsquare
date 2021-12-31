@@ -1,5 +1,7 @@
 import styled, { css } from "styled-components";
 import { useRef, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+
 import {
   isWeb3Injected,
   web3Accounts,
@@ -18,6 +20,8 @@ import {
 import { useOnClickOutside, useIsMounted, useApi } from "utils/hooks";
 import AddressSelect from "components/addressSelect";
 import Button from "components/button";
+import { addToast } from "store/reducers/toastSlice";
+
 import TipInput from "./tipInput";
 import { getNode } from "utils";
 
@@ -81,7 +85,8 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-export default function Popup({ chain, councilTippers, tipHash, onClose }) {
+export default function Popup({ chain, councilTippers, tipHash, onClose, onFinalized }) {
+  const dispatch = useDispatch();
   const ref = useRef();
   useOnClickOutside(ref, () => onClose());
   const isMounted = useIsMounted();
@@ -89,7 +94,8 @@ export default function Popup({ chain, councilTippers, tipHash, onClose }) {
   const [hasExtension, setHasExtension] = useState(true);
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [web3Error, setWeb3Error] = useState();
-  const [tipValue, setTipValue] = useState();
+  const [inputTipValue, setInputTipValue] = useState();
+  const [tipping, setTipping] = useState(false);
 
   const selectedAccountIsTipper = councilTippers.includes(selectedAccount?.[`${chain}Address`]);
 
@@ -144,7 +150,12 @@ export default function Popup({ chain, councilTippers, tipHash, onClose }) {
 
   const doEndorse = async () => {
     if (!api) {
-      setWeb3Error("Chain network is not connected yet");
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Chain network is not connected yet"
+        })
+      );
       return;
     }
 
@@ -153,12 +164,22 @@ export default function Popup({ chain, councilTippers, tipHash, onClose }) {
     }
 
     if (!selectedAccount) {
-      setWeb3Error("Please select an account");
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Please select an account"
+        })
+      );
       return;
     }
 
-    if (!tipValue) {
-      setWeb3Error("Invalid tip value");
+    if (!inputTipValue) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Please input tip value"
+        })
+      );
       return;
     }
 
@@ -168,34 +189,57 @@ export default function Popup({ chain, councilTippers, tipHash, onClose }) {
     }
     const decimals = node.decimals;
 
-    const bnTipValue = new BigNumber(tipValue).multipliedBy(Math.pow(10, decimals));
+    const bnTipValue = new BigNumber(inputTipValue).multipliedBy(Math.pow(10, decimals));
     if (bnTipValue.lte(0)) {
-      setWeb3Error("Invalid tip value");
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Invalid tip value"
+        })
+      );
       return;
     }
 
     if (!bnTipValue.mod(1).isZero()) {
-      setWeb3Error("Invalid tip value");
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Invalid tip value"
+        })
+      );
       return;
     }
 
     try {
-      const unsub = await api.tx.tips
-      .tip(tipHash, bnTipValue.toNumber())
-      .signAndSend(selectedAccount.address, ({ events = [], status }) => {
-        if (status.isFinalized) {
-          //TODO: do something when finalized
-          unsub();
-        }
+      setTipping(true);
 
-        if (status.isInBlock) {
-          // Transaction went through
-          const tipSent = true;
-          onClose(tipSent);
-        }
-      });
+      const tipperAddress = selectedAccount.address;
+
+      const unsub = await api.tx.tips
+        .tip(tipHash, bnTipValue.toNumber())
+        .signAndSend(tipperAddress, ({ events = [], status }) => {
+          if (status.isFinalized) {
+            onFinalized(tipperAddress);
+            unsub();
+          }
+
+          if (status.isInBlock) {
+            // Transaction went through
+            const tipSent = true;
+            onClose(tipSent);
+          }
+        });
     } catch (e) {
-      setWeb3Error(e.message);
+      if (e.message !== "Cancelled") {
+        dispatch(
+          addToast({
+            type: "error",
+            message: e.message
+          })
+        );
+      }
+    } finally {
+      setTipping(false);
     }
   };
 
@@ -219,11 +263,11 @@ export default function Popup({ chain, councilTippers, tipHash, onClose }) {
       </div>
       <div>
         <Label>Tip Value</Label>
-        <TipInput value={tipValue} setValue={setTipValue} />
+        <TipInput value={inputTipValue} setValue={setInputTipValue} />
       </div>
       <ButtonWrapper>
-        {(selectedAccountIsTipper && api && tipValue) ? (
-          <Button secondary onClick={doEndorse}>Endorse</Button>
+        {(selectedAccountIsTipper && api && inputTipValue) ? (
+          <Button secondary isLoading={tipping} onClick={doEndorse}>Endorse</Button>
         ) : (
           <Button disabled>Endorse</Button>
         )}
