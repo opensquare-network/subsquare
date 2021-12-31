@@ -1,9 +1,13 @@
 import styled from "styled-components";
 import { useState } from "react";
+import dynamic from "next/dynamic";
 
 import Button from "components/button";
-import Popup from "./Popup";
 import User from "components/user";
+
+const Popup = dynamic(() => import("./popup"), {
+  ssr: false,
+});
 
 const Wrapper = styled.div`
   position: absolute;
@@ -65,7 +69,7 @@ const TipperItem = styled.div`
   color: #506176;
 `;
 
-export default function Tipper() {
+export default function Tipper({ chain }) {
   const [showPopup, setShowPopup] = useState(false);
 
   return (
@@ -97,7 +101,7 @@ export default function Tipper() {
           <span onClick={() => setShowPopup(true)}>Still tip</span>
         </SitllTip>
       </Wrapper>
-      {showPopup && <Popup onClose={() => setShowPopup(false)} />}
+      {showPopup && <Popup chain={chain} onClose={() => setShowPopup(false)} />}
     </>
   );
 }

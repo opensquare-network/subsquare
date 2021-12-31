@@ -53,9 +53,7 @@ export default function AddressLogin({ chain, onBack }) {
   const doWeb3Login = async () => {
     setLoading(true);
     const address = selectedAccount[`${chain}Address`];
-    const { result, error } = await nextApi.fetch(
-      `auth/login/${address}`
-    );
+    const { result, error } = await nextApi.fetch(`auth/login/${address}`);
     if (error) {
       setWeb3Error(error.message);
     }

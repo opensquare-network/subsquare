@@ -1,7 +1,20 @@
 import styled, { css } from "styled-components";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
+import {
+  isWeb3Injected,
+  web3Accounts,
+  web3Enable,
+} from "@polkadot/extension-dapp";
+import {
+  encodeKaruraAddress,
+  encodeKhalaAddress,
+  encodeKusamaAddress,
+  encodePolkadotAddress,
+  encodeBasiliskAddress,
+  signMessage,
+} from "services/chainApi";
 
-import { useOnClickOutside } from "utils/hooks";
+import { useOnClickOutside, useIsMounted } from "utils/hooks";
 import AddressSelect from "components/addressSelect";
 import Button from "components/button";
 import TipInput from "./tipInput";
@@ -66,9 +79,53 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-export default function Popup({ onClose }) {
+export default function Popup({ chain, onClose }) {
   const ref = useRef();
   useOnClickOutside(ref, () => onClose());
+  const isMounted = useIsMounted();
+  const [accounts, setAccounts] = useState([]);
+  const [hasExtension, setHasExtension] = useState(true);
+  const [selectedAccount, setSelectedAccount] = useState(null);
+  const [web3Error, setWeb3Error] = useState();
+
+  useEffect(() => {
+    (async () => {
+      await web3Enable("subsquare");
+      if (!isWeb3Injected) {
+        if (isMounted.current) {
+          setHasExtension(false);
+        }
+        return;
+      }
+      const extensionAccounts = await web3Accounts();
+      const accounts = extensionAccounts.map((item) => {
+        const {
+          address,
+          meta: { name },
+        } = item;
+        return {
+          address,
+          kusamaAddress: encodeKusamaAddress(address),
+          polkadotAddress: encodePolkadotAddress(address),
+          karuraAddress: encodeKaruraAddress(address),
+          khalaAddress: encodeKhalaAddress(address),
+          basiliskAddress: encodeBasiliskAddress(address),
+          name,
+        };
+      });
+
+      if (isMounted.current) {
+        setAccounts(accounts);
+      }
+    })();
+  }, [isMounted]);
+
+  useEffect(() => {
+    if (accounts && accounts.length > 0 && !selectedAccount) {
+      setSelectedAccount(accounts[0]);
+    }
+    setWeb3Error();
+  }, [chain, accounts, selectedAccount]);
 
   return (
     <Wrapper ref={ref}>
@@ -79,7 +136,14 @@ export default function Popup({ onClose }) {
       <Info>Only council members can tip.</Info>
       <div>
         <Label>Address</Label>
-        <AddressSelect />
+        <AddressSelect
+          chain={chain}
+          accounts={accounts}
+          selectedAccount={selectedAccount}
+          onSelect={(account) => {
+            setSelectedAccount(account);
+          }}
+        />
       </div>
       <div>
         <Label>Tip Value</Label>

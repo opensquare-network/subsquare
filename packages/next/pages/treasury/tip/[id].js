@@ -236,7 +236,7 @@ export default withLoginUserRedux(
               type={TYPE_TREASURY_TIP}
             />
             <KVList title="Metadata" data={metadata} />
-            <Tipper />
+            <Tipper chain={chain} />
             <Timeline data={timeline} chain={chain} indent={false} />
             <CommentsWrapper>
               <Comments
