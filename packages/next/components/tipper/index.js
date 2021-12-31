@@ -163,12 +163,8 @@ export default function Tipper({
           chain={chain}
           councilTippers={councilTippers}
           tipHash={tipHash}
-          onClose={(tipSent) => {
-            if (tipSent) {
-              updateTips();
-            }
-            setShowPopup(false);
-          }}
+          onClose={() => setShowPopup(false)}
+          onInBlock={updateTips}
           onFinalized={updateTimeline}
         />}
     </>

@@ -85,7 +85,7 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-export default function Popup({ chain, councilTippers, tipHash, onClose, onFinalized }) {
+export default function Popup({ chain, councilTippers, tipHash, onClose, onInBlock, onFinalized }) {
   const dispatch = useDispatch();
   const ref = useRef();
   useOnClickOutside(ref, () => onClose());
@@ -225,10 +225,11 @@ export default function Popup({ chain, councilTippers, tipHash, onClose, onFinal
 
           if (status.isInBlock) {
             // Transaction went through
-            const tipSent = true;
-            onClose(tipSent);
+            onInBlock(tipperAddress);
           }
         });
+
+      onClose();
     } catch (e) {
       if (e.message !== "Cancelled") {
         dispatch(
