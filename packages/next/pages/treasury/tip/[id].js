@@ -1,30 +1,33 @@
 /* eslint-disable react/jsx-key */
 import styled from "styled-components";
+import { useApi, useCall } from "utils/hooks";
+import { useEffect, useState, useRef } from "react";
+import dayjs from "dayjs";
+import findLastIndex from "lodash.findlastindex";
+
+import { withLoginUser, withLoginUserRedux } from "lib";
+import { EmptyList } from "utils/constants";
+import { getTimelineStatus, getNode, toPrecision } from "utils";
+import { TYPE_TREASURY_TIP } from "utils/viewConstants";
+import { getMetaDesc, getTipState } from "utils/viewfuncs";
+import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
+import { to404 } from "utils/serverSideUtil";
 
 import Back from "components/back";
 import DetailItem from "components/detailItem";
 import Comments from "components/comment";
-import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
-import { EmptyList } from "utils/constants";
 import Input from "components/comment/input";
-import { useState, useRef } from "react";
 import Layout from "components/layout";
-import { getTimelineStatus, getNode, toPrecision } from "utils";
 import Timeline from "components/timeline";
-import dayjs from "dayjs";
 import User from "components/user";
 import KVList from "components/kvList";
 import Links from "components/timeline/links";
 import ReasonLink from "components/reasonLink";
-import { TYPE_TREASURY_TIP } from "utils/viewConstants";
-import { getMetaDesc, getTipState } from "utils/viewfuncs";
-import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
-import findLastIndex from "lodash.findlastindex";
-import { shadow_100 } from "styles/componentCss";
-import { to404 } from "utils/serverSideUtil";
-// import SEO from "components/SEO";
+import SEO from "components/SEO";
 import Tipper from "components/tipper";
+
+import { shadow_100 } from "styles/componentCss";
 
 const OutWrapper = styled.div`
   display: flex;
@@ -98,6 +101,46 @@ export default withLoginUserRedux(
     const [contentType, setContentType] = useState(
       loginUser?.preference.editor || "markdown"
     );
+
+    const [tipIsFinal, setTipIsFinal] = useState(
+      ["TipClosed", "TipRetracted"].includes(
+        detail?.onchainData?.state?.state
+      )
+    );
+
+    // If the tip is not final, we'd need to look for tip state from the chain first.
+    const shouldGetTipsFromNode = !tipIsFinal;
+    const tipHash = detail?.onchainData?.hash;
+    const tipsInDb = detail?.onchainData?.meta?.tips || [];
+
+    const [loading, setLoading] = useState(shouldGetTipsFromNode);
+    const [tips, setTips] = useState(tipsInDb);
+
+    const api = useApi(chain);
+    const councilMembers = useCall((api?.query.council || api?.query.generalCouncil)?.members, []);
+    const councilTippers = councilMembers?.toJSON() || [];
+    const userIsTipper = councilTippers?.some(
+      address => loginUser?.addresses?.some(
+        item => item.address === address && item.chain === chain
+      )
+    );
+
+    useEffect(() => {
+      if (shouldGetTipsFromNode && api) {
+        api.query.tips.tips(tipHash).then((tip) => {
+          const normalizedTip = tip.toJSON();
+          if (normalizedTip) {
+            // Repalce the tips read from db with the current on-chain state
+            setTips(normalizedTip?.meta?.tips);
+          } else {
+            // If the tip is null,
+            // It is considered to have been closed/retracted already
+            setTipIsFinal(true);
+          }
+          setLoading(false);
+        });
+      }
+    }, [api, shouldGetTipsFromNode, tipHash]);
 
     const node = getNode(chain);
     if (!node) {
@@ -219,12 +262,12 @@ export default withLoginUserRedux(
     const desc = getMetaDesc(detail, "Tip");
     return (
       <Layout user={loginUser} chain={chain}>
-        {/* <SEO
+        <SEO
           title={detail?.title}
           desc={desc}
           siteUrl={siteUrl}
           chain={chain}
-        /> */}
+        />
         <OutWrapper>
           <Wrapper className="post-content">
             <Back href={`/treasury/tips`} text="Back to Tips" />
@@ -236,7 +279,13 @@ export default withLoginUserRedux(
               type={TYPE_TREASURY_TIP}
             />
             <KVList title="Metadata" data={metadata} />
-            <Tipper chain={chain} />
+            <Tipper
+              chain={chain}
+              tipIsFinal={tipIsFinal}
+              userIsTipper={userIsTipper}
+              loading={loading}
+              tips={tips}
+            />
             <Timeline data={timeline} chain={chain} indent={false} />
             <CommentsWrapper>
               <Comments
