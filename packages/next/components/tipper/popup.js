@@ -4,7 +4,9 @@ import {
   isWeb3Injected,
   web3Accounts,
   web3Enable,
+  web3FromAddress,
 } from "@polkadot/extension-dapp";
+import BigNumber from "bignumber.js";
 import {
   encodeKaruraAddress,
   encodeKhalaAddress,
@@ -13,10 +15,11 @@ import {
   encodeBasiliskAddress,
 } from "services/chainApi";
 
-import { useOnClickOutside, useIsMounted } from "utils/hooks";
+import { useOnClickOutside, useIsMounted, useApi } from "utils/hooks";
 import AddressSelect from "components/addressSelect";
 import Button from "components/button";
 import TipInput from "./tipInput";
+import { getNode } from "utils";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -78,7 +81,7 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-export default function Popup({ chain, councilTippers, onClose }) {
+export default function Popup({ chain, councilTippers, tipHash, onClose }) {
   const ref = useRef();
   useOnClickOutside(ref, () => onClose());
   const isMounted = useIsMounted();
@@ -129,8 +132,71 @@ export default function Popup({ chain, councilTippers, onClose }) {
     setWeb3Error();
   }, [chain, accounts, selectedAccount]);
 
-  const doEndorse = () => {
-    //TODO: submit tip with the selected account
+  const api = useApi(chain);
+
+  useEffect(() => {
+    if (api && selectedAccount) {
+      web3FromAddress(selectedAccount.address).then(injector => {
+        api.setSigner(injector.signer);
+      });
+    }
+  }, [api, selectedAccount]);
+
+  const doEndorse = async () => {
+    if (!api) {
+      setWeb3Error("Chain network is not connected yet");
+      return;
+    }
+
+    if (!tipHash) {
+      return;
+    }
+
+    if (!selectedAccount) {
+      setWeb3Error("Please select an account");
+      return;
+    }
+
+    if (!tipValue) {
+      setWeb3Error("Invalid tip value");
+      return;
+    }
+
+    const node = getNode(chain);
+    if (!node) {
+      return;
+    }
+    const decimals = node.decimals;
+
+    const bnTipValue = new BigNumber(tipValue).multipliedBy(Math.pow(10, decimals));
+    if (bnTipValue.lte(0)) {
+      setWeb3Error("Invalid tip value");
+      return;
+    }
+
+    if (!bnTipValue.mod(1).isZero()) {
+      setWeb3Error("Invalid tip value");
+      return;
+    }
+
+    try {
+      const unsub = await api.tx.tips
+      .tip(tipHash, bnTipValue.toNumber())
+      .signAndSend(selectedAccount.address, ({ events = [], status }) => {
+        if (status.isFinalized) {
+          //TODO: do something when finalized
+          unsub();
+        }
+
+        if (status.isInBlock) {
+          // Transaction went through
+          const tipSent = true;
+          onClose(tipSent);
+        }
+      });
+    } catch (e) {
+      setWeb3Error(e.message);
+    }
   };
 
   return (
@@ -156,7 +222,7 @@ export default function Popup({ chain, councilTippers, onClose }) {
         <TipInput value={tipValue} setValue={setTipValue} />
       </div>
       <ButtonWrapper>
-        {(selectedAccountIsTipper && tipValue) ? (
+        {(selectedAccountIsTipper && api && tipValue) ? (
           <Button secondary onClick={doEndorse}>Endorse</Button>
         ) : (
           <Button disabled>Endorse</Button>
