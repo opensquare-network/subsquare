@@ -4,6 +4,7 @@ import {
   isWeb3Injected,
   web3Accounts,
   web3Enable,
+  web3FromAddress,
 } from "@polkadot/extension-dapp";
 import BigNumber from "bignumber.js";
 import {
@@ -133,8 +134,17 @@ export default function Popup({ chain, councilTippers, tipHash, onClose }) {
 
   const api = useApi(chain);
 
-  const doEndorse = () => {
+  useEffect(() => {
+    if (api && selectedAccount) {
+      web3FromAddress(selectedAccount.address).then(injector => {
+        api.setSigner(injector.signer);
+      });
+    }
+  }, [api, selectedAccount]);
+
+  const doEndorse = async () => {
     if (!api) {
+      setWeb3Error("Chain network is not connected yet");
       return;
     }
 
@@ -143,10 +153,12 @@ export default function Popup({ chain, councilTippers, tipHash, onClose }) {
     }
 
     if (!selectedAccount) {
+      setWeb3Error("Please select an account");
       return;
     }
 
     if (!tipValue) {
+      setWeb3Error("Invalid tip value");
       return;
     }
 
@@ -158,16 +170,17 @@ export default function Popup({ chain, councilTippers, tipHash, onClose }) {
 
     const bnTipValue = new BigNumber(tipValue).multipliedBy(Math.pow(10, decimals));
     if (bnTipValue.lte(0)) {
-      // Tip value should be greater than 0
+      setWeb3Error("Invalid tip value");
       return;
     }
 
     if (!bnTipValue.mod(1).isZero()) {
-      // Tip value should be integer
+      setWeb3Error("Invalid tip value");
       return;
     }
 
-    const unsub = await api.tx.tips
+    try {
+      const unsub = await api.tx.tips
       .tip(tipHash, bnTipValue.toNumber())
       .signAndSend(selectedAccount.address, ({ events = [], status }) => {
         if (status.isFinalized) {
@@ -180,8 +193,10 @@ export default function Popup({ chain, councilTippers, tipHash, onClose }) {
           const tipSent = true;
           onClose(tipSent);
         }
-      }
-    );
+      });
+    } catch (e) {
+      setWeb3Error(e.message);
+    }
   };
 
   return (
