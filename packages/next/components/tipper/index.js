@@ -4,6 +4,8 @@ import dynamic from "next/dynamic";
 
 import Button from "components/button";
 import User from "components/user";
+import { getNode, toPrecision } from "utils";
+import LoadingIcon from "public/imgs/icons/members-loading.svg";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -44,7 +46,7 @@ const NoTippers = styled.div`
   color: #9da9bb;
 `;
 
-const SitllTip = styled.div`
+const Description = styled.div`
   font-size: 12px;
   line-height: 140%;
   color: #9da9bb;
@@ -69,37 +71,88 @@ const TipperItem = styled.div`
   color: #506176;
 `;
 
-export default function Tipper({ chain }) {
+const LoadingDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export default function Tipper({
+  chain,
+  tipIsFinal = false,
+  userIsTipper = false,
+  loading = true,
+  tips = []
+}) {
   const [showPopup, setShowPopup] = useState(false);
+
+  const node = getNode(chain);
+  if (!node) {
+    return null;
+  }
+  const decimals = node.decimals;
+  const symbol = node.symbol;
+
+  let tipList = null;
+
+  if (loading) {
+    tipList = (
+      <TipperList>
+        <LoadingDiv>
+          <LoadingIcon />
+        </LoadingDiv>
+      </TipperList>
+    );
+  } else if (tips.length === 0) {
+    tipList = (
+      <TipperList>
+        <NoTippers>No tippers</NoTippers>
+      </TipperList>
+    );
+  } else {
+    tipList = (
+      <TipperList>
+        {tips.map(([address, amount]) => (
+          <TipperItem key={address}>
+            <User chain={chain} add={address} />
+            <div>{`${toPrecision(amount ?? 0, decimals)} ${symbol}`}</div>
+          </TipperItem>
+        ))}
+      </TipperList>
+    );
+  }
+
+  let action = null;
+
+  if (tipIsFinal) {
+    action = (
+      <Description>
+        This tip has been cloesd.
+      </Description>
+    );
+  } else if (userIsTipper) {
+    action = (
+      <Button secondary isFill onClick={() => setShowPopup(true)}>
+        Endorse
+      </Button>
+    );
+  } else {
+    action = (
+      <Description>
+        Only council members can tip, no account found from the council.{" "}
+        <span onClick={() => setShowPopup(true)}>Still tip</span>
+      </Description>
+    );
+  }
 
   return (
     <>
       <Wrapper>
         <Content>
           <Title>Tippers</Title>
-          {/* <NoTippers>No current tippers</NoTippers> */}
-          <TipperList>
-            <TipperItem>
-              <User add="rU372H6Tsj11cUWoiB4aPxiJNs3e6p2oWtsefm2TTVKzr2t" />
-              <div>500 PHA</div>
-            </TipperItem>
-            <TipperItem>
-              <User add="rU372H6Tsj11cUWoiB4aPxiJNs3e6p2oWtsefm2TTVKzr2t" />
-              <div>500 PHA</div>
-            </TipperItem>
-            <TipperItem>
-              <User add="rU372H6Tsj11cUWoiB4aPxiJNs3e6p2oWtsefm2TTVKzr2t" />
-              <div>500 PHA</div>
-            </TipperItem>
-          </TipperList>
+          {tipList}
         </Content>
-        <Button secondary isFill onClick={() => setShowPopup(true)}>
-          Endorse
-        </Button>
-        <SitllTip>
-          Only council members can tip, no account found from the council.{" "}
-          <span onClick={() => setShowPopup(true)}>Still tip</span>
-        </SitllTip>
+        {!loading && action}
       </Wrapper>
       {showPopup && <Popup chain={chain} onClose={() => setShowPopup(false)} />}
     </>
