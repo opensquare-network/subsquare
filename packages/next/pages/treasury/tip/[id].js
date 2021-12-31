@@ -16,7 +16,7 @@ import { to404 } from "utils/serverSideUtil";
 import Back from "components/back";
 import DetailItem from "components/detailItem";
 import Comments from "components/comment";
-import { ssrNextApi as nextApi } from "services/nextApi";
+import { ssrNextApi, nextApi } from "services/nextApi";
 import Input from "components/comment/input";
 import Layout from "components/layout";
 import Timeline from "components/timeline";
@@ -92,7 +92,8 @@ const getClosedTimelineData = (timeline = []) => {
 };
 
 export default withLoginUserRedux(
-  ({ loginUser, detail, comments, chain, siteUrl }) => {
+  ({ loginUser, detail: tip, comments, chain, siteUrl }) => {
+    const [detail, setDetail] = useState(tip);
     const postId = detail._id;
 
     const editorWrapperRef = useRef(null);
@@ -266,6 +267,29 @@ export default withLoginUserRedux(
       setTipsNeedUpdate(Date.now());
     };
 
+    const updateTimeline = (tipperAddress) => {
+      let times = 6;
+      const doUpdate = async () => {
+        const { result: newTipDetail } = await nextApi.fetch(`treasury/tips/${`${detail._id}`}`);
+
+        // Check if user's tip is present in DB
+        const tipFound = newTipDetail?.onchainData?.meta?.tips?.some(
+          ([address]) => address === tipperAddress
+        );
+        if (tipFound) {
+          setDetail(newTipDetail);
+          return;
+        }
+
+        // Do next update
+        times--;
+        if (times > 0) {
+          setTimeout(doUpdate, 10 * 1000);
+        }
+      };
+      setTimeout(doUpdate, 10 * 1000)
+    };
+
     const desc = getMetaDesc(detail, "Tip");
     return (
       <Layout user={loginUser} chain={chain}>
@@ -295,6 +319,7 @@ export default withLoginUserRedux(
               councilTippers={councilTippers}
               tipHash={tipHash}
               updateTips={updateTips}
+              updateTimeline={updateTimeline}
             />
             <Timeline data={timeline} chain={chain} indent={false} />
             <CommentsWrapper>
@@ -335,14 +360,14 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { id, page, page_size: pageSize } = context.query;
 
   const [{ result: detail }] = await Promise.all([
-    nextApi.fetch(`treasury/tips/${id}`),
+    ssrNextApi.fetch(`treasury/tips/${id}`),
   ]);
 
   if (!detail) {
     to404(context);
   }
 
-  const { result: comments } = await nextApi.fetch(
+  const { result: comments } = await ssrNextApi.fetch(
     `treasury/tips/${detail._id}/comments`,
     {
       page: page ?? "last",

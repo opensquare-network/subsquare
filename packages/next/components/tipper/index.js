@@ -86,6 +86,7 @@ export default function Tipper({
   councilTippers = [],
   tipHash,
   updateTips = ()=>{},
+  updateTimeline = ()=>{},
 }) {
   const [showPopup, setShowPopup] = useState(false);
 
@@ -168,6 +169,7 @@ export default function Tipper({
             }
             setShowPopup(false);
           }}
+          onFinalized={updateTimeline}
         />}
     </>
   );
