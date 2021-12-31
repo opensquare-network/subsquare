@@ -5,6 +5,7 @@ import {
   web3Accounts,
   web3Enable,
 } from "@polkadot/extension-dapp";
+import BigNumber from "bignumber.js";
 import {
   encodeKaruraAddress,
   encodeKhalaAddress,
@@ -13,10 +14,11 @@ import {
   encodeBasiliskAddress,
 } from "services/chainApi";
 
-import { useOnClickOutside, useIsMounted } from "utils/hooks";
+import { useOnClickOutside, useIsMounted, useApi } from "utils/hooks";
 import AddressSelect from "components/addressSelect";
 import Button from "components/button";
 import TipInput from "./tipInput";
+import { getNode } from "utils";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -78,7 +80,7 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-export default function Popup({ chain, councilTippers, onClose }) {
+export default function Popup({ chain, councilTippers, tipHash, onClose }) {
   const ref = useRef();
   useOnClickOutside(ref, () => onClose());
   const isMounted = useIsMounted();
@@ -129,8 +131,57 @@ export default function Popup({ chain, councilTippers, onClose }) {
     setWeb3Error();
   }, [chain, accounts, selectedAccount]);
 
+  const api = useApi(chain);
+
   const doEndorse = () => {
-    //TODO: submit tip with the selected account
+    if (!api) {
+      return;
+    }
+
+    if (!tipHash) {
+      return;
+    }
+
+    if (!selectedAccount) {
+      return;
+    }
+
+    if (!tipValue) {
+      return;
+    }
+
+    const node = getNode(chain);
+    if (!node) {
+      return;
+    }
+    const decimals = node.decimals;
+
+    const bnTipValue = new BigNumber(tipValue).multipliedBy(Math.pow(10, decimals));
+    if (bnTipValue.lte(0)) {
+      // Tip value should be greater than 0
+      return;
+    }
+
+    if (!bnTipValue.mod(1).isZero()) {
+      // Tip value should be integer
+      return;
+    }
+
+    const unsub = await api.tx.tips
+      .tip(tipHash, bnTipValue.toNumber())
+      .signAndSend(selectedAccount.address, ({ events = [], status }) => {
+        if (status.isFinalized) {
+          //TODO: do something when finalized
+          unsub();
+        }
+
+        if (status.isInBlock) {
+          // Transaction went through
+          const tipSent = true;
+          onClose(tipSent);
+        }
+      }
+    );
   };
 
   return (
@@ -156,7 +207,7 @@ export default function Popup({ chain, councilTippers, onClose }) {
         <TipInput value={tipValue} setValue={setTipValue} />
       </div>
       <ButtonWrapper>
-        {(selectedAccountIsTipper && tipValue) ? (
+        {(selectedAccountIsTipper && api && tipValue) ? (
           <Button secondary onClick={doEndorse}>Endorse</Button>
         ) : (
           <Button disabled>Endorse</Button>

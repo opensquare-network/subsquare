@@ -124,6 +124,8 @@ export default withLoginUserRedux(
         item => item.address === address && item.chain === chain
       )
     );
+    // Used to trigger tips updating
+    const [tipsNeedUpdate, setTipsNeedUpdate] = useState(Date.now());
 
     useEffect(() => {
       if (shouldGetTipsFromNode && api) {
@@ -140,7 +142,7 @@ export default withLoginUserRedux(
           setLoading(false);
         });
       }
-    }, [api, shouldGetTipsFromNode, tipHash]);
+    }, [api, shouldGetTipsFromNode, tipHash, tipsNeedUpdate]);
 
     const node = getNode(chain);
     if (!node) {
@@ -259,6 +261,11 @@ export default withLoginUserRedux(
       ],
     ];
 
+    const updateTips = () => {
+      // Trigger tips update
+      setTipsNeedUpdate(Date.now());
+    };
+
     const desc = getMetaDesc(detail, "Tip");
     return (
       <Layout user={loginUser} chain={chain}>
@@ -286,6 +293,8 @@ export default withLoginUserRedux(
               loading={loading}
               tips={tips}
               councilTippers={councilTippers}
+              tipHash={tipHash}
+              updateTips={updateTips}
             />
             <Timeline data={timeline} chain={chain} indent={false} />
             <CommentsWrapper>
