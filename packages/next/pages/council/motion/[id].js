@@ -6,7 +6,7 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import Layout from "components/layout";
 import MotionDetail from "components/motion/councilMotionDetail";
 import { to404 } from "utils/serverSideUtil";
-import { TYPE_MOTION } from "utils/viewConstants";
+import { TYPE_COUNCIL_MOTION } from "utils/viewConstants";
 import { getMetaDesc, isMotionCompleted } from "../../../utils/viewfuncs";
 import { EmptyList } from "../../../utils/constants";
 import Comments from "../../../components/comment";
@@ -75,7 +75,7 @@ export default withLoginUserRedux(
             motion={motion}
             user={loginUser}
             chain={chain}
-            type={TYPE_MOTION}
+            type={TYPE_COUNCIL_MOTION}
             onReply={onReply}
           />
           <CommentsWrapper>
@@ -93,7 +93,7 @@ export default withLoginUserRedux(
                 ref={editorWrapperRef}
                 setQuillRef={setQuillRef}
                 {...{ contentType, setContentType, content, setContent, users }}
-                type={TYPE_MOTION}
+                type={TYPE_COUNCIL_MOTION}
               />
             )}
           </CommentsWrapper>

@@ -62,7 +62,12 @@ const Right = styled.div`
   flex-grow: 1;
 `;
 
-export default function FoldableItem({ data, chain, indent = true }) {
+export default function FoldableItem({
+  data,
+  chain,
+  indent = true,
+  type = "",
+}) {
   const [isFold, setIsFold] = useState(true);
 
   return (
@@ -85,6 +90,7 @@ export default function FoldableItem({ data, chain, indent = true }) {
             isFold={isFold}
             setIsFold={setIsFold}
             chain={chain}
+            type={type}
           />
         ))}
       </Right>

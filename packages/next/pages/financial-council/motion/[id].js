@@ -6,7 +6,7 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import Layout from "components/layout";
 import MotionDetail from "components/motion/councilMotionDetail";
 import { to404 } from "utils/serverSideUtil";
-import { TYPE_FINANCIAL_MOTION, TYPE_MOTION } from "utils/viewConstants";
+import { TYPE_FINANCIAL_MOTION } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import { EmptyList } from "../../../utils/constants";
 import Comments from "../../../components/comment";

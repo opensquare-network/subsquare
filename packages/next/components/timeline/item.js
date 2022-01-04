@@ -132,7 +132,14 @@ const VoteResultWrapper = styled(Flex)`
   }
 `;
 
-export default function Item({ data, foldable, isFold, setIsFold, chain }) {
+export default function Item({
+  data,
+  foldable,
+  isFold,
+  setIsFold,
+  chain,
+  type = "",
+}) {
   return (
     <Wrapper foldable={foldable} isFold={isFold}>
       <Left>
@@ -144,7 +151,7 @@ export default function Item({ data, foldable, isFold, setIsFold, chain }) {
           <div>{data.time}</div>
           {data.status && data.status.value && (
             <TagWrapper>
-              <Tag name={data.status.value} data={data} />
+              <Tag name={data.status.value} data={data} type={type} />
             </TagWrapper>
           )}
           <FoldButton
