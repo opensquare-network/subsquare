@@ -141,7 +141,7 @@ export default function Header({ user, left, chain, isWeb3Login }) {
                 <NetworkWrapper>
                   <NetworkSwitch activeNode={node} isWeb3Login={isWeb3Login} />
                 </NetworkWrapper>
-                <NodeSwitch small chain={chain} />
+                <NodeSwitch small chain={chain} node={node} />
               </>
             }
           </Right>

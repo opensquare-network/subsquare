@@ -105,6 +105,7 @@ export const nodes = [
     value: "kabocha",
     name: "Kabocha",
     icon: "kabocha.svg",
+    hideHeight: true,
     // identity: "kabocha",
     // symbol: "",
     // decimals: 0,
@@ -125,11 +126,13 @@ export const accountMenu = [
   {
     value: "settings",
     name: "Settings",
+    icon: "settings.svg",
     pathname: "/setting/account",
   },
   {
     value: "logout",
     name: "Logout",
+    icon: "logout.svg",
   },
 ];
 

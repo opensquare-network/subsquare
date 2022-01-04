@@ -82,8 +82,8 @@ export default function SidebarAccount({ user, chain }) {
     <Wrapper>
       <Title>NETWORK</Title>
       <NetworkSwitch activeNode={node} />
-      <Title>NODE</Title>
-      <NodeSwitch chain={chain} />
+      {node?.hideHeight ? null : <Title>NODE</Title>}
+      <NodeSwitch chain={chain} node={node} />
       <Title>ACCOUNT</Title>
       {!user && (
         <ButtonWrapper>
@@ -102,7 +102,12 @@ export default function SidebarAccount({ user, chain }) {
           </UserWrapper>
           {accountMenu.map((item, index) => (
             <Item key={index} onClick={() => handleAccountMenu(item)}>
-              <img src={`/imgs/icons/${item.icon}`} alt="icon"  width={24} height={24}  />
+              <img
+                src={`/imgs/icons/${item.icon}`}
+                alt="icon"
+                width={24}
+                height={24}
+              />
               <div>{item.name}</div>
             </Item>
           ))}
