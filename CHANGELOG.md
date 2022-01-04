@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.6.6
+
+### Added
+
+- Financial Council support for Karura
+- Display current Treasury pot above treasury related pages
+- Scan function for democracy preimage
+- Migrate more functions into scan-common package
+- New next-common package for shared UI components
+
+### Fixed
+
+- UI fix up
+- Abbreviate big number display
+- Show linked business information in motions
+
+### Update
+
+- New private policy
+- Regular dependency update
+
 ## v1.6.5
 
 ### Added
