@@ -68,9 +68,12 @@ const isMotion = (data) => {
 export default function Tag({ name, data, type = "" }) {
   let tag = name;
   if (isMotion(data)) {
-    const motionIndex = data?.status?.value?.replace(/^\D+/g, "");
     if (type === TYPE_COUNCIL_MOTION) {
-      tag = <a href={`/council/motion/${motionIndex}`}>{name}</a>;
+      tag = (
+        <a href={`/council/motion/${data.indexer.blockHeight}_${data.hash}`}>
+          {name}
+        </a>
+      );
     }
     if (type === TYPE_FINANCIAL_MOTION) {
       tag = (
