@@ -120,12 +120,18 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
           className="logo"
         />
         <NetworkBlock>
-          <div>Block</div>
-          {nodesHeight ? (
-            <span>{`#${nodesHeight?.toLocaleString()}`}</span>
-          ) : !activeNode?.hideHeight ? (
-            <LoadingSvg />
-          ) : null}
+          {activeNode?.hideHeight ? (
+            <div>{activeNode?.name}</div>
+          ) : (
+            <>
+              <div>Block</div>
+              {nodesHeight ? (
+                <span>{`#${nodesHeight?.toLocaleString()}`}</span>
+              ) : (
+                <LoadingSvg />
+              )}
+            </>
+          )}
         </NetworkBlock>
         <img width={14} height={14} src="/imgs/icons/caret-down.svg" alt="" />
       </Select>
