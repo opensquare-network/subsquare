@@ -2,6 +2,8 @@ import styled from "styled-components";
 import {
   TYPE_COUNCIL_MOTION,
   TYPE_FINANCIAL_MOTION,
+  TYPE_TECH_COMM_MOTION,
+  TYPE_TREASURY_BOUNTY,
 } from "../utils/viewConstants";
 
 const Wrapper = styled.div`
@@ -68,7 +70,7 @@ const isMotion = (data) => {
 export default function Tag({ name, data, type = "" }) {
   let tag = name;
   if (isMotion(data)) {
-    if (type === TYPE_COUNCIL_MOTION) {
+    if (type === TYPE_COUNCIL_MOTION || type === TYPE_TREASURY_BOUNTY) {
       tag = (
         <a href={`/council/motion/${data.indexer.blockHeight}_${data.hash}`}>
           {name}
@@ -80,6 +82,13 @@ export default function Tag({ name, data, type = "" }) {
         <a
           href={`/financial-council/motion/${data.indexer.blockHeight}_${data.hash}`}
         >
+          {name}
+        </a>
+      );
+    }
+    if (type === TYPE_TECH_COMM_MOTION) {
+      tag = (
+        <a href={`/techcomm/proposal/${data.indexer.blockHeight}_${data.hash}`}>
           {name}
         </a>
       );

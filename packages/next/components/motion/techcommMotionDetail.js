@@ -15,7 +15,6 @@ import ArticleContent from "../articleContent";
 import { useState } from "react";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
 import { getPostUpdatedAt } from "../../utils/viewfuncs";
-import { TYPE_TECH_COMM_MOTION } from "../../utils/viewConstants";
 import MultiKVList from "../multiKVList";
 
 const Wrapper = styled.div`
@@ -166,6 +165,7 @@ export default function TechcommMotionDetail({
   chain,
   onReply,
   loginUser,
+  type,
 }) {
   const node = getNode(chain);
   const [post, setPost] = useState(motion);
@@ -278,7 +278,7 @@ export default function TechcommMotionDetail({
             setPost={setPost}
             user={loginUser}
             onReply={onReply}
-            type={TYPE_TECH_COMM_MOTION}
+            type={type}
           />
         </div>
       </Wrapper>
@@ -310,7 +310,7 @@ export default function TechcommMotionDetail({
         ]}
       />
 
-      <Timeline data={timelineData} chain={chain} indent={false} />
+      <Timeline data={timelineData} chain={chain} indent={false} type={type} />
     </div>
   );
 }
