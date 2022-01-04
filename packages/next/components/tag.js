@@ -4,6 +4,7 @@ import {
   TYPE_FINANCIAL_MOTION,
   TYPE_TECH_COMM_MOTION,
   TYPE_TREASURY_BOUNTY,
+  TYPE_TREASURY_PROPOSAL,
 } from "../utils/viewConstants";
 
 const Wrapper = styled.div`
@@ -70,7 +71,11 @@ const isMotion = (data) => {
 export default function Tag({ name, data, type = "" }) {
   let tag = name;
   if (isMotion(data)) {
-    if (type === TYPE_COUNCIL_MOTION || type === TYPE_TREASURY_BOUNTY) {
+    if (
+      type === TYPE_COUNCIL_MOTION ||
+      type === TYPE_TREASURY_BOUNTY ||
+      type === TYPE_TREASURY_PROPOSAL
+    ) {
       tag = (
         <a href={`/council/motion/${data.indexer.blockHeight}_${data.hash}`}>
           {name}
