@@ -176,7 +176,11 @@ export default withLoginUserRedux(
             type={TYPE_TREASURY_BOUNTY}
           />
           <Metadata data={metadata} />
-          <Timeline data={timelineData} chain={chain} />
+          <Timeline
+            data={timelineData}
+            chain={chain}
+            type={TYPE_TREASURY_BOUNTY}
+          />
           <CommentsWrapper>
             <Comments
               data={comments}
