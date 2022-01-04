@@ -41,7 +41,7 @@ async function findMotion(postId) {
   }
 
   const chainMotionCol = await getChainMotionCollection();
-  return await chainMotionCol.findOne(q);
+  return await chainMotionCol.findOne(q, { sort: [["indexer.blockHeight", -1]] });
 }
 
 async function findMotionPost(chainMotion) {
