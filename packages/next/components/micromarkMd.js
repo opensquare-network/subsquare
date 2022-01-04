@@ -168,21 +168,13 @@ const Wrapper = styled.div`
 `;
 
 export default function MicromarkMd({ md = "", contentVersion = "" }) {
-  const matchLinkMd = matchMdLink(md);
-  let displayContent = matchLinkMd;
+  let displayContent = matchMdLink(md);
 
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "/prism.js";
     document.body.appendChild(script);
   }, []);
-
-  if (contentVersion === "2") {
-    displayContent = md.replace(/\n+/g, function (ns) {
-      if (ns.length === 1) return "  " + ns;
-      return ns;
-    });
-  }
 
   const html = micromark(displayContent, {
     allowDangerousHtml: true,

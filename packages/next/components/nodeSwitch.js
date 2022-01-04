@@ -104,7 +104,7 @@ const Item = styled.div`
     `}
 `;
 
-export default function NodeSwitch({ small, chain }) {
+export default function NodeSwitch({ small, chain, node }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
   const windowSize = useWindowSize();
@@ -148,6 +148,10 @@ export default function NodeSwitch({ small, chain }) {
     if (delay >= 100) return "#FF9800";
     return "#4CAF50";
   };
+
+  if (node.hideHeight) {
+    return null;
+  }
 
   return (
     <Wrapper ref={ref}>
