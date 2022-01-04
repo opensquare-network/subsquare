@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { BN, BN_THOUSAND, BN_TWO, bnToBn, extractTime } from "@polkadot/util";
+import {
+  BN,
+  BN_THOUSAND,
+  BN_TWO,
+  bnToBn,
+  extractTime,
+  u8aConcat,
+} from "@polkadot/util";
 import { useDispatch, useSelector } from "react-redux";
 
 import CountDown from "./countDown";
 import { toPrecision } from "utils/index";
-import { TreasuryAccount } from "utils/constants";
 import { useApi } from "utils/hooks";
 import { getNode, abbreviateBigNumber } from "utils";
 import { summarySelector, setSummary } from "store/reducers/summarySlice";
@@ -67,6 +73,7 @@ const CountDownWrapper = styled.div`
 
 const DEFAULT_TIME = new BN(6_000);
 const THRESHOLD = BN_THOUSAND.div(BN_TWO);
+const EMPTY_U8A_32 = new Uint8Array(32);
 
 export default function Summary({ chain }) {
   const dispatch = useDispatch();
@@ -78,6 +85,13 @@ export default function Summary({ chain }) {
   const summary = useSelector(summarySelector);
 
   useEffect(() => {
+    const TreasuryAccount = u8aConcat(
+      "modl",
+      api?.consts.treasury && api.consts.treasury.palletId
+        ? api.consts.treasury.palletId.toU8a(true)
+        : "py/trsry",
+      EMPTY_U8A_32
+    ).subarray(0, 32);
     api?.query.system.account(TreasuryAccount).then((response) => {
       const account = response.toJSON();
       const free = account ? toPrecision(account.data.free, decimals) : 0;
