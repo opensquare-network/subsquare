@@ -204,7 +204,7 @@ async function getMotionById(postId) {
   const reactionCol = await getReactionCollection();
   const userCol = await getUserCollection();
 
-  const reactions = await reactionCol.find({ motion: post._id }).toArray();
+  const reactions = await reactionCol.find({ [postType]: post._id }).toArray();
 
   const [, author] = await Promise.all([
     lookupUser({ for: reactions, localField: "user" }),
