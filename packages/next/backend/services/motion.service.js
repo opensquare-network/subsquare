@@ -68,10 +68,11 @@ async function findMotionPost(chainMotion) {
     post = await postCol.findOne({ bountyIndex });
     postType = "bounty";
   } else {
-    const motionIndex = chainMotion.index;
+    const hash = chainMotion.hash;
+    const height = chainMotion.indexer.blockHeight;
 
     postCol = await getMotionCollection();
-    post = await postCol.findOne({ motionIndex });
+    post = await postCol.findOne({ hash, height });
     postType = "motion";
   }
 
@@ -188,12 +189,12 @@ async function loadPostForMotions(chainMotions) {
       localField: "bountyPost",
       foreignField: "bountyIndex",
     }),
-    businessDb.lookupOne({
+    businessDb.compoundLookupOne({
       from: "motion",
       for: chainMotions,
       as: "motionPost",
-      localField: "index",
-      foreignField: "motionIndex",
+      compoundLocalFields: ["hash", "indexer.blockHeight"],
+      compoundForeignFields: ["hash", "height"],
     }),
   ]);
 
@@ -348,9 +349,10 @@ async function getMotionById(postId) {
     reactions = await reactionCol.find({ bounty: post._id }).toArray();
     postType = "bounty";
   } else {
-    const motionIndex = chainMotion.index;
+    const hash = chainMotion.hash;
+    const height = chainMotion.indexer.blockHeight;
 
-    post = await motionCol.findOne({ motionIndex });
+    post = await motionCol.findOne({ hash, height });
     reactions = await reactionCol.find({ motion: post._id }).toArray();
     postType = "motion";
   }
