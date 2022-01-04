@@ -22,10 +22,12 @@ const mailService = require("./mail.service");
 
 async function findMotion(post) {
   const chainMotionCol = await getChainFinancialMotionCollection();
-  return await chainMotionCol.findOne({
-    hash: post.hash,
-    "indexer.blockHeight": post.height,
-  });
+  return await chainMotionCol.findOne(
+    {
+      hash: post.hash,
+      "indexer.blockHeight": post.height,
+    },
+  );
 }
 
 async function findMotionPost(postId) {
@@ -45,7 +47,7 @@ async function findMotionPost(postId) {
   }
 
   const motionCol = await getFinancialMotionCollection();
-  const post = await motionCol.findOne(q);
+  const post = await motionCol.findOne(q, { sort: [["height", -1]] });
   const postType = "financialMotion";
 
   return [motionCol, post, postType];
