@@ -157,7 +157,12 @@ export default withLoginUserRedux(
             type={TYPE_TREASURY_PROPOSAL}
           />
           <Metadata data={metadata} />
-          <Timeline data={timelineData} chain={chain} />
+          <Timeline
+            data={timelineData}
+            chain={chain}
+            type={TYPE_TREASURY_PROPOSAL}
+            indent={false}
+          />
           <CommentsWrapper>
             <Comments
               data={comments}
