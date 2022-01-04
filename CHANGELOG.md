@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.6.7
+
+### Fixed
+
+- Motions URL fixup
+
 ## v1.6.6
 
 ### Added
