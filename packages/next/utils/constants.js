@@ -101,6 +101,15 @@ export const nodes = [
     decimals: 12,
     hasElections: true,
   },
+  {
+    value: "kabocha",
+    name: "Kabocha",
+    icon: "kabocha.svg",
+    // identity: "kabocha",
+    // symbol: "",
+    // decimals: 0,
+    // hasElections: true,
+  },
   // {
   //   value: "basilisk",
   //   name: "Basilisk",
@@ -141,6 +150,7 @@ export const mainMenu = [
   },
   {
     name: "TREASURY",
+    excludeToChains: ["kabocha"],
     items: [
       {
         value: "proposals",
@@ -162,6 +172,7 @@ export const mainMenu = [
   },
   {
     name: "DEMOCRACY",
+    excludeToChains: ["kabocha"],
     items: [
       {
         value: "democracyProposals",
@@ -182,6 +193,7 @@ export const mainMenu = [
   },
   {
     name: "COUNCIL",
+    excludeToChains: ["kabocha"],
     items: [
       {
         value: "motions",
@@ -197,6 +209,7 @@ export const mainMenu = [
   },
   {
     name: "TECH.COMM.",
+    excludeToChains: ["kabocha"],
     items: [
       {
         value: "techCommProposals",
@@ -224,7 +237,7 @@ export const mainMenu = [
         pathname: "/financial-council/members",
       },
     ],
-    excludeToChains: ["khala", "kusamu", "basilisk"],
+    excludeToChains: ["khala", "kusamu", "basilisk", "kabocha"],
   },
 ];
 

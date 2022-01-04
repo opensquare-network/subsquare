@@ -4,6 +4,7 @@ const SupportChains = [
   "karura",
   "khala",
   "basilisk",
+  "kabocha",
 ];
 
 const chainStatusRoom = "CHAIN_STATUS_ROOM";

@@ -19,7 +19,7 @@ import {
 import SEO from "components/SEO";
 
 export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
-  const overviewData = [
+  let overviewData = [
     {
       category: "Discussions",
       items: (overview?.discussions ?? []).map((item) =>
@@ -83,6 +83,17 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
       ),
     },
   ];
+
+  if (chain === "kabocha") {
+    overviewData = [
+      {
+        category: "Discussions",
+        items: (overview?.discussions ?? []).map((item) =>
+          toDiscussionListItem(chain, item)
+        ),
+      },
+    ];
+  }
 
   // Sort the items with length = 0 to the end of the list
   overviewData.sort((a, b) =>
