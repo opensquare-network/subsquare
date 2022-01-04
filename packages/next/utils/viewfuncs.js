@@ -52,7 +52,7 @@ export const toFinancialMotionsListItem = (chain, item) => ({
     addresses: [{ chain, address: item.proposer }],
   },
   status: item.state ?? "Unknown",
-  detailLink: `/financial-council/motion/${item.motionIndex}`,
+  detailLink: `/financial-council/motion/${item.indexer.blockHeight}_${item.hash}`,
   time: getPostUpdatedAt(item),
 });
 
