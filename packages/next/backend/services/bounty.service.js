@@ -226,13 +226,16 @@ async function getPostById(postId) {
 
   const [, motions] = await Promise.all([
     lookupUser({ for: reactions, localField: "user" }),
-    chainMotionCol
-      .find({
-        index: {
-          $in: bountyData?.motions?.map((m) => m.index) || [],
-        },
-      })
-      .toArray(),
+    bountyData?.motions?.length > 0
+      ? chainMotionCol
+          .find({
+            $or: bountyData.motions.map((motion) => ({
+              hash: motion.hash,
+              "indexer.blockHeight": motion.indexer.blockHeight,
+            })),
+          })
+          .toArray()
+      : [],
   ]);
 
   return {
