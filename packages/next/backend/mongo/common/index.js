@@ -14,7 +14,10 @@ async function createIndex(db) {
 
 async function initDb() {
   if (!db) {
-    db = await connectDb(process.env.MONGO_DB_COMMON_NAME || "subsquare-common");
+    db = await connectDb(
+      process.env.MONGO_DB_COMMON_NAME || "subsquare-common",
+      process.env.MONGO_COMMON_URL
+    );
     await createIndex(db);
   }
 }
