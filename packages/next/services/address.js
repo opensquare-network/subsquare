@@ -64,3 +64,12 @@ export const encodeKabochaAddress = (address) => {
     return "";
   }
 };
+
+export const encodeKabochaAddress = (address) => {
+  try {
+    //todo ： prefix is unknown
+    return encodeAddress(address, 10041);
+  } catch {
+    return "";
+  }
+};
