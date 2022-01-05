@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@acala-network/type-definitions": "3.0.3-3",
+    "@interlay/interbtc-types": "^1.5.9",
     "@phala/typedefs": "0.2.30",
     "@polkadot/api": "7.0.2",
     "dotenv": "^10.0.0",
