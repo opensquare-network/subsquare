@@ -20,8 +20,8 @@ async function handleEvents(events, extrinsics, blockIndexer) {
       extrinsic = extrinsics[extrinsicIndex];
     }
 
-    await handlePreImageEvent(event, indexer, events, extrinsic);
-    await handleDemocracyEvent(event, indexer, events, extrinsic);
+    await handlePreImageEvent(event, indexer, extrinsic, events);
+    await handleDemocracyEvent(event, indexer, extrinsic, events);
   }
 }
 

@@ -1,22 +1,30 @@
+const { handleFastTrack } = require("./fastTrack");
 const { saveNewPublicProposal } = require("./proposed");
 const {
   business: {
-    consts: { Modules, DemocracyPublicProposalEvents },
+    consts: { Modules },
   },
 } = require("@subsquare/scan-common");
+const { DemocracyEvents } = require("./constants");
 
 function isPublicProposalEvent(section, method) {
   if (![Modules.Democracy].includes(section)) {
     return false;
   }
 
-  return DemocracyPublicProposalEvents.hasOwnProperty(method);
+  return DemocracyEvents.hasOwnProperty(method);
 }
 
 async function handleDemocracyEvent(event, indexer, extrinsic, blockEvents) {
   const { section, method } = event;
-  if (isPublicProposalEvent(section, method)) {
-    await saveNewPublicProposal(event, extrinsic, indexer);
+  if (!isPublicProposalEvent(section, method)) {
+    return;
+  }
+
+  if (DemocracyEvents.Proposed === method) {
+    await saveNewPublicProposal(event, indexer, extrinsic);
+  } else if (DemocracyEvents.FastTrack === method) {
+    // await handleFastTrack(event, indexer, extrinsic, blockEvents);
   }
 }
 

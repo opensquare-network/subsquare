@@ -11,7 +11,7 @@ const {
   },
 } = require("@subsquare/scan-common");
 
-async function saveNewPublicProposal(event, extrinsic, indexer) {
+async function saveNewPublicProposal(event, indexer, extrinsic) {
   const eventData = event.data.toJSON();
   const [proposalIndex] = eventData;
   const [, hash, proposer] = await getPublicProposalFromStorage(
