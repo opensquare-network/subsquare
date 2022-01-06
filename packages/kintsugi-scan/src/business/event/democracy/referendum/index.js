@@ -1,4 +1,3 @@
-const { checkReferendumAtStarted } = require("./started");
 const { handleCancelled } = require("./cancelled");
 const { handleNotPassed } = require("./notPassed");
 const { handlePassed } = require("./passed");
@@ -27,7 +26,6 @@ async function handleReferendumEvent(event, indexer, extrinsic, blockEvents) {
     // note: referendum discovery will be done by 2 points
     // 1. Democracy#Tabled, we insert referendum when handling public proposal
     // 2. FastTrack extrinsic
-    await checkReferendumAtStarted(event, indexer);
   } else if (ReferendumEvents.Executed === method) {
     await handleExecuted(event, indexer);
   } else if (ReferendumEvents.Passed === method) {
