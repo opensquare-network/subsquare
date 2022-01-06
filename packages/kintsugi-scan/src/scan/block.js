@@ -7,8 +7,8 @@ const {
 
 async function scanBlock(block, blockEvents) {
   const blockIndexer = getBlockIndexer(block);
-  await handleEvents(blockEvents, block.extrinsics, blockIndexer);
   await handleExtrinsics(block.extrinsics, blockEvents, blockIndexer);
+  await handleEvents(blockEvents, block.extrinsics, blockIndexer);
 
   removeBlockApi(blockIndexer.blockHash);
 }
