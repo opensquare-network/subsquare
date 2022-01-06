@@ -45,6 +45,7 @@ async function saveNewPublicProposal(event, indexer, extrinsic) {
     proposer,
     state,
     timeline: [timelineItem],
+    techCommMotions: [],
   };
 
   await insertDemocracyPublicProposal(obj);

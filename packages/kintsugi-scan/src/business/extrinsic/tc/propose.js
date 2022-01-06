@@ -1,18 +1,21 @@
 const {
+  updateDemocracyPublicProposal,
+} = require("../../../mongo/service/onchain/democracyPublicProposal");
+const {
   insertTechCommMotionPost,
 } = require("../../../mongo/service/business/techCommMotion");
 const {
-  extractTechCommMotionBusiness,
-} = require("../../common/techComm/extractBusiness");
-const {
   insertTechCommMotion,
 } = require("../../../mongo/service/onchain/techCommMotion");
-const {
-  handleBusinessWhenTechCommMotionProposed,
-} = require("../../event/techCommMotion/service/hooks/proposed");
+const { extractPublicProposals } = require("./business");
 const {
   business: {
-    consts: { Modules, TechnicalCommitteeMethods },
+    consts: {
+      Modules,
+      TechnicalCommitteeMethods,
+      TimelineItemTypes,
+      CollectiveMethods,
+    },
     isSingleMemberCollectivePropose,
     extractCommonFieldsFromSinglePropose,
   },
@@ -47,19 +50,35 @@ async function handleTechCommPropose(
     Modules.TechnicalCommittee
   );
 
-  const { externalProposals } = await extractTechCommMotionBusiness(
+  const timelineItem = {
+    type: TimelineItemTypes.extrinsic,
+    method: CollectiveMethods.propose,
+    args: {
+      proposer: fields.propose,
+      hash: fields.hash,
+      threshold: fields.threshold,
+    },
+    indexer: extrinsicIndexer,
+  };
+
+  const { publicProposals } = await extractPublicProposals(
     call.args[1],
     signer,
     extrinsicIndexer,
     extrinsicEvents
   );
-
   const obj = {
     ...fields,
-    externalProposals,
+    publicProposals,
+    timeline: [timelineItem],
   };
 
-  await handleBusinessWhenTechCommMotionProposed(obj, extrinsicIndexer);
+  for (const { proposalIndex } of publicProposals) {
+    await updateDemocracyPublicProposal(proposalIndex, null, null, {
+      hash: fields.hash,
+      indexer: extrinsicIndexer,
+    });
+  }
   await insertTechCommMotion(obj);
   await insertTechCommMotionPost(extrinsicIndexer, fields.hash, null, signer);
 }

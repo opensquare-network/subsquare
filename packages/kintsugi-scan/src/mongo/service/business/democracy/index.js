@@ -1,4 +1,4 @@
-const { getBusinessDemocracy } = require("../../business");
+const { getBusinessDemocracy } = require("../../../business");
 
 async function insertDemocracyPostByProposal(proposalIndex, indexer, proposer) {
   const col = await getBusinessDemocracy();
@@ -84,31 +84,6 @@ async function insertDemocracyPostByExternal(
   });
 }
 
-async function updateDemocracyExternalPostWithReferendumIndex(
-  externalProposalHash,
-  height,
-  referendumIndex
-) {
-  const col = await getBusinessDemocracy();
-
-  const maybeInDb = await col.findOne({ referendumIndex });
-  if (maybeInDb) {
-    return;
-  }
-
-  await col.updateOne(
-    {
-      externalProposalHash,
-      "indexer.blockHeight": height,
-    },
-    {
-      $set: {
-        referendumIndex,
-      },
-    }
-  );
-}
-
 // Will executed when previous public or external proposal not detected
 async function insertReferendumPostSolo(referendumIndex) {
   const col = await getBusinessDemocracy();
@@ -125,5 +100,4 @@ module.exports = {
   updateOrCreatePostByReferendumWithProposal,
   insertDemocracyPostByExternal,
   insertReferendumPostSolo,
-  updateDemocracyExternalPostWithReferendumIndex,
 };
