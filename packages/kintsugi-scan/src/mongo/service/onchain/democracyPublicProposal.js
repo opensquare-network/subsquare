@@ -12,13 +12,25 @@ async function insertProposal(proposalObj) {
   await col.insertOne(proposalObj);
 }
 
-async function updateProposalByIndex(proposalIndex, updates, timelineItem) {
+async function updateProposalByIndex(
+  proposalIndex,
+  updates,
+  timelineItem,
+  techCommMotion
+) {
   let update = isEmpty(updates) ? null : { $set: updates };
 
   if (timelineItem) {
     update = {
       ...update,
       $push: { timeline: timelineItem },
+    };
+  }
+
+  if (techCommMotion) {
+    update = {
+      ...update,
+      $push: { techCommMotions: techCommMotion },
     };
   }
 

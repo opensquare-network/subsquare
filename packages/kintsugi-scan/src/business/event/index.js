@@ -1,3 +1,5 @@
+const { handleReferendumEvent } = require("./democracy/referendum");
+const { handleTechCommMotionEvent } = require("./tc");
 const { handleDemocracyEvent } = require("./democracy/publicProposal");
 const { handlePreImageEvent } = require("./democracy/preimage");
 
@@ -20,8 +22,10 @@ async function handleEvents(events, extrinsics, blockIndexer) {
       extrinsic = extrinsics[extrinsicIndex];
     }
 
-    await handlePreImageEvent(event, indexer, events, extrinsic);
-    await handleDemocracyEvent(event, indexer, events, extrinsic);
+    await handlePreImageEvent(event, indexer, extrinsic, events);
+    await handleDemocracyEvent(event, indexer, extrinsic, events);
+    await handleTechCommMotionEvent(event, indexer, extrinsic, events);
+    await handleReferendumEvent(event, indexer, extrinsic, events);
   }
 }
 

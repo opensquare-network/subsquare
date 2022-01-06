@@ -8,6 +8,7 @@ const CHAINS = {
   KUSAMA: "kusama",
   POLKADOT: "polkadot",
   BASILISK: "basilisk",
+  KINTSUGI: "kintsugi",
 };
 
 let chain = null;
