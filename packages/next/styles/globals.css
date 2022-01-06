@@ -17,6 +17,11 @@ a {
   text-decoration: none;
 }
 
+hr {
+  border-top: none;
+  border-bottom-color: #ebeef4;
+}
+
 * {
   box-sizing: border-box;
 }
