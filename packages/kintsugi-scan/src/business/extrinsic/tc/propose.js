@@ -67,6 +67,14 @@ async function handleTechCommPropose(
     extrinsicIndexer,
     extrinsicEvents
   );
+
+  if ((publicProposals || []).length > 1) {
+    // currently we won't handle multiple proposals fast track logic
+    throw new Error(
+      `Found fast track more than 1 public proposal at ${extrinsicIndexer.blockHeight}`
+    );
+  }
+
   const obj = {
     ...fields,
     publicProposals,

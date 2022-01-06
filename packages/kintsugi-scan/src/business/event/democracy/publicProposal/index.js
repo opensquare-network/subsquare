@@ -1,4 +1,5 @@
-const { handleFastTrack } = require("./fastTrack");
+const { handleTabled } = require("./tabled");
+// const { handleFastTrack } = require("./fastTrack");
 const { saveNewPublicProposal } = require("./proposed");
 const {
   business: {
@@ -22,9 +23,11 @@ async function handleDemocracyEvent(event, indexer, extrinsic, blockEvents) {
   }
 
   if (DemocracyEvents.Proposed === method) {
-    await saveNewPublicProposal(event, indexer, extrinsic);
+    await saveNewPublicProposal(event, indexer, extrinsic, blockEvents);
   } else if (DemocracyEvents.FastTrack === method) {
     // await handleFastTrack(event, indexer, extrinsic, blockEvents);
+  } else if (DemocracyEvents.Tabled === method) {
+    await handleTabled(event, indexer, extrinsic, blockEvents);
   }
 }
 

@@ -11,8 +11,8 @@ function isTechCommModule(section) {
 
 async function handleTechCommMotionEvent(
   event,
-  extrinsic,
   indexer,
+  extrinsic,
   extrinsicEvents
 ) {
   const { section, method } = event;
