@@ -9,7 +9,9 @@ const {
 } = require("@subsquare/scan-common");
 
 async function test() {
-  const blockHeights = [173691, 173706, 174606, 178981, 178987, 179887, 181806];
+  const blockHeights = [
+    173680, 173691, 173706, 174606, 178981, 178987, 179887, 181806,
+  ];
 
   for (const height of blockHeights) {
     await setSpecHeights([height - 1]);

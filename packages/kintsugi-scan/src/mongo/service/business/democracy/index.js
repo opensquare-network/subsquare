@@ -84,20 +84,8 @@ async function insertDemocracyPostByExternal(
   });
 }
 
-// Will executed when previous public or external proposal not detected
-async function insertReferendumPostSolo(referendumIndex) {
-  const col = await getBusinessDemocracy();
-  const maybeInDb = await col.findOne({ referendumIndex });
-  if (maybeInDb) {
-    return;
-  }
-
-  await col.insertOne({ referendumIndex });
-}
-
 module.exports = {
   insertDemocracyPostByProposal,
   updateOrCreatePostByReferendumWithProposal,
   insertDemocracyPostByExternal,
-  insertReferendumPostSolo,
 };

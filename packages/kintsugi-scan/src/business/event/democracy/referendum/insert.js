@@ -1,5 +1,4 @@
 const {
-  insertReferendumPostSolo,
   updateOrCreatePostByReferendumWithProposal,
 } = require("../../../../mongo/service/business/democracy");
 const {
@@ -72,13 +71,6 @@ async function insertReferendumWithPublicProposal(
   );
 }
 
-async function insertSoloReferendum(referendumStartedEvent, indexer) {
-  const commonObj = await _extractCommonData(referendumStartedEvent, indexer);
-  await insertDemocracyReferendum(commonObj);
-  await insertReferendumPostSolo(commonObj.referendumIndex);
-}
-
 module.exports = {
   insertReferendumWithPublicProposal,
-  insertSoloReferendum,
 };
