@@ -290,8 +290,7 @@ export const SS58Prefix = {
   khala: 30,
   substrate: 42,
   basilisk: 10041,
-  kabocha: 1,
-  //todo ： prefix is unknown
+  kabocha: 2,
 };
 
 export const TreasuryAccount =
