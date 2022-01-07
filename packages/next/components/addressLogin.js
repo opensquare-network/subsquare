@@ -19,6 +19,7 @@ import {
   encodePolkadotAddress,
   encodeBasiliskAddress,
   signMessage,
+  encodeKabochaAddress,
 } from "services/chainApi";
 import nextApi from "services/nextApi";
 import ErrorText from "./ErrorText";
@@ -53,9 +54,7 @@ export default function AddressLogin({ chain, onBack }) {
   const doWeb3Login = async () => {
     setLoading(true);
     const address = selectedAccount[`${chain}Address`];
-    const { result, error } = await nextApi.fetch(
-      `auth/login/${address}`
-    );
+    const { result, error } = await nextApi.fetch(`auth/login/${address}`);
     if (error) {
       setWeb3Error(error.message);
     }
@@ -112,6 +111,7 @@ export default function AddressLogin({ chain, onBack }) {
           karuraAddress: encodeKaruraAddress(address),
           khalaAddress: encodeKhalaAddress(address),
           basiliskAddress: encodeBasiliskAddress(address),
+          kabochaAddress: encodeKabochaAddress(address),
           name,
         };
       });

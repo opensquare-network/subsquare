@@ -16,6 +16,7 @@ const SS58Format = Object.freeze({
   Khala: 30,
   Basilisk: 10041,
   Substrate: 42,
+  Kabocha: 2,
 });
 
 const ContentType = Object.freeze({
