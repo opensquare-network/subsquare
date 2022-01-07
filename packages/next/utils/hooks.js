@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
@@ -104,6 +104,5 @@ export function useCall(fn, params = []) {
 export function useApi(chain) {
   const nodeUrl = useSelector(currentNodeSelector);
   const apiUrl = nodeUrl[chain];
-  const api = useCall(getApi, [chain, apiUrl]);
-  return api;
+  return useCall(getApi, [chain, apiUrl]);
 }

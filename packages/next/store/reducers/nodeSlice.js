@@ -10,6 +10,7 @@ import {
   DEFAULT_BASILISK_NODE_URL,
   DEFAULT_BASILISK_NODES,
   DEFAULT_BIFROST_NODES,
+  DEFAULT_BIFROST_NODE_URL,
 } from "utils/constants";
 
 let nodeUrl = (() => {
@@ -32,6 +33,9 @@ let nodeUrl = (() => {
     basilisk:
       DEFAULT_BASILISK_NODES.find((item) => item.url === localNodeUrl?.khala)
         ?.url || DEFAULT_BASILISK_NODE_URL,
+    bifrost:
+      DEFAULT_BIFROST_NODES.find((item) => item.url === localNodeUrl?.bifrost)
+        ?.url || DEFAULT_BIFROST_NODE_URL,
   };
 })();
 
