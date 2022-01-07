@@ -17,32 +17,26 @@ const { getTreasuryProposalHeights } = require("./heights/treasuryProposal");
 const { saveKnownHeights } = require("./mongo/service/known");
 
 async function main() {
-  const motionHeights = await getMotionHeights();
-  await saveKnownHeights(motionHeights);
-
   const bountyHeights = await getBountyHeights();
   await saveKnownHeights(bountyHeights);
-
   const tipHeights = await getTipHeights();
   await saveKnownHeights(tipHeights);
+  const treasuryProposalHeights = await getTreasuryProposalHeights();
+  await saveKnownHeights(treasuryProposalHeights);
 
-  const externalHeights = await getExternalHeights();
-  await saveKnownHeights(externalHeights);
-
-  const publicProposalHeights = await getDemocracyPublicProposalHeights();
-  await saveKnownHeights(publicProposalHeights);
-
-  const referendumHeights = await getReferendumHeights();
-  await saveKnownHeights(referendumHeights);
-
-  const imageHeights = await getPreImageHeights();
-  await saveKnownHeights(imageHeights);
-
+  const motionHeights = await getMotionHeights();
+  await saveKnownHeights(motionHeights);
   const techCommHeights = await getTechCommHeights();
   await saveKnownHeights(techCommHeights);
 
-  const treasuryProposalHeights = await getTreasuryProposalHeights();
-  await saveKnownHeights(treasuryProposalHeights);
+  const externalHeights = await getExternalHeights();
+  await saveKnownHeights(externalHeights);
+  const publicProposalHeights = await getDemocracyPublicProposalHeights();
+  await saveKnownHeights(publicProposalHeights);
+  const referendumHeights = await getReferendumHeights();
+  await saveKnownHeights(referendumHeights);
+  const imageHeights = await getPreImageHeights();
+  await saveKnownHeights(imageHeights);
 }
 
 main()
