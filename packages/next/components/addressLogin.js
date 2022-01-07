@@ -20,6 +20,7 @@ import {
   encodeBasiliskAddress,
   signMessage,
   encodeKabochaAddress,
+  encodeBifrostAddress,
 } from "services/chainApi";
 import nextApi from "services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
@@ -112,6 +113,7 @@ export default function AddressLogin({ chain, onBack }) {
           khalaAddress: encodeKhalaAddress(address),
           basiliskAddress: encodeBasiliskAddress(address),
           kabochaAddress: encodeKabochaAddress(address),
+          bifrostAddress: encodeBifrostAddress(address),
           name,
         };
       });

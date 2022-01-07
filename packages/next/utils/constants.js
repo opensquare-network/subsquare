@@ -111,6 +111,16 @@ export const nodes = [
     // decimals: 0,
     // hasElections: true,
   },
+  {
+    value: "bifrost",
+    name: "Bifrost",
+    icon: "bifrost.svg",
+    hideHeight: true,
+    identity: "bifrost",
+    symbol: "bnc",
+    decimals: 12,
+    hasElections: true,
+  },
   // {
   //   value: "basilisk",
   //   name: "Basilisk",
@@ -240,7 +250,7 @@ export const mainMenu = [
         pathname: "/financial-council/members",
       },
     ],
-    excludeToChains: ["khala", "kusamu", "basilisk", "kabocha"],
+    excludeToChains: ["khala", "kusamu", "basilisk", "kabocha", "bifrost"],
   },
 ];
 
@@ -291,6 +301,7 @@ export const SS58Prefix = {
   substrate: 42,
   basilisk: 10041,
   kabocha: 2,
+  bifrost: 6,
 };
 
 export const TreasuryAccount =
