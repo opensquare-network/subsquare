@@ -284,12 +284,12 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             post.externalProposalHash !== undefined && (
               <ReferendaWrapper>
                 <Link
+                  passHref={true}
                   href={`/democracy/external/${post.indexer.blockHeight}_${post.externalProposalHash}`}
                 >
-                  <div>{`External #${post?.externalProposalHash?.slice(
-                    0,
-                    6
-                  )}`}</div>
+                  <a>
+                    {`External #${post?.externalProposalHash?.slice(0, 6)}`}
+                  </a>
                 </Link>
                 {post?.onchainData?.techCommMotions?.map(
                   (techCommMotion, key) => (
