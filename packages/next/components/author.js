@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import Grvatar from "components/gravatar";
-import Avatar from "components/avatar";
+import Avatar from "next-common/components/avatar";
 import Flex from "./styled/flex";
 
 const Wrapper = styled(Flex)`
