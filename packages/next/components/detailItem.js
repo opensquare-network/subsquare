@@ -286,7 +286,10 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                 <Link
                   href={`/democracy/external/${post.indexer.blockHeight}_${post.externalProposalHash}`}
                 >
-                  {`External`}
+                  <div>{`External #${post?.externalProposalHash?.slice(
+                    0,
+                    6
+                  )}`}</div>
                 </Link>
                 {post?.onchainData?.techCommMotions?.map(
                   (techCommMotion, key) => (
