@@ -149,7 +149,7 @@ export default function NodeSwitch({ small, chain, node }) {
     return "#4CAF50";
   };
 
-  if (node.hideHeight) {
+  if (!currentNodeSetting) {
     return null;
   }
 
