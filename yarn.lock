@@ -1595,26 +1595,9 @@
   dependencies:
     "@babel/runtime" "^7.16.5"
 
-"@polkadot/react-identicon@0.87.6":
+"@polkadot/react-identicon@0.87.6", "@polkadot/react-identicon@^0.87.6":
   version "0.87.6"
   resolved "https://registry.npmjs.org/@polkadot/react-identicon/-/react-identicon-0.87.6.tgz#976ea59b3627dde294af3e3b4c52ec52f32f9060"
-  integrity sha512-d7/DZHBYaeCliKzO0n6zyO7vhzBcQEqv1RS3vKLEn81U0t0eMtHqRhyyiKK/dy3Yd1cY+h5K/0J+VeXI6XBtuA==
-  dependencies:
-    "@babel/runtime" "^7.16.5"
-    "@polkadot/keyring" "^8.2.2"
-    "@polkadot/ui-settings" "0.87.6"
-    "@polkadot/ui-shared" "0.87.6"
-    "@polkadot/util" "^8.2.2"
-    "@polkadot/util-crypto" "^8.2.2"
-    color "^3.2.1"
-    ethereum-blockies-base64 "^1.0.2"
-    jdenticon "3.1.1"
-    react-copy-to-clipboard "^5.0.4"
-    styled-components "^5.3.3"
-
-"@polkadot/react-identicon@^0.87.6":
-  version "0.87.6"
-  resolved "https://registry.yarnpkg.com/@polkadot/react-identicon/-/react-identicon-0.87.6.tgz#976ea59b3627dde294af3e3b4c52ec52f32f9060"
   integrity sha512-d7/DZHBYaeCliKzO0n6zyO7vhzBcQEqv1RS3vKLEn81U0t0eMtHqRhyyiKK/dy3Yd1cY+h5K/0J+VeXI6XBtuA==
   dependencies:
     "@babel/runtime" "^7.16.5"
@@ -1987,6 +1970,7 @@
 "@subsquare/next-common@file:packages/next-common":
   version "1.0.0"
   dependencies:
+    "@polkadot/react-identicon" "^0.87.6"
     md5 "^2.3.0"
     react "^17.0.2"
     react-dom "^17.0.2"
