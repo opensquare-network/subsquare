@@ -10,7 +10,7 @@ import Button from "components/button";
 import nextApi from "services/nextApi";
 import PreviewMD from "components/create/previewMD";
 import Toggle from "components/toggle";
-import ErrorText from "components/ErrorText";
+import ErrorText from "next-common/components/ErrorText";
 import InsertContentsModal from "components/editor/modal";
 import QuillEditor from "components/editor/quillEditor";
 import HtmlRender from "components/post/htmlRender";

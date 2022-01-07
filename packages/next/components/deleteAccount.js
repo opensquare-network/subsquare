@@ -8,7 +8,7 @@ import Input from "./input";
 import Button from "./button";
 import { useForm } from "utils/hooks";
 import { logout } from "store/reducers/userSlice";
-import ErrorText from "./ErrorText";
+import ErrorText from "next-common/components/ErrorText";
 
 const Wrapper = styled.div`
   position: fixed;

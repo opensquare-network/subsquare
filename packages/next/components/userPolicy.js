@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Link from "next/link";
 
-import ErrorText from "components/ErrorText";
+import ErrorText from "next-common/components/ErrorText";
 
 const Wrapper = styled.div`
   margin-top: 16px !important;
