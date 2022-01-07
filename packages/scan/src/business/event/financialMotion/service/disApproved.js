@@ -2,19 +2,12 @@ const {
   updateFinancialMotionByHash,
 } = require("../../../../mongo/service/onchain/financialMotion");
 const {
-  business: {
-    getCollectiveDisApprovedCommonFields,
-    consts: { KaruraModules },
-  },
+  business: { getCollectiveDisApprovedCommonFields },
 } = require("@subsquare/scan-common");
 
 async function handleDisApproved(event, indexer) {
   const { hash, updates, timelineItem } =
-    await getCollectiveDisApprovedCommonFields(
-      event,
-      indexer,
-      KaruraModules.FinancialCouncil
-    );
+    await getCollectiveDisApprovedCommonFields(event, indexer);
 
   await updateFinancialMotionByHash(hash, updates, timelineItem);
 }
