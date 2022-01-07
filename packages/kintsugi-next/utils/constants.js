@@ -164,12 +164,13 @@ export const mainMenu = [
         value: "bounties",
         name: "Bounties",
         pathname: "/treasury/bounties",
-        excludeToChains: ["basilisk"],
+        excludeToChains: ["basilisk", "kintsugi"],
       },
       {
         value: "tips",
         name: "Tips",
         pathname: "/treasury/tips",
+        excludeToChains: ["kintsugi"],
       },
     ],
   },
@@ -186,6 +187,7 @@ export const mainMenu = [
         value: "democracyExternals",
         name: "External",
         pathname: "/democracy/externals",
+        excludeToChains: ["kintsugi"],
       },
       {
         value: "referenda",
@@ -196,7 +198,7 @@ export const mainMenu = [
   },
   {
     name: "COUNCIL",
-    excludeToChains: ["kabocha"],
+    excludeToChains: ["kabocha", "kintsugi"],
     items: [
       {
         value: "motions",
@@ -240,7 +242,7 @@ export const mainMenu = [
         pathname: "/financial-council/members",
       },
     ],
-    excludeToChains: ["khala", "kusamu", "basilisk", "kabocha"],
+    excludeToChains: ["khala", "kusamu", "basilisk", "kabocha", "kintsugi"],
   },
 ];
 
