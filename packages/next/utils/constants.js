@@ -129,7 +129,7 @@ export const nodes = [
     value: "bifrost",
     name: "Bifrost",
     icon: "bifrost.svg",
-    hideHeight: true,
+    hideHeight: false,
     identity: "bifrost",
     symbol: "bnc",
     decimals: 12,
