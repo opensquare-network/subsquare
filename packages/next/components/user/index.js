@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { encodeAddressToChain } from "services/address";
 import { nodes } from "utils/constants";
 import Avatar from "next-common/components/avatar";
-import Grvatar from "components/gravatar";
+import Grvatar from "next-common/components/gravatar";
 import { addressEllipsis } from "../../utils";
 import Flex from "../styled/flex";
 

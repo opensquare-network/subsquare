@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import Grvatar from "components/gravatar";
+import Grvatar from "next-common/components/gravatar";
 import Avatar from "next-common/components/avatar";
 import Flex from "./styled/flex";
 
