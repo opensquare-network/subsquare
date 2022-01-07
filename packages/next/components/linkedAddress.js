@@ -17,6 +17,7 @@ import {
   encodeSubstrateAddress,
   encodeBasiliskAddress,
   signMessage,
+  encodeKabochaAddress,
 } from "services/chainApi";
 import { addressEllipsis } from "utils";
 import nextApi from "services/nextApi";
@@ -207,6 +208,7 @@ export default function LinkedAddress({ chain }) {
         karuraAddress: encodeKaruraAddress(address),
         khalaAddress: encodeKhalaAddress(address),
         basiliskAddress: encodeBasiliskAddress(address),
+        kabochaAddress: encodeKabochaAddress(address),
         name,
       };
     });
@@ -219,9 +221,7 @@ export default function LinkedAddress({ chain }) {
   const unlinkAddress = async (chain, account) => {
     const address = account[`${chain}Address`];
 
-    const { error, result } = await nextApi.delete(
-      `user/linkaddr/${address}`
-    );
+    const { error, result } = await nextApi.delete(`user/linkaddr/${address}`);
     dispatch(fetchUserProfile());
 
     if (result) {
@@ -246,9 +246,7 @@ export default function LinkedAddress({ chain }) {
   const linkAddress = async (chain, account) => {
     const address = account[`${chain}Address`];
 
-    const { result, error } = await nextApi.fetch(
-      `user/linkaddr/${address}`
-    );
+    const { result, error } = await nextApi.fetch(`user/linkaddr/${address}`);
     if (result) {
       const signature = await signMessage(result?.challenge, account.address);
       const { error: confirmError, result: confirmResult } = await nextApi.post(
@@ -301,6 +299,7 @@ export default function LinkedAddress({ chain }) {
         karuraAddress: address.chain === "karura" ? address.address : null,
         khalaAddress: address.chain === "khala" ? address.address : null,
         basiliskAddress: address.chain === "basilisk" ? address.address : null,
+        kabochaAddress: address.chain === "kabocha" ? address.address : null,
         name: "--",
       })),
   ];
@@ -324,15 +323,17 @@ export default function LinkedAddress({ chain }) {
         )}
         <div>
           <NodesWrapper>
-            {nodes.filter(node => node.value === activeChain).map((item, index) => (
-              <NodeItem
-                key={index}
-                onClick={() => setActiveChain(item.value)}
-                selected={item.value === activeChain}
-              >
-                {item.name}
-              </NodeItem>
-            ))}
+            {nodes
+              .filter((node) => node.value === activeChain)
+              .map((item, index) => (
+                <NodeItem
+                  key={index}
+                  onClick={() => setActiveChain(item.value)}
+                  selected={item.value === activeChain}
+                >
+                  {item.name}
+                </NodeItem>
+              ))}
           </NodesWrapper>
           <AddressWrapper>
             {availableAccounts.length === 0 && (
