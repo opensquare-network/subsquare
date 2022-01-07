@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Flex from "./styled/flex";
+import Flex from "next-common/components/styled/flex";
 import ElementIcon from "../public/imgs/icons/element.svg";
 import MailIcon from "../public/imgs/icons/mail.svg";
 import FooterLogo from "../public/imgs/icons/footerLogo.svg";
@@ -19,7 +19,7 @@ const Wrapper = styled.footer`
 `;
 
 const FlexWrapper = styled(Flex)`
-  a{
+  a {
     display: flex;
     align-items: center;
   }

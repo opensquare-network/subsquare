@@ -9,7 +9,7 @@ import Timeline from "../timeline";
 import { getNode, timeDurationFromNow, toPrecision } from "utils";
 import SectionTag from "components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
-import Flex from "../styled/flex";
+import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "../../styles/componentCss";
 import ArticleContent from "../articleContent";
 import { useState } from "react";

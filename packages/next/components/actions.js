@@ -5,7 +5,7 @@ import ThumbUpIcon from "public/imgs/icons/thumb-up.svg";
 import Edit from "components/edit";
 import UnfoldIcon from "public/imgs/icons/unfold.svg";
 import FoldIcon from "public/imgs/icons/fold.svg";
-import Flex from "./styled/flex";
+import Flex from "next-common/components/styled/flex";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;

@@ -7,8 +7,8 @@ import { accountMenu } from "utils/constants";
 import { useOnClickOutside, useWindowSize } from "utils/hooks";
 import { logout } from "store/reducers/userSlice";
 import User from "components/user";
-import Relative from "../styled/relative";
-import Flex from "../styled/flex";
+import Relative from "next-common/components/styled/relative";
+import Flex from "next-common/components/styled/flex";
 import { shadow_200 } from "../../styles/componentCss";
 
 const Wrapper = Relative;
