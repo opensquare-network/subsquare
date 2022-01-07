@@ -1,11 +1,11 @@
 import styled, { css } from "styled-components";
-import Identity from "./identity";
 import { fetchIdentity } from "services/identity";
 import { useEffect, useState } from "react";
 import { encodeAddressToChain } from "services/address";
 import { nodes } from "utils/constants";
 import Avatar from "next-common/components/avatar";
 import Grvatar from "next-common/components/gravatar";
+import Identity from "next-common/components/Identity";
 import { addressEllipsis } from "../../utils";
 import Flex from "../styled/flex";
 
