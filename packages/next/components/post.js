@@ -6,7 +6,7 @@ import { getNode, timeDuration, timeDurationFromNow, toPrecision } from "utils";
 import Tag from "components/tag";
 import ReasonLink from "components/reasonLink";
 import SectionTag from "components/sectionTag";
-import Flex from "./styled/flex";
+import Flex from "next-common/components/styled/flex";
 import {
   p_14_medium,
   shadow_100,

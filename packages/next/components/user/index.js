@@ -7,7 +7,7 @@ import Avatar from "next-common/components/avatar";
 import Grvatar from "next-common/components/gravatar";
 import Identity from "next-common/components/Identity";
 import { addressEllipsis } from "../../utils";
-import Flex from "../styled/flex";
+import Flex from "next-common/components/styled/flex";
 
 const Wrapper = styled(Flex)`
   a {

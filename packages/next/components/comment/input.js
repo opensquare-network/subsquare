@@ -12,8 +12,8 @@ import HtmlRender from "../post/htmlRender";
 import InsertContentsModal from "../editor/modal";
 import { fetchUserProfile } from "store/reducers/userSlice";
 import { useDispatch } from "react-redux";
-import Relative from "components/styled/relative";
-import Flex from "../styled/flex";
+import Relative from "next-common/components/styled/relative";
+import Flex from "next-common/components/styled/flex";
 import { toApiType } from "utils/viewfuncs";
 
 const Wrapper = styled.div`

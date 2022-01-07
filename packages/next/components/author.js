@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import Grvatar from "next-common/components/gravatar";
 import Avatar from "next-common/components/avatar";
-import Flex from "./styled/flex";
+import Flex from "next-common/components/styled/flex";
 
 const Wrapper = styled(Flex)`
   word-break: break-word;

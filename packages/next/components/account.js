@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Flex from "./styled/flex";
+import Flex from "next-common/components/styled/flex";
 
 const Wrapper = styled(Flex)`
   display: flex;

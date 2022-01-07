@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { removeToast } from "store/reducers/toastSlice";
 import { useIsMounted } from "utils/hooks";
-import Flex from "../styled/flex";
+import Flex from "next-common/components/styled/flex";
 import { shadow_200 } from "../../styles/componentCss";
 
 const Wrapper = styled(Flex)`
@@ -67,7 +67,7 @@ const ToastItem = ({ type, message, id }) => {
 
   return (
     <Wrapper className={tranClass}>
-      <img src={`/imgs/icons/toast-${type}.svg`} alt=""/>
+      <img src={`/imgs/icons/toast-${type}.svg`} alt="" />
       <div>{message}</div>
       <img
         src={`/imgs/icons/toast-reject.svg`}

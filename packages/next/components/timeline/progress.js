@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Flex from "../styled/flex";
+import Flex from "next-common/components/styled/flex";
 const Wrapper = styled.div`
   padding: 10px 0;
 `;
@@ -60,11 +60,11 @@ export default function Progress({ total, ayes, nays }) {
         <div>{`${ayes}/${total}`}</div>
         <div>
           <div>{`Aye(${ayes})`}</div>
-          <img src="/imgs/icons/approve.svg" alt=""/>
+          <img src="/imgs/icons/approve.svg" alt="" />
         </div>
         <div>
           <div>{`Nay(${nays})`}</div>
-          <img src="/imgs/icons/reject.svg" alt=""/>
+          <img src="/imgs/icons/reject.svg" alt="" />
         </div>
       </DetailWrapper>
     </Wrapper>

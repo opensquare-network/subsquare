@@ -3,8 +3,8 @@ import { useState, useRef } from "react";
 import { useOnClickOutside } from "utils/hooks";
 import { addressEllipsis } from "utils";
 import Avatar from "next-common/components/avatar";
-import Flex from "./styled/flex";
-import Relative from "./styled/relative";
+import Flex from "next-common/components/styled/flex";
+import Relative from "next-common/components/styled/relative";
 import { shadow_200 } from "../styles/componentCss";
 
 const Wrapper = Relative;

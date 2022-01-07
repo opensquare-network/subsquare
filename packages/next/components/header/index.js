@@ -7,7 +7,7 @@ import Sidebar from "./sidebar";
 import SidebarAccount from "./sidebarAccount";
 import { nodes } from "utils/constants";
 import NodeSwitch from "components/nodeSwitch";
-import Flex from "../styled/flex";
+import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "../../styles/componentCss";
 import Link from "next/link";
 
