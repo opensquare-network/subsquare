@@ -4,6 +4,9 @@ const defaultDbNames = {
   kusama: "subsquare-ksm",
   karura: "subsquare-kar",
   khala: "subsquare-kha",
+  basilisk: "subsquare-bsx",
+  kabocha: "subsquare-kab",
+  bifrost: "subsquare-bnc",
 };
 
 let db = null;
