@@ -9,7 +9,7 @@ import Menu from "components/menu";
 import { settingMenu } from "utils/constants";
 import { userSelector, logout } from "store/reducers/userSlice";
 import { useForm, useAuthPage } from "utils/hooks";
-import ErrorText from "components/ErrorText";
+import ErrorText from "next-common/components/ErrorText";
 import nextApi from "services/nextApi";
 import { addToast } from "store/reducers/toastSlice";
 import { withLoginUser, withLoginUserRedux } from "lib";
