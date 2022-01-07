@@ -1,6 +1,6 @@
 const { CollectiveEvents, TimelineItemTypes } = require("../common/constants");
 
-async function getCollectiveDisApprovedCommonFields(event, extrinsic, indexer) {
+async function getCollectiveDisApprovedCommonFields(event, indexer) {
   const eventData = event.data.toJSON();
   const [hash] = eventData;
 
