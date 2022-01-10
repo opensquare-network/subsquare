@@ -50,7 +50,7 @@ const Options = styled.div`
   z-index: 999999;
 `;
 
-const Item = styled.div`
+const Item = styled.a`
   display: flex;
   align-items: center;
   padding: 0 12px;
@@ -141,14 +141,15 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
               key={index}
               onClick={() => {
                 setShow(false);
-                if (activeNode.value === item.value) return;
-                if (isWeb3Login) {
-                  window.location.href = `https://${item.value}.subsquare.io/login`;
-                } else {
-                  window.location.href = `https://${item.value}.subsquare.io`;
-                }
               }}
               active={activeNode.value === nodes[index].value}
+              href={
+                activeNode.value === item.value
+                  ? null
+                  : isWeb3Login
+                  ? `https://${item.value}.subsquare.io/login`
+                  : `https://${item.value}.subsquare.io`
+              }
             >
               <img
                 width={24}
