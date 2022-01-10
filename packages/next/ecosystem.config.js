@@ -43,5 +43,17 @@ module.exports = {
         CHAIN: "basilisk",
       },
     },
+    {
+      name: "subsquare-time-updater-bifrost",
+      ...common,
+      env: {
+        NODE_ENV: "development",
+        CHAIN: "bifrost",
+      },
+      env_production: {
+        NODE_ENV: "production",
+        CHAIN: "bifrost",
+      },
+    },
   ],
 };

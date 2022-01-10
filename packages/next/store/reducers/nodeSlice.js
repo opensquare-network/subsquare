@@ -9,6 +9,8 @@ import {
   DEFAULT_KHALA_NODES,
   DEFAULT_BASILISK_NODE_URL,
   DEFAULT_BASILISK_NODES,
+  DEFAULT_BIFROST_NODES,
+  DEFAULT_BIFROST_NODE_URL,
 } from "utils/constants";
 
 let nodeUrl = (() => {
@@ -31,6 +33,9 @@ let nodeUrl = (() => {
     basilisk:
       DEFAULT_BASILISK_NODES.find((item) => item.url === localNodeUrl?.khala)
         ?.url || DEFAULT_BASILISK_NODE_URL,
+    bifrost:
+      DEFAULT_BIFROST_NODES.find((item) => item.url === localNodeUrl?.bifrost)
+        ?.url || DEFAULT_BIFROST_NODE_URL,
   };
 })();
 
@@ -41,6 +46,7 @@ export const getNodes = () => ({
   karura: DEFAULT_KARURA_NODES,
   khala: DEFAULT_KHALA_NODES,
   basilisk: DEFAULT_BASILISK_NODES,
+  bifrost: DEFAULT_BIFROST_NODES,
 });
 
 const nodeSlice = createSlice({

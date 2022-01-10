@@ -62,11 +62,25 @@ export const DEFAULT_BASILISK_NODES = [
 ];
 export const DEFAULT_BASILISK_NODE_URL = DEFAULT_BASILISK_NODES[0]?.url;
 
+export const DEFAULT_BIFROST_NODES = [
+  {
+    name: "OnFinality",
+    url: "wss://bifrost-parachain.api.onfinality.io/public-ws",
+  },
+  {
+    name: "Liebi",
+    url: "wss://bifrost-rpc.liebi.com/ws",
+  },
+];
+
+export const DEFAULT_BIFROST_NODE_URL = DEFAULT_BIFROST_NODES[0]?.url;
+
 export const DEFAULT_NODES = {
   kusama: DEFAULT_KUSAMA_NODE_URL,
   karura: DEFAULT_KARURA_NODE_URL,
   khala: DEFAULT_KHALA_NODE_URL,
   basilisk: DEFAULT_BASILISK_NODE_URL,
+  bifrost: DEFAULT_BIFROST_NODE_URL,
 };
 
 export const nodes = [
@@ -110,6 +124,16 @@ export const nodes = [
     // symbol: "",
     // decimals: 0,
     // hasElections: true,
+  },
+  {
+    value: "bifrost",
+    name: "Bifrost",
+    icon: "bifrost.svg",
+    hideHeight: false,
+    identity: "bifrost",
+    symbol: "bnc",
+    decimals: 12,
+    hasElections: true,
   },
   // {
   //   value: "basilisk",
@@ -240,7 +264,7 @@ export const mainMenu = [
         pathname: "/financial-council/members",
       },
     ],
-    excludeToChains: ["khala", "kusamu", "basilisk", "kabocha"],
+    excludeToChains: ["khala", "kusamu", "basilisk", "kabocha", "bifrost"],
   },
 ];
 
@@ -291,6 +315,7 @@ export const SS58Prefix = {
   substrate: 42,
   basilisk: 10041,
   kabocha: 2,
+  bifrost: 6,
 };
 
 export const TreasuryAccount =

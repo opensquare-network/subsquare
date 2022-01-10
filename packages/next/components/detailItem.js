@@ -239,7 +239,10 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
         <>
           {type === TYPE_DEMOCRACY_EXTERNAL && (
             <ReferendaWrapper>
-              <div>{`External`}</div>
+              <div>{`External #${post?.externalProposalHash?.slice(
+                0,
+                6
+              )}`}</div>
               {post?.onchainData?.techCommMotions?.map(
                 (techCommMotion, key) => (
                   <div key={key}>
@@ -281,9 +284,12 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             post.externalProposalHash !== undefined && (
               <ReferendaWrapper>
                 <Link
+                  passHref={true}
                   href={`/democracy/external/${post.indexer.blockHeight}_${post.externalProposalHash}`}
                 >
-                  {`External`}
+                  <a>
+                    {`External #${post?.externalProposalHash?.slice(0, 6)}`}
+                  </a>
                 </Link>
                 {post?.onchainData?.techCommMotions?.map(
                   (techCommMotion, key) => (

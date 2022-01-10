@@ -18,6 +18,7 @@ import {
   encodeBasiliskAddress,
   signMessage,
   encodeKabochaAddress,
+  encodeBifrostAddress,
 } from "services/chainApi";
 import { addressEllipsis } from "utils";
 import nextApi from "services/nextApi";
@@ -209,6 +210,7 @@ export default function LinkedAddress({ chain }) {
         khalaAddress: encodeKhalaAddress(address),
         basiliskAddress: encodeBasiliskAddress(address),
         kabochaAddress: encodeKabochaAddress(address),
+        bifrostAddress: encodeBifrostAddress(address),
         name,
       };
     });

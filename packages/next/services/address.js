@@ -64,3 +64,11 @@ export const encodeKabochaAddress = (address) => {
     return "";
   }
 };
+
+export const encodeBifrostAddress = (address) => {
+  try {
+    return encodeAddress(address, SS58Prefix.bifrost);
+  } catch {
+    return "";
+  }
+};

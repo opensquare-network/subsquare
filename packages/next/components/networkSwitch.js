@@ -2,7 +2,6 @@ import styled, { css } from "styled-components";
 import { useState, useRef, useEffect } from "react";
 import { nodes } from "utils/constants";
 import { useOnClickOutside, useWindowSize } from "utils/hooks";
-import { useRouter } from "next/router";
 import { shadow_200 } from "../styles/componentCss";
 import { useSelector } from "react-redux";
 import { nodesHeightSelector } from "store/reducers/nodeSlice";

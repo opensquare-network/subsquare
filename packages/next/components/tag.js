@@ -59,6 +59,7 @@ const getTagColor = (name) => {
     case "Disapproved":
     case "NotPassed":
     case "Tip Retracted":
+    case "Overwritten":
       return NEGATIVE;
   }
   return END;
