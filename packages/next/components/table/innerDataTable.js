@@ -74,7 +74,7 @@ const StyledTd = styled.td`
 `;
 
 export default function InnerDataTable({ data, nested = false }) {
-  if (Object.keys(data)?.length === 0) {
+  if (Object.keys(data)?.length === 0 && nested === false) {
     return <Placeholder />;
   }
   if (React.isValidElement(data)) {
@@ -83,9 +83,13 @@ export default function InnerDataTable({ data, nested = false }) {
 
   const formatValue = (fieldValue) =>
     Array.isArray(fieldValue) ? (
-      <StyledTd style={{ padding: 0 }}>
-        <InnerDataTable data={fieldValue} nested />
-      </StyledTd>
+      fieldValue.length > 0 ? (
+        <StyledTd style={{ padding: 0 }}>
+          <InnerDataTable data={fieldValue} nested />
+        </StyledTd>
+      ) : (
+        <StyledTd style={{ minWidth: 320, padding: "10px 24px" }}>[]</StyledTd>
+      )
     ) : typeof fieldValue === "object" ? (
       fieldValue === null ? (
         <StyledTd style={{ minWidth: 320, padding: "10px 24px" }}>
