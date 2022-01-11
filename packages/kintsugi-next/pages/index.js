@@ -1,5 +1,7 @@
+import Flex from "next-common/components/styled/flex";
+
 function HomePage() {
-  return <div>Welcome to Next.js!</div>;
+  return <Flex>Test Import from next-common</Flex>;
 }
 
 export default HomePage;
