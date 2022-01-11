@@ -168,7 +168,11 @@ const Wrapper = styled.div`
 `;
 
 export default function MicromarkMd({ md = "", contentVersion = "" }) {
-  let displayContent = matchMdLink(md);
+  const linkMd = matchMdLink(md);
+  const displayContent = linkMd.replace(/\n+/g, function (ns) {
+    if (ns.length == 1) return "  " + ns;
+    return ns;
+  });
 
   useEffect(() => {
     const script = document.createElement("script");
