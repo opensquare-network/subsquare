@@ -81,6 +81,22 @@ function convertProposalForTableView(proposal, chain) {
     args: Object.fromEntries(
       proposal.args.map((arg) => {
         switch (arg.type) {
+          case "OrmlTraitsChangeU128": {
+            if (typeof arg.value === "string") {
+              return [arg.name, new BigNumber(arg.value).toString()];
+            }
+            if (typeof arg.value === "object") {
+              const argHexToString = {};
+              Object.keys(arg.value).map((key) => {
+                if (typeof arg.value[key] === "string") {
+                  argHexToString[key] = new BigNumber(
+                    arg.value[key]
+                  ).toString();
+                }
+              });
+              return [arg.name, argHexToString];
+            }
+          }
           case "Call":
           case "CallOf": {
             return [arg.name, convertProposalForTableView(arg.value, chain)];
