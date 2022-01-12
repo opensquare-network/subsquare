@@ -19,6 +19,7 @@ import { withLoginUserRedux } from "../../lib";
 import { useState } from "react";
 import CapitalText from "../capitalText";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
+import Tag from "components/tag";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -73,17 +74,6 @@ const Title = styled.div`
   font-size: 20px;
   line-height: 140%;
   margin-bottom: 12px;
-`;
-
-const StatusWrapper = styled.div`
-  background: #2196f3;
-  border-radius: 2px;
-  font-weight: 500;
-  font-size: 12px;
-  height: 20px;
-  line-height: 20px;
-  padding: 0 8px;
-  color: #ffffff;
 `;
 
 const Index = styled.div`
@@ -289,7 +279,7 @@ export default withLoginUserRedux(
                   <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
                 )}
               </DividerWrapper>
-              {motion.state && <StatusWrapper>{motion.state}</StatusWrapper>}
+              {motion.state && <Tag name={motion.state} />}
             </FlexWrapper>
             <ArticleContent
               chain={chain}
