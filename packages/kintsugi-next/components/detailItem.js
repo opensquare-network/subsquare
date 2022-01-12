@@ -106,66 +106,6 @@ const TypeWrapper = styled.div`
     `}
 `;
 
-const EditedLabel = styled.div`
-  margin-top: 8px;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  color: #9da9bb;
-`;
-
-const GreyWrapper = styled.div`
-  display: flex;
-  flex-flow: wrap;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 22px;
-  padding: 8px 12px;
-  background: #f6f7fa;
-  border-radius: 4px;
-  margin-top: 16px;
-`;
-
-const GreyItem = styled.div`
-  display: inline-block;
-  margin-right: 12px;
-
-  > .username {
-    color: #506176;
-  }
-`;
-
-const PlaceHolder = styled.div`
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 140%;
-  text-align: center;
-  color: #9da9bb;
-  height: 68px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Edit = styled.div`
-  cursor: pointer;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 140%;
-  text-align: center;
-  color: #506176;
-  display: flex;
-  align-items: center;
-
-  svg {
-    margin-left: 8px;
-    margin-right: 4px;
-  }
-`;
-
 const ReferendaWrapper = styled(Flex)`
   justify-content: center;
   flex-wrap: wrap;

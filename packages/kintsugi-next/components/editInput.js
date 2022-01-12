@@ -5,9 +5,9 @@ import Toggle from "components/toggle";
 import Button from "components/button";
 import PreviewMD from "components/create/previewMD";
 import ErrorText from "components/errorText";
-import QuillEditor from "./editor/quillEditor";
-import HtmlRender from "./post/htmlRender";
-import InsertContentsModal from "./editor/modal";
+import QuillEditor from "components/editor/quillEditor";
+import HtmlRender from "components/post/htmlRender";
+import InsertContentsModal from "components/editor/modal";
 
 const Wrapper = styled.div`
   margin-top: 8px;

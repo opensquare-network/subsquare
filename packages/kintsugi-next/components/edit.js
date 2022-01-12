@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { useState, useRef } from "react";
 import { useOnClickOutside } from "utils/hooks";
-import { shadow_200 } from "../styles/componentCss";
+import { shadow_200 } from "styles/componentCss";
 
 const Wrapper = styled.div`
   margin-left: auto;
