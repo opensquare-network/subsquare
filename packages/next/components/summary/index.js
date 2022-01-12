@@ -60,6 +60,9 @@ const Content = styled.div`
   > .unit {
     color: #9da9bb;
   }
+  > .upper {
+    text-transform: uppercase;
+  }
   > :not(:first-child) {
     margin-left: 4px;
   }
@@ -159,14 +162,14 @@ export default function Summary({ chain }) {
         <Title>AVAILABLE</Title>
         <Content>
           <span>{abbreviateBigNumber(summary?.available ?? 0)}</span>
-          <span className="unit">{symbol}</span>
+          <span className="unit upper">{symbol}</span>
         </Content>
       </Card>
       <Card>
         <Title>NEXT BURN</Title>
         <Content>
           <span>{abbreviateBigNumber(summary?.nextBurn ?? 0)}</span>
-          <span className="unit">{symbol}</span>
+          <span className="unit upper">{symbol}</span>
         </Content>
       </Card>
       <Card>
