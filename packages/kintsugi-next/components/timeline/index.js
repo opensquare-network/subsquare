@@ -5,7 +5,6 @@ import Item from "./item";
 import FoldableItem from "./foldableItem";
 import { timeDurationFromNow } from "utils";
 import { shadow_100 } from "styles/componentCss";
-import { timelineData } from "utils/data";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -36,10 +35,6 @@ const TitleWrapper = styled.div`
 `;
 
 export default function Timeline({ data, chain, indent = true, type = "" }) {
-  if (!timelineData || timelineData?.length === 0) {
-    return null;
-  }
-
   return (
     <Wrapper>
       <TitleWrapper>
