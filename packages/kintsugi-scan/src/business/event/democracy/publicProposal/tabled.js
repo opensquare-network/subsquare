@@ -50,6 +50,7 @@ async function handleProposal(indexer, event, sort, allEvents) {
     {
       referendumIndex,
       state,
+      isFinal: true,
     },
     timelineTime
   );
