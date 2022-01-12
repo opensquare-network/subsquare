@@ -11,7 +11,6 @@
   "dependencies": {
     "@alicloud/pop-core": "^1.7.10",
     "@koa/cors": "^3.1.0",
-    "@polkadot/api": "^7.0.2",
     "@polkadot/react-identicon": "^0.87.6",
     "argon2": "^0.28.2",
     "bignumber.js": "^9.0.2",
