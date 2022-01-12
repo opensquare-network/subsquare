@@ -17,9 +17,9 @@ import { withLoginUser, withLoginUserRedux } from "lib";
 import { shadow_100 } from "styles/componentCss";
 import NextHead from "components/nextHead";
 
-// const AddressLogin = dynamic(() => import("components/addressLogin"), {
-//   ssr: false,
-// });
+const AddressLogin = dynamic(() => import("components/addressLogin"), {
+  ssr: false,
+});
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -170,7 +170,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
               </ButtonWrapper>
             </FormWrapper>
           )}
-          {/*{web3 && <AddressLogin chain={chain} onBack={() => setWeb3(false)} />}*/}
+          {web3 && <AddressLogin chain={chain} onBack={() => setWeb3(false)} />}
           <LinkWrapper>
             Don’t have a account? <Link href="/signup">Sign up</Link>
           </LinkWrapper>

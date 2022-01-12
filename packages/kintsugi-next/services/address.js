@@ -72,3 +72,11 @@ export const encodeBifrostAddress = (address) => {
     return "";
   }
 };
+
+export const encodeKintsugiAddress = (address) => {
+  try {
+    return encodeAddress(address, SS58Prefix.kintsugi);
+  } catch {
+    return "";
+  }
+};
