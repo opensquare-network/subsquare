@@ -134,10 +134,6 @@ export const nodes = [
     name: "Kabocha",
     icon: "kabocha.svg",
     hideHeight: true,
-    // identity: "kabocha",
-    // symbol: "",
-    // decimals: 0,
-    // hasElections: true,
   },
   {
     value: "bifrost",
@@ -174,7 +170,7 @@ export const accountMenu = [
     value: "settings",
     name: "Settings",
     icon: "settings.svg",
-    pathname: "/setting/account",
+    pathname: "/settings/account",
   },
   {
     value: "logout",
@@ -256,17 +252,17 @@ export const settingMenu = [
       {
         value: "account",
         name: "Account",
-        pathname: "/setting/account",
+        pathname: "/settings/account",
       },
       {
         value: "linked-address",
         name: "Linked Address",
-        pathname: "/setting/linked-address",
+        pathname: "/settings/linked-address",
       },
       {
         value: "notification",
         name: "Notification",
-        pathname: "/setting/notification",
+        pathname: "/settings/notification",
       },
     ],
   },

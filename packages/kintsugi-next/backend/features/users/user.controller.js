@@ -282,7 +282,7 @@ async function setUserNotification(ctx) {
   );
 
   if (!result.acknowledged) {
-    throw new HttpError(500, "Db error, update notification setting");
+    throw new HttpError(500, "Db error, update notification settings");
   }
 
   ctx.body = true;
@@ -307,7 +307,7 @@ async function setUserPreference(ctx) {
   );
 
   if (!result.acknowledged) {
-    throw new HttpError(500, "Db error, update notification setting");
+    throw new HttpError(500, "Db error, update notification settings");
   }
 
   ctx.body = true;
