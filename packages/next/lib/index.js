@@ -28,7 +28,7 @@ export function withLoginUser(getServerSideProps) {
       profilePromise,
     ]);
 
-    if (context.resolvedUrl?.startsWith("/setting/") && !user) {
+    if (context.resolvedUrl?.startsWith("/settings/") && !user) {
       return {
         redirect: {
           permanent: false,
