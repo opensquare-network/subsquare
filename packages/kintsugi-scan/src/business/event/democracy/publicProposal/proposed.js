@@ -35,6 +35,7 @@ async function saveNewPublicProposal(event, indexer, extrinsic) {
       proposer,
     },
     indexer,
+    isFinal: false,
   };
 
   const obj = {
