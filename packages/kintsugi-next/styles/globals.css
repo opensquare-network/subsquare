@@ -1,0 +1,35 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background: #f6f7fa;
+  color: #1e2134;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  transition: 0.3 ease;
+  position: relative;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+hr {
+  border-top: none;
+  border-bottom-color: #ebeef4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#nprogress .bar {
+  background: #6848ff !important;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px #6848ff, 0 0 5px #6848ff !important;
+}
