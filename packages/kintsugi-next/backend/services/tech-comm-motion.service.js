@@ -39,7 +39,9 @@ async function findMotion(postId) {
   }
 
   const chainMotionCol = await getChainTechCommMotionCollection();
-  return await chainMotionCol.findOne(q, { sort: [["indexer.blockHeight", -1]] });
+  return await chainMotionCol.findOne(q, {
+    sort: [["indexer.blockHeight", -1]],
+  });
 }
 
 async function findMotionPost(chainMotion) {
@@ -68,9 +70,8 @@ async function findMotionPost(chainMotion) {
 async function loadPostForMotions(chainMotions) {
   const chain = process.env.CHAIN;
   for (const motion of chainMotions) {
-    if (motion.externalProposals?.length === 1) {
-      motion.externalProposalHash = motion.externalProposals[0].hash;
-      motion.externalProposalIndexer = motion.externalProposals[0].indexer;
+    if (motion.publicProposals?.length === 1) {
+      motion.publicProposalIndex = motion.publicProposals[0].proposalIndex;
     }
   }
 
@@ -78,15 +79,12 @@ async function loadPostForMotions(chainMotions) {
   const businessDb = await getBusinessDb();
 
   const [democracyPosts, motionPosts] = await Promise.all([
-    businessDb.compoundLookupOne({
+    businessDb.lookupOne({
       from: "democracy",
       for: chainMotions,
       as: "democracyPost",
-      compoundLocalFields: [
-        "externalProposalHash",
-        "externalProposalIndexer.blockHeight",
-      ],
-      compoundForeignFields: ["externalProposalHash", "indexer.blockHeight"],
+      localField: "publicProposalIndex",
+      foreignField: "proposalIndex",
     }),
     businessDb.compoundLookupOne({
       from: "techCommMotion",
@@ -297,7 +295,7 @@ async function getMotionById(postId) {
           .find({
             proposalIndex: {
               $in: chainMotion.publicProposals.map((p) => p.proposalIndex),
-            }
+            },
           })
           .sort({ "indexer.blockHeight": 1 })
           .toArray()
