@@ -17,6 +17,7 @@
     "bignumber.js": "^9.0.2",
     "cheerio": "^1.0.0-rc.10",
     "cookies": "^0.8.0",
+    "dayjs": "^1.10.7",
     "dotenv": "^10.0.0",
     "handlebars": "^4.7.7",
     "html-react-parser": "^1.4.5",

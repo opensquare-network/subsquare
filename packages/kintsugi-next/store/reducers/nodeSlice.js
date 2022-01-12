@@ -12,6 +12,7 @@ import {
   DEFAULT_BIFROST_NODES,
   DEFAULT_BIFROST_NODE_URL,
   DEFAULT_KINTSUGI_NODES,
+  DEFAULT_KINTSUGI_NODE_URL,
 } from "utils/constants";
 
 let nodeUrl = (() => {
@@ -37,6 +38,9 @@ let nodeUrl = (() => {
     bifrost:
       DEFAULT_BIFROST_NODES.find((item) => item.url === localNodeUrl?.bifrost)
         ?.url || DEFAULT_BIFROST_NODE_URL,
+    kintsugi:
+      DEFAULT_KINTSUGI_NODES.find((item) => item.url === localNodeUrl?.bifrost)
+        ?.url || DEFAULT_KINTSUGI_NODE_URL,
   };
 })();
 
