@@ -17,11 +17,20 @@ app.use(async (ctx, next) => {
   try {
     await next();
   } catch (err) {
-    ctx.status = err.statusCode || err.status || 500;
-    ctx.body = {
-      message: err.message,
-      data: err.data,
-    };
+    const statusCode = err.statusCode || err.status;
+    if (!statusCode) {
+      console.error(err.message);
+      ctx.status = 500;
+      ctx.body = {
+        message: "Internal Server Error",
+      };
+    } else {
+      ctx.status = statusCode;
+      ctx.body = {
+        message: err.message,
+        data: err.data,
+      };
+    }
   }
 });
 
