@@ -3,6 +3,7 @@ const {
   scan: { scanStartHeight },
   env: { currentChain },
 } = require("@subsquare/scan-common");
+const isNil = require("lodash.isnil");
 
 const genesisHeight = 1;
 const mainScanName = "main-scan-height";
@@ -21,7 +22,12 @@ async function getNextScanHeight() {
     process.exit(1);
   }
 
-  return Math.max(scanStartHeight[currentChain()], result);
+  const startHeight = scanStartHeight[currentChain()];
+  if (!isNil(startHeight) && result < startHeight) {
+    return startHeight;
+  }
+
+  return result;
 }
 
 async function updateScanHeight(height) {
