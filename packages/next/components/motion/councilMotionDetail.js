@@ -140,6 +140,7 @@ export default withLoginUserRedux(
       return null;
     }
     const [post, setPost] = useState(motion);
+    const [isEdit, setIsEdit] = useState(false);
     const decimals = node.decimals;
     const symbol = node.symbol;
 
@@ -256,7 +257,7 @@ export default withLoginUserRedux(
     return (
       <div>
         <Wrapper>
-          <div>
+          {!isEdit && <div>
             <TitleWrapper>
               {motion?.motionIndex !== undefined && (
                 <Index>{`#${motion.motionIndex}`}</Index>
@@ -281,15 +282,18 @@ export default withLoginUserRedux(
               </DividerWrapper>
               {motion.state && <Tag name={motion.state} />}
             </FlexWrapper>
-            <ArticleContent
-              chain={chain}
-              post={post}
-              setPost={setPost}
-              user={loginUser}
-              onReply={onReply}
-              type={type}
-            />
           </div>
+          }
+          <ArticleContent
+            chain={chain}
+            post={post}
+            setPost={setPost}
+            user={loginUser}
+            onReply={onReply}
+            type={type}
+            isEdit={isEdit}
+            setIsEdit={setIsEdit}
+          />
         </Wrapper>
 
         <MultiKVList title="Business" data={business} />
