@@ -7,6 +7,11 @@ const DemocracyEvents = Object.freeze({
   Executed: "Executed",
 });
 
+const publicProposalState = Object.freeze({
+  FastTracked: "FastTracked",
+});
+
 module.exports = {
   DemocracyEvents,
+  publicProposalState,
 };

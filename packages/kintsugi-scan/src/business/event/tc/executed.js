@@ -1,4 +1,11 @@
 const {
+  updateDemocracyPublicProposal,
+} = require("../../../mongo/service/onchain/democracyPublicProposal");
+const {
+  publicProposalState,
+  DemocracyEvents,
+} = require("../democracy/publicProposal/constants");
+const {
   insertReferendumWithPublicProposal,
 } = require("../democracy/referendum/insert");
 const { getTechCommMotionCollection } = require("../../../mongo");
@@ -8,7 +15,7 @@ const {
 const {
   business: {
     getCollectiveExecutedCommonFields,
-    consts: { Modules, ReferendumEvents },
+    consts: { Modules, ReferendumEvents, TimelineItemTypes },
   },
 } = require("@subsquare/scan-common");
 
@@ -41,6 +48,26 @@ async function handleBusiness(motionHash, indexer, blockEvents) {
   }
 
   const { proposalIndex } = motion.publicProposals[0];
+  const state = {
+    indexer,
+    state: publicProposalState.FastTracked,
+  };
+
+  const timelineTime = {
+    type: TimelineItemTypes.event,
+    method: DemocracyEvents.FastTrack,
+    indexer,
+  };
+
+  await updateDemocracyPublicProposal(
+    proposalIndex,
+    {
+      state,
+      isFinal: true,
+    },
+    timelineTime
+  );
+
   await insertReferendumWithPublicProposal(
     startedEvent.event,
     indexer,

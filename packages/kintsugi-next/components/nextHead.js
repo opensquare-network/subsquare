@@ -21,11 +21,11 @@ export default function NextHead({
       {type === "post" && <meta property="twitter:card" content="summary" />}
       <meta
         property="og:image"
-        content="https://test.subsquare.io/imgs/logo.png"
+        content={`${process.env.NEXT_PUBLIC_SITE_URL}/imgs/logo.png`}
       />
       <meta
         property="twitter:image"
-        content="https://test.subsquare.io/imgs/logo4twitter.png"
+        content={`${process.env.NEXT_PUBLIC_SITE_URL}/imgs/logo4twitter.png`}
       />
     </Head>
   );
