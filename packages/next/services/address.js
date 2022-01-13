@@ -41,6 +41,14 @@ export const encodeKaruraAddress = (address) => {
   }
 };
 
+export const encodeAcalaAddress = (address) => {
+  try {
+    return encodeAddress(address, SS58Prefix.acala);
+  } catch {
+    return "";
+  }
+};
+
 export const encodeKhalaAddress = (address) => {
   try {
     return encodeAddress(address, SS58Prefix.khala);

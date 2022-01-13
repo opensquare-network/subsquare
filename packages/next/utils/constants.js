@@ -189,7 +189,7 @@ export const accountMenu = [
     value: "settings",
     name: "Settings",
     icon: "settings.svg",
-    pathname: "/settings/account",
+    pathname: "/setting/account",
   },
   {
     value: "logout",
@@ -322,17 +322,17 @@ export const settingMenu = [
       {
         value: "account",
         name: "Account",
-        pathname: "/settings/account",
+        pathname: "/setting/account",
       },
       {
         value: "linked-address",
         name: "Linked Address",
-        pathname: "/settings/linked-address",
+        pathname: "/setting/linked-address",
       },
       {
         value: "notification",
         name: "Notification",
-        pathname: "/settings/notification",
+        pathname: "/setting/notification",
       },
     ],
   },

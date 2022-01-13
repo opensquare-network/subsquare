@@ -11,6 +11,7 @@ import { useAuthPage, useIsMounted } from "utils/hooks";
 import { userSelector } from "store/reducers/userSlice";
 import {
   encodeKaruraAddress,
+  encodeAcalaAddress,
   encodeKhalaAddress,
   encodeKusamaAddress,
   encodePolkadotAddress,
@@ -207,6 +208,7 @@ export default function LinkedAddress({ chain }) {
         kusamaAddress: encodeKusamaAddress(address),
         polkadotAddress: encodePolkadotAddress(address),
         karuraAddress: encodeKaruraAddress(address),
+        acalaAddress: encodeAcalaAddress(address),
         khalaAddress: encodeKhalaAddress(address),
         basiliskAddress: encodeBasiliskAddress(address),
         kabochaAddress: encodeKabochaAddress(address),
@@ -299,6 +301,7 @@ export default function LinkedAddress({ chain }) {
         kusamaAddress: address.chain === "kusama" ? address.address : null,
         polkadotAddress: address.chain === "polkadot" ? address.address : null,
         karuraAddress: address.chain === "karura" ? address.address : null,
+        acalaAddress: address.chain === "acala" ? address.address : null,
         khalaAddress: address.chain === "khala" ? address.address : null,
         basiliskAddress: address.chain === "basilisk" ? address.address : null,
         kabochaAddress: address.chain === "kabocha" ? address.address : null,
