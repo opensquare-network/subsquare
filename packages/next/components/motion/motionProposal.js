@@ -218,6 +218,7 @@ export default function MotionProposal({ motion, chain }) {
         <ArgsWrapper className="wrapper">
           <InnerDataTable
             data={convertProposalForTableView(motion.proposal, chain)}
+            chain={chain}
           />
         </ArgsWrapper>
       )}

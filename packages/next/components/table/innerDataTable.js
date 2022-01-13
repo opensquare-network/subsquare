@@ -75,9 +75,9 @@ const StyledTd = styled.td`
   }
 `;
 
-const TO_STRING_FIELDS = ["name", "symbol"];
+const toStringFieldMap = new Map([["karura", ["name", "symbol"]]]);
 
-export default function InnerDataTable({ data, nested = false }) {
+export default function InnerDataTable({ data, chain, nested = false }) {
   if (Object.keys(data)?.length === 0 && nested === false) {
     return <Placeholder />;
   }
@@ -89,7 +89,7 @@ export default function InnerDataTable({ data, nested = false }) {
     Array.isArray(fieldValue) ? (
       fieldValue.length > 0 ? (
         <StyledTd style={{ padding: 0 }}>
-          <InnerDataTable data={fieldValue} nested />
+          <InnerDataTable data={fieldValue} nested chain={chain} />
         </StyledTd>
       ) : (
         <StyledTd style={{ minWidth: 320, padding: "10px 24px" }}>[]</StyledTd>
@@ -105,10 +105,11 @@ export default function InnerDataTable({ data, nested = false }) {
         </StyledTd>
       ) : (
         <StyledTd style={{ padding: 0 }}>
-          <InnerDataTable data={fieldValue} nested />
+          <InnerDataTable data={fieldValue} nested chain={chain} />
         </StyledTd>
       )
-    ) : isHex(fieldValue) && TO_STRING_FIELDS.includes(fieldName) ? (
+    ) : toStringFieldMap.get(chain)?.includes(fieldName) &&
+      isHex(fieldValue) ? (
       <StyledTd style={{ minWidth: 320, padding: "10px 24px" }}>
         <BreakText>{hexToString(fieldValue)}</BreakText>
       </StyledTd>
