@@ -6,6 +6,7 @@ const SupportChains = [
   "basilisk",
   "kabocha",
   "bifrost",
+  "acala",
 ];
 
 const chainStatusRoom = "CHAIN_STATUS_ROOM";
@@ -19,6 +20,7 @@ const SS58Format = Object.freeze({
   Substrate: 42,
   Kabocha: 2,
   Bifrost: 6,
+  Acala: 10,
 });
 
 const ContentType = Object.freeze({
