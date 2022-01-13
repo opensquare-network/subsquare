@@ -75,7 +75,10 @@ const StyledTd = styled.td`
   }
 `;
 
-const toStringFieldMap = new Map([["karura", ["name", "symbol"]]]);
+const toStringFieldMap = new Map([
+  ["karura", ["name", "symbol"]],
+  ["acala", ["name", "symbol"]],
+]);
 
 export default function InnerDataTable({ data, chain, nested = false }) {
   if (Object.keys(data)?.length === 0 && nested === false) {
