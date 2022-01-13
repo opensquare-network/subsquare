@@ -57,17 +57,6 @@ export default function Links({
   }
   return (
     <Wrapper style={style}>
-      <PolkascanLink
-        href={
-          address
-            ? `https://polkascan.io/${chain}/account/${address}`
-            : `https://polkascan.io/${chain}/extrinsic/${indexer.blockHeight}-${
-                indexer.extrinsicIndex ?? indexer.index ?? 0
-              }`
-        }
-        target="_blank"
-        rel="noreferrer"
-      />
       <SubscanLink
         href={
           address
