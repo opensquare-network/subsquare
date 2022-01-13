@@ -249,7 +249,7 @@ export default function ArticleContent({
           {post.content === "" && (
             <PlaceHolder>
               {`The ${type} has not been edited by creator.`}
-              {!ownPost && (
+              {ownPost && (
                 <Edit
                   onClick={() => {
                     setIsEdit(true);
