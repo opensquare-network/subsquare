@@ -7,6 +7,7 @@ const defaultDbNames = {
   basilisk: "subsquare-bsx",
   kabocha: "subsquare-kab",
   bifrost: "subsquare-bnc",
+  acala: "subsquare-aca",
 };
 
 let db = null;
