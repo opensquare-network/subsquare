@@ -229,20 +229,23 @@ export default function TechcommMotionDetail({
     ]);
   }
 
-  if (motion?.onchainData?.externalProposals?.length > 0) {
-    motion?.onchainData?.externalProposals?.forEach((external) => {
+  if (motion?.onchainData?.publicProposals?.length > 0) {
+    motion?.onchainData?.publicProposals?.forEach((proposal) => {
       business.push([
         [
           "Link to",
           <Link
-            href={`/democracy/external/${external?.indexer?.blockHeight}_${external?.proposalHash}`}
-          >{`Democracy External #${external?.proposalHash?.slice(
-            0,
-            6
-          )}`}</Link>,
+            href={`/democracy/proposal/${proposal?.proposalIndex}`}
+          >{`Democracy Public Proposal #${proposal?.proposalIndex}`}</Link>,
         ],
-        ["hash", external.proposalHash],
-        ["voteThreshould", external.voteThreshold],
+        ["Hash", proposal.hash],
+        [
+          "Proposer",
+          <Flex>
+            <User chain={chain} add={proposal?.proposer} />
+            <Links chain={chain} address={proposal?.proposer} />
+          </Flex>,
+        ],
       ]);
     });
   }
