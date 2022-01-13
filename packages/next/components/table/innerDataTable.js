@@ -87,6 +87,11 @@ export default function InnerDataTable({ data, chain, nested = false }) {
   if (React.isValidElement(data)) {
     return data;
   }
+  const isHexToStringField = (fieldValue, fieldName) => {
+    return (
+      toStringFieldMap.get(chain)?.includes(fieldName) && isHex(fieldValue)
+    );
+  };
 
   const formatValue = (fieldValue, fieldName) =>
     Array.isArray(fieldValue) ? (
@@ -111,8 +116,7 @@ export default function InnerDataTable({ data, chain, nested = false }) {
           <InnerDataTable data={fieldValue} nested chain={chain} />
         </StyledTd>
       )
-    ) : toStringFieldMap.get(chain)?.includes(fieldName) &&
-      isHex(fieldValue) ? (
+    ) : isHexToStringField(fieldValue, fieldName) ? (
       <StyledTd style={{ minWidth: 320, padding: "10px 24px" }}>
         <BreakText>{hexToString(fieldValue)}</BreakText>
       </StyledTd>
