@@ -14,6 +14,7 @@ import { useIsMounted } from "utils/hooks";
 import DownloadExtension from "components/downloadExtension";
 import {
   encodeKaruraAddress,
+  encodeAcalaAddress,
   encodeKhalaAddress,
   encodeKusamaAddress,
   encodePolkadotAddress,
@@ -110,6 +111,7 @@ export default function AddressLogin({ chain, onBack }) {
           kusamaAddress: encodeKusamaAddress(address),
           polkadotAddress: encodePolkadotAddress(address),
           karuraAddress: encodeKaruraAddress(address),
+          acalaAddress: encodeAcalaAddress(address),
           khalaAddress: encodeKhalaAddress(address),
           basiliskAddress: encodeBasiliskAddress(address),
           kabochaAddress: encodeKabochaAddress(address),

@@ -42,6 +42,34 @@ export const DEFAULT_KARURA_NODES = [
 ];
 export const DEFAULT_KARURA_NODE_URL = DEFAULT_KARURA_NODES[0]?.url;
 
+export const DEFAULT_ACALA_NODES = [
+  {
+    name: "OnFinality",
+    url: "wss://acala-polkadot.api.onfinality.io/public-ws",
+  },
+  {
+    name: "Polkawallet",
+    url: "wss://acala.polkawallet.io/",
+  },
+  {
+    name: "Acala Foundation 0",
+    url: "wss://acala-rpc-0.aca-api.network/",
+  },
+  {
+    name: "Acala Foundation 1",
+    url: "wss://acala-rpc-1.aca-api.network/",
+  },
+  {
+    name: "Acala Foundation 2",
+    url: "wss://acala-rpc-2.aca-api.network/",
+  },
+  {
+    name: "Acala Foundation 3",
+    url: "wss://acala-rpc-3.aca-api.network/",
+  },
+];
+export const DEFAULT_ACALA_NODE_URL = DEFAULT_ACALA_NODES[0]?.url;
+
 export const DEFAULT_KHALA_NODES = [
   {
     name: "OnFinality",
@@ -78,6 +106,7 @@ export const DEFAULT_BIFROST_NODE_URL = DEFAULT_BIFROST_NODES[0]?.url;
 export const DEFAULT_NODES = {
   kusama: DEFAULT_KUSAMA_NODE_URL,
   karura: DEFAULT_KARURA_NODE_URL,
+  acala: DEFAULT_ACALA_NODE_URL,
   khala: DEFAULT_KHALA_NODE_URL,
   basilisk: DEFAULT_BASILISK_NODE_URL,
   bifrost: DEFAULT_BIFROST_NODE_URL,
@@ -103,6 +132,15 @@ export const nodes = [
     icon: "karura.svg",
     identity: "kusama",
     symbol: "KAR",
+    decimals: 12,
+    hasElections: false,
+  },
+  {
+    value: "acala",
+    name: "Acala",
+    icon: "acala.svg",
+    identity: "polkadot",
+    symbol: "ACA",
     decimals: 12,
     hasElections: false,
   },
@@ -151,7 +189,7 @@ export const accountMenu = [
     value: "settings",
     name: "Settings",
     icon: "settings.svg",
-    pathname: "/settings/account",
+    pathname: "/setting/account",
   },
   {
     value: "logout",
@@ -284,17 +322,17 @@ export const settingMenu = [
       {
         value: "account",
         name: "Account",
-        pathname: "/settings/account",
+        pathname: "/setting/account",
       },
       {
         value: "linked-address",
         name: "Linked Address",
-        pathname: "/settings/linked-address",
+        pathname: "/setting/linked-address",
       },
       {
         value: "notification",
         name: "Notification",
-        pathname: "/settings/notification",
+        pathname: "/setting/notification",
       },
     ],
   },
@@ -311,6 +349,7 @@ export const SS58Prefix = {
   polkadot: 0,
   kusama: 2,
   karura: 8,
+  acala: 10,
   khala: 30,
   substrate: 42,
   basilisk: 10041,
