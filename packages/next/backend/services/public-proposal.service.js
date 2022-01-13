@@ -9,7 +9,6 @@ const {
   getDb: getChainDb,
   getPublicProposalCollection: getChainPublicProposalCollection,
   getPreImageCollection,
-  getPublicProposalCollection,
 } = require("../mongo/chain");
 const {
   getDb: getCommonDb,
