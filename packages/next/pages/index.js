@@ -38,7 +38,7 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
         toTechCommMotionListItem(chain, item)
       ),
     },
-    （chain === "karura" || chain === "acala")
+    (chain === "karura" || chain === "acala")
       ? {
           category: "Financial Council Motions",
           items: (overview?.financialCouncil?.motions ?? []).map((item) =>
