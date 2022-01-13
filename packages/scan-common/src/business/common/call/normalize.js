@@ -1,4 +1,4 @@
-const { u8aToHex, BN } = require("@polkadot/util");
+const { u8aToHex } = require("@polkadot/util");
 
 function normalizeCall(call) {
   const { section, method } = call;
