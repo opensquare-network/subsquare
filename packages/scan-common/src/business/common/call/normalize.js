@@ -1,4 +1,4 @@
-const { u8aToHex } = require("@polkadot/util");
+const { u8aToHex, BN } = require("@polkadot/util");
 
 function normalizeCall(call) {
   const { section, method } = call;
@@ -29,10 +29,17 @@ function normalizeCall(call) {
       continue;
     }
 
+    let value;
+    if ("Compact<BalanceOf>" === type) {
+      value = arg.toString();
+    } else {
+      value = arg.toJSON();
+    }
+
     args.push({
       name,
       type,
-      value: arg.toJSON(),
+      value,
     });
   }
 
