@@ -17,14 +17,15 @@ app.use(async (ctx, next) => {
   try {
     await next();
   } catch (err) {
-    if (!err.statusCode) {
+    const statusCode = err.statusCode || err.status;
+    if (!statusCode) {
       console.error(err.message);
       ctx.status = 500;
       ctx.body = {
         message: "Internal Server Error",
       };
     } else {
-      ctx.status = err.statusCode;
+      ctx.status = statusCode;
       ctx.body = {
         message: err.message,
         data: err.data,
