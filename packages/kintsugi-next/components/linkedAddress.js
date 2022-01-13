@@ -304,6 +304,7 @@ export default function LinkedAddress({ chain }) {
         khalaAddress: address.chain === "khala" ? address.address : null,
         basiliskAddress: address.chain === "basilisk" ? address.address : null,
         kabochaAddress: address.chain === "kabocha" ? address.address : null,
+        kintsugiAddress: address.chain === "kintsugi" ? address.address : null,
         name: "--",
       })),
   ];
