@@ -172,7 +172,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
   };
 
   const postUpdatedTime = getPostUpdatedAt(post);
-
+  console.log(isEdit);
   return (
     <Wrapper>
       {!isEdit && (
@@ -291,25 +291,18 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             </DividerWrapper>
             {post.status && <Tag name={post.status} />}
           </FlexWrapper>
-          <ArticleContent
-            chain={chain}
-            post={post}
-            setPost={setPost}
-            user={user}
-            type={type}
-            onReply={onReply}
-          />
         </>
       )}
-      {isEdit && (
-        <PostEdit
-          chain={chain}
-          postData={post}
-          setIsEdit={setIsEdit}
-          updatePost={updatePost}
-          type={type}
-        />
-      )}
+      <ArticleContent
+        chain={chain}
+        post={post}
+        setPost={setPost}
+        user={user}
+        type={type}
+        onReply={onReply}
+        isEdit={isEdit}
+        setIsEdit={setIsEdit}
+      />
     </Wrapper>
   );
 }
