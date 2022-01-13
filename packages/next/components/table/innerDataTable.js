@@ -1,5 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import { hexToString, isHex } from "@polkadot/util";
+
 import Placeholder from "./placeholder";
 
 const Wrapper = styled.div`
@@ -73,6 +75,8 @@ const StyledTd = styled.td`
   }
 `;
 
+const TO_STRING_FIELDS = ["name", "symbol"];
+
 export default function InnerDataTable({ data, nested = false }) {
   if (Object.keys(data)?.length === 0 && nested === false) {
     return <Placeholder />;
@@ -81,7 +85,7 @@ export default function InnerDataTable({ data, nested = false }) {
     return data;
   }
 
-  const formatValue = (fieldValue) =>
+  const formatValue = (fieldValue, fieldName) =>
     Array.isArray(fieldValue) ? (
       fieldValue.length > 0 ? (
         <StyledTd style={{ padding: 0 }}>
@@ -104,6 +108,10 @@ export default function InnerDataTable({ data, nested = false }) {
           <InnerDataTable data={fieldValue} nested />
         </StyledTd>
       )
+    ) : isHex(fieldValue) && TO_STRING_FIELDS.includes(fieldName) ? (
+      <StyledTd style={{ minWidth: 320, padding: "10px 24px" }}>
+        <BreakText>{hexToString(fieldValue)}</BreakText>
+      </StyledTd>
     ) : (
       <StyledTd style={{ minWidth: 320, padding: "10px 24px" }}>
         <BreakText>{fieldValue.toString()}</BreakText>
@@ -154,7 +162,7 @@ export default function InnerDataTable({ data, nested = false }) {
                     >
                       {fieldName}
                     </StyledTd>
-                    {formatValue(fieldValue)}
+                    {formatValue(fieldValue, fieldName)}
                   </StyledTr>
                 );
               })}
