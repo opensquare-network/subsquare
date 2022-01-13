@@ -38,7 +38,8 @@ export default function Links({
   if (!indexer && !address) {
     return null;
   }
-  if (chain === "karura" || chain === "acala" || chain === "khala" || chain === "basilisk") {
+  const supporttedChains = ["karura", "acala", "khala", "basilisk"];
+  if (supporttedChains.includes(chain)) {
     return (
       <Wrapper style={style}>
         <SubscanLink
