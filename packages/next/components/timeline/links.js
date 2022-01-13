@@ -38,7 +38,7 @@ export default function Links({
   if (!indexer && !address) {
     return null;
   }
-  if (chain === "karura" || chain === "khala" || chain === "basilisk") {
+  if (chain === "karura" || chain === "acala" || chain === "khala" || chain === "basilisk") {
     return (
       <Wrapper style={style}>
         <SubscanLink
