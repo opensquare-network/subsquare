@@ -13,8 +13,8 @@ export default withLoginUserRedux(({ loginUser, chain, siteUrl }) => {
   const [loading, setLoading] = useState(true);
   const api = useApi(chain);
   const node = getNode(chain);
-  const electionsInfo = useCall(api?.derive.elections.info, []);
-  const allVotes = useCall(api?.derive.council.votes, []);
+  const electionsInfo = useCall(api?.derive?.elections?.info, []);
+  const allVotes = useCall(api?.derive?.council?.votes, []);
   useEffect(() => {
     if (electionsInfo) {
       const votesMap = {};
