@@ -122,6 +122,7 @@ function convertProposalForTableView(proposal, chain) {
             const value = new BigNumber(arg.value).toString();
             return [arg.name, value];
           }
+          case "Compact<BalanceOf>":
           case "Compact<Balance>": {
             const value = new BigNumber(arg.value).toString();
             return [arg.name, value];
