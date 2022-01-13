@@ -139,7 +139,7 @@ export const nodes = [
     value: "acala",
     name: "Acala",
     icon: "acala.svg",
-    identity: "acala",
+    identity: "polkadot",
     symbol: "ACA",
     decimals: 12,
     hasElections: false,
