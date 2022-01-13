@@ -29,10 +29,17 @@ function normalizeCall(call) {
       continue;
     }
 
+    let value;
+    if ("Compact<BalanceOf>" === type) {
+      value = arg.toString();
+    } else {
+      value = arg.toJSON();
+    }
+
     args.push({
       name,
       type,
-      value: arg.toJSON(),
+      value,
     });
   }
 
