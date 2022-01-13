@@ -9,7 +9,7 @@ export const getApi = async (chain, queryUrl) => {
   if (!apiInstanceMap.has(queryUrl)) {
     const provider = new WsProvider(queryUrl, 1000);
     const options = { provider };
-    if (chain === "karura") {
+    if (chain === "karura" || chain === "acala") {
       options.typesBundle = { ...typesBundleForPolkadot };
     }
     if (chain === "khala") {
