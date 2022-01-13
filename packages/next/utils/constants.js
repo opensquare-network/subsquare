@@ -61,11 +61,11 @@ export const DEFAULT_ACALA_NODES = [
   },
   {
     name: "Acala Foundation 2",
-    url: "wss://acala-rpc-2.aca-api.network/",
+    url: "wss://acala-rpc-2.aca-api.network/ws",
   },
   {
     name: "Acala Foundation 3",
-    url: "wss://acala-rpc-3.aca-api.network/",
+    url: "wss://acala-rpc-3.aca-api.network/ws",
   },
 ];
 export const DEFAULT_ACALA_NODE_URL = DEFAULT_ACALA_NODES[0]?.url;
