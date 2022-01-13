@@ -3,6 +3,7 @@ const scanKnownFirst = !!process.env.SCAN_KNOWN_HEIGHTS_FIRST;
 const scanStep = parseInt(process.env.SCAN_STEP) || 100;
 
 const CHAINS = {
+  ACALA: "acala",
   KARURA: "karura",
   KHALA: "khala",
   KUSAMA: "kusama",
@@ -33,7 +34,7 @@ function currentChain() {
 }
 
 function isKarura() {
-  return CHAINS.KARURA === currentChain();
+  return [CHAINS.KARURA, CHAINS.ACALA].includes(currentChain());
 }
 
 function isUseMetaDb() {
