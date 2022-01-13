@@ -172,7 +172,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
   };
 
   const postUpdatedTime = getPostUpdatedAt(post);
-  console.log(isEdit);
+
   return (
     <Wrapper>
       {!isEdit && (
