@@ -223,14 +223,6 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
     return null;
   }
 
-  const updatePost = async () => {
-    const url = `${toApiType(type)}/${post._id}`;
-    const { result: newPost } = await nextApi.fetch(url);
-    if (newPost) {
-      setPost(newPost);
-    }
-  };
-
   const postUpdatedTime = getPostUpdatedAt(post);
 
   return (
@@ -351,25 +343,18 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             </DividerWrapper>
             {post.status && <Tag name={post.status} />}
           </FlexWrapper>
-          <ArticleContent
-            chain={chain}
-            post={post}
-            setPost={setPost}
-            user={user}
-            type={type}
-            onReply={onReply}
-          />
         </>
       )}
-      {isEdit && (
-        <PostEdit
-          chain={chain}
-          postData={post}
-          setIsEdit={setIsEdit}
-          updatePost={updatePost}
-          type={type}
-        />
-      )}
+      <ArticleContent
+        chain={chain}
+        post={post}
+        setPost={setPost}
+        user={user}
+        type={type}
+        onReply={onReply}
+        isEdit={isEdit}
+        setIsEdit={setIsEdit}
+      />
     </Wrapper>
   );
 }

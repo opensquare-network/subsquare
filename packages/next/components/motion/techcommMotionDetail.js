@@ -169,6 +169,7 @@ export default function TechcommMotionDetail({
 }) {
   const node = getNode(chain);
   const [post, setPost] = useState(motion);
+  const [isEdit, setIsEdit] = useState(false);
   if (!node) {
     return null;
   }
@@ -249,7 +250,7 @@ export default function TechcommMotionDetail({
   return (
     <div>
       <Wrapper>
-        <div>
+        {!isEdit && <div>
           <TitleWrapper>
             {motion?.index !== undefined && <Index>{`#${motion.index}`}</Index>}
             <Title>{post?.title}</Title>
@@ -272,6 +273,7 @@ export default function TechcommMotionDetail({
             </DividerWrapper>
             {motion.state && <StatusWrapper>{motion.state}</StatusWrapper>}
           </FlexWrapper>
+        </div>}
           <ArticleContent
             chain={chain}
             post={post}
@@ -279,8 +281,9 @@ export default function TechcommMotionDetail({
             user={loginUser}
             onReply={onReply}
             type={type}
+            isEdit={isEdit}
+            setIsEdit={setIsEdit}
           />
-        </div>
       </Wrapper>
 
       <MultiKVList title="Business" data={business} />
