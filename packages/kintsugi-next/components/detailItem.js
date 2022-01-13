@@ -210,6 +210,20 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
           {type === TYPE_DEMOCRACY_PROPOSAL && (
             <ReferendaWrapper>
               <div>{`Proposal #${post.proposalIndex}`}</div>
+              {post?.onchainData?.techCommMotions?.map(
+                (techCommMotion, key) => (
+                  <div key={key}>
+                    <TriangleRight />
+                    <Link
+                      href={`/techcomm/proposal/${getTechCommId(
+                        techCommMotion
+                      )}`}
+                    >
+                      {`Tech. Comm. #${shortTechId(techCommMotion)}`}
+                    </Link>
+                  </div>
+                )
+              )}
               {post?.referendumIndex !== undefined && (
                 <div>
                   <TriangleRight />
@@ -257,6 +271,20 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                 <Link href={`/democracy/proposal/${post.proposalIndex}`}>
                   {`Proposal #${post.proposalIndex}`}
                 </Link>
+                {post?.onchainData?.techCommMotions?.map(
+                  (techCommMotion, key) => (
+                    <div key={key}>
+                      <TriangleRight />
+                      <Link
+                        href={`/techcomm/proposal/${getTechCommId(
+                          techCommMotion
+                        )}`}
+                      >
+                        {`Tech. Comm. #${shortTechId(techCommMotion)}`}
+                      </Link>
+                    </div>
+                  )
+                )}
                 <div>
                   <TriangleRight />
                   <div>{`Referenda #${post?.referendumIndex}`}</div>

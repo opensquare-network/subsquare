@@ -234,6 +234,7 @@ async function getPostById(postId) {
       proposalIndex: chainReferendum.publicProposalIndex,
     });
     chainReferendum.authors = chainPublicProposal?.authors;
+    chainReferendum.techCommMotions = chainPublicProposal?.techCommMotions;
 
     const preImageCol = await getPreImageCollection();
     const preImage = await preImageCol.findOne({
