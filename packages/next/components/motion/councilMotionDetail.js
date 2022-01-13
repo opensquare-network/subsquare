@@ -257,33 +257,34 @@ export default withLoginUserRedux(
     return (
       <div>
         <Wrapper>
-          {!isEdit && <div>
-            <TitleWrapper>
-              {motion?.motionIndex !== undefined && (
-                <Index>{`#${motion.motionIndex}`}</Index>
-              )}
-              <Title>{post?.title}</Title>
-            </TitleWrapper>
-            <FlexWrapper>
-              <DividerWrapper>
-                <User
-                  user={motion?.author}
-                  add={motion.proposer}
-                  chain={chain}
-                  fontSize={12}
-                />
-                {motion.isTreasury && <SectionTag name={"Treasury"} />}
-                {motion?.onchainData?.externalProposals?.length > 0 && (
-                  <SectionTag name={"Democracy"} />
+          {!isEdit && (
+            <div>
+              <TitleWrapper>
+                {motion?.motionIndex !== undefined && (
+                  <Index>{`#${motion.motionIndex}`}</Index>
                 )}
-                {postUpdateTime && (
-                  <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
-                )}
-              </DividerWrapper>
-              {motion.state && <Tag name={motion.state} />}
-            </FlexWrapper>
-          </div>
-          }
+                <Title>{post?.title}</Title>
+              </TitleWrapper>
+              <FlexWrapper>
+                <DividerWrapper>
+                  <User
+                    user={motion?.author}
+                    add={motion.proposer}
+                    chain={chain}
+                    fontSize={12}
+                  />
+                  {motion.isTreasury && <SectionTag name={"Treasury"} />}
+                  {motion?.onchainData?.externalProposals?.length > 0 && (
+                    <SectionTag name={"Democracy"} />
+                  )}
+                  {postUpdateTime && (
+                    <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
+                  )}
+                </DividerWrapper>
+                {motion.state && <Tag name={motion.state} />}
+              </FlexWrapper>
+            </div>
+          )}
           <ArticleContent
             chain={chain}
             post={post}
