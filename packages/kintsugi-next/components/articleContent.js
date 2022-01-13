@@ -92,9 +92,10 @@ export default function ArticleContent({
   chain,
   onReply,
   type,
+  isEdit,
+  setIsEdit,
 }) {
   const dispatch = useDispatch();
-  const [isEdit, setIsEdit] = useState(false);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
   if (!post) {

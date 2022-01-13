@@ -169,6 +169,7 @@ export default function TechcommMotionDetail({
 }) {
   const node = getNode(chain);
   const [post, setPost] = useState(motion);
+  const [isEdit, setIsEdit] = useState(false);
   if (!node) {
     return null;
   }
@@ -250,28 +251,34 @@ export default function TechcommMotionDetail({
     <div>
       <Wrapper>
         <div>
-          <TitleWrapper>
-            {motion?.index !== undefined && <Index>{`#${motion.index}`}</Index>}
-            <Title>{post?.title}</Title>
-          </TitleWrapper>
-          <FlexWrapper>
-            <DividerWrapper>
-              <User
-                user={motion?.author}
-                add={motion.proposer}
-                chain={chain}
-                fontSize={12}
-              />
-              {motion.isTreasury && <SectionTag name={"Treasury"} />}
-              {motion?.onchainData?.externalProposals?.length > 0 && (
-                <SectionTag name={"Democracy"} />
+          {!isEdit && (
+            <TitleWrapper>
+              {motion?.index !== undefined && (
+                <Index>{`#${motion.index}`}</Index>
               )}
-              {postUpdateTime && (
-                <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
-              )}
-            </DividerWrapper>
-            {motion.state && <StatusWrapper>{motion.state}</StatusWrapper>}
-          </FlexWrapper>
+              <Title>{post?.title}</Title>
+            </TitleWrapper>
+          )}
+          {!isEdit && (
+            <FlexWrapper>
+              <DividerWrapper>
+                <User
+                  user={motion?.author}
+                  add={motion.proposer}
+                  chain={chain}
+                  fontSize={12}
+                />
+                {motion.isTreasury && <SectionTag name={"Treasury"} />}
+                {motion?.onchainData?.externalProposals?.length > 0 && (
+                  <SectionTag name={"Democracy"} />
+                )}
+                {postUpdateTime && (
+                  <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
+                )}
+              </DividerWrapper>
+              {motion.state && <StatusWrapper>{motion.state}</StatusWrapper>}
+            </FlexWrapper>
+          )}
           <ArticleContent
             chain={chain}
             post={post}
@@ -279,6 +286,8 @@ export default function TechcommMotionDetail({
             user={loginUser}
             onReply={onReply}
             type={type}
+            isEdit={isEdit}
+            setIsEdit={setIsEdit}
           />
         </div>
       </Wrapper>
