@@ -14,15 +14,14 @@ import User from "components/user";
 import { getNode, toPrecision } from "utils";
 import Link from "next/link";
 import Links from "components/timeline/links";
-import dayjs from "dayjs";
 import Timeline from "components/timeline";
-import { getTimelineStatus } from "utils";
 import KVList from "components/kvList";
 import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
+import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 import sortTimeline from "utils/timeline/sort";
 import { getMetaDesc } from "utils/viewfuncs";
 import SEO from "components/SEO";
@@ -57,18 +56,8 @@ const MetadataProposerWrapper = styled.div`
   }
 `;
 
-const DepositorsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-
-  > :not(:first-child) {
-    margin-top: 4px;
-  }
-`;
-
 export default withLoginUserRedux(
-  ({ loginUser, detail, comments, chain, siteUrl }) => {
+  ({ loginUser, detail, referendum, comments, chain, siteUrl }) => {
     const postId = detail._id;
 
     const editorWrapperRef = useRef(null);
@@ -85,36 +74,10 @@ export default withLoginUserRedux(
     const decimals = node.decimals;
     const symbol = node.symbol;
 
-    const getTimelineData = (args, method, chain) => {
-      switch (method) {
-        case "Proposed":
-          return {
-            Index: `#${args.index}`,
-          };
-        case "Tabled":
-          return {
-            "Referenda Index": `#${args.referendumIndex}`,
-            Deposit: `${toPrecision(args.deposit ?? 0, decimals)} ${symbol}`,
-            Depositors: (
-              <DepositorsWrapper>
-                {(args.depositors || []).map((item, index) => (
-                  <User add={item} key={index} chain={chain} />
-                ))}
-              </DepositorsWrapper>
-            ),
-          };
-      }
-      return args;
-    };
-
-    const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
-      return {
-        time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-        indexer: item.indexer,
-        status: getTimelineStatus("proposal", item.method ?? item.name),
-        data: getTimelineData(item.args, item.method ?? item.name, chain),
-      };
-    });
+    const completeTimeline = (detail?.onchainData?.timeline || []).concat(
+      referendum?.onchainData?.timeline || []
+    );
+    const timelineData = getDemocracyTimelineData(completeTimeline, chain);
     sortTimeline(timelineData);
 
     const users = getMentionList(comments);
@@ -230,6 +193,14 @@ export const getServerSideProps = withLoginUser(async (context) => {
     to404(context);
   }
 
+  let referendum = null;
+  if ((detail.referendumIndex ?? null) !== null) {
+    const result = await nextApi.fetch(
+      `democracy/referendums/${detail.referendumIndex}`
+    );
+    referendum = result.result;
+  }
+
   const { result: comments } = await nextApi.fetch(
     `democracy/proposals/${detail._id}/comments`,
     {
@@ -241,6 +212,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       detail,
+      referendum,
       comments: comments ?? EmptyList,
       chain,
       siteUrl: process.env.SITE_URL,
