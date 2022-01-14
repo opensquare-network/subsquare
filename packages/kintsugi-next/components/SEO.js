@@ -11,7 +11,9 @@ const imageMap = new Map([
 
 export default function SEO({ title, desc, chain, siteUrl }) {
   const route = useRouter();
-  const endpoint = process.env.NEXT_PUBLIC_PREVIEW_IMG_ENDPOINT;
+  const endpoint =
+    process.env.NEXT_PUBLIC_PREVIEW_IMG_ENDPOINT ||
+    "https://ipfs.fleek.co/ipfs";
   const images = [
     {
       url: `${endpoint}/${imageMap.get(chain)}`,
