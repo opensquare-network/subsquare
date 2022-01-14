@@ -182,6 +182,16 @@ export const nodes = [
   //   decimals: 12,
   //   hasElections: true,
   // },
+  {
+    value: "kintsugi",
+    name: "Kintsugi",
+    icon: "kintsugi.png",
+    identity: "kusama",
+    symbol: "KINT",
+    voteSymbol: "vKINT",
+    decimals: 12,
+    hasElections: false,
+  },
 ];
 
 export const accountMenu = [
