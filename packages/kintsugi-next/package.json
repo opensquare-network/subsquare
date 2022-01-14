@@ -6,7 +6,8 @@
     "dev": "node server.js",
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
-    "lint": "next lint"
+    "lint": "next lint",
+    "timeupdater": "pm2 start ecosystem.config.js --only subsquare-time-updater-kintsugi --env production"
   },
   "dependencies": {
     "@alicloud/pop-core": "^1.7.10",
