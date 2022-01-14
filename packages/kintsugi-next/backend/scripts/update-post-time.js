@@ -2,7 +2,10 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const { getDemocracyCollection } = require("../mongo/business");
-const { getDb: getChainDb } = require("../mongo/chain");
+const {
+  getDb: getChainDb,
+  getTechCommMotionCollection: getChainTechCommMotionCollection,
+} = require("../mongo/chain");
 
 async function updatePublicProposal() {
   const chainDb = await getChainDb();
@@ -14,7 +17,7 @@ async function updatePublicProposal() {
     })
     .toArray();
 
-  await Promise.all([
+  const [publicProposals] = await Promise.all([
     chainDb.lookupOne({
       from: "democracyPublicProposal",
       for: items,
@@ -31,6 +34,21 @@ async function updatePublicProposal() {
     }),
   ]);
 
+  const chainTechCommMotionsCol = await getChainTechCommMotionCollection();
+  for (const proposal of publicProposals) {
+    const techCommMotions = await chainTechCommMotionsCol
+      .find({
+        publicProposals: {
+          $elemMatch: {
+            proposalIndex: proposal.proposalIndex,
+          },
+        },
+      })
+      .toArray();
+
+    proposal.techCommMotions = techCommMotions;
+  }
+
   if (items.length > 0) {
     const bulk = col.initializeUnorderedBulkOp();
     for (const item of items) {
@@ -40,6 +58,9 @@ async function updatePublicProposal() {
             ? []
             : [item.lastActivityAt.getTime()]),
           item.democracyPublicProposal?.state?.indexer?.blockTime || 0,
+          ...(item.democracyPublicProposal?.techCommMotions || []).map(
+            (m) => m.state?.indexer?.blockTime || 0
+          ),
           item.democracyReferendum?.state?.indexer?.blockTime || 0
         )
       );
