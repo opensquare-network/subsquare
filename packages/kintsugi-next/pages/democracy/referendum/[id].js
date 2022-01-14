@@ -13,14 +13,13 @@ import DetailItem from "components/detailItem";
 import KVList from "components/kvList";
 import User from "components/user";
 import Links from "components/timeline/links";
-import { getTimelineStatus } from "utils";
 import Vote from "components/referenda/vote";
-import dayjs from "dayjs";
 import Timeline from "components/timeline";
 import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";
+import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 import { TYPE_DEMOCRACY_REFERENDUM } from "utils/viewConstants";
 import { useApi, useIsMounted } from "utils/hooks";
 import { getMetaDesc } from "utils/viewfuncs";
@@ -47,7 +46,7 @@ const CommentsWrapper = styled.div`
 `;
 
 export default withLoginUserRedux(
-  ({ loginUser, detail, comments, chain, siteUrl }) => {
+  ({ loginUser, detail, publicProposal, comments, chain, siteUrl }) => {
     const api = useApi(chain);
     const editorWrapperRef = useRef(null);
     const [quillRef, setQuillRef] = useState(null);
@@ -86,32 +85,10 @@ export default withLoginUserRedux(
       focusEditor
     );
 
-    const getTimelineData = (args, method) => {
-      switch (method) {
-        case "Executed":
-          const rawResult = args.result;
-          let result;
-          if (typeof rawResult === "boolean") {
-            result = rawResult;
-          } else if (typeof args.result === "object") {
-            result = Object.keys(rawResult)[0];
-          } else {
-            result = JSON.stringify(rawResult);
-          }
-
-          return { result };
-      }
-      return args;
-    };
-
-    const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
-      return {
-        time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-        indexer: item.indexer,
-        status: getTimelineStatus("proposal", item.method ?? item.name),
-        data: getTimelineData(item.args, item.method ?? item.name),
-      };
-    });
+    const completeTimeline = (
+      publicProposal?.onchainData?.timeline || []
+    ).concat(detail?.onchainData?.timeline || []);
+    const timelineData = getDemocracyTimelineData(completeTimeline, chain);
 
     const metadata = [
       [
@@ -214,6 +191,14 @@ export const getServerSideProps = withLoginUser(async (context) => {
     to404(context);
   }
 
+  let publicProposal = null;
+  if ((detail.proposalIndex ?? null) !== null) {
+    const result = await nextApi.fetch(
+      `democracy/proposals/${detail.proposalIndex}`
+    );
+    publicProposal = result.result;
+  }
+
   const postId = detail?._id;
 
   const { result: comments } = await nextApi.fetch(
@@ -227,6 +212,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       detail: detail ?? {},
+      publicProposal,
       comments: comments ?? EmptyList,
       chain,
       siteUrl: process.env.SITE_URL,
