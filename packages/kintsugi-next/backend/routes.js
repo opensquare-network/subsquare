@@ -15,6 +15,7 @@ const chainFeatureRouters = [
 const commonFeatureRouters = [
   require("./features/auth/routes"),
   require("./features/users/routes"),
+  require("./features/inspect/routes"),
 ];
 
 module.exports = (app) => {
