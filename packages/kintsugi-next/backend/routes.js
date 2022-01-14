@@ -10,12 +10,12 @@ const chainFeatureRouters = [
   require("./features/tech-comm/motions/routes"),
   require("./features/comments/routes"),
   require("./features/overview/routes"),
+  require("./features/inspect/routes"),
 ];
 
 const commonFeatureRouters = [
   require("./features/auth/routes"),
   require("./features/users/routes"),
-  require("./features/inspect/routes"),
 ];
 
 module.exports = (app) => {
