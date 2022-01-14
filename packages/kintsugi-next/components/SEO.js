@@ -1,14 +1,6 @@
 import { useRouter } from "next/router";
 import NextSeo from "components/nextSeo";
 
-const imageMap = new Map([
-  ["kabocha", "bafybeibind6xq3c3xuu2moy2jr4bmoaodjbyhdgfnrnfo7hkpvotyrhssi"],
-  ["acala", "bafybeiafirhri4nsnvxm6usej6fcfyrz4hty5jikupag7fufsniamnyauy"],
-  ["bifrost", "bafybeibu7lmjymi5x6gjixdawmc4rjufruc6qwazailfnpzpoaqtuq6khe"],
-  ["karura", "bafybeiaoq7r32qsnpjqcey3x5hxfikbq3artjzi32he7dkretvesqgf3ny"],
-  ["khala", "bafybeifo4hsd3ue5ivsbcrb77fp2uvglxyc2royqvg52eo5eggnppdjxp4"],
-]);
-
 export default function SEO({ title, desc, chain, siteUrl }) {
   const route = useRouter();
   const endpoint =
@@ -16,7 +8,7 @@ export default function SEO({ title, desc, chain, siteUrl }) {
     "https://ipfs.fleek.co/ipfs";
   const images = [
     {
-      url: `${endpoint}/${imageMap.get(chain)}`,
+      url: `${endpoint}/bafybeid66326gcwrriitsffgrhljk4i7uf54am25arkqjz4j6o3gfwyime`,
       width: 1200,
       height: 628,
     },
