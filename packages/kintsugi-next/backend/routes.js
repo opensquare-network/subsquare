@@ -10,6 +10,7 @@ const chainFeatureRouters = [
   require("./features/tech-comm/motions/routes"),
   require("./features/comments/routes"),
   require("./features/overview/routes"),
+  require("./features/inspect/routes"),
 ];
 
 const commonFeatureRouters = [
