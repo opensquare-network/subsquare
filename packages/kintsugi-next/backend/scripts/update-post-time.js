@@ -1,58 +1,8 @@
 const dotenv = require("dotenv");
 dotenv.config();
 
-const {
-  getTreasuryProposalCollection,
-  getDemocracyCollection,
-} = require("../mongo/business");
-const {
-  getDb: getChainDb,
-} = require("../mongo/chain");
-
-async function updateTreasuryProposal() {
-  const chainDb = await getChainDb();
-
-  const col = await getTreasuryProposalCollection();
-  const items = await col.find({}).toArray();
-  const onchainDatas = await chainDb.lookupOne({
-    from: "treasuryProposal",
-    for: items,
-    as: "onchainData",
-    localField: "proposalIndex",
-    foreignField: "proposalIndex",
-  });
-
-  await chainDb.lookupMany({
-    from: "motion",
-    for: onchainDatas,
-    as: "motions",
-    localField: "proposalIndex",
-    foreignField: "treasuryProposals.index",
-  });
-
-  if (items.length > 0) {
-    const bulk = col.initializeUnorderedBulkOp();
-    for (const item of items) {
-      const lastActivityAt = new Date(
-        Math.max(
-          ...(item.lastActivityAt.getTime() === item.createdAt.getTime()
-            ? []
-            : [item.lastActivityAt.getTime()]),
-          item.onchainData?.state?.indexer?.blockTime || 0,
-          ...(item.onchainData?.motions || []).map(
-            (m) => m.state?.indexer?.blockTime || 0
-          )
-        )
-      );
-      bulk.find({ proposalIndex: item.proposalIndex }).updateOne({
-        $set: {
-          lastActivityAt,
-        },
-      });
-    }
-    await bulk.execute();
-  }
-}
+const { getDemocracyCollection } = require("../mongo/business");
+const { getDb: getChainDb } = require("../mongo/chain");
 
 async function updatePublicProposal() {
   const chainDb = await getChainDb();
@@ -105,7 +55,6 @@ async function updatePublicProposal() {
 
 async function main() {
   try {
-    await updateTreasuryProposal();
     await updatePublicProposal();
 
     console.log(`Last run at`, new Date());
