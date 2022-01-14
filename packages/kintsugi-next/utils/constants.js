@@ -121,6 +121,15 @@ export const nodes = [
     hasElections: false,
   },
   {
+    value: "acala",
+    name: "Acala",
+    icon: "acala.svg",
+    identity: "polkadot",
+    symbol: "ACA",
+    decimals: 12,
+    hasElections: false,
+  },
+  {
     value: "khala",
     name: "Khala",
     icon: "khala.svg",
@@ -134,6 +143,10 @@ export const nodes = [
     name: "Kabocha",
     icon: "kabocha.svg",
     hideHeight: true,
+    // identity: "kabocha",
+    // symbol: "",
+    // decimals: 0,
+    // hasElections: true,
   },
   {
     value: "bifrost",
