@@ -160,6 +160,7 @@ export const nodes = [
     icon: "kintsugi.png",
     identity: "kusama",
     symbol: "KINT",
+    voteSymbol: "vKINT",
     decimals: 12,
     hasElections: false,
   },

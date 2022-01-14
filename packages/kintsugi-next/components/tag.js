@@ -53,6 +53,7 @@ const getTagColor = (name) => {
     case "Approved":
     case "ApproveVoting":
     case "FastTracked":
+    case "FastTrack":
       return POSITIVE;
     case "Rejected":
     case "Retracted":

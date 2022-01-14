@@ -131,7 +131,7 @@ function Vote({ referendumInfo, referendumStatus, chain }) {
     return null;
   }
   const decimals = node.decimals;
-  const symbol = node.symbol;
+  const symbol = node.voteSymbol ?? node.symbol;
 
   const nAyes = toPrecision(referendumStatus?.tally?.ayes ?? 0, decimals);
   const nNays = toPrecision(referendumStatus?.tally?.nays ?? 0, decimals);
