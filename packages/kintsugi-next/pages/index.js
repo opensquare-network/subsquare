@@ -11,6 +11,7 @@ import {
   toTechCommMotionListItem,
 } from "utils/viewfuncs";
 import SEO from "components/SEO";
+import { isSafari, toSafariError } from "../utils/serverSideUtil";
 
 export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
   let overviewData = [
@@ -66,7 +67,7 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-
+  isSafari(context);
   const { result } = await nextApi.fetch(`overview`);
 
   return {

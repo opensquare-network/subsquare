@@ -7,6 +7,7 @@ import { EmptyList } from "utils/constants";
 import Layout from "components/layout";
 import { toReferendaListItem } from "utils/viewfuncs";
 import SEO from "components/SEO";
+import { isSafari } from "../../utils/serverSideUtil";
 
 export default withLoginUserRedux(({ loginUser, posts, chain, siteUrl }) => {
   const items = (posts.items || []).map((item) =>
@@ -42,7 +43,7 @@ export default withLoginUserRedux(({ loginUser, posts, chain, siteUrl }) => {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-
+  isSafari(context);
   const { page, page_size: pageSize } = context.query;
 
   const [{ result: posts }] = await Promise.all([

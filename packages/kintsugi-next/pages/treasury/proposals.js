@@ -8,6 +8,7 @@ import Layout from "components/layout";
 import { toTreasuryProposalListItem } from "utils/viewfuncs";
 import SEO from "components/SEO";
 import Summary from "components/summary";
+import { isSafari } from "../../utils/serverSideUtil";
 
 export default withLoginUserRedux(
   ({ loginUser, proposals, chain, siteUrl }) => {
@@ -46,7 +47,7 @@ export default withLoginUserRedux(
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-
+  isSafari(context);
   const { page, page_size: pageSize } = context.query;
 
   const [{ result: proposals }] = await Promise.all([

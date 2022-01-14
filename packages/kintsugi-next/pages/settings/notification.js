@@ -14,6 +14,7 @@ import { fetchUserProfile } from "store/reducers/userSlice";
 import Layout from "components/layout";
 import { shadow_100 } from "styles/componentCss";
 import NextHead from "../../components/nextHead";
+import { isSafari } from "../../utils/serverSideUtil";
 
 const Wrapper = styled.div`
   max-width: 848px;
@@ -157,7 +158,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-
+  isSafari(context);
   return {
     props: {
       chain,
