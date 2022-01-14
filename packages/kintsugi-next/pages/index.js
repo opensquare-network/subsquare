@@ -5,16 +5,10 @@ import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import Layout from "components/layout";
 import {
-  toCouncilMotionListItem,
   toDiscussionListItem,
-  toExternalProposalListItem,
-  toFinancialMotionsListItem,
   toPublicProposalListItem,
   toReferendaListItem,
   toTechCommMotionListItem,
-  toTipListItem,
-  toTreasuryBountyListItem,
-  toTreasuryProposalListItem,
 } from "utils/viewfuncs";
 import SEO from "components/SEO";
 
@@ -27,35 +21,9 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
       ),
     },
     {
-      category: "Council Motions",
-      items: (overview?.council?.motions ?? []).map((item) =>
-        toCouncilMotionListItem(chain, item)
-      ),
-    },
-    {
       category: "Tech. Comm. Proposals",
       items: (overview?.techComm?.motions ?? []).map((item) =>
         toTechCommMotionListItem(chain, item)
-      ),
-    },
-    chain === "karura"
-      ? {
-          category: "Financial Council Motions",
-          items: (overview?.financialCouncil?.motions ?? []).map((item) =>
-            toFinancialMotionsListItem(chain, item)
-          ),
-        }
-      : null,
-    {
-      category: "Treasury Proposals",
-      items: (overview?.treasury?.proposals ?? []).map((item) =>
-        toTreasuryProposalListItem(chain, item)
-      ),
-    },
-    {
-      category: "Treasury Bounties",
-      items: (overview?.treasury?.bounties ?? []).map((item) =>
-        toTreasuryBountyListItem(chain, item)
       ),
     },
     {
@@ -65,35 +33,12 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
       ),
     },
     {
-      category: "Tips",
-      items: (overview?.treasury?.tips ?? []).map((item) =>
-        toTipListItem(chain, item)
-      ),
-    },
-    {
       category: "Democracy Public Proposals",
       items: (overview?.democracy?.proposals ?? []).map((item) =>
         toPublicProposalListItem(chain, item)
       ),
     },
-    {
-      category: "Democracy External Proposals",
-      items: (overview?.democracy?.externals ?? []).map((item) =>
-        toExternalProposalListItem(chain, item)
-      ),
-    },
   ];
-
-  if (chain === "kabocha") {
-    overviewData = [
-      {
-        category: "Discussions",
-        items: (overview?.discussions ?? []).map((item) =>
-          toDiscussionListItem(chain, item)
-        ),
-      },
-    ];
-  }
 
   // Sort the items with length = 0 to the end of the list
   overviewData.sort((a, b) =>

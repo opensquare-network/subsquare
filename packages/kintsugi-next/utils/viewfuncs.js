@@ -74,7 +74,7 @@ export const toTechCommMotionListItem = (chain, item) => ({
   status: item?.state ?? "Unknown",
   detailLink: `/techcomm/proposal/${getTechCommMotionId(item)}`,
   time: getPostUpdatedAt(item),
-  isDemocracy: item?.onchainData?.externalProposals?.length > 0,
+  isDemocracy: item?.onchainData?.publicProposals?.length > 0,
 });
 
 export const toTreasuryProposalListItem = (chain, item) => ({
