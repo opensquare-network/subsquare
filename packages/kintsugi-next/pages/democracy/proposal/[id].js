@@ -12,6 +12,7 @@ import { useState, useRef } from "react";
 import Layout from "components/layout";
 import User from "components/user";
 import { getNode, toPrecision } from "utils";
+import Link from "next/link";
 import Links from "components/timeline/links";
 import dayjs from "dayjs";
 import Timeline from "components/timeline";
@@ -156,6 +157,16 @@ export default withLoginUserRedux(
       ]);
     }
 
+    const referendumData = [];
+    if ((detail?.referendumIndex ?? null) !== null) {
+      referendumData.push([
+        "Link to",
+        <Link
+          href={`/democracy/referendum/${detail.referendumIndex}`}
+        >{`Democracy Referenda #${detail.referendumIndex}`}</Link>,
+      ]);
+    }
+
     detail.status = detail.onchainData?.state?.state;
 
     const desc = getMetaDesc(detail, "Proposal");
@@ -176,6 +187,9 @@ export default withLoginUserRedux(
             onReply={focusEditor}
             type={TYPE_DEMOCRACY_PROPOSAL}
           />
+          {referendumData.length > 0 && (
+            <KVList title="Business" data={referendumData} />
+          )}
           <KVList title="Metadata" data={metadata} />
           <Timeline data={timelineData} chain={chain} />
           <CommentsWrapper>
