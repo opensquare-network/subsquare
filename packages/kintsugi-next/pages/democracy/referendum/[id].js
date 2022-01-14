@@ -18,7 +18,7 @@ import Timeline from "components/timeline";
 import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
-import { to404 } from "utils/serverSideUtil";
+import { isSafari, to404 } from "utils/serverSideUtil";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 import { TYPE_DEMOCRACY_REFERENDUM } from "utils/viewConstants";
 import { useApi, useIsMounted } from "utils/hooks";
@@ -180,7 +180,7 @@ export default withLoginUserRedux(
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-
+  isSafari(context);
   const { id, page, page_size: pageSize } = context.query;
 
   const [{ result: detail }] = await Promise.all([

@@ -6,6 +6,7 @@ import Layout from "components/layout";
 import { useApi, useCall } from "utils/hooks";
 import { useEffect, useState } from "react";
 import SEO from "components/SEO";
+import { isSafari } from "../../utils/serverSideUtil";
 
 export default withLoginUserRedux(({ loginUser, chain, siteUrl }) => {
   const [data, setData] = useState([]);
@@ -43,7 +44,7 @@ export default withLoginUserRedux(({ loginUser, chain, siteUrl }) => {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-
+  isSafari(context);
   return {
     props: {
       chain,

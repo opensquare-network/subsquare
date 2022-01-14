@@ -9,6 +9,7 @@ import PlusIcon from "public/imgs/icons/plusInCircle.svg";
 import Layout from "components/layout";
 import { toDiscussionListItem } from "utils/viewfuncs";
 import SEO from "components/SEO";
+import { isSafari } from "../utils/serverSideUtil";
 
 const Create = styled.a`
   display: flex;
@@ -64,7 +65,7 @@ export default withLoginUserRedux(({ loginUser, posts, chain, siteUrl }) => {
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
   const { page, page_size: pageSize } = context.query;
-
+  isSafari(context);
   const [{ result: posts }] = await Promise.all([
     nextApi.fetch(`posts`, { page: page ?? 1, pageSize: pageSize ?? 50 }),
   ]);

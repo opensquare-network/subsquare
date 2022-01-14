@@ -13,7 +13,7 @@ import { useRef, useState } from "react";
 import Comments from "components/comment";
 import Input from "components/comment/input";
 import { shadow_100 } from "styles/componentCss";
-import { to404 } from "utils/serverSideUtil";
+import { isSafari, to404 } from "utils/serverSideUtil";
 import { EmptyList } from "utils/constants";
 
 const Wrapper = styled.div`
@@ -100,7 +100,7 @@ export default withLoginUserRedux(
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-
+  isSafari(context);
   const { id, page, page_size: pageSize } = context.query;
 
   const [{ result: motion }] = await Promise.all([
