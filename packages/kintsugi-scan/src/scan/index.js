@@ -51,7 +51,6 @@ async function oneStepScan(startHeight) {
       await sleep(1000);
       logger.error(`Error with block scan ${item.height}`, e);
       console.error(`Error with block scan ${item.height}`, e);
-      throw e;
     }
 
     if (item.height % 100000 === 0) {
