@@ -40,17 +40,6 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
     },
   ];
 
-  if (chain === "kabocha") {
-    overviewData = [
-      {
-        category: "Discussions",
-        items: (overview?.discussions ?? []).map((item) =>
-          toDiscussionListItem(chain, item)
-        ),
-      },
-    ];
-  }
-
   // Sort the items with length = 0 to the end of the list
   overviewData.sort((a, b) =>
     a?.items?.length > 0 && b?.items?.length > 0
