@@ -196,6 +196,7 @@ export const mainMenu = [
   },
   {
     name: "TREASURY",
+    excludeToChains: ["kintsugi"],
     items: [
       {
         value: "proposals",
