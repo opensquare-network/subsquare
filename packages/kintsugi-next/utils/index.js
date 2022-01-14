@@ -110,6 +110,12 @@ export function decimalPlaces(value, n) {
 export function getTimelineStatus(type, method) {
   const defaultColor = "#0F6FFF";
   switch (type) {
+    case "proposal":
+      switch (method) {
+        case "FastTrack":
+          return { value: "FastTracked", color: "#4CAF50" };
+      }
+      break;
     case "bounty":
       switch (method) {
         case "proposeBounty":

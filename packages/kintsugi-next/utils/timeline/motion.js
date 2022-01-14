@@ -36,12 +36,17 @@ export function createMotionTimelineData(motion = {}) {
         };
       }
       default: {
+        const methodMap = new Map([
+          ["propose", "Proposed"],
+          ["FastTrack", "FastTracked"],
+        ]);
+        const method = methodMap.get(item.method) ?? item.method;
         return {
           indexer: item.indexer,
           hash: motion.hash,
           time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-          status: { value: item.method, color: "#6848FF" },
-          method: item.method,
+          status: { value: method, color: "#6848FF" },
+          method,
         };
       }
     }
