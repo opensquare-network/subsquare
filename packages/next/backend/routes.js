@@ -15,6 +15,7 @@ const chainFeatureRouters = [
   require("./features/financial-motions/routes"),
   require("./features/comments/routes"),
   require("./features/overview/routes"),
+  require("./features/inspect/routes"),
 ];
 
 const commonFeatureRouters = [
