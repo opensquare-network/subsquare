@@ -69,6 +69,9 @@ const TipperItem = styled.div`
   font-size: 12px;
   line-height: 100%;
   color: #506176;
+  > :last-child {
+    white-space: nowrap;
+  }
 `;
 
 const LoadingDiv = styled.div`
@@ -85,8 +88,8 @@ export default function Tipper({
   tips = [],
   councilTippers = [],
   tipHash,
-  updateTips = ()=>{},
-  updateTimeline = ()=>{},
+  updateTips = () => {},
+  updateTimeline = () => {},
 }) {
   const [showPopup, setShowPopup] = useState(false);
 
@@ -129,11 +132,7 @@ export default function Tipper({
   let action = null;
 
   if (tipIsFinal) {
-    action = (
-      <Description>
-        This tip has been cloesd.
-      </Description>
-    );
+    action = <Description>This tip has been cloesd.</Description>;
   } else if (userIsTipper) {
     action = (
       <Button secondary isFill onClick={() => setShowPopup(true)}>
@@ -158,7 +157,10 @@ export default function Tipper({
         </Content>
         {!loading && action}
       </Wrapper>
-      {showPopup &&
+      <Button secondary isFill onClick={() => setShowPopup(true)}>
+        Endorse
+      </Button>
+      {showPopup && (
         <Popup
           chain={chain}
           councilTippers={councilTippers}
@@ -166,7 +168,8 @@ export default function Tipper({
           onClose={() => setShowPopup(false)}
           onInBlock={updateTips}
           onFinalized={updateTimeline}
-        />}
+        />
+      )}
     </>
   );
 }

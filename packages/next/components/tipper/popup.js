@@ -23,7 +23,7 @@ import Button from "components/button";
 import { addToast } from "store/reducers/toastSlice";
 
 import TipInput from "./tipInput";
-import { getNode } from "utils";
+import { getNode, toPrecision } from "utils";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -73,6 +73,11 @@ const Info = styled.div`
     `}
 `;
 
+const LabelWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const Label = styled.div`
   font-weight: bold;
   font-size: 12px;
@@ -85,27 +90,47 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-export default function Popup({ chain, councilTippers, tipHash, onClose, onInBlock, onFinalized }) {
+const BalanceWrapper = styled.div`
+  display: flex;
+  font-size: 12px;
+  line-height: 100%;
+  color: #506176;
+  > :nth-child(2) {
+    color: #1e2134;
+    font-weight: bold;
+    margin-left: 8px;
+  }
+`;
+
+const balanceMap = new Map();
+
+export default function Popup({
+  chain,
+  councilTippers,
+  tipHash,
+  onClose,
+  onInBlock,
+  onFinalized,
+}) {
   const dispatch = useDispatch();
   const ref = useRef();
   useOnClickOutside(ref, () => onClose());
   const isMounted = useIsMounted();
   const [accounts, setAccounts] = useState([]);
-  const [hasExtension, setHasExtension] = useState(true);
   const [selectedAccount, setSelectedAccount] = useState(null);
-  const [web3Error, setWeb3Error] = useState();
   const [inputTipValue, setInputTipValue] = useState();
   const [tipping, setTipping] = useState(false);
+  const [balance, setBalance] = useState();
+  const node = getNode(chain);
 
-  const selectedAccountIsTipper = councilTippers.includes(selectedAccount?.[`${chain}Address`]);
+  const selectedAccountIsTipper = councilTippers.includes(
+    selectedAccount?.[`${chain}Address`]
+  );
 
   useEffect(() => {
     (async () => {
       await web3Enable("subsquare");
       if (!isWeb3Injected) {
-        if (isMounted.current) {
-          setHasExtension(false);
-        }
         return;
       }
       const extensionAccounts = await web3Accounts();
@@ -135,25 +160,40 @@ export default function Popup({ chain, councilTippers, tipHash, onClose, onInBlo
     if (accounts && accounts.length > 0 && !selectedAccount) {
       setSelectedAccount(accounts[0]);
     }
-    setWeb3Error();
   }, [chain, accounts, selectedAccount]);
 
   const api = useApi(chain);
 
   useEffect(() => {
     if (api && selectedAccount) {
-      web3FromAddress(selectedAccount.address).then(injector => {
-        api.setSigner(injector.signer);
+      web3FromAddress(selectedAccount.address).then((injector) => {
+        if (isMounted.current) {
+          api.setSigner(injector.signer);
+        }
       });
     }
-  }, [api, selectedAccount]);
+  }, [api, selectedAccount, isMounted]);
+
+  useEffect(() => {
+    if (balanceMap.has(selectedAccount?.address)) {
+      setBalance(balanceMap.get(selectedAccount?.address));
+      return;
+    }
+    if (api && selectedAccount) {
+      api.query.system.account(selectedAccount.address).then((result) => {
+        const free = toPrecision(result.data.free, node.decimals);
+        setBalance(free);
+        balanceMap.set(selectedAccount.address, free);
+      });
+    }
+  }, [api, selectedAccount, node.decimals]);
 
   const doEndorse = async () => {
     if (!api) {
       dispatch(
         addToast({
           type: "error",
-          message: "Chain network is not connected yet"
+          message: "Chain network is not connected yet",
         })
       );
       return;
@@ -167,7 +207,7 @@ export default function Popup({ chain, councilTippers, tipHash, onClose, onInBlo
       dispatch(
         addToast({
           type: "error",
-          message: "Please select an account"
+          message: "Please select an account",
         })
       );
       return;
@@ -177,24 +217,25 @@ export default function Popup({ chain, councilTippers, tipHash, onClose, onInBlo
       dispatch(
         addToast({
           type: "error",
-          message: "Please input tip value"
+          message: "Please input tip value",
         })
       );
       return;
     }
 
-    const node = getNode(chain);
     if (!node) {
       return;
     }
     const decimals = node.decimals;
 
-    const bnTipValue = new BigNumber(inputTipValue).multipliedBy(Math.pow(10, decimals));
+    const bnTipValue = new BigNumber(inputTipValue).multipliedBy(
+      Math.pow(10, decimals)
+    );
     if (bnTipValue.lte(0)) {
       dispatch(
         addToast({
           type: "error",
-          message: "Invalid tip value"
+          message: "Invalid tip value",
         })
       );
       return;
@@ -204,7 +245,7 @@ export default function Popup({ chain, councilTippers, tipHash, onClose, onInBlo
       dispatch(
         addToast({
           type: "error",
-          message: "Invalid tip value"
+          message: "Invalid tip value",
         })
       );
       return;
@@ -222,7 +263,6 @@ export default function Popup({ chain, councilTippers, tipHash, onClose, onInBlo
             onFinalized(tipperAddress);
             unsub();
           }
-
           if (status.isInBlock) {
             // Transaction went through
             onInBlock(tipperAddress);
@@ -235,7 +275,7 @@ export default function Popup({ chain, councilTippers, tipHash, onClose, onInBlo
         dispatch(
           addToast({
             type: "error",
-            message: e.message
+            message: e.message,
           })
         );
       }
@@ -250,9 +290,19 @@ export default function Popup({ chain, councilTippers, tipHash, onClose, onInBlo
         <div>Tip</div>
         <img onClick={onClose} src="/imgs/icons/close.svg" alt="" />
       </TopWrapper>
-      <Info danger={!selectedAccountIsTipper}>Only council members can tip.</Info>
+      <Info danger={!selectedAccountIsTipper}>
+        Only council members can tip.
+      </Info>
       <div>
-        <Label>Address</Label>
+        <LabelWrapper>
+          <Label>Address</Label>
+          {balance && (
+            <BalanceWrapper>
+              <div>Balance</div>
+              <div>{balance}</div>
+            </BalanceWrapper>
+          )}
+        </LabelWrapper>
         <AddressSelect
           chain={chain}
           accounts={accounts}
@@ -264,15 +314,20 @@ export default function Popup({ chain, councilTippers, tipHash, onClose, onInBlo
       </div>
       <div>
         <Label>Tip Value</Label>
-        <TipInput value={inputTipValue} setValue={setInputTipValue} />
+        <TipInput
+          value={inputTipValue}
+          setValue={setInputTipValue}
+          symbol={node?.symbol}
+        />
       </div>
       <ButtonWrapper>
-        {(selectedAccountIsTipper && api && inputTipValue) ? (
-          <Button secondary isLoading={tipping} onClick={doEndorse}>Endorse</Button>
+        {selectedAccountIsTipper && api && inputTipValue ? (
+          <Button secondary isLoading={tipping} onClick={doEndorse}>
+            Endorse
+          </Button>
         ) : (
           <Button disabled>Endorse</Button>
         )}
-
       </ButtonWrapper>
     </Wrapper>
   );

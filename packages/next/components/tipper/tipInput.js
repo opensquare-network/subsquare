@@ -9,7 +9,6 @@ const Wrapper = styled.div`
 
 const Input = styled.input`
   all: unset;
-  /* display: block; */
   padding: 12px 16px;
   flex-grow: 1;
 `;
@@ -23,11 +22,16 @@ const Unit = styled.div`
   border-left: 1px solid #e0e4eb;
 `;
 
-export default function TipInput({ value, setValue = ()=>{} }) {
+export default function TipInput({ symbol, value, setValue = () => {} }) {
   return (
     <Wrapper>
-      <Input type="number" placeholder="0.00" value={value} onChange={(e) => setValue(e.target.value)} />
-      <Unit>PHA</Unit>
+      <Input
+        type="number"
+        placeholder="0.00"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <Unit>{symbol}</Unit>
     </Wrapper>
   );
 }
