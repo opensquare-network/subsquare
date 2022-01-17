@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { no_scroll_bar } from "../styles/componentCss";
 import Container from "./container";
-import Main from "./main";
+import Main from "next-common/components/main";
 import Footer from "./footer";
 
 const Wrapper = styled.div`
@@ -10,8 +10,6 @@ const Wrapper = styled.div`
   padding-left: 32px;
   padding-right: 32px;
   @media screen and (max-width: 768px) {
-    padding-left: 16px;
-    padding-right: 16px;
     padding: 0;
   }
   margin-top: 26px;

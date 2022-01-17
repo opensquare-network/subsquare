@@ -15,7 +15,7 @@ import { getNode, toPrecision } from "utils";
 import Link from "next/link";
 import Links from "components/timeline/links";
 import Timeline from "components/timeline";
-import KVList from "components/kvList";
+import KVList from "next-common/components/kvList";
 import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";

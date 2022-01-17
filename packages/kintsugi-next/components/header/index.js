@@ -51,7 +51,7 @@ const Right = styled(Flex)`
 `;
 
 const MenuButton = styled(Flex)`
-  display: none;
+  display: none !important;
   border: 1px solid #e0e4eb;
   border-radius: 4px;
   width: 38px;
@@ -59,7 +59,7 @@ const MenuButton = styled(Flex)`
   justify-content: center;
   cursor: pointer;
   @media screen and (max-width: 1024px) {
-    display: flex;
+    display: flex !important;
     margin-right: 12px;
   }
 `;
@@ -67,7 +67,7 @@ const MenuButton = styled(Flex)`
 const NetworkWrapper = styled.div``;
 
 const NodeButton = styled(Flex)`
-  display: none;
+  display: none !important;
   border: 1px solid #e0e4eb;
   border-radius: 4px;
   width: 38px;
@@ -75,7 +75,7 @@ const NodeButton = styled(Flex)`
   justify-content: center;
   cursor: pointer;
   @media screen and (max-width: 768px) {
-    display: flex;
+    display: flex !important;
   }
 `;
 

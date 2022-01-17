@@ -14,7 +14,7 @@ import { getTimelineStatus, getNode, toPrecision } from "utils";
 import Timeline from "components/timeline";
 import dayjs from "dayjs";
 import User from "components/user";
-import KVList from "components/kvList";
+import KVList from "next-common/components/kvList";
 import Links from "components/timeline/links";
 import ReasonLink from "components/reasonLink";
 import { TYPE_TREASURY_TIP } from "utils/viewConstants";
