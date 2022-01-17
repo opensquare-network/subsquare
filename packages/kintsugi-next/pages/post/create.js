@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Layout from "components/layout";
-import Back from "components/back";
+import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import Input from "components/input";
 import MarkdownEditor from "components/markdownEditor";

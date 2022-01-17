@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import Back from "components/back";
+import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import Layout from "components/layout";
