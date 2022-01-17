@@ -179,14 +179,17 @@ export default function Popup({
       setBalance(balanceMap.get(selectedAccount?.address));
       return;
     }
+    setBalance();
     if (api && selectedAccount) {
       api.query.system.account(selectedAccount.address).then((result) => {
-        const free = toPrecision(result.data.free, node.decimals);
-        setBalance(free);
-        balanceMap.set(selectedAccount.address, free);
+        if (isMounted.current) {
+          const free = toPrecision(result.data.free, node.decimals);
+          setBalance(free);
+          balanceMap.set(selectedAccount.address, free);
+        }
       });
     }
-  }, [api, selectedAccount, node.decimals]);
+  }, [api, selectedAccount, node.decimals, isMounted]);
 
   const doEndorse = async () => {
     if (!api) {
