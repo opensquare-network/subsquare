@@ -6,7 +6,7 @@ import {
   web3Accounts,
   web3Enable,
 } from "@polkadot/extension-dapp";
-import Button from "components/button";
+import Button from "next-common/components/button";
 import { useAuthPage, useIsMounted } from "utils/hooks";
 import { userSelector } from "store/reducers/userSlice";
 import {

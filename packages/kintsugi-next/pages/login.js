@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import dynamic from "next/dynamic";
 import Layout from "components/layout";
-import Button from "components/button";
+import Button from "next-common/components/button";
 import Input from "components/input";
 import { useForm } from "utils/hooks";
 import nextApi from "services/nextApi";

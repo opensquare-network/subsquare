@@ -1,6 +1,8 @@
+import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
-import Flex from "next-common/components/styled/flex";
+import Flex from "./styled/flex";
+
 const Wrapper = styled(Flex)`
   font-size: 16px;
   font-weight: bold;

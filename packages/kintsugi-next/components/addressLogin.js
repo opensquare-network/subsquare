@@ -9,7 +9,7 @@ import {
 import { useRouter } from "next/router";
 
 import AddressSelect from "components/addressSelect";
-import Button from "./button";
+import Button from "next-common/components/button";
 import { useIsMounted } from "utils/hooks";
 import DownloadExtension from "components/downloadExtension";
 import {

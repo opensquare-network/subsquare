@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import Back from "components/back";
+import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import Comments from "components/comment";
 import { withLoginUser, withLoginUserRedux } from "lib";

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState, useRef, useEffect, Fragment } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import Button from "components/button";
+import Button from "next-common/components/button";
 import { accountMenu } from "next-common/utils/constants";
 import { useOnClickOutside, useWindowSize } from "utils/hooks";
 import { logout } from "store/reducers/userSlice";
