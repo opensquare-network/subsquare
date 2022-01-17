@@ -4,13 +4,12 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import dynamic from "next/dynamic";
-
 import Layout from "components/layout";
 import Button from "components/button";
 import Input from "components/input";
 import { useForm } from "utils/hooks";
 import nextApi from "services/nextApi";
-import ErrorText from "components/errorText";
+import ErrorText from "next-common/components/ErrorText";
 import { setUser } from "store/reducers/userSlice";
 import { useAuthPage } from "utils/hooks";
 import { withLoginUser, withLoginUserRedux } from "lib";

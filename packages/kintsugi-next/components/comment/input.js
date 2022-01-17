@@ -6,7 +6,7 @@ import Toggle from "components/toggle";
 import Button from "components/button";
 import PreviewMD from "components/create/previewMD";
 import nextApi from "services/nextApi";
-import ErrorText from "components/errorText";
+import ErrorText from "next-common/components/ErrorText";
 import QuillEditor from "../editor/quillEditor";
 import HtmlRender from "../post/htmlRender";
 import InsertContentsModal from "../editor/modal";

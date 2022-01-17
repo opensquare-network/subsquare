@@ -4,7 +4,7 @@ import MarkdownEditor from "components/markdownEditor";
 import Toggle from "components/toggle";
 import Button from "components/button";
 import PreviewMD from "components/create/previewMD";
-import ErrorText from "components/errorText";
+import ErrorText from "next-common/components/ErrorText";
 import QuillEditor from "components/editor/quillEditor";
 import HtmlRender from "components/post/htmlRender";
 import InsertContentsModal from "components/editor/modal";
