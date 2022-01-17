@@ -12,6 +12,7 @@ import {
 } from "utils/viewfuncs";
 import SEO from "components/SEO";
 import { isSafari, toSafariError } from "../utils/serverSideUtil";
+import {Circle} from "next-common/circle";
 
 export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
   let overviewData = [
@@ -47,6 +48,7 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
       ? 0
       : b?.items?.length - a?.items?.length
   );
+  return <Circle/>
 
   return (
     <Layout
