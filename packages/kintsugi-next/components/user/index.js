@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { fetchIdentity } from "services/identity";
 import { useEffect, useState } from "react";
 import { encodeAddressToChain } from "services/address";
-import { nodes } from "utils/constants";
+import { nodes } from "next-common/utils/constants";
 import Avatar from "components/avatar";
 import Grvatar from "components/gravatar";
 import Identity from "components/Identity";

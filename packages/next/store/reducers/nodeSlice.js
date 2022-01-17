@@ -13,7 +13,7 @@ import {
   DEFAULT_BASILISK_NODES,
   DEFAULT_BIFROST_NODES,
   DEFAULT_BIFROST_NODE_URL,
-} from "utils/constants";
+} from "next-common/utils/constants";
 
 let nodeUrl = (() => {
   let localNodeUrl = null;

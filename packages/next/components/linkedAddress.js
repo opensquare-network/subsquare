@@ -25,7 +25,7 @@ import { addressEllipsis } from "utils";
 import nextApi from "services/nextApi";
 import { fetchUserProfile } from "store/reducers/userSlice";
 import { addToast } from "store/reducers/toastSlice";
-import { nodes } from "utils/constants";
+import { nodes } from "next-common/utils/constants";
 import Avatar from "next-common/components/avatar";
 import DownloadExtension from "./downloadExtension";
 import { shadow_100 } from "../styles/componentCss";

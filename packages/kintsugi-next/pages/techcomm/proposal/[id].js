@@ -14,7 +14,7 @@ import Comments from "components/comment";
 import Input from "components/comment/input";
 import { shadow_100 } from "styles/componentCss";
 import { isSafari, to404 } from "utils/serverSideUtil";
-import { EmptyList } from "utils/constants";
+import { EmptyList } from "next-common/utils/constants";
 
 const Wrapper = styled.div`
   > :not(:first-child) {

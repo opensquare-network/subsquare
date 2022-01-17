@@ -13,7 +13,7 @@ import {
   DEFAULT_BIFROST_NODE_URL,
   DEFAULT_KINTSUGI_NODES,
   DEFAULT_KINTSUGI_NODE_URL,
-} from "utils/constants";
+} from "next-common/utils/constants";
 
 let nodeUrl = (() => {
   let localNodeUrl = null;

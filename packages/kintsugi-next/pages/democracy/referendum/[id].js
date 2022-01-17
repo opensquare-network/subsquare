@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Back from "components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
-import { EmptyList } from "utils/constants";
+import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import Comments from "components/comment";
 import Input from "components/comment/input";

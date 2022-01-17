@@ -3,7 +3,7 @@ import { useState, useRef, useEffect, Fragment } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import Button from "components/button";
-import { accountMenu } from "utils/constants";
+import { accountMenu } from "next-common/utils/constants";
 import { useOnClickOutside, useWindowSize } from "utils/hooks";
 import { logout } from "store/reducers/userSlice";
 import User from "components/user";

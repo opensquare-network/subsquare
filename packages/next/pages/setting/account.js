@@ -6,7 +6,7 @@ import Input from "components/input";
 import Button from "components/button";
 import DeleteAccount from "components/deleteAccount";
 import Menu from "components/menu";
-import { settingMenu } from "utils/constants";
+import { settingMenu } from "next-common/utils/constants";
 import { userSelector, logout } from "store/reducers/userSlice";
 import { useForm, useAuthPage } from "utils/hooks";
 import ErrorText from "next-common/components/ErrorText";

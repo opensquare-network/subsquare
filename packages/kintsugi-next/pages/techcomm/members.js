@@ -1,6 +1,6 @@
 import MembersList from "components/membersList/techCommMembersList";
 import Menu from "components/menu";
-import { mainMenu } from "utils/constants";
+import { mainMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import Layout from "components/layout";
 import { useApi, useCall } from "utils/hooks";
