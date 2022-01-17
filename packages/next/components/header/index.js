@@ -5,7 +5,7 @@ import Container from "components/container";
 import HeaderAccount from "./headerAccount";
 import Sidebar from "./sidebar";
 import SidebarAccount from "./sidebarAccount";
-import { nodes } from "utils/constants";
+import { nodes } from "next-common/utils/constants";
 import NodeSwitch from "components/nodeSwitch";
 import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "../../styles/componentCss";

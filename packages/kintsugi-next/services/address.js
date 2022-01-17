@@ -1,5 +1,5 @@
 import { encodeAddress } from "@polkadot/keyring";
-import { SS58Prefix } from "../utils/constants";
+import { SS58Prefix } from "next-common/utils/constants";
 
 export const encodeAddressToChain = (address, chain) => {
   try {

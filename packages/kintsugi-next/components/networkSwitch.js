@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { useState, useRef, useEffect } from "react";
-import { nodes } from "utils/constants";
+import { nodes } from "next-common/utils/constants";
 import { useOnClickOutside, useWindowSize } from "utils/hooks";
 import { shadow_200 } from "../styles/componentCss";
 import { useSelector } from "react-redux";

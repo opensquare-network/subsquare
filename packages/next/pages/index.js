@@ -1,6 +1,6 @@
 import Overview from "components/overview";
 import Menu from "components/menu";
-import { mainMenu } from "utils/constants";
+import { mainMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import Layout from "components/layout";
@@ -38,7 +38,7 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
         toTechCommMotionListItem(chain, item)
       ),
     },
-    (chain === "karura" || chain === "acala")
+    chain === "karura" || chain === "acala"
       ? {
           category: "Financial Council Motions",
           items: (overview?.financialCouncil?.motions ?? []).map((item) =>
