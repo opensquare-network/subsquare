@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { no_scroll_bar } from "../styles/componentCss";
-import Container from "./container";
 import Main from "./main";
 import Footer from "./footer";
 
@@ -10,8 +9,6 @@ const Wrapper = styled.div`
   padding-left: 32px;
   padding-right: 32px;
   @media screen and (max-width: 768px) {
-    padding-left: 16px;
-    padding-right: 16px;
     padding: 0;
   }
   margin-top: 26px;
@@ -51,7 +48,7 @@ const LeftPlaceHolder = styled.div`
 export default function Content({ left, children }) {
   return (
     <Wrapper>
-      <Container>
+      <div>
         <ContentWrapper>
           {left && (
             <Left>
@@ -62,7 +59,7 @@ export default function Content({ left, children }) {
           {left && <LeftPlaceHolder />}
           <Main>{children}</Main>
         </ContentWrapper>
-      </Container>
+      </div>
     </Wrapper>
   );
 }

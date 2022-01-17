@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import styled from "styled-components";
 import { getNode, toPrecision } from "utils";
-import Flex from "components/flex";
+import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "styles/componentCss";
 
 const Wrapper = styled.div`

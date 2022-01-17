@@ -14,7 +14,7 @@ import { addToast } from "store/reducers/toastSlice";
 import User from "components/user";
 import EditInput from "components/editInput";
 import { useRouter } from "next/router";
-import Flex from "components/flex";
+import Flex from "next-common/components/styled/flex";
 import MicromarkMd from "components/micromarkMd";
 
 const Wrapper = styled.div`

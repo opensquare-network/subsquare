@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { removeToast } from "store/reducers/toastSlice";
 import { useIsMounted } from "utils/hooks";
-import Flex from "components/flex";
+import Flex from "next-common/components/styled/flex";
 import { shadow_200 } from "styles/componentCss";
 
 const Wrapper = styled(Flex)`

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
-import Flex from "components/flex";
+import Flex from "next-common/components/styled/flex";
 
 const Shade = styled.div`
   z-index: 10;

@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import Flex from "components/flex";
+import Flex from "next-common/components/styled/flex";
 import ElementIcon from "../public/imgs/icons/element.svg";
 import MailIcon from "../public/imgs/icons/mail.svg";
 import FooterLogo from "../public/imgs/icons/footerLogo.svg";
-import ExternalLink from "./externalLink";
+import ExternalLink from "next-common/components/externalLink";
 
 const Wrapper = styled.footer`
   color: #9da9bb;

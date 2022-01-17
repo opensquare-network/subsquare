@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import ExternalLink from "./externalLink";
+import ExternalLink from "next-common/components/externalLink";
 
 const Wrapper = styled.div`
   background: #f6f7fa;

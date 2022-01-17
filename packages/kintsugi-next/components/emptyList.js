@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Flex from "./flex";
+import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "../styles/componentCss";
 
 const Wrapper = styled(Flex)`

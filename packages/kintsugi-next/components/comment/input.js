@@ -13,7 +13,7 @@ import InsertContentsModal from "../editor/modal";
 import { fetchUserProfile } from "store/reducers/userSlice";
 import { useDispatch } from "react-redux";
 import Relative from "components/relative";
-import Flex from "components/flex";
+import Flex from "next-common/components/styled/flex";
 import { toApiType } from "utils/viewfuncs";
 
 const Wrapper = styled.div`
