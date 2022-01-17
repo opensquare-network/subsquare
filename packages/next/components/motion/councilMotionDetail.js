@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
 import styled from "styled-components";
 import KVList from "next-common/components/kvList";
-import MultiKVList from "components/multiKVList";
+import MultiKVList from "next-common/components/multiKVList";
 import Link from "next/link";
 
 import User from "components/user";

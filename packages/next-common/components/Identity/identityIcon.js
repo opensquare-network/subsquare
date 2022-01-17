@@ -1,3 +1,4 @@
+import React from "react";
 import AuthIcon from "./icons/auth.svg";
 import SubIcon from "./icons/sub.svg";
 import ErrorIcon from "./icons/error.svg";
