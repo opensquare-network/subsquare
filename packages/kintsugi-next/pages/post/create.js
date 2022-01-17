@@ -6,7 +6,7 @@ import Back from "components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import Input from "components/input";
 import MarkdownEditor from "components/markdownEditor";
-import Button from "components/button";
+import Button from "next-common/components/button";
 import nextApi from "services/nextApi";
 import PreviewMD from "components/create/previewMD";
 import Toggle from "components/toggle";

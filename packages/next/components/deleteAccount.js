@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import nextApi from "services/nextApi";
 
 import Input from "./input";
-import Button from "./button";
+import Button from "next-common/components/button";
 import { useForm } from "utils/hooks";
 import { logout } from "store/reducers/userSlice";
 import ErrorText from "next-common/components/ErrorText";

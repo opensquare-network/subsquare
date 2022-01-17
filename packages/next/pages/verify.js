@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
 import Layout from "components/layout";
-import Button from "components/button";
+import Button from "next-common/components/button";
 import { useIsMounted } from "utils/hooks";
 import nextApi from "services/nextApi";
 import ErrorText from "next-common/components/ErrorText";

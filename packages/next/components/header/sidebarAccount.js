@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import NetworkSwitch from "components/networkSwitch";
-import Button from "components/button";
+import Button from "next-common/components/button";
 import { accountMenu } from "next-common/utils/constants";
 import { logout } from "store/reducers/userSlice";
 import { nodes } from "next-common/utils/constants";

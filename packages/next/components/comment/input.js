@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import MarkdownEditor from "components/markdownEditor";
 import Toggle from "components/toggle";
-import Button from "components/button";
+import Button from "next-common/components/button";
 import PreviewMD from "components/create/previewMD";
 import nextApi from "services/nextApi";
 import ErrorText from "next-common/components/ErrorText";

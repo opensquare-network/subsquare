@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import Input from "components/input";
-import Button from "components/button";
+import Button from "next-common/components/button";
 import DeleteAccount from "components/deleteAccount";
 import Menu from "components/menu";
 import { settingMenu } from "next-common/utils/constants";
