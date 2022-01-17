@@ -23,7 +23,7 @@ import Button from "components/button";
 import { addToast } from "store/reducers/toastSlice";
 
 import TipInput from "./tipInput";
-import { getNode } from "utils";
+import { getNode, toPrecision } from "utils";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -73,6 +73,11 @@ const Info = styled.div`
     `}
 `;
 
+const LabelWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const Label = styled.div`
   font-weight: bold;
   font-size: 12px;
@@ -84,6 +89,20 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
+
+const BalanceWrapper = styled.div`
+  display: flex;
+  font-size: 12px;
+  line-height: 100%;
+  color: #506176;
+  > :nth-child(2) {
+    color: #1e2134;
+    font-weight: bold;
+    margin-left: 8px;
+  }
+`;
+
+const balanceMap = new Map();
 
 export default function Popup({
   chain,
@@ -101,6 +120,7 @@ export default function Popup({
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [inputTipValue, setInputTipValue] = useState();
   const [tipping, setTipping] = useState(false);
+  const [balance, setBalance] = useState();
   const node = getNode(chain);
 
   const selectedAccountIsTipper = councilTippers.includes(
@@ -155,15 +175,18 @@ export default function Popup({
   }, [api, selectedAccount, isMounted]);
 
   useEffect(() => {
-    if (api && selectedAccount) {
-      // api.query.system.account(selectedAccount.address).then((result) => {
-      //   console.log({ result });
-      // });
-      // api.query.balances.freeBalance(selectedAccount.address).then((result) => {
-      //   console.log({ result });
-      // });
+    if (balanceMap.has(selectedAccount?.address)) {
+      setBalance(balanceMap.get(selectedAccount?.address));
+      return;
     }
-  }, [api, selectedAccount]);
+    if (api && selectedAccount) {
+      api.query.system.account(selectedAccount.address).then((result) => {
+        const free = toPrecision(result.data.free, node.decimals);
+        setBalance(free);
+        balanceMap.set(selectedAccount.address, free);
+      });
+    }
+  }, [api, selectedAccount, node.decimals]);
 
   const doEndorse = async () => {
     if (!api) {
@@ -271,7 +294,15 @@ export default function Popup({
         Only council members can tip.
       </Info>
       <div>
-        <Label>Address</Label>
+        <LabelWrapper>
+          <Label>Address</Label>
+          {balance && (
+            <BalanceWrapper>
+              <div>Balance</div>
+              <div>{balance}</div>
+            </BalanceWrapper>
+          )}
+        </LabelWrapper>
         <AddressSelect
           chain={chain}
           accounts={accounts}
