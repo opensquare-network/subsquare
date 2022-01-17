@@ -8,7 +8,7 @@ import { useOnClickOutside, useWindowSize } from "utils/hooks";
 import { logout } from "store/reducers/userSlice";
 import User from "components/user";
 import Relative from "components/relative";
-import Flex from "components/flex";
+import Flex from "next-common/components/styled/flex";
 import { shadow_200 } from "styles/componentCss";
 
 const Wrapper = Relative;

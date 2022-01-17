@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import User from "components/user";
 import Progress from "./progress";
-import Flex from "components/flex";
+import Flex from "next-common/components/styled/flex";
 
 const TitleWrapper = styled(Flex)`
   justify-content: space-between;

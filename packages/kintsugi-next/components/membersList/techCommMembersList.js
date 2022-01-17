@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import Flex from "components/flex";
+import Flex from "next-common/components/styled/flex";
 import User from "components/user";
 import { Fragment } from "react";
 import LoadingSvg from "public/imgs/icons/members-loading.svg";

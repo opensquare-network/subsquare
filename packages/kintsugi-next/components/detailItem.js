@@ -3,12 +3,11 @@ import { useState } from "react";
 import Link from "next/link";
 
 import { timeDurationFromNow } from "utils";
-import PostEdit from "components/post/postEdit";
 import nextApi from "services/nextApi";
 import User from "components/user";
 import TriangleRight from "public/imgs/icons/arrow-triangle-right.svg";
 import Tag from "components/tag";
-import Flex from "components/flex";
+import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "styles/componentCss";
 import { getPostUpdatedAt, toApiType } from "utils/viewfuncs";
 import {

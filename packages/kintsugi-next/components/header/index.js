@@ -1,13 +1,12 @@
 import styled from "styled-components";
 import { useState } from "react";
 import NetworkSwitch from "components/networkSwitch";
-import Container from "components/container";
 import HeaderAccount from "./headerAccount";
 import Sidebar from "./sidebar";
 import SidebarAccount from "./sidebarAccount";
 import { nodes } from "next-common/utils/constants";
 import NodeSwitch from "components/nodeSwitch";
-import Flex from "components/flex";
+import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "../../styles/componentCss";
 import Link from "next/link";
 
@@ -95,7 +94,7 @@ export default function Header({ user, left, chain, isWeb3Login }) {
 
   return (
     <Wrapper>
-      <Container>
+      <div>
         <FlexWrapper>
           <Left>
             {left && (
@@ -146,7 +145,7 @@ export default function Header({ user, left, chain, isWeb3Login }) {
             }
           </Right>
         </FlexWrapper>
-      </Container>
+      </div>
       {show && (
         <Sidebar onClose={() => setShow(false)} position={position}>
           {content === "left" && <>{left}</>}

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 import ToastItem from "./toastItem";
 import { toastsSelector } from "store/reducers/toastSlice";
-import Flex from "components/flex";
+import Flex from "next-common/components/styled/flex";
 
 const Wrapper = styled.div`
   position: fixed;

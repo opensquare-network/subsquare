@@ -8,7 +8,7 @@ import { logout } from "store/reducers/userSlice";
 import { nodes } from "next-common/utils/constants";
 import User from "components/user";
 import NodeSwitch from "components/nodeSwitch";
-import Flex from "components/flex";
+import Flex from "next-common/components/styled/flex";
 
 const Wrapper = styled.div`
   padding: 32px 0 0;
