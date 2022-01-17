@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import React from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import {
   BN,
@@ -14,7 +15,7 @@ import CountDown from "./countDown";
 import { toPrecision } from "utils/index";
 import { useApi } from "utils/hooks";
 import { getNode, abbreviateBigNumber } from "utils";
-import { summarySelector, setSummary } from "store/reducers/summarySlice";
+import { summarySelector, setSummary } from "../../store/reducers/summarySlice";
 
 const Wrapper = styled.div`
   display: flex;

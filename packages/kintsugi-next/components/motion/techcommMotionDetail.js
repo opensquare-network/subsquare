@@ -15,7 +15,7 @@ import ArticleContent from "components/articleContent";
 import { useState } from "react";
 import { createMotionTimelineData } from "utils/timeline/motion";
 import { getPostUpdatedAt } from "utils/viewfuncs";
-import MultiKVList from "components/multiKVList";
+import MultiKVList from "next-common/components/multiKVList";
 
 const Wrapper = styled.div`
   background: #ffffff;

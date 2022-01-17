@@ -239,7 +239,7 @@ export const mainMenu = [
   },
   {
     name: "TREASURY",
-    excludeToChains: ["kabocha"],
+    excludeToChains: ["kabocha", "kintsugi"],
     items: [
       {
         value: "proposals",
@@ -270,6 +270,7 @@ export const mainMenu = [
       },
       {
         value: "democracyExternals",
+        excludeToChains: ["kintsugi"],
         name: "External",
         pathname: "/democracy/externals",
       },
@@ -282,7 +283,7 @@ export const mainMenu = [
   },
   {
     name: "COUNCIL",
-    excludeToChains: ["kabocha"],
+    excludeToChains: ["kabocha", "kintsugi"],
     items: [
       {
         value: "motions",
@@ -326,7 +327,14 @@ export const mainMenu = [
         pathname: "/financial-council/members",
       },
     ],
-    excludeToChains: ["khala", "kusamu", "basilisk", "kabocha", "bifrost"],
+    excludeToChains: [
+      "khala",
+      "kusamu",
+      "basilisk",
+      "kabocha",
+      "bifrost",
+      "kintsugi",
+    ],
   },
 ];
 
