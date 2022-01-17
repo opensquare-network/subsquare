@@ -26,7 +26,7 @@ import nextApi from "services/nextApi";
 import { fetchUserProfile } from "store/reducers/userSlice";
 import { addToast } from "store/reducers/toastSlice";
 import { nodes } from "utils/constants";
-import Avatar from "components/avatar";
+import Avatar from "next-common/components/avatar";
 import DownloadExtension from "./downloadExtension";
 import { shadow_100 } from "../styles/componentCss";
 
