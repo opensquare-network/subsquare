@@ -24,7 +24,7 @@ import {
   encodeKintsugiAddress,
 } from "services/chainApi";
 import nextApi from "services/nextApi";
-import ErrorText from "components/errorText";
+import ErrorText from "next-common/components/ErrorText";
 import { setUser } from "store/reducers/userSlice";
 import { addToast } from "../store/reducers/toastSlice";
 

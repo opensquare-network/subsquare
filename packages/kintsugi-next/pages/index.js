@@ -11,7 +11,7 @@ import {
   toTechCommMotionListItem,
 } from "utils/viewfuncs";
 import SEO from "components/SEO";
-import { isSafari, toSafariError } from "../utils/serverSideUtil";
+import { isSafari } from "../utils/serverSideUtil";
 
 export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
   let overviewData = [

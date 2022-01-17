@@ -8,6 +8,10 @@ module.exports = {
       {
         test: /\.md$/,
         use: "raw-loader",
+      },
+      {
+        test: /\/next-common\/.*\.js/,
+        use: "babel-loader",
       }
     );
     config.plugins.push(
