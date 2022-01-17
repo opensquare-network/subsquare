@@ -212,7 +212,7 @@ export const accountMenu = [
   {
     value: "settings",
     name: "Settings",
-    icon: "settings.svg",
+    icon: "setting.svg",
     pathname: "/setting/account",
   },
   {
