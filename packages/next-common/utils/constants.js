@@ -387,6 +387,7 @@ export const SS58Prefix = {
   basilisk: 10041,
   kabocha: 2,
   bifrost: 6,
+  kintsugi: 2092,
 };
 
 export const TreasuryAccount =
