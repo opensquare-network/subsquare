@@ -16,7 +16,7 @@ import Links from "components/timeline/links";
 import dayjs from "dayjs";
 import Timeline from "components/timeline";
 import { getTimelineStatus } from "utils";
-import KVList from "components/kvList";
+import KVList from "next-common/components/kvList";
 import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";

@@ -9,7 +9,6 @@ import { EmptyList } from "next-common/utils/constants";
 import Input from "components/comment/input";
 import { useState, useRef } from "react";
 import Layout from "components/layout";
-import Metadata from "components/metadata";
 import User from "components/user";
 import { getNode, toPrecision } from "utils";
 import Links from "components/timeline/links";
@@ -24,6 +23,7 @@ import { createMotionTimelineData } from "utils/timeline/motion";
 import sortTimeline from "utils/timeline/sort";
 import { getMetaDesc } from "utils/viewfuncs";
 import SEO from "components/SEO";
+import KVList from "next-common/components/kvList";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -156,7 +156,7 @@ export default withLoginUserRedux(
             onReply={focusEditor}
             type={TYPE_TREASURY_PROPOSAL}
           />
-          <Metadata data={metadata} />
+          {/*<KVList title="Metadata" data={metadata} />*/}
           <Timeline
             data={timelineData}
             chain={chain}

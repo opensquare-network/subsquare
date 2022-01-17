@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { no_scroll_bar } from "../styles/componentCss";
-import Main from "./main";
+import Main from "next-common/components/main";
 import Footer from "./footer";
 
 const Wrapper = styled.div`

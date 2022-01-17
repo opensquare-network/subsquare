@@ -10,7 +10,7 @@ import Comments from "components/comment";
 import Input from "components/comment/input";
 import { useEffect, useRef, useState } from "react";
 import DetailItem from "components/detailItem";
-import KVList from "components/kvList";
+import KVList from "next-common/components/kvList";
 import User from "components/user";
 import Links from "components/timeline/links";
 import { getTimelineStatus } from "utils";

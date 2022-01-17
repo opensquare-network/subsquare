@@ -11,7 +11,7 @@ import { useState, useRef } from "react";
 import Layout from "components/layout";
 import { getNode } from "utils";
 import Timeline from "components/timeline";
-import KVList from "components/kvList";
+import KVList from "next-common/components/kvList";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";

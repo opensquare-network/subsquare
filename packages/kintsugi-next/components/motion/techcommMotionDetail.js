@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 import styled from "styled-components";
-import KVList from "components/kvList";
+import KVList from "next-common/components/kvList";
 import Link from "next/link";
 import User from "components/user";
 import MotionProposal from "./motionProposal";

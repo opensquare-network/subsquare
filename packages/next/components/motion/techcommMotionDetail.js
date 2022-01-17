@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 import styled from "styled-components";
-import KVList from "components/kvList";
+import KVList from "next-common/components/kvList";
 import Link from "next/link";
 import User from "components/user";
 import MotionProposal from "./motionProposal";
@@ -250,40 +250,44 @@ export default function TechcommMotionDetail({
   return (
     <div>
       <Wrapper>
-        {!isEdit && <div>
-          <TitleWrapper>
-            {motion?.index !== undefined && <Index>{`#${motion.index}`}</Index>}
-            <Title>{post?.title}</Title>
-          </TitleWrapper>
-          <FlexWrapper>
-            <DividerWrapper>
-              <User
-                user={motion?.author}
-                add={motion.proposer}
-                chain={chain}
-                fontSize={12}
-              />
-              {motion.isTreasury && <SectionTag name={"Treasury"} />}
-              {motion?.onchainData?.externalProposals?.length > 0 && (
-                <SectionTag name={"Democracy"} />
+        {!isEdit && (
+          <div>
+            <TitleWrapper>
+              {motion?.index !== undefined && (
+                <Index>{`#${motion.index}`}</Index>
               )}
-              {postUpdateTime && (
-                <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
-              )}
-            </DividerWrapper>
-            {motion.state && <StatusWrapper>{motion.state}</StatusWrapper>}
-          </FlexWrapper>
-        </div>}
-          <ArticleContent
-            chain={chain}
-            post={post}
-            setPost={setPost}
-            user={loginUser}
-            onReply={onReply}
-            type={type}
-            isEdit={isEdit}
-            setIsEdit={setIsEdit}
-          />
+              <Title>{post?.title}</Title>
+            </TitleWrapper>
+            <FlexWrapper>
+              <DividerWrapper>
+                <User
+                  user={motion?.author}
+                  add={motion.proposer}
+                  chain={chain}
+                  fontSize={12}
+                />
+                {motion.isTreasury && <SectionTag name={"Treasury"} />}
+                {motion?.onchainData?.externalProposals?.length > 0 && (
+                  <SectionTag name={"Democracy"} />
+                )}
+                {postUpdateTime && (
+                  <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
+                )}
+              </DividerWrapper>
+              {motion.state && <StatusWrapper>{motion.state}</StatusWrapper>}
+            </FlexWrapper>
+          </div>
+        )}
+        <ArticleContent
+          chain={chain}
+          post={post}
+          setPost={setPost}
+          user={loginUser}
+          onReply={onReply}
+          type={type}
+          isEdit={isEdit}
+          setIsEdit={setIsEdit}
+        />
       </Wrapper>
 
       <MultiKVList title="Business" data={business} />
