@@ -103,6 +103,19 @@ export const DEFAULT_BIFROST_NODES = [
 
 export const DEFAULT_BIFROST_NODE_URL = DEFAULT_BIFROST_NODES[0]?.url;
 
+export const DEFAULT_KINTSUGI_NODES = [
+  {
+    name: "OnFinality",
+    url: "wss://kintsugi.api.onfinality.io/public-ws",
+  },
+  {
+    name: "Kintsugi Labs",
+    url: "wss://api-kusama.interlay.io/parachain",
+  },
+];
+
+export const DEFAULT_KINTSUGI_NODE_URL = DEFAULT_KINTSUGI_NODES[0]?.url;
+
 export const DEFAULT_NODES = {
   kusama: DEFAULT_KUSAMA_NODE_URL,
   karura: DEFAULT_KARURA_NODE_URL,
@@ -110,6 +123,7 @@ export const DEFAULT_NODES = {
   khala: DEFAULT_KHALA_NODE_URL,
   basilisk: DEFAULT_BASILISK_NODE_URL,
   bifrost: DEFAULT_BIFROST_NODE_URL,
+  kintsugi: DEFAULT_KINTSUGI_NODE_URL,
 };
 
 export const nodes = [

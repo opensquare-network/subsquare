@@ -8,7 +8,7 @@ import MotionDetail from "components/motion/councilMotionDetail";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_FINANCIAL_MOTION } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-import { EmptyList } from "../../../utils/constants";
+import { EmptyList } from "next-common/utils/constants";
 import Comments from "../../../components/comment";
 import Input from "../../../components/comment/input";
 import { shadow_100 } from "../../../styles/componentCss";
