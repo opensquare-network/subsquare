@@ -7,7 +7,7 @@ import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import { toTreasuryProposalListItem } from "utils/viewfuncs";
 import SEO from "components/SEO";
-import Summary from "components/summary";
+import Summary from "next-common/components/summary";
 
 export default withLoginUserRedux(
   ({ loginUser, proposals, chain, siteUrl }) => {
