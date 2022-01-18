@@ -19,7 +19,7 @@ import {
 
 import { useOnClickOutside, useIsMounted, useApi } from "utils/hooks";
 import AddressSelect from "components/addressSelect";
-import Button from "components/button";
+import Button from "next-common/components/button";
 import { addToast } from "store/reducers/toastSlice";
 
 import TipInput from "./tipInput";

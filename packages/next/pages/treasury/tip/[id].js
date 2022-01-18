@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import findLastIndex from "lodash.findlastindex";
 
 import { withLoginUser, withLoginUserRedux } from "lib";
-import { EmptyList } from "utils/constants";
+import { EmptyList } from "next-common/utils/constants";
 import { getTimelineStatus, getNode, toPrecision } from "utils";
 import { TYPE_TREASURY_TIP } from "utils/viewConstants";
 import { getMetaDesc, getTipState } from "utils/viewfuncs";
@@ -363,14 +363,14 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { id, page, page_size: pageSize } = context.query;
 
   const [{ result: detail }] = await Promise.all([
-    ssrNextApi.fetch(`treasury/tips/${id}`),
+    nextApi.fetch(`treasury/tips/${id}`),
   ]);
 
   if (!detail) {
     to404(context);
   }
 
-  const { result: comments } = await ssrNextApi.fetch(
+  const { result: comments } = await nextApi.fetch(
     `treasury/tips/${detail._id}/comments`,
     {
       page: page ?? "last",

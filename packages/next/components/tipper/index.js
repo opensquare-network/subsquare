@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 
-import Button from "components/button";
+import Button from "next-common/components/button";
 import User from "components/user";
 import { getNode, toPrecision } from "utils";
 import LoadingIcon from "public/imgs/icons/members-loading.svg";
