@@ -6,25 +6,28 @@ import {
   web3Accounts,
   web3Enable,
 } from "@polkadot/extension-dapp";
-import Button from "components/button";
+import Button from "next-common/components/button";
 import { useAuthPage, useIsMounted } from "utils/hooks";
 import { userSelector } from "store/reducers/userSlice";
 import {
   encodeKaruraAddress,
+  encodeAcalaAddress,
   encodeKhalaAddress,
   encodeKusamaAddress,
   encodePolkadotAddress,
   encodeSubstrateAddress,
   encodeBasiliskAddress,
   signMessage,
+  encodeKabochaAddress,
+  encodeBifrostAddress,
 } from "services/chainApi";
 import { addressEllipsis } from "utils";
 import nextApi from "services/nextApi";
 import { fetchUserProfile } from "store/reducers/userSlice";
 import { addToast } from "store/reducers/toastSlice";
-import { nodes } from "utils/constants";
-import Avatar from "./avatar";
-import DownloadExtension from "./downloadExtension";
+import { nodes } from "next-common/utils/constants";
+import Avatar from "next-common/components/avatar";
+import DownloadExtension from "next-common/components/downloadExtension";
 import { shadow_100 } from "../styles/componentCss";
 
 const Wrapper = styled.div`
@@ -205,8 +208,11 @@ export default function LinkedAddress({ chain }) {
         kusamaAddress: encodeKusamaAddress(address),
         polkadotAddress: encodePolkadotAddress(address),
         karuraAddress: encodeKaruraAddress(address),
+        acalaAddress: encodeAcalaAddress(address),
         khalaAddress: encodeKhalaAddress(address),
         basiliskAddress: encodeBasiliskAddress(address),
+        kabochaAddress: encodeKabochaAddress(address),
+        bifrostAddress: encodeBifrostAddress(address),
         name,
       };
     });
@@ -219,9 +225,7 @@ export default function LinkedAddress({ chain }) {
   const unlinkAddress = async (chain, account) => {
     const address = account[`${chain}Address`];
 
-    const { error, result } = await nextApi.delete(
-      `user/linkaddr/${address}`
-    );
+    const { error, result } = await nextApi.delete(`user/linkaddr/${address}`);
     dispatch(fetchUserProfile());
 
     if (result) {
@@ -246,9 +250,7 @@ export default function LinkedAddress({ chain }) {
   const linkAddress = async (chain, account) => {
     const address = account[`${chain}Address`];
 
-    const { result, error } = await nextApi.fetch(
-      `user/linkaddr/${address}`
-    );
+    const { result, error } = await nextApi.fetch(`user/linkaddr/${address}`);
     if (result) {
       const signature = await signMessage(result?.challenge, account.address);
       const { error: confirmError, result: confirmResult } = await nextApi.post(
@@ -299,8 +301,10 @@ export default function LinkedAddress({ chain }) {
         kusamaAddress: address.chain === "kusama" ? address.address : null,
         polkadotAddress: address.chain === "polkadot" ? address.address : null,
         karuraAddress: address.chain === "karura" ? address.address : null,
+        acalaAddress: address.chain === "acala" ? address.address : null,
         khalaAddress: address.chain === "khala" ? address.address : null,
         basiliskAddress: address.chain === "basilisk" ? address.address : null,
+        kabochaAddress: address.chain === "kabocha" ? address.address : null,
         name: "--",
       })),
   ];
@@ -324,15 +328,17 @@ export default function LinkedAddress({ chain }) {
         )}
         <div>
           <NodesWrapper>
-            {nodes.filter(node => node.value === activeChain).map((item, index) => (
-              <NodeItem
-                key={index}
-                onClick={() => setActiveChain(item.value)}
-                selected={item.value === activeChain}
-              >
-                {item.name}
-              </NodeItem>
-            ))}
+            {nodes
+              .filter((node) => node.value === activeChain)
+              .map((item, index) => (
+                <NodeItem
+                  key={index}
+                  onClick={() => setActiveChain(item.value)}
+                  selected={item.value === activeChain}
+                >
+                  {item.name}
+                </NodeItem>
+              ))}
           </NodesWrapper>
           <AddressWrapper>
             {availableAccounts.length === 0 && (

@@ -1,4 +1,5 @@
 const { getDemocracyPreImageCollection } = require("../../index");
+const isEmpty = require("lodash.isempty");
 
 async function insertPreImage(imageInfo) {
   const { hash } = imageInfo;
@@ -12,6 +13,17 @@ async function insertPreImage(imageInfo) {
   await col.insertOne(imageInfo);
 }
 
+async function updatePreImage(hash, updates) {
+  if (isEmpty(updates)) {
+    return;
+  }
+
+  const col = await getDemocracyPreImageCollection();
+  let update = { $set: updates };
+  await col.updateOne({ hash: hash }, update);
+}
+
 module.exports = {
   insertPreImage,
+  updatePreImage,
 };

@@ -1,4 +1,11 @@
 import styled from "styled-components";
+import {
+  TYPE_COUNCIL_MOTION,
+  TYPE_FINANCIAL_MOTION,
+  TYPE_TECH_COMM_MOTION,
+  TYPE_TREASURY_BOUNTY,
+  TYPE_TREASURY_PROPOSAL,
+} from "../utils/viewConstants";
 
 const Wrapper = styled.div`
   padding: 4px 8px;
@@ -52,6 +59,7 @@ const getTagColor = (name) => {
     case "Disapproved":
     case "NotPassed":
     case "Tip Retracted":
+    case "Overwritten":
       return NEGATIVE;
   }
   return END;
@@ -61,11 +69,36 @@ const isMotion = (data) => {
   return data?.status?.value?.includes("Motion");
 };
 
-export default function Tag({ name, data }) {
+export default function Tag({ name, data, type = "" }) {
   let tag = name;
   if (isMotion(data)) {
-    const motionIndex = data?.status?.value?.replace(/^\D+/g, "");
-    tag = <a href={`/council/motion/${motionIndex}`}>{name}</a>;
+    if (
+      type === TYPE_COUNCIL_MOTION ||
+      type === TYPE_TREASURY_BOUNTY ||
+      type === TYPE_TREASURY_PROPOSAL
+    ) {
+      tag = (
+        <a href={`/council/motion/${data.indexer.blockHeight}_${data.hash}`}>
+          {name}
+        </a>
+      );
+    }
+    if (type === TYPE_FINANCIAL_MOTION) {
+      tag = (
+        <a
+          href={`/financial-council/motion/${data.indexer.blockHeight}_${data.hash}`}
+        >
+          {name}
+        </a>
+      );
+    }
+    if (type === TYPE_TECH_COMM_MOTION) {
+      tag = (
+        <a href={`/techcomm/proposal/${data.indexer.blockHeight}_${data.hash}`}>
+          {name}
+        </a>
+      );
+    }
   }
   const color = getTagColor(name);
   return <Wrapper color={color}>{tag}</Wrapper>;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import Back from "components/back";
+import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import Layout from "components/layout";
@@ -8,7 +8,6 @@ import TechcommMotionDetail from "components/motion/techcommMotionDetail";
 import { TYPE_TECH_COMM_MOTION } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import SEO from "components/SEO";
-import NextHead from "../../../components/nextHead";
 import {
   getFocusEditor,
   getMentionList,
@@ -19,7 +18,7 @@ import Comments from "../../../components/comment";
 import Input from "../../../components/comment/input";
 import { shadow_100 } from "../../../styles/componentCss";
 import { to404 } from "../../../utils/serverSideUtil";
-import { EmptyList } from "../../../utils/constants";
+import { EmptyList } from "next-common/utils/constants";
 
 const Wrapper = styled.div`
   > :not(:first-child) {

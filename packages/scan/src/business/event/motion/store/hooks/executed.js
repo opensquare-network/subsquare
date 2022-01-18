@@ -1,3 +1,4 @@
+const { getDemocracyExternalCollection } = require("../../../../../mongo");
 const { updateBounty } = require("../../../../../mongo/service/onchain/bounty");
 const {
   updateTreasuryProposal,
@@ -7,6 +8,7 @@ const {
 } = require("../../../../../mongo/service/business/democracy");
 const {
   insertDemocracyExternal,
+  updateDemocracyExternalByHash,
 } = require("../../../../../mongo/service/onchain/democracyExternal");
 const { getMotionCollection } = require("../../../../../mongo");
 const {
@@ -63,6 +65,35 @@ async function handleBounty(bountyInfo, indexer) {
   }
 }
 
+async function setLastExternalOverwritten(indexer) {
+  const col = await getDemocracyExternalCollection();
+  const external = await col.findOne({ isFinal: false });
+  if (!external) {
+    return;
+  }
+
+  const state = {
+    state: "Overwritten",
+    indexer,
+  };
+
+  const timelineItem = {
+    type: TimelineItemTypes.event,
+    method: "Overwritten",
+    indexer,
+  };
+
+  const { proposalHash } = external;
+  await updateDemocracyExternalByHash(
+    proposalHash,
+    {
+      state,
+      isFinal: true,
+    },
+    timelineItem
+  );
+}
+
 async function handleExternalProposal(proposalHash, motion, indexer) {
   const nextExternal = await getExternalFromStorageByHeight(
     indexer.blockHeight
@@ -80,6 +111,8 @@ async function handleExternalProposal(proposalHash, motion, indexer) {
   if (hash !== proposalHash) {
     throw new Error(`Not matched external hash, ${JSON.stringify(indexer)}`);
   }
+
+  await setLastExternalOverwritten(indexer);
 
   const state = {
     indexer,

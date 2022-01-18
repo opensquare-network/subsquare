@@ -61,7 +61,7 @@ async function handleTechCommPropose(
 
   await handleBusinessWhenTechCommMotionProposed(obj, extrinsicIndexer);
   await insertTechCommMotion(obj);
-  await insertTechCommMotionPost(extrinsicIndexer, motionHash, null, signer);
+  await insertTechCommMotionPost(extrinsicIndexer, fields.hash, null, signer);
 }
 
 module.exports = {

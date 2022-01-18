@@ -1,4 +1,3 @@
-const { getCouncilName } = require("../../../common/motion/utils");
 const { handleBusinessWhenMotionDisApproved } = require("./hooks/disApproved");
 const {
   updateMotionByHash,
@@ -9,11 +8,7 @@ const {
 
 async function handleDisApproved(event, extrinsic, indexer) {
   const { hash, updates, timelineItem } =
-    await getCollectiveDisApprovedCommonFields(
-      event,
-      indexer,
-      getCouncilName()
-    );
+    await getCollectiveDisApprovedCommonFields(event, indexer);
 
   await handleBusinessWhenMotionDisApproved(hash, indexer);
   await updateMotionByHash(hash, updates, timelineItem);

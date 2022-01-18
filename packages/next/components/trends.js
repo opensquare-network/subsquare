@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
 
-import Button from "./button";
+import Button from "next-common/components/button";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -21,11 +21,7 @@ export default function Trends({ user, chain }) {
     <Wrapper>
       <Title>Trends</Title>
       {user && (
-        <Button
-          primary
-          isFill
-          onClick={() => router.push(`/post/create`)}
-        >
+        <Button primary isFill onClick={() => router.push(`/post/create`)}>
           New Post
         </Button>
       )}

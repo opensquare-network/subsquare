@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import Back from "components/back";
+import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import Comments from "components/comment";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
-import { EmptyList } from "utils/constants";
+import { EmptyList } from "next-common/utils/constants";
 import Input from "components/comment/input";
 import { useState, useRef } from "react";
 import Layout from "components/layout";
@@ -39,64 +39,71 @@ const CommentsWrapper = styled.div`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser, detail, comments, siteUrl, chain }) => {
-  const postId = detail._id;
+export default withLoginUserRedux(
+  ({ loginUser, detail, comments, siteUrl, chain }) => {
+    const postId = detail._id;
 
-  const editorWrapperRef = useRef(null);
-  const [quillRef, setQuillRef] = useState(null);
-  const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown"
-  );
+    const editorWrapperRef = useRef(null);
+    const [quillRef, setQuillRef] = useState(null);
+    const [content, setContent] = useState("");
+    const [contentType, setContentType] = useState(
+      loginUser?.preference.editor || "markdown"
+    );
 
-  const users = getMentionList(comments);
+    const users = getMentionList(comments);
 
-  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
+    const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
-  const onReply = getOnReply(
-    contentType,
-    content,
-    setContent,
-    quillRef,
-    focusEditor
-  );
+    const onReply = getOnReply(
+      contentType,
+      content,
+      setContent,
+      quillRef,
+      focusEditor
+    );
 
-  const desc = getMetaDesc(detail, "Discussion");
-  return (
-    <Layout user={loginUser} chain={chain}>
-      <SEO title={detail?.title} desc={desc} siteUrl={siteUrl} chain={chain} />
-      <Wrapper className="post-content">
-        <Back href={`/discussions`} text="Back to Discussions" />
-        <DetailItem
-          data={detail}
-          user={loginUser}
+    const desc = getMetaDesc(detail, "Discussion");
+    return (
+      <Layout user={loginUser} chain={chain}>
+        <SEO
+          title={detail?.title}
+          desc={desc}
+          siteUrl={siteUrl}
           chain={chain}
-          onReply={focusEditor}
-          type={TYPE_POST}
         />
-        <CommentsWrapper>
-          <Comments
-            data={comments}
+        <Wrapper className="post-content">
+          <Back href={`/discussions`} text="Back to Discussions" />
+          <DetailItem
+            data={detail}
             user={loginUser}
-            postId={postId}
             chain={chain}
-            onReply={onReply}
+            onReply={focusEditor}
+            type={TYPE_POST}
           />
-          {loginUser && (
-            <Input
+          <CommentsWrapper>
+            <Comments
+              data={comments}
+              user={loginUser}
               postId={postId}
               chain={chain}
-              ref={editorWrapperRef}
-              setQuillRef={setQuillRef}
-              {...{ contentType, setContentType, content, setContent, users }}
-              type={TYPE_POST}
+              onReply={onReply}
             />
-          )}
-        </CommentsWrapper>
-      </Wrapper>
-    </Layout>
-  );
-});
+            {loginUser && (
+              <Input
+                postId={postId}
+                chain={chain}
+                ref={editorWrapperRef}
+                setQuillRef={setQuillRef}
+                {...{ contentType, setContentType, content, setContent, users }}
+                type={TYPE_POST}
+              />
+            )}
+          </CommentsWrapper>
+        </Wrapper>
+      </Layout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;

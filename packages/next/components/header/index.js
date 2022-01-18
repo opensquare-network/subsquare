@@ -5,9 +5,9 @@ import Container from "components/container";
 import HeaderAccount from "./headerAccount";
 import Sidebar from "./sidebar";
 import SidebarAccount from "./sidebarAccount";
-import { nodes } from "utils/constants";
+import { nodes } from "next-common/utils/constants";
 import NodeSwitch from "components/nodeSwitch";
-import Flex from "../styled/flex";
+import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "../../styles/componentCss";
 import Link from "next/link";
 
@@ -141,7 +141,7 @@ export default function Header({ user, left, chain, isWeb3Login }) {
                 <NetworkWrapper>
                   <NetworkSwitch activeNode={node} isWeb3Login={isWeb3Login} />
                 </NetworkWrapper>
-                <NodeSwitch small chain={chain} />
+                <NodeSwitch small chain={chain} node={node} />
               </>
             }
           </Right>

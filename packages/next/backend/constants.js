@@ -4,6 +4,9 @@ const SupportChains = [
   "karura",
   "khala",
   "basilisk",
+  "kabocha",
+  "bifrost",
+  "acala",
 ];
 
 const chainStatusRoom = "CHAIN_STATUS_ROOM";
@@ -15,6 +18,9 @@ const SS58Format = Object.freeze({
   Khala: 30,
   Basilisk: 10041,
   Substrate: 42,
+  Kabocha: 2,
+  Bifrost: 6,
+  Acala: 10,
 });
 
 const ContentType = Object.freeze({

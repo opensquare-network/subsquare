@@ -8,7 +8,7 @@ import nextApi from "services/nextApi";
 import User from "components/user";
 import TriangleRight from "../public/imgs/icons/arrow-triangle-right.svg";
 import Tag from "./tag";
-import Flex from "./styled/flex";
+import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "../styles/componentCss";
 import { getPostUpdatedAt, toApiType } from "utils/viewfuncs";
 import {
@@ -223,14 +223,6 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
     return null;
   }
 
-  const updatePost = async () => {
-    const url = `${toApiType(type)}/${post._id}`;
-    const { result: newPost } = await nextApi.fetch(url);
-    if (newPost) {
-      setPost(newPost);
-    }
-  };
-
   const postUpdatedTime = getPostUpdatedAt(post);
 
   return (
@@ -239,19 +231,24 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
         <>
           {type === TYPE_DEMOCRACY_EXTERNAL && (
             <ReferendaWrapper>
-              <div>{`External`}</div>
-              {
-                post?.onchainData?.techCommMotions?.map((techCommMotion, key) => (
+              <div>{`External #${post?.externalProposalHash?.slice(
+                0,
+                6
+              )}`}</div>
+              {post?.onchainData?.techCommMotions?.map(
+                (techCommMotion, key) => (
                   <div key={key}>
                     <TriangleRight />
                     <Link
-                      href={`/techcomm/proposal/${getTechCommId(techCommMotion)}`}
+                      href={`/techcomm/proposal/${getTechCommId(
+                        techCommMotion
+                      )}`}
                     >
                       {`Tech. Comm. #${shortTechId(techCommMotion)}`}
                     </Link>
                   </div>
-                ))
-              }
+                )
+              )}
               {post?.referendumIndex !== undefined && (
                 <div>
                   <TriangleRight />
@@ -279,22 +276,27 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             post.externalProposalHash !== undefined && (
               <ReferendaWrapper>
                 <Link
+                  passHref={true}
                   href={`/democracy/external/${post.indexer.blockHeight}_${post.externalProposalHash}`}
                 >
-                  {`External`}
+                  <a>
+                    {`External #${post?.externalProposalHash?.slice(0, 6)}`}
+                  </a>
                 </Link>
-                {
-                  post?.onchainData?.techCommMotions?.map((techCommMotion, key) => (
+                {post?.onchainData?.techCommMotions?.map(
+                  (techCommMotion, key) => (
                     <div key={key}>
                       <TriangleRight />
                       <Link
-                        href={`/techcomm/proposal/${getTechCommId(techCommMotion)}`}
+                        href={`/techcomm/proposal/${getTechCommId(
+                          techCommMotion
+                        )}`}
                       >
                         {`Tech. Comm. #${shortTechId(techCommMotion)}`}
                       </Link>
                     </div>
-                  ))
-                }
+                  )
+                )}
                 <div>
                   <TriangleRight />
                   <div>{`Referenda #${post?.referendumIndex}`}</div>
@@ -333,10 +335,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                 </div>
               )}
               {postUpdatedTime && (
-                <Info>
-                  Updated{" "}
-                  {timeDurationFromNow(postUpdatedTime)}
-                </Info>
+                <Info>Updated {timeDurationFromNow(postUpdatedTime)}</Info>
               )}
               {post.commentsCount > -1 && (
                 <Info>{`${post.commentsCount} Comments`}</Info>
@@ -344,25 +343,18 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             </DividerWrapper>
             {post.status && <Tag name={post.status} />}
           </FlexWrapper>
-          <ArticleContent
-            chain={chain}
-            post={post}
-            setPost={setPost}
-            user={user}
-            type={type}
-            onReply={onReply}
-          />
         </>
       )}
-      {isEdit && (
-        <PostEdit
-          chain={chain}
-          postData={post}
-          setIsEdit={setIsEdit}
-          updatePost={updatePost}
-          type={type}
-        />
-      )}
+      <ArticleContent
+        chain={chain}
+        post={post}
+        setPost={setPost}
+        user={user}
+        type={type}
+        onReply={onReply}
+        isEdit={isEdit}
+        setIsEdit={setIsEdit}
+      />
     </Wrapper>
   );
 }

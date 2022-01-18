@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 import styled from "styled-components";
-import KVList from "components/kvList";
+import KVList from "next-common/components/kvList";
 import Link from "next/link";
 import User from "components/user";
 import MotionProposal from "./motionProposal";
@@ -9,14 +9,13 @@ import Timeline from "../timeline";
 import { getNode, timeDurationFromNow, toPrecision } from "utils";
 import SectionTag from "components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
-import Flex from "../styled/flex";
+import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "../../styles/componentCss";
 import ArticleContent from "../articleContent";
 import { useState } from "react";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
 import { getPostUpdatedAt } from "../../utils/viewfuncs";
-import { TYPE_TECH_COMM_MOTION } from "../../utils/viewConstants";
-import MultiKVList from "../multiKVList";
+import MultiKVList from "next-common/components/multiKVList";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -166,9 +165,11 @@ export default function TechcommMotionDetail({
   chain,
   onReply,
   loginUser,
+  type,
 }) {
   const node = getNode(chain);
   const [post, setPost] = useState(motion);
+  const [isEdit, setIsEdit] = useState(false);
   if (!node) {
     return null;
   }
@@ -249,38 +250,44 @@ export default function TechcommMotionDetail({
   return (
     <div>
       <Wrapper>
-        <div>
-          <TitleWrapper>
-            {motion?.index !== undefined && <Index>{`#${motion.index}`}</Index>}
-            <Title>{post?.title}</Title>
-          </TitleWrapper>
-          <FlexWrapper>
-            <DividerWrapper>
-              <User
-                user={motion?.author}
-                add={motion.proposer}
-                chain={chain}
-                fontSize={12}
-              />
-              {motion.isTreasury && <SectionTag name={"Treasury"} />}
-              {motion?.onchainData?.externalProposals?.length > 0 && (
-                <SectionTag name={"Democracy"} />
+        {!isEdit && (
+          <div>
+            <TitleWrapper>
+              {motion?.index !== undefined && (
+                <Index>{`#${motion.index}`}</Index>
               )}
-              {postUpdateTime && (
-                <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
-              )}
-            </DividerWrapper>
-            {motion.state && <StatusWrapper>{motion.state}</StatusWrapper>}
-          </FlexWrapper>
-          <ArticleContent
-            chain={chain}
-            post={post}
-            setPost={setPost}
-            user={loginUser}
-            onReply={onReply}
-            type={TYPE_TECH_COMM_MOTION}
-          />
-        </div>
+              <Title>{post?.title}</Title>
+            </TitleWrapper>
+            <FlexWrapper>
+              <DividerWrapper>
+                <User
+                  user={motion?.author}
+                  add={motion.proposer}
+                  chain={chain}
+                  fontSize={12}
+                />
+                {motion.isTreasury && <SectionTag name={"Treasury"} />}
+                {motion?.onchainData?.externalProposals?.length > 0 && (
+                  <SectionTag name={"Democracy"} />
+                )}
+                {postUpdateTime && (
+                  <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
+                )}
+              </DividerWrapper>
+              {motion.state && <StatusWrapper>{motion.state}</StatusWrapper>}
+            </FlexWrapper>
+          </div>
+        )}
+        <ArticleContent
+          chain={chain}
+          post={post}
+          setPost={setPost}
+          user={loginUser}
+          onReply={onReply}
+          type={type}
+          isEdit={isEdit}
+          setIsEdit={setIsEdit}
+        />
       </Wrapper>
 
       <MultiKVList title="Business" data={business} />
@@ -310,7 +317,7 @@ export default function TechcommMotionDetail({
         ]}
       />
 
-      <Timeline data={timelineData} chain={chain} indent={false} />
+      <Timeline data={timelineData} chain={chain} indent={false} type={type} />
     </div>
   );
 }

@@ -44,7 +44,8 @@ async function updatePost(postId, title, content, contentType, author) {
     const col = await getChainExternalCollection();
     const chainExternal = await col.findOne({
       proposalHash: chainReferendum.externalProposalHash,
-      "indexer.blockHeight": chainReferendum.externalProposalIndexer.blockHeight,
+      "indexer.blockHeight":
+        chainReferendum.externalProposalIndexer.blockHeight,
     });
     authors = chainExternal?.authors || [];
   } else if (chainReferendum.publicProposalIndex !== undefined) {

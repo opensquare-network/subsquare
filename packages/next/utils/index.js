@@ -1,6 +1,6 @@
 import moment from "moment";
 import BigNumber from "bignumber.js";
-import { nodes } from "./constants";
+import { nodes } from "next-common/utils/constants";
 
 BigNumber.config({ EXPONENTIAL_AT: 36 });
 

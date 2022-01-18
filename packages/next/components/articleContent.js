@@ -18,7 +18,7 @@ import HtmlRender from "./post/htmlRender";
 import Actions from "./actions";
 import PostEdit from "./post/postEdit";
 import styled, { css } from "styled-components";
-import Flex from "./styled/flex";
+import Flex from "next-common/components/styled/flex";
 import MicromarkMd from "./micromarkMd";
 
 const Wrapper = styled.div`
@@ -172,9 +172,10 @@ export default function ArticleContent({
   chain,
   onReply,
   type,
+  isEdit,
+  setIsEdit,
 }) {
   const dispatch = useDispatch();
-  const [isEdit, setIsEdit] = useState(false);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
   if (!post) {

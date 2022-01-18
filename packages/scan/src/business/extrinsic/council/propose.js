@@ -60,7 +60,7 @@ async function handleCouncilPropose(
   };
 
   await insertMotion(obj);
-  await insertMotionPost(extrinsicIndexer, motionHash, null, signer);
+  await insertMotionPost(extrinsicIndexer, fields.hash, null, signer);
   await handleBusinessWhenMotionProposed(
     obj,
     proposalCall,

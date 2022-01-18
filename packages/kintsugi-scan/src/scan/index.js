@@ -12,6 +12,7 @@ const {
 } = require("@subsquare/scan-common");
 const last = require("lodash.last");
 const { scanBlock } = require("./block");
+const { filterOutIgnoredHeights } = require("./ignore");
 
 async function scan() {
   await updateSpecs();
@@ -34,7 +35,8 @@ async function oneStepScan(startHeight) {
   const targetHeight = getTargetHeight(startHeight);
   await checkAndUpdateSpecs(targetHeight);
 
-  const heights = getHeights(startHeight, targetHeight);
+  let heights = getHeights(startHeight, targetHeight);
+  heights = filterOutIgnoredHeights(heights);
   const blocks = await fetchBlocks(heights, false);
   if ((blocks || []).length <= 0) {
     await sleep(1000);
@@ -49,7 +51,6 @@ async function oneStepScan(startHeight) {
       await sleep(1000);
       logger.error(`Error with block scan ${item.height}`, e);
       console.error(`Error with block scan ${item.height}`, e);
-      throw e;
     }
 
     if (item.height % 100000 === 0) {

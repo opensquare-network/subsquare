@@ -3,11 +3,11 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 
 import Layout from "components/layout";
-import Button from "components/button";
+import Button from "next-common/components/button";
 import Input from "components/input";
 import { useForm } from "utils/hooks";
 import nextApi from "services/nextApi";
-import ErrorText from "components/ErrorText";
+import ErrorText from "next-common/components/ErrorText";
 import { useAuthPage } from "utils/hooks";
 import { withLoginUser, withLoginUserRedux } from "../lib";
 import { useDispatch } from "react-redux";

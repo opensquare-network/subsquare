@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { no_scroll_bar } from "../../styles/componentCss";
-import Flex from "../styled/flex";
+import Flex from "next-common/components/styled/flex";
 const Wrapper = styled.div`
   position: fixed;
   width: 100vw;

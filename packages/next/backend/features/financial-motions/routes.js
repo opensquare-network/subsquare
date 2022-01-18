@@ -9,11 +9,23 @@ router.get("/financial-motions", motionsController.getMotions);
 
 router.get("/financial-motions/:postId", motionsController.getMotionById);
 
-router.patch("/financial-motions/:postId", requireAuth, motionsController.updatePost);
+router.patch(
+  "/financial-motions/:postId",
+  requireAuth,
+  motionsController.updatePost
+);
 
-router.post("/financial-motions/:postId/comments", requireAuth, requireVerify, motionsController.postComment);
+router.post(
+  "/financial-motions/:postId/comments",
+  requireAuth,
+  requireVerify,
+  motionsController.postComment
+);
 
-router.get("/financial-motions/:postId/comments", motionsController.getComments);
+router.get(
+  "/financial-motions/:postId/comments",
+  motionsController.getComments
+);
 
 router.put(
   "/financial-motions/:postId/reaction",

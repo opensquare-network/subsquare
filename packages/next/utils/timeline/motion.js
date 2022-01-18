@@ -8,6 +8,7 @@ export function createMotionTimelineData(motion = {}) {
       case "Proposed": {
         return {
           indexer: item.indexer,
+          hash: motion.hash,
           time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
           status: { value: `Motion #${motion.index}`, color: "#6848FF" },
           voting: {
@@ -24,6 +25,7 @@ export function createMotionTimelineData(motion = {}) {
       case "Voted": {
         return {
           indexer: item.indexer,
+          hash: motion.hash,
           time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
           status: { value: "Vote", color: "#6848FF" },
           voteResult: {
@@ -36,6 +38,7 @@ export function createMotionTimelineData(motion = {}) {
       default: {
         return {
           indexer: item.indexer,
+          hash: motion.hash,
           time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
           status: { value: item.method, color: "#6848FF" },
           method: item.method,

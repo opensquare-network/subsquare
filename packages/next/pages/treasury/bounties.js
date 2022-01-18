@@ -1,13 +1,13 @@
 import List from "components/list";
 import Menu from "components/menu";
-import { mainMenu } from "utils/constants";
+import { mainMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
-import { EmptyList } from "utils/constants";
+import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import { toTreasuryBountyListItem } from "utils/viewfuncs";
 import SEO from "components/SEO";
-import Summary from "components/summary";
+import Summary from "next-common/components/summary";
 
 export default withLoginUserRedux(({ loginUser, bounties, chain, siteUrl }) => {
   const items = (bounties.items || []).map((item) =>
@@ -15,7 +15,11 @@ export default withLoginUserRedux(({ loginUser, bounties, chain, siteUrl }) => {
   );
 
   return (
-    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
+    <Layout
+      user={loginUser}
+      left={<Menu menu={mainMenu} chain={chain} />}
+      chain={chain}
+    >
       <SEO
         title={`Treasury Bounties`}
         desc={`Treasury Bounties`}

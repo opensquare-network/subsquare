@@ -2,15 +2,15 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Layout from "components/layout";
-import Back from "components/back";
+import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import Input from "components/input";
 import MarkdownEditor from "components/markdownEditor";
-import Button from "components/button";
+import Button from "next-common/components/button";
 import nextApi from "services/nextApi";
 import PreviewMD from "components/create/previewMD";
 import Toggle from "components/toggle";
-import ErrorText from "components/ErrorText";
+import ErrorText from "next-common/components/ErrorText";
 import InsertContentsModal from "components/editor/modal";
 import QuillEditor from "components/editor/quillEditor";
 import HtmlRender from "components/post/htmlRender";
@@ -219,9 +219,15 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
           {showPreview && (
             <PreviewWrapper className="preview">
               {contentType === "markdown" && (
-                <PreviewMD content={content} setContent={setContent} maxHeight={editorHeight} />
+                <PreviewMD
+                  content={content}
+                  setContent={setContent}
+                  maxHeight={editorHeight}
+                />
               )}
-              {contentType === "html" && <HtmlRender html={content} maxHeight={editorHeight} />}
+              {contentType === "html" && (
+                <HtmlRender html={content} maxHeight={editorHeight} />
+              )}
             </PreviewWrapper>
           )}
           {errors?.data?.content?.[0] && (

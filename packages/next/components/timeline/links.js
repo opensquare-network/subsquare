@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Flex from "../styled/flex";
+import Flex from "next-common/components/styled/flex";
 
 const Wrapper = styled(Flex)`
   height: 20px;
@@ -38,7 +38,8 @@ export default function Links({
   if (!indexer && !address) {
     return null;
   }
-  if (chain === "karura" || chain === "khala" || chain === "basilisk") {
+  const supporttedChains = ["karura", "acala", "khala", "basilisk"];
+  if (supporttedChains.includes(chain)) {
     return (
       <Wrapper style={style}>
         <SubscanLink
@@ -57,17 +58,6 @@ export default function Links({
   }
   return (
     <Wrapper style={style}>
-      <PolkascanLink
-        href={
-          address
-            ? `https://polkascan.io/${chain}/account/${address}`
-            : `https://polkascan.io/${chain}/extrinsic/${indexer.blockHeight}-${
-                indexer.extrinsicIndex ?? indexer.index ?? 0
-              }`
-        }
-        target="_blank"
-        rel="noreferrer"
-      />
       <SubscanLink
         href={
           address

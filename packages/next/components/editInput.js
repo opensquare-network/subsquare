@@ -2,9 +2,9 @@ import styled from "styled-components";
 import { useState } from "react";
 import MarkdownEditor from "components/markdownEditor";
 import Toggle from "components/toggle";
-import Button from "components/button";
+import Button from "next-common/components/button";
 import PreviewMD from "components/create/previewMD";
-import ErrorText from "components/ErrorText";
+import ErrorText from "next-common/components/ErrorText";
 import QuillEditor from "./editor/quillEditor";
 import HtmlRender from "./post/htmlRender";
 import InsertContentsModal from "./editor/modal";
@@ -162,9 +162,15 @@ export default function EditInput({
       {showPreview && (
         <PreviewWrapper className="preview">
           {contentType === "markdown" && (
-            <PreviewMD content={content} setContent={setContent} maxHeight={editorHeight}/>
+            <PreviewMD
+              content={content}
+              setContent={setContent}
+              maxHeight={editorHeight}
+            />
           )}
-          {contentType === "html" && <HtmlRender html={content} maxHeight={editorHeight} />}
+          {contentType === "html" && (
+            <HtmlRender html={content} maxHeight={editorHeight} />
+          )}
         </PreviewWrapper>
       )}
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}

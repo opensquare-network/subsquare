@@ -2,7 +2,9 @@ const { getBusinessTreasuryProposalCollection } = require("../../business");
 
 async function insertProposalPost(proposal) {
   const col = await getBusinessTreasuryProposalCollection();
-  const maybeInDb = await col.findOne({ proposalIndex: proposal.proposalIndex });
+  const maybeInDb = await col.findOne({
+    proposalIndex: proposal.proposalIndex,
+  });
   if (maybeInDb) {
     return;
   }

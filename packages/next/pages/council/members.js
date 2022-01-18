@@ -1,6 +1,6 @@
 import MembersList from "components/membersList/councilMembersList";
 import Menu from "components/menu";
-import { mainMenu } from "utils/constants";
+import { mainMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import Layout from "components/layout";
 import { useApi, useCall } from "utils/hooks";
@@ -13,8 +13,8 @@ export default withLoginUserRedux(({ loginUser, chain, siteUrl }) => {
   const [loading, setLoading] = useState(true);
   const api = useApi(chain);
   const node = getNode(chain);
-  const electionsInfo = useCall(api?.derive.elections.info, []);
-  const allVotes = useCall(api?.derive.council.votes, []);
+  const electionsInfo = useCall(api?.derive?.elections?.info, []);
+  const allVotes = useCall(api?.derive?.council?.votes, []);
   useEffect(() => {
     if (electionsInfo) {
       const votesMap = {};
@@ -39,8 +39,17 @@ export default withLoginUserRedux(({ loginUser, chain, siteUrl }) => {
   }, [electionsInfo, allVotes]);
 
   return (
-    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
-      <SEO title={`Council members`} desc={`Council members`} siteUrl={siteUrl} chain={chain} />
+    <Layout
+      user={loginUser}
+      left={<Menu menu={mainMenu} chain={chain} />}
+      chain={chain}
+    >
+      <SEO
+        title={`Council members`}
+        desc={`Council members`}
+        siteUrl={siteUrl}
+        chain={chain}
+      />
       <MembersList
         chain={chain}
         category={"Council Members"}

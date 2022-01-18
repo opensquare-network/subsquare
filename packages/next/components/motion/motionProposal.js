@@ -23,10 +23,9 @@ const Header = styled.div`
 `;
 
 const ArgsWrapper = styled.div`
-  background: #f6f7fa;
   border-radius: 4px;
   border: 24px solid #f6f7fa;
-  padding-bottom: 24px;
+  border-bottom: 24px solid #f6f7fa !important;
   font-size: 14px;
   line-height: 20px;
   word-wrap: break-word;
@@ -56,7 +55,9 @@ const TagWrapper = styled.div`
 
 const TagItem = styled.div`
   padding: 4px 8px;
-  background: #f6f7fa;
+  &.tag {
+    background: #f6f7fa !important;
+  }
   border-radius: 2px;
   font-weight: 500;
   font-size: 12px;
@@ -80,6 +81,22 @@ function convertProposalForTableView(proposal, chain) {
     args: Object.fromEntries(
       proposal.args.map((arg) => {
         switch (arg.type) {
+          case "OrmlTraitsChangeU128": {
+            if (typeof arg.value === "string") {
+              return [arg.name, new BigNumber(arg.value).toString()];
+            }
+            if (typeof arg.value === "object") {
+              const argHexToString = {};
+              Object.keys(arg.value).map((key) => {
+                if (typeof arg.value[key] === "string") {
+                  argHexToString[key] = new BigNumber(
+                    arg.value[key]
+                  ).toString();
+                }
+              });
+              return [arg.name, argHexToString];
+            }
+          }
           case "Call":
           case "CallOf": {
             return [arg.name, convertProposalForTableView(arg.value, chain)];
@@ -105,6 +122,7 @@ function convertProposalForTableView(proposal, chain) {
             const value = new BigNumber(arg.value).toString();
             return [arg.name, value];
           }
+          case "Compact<BalanceOf>":
           case "Compact<Balance>": {
             const value = new BigNumber(arg.value).toString();
             return [arg.name, value];
@@ -182,25 +200,31 @@ export default function MotionProposal({ motion, chain }) {
         <Header>Call</Header>
         <TagWrapper>
           <TagItem
+            className="tag"
             active={callType === "table"}
             onClick={() => onClick("table")}
           >
             Table
           </TagItem>
-          <TagItem active={callType === "json"} onClick={() => onClick("json")}>
+          <TagItem
+            className="tag"
+            active={callType === "json"}
+            onClick={() => onClick("json")}
+          >
             Json
           </TagItem>
         </TagWrapper>
       </HeaderWrapper>
       {callType === "table" && (
-        <ArgsWrapper>
+        <ArgsWrapper className="wrapper">
           <InnerDataTable
             data={convertProposalForTableView(motion.proposal, chain)}
+            chain={chain}
           />
         </ArgsWrapper>
       )}
       {callType === "json" && (
-        <ArgsWrapper>
+        <ArgsWrapper className="wrapper">
           <JsonView src={convertProposalForJsonView(motion.proposal, chain)} />
         </ArgsWrapper>
       )}

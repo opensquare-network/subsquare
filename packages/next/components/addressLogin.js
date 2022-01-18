@@ -9,19 +9,22 @@ import {
 import { useRouter } from "next/router";
 
 import AddressSelect from "components/addressSelect";
-import Button from "./button";
+import Button from "next-common/components/button";
 import { useIsMounted } from "utils/hooks";
-import DownloadExtension from "components/downloadExtension";
+import DownloadExtension from "next-common/components/downloadExtension";
 import {
   encodeKaruraAddress,
+  encodeAcalaAddress,
   encodeKhalaAddress,
   encodeKusamaAddress,
   encodePolkadotAddress,
   encodeBasiliskAddress,
   signMessage,
+  encodeKabochaAddress,
+  encodeBifrostAddress,
 } from "services/chainApi";
 import nextApi from "services/nextApi";
-import ErrorText from "./ErrorText";
+import ErrorText from "next-common/components/ErrorText";
 import { setUser } from "store/reducers/userSlice";
 import { addToast } from "../store/reducers/toastSlice";
 
@@ -108,8 +111,11 @@ export default function AddressLogin({ chain, onBack }) {
           kusamaAddress: encodeKusamaAddress(address),
           polkadotAddress: encodePolkadotAddress(address),
           karuraAddress: encodeKaruraAddress(address),
+          acalaAddress: encodeAcalaAddress(address),
           khalaAddress: encodeKhalaAddress(address),
           basiliskAddress: encodeBasiliskAddress(address),
+          kabochaAddress: encodeKabochaAddress(address),
+          bifrostAddress: encodeBifrostAddress(address),
           name,
         };
       });

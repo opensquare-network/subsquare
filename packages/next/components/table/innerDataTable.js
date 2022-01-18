@@ -1,5 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import { hexToString, isHex } from "@polkadot/util";
+
 import Placeholder from "./placeholder";
 
 const Wrapper = styled.div`
@@ -73,19 +75,33 @@ const StyledTd = styled.td`
   }
 `;
 
-export default function InnerDataTable({ data, nested = false }) {
-  if (Object.keys(data)?.length === 0) {
+const toStringFieldMap = new Map([
+  ["karura", ["name", "symbol"]],
+  ["acala", ["name", "symbol"]],
+]);
+
+export default function InnerDataTable({ data, chain, nested = false }) {
+  if (Object.keys(data)?.length === 0 && nested === false) {
     return <Placeholder />;
   }
   if (React.isValidElement(data)) {
     return data;
   }
+  const isHexToStringField = (fieldValue, fieldName) => {
+    return (
+      toStringFieldMap.get(chain)?.includes(fieldName) && isHex(fieldValue)
+    );
+  };
 
-  const formatValue = (fieldValue) =>
+  const formatValue = (fieldValue, fieldName) =>
     Array.isArray(fieldValue) ? (
-      <StyledTd style={{ padding: 0 }}>
-        <InnerDataTable data={fieldValue} nested />
-      </StyledTd>
+      fieldValue.length > 0 ? (
+        <StyledTd style={{ padding: 0 }}>
+          <InnerDataTable data={fieldValue} nested chain={chain} />
+        </StyledTd>
+      ) : (
+        <StyledTd style={{ minWidth: 320, padding: "10px 24px" }}>[]</StyledTd>
+      )
     ) : typeof fieldValue === "object" ? (
       fieldValue === null ? (
         <StyledTd style={{ minWidth: 320, padding: "10px 24px" }}>
@@ -97,9 +113,13 @@ export default function InnerDataTable({ data, nested = false }) {
         </StyledTd>
       ) : (
         <StyledTd style={{ padding: 0 }}>
-          <InnerDataTable data={fieldValue} nested />
+          <InnerDataTable data={fieldValue} nested chain={chain} />
         </StyledTd>
       )
+    ) : isHexToStringField(fieldValue, fieldName) ? (
+      <StyledTd style={{ minWidth: 320, padding: "10px 24px" }}>
+        <BreakText>{hexToString(fieldValue)}</BreakText>
+      </StyledTd>
     ) : (
       <StyledTd style={{ minWidth: 320, padding: "10px 24px" }}>
         <BreakText>{fieldValue.toString()}</BreakText>
@@ -150,7 +170,7 @@ export default function InnerDataTable({ data, nested = false }) {
                     >
                       {fieldName}
                     </StyledTd>
-                    {formatValue(fieldValue)}
+                    {formatValue(fieldValue, fieldName)}
                   </StyledTr>
                 );
               })}

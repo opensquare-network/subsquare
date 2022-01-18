@@ -1,4 +1,9 @@
 const { getStatusCollection } = require("./index");
+const {
+  scan: { scanStartHeight },
+  env: { currentChain },
+} = require("@subsquare/scan-common");
+const isNil = require("lodash.isnil");
 
 const genesisHeight = 1;
 const mainScanName = "main-scan-height";
@@ -7,14 +12,22 @@ async function getNextScanHeight() {
   const statusCol = await getStatusCollection();
   const heightInfo = await statusCol.findOne({ name: mainScanName });
 
+  let result = genesisHeight;
   if (!heightInfo) {
-    return genesisHeight;
+    result = genesisHeight;
   } else if (typeof heightInfo.value === "number") {
-    return heightInfo.value + 1;
+    result = heightInfo.value + 1;
   } else {
     console.error("Scan height value error in DB!");
     process.exit(1);
   }
+
+  const startHeight = scanStartHeight[currentChain()];
+  if (!isNil(startHeight) && result < startHeight) {
+    return startHeight;
+  }
+
+  return result;
 }
 
 async function updateScanHeight(height) {

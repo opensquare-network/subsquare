@@ -1,9 +1,9 @@
 import List from "components/list";
 import Menu from "components/menu";
-import { mainMenu } from "utils/constants";
+import { mainMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
-import { EmptyList } from "utils/constants";
+import { EmptyList } from "next-common/utils/constants";
 import styled from "styled-components";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
 import Layout from "components/layout";
@@ -35,8 +35,17 @@ export default withLoginUserRedux(({ loginUser, posts, chain, siteUrl }) => {
   );
 
   return (
-    <Layout user={loginUser} left={<Menu menu={mainMenu} />} chain={chain}>
-      <SEO title={`Discussions`} desc={`Discussions`} siteUrl={siteUrl} chain={chain} />
+    <Layout
+      user={loginUser}
+      left={<Menu menu={mainMenu} chain={chain} />}
+      chain={chain}
+    >
+      <SEO
+        title={`Discussions`}
+        desc={`Discussions`}
+        siteUrl={siteUrl}
+        chain={chain}
+      />
       <List
         chain={chain}
         category={"Discussions"}

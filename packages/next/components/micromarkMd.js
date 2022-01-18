@@ -168,28 +168,23 @@ const Wrapper = styled.div`
 `;
 
 export default function MicromarkMd({ md = "", contentVersion = "" }) {
-  const matchLinkMd = matchMdLink(md);
-  let displayContent = matchLinkMd;
-
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "/prism.js";
-    document.body.appendChild(script);
-  }, []);
-
+  let displayContent = matchMdLink(md);
   if (contentVersion === "2") {
     displayContent = md.replace(/\n+/g, function (ns) {
       if (ns.length === 1) return "  " + ns;
       return ns;
     });
   }
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "/prism.js";
+    document.body.appendChild(script);
+  }, []);
 
   const html = micromark(displayContent, {
     allowDangerousHtml: true,
     extensions: [gfm()],
-    htmlExtensions: [
-      gfmHtml(),
-    ],
+    htmlExtensions: [gfmHtml()],
   });
 
   const cleanHtml = sanitizeHtml(html, {

@@ -11,7 +11,7 @@ const {
   },
 } = require("@subsquare/scan-common");
 
-async function saveNewPublicProposal(event, extrinsic, indexer) {
+async function saveNewPublicProposal(event, indexer, extrinsic) {
   const eventData = event.data.toJSON();
   const [proposalIndex] = eventData;
   const [, hash, proposer] = await getPublicProposalFromStorage(
@@ -35,6 +35,7 @@ async function saveNewPublicProposal(event, extrinsic, indexer) {
       proposer,
     },
     indexer,
+    isFinal: false,
   };
 
   const obj = {
@@ -45,6 +46,7 @@ async function saveNewPublicProposal(event, extrinsic, indexer) {
     proposer,
     state,
     timeline: [timelineItem],
+    techCommMotions: [],
   };
 
   await insertDemocracyPublicProposal(obj);

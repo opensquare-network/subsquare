@@ -1,15 +1,14 @@
 import styled from "styled-components";
 
-import Back from "components/back";
+import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import Comments from "components/comment";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
-import { EmptyList } from "utils/constants";
+import { EmptyList } from "next-common/utils/constants";
 import Input from "components/comment/input";
 import { useState, useRef } from "react";
 import Layout from "components/layout";
-import Metadata from "components/metadata";
 import User from "components/user";
 import { getNode, toPrecision } from "utils";
 import Links from "components/timeline/links";
@@ -24,6 +23,7 @@ import { createMotionTimelineData } from "../../../utils/timeline/motion";
 import sortTimeline from "../../../utils/timeline/sort";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import SEO from "components/SEO";
+import KVList from "next-common/components/kvList";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -175,8 +175,12 @@ export default withLoginUserRedux(
             onReply={focusEditor}
             type={TYPE_TREASURY_BOUNTY}
           />
-          <Metadata data={metadata} />
-          <Timeline data={timelineData} chain={chain} />
+          <KVList title="Metadata" data={metadata} />
+          <Timeline
+            data={timelineData}
+            chain={chain}
+            type={TYPE_TREASURY_BOUNTY}
+          />
           <CommentsWrapper>
             <Comments
               data={comments}

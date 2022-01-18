@@ -13,15 +13,15 @@ import { getMetaDesc, getTipState } from "utils/viewfuncs";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { to404 } from "utils/serverSideUtil";
 
-import Back from "components/back";
+import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import Comments from "components/comment";
-import { ssrNextApi, nextApi } from "services/nextApi";
+import { ssrNextApi as nextApi } from "services/nextApi";
 import Input from "components/comment/input";
 import Layout from "components/layout";
 import Timeline from "components/timeline";
 import User from "components/user";
-import KVList from "components/kvList";
+import KVList from "next-common/components/kvList";
 import Links from "components/timeline/links";
 import ReasonLink from "components/reasonLink";
 import SEO from "components/SEO";
@@ -104,9 +104,7 @@ export default withLoginUserRedux(
     );
 
     const [tipIsFinal, setTipIsFinal] = useState(
-      ["TipClosed", "TipRetracted"].includes(
-        detail?.onchainData?.state?.state
-      )
+      ["TipClosed", "TipRetracted"].includes(detail?.onchainData?.state?.state)
     );
 
     // If the tip is not final, we'd need to look for tip state from the chain first.
@@ -118,11 +116,14 @@ export default withLoginUserRedux(
     const [tips, setTips] = useState(tipsInDb);
 
     const api = useApi(chain);
-    const councilMembers = useCall((api?.query.council || api?.query.generalCouncil)?.members, []);
+    const councilMembers = useCall(
+      (api?.query.council || api?.query.generalCouncil)?.members,
+      []
+    );
     const councilTippers = councilMembers?.toJSON() || [];
-    const userIsTipper = councilTippers?.some(
-      address => loginUser?.addresses?.some(
-        item => item.address === address && item.chain === chain
+    const userIsTipper = councilTippers?.some((address) =>
+      loginUser?.addresses?.some(
+        (item) => item.address === address && item.chain === chain
       )
     );
     // Used to trigger tips updating
@@ -270,7 +271,9 @@ export default withLoginUserRedux(
     const updateTimeline = (tipperAddress) => {
       let times = 6;
       const doUpdate = async () => {
-        const { result: newTipDetail } = await nextApi.fetch(`treasury/tips/${`${detail._id}`}`);
+        const { result: newTipDetail } = await nextApi.fetch(
+          `treasury/tips/${`${detail._id}`}`
+        );
 
         // Check if user's tip is present in DB
         const tipFound = newTipDetail?.onchainData?.meta?.tips?.some(
@@ -287,7 +290,7 @@ export default withLoginUserRedux(
           setTimeout(doUpdate, 10 * 1000);
         }
       };
-      setTimeout(doUpdate, 10 * 1000)
+      setTimeout(doUpdate, 10 * 1000);
     };
 
     const desc = getMetaDesc(detail, "Tip");

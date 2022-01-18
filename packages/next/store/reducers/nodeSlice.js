@@ -4,12 +4,16 @@ import {
   DEFAULT_KUSAMA_NODE_URL,
   DEFAULT_KUSAMA_NODES,
   DEFAULT_KARURA_NODE_URL,
+  DEFAULT_ACALA_NODES,
+  DEFAULT_ACALA_NODE_URL,
   DEFAULT_KARURA_NODES,
   DEFAULT_KHALA_NODE_URL,
   DEFAULT_KHALA_NODES,
   DEFAULT_BASILISK_NODE_URL,
   DEFAULT_BASILISK_NODES,
-} from "utils/constants";
+  DEFAULT_BIFROST_NODES,
+  DEFAULT_BIFROST_NODE_URL,
+} from "next-common/utils/constants";
 
 let nodeUrl = (() => {
   let localNodeUrl = null;
@@ -25,12 +29,18 @@ let nodeUrl = (() => {
     karura:
       DEFAULT_KARURA_NODES.find((item) => item.url === localNodeUrl?.karura)
         ?.url || DEFAULT_KARURA_NODE_URL,
+    acala:
+      DEFAULT_ACALA_NODES.find((item) => item.url === localNodeUrl?.acala)
+        ?.url || DEFAULT_ACALA_NODE_URL,
     khala:
       DEFAULT_KHALA_NODES.find((item) => item.url === localNodeUrl?.khala)
         ?.url || DEFAULT_KHALA_NODE_URL,
     basilisk:
       DEFAULT_BASILISK_NODES.find((item) => item.url === localNodeUrl?.khala)
         ?.url || DEFAULT_BASILISK_NODE_URL,
+    bifrost:
+      DEFAULT_BIFROST_NODES.find((item) => item.url === localNodeUrl?.bifrost)
+        ?.url || DEFAULT_BIFROST_NODE_URL,
   };
 })();
 
@@ -39,8 +49,10 @@ export const getNodeUrl = () => nodeUrl;
 export const getNodes = () => ({
   kusama: DEFAULT_KUSAMA_NODES,
   karura: DEFAULT_KARURA_NODES,
+  acala: DEFAULT_ACALA_NODES,
   khala: DEFAULT_KHALA_NODES,
   basilisk: DEFAULT_BASILISK_NODES,
+  bifrost: DEFAULT_BIFROST_NODES,
 });
 
 const nodeSlice = createSlice({

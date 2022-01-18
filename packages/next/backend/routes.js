@@ -15,6 +15,7 @@ const chainFeatureRouters = [
   require("./features/financial-motions/routes"),
   require("./features/comments/routes"),
   require("./features/overview/routes"),
+  require("./features/inspect/routes"),
 ];
 
 const commonFeatureRouters = [
@@ -28,10 +29,7 @@ module.exports = (app) => {
   }
 
   for (const r of chainFeatureRouters) {
-    router.use(
-      r.routes(),
-      r.allowedMethods({ throw: true })
-    );
+    router.use(r.routes(), r.allowedMethods({ throw: true }));
   }
   app.use(router.routes());
 };

@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
 import styled from "styled-components";
-import KVList from "components/kvList";
-import MultiKVList from "components/multiKVList";
+import KVList from "next-common/components/kvList";
+import MultiKVList from "next-common/components/multiKVList";
 import Link from "next/link";
 
 import User from "components/user";
@@ -11,7 +11,7 @@ import Timeline from "../timeline";
 import { getNode, timeDurationFromNow, toPrecision } from "utils";
 import SectionTag from "components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
-import Flex from "../styled/flex";
+import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "../../styles/componentCss";
 import ArticleContent from "../articleContent";
 import { getPostUpdatedAt, isMotionCompleted } from "../../utils/viewfuncs";
@@ -19,6 +19,7 @@ import { withLoginUserRedux } from "../../lib";
 import { useState } from "react";
 import CapitalText from "../capitalText";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
+import Tag from "components/tag";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -73,17 +74,6 @@ const Title = styled.div`
   font-size: 20px;
   line-height: 140%;
   margin-bottom: 12px;
-`;
-
-const StatusWrapper = styled.div`
-  background: #2196f3;
-  border-radius: 2px;
-  font-weight: 500;
-  font-size: 12px;
-  height: 20px;
-  line-height: 20px;
-  padding: 0 8px;
-  color: #ffffff;
 `;
 
 const Index = styled.div`
@@ -143,181 +133,200 @@ const getClosedTimelineData = (timeline = []) => {
   return [foldItems, ...notFoldItems];
 };
 
-export default withLoginUserRedux(({ loginUser, motion, onReply, chain }) => {
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const [post, setPost] = useState(motion);
-  const decimals = node.decimals;
-  const symbol = node.symbol;
+export default withLoginUserRedux(
+  ({ loginUser, motion, onReply, chain, type }) => {
+    const node = getNode(chain);
+    if (!node) {
+      return null;
+    }
+    const [post, setPost] = useState(motion);
+    const [isEdit, setIsEdit] = useState(false);
+    const decimals = node.decimals;
+    const symbol = node.symbol;
 
-  const postUpdateTime = getPostUpdatedAt(post);
-  const timeline = createMotionTimelineData(motion.onchainData);
+    const postUpdateTime = getPostUpdatedAt(post);
+    const timeline = createMotionTimelineData(motion.onchainData);
 
-  let timelineData;
-  if (isClosed(timeline)) {
-    timelineData = getClosedTimelineData(timeline);
-  } else {
-    timelineData = timeline;
-  }
-
-  let business = [];
-
-  const motionCompleted = isMotionCompleted(motion);
-  if (motionCompleted) {
-    business.push(createMotionBusinessData(motion, chain));
-  }
-
-  if (
-    motion.onchainData.treasuryProposals?.length > 0 ||
-    motion.onchainData.treasuryBounties?.length > 0
-  ) {
-    for (const proposal of motion.onchainData.treasuryProposals) {
-      business.push([
-        [
-          "Link to",
-          <Link
-            href={`/treasury/proposal/${proposal.proposalIndex}`}
-          >{`Treasury Proposal #${proposal.proposalIndex}`}</Link>,
-        ],
-        [
-          "Beneficiary",
-          <Flex>
-            <User chain={chain} add={proposal.meta.beneficiary} fontSize={14} />
-            <Links
-              chain={chain}
-              address={proposal.meta.beneficiary}
-              style={{ marginLeft: 8 }}
-            />
-          </Flex>,
-        ],
-        [
-          "Value",
-          `${toPrecision(proposal.meta.value ?? 0, decimals)} ${symbol}`,
-        ],
-        ["Bond", `${toPrecision(proposal.meta.bond ?? 0, decimals)} ${symbol}`],
-      ]);
+    let timelineData;
+    if (isClosed(timeline)) {
+      timelineData = getClosedTimelineData(timeline);
+    } else {
+      timelineData = timeline;
     }
 
-    for (const bounty of motion.onchainData.treasuryBounties) {
-      const kvData = [];
+    let business = [];
 
-      kvData.push([
-        "Link to",
-        <Link
-          href={`/treasury/bounty/${bounty.bountyIndex}`}
-        >{`Treasury Bounty #${bounty.bountyIndex}`}</Link>,
-      ]);
-
-      const metadata = bounty.meta ? Object.entries(bounty.meta) : [];
-      metadata.forEach((item) => {
-        switch (item[0]) {
-          case "proposer":
-          case "beneficiary":
-            kvData.push([
-              <CapitalText>{item[0]}</CapitalText>,
-              <Flex>
-                <User chain={chain} add={item[1]} fontSize={14} />
-                <Links
-                  chain={chain}
-                  address={item[1]}
-                  style={{ marginLeft: 8 }}
-                />
-              </Flex>,
-            ]);
-            break;
-          case "value":
-          case "bond":
-            kvData.push([
-              <CapitalText>{item[0]}</CapitalText>,
-              `${toPrecision(item[1] ?? 0, decimals)} ${symbol}`,
-            ]);
-            break;
-        }
-      });
-
-      business.push(kvData);
+    const motionCompleted = isMotionCompleted(motion);
+    if (motionCompleted) {
+      business.push(createMotionBusinessData(motion, chain));
     }
-  }
 
-  if (motion?.onchainData?.externalProposals?.length > 0) {
-    motion?.onchainData?.externalProposals?.forEach((external) => {
-      business.push([
-        [
-          "Link to",
-          <Link
-            href={`/democracy/external/${external?.hash}`}
-          >{`Democracy External #${external?.hash?.slice(0, 6)}`}</Link>,
-        ],
-        ["hash", external.hash],
-      ]);
-    });
-  }
-
-  return (
-    <div>
-      <Wrapper>
-        <div>
-          <TitleWrapper>
-            {motion?.motionIndex !== undefined && (
-              <Index>{`#${motion.motionIndex}`}</Index>
-            )}
-            <Title>{post?.title}</Title>
-          </TitleWrapper>
-          <FlexWrapper>
-            <DividerWrapper>
+    if (
+      motion.onchainData.treasuryProposals?.length > 0 ||
+      motion.onchainData.treasuryBounties?.length > 0
+    ) {
+      for (const proposal of motion.onchainData.treasuryProposals) {
+        business.push([
+          [
+            "Link to",
+            <Link
+              href={`/treasury/proposal/${proposal.proposalIndex}`}
+            >{`Treasury Proposal #${proposal.proposalIndex}`}</Link>,
+          ],
+          [
+            "Beneficiary",
+            <Flex>
               <User
-                user={motion?.author}
-                add={motion.proposer}
                 chain={chain}
-                fontSize={12}
+                add={proposal.meta.beneficiary}
+                fontSize={14}
               />
-              {motion.isTreasury && <SectionTag name={"Treasury"} />}
-              {motion?.onchainData?.externalProposals?.length > 0 && (
-                <SectionTag name={"Democracy"} />
-              )}
-              {postUpdateTime && (
-                <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
-              )}
-            </DividerWrapper>
-            {motion.state && <StatusWrapper>{motion.state}</StatusWrapper>}
-          </FlexWrapper>
+              <Links
+                chain={chain}
+                address={proposal.meta.beneficiary}
+                style={{ marginLeft: 8 }}
+              />
+            </Flex>,
+          ],
+          [
+            "Value",
+            `${toPrecision(proposal.meta.value ?? 0, decimals)} ${symbol}`,
+          ],
+          [
+            "Bond",
+            `${toPrecision(proposal.meta.bond ?? 0, decimals)} ${symbol}`,
+          ],
+        ]);
+      }
+
+      for (const bounty of motion.onchainData.treasuryBounties) {
+        const kvData = [];
+
+        kvData.push([
+          "Link to",
+          <Link
+            href={`/treasury/bounty/${bounty.bountyIndex}`}
+          >{`Treasury Bounty #${bounty.bountyIndex}`}</Link>,
+        ]);
+
+        const metadata = bounty.meta ? Object.entries(bounty.meta) : [];
+        metadata.forEach((item) => {
+          switch (item[0]) {
+            case "proposer":
+            case "beneficiary":
+              kvData.push([
+                <CapitalText>{item[0]}</CapitalText>,
+                <Flex>
+                  <User chain={chain} add={item[1]} fontSize={14} />
+                  <Links
+                    chain={chain}
+                    address={item[1]}
+                    style={{ marginLeft: 8 }}
+                  />
+                </Flex>,
+              ]);
+              break;
+            case "value":
+            case "bond":
+              kvData.push([
+                <CapitalText>{item[0]}</CapitalText>,
+                `${toPrecision(item[1] ?? 0, decimals)} ${symbol}`,
+              ]);
+              break;
+          }
+        });
+
+        business.push(kvData);
+      }
+    }
+
+    if (motion?.onchainData?.externalProposals?.length > 0) {
+      motion?.onchainData?.externalProposals?.forEach((external) => {
+        business.push([
+          [
+            "Link to",
+            <Link
+              href={`/democracy/external/${external?.hash}`}
+            >{`Democracy External #${external?.hash?.slice(0, 6)}`}</Link>,
+          ],
+          ["hash", external.hash],
+        ]);
+      });
+    }
+
+    return (
+      <div>
+        <Wrapper>
+          {!isEdit && (
+            <div>
+              <TitleWrapper>
+                {motion?.motionIndex !== undefined && (
+                  <Index>{`#${motion.motionIndex}`}</Index>
+                )}
+                <Title>{post?.title}</Title>
+              </TitleWrapper>
+              <FlexWrapper>
+                <DividerWrapper>
+                  <User
+                    user={motion?.author}
+                    add={motion.proposer}
+                    chain={chain}
+                    fontSize={12}
+                  />
+                  {motion.isTreasury && <SectionTag name={"Treasury"} />}
+                  {motion?.onchainData?.externalProposals?.length > 0 && (
+                    <SectionTag name={"Democracy"} />
+                  )}
+                  {postUpdateTime && (
+                    <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
+                  )}
+                </DividerWrapper>
+                {motion.state && <Tag name={motion.state} />}
+              </FlexWrapper>
+            </div>
+          )}
           <ArticleContent
             chain={chain}
             post={post}
             setPost={setPost}
             user={loginUser}
             onReply={onReply}
-            type="motion"
+            type={type}
+            isEdit={isEdit}
+            setIsEdit={setIsEdit}
           />
-        </div>
-      </Wrapper>
+        </Wrapper>
 
-      <MultiKVList title="Business" data={business} />
+        <MultiKVList title="Business" data={business} />
 
-      <KVList
-        title={"Metadata"}
-        data={[
-          [
-            "Proposer",
-            <>
-              <User add={motion?.onchainData?.proposer} fontSize={14} />
-              <Links
-                chain={chain}
-                address={motion?.onchainData?.proposer}
-                style={{ marginLeft: 8 }}
-              />
-            </>,
-          ],
-          ["Index", motion?.motionIndex],
-          ["Threshold", motion?.onchainData?.threshold],
-          ["Hash", motion?.onchainData?.hash],
-          [<MotionProposal motion={motion.onchainData} chain={chain} />],
-        ]}
-      />
+        <KVList
+          title={"Metadata"}
+          data={[
+            [
+              "Proposer",
+              <>
+                <User add={motion?.onchainData?.proposer} fontSize={14} />
+                <Links
+                  chain={chain}
+                  address={motion?.onchainData?.proposer}
+                  style={{ marginLeft: 8 }}
+                />
+              </>,
+            ],
+            ["Index", motion?.motionIndex],
+            ["Threshold", motion?.onchainData?.threshold],
+            ["Hash", motion?.onchainData?.hash],
+            [<MotionProposal motion={motion.onchainData} chain={chain} />],
+          ]}
+        />
 
-      <Timeline data={timelineData} chain={chain} indent={false} />
-    </div>
-  );
-});
+        <Timeline
+          data={timelineData}
+          chain={chain}
+          indent={false}
+          type={type}
+        />
+      </div>
+    );
+  }
+);

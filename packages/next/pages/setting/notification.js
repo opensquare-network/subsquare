@@ -2,9 +2,9 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 
 import Toggle from "components/toggle";
-import Button from "components/button";
+import Button from "next-common/components/button";
 import Menu from "components/menu";
-import { settingMenu } from "utils/constants";
+import { settingMenu } from "next-common/utils/constants";
 import { useAuthPage } from "utils/hooks";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";

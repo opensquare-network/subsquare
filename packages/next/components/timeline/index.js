@@ -35,7 +35,7 @@ const TitleWrapper = styled.div`
   }
 `;
 
-export default function Timeline({ data, chain, indent = true }) {
+export default function Timeline({ data, chain, indent = true, type = "" }) {
   if (!timelineData || timelineData?.length === 0) {
     return null;
   }
@@ -51,9 +51,14 @@ export default function Timeline({ data, chain, indent = true }) {
       {data.map((item, index) => (
         <Fragment key={index}>
           {Array.isArray(item) ? (
-            <FoldableItem data={item} chain={chain} indent={indent} />
+            <FoldableItem
+              data={item}
+              chain={chain}
+              indent={indent}
+              type={type}
+            />
           ) : (
-            <Item data={item} chain={chain} />
+            <Item data={item} chain={chain} type={type} />
           )}
         </Fragment>
       ))}

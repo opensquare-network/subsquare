@@ -1,3 +1,4 @@
+const { handleUsed } = require("./used");
 const { handleNoted } = require("./noted");
 const {
   business: {
@@ -14,6 +15,8 @@ async function handlePreImageEvent(event, indexer) {
 
   if (PreImageEvents.PreimageNoted === method) {
     await handleNoted(event, indexer);
+  } else if (PreImageEvents.PreimageUsed === method) {
+    await handleUsed(event, indexer);
   }
 }
 
