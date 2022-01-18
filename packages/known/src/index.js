@@ -1,4 +1,6 @@
 require("dotenv").config();
+
+const { getFinancialMotionHeights } = require("./heights/financialMotion");
 const { closeKnownClient } = require("./mongo/knownHeight");
 const { closeDataDbClient } = require("./mongo/data");
 
@@ -13,6 +15,9 @@ const { getReferendumHeights } = require("./heights/democracyReferendum");
 const { getPreImageHeights } = require("./heights/preImage");
 const { getTechCommHeights } = require("./heights/techComm");
 const { getTreasuryProposalHeights } = require("./heights/treasuryProposal");
+const {
+  env: { isKarura },
+} = require("@subsquare/scan-common");
 
 const { saveKnownHeights } = require("./mongo/service/known");
 
@@ -37,6 +42,11 @@ async function main() {
   await saveKnownHeights(referendumHeights);
   const imageHeights = await getPreImageHeights();
   await saveKnownHeights(imageHeights);
+
+  if (isKarura()) {
+    const financialHeights = await getFinancialMotionHeights();
+    await saveKnownHeights(financialHeights);
+  }
 }
 
 main()

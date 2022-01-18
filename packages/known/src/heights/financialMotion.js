@@ -1,7 +1,7 @@
-const { getMotionCollection } = require("../mongo/data");
+const { getFinancialMotionCollection } = require("../mongo/data");
 
-async function getMotionHeights() {
-  const col = await getMotionCollection();
+async function getFinancialMotionHeights() {
+  const col = await getFinancialMotionCollection();
   const motions = await col.find({}).toArray();
 
   const heights = [];
@@ -17,5 +17,5 @@ async function getMotionHeights() {
 }
 
 module.exports = {
-  getMotionHeights,
+  getFinancialMotionHeights,
 };
