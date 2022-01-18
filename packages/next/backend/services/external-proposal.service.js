@@ -80,7 +80,13 @@ async function getActivePostsOverview() {
   const proposals = await chainDemocracyCol
     .find({
       "state.state": {
-        $nin: ["Tabled", "ExternalTabled", "fastTrack", "Vetoed"],
+        $nin: [
+          "Tabled",
+          "ExternalTabled",
+          "fastTrack",
+          "Vetoed",
+          "Overwritten",
+        ],
       },
     })
     .sort({ "indexer.blockHeight": -1 })
