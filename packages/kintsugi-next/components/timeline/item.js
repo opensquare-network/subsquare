@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import Links from "./links";
 import Voting from "./voting";
 import User from "components/user";
-import Tag from "components/tag";
+import Tag from "next-common/components/tag";
 import Flex from "next-common/components/styled/flex";
 
 const Wrapper = styled.div`
