@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 import Post from "./post";
-import Pagination from "./pagination";
-import EmptyList from "./emptyList";
+import Pagination from "next-common/components/pagination";
+import EmptyList from "next-common/components/emptyList";
 import Flex from "next-common/components/styled/flex";
 
 const Wrapper = styled.div`
