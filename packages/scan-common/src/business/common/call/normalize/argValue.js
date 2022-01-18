@@ -1,5 +1,6 @@
+const { normalizeKhalaArg } = require("./khala");
 const { normalizeKaruraArg } = require("./karura");
-const { isKarura } = require("../../../../env");
+const { isKarura, isPhala } = require("../../../../env");
 
 const balanceTypes = ["Balance", "Compact<BalanceOf>", "Compact<Balance>"];
 
@@ -10,6 +11,8 @@ function normalizeArgValue(type, name, value) {
 
   if (isKarura()) {
     return normalizeKaruraArg(...arguments);
+  } else if (isPhala()) {
+    return normalizeKhalaArg(...arguments);
   }
 
   return value.toJSON();

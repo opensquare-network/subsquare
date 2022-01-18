@@ -37,6 +37,10 @@ function isKarura() {
   return [CHAINS.KARURA, CHAINS.ACALA].includes(currentChain());
 }
 
+function isPhala() {
+  return [CHAINS.KHALA].includes(currentChain());
+}
+
 function isUseMetaDb() {
   return useMetaDb;
 }
@@ -57,4 +61,5 @@ module.exports = {
   isUseMetaDb,
   doScanKnownFirst,
   getScanStep,
+  isPhala,
 };
