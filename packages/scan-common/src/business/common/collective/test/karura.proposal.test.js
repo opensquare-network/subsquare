@@ -122,7 +122,7 @@ const targetCall = {
                 {
                   name: "value",
                   type: "Compact<Balance>",
-                  value: 10000000000000,
+                  value: "10000000000000",
                 },
               ],
             },
