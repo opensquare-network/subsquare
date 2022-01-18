@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import User from "components/user";
 import { getNode, timeDuration, timeDurationFromNow, toPrecision } from "utils";
-import Tag from "components/tag";
+import Tag from "next-common/components/tag";
 import ReasonLink from "components/reasonLink";
 import SectionTag from "components/sectionTag";
 import Flex from "next-common/components/styled/flex";

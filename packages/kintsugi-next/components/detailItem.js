@@ -6,7 +6,7 @@ import { timeDurationFromNow } from "utils";
 import nextApi from "services/nextApi";
 import User from "components/user";
 import TriangleRight from "public/imgs/icons/arrow-triangle-right.svg";
-import Tag from "components/tag";
+import Tag from "next-common/components/tag";
 import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "styles/componentCss";
 import { getPostUpdatedAt, toApiType } from "utils/viewfuncs";

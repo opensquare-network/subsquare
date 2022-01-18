@@ -12,7 +12,7 @@ import TriangleRight from "../public/imgs/icons/arrow-triangle-right.svg";
 import Link from "next/link";
 import User from "./user";
 import { timeDurationFromNow } from "../utils";
-import Tag from "./tag";
+import Tag from "next-common/components/tag";
 import EditIcon from "../public/imgs/icons/edit.svg";
 import HtmlRender from "./post/htmlRender";
 import Actions from "./actions";

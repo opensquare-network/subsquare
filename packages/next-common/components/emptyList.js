@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "../styles/componentCss";
@@ -9,7 +10,6 @@ const Wrapper = styled(Flex)`
   ${shadow_100};
   border-radius: 6px;
   padding: 24px;
-
   font-style: normal;
   font-weight: normal;
   font-size: 14px;

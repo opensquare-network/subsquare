@@ -19,7 +19,7 @@ import { withLoginUserRedux } from "../../lib";
 import { useState } from "react";
 import CapitalText from "../capitalText";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
-import Tag from "components/tag";
+import Tag from "next-common/components/tag";
 
 const Wrapper = styled.div`
   background: #ffffff;

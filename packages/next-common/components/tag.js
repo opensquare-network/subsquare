@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import {
   TYPE_COUNCIL_MOTION,
@@ -5,7 +6,7 @@ import {
   TYPE_TECH_COMM_MOTION,
   TYPE_TREASURY_BOUNTY,
   TYPE_TREASURY_PROPOSAL,
-} from "utils/viewConstants";
+} from "../utils/viewConstants";
 
 const Wrapper = styled.div`
   padding: 4px 8px;
