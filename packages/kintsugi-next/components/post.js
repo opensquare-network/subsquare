@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Link from "next/link";
 
-import User from "components/user";
+import User from "next-common/components/user";
 import { getNode, timeDuration, timeDurationFromNow, toPrecision } from "utils";
 import Tag from "next-common/components/tag";
 import ReasonLink from "components/reasonLink";

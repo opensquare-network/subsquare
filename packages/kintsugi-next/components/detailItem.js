@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { timeDurationFromNow } from "utils";
 import nextApi from "services/nextApi";
-import User from "components/user";
+import User from "next-common/components/user";
 import TriangleRight from "public/imgs/icons/arrow-triangle-right.svg";
 import Tag from "next-common/components/tag";
 import Flex from "next-common/components/styled/flex";

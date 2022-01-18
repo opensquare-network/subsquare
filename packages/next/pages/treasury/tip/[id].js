@@ -13,7 +13,7 @@ import Layout from "components/layout";
 import { getTimelineStatus, getNode, toPrecision } from "utils";
 import Timeline from "components/timeline";
 import dayjs from "dayjs";
-import User from "components/user";
+import User from "next-common/components/user";
 import KVList from "next-common/components/kvList";
 import Links from "components/timeline/links";
 import ReasonLink from "components/reasonLink";

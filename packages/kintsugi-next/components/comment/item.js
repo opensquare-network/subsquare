@@ -11,7 +11,7 @@ import UnfoldIcon from "public/imgs/icons/unfold.svg";
 import FoldIcon from "public/imgs/icons/fold.svg";
 import { useDispatch } from "react-redux";
 import { addToast } from "store/reducers/toastSlice";
-import User from "components/user";
+import User from "next-common/components/user";
 import EditInput from "components/editInput";
 import { useRouter } from "next/router";
 import Flex from "next-common/components/styled/flex";

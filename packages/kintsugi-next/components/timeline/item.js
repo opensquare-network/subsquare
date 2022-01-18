@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import Links from "./links";
 import Voting from "./voting";
-import User from "components/user";
+import User from "next-common/components/user";
 import Tag from "next-common/components/tag";
 import Flex from "next-common/components/styled/flex";
 

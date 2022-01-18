@@ -3,22 +3,12 @@ import { useState } from "react";
 import { toApiType } from "../utils/viewfuncs";
 import nextApi from "../services/nextApi";
 import { addToast } from "../store/reducers/toastSlice";
-import {
-  TYPE_DEMOCRACY_EXTERNAL,
-  TYPE_DEMOCRACY_PROPOSAL,
-  TYPE_DEMOCRACY_REFERENDUM,
-} from "../utils/viewConstants";
-import TriangleRight from "../public/imgs/icons/arrow-triangle-right.svg";
-import Link from "next/link";
-import User from "./user";
-import { timeDurationFromNow } from "../utils";
-import Tag from "next-common/components/tag";
+import User from "next-common/components/user";
 import EditIcon from "../public/imgs/icons/edit.svg";
 import HtmlRender from "./post/htmlRender";
 import Actions from "./actions";
 import PostEdit from "./post/postEdit";
 import styled, { css } from "styled-components";
-import Flex from "next-common/components/styled/flex";
 import MicromarkMd from "./micromarkMd";
 
 const Wrapper = styled.div`
@@ -29,38 +19,10 @@ const Wrapper = styled.div`
   }
 `;
 
-const TitleWrapper = styled.div`
-  margin-bottom: 8px;
-  overflow: hidden;
-  > :not(:first-child) {
-    ::before {
-      content: "·";
-      font-size: 20px;
-      line-height: 28px;
-      color: #9da9bb;
-      margin: 0 8px;
-    }
-  }
-`;
-
-const Title = styled.div`
-  max-width: 750px;
-  word-break: break-all;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 140%;
-  margin-bottom: 12px;
-`;
-
 const Divider = styled.div`
   height: 1px;
   background: #ebeef4;
   margin: 16px 0;
-`;
-
-const FlexWrapper = styled(Flex)`
-  justify-content: space-between;
-  flex-wrap: nowrap;
 `;
 
 const PlaceHolder = styled.div`
@@ -74,41 +36,6 @@ const PlaceHolder = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const Info = styled.div`
-  font-size: 12px;
-  color: #506176;
-`;
-
-const DividerWrapper = styled(Flex)`
-  flex-wrap: wrap;
-
-  > :not(:first-child) {
-    ::before {
-      content: "·";
-      font-size: 12px;
-      color: #9da9bb;
-      margin: 0 8px;
-    }
-  }
-`;
-
-const TypeWrapper = styled.div`
-  display: inline-block;
-  height: 20px;
-  line-height: 20px;
-  border-radius: 10px;
-  background: #1e2134;
-  color: #e81f66;
-  font-weight: 500;
-  font-size: 12px;
-  padding: 0 8px;
-  ${(p) =>
-    p.color &&
-    css`
-      background: ${p.color};
-    `}
 `;
 
 const GreyWrapper = styled.div`
@@ -156,13 +83,6 @@ const Edit = styled.div`
     margin-left: 8px;
     margin-right: 4px;
   }
-`;
-
-const Index = styled.div`
-  float: left;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 140%;
 `;
 
 export default function ArticleContent({

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import User from "components/user";
+import User from "next-common/components/user";
 import Progress from "./progress";
 import Flex from "next-common/components/styled/flex";
 
