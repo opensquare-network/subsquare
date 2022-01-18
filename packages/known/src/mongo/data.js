@@ -1,4 +1,7 @@
 const { MongoClient } = require("mongodb");
+const {
+  env: { isKarura },
+} = require("@subsquare/scan-common");
 
 function getDbName() {
   return process.env.MONGO_DB_NAME || "business-chain-table";
@@ -18,6 +21,7 @@ let democracyReferendumCol = null;
 let democracyExternalCol = null;
 let preImageCol = null;
 let bountyCol = null;
+let financialMotionCol = null;
 
 async function initDb() {
   client = await MongoClient.connect(mongoUrl, {
@@ -35,6 +39,9 @@ async function initDb() {
   preImageCol = db.collection("democracyPreImage");
 
   bountyCol = db.collection("bounty");
+  if (isKarura()) {
+    financialMotionCol = db.collection("financialMotion");
+  }
 }
 
 async function tryInit(col) {
@@ -92,6 +99,11 @@ async function closeDataDbClient() {
   await client.close();
 }
 
+async function getFinancialMotionCollection() {
+  await tryInit(financialMotionCol);
+  return financialMotionCol;
+}
+
 module.exports = {
   getTipCollection,
   getMotionCollection,
@@ -103,4 +115,5 @@ module.exports = {
   getDemocracyPreImageCollection,
   getBountyCollection,
   closeDataDbClient,
+  ...(isKarura() ? { getFinancialMotionCollection } : {}),
 };

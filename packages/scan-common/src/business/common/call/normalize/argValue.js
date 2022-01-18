@@ -1,22 +1,7 @@
+const { normalizeKaruraArg } = require("./karura");
 const { isKarura } = require("../../../../env");
-const { hexToString } = require("@polkadot/util");
 
 const balanceTypes = ["Balance", "Compact<BalanceOf>", "Compact<Balance>"];
-
-function normalizeKaruraArg(type, name, value) {
-  if (
-    type === "ModuleAssetRegistryModuleAssetMetadata" &&
-    name === "metadata"
-  ) {
-    const rawJSON = value.toJSON();
-    rawJSON.name = hexToString(value.name.toHex());
-    rawJSON.symbol = hexToString(value.symbol.toHex());
-
-    return rawJSON;
-  }
-
-  return value.toJSON();
-}
 
 function normalizeArgValue(type, name, value) {
   if (balanceTypes.includes(type)) {
