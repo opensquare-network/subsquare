@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file.
 
+
+## v1.8.1
+### Fixed
+- Metadata display fixup
+
+## v1.8.0
+### Fixed
+- Support Kintsugi fixup
+- Shared UI components between next & dedicated kintsugi-next projects
+
+## v1.7.2
+### Added
+- Support Acala
+- Support Kintsugi
+- Handle with FastTrack event
+
+## v1.7.1
+### Fixed
+
+- GitHub Flavored Markdown support fixup
+
+
+## v1.7.0
+### Added
+
+- Support Bifrost
+### Fixed
+
+- Metadata display issues
+
+
+## v1.6.8
+### Added
+
+- Support Kabocha
+### Fixed
+
+- Karura onchain Treasury summary display
+
 ## v1.6.7
 
 ### Fixed
