@@ -112,6 +112,7 @@ function convertProposalForTableView(proposal, chain) {
             if (
               (proposal.section === "phalaRegistry" &&
                 proposal.method === "addPruntime") ||
+              proposal.method === "removePruntime" ||
               (proposal.section === "system" && proposal.method === "setCode")
             ) {
               return [arg.name, <LongText text={arg.value} key="0" />];

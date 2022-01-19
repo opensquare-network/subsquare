@@ -3,7 +3,7 @@ import { useState } from "react";
 import { toApiType } from "utils/viewfuncs";
 import nextApi from "services/nextApi";
 import { addToast } from "store/reducers/toastSlice";
-import User from "./user";
+import User from "next-common/components/user";
 import EditIcon from "public/imgs/icons/edit.svg";
 import HtmlRender from "./post/htmlRender";
 import Actions from "./actions";

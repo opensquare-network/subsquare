@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import Item from "./item";
-import Pagination from "components/pagination";
+import Pagination from "next-common/components/pagination";
 import NoComment from "./noComment";
 import LoginButtons from "./loginButtons";
 

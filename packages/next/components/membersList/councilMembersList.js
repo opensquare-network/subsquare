@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import Flex from "next-common/components/styled/flex";
 import { getNode, toPrecision, bigNumber2Locale, decimalPlaces } from "utils";
-import User from "components/user";
+import User from "next-common/components/user";
 import { Fragment, useState } from "react";
 import LoadingSvg from "public/imgs/icons/members-loading.svg";
 

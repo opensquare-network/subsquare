@@ -4,7 +4,7 @@ import KVList from "next-common/components/kvList";
 import MultiKVList from "next-common/components/multiKVList";
 import Link from "next/link";
 
-import User from "components/user";
+import User from "next-common/components/user";
 import MotionProposal from "./motionProposal";
 import Links from "../timeline/links";
 import Timeline from "../timeline";
@@ -19,7 +19,7 @@ import { withLoginUserRedux } from "../../lib";
 import { useState } from "react";
 import CapitalText from "../capitalText";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
-import Tag from "components/tag";
+import Tag from "next-common/components/tag";
 
 const Wrapper = styled.div`
   background: #ffffff;
