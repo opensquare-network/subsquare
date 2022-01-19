@@ -2,7 +2,6 @@
 import styled from "styled-components";
 import { useApi, useCall } from "utils/hooks";
 import { useEffect, useState, useRef } from "react";
-import dayjs from "dayjs";
 import findLastIndex from "lodash.findlastindex";
 
 import { withLoginUser, withLoginUserRedux } from "lib";
