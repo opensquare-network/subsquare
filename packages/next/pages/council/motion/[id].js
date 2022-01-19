@@ -9,7 +9,7 @@ import { to404 } from "utils/serverSideUtil";
 import { TYPE_COUNCIL_MOTION } from "utils/viewConstants";
 import { getMetaDesc, isMotionCompleted } from "../../../utils/viewfuncs";
 import { EmptyList } from "next-common/utils/constants";
-import Comments from "../../../components/comment";
+import Comments from "next-common/components/comment";
 import Input from "../../../components/comment/input";
 import { shadow_100 } from "../../../styles/componentCss";
 import {
