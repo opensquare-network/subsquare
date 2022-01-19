@@ -54,6 +54,7 @@ module.exports = {
   initDb,
   getDb,
   lookupUser,
+  getCollection,
   getUserCollection: () => getCollection("user"),
   getAttemptCollection: () => getCollection("attempt"),
 };

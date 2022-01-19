@@ -8,9 +8,9 @@ const {
 const { HttpError } = require("../../exc");
 const mailService = require("../../services/mail.service");
 const { validateAddress, isValidSignature } = require("../../utils");
-const { SupportChains } = require("../../constants");
 
 async function getUserProfile(ctx) {
+  const chain = process.env.CHAIN;
   const user = ctx.user;
 
   ctx.body = {
@@ -25,16 +25,14 @@ async function getUserProfile(ctx) {
       mention: user.notification?.mention ?? true,
       thumbsUp: user.notification?.thumbsUp ?? false,
     },
-    addresses: SupportChains.reduce((addresses, chain) => {
-      const address = user[`${chain}Address`];
-      if (address) {
-        addresses.push({
-          chain,
-          address,
-        });
-      }
-      return addresses;
-    }, []),
+    addresses: user[`${chain}Address`]
+      ? [
+          {
+            chain,
+            address: user[`${chain}Address`],
+          }
+        ]
+      : [],
   };
 }
 
@@ -282,7 +280,7 @@ async function setUserNotification(ctx) {
   );
 
   if (!result.acknowledged) {
-    throw new HttpError(500, "Db error, update notification settings");
+    throw new HttpError(500, "Db error, update notification setting");
   }
 
   ctx.body = true;
@@ -307,7 +305,7 @@ async function setUserPreference(ctx) {
   );
 
   if (!result.acknowledged) {
-    throw new HttpError(500, "Db error, update notification settings");
+    throw new HttpError(500, "Db error, update notification setting");
   }
 
   ctx.body = true;

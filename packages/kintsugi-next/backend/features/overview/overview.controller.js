@@ -1,5 +1,5 @@
 const NodeCache = require( "node-cache" );
-const discussionPostService = require("../../services/post.service")("post");
+const discussionPostService = require("@subsquare/backend-common/services/post.service")("post");
 const treasuryProposalPostService = require("../../services/treasury-proposal.service");
 const publicProposalPostService = require("../../services/public-proposal.service");
 const referendumPostService = require("../../services/referendum.service");

@@ -1982,6 +1982,27 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.0.0.tgz#8863915676f837d9dad7b76f50cb500c1e9422e9"
   integrity sha512-2pTGuibAXJswAPJjaKisthqS/NOK5ypG4LYT6tEAV0S/mxW0zOIvYvGK0V8w8+SHxAm6vRMSjqSalFXeBAqs+Q==
 
+"@subsquare/backend-common@file:packages/backend-common":
+  version "1.0.0"
+  dependencies:
+    "@alicloud/pop-core" "^1.7.10"
+    "@koa/cors" "^3.1.0"
+    argon2 "^0.28.2"
+    cheerio "^1.0.0-rc.10"
+    cookies "^0.8.0"
+    dotenv "^10.0.0"
+    handlebars "^4.7.7"
+    jsonwebtoken "^8.5.1"
+    koa "^2.13.1"
+    koa-bodyparser "^4.3.0"
+    koa-helmet "^6.1.0"
+    koa-logger "^3.2.1"
+    koa-router "^10.0.0"
+    md5 "^2.3.0"
+    mongodb "^4.1.3"
+    validator "^13.7.0"
+    xss "^1.0.9"
+
 "@subsquare/next-common@file:packages/next-common":
   version "1.0.0"
   dependencies:
