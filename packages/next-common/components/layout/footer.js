@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
-import ElementIcon from "../public/imgs/icons/element.svg";
-import MailIcon from "../public/imgs/icons/mail.svg";
-import FooterLogo from "../public/imgs/icons/footerLogo.svg";
+import ElementIcon from "next-common/assets/imgs/icons/element.svg";
+import MailIcon from "next-common/assets/imgs/icons/mail.svg";
+import FooterLogo from "next-common/assets/imgs/icons/footerLogo.svg";
 import ExternalLink from "next-common/components/externalLink";
 
 const Wrapper = styled.footer`

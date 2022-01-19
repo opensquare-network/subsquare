@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import Header from "./header";
-import Content from "./content";
+import Content from "next-common/components/layout/content";
 import Toast from "components/toast";
 import Auth from "components/auth";
 

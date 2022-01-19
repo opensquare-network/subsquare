@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { no_scroll_bar } from "../styles/componentCss";
+import { no_scroll_bar } from "next-common/styles/componentCss";
 import Main from "next-common/components/main";
-import Footer from "./footer";
+import Footer from "next-common/components/layout/footer";
 
 const Wrapper = styled.div`
   width: 100%;
