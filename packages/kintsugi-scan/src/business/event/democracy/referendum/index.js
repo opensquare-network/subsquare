@@ -24,7 +24,7 @@ async function handleReferendumEvent(event, indexer, extrinsic, blockEvents) {
 
   if (ReferendumEvents.Started === method) {
     // note: referendum discovery will be done by 2 points
-    // 1. Democracy#Tabled, we insert referendum when handling assets proposal
+    // 1. Democracy#Tabled, we insert referendum when handling public proposal
     // 2. FastTrack extrinsic
   } else if (ReferendumEvents.Executed === method) {
     await handleExecuted(event, indexer);
