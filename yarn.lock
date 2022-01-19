@@ -1852,17 +1852,10 @@
     micro-base "^0.10.2"
     tweetnacl "^1.0.3"
 
-<<<<<<< HEAD
-"@polkadot/util@8.2.2":
-  version "8.2.2"
-  resolved "https://registry.npmjs.org/@polkadot/util/-/util-8.2.2.tgz#e3b30b90ade18032a28ac237dfa939adce43f2f4"
-  integrity sha512-tiHe0rcQvofd3vUVCRmvfULAv9yBG7s/huv1ZLVY/JGT1JBDonc1HWU3Vdb5MvWpx2R+HHv19ORHyD/LiROE9A==
-=======
 "@polkadot/util@8.3.1", "@polkadot/util@^8.2.2", "@polkadot/util@^8.3.1":
   version "8.3.1"
   resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-8.3.1.tgz#64be69a6758c86aaa4ee136b8a59d94788b943d9"
   integrity sha512-0jkxqDKBd9Tl7DeIrazNOsvo4rVlWIfxU+Xn021rBLjKZwfWICRuEcywpZ8D3AS9ZpUxymb8VAAu77wkCG2j4Q==
->>>>>>> main
   dependencies:
     "@babel/runtime" "^7.16.7"
     "@polkadot/x-bigint" "8.3.1"
