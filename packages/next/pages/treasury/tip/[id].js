@@ -1,37 +1,50 @@
 /* eslint-disable react/jsx-key */
 import styled from "styled-components";
+import { useApi, useCall } from "utils/hooks";
+import { useEffect, useState, useRef } from "react";
+import findLastIndex from "lodash.findlastindex";
+
+import { withLoginUser, withLoginUserRedux } from "lib";
+import { EmptyList } from "next-common/utils/constants";
+import { getTimelineStatus, getNode, toPrecision } from "utils";
+import { TYPE_TREASURY_TIP } from "utils/viewConstants";
+import { getMetaDesc, getTipState } from "utils/viewfuncs";
+import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
+import { to404 } from "utils/serverSideUtil";
 
 import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import Comments from "next-common/components/comment";
-import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
-import { EmptyList } from "next-common/utils/constants";
 import Input from "next-common/components/comment/input";
-import { useState, useRef } from "react";
 import Layout from "components/layout";
-import { getTimelineStatus, getNode, toPrecision } from "utils";
 import Timeline from "components/timeline";
 import dayjs from "dayjs";
 import User from "next-common/components/user";
 import KVList from "next-common/components/kvList";
 import Links from "components/timeline/links";
 import ReasonLink from "components/reasonLink";
-import { TYPE_TREASURY_TIP } from "utils/viewConstants";
-import { getMetaDesc, getTipState } from "utils/viewfuncs";
-import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
-import findLastIndex from "lodash.findlastindex";
-import { shadow_100 } from "styles/componentCss";
-import { to404 } from "utils/serverSideUtil";
 import SEO from "components/SEO";
+import Tipper from "components/tipper";
+
+import { shadow_100 } from "styles/componentCss";
+
+const OutWrapper = styled.div`
+  display: flex;
+  max-width: 1080px;
+  margin: 0 auto;
+  position: relative;
+`;
 
 const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
-
-  max-width: 848px;
-  margin: auto;
+  max-width: 768px;
+  @media screen and (max-width: 1444px) {
+    max-width: 848px;
+    margin: 0 auto;
+  }
 `;
 
 const CommentsWrapper = styled.div`
@@ -79,7 +92,8 @@ const getClosedTimelineData = (timeline = []) => {
 };
 
 export default withLoginUserRedux(
-  ({ loginUser, detail, comments, chain, siteUrl }) => {
+  ({ loginUser, detail: tip, comments, chain, siteUrl }) => {
+    const [detail, setDetail] = useState(tip);
     const postId = detail._id;
 
     const editorWrapperRef = useRef(null);
@@ -88,6 +102,49 @@ export default withLoginUserRedux(
     const [contentType, setContentType] = useState(
       loginUser?.preference.editor || "markdown"
     );
+
+    const [tipIsFinal, setTipIsFinal] = useState(
+      ["TipClosed", "TipRetracted"].includes(detail?.onchainData?.state?.state)
+    );
+
+    // If the tip is not final, we'd need to look for tip state from the chain first.
+    const shouldGetTipsFromNode = !tipIsFinal;
+    const tipHash = detail?.onchainData?.hash;
+    const tipsInDb = detail?.onchainData?.meta?.tips || [];
+
+    const [loading, setLoading] = useState(shouldGetTipsFromNode);
+    const [tips, setTips] = useState(tipsInDb);
+
+    const api = useApi(chain);
+    const councilMembers = useCall(
+      (api?.query.council || api?.query.generalCouncil)?.members,
+      []
+    );
+    const councilTippers = councilMembers?.toJSON() || [];
+    const userIsTipper = councilTippers?.some((address) =>
+      loginUser?.addresses?.some(
+        (item) => item.address === address && item.chain === chain
+      )
+    );
+    // Used to trigger tips updating
+    const [tipsNeedUpdate, setTipsNeedUpdate] = useState(Date.now());
+
+    useEffect(() => {
+      if (shouldGetTipsFromNode && api) {
+        api.query.tips.tips(tipHash).then((tip) => {
+          const normalizedTip = tip.toJSON();
+          if (normalizedTip) {
+            // Repalce the tips read from db with the current on-chain state
+            setTips(normalizedTip?.meta?.tips);
+          } else {
+            // If the tip is null,
+            // It is considered to have been closed/retracted already
+            setTipIsFinal(true);
+          }
+          setLoading(false);
+        });
+      }
+    }, [api, shouldGetTipsFromNode, tipHash, tipsNeedUpdate]);
 
     const node = getNode(chain);
     if (!node) {
@@ -206,6 +263,36 @@ export default withLoginUserRedux(
       ],
     ];
 
+    const updateTips = () => {
+      // Trigger tips update
+      setTipsNeedUpdate(Date.now());
+    };
+
+    const updateTimeline = (tipperAddress) => {
+      let times = 6;
+      const doUpdate = async () => {
+        const { result: newTipDetail } = await nextApi.fetch(
+          `treasury/tips/${`${detail._id}`}`
+        );
+
+        // Check if user's tip is present in DB
+        const tipFound = newTipDetail?.onchainData?.meta?.tips?.some(
+          ([address]) => address === tipperAddress
+        );
+        if (tipFound) {
+          setDetail(newTipDetail);
+          return;
+        }
+
+        // Do next update
+        times--;
+        if (times > 0) {
+          setTimeout(doUpdate, 10 * 1000);
+        }
+      };
+      setTimeout(doUpdate, 10 * 1000);
+    };
+
     const desc = getMetaDesc(detail, "Tip");
     return (
       <Layout user={loginUser} chain={chain}>
@@ -215,38 +302,56 @@ export default withLoginUserRedux(
           siteUrl={siteUrl}
           chain={chain}
         />
-        <Wrapper className="post-content">
-          <Back href={`/treasury/tips`} text="Back to Tips" />
-          <DetailItem
-            data={detail}
-            user={loginUser}
-            chain={chain}
-            onReply={focusEditor}
-            type={TYPE_TREASURY_TIP}
-          />
-
-          <KVList title="Metadata" data={metadata} />
-          <Timeline data={timeline} chain={chain} indent={false} />
-          <CommentsWrapper>
-            <Comments
-              data={comments}
+        <OutWrapper>
+          <Wrapper className="post-content">
+            <Back href={`/treasury/tips`} text="Back to Tips" />
+            <DetailItem
+              data={detail}
               user={loginUser}
-              postId={postId}
               chain={chain}
-              onReply={onReply}
+              onReply={focusEditor}
+              type={TYPE_TREASURY_TIP}
             />
-            {loginUser && (
-              <Input
+            <KVList title="Metadata" data={metadata} />
+            <Tipper
+              chain={chain}
+              tipIsFinal={tipIsFinal}
+              userIsTipper={userIsTipper}
+              loading={loading}
+              tips={tips}
+              councilTippers={councilTippers}
+              tipHash={tipHash}
+              updateTips={updateTips}
+              updateTimeline={updateTimeline}
+            />
+            <Timeline data={timeline} chain={chain} indent={false} />
+            <CommentsWrapper>
+              <Comments
+                data={comments}
+                user={loginUser}
                 postId={postId}
                 chain={chain}
-                ref={editorWrapperRef}
-                setQuillRef={setQuillRef}
-                {...{ contentType, setContentType, content, setContent, users }}
-                type={TYPE_TREASURY_TIP}
+                onReply={onReply}
               />
-            )}
-          </CommentsWrapper>
-        </Wrapper>
+              {loginUser && (
+                <Input
+                  postId={postId}
+                  chain={chain}
+                  ref={editorWrapperRef}
+                  setQuillRef={setQuillRef}
+                  {...{
+                    contentType,
+                    setContentType,
+                    content,
+                    setContent,
+                    users,
+                  }}
+                  type={TYPE_TREASURY_TIP}
+                />
+              )}
+            </CommentsWrapper>
+          </Wrapper>
+        </OutWrapper>
       </Layout>
     );
   }

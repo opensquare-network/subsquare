@@ -5,6 +5,7 @@ import Flex from "./styled/flex";
 
 const Wrapper = styled(Flex)`
   font-size: 16px;
+  line-height: 16px;
   font-weight: bold;
   cursor: pointer;
 

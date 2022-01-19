@@ -33,3 +33,11 @@ hr {
 #nprogress .peg {
   box-shadow: 0 0 10px #6848ff, 0 0 5px #6848ff !important;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
