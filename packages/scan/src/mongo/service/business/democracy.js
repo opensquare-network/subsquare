@@ -109,7 +109,7 @@ async function updateDemocracyExternalPostWithReferendumIndex(
   );
 }
 
-// Will executed when previous assets or external proposal not detected
+// Will executed when previous public or external proposal not detected
 async function insertReferendumPostSolo(referendumIndex) {
   const col = await getBusinessDemocracy();
   const maybeInDb = await col.findOne({ referendumIndex });
