@@ -3,7 +3,7 @@ const { setKarura } = require("../../../../../test/kar");
 const { getPublicProposalFromStorage } = require("../storage");
 jest.setTimeout(3000000);
 
-describe("test democracy public proposals", () => {
+describe("test democracy assets proposals", () => {
   beforeAll(async () => {
     await setKarura();
   });

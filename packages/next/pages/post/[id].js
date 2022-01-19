@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
-import Comments from "components/comment";
+import Comments from "next-common/components/comment";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import Input from "components/comment/input";
+import Input from "next-common/components/comment/input";
 import { useState, useRef } from "react";
 import Layout from "components/layout";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
