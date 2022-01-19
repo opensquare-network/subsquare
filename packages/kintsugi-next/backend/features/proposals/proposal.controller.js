@@ -1,8 +1,8 @@
-const { HttpError } = require("../../exc");
-const postService = require("../../services/post.service")("treasuryProposal");
+const { HttpError } = require("@subsquare/backend-common/exc");
+const postService = require("@subsquare/backend-common/services/post.service")("treasuryProposal");
 const treasuryProposalPostService = require("../../services/treasury-proposal.service");
-const { ContentType } = require("../../constants");
-const { extractPage } = require("../../utils");
+const { ContentType } = require("@subsquare/backend-common/constants");
+const { extractPage } = require("@subsquare/backend-common/utils");
 
 async function updatePost(ctx) {
   const { postId } = ctx.params;

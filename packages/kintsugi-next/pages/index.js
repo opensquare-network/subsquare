@@ -68,7 +68,7 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
   isSafari(context);
-  const { result } = await nextApi.fetch(`overview`);
+  const { result, error } = await nextApi.fetch(`overview`);
 
   return {
     props: {
