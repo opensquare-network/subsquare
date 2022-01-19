@@ -8,7 +8,7 @@ import Input from "components/input";
 import MarkdownEditor from "components/markdownEditor";
 import Button from "next-common/components/button";
 import nextApi from "services/nextApi";
-import PreviewMD from "components/create/previewMD";
+import PreviewMD from "next-common/components/previewMD";
 import Toggle from "components/toggle";
 import ErrorText from "next-common/components/ErrorText";
 import InsertContentsModal from "components/editor/modal";

@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import MarkdownEditor from "next-common/components/markdownEditor";
 import Toggle from "next-common/components/toggle";
 import Button from "next-common/components/button";
-import PreviewMD from "next-common/components/create/previewMD";
+import PreviewMD from "next-common/components/previewMD";
 import nextApi from "services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import QuillEditor from "../editor/quillEditor";
@@ -12,7 +12,7 @@ import HtmlRender from "../post/htmlRender";
 import InsertContentsModal from "../editor/modal";
 import { fetchUserProfile } from "store/reducers/userSlice";
 import { useDispatch } from "react-redux";
-import Relative from "components/relative";
+import Relative from "next-common/components/styled/relative";
 import Flex from "next-common/components/styled/flex";
 import { toApiType } from "utils/viewfuncs";
 
