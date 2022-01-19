@@ -14,9 +14,9 @@ import { to404 } from "utils/serverSideUtil";
 
 import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
-import Comments from "components/comment";
+import Comments from "next-common/components/comment";
 import { ssrNextApi as nextApi } from "services/nextApi";
-import Input from "components/comment/input";
+import Input from "next-common/components/comment/input";
 import Layout from "components/layout";
 import Timeline from "components/timeline";
 import dayjs from "dayjs";

@@ -3,11 +3,11 @@ import { useState } from "react";
 import MarkdownEditor from "components/markdownEditor";
 import Toggle from "components/toggle";
 import Button from "next-common/components/button";
-import PreviewMD from "components/create/previewMD";
+import PreviewMD from "next-common/components/previewMD";
 import ErrorText from "next-common/components/ErrorText";
-import QuillEditor from "./editor/quillEditor";
+import QuillEditor from "next-common/components/editor/quillEditor";
 import HtmlRender from "./post/htmlRender";
-import InsertContentsModal from "./editor/modal";
+import InsertContentsModal from "next-common/components/editor/modal";
 
 const Wrapper = styled.div`
   margin-top: 8px;

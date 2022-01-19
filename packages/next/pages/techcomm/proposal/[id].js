@@ -14,7 +14,7 @@ import {
   getOnReply,
 } from "../../../utils/post";
 import { useRef, useState } from "react";
-import Comments from "../../../components/comment";
+import Comments from "next-common/components/comment";
 import Input from "../../../components/comment/input";
 import { shadow_100 } from "../../../styles/componentCss";
 import { to404 } from "../../../utils/serverSideUtil";
