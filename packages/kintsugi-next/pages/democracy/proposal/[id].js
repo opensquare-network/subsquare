@@ -10,7 +10,7 @@ import { EmptyList } from "next-common/utils/constants";
 import Input from "components/comment/input";
 import { useState, useRef } from "react";
 import Layout from "components/layout";
-import User from "components/user";
+import User from "next-common/components/user";
 import { getNode, toPrecision } from "utils";
 import Link from "next/link";
 import Links from "components/timeline/links";

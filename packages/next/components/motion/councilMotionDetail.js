@@ -4,7 +4,7 @@ import KVList from "next-common/components/kvList";
 import MultiKVList from "next-common/components/multiKVList";
 import Link from "next/link";
 
-import User from "components/user";
+import User from "next-common/components/user";
 import MotionProposal from "./motionProposal";
 import Links from "../timeline/links";
 import Timeline from "../timeline";

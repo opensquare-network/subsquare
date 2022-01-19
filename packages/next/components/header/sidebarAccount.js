@@ -6,7 +6,7 @@ import Button from "next-common/components/button";
 import { accountMenu } from "next-common/utils/constants";
 import { logout } from "store/reducers/userSlice";
 import { nodes } from "next-common/utils/constants";
-import User from "components/user";
+import User from "next-common/components/user";
 import NodeSwitch from "components/nodeSwitch";
 import Flex from "next-common/components/styled/flex";
 

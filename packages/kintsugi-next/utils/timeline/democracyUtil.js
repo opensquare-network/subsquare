@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import dayjs from "dayjs";
 import { toPrecision, getTimelineStatus } from "utils";
-import User from "components/user";
+import User from "next-common/components/user";
 
 const DepositorsWrapper = styled.div`
   display: flex;
