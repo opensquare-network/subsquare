@@ -11,4 +11,8 @@ module.exports = {
   ...require("./common/collective/voting"),
   ...require("./common/collective/title"),
   ...require("./collective"),
+  ...require("./treasuryProposal/proposed"),
+  ...require("./treasuryProposal/awarded"),
+  ...require("./treasuryProposal/rejected"),
+  ...require("./treasuryProposal/common"),
 };

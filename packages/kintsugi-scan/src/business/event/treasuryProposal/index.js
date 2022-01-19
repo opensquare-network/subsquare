@@ -1,8 +1,6 @@
-const {
-  saveNewTreasuryProposal,
-  handleTreasuryProposalAwarded,
-  handleTreasuryProposalRejected,
-} = require("./store");
+const { handleAwarded } = require("./awarded");
+const { handleRejected } = require("./rejected");
+const { handleProposed } = require("./proposed");
 const {
   business: {
     consts: { TreasuryProposalEvents },
@@ -17,11 +15,11 @@ async function handleTreasuryEvent(event, indexer, events, extrinsic) {
   }
 
   if (TreasuryProposalEvents.Proposed === method) {
-    await saveNewTreasuryProposal(...arguments);
+    await handleProposed(...arguments);
   } else if (TreasuryProposalEvents.Rejected === method) {
-    await handleTreasuryProposalRejected(...arguments);
+    await handleRejected(...arguments);
   } else if (TreasuryProposalEvents.Awarded === method) {
-    await handleTreasuryProposalAwarded(...arguments);
+    await handleAwarded(...arguments);
   }
 }
 
