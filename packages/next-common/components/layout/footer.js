@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import ElementIcon from "next-common/assets/imgs/icons/element.svg";

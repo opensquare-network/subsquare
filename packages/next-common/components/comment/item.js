@@ -1,5 +1,5 @@
+import React from "react";
 import styled, { css } from "styled-components";
-
 import { timeDurationFromNow } from "next-common/utils";
 import Edit from "components/edit";
 import HtmlRender from "../post/htmlRender";
