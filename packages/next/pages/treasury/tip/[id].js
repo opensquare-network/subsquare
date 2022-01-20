@@ -16,7 +16,7 @@ import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import Comments from "next-common/components/comment";
 import { ssrNextApi as nextApi } from "services/nextApi";
-import Input from "next-common/components/comment/input";
+import Editor from "next-common/components/comment/editor";
 import Layout from "components/layout";
 import Timeline from "components/timeline";
 import dayjs from "dayjs";
@@ -334,7 +334,7 @@ export default withLoginUserRedux(
                 onReply={onReply}
               />
               {loginUser && (
-                <Input
+                <Editor
                   postId={postId}
                   chain={chain}
                   ref={editorWrapperRef}

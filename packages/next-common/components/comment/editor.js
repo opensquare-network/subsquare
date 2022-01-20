@@ -56,7 +56,7 @@ const PreviewWrapper = styled.div`
   }
 `;
 
-function Input(
+function Editor(
   {
     postId,
     isEdit,
@@ -241,4 +241,4 @@ function Input(
   );
 }
 
-export default React.forwardRef(Input);
+export default React.forwardRef(Editor);

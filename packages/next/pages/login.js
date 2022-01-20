@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 
 import Layout from "components/layout";
 import Button from "next-common/components/button";
-import Input from "components/input";
+import Input from "next-common/components/input";
 import { useForm } from "utils/hooks";
 import nextApi from "services/nextApi";
 import ErrorText from "next-common/components/ErrorText";

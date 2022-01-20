@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import Input from "components/input";
+import Input from "next-common/components/input";
 import Button from "next-common/components/button";
 import DeleteAccount from "components/deleteAccount";
 import Menu from "next-common/components/menu";

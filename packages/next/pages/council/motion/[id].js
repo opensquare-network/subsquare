@@ -10,7 +10,7 @@ import { TYPE_COUNCIL_MOTION } from "utils/viewConstants";
 import { getMetaDesc, isMotionCompleted } from "../../../utils/viewfuncs";
 import { EmptyList } from "next-common/utils/constants";
 import Comments from "next-common/components/comment";
-import Input from "next-common/components/comment/input";
+import Editor from "next-common/components/comment/editor";
 import { shadow_100 } from "../../../styles/componentCss";
 import {
   getFocusEditor,
@@ -87,7 +87,7 @@ export default withLoginUserRedux(
               onReply={onReply}
             />
             {loginUser && (
-              <Input
+              <Editor
                 postId={motion._id}
                 chain={chain}
                 ref={editorWrapperRef}

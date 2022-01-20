@@ -7,7 +7,7 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import Comments from "next-common/components/comment";
-import Input from "next-common/components/comment/input";
+import Editor from "next-common/components/comment/editor";
 import { useEffect, useRef, useState } from "react";
 import DetailItem from "components/detailItem";
 import KVList from "next-common/components/kvList";
@@ -156,7 +156,7 @@ export default withLoginUserRedux(
               onReply={onReply}
             />
             {loginUser && (
-              <Input
+              <Editor
                 postId={detail._id}
                 chain={chain}
                 ref={editorWrapperRef}
