@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Layout from "components/layout";
 import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import Input from "components/input";
+import Input from "next-common/components/input";
 import MarkdownEditor from "components/markdownEditor";
 import Button from "next-common/components/button";
 import nextApi from "services/nextApi";

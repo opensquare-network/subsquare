@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 
-import Input from "components/input";
+import Input from "next-common/components/input";
 import EditInput from "components/editInput";
 import nextApi from "services/nextApi";
 import { toApiType } from "utils/viewfuncs";

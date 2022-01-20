@@ -15,7 +15,7 @@ import {
 } from "../../../utils/post";
 import { useRef, useState } from "react";
 import Comments from "next-common/components/comment";
-import Input from "next-common/components/comment/input";
+import Editor from "next-common/components/comment/editor";
 import { shadow_100 } from "../../../styles/componentCss";
 import { to404 } from "../../../utils/serverSideUtil";
 import { EmptyList } from "next-common/utils/constants";
@@ -86,7 +86,7 @@ export default withLoginUserRedux(
               onReply={onReply}
             />
             {loginUser && (
-              <Input
+              <Editor
                 postId={motion._id}
                 chain={chain}
                 ref={editorWrapperRef}
