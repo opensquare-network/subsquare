@@ -95,7 +95,7 @@ export default function Menu({ menu, chain }) {
   iconMap.set("techCommMembers", <MembersIcon />);
   iconMap.set("financialCouncilMembers", <MembersIcon />);
   iconMap.set("financialMotions", <MotionIcon />);
-  return <h1>FUCK</h1>;
+
   return (
     <Wrapper>
       {menu.map((item, index) => {
