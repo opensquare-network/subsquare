@@ -1,5 +1,5 @@
 import MembersList from "components/membersList/techCommMembersList";
-import Menu from "components/menu";
+import Menu from "next-common/components/menu";
 import { mainMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import Layout from "components/layout";

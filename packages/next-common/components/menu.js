@@ -1,18 +1,18 @@
 import styled, { css } from "styled-components";
-import { Fragment } from "react";
+import React, { Fragment } from "react";
 import { useRouter } from "next/router";
-import OverviewIcon from "../public/imgs/icons/overview.svg";
-import DiscussionIcon from "../public/imgs/icons/discussions.svg";
-import TipIcon from "../public/imgs/icons/tips.svg";
-import ProposalIcon from "../public/imgs/icons/proposals.svg";
-import MotionIcon from "../public/imgs/icons/type-motions.svg";
-import ReferendaIcon from "../public/imgs/icons/type-referenda.svg";
-import DemocracyProposalIcon from "../public/imgs/icons/type-proposals.svg";
-import UserIcon from "../public/imgs/icons/user.svg";
-import AddressIcon from "../public/imgs/icons/address.svg";
-import BellIcon from "../public/imgs/icons/bell.svg";
-import MembersIcon from "../public/imgs/icons/members.svg";
-import BountyIcon from "../public/imgs/icons/bounties.svg";
+import OverviewIcon from "../assets/imgs/icons/overview.svg";
+import DiscussionIcon from "../assets/imgs/icons/discussions.svg";
+import TipIcon from "../assets/imgs/icons/tips.svg";
+import ProposalIcon from "../assets/imgs/icons/proposals.svg";
+import MotionIcon from "../assets/imgs/icons/type-motions.svg";
+import ReferendaIcon from "../assets/imgs/icons/type-referenda.svg";
+import DemocracyProposalIcon from "../assets/imgs/icons/type-proposals.svg";
+import UserIcon from "../assets/imgs/icons/user.svg";
+import AddressIcon from "../assets/imgs/icons/address.svg";
+import BellIcon from "../assets/imgs/icons/bell.svg";
+import MembersIcon from "../assets/imgs/icons/members.svg";
+import BountyIcon from "../assets/imgs/icons/bounties.svg";
 import Link from "next/link";
 
 const Wrapper = styled.div`
