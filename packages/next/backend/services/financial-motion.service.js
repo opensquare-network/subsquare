@@ -214,7 +214,7 @@ async function getMotionById(postId) {
   return {
     ...post,
     reactions,
-    author,
+    author: toUserPublicInfo(author),
     state: chainMotion.state?.state,
     authors: chainMotion.authors,
     onchainData: chainMotion,
