@@ -1,19 +1,23 @@
 const { md5 } = require("../utils");
 
-const toUserPublicInfo = (item) => {
+const toUserPublicInfo = (user) => {
+  if (!user) {
+    return null;
+  }
+
   const chain = process.env.CHAIN;
-  return ({
-    username: item.username,
-    emailMd5: md5(item.email.trim().toLocaleLowerCase()),
-    addresses: item[`${chain}Address`]
+  return {
+    username: user.username,
+    emailMd5: md5(user.email.trim().toLocaleLowerCase()),
+    addresses: user[`${chain}Address`]
       ? [
           {
             chain,
-            address: item[`${chain}Address`],
+            address: user[`${chain}Address`],
           }
         ]
       : [],
-  });
+  };
 }
 
 module.exports = {

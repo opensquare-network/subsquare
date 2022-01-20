@@ -321,7 +321,7 @@ async function getMotionById(postId) {
       publicProposals,
     },
     state: chainMotion.state?.state,
-    author,
+    author: toUserPublicInfo(author),
     reactions,
   };
 }

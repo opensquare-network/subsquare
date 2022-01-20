@@ -329,7 +329,7 @@ async function getMotionById(postId) {
       externalProposals,
     },
     state: chainMotion.state?.state,
-    author,
+    author: toUserPublicInfo(author),
     reactions,
   };
 }

@@ -250,7 +250,7 @@ async function getPostById(postId) {
 
   return {
     ...post,
-    author,
+    author: toUserPublicInfo(author),
     authors: chainReferendum.authors,
     onchainData: chainReferendum,
   };

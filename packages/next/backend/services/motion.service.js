@@ -386,7 +386,7 @@ async function getMotionById(postId) {
     hash: chainMotion.hash,
     height: chainMotion.indexer.blockHeight,
     indexer: chainMotion.indexer,
-    author,
+    author: toUserPublicInfo(author),
     state: chainMotion.state?.state,
     authors:
       postType === "treasuryProposal"
