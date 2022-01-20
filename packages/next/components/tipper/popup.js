@@ -2,9 +2,7 @@ import styled, { css } from "styled-components";
 import { useRef, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import {
-  web3FromAddress,
-} from "@polkadot/extension-dapp";
+import { web3FromAddress } from "@polkadot/extension-dapp";
 import BigNumber from "bignumber.js";
 import {
   encodeKaruraAddress,
@@ -130,7 +128,12 @@ export default function Popup({
   const [inputTipValue, setInputTipValue] = useState();
   const [tipping, setTipping] = useState(false);
   const [balance, setBalance] = useState();
-  const [extensionAccounts, hasExtension, isExtensionAccessible, extensionDetecting] = useExtensionAccounts("subsquare");
+  const [
+    extensionAccounts,
+    hasExtension,
+    isExtensionAccessible,
+    extensionDetecting,
+  ] = useExtensionAccounts("subsquare");
   const node = getNode(chain);
 
   const selectedAccountIsTipper = councilTippers.includes(
@@ -150,8 +153,8 @@ export default function Popup({
           addToast({
             type: "error",
             message: "Polkadot-js extension not detected",
-          }
-        ));
+          })
+        );
       }
 
       return;
@@ -165,30 +168,31 @@ export default function Popup({
           addToast({
             type: "error",
             message: "Polkadot-js extension is detected but unaccessible",
-          }
-        ));
+          })
+        );
       }
 
       return;
     }
 
-    const accounts = extensionAccounts.map(
-      ({
-        address,
-        meta: { name },
-      }) => ({
-        address,
-        kusamaAddress: encodeKusamaAddress(address),
-        polkadotAddress: encodePolkadotAddress(address),
-        karuraAddress: encodeKaruraAddress(address),
-        khalaAddress: encodeKhalaAddress(address),
-        basiliskAddress: encodeBasiliskAddress(address),
-        name,
-      })
-    );
+    const accounts = extensionAccounts.map(({ address, meta: { name } }) => ({
+      address,
+      kusamaAddress: encodeKusamaAddress(address),
+      polkadotAddress: encodePolkadotAddress(address),
+      karuraAddress: encodeKaruraAddress(address),
+      khalaAddress: encodeKhalaAddress(address),
+      basiliskAddress: encodeBasiliskAddress(address),
+      name,
+    }));
 
     setAccounts(accounts);
-  }, [extensionAccounts, hasExtension, isExtensionAccessible, extensionDetecting, isMounted]);
+  }, [
+    extensionAccounts,
+    hasExtension,
+    isExtensionAccessible,
+    extensionDetecting,
+    isMounted,
+  ]);
 
   useEffect(() => {
     if (accounts && accounts.length > 0 && !selectedAccount) {
@@ -321,55 +325,57 @@ export default function Popup({
     }
   };
 
+  if (!hasExtension || !isExtensionAccessible) {
+    return null;
+  }
+
   return (
-    hasExtension && isExtensionAccessible && (
-      <Background>
-        <Wrapper ref={ref}>
-          <TopWrapper>
-            <div>Tip</div>
-            <img onClick={onClose} src="/imgs/icons/close.svg" alt="" />
-          </TopWrapper>
-          <Info danger={!selectedAccountIsTipper}>
-            Only council members can tip.
-          </Info>
-          <div>
-            <LabelWrapper>
-              <Label>Address</Label>
-              {balance && (
-                <BalanceWrapper>
-                  <div>Balance</div>
-                  <div>{balance}</div>
-                </BalanceWrapper>
-              )}
-            </LabelWrapper>
-            <AddressSelect
-              chain={chain}
-              accounts={accounts}
-              selectedAccount={selectedAccount}
-              onSelect={(account) => {
-                setSelectedAccount(account);
-              }}
-            />
-          </div>
-          <div>
-            <Label>Tip Value</Label>
-            <TipInput
-              value={inputTipValue}
-              setValue={setInputTipValue}
-              symbol={node?.symbol}
-            />
-          </div>
-          <ButtonWrapper>
-            {selectedAccountIsTipper && api && inputTipValue ? (
-              <Button secondary isLoading={tipping} onClick={doEndorse}>
-                Endorse
-              </Button>
-            ) : (
-              <Button disabled>Endorse</Button>
+    <Background>
+      <Wrapper ref={ref}>
+        <TopWrapper>
+          <div>Tip</div>
+          <img onClick={onClose} src="/imgs/icons/close.svg" alt="" />
+        </TopWrapper>
+        <Info danger={!selectedAccountIsTipper}>
+          Only council members can tip.
+        </Info>
+        <div>
+          <LabelWrapper>
+            <Label>Address</Label>
+            {balance && (
+              <BalanceWrapper>
+                <div>Balance</div>
+                <div>{balance}</div>
+              </BalanceWrapper>
             )}
-          </ButtonWrapper>
-        </Wrapper>
-      </Background>
-    )
+          </LabelWrapper>
+          <AddressSelect
+            chain={chain}
+            accounts={accounts}
+            selectedAccount={selectedAccount}
+            onSelect={(account) => {
+              setSelectedAccount(account);
+            }}
+          />
+        </div>
+        <div>
+          <Label>Tip Value</Label>
+          <TipInput
+            value={inputTipValue}
+            setValue={setInputTipValue}
+            symbol={node?.symbol}
+          />
+        </div>
+        <ButtonWrapper>
+          {selectedAccountIsTipper && api && inputTipValue ? (
+            <Button secondary isLoading={tipping} onClick={doEndorse}>
+              Endorse
+            </Button>
+          ) : (
+            <Button disabled>Endorse</Button>
+          )}
+        </ButtonWrapper>
+      </Wrapper>
+    </Background>
   );
 }
