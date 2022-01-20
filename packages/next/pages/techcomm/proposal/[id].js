@@ -15,7 +15,7 @@ import {
 } from "../../../utils/post";
 import { useRef, useState } from "react";
 import Comments from "next-common/components/comment";
-import Input from "../../../components/comment/input";
+import Input from "next-common/components/comment/input";
 import { shadow_100 } from "../../../styles/componentCss";
 import { to404 } from "../../../utils/serverSideUtil";
 import { EmptyList } from "next-common/utils/constants";
