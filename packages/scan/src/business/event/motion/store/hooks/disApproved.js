@@ -8,8 +8,8 @@ const {
   business: {
     consts: { TreasuryProposalEvents, BountyStatus },
     getBountyMeta,
+    isStateChangeBountyMotionCall,
   },
-  isStateChangeBountyMotionCall,
 } = require("@subsquare/scan-common");
 
 async function handleBounty(bountyIndex, indexer) {
