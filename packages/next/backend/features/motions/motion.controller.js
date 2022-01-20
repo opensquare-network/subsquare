@@ -1,7 +1,7 @@
 const motionService = require("../../services/motion.service");
-const { ContentType } = require("../../constants");
-const { extractPage,  } = require("../../utils");
-const { HttpError } = require("../../exc");
+const { ContentType } = require("@subsquare/backend-common/constants");
+const { extractPage,  } = require("@subsquare/backend-common/utils");
+const { HttpError } = require("@subsquare/backend-common/exc");
 
 async function updatePost(ctx) {
   const { postId } = ctx.params;

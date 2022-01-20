@@ -1,9 +1,9 @@
 const { ObjectId } = require("mongodb");
-const { HttpError } = require("../exc");
-const { ContentType, Day } = require("../constants");
-const { PostTitleLengthLimitation } = require("../constants");
-const { safeHtml, extractMentions } = require("../utils/post");
-const { toUserPublicInfo } = require("../utils/user");
+const { HttpError } = require("@subsquare/backend-common/exc");
+const { ContentType, Day } = require("@subsquare/backend-common/constants");
+const { PostTitleLengthLimitation } = require("@subsquare/backend-common/constants");
+const { safeHtml, extractMentions } = require("@subsquare/backend-common/utils/post");
+const { toUserPublicInfo } = require("@subsquare/backend-common/utils/user");
 const {
   getMotionCollection: getChainMotionCollection,
   getTreasuryProposalCollection: getChainTreasuryProposalCollection,
@@ -13,7 +13,7 @@ const {
   getDb: getCommonDb,
   getUserCollection,
   lookupUser,
-} = require("../mongo/common");
+} = require("@subsquare/backend-common/mongo/common");
 const {
   getDb: getBusinessDb,
   getMotionCollection,
@@ -22,7 +22,7 @@ const {
   getCommentCollection,
   getReactionCollection,
 } = require("../mongo/business");
-const mailService = require("./mail.service");
+const mailService = require("@subsquare/backend-common/services/mail.service");
 
 async function findMotion(postId) {
   const q = {};
