@@ -51,10 +51,7 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
   return (
     <Layout
       user={loginUser}
-      left={
-        // <Menu menu={mainMenu} chain={chain} />
-        <h1>fuck</h1>
-      }
+      left={<Menu menu={mainMenu} chain={chain} />}
       chain={chain}
     >
       <SEO
