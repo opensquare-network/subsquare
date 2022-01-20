@@ -129,10 +129,9 @@ export default function Tipper({
     );
   }
 
-  let action = null;
-
+  let action;
   if (tipIsFinal) {
-    action = <Description>This tip has been cloesd.</Description>;
+    action = <Description>This tip has been closed.</Description>;
   } else if (userIsTipper) {
     action = (
       <Button secondary isFill onClick={() => setShowPopup(true)}>
