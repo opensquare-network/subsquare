@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import ReactMde from "react-mde";
-import Header from "next-common/assets/imgs/md-icons/header.svg";
-import Bold from "next-common/assets/imgs/md-icons/bold.svg";
-import Italic from "next-common/assets/imgs/md-icons/italic.svg";
-import Quote from "next-common/assets/imgs/md-icons/quote.svg";
-import OrderedList from "next-common/assets/imgs/md-icons/ordered-list.svg";
-import UnorderedList from "next-common/assets/imgs/md-icons/unordered-list.svg";
-import Link from "next-common/assets/imgs/md-icons/link.svg";
-import ImageIcon from "next-common/assets/imgs/md-icons/image.svg";
-import Code from "next-common/assets/imgs/md-icons/code.svg";
+import Header from "../assets/imgs/md-icons/header.svg";
+import Bold from "../assets/imgs/md-icons/bold.svg";
+import Italic from "../assets/imgs/md-icons/italic.svg";
+import Quote from "../assets/imgs/md-icons/quote.svg";
+import OrderedList from "../assets/imgs/md-icons/ordered-list.svg";
+import UnorderedList from "../assets/imgs/md-icons/unordered-list.svg";
+import Link from "../assets/imgs/md-icons/link.svg";
+import ImageIcon from "../assets/imgs/md-icons/image.svg";
+import Code from "../assets/imgs/md-icons/code.svg";
 
 const icons = new Map();
 icons.set("header", <Header />);
