@@ -2,7 +2,9 @@ import Script from "next/script";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { Provider } from "react-redux";
-
+import "react-quill/dist/quill.snow.css";
+import "quill-mention/dist/quill.mention.css";
+import "react-mde/lib/styles/css/react-mde-all.css";
 import "nprogress/nprogress.css";
 import "../styles/globals.css";
 import "public/prism.css";
