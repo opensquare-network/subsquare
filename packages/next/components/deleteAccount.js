@@ -28,7 +28,7 @@ const ContentWrapper = styled.div`
   border-radius: 6px;
   padding: 24px;
   width: 400px;
-  margin: 122px auto 0;
+  margin: 126px auto 0;
   > :not(:first-child) {
     margin-top: 16px;
   }

@@ -20,9 +20,10 @@ const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
-  @media screen and (max-width: 1444px) {
+  @media screen and (max-width: 1024px) {
     position: static;
     width: auto;
+    margin-top: 16px !important;
   }
 `;
 
@@ -156,9 +157,6 @@ export default function Tipper({
         </Content>
         {!loading && action}
       </Wrapper>
-      <Button secondary isFill onClick={() => setShowPopup(true)}>
-        Endorse
-      </Button>
       {showPopup && (
         <Popup
           chain={chain}

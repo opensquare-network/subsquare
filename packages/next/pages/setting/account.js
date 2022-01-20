@@ -245,7 +245,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
             </form>
             <Divider />
             <div>
-              <Label>Log out</Label>
+              <Label>Logout</Label>
               <ButtonWrapper>
                 <Button
                   isFill
