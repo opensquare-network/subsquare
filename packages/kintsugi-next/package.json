@@ -12,8 +12,8 @@
   "dependencies": {
     "@alicloud/pop-core": "^1.7.10",
     "@koa/cors": "^3.1.0",
-    "@polkadot/api": "7.0.2",
-    "@polkadot/react-identicon": "0.87.6",
+    "@polkadot/api": "7.4.1",
+    "@polkadot/react-identicon": "0.89.2",
     "@subsquare/next-common": "file:../next-common",
     "@subsquare/backend-common": "file:../backend-common",
     "bignumber.js": "^9.0.2",
