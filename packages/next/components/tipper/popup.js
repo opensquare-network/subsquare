@@ -2,12 +2,7 @@ import styled, { css } from "styled-components";
 import { useRef, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import {
-  isWeb3Injected,
-  web3Accounts,
-  web3Enable,
-  web3FromAddress,
-} from "@polkadot/extension-dapp";
+import { web3FromAddress } from "@polkadot/extension-dapp";
 import BigNumber from "bignumber.js";
 import {
   encodeKaruraAddress,
@@ -24,6 +19,7 @@ import { addToast } from "store/reducers/toastSlice";
 
 import TipInput from "./tipInput";
 import { getNode, toPrecision } from "utils";
+import { useExtensionAccounts } from "utils/polkadotExtension";
 
 const Background = styled.div`
   position: fixed;
@@ -132,6 +128,12 @@ export default function Popup({
   const [inputTipValue, setInputTipValue] = useState();
   const [tipping, setTipping] = useState(false);
   const [balance, setBalance] = useState();
+  const [
+    extensionAccounts,
+    hasExtension,
+    isExtensionAccessible,
+    extensionDetecting,
+  ] = useExtensionAccounts("subsquare");
   const node = getNode(chain);
 
   const selectedAccountIsTipper = councilTippers.includes(
@@ -139,33 +141,58 @@ export default function Popup({
   );
 
   useEffect(() => {
-    (async () => {
-      await web3Enable("subsquare");
-      if (!isWeb3Injected) {
-        return;
-      }
-      const extensionAccounts = await web3Accounts();
-      const accounts = extensionAccounts.map((item) => {
-        const {
-          address,
-          meta: { name },
-        } = item;
-        return {
-          address,
-          kusamaAddress: encodeKusamaAddress(address),
-          polkadotAddress: encodePolkadotAddress(address),
-          karuraAddress: encodeKaruraAddress(address),
-          khalaAddress: encodeKhalaAddress(address),
-          basiliskAddress: encodeBasiliskAddress(address),
-          name,
-        };
-      });
+    if (extensionDetecting) {
+      return;
+    }
 
+    if (!hasExtension) {
       if (isMounted.current) {
-        setAccounts(accounts);
+        onClose();
+
+        dispatch(
+          addToast({
+            type: "error",
+            message: "Polkadot-js extension not detected",
+          })
+        );
       }
-    })();
-  }, [isMounted]);
+
+      return;
+    }
+
+    if (!isExtensionAccessible) {
+      if (isMounted.current) {
+        onClose();
+
+        dispatch(
+          addToast({
+            type: "error",
+            message: "Polkadot-js extension is detected but unaccessible",
+          })
+        );
+      }
+
+      return;
+    }
+
+    const accounts = extensionAccounts.map(({ address, meta: { name } }) => ({
+      address,
+      kusamaAddress: encodeKusamaAddress(address),
+      polkadotAddress: encodePolkadotAddress(address),
+      karuraAddress: encodeKaruraAddress(address),
+      khalaAddress: encodeKhalaAddress(address),
+      basiliskAddress: encodeBasiliskAddress(address),
+      name,
+    }));
+
+    setAccounts(accounts);
+  }, [
+    extensionAccounts,
+    hasExtension,
+    isExtensionAccessible,
+    extensionDetecting,
+    isMounted,
+  ]);
 
   useEffect(() => {
     if (accounts && accounts.length > 0 && !selectedAccount) {
@@ -297,6 +324,10 @@ export default function Popup({
       setTipping(false);
     }
   };
+
+  if (!hasExtension || !isExtensionAccessible) {
+    return null;
+  }
 
   return (
     <Background>
