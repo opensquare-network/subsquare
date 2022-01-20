@@ -142,30 +142,34 @@ export default function Popup({
       return;
     }
 
-    if (!hasExtension || !isExtensionAccessible) {
+    if (!hasExtension) {
       if (isMounted.current) {
         onClose();
 
-        if (!hasExtension) {
-          dispatch(
-            addToast({
-              type: "error",
-              message: "Polkadot-js extension not detected",
-            }
-          ));
-          return;
-        }
-
-        if (!isExtensionAccessible) {
-          dispatch(
-            addToast({
-              type: "error",
-              message: "Polkadot-js extension is detected but unaccessible",
-            }
-          ));
-          return;
-        }
+        dispatch(
+          addToast({
+            type: "error",
+            message: "Polkadot-js extension not detected",
+          }
+        ));
       }
+
+      return;
+    }
+
+    if (!isExtensionAccessible) {
+      if (isMounted.current) {
+        onClose();
+
+        dispatch(
+          addToast({
+            type: "error",
+            message: "Polkadot-js extension is detected but unaccessible",
+          }
+        ));
+      }
+
+      return;
     }
 
     const accounts = extensionAccounts.map(
