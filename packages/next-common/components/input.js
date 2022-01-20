@@ -1,8 +1,8 @@
+import React, { useState } from "react";
 import styled, { css } from "styled-components";
-import { useState } from "react";
 import ErrorText from "next-common/components/ErrorText";
-import EyeIcon from "public/imgs/icons/eye.svg";
-import EyeSlashIcon from "public/imgs/icons/eye-slash.svg";
+import EyeIcon from "../assets/imgs/icons/eye.svg";
+import EyeSlashIcon from "../assets/imgs/icons/eye-slash.svg";
 
 const Wrapper = styled.div`
   position: relative;

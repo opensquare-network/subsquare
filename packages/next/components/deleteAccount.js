@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import nextApi from "services/nextApi";
 
-import Input from "./input";
+import Input from "next-common/components/input";
 import Button from "next-common/components/button";
 import { useForm } from "utils/hooks";
 import { logout } from "store/reducers/userSlice";
@@ -28,7 +28,7 @@ const ContentWrapper = styled.div`
   border-radius: 6px;
   padding: 24px;
   width: 400px;
-  margin: 122px auto 0;
+  margin: 126px auto 0;
   > :not(:first-child) {
     margin-top: 16px;
   }

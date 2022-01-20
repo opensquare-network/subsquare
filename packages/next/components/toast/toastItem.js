@@ -31,7 +31,7 @@ const Wrapper = styled(Flex)`
   }
   > div {
     flex-grow: 1;
-    word-break: break-all;
+    width: 150px;
     word-wrap: break-word;
   }
   transform: translateX(200%);

@@ -23,6 +23,17 @@ import TipInput from "./tipInput";
 import { getNode, toPrecision } from "utils";
 import { useExtensionAccounts } from "utils/polkadotExtension";
 
+const Background = styled.div`
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.24);
+  z-index: 999;
+  top: 0;
+  left: 0;
+  margin-top: 0 !important;
+`;
+
 const Wrapper = styled.div`
   position: fixed;
   top: 260px;
@@ -253,7 +264,7 @@ export default function Popup({
     const bnTipValue = new BigNumber(inputTipValue).multipliedBy(
       Math.pow(10, decimals)
     );
-    if (bnTipValue.lte(0)) {
+    if (bnTipValue.lt(0)) {
       dispatch(
         addToast({
           type: "error",
@@ -308,51 +319,53 @@ export default function Popup({
 
   return (
     hasExtension && isExtensionAccessible && (
-      <Wrapper ref={ref}>
-        <TopWrapper>
-          <div>Tip</div>
-          <img onClick={onClose} src="/imgs/icons/close.svg" alt="" />
-        </TopWrapper>
-        <Info danger={!selectedAccountIsTipper}>
-          Only council members can tip.
-        </Info>
-        <div>
-          <LabelWrapper>
-            <Label>Address</Label>
-            {balance && (
-              <BalanceWrapper>
-                <div>Balance</div>
-                <div>{balance}</div>
-              </BalanceWrapper>
+      <Background>
+        <Wrapper ref={ref}>
+          <TopWrapper>
+            <div>Tip</div>
+            <img onClick={onClose} src="/imgs/icons/close.svg" alt="" />
+          </TopWrapper>
+          <Info danger={!selectedAccountIsTipper}>
+            Only council members can tip.
+          </Info>
+          <div>
+            <LabelWrapper>
+              <Label>Address</Label>
+              {balance && (
+                <BalanceWrapper>
+                  <div>Balance</div>
+                  <div>{balance}</div>
+                </BalanceWrapper>
+              )}
+            </LabelWrapper>
+            <AddressSelect
+              chain={chain}
+              accounts={accounts}
+              selectedAccount={selectedAccount}
+              onSelect={(account) => {
+                setSelectedAccount(account);
+              }}
+            />
+          </div>
+          <div>
+            <Label>Tip Value</Label>
+            <TipInput
+              value={inputTipValue}
+              setValue={setInputTipValue}
+              symbol={node?.symbol}
+            />
+          </div>
+          <ButtonWrapper>
+            {selectedAccountIsTipper && api && inputTipValue ? (
+              <Button secondary isLoading={tipping} onClick={doEndorse}>
+                Endorse
+              </Button>
+            ) : (
+              <Button disabled>Endorse</Button>
             )}
-          </LabelWrapper>
-          <AddressSelect
-            chain={chain}
-            accounts={accounts}
-            selectedAccount={selectedAccount}
-            onSelect={(account) => {
-              setSelectedAccount(account);
-            }}
-          />
-        </div>
-        <div>
-          <Label>Tip Value</Label>
-          <TipInput
-            value={inputTipValue}
-            setValue={setInputTipValue}
-            symbol={node?.symbol}
-          />
-        </div>
-        <ButtonWrapper>
-          {selectedAccountIsTipper && api && inputTipValue ? (
-            <Button secondary isLoading={tipping} onClick={doEndorse}>
-              Endorse
-            </Button>
-          ) : (
-            <Button disabled>Endorse</Button>
-          )}
-        </ButtonWrapper>
-      </Wrapper>
+          </ButtonWrapper>
+        </Wrapper>
+      </Background>
     )
   );
 }
