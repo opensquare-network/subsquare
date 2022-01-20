@@ -11,7 +11,7 @@ import SEO from "components/SEO";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { useRef, useState } from "react";
 import Comments from "next-common/components/comment";
-import Input from "components/comment/input";
+import Input from "next-common/components/comment/input";
 import { shadow_100 } from "styles/componentCss";
 import { isSafari, to404 } from "utils/serverSideUtil";
 import { EmptyList } from "next-common/utils/constants";
