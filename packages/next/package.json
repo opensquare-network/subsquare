@@ -23,6 +23,7 @@
     "@polkadot/util": "^8.2.2",
     "@reduxjs/toolkit": "^1.6.1",
     "@subsquare/next-common": "file:../next-common",
+    "@subsquare/backend-common": "file:../backend-common",
     "@svgr/webpack": "^5.5.0",
     "argon2": "^0.28.2",
     "axios": "^0.21.1",

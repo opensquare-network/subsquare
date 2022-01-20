@@ -1,7 +1,7 @@
 const Router = require("koa-router");
 const motionsController = require("./motion.controller");
-const requireAuth = require("../../../middleware/require-auth");
-const requireVerify = require("../../../middleware/require-verify");
+const requireAuth = require("@subsquare/backend-common/middleware/require-auth");
+const requireVerify = require("@subsquare/backend-common/middleware/require-verify");
 
 const router = new Router();
 

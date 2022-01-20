@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
-const { safeHtml } = require("../utils/post");
-const { PostTitleLengthLimitation, Day } = require("../constants");
+const { safeHtml } = require("@subsquare/backend-common/utils/post");
+const { PostTitleLengthLimitation, Day } = require("@subsquare/backend-common/constants");
 const {
   getDb: getBusinessDb,
   getBountyCollection,
@@ -10,10 +10,10 @@ const {
   getBountyCollection: getChainBountyCollection,
   getMotionCollection,
 } = require("../mongo/chain");
-const { getDb: getCommonDb, lookupUser } = require("../mongo/common");
-const { HttpError } = require("../exc");
-const { ContentType } = require("../constants");
-const { toUserPublicInfo } = require("../utils/user");
+const { getDb: getCommonDb, lookupUser } = require("@subsquare/backend-common/mongo/common");
+const { HttpError } = require("@subsquare/backend-common/exc");
+const { ContentType } = require("@subsquare/backend-common/constants");
+const { toUserPublicInfo } = require("@subsquare/backend-common/utils/user");
 
 async function updatePost(postId, title, content, contentType, author) {
   const chain = process.env.CHAIN;
