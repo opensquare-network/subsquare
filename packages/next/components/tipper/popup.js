@@ -245,7 +245,7 @@ export default function Popup({
     const bnTipValue = new BigNumber(inputTipValue).multipliedBy(
       Math.pow(10, decimals)
     );
-    if (bnTipValue.lte(0)) {
+    if (bnTipValue.lt(0)) {
       dispatch(
         addToast({
           type: "error",
