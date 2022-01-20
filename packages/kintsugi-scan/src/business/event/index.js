@@ -1,3 +1,4 @@
+const { handleTreasuryEvent } = require("./treasuryProposal");
 const { handleReferendumEvent } = require("./democracy/referendum");
 const { handleTechCommMotionEvent } = require("./tc");
 const { handleDemocracyEvent } = require("./democracy/publicProposal");
@@ -26,6 +27,7 @@ async function handleEvents(events, extrinsics, blockIndexer) {
     await handleDemocracyEvent(event, indexer, extrinsic, events);
     await handleTechCommMotionEvent(event, indexer, extrinsic, events);
     await handleReferendumEvent(event, indexer, extrinsic, events);
+    await handleTreasuryEvent(event, indexer, extrinsic, events);
   }
 }
 
