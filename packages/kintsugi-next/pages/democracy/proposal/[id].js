@@ -7,7 +7,7 @@ import Comments from "next-common/components/comment";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import Input from "components/comment/input";
+import Input from "next-common/components/comment/input";
 import { useState, useRef } from "react";
 import Layout from "components/layout";
 import User from "next-common/components/user";
