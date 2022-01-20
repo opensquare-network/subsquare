@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
-
+import React from "react";
 import Input from "components/input";
 import EditInput from "components/editInput";
 import nextApi from "services/nextApi";

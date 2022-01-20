@@ -1,3 +1,4 @@
+import React from "react";
 import parse from "html-react-parser";
 import styled, { css } from "styled-components";
 import sanitizeHtml from "sanitize-html";

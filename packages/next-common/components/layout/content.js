@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { no_scroll_bar } from "next-common/styles/componentCss";
 import Main from "next-common/components/main";

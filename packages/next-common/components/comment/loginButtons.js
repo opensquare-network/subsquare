@@ -1,6 +1,6 @@
+import React from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-
 import Button from "next-common/components/button";
 
 const Wrapper = styled.div`
