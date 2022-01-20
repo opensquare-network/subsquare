@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import ReactMde from "react-mde";
-import "react-mde/lib/styles/css/react-mde-all.css";
 import Header from "next-common/assets/imgs/md-icons/header.svg";
 import Bold from "next-common/assets/imgs/md-icons/bold.svg";
 import Italic from "next-common/assets/imgs/md-icons/italic.svg";

@@ -2,8 +2,6 @@ import ReactQuill, { Quill } from "react-quill";
 import "quill-mention";
 import ImageResize from "quill-image-resize-module";
 import MagicUrl from "quill-magic-url";
-import "react-quill/dist/quill.snow.css";
-import "quill-mention/dist/quill.mention.css";
 import React, { useState, useRef, useEffect } from "react";
 
 const icons = Quill.import("ui/icons");
