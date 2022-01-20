@@ -1,5 +1,5 @@
 import Overview from "components/overview";
-import Menu from "components/menu";
+import Menu from "next-common/components/menu";
 import { mainMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
@@ -51,7 +51,10 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
   return (
     <Layout
       user={loginUser}
-      left={<Menu menu={mainMenu} chain={chain} />}
+      left={
+        // <Menu menu={mainMenu} chain={chain} />
+        <h1>fuck</h1>
+      }
       chain={chain}
     >
       <SEO
