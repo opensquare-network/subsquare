@@ -40,8 +40,8 @@ const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
-  max-width: 768px;
-  @media screen and (max-width: 1444px) {
+  margin-right: 312px;
+  @media screen and (max-width: 1024px) {
     max-width: 848px;
     margin: 0 auto;
   }
@@ -312,7 +312,6 @@ export default withLoginUserRedux(
               onReply={focusEditor}
               type={TYPE_TREASURY_TIP}
             />
-            <KVList title="Metadata" data={metadata} />
             <Tipper
               chain={chain}
               tipIsFinal={tipIsFinal}
@@ -324,6 +323,7 @@ export default withLoginUserRedux(
               updateTips={updateTips}
               updateTimeline={updateTimeline}
             />
+            <KVList title="Metadata" data={metadata} />
             <Timeline data={timeline} chain={chain} indent={false} />
             <CommentsWrapper>
               <Comments
