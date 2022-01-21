@@ -113,7 +113,7 @@ const ContentItem = styled(Flex)`
     align-items: center;
     min-height: 28px;
     line-height: 19.6px;
-    text-align: right;
+    text-align: left;
     flex: 1 1 auto;
   }
 `;
