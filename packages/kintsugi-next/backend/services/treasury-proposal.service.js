@@ -232,7 +232,6 @@ async function getPostById(postId) {
     authors: treasuryProposalData.authors,
     onchainData: {
       ...treasuryProposalData,
-      motions,
     },
   };
 }
