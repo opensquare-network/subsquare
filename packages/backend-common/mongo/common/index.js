@@ -50,11 +50,19 @@ async function lookupUser(lookupProps) {
   );
 }
 
+async function getUserByAddress(address, { public = true } = {}) {
+  const chain = process.env.CHAIN;
+  const userCol = await getCollection("user");
+  const user = await userCol.findOne({ [`${chain}Address`]: address });
+  return public ? toUserPublicInfo(user) : user;
+}
+
 module.exports = {
   initDb,
   getDb,
   lookupUser,
   getCollection,
+  getUserByAddress,
   getUserCollection: () => getCollection("user"),
   getAttemptCollection: () => getCollection("attempt"),
 };

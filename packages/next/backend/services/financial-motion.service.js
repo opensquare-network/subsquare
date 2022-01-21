@@ -11,6 +11,7 @@ const {
   getDb: getCommonDb,
   getUserCollection,
   lookupUser,
+  getUserByAddress,
 } = require("@subsquare/backend-common/mongo/common");
 const {
   getDb: getBusinessDb,
@@ -189,8 +190,6 @@ async function getMotionsByChain(page, pageSize) {
 }
 
 async function getMotionById(postId) {
-  const chain = process.env.CHAIN;
-
   const [postCol, post, postType] = await findMotionPost(postId);
   if (!post) {
     throw new HttpError(404, "Post does not exists");
@@ -202,19 +201,20 @@ async function getMotionById(postId) {
   }
 
   const reactionCol = await getReactionCollection();
-  const userCol = await getUserCollection();
 
   const reactions = await reactionCol.find({ [postType]: post._id }).toArray();
 
   const [, author] = await Promise.all([
     lookupUser({ for: reactions, localField: "user" }),
-    userCol.findOne({ [`${chain}Address`]: post.proposer }),
+    post.proposer
+      ? getUserByAddress(post.proposer)
+      : null,
   ]);
 
   return {
     ...post,
     reactions,
-    author: toUserPublicInfo(author),
+    author,
     state: chainMotion.state?.state,
     authors: chainMotion.authors,
     onchainData: chainMotion,

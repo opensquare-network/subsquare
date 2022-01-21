@@ -13,7 +13,7 @@ const {
 const {
   getDb: getCommonDb,
   lookupUser,
-  getUserCollection,
+  getUserByAddress,
 } = require("@subsquare/backend-common/mongo/common");
 const { HttpError } = require("@subsquare/backend-common/exc");
 const { ContentType } = require("@subsquare/backend-common/constants");
@@ -182,7 +182,6 @@ async function getPostsByChain(page, pageSize) {
 }
 
 async function getPostById(postId) {
-  const chain = process.env.CHAIN;
   const q = {};
   if (ObjectId.isValid(postId)) {
     q._id = ObjectId(postId);
@@ -201,13 +200,12 @@ async function getPostById(postId) {
     throw new HttpError(404, "Post not found");
   }
 
-  const userCol = await getUserCollection();
   const businessDb = await getBusinessDb();
   const chainProposalCol = await getChainPublicProposalCollection();
   const preImageCol = await getPreImageCollection();
   const [author, reactions, chanProposalData] = await Promise.all([
     post.proposer
-      ? userCol.findOne({ [`${chain}Address`]: post.proposer })
+      ? getUserByAddress(post.proposer)
       : null,
     businessDb.lookupMany({
       from: "reaction",
@@ -224,7 +222,7 @@ async function getPostById(postId) {
 
   return {
     ...post,
-    author: toUserPublicInfo(author),
+    author,
     authors: chanProposalData.authors,
     onchainData: {
       ...chanProposalData,
