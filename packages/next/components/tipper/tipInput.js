@@ -26,6 +26,7 @@ export default function TipInput({ symbol, value, setValue = () => {} }) {
   return (
     <Wrapper>
       <Input
+        min={0}
         type="number"
         placeholder="0.00"
         value={value}
