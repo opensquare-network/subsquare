@@ -10,7 +10,7 @@ const {
   getTreasuryProposalCollection: getChainTreasuryProposalCollection,
   getMotionCollection,
 } = require("../mongo/chain");
-const { getDb: getCommonDb, lookupUser } = require("@subsquare/backend-common/mongo/common");
+const { getDb: getCommonDb, lookupUser, getUserByAddress } = require("@subsquare/backend-common/mongo/common");
 const { HttpError } = require("@subsquare/backend-common/exc");
 const { ContentType } = require("@subsquare/backend-common/constants");
 const { toUserPublicInfo } = require("@subsquare/backend-common/utils/user");
@@ -181,7 +181,6 @@ async function getPostsByChain(page, pageSize) {
 }
 
 async function getPostById(postId) {
-  const chain = process.env.CHAIN;
   const q = {};
   if (ObjectId.isValid(postId)) {
     q._id = ObjectId(postId);
@@ -196,19 +195,13 @@ async function getPostById(postId) {
     throw new HttpError(404, "Post not found");
   }
 
-  const commonDb = await getCommonDb();
   const businessDb = await getBusinessDb();
   const chainTreasuryProposalCol = await getChainTreasuryProposalCollection();
   const chainMotionCol = await getMotionCollection();
-  const [, reactions, treasuryProposalData] = await Promise.all([
-    commonDb.lookupOne({
-      from: "user",
-      for: post,
-      as: "author",
-      localField: "proposer",
-      foreignField: `${chain}Address`,
-      map: toUserPublicInfo,
-    }),
+  const [author, reactions, treasuryProposalData] = await Promise.all([
+    post.proposer
+      ? getUserByAddress(post.proposer)
+      : null,
     businessDb.lookupMany({
       from: "reaction",
       for: post,
@@ -235,6 +228,7 @@ async function getPostById(postId) {
 
   return {
     ...post,
+    author,
     authors: treasuryProposalData.authors,
     onchainData: {
       ...treasuryProposalData,

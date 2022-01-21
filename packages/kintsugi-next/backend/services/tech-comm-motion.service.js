@@ -11,6 +11,7 @@ const {
   getDb: getCommonDb,
   getUserCollection,
   lookupUser,
+  getUserByAddress,
 } = require("@subsquare/backend-common/mongo/common");
 const {
   getTechCommMotionCollection: getChainTechCommMotionCollection,
@@ -258,8 +259,6 @@ async function getMotionsByChain(page, pageSize) {
 }
 
 async function getMotionById(postId) {
-  const chain = process.env.CHAIN;
-
   const chainMotion = await findMotion(postId);
   if (!chainMotion) {
     throw new HttpError(404, "Post not found");
@@ -268,7 +267,6 @@ async function getMotionById(postId) {
   const techCommMotionCol = await getTechCommMotionCollection();
   const democracyCol = await getDemocracyCollection();
   const reactionCol = await getReactionCollection();
-  const userCol = await getUserCollection();
   const chainPublicProposalCol = await getChainPublicProposalCollection();
 
   let post;
@@ -292,7 +290,9 @@ async function getMotionById(postId) {
 
   const [, author, publicProposals] = await Promise.all([
     lookupUser({ for: reactions, localField: "user" }),
-    userCol.findOne({ [`${chain}Address`]: post.proposer }),
+    post.proposer
+      ? getUserByAddress(post.proposer)
+      : null,
     chainMotion.publicProposals?.length > 0
       ? chainPublicProposalCol
           .find({
@@ -321,7 +321,7 @@ async function getMotionById(postId) {
       publicProposals,
     },
     state: chainMotion.state?.state,
-    author: toUserPublicInfo(author),
+    author,
     reactions,
   };
 }
