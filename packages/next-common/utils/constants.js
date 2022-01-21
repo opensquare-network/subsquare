@@ -239,7 +239,7 @@ export const mainMenu = [
   },
   {
     name: "TREASURY",
-    excludeToChains: ["kabocha", "kintsugi"],
+    excludeToChains: ["kabocha"],
     items: [
       {
         value: "proposals",
@@ -250,12 +250,13 @@ export const mainMenu = [
         value: "bounties",
         name: "Bounties",
         pathname: "/treasury/bounties",
-        excludeToChains: ["basilisk"],
+        excludeToChains: ["basilisk", "kintsugi"],
       },
       {
         value: "tips",
         name: "Tips",
         pathname: "/treasury/tips",
+        excludeToChains: ["kintsugi"],
       },
     ],
   },
