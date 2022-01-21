@@ -20,6 +20,7 @@ import { addToast } from "store/reducers/toastSlice";
 import TipInput from "./tipInput";
 import { getNode, toPrecision } from "utils";
 import { useExtensionAccounts } from "utils/polkadotExtension";
+import ExternalLink from "next-common/components/externalLink";
 
 const Background = styled.div`
   position: fixed;
@@ -109,6 +110,24 @@ const BalanceWrapper = styled.div`
   }
 `;
 
+const Message = styled.div`
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: 12px 16px;
+  background: #F6F7FA;
+  border-radius: 4px;
+  color: rgba(80, 97, 118, 1);
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 140%;
+`;
+
+const Download = styled.div`
+  color: #2196F3;
+`;
+
 const balanceMap = new Map();
 
 export default function Popup({
@@ -146,32 +165,10 @@ export default function Popup({
     }
 
     if (!hasExtension) {
-      if (isMounted.current) {
-        onClose();
-
-        dispatch(
-          addToast({
-            type: "error",
-            message: "Polkadot-js extension not detected",
-          })
-        );
-      }
-
       return;
     }
 
     if (!isExtensionAccessible) {
-      if (isMounted.current) {
-        onClose();
-
-        dispatch(
-          addToast({
-            type: "error",
-            message: "Polkadot-js extension is detected but unaccessible",
-          })
-        );
-      }
-
       return;
     }
 
@@ -325,17 +322,40 @@ export default function Popup({
     }
   };
 
-  if (!hasExtension || !isExtensionAccessible) {
+  if (extensionDetecting) {
     return null;
   }
 
-  return (
-    <Background>
-      <Wrapper ref={ref}>
-        <TopWrapper>
-          <div>Tip</div>
-          <img onClick={onClose} src="/imgs/icons/close.svg" alt="" />
-        </TopWrapper>
+  let content = null;
+
+  if (!hasExtension) {
+    content = (
+      <Message>
+        <span>Polkadot-js extension not detected. No web3 account could be found.
+          Visit this page on a computer with polkadot-js extension.</span>
+        <ExternalLink href="https://polkadot.js.org/extension/">
+          <Download>{"Download Polkadot{.js} extension"}</Download>
+        </ExternalLink>
+      </Message>
+    );
+  } else if (!isExtensionAccessible) {
+    content = (
+      <Message>
+        Polkadot-js extension is detected but unaccessible, please go to
+        Polkadot-js extension, settings, and check Manage Website Access
+        section.
+      </Message>
+    );
+  } else if (!accounts || accounts.length === 0) {
+    content = (
+      <Message>
+        Polkadot-js extension is connected, but no account found.
+        Please create or import some accounts first.
+      </Message>
+    );
+  } else {
+    content = (
+      <>
         <Info danger={!selectedAccountIsTipper}>
           Only council members can tip.
         </Info>
@@ -375,6 +395,18 @@ export default function Popup({
             <Button disabled>Endorse</Button>
           )}
         </ButtonWrapper>
+      </>
+    );
+  }
+
+  return (
+    <Background>
+      <Wrapper ref={ref}>
+        <TopWrapper>
+          <div>Tip</div>
+          <img onClick={onClose} src="/imgs/icons/close.svg" alt="" />
+        </TopWrapper>
+        {content}
       </Wrapper>
     </Background>
   );
