@@ -109,11 +109,12 @@ const ContentItem = styled(Flex)`
   }
   > :last-child {
     display: flex;
+    max-width: 50%;
     justify-content: flex-end;
     align-items: center;
     min-height: 28px;
     line-height: 19.6px;
-    text-align: left;
+    text-align: right;
     flex: 1 1 auto;
   }
 `;
