@@ -35,17 +35,17 @@ const Background = styled.div`
 
 const Wrapper = styled.div`
   position: fixed;
-  top: 260px;
+  top: 50%;
   left: 50%;
   margin-top: 0 !important;
   width: 400px;
   padding: 24px;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   background: #ffffff;
   border: 1px solid #ebeef4;
-  box-shadow: 0px 6px 22px rgba(30, 33, 52, 0.11),
-    0px 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
-    0px 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
+  box-shadow: 0 6px 22px rgba(30, 33, 52, 0.11),
+    0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
+    0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
   border-radius: 6px;
   > :not(:first-child) {
     margin-top: 16px;
@@ -115,7 +115,7 @@ const Message = styled.div`
   align-items: flex-start;
   flex-direction: column;
   padding: 12px 16px;
-  background: #F6F7FA;
+  background: #f6f7fa;
   border-radius: 4px;
   color: rgba(80, 97, 118, 1);
   font-style: normal;
@@ -125,7 +125,7 @@ const Message = styled.div`
 `;
 
 const Download = styled.div`
-  color: #2196F3;
+  color: #2196f3;
 `;
 
 const balanceMap = new Map();
@@ -326,13 +326,15 @@ export default function Popup({
     return null;
   }
 
-  let content = null;
+  let content;
 
   if (!hasExtension) {
     content = (
       <Message>
-        <span>Polkadot-js extension not detected. No web3 account could be found.
-          Visit this page on a computer with polkadot-js extension.</span>
+        <span>
+          Polkadot-js extension not detected. No web3 account could be found.
+          Visit this page on a computer with polkadot-js extension.
+        </span>
         <ExternalLink href="https://polkadot.js.org/extension/">
           <Download>{"Download Polkadot{.js} extension"}</Download>
         </ExternalLink>
@@ -349,8 +351,8 @@ export default function Popup({
   } else if (!accounts || accounts.length === 0) {
     content = (
       <Message>
-        Polkadot-js extension is connected, but no account found.
-        Please create or import some accounts first.
+        Polkadot-js extension is connected, but no account found. Please create
+        or import some accounts first.
       </Message>
     );
   } else {
