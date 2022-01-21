@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import InnerDataTable from "../table/innerDataTable";
 import BigNumber from "bignumber.js";
 import { hexToString } from "@polkadot/util";
-import { hexEllipsis } from "../../utils";
+import { textEllipsis } from "../../utils";
 const LongText = dynamic(() => import("../longText"), { ssr: false });
 
 const JsonView = dynamic(
@@ -156,14 +156,24 @@ function convertProposalForJsonView(proposal, chain) {
             return arg.value.map((v) => convertProposalForJsonView(v, chain));
           }
           case "Bytes": {
+            let nonConvert = false;
             if (
-              (proposal.section === "phalaRegistry" &&
-                proposal.method === "addPruntime") ||
-              (proposal.section === "system" && proposal.method === "setCode")
+              proposal.section === "phalaRegistry" &&
+              (proposal.method === "addPruntime" ||
+                proposal.method === "removePruntime")
             ) {
+              nonConvert = true;
+            }
+            if (
+              proposal.section === "system" &&
+              proposal.method === "setCode"
+            ) {
+              nonConvert = true;
+            }
+            if (nonConvert) {
               return arg.value?.length <= 200
                 ? arg.value
-                : hexEllipsis(arg.value);
+                : textEllipsis(arg.value, 6, 4);
             }
             return hexToString(arg.value);
           }
