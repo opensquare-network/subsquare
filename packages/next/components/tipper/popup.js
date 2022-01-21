@@ -10,6 +10,9 @@ import {
   encodeKusamaAddress,
   encodePolkadotAddress,
   encodeBasiliskAddress,
+  encodeBifrostAddress,
+  encodeAcalaAddress,
+  encodeKabochaAddress,
 } from "services/chainApi";
 
 import { useOnClickOutside, useIsMounted, useApi } from "utils/hooks";
@@ -179,6 +182,9 @@ export default function Popup({
       karuraAddress: encodeKaruraAddress(address),
       khalaAddress: encodeKhalaAddress(address),
       basiliskAddress: encodeBasiliskAddress(address),
+      bifrostAddress: encodeBifrostAddress(address),
+      acalaAddress: encodeAcalaAddress(address),
+      kabochaAddress: encodeKabochaAddress(address),
       name,
     }));
 

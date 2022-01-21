@@ -303,6 +303,7 @@ export default function LinkedAddress({ chain }) {
         karuraAddress: address.chain === "karura" ? address.address : null,
         acalaAddress: address.chain === "acala" ? address.address : null,
         khalaAddress: address.chain === "khala" ? address.address : null,
+        bifrostAddress: address.chain === "bifrost" ? address.address : null,
         basiliskAddress: address.chain === "basilisk" ? address.address : null,
         kabochaAddress: address.chain === "kabocha" ? address.address : null,
         name: "--",
