@@ -82,6 +82,9 @@ function convertProposalForTableView(proposal, chain) {
       proposal.args.map((arg) => {
         switch (arg.type) {
           case "OrmlTraitsChangeU128": {
+            if (arg.value === "NoChange") {
+              return [arg.name, arg.value];
+            }
             if (typeof arg.value === "string") {
               return [arg.name, new BigNumber(arg.value).toString()];
             }
