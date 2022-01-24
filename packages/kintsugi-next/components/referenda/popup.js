@@ -29,6 +29,7 @@ import Input from "next-common/components/input";
 // import Select from "components/select";
 import ApproveIcon from "next-common/assets/imgs/icons/approve.svg";
 import RejectIcon from "next-common/assets/imgs/icons/reject.svg";
+import Tooltip from "components/tooltip";
 
 const Background = styled.div`
   position: fixed;
@@ -128,16 +129,6 @@ const Download = styled.div`
   color: #2196f3;
 `;
 
-const Warning = styled.div`
-  background: #f6f7fa;
-  border-radius: 4px;
-  padding: 12px 16px;
-  color: #506176;
-  font-size: 14px;
-  line-height: 140%;
-  margin-top: 8px;
-`;
-
 const StatusWrapper = styled.div`
   background: #ebeef4;
   border-radius: 4px;
@@ -162,6 +153,14 @@ const StatusWrapper = styled.div`
   }
 `;
 
+const TooltipWrapper = styled.div`
+  display: flex;
+  align-items: flex-start;
+  > :not(:first-child) {
+    margin-left: 4px;
+  }
+`;
+
 const balanceMap = new Map();
 
 export default function Popup({ chain, onClose }) {
@@ -179,7 +178,6 @@ export default function Popup({ chain, onClose }) {
     extensionDetecting,
   ] = useExtensionAccounts("subsquare");
   const node = getNode(chain);
-  const [voteLock, setVoteLock] = useState();
   const [isLoading, setIsLoading] = useState();
 
   useEffect(() => {
@@ -390,7 +388,7 @@ export default function Popup({ chain, onClose }) {
             <Label>Address</Label>
             {balance && (
               <BalanceWrapper>
-                <div>Balance</div>
+                <div>Voting Balance</div>
                 <div>{balance}</div>
               </BalanceWrapper>
             )}
@@ -406,25 +404,19 @@ export default function Popup({ chain, onClose }) {
           />
         </div>
         <div>
-          <Label>Lock balance</Label>
+          <TooltipWrapper>
+            <Label>Value</Label>
+            <Tooltip content="The value is locked for the duration of the vote" />
+          </TooltipWrapper>
           <Input type="number" placeholder="0" disabled={isLoading} />
-          <Warning>The value is locked for the duration of the vote.</Warning>
         </div>
-        {/* <div>
-          <Label>Vote lock</Label>
-          <Select
-            value={voteLock}
-            setValue={setVoteLock}
-            options={VOTE_LOCK_OPTIONS}
-            disabled={isLoading}
-          />
-        </div> */}
         <div>
-          <Label>Vote status</Label>
+          <TooltipWrapper>
+            <Label>Voting status</Label>
+            <Tooltip content="Resubmit the vote will overwrite the previous voting record" />
+          </TooltipWrapper>
           <StatusWrapper>
-            <div>
-              60<span>(3X)</span>
-            </div>
+            <div>60</div>
             {true ? (
               <div>
                 Aye
@@ -437,9 +429,6 @@ export default function Popup({ chain, onClose }) {
               </div>
             )}
           </StatusWrapper>
-          <Warning>
-            Resubmit the vote will overwrite the previous voting record
-          </Warning>
         </div>
         <ButtonWrapper>
           <Button
