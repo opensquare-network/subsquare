@@ -30,6 +30,12 @@ const Select = styled(Flex)`
     flex: 0 0 auto;
     margin-left: auto;
   }
+  ${(p) =>
+    p.disabled &&
+    css`
+      background: #f6f7fa;
+      pointer-events: none;
+    `}
 `;
 
 const NameWrapper = styled.div`
@@ -52,6 +58,7 @@ const Options = styled.div`
   background: #ffffff;
   ${shadow_200};
   border-radius: 4px;
+  z-index: 999;
 `;
 
 const Item = styled(Flex)`
@@ -82,6 +89,7 @@ export default function AddressSelect({
   accounts,
   selectedAccount,
   onSelect,
+  disabled,
 }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
@@ -90,7 +98,7 @@ export default function AddressSelect({
 
   return (
     <Wrapper ref={ref}>
-      <Select onClick={() => setShow(!show)}>
+      <Select onClick={() => setShow(!show)} disabled={disabled}>
         {selectedAccount && (
           <>
             <Avatar address={selectedAccount?.[`${chain}Address`]} />
@@ -105,7 +113,7 @@ export default function AddressSelect({
           src={show ? "/imgs/icons/caret-up.svg" : "/imgs/icons/caret-down.svg"}
         />
       </Select>
-      {show && (
+      {show && !disabled && (
         <Options>
           {(accounts || []).map((item, index) => (
             <Item
