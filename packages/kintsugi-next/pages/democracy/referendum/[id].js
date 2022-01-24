@@ -34,8 +34,11 @@ const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
-  max-width: 848px;
-  margin: auto;
+  margin-right: 312px;
+  @media screen and (max-width: 1024px) {
+    max-width: 848px;
+    margin: 0 auto;
+  }
 `;
 
 const CommentsWrapper = styled.div`
@@ -63,7 +66,7 @@ export default withLoginUserRedux(
       detail?.onchainData?.status
     );
     const isMounted = useIsMounted();
-    const [showVote, setShowVote] = useState(true);
+    const [showVote, setShowVote] = useState(false);
 
     useEffect(() => {
       // Already has the last ongoging status
@@ -150,6 +153,7 @@ export default withLoginUserRedux(
             referendumInfo={detail?.onchainData?.info}
             referendumStatus={referendumStatus}
             chain={chain}
+            setShowVote={setShowVote}
           />
 
           <KVList title={"Metadata"} data={metadata} />
