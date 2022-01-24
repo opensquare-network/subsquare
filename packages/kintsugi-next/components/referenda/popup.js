@@ -26,7 +26,7 @@ import { useExtensionAccounts } from "utils/polkadotExtension";
 import ExternalLink from "next-common/components/externalLink";
 import ClosePanelIcon from "next-common/assets/imgs/icons/close-panel.svg";
 import Input from "next-common/components/input";
-import Select from "components/select";
+// import Select from "components/select";
 import ApproveIcon from "next-common/assets/imgs/icons/approve.svg";
 import RejectIcon from "next-common/assets/imgs/icons/reject.svg";
 
@@ -163,37 +163,6 @@ const StatusWrapper = styled.div`
 `;
 
 const balanceMap = new Map();
-
-const VOTE_LOCK_OPTIONS = [
-  {
-    value: 1,
-    text: "0.1x, no lockup period",
-  },
-  {
-    value: 2,
-    text: "1x, locked for 1 enactment period(s)",
-  },
-  {
-    value: 3,
-    text: "2x, locked for 2 enactment period(s)",
-  },
-  {
-    value: 4,
-    text: "3x, locked for 4 enactment period(s)",
-  },
-  {
-    value: 5,
-    text: "4x, locked for 8 enactment period(s)",
-  },
-  {
-    value: 6,
-    text: "5x, locked for 16 enactment period(s)",
-  },
-  {
-    value: 7,
-    text: "6x, locked for 32 enactment period(s)",
-  },
-];
 
 export default function Popup({ chain, onClose }) {
   const dispatch = useDispatch();
@@ -440,7 +409,7 @@ export default function Popup({ chain, onClose }) {
           <Label>Lock balance</Label>
           <Input type="number" placeholder="0" disabled={isLoading} />
         </div>
-        <div>
+        {/* <div>
           <Label>Vote lock</Label>
           <Select
             value={voteLock}
@@ -448,7 +417,7 @@ export default function Popup({ chain, onClose }) {
             options={VOTE_LOCK_OPTIONS}
             disabled={isLoading}
           />
-        </div>
+        </div> */}
         <div>
           <Label>Vote status</Label>
           <StatusWrapper>
