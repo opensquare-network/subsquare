@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { getNode, toPrecision } from "utils";
 import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "styles/componentCss";
+import AyeIcon from "public/imgs/icons/aye.svg";
+import NayIcon from "public/imgs/icons/nay.svg";
+import TurnoutIcon from "public/imgs/icons/turnout.svg";
 
 const Wrapper = styled.div`
   margin: 16px 0;
@@ -43,11 +46,6 @@ const Headers = styled(Flex)`
   justify-content: space-between;
   font-size: 12px;
   color: #506176;
-
-  span {
-    //display: inline-block;
-    //width: 33.33%;
-  }
 
   span:nth-child(2) {
     text-align: center;
@@ -210,21 +208,7 @@ function Vote({ referendumInfo, referendumStatus, chain, setShowVote }) {
 
         <BorderedRow>
           <Header>
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 14 14"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M12.4933 3.1543L5.16868 10.8452L1.50635 6.99991"
-                stroke="#4CAF50"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <AyeIcon />
             Aye
           </Header>
           <span>
@@ -234,20 +218,7 @@ function Vote({ referendumInfo, referendumStatus, chain, setShowVote }) {
 
         <BorderedRow>
           <Header>
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 14 14"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M2.50439 2.50391L7.00023 6.99975M7.00023 6.99975L11.4961 11.4956M7.00023 6.99975L11.4961 2.50391M7.00023 6.99975L2.50439 11.4956"
-                stroke="#F44336"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
+            <NayIcon />
             Nay
           </Header>
           <span>
@@ -257,21 +228,7 @@ function Vote({ referendumInfo, referendumStatus, chain, setShowVote }) {
 
         <Row>
           <Header>
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 14 14"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M5 4.3H9M4 7H10M5 9.7H9M2 1.5H12C12.2761 1.5 12.5 1.74624 12.5 2.05V11.95C12.5 12.2538 12.2761 12.5 12 12.5H2C1.72386 12.5 1.5 12.2538 1.5 11.95V2.05C1.5 1.74624 1.72386 1.5 2 1.5Z"
-                stroke="#9DA9BB"
-                strokeWidth="1.25"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <TurnoutIcon />
             Turnout
           </Header>
           <span>
