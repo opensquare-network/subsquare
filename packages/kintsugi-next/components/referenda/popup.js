@@ -408,6 +408,7 @@ export default function Popup({ chain, onClose }) {
         <div>
           <Label>Lock balance</Label>
           <Input type="number" placeholder="0" disabled={isLoading} />
+          <Warning>The value is locked for the duration of the vote.</Warning>
         </div>
         {/* <div>
           <Label>Vote lock</Label>
