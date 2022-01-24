@@ -129,16 +129,6 @@ const Download = styled.div`
   color: #2196f3;
 `;
 
-const Warning = styled.div`
-  background: #f6f7fa;
-  border-radius: 4px;
-  padding: 12px 16px;
-  color: #506176;
-  font-size: 14px;
-  line-height: 140%;
-  margin-top: 8px;
-`;
-
 const StatusWrapper = styled.div`
   background: #ebeef4;
   border-radius: 4px;
@@ -188,7 +178,6 @@ export default function Popup({ chain, onClose }) {
     extensionDetecting,
   ] = useExtensionAccounts("subsquare");
   const node = getNode(chain);
-  const [voteLock, setVoteLock] = useState();
   const [isLoading, setIsLoading] = useState();
 
   useEffect(() => {
