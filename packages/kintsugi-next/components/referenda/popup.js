@@ -146,15 +146,15 @@ const StatusWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   min-height: 38px;
-  > div:first-child {
+  > div.value {
     font-size: 14px;
-    line-height: 140%;
+    line-height: 100%;
     font-weight: 500;
     > span {
       color: #9da9bb;
     }
   }
-  > div:last-child {
+  > div.result {
     display: flex;
     align-items: center;
     > svg {
@@ -163,6 +163,13 @@ const StatusWrapper = styled.div`
   }
   > img {
     margin: 0 auto;
+  }
+  > div.no-data {
+    font-size: 14px;
+    line-height: 100%;
+    color: #9da9bb;
+    flex-grow: 1;
+    text-align: center;
   }
 `;
 
@@ -387,33 +394,36 @@ export default function Popup({ chain, onClose, referendumIndex }) {
             onChange={(e) => setInputVoteBalance(e.target.value)}
           />
         </div>
-        {(addressVote || addressVoteIsLoading) && (
-          <div>
-            <TooltipWrapper>
-              <Label>Voting status</Label>
-              <Tooltip content="Resubmit the vote will overwrite the previous voting record" />
-            </TooltipWrapper>
-            <StatusWrapper>
-              {!addressVoteIsLoading && addressVote && (
+        <div>
+          <TooltipWrapper>
+            <Label>Voting status</Label>
+            <Tooltip content="Resubmit the vote will overwrite the previous voting record" />
+          </TooltipWrapper>
+          <StatusWrapper>
+            {!addressVoteIsLoading &&
+              (addressVote ? (
                 <>
-                  <div>{toPrecision(addressVote.balance, node.decimals)}</div>
+                  <div className="value">
+                    {toPrecision(addressVote.balance, node.decimals)}
+                  </div>
                   {addressVote.aye ? (
-                    <div>
+                    <div className="result">
                       Aye
                       <ApproveIcon />
                     </div>
                   ) : (
-                    <div>
+                    <div className="result">
                       Nay
                       <RejectIcon />
                     </div>
                   )}
                 </>
-              )}
-              {addressVoteIsLoading && <Loading size={14} />}
-            </StatusWrapper>
-          </div>
-        )}
+              ) : (
+                <div className="no-data">No voting record</div>
+              ))}
+            {addressVoteIsLoading && <Loading size={14} />}
+          </StatusWrapper>
+        </div>
         <ButtonWrapper>
           <Button
             primary
