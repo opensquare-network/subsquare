@@ -12,12 +12,12 @@ function minmax(min, value, max) {
   return BigNumber.max(BigNumber.min(value, max), min);
 }
 
-export function getThresholdOfSuperMajorityAgainst(nays, turnout, totalIssuance) {
-  const bnNays = new BigNumber(nays);
+export function getThresholdOfSuperMajorityAgainst(turnout, totalIssuance) {
+  const bnNays = new BigNumber(1);
   const sqrtElectorate = BigNumber.max(totalIssuance, turnout).sqrt();
   const sqrtOfTurnout = new BigNumber(turnout).sqrt();
 
-  if (bnNays.isZero() || sqrtOfTurnout.isZero() || sqrtElectorate.isZero()) {
+  if (sqrtOfTurnout.isZero() || sqrtElectorate.isZero()) {
     return "1%";
   }
 
@@ -28,15 +28,16 @@ export function getThresholdOfSuperMajorityAgainst(nays, turnout, totalIssuance)
     99
   ).toFixed(0);
 
+  console.log(threshold);
   return `${threshold}%`;
 }
 
-export function getThresholdOfSuperMajorityApprove(nays, turnout, totalIssuance) {
-  const bnNays = new BigNumber(nays);
+export function getThresholdOfSuperMajorityApprove(turnout, totalIssuance) {
+  const bnNays = new BigNumber(1);
   const sqrtElectorate = BigNumber.max(totalIssuance, turnout).sqrt();
   const sqrtOfTurnout = new BigNumber(turnout).sqrt();
 
-  if (bnNays.isZero() || sqrtOfTurnout.isZero() || sqrtElectorate.isZero()) {
+  if (sqrtOfTurnout.isZero() || sqrtElectorate.isZero()) {
     return "1%";
   }
 
@@ -47,6 +48,7 @@ export function getThresholdOfSuperMajorityApprove(nays, turnout, totalIssuance)
     99
   ).toFixed(0);
 
+  console.log(threshold);
   return `${threshold}%`;
 }
 
