@@ -131,31 +131,45 @@ export function useElectorate(height) {
 export function useAddressVotingBalance(address) {
   const api = useApi("kintsugi");
   const [balance, setBalance] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const isMounted = useIsMounted();
   useEffect(() => {
     if (api && address) {
-      getAddressVotingBalance(api, address).then((value) => {
-        if (isMounted.current) {
-          setBalance(value);
-        }
-      });
+      setIsLoading(true);
+      getAddressVotingBalance(api, address)
+        .then((value) => {
+          if (isMounted.current) {
+            setBalance(value);
+          }
+        })
+        .finally(() => {
+          if (isMounted.current) {
+            setIsLoading(false);
+          }
+        });
     }
   }, [api, address]);
-  return balance;
+  return [balance, isLoading];
 }
 
 export function useAddressVote(referendumIndex, address) {
   const api = useApi("kintsugi");
   const [vote, setVote] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const isMounted = useIsMounted();
   useEffect(() => {
     if (api && address) {
-      getAddressVote(api, referendumIndex, address).then((vote) => {
-        if (isMounted.current) {
-          setVote(vote);
-        }
-      });
+      setIsLoading(true);
+      getAddressVote(api, referendumIndex, address)
+        .then((vote) => {
+          if (isMounted.current) {
+            setVote(vote);
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
   }, [api, referendumIndex, address]);
-  return vote;
+  return [vote, isLoading];
 }

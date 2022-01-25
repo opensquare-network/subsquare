@@ -36,6 +36,7 @@ import Input from "next-common/components/input";
 import ApproveIcon from "next-common/assets/imgs/icons/approve.svg";
 import RejectIcon from "next-common/assets/imgs/icons/reject.svg";
 import Tooltip from "components/tooltip";
+import Loading from "./loading";
 
 const Background = styled.div`
   position: fixed;
@@ -113,6 +114,8 @@ const BalanceWrapper = styled.div`
   > :nth-child(2) {
     color: #1e2134;
     font-weight: bold;
+  }
+  > :not(:first-child) {
     margin-left: 8px;
   }
 `;
@@ -142,7 +145,8 @@ const StatusWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  > :first-child {
+  min-height: 38px;
+  > div:first-child {
     font-size: 14px;
     line-height: 140%;
     font-weight: 500;
@@ -150,12 +154,15 @@ const StatusWrapper = styled.div`
       color: #9da9bb;
     }
   }
-  > :last-child {
+  > div:last-child {
     display: flex;
     align-items: center;
     > svg {
       margin-left: 8px;
     }
+  }
+  > img {
+    margin: 0 auto;
   }
 `;
 
@@ -166,8 +173,6 @@ const TooltipWrapper = styled.div`
     margin-left: 4px;
   }
 `;
-
-const balanceMap = new Map();
 
 export default function Popup({ chain, onClose, referendumIndex }) {
   const dispatch = useDispatch();
@@ -184,20 +189,18 @@ export default function Popup({ chain, onClose, referendumIndex }) {
   ] = useExtensionAccounts("subsquare");
   const node = getNode(chain);
   const [isLoading, setIsLoading] = useState();
-  const votingBalance = useAddressVotingBalance(selectedAccount?.address);
+  const [votingBalance, votingIsLoading] = useAddressVotingBalance(
+    selectedAccount?.address
+  );
   const balance = toPrecision(votingBalance, node.decimals);
-  const addressVote = useAddressVote(referendumIndex, selectedAccount?.address);
+  const [addressVote, addressVoteIsLoading] = useAddressVote(
+    referendumIndex,
+    selectedAccount?.address
+  );
+  const [inputVoteBalance, setInputVoteBalance] = useState("0");
 
   useEffect(() => {
-    if (extensionDetecting) {
-      return;
-    }
-
-    if (!hasExtension) {
-      return;
-    }
-
-    if (!isExtensionAccessible) {
+    if (extensionDetecting || !hasExtension || !isExtensionAccessible) {
       return;
     }
 
@@ -242,6 +245,80 @@ export default function Popup({ chain, onClose, referendumIndex }) {
     }
   }, [api, selectedAccount, isMounted]);
 
+  const doVote = async (aye) => {
+    if (isLoading || referendumIndex == null || !node) {
+      return;
+    }
+
+    if (!inputVoteBalance) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Please input vote balance",
+        })
+      );
+      return;
+    }
+
+    let errorMessage = null;
+    const decimals = node.decimals;
+    const bnVoteBalance = new BigNumber(inputVoteBalance).multipliedBy(
+      Math.pow(10, decimals)
+    );
+
+    if (bnVoteBalance.lte(0) || !bnVoteBalance.mod(1).isZero()) {
+      errorMessage = { type: "error", message: "Invalid vote balance" };
+    }
+
+    if (!selectedAccount) {
+      errorMessage = { type: "error", message: "Please select an account" };
+    }
+
+    if (!api) {
+      errorMessage = {
+        type: "error",
+        message: "Chain network is not connected yet",
+      };
+    }
+
+    if (errorMessage) {
+      dispatch(addToast(errorMessage));
+      return;
+    }
+
+    try {
+      setIsLoading(aye ? "Aye" : "Nay");
+
+      const voteAddress = selectedAccount.address;
+
+      const unsub = await api.tx.democracy
+        .vote(referendumIndex, { aye, balance: bnVoteBalance.toNumber() })
+        .signAndSend(voteAddress, ({ events = [], status }) => {
+          if (status.isFinalized) {
+            onFinalized(voteAddress);
+            unsub();
+          }
+          if (status.isInBlock) {
+            // Transaction went through
+            onInBlock(voteAddress);
+          }
+        });
+
+      onClose();
+    } catch (e) {
+      if (e.message !== "Cancelled") {
+        dispatch(
+          addToast({
+            type: "error",
+            message: e.message,
+          })
+        );
+      }
+    } finally {
+      setIsLoading(null);
+    }
+  };
+
   if (extensionDetecting) {
     return null;
   }
@@ -281,12 +358,11 @@ export default function Popup({ chain, onClose, referendumIndex }) {
         <div>
           <LabelWrapper>
             <Label>Address</Label>
-            {balance && (
-              <BalanceWrapper>
-                <div>Voting Balance</div>
-                <div>{balance}</div>
-              </BalanceWrapper>
-            )}
+            <BalanceWrapper>
+              <div>Voting Balance</div>
+              {!votingIsLoading && <div>{balance ?? 0}</div>}
+              {votingIsLoading && <Loading />}
+            </BalanceWrapper>
           </LabelWrapper>
           <AddressSelect
             chain={chain}
@@ -303,27 +379,38 @@ export default function Popup({ chain, onClose, referendumIndex }) {
             <Label>Value</Label>
             <Tooltip content="The value is locked for the duration of the vote" />
           </TooltipWrapper>
-          <Input type="number" placeholder="0" disabled={isLoading} />
+          <Input
+            type="number"
+            placeholder="0"
+            disabled={isLoading}
+            value={inputVoteBalance}
+            onChange={(e) => setInputVoteBalance(e.target.value)}
+          />
         </div>
-        {addressVote && (
+        {(addressVote || addressVoteIsLoading) && (
           <div>
             <TooltipWrapper>
               <Label>Voting status</Label>
               <Tooltip content="Resubmit the vote will overwrite the previous voting record" />
             </TooltipWrapper>
             <StatusWrapper>
-              <div>{toPrecision(addressVote.balance, node.decimals)}</div>
-              {addressVote.aye ? (
-                <div>
-                  Aye
-                  <ApproveIcon />
-                </div>
-              ) : (
-                <div>
-                  Nay
-                  <RejectIcon />
-                </div>
+              {!addressVoteIsLoading && addressVote && (
+                <>
+                  <div>{toPrecision(addressVote.balance, node.decimals)}</div>
+                  {addressVote.aye ? (
+                    <div>
+                      Aye
+                      <ApproveIcon />
+                    </div>
+                  ) : (
+                    <div>
+                      Nay
+                      <RejectIcon />
+                    </div>
+                  )}
+                </>
               )}
+              {addressVoteIsLoading && <Loading size={14} />}
             </StatusWrapper>
           </div>
         )}
@@ -331,7 +418,7 @@ export default function Popup({ chain, onClose, referendumIndex }) {
           <Button
             primary
             background="#4CAF50"
-            onClick={() => setIsLoading("Aye")}
+            onClick={() => doVote(true)}
             isLoading={isLoading === "Aye"}
             disabled={isLoading && isLoading !== "Aye"}
           >
@@ -340,7 +427,7 @@ export default function Popup({ chain, onClose, referendumIndex }) {
           <Button
             primary
             background="#F44336"
-            onClick={() => setIsLoading("Nay")}
+            onClick={() => doVote(false)}
             isLoading={isLoading === "Nay"}
             disabled={isLoading && isLoading !== "Nay"}
           >
