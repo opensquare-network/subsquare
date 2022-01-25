@@ -1,8 +1,14 @@
 import BigNumber from "bignumber.js";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { getNode, toPrecision } from "utils";
 import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "styles/componentCss";
+import {
+  getThresholdOfSimplyMajority,
+  getThresholdOfSuperMajorityApprove,
+  getThresholdOfSuperMajorityAgainst,
+} from "utils/referendumUtil";
+import { useElectorate } from "utils/hooks";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -119,13 +125,18 @@ const NaysBar = styled.div`
 
 const Threshold = styled.div`
   position: absolute;
-  left: 50%;
+  ${(p) => p.threshold
+      ? css`left: ${p.threshold};`
+      : css`left: 50%;`
+  }
   width: 2px;
   height: 1rem;
   background-color: #c2c8d5;
 `;
 
-function Vote({ referendumInfo, referendumStatus, chain }) {
+function Vote({ referendumInfo, referendumStatus, isPassing, chain }) {
+  const electorate = useElectorate();
+  console.log(electorate);
   const node = getNode(chain);
   if (!node) {
     return null;
@@ -158,8 +169,29 @@ function Vote({ referendumInfo, referendumStatus, chain }) {
         <BarContainer gap={gap}>
           <AyesBar precent={nAyesPrecent} />
           <NaysBar precent={nNaysPrecent} />
+
           {(referendumStatus?.threshold || "").toLowerCase() ===
-            "simplemajority" && <Threshold />}
+            "simplemajority" && <Threshold threshold={getThresholdOfSimplyMajority()} />}
+
+          {(referendumStatus?.threshold || "").toLowerCase() === "supermajorityapprove" &&
+              <Threshold threshold={
+                getThresholdOfSuperMajorityApprove(
+                  referendumStatus?.tally?.nays || 0,
+                  referendumStatus?.tally?.turnout ?? 0,
+                  electorate
+                )}
+              />
+          }
+
+          {(referendumStatus?.threshold || "").toLowerCase() === "supermajorityagainst" &&
+              <Threshold threshold={
+                getThresholdOfSuperMajorityAgainst(
+                  referendumStatus?.tally?.nays || 0,
+                  referendumStatus?.tally?.turnout ?? 0,
+                  electorate
+                )}
+              />
+          }
         </BarContainer>
       </BarWrapper>
 
@@ -248,6 +280,13 @@ function Vote({ referendumInfo, referendumStatus, chain }) {
       {referendumInfo?.finished?.approved && <PassButton>Passed</PassButton>}
       {referendumInfo?.finished?.approved === false && (
         <RejectButton>Rejected</RejectButton>
+      )}
+      {referendumInfo && !referendumInfo.finished && (
+        isPassing ? (
+          <PassButton>Passing</PassButton>
+        ) : (
+          <RejectButton>Failing</RejectButton>
+        )
       )}
     </Wrapper>
   );

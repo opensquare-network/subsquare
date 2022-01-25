@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { userSelector } from "store/reducers/userSlice";
 import { currentNodeSelector } from "store/reducers/nodeSlice";
 import { getApi } from "services/polkadotApi";
+import { getTotalSupply } from "./escrow/totalSupply";
 
 export function useOnClickOutside(ref, handler) {
   useEffect(() => {
@@ -105,4 +106,20 @@ export function useApi(chain) {
   const nodeUrl = useSelector(currentNodeSelector);
   const apiUrl = nodeUrl[chain];
   return useCall(getApi, [chain, apiUrl]);
+}
+
+export function useElectorate() {
+  const api = useApi("kintsugi");
+  const [electorate, setElectorate] = useState(0);
+  const isMounted = useIsMounted();
+  useEffect(() => {
+    if (api) {
+      getTotalSupply(api).then((value) => {
+        if (isMounted.current) {
+          setElectorate(value);
+        }
+      });
+    }
+  }, [api]);
+  return electorate;
 }
