@@ -161,8 +161,6 @@ const TooltipWrapper = styled.div`
   }
 `;
 
-const balanceMap = new Map();
-
 export default function Popup({ chain, onClose, referendumIndex }) {
   const dispatch = useDispatch();
   const ref = useRef();
@@ -181,6 +179,7 @@ export default function Popup({ chain, onClose, referendumIndex }) {
   const votingBalance = useAddressVotingBalance(selectedAccount?.address);
   const balance = toPrecision(votingBalance, node.decimals);
   const addressVote = useAddressVote(referendumIndex, selectedAccount?.address);
+  const [inputVoteBalance, setInputVoteBalance] = useState("0");
 
   useEffect(() => {
     if (extensionDetecting) {
@@ -235,6 +234,107 @@ export default function Popup({ chain, onClose, referendumIndex }) {
       });
     }
   }, [api, selectedAccount, isMounted]);
+
+  const doVote = async (aye) => {
+    if (!api) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Chain network is not connected yet",
+        })
+      );
+      return;
+    }
+
+    if (isLoading) {
+      return;
+    }
+
+    if (referendumIndex == null) {
+      return;
+    }
+
+    if (!selectedAccount) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Please select an account",
+        })
+      );
+      return;
+    }
+
+    if (!inputVoteBalance) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Please input vote balance",
+        })
+      );
+      return;
+    }
+
+    if (!node) {
+      return;
+    }
+    const decimals = node.decimals;
+
+    const bnVoteBalance = new BigNumber(inputVoteBalance).multipliedBy(
+      Math.pow(10, decimals)
+    );
+    if (bnVoteBalance.lte(0)) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Invalid vote balance",
+        })
+      );
+      return;
+    }
+
+    if (!bnVoteBalance.mod(1).isZero()) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Invalid vote balance",
+        })
+      );
+      return;
+    }
+
+    try {
+      setIsLoading(aye ? "Aye" : "Nay");
+
+      const voteAddress = selectedAccount.address;
+
+      const unsub = await api.tx.democracy
+        .vote(referendumIndex, { aye, balance: bnVoteBalance.toNumber() })
+        .signAndSend(voteAddress, ({ events = [], status }) => {
+          if (status.isFinalized) {
+            onFinalized(voteAddress);
+            unsub();
+          }
+          if (status.isInBlock) {
+            // Transaction went through
+            onInBlock(voteAddress);
+          }
+        });
+
+      onClose();
+    } catch (e) {
+      console.log(e);
+      if (e.message !== "Cancelled") {
+        dispatch(
+          addToast({
+            type: "error",
+            message: e.message,
+          })
+        );
+      }
+    } finally {
+      setIsLoading(null);
+    }
+  };
 
   if (extensionDetecting) {
     return null;
@@ -297,7 +397,13 @@ export default function Popup({ chain, onClose, referendumIndex }) {
             <Label>Value</Label>
             <Tooltip content="The value is locked for the duration of the vote" />
           </TooltipWrapper>
-          <Input type="number" placeholder="0" disabled={isLoading} />
+          <Input
+            type="number"
+            placeholder="0"
+            disabled={isLoading}
+            value={inputVoteBalance}
+            onChange={(e) => setInputVoteBalance(e.target.value)}
+          />
         </div>
         {addressVote && <div>
           <TooltipWrapper>
@@ -323,7 +429,7 @@ export default function Popup({ chain, onClose, referendumIndex }) {
           <Button
             primary
             background="#4CAF50"
-            onClick={() => setIsLoading("Aye")}
+            onClick={() => doVote(true)}
             isLoading={isLoading === "Aye"}
             disabled={isLoading && isLoading !== "Aye"}
           >
@@ -332,7 +438,7 @@ export default function Popup({ chain, onClose, referendumIndex }) {
           <Button
             primary
             background="#F44336"
-            onClick={() => setIsLoading("Nay")}
+            onClick={() => doVote(false)}
             isLoading={isLoading === "Nay"}
             disabled={isLoading && isLoading !== "Nay"}
           >
