@@ -210,7 +210,6 @@ function Vote({ referendumInfo, referendumStatus, chain, setShowVote }) {
           {(referendumStatus?.threshold || "").toLowerCase() === "supermajorityapprove" &&
               <Threshold threshold={
                 getThresholdOfSuperMajorityApprove(
-                  referendumStatus?.tally?.nays || 0,
                   referendumStatus?.tally?.turnout ?? 0,
                   electorate
                 )}
@@ -220,7 +219,6 @@ function Vote({ referendumInfo, referendumStatus, chain, setShowVote }) {
           {(referendumStatus?.threshold || "").toLowerCase() === "supermajorityagainst" &&
               <Threshold threshold={
                 getThresholdOfSuperMajorityAgainst(
-                  referendumStatus?.tally?.nays || 0,
                   referendumStatus?.tally?.turnout ?? 0,
                   electorate
                 )}
