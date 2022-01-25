@@ -238,29 +238,35 @@ export default function Popup({ chain, onClose, referendumIndex }) {
       return;
     }
 
+    if (!inputVoteBalance) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Please input vote balance",
+        })
+      );
+      return;
+    }
+
     let errorMessage = null;
     const decimals = node.decimals;
     const bnVoteBalance = new BigNumber(inputVoteBalance).multipliedBy(
       Math.pow(10, decimals)
     );
 
-    if (!api) {
-      errorMessage = {
-        type: "error",
-        message: "Chain network is not connected yet",
-      };
+    if (bnVoteBalance.lte(0) || !bnVoteBalance.mod(1).isZero()) {
+      errorMessage = { type: "error", message: "Invalid vote balance" };
     }
 
     if (!selectedAccount) {
       errorMessage = { type: "error", message: "Please select an account" };
     }
 
-    if (!inputVoteBalance) {
-      errorMessage = { type: "error", message: "Please input vote balance" };
-    }
-
-    if (bnVoteBalance.lte(0) || !bnVoteBalance.mod(1).isZero()) {
-      errorMessage = { type: "error", message: "Invalid vote balance" };
+    if (!api) {
+      errorMessage = {
+        type: "error",
+        message: "Chain network is not connected yet",
+      };
     }
 
     if (errorMessage) {
