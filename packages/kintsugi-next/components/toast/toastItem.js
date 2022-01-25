@@ -52,7 +52,7 @@ const ToastItem = ({ type, message, id }) => {
   useEffect(() => {
     setTimeout(() => {
       dispatch(removeToast(id));
-    }, 2000);
+    }, 5000);
   });
 
   useEffect(() => {
