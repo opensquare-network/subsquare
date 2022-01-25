@@ -306,7 +306,6 @@ export default function Popup({ chain, onClose, referendumIndex }) {
 
       onClose();
     } catch (e) {
-      console.log(e);
       if (e.message !== "Cancelled") {
         dispatch(
           addToast({
