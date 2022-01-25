@@ -16,7 +16,7 @@ import {
   encodeKintsugiAddress,
 } from "services/chainApi";
 
-import { useOnClickOutside, useIsMounted, useApi, useAddressVotingBalance } from "utils/hooks";
+import { useOnClickOutside, useIsMounted, useApi, useAddressVotingBalance, useAddressVote } from "utils/hooks";
 import AddressSelect from "components/addressSelect";
 import Button from "next-common/components/button";
 import { addToast } from "store/reducers/toastSlice";
@@ -163,7 +163,7 @@ const TooltipWrapper = styled.div`
 
 const balanceMap = new Map();
 
-export default function Popup({ chain, onClose }) {
+export default function Popup({ chain, onClose, referendumIndex }) {
   const dispatch = useDispatch();
   const ref = useRef();
   useOnClickOutside(ref, () => onClose());
@@ -180,6 +180,7 @@ export default function Popup({ chain, onClose }) {
   const [isLoading, setIsLoading] = useState();
   const votingBalance = useAddressVotingBalance(selectedAccount?.address);
   const balance = toPrecision(votingBalance, node.decimals);
+  const addressVote = useAddressVote(referendumIndex, selectedAccount?.address);
 
   useEffect(() => {
     if (extensionDetecting) {
@@ -234,102 +235,6 @@ export default function Popup({ chain, onClose }) {
       });
     }
   }, [api, selectedAccount, isMounted]);
-
-  // const doEndorse = async () => {
-  //   if (!api) {
-  //     dispatch(
-  //       addToast({
-  //         type: "error",
-  //         message: "Chain network is not connected yet",
-  //       })
-  //     );
-  //     return;
-  //   }
-
-  //   if (!tipHash) {
-  //     return;
-  //   }
-
-  //   if (!selectedAccount) {
-  //     dispatch(
-  //       addToast({
-  //         type: "error",
-  //         message: "Please select an account",
-  //       })
-  //     );
-  //     return;
-  //   }
-
-  //   if (!inputTipValue) {
-  //     dispatch(
-  //       addToast({
-  //         type: "error",
-  //         message: "Please input tip value",
-  //       })
-  //     );
-  //     return;
-  //   }
-
-  //   if (!node) {
-  //     return;
-  //   }
-  //   const decimals = node.decimals;
-
-  //   const bnTipValue = new BigNumber(inputTipValue).multipliedBy(
-  //     Math.pow(10, decimals)
-  //   );
-  //   if (bnTipValue.lt(0)) {
-  //     dispatch(
-  //       addToast({
-  //         type: "error",
-  //         message: "Invalid tip value",
-  //       })
-  //     );
-  //     return;
-  //   }
-
-  //   if (!bnTipValue.mod(1).isZero()) {
-  //     dispatch(
-  //       addToast({
-  //         type: "error",
-  //         message: "Invalid tip value",
-  //       })
-  //     );
-  //     return;
-  //   }
-
-  //   try {
-  //     setTipping(true);
-
-  //     const tipperAddress = selectedAccount.address;
-
-  //     const unsub = await api.tx.tips
-  //       .tip(tipHash, bnTipValue.toNumber())
-  //       .signAndSend(tipperAddress, ({ events = [], status }) => {
-  //         if (status.isFinalized) {
-  //           onFinalized(tipperAddress);
-  //           unsub();
-  //         }
-  //         if (status.isInBlock) {
-  //           // Transaction went through
-  //           onInBlock(tipperAddress);
-  //         }
-  //       });
-
-  //     onClose();
-  //   } catch (e) {
-  //     if (e.message !== "Cancelled") {
-  //       dispatch(
-  //         addToast({
-  //           type: "error",
-  //           message: e.message,
-  //         })
-  //       );
-  //     }
-  //   } finally {
-  //     setTipping(false);
-  //   }
-  // };
 
   if (extensionDetecting) {
     return null;
@@ -394,14 +299,14 @@ export default function Popup({ chain, onClose }) {
           </TooltipWrapper>
           <Input type="number" placeholder="0" disabled={isLoading} />
         </div>
-        <div>
+        {addressVote && <div>
           <TooltipWrapper>
             <Label>Voting status</Label>
             <Tooltip content="Resubmit the vote will overwrite the previous voting record" />
           </TooltipWrapper>
           <StatusWrapper>
-            <div>60</div>
-            {true ? (
+            <div>{toPrecision(addressVote.balance, node.decimals)}</div>
+            {addressVote.aye ? (
               <div>
                 Aye
                 <ApproveIcon />
@@ -413,7 +318,7 @@ export default function Popup({ chain, onClose }) {
               </div>
             )}
           </StatusWrapper>
-        </div>
+        </div>}
         <ButtonWrapper>
           <Button
             primary
