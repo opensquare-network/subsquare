@@ -1,14 +1,16 @@
 const { decodeAddress } = require("@polkadot/util-crypto");
-const monetary = require("@interlay/monetary-js")
+const monetary = require("@interlay/monetary-js");
 const BN = require("bn.js");
 const {
-  getFinalizedBlockNumber, parseEscrowPoint, newMonetaryAmount,
+  getFinalizedBlockNumber,
+  parseEscrowPoint,
+  newMonetaryAmount,
   saturatingSub,
 } = require("./utils");
 
 function rawBalanceAt(escrowPoint, height) {
   const heightDiff = saturatingSub(height, escrowPoint.ts);
-  return saturatingSub(escrowPoint.bias, escrowPoint.slope.mul(heightDiff))
+  return saturatingSub(escrowPoint.bias, escrowPoint.slope.mul(heightDiff));
 }
 
 export async function getVotingBalance(api, address) {
@@ -17,7 +19,10 @@ export async function getVotingBalance(api, address) {
   const nowHeight = await getFinalizedBlockNumber(api);
 
   const userPointEpoch = await api.query.escrow.userPointEpoch(publicKey);
-  const lastPoint = await api.query.escrow.userPointHistory(publicKey, userPointEpoch);
+  const lastPoint = await api.query.escrow.userPointHistory(
+    publicKey,
+    userPointEpoch
+  );
   const escrowPoint = parseEscrowPoint(lastPoint);
   const rawBalance = rawBalanceAt(escrowPoint, new BN(nowHeight));
 

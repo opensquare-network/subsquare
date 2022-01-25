@@ -67,6 +67,7 @@ const Headers = styled(Flex)`
 const Contents = styled(Headers)`
   font-weight: 500;
   color: #1e2134;
+  margin-top: 8px !important;
   margin-bottom: 16px;
 `;
 
@@ -93,11 +94,12 @@ const RejectStatus = styled(Status)`
 
 const Row = styled(Flex)`
   height: 48px;
+  margin-top: 0 !important;
   margin-bottom: 16px;
 `;
 
 const BorderedRow = styled(Flex)`
-  height: 48px;
+  height: 44px;
   border-bottom: 1px solid #ebeef4;
 `;
 
@@ -142,10 +144,14 @@ const NaysBar = styled.div`
 
 const Threshold = styled.div`
   position: absolute;
-  ${(p) => p.threshold
-      ? css`left: ${p.threshold};`
-      : css`left: 50%;`
-  }
+  ${(p) =>
+    p.threshold
+      ? css`
+          left: ${p.threshold};
+        `
+      : css`
+          left: 50%;
+        `}
   width: 2px;
   height: 1rem;
   background-color: #c2c8d5;
@@ -204,26 +210,32 @@ function Vote({ referendumInfo, referendumStatus, chain, setShowVote }) {
             <AyesBar precent={nAyesPrecent} />
             <NaysBar precent={nNaysPrecent} />
 
-          {(referendumStatus?.threshold || "").toLowerCase() ===
-            "simplemajority" && <Threshold threshold={getThresholdOfSimplyMajority()} />}
+            {(referendumStatus?.threshold || "").toLowerCase() ===
+              "simplemajority" && (
+              <Threshold threshold={getThresholdOfSimplyMajority()} />
+            )}
 
-          {(referendumStatus?.threshold || "").toLowerCase() === "supermajorityapprove" &&
-              <Threshold threshold={
-                getThresholdOfSuperMajorityApprove(
+            {(referendumStatus?.threshold || "").toLowerCase() ===
+              "supermajorityapprove" && (
+              <Threshold
+                threshold={getThresholdOfSuperMajorityApprove(
+                  referendumStatus?.tally?.nays || 0,
                   referendumStatus?.tally?.turnout ?? 0,
                   electorate
                 )}
               />
-          }
+            )}
 
-          {(referendumStatus?.threshold || "").toLowerCase() === "supermajorityagainst" &&
-              <Threshold threshold={
-                getThresholdOfSuperMajorityAgainst(
+            {(referendumStatus?.threshold || "").toLowerCase() ===
+              "supermajorityagainst" && (
+              <Threshold
+                threshold={getThresholdOfSuperMajorityAgainst(
+                  referendumStatus?.tally?.nays || 0,
                   referendumStatus?.tally?.turnout ?? 0,
                   electorate
                 )}
               />
-          }
+            )}
           </BarContainer>
         </BarWrapper>
 
@@ -272,13 +284,13 @@ function Vote({ referendumInfo, referendumStatus, chain, setShowVote }) {
         {referendumInfo?.finished?.approved === false && (
           <RejectStatus>Failed</RejectStatus>
         )}
-        {referendumInfo && !referendumInfo.finished && (
-          isPassing ? (
+        {referendumInfo &&
+          !referendumInfo.finished &&
+          (isPassing ? (
             <PassStatus>Passing</PassStatus>
           ) : (
             <RejectStatus>Failing</RejectStatus>
-          )
-        )}
+          ))}
       </Card>
 
       {!referendumInfo?.finished && (

@@ -121,5 +121,7 @@ export async function getAddressVote(api, referendumIndex, address) {
   if (!jsonVoting) {
     return null;
   }
-  return (jsonVoting.votes || []).find(vote => vote[0] === referendumIndex)?.[1];
+  return (jsonVoting.votes || []).find(
+    (vote) => vote[0] === referendumIndex
+  )?.[1];
 }
