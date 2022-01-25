@@ -28,7 +28,6 @@ export function getThresholdOfSuperMajorityAgainst(turnout, totalIssuance) {
     99
   ).toFixed(0);
 
-  console.log(threshold);
   return `${threshold}%`;
 }
 
@@ -48,7 +47,6 @@ export function getThresholdOfSuperMajorityApprove(turnout, totalIssuance) {
     99
   ).toFixed(0);
 
-  console.log(threshold);
   return `${threshold}%`;
 }
 
