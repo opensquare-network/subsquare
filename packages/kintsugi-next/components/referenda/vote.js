@@ -180,7 +180,6 @@ function Vote({ referendumInfo, referendumStatus, chain, setShowVote }) {
       gap = 0;
     }
   }
-  console.log(referendumStatus);
   return (
     <Wrapper>
       <Card>
