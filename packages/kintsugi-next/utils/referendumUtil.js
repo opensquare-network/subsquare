@@ -4,28 +4,46 @@ export function getThresholdOfSimplyMajority() {
   return "50%";
 }
 
+function minmax(min, value, max) {
+  return BigNumber.max(BigNumber.min(value, max), min);
+}
+
 export function getThresholdOfSuperMajorityAgainst(nays, turnout, totalIssuance) {
   const bnNays = new BigNumber(nays);
   const sqrtOfTotalIssuance = new BigNumber(totalIssuance).sqrt();
   const sqrtOfTurnout = new BigNumber(turnout).sqrt();
+
   if (bnNays.isZero() || sqrtOfTurnout.isZero() || sqrtOfTotalIssuance.isZero()) {
     return "1%";
   }
 
   const bnAyes = bnNays.times(sqrtOfTurnout).div(sqrtOfTotalIssuance);
-  return `${bnAyes.div(bnAyes.plus(bnNays)).times(100).toFixed(0)}%`;
+  const threshold = minmax(
+    1,
+    bnAyes.div(bnAyes.plus(bnNays)).times(100),
+    99
+  ).toFixed(0);
+
+  return `${threshold}%`;
 }
 
 export function getThresholdOfSuperMajorityApprove(nays, turnout, totalIssuance) {
   const bnNays = new BigNumber(nays);
   const sqrtOfTotalIssuance = new BigNumber(totalIssuance).sqrt();
   const sqrtOfTurnout = new BigNumber(turnout).sqrt();
+
   if (bnNays.isZero() || sqrtOfTurnout.isZero() || sqrtOfTotalIssuance.isZero()) {
     return "1%";
   }
 
   const bnAyes = bnNays.times(sqrtOfTotalIssuance).div(sqrtOfTurnout);
-  return `${bnAyes.div(bnAyes.plus(bnNays)).times(100).toFixed(0)}%`;
+  const threshold = minmax(
+    1,
+    bnAyes.div(bnAyes.plus(bnNays)).times(100),
+    99
+  ).toFixed(0);
+
+  return `${threshold}%`;
 }
 
 function compareRationals(n1, d1, n2, d2) {
@@ -56,9 +74,10 @@ function compareRationals(n1, d1, n2, d2) {
 }
 
 export function calcPassing(referendumInfo, totalIssuance) {
-  if (!referendumInfo) {
+  if (!referendumInfo || !totalIssuance) {
     return false;
   }
+
   const ayes = new BigNumber(referendumInfo.tally.ayes);
   const nays = new BigNumber(referendumInfo.tally.nays);
   const turnout = new BigNumber(referendumInfo.tally.turnout);
@@ -66,7 +85,7 @@ export function calcPassing(referendumInfo, totalIssuance) {
   const sqrtElectorate = new BigNumber(totalIssuance).sqrt();
 
   const threshold = referendumInfo.threshold;
-  if (threshold === "SimpleMajority") {
+  if (threshold.toLowerCase() === "simplemajority") {
     return ayes.gt(nays);
   }
 
@@ -74,9 +93,11 @@ export function calcPassing(referendumInfo, totalIssuance) {
     return false;
   }
 
-  if (threshold === "SuperMajorityApprove") {
+  if (threshold.toLowerCase() === "supermajorityapprove") {
     return compareRationals(nays, sqrtTurnout, ayes, sqrtElectorate);
-  } else { // threshold === "SuperMajorityAgainst"
+  } else if (threshold.toLowerCase() === "supermajorityagainst") {
     return compareRationals(nays, sqrtElectorate, ayes, sqrtTurnout);
   }
+
+  return false;
 }

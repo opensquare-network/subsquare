@@ -65,7 +65,6 @@ export default withLoginUserRedux(
     const [referendumStatus, setReferendumStatus] = useState(
       detail?.onchainData?.status
     );
-    const [isPassing, setIsPassing] = useState(null);
     const isMounted = useIsMounted();
     const [showVote, setShowVote] = useState(false);
 
@@ -75,15 +74,14 @@ export default withLoginUserRedux(
         return;
       }
 
-      api?.derive.democracy.referendums().then(
-        (referendums) => {
-          const referendum = referendums.filter(r => r.index.toNumber() === detail.referendumIndex)[0];
+      api?.query.democracy
+        .referendumInfoOf(detail.referendumIndex)
+        .then((referendumInfo) => {
+          const referendumInfoData = referendumInfo.toJSON();
           if (isMounted.current) {
-            setReferendumStatus(referendum?.status);
-            setIsPassing(referendum?.isPassing);
+            setReferendumStatus(referendumInfoData?.ongoing);
           }
-        }
-      );
+        });
     }, [api, detail, isMounted, referendumStatus]);
 
     const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
@@ -154,7 +152,6 @@ export default withLoginUserRedux(
           <Vote
             referendumInfo={detail?.onchainData?.info}
             referendumStatus={referendumStatus}
-            isPassing={isPassing}
             chain={chain}
             setShowVote={setShowVote}
           />

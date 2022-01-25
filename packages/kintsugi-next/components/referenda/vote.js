@@ -7,6 +7,7 @@ import {
   getThresholdOfSimplyMajority,
   getThresholdOfSuperMajorityApprove,
   getThresholdOfSuperMajorityAgainst,
+  calcPassing,
 } from "utils/referendumUtil";
 import { useElectorate } from "utils/hooks";
 import AyeIcon from "public/imgs/icons/aye.svg";
@@ -164,9 +165,12 @@ const VoteButton = styled.button`
   border-radius: 4px;
 `;
 
-function Vote({ referendumInfo, referendumStatus, isPassing, chain, setShowVote }) {
-  const electorate = useElectorate();
-  console.log(electorate);
+function Vote({ referendumInfo, referendumStatus, chain, setShowVote }) {
+  let electorate = useElectorate();
+  if (new BigNumber(electorate).lte(0)) {
+    electorate = new BigNumber(100);
+  }
+  const isPassing = calcPassing(referendumStatus, electorate);
 
   const node = getNode(chain);
   if (!node) {
@@ -273,9 +277,9 @@ function Vote({ referendumInfo, referendumStatus, isPassing, chain, setShowVote 
         <RejectStatus>Failed</RejectStatus>
         {referendumInfo && !referendumInfo.finished && (
           isPassing ? (
-            <PassButton>Passing</PassButton>
+            <PassStatus>Passing</PassStatus>
           ) : (
-            <RejectButton>Failing</RejectButton>
+            <RejectStatus>Failing</RejectStatus>
           )
         )}
       </Card>
