@@ -26,6 +26,7 @@
     "html-react-parser": "^1.4.5",
     "http-proxy": "^1.18.1",
     "koa-router": "^10.0.0",
+    "lodash.isnil": "^4.0.0",
     "micromark": "^3.0.10",
     "micromark-extension-gfm": "^2.0.0",
     "micromark-extension-gfm-autolink-literal": "^1.0.3",

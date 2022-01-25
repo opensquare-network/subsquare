@@ -166,7 +166,8 @@ const VoteButton = styled.button`
 `;
 
 function Vote({ referendumInfo, referendumStatus, chain, setShowVote }) {
-  let electorate = useElectorate();
+  const referendumEndHeight = referendumInfo?.finished?.end;
+  let electorate = useElectorate(referendumEndHeight);
   const isPassing = calcPassing(referendumStatus, electorate);
 
   const node = getNode(chain);

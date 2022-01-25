@@ -1,4 +1,7 @@
 import BigNumber from "bignumber.js";
+import { getTotalSupply } from "./escrow/totalSupply";
+const { getFinalizedBlockNumber } = require("./escrow/utils");
+
 
 export function getThresholdOfSimplyMajority() {
   return "50%";
@@ -101,4 +104,21 @@ export function calcPassing(referendumInfo, totalIssuance) {
   }
 
   return false;
+}
+
+const electorates = {};
+
+export async function getElectorate(api, height) {
+  let blockHeight = height;
+  if (!blockHeight) {
+    blockHeight = await getFinalizedBlockNumber(api);
+  }
+
+  if (electorates[blockHeight]) {
+    return electorates[blockHeight];
+  }
+
+  const value = await getTotalSupply(api, blockHeight);
+  electorates[blockHeight] = value;
+  return value;
 }

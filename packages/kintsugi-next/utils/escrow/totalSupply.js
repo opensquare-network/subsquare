@@ -6,6 +6,7 @@ const {
 } = require("./utils");
 const BN = require("bn.js");
 const monetary = require("@interlay/monetary-js");
+const isNil = require("lodash.isnil");
 
 async function getSpan(api) {
   return (await api.consts.escrow.span).toBn();
@@ -62,25 +63,29 @@ function storageKeyToNthInner(s, n = 0) {
   return s.args[n];
 }
 
+export async function getTotalSupply(api, blockNumber) {
+  let height = blockNumber;
+  if (isNil(height)) {
+    height = await getFinalizedBlockNumber(api);
+  }
+  const blockHash = await api.rpc.chain.getBlockHash(height);
 
-export async function getTotalSupply(api) {
-  const [currentBlockNumber, epoch, span, rawSlopeChanges] = await Promise.all([
-    getFinalizedBlockNumber(api),
-    api.query.escrow.epoch(),
+  const [epoch, span, rawSlopeChanges] = await Promise.all([
+    api.query.escrow.epoch.at(blockHash),
     getSpan(api),
-    api.query.escrow.slopeChanges.entries()
+    api.query.escrow.slopeChanges.entriesAt(blockHash)
   ]);
 
-  const height = currentBlockNumber;
   const slopeChanges = new Map();
   rawSlopeChanges.forEach(
     ([id, value]) => slopeChanges.set(storageKeyToNthInner(id).toBn(), value.toBn())
   );
 
-  const lastPoint = await api.query.escrow.pointHistory(epoch);
+  const lastPoint = await api.query.escrow.pointHistory.at(blockHash, epoch);
   const rawSupply = rawSupplyAt(parseEscrowPoint(lastPoint), new BN(height), span, slopeChanges);
 
   const totalSupply = newMonetaryAmount(rawSupply.toString(), monetary.VoteKintsugi);
 
   return totalSupply.toHuman();
 }
+
