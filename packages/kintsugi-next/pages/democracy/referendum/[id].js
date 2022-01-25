@@ -30,7 +30,15 @@ const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
 });
 
+const OutWrapper = styled.div`
+  display: flex;
+  max-width: 1080px;
+  margin: 0 auto;
+  position: relative;
+`;
+
 const Wrapper = styled.div`
+  width: 100%;
   > :not(:first-child) {
     margin-top: 16px;
   }
@@ -136,56 +144,58 @@ export default withLoginUserRedux(
           siteUrl={siteUrl}
           chain={chain}
         />
-        <Wrapper className="post-content">
-          {showVote && (
-            <Popup chain={chain} onClose={() => setShowVote(false)} />
-          )}
-          <Back href={`/democracy/referendums`} text="Back to Referendas" />
-          <DetailItem
-            data={detail}
-            onReply={focusEditor}
-            user={loginUser}
-            chain={chain}
-            type={TYPE_DEMOCRACY_REFERENDUM}
-          />
-
-          <Vote
-            referendumInfo={detail?.onchainData?.info}
-            referendumStatus={referendumStatus}
-            chain={chain}
-            setShowVote={setShowVote}
-          />
-
-          <KVList title={"Metadata"} data={metadata} />
-
-          <Timeline data={timelineData} chain={chain} />
-
-          <CommentsWrapper>
-            <Comments
-              data={comments}
+        <OutWrapper>
+          <Wrapper className="post-content">
+            {showVote && (
+              <Popup chain={chain} onClose={() => setShowVote(false)} />
+            )}
+            <Back href={`/democracy/referendums`} text="Back to Referendas" />
+            <DetailItem
+              data={detail}
+              onReply={focusEditor}
               user={loginUser}
-              postId={detail._id}
               chain={chain}
-              onReply={onReply}
+              type={TYPE_DEMOCRACY_REFERENDUM}
             />
-            {loginUser && (
-              <Editor
+
+            <Vote
+              referendumInfo={detail?.onchainData?.info}
+              referendumStatus={referendumStatus}
+              chain={chain}
+              setShowVote={setShowVote}
+            />
+
+            <KVList title={"Metadata"} data={metadata} />
+
+            <Timeline data={timelineData} chain={chain} />
+
+            <CommentsWrapper>
+              <Comments
+                data={comments}
+                user={loginUser}
                 postId={detail._id}
                 chain={chain}
-                ref={editorWrapperRef}
-                setQuillRef={setQuillRef}
-                {...{
-                  contentType,
-                  setContentType,
-                  content,
-                  setContent,
-                  users: getMentionList(comments),
-                }}
-                type={TYPE_DEMOCRACY_REFERENDUM}
+                onReply={onReply}
               />
-            )}
-          </CommentsWrapper>
-        </Wrapper>
+              {loginUser && (
+                <Editor
+                  postId={detail._id}
+                  chain={chain}
+                  ref={editorWrapperRef}
+                  setQuillRef={setQuillRef}
+                  {...{
+                    contentType,
+                    setContentType,
+                    content,
+                    setContent,
+                    users: getMentionList(comments),
+                  }}
+                  type={TYPE_DEMOCRACY_REFERENDUM}
+                />
+              )}
+            </CommentsWrapper>
+          </Wrapper>
+        </OutWrapper>
       </Layout>
     );
   }
