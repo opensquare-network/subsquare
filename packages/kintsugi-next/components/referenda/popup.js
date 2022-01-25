@@ -16,7 +16,13 @@ import {
   encodeKintsugiAddress,
 } from "services/chainApi";
 
-import { useOnClickOutside, useIsMounted, useApi, useAddressVotingBalance, useAddressVote } from "utils/hooks";
+import {
+  useOnClickOutside,
+  useIsMounted,
+  useApi,
+  useAddressVotingBalance,
+  useAddressVote,
+} from "utils/hooks";
 import AddressSelect from "components/addressSelect";
 import Button from "next-common/components/button";
 import { addToast } from "store/reducers/toastSlice";
@@ -30,6 +36,7 @@ import Input from "next-common/components/input";
 import ApproveIcon from "next-common/assets/imgs/icons/approve.svg";
 import RejectIcon from "next-common/assets/imgs/icons/reject.svg";
 import Tooltip from "components/tooltip";
+import Loading from "./loading";
 
 const Background = styled.div`
   position: fixed;
@@ -107,6 +114,8 @@ const BalanceWrapper = styled.div`
   > :nth-child(2) {
     color: #1e2134;
     font-weight: bold;
+  }
+  > :not(:first-child) {
     margin-left: 8px;
   }
 `;
@@ -136,7 +145,8 @@ const StatusWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  > :first-child {
+  min-height: 38px;
+  > div:first-child {
     font-size: 14px;
     line-height: 140%;
     font-weight: 500;
@@ -144,12 +154,15 @@ const StatusWrapper = styled.div`
       color: #9da9bb;
     }
   }
-  > :last-child {
+  > div:last-child {
     display: flex;
     align-items: center;
     > svg {
       margin-left: 8px;
     }
+  }
+  > img {
+    margin: 0 auto;
   }
 `;
 
@@ -178,9 +191,14 @@ export default function Popup({ chain, onClose, referendumIndex }) {
   ] = useExtensionAccounts("subsquare");
   const node = getNode(chain);
   const [isLoading, setIsLoading] = useState();
-  const votingBalance = useAddressVotingBalance(selectedAccount?.address);
+  const [votingBalance, votingIsLoading] = useAddressVotingBalance(
+    selectedAccount?.address
+  );
   const balance = toPrecision(votingBalance, node.decimals);
-  const addressVote = useAddressVote(referendumIndex, selectedAccount?.address);
+  const [addressVote, addressVoteIsLoading] = useAddressVote(
+    referendumIndex,
+    selectedAccount?.address
+  );
 
   useEffect(() => {
     if (extensionDetecting) {
@@ -275,12 +293,11 @@ export default function Popup({ chain, onClose, referendumIndex }) {
         <div>
           <LabelWrapper>
             <Label>Address</Label>
-            {balance && (
-              <BalanceWrapper>
-                <div>Voting Balance</div>
-                <div>{balance}</div>
-              </BalanceWrapper>
-            )}
+            <BalanceWrapper>
+              <div>Voting Balance</div>
+              {!votingIsLoading && <div>{balance ?? 0}</div>}
+              {votingIsLoading && <Loading />}
+            </BalanceWrapper>
           </LabelWrapper>
           <AddressSelect
             chain={chain}
@@ -299,26 +316,33 @@ export default function Popup({ chain, onClose, referendumIndex }) {
           </TooltipWrapper>
           <Input type="number" placeholder="0" disabled={isLoading} />
         </div>
-        {addressVote && <div>
-          <TooltipWrapper>
-            <Label>Voting status</Label>
-            <Tooltip content="Resubmit the vote will overwrite the previous voting record" />
-          </TooltipWrapper>
-          <StatusWrapper>
-            <div>{toPrecision(addressVote.balance, node.decimals)}</div>
-            {addressVote.aye ? (
-              <div>
-                Aye
-                <ApproveIcon />
-              </div>
-            ) : (
-              <div>
-                Nay
-                <RejectIcon />
-              </div>
-            )}
-          </StatusWrapper>
-        </div>}
+        {(addressVote || addressVoteIsLoading) && (
+          <div>
+            <TooltipWrapper>
+              <Label>Voting status</Label>
+              <Tooltip content="Resubmit the vote will overwrite the previous voting record" />
+            </TooltipWrapper>
+            <StatusWrapper>
+              {!addressVoteIsLoading && addressVote && (
+                <>
+                  <div>{toPrecision(addressVote.balance, node.decimals)}</div>
+                  {addressVote.aye ? (
+                    <div>
+                      Aye
+                      <ApproveIcon />
+                    </div>
+                  ) : (
+                    <div>
+                      Nay
+                      <RejectIcon />
+                    </div>
+                  )}
+                </>
+              )}
+              {addressVoteIsLoading && <Loading size={14} />}
+            </StatusWrapper>
+          </div>
+        )}
         <ButtonWrapper>
           <Button
             primary
