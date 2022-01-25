@@ -1,50 +1,38 @@
 import BigNumber from "bignumber.js";
 import { getTotalSupply } from "./escrow/totalSupply";
+import { getVotingBalance } from "./escrow/votingBalance";
 const { getFinalizedBlockNumber } = require("./escrow/utils");
 
+const ONE = new BigNumber(1);
 
 export function getThresholdOfSimplyMajority() {
   return "50%";
 }
 
-function minmax(min, value, max) {
-  return BigNumber.max(BigNumber.min(value, max), min);
-}
-
-export function getThresholdOfSuperMajorityAgainst(nays, turnout, totalIssuance) {
-  const bnNays = new BigNumber(nays);
+export function getThresholdOfSuperMajorityAgainst(turnout, totalIssuance) {
   const sqrtElectorate = BigNumber.max(totalIssuance, turnout).sqrt();
   const sqrtOfTurnout = new BigNumber(turnout).sqrt();
 
-  if (bnNays.isZero() || sqrtOfTurnout.isZero() || sqrtElectorate.isZero()) {
-    return "1%";
+  if (sqrtOfTurnout.isZero() || sqrtElectorate.isZero()) {
+    return "0%";
   }
 
-  const bnAyes = bnNays.times(sqrtOfTurnout).div(sqrtElectorate);
-  const threshold = minmax(
-    1,
-    bnAyes.div(bnAyes.plus(bnNays)).times(100),
-    99
-  ).toFixed(0);
+  const bnAyes = ONE.times(sqrtOfTurnout).div(sqrtElectorate);
+  const threshold = bnAyes.div(bnAyes.plus(ONE)).times(100).toFixed(0);
 
   return `${threshold}%`;
 }
 
-export function getThresholdOfSuperMajorityApprove(nays, turnout, totalIssuance) {
-  const bnNays = new BigNumber(nays);
+export function getThresholdOfSuperMajorityApprove(turnout, totalIssuance) {
   const sqrtElectorate = BigNumber.max(totalIssuance, turnout).sqrt();
   const sqrtOfTurnout = new BigNumber(turnout).sqrt();
 
-  if (bnNays.isZero() || sqrtOfTurnout.isZero() || sqrtElectorate.isZero()) {
-    return "1%";
+  if (sqrtOfTurnout.isZero() || sqrtElectorate.isZero()) {
+    return "0%";
   }
 
-  const bnAyes = bnNays.times(sqrtElectorate).div(sqrtOfTurnout);
-  const threshold = minmax(
-    1,
-    bnAyes.div(bnAyes.plus(bnNays)).times(100),
-    99
-  ).toFixed(0);
+  const bnAyes = ONE.times(sqrtElectorate).div(sqrtOfTurnout);
+  const threshold = bnAyes.div(bnAyes.plus(ONE)).times(100).toFixed(0);
 
   return `${threshold}%`;
 }
@@ -121,4 +109,19 @@ export async function getElectorate(api, height) {
   const value = await getTotalSupply(api, blockHeight);
   electorates[blockHeight] = value;
   return value;
+}
+
+export function getAddressVotingBalance(api, address) {
+  return getVotingBalance(api, address);
+}
+
+export async function getAddressVote(api, referendumIndex, address) {
+  const voting = await api.query.democracy.votingOf(address);
+  const jsonVoting = voting?.toJSON();
+  if (!jsonVoting) {
+    return null;
+  }
+  return (jsonVoting.votes || []).find(
+    (vote) => vote[0] === referendumIndex
+  )?.[1];
 }

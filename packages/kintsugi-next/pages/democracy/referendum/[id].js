@@ -147,7 +147,11 @@ export default withLoginUserRedux(
         <OutWrapper>
           <Wrapper className="post-content">
             {showVote && (
-              <Popup chain={chain} onClose={() => setShowVote(false)} />
+              <Popup
+                chain={chain}
+                onClose={() => setShowVote(false)}
+                referendumIndex={detail?.referendumIndex}
+              />
             )}
             <Back href={`/democracy/referendums`} text="Back to Referendas" />
             <DetailItem
