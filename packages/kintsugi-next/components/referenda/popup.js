@@ -174,8 +174,6 @@ const TooltipWrapper = styled.div`
   }
 `;
 
-const balanceMap = new Map();
-
 export default function Popup({ chain, onClose, referendumIndex }) {
   const dispatch = useDispatch();
   const ref = useRef();
@@ -199,17 +197,10 @@ export default function Popup({ chain, onClose, referendumIndex }) {
     referendumIndex,
     selectedAccount?.address
   );
+  const [inputVoteBalance, setInputVoteBalance] = useState("0");
 
   useEffect(() => {
-    if (extensionDetecting) {
-      return;
-    }
-
-    if (!hasExtension) {
-      return;
-    }
-
-    if (!isExtensionAccessible) {
+    if (extensionDetecting || !hasExtension || !isExtensionAccessible) {
       return;
     }
 
@@ -253,6 +244,80 @@ export default function Popup({ chain, onClose, referendumIndex }) {
       });
     }
   }, [api, selectedAccount, isMounted]);
+
+  const doVote = async (aye) => {
+    if (isLoading || referendumIndex == null || !node) {
+      return;
+    }
+
+    if (!inputVoteBalance) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Please input vote balance",
+        })
+      );
+      return;
+    }
+
+    let errorMessage = null;
+    const decimals = node.decimals;
+    const bnVoteBalance = new BigNumber(inputVoteBalance).multipliedBy(
+      Math.pow(10, decimals)
+    );
+
+    if (bnVoteBalance.lte(0) || !bnVoteBalance.mod(1).isZero()) {
+      errorMessage = { type: "error", message: "Invalid vote balance" };
+    }
+
+    if (!selectedAccount) {
+      errorMessage = { type: "error", message: "Please select an account" };
+    }
+
+    if (!api) {
+      errorMessage = {
+        type: "error",
+        message: "Chain network is not connected yet",
+      };
+    }
+
+    if (errorMessage) {
+      dispatch(addToast(errorMessage));
+      return;
+    }
+
+    try {
+      setIsLoading(aye ? "Aye" : "Nay");
+
+      const voteAddress = selectedAccount.address;
+
+      const unsub = await api.tx.democracy
+        .vote(referendumIndex, { aye, balance: bnVoteBalance.toNumber() })
+        .signAndSend(voteAddress, ({ events = [], status }) => {
+          if (status.isFinalized) {
+            onFinalized(voteAddress);
+            unsub();
+          }
+          if (status.isInBlock) {
+            // Transaction went through
+            onInBlock(voteAddress);
+          }
+        });
+
+      onClose();
+    } catch (e) {
+      if (e.message !== "Cancelled") {
+        dispatch(
+          addToast({
+            type: "error",
+            message: e.message,
+          })
+        );
+      }
+    } finally {
+      setIsLoading(null);
+    }
+  };
 
   if (extensionDetecting) {
     return null;
@@ -314,7 +379,13 @@ export default function Popup({ chain, onClose, referendumIndex }) {
             <Label>Value</Label>
             <Tooltip content="The value is locked for the duration of the vote" />
           </TooltipWrapper>
-          <Input type="number" placeholder="0" disabled={isLoading} />
+          <Input
+            type="number"
+            placeholder="0"
+            disabled={isLoading}
+            value={inputVoteBalance}
+            onChange={(e) => setInputVoteBalance(e.target.value)}
+          />
         </div>
         {(addressVote || addressVoteIsLoading) && (
           <div>
@@ -347,7 +418,7 @@ export default function Popup({ chain, onClose, referendumIndex }) {
           <Button
             primary
             background="#4CAF50"
-            onClick={() => setIsLoading("Aye")}
+            onClick={() => doVote(true)}
             isLoading={isLoading === "Aye"}
             disabled={isLoading && isLoading !== "Aye"}
           >
@@ -356,7 +427,7 @@ export default function Popup({ chain, onClose, referendumIndex }) {
           <Button
             primary
             background="#F44336"
-            onClick={() => setIsLoading("Nay")}
+            onClick={() => doVote(false)}
             isLoading={isLoading === "Nay"}
             disabled={isLoading && isLoading !== "Nay"}
           >
