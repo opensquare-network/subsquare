@@ -1,17 +1,20 @@
-const definitions = require("./kintsugi/definitions");
-const { getKintRegistry } = require("./kintsugi/registry");
 import { ApiPromise, WsProvider } from "@polkadot/api";
+import interbtc from "@interlay/interbtc-types";
 
 const apiInstanceMap = new Map();
 
 export const getApi = async (chain, queryUrl) => {
   if (!apiInstanceMap.has(queryUrl)) {
     const provider = new WsProvider(queryUrl, 1000);
-    const options = { provider };
-    if (chain === "kintsugi") {
-      options.registry = getKintRegistry();
-      options.rpc = definitions.providerRpc;
-    }
+    const options = {
+      provider,
+      typesBundle: {
+        spec: {
+          "interbtc-parachain": interbtc,
+        },
+      },
+      rpc: interbtc.rpc,
+    };
 
     apiInstanceMap.set(queryUrl, ApiPromise.create(options));
   }

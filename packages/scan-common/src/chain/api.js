@@ -1,5 +1,4 @@
 const definitions = require("./kintsugi/definitions");
-const { getKintRegistry } = require("./kintsugi/registry");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { CHAINS, currentChain } = require("../env");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
@@ -37,7 +36,11 @@ async function getApi() {
   } else if (chain === CHAINS.BASILISK) {
     options.typesBundle = { spec: { basilisk } };
   } else if (CHAINS.KINTSUGI === chain) {
-    options.registry = getKintRegistry();
+    options.typesBundle = {
+      spec: {
+        "interbtc-parachain": definitions,
+      },
+    };
     options.rpc = definitions.providerRpc;
   } else if (CHAINS.BIFROST === chain) {
     options.typesBundle = {
