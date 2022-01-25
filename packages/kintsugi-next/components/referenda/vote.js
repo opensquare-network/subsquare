@@ -180,6 +180,7 @@ function Vote({ referendumInfo, referendumStatus, chain, setShowVote }) {
       gap = 0;
     }
   }
+  console.log(referendumStatus);
   return (
     <Wrapper>
       <Card>
@@ -235,9 +236,10 @@ function Vote({ referendumInfo, referendumStatus, chain, setShowVote }) {
             {nTurnout} {symbol}
           </span>
         </Row>
-        {/* just show some static, bind data later */}
-        <PassStatus>Passed</PassStatus>
-        <RejectStatus>Failed</RejectStatus>
+        {referendumInfo?.finished?.approved && <PassStatus>Passed</PassStatus>}
+        {referendumInfo?.finished?.approved === false && (
+          <RejectStatus>Failed</RejectStatus>
+        )}
       </Card>
 
       {!referendumInfo?.finished && (
