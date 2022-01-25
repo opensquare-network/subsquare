@@ -74,22 +74,23 @@ function compareRationals(n1, d1, n2, d2) {
 }
 
 export function calcPassing(referendumInfo, totalIssuance) {
-  if (!referendumInfo || !totalIssuance) {
+  if (!referendumInfo) {
     return false;
   }
 
   const ayes = new BigNumber(referendumInfo.tally.ayes);
   const nays = new BigNumber(referendumInfo.tally.nays);
-  const turnout = new BigNumber(referendumInfo.tally.turnout);
-  const sqrtTurnout = turnout.sqrt();
-  const sqrtElectorate = new BigNumber(totalIssuance).sqrt();
-
   const threshold = referendumInfo.threshold;
+
   if (threshold.toLowerCase() === "simplemajority") {
     return ayes.gt(nays);
   }
 
-  if (sqrtTurnout.isZero()) {
+  const turnout = new BigNumber(referendumInfo.tally.turnout);
+  const sqrtTurnout = turnout.sqrt();
+  const sqrtElectorate = BigNumber.max(totalIssuance, turnout).sqrt();
+
+  if (sqrtTurnout.isZero() || sqrtElectorate.isZero()) {
     return false;
   }
 

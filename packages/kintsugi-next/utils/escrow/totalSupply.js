@@ -1,10 +1,11 @@
-const BN = require("bn.js");
-const monetary = require("@interlay/monetary-js");
 const {
   getFinalizedBlockNumber,
   parseEscrowPoint,
   newMonetaryAmount,
+  saturatingSub,
 } = require("./utils");
+const BN = require("bn.js");
+const monetary = require("@interlay/monetary-js");
 
 async function getSpan(api) {
   return (await api.consts.escrow.span).toBn();
@@ -40,8 +41,11 @@ function rawSupplyAt(escrowPoint, height, escrowSpan, slopeChanges) {
       d_slope = getSlopeChange(slopeChanges, t_i);
     }
 
-    const heightDiff = t_i.sub(lastPoint.ts);
-    lastPoint.bias = lastPoint.bias.sub(lastPoint.slope.mul(heightDiff));
+    const heightDiff = saturatingSub(t_i, lastPoint.ts);
+    lastPoint.bias = saturatingSub(
+      lastPoint.bias,
+      lastPoint.slope.mul(heightDiff)
+    );
 
     if (t_i.eq(height)) {
       break;
@@ -58,6 +62,7 @@ function storageKeyToNthInner(s, n = 0) {
   return s.args[n];
 }
 
+
 export async function getTotalSupply(api) {
   const [currentBlockNumber, epoch, span, rawSlopeChanges] = await Promise.all([
     getFinalizedBlockNumber(api),
@@ -65,7 +70,6 @@ export async function getTotalSupply(api) {
     getSpan(api),
     api.query.escrow.slopeChanges.entries()
   ]);
-  console.log(currentBlockNumber.toString());
 
   const height = currentBlockNumber;
   const slopeChanges = new Map();

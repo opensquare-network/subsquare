@@ -167,9 +167,6 @@ const VoteButton = styled.button`
 
 function Vote({ referendumInfo, referendumStatus, chain, setShowVote }) {
   let electorate = useElectorate();
-  if (new BigNumber(electorate).lte(0)) {
-    electorate = new BigNumber(100);
-  }
   const isPassing = calcPassing(referendumStatus, electorate);
 
   const node = getNode(chain);
