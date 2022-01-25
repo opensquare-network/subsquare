@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@alicloud/pop-core": "^1.7.10",
+    "@interlay/interbtc-types": "^1.5.10",
     "@interlay/monetary-js": "^0.5.3",
     "@koa/cors": "^3.1.0",
     "@polkadot/api": "7.4.1",

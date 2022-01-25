@@ -1,3 +1,5 @@
+const definitions = require("./kintsugi/definitions");
+const { getKintRegistry } = require("./kintsugi/registry");
 import { ApiPromise, WsProvider } from "@polkadot/api";
 
 const apiInstanceMap = new Map();
@@ -7,8 +9,8 @@ export const getApi = async (chain, queryUrl) => {
     const provider = new WsProvider(queryUrl, 1000);
     const options = { provider };
     if (chain === "kintsugi") {
-      //TODO: kintsugi type boundle
-      //options.typesBundle = ...;
+      options.registry = getKintRegistry();
+      options.rpc = definitions.providerRpc;
     }
 
     apiInstanceMap.set(queryUrl, ApiPromise.create(options));
