@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { userSelector } from "store/reducers/userSlice";
 import { currentNodeSelector } from "store/reducers/nodeSlice";
 import { getApi } from "services/polkadotApi";
-import { getElectorate } from "./referendumUtil";
+import { getAddressVotingBalance, getElectorate } from "./referendumUtil";
 
 export function useOnClickOutside(ref, handler) {
   useEffect(() => {
@@ -122,4 +122,20 @@ export function useElectorate(height) {
     }
   }, [api, height]);
   return electorate;
+}
+
+export function useAddressVotingBalance(address) {
+  const api = useApi("kintsugi");
+  const [balance, setBalance] = useState(0);
+  const isMounted = useIsMounted();
+  useEffect(() => {
+    if (api && address) {
+      getAddressVotingBalance(api, address).then((value) => {
+        if (isMounted.current) {
+          setBalance(value);
+        }
+      });
+    }
+  }, [api, address]);
+  return balance;
 }

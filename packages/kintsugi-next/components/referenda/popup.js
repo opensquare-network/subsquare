@@ -16,7 +16,7 @@ import {
   encodeKintsugiAddress,
 } from "services/chainApi";
 
-import { useOnClickOutside, useIsMounted, useApi } from "utils/hooks";
+import { useOnClickOutside, useIsMounted, useApi, useAddressVotingBalance } from "utils/hooks";
 import AddressSelect from "components/addressSelect";
 import Button from "next-common/components/button";
 import { addToast } from "store/reducers/toastSlice";
@@ -170,7 +170,6 @@ export default function Popup({ chain, onClose }) {
   const isMounted = useIsMounted();
   const [accounts, setAccounts] = useState([]);
   const [selectedAccount, setSelectedAccount] = useState(null);
-  const [balance, setBalance] = useState();
   const [
     extensionAccounts,
     hasExtension,
@@ -179,6 +178,8 @@ export default function Popup({ chain, onClose }) {
   ] = useExtensionAccounts("subsquare");
   const node = getNode(chain);
   const [isLoading, setIsLoading] = useState();
+  const votingBalance = useAddressVotingBalance(selectedAccount?.address);
+  const balance = toPrecision(votingBalance, node.decimals);
 
   useEffect(() => {
     if (extensionDetecting) {
@@ -233,23 +234,6 @@ export default function Popup({ chain, onClose }) {
       });
     }
   }, [api, selectedAccount, isMounted]);
-
-  useEffect(() => {
-    if (balanceMap.has(selectedAccount?.address)) {
-      setBalance(balanceMap.get(selectedAccount?.address));
-      return;
-    }
-    setBalance();
-    if (api && selectedAccount) {
-      api.query.system.account(selectedAccount.address).then((result) => {
-        if (isMounted.current) {
-          const free = toPrecision(result.data.free, node.decimals);
-          setBalance(free);
-          balanceMap.set(selectedAccount.address, free);
-        }
-      });
-    }
-  }, [api, selectedAccount, node.decimals, isMounted]);
 
   // const doEndorse = async () => {
   //   if (!api) {
