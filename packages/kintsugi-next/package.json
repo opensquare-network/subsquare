@@ -11,12 +11,14 @@
   },
   "dependencies": {
     "@alicloud/pop-core": "^1.7.10",
+    "@interlay/monetary-js": "^0.5.3",
     "@koa/cors": "^3.1.0",
     "@polkadot/api": "7.4.1",
     "@polkadot/react-identicon": "0.89.2",
-    "@subsquare/next-common": "file:../next-common",
     "@subsquare/backend-common": "file:../backend-common",
+    "@subsquare/next-common": "file:../next-common",
     "bignumber.js": "^9.0.2",
+    "bn.js": "^5.2.0",
     "cheerio": "^1.0.0-rc.10",
     "cookies": "^0.8.0",
     "dayjs": "^1.10.7",
@@ -24,6 +26,7 @@
     "html-react-parser": "^1.4.5",
     "http-proxy": "^1.18.1",
     "koa-router": "^10.0.0",
+    "lodash.isnil": "^4.0.0",
     "micromark": "^3.0.10",
     "micromark-extension-gfm": "^2.0.0",
     "micromark-extension-gfm-autolink-literal": "^1.0.3",
@@ -49,7 +52,7 @@
     "xss": "^1.0.9"
   },
   "devDependencies": {
-    "next-transpile-modules": "^9.0.0",
-    "babel-loader": "^8.2.3"
+    "babel-loader": "^8.2.3",
+    "next-transpile-modules": "^9.0.0"
   }
 }
