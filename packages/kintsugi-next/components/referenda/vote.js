@@ -9,18 +9,37 @@ import {
   getThresholdOfSuperMajorityAgainst,
 } from "utils/referendumUtil";
 import { useElectorate } from "utils/hooks";
+import AyeIcon from "public/imgs/icons/aye.svg";
+import NayIcon from "public/imgs/icons/nay.svg";
+import TurnoutIcon from "public/imgs/icons/turnout.svg";
 
 const Wrapper = styled.div`
+  margin: 16px 0;
+  position: absolute;
+  right: 0;
+  top: 32px;
+  width: 280px;
+  margin-top: 0 !important;
+  @media screen and (max-width: 1024px) {
+    position: static;
+    width: auto;
+    margin-top: 16px !important;
+  }
+`;
+
+const Card = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
   ${shadow_100};
   border-radius: 6px;
-  padding: 48px;
+  padding: 24px;
   @media screen and (max-width: 768px) {
-    padding: 24px;
     border-radius: 0;
   }
-  margin: 16px 0;
+
+  > :not(:first-child) {
+    margin-top: 16px;
+  }
 `;
 
 const Title = styled.div`
@@ -34,13 +53,9 @@ const Headers = styled(Flex)`
   font-size: 12px;
   color: #506176;
 
-  span {
-    display: inline-block;
-    width: 33.33%;
-  }
-
   span:nth-child(2) {
     text-align: center;
+    white-space: nowrap;
   }
 
   span:nth-child(3) {
@@ -54,22 +69,23 @@ const Contents = styled(Headers)`
   margin-bottom: 16px;
 `;
 
-const Button = styled.button`
+const Status = styled.div`
   width: 100%;
-  height: 38px;
+  line-height: 38px;
   border-width: 0;
   border-radius: 4px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 700;
   cursor: default;
+  text-align: center;
 `;
 
-const PassButton = styled(Button)`
+const PassStatus = styled(Status)`
   color: #4caf50;
   background: #edf7ed;
 `;
 
-const RejectButton = styled(Button)`
+const RejectStatus = styled(Status)`
   color: #f44336;
   background: #fff1f0;
 `;
@@ -134,9 +150,24 @@ const Threshold = styled.div`
   background-color: #c2c8d5;
 `;
 
-function Vote({ referendumInfo, referendumStatus, isPassing, chain }) {
+const VoteButton = styled.button`
+  all: unset;
+  cursor: pointer;
+  margin-top: 16px;
+  width: 100%;
+  line-height: 38px;
+  background-color: #1e2134;
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: center;
+  border-radius: 4px;
+`;
+
+function Vote({ referendumInfo, referendumStatus, isPassing, chain, setShowVote }) {
   const electorate = useElectorate();
   console.log(electorate);
+
   const node = getNode(chain);
   if (!node) {
     return null;
@@ -163,12 +194,13 @@ function Vote({ referendumInfo, referendumStatus, isPassing, chain }) {
   }
   return (
     <Wrapper>
-      <Title>Votes</Title>
+      <Card>
+        <Title>Votes</Title>
 
-      <BarWrapper>
-        <BarContainer gap={gap}>
-          <AyesBar precent={nAyesPrecent} />
-          <NaysBar precent={nNaysPrecent} />
+        <BarWrapper>
+          <BarContainer gap={gap}>
+            <AyesBar precent={nAyesPrecent} />
+            <NaysBar precent={nNaysPrecent} />
 
           {(referendumStatus?.threshold || "").toLowerCase() ===
             "simplemajority" && <Threshold threshold={getThresholdOfSimplyMajority()} />}
@@ -192,101 +224,70 @@ function Vote({ referendumInfo, referendumStatus, isPassing, chain }) {
                 )}
               />
           }
-        </BarContainer>
-      </BarWrapper>
+          </BarContainer>
+        </BarWrapper>
 
-      <Headers>
-        <span>Aye</span>
-        <span>Passing threshold</span>
-        <span>Nay</span>
-      </Headers>
+        <Headers>
+          <span>Aye</span>
+          <span>Passing threshold</span>
+          <span>Nay</span>
+        </Headers>
 
-      <Contents>
-        <span>{nAyesPrecent}%</span>
-        <span>{referendumStatus?.threshold}</span>
-        <span>{nNaysPrecent}%</span>
-      </Contents>
+        <Contents>
+          <span>{nAyesPrecent}%</span>
+          <span>{referendumStatus?.threshold}</span>
+          <span>{nNaysPrecent}%</span>
+        </Contents>
 
-      <BorderedRow>
-        <Header>
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 14 14"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12.4933 3.1543L5.16868 10.8452L1.50635 6.99991"
-              stroke="#4CAF50"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          Aye
-        </Header>
-        <span>
-          {nAyes} {symbol}
-        </span>
-      </BorderedRow>
+        <BorderedRow>
+          <Header>
+            <AyeIcon />
+            Aye
+          </Header>
+          <span>
+            {nAyes} {symbol}
+          </span>
+        </BorderedRow>
 
-      <BorderedRow>
-        <Header>
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 14 14"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M2.50439 2.50391L7.00023 6.99975M7.00023 6.99975L11.4961 11.4956M7.00023 6.99975L11.4961 2.50391M7.00023 6.99975L2.50439 11.4956"
-              stroke="#F44336"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
-          Nay
-        </Header>
-        <span>
-          {nNays} {symbol}
-        </span>
-      </BorderedRow>
+        <BorderedRow>
+          <Header>
+            <NayIcon />
+            Nay
+          </Header>
+          <span>
+            {nNays} {symbol}
+          </span>
+        </BorderedRow>
 
-      <Row>
-        <Header>
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 14 14"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M5 4.3H9M4 7H10M5 9.7H9M2 1.5H12C12.2761 1.5 12.5 1.74624 12.5 2.05V11.95C12.5 12.2538 12.2761 12.5 12 12.5H2C1.72386 12.5 1.5 12.2538 1.5 11.95V2.05C1.5 1.74624 1.72386 1.5 2 1.5Z"
-              stroke="#9DA9BB"
-              strokeWidth="1.25"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          Turnout
-        </Header>
-        <span>
-          {nTurnout} {symbol}
-        </span>
-      </Row>
-      {referendumInfo?.finished?.approved && <PassButton>Passed</PassButton>}
-      {referendumInfo?.finished?.approved === false && (
-        <RejectButton>Rejected</RejectButton>
-      )}
-      {referendumInfo && !referendumInfo.finished && (
-        isPassing ? (
-          <PassButton>Passing</PassButton>
-        ) : (
-          <RejectButton>Failing</RejectButton>
-        )
+        <Row>
+          <Header>
+            <TurnoutIcon />
+            Turnout
+          </Header>
+          <span>
+            {nTurnout} {symbol}
+          </span>
+        </Row>
+        {/* just show some static, bind data later */}
+        <PassStatus>Passed</PassStatus>
+        <RejectStatus>Failed</RejectStatus>
+        {referendumInfo && !referendumInfo.finished && (
+          isPassing ? (
+            <PassButton>Passing</PassButton>
+          ) : (
+            <RejectButton>Failing</RejectButton>
+          )
+        )}
+      </Card>
+
+      {!referendumInfo?.finished && (
+        <VoteButton
+          onClick={() => {
+            setShowVote(true);
+          }}
+        >
+          Vote
+        </VoteButton>
       )}
     </Wrapper>
   );

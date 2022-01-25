@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-key */
 import styled from "styled-components";
+import dynamic from "next/dynamic";
 
 import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
@@ -25,12 +26,19 @@ import { useApi, useIsMounted } from "utils/hooks";
 import { getMetaDesc } from "utils/viewfuncs";
 import SEO from "components/SEO";
 
+const Popup = dynamic(() => import("components/referenda/popup"), {
+  ssr: false,
+});
+
 const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
-  max-width: 848px;
-  margin: auto;
+  margin-right: 312px;
+  @media screen and (max-width: 1024px) {
+    max-width: 848px;
+    margin: 0 auto;
+  }
 `;
 
 const CommentsWrapper = styled.div`
@@ -59,6 +67,7 @@ export default withLoginUserRedux(
     );
     const [isPassing, setIsPassing] = useState(null);
     const isMounted = useIsMounted();
+    const [showVote, setShowVote] = useState(false);
 
     useEffect(() => {
       // Already has the last ongoging status
@@ -130,6 +139,9 @@ export default withLoginUserRedux(
           chain={chain}
         />
         <Wrapper className="post-content">
+          {showVote && (
+            <Popup chain={chain} onClose={() => setShowVote(false)} />
+          )}
           <Back href={`/democracy/referendums`} text="Back to Referendas" />
           <DetailItem
             data={detail}
@@ -144,6 +156,7 @@ export default withLoginUserRedux(
             referendumStatus={referendumStatus}
             isPassing={isPassing}
             chain={chain}
+            setShowVote={setShowVote}
           />
 
           <KVList title={"Metadata"} data={metadata} />

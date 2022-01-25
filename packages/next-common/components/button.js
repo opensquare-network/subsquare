@@ -17,14 +17,14 @@ const Wrapper = styled.button`
   ${(p) =>
     p.disabled &&
     css`
-      background: #c2c8d4;
+      background: #c2c8d4 !important;
       color: #ffffff;
       border: none;
     `}
   ${(p) =>
     p.primary &&
     css`
-      background: #6848ff;
+      background: ${p.background || "#6848ff"};
       color: #ffffff;
       border: none;
     `}
