@@ -3,6 +3,7 @@ import { getTotalSupply } from "./escrow/totalSupply";
 import { getVotingBalance } from "./escrow/votingBalance";
 const { getFinalizedBlockNumber } = require("./escrow/utils");
 
+const ONE = new BigNumber(1);
 
 export function getThresholdOfSimplyMajority() {
   return "50%";
@@ -13,7 +14,6 @@ function minmax(min, value, max) {
 }
 
 export function getThresholdOfSuperMajorityAgainst(turnout, totalIssuance) {
-  const bnNays = new BigNumber(1);
   const sqrtElectorate = BigNumber.max(totalIssuance, turnout).sqrt();
   const sqrtOfTurnout = new BigNumber(turnout).sqrt();
 
@@ -21,10 +21,10 @@ export function getThresholdOfSuperMajorityAgainst(turnout, totalIssuance) {
     return "1%";
   }
 
-  const bnAyes = bnNays.times(sqrtOfTurnout).div(sqrtElectorate);
+  const bnAyes = ONE.times(sqrtOfTurnout).div(sqrtElectorate);
   const threshold = minmax(
     1,
-    bnAyes.div(bnAyes.plus(bnNays)).times(100),
+    bnAyes.div(bnAyes.plus(ONE)).times(100),
     99
   ).toFixed(0);
 
@@ -32,7 +32,6 @@ export function getThresholdOfSuperMajorityAgainst(turnout, totalIssuance) {
 }
 
 export function getThresholdOfSuperMajorityApprove(turnout, totalIssuance) {
-  const bnNays = new BigNumber(1);
   const sqrtElectorate = BigNumber.max(totalIssuance, turnout).sqrt();
   const sqrtOfTurnout = new BigNumber(turnout).sqrt();
 
@@ -40,10 +39,10 @@ export function getThresholdOfSuperMajorityApprove(turnout, totalIssuance) {
     return "1%";
   }
 
-  const bnAyes = bnNays.times(sqrtElectorate).div(sqrtOfTurnout);
+  const bnAyes = ONE.times(sqrtElectorate).div(sqrtOfTurnout);
   const threshold = minmax(
     1,
-    bnAyes.div(bnAyes.plus(bnNays)).times(100),
+    bnAyes.div(bnAyes.plus(ONE)).times(100),
     99
   ).toFixed(0);
 
