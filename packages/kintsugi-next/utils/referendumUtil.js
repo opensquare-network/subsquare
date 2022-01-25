@@ -9,24 +9,16 @@ export function getThresholdOfSimplyMajority() {
   return "50%";
 }
 
-function minmax(min, value, max) {
-  return BigNumber.max(BigNumber.min(value, max), min);
-}
-
 export function getThresholdOfSuperMajorityAgainst(turnout, totalIssuance) {
   const sqrtElectorate = BigNumber.max(totalIssuance, turnout).sqrt();
   const sqrtOfTurnout = new BigNumber(turnout).sqrt();
 
   if (sqrtOfTurnout.isZero() || sqrtElectorate.isZero()) {
-    return "1%";
+    return "0%";
   }
 
   const bnAyes = ONE.times(sqrtOfTurnout).div(sqrtElectorate);
-  const threshold = minmax(
-    1,
-    bnAyes.div(bnAyes.plus(ONE)).times(100),
-    99
-  ).toFixed(0);
+  const threshold = bnAyes.div(bnAyes.plus(ONE)).times(100).toFixed(0);
 
   return `${threshold}%`;
 }
@@ -36,15 +28,11 @@ export function getThresholdOfSuperMajorityApprove(turnout, totalIssuance) {
   const sqrtOfTurnout = new BigNumber(turnout).sqrt();
 
   if (sqrtOfTurnout.isZero() || sqrtElectorate.isZero()) {
-    return "1%";
+    return "0%";
   }
 
   const bnAyes = ONE.times(sqrtElectorate).div(sqrtOfTurnout);
-  const threshold = minmax(
-    1,
-    bnAyes.div(bnAyes.plus(ONE)).times(100),
-    99
-  ).toFixed(0);
+  const threshold = bnAyes.div(bnAyes.plus(ONE)).times(100).toFixed(0);
 
   return `${threshold}%`;
 }
