@@ -200,15 +200,7 @@ export default function Popup({ chain, onClose, referendumIndex }) {
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
 
   useEffect(() => {
-    if (extensionDetecting) {
-      return;
-    }
-
-    if (!hasExtension) {
-      return;
-    }
-
-    if (!isExtensionAccessible) {
+    if (extensionDetecting || !hasExtension || !isExtensionAccessible) {
       return;
     }
 
@@ -254,31 +246,7 @@ export default function Popup({ chain, onClose, referendumIndex }) {
   }, [api, selectedAccount, isMounted]);
 
   const doVote = async (aye) => {
-    if (!api) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Chain network is not connected yet",
-        })
-      );
-      return;
-    }
-
-    if (isLoading) {
-      return;
-    }
-
-    if (referendumIndex == null) {
-      return;
-    }
-
-    if (!selectedAccount) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Please select an account",
-        })
-      );
+    if (isLoading || referendumIndex == null || !node) {
       return;
     }
 
@@ -292,31 +260,29 @@ export default function Popup({ chain, onClose, referendumIndex }) {
       return;
     }
 
-    if (!node) {
-      return;
-    }
+    let errorMessage = null;
     const decimals = node.decimals;
-
     const bnVoteBalance = new BigNumber(inputVoteBalance).multipliedBy(
       Math.pow(10, decimals)
     );
-    if (bnVoteBalance.lte(0)) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Invalid vote balance",
-        })
-      );
-      return;
+
+    if (bnVoteBalance.lte(0) || !bnVoteBalance.mod(1).isZero()) {
+      errorMessage = { type: "error", message: "Invalid vote balance" };
     }
 
-    if (!bnVoteBalance.mod(1).isZero()) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Invalid vote balance",
-        })
-      );
+    if (!selectedAccount) {
+      errorMessage = { type: "error", message: "Please select an account" };
+    }
+
+    if (!api) {
+      errorMessage = {
+        type: "error",
+        message: "Chain network is not connected yet",
+      };
+    }
+
+    if (errorMessage) {
+      dispatch(addToast(errorMessage));
       return;
     }
 
