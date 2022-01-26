@@ -80,7 +80,7 @@ async function getActivePostsOverview() {
     .find(
       {
         "state.indexer.blockTime": {
-          $lt: Date.now() - 7 * Day
+          $gt: Date.now() - 7 * Day
         },
       },
       {
