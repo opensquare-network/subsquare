@@ -5,7 +5,6 @@ import Toggle from "components/toggle";
 import Button from "next-common/components/button";
 import Menu from "next-common/components/menu";
 import { settingMenu } from "next-common/utils/constants";
-import { useAuthPage } from "utils/hooks";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "services/nextApi";
 import { addToast } from "store/reducers/toastSlice";
@@ -85,7 +84,6 @@ const ButtonWrapper = styled.div`
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const dispatch = useDispatch();
-  useAuthPage(true);
 
   const [reply, setReply] = useState(!!loginUser?.notification?.reply);
   const [mention, setMention] = useState(!!loginUser?.notification?.mention);
