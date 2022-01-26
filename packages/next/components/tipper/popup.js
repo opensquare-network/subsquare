@@ -301,7 +301,7 @@ export default function Popup({
       const tipperAddress = selectedAccount.address;
 
       const unsub = await api.tx.tips
-        .tip(tipHash, bnTipValue.toNumber())
+        .tip(tipHash, bnTipValue.toFixed())
         .signAndSend(tipperAddress, ({ events = [], status }) => {
           if (status.isFinalized) {
             onFinalized(tipperAddress);

@@ -299,7 +299,7 @@ export default function Popup({ chain, onClose, referendumIndex }) {
       const voteAddress = selectedAccount.address;
 
       const unsub = await api.tx.democracy
-        .vote(referendumIndex, { aye, balance: bnVoteBalance.toNumber() })
+        .vote(referendumIndex, { aye, balance: bnVoteBalance.toFixed() })
         .signAndSend(voteAddress, ({ events = [], status }) => {
           if (status.isFinalized) {
             onFinalized(voteAddress);
