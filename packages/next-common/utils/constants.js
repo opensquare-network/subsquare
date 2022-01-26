@@ -103,16 +103,23 @@ export const DEFAULT_BIFROST_NODES = [
 
 export const DEFAULT_BIFROST_NODE_URL = DEFAULT_BIFROST_NODES[0]?.url;
 
-export const DEFAULT_KINTSUGI_NODES = [
-  {
-    name: "OnFinality",
-    url: "wss://kintsugi.api.onfinality.io/public-ws",
-  },
-  {
-    name: "Kintsugi Labs",
-    url: "wss://api-kusama.interlay.io/parachain",
-  },
-];
+export const DEFAULT_KINTSUGI_NODES = process.env.NEXT_PUBLIC_DEVELOPMENT === "true"
+  ? [
+      {
+        name: "Kintsugi Test Endpoint",
+        url: "wss://api-dev-kintsugi.interlay.io/parachain",
+      }
+    ]
+  : [
+      {
+        name: "OnFinality",
+        url: "wss://kintsugi.api.onfinality.io/public-ws",
+      },
+      {
+        name: "Kintsugi Labs",
+        url: "wss://api-kusama.interlay.io/parachain",
+      },
+    ];
 
 export const DEFAULT_KINTSUGI_NODE_URL = DEFAULT_KINTSUGI_NODES[0]?.url;
 
@@ -127,7 +134,7 @@ export const DEFAULT_NODES = {
 };
 
 export const nodes = [
-  ...(process.env.NEXT_PUBLIC_SHOW_KUSAMA === "true"
+  ...(process.env.NEXT_PUBLIC_DEVELOPMENT === "true"
     ? [
         {
           value: "kusama",

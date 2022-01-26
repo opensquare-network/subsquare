@@ -6,6 +6,7 @@ const {
 
 const genesisHeight = 1;
 const mainScanName = "main-scan-height";
+const isDev = process.env.DEV === "true";
 
 async function getNextScanHeight() {
   const statusCol = await getStatusCollection();
@@ -19,6 +20,10 @@ async function getNextScanHeight() {
   } else {
     console.error("Scan height value error in DB!");
     process.exit(1);
+  }
+
+  if (isDev) {
+    return result;
   }
 
   return Math.max(scanStartHeight[currentChain()], result);

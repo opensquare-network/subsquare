@@ -7,7 +7,7 @@ import {
   web3Enable,
 } from "@polkadot/extension-dapp";
 import Button from "next-common/components/button";
-import { useAuthPage, useIsMounted } from "utils/hooks";
+import { useIsMounted } from "utils/hooks";
 import { userSelector } from "store/reducers/userSlice";
 import {
   encodeKaruraAddress,
@@ -169,7 +169,6 @@ const EmptyList = styled.div`
 `;
 
 export default function LinkedAddress({ chain }) {
-  useAuthPage(true);
   const isMounted = useIsMounted();
   const user = useSelector(userSelector);
   const [hasExtension, setHasExtension] = useState(true);

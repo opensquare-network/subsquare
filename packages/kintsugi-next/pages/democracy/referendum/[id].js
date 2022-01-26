@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-key */
 import styled from "styled-components";
+import dynamic from "next/dynamic";
 
 import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
@@ -25,12 +26,27 @@ import { useApi, useIsMounted } from "utils/hooks";
 import { getMetaDesc } from "utils/viewfuncs";
 import SEO from "components/SEO";
 
+const Popup = dynamic(() => import("components/referenda/popup"), {
+  ssr: false,
+});
+
+const OutWrapper = styled.div`
+  display: flex;
+  max-width: 1080px;
+  margin: 0 auto;
+  position: relative;
+`;
+
 const Wrapper = styled.div`
+  width: 100%;
   > :not(:first-child) {
     margin-top: 16px;
   }
-  max-width: 848px;
-  margin: auto;
+  margin-right: 312px;
+  @media screen and (max-width: 1024px) {
+    max-width: 848px;
+    margin: 0 auto;
+  }
 `;
 
 const CommentsWrapper = styled.div`
@@ -58,6 +74,7 @@ export default withLoginUserRedux(
       detail?.onchainData?.status
     );
     const isMounted = useIsMounted();
+    const [showVote, setShowVote] = useState(false);
 
     useEffect(() => {
       // Already has the last ongoging status
@@ -127,52 +144,62 @@ export default withLoginUserRedux(
           siteUrl={siteUrl}
           chain={chain}
         />
-        <Wrapper className="post-content">
-          <Back href={`/democracy/referendums`} text="Back to Referendas" />
-          <DetailItem
-            data={detail}
-            onReply={focusEditor}
-            user={loginUser}
-            chain={chain}
-            type={TYPE_DEMOCRACY_REFERENDUM}
-          />
-
-          <Vote
-            referendumInfo={detail?.onchainData?.info}
-            referendumStatus={referendumStatus}
-            chain={chain}
-          />
-
-          <KVList title={"Metadata"} data={metadata} />
-
-          <Timeline data={timelineData} chain={chain} />
-
-          <CommentsWrapper>
-            <Comments
-              data={comments}
-              user={loginUser}
-              postId={detail._id}
-              chain={chain}
-              onReply={onReply}
-            />
-            {loginUser && (
-              <Editor
-                postId={detail._id}
+        <OutWrapper>
+          <Wrapper className="post-content">
+            {showVote && (
+              <Popup
                 chain={chain}
-                ref={editorWrapperRef}
-                setQuillRef={setQuillRef}
-                {...{
-                  contentType,
-                  setContentType,
-                  content,
-                  setContent,
-                  users: getMentionList(comments),
-                }}
-                type={TYPE_DEMOCRACY_REFERENDUM}
+                onClose={() => setShowVote(false)}
+                referendumIndex={detail?.referendumIndex}
               />
             )}
-          </CommentsWrapper>
-        </Wrapper>
+            <Back href={`/democracy/referendums`} text="Back to Referendas" />
+            <DetailItem
+              data={detail}
+              onReply={focusEditor}
+              user={loginUser}
+              chain={chain}
+              type={TYPE_DEMOCRACY_REFERENDUM}
+            />
+
+            <Vote
+              referendumInfo={detail?.onchainData?.info}
+              referendumStatus={referendumStatus}
+              chain={chain}
+              setShowVote={setShowVote}
+            />
+
+            <KVList title={"Metadata"} data={metadata} />
+
+            <Timeline data={timelineData} chain={chain} />
+
+            <CommentsWrapper>
+              <Comments
+                data={comments}
+                user={loginUser}
+                postId={detail._id}
+                chain={chain}
+                onReply={onReply}
+              />
+              {loginUser && (
+                <Editor
+                  postId={detail._id}
+                  chain={chain}
+                  ref={editorWrapperRef}
+                  setQuillRef={setQuillRef}
+                  {...{
+                    contentType,
+                    setContentType,
+                    content,
+                    setContent,
+                    users: getMentionList(comments),
+                  }}
+                  type={TYPE_DEMOCRACY_REFERENDUM}
+                />
+              )}
+            </CommentsWrapper>
+          </Wrapper>
+        </OutWrapper>
       </Layout>
     );
   }

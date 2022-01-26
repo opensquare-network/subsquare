@@ -11,19 +11,32 @@ import {
   encodePolkadotAddress,
   encodeBasiliskAddress,
   encodeBifrostAddress,
-  encodeAcalaAddress,
+  // encodeAcalaAddress,
   encodeKabochaAddress,
+  encodeKintsugiAddress,
 } from "services/chainApi";
 
-import { useOnClickOutside, useIsMounted, useApi } from "utils/hooks";
+import {
+  useOnClickOutside,
+  useIsMounted,
+  useApi,
+  useAddressVotingBalance,
+  useAddressVote,
+} from "utils/hooks";
 import AddressSelect from "components/addressSelect";
 import Button from "next-common/components/button";
 import { addToast } from "store/reducers/toastSlice";
 
-import TipInput from "./tipInput";
 import { getNode, toPrecision } from "utils";
 import { useExtensionAccounts } from "utils/polkadotExtension";
 import ExternalLink from "next-common/components/externalLink";
+import ClosePanelIcon from "next-common/assets/imgs/icons/close-panel.svg";
+import Input from "next-common/components/input";
+// import Select from "components/select";
+import ApproveIcon from "next-common/assets/imgs/icons/approve.svg";
+import RejectIcon from "next-common/assets/imgs/icons/reject.svg";
+import Tooltip from "components/tooltip";
+import Loading from "./loading";
 
 const Background = styled.div`
   position: fixed;
@@ -50,6 +63,7 @@ const Wrapper = styled.div`
     0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
     0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
   border-radius: 6px;
+  color: #1e2134;
   > :not(:first-child) {
     margin-top: 16px;
   }
@@ -62,26 +76,9 @@ const TopWrapper = styled.div`
   font-weight: bold;
   font-size: 14px;
   line-height: 100%;
-  > img {
-    width: 14px;
-    height: 14px;
+  > svg {
     cursor: pointer;
   }
-`;
-
-const Info = styled.div`
-  background: #f6f7fa;
-  border-radius: 4px;
-  padding: 12px 16px;
-  color: #506176;
-  font-size: 14px;
-  line-height: 140%;
-  ${(p) =>
-    p.danger &&
-    css`
-      color: #f44336;
-      background: #fff1f0;
-    `}
 `;
 
 const LabelWrapper = styled.div`
@@ -98,7 +95,15 @@ const Label = styled.div`
 
 const ButtonWrapper = styled.div`
   display: flex;
-  justify-content: flex-end;
+  > first-child {
+    background: #4caf50;
+  }
+  > * {
+    flex-grow: 1;
+  }
+  > :not(:first-child) {
+    margin-left: 12px;
+  }
 `;
 
 const BalanceWrapper = styled.div`
@@ -109,6 +114,8 @@ const BalanceWrapper = styled.div`
   > :nth-child(2) {
     color: #1e2134;
     font-weight: bold;
+  }
+  > :not(:first-child) {
     margin-left: 8px;
   }
 `;
@@ -131,25 +138,56 @@ const Download = styled.div`
   color: #2196f3;
 `;
 
-const balanceMap = new Map();
+const StatusWrapper = styled.div`
+  background: #ebeef4;
+  border-radius: 4px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 38px;
+  > div.value {
+    font-size: 14px;
+    line-height: 100%;
+    font-weight: 500;
+    > span {
+      color: #9da9bb;
+    }
+  }
+  > div.result {
+    display: flex;
+    align-items: center;
+    > svg {
+      margin-left: 8px;
+    }
+  }
+  > img {
+    margin: 0 auto;
+  }
+  > div.no-data {
+    font-size: 14px;
+    line-height: 100%;
+    color: #9da9bb;
+    flex-grow: 1;
+    text-align: center;
+  }
+`;
 
-export default function Popup({
-  chain,
-  councilTippers,
-  tipHash,
-  onClose,
-  onInBlock,
-  onFinalized,
-}) {
+const TooltipWrapper = styled.div`
+  display: flex;
+  align-items: flex-start;
+  > :not(:first-child) {
+    margin-left: 4px;
+  }
+`;
+
+export default function Popup({ chain, onClose, referendumIndex }) {
   const dispatch = useDispatch();
   const ref = useRef();
   useOnClickOutside(ref, () => onClose());
   const isMounted = useIsMounted();
   const [accounts, setAccounts] = useState([]);
   const [selectedAccount, setSelectedAccount] = useState(null);
-  const [inputTipValue, setInputTipValue] = useState();
-  const [tipping, setTipping] = useState(false);
-  const [balance, setBalance] = useState();
   const [
     extensionAccounts,
     hasExtension,
@@ -157,21 +195,19 @@ export default function Popup({
     extensionDetecting,
   ] = useExtensionAccounts("subsquare");
   const node = getNode(chain);
-
-  const selectedAccountIsTipper = councilTippers.includes(
-    selectedAccount?.[`${chain}Address`]
+  const [isLoading, setIsLoading] = useState();
+  const [votingBalance, votingIsLoading] = useAddressVotingBalance(
+    selectedAccount?.address
   );
+  const balance = toPrecision(votingBalance, node.decimals);
+  const [addressVote, addressVoteIsLoading] = useAddressVote(
+    referendumIndex,
+    selectedAccount?.address
+  );
+  const [inputVoteBalance, setInputVoteBalance] = useState("0");
 
   useEffect(() => {
-    if (extensionDetecting) {
-      return;
-    }
-
-    if (!hasExtension) {
-      return;
-    }
-
-    if (!isExtensionAccessible) {
+    if (extensionDetecting || !hasExtension || !isExtensionAccessible) {
       return;
     }
 
@@ -183,8 +219,9 @@ export default function Popup({
       khalaAddress: encodeKhalaAddress(address),
       basiliskAddress: encodeBasiliskAddress(address),
       bifrostAddress: encodeBifrostAddress(address),
-      acalaAddress: encodeAcalaAddress(address),
+      // acalaAddress: encodeAcalaAddress(address),
       kabochaAddress: encodeKabochaAddress(address),
+      kintsugiAddress: encodeKintsugiAddress(address),
       name,
     }));
 
@@ -215,101 +252,62 @@ export default function Popup({
     }
   }, [api, selectedAccount, isMounted]);
 
-  useEffect(() => {
-    if (balanceMap.has(selectedAccount?.address)) {
-      setBalance(balanceMap.get(selectedAccount?.address));
+  const doVote = async (aye) => {
+    if (isLoading || referendumIndex == null || !node) {
       return;
     }
-    setBalance();
-    if (api && selectedAccount) {
-      api.query.system.account(selectedAccount.address).then((result) => {
-        if (isMounted.current) {
-          const free = toPrecision(result.data.free, node.decimals);
-          setBalance(free);
-          balanceMap.set(selectedAccount.address, free);
-        }
-      });
-    }
-  }, [api, selectedAccount, node.decimals, isMounted]);
 
-  const doEndorse = async () => {
-    if (!api) {
+    if (!inputVoteBalance) {
       dispatch(
         addToast({
           type: "error",
-          message: "Chain network is not connected yet",
+          message: "Please input vote balance",
         })
       );
       return;
     }
 
-    if (!tipHash) {
-      return;
+    let errorMessage = null;
+    const decimals = node.decimals;
+    const bnVoteBalance = new BigNumber(inputVoteBalance).multipliedBy(
+      Math.pow(10, decimals)
+    );
+
+    if (bnVoteBalance.lte(0) || !bnVoteBalance.mod(1).isZero()) {
+      errorMessage = { type: "error", message: "Invalid vote balance" };
     }
 
     if (!selectedAccount) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Please select an account",
-        })
-      );
-      return;
+      errorMessage = { type: "error", message: "Please select an account" };
     }
 
-    if (!inputTipValue) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Please input tip value",
-        })
-      );
-      return;
+    if (!api) {
+      errorMessage = {
+        type: "error",
+        message: "Chain network is not connected yet",
+      };
     }
 
-    if (!node) {
-      return;
-    }
-    const decimals = node.decimals;
-
-    const bnTipValue = new BigNumber(inputTipValue).multipliedBy(
-      Math.pow(10, decimals)
-    );
-    if (bnTipValue.lt(0)) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Invalid tip value",
-        })
-      );
-      return;
-    }
-
-    if (!bnTipValue.mod(1).isZero()) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Invalid tip value",
-        })
-      );
+    if (errorMessage) {
+      dispatch(addToast(errorMessage));
       return;
     }
 
     try {
-      setTipping(true);
+      setIsLoading(aye ? "Aye" : "Nay");
 
-      const tipperAddress = selectedAccount.address;
+      const voteAddress = selectedAccount.address;
 
-      const unsub = await api.tx.tips
-        .tip(tipHash, bnTipValue.toFixed())
-        .signAndSend(tipperAddress, ({ events = [], status }) => {
+      const unsub = await api.tx.democracy
+        .vote(referendumIndex, { aye, balance: bnVoteBalance.toFixed() })
+        .signAndSend(voteAddress, ({ events = [], status }) => {
           if (status.isFinalized) {
-            onFinalized(tipperAddress);
+            onFinalized(voteAddress);
             unsub();
           }
           if (status.isInBlock) {
             // Transaction went through
-            onInBlock(tipperAddress);
+            onInBlock(voteAddress);
           }
         });
 
@@ -324,7 +322,7 @@ export default function Popup({
         );
       }
     } finally {
-      setTipping(false);
+      setIsLoading(null);
     }
   };
 
@@ -364,18 +362,14 @@ export default function Popup({
   } else {
     content = (
       <>
-        <Info danger={!selectedAccountIsTipper}>
-          Only council members can tip.
-        </Info>
         <div>
           <LabelWrapper>
             <Label>Address</Label>
-            {balance && (
-              <BalanceWrapper>
-                <div>Balance</div>
-                <div>{balance}</div>
-              </BalanceWrapper>
-            )}
+            <BalanceWrapper>
+              <div>Voting Balance</div>
+              {!votingIsLoading && <div>{balance ?? 0}</div>}
+              {votingIsLoading && <Loading />}
+            </BalanceWrapper>
           </LabelWrapper>
           <AddressSelect
             chain={chain}
@@ -384,24 +378,71 @@ export default function Popup({
             onSelect={(account) => {
               setSelectedAccount(account);
             }}
+            disabled={isLoading}
           />
         </div>
         <div>
-          <Label>Tip Value</Label>
-          <TipInput
-            value={inputTipValue}
-            setValue={setInputTipValue}
-            symbol={node?.symbol}
+          <TooltipWrapper>
+            <Label>Value</Label>
+            <Tooltip content="The value is locked for the duration of the vote" />
+          </TooltipWrapper>
+          <Input
+            type="number"
+            placeholder="0"
+            disabled={isLoading}
+            value={inputVoteBalance}
+            onChange={(e) => setInputVoteBalance(e.target.value)}
           />
         </div>
+        <div>
+          <TooltipWrapper>
+            <Label>Voting status</Label>
+            <Tooltip content="Resubmit the vote will overwrite the previous voting record" />
+          </TooltipWrapper>
+          <StatusWrapper>
+            {!addressVoteIsLoading &&
+              (addressVote ? (
+                <>
+                  <div className="value">
+                    {toPrecision(addressVote.balance, node.decimals)}
+                  </div>
+                  {addressVote.aye ? (
+                    <div className="result">
+                      Aye
+                      <ApproveIcon />
+                    </div>
+                  ) : (
+                    <div className="result">
+                      Nay
+                      <RejectIcon />
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="no-data">No voting record</div>
+              ))}
+            {addressVoteIsLoading && <Loading size={14} />}
+          </StatusWrapper>
+        </div>
         <ButtonWrapper>
-          {selectedAccountIsTipper && api && inputTipValue ? (
-            <Button secondary isLoading={tipping} onClick={doEndorse}>
-              Endorse
-            </Button>
-          ) : (
-            <Button disabled>Endorse</Button>
-          )}
+          <Button
+            primary
+            background="#4CAF50"
+            onClick={() => doVote(true)}
+            isLoading={isLoading === "Aye"}
+            disabled={isLoading && isLoading !== "Aye"}
+          >
+            Aye
+          </Button>
+          <Button
+            primary
+            background="#F44336"
+            onClick={() => doVote(false)}
+            isLoading={isLoading === "Nay"}
+            disabled={isLoading && isLoading !== "Nay"}
+          >
+            Nay
+          </Button>
         </ButtonWrapper>
       </>
     );
@@ -411,8 +452,8 @@ export default function Popup({
     <Background>
       <Wrapper ref={ref}>
         <TopWrapper>
-          <div>Tip</div>
-          <img onClick={onClose} src="/imgs/icons/close.svg" alt="" />
+          <div>Referenda vote</div>
+          <ClosePanelIcon onClick={onClose} />
         </TopWrapper>
         {content}
       </Wrapper>

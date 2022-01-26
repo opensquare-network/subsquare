@@ -9,7 +9,6 @@ import Input from "next-common/components/input";
 import { useForm, useIsMounted } from "utils/hooks";
 import nextApi from "services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
-import { useAuthPage } from "utils/hooks";
 import { withLoginUser, withLoginUserRedux } from "../lib";
 import { useDispatch } from "react-redux";
 import { addToast } from "store/reducers/toastSlice";
@@ -111,7 +110,6 @@ const FormWrapper = styled.form`
 `;
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
-  useAuthPage(false);
   const router = useRouter();
   const dispatch = useDispatch();
   const [success, setSuccess] = useState(!!loginUser);

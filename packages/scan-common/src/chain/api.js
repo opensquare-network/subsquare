@@ -1,9 +1,9 @@
+const definitions = require("./kintsugi/definitions");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { CHAINS, currentChain } = require("../env");
 const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
 const { versionedKhala, typesChain } = require("@phala/typedefs");
 const { basilisk } = require("./bundle/basilisk");
-const interbtc = require("@interlay/interbtc-types");
 const {
   typesBundleForPolkadot: bifrostTypesBundleForPolkadot,
 } = require("@bifrost-finance/type-definitions");
@@ -36,7 +36,12 @@ async function getApi() {
   } else if (chain === CHAINS.BASILISK) {
     options.typesBundle = { spec: { basilisk } };
   } else if (CHAINS.KINTSUGI === chain) {
-    options.typesBundle = { spec: { "kintsugi-parachain": interbtc } };
+    options.typesBundle = {
+      spec: {
+        "interbtc-parachain": definitions,
+      },
+    };
+    options.rpc = definitions.providerRpc;
   } else if (CHAINS.BIFROST === chain) {
     options.typesBundle = {
       spec: {
