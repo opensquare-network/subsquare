@@ -10,6 +10,7 @@ const {
       ReferendumEvents,
       TimelineItemTypes,
     },
+    getPublicProposalDeposit,
   },
 } = require("@subsquare/scan-common");
 
@@ -27,6 +28,7 @@ async function handleProposal(indexer, event, sort, allEvents) {
   const eventData = event.data.toJSON();
   const [proposalIndex, deposit, depositors] = eventData;
   const referendumIndex = extractReferendumIndex(allEvents[sort + 1]);
+  const depositStorage = await getPublicProposalDeposit(proposalIndex, indexer);
 
   const state = {
     indexer,
@@ -50,6 +52,7 @@ async function handleProposal(indexer, event, sort, allEvents) {
     {
       referendumIndex,
       state,
+      deposit: depositStorage,
       isFinal: true,
     },
     timelineTime
