@@ -99,7 +99,7 @@ const ContentWrapper = styled.div`
 `;
 
 const ContentItem = styled(Flex)`
-  align-items: flex-start;
+  align-items: flex-start !important;
   justify-content: space-between;
   word-break: break-word;
   > :first-child {
@@ -109,9 +109,10 @@ const ContentItem = styled(Flex)`
   }
   > :last-child {
     display: flex;
+    padding-top: 4px;
     justify-content: flex-end;
     align-items: center;
-    min-height: 28px;
+    max-width: 50%;
     line-height: 19.6px;
     text-align: right;
     flex: 1 1 auto;
