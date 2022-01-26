@@ -13,7 +13,6 @@ import AddressIcon from "../assets/imgs/icons/address.svg";
 import BellIcon from "../assets/imgs/icons/bell.svg";
 import MembersIcon from "../assets/imgs/icons/members.svg";
 import BountyIcon from "../assets/imgs/icons/bounties.svg";
-import Link from "next/link";
 
 const Wrapper = styled.div`
   padding-top: 37px;
@@ -111,20 +110,18 @@ export default function Menu({ menu, chain }) {
               }
               return (
                 <Fragment key={index}>
-                  <Link href={item?.pathname}>
-                    <a>
-                      <Item
-                        active={
-                          router.pathname === item.pathname ||
-                          (router.pathname === "/[chain]" &&
-                            item.pathname === "/")
-                        }
-                      >
-                        {iconMap.get(item.value)}
-                        <div>{item.name}</div>
-                      </Item>
-                    </a>
-                  </Link>
+                  <a href={item?.pathname}>
+                    <Item
+                      active={
+                        router.pathname === item.pathname ||
+                        (router.pathname === "/[chain]" &&
+                          item.pathname === "/")
+                      }
+                    >
+                      {iconMap.get(item.value)}
+                      <div>{item.name}</div>
+                    </Item>
+                  </a>
                 </Fragment>
               );
             })}
