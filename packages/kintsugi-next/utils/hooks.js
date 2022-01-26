@@ -79,18 +79,6 @@ export function useIsMounted() {
   return isMounted;
 }
 
-export function useAuthPage(isAuth) {
-  return;
-  const user = useSelector(userSelector);
-  const router = useRouter();
-
-  if (isAuth && !user) {
-    router.replace("/");
-  } else if (!isAuth && user) {
-    router.replace("/");
-  }
-}
-
 export function useCall(fn, params = []) {
   const [result, setResult] = useState();
   const isMounted = useIsMounted();

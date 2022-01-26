@@ -8,7 +8,7 @@ import DeleteAccount from "components/deleteAccount";
 import Menu from "next-common/components/menu";
 import { settingMenu } from "next-common/utils/constants";
 import { userSelector, logout } from "store/reducers/userSlice";
-import { useForm, useAuthPage } from "utils/hooks";
+import { useForm } from "utils/hooks";
 import ErrorText from "next-common/components/ErrorText";
 import nextApi from "services/nextApi";
 import { addToast } from "store/reducers/toastSlice";
@@ -108,7 +108,6 @@ const ButtonWrapper = styled.div`
 `;
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
-  useAuthPage(true);
   const user = useSelector(userSelector);
   const [show, setShow] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
