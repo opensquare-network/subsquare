@@ -199,7 +199,6 @@ export default function Popup({ chain, onClose, referendumIndex }) {
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     selectedAccount?.address
   );
-  const balance = toPrecision(votingBalance, node.decimals);
   const [addressVote, addressVoteIsLoading] = useAddressVote(
     referendumIndex,
     selectedAccount?.address
@@ -367,7 +366,7 @@ export default function Popup({ chain, onClose, referendumIndex }) {
             <Label>Address</Label>
             <BalanceWrapper>
               <div>Voting Balance</div>
-              {!votingIsLoading && <div>{balance ?? 0}</div>}
+              {!votingIsLoading && <div>{votingBalance ?? 0}</div>}
               {votingIsLoading && <Loading />}
             </BalanceWrapper>
           </LabelWrapper>
