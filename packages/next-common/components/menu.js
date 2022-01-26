@@ -20,6 +20,9 @@ const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
+  a {
+    display: block;
+  }
 `;
 
 const Title = styled.div`
