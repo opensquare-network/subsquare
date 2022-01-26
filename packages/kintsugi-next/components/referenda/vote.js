@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { getNode, toPrecision } from "utils";
 import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "styles/componentCss";
@@ -13,6 +13,7 @@ import { useElectorate } from "utils/hooks";
 import AyeIcon from "public/imgs/icons/aye.svg";
 import NayIcon from "public/imgs/icons/nay.svg";
 import TurnoutIcon from "public/imgs/icons/turnout.svg";
+import Threshold from "./threshold";
 
 const Wrapper = styled.div`
   margin: 16px 0;
@@ -140,21 +141,6 @@ const NaysBar = styled.div`
   background-color: #f44336;
   width: ${(p) => p.precent}%;
   height: 100%;
-`;
-
-const Threshold = styled.div`
-  position: absolute;
-  ${(p) =>
-    p.threshold
-      ? css`
-          left: ${p.threshold};
-        `
-      : css`
-          left: 50%;
-        `}
-  width: 2px;
-  height: 1rem;
-  background-color: #c2c8d5;
 `;
 
 const VoteButton = styled.button`
