@@ -79,9 +79,14 @@ async function getActivePostsOverview() {
   const proposals = await chainProposalCol
     .find(
       {
-        "state.indexer.blockTime": {
-          $gt: Date.now() - 7 * Day
-        },
+        $or: [
+          { $nin: ["Awarded", "Approved", "Rejected"] },
+          {
+            "state.indexer.blockTime": {
+              $gt: Date.now() - 3 * Day
+            },
+          }
+        ]
       },
       {
         projection: {
