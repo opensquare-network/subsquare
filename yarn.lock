@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@acala-network/type-definitions@3.0.3-3":
-  version "3.0.3-3"
-  resolved "https://registry.yarnpkg.com/@acala-network/type-definitions/-/type-definitions-3.0.3-3.tgz#0ddbe33330db658ca3aaad73e7002ca30f4cb737"
-  integrity sha512-vE5GtRsKFoF9SHhPaquY6oD4J9l1bh1kExUafQfYPtSExDViW1vf09YB+OopuXtAGuauW+YqdT7Ze4MPPBWUZw==
+"@acala-network/type-definitions@4.0.1":
+  version "4.0.1"
+  resolved "https://registry.npmjs.org/@acala-network/type-definitions/-/type-definitions-4.0.1.tgz#b7301d4db53317e479e934bd6af91ee963d957fe"
+  integrity sha512-LA3hltYi2tU5BuaW9tbZsbVDdS5sLW2Wtl7AXCyYKMaHU43rsZXeBWoXotxJ3NamJXu1RI6695zLbSd0Hy42YQ==
   dependencies:
     "@open-web3/orml-type-definitions" "^1.0.2-0"
 
@@ -1021,10 +1021,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bifrost-finance/type-definitions@^1.3.18":
-  version "1.3.18"
-  resolved "https://registry.yarnpkg.com/@bifrost-finance/type-definitions/-/type-definitions-1.3.18.tgz#99f5d76a06a8a9ad9544e3e7fb3da43629df4822"
-  integrity sha512-cNoBCEGP1nghrPrmqyWC4u/P9lgZOjq32/zv9OJbt/66tXIDEbkd9fhN9gRWMu8EANDddbkBZ3CQt/0hXEIb0Q==
+"@bifrost-finance/type-definitions@1.3.21", "@bifrost-finance/type-definitions@^1.3.21":
+  version "1.3.21"
+  resolved "https://registry.npmjs.org/@bifrost-finance/type-definitions/-/type-definitions-1.3.21.tgz#691c6da4f780a1889b4f4db15c10b7c98e87eb77"
+  integrity sha512-1C8qtls07aPA86QW4g574cgF/cArPQuWfWBBlaOw0RVO0XgXzVsq5MW23cf+i6qO7B66tobEmAHVCOoPqW6w8A==
   dependencies:
     "@open-web3/orml-type-definitions" "^0.9.4-7"
 
@@ -1632,6 +1632,14 @@
     "@polkadot/util" "8.3.2"
     "@polkadot/util-crypto" "8.3.2"
 
+"@polkadot/networks@8.3.1":
+  version "8.3.1"
+  resolved "https://registry.npmjs.org/@polkadot/networks/-/networks-8.3.1.tgz#b53342094374edb6477d868c794c089cbe667079"
+  integrity sha512-MG3ryZovtlg3lALeOWQMPEVr+Akr54aYjUMgfrarxpB4Bckw51URfCi/FhrKZRH+VkK1imKJBMDSSEhoA3Rbow==
+  dependencies:
+    "@babel/runtime" "^7.16.7"
+    "@polkadot/util" "8.3.1"
+
 "@polkadot/networks@8.3.2", "@polkadot/networks@^8.3.2":
   version "8.3.2"
   resolved "https://registry.npmjs.org/@polkadot/networks/-/networks-8.3.2.tgz#e5306f5d795ea3ee9fb6389d643577817c6fb4f0"
@@ -1778,6 +1786,23 @@
     "@babel/runtime" "^7.16.7"
     color "^3.2.1"
 
+"@polkadot/util-crypto@8.3.1":
+  version "8.3.1"
+  resolved "https://registry.npmjs.org/@polkadot/util-crypto/-/util-crypto-8.3.1.tgz#ad1b3731d56a2efc92e514d950244b5a12cedb32"
+  integrity sha512-srEHwMwRSfuLxh/J4PRHWVVbROapo3LNkYgKvpbIxf1Ef2rZT/vfzlNtxUHdFwcEioOoo9elxCnV5zVJDZ1whw==
+  dependencies:
+    "@babel/runtime" "^7.16.7"
+    "@noble/hashes" "0.5.7"
+    "@noble/secp256k1" "1.3.4"
+    "@polkadot/networks" "8.3.1"
+    "@polkadot/util" "8.3.1"
+    "@polkadot/wasm-crypto" "^4.5.1"
+    "@polkadot/x-bigint" "8.3.1"
+    "@polkadot/x-randomvalues" "8.3.1"
+    ed2curve "^0.3.0"
+    micro-base "^0.10.2"
+    tweetnacl "^1.0.3"
+
 "@polkadot/util-crypto@8.3.2", "@polkadot/util-crypto@^8.3.2":
   version "8.3.2"
   resolved "https://registry.npmjs.org/@polkadot/util-crypto/-/util-crypto-8.3.2.tgz#68e5b41710c8b099daad2c4f8d3ec59cb86bd913"
@@ -1794,6 +1819,20 @@
     ed2curve "^0.3.0"
     micro-base "^0.10.2"
     tweetnacl "^1.0.3"
+
+"@polkadot/util@8.3.1":
+  version "8.3.1"
+  resolved "https://registry.npmjs.org/@polkadot/util/-/util-8.3.1.tgz#64be69a6758c86aaa4ee136b8a59d94788b943d9"
+  integrity sha512-0jkxqDKBd9Tl7DeIrazNOsvo4rVlWIfxU+Xn021rBLjKZwfWICRuEcywpZ8D3AS9ZpUxymb8VAAu77wkCG2j4Q==
+  dependencies:
+    "@babel/runtime" "^7.16.7"
+    "@polkadot/x-bigint" "8.3.1"
+    "@polkadot/x-global" "8.3.1"
+    "@polkadot/x-textdecoder" "8.3.1"
+    "@polkadot/x-textencoder" "8.3.1"
+    "@types/bn.js" "^4.11.6"
+    bn.js "^4.12.0"
+    ip-regex "^4.3.0"
 
 "@polkadot/util@8.3.2", "@polkadot/util@^8.3.2":
   version "8.3.2"
@@ -1832,6 +1871,14 @@
     "@polkadot/wasm-crypto-asmjs" "^4.5.1"
     "@polkadot/wasm-crypto-wasm" "^4.5.1"
 
+"@polkadot/x-bigint@8.3.1":
+  version "8.3.1"
+  resolved "https://registry.npmjs.org/@polkadot/x-bigint/-/x-bigint-8.3.1.tgz#c010199c9d77739e1e4a95dd235d57cc0f74d07a"
+  integrity sha512-amHrXrLzuYb8aHQNjJMcokwh0K2hBc74oShR4c+CCDBy3/EEVpiJrCFehWXStTu9T5qoCX6JLlSBjdpZ1i9tzA==
+  dependencies:
+    "@babel/runtime" "^7.16.7"
+    "@polkadot/x-global" "8.3.1"
+
 "@polkadot/x-bigint@8.3.2":
   version "8.3.2"
   resolved "https://registry.npmjs.org/@polkadot/x-bigint/-/x-bigint-8.3.2.tgz#8d83a9e8ebc7d22636e199e9a9c416c35aa3856e"
@@ -1850,12 +1897,27 @@
     "@types/node-fetch" "^2.5.12"
     node-fetch "^2.6.6"
 
+"@polkadot/x-global@8.3.1":
+  version "8.3.1"
+  resolved "https://registry.npmjs.org/@polkadot/x-global/-/x-global-8.3.1.tgz#e8a93dcb594a2cffed30a2fe1df90995a2aab985"
+  integrity sha512-bqqbF484jLqe4naPn7rtQJKgWRFtmg0UWIQ5U8qxh4IKZMPAfbMgVtv8+haH8Xf6pjurfSIOIjowySvc8UArVQ==
+  dependencies:
+    "@babel/runtime" "^7.16.7"
+
 "@polkadot/x-global@8.3.2", "@polkadot/x-global@^8.3.2":
   version "8.3.2"
   resolved "https://registry.npmjs.org/@polkadot/x-global/-/x-global-8.3.2.tgz#5d8800512b503ec755da5afceeabed9ab0047710"
   integrity sha512-lIZZF33mr/BU4VZ6AB8JtMw6WAvhYW41WFXkegCM5EToyVYf59xb1ExtalyhpuDsxdNfITDxX6wBoH736ON5og==
   dependencies:
     "@babel/runtime" "^7.16.7"
+
+"@polkadot/x-randomvalues@8.3.1":
+  version "8.3.1"
+  resolved "https://registry.npmjs.org/@polkadot/x-randomvalues/-/x-randomvalues-8.3.1.tgz#a40ea594dad11566b9c0be9753fdad0f803888dd"
+  integrity sha512-qIni71DMX1bNHuFqQ6C5dbGMB/E3QzmEUjYfvZv/Q8US5REQTVZuniMwtxM4LH4hrhQbRoNH6QyBxxvcwiTy4Q==
+  dependencies:
+    "@babel/runtime" "^7.16.7"
+    "@polkadot/x-global" "8.3.1"
 
 "@polkadot/x-randomvalues@8.3.2":
   version "8.3.2"
@@ -1865,6 +1927,14 @@
     "@babel/runtime" "^7.16.7"
     "@polkadot/x-global" "8.3.2"
 
+"@polkadot/x-textdecoder@8.3.1":
+  version "8.3.1"
+  resolved "https://registry.npmjs.org/@polkadot/x-textdecoder/-/x-textdecoder-8.3.1.tgz#33bb3591d665f9bb97b2ee1c476ea7f5b164a7bb"
+  integrity sha512-xXg9Py9Xu1pOa7eBVxR1THzAtr6NiyVjWjwU13m9K6v+SyLrmwd+PkamBFtOiPPSLuMKtNe7nNZCF8BT+EQefQ==
+  dependencies:
+    "@babel/runtime" "^7.16.7"
+    "@polkadot/x-global" "8.3.1"
+
 "@polkadot/x-textdecoder@8.3.2":
   version "8.3.2"
   resolved "https://registry.npmjs.org/@polkadot/x-textdecoder/-/x-textdecoder-8.3.2.tgz#969da8530ee7169fc8bc512631ffcbb9845f31d9"
@@ -1872,6 +1942,14 @@
   dependencies:
     "@babel/runtime" "^7.16.7"
     "@polkadot/x-global" "8.3.2"
+
+"@polkadot/x-textencoder@8.3.1":
+  version "8.3.1"
+  resolved "https://registry.npmjs.org/@polkadot/x-textencoder/-/x-textencoder-8.3.1.tgz#ad5eb021f851d3a64b443802f99f8d77db1629a1"
+  integrity sha512-ceItZCo9nl1jia0eB2RJ5i746SROcETkIzhtHG3ricm9d48FDtTPD59CKRkvyIYRAh92on7x/R7hNfcLvrObxQ==
+  dependencies:
+    "@babel/runtime" "^7.16.7"
+    "@polkadot/x-global" "8.3.1"
 
 "@polkadot/x-textencoder@8.3.2":
   version "8.3.2"

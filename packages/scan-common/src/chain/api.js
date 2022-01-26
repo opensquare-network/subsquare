@@ -6,6 +6,7 @@ const { versionedKhala, typesChain } = require("@phala/typedefs");
 const { basilisk } = require("./bundle/basilisk");
 const {
   typesBundleForPolkadot: bifrostTypesBundleForPolkadot,
+  rpc,
 } = require("@bifrost-finance/type-definitions");
 
 let provider = null;
@@ -48,6 +49,7 @@ async function getApi() {
         bifrost: bifrostTypesBundleForPolkadot.spec.bifrost,
         "bifrost-parachain": bifrostTypesBundleForPolkadot.spec.bifrost,
       },
+      rpc,
     };
   }
 
