@@ -19,7 +19,10 @@ async function handleSecond(call, signer, extrinsicIndexer) {
     `second extrinsic detected at ${extrinsicIndexer.blockHeight}`
   );
   const proposalIndex = call.args[0].toNumber();
-  const deposit = await getPublicProposalDeposit(proposalIndex, indexer);
+  const deposit = await getPublicProposalDeposit(
+    proposalIndex,
+    extrinsicIndexer
+  );
 
   await updateDemocracyPublicProposal(proposalIndex, {
     deposit,
