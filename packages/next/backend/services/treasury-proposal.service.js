@@ -73,13 +73,27 @@ async function getActivePostsOverview() {
   const proposals = await chainProposalCol
     .find(
       {
-        "state.state": { $nin: ["Awarded", "Approved", "Rejected"] },
+        $or: [
+          {
+            "state.state": {
+              $nin: ["Awarded", "Approved", "Rejected"]
+            }
+          },
+          {
+            "state.indexer.blockTime": {
+              $gt: Date.now() - 3 * Day
+            },
+          }
+        ]
       },
       {
-        projection: { timeline: 0 },
+        projection: {
+          timeline: 0
+        },
       }
     )
     .sort({ "indexer.blockHeight": -1 })
+    .limit(3)
     .toArray();
 
   const commonDb = await getCommonDb();
@@ -118,9 +132,7 @@ async function getActivePostsOverview() {
     return post;
   });
 
-  return result
-    .filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day)
-    .slice(0, 3);
+  return result;
 }
 
 async function getPostsByChain(page, pageSize) {

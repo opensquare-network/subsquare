@@ -218,18 +218,34 @@ async function updatePost(postId, title, content, contentType, author) {
 async function getActiveMotionsOverview() {
   const motionCol = await getChainTechCommMotionCollection();
   const motions = await motionCol
-    .find({
-      "state.state": { $nin: ["Approved", "Disapproved", "Executed"] },
-    })
+    .find(
+      {
+        $or: [
+          {
+            "state.state": {
+              $nin: ["Approved", "Disapproved", "Executed"]
+            }
+          },
+          {
+            "state.indexer.blockTime": {
+              $gt: Date.now() - 3 * Day
+            },
+          }
+        ]
+      },
+      {
+        projection: {
+          timeline: 0
+        },
+      }
+    )
     .sort({ "indexer.blockHeight": -1 })
     .limit(3)
     .toArray();
 
   const result = await loadPostForMotions(motions);
 
-  return result
-    .filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day)
-    .slice(0, 3);
+  return result;
 }
 
 async function getMotionsByChain(page, pageSize) {
