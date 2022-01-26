@@ -74,17 +74,27 @@ async function getActivePostsOverview() {
   const bounties = await chainBountyCol
     .find(
       {
-        //TODO: Not sure what state to be shown:
-        // Proposed, Approved, Funded, CuratorProposed, Active, PendingPayout
-        "state.state": {
-          $nin: ["Active", "PendingPayout", "Rejected", "Claimed"],
-        },
+        $or: [
+          {
+            "state.state": {
+              $nin: ["Active", "PendingPayout", "Rejected", "Claimed"]
+            }
+          },
+          {
+            "state.indexer.blockTime": {
+              $gt: Date.now() - 3 * Day
+            },
+          }
+        ]
       },
       {
-        projection: { timeline: 0 },
+        projection: {
+          timeline: 0
+        },
       }
     )
     .sort({ "indexer.blockHeight": -1 })
+    .limit(3)
     .toArray();
 
   const commonDb = await getCommonDb();
@@ -123,9 +133,7 @@ async function getActivePostsOverview() {
     return post;
   });
 
-  return result
-    .filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day)
-    .slice(0, 3);
+  return result;
 }
 
 async function getPostsByChain(page, pageSize) {

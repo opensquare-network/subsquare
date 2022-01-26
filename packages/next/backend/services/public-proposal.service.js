@@ -75,12 +75,29 @@ async function getActivePostsOverview() {
 
   const chainDemocracyCol = await getChainPublicProposalCollection();
   const proposals = await chainDemocracyCol
-    .find({
-      "state.state": {
-        $nin: ["Tabled"],
+    .find(
+      {
+        $or: [
+          {
+            "state.state": {
+              $nin: ["Tabled"]
+            }
+          },
+          {
+            "state.indexer.blockTime": {
+              $gt: Date.now() - 3 * Day
+            },
+          }
+        ]
       },
-    })
+      {
+        projection: {
+          timeline: 0
+        },
+      }
+    )
     .sort({ "indexer.blockHeight": -1 })
+    .limit(3)
     .toArray();
 
   const commonDb = await getCommonDb();
@@ -119,9 +136,7 @@ async function getActivePostsOverview() {
     return post;
   });
 
-  return result
-    .filter((post) => post.lastActivityAt?.getTime() >= Date.now() - 7 * Day)
-    .slice(0, 3);
+  return result;
 }
 
 async function getPostsByChain(page, pageSize) {
