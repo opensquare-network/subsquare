@@ -8,9 +8,6 @@
     "scan": "node src/index.js"
   },
   "dependencies": {
-    "@acala-network/type-definitions": "3.0.3-3",
-    "@phala/typedefs": "0.2.30",
-    "@polkadot/api": "7.0.2",
     "@polkadot/util-crypto": "8.3.1",
     "dotenv": "^10.0.0",
     "lodash.findlast": "^4.6.0",

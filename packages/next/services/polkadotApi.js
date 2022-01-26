@@ -1,7 +1,11 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { typesBundleForPolkadot } from "@acala-network/type-definitions";
-const { khala } = require("@phala/typedefs");
-const { basilisk } = require("./bundle/basilisk");
+import { khala } from "@phala/typedefs";
+import { basilisk } from "./bundle/basilisk";
+import {
+  typesBundleForPolkadot as bifrostTypesBundleForPolkadot,
+  rpc,
+} from "@bifrost-finance/type-definitions";
 
 const apiInstanceMap = new Map();
 
@@ -17,6 +21,14 @@ export const getApi = async (chain, queryUrl) => {
     }
     if (chain === "basilisk") {
       options.typesBundle = { spec: { basilisk } };
+    } else if (chain === "bifrost") {
+      options.typesBundle = {
+        spec: {
+          bifrost: bifrostTypesBundleForPolkadot.spec.bifrost,
+          "bifrost-parachain": bifrostTypesBundleForPolkadot.spec.bifrost,
+        },
+        rpc,
+      };
     }
 
     apiInstanceMap.set(queryUrl, ApiPromise.create(options));
