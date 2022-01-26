@@ -80,7 +80,11 @@ async function getActivePostsOverview() {
     .find(
       {
         $or: [
-          { $nin: ["Awarded", "Approved", "Rejected"] },
+          {
+            "state.state": {
+              $nin: ["Awarded", "Approved", "Rejected"]
+            }
+          },
           {
             "state.indexer.blockTime": {
               $gt: Date.now() - 3 * Day

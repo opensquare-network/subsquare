@@ -221,7 +221,11 @@ async function getActiveMotionsOverview() {
     .find(
       {
         $or: [
-          { $nin: ["Approved", "Disapproved", "Executed"] },
+          {
+            "state.state": {
+              $nin: ["Approved", "Disapproved", "Executed"]
+            }
+          },
           {
             "state.indexer.blockTime": {
               $gt: Date.now() - 3 * Day
