@@ -23,11 +23,11 @@ async function handleEvents(events, extrinsics, blockIndexer) {
       extrinsic = extrinsics[extrinsicIndex];
     }
 
-    await handlePreImageEvent(event, indexer, extrinsic, events);
+    await handlePreImageEvent(event, indexer);
     await handleDemocracyEvent(event, indexer, extrinsic, events);
     await handleTechCommMotionEvent(event, indexer, extrinsic, events);
     await handleReferendumEvent(event, indexer, extrinsic, events);
-    await handleTreasuryEvent(event, indexer, extrinsic, events);
+    await handleTreasuryEvent(event, indexer, events, extrinsic);
   }
 }
 
