@@ -305,6 +305,7 @@ function Vote({ referendumInfo, referendumStatus, chain, setShowVote }) {
         <a
           href="https://docs.interlay.io/#/kintsugi/governance"
           target="_blank"
+          rel="noreferrer"
         >
           View detail <ArrowIcon />{" "}
         </a>
