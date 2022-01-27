@@ -14,6 +14,7 @@ import AyeIcon from "public/imgs/icons/aye.svg";
 import NayIcon from "public/imgs/icons/nay.svg";
 import TurnoutIcon from "public/imgs/icons/turnout.svg";
 import Threshold from "./threshold";
+import ArrowIcon from "public/imgs/icons/arrow.svg";
 
 const Wrapper = styled.div`
   margin: 16px 0;
@@ -157,6 +158,19 @@ const VoteButton = styled.button`
   border-radius: 4px;
 `;
 
+const Guide = styled.p`
+  font-size: 12px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  color: #9da9bb;
+  a {
+    display: flex;
+    align-items: center;
+    color: #6848ff;
+  }
+`;
+
 function Vote({ referendumInfo, referendumStatus, chain, setShowVote }) {
   const referendumEndHeight = referendumInfo?.finished?.end;
   let electorate = useElectorate(referendumEndHeight);
@@ -286,6 +300,15 @@ function Vote({ referendumInfo, referendumStatus, chain, setShowVote }) {
           Vote
         </VoteButton>
       )}
+      <Guide>
+        How Kintsugi Governance Works.
+        <a
+          href="https://docs.interlay.io/#/kintsugi/governance"
+          target="_blank"
+        >
+          View detail <ArrowIcon />{" "}
+        </a>
+      </Guide>
     </Wrapper>
   );
 }
