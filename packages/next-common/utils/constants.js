@@ -398,5 +398,18 @@ export const SS58Prefix = {
   kintsugi: 2092,
 };
 
+export const Chains = {
+  polkadot: "polkadot",
+  kusama: "kusama",
+  karura: "karura",
+  acala: "acala",
+  khala: "khala",
+  substrate: "substrate",
+  basilisk: "basilisk",
+  kabocha: "kabocha",
+  bifrost: "bifrost",
+  kintsugi: "kintsugi",
+};
+
 export const TreasuryAccount =
   "F3opxRbN5ZbjJNU511Kj2TLuzFcDq9BGduA9TgiECafpg29";

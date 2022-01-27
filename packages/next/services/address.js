@@ -1,5 +1,5 @@
 import { encodeAddress } from "@polkadot/keyring";
-import { SS58Prefix } from "next-common/utils/constants";
+import { SS58Prefix, Chains } from "next-common/utils/constants";
 
 export const encodeAddressToChain = (address, chain) => {
   let ss58Prefix;
@@ -17,41 +17,41 @@ export const encodeAddressToChain = (address, chain) => {
 };
 
 export const encodeKusamaAddress = (address) => {
-  return encodeAddressToChain(address, "kusama");
+  return encodeAddressToChain(address, Chains.kusama);
 };
 
 export const encodePolkadotAddress = (address) => {
-  return encodeAddressToChain(address, "polkadot");
+  return encodeAddressToChain(address, Chains.polkadot);
 };
 
 export const encodeSubstrateAddress = (address) => {
-  return encodeAddressToChain(address, "substrate");
+  return encodeAddressToChain(address, Chains.substrate);
 };
 
 export const encodeKaruraAddress = (address) => {
-  return encodeAddressToChain(address, "karura");
+  return encodeAddressToChain(address, Chains.karura);
 };
 
 export const encodeAcalaAddress = (address) => {
-  return encodeAddressToChain(address, "acala");
+  return encodeAddressToChain(address, Chains.acala);
 };
 
 export const encodeKhalaAddress = (address) => {
-  return encodeAddressToChain(address, "khala");
+  return encodeAddressToChain(address, Chains.khala);
 };
 
 export const encodeBasiliskAddress = (address) => {
-  return encodeAddressToChain(address, "basilisk");
+  return encodeAddressToChain(address, Chains.basilisk);
 };
 
 export const encodeKabochaAddress = (address) => {
-  return encodeAddressToChain(address, "kabocha");
+  return encodeAddressToChain(address, Chains.kabocha);
 };
 
 export const encodeBifrostAddress = (address) => {
-  return encodeAddressToChain(address, "bifrost");
+  return encodeAddressToChain(address, Chains.bifrost);
 };
 
 export const encodeKintsugiAddress = (address) => {
-  return encodeAddressToChain(address, "kintsugi");
+  return encodeAddressToChain(address, Chains.kintsugi);
 };
