@@ -1,3 +1,5 @@
+import { useCallback, useState } from "react";
+import dynamic from "next/dynamic";
 import BigNumber from "bignumber.js";
 import styled from "styled-components";
 import { getNode, toPrecision } from "utils";
@@ -9,11 +11,15 @@ import {
   getThresholdOfSuperMajorityAgainst,
   calcPassing,
 } from "utils/referendumUtil";
-import { useElectorate } from "utils/hooks";
+import { useElectorate, useIsMounted, useApi } from "utils/hooks";
 import AyeIcon from "public/imgs/icons/aye.svg";
 import NayIcon from "public/imgs/icons/nay.svg";
 import TurnoutIcon from "public/imgs/icons/turnout.svg";
 import Threshold from "./threshold";
+
+const Popup = dynamic(() => import("components/referenda/popup"), {
+  ssr: false,
+});
 
 const Wrapper = styled.div`
   margin: 16px 0;
@@ -157,7 +163,28 @@ const VoteButton = styled.button`
   border-radius: 4px;
 `;
 
-function Vote({ referendumInfo, referendumStatus, chain, setShowVote }) {
+function Vote({
+  referendumInfo,
+  referendumStatus: _referendumStatus,
+  referendumIndex,
+  chain,
+}) {
+  const [referendumStatus, setReferendumStatus] = useState(_referendumStatus);
+  const [showVote, setShowVote] = useState(false);
+  const isMounted = useIsMounted();
+  const api = useApi(chain);
+
+  const updateVoteProgress = useCallback(() => {
+    api?.query.democracy
+      .referendumInfoOf(referendumIndex)
+      .then((referendumInfo) => {
+        const referendumInfoData = referendumInfo.toJSON();
+        if (isMounted.current) {
+          setReferendumStatus(referendumInfoData?.ongoing);
+        }
+      });
+  }, [api, referendumIndex, isMounted]);
+
   const referendumEndHeight = referendumInfo?.finished?.end;
   let electorate = useElectorate(referendumEndHeight);
   const isPassing = calcPassing(referendumStatus, electorate);
@@ -285,6 +312,15 @@ function Vote({ referendumInfo, referendumStatus, chain, setShowVote }) {
         >
           Vote
         </VoteButton>
+      )}
+
+      {showVote && (
+        <Popup
+          chain={chain}
+          onClose={() => setShowVote(false)}
+          referendumIndex={referendumIndex}
+          onInBlock={updateVoteProgress}
+        />
       )}
     </Wrapper>
   );
