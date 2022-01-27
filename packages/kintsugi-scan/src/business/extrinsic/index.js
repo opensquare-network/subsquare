@@ -1,4 +1,5 @@
 const { handleTechCommPropose } = require("./tc/propose");
+const { handleSecond } = require("./democracy/second");
 const {
   business: { handleWrappedCall },
   utils: { isExtrinsicSuccess, extractExtrinsicEvents },
@@ -20,6 +21,7 @@ async function handleExtrinsics(extrinsics = [], allEvents = [], blockIndexer) {
       allEvents,
       async (call, signer, indexer, events) => {
         await handleTechCommPropose(call, signer, indexer, events);
+        await handleSecond(call, signer, indexer, events);
       }
     );
   }
