@@ -84,6 +84,18 @@ export default withLoginUserRedux(
       return args;
     };
 
+    const ProposalTimelineData = (
+      detail?.onchainData?.publicProposals?.[0]?.timeline || []
+    ).map((item) => {
+      const indexer = item.extrinsicIndexer ?? item.indexer;
+      return {
+        indexer,
+        time: dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+        status: getTimelineStatus("proposal", item.method ?? item.name),
+        data: getTimelineData(item.args, item.method ?? item.name),
+      };
+    });
+
     const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
       const indexer = item.extrinsicIndexer ?? item.indexer;
       return {
@@ -93,6 +105,10 @@ export default withLoginUserRedux(
         data: getTimelineData(item.args, item.method ?? item.name),
       };
     });
+
+    if (ProposalTimelineData && ProposalTimelineData.length > 0) {
+      timelineData.push(ProposalTimelineData);
+    }
 
     detail?.onchainData?.motions?.forEach((motion) => {
       const motionTimelineData = createMotionTimelineData(motion);
