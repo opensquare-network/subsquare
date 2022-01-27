@@ -19,11 +19,11 @@ import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_TREASURY_PROPOSAL } from "utils/viewConstants";
-import { createMotionTimelineData } from "../../../utils/timeline/motion";
 import sortTimeline from "../../../utils/timeline/sort";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import SEO from "components/SEO";
 import KVList from "next-common/components/kvList";
+import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -94,9 +94,23 @@ export default withLoginUserRedux(
       };
     });
 
-    detail?.onchainData?.motions?.forEach((motion) => {
-      const motionTimelineData = createMotionTimelineData(motion);
-      timelineData.push(motionTimelineData);
+    detail?.onchainData?.publicProposals?.forEach((publicProposal) => {
+      const completeTimeline = (publicProposal.timeline || []).concat(
+        publicProposal.democracyReferendum?.timeline || []
+      );
+
+      const publicProposalTimelineData = [
+        ...completeTimeline.slice(0, 1).map(item => ({
+          indexer: item.indexer,
+          index: item.args.index,
+          time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+          status: { value: `Public proposal #${item.args.index}`, color: "#6848FF" },
+          method: item.method,
+          link: `/democracy/proposal/${item.args.index}`,
+        })),
+        ...getDemocracyTimelineData(completeTimeline.slice(1), chain),
+      ];
+      timelineData.push(publicProposalTimelineData);
     });
     sortTimeline(timelineData);
 

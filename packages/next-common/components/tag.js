@@ -103,6 +103,14 @@ export default function Tag({ name, data, type = "" }) {
       );
     }
   }
-  const color = getTagColor(name);
+  if (data?.link) {
+    tag = (
+      <a href={data.link}>
+        {name}
+      </a>
+    );
+  }
+
+  const color = data?.status?.color || getTagColor(name);
   return <Wrapper color={color}>{tag}</Wrapper>;
 }
