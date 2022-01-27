@@ -3,8 +3,8 @@ import { SS58Prefix } from "next-common/utils/constants";
 
 export const encodeAddressToChain = (address, chain) => {
   let ss58Prefix;
-  if (process.env.NEXT_PUBLIC_DEV_CHAIN === "true") {
-    ss58Prefix = SS58Prefix.substrate;
+  if (process.env.NEXT_PUBLIC_SS58_PREFIX) {
+    ss58Prefix = parseInt(process.env.NEXT_PUBLIC_SS58_PREFIX);
   } else {
     ss58Prefix = SS58Prefix[chain];
   }

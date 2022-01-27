@@ -55,8 +55,8 @@ function isValidSignature(signedMessage, signature, address) {
 }
 
 function getSS58Prefix(chain) {
-  if (process.env.NEXT_PUBLIC_DEV_CHAIN === "true") {
-    return SS58Format.Substrate;
+  if (process.env.NEXT_PUBLIC_SS58_PREFIX) {
+    return parseInt(process.env.NEXT_PUBLIC_SS58_PREFIX);
   }
   return SS58Format[stringUpperFirst(chain)];
 }
