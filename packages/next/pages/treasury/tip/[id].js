@@ -130,7 +130,7 @@ export default withLoginUserRedux(
     const [tipsNeedUpdate, setTipsNeedUpdate] = useState(Date.now());
 
     useEffect(() => {
-      if (shouldGetTipsFromNode && api) {
+      if ((shouldGetTipsFromNode || tipsNeedUpdate) && api) {
         api.query.tips.tips(tipHash).then((tip) => {
           const normalizedTip = tip.toJSON();
           if (normalizedTip) {

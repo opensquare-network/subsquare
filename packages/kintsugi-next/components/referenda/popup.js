@@ -181,7 +181,13 @@ const TooltipWrapper = styled.div`
   }
 `;
 
-export default function Popup({ chain, onClose, referendumIndex }) {
+export default function Popup({
+  chain,
+  referendumIndex,
+  onClose,
+  onFinalized = ()=>{},
+  onInBlock = ()=>{},
+}) {
   const dispatch = useDispatch();
   const ref = useRef();
   useOnClickOutside(ref, () => onClose());
