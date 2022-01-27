@@ -12,6 +12,7 @@ const {
 const {
   getDb: getChainDb,
   getTreasuryProposalCollection: getChainTreasuryProposalCollection,
+  getPublicProposalCollection: getChainPublicProposalCollection,
 } = require("../mongo/chain");
 const {
   getDb: getCommonDb,
@@ -213,7 +214,9 @@ async function getPostById(postId) {
     throw new HttpError(404, "Post not found");
   }
 
+  const chainDb = await getChainDb();
   const businessDb = await getBusinessDb();
+
   const chainTreasuryProposalCol = await getChainTreasuryProposalCollection();
   const [author, reactions, treasuryProposalData] = await Promise.all([
     post.proposer
@@ -229,8 +232,29 @@ async function getPostById(postId) {
     chainTreasuryProposalCol.findOne({ proposalIndex: post.proposalIndex }),
   ]);
 
-  await Promise.all([
+  const chainPublicProposalCol = await getChainPublicProposalCollection();
+  const [, publicProposals] = await Promise.all([
     lookupUser({ for: reactions, localField: "user" }),
+    treasuryProposalData.publicProposals?.length > 0
+      ? chainPublicProposalCol
+          .find({
+            proposalIndex: {
+              $in: treasuryProposalData.publicProposals.map((p) => p.index),
+            },
+          })
+          .sort({ "indexer.blockHeight": 1 })
+          .toArray()
+      : [],
+  ]);
+
+  await Promise.all([
+    chainDb.lookupOne({
+      from: "democracyReferendum",
+      for: publicProposals,
+      as: "democracyReferendum",
+      localField: "referendumIndex",
+      foreignField: "referendumIndex",
+    }),
   ]);
 
   return {
@@ -239,6 +263,7 @@ async function getPostById(postId) {
     authors: treasuryProposalData.authors,
     onchainData: {
       ...treasuryProposalData,
+      publicProposals,
     },
   };
 }

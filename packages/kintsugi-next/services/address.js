@@ -1,82 +1,57 @@
 import { encodeAddress } from "@polkadot/keyring";
-import { SS58Prefix } from "next-common/utils/constants";
+import { SS58Prefix, Chains } from "next-common/utils/constants";
 
 export const encodeAddressToChain = (address, chain) => {
+  let ss58Prefix;
+  if (process.env.NEXT_PUBLIC_SS58_PREFIX) {
+    ss58Prefix = parseInt(process.env.NEXT_PUBLIC_SS58_PREFIX);
+  } else {
+    ss58Prefix = SS58Prefix[chain];
+  }
+
   try {
-    return encodeAddress(address, SS58Prefix[chain]);
+    return encodeAddress(address, ss58Prefix);
   } catch {
     return "";
   }
 };
 
 export const encodeKusamaAddress = (address) => {
-  try {
-    return encodeAddress(address, SS58Prefix.kusama);
-  } catch {
-    return "";
-  }
+  return encodeAddressToChain(address, Chains.kusama);
 };
 
 export const encodePolkadotAddress = (address) => {
-  try {
-    return encodeAddress(address, SS58Prefix.polkadot);
-  } catch {
-    return "";
-  }
+  return encodeAddressToChain(address, Chains.polkadot);
 };
 
 export const encodeSubstrateAddress = (address) => {
-  try {
-    return encodeAddress(address, SS58Prefix.substrate);
-  } catch {
-    return "";
-  }
+  return encodeAddressToChain(address, Chains.substrate);
 };
 
 export const encodeKaruraAddress = (address) => {
-  try {
-    return encodeAddress(address, SS58Prefix.karura);
-  } catch {
-    return "";
-  }
+  return encodeAddressToChain(address, Chains.karura);
+};
+
+export const encodeAcalaAddress = (address) => {
+  return encodeAddressToChain(address, Chains.acala);
 };
 
 export const encodeKhalaAddress = (address) => {
-  try {
-    return encodeAddress(address, SS58Prefix.khala);
-  } catch {
-    return "";
-  }
+  return encodeAddressToChain(address, Chains.khala);
 };
 
 export const encodeBasiliskAddress = (address) => {
-  try {
-    return encodeAddress(address, SS58Prefix.basilisk);
-  } catch {
-    return "";
-  }
+  return encodeAddressToChain(address, Chains.basilisk);
 };
 
 export const encodeKabochaAddress = (address) => {
-  try {
-    return encodeAddress(address, SS58Prefix.kabocha);
-  } catch {
-    return "";
-  }
+  return encodeAddressToChain(address, Chains.kabocha);
 };
 
 export const encodeBifrostAddress = (address) => {
-  try {
-    return encodeAddress(address, SS58Prefix.bifrost);
-  } catch {
-    return "";
-  }
+  return encodeAddressToChain(address, Chains.bifrost);
 };
 
 export const encodeKintsugiAddress = (address) => {
-  try {
-    return encodeAddress(address, SS58Prefix.kintsugi);
-  } catch {
-    return "";
-  }
+  return encodeAddressToChain(address, Chains.kintsugi);
 };

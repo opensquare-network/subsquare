@@ -54,8 +54,15 @@ function isValidSignature(signedMessage, signature, address) {
   return result.isValid;
 }
 
+function getSS58Prefix(chain) {
+  if (process.env.NEXT_PUBLIC_SS58_PREFIX) {
+    return parseInt(process.env.NEXT_PUBLIC_SS58_PREFIX);
+  }
+  return SS58Format[stringUpperFirst(chain)];
+}
+
 function validateAddress(address, chain) {
-  const ss58Format = SS58Format[stringUpperFirst(chain)];
+  const ss58Format = getSS58Prefix(chain);
   if (ss58Format === undefined) {
     throw new HttpError(400, { chain: ["Unsupported relay chain."] });
   }
