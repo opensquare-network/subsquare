@@ -13,7 +13,7 @@ async function handleProposed(event, indexer, events, extrinsic) {
   const commonObj = await getTreasuryProposalFieldsWhenProposed(...arguments);
   const obj = {
     ...commonObj,
-    motions: [],
+    publicProposals: [],
   };
 
   await insertTreasuryProposal(obj);

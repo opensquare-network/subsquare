@@ -1,4 +1,5 @@
 const { getTreasuryProposalCollection } = require("../../index");
+const isEmpty = require("lodash.isempty");
 
 async function insertProposal(proposalObj) {
   const col = await getTreasuryProposalCollection();
@@ -15,12 +16,10 @@ async function updateProposal(
   proposalIndex,
   updates,
   timelineItem,
-  motionInfo
+  publicProposalInfo
 ) {
   const col = await getTreasuryProposalCollection();
-  let update = {
-    $set: updates,
-  };
+  let update = isEmpty(updates) ? null : { $set: updates };
 
   if (timelineItem) {
     update = {
@@ -29,11 +28,15 @@ async function updateProposal(
     };
   }
 
-  if (motionInfo) {
+  if (publicProposalInfo) {
     update = {
       ...update,
-      $push: { motions: motionInfo },
+      $push: { publicProposals: publicProposalInfo },
     };
+  }
+
+  if (isEmpty(update)) {
+    return;
   }
 
   await col.updateOne({ proposalIndex }, update);
