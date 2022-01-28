@@ -214,16 +214,16 @@ function Vote({
   const nNays = toPrecision(referendumStatus?.tally?.nays ?? 0, decimals);
   const nTurnout = toPrecision(referendumStatus?.tally?.turnout ?? 0, decimals);
 
-  let nAyesPrecent = 50;
-  let nNaysPrecent = 50;
+  let nAyesPercent = 50;
+  let nNaysPercent = 50;
   let gap = 2;
   const nTotal = new BigNumber(nAyes).plus(nNays);
   if (nTotal.gt(0)) {
-    nAyesPrecent = Math.round(
+    nAyesPercent = Math.round(
       new BigNumber(nAyes).div(nTotal).toNumber() * 100
     );
-    nNaysPrecent = 100 - nAyesPrecent;
-    if (nAyesPrecent === 100 || nNaysPrecent === 100) {
+    nNaysPercent = 100 - nAyesPercent;
+    if (nAyesPercent === 100 || nNaysPercent === 100) {
       gap = 0;
     }
   }
@@ -234,8 +234,8 @@ function Vote({
 
         <BarWrapper>
           <BarContainer gap={gap}>
-            <AyesBar precent={nAyesPrecent} />
-            <NaysBar precent={nNaysPrecent} />
+            <AyesBar precent={nAyesPercent} />
+            <NaysBar precent={nNaysPercent} />
 
             {(referendumStatus?.threshold || "").toLowerCase() ===
               "simplemajority" && (
@@ -271,9 +271,9 @@ function Vote({
         </Headers>
 
         <Contents>
-          <span>{nAyesPrecent}%</span>
+          <span>{nAyesPercent}%</span>
           <span>{referendumStatus?.threshold}</span>
-          <span>{nNaysPrecent}%</span>
+          <span>{nNaysPercent}%</span>
         </Contents>
 
         <BorderedRow>
