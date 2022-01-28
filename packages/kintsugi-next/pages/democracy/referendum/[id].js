@@ -162,6 +162,8 @@ export default withLoginUserRedux(
               setReferendumStatus={setReferendumStatus}
               chain={chain}
               referendumIndex={detail?.referendumIndex}
+              isLoadingReferendumStatus={isLoadingReferendumStatus}
+              setIsLoadingReferendumStatus={setIsLoadingReferendumStatus}
             />
 
             <KVList title={"Metadata"} data={metadata} />

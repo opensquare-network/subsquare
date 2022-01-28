@@ -285,7 +285,7 @@ function Vote({
               "supermajorityapprove" && (
               <Threshold
                 threshold={getThresholdOfSuperMajorityApprove(
-                  referendumStatus?.tally?.turnout ?? 0,
+                  toPrecision(referendumStatus?.tally?.turnout ?? 0, decimals),
                   electorate
                 )}
               />
@@ -295,7 +295,7 @@ function Vote({
               "supermajorityagainst" && (
               <Threshold
                 threshold={getThresholdOfSuperMajorityAgainst(
-                  referendumStatus?.tally?.turnout ?? 0,
+                  toPrecision(referendumStatus?.tally?.turnout ?? 0, decimals),
                   electorate
                 )}
               />

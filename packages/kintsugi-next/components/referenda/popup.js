@@ -140,7 +140,7 @@ const Download = styled.div`
 `;
 
 const StatusWrapper = styled.div`
-  background: #ebeef4;
+  background: #f6f7fa;
   border-radius: 4px;
   padding: 12px 16px;
   display: flex;
@@ -399,11 +399,13 @@ export default function Popup({
             <Tooltip content="The value is locked for the duration of the vote" />
           </TooltipWrapper>
           <Input
-            type="number"
+            type="text"
             placeholder="0"
             disabled={isLoading}
             value={inputVoteBalance}
-            onChange={(e) => setInputVoteBalance(e.target.value)}
+            onChange={(e) =>
+              setInputVoteBalance(e.target.value.replace("。", "."))
+            }
           />
         </div>
         <div>
