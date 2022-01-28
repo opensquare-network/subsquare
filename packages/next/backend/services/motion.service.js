@@ -400,13 +400,11 @@ async function getMotionById(postId) {
           .find({
             $or: chainMotion.externalProposals.map((p) => ({
               proposalHash: p.hash,
-              "indexer.blockHeight": p.indexer?.blockHeight,
             })),
           })
           .sort({ "indexer.blockHeight": 1 })
           .toArray()
       : [],
-
   ]);
 
   return {
