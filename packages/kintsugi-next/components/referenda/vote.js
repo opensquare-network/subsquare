@@ -110,6 +110,7 @@ const Row = styled(Flex)`
   margin-top: 0 !important;
   justify-content: space-between;
   white-space: nowrap;
+  font-size: 14px;
   @media screen and (max-width: 1024px) {
     justify-content: flex-start;
   }
@@ -120,6 +121,7 @@ const BorderedRow = styled(Flex)`
   border-bottom: 1px solid #ebeef4;
   justify-content: space-between;
   white-space: nowrap;
+  font-size: 14px;
   @media screen and (max-width: 1024px) {
     justify-content: flex-start;
   }
