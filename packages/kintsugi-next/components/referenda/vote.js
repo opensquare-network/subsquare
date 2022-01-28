@@ -30,10 +30,16 @@ const Popup = dynamic(() => import("components/referenda/popup"), {
 });
 
 const Wrapper = styled.div`
-  margin: 16px 0;
+  position: absolute;
+  right: 0;
+  top: 32px;
   width: 280px;
   margin-top: 0 !important;
+  > :not(:first-child) {
+    margin-top: 16px;
+  }
   @media screen and (max-width: 1024px) {
+    position: static;
     width: auto;
     margin-top: 16px !important;
   }
