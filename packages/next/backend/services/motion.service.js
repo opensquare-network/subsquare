@@ -374,7 +374,7 @@ async function getMotionById(postId) {
     postType = "motion";
   }
 
-  const [, author, chainProposals, chainBounties] = await Promise.all([
+  const [, author, chainProposals, chainBounties, chainExternals] = await Promise.all([
     lookupUser({ for: reactions, localField: "user" }),
     post.proposer
       ? getUserByAddress(post.proposer)
@@ -429,6 +429,7 @@ async function getMotionById(postId) {
       ...chainMotion,
       treasuryProposals: chainProposals,
       treasuryBounties: chainBounties,
+      externalProposals: chainExternals,
     },
   };
 }
