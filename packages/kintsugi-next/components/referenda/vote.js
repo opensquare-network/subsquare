@@ -17,6 +17,7 @@ import NayIcon from "public/imgs/icons/nay.svg";
 import TurnoutIcon from "public/imgs/icons/turnout.svg";
 import Threshold from "./threshold";
 import ArrowIcon from "public/imgs/icons/arrow.svg";
+import Loading from "./loading";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -52,6 +53,9 @@ const Card = styled.div`
 `;
 
 const Title = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-weight: bold;
   font-size: 16px;
   margin-bottom: 16px;
@@ -181,6 +185,8 @@ function Vote({
   referendumInfo,
   referendumStatus,
   setReferendumStatus,
+  isLoadingReferendumStatus,
+  setIsLoadingReferendumStatus,
   referendumIndex,
   chain,
 }) {
@@ -196,8 +202,11 @@ function Vote({
         if (isMounted.current) {
           setReferendumStatus(referendumInfoData?.ongoing);
         }
+      })
+      .finally(() => {
+        setIsLoadingReferendumStatus(false);
       });
-  }, [api, referendumIndex, setReferendumStatus, isMounted]);
+  }, [api, referendumIndex, setReferendumStatus, setIsLoadingReferendumStatus, isMounted]);
 
   const referendumEndHeight = referendumInfo?.finished?.end;
   let electorate = useElectorate(referendumEndHeight);
@@ -230,7 +239,15 @@ function Vote({
   return (
     <Wrapper>
       <Card>
-        <Title>Votes</Title>
+        <Title>
+          <span>Votes</span>
+          <div>{
+            isLoadingReferendumStatus
+              ? <Loading size={16} />
+              : null
+            }
+          </div>
+        </Title>
 
         <BarWrapper>
           <BarContainer gap={gap}>
@@ -344,6 +361,7 @@ function Vote({
           chain={chain}
           onClose={() => setShowVote(false)}
           referendumIndex={referendumIndex}
+          onSubmitted={() => setIsLoadingReferendumStatus(true) }
           onInBlock={updateVoteProgress}
         />
       )}
