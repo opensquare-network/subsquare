@@ -29,19 +29,34 @@ const OutWrapper = styled.div`
   display: flex;
   max-width: 1080px;
   margin: 0 auto;
-  position: relative;
+  gap: 32px;
 `;
 
 const Wrapper = styled.div`
-  max-width: 768px;
   width: 100%;
+  max-width: 848px;
+  margin: auto;
   > :not(:first-child) {
     margin-top: 16px;
   }
-  margin-right: 312px;
   @media screen and (max-width: 1024px) {
     max-width: 848px;
     margin: 0 auto;
+  }
+`;
+
+const SideVoteWrapper = styled.div`
+  padding-top: 32px;
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
+`;
+
+const MiddleVoteWrapper = styled.div`
+  padding-top: 32px;
+  display: none;
+  @media screen and (max-width: 800px) {
+    display: block;
   }
 `;
 
@@ -150,13 +165,15 @@ export default withLoginUserRedux(
               type={TYPE_DEMOCRACY_REFERENDUM}
             />
 
-            <Vote
-              referendumInfo={detail?.onchainData?.info}
-              referendumStatus={referendumStatus}
-              setReferendumStatus={setReferendumStatus}
-              chain={chain}
-              referendumIndex={detail?.referendumIndex}
-            />
+            <MiddleVoteWrapper>
+              <Vote
+                referendumInfo={detail?.onchainData?.info}
+                referendumStatus={referendumStatus}
+                setReferendumStatus={setReferendumStatus}
+                chain={chain}
+                referendumIndex={detail?.referendumIndex}
+              />
+            </MiddleVoteWrapper>
 
             <KVList title={"Metadata"} data={metadata} />
 
@@ -188,6 +205,15 @@ export default withLoginUserRedux(
               )}
             </CommentsWrapper>
           </Wrapper>
+          <SideVoteWrapper>
+            <Vote
+              referendumInfo={detail?.onchainData?.info}
+              referendumStatus={referendumStatus}
+              setReferendumStatus={setReferendumStatus}
+              chain={chain}
+              referendumIndex={detail?.referendumIndex}
+            />
+          </SideVoteWrapper>
         </OutWrapper>
       </Layout>
     );
