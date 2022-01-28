@@ -398,9 +398,9 @@ async function getMotionById(postId) {
     chainMotion.externalProposals?.length > 0
       ? chainExternalCol
           .find({
-            $or: chainMotion.externalProposals.map((p) => ({
-              proposalHash: p.hash,
-            })),
+            proposalHash: {
+              $in: chainMotion.externalProposals.map((p) => p.hash),
+            },
           })
           .sort({ "indexer.blockHeight": 1 })
           .toArray()
