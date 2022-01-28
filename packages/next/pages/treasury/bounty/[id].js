@@ -87,7 +87,9 @@ export default withLoginUserRedux(
           };
         case "Awarded":
           return {
-            Beneficiary: <User chain={chain} add={args.beneficiary} />,
+            Beneficiary: (
+              <User chain={chain} add={args.beneficiary} fontSize={14} />
+            ),
             Award: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
           };
         case "BountyClaimed":
