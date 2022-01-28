@@ -185,8 +185,9 @@ export default function Popup({
   chain,
   referendumIndex,
   onClose,
-  onFinalized = ()=>{},
-  onInBlock = ()=>{},
+  onSubmitted = () => {},
+  onFinalized = () => {},
+  onInBlock = () => {},
 }) {
   const dispatch = useDispatch();
   const ref = useRef();
@@ -278,6 +279,10 @@ export default function Popup({
       Math.pow(10, decimals)
     );
 
+    if (bnVoteBalance.isNaN()) {
+      errorMessage = { type: "error", message: "Invalid vote balance" };
+    }
+
     if (bnVoteBalance.lte(0) || !bnVoteBalance.mod(1).isZero()) {
       errorMessage = { type: "error", message: "Invalid vote balance" };
     }
@@ -314,7 +319,8 @@ export default function Popup({
             // Transaction went through
             onInBlock(voteAddress);
           }
-        });
+        })
+        .then(() => onSubmitted(voteAddress));
 
       onClose();
     } catch (e) {

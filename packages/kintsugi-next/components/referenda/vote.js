@@ -17,6 +17,7 @@ import NayIcon from "public/imgs/icons/nay.svg";
 import TurnoutIcon from "public/imgs/icons/turnout.svg";
 import Threshold from "./threshold";
 import ArrowIcon from "public/imgs/icons/arrow.svg";
+import Loading from "./loading";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -48,6 +49,9 @@ const Card = styled.div`
 `;
 
 const Title = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-weight: bold;
   font-size: 16px;
   margin-bottom: 16px;
@@ -177,6 +181,8 @@ function Vote({
   referendumInfo,
   referendumStatus,
   setReferendumStatus,
+  isLoadingReferendumStatus,
+  setIsLoadingReferendumStatus,
   referendumIndex,
   chain,
 }) {
@@ -192,8 +198,17 @@ function Vote({
         if (isMounted.current) {
           setReferendumStatus(referendumInfoData?.ongoing);
         }
+      })
+      .finally(() => {
+        setIsLoadingReferendumStatus(false);
       });
-  }, [api, referendumIndex, setReferendumStatus, isMounted]);
+  }, [
+    api,
+    referendumIndex,
+    setReferendumStatus,
+    setIsLoadingReferendumStatus,
+    isMounted,
+  ]);
 
   const referendumEndHeight = referendumInfo?.finished?.end;
   let electorate = useElectorate(referendumEndHeight);
@@ -210,28 +225,31 @@ function Vote({
   const nNays = toPrecision(referendumStatus?.tally?.nays ?? 0, decimals);
   const nTurnout = toPrecision(referendumStatus?.tally?.turnout ?? 0, decimals);
 
-  let nAyesPrecent = 50;
-  let nNaysPrecent = 50;
+  let nAyesPercent = 50;
+  let nNaysPercent = 50;
   let gap = 2;
   const nTotal = new BigNumber(nAyes).plus(nNays);
   if (nTotal.gt(0)) {
-    nAyesPrecent = Math.round(
+    nAyesPercent = Math.round(
       new BigNumber(nAyes).div(nTotal).toNumber() * 100
     );
-    nNaysPrecent = 100 - nAyesPrecent;
-    if (nAyesPrecent === 100 || nNaysPrecent === 100) {
+    nNaysPercent = 100 - nAyesPercent;
+    if (nAyesPercent === 100 || nNaysPercent === 100) {
       gap = 0;
     }
   }
   return (
     <Wrapper>
       <Card>
-        <Title>Votes</Title>
+        <Title>
+          <span>Votes</span>
+          <div>{isLoadingReferendumStatus ? <Loading size={16} /> : null}</div>
+        </Title>
 
         <BarWrapper>
           <BarContainer gap={gap}>
-            <AyesBar precent={nAyesPrecent} />
-            <NaysBar precent={nNaysPrecent} />
+            <AyesBar precent={nAyesPercent} />
+            <NaysBar precent={nNaysPercent} />
 
             {(referendumStatus?.threshold || "").toLowerCase() ===
               "simplemajority" && (
@@ -267,9 +285,9 @@ function Vote({
         </Headers>
 
         <Contents>
-          <span>{nAyesPrecent}%</span>
+          <span>{nAyesPercent}%</span>
           <span>{referendumStatus?.threshold}</span>
-          <span>{nNaysPrecent}%</span>
+          <span>{nNaysPercent}%</span>
         </Contents>
 
         <BorderedRow>
@@ -340,6 +358,7 @@ function Vote({
           chain={chain}
           onClose={() => setShowVote(false)}
           referendumIndex={referendumIndex}
+          onSubmitted={() => setIsLoadingReferendumStatus(true)}
           onInBlock={updateVoteProgress}
         />
       )}
