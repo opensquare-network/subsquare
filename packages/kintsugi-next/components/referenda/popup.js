@@ -202,7 +202,6 @@ export default function Popup({
     extensionDetecting,
   ] = useExtensionAccounts("subsquare");
   const node = getNode(chain);
-  console.log({ node });
   const [isLoading, setIsLoading] = useState();
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     selectedAccount?.address
