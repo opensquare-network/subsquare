@@ -24,10 +24,10 @@ const Threshold = styled.div`
   transform: translateX(-50%);
 `;
 
-export default function ThresholdComponent() {
+export default function ThresholdComponent({ threshold }) {
   return (
     <ThresholdScope>
-      <Threshold />
+      <Threshold threshold={threshold} />
     </ThresholdScope>
   );
 }
