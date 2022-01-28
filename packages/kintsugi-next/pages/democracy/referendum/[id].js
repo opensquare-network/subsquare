@@ -29,34 +29,19 @@ const OutWrapper = styled.div`
   display: flex;
   max-width: 1080px;
   margin: 0 auto;
-  gap: 32px;
+  position: relative;
 `;
 
 const Wrapper = styled.div`
-  width: 100%;
-  max-width: 848px;
-  margin: auto;
+  margin-right: 312px;
+  overflow: hidden;
+  flex-grow: 1;
   > :not(:first-child) {
     margin-top: 16px;
   }
   @media screen and (max-width: 1024px) {
     max-width: 848px;
     margin: 0 auto;
-  }
-`;
-
-const SideVoteWrapper = styled.div`
-  padding-top: 32px;
-  @media screen and (max-width: 800px) {
-    display: none;
-  }
-`;
-
-const MiddleVoteWrapper = styled.div`
-  padding-top: 32px;
-  display: none;
-  @media screen and (max-width: 800px) {
-    display: block;
   }
 `;
 
@@ -171,17 +156,15 @@ export default withLoginUserRedux(
               type={TYPE_DEMOCRACY_REFERENDUM}
             />
 
-            <MiddleVoteWrapper>
-              <Vote
-                referendumInfo={detail?.onchainData?.info}
-                referendumStatus={referendumStatus}
-                setReferendumStatus={setReferendumStatus}
-                chain={chain}
-                referendumIndex={detail?.referendumIndex}
-                isLoadingReferendumStatus={isLoadingReferendumStatus}
-                setIsLoadingReferendumStatus={setIsLoadingReferendumStatus}
-              />
-            </MiddleVoteWrapper>
+            <Vote
+              referendumInfo={detail?.onchainData?.info}
+              referendumStatus={referendumStatus}
+              setReferendumStatus={setReferendumStatus}
+              chain={chain}
+              referendumIndex={detail?.referendumIndex}
+              isLoadingReferendumStatus={isLoadingReferendumStatus}
+              setIsLoadingReferendumStatus={setIsLoadingReferendumStatus}
+            />
 
             <KVList title={"Metadata"} data={metadata} />
 
@@ -213,17 +196,6 @@ export default withLoginUserRedux(
               )}
             </CommentsWrapper>
           </Wrapper>
-          <SideVoteWrapper>
-            <Vote
-              referendumInfo={detail?.onchainData?.info}
-              referendumStatus={referendumStatus}
-              setReferendumStatus={setReferendumStatus}
-              chain={chain}
-              referendumIndex={detail?.referendumIndex}
-              isLoadingReferendumStatus={isLoadingReferendumStatus}
-              setIsLoadingReferendumStatus={setIsLoadingReferendumStatus}
-            />
-          </SideVoteWrapper>
         </OutWrapper>
       </Layout>
     );
