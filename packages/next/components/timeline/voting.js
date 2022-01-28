@@ -20,7 +20,7 @@ export default function Voting({ data, chain }) {
   return (
     <div>
       <TitleWrapper>
-        <User chain={chain} add={data.proposer} fontSize={12} />
+        <User chain={chain} add={data.proposer} fontSize={14} />
         <div>
           <div>{data.method}</div>
           <img src="/imgs/icons/approve.svg" alt="" />
