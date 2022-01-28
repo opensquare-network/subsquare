@@ -399,11 +399,13 @@ export default function Popup({
             <Tooltip content="The value is locked for the duration of the vote" />
           </TooltipWrapper>
           <Input
-            type="number"
+            type="text"
             placeholder="0"
             disabled={isLoading}
             value={inputVoteBalance}
-            onChange={(e) => setInputVoteBalance(e.target.value)}
+            onChange={(e) =>
+              setInputVoteBalance(e.target.value.replace("。", "."))
+            }
           />
         </div>
         <div>
