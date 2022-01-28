@@ -180,7 +180,7 @@ export default function Item({
         {data.voting && <Voting data={data.voting} chain={chain} />}
         {data.voteResult && (
           <VoteResultWrapper>
-            <User chain={chain} add={data.voteResult.name} fontSize={12} />
+            <User chain={chain} add={data.voteResult.name} fontSize={14} />
             {data.voteResult.value ? (
               <div>
                 Aye
