@@ -242,6 +242,9 @@ export default withLoginUserRedux(
 
     if (motion?.onchainData?.externalProposals?.length > 0) {
       motion?.onchainData?.externalProposals?.forEach((external) => {
+        if (!external.indexer) {
+          return;
+        }
         business.push([
           [
             "Link to",
