@@ -8,6 +8,7 @@ const {
   business: {
     consts: { DemocracyPublicProposalEvents, TimelineItemTypes },
     getPublicProposalFromStorage,
+    getPublicProposalDeposit,
   },
 } = require("@subsquare/scan-common");
 
@@ -19,6 +20,7 @@ async function saveNewPublicProposal(event, extrinsic, indexer) {
     indexer
   );
   const authors = [...new Set([proposer, extrinsic.signer.toString()])];
+  const deposit = await getPublicProposalDeposit(proposalIndex, indexer);
 
   const state = {
     indexer,
@@ -43,6 +45,7 @@ async function saveNewPublicProposal(event, extrinsic, indexer) {
     hash,
     authors,
     proposer,
+    deposit,
     state,
     timeline: [timelineItem],
   };
