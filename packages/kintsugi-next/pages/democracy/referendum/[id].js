@@ -68,6 +68,7 @@ export default withLoginUserRedux(
     const [referendumStatus, setReferendumStatus] = useState(
       detail?.onchainData?.status
     );
+    const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] = useState(false);
     const isMounted = useIsMounted();
 
     useEffect(() => {
@@ -76,6 +77,7 @@ export default withLoginUserRedux(
         return;
       }
 
+      setIsLoadingReferendumStatus(true);
       api?.query.democracy
         .referendumInfoOf(detail.referendumIndex)
         .then((referendumInfo) => {
@@ -83,6 +85,9 @@ export default withLoginUserRedux(
           if (isMounted.current) {
             setReferendumStatus(referendumInfoData?.ongoing);
           }
+        })
+        .finally(() => {
+          setIsLoadingReferendumStatus(false);
         });
     }, [api, detail, isMounted, referendumStatus]);
 
@@ -155,6 +160,8 @@ export default withLoginUserRedux(
               setReferendumStatus={setReferendumStatus}
               chain={chain}
               referendumIndex={detail?.referendumIndex}
+              isLoadingReferendumStatus={isLoadingReferendumStatus}
+              setIsLoadingReferendumStatus={setIsLoadingReferendumStatus}
             />
 
             <KVList title={"Metadata"} data={metadata} />
