@@ -114,10 +114,23 @@ export function useElectorate(height) {
         }
       }).finally(() => {
         setIsLoading(false);
-      });;
+      });
     }
   }, [api, height]);
   return [electorate, isLoading];
+}
+
+export function useLoaded(isLoading) {
+  const [loadStatus, setLoadStatus] = useState(0);
+  useEffect(() => {
+    if (loadStatus === 0 && isLoading) {
+      setLoadStatus(1);
+    }
+    if (loadStatus === 1 && !isLoading) {
+      setLoadStatus(2);
+    }
+  }, [isLoading]);
+  return loadStatus === 2;
 }
 
 export function useAddressVotingBalance(address) {
@@ -164,4 +177,24 @@ export function useAddressVote(referendumIndex, address) {
     }
   }, [api, referendumIndex, address]);
   return [vote, isLoading];
+}
+
+export function useBlockHeight() {
+  const api = useApi("kintsugi");
+  const [blockHeight, setBlockHeight] = useState();
+  const isMounted = useIsMounted();
+  useEffect(() => {
+    let unsub = null;
+    if (api) {
+      api.rpc.chain.subscribeNewHeads((header) => {
+        if (isMounted.current) {
+          const height = header.number.toNumber();
+          setBlockHeight(height);
+        }
+      }).then(res => unsub = res);
+
+      return () => unsub?.();
+    }
+  }, [api]);
+  return blockHeight;
 }

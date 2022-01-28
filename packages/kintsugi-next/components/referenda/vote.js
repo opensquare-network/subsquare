@@ -16,6 +16,7 @@ import {
   useIsMounted,
   useApi,
   useWindowSize,
+  useLoaded,
 } from "utils/hooks";
 import AyeIcon from "public/imgs/icons/aye.svg";
 import NayIcon from "public/imgs/icons/nay.svg";
@@ -24,6 +25,7 @@ import Threshold from "./threshold";
 import ArrowIcon from "public/imgs/icons/arrow.svg";
 import DisplayValue from "./displayValue";
 import Loading from "./loading";
+import { useBlockHeight } from "utils/hooks";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -211,6 +213,7 @@ function Vote({
   const [showVote, setShowVote] = useState(false);
   const isMounted = useIsMounted();
   const api = useApi(chain);
+  const blockHeight = useBlockHeight();
 
   const updateVoteProgress = useCallback(() => {
     api?.query.democracy
@@ -233,7 +236,8 @@ function Vote({
   ]);
 
   const referendumEndHeight = referendumInfo?.finished?.end;
-  let [electorate, isElectorateLoading] = useElectorate(referendumEndHeight);
+  const [electorate, isElectorateLoading] = useElectorate(referendumEndHeight || blockHeight);
+  const isElectorateLoaded = useLoaded(isElectorateLoading);
 
   const { width } = useWindowSize();
 
@@ -273,7 +277,7 @@ function Vote({
         <Title>
           <span>Votes</span>
           <div>{
-            (isLoadingReferendumStatus || isElectorateLoading)
+            (isLoadingReferendumStatus || !isElectorateLoaded)
               ? <Loading size={16} />
               : null
           }</div>
@@ -349,7 +353,7 @@ function Vote({
               />
             </span>
           </BorderedRow>
-          <Row>
+          <BorderedRow>
             <Header>
               <TurnoutIcon />
               Turnout
@@ -361,7 +365,7 @@ function Vote({
                 noWrap={width <= 1024}
               />
             </span>
-          </Row>
+          </BorderedRow>
           <Row>
             <Header>
               <TurnoutIcon />
