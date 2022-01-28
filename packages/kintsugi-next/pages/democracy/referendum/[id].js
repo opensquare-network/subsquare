@@ -178,6 +178,8 @@ export default withLoginUserRedux(
                 setReferendumStatus={setReferendumStatus}
                 chain={chain}
                 referendumIndex={detail?.referendumIndex}
+                isLoadingReferendumStatus={isLoadingReferendumStatus}
+                setIsLoadingReferendumStatus={setIsLoadingReferendumStatus}
               />
             </MiddleVoteWrapper>
 
@@ -218,6 +220,8 @@ export default withLoginUserRedux(
               setReferendumStatus={setReferendumStatus}
               chain={chain}
               referendumIndex={detail?.referendumIndex}
+              isLoadingReferendumStatus={isLoadingReferendumStatus}
+              setIsLoadingReferendumStatus={setIsLoadingReferendumStatus}
             />
           </SideVoteWrapper>
         </OutWrapper>
