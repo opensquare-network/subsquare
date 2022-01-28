@@ -227,8 +227,7 @@ function Vote({
   ]);
 
   const referendumEndHeight = referendumInfo?.finished?.end;
-  let electorate = useElectorate(referendumEndHeight);
-  const isPassing = calcPassing(referendumStatus, electorate);
+  let [electorate, isElectorateLoading] = useElectorate(referendumEndHeight);
 
   const { width } = useWindowSize();
 
@@ -238,6 +237,11 @@ function Vote({
   }
   const decimals = node.decimals;
   const symbol = node.voteSymbol ?? node.symbol;
+
+  const isPassing = calcPassing(
+    referendumStatus,
+    new BigNumber(electorate).times(Math.pow(10, decimals))
+  );
 
   const nAyes = toPrecision(referendumStatus?.tally?.ayes ?? 0, decimals);
   const nNays = toPrecision(referendumStatus?.tally?.nays ?? 0, decimals);
@@ -262,7 +266,11 @@ function Vote({
       <Card>
         <Title>
           <span>Votes</span>
-          <div>{isLoadingReferendumStatus ? <Loading size={16} /> : null}</div>
+          <div>{
+            (isLoadingReferendumStatus || isElectorateLoading)
+              ? <Loading size={16} />
+              : null
+          }</div>
         </Title>
 
         <BarWrapper>
@@ -343,6 +351,19 @@ function Vote({
             <span>
               <DisplayValue
                 value={nTurnout}
+                symbol={symbol}
+                noWrap={width <= 1024}
+              />
+            </span>
+          </Row>
+          <Row>
+            <Header>
+              <TurnoutIcon />
+              Electorate
+            </Header>
+            <span>
+              <DisplayValue
+                value={BigNumber.max(nTurnout, electorate)}
                 symbol={symbol}
                 noWrap={width <= 1024}
               />

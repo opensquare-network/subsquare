@@ -103,17 +103,21 @@ export function useApi(chain) {
 export function useElectorate(height) {
   const api = useApi("kintsugi");
   const [electorate, setElectorate] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const isMounted = useIsMounted();
   useEffect(() => {
     if (api) {
+      setIsLoading(true);
       getElectorate(api, height).then((value) => {
         if (isMounted.current) {
           setElectorate(value);
         }
-      });
+      }).finally(() => {
+        setIsLoading(false);
+      });;
     }
   }, [api, height]);
-  return electorate;
+  return [electorate, isLoading];
 }
 
 export function useAddressVotingBalance(address) {
