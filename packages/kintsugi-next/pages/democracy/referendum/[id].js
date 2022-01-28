@@ -33,6 +33,7 @@ const OutWrapper = styled.div`
 `;
 
 const Wrapper = styled.div`
+  max-width: 768px;
   width: 100%;
   > :not(:first-child) {
     margin-top: 16px;
