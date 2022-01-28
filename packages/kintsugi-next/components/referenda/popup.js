@@ -140,7 +140,7 @@ const Download = styled.div`
 `;
 
 const StatusWrapper = styled.div`
-  background: #ebeef4;
+  background: #f6f7fa;
   border-radius: 4px;
   padding: 12px 16px;
   display: flex;
