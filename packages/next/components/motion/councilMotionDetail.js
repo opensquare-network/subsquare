@@ -246,10 +246,10 @@ export default withLoginUserRedux(
           [
             "Link to",
             <Link
-              href={`/democracy/external/${external?.hash}`}
-            >{`Democracy External #${external?.hash?.slice(0, 6)}`}</Link>,
+              href={`/democracy/external/${external?.proposalHash}`}
+            >{`Democracy External #${external?.proposalHash?.slice(0, 6)}`}</Link>,
           ],
-          ["hash", external.hash],
+          ["hash", external.proposalHash],
         ]);
       });
     }

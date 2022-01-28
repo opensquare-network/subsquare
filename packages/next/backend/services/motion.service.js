@@ -8,6 +8,7 @@ const {
   getMotionCollection: getChainMotionCollection,
   getTreasuryProposalCollection: getChainTreasuryProposalCollection,
   getBountyCollection: getChainBountyCollection,
+  getExternalCollection: getChainExternalCollection,
 } = require("../mongo/chain");
 const {
   getDb: getCommonDb,
@@ -338,6 +339,7 @@ async function getMotionById(postId) {
   const reactionCol = await getReactionCollection();
   const chainProposalCol = await getChainTreasuryProposalCollection();
   const chainBountyCol = await getChainBountyCollection();
+  const chainExternalCol = await getChainExternalCollection();
 
   let post;
   let reactions;
@@ -372,7 +374,7 @@ async function getMotionById(postId) {
     postType = "motion";
   }
 
-  const [, author, chainProposals, chainBounties] = await Promise.all([
+  const [, author, chainProposals, chainBounties, chainExternals] = await Promise.all([
     lookupUser({ for: reactions, localField: "user" }),
     post.proposer
       ? getUserByAddress(post.proposer)
@@ -393,6 +395,16 @@ async function getMotionById(postId) {
       })
       .sort({ "indexer.blockHeight": 1 })
       .toArray(),
+    chainMotion.externalProposals?.length > 0
+      ? chainExternalCol
+          .find({
+            proposalHash: {
+              $in: chainMotion.externalProposals.map((p) => p.hash),
+            },
+          })
+          .sort({ "indexer.blockHeight": 1 })
+          .toArray()
+      : [],
   ]);
 
   return {
@@ -415,6 +427,7 @@ async function getMotionById(postId) {
       ...chainMotion,
       treasuryProposals: chainProposals,
       treasuryBounties: chainBounties,
+      externalProposals: chainExternals,
     },
   };
 }
