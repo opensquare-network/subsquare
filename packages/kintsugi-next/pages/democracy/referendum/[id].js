@@ -152,6 +152,7 @@ export default withLoginUserRedux(
             <Vote
               referendumInfo={detail?.onchainData?.info}
               referendumStatus={referendumStatus}
+              setReferendumStatus={setReferendumStatus}
               chain={chain}
               referendumIndex={detail?.referendumIndex}
             />

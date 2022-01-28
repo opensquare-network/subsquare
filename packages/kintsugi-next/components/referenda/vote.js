@@ -179,11 +179,11 @@ const Guide = styled.p`
 
 function Vote({
   referendumInfo,
-  referendumStatus: _referendumStatus,
+  referendumStatus,
+  setReferendumStatus,
   referendumIndex,
   chain,
 }) {
-  const [referendumStatus, setReferendumStatus] = useState(_referendumStatus);
   const [showVote, setShowVote] = useState(false);
   const isMounted = useIsMounted();
   const api = useApi(chain);
@@ -197,7 +197,7 @@ function Vote({
           setReferendumStatus(referendumInfoData?.ongoing);
         }
       });
-  }, [api, referendumIndex, isMounted]);
+  }, [api, referendumIndex, setReferendumStatus, isMounted]);
 
   const referendumEndHeight = referendumInfo?.finished?.end;
   let electorate = useElectorate(referendumEndHeight);
