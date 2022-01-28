@@ -42,6 +42,7 @@ const NameWrapper = styled.div`
   flex-grow: 1;
   > :first-child {
     font-size: 14px;
+    font-weight: 500;
   }
   > :last-child {
     margin-top: 4px;
