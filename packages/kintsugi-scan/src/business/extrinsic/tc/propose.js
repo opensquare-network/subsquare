@@ -19,6 +19,7 @@ const {
     isSingleMemberCollectivePropose,
     extractCommonFieldsFromSinglePropose,
   },
+  log: { busLogger },
 } = require("@subsquare/scan-common");
 
 function isTechCommProposeCall(call) {
@@ -37,6 +38,7 @@ async function handleTechCommPropose(
   if (!isTechCommProposeCall(call)) {
     return;
   }
+  busLogger.info(`TC fast track detected at ${extrinsicIndexer.blockHeight}`);
 
   if (!isSingleMemberCollectivePropose(call, extrinsicEvents)) {
     return;
