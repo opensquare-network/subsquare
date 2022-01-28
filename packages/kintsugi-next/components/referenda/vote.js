@@ -25,13 +25,9 @@ const Popup = dynamic(() => import("components/referenda/popup"), {
 
 const Wrapper = styled.div`
   margin: 16px 0;
-  position: absolute;
-  right: 0;
-  top: 32px;
   width: 280px;
   margin-top: 0 !important;
   @media screen and (max-width: 1024px) {
-    position: static;
     width: auto;
     margin-top: 16px !important;
   }
@@ -206,7 +202,13 @@ function Vote({
       .finally(() => {
         setIsLoadingReferendumStatus(false);
       });
-  }, [api, referendumIndex, setReferendumStatus, setIsLoadingReferendumStatus, isMounted]);
+  }, [
+    api,
+    referendumIndex,
+    setReferendumStatus,
+    setIsLoadingReferendumStatus,
+    isMounted,
+  ]);
 
   const referendumEndHeight = referendumInfo?.finished?.end;
   let electorate = useElectorate(referendumEndHeight);
@@ -241,12 +243,7 @@ function Vote({
       <Card>
         <Title>
           <span>Votes</span>
-          <div>{
-            isLoadingReferendumStatus
-              ? <Loading size={16} />
-              : null
-            }
-          </div>
+          <div>{isLoadingReferendumStatus ? <Loading size={16} /> : null}</div>
         </Title>
 
         <BarWrapper>
@@ -361,7 +358,7 @@ function Vote({
           chain={chain}
           onClose={() => setShowVote(false)}
           referendumIndex={referendumIndex}
-          onSubmitted={() => setIsLoadingReferendumStatus(true) }
+          onSubmitted={() => setIsLoadingReferendumStatus(true)}
           onInBlock={updateVoteProgress}
         />
       )}

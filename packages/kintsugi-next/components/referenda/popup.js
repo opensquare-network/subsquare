@@ -186,8 +186,8 @@ export default function Popup({
   referendumIndex,
   onClose,
   onSubmitted = () => {},
-  onFinalized = ()=>{},
-  onInBlock = ()=>{},
+  onFinalized = () => {},
+  onInBlock = () => {},
 }) {
   const dispatch = useDispatch();
   const ref = useRef();
