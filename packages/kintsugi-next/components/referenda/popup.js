@@ -37,6 +37,7 @@ import ApproveIcon from "next-common/assets/imgs/icons/approve.svg";
 import RejectIcon from "next-common/assets/imgs/icons/reject.svg";
 import Tooltip from "components/tooltip";
 import Loading from "./loading";
+import DisplayValue from "./displayValue";
 
 const Background = styled.div`
   position: fixed;
@@ -415,7 +416,10 @@ export default function Popup({
               (addressVote ? (
                 <>
                   <div className="value">
-                    {toPrecision(addressVote.balance, node.decimals)}
+                    <DisplayValue
+                      value={toPrecision(addressVote.balance, node.decimals)}
+                      symbol={node?.voteSymbol}
+                    />
                   </div>
                   {addressVote.aye ? (
                     <div className="result">
