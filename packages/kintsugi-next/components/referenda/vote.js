@@ -11,12 +11,18 @@ import {
   getThresholdOfSuperMajorityAgainst,
   calcPassing,
 } from "utils/referendumUtil";
-import { useElectorate, useIsMounted, useApi } from "utils/hooks";
+import {
+  useElectorate,
+  useIsMounted,
+  useApi,
+  useWindowSize,
+} from "utils/hooks";
 import AyeIcon from "public/imgs/icons/aye.svg";
 import NayIcon from "public/imgs/icons/nay.svg";
 import TurnoutIcon from "public/imgs/icons/turnout.svg";
 import Threshold from "./threshold";
 import ArrowIcon from "public/imgs/icons/arrow.svg";
+import DisplayValue from "./displayValue";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -45,7 +51,6 @@ const Card = styled.div`
   @media screen and (max-width: 768px) {
     border-radius: 0;
   }
-
   > :not(:first-child) {
     margin-top: 16px;
   }
@@ -101,14 +106,23 @@ const RejectStatus = styled(Status)`
 `;
 
 const Row = styled(Flex)`
-  height: 48px;
+  height: 44px;
   margin-top: 0 !important;
-  margin-bottom: 16px;
+  justify-content: space-between;
+  white-space: nowrap;
+  @media screen and (max-width: 1024px) {
+    justify-content: flex-start;
+  }
 `;
 
 const BorderedRow = styled(Flex)`
   height: 44px;
   border-bottom: 1px solid #ebeef4;
+  justify-content: space-between;
+  white-space: nowrap;
+  @media screen and (max-width: 1024px) {
+    justify-content: flex-start;
+  }
 `;
 
 const Header = styled.span`
@@ -203,6 +217,8 @@ function Vote({
   let electorate = useElectorate(referendumEndHeight);
   const isPassing = calcPassing(referendumStatus, electorate);
 
+  const { width } = useWindowSize();
+
   const node = getNode(chain);
   if (!node) {
     return null;
@@ -227,6 +243,7 @@ function Vote({
       gap = 0;
     }
   }
+
   return (
     <Wrapper>
       <Card>
@@ -275,36 +292,47 @@ function Vote({
           <span>{referendumStatus?.threshold}</span>
           <span>{nNaysPrecent}%</span>
         </Contents>
-
-        <BorderedRow>
-          <Header>
-            <AyeIcon />
-            Aye
-          </Header>
-          <span>
-            {nAyes} {symbol}
-          </span>
-        </BorderedRow>
-
-        <BorderedRow>
-          <Header>
-            <NayIcon />
-            Nay
-          </Header>
-          <span>
-            {nNays} {symbol}
-          </span>
-        </BorderedRow>
-
-        <Row>
-          <Header>
-            <TurnoutIcon />
-            Turnout
-          </Header>
-          <span>
-            {nTurnout} {symbol}
-          </span>
-        </Row>
+        <div>
+          <BorderedRow>
+            <Header>
+              <AyeIcon />
+              Aye
+            </Header>
+            <span>
+              <DisplayValue
+                value={nAyes}
+                symbol={symbol}
+                noWrap={width <= 1024}
+              />
+            </span>
+          </BorderedRow>
+          <BorderedRow>
+            <Header>
+              <NayIcon />
+              Nay
+            </Header>
+            <span>
+              <DisplayValue
+                value={nNays}
+                symbol={symbol}
+                noWrap={width <= 1024}
+              />
+            </span>
+          </BorderedRow>
+          <Row>
+            <Header>
+              <TurnoutIcon />
+              Turnout
+            </Header>
+            <span>
+              <DisplayValue
+                value={nTurnout}
+                symbol={symbol}
+                noWrap={width <= 1024}
+              />
+            </span>
+          </Row>
+        </div>
         {referendumInfo?.finished?.approved && <PassStatus>Passed</PassStatus>}
         {referendumInfo?.finished?.approved === false && (
           <RejectStatus>Failed</RejectStatus>

@@ -54,7 +54,7 @@ const Popup = styled.div`
   position: relative;
   background: rgba(0, 0, 0, 0.65);
   border-radius: 4px;
-  width: 220px;
+  max-width: 220px;
   padding: 6px 12px;
   font-size: 12px;
   line-height: 16px;
