@@ -37,6 +37,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  width: 100%;
 `;
 
 const HeaderWrapper = styled.div`
