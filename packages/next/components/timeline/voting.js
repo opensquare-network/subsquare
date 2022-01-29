@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import User from "next-common/components/user";
 import Progress from "./progress";
@@ -64,7 +65,12 @@ export default function Voting({ data, chain }) {
           {data.args.map((arg, index) => (
             <ArgItem key={index}>
               <div>{arg.name}</div>
-              <div>{arg.value}</div>
+              <div>{
+                ["boolean", "number", "string"].includes(typeof arg.value) ||
+                React.isValidElement(arg.value)
+                  ? arg.value
+                  : JSON.stringify(arg.value)
+              }</div>
             </ArgItem>
           ))}
         </ArgsWrapper>
