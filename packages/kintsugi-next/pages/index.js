@@ -41,8 +41,12 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
     },
   ];
 
+  const filteredOverviewData = overviewData.filter(
+    data => data.items?.length > 0 || data.category === "Discussions"
+  );
+
   // Sort the items with length = 0 to the end of the list
-  overviewData.sort((a, b) =>
+  filteredOverviewData.sort((a, b) =>
     a?.items?.length > 0 && b?.items?.length > 0
       ? 0
       : b?.items?.length - a?.items?.length
@@ -60,7 +64,7 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
         siteUrl={siteUrl}
         chain={chain}
       />
-      <Overview overviewData={overviewData} chain={chain} />
+      <Overview overviewData={filteredOverviewData} chain={chain} />
     </Layout>
   );
 });
