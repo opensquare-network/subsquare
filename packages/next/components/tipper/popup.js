@@ -140,6 +140,7 @@ export default function Popup({
   onClose,
   onInBlock,
   onFinalized,
+  onSubmitted,
 }) {
   const dispatch = useDispatch();
   const ref = useRef();
@@ -267,29 +268,28 @@ export default function Popup({
       return;
     }
 
-    if (!node) {
-      return;
-    }
-    const decimals = node.decimals;
-
-    const bnTipValue = new BigNumber(inputTipValue).multipliedBy(
-      Math.pow(10, decimals)
-    );
-    if (bnTipValue.lt(0)) {
+    const bnInputTipValue = new BigNumber(inputTipValue);
+    if (bnInputTipValue.isNaN() || bnInputTipValue.lt(0)) {
       dispatch(
         addToast({
           type: "error",
-          message: "Invalid tip value",
+          message: "Tip value is not valid",
         })
       );
       return;
     }
 
+    if (!node) {
+      return;
+    }
+    const decimals = node.decimals;
+
+    const bnTipValue = bnInputTipValue.multipliedBy(Math.pow(10, decimals));
     if (!bnTipValue.mod(1).isZero()) {
       dispatch(
         addToast({
           type: "error",
-          message: "Invalid tip value",
+          message: "Tip value is not valid",
         })
       );
       return;
@@ -311,7 +311,8 @@ export default function Popup({
             // Transaction went through
             onInBlock(tipperAddress);
           }
-        });
+        })
+        .then(() => onSubmitted(tipperAddress));
 
       onClose();
     } catch (e) {
