@@ -16,6 +16,40 @@ const TitleWrapper = styled(Flex)`
   }
 `;
 
+const ArgsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 8px 28px;
+
+  background: #F6F7FA;
+  border-radius: 4px;
+  margin-bottom: 8px;
+`;
+
+const ArgItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 7px 0px;
+  > :first-child {
+    text-transform: capitalize;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 100%;
+    color: #506176;
+  }
+  > :last-child {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 100%;
+    color: #1E2134;
+  }
+`;
+
 export default function Voting({ data, chain }) {
   return (
     <div>
@@ -26,7 +60,28 @@ export default function Voting({ data, chain }) {
           <img src="/imgs/icons/approve.svg" alt="" />
         </div>
       </TitleWrapper>
-      <Progress total={data.total} ayes={data.ayes} nays={data.nays} />
+      {data.args?.length > 0 && (
+        <ArgsWrapper>
+          {data.args.map((arg, index) => (
+            <ArgItem key={index}>
+              <div>{arg.name}</div>
+              <div>{
+                ["boolean", "number", "string"].includes(typeof arg.value) ||
+                React.isValidElement(arg.value)
+                  ? arg.value
+                  : JSON.stringify(arg.value)
+              }</div>
+            </ArgItem>
+          ))}
+        </ArgsWrapper>
+      )}
+      {
+        data.total !== undefined &&
+          data.ayes !== undefined &&
+          data.nays !== undefined && (
+          <Progress total={data.total} ayes={data.ayes} nays={data.nays} />
+        )
+      }
     </div>
   );
 }
