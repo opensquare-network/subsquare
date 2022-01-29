@@ -27,7 +27,7 @@ export default function Overview({ overviewData, chain }) {
     // All items are empty, show default empty page
     return (
       <Wrapper>
-        <EmptyOverview chain={chain} />
+        <EmptyOverview />
       </Wrapper>
     );
   }

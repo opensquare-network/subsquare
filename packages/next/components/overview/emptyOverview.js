@@ -85,7 +85,7 @@ const EmptyPanel = styled.div`
   }
 `;
 
-export default function EmptyOverview({ chain }) {
+export default function EmptyOverview() {
   return (
     <Wrapper>
       <Title>Overview</Title>
