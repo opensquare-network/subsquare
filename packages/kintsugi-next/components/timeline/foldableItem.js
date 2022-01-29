@@ -86,7 +86,7 @@ export default function FoldableItem({
           <Item
             key={index}
             data={item}
-            foldable
+            foldable={data?.length > 1}
             isFold={isFold}
             setIsFold={setIsFold}
             chain={chain}
