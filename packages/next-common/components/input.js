@@ -20,27 +20,17 @@ const Wrapper = styled.div`
   input[type="number"] {
     -moz-appearance: textfield;
   }
-`;
-
-const InputWrapper = styled.input`
-  all: unset;
   border: 1px solid #e0e4eb;
-  display: block;
   width: 100%;
-  padding: 10px 16px;
-  box-sizing: border-box;
-  font-size: 14px;
   border-radius: 4px;
-  color: #1e2134;
   :hover {
     border-color: #c2c8d5;
   }
-  :focus {
-    border-color: #c2c8d5;
-  }
-  ::placeholder {
-    color: #d7dee8;
-  }
+  ${(p) =>
+    p.focus &&
+    css`
+      border-color: #c2c8d5;
+    `}
   ${(p) =>
     p.error &&
     css`
@@ -50,7 +40,25 @@ const InputWrapper = styled.input`
     p.disabled &&
     css`
       background: #f6f7fa;
+      :hover {
+        border-color: #e0e4eb;
+      }
     `}
+  display:flex;
+  overflow: hidden;
+`;
+
+const InputWrapper = styled.input`
+  all: unset;
+  flex-grow: 1;
+  display: block;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #1e2134;
+  background: transparent;
+  ::placeholder {
+    color: #d7dee8;
+  }
 `;
 
 const ShowButton = styled.div`
@@ -81,15 +89,30 @@ const PostWrapper = styled.div`
   right: 0;
 `;
 
+const SymbolWrapper = styled.div`
+  background: #f6f7fa;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 100%;
+  border-left: 1px solid #e0e4eb;
+`;
+
 export default function Input({ ...props }) {
   const [show, setShow] = useState(false);
+  const [focus, setFocus] = useState(false);
 
   return (
-    <Wrapper>
+    <Wrapper focus={focus} {...props}>
       <InputWrapper
         {...props}
         type={props.type === "password" && show ? "text" : props.type ?? "auto"}
         autocomplete="off"
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
       />
       {props.type === "password" && (
         <ShowButton onClick={() => setShow(!show)}>
@@ -98,6 +121,7 @@ export default function Input({ ...props }) {
       )}
       {props.error && <ErrorText>{props.error}</ErrorText>}
       {props.post && <PostWrapper>{props.post}</PostWrapper>}
+      {props.symbol && <SymbolWrapper>{props.symbol}</SymbolWrapper>}
     </Wrapper>
   );
 }

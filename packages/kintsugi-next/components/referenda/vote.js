@@ -237,7 +237,9 @@ function Vote({
   ]);
 
   const referendumEndHeight = referendumInfo?.finished?.end;
-  const [electorate, isElectorateLoading] = useElectorate(referendumEndHeight || blockHeight);
+  const [electorate, isElectorateLoading] = useElectorate(
+    referendumEndHeight || blockHeight
+  );
   const isElectorateLoaded = useLoaded(isElectorateLoading);
 
   const { width } = useWindowSize();
@@ -277,11 +279,11 @@ function Vote({
       <Card>
         <Title>
           <span>Votes</span>
-          <div>{
-            (isLoadingReferendumStatus || !isElectorateLoaded)
-              ? <Loading size={16} />
-              : null
-          }</div>
+          <div>
+            {isLoadingReferendumStatus || !isElectorateLoaded ? (
+              <Loading size={16} />
+            ) : null}
+          </div>
         </Title>
 
         <BarWrapper>

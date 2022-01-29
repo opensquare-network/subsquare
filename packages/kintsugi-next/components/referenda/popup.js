@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useRef, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
@@ -180,6 +180,16 @@ const TooltipWrapper = styled.div`
   > :not(:first-child) {
     margin-left: 4px;
   }
+`;
+
+const WarningWrapper = styled.div`
+  background: #f6f7fa;
+  border-radius: 4px;
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 140%;
+  color: #506176;
+  margin-top: 8px;
 `;
 
 export default function Popup({
@@ -406,41 +416,38 @@ export default function Popup({
             onChange={(e) =>
               setInputVoteBalance(e.target.value.replace("。", "."))
             }
+            symbol={node?.voteSymbol}
           />
         </div>
-        <div>
-          <TooltipWrapper>
-            <Label>Voting status</Label>
-            <Tooltip content="Resubmit the vote will overwrite the previous voting record" />
-          </TooltipWrapper>
-          <StatusWrapper>
-            {!addressVoteIsLoading &&
-              (addressVote ? (
-                <>
-                  <div className="value">
-                    <DisplayValue
-                      value={toPrecision(addressVote.balance, node.decimals)}
-                      symbol={node?.voteSymbol}
-                    />
-                  </div>
-                  {addressVote.aye ? (
-                    <div className="result">
-                      Aye
-                      <ApproveIcon />
-                    </div>
-                  ) : (
-                    <div className="result">
-                      Nay
-                      <RejectIcon />
-                    </div>
-                  )}
-                </>
+        {!addressVoteIsLoading && addressVote && (
+          <div>
+            <TooltipWrapper>
+              <Label>Voting status</Label>
+            </TooltipWrapper>
+            <StatusWrapper>
+              <div className="value">
+                <DisplayValue
+                  value={toPrecision(addressVote?.balance, node.decimals)}
+                  symbol={node?.voteSymbol}
+                />
+              </div>
+              {addressVote?.aye ? (
+                <div className="result">
+                  Aye
+                  <ApproveIcon />
+                </div>
               ) : (
-                <div className="no-data">No voting record</div>
-              ))}
-            {addressVoteIsLoading && <Loading size={14} />}
-          </StatusWrapper>
-        </div>
+                <div className="result">
+                  Nay
+                  <RejectIcon />
+                </div>
+              )}
+            </StatusWrapper>
+            <WarningWrapper>
+              Resubmit the vote will overwrite the previous voting record
+            </WarningWrapper>
+          </div>
+        )}
         <ButtonWrapper>
           <Button
             primary
