@@ -196,6 +196,10 @@ const Guide = styled.p`
   align-items: center;
   color: #9da9bb;
   a {
+    margin-left: 2px;
+    svg {
+      margin-left: 2px;
+    }
     font-size: 12px !important;
     display: flex;
     align-items: center;
@@ -414,7 +418,7 @@ function Vote({
           target="_blank"
           rel="noreferrer"
         >
-          View detail <ArrowIcon />{" "}
+          View detail <ArrowIcon />
         </a>
       </Guide>
 
