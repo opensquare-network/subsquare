@@ -128,15 +128,12 @@ export default withLoginUserRedux(
       focusEditor
     );
 
+    const deposit = detail.onchainData.deposit;
     const metadata = [
       ["hash", detail.onchainData?.hash],
       [
         "deposit",
-        `${toPrecision(
-          detail.onchainData?.timeline?.find((item) => item.method === "Tabled")
-            ?.args?.deposit ?? 0,
-          decimals
-        )} ${symbol}`,
+        `${toPrecision(deposit ? deposit[1] : 0, decimals)} ${symbol}`,
       ],
       [
         "proposer",
