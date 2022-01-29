@@ -6,6 +6,7 @@ import Button from "next-common/components/button";
 import User from "next-common/components/user";
 import { getNode, toPrecision } from "utils";
 import LoadingIcon from "public/imgs/icons/members-loading.svg";
+import Loading from "components/loading";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -34,10 +35,20 @@ const Content = styled.div`
 `;
 
 const Title = styled.div`
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 16px;
+  > :first-child {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 16px;
+  }
+  > :last-child {
+    display: flex;
+    align-items: center;
+  }
 `;
 
 const NoTippers = styled.div`
@@ -58,6 +69,7 @@ const Description = styled.div`
 `;
 
 const TipperList = styled.div`
+  padding: 8px 0px;
   > :not(:first-child) {
     margin-top: 8px;
   }
@@ -91,6 +103,8 @@ export default function Tipper({
   tipHash,
   updateTips = () => {},
   updateTimeline = () => {},
+  isLoadingTip,
+  setIsLoadingTip = () => {},
 }) {
   const [showPopup, setShowPopup] = useState(false);
 
@@ -152,7 +166,10 @@ export default function Tipper({
     <>
       <Wrapper>
         <Content>
-          <Title>Tippers</Title>
+          <Title>
+            <div>Tippers</div>
+            <div>{isLoadingTip && <Loading size={16} />}</div>
+          </Title>
           {tipList}
         </Content>
         {!loading && action}
@@ -165,6 +182,7 @@ export default function Tipper({
           onClose={() => setShowPopup(false)}
           onInBlock={updateTips}
           onFinalized={updateTimeline}
+          onSubmitted={() => setIsLoadingTip(true)}
         />
       )}
     </>

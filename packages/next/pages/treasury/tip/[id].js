@@ -128,9 +128,11 @@ export default withLoginUserRedux(
     );
     // Used to trigger tips updating
     const [tipsNeedUpdate, setTipsNeedUpdate] = useState(Date.now());
+    const [isLoadingTip, setIsLoadingTip] = useState(false);
 
     useEffect(() => {
       if ((shouldGetTipsFromNode || tipsNeedUpdate) && api) {
+        setIsLoadingTip(true);
         api.query.tips.tips(tipHash).then((tip) => {
           const normalizedTip = tip.toJSON();
           if (normalizedTip) {
@@ -142,6 +144,9 @@ export default withLoginUserRedux(
             setTipIsFinal(true);
           }
           setLoading(false);
+        })
+        .finally(() => {
+          setIsLoadingTip(false);
         });
       }
     }, [api, shouldGetTipsFromNode, tipHash, tipsNeedUpdate]);
@@ -322,6 +327,8 @@ export default withLoginUserRedux(
               tipHash={tipHash}
               updateTips={updateTips}
               updateTimeline={updateTimeline}
+              isLoadingTip={isLoadingTip}
+              setIsLoadingTip={setIsLoadingTip}
             />
             <KVList title="Metadata" data={metadata} />
             <Timeline data={timeline} chain={chain} indent={false} />
