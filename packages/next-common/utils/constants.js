@@ -250,6 +250,11 @@ export const mainMenu = [
     excludeToChains: ["kabocha"],
     items: [
       {
+        value: "referenda",
+        name: "Referenda",
+        pathname: "/democracy/referendums",
+      },
+      {
         value: "democracyProposals",
         name: "Proposals",
         pathname: "/democracy/proposals",
@@ -259,11 +264,6 @@ export const mainMenu = [
         excludeToChains: ["kintsugi"],
         name: "External",
         pathname: "/democracy/externals",
-      },
-      {
-        value: "referenda",
-        name: "Referenda",
-        pathname: "/democracy/referendums",
       },
     ],
   },
