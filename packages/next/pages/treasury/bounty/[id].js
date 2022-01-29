@@ -112,7 +112,7 @@ export default withLoginUserRedux(
     });
 
     detail?.onchainData?.motions?.forEach((motion) => {
-      const motionTimelineData = createMotionTimelineData(motion);
+      const motionTimelineData = createMotionTimelineData(motion, chain);
       timelineData.push(motionTimelineData);
     });
     sortTimeline(timelineData);

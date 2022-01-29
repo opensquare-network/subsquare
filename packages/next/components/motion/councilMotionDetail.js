@@ -145,7 +145,7 @@ export default withLoginUserRedux(
     const symbol = node.symbol;
 
     const postUpdateTime = getPostUpdatedAt(post);
-    const timeline = createMotionTimelineData(motion.onchainData);
+    const timeline = createMotionTimelineData(motion.onchainData, chain);
 
     let timelineData;
     if (isClosed(timeline)) {
