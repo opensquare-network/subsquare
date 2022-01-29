@@ -196,9 +196,10 @@ const Guide = styled.p`
   align-items: center;
   color: #9da9bb;
   a {
+    font-size: 12px !important;
     display: flex;
     align-items: center;
-    color: #6848ff;
+    color: #6848ff !important;
   }
 `;
 
