@@ -46,7 +46,7 @@ const Right = styled(Flex)`
     margin-left: 12px;
   }
   @media screen and (max-width: 768px) {
-    display: none;
+    display: none !important;
   }
 `;
 
