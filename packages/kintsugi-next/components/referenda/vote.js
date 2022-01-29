@@ -21,6 +21,7 @@ import {
 import AyeIcon from "public/imgs/icons/aye.svg";
 import NayIcon from "public/imgs/icons/nay.svg";
 import TurnoutIcon from "public/imgs/icons/turnout.svg";
+import ElectorateIcon from "public/imgs/icons/electorate.svg";
 import Threshold from "./threshold";
 import ArrowIcon from "public/imgs/icons/arrow.svg";
 import DisplayValue from "./displayValue";
@@ -368,7 +369,7 @@ function Vote({
           </BorderedRow>
           <Row>
             <Header>
-              <TurnoutIcon />
+              <ElectorateIcon />
               Electorate
             </Header>
             <span>
