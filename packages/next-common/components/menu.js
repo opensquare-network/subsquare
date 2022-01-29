@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import React, { Fragment } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import OverviewIcon from "../assets/imgs/icons/overview.svg";
 import DiscussionIcon from "../assets/imgs/icons/discussions.svg";
@@ -113,18 +114,20 @@ export default function Menu({ menu, chain }) {
               }
               return (
                 <Fragment key={index}>
-                  <a href={item?.pathname}>
-                    <Item
-                      active={
-                        router.pathname === item.pathname ||
-                        (router.pathname === "/[chain]" &&
-                          item.pathname === "/")
-                      }
-                    >
-                      {iconMap.get(item.value)}
-                      <div>{item.name}</div>
-                    </Item>
-                  </a>
+                  <Link href={item?.pathname} passHref>
+                    <a>
+                      <Item
+                        active={
+                          router.pathname === item.pathname ||
+                          (router.pathname === "/[chain]" &&
+                            item.pathname === "/")
+                        }
+                      >
+                        {iconMap.get(item.value)}
+                        <div>{item.name}</div>
+                      </Item>
+                    </a>
+                  </Link>
                 </Fragment>
               );
             })}
