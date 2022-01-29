@@ -406,6 +406,7 @@ export default function Popup({
             onChange={(e) =>
               setInputVoteBalance(e.target.value.replace("。", "."))
             }
+            symbol={node?.voteSymbol}
           />
         </div>
         <div>
