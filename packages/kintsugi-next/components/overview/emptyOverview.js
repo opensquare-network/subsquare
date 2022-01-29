@@ -56,6 +56,7 @@ const EmptyPanel = styled.div`
     text-align: center;
     color: #506176;
     margin-bottom: 24px;
+    max-width: 343px;
   }
 
   > .button {
@@ -94,7 +95,7 @@ export default function EmptyOverview() {
           Welcome to SubSquare
         </div>
         <div className="desc">
-          Latest events will be displayed on this page. Any<br/> ideas? Start a discussion.
+          Latest events will be displayed on this page. Any ideas? Start a discussion.
         </div>
         <Link href={"/post/create"}>
           <a className="button">
