@@ -177,7 +177,7 @@ export default function TechcommMotionDetail({
   const symbol = node.symbol;
   const treasuryProposalMeta = motion.treasuryProposal?.meta;
   const postUpdateTime = getPostUpdatedAt(post);
-  const timeline = createMotionTimelineData(motion.onchainData);
+  const timeline = createMotionTimelineData(motion.onchainData, chain);
 
   let timelineData;
 

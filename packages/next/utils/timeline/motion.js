@@ -1,6 +1,27 @@
 import dayjs from "dayjs";
+import User from "next-common/components/user";
 
-export function createMotionTimelineData(motion = {}) {
+export function createArgs(method, args, chain) {
+  switch (method) {
+    case "proposeCurator": {
+      const [bountyId, curator] = args;
+      return [
+        {
+          name: "bountyIndex",
+          value: bountyId.value
+        },
+        {
+          name: curator.name,
+          value: <User chain={chain} add={curator.value.id} fontSize={14} />,
+        }
+      ];
+    }
+    default:
+      return [];
+  }
+}
+
+export function createMotionTimelineData(motion = {}, chain) {
   const { proposer, proposal, voting, timeline = [] } = motion;
 
   return timeline.map((item) => {
@@ -14,7 +35,7 @@ export function createMotionTimelineData(motion = {}) {
           voting: {
             proposer: proposer,
             method: proposal.method,
-            args: proposal.args,
+            args: createArgs(proposal.method, proposal.args, chain),
             total: voting.threshold,
             ayes: voting.ayes.length,
             nays: voting.nays.length,
