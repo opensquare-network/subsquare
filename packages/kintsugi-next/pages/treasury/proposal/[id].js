@@ -105,6 +105,11 @@ export default withLoginUserRedux(
           index: item.args.index,
           time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
           status: { value: `Public proposal #${item.args.index}`, color: "#6848FF" },
+          voting: {
+            proposer: publicProposal.proposer,
+            method: publicProposal.preImage?.call.method,
+            args: publicProposal.preImage?.call.args,
+          },
           method: item.method,
           link: `/democracy/proposal/${item.args.index}`,
         })),

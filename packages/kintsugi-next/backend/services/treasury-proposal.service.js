@@ -247,6 +247,14 @@ async function getPostById(postId) {
       : [],
   ]);
 
+  await chainDb.lookupOne({
+    from: "democracyPreImage",
+    for: publicProposals,
+    as: "preImage",
+    localField: "hash",
+    foreignField: "hash",
+  });
+
   await Promise.all([
     chainDb.lookupOne({
       from: "democracyReferendum",
