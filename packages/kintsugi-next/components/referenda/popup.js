@@ -444,7 +444,7 @@ export default function Popup({
               )}
             </StatusWrapper>
             <WarningWrapper>
-              Resubmit the vote will overwrite the previous voting record
+              Resubmitting the vote will override the current voting record
             </WarningWrapper>
           </div>
         )}
