@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
-import List from "./list";
+import List from "../list";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
+import EmptyOverview from "./emptyOverview";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -22,6 +23,15 @@ const Create = styled.a`
 `;
 
 export default function Overview({ overviewData, chain }) {
+  if (overviewData?.[0]?.items?.length === 0) {
+    // All items are empty, show default empty page
+    return (
+      <Wrapper>
+        <EmptyOverview chain={chain} />
+      </Wrapper>
+    );
+  }
+
   const createDiscussion = (
     <Create href="post/create">
       <PlusIcon />
