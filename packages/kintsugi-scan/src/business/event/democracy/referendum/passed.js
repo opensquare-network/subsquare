@@ -18,10 +18,17 @@ async function handlePassed(event, indexer) {
     indexer.blockHeight - 1
   );
 
-  const finishedInfo = await getReferendumInfoFromStorage(
-    referendumIndex,
-    indexer
-  );
+  let finishedInfo;
+  if (ongoing.delay <= 0) {
+    finishedInfo = {
+      finished: {
+        approved: true,
+        end: indexer.blockHeight,
+      },
+    };
+  } else {
+    finishedInfo = await getReferendumInfoFromStorage(referendumIndex, indexer);
+  }
 
   const state = {
     indexer,
