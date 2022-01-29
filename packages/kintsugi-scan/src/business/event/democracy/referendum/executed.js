@@ -4,18 +4,12 @@ const {
 const {
   business: {
     consts: { ReferendumEvents, TimelineItemTypes },
-    getReferendumInfoByHeight,
   },
 } = require("@subsquare/scan-common");
 
 async function handleExecuted(event, indexer) {
   const eventData = event.data.toJSON();
   const [referendumIndex, executeResult] = eventData;
-
-  const referendumInfo = await getReferendumInfoByHeight(
-    referendumIndex,
-    indexer.blockHeight - 1
-  );
 
   const state = {
     indexer,
@@ -36,7 +30,6 @@ async function handleExecuted(event, indexer) {
   await updateDemocracyReferendum(
     referendumIndex,
     {
-      info: referendumInfo,
       state,
     },
     timelineItem
