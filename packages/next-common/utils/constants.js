@@ -103,23 +103,24 @@ export const DEFAULT_BIFROST_NODES = [
 
 export const DEFAULT_BIFROST_NODE_URL = DEFAULT_BIFROST_NODES[0]?.url;
 
-export const DEFAULT_KINTSUGI_NODES = process.env.NEXT_PUBLIC_DEVELOPMENT === "true"
-  ? [
-      {
-        name: "Kintsugi Test Endpoint",
-        url: "wss://api-dev-kintsugi.interlay.io/parachain",
-      }
-    ]
-  : [
-      {
-        name: "OnFinality",
-        url: "wss://kintsugi.api.onfinality.io/public-ws",
-      },
-      {
-        name: "Kintsugi Labs",
-        url: "wss://api-kusama.interlay.io/parachain",
-      },
-    ];
+export const DEFAULT_KINTSUGI_NODES =
+  process.env.NEXT_PUBLIC_DEVELOPMENT === "true"
+    ? [
+        {
+          name: "Kintsugi Test Endpoint",
+          url: "wss://api-dev-kintsugi.interlay.io/parachain",
+        },
+      ]
+    : [
+        {
+          name: "OnFinality",
+          url: "wss://kintsugi.api.onfinality.io/public-ws",
+        },
+        {
+          name: "Kintsugi Labs",
+          url: "wss://api-kusama.interlay.io/parachain",
+        },
+      ];
 
 export const DEFAULT_KINTSUGI_NODE_URL = DEFAULT_KINTSUGI_NODES[0]?.url;
 
@@ -245,6 +246,28 @@ export const mainMenu = [
     ],
   },
   {
+    name: "DEMOCRACY",
+    excludeToChains: ["kabocha"],
+    items: [
+      {
+        value: "democracyProposals",
+        name: "Proposals",
+        pathname: "/democracy/proposals",
+      },
+      {
+        value: "democracyExternals",
+        excludeToChains: ["kintsugi"],
+        name: "External",
+        pathname: "/democracy/externals",
+      },
+      {
+        value: "referenda",
+        name: "Referenda",
+        pathname: "/democracy/referendums",
+      },
+    ],
+  },
+  {
     name: "TREASURY",
     excludeToChains: ["kabocha"],
     items: [
@@ -264,28 +287,6 @@ export const mainMenu = [
         name: "Tips",
         pathname: "/treasury/tips",
         excludeToChains: ["kintsugi"],
-      },
-    ],
-  },
-  {
-    name: "DEMOCRACY",
-    excludeToChains: ["kabocha"],
-    items: [
-      {
-        value: "democracyProposals",
-        name: "Proposals",
-        pathname: "/democracy/proposals",
-      },
-      {
-        value: "democracyExternals",
-        excludeToChains: ["kintsugi"],
-        name: "External",
-        pathname: "/democracy/externals",
-      },
-      {
-        value: "referenda",
-        name: "Referenda",
-        pathname: "/democracy/referendums",
       },
     ],
   },
