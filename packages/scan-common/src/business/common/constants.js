@@ -28,6 +28,7 @@ const DemocracyMethods = Object.freeze({
   fastTrack: "fastTrack",
   vetoExternal: "vetoExternal",
   second: "second",
+  cancelProposal: "cancelProposal",
 });
 
 const KaruraModules = Object.freeze({
@@ -113,6 +114,7 @@ const MotionState = Object.freeze({
 const DemocracyPublicProposalEvents = Object.freeze({
   Proposed: "Proposed",
   Tabled: "Tabled",
+  Canceled: "Canceled",
 });
 
 const ReferendumEvents = Object.freeze({
