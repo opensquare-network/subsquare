@@ -20,6 +20,7 @@ import { useState } from "react";
 import CapitalText from "../capitalText";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
 import Tag from "next-common/components/tag";
+import ElapsedHeader from "./elapsedHeader";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -259,6 +260,7 @@ export default withLoginUserRedux(
         <Wrapper>
           {!isEdit && (
             <div>
+              <ElapsedHeader data={motion} chain={chain} />
               <TitleWrapper>
                 {motion?.motionIndex !== undefined && (
                   <Index>{`#${motion.motionIndex}`}</Index>

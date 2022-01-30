@@ -12,7 +12,7 @@ const BackCircle = styled.div`
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  border: 4px solid #f5f2ff;
+  border: 4px solid rgba(33, 150, 243, .2);
   background: white;
 `;
 
@@ -30,7 +30,7 @@ const InnerCircle = styled.div`
   top: 1px;
   background: white;
   border-radius: 50%;
-  border: 3px solid #6848ff;
+  border: 3px solid #2196F3;
 `;
 
 const InnerCircleLeft = styled(InnerCircle)`
