@@ -108,33 +108,32 @@ export function decimalPlaces(value, n) {
 }
 
 export function getTimelineStatus(type, method) {
-  const defaultColor = "#0F6FFF";
   switch (type) {
     case "proposal":
       switch (method) {
         case "FastTrack":
-          return { value: "FastTracked", color: "#4CAF50" };
+          return { value: "FastTracked" };
       }
       break;
     case "bounty":
       switch (method) {
         case "proposeBounty":
-          return { value: "Propose Bounty", color: "#6848FF" };
+          return { value: "Propose Bounty" };
       }
       break;
     case "tip":
       switch (method) {
         case "reportAwesome":
-          return { value: "Report Awesome", color: "#6848FF" };
+          return { value: "Report Awesome" };
         case "TipRetracted":
-          return { value: "Tip Retracted", color: defaultColor };
+          return { value: "Tip Retracted" };
         case "tip":
-          return { value: "Tip", color: defaultColor };
+          return { value: "Tip" };
         case "TipClosed":
-          return { value: "Tip Closed", color: defaultColor };
+          return { value: "Tip Closed" };
       }
   }
-  return { value: method, color: defaultColor };
+  return { value: method };
 }
 
 export const sleep = (time) => {
