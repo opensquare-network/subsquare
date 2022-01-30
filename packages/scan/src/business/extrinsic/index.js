@@ -4,6 +4,7 @@ const { handleAcceptCurator } = require("./bounty/acceptCurator");
 const { handleTechCommPropose } = require("./techComm/propose");
 const { handleFastTrack } = require("./democracy/fastTrack");
 const { handleExternalPropose } = require("./democracy/external");
+const { handleCancelProposal } = require("./democracy/cancelProposal");
 const { GenericCall } = require("@polkadot/types");
 const { handleTipCall } = require("../extrinsic/tip");
 const {
@@ -28,6 +29,7 @@ async function handleCall(call, author, extrinsicIndexer, events) {
   await handleAcceptCurator(...arguments);
   await handleCouncilPropose(...arguments);
   await handleFinancialCouncilPropose(...arguments);
+  await handleCancelProposal(...arguments);
 }
 
 async function unwrapProxy(call, signer, extrinsicIndexer, events) {
@@ -97,7 +99,12 @@ async function handleExtrinsics(extrinsics = [], allEvents = [], blockIndexer) {
       continue;
     }
 
-    const extrinsicIndexer = { ...blockIndexer, index: index++ };
+    const extrinsicIndex = index++;
+    const extrinsicIndexer = {
+      ...blockIndexer,
+      index: extrinsicIndex,
+      extrinsicIndex,
+    };
     await extractAndHandleCall(extrinsic, events, extrinsicIndexer);
   }
 }
