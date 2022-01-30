@@ -42,7 +42,7 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
   ];
 
   const filteredOverviewData = overviewData.filter(
-    data => data.items?.length > 0 || data.category === "Discussions"
+    data => data?.items?.length > 0 || data?.category === "Discussions"
   );
 
   // Sort the items with length = 0 to the end of the list
