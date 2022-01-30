@@ -6,6 +6,9 @@ const {
   getTreasuryProposalCollection,
   getBountyCollection,
   getDemocracyCollection,
+  getMotionCollection,
+  getFinancialMotionCollection,
+  getTechCommMotionCollection,
 } = require("../mongo/business");
 const {
   getDb: getChainDb,
@@ -251,10 +254,121 @@ async function updateBounty() {
             ? []
             : [item.lastActivityAt.getTime()]),
           item.onchainData?.state?.indexer?.blockTime || 0,
-          ...(item.motions || []).map((m) => m.state?.indexer?.blockTime || 0)
+          ...(item.onchainData?.motions || []).map((m) => m.state?.indexer?.blockTime || 0)
         )
       );
       bulk.find({ bountyIndex: item.bountyIndex }).updateOne({
+        $set: {
+          lastActivityAt,
+        },
+      });
+    }
+    await bulk.execute();
+  }
+}
+
+async function updateCouncilMotion() {
+  const col = await getMotionCollection();
+  const items = await col.find({}).toArray();
+
+  const chainDb = await getChainDb();
+  await chainDb.compoundLookupOne({
+    from: "motions",
+    for: items,
+    as: "onchainData",
+    compoundLocalFields: ["hash", "height"],
+    compoundForeignFields: ["hash", "indexer.blockHeight"],
+  });
+
+  if (items.length > 0) {
+    const bulk = col.initializeUnorderedBulkOp();
+    for (const item of items) {
+      const lastActivityAt = new Date(
+        Math.max(
+          ...(item.lastActivityAt.getTime() === item.createdAt.getTime()
+            ? []
+            : [item.lastActivityAt.getTime()]),
+          item.onchainData?.state?.indexer?.blockTime || 0,
+        )
+      );
+      bulk.find({
+        hash: item.hash,
+        height: item.height,
+      }).updateOne({
+        $set: {
+          lastActivityAt,
+        },
+      });
+    }
+    await bulk.execute();
+  }
+}
+
+async function updateTechCommMotion() {
+  const col = await getTechCommMotionCollection();
+  const items = await col.find({}).toArray();
+
+  const chainDb = await getChainDb();
+  await chainDb.compoundLookupOne({
+    from: "techCommMotion",
+    for: items,
+    as: "onchainData",
+    compoundLocalFields: ["hash", "height"],
+    compoundForeignFields: ["hash", "indexer.blockHeight"],
+  });
+
+  if (items.length > 0) {
+    const bulk = col.initializeUnorderedBulkOp();
+    for (const item of items) {
+      const lastActivityAt = new Date(
+        Math.max(
+          ...(item.lastActivityAt.getTime() === item.createdAt.getTime()
+            ? []
+            : [item.lastActivityAt.getTime()]),
+          item.onchainData?.state?.indexer?.blockTime || 0,
+        )
+      );
+      bulk.find({
+        hash: item.hash,
+        height: item.height,
+      }).updateOne({
+        $set: {
+          lastActivityAt,
+        },
+      });
+    }
+    await bulk.execute();
+  }
+}
+
+async function updateFinancialMotion() {
+  const col = await getFinancialMotionCollection();
+  const items = await col.find({}).toArray();
+
+  const chainDb = await getChainDb();
+  await chainDb.compoundLookupOne({
+    from: "financialMotion",
+    for: items,
+    as: "onchainData",
+    compoundLocalFields: ["hash", "height"],
+    compoundForeignFields: ["hash", "indexer.blockHeight"],
+  });
+
+  if (items.length > 0) {
+    const bulk = col.initializeUnorderedBulkOp();
+    for (const item of items) {
+      const lastActivityAt = new Date(
+        Math.max(
+          ...(item.lastActivityAt.getTime() === item.createdAt.getTime()
+            ? []
+            : [item.lastActivityAt.getTime()]),
+          item.onchainData?.state?.indexer?.blockTime || 0,
+        )
+      );
+      bulk.find({
+        hash: item.hash,
+        height: item.height,
+      }).updateOne({
         $set: {
           lastActivityAt,
         },
@@ -271,6 +385,9 @@ async function main() {
     await updatePublicProposal();
     await updateExternalProposal();
     await updateBounty();
+    await updateCouncilMotion();
+    await updateTechCommMotion();
+    await updateFinancialMotion();
 
     console.log(`Last run at`, new Date());
   } catch (e) {
