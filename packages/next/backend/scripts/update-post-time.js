@@ -387,7 +387,10 @@ async function main() {
     await updateBounty();
     await updateCouncilMotion();
     await updateTechCommMotion();
-    await updateFinancialMotion();
+
+    if (["karura", "acala"].includes(process.env.CHAIN)) {
+      await updateFinancialMotion();
+    }
 
     console.log(`Last run at`, new Date());
   } catch (e) {
