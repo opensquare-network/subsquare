@@ -62,8 +62,10 @@ const EmptyPanel = styled.div`
   > .button {
     > svg {
       margin-right: 8px;
+      min-width: 15px;
     }
 
+    white-space: nowrap;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -72,6 +74,7 @@ const EmptyPanel = styled.div`
 
     position: static;
     width: 153px;
+    min-width: 153px;
     height: 38px;
 
     background: #6848FF;
