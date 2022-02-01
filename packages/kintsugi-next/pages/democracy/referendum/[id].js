@@ -76,7 +76,6 @@ export default withLoginUserRedux(
     useEffect(() => {
       // Already has the last ongoging status
       if (referendumStatus) {
-        setReferendumStatus(detail?.onchainData?.info?.ongoing);
         return;
       }
 
