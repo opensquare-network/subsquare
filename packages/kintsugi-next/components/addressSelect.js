@@ -134,7 +134,7 @@ export default function AddressSelect({
                 onSelect(item);
                 setShow(false);
               }}
-              selected={item.address !== selectedAccount?.address}
+              selected={item.address === selectedAccount?.address}
             >
               <Avatar address={item[`${chain}Address`]} />
               <NameWrapper>
