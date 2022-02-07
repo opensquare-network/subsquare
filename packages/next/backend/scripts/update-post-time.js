@@ -15,6 +15,10 @@ const {
   getTechCommMotionCollection: getChainTechCommMotionCollection,
 } = require("../mongo/chain");
 
+function last(arr) {
+  return arr?.[arr?.length - 1];
+}
+
 async function updateTip() {
   const chainDb = await getChainDb();
 
@@ -36,7 +40,8 @@ async function updateTip() {
           ...(item.lastActivityAt.getTime() === item.createdAt.getTime()
             ? []
             : [item.lastActivityAt.getTime()]),
-          item.onchainData?.state?.indexer?.blockTime || 0
+          item.onchainData?.state?.indexer?.blockTime || 0,
+          last(item.onchainData?.timeline)?.indexer?.blockTime || 0,
         )
       );
       bulk
