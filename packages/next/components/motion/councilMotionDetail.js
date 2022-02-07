@@ -167,8 +167,9 @@ export default withLoginUserRedux(
     const currentFinalHeight = useSelector(nodesHeightSelector);
     const motionEndHeight = motion.onchainData?.voting?.end;
     const blockTime = useBlockTime(currentFinalHeight - motionEndHeight, chain);
+    const motionClosed = motion.onchainData?.timeline?.some(item => item.method === "Closed");
 
-    const showMotionEnd = motionEndHeight && currentFinalHeight && currentFinalHeight <= motionEndHeight && blockTime;
+    const showMotionEnd = !motionClosed && motionEndHeight && currentFinalHeight && currentFinalHeight <= motionEndHeight && blockTime;
 
     const node = getNode(chain);
     if (!node) {
@@ -291,13 +292,13 @@ export default withLoginUserRedux(
 
     const motionEnd = showMotionEnd ? (
       <TimelineMotionEnd>
-        <MotionEnd type="simple" data={motion} chain={chain} />
+        <MotionEnd type="simple" data={motion.onchainData} chain={chain} />
       </TimelineMotionEnd>
     ) : null;
 
     const motionEndHeader = showMotionEnd ? (
       <MotionEndHeader>
-        <MotionEnd type="full" data={motion} chain={chain} />
+        <MotionEnd type="full" data={motion.onchainData} chain={chain} />
       </MotionEndHeader>
     ) : null;
 

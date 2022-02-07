@@ -5,13 +5,14 @@ import Tooltip from "./tooltip";
 import { useBlockTime } from "utils/hooks";
 import { bigNumber2Locale } from "utils";
 
-export default function MotionElapse({ data, chain }) {
+export default function MotionElapse({ motion, chain }) {
   const currentFinalHeight = useSelector(nodesHeightSelector);
-  const motionEndHeight = data.onchainData?.voting?.end;
-  const motionStartHeight = data.onchainData?.indexer?.blockHeight;
+  const motionEndHeight = motion?.voting?.end;
+  const motionStartHeight = motion?.indexer?.blockHeight;
   const blockTime = useBlockTime(currentFinalHeight - motionEndHeight, chain)
+  const motionClosed = motion?.timeline?.some(item => item.method === "Closed");
 
-  if (!motionEndHeight || !currentFinalHeight || currentFinalHeight >= motionEndHeight) {
+  if (motionClosed || !motionEndHeight || !currentFinalHeight || currentFinalHeight >= motionEndHeight || !blockTime) {
     return null;
   }
 

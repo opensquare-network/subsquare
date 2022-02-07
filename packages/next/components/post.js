@@ -169,7 +169,7 @@ export default function Post({ data, chain, href, type }) {
       "Tech. Comm. Proposals",
     ].includes(type)
   ) {
-    elapseIcon = <MotionElapse data={data} chain={chain} />;
+    elapseIcon = <MotionElapse data={data.onchainData} chain={chain} />;
   }
 
   return (
