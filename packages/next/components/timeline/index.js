@@ -35,7 +35,7 @@ const TitleWrapper = styled.div`
   }
 `;
 
-export default function Timeline({ data, chain, indent = true, type = "", motionEnd = null }) {
+export default function Timeline({ data, chain, indent = true, type = "", motionEndInfo = null }) {
   if (!timelineData || timelineData?.length === 0) {
     return null;
   }
@@ -44,7 +44,7 @@ export default function Timeline({ data, chain, indent = true, type = "", motion
     <Wrapper>
       <TitleWrapper>
         <div>Timeline</div>
-        <div>{motionEnd || `Last active ${timeDurationFromNow(
+        <div>{motionEndInfo || `Last active ${timeDurationFromNow(
           data[data.length - 1]?.indexer?.blockTime
         )}`}</div>
       </TitleWrapper>

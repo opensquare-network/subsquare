@@ -3,16 +3,16 @@ import { nodesHeightSelector } from "store/reducers/nodeSlice";
 import CountDown from "components/countDown";
 import Tooltip from "./tooltip";
 import { useBlockTime } from "utils/hooks";
-import { bigNumber2Locale } from "utils";
+import { bigNumber2Locale, isMotionEnded } from "utils";
 
 export default function MotionElapse({ motion, chain }) {
   const currentFinalHeight = useSelector(nodesHeightSelector);
   const motionEndHeight = motion?.voting?.end;
   const motionStartHeight = motion?.indexer?.blockHeight;
   const blockTime = useBlockTime(currentFinalHeight - motionEndHeight, chain)
-  const motionClosed = motion?.timeline?.some(item => item.method === "Closed");
+  const motionEnd = isMotionEnded(motion);
 
-  if (motionClosed || !motionEndHeight || !currentFinalHeight || currentFinalHeight >= motionEndHeight || !blockTime) {
+  if (motionEnd || !motionEndHeight || !currentFinalHeight || currentFinalHeight >= motionEndHeight || !blockTime) {
     return null;
   }
 
