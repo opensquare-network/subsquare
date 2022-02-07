@@ -273,7 +273,7 @@ async function updateCouncilMotion() {
 
   const chainDb = await getChainDb();
   await chainDb.compoundLookupOne({
-    from: "motions",
+    from: "motion",
     for: items,
     as: "onchainData",
     compoundLocalFields: ["hash", "height"],

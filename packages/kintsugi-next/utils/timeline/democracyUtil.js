@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import dayjs from "dayjs";
-import { toPrecision, getTimelineStatus } from "utils";
+import { toPrecision, getTimelineStatus, getNode } from "utils";
 import User from "next-common/components/user";
 
 const DepositorsWrapper = styled.div`
@@ -14,6 +14,7 @@ const DepositorsWrapper = styled.div`
 `;
 
 function getTimelineData(args, method, chain) {
+  const { decimals, symbol } = getNode(chain);
   switch (method) {
     case "Proposed":
       return {

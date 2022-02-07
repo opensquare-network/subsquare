@@ -133,21 +133,23 @@ export default withLoginUserRedux(
     useEffect(() => {
       if ((shouldGetTipsFromNode || tipsNeedUpdate) && api) {
         setIsLoadingTip(true);
-        api.query.tips.tips(tipHash).then((tip) => {
-          const normalizedTip = tip.toJSON();
-          if (normalizedTip) {
-            // Repalce the tips read from db with the current on-chain state
-            setTips(normalizedTip?.meta?.tips);
-          } else {
-            // If the tip is null,
-            // It is considered to have been closed/retracted already
-            setTipIsFinal(true);
-          }
-          setLoading(false);
-        })
-        .finally(() => {
-          setIsLoadingTip(false);
-        });
+        api.query.tips
+          .tips(tipHash)
+          .then((tip) => {
+            const normalizedTip = tip.toJSON();
+            if (normalizedTip) {
+              // Repalce the tips read from db with the current on-chain state
+              setTips(normalizedTip?.tips);
+            } else {
+              // If the tip is null,
+              // It is considered to have been closed/retracted already
+              setTipIsFinal(true);
+            }
+            setLoading(false);
+          })
+          .finally(() => {
+            setIsLoadingTip(false);
+          });
       }
     }, [api, shouldGetTipsFromNode, tipHash, tipsNeedUpdate]);
 
