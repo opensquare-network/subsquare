@@ -292,13 +292,13 @@ export default withLoginUserRedux(
 
     const motionEnd = showMotionEnd ? (
       <TimelineMotionEnd>
-        <MotionEnd type="simple" data={motion.onchainData} chain={chain} />
+        <MotionEnd type="simple" motion={motion.onchainData} chain={chain} />
       </TimelineMotionEnd>
     ) : null;
 
     const motionEndHeader = showMotionEnd ? (
       <MotionEndHeader>
-        <MotionEnd type="full" data={motion.onchainData} chain={chain} />
+        <MotionEnd type="full" motion={motion.onchainData} chain={chain} />
       </MotionEndHeader>
     ) : null;
 
