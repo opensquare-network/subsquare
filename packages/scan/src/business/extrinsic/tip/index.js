@@ -1,6 +1,6 @@
 const {
   business: {
-    consts: { TipMethods, Modules, TimelineItemTypes },
+    consts: { TipEvents, TipMethods, Modules, TimelineItemTypes },
   },
 } = require("@subsquare/scan-common");
 const { updateTipByHash } = require("../../../mongo/service/tip");
@@ -18,7 +18,20 @@ async function handleTipCall(call, author, extrinsicIndexer) {
     args: { hash, tip_value: tipValue },
   } = call.toJSON();
 
-  const updates = await getTipCommonUpdates(hash, extrinsicIndexer);
+  const commonUpdates = await getTipCommonUpdates(hash, extrinsicIndexer);
+  const state = {
+    indexer: extrinsicIndexer,
+    state: TipEvents.Tipping,
+    data: {
+      tipsCount: (commonUpdates?.meta?.tips || []).length,
+    },
+  };
+
+  const updates = {
+    ...commonUpdates,
+    state,
+  };
+
   const timelineItem = {
     type: TimelineItemTypes.extrinsic,
     method: TipMethods.tip,

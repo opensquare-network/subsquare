@@ -38,6 +38,7 @@ const KaruraModules = Object.freeze({
 
 const TipEvents = Object.freeze({
   NewTip: "NewTip",
+  Tipping: "Tipping",
   TipClosing: "TipClosing",
   TipClosed: "TipClosed",
   TipRetracted: "TipRetracted",

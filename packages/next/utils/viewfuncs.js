@@ -3,6 +3,7 @@ import { addressEllipsis, stringUpperFirst } from ".";
 const TipStateMap = {
   NewTip: "Tipping",
   tip: "Tipping",
+  Tipping: "Tipping",
   TipRetracted: "Retracted",
   TipClosed: "Closed",
 };
