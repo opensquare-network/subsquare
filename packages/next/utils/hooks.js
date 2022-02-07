@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { useRouter } from "next/router";
 
-import { userSelector } from "store/reducers/userSlice";
 import { currentNodeSelector } from "store/reducers/nodeSlice";
 import { getApi } from "services/polkadotApi";
+import { BN, BN_TWO, BN_THOUSAND, bnToBn, extractTime } from '@polkadot/util';
 
 export function useOnClickOutside(ref, handler) {
   useEffect(() => {
@@ -196,4 +195,49 @@ export function useBlockHeight() {
     }
   }, [api]);
   return blockHeight;
+
+const DEFAULT_BLOCK_TIME = new BN(6_000);
+const THRESHOLD = BN_THOUSAND.div(BN_TWO);
+
+export function useBlockTime(blocks, chain) {
+  const api = useApi(chain);
+  const [blockTime, setBlockTime] = useState("");
+  useEffect(() => {
+    if (api) {
+      const blockTime = (
+        // Babe
+        api.consts.babe?.expectedBlockTime ||
+        // POW, eg. Kulupu
+        api.consts.difficulty?.targetBlockTime ||
+        // Subspace
+        api.consts.subspace?.expectedBlockTime || (
+          // Check against threshold to determine value validity
+          api.consts.timestamp?.minimumPeriod.gte(THRESHOLD)
+            // Default minimum period config
+            ? api.consts.timestamp.minimumPeriod.mul(BN_TWO)
+            : api.query.parachainSystem
+              // default guess for a parachain
+              ? DEFAULT_BLOCK_TIME.mul(TWO)
+              // default guess for others
+              : DEFAULT_BLOCK_TIME
+        )
+      );
+      const value = blockTime.mul(bnToBn(blocks)).toNumber();
+      const time = extractTime(Math.abs(value));
+      const { days, hours, minutes, seconds } = time;
+      const timeStr = [
+        days ? (days > 1) ? `${days} days` : '1 day' : null,
+        hours ? (hours > 1) ? `${hours} hrs` : '1 hr' : null,
+        minutes ? (minutes > 1) ? `${minutes} mins` : '1 min' : null,
+        seconds ? (seconds > 1) ? `${seconds} s` : '1 s' : null,
+      ]
+        .filter((s) => !!s)
+        .slice(0, 2)
+        .join(" ");
+
+      setBlockTime(timeStr);
+    }
+  }, [api]);
+
+  return blockTime;
 }
