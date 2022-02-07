@@ -16,6 +16,10 @@ import { useState } from "react";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
 import { getPostUpdatedAt } from "../../utils/viewfuncs";
 import MultiKVList from "next-common/components/multiKVList";
+import MotionEnd from "./motionEnd";
+import { useBlockTime } from "utils/hooks";
+import { nodesHeightSelector } from "store/reducers/nodeSlice";
+import { useSelector } from "react-redux";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -101,6 +105,31 @@ const Info = styled.div`
   color: #506176;
 `;
 
+const TimelineMotionEnd = styled.div`
+  display: flex;
+  align-items: center;
+  > :first-child {
+    margin-right: 8px;
+  }
+`;
+
+const MotionEndHeader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  gap: 8px;
+
+  position: static;
+  height: 38px;
+
+  background: #F6F7FA;
+  border-radius: 4px;
+
+  margin-bottom: 16px;
+  color: rgba(80, 97, 118, 1);
+`;
+
 function createMotionBusinessData(motion, chain) {
   const height = motion.state.indexer.blockHeight;
   return [
@@ -167,6 +196,10 @@ export default function TechcommMotionDetail({
   loginUser,
   type,
 }) {
+  const currentFinalHeight = useSelector(nodesHeightSelector);
+  const motionEndHeight = motion.onchainData?.voting?.end;
+  const blockTime = useBlockTime(currentFinalHeight - motionEndHeight, chain);
+
   const node = getNode(chain);
   const [post, setPost] = useState(motion);
   const [isEdit, setIsEdit] = useState(false);
@@ -247,11 +280,24 @@ export default function TechcommMotionDetail({
     });
   }
 
+  const motionEnd = blockTime ? (
+    <TimelineMotionEnd>
+      <MotionEnd type="simple" data={motion} chain={chain} />
+    </TimelineMotionEnd>
+  ) : null;
+
+  const motionEndHeader = blockTime ? (
+    <MotionEndHeader>
+      <MotionEnd type="full" data={motion} chain={chain} />
+    </MotionEndHeader>
+  ) : null;
+
   return (
     <div>
       <Wrapper>
         {!isEdit && (
           <div>
+            {motionEndHeader}
             <TitleWrapper>
               {motion?.index !== undefined && (
                 <Index>{`#${motion.index}`}</Index>
@@ -317,7 +363,13 @@ export default function TechcommMotionDetail({
         ]}
       />
 
-      <Timeline data={timelineData} chain={chain} indent={false} type={type} />
+      <Timeline
+        motionEnd={motionEnd}
+        data={timelineData}
+        chain={chain}
+        indent={false}
+        type={type}
+      />
     </div>
   );
 }

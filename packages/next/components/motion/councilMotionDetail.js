@@ -20,6 +20,10 @@ import { useState } from "react";
 import CapitalText from "../capitalText";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
 import Tag from "next-common/components/tag";
+import MotionEnd from "./motionEnd";
+import { useBlockTime } from "utils/hooks";
+import { nodesHeightSelector } from "store/reducers/nodeSlice";
+import { useSelector } from "react-redux";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -94,6 +98,31 @@ const Info = styled.div`
   color: #506176;
 `;
 
+const TimelineMotionEnd = styled.div`
+  display: flex;
+  align-items: center;
+  > :first-child {
+    margin-right: 8px;
+  }
+`;
+
+const MotionEndHeader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  gap: 8px;
+
+  position: static;
+  height: 38px;
+
+  background: #F6F7FA;
+  border-radius: 4px;
+
+  margin-bottom: 16px;
+  color: rgba(80, 97, 118, 1);
+`;
+
 function createMotionBusinessData(motion) {
   const height = motion.state.indexer.blockHeight;
   return [
@@ -135,6 +164,10 @@ const getClosedTimelineData = (timeline = []) => {
 
 export default withLoginUserRedux(
   ({ loginUser, motion, onReply, chain, type }) => {
+    const currentFinalHeight = useSelector(nodesHeightSelector);
+    const motionEndHeight = motion.onchainData?.voting?.end;
+    const blockTime = useBlockTime(currentFinalHeight - motionEndHeight, chain);
+
     const node = getNode(chain);
     if (!node) {
       return null;
@@ -254,11 +287,24 @@ export default withLoginUserRedux(
       });
     }
 
+    const motionEnd = blockTime ? (
+      <TimelineMotionEnd>
+        <MotionEnd type="simple" data={motion} chain={chain} />
+      </TimelineMotionEnd>
+    ) : null;
+
+    const motionEndHeader = blockTime ? (
+      <MotionEndHeader>
+        <MotionEnd type="full" data={motion} chain={chain} />
+      </MotionEndHeader>
+    ) : null;
+
     return (
       <div>
         <Wrapper>
           {!isEdit && (
             <div>
+              {motionEndHeader}
               <TitleWrapper>
                 {motion?.motionIndex !== undefined && (
                   <Index>{`#${motion.motionIndex}`}</Index>
@@ -321,6 +367,7 @@ export default withLoginUserRedux(
         />
 
         <Timeline
+          motionEnd={motionEnd}
           data={timelineData}
           chain={chain}
           indent={false}

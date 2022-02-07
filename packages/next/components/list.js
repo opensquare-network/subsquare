@@ -44,7 +44,7 @@ export default function List({
       {summary}
       {items?.length > 0 ? (
         items.map((item, index) => (
-          <Post key={index} data={item} chain={chain} href={item.detailLink} />
+          <Post key={index} data={item} chain={chain} href={item.detailLink} type={category} />
         ))
       ) : (
         <EmptyList type={category} />
