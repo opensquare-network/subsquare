@@ -26,12 +26,24 @@ import { useApi, useIsMounted } from "utils/hooks";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import SEO from "components/SEO";
 
+const OutWrapper = styled.div`
+  display: flex;
+  max-width: 1080px;
+  margin: 0 auto;
+  position: relative;
+`;
+
 const Wrapper = styled.div`
+  margin-right: 312px;
+  overflow: hidden;
+  flex-grow: 1;
   > :not(:first-child) {
     margin-top: 16px;
   }
-  max-width: 848px;
-  margin: auto;
+  @media screen and (max-width: 1024px) {
+    max-width: 848px;
+    margin: 0 auto;
+  }
 `;
 
 const CommentsWrapper = styled.div`
@@ -150,52 +162,54 @@ export default withLoginUserRedux(
           siteUrl={siteUrl}
           chain={chain}
         />
-        <Wrapper className="post-content">
-          <Back href={`/democracy/referendums`} text="Back to Referendas" />
-          <DetailItem
-            data={detail}
-            onReply={focusEditor}
-            user={loginUser}
-            chain={chain}
-            type={TYPE_DEMOCRACY_REFERENDUM}
-          />
-
-          <Vote
-            referendumInfo={detail?.onchainData?.info}
-            referendumStatus={referendumStatus}
-            chain={chain}
-          />
-
-          <KVList title={"Metadata"} data={metadata} />
-
-          <Timeline data={timelineData} chain={chain} />
-
-          <CommentsWrapper>
-            <Comments
-              data={comments}
+        <OutWrapper>
+          <Wrapper className="post-content">
+            <Back href={`/democracy/referendums`} text="Back to Referendas" />
+            <DetailItem
+              data={detail}
+              onReply={focusEditor}
               user={loginUser}
-              postId={detail._id}
               chain={chain}
-              onReply={onReply}
+              type={TYPE_DEMOCRACY_REFERENDUM}
             />
-            {loginUser && (
-              <Editor
+
+            <Vote
+              referendumInfo={detail?.onchainData?.info}
+              referendumStatus={referendumStatus}
+              chain={chain}
+            />
+
+            <KVList title={"Metadata"} data={metadata} />
+
+            <Timeline data={timelineData} chain={chain} />
+
+            <CommentsWrapper>
+              <Comments
+                data={comments}
+                user={loginUser}
                 postId={detail._id}
                 chain={chain}
-                ref={editorWrapperRef}
-                setQuillRef={setQuillRef}
-                {...{
-                  contentType,
-                  setContentType,
-                  content,
-                  setContent,
-                  users: getMentionList(comments),
-                }}
-                type={TYPE_DEMOCRACY_REFERENDUM}
+                onReply={onReply}
               />
-            )}
-          </CommentsWrapper>
-        </Wrapper>
+              {loginUser && (
+                <Editor
+                  postId={detail._id}
+                  chain={chain}
+                  ref={editorWrapperRef}
+                  setQuillRef={setQuillRef}
+                  {...{
+                    contentType,
+                    setContentType,
+                    content,
+                    setContent,
+                    users: getMentionList(comments),
+                  }}
+                  type={TYPE_DEMOCRACY_REFERENDUM}
+                />
+              )}
+            </CommentsWrapper>
+          </Wrapper>
+        </OutWrapper>
       </Layout>
     );
   }
