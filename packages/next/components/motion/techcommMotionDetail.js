@@ -200,6 +200,8 @@ export default function TechcommMotionDetail({
   const motionEndHeight = motion.onchainData?.voting?.end;
   const blockTime = useBlockTime(currentFinalHeight - motionEndHeight, chain);
 
+  const showMotionEnd = motionEndHeight && currentFinalHeight && currentFinalHeight <= motionEndHeight && blockTime;
+
   const node = getNode(chain);
   const [post, setPost] = useState(motion);
   const [isEdit, setIsEdit] = useState(false);
@@ -280,13 +282,13 @@ export default function TechcommMotionDetail({
     });
   }
 
-  const motionEnd = blockTime ? (
+  const motionEnd = showMotionEnd ? (
     <TimelineMotionEnd>
       <MotionEnd type="simple" data={motion} chain={chain} />
     </TimelineMotionEnd>
   ) : null;
 
-  const motionEndHeader = blockTime ? (
+  const motionEndHeader = showMotionEnd ? (
     <MotionEndHeader>
       <MotionEnd type="full" data={motion} chain={chain} />
     </MotionEndHeader>

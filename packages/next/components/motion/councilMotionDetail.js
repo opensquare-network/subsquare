@@ -168,6 +168,8 @@ export default withLoginUserRedux(
     const motionEndHeight = motion.onchainData?.voting?.end;
     const blockTime = useBlockTime(currentFinalHeight - motionEndHeight, chain);
 
+    const showMotionEnd = motionEndHeight && currentFinalHeight && currentFinalHeight <= motionEndHeight && blockTime;
+
     const node = getNode(chain);
     if (!node) {
       return null;
@@ -287,13 +289,13 @@ export default withLoginUserRedux(
       });
     }
 
-    const motionEnd = blockTime ? (
+    const motionEnd = showMotionEnd ? (
       <TimelineMotionEnd>
         <MotionEnd type="simple" data={motion} chain={chain} />
       </TimelineMotionEnd>
     ) : null;
 
-    const motionEndHeader = blockTime ? (
+    const motionEndHeader = showMotionEnd ? (
       <MotionEndHeader>
         <MotionEnd type="full" data={motion} chain={chain} />
       </MotionEndHeader>
