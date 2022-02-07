@@ -19,6 +19,7 @@ const Wrapper = styled.div`
   border-radius: 4px;
 
   margin-bottom: 16px;
+  color: rgba(80, 97, 118, 1);
 `;
 
 export default function ElapseHeader({ data, type = "full", chain }) {

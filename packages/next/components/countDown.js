@@ -52,16 +52,6 @@ const InnerCircleMaskRight = styled(BackCircle)`
   visibility: ${(p) => (p.overHalf ? "visible" : "hidden")};
 `;
 
-const PercentLable = styled.div`
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 50%;
-  font-size: 12px;
-  font-weight: bold;
-  color: rgba(0, 0, 0, 0.9);
-`;
-
 const CountDown = ({ percent = 0 }) => {
   let percentInt = parseInt(percent);
   if (isNaN(percentInt) || percentInt < 0) {

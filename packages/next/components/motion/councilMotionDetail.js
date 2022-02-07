@@ -323,6 +323,7 @@ export default withLoginUserRedux(
         />
 
         <Timeline
+          motionEnd={<ElapsedHeader type="simple" data={motion} chain={chain} />}
           data={timelineData}
           chain={chain}
           indent={false}
