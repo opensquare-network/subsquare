@@ -53,6 +53,8 @@ const Options = styled.div`
   background: #ffffff;
   ${shadow_200};
   border-radius: 4px;
+  max-height: 320px;
+  overflow-y: auto;
 `;
 
 const Item = styled(Flex)`

@@ -94,6 +94,108 @@ export function useApi(chain) {
   return useCall(getApi, [chain, apiUrl]);
 }
 
+export function useElectorate(height) {
+  const api = useApi("kintsugi");
+  const [electorate, setElectorate] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const isMounted = useIsMounted();
+  useEffect(() => {
+    if (api) {
+      setIsLoading(true);
+      getElectorate(api, height)
+        .then((value) => {
+          if (isMounted.current) {
+            setElectorate(value);
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  }, [api, height]);
+  return [electorate, isLoading];
+}
+
+export function useLoaded(isLoading) {
+  const [loadStatus, setLoadStatus] = useState(0);
+  useEffect(() => {
+    if (loadStatus === 0 && isLoading) {
+      setLoadStatus(1);
+    }
+    if (loadStatus === 1 && !isLoading) {
+      setLoadStatus(2);
+    }
+  }, [isLoading]);
+  return loadStatus === 2;
+}
+
+export function useAddressVotingBalance(address) {
+  const api = useApi("kintsugi");
+  const [balance, setBalance] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const isMounted = useIsMounted();
+  useEffect(() => {
+    if (api && address) {
+      setIsLoading(true);
+      getAddressVotingBalance(api, address)
+        .then((value) => {
+          if (isMounted.current) {
+            setBalance(value);
+          }
+        })
+        .finally(() => {
+          if (isMounted.current) {
+            setIsLoading(false);
+          }
+        });
+    }
+  }, [api, address]);
+  return [balance, isLoading];
+}
+
+export function useAddressVote(referendumIndex, address) {
+  const api = useApi("kintsugi");
+  const [vote, setVote] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const isMounted = useIsMounted();
+  useEffect(() => {
+    if (api && address) {
+      setIsLoading(true);
+      getAddressVote(api, referendumIndex, address)
+        .then((vote) => {
+          if (isMounted.current) {
+            setVote(vote);
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  }, [api, referendumIndex, address]);
+  return [vote, isLoading];
+}
+
+export function useBlockHeight() {
+  const api = useApi("kintsugi");
+  const [blockHeight, setBlockHeight] = useState();
+  const isMounted = useIsMounted();
+  useEffect(() => {
+    let unsub = null;
+    if (api) {
+      api.rpc.chain
+        .subscribeNewHeads((header) => {
+          if (isMounted.current) {
+            const height = header.number.toNumber();
+            setBlockHeight(height);
+          }
+        })
+        .then((res) => (unsub = res));
+
+      return () => unsub?.();
+    }
+  }, [api]);
+  return blockHeight;
+
 const DEFAULT_BLOCK_TIME = new BN(6_000);
 const THRESHOLD = BN_THOUSAND.div(BN_TWO);
 
