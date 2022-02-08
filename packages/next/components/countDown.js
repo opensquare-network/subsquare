@@ -42,7 +42,7 @@ const CountDown = ({ percent = 0, size = 12 }) => {
       .style("fill", "#d3eafd")
       .style("stroke-width", "0");
 
-  }, [percent, size]);
+  }, [percent, size, svgRef]);
 
   return (
     <Wrapper>
