@@ -38,11 +38,11 @@ All notable changes to this project will be documented in this file.
 - Show spinner before referendum voting threshold loaded.
 - Display proposeCurator arguments in bounty timeline.
 - Show democracy voting process in Kintsugi treasury proposal timeline.
-- Loading effect for tips.
+- Loading effect for tippers card.
 
 ### Fixed
 
-- Handle referendum info when delay is 0.
+- Fix referendum info update when the delay is 0.
 - Rearrange menus sorts.
 - Timeline folding fixup.
 - CSS fixup.
