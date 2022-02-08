@@ -44,7 +44,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Handle referendum info when delay is 0.
-- Arrange menu sorts.
+- Rearrange menus sorts.
 - Timeline folding fixup.
 - CSS fixup.
 - Typo fixup.
