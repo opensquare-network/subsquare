@@ -23,8 +23,8 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Handle canceled proposal status.
-- Add a script for updating motion post time.
+- Handle democracy public proposal canceled status.
+- Post time update for Council/TC motions.
 
 ### Fixed
 
@@ -35,9 +35,9 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Show spinner before referendum voting threshold loaded
+- Show spinner before referendum voting threshold loaded.
 - Display proposeCurator arguments in bounty timeline.
-- Display preImage in democracy proposals. (for Kintsugi)
+- Show democracy voting process in Kintsugi treasury proposal timeline.
 - Loading effect for tips.
 
 ### Fixed
