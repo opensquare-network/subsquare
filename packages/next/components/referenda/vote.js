@@ -23,7 +23,6 @@ import NayIcon from "public/imgs/icons/nay.svg";
 import TurnoutIcon from "public/imgs/icons/turnout.svg";
 import ElectorateIcon from "public/imgs/icons/electorate.svg";
 import Threshold from "./threshold";
-import ArrowIcon from "public/imgs/icons/arrow.svg";
 import DisplayValue from "./displayValue";
 import Loading from "./loading";
 import { useBlockHeight } from "utils/hooks";
@@ -189,24 +188,6 @@ const VoteButton = styled.button`
   border-radius: 4px;
 `;
 
-const Guide = styled.p`
-  font-size: 12px;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  color: #9da9bb;
-  a {
-    margin-left: 2px;
-    svg {
-      margin-left: 2px;
-    }
-    font-size: 12px !important;
-    display: flex;
-    align-items: center;
-    color: #6848ff !important;
-  }
-`;
-
 function Vote({
   referendumInfo,
   referendumStatus,
@@ -219,7 +200,7 @@ function Vote({
   const [showVote, setShowVote] = useState(false);
   const isMounted = useIsMounted();
   const api = useApi(chain);
-  const blockHeight = useBlockHeight();
+  const blockHeight = useBlockHeight(chain);
 
   const updateVoteProgress = useCallback(() => {
     api?.query.democracy
@@ -243,7 +224,8 @@ function Vote({
 
   const referendumEndHeight = referendumInfo?.finished?.end;
   const [electorate, isElectorateLoading] = useElectorate(
-    referendumEndHeight || blockHeight
+    referendumEndHeight || blockHeight,
+    chain
   );
   const isElectorateLoaded = useLoaded(isElectorateLoading);
 
@@ -256,14 +238,12 @@ function Vote({
   const decimals = node.decimals;
   const symbol = node.voteSymbol ?? node.symbol;
 
-  const isPassing = calcPassing(
-    referendumStatus,
-    new BigNumber(electorate).times(Math.pow(10, decimals))
-  );
+  const isPassing = calcPassing(referendumStatus, electorate);
 
   const nAyes = toPrecision(referendumStatus?.tally?.ayes ?? 0, decimals);
   const nNays = toPrecision(referendumStatus?.tally?.nays ?? 0, decimals);
   const nTurnout = toPrecision(referendumStatus?.tally?.turnout ?? 0, decimals);
+  const nElectorate = toPrecision(electorate ?? 0, decimals);
 
   let nAyesPercent = 50;
   let nNaysPercent = 50;
@@ -305,7 +285,7 @@ function Vote({
               "supermajorityapprove" && (
               <Threshold
                 threshold={getThresholdOfSuperMajorityApprove(
-                  toPrecision(referendumStatus?.tally?.turnout ?? 0, decimals),
+                  referendumStatus?.tally?.turnout ?? 0,
                   electorate
                 )}
               />
@@ -315,7 +295,7 @@ function Vote({
               "supermajorityagainst" && (
               <Threshold
                 threshold={getThresholdOfSuperMajorityAgainst(
-                  toPrecision(referendumStatus?.tally?.turnout ?? 0, decimals),
+                  referendumStatus?.tally?.turnout ?? 0,
                   electorate
                 )}
               />
@@ -381,7 +361,7 @@ function Vote({
             </Header>
             <span>
               <DisplayValue
-                value={BigNumber.max(nTurnout, electorate)}
+                value={nElectorate}
                 symbol={symbol}
                 noWrap={width <= 1024}
               />
@@ -410,17 +390,6 @@ function Vote({
           Vote
         </VoteButton>
       )}
-
-      <Guide>
-        How Kintsugi Governance Works.
-        <a
-          href="https://docs.interlay.io/#/kintsugi/governance"
-          target="_blank"
-          rel="noreferrer"
-        >
-          View detail <ArrowIcon />
-        </a>
-      </Guide>
 
       {showVote && (
         <Popup

@@ -66,31 +66,31 @@ const Item = styled.div`
 const DEFAULT_OPTIONS = [
   {
     text: "0.1x, no lockup period",
-    value: 1,
+    value: 0,
   },
   {
     text: "1x, locked for 1 enactment period(s)",
-    value: 2,
+    value: 1,
   },
   {
     text: "2x, locked for 2 enactment period(s)",
-    value: 3,
+    value: 2,
   },
   {
     text: "3x, locked for 4 enactment period(s)",
-    value: 4,
+    value: 3,
   },
   {
     text: "4x, locked for 8 enactment period(s)",
-    value: 5,
+    value: 4,
   },
   {
     text: "5x, locked for 16 enactment period(s)",
-    value: 6,
+    value: 5,
   },
   {
     text: "6x, locked for 32 enactment period(s)",
-    value: 7,
+    value: 6,
   },
 ];
 

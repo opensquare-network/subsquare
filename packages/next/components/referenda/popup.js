@@ -215,11 +215,13 @@ export default function Popup({
   const node = getNode(chain);
   const [isLoading, setIsLoading] = useState();
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
-    selectedAccount?.address
+    selectedAccount?.address,
+    chain
   );
   const [addressVote, addressVoteIsLoading] = useAddressVote(
     referendumIndex,
-    selectedAccount?.address
+    selectedAccount?.address,
+    chain
   );
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const [voteLock, setVoteLock] = useState(1);
@@ -390,7 +392,9 @@ export default function Popup({
             <Label>Address</Label>
             <BalanceWrapper>
               <div>Voting Balance</div>
-              {!votingIsLoading && <div>{votingBalance ?? 0}</div>}
+              {!votingIsLoading && (
+                <div>{toPrecision(votingBalance ?? 0, node.decimals)}</div>
+              )}
               {votingIsLoading && <Loading />}
             </BalanceWrapper>
           </LabelWrapper>
@@ -435,7 +439,7 @@ export default function Popup({
               <div className="value">
                 <DisplayValue
                   value={toPrecision(addressVote?.balance, node.decimals)}
-                  symbol={node?.voteSymbol}
+                  symbol={node?.voteSymbol || node?.symbol}
                 />
               </div>
               {addressVote?.aye ? (
