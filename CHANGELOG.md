@@ -8,26 +8,26 @@ All notable changes to this project will be documented in this file.
 
 - Show scrollbar for long address list selection.
 - Show council/TC/financial council motion time counting down.
-- Update tip state with tip extrinsic.
+- Update tip state with the tip extrinsic.
 
 ### Fixed
 
-- State tag background color fixup.
-- Timeline last activity time.
+- Correct state tag background color.
+- Fix Timeline last activity time.
 
-### Removed
+### Refactor
 
-- Un-used view layer utilities. (for Kintsugi)
+- Remove unused view layer utility functions for kintsugi.
 
 ## v1.9.1
 
 ### Added
 
 - Handle democracy public proposal canceled status.
-- Post time update for Council/TC motions.
 
 ### Fixed
 
+- Fix Council/TC motions post time updating.
 - On-chain tippers data-fetching incorrect field name fixup.
 - Kintsugi referendum metadata ongoing status display fixup.
 
@@ -43,8 +43,8 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Fix referendum info update when the delay is 0.
-- Rearrange menus sorts.
-- Timeline folding fixup.
+- Rearrange menus.
+- Timeline folding status fixup.
 - CSS fixup.
 - Typo fixup.
 
