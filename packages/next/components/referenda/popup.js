@@ -439,7 +439,7 @@ export default function Popup({
               <div className="value">
                 <DisplayValue
                   value={toPrecision(addressVote?.balance, node.decimals)}
-                  symbol={node?.voteSymbol}
+                  symbol={node?.voteSymbol || node?.symbol}
                 />
               </div>
               {addressVote?.aye ? (
