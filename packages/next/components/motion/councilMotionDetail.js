@@ -8,7 +8,7 @@ import User from "next-common/components/user";
 import MotionProposal from "./motionProposal";
 import Links from "../timeline/links";
 import Timeline from "../timeline";
-import { getNode, timeDurationFromNow, toPrecision } from "utils";
+import { getNode, isMotionEnded, timeDurationFromNow, toPrecision } from "utils";
 import SectionTag from "components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
 import Flex from "next-common/components/styled/flex";
@@ -167,6 +167,9 @@ export default withLoginUserRedux(
     const currentFinalHeight = useSelector(nodesHeightSelector);
     const motionEndHeight = motion.onchainData?.voting?.end;
     const blockTime = useBlockTime(currentFinalHeight - motionEndHeight, chain);
+    const motionEnd = isMotionEnded(motion.onchainData);
+
+    const showMotionEnd = !motionEnd && motionEndHeight && currentFinalHeight && currentFinalHeight <= motionEndHeight && blockTime;
 
     const node = getNode(chain);
     if (!node) {
@@ -287,15 +290,15 @@ export default withLoginUserRedux(
       });
     }
 
-    const motionEnd = blockTime ? (
+    const motionEndInfo = showMotionEnd ? (
       <TimelineMotionEnd>
-        <MotionEnd type="simple" data={motion} chain={chain} />
+        <MotionEnd type="simple" motion={motion.onchainData} chain={chain} />
       </TimelineMotionEnd>
     ) : null;
 
-    const motionEndHeader = blockTime ? (
+    const motionEndHeader = showMotionEnd ? (
       <MotionEndHeader>
-        <MotionEnd type="full" data={motion} chain={chain} />
+        <MotionEnd type="full" motion={motion.onchainData} chain={chain} />
       </MotionEndHeader>
     ) : null;
 
@@ -367,7 +370,7 @@ export default withLoginUserRedux(
         />
 
         <Timeline
-          motionEnd={motionEnd}
+          motionEndInfo={motionEndInfo}
           data={timelineData}
           chain={chain}
           indent={false}

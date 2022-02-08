@@ -176,3 +176,12 @@ export function abbreviateBigNumber(x, fixed = 2) {
   BigNumber.config({ FORMAT: fmt });
   return new BigNumber(n.dividedBy(divideBy).toFixed(fixed)).toFormat();
 }
+
+export function isMotionEnded(motion) {
+  return [
+    "Closed",
+    "Approved",
+    "Executed",
+    "Disapproved",
+  ].includes(motion.state.state);
+}
