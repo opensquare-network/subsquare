@@ -49,7 +49,7 @@ export default function Timeline({ data, chain, indent = true, type = "" }) {
     <Wrapper>
       <TitleWrapper>
         <div>Timeline</div>
-        <div>{`Lastest activity ${timeDurationFromNow(
+        <div>{`Latest activity ${timeDurationFromNow(
           lastTimelineItemTime
         )}`}</div>
       </TitleWrapper>
