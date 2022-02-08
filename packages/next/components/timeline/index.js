@@ -5,7 +5,6 @@ import Item from "./item";
 import FoldableItem from "./foldableItem";
 import { timeDurationFromNow } from "utils";
 import { shadow_100 } from "../../styles/componentCss";
-import { timelineData } from "../../utils/data";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -35,18 +34,31 @@ const TitleWrapper = styled.div`
   }
 `;
 
-export default function Timeline({ data, chain, indent = true, type = "", motionEndInfo = null }) {
-  if (!timelineData || timelineData?.length === 0) {
+export default function Timeline({
+  data,
+  chain,
+  indent = true,
+  type = "",
+  motionEndInfo = null,
+}) {
+  if (!data || data?.length === 0) {
     return null;
   }
+
+  let lastTimelineItem = data[data.length - 1];
+  if (Array.isArray(lastTimelineItem)) {
+    lastTimelineItem = lastTimelineItem[lastTimelineItem.length - 1];
+  }
+  const lastTimelineItemTime = lastTimelineItem?.indexer?.blockTime;
 
   return (
     <Wrapper>
       <TitleWrapper>
         <div>Timeline</div>
-        <div>{motionEndInfo || `Last active ${timeDurationFromNow(
-          data[data.length - 1]?.indexer?.blockTime
-        )}`}</div>
+        <div>
+          {motionEndInfo ||
+            `Last active ${timeDurationFromNow(lastTimelineItemTime)}`}
+        </div>
       </TitleWrapper>
       {data.map((item, index) => (
         <Fragment key={index}>
