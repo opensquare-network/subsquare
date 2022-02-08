@@ -6,19 +6,18 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Customize scrollbar style for address select.
-- Display motionEnd.
-- Display ongoing motion count down.
+- Show scrollbar for long address list selection.
+- Show council/TC/financial council motion time counting down.
 - Update tip state with tip extrinsic.
 
 ### Fixed
 
 - State tag background color fixup.
-- Fix timeline last activity time.
+- Timeline last activity time.
 
 ### Removed
 
-- Some un-used codes removed.
+- Un-used view layer utilities. (for Kintsugi)
 
 ## v1.9.1
 
@@ -38,7 +37,7 @@ All notable changes to this project will be documented in this file.
 
 - Show spinner before referendum voting threshold loaded
 - Display proposeCurator arguments in bounty timeline.
-- Display preImage in treasury proposals.
+- Display preImage in democracy proposals. (for Kintsugi)
 - Loading effect for tips.
 
 ### Fixed
