@@ -31,7 +31,7 @@
     "bignumber.js": "^9.0.1",
     "cheerio": "^1.0.0-rc.10",
     "cookies": "^0.8.0",
-    "d3": "^7.3.0",
+    "d3-selection": "^3.0.0",
     "d3-shape": "^3.1.0",
     "dayjs": "^1.10.7",
     "dotenv": "^10.0.0",

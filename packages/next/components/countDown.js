@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
-import * as d3 from "d3";
-import * as d3shape from "d3-shape";
+import { select } from "d3-selection";
+import { arc } from "d3-shape";
 
 const Wrapper = styled.div`
   display: flex;
@@ -16,13 +16,13 @@ const CountDown = ({ percent = 0, size = 12 }) => {
     const innerRadius = outerRadius / 2;
     const angle = 2 * Math.PI * percent / 100;
 
-    const svgEl = d3.select(svgRef.current);
+    const svgEl = select(svgRef.current);
     svgEl.selectAll("*").remove();
     const svg = svgEl
       .append("g")
       .attr("transform", `translate(${outerRadius},${outerRadius})`)
 
-    const arc1 = d3shape.arc()
+    const arc1 = arc()
       .innerRadius(innerRadius)
       .outerRadius(outerRadius)
       .startAngle(0)
@@ -32,7 +32,7 @@ const CountDown = ({ percent = 0, size = 12 }) => {
       .style("fill", "#2196f3")
       .style("stroke-width", "0");
 
-    const arc2 = d3shape.arc()
+    const arc2 = arc()
       .innerRadius(innerRadius)
       .outerRadius(outerRadius)
       .startAngle(angle)
