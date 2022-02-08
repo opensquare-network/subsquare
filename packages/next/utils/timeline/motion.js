@@ -8,12 +8,12 @@ export function createArgs(method, args, chain) {
       return [
         {
           name: "bountyIndex",
-          value: bountyId.value
+          value: bountyId.value,
         },
         {
           name: curator.name,
           value: <User chain={chain} add={curator.value.id} fontSize={14} />,
-        }
+        },
       ];
     }
     default:
@@ -61,7 +61,7 @@ export function createMotionTimelineData(motion = {}, chain) {
           indexer: item.indexer,
           hash: motion.hash,
           time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-          status: { value: item.method, color: "#6848FF" },
+          status: { value: item.method },
           method: item.method,
         };
       }

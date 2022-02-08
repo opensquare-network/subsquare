@@ -43,6 +43,7 @@ const getTagColor = (name) => {
     case "Tip":
     case "Vote":
     case "BountyBecameActive":
+    case "Funded":
       return ACTIVE;
     case "Passed":
     case "Claimed":
@@ -64,6 +65,7 @@ const getTagColor = (name) => {
     case "Tip Retracted":
     case "Overwritten":
     case "Canceled":
+    case "BountyRejected":
       return NEGATIVE;
   }
   return END;
@@ -105,11 +107,7 @@ export default function Tag({ name, data, type = "" }) {
     }
   }
   if (data?.link) {
-    tag = (
-      <a href={data.link}>
-        {name}
-      </a>
-    );
+    tag = <a href={data.link}>{name}</a>;
   }
 
   const color = data?.status?.color || getTagColor(name);

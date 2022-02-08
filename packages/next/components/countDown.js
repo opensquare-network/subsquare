@@ -1,77 +1,53 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
+import { select } from "d3-selection";
+import { arc } from "d3-shape";
 
-const CircleWrapper = styled.div`
-  position: relative;
-  width: 12px;
-  height: 12px;
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
-const BackCircle = styled.div`
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 4px solid rgba(33, 150, 243, .2);
-  background: white;
-`;
+const CountDown = ({ percent = 0, size = 12 }) => {
+  const svgRef = useRef(null);
 
-const InnerCircleWrapper = styled.div`
-  position: absolute;
-  width: 12px;
-  height: 12px;
-`;
+  useEffect(() => {
+    const outerRadius = size / 2;
+    const innerRadius = outerRadius / 2;
+    const angle = 2 * Math.PI * percent / 100;
 
-const InnerCircle = styled.div`
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  left: 1px;
-  top: 1px;
-  background: white;
-  border-radius: 50%;
-  border: 3px solid #2196F3;
-`;
+    const svgEl = select(svgRef.current);
+    svgEl.selectAll("*").remove();
+    const svg = svgEl
+      .append("g")
+      .attr("transform", `translate(${outerRadius},${outerRadius})`)
 
-const InnerCircleLeft = styled(InnerCircle)`
-  clip-path: polygon(0px 0px, 50% 0px, 50% 100%, 0 100%);
-  transform: rotate(${(p) => p.turn}turn);
-`;
-const InnerCircleRight = styled(InnerCircle)`
-  clip-path: polygon(50% 0px, 101% 0px, 101% 100%, 50% 100%);
-  visibility: ${(p) => (p.overHalf ? "visible" : "hidden")};
-`;
+    const arc1 = arc()
+      .innerRadius(innerRadius)
+      .outerRadius(outerRadius)
+      .startAngle(0)
+      .endAngle(angle);
+    svg.append("path")
+      .attr("d", arc1)
+      .style("fill", "#2196f3")
+      .style("stroke-width", "0");
 
-const InnerCircleMaskLeft = styled(BackCircle)`
-  clip-path: polygon(0px 0px, 50% 0px, 50% 100%, 0 100%);
-  visibility: ${(p) => (p.overHalf ? "hidden" : "visible")};
-`;
+    const arc2 = arc()
+      .innerRadius(innerRadius)
+      .outerRadius(outerRadius)
+      .startAngle(angle)
+      .endAngle(2 * Math.PI);
+    svg.append("path")
+      .attr("d", arc2)
+      .style("fill", "#d3eafd")
+      .style("stroke-width", "0");
 
-const InnerCircleMaskRight = styled(BackCircle)`
-  clip-path: polygon(52% 0px, 100% 0px, 100% 100%, 52% 100%);
-  visibility: ${(p) => (p.overHalf ? "visible" : "hidden")};
-`;
+  }, [percent, size, svgRef]);
 
-const CountDown = ({ percent = 0 }) => {
-  let percentInt = parseInt(percent);
-  if (isNaN(percentInt) || percentInt < 0) {
-    percentInt = 0;
-  }
-  let turn = percentInt / 100;
-  if (percentInt > 100) {
-    turn = 1;
-  }
-  const overHalf = percentInt > 50;
   return (
-    <CircleWrapper>
-      <BackCircle />
-      <InnerCircleWrapper>
-        <InnerCircleLeft turn={turn} overHalf={overHalf} />
-        <InnerCircleMaskLeft overHalf={overHalf} />
-        <InnerCircleMaskRight overHalf={overHalf} />
-        <InnerCircleRight overHalf={overHalf} />
-      </InnerCircleWrapper>
-    </CircleWrapper>
+    <Wrapper>
+      <svg ref={svgRef} width={size} height={size} />
+    </Wrapper>
   );
 };
 

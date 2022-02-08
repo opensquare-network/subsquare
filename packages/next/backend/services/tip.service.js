@@ -73,7 +73,7 @@ async function getActivePostsOverview() {
         $or: [
           {
             "state.state": {
-              $in: ["NewTip", "tip"]
+              $in: ["NewTip", "Tipping"]
             }
           },
           {
