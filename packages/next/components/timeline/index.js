@@ -45,9 +45,9 @@ export default function Timeline({
     return null;
   }
 
-  let lastTimelineItem = data[data.length - 1];
+  let lastTimelineItem = data?.at(-1);
   if (Array.isArray(lastTimelineItem)) {
-    lastTimelineItem = lastTimelineItem[lastTimelineItem.length - 1];
+    lastTimelineItem = lastTimelineItem?.at(-1);
   }
   const lastTimelineItemTime = lastTimelineItem?.indexer?.blockTime;
 
