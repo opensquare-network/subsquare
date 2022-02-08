@@ -28,8 +28,8 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- On-chain tippers data fetching fixup.
-- Kintsugi referendum metadata display fixup.
+- On-chain tippers data-fetching incorrect field name fixup.
+- Kintsugi referendum metadata ongoing status display fixup.
 
 ## v1.9.0
 
