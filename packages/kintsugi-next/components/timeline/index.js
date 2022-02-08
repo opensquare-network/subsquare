@@ -35,12 +35,22 @@ const TitleWrapper = styled.div`
 `;
 
 export default function Timeline({ data, chain, indent = true, type = "" }) {
+  if (!data || data?.length === 0) {
+    return null;
+  }
+
+  let lastTimelineItem = data[data.length - 1];
+  if (Array.isArray(lastTimelineItem)) {
+    lastTimelineItem = lastTimelineItem[lastTimelineItem.length - 1];
+  }
+  const lastTimelineItemTime = lastTimelineItem?.indexer?.blockTime;
+
   return (
     <Wrapper>
       <TitleWrapper>
         <div>Timeline</div>
-        <div>{`Last active ${timeDurationFromNow(
-          data[data.length - 1]?.indexer?.blockTime
+        <div>{`Lastest activity ${timeDurationFromNow(
+          lastTimelineItemTime
         )}`}</div>
       </TitleWrapper>
       {data.map((item, index) => (
