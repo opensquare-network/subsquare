@@ -57,7 +57,7 @@ export default function Timeline({
         <div>Timeline</div>
         <div>
           {motionEndInfo ||
-            `Last activity ${timeDurationFromNow(lastTimelineItemTime)}`}
+            `Latest activity ${timeDurationFromNow(lastTimelineItemTime)}`}
         </div>
       </TitleWrapper>
       {data.map((item, index) => (
