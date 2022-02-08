@@ -19,7 +19,9 @@ export default function MotionElapse({ motion, chain }) {
   const elapsePercent = (currentFinalHeight - motionStartHeight) / (motionEndHeight - motionStartHeight);
   return (
     <Tooltip content={`End in ${blockTime}, #${bigNumber2Locale(motionEndHeight.toString())}`}>
-      <CountDown percent={parseInt(elapsePercent * 100)} />
+      <div>
+        <CountDown percent={parseInt(elapsePercent * 100)} />
+      </div>
     </Tooltip>
   );
 }

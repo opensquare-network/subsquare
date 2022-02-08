@@ -4,9 +4,6 @@ import * as d3 from "d3";
 import * as d3shape from "d3-shape";
 
 const Wrapper = styled.div`
-`;
-
-const Center = styled.div`
   display: flex;
   align-items: center;
 `;
@@ -16,7 +13,7 @@ const CountDown = ({ percent = 0, size = 12 }) => {
 
   useEffect(() => {
     const outerRadius = size / 2;
-    const innerRadius = (size - 6) / 2;
+    const innerRadius = outerRadius / 2;
     const angle = 2 * Math.PI * percent / 100;
 
     const svgEl = d3.select(svgRef.current);
@@ -49,9 +46,7 @@ const CountDown = ({ percent = 0, size = 12 }) => {
 
   return (
     <Wrapper>
-      <Center>
-        <svg ref={svgRef} width={size} height={size} />
-      </Center>
+      <svg ref={svgRef} width={size} height={size} />
     </Wrapper>
   );
 };
