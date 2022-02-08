@@ -195,6 +195,7 @@ export function useBlockHeight() {
     }
   }, [api]);
   return blockHeight;
+}
 
 const DEFAULT_BLOCK_TIME = new BN(6_000);
 const THRESHOLD = BN_THOUSAND.div(BN_TWO);
