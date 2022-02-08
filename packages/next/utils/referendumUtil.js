@@ -1,7 +1,4 @@
 import BigNumber from "bignumber.js";
-import { getTotalSupply } from "./escrow/totalSupply";
-import { getVotingBalance } from "./escrow/votingBalance";
-const { getFinalizedBlockNumber } = require("./escrow/utils");
 
 const ONE = new BigNumber(1);
 
@@ -10,7 +7,7 @@ export function getThresholdOfSimplyMajority() {
 }
 
 export function getThresholdOfSuperMajorityAgainst(turnout, totalIssuance) {
-  const sqrtElectorate = BigNumber.max(totalIssuance, turnout).sqrt();
+  const sqrtElectorate = new BigNumber(totalIssuance).sqrt();
   const sqrtOfTurnout = new BigNumber(turnout).sqrt();
 
   if (sqrtOfTurnout.isZero() || sqrtElectorate.isZero()) {
@@ -24,7 +21,7 @@ export function getThresholdOfSuperMajorityAgainst(turnout, totalIssuance) {
 }
 
 export function getThresholdOfSuperMajorityApprove(turnout, totalIssuance) {
-  const sqrtElectorate = BigNumber.max(totalIssuance, turnout).sqrt();
+  const sqrtElectorate = new BigNumber(totalIssuance).sqrt();
   const sqrtOfTurnout = new BigNumber(turnout).sqrt();
 
   if (sqrtOfTurnout.isZero() || sqrtElectorate.isZero()) {
@@ -79,7 +76,7 @@ export function calcPassing(referendumInfo, totalIssuance) {
 
   const turnout = new BigNumber(referendumInfo.tally.turnout);
   const sqrtTurnout = turnout.sqrt();
-  const sqrtElectorate = BigNumber.max(totalIssuance, turnout).sqrt();
+  const sqrtElectorate = new BigNumber(totalIssuance).sqrt();
 
   if (sqrtTurnout.isZero() || sqrtElectorate.isZero()) {
     return false;
@@ -94,6 +91,11 @@ export function calcPassing(referendumInfo, totalIssuance) {
   return false;
 }
 
+async function getFinalizedBlockNumber(api) {
+  const head = await api.rpc.chain.getFinalizedHead();
+  return (await api.query.system.number.at(head)).toNumber();
+}
+
 const electorates = {};
 
 export async function getElectorate(api, height) {
@@ -106,13 +108,15 @@ export async function getElectorate(api, height) {
     return electorates[blockHeight];
   }
 
-  const value = await getTotalSupply(api, blockHeight);
+  const value = await api.query.balances.totalIssuance();
   electorates[blockHeight] = value;
   return value;
 }
 
-export function getAddressVotingBalance(api, address) {
-  return getVotingBalance(api, address);
+export async function getAddressVotingBalance(api, address) {
+  const account = await api.query.system.account(address);
+  const jsonAccount = account?.toJSON();
+  return jsonAccount?.data?.free;
 }
 
 export async function getAddressVote(api, referendumIndex, address) {
