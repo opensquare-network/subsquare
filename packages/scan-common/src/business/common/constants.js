@@ -83,6 +83,11 @@ const CollectiveEvents = Object.freeze({
   ...CouncilEvents,
 });
 
+const CollectiveStates = Object.freeze({
+  ...CollectiveEvents,
+  Voting: "Voting",
+});
+
 const TechnicalCommitteeEvents = Object.freeze({
   ...CouncilEvents,
 });
@@ -204,4 +209,5 @@ module.exports = {
   TechnicalCommitteeMethods,
   CollectiveMethods,
   CollectiveEvents,
+  CollectiveStates,
 };
