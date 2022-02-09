@@ -1,8 +1,13 @@
 const { ObjectId } = require("mongodb");
 const { HttpError } = require("@subsquare/backend-common/exc");
 const { ContentType, Day } = require("@subsquare/backend-common/constants");
-const { PostTitleLengthLimitation } = require("@subsquare/backend-common/constants");
-const { safeHtml, extractMentions } = require("@subsquare/backend-common/utils/post");
+const {
+  PostTitleLengthLimitation,
+} = require("@subsquare/backend-common/constants");
+const {
+  safeHtml,
+  extractMentions,
+} = require("@subsquare/backend-common/utils/post");
 const { toUserPublicInfo } = require("@subsquare/backend-common/utils/user");
 const {
   getMotionCollection: getChainMotionCollection,
@@ -43,7 +48,9 @@ async function findMotion(postId) {
   }
 
   const chainMotionCol = await getChainMotionCollection();
-  return await chainMotionCol.findOne(q, { sort: [["indexer.blockHeight", -1]] });
+  return await chainMotionCol.findOne(q, {
+    sort: [["indexer.blockHeight", -1]],
+  });
 }
 
 async function findMotionPost(chainMotion) {
@@ -276,19 +283,19 @@ async function getActiveMotionsOverview() {
         $or: [
           {
             "state.state": {
-              $nin: ["Approved", "Disapproved", "Executed"]
-            }
+              $nin: ["Approved", "Disapproved", "Executed"],
+            },
           },
           {
             "state.indexer.blockTime": {
-              $gt: Date.now() - 3 * Day
+              $gt: Date.now() - 3 * Day,
             },
-          }
-        ]
+          },
+        ],
       },
       {
         projection: {
-          timeline: 0
+          timeline: 0,
         },
       }
     )
@@ -374,38 +381,40 @@ async function getMotionById(postId) {
     postType = "motion";
   }
 
-  const [, author, chainProposals, chainBounties, chainExternals] = await Promise.all([
-    lookupUser({ for: reactions, localField: "user" }),
-    post.proposer
-      ? getUserByAddress(post.proposer)
-      : null,
-    chainProposalCol
-      .find({
-        proposalIndex: {
-          $in: chainMotion.treasuryProposals.map((p) => p.index),
-        },
-      })
-      .sort({ "indexer.blockHeight": 1 })
-      .toArray(),
-    chainBountyCol
-      .find({
-        bountyIndex: {
-          $in: chainMotion.treasuryBounties.map((p) => p.index),
-        },
-      })
-      .sort({ "indexer.blockHeight": 1 })
-      .toArray(),
-    chainMotion.externalProposals?.length > 0
-      ? chainExternalCol
-          .find({
-            proposalHash: {
-              $in: chainMotion.externalProposals.map((p) => p.hash),
-            },
-          })
-          .sort({ "indexer.blockHeight": 1 })
-          .toArray()
-      : [],
-  ]);
+  const [, author, chainProposals, chainBounties, chainExternals] =
+    await Promise.all([
+      lookupUser({ for: reactions, localField: "user" }),
+      post.proposer ? getUserByAddress(post.proposer) : null,
+      chainProposalCol
+        .find({
+          proposalIndex: {
+            $in: chainMotion.treasuryProposals.map((p) => p.index),
+          },
+        })
+        .sort({ "indexer.blockHeight": 1 })
+        .toArray(),
+      chainBountyCol
+        .find({
+          bountyIndex: {
+            $in: chainMotion.treasuryBounties.map((p) => p.index),
+          },
+        })
+        .sort({ "indexer.blockHeight": 1 })
+        .toArray(),
+      chainMotion.externalProposals?.length > 0
+        ? chainExternalCol
+            .find({
+              motions: {
+                $elemMatch: {
+                  hash: chainMotion.hash,
+                  "indexer.blockHeight": chainMotion.indexer.blockHeight,
+                },
+              },
+            })
+            .sort({ "indexer.blockHeight": 1 })
+            .toArray()
+        : [],
+    ]);
 
   return {
     ...post,

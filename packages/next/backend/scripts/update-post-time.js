@@ -41,7 +41,7 @@ async function updateTip() {
             ? []
             : [item.lastActivityAt.getTime()]),
           item.onchainData?.state?.indexer?.blockTime || 0,
-          last(item.onchainData?.timeline)?.indexer?.blockTime || 0,
+          last(item.onchainData?.timeline)?.indexer?.blockTime || 0
         )
       );
       bulk
@@ -259,7 +259,9 @@ async function updateBounty() {
             ? []
             : [item.lastActivityAt.getTime()]),
           item.onchainData?.state?.indexer?.blockTime || 0,
-          ...(item.onchainData?.motions || []).map((m) => m.state?.indexer?.blockTime || 0)
+          ...(item.onchainData?.motions || []).map(
+            (m) => m.state?.indexer?.blockTime || 0
+          )
         )
       );
       bulk.find({ bountyIndex: item.bountyIndex }).updateOne({
@@ -294,16 +296,19 @@ async function updateCouncilMotion() {
             ? []
             : [item.lastActivityAt.getTime()]),
           item.onchainData?.state?.indexer?.blockTime || 0,
+          last(item.onchainData?.timeline)?.indexer?.blockTime || 0
         )
       );
-      bulk.find({
-        hash: item.hash,
-        height: item.height,
-      }).updateOne({
-        $set: {
-          lastActivityAt,
-        },
-      });
+      bulk
+        .find({
+          hash: item.hash,
+          height: item.height,
+        })
+        .updateOne({
+          $set: {
+            lastActivityAt,
+          },
+        });
     }
     await bulk.execute();
   }
@@ -331,16 +336,19 @@ async function updateTechCommMotion() {
             ? []
             : [item.lastActivityAt.getTime()]),
           item.onchainData?.state?.indexer?.blockTime || 0,
+          last(item.onchainData?.timeline)?.indexer?.blockTime || 0
         )
       );
-      bulk.find({
-        hash: item.hash,
-        height: item.height,
-      }).updateOne({
-        $set: {
-          lastActivityAt,
-        },
-      });
+      bulk
+        .find({
+          hash: item.hash,
+          height: item.height,
+        })
+        .updateOne({
+          $set: {
+            lastActivityAt,
+          },
+        });
     }
     await bulk.execute();
   }
@@ -368,16 +376,19 @@ async function updateFinancialMotion() {
             ? []
             : [item.lastActivityAt.getTime()]),
           item.onchainData?.state?.indexer?.blockTime || 0,
+          last(item.onchainData?.timeline)?.indexer?.blockTime || 0
         )
       );
-      bulk.find({
-        hash: item.hash,
-        height: item.height,
-      }).updateOne({
-        $set: {
-          lastActivityAt,
-        },
-      });
+      bulk
+        .find({
+          hash: item.hash,
+          height: item.height,
+        })
+        .updateOne({
+          $set: {
+            lastActivityAt,
+          },
+        });
     }
     await bulk.execute();
   }

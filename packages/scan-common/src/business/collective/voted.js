@@ -1,4 +1,8 @@
-const { CollectiveEvents, TimelineItemTypes } = require("../common/constants");
+const {
+  CollectiveEvents,
+  TimelineItemTypes,
+  CollectiveStates,
+} = require("../common/constants");
 const { getCollectiveVoting } = require("../common/collective/voting");
 
 async function getCollectiveVotedCommonFields(event, indexer, moduleName) {
@@ -6,7 +10,17 @@ async function getCollectiveVotedCommonFields(event, indexer, moduleName) {
   const [voter, hash, approve, yesVotes, noVotes] = eventData;
 
   const voting = await getCollectiveVoting(hash, indexer, moduleName);
-  const updates = { voting };
+
+  const state = {
+    indexer,
+    state: CollectiveStates.Voting,
+    args: {
+      yesVotes,
+      noVotes,
+    },
+  };
+
+  const updates = { voting, state };
   const timelineItem = {
     type: TimelineItemTypes.event,
     method: CollectiveEvents.Voted,

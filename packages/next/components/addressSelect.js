@@ -55,6 +55,15 @@ const Options = styled.div`
   border-radius: 4px;
   max-height: 320px;
   overflow-y: auto;
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #c2c8d5;
+    border-right: 4px solid white;
+  }
 `;
 
 const Item = styled(Flex)`
