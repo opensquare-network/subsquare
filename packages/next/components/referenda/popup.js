@@ -224,7 +224,7 @@ export default function Popup({
     chain
   );
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
-  const [voteLock, setVoteLock] = useState(1);
+  const [voteLock, setVoteLock] = useState(0);
 
   useEffect(() => {
     if (extensionDetecting || !hasExtension || !isExtensionAccessible) {
@@ -301,6 +301,13 @@ export default function Popup({
       errorMessage = { type: "error", message: "Invalid vote balance" };
     }
 
+    if (bnVoteBalance.gt(votingBalance)) {
+      errorMessage = {
+        type: "error",
+        message: "Insufficient voting balance",
+      };
+    }
+
     if (!selectedAccount) {
       errorMessage = { type: "error", message: "Please select an account" };
     }
@@ -323,7 +330,15 @@ export default function Popup({
       const voteAddress = selectedAccount.address;
 
       const unsub = await api.tx.democracy
-        .vote(referendumIndex, { aye, balance: bnVoteBalance.toFixed() })
+        .vote(referendumIndex, {
+          Standard: {
+            balance: bnVoteBalance.toFixed(),
+            vote: {
+              aye,
+              conviction: voteLock,
+            },
+          },
+        })
         .signAndSend(voteAddress, ({ events = [], status }) => {
           if (status.isFinalized) {
             onFinalized(voteAddress);

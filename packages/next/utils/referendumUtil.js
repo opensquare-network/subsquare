@@ -78,7 +78,7 @@ export function calcPassing(referendumInfo, totalIssuance) {
   const sqrtTurnout = turnout.sqrt();
   const sqrtElectorate = new BigNumber(totalIssuance).sqrt();
 
-  if (sqrtTurnout.isZero() || sqrtElectorate.isZero()) {
+  if (sqrtTurnout.isZero()) {
     return false;
   }
 
