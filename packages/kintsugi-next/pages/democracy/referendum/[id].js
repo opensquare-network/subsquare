@@ -69,9 +69,9 @@ export default withLoginUserRedux(
     const [referendumStatus, setReferendumStatus] = useState(
       detail?.onchainData?.status
     );
+    const isMounted = useIsMounted();
     const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] =
       useState(false);
-    const isMounted = useIsMounted();
 
     useEffect(() => {
       // Already has the last ongoging status
