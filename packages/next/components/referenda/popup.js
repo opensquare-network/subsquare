@@ -38,6 +38,7 @@ import RejectIcon from "next-common/assets/imgs/icons/reject.svg";
 import Tooltip from "components/tooltip";
 import Loading from "./loading";
 import DisplayValue from "./displayValue";
+import { isAye, getConviction } from "utils/referendumUtil";
 
 const Background = styled.div`
   position: fixed;
@@ -241,6 +242,14 @@ export default function Popup({
     selectedAccount?.address,
     chain
   );
+  const addressVoteStandardBalance = addressVote?.standard?.balance;
+  const addressVoteStandardAye = isAye(addressVote?.standard?.vote);
+  const addressVoteStandardConviction = getConviction(
+    addressVote?.standard?.vote
+  );
+  const addressVoteSplitAye = addressVote?.split?.aye;
+  const addressVoteSplitNay = addressVote?.split?.nay;
+
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const [voteLock, setVoteLock] = useState(0);
 
@@ -468,7 +477,7 @@ export default function Popup({
             <TooltipWrapper>
               <Label>Voting status</Label>
               <VotingStatusWrapper>
-                {addressVote?.isStandard ? (
+                {addressVote?.standard ? (
                   <div>Standard</div>
                 ) : (
                   <>
@@ -478,35 +487,58 @@ export default function Popup({
                 )}
               </VotingStatusWrapper>
             </TooltipWrapper>
-            {addressVote?.aye && (
+            {addressVote?.standard && (
               <StatusWrapper>
                 <div className="value">
                   <DisplayValue
-                    value={toPrecision(addressVote?.balance, node.decimals)}
+                    value={toPrecision(
+                      addressVoteStandardBalance,
+                      node.decimals
+                    )}
                     symbol={node?.voteSymbol || node?.symbol}
                   />
-                  <span>(3x)</span>
+                  <span>{`(${addressVoteStandardConviction}x)`}</span>
                 </div>
-                <div className="result">
-                  Aye
-                  <ApproveIcon />
-                </div>
+                {addressVoteStandardAye ? (
+                  <div className="result">
+                    Aye
+                    <ApproveIcon />
+                  </div>
+                ) : (
+                  <div className="result">
+                    Nay
+                    <RejectIcon />
+                  </div>
+                )}
               </StatusWrapper>
             )}
-            {addressVote?.nay && (
-              <StatusWrapper>
-                <div className="value">
-                  <DisplayValue
-                    value={toPrecision(addressVote?.balance, node.decimals)}
-                    symbol={node?.voteSymbol || node?.symbol}
-                  />
-                  <span>(3x)</span>
-                </div>
-                <div className="result">
-                  Nay
-                  <RejectIcon />
-                </div>
-              </StatusWrapper>
+            {addressVote?.split && (
+              <>
+                <StatusWrapper>
+                  <div className="value">
+                    <DisplayValue
+                      value={toPrecision(addressVoteSplitAye, node.decimals)}
+                      symbol={node?.voteSymbol || node?.symbol}
+                    />
+                  </div>
+                  <div className="result">
+                    Aye
+                    <ApproveIcon />
+                  </div>
+                </StatusWrapper>
+                <StatusWrapper>
+                  <div className="value">
+                    <DisplayValue
+                      value={toPrecision(addressVoteSplitNay, node.decimals)}
+                      symbol={node?.voteSymbol || node?.symbol}
+                    />
+                  </div>
+                  <div className="result">
+                    Nay
+                    <RejectIcon />
+                  </div>
+                </StatusWrapper>
+              </>
             )}
             <WarningWrapper>
               Resubmitting the vote will override the current voting record
