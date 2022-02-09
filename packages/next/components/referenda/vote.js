@@ -390,7 +390,6 @@ function Vote({
           Vote
         </VoteButton>
       )}
-
       {showVote && (
         <Popup
           chain={chain}

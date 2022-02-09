@@ -153,6 +153,7 @@ const StatusWrapper = styled.div`
     font-weight: 500;
     > span {
       color: #9da9bb;
+      margin-left: 2px;
     }
   }
   > div.result {
@@ -189,7 +190,24 @@ const WarningWrapper = styled.div`
   font-size: 14px;
   line-height: 140%;
   color: #506176;
-  margin-top: 8px;
+`;
+
+const VotingStatusWrapper = styled.div`
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 100%;
+  color: #9da9bb;
+  margin-left: auto !important;
+  display: flex;
+  > :not(:first-child) {
+    margin-left: 4px;
+  }
+`;
+
+const VotingStatusContent = styled.div`
+  > :nth-child(n + 3) {
+    margin-top: 8px;
+  }
 `;
 
 export default function Popup({
@@ -431,33 +449,54 @@ export default function Popup({
           <Select value={voteLock} setValue={setVoteLock} disabled={false} />
         </div>
         {!addressVoteIsLoading && addressVote && (
-          <div>
+          <VotingStatusContent>
             <TooltipWrapper>
               <Label>Voting status</Label>
+              <VotingStatusWrapper>
+                {addressVote?.isStandard ? (
+                  <div>Standard</div>
+                ) : (
+                  <>
+                    <div>Split</div>
+                    <Tooltip content="Vote for both aye and nay" />
+                  </>
+                )}
+              </VotingStatusWrapper>
             </TooltipWrapper>
-            <StatusWrapper>
-              <div className="value">
-                <DisplayValue
-                  value={toPrecision(addressVote?.balance, node.decimals)}
-                  symbol={node?.voteSymbol || node?.symbol}
-                />
-              </div>
-              {addressVote?.aye ? (
+            {addressVote?.aye && (
+              <StatusWrapper>
+                <div className="value">
+                  <DisplayValue
+                    value={toPrecision(addressVote?.balance, node.decimals)}
+                    symbol={node?.voteSymbol || node?.symbol}
+                  />
+                  <span>(3x)</span>
+                </div>
                 <div className="result">
                   Aye
                   <ApproveIcon />
                 </div>
-              ) : (
+              </StatusWrapper>
+            )}
+            {addressVote?.nay && (
+              <StatusWrapper>
+                <div className="value">
+                  <DisplayValue
+                    value={toPrecision(addressVote?.balance, node.decimals)}
+                    symbol={node?.voteSymbol || node?.symbol}
+                  />
+                  <span>(3x)</span>
+                </div>
                 <div className="result">
                   Nay
                   <RejectIcon />
                 </div>
-              )}
-            </StatusWrapper>
+              </StatusWrapper>
+            )}
             <WarningWrapper>
               Resubmitting the vote will override the current voting record
             </WarningWrapper>
-          </div>
+          </VotingStatusContent>
         )}
         <ButtonWrapper>
           <Button
