@@ -125,7 +125,15 @@ export async function getAddressVote(api, referendumIndex, address) {
   if (!jsonVoting) {
     return null;
   }
-  return (jsonVoting.votes || []).find(
+  const vote = (jsonVoting.direct?.votes || []).find(
     (vote) => vote[0] === referendumIndex
   )?.[1];
+
+  return vote;
 }
+
+const AYE_BITS = 0b10000000;
+const CON_MASK = 0b01111111;
+
+export const isAye = (vote) => (vote & AYE_BITS) === AYE_BITS;
+export const getConviction = (vote) => vote & CON_MASK;
