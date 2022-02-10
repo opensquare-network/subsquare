@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { u8aConcat } from "@polkadot/util";
 import { useDispatch, useSelector } from "react-redux";
 import CountDown from "./countDown";
-import { useBestNumber, useBlockTime } from "next-common/utils/hooks";
+import { useBestNumber, useBlockTime } from "../../utils/hooks";
 import { abbreviateBigNumber, getNode } from "../../utils";
 import { setSummary, summarySelector } from "../../store/reducers/summarySlice";
 import { estimateBlocksTime, toPrecision } from "../../utils";
