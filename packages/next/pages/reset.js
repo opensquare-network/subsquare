@@ -5,7 +5,8 @@ import { useRouter } from "next/router";
 import Layout from "components/layout";
 import Button from "next-common/components/button";
 import Input from "next-common/components/input";
-import { useForm, useIsMounted } from "utils/hooks";
+import { useForm } from "utils/hooks";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import nextApi from "services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { withLoginUser, withLoginUserRedux } from "../lib";
@@ -29,9 +30,11 @@ const ContentWrapper = styled.div`
   width: 400px;
   margin: 0 auto;
   padding: 48px;
+
   > :not(:first-child) {
     margin-top: 24px;
   }
+
   @media screen and (max-width: 392px) {
     width: 100%;
   }
@@ -51,6 +54,7 @@ const Label = styled.div`
   font-size: 12px;
   margin-bottom: 8px;
   line-height: 12px;
+
   :not(:first-child) {
     margin-top: 16px;
   }
@@ -67,6 +71,7 @@ const InfoWrapper = styled.div`
 const Redirect = styled.div`
   text-align: center;
   color: #506176;
+
   .sec {
     font-weight: bold;
     color: #6848ff;

@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-key */
 import styled from "styled-components";
-import { useApi, useCall } from "utils/hooks";
+import { useApi } from "utils/hooks";
+import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState, useRef } from "react";
 import findLastIndex from "lodash.findlastindex";
 

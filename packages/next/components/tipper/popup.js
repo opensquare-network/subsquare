@@ -15,7 +15,8 @@ import {
   encodeKabochaAddress,
 } from "services/chainApi";
 
-import { useOnClickOutside, useIsMounted, useApi } from "utils/hooks";
+import { useOnClickOutside, useApi } from "utils/hooks";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import AddressSelect from "components/addressSelect";
 import Button from "next-common/components/button";
 import { addToast } from "store/reducers/toastSlice";

@@ -9,9 +9,9 @@ import {
 
 const apiInstanceMap = new Map();
 
-export const getApi = async (chain, queryUrl) => {
-  if (!apiInstanceMap.has(queryUrl)) {
-    const provider = new WsProvider(queryUrl, 1000);
+export default async function getApi(chain, endpoint) {
+  if (!apiInstanceMap.has(endpoint)) {
+    const provider = new WsProvider(endpoint, 1000);
     const options = { provider };
     if (chain === "karura" || chain === "acala") {
       options.typesBundle = { ...typesBundleForPolkadot };
@@ -31,7 +31,7 @@ export const getApi = async (chain, queryUrl) => {
       };
     }
 
-    apiInstanceMap.set(queryUrl, ApiPromise.create(options));
+    apiInstanceMap.set(endpoint, ApiPromise.create(options));
   }
-  return apiInstanceMap.get(queryUrl);
-};
+  return apiInstanceMap.get(endpoint);
+}
