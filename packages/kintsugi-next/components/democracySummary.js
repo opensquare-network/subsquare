@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import CountDown from "next-common/components/summary/countDown";
-import { useApi, useBlockTime, useBestNumber } from "utils/hooks";
+import { useApi } from "utils/hooks";
+import { useBlockTime, useBestNumber } from "next-common/utils/hooks";
 import {
   setSummary,
   summarySelector,

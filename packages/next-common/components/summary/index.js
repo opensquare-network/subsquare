@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import {
   BN,
@@ -10,12 +9,13 @@ import {
   u8aConcat,
 } from "@polkadot/util";
 import { useDispatch, useSelector } from "react-redux";
-
 import CountDown from "./countDown";
 import { toPrecision } from "utils/index";
 import { useApi } from "utils/hooks";
-import { getNode, abbreviateBigNumber } from "utils";
-import { summarySelector, setSummary } from "../../store/reducers/summarySlice";
+import { useBestNumber, useBlockTime } from "next-common/utils/hooks";
+import { abbreviateBigNumber, getNode } from "utils";
+import { setSummary, summarySelector } from "../../store/reducers/summarySlice";
+import { estimateBlocksTime } from "@subsquare/kintsugi-next/utils";
 
 const Wrapper = styled.div`
   display: flex;
@@ -83,6 +83,9 @@ export default function Summary({ chain }) {
   const dispatch = useDispatch();
   const api = useApi(chain);
   const node = getNode(chain);
+  const blockTime = useBlockTime(api);
+  const bestNumber = useBestNumber(api);
+
   const decimals = node?.decimals;
   const symbol = node?.symbol;
 
@@ -107,55 +110,21 @@ export default function Summary({ chain }) {
   }, [api, chain, decimals, dispatch]);
 
   useEffect(() => {
-    const estimateBlocksTime = async (blocks) => {
-      if (api) {
-        const blockTime =
-          // Babe
-          api.consts.babe?.expectedBlockTime ||
-          // POW, eg. Kulupu
-          api.consts.difficulty?.targetBlockTime ||
-          // Subspace
-          api.consts.subspace?.expectedBlockTime ||
-          // Check against threshold to determine value validity
-          (api.consts.timestamp?.minimumPeriod.gte(THRESHOLD)
-            ? // Default minimum period config
-              api.consts.timestamp.minimumPeriod.mul(BN_TWO)
-            : api.query.parachainSystem
-            ? // default guess for a parachain
-              DEFAULT_TIME.mul(BN_TWO)
-            : // default guess for others
-              DEFAULT_TIME);
-        const value = blockTime.mul(bnToBn(blocks)).toNumber();
-        const time = extractTime(Math.abs(value));
-        const { days, hours, minutes, seconds } = time;
-        const timeArray = [
-          days ? (days > 1 ? `${days} days` : "1 day") : null,
-          hours ? (hours > 1 ? `${hours} hrs` : "1 hr") : null,
-          minutes ? (minutes > 1 ? `${minutes} mins` : "1 min") : null,
-          seconds ? (seconds > 1 ? `${seconds} s` : "1 s") : null,
-        ]
-          .filter((s) => !!s)
-          .slice(0, 2)
-          .join(" ")
-          .split(" ");
-        return timeArray;
-      }
-    };
-
     const getSpendPeriod = async function () {
-      if (api) {
-        const bestNumber = await api.derive.chain.bestNumber();
+      if (api && bestNumber) {
         const spendPeriod = api.consts.treasury.spendPeriod;
         const goneBlocks = bestNumber.mod(spendPeriod);
         const progress = goneBlocks.muln(100).div(spendPeriod).toNumber();
-        const TimeArray = await estimateBlocksTime(
-          spendPeriod.sub(goneBlocks).toNumber()
+        const TimeArray = estimateBlocksTime(
+          api,
+          spendPeriod.sub(goneBlocks).toNumber(),
+          blockTime
         );
         dispatch(setSummary({ progress, spendPeriod: TimeArray }));
       }
     };
     getSpendPeriod();
-  }, [api, chain, dispatch]);
+  }, [api, chain, dispatch, bestNumber]);
 
   return (
     <Wrapper>
