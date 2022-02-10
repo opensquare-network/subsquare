@@ -94,8 +94,7 @@ export function useCall(fn, params = []) {
 
 export function useApi(chain) {
   const nodeUrl = useSelector(currentNodeSelector);
-  const apiUrl = nodeUrl[chain];
-  return useCall(getApi, [chain, apiUrl]);
+  return useCall(getApi, [chain, nodeUrl]);
 }
 
 export function useElectorate(height) {
