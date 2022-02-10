@@ -1,13 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import {
-  BN,
-  BN_THOUSAND,
-  BN_TWO,
-  bnToBn,
-  extractTime,
-  u8aConcat,
-} from "@polkadot/util";
+import { BN, BN_THOUSAND, BN_TWO, u8aConcat } from "@polkadot/util";
 import { useDispatch, useSelector } from "react-redux";
 import CountDown from "./countDown";
 import { toPrecision } from "utils/index";

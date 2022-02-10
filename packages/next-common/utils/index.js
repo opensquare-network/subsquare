@@ -1,6 +1,7 @@
 import moment from "moment";
 import BigNumber from "bignumber.js";
 import { nodes } from "./constants";
+import { bnToBn, extractTime } from "@polkadot/util";
 
 BigNumber.config({ EXPONENTIAL_AT: 36 });
 
@@ -183,3 +184,21 @@ export function abbreviateBigNumber(x, fixed = 2) {
   BigNumber.config({ FORMAT: fmt });
   return new BigNumber(n.dividedBy(divideBy).toFixed(fixed)).toFormat();
 }
+
+export const estimateBlocksTime = (api, blocks, blockTime) => {
+  if (api && blockTime) {
+    const value = blockTime.mul(bnToBn(blocks)).toNumber();
+    const time = extractTime(Math.abs(value));
+    const { days, hours, minutes, seconds } = time;
+    return [
+      days ? (days > 1 ? `${days} days` : "1 day") : null,
+      hours ? (hours > 1 ? `${hours} hrs` : "1 hr") : null,
+      minutes ? (minutes > 1 ? `${minutes} mins` : "1 min") : null,
+      seconds ? (seconds > 1 ? `${seconds} s` : "1 s") : null,
+    ]
+      .filter((s) => !!s)
+      .slice(0, 2)
+      .join(" ")
+      .split(" ");
+  }
+};

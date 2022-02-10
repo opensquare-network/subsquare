@@ -8,7 +8,7 @@ import Layout from "components/layout";
 import { toReferendaListItem } from "utils/viewfuncs";
 import SEO from "components/SEO";
 import { isSafari } from "../../utils/serverSideUtil";
-import DemocracySummary from "components/democracySummary";
+import DemocracySummary from "next-common/components/summary/democracySummary";
 
 export default withLoginUserRedux(({ loginUser, posts, chain, siteUrl }) => {
   const items = (posts.items || []).map((item) =>
