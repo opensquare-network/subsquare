@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { currentNodeSelector } from "store/reducers/nodeSlice";
-import { getApi } from "services/polkadotApi";
 import { BN, BN_TWO, BN_THOUSAND, bnToBn, extractTime } from "@polkadot/util";
+import useChainApi from "next-common/utils/hooks/useApi";
 
 export function useOnClickOutside(ref, handler) {
   useEffect(() => {
@@ -34,6 +34,7 @@ export function useWindowSize() {
         height: window.innerHeight,
       });
     }
+
     window.addEventListener("resize", handleResize);
     handleResize();
     return () => window.removeEventListener("resize", handleResize);
@@ -73,25 +74,9 @@ export function useIsMounted() {
   return isMounted;
 }
 
-export function useCall(fn, params = []) {
-  const [result, setResult] = useState();
-  const isMounted = useIsMounted();
-  useEffect(() => {
-    if (fn) {
-      fn(...params).then((value) => {
-        if (isMounted.current) {
-          setResult(value);
-        }
-      });
-    }
-  }, [fn, ...params]);
-  return result;
-}
-
 export function useApi(chain) {
   const nodeUrl = useSelector(currentNodeSelector);
-  const apiUrl = nodeUrl[chain];
-  return useCall(getApi, [chain, apiUrl]);
+  return useChainApi(chain, nodeUrl[chain]);
 }
 
 const DEFAULT_BLOCK_TIME = new BN(6_000);
