@@ -6,14 +6,17 @@ import CountDown from "./countDown";
 import { useBestNumber, useBlockTime } from "next-common/utils/hooks";
 import { abbreviateBigNumber, getNode } from "../../utils";
 import { setSummary, summarySelector } from "../../store/reducers/summarySlice";
-import { useApi } from "@subsquare/next/utils/hooks";
 import { estimateBlocksTime, toPrecision } from "../../utils";
+import { currentNodeSelector } from "@subsquare/next/store/reducers/nodeSlice";
+import useApi from "../../utils/hooks/useApi";
 
 const Wrapper = styled.div`
   display: flex;
+
   > :not(:first-child) {
     margin-left: 16px;
   }
+
   @media screen and (max-width: 768px) {
     flex-direction: column;
     > :not(:first-child) {
@@ -50,12 +53,15 @@ const Content = styled.div`
   font-size: 16px;
   line-height: 100%;
   color: #1e2134;
+
   > .unit {
     color: #9da9bb;
   }
+
   > .upper {
     text-transform: uppercase;
   }
+
   > :not(:first-child) {
     margin-left: 4px;
   }
@@ -71,7 +77,9 @@ const EMPTY_U8A_32 = new Uint8Array(32);
 
 export default function Summary({ chain }) {
   const dispatch = useDispatch();
-  const api = useApi(chain);
+  const nodeUrl = useSelector(currentNodeSelector);
+  const endpoint = nodeUrl[chain];
+  const api = useApi(chain, endpoint);
   const node = getNode(chain);
   const blockTime = useBlockTime(api);
   const bestNumber = useBestNumber(api);
