@@ -124,8 +124,8 @@ export default function DemocracySummary({ chain }) {
         <Title>Proposals</Title>
         <Content>
           <span>
-            {summary.activeProposalsCount}
-            <GreyText> / {summary.publicPropCount}</GreyText>
+            {summary.activeProposalsCount || 0}
+            <GreyText> / {summary.publicPropCount || 0}</GreyText>
           </span>
         </Content>
       </Card>
@@ -133,8 +133,8 @@ export default function DemocracySummary({ chain }) {
         <Title>Referenda</Title>
         <Content>
           <span>
-            {summary.referendumCount}
-            <GreyText> / {summary.referendumTotal}</GreyText>
+            {summary.referendumCount || 0}
+            <GreyText> / {summary.referendumTotal || 0}</GreyText>
           </span>
         </Content>
       </Card>
