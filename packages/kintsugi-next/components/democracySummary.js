@@ -3,12 +3,12 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import CountDown from "next-common/components/summary/countDown";
-import { useApi, useBlockTime, useBestNumber } from "utils/hooks";
+import { useApi } from "utils/hooks";
+import { useBlockTime, useBestNumber } from "next-common/utils/hooks";
 import {
   setSummary,
   summarySelector,
 } from "next-common/store/reducers/democracySummarySlice";
-import { bnToBn, extractTime } from "@polkadot/util";
 import { estimateBlocksTime } from "utils";
 
 const Wrapper = styled.div`
@@ -127,8 +127,7 @@ export default function DemocracySummary({ chain }) {
         <Title>Proposals</Title>
         <Content>
           <span>
-            {" "}
-            {summary.activeProposalsCount}{" "}
+            {summary.activeProposalsCount}
             <GreyText> / {summary.publicPropCount}</GreyText>
           </span>
         </Content>
@@ -137,7 +136,7 @@ export default function DemocracySummary({ chain }) {
         <Title>Referenda</Title>
         <Content>
           <span>
-            {summary.referendumCount}{" "}
+            {summary.referendumCount}
             <GreyText> / {summary.referendumTotal}</GreyText>
           </span>
         </Content>

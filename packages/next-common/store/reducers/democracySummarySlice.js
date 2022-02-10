@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const summarySlice = createSlice({
+const democracySummarySlice = createSlice({
   name: "democracySummary",
   initialState: {
     summary: {},
@@ -12,8 +12,8 @@ const summarySlice = createSlice({
   },
 });
 
-export const { setSummary } = summarySlice.actions;
+export const { setSummary } = democracySummarySlice.actions;
 
-export const summarySelector = (state) => state.summary.summary;
+export const summarySelector = (state) => state.democracySummary.summary;
 
-export default summarySlice.reducer;
+export default democracySummarySlice.reducer;
