@@ -141,7 +141,11 @@ export async function getAddressVote(api, referendumIndex, address) {
     const vote = (jsonVoting.direct.votes || []).find(
       (vote) => vote[0] === referendumIndex
     )?.[1];
-    return vote;
+
+    return {
+      ...vote,
+      delegations: jsonVoting.direct.delegations,
+    };
   }
 
   // If the address has delegated to other.
@@ -186,3 +190,24 @@ const CON_MASK = 0b01111111;
 
 export const isAye = (vote) => (vote & AYE_BITS) === AYE_BITS;
 export const getConviction = (vote) => vote & CON_MASK;
+
+export const convictionToLockX = (conviction) => {
+  switch (conviction) {
+    case 0:
+      return "0.1x";
+    case 1:
+      return "1x";
+    case 2:
+      return "2x";
+    case 3:
+      return "3x";
+    case 4:
+      return "4x";
+    case 5:
+      return "5x";
+    case 6:
+      return "6x";
+    default:
+      return "0.1x";
+  }
+};

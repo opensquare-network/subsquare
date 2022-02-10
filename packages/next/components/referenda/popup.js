@@ -38,7 +38,7 @@ import RejectIcon from "next-common/assets/imgs/icons/reject.svg";
 import Tooltip from "components/tooltip";
 import Loading from "./loading";
 import DisplayValue from "./displayValue";
-import { isAye, getConviction } from "utils/referendumUtil";
+import { isAye, getConviction, convictionToLockX } from "utils/referendumUtil";
 
 const Background = styled.div`
   position: fixed;
@@ -308,6 +308,7 @@ export default function Popup({
   const addressVoteStandardConviction = getConviction(
     addressVote?.standard?.vote
   );
+  const addressVoteDelegations = addressVote?.delegations?.votes;
 
   const addressVoteSplitAye = addressVote?.split?.aye;
   const addressVoteSplitNay = addressVote?.split?.nay;
@@ -520,6 +521,22 @@ export default function Popup({
         </div>
         {!addressVote?.delegating && (
           <>
+            {addressVoteDelegations ? (
+              <div>
+                <TooltipWrapper>
+                  <Label>Total Proxy Value</Label>
+                  <Tooltip content="Voting value for all proxy addresses" />
+                </TooltipWrapper>
+                <DelegatingValue>
+                  <div className="vote">
+                    <div className="balance">
+                      {toPrecision(addressVoteDelegations, node.decimals)}{" "}
+                      {node.voteSymbol || node.symbol}
+                    </div>
+                  </div>
+                </DelegatingValue>
+              </div>
+            ) : null}
             <div>
               <TooltipWrapper>
                 <Label>Value</Label>
@@ -559,7 +576,9 @@ export default function Popup({
                   {toPrecision(addressVoteDelegateBalance, node.decimals)}{" "}
                   {node.voteSymbol || node.symbol}
                 </div>
-                <div className="conviction">{`${addressVoteDelegateConviction}x`}</div>
+                <div className="conviction">
+                  {convictionToLockX(addressVoteDelegateConviction)}
+                </div>
               </div>
               <div className="proxy">
                 <div className="proxy-label">Proxy</div>
@@ -595,9 +614,9 @@ export default function Popup({
                   <div>Delegate</div>
                   <Tooltip content="Vote by delegating target" />
                 </>
-              ) : (
+              ) : addressVoteIsLoading ? (
                 <Loading size={10} />
-              )}
+              ) : null}
             </VotingStatusWrapper>
           </TooltipWrapper>
           {addressVote?.standard && (
@@ -611,7 +630,9 @@ export default function Popup({
                     )}
                     symbol={node?.voteSymbol || node?.symbol}
                   />
-                  <span>{`(${addressVoteStandardConviction}x)`}</span>
+                  <span>{`(${convictionToLockX(
+                    addressVoteStandardConviction
+                  )})`}</span>
                 </div>
                 {addressVoteStandardAye ? (
                   <div className="result">
@@ -677,7 +698,14 @@ export default function Popup({
               )}
             </StatusWrapper>
           )}
-          {!addressVote && (
+          {!addressVoteIsLoading &&
+            (!addressVote ||
+              (addressVote?.delegating && !addressVoteDelegateVoted)) && (
+              <StatusWrapper>
+                <div className="no-data">No voting record</div>
+              </StatusWrapper>
+            )}
+          {addressVoteIsLoading && (
             <StatusWrapper>
               <Loading size={14} />
             </StatusWrapper>
