@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { BN, BN_THOUSAND, BN_TWO, u8aConcat } from "@polkadot/util";
+import { u8aConcat } from "@polkadot/util";
 import { useDispatch, useSelector } from "react-redux";
 import CountDown from "./countDown";
-import { toPrecision } from "utils/index";
-import { useApi } from "utils/hooks";
 import { useBestNumber, useBlockTime } from "next-common/utils/hooks";
-import { abbreviateBigNumber, getNode } from "utils";
+import { abbreviateBigNumber, getNode } from "../../utils";
 import { setSummary, summarySelector } from "../../store/reducers/summarySlice";
-import { estimateBlocksTime } from "@subsquare/kintsugi-next/utils";
+import { useApi } from "@subsquare/next/utils/hooks";
+import { estimateBlocksTime, toPrecision } from "../../utils";
 
 const Wrapper = styled.div`
   display: flex;
@@ -68,8 +67,6 @@ const CountDownWrapper = styled.div`
   right: 24px;
 `;
 
-const DEFAULT_TIME = new BN(6_000);
-const THRESHOLD = BN_THOUSAND.div(BN_TWO);
 const EMPTY_U8A_32 = new Uint8Array(32);
 
 export default function Summary({ chain }) {
