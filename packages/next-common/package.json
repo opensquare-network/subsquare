@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@polkadot/react-identicon": "0.89.2",
+    "@polkadot/react-identicon": "1.0.1",
     "md5": "^2.3.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
