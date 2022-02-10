@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useIsMounted } from "./hooks";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import {
   isWeb3Injected,
   web3Accounts,

@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import CountDown from "next-common/components/summary/countDown";
-import { useApi } from "utils/hooks";
-import { useBlockTime, useBestNumber } from "next-common/utils/hooks";
-import { estimateBlocksTime } from "next-common/utils";
+import useApi from "../../utils/hooks/useApi";
+import { useBlockTime, useBestNumber } from "../../utils/hooks";
+import { estimateBlocksTime } from "../../utils";
+import { useSelector } from "react-redux";
+import { currentNodeSelector } from "@subsquare/next/store/reducers/nodeSlice";
 
 const Wrapper = styled.div`
   display: flex;
+
   > :not(:first-child) {
     margin-left: 16px;
   }
+
   @media screen and (max-width: 768px) {
     flex-direction: column;
     > :not(:first-child) {
@@ -47,12 +51,15 @@ const Content = styled.div`
   font-size: 16px;
   line-height: 100%;
   color: #1e2134;
+
   > .unit {
     color: #9da9bb;
   }
+
   > .upper {
     text-transform: uppercase;
   }
+
   > :not(:first-child) {
     margin-left: 4px;
   }
@@ -70,7 +77,9 @@ const GreyText = styled.span`
 
 export default function DemocracySummary({ chain }) {
   const [summary, setSummary] = useState({});
-  const api = useApi(chain);
+  const nodeUrl = useSelector(currentNodeSelector);
+  const endpoint = nodeUrl[chain];
+  const api = useApi(chain, endpoint);
   const blockTime = useBlockTime(api);
   const bestNumber = useBestNumber(api);
 

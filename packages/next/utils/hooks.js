@@ -62,18 +62,6 @@ export function useForm(initialState = {}, onSubmit, clearError) {
   return { formData, handleInputChange, handleSubmit, reset };
 }
 
-export function useIsMounted() {
-  const isMounted = useRef(true);
-
-  useEffect(() => {
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
-
-  return isMounted;
-}
-
 export function useApi(chain) {
   const nodeUrl = useSelector(currentNodeSelector);
   return useChainApi(chain, nodeUrl[chain]);
