@@ -77,8 +77,7 @@ const GreyText = styled.span`
 
 export default function DemocracySummary({ chain }) {
   const [summary, setSummary] = useState({});
-  const nodeUrl = useSelector(currentNodeSelector);
-  const endpoint = nodeUrl[chain];
+  const endpoint = useSelector(currentNodeSelector);
   const api = useApi(chain, endpoint);
   const blockTime = useBlockTime(api);
   const bestNumber = useBestNumber(api);

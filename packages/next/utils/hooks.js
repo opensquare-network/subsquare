@@ -64,7 +64,7 @@ export function useForm(initialState = {}, onSubmit, clearError) {
 
 export function useApi(chain) {
   const nodeUrl = useSelector(currentNodeSelector);
-  return useChainApi(chain, nodeUrl[chain]);
+  return useChainApi(chain, nodeUrl);
 }
 
 const DEFAULT_BLOCK_TIME = new BN(6_000);

@@ -77,8 +77,7 @@ const EMPTY_U8A_32 = new Uint8Array(32);
 
 export default function Summary({ chain }) {
   const dispatch = useDispatch();
-  const nodeUrl = useSelector(currentNodeSelector);
-  const endpoint = nodeUrl[chain];
+  const endpoint = useSelector(currentNodeSelector);
   const api = useApi(chain, endpoint);
   const node = getNode(chain);
   const blockTime = useBlockTime(api);
