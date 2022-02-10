@@ -10,6 +10,7 @@ import {
   getAddressVote,
   getElectorate,
 } from "./referendumUtil";
+import { BN_THOUSAND, BN_TWO, bnToBn, extractTime } from "@polkadot/util";
 
 export function useOnClickOutside(ref, handler) {
   useEffect(() => {
@@ -100,6 +101,42 @@ export function useApi(chain) {
   return useCall(getApi, [chain, apiUrl]);
 }
 
+export function useBlockTime(api, blocks) {
+  if (!api) {
+    return;
+  }
+  const THRESHOLD = BN_THOUSAND.div(BN_TWO);
+  const blockTime =
+    // Babe
+    api.consts.babe?.expectedBlockTime ||
+    // POW, eg. Kulupu
+    api.consts.difficulty?.targetBlockTime ||
+    // Subspace
+    api.consts.subspace?.expectedBlockTime ||
+    // Check against threshold to determine value validity
+    (api.consts.timestamp?.minimumPeriod.gte(THRESHOLD)
+      ? // Default minimum period config
+        api.consts.timestamp.minimumPeriod.mul(BN_TWO)
+      : api.query.parachainSystem
+      ? // default guess for a parachain
+        DEFAULT_TIME.mul(BN_TWO)
+      : // default guess for others
+        DEFAULT_TIME);
+  const value = blockTime.mul(bnToBn(blocks)).toNumber();
+  const time = extractTime(Math.abs(value));
+  const { days, hours, minutes, seconds } = time;
+  return [
+    days ? (days > 1 ? `${days} days` : "1 day") : null,
+    hours ? (hours > 1 ? `${hours} hrs` : "1 hr") : null,
+    minutes ? (minutes > 1 ? `${minutes} mins` : "1 min") : null,
+    seconds ? (seconds > 1 ? `${seconds} s` : "1 s") : null,
+  ]
+    .filter((s) => !!s)
+    .slice(0, 2)
+    .join(" ")
+    .split(" ");
+}
+
 export function useElectorate(height) {
   const api = useApi("kintsugi");
   const [electorate, setElectorate] = useState(0);
@@ -108,13 +145,15 @@ export function useElectorate(height) {
   useEffect(() => {
     if (api) {
       setIsLoading(true);
-      getElectorate(api, height).then((value) => {
-        if (isMounted.current) {
-          setElectorate(value);
-        }
-      }).finally(() => {
-        setIsLoading(false);
-      });
+      getElectorate(api, height)
+        .then((value) => {
+          if (isMounted.current) {
+            setElectorate(value);
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
   }, [api, height]);
   return [electorate, isLoading];
@@ -186,12 +225,14 @@ export function useBlockHeight() {
   useEffect(() => {
     let unsub = null;
     if (api) {
-      api.rpc.chain.subscribeNewHeads((header) => {
-        if (isMounted.current) {
-          const height = header.number.toNumber();
-          setBlockHeight(height);
-        }
-      }).then(res => unsub = res);
+      api.rpc.chain
+        .subscribeNewHeads((header) => {
+          if (isMounted.current) {
+            const height = header.number.toNumber();
+            setBlockHeight(height);
+          }
+        })
+        .then((res) => (unsub = res));
 
       return () => unsub?.();
     }

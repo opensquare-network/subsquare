@@ -1,15 +1,13 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { BN, BN_THOUSAND, BN_TWO, bnToBn, extractTime } from "@polkadot/util";
 import { useDispatch, useSelector } from "react-redux";
 
 import CountDown from "next-common/components/summary/countDown";
-import { useApi } from "utils/hooks";
+import { useApi, useBlockTime } from "utils/hooks";
 import {
   setSummary,
   summarySelector,
 } from "next-common/store/reducers/democracySummarySlice";
-// import { useBestNumber } from '@polkadot/react-hooks';
 
 const Wrapper = styled.div`
   display: flex;
@@ -74,10 +72,6 @@ const GreyText = styled.span`
   color: #9da9bb !important;
 `;
 
-const DEFAULT_TIME = new BN(6_000);
-const THRESHOLD = BN_THOUSAND.div(BN_TWO);
-const EMPTY_U8A_32 = new Uint8Array(32);
-
 export default function DemocracySummary({ chain }) {
   const dispatch = useDispatch();
   const api = useApi(chain);
@@ -107,47 +101,14 @@ export default function DemocracySummary({ chain }) {
   }, [api, chain, dispatch]);
 
   useEffect(() => {
-    const estimateBlocksTime = async (blocks) => {
-      if (api) {
-        const blockTime =
-          // Babe
-          api.consts.babe?.expectedBlockTime ||
-          // POW, eg. Kulupu
-          api.consts.difficulty?.targetBlockTime ||
-          // Subspace
-          api.consts.subspace?.expectedBlockTime ||
-          // Check against threshold to determine value validity
-          (api.consts.timestamp?.minimumPeriod.gte(THRESHOLD)
-            ? // Default minimum period config
-              api.consts.timestamp.minimumPeriod.mul(BN_TWO)
-            : api.query.parachainSystem
-            ? // default guess for a parachain
-              DEFAULT_TIME.mul(BN_TWO)
-            : // default guess for others
-              DEFAULT_TIME);
-        const value = blockTime.mul(bnToBn(blocks)).toNumber();
-        const time = extractTime(Math.abs(value));
-        const { days, hours, minutes, seconds } = time;
-        return [
-          days ? (days > 1 ? `${days} days` : "1 day") : null,
-          hours ? (hours > 1 ? `${hours} hrs` : "1 hr") : null,
-          minutes ? (minutes > 1 ? `${minutes} mins` : "1 min") : null,
-          seconds ? (seconds > 1 ? `${seconds} s` : "1 s") : null,
-        ]
-          .filter((s) => !!s)
-          .slice(0, 2)
-          .join(" ")
-          .split(" ");
-      }
-    };
-
     const getSpendPeriod = async function () {
       if (api) {
         const bestNumber = await api.derive.chain.bestNumber();
         const spendPeriod = api.consts.democracy.launchPeriod;
         const goneBlocks = bestNumber.mod(spendPeriod);
         const progress = goneBlocks.muln(100).div(spendPeriod).toNumber();
-        const TimeArray = await estimateBlocksTime(
+        const TimeArray = useBlockTime(
+          api,
           spendPeriod.sub(goneBlocks).toNumber()
         );
         dispatch(setSummary({ progress, spendPeriod: TimeArray }));
