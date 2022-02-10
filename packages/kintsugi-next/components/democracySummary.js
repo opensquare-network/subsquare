@@ -3,11 +3,13 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import CountDown from "next-common/components/summary/countDown";
-import { useApi, useBlockTime } from "utils/hooks";
+import { useApi, useBlockTime, useBestNumber } from "utils/hooks";
 import {
   setSummary,
   summarySelector,
 } from "next-common/store/reducers/democracySummarySlice";
+import { bnToBn, extractTime } from "@polkadot/util";
+import { estimateBlocksTime } from "utils";
 
 const Wrapper = styled.div`
   display: flex;
@@ -74,9 +76,10 @@ const GreyText = styled.span`
 
 export default function DemocracySummary({ chain }) {
   const dispatch = useDispatch();
-  const api = useApi(chain);
-
   const summary = useSelector(summarySelector);
+  const api = useApi(chain);
+  const blockTime = useBlockTime(api);
+  const bestNumber = useBestNumber(api);
 
   useEffect(() => {
     if (!api) {
@@ -94,6 +97,7 @@ export default function DemocracySummary({ chain }) {
       const publicPropCount = response.toJSON();
       dispatch(setSummary({ publicPropCount }));
     });
+
     api?.query.democracy.referendumCount().then((response) => {
       const referendumCount = response.toJSON();
       dispatch(setSummary({ referendumTotal: referendumCount }));
@@ -101,21 +105,21 @@ export default function DemocracySummary({ chain }) {
   }, [api, chain, dispatch]);
 
   useEffect(() => {
-    const getSpendPeriod = async function () {
-      if (api) {
-        const bestNumber = await api.derive.chain.bestNumber();
-        const spendPeriod = api.consts.democracy.launchPeriod;
-        const goneBlocks = bestNumber.mod(spendPeriod);
-        const progress = goneBlocks.muln(100).div(spendPeriod).toNumber();
-        const TimeArray = useBlockTime(
+    const getLaunchPeriod = async function () {
+      if (api && bestNumber) {
+        const launchPeriod = api.consts.democracy.launchPeriod;
+        const goneBlocks = bestNumber.mod(launchPeriod);
+        const progress = goneBlocks.muln(100).div(launchPeriod).toNumber();
+        const TimeArray = estimateBlocksTime(
           api,
-          spendPeriod.sub(goneBlocks).toNumber()
+          launchPeriod.sub(goneBlocks).toNumber(),
+          blockTime
         );
-        dispatch(setSummary({ progress, spendPeriod: TimeArray }));
+        dispatch(setSummary({ progress, launchPeriod: TimeArray }));
       }
     };
-    getSpendPeriod();
-  }, [api, chain, dispatch]);
+    getLaunchPeriod();
+  }, [api, blockTime, chain, dispatch]);
 
   return (
     <Wrapper>
@@ -141,7 +145,7 @@ export default function DemocracySummary({ chain }) {
       <Card>
         <Title>Launch period</Title>
         <Content>
-          {(summary?.spendPeriod || []).map((item, index) => (
+          {(summary?.launchPeriod || []).map((item, index) => (
             <span className={index % 2 === 1 ? "unit" : ""} key={index}>
               {item}
             </span>

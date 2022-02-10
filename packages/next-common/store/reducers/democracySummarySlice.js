@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const summarySlice = createSlice({
-  name: "summary",
+  name: "democracySummary",
   initialState: {
     summary: {},
   },
