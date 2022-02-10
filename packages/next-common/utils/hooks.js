@@ -31,7 +31,10 @@ export function useBestNumber(api) {
   const [bestNumber, setBestNumber] = useState();
   useEffect(() => {
     if (api) {
-      api.derive.chain.bestNumber().then((result) => setBestNumber(result));
+      api.derive.chain
+        .bestNumber()
+        .then((result) => setBestNumber(result))
+        .catch((e) => console.error(e));
     }
   }, [api]);
   return bestNumber;

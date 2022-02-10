@@ -1,15 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-
 import CountDown from "next-common/components/summary/countDown";
 import { useApi } from "utils/hooks";
 import { useBlockTime, useBestNumber } from "next-common/utils/hooks";
-import {
-  setSummary,
-  summarySelector,
-} from "next-common/store/reducers/democracySummarySlice";
-import { estimateBlocksTime } from "utils";
+import { estimateBlocksTime } from "next-common/utils";
 
 const Wrapper = styled.div`
   display: flex;
@@ -75,51 +69,54 @@ const GreyText = styled.span`
 `;
 
 export default function DemocracySummary({ chain }) {
-  const dispatch = useDispatch();
-  const summary = useSelector(summarySelector);
+  const [summary, setSummary] = useState({});
   const api = useApi(chain);
   const blockTime = useBlockTime(api);
   const bestNumber = useBestNumber(api);
+
+  const getLaunchPeriod = async function () {
+    if (api && bestNumber) {
+      const launchPeriod = api.consts.democracy.launchPeriod;
+      const goneBlocks = bestNumber.mod(launchPeriod);
+      const progress = goneBlocks.muln(100).div(launchPeriod).toNumber();
+      const TimeArray = estimateBlocksTime(
+        api,
+        launchPeriod.sub(goneBlocks).toNumber(),
+        blockTime
+      );
+      return { progress, launchPeriod: TimeArray };
+    }
+  };
 
   useEffect(() => {
     if (!api) {
       return;
     }
-    api.derive.democracy.proposals().then((activeProposals) => {
-      dispatch(setSummary({ activeProposalsCount: activeProposals?.length }));
-    });
-
-    api.derive.democracy.referendums().then((referendums) => {
-      dispatch(setSummary({ referendumCount: referendums?.length }));
-    });
-
-    api?.query.democracy.publicPropCount().then((response) => {
-      const publicPropCount = response.toJSON();
-      dispatch(setSummary({ publicPropCount }));
-    });
-
-    api?.query.democracy.referendumCount().then((response) => {
-      const referendumCount = response.toJSON();
-      dispatch(setSummary({ referendumTotal: referendumCount }));
-    });
-  }, [api, chain, dispatch]);
-
-  useEffect(() => {
-    const getLaunchPeriod = async function () {
-      if (api && bestNumber) {
-        const launchPeriod = api.consts.democracy.launchPeriod;
-        const goneBlocks = bestNumber.mod(launchPeriod);
-        const progress = goneBlocks.muln(100).div(launchPeriod).toNumber();
-        const TimeArray = estimateBlocksTime(
-          api,
-          launchPeriod.sub(goneBlocks).toNumber(),
-          blockTime
-        );
-        dispatch(setSummary({ progress, launchPeriod: TimeArray }));
+    Promise.all([
+      api.derive.democracy.proposals(),
+      api.derive.democracy.referendums(),
+      api?.query.democracy.publicPropCount(),
+      api?.query.democracy.referendumCount(),
+      getLaunchPeriod(),
+    ]).then(
+      ([
+        activeProposals,
+        referendums,
+        publicPropCountResponse,
+        referendumCountResponse,
+        period,
+      ]) => {
+        setSummary({
+          ...summary,
+          activeProposalsCount: activeProposals?.length,
+          referendumCount: referendums?.length,
+          publicPropCount: publicPropCountResponse.toJSON(),
+          referendumTotal: referendumCountResponse.toJSON(),
+          ...period,
+        });
       }
-    };
-    getLaunchPeriod();
-  }, [api, blockTime, chain, dispatch]);
+    );
+  }, [chain, api, blockTime, bestNumber]);
 
   return (
     <Wrapper>
