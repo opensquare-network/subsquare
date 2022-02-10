@@ -8,7 +8,6 @@ import {
   setSummary,
   summarySelector,
 } from "next-common/store/reducers/democracySummarySlice";
-import { bnToBn, extractTime } from "@polkadot/util";
 import { estimateBlocksTime } from "utils";
 
 const Wrapper = styled.div`
@@ -127,8 +126,7 @@ export default function DemocracySummary({ chain }) {
         <Title>Proposals</Title>
         <Content>
           <span>
-            {" "}
-            {summary.activeProposalsCount}{" "}
+            {summary.activeProposalsCount}
             <GreyText> / {summary.publicPropCount}</GreyText>
           </span>
         </Content>
@@ -137,7 +135,7 @@ export default function DemocracySummary({ chain }) {
         <Title>Referenda</Title>
         <Content>
           <span>
-            {summary.referendumCount}{" "}
+            {summary.referendumCount}
             <GreyText> / {summary.referendumTotal}</GreyText>
           </span>
         </Content>
