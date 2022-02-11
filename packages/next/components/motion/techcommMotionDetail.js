@@ -21,7 +21,7 @@ import { useState } from "react";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
 import { getPostUpdatedAt } from "../../utils/viewfuncs";
 import MultiKVList from "next-common/components/multiKVList";
-import MotionEnd from "./motionEnd";
+import MotionEnd from "next-common/components/motionEnd";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { nodesHeightSelector } from "store/reducers/nodeSlice";
 import { useSelector } from "react-redux";
