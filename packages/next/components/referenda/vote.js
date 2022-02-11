@@ -196,7 +196,7 @@ function Vote({
   const isMounted = useIsMounted();
   const api = useApi(chain);
   const bestNumber = useBestNumber(api);
-  const blockHeight = bestNumber.toNumber();
+  const blockHeight = bestNumber?.toNumber() || 0;
 
   const updateVoteProgress = useCallback(() => {
     api?.query.democracy
