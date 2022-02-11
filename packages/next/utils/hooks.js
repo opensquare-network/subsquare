@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+import useChainApi from "next-common/utils/hooks/useApi";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
+
 import { currentNodeSelector } from "store/reducers/nodeSlice";
 import { BN, BN_TWO, BN_THOUSAND, bnToBn, extractTime } from "@polkadot/util";
 import {
@@ -8,8 +11,6 @@ import {
   getAddressVote,
   getElectorate,
 } from "./referendumUtil";
-import useChainApi from "next-common/utils/hooks/useApi";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
 
 export function useOnClickOutside(ref, handler) {
   useEffect(() => {
