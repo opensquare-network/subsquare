@@ -1,23 +1,65 @@
+import { useCallback, useState } from "react";
+import dynamic from "next/dynamic";
 import BigNumber from "bignumber.js";
 import styled from "styled-components";
-import { getNode, toPrecision } from "../../utils";
+import { getNode, toPrecision } from "utils";
 import Flex from "next-common/components/styled/flex";
-import { shadow_100 } from "../../styles/componentCss";
+import { shadow_100 } from "styles/componentCss";
+import {
+  getThresholdOfSimplyMajority,
+  getThresholdOfSuperMajorityApprove,
+  getThresholdOfSuperMajorityAgainst,
+  calcPassing,
+} from "utils/referendumUtil";
+import { useElectorate, useApi, useWindowSize, useLoaded } from "utils/hooks";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import AyeIcon from "public/imgs/icons/aye.svg";
+import NayIcon from "public/imgs/icons/nay.svg";
+import TurnoutIcon from "public/imgs/icons/turnout.svg";
+import ElectorateIcon from "public/imgs/icons/electorate.svg";
+import Threshold from "./threshold";
+import DisplayValue from "./displayValue";
+import Loading from "./loading";
+import { useBlockHeight } from "utils/hooks";
+
+const Popup = dynamic(() => import("components/referenda/popup"), {
+  ssr: false,
+});
 
 const Wrapper = styled.div`
+  position: absolute;
+  right: 0;
+  top: 32px;
+  width: 280px;
+  margin-top: 0 !important;
+  > :not(:first-child) {
+    margin-top: 16px;
+  }
+  @media screen and (max-width: 1024px) {
+    position: static;
+    width: auto;
+    margin-top: 16px !important;
+  }
+`;
+
+const Card = styled.div`
   background: #ffffff;
   border: 1px solid #ebeef4;
   ${shadow_100};
   border-radius: 6px;
-  padding: 48px;
+  padding: 24px;
   @media screen and (max-width: 768px) {
-    padding: 24px;
     border-radius: 0;
   }
-  margin: 16px 0;
+  > :not(:first-child) {
+    margin-top: 16px;
+  }
 `;
 
 const Title = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-weight: bold;
   font-size: 16px;
   margin-bottom: 16px;
@@ -28,13 +70,9 @@ const Headers = styled(Flex)`
   font-size: 12px;
   color: #506176;
 
-  span {
-    display: inline-block;
-    width: 33.33%;
-  }
-
   span:nth-child(2) {
     text-align: center;
+    white-space: nowrap;
   }
 
   span:nth-child(3) {
@@ -45,37 +83,51 @@ const Headers = styled(Flex)`
 const Contents = styled(Headers)`
   font-weight: 500;
   color: #1e2134;
+  margin-top: 8px !important;
   margin-bottom: 16px;
 `;
 
-const Button = styled.button`
+const Status = styled.div`
   width: 100%;
-  height: 38px;
+  line-height: 38px;
   border-width: 0;
   border-radius: 4px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 700;
   cursor: default;
+  text-align: center;
 `;
 
-const PassButton = styled(Button)`
+const PassStatus = styled(Status)`
   color: #4caf50;
   background: #edf7ed;
 `;
 
-const RejectButton = styled(Button)`
+const RejectStatus = styled(Status)`
   color: #f44336;
   background: #fff1f0;
 `;
 
 const Row = styled(Flex)`
-  height: 48px;
-  margin-bottom: 16px;
+  height: 44px;
+  margin-top: 0 !important;
+  justify-content: space-between;
+  white-space: nowrap;
+  font-size: 14px;
+  @media screen and (max-width: 1024px) {
+    justify-content: flex-start;
+  }
 `;
 
 const BorderedRow = styled(Flex)`
-  height: 48px;
+  height: 44px;
   border-bottom: 1px solid #ebeef4;
+  justify-content: space-between;
+  white-space: nowrap;
+  font-size: 14px;
+  @media screen and (max-width: 1024px) {
+    justify-content: flex-start;
+  }
 `;
 
 const Header = styled.span`
@@ -117,137 +169,230 @@ const NaysBar = styled.div`
   height: 100%;
 `;
 
-const Threshold = styled.div`
-  position: absolute;
-  left: 50%;
-  width: 2px;
-  height: 1rem;
-  background-color: #c2c8d5;
+const VoteButton = styled.button`
+  all: unset;
+  cursor: pointer;
+  margin-top: 16px;
+  width: 100%;
+  line-height: 38px;
+  background-color: #1e2134;
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: center;
+  border-radius: 4px;
 `;
 
-function Vote({ referendumInfo, referendumStatus, chain }) {
+function Vote({
+  referendumInfo,
+  referendumStatus,
+  setReferendumStatus,
+  isLoadingReferendumStatus,
+  setIsLoadingReferendumStatus,
+  referendumIndex,
+  chain,
+}) {
+  const [showVote, setShowVote] = useState(false);
+  const isMounted = useIsMounted();
+  const api = useApi(chain);
+  const blockHeight = useBlockHeight(chain);
+
+  const updateVoteProgress = useCallback(() => {
+    api?.query.democracy
+      .referendumInfoOf(referendumIndex)
+      .then((referendumInfo) => {
+        const referendumInfoData = referendumInfo.toJSON();
+        if (isMounted.current) {
+          setReferendumStatus(referendumInfoData?.ongoing);
+        }
+      })
+      .finally(() => {
+        setIsLoadingReferendumStatus(false);
+      });
+  }, [
+    api,
+    referendumIndex,
+    setReferendumStatus,
+    setIsLoadingReferendumStatus,
+    isMounted,
+  ]);
+
+  const referendumEndHeight = referendumInfo?.finished?.end;
+  const [electorate, isElectorateLoading] = useElectorate(
+    referendumEndHeight || blockHeight,
+    chain
+  );
+  const isElectorateLoaded = useLoaded(isElectorateLoading);
+
+  const { width } = useWindowSize();
+
   const node = getNode(chain);
   if (!node) {
     return null;
   }
   const decimals = node.decimals;
-  const symbol = node.symbol;
+  const symbol = node.voteSymbol ?? node.symbol;
+
+  const isPassing = calcPassing(referendumStatus, electorate);
 
   const nAyes = toPrecision(referendumStatus?.tally?.ayes ?? 0, decimals);
   const nNays = toPrecision(referendumStatus?.tally?.nays ?? 0, decimals);
   const nTurnout = toPrecision(referendumStatus?.tally?.turnout ?? 0, decimals);
+  const nElectorate = toPrecision(electorate ?? 0, decimals);
 
-  let nAyesPrecent = 50;
-  let nNaysPrecent = 50;
+  let nAyesPercent = 50;
+  let nNaysPercent = 50;
   let gap = 2;
   const nTotal = new BigNumber(nAyes).plus(nNays);
   if (nTotal.gt(0)) {
-    nAyesPrecent = Math.round(
+    nAyesPercent = Math.round(
       new BigNumber(nAyes).div(nTotal).toNumber() * 100
     );
-    nNaysPrecent = 100 - nAyesPrecent;
-    if (nAyesPrecent === 100 || nNaysPrecent === 100) {
+    nNaysPercent = 100 - nAyesPercent;
+    if (nAyesPercent === 100 || nNaysPercent === 100) {
       gap = 0;
     }
   }
+
   return (
     <Wrapper>
-      <Title>Votes</Title>
+      <Card>
+        <Title>
+          <span>Votes</span>
+          <div>
+            {isLoadingReferendumStatus || !isElectorateLoaded ? (
+              <Loading size={16} />
+            ) : null}
+          </div>
+        </Title>
 
-      <BarWrapper>
-        <BarContainer gap={gap}>
-          <AyesBar precent={nAyesPrecent} />
-          <NaysBar precent={nNaysPrecent} />
-          {(referendumStatus?.threshold || "").toLowerCase() ===
-            "simplemajority" && <Threshold />}
-        </BarContainer>
-      </BarWrapper>
+        <BarWrapper>
+          <BarContainer gap={gap}>
+            <AyesBar precent={nAyesPercent} />
+            <NaysBar precent={nNaysPercent} />
 
-      <Headers>
-        <span>Aye</span>
-        <span>Passing threshold</span>
-        <span>Nay</span>
-      </Headers>
+            {(referendumStatus?.threshold || "").toLowerCase() ===
+              "simplemajority" && (
+              <Threshold threshold={getThresholdOfSimplyMajority()} />
+            )}
 
-      <Contents>
-        <span>{nAyesPrecent}%</span>
-        <span>{referendumStatus?.threshold}</span>
-        <span>{nNaysPrecent}%</span>
-      </Contents>
+            {(referendumStatus?.threshold || "").toLowerCase() ===
+              "supermajorityapprove" && (
+              <Threshold
+                threshold={getThresholdOfSuperMajorityApprove(
+                  referendumStatus?.tally?.turnout ?? 0,
+                  electorate
+                )}
+              />
+            )}
 
-      <BorderedRow>
-        <Header>
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 14 14"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12.4933 3.1543L5.16868 10.8452L1.50635 6.99991"
-              stroke="#4CAF50"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          Aye
-        </Header>
-        <span>
-          {nAyes} {symbol}
-        </span>
-      </BorderedRow>
+            {(referendumStatus?.threshold || "").toLowerCase() ===
+              "supermajorityagainst" && (
+              <Threshold
+                threshold={getThresholdOfSuperMajorityAgainst(
+                  referendumStatus?.tally?.turnout ?? 0,
+                  electorate
+                )}
+              />
+            )}
+          </BarContainer>
+        </BarWrapper>
 
-      <BorderedRow>
-        <Header>
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 14 14"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M2.50439 2.50391L7.00023 6.99975M7.00023 6.99975L11.4961 11.4956M7.00023 6.99975L11.4961 2.50391M7.00023 6.99975L2.50439 11.4956"
-              stroke="#F44336"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
-          Nay
-        </Header>
-        <span>
-          {nNays} {symbol}
-        </span>
-      </BorderedRow>
+        <Headers>
+          <span>Aye</span>
+          <span>Passing threshold</span>
+          <span>Nay</span>
+        </Headers>
 
-      <Row>
-        <Header>
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 14 14"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M5 4.3H9M4 7H10M5 9.7H9M2 1.5H12C12.2761 1.5 12.5 1.74624 12.5 2.05V11.95C12.5 12.2538 12.2761 12.5 12 12.5H2C1.72386 12.5 1.5 12.2538 1.5 11.95V2.05C1.5 1.74624 1.72386 1.5 2 1.5Z"
-              stroke="#9DA9BB"
-              strokeWidth="1.25"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          Turnout
-        </Header>
-        <span>
-          {nTurnout} {symbol}
-        </span>
-      </Row>
-      {referendumInfo?.finished?.approved && <PassButton>Passed</PassButton>}
-      {referendumInfo?.finished?.approved === false && (
-        <RejectButton>Rejected</RejectButton>
+        <Contents>
+          <span>{nAyesPercent}%</span>
+          <span>{referendumStatus?.threshold}</span>
+          <span>{nNaysPercent}%</span>
+        </Contents>
+        <div>
+          <BorderedRow>
+            <Header>
+              <AyeIcon />
+              Aye
+            </Header>
+            <span>
+              <DisplayValue
+                value={nAyes}
+                symbol={symbol}
+                noWrap={width <= 1024}
+              />
+            </span>
+          </BorderedRow>
+          <BorderedRow>
+            <Header>
+              <NayIcon />
+              Nay
+            </Header>
+            <span>
+              <DisplayValue
+                value={nNays}
+                symbol={symbol}
+                noWrap={width <= 1024}
+              />
+            </span>
+          </BorderedRow>
+          <BorderedRow>
+            <Header>
+              <TurnoutIcon />
+              Turnout
+            </Header>
+            <span>
+              <DisplayValue
+                value={nTurnout}
+                symbol={symbol}
+                noWrap={width <= 1024}
+              />
+            </span>
+          </BorderedRow>
+          <Row>
+            <Header>
+              <ElectorateIcon />
+              Electorate
+            </Header>
+            <span>
+              <DisplayValue
+                value={nElectorate}
+                symbol={symbol}
+                noWrap={width <= 1024}
+              />
+            </span>
+          </Row>
+        </div>
+        {referendumInfo?.finished?.approved && <PassStatus>Passed</PassStatus>}
+        {referendumInfo?.finished?.approved === false && (
+          <RejectStatus>Failed</RejectStatus>
+        )}
+        {referendumInfo &&
+          !referendumInfo.finished &&
+          (isPassing ? (
+            <PassStatus>Passing</PassStatus>
+          ) : (
+            <RejectStatus>Failing</RejectStatus>
+          ))}
+      </Card>
+
+      {!referendumInfo?.finished && (
+        <VoteButton
+          onClick={() => {
+            setShowVote(true);
+          }}
+        >
+          Vote
+        </VoteButton>
+      )}
+      {showVote && (
+        <Popup
+          chain={chain}
+          onClose={() => setShowVote(false)}
+          referendumIndex={referendumIndex}
+          onSubmitted={() => setIsLoadingReferendumStatus(true)}
+          onInBlock={updateVoteProgress}
+        />
       )}
     </Wrapper>
   );

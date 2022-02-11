@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+import useChainApi from "next-common/utils/hooks/useApi";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { currentNodeSelector } from "store/reducers/nodeSlice";
 import { bnToBn, extractTime } from "@polkadot/util";
-import useChainApi from "next-common/utils/hooks/useApi";
 import { useBlockTime } from "next-common/utils/hooks";
+import {
+  getAddressVotingBalance,
+  getAddressVote,
+  getElectorate,
+} from "./referendumUtil";
 
 export function useOnClickOutside(ref, handler) {
   useEffect(() => {
@@ -68,10 +74,112 @@ export function useApi(chain) {
   return useChainApi(chain, nodeUrl);
 }
 
-export function useEstimateBlockTime(blocks) {
-  const chain = process.env.NEXT_PUBLIC_CHAIN;
+export function useElectorate(height, chain) {
   const api = useApi(chain);
-  const singleBlockTime = useBlockTime();
+  const [electorate, setElectorate] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const isMounted = useIsMounted();
+  useEffect(() => {
+    if (api) {
+      setIsLoading(true);
+      getElectorate(api, height)
+        .then((value) => {
+          if (isMounted.current) {
+            setElectorate(value);
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  }, [api, height]);
+  return [electorate, isLoading];
+}
+
+export function useLoaded(isLoading) {
+  const [loadStatus, setLoadStatus] = useState(0);
+  useEffect(() => {
+    if (loadStatus === 0 && isLoading) {
+      setLoadStatus(1);
+    }
+    if (loadStatus === 1 && !isLoading) {
+      setLoadStatus(2);
+    }
+  }, [isLoading]);
+  return loadStatus === 2;
+}
+
+export function useAddressVotingBalance(address, chain) {
+  const api = useApi(chain);
+  const [balance, setBalance] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const isMounted = useIsMounted();
+  useEffect(() => {
+    if (api && address) {
+      setIsLoading(true);
+      getAddressVotingBalance(api, address)
+        .then((value) => {
+          if (isMounted.current) {
+            setBalance(value);
+          }
+        })
+        .finally(() => {
+          if (isMounted.current) {
+            setIsLoading(false);
+          }
+        });
+    }
+  }, [api, address]);
+  return [balance, isLoading];
+}
+
+export function useAddressVote(referendumIndex, address, chain) {
+  const api = useApi(chain);
+  const [vote, setVote] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const isMounted = useIsMounted();
+  useEffect(() => {
+    if (api && address) {
+      setIsLoading(true);
+      getAddressVote(api, referendumIndex, address)
+        .then((vote) => {
+          if (isMounted.current) {
+            setVote(vote);
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  }, [api, referendumIndex, address]);
+  return [vote, isLoading];
+}
+
+export function useBlockHeight(chain) {
+  const api = useApi(chain);
+  const [blockHeight, setBlockHeight] = useState();
+  const isMounted = useIsMounted();
+  useEffect(() => {
+    let unsub = null;
+    if (api) {
+      api.rpc.chain
+        .subscribeNewHeads((header) => {
+          if (isMounted.current) {
+            const height = header.number.toNumber();
+            setBlockHeight(height);
+          }
+        })
+        .then((res) => (unsub = res));
+
+      return () => unsub?.();
+    }
+  }, [api]);
+  return blockHeight;
+}
+
+export function useEstimateBlocksTime(blocks, chain) {
+  const api = useApi(chain);
+  const singleBlockTime = useBlockTime(api);
   const [estimatedTime, setEstimatedTime] = useState("");
   useEffect(() => {
     if (api && singleBlockTime) {
