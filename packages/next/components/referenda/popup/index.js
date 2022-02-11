@@ -18,11 +18,11 @@ import {
 
 import {
   useOnClickOutside,
-  useIsMounted,
   useApi,
   useAddressVotingBalance,
   useAddressVote,
 } from "utils/hooks";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import AddressSelect from "components/addressSelect";
 import Button from "next-common/components/button";
 import { addToast } from "store/reducers/toastSlice";

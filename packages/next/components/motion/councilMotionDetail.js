@@ -8,7 +8,12 @@ import User from "next-common/components/user";
 import MotionProposal from "./motionProposal";
 import Links from "../timeline/links";
 import Timeline from "../timeline";
-import { getNode, isMotionEnded, timeDurationFromNow, toPrecision } from "utils";
+import {
+  getNode,
+  isMotionEnded,
+  timeDurationFromNow,
+  toPrecision,
+} from "utils";
 import SectionTag from "components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
 import Flex from "next-common/components/styled/flex";
@@ -116,7 +121,7 @@ const MotionEndHeader = styled.div`
   position: static;
   height: 38px;
 
-  background: #F6F7FA;
+  background: #f6f7fa;
   border-radius: 4px;
 
   margin-bottom: 16px;
@@ -169,7 +174,12 @@ export default withLoginUserRedux(
     const blockTime = useBlockTime(currentFinalHeight - motionEndHeight, chain);
     const motionEnd = isMotionEnded(motion.onchainData);
 
-    const showMotionEnd = !motionEnd && motionEndHeight && currentFinalHeight && currentFinalHeight <= motionEndHeight && blockTime;
+    const showMotionEnd =
+      !motionEnd &&
+      motionEndHeight &&
+      currentFinalHeight &&
+      currentFinalHeight <= motionEndHeight &&
+      blockTime;
 
     const node = getNode(chain);
     if (!node) {
@@ -282,8 +292,11 @@ export default withLoginUserRedux(
           [
             "Link to",
             <Link
-              href={`/democracy/external/${external?.proposalHash}`}
-            >{`Democracy External #${external?.proposalHash?.slice(0, 6)}`}</Link>,
+              href={`/democracy/external/${external?.indexer.blockHeight}_${external?.proposalHash}`}
+            >{`Democracy External #${external?.proposalHash?.slice(
+              0,
+              6
+            )}`}</Link>,
           ],
           ["hash", external.proposalHash],
         ]);

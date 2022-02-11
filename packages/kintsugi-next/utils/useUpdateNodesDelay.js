@@ -1,8 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/router";
-
-import { getApi } from "../services/polkadotApi";
+import getApi from "next-common/services/chain/api";
 import {
   currentNodeSelector,
   nodesSelector,
@@ -54,8 +52,8 @@ const useUpdateNodesDelay = (chain) => {
     }
 
     const intervalId = setInterval(async () => {
-      const updateNodes = (nodesSetting[chain] || []).filter(
-        (item) => item.url === currentNode?.[chain] || item.update
+      const updateNodes = (nodesSetting || []).filter(
+        (item) => item.url === currentNode || item.update
       );
 
       if (updateNodes && updateNodes.length > 0) {

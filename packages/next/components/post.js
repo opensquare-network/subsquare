@@ -79,9 +79,11 @@ const Index = styled.div`
 const Info = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
   font-size: 12px;
   color: #506176;
+  .elapseIcon {
+    margin-left: 8px;
+  }
 `;
 
 const AutHideInfo = styled(Info)`
@@ -163,11 +165,9 @@ export default function Post({ data, chain, href, type }) {
 
   let elapseIcon = null;
   if (
-    [
-      "Council Motions",
-      "Financial Motions",
-      "Tech. Comm. Proposals",
-    ].includes(type)
+    ["Council Motions", "Financial Motions", "Tech. Comm. Proposals"].includes(
+      type
+    )
   ) {
     elapseIcon = <MotionElapse motion={data.onchainData} chain={chain} />;
   }
@@ -200,7 +200,7 @@ export default function Post({ data, chain, href, type }) {
           {data.time && (
             <Info>
               <span>{`Updated ${timeDurationFromNow(data.time)}`}</span>
-              {elapseIcon}
+              <Flex className="elapseIcon">{elapseIcon}</Flex>
             </Info>
           )}
           {data.remaining && <Info>{`${timeDuration(data.remaining)}`}</Info>}

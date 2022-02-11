@@ -4,14 +4,16 @@ import { khala } from "@phala/typedefs";
 import { basilisk } from "./bundle/basilisk";
 import {
   typesBundleForPolkadot as bifrostTypesBundleForPolkadot,
-  rpc,
+  rpc as bifrostRpc,
 } from "@bifrost-finance/type-definitions";
+import interbtc from "@interlay/interbtc-types";
+import { Chains } from "../../utils/constants";
 
 const apiInstanceMap = new Map();
 
-export const getApi = async (chain, queryUrl) => {
-  if (!apiInstanceMap.has(queryUrl)) {
-    const provider = new WsProvider(queryUrl, 1000);
+export default async function getApi(chain, endpoint) {
+  if (!apiInstanceMap.has(endpoint)) {
+    const provider = new WsProvider(endpoint, 1000);
     const options = { provider };
     if (chain === "karura" || chain === "acala") {
       options.typesBundle = { ...typesBundleForPolkadot };
@@ -27,11 +29,18 @@ export const getApi = async (chain, queryUrl) => {
           bifrost: bifrostTypesBundleForPolkadot.spec.bifrost,
           "bifrost-parachain": bifrostTypesBundleForPolkadot.spec.bifrost,
         },
-        rpc,
       };
+      options.rpc = bifrostRpc;
+    } else if (chain === Chains.kintsugi) {
+      options.typesBundle = {
+        spec: {
+          "interbtc-parachain": interbtc,
+        },
+      };
+      options.rpc = interbtc.rpc;
     }
 
-    apiInstanceMap.set(queryUrl, ApiPromise.create(options));
+    apiInstanceMap.set(endpoint, ApiPromise.create(options));
   }
-  return apiInstanceMap.get(queryUrl);
-};
+  return apiInstanceMap.get(endpoint);
+}

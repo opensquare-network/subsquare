@@ -1,15 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { useRouter } from "next/router";
-
-import { userSelector } from "store/reducers/userSlice";
 import { currentNodeSelector } from "store/reducers/nodeSlice";
-import { getApi } from "services/polkadotApi";
 import {
-  getAddressVotingBalance,
   getAddressVote,
+  getAddressVotingBalance,
   getElectorate,
 } from "./referendumUtil";
+import useChainApi from "next-common/utils/hooks/useApi";
 
 export function useOnClickOutside(ref, handler) {
   useEffect(() => {
@@ -79,25 +76,9 @@ export function useIsMounted() {
   return isMounted;
 }
 
-export function useCall(fn, params = []) {
-  const [result, setResult] = useState();
-  const isMounted = useIsMounted();
-  useEffect(() => {
-    if (fn) {
-      fn(...params).then((value) => {
-        if (isMounted.current) {
-          setResult(value);
-        }
-      });
-    }
-  }, [fn, ...params]);
-  return result;
-}
-
 export function useApi(chain) {
   const nodeUrl = useSelector(currentNodeSelector);
-  const apiUrl = nodeUrl[chain];
-  return useCall(getApi, [chain, apiUrl]);
+  return useChainApi(chain, nodeUrl);
 }
 
 export function useElectorate(height) {
@@ -108,13 +89,15 @@ export function useElectorate(height) {
   useEffect(() => {
     if (api) {
       setIsLoading(true);
-      getElectorate(api, height).then((value) => {
-        if (isMounted.current) {
-          setElectorate(value);
-        }
-      }).finally(() => {
-        setIsLoading(false);
-      });
+      getElectorate(api, height)
+        .then((value) => {
+          if (isMounted.current) {
+            setElectorate(value);
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
   }, [api, height]);
   return [electorate, isLoading];
@@ -186,12 +169,14 @@ export function useBlockHeight() {
   useEffect(() => {
     let unsub = null;
     if (api) {
-      api.rpc.chain.subscribeNewHeads((header) => {
-        if (isMounted.current) {
-          const height = header.number.toNumber();
-          setBlockHeight(height);
-        }
-      }).then(res => unsub = res);
+      api.rpc.chain
+        .subscribeNewHeads((header) => {
+          if (isMounted.current) {
+            const height = header.number.toNumber();
+            setBlockHeight(height);
+          }
+        })
+        .then((res) => (unsub = res));
 
       return () => unsub?.();
     }

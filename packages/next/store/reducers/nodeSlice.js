@@ -15,75 +15,67 @@ import {
   DEFAULT_BIFROST_NODE_URL,
 } from "next-common/utils/constants";
 
+const chain = process.env.NEXT_PUBLIC_CHAIN;
+
 let nodeUrl = (() => {
   let localNodeUrl = null;
   try {
-    localNodeUrl = JSON.parse(localStorage.getItem("nodeUrl"));
+    localNodeUrl = localStorage.getItem("nodeUrl");
   } catch (e) {
     // ignore parse error
   }
   return {
     kusama:
-      DEFAULT_KUSAMA_NODES.find((item) => item.url === localNodeUrl?.kusama)
-        ?.url || DEFAULT_KUSAMA_NODE_URL,
+      DEFAULT_KUSAMA_NODES.find((item) => item.url === localNodeUrl)?.url ||
+      DEFAULT_KUSAMA_NODE_URL,
     karura:
-      DEFAULT_KARURA_NODES.find((item) => item.url === localNodeUrl?.karura)
-        ?.url || DEFAULT_KARURA_NODE_URL,
+      DEFAULT_KARURA_NODES.find((item) => item.url === localNodeUrl)?.url ||
+      DEFAULT_KARURA_NODE_URL,
     acala:
-      DEFAULT_ACALA_NODES.find((item) => item.url === localNodeUrl?.acala)
-        ?.url || DEFAULT_ACALA_NODE_URL,
+      DEFAULT_ACALA_NODES.find((item) => item.url === localNodeUrl)?.url ||
+      DEFAULT_ACALA_NODE_URL,
     khala:
-      DEFAULT_KHALA_NODES.find((item) => item.url === localNodeUrl?.khala)
-        ?.url || DEFAULT_KHALA_NODE_URL,
+      DEFAULT_KHALA_NODES.find((item) => item.url === localNodeUrl)?.url ||
+      DEFAULT_KHALA_NODE_URL,
     basilisk:
-      DEFAULT_BASILISK_NODES.find((item) => item.url === localNodeUrl?.khala)
-        ?.url || DEFAULT_BASILISK_NODE_URL,
+      DEFAULT_BASILISK_NODES.find((item) => item.url === localNodeUrl)?.url ||
+      DEFAULT_BASILISK_NODE_URL,
     bifrost:
-      DEFAULT_BIFROST_NODES.find((item) => item.url === localNodeUrl?.bifrost)
-        ?.url || DEFAULT_BIFROST_NODE_URL,
+      DEFAULT_BIFROST_NODES.find((item) => item.url === localNodeUrl)?.url ||
+      DEFAULT_BIFROST_NODE_URL,
   };
 })();
 
-export const getNodeUrl = () => nodeUrl;
-
-export const getNodes = () => ({
+export const defaultNodes = {
   kusama: DEFAULT_KUSAMA_NODES,
   karura: DEFAULT_KARURA_NODES,
   acala: DEFAULT_ACALA_NODES,
   khala: DEFAULT_KHALA_NODES,
   basilisk: DEFAULT_BASILISK_NODES,
   bifrost: DEFAULT_BIFROST_NODES,
-});
+};
 
 const nodeSlice = createSlice({
   name: "node",
   initialState: {
-    currentNode: getNodeUrl(),
-    nodes: getNodes(),
+    currentNode: nodeUrl[chain],
+    nodes: defaultNodes[chain],
     nodesHeight: 0,
   },
   reducers: {
     setCurrentNode(state, { payload }) {
-      const { chain, url, refresh } = payload;
-      const boforeUrl = state.currentNode?.[chain];
+      const { url, refresh } = payload;
+      const beforeUrl = state.currentNode;
 
-      let nodeUrl = null;
-      try {
-        nodeUrl = JSON.parse(localStorage.getItem("nodeUrl"));
-      } catch (e) {
-        // ignore parse error
-      }
-      nodeUrl = { ...nodeUrl, [chain]: url };
-      localStorage.setItem("nodeUrl", JSON.stringify(nodeUrl));
-
-      state.nodes[chain] = (state.nodes?.[chain] || []).map((item) => {
-        if (item.url === boforeUrl) {
+      state.currentNode = url;
+      state.nodes = (state.nodes || []).map((item) => {
+        if (item.url === beforeUrl) {
           return { ...item, update: true };
         } else {
           return item;
         }
       });
-      state.currentNode = nodeUrl;
+      localStorage.setItem("nodeUrl", JSON.stringify(url));
 
       if (refresh) {
         window.location.href = `https://${chain}.subsquare.io`;
@@ -91,9 +83,7 @@ const nodeSlice = createSlice({
     },
     setNodesDelay(state, { payload }) {
       (payload || []).forEach((item) => {
-        const node = state.nodes[item.chain]?.find(
-          (node) => item.url === node.url
-        );
+        const node = (state.nodes || []).find((node) => item.url === node.url);
         if (node) node.delay = item.delay;
       });
     },
