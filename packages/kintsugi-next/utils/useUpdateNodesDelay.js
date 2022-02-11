@@ -1,8 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/router";
-
-import { getApi } from "../services/polkadotApi";
+import getApi from "next-common/services/chain/api";
 import {
   currentNodeSelector,
   nodesSelector,

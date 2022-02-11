@@ -18,11 +18,11 @@ import {
 
 import {
   useOnClickOutside,
-  useIsMounted,
   useApi,
   useAddressVotingBalance,
   useAddressVote,
 } from "utils/hooks";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import AddressSelect from "components/addressSelect";
 import Button from "next-common/components/button";
 import { addToast } from "store/reducers/toastSlice";
@@ -32,12 +32,18 @@ import { useExtensionAccounts } from "utils/polkadotExtension";
 import ExternalLink from "next-common/components/externalLink";
 import ClosePanelIcon from "next-common/assets/imgs/icons/close-panel.svg";
 import Input from "next-common/components/input";
-// import Select from "components/select";
-import ApproveIcon from "next-common/assets/imgs/icons/approve.svg";
-import RejectIcon from "next-common/assets/imgs/icons/reject.svg";
+import Select from "components/select";
 import Tooltip from "components/tooltip";
-import Loading from "./loading";
-import DisplayValue from "./displayValue";
+import Loading from "../loading";
+import { isAye, getConviction } from "utils/referendumUtil";
+import { TooltipWrapper, Label } from "./styled";
+import StandardVoteStatus from "./standardVoteStatus";
+import SplitVoteStatus from "./splitVoteStatus";
+import DelegateVoteStatus from "./delegateVoteStatus";
+import NoVoteRecord from "./noVoteRecord";
+import LoadingVoteStatus from "./loadingVoteStatus";
+import Delegating from "./delegating";
+import Delegations from "./delegations";
 
 const Background = styled.div`
   position: fixed;
@@ -87,13 +93,6 @@ const LabelWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const Label = styled.div`
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 100%;
-  margin-bottom: 8px;
-`;
-
 const ButtonWrapper = styled.div`
   display: flex;
   > first-child {
@@ -139,59 +138,6 @@ const Download = styled.div`
   color: #2196f3;
 `;
 
-const StatusWrapper = styled.div`
-  background: #f6f7fa;
-  border-radius: 4px;
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 38px;
-  > div.value {
-    font-size: 14px;
-    line-height: 100%;
-    font-weight: 500;
-    > span {
-      color: #9da9bb;
-    }
-  }
-  > div.result {
-    display: flex;
-    align-items: center;
-    > svg {
-      margin-left: 8px;
-    }
-  }
-  > img {
-    margin: 0 auto;
-  }
-  > div.no-data {
-    font-size: 14px;
-    line-height: 100%;
-    color: #9da9bb;
-    flex-grow: 1;
-    text-align: center;
-  }
-`;
-
-const TooltipWrapper = styled.div`
-  display: flex;
-  align-items: flex-start;
-  > :not(:first-child) {
-    margin-left: 4px;
-  }
-`;
-
-const WarningWrapper = styled.div`
-  background: #f6f7fa;
-  border-radius: 4px;
-  padding: 12px 16px;
-  font-size: 14px;
-  line-height: 140%;
-  color: #506176;
-  margin-top: 8px;
-`;
-
 export default function Popup({
   chain,
   referendumIndex,
@@ -215,13 +161,34 @@ export default function Popup({
   const node = getNode(chain);
   const [isLoading, setIsLoading] = useState();
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
-    selectedAccount?.address
+    selectedAccount?.address,
+    chain
   );
+
   const [addressVote, addressVoteIsLoading] = useAddressVote(
     referendumIndex,
-    selectedAccount?.address
+    selectedAccount?.address,
+    chain
   );
+
+  const addressVoteStandardBalance = addressVote?.standard?.balance;
+  const addressVoteStandardAye = isAye(addressVote?.standard?.vote);
+  const addressVoteStandardConviction = getConviction(
+    addressVote?.standard?.vote
+  );
+  const addressVoteDelegations = addressVote?.delegations?.votes;
+
+  const addressVoteSplitAye = addressVote?.split?.aye;
+  const addressVoteSplitNay = addressVote?.split?.nay;
+
+  const addressVoteDelegateBalance = addressVote?.delegating?.balance;
+  const addressVoteDelegateVoted = addressVote?.delegating?.voted;
+  const addressVoteDelegateAye = addressVote?.delegating?.aye;
+  const addressVoteDelegateConviction = addressVote?.delegating?.conviction;
+  const addressVoteDelegateTarget = addressVote?.delegating?.target;
+
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
+  const [voteLock, setVoteLock] = useState(0);
 
   useEffect(() => {
     if (extensionDetecting || !hasExtension || !isExtensionAccessible) {
@@ -327,7 +294,15 @@ export default function Popup({
       const voteAddress = selectedAccount.address;
 
       const unsub = await api.tx.democracy
-        .vote(referendumIndex, { aye, balance: bnVoteBalance.toFixed() })
+        .vote(referendumIndex, {
+          Standard: {
+            balance: bnVoteBalance.toFixed(),
+            vote: {
+              aye,
+              conviction: voteLock,
+            },
+          },
+        })
         .signAndSend(voteAddress, ({ events = [], status }) => {
           if (status.isFinalized) {
             onFinalized(voteAddress);
@@ -396,7 +371,9 @@ export default function Popup({
             <Label>Address</Label>
             <BalanceWrapper>
               <div>Voting Balance</div>
-              {!votingIsLoading && <div>{votingBalance ?? 0}</div>}
+              {!votingIsLoading && (
+                <div>{toPrecision(votingBalance ?? 0, node.decimals)}</div>
+              )}
               {votingIsLoading && <Loading />}
             </BalanceWrapper>
           </LabelWrapper>
@@ -410,71 +387,103 @@ export default function Popup({
             disabled={isLoading}
           />
         </div>
-        <div>
-          <TooltipWrapper>
-            <Label>Value</Label>
-            <Tooltip content="The value is locked for the duration of the vote" />
-          </TooltipWrapper>
-          <Input
-            type="text"
-            placeholder="0"
-            disabled={isLoading}
-            value={inputVoteBalance}
-            onChange={(e) =>
-              setInputVoteBalance(e.target.value.replace("。", "."))
-            }
-            symbol={node?.voteSymbol}
-          />
-        </div>
-        {!addressVoteIsLoading && addressVote && (
-          <div>
-            <TooltipWrapper>
-              <Label>Voting status</Label>
-            </TooltipWrapper>
-            <StatusWrapper>
-              <div className="value">
-                <DisplayValue
-                  value={toPrecision(addressVote?.balance, node.decimals)}
-                  symbol={node?.voteSymbol}
-                />
-              </div>
-              {addressVote?.aye ? (
-                <div className="result">
-                  Aye
-                  <ApproveIcon />
-                </div>
-              ) : (
-                <div className="result">
-                  Nay
-                  <RejectIcon />
-                </div>
-              )}
-            </StatusWrapper>
-            <WarningWrapper>
-              Resubmitting the vote will override the current voting record
-            </WarningWrapper>
-          </div>
+        {!addressVote?.delegating && (
+          // Address is not allow to vote directly when it is in delegate mode
+          <>
+            {addressVoteDelegations ? (
+              <Delegations
+                addressVoteDelegations={addressVoteDelegations}
+                node={node}
+              />
+            ) : null}
+            <div>
+              <TooltipWrapper>
+                <Label>Value</Label>
+                <Tooltip content="The value is locked for the duration of the vote" />
+              </TooltipWrapper>
+              <Input
+                type="text"
+                placeholder="0"
+                disabled={isLoading}
+                value={inputVoteBalance}
+                onChange={(e) =>
+                  setInputVoteBalance(e.target.value.replace("。", "."))
+                }
+                symbol={node?.voteSymbol}
+              />
+            </div>
+            <div>
+              <TooltipWrapper>
+                <Label>Vote lock</Label>
+              </TooltipWrapper>
+              <Select
+                value={voteLock}
+                setValue={setVoteLock}
+                disabled={false}
+              />
+            </div>
+          </>
         )}
-        <ButtonWrapper>
-          <Button
-            primary
-            background="#4CAF50"
-            onClick={() => doVote(true)}
-            isLoading={isLoading === "Aye"}
-            disabled={isLoading && isLoading !== "Aye"}
-          >
-            Aye
-          </Button>
-          <Button
-            primary
-            background="#F44336"
-            onClick={() => doVote(false)}
-            isLoading={isLoading === "Nay"}
-            disabled={isLoading && isLoading !== "Nay"}
-          >
-            Nay
-          </Button>
-        </ButtonWrapper>
+
+        {addressVote?.delegating && (
+          // If the address has set to delegate mode, show the delegating setting instead
+          <Delegating
+            addressVoteDelegateBalance={addressVoteDelegateBalance}
+            addressVoteDelegateConviction={addressVoteDelegateConviction}
+            addressVoteDelegateTarget={addressVoteDelegateTarget}
+            node={node}
+          />
+        )}
+
+        {!addressVoteIsLoading &&
+          !addressVote?.standard &&
+          !addressVote?.split &&
+          (!addressVote?.delegating || !addressVoteDelegateVoted) && (
+            <NoVoteRecord />
+          )}
+        {addressVote?.standard && (
+          <StandardVoteStatus
+            addressVoteStandardBalance={addressVoteStandardBalance}
+            addressVoteStandardConviction={addressVoteStandardConviction}
+            addressVoteStandardAye={addressVoteStandardAye}
+            node={node}
+          />
+        )}
+        {addressVote?.split && (
+          <SplitVoteStatus
+            addressVoteSplitAye={addressVoteSplitAye}
+            addressVoteSplitNay={addressVoteSplitNay}
+            node={node}
+          />
+        )}
+        {addressVote?.delegating && addressVoteDelegateVoted && (
+          <DelegateVoteStatus addressVoteDelegateAye={addressVoteDelegateAye} />
+        )}
+        {addressVoteIsLoading && <LoadingVoteStatus />}
+
+        {!addressVote?.delegating && (
+          // Address is not allow to vote directly when it is in delegate mode
+          <ButtonWrapper>
+            <Button
+              primary
+              background="#4CAF50"
+              onClick={() => doVote(true)}
+              isLoading={isLoading === "Aye"}
+              disabled={isLoading && isLoading !== "Aye"}
+            >
+              Aye
+            </Button>
+            <Button
+              primary
+              background="#F44336"
+              onClick={() => doVote(false)}
+              isLoading={isLoading === "Nay"}
+              disabled={isLoading && isLoading !== "Nay"}
+            >
+              Nay
+            </Button>
+          </ButtonWrapper>
+        )}
       </>
     );
   }

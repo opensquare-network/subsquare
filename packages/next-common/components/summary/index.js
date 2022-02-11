@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { u8aConcat } from "@polkadot/util";
 import { useDispatch, useSelector } from "react-redux";
 import CountDown from "./countDown";
 import { useBestNumber, useBlockTime } from "../../utils/hooks";
@@ -9,6 +8,8 @@ import { setSummary, summarySelector } from "../../store/reducers/summarySlice";
 import { estimateBlocksTime, toPrecision } from "../../utils";
 import { currentNodeSelector } from "@subsquare/next/store/reducers/nodeSlice";
 import useApi from "../../utils/hooks/useApi";
+import useTreasuryFree from "../../utils/hooks/useTreasuryFree";
+import useTreasuryBurn from "../../utils/hooks/useTreasuryBurn";
 
 const Wrapper = styled.div`
   display: flex;
@@ -73,8 +74,6 @@ const CountDownWrapper = styled.div`
   right: 24px;
 `;
 
-const EMPTY_U8A_32 = new Uint8Array(32);
-
 export default function Summary({ chain }) {
   const dispatch = useDispatch();
   const endpoint = useSelector(currentNodeSelector);
@@ -87,24 +86,8 @@ export default function Summary({ chain }) {
   const symbol = node?.symbol;
 
   const summary = useSelector(summarySelector);
-
-  useEffect(() => {
-    const TreasuryAccount = u8aConcat(
-      "modl",
-      api?.consts.treasury && api.consts.treasury.palletId
-        ? api.consts.treasury.palletId.toU8a(true)
-        : "py/trsry",
-      EMPTY_U8A_32
-    ).subarray(0, 32);
-    api?.query.system.account(TreasuryAccount).then((response) => {
-      const account = response.toJSON();
-      const free = account ? toPrecision(account.data.free, decimals) : 0;
-      const burnPercent = toPrecision(api.consts.treasury.burn, decimals) ?? 0;
-      const available = Number(free);
-      const nextBurn = Number(free) * Number(burnPercent);
-      dispatch(setSummary({ available, nextBurn }));
-    });
-  }, [api, chain, decimals, dispatch]);
+  const free = useTreasuryFree(api, chain);
+  const nextBurn = useTreasuryBurn(api, free);
 
   useEffect(() => {
     const getSpendPeriod = async function () {
@@ -128,14 +111,14 @@ export default function Summary({ chain }) {
       <Card>
         <Title>AVAILABLE</Title>
         <Content>
-          <span>{abbreviateBigNumber(summary?.available ?? 0)}</span>
+          <span>{abbreviateBigNumber(toPrecision(free, decimals))}</span>
           <span className="unit upper">{symbol}</span>
         </Content>
       </Card>
       <Card>
         <Title>NEXT BURN</Title>
         <Content>
-          <span>{abbreviateBigNumber(summary?.nextBurn ?? 0)}</span>
+          <span>{abbreviateBigNumber(toPrecision(nextBurn, decimals))}</span>
           <span className="unit upper">{symbol}</span>
         </Content>
       </Card>

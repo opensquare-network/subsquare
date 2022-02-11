@@ -4,8 +4,10 @@ import { khala } from "@phala/typedefs";
 import { basilisk } from "./bundle/basilisk";
 import {
   typesBundleForPolkadot as bifrostTypesBundleForPolkadot,
-  rpc,
+  rpc as bifrostRpc,
 } from "@bifrost-finance/type-definitions";
+import interbtc from "@interlay/interbtc-types";
+import { Chains } from "../../utils/constants";
 
 const apiInstanceMap = new Map();
 
@@ -27,8 +29,15 @@ export default async function getApi(chain, endpoint) {
           bifrost: bifrostTypesBundleForPolkadot.spec.bifrost,
           "bifrost-parachain": bifrostTypesBundleForPolkadot.spec.bifrost,
         },
-        rpc,
       };
+      options.rpc = bifrostRpc;
+    } else if (chain === Chains.kintsugi) {
+      options.typesBundle = {
+        spec: {
+          "interbtc-parachain": interbtc,
+        },
+      };
+      options.rpc = interbtc.rpc;
     }
 
     apiInstanceMap.set(endpoint, ApiPromise.create(options));
