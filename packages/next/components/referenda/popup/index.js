@@ -33,12 +33,17 @@ import ExternalLink from "next-common/components/externalLink";
 import ClosePanelIcon from "next-common/assets/imgs/icons/close-panel.svg";
 import Input from "next-common/components/input";
 import Select from "components/select";
-import ApproveIcon from "next-common/assets/imgs/icons/approve.svg";
-import RejectIcon from "next-common/assets/imgs/icons/reject.svg";
 import Tooltip from "components/tooltip";
-import Loading from "./loading";
-import DisplayValue from "./displayValue";
-import { isAye, getConviction, convictionToLockX } from "utils/referendumUtil";
+import Loading from "../loading";
+import { isAye, getConviction } from "utils/referendumUtil";
+import { TooltipWrapper, Label } from "./styled";
+import StandardVoteStatus from "./standardVoteStatus";
+import SplitVoteStatus from "./splitVoteStatus";
+import DelegateVoteStatus from "./delegateVoteStatus";
+import NoVoteRecord from "./noVoteRecord";
+import LoadingVoteStatus from "./loadingVoteStatus";
+import Delegating from "./delegating";
+import Delegations from "./delegations";
 
 const Background = styled.div`
   position: fixed;
@@ -88,13 +93,6 @@ const LabelWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const Label = styled.div`
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 100%;
-  margin-bottom: 8px;
-`;
-
 const ButtonWrapper = styled.div`
   display: flex;
   > first-child {
@@ -138,136 +136,6 @@ const Message = styled.div`
 
 const Download = styled.div`
   color: #2196f3;
-`;
-
-const StatusWrapper = styled.div`
-  background: #f6f7fa;
-  border-radius: 4px;
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 38px;
-  > div.value {
-    font-size: 14px;
-    line-height: 100%;
-    font-weight: 500;
-    > span {
-      color: #9da9bb;
-      margin-left: 2px;
-    }
-  }
-  > div.result {
-    display: flex;
-    align-items: center;
-    color: #506176;
-    > svg {
-      margin-left: 8px;
-    }
-  }
-  > img {
-    margin: 0 auto;
-  }
-  > div.no-data {
-    font-size: 14px;
-    line-height: 100%;
-    color: #9da9bb;
-    flex-grow: 1;
-    text-align: center;
-  }
-`;
-
-const TooltipWrapper = styled.div`
-  display: flex;
-  align-items: flex-start;
-  > :not(:first-child) {
-    margin-left: 4px;
-  }
-`;
-
-const WarningWrapper = styled.div`
-  background: #f6f7fa;
-  border-radius: 4px;
-  padding: 12px 16px;
-  font-size: 14px;
-  line-height: 140%;
-  color: #506176;
-`;
-
-const VotingStatusWrapper = styled.div`
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 100%;
-  color: #9da9bb;
-  margin-left: auto !important;
-  display: flex;
-  > :not(:first-child) {
-    margin-left: 4px;
-  }
-`;
-
-const VotingStatusContent = styled.div`
-  > :nth-child(n + 3) {
-    margin-top: 8px;
-  }
-`;
-
-const DelegatingInfo = styled.div`
-  display: flex;
-  padding: 12px 16px;
-  height: 64px;
-  background: #f6f7fa;
-  border-radius: 4px;
-
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 140%;
-  color: #506176;
-`;
-
-const DelegatingValue = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 16px;
-  height: 38px;
-  background: #f6f7fa;
-  border-radius: 4px;
-  margin-top: 8px;
-
-  > .vote {
-    display: flex;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 100%;
-
-    > .balance {
-      color: #1e2134;
-    }
-
-    > .conviction {
-      color: #9da9bb;
-      margin-left: 2px;
-    }
-  }
-
-  > .proxy {
-    display: flex;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 100%;
-
-    > .proxy-label {
-      color: #506176;
-    }
-
-    > .proxy-addr {
-      color: #1f70c7;
-      margin-left: 8px;
-    }
-  }
 `;
 
 export default function Popup({
@@ -520,22 +388,13 @@ export default function Popup({
           />
         </div>
         {!addressVote?.delegating && (
+          // Address is not allow to vote directly when it is in delegate mode
           <>
             {addressVoteDelegations ? (
-              <div>
-                <TooltipWrapper>
-                  <Label>Total Proxy Value</Label>
-                  <Tooltip content="Voting value for all proxy addresses" />
-                </TooltipWrapper>
-                <DelegatingValue>
-                  <div className="vote">
-                    <div className="balance">
-                      {toPrecision(addressVoteDelegations, node.decimals)}{" "}
-                      {node.voteSymbol || node.symbol}
-                    </div>
-                  </div>
-                </DelegatingValue>
-              </div>
+              <Delegations
+                addressVoteDelegations={addressVoteDelegations}
+                node={node}
+              />
             ) : null}
             <div>
               <TooltipWrapper>
@@ -565,153 +424,45 @@ export default function Popup({
             </div>
           </>
         )}
+
         {addressVote?.delegating && (
-          <div>
-            <DelegatingInfo>
-              The address is set to proxy mode, the proxy address cannot vote
-            </DelegatingInfo>
-            <DelegatingValue>
-              <div className="vote">
-                <div className="balance">
-                  {toPrecision(addressVoteDelegateBalance, node.decimals)}{" "}
-                  {node.voteSymbol || node.symbol}
-                </div>
-                <div className="conviction">
-                  {convictionToLockX(addressVoteDelegateConviction)}
-                </div>
-              </div>
-              <div className="proxy">
-                <div className="proxy-label">Proxy</div>
-                <a
-                  className="proxy-addr"
-                  href={`https://${chain}.subscan.io/account/${addressVoteDelegateTarget}`}
-                  target="_blank"
-                >
-                  {`${addressVoteDelegateTarget.substr(
-                    0,
-                    4
-                  )}...${addressVoteDelegateTarget.substr(
-                    addressVoteDelegateTarget.length - 4
-                  )}`}
-                </a>
-              </div>
-            </DelegatingValue>
-          </div>
+          // If the address has set to delegate mode, show the delegating setting instead
+          <Delegating
+            addressVoteDelegateBalance={addressVoteDelegateBalance}
+            addressVoteDelegateConviction={addressVoteDelegateConviction}
+            addressVoteDelegateTarget={addressVoteDelegateTarget}
+            node={node}
+          />
         )}
-        <VotingStatusContent>
-          <TooltipWrapper>
-            <Label>Current voting</Label>
-            <VotingStatusWrapper>
-              {addressVote?.standard ? (
-                <div>Standard</div>
-              ) : addressVote?.split ? (
-                <>
-                  <div>Split</div>
-                  <Tooltip content="Vote for both aye and nay" />
-                </>
-              ) : addressVote?.delegating ? (
-                <>
-                  <div>Delegate</div>
-                  <Tooltip content="Vote by delegating target" />
-                </>
-              ) : addressVoteIsLoading ? (
-                <Loading size={10} />
-              ) : null}
-            </VotingStatusWrapper>
-          </TooltipWrapper>
-          {addressVote?.standard && (
-            <>
-              <StatusWrapper>
-                <div className="value">
-                  <DisplayValue
-                    value={toPrecision(
-                      addressVoteStandardBalance,
-                      node.decimals
-                    )}
-                    symbol={node?.voteSymbol || node?.symbol}
-                  />
-                  <span>{`(${convictionToLockX(
-                    addressVoteStandardConviction
-                  )})`}</span>
-                </div>
-                {addressVoteStandardAye ? (
-                  <div className="result">
-                    Aye
-                    <ApproveIcon />
-                  </div>
-                ) : (
-                  <div className="result">
-                    Nay
-                    <RejectIcon />
-                  </div>
-                )}
-              </StatusWrapper>
-              <WarningWrapper>
-                Resubmitting the vote will override the current voting record
-              </WarningWrapper>
-            </>
+
+        {!addressVoteIsLoading &&
+          !addressVote?.standard &&
+          !addressVote?.split &&
+          (!addressVote?.delegating || !addressVoteDelegateVoted) && (
+            <NoVoteRecord />
           )}
-          {addressVote?.split && (
-            <>
-              <StatusWrapper>
-                <div className="value">
-                  <DisplayValue
-                    value={toPrecision(addressVoteSplitAye, node.decimals)}
-                    symbol={node?.voteSymbol || node?.symbol}
-                  />
-                </div>
-                <div className="result">
-                  Aye
-                  <ApproveIcon />
-                </div>
-              </StatusWrapper>
-              <StatusWrapper>
-                <div className="value">
-                  <DisplayValue
-                    value={toPrecision(addressVoteSplitNay, node.decimals)}
-                    symbol={node?.voteSymbol || node?.symbol}
-                  />
-                </div>
-                <div className="result">
-                  Nay
-                  <RejectIcon />
-                </div>
-              </StatusWrapper>
-              <WarningWrapper>
-                Resubmitting the vote will override the current voting record
-              </WarningWrapper>
-            </>
-          )}
-          {addressVote?.delegating && addressVoteDelegateVoted && (
-            <StatusWrapper>
-              <div className="value">Voting</div>
-              {addressVoteDelegateAye ? (
-                <div className="result">
-                  Aye
-                  <ApproveIcon />
-                </div>
-              ) : (
-                <div className="result">
-                  Nay
-                  <RejectIcon />
-                </div>
-              )}
-            </StatusWrapper>
-          )}
-          {!addressVoteIsLoading &&
-            (!addressVote ||
-              (addressVote?.delegating && !addressVoteDelegateVoted)) && (
-              <StatusWrapper>
-                <div className="no-data">No voting record</div>
-              </StatusWrapper>
-            )}
-          {addressVoteIsLoading && (
-            <StatusWrapper>
-              <Loading size={14} />
-            </StatusWrapper>
-          )}
-        </VotingStatusContent>
+        {addressVote?.standard && (
+          <StandardVoteStatus
+            addressVoteStandardBalance={addressVoteStandardBalance}
+            addressVoteStandardConviction={addressVoteStandardConviction}
+            addressVoteStandardAye={addressVoteStandardAye}
+            node={node}
+          />
+        )}
+        {addressVote?.split && (
+          <SplitVoteStatus
+            addressVoteSplitAye={addressVoteSplitAye}
+            addressVoteSplitNay={addressVoteSplitNay}
+            node={node}
+          />
+        )}
+        {addressVote?.delegating && addressVoteDelegateVoted && (
+          <DelegateVoteStatus addressVoteDelegateAye={addressVoteDelegateAye} />
+        )}
+        {addressVoteIsLoading && <LoadingVoteStatus />}
+
         {!addressVote?.delegating && (
+          // Address is not allow to vote directly when it is in delegate mode
           <ButtonWrapper>
             <Button
               primary
