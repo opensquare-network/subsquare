@@ -5,7 +5,7 @@ import {
   VotingStatusWrapper,
   StatusWrapper,
 } from "./styled";
-import Tooltip from "components/tooltip";
+import Tooltip from "next-common/components/tooltip";
 import ApproveIcon from "next-common/assets/imgs/icons/approve.svg";
 import RejectIcon from "next-common/assets/imgs/icons/reject.svg";
 

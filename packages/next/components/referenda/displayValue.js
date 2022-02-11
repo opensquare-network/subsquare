@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import Tooltip from "components/tooltip";
+import Tooltip from "next-common/components/tooltip";
 import { abbreviateBigNumber } from "utils";
 
 const NotEqual = styled.div`

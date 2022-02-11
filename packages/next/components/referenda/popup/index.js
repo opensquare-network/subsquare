@@ -33,7 +33,7 @@ import ExternalLink from "next-common/components/externalLink";
 import ClosePanelIcon from "next-common/assets/imgs/icons/close-panel.svg";
 import Input from "next-common/components/input";
 import Select from "components/select";
-import Tooltip from "components/tooltip";
+import Tooltip from "next-common/components/tooltip";
 import Loading from "../loading";
 import { isAye, getConviction } from "utils/referendumUtil";
 import { TooltipWrapper, Label } from "./styled";
