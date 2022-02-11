@@ -1119,7 +1119,7 @@
   resolved "https://registry.yarnpkg.com/@interlay/interbtc-types/-/interbtc-types-1.5.10.tgz#8ff123e7886df06776e090deacca5c1b84ecf315"
   integrity sha512-7pUzNKmNeHi74uJl9WBoYzwyKh8+X18wZz9MVDvx58SgkDiEjUpyeafjhcmVhJptaB+OwPJ1V76RDbJRxr0T4w==
 
-"@interlay/monetary-js@^0.5.3":
+"@interlay/monetary-js@0.5.4", "@interlay/monetary-js@^0.5.3":
   version "0.5.4"
   resolved "https://registry.yarnpkg.com/@interlay/monetary-js/-/monetary-js-0.5.4.tgz#f9dc8e7444b79a00724c3d01511c7ae2d4f2ee5f"
   integrity sha512-QY/LpqFFZp1OPU8tkF9VKERBgJMIF9hlyUr8ApiK3WS3D4iJCjKGu0+BYd5OTZiYk0yS+76s+zwneVTguE3Mog==
@@ -1979,6 +1979,12 @@
 "@subsquare/next-common@file:packages/next-common":
   version "1.0.0"
   dependencies:
+    "@acala-network/type-definitions" "4.0.1"
+    "@bifrost-finance/type-definitions" "^1.3.21"
+    "@interlay/interbtc-types" "1.5.10"
+    "@interlay/monetary-js" "0.5.4"
+    "@phala/typedefs" "^0.2.30"
+    "@polkadot/api" "7.7.1"
     "@polkadot/react-identicon" "1.0.1"
     md5 "^2.3.0"
     react "^17.0.2"
