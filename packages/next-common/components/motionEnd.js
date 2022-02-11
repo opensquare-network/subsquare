@@ -1,8 +1,9 @@
+import React from "react";
 import { useSelector } from "react-redux";
-import { nodesHeightSelector } from "store/reducers/nodeSlice";
+import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
 import CountDown from "next-common/components/countDown";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
-import { bigNumber2Locale, isMotionEnded } from "utils";
+import { bigNumber2Locale, isMotionEnded } from "next-common/utils";
 
 export default function MotionEnd({ motion, type = "full", chain }) {
   const currentFinalHeight = useSelector(nodesHeightSelector);
