@@ -34,7 +34,13 @@ const TitleWrapper = styled.div`
   }
 `;
 
-export default function Timeline({ data, chain, indent = true, type = "" }) {
+export default function Timeline({
+  data,
+  chain,
+  indent = true,
+  type = "",
+  motionEndInfo = null,
+}) {
   if (!data || data?.length === 0) {
     return null;
   }
@@ -49,9 +55,10 @@ export default function Timeline({ data, chain, indent = true, type = "" }) {
     <Wrapper>
       <TitleWrapper>
         <div>Timeline</div>
-        <div>{`Latest activity ${timeDurationFromNow(
-          lastTimelineItemTime
-        )}`}</div>
+        <div>
+          {motionEndInfo ||
+            `Latest activity ${timeDurationFromNow(lastTimelineItemTime)}`}
+        </div>
       </TitleWrapper>
       {data.map((item, index) => (
         <Fragment key={index}>
