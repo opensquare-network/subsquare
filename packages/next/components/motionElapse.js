@@ -12,8 +12,7 @@ export default function MotionElapse({ motion, chain }) {
   const currentFinalHeight = motionEndHeight - 10000;
   const motionStartHeight = motion?.indexer?.blockHeight;
   const estimatedBlocksTime = useEstimateBlockTime(
-    currentFinalHeight - motionEndHeight,
-    chain
+    currentFinalHeight - motionEndHeight
   );
   const motionEnd = isMotionEnded(motion);
 

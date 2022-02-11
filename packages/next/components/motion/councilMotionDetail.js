@@ -171,9 +171,8 @@ export default withLoginUserRedux(
   ({ loginUser, motion, onReply, chain, type }) => {
     const currentFinalHeight = useSelector(nodesHeightSelector);
     const motionEndHeight = motion.onchainData?.voting?.end;
-    const esitmatedBlocksTime = useEstimateBlockTime(
-      currentFinalHeight - motionEndHeight,
-      chain
+    const estimatedBlocksTime = useEstimateBlockTime(
+      currentFinalHeight - motionEndHeight
     );
     const motionEnd = isMotionEnded(motion.onchainData);
 
@@ -182,7 +181,7 @@ export default withLoginUserRedux(
       motionEndHeight &&
       currentFinalHeight &&
       currentFinalHeight <= motionEndHeight &&
-      esitmatedBlocksTime;
+      estimatedBlocksTime;
 
     const node = getNode(chain);
     if (!node) {

@@ -204,8 +204,7 @@ export default function TechcommMotionDetail({
   const currentFinalHeight = useSelector(nodesHeightSelector);
   const motionEndHeight = motion.onchainData?.voting?.end;
   const estimatedBlocksTime = useEstimateBlockTime(
-    currentFinalHeight - motionEndHeight,
-    chain
+    currentFinalHeight - motionEndHeight
   );
   const motionEnd = isMotionEnded(motion.onchainData);
 

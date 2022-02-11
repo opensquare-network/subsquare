@@ -68,7 +68,8 @@ export function useApi(chain) {
   return useChainApi(chain, nodeUrl);
 }
 
-export function useEstimateBlockTime(blocks, chain) {
+export function useEstimateBlockTime(blocks) {
+  const chain = process.env.NEXT_PUBLIC_CHAIN;
   const api = useApi(chain);
   const singleBlockTime = useBlockTime();
   const [estimatedTime, setEstimatedTime] = useState("");
