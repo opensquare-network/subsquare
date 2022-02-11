@@ -19,7 +19,7 @@ export default function MotionElapse({ motion, chain }) {
     currentFinalHeight >= motionEndHeight ||
     !blockTime
   ) {
-    // return null;
+    return null;
   }
 
   const elapsePercent =
