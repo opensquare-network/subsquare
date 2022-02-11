@@ -135,25 +135,3 @@ export function useAddressVote(referendumIndex, address, chain) {
   }, [api, referendumIndex, address]);
   return [vote, isLoading];
 }
-
-export function useBlockHeight(chain) {
-  const api = useApi(chain);
-  const [blockHeight, setBlockHeight] = useState();
-  const isMounted = useIsMounted();
-  useEffect(() => {
-    let unsub = null;
-    if (api) {
-      api.rpc.chain
-        .subscribeNewHeads((header) => {
-          if (isMounted.current) {
-            const height = header.number.toNumber();
-            setBlockHeight(height);
-          }
-        })
-        .then((res) => (unsub = res));
-
-      return () => unsub?.();
-    }
-  }, [api]);
-  return blockHeight;
-}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { BN_THOUSAND, BN_TWO, bnToBn, extractTime } from "@polkadot/util";
 import { useApi } from "@subsquare/next/utils/hooks";
+import useIsMounted from "./useIsMounted";
 
 export function useBlockTime(api) {
   const [blockTime, setBlockTime] = useState();
@@ -32,11 +33,16 @@ export function useBlockTime(api) {
 
 export function useBestNumber(api) {
   const [bestNumber, setBestNumber] = useState();
+  const isMounted = useIsMounted();
   useEffect(() => {
     if (api) {
       api.derive.chain
         .bestNumber()
-        .then((result) => setBestNumber(result))
+        .then((result) => {
+          if (isMounted.current) {
+            setBestNumber(result);
+          }
+        })
         .catch((e) => console.error(e));
     }
   }, [api]);

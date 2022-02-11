@@ -20,7 +20,7 @@ import ElectorateIcon from "public/imgs/icons/electorate.svg";
 import Threshold from "./threshold";
 import DisplayValue from "./displayValue";
 import Loading from "./loading";
-import { useBlockHeight } from "utils/hooks";
+import { useBestNumber } from "next-common/utils/hooks";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -195,7 +195,8 @@ function Vote({
   const [showVote, setShowVote] = useState(false);
   const isMounted = useIsMounted();
   const api = useApi(chain);
-  const blockHeight = useBlockHeight(chain);
+  const bestNumber = useBestNumber(api);
+  const blockHeight = bestNumber.toNumber();
 
   const updateVoteProgress = useCallback(() => {
     api?.query.democracy
