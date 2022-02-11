@@ -20,13 +20,24 @@ import {
 import { useRef, useState } from "react";
 import SEO from "components/SEO";
 
+const OutWrapper = styled.div`
+  display: flex;
+  max-width: 1080px;
+  margin: 0 auto;
+  position: relative;
+`;
+
 const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
 
-  max-width: 848px;
-  margin: auto;
+  margin-right: 312px;
+  @media screen and (max-width: 1024px) {
+    max-width: 848px;
+    margin: 0 auto;
+  }
+  overflow: hidden;
 `;
 
 const CommentsWrapper = styled.div`
@@ -69,35 +80,43 @@ export default withLoginUserRedux(
           siteUrl={siteUrl}
           chain={chain}
         />
-        <Wrapper className="post-content">
-          <Back href={`/council/motions`} text="Back to Motions" />
-          <MotionDetail
-            motion={motion}
-            user={loginUser}
-            chain={chain}
-            type={TYPE_COUNCIL_MOTION}
-            onReply={onReply}
-          />
-          <CommentsWrapper>
-            <Comments
-              data={comments}
+        <OutWrapper>
+          <Wrapper className="post-content">
+            <Back href={`/council/motions`} text="Back to Motions" />
+            <MotionDetail
+              motion={motion}
               user={loginUser}
-              postId={motion._id}
               chain={chain}
+              type={TYPE_COUNCIL_MOTION}
               onReply={onReply}
             />
-            {loginUser && (
-              <Editor
+            <CommentsWrapper>
+              <Comments
+                data={comments}
+                user={loginUser}
                 postId={motion._id}
                 chain={chain}
-                ref={editorWrapperRef}
-                setQuillRef={setQuillRef}
-                {...{ contentType, setContentType, content, setContent, users }}
-                type={TYPE_COUNCIL_MOTION}
+                onReply={onReply}
               />
-            )}
-          </CommentsWrapper>
-        </Wrapper>
+              {loginUser && (
+                <Editor
+                  postId={motion._id}
+                  chain={chain}
+                  ref={editorWrapperRef}
+                  setQuillRef={setQuillRef}
+                  {...{
+                    contentType,
+                    setContentType,
+                    content,
+                    setContent,
+                    users,
+                  }}
+                  type={TYPE_COUNCIL_MOTION}
+                />
+              )}
+            </CommentsWrapper>
+          </Wrapper>
+        </OutWrapper>
       </Layout>
     );
   }

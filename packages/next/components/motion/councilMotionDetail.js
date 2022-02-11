@@ -29,6 +29,7 @@ import MotionEnd from "./motionEnd";
 import { useBlockTime } from "utils/hooks";
 import { nodesHeightSelector } from "store/reducers/nodeSlice";
 import { useSelector } from "react-redux";
+import Vote from "components/vote";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -358,6 +359,7 @@ export default withLoginUserRedux(
             setIsEdit={setIsEdit}
           />
         </Wrapper>
+        <Vote chain={chain} />
 
         <MultiKVList title="Business" data={business} />
 
