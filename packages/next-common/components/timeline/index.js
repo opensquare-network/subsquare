@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { Fragment } from "react";
+import React, { Fragment } from "react";
 
 import Item from "./item";
 import FoldableItem from "./foldableItem";
-import { timeDurationFromNow } from "utils";
+import { timeDurationFromNow } from "../../utils";
 import { shadow_100 } from "../../styles/componentCss";
 
 const Wrapper = styled.div`

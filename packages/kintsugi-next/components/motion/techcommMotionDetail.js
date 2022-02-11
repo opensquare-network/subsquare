@@ -5,7 +5,7 @@ import Link from "next/link";
 import User from "next-common/components/user";
 import MotionProposal from "./motionProposal";
 import Links from "next-common/components/links";
-import Timeline from "components/timeline";
+import Timeline from "next-common/components/timeline";
 import { getNode, timeDurationFromNow, toPrecision } from "utils";
 import SectionTag from "components/sectionTag";
 import findLastIndex from "lodash.findlastindex";

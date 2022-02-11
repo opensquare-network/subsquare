@@ -1,10 +1,10 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import Links from "next-common/components/links";
+import Links from "../links";
 import Voting from "./voting";
-import User from "next-common/components/user";
-import Tag from "next-common/components/tag";
-import Flex from "next-common/components/styled/flex";
+import User from "../user";
+import Tag from "../tag";
+import Flex from "../styled/flex";
 
 const Wrapper = styled.div`
   display: flex;
@@ -99,7 +99,7 @@ const ContentWrapper = styled.div`
 `;
 
 const ContentItem = styled(Flex)`
-  align-items: flex-start;
+  align-items: flex-start !important;
   justify-content: space-between;
   word-break: break-word;
   > :first-child {
@@ -110,9 +110,9 @@ const ContentItem = styled(Flex)`
   > :last-child {
     display: flex;
     padding-top: 4px;
-    max-width: 50%;
     justify-content: flex-end;
     align-items: center;
+    max-width: 50%;
     line-height: 19.6px;
     text-align: right;
     flex: 1 1 auto;
@@ -180,7 +180,7 @@ export default function Item({
         {data.voting && <Voting data={data.voting} chain={chain} />}
         {data.voteResult && (
           <VoteResultWrapper>
-            <User chain={chain} add={data.voteResult.name} fontSize={14} />
+            <User chain={chain} add={data.voteResult.name} fontSize={12} />
             {data.voteResult.value ? (
               <div>
                 Aye

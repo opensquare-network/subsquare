@@ -19,7 +19,7 @@ import Comments from "next-common/components/comment";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import Editor from "next-common/components/comment/editor";
 import Layout from "components/layout";
-import Timeline from "components/timeline";
+import Timeline from "next-common/components/timeline";
 import dayjs from "dayjs";
 import User from "next-common/components/user";
 import KVList from "next-common/components/kvList";

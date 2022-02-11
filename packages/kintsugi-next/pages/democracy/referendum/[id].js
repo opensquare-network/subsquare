@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-key */
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import Back from "next-common/components/back";
@@ -8,13 +9,12 @@ import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import Comments from "next-common/components/comment";
 import Editor from "next-common/components/comment/editor";
-import { useEffect, useRef, useState } from "react";
 import DetailItem from "components/detailItem";
 import KVList from "next-common/components/kvList";
 import User from "next-common/components/user";
 import Links from "next-common/components/links";
 import Vote from "components/referenda/vote";
-import Timeline from "components/timeline";
+import Timeline from "next-common/components/timeline";
 import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";

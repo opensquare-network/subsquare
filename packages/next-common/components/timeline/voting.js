@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import User from "next-common/components/user";
 import Progress from "./progress";
@@ -22,9 +23,8 @@ const ArgsWrapper = styled.div`
   align-items: flex-start;
   padding: 8px 28px;
 
-  background: #F6F7FA;
+  background: #f6f7fa;
   border-radius: 4px;
-  margin-bottom: 8px;
 `;
 
 const ArgItem = styled.div`
@@ -46,7 +46,7 @@ const ArgItem = styled.div`
     font-weight: normal;
     font-size: 14px;
     line-height: 100%;
-    color: #1E2134;
+    color: #1e2134;
   }
 `;
 
@@ -54,7 +54,7 @@ export default function Voting({ data, chain }) {
   return (
     <div>
       <TitleWrapper>
-        <User chain={chain} add={data.proposer} fontSize={12} />
+        <User chain={chain} add={data.proposer} fontSize={14} />
         <div>
           <div>{data.method}</div>
           <img src="/imgs/icons/approve.svg" alt="" />
@@ -65,23 +65,17 @@ export default function Voting({ data, chain }) {
           {data.args.map((arg, index) => (
             <ArgItem key={index}>
               <div>{arg.name}</div>
-              <div>{
-                ["boolean", "number", "string"].includes(typeof arg.value) ||
+              <div>
+                {["boolean", "number", "string"].includes(typeof arg.value) ||
                 React.isValidElement(arg.value)
                   ? arg.value
-                  : JSON.stringify(arg.value)
-              }</div>
+                  : JSON.stringify(arg.value)}
+              </div>
             </ArgItem>
           ))}
         </ArgsWrapper>
       )}
-      {
-        data.total !== undefined &&
-          data.ayes !== undefined &&
-          data.nays !== undefined && (
-          <Progress total={data.total} ayes={data.ayes} nays={data.nays} />
-        )
-      }
+      <Progress total={data.total} ayes={data.ayes} nays={data.nays} />
     </div>
   );
 }

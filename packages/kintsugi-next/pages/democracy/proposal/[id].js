@@ -14,7 +14,7 @@ import User from "next-common/components/user";
 import { getNode, toPrecision } from "utils";
 import Link from "next/link";
 import Links from "next-common/components/links";
-import Timeline from "components/timeline";
+import Timeline from "next-common/components/timeline";
 import KVList from "next-common/components/kvList";
 import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";

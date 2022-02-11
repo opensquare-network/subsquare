@@ -13,7 +13,7 @@ import User from "next-common/components/user";
 import { getNode, toPrecision } from "utils";
 import Links from "next-common/components/links";
 import dayjs from "dayjs";
-import Timeline from "components/timeline";
+import Timeline from "next-common/components/timeline";
 import { getTimelineStatus } from "utils";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
