@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 
 import useChainApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-
 import { currentNodeSelector } from "store/reducers/nodeSlice";
-import { BN, BN_TWO, BN_THOUSAND, bnToBn, extractTime } from "@polkadot/util";
+import { bnToBn, extractTime } from "@polkadot/util";
+import { useBlockTime } from "next-common/utils/hooks";
 import {
   getAddressVotingBalance,
   getAddressVote,
@@ -177,31 +177,13 @@ export function useBlockHeight(chain) {
   return blockHeight;
 }
 
-const DEFAULT_BLOCK_TIME = new BN(6_000);
-const THRESHOLD = BN_THOUSAND.div(BN_TWO);
-
-export function useBlockTime(blocks, chain) {
+export function useEstimateBlocksTime(blocks, chain) {
   const api = useApi(chain);
-  const [blockTime, setBlockTime] = useState("");
+  const singleBlockTime = useBlockTime(api);
+  const [estimatedTime, setEstimatedTime] = useState("");
   useEffect(() => {
-    if (api) {
-      const blockTime =
-        // Babe
-        api.consts.babe?.expectedBlockTime ||
-        // POW, eg. Kulupu
-        api.consts.difficulty?.targetBlockTime ||
-        // Subspace
-        api.consts.subspace?.expectedBlockTime ||
-        // Check against threshold to determine value validity
-        (api.consts.timestamp?.minimumPeriod.gte(THRESHOLD)
-          ? // Default minimum period config
-            api.consts.timestamp.minimumPeriod.mul(BN_TWO)
-          : api.query.parachainSystem
-          ? // default guess for a parachain
-            DEFAULT_BLOCK_TIME.mul(TWO)
-          : // default guess for others
-            DEFAULT_BLOCK_TIME);
-      const value = blockTime.mul(bnToBn(blocks)).toNumber();
+    if (api && singleBlockTime) {
+      const value = singleBlockTime.mul(bnToBn(blocks)).toNumber();
       const time = extractTime(Math.abs(value));
       const { days, hours, minutes, seconds } = time;
       const timeStr = [
@@ -214,9 +196,9 @@ export function useBlockTime(blocks, chain) {
         .slice(0, 2)
         .join(" ");
 
-      setBlockTime(timeStr);
+      setEstimatedTime(timeStr);
     }
-  }, [api, blocks]);
+  }, [blocks, api, singleBlockTime]);
 
-  return blockTime;
+  return estimatedTime;
 }
