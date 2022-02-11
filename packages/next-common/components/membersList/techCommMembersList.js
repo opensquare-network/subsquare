@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-import Flex from "next-common/components/styled/flex";
-import User from "next-common/components/user";
-import { Fragment } from "react";
-import LoadingSvg from "public/imgs/icons/members-loading.svg";
+import Flex from "../styled/flex";
+import User from "../user";
+import React, { Fragment } from "react";
+import LoadingSvg from "../../assets/imgs/icons/members-loading.svg";
 
 const Wrapper = styled.div`
   max-width: 848px;
@@ -38,6 +38,7 @@ const StyledTable = styled.table`
     .autohide {
       display: none;
     }
+
     th.clickable {
       color: #506176;
       cursor: pointer;

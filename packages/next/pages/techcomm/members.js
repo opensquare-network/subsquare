@@ -1,4 +1,4 @@
-import MembersList from "components/membersList/techCommMembersList";
+import MembersList from "next-common/components/membersList/techCommMembersList";
 import Menu from "next-common/components/menu";
 import { mainMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
