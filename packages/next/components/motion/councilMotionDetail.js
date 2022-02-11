@@ -26,7 +26,7 @@ import CapitalText from "../capitalText";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
 import Tag from "next-common/components/tag";
 import MotionEnd from "./motionEnd";
-import { useEstimateBlockTime } from "utils/hooks";
+import { useEstimateBlocksTime } from "utils/hooks";
 import { nodesHeightSelector } from "store/reducers/nodeSlice";
 import { useSelector } from "react-redux";
 
@@ -171,7 +171,7 @@ export default withLoginUserRedux(
   ({ loginUser, motion, onReply, chain, type }) => {
     const currentFinalHeight = useSelector(nodesHeightSelector);
     const motionEndHeight = motion.onchainData?.voting?.end;
-    const estimatedBlocksTime = useEstimateBlockTime(
+    const estimatedBlocksTime = useEstimateBlocksTime(
       currentFinalHeight - motionEndHeight
     );
     const motionEnd = isMotionEnded(motion.onchainData);

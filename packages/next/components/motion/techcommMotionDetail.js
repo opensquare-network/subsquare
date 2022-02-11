@@ -22,7 +22,7 @@ import { createMotionTimelineData } from "../../utils/timeline/motion";
 import { getPostUpdatedAt } from "../../utils/viewfuncs";
 import MultiKVList from "next-common/components/multiKVList";
 import MotionEnd from "./motionEnd";
-import { useEstimateBlockTime } from "utils/hooks";
+import { useEstimateBlocksTime } from "utils/hooks";
 import { nodesHeightSelector } from "store/reducers/nodeSlice";
 import { useSelector } from "react-redux";
 
@@ -203,7 +203,7 @@ export default function TechcommMotionDetail({
 }) {
   const currentFinalHeight = useSelector(nodesHeightSelector);
   const motionEndHeight = motion.onchainData?.voting?.end;
-  const estimatedBlocksTime = useEstimateBlockTime(
+  const estimatedBlocksTime = useEstimateBlocksTime(
     currentFinalHeight - motionEndHeight
   );
   const motionEnd = isMotionEnded(motion.onchainData);

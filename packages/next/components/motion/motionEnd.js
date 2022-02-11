@@ -1,14 +1,14 @@
 import { useSelector } from "react-redux";
 import { nodesHeightSelector } from "store/reducers/nodeSlice";
 import CountDown from "components/countDown";
-import { useEstimateBlockTime } from "utils/hooks";
+import { useEstimateBlocksTime } from "utils/hooks";
 import { bigNumber2Locale, isMotionEnded } from "utils";
 
 export default function MotionEnd({ motion, type = "full", chain }) {
   const currentFinalHeight = useSelector(nodesHeightSelector);
   const motionEndHeight = motion?.voting?.end;
   const motionStartHeight = motion?.indexer?.blockHeight;
-  const estimatedBlocksTime = useEstimateBlockTime(
+  const estimatedBlocksTime = useEstimateBlocksTime(
     currentFinalHeight - motionEndHeight
   );
   const motionEnd = isMotionEnded(motion);
