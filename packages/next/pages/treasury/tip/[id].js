@@ -23,7 +23,7 @@ import Timeline from "components/timeline";
 import dayjs from "dayjs";
 import User from "next-common/components/user";
 import KVList from "next-common/components/kvList";
-import Links from "components/timeline/links";
+import Links from "next-common/components/links";
 import ReasonLink from "components/reasonLink";
 import SEO from "components/SEO";
 import Tipper from "components/tipper";

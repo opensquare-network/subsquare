@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import User from "next-common/components/user";
 import MotionProposal from "./motionProposal";
-import Links from "../timeline/links";
+import Links from "next-common/components/links";
 import Timeline from "../timeline";
 import {
   getNode,
