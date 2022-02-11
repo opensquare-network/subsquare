@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { currentNodeSelector } from "store/reducers/nodeSlice";
-import { getApi } from "services/polkadotApi";
 import {
   getAddressVote,
   getAddressVotingBalance,
   getElectorate,
 } from "./referendumUtil";
-import { BN_THOUSAND, BN_TWO, bnToBn, extractTime } from "@polkadot/util";
+import useChainApi from "next-common/utils/hooks/useApi";
 
 export function useOnClickOutside(ref, handler) {
   useEffect(() => {
@@ -77,24 +76,9 @@ export function useIsMounted() {
   return isMounted;
 }
 
-export function useCall(fn, params = []) {
-  const [result, setResult] = useState();
-  const isMounted = useIsMounted();
-  useEffect(() => {
-    if (fn) {
-      fn(...params).then((value) => {
-        if (isMounted.current) {
-          setResult(value);
-        }
-      });
-    }
-  }, [fn, ...params]);
-  return result;
-}
-
 export function useApi(chain) {
   const nodeUrl = useSelector(currentNodeSelector);
-  return useCall(getApi, [chain, nodeUrl]);
+  return useChainApi(chain, nodeUrl);
 }
 
 export function useElectorate(height) {
