@@ -81,7 +81,7 @@ const Info = styled.div`
   align-items: center;
   font-size: 12px;
   color: #506176;
-  .elapseIcon {
+  .elapseIcon > * {
     margin-left: 8px;
   }
 `;
