@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { useState, useRef } from "react";
 
-import { useOnClickOutside } from "utils/hooks";
+import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside.js";
 
 const Wrapper = styled.div`
   position: relative;

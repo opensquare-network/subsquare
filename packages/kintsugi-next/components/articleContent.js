@@ -6,7 +6,7 @@ import { addToast } from "store/reducers/toastSlice";
 import User from "next-common/components/user";
 import EditIcon from "public/imgs/icons/edit.svg";
 import HtmlRender from "./post/htmlRender";
-import Actions from "./actions";
+import Actions from "next-common/components/actions";
 import PostEdit from "./post/postEdit";
 import styled from "styled-components";
 import MicromarkMd from "./micromarkMd";

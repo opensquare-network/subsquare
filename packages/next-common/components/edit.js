@@ -1,17 +1,19 @@
+import React, { useState, useRef } from "react";
 import styled, { css } from "styled-components";
-import { useState, useRef } from "react";
-import { useOnClickOutside } from "utils/hooks";
+import useOnClickOutside from "../utils/hooks/useOnClickOutside";
 import { shadow_200 } from "../styles/componentCss";
 
 const Wrapper = styled.div`
   margin-left: auto;
   position: relative;
   display: none;
+
   > img {
     width: 16px;
     height: 16px;
     cursor: pointer;
   }
+
   ${(p) =>
     p.active &&
     css`
@@ -36,6 +38,7 @@ const OptionItem = styled.div`
   cursor: pointer;
   padding: 0 12px;
   font-weight: 500;
+
   :hover {
     background: #f6f7fa;
   }
@@ -49,7 +52,13 @@ export default function Edit({ edit, setIsEdit, alwaysShow }) {
 
   return (
     <Wrapper className="edit" active={show || alwaysShow} ref={ref}>
-      <img alt="" src="/imgs/icons/more.svg" onClick={() => setShow(!show)} width={24} height={24}/>
+      <img
+        alt=""
+        src="/imgs/icons/more.svg"
+        onClick={() => setShow(!show)}
+        width={24}
+        height={24}
+      />
       {show && (
         <OptionWrapper>
           {edit && (

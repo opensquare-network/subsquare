@@ -15,7 +15,8 @@ import {
   encodeKabochaAddress,
 } from "services/chainApi";
 
-import { useOnClickOutside, useApi } from "utils/hooks";
+import { useApi } from "utils/hooks";
+import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside.js";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import AddressSelect from "components/addressSelect";
 import Button from "next-common/components/button";

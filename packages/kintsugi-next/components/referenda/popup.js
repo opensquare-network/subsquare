@@ -16,8 +16,8 @@ import {
   encodeKintsugiAddress,
 } from "services/chainApi";
 
+import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside.js";
 import {
-  useOnClickOutside,
   useIsMounted,
   useApi,
   useAddressVotingBalance,

@@ -8,23 +8,6 @@ import {
 } from "./referendumUtil";
 import useChainApi from "next-common/utils/hooks/useApi";
 
-export function useOnClickOutside(ref, handler) {
-  useEffect(() => {
-    const listener = (event) => {
-      if (!ref.current || ref.current.contains(event.target)) {
-        return;
-      }
-      handler(event);
-    };
-    document.addEventListener("mousedown", listener);
-    document.addEventListener("touchstart", listener);
-    return () => {
-      document.removeEventListener("mousedown", listener);
-      document.removeEventListener("touchstart", listener);
-    };
-  });
-}
-
 export function useWindowSize() {
   const [windowSize, setWindowSize] = useState({
     width: undefined,
