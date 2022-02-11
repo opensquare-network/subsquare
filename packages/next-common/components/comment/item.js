@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { timeDurationFromNow } from "next-common/utils";
-import Edit from "components/edit";
+import Edit from "../edit";
 import HtmlRender from "../post/htmlRender";
 import nextApi from "next-common/services/nextApi";
 import { useEffect, useState } from "react";
