@@ -202,3 +202,9 @@ export const estimateBlocksTime = (api, blocks, blockTime) => {
       .split(" ");
   }
 };
+
+export function isMotionEnded(motion) {
+  return ["Closed", "Approved", "Executed", "Disapproved"].includes(
+    motion.state.state
+  );
+}

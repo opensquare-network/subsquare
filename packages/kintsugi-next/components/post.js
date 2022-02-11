@@ -13,6 +13,7 @@ import {
   text_accessory,
   text_primary,
 } from "../styles/componentCss";
+import MotionElapse from "next-common/components/motionElapse";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -76,8 +77,13 @@ const Index = styled.div`
 `;
 
 const Info = styled.div`
+  display: flex;
+  align-items: center;
   font-size: 12px;
   color: #506176;
+  .elapseIcon > * {
+    margin-left: 8px;
+  }
 `;
 
 const AutHideInfo = styled(Info)`
@@ -148,7 +154,7 @@ const Method = styled.span`
   color: #9da9bb !important;
 `;
 
-export default function Post({ data, chain, href }) {
+export default function Post({ data, chain, href, type }) {
   const node = getNode(chain);
   if (!node) {
     return null;
@@ -156,6 +162,16 @@ export default function Post({ data, chain, href }) {
   const decimals = node.decimals;
   const symbol = node.symbol;
   const method = data?.onchainData?.proposal?.method;
+
+  let elapseIcon = null;
+  if (
+    ["Council Motions", "Financial Motions", "Tech. Comm. Proposals"].includes(
+      type
+    )
+  ) {
+    elapseIcon = <MotionElapse motion={data.onchainData} chain={chain} />;
+  }
+
   return (
     <Wrapper>
       <HeadWrapper>
@@ -182,7 +198,10 @@ export default function Post({ data, chain, href }) {
           {data.isTreasury && <SectionTag name={"Treasury"} />}
           {data.isDemocracy && <SectionTag name={"Democracy"} />}
           {data.time && (
-            <Info>{`Updated ${timeDurationFromNow(data.time)}`}</Info>
+            <Info>
+              <span>{`Updated ${timeDurationFromNow(data.time)}`}</span>
+              <Flex className="elapseIcon">{elapseIcon}</Flex>
+            </Info>
           )}
           {data.remaining && <Info>{`${timeDuration(data.remaining)}`}</Info>}
           {data.commentsCount > -1 && (

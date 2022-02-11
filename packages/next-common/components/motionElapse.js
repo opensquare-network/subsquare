@@ -1,9 +1,10 @@
+import React from "react";
 import { useSelector } from "react-redux";
-import { nodesHeightSelector } from "store/reducers/nodeSlice";
-import CountDown from "components/countDown";
-import Tooltip from "./tooltip";
-import { useEstimateBlocksTime } from "utils/hooks";
-import { bigNumber2Locale, isMotionEnded } from "utils";
+import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
+import CountDown from "next-common/components/countDown";
+import Tooltip from "next-common/components/tooltip";
+import { useEstimateBlocksTime } from "next-common/utils/hooks";
+import { bigNumber2Locale, isMotionEnded } from "next-common/utils";
 
 export default function MotionElapse({ motion, chain }) {
   const currentFinalHeight = useSelector(nodesHeightSelector);

@@ -13,7 +13,7 @@ import {
   text_accessory,
   text_primary,
 } from "../styles/componentCss";
-import MotionElapse from "./motionElapse";
+import MotionElapse from "next-common/components/motionElapse";
 
 const Wrapper = styled.div`
   background: #ffffff;

@@ -26,7 +26,7 @@ import CapitalText from "../capitalText";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
 import Tag from "next-common/components/tag";
 import MotionEnd from "./motionEnd";
-import { useEstimateBlocksTime } from "utils/hooks";
+import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { nodesHeightSelector } from "store/reducers/nodeSlice";
 import { useSelector } from "react-redux";
 
