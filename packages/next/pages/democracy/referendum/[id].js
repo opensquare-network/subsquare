@@ -16,7 +16,7 @@ import Links from "next-common/components/links";
 import { getTimelineStatus } from "utils";
 import Vote from "components/referenda/vote";
 import dayjs from "dayjs";
-import Timeline from "components/timeline";
+import Timeline from "next-common/components/timeline";
 import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
