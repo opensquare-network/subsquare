@@ -31,7 +31,7 @@ const Left = styled.div`
   flex-direction: column;
 `;
 
-const Cirtcle = styled.div`
+const Circle = styled.div`
   height: 12px;
   width: 12px;
   border: 3px solid #6848ff;
@@ -75,7 +75,7 @@ export default function FoldableItem({
       {indent && (
         <>
           <Left>
-            <Cirtcle />
+            <Circle />
             <Bar className="fold-bar" isFold={isFold} />
           </Left>
           <Mid />
