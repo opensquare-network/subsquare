@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import DetailItem from "components/detailItem";
 import KVList from "next-common/components/kvList";
 import User from "next-common/components/user";
-import Links from "components/timeline/links";
+import Links from "next-common/components/links";
 import Vote from "components/referenda/vote";
 import Timeline from "components/timeline";
 import MotionProposal from "components/motion/motionProposal";

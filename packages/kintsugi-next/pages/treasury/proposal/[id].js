@@ -11,7 +11,7 @@ import { useState, useRef } from "react";
 import Layout from "components/layout";
 import User from "next-common/components/user";
 import { getNode, toPrecision } from "utils";
-import Links from "components/timeline/links";
+import Links from "next-common/components/links";
 import dayjs from "dayjs";
 import Timeline from "components/timeline";
 import { getTimelineStatus } from "utils";
@@ -100,11 +100,14 @@ export default withLoginUserRedux(
       );
 
       const publicProposalTimelineData = [
-        ...completeTimeline.slice(0, 1).map(item => ({
+        ...completeTimeline.slice(0, 1).map((item) => ({
           indexer: item.indexer,
           index: item.args.index,
           time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-          status: { value: `Public proposal #${item.args.index}`, color: "#6848FF" },
+          status: {
+            value: `Public proposal #${item.args.index}`,
+            color: "#6848FF",
+          },
           voting: {
             proposer: publicProposal.proposer,
             method: publicProposal.preImage?.call.method,
