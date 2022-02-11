@@ -78,7 +78,7 @@ const EmptyTd = styled.td`
   color: #9da9bb;
 `;
 
-const RowSpliter = ({ backgroundColor, padding }) => (
+const RowSplitter = ({ backgroundColor, padding }) => (
   <tr>
     <td colSpan="3" style={{ padding }}>
       <div style={{ height: "1px", backgroundColor }} />
@@ -100,7 +100,7 @@ export default function MembersList({
           <StyledTr>
             <StyledTh style={{ textAlign: "left" }}>MEMBERS</StyledTh>
           </StyledTr>
-          <RowSpliter backgroundColor={"#EBEEF4"} padding={"16px 0 4px 0"} />
+          <RowSplitter backgroundColor={"#EBEEF4"} padding={"16px 0 4px 0"} />
         </thead>
         <tbody>
           {items?.length > 0 ? (
@@ -112,7 +112,7 @@ export default function MembersList({
                   </StyledTd>
                 </StyledTr>
                 {index !== items.length - 1 && (
-                  <RowSpliter backgroundColor={"#F6F7FA"} />
+                  <RowSplitter backgroundColor={"#F6F7FA"} />
                 )}
               </Fragment>
             ))
