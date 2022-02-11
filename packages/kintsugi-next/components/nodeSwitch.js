@@ -125,11 +125,9 @@ export default function NodeSwitch({ small, chain, node }) {
 
   useEffect(() => {
     if (chain) {
-      const url = currentNode[chain];
+      const url = currentNode;
       if (url) {
-        const nodeSetting = (nodes?.[chain] || []).find(
-          (item) => item.url === url
-        );
+        const nodeSetting = (nodes || []).find((item) => item.url === url);
         setCurrentNodeSetting(nodeSetting);
       }
     }
@@ -180,7 +178,7 @@ export default function NodeSwitch({ small, chain, node }) {
       )}
       {show && (
         <Options small={small}>
-          {(nodes?.[chain] || []).map((item, index) => (
+          {(nodes || []).map((item, index) => (
             <Item
               key={index}
               onClick={() => {

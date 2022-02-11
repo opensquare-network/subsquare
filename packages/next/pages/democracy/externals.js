@@ -7,6 +7,7 @@ import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import { toExternalProposalListItem } from "utils/viewfuncs";
 import SEO from "components/SEO";
+import DemocracySummary from "next-common/components/summary/democracySummary";
 
 export default withLoginUserRedux(
   ({ loginUser, externals, chain, siteUrl }) => {
@@ -36,6 +37,7 @@ export default withLoginUserRedux(
             pageSize: externals.pageSize,
             total: externals.total,
           }}
+          summary={<DemocracySummary chain={chain} />}
         />
       </Layout>
     );

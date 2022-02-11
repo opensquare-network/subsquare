@@ -8,6 +8,7 @@ import Layout from "components/layout";
 import { toPublicProposalListItem } from "utils/viewfuncs";
 import SEO from "components/SEO";
 import { isSafari } from "../../utils/serverSideUtil";
+import DemocracySummary from "next-common/components/summary/democracySummary";
 
 export default withLoginUserRedux(
   ({ loginUser, proposals, chain, siteUrl }) => {
@@ -37,6 +38,7 @@ export default withLoginUserRedux(
             pageSize: proposals.pageSize,
             total: proposals.total,
           }}
+          summary={<DemocracySummary chain={chain} />}
         />
       </Layout>
     );

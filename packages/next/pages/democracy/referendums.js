@@ -7,6 +7,7 @@ import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import { toReferendaListItem } from "utils/viewfuncs";
 import SEO from "components/SEO";
+import DemocracySummary from "next-common/components/summary/democracySummary";
 
 export default withLoginUserRedux(({ loginUser, posts, chain, siteUrl }) => {
   const items = (posts.items || []).map((item) =>
@@ -35,6 +36,7 @@ export default withLoginUserRedux(({ loginUser, posts, chain, siteUrl }) => {
           pageSize: posts.pageSize,
           total: posts.total,
         }}
+        summary={<DemocracySummary chain={chain} />}
       />
     </Layout>
   );

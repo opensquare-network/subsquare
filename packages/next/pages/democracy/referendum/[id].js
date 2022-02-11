@@ -22,7 +22,8 @@ import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_DEMOCRACY_REFERENDUM } from "utils/viewConstants";
-import { useApi, useIsMounted } from "utils/hooks";
+import { useApi } from "utils/hooks";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import SEO from "components/SEO";
 

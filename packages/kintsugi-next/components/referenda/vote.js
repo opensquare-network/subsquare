@@ -330,9 +330,9 @@ function Vote({
         </Headers>
 
         <Contents>
-          <span>{nAyesPercent}%</span>
+          <span style={{ width: 40 }}>{nAyesPercent}%</span>
           <span>{referendumStatus?.threshold}</span>
-          <span>{nNaysPercent}%</span>
+          <span style={{ width: 40 }}>{nNaysPercent}%</span>
         </Contents>
         <div>
           <BorderedRow>

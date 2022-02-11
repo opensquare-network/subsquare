@@ -3,7 +3,8 @@ import Menu from "next-common/components/menu";
 import { mainMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import Layout from "components/layout";
-import { useApi, useCall } from "utils/hooks";
+import { useApi } from "utils/hooks";
+import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
 import SEO from "components/SEO";
 
