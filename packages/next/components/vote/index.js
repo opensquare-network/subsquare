@@ -84,6 +84,11 @@ const TipperItem = styled.div`
   color: #506176;
   > :last-child {
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    > img {
+      margin-left: 8px;
+    }
   }
 `;
 
@@ -128,18 +133,26 @@ export default function Vote({
   } else if (tips.length === 0) {
     tipList = (
       <TipperList>
-        <NoTippers>No tippers</NoTippers>
+        <NoTippers>No Vote</NoTippers>
       </TipperList>
     );
   } else {
     tipList = (
       <TipperList>
-        {tips.map(([address, amount]) => (
-          <TipperItem key={address}>
-            <User chain={chain} add={address} />
-            <div>{`${toPrecision(amount ?? 0, decimals)} ${symbol}`}</div>
-          </TipperItem>
-        ))}
+        <TipperItem>
+          <User
+            add="ouJX1WJQ9s4RMukAx5zvMwPY2zJZ9Xr5euzRG97Ne6UTNG9"
+            chain={chain}
+          />
+          <div>
+            Aye
+            <img src="/imgs/icons/aye.svg" alt="" />
+          </div>
+          {/* <div>
+                Nay
+                <img src="/imgs/icons/nay.svg" alt="" />
+              </div> */}
+        </TipperItem>
       </TipperList>
     );
   }
@@ -173,10 +186,6 @@ export default function Vote({
           {tipList}
         </Content>
         {!loading && action}
-        <Description>
-          Only council members can vote, no account found from the council.{" "}
-          <span onClick={() => setShowPopup(true)}>Still vote</span>
-        </Description>
       </Wrapper>
       {showPopup && (
         <Popup

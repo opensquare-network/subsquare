@@ -15,7 +15,8 @@ import {
   encodeKabochaAddress,
 } from "services/chainApi";
 
-import { useOnClickOutside, useIsMounted, useApi } from "utils/hooks";
+import { useOnClickOutside, useApi } from "utils/hooks";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import AddressSelect from "components/addressSelect";
 import Button from "next-common/components/button";
 import { addToast } from "store/reducers/toastSlice";
@@ -23,6 +24,7 @@ import { addToast } from "store/reducers/toastSlice";
 import { getNode, toPrecision } from "utils";
 import { useExtensionAccounts } from "utils/polkadotExtension";
 import ExternalLink from "next-common/components/externalLink";
+import Loading from "./loading";
 
 const Background = styled.div`
   position: fixed;
@@ -75,6 +77,7 @@ const Info = styled.div`
   color: #506176;
   font-size: 14px;
   line-height: 140%;
+  margin-top: 8px;
   ${(p) =>
     p.danger &&
     css`
@@ -93,11 +96,6 @@ const Label = styled.div`
   font-size: 12px;
   line-height: 100%;
   margin-bottom: 8px;
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
 `;
 
 const BalanceWrapper = styled.div`
@@ -130,6 +128,63 @@ const Download = styled.div`
   color: #2196f3;
 `;
 
+const CurrentVotingWrapper = styled.div`
+  > :not(:first-child) {
+    margin-top: 8px;
+  }
+`;
+
+const CurrentVoting = styled.div`
+  background: #f6f7fa;
+  border-radius: 4px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 100%;
+  color: #1e2134;
+  > :last-child {
+    font-size: 12px;
+    line-height: 100%;
+    color: #506176;
+    display: flex;
+    align-items: center;
+    > img {
+      margin-left: 8px;
+    }
+  }
+`;
+
+const CurrentVotingNoData = styled(Message)`
+  color: #9da9bb;
+  display: block;
+  text-align: center;
+`;
+
+const CurrentVotingLoading = styled.div`
+  height: 38px;
+  background: #f6f7fa;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  > first-child {
+    background: #4caf50;
+  }
+  > * {
+    flex-grow: 1;
+  }
+  > :not(:first-child) {
+    margin-left: 12px;
+  }
+`;
+
 const balanceMap = new Map();
 
 export default function Popup({
@@ -150,6 +205,7 @@ export default function Popup({
   const [inputTipValue, setInputTipValue] = useState();
   const [tipping, setTipping] = useState(false);
   const [balance, setBalance] = useState();
+  const [isLoading, setIsLoading] = useState();
   const [
     extensionAccounts,
     hasExtension,
@@ -364,18 +420,9 @@ export default function Popup({
   } else {
     content = (
       <>
-        <Info danger={!selectedAccountIsTipper}>
-          Only council members can tip.
-        </Info>
         <div>
           <LabelWrapper>
             <Label>Address</Label>
-            {balance && (
-              <BalanceWrapper>
-                <div>Balance</div>
-                <div>{balance}</div>
-              </BalanceWrapper>
-            )}
           </LabelWrapper>
           <AddressSelect
             chain={chain}
@@ -385,15 +432,52 @@ export default function Popup({
               setSelectedAccount(account);
             }}
           />
+          <Info danger={!selectedAccountIsTipper}>
+            Only council members can tip.
+          </Info>
         </div>
+        <CurrentVotingWrapper>
+          <LabelWrapper>
+            <Label>Current Voting</Label>
+          </LabelWrapper>
+          <CurrentVotingLoading>
+            <Loading />
+          </CurrentVotingLoading>
+          <CurrentVotingNoData>No voting record</CurrentVotingNoData>
+          <CurrentVoting>
+            <div>Voting</div>
+            {/* <div>
+              Aye
+              <img src="/imgs/icons/aye.svg" alt="" />
+            </div> */}
+            <div>
+              Nay
+              <img src="/imgs/icons/nay.svg" alt="" />
+            </div>
+          </CurrentVoting>
+          <Message>
+            Resubmitting the vote will override the current voting record
+          </Message>
+        </CurrentVotingWrapper>
         <ButtonWrapper>
-          {selectedAccountIsTipper && api && inputTipValue ? (
-            <Button secondary isLoading={tipping} onClick={doEndorse}>
-              Endorse
-            </Button>
-          ) : (
-            <Button disabled>Endorse</Button>
-          )}
+          <Button
+            primary
+            background="#4CAF50"
+            onClick={() => setIsLoading("Aye")}
+            isLoading={isLoading === "Aye"}
+            disabled={isLoading && isLoading !== "Aye"}
+          >
+            Aye
+          </Button>
+          <Button
+            primary
+            background="#F44336"
+            onClick={() => setIsLoading("Nay")}
+            isLoading={isLoading === "Nay"}
+            disabled={isLoading && isLoading !== "Nay"}
+          >
+            Nay
+          </Button>
         </ButtonWrapper>
       </>
     );
@@ -403,7 +487,7 @@ export default function Popup({
     <Background>
       <Wrapper ref={ref}>
         <TopWrapper>
-          <div>Tip</div>
+          <div>Vote</div>
           <img onClick={onClose} src="/imgs/icons/close.svg" alt="" />
         </TopWrapper>
         {content}
