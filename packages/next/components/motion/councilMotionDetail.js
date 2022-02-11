@@ -8,7 +8,12 @@ import User from "next-common/components/user";
 import MotionProposal from "./motionProposal";
 import Links from "../timeline/links";
 import Timeline from "../timeline";
-import { getNode, isMotionEnded, timeDurationFromNow, toPrecision } from "utils";
+import {
+  getNode,
+  isMotionEnded,
+  timeDurationFromNow,
+  toPrecision,
+} from "utils";
 import SectionTag from "components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
 import Flex from "next-common/components/styled/flex";
@@ -24,6 +29,7 @@ import MotionEnd from "./motionEnd";
 import { useBlockTime } from "utils/hooks";
 import { nodesHeightSelector } from "store/reducers/nodeSlice";
 import { useSelector } from "react-redux";
+import Vote from "components/vote";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -116,7 +122,7 @@ const MotionEndHeader = styled.div`
   position: static;
   height: 38px;
 
-  background: #F6F7FA;
+  background: #f6f7fa;
   border-radius: 4px;
 
   margin-bottom: 16px;
@@ -169,7 +175,12 @@ export default withLoginUserRedux(
     const blockTime = useBlockTime(currentFinalHeight - motionEndHeight, chain);
     const motionEnd = isMotionEnded(motion.onchainData);
 
-    const showMotionEnd = !motionEnd && motionEndHeight && currentFinalHeight && currentFinalHeight <= motionEndHeight && blockTime;
+    const showMotionEnd =
+      !motionEnd &&
+      motionEndHeight &&
+      currentFinalHeight &&
+      currentFinalHeight <= motionEndHeight &&
+      blockTime;
 
     const node = getNode(chain);
     if (!node) {
@@ -283,7 +294,10 @@ export default withLoginUserRedux(
             "Link to",
             <Link
               href={`/democracy/external/${external?.proposalHash}`}
-            >{`Democracy External #${external?.proposalHash?.slice(0, 6)}`}</Link>,
+            >{`Democracy External #${external?.proposalHash?.slice(
+              0,
+              6
+            )}`}</Link>,
           ],
           ["hash", external.proposalHash],
         ]);
@@ -345,6 +359,7 @@ export default withLoginUserRedux(
             setIsEdit={setIsEdit}
           />
         </Wrapper>
+        <Vote chain={chain} />
 
         <MultiKVList title="Business" data={business} />
 
