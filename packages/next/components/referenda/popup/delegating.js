@@ -29,6 +29,7 @@ export default function Delegating({
             className="proxy-addr"
             href={`https://${node.value}.subscan.io/account/${addressVoteDelegateTarget}`}
             target="_blank"
+            rel="noreferrer"
           >
             {`${addressVoteDelegateTarget.substr(
               0,
