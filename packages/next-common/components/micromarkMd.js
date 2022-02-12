@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { micromark } from "micromark";
 import { gfm, gfmHtml } from "micromark-extension-gfm";
-import { matchMdLink } from "next-common/utils";
+import { matchMdLink } from "../utils";
 import sanitizeHtml from "sanitize-html";
 import { useEffect } from "react";
-import { no_scroll_bar } from "next-common/styles/componentCss";
+import { no_scroll_bar } from "../styles/componentCss";
 
 const Wrapper = styled.div`
   &.markdown-content {

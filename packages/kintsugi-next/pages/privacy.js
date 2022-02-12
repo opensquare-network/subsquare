@@ -5,7 +5,7 @@ import Layout from "components/layout";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import NextHead from "components/nextHead";
 import privacyMd from "public/privacy-policy.md";
-import Markdown from "components/micromarkMd";
+import Markdown from "next-common/components/micromarkMd";
 
 const Wrapper = styled.div`
   margin: 0 auto;

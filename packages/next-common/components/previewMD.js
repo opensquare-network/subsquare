@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import Markdown from "components/micromarkMd";
+import Markdown from "./micromarkMd";
 
 const Wrapper = styled.div`
   min-height: 245px;
