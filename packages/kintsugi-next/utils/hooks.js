@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { currentNodeSelector } from "store/reducers/nodeSlice";
 import {
@@ -8,25 +8,6 @@ import {
 } from "./referendumUtil";
 import useChainApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-
-export function useWindowSize() {
-  const [windowSize, setWindowSize] = useState({
-    width: undefined,
-    height: undefined,
-  });
-  useEffect(() => {
-    function handleResize() {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    }
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  return windowSize;
-}
 
 export function useForm(initialState = {}, onSubmit, clearError) {
   const [formData, setFormData] = useState(initialState);
