@@ -4,7 +4,7 @@ import Link from "next/link";
 import User from "next-common/components/user";
 import { getNode, timeDuration, timeDurationFromNow, toPrecision } from "utils";
 import Tag from "next-common/components/tag";
-import ReasonLink from "components/reasonLink";
+import ReasonLink from "next-common/components/reasonLink";
 import SectionTag from "components/sectionTag";
 import Flex from "next-common/components/styled/flex";
 import {

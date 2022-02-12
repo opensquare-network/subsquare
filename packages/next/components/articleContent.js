@@ -9,7 +9,7 @@ import HtmlRender from "./post/htmlRender";
 import Actions from "next-common/components/actions";
 import PostEdit from "./post/postEdit";
 import styled, { css } from "styled-components";
-import MicromarkMd from "./micromarkMd";
+import MicromarkMd from "next-common/components/micromarkMd";
 
 const Wrapper = styled.div`
   :hover {

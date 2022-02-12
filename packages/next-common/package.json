@@ -20,6 +20,10 @@
     "md5": "^2.3.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "styled-components": "^5.3.3"
+    "styled-components": "^5.3.3",
+    "react-json-view": "^1.21.3",
+    "micromark-extension-gfm": "^2.0.0",
+    "micromark": "^3.0.10",
+    "sanitize-html": "^2.4.0"
   }
 }
