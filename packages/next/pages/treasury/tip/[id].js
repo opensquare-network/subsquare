@@ -24,7 +24,7 @@ import dayjs from "dayjs";
 import User from "next-common/components/user";
 import KVList from "next-common/components/kvList";
 import Links from "next-common/components/links";
-import ReasonLink from "components/reasonLink";
+import ReasonLink from "next-common/components/reasonLink";
 import SEO from "components/SEO";
 import Tipper from "components/tipper";
 
