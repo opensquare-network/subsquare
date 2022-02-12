@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { currentNodeSelector } from "store/reducers/nodeSlice";
 import {
@@ -7,25 +7,7 @@ import {
   getElectorate,
 } from "./referendumUtil";
 import useChainApi from "next-common/utils/hooks/useApi";
-
-export function useWindowSize() {
-  const [windowSize, setWindowSize] = useState({
-    width: undefined,
-    height: undefined,
-  });
-  useEffect(() => {
-    function handleResize() {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    }
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  return windowSize;
-}
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 
 export function useForm(initialState = {}, onSubmit, clearError) {
   const [formData, setFormData] = useState(initialState);
@@ -45,18 +27,6 @@ export function useForm(initialState = {}, onSubmit, clearError) {
   };
 
   return { formData, handleInputChange, handleSubmit, reset };
-}
-
-export function useIsMounted() {
-  const isMounted = useRef(true);
-
-  useEffect(() => {
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
-
-  return isMounted;
 }
 
 export function useApi(chain) {
@@ -143,26 +113,4 @@ export function useAddressVote(referendumIndex, address) {
     }
   }, [api, referendumIndex, address]);
   return [vote, isLoading];
-}
-
-export function useBlockHeight() {
-  const api = useApi("kintsugi");
-  const [blockHeight, setBlockHeight] = useState();
-  const isMounted = useIsMounted();
-  useEffect(() => {
-    let unsub = null;
-    if (api) {
-      api.rpc.chain
-        .subscribeNewHeads((header) => {
-          if (isMounted.current) {
-            const height = header.number.toNumber();
-            setBlockHeight(height);
-          }
-        })
-        .then((res) => (unsub = res));
-
-      return () => unsub?.();
-    }
-  }, [api]);
-  return blockHeight;
 }

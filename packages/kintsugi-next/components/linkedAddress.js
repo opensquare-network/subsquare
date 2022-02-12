@@ -7,7 +7,7 @@ import {
   web3Enable,
 } from "@polkadot/extension-dapp";
 import Button from "next-common/components/button";
-import { useIsMounted } from "utils/hooks";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { userSelector } from "store/reducers/userSlice";
 import {
   encodeKaruraAddress,

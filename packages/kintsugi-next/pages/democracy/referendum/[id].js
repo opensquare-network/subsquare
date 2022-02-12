@@ -21,7 +21,8 @@ import { shadow_100 } from "styles/componentCss";
 import { isSafari, to404 } from "utils/serverSideUtil";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 import { TYPE_DEMOCRACY_REFERENDUM } from "utils/viewConstants";
-import { useApi, useIsMounted } from "utils/hooks";
+import { useApi } from "utils/hooks";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "utils/viewfuncs";
 import SEO from "components/SEO";
 

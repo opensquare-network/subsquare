@@ -17,12 +17,8 @@ import {
 } from "services/chainApi";
 
 import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside.js";
-import {
-  useIsMounted,
-  useApi,
-  useAddressVotingBalance,
-  useAddressVote,
-} from "utils/hooks";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useApi, useAddressVotingBalance, useAddressVote } from "utils/hooks";
 import AddressSelect from "components/addressSelect";
 import Button from "next-common/components/button";
 import { addToast } from "store/reducers/toastSlice";

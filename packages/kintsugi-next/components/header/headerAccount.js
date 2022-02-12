@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import Button from "next-common/components/button";
 import { accountMenu } from "next-common/utils/constants";
-import { useWindowSize } from "utils/hooks";
+import useWindowSize from "next-common/utils/hooks/useWindowSize.js";
 import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside.js";
 import { logout } from "store/reducers/userSlice";
 import User from "next-common/components/user";
