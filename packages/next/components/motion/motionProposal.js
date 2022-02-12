@@ -9,7 +9,8 @@ import { textEllipsis } from "../../utils";
 const LongText = dynamic(() => import("../longText"), { ssr: false });
 
 const JsonView = dynamic(
-  () => import("components/jsonView").catch((e) => console.error(e)),
+  () =>
+    import("next-common/components/jsonView").catch((e) => console.error(e)),
   { ssr: false }
 );
 
