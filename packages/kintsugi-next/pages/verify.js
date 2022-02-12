@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 import Layout from "components/layout";
 import Button from "next-common/components/button";
-import { useIsMounted } from "utils/hooks";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import nextApi from "services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { withLoginUser, withLoginUserRedux } from "lib";

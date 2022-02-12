@@ -7,6 +7,7 @@ import {
   getElectorate,
 } from "./referendumUtil";
 import useChainApi from "next-common/utils/hooks/useApi";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 
 export function useWindowSize() {
   const [windowSize, setWindowSize] = useState({
@@ -45,18 +46,6 @@ export function useForm(initialState = {}, onSubmit, clearError) {
   };
 
   return { formData, handleInputChange, handleSubmit, reset };
-}
-
-export function useIsMounted() {
-  const isMounted = useRef(true);
-
-  useEffect(() => {
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
-
-  return isMounted;
 }
 
 export function useApi(chain) {
