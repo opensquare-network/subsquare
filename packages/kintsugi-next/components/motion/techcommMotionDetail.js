@@ -200,6 +200,7 @@ export default function TechcommMotionDetail({
   const node = getNode(chain);
   const [post, setPost] = useState(motion);
   const [isEdit, setIsEdit] = useState(false);
+  const motionEndHeight = motion.onchainData?.voting?.end;
   const currentFinalHeight = useSelector(nodesHeightSelector);
   const estimatedBlocksTime = useEstimateBlocksTime(
     currentFinalHeight - motionEndHeight
@@ -212,7 +213,6 @@ export default function TechcommMotionDetail({
   const treasuryProposalMeta = motion.treasuryProposal?.meta;
   const postUpdateTime = getPostUpdatedAt(post);
   const timeline = createMotionTimelineData(motion.onchainData);
-  const motionEndHeight = motion.onchainData?.voting?.end;
   const motionEnd = isMotionEnded(motion.onchainData);
 
   const showMotionEnd =
