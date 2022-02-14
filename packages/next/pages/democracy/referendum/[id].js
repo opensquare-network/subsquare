@@ -13,10 +13,7 @@ import DetailItem from "components/detailItem";
 import KVList from "next-common/components/kvList";
 import User from "next-common/components/user";
 import Links from "next-common/components/links";
-import { getTimelineStatus } from "utils";
 import Vote from "components/referenda/vote";
-import dayjs from "dayjs";
-import Timeline from "next-common/components/timeline";
 import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
@@ -26,6 +23,7 @@ import { useApi } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import SEO from "components/SEO";
+import ReferendumTimeline from "./timeline";
 
 const OutWrapper = styled.div`
   display: flex;
@@ -105,33 +103,6 @@ export default withLoginUserRedux(
       focusEditor
     );
 
-    const getTimelineData = (args, method) => {
-      switch (method) {
-        case "Executed":
-          const rawResult = args.result;
-          let result;
-          if (typeof rawResult === "boolean") {
-            result = rawResult;
-          } else if (typeof args.result === "object") {
-            result = Object.keys(rawResult)[0];
-          } else {
-            result = JSON.stringify(rawResult);
-          }
-
-          return { result };
-      }
-      return args;
-    };
-
-    const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
-      return {
-        time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-        indexer: item.indexer,
-        status: getTimelineStatus("proposal", item.method ?? item.name),
-        data: getTimelineData(item.args, item.method ?? item.name),
-      };
-    });
-
     const metadata = [
       [
         "Proposer",
@@ -192,7 +163,10 @@ export default withLoginUserRedux(
 
             <KVList title={"Metadata"} data={metadata} />
 
-            <Timeline data={timelineData} chain={chain} />
+            <ReferendumTimeline
+              timeline={detail?.onchainData?.timeline || []}
+              chain={chain}
+            />
 
             <CommentsWrapper>
               <Comments
