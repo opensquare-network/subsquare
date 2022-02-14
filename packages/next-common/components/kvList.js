@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { shadow_100 } from "styles/componentCss";
+import { shadow_100 } from "../styles/componentCss";
 
 const Wrapper = styled.div`
   background: #ffffff;
