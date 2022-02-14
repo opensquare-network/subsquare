@@ -1,8 +1,13 @@
 const { ObjectId } = require("mongodb");
 const { HttpError } = require("@subsquare/backend-common/exc");
 const { ContentType, Day } = require("@subsquare/backend-common/constants");
-const { PostTitleLengthLimitation } = require("@subsquare/backend-common/constants");
-const { safeHtml, extractMentions } = require("@subsquare/backend-common/utils/post");
+const {
+  PostTitleLengthLimitation,
+} = require("@subsquare/backend-common/constants");
+const {
+  safeHtml,
+  extractMentions,
+} = require("@subsquare/backend-common/utils/post");
 const { toUserPublicInfo } = require("@subsquare/backend-common/utils/user");
 const {
   getTechCommMotionCollection: getChainTechCommMotionCollection,
@@ -40,7 +45,9 @@ async function findMotion(postId) {
   }
 
   const chainMotionCol = await getChainTechCommMotionCollection();
-  return await chainMotionCol.findOne(q, { sort: [["indexer.blockHeight", -1]] });
+  return await chainMotionCol.findOne(q, {
+    sort: [["indexer.blockHeight", -1]],
+  });
 }
 
 async function findMotionPost(chainMotion) {
@@ -226,19 +233,19 @@ async function getActiveMotionsOverview() {
         $or: [
           {
             "state.state": {
-              $nin: ["Approved", "Disapproved", "Executed"]
-            }
+              $nin: ["Approved", "Disapproved", "Executed"],
+            },
           },
           {
             "state.indexer.blockTime": {
-              $gt: Date.now() - 3 * Day
+              $gt: Date.now() - Day,
             },
-          }
-        ]
+          },
+        ],
       },
       {
         projection: {
-          timeline: 0
+          timeline: 0,
         },
       }
     )
@@ -313,9 +320,7 @@ async function getMotionById(postId) {
 
   const [, author, externalProposals] = await Promise.all([
     lookupUser({ for: reactions, localField: "user" }),
-    post.proposer
-      ? getUserByAddress(post.proposer)
-      : null,
+    post.proposer ? getUserByAddress(post.proposer) : null,
     chainMotion.externalProposals?.length > 0
       ? chainExternalCol
           .find({

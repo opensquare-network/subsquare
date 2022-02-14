@@ -3,9 +3,12 @@ const { HttpError } = require("@subsquare/backend-common/exc");
 const {
   ContentType,
   PostTitleLengthLimitation,
-  Day
+  Day,
 } = require("@subsquare/backend-common/constants");
-const { safeHtml, extractMentions } = require("@subsquare/backend-common/utils/post");
+const {
+  safeHtml,
+  extractMentions,
+} = require("@subsquare/backend-common/utils/post");
 const { toUserPublicInfo } = require("@subsquare/backend-common/utils/user");
 const {
   getDb: getCommonDb,
@@ -223,19 +226,19 @@ async function getActiveMotionsOverview() {
         $or: [
           {
             "state.state": {
-              $nin: ["Approved", "Disapproved", "Executed"]
-            }
+              $nin: ["Approved", "Disapproved", "Executed"],
+            },
           },
           {
             "state.indexer.blockTime": {
-              $gt: Date.now() - 3 * Day
+              $gt: Date.now() - Day,
             },
-          }
-        ]
+          },
+        ],
       },
       {
         projection: {
-          timeline: 0
+          timeline: 0,
         },
       }
     )
@@ -306,9 +309,7 @@ async function getMotionById(postId) {
 
   const [, author, publicProposals] = await Promise.all([
     lookupUser({ for: reactions, localField: "user" }),
-    post.proposer
-      ? getUserByAddress(post.proposer)
-      : null,
+    post.proposer ? getUserByAddress(post.proposer) : null,
     chainMotion.publicProposals?.length > 0
       ? chainPublicProposalCol
           .find({
