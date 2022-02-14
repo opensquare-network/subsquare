@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import List from "../list";
+import List from "next-common/components/list";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
 import EmptyOverview from "./emptyOverview";
 
