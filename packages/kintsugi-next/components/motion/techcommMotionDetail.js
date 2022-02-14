@@ -18,6 +18,8 @@ import { getPostUpdatedAt } from "utils/viewfuncs";
 import MultiKVList from "next-common/components/multiKVList";
 import MotionEnd from "next-common/components/motionEnd";
 import { isMotionEnded } from "next-common/utils";
+import { useSelector } from "react-redux";
+import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -207,6 +209,8 @@ export default function TechcommMotionDetail({
   const timeline = createMotionTimelineData(motion.onchainData);
   const motionEndHeight = motion.onchainData?.voting?.end;
   const motionEnd = isMotionEnded(motion.onchainData);
+  const currentFinalHeight = useSelector(nodesHeightSelector);
+
   const showMotionEnd =
     !motionEnd &&
     motionEndHeight &&
