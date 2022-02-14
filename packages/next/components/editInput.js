@@ -6,7 +6,7 @@ import Button from "next-common/components/button";
 import PreviewMD from "next-common/components/previewMD";
 import ErrorText from "next-common/components/ErrorText";
 import QuillEditor from "next-common/components/editor/quillEditor";
-import HtmlRender from "./post/htmlRender";
+import HtmlRender from "next-common/components/post/htmlRender";
 import InsertContentsModal from "next-common/components/editor/modal";
 
 const Wrapper = styled.div`
