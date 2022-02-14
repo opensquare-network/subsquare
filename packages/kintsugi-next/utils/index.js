@@ -1,7 +1,6 @@
 import moment from "moment";
 import BigNumber from "bignumber.js";
 import { nodes } from "next-common/utils/constants";
-import { bnToBn, extractTime } from "@polkadot/util";
 
 BigNumber.config({ EXPONENTIAL_AT: 36 });
 
@@ -142,22 +141,6 @@ export const sleep = (time) => {
     setTimeout(resolve, time);
   });
 };
-
-export function bigNumber2Locale(x) {
-  let result = "";
-  const [Int, Decimals] = x.split(".");
-  result += Int.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  if (Decimals) {
-    result += `.${Decimals}`;
-  }
-  return result;
-}
-
-export function matchMdLink(t) {
-  const expression =
-    /(?<!\]\()((?:https?|ftp):\/\/[^\s\]\)]*)(?:[\s\]\)](?!\()|$)/gi;
-  return t.replace(expression, "[$1]($1) ");
-}
 
 export function abbreviateBigNumber(x, fixed = 2) {
   const n = new BigNumber(x);
