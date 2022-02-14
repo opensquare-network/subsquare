@@ -9,7 +9,7 @@ import MarkdownEditor from "components/markdownEditor";
 import Button from "next-common/components/button";
 import nextApi from "services/nextApi";
 import PreviewMD from "next-common/components/previewMD";
-import Toggle from "components/toggle";
+import Toggle from "next-common/components/toggle";
 import ErrorText from "next-common/components/ErrorText";
 import InsertContentsModal from "next-common/components/editor/modal";
 import QuillEditor from "next-common/components/editor/quillEditor";
