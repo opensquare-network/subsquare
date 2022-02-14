@@ -199,6 +199,7 @@ export default function TechcommMotionDetail({
   const node = getNode(chain);
   const [post, setPost] = useState(motion);
   const [isEdit, setIsEdit] = useState(false);
+  const currentFinalHeight = useSelector(nodesHeightSelector);
   if (!node) {
     return null;
   }
@@ -209,7 +210,6 @@ export default function TechcommMotionDetail({
   const timeline = createMotionTimelineData(motion.onchainData);
   const motionEndHeight = motion.onchainData?.voting?.end;
   const motionEnd = isMotionEnded(motion.onchainData);
-  const currentFinalHeight = useSelector(nodesHeightSelector);
 
   const showMotionEnd =
     !motionEnd &&
