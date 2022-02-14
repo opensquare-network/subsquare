@@ -1,6 +1,6 @@
 import { TooltipWrapper, Label, DelegatingValue } from "./styled";
 import { toPrecision } from "utils";
-import Tooltip from "components/tooltip";
+import Tooltip from "next-common/components/tooltip";
 
 export default function Delegations({ addressVoteDelegations, node }) {
   return (

@@ -1,8 +1,8 @@
+import React from "react";
 import styled from "styled-components";
-import { extractLinks, getLinkNameAndLogo } from "utils/viewfuncs";
+import { extractLinks, getLinkNameAndLogo } from "../utils/viewFuncs/tip";
 
-const ReasonText = styled.span`
-`;
+const ReasonText = styled.span``;
 
 const LogoLink = styled.a`
   margin-left: 9px;
@@ -17,7 +17,7 @@ const Logo = styled.img`
   transform: translateY(-50%);
 `;
 
-export default function ReasonList({ text, hideText = false }) {
+export default function ReasonLink({ text, hideText = false }) {
   if (!text) {
     return null;
   }
@@ -35,5 +35,5 @@ export default function ReasonList({ text, hideText = false }) {
         );
       })}
     </>
-  )
+  );
 }

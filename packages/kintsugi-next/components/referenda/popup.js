@@ -16,13 +16,9 @@ import {
   encodeKintsugiAddress,
 } from "services/chainApi";
 
-import {
-  useOnClickOutside,
-  useIsMounted,
-  useApi,
-  useAddressVotingBalance,
-  useAddressVote,
-} from "utils/hooks";
+import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside.js";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useApi, useAddressVotingBalance, useAddressVote } from "utils/hooks";
 import AddressSelect from "components/addressSelect";
 import Button from "next-common/components/button";
 import { addToast } from "store/reducers/toastSlice";
@@ -35,7 +31,7 @@ import Input from "next-common/components/input";
 // import Select from "components/select";
 import ApproveIcon from "next-common/assets/imgs/icons/approve.svg";
 import RejectIcon from "next-common/assets/imgs/icons/reject.svg";
-import Tooltip from "components/tooltip";
+import Tooltip from "next-common/components/tooltip";
 import Loading from "./loading";
 import DisplayValue from "./displayValue";
 

@@ -13,8 +13,8 @@ import Layout from "components/layout";
 import User from "next-common/components/user";
 import { getNode, toPrecision } from "utils";
 import Link from "next/link";
-import Links from "components/timeline/links";
-import Timeline from "components/timeline";
+import Links from "next-common/components/links";
+import Timeline from "next-common/components/timeline";
 import KVList from "next-common/components/kvList";
 import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
@@ -156,7 +156,6 @@ export default withLoginUserRedux(
             <Comments
               data={comments}
               user={loginUser}
-              postId={postId}
               chain={chain}
               onReply={onReply}
             />

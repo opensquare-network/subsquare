@@ -1,11 +1,12 @@
+import React from "react";
 import styled, { css } from "styled-components";
 
-import ReplyIcon from "public/imgs/icons/reply.svg";
-import ThumbUpIcon from "public/imgs/icons/thumb-up.svg";
-import Edit from "components/edit";
-import UnfoldIcon from "public/imgs/icons/unfold.svg";
-import FoldIcon from "public/imgs/icons/fold.svg";
-import Flex from "next-common/components/styled/flex";
+import ReplyIcon from "../assets/imgs/icons/reply.svg";
+import ThumbUpIcon from "../assets/imgs/icons/thumb-up.svg";
+import Edit from "./edit";
+import UnfoldIcon from "../assets/imgs/icons/unfold.svg";
+import FoldIcon from "../assets/imgs/icons/fold.svg";
+import Flex from "./styled/flex";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;

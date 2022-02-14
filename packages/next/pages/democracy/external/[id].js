@@ -10,7 +10,7 @@ import Editor from "next-common/components/comment/editor";
 import { useState, useRef } from "react";
 import Layout from "components/layout";
 import { getNode } from "utils";
-import Timeline from "components/timeline";
+import Timeline from "next-common/components/timeline";
 import KVList from "next-common/components/kvList";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
@@ -102,7 +102,6 @@ export default withLoginUserRedux(
             <Comments
               data={comments}
               user={loginUser}
-              postId={postId}
               chain={chain}
               onReply={onReply}
             />

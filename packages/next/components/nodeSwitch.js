@@ -1,7 +1,8 @@
 import styled, { css } from "styled-components";
 import { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useOnClickOutside, useWindowSize } from "utils/hooks";
+import useWindowSize from "next-common/utils/hooks/useWindowSize.js";
+import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside.js";
 import {
   currentNodeSelector,
   setCurrentNode,

@@ -5,7 +5,7 @@ import Layout from "components/layout";
 import { withLoginUser, withLoginUserRedux } from "../lib";
 import NextHead from "components/nextHead";
 import termsMd from "public/terms-of-service.md";
-import Markdown from "components/micromarkMd";
+import Markdown from "next-common/components/micromarkMd";
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -13,9 +13,8 @@ const Wrapper = styled.div`
 `;
 
 const BackButton = styled.div`
-  display: inline-block;
-  margin-top: 8px;
   display: flex;
+  margin-top: 8px;
   font-weight: bold;
   font-size: 16px;
   line-height: 100%;

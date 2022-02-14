@@ -19,12 +19,12 @@ import Comments from "next-common/components/comment";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import Editor from "next-common/components/comment/editor";
 import Layout from "components/layout";
-import Timeline from "components/timeline";
+import Timeline from "next-common/components/timeline";
 import dayjs from "dayjs";
 import User from "next-common/components/user";
 import KVList from "next-common/components/kvList";
-import Links from "components/timeline/links";
-import ReasonLink from "components/reasonLink";
+import Links from "next-common/components/links";
+import ReasonLink from "next-common/components/reasonLink";
 import SEO from "components/SEO";
 import Tipper from "components/tipper";
 
@@ -339,7 +339,6 @@ export default withLoginUserRedux(
               <Comments
                 data={comments}
                 user={loginUser}
-                postId={postId}
                 chain={chain}
                 onReply={onReply}
               />

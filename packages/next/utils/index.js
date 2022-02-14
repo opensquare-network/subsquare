@@ -136,22 +136,6 @@ export const sleep = (time) => {
   });
 };
 
-export function bigNumber2Locale(x) {
-  let result = "";
-  const [Int, Decimals] = x.split(".");
-  result += Int.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  if (Decimals) {
-    result += `.${Decimals}`;
-  }
-  return result;
-}
-
-export function matchMdLink(t) {
-  const expression =
-    /(?<!\]\()((?:https?|ftp):\/\/[^\s\]\)]*)(?:[\s\]\)](?!\()|$)/gi;
-  return t.replace(expression, "[$1]($1) ");
-}
-
 export function abbreviateBigNumber(x, fixed = 2) {
   const n = new BigNumber(x);
   const fmt = {
@@ -178,10 +162,7 @@ export function abbreviateBigNumber(x, fixed = 2) {
 }
 
 export function isMotionEnded(motion) {
-  return [
-    "Closed",
-    "Approved",
-    "Executed",
-    "Disapproved",
-  ].includes(motion.state.state);
+  return ["Closed", "Approved", "Executed", "Disapproved"].includes(
+    motion.state.state
+  );
 }

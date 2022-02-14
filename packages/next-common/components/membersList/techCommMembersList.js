@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-import Flex from "next-common/components/styled/flex";
-import User from "next-common/components/user";
-import { Fragment } from "react";
-import LoadingSvg from "public/imgs/icons/members-loading.svg";
+import Flex from "../styled/flex";
+import User from "../user";
+import React, { Fragment } from "react";
+import LoadingSvg from "../../assets/imgs/icons/members-loading.svg";
 
 const Wrapper = styled.div`
   max-width: 848px;
@@ -38,6 +38,7 @@ const StyledTable = styled.table`
     .autohide {
       display: none;
     }
+
     th.clickable {
       color: #506176;
       cursor: pointer;
@@ -77,7 +78,7 @@ const EmptyTd = styled.td`
   color: #9da9bb;
 `;
 
-const RowSpliter = ({ backgroundColor, padding }) => (
+const RowSplitter = ({ backgroundColor, padding }) => (
   <tr>
     <td colSpan="3" style={{ padding }}>
       <div style={{ height: "1px", backgroundColor }} />
@@ -99,7 +100,7 @@ export default function MembersList({
           <StyledTr>
             <StyledTh style={{ textAlign: "left" }}>MEMBERS</StyledTh>
           </StyledTr>
-          <RowSpliter backgroundColor={"#EBEEF4"} padding={"16px 0 4px 0"} />
+          <RowSplitter backgroundColor={"#EBEEF4"} padding={"16px 0 4px 0"} />
         </thead>
         <tbody>
           {items?.length > 0 ? (
@@ -111,7 +112,7 @@ export default function MembersList({
                   </StyledTd>
                 </StyledTr>
                 {index !== items.length - 1 && (
-                  <RowSpliter backgroundColor={"#F6F7FA"} />
+                  <RowSplitter backgroundColor={"#F6F7FA"} />
                 )}
               </Fragment>
             ))

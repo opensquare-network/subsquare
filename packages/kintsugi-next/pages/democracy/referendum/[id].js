@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-key */
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import Back from "next-common/components/back";
@@ -8,20 +9,20 @@ import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import Comments from "next-common/components/comment";
 import Editor from "next-common/components/comment/editor";
-import { useEffect, useRef, useState } from "react";
 import DetailItem from "components/detailItem";
 import KVList from "next-common/components/kvList";
 import User from "next-common/components/user";
-import Links from "components/timeline/links";
+import Links from "next-common/components/links";
 import Vote from "components/referenda/vote";
-import Timeline from "components/timeline";
+import Timeline from "next-common/components/timeline";
 import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
 import { isSafari, to404 } from "utils/serverSideUtil";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 import { TYPE_DEMOCRACY_REFERENDUM } from "utils/viewConstants";
-import { useApi, useIsMounted } from "utils/hooks";
+import { useApi } from "utils/hooks";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "utils/viewfuncs";
 import SEO from "components/SEO";
 
@@ -174,7 +175,6 @@ export default withLoginUserRedux(
               <Comments
                 data={comments}
                 user={loginUser}
-                postId={detail._id}
                 chain={chain}
                 onReply={onReply}
               />

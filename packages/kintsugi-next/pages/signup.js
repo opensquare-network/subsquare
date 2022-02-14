@@ -6,7 +6,8 @@ import { useRouter } from "next/router";
 import Layout from "components/layout";
 import Button from "next-common/components/button";
 import Input from "next-common/components/input";
-import { useForm, useIsMounted } from "utils/hooks";
+import { useForm } from "utils/hooks";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import nextApi from "services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { withLoginUser, withLoginUserRedux } from "lib";
@@ -14,7 +15,7 @@ import { useDispatch } from "react-redux";
 import { addToast } from "store/reducers/toastSlice";
 import { shadow_100 } from "styles/componentCss";
 import NextHead from "components/nextHead";
-import UserPolicy from "components/userPolicy";
+import UserPolicy from "next-common/components/userPolicy";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;

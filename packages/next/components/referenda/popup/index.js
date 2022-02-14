@@ -16,12 +16,8 @@ import {
   encodeKintsugiAddress,
 } from "services/chainApi";
 
-import {
-  useOnClickOutside,
-  useApi,
-  useAddressVotingBalance,
-  useAddressVote,
-} from "utils/hooks";
+import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside.js";
+import { useApi, useAddressVotingBalance, useAddressVote } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import AddressSelect from "components/addressSelect";
 import Button from "next-common/components/button";
@@ -33,7 +29,7 @@ import ExternalLink from "next-common/components/externalLink";
 import ClosePanelIcon from "next-common/assets/imgs/icons/close-panel.svg";
 import Input from "next-common/components/input";
 import Select from "components/select";
-import Tooltip from "components/tooltip";
+import Tooltip from "next-common/components/tooltip";
 import Loading from "../loading";
 import { isAye, getConviction } from "utils/referendumUtil";
 import { TooltipWrapper, Label } from "./styled";

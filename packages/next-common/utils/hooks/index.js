@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { BN_THOUSAND, BN_TWO } from "@polkadot/util";
+import { BN_THOUSAND, BN_TWO, bnToBn, extractTime } from "@polkadot/util";
+import { useApi } from "@subsquare/next/utils/hooks";
+import useIsMounted from "./useIsMounted";
 
 export function useBlockTime(api) {
   const [blockTime, setBlockTime] = useState();
@@ -31,13 +33,44 @@ export function useBlockTime(api) {
 
 export function useBestNumber(api) {
   const [bestNumber, setBestNumber] = useState();
+  const isMounted = useIsMounted();
   useEffect(() => {
     if (api) {
       api.derive.chain
         .bestNumber()
-        .then((result) => setBestNumber(result))
+        .then((result) => {
+          if (isMounted.current) {
+            setBestNumber(result);
+          }
+        })
         .catch((e) => console.error(e));
     }
   }, [api]);
   return bestNumber;
+}
+
+export function useEstimateBlocksTime(blocks, chain) {
+  const api = useApi(chain);
+  const singleBlockTime = useBlockTime(api);
+  const [estimatedTime, setEstimatedTime] = useState("");
+  useEffect(() => {
+    if (api && singleBlockTime) {
+      const value = singleBlockTime.mul(bnToBn(blocks)).toNumber();
+      const time = extractTime(Math.abs(value));
+      const { days, hours, minutes, seconds } = time;
+      const timeStr = [
+        days ? (days > 1 ? `${days} days` : "1 day") : null,
+        hours ? (hours > 1 ? `${hours} hrs` : "1 hr") : null,
+        minutes ? (minutes > 1 ? `${minutes} mins` : "1 min") : null,
+        seconds ? (seconds > 1 ? `${seconds} s` : "1 s") : null,
+      ]
+        .filter((s) => !!s)
+        .slice(0, 2)
+        .join(" ");
+
+      setEstimatedTime(timeStr);
+    }
+  }, [blocks, api, singleBlockTime]);
+
+  return estimatedTime;
 }

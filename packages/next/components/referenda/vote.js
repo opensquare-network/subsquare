@@ -11,7 +11,8 @@ import {
   getThresholdOfSuperMajorityAgainst,
   calcPassing,
 } from "utils/referendumUtil";
-import { useElectorate, useApi, useWindowSize, useLoaded } from "utils/hooks";
+import { useElectorate, useApi, useLoaded } from "utils/hooks";
+import useWindowSize from "next-common/utils/hooks/useWindowSize.js";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import AyeIcon from "public/imgs/icons/aye.svg";
 import NayIcon from "public/imgs/icons/nay.svg";
@@ -20,7 +21,7 @@ import ElectorateIcon from "public/imgs/icons/electorate.svg";
 import Threshold from "./threshold";
 import DisplayValue from "./displayValue";
 import Loading from "./loading";
-import { useBlockHeight } from "utils/hooks";
+import { useBestNumber } from "next-common/utils/hooks";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -195,7 +196,8 @@ function Vote({
   const [showVote, setShowVote] = useState(false);
   const isMounted = useIsMounted();
   const api = useApi(chain);
-  const blockHeight = useBlockHeight(chain);
+  const bestNumber = useBestNumber(api);
+  const blockHeight = bestNumber?.toNumber() || 0;
 
   const updateVoteProgress = useCallback(() => {
     api?.query.democracy

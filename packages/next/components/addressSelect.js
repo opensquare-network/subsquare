@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { useState, useRef } from "react";
-import { useOnClickOutside } from "utils/hooks";
+import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside.js";
 import { addressEllipsis } from "utils";
 import Avatar from "next-common/components/avatar";
 import Flex from "next-common/components/styled/flex";

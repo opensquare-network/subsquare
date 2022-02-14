@@ -1,6 +1,6 @@
+import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
-
 import ErrorText from "next-common/components/ErrorText";
 
 const Wrapper = styled.div`

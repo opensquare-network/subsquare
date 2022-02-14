@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Flex from "next-common/components/styled/flex";
+import Flex from "../styled/flex";
 const Wrapper = styled.div`
   padding: 10px 0;
   font-size: 12px;

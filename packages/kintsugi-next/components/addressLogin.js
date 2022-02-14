@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 
 import AddressSelect from "components/addressSelect";
 import Button from "next-common/components/button";
-import { useIsMounted } from "utils/hooks";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import DownloadExtension from "next-common/components/downloadExtension";
 import {
   encodeKaruraAddress,

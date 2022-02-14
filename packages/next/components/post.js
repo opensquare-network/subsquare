@@ -4,7 +4,7 @@ import Link from "next/link";
 import User from "next-common/components/user";
 import { getNode, timeDuration, timeDurationFromNow, toPrecision } from "utils";
 import Tag from "next-common/components/tag";
-import ReasonLink from "components/reasonLink";
+import ReasonLink from "next-common/components/reasonLink";
 import SectionTag from "components/sectionTag";
 import Flex from "next-common/components/styled/flex";
 import {
@@ -13,7 +13,7 @@ import {
   text_accessory,
   text_primary,
 } from "../styles/componentCss";
-import MotionElapse from "./motionElapse";
+import MotionElapse from "next-common/components/motionElapse";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -81,7 +81,7 @@ const Info = styled.div`
   align-items: center;
   font-size: 12px;
   color: #506176;
-  .elapseIcon {
+  .elapseIcon > * {
     margin-left: 8px;
   }
 `;

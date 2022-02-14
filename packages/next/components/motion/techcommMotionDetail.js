@@ -4,9 +4,14 @@ import KVList from "next-common/components/kvList";
 import Link from "next/link";
 import User from "next-common/components/user";
 import MotionProposal from "./motionProposal";
-import Links from "../timeline/links";
-import Timeline from "../timeline";
-import { getNode, isMotionEnded, timeDurationFromNow, toPrecision } from "utils";
+import Links from "next-common/components/links";
+import Timeline from "next-common/components/timeline";
+import {
+  getNode,
+  isMotionEnded,
+  timeDurationFromNow,
+  toPrecision,
+} from "utils";
 import SectionTag from "components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
 import Flex from "next-common/components/styled/flex";
@@ -16,8 +21,8 @@ import { useState } from "react";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
 import { getPostUpdatedAt } from "../../utils/viewfuncs";
 import MultiKVList from "next-common/components/multiKVList";
-import MotionEnd from "./motionEnd";
-import { useBlockTime } from "utils/hooks";
+import MotionEnd from "next-common/components/motionEnd";
+import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { nodesHeightSelector } from "store/reducers/nodeSlice";
 import { useSelector } from "react-redux";
 
@@ -123,7 +128,7 @@ const MotionEndHeader = styled.div`
   position: static;
   height: 38px;
 
-  background: #F6F7FA;
+  background: #f6f7fa;
   border-radius: 4px;
 
   margin-bottom: 16px;
@@ -198,10 +203,17 @@ export default function TechcommMotionDetail({
 }) {
   const currentFinalHeight = useSelector(nodesHeightSelector);
   const motionEndHeight = motion.onchainData?.voting?.end;
-  const blockTime = useBlockTime(currentFinalHeight - motionEndHeight, chain);
+  const estimatedBlocksTime = useEstimateBlocksTime(
+    currentFinalHeight - motionEndHeight
+  );
   const motionEnd = isMotionEnded(motion.onchainData);
 
-  const showMotionEnd = !motionEnd && motionEndHeight && currentFinalHeight && currentFinalHeight <= motionEndHeight && blockTime;
+  const showMotionEnd =
+    !motionEnd &&
+    motionEndHeight &&
+    currentFinalHeight &&
+    currentFinalHeight <= motionEndHeight &&
+    estimatedBlocksTime;
 
   const node = getNode(chain);
   const [post, setPost] = useState(motion);

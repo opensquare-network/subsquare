@@ -4,8 +4,8 @@ import KVList from "next-common/components/kvList";
 import Link from "next/link";
 import User from "next-common/components/user";
 import MotionProposal from "./motionProposal";
-import Links from "components/timeline/links";
-import Timeline from "components/timeline";
+import Links from "next-common/components/links";
+import Timeline from "next-common/components/timeline";
 import { getNode, timeDurationFromNow, toPrecision } from "utils";
 import SectionTag from "components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
@@ -16,6 +16,11 @@ import { useState } from "react";
 import { createMotionTimelineData } from "utils/timeline/motion";
 import { getPostUpdatedAt } from "utils/viewfuncs";
 import MultiKVList from "next-common/components/multiKVList";
+import MotionEnd from "next-common/components/motionEnd";
+import { isMotionEnded } from "next-common/utils";
+import { useSelector } from "react-redux";
+import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
+import { useEstimateBlocksTime } from "next-common/utils/hooks";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -101,6 +106,31 @@ const Info = styled.div`
   color: #506176;
 `;
 
+const TimelineMotionEnd = styled.div`
+  display: flex;
+  align-items: center;
+  > :first-child {
+    margin-right: 8px;
+  }
+`;
+
+const MotionEndHeader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  gap: 8px;
+
+  position: static;
+  height: 38px;
+
+  background: #f6f7fa;
+  border-radius: 4px;
+
+  margin-bottom: 16px;
+  color: rgba(80, 97, 118, 1);
+`;
+
 function createMotionBusinessData(motion, chain) {
   const height = motion.state.indexer.blockHeight;
   return [
@@ -170,6 +200,11 @@ export default function TechcommMotionDetail({
   const node = getNode(chain);
   const [post, setPost] = useState(motion);
   const [isEdit, setIsEdit] = useState(false);
+  const motionEndHeight = motion.onchainData?.voting?.end;
+  const currentFinalHeight = useSelector(nodesHeightSelector);
+  const estimatedBlocksTime = useEstimateBlocksTime(
+    currentFinalHeight - motionEndHeight
+  );
   if (!node) {
     return null;
   }
@@ -178,6 +213,14 @@ export default function TechcommMotionDetail({
   const treasuryProposalMeta = motion.treasuryProposal?.meta;
   const postUpdateTime = getPostUpdatedAt(post);
   const timeline = createMotionTimelineData(motion.onchainData);
+  const motionEnd = isMotionEnded(motion.onchainData);
+
+  const showMotionEnd =
+    !motionEnd &&
+    motionEndHeight &&
+    currentFinalHeight &&
+    currentFinalHeight <= motionEndHeight &&
+    estimatedBlocksTime;
 
   let timelineData;
 
@@ -250,17 +293,32 @@ export default function TechcommMotionDetail({
     });
   }
 
+  const motionEndInfo = showMotionEnd ? (
+    <TimelineMotionEnd>
+      <MotionEnd type="simple" motion={motion.onchainData} chain={chain} />
+    </TimelineMotionEnd>
+  ) : null;
+
+  const motionEndHeader = showMotionEnd ? (
+    <MotionEndHeader>
+      <MotionEnd type="full" motion={motion.onchainData} chain={chain} />
+    </MotionEndHeader>
+  ) : null;
+
   return (
     <div>
       <Wrapper>
         <div>
           {!isEdit && (
-            <TitleWrapper>
-              {motion?.index !== undefined && (
-                <Index>{`#${motion.index}`}</Index>
-              )}
-              <Title>{post?.title}</Title>
-            </TitleWrapper>
+            <div>
+              {motionEndHeader}
+              <TitleWrapper>
+                {motion?.index !== undefined && (
+                  <Index>{`#${motion.index}`}</Index>
+                )}
+                <Title>{post?.title}</Title>
+              </TitleWrapper>
+            </div>
           )}
           {!isEdit && (
             <FlexWrapper>
@@ -322,7 +380,13 @@ export default function TechcommMotionDetail({
         ]}
       />
 
-      <Timeline data={timelineData} chain={chain} indent={false} type={type} />
+      <Timeline
+        data={timelineData}
+        chain={chain}
+        indent={false}
+        type={type}
+        motionEndInfo={motionEndInfo}
+      />
     </div>
   );
 }

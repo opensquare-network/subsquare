@@ -1,7 +1,8 @@
 import styled, { css } from "styled-components";
 import { useState, useRef, useEffect } from "react";
 import { nodes } from "next-common/utils/constants";
-import { useOnClickOutside, useWindowSize } from "utils/hooks";
+import useWindowSize from "next-common/utils/hooks/useWindowSize.js";
+import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside.js";
 import { shadow_200 } from "../styles/componentCss";
 import { useSelector } from "react-redux";
 import { nodesHeightSelector } from "store/reducers/nodeSlice";

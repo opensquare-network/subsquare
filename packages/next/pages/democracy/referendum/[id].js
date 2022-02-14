@@ -10,14 +10,7 @@ import Comments from "next-common/components/comment";
 import Editor from "next-common/components/comment/editor";
 import { useEffect, useRef, useState } from "react";
 import DetailItem from "components/detailItem";
-import KVList from "next-common/components/kvList";
-import User from "next-common/components/user";
-import Links from "components/timeline/links";
-import { getTimelineStatus } from "utils";
 import Vote from "components/referenda/vote";
-import dayjs from "dayjs";
-import Timeline from "components/timeline";
-import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
 import { to404 } from "utils/serverSideUtil";
@@ -26,6 +19,8 @@ import { useApi } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import SEO from "components/SEO";
+import ReferendumTimeline from "./timeline";
+import ReferendumMetadata from "./metadata";
 
 const OutWrapper = styled.div`
   display: flex;
@@ -105,59 +100,6 @@ export default withLoginUserRedux(
       focusEditor
     );
 
-    const getTimelineData = (args, method) => {
-      switch (method) {
-        case "Executed":
-          const rawResult = args.result;
-          let result;
-          if (typeof rawResult === "boolean") {
-            result = rawResult;
-          } else if (typeof args.result === "object") {
-            result = Object.keys(rawResult)[0];
-          } else {
-            result = JSON.stringify(rawResult);
-          }
-
-          return { result };
-      }
-      return args;
-    };
-
-    const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
-      return {
-        time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-        indexer: item.indexer,
-        status: getTimelineStatus("proposal", item.method ?? item.name),
-        data: getTimelineData(item.args, item.method ?? item.name),
-      };
-    });
-
-    const metadata = [
-      [
-        "Proposer",
-        <>
-          <User add={detail.proposer} fontSize={14} />
-          <Links
-            chain={chain}
-            address={detail.proposer}
-            style={{ marginLeft: 8 }}
-          />
-        </>,
-      ],
-      ["Delay", referendumStatus?.delay],
-      ["End", referendumStatus?.end],
-      ["Threshold", referendumStatus?.threshold],
-    ];
-
-    if (detail?.onchainData?.preImage) {
-      metadata.push([
-        <MotionProposal
-          motion={{ proposal: detail.onchainData.preImage.call }}
-          chain={chain}
-        />,
-      ]);
-    }
-
     detail.status = detail.onchainData?.state?.state;
 
     const desc = getMetaDesc(detail, "Referendum");
@@ -190,15 +132,24 @@ export default withLoginUserRedux(
               setIsLoadingReferendumStatus={setIsLoadingReferendumStatus}
             />
 
-            <KVList title={"Metadata"} data={metadata} />
+            <ReferendumMetadata
+              proposer={detail.proposer}
+              delay={referendumStatus?.delay}
+              end={referendumStatus?.end}
+              threshold={referendumStatus?.threshold}
+              preImage={detail?.onchainData?.preImage}
+              chain={chain}
+            />
 
-            <Timeline data={timelineData} chain={chain} />
+            <ReferendumTimeline
+              timeline={detail?.onchainData?.timeline || []}
+              chain={chain}
+            />
 
             <CommentsWrapper>
               <Comments
                 data={comments}
                 user={loginUser}
-                postId={detail._id}
                 chain={chain}
                 onReply={onReply}
               />
