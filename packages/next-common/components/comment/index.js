@@ -11,14 +11,19 @@ const Title = styled.div`
   margin-bottom: 16px;
 `;
 
-export default function Comments({ user, data, chain, onReply }) {
+export default function Comments({
+  user,
+  data: { items, page, pageSize, total } = {},
+  chain,
+  onReply,
+}) {
   return (
     <div>
       <Title>Comments</Title>
-      {data?.items?.length > 0 && (
+      {items?.length > 0 && (
         <>
           <div>
-            {(data?.items || []).map((item) => (
+            {(items || []).map((item) => (
               <Item
                 key={item._id}
                 data={item}
@@ -28,14 +33,10 @@ export default function Comments({ user, data, chain, onReply }) {
               />
             ))}
           </div>
-          <Pagination
-            page={data.page}
-            pageSize={data.pageSize}
-            total={data.total}
-          />
+          <Pagination page={page} pageSize={pageSize} total={total} />
         </>
       )}
-      {!data?.items?.length > 0 && <NoComment />}
+      {!items?.length > 0 && <NoComment />}
       {!user && <LoginButtons />}
     </div>
   );
