@@ -422,35 +422,41 @@ export default function Popup({
             symbol={node?.voteSymbol}
           />
         </div>
-        {!addressVoteIsLoading && addressVote && (
-          <div>
-            <TooltipWrapper>
-              <Label>Voting status</Label>
-            </TooltipWrapper>
-            <StatusWrapper>
-              <div className="value">
-                <DisplayValue
-                  value={toPrecision(addressVote?.balance, node.decimals)}
-                  symbol={node?.voteSymbol}
-                />
-              </div>
-              {addressVote?.aye ? (
-                <div className="result">
-                  Aye
-                  <ApproveIcon />
-                </div>
+        <div>
+          <TooltipWrapper>
+            <Label>Voting status</Label>
+          </TooltipWrapper>
+          <StatusWrapper>
+            {!addressVoteIsLoading &&
+              (addressVote ? (
+                <>
+                  <div className="value">
+                    <DisplayValue
+                      value={toPrecision(addressVote?.balance, node.decimals)}
+                      symbol={node?.voteSymbol}
+                    />
+                  </div>
+                  {addressVote?.aye ? (
+                    <div className="result">
+                      Aye
+                      <ApproveIcon />
+                    </div>
+                  ) : (
+                    <div className="result">
+                      Nay
+                      <RejectIcon />
+                    </div>
+                  )}
+                </>
               ) : (
-                <div className="result">
-                  Nay
-                  <RejectIcon />
-                </div>
-              )}
-            </StatusWrapper>
-            <WarningWrapper>
-              Resubmitting the vote will override the current voting record
-            </WarningWrapper>
-          </div>
-        )}
+                <div className="no-data">No voting record</div>
+              ))}
+            {addressVoteIsLoading && <Loading size={14} />}
+          </StatusWrapper>
+          {addressVote && <WarningWrapper>
+            Resubmitting the vote will override the current voting record
+          </WarningWrapper>}
+        </div>
         <ButtonWrapper>
           <Button
             primary
