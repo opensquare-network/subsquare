@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
-import InnerDataTable from "../table/innerDataTable";
+import InnerDataTable from "next-common/components/table/innerDataTable";
 import BigNumber from "bignumber.js";
 import { hexToString } from "@polkadot/util";
 import { textEllipsis } from "../../utils";
