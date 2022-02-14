@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import InvalidPreImageIcon from "./invalidPreImage.svg";
+import InvalidPreImage from "./invalidPreImage.svg";
 
 const Wrapper = styled.div`
   overflow-x: auto;
@@ -75,7 +75,7 @@ const StyledTd = styled.td`
 
 export default function InnerDataTable({ data, nested = false }) {
   if (Object.keys(data)?.length === 0 && nested === false) {
-    return <InvalidPreImageIcon />;
+    return <InvalidPreImage />;
   }
   if (React.isValidElement(data)) {
     return data;
