@@ -13,7 +13,7 @@ import Toggle from "next-common/components/toggle";
 import ErrorText from "next-common/components/ErrorText";
 import InsertContentsModal from "next-common/components/editor/modal";
 import QuillEditor from "next-common/components/editor/quillEditor";
-import HtmlRender from "components/post/htmlRender";
+import HtmlRender from "next-common/components/post/htmlRender";
 import { useDispatch } from "react-redux";
 import { addToast } from "store/reducers/toastSlice";
 import { fetchUserProfile } from "store/reducers/userSlice";
