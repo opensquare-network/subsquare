@@ -20,6 +20,7 @@ import MotionEnd from "next-common/components/motionEnd";
 import { isMotionEnded } from "next-common/utils";
 import { useSelector } from "react-redux";
 import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
+import { useEstimateBlocksTime } from "next-common/utils/hooks";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -200,6 +201,9 @@ export default function TechcommMotionDetail({
   const [post, setPost] = useState(motion);
   const [isEdit, setIsEdit] = useState(false);
   const currentFinalHeight = useSelector(nodesHeightSelector);
+  const estimatedBlocksTime = useEstimateBlocksTime(
+    currentFinalHeight - motionEndHeight
+  );
   if (!node) {
     return null;
   }
