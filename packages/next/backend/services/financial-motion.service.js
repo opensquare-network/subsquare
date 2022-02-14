@@ -1,8 +1,13 @@
 const { ObjectId } = require("mongodb");
 const { HttpError } = require("@subsquare/backend-common/exc");
 const { ContentType, Day } = require("@subsquare/backend-common/constants");
-const { PostTitleLengthLimitation } = require("@subsquare/backend-common/constants");
-const { safeHtml, extractMentions } = require("@subsquare/backend-common/utils/post");
+const {
+  PostTitleLengthLimitation,
+} = require("@subsquare/backend-common/constants");
+const {
+  safeHtml,
+  extractMentions,
+} = require("@subsquare/backend-common/utils/post");
 const { toUserPublicInfo } = require("@subsquare/backend-common/utils/user");
 const {
   getFinancialMotionCollection: getChainFinancialMotionCollection,
@@ -23,12 +28,10 @@ const mailService = require("@subsquare/backend-common/services/mail.service");
 
 async function findMotion(post) {
   const chainMotionCol = await getChainFinancialMotionCollection();
-  return await chainMotionCol.findOne(
-    {
-      hash: post.hash,
-      "indexer.blockHeight": post.height,
-    },
-  );
+  return await chainMotionCol.findOne({
+    hash: post.hash,
+    "indexer.blockHeight": post.height,
+  });
 }
 
 async function findMotionPost(postId) {
@@ -155,19 +158,19 @@ async function getActiveMotionsOverview() {
         $or: [
           {
             "state.state": {
-              $nin: ["Approved", "Disapproved", "Executed"]
-            }
+              $nin: ["Approved", "Disapproved", "Executed"],
+            },
           },
           {
             "state.indexer.blockTime": {
-              $gt: Date.now() - 3 * Day
+              $gt: Date.now() - Day,
             },
-          }
-        ]
+          },
+        ],
       },
       {
         projection: {
-          timeline: 0
+          timeline: 0,
         },
       }
     )
@@ -223,9 +226,7 @@ async function getMotionById(postId) {
 
   const [, author] = await Promise.all([
     lookupUser({ for: reactions, localField: "user" }),
-    post.proposer
-      ? getUserByAddress(post.proposer)
-      : null,
+    post.proposer ? getUserByAddress(post.proposer) : null,
   ]);
 
   return {

@@ -288,7 +288,7 @@ async function getActiveMotionsOverview() {
           },
           {
             "state.indexer.blockTime": {
-              $gt: Date.now() - 3 * Day,
+              $gt: Date.now() - Day,
             },
           },
         ],
