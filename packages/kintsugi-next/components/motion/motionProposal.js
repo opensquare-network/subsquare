@@ -6,7 +6,9 @@ import InnerDataTable from "components/table/innerDataTable";
 import BigNumber from "bignumber.js";
 import { hexToString } from "@polkadot/util";
 import { hexEllipsis } from "utils";
-const LongText = dynamic(() => import("components/longText"), { ssr: false });
+const LongText = dynamic(() => import("next-common/components/longText"), {
+  ssr: false,
+});
 
 const JsonView = dynamic(
   () =>
