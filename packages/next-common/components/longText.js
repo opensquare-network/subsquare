@@ -1,5 +1,6 @@
+import React from "react";
 import styled from "styled-components";
-import { hexEllipsis } from "../utils";
+import { hexEllipsis } from "next-common/utils";
 
 const Between = styled.div`
   display: flex;
