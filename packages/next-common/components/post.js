@@ -1,8 +1,13 @@
+import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
-
 import User from "next-common/components/user";
-import { getNode, timeDuration, timeDurationFromNow, toPrecision } from "utils";
+import {
+  getNode,
+  timeDuration,
+  timeDurationFromNow,
+  toPrecision,
+} from "next-common/utils";
 import Tag from "next-common/components/tag";
 import ReasonLink from "next-common/components/reasonLink";
 import SectionTag from "components/sectionTag";
@@ -12,7 +17,7 @@ import {
   shadow_100,
   text_accessory,
   text_primary,
-} from "../styles/componentCss";
+} from "next-common/styles/componentCss";
 import MotionElapse from "next-common/components/motionElapse";
 
 const Wrapper = styled.div`
