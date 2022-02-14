@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import Post from "./post";
+import Post from "next-common/components/post";
 import Pagination from "next-common/components/pagination";
 import EmptyList from "next-common/components/emptyList";
 import Flex from "next-common/components/styled/flex";
@@ -44,7 +44,13 @@ export default function List({
       {summary}
       {items?.length > 0 ? (
         items.map((item, index) => (
-          <Post key={index} data={item} chain={chain} href={item.detailLink} type={category} />
+          <Post
+            key={index}
+            data={item}
+            chain={chain}
+            href={item.detailLink}
+            type={category}
+          />
         ))
       ) : (
         <EmptyList type={category} />
