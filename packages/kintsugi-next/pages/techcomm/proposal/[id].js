@@ -77,7 +77,6 @@ export default withLoginUserRedux(
             <Comments
               data={comments}
               user={loginUser}
-              postId={motion._id}
               chain={chain}
               onReply={onReply}
             />

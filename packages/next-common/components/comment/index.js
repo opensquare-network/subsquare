@@ -11,7 +11,7 @@ const Title = styled.div`
   margin-bottom: 16px;
 `;
 
-export default function Comments({ user, postId, data, chain, onReply }) {
+export default function Comments({ user, data, chain, onReply }) {
   return (
     <div>
       <Title>Comments</Title>

@@ -156,7 +156,6 @@ export default withLoginUserRedux(
             <Comments
               data={comments}
               user={loginUser}
-              postId={postId}
               chain={chain}
               onReply={onReply}
             />
