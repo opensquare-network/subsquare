@@ -13,9 +13,8 @@ const Wrapper = styled.div`
 `;
 
 const BackButton = styled.div`
-  display: inline-block;
-  margin-top: 8px;
   display: flex;
+  margin-top: 8px;
   font-weight: bold;
   font-size: 16px;
   line-height: 100%;

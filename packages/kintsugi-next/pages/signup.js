@@ -15,7 +15,7 @@ import { useDispatch } from "react-redux";
 import { addToast } from "store/reducers/toastSlice";
 import { shadow_100 } from "styles/componentCss";
 import NextHead from "components/nextHead";
-import UserPolicy from "components/userPolicy";
+import UserPolicy from "next-common/components/userPolicy";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
