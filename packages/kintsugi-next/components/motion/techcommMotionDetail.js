@@ -7,7 +7,7 @@ import MotionProposal from "./motionProposal";
 import Links from "next-common/components/links";
 import Timeline from "next-common/components/timeline";
 import { getNode, timeDurationFromNow, toPrecision } from "utils";
-import SectionTag from "components/sectionTag";
+import SectionTag from "next-common/components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
 import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "styles/componentCss";

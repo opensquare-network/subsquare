@@ -10,7 +10,7 @@ import {
 } from "next-common/utils";
 import Tag from "next-common/components/tag";
 import ReasonLink from "next-common/components/reasonLink";
-import SectionTag from "components/sectionTag";
+import SectionTag from "next-common/components/sectionTag";
 import Flex from "next-common/components/styled/flex";
 import {
   p_14_medium,

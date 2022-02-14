@@ -12,7 +12,7 @@ import {
   timeDurationFromNow,
   toPrecision,
 } from "utils";
-import SectionTag from "components/sectionTag";
+import SectionTag from "next-common/components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
 import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "../../styles/componentCss";
