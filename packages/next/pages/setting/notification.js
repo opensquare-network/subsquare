@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 
-import Toggle from "components/toggle";
+import Toggle from "next-common/components/toggle";
 import Button from "next-common/components/button";
 import Menu from "next-common/components/menu";
 import { settingMenu } from "next-common/utils/constants";
