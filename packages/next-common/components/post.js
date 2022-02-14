@@ -176,7 +176,6 @@ export default function Post({ data, chain, href, type }) {
   ) {
     elapseIcon = <MotionElapse motion={data.onchainData} chain={chain} />;
   }
-  return <h1>fuck</h1>;
 
   return (
     <Wrapper>
