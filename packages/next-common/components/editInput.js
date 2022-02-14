@@ -1,6 +1,6 @@
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useState } from "react";
-import MarkdownEditor from "components/markdownEditor";
+import MarkdownEditor from "next-common/components/markdownEditor";
 import Toggle from "next-common/components/toggle";
 import Button from "next-common/components/button";
 import PreviewMD from "next-common/components/previewMD";

@@ -9,6 +9,7 @@ import "public/prism.css";
 import { store } from "../store";
 import "../styles/richTextStyles.scss";
 import "react-quill/dist/quill.snow.css";
+import "react-mde/lib/styles/css/react-mde-all.css";
 import { connect } from "../services/websocket";
 import { useEffect } from "react";
 

@@ -12,7 +12,7 @@ import FoldIcon from "../../assets/imgs/icons/fold.svg";
 import { useDispatch } from "react-redux";
 import { addToast } from "next-common/store/reducers/toastSlice";
 import User from "next-common/components/user";
-import EditInput from "components/editInput";
+import EditInput from "next-common/components/editInput";
 import { useRouter } from "next/router";
 import Flex from "next-common/components/styled/flex";
 import MicromarkMd from "next-common/components/micromarkMd";
