@@ -1,4 +1,4 @@
-import List from "components/list";
+import List from "next-common/components/list";
 import Menu from "next-common/components/menu";
 import { mainMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";

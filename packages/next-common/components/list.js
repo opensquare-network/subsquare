@@ -1,5 +1,5 @@
+import React from "react";
 import styled from "styled-components";
-
 import Post from "next-common/components/post";
 import Pagination from "next-common/components/pagination";
 import EmptyList from "next-common/components/emptyList";
