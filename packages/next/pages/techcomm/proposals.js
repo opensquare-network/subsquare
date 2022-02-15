@@ -6,7 +6,7 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import { toTechCommMotionListItem } from "utils/viewfuncs";
-import SEO from "components/SEO";
+import SEO from "next-common/components/SEO";
 
 export default withLoginUserRedux(
   ({ loginUser, proposals, chain, siteUrl }) => {

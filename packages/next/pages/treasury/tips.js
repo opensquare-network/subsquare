@@ -6,7 +6,7 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import { toTipListItem } from "utils/viewfuncs";
-import SEO from "components/SEO";
+import SEO from "next-common/components/SEO";
 import Summary from "next-common/components/summary";
 
 export default withLoginUserRedux(({ loginUser, tips, chain, siteUrl }) => {

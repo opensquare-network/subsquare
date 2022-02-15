@@ -7,7 +7,7 @@ import Layout from "components/layout";
 import TechcommMotionDetail from "components/motion/techcommMotionDetail";
 import { TYPE_TECH_COMM_MOTION } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-import SEO from "components/SEO";
+import SEO from "next-common/components/SEO";
 import {
   getFocusEditor,
   getMentionList,

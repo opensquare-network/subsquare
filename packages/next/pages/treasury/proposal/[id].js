@@ -22,7 +22,7 @@ import { TYPE_TREASURY_PROPOSAL } from "utils/viewConstants";
 import { createMotionTimelineData } from "../../../utils/timeline/motion";
 import sortTimeline from "../../../utils/timeline/sort";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-import SEO from "components/SEO";
+import SEO from "next-common/components/SEO";
 import KVList from "next-common/components/kvList";
 
 const Wrapper = styled.div`

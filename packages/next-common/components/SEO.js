@@ -1,5 +1,6 @@
+import React from "react";
 import { useRouter } from "next/router";
-import NextSeo from "components/nextSeo";
+import NextSeo from "./nextSeo";
 
 const imageMap = new Map([
   ["kabocha", "bafybeibind6xq3c3xuu2moy2jr4bmoaodjbyhdgfnrnfo7hkpvotyrhssi"],
@@ -7,6 +8,7 @@ const imageMap = new Map([
   ["bifrost", "bafybeibu7lmjymi5x6gjixdawmc4rjufruc6qwazailfnpzpoaqtuq6khe"],
   ["karura", "bafybeiaoq7r32qsnpjqcey3x5hxfikbq3artjzi32he7dkretvesqgf3ny"],
   ["khala", "bafybeifo4hsd3ue5ivsbcrb77fp2uvglxyc2royqvg52eo5eggnppdjxp4"],
+  ["kintsugi", "bafybeid66326gcwrriitsffgrhljk4i7uf54am25arkqjz4j6o3gfwyime"],
 ]);
 
 export default function SEO({ title, desc, chain, siteUrl }) {

@@ -16,7 +16,7 @@ import {
   toTreasuryBountyListItem,
   toTreasuryProposalListItem,
 } from "utils/viewfuncs";
-import SEO from "components/SEO";
+import SEO from "next-common/components/SEO";
 
 export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
   let overviewData = [
@@ -38,16 +38,16 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
         toTechCommMotionListItem(chain, item)
       ),
     },
-    ...(
-      chain === "karura" || chain === "acala"
-      ? [{
-          category: "Financial Council Motions",
-          items: (overview?.financialCouncil?.motions ?? []).map((item) =>
-            toFinancialMotionsListItem(chain, item)
-          ),
-        }]
-      : []
-    ),
+    ...(chain === "karura" || chain === "acala"
+      ? [
+          {
+            category: "Financial Council Motions",
+            items: (overview?.financialCouncil?.motions ?? []).map((item) =>
+              toFinancialMotionsListItem(chain, item)
+            ),
+          },
+        ]
+      : []),
     {
       category: "Treasury Proposals",
       items: (overview?.treasury?.proposals ?? []).map((item) =>
@@ -98,7 +98,7 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
   }
 
   const filteredOverviewData = overviewData.filter(
-    data => data?.items?.length > 0 || data?.category === "Discussions"
+    (data) => data?.items?.length > 0 || data?.category === "Discussions"
   );
 
   // Sort the items with length = 0 to the end of the list

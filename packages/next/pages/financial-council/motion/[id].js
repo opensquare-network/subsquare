@@ -18,7 +18,7 @@ import {
   getOnReply,
 } from "../../../utils/post";
 import { useRef, useState } from "react";
-import SEO from "components/SEO";
+import SEO from "next-common/components/SEO";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
