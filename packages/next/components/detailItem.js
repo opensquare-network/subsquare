@@ -3,8 +3,6 @@ import { useState } from "react";
 import Link from "next/link";
 
 import { timeDurationFromNow } from "utils";
-import PostEdit from "components/post/postEdit";
-import nextApi from "services/nextApi";
 import User from "next-common/components/user";
 import TriangleRight from "../public/imgs/icons/arrow-triangle-right.svg";
 import Tag from "next-common/components/tag";
@@ -16,7 +14,7 @@ import {
   TYPE_DEMOCRACY_EXTERNAL,
   TYPE_DEMOCRACY_PROPOSAL,
 } from "utils/viewConstants";
-import ArticleContent from "./articleContent";
+import ArticleContent from "next-common/components/articleContent";
 
 const Wrapper = styled.div`
   background: #ffffff;

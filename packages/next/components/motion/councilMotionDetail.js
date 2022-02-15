@@ -18,7 +18,7 @@ import SectionTag from "next-common/components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
 import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "../../styles/componentCss";
-import ArticleContent from "../articleContent";
+import ArticleContent from "next-common/components/articleContent";
 import { getPostUpdatedAt, isMotionCompleted } from "../../utils/viewfuncs";
 import { withLoginUserRedux } from "../../lib";
 import { useState } from "react";
