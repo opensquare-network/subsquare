@@ -21,7 +21,7 @@ import { shadow_100 } from "../../styles/componentCss";
 import ArticleContent from "../articleContent";
 import { getPostUpdatedAt, isMotionCompleted } from "../../utils/viewfuncs";
 import { withLoginUserRedux } from "../../lib";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CapitalText from "../capitalText";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
 import Tag from "next-common/components/tag";
@@ -30,6 +30,8 @@ import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { nodesHeightSelector } from "store/reducers/nodeSlice";
 import { useSelector } from "react-redux";
 import Vote from "components/vote";
+import { useApi } from "utils/hooks";
+import useCall from "next-common/utils/hooks/useCall";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -184,12 +186,35 @@ export default withLoginUserRedux(
       currentFinalHeight <= motionEndHeight &&
       estimatedBlocksTime;
 
+    const [post, setPost] = useState(motion);
+    const [isEdit, setIsEdit] = useState(false);
+
+    const api = useApi();
+    const voters = useCall(api?.query?.council?.members, []) || [];
+    const userCanVote = voters?.some((address) =>
+      loginUser?.addresses?.some(
+        (item) => item.address === address && item.chain === chain
+      )
+    );
+
+    let motionVotes = [];
+    if (motion?.onchainData) {
+      motionVotes = [[motion.onchainData.proposer, true]];
+      // When there is only one council member, the motion executed immediately
+      // No "voting" field, and no "Voted" event in timeline
+      const voting = motion.onchainData.voting;
+      if (voting) {
+        motionVotes = motion.onchainData.timeline
+          .filter((item) => item.method === "Voted")
+          .map((item) => [item.args.voter, item.args.approve]);
+      }
+    }
+    const [votes, setVotes] = useState(motionVotes);
+
     const node = getNode(chain);
     if (!node) {
       return null;
     }
-    const [post, setPost] = useState(motion);
-    const [isEdit, setIsEdit] = useState(false);
     const decimals = node.decimals;
     const symbol = node.symbol;
 
@@ -361,7 +386,14 @@ export default withLoginUserRedux(
             setIsEdit={setIsEdit}
           />
         </Wrapper>
-        <Vote chain={chain} />
+        <Vote
+          chain={chain}
+          votes={votes}
+          voters={voters}
+          userCanVote={userCanVote}
+          motionHash={motion.hash}
+          motionIndex={motion.motionIndex}
+        />
 
         <MultiKVList title="Business" data={business} />
 

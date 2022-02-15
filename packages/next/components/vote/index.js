@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 
 import Button from "next-common/components/button";
 import User from "next-common/components/user";
-import { getNode, toPrecision } from "utils";
 import LoadingIcon from "public/imgs/icons/members-loading.svg";
 import Loading from "components/loading";
 
@@ -100,70 +99,66 @@ const LoadingDiv = styled.div`
 
 export default function Vote({
   chain,
-  tipIsFinal = false,
-  userIsTipper = false,
-  loading = true,
-  tips = [],
-  councilTippers = [],
-  tipHash,
-  updateTips = () => {},
+  motionIsFinal = false,
+  userCanVote = false,
+  loading = false,
+  votes = [],
+  voters = [],
+  motionHash,
+  motionIndex,
+  updateVotes = () => {},
   updateTimeline = () => {},
-  isLoadingTip,
-  setIsLoadingTip = () => {},
+  isLoadingVote,
+  setIsLoadingVote = () => {},
 }) {
   const [showPopup, setShowPopup] = useState(false);
 
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
-
-  let tipList = null;
+  let voteList = null;
 
   if (loading) {
-    tipList = (
+    voteList = (
       <TipperList>
         <LoadingDiv>
           <LoadingIcon />
         </LoadingDiv>
       </TipperList>
     );
-  } else if (tips.length === 0) {
-    tipList = (
+  } else if (votes.length === 0) {
+    voteList = (
       <TipperList>
         <NoTippers>No Vote</NoTippers>
       </TipperList>
     );
   } else {
-    tipList = (
+    voteList = (
       <TipperList>
-        <TipperItem>
-          <User
-            add="ouJX1WJQ9s4RMukAx5zvMwPY2zJZ9Xr5euzRG97Ne6UTNG9"
-            chain={chain}
-          />
-          <div>
-            Aye
-            <img src="/imgs/icons/aye.svg" alt="" />
-          </div>
-          {/* <div>
+        {votes.map(([voter, approve], index) => (
+          <TipperItem key={index}>
+            <User add={voter} chain={chain} />
+            {approve ? (
+              <div>
+                Aye
+                <img src="/imgs/icons/aye.svg" alt="" />
+              </div>
+            ) : (
+              <div>
                 Nay
                 <img src="/imgs/icons/nay.svg" alt="" />
-              </div> */}
-        </TipperItem>
+              </div>
+            )}
+          </TipperItem>
+        ))}
       </TipperList>
     );
   }
 
   let action;
-  if (tipIsFinal) {
-    action = <Description>This tip has been closed.</Description>;
-  } else if (userIsTipper) {
+  if (motionIsFinal) {
+    action = <Description>This vote has been closed.</Description>;
+  } else if (userCanVote) {
     action = (
       <Button secondary isFill onClick={() => setShowPopup(true)}>
-        Endorse
+        Vote
       </Button>
     );
   } else {
@@ -181,21 +176,23 @@ export default function Vote({
         <Content>
           <Title>
             <div>Council Votes</div>
-            <div>{isLoadingTip && <Loading size={16} />}</div>
+            <div>{isLoadingVote && <Loading size={16} />}</div>
           </Title>
-          {tipList}
+          {voteList}
         </Content>
         {!loading && action}
       </Wrapper>
       {showPopup && (
         <Popup
           chain={chain}
-          councilTippers={councilTippers}
-          tipHash={tipHash}
+          votes={votes}
+          voters={voters}
+          motionHash={motionHash}
+          motionIndex={motionIndex}
           onClose={() => setShowPopup(false)}
-          onInBlock={updateTips}
+          onInBlock={updateVotes}
           onFinalized={updateTimeline}
-          onSubmitted={() => setIsLoadingTip(true)}
+          onSubmitted={() => setIsLoadingVote(true)}
         />
       )}
     </>

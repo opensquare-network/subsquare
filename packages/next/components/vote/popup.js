@@ -15,7 +15,8 @@ import {
   encodeKabochaAddress,
 } from "services/chainApi";
 
-import { useOnClickOutside, useApi } from "utils/hooks";
+import { useApi } from "utils/hooks";
+import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import AddressSelect from "components/addressSelect";
 import Button from "next-common/components/button";
@@ -98,18 +99,6 @@ const Label = styled.div`
   margin-bottom: 8px;
 `;
 
-const BalanceWrapper = styled.div`
-  display: flex;
-  font-size: 12px;
-  line-height: 100%;
-  color: #506176;
-  > :nth-child(2) {
-    color: #1e2134;
-    font-weight: bold;
-    margin-left: 8px;
-  }
-`;
-
 const Message = styled.div`
   display: flex;
   align-items: flex-start;
@@ -185,12 +174,12 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const balanceMap = new Map();
-
 export default function Popup({
   chain,
-  councilTippers,
-  tipHash,
+  votes,
+  voters,
+  motionHash,
+  motionIndex,
   onClose,
   onInBlock,
   onFinalized,
@@ -202,9 +191,6 @@ export default function Popup({
   const isMounted = useIsMounted();
   const [accounts, setAccounts] = useState([]);
   const [selectedAccount, setSelectedAccount] = useState(null);
-  const [inputTipValue, setInputTipValue] = useState();
-  const [tipping, setTipping] = useState(false);
-  const [balance, setBalance] = useState();
   const [isLoading, setIsLoading] = useState();
   const [
     extensionAccounts,
@@ -212,11 +198,10 @@ export default function Popup({
     isExtensionAccessible,
     extensionDetecting,
   ] = useExtensionAccounts("subsquare");
-  const node = getNode(chain);
 
-  const selectedAccountIsTipper = councilTippers.includes(
-    selectedAccount?.[`${chain}Address`]
-  );
+  const selectedAddress = selectedAccount?.[`${chain}Address`];
+  const selectedAccountCanVote = voters.includes(selectedAddress);
+  const currentVote = votes.find((item) => item[0] === selectedAddress);
 
   useEffect(() => {
     if (extensionDetecting) {
@@ -271,24 +256,9 @@ export default function Popup({
     }
   }, [api, selectedAccount, isMounted]);
 
-  useEffect(() => {
-    if (balanceMap.has(selectedAccount?.address)) {
-      setBalance(balanceMap.get(selectedAccount?.address));
-      return;
-    }
-    setBalance();
-    if (api && selectedAccount) {
-      api.query.system.account(selectedAccount.address).then((result) => {
-        if (isMounted.current) {
-          const free = toPrecision(result.data.free, node.decimals);
-          setBalance(free);
-          balanceMap.set(selectedAccount.address, free);
-        }
-      });
-    }
-  }, [api, selectedAccount, node.decimals, isMounted]);
+  const doVote = async (approve) => {
+    if (isLoading) return;
 
-  const doEndorse = async () => {
     if (!api) {
       dispatch(
         addToast({
@@ -299,7 +269,7 @@ export default function Popup({
       return;
     }
 
-    if (!tipHash) {
+    if (!motionHash || motionIndex === undefined) {
       return;
     }
 
@@ -313,61 +283,24 @@ export default function Popup({
       return;
     }
 
-    if (!inputTipValue) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Please input tip value",
-        })
-      );
-      return;
-    }
-
-    const bnInputTipValue = new BigNumber(inputTipValue);
-    if (bnInputTipValue.isNaN() || bnInputTipValue.lt(0)) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Tip value is not valid",
-        })
-      );
-      return;
-    }
-
-    if (!node) {
-      return;
-    }
-    const decimals = node.decimals;
-
-    const bnTipValue = bnInputTipValue.multipliedBy(Math.pow(10, decimals));
-    if (!bnTipValue.mod(1).isZero()) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Tip value is not valid",
-        })
-      );
-      return;
-    }
-
     try {
-      setTipping(true);
+      setIsLoading(approve ? "Aye" : "Nay");
 
-      const tipperAddress = selectedAccount.address;
+      const voterAddress = selectedAccount.address;
 
-      const unsub = await api.tx.tips
-        .tip(tipHash, bnTipValue.toFixed())
-        .signAndSend(tipperAddress, ({ events = [], status }) => {
+      const unsub = await api.tx.council
+        .vote(motionHash, motionIndex, approve)
+        .signAndSend(voterAddress, ({ events = [], status }) => {
           if (status.isFinalized) {
-            onFinalized(tipperAddress);
+            onFinalized(voterAddress);
             unsub();
           }
           if (status.isInBlock) {
             // Transaction went through
-            onInBlock(tipperAddress);
+            onInBlock(voterAddress);
           }
         })
-        .then(() => onSubmitted(tipperAddress));
+        .then(() => onSubmitted(voterAddress));
 
       onClose();
     } catch (e) {
@@ -380,7 +313,7 @@ export default function Popup({
         );
       }
     } finally {
-      setTipping(false);
+      setIsLoading(null);
     }
   };
 
@@ -432,49 +365,59 @@ export default function Popup({
               setSelectedAccount(account);
             }}
           />
-          <Info danger={!selectedAccountIsTipper}>
-            Only council members can tip.
-          </Info>
+          {!selectedAccountCanVote && (
+            <Info danger={!selectedAccountCanVote}>
+              Only council members can vote.
+            </Info>
+          )}
         </div>
         <CurrentVotingWrapper>
           <LabelWrapper>
             <Label>Current Voting</Label>
           </LabelWrapper>
-          <CurrentVotingLoading>
+          {/* <CurrentVotingLoading>
             <Loading />
-          </CurrentVotingLoading>
-          <CurrentVotingNoData>No voting record</CurrentVotingNoData>
-          <CurrentVoting>
-            <div>Voting</div>
-            {/* <div>
-              Aye
-              <img src="/imgs/icons/aye.svg" alt="" />
-            </div> */}
-            <div>
-              Nay
-              <img src="/imgs/icons/nay.svg" alt="" />
-            </div>
-          </CurrentVoting>
-          <Message>
-            Resubmitting the vote will override the current voting record
-          </Message>
+          </CurrentVotingLoading> */}
+          {currentVote ? (
+            <CurrentVoting>
+              <div>Voting</div>
+              {currentVote[1] ? (
+                <div>
+                  Aye
+                  <img src="/imgs/icons/aye.svg" alt="" />
+                </div>
+              ) : (
+                <div>
+                  Nay
+                  <img src="/imgs/icons/nay.svg" alt="" />
+                </div>
+              )}
+            </CurrentVoting>
+          ) : (
+            <CurrentVotingNoData>No voting record</CurrentVotingNoData>
+          )}
+          {currentVote && (
+            <Message>
+              Resubmitting the vote will override the current voting record
+            </Message>
+          )}
         </CurrentVotingWrapper>
         <ButtonWrapper>
           <Button
             primary
             background="#4CAF50"
-            onClick={() => setIsLoading("Aye")}
+            onClick={() => doVote(true)}
             isLoading={isLoading === "Aye"}
-            disabled={isLoading && isLoading !== "Aye"}
+            disabled={isLoading}
           >
             Aye
           </Button>
           <Button
             primary
             background="#F44336"
-            onClick={() => setIsLoading("Nay")}
+            onClick={() => doVote(false)}
             isLoading={isLoading === "Nay"}
-            disabled={isLoading && isLoading !== "Nay"}
+            disabled={isLoading}
           >
             Nay
           </Button>
