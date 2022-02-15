@@ -1987,8 +1987,12 @@
     "@polkadot/api" "7.7.1"
     "@polkadot/react-identicon" "1.0.1"
     md5 "^2.3.0"
+    micromark "^3.0.10"
+    micromark-extension-gfm "^2.0.0"
     react "^17.0.2"
     react-dom "^17.0.2"
+    react-json-view "^1.21.3"
+    sanitize-html "^2.4.0"
     styled-components "^5.3.3"
 
 "@svgr/babel-plugin-add-jsx-attribute@^5.4.0":
@@ -6901,6 +6905,11 @@ locate-path@^6.0.0:
   integrity sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==
   dependencies:
     p-locate "^5.0.0"
+
+lodash.clonedeep@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
+  integrity sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=
 
 lodash.curry@^4.0.1:
   version "4.1.1"

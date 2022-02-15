@@ -3,7 +3,6 @@ import { useRef, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import { web3FromAddress } from "@polkadot/extension-dapp";
-import BigNumber from "bignumber.js";
 import {
   encodeKaruraAddress,
   encodeKhalaAddress,
@@ -22,7 +21,6 @@ import AddressSelect from "components/addressSelect";
 import Button from "next-common/components/button";
 import { addToast } from "store/reducers/toastSlice";
 
-import { getNode, toPrecision } from "utils";
 import { useExtensionAccounts } from "utils/polkadotExtension";
 import ExternalLink from "next-common/components/externalLink";
 import Loading from "./loading";
@@ -177,6 +175,7 @@ const ButtonWrapper = styled.div`
 export default function Popup({
   chain,
   votes,
+  isLoadingVotes,
   voters,
   motionHash,
   motionIndex,
@@ -375,28 +374,31 @@ export default function Popup({
           <LabelWrapper>
             <Label>Current Voting</Label>
           </LabelWrapper>
-          {/* <CurrentVotingLoading>
-            <Loading />
-          </CurrentVotingLoading> */}
-          {currentVote ? (
-            <CurrentVoting>
-              <div>Voting</div>
-              {currentVote[1] ? (
-                <div>
-                  Aye
-                  <img src="/imgs/icons/aye.svg" alt="" />
-                </div>
-              ) : (
-                <div>
-                  Nay
-                  <img src="/imgs/icons/nay.svg" alt="" />
-                </div>
-              )}
-            </CurrentVoting>
-          ) : (
-            <CurrentVotingNoData>No voting record</CurrentVotingNoData>
+          {isLoadingVotes && (
+            <CurrentVotingLoading>
+              <Loading />
+            </CurrentVotingLoading>
           )}
-          {currentVote && (
+          {!isLoadingVotes &&
+            (currentVote ? (
+              <CurrentVoting>
+                <div>Voting</div>
+                {currentVote[1] ? (
+                  <div>
+                    Aye
+                    <img src="/imgs/icons/aye.svg" alt="" />
+                  </div>
+                ) : (
+                  <div>
+                    Nay
+                    <img src="/imgs/icons/nay.svg" alt="" />
+                  </div>
+                )}
+              </CurrentVoting>
+            ) : (
+              <CurrentVotingNoData>No voting record</CurrentVotingNoData>
+            ))}
+          {!isLoadingVotes && currentVote && (
             <Message>
               Resubmitting the vote will override the current voting record
             </Message>

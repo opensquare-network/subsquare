@@ -3,6 +3,7 @@ import styled from "styled-components";
 import KVList from "next-common/components/kvList";
 import MultiKVList from "next-common/components/multiKVList";
 import Link from "next/link";
+import cloneDeep from "lodash.clonedeep";
 
 import User from "next-common/components/user";
 import MotionProposal from "./motionProposal";
@@ -20,8 +21,7 @@ import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "../../styles/componentCss";
 import ArticleContent from "../articleContent";
 import { getPostUpdatedAt, isMotionCompleted } from "../../utils/viewfuncs";
-import { withLoginUserRedux } from "../../lib";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import CapitalText from "../capitalText";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
 import Tag from "next-common/components/tag";
@@ -32,6 +32,7 @@ import { useSelector } from "react-redux";
 import Vote from "components/vote";
 import { useApi } from "utils/hooks";
 import useCall from "next-common/utils/hooks/useCall";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -170,262 +171,315 @@ const getClosedTimelineData = (timeline = []) => {
   return [foldItems, ...notFoldItems];
 };
 
-export default withLoginUserRedux(
-  ({ loginUser, motion, onReply, chain, type }) => {
-    const currentFinalHeight = useSelector(nodesHeightSelector);
-    const motionEndHeight = motion.onchainData?.voting?.end;
-    const estimatedBlocksTime = useEstimateBlocksTime(
-      currentFinalHeight - motionEndHeight
-    );
-    const motionEnd = isMotionEnded(motion.onchainData);
+export default function CouncilMotionDetail({
+  user,
+  motion,
+  onReply,
+  chain,
+  type,
+  updateMotionDetail,
+}) {
+  const isMounted = useIsMounted();
+  const currentFinalHeight = useSelector(nodesHeightSelector);
+  const motionEndHeight = motion.onchainData?.voting?.end;
+  const estimatedBlocksTime = useEstimateBlocksTime(
+    currentFinalHeight - motionEndHeight
+  );
+  const motionEnd = isMotionEnded(motion.onchainData);
 
-    const showMotionEnd =
-      !motionEnd &&
-      motionEndHeight &&
-      currentFinalHeight &&
-      currentFinalHeight <= motionEndHeight &&
-      estimatedBlocksTime;
+  const showMotionEnd =
+    !motionEnd &&
+    motionEndHeight &&
+    currentFinalHeight &&
+    currentFinalHeight <= motionEndHeight &&
+    estimatedBlocksTime;
 
-    const [post, setPost] = useState(motion);
-    const [isEdit, setIsEdit] = useState(false);
+  const [post, setPost] = useState(motion);
+  const [isEdit, setIsEdit] = useState(false);
 
-    const api = useApi();
-    const voters = useCall(api?.query?.council?.members, []) || [];
-    const userCanVote = voters?.some((address) =>
-      loginUser?.addresses?.some(
-        (item) => item.address === address && item.chain === chain
-      )
-    );
+  const api = useApi();
+  const voters = useCall(api?.query?.council?.members, []) || [];
+  const userCanVote = voters?.some((address) =>
+    user?.addresses?.some(
+      (item) => item.address === address && item.chain === chain
+    )
+  );
 
-    let motionVotes = [];
+  const dbVotes = useMemo(() => {
     if (motion?.onchainData) {
-      motionVotes = [[motion.onchainData.proposer, true]];
       // When there is only one council member, the motion executed immediately
       // No "voting" field, and no "Voted" event in timeline
       const voting = motion.onchainData.voting;
       if (voting) {
-        motionVotes = motion.onchainData.timeline
+        return motion.onchainData.timeline
           .filter((item) => item.method === "Voted")
           .map((item) => [item.args.voter, item.args.approve]);
       }
-    }
-    const [votes, setVotes] = useState(motionVotes);
 
-    const node = getNode(chain);
-    if (!node) {
-      return null;
-    }
-    const decimals = node.decimals;
-    const symbol = node.symbol;
-
-    const postUpdateTime = getPostUpdatedAt(post);
-    const timeline = createMotionTimelineData(motion.onchainData, chain);
-
-    let timelineData;
-    if (isClosed(timeline)) {
-      timelineData = getClosedTimelineData(timeline);
-    } else {
-      timelineData = timeline;
+      return [[motion.onchainData.proposer, true]];
     }
 
-    let business = [];
+    return [];
+  }, [motion]);
 
-    const motionCompleted = isMotionCompleted(motion);
-    if (motionCompleted) {
-      business.push(createMotionBusinessData(motion, chain));
+  const [votes, setVotes] = useState(dbVotes);
+  const [readOnchainVotes, setReadOnchainVotes] = useState(0);
+  const [isLoadingVote, setIsLoadingVote] = useState(false);
+
+  useEffect(() => {
+    if (!api || !readOnchainVotes) {
+      return;
     }
 
-    if (
-      motion.onchainData.treasuryProposals?.length > 0 ||
-      motion.onchainData.treasuryBounties?.length > 0
-    ) {
-      for (const proposal of motion.onchainData.treasuryProposals) {
-        business.push([
-          [
-            "Link to",
-            <Link
-              href={`/treasury/proposal/${proposal.proposalIndex}`}
-            >{`Treasury Proposal #${proposal.proposalIndex}`}</Link>,
-          ],
-          [
-            "Beneficiary",
-            <Flex>
-              <User
-                chain={chain}
-                add={proposal.meta.beneficiary}
-                fontSize={14}
-              />
-              <Links
-                chain={chain}
-                address={proposal.meta.beneficiary}
-                style={{ marginLeft: 8 }}
-              />
-            </Flex>,
-          ],
-          [
-            "Value",
-            `${toPrecision(proposal.meta.value ?? 0, decimals)} ${symbol}`,
-          ],
-          [
-            "Bond",
-            `${toPrecision(proposal.meta.bond ?? 0, decimals)} ${symbol}`,
-          ],
-        ]);
-      }
+    setIsLoadingVote(true);
+    api.query.council
+      .voting(motion.hash)
+      .then((voting) => {
+        const jsonVoting = voting.toJSON();
+        if (!jsonVoting) {
+          return;
+        }
 
-      for (const bounty of motion.onchainData.treasuryBounties) {
-        const kvData = [];
-
-        kvData.push([
-          "Link to",
-          <Link
-            href={`/treasury/bounty/${bounty.bountyIndex}`}
-          >{`Treasury Bounty #${bounty.bountyIndex}`}</Link>,
-        ]);
-
-        const metadata = bounty.meta ? Object.entries(bounty.meta) : [];
-        metadata.forEach((item) => {
-          switch (item[0]) {
-            case "proposer":
-            case "beneficiary":
-              kvData.push([
-                <CapitalText>{item[0]}</CapitalText>,
-                <Flex>
-                  <User chain={chain} add={item[1]} fontSize={14} />
-                  <Links
-                    chain={chain}
-                    address={item[1]}
-                    style={{ marginLeft: 8 }}
-                  />
-                </Flex>,
-              ]);
-              break;
-            case "value":
-            case "bond":
-              kvData.push([
-                <CapitalText>{item[0]}</CapitalText>,
-                `${toPrecision(item[1] ?? 0, decimals)} ${symbol}`,
-              ]);
-              break;
+        const newVotes = cloneDeep(dbVotes);
+        jsonVoting.ayes?.map((voter) => {
+          const vote = newVotes.find((item) => item[0] === voter);
+          if (!vote) {
+            newVotes.push([voter, true]);
+          } else {
+            vote[1] = true;
+          }
+        });
+        jsonVoting.nays?.map((voter) => {
+          const vote = newVotes.find((item) => item[0] === voter);
+          if (!vote) {
+            newVotes.push([voter, false]);
+          } else {
+            vote[1] = false;
           }
         });
 
-        business.push(kvData);
-      }
+        if (isMounted.current) {
+          setVotes(newVotes);
+        }
+      })
+      .finally(() => setIsLoadingVote(false));
+  }, [api, readOnchainVotes, motion, dbVotes, isMounted]);
+
+  const updateVotes = useCallback(() => {
+    setReadOnchainVotes(Date.now());
+  }, []);
+
+  const node = getNode(chain);
+  if (!node) {
+    return null;
+  }
+  const decimals = node.decimals;
+  const symbol = node.symbol;
+
+  const postUpdateTime = getPostUpdatedAt(post);
+  const timeline = createMotionTimelineData(motion.onchainData, chain);
+
+  let timelineData;
+  if (isClosed(timeline)) {
+    timelineData = getClosedTimelineData(timeline);
+  } else {
+    timelineData = timeline;
+  }
+
+  let business = [];
+
+  const motionCompleted = isMotionCompleted(motion);
+  if (motionCompleted) {
+    business.push(createMotionBusinessData(motion, chain));
+  }
+
+  if (
+    motion.onchainData.treasuryProposals?.length > 0 ||
+    motion.onchainData.treasuryBounties?.length > 0
+  ) {
+    for (const proposal of motion.onchainData.treasuryProposals) {
+      business.push([
+        [
+          "Link to",
+          <Link
+            href={`/treasury/proposal/${proposal.proposalIndex}`}
+          >{`Treasury Proposal #${proposal.proposalIndex}`}</Link>,
+        ],
+        [
+          "Beneficiary",
+          <Flex>
+            <User chain={chain} add={proposal.meta.beneficiary} fontSize={14} />
+            <Links
+              chain={chain}
+              address={proposal.meta.beneficiary}
+              style={{ marginLeft: 8 }}
+            />
+          </Flex>,
+        ],
+        [
+          "Value",
+          `${toPrecision(proposal.meta.value ?? 0, decimals)} ${symbol}`,
+        ],
+        ["Bond", `${toPrecision(proposal.meta.bond ?? 0, decimals)} ${symbol}`],
+      ]);
     }
 
-    if (motion?.onchainData?.externalProposals?.length > 0) {
-      motion?.onchainData?.externalProposals?.forEach((external) => {
-        business.push([
-          [
-            "Link to",
-            <Link
-              href={`/democracy/external/${external?.indexer.blockHeight}_${external?.proposalHash}`}
-            >{`Democracy External #${external?.proposalHash?.slice(
-              0,
-              6
-            )}`}</Link>,
-          ],
-          ["hash", external.proposalHash],
-        ]);
-      });
-    }
+    for (const bounty of motion.onchainData.treasuryBounties) {
+      const kvData = [];
 
-    const motionEndInfo = showMotionEnd ? (
-      <TimelineMotionEnd>
-        <MotionEnd type="simple" motion={motion.onchainData} chain={chain} />
-      </TimelineMotionEnd>
-    ) : null;
+      kvData.push([
+        "Link to",
+        <Link
+          href={`/treasury/bounty/${bounty.bountyIndex}`}
+        >{`Treasury Bounty #${bounty.bountyIndex}`}</Link>,
+      ]);
 
-    const motionEndHeader = showMotionEnd ? (
-      <MotionEndHeader>
-        <MotionEnd type="full" motion={motion.onchainData} chain={chain} />
-      </MotionEndHeader>
-    ) : null;
-
-    return (
-      <div>
-        <Wrapper>
-          {!isEdit && (
-            <div>
-              {motionEndHeader}
-              <TitleWrapper>
-                {motion?.motionIndex !== undefined && (
-                  <Index>{`#${motion.motionIndex}`}</Index>
-                )}
-                <Title>{post?.title}</Title>
-              </TitleWrapper>
-              <FlexWrapper>
-                <DividerWrapper>
-                  <User
-                    user={motion?.author}
-                    add={motion.proposer}
-                    chain={chain}
-                    fontSize={12}
-                  />
-                  {motion.isTreasury && <SectionTag name={"Treasury"} />}
-                  {motion?.onchainData?.externalProposals?.length > 0 && (
-                    <SectionTag name={"Democracy"} />
-                  )}
-                  {postUpdateTime && (
-                    <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
-                  )}
-                </DividerWrapper>
-                {motion.state && <Tag name={motion.state} />}
-              </FlexWrapper>
-            </div>
-          )}
-          <ArticleContent
-            chain={chain}
-            post={post}
-            setPost={setPost}
-            user={loginUser}
-            onReply={onReply}
-            type={type}
-            isEdit={isEdit}
-            setIsEdit={setIsEdit}
-          />
-        </Wrapper>
-        <Vote
-          chain={chain}
-          votes={votes}
-          voters={voters}
-          userCanVote={userCanVote}
-          motionHash={motion.hash}
-          motionIndex={motion.motionIndex}
-        />
-
-        <MultiKVList title="Business" data={business} />
-
-        <KVList
-          title={"Metadata"}
-          data={[
-            [
-              "Proposer",
-              <>
-                <User add={motion?.onchainData?.proposer} fontSize={14} />
+      const metadata = bounty.meta ? Object.entries(bounty.meta) : [];
+      metadata.forEach((item) => {
+        switch (item[0]) {
+          case "proposer":
+          case "beneficiary":
+            kvData.push([
+              <CapitalText>{item[0]}</CapitalText>,
+              <Flex>
+                <User chain={chain} add={item[1]} fontSize={14} />
                 <Links
                   chain={chain}
-                  address={motion?.onchainData?.proposer}
+                  address={item[1]}
                   style={{ marginLeft: 8 }}
                 />
-              </>,
-            ],
-            ["Index", motion?.motionIndex],
-            ["Threshold", motion?.onchainData?.threshold],
-            ["Hash", motion?.onchainData?.hash],
-            [<MotionProposal motion={motion.onchainData} chain={chain} />],
-          ]}
-        />
+              </Flex>,
+            ]);
+            break;
+          case "value":
+          case "bond":
+            kvData.push([
+              <CapitalText>{item[0]}</CapitalText>,
+              `${toPrecision(item[1] ?? 0, decimals)} ${symbol}`,
+            ]);
+            break;
+        }
+      });
 
-        <Timeline
-          motionEndInfo={motionEndInfo}
-          data={timelineData}
-          chain={chain}
-          indent={false}
-          type={type}
-        />
-      </div>
-    );
+      business.push(kvData);
+    }
   }
-);
+
+  if (motion?.onchainData?.externalProposals?.length > 0) {
+    motion?.onchainData?.externalProposals?.forEach((external) => {
+      business.push([
+        [
+          "Link to",
+          <Link
+            href={`/democracy/external/${external?.indexer.blockHeight}_${external?.proposalHash}`}
+          >{`Democracy External #${external?.proposalHash?.slice(
+            0,
+            6
+          )}`}</Link>,
+        ],
+        ["hash", external.proposalHash],
+      ]);
+    });
+  }
+
+  const motionEndInfo = showMotionEnd ? (
+    <TimelineMotionEnd>
+      <MotionEnd type="simple" motion={motion.onchainData} chain={chain} />
+    </TimelineMotionEnd>
+  ) : null;
+
+  const motionEndHeader = showMotionEnd ? (
+    <MotionEndHeader>
+      <MotionEnd type="full" motion={motion.onchainData} chain={chain} />
+    </MotionEndHeader>
+  ) : null;
+
+  return (
+    <div>
+      <Wrapper>
+        {!isEdit && (
+          <div>
+            {motionEndHeader}
+            <TitleWrapper>
+              {motion?.motionIndex !== undefined && (
+                <Index>{`#${motion.motionIndex}`}</Index>
+              )}
+              <Title>{post?.title}</Title>
+            </TitleWrapper>
+            <FlexWrapper>
+              <DividerWrapper>
+                <User
+                  user={motion?.author}
+                  add={motion.proposer}
+                  chain={chain}
+                  fontSize={12}
+                />
+                {motion.isTreasury && <SectionTag name={"Treasury"} />}
+                {motion?.onchainData?.externalProposals?.length > 0 && (
+                  <SectionTag name={"Democracy"} />
+                )}
+                {postUpdateTime && (
+                  <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
+                )}
+              </DividerWrapper>
+              {motion.state && <Tag name={motion.state} />}
+            </FlexWrapper>
+          </div>
+        )}
+        <ArticleContent
+          chain={chain}
+          post={post}
+          setPost={setPost}
+          user={user}
+          onReply={onReply}
+          type={type}
+          isEdit={isEdit}
+          setIsEdit={setIsEdit}
+        />
+      </Wrapper>
+      <Vote
+        chain={chain}
+        votes={votes}
+        voters={voters}
+        userCanVote={userCanVote}
+        motionIsFinal={motionEnd}
+        motionHash={motion.hash}
+        motionIndex={motion.motionIndex}
+        updateVotes={updateVotes}
+        isLoadingVote={isLoadingVote}
+        updateMotionDetail={updateMotionDetail}
+      />
+
+      <MultiKVList title="Business" data={business} />
+
+      <KVList
+        title={"Metadata"}
+        data={[
+          [
+            "Proposer",
+            <>
+              <User add={motion?.onchainData?.proposer} fontSize={14} />
+              <Links
+                chain={chain}
+                address={motion?.onchainData?.proposer}
+                style={{ marginLeft: 8 }}
+              />
+            </>,
+          ],
+          ["Index", motion?.motionIndex],
+          ["Threshold", motion?.onchainData?.threshold],
+          ["Hash", motion?.onchainData?.hash],
+          [<MotionProposal motion={motion.onchainData} chain={chain} />],
+        ]}
+      />
+
+      <Timeline
+        motionEndInfo={motionEndInfo}
+        data={timelineData}
+        chain={chain}
+        indent={false}
+        type={type}
+      />
+    </div>
+  );
+}

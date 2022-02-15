@@ -107,8 +107,8 @@ export default function Vote({
   motionHash,
   motionIndex,
   updateVotes = () => {},
-  updateTimeline = () => {},
-  isLoadingVote,
+  updateMotionDetail = () => {},
+  isLoadingVote = false,
   setIsLoadingVote = () => {},
 }) {
   const [showPopup, setShowPopup] = useState(false);
@@ -191,7 +191,7 @@ export default function Vote({
           motionIndex={motionIndex}
           onClose={() => setShowPopup(false)}
           onInBlock={updateVotes}
-          onFinalized={updateTimeline}
+          onFinalized={updateMotionDetail}
           onSubmitted={() => setIsLoadingVote(true)}
         />
       )}

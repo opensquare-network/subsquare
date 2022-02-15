@@ -7,7 +7,7 @@ import Layout from "components/layout";
 import MotionDetail from "components/motion/councilMotionDetail";
 import { to404 } from "utils/serverSideUtil";
 import { TYPE_COUNCIL_MOTION } from "utils/viewConstants";
-import { getMetaDesc, isMotionCompleted } from "../../../utils/viewfuncs";
+import { getMetaDesc } from "../../../utils/viewfuncs";
 import { EmptyList } from "next-common/utils/constants";
 import Comments from "next-common/components/comment";
 import Editor from "next-common/components/comment/editor";
@@ -17,7 +17,7 @@ import {
   getMentionList,
   getOnReply,
 } from "../../../utils/post";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import SEO from "components/SEO";
 
 const OutWrapper = styled.div`
@@ -53,7 +53,8 @@ const CommentsWrapper = styled.div`
 `;
 
 export default withLoginUserRedux(
-  ({ loginUser, motion, comments, chain, siteUrl }) => {
+  ({ loginUser, motion: _motion, comments, chain, siteUrl }) => {
+    const [motion, setMotion] = useState(_motion);
     const users = getMentionList(comments);
     motion.status = motion.state?.state;
     const editorWrapperRef = useRef(null);
@@ -70,6 +71,18 @@ export default withLoginUserRedux(
       quillRef,
       focusEditor
     );
+
+    const updateMotionDetail = useCallback(() => {
+      setTimeout(() => {
+        nextApi
+          .fetch(`motions/${motion.height}_${motion.hash}`)
+          .then(({ result }) => {
+            if (result) {
+              setMotion(result);
+            }
+          });
+      }, 5000);
+    }, [motion]);
 
     const desc = getMetaDesc(motion, "Motion");
     return (
@@ -89,6 +102,7 @@ export default withLoginUserRedux(
               chain={chain}
               type={TYPE_COUNCIL_MOTION}
               onReply={onReply}
+              updateMotionDetail={updateMotionDetail}
             />
             <CommentsWrapper>
               <Comments
@@ -132,21 +146,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     to404(context);
   }
 
-  let external = null;
-
-  if (isMotionCompleted(motion)) {
-    const motionId = `${motion.state.indexer.blockHeight}_${motion.proposalHash}`;
-    const res = await nextApi.fetch(`democracy/externals/${motionId}`);
-    const { result: comments } = await nextApi.fetch(
-      `democracy/externals/${res.result._id}/comments`,
-      {
-        page: page ?? "last",
-        pageSize: Math.min(pageSize ?? 50, 100),
-      }
-    );
-    external = { ...res.result, comments };
-  }
-
   const motionId = motion._id;
 
   const { result: comments } = await nextApi.fetch(
@@ -159,7 +158,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      motion: motion ? { ...motion, external } : null,
+      motion: motion ?? null,
       comments: comments ?? EmptyList,
       chain,
       siteUrl: process.env.SITE_URL,
