@@ -1,15 +1,15 @@
+import React, { useState } from "react";
+import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { useState } from "react";
-import { toApiType } from "../utils/viewfuncs";
-import nextApi from "../services/nextApi";
-import { addToast } from "../store/reducers/toastSlice";
+import { toApiType } from "next-common/utils/viewfuncs";
+import nextApi from "next-common/services/nextApi";
+import { addToast } from "next-common/store/reducers/toastSlice";
 import User from "next-common/components/user";
-import EditIcon from "../public/imgs/icons/edit.svg";
 import HtmlRender from "next-common/components/post/htmlRender";
 import Actions from "next-common/components/actions";
 import PostEdit from "next-common/components/post/postEdit";
-import styled, { css } from "styled-components";
 import MicromarkMd from "next-common/components/micromarkMd";
+import EditIcon from "../assets/imgs/icons/edit.svg";
 
 const Wrapper = styled.div`
   :hover {

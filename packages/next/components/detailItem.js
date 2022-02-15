@@ -14,7 +14,7 @@ import {
   TYPE_DEMOCRACY_EXTERNAL,
   TYPE_DEMOCRACY_PROPOSAL,
 } from "utils/viewConstants";
-import ArticleContent from "./articleContent";
+import ArticleContent from "next-common/components/articleContent";
 
 const Wrapper = styled.div`
   background: #ffffff;
