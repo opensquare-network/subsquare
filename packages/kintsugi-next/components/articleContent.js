@@ -7,7 +7,7 @@ import User from "next-common/components/user";
 import EditIcon from "public/imgs/icons/edit.svg";
 import HtmlRender from "next-common/components/post/htmlRender";
 import Actions from "next-common/components/actions";
-import PostEdit from "./post/postEdit";
+import PostEdit from "next-common/components/post/postEdit";
 import styled from "styled-components";
 import MicromarkMd from "next-common/components/micromarkMd";
 
