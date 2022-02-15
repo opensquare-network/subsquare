@@ -24,7 +24,7 @@ import { TYPE_DEMOCRACY_REFERENDUM } from "utils/viewConstants";
 import { useApi } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "utils/viewfuncs";
-import SEO from "components/SEO";
+import SEO from "next-common/components/SEO";
 
 const OutWrapper = styled.div`
   display: flex;

@@ -25,7 +25,7 @@ import User from "next-common/components/user";
 import KVList from "next-common/components/kvList";
 import Links from "next-common/components/links";
 import ReasonLink from "next-common/components/reasonLink";
-import SEO from "components/SEO";
+import SEO from "next-common/components/SEO";
 import Tipper from "components/tipper";
 
 import { shadow_100 } from "styles/componentCss";

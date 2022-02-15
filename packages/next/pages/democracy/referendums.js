@@ -6,7 +6,7 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import { toReferendaListItem } from "utils/viewfuncs";
-import SEO from "components/SEO";
+import SEO from "next-common/components/SEO";
 import DemocracySummary from "next-common/components/summary/democracySummary";
 
 export default withLoginUserRedux(({ loginUser, posts, chain, siteUrl }) => {

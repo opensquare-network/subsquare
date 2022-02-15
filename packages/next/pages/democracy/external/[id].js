@@ -19,7 +19,7 @@ import { makeExternalTimelineData } from "utils/dataWrappers/makeTimelineData";
 import { makeExternalMetadata } from "utils/dataWrappers/makeMetadata";
 import { TYPE_DEMOCRACY_EXTERNAL } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-import SEO from "components/SEO";
+import SEO from "next-common/components/SEO";
 
 const Wrapper = styled.div`
   > :not(:first-child) {

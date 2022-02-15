@@ -10,7 +10,7 @@ import {
   toReferendaListItem,
   toTechCommMotionListItem,
 } from "utils/viewfuncs";
-import SEO from "components/SEO";
+import SEO from "next-common/components/SEO";
 import { isSafari } from "../utils/serverSideUtil";
 
 export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
@@ -42,7 +42,7 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
   ];
 
   const filteredOverviewData = overviewData.filter(
-    data => data?.items?.length > 0 || data?.category === "Discussions"
+    (data) => data?.items?.length > 0 || data?.category === "Discussions"
   );
 
   // Sort the items with length = 0 to the end of the list
