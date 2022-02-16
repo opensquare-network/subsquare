@@ -398,7 +398,7 @@ function Vote({
           ))}
       </Card>
 
-      {!referendumInfo?.finished && (
+      {(!referendumInfo?.finished || true) && (
         <VoteButton
           onClick={() => {
             setShowVote(true);

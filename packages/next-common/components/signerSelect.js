@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import { web3FromAddress } from "@polkadot/extension-dapp";
 import AddressSelect from "./addressSelect";
