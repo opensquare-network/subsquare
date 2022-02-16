@@ -66,70 +66,74 @@ const Download = styled.div`
   color: #2196f3;
 `;
 
-export default (Component, title) =>
-  function ({ onClose, ...props }) {
-    const ref = useRef();
-    useOnClickOutside(ref, () => onClose());
+export default function PopupWithAddress({
+  Component,
+  title,
+  onClose,
+  ...props
+}) {
+  const ref = useRef();
+  useOnClickOutside(ref, () => onClose());
 
-    const [
-      extensionAccounts,
-      hasExtension,
-      isExtensionAccessible,
-      extensionDetecting,
-    ] = useExtensionAccounts("subsquare");
+  const [
+    extensionAccounts,
+    hasExtension,
+    isExtensionAccessible,
+    extensionDetecting,
+  ] = useExtensionAccounts("subsquare");
 
-    if (extensionDetecting) {
-      return null;
-    }
+  if (extensionDetecting) {
+    return null;
+  }
 
-    let content;
+  let content;
 
-    if (!hasExtension) {
-      content = (
-        <Message>
-          <span>
-            Polkadot-js extension not detected. No web3 account could be found.
-            Visit this page on a computer with polkadot-js extension.
-          </span>
-          <ExternalLink href="https://polkadot.js.org/extension/">
-            <Download>{"Download Polkadot{.js} extension"}</Download>
-          </ExternalLink>
-        </Message>
-      );
-    } else if (!isExtensionAccessible) {
-      content = (
-        <Message>
-          Polkadot-js extension is detected but unaccessible, please go to
-          Polkadot-js extension, settings, and check Manage Website Access
-          section.
-        </Message>
-      );
-    } else if (!extensionAccounts || extensionAccounts.length === 0) {
-      content = (
-        <Message>
-          Polkadot-js extension is connected, but no account found. Please
-          create or import some accounts first.
-        </Message>
-      );
-    } else {
-      content = (
-        <Component
-          onClose={onClose}
-          extensionAccounts={extensionAccounts}
-          {...props}
-        />
-      );
-    }
-
-    return (
-      <Background>
-        <Wrapper ref={ref}>
-          <TopWrapper>
-            <div>{title}</div>
-            <ClosePanelIcon onClick={onClose} />
-          </TopWrapper>
-          {content}
-        </Wrapper>
-      </Background>
+  if (!hasExtension) {
+    content = (
+      <Message>
+        <span>
+          Polkadot-js extension not detected. No web3 account could be found.
+          Visit this page on a computer with polkadot-js extension.
+        </span>
+        <ExternalLink href="https://polkadot.js.org/extension/">
+          <Download>{"Download Polkadot{.js} extension"}</Download>
+        </ExternalLink>
+      </Message>
     );
-  };
+  } else if (!isExtensionAccessible) {
+    content = (
+      <Message>
+        Polkadot-js extension is detected but unaccessible, please go to
+        Polkadot-js extension, settings, and check Manage Website Access
+        section.
+      </Message>
+    );
+  } else if (!extensionAccounts || extensionAccounts.length === 0) {
+    content = (
+      <Message>
+        Polkadot-js extension is connected, but no account found. Please create
+        or import some accounts first.
+      </Message>
+    );
+  } else {
+    content = (
+      <Component
+        onClose={onClose}
+        extensionAccounts={extensionAccounts}
+        {...props}
+      />
+    );
+  }
+
+  return (
+    <Background>
+      <Wrapper ref={ref}>
+        <TopWrapper>
+          <div>{title}</div>
+          <ClosePanelIcon onClick={onClose} />
+        </TopWrapper>
+        {content}
+      </Wrapper>
+    </Background>
+  );
+}

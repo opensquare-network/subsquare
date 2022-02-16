@@ -321,6 +321,12 @@ function PopupContent({
   );
 }
 
-const Popup = PopupWithAddress(PopupContent, "Referenda vote");
-
-export default Popup;
+export default function Popup(props) {
+  return (
+    <PopupWithAddress
+      title="Referenda vote"
+      Component={PopupContent}
+      {...props}
+    />
+  );
+}
