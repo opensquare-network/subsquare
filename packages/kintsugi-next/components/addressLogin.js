@@ -53,8 +53,6 @@ export default function AddressLogin({ chain, onBack }) {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  console.log(selectedAccount);
-
   const doWeb3Login = async () => {
     setLoading(true);
     const address = selectedAccount[`${chain}Address`];
