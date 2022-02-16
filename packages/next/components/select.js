@@ -48,6 +48,7 @@ const Options = styled.div`
   left: 0;
   margin-top: 4px;
   width: 100%;
+  z-index: 1;
 `;
 
 const Item = styled.div`

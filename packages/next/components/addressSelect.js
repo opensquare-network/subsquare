@@ -55,6 +55,7 @@ const Options = styled.div`
   border-radius: 4px;
   max-height: 320px;
   overflow-y: auto;
+  z-index: 1;
 
   ::-webkit-scrollbar {
     width: 8px;
