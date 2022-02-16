@@ -110,8 +110,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { result: motion } = await nextApi.fetch(`financial-motions/${id}`);
 
   if (!motion) {
-    to404(context);
-    return { props: {} };
+    return to404(context);
   }
 
   const motionId = motion._id;

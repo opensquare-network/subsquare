@@ -187,8 +187,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   if (!detail) {
-    to404(context);
-    return { props: {} };
+    return to404(context);
   }
 
   const postId = detail?._id;
