@@ -1,6 +1,7 @@
+import React from "react";
 import styled from "styled-components";
 import { Message } from "./styled";
-import ExternalLink from "next-common/components/externalLink";
+import ExternalLink from "../externalLink";
 
 const Download = styled.div`
   color: #2196f3;

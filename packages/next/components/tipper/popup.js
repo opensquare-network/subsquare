@@ -11,8 +11,8 @@ import { addToast } from "store/reducers/toastSlice";
 
 import TipInput from "./tipInput";
 import { getNode, toPrecision } from "utils";
-import PopupWithAddress from "components/popupWithAddress";
-import SignerSelect from "components/signerSelect";
+import PopupWithAddress from "next-common/components/popupWithAddress";
+import SignerSelect from "next-common/components/signerSelect";
 
 const Info = styled.div`
   background: #f6f7fa;

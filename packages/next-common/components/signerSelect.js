@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { web3FromAddress } from "@polkadot/extension-dapp";
-import AddressSelect from "components/addressSelect";
+import AddressSelect from "./addressSelect";
 import {
   encodeKaruraAddress,
   encodeKhalaAddress,

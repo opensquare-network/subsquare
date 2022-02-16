@@ -1,8 +1,9 @@
+import React from "react";
 import styled from "styled-components";
 import { useRef } from "react";
-import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside.js";
-import { useExtensionAccounts } from "utils/polkadotExtension";
-import ClosePanelIcon from "next-common/assets/imgs/icons/close-panel.svg";
+import useOnClickOutside from "../../utils/hooks/useOnClickOutside.js";
+import useExtensionAccounts from "../../utils/hooks/useExtensionAccounts";
+import ClosePanelIcon from "../../assets/imgs/icons/close-panel.svg";
 import NoExtension from "./noExtension";
 import Inaccessible from "./inaccessible";
 import NoAccounts from "./noAccounts";

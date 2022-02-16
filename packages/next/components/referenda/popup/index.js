@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import BigNumber from "bignumber.js";
 import { useApi, useAddressVotingBalance, useAddressVote } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import SignerSelect from "components/signerSelect";
+import SignerSelect from "next-common/components/signerSelect";
 import Button from "next-common/components/button";
 import { addToast } from "store/reducers/toastSlice";
 
@@ -24,7 +24,7 @@ import LoadingVoteStatus from "./loadingVoteStatus";
 import Delegating from "./delegating";
 import Delegations from "./delegations";
 
-import PopupWithAddress from "components/popupWithAddress";
+import PopupWithAddress from "next-common/components/popupWithAddress";
 
 const LabelWrapper = styled.div`
   display: flex;
