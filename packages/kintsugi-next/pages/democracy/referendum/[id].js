@@ -19,7 +19,7 @@ import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
 import { isSafari } from "utils/serverSideUtil";
-import { to404} from "next-common/utils/serverSideUtil";
+import { to404 } from "next-common/utils/serverSideUtil";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 import { TYPE_DEMOCRACY_REFERENDUM } from "utils/viewConstants";
 import { useApi } from "utils/hooks";
@@ -213,7 +213,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   if (!detail) {
-    return to404(context);
+    to404(context);
+    return { props: {} };
   }
 
   let publicProposal = null;

@@ -14,7 +14,7 @@ import Comments from "next-common/components/comment";
 import Editor from "next-common/components/comment/editor";
 import { shadow_100 } from "styles/componentCss";
 import { isSafari } from "utils/serverSideUtil";
-import { to404} from "next-common/utils/serverSideUtil";
+import { to404 } from "next-common/utils/serverSideUtil";
 import { EmptyList } from "next-common/utils/constants";
 
 const Wrapper = styled.div`
@@ -108,7 +108,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   if (!motion) {
-    return to404(context);
+    to404(context);
+    return { props: {} };
   }
 
   const motionId = motion._id;

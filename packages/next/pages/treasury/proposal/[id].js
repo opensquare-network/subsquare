@@ -197,7 +197,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   if (!detail) {
-    return to404(context);
+    to404(context);
+    return { props: {} };
   }
 
   const { result: comments } = await nextApi.fetch(

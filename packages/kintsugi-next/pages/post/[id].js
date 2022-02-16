@@ -11,7 +11,7 @@ import Layout from "components/layout";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
 import { isSafari } from "utils/serverSideUtil";
-import { to404} from "next-common/utils/serverSideUtil";
+import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_POST } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
 import SEO from "next-common/components/SEO";
@@ -114,7 +114,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   if (!detail) {
-    return to404(context);
+    to404(context);
+    return { props: {} };
   }
 
   const postId = detail._id;

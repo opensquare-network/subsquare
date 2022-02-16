@@ -108,7 +108,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { id, page, page_size: pageSize } = context.query;
   const { result: motion } = await nextApi.fetch(`motions/${id}`);
   if (!motion) {
-    return to404(context);
+    to404(context);
+    return { props: {} };
   }
 
   let external = null;

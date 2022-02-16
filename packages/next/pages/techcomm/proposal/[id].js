@@ -111,7 +111,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   if (!motion) {
-    return to404(context);
+    to404(context);
+    return { props: {} };
   }
 
   const motionId = motion._id;
