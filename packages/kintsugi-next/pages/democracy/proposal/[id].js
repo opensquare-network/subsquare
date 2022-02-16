@@ -19,7 +19,8 @@ import KVList from "next-common/components/kvList";
 import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
-import { isSafari, to404 } from "utils/serverSideUtil";
+import { to404 } from "next-common/utils/serverSideUtil";
+import { isSafari } from "utils/serverSideUtil";
 import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 import sortTimeline from "utils/timeline/sort";
@@ -186,7 +187,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   if (!detail) {
-    to404(context);
+    return to404(context);
   }
 
   let referendum = null;
