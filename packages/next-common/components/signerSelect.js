@@ -8,10 +8,10 @@ import {
   encodePolkadotAddress,
   encodeBasiliskAddress,
   encodeBifrostAddress,
-  // encodeAcalaAddress,
+  encodeAcalaAddress,
   encodeKabochaAddress,
   encodeKintsugiAddress,
-} from "services/chainApi";
+} from "../services/address";
 
 export default function SignerSelect({
   chain,
@@ -32,7 +32,7 @@ export default function SignerSelect({
       khalaAddress: encodeKhalaAddress(address),
       basiliskAddress: encodeBasiliskAddress(address),
       bifrostAddress: encodeBifrostAddress(address),
-      // acalaAddress: encodeAcalaAddress(address),
+      acalaAddress: encodeAcalaAddress(address),
       kabochaAddress: encodeKabochaAddress(address),
       kintsugiAddress: encodeKintsugiAddress(address),
       name,
