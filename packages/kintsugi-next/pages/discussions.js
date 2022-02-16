@@ -1,4 +1,4 @@
-import List from "components/list";
+import List from "next-common/components/list";
 import Menu from "next-common/components/menu";
 import { mainMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
@@ -8,7 +8,7 @@ import styled from "styled-components";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
 import Layout from "components/layout";
 import { toDiscussionListItem } from "utils/viewfuncs";
-import SEO from "components/SEO";
+import SEO from "next-common/components/SEO";
 import { isSafari } from "../utils/serverSideUtil";
 
 const Create = styled.a`

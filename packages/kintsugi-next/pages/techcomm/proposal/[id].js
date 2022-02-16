@@ -7,13 +7,14 @@ import Layout from "components/layout";
 import TechcommMotionDetail from "components/motion/techcommMotionDetail";
 import { TYPE_TECH_COMM_MOTION } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
-import SEO from "components/SEO";
+import SEO from "next-common/components/SEO";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { useRef, useState } from "react";
 import Comments from "next-common/components/comment";
 import Editor from "next-common/components/comment/editor";
 import { shadow_100 } from "styles/componentCss";
-import { isSafari, to404 } from "utils/serverSideUtil";
+import { isSafari } from "utils/serverSideUtil";
+import { to404 } from "next-common/utils/serverSideUtil";
 import { EmptyList } from "next-common/utils/constants";
 
 const Wrapper = styled.div`
@@ -107,7 +108,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   if (!motion) {
-    to404(context);
+    return to404(context);
   }
 
   const motionId = motion._id;

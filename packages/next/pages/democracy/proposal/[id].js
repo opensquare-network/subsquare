@@ -20,11 +20,11 @@ import KVList from "next-common/components/kvList";
 import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
-import { to404 } from "utils/serverSideUtil";
+import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
 import sortTimeline from "../../../utils/timeline/sort";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-import SEO from "components/SEO";
+import SEO from "next-common/components/SEO";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -209,7 +209,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   if (!detail) {
-    to404(context);
+    return to404(context);
   }
 
   const { result: comments } = await nextApi.fetch(

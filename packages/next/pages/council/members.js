@@ -7,7 +7,7 @@ import { useApi } from "utils/hooks";
 import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
 import { getNode } from "utils";
-import SEO from "components/SEO";
+import SEO from "next-common/components/SEO";
 
 export default withLoginUserRedux(({ loginUser, chain, siteUrl }) => {
   const [data, setData] = useState([]);

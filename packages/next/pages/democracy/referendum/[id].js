@@ -13,12 +13,12 @@ import DetailItem from "components/detailItem";
 import Vote from "components/referenda/vote";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
-import { to404 } from "utils/serverSideUtil";
+import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_DEMOCRACY_REFERENDUM } from "utils/viewConstants";
 import { useApi } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-import SEO from "components/SEO";
+import SEO from "next-common/components/SEO";
 import ReferendumTimeline from "./timeline";
 import ReferendumMetadata from "./metadata";
 
@@ -187,7 +187,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   if (!detail) {
-    to404(context);
+    return to404(context);
   }
 
   const postId = detail?._id;

@@ -6,7 +6,7 @@ import Layout from "components/layout";
 import { useApi } from "utils/hooks";
 import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
-import SEO from "components/SEO";
+import SEO from "next-common/components/SEO";
 import { isSafari } from "../../utils/serverSideUtil";
 
 export default withLoginUserRedux(({ loginUser, chain, siteUrl }) => {

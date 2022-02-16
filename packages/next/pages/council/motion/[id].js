@@ -5,7 +5,7 @@ import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import Layout from "components/layout";
 import MotionDetail from "components/motion/councilMotionDetail";
-import { to404 } from "utils/serverSideUtil";
+import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_COUNCIL_MOTION } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import { EmptyList } from "next-common/utils/constants";
@@ -18,7 +18,7 @@ import {
   getOnReply,
 } from "../../../utils/post";
 import { useCallback, useRef, useState } from "react";
-import SEO from "components/SEO";
+import SEO from "next-common/components/SEO";
 
 const OutWrapper = styled.div`
   display: flex;
@@ -140,10 +140,9 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
 
   const { id, page, page_size: pageSize } = context.query;
-
   const { result: motion } = await nextApi.fetch(`motions/${id}`);
   if (!motion) {
-    to404(context);
+    return to404(context);
   }
 
   const motionId = motion._id;

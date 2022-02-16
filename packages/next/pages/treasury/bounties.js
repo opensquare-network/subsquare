@@ -1,4 +1,4 @@
-import List from "components/list";
+import List from "next-common/components/list";
 import Menu from "next-common/components/menu";
 import { mainMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
@@ -6,7 +6,7 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import { toTreasuryBountyListItem } from "utils/viewfuncs";
-import SEO from "components/SEO";
+import SEO from "next-common/components/SEO";
 import Summary from "next-common/components/summary";
 
 export default withLoginUserRedux(({ loginUser, bounties, chain, siteUrl }) => {

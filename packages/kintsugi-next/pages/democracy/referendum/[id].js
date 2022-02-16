@@ -18,13 +18,14 @@ import Timeline from "next-common/components/timeline";
 import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
-import { isSafari, to404 } from "utils/serverSideUtil";
+import { isSafari } from "utils/serverSideUtil";
+import { to404 } from "next-common/utils/serverSideUtil";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 import { TYPE_DEMOCRACY_REFERENDUM } from "utils/viewConstants";
 import { useApi } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "utils/viewfuncs";
-import SEO from "components/SEO";
+import SEO from "next-common/components/SEO";
 
 const OutWrapper = styled.div`
   display: flex;
@@ -212,7 +213,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   if (!detail) {
-    to404(context);
+    return to404(context);
   }
 
   let publicProposal = null;

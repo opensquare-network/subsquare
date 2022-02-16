@@ -1,5 +1,5 @@
-import Head from "next/head";
 import React, { Component } from "react";
+import Head from "next/head";
 import buildTags from "./buildTags";
 
 export default class NextSeo extends Component {

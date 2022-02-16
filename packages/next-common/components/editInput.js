@@ -1,12 +1,12 @@
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useState } from "react";
-import MarkdownEditor from "components/markdownEditor";
-import Toggle from "components/toggle";
+import MarkdownEditor from "next-common/components/markdownEditor";
+import Toggle from "next-common/components/toggle";
 import Button from "next-common/components/button";
 import PreviewMD from "next-common/components/previewMD";
 import ErrorText from "next-common/components/ErrorText";
 import QuillEditor from "next-common/components/editor/quillEditor";
-import HtmlRender from "components/post/htmlRender";
+import HtmlRender from "next-common/components/post/htmlRender";
 import InsertContentsModal from "next-common/components/editor/modal";
 
 const Wrapper = styled.div`

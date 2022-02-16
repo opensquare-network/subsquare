@@ -12,11 +12,11 @@ import {
   timeDurationFromNow,
   toPrecision,
 } from "utils";
-import SectionTag from "components/sectionTag";
+import SectionTag from "next-common/components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
 import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "../../styles/componentCss";
-import ArticleContent from "../articleContent";
+import ArticleContent from "next-common/components/articleContent";
 import { useState } from "react";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
 import { getPostUpdatedAt } from "../../utils/viewfuncs";

@@ -15,11 +15,11 @@ import {
   timeDurationFromNow,
   toPrecision,
 } from "utils";
-import SectionTag from "components/sectionTag";
+import SectionTag from "next-common/components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
 import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "../../styles/componentCss";
-import ArticleContent from "../articleContent";
+import ArticleContent from "next-common/components/articleContent";
 import { getPostUpdatedAt, isMotionCompleted } from "../../utils/viewfuncs";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import CapitalText from "../capitalText";

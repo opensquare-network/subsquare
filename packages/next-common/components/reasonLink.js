@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { extractLinks, getLinkNameAndLogo } from "../utils/viewFuncs/tip";
+import { extractLinks, getLinkNameAndLogo } from "../utils/viewfuncs/tip";
 
 const ReasonText = styled.span``;
 

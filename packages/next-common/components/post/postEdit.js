@@ -1,10 +1,9 @@
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useState } from "react";
-import React from "react";
-import Input from "components/input";
-import EditInput from "components/editInput";
-import nextApi from "services/nextApi";
-import { toApiType } from "utils/viewfuncs";
+import Input from "next-common/components/input";
+import EditInput from "next-common/components/editInput";
+import nextApi from "next-common/services/nextApi";
+import { toApiType } from "next-common/utils/viewfuncs";
 
 const Wrapper = styled.div`
   textarea:read-only,

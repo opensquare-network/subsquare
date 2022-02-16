@@ -100,28 +100,33 @@ const SymbolWrapper = styled.div`
   line-height: 100%;
   border-left: 1px solid #e0e4eb;
 `;
+const OuterWrapper = styled.div``;
 
 export default function Input({ ...props }) {
   const [show, setShow] = useState(false);
   const [focus, setFocus] = useState(false);
 
   return (
-    <Wrapper focus={focus} {...props}>
-      <InputWrapper
-        {...props}
-        type={props.type === "password" && show ? "text" : props.type ?? "auto"}
-        autocomplete="off"
-        onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
-      />
-      {props.type === "password" && (
-        <ShowButton onClick={() => setShow(!show)}>
-          {show ? <EyeIcon /> : <EyeSlashIcon />}
-        </ShowButton>
-      )}
+    <OuterWrapper>
+      <Wrapper focus={focus} {...props}>
+        <InputWrapper
+          {...props}
+          type={
+            props.type === "password" && show ? "text" : props.type ?? "auto"
+          }
+          autocomplete="off"
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
+        />
+        {props.type === "password" && (
+          <ShowButton onClick={() => setShow(!show)}>
+            {show ? <EyeIcon /> : <EyeSlashIcon />}
+          </ShowButton>
+        )}
+        {props.post && <PostWrapper>{props.post}</PostWrapper>}
+        {props.symbol && <SymbolWrapper>{props.symbol}</SymbolWrapper>}
+      </Wrapper>
       {props.error && <ErrorText>{props.error}</ErrorText>}
-      {props.post && <PostWrapper>{props.post}</PostWrapper>}
-      {props.symbol && <SymbolWrapper>{props.symbol}</SymbolWrapper>}
-    </Wrapper>
+    </OuterWrapper>
   );
 }

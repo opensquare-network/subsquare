@@ -11,7 +11,7 @@ import { getTimelineStatus, getNode, toPrecision } from "utils";
 import { TYPE_TREASURY_TIP } from "utils/viewConstants";
 import { getMetaDesc, getTipState } from "utils/viewfuncs";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
-import { to404 } from "utils/serverSideUtil";
+import { to404 } from "next-common/utils/serverSideUtil";
 
 import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
@@ -25,7 +25,7 @@ import User from "next-common/components/user";
 import KVList from "next-common/components/kvList";
 import Links from "next-common/components/links";
 import ReasonLink from "next-common/components/reasonLink";
-import SEO from "components/SEO";
+import SEO from "next-common/components/SEO";
 import Tipper from "components/tipper";
 
 import { shadow_100 } from "styles/componentCss";
@@ -376,7 +376,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   if (!detail) {
-    to404(context);
+    return to404(context);
   }
 
   const { result: comments } = await nextApi.fetch(
