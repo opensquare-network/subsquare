@@ -8,7 +8,7 @@ import {
 } from "@polkadot/extension-dapp";
 import { useRouter } from "next/router";
 
-import AddressSelect from "components/addressSelect";
+import AddressSelect from "next-common/components/addressSelect";
 import Button from "next-common/components/button";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import DownloadExtension from "next-common/components/downloadExtension";
