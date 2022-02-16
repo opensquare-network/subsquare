@@ -415,6 +415,7 @@ export const Chains = {
 export const TreasuryAccount =
   "F3opxRbN5ZbjJNU511Kj2TLuzFcDq9BGduA9TgiECafpg29";
 
-export const BASIC_SEO_INFO = {
+export const DEFAULT_SEO_INFO = {
   title: `SubSquare`,
+  desc: `A platform that scans and normalizes the blockchain governance data. It enables community members to propose, vote proposals and discuss the corresponding topics.`,
 };

@@ -56,7 +56,7 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
       user={loginUser}
       left={<Menu menu={mainMenu} chain={chain} />}
       chain={chain}
-      seoInfo={BASIC_SEO_INFO}
+      seoInfo={DEFAULT_SEO_INFO}
     >
       <Overview overviewData={filteredOverviewData} chain={chain} />
     </Layout>

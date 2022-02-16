@@ -5,6 +5,7 @@ import Content from "next-common/components/layout/content";
 import Toast from "./toast";
 import Auth from "./auth";
 import SEO from "next-common/components/SEO";
+import { DEFAULT_SEO_INFO } from "next-common/utils/constants";
 
 const Wrapper = styled.div`
   display: flex;
@@ -19,7 +20,7 @@ export default function Layout({ user, left, children, chain, isWeb3Login, seoIn
     <Wrapper>
       {seoInfo && <SEO
         title={seoInfo.title || `SubSquare`}
-        desc={seoInfo.desc || `SubSquare`}
+        desc={seoInfo.desc || DEFAULT_SEO_INFO.desc}
         chain={chain}
       />}
       <Auth chain={chain} />
