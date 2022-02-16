@@ -1,75 +1,18 @@
 import styled, { css } from "styled-components";
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { web3FromAddress } from "@polkadot/extension-dapp";
 import BigNumber from "bignumber.js";
-import {
-  encodeKaruraAddress,
-  encodeKhalaAddress,
-  encodeKusamaAddress,
-  encodePolkadotAddress,
-  encodeBasiliskAddress,
-  encodeBifrostAddress,
-  encodeAcalaAddress,
-  encodeKabochaAddress,
-} from "services/chainApi";
 
 import { useApi } from "utils/hooks";
-import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside.js";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import AddressSelect from "components/addressSelect";
 import Button from "next-common/components/button";
 import { addToast } from "store/reducers/toastSlice";
 
 import TipInput from "./tipInput";
 import { getNode, toPrecision } from "utils";
-import { useExtensionAccounts } from "utils/polkadotExtension";
-import ExternalLink from "next-common/components/externalLink";
-
-const Background = styled.div`
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.24);
-  z-index: 999;
-  top: 0;
-  left: 0;
-  margin-top: 0 !important;
-`;
-
-const Wrapper = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  margin-top: 0 !important;
-  width: 400px;
-  padding: 24px;
-  transform: translate(-50%, -50%);
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  box-shadow: 0 6px 22px rgba(30, 33, 52, 0.11),
-    0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
-    0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
-  border-radius: 6px;
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-`;
-
-const TopWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 100%;
-  > img {
-    width: 14px;
-    height: 14px;
-    cursor: pointer;
-  }
-`;
+import PopupWithAddress from "next-common/components/popupWithAddress";
+import SignerSelect from "next-common/components/signerSelect";
 
 const Info = styled.div`
   background: #f6f7fa;
@@ -115,27 +58,10 @@ const BalanceWrapper = styled.div`
   }
 `;
 
-const Message = styled.div`
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  padding: 12px 16px;
-  background: #f6f7fa;
-  border-radius: 4px;
-  color: rgba(80, 97, 118, 1);
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 140%;
-`;
-
-const Download = styled.div`
-  color: #2196f3;
-`;
-
 const balanceMap = new Map();
 
-export default function Popup({
+function PopupContent({
+  extensionAccounts,
   chain,
   councilTippers,
   tipHash,
@@ -145,78 +71,18 @@ export default function Popup({
   onSubmitted,
 }) {
   const dispatch = useDispatch();
-  const ref = useRef();
-  useOnClickOutside(ref, () => onClose());
   const isMounted = useIsMounted();
-  const [accounts, setAccounts] = useState([]);
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [inputTipValue, setInputTipValue] = useState();
   const [tipping, setTipping] = useState(false);
   const [balance, setBalance] = useState();
-  const [
-    extensionAccounts,
-    hasExtension,
-    isExtensionAccessible,
-    extensionDetecting,
-  ] = useExtensionAccounts("subsquare");
   const node = getNode(chain);
 
   const selectedAccountIsTipper = councilTippers.includes(
     selectedAccount?.[`${chain}Address`]
   );
 
-  useEffect(() => {
-    if (extensionDetecting) {
-      return;
-    }
-
-    if (!hasExtension) {
-      return;
-    }
-
-    if (!isExtensionAccessible) {
-      return;
-    }
-
-    const accounts = extensionAccounts.map(({ address, meta: { name } }) => ({
-      address,
-      kusamaAddress: encodeKusamaAddress(address),
-      polkadotAddress: encodePolkadotAddress(address),
-      karuraAddress: encodeKaruraAddress(address),
-      khalaAddress: encodeKhalaAddress(address),
-      basiliskAddress: encodeBasiliskAddress(address),
-      bifrostAddress: encodeBifrostAddress(address),
-      acalaAddress: encodeAcalaAddress(address),
-      kabochaAddress: encodeKabochaAddress(address),
-      name,
-    }));
-
-    setAccounts(accounts);
-  }, [
-    extensionAccounts,
-    hasExtension,
-    isExtensionAccessible,
-    extensionDetecting,
-    isMounted,
-  ]);
-
-  useEffect(() => {
-    if (accounts && accounts.length > 0 && !selectedAccount) {
-      setSelectedAccount(accounts[0]);
-    }
-  }, [chain, accounts, selectedAccount]);
-
   const api = useApi(chain);
-
-  useEffect(() => {
-    if (api && selectedAccount) {
-      web3FromAddress(selectedAccount.address).then((injector) => {
-        if (isMounted.current) {
-          api.setSigner(injector.signer);
-        }
-      });
-    }
-  }, [api, selectedAccount, isMounted]);
 
   useEffect(() => {
     if (balanceMap.has(selectedAccount?.address)) {
@@ -331,94 +197,50 @@ export default function Popup({
     }
   };
 
-  if (extensionDetecting) {
-    return null;
-  }
-
-  let content;
-
-  if (!hasExtension) {
-    content = (
-      <Message>
-        <span>
-          Polkadot-js extension not detected. No web3 account could be found.
-          Visit this page on a computer with polkadot-js extension.
-        </span>
-        <ExternalLink href="https://polkadot.js.org/extension/">
-          <Download>{"Download Polkadot{.js} extension"}</Download>
-        </ExternalLink>
-      </Message>
-    );
-  } else if (!isExtensionAccessible) {
-    content = (
-      <Message>
-        Polkadot-js extension is detected but unaccessible, please go to
-        Polkadot-js extension, settings, and check Manage Website Access
-        section.
-      </Message>
-    );
-  } else if (!accounts || accounts.length === 0) {
-    content = (
-      <Message>
-        Polkadot-js extension is connected, but no account found. Please create
-        or import some accounts first.
-      </Message>
-    );
-  } else {
-    content = (
-      <>
-        <Info danger={!selectedAccountIsTipper}>
-          Only council members can tip.
-        </Info>
-        <div>
-          <LabelWrapper>
-            <Label>Address</Label>
-            {balance && (
-              <BalanceWrapper>
-                <div>Balance</div>
-                <div>{balance}</div>
-              </BalanceWrapper>
-            )}
-          </LabelWrapper>
-          <AddressSelect
-            chain={chain}
-            accounts={accounts}
-            selectedAccount={selectedAccount}
-            onSelect={(account) => {
-              setSelectedAccount(account);
-            }}
-          />
-        </div>
-        <div>
-          <Label>Tip Value</Label>
-          <TipInput
-            value={inputTipValue}
-            setValue={setInputTipValue}
-            symbol={node?.symbol}
-          />
-        </div>
-        <ButtonWrapper>
-          {selectedAccountIsTipper && api && inputTipValue ? (
-            <Button secondary isLoading={tipping} onClick={doEndorse}>
-              Endorse
-            </Button>
-          ) : (
-            <Button disabled>Endorse</Button>
-          )}
-        </ButtonWrapper>
-      </>
-    );
-  }
-
   return (
-    <Background>
-      <Wrapper ref={ref}>
-        <TopWrapper>
-          <div>Tip</div>
-          <img onClick={onClose} src="/imgs/icons/close.svg" alt="" />
-        </TopWrapper>
-        {content}
-      </Wrapper>
-    </Background>
+    <>
+      <Info danger={!selectedAccountIsTipper}>
+        Only council members can tip.
+      </Info>
+      <div>
+        <LabelWrapper>
+          <Label>Address</Label>
+          {balance && (
+            <BalanceWrapper>
+              <div>Balance</div>
+              <div>{balance}</div>
+            </BalanceWrapper>
+          )}
+        </LabelWrapper>
+        <SignerSelect
+          api={api}
+          chain={chain}
+          selectedAccount={selectedAccount}
+          setSelectedAccount={setSelectedAccount}
+          extensionAccounts={extensionAccounts}
+        />
+      </div>
+      <div>
+        <Label>Tip Value</Label>
+        <TipInput
+          value={inputTipValue}
+          setValue={setInputTipValue}
+          symbol={node?.symbol}
+        />
+      </div>
+      <ButtonWrapper>
+        {selectedAccountIsTipper && api && inputTipValue ? (
+          <Button secondary isLoading={tipping} onClick={doEndorse}>
+            Endorse
+          </Button>
+        ) : (
+          <Button disabled>Endorse</Button>
+        )}
+      </ButtonWrapper>
+    </>
   );
+}
+
+export default function Popup(props) {
+  return <PopupWithAddress title="Tip" Component={PopupContent} {...props} />;
 }

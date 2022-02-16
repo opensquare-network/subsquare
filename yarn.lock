@@ -1626,7 +1626,7 @@
     eventemitter3 "^4.0.7"
     rxjs "^7.5.2"
 
-"@polkadot/extension-dapp@0.42.7":
+"@polkadot/extension-dapp@0.42.7", "@polkadot/extension-dapp@^0.42.7":
   version "0.42.7"
   resolved "https://registry.yarnpkg.com/@polkadot/extension-dapp/-/extension-dapp-0.42.7.tgz#0b442d274373980c042dd2e9b66d54cd77459f4c"
   integrity sha512-KqibGf1tE81Azax7MRc/c0asnGcxum/tFpsGSVacz4mR8WV6P7tVO2q8/7CwFL8aQ6lg4Wm7EVKo2YYX1VurxA==
@@ -1987,8 +1987,12 @@
     "@polkadot/api" "7.7.1"
     "@polkadot/react-identicon" "1.0.1"
     md5 "^2.3.0"
+    micromark "^3.0.10"
+    micromark-extension-gfm "^2.0.0"
     react "^17.0.2"
     react-dom "^17.0.2"
+    react-json-view "^1.21.3"
+    sanitize-html "^2.4.0"
     styled-components "^5.3.3"
 
 "@svgr/babel-plugin-add-jsx-attribute@^5.4.0":

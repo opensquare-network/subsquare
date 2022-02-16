@@ -1,10 +1,10 @@
 import styled, { css } from "styled-components";
 import { useState, useRef } from "react";
-import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside.js";
+import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
 import { addressEllipsis } from "utils";
-import Avatar from "next-common/components/avatar";
-import Flex from "next-common/components/styled/flex";
-import Relative from "next-common/components/styled/relative";
+import Avatar from "./avatar";
+import Flex from "./styled/flex";
+import Relative from "./styled/relative";
 import { shadow_200 } from "../styles/componentCss";
 
 const Wrapper = Relative;
@@ -55,6 +55,7 @@ const Options = styled.div`
   border-radius: 4px;
   max-height: 320px;
   overflow-y: auto;
+  z-index: 1;
 
   ::-webkit-scrollbar {
     width: 8px;
