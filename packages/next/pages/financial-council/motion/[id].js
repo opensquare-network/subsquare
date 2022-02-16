@@ -5,7 +5,7 @@ import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import Layout from "components/layout";
 import MotionDetail from "components/motion/councilMotionDetail";
-import { to404 } from "utils/serverSideUtil";
+import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_FINANCIAL_MOTION } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import { EmptyList } from "next-common/utils/constants";
@@ -110,7 +110,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { result: motion } = await nextApi.fetch(`financial-motions/${id}`);
 
   if (!motion) {
-    to404(context);
+    return to404(context);
   }
 
   const motionId = motion._id;

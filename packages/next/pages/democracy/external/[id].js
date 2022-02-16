@@ -14,7 +14,7 @@ import Timeline from "next-common/components/timeline";
 import KVList from "next-common/components/kvList";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { shadow_100 } from "styles/componentCss";
-import { to404 } from "utils/serverSideUtil";
+import { to404 } from "next-common/utils/serverSideUtil";
 import { makeExternalTimelineData } from "utils/dataWrappers/makeTimelineData";
 import { makeExternalMetadata } from "utils/dataWrappers/makeMetadata";
 import { TYPE_DEMOCRACY_EXTERNAL } from "utils/viewConstants";
@@ -132,7 +132,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   if (!detail) {
-    to404(context);
+    return to404(context);
   }
 
   const { result: comments } = await nextApi.fetch(

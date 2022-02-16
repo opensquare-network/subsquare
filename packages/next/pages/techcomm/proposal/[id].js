@@ -17,7 +17,7 @@ import { useRef, useState } from "react";
 import Comments from "next-common/components/comment";
 import Editor from "next-common/components/comment/editor";
 import { shadow_100 } from "../../../styles/componentCss";
-import { to404 } from "../../../utils/serverSideUtil";
+import { to404 } from "next-common/utils/serverSideUtil";
 import { EmptyList } from "next-common/utils/constants";
 
 const Wrapper = styled.div`
@@ -111,7 +111,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   if (!motion) {
-    to404(context);
+    return to404(context);
   }
 
   const motionId = motion._id;
