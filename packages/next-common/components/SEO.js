@@ -11,7 +11,8 @@ const imageMap = new Map([
   ["kintsugi", "bafybeid66326gcwrriitsffgrhljk4i7uf54am25arkqjz4j6o3gfwyime"],
 ]);
 
-export default function SEO({ title, desc, chain, siteUrl }) {
+export default function SEO({ title, desc, chain }) {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
   const route = useRouter();
   const endpoint =
     process.env.NEXT_PUBLIC_PREVIEW_IMG_ENDPOINT ||

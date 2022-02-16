@@ -6,7 +6,6 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import { toExternalProposalListItem } from "utils/viewfuncs";
-import SEO from "next-common/components/SEO";
 import DemocracySummary from "next-common/components/summary/democracySummary";
 
 export default withLoginUserRedux(
@@ -14,22 +13,19 @@ export default withLoginUserRedux(
     const items = (externals.items || []).map((item) =>
       toExternalProposalListItem(chain, item)
     );
+    const category = "Democracy External Proposals";
+    const seoInfo = {title:category,desc:category};
 
     return (
       <Layout
         user={loginUser}
         left={<Menu menu={mainMenu} chain={chain} />}
         chain={chain}
+        seoInfo={seoInfo}
       >
-        <SEO
-          title={`Democracy External Proposals`}
-          desc={`Democracy External Proposals`}
-          siteUrl={siteUrl}
-          chain={chain}
-        />
         <List
           chain={chain}
-          category={"Democracy External Proposals"}
+          category={category}
           create={null}
           items={items}
           pagination={{

@@ -1,6 +1,6 @@
 import Overview from "components/overview";
 import Menu from "next-common/components/menu";
-import { mainMenu } from "next-common/utils/constants";
+import { BASIC_SEO_INFO, mainMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import Layout from "components/layout";
@@ -16,7 +16,6 @@ import {
   toTreasuryBountyListItem,
   toTreasuryProposalListItem,
 } from "utils/viewfuncs";
-import SEO from "next-common/components/SEO";
 
 export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
   let overviewData = [
@@ -113,13 +112,8 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
       user={loginUser}
       left={<Menu menu={mainMenu} chain={chain} />}
       chain={chain}
+      seoInfo={BASIC_SEO_INFO}
     >
-      <SEO
-        title={`SubSquare`}
-        desc={`SubSquare`}
-        siteUrl={siteUrl}
-        chain={chain}
-      />
       <Overview overviewData={filteredOverviewData} chain={chain} />
     </Layout>
   );

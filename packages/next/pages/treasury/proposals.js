@@ -6,7 +6,6 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import { toTreasuryProposalListItem } from "utils/viewfuncs";
-import SEO from "next-common/components/SEO";
 import Summary from "next-common/components/summary";
 
 export default withLoginUserRedux(
@@ -14,22 +13,19 @@ export default withLoginUserRedux(
     const items = (proposals.items || []).map((item) =>
       toTreasuryProposalListItem(chain, item)
     );
+    const category = "Treasury Proposals";
+    const seoInfo = {title:category,desc:category};
 
     return (
       <Layout
         user={loginUser}
         left={<Menu menu={mainMenu} chain={chain} />}
         chain={chain}
+        seoInfo={seoInfo}
       >
-        <SEO
-          title={`Treasury Proposals`}
-          desc={`Treasury Proposals`}
-          siteUrl={siteUrl}
-          chain={chain}
-        />
         <List
           chain={chain}
-          category={"Treasury Proposals"}
+          category={category}
           create={null}
           items={items}
           summary={<Summary chain={chain} />}

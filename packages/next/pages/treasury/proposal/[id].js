@@ -22,7 +22,6 @@ import { TYPE_TREASURY_PROPOSAL } from "utils/viewConstants";
 import { createMotionTimelineData } from "../../../utils/timeline/motion";
 import sortTimeline from "../../../utils/timeline/sort";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-import SEO from "next-common/components/SEO";
 import KVList from "next-common/components/kvList";
 
 const Wrapper = styled.div`
@@ -140,13 +139,7 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail, "Proposal");
     return (
-      <Layout user={loginUser} chain={chain}>
-        <SEO
-          title={detail?.title}
-          desc={desc}
-          siteUrl={siteUrl}
-          chain={chain}
-        />
+      <Layout user={loginUser} chain={chain} seoInfo={{title:detail?.title, desc}}>
         <Wrapper className="post-content">
           <Back href={`/treasury/proposals`} text="Back to Proposals" />
           <DetailItem

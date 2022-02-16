@@ -25,7 +25,6 @@ import User from "next-common/components/user";
 import KVList from "next-common/components/kvList";
 import Links from "next-common/components/links";
 import ReasonLink from "next-common/components/reasonLink";
-import SEO from "next-common/components/SEO";
 import Tipper from "components/tipper";
 
 import { shadow_100 } from "styles/componentCss";
@@ -303,13 +302,7 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail, "Tip");
     return (
-      <Layout user={loginUser} chain={chain}>
-        <SEO
-          title={detail?.title}
-          desc={desc}
-          siteUrl={siteUrl}
-          chain={chain}
-        />
+      <Layout user={loginUser} chain={chain} seoInfo={{title:detail?.title, desc}}>
         <OutWrapper>
           <Wrapper className="post-content">
             <Back href={`/treasury/tips`} text="Back to Tips" />

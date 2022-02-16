@@ -414,3 +414,7 @@ export const Chains = {
 
 export const TreasuryAccount =
   "F3opxRbN5ZbjJNU511Kj2TLuzFcDq9BGduA9TgiECafpg29";
+
+export const BASIC_SEO_INFO = {
+  title: `SubSquare`,
+};

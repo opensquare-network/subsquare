@@ -13,7 +13,6 @@ import { shadow_100 } from "styles/componentCss";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_POST } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
-import SEO from "next-common/components/SEO";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -64,13 +63,7 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail, "Discussion");
     return (
-      <Layout user={loginUser} chain={chain}>
-        <SEO
-          title={detail?.title}
-          desc={desc}
-          siteUrl={siteUrl}
-          chain={chain}
-        />
+      <Layout user={loginUser} chain={chain} seoInfo={{title:detail?.title, desc}}>
         <Wrapper className="post-content">
           <Back href={`/discussions`} text="Back to Discussions" />
           <DetailItem
