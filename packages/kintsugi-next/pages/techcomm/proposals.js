@@ -14,22 +14,19 @@ export default withLoginUserRedux(
     const items = (proposals.items || []).map((item) =>
       toTechCommMotionListItem(chain, item)
     );
+    const category = `Tech. Comm. Proposals`;
+    const seoInfo = {title:`Technical Committee Proposals`, desc:`Technical Committee Proposals`};
 
     return (
       <Layout
         user={loginUser}
         left={<Menu menu={mainMenu} chain={chain} />}
         chain={chain}
+        seoInfo={seoInfo}
       >
-        <SEO
-          title={`Technical Committee Proposals`}
-          desc={`Technical Committee Proposals`}
-          siteUrl={siteUrl}
-          chain={chain}
-        />
         <List
           chain={chain}
-          category={"Tech. Comm. Proposals"}
+          category={category}
           create={null}
           items={items}
           pagination={{

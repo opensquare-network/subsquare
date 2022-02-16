@@ -14,22 +14,19 @@ export default withLoginUserRedux(({ loginUser, posts, chain, siteUrl }) => {
   const items = (posts.items || []).map((item) =>
     toReferendaListItem(chain, item)
   );
+  const category = `Referenda`;
+  const seoInfo = {title:`Democracy Referenda`, desc:`Democracy Referenda`};
 
   return (
     <Layout
       user={loginUser}
       left={<Menu menu={mainMenu} chain={chain} />}
       chain={chain}
+      seoInfo={seoInfo}
     >
-      <SEO
-        title={`Democracy Referenda`}
-        desc={`Democracy Referenda`}
-        siteUrl={siteUrl}
-        chain={chain}
-      />
       <List
         chain={chain}
-        category={"Referenda"}
+        category={category}
         create={null}
         items={items}
         pagination={{
