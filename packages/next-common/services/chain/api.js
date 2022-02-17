@@ -6,15 +6,19 @@ import {
   typesBundleForPolkadot as bifrostTypesBundleForPolkadot,
   rpc as bifrostRpc,
 } from "@bifrost-finance/type-definitions";
-import interbtc from "@interlay/interbtc-types";
 import { Chains } from "../../utils/constants";
+import interbtc from "./kintsugi/definitions";
 
 const apiInstanceMap = new Map();
 
 export default async function getApi(chain, endpoint) {
+  if (!Object.keys(Chains).includes(chain)) {
+    throw new Error(`Invalid chain: ${chain} to construct api`);
+  }
+
   if (!apiInstanceMap.has(endpoint)) {
     const provider = new WsProvider(endpoint, 1000);
-    const options = { provider };
+    let options = { provider };
     if (chain === "karura" || chain === "acala") {
       options.typesBundle = { ...typesBundleForPolkadot };
     }
@@ -32,12 +36,15 @@ export default async function getApi(chain, endpoint) {
       };
       options.rpc = bifrostRpc;
     } else if (chain === Chains.kintsugi) {
-      options.typesBundle = {
-        spec: {
-          "interbtc-parachain": interbtc,
+      options = {
+        ...options,
+        typesBundle: {
+          spec: {
+            "interbtc-parachain": interbtc,
+          },
         },
+        rpc: interbtc.providerRpc,
       };
-      options.rpc = interbtc.rpc;
     }
 
     apiInstanceMap.set(endpoint, ApiPromise.create(options));

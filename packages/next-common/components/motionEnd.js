@@ -10,7 +10,8 @@ export default function MotionEnd({ motion, type = "full", chain }) {
   const motionEndHeight = motion?.voting?.end;
   const motionStartHeight = motion?.indexer?.blockHeight;
   const estimatedBlocksTime = useEstimateBlocksTime(
-    currentFinalHeight - motionEndHeight
+    currentFinalHeight - motionEndHeight,
+    chain
   );
   const motionEnd = isMotionEnded(motion);
 
