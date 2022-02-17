@@ -136,6 +136,18 @@ export const sleep = (time) => {
   });
 };
 
+export function getEffectiveNumbers(n) {
+  const result = [];
+  let flag = false;
+  n.split('').reverse().forEach(dig => {
+    if (!isNaN(parseInt(dig))) {
+      flag = flag || parseInt(dig) > 0;
+      flag && result.push(dig);
+    }
+  });
+  return result.reverse().join();
+}
+
 export function abbreviateBigNumber(x, fixed = 2) {
   const n = new BigNumber(x);
   const fmt = {
