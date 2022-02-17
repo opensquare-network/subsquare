@@ -1,4 +1,4 @@
-export const EMPTY_SERVER_PROPS = {props:{}};
+export const EMPTY_SERVER_PROPS = { props: {} };
 
 export function to404(context) {
   const { res } = context;

@@ -103,7 +103,11 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail, "Referendum");
     return (
-      <Layout user={loginUser} chain={chain} seoInfo={{title:detail?.title, desc}}>
+      <Layout
+        user={loginUser}
+        chain={chain}
+        seoInfo={{ title: detail?.title, desc }}
+      >
         <OutWrapper>
           <Wrapper className="post-content">
             <Back href={`/democracy/referendums`} text="Back to Referendas" />

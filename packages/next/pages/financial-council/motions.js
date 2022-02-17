@@ -12,7 +12,7 @@ export default withLoginUserRedux(({ loginUser, motions, chain, siteUrl }) => {
     toFinancialMotionsListItem(chain, item)
   );
   const category = "Financial Motions";
-  const seoInfo = {title:category,desc:category};
+  const seoInfo = { title: category, desc: category };
 
   return (
     <Layout

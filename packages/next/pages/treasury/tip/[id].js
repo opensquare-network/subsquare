@@ -302,7 +302,11 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail, "Tip");
     return (
-      <Layout user={loginUser} chain={chain} seoInfo={{title:detail?.title, desc}}>
+      <Layout
+        user={loginUser}
+        chain={chain}
+        seoInfo={{ title: detail?.title, desc }}
+      >
         <OutWrapper>
           <Wrapper className="post-content">
             <Back href={`/treasury/tips`} text="Back to Tips" />

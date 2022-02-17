@@ -35,7 +35,7 @@ export default withLoginUserRedux(({ loginUser, posts, chain, siteUrl }) => {
     </Create>
   );
   const category = `Discussions`;
-  const seoInfo = {title:category, desc:category};
+  const seoInfo = { title: category, desc: category };
 
   return (
     <Layout

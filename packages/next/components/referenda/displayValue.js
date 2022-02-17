@@ -20,11 +20,7 @@ export default function ValueDisplay({ value, symbol, noWrap }) {
     if (getEffectiveNumbers(abbreviated) !== getEffectiveNumbers(value)) {
       display = <NotEqual>{`${abbreviated} ${symbol}`}</NotEqual>;
     }
-    return (
-      <Tooltip content={`${value} ${symbol}`}>
-        {display}
-      </Tooltip>
-    );
+    return <Tooltip content={`${value} ${symbol}`}>{display}</Tooltip>;
   }
   const [int, decimal] = String(value).split(".");
   if (decimal?.length > 5) {

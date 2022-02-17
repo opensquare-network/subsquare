@@ -11,7 +11,7 @@ import Summary from "next-common/components/summary";
 export default withLoginUserRedux(({ loginUser, tips, chain, siteUrl }) => {
   const items = (tips.items || []).map((item) => toTipListItem(chain, item));
   const category = "Tips";
-  const seoInfo = {title:`Treasury Tips`,desc:`Treasury Tips`};
+  const seoInfo = { title: `Treasury Tips`, desc: `Treasury Tips` };
 
   return (
     <Layout

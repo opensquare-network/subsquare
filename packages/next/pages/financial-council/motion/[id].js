@@ -4,7 +4,7 @@ import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import Layout from "components/layout";
-import MotionDetail from "components/motion/councilMotionDetail";
+import MotionDetail from "components/motion/motionDetail";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_FINANCIAL_MOTION } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
@@ -19,13 +19,25 @@ import {
 } from "../../../utils/post";
 import { useRef, useState } from "react";
 
+const OutWrapper = styled.div`
+  display: flex;
+  max-width: 1080px;
+  margin: 0 auto;
+  position: relative;
+`;
+
 const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
 
-  max-width: 848px;
-  margin: auto;
+  margin-right: 312px;
+  @media screen and (max-width: 1024px) {
+    max-width: 848px;
+    margin: 0 auto;
+  }
+  overflow: hidden;
+  flex-grow: 1;
 `;
 
 const CommentsWrapper = styled.div`
@@ -61,35 +73,47 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(motion, "Financial Motion");
     return (
-      <Layout user={loginUser} chain={chain} seoInfo={{title:detail?.title, desc}}>
-        <Wrapper className="post-content">
-          <Back href={`/financial-council/motions`} text="Back to Motions" />
-          <MotionDetail
-            motion={motion}
-            user={loginUser}
-            chain={chain}
-            type={TYPE_FINANCIAL_MOTION}
-            onReply={onReply}
-          />
-          <CommentsWrapper>
-            <Comments
-              data={comments}
+      <Layout
+        user={loginUser}
+        chain={chain}
+        seoInfo={{ title: motion?.title, desc }}
+      >
+        <OutWrapper>
+          <Wrapper className="post-content">
+            <Back href={`/financial-council/motions`} text="Back to Motions" />
+            <MotionDetail
+              motion={motion}
               user={loginUser}
               chain={chain}
+              type={TYPE_FINANCIAL_MOTION}
               onReply={onReply}
             />
-            {loginUser && (
-              <Editor
-                postId={motion._id}
+            <CommentsWrapper>
+              <Comments
+                data={comments}
+                user={loginUser}
                 chain={chain}
-                ref={editorWrapperRef}
-                setQuillRef={setQuillRef}
-                {...{ contentType, setContentType, content, setContent, users }}
-                type={TYPE_FINANCIAL_MOTION}
+                onReply={onReply}
               />
-            )}
-          </CommentsWrapper>
-        </Wrapper>
+              {loginUser && (
+                <Editor
+                  postId={motion._id}
+                  chain={chain}
+                  ref={editorWrapperRef}
+                  setQuillRef={setQuillRef}
+                  {...{
+                    contentType,
+                    setContentType,
+                    content,
+                    setContent,
+                    users,
+                  }}
+                  type={TYPE_FINANCIAL_MOTION}
+                />
+              )}
+            </CommentsWrapper>
+          </Wrapper>
+        </OutWrapper>
       </Layout>
     );
   }
@@ -99,9 +123,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
 
   const { id, page, page_size: pageSize } = context.query;
-
   const { result: motion } = await nextApi.fetch(`financial-motions/${id}`);
-
   if (!motion) {
     return to404(context);
   }

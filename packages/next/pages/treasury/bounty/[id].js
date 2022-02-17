@@ -160,7 +160,11 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail, "Bounty");
     return (
-      <Layout user={loginUser} chain={chain} seoInfo={{title:detail?.title, desc}}>
+      <Layout
+        user={loginUser}
+        chain={chain}
+        seoInfo={{ title: detail?.title, desc }}
+      >
         <Wrapper className="post-content">
           <Back href={`/treasury/bounties`} text="Back to Bounties" />
           <DetailItem

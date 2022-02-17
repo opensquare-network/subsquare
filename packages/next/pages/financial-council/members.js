@@ -19,7 +19,7 @@ export default withLoginUserRedux(({ loginUser, chain, siteUrl }) => {
     }
   }, [members]);
   const category = "Financial Council Members";
-  const seoInfo = {title:category,desc:category};
+  const seoInfo = { title: category, desc: category };
 
   return (
     <Layout

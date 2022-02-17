@@ -13,7 +13,7 @@ export default withLoginUserRedux(({ loginUser, bounties, chain, siteUrl }) => {
     toTreasuryBountyListItem(chain, item)
   );
   const category = "Treasury Bounties";
-  const seoInfo = {title:category,desc:category};
+  const seoInfo = { title: category, desc: category };
 
   return (
     <Layout

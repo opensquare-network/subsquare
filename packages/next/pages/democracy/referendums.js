@@ -13,7 +13,7 @@ export default withLoginUserRedux(({ loginUser, posts, chain, siteUrl }) => {
     toReferendaListItem(chain, item)
   );
   const category = "Referenda";
-  const seoInfo = {title:`Democracy Referenda`,desc:`Democracy Referenda`};
+  const seoInfo = { title: `Democracy Referenda`, desc: `Democracy Referenda` };
 
   return (
     <Layout

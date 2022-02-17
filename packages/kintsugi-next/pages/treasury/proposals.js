@@ -15,7 +15,7 @@ export default withLoginUserRedux(
       toTreasuryProposalListItem(chain, item)
     );
     const category = `Treasury Proposals`;
-    const seoInfo = {title:category, desc:category};
+    const seoInfo = { title: category, desc: category };
 
     return (
       <Layout

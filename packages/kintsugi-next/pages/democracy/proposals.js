@@ -16,7 +16,7 @@ export default withLoginUserRedux(
       toPublicProposalListItem(chain, item)
     );
     const category = `Democracy Public Proposals`;
-    const seoInfo = {title:category, desc:category};
+    const seoInfo = { title: category, desc: category };
 
     return (
       <Layout

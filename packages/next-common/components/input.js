@@ -100,7 +100,7 @@ const SymbolWrapper = styled.div`
   line-height: 100%;
   border-left: 1px solid #e0e4eb;
 `;
-const OuterWrapper = styled.div``
+const OuterWrapper = styled.div``;
 
 export default function Input({ ...props }) {
   const [show, setShow] = useState(false);
@@ -111,7 +111,9 @@ export default function Input({ ...props }) {
       <Wrapper focus={focus} {...props}>
         <InputWrapper
           {...props}
-          type={props.type === "password" && show ? "text" : props.type ?? "auto"}
+          type={
+            props.type === "password" && show ? "text" : props.type ?? "auto"
+          }
           autocomplete="off"
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}

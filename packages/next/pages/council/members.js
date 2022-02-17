@@ -38,7 +38,7 @@ export default withLoginUserRedux(({ loginUser, chain, siteUrl }) => {
     }
   }, [electionsInfo, allVotes]);
   const category = "Council Members";
-  const seoInfo = {title:category,desc:category};
+  const seoInfo = { title: category, desc: category };
 
   return (
     <Layout

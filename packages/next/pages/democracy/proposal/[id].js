@@ -156,7 +156,11 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail, "Proposal");
     return (
-      <Layout user={loginUser} chain={chain} seoInfo={{title:detail?.title, desc}}>
+      <Layout
+        user={loginUser}
+        chain={chain}
+        seoInfo={{ title: detail?.title, desc }}
+      >
         <Wrapper className="post-content">
           <Back href={`/democracy/proposals`} text="Back to Proposals" />
           <DetailItem

@@ -14,7 +14,7 @@ export default withLoginUserRedux(
       toExternalProposalListItem(chain, item)
     );
     const category = "Democracy External Proposals";
-    const seoInfo = {title:category,desc:category};
+    const seoInfo = { title: category, desc: category };
 
     return (
       <Layout

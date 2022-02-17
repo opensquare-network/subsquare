@@ -13,7 +13,10 @@ export default withLoginUserRedux(
       toTechCommMotionListItem(chain, item)
     );
     const category = "Tech. Comm. Proposals";
-    const seoInfo = {title:`Technical Committee Proposals`,desc:`Technical Committee Proposals`};
+    const seoInfo = {
+      title: `Technical Committee Proposals`,
+      desc: `Technical Committee Proposals`,
+    };
 
     return (
       <Layout
