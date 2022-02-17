@@ -45,7 +45,7 @@ export default function MotionTimeline({ motion, chain, type }) {
     return null;
   }
 
-  const showMotionEnd = useShowMotionEnd(motion);
+  const showMotionEnd = useShowMotionEnd(motion, chain);
   const timeline = createMotionTimelineData(motion, chain);
 
   let timelineData;

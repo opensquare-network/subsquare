@@ -39,7 +39,7 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
   const [post, setPost] = useState(motion);
   const [isEdit, setIsEdit] = useState(false);
 
-  const api = useApi();
+  const api = useApi(chain);
 
   const votingMethod = api?.query?.[toApiCouncil(chain, type)]?.voting;
   const membersMethod = api?.query?.[toApiCouncil(chain, type)]?.members;
