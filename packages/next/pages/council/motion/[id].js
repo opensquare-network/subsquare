@@ -18,7 +18,6 @@ import {
   getOnReply,
 } from "../../../utils/post";
 import { useRef, useState } from "react";
-import SEO from "next-common/components/SEO";
 
 const OutWrapper = styled.div`
   display: flex;
@@ -74,13 +73,11 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(motion, "Motion");
     return (
-      <Layout user={loginUser} chain={chain}>
-        <SEO
-          title={motion?.title}
-          desc={desc}
-          siteUrl={siteUrl}
-          chain={chain}
-        />
+      <Layout
+        user={loginUser}
+        chain={chain}
+        seoInfo={{ title: motion?.title, desc }}
+      >
         <OutWrapper>
           <Wrapper className="post-content">
             <Back href={`/council/motions`} text="Back to Motions" />
@@ -95,7 +92,6 @@ export default withLoginUserRedux(
               <Comments
                 data={comments}
                 user={loginUser}
-                postId={motion._id}
                 chain={chain}
                 onReply={onReply}
               />

@@ -19,7 +19,6 @@ import { makeExternalTimelineData } from "utils/dataWrappers/makeTimelineData";
 import { makeExternalMetadata } from "utils/dataWrappers/makeMetadata";
 import { TYPE_DEMOCRACY_EXTERNAL } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-import SEO from "next-common/components/SEO";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -80,13 +79,11 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail, "External");
     return (
-      <Layout user={loginUser} chain={chain}>
-        <SEO
-          title={detail?.title}
-          desc={desc}
-          siteUrl={siteUrl}
-          chain={chain}
-        />
+      <Layout
+        user={loginUser}
+        chain={chain}
+        seoInfo={{ title: detail?.title, desc }}
+      >
         <Wrapper className="post-content">
           <Back href={`/democracy/externals`} text="Back to Externals" />
           <DetailItem

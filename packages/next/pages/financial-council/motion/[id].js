@@ -18,7 +18,6 @@ import {
   getOnReply,
 } from "../../../utils/post";
 import { useRef, useState } from "react";
-import SEO from "next-common/components/SEO";
 
 const OutWrapper = styled.div`
   display: flex;
@@ -31,12 +30,14 @@ const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
+
   margin-right: 312px;
-  overflow: hidden;
   @media screen and (max-width: 1024px) {
     max-width: 848px;
     margin: 0 auto;
   }
+  overflow: hidden;
+  flex-grow: 1;
 `;
 
 const CommentsWrapper = styled.div`
@@ -72,13 +73,11 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(motion, "Financial Motion");
     return (
-      <Layout user={loginUser} chain={chain}>
-        <SEO
-          title={motion?.title}
-          desc={desc}
-          siteUrl={siteUrl}
-          chain={chain}
-        />
+      <Layout
+        user={loginUser}
+        chain={chain}
+        seoInfo={{ title: detail?.title, desc }}
+      >
         <OutWrapper>
           <Wrapper className="post-content">
             <Back href={`/financial-council/motions`} text="Back to Motions" />
@@ -93,7 +92,6 @@ export default withLoginUserRedux(
               <Comments
                 data={comments}
                 user={loginUser}
-                postId={motion._id}
                 chain={chain}
                 onReply={onReply}
               />
@@ -125,9 +123,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
 
   const { id, page, page_size: pageSize } = context.query;
-
   const { result: motion } = await nextApi.fetch(`financial-motions/${id}`);
-
   if (!motion) {
     return to404(context);
   }

@@ -6,28 +6,24 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import { toCouncilMotionListItem } from "utils/viewfuncs";
-import SEO from "next-common/components/SEO";
 
 export default withLoginUserRedux(({ loginUser, motions, chain, siteUrl }) => {
   const items = (motions.items || []).map((item) =>
     toCouncilMotionListItem(chain, item)
   );
+  const category = "Council motions";
+  const seoInfo = { title: category, desc: category };
 
   return (
     <Layout
       user={loginUser}
       left={<Menu menu={mainMenu} chain={chain} />}
       chain={chain}
+      seoInfo={seoInfo}
     >
-      <SEO
-        title={`Council motions`}
-        desc={`Council motions`}
-        siteUrl={siteUrl}
-        chain={chain}
-      />
       <List
         chain={chain}
-        category={"Council Motions"}
+        category={category}
         create={null}
         items={items}
         pagination={{

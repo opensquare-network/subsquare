@@ -6,28 +6,24 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import { toFinancialMotionsListItem } from "utils/viewfuncs";
-import SEO from "next-common/components/SEO";
 
 export default withLoginUserRedux(({ loginUser, motions, chain, siteUrl }) => {
   const items = (motions.items || []).map((item) =>
     toFinancialMotionsListItem(chain, item)
   );
+  const category = "Financial Motions";
+  const seoInfo = { title: category, desc: category };
 
   return (
     <Layout
       user={loginUser}
       left={<Menu menu={mainMenu} chain={chain} />}
       chain={chain}
+      seoInfo={seoInfo}
     >
-      <SEO
-        title={`Financial motions`}
-        desc={`Financial motions`}
-        siteUrl={siteUrl}
-        chain={chain}
-      />
       <List
         chain={chain}
-        category={"Financial Motions"}
+        category={category}
         create={null}
         items={items}
         pagination={{

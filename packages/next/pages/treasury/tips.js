@@ -6,27 +6,23 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import { toTipListItem } from "utils/viewfuncs";
-import SEO from "next-common/components/SEO";
 import Summary from "next-common/components/summary";
 
 export default withLoginUserRedux(({ loginUser, tips, chain, siteUrl }) => {
   const items = (tips.items || []).map((item) => toTipListItem(chain, item));
+  const category = "Tips";
+  const seoInfo = { title: `Treasury Tips`, desc: `Treasury Tips` };
 
   return (
     <Layout
       user={loginUser}
       left={<Menu menu={mainMenu} chain={chain} />}
       chain={chain}
+      seoInfo={seoInfo}
     >
-      <SEO
-        title={`Treasury Tips`}
-        desc={`Treasury Tips`}
-        siteUrl={siteUrl}
-        chain={chain}
-      />
       <List
         chain={chain}
-        category={"Tips"}
+        category={category}
         create={null}
         items={items}
         summary={<Summary chain={chain} />}

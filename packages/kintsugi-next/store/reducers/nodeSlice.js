@@ -10,14 +10,15 @@ const chain = process.env.NEXT_PUBLIC_CHAIN || "kintsugi";
 let nodeUrl = (() => {
   let localNodeUrl = null;
   try {
-    localNodeUrl = JSON.parse(localStorage.getItem("nodeUrl"));
+    localNodeUrl = localStorage.getItem("nodeUrl");
   } catch (e) {
     // ignore parse error
   }
+
   return {
     kintsugi:
-      DEFAULT_KINTSUGI_NODES.find((item) => item.url === localNodeUrl?.kintsugi)
-        ?.url || DEFAULT_KINTSUGI_NODE_URL,
+      DEFAULT_KINTSUGI_NODES.find((item) => item.url === localNodeUrl)?.url ||
+      DEFAULT_KINTSUGI_NODE_URL,
   };
 })();
 
@@ -38,6 +39,7 @@ const nodeSlice = createSlice({
       const beforeUrl = state.currentNode;
 
       state.currentNode = url;
+      localStorage.setItem("nodeUrl", url);
       state.nodes = (state.nodes || []).map((item) => {
         if (item.url === beforeUrl) {
           return { ...item, update: true };
@@ -45,7 +47,6 @@ const nodeSlice = createSlice({
           return item;
         }
       });
-      localStorage.setItem("nodeUrl", url);
 
       if (refresh) {
         window.location.href = `https://${chain}.subsquare.io`;

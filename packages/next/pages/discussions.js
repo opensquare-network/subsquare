@@ -8,7 +8,6 @@ import styled from "styled-components";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
 import Layout from "components/layout";
 import { toDiscussionListItem } from "utils/viewfuncs";
-import SEO from "next-common/components/SEO";
 
 const Create = styled.a`
   display: flex;
@@ -33,22 +32,19 @@ export default withLoginUserRedux(({ loginUser, posts, chain, siteUrl }) => {
       New Post
     </Create>
   );
+  const category = "Discussions";
+  const seoInfo = { title: category, desc: category };
 
   return (
     <Layout
       user={loginUser}
       left={<Menu menu={mainMenu} chain={chain} />}
       chain={chain}
+      seoInfo={seoInfo}
     >
-      <SEO
-        title={`Discussions`}
-        desc={`Discussions`}
-        siteUrl={siteUrl}
-        chain={chain}
-      />
       <List
         chain={chain}
-        category={"Discussions"}
+        category={category}
         create={create}
         items={items}
         pagination={{

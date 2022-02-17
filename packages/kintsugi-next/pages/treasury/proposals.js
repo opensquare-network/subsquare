@@ -14,22 +14,19 @@ export default withLoginUserRedux(
     const items = (proposals.items || []).map((item) =>
       toTreasuryProposalListItem(chain, item)
     );
+    const category = `Treasury Proposals`;
+    const seoInfo = { title: category, desc: category };
 
     return (
       <Layout
         user={loginUser}
         left={<Menu menu={mainMenu} chain={chain} />}
         chain={chain}
+        seoInfo={seoInfo}
       >
-        <SEO
-          title={`Treasury Proposals`}
-          desc={`Treasury Proposals`}
-          siteUrl={siteUrl}
-          chain={chain}
-        />
         <List
           chain={chain}
-          category={"Treasury Proposals"}
+          category={category}
           create={null}
           items={items}
           summary={<Summary chain={chain} />}

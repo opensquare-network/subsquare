@@ -20,22 +20,19 @@ export default withLoginUserRedux(({ loginUser, chain, siteUrl }) => {
       setLoading(false);
     }
   }, [members]);
+  const category = `Technical Committee Members`;
+  const seoInfo = { title: category, desc: category };
 
   return (
     <Layout
       user={loginUser}
       left={<Menu menu={mainMenu} chain={chain} />}
       chain={chain}
+      seoInfo={seoInfo}
     >
-      <SEO
-        title={`Technical Committee Members`}
-        desc={`Technical Committee Members`}
-        siteUrl={siteUrl}
-        chain={chain}
-      />
       <MembersList
         chain={chain}
-        category={"Technical Committee Members"}
+        category={category}
         items={data}
         loading={loading}
       />

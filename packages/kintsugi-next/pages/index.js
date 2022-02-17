@@ -10,7 +10,6 @@ import {
   toReferendaListItem,
   toTechCommMotionListItem,
 } from "utils/viewfuncs";
-import SEO from "next-common/components/SEO";
 import { isSafari } from "../utils/serverSideUtil";
 
 export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
@@ -57,13 +56,8 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
       user={loginUser}
       left={<Menu menu={mainMenu} chain={chain} />}
       chain={chain}
+      seoInfo={DEFAULT_SEO_INFO}
     >
-      <SEO
-        title={`SubSquare`}
-        desc={`SubSquare`}
-        siteUrl={siteUrl}
-        chain={chain}
-      />
       <Overview overviewData={filteredOverviewData} chain={chain} />
     </Layout>
   );

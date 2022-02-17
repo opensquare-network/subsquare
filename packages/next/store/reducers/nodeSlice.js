@@ -24,6 +24,7 @@ let nodeUrl = (() => {
   } catch (e) {
     // ignore parse error
   }
+
   return {
     kusama:
       DEFAULT_KUSAMA_NODES.find((item) => item.url === localNodeUrl)?.url ||
@@ -75,7 +76,7 @@ const nodeSlice = createSlice({
           return item;
         }
       });
-      localStorage.setItem("nodeUrl", JSON.stringify(url));
+      localStorage.setItem("nodeUrl", url);
 
       if (refresh) {
         window.location.href = `https://${chain}.subsquare.io`;

@@ -7,7 +7,6 @@ import { useApi } from "utils/hooks";
 import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
 import { getNode } from "utils";
-import SEO from "next-common/components/SEO";
 
 export default withLoginUserRedux(({ loginUser, chain, siteUrl }) => {
   const [data, setData] = useState([]);
@@ -38,22 +37,19 @@ export default withLoginUserRedux(({ loginUser, chain, siteUrl }) => {
       setLoading(false);
     }
   }, [electionsInfo, allVotes]);
+  const category = "Council Members";
+  const seoInfo = { title: category, desc: category };
 
   return (
     <Layout
       user={loginUser}
       left={<Menu menu={mainMenu} chain={chain} />}
       chain={chain}
+      seoInfo={seoInfo}
     >
-      <SEO
-        title={`Council members`}
-        desc={`Council members`}
-        siteUrl={siteUrl}
-        chain={chain}
-      />
       <MembersList
         chain={chain}
-        category={"Council Members"}
+        category={category}
         items={data}
         loading={loading}
         hasElections={node?.hasElections}

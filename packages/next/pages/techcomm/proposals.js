@@ -6,29 +6,28 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import { toTechCommMotionListItem } from "utils/viewfuncs";
-import SEO from "next-common/components/SEO";
 
 export default withLoginUserRedux(
   ({ loginUser, proposals, chain, siteUrl }) => {
     const items = (proposals.items || []).map((item) =>
       toTechCommMotionListItem(chain, item)
     );
+    const category = "Tech. Comm. Proposals";
+    const seoInfo = {
+      title: `Technical Committee Proposals`,
+      desc: `Technical Committee Proposals`,
+    };
 
     return (
       <Layout
         user={loginUser}
         left={<Menu menu={mainMenu} chain={chain} />}
         chain={chain}
+        seoInfo={seoInfo}
       >
-        <SEO
-          title={`Technical Committee Proposals`}
-          desc={`Technical Committee Proposals`}
-          siteUrl={siteUrl}
-          chain={chain}
-        />
         <List
           chain={chain}
-          category={"Tech. Comm. Proposals"}
+          category={category}
           create={null}
           items={items}
           pagination={{

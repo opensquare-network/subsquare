@@ -6,29 +6,25 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import { toTreasuryBountyListItem } from "utils/viewfuncs";
-import SEO from "next-common/components/SEO";
 import Summary from "next-common/components/summary";
 
 export default withLoginUserRedux(({ loginUser, bounties, chain, siteUrl }) => {
   const items = (bounties.items || []).map((item) =>
     toTreasuryBountyListItem(chain, item)
   );
+  const category = "Treasury Bounties";
+  const seoInfo = { title: category, desc: category };
 
   return (
     <Layout
       user={loginUser}
       left={<Menu menu={mainMenu} chain={chain} />}
       chain={chain}
+      seoInfo={seoInfo}
     >
-      <SEO
-        title={`Treasury Bounties`}
-        desc={`Treasury Bounties`}
-        siteUrl={siteUrl}
-        chain={chain}
-      />
       <List
         chain={chain}
-        category={"Treasury Bounties"}
+        category={category}
         create={null}
         items={items}
         summary={<Summary chain={chain} />}

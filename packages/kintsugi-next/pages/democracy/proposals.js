@@ -15,22 +15,19 @@ export default withLoginUserRedux(
     const items = (proposals.items || []).map((item) =>
       toPublicProposalListItem(chain, item)
     );
+    const category = `Democracy Public Proposals`;
+    const seoInfo = { title: category, desc: category };
 
     return (
       <Layout
         user={loginUser}
         left={<Menu menu={mainMenu} chain={chain} />}
         chain={chain}
+        seoInfo={seoInfo}
       >
-        <SEO
-          title={`Democracy Public Proposals`}
-          desc={`Democracy Public Proposals`}
-          siteUrl={siteUrl}
-          chain={chain}
-        />
         <List
           chain={chain}
-          category={"Democracy Public Proposals"}
+          category={category}
           create={null}
           items={items}
           pagination={{
