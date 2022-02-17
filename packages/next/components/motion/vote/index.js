@@ -106,8 +106,8 @@ export default function Vote({
   voters = [],
   motionHash,
   motionIndex,
+  type,
   updateVotes = () => {},
-  updateMotionDetail = () => {},
   isLoadingVote = false,
   setIsLoadingVote = () => {},
 }) {
@@ -175,7 +175,7 @@ export default function Vote({
       <Wrapper>
         <Content>
           <Title>
-            <div>Council Votes</div>
+            <div>Votes</div>
             <div>{isLoadingVote && <Loading size={16} />}</div>
           </Title>
           {voteList}
@@ -189,9 +189,9 @@ export default function Vote({
           voters={voters}
           motionHash={motionHash}
           motionIndex={motionIndex}
+          type={type}
           onClose={() => setShowPopup(false)}
           onInBlock={updateVotes}
-          onFinalized={updateMotionDetail}
           onSubmitted={() => setIsLoadingVote(true)}
         />
       )}

@@ -4,7 +4,7 @@ import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import Layout from "components/layout";
-import MotionDetail from "components/motion/councilMotionDetail";
+import MotionDetail from "components/motion/motionDetail";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_FINANCIAL_MOTION } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";

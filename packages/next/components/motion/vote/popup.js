@@ -9,6 +9,7 @@ import { addToast } from "store/reducers/toastSlice";
 import Loading from "./loading";
 import SignerSelect from "next-common/components/signerSelect";
 import PopupWithAddress from "next-common/components/popupWithAddress";
+import toApiCouncil from "../toApiCouncil";
 
 const Info = styled.div`
   background: #f6f7fa;
@@ -121,6 +122,7 @@ function PopupContent({
   onInBlock,
   onFinalized,
   onSubmitted,
+  type,
 }) {
   const dispatch = useDispatch();
   const [selectedAccount, setSelectedAccount] = useState(null);
@@ -131,11 +133,12 @@ function PopupContent({
   const currentVote = votes.find((item) => item[0] === selectedAddress);
 
   const api = useApi(chain);
+  const voteMethod = api?.tx?.[toApiCouncil(chain, type)]?.vote;
 
   const doVote = async (approve) => {
     if (isLoading) return;
 
-    if (!api) {
+    if (!voteMethod) {
       dispatch(
         addToast({
           type: "error",
@@ -164,8 +167,7 @@ function PopupContent({
 
       const voterAddress = selectedAccount.address;
 
-      const unsub = await api.tx.council
-        .vote(motionHash, motionIndex, approve)
+      const unsub = await voteMethod(motionHash, motionIndex, approve)
         .signAndSend(voterAddress, ({ events = [], status }) => {
           if (status.isFinalized) {
             onFinalized(voterAddress);

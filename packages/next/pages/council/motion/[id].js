@@ -4,7 +4,7 @@ import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import Layout from "components/layout";
-import MotionDetail from "components/motion/councilMotionDetail";
+import MotionDetail from "components/motion/motionDetail";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_COUNCIL_MOTION } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
@@ -17,7 +17,7 @@ import {
   getMentionList,
   getOnReply,
 } from "../../../utils/post";
-import { useCallback, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import SEO from "next-common/components/SEO";
 
 const OutWrapper = styled.div`
@@ -38,6 +38,7 @@ const Wrapper = styled.div`
     margin: 0 auto;
   }
   overflow: hidden;
+  flex-grow: 1;
 `;
 
 const CommentsWrapper = styled.div`
@@ -53,8 +54,7 @@ const CommentsWrapper = styled.div`
 `;
 
 export default withLoginUserRedux(
-  ({ loginUser, motion: _motion, comments, chain, siteUrl }) => {
-    const [motion, setMotion] = useState(_motion);
+  ({ loginUser, motion, comments, chain, siteUrl }) => {
     const users = getMentionList(comments);
     motion.status = motion.state?.state;
     const editorWrapperRef = useRef(null);
@@ -71,18 +71,6 @@ export default withLoginUserRedux(
       quillRef,
       focusEditor
     );
-
-    const updateMotionDetail = useCallback(() => {
-      setTimeout(() => {
-        nextApi
-          .fetch(`motions/${motion.height}_${motion.hash}`)
-          .then(({ result }) => {
-            if (result) {
-              setMotion(result);
-            }
-          });
-      }, 5000);
-    }, [motion]);
 
     const desc = getMetaDesc(motion, "Motion");
     return (
@@ -102,7 +90,6 @@ export default withLoginUserRedux(
               chain={chain}
               type={TYPE_COUNCIL_MOTION}
               onReply={onReply}
-              updateMotionDetail={updateMotionDetail}
             />
             <CommentsWrapper>
               <Comments
