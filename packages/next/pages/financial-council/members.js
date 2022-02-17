@@ -6,7 +6,6 @@ import Layout from "components/layout";
 import { useApi } from "utils/hooks";
 import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
-import SEO from "next-common/components/SEO";
 
 export default withLoginUserRedux(({ loginUser, chain, siteUrl }) => {
   const [data, setData] = useState([]);
@@ -19,22 +18,19 @@ export default withLoginUserRedux(({ loginUser, chain, siteUrl }) => {
       setLoading(false);
     }
   }, [members]);
+  const category = "Financial Council Members";
+  const seoInfo = {title:category,desc:category};
 
   return (
     <Layout
       user={loginUser}
       left={<Menu menu={mainMenu} chain={chain} />}
       chain={chain}
+      seoInfo={seoInfo}
     >
-      <SEO
-        title={`Financial Council Members`}
-        desc={`Financial Council Members`}
-        siteUrl={siteUrl}
-        chain={chain}
-      />
       <MembersList
         chain={chain}
-        category={"Financial Council Members"}
+        category={category}
         items={data}
         loading={loading}
       />

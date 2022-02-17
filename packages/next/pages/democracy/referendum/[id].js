@@ -18,7 +18,6 @@ import { TYPE_DEMOCRACY_REFERENDUM } from "utils/viewConstants";
 import { useApi } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-import SEO from "next-common/components/SEO";
 import ReferendumTimeline from "./timeline";
 import ReferendumMetadata from "./metadata";
 
@@ -104,13 +103,7 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail, "Referendum");
     return (
-      <Layout user={loginUser} chain={chain}>
-        <SEO
-          title={detail?.title}
-          desc={desc}
-          siteUrl={siteUrl}
-          chain={chain}
-        />
+      <Layout user={loginUser} chain={chain} seoInfo={{title:detail?.title, desc}}>
         <OutWrapper>
           <Wrapper className="post-content">
             <Back href={`/democracy/referendums`} text="Back to Referendas" />

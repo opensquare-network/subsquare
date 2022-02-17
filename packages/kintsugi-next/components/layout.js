@@ -4,6 +4,8 @@ import Header from "./header";
 import Content from "next-common/components/layout/content";
 import Toast from "./toast";
 import Auth from "./auth";
+import SEO from "next-common/components/SEO";
+import { DEFAULT_SEO_INFO } from "next-common/utils/constants";
 
 const Wrapper = styled.div`
   display: flex;
@@ -13,9 +15,14 @@ const Wrapper = styled.div`
   padding-top: 64px;
 `;
 
-export default function Layout({ user, left, children, chain, isWeb3Login }) {
+export default function Layout({ user, left, children, chain, isWeb3Login, seoInfo }) {
   return (
     <Wrapper>
+      {seoInfo && <SEO
+        title={seoInfo.title || `SubSquare`}
+        desc={seoInfo.desc || DEFAULT_SEO_INFO.desc}
+        chain={chain}
+      />}
       <Auth chain={chain} />
       <Header user={user} left={left} chain={chain} isWeb3Login={isWeb3Login} />
       <Content left={left}>{children}</Content>

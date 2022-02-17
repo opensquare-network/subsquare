@@ -7,7 +7,6 @@ import Layout from "components/layout";
 import TechcommMotionDetail from "components/motion/techcommMotionDetail";
 import { TYPE_TECH_COMM_MOTION } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-import SEO from "next-common/components/SEO";
 import {
   getFocusEditor,
   getMentionList,
@@ -61,13 +60,7 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(motion, "Proposal");
     return (
-      <Layout user={loginUser} chain={chain}>
-        <SEO
-          title={motion?.title}
-          desc={desc}
-          siteUrl={siteUrl}
-          chain={chain}
-        />
+      <Layout user={loginUser} chain={chain} seoInfo={{title:motion?.title, desc}}>
         <Wrapper className="post-content">
           <Back href={`/techcomm/proposals`} text="Back to Proposals" />
           <TechcommMotionDetail

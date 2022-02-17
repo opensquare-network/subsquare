@@ -34,19 +34,16 @@ export default withLoginUserRedux(({ loginUser, posts, chain, siteUrl }) => {
       New Post
     </Create>
   );
+  const category = `Discussions`;
+  const seoInfo = {title:category, desc:category};
 
   return (
     <Layout
       user={loginUser}
       left={<Menu menu={mainMenu} chain={chain} />}
       chain={chain}
+      seoInfo={seoInfo}
     >
-      <SEO
-        title={`Discussions`}
-        desc={`Discussions`}
-        siteUrl={siteUrl}
-        chain={chain}
-      />
       <List
         chain={chain}
         category={"Discussions"}
