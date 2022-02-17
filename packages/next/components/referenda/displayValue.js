@@ -1,8 +1,7 @@
 import styled from "styled-components";
 
 import Tooltip from "next-common/components/tooltip";
-import { abbreviateBigNumber } from "utils";
-
+import { abbreviateBigNumber, getEffectiveNumbers } from "utils";
 const NotEqual = styled.div`
   ::before {
     content: "≈";
@@ -16,9 +15,14 @@ export default function ValueDisplay({ value, symbol, noWrap }) {
     return `${value} ${symbol}`;
   }
   if (Number(value) >= 1000000) {
+    const abbreviated = abbreviateBigNumber(value, 5);
+    let display = `${abbreviated} ${symbol}`;
+    if (getEffectiveNumbers(abbreviated) !== getEffectiveNumbers(value)) {
+      display = <NotEqual>{`${abbreviated} ${symbol}`}</NotEqual>;
+    }
     return (
       <Tooltip content={`${value} ${symbol}`}>
-        <NotEqual>{`${abbreviateBigNumber(value, 5)} ${symbol}`}</NotEqual>
+        {display}
       </Tooltip>
     );
   }
