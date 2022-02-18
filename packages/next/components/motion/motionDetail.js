@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import styled from "styled-components";
 import cloneDeep from "lodash.clonedeep";
 import { shadow_100 } from "../../styles/componentCss";
