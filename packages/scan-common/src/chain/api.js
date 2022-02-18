@@ -1,13 +1,13 @@
 const definitions = require("./kintsugi/definitions");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { CHAINS, currentChain } = require("../env");
-const { typesBundleForPolkadot } = require("@acala-network/type-definitions");
 const { versionedKhala, typesChain } = require("@phala/typedefs");
 const { basilisk } = require("./bundle/basilisk");
 const {
   typesBundleForPolkadot: bifrostTypesBundleForPolkadot,
   rpc,
 } = require("@bifrost-finance/type-definitions");
+const { karuraOptions } = require("./karura/options");
 
 let provider = null;
 let api = null;
@@ -24,9 +24,12 @@ async function getApi() {
 
   provider = new WsProvider(wsEndpoint, 1000);
   const chain = currentChain();
-  const options = { provider };
-  if (chain === CHAINS.KARURA) {
-    options.typesBundle = { ...typesBundleForPolkadot };
+  let options = { provider };
+  if ([CHAINS.KARURA, CHAINS.ACALA].includes(chain)) {
+    options = {
+      ...options,
+      ...karuraOptions,
+    };
   } else if (chain === CHAINS.KHALA) {
     options.typesBundle = {
       spec: {
