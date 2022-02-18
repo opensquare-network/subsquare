@@ -26,7 +26,7 @@ export default function Metadata({ motion, chain }) {
         ...[Number.isInteger(motion?.index) ? ["Index", motion?.index] : null],
         ["Threshold", motion?.threshold],
         ["Hash", motion?.hash],
-        [<MotionProposal motion={motion} chain={chain} />],
+        [<MotionProposal key="proposal" motion={motion} chain={chain} />],
       ]}
     />
   );
