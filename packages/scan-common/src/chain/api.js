@@ -3,11 +3,8 @@ const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { CHAINS, currentChain } = require("../env");
 const { versionedKhala, typesChain } = require("@phala/typedefs");
 const { basilisk } = require("./bundle/basilisk");
-const {
-  typesBundleForPolkadot: bifrostTypesBundleForPolkadot,
-  rpc,
-} = require("@bifrost-finance/type-definitions");
 const { karuraOptions } = require("./karura/options");
+const { bifrostOptions } = require("./bifrost/options");
 
 let provider = null;
 let api = null;
@@ -27,8 +24,8 @@ async function getApi() {
   let options = { provider };
   if ([CHAINS.KARURA, CHAINS.ACALA].includes(chain)) {
     options = {
-      ...options,
       ...karuraOptions,
+      ...options,
     };
   } else if (chain === CHAINS.KHALA) {
     options.typesBundle = {
@@ -47,12 +44,9 @@ async function getApi() {
     };
     options.rpc = definitions.providerRpc;
   } else if (CHAINS.BIFROST === chain) {
-    options.typesBundle = {
-      spec: {
-        bifrost: bifrostTypesBundleForPolkadot.spec.bifrost,
-        "bifrost-parachain": bifrostTypesBundleForPolkadot.spec.bifrost,
-      },
-      rpc,
+    options = {
+      ...bifrostOptions,
+      ...options,
     };
   }
 
