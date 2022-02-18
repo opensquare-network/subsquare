@@ -1,13 +1,10 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
-import { typesBundleForPolkadot } from "@acala-network/type-definitions";
 import { khala } from "@phala/typedefs";
 import { basilisk } from "./bundle/basilisk";
-import {
-  typesBundleForPolkadot as bifrostTypesBundleForPolkadot,
-  rpc as bifrostRpc,
-} from "@bifrost-finance/type-definitions";
 import { Chains } from "../../utils/constants";
 import interbtc from "./kintsugi/definitions";
+import bifrostOptions from "./bifrost/options";
+import karuraOptions from "./karura/options";
 
 const apiInstanceMap = new Map();
 
@@ -20,21 +17,19 @@ export default async function getApi(chain, endpoint) {
     const provider = new WsProvider(endpoint, 1000);
     let options = { provider };
     if (chain === "karura" || chain === "acala") {
-      options.typesBundle = { ...typesBundleForPolkadot };
-    }
-    if (chain === "khala") {
+      options = {
+        ...karuraOptions,
+        ...options,
+      };
+    } else if (chain === "khala") {
       options.types = khala;
-    }
-    if (chain === "basilisk") {
+    } else if (chain === "basilisk") {
       options.typesBundle = { spec: { basilisk } };
     } else if (chain === "bifrost") {
-      options.typesBundle = {
-        spec: {
-          bifrost: bifrostTypesBundleForPolkadot.spec.bifrost,
-          "bifrost-parachain": bifrostTypesBundleForPolkadot.spec.bifrost,
-        },
+      options = {
+        ...bifrostOptions,
+        ...options,
       };
-      options.rpc = bifrostRpc;
     } else if (chain === Chains.kintsugi) {
       options = {
         ...options,
