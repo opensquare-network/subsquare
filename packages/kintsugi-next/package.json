@@ -14,7 +14,6 @@
     "@interlay/monetary-js": "^0.5.3",
     "@koa/cors": "^3.1.0",
     "@polkadot/api": "7.8.1",
-    "@polkadot/react-identicon": "1.1.1",
     "@subsquare/backend-common": "file:../backend-common",
     "@subsquare/next-common": "file:../next-common",
     "bignumber.js": "^9.0.2",

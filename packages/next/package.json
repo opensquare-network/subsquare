@@ -17,7 +17,6 @@
     "@koa/cors": "^3.1.0",
     "@polkadot/api": "7.8.1",
     "@polkadot/extension-dapp": "0.42.8-6",
-    "@polkadot/react-identicon": "1.1.1",
     "@polkadot/util": "8.4.1",
     "@reduxjs/toolkit": "^1.6.1",
     "@subsquare/backend-common": "file:../backend-common",

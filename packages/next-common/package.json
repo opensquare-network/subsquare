@@ -20,7 +20,7 @@
     "@phala/typedefs": "^0.2.30",
     "@polkadot/api": "7.8.1",
     "@polkadot/extension-dapp": "0.42.8-6",
-    "@polkadot/react-identicon": "1.1.1",
+    "@osn/react-identicon": "^0.1.1",
     "md5": "^2.3.0",
     "micromark": "^3.0.10",
     "micromark-extension-gfm": "^2.0.0",
