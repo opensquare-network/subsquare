@@ -8,6 +8,7 @@ import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import Comments from "next-common/components/comment";
 import Editor from "next-common/components/comment/editor";
+import OutWrapper from "next-common/components/styled/outWrapper";
 import { useEffect, useRef, useState } from "react";
 import DetailItem from "components/detailItem";
 import Vote from "components/referenda/vote";
@@ -20,13 +21,6 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import ReferendumTimeline from "./timeline";
 import ReferendumMetadata from "./metadata";
-
-const OutWrapper = styled.div`
-  display: flex;
-  max-width: 1080px;
-  margin: 0 auto;
-  position: relative;
-`;
 
 const Wrapper = styled.div`
   margin-right: 312px;

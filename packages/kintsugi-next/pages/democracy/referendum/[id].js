@@ -26,13 +26,7 @@ import { useApi } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "utils/viewfuncs";
 import SEO from "next-common/components/SEO";
-
-const OutWrapper = styled.div`
-  display: flex;
-  max-width: 1080px;
-  margin: 0 auto;
-  position: relative;
-`;
+import OutWrapper from "next-common/components/styled/outWrapper";
 
 const Wrapper = styled.div`
   margin-right: 312px;

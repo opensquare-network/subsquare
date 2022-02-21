@@ -10,6 +10,7 @@ import { TYPE_COUNCIL_MOTION } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import { EmptyList } from "next-common/utils/constants";
 import Comments from "next-common/components/comment";
+import OutWrapper from "next-common/components/styled/outWrapper";
 import Editor from "next-common/components/comment/editor";
 import { shadow_100 } from "../../../styles/componentCss";
 import {
@@ -18,13 +19,6 @@ import {
   getOnReply,
 } from "../../../utils/post";
 import { useRef, useState } from "react";
-
-const OutWrapper = styled.div`
-  display: flex;
-  max-width: 1080px;
-  margin: 0 auto;
-  position: relative;
-`;
 
 const Wrapper = styled.div`
   > :not(:first-child) {

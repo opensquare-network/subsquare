@@ -16,6 +16,7 @@ import { to404 } from "next-common/utils/serverSideUtil";
 import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import Comments from "next-common/components/comment";
+import OutWrapper from "next-common/components/styled/outWrapper";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import Editor from "next-common/components/comment/editor";
 import Layout from "components/layout";
@@ -28,13 +29,6 @@ import ReasonLink from "next-common/components/reasonLink";
 import Tipper from "components/tipper";
 
 import { shadow_100 } from "styles/componentCss";
-
-const OutWrapper = styled.div`
-  display: flex;
-  max-width: 1080px;
-  margin: 0 auto;
-  position: relative;
-`;
 
 const Wrapper = styled.div`
   > :not(:first-child) {
