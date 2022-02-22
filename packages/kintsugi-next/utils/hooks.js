@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { currentNodeSelector } from "store/reducers/nodeSlice";
-import {
-  getAddressVote,
-  getAddressVotingBalance,
-  getElectorate,
-} from "./referendumUtil";
+import { getAddressVote, getElectorate } from "./referendumUtil";
 import useChainApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { getVotingBalance } from "./escrow/votingBalance";
 
 export function useForm(initialState = {}, onSubmit, clearError) {
   const [formData, setFormData] = useState(initialState);
@@ -77,7 +74,7 @@ export function useAddressVotingBalance(address) {
   useEffect(() => {
     if (api && address) {
       setIsLoading(true);
-      getAddressVotingBalance(api, address)
+      getVotingBalance(api, address)
         .then((value) => {
           if (isMounted.current) {
             setBalance(value);
