@@ -162,13 +162,6 @@ function PopupContent({
       errorMessage = { type: "error", message: "Invalid vote balance" };
     }
 
-    if (bnVoteBalance.gt(votingBalance)) {
-      errorMessage = {
-        type: "error",
-        message: "Insufficient voting balance",
-      };
-    }
-
     if (!selectedAccount) {
       errorMessage = { type: "error", message: "Please select an account" };
     }
