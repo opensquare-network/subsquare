@@ -10,21 +10,15 @@ import { TYPE_TECH_COMM_MOTION } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import { EmptyList } from "next-common/utils/constants";
 import Comments from "next-common/components/comment";
+import OutWrapper from "next-common/components/styled/outWrapper";
+import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import Editor from "next-common/components/comment/editor";
-import { shadow_100 } from "../../../styles/componentCss";
 import {
   getFocusEditor,
   getMentionList,
   getOnReply,
 } from "../../../utils/post";
 import { useRef, useState } from "react";
-
-const OutWrapper = styled.div`
-  display: flex;
-  max-width: 1080px;
-  margin: 0 auto;
-  position: relative;
-`;
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -38,18 +32,6 @@ const Wrapper = styled.div`
   }
   overflow: hidden;
   flex-grow: 1;
-`;
-
-const CommentsWrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 6px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-    border-radius: 0;
-  }
 `;
 
 export default withLoginUserRedux(

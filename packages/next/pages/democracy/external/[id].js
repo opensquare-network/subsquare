@@ -11,9 +11,9 @@ import { useState, useRef } from "react";
 import Layout from "components/layout";
 import { getNode } from "utils";
 import Timeline from "next-common/components/timeline";
+import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import KVList from "next-common/components/kvList";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
-import { shadow_100 } from "styles/componentCss";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { makeExternalTimelineData } from "utils/dataWrappers/makeTimelineData";
 import { makeExternalMetadata } from "utils/dataWrappers/makeMetadata";
@@ -27,18 +27,6 @@ const Wrapper = styled.div`
 
   max-width: 848px;
   margin: auto;
-`;
-
-const CommentsWrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 6px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-    border-radius: 0;
-  }
 `;
 
 export default withLoginUserRedux(

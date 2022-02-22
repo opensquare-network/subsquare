@@ -16,6 +16,8 @@ import { to404 } from "next-common/utils/serverSideUtil";
 import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import Comments from "next-common/components/comment";
+import OutWrapper from "next-common/components/styled/outWrapper";
+import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import Editor from "next-common/components/comment/editor";
 import Layout from "components/layout";
@@ -29,13 +31,6 @@ import Tipper from "components/tipper";
 
 import { shadow_100 } from "styles/componentCss";
 
-const OutWrapper = styled.div`
-  display: flex;
-  max-width: 1080px;
-  margin: 0 auto;
-  position: relative;
-`;
-
 const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
@@ -47,17 +42,6 @@ const Wrapper = styled.div`
   }
 `;
 
-const CommentsWrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 6px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-    border-radius: 0;
-  }
-`;
 const FlexEnd = styled.div`
   display: flex;
   justify-content: right;

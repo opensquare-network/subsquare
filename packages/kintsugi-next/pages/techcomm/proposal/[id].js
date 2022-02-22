@@ -11,8 +11,8 @@ import SEO from "next-common/components/SEO";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { useRef, useState } from "react";
 import Comments from "next-common/components/comment";
+import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import Editor from "next-common/components/comment/editor";
-import { shadow_100 } from "styles/componentCss";
 import { isSafari } from "utils/serverSideUtil";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { EmptyList } from "next-common/utils/constants";
@@ -24,18 +24,6 @@ const Wrapper = styled.div`
 
   max-width: 848px;
   margin: auto;
-`;
-
-const CommentsWrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 6px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-    border-radius: 0;
-  }
 `;
 
 export default withLoginUserRedux(

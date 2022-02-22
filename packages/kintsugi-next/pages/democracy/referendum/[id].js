@@ -15,9 +15,9 @@ import User from "next-common/components/user";
 import Links from "next-common/components/links";
 import Vote from "components/referenda/vote";
 import Timeline from "next-common/components/timeline";
+import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
-import { shadow_100 } from "styles/componentCss";
 import { isSafari } from "utils/serverSideUtil";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
@@ -26,13 +26,7 @@ import { useApi } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "utils/viewfuncs";
 import SEO from "next-common/components/SEO";
-
-const OutWrapper = styled.div`
-  display: flex;
-  max-width: 1080px;
-  margin: 0 auto;
-  position: relative;
-`;
+import OutWrapper from "next-common/components/styled/outWrapper";
 
 const Wrapper = styled.div`
   margin-right: 312px;
@@ -44,18 +38,6 @@ const Wrapper = styled.div`
   @media screen and (max-width: 1024px) {
     max-width: 848px;
     margin: 0 auto;
-  }
-`;
-
-const CommentsWrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 6px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-    border-radius: 0;
   }
 `;
 
