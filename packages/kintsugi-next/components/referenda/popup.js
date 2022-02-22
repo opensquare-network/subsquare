@@ -162,7 +162,10 @@ function PopupContent({
       errorMessage = { type: "error", message: "Invalid vote balance" };
     }
 
-    if (bnVoteBalance.gt(votingBalance)) {
+    const bnVotingBalance = new BigNumber(votingBalance).multipliedBy(
+      Math.pow(10, decimals)
+    );
+    if (bnVoteBalance.gt(bnVotingBalance)) {
       errorMessage = {
         type: "error",
         message: "Insufficient voting balance",

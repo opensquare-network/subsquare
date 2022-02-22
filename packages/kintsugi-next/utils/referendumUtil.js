@@ -1,6 +1,5 @@
 import BigNumber from "bignumber.js";
 import { getTotalSupply } from "./escrow/totalSupply";
-import { getVotingBalance } from "./escrow/votingBalance";
 const { getFinalizedBlockNumber } = require("./escrow/utils");
 
 const ONE = new BigNumber(1);
@@ -109,10 +108,6 @@ export async function getElectorate(api, height) {
   const value = await getTotalSupply(api, blockHeight);
   electorates[blockHeight] = value;
   return value;
-}
-
-export function getAddressVotingBalance(api, address) {
-  return getVotingBalance(api, address);
 }
 
 export async function getAddressVote(api, referendumIndex, address) {
