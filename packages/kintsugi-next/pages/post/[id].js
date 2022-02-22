@@ -9,7 +9,7 @@ import Editor from "next-common/components/comment/editor";
 import { useState, useRef } from "react";
 import Layout from "components/layout";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
-import CommentsWrapper from "next-common/components/styled/commonsWrapper";
+import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { isSafari } from "utils/serverSideUtil";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_POST } from "utils/viewConstants";

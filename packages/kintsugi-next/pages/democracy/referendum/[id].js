@@ -15,7 +15,7 @@ import User from "next-common/components/user";
 import Links from "next-common/components/links";
 import Vote from "components/referenda/vote";
 import Timeline from "next-common/components/timeline";
-import CommentsWrapper from "next-common/components/styled/commonsWrapper";
+import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { isSafari } from "utils/serverSideUtil";

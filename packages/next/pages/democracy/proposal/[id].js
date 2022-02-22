@@ -17,7 +17,7 @@ import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import { getTimelineStatus } from "utils";
 import KVList from "next-common/components/kvList";
-import CommentsWrapper from "next-common/components/styled/commonsWrapper";
+import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { to404 } from "next-common/utils/serverSideUtil";

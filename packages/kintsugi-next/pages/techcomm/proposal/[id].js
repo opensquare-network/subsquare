@@ -11,7 +11,7 @@ import SEO from "next-common/components/SEO";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { useRef, useState } from "react";
 import Comments from "next-common/components/comment";
-import CommentsWrapper from "next-common/components/styled/commonsWrapper";
+import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import Editor from "next-common/components/comment/editor";
 import { isSafari } from "utils/serverSideUtil";
 import { to404 } from "next-common/utils/serverSideUtil";

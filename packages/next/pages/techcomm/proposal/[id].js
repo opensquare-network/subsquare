@@ -11,7 +11,7 @@ import { getMetaDesc } from "../../../utils/viewfuncs";
 import { EmptyList } from "next-common/utils/constants";
 import Comments from "next-common/components/comment";
 import OutWrapper from "next-common/components/styled/outWrapper";
-import CommentsWrapper from "next-common/components/styled/commonsWrapper";
+import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import Editor from "next-common/components/comment/editor";
 import {
   getFocusEditor,
