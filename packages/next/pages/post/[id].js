@@ -9,7 +9,7 @@ import Editor from "next-common/components/comment/editor";
 import { useState, useRef } from "react";
 import Layout from "components/layout";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
-import { shadow_100 } from "styles/componentCss";
+import CommentsWrapper from "next-common/components/styled/commonsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_POST } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
@@ -23,18 +23,6 @@ const Wrapper = styled.div`
   @media screen and (max-width: 768px) {
     margin-left: -16px;
     margin-right: -16px;
-  }
-`;
-
-const CommentsWrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 6px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-    border-radius: 0;
   }
 `;
 

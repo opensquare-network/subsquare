@@ -17,9 +17,9 @@ import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import { getTimelineStatus } from "utils";
 import KVList from "next-common/components/kvList";
+import CommentsWrapper from "next-common/components/styled/commonsWrapper";
 import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
-import { shadow_100 } from "styles/componentCss";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
 import sortTimeline from "../../../utils/timeline/sort";
@@ -32,18 +32,6 @@ const Wrapper = styled.div`
 
   max-width: 848px;
   margin: auto;
-`;
-
-const CommentsWrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 6px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-    border-radius: 0;
-  }
 `;
 
 const MetadataProposerWrapper = styled.div`

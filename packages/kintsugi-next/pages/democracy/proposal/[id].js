@@ -18,7 +18,7 @@ import Timeline from "next-common/components/timeline";
 import KVList from "next-common/components/kvList";
 import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
-import { shadow_100 } from "styles/componentCss";
+import CommentsWrapper from "next-common/components/styled/commonsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { isSafari } from "utils/serverSideUtil";
 import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
@@ -34,18 +34,6 @@ const Wrapper = styled.div`
 
   max-width: 848px;
   margin: auto;
-`;
-
-const CommentsWrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 6px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-    border-radius: 0;
-  }
 `;
 
 const MetadataProposerWrapper = styled.div`

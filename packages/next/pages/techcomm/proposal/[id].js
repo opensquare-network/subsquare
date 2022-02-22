@@ -11,8 +11,8 @@ import { getMetaDesc } from "../../../utils/viewfuncs";
 import { EmptyList } from "next-common/utils/constants";
 import Comments from "next-common/components/comment";
 import OutWrapper from "next-common/components/styled/outWrapper";
+import CommentsWrapper from "next-common/components/styled/commonsWrapper";
 import Editor from "next-common/components/comment/editor";
-import { shadow_100 } from "../../../styles/componentCss";
 import {
   getFocusEditor,
   getMentionList,
@@ -32,18 +32,6 @@ const Wrapper = styled.div`
   }
   overflow: hidden;
   flex-grow: 1;
-`;
-
-const CommentsWrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 6px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-    border-radius: 0;
-  }
 `;
 
 export default withLoginUserRedux(

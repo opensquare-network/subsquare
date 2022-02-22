@@ -13,7 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import DetailItem from "components/detailItem";
 import Vote from "components/referenda/vote";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
-import { shadow_100 } from "styles/componentCss";
+import CommentsWrapper from "next-common/components/styled/commonsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_DEMOCRACY_REFERENDUM } from "utils/viewConstants";
 import { useApi } from "utils/hooks";
@@ -32,18 +32,6 @@ const Wrapper = styled.div`
   @media screen and (max-width: 1024px) {
     max-width: 848px;
     margin: 0 auto;
-  }
-`;
-
-const CommentsWrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 6px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-    border-radius: 0;
   }
 `;
 

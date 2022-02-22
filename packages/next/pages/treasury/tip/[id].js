@@ -17,6 +17,7 @@ import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import Comments from "next-common/components/comment";
 import OutWrapper from "next-common/components/styled/outWrapper";
+import CommentsWrapper from "next-common/components/styled/commonsWrapper";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import Editor from "next-common/components/comment/editor";
 import Layout from "components/layout";
@@ -41,17 +42,6 @@ const Wrapper = styled.div`
   }
 `;
 
-const CommentsWrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 6px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-    border-radius: 0;
-  }
-`;
 const FlexEnd = styled.div`
   display: flex;
   justify-content: right;
