@@ -57,9 +57,13 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
       // No "voting" field, and no "Voted" event in timeline
       const voting = post.onchainData.voting;
       if (voting) {
-        return post.onchainData.timeline
-          .filter((item) => item.method === "Voted")
-          .map((item) => [item.args.voter, item.args.approve]);
+        return Array.from(
+          new Map(
+            post.onchainData.timeline
+              .filter((item) => item.method === "Voted")
+              .map((item) => [item.args.voter, item.args.approve])
+          )
+        );
       }
 
       return [[post.onchainData.proposer, true]];
