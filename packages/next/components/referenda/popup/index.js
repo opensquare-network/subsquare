@@ -72,7 +72,7 @@ function PopupContent({
 
   const [selectedAccount, setSelectedAccount] = useState(null);
 
-  const api = useApi();
+  const api = useApi(chain);
   const node = getNode(chain);
 
   const [isLoading, setIsLoading] = useState();
