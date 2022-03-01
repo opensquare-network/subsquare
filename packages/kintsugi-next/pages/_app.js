@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import Script from "next/script";
+import Head from "next/head";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { Provider } from "react-redux";
 import { store } from "../store";
 import "nprogress/nprogress.css";
 import "../styles/globals.css";
-import "public/prism.css";
 import "../styles/richTextStyles.scss";
 import "react-quill/dist/quill.snow.css";
 import "quill-mention/dist/quill.mention.css";
@@ -39,10 +39,18 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   return (
-    <Provider store={store}>
-      <Component {...pageProps} />
-      <Script src="/prism.js" />
-    </Provider>
+    <>
+      <Head>
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/themes/prism.min.css"
+        />
+      </Head>
+      <Provider store={store}>
+        <Component {...pageProps} />
+        <Script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/prism.min.js" />
+      </Provider>
+    </>
   );
 }
 

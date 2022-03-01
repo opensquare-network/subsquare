@@ -178,7 +178,8 @@ export default function MicromarkMd({ md = "", contentVersion = "" }) {
   }
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = "/prism.js";
+    script.src =
+      "https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/prism.min.js";
     document.body.appendChild(script);
   }, []);
 
