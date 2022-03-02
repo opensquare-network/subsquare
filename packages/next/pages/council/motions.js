@@ -11,7 +11,7 @@ export default withLoginUserRedux(({ loginUser, motions, chain, siteUrl }) => {
   const items = (motions.items || []).map((item) =>
     toCouncilMotionListItem(chain, item)
   );
-  const category = "Council motions";
+  const category = "Council Motions";
   const seoInfo = { title: category, desc: category };
 
   return (
