@@ -67,27 +67,45 @@ export function timeDurationFromNow(time) {
     //todo 讨论当客户端时间不准时应当如何处理
     return moment(time).fromNow();
   }
-  let mm = now.diff(time, "minutes");
+
+  let ss = now.diff(time, "seconds");
+  let ii = now.diff(time, "minutes");
   let hh = now.diff(time, "hours");
   let dd = now.diff(time, "days");
-  if (dd) {
-    hh %= 24;
-    if (dd < 3 && hh) {
-      return `${dd} day${dd > 1 ? "s" : ""} ${hh} hr${hh > 1 ? "s" : ""} ago`;
-    }
-    return `${dd} day${dd > 1 ? "s" : ""} ago`;
-  }
-  if (hh) {
-    mm %= 60;
+  let mm = now.diff(time, "months");
+  let yy = now.diff(time, "years");
+  if (yy) {
+    mm %= 12;
     if (mm) {
-      return `${hh} hr${hh > 1 ? "s" : ""} ${mm} min${mm > 1 ? "s" : ""} ago`;
+      return `${yy}y ${mm}mo${mm > 1 ? "s" : ""} ago`;
     }
-    return `${hh} hr${hh > 1 ? "s" : ""} ago`;
+    return `${yy}y ago`;
   }
   if (mm) {
-    return `${mm} min${mm > 1 ? "s" : ""} ago`;
+    return `${mm}mo${mm > 1 ? "s" : ""} ago`;
   }
-  return `just now`;
+  if (dd) {
+    hh %= 24;
+    if (hh && dd < 3) {
+      return `${dd}d ${hh}h${hh > 1 ? "rs" : ""} ago`;
+    }
+    return `${dd}d ago`;
+  }
+  if (hh) {
+    ii %= 60;
+    if (ii) {
+      return `${hh}h${hh > 1 ? "rs" : ""} ${ii}min${ii > 1 ? "s" : ""} ago`;
+    }
+    return `${hh}h${hh > 1 ? "rs" : ""} ago`;
+  }
+  if (ii) {
+    ss %= 60;
+    if (ss) {
+      return `${ii}min${ii > 1 ? "s" : ""} ${ss}s ago`;
+    }
+    return `${ii}min${ii > 1 ? "s" : ""} ago`;
+  }
+  return `${ss}s ago`;
 }
 
 export function encodeURIQuery(q) {
