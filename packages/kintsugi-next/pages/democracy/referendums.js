@@ -6,7 +6,6 @@ import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import { toReferendaListItem } from "utils/viewfuncs";
-import SEO from "next-common/components/SEO";
 import { isSafari } from "../../utils/serverSideUtil";
 import DemocracySummary from "next-common/components/summary/democracySummary";
 

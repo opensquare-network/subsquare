@@ -102,14 +102,14 @@ export default function DemocracySummary({ chain }) {
     }
     Promise.all([
       api.query.democracy.publicProps(),
-      api.derive.democracy.referendumIds(),
+      api.derive.democracy.referendumsActive(),
       api?.query.democracy.publicPropCount(),
       api?.query.democracy.referendumCount(),
       getLaunchPeriod(),
     ]).then(
       ([
         activeProposals,
-        referendumIds,
+        activeReferendums,
         publicPropCountResponse,
         referendumCountResponse,
         period,
@@ -117,7 +117,7 @@ export default function DemocracySummary({ chain }) {
         setSummary({
           ...summary,
           activeProposalsCount: activeProposals?.length,
-          referendumCount: (referendumIds || []).length,
+          referendumCount: (activeReferendums || []).length,
           publicPropCount: publicPropCountResponse.toJSON(),
           referendumTotal: referendumCountResponse.toJSON(),
           ...period,
