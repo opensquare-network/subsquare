@@ -134,7 +134,7 @@ export default function Vote({
       <TipperList>
         {votes.map(([voter, approve], index) => (
           <TipperItem key={index}>
-            <User add={voter} chain={chain} />
+            <User add={voter} chain={chain} fontSize={12} />
             {approve ? (
               <div>
                 Aye
