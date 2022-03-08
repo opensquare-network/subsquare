@@ -115,7 +115,7 @@ export default function Tipper({
   const decimals = node.decimals;
   const symbol = node.symbol;
 
-  let tipList = null;
+  let tipList;
 
   if (loading) {
     tipList = (
@@ -136,7 +136,7 @@ export default function Tipper({
       <TipperList>
         {tips.map(([address, amount]) => (
           <TipperItem key={address}>
-            <User chain={chain} add={address} />
+            <User chain={chain} add={address} fontSize={12} />
             <div>{`${toPrecision(amount ?? 0, decimals)} ${symbol}`}</div>
           </TipperItem>
         ))}
