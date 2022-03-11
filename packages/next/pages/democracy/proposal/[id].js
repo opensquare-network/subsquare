@@ -8,22 +8,21 @@ import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Editor from "next-common/components/comment/editor";
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import Layout from "components/layout";
 import User from "next-common/components/user";
-import { getNode, toPrecision } from "utils";
+import { getNode, getTimelineStatus, toPrecision } from "utils";
 import Links from "next-common/components/links";
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
-import { getTimelineStatus } from "utils";
 import KVList from "next-common/components/kvList";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
-import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
 import sortTimeline from "../../../utils/timeline/sort";
 import { getMetaDesc } from "../../../utils/viewfuncs";
+import Proposal from "next-common/components/proposal";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -133,7 +132,7 @@ export default withLoginUserRedux(
 
     if (detail?.onchainData?.preImage) {
       metadata.push([
-        <MotionProposal
+        <Proposal
           motion={{ proposal: detail.onchainData.preImage.call }}
           chain={chain}
         />,

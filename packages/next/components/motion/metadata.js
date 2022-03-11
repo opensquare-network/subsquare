@@ -1,7 +1,7 @@
 import KVList from "next-common/components/kvList";
 import User from "next-common/components/user";
 import Links from "next-common/components/links";
-import MotionProposal from "./motionProposal";
+import Proposal from "next-common/components/proposal";
 
 export default function Metadata({ motion, chain }) {
   if (!motion) {
@@ -26,7 +26,7 @@ export default function Metadata({ motion, chain }) {
         ...[Number.isInteger(motion?.index) ? ["Index", motion?.index] : null],
         ["Threshold", motion?.threshold],
         ["Hash", motion?.hash],
-        [<MotionProposal key="proposal" motion={motion} chain={chain} />],
+        [<Proposal key="proposal" motion={motion} chain={chain} />],
       ]}
     />
   );

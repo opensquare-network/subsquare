@@ -1,4 +1,4 @@
-import MotionProposal from "../../components/motion/motionProposal";
+import Proposal from "next-common/components/proposal";
 
 export function makeExternalMetadata(detail, chain) {
   const metadata = [
@@ -7,7 +7,7 @@ export function makeExternalMetadata(detail, chain) {
   ];
   if (detail?.onchainData?.preImage) {
     metadata.push([
-      <MotionProposal
+      <Proposal
         motion={{ proposal: detail.onchainData.preImage.call }}
         chain={chain}
       />,

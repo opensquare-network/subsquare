@@ -20,7 +20,7 @@ import { useApi } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import ReferendumTimeline from "./timeline";
-import ReferendumMetadata from "./metadata";
+import ReferendumMetadata from "next-common/components/democracy/metadata";
 
 const Wrapper = styled.div`
   margin-right: 312px;

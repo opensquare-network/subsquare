@@ -3,7 +3,6 @@ import styled from "styled-components";
 import KVList from "next-common/components/kvList";
 import Link from "next/link";
 import User from "next-common/components/user";
-import MotionProposal from "./motionProposal";
 import Links from "next-common/components/links";
 import Timeline from "next-common/components/timeline";
 import { getNode, timeDurationFromNow, toPrecision } from "utils";
@@ -21,6 +20,7 @@ import { isMotionEnded } from "next-common/utils";
 import { useSelector } from "react-redux";
 import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
+import Proposal from "next-common/components/proposal";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -377,7 +377,7 @@ export default function TechcommMotionDetail({
           ],
           ["Threshold", motion?.onchainData?.threshold],
           ["Hash", motion.hash],
-          [<MotionProposal motion={motion?.onchainData} chain={chain} />],
+          [<Proposal motion={motion?.onchainData} chain={chain} />],
         ]}
       />
 
