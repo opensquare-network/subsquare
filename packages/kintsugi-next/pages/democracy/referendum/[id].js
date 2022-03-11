@@ -27,6 +27,7 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "utils/viewfuncs";
 import SEO from "next-common/components/SEO";
 import OutWrapper from "next-common/components/styled/outWrapper";
+import ReferendumMetadata from "./metadata";
 
 const Wrapper = styled.div`
   margin-right: 312px;
@@ -151,6 +152,13 @@ export default withLoginUserRedux(
             />
 
             <KVList title={"Metadata"} data={metadata} />
+            <ReferendumMetadata
+              proposer={detail.proposer}
+              status={referendumStatus}
+              preimage={detail?.onchainData?.preImage}
+              chain={chain}
+              onchainData={detail.onchainData}
+            />
 
             <Timeline data={timelineData} chain={chain} />
 
