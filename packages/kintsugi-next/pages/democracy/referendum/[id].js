@@ -10,13 +10,9 @@ import Layout from "components/layout";
 import Comments from "next-common/components/comment";
 import Editor from "next-common/components/comment/editor";
 import DetailItem from "components/detailItem";
-import KVList from "next-common/components/kvList";
-import User from "next-common/components/user";
-import Links from "next-common/components/links";
 import Vote from "components/referenda/vote";
 import Timeline from "next-common/components/timeline";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
-import MotionProposal from "components/motion/motionProposal";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { isSafari } from "utils/serverSideUtil";
 import { to404 } from "next-common/utils/serverSideUtil";
@@ -27,6 +23,7 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "utils/viewfuncs";
 import SEO from "next-common/components/SEO";
 import OutWrapper from "next-common/components/styled/outWrapper";
+import ReferendumMetadata from "./metadata";
 
 const Wrapper = styled.div`
   margin-right: 312px;
@@ -51,7 +48,7 @@ export default withLoginUserRedux(
       loginUser?.preference.editor || "markdown"
     );
     const [referendumStatus, setReferendumStatus] = useState(
-      detail?.onchainData?.status
+      detail?.onchainData?.status || detail?.onchainData?.info?.ongoing
     );
     const isMounted = useIsMounted();
     const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] =
@@ -92,32 +89,6 @@ export default withLoginUserRedux(
     ).concat(detail?.onchainData?.timeline || []);
     const timelineData = getDemocracyTimelineData(completeTimeline, chain);
 
-    const metadata = [
-      [
-        "Proposer",
-        <>
-          <User add={detail.proposer} fontSize={14} />
-          <Links
-            chain={chain}
-            address={detail.proposer}
-            style={{ marginLeft: 8 }}
-          />
-        </>,
-      ],
-      ["Delay", referendumStatus?.delay],
-      ["End", referendumStatus?.end],
-      ["Threshold", referendumStatus?.threshold],
-    ];
-
-    if (detail?.onchainData?.preImage) {
-      metadata.push([
-        <MotionProposal
-          motion={{ proposal: detail.onchainData.preImage.call }}
-          chain={chain}
-        />,
-      ]);
-    }
-
     detail.status = detail.onchainData?.state?.state;
 
     const desc = getMetaDesc(detail, "Referendum");
@@ -150,7 +121,13 @@ export default withLoginUserRedux(
               setIsLoadingReferendumStatus={setIsLoadingReferendumStatus}
             />
 
-            <KVList title={"Metadata"} data={metadata} />
+            <ReferendumMetadata
+              proposer={detail.proposer}
+              status={referendumStatus}
+              preimage={detail?.onchainData?.preImage}
+              chain={chain}
+              onchainData={detail.onchainData}
+            />
 
             <Timeline data={timelineData} chain={chain} />
 

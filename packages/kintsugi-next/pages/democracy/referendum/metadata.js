@@ -31,8 +31,8 @@ export default function ReferendumMetadata({
   );
 
   const { delay = 0, end = 0, threshold } = status;
-
   const { state, timeline = [] } = onchainData;
+
   const { endTime, delayTime, isEndEstimated, isDelayEstimated } =
     getReferendumTime(
       state,

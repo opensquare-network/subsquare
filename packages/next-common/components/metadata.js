@@ -31,7 +31,7 @@ const Label = styled.div`
   font-size: 14px;
   line-height: 140%;
   padding: 12px 0;
-  width: 128px;
+  width: 120px;
   flex: 0 0 128px;
   text-transform: capitalize;
 `;

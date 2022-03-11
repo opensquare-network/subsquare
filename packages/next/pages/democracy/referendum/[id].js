@@ -9,7 +9,7 @@ import Layout from "components/layout";
 import Comments from "next-common/components/comment";
 import Editor from "next-common/components/comment/editor";
 import OutWrapper from "next-common/components/styled/outWrapper";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DetailItem from "components/detailItem";
 import Vote from "components/referenda/vote";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
@@ -45,7 +45,7 @@ export default withLoginUserRedux(
       loginUser?.preference.editor || "markdown"
     );
     const [referendumStatus, setReferendumStatus] = useState(
-      detail?.onchainData?.status
+      detail?.onchainData?.status || detail?.onchainData?.info?.ongoing
     );
     const isMounted = useIsMounted();
     const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] =
@@ -113,11 +113,10 @@ export default withLoginUserRedux(
 
             <ReferendumMetadata
               proposer={detail.proposer}
-              delay={referendumStatus?.delay}
-              end={referendumStatus?.end}
-              threshold={referendumStatus?.threshold}
-              preImage={detail?.onchainData?.preImage}
+              status={referendumStatus}
+              preimage={detail?.onchainData?.preImage}
               chain={chain}
+              onchainData={detail.onchainData}
             />
 
             <ReferendumTimeline

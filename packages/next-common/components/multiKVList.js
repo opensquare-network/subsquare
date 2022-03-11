@@ -42,7 +42,7 @@ const Row = styled.div`
   background-color: white;
 `;
 const Header = styled.div`
-  width: 128px;
+  width: 120px;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;

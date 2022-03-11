@@ -5,10 +5,6 @@ import { bnToBn, extractTime } from "@polkadot/util";
 
 BigNumber.config({ EXPONENTIAL_AT: 36 });
 
-export function stringUpperFirst(value) {
-  return value ? value.charAt(0).toUpperCase() + value.slice(1) : "";
-}
-
 export function textEllipsis(text, start, end) {
   if (!text) return;
   if (text.length <= start + end) return text;
@@ -48,23 +44,22 @@ export function timeDurationFromNow(time) {
     relativeTime: {
       future: "in %s",
       past: "%s ",
-      s: (number) => number + " secs ago ",
-      ss: "%d secs ago",
-      m: "1 min ago",
-      mm: "%d mins ago",
-      h: "1 hour ago ",
-      hh: "%d hours ago",
-      d: "1 day ago",
-      dd: "%dd ago",
-      M: "1 month ago ",
-      MM: "%d months ago ",
-      y: "1 year ago",
-      yy: "%d years ago",
+      s: (number) => number + " secs",
+      ss: "%d secs",
+      m: "1 min",
+      mm: "%d mins",
+      h: "1 ho",
+      hh: "%d hrs",
+      d: "1 d",
+      dd: "%dd",
+      M: "1 mo",
+      MM: "%d mos",
+      y: "1 y",
+      yy: "%d y",
     },
   });
   const now = moment();
-  if (!now.isAfter(time)) {
-    //todo 讨论当客户端时间不准时应当如何处理
+  if (moment(time).isSameOrAfter(now)) {
     return moment(time).fromNow();
   }
 
