@@ -7,17 +7,16 @@ import useLatestBlockTime from "../../../utils/hooks/useBlockTime";
 import getReferendumTime from "../../../utils/referendumTime";
 import BlockValue from "./blockValue";
 import Proposal from "../../proposal";
-import useApi from "../../../utils/hooks/useApi";
 import Threshold from "./threshold";
 
 export default function ReferendumMetadata({
+  api,
   proposer,
   status = {},
   preimage,
   chain,
   onchainData = {},
 }) {
-  const api = useApi(chain);
   const blockTime = useBlockTime(api);
   const oneBlockTime = blockTime?.toNumber() || 0;
   const bestNumber = useBestNumber(api);
