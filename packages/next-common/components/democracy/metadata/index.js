@@ -8,6 +8,7 @@ import getReferendumTime from "../../../utils/referendumTime";
 import BlockValue from "./blockValue";
 import Proposal from "../../proposal";
 import Threshold from "./threshold";
+import { ChainBlockTime, defaultBlockTime } from "../../../utils/constants";
 
 export default function ReferendumMetadata({
   api,
@@ -18,7 +19,8 @@ export default function ReferendumMetadata({
   onchainData = {},
 }) {
   const blockTime = useBlockTime(api);
-  const oneBlockTime = blockTime?.toNumber() || 0;
+  const oneBlockTime =
+    blockTime?.toNumber() || ChainBlockTime[chain] || defaultBlockTime;
   const bestNumber = useBestNumber(api);
   const blockHeight = bestNumber?.toNumber() || 0;
   const latestBlockTime = useLatestBlockTime(api, blockHeight);

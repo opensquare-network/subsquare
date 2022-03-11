@@ -412,6 +412,12 @@ export const Chains = {
   kintsugi: "kintsugi",
 };
 
+export const ChainBlockTime = {
+  polkadot: 12000,
+};
+
+export const defaultBlockTime = 12000;
+
 export const TreasuryAccount =
   "F3opxRbN5ZbjJNU511Kj2TLuzFcDq9BGduA9TgiECafpg29";
 
