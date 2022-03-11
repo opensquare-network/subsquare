@@ -1,18 +1,18 @@
 import styled, { css } from "styled-components";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
-import InnerDataTable from "next-common/components/table/innerDataTable";
+import InnerDataTable from "../table/innerDataTable";
 import BigNumber from "bignumber.js";
 import { hexToString } from "@polkadot/util";
-import { hexEllipsis } from "utils";
-const LongText = dynamic(() => import("next-common/components/longText"), {
+import { hexEllipsis } from "../../utils";
+
+const LongText = dynamic(() => import("../longText"), {
   ssr: false,
 });
 
 const JsonView = dynamic(
-  () =>
-    import("next-common/components/jsonView").catch((e) => console.error(e)),
+  () => import("../jsonView").catch((e) => console.error(e)),
   { ssr: false }
 );
 
@@ -52,6 +52,7 @@ const HeaderWrapper = styled.div`
 const TagWrapper = styled.div`
   display: flex;
   align-items: center;
+
   > :not(:first-child) {
     margin-left: 8px;
   }
@@ -59,9 +60,11 @@ const TagWrapper = styled.div`
 
 const TagItem = styled.div`
   padding: 4px 8px;
+
   &.tag {
     background: #f6f7fa !important;
   }
+
   border-radius: 2px;
   font-weight: 500;
   font-size: 12px;
@@ -182,7 +185,7 @@ function convertProposalForJsonView(proposal, chain) {
   };
 }
 
-export default function MotionProposal({ motion, chain }) {
+export default function Proposal({ motion, chain }) {
   const [callType, setCallType] = useState("table");
 
   useEffect(() => {

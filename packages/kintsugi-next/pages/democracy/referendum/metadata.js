@@ -3,11 +3,11 @@ import Links from "next-common/components/links";
 import KVList from "next-common/components/kvList";
 import { useBestNumber, useBlockTime } from "next-common/utils/hooks";
 import { useApi } from "utils/hooks";
-import MotionProposal from "../../../components/motion/motionProposal";
 import React from "react";
 import useLatestBlockTime from "next-common/utils/hooks/useBlockTime";
 import getReferendumTime from "next-common/utils/referendumTime";
 import BlockValue from "next-common/components/democracy/metadata/blockValue";
+import Proposal from "next-common/components/proposal";
 
 export default function ReferendumMetadata({
   proposer,
@@ -67,7 +67,7 @@ export default function ReferendumMetadata({
   ];
   if (preimage) {
     metadata.push([
-      <MotionProposal
+      <Proposal
         key="preimage"
         motion={{ proposal: preimage.call }}
         chain={chain}
