@@ -3,10 +3,12 @@ import Links from "next-common/components/links";
 import KVList from "next-common/components/kvList";
 import { referendumState } from "next-common/utils/consts/referendum";
 import BlockValue from "./blockValue";
-import { useBlockTime } from "next-common/utils/hooks";
+import { useBestNumber, useBlockTime } from "next-common/utils/hooks";
 import { useApi } from "utils/hooks";
 import MotionProposal from "../../../components/motion/motionProposal";
 import React from "react";
+import useLatestBlockTime from "next-common/utils/hooks/useBlockTime";
+import BigNumber from "bignumber.js";
 
 export default function ReferendumMetadata({
   proposer,
@@ -17,6 +19,10 @@ export default function ReferendumMetadata({
 }) {
   const api = useApi(chain);
   const blockTime = useBlockTime(api);
+  const oneBlockTime = blockTime?.toNumber() || 0;
+  const bestNumber = useBestNumber(api);
+  const blockHeight = bestNumber?.toNumber() || 0;
+  const latestBlockTime = useLatestBlockTime(api, blockHeight);
 
   const proposerElement = (
     <>
@@ -25,7 +31,7 @@ export default function ReferendumMetadata({
     </>
   );
 
-  const { delay, end, threshold } = status;
+  const { delay = 0, end = 0, threshold } = status;
 
   let isEndEstimated = false;
   let isDelayEstimated = false;
@@ -42,29 +48,32 @@ export default function ReferendumMetadata({
     endTime = endTimelineItem.indexer.blockTime;
     delayTime = executedTimelineItem?.indexer.blockTime;
   } else if (
-    [referendumState.Passed, referendumState.NotPassed].includes(state?.state)
+    [referendumState.Passed, referendumState.NotPassed].includes(
+      state?.state
+    ) &&
+    blockTime
   ) {
     endTime = endTimelineItem.indexer.blockTime;
-    delayTime = blockTime.mul(delay).plus(endTime).toNumber();
+    delayTime = new BigNumber(oneBlockTime)
+      .multipliedBy(delay)
+      .plus(endTime)
+      .toNumber();
     isDelayEstimated = true;
-  } else if (state?.state === referendumState.Started) {
-    const startedTimelineItem = timeline.find(
-      (item) => item.method === referendumState.Started
-    );
-    const startTime = startedTimelineItem?.indexer.blockTime;
-    const startHeight = startedTimelineItem.indexer.blockHeight;
-    if (startTime) {
-      endTime = blockTime
-        .mul(end - startHeight)
-        .plus(startTime)
-        .toNumber();
-      delayTime = blockTime
-        .mul(end + delay - startHeight)
-        .plus(startTime)
-        .toNumber();
-      isDelayEstimated = true;
-      isEndEstimated = true;
-    }
+  } else if (
+    state?.state === referendumState.Started &&
+    oneBlockTime &&
+    latestBlockTime
+  ) {
+    endTime = new BigNumber(oneBlockTime)
+      .multipliedBy(end - blockHeight)
+      .plus(latestBlockTime)
+      .toNumber();
+    delayTime = new BigNumber(oneBlockTime)
+      .multipliedBy(delay)
+      .plus(endTime)
+      .toNumber();
+    isDelayEstimated = true;
+    isEndEstimated = true;
   }
 
   const metadata = [
