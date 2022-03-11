@@ -1,14 +1,13 @@
 import User from "next-common/components/user";
 import Links from "next-common/components/links";
 import KVList from "next-common/components/kvList";
-import { referendumState } from "next-common/utils/consts/referendum";
 import BlockValue from "./blockValue";
 import { useBestNumber, useBlockTime } from "next-common/utils/hooks";
 import { useApi } from "utils/hooks";
 import MotionProposal from "../../../components/motion/motionProposal";
 import React from "react";
 import useLatestBlockTime from "next-common/utils/hooks/useBlockTime";
-import BigNumber from "bignumber.js";
+import getReferendumTime from "next-common/utils/referendumTime";
 
 export default function ReferendumMetadata({
   proposer,
@@ -32,49 +31,17 @@ export default function ReferendumMetadata({
   );
 
   const { delay = 0, end = 0, threshold } = status;
-
-  let isEndEstimated = false;
-  let isDelayEstimated = false;
   const { state, timeline = [] } = onchainData;
-  let delayTime, endTime;
 
-  const endTimelineItem = timeline.find((item) =>
-    [referendumState.Passed, referendumState.NotPassed].includes(item.method)
-  );
-  if (state?.state === referendumState.Executed) {
-    const executedTimelineItem = timeline.find(
-      (item) => item.method === referendumState.Executed
+  const { endTime, delayTime, isEndEstimated, isDelayEstimated } =
+    getReferendumTime(
+      state,
+      status,
+      timeline,
+      oneBlockTime,
+      blockHeight,
+      latestBlockTime
     );
-    endTime = endTimelineItem.indexer.blockTime;
-    delayTime = executedTimelineItem?.indexer.blockTime;
-  } else if (
-    [referendumState.Passed, referendumState.NotPassed].includes(
-      state?.state
-    ) &&
-    blockTime
-  ) {
-    endTime = endTimelineItem.indexer.blockTime;
-    delayTime = new BigNumber(oneBlockTime)
-      .multipliedBy(delay)
-      .plus(endTime)
-      .toNumber();
-    isDelayEstimated = true;
-  } else if (
-    state?.state === referendumState.Started &&
-    oneBlockTime &&
-    latestBlockTime
-  ) {
-    endTime = new BigNumber(oneBlockTime)
-      .multipliedBy(end - blockHeight)
-      .plus(latestBlockTime)
-      .toNumber();
-    delayTime = new BigNumber(oneBlockTime)
-      .multipliedBy(delay)
-      .plus(endTime)
-      .toNumber();
-    isDelayEstimated = true;
-    isEndEstimated = true;
-  }
 
   const metadata = [
     ["Proposer", proposerElement],
