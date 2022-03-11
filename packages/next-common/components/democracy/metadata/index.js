@@ -1,13 +1,13 @@
-import User from "next-common/components/user";
-import Links from "next-common/components/links";
-import KVList from "next-common/components/kvList";
-import { useBestNumber, useBlockTime } from "next-common/utils/hooks";
-import { useApi } from "utils/hooks";
+import User from "../../user";
+import Links from "../../links";
+import KVList from "../../kvList";
+import { useBestNumber, useBlockTime } from "../../../utils/hooks";
 import React from "react";
-import useLatestBlockTime from "next-common/utils/hooks/useBlockTime";
-import getReferendumTime from "next-common/utils/referendumTime";
-import BlockValue from "next-common/components/democracy/metadata/blockValue";
-import Proposal from "next-common/components/proposal";
+import useLatestBlockTime from "../../../utils/hooks/useBlockTime";
+import getReferendumTime from "../../../utils/referendumTime";
+import BlockValue from "./blockValue";
+import Proposal from "../../proposal";
+import useApi from "../../../utils/hooks/useApi";
 
 export default function ReferendumMetadata({
   proposer,

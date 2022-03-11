@@ -23,7 +23,7 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "utils/viewfuncs";
 import SEO from "next-common/components/SEO";
 import OutWrapper from "next-common/components/styled/outWrapper";
-import ReferendumMetadata from "./metadata";
+import ReferendumMetadata from "next-common/components/democracy/metadata";
 
 const Wrapper = styled.div`
   margin-right: 312px;
