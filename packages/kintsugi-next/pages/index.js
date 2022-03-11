@@ -1,6 +1,6 @@
 import Overview from "components/overview";
 import Menu from "next-common/components/menu";
-import {DEFAULT_SEO_INFO, mainMenu} from "next-common/utils/constants";
+import { DEFAULT_SEO_INFO, mainMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import Layout from "components/layout";
@@ -56,7 +56,6 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
       user={loginUser}
       left={<Menu menu={mainMenu} chain={chain} />}
       chain={chain}
-      seoInfo={DEFAULT_SEO_INFO}
     >
       <Overview overviewData={filteredOverviewData} chain={chain} />
     </Layout>

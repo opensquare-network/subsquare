@@ -6,6 +6,7 @@ import Toast from "./toast";
 import Auth from "./auth";
 import SEO from "next-common/components/SEO";
 import { DEFAULT_SEO_INFO } from "next-common/utils/constants";
+import capitalize from "next-common/utils/capitalize";
 
 const Wrapper = styled.div`
   display: flex;
@@ -25,13 +26,14 @@ export default function Layout({
 }) {
   return (
     <Wrapper>
-      {seoInfo && (
-        <SEO
-          title={seoInfo.title || `SubSquare`}
-          desc={seoInfo.desc || DEFAULT_SEO_INFO.desc}
-          chain={chain}
-        />
-      )}
+      <SEO
+        title={
+          seoInfo?.title ||
+          `SubSquare | ${capitalize(chain)} governance platform`
+        }
+        desc={seoInfo?.desc || DEFAULT_SEO_INFO.desc}
+        chain={chain}
+      />
       <Auth chain={chain} />
       <Header user={user} left={left} chain={chain} isWeb3Login={isWeb3Login} />
       <Content left={left}>{children}</Content>
