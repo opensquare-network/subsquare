@@ -31,7 +31,7 @@ function SwitchableTime({
 
   return (
     <Wrapper onClick={() => setIsDuration(!isDuration)}>
-      <span>{isEstimated ? "≈" : ""}</span>
+      {isEstimated ? <span>≈</span> : null}
       {isDuration ? duration : timeStr}
     </Wrapper>
   );

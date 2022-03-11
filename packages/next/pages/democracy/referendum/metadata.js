@@ -1,13 +1,13 @@
 import User from "next-common/components/user";
 import Links from "next-common/components/links";
 import KVList from "next-common/components/kvList";
-import BlockValue from "./blockValue";
 import { useBestNumber, useBlockTime } from "next-common/utils/hooks";
 import { useApi } from "utils/hooks";
 import MotionProposal from "../../../components/motion/motionProposal";
 import React from "react";
 import useLatestBlockTime from "next-common/utils/hooks/useBlockTime";
 import getReferendumTime from "next-common/utils/referendumTime";
+import BlockValue from "next-common/components/democracy/metadata/blockValue";
 
 export default function ReferendumMetadata({
   proposer,
