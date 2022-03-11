@@ -5,3 +5,9 @@ export const referendumState = Object.freeze({
   Passed: "Passed",
   Started: "Started",
 });
+
+export const votingThreshold = Object.freeze({
+  SimpleMajority: "simplemajority",
+  SuperMajorityAgainst: "supermajorityagainst",
+  SuperMajorityApprove: "supermajorityapprove",
+});
