@@ -8,6 +8,7 @@ import getReferendumTime from "../../../utils/referendumTime";
 import BlockValue from "./blockValue";
 import Proposal from "../../proposal";
 import useApi from "../../../utils/hooks/useApi";
+import Threshold from "./threshold";
 
 export default function ReferendumMetadata({
   proposer,
@@ -63,7 +64,7 @@ export default function ReferendumMetadata({
         isEstimated={isEndEstimated}
       />,
     ],
-    ["Threshold", threshold],
+    ["Threshold", <Threshold chain={chain} threshold={threshold} />],
   ];
   if (preimage) {
     metadata.push([
