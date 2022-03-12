@@ -1,18 +1,17 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
 import CountDown from "next-common/components/countDown";
 import Tooltip from "next-common/components/tooltip";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { bigNumber2Locale, isMotionEnded } from "next-common/utils";
+import { finalizedHeightSelector } from "../store/reducers/chainSlice";
 
-export default function MotionElapse({ motion, chain }) {
-  const currentFinalHeight = useSelector(nodesHeightSelector);
+export default function MotionElapse({ motion }) {
+  const currentFinalHeight = useSelector(finalizedHeightSelector);
   const motionEndHeight = motion?.voting?.end;
   const motionStartHeight = motion?.indexer?.blockHeight;
   const estimatedBlocksTime = useEstimateBlocksTime(
-    currentFinalHeight - motionEndHeight,
-    chain
+    currentFinalHeight - motionEndHeight
   );
   const motionEnd = isMotionEnded(motion);
 
