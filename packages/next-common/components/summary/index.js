@@ -1,11 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import CountDown from "./countDown";
 import { useBestNumber, useBlockTime } from "../../utils/hooks";
-import { abbreviateBigNumber, getNode } from "../../utils";
-import { setSummary, summarySelector } from "../../store/reducers/summarySlice";
-import { estimateBlocksTime, toPrecision } from "../../utils";
+import {
+  abbreviateBigNumber,
+  estimateBlocksTime,
+  getNode,
+  toPrecision,
+} from "../../utils";
 import { currentNodeSelector } from "@subsquare/next/store/reducers/nodeSlice";
 import useApi from "../../utils/hooks/useApi";
 import useTreasuryFree from "../../utils/hooks/useTreasuryFree";
@@ -75,6 +78,7 @@ const CountDownWrapper = styled.div`
 `;
 
 export default function Summary({ chain }) {
+  const [summary, setSummary] = useState({});
   const dispatch = useDispatch();
   const endpoint = useSelector(currentNodeSelector);
   const api = useApi(chain, endpoint);
@@ -85,7 +89,6 @@ export default function Summary({ chain }) {
   const decimals = node?.decimals;
   const symbol = node?.symbol;
 
-  const summary = useSelector(summarySelector);
   const free = useTreasuryFree(api, chain);
   const nextBurn = useTreasuryBurn(api, free);
 
@@ -100,7 +103,7 @@ export default function Summary({ chain }) {
           spendPeriod.sub(goneBlocks).toNumber(),
           blockTime
         );
-        dispatch(setSummary({ progress, spendPeriod: TimeArray }));
+        setSummary({ progress, spendPeriod: TimeArray });
       }
     };
     getSpendPeriod();
