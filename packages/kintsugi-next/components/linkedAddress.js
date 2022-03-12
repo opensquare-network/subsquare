@@ -8,7 +8,7 @@ import {
 } from "@polkadot/extension-dapp";
 import Button from "next-common/components/button";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { userSelector } from "store/reducers/userSlice";
+import { userSelector } from "next-common/store/reducers/userSlice";
 import {
   encodeKaruraAddress,
   encodeKhalaAddress,
@@ -23,8 +23,8 @@ import {
 } from "services/chainApi";
 import { addressEllipsis } from "utils";
 import nextApi from "services/nextApi";
-import { fetchUserProfile } from "store/reducers/userSlice";
-import { addToast } from "store/reducers/toastSlice";
+import { fetchUserProfile } from "next-common/store/reducers/userSlice";
+import { addToast } from "next-common/store/reducers/toastSlice";
 import { nodes } from "next-common/utils/constants";
 import Avatar from "next-common/components/avatar";
 import DownloadExtension from "next-common/components/downloadExtension";

@@ -5,7 +5,7 @@ import useApi from "../../utils/hooks/useApi";
 import { useBlockTime, useBestNumber } from "../../utils/hooks";
 import { estimateBlocksTime } from "../../utils";
 import { useSelector } from "react-redux";
-import { currentNodeSelector } from "@subsquare/next/store/reducers/nodeSlice";
+import { currentNodeSelector } from "next-common/store/reducers/nodeSlice";
 
 const Wrapper = styled.div`
   display: flex;

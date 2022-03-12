@@ -10,7 +10,7 @@ import nextApi from "services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { useDispatch } from "react-redux";
-import { addToast } from "store/reducers/toastSlice";
+import { addToast } from "next-common/store/reducers/toastSlice";
 import { shadow_100 } from "styles/componentCss";
 import NextHead from "components/nextHead";
 

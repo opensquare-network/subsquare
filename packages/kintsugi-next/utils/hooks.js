@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { currentNodeSelector } from "store/reducers/nodeSlice";
+import { currentNodeSelector } from "next-common/store/reducers/nodeSlice";
 import { getAddressVote, getElectorate } from "./referendumUtil";
 import useChainApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";

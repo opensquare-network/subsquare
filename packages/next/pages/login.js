@@ -11,7 +11,7 @@ import Input from "next-common/components/input";
 import { useForm } from "utils/hooks";
 import nextApi from "services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
-import { setUser } from "store/reducers/userSlice";
+import { setUser } from "next-common/store/reducers/userSlice";
 import { withLoginUser, withLoginUserRedux } from "../lib";
 import { shadow_100 } from "../styles/componentCss";
 import NextHead from "../components/nextHead";

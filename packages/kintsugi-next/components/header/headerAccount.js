@@ -6,7 +6,7 @@ import Button from "next-common/components/button";
 import { accountMenu } from "next-common/utils/constants";
 import useWindowSize from "next-common/utils/hooks/useWindowSize.js";
 import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside.js";
-import { logout } from "store/reducers/userSlice";
+import { logout } from "next-common/store/reducers/userSlice";
 import User from "next-common/components/user";
 import Relative from "next-common/components/styled/relative";
 import Flex from "next-common/components/styled/flex";

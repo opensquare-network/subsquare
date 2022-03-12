@@ -25,8 +25,8 @@ import {
 } from "services/chainApi";
 import nextApi from "services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
-import { setUser } from "store/reducers/userSlice";
-import { addToast } from "../store/reducers/toastSlice";
+import { setUser } from "next-common/store/reducers/userSlice";
+import { addToast } from "next-common/store/reducers/toastSlice";
 
 const Label = styled.div`
   font-weight: bold;

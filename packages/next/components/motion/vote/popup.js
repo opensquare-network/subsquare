@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 
 import { useApi } from "utils/hooks";
 import Button from "next-common/components/button";
-import { addToast } from "store/reducers/toastSlice";
+import { addToast } from "next-common/store/reducers/toastSlice";
 
 import Loading from "./loading";
 import SignerSelect from "next-common/components/signerSelect";

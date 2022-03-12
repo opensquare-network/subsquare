@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import nextApi from "services/nextApi";
+import nextApi from "../../services/nextApi";
 
 const userSlice = createSlice({
   name: "user",

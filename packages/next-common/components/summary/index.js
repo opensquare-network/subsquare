@@ -9,7 +9,7 @@ import {
   getNode,
   toPrecision,
 } from "../../utils";
-import { currentNodeSelector } from "@subsquare/next/store/reducers/nodeSlice";
+import { currentNodeSelector } from "next-common/store/reducers/nodeSlice";
 import useApi from "../../utils/hooks/useApi";
 import useTreasuryFree from "../../utils/hooks/useTreasuryFree";
 import useTreasuryBurn from "../../utils/hooks/useTreasuryBurn";
