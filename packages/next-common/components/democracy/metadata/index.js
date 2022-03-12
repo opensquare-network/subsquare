@@ -1,14 +1,17 @@
 import User from "../../user";
 import Links from "../../links";
 import KVList from "../../kvList";
-import { useBestNumber, useBlockTime } from "../../../utils/hooks";
 import React from "react";
 import useLatestBlockTime from "../../../utils/hooks/useBlockTime";
 import getReferendumTime from "../../../utils/referendumTime";
 import BlockValue from "./blockValue";
 import Proposal from "../../proposal";
 import Threshold from "./threshold";
-import { ChainBlockTime, defaultBlockTime } from "../../../utils/constants";
+import { useSelector } from "react-redux";
+import {
+  blockTimeSelector,
+  finalizedHeightSelector,
+} from "../../../store/reducers/chainSlice";
 
 export default function ReferendumMetadata({
   api,
@@ -18,11 +21,8 @@ export default function ReferendumMetadata({
   chain,
   onchainData = {},
 }) {
-  const blockTime = useBlockTime(api);
-  const oneBlockTime =
-    blockTime?.toNumber() || ChainBlockTime[chain] || defaultBlockTime;
-  const bestNumber = useBestNumber(api);
-  const blockHeight = bestNumber?.toNumber() || 0;
+  const oneBlockTime = useSelector(blockTimeSelector);
+  const blockHeight = useSelector(finalizedHeightSelector);
   const latestBlockTime = useLatestBlockTime(api, blockHeight);
 
   const proposerElement = (

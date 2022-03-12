@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import CountDown from "./countDown";
-import { useBestNumber, useBlockTime } from "../../utils/hooks";
 import {
   abbreviateBigNumber,
   estimateBlocksTime,
@@ -13,6 +12,11 @@ import { currentNodeSelector } from "next-common/store/reducers/nodeSlice";
 import useApi from "../../utils/hooks/useApi";
 import useTreasuryFree from "../../utils/hooks/useTreasuryFree";
 import useTreasuryBurn from "../../utils/hooks/useTreasuryBurn";
+import {
+  blockTimeSelector,
+  finalizedHeightSelector,
+} from "../../store/reducers/chainSlice";
+import BigNumber from "bignumber.js";
 
 const Wrapper = styled.div`
   display: flex;
@@ -83,8 +87,8 @@ export default function Summary({ chain }) {
   const endpoint = useSelector(currentNodeSelector);
   const api = useApi(chain, endpoint);
   const node = getNode(chain);
-  const blockTime = useBlockTime(api);
-  const bestNumber = useBestNumber(api);
+  const blockTime = useSelector(blockTimeSelector);
+  const finalizedHeight = useSelector(finalizedHeightSelector);
 
   const decimals = node?.decimals;
   const symbol = node?.symbol;
@@ -94,20 +98,25 @@ export default function Summary({ chain }) {
 
   useEffect(() => {
     const getSpendPeriod = async function () {
-      if (api && bestNumber) {
-        const spendPeriod = api.consts.treasury.spendPeriod;
-        const goneBlocks = bestNumber.mod(spendPeriod);
-        const progress = goneBlocks.muln(100).div(spendPeriod).toNumber();
+      if (api && finalizedHeight) {
+        const spendPeriod = api.consts.treasury.spendPeriod.toNumber();
+        const goneBlocks = new BigNumber(finalizedHeight)
+          .mod(spendPeriod)
+          .toNumber();
+        const progress = new BigNumber(goneBlocks)
+          .div(spendPeriod)
+          .multipliedBy(100)
+          .toNumber();
         const TimeArray = estimateBlocksTime(
           api,
-          spendPeriod.sub(goneBlocks).toNumber(),
+          spendPeriod - goneBlocks,
           blockTime
         );
         setSummary({ progress, spendPeriod: TimeArray });
       }
     };
     getSpendPeriod();
-  }, [api, chain, dispatch, bestNumber]);
+  }, [api, chain, dispatch, finalizedHeight]);
 
   return (
     <Wrapper>

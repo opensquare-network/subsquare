@@ -7,6 +7,15 @@ import Auth from "components/auth";
 import SEO from "next-common/components/SEO";
 import capitalize from "next-common/utils/capitalize";
 import { DEFAULT_SEO_INFO } from "next-common/utils/constants";
+import { useDispatch, useSelector } from "react-redux";
+import { currentNodeSelector } from "next-common/store/reducers/nodeSlice";
+import useApi from "next-common/utils/hooks/useApi";
+import { useBestNumber, useBlockTime } from "next-common/utils/hooks";
+import { useEffect } from "react";
+import {
+  setBlockTime,
+  setFinalizedHeight,
+} from "next-common/store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   display: flex;
@@ -24,6 +33,24 @@ export default function Layout({
   isWeb3Login,
   seoInfo,
 }) {
+  const endpoint = useSelector(currentNodeSelector);
+  const api = useApi(chain, endpoint);
+  const blockTime = useBlockTime(api);
+  const bestNumber = useBestNumber(api);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (blockTime) {
+      dispatch(setBlockTime(blockTime.toNumber()));
+    }
+  }, [blockTime, dispatch]);
+
+  useEffect(() => {
+    if (bestNumber) {
+      dispatch(setFinalizedHeight(bestNumber.toNumber()));
+    }
+  }, [bestNumber, dispatch]);
+
   return (
     <Wrapper>
       <SEO

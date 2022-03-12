@@ -2,10 +2,15 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import CountDown from "next-common/components/summary/countDown";
 import useApi from "../../utils/hooks/useApi";
-import { useBlockTime, useBestNumber } from "../../utils/hooks";
+import { useBestNumber } from "../../utils/hooks";
 import { estimateBlocksTime } from "../../utils";
 import { useSelector } from "react-redux";
 import { currentNodeSelector } from "next-common/store/reducers/nodeSlice";
+import {
+  blockTimeSelector,
+  finalizedHeightSelector,
+} from "../../store/reducers/chainSlice";
+import BigNumber from "bignumber.js";
 
 const Wrapper = styled.div`
   display: flex;
@@ -79,17 +84,22 @@ export default function DemocracySummary({ chain }) {
   const [summary, setSummary] = useState({});
   const endpoint = useSelector(currentNodeSelector);
   const api = useApi(chain, endpoint);
-  const blockTime = useBlockTime(api);
-  const bestNumber = useBestNumber(api);
+  const blockTime = useSelector(blockTimeSelector);
+  const finalizedHeight = useSelector(finalizedHeightSelector);
 
   const getLaunchPeriod = async function () {
-    if (api && bestNumber) {
-      const launchPeriod = api.consts.democracy.launchPeriod;
-      const goneBlocks = bestNumber.mod(launchPeriod);
-      const progress = goneBlocks.muln(100).div(launchPeriod).toNumber();
+    if (api && finalizedHeight) {
+      const launchPeriod = api.consts.democracy.launchPeriod.toNumber();
+      const goneBlocks = new BigNumber(finalizedHeight)
+        .mod(launchPeriod)
+        .toNumber();
+      const progress = new BigNumber(goneBlocks)
+        .div(launchPeriod)
+        .multipliedBy(100)
+        .toNumber();
       const TimeArray = estimateBlocksTime(
         api,
-        launchPeriod.sub(goneBlocks).toNumber(),
+        launchPeriod - goneBlocks,
         blockTime
       );
       return { progress, launchPeriod: TimeArray };
@@ -124,7 +134,7 @@ export default function DemocracySummary({ chain }) {
         });
       }
     );
-  }, [chain, api, blockTime, bestNumber]);
+  }, [chain, api, blockTime, finalizedHeight]);
 
   return (
     <Wrapper>
