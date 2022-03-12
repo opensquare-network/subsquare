@@ -18,9 +18,9 @@ import MultiKVList from "next-common/components/multiKVList";
 import MotionEnd from "next-common/components/motionEnd";
 import { isMotionEnded } from "next-common/utils";
 import { useSelector } from "react-redux";
-import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import Proposal from "next-common/components/proposal";
+import { finalizedHeightSelector } from "next-common/store/reducers/chainSlice";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -201,10 +201,9 @@ export default function TechcommMotionDetail({
   const [post, setPost] = useState(motion);
   const [isEdit, setIsEdit] = useState(false);
   const motionEndHeight = motion.onchainData?.voting?.end;
-  const currentFinalHeight = useSelector(nodesHeightSelector);
+  const currentFinalHeight = useSelector(finalizedHeightSelector);
   const estimatedBlocksTime = useEstimateBlocksTime(
-    currentFinalHeight - motionEndHeight,
-    chain
+    currentFinalHeight - motionEndHeight
   );
   if (!node) {
     return null;

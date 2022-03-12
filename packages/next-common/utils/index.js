@@ -200,7 +200,7 @@ export function abbreviateBigNumber(x, fixed = 2) {
 
 export const estimateBlocksTime = (api, blocks, blockTime) => {
   if (api && blockTime) {
-    const value = blockTime.mul(bnToBn(blocks)).toNumber();
+    const value = new BigNumber(blockTime).multipliedBy(blocks).toNumber();
     const time = extractTime(Math.abs(value));
     const { days, hours, minutes, seconds } = time;
     return [
