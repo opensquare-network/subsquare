@@ -7,7 +7,7 @@ import nextApi from "services/nextApi";
 import Input from "next-common/components/input";
 import Button from "next-common/components/button";
 import { useForm } from "utils/hooks";
-import { logout } from "store/reducers/userSlice";
+import { logout } from "next-common/store/reducers/userSlice";
 import ErrorText from "next-common/components/ErrorText";
 
 const Wrapper = styled.div`

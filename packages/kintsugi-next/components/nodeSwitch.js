@@ -7,7 +7,7 @@ import {
   currentNodeSelector,
   setCurrentNode,
   nodesSelector,
-} from "store/reducers/nodeSlice";
+} from "next-common/store/reducers/nodeSlice";
 import { DEFAULT_NODES } from "next-common/utils/constants";
 
 const Wrapper = styled.div`

@@ -1,7 +1,7 @@
 import Cookies from "cookies";
 import { ssrNextApi as nextApi } from "services/nextApi";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser, userSelector } from "../store/reducers/userSlice";
+import { setUser, userSelector } from "next-common/store/reducers/userSlice";
 import { useEffect, useLayoutEffect } from "react";
 
 export const useIsomorphicLayoutEffect =

@@ -7,7 +7,7 @@ import BigNumber from "bignumber.js";
 import { useApi } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Button from "next-common/components/button";
-import { addToast } from "store/reducers/toastSlice";
+import { addToast } from "next-common/store/reducers/toastSlice";
 
 import TipInput from "./tipInput";
 import { getNode, toPrecision } from "utils";

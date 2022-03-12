@@ -15,8 +15,8 @@ import InsertContentsModal from "next-common/components/editor/modal";
 import QuillEditor from "next-common/components/editor/quillEditor";
 import HtmlRender from "next-common/components/post/htmlRender";
 import { useDispatch } from "react-redux";
-import { addToast } from "store/reducers/toastSlice";
-import { fetchUserProfile } from "store/reducers/userSlice";
+import { addToast } from "next-common/store/reducers/toastSlice";
+import { fetchUserProfile } from "next-common/store/reducers/userSlice";
 import { shadow_100 } from "styles/componentCss";
 import NextHead from "../../components/nextHead";
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { removeToast } from "store/reducers/toastSlice";
+import { removeToast } from "next-common/store/reducers/toastSlice";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Flex from "next-common/components/styled/flex";
 import { shadow_200 } from "../../styles/componentCss";

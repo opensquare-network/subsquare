@@ -5,7 +5,7 @@ import {
   currentNodeSelector,
   nodesSelector,
   setNodesDelay,
-} from "../store/reducers/nodeSlice";
+} from "next-common/store/reducers/nodeSlice";
 import { sleep } from "./index";
 
 const TIMEOUT = 10000;

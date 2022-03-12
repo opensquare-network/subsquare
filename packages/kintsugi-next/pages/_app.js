@@ -4,7 +4,7 @@ import Head from "next/head";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { Provider } from "react-redux";
-import { store } from "../store";
+import { store } from "next-common/store";
 import "nprogress/nprogress.css";
 import "../styles/globals.css";
 import "../styles/richTextStyles.scss";

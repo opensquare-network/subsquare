@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 
-import { store } from "../store";
-import { setNodeBlockHeight } from "../store/reducers/nodeSlice";
+import { store } from "next-common/store";
+import { setNodeBlockHeight } from "next-common/store/reducers/nodeSlice";
 
 const chainStatusRoom = "CHAIN_STATUS_ROOM";
 
@@ -13,8 +13,7 @@ export function connect() {
     socket.disconnect();
   }
 
-  const socketUrl = new URL(`/`, process.env.NEXT_PUBLIC_API_END_POINT)
-    .href;
+  const socketUrl = new URL(`/`, process.env.NEXT_PUBLIC_API_END_POINT).href;
   socket = io(socketUrl);
   socket.connect();
 
