@@ -9,7 +9,6 @@ import { getNode, timeDurationFromNow, toPrecision } from "utils";
 import SectionTag from "next-common/components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
 import Flex from "next-common/components/styled/flex";
-import { shadow_100 } from "styles/componentCss";
 import ArticleContent from "next-common/components/articleContent";
 import { useState } from "react";
 import { createMotionTimelineData } from "utils/timeline/motion";
@@ -21,18 +20,9 @@ import { useSelector } from "react-redux";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import Proposal from "next-common/components/proposal";
 import { finalizedHeightSelector } from "next-common/store/reducers/chainSlice";
+import Panel from "next-common/components/styled/panel";
 
-const Wrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 6px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-    border-radius: 0;
-  }
-
+const Wrapper = styled(Panel)`
   :hover {
     .edit {
       display: block;

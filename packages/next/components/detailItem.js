@@ -7,26 +7,16 @@ import User from "next-common/components/user";
 import TriangleRight from "../public/imgs/icons/arrow-triangle-right.svg";
 import Tag from "next-common/components/tag";
 import Flex from "next-common/components/styled/flex";
-import { shadow_100 } from "../styles/componentCss";
-import { getPostUpdatedAt, toApiType } from "utils/viewfuncs";
+import { getPostUpdatedAt } from "utils/viewfuncs";
 import {
-  TYPE_DEMOCRACY_REFERENDUM,
   TYPE_DEMOCRACY_EXTERNAL,
   TYPE_DEMOCRACY_PROPOSAL,
+  TYPE_DEMOCRACY_REFERENDUM,
 } from "utils/viewConstants";
 import ArticleContent from "next-common/components/articleContent";
+import Panel from "next-common/components/styled/panel";
 
-const Wrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 6px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-    border-radius: 0;
-  }
-
+const Wrapper = styled(Panel)`
   :hover {
     .edit {
       display: block;

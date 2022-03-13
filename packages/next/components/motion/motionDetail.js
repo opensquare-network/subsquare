@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import cloneDeep from "lodash.clonedeep";
-import { shadow_100 } from "../../styles/componentCss";
 import ArticleContent from "next-common/components/articleContent";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Vote from "./vote";
@@ -13,18 +12,9 @@ import Head from "./head";
 import { isMotionEnded } from "next-common/utils";
 import { useApi } from "utils/hooks";
 import toApiCouncil from "./toApiCouncil";
+import Panel from "next-common/components/styled/panel";
 
-const Wrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 6px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-    border-radius: 0;
-  }
-
+const Wrapper = styled(Panel)`
   :hover {
     .edit {
       display: block;
