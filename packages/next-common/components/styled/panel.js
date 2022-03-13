@@ -14,4 +14,12 @@ const Panel = styled.div`
   }
 `;
 
+export const EditablePanel = styled(Panel)`
+  :hover {
+    .edit {
+      display: block;
+    }
+  }
+`;
+
 export default Panel;

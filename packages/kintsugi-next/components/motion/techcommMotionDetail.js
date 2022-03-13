@@ -20,15 +20,7 @@ import { useSelector } from "react-redux";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import Proposal from "next-common/components/proposal";
 import { finalizedHeightSelector } from "next-common/store/reducers/chainSlice";
-import Panel from "next-common/components/styled/panel";
-
-const Wrapper = styled(Panel)`
-  :hover {
-    .edit {
-      display: block;
-    }
-  }
-`;
+import { EditablePanel } from "next-common/components/styled/panel";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -297,7 +289,7 @@ export default function TechcommMotionDetail({
 
   return (
     <div>
-      <Wrapper>
+      <EditablePanel>
         <div>
           {!isEdit && (
             <div>
@@ -341,7 +333,7 @@ export default function TechcommMotionDetail({
             setIsEdit={setIsEdit}
           />
         </div>
-      </Wrapper>
+      </EditablePanel>
 
       <MultiKVList title="Business" data={business} />
 

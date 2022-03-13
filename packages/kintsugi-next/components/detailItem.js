@@ -15,15 +15,7 @@ import {
   TYPE_DEMOCRACY_REFERENDUM,
 } from "utils/viewConstants";
 import ArticleContent from "next-common/components/articleContent";
-import Panel from "next-common/components/styled/panel";
-
-const Wrapper = styled(Panel)`
-  :hover {
-    .edit {
-      display: block;
-    }
-  }
-`;
+import { EditablePanel } from "next-common/components/styled/panel";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -163,7 +155,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
   const postUpdatedTime = getPostUpdatedAt(post);
 
   return (
-    <Wrapper>
+    <EditablePanel>
       {!isEdit && (
         <>
           {type === TYPE_DEMOCRACY_EXTERNAL && (
@@ -320,6 +312,6 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
         isEdit={isEdit}
         setIsEdit={setIsEdit}
       />
-    </Wrapper>
+    </EditablePanel>
   );
 }

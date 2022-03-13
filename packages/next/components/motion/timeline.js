@@ -41,7 +41,7 @@ const getClosedTimelineData = (timeline = []) => {
 };
 
 export default function MotionTimeline({ motion, chain, type }) {
-  const showMotionEnd = useShowMotionEnd(motion, chain);
+  const showMotionEnd = useShowMotionEnd(motion);
   if (!motion) {
     return null;
   }
