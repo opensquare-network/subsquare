@@ -24,15 +24,7 @@ import { getMetaDesc } from "../../../utils/viewfuncs";
 import SEO from "next-common/components/SEO";
 import KVList from "next-common/components/kvList";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
-
-const Wrapper = styled.div`
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-
-  max-width: 848px;
-  margin: auto;
-`;
+import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 
 const Flex = styled.div`
   display: flex;
@@ -157,7 +149,7 @@ export default withLoginUserRedux(
           siteUrl={siteUrl}
           chain={chain}
         />
-        <Wrapper className="post-content">
+        <DetailPageWrapper className="post-content">
           <Back href={`/treasury/proposals`} text="Back to Proposals" />
           <DetailItem
             data={detail}
@@ -191,7 +183,7 @@ export default withLoginUserRedux(
               />
             )}
           </CommentsWrapper>
-        </Wrapper>
+        </DetailPageWrapper>
       </Layout>
     );
   }

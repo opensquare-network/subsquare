@@ -26,15 +26,7 @@ import sortTimeline from "utils/timeline/sort";
 import { getMetaDesc } from "utils/viewfuncs";
 import SEO from "next-common/components/SEO";
 import Proposal from "next-common/components/proposal";
-
-const Wrapper = styled.div`
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-
-  max-width: 848px;
-  margin: auto;
-`;
+import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 
 const MetadataProposerWrapper = styled.div`
   display: flex;
@@ -127,7 +119,7 @@ export default withLoginUserRedux(
           siteUrl={siteUrl}
           chain={chain}
         />
-        <Wrapper className="post-content">
+        <DetailPageWrapper className="post-content">
           <Back href={`/democracy/proposals`} text="Back to Proposals" />
           <DetailItem
             data={detail}
@@ -159,7 +151,7 @@ export default withLoginUserRedux(
               />
             )}
           </CommentsWrapper>
-        </Wrapper>
+        </DetailPageWrapper>
       </Layout>
     );
   }
