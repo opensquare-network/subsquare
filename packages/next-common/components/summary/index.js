@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import CountDown from "./countDown";
 import {
   abbreviateBigNumber,
@@ -83,7 +83,6 @@ const CountDownWrapper = styled.div`
 
 export default function Summary({ chain }) {
   const [summary, setSummary] = useState({});
-  const dispatch = useDispatch();
   const endpoint = useSelector(currentNodeSelector);
   const api = useApi(chain, endpoint);
   const node = getNode(chain);
@@ -97,26 +96,19 @@ export default function Summary({ chain }) {
   const nextBurn = useTreasuryBurn(api, free);
 
   useEffect(() => {
-    const getSpendPeriod = async function () {
-      if (api && finalizedHeight) {
-        const spendPeriod = api.consts.treasury.spendPeriod.toNumber();
-        const goneBlocks = new BigNumber(finalizedHeight)
-          .mod(spendPeriod)
-          .toNumber();
-        const progress = new BigNumber(goneBlocks)
-          .div(spendPeriod)
-          .multipliedBy(100)
-          .toNumber();
-        const TimeArray = estimateBlocksTime(
-          api,
-          spendPeriod - goneBlocks,
-          blockTime
-        );
-        setSummary({ progress, spendPeriod: TimeArray });
-      }
-    };
-    getSpendPeriod();
-  }, [api, chain, dispatch, finalizedHeight]);
+    if (api && finalizedHeight) {
+      const spendPeriod = api.consts.treasury.spendPeriod.toNumber();
+      const goneBlocks = new BigNumber(finalizedHeight)
+        .mod(spendPeriod)
+        .toNumber();
+      const progress = new BigNumber(goneBlocks)
+        .div(spendPeriod)
+        .multipliedBy(100)
+        .toNumber();
+      const TimeArray = estimateBlocksTime(spendPeriod - goneBlocks, blockTime);
+      setSummary({ progress, spendPeriod: TimeArray });
+    }
+  }, [api, finalizedHeight]);
 
   return (
     <Wrapper>

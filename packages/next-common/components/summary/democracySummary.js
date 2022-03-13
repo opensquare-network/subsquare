@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import CountDown from "next-common/components/summary/countDown";
 import useApi from "../../utils/hooks/useApi";
-import { useBestNumber } from "../../utils/hooks";
 import { estimateBlocksTime } from "../../utils";
 import { useSelector } from "react-redux";
 import { currentNodeSelector } from "next-common/store/reducers/nodeSlice";
@@ -98,7 +97,6 @@ export default function DemocracySummary({ chain }) {
         .multipliedBy(100)
         .toNumber();
       const TimeArray = estimateBlocksTime(
-        api,
         launchPeriod - goneBlocks,
         blockTime
       );
