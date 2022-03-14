@@ -246,7 +246,7 @@ export const nodes = [
     value: "polkadex",
     name: "Polkadex",
     icon: "polkadex.svg",
-    identity: "polkadot",
+    identity: "polkadex",
     symbol: "PDEX",
     decimals: 12,
     hasElections: true,
