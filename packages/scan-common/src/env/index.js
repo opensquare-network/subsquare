@@ -11,6 +11,7 @@ const CHAINS = {
   BASILISK: "basilisk",
   KINTSUGI: "kintsugi",
   BIFROST: "bifrost",
+  POLKADEX: "polkadex",
 };
 
 let chain = null;
