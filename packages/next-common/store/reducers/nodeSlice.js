@@ -15,6 +15,9 @@ import {
   DEFAULT_BIFROST_NODE_URL,
   DEFAULT_KINTSUGI_NODES,
   DEFAULT_KINTSUGI_NODE_URL,
+  DEFAULT_POLKADEX_NODES,
+  DEFAULT_POLKADEX_NODE_URL,
+  defaultNodes,
 } from "../../utils/constants";
 
 const chain = process.env.NEXT_PUBLIC_CHAIN;
@@ -49,18 +52,11 @@ let nodeUrl = (() => {
     kintsugi:
       DEFAULT_KINTSUGI_NODES.find((item) => item.url === localNodeUrl)?.url ||
       DEFAULT_KINTSUGI_NODE_URL,
+    polkadex:
+      DEFAULT_POLKADEX_NODES.find((item) => item.url === localNodeUrl)?.url ||
+      DEFAULT_POLKADEX_NODE_URL,
   };
 })();
-
-export const defaultNodes = {
-  kusama: DEFAULT_KUSAMA_NODES,
-  karura: DEFAULT_KARURA_NODES,
-  acala: DEFAULT_ACALA_NODES,
-  khala: DEFAULT_KHALA_NODES,
-  basilisk: DEFAULT_BASILISK_NODES,
-  bifrost: DEFAULT_BIFROST_NODES,
-  kintsugi: DEFAULT_KINTSUGI_NODES,
-};
 
 const nodeSlice = createSlice({
   name: "node",

@@ -10,6 +10,7 @@ import Summary from "next-common/components/summary";
 
 export default withLoginUserRedux(
   ({ loginUser, proposals, chain, siteUrl }) => {
+    console.log("proposals", proposals);
     const items = (proposals.items || []).map((item) =>
       toTreasuryProposalListItem(chain, item)
     );

@@ -22,11 +22,13 @@ import {
   encodeKabochaAddress,
   encodeBifrostAddress,
   encodeKintsugiAddress,
+  encodePolkadexAddress,
 } from "services/chainApi";
 import nextApi from "services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { setUser } from "next-common/store/reducers/userSlice";
 import { addToast } from "next-common/store/reducers/toastSlice";
+import { add } from "cheerio/lib/api/traversing";
 
 const Label = styled.div`
   font-weight: bold;
@@ -116,6 +118,7 @@ export default function AddressLogin({ chain, onBack }) {
           kabochaAddress: encodeKabochaAddress(address),
           bifrostAddress: encodeBifrostAddress(address),
           kintsugiAddress: encodeKintsugiAddress(address),
+          polkadexAddress: encodePolkadexAddress(address),
           name,
         };
       });

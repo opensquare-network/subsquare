@@ -36,6 +36,7 @@ export default function SignerSelect({
       acalaAddress: encodeAcalaAddress(address),
       kabochaAddress: encodeKabochaAddress(address),
       kintsugiAddress: encodeKintsugiAddress(address),
+      polkadexAddress: encodePolkadotAddress(address),
       name,
     }));
 
