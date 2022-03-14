@@ -23,15 +23,7 @@ import { createMotionTimelineData } from "../../../utils/timeline/motion";
 import sortTimeline from "../../../utils/timeline/sort";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import KVList from "next-common/components/kvList";
-
-const Wrapper = styled.div`
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-
-  max-width: 848px;
-  margin: auto;
-`;
+import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 
 const Flex = styled.div`
   display: flex;
@@ -153,7 +145,7 @@ export default withLoginUserRedux(
         chain={chain}
         seoInfo={{ title: detail?.title, desc }}
       >
-        <Wrapper className="post-content">
+        <DetailPageWrapper className="post-content">
           <Back href={`/treasury/bounties`} text="Back to Bounties" />
           <DetailItem
             data={detail}
@@ -186,7 +178,7 @@ export default withLoginUserRedux(
               />
             )}
           </CommentsWrapper>
-        </Wrapper>
+        </DetailPageWrapper>
       </Layout>
     );
   }

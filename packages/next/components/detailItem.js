@@ -7,32 +7,14 @@ import User from "next-common/components/user";
 import TriangleRight from "../public/imgs/icons/arrow-triangle-right.svg";
 import Tag from "next-common/components/tag";
 import Flex from "next-common/components/styled/flex";
-import { shadow_100 } from "../styles/componentCss";
-import { getPostUpdatedAt, toApiType } from "utils/viewfuncs";
+import { getPostUpdatedAt } from "utils/viewfuncs";
 import {
-  TYPE_DEMOCRACY_REFERENDUM,
   TYPE_DEMOCRACY_EXTERNAL,
   TYPE_DEMOCRACY_PROPOSAL,
+  TYPE_DEMOCRACY_REFERENDUM,
 } from "utils/viewConstants";
 import ArticleContent from "next-common/components/articleContent";
-
-const Wrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 6px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-    border-radius: 0;
-  }
-
-  :hover {
-    .edit {
-      display: block;
-    }
-  }
-`;
+import { EditablePanel } from "next-common/components/styled/panel";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -104,66 +86,6 @@ const TypeWrapper = styled.div`
     `}
 `;
 
-const EditedLabel = styled.div`
-  margin-top: 8px;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  color: #9da9bb;
-`;
-
-const GreyWrapper = styled.div`
-  display: flex;
-  flex-flow: wrap;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 22px;
-  padding: 8px 12px;
-  background: #f6f7fa;
-  border-radius: 4px;
-  margin-top: 16px;
-`;
-
-const GreyItem = styled.div`
-  display: inline-block;
-  margin-right: 12px;
-
-  > .username {
-    color: #506176;
-  }
-`;
-
-const PlaceHolder = styled.div`
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 140%;
-  text-align: center;
-  color: #9da9bb;
-  height: 68px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Edit = styled.div`
-  cursor: pointer;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 140%;
-  text-align: center;
-  color: #506176;
-  display: flex;
-  align-items: center;
-
-  svg {
-    margin-left: 8px;
-    margin-right: 4px;
-  }
-`;
-
 const ReferendaWrapper = styled(Flex)`
   justify-content: center;
   flex-wrap: wrap;
@@ -224,7 +146,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
   const postUpdatedTime = getPostUpdatedAt(post);
 
   return (
-    <Wrapper>
+    <EditablePanel>
       {!isEdit && (
         <>
           {type === TYPE_DEMOCRACY_EXTERNAL && (
@@ -353,6 +275,6 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
         isEdit={isEdit}
         setIsEdit={setIsEdit}
       />
-    </Wrapper>
+    </EditablePanel>
   );
 }

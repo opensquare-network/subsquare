@@ -81,7 +81,7 @@ const Info = styled.div`
 `;
 
 export default function MotionHead({ motion, chain }) {
-  const showMotionEnd = useShowMotionEnd(motion?.onchainData, chain);
+  const showMotionEnd = useShowMotionEnd(motion?.onchainData);
 
   const motionEndHeader = showMotionEnd ? (
     <MotionEndHeader>

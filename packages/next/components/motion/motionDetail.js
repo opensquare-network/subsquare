@@ -1,6 +1,4 @@
-import styled from "styled-components";
 import cloneDeep from "lodash.clonedeep";
-import { shadow_100 } from "../../styles/componentCss";
 import ArticleContent from "next-common/components/articleContent";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Vote from "./vote";
@@ -13,24 +11,7 @@ import Head from "./head";
 import { isMotionEnded } from "next-common/utils";
 import { useApi } from "utils/hooks";
 import toApiCouncil from "./toApiCouncil";
-
-const Wrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 6px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-    border-radius: 0;
-  }
-
-  :hover {
-    .edit {
-      display: block;
-    }
-  }
-`;
+import { EditablePanel } from "next-common/components/styled/panel";
 
 export default function MotionDetail({ user, motion, onReply, chain, type }) {
   const isMounted = useIsMounted();
@@ -121,7 +102,7 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
 
   return (
     <div>
-      <Wrapper>
+      <EditablePanel>
         {!isEdit && <Head motion={post} chain={chain} />}
         <ArticleContent
           chain={chain}
@@ -133,7 +114,7 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
           isEdit={isEdit}
           setIsEdit={setIsEdit}
         />
-      </Wrapper>
+      </EditablePanel>
       <Vote
         chain={chain}
         votes={votes}

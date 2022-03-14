@@ -16,15 +16,7 @@ import Editor from "next-common/components/comment/editor";
 import { isSafari } from "utils/serverSideUtil";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { EmptyList } from "next-common/utils/constants";
-
-const Wrapper = styled.div`
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-
-  max-width: 848px;
-  margin: auto;
-`;
+import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 
 export default withLoginUserRedux(
   ({ loginUser, motion, comments, chain, siteUrl }) => {
@@ -53,7 +45,7 @@ export default withLoginUserRedux(
           siteUrl={siteUrl}
           chain={chain}
         />
-        <Wrapper className="post-content">
+        <DetailPageWrapper className="post-content">
           <Back href={`/techcomm/proposals`} text="Back to Proposals" />
           <TechcommMotionDetail
             motion={motion}
@@ -80,7 +72,7 @@ export default withLoginUserRedux(
               />
             )}
           </CommentsWrapper>
-        </Wrapper>
+        </DetailPageWrapper>
       </Layout>
     );
   }

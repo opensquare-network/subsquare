@@ -9,7 +9,6 @@ import { getNode, timeDurationFromNow, toPrecision } from "utils";
 import SectionTag from "next-common/components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
 import Flex from "next-common/components/styled/flex";
-import { shadow_100 } from "styles/componentCss";
 import ArticleContent from "next-common/components/articleContent";
 import { useState } from "react";
 import { createMotionTimelineData } from "utils/timeline/motion";
@@ -21,24 +20,7 @@ import { useSelector } from "react-redux";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import Proposal from "next-common/components/proposal";
 import { finalizedHeightSelector } from "next-common/store/reducers/chainSlice";
-
-const Wrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 6px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-    border-radius: 0;
-  }
-
-  :hover {
-    .edit {
-      display: block;
-    }
-  }
-`;
+import { EditablePanel } from "next-common/components/styled/panel";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -307,7 +289,7 @@ export default function TechcommMotionDetail({
 
   return (
     <div>
-      <Wrapper>
+      <EditablePanel>
         <div>
           {!isEdit && (
             <div>
@@ -351,7 +333,7 @@ export default function TechcommMotionDetail({
             setIsEdit={setIsEdit}
           />
         </div>
-      </Wrapper>
+      </EditablePanel>
 
       <MultiKVList title="Business" data={business} />
 

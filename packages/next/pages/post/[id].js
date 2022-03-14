@@ -20,10 +20,6 @@ const Wrapper = styled.div`
   }
   max-width: 848px;
   margin: auto;
-  @media screen and (max-width: 768px) {
-    margin-left: -16px;
-    margin-right: -16px;
-  }
 `;
 
 export default withLoginUserRedux(

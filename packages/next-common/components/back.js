@@ -25,7 +25,7 @@ export default function Back({ href, text }) {
     <Link href={href} passHref>
       <Wrapper>
         <img alt="" src="/imgs/icons/arrow-left.svg" width={16} height={16} />
-        <div>{text}</div>
+        <span>{text}</span>
       </Wrapper>
     </Link>
   );

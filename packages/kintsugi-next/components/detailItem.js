@@ -8,32 +8,14 @@ import User from "next-common/components/user";
 import TriangleRight from "public/imgs/icons/arrow-triangle-right.svg";
 import Tag from "next-common/components/tag";
 import Flex from "next-common/components/styled/flex";
-import { shadow_100 } from "styles/componentCss";
 import { getPostUpdatedAt, toApiType } from "utils/viewfuncs";
 import {
-  TYPE_DEMOCRACY_REFERENDUM,
   TYPE_DEMOCRACY_EXTERNAL,
   TYPE_DEMOCRACY_PROPOSAL,
+  TYPE_DEMOCRACY_REFERENDUM,
 } from "utils/viewConstants";
 import ArticleContent from "next-common/components/articleContent";
-
-const Wrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 6px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-    border-radius: 0;
-  }
-
-  :hover {
-    .edit {
-      display: block;
-    }
-  }
-`;
+import { EditablePanel } from "next-common/components/styled/panel";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -173,7 +155,7 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
   const postUpdatedTime = getPostUpdatedAt(post);
 
   return (
-    <Wrapper>
+    <EditablePanel>
       {!isEdit && (
         <>
           {type === TYPE_DEMOCRACY_EXTERNAL && (
@@ -330,6 +312,6 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
         isEdit={isEdit}
         setIsEdit={setIsEdit}
       />
-    </Wrapper>
+    </EditablePanel>
   );
 }

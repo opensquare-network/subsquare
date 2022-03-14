@@ -19,15 +19,7 @@ import { makeExternalTimelineData } from "utils/dataWrappers/makeTimelineData";
 import { makeExternalMetadata } from "utils/dataWrappers/makeMetadata";
 import { TYPE_DEMOCRACY_EXTERNAL } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-
-const Wrapper = styled.div`
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-
-  max-width: 848px;
-  margin: auto;
-`;
+import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, chain, siteUrl }) => {
@@ -72,7 +64,7 @@ export default withLoginUserRedux(
         chain={chain}
         seoInfo={{ title: detail?.title, desc }}
       >
-        <Wrapper className="post-content">
+        <DetailPageWrapper className="post-content">
           <Back href={`/democracy/externals`} text="Back to Externals" />
           <DetailItem
             data={detail}
@@ -101,7 +93,7 @@ export default withLoginUserRedux(
               />
             )}
           </CommentsWrapper>
-        </Wrapper>
+        </DetailPageWrapper>
       </Layout>
     );
   }
