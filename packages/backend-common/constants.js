@@ -11,6 +11,7 @@ const SS58Format = Object.freeze({
   Bifrost: 6,
   Acala: 10,
   Kintsugi: 2092,
+  Polkadex: 88,
 });
 
 const ContentType = Object.freeze({
