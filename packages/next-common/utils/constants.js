@@ -1,3 +1,17 @@
+export const Chains = {
+  polkadot: "polkadot",
+  kusama: "kusama",
+  karura: "karura",
+  acala: "acala",
+  khala: "khala",
+  substrate: "substrate",
+  basilisk: "basilisk",
+  kabocha: "kabocha",
+  bifrost: "bifrost",
+  kintsugi: "kintsugi",
+  polkadex: "polkadex",
+};
+
 export const DEFAULT_KUSAMA_NODES = [
   {
     name: "Parity",
@@ -270,7 +284,7 @@ export const mainMenu = [
   },
   {
     name: "DEMOCRACY",
-    excludeToChains: ["kabocha"],
+    excludeToChains: [Chains.kabocha, Chains.polkadex],
     items: [
       {
         value: "referenda",
@@ -292,7 +306,7 @@ export const mainMenu = [
   },
   {
     name: "TREASURY",
-    excludeToChains: ["kabocha"],
+    excludeToChains: [Chains.kabocha],
     items: [
       {
         value: "proposals",
@@ -366,6 +380,7 @@ export const mainMenu = [
       "kabocha",
       "bifrost",
       "kintsugi",
+      Chains.polkadex,
     ],
   },
 ];
@@ -421,20 +436,6 @@ export const SS58Prefix = {
   bifrost: 6,
   kintsugi: 2092,
   polkadex: 88,
-};
-
-export const Chains = {
-  polkadot: "polkadot",
-  kusama: "kusama",
-  karura: "karura",
-  acala: "acala",
-  khala: "khala",
-  substrate: "substrate",
-  basilisk: "basilisk",
-  kabocha: "kabocha",
-  bifrost: "bifrost",
-  kintsugi: "kintsugi",
-  polkadex: "polkadex",
 };
 
 export const defaultNodes = {
