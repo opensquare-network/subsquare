@@ -55,3 +55,7 @@ export const encodeBifrostAddress = (address) => {
 export const encodeKintsugiAddress = (address) => {
   return encodeAddressToChain(address, Chains.kintsugi);
 };
+
+export const encodePolkadexAddress = (address) => {
+  return encodeAddressToChain(address, Chains.polkadex);
+};

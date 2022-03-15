@@ -1,7 +1,7 @@
 import moment from "moment";
 import BigNumber from "bignumber.js";
 import { nodes } from "./constants";
-import { bnToBn, extractTime } from "@polkadot/util";
+import { extractTime } from "@polkadot/util";
 
 BigNumber.config({ EXPONENTIAL_AT: 36 });
 

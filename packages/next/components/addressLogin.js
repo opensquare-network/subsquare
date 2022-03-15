@@ -22,11 +22,13 @@ import {
   signMessage,
   encodeKabochaAddress,
   encodeBifrostAddress,
+  encodeAddressToChain,
 } from "services/chainApi";
 import nextApi from "services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { setUser } from "next-common/store/reducers/userSlice";
 import { addToast } from "next-common/store/reducers/toastSlice";
+import { Chains } from "next-common/utils/constants";
 
 const Label = styled.div`
   font-weight: bold;
@@ -116,6 +118,7 @@ export default function AddressLogin({ chain, onBack }) {
           basiliskAddress: encodeBasiliskAddress(address),
           kabochaAddress: encodeKabochaAddress(address),
           bifrostAddress: encodeBifrostAddress(address),
+          polkadexAddress: encodeAddressToChain(address, Chains.polkadex),
           name,
         };
       });

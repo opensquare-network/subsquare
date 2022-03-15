@@ -1,3 +1,17 @@
+export const Chains = {
+  polkadot: "polkadot",
+  kusama: "kusama",
+  karura: "karura",
+  acala: "acala",
+  khala: "khala",
+  substrate: "substrate",
+  basilisk: "basilisk",
+  kabocha: "kabocha",
+  bifrost: "bifrost",
+  kintsugi: "kintsugi",
+  polkadex: "polkadex",
+};
+
 export const DEFAULT_KUSAMA_NODES = [
   {
     name: "Parity",
@@ -124,6 +138,19 @@ export const DEFAULT_KINTSUGI_NODES =
 
 export const DEFAULT_KINTSUGI_NODE_URL = DEFAULT_KINTSUGI_NODES[0]?.url;
 
+export const DEFAULT_POLKADEX_NODES = [
+  {
+    name: "Polkadex",
+    url: "wss://mainnet.polkadex.trade/",
+  },
+  {
+    name: "Polkadex-JP",
+    url: "wss://mainnet-jp-1.polkadex.trade",
+  },
+];
+
+export const DEFAULT_POLKADEX_NODE_URL = DEFAULT_POLKADEX_NODES[0].url;
+
 export const DEFAULT_NODES = {
   kusama: DEFAULT_KUSAMA_NODE_URL,
   karura: DEFAULT_KARURA_NODE_URL,
@@ -132,6 +159,7 @@ export const DEFAULT_NODES = {
   basilisk: DEFAULT_BASILISK_NODE_URL,
   bifrost: DEFAULT_BIFROST_NODE_URL,
   kintsugi: DEFAULT_KINTSUGI_NODE_URL,
+  polkadex: DEFAULT_POLKADEX_NODES,
 };
 
 export const nodes = [
@@ -214,6 +242,15 @@ export const nodes = [
     decimals: 12,
     hasElections: false,
   },
+  {
+    value: "polkadex",
+    name: "Polkadex",
+    icon: "polkadex.svg",
+    identity: "polkadex",
+    symbol: "PDEX",
+    decimals: 12,
+    hasElections: true,
+  },
 ];
 
 export const accountMenu = [
@@ -247,7 +284,7 @@ export const mainMenu = [
   },
   {
     name: "DEMOCRACY",
-    excludeToChains: ["kabocha"],
+    excludeToChains: [Chains.kabocha, Chains.polkadex],
     items: [
       {
         value: "referenda",
@@ -269,7 +306,7 @@ export const mainMenu = [
   },
   {
     name: "TREASURY",
-    excludeToChains: ["kabocha"],
+    excludeToChains: [Chains.kabocha],
     items: [
       {
         value: "proposals",
@@ -343,6 +380,7 @@ export const mainMenu = [
       "kabocha",
       "bifrost",
       "kintsugi",
+      Chains.polkadex,
     ],
   },
 ];
@@ -397,19 +435,18 @@ export const SS58Prefix = {
   kabocha: 2,
   bifrost: 6,
   kintsugi: 2092,
+  polkadex: 88,
 };
 
-export const Chains = {
-  polkadot: "polkadot",
-  kusama: "kusama",
-  karura: "karura",
-  acala: "acala",
-  khala: "khala",
-  substrate: "substrate",
-  basilisk: "basilisk",
-  kabocha: "kabocha",
-  bifrost: "bifrost",
-  kintsugi: "kintsugi",
+export const defaultNodes = {
+  kusama: DEFAULT_KUSAMA_NODES,
+  karura: DEFAULT_KARURA_NODES,
+  acala: DEFAULT_ACALA_NODES,
+  khala: DEFAULT_KHALA_NODES,
+  basilisk: DEFAULT_BASILISK_NODES,
+  bifrost: DEFAULT_BIFROST_NODES,
+  kintsugi: DEFAULT_KINTSUGI_NODES,
+  polkadex: DEFAULT_POLKADEX_NODES,
 };
 
 export const ChainBlockTime = {
@@ -417,9 +454,6 @@ export const ChainBlockTime = {
 };
 
 export const defaultBlockTime = 12000;
-
-export const TreasuryAccount =
-  "F3opxRbN5ZbjJNU511Kj2TLuzFcDq9BGduA9TgiECafpg29";
 
 export const DEFAULT_SEO_INFO = {
   title: `SubSquare`,

@@ -20,15 +20,17 @@ import {
   signMessage,
   encodeKabochaAddress,
   encodeBifrostAddress,
+  encodeAddressToChain,
 } from "services/chainApi";
 import { addressEllipsis } from "utils";
 import nextApi from "services/nextApi";
 import { fetchUserProfile } from "next-common/store/reducers/userSlice";
 import { addToast } from "next-common/store/reducers/toastSlice";
-import { nodes } from "next-common/utils/constants";
+import { Chains, nodes } from "next-common/utils/constants";
 import Avatar from "next-common/components/avatar";
 import DownloadExtension from "next-common/components/downloadExtension";
 import { shadow_100 } from "../styles/componentCss";
+import { add } from "cheerio/lib/api/traversing";
 
 const Wrapper = styled.div`
   max-width: 848px;
@@ -212,6 +214,7 @@ export default function LinkedAddress({ chain }) {
         basiliskAddress: encodeBasiliskAddress(address),
         kabochaAddress: encodeKabochaAddress(address),
         bifrostAddress: encodeBifrostAddress(address),
+        polkadexAddress: encodeAddressToChain(address, Chains.polkadex),
         name,
       };
     });
@@ -305,6 +308,8 @@ export default function LinkedAddress({ chain }) {
         bifrostAddress: address.chain === "bifrost" ? address.address : null,
         basiliskAddress: address.chain === "basilisk" ? address.address : null,
         kabochaAddress: address.chain === "kabocha" ? address.address : null,
+        polkadexAddress:
+          address.chain === Chains.polkadex ? address.address : null,
         name: "--",
       })),
   ];

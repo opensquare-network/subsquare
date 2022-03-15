@@ -88,3 +88,11 @@ export const encodeKintsugiAddress = (address) => {
     return "";
   }
 };
+
+export const encodePolkadexAddress = (address) => {
+  try {
+    return encodeAddress(address, SS58Prefix.polkadex);
+  } catch {
+    return "";
+  }
+};
