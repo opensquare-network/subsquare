@@ -2,24 +2,43 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.9.7
+
+- Support polkadex
+- Code refactor: keep only the redux store on next-common package
+- Create chainSlice to store the latest chain height and block time
+- Extract common styled components
+
+## 1.9.6
+
+- Improve time duration format
+- Style improvement like correct font size in timeline
+- Show time for end and delay in referendum metadata
+- Extract common components
+
 ## 1.9.3
 
 ### Added
+
 - Show motion end information for Kintsugi tech.comm motions.
 - Add loading effect to Kintsugi referenda vote dialog.
 
 ### Update
+
 - Kintsugi Tech.Comm Motions in overview condition: ended in the past 3 days => ended in the past 1 day.
 
-### Fixed  
+### Fixed
+
 - Prevent code execution after to404 function is called.
 - Form validation error hint style fixup.
 
 ### Refactor
+
 - Some shared components are migrated to `next-common`.
 - Split the component interacting with `PolkadotExtension` into more atomic pieces.
 
 ### Removed
+
 - Un-used functions and importation statements.
 
 ## 1.9.2
