@@ -12,21 +12,12 @@ import AddressSelect from "next-common/components/addressSelect";
 import Button from "next-common/components/button";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import DownloadExtension from "next-common/components/downloadExtension";
-import {
-  encodeKaruraAddress,
-  encodeKhalaAddress,
-  encodeKusamaAddress,
-  encodePolkadotAddress,
-  encodeBasiliskAddress,
-  signMessage,
-  encodeKabochaAddress,
-  encodeBifrostAddress,
-  encodeKintsugiAddress,
-} from "services/chainApi";
 import nextApi from "services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { setUser } from "next-common/store/reducers/userSlice";
 import { addToast } from "next-common/store/reducers/toastSlice";
+import { encodeAddressToChain } from "next-common/services/address";
+import { signMessage } from "next-common/services/extension/signMessage";
 
 const Label = styled.div`
   font-weight: bold;
@@ -55,7 +46,7 @@ export default function AddressLogin({ chain, onBack }) {
 
   const doWeb3Login = async () => {
     setLoading(true);
-    const address = selectedAccount[`${chain}Address`];
+    const address = encodeAddressToChain(selectedAccount.address, chain);
     const { result, error } = await nextApi.fetch(`auth/login/${address}`);
     if (error) {
       setWeb3Error(error.message);
@@ -106,18 +97,7 @@ export default function AddressLogin({ chain, onBack }) {
           address,
           meta: { name },
         } = item;
-        return {
-          address,
-          kusamaAddress: encodeKusamaAddress(address),
-          polkadotAddress: encodePolkadotAddress(address),
-          karuraAddress: encodeKaruraAddress(address),
-          khalaAddress: encodeKhalaAddress(address),
-          basiliskAddress: encodeBasiliskAddress(address),
-          kabochaAddress: encodeKabochaAddress(address),
-          bifrostAddress: encodeBifrostAddress(address),
-          kintsugiAddress: encodeKintsugiAddress(address),
-          name,
-        };
+        return { address, name };
       });
 
       if (isMounted.current) {

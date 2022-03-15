@@ -33,6 +33,7 @@ export default function Links({
     "basilisk",
     "acala",
     "kintsugi",
+    "polkadex",
   ];
   if (!indexer && !address && supportedChains.includes(chain)) {
     return null;

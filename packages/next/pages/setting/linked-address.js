@@ -5,9 +5,12 @@ import dynamic from "next/dynamic";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import NextHead from "../../components/nextHead";
 
-const LinkedAddressComp = dynamic(() => import("components/linkedAddress"), {
-  ssr: false,
-});
+const LinkedAddressComp = dynamic(
+  () => import("next-common/components/linkedAddress"),
+  {
+    ssr: false,
+  }
+);
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   return (

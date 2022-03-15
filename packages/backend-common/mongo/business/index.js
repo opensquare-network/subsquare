@@ -16,14 +16,13 @@ async function createIndex(db) {
 async function initDb() {
   if (!db) {
     if (!process.env.MONGO_DB_BUSINESS_DATA_NAME) {
-      console.error(`Environment variable MONGO_DB_BUSINESS_DATA_NAME is not defined`);
+      console.error(
+        `Environment variable MONGO_DB_BUSINESS_DATA_NAME is not defined`
+      );
       process.exit();
     }
 
-    db = await connectDb(
-      process.env.MONGO_DB_BUSINESS_DATA_NAME ||
-        defaultDbNames[process.env.CHAIN]
-    );
+    db = await connectDb(process.env.MONGO_DB_BUSINESS_DATA_NAME);
     await createIndex(db);
   }
 }

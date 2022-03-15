@@ -54,9 +54,18 @@ export default withLoginUserRedux(
     const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] =
       useState(false);
 
+    const completeTimeline = (
+      publicProposal?.onchainData?.timeline || []
+    ).concat(detail?.onchainData?.timeline || []);
+    const timelineData = getDemocracyTimelineData(completeTimeline, chain);
+
+    const timeline = detail?.onchainData?.timeline || [];
+    const voteFinished = ["Executed", "Passed", "NotPassed"].includes(
+      timeline[timeline.length - 1]?.method
+    );
+
     useEffect(() => {
-      // Already has the last ongoging status
-      if (referendumStatus) {
+      if (voteFinished) {
         return;
       }
 
@@ -72,7 +81,7 @@ export default withLoginUserRedux(
         .finally(() => {
           setIsLoadingReferendumStatus(false);
         });
-    }, [api, detail, isMounted, referendumStatus]);
+    }, [api, detail, isMounted, voteFinished]);
 
     const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
@@ -83,11 +92,6 @@ export default withLoginUserRedux(
       quillRef,
       focusEditor
     );
-
-    const completeTimeline = (
-      publicProposal?.onchainData?.timeline || []
-    ).concat(detail?.onchainData?.timeline || []);
-    const timelineData = getDemocracyTimelineData(completeTimeline, chain);
 
     detail.status = detail.onchainData?.state?.state;
 

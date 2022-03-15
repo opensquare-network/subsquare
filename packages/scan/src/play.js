@@ -10,7 +10,7 @@ const {
 } = require("@subsquare/scan-common");
 
 async function test() {
-  const blockHeights = [320304];
+  const blockHeights = [1209570, 1209572, 1209575, 1209578, 1209600];
 
   for (const height of blockHeights) {
     await setSpecHeights([height - 1]);
@@ -19,8 +19,6 @@ async function test() {
     const blockHash = await api.rpc.chain.getBlockHash(height);
     const block = await api.rpc.chain.getBlock(blockHash);
     const allEvents = await api.query.system.events.at(blockHash);
-
-    await fetchBlocks();
 
     await scanNormalizedBlock(block.block, allEvents);
   }

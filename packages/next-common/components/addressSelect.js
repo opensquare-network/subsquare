@@ -7,6 +7,7 @@ import Avatar from "./avatar";
 import Flex from "./styled/flex";
 import Relative from "./styled/relative";
 import { shadow_200 } from "../styles/componentCss";
+import { encodeAddressToChain } from "../services/address";
 
 const Wrapper = Relative;
 
@@ -110,7 +111,11 @@ export default function AddressSelect({
             <Avatar address={selectedAccount?.[`${chain}Address`]} />
             <NameWrapper>
               <div>{selectedAccount?.name}</div>
-              <div>{addressEllipsis(selectedAccount?.[`${chain}Address`])}</div>
+              <div>
+                {addressEllipsis(
+                  encodeAddressToChain(selectedAccount.address, chain)
+                )}
+              </div>
             </NameWrapper>
           </>
         )}
@@ -133,7 +138,9 @@ export default function AddressSelect({
               <Avatar address={item[`${chain}Address`]} />
               <NameWrapper>
                 <div>{item.name}</div>
-                <div>{addressEllipsis(item[`${chain}Address`])}</div>
+                <div>
+                  {addressEllipsis(encodeAddressToChain(item.address, chain))}
+                </div>
               </NameWrapper>
             </Item>
           ))}

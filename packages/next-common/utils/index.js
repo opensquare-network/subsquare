@@ -1,7 +1,7 @@
 import moment from "moment";
 import BigNumber from "bignumber.js";
 import { nodes } from "./constants";
-import { bnToBn, extractTime } from "@polkadot/util";
+import { extractTime } from "@polkadot/util";
 
 BigNumber.config({ EXPONENTIAL_AT: 36 });
 
@@ -48,7 +48,7 @@ export function timeDurationFromNow(time) {
       ss: "%d secs",
       m: "1 min",
       mm: "%d mins",
-      h: "1 ho",
+      h: "1 h",
       hh: "%d hrs",
       d: "1 d",
       dd: "%dd",

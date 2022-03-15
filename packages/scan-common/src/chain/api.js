@@ -1,10 +1,11 @@
-const definitions = require("./kintsugi/definitions");
+const kintsugiDefinitions = require("./kintsugi/definitions");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { CHAINS, currentChain } = require("../env");
 const { versionedKhala, typesChain } = require("@phala/typedefs");
 const { basilisk } = require("./bundle/basilisk");
 const { karuraOptions } = require("./karura/options");
 const { bifrostOptions } = require("./bifrost/options");
+const { definitions: polkadexDefinitions } = require("./polkadex/definitions");
 
 let provider = null;
 let api = null;
@@ -39,14 +40,20 @@ async function getApi() {
   } else if (CHAINS.KINTSUGI === chain) {
     options.typesBundle = {
       spec: {
-        "interbtc-parachain": definitions,
+        "interbtc-parachain": kintsugiDefinitions,
       },
     };
-    options.rpc = definitions.providerRpc;
+    options.rpc = kintsugiDefinitions.providerRpc;
   } else if (CHAINS.BIFROST === chain) {
     options = {
       ...bifrostOptions,
       ...options,
+    };
+  } else if (CHAINS.POLKADEX === chain) {
+    options.typesBundle = {
+      spec: {
+        "node-polkadex": polkadexDefinitions,
+      },
     };
   }
 

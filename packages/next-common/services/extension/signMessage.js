@@ -1,8 +1,6 @@
 import { isWeb3Injected, web3FromAddress } from "@polkadot/extension-dapp";
 import { stringToHex } from "@polkadot/util";
 
-export * from "./address";
-
 export const signMessage = async (text, address) => {
   if (!isWeb3Injected || !address) {
     return "";
