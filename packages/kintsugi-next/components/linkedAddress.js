@@ -304,6 +304,8 @@ export default function LinkedAddress({ chain }) {
       })),
   ];
 
+  console.log("mergedAccounts", mergedAccounts);
+
   const availableAccounts =
     mergedAccounts?.filter((acc) => acc[`${activeChain}Address`]) || [];
 

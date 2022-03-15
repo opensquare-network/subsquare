@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { web3FromAddress } from "@polkadot/extension-dapp";
 import AddressSelect from "./addressSelect";
-import { encodeAddressToChain } from "@subsquare/next/services/address";
-import { Chains } from "../utils/constants";
 
 export default function SignerSelect({
   chain,
@@ -17,16 +15,6 @@ export default function SignerSelect({
   useEffect(() => {
     const accounts = extensionAccounts?.map(({ address, meta: { name } }) => ({
       address,
-      acalaAddress: encodeAddressToChain(address, Chains.acala),
-      kusamaAddress: encodeAddressToChain(address, Chains.kusama),
-      polkadotAddress: encodeAddressToChain(address, Chains.polkadot),
-      karuraAddress: encodeAddressToChain(address, Chains.karura),
-      khalaAddress: encodeAddressToChain(address, Chains.khala),
-      basiliskAddress: encodeAddressToChain(address, Chains.basilisk),
-      kabochaAddress: encodeAddressToChain(address, Chains.kabocha),
-      bifrostAddress: encodeAddressToChain(address, Chains.bifrost),
-      kintsugiAddress: encodeAddressToChain(address, Chains.kintsugi),
-      polkadexAddress: encodeAddressToChain(address, Chains.polkadex),
       name,
     }));
 

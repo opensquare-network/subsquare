@@ -12,15 +12,11 @@ import {
   fetchUserProfile,
   userSelector,
 } from "next-common/store/reducers/userSlice";
-import {
-  encodeAddressToChain,
-  encodeSubstrateAddress,
-  signMessage,
-} from "services/chainApi";
+import { encodeAddressToChain, signMessage } from "services/chainApi";
 import { addressEllipsis } from "utils";
 import nextApi from "services/nextApi";
 import { addToast } from "next-common/store/reducers/toastSlice";
-import { Chains, nodes } from "next-common/utils/constants";
+import { nodes } from "next-common/utils/constants";
 import Avatar from "next-common/components/avatar";
 import DownloadExtension from "next-common/components/downloadExtension";
 import { shadow_100 } from "../styles/componentCss";
@@ -199,16 +195,6 @@ export default function LinkedAddress({ chain }) {
       } = item;
       return {
         address,
-        acalaAddress: encodeAddressToChain(address, Chains.acala),
-        kusamaAddress: encodeAddressToChain(address, Chains.kusama),
-        polkadotAddress: encodeAddressToChain(address, Chains.polkadot),
-        karuraAddress: encodeAddressToChain(address, Chains.karura),
-        khalaAddress: encodeAddressToChain(address, Chains.khala),
-        basiliskAddress: encodeAddressToChain(address, Chains.basilisk),
-        kabochaAddress: encodeAddressToChain(address, Chains.kabocha),
-        bifrostAddress: encodeAddressToChain(address, Chains.bifrost),
-        kintsugiAddress: encodeAddressToChain(address, Chains.kintsugi),
-        polkadexAddress: encodeAddressToChain(address, Chains.polkadex),
         name,
       };
     });
@@ -218,9 +204,7 @@ export default function LinkedAddress({ chain }) {
     }
   };
 
-  const unlinkAddress = async (chain, account) => {
-    const address = account[`${chain}Address`];
-
+  const unlinkAddress = async (chain, address) => {
     const { error, result } = await nextApi.delete(`user/linkaddr/${address}`);
     dispatch(fetchUserProfile());
 
@@ -243,12 +227,18 @@ export default function LinkedAddress({ chain }) {
     }
   };
 
-  const linkAddress = async (chain, account) => {
-    const address = account[`${chain}Address`];
-
+  const linkAddress = async (chain, address) => {
     const { result, error } = await nextApi.fetch(`user/linkaddr/${address}`);
     if (result) {
-      const signature = await signMessage(result?.challenge, account.address);
+      let signature;
+
+      try {
+        signature = await signMessage(result?.challenge, address);
+      } catch (e) {
+        console.log("Sign request is cancelled");
+        return;
+      }
+
       const { error: confirmError, result: confirmResult } = await nextApi.post(
         `user/linkaddr/${result?.attemptId}`,
         { challengeAnswer: signature }
@@ -293,23 +283,11 @@ export default function LinkedAddress({ chain }) {
         )
       )
       .map((address) => ({
-        address: encodeSubstrateAddress(address.address),
-        kusamaAddress: address.chain === "kusama" ? address.address : null,
-        polkadotAddress: address.chain === "polkadot" ? address.address : null,
-        karuraAddress: address.chain === "karura" ? address.address : null,
-        acalaAddress: address.chain === "acala" ? address.address : null,
-        khalaAddress: address.chain === "khala" ? address.address : null,
-        bifrostAddress: address.chain === "bifrost" ? address.address : null,
-        basiliskAddress: address.chain === "basilisk" ? address.address : null,
-        kabochaAddress: address.chain === "kabocha" ? address.address : null,
-        polkadexAddress:
-          address.chain === Chains.polkadex ? address.address : null,
+        address: address.address,
         name: "--",
       })),
   ];
-
-  const availableAccounts =
-    mergedAccounts?.filter((acc) => acc[`${activeChain}Address`]) || [];
+  const availableAccounts = mergedAccounts || [];
 
   return (
     <Wrapper>
@@ -344,45 +322,48 @@ export default function LinkedAddress({ chain }) {
               <EmptyList>No available addresses</EmptyList>
             )}
             {availableAccounts.length > 0 &&
-              availableAccounts.map((item, index) => (
-                <AddressItem
-                  key={index}
-                  linked={user?.addresses?.some(
-                    (i) => i.address === item[`${activeChain}Address`]
-                  )}
-                >
-                  {item[`${activeChain}Address`] ? (
-                    <Avatar address={item[`${activeChain}Address`]} size={32} />
-                  ) : (
-                    <img alt="" src="/imgs/icons/avatar.svg" />
-                  )}
-                  <NameWrapper>
-                    <div>{item.name}</div>
-                    <div>{addressEllipsis(item[`${activeChain}Address`])}</div>
-                  </NameWrapper>
-                  {user?.addresses?.some(
-                    (i) => i.address === item[`${activeChain}Address`]
-                  ) ? (
-                    <LinkWrapper
-                      onClick={() => {
-                        unlinkAddress(activeChain, item);
-                      }}
-                    >
-                      <img alt="" src="/imgs/icons/link-unlink.svg" />
-                      <div>Unlink</div>
-                    </LinkWrapper>
-                  ) : (
-                    <LinkWrapper
-                      onClick={() => {
-                        linkAddress(activeChain, item);
-                      }}
-                    >
-                      <img alt="" src="/imgs/icons/link-linked.svg" />
-                      <div>Link</div>
-                    </LinkWrapper>
-                  )}
-                </AddressItem>
-              ))}
+              availableAccounts.map((item, index) => {
+                const activeChainAddress = encodeAddressToChain(
+                  item.address,
+                  activeChain
+                );
+
+                return (
+                  <AddressItem
+                    key={index}
+                    linked={user?.addresses?.some(
+                      (i) => i.address === activeChainAddress
+                    )}
+                  >
+                    <Avatar address={activeChainAddress} size={32} />
+                    <NameWrapper>
+                      <div>{item.name}</div>
+                      <div>{addressEllipsis(activeChainAddress)}</div>
+                    </NameWrapper>
+                    {user?.addresses?.some(
+                      (i) => i.address === activeChainAddress
+                    ) ? (
+                      <LinkWrapper
+                        onClick={() => {
+                          unlinkAddress(activeChain, activeChainAddress);
+                        }}
+                      >
+                        <img alt="" src="/imgs/icons/link-unlink.svg" />
+                        <div>Unlink</div>
+                      </LinkWrapper>
+                    ) : (
+                      <LinkWrapper
+                        onClick={() => {
+                          linkAddress(activeChain, activeChainAddress);
+                        }}
+                      >
+                        <img alt="" src="/imgs/icons/link-linked.svg" />
+                        <div>Link</div>
+                      </LinkWrapper>
+                    )}
+                  </AddressItem>
+                );
+              })}
           </AddressWrapper>
         </div>
       </ContentWrapper>
