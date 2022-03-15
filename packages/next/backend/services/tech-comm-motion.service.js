@@ -25,6 +25,7 @@ const {
   getTechCommMotionCollection,
   getCommentCollection,
   getReactionCollection,
+  getMotionCollection,
 } = require("../mongo/business");
 const mailService = require("@subsquare/backend-common/services/mail.service");
 
@@ -65,6 +66,35 @@ async function findMotionPost(chainMotion) {
       "indexer.blockHeight": blockHeight,
     });
     postType = "democracy";
+
+    if (post.content) {
+      return [postCol, post, postType];
+    }
+
+    // 查找 techCommMotion 对应的 External
+    const chainExternalCol = await getChainExternalCollection();
+    const chainExternal = await chainExternalCol.findOne({
+      proposalHash: externalProposalHash,
+      "indexer.blockHeight": blockHeight,
+    });
+
+    // 当 Democracy post 没有编辑内容时，而且这个 External proposal 只关联了一个 motion，
+    // 那么我们认为此关联的 Motion 创建了这个 External。
+    //
+    // 旧数据中，当 Democracy post 没有编辑内容，而 Motion post有内容时，使用 Motion post
+    // 其他情况则使用 Democracy post
+    if (chainExternal?.motions?.length === 1) {
+      const hash = chainExternal.motions[0].hash;
+      const height = chainExternal.motions[0].indexer.blockHeight;
+
+      const motionCol = await getMotionCollection();
+      const motionPost = await motionCol.findOne({ hash, height });
+      if (motionPost && motionPost.content) {
+        postCol = motionCol;
+        post = motionPost;
+        postType = "motion";
+      }
+    }
   } else {
     const hash = chainMotion.hash;
     const height = chainMotion.indexer.blockHeight;
@@ -176,10 +206,14 @@ async function updatePost(postId, title, content, contentType, author) {
   }
 
   // Check if author is allow to edit
-  if (postType === "democracy") {
+  if (postType === "democracy" || postType === "motion") {
+    const externalProposalHash = chainMotion.externalProposals[0].hash;
+    const blockHeight = chainMotion.externalProposals[0].indexer?.blockHeight;
+
     const chainExternalCol = await getChainExternalCollection();
     const chainExternal = await chainExternalCol.findOne({
-      proposalHash: post.externalProposalHash,
+      proposalHash: externalProposalHash,
+      "indexer.blockHeight": blockHeight,
     });
 
     if (!chainExternal) {
@@ -290,36 +324,19 @@ async function getMotionById(postId) {
     throw new HttpError(404, "Post not found");
   }
 
-  const techCommMotionCol = await getTechCommMotionCollection();
-  const democracyCol = await getDemocracyCollection();
-  const reactionCol = await getReactionCollection();
+  const [postCol, post, postType] = await findMotionPost(chainMotion);
+
   const chainExternalCol = await getChainExternalCollection();
+  const businessDb = await getBusinessDb();
 
-  let post;
-  let reactions;
-  let postType;
-
-  if (chainMotion.externalProposals?.length === 1) {
-    const externalProposalHash = chainMotion.externalProposals[0].hash;
-    const blockHeight = chainMotion.externalProposals[0].indexer?.blockHeight;
-
-    post = await democracyCol.findOne({
-      externalProposalHash,
-      "indexer.blockHeight": blockHeight,
-    });
-    reactions = await reactionCol.find({ democracy: post._id }).toArray();
-    postType = "democracy";
-  } else {
-    const hash = chainMotion.hash;
-    const height = chainMotion.indexer.blockHeight;
-
-    post = await techCommMotionCol.findOne({ hash, height });
-    reactions = await reactionCol.find({ techCommMotion: post._id }).toArray();
-    postType = "techCommMotion";
-  }
-
-  const [, author, externalProposals] = await Promise.all([
-    lookupUser({ for: reactions, localField: "user" }),
+  const [reactions, author, externalProposals] = await Promise.all([
+    businessDb.lookupMany({
+      from: "reaction",
+      for: post,
+      as: "reactions",
+      localField: "_id",
+      foreignField: postType,
+    }),
     post.proposer ? getUserByAddress(post.proposer) : null,
     chainMotion.externalProposals?.length > 0
       ? chainExternalCol
@@ -334,6 +351,8 @@ async function getMotionById(postId) {
       : [],
   ]);
 
+  await lookupUser({ for: reactions, localField: "user" });
+
   return {
     ...post,
     _id: chainMotion._id,
@@ -342,7 +361,7 @@ async function getMotionById(postId) {
     height: chainMotion.indexer.blockHeight,
     indexer: chainMotion.indexer,
     authors:
-      postType === "democracy"
+      postType === "democracy" || postType === "motion"
         ? externalProposals[0].authors
         : chainMotion.authors,
     onchainData: {

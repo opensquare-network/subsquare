@@ -1,16 +1,11 @@
 const { HttpError } = require("@subsquare/backend-common/exc");
-const postService = require("@subsquare/backend-common/services/post.service")("democracy");
 const referendumPostService = require("../../services/referendum.service");
 const { ContentType } = require("@subsquare/backend-common/constants");
 const { extractPage } = require("@subsquare/backend-common/utils");
 
 async function updatePost(ctx) {
   const { postId } = ctx.params;
-  const {
-    title,
-    content,
-    contentType: paramContentType,
-  } = ctx.request.body;
+  const { title, content, contentType: paramContentType } = ctx.request.body;
 
   if (!title) {
     throw new HttpError(400, { title: ["Post title is missing"] });
@@ -77,7 +72,7 @@ async function postComment(ctx) {
     ? paramContentType
     : ContentType.Markdown;
 
-  ctx.body = await postService.postComment(
+  ctx.body = await referendumPostService.postComment(
     postId,
     content,
     contentType,
@@ -93,7 +88,7 @@ async function getComments(ctx) {
   }
 
   const { postId } = ctx.params;
-  ctx.body = await postService.getComments(postId, page, pageSize);
+  ctx.body = await referendumPostService.getComments(postId, page, pageSize);
 }
 
 async function setPostReaction(ctx) {
@@ -105,7 +100,7 @@ async function setPostReaction(ctx) {
   }
 
   const user = ctx.user;
-  ctx.body = await postService.setPostReaction(
+  ctx.body = await referendumPostService.setPostReaction(
     postId,
     reaction,
     user
@@ -115,9 +110,8 @@ async function setPostReaction(ctx) {
 async function unsetPostReaction(ctx) {
   const { postId } = ctx.params;
   const user = ctx.user;
-  ctx.body = await postService.unsetPostReaction(postId, user);
+  ctx.body = await referendumPostService.unsetPostReaction(postId, user);
 }
-
 
 module.exports = {
   updatePost,
