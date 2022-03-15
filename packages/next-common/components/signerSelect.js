@@ -1,18 +1,6 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { web3FromAddress } from "@polkadot/extension-dapp";
 import AddressSelect from "./addressSelect";
-import {
-  encodeKaruraAddress,
-  encodeKhalaAddress,
-  encodeKusamaAddress,
-  encodePolkadotAddress,
-  encodeBasiliskAddress,
-  encodeBifrostAddress,
-  encodeAcalaAddress,
-  encodeKabochaAddress,
-  encodeKintsugiAddress,
-} from "../services/address";
 
 export default function SignerSelect({
   chain,
@@ -27,16 +15,6 @@ export default function SignerSelect({
   useEffect(() => {
     const accounts = extensionAccounts?.map(({ address, meta: { name } }) => ({
       address,
-      kusamaAddress: encodeKusamaAddress(address),
-      polkadotAddress: encodePolkadotAddress(address),
-      karuraAddress: encodeKaruraAddress(address),
-      khalaAddress: encodeKhalaAddress(address),
-      basiliskAddress: encodeBasiliskAddress(address),
-      bifrostAddress: encodeBifrostAddress(address),
-      acalaAddress: encodeAcalaAddress(address),
-      kabochaAddress: encodeKabochaAddress(address),
-      kintsugiAddress: encodeKintsugiAddress(address),
-      polkadexAddress: encodePolkadotAddress(address),
       name,
     }));
 

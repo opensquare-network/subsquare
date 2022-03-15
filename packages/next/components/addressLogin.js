@@ -12,23 +12,11 @@ import AddressSelect from "next-common/components/addressSelect";
 import Button from "next-common/components/button";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import DownloadExtension from "next-common/components/downloadExtension";
-import {
-  encodeKaruraAddress,
-  encodeAcalaAddress,
-  encodeKhalaAddress,
-  encodeKusamaAddress,
-  encodePolkadotAddress,
-  encodeBasiliskAddress,
-  signMessage,
-  encodeKabochaAddress,
-  encodeBifrostAddress,
-  encodeAddressToChain,
-} from "services/chainApi";
+import { signMessage } from "services/chainApi";
 import nextApi from "services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { setUser } from "next-common/store/reducers/userSlice";
 import { addToast } from "next-common/store/reducers/toastSlice";
-import { Chains } from "next-common/utils/constants";
 
 const Label = styled.div`
   font-weight: bold;
@@ -110,15 +98,6 @@ export default function AddressLogin({ chain, onBack }) {
         } = item;
         return {
           address,
-          kusamaAddress: encodeKusamaAddress(address),
-          polkadotAddress: encodePolkadotAddress(address),
-          karuraAddress: encodeKaruraAddress(address),
-          acalaAddress: encodeAcalaAddress(address),
-          khalaAddress: encodeKhalaAddress(address),
-          basiliskAddress: encodeBasiliskAddress(address),
-          kabochaAddress: encodeKabochaAddress(address),
-          bifrostAddress: encodeBifrostAddress(address),
-          polkadexAddress: encodeAddressToChain(address, Chains.polkadex),
           name,
         };
       });
