@@ -242,15 +242,15 @@ export const nodes = [
     decimals: 12,
     hasElections: false,
   },
-  {
-    value: "polkadex",
-    name: "Polkadex",
-    icon: "polkadex.svg",
-    identity: "polkadex",
-    symbol: "PDEX",
-    decimals: 12,
-    hasElections: true,
-  },
+  // {
+  //   value: "polkadex",
+  //   name: "Polkadex",
+  //   icon: "polkadex.svg",
+  //   identity: "polkadex",
+  //   symbol: "PDEX",
+  //   decimals: 12,
+  //   hasElections: true,
+  // },
 ];
 
 export const accountMenu = [
