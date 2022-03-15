@@ -12,23 +12,12 @@ import AddressSelect from "next-common/components/addressSelect";
 import Button from "next-common/components/button";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import DownloadExtension from "next-common/components/downloadExtension";
-import {
-  encodeKaruraAddress,
-  encodeKhalaAddress,
-  encodeKusamaAddress,
-  encodePolkadotAddress,
-  encodeBasiliskAddress,
-  signMessage,
-  encodeKabochaAddress,
-  encodeBifrostAddress,
-  encodeKintsugiAddress,
-  encodePolkadexAddress,
-} from "services/chainApi";
+import { encodeAddressToChain, signMessage } from "services/chainApi";
 import nextApi from "services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { setUser } from "next-common/store/reducers/userSlice";
 import { addToast } from "next-common/store/reducers/toastSlice";
-import { add } from "cheerio/lib/api/traversing";
+import { Chains } from "next-common/utils/constants";
 
 const Label = styled.div`
   font-weight: bold;
@@ -110,15 +99,15 @@ export default function AddressLogin({ chain, onBack }) {
         } = item;
         return {
           address,
-          kusamaAddress: encodeKusamaAddress(address),
-          polkadotAddress: encodePolkadotAddress(address),
-          karuraAddress: encodeKaruraAddress(address),
-          khalaAddress: encodeKhalaAddress(address),
-          basiliskAddress: encodeBasiliskAddress(address),
-          kabochaAddress: encodeKabochaAddress(address),
-          bifrostAddress: encodeBifrostAddress(address),
-          kintsugiAddress: encodeKintsugiAddress(address),
-          polkadexAddress: encodePolkadexAddress(address),
+          kusamaAddress: encodeAddressToChain(address, Chains.kusama),
+          polkadotAddress: encodeAddressToChain(address, Chains.polkadot),
+          karuraAddress: encodeAddressToChain(address, Chains.karura),
+          khalaAddress: encodeAddressToChain(address, Chains.khala),
+          basiliskAddress: encodeAddressToChain(address, Chains.basilisk),
+          kabochaAddress: encodeAddressToChain(address, Chains.kabocha),
+          bifrostAddress: encodeAddressToChain(address, Chains.bifrost),
+          kintsugiAddress: encodeAddressToChain(address, Chains.kintsugi),
+          polkadexAddress: encodeAddressToChain(address, Chains.polkadex),
           name,
         };
       });

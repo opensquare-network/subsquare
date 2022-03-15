@@ -12,18 +12,7 @@ import AddressSelect from "next-common/components/addressSelect";
 import Button from "next-common/components/button";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import DownloadExtension from "next-common/components/downloadExtension";
-import {
-  encodeKaruraAddress,
-  encodeAcalaAddress,
-  encodeKhalaAddress,
-  encodeKusamaAddress,
-  encodePolkadotAddress,
-  encodeBasiliskAddress,
-  signMessage,
-  encodeKabochaAddress,
-  encodeBifrostAddress,
-  encodeAddressToChain,
-} from "services/chainApi";
+import { encodeAddressToChain, signMessage } from "services/chainApi";
 import nextApi from "services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { setUser } from "next-common/store/reducers/userSlice";
@@ -110,14 +99,15 @@ export default function AddressLogin({ chain, onBack }) {
         } = item;
         return {
           address,
-          kusamaAddress: encodeKusamaAddress(address),
-          polkadotAddress: encodePolkadotAddress(address),
-          karuraAddress: encodeKaruraAddress(address),
-          acalaAddress: encodeAcalaAddress(address),
-          khalaAddress: encodeKhalaAddress(address),
-          basiliskAddress: encodeBasiliskAddress(address),
-          kabochaAddress: encodeKabochaAddress(address),
-          bifrostAddress: encodeBifrostAddress(address),
+          acalaAddress: encodeAddressToChain(address, Chains.acala),
+          kusamaAddress: encodeAddressToChain(address, Chains.kusama),
+          polkadotAddress: encodeAddressToChain(address, Chains.polkadot),
+          karuraAddress: encodeAddressToChain(address, Chains.karura),
+          khalaAddress: encodeAddressToChain(address, Chains.khala),
+          basiliskAddress: encodeAddressToChain(address, Chains.basilisk),
+          kabochaAddress: encodeAddressToChain(address, Chains.kabocha),
+          bifrostAddress: encodeAddressToChain(address, Chains.bifrost),
+          kintsugiAddress: encodeAddressToChain(address, Chains.kintsugi),
           polkadexAddress: encodeAddressToChain(address, Chains.polkadex),
           name,
         };

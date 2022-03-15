@@ -16,46 +16,6 @@ export const encodeAddressToChain = (address, chain) => {
   }
 };
 
-export const encodeKusamaAddress = (address) => {
-  return encodeAddressToChain(address, Chains.kusama);
-};
-
-export const encodePolkadotAddress = (address) => {
-  return encodeAddressToChain(address, Chains.polkadot);
-};
-
 export const encodeSubstrateAddress = (address) => {
   return encodeAddressToChain(address, Chains.substrate);
-};
-
-export const encodeKaruraAddress = (address) => {
-  return encodeAddressToChain(address, Chains.karura);
-};
-
-export const encodeAcalaAddress = (address) => {
-  return encodeAddressToChain(address, Chains.acala);
-};
-
-export const encodeKhalaAddress = (address) => {
-  return encodeAddressToChain(address, Chains.khala);
-};
-
-export const encodeBasiliskAddress = (address) => {
-  return encodeAddressToChain(address, Chains.basilisk);
-};
-
-export const encodeKabochaAddress = (address) => {
-  return encodeAddressToChain(address, Chains.kabocha);
-};
-
-export const encodeBifrostAddress = (address) => {
-  return encodeAddressToChain(address, Chains.bifrost);
-};
-
-export const encodeKintsugiAddress = (address) => {
-  return encodeAddressToChain(address, Chains.kintsugi);
-};
-
-export const encodePolkadexAddress = (address) => {
-  return encodeAddressToChain(address, Chains.polkadex);
 };

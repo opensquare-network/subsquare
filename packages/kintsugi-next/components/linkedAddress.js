@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   isWeb3Injected,
   web3Accounts,
@@ -8,24 +8,19 @@ import {
 } from "@polkadot/extension-dapp";
 import Button from "next-common/components/button";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { userSelector } from "next-common/store/reducers/userSlice";
 import {
-  encodeKaruraAddress,
-  encodeKhalaAddress,
-  encodeKusamaAddress,
-  encodePolkadotAddress,
+  fetchUserProfile,
+  userSelector,
+} from "next-common/store/reducers/userSlice";
+import {
+  encodeAddressToChain,
   encodeSubstrateAddress,
-  encodeBasiliskAddress,
   signMessage,
-  encodeKabochaAddress,
-  encodeBifrostAddress,
-  encodeKintsugiAddress,
 } from "services/chainApi";
 import { addressEllipsis } from "utils";
 import nextApi from "services/nextApi";
-import { fetchUserProfile } from "next-common/store/reducers/userSlice";
 import { addToast } from "next-common/store/reducers/toastSlice";
-import { nodes } from "next-common/utils/constants";
+import { Chains, nodes } from "next-common/utils/constants";
 import Avatar from "next-common/components/avatar";
 import DownloadExtension from "next-common/components/downloadExtension";
 import { shadow_100 } from "../styles/componentCss";
@@ -204,14 +199,15 @@ export default function LinkedAddress({ chain }) {
       } = item;
       return {
         address,
-        kusamaAddress: encodeKusamaAddress(address),
-        polkadotAddress: encodePolkadotAddress(address),
-        karuraAddress: encodeKaruraAddress(address),
-        khalaAddress: encodeKhalaAddress(address),
-        basiliskAddress: encodeBasiliskAddress(address),
-        kabochaAddress: encodeKabochaAddress(address),
-        bifrostAddress: encodeBifrostAddress(address),
-        kintsugiAddress: encodeKintsugiAddress(address),
+        kusamaAddress: encodeAddressToChain(address, Chains.kusama),
+        polkadotAddress: encodeAddressToChain(address, Chains.polkadot),
+        karuraAddress: encodeAddressToChain(address, Chains.karura),
+        khalaAddress: encodeAddressToChain(address, Chains.khala),
+        basiliskAddress: encodeAddressToChain(address, Chains.basilisk),
+        kabochaAddress: encodeAddressToChain(address, Chains.kabocha),
+        bifrostAddress: encodeAddressToChain(address, Chains.bifrost),
+        kintsugiAddress: encodeAddressToChain(address, Chains.kintsugi),
+        polkadexAddress: encodeAddressToChain(address, Chains.polkadex),
         name,
       };
     });
