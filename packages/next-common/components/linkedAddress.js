@@ -175,7 +175,6 @@ export default function LinkedAddress({ chain }) {
         if (isMounted.current) {
           setHasExtension(false);
         }
-        return;
       }
     })();
   }, [isMounted]);
