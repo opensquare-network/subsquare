@@ -1,25 +1,26 @@
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   isWeb3Injected,
   web3Accounts,
   web3Enable,
 } from "@polkadot/extension-dapp";
-import Button from "next-common/components/button";
+import Button from "./button";
+import nextApi from "../services/nextApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import {
   fetchUserProfile,
   userSelector,
 } from "next-common/store/reducers/userSlice";
-import { encodeAddressToChain, signMessage } from "services/chainApi";
-import { addressEllipsis } from "utils";
-import nextApi from "services/nextApi";
 import { addToast } from "next-common/store/reducers/toastSlice";
 import { nodes } from "next-common/utils/constants";
-import Avatar from "next-common/components/avatar";
-import DownloadExtension from "next-common/components/downloadExtension";
+import Avatar from "./avatar";
+import DownloadExtension from "./downloadExtension";
 import { shadow_100 } from "../styles/componentCss";
+import { addressEllipsis } from "../utils";
+import { encodeAddressToChain } from "../services/address";
+import { signMessage } from "../services/extension/signMessage";
 
 const Wrapper = styled.div`
   max-width: 848px;
