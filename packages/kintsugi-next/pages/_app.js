@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import Script from "next/script";
-import Head from "next/head";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { Provider } from "react-redux";
@@ -10,6 +9,7 @@ import "../styles/globals.css";
 import "../styles/richTextStyles.scss";
 import "react-quill/dist/quill.snow.css";
 import "quill-mention/dist/quill.mention.css";
+import "next-common/styles/prism.min.css";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import { connect } from "../services/websocket";
 
@@ -39,18 +39,10 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   return (
-    <>
-      <Head>
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/themes/prism.min.css"
-        />
-      </Head>
-      <Provider store={store}>
-        <Component {...pageProps} />
-        <Script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/prism.min.js" />
-      </Provider>
-    </>
+    <Provider store={store}>
+      <Component {...pageProps} />
+      <Script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/prism.min.js" />
+    </Provider>
   );
 }
 

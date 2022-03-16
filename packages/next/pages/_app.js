@@ -9,7 +9,7 @@ import { store } from "next-common/store";
 import "../styles/richTextStyles.scss";
 import "react-quill/dist/quill.snow.css";
 import "react-mde/lib/styles/css/react-mde-all.css";
-import "../styles/prism.min.css";
+import "next-common/styles/prism.min.css";
 import { connect } from "../services/websocket";
 import React, { useEffect } from "react";
 
