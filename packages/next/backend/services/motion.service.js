@@ -663,6 +663,10 @@ async function getComments(postId, page, pageSize) {
   }
 
   const [, post, postType] = await findMotionPost(chainMotion);
+  if (!post) {
+    throw new HttpError(404, "Motion post does not found");
+  }
+
   const q = { [postType]: post._id };
 
   const commentCol = await getCommentCollection();
