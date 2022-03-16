@@ -10,6 +10,7 @@ const {
 } = require("@subsquare/backend-common/utils/post");
 const { toUserPublicInfo } = require("@subsquare/backend-common/utils/user");
 const {
+  getDb: getChainDb,
   getTechCommMotionCollection: getChainTechCommMotionCollection,
   getExternalCollection: getChainExternalCollection,
 } = require("../mongo/chain");
@@ -118,26 +119,63 @@ async function loadPostForMotions(chainMotions) {
 
   const commonDb = await getCommonDb();
   const businessDb = await getBusinessDb();
+  const chainDb = await getChainDb();
 
-  const [democracyPosts, motionPosts] = await Promise.all([
-    businessDb.compoundLookupOne({
-      from: "democracy",
-      for: chainMotions,
-      as: "democracyPost",
-      compoundLocalFields: [
-        "externalProposalHash",
-        "externalProposalIndexer.blockHeight",
-      ],
-      compoundForeignFields: ["externalProposalHash", "indexer.blockHeight"],
-    }),
-    businessDb.compoundLookupOne({
-      from: "techCommMotion",
-      for: chainMotions,
-      as: "motionPost",
-      compoundLocalFields: ["hash", "indexer.blockHeight"],
-      compoundForeignFields: ["hash", "height"],
-    }),
-  ]);
+  const [democracyPosts, chainExternals, techCommMotionPosts] =
+    await Promise.all([
+      businessDb.compoundLookupOne({
+        from: "democracy",
+        for: chainMotions,
+        as: "democracyPost",
+        compoundLocalFields: [
+          "externalProposalHash",
+          "externalProposalIndexer.blockHeight",
+        ],
+        compoundForeignFields: ["externalProposalHash", "indexer.blockHeight"],
+      }),
+      chainDb.compoundLookupOne({
+        from: "democracyExternal",
+        for: chainMotions,
+        as: "democracyExternal",
+        compoundLocalFields: [
+          "externalProposalHash",
+          "externalProposalIndexer.blockHeight",
+        ],
+        compoundForeignFields: ["proposalHash", "indexer.blockHeight"],
+      }),
+      businessDb.compoundLookupOne({
+        from: "techCommMotion",
+        for: chainMotions,
+        as: "techCommMotionPost",
+        compoundLocalFields: ["hash", "indexer.blockHeight"],
+        compoundForeignFields: ["hash", "height"],
+      }),
+    ]);
+
+  for (const motion of chainMotions) {
+    if (motion.democracyPost) {
+      if (motion.democracyPost.content) {
+        continue;
+      }
+      if (motion.democracyExternal?.motions?.length !== 1) {
+        continue;
+      }
+
+      // Should use motion post
+      motion.motionPostHash = motion.democracyExternal.motions[0].hash;
+      motion.motionPostHeight =
+        motion.democracyExternal.motions[0].indexer.blockHeight;
+      continue;
+    }
+  }
+
+  const motionPosts = await businessDb.compoundLookupOne({
+    from: "motion",
+    for: chainMotions,
+    as: "motionPost",
+    compoundLocalFields: ["motionPostHash", "motionPostHeight"],
+    compoundForeignFields: ["hash", "indexer.blockHeight"],
+  });
 
   await Promise.all([
     businessDb.lookupCount({
@@ -149,10 +187,17 @@ async function loadPostForMotions(chainMotions) {
     }),
     businessDb.lookupCount({
       from: "comment",
-      for: motionPosts,
+      for: techCommMotionPosts,
       as: "commentsCount",
       localField: "_id",
       foreignField: "techCommMotion",
+    }),
+    businessDb.lookupCount({
+      from: "comment",
+      for: motionPosts,
+      as: "commentsCount",
+      localField: "_id",
+      foreignField: "motion",
     }),
     commonDb.lookupOne(
       {
@@ -167,6 +212,11 @@ async function loadPostForMotions(chainMotions) {
           localField: "proposer",
         },
         {
+          for: techCommMotionPosts,
+          as: "author",
+          localField: "proposer",
+        },
+        {
           for: motionPosts,
           as: "author",
           localField: "proposer",
@@ -177,10 +227,16 @@ async function loadPostForMotions(chainMotions) {
 
   return chainMotions.map((motion) => {
     const post = {
-      ...(motion.democracyPost ?? motion.motionPost),
+      ...(motion.motionPost?.content
+        ? motion.motionPost
+        : motion.democracyPost ?? motion.techCommMotionPost),
     };
+    // Clear temporary data
     motion.democracyPost = undefined;
+    motion.techCommMotionPost = undefined;
     motion.motionPost = undefined;
+    motion.motionPostHash = undefined;
+    motion.motionPostHeight = undefined;
     post._id = motion._id;
     post.motionIndex = motion.index;
     post.hash = motion.hash;
@@ -220,6 +276,7 @@ async function updatePost(postId, title, content, contentType, author) {
       throw new HttpError(404, "On-chain external proposal data is not found");
     }
 
+    //TODO: authors check
     if (!chainExternal.authors.includes(author[`${chain}Address`])) {
       throw new HttpError(403, "You cannot edit");
     }

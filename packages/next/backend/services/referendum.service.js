@@ -175,6 +175,7 @@ async function loadPostForReferendums(chainReferendums) {
     };
     item.democracyPost = undefined;
     item.motionPost = undefined;
+    item.democracyExternal = undefined;
     post._id = item._id;
     post.referendumIndex = item.referendumIndex;
     post.indexer = item.indexer;
@@ -325,7 +326,7 @@ async function getPostById(postId) {
       for: post,
       as: "reactions",
       localField: "_id",
-      foreignField: "democracy",
+      foreignField: postType,
     }),
   ]);
 
