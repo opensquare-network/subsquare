@@ -51,9 +51,13 @@ export default withLoginUserRedux(
     const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] =
       useState(false);
 
+    const timeline = detail?.onchainData?.timeline || [];
+    const voteFinished = ["Executed", "Passed", "NotPassed"].includes(
+      timeline[timeline.length - 1]?.method
+    );
+
     useEffect(() => {
-      // Already has the last ongoging status
-      if (referendumStatus) {
+      if (voteFinished) {
         return;
       }
 
@@ -69,7 +73,7 @@ export default withLoginUserRedux(
         .finally(() => {
           setIsLoadingReferendumStatus(false);
         });
-    }, [api, detail, isMounted, referendumStatus]);
+    }, [api, detail, isMounted, voteFinished]);
 
     const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
