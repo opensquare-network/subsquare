@@ -29,6 +29,7 @@ const {
 } = require("@subsquare/backend-common/mongo/common");
 const { HttpError } = require("@subsquare/backend-common/exc");
 const { toUserPublicInfo } = require("@subsquare/backend-common/utils/user");
+const mailService = require("@subsquare/backend-common/services/mail.service");
 
 async function findExternal(postId) {
   const q = {};
