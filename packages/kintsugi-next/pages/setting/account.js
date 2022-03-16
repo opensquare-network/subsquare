@@ -15,7 +15,7 @@ import { addToast } from "next-common/store/reducers/toastSlice";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import Layout from "components/layout";
 import { shadow_100 } from "styles/componentCss";
-import NextHead from "../../components/nextHead";
+import NextHead from "next-common/components/nextHead";
 
 const Wrapper = styled.div`
   max-width: 848px;

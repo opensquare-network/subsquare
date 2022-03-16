@@ -3,7 +3,7 @@ import Menu from "next-common/components/menu";
 import { settingMenu } from "next-common/utils/constants";
 import dynamic from "next/dynamic";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import NextHead from "../../components/nextHead";
+import NextHead from "next-common/components/nextHead";
 
 const LinkedAddressComp = dynamic(
   () => import("next-common/components/linkedAddress"),

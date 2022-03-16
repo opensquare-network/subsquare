@@ -14,7 +14,7 @@ import ErrorText from "next-common/components/ErrorText";
 import { setUser } from "next-common/store/reducers/userSlice";
 import { withLoginUser, withLoginUserRedux } from "../lib";
 import { shadow_100 } from "../styles/componentCss";
-import NextHead from "../components/nextHead";
+import NextHead from "next-common/components/nextHead";
 
 const AddressLogin = dynamic(() => import("components/addressLogin"), {
   ssr: false,

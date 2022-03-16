@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import Layout from "components/layout";
 import { withLoginUser, withLoginUserRedux } from "../lib";
-import NextHead from "components/nextHead";
+import NextHead from "next-common/components/nextHead";
 import termsMd from "public/terms-of-service.md";
 import Markdown from "next-common/components/micromarkMd";
 
