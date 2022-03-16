@@ -276,7 +276,6 @@ async function updatePost(postId, title, content, contentType, author) {
       throw new HttpError(404, "On-chain external proposal data is not found");
     }
 
-    //TODO: authors check
     if (!chainExternal.authors.includes(author[`${chain}Address`])) {
       throw new HttpError(403, "You cannot edit");
     }

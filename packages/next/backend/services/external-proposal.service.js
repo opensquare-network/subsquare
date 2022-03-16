@@ -160,7 +160,6 @@ async function loadPostForExternals(chainExternals) {
         ? item.motionPost
         : item.democracyPost),
     };
-    //TODO: post authors
     item.democracyPost = undefined;
     item.motionPost = undefined;
     post._id = item._id;
@@ -346,7 +345,7 @@ async function getPostById(postId) {
     referendumIndex: chainExternal.referendumIndex,
     state: chainExternal.state?.state,
     author,
-    authors: chainExternal.authors, // TODO: authors
+    authors: chainExternal.authors,
     onchainData: {
       ...chainExternal,
       preImage,

@@ -371,7 +371,7 @@ async function getPostById(postId) {
     referendumIndex: chainReferendum.referendumIndex,
     state: chainReferendum.state?.state,
     author,
-    authors: chainReferendum.authors, // TODO: authors
+    authors: chainReferendum.authors,
     onchainData: chainReferendum,
   };
 }
