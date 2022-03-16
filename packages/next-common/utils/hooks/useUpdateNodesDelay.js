@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import getApi from "next-common/services/chain/api";
+import getApi from "../../services/chain/api";
 import {
   currentNodeSelector,
   nodesSelector,
   setNodesDelay,
-} from "next-common/store/reducers/nodeSlice";
-import { sleep } from "./index";
+} from "../../store/reducers/nodeSlice";
+import { sleep } from "../index";
 
 const TIMEOUT = 10000;
 let count = 0;
