@@ -130,12 +130,6 @@ export function getTimelineStatus(type, method) {
   return { value: method };
 }
 
-export const sleep = (time) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, time);
-  });
-};
-
 export function getEffectiveNumbers(n) {
   const result = [];
   let flag = false;

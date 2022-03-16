@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import NextHead from "components/nextHead";
+import NextHead from "next-common/components/nextHead";
 
 const Wrapper = styled.div`
   height: 100vh;

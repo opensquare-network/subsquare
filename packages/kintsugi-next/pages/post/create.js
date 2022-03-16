@@ -18,7 +18,7 @@ import { useDispatch } from "react-redux";
 import { addToast } from "next-common/store/reducers/toastSlice";
 import { fetchUserProfile } from "next-common/store/reducers/userSlice";
 import { shadow_100 } from "styles/componentCss";
-import NextHead from "components/nextHead";
+import NextHead from "next-common/components/nextHead";
 
 const Wrapper = styled.div`
   > :not(:first-child) {

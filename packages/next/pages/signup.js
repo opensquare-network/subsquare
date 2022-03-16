@@ -14,7 +14,7 @@ import { withLoginUser, withLoginUserRedux } from "../lib";
 import { useDispatch } from "react-redux";
 import { addToast } from "next-common/store/reducers/toastSlice";
 import { shadow_100 } from "../styles/componentCss";
-import NextHead from "../components/nextHead";
+import NextHead from "next-common/components/nextHead";
 import UserPolicy from "next-common/components/userPolicy";
 
 const Wrapper = styled.div`

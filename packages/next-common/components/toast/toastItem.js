@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { removeToast } from "next-common/store/reducers/toastSlice";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import Flex from "next-common/components/styled/flex";
-import { shadow_200 } from "styles/componentCss";
+import { removeToast } from "../../store/reducers/toastSlice";
+import useIsMounted from "../../utils/hooks/useIsMounted";
+import Flex from "../../components/styled/flex";
+import { shadow_200 } from "../../styles/componentCss";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
@@ -31,7 +31,7 @@ const Wrapper = styled(Flex)`
   }
   > div {
     flex-grow: 1;
-    word-break: break-all;
+    width: 150px;
     word-wrap: break-word;
   }
   transform: translateX(200%);

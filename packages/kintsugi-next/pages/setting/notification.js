@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import { fetchUserProfile } from "next-common/store/reducers/userSlice";
 import Layout from "components/layout";
 import { shadow_100 } from "styles/componentCss";
-import NextHead from "../../components/nextHead";
+import NextHead from "next-common/components/nextHead";
 import { isSafari } from "../../utils/serverSideUtil";
 
 const Wrapper = styled.div`

@@ -9,7 +9,7 @@ import nextApi from "services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { shadow_100 } from "styles/componentCss";
-import NextHead from "components/nextHead";
+import NextHead from "next-common/components/nextHead";
 
 const Wrapper = styled.div`
   padding: 32px 0;

@@ -1,13 +1,13 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import Input from "next-common/components/input";
 import Button from "next-common/components/button";
 import DeleteAccount from "components/deleteAccount";
 import Menu from "next-common/components/menu";
 import { settingMenu } from "next-common/utils/constants";
-import { userSelector, logout } from "next-common/store/reducers/userSlice";
+import { logout, userSelector } from "next-common/store/reducers/userSlice";
 import { useForm } from "utils/hooks";
 import ErrorText from "next-common/components/ErrorText";
 import nextApi from "services/nextApi";
@@ -15,7 +15,7 @@ import { addToast } from "next-common/store/reducers/toastSlice";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import Layout from "components/layout";
 import { shadow_100 } from "styles/componentCss";
-import NextHead from "../../components/nextHead";
+import NextHead from "next-common/components/nextHead";
 
 const Wrapper = styled.div`
   max-width: 848px;

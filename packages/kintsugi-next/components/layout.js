@@ -2,8 +2,6 @@ import styled from "styled-components";
 
 import Header from "./header";
 import Content from "next-common/components/layout/content";
-import Toast from "./toast";
-import Auth from "./auth";
 import SEO from "next-common/components/SEO";
 import { DEFAULT_SEO_INFO } from "next-common/utils/constants";
 import capitalize from "next-common/utils/capitalize";
@@ -16,6 +14,8 @@ import {
   setFinalizedHeight,
 } from "next-common/store/reducers/chainSlice";
 import { useEffect } from "react";
+import Auth from "next-common/components/auth";
+import Toast from "next-common/components/toast";
 
 const Wrapper = styled.div`
   display: flex;

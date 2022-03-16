@@ -136,12 +136,6 @@ export function getTimelineStatus(type, method) {
   return { value: method };
 }
 
-export const sleep = (time) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, time);
-  });
-};
-
 export function abbreviateBigNumber(x, fixed = 2) {
   const n = new BigNumber(x);
   const fmt = {

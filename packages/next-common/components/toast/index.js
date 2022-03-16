@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 
 import ToastItem from "./toastItem";
-import { toastsSelector } from "next-common/store/reducers/toastSlice";
-import Flex from "next-common/components/styled/flex";
+import { toastsSelector } from "../../store/reducers/toastSlice";
+import Flex from "../../components/styled/flex";
 
 const Wrapper = styled.div`
   position: fixed;
