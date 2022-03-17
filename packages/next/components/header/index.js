@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import NetworkSwitch from "components/networkSwitch";
 import Container from "components/container";
-import HeaderAccount from "./headerAccount";
+import HeaderAccount from "next-common/components/header/headerAccount";
 import Sidebar from "./sidebar";
 import SidebarAccount from "./sidebarAccount";
 import { nodes } from "next-common/utils/constants";

@@ -1,16 +1,16 @@
 import styled from "styled-components";
-import { useState, useRef, useEffect, Fragment } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import Button from "next-common/components/button";
-import { accountMenu } from "next-common/utils/constants";
-import useWindowSize from "next-common/utils/hooks/useWindowSize.js";
-import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside.js";
-import { logout } from "next-common/store/reducers/userSlice";
-import User from "next-common/components/user";
-import Relative from "next-common/components/styled/relative";
-import Flex from "next-common/components/styled/flex";
-import { shadow_200 } from "styles/componentCss";
+import Button from "../button";
+import { accountMenu } from "../../utils/constants";
+import useOnClickOutside from "../../utils/hooks/useOnClickOutside.js";
+import useWindowSize from "../../utils/hooks/useWindowSize.js";
+import { logout } from "../../store/reducers/userSlice";
+import User from "../user";
+import Relative from "../styled/relative";
+import Flex from "../styled/flex";
+import { shadow_200 } from "../../styles/componentCss";
 
 const Wrapper = Relative;
 
