@@ -6,7 +6,7 @@ import Button from "next-common/components/button";
 import Menu from "next-common/components/menu";
 import { settingMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import nextApi from "services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import { addToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import { fetchUserProfile } from "next-common/store/reducers/userSlice";

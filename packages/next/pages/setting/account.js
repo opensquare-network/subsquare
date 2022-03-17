@@ -10,7 +10,7 @@ import { settingMenu } from "next-common/utils/constants";
 import { logout, userSelector } from "next-common/store/reducers/userSlice";
 import { useForm } from "utils/hooks";
 import ErrorText from "next-common/components/ErrorText";
-import nextApi from "services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import { addToast } from "next-common/store/reducers/toastSlice";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import Layout from "components/layout";

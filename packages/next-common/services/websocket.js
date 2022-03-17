@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 
-import { store } from "next-common/store";
-import { setNodeBlockHeight } from "next-common/store/reducers/nodeSlice";
+import { store } from "../store";
+import { setNodeBlockHeight } from "../store/reducers/nodeSlice";
 
 const chainStatusRoom = "CHAIN_STATUS_ROOM";
 

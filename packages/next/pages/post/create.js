@@ -7,7 +7,7 @@ import { withLoginUser, withLoginUserRedux } from "lib";
 import Input from "next-common/components/input";
 import MarkdownEditor from "next-common/components/markdownEditor";
 import Button from "next-common/components/button";
-import nextApi from "services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import PreviewMD from "next-common/components/previewMD";
 import Toggle from "next-common/components/toggle";
 import ErrorText from "next-common/components/ErrorText";

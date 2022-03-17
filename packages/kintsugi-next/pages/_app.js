@@ -11,7 +11,7 @@ import "react-quill/dist/quill.snow.css";
 import "quill-mention/dist/quill.mention.css";
 import "next-common/styles/prism.min.css";
 import "react-mde/lib/styles/css/react-mde-all.css";
-import { connect } from "../services/websocket";
+import { connect } from "next-common/services/websocket";
 
 NProgress.configure({
   minimum: 0.3,

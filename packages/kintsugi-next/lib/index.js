@@ -1,5 +1,5 @@
 import Cookies from "cookies";
-import { ssrNextApi as nextApi } from "services/nextApi";
+import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser, userSelector } from "next-common/store/reducers/userSlice";
 import { useEffect, useLayoutEffect } from "react";

@@ -1,8 +1,8 @@
 import Overview from "components/overview";
 import Menu from "next-common/components/menu";
-import { DEFAULT_SEO_INFO, mainMenu } from "next-common/utils/constants";
+import { mainMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import { ssrNextApi as nextApi } from "services/nextApi";
+import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import Layout from "components/layout";
 import {
   toDiscussionListItem,

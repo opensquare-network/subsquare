@@ -2,7 +2,7 @@ import List from "next-common/components/list";
 import Menu from "next-common/components/menu";
 import { mainMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import { ssrNextApi as nextApi } from "services/nextApi";
+import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import { toTreasuryProposalListItem } from "utils/viewfuncs";

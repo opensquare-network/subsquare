@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import { ssrNextApi as nextApi } from "services/nextApi";
+import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import Layout from "components/layout";
 import MotionDetail from "components/motion/motionDetail";
 import { to404 } from "next-common/utils/serverSideUtil";
