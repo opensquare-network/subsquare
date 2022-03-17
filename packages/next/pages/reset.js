@@ -7,7 +7,7 @@ import Button from "next-common/components/button";
 import Input from "next-common/components/input";
 import { useForm } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import nextApi from "services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { withLoginUser, withLoginUserRedux } from "../lib";
 import NextHead from "next-common/components/nextHead";

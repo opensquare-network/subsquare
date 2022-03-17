@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import nextApi from "services/nextApi";
+import nextApi from "next-common/services/nextApi";
 
 import Input from "next-common/components/input";
 import Button from "next-common/components/button";

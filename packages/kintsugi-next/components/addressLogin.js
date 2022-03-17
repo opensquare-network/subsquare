@@ -12,7 +12,7 @@ import AddressSelect from "next-common/components/addressSelect";
 import Button from "next-common/components/button";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import DownloadExtension from "next-common/components/downloadExtension";
-import nextApi from "services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { setUser } from "next-common/store/reducers/userSlice";
 import { addToast } from "next-common/store/reducers/toastSlice";

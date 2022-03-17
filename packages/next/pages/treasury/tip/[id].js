@@ -18,7 +18,7 @@ import DetailItem from "components/detailItem";
 import Comments from "next-common/components/comment";
 import OutWrapper from "next-common/components/styled/outWrapper";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
-import { ssrNextApi as nextApi } from "services/nextApi";
+import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import Editor from "next-common/components/comment/editor";
 import Layout from "components/layout";
 import Timeline from "next-common/components/timeline";

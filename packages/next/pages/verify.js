@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import Layout from "components/layout";
 import Button from "next-common/components/button";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import nextApi from "services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { withLoginUser, withLoginUserRedux } from "../lib";
 import { shadow_100 } from "../styles/componentCss";
