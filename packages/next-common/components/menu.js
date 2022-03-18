@@ -14,6 +14,7 @@ import AddressIcon from "../assets/imgs/icons/address.svg";
 import BellIcon from "../assets/imgs/icons/bell.svg";
 import MembersIcon from "../assets/imgs/icons/members.svg";
 import BountyIcon from "../assets/imgs/icons/bounties.svg";
+import ExternalLink from "./icons/externalLink";
 
 const Wrapper = styled.div`
   padding-top: 37px;
@@ -48,8 +49,14 @@ const Item = styled.div`
     color: #6848ff;
 
     > svg {
-      * {
-        fill: #6848ff;
+      &:first-child {
+        * {
+          fill: #6848ff;
+        }
+      }
+
+      &:last-child {
+        stroke: #6848ff;
       }
     }
   }
@@ -83,6 +90,7 @@ export default function Menu({ menu, chain }) {
   const iconMap = new Map();
   iconMap.set("overview", <OverviewIcon />);
   iconMap.set("discussions", <DiscussionIcon />);
+  iconMap.set("offChainVoting", <ReferendaIcon />);
   iconMap.set("tips", <TipIcon />);
   iconMap.set("proposals", <ProposalIcon />);
   iconMap.set("bounties", <BountyIcon />);
@@ -109,13 +117,15 @@ export default function Menu({ menu, chain }) {
           <div key={index}>
             {item.name && <Title>{item.name}</Title>}
             {item.items.map((item, index) => {
+              const isExternalLink = (item.pathname || "").startsWith("http");
+
               if (item?.excludeToChains?.includes(chain)) {
                 return null;
               }
               return (
                 <Fragment key={index}>
                   <Link href={item?.pathname} passHref>
-                    <a>
+                    <a target={isExternalLink ? "_blank" : "_self"}>
                       <Item
                         active={
                           router.pathname === item.pathname ||
@@ -124,7 +134,8 @@ export default function Menu({ menu, chain }) {
                         }
                       >
                         {iconMap.get(item.value)}
-                        <div>{item.name}</div>
+                        <span>{item.name}</span>
+                        {isExternalLink && <ExternalLink />}
                       </Item>
                     </a>
                   </Link>
