@@ -20,13 +20,13 @@ import DisplayValue from "./displayValue";
 const LabelWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 8px;
 `;
 
-const Label = styled.div`
+const Label = styled.span`
   font-weight: bold;
   font-size: 12px;
   line-height: 100%;
-  margin-bottom: 8px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -53,6 +53,10 @@ const BalanceWrapper = styled.div`
   }
   > :not(:first-child) {
     margin-left: 8px;
+  }
+
+  & > .balance {
+    cursor: pointer;
   }
 `;
 
@@ -97,6 +101,8 @@ const TooltipWrapper = styled.div`
   > :not(:first-child) {
     margin-left: 4px;
   }
+
+  margin-bottom: 8px;
 `;
 
 const WarningWrapper = styled.div`
@@ -229,7 +235,14 @@ function PopupContent({
           <Label>Address</Label>
           <BalanceWrapper>
             <div>Voting Balance</div>
-            {!votingIsLoading && <div>{votingBalance ?? 0}</div>}
+            {!votingIsLoading && (
+              <div
+                className="balance"
+                onClick={() => setInputVoteBalance(votingBalance ?? 0)}
+              >
+                {votingBalance ?? 0}
+              </div>
+            )}
             {votingIsLoading && <Loading />}
           </BalanceWrapper>
         </LabelWrapper>
