@@ -1,5 +1,5 @@
 import Link from "next/link";
-import MultiKVList from "next-common/components/multiKVList";
+import MultiKVList from "next-common/components/listInfo/multiKVList";
 import Flex from "next-common/components/styled/flex";
 import User from "next-common/components/user";
 import Links from "next-common/components/links";

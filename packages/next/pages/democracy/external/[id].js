@@ -10,7 +10,7 @@ import Layout from "components/layout";
 import { getNode } from "utils";
 import Timeline from "next-common/components/timeline";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
-import KVList from "next-common/components/kvList";
+import KVList from "next-common/components/listInfo/kvList";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { makeExternalTimelineData } from "utils/dataWrappers/makeTimelineData";

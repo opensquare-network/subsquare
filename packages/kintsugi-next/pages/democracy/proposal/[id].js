@@ -15,7 +15,7 @@ import { getNode, toPrecision } from "utils";
 import Link from "next/link";
 import Links from "next-common/components/links";
 import Timeline from "next-common/components/timeline";
-import KVList from "next-common/components/kvList";
+import KVList from "next-common/components/listInfo/kvList";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";

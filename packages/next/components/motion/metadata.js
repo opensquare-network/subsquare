@@ -1,4 +1,4 @@
-import KVList from "next-common/components/kvList";
+import KVList from "next-common/components/listInfo/kvList";
 import User from "next-common/components/user";
 import Links from "next-common/components/links";
 import Proposal from "next-common/components/proposal";

@@ -24,7 +24,7 @@ import Layout from "components/layout";
 import Timeline from "next-common/components/timeline";
 import dayjs from "dayjs";
 import User from "next-common/components/user";
-import KVList from "next-common/components/kvList";
+import KVList from "next-common/components/listInfo/kvList";
 import Links from "next-common/components/links";
 import ReasonLink from "next-common/components/reasonLink";
 import Tipper from "components/tipper";

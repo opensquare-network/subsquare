@@ -1,7 +1,7 @@
 import React, { useState, memo } from "react";
 import styled from "styled-components";
-import Panel from "./styled/panel";
-import Caret from "./icons/caret";
+import Panel from "../styled/panel";
+import Caret from "../icons/caret";
 
 const Wrapper = styled(Panel)`
   margin: 16px 0;

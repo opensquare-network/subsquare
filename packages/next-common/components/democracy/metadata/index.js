@@ -1,6 +1,6 @@
 import User from "../../user";
 import Links from "../../links";
-import KVList from "../../kvList";
+import KVList from "../../listInfo/kvList";
 import React from "react";
 import useLatestBlockTime from "../../../utils/hooks/useBlockTime";
 import getReferendumTime from "../../../utils/referendumTime";
