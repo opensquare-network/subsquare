@@ -1,6 +1,6 @@
 import User from "../../user";
 import Links from "../../links";
-import KVList from "../../kvList";
+import KVList from "../../listInfo/kvList";
 import React from "react";
 import useLatestBlockTime from "../../../utils/hooks/useBlockTime";
 import getReferendumTime from "../../../utils/referendumTime";
@@ -77,5 +77,5 @@ export default function ReferendumMetadata({
     ]);
   }
 
-  return <KVList title={"Metadata"} data={metadata} />;
+  return <KVList title={"Metadata"} data={metadata} showFold={true} />;
 }

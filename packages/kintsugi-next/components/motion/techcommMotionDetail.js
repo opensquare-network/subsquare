@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 import styled from "styled-components";
-import KVList from "next-common/components/kvList";
+import KVList from "next-common/components/listInfo/kvList";
 import Link from "next/link";
 import User from "next-common/components/user";
 import Links from "next-common/components/links";
@@ -13,7 +13,7 @@ import ArticleContent from "next-common/components/articleContent";
 import { useState } from "react";
 import { createMotionTimelineData } from "utils/timeline/motion";
 import { getPostUpdatedAt } from "utils/viewfuncs";
-import MultiKVList from "next-common/components/multiKVList";
+import MultiKVList from "next-common/components/listInfo/multiKVList";
 import MotionEnd from "next-common/components/motionEnd";
 import { isMotionEnded } from "next-common/utils";
 import { useSelector } from "react-redux";
@@ -339,6 +339,7 @@ export default function TechcommMotionDetail({
 
       <KVList
         title={"Metadata"}
+        showFold
         data={[
           [
             "Proposer",

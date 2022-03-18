@@ -22,7 +22,7 @@ import { TYPE_TREASURY_PROPOSAL } from "utils/viewConstants";
 import { createMotionTimelineData } from "../../../utils/timeline/motion";
 import sortTimeline from "../../../utils/timeline/sort";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-import KVList from "next-common/components/kvList";
+import KVList from "next-common/components/listInfo/kvList";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 
 const Flex = styled.div`
@@ -133,7 +133,7 @@ export default withLoginUserRedux(
             onReply={focusEditor}
             type={TYPE_TREASURY_PROPOSAL}
           />
-          <KVList title="Metadata" data={metadata} />
+          <KVList title="Metadata" data={metadata} showFold />
           <Timeline
             data={timelineData}
             chain={chain}

@@ -15,7 +15,7 @@ import { getNode, getTimelineStatus, toPrecision } from "utils";
 import Links from "next-common/components/links";
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
-import KVList from "next-common/components/kvList";
+import KVList from "next-common/components/listInfo/kvList";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { to404 } from "next-common/utils/serverSideUtil";
@@ -149,7 +149,7 @@ export default withLoginUserRedux(
             onReply={focusEditor}
             type={TYPE_DEMOCRACY_PROPOSAL}
           />
-          <KVList title="Metadata" data={metadata} />
+          <KVList title="Metadata" data={metadata} showFold />
           <Timeline data={timelineData} chain={chain} />
           <CommentsWrapper>
             <Comments
