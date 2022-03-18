@@ -122,7 +122,7 @@ const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
 if (space) {
   menus[0].items.push({
     value: "offChainVoting",
-    name: "Off-chain Voting",
+    name: "Off-chain",
     pathname: `https://voting.opensquare.io/space/${space}`,
   });
 }

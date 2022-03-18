@@ -54,10 +54,6 @@ const Item = styled.div`
           fill: #6848ff;
         }
       }
-
-      &:last-child {
-        stroke: #6848ff;
-      }
     }
   }
 
@@ -135,7 +131,7 @@ export default function Menu({ menu, chain }) {
                       >
                         {iconMap.get(item.value)}
                         <span>{item.name}</span>
-                        {isExternalLink && <ExternalLink />}
+                        {isExternalLink && <ExternalLink color="#D7DEE8" />}
                       </Item>
                     </a>
                   </Link>
