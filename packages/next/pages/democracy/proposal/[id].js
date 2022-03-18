@@ -149,7 +149,7 @@ export default withLoginUserRedux(
             onReply={focusEditor}
             type={TYPE_DEMOCRACY_PROPOSAL}
           />
-          <KVList title="Metadata" data={metadata} />
+          <KVList title="Metadata" data={metadata} showFold />
           <Timeline data={timelineData} chain={chain} />
           <CommentsWrapper>
             <Comments

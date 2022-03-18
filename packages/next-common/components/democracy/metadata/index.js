@@ -77,5 +77,5 @@ export default function ReferendumMetadata({
     ]);
   }
 
-  return <KVList title={"Metadata"} data={metadata} />;
+  return <KVList title={"Metadata"} data={metadata} showFold={true} />;
 }

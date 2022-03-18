@@ -129,9 +129,9 @@ export default withLoginUserRedux(
             type={TYPE_DEMOCRACY_PROPOSAL}
           />
           {referendumData.length > 0 && (
-            <KVList title="Business" data={referendumData} />
+            <KVList title="Business" data={referendumData} showFold />
           )}
-          <KVList title="Metadata" data={metadata} />
+          <KVList title="Metadata" data={metadata} showFold />
           <Timeline data={timelineData} chain={chain} />
           <CommentsWrapper>
             <Comments

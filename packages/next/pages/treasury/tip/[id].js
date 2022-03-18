@@ -314,7 +314,7 @@ export default withLoginUserRedux(
               isLoadingTip={isLoadingTip}
               setIsLoadingTip={setIsLoadingTip}
             />
-            <KVList title="Metadata" data={metadata} />
+            <KVList title="Metadata" data={metadata} showFold />
             <Timeline data={timeline} chain={chain} indent={false} />
             <CommentsWrapper>
               <Comments

@@ -339,6 +339,7 @@ export default function TechcommMotionDetail({
 
       <KVList
         title={"Metadata"}
+        showFold
         data={[
           [
             "Proposer",
