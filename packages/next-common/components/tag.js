@@ -45,6 +45,7 @@ const getTagColor = (name) => {
     case "Voting":
     case "BountyBecameActive":
     case "Funded":
+    case "Active":
       return ACTIVE;
     case "Passed":
     case "Claimed":
