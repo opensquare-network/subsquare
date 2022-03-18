@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 
 import Icon from "next-common/assets/imgs/icons/circle-question.svg";
 
-const Wrapper = styled.div`
+const Wrapper = styled.span`
   display: inline-block;
   position: relative;
   font-size: 12px;
@@ -23,16 +23,6 @@ const Wrapper = styled.div`
       display: block;
     }
   }
-  ${(p) =>
-    p.bg &&
-    css`
-      padding: 2px 8px;
-      background: #f4f4f4;
-      border-radius: 4px;
-      :hover {
-        background: #eeeeee;
-      }
-    `}
 `;
 
 const PopupWrapper = styled.div`
