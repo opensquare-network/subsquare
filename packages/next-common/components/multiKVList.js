@@ -1,25 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import Panel from "./styled/panel";
+import Accordion from "./accordion";
 
 const Section = styled.div`
   :not(:first-child) {
     margin-top: 16px;
   }
-`;
-
-const Wrapper = styled(Panel)`
-  margin: 16px 0;
-
-  div:last-child {
-    border-bottom: none;
-  }
-`;
-
-const Title = styled.div`
-  font-weight: bold;
-  font-size: 16px;
-  margin-bottom: 16px;
 `;
 
 const Row = styled.div`
@@ -50,6 +36,7 @@ const Content = styled.div`
   line-height: 140%;
   color: #1e2134;
   word-break: break-all;
+
   a {
     color: #1f70c7;
     font-weight: 500;
@@ -60,13 +47,13 @@ const Content = styled.div`
   }
 `;
 
-function MultiKVList({ data, title }) {
+function MultiKVList({ data, title, showFold = true }) {
   if (!data || data?.length === 0) {
     return null;
   }
+
   return (
-    <Wrapper>
-      <Title>{title}</Title>
+    <Accordion title={title} showFold={showFold}>
       {data.map((item, index) => (
         <Section key={index}>
           {item.map((row, index) => (
@@ -82,7 +69,7 @@ function MultiKVList({ data, title }) {
           ))}
         </Section>
       ))}
-    </Wrapper>
+    </Accordion>
   );
 }
 
