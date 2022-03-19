@@ -11,3 +11,15 @@ export default function useIsMounted() {
 
   return isMounted;
 }
+
+export function useIsMountedBool() {
+  const isMounted = useRef(true);
+
+  useEffect(() => {
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
+  return isMounted.current;
+}

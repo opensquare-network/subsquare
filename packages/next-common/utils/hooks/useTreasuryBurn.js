@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import useIsMounted from "./useIsMounted";
+import { useIsMountedBool } from "./useIsMounted";
 import BN from "bn.js";
 
 export default function useTreasuryBurn(api, free) {
   const [burn, setBurn] = useState("0");
-  const isMounted = useIsMounted();
+  const isMounted = useIsMountedBool();
 
   useEffect(() => {
     if (!api) {
@@ -13,7 +13,7 @@ export default function useTreasuryBurn(api, free) {
 
     const burn = api.consts.treasury.burn;
     const toBurn = burn.mul(new BN(free));
-    if (isMounted.current) {
+    if (isMounted) {
       setBurn(toBurn.toString());
     }
   }, [api, free]);

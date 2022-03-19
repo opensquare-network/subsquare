@@ -16,6 +16,7 @@ import {
 } from "next-common/store/reducers/chainSlice";
 import Auth from "next-common/components/auth";
 import Toast from "next-common/components/toast";
+import { useIsMountedBool } from "next-common/utils/hooks/useIsMounted";
 
 const Wrapper = styled.div`
   display: flex;
@@ -38,15 +39,16 @@ export default function Layout({
   const blockTime = useBlockTime(api);
   const bestNumber = useBestNumber(api);
   const dispatch = useDispatch();
+  const isMounted = useIsMountedBool();
 
   useEffect(() => {
-    if (blockTime) {
+    if (blockTime && isMounted) {
       dispatch(setBlockTime(blockTime.toNumber()));
     }
   }, [blockTime, dispatch]);
 
   useEffect(() => {
-    if (bestNumber) {
+    if (bestNumber && isMounted) {
       dispatch(setFinalizedHeight(bestNumber.toNumber()));
     }
   }, [bestNumber, dispatch]);

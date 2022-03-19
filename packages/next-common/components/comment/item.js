@@ -16,6 +16,7 @@ import EditInput from "next-common/components/editInput";
 import { useRouter } from "next/router";
 import Flex from "next-common/components/styled/flex";
 import MicromarkMd from "next-common/components/micromarkMd";
+import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 
 const Wrapper = styled.div`
   position: relative;
@@ -160,6 +161,7 @@ export default function Item({ user, data, chain, onReply }) {
   const [loading, setLoading] = useState(false);
   const [highlight, setHighlight] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
+  const isMounted = useIsMountedBool();
 
   useEffect(() => {
     if (window?.location?.hash === "") {
@@ -304,7 +306,9 @@ export default function Item({ user, data, chain, onReply }) {
             if (reload) {
               await updateComment();
             }
-            setIsEdit(false);
+            if (isMounted) {
+              setIsEdit(false);
+            }
           }}
           update={editComment}
           loading={loading}

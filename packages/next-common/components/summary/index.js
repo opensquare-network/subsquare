@@ -17,6 +17,7 @@ import {
   finalizedHeightSelector,
 } from "../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
+import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 
 const Wrapper = styled.div`
   display: flex;
@@ -94,6 +95,7 @@ export default function Summary({ chain }) {
 
   const free = useTreasuryFree(api, chain);
   const nextBurn = useTreasuryBurn(api, free);
+  const isMounted = useIsMountedBool();
 
   useEffect(() => {
     if (api && finalizedHeight) {
@@ -106,7 +108,9 @@ export default function Summary({ chain }) {
         .multipliedBy(100)
         .toNumber();
       const TimeArray = estimateBlocksTime(spendPeriod - goneBlocks, blockTime);
-      setSummary({ progress, spendPeriod: TimeArray });
+      if (isMounted) {
+        setSummary({ progress, spendPeriod: TimeArray });
+      }
     }
   }, [api, finalizedHeight]);
 
