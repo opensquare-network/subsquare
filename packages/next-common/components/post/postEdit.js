@@ -4,6 +4,7 @@ import Input from "next-common/components/input";
 import EditInput from "next-common/components/editInput";
 import nextApi from "next-common/services/nextApi";
 import { toApiType } from "next-common/utils/viewfuncs";
+import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 
 const Wrapper = styled.div`
   textarea:read-only,
@@ -42,6 +43,8 @@ export default function PostEdit({
     });
   };
 
+  const isMounted = useIsMountedBool();
+
   return (
     <Wrapper>
       <Title>Edit</Title>
@@ -59,7 +62,10 @@ export default function PostEdit({
           if (reload) {
             await updatePost();
           }
-          setIsEdit(false);
+
+          if (isMounted) {
+            setIsEdit(false);
+          }
         }}
         loading={updating}
         setLoading={setUpdating}

@@ -1,5 +1,3 @@
-import styled from "styled-components";
-
 import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import Comments from "next-common/components/comment";
@@ -7,14 +5,12 @@ import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Editor from "next-common/components/comment/editor";
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import Layout from "components/layout";
 import User from "next-common/components/user";
-import { getNode, toPrecision } from "utils";
-import Links from "next-common/components/links";
+import { getNode, getTimelineStatus, toPrecision } from "utils";
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
-import { getTimelineStatus } from "utils";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
@@ -22,13 +18,8 @@ import { TYPE_TREASURY_BOUNTY } from "utils/viewConstants";
 import { createMotionTimelineData } from "../../../utils/timeline/motion";
 import sortTimeline from "../../../utils/timeline/sort";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-import KVList from "next-common/components/listInfo/kvList";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
-
-const Flex = styled.div`
-  display: flex;
-  align-items: center; ;
-`;
+import BountyMetadata from "next-common/components/treasury/bounty/metadata";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, chain, siteUrl }) => {
@@ -108,34 +99,6 @@ export default withLoginUserRedux(
       focusEditor
     );
 
-    const metadata = detail.onchainData?.meta
-      ? Object.entries(detail.onchainData?.meta)
-      : [];
-
-    metadata.forEach((item) => {
-      switch (item[0]) {
-        case "proposer":
-        case "beneficiary":
-          item[1] = (
-            <Flex>
-              <User chain={chain} add={item[1]} fontSize={14} />
-              <Links
-                chain={chain}
-                address={item[1]}
-                style={{ marginLeft: 8 }}
-              />
-            </Flex>
-          );
-          break;
-        case "value":
-        case "bond":
-          item[1] = `${toPrecision(item[1] ?? 0, decimals)} ${symbol}`;
-          break;
-        case "status":
-          item[1] = Object.keys(item[1])[0];
-      }
-    });
-
     detail.status = detail.onchainData?.state?.state;
 
     const desc = getMetaDesc(detail, "Bounty");
@@ -154,7 +117,7 @@ export default withLoginUserRedux(
             onReply={focusEditor}
             type={TYPE_TREASURY_BOUNTY}
           />
-          <KVList title="Metadata" data={metadata} showFold />
+          <BountyMetadata meta={detail.onchainData?.meta} chain={chain} />
           <Timeline
             data={timelineData}
             chain={chain}

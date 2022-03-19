@@ -14,7 +14,8 @@ import { fetchUserProfile } from "next-common/store/reducers/userSlice";
 import { useDispatch } from "react-redux";
 import Relative from "next-common/components/styled/relative";
 import Flex from "next-common/components/styled/flex";
-import { toApiType } from "utils/viewfuncs";
+import { toApiType } from "../../utils/viewfuncs";
+import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -82,6 +83,7 @@ function Editor(
   const [editorHeight, setEditorHeight] = useState(100);
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
+  const isMounted = useIsMountedBool();
 
   const onMarkdownSwitch = () => {
     if (
@@ -101,13 +103,17 @@ function Editor(
         editor: newContentType,
       })
       .then(({ result }) => {
-        if (result) {
+        if (result && isMounted) {
           dispatch(fetchUserProfile());
         }
       });
   };
 
   const createComment = async () => {
+    if (!isMounted) {
+      return;
+    }
+
     try {
       setLoading(true);
       const result = await nextApi.post(
@@ -118,6 +124,11 @@ function Editor(
         },
         { credentials: "include" }
       );
+
+      if (!isMounted) {
+        return;
+      }
+
       if (result.error) {
         setErrors(result.error);
       } else {
@@ -127,11 +138,15 @@ function Editor(
           pathname: `${router.query.id}`,
         });
         setTimeout(() => {
-          window && window.scrollTo(0, document.body.scrollHeight);
+          if (isMounted) {
+            window && window.scrollTo(0, document.body.scrollHeight);
+          }
         }, 4);
       }
     } finally {
-      setLoading(false);
+      if (isMounted) {
+        setLoading(false);
+      }
     }
   };
 
@@ -141,6 +156,11 @@ function Editor(
       content,
       contentType,
     });
+
+    if (!isMounted) {
+      return;
+    }
+
     setLoading(false);
     if (error) {
       setErrors(error);
