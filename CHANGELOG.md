@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+# 1.9.8
+
+- Code refactor
+  - Encode address code refactor
+  - Remove some useless functions
+  - Extract common components and services
+- kintsugi: fill input value when clicking voting balance
+- Fix bounty active color
+- Add off-chain voting to menus
+
 ## 1.9.7
 
 - Support polkadex
