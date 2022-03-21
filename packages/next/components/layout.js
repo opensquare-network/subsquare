@@ -45,13 +45,13 @@ export default function Layout({
     if (blockTime && isMounted) {
       dispatch(setBlockTime(blockTime.toNumber()));
     }
-  }, [blockTime, dispatch]);
+  }, [blockTime, dispatch, isMounted]);
 
   useEffect(() => {
     if (bestNumber && isMounted) {
       dispatch(setFinalizedHeight(bestNumber.toNumber()));
     }
-  }, [bestNumber, dispatch]);
+  }, [bestNumber, dispatch, isMounted]);
 
   return (
     <Wrapper>

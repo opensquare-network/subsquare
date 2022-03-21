@@ -17,7 +17,7 @@ const menus = [
   },
   {
     name: "DEMOCRACY",
-    excludeToChains: [Chains.kabocha, Chains.polkadex],
+    excludeToChains: [Chains.kabocha],
     items: [
       {
         value: "referenda",
