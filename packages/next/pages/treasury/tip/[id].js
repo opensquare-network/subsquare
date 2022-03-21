@@ -29,9 +29,8 @@ import Links from "next-common/components/links";
 import ReasonLink from "next-common/components/reasonLink";
 import Tipper from "components/tipper";
 
-import { shadow_100 } from "styles/componentCss";
-
 const Wrapper = styled.div`
+  flex: 1;
   > :not(:first-child) {
     margin-top: 16px;
   }
