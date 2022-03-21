@@ -11,6 +11,7 @@ const SS58Format = Object.freeze({
   Bifrost: 6,
   Acala: 10,
   Kintsugi: 2092,
+  Interlay: 2032,
   Polkadex: 88,
 });
 

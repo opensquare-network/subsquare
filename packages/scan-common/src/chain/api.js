@@ -37,7 +37,7 @@ async function getApi() {
     options.typesChain = typesChain;
   } else if (chain === CHAINS.BASILISK) {
     options.typesBundle = { spec: { basilisk } };
-  } else if (CHAINS.KINTSUGI === chain) {
+  } else if ([CHAINS.KINTSUGI, CHAINS.INTERLAY].includes(chain)) {
     options.typesBundle = {
       spec: {
         "interbtc-parachain": kintsugiDefinitions,

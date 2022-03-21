@@ -31,7 +31,7 @@ export default async function getApi(chain, endpoint) {
         ...bifrostOptions,
         ...options,
       };
-    } else if (chain === Chains.kintsugi) {
+    } else if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
       options = {
         ...options,
         typesBundle: {

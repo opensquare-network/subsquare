@@ -64,7 +64,7 @@ function getSS58Prefix(chain) {
 function validateAddress(address, chain) {
   const ss58Format = getSS58Prefix(chain);
   if (ss58Format === undefined) {
-    throw new HttpError(400, { chain: ["Unsupported relay chain."] });
+    throw new HttpError(400, { chain: ["Unsupported chain."] });
   }
 
   const validAddress = encodeAddress(address, ss58Format);

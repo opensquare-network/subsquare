@@ -10,6 +10,7 @@ const CHAINS = {
   POLKADOT: "polkadot",
   BASILISK: "basilisk",
   KINTSUGI: "kintsugi",
+  INTERLAY: "interlay",
   BIFROST: "bifrost",
   POLKADEX: "polkadex",
 };

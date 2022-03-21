@@ -3,10 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   DEFAULT_KUSAMA_NODE_URL,
   DEFAULT_KUSAMA_NODES,
-  DEFAULT_KARURA_NODE_URL,
   DEFAULT_ACALA_NODES,
   DEFAULT_ACALA_NODE_URL,
-  DEFAULT_KARURA_NODES,
   DEFAULT_KHALA_NODE_URL,
   DEFAULT_KHALA_NODES,
   DEFAULT_BASILISK_NODE_URL,
@@ -19,6 +17,13 @@ import {
   DEFAULT_POLKADEX_NODE_URL,
   defaultNodes,
 } from "../../utils/constants";
+import {
+  DEFAULT_INTERLAY_NODE_URL,
+  DEFAULT_INTERLAY_NODES,
+  DEFAULT_KARURA_NODE_URL,
+  DEFAULT_KARURA_NODES,
+} from "../../utils/consts/endpoints";
+import Chains from "../../utils/consts/chains";
 
 const chain = process.env.NEXT_PUBLIC_CHAIN;
 
@@ -49,9 +54,12 @@ let nodeUrl = (() => {
     bifrost:
       DEFAULT_BIFROST_NODES.find((item) => item.url === localNodeUrl)?.url ||
       DEFAULT_BIFROST_NODE_URL,
-    kintsugi:
+    [Chains.kintsugi]:
       DEFAULT_KINTSUGI_NODES.find((item) => item.url === localNodeUrl)?.url ||
       DEFAULT_KINTSUGI_NODE_URL,
+    [Chains.interlay]:
+      DEFAULT_INTERLAY_NODES.find((item) => item.url === localNodeUrl)?.url ||
+      DEFAULT_INTERLAY_NODE_URL,
     polkadex:
       DEFAULT_POLKADEX_NODES.find((item) => item.url === localNodeUrl)?.url ||
       DEFAULT_POLKADEX_NODE_URL,

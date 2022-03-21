@@ -31,7 +31,7 @@ const menus = [
       },
       {
         value: "democracyExternals",
-        excludeToChains: ["kintsugi"],
+        excludeToChains: [Chains.kintsugi, Chains.interlay],
         name: "External",
         pathname: "/democracy/externals",
       },
@@ -50,19 +50,19 @@ const menus = [
         value: "bounties",
         name: "Bounties",
         pathname: "/treasury/bounties",
-        excludeToChains: ["basilisk", "kintsugi"],
+        excludeToChains: ["basilisk", Chains.kintsugi, Chains.interlay],
       },
       {
         value: "tips",
         name: "Tips",
         pathname: "/treasury/tips",
-        excludeToChains: ["kintsugi"],
+        excludeToChains: [Chains.kintsugi, Chains.interlay],
       },
     ],
   },
   {
     name: "COUNCIL",
-    excludeToChains: ["kabocha", "kintsugi"],
+    excludeToChains: ["kabocha", Chains.kintsugi, Chains.interlay],
     items: [
       {
         value: "motions",
@@ -107,13 +107,14 @@ const menus = [
       },
     ],
     excludeToChains: [
-      "khala",
-      "kusamu",
-      "basilisk",
-      "kabocha",
-      "bifrost",
-      "kintsugi",
+      Chains.khala,
+      Chains.kusama,
+      Chains.basilisk,
+      Chains.basilisk,
+      Chains.bifrost,
+      Chains.kintsugi,
       Chains.polkadex,
+      Chains.interlay,
     ],
   },
 ];
