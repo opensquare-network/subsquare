@@ -26,7 +26,7 @@ async function getNextScanHeight() {
     return result;
   }
 
-  return Math.max(scanStartHeight[currentChain()], result);
+  return Math.max(scanStartHeight[currentChain()] || 1, result);
 }
 
 async function updateScanHeight(height) {
