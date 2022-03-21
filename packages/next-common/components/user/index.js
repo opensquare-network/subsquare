@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { fetchIdentity } from "../../services/identity";
 import { encodeAddressToChain } from "../../services/address";
@@ -55,7 +55,7 @@ const LinkWrapper = styled.a`
   }
 `;
 
-export default function User({
+function User({
   user,
   chain,
   add,
@@ -117,3 +117,5 @@ export default function User({
     </Wrapper>
   );
 }
+
+export default memo(User);

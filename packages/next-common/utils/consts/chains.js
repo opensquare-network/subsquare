@@ -9,6 +9,7 @@ const Chains = {
   kabocha: "kabocha",
   bifrost: "bifrost",
   kintsugi: "kintsugi",
+  interlay: "interlay",
   polkadex: "polkadex",
 };
 
