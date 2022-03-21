@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+# 1.9.9
+
+- Add accordion effect for detail page metadata
+- Normalize bounty metadata(fixed some value normalization)
+- Support interlay
+- Support polkadex democracy
+- Fix markdown editor memory leak(update unmounted component)
+
 # 1.9.8
 
 - Code refactor
