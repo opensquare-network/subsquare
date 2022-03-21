@@ -5,7 +5,7 @@ import {
   DEFAULT_KARURA_NODE_URL,
   DEFAULT_KARURA_NODES,
 } from "./consts/endpoints";
-import { interlay } from "./consts/networks";
+import { interlay, polkadex } from "./consts/networks";
 
 export const Chains = {
   polkadot: "polkadot",
@@ -221,15 +221,7 @@ export const nodes = [
     decimals: 12,
     hasElections: false,
   },
-  // {
-  //   value: "polkadex",
-  //   name: "Polkadex",
-  //   icon: "polkadex.svg",
-  //   identity: "polkadex",
-  //   symbol: "PDEX",
-  //   decimals: 12,
-  //   hasElections: true,
-  // },
+  polkadex,
   interlay,
 ];
 

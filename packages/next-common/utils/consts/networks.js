@@ -8,4 +8,14 @@ const interlay = {
   hasElections: false,
 };
 
-export { interlay };
+const polkadex = {
+  value: "polkadex",
+  name: "Polkadex",
+  icon: "polkadex.svg",
+  identity: "polkadex",
+  symbol: "PDEX",
+  decimals: 12,
+  hasElections: true,
+};
+
+export { interlay, polkadex };
