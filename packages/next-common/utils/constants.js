@@ -221,7 +221,7 @@ export const nodes = [
     decimals: 12,
     hasElections: false,
   },
-  polkadex,
+  // polkadex,
   interlay,
 ];
 
