@@ -232,14 +232,17 @@ const MarkdownEditor = ({
 
   useEffect(() => {
     const textarea = ref?.current?.finalRefs?.textarea?.current;
-    const body = document.getElementsByTagName("body")[0];
-    if (textarea && !body.onmouseup) {
-      body.onmouseup = function () {
+    if (textarea) {
+      // MutationObserver is the modern way to observe element resize event
+      new MutationObserver(()=>{
         if (textarea?.style?.height !== `${height}px`) {
           setUserResized(true);
         }
+        // keep user resized editor height in memory
         setEditorHeight(parseInt(textarea?.style?.height));
-      };
+      }).observe(textarea, {
+        attributes: true, attributeFilter: [ "style" ]
+      })
     }
   }, [height, setEditorHeight]);
 
