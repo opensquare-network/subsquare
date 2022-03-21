@@ -296,7 +296,7 @@ export const SS58Prefix = {
   khala: 30,
   substrate: 42,
   basilisk: 10041,
-  kabocha: 2,
+  kabocha: 27,
   bifrost: 6,
   kintsugi: 2092,
   polkadex: 88,
