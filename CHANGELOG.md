@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 # 1.9.9
 
-- Add accordion effect for detail page metadata
+- Add accordion effect for detail page metadata/timeline
 - Normalize bounty metadata(fixed some value normalization)
 - Support interlay
 - Support polkadex democracy
