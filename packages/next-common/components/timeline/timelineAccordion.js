@@ -32,6 +32,7 @@ const TitleWrapper = styled.div`
       margin-left: 12px;
       font-size: 12px;
       color: #9da9bb;
+      display: inline-flex;
     }
   }
 
