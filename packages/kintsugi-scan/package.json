@@ -8,7 +8,6 @@
     "scan": "node src/index.js"
   },
   "dependencies": {
-    "@polkadot/api": "7.11.1",
     "dotenv": "^10.0.0",
     "lodash.findlast": "^4.6.0",
     "lodash.isempty": "^4.4.0",
