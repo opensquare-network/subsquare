@@ -15,9 +15,8 @@
   "dependencies": {
     "@alicloud/pop-core": "^1.7.10",
     "@koa/cors": "^3.1.0",
-    "@polkadot/api": "7.11.1",
-    "@polkadot/extension-dapp": "0.42.8-16",
-    "@polkadot/util": "8.4.1",
+    "@polkadot/extension-dapp": "0.42.9",
+    "@polkadot/util": "8.6.1",
     "@reduxjs/toolkit": "^1.6.1",
     "@subsquare/backend-common": "file:../backend-common",
     "@subsquare/next-common": "file:../next-common",
