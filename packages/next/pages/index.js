@@ -20,6 +20,24 @@ import {
 export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
   let overviewData = [
     {
+      category: "Referenda",
+      items: (overview?.democracy?.referendums ?? []).map((item) =>
+        toReferendaListItem(chain, item)
+      ),
+    },
+    {
+      category: "Democracy External Proposals",
+      items: (overview?.democracy?.externals ?? []).map((item) =>
+        toExternalProposalListItem(chain, item)
+      ),
+    },
+    {
+      category: "Democracy Public Proposals",
+      items: (overview?.democracy?.proposals ?? []).map((item) =>
+        toPublicProposalListItem(chain, item)
+      ),
+    },
+    {
       category: "Discussions",
       items: (overview?.discussions ?? []).map((item) =>
         toDiscussionListItem(chain, item)
@@ -60,27 +78,9 @@ export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
       ),
     },
     {
-      category: "Referenda",
-      items: (overview?.democracy?.referendums ?? []).map((item) =>
-        toReferendaListItem(chain, item)
-      ),
-    },
-    {
       category: "Tips",
       items: (overview?.treasury?.tips ?? []).map((item) =>
         toTipListItem(chain, item)
-      ),
-    },
-    {
-      category: "Democracy Public Proposals",
-      items: (overview?.democracy?.proposals ?? []).map((item) =>
-        toPublicProposalListItem(chain, item)
-      ),
-    },
-    {
-      category: "Democracy External Proposals",
-      items: (overview?.democracy?.externals ?? []).map((item) =>
-        toExternalProposalListItem(chain, item)
       ),
     },
   ];
