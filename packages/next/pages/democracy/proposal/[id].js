@@ -19,7 +19,7 @@ import DemocracyTimeline from "components/democracyTimeline";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, chain, siteUrl }) => {
-    const postId = detail._id;
+    const postId = detail?._id;
 
     const editorWrapperRef = useRef(null);
     const [quillRef, setQuillRef] = useState(null);
@@ -40,7 +40,7 @@ export default withLoginUserRedux(
       focusEditor
     );
 
-    detail.status = detail.onchainData?.state?.state;
+    detail.status = detail?.onchainData?.state?.state;
 
     const desc = getMetaDesc(detail, "Proposal");
     return (

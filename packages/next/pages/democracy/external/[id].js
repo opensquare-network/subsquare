@@ -20,7 +20,7 @@ import DemocracyTimeline from "components/democracyTimeline";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, chain, siteUrl }) => {
-    const postId = detail._id;
+    const postId = detail?._id;
 
     const editorWrapperRef = useRef(null);
     const [quillRef, setQuillRef] = useState(null);
@@ -46,7 +46,7 @@ export default withLoginUserRedux(
       focusEditor
     );
 
-    detail.status = detail.onchainData?.state?.state;
+    detail.status = detail?.onchainData?.state?.state;
 
     const desc = getMetaDesc(detail, "External");
     return (
@@ -64,13 +64,13 @@ export default withLoginUserRedux(
             onReply={focusEditor}
             type={TYPE_DEMOCRACY_EXTERNAL}
           />
-          <Business external={detail.onchainData} chain={chain} />
-          <Metadata external={detail.onchainData} chain={chain} />
+          <Business external={detail?.onchainData} chain={chain} />
+          <Metadata external={detail?.onchainData} chain={chain} />
           <DemocracyTimeline
-            councilMotion={detail.onchainData?.motions?.[0]}
-            external={detail.onchainData}
-            techCommMotion={detail.onchainData?.techCommMotions?.[0]}
-            referendum={detail.onchainData?.referendum}
+            councilMotion={detail?.onchainData?.motions?.[0]}
+            external={detail?.onchainData}
+            techCommMotion={detail?.onchainData?.techCommMotions?.[0]}
+            referendum={detail?.onchainData?.referendum}
             chain={chain}
           />
           <CommentsWrapper>

@@ -63,7 +63,7 @@ export default withLoginUserRedux(
 
       setIsLoadingReferendumStatus(true);
       api?.query.democracy
-        .referendumInfoOf(detail.referendumIndex)
+        .referendumInfoOf(detail?.referendumIndex)
         .then((referendumInfo) => {
           const referendumInfoData = referendumInfo.toJSON();
           if (isMounted.current) {
@@ -85,7 +85,7 @@ export default withLoginUserRedux(
       focusEditor
     );
 
-    detail.status = detail.onchainData?.state?.state;
+    detail.status = detail?.onchainData?.state?.state;
 
     const desc = getMetaDesc(detail, "Referendum");
     return (
@@ -117,11 +117,11 @@ export default withLoginUserRedux(
 
             <ReferendumMetadata
               api={api}
-              proposer={detail.proposer}
+              proposer={detail?.proposer}
               status={referendumStatus}
               preimage={detail?.onchainData?.preImage}
               chain={chain}
-              onchainData={detail.onchainData}
+              onchainData={detail?.onchainData}
             />
 
             <DemocracyTimeline
@@ -129,7 +129,7 @@ export default withLoginUserRedux(
               publicProposal={detail?.onchainData?.publicProposal}
               external={detail?.onchainData?.external}
               techCommMotion={detail?.onchainData?.techCommMotions?.[0]}
-              referendum={detail.onchainData}
+              referendum={detail?.onchainData}
               chain={chain}
             />
 
@@ -142,7 +142,7 @@ export default withLoginUserRedux(
               />
               {loginUser && (
                 <Editor
-                  postId={detail._id}
+                  postId={detail?._id}
                   chain={chain}
                   ref={editorWrapperRef}
                   setQuillRef={setQuillRef}
@@ -189,7 +189,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      detail: detail ?? {},
+      detail,
       comments: comments ?? EmptyList,
       chain,
       siteUrl: process.env.SITE_URL,
