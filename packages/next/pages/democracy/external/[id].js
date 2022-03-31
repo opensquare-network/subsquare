@@ -8,16 +8,15 @@ import Editor from "next-common/components/comment/editor";
 import { useRef, useState } from "react";
 import Layout from "components/layout";
 import { getNode } from "utils";
-import Timeline from "next-common/components/timeline";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
-import KVList from "next-common/components/listInfo/kvList";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { to404 } from "next-common/utils/serverSideUtil";
-import { makeExternalTimelineData } from "utils/dataWrappers/makeTimelineData";
-import { makeExternalMetadata } from "utils/dataWrappers/makeMetadata";
 import { TYPE_DEMOCRACY_EXTERNAL } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
+import Business from "components/external/business";
+import Metadata from "components/external/metadata";
+import DemocracyTimeline from "components/democracyTimeline";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, chain, siteUrl }) => {
@@ -35,10 +34,6 @@ export default withLoginUserRedux(
       return null;
     }
 
-    const timelineData = makeExternalTimelineData(
-      detail?.onchainData?.timeline
-    );
-
     const users = getMentionList(comments);
 
     const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
@@ -50,8 +45,6 @@ export default withLoginUserRedux(
       quillRef,
       focusEditor
     );
-
-    const metadata = makeExternalMetadata(detail, chain);
 
     detail.status = detail.onchainData?.state?.state;
 
@@ -71,8 +64,15 @@ export default withLoginUserRedux(
             onReply={focusEditor}
             type={TYPE_DEMOCRACY_EXTERNAL}
           />
-          <KVList title="Metadata" data={metadata} showFold />
-          <Timeline data={timelineData} chain={chain} />
+          <Business external={detail.onchainData} chain={chain} />
+          <Metadata external={detail.onchainData} chain={chain} />
+          <DemocracyTimeline
+            councilMotion={detail.onchainData?.motions?.[0]}
+            external={detail.onchainData}
+            techCommMotion={detail.onchainData?.techCommMotions?.[0]}
+            referendum={detail.onchainData?.referendum}
+            chain={chain}
+          />
           <CommentsWrapper>
             <Comments
               data={comments}

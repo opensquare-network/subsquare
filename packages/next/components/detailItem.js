@@ -128,12 +128,12 @@ const getTypeColor = (type) => {
   }
 };
 
-function getTechCommId(techCommMotion) {
-  return `${techCommMotion?.indexer?.blockHeight}_${techCommMotion?.hash}`;
+function getTechCommId(motion) {
+  return `${motion?.indexer?.blockHeight}_${motion?.hash}`;
 }
 
-function shortTechId(techCommMotion) {
-  return techCommMotion.hash.slice(0, 6);
+function shortTechId(motion) {
+  return motion.hash.slice(0, 6);
 }
 
 export default function DetailItem({ data, user, chain, onReply, type }) {
@@ -151,10 +151,17 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
         <>
           {type === TYPE_DEMOCRACY_EXTERNAL && (
             <ReferendaWrapper>
-              <div>{`External #${post?.externalProposalHash?.slice(
-                0,
-                6
-              )}`}</div>
+              {post?.onchainData?.motions?.map((motion, key) => (
+                <div key={key}>
+                  <Link href={`/council/motion/${getTechCommId(motion)}`}>
+                    {`Motion #${shortTechId(motion)}`}
+                  </Link>
+                </div>
+              ))}
+              <div>
+                <TriangleRight />
+                {`External #${post?.externalProposalHash?.slice(0, 6)}`}
+              </div>
               {post?.onchainData?.techCommMotions?.map(
                 (techCommMotion, key) => (
                   <div key={key}>
@@ -195,14 +202,24 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
           {type === TYPE_DEMOCRACY_REFERENDUM &&
             post.externalProposalHash !== undefined && (
               <ReferendaWrapper>
-                <Link
-                  passHref={true}
-                  href={`/democracy/external/${post.indexer.blockHeight}_${post.externalProposalHash}`}
-                >
-                  <a>
-                    {`External #${post?.externalProposalHash?.slice(0, 6)}`}
-                  </a>
-                </Link>
+                {post?.onchainData?.motions?.map((motion, key) => (
+                  <div key={key}>
+                    <Link href={`/council/motion/${getTechCommId(motion)}`}>
+                      {`Motion #${shortTechId(motion)}`}
+                    </Link>
+                  </div>
+                ))}
+                <div>
+                  <TriangleRight />
+                  <Link
+                    passHref={true}
+                    href={`/democracy/external/${post.indexer.blockHeight}_${post.externalProposalHash}`}
+                  >
+                    <a>
+                      {`External #${post?.externalProposalHash?.slice(0, 6)}`}
+                    </a>
+                  </Link>
+                </div>
                 {post?.onchainData?.techCommMotions?.map(
                   (techCommMotion, key) => (
                     <div key={key}>

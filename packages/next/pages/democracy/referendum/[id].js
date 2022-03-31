@@ -19,7 +19,7 @@ import { TYPE_DEMOCRACY_REFERENDUM } from "utils/viewConstants";
 import { useApi } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-import ReferendumTimeline from "./timeline";
+import DemocracyTimeline from "components/democracyTimeline";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
 
 const Wrapper = styled.div`
@@ -124,8 +124,12 @@ export default withLoginUserRedux(
               onchainData={detail.onchainData}
             />
 
-            <ReferendumTimeline
-              timeline={detail?.onchainData?.timeline || []}
+            <DemocracyTimeline
+              councilMotion={detail?.onchainData?.motions?.[0]}
+              publicProposal={detail?.onchainData?.publicProposal}
+              external={detail?.onchainData?.external}
+              techCommMotion={detail?.onchainData?.techCommMotions?.[0]}
+              referendum={detail.onchainData}
               chain={chain}
             />
 

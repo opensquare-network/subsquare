@@ -1,6 +1,9 @@
 const { ObjectId } = require("mongodb");
 const { safeHtml } = require("@subsquare/backend-common/utils/post");
-const { PostTitleLengthLimitation, Day } = require("@subsquare/backend-common/constants");
+const {
+  PostTitleLengthLimitation,
+  Day,
+} = require("@subsquare/backend-common/constants");
 const {
   getDb: getBusinessDb,
   getDemocracyCollection,
@@ -9,6 +12,7 @@ const {
   getDb: getChainDb,
   getPublicProposalCollection: getChainPublicProposalCollection,
   getPreImageCollection,
+  getReferendumCollection: getChainReferendumCollection,
 } = require("../mongo/chain");
 const {
   getDb: getCommonDb,
@@ -80,19 +84,19 @@ async function getActivePostsOverview() {
         $or: [
           {
             "state.state": {
-              $nin: ["Tabled", "Canceled"]
-            }
+              $nin: ["Tabled", "Canceled"],
+            },
           },
           {
             "state.indexer.blockTime": {
-              $gt: Date.now() - 3 * Day
+              $gt: Date.now() - 3 * Day,
             },
-          }
-        ]
+          },
+        ],
       },
       {
         projection: {
-          timeline: 0
+          timeline: 0,
         },
       }
     )
@@ -218,10 +222,9 @@ async function getPostById(postId) {
   const businessDb = await getBusinessDb();
   const chainProposalCol = await getChainPublicProposalCollection();
   const preImageCol = await getPreImageCollection();
-  const [author, reactions, chanProposalData] = await Promise.all([
-    post.proposer
-      ? getUserByAddress(post.proposer)
-      : null,
+  const chainReferendumCol = await getChainReferendumCollection();
+  const [author, reactions, chanProposalData, referendum] = await Promise.all([
+    post.proposer ? getUserByAddress(post.proposer) : null,
     businessDb.lookupMany({
       from: "reaction",
       for: post,
@@ -230,6 +233,7 @@ async function getPostById(postId) {
       foreignField: "democracy",
     }),
     chainProposalCol.findOne({ proposalIndex: post.proposalIndex }),
+    chainReferendumCol.findOne({ referendumIndex: post.referendumIndex }),
   ]);
 
   const preImage = await preImageCol.findOne({ hash: chanProposalData?.hash });
@@ -242,6 +246,7 @@ async function getPostById(postId) {
     onchainData: {
       ...chanProposalData,
       preImage,
+      referendum,
     },
   };
 }

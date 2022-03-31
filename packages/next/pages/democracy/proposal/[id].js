@@ -1,6 +1,4 @@
 /* eslint-disable react/jsx-key */
-import styled from "styled-components";
-
 import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import Comments from "next-common/components/comment";
@@ -10,39 +8,14 @@ import { EmptyList } from "next-common/utils/constants";
 import Editor from "next-common/components/comment/editor";
 import { useRef, useState } from "react";
 import Layout from "components/layout";
-import User from "next-common/components/user";
-import { getNode, getTimelineStatus, toPrecision } from "utils";
-import Links from "next-common/components/links";
-import dayjs from "dayjs";
-import Timeline from "next-common/components/timeline";
-import KVList from "next-common/components/listInfo/kvList";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
-import sortTimeline from "../../../utils/timeline/sort";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-import Proposal from "next-common/components/proposal";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
-
-const MetadataProposerWrapper = styled.div`
-  display: flex;
-  align-items: center;
-
-  > :not(:first-child) {
-    margin-left: 8px;
-  }
-`;
-
-const DepositorsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-
-  > :not(:first-child) {
-    margin-top: 4px;
-  }
-`;
+import Metadata from "components/publicProposal/metadata";
+import DemocracyTimeline from "components/democracyTimeline";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, chain, siteUrl }) => {
@@ -55,45 +28,6 @@ export default withLoginUserRedux(
       loginUser?.preference.editor || "markdown"
     );
 
-    const node = getNode(chain);
-    if (!node) {
-      return null;
-    }
-    const decimals = node.decimals;
-    const symbol = node.symbol;
-
-    const getTimelineData = (args, method, chain) => {
-      switch (method) {
-        case "Proposed":
-          return {
-            Index: `#${args.index}`,
-          };
-        case "Tabled":
-          return {
-            "Referenda Index": `#${args.referendumIndex}`,
-            Deposit: `${toPrecision(args.deposit ?? 0, decimals)} ${symbol}`,
-            Depositors: (
-              <DepositorsWrapper>
-                {(args.depositors || []).map((item, index) => (
-                  <User add={item} key={index} chain={chain} />
-                ))}
-              </DepositorsWrapper>
-            ),
-          };
-      }
-      return args;
-    };
-
-    const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
-      return {
-        time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-        indexer: item.indexer,
-        status: getTimelineStatus("proposal", item.method ?? item.name),
-        data: getTimelineData(item.args, item.method ?? item.name, chain),
-      };
-    });
-    sortTimeline(timelineData);
-
     const users = getMentionList(comments);
 
     const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
@@ -105,31 +39,6 @@ export default withLoginUserRedux(
       quillRef,
       focusEditor
     );
-
-    const deposit = detail.onchainData.deposit;
-    const metadata = [
-      ["hash", detail.onchainData?.hash],
-      [
-        "deposit",
-        `${toPrecision(deposit ? deposit[1] : 0, decimals)} ${symbol}`,
-      ],
-      [
-        "proposer",
-        <MetadataProposerWrapper>
-          <User chain={chain} add={detail.onchainData?.proposer} />
-          <Links chain={chain} address={detail.onchainData?.proposer} />
-        </MetadataProposerWrapper>,
-      ],
-    ];
-
-    if (detail?.onchainData?.preImage) {
-      metadata.push([
-        <Proposal
-          motion={{ proposal: detail.onchainData.preImage.call }}
-          chain={chain}
-        />,
-      ]);
-    }
 
     detail.status = detail.onchainData?.state?.state;
 
@@ -149,8 +58,12 @@ export default withLoginUserRedux(
             onReply={focusEditor}
             type={TYPE_DEMOCRACY_PROPOSAL}
           />
-          <KVList title="Metadata" data={metadata} showFold />
-          <Timeline data={timelineData} chain={chain} />
+          <Metadata proposal={detail?.onchainData} chain={chain} />
+          <DemocracyTimeline
+            publicProposal={detail?.onchainData}
+            referendum={detail?.onchainData?.referendum}
+            chain={chain}
+          />
           <CommentsWrapper>
             <Comments
               data={comments}
