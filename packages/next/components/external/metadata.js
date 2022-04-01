@@ -1,4 +1,5 @@
 import KVList from "next-common/components/listInfo/kvList";
+import Proposal from "next-common/components/proposal";
 
 export default function Metadata({ external, chain }) {
   if (!external) {

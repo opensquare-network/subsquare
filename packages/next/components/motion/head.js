@@ -5,8 +5,9 @@ import MotionEnd from "next-common/components/motionEnd";
 import SectionTag from "next-common/components/sectionTag";
 import Tag from "next-common/components/tag";
 import Flex from "next-common/components/styled/flex";
-import { getPostUpdatedAt } from "../../utils/viewfuncs";
+import { getPostUpdatedAt } from "utils/viewfuncs";
 import { timeDurationFromNow } from "utils";
+import DemocracyNavigate from "./democracyNavigate";
 
 const MotionEndHeader = styled.div`
   display: flex;
@@ -80,7 +81,7 @@ const Info = styled.div`
   color: #506176;
 `;
 
-export default function MotionHead({ motion, chain }) {
+export default function MotionHead({ motion, chain, type }) {
   const showMotionEnd = useShowMotionEnd(motion?.onchainData);
 
   const motionEndHeader = showMotionEnd ? (
@@ -93,6 +94,7 @@ export default function MotionHead({ motion, chain }) {
 
   return (
     <div>
+      <DemocracyNavigate motion={motion.onchainData} type={type} />
       {motionEndHeader}
       <TitleWrapper>
         {motion?.motionIndex !== undefined && (

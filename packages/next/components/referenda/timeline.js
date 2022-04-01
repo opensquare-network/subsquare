@@ -21,7 +21,7 @@ const getTimelineData = (args, method) => {
 };
 
 export function makeReferendumTimelineData(timeline) {
-  return timeline.map((item) => {
+  return (timeline || []).map((item) => {
     return {
       time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
       indexer: item.indexer,
@@ -31,7 +31,7 @@ export function makeReferendumTimelineData(timeline) {
   });
 }
 
-export default function ReferendumTimeline({ timeline = [], chain }) {
+export default function ReferendumTimeline({ timeline, chain }) {
   const timelineData = makeReferendumTimelineData(timeline);
 
   return <Timeline data={timelineData} chain={chain} />;

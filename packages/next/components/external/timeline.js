@@ -32,7 +32,7 @@ export function makeExternalTimelineData(timeline) {
   });
 }
 
-export default function ExternalTimeline({ timeline = [], chain }) {
+export default function ExternalTimeline({ timeline, chain }) {
   const timelineData = makeExternalTimelineData(timeline);
 
   return <Timeline data={timelineData} chain={chain} />;

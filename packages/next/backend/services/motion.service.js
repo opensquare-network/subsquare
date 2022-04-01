@@ -11,9 +11,11 @@ const {
 const { toUserPublicInfo } = require("@subsquare/backend-common/utils/user");
 const {
   getMotionCollection: getChainMotionCollection,
+  getTechCommMotionCollection: getChainTechCommMotionCollection,
   getTreasuryProposalCollection: getChainTreasuryProposalCollection,
   getBountyCollection: getChainBountyCollection,
   getExternalCollection: getChainExternalCollection,
+  getReferendumCollection: getChainReferendumCollection,
 } = require("../mongo/chain");
 const {
   getDb: getCommonDb,
@@ -415,6 +417,33 @@ async function getMotionById(postId) {
             .toArray()
         : [],
     ]);
+
+  // If the motion is connecting to only one external proposal,
+  // Then load the associated tech-comm motion/external/referendum data, so able to show the merged timeline
+  if (chainExternals.length === 1) {
+    const chainExternal = chainExternals[0];
+
+    const chainTechCommMotionCol = await getChainTechCommMotionCollection();
+    const chainReferendumCol = await getChainReferendumCollection();
+    const [techCommMotions, referendum] = await Promise.all([
+      chainExternal.techCommMotions?.length > 0
+        ? chainTechCommMotionCol
+            .find({
+              $or: chainExternal.techCommMotions.map((motion) => ({
+                hash: motion.hash,
+                "indexer.blockHeight": motion.indexer.blockHeight,
+              })),
+            })
+            .toArray()
+        : [],
+      chainReferendumCol.findOne({
+        referendumIndex: chainExternal.referendumIndex,
+      }),
+    ]);
+
+    chainExternal.techCommMotions = techCommMotions;
+    chainExternal.referendum = referendum;
+  }
 
   return {
     ...post,
