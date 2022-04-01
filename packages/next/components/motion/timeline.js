@@ -40,12 +40,7 @@ const getClosedTimelineData = (timeline = []) => {
   return [foldItems, ...notFoldItems];
 };
 
-export default function MotionTimeline({ motion, chain, type }) {
-  const showMotionEnd = useShowMotionEnd(motion);
-  if (!motion) {
-    return null;
-  }
-
+export function makeMotionTimelineData(motion, chain) {
   const timeline = createMotionTimelineData(motion, chain);
 
   let timelineData;
@@ -54,6 +49,17 @@ export default function MotionTimeline({ motion, chain, type }) {
   } else {
     timelineData = timeline;
   }
+
+  return timelineData;
+}
+
+export default function MotionTimeline({ motion, chain, type }) {
+  const showMotionEnd = useShowMotionEnd(motion);
+  if (!motion) {
+    return null;
+  }
+
+  const timelineData = makeMotionTimelineData(motion, chain);
 
   const motionEndInfo = showMotionEnd ? (
     <TimelineMotionEnd>

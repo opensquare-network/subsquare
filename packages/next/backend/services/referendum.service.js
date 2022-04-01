@@ -20,6 +20,8 @@ const {
   getExternalCollection: getChainExternalCollection,
   getReferendumCollection: getChainReferendumCollection,
   getPreImageCollection,
+  getMotionCollection: getChainMotionCollection,
+  getTechCommMotionCollection: getChainTechCommMotionCollection,
 } = require("../mongo/chain");
 const {
   getDb: getCommonDb,
@@ -339,8 +341,35 @@ async function getPostById(postId) {
         chainReferendum.externalProposalIndexer.blockHeight,
     });
 
+    const chainMotionCol = await getChainMotionCollection();
+    const chainTechCommMotionCol = await getChainTechCommMotionCollection();
+    const [motions, techCommMotions] = await Promise.all([
+      chainExternal.motions?.length > 0
+        ? chainMotionCol
+            .find({
+              $or: chainExternal.motions.map((motion) => ({
+                hash: motion.hash,
+                "indexer.blockHeight": motion.indexer.blockHeight,
+              })),
+            })
+            .toArray()
+        : [],
+      chainExternal.techCommMotions?.length > 0
+        ? chainTechCommMotionCol
+            .find({
+              $or: chainExternal.techCommMotions.map((motion) => ({
+                hash: motion.hash,
+                "indexer.blockHeight": motion.indexer.blockHeight,
+              })),
+            })
+            .toArray()
+        : [],
+    ]);
+
     chainReferendum.authors = chainExternal?.authors;
-    chainReferendum.techCommMotions = chainExternal?.techCommMotions;
+    chainReferendum.techCommMotions = techCommMotions;
+    chainReferendum.motions = motions;
+    chainReferendum.external = chainExternal;
 
     const preImageCol = await getPreImageCollection();
     const preImage = await preImageCol.findOne({
@@ -353,6 +382,8 @@ async function getPostById(postId) {
     const chainPublicProposal = await col.findOne({
       proposalIndex: chainReferendum.publicProposalIndex,
     });
+
+    chainReferendum.publicProposal = chainPublicProposal;
     chainReferendum.authors = chainPublicProposal?.authors;
 
     const preImageCol = await getPreImageCollection();

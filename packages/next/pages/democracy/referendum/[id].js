@@ -19,7 +19,7 @@ import { TYPE_DEMOCRACY_REFERENDUM } from "utils/viewConstants";
 import { useApi } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-import ReferendumTimeline from "./timeline";
+import DemocracyTimeline from "components/democracyTimeline";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
 
 const Wrapper = styled.div`
@@ -63,7 +63,7 @@ export default withLoginUserRedux(
 
       setIsLoadingReferendumStatus(true);
       api?.query.democracy
-        .referendumInfoOf(detail.referendumIndex)
+        .referendumInfoOf(detail?.referendumIndex)
         .then((referendumInfo) => {
           const referendumInfoData = referendumInfo.toJSON();
           if (isMounted.current) {
@@ -85,7 +85,7 @@ export default withLoginUserRedux(
       focusEditor
     );
 
-    detail.status = detail.onchainData?.state?.state;
+    detail.status = detail?.onchainData?.state?.state;
 
     const desc = getMetaDesc(detail, "Referendum");
     return (
@@ -117,15 +117,19 @@ export default withLoginUserRedux(
 
             <ReferendumMetadata
               api={api}
-              proposer={detail.proposer}
+              proposer={detail?.proposer}
               status={referendumStatus}
               preimage={detail?.onchainData?.preImage}
               chain={chain}
-              onchainData={detail.onchainData}
+              onchainData={detail?.onchainData}
             />
 
-            <ReferendumTimeline
-              timeline={detail?.onchainData?.timeline || []}
+            <DemocracyTimeline
+              councilMotion={detail?.onchainData?.motions?.[0]}
+              publicProposal={detail?.onchainData?.publicProposal}
+              external={detail?.onchainData?.external}
+              techCommMotion={detail?.onchainData?.techCommMotions?.[0]}
+              referendum={detail?.onchainData}
               chain={chain}
             />
 
@@ -138,7 +142,7 @@ export default withLoginUserRedux(
               />
               {loginUser && (
                 <Editor
-                  postId={detail._id}
+                  postId={detail?._id}
                   chain={chain}
                   ref={editorWrapperRef}
                   setQuillRef={setQuillRef}
@@ -185,7 +189,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      detail: detail ?? {},
+      detail,
       comments: comments ?? EmptyList,
       chain,
       siteUrl: process.env.SITE_URL,
