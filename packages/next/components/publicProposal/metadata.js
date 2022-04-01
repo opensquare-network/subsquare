@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import styled from "styled-components";
 import User from "next-common/components/user";
 import Links from "next-common/components/links";

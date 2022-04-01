@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import KVList from "next-common/components/listInfo/kvList";
 import Proposal from "next-common/components/proposal";
 
