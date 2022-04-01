@@ -48,7 +48,9 @@ export default async function getApi(chain, endpoint) {
       };
     }
 
-    apiInstanceMap.set(endpoint, ApiPromise.create(options));
+    const api = (await ApiPromise.create(options)).isReady;
+
+    apiInstanceMap.set(endpoint, api);
   }
   return apiInstanceMap.get(endpoint);
 }
