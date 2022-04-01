@@ -7,7 +7,11 @@ import { useApi, useAddressVotingBalance, useAddressVote } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import SignerSelect from "next-common/components/signerSelect";
 import Button from "next-common/components/button";
-import { addToast } from "next-common/store/reducers/toastSlice";
+import {
+  addToast,
+  newToastId,
+  updateToast,
+} from "next-common/store/reducers/toastSlice";
 
 import { getNode, toPrecision } from "utils";
 import Input from "next-common/components/input";
@@ -106,57 +110,58 @@ function PopupContent({
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const [voteLock, setVoteLock] = useState(0);
 
+  const showErrorToast = (message) => {
+    dispatch(
+      addToast({
+        type: "error",
+        message,
+      })
+    );
+  };
+
   const doVote = async (aye) => {
     if (isLoading || referendumIndex == null || !node) {
       return;
     }
 
     if (!inputVoteBalance) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Please input vote balance",
-        })
-      );
-      return;
+      return showErrorToast("Please input vote balance");
     }
 
-    let errorMessage = null;
     const decimals = node.decimals;
     const bnVoteBalance = new BigNumber(inputVoteBalance).multipliedBy(
       Math.pow(10, decimals)
     );
 
     if (bnVoteBalance.isNaN()) {
-      errorMessage = { type: "error", message: "Invalid vote balance" };
+      return showErrorToast("Invalid vote balance");
     }
 
     if (bnVoteBalance.lte(0) || !bnVoteBalance.mod(1).isZero()) {
-      errorMessage = { type: "error", message: "Invalid vote balance" };
+      return showErrorToast("Invalid vote balance");
     }
 
     if (bnVoteBalance.gt(votingBalance)) {
-      errorMessage = {
-        type: "error",
-        message: "Insufficient voting balance",
-      };
+      return showErrorToast("Insufficient voting balance");
     }
 
     if (!selectedAccount) {
-      errorMessage = { type: "error", message: "Please select an account" };
+      return showErrorToast("Please select an account");
     }
 
     if (!api) {
-      errorMessage = {
-        type: "error",
-        message: "Chain network is not connected yet",
-      };
+      return showErrorToast("Chain network is not connected yet");
     }
 
-    if (errorMessage) {
-      dispatch(addToast(errorMessage));
-      return;
-    }
+    const toastId = newToastId();
+    dispatch(
+      addToast({
+        type: "pending",
+        message: "Waiting for signing...",
+        id: toastId,
+        sticky: true,
+      })
+    );
 
     try {
       setIsLoading(aye ? "Aye" : "Nay");
@@ -180,21 +185,36 @@ function PopupContent({
           }
           if (status.isInBlock) {
             // Transaction went through
+            dispatch(
+              updateToast({
+                type: "success",
+                message: "InBlock",
+                id: toastId,
+                sticky: false,
+              })
+            );
             onInBlock(voteAddress);
           }
+        });
+
+      dispatch(
+        updateToast({
+          message: "Broadcasting",
+          id: toastId,
         })
-        .then(() => onSubmitted(voteAddress));
+      );
+      onSubmitted(voteAddress);
 
       onClose();
     } catch (e) {
-      if (e.message !== "Cancelled") {
-        dispatch(
-          addToast({
-            type: "error",
-            message: e.message,
-          })
-        );
-      }
+      dispatch(
+        updateToast({
+          type: "error",
+          message: e.message,
+          id: toastId,
+          sticky: false,
+        })
+      );
     } finally {
       if (isMounted.current) {
         setIsLoading(null);

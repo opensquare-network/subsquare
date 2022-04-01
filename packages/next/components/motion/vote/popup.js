@@ -4,12 +4,17 @@ import { useDispatch } from "react-redux";
 
 import { useApi } from "utils/hooks";
 import Button from "next-common/components/button";
-import { addToast } from "next-common/store/reducers/toastSlice";
+import {
+  addToast,
+  newToastId,
+  updateToast,
+} from "next-common/store/reducers/toastSlice";
 
 import Loading from "./loading";
 import SignerSelect from "next-common/components/signerSelect";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import toApiCouncil from "../toApiCouncil";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 
 const Info = styled.div`
   background: #f6f7fa;
@@ -134,18 +139,22 @@ function PopupContent({
 
   const api = useApi(chain);
   const voteMethod = api?.tx?.[toApiCouncil(chain, type)]?.vote;
+  const isMounted = useIsMounted();
+
+  const showErrorToast = (message) => {
+    dispatch(
+      addToast({
+        type: "error",
+        message,
+      })
+    );
+  };
 
   const doVote = async (approve) => {
     if (isLoading) return;
 
     if (!voteMethod) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Chain network is not connected yet",
-        })
-      );
-      return;
+      return showErrorToast("Chain network is not connected yet");
     }
 
     if (!motionHash || motionIndex === undefined) {
@@ -153,45 +162,69 @@ function PopupContent({
     }
 
     if (!selectedAccount) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Please select an account",
-        })
-      );
-      return;
+      return showErrorToast("Please select an account");
     }
+
+    const toastId = newToastId();
+    dispatch(
+      addToast({
+        type: "pending",
+        message: "Waiting for signing...",
+        id: toastId,
+        sticky: true,
+      })
+    );
 
     try {
       setIsLoading(approve ? "Aye" : "Nay");
 
       const voterAddress = selectedAccount.address;
 
-      const unsub = await voteMethod(motionHash, motionIndex, approve)
-        .signAndSend(voterAddress, ({ events = [], status }) => {
-          if (status.isFinalized) {
-            onFinalized(voterAddress);
-            unsub();
-          }
-          if (status.isInBlock) {
-            // Transaction went through
-            onInBlock(voterAddress);
-          }
+      const unsub = await voteMethod(
+        motionHash,
+        motionIndex,
+        approve
+      ).signAndSend(voterAddress, ({ events = [], status }) => {
+        if (status.isFinalized) {
+          onFinalized(voterAddress);
+          unsub();
+        }
+        if (status.isInBlock) {
+          // Transaction went through
+          dispatch(
+            updateToast({
+              type: "success",
+              message: "InBlock",
+              id: toastId,
+              sticky: false,
+            })
+          );
+          onInBlock(voterAddress);
+        }
+      });
+
+      dispatch(
+        updateToast({
+          message: "Broadcasting",
+          id: toastId,
         })
-        .then(() => onSubmitted(voterAddress));
+      );
+      onSubmitted(voterAddress);
 
       onClose();
     } catch (e) {
-      if (e.message !== "Cancelled") {
-        dispatch(
-          addToast({
-            type: "error",
-            message: e.message,
-          })
-        );
-      }
+      dispatch(
+        updateToast({
+          type: "error",
+          message: e.message,
+          id: toastId,
+          sticky: false,
+        })
+      );
     } finally {
-      setIsLoading(null);
+      if (isMounted.current) {
+        setIsLoading(null);
+      }
     }
   };
 
