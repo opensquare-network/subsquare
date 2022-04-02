@@ -52,9 +52,12 @@ export default withLoginUserRedux(
       useState(false);
 
     const timeline = detail?.onchainData?.timeline || [];
-    const voteFinished = ["Executed", "Passed", "NotPassed"].includes(
-      timeline[timeline.length - 1]?.method
-    );
+    const voteFinished = [
+      "Executed",
+      "Passed",
+      "NotPassed",
+      "Cancelled",
+    ].includes(timeline[timeline.length - 1]?.method);
 
     useEffect(() => {
       if (voteFinished) {
