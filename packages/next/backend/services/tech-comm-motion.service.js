@@ -11,10 +11,8 @@ const {
 const { toUserPublicInfo } = require("@subsquare/backend-common/utils/user");
 const {
   getDb: getChainDb,
-  getMotionCollection: getChainMotionCollection,
   getTechCommMotionCollection: getChainTechCommMotionCollection,
   getExternalCollection: getChainExternalCollection,
-  getReferendumCollection: getChainReferendumCollection,
 } = require("../mongo/chain");
 const {
   getDb: getCommonDb,
@@ -410,33 +408,6 @@ async function getMotionById(postId) {
   ]);
 
   await lookupUser({ for: reactions, localField: "user" });
-
-  // If the tech-comm motion is connecting to only one external proposal,
-  // Then load the associated motion/external/referendum data, so able to show the merged timeline
-  if (externalProposals.length === 1) {
-    const chainExternal = externalProposals[0];
-
-    const chainMotionCol = await getChainMotionCollection();
-    const chainReferendumCol = await getChainReferendumCollection();
-    const [motions, referendum] = await Promise.all([
-      chainExternal.motions?.length > 0
-        ? chainMotionCol
-            .find({
-              $or: chainExternal.motions.map((motion) => ({
-                hash: motion.hash,
-                "indexer.blockHeight": motion.indexer.blockHeight,
-              })),
-            })
-            .toArray()
-        : [],
-      chainReferendumCol.findOne({
-        referendumIndex: chainExternal.referendumIndex,
-      }),
-    ]);
-
-    chainExternal.motions = motions;
-    chainExternal.referendum = referendum;
-  }
 
   return {
     ...post,

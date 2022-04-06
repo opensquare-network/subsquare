@@ -7,16 +7,11 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Business from "./business";
 import Metadata from "./metadata";
 import Timeline from "./timeline";
-import DemocracyTimeline from "../democracyTimeline";
 import Head from "./head";
 import { isMotionEnded } from "next-common/utils";
 import { useApi } from "utils/hooks";
 import toApiCouncil from "./toApiCouncil";
 import { EditablePanel } from "next-common/components/styled/panel";
-import {
-  TYPE_COUNCIL_MOTION,
-  TYPE_TECH_COMM_MOTION,
-} from "next-common/utils/viewConstants";
 
 export default function MotionDetail({ user, motion, onReply, chain, type }) {
   const isMounted = useIsMounted();
@@ -139,25 +134,7 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
       />
       <Business motion={post?.onchainData} chain={chain} />
       <Metadata motion={post?.onchainData} chain={chain} />
-      {type === TYPE_COUNCIL_MOTION && external ? (
-        <DemocracyTimeline
-          councilMotion={post?.onchainData}
-          external={external}
-          techCommMotion={external.techCommMotions?.[0]}
-          referendum={external.referendum}
-          chain={chain}
-        />
-      ) : type === TYPE_TECH_COMM_MOTION && external ? (
-        <DemocracyTimeline
-          councilMotion={external.motions?.[0]}
-          external={external}
-          techCommMotion={post?.onchainData}
-          referendum={external.referendum}
-          chain={chain}
-        />
-      ) : (
-        <Timeline motion={post?.onchainData} chain={chain} type={type} />
-      )}
+      <Timeline motion={post?.onchainData} chain={chain} type={type} />
     </div>
   );
 }
