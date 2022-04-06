@@ -15,7 +15,7 @@ import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import Metadata from "components/publicProposal/metadata";
-import DemocracyTimeline from "components/democracyTimeline";
+import Timeline from "components/publicProposal/timeline";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, chain, siteUrl }) => {
@@ -59,11 +59,7 @@ export default withLoginUserRedux(
             type={TYPE_DEMOCRACY_PROPOSAL}
           />
           <Metadata proposal={detail?.onchainData} chain={chain} />
-          <DemocracyTimeline
-            publicProposal={detail?.onchainData}
-            referendum={detail?.onchainData?.referendum}
-            chain={chain}
-          />
+          <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
           <CommentsWrapper>
             <Comments
               data={comments}

@@ -12,7 +12,6 @@ const {
   getDb: getChainDb,
   getPublicProposalCollection: getChainPublicProposalCollection,
   getPreImageCollection,
-  getReferendumCollection: getChainReferendumCollection,
 } = require("../mongo/chain");
 const {
   getDb: getCommonDb,
@@ -222,8 +221,7 @@ async function getPostById(postId) {
   const businessDb = await getBusinessDb();
   const chainProposalCol = await getChainPublicProposalCollection();
   const preImageCol = await getPreImageCollection();
-  const chainReferendumCol = await getChainReferendumCollection();
-  const [author, reactions, chanProposalData, referendum] = await Promise.all([
+  const [author, reactions, chanProposalData] = await Promise.all([
     post.proposer ? getUserByAddress(post.proposer) : null,
     businessDb.lookupMany({
       from: "reaction",
@@ -233,7 +231,6 @@ async function getPostById(postId) {
       foreignField: "democracy",
     }),
     chainProposalCol.findOne({ proposalIndex: post.proposalIndex }),
-    chainReferendumCol.findOne({ referendumIndex: post.referendumIndex }),
   ]);
 
   const preImage = await preImageCol.findOne({ hash: chanProposalData?.hash });
@@ -246,7 +243,6 @@ async function getPostById(postId) {
     onchainData: {
       ...chanProposalData,
       preImage,
-      referendum,
     },
   };
 }

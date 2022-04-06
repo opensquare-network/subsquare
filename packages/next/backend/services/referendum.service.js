@@ -355,7 +355,6 @@ async function getPostById(postId) {
       proposalIndex: chainReferendum.publicProposalIndex,
     });
 
-    chainReferendum.publicProposal = chainPublicProposal;
     chainReferendum.authors = chainPublicProposal?.authors;
 
     const preImageCol = await getPreImageCollection();

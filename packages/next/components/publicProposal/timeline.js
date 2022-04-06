@@ -58,12 +58,8 @@ export function makePublicProposalTimelineData(timeline, chain) {
   return timelineData;
 }
 
-export default function PublicProposalTimeline({ proposal, chain }) {
-  if (!proposal) {
-    return null;
-  }
-
-  const timelineData = makePublicProposalTimelineData(proposal.timeline, chain);
+export default function PublicProposalTimeline({ timeline, chain }) {
+  const timelineData = makePublicProposalTimelineData(timeline, chain);
 
   return <Timeline data={timelineData} chain={chain} />;
 }
