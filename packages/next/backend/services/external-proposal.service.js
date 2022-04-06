@@ -15,12 +15,10 @@ const {
   getReactionCollection,
 } = require("../mongo/business");
 const {
-  getDb: getChainDb,
   getExternalCollection: getChainExternalCollection,
   getPreImageCollection,
   getMotionCollection: getChainMotionCollection,
   getTechCommMotionCollection: getChainTechCommMotionCollection,
-  getReferendumCollection: getChainReferendumCollection,
 } = require("../mongo/chain");
 const {
   getDb: getCommonDb,
@@ -303,9 +301,8 @@ async function getPostById(postId) {
   const preImageCol = await getPreImageCollection();
   const chainMotionCol = await getChainMotionCollection();
   const chainTechCommMotionCol = await getChainTechCommMotionCollection();
-  const chainReferendumCol = await getChainReferendumCollection();
 
-  const [author, reactions, preImage, motions, techCommMotions, referendum] =
+  const [author, reactions, preImage, motions, techCommMotions] =
     await Promise.all([
       post.proposer ? getUserByAddress(post.proposer) : null,
       businessDb.lookupMany({
@@ -336,11 +333,6 @@ async function getPostById(postId) {
             })
             .toArray()
         : [],
-      chainExternal.referendumIndex !== undefined
-        ? chainReferendumCol.findOne({
-            referendumIndex: chainExternal.referendumIndex,
-          })
-        : null,
     ]);
 
   await Promise.all([lookupUser({ for: reactions, localField: "user" })]);
@@ -359,7 +351,6 @@ async function getPostById(postId) {
       preImage,
       motions,
       techCommMotions,
-      referendum,
     },
   };
 }

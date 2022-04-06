@@ -16,7 +16,7 @@ import { getMetaDesc } from "../../../utils/viewfuncs";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import Business from "components/external/business";
 import Metadata from "components/external/metadata";
-import DemocracyTimeline from "components/democracyTimeline";
+import Timeline from "components/external/timeline";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, chain, siteUrl }) => {
@@ -66,13 +66,7 @@ export default withLoginUserRedux(
           />
           <Business external={detail?.onchainData} chain={chain} />
           <Metadata external={detail?.onchainData} chain={chain} />
-          <DemocracyTimeline
-            councilMotion={detail?.onchainData?.motions?.[0]}
-            external={detail?.onchainData}
-            techCommMotion={detail?.onchainData?.techCommMotions?.[0]}
-            referendum={detail?.onchainData?.referendum}
-            chain={chain}
-          />
+          <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
           <CommentsWrapper>
             <Comments
               data={comments}
