@@ -1,5 +1,5 @@
 const common = {
-  script: "backend/scripts/update-post-time.js",
+  script: "src/scripts/update-post-time.js",
   log_date_format: "YYYY-MM-DD HH:mm Z",
   cron_restart: "*/30 * * * * *",
   autorestart: false,
