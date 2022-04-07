@@ -8,7 +8,7 @@ const httpProxy = require("http-proxy");
 const projectDir = process.cwd();
 loadEnvConfig(projectDir);
 
-const ssrUrl = new URL(process.env.NEXT_PUBLIC_SSR_API_END_POINT);
+const ssrUrl = new URL(process.env.NEXT_PUBLIC_BACKEND_API_END_POINT);
 const proxy = httpProxy.createProxyServer({
   target: {
     protocol: ssrUrl.protocol,
