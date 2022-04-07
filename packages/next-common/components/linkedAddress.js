@@ -3,7 +3,6 @@ import styled, { css } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import {
   isWeb3Injected,
-  web3Accounts,
   web3Enable,
 } from "@polkadot/extension-dapp";
 import Button from "./button";
@@ -21,6 +20,7 @@ import { shadow_100 } from "../styles/componentCss";
 import { addressEllipsis } from "../utils";
 import { encodeAddressToChain } from "../services/address";
 import { signMessage } from "../services/extension/signMessage";
+import { polkadotWeb3Accounts } from "../extensionAccount";
 
 const Wrapper = styled.div`
   max-width: 848px;
@@ -187,9 +187,8 @@ export default function LinkedAddress({ chain }) {
       }
       return;
     }
-    const extensionAccounts = await web3Accounts();
+    const extensionAccounts = await polkadotWeb3Accounts();
     const accounts = extensionAccounts
-      .filter((acc) => acc.type === "sr25519")
       .map((item) => {
         const {
           address,

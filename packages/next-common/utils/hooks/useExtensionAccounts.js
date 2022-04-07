@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import useIsMounted from "./useIsMounted";
 import {
   isWeb3Injected,
-  web3Accounts,
   web3Enable,
 } from "@polkadot/extension-dapp";
+import { polkadotWeb3Accounts } from "../extensionAccount";
 
 export default function useExtensionAccounts(appName) {
   const isMounted = useIsMounted();
@@ -33,9 +33,9 @@ export default function useExtensionAccounts(appName) {
         return;
       }
 
-      const extensionAccounts = await web3Accounts();
+      const extensionAccounts = await polkadotWeb3Accounts();
       if (isMounted.current) {
-        setAccounts(extensionAccounts.filter((acc) => acc.type === "sr25519"));
+        setAccounts(extensionAccounts);
         setDetecting(false);
       }
     })();
