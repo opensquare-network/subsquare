@@ -15,6 +15,7 @@ import {
 } from "utils/viewConstants";
 import ArticleContent from "next-common/components/articleContent";
 import { EditablePanel } from "next-common/components/styled/panel";
+import { getMotionId, shortMotionId } from "next-common/utils/motion";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -128,14 +129,6 @@ const getTypeColor = (type) => {
   }
 };
 
-function getTechCommId(motion) {
-  return `${motion?.indexer?.blockHeight}_${motion?.hash}`;
-}
-
-function shortTechId(motion) {
-  return motion.hash.slice(0, 6);
-}
-
 export default function DetailItem({ data, user, chain, onReply, type }) {
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
@@ -153,8 +146,8 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
             <ReferendaWrapper>
               {post?.onchainData?.motions?.map((motion, key) => (
                 <div key={key}>
-                  <Link href={`/council/motion/${getTechCommId(motion)}`}>
-                    {`Motion #${shortTechId(motion)}`}
+                  <Link href={`/council/motion/${getMotionId(motion)}`}>
+                    {`Motion #${shortMotionId(motion)}`}
                   </Link>
                 </div>
               ))}
@@ -167,11 +160,9 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                   <div key={key}>
                     <TriangleRight />
                     <Link
-                      href={`/techcomm/proposal/${getTechCommId(
-                        techCommMotion
-                      )}`}
+                      href={`/techcomm/proposal/${getMotionId(techCommMotion)}`}
                     >
-                      {`Tech. Comm. #${shortTechId(techCommMotion)}`}
+                      {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
                     </Link>
                   </div>
                 )
@@ -204,8 +195,8 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
               <ReferendaWrapper>
                 {post?.onchainData?.motions?.map((motion, key) => (
                   <div key={key}>
-                    <Link href={`/council/motion/${getTechCommId(motion)}`}>
-                      {`Motion #${shortTechId(motion)}`}
+                    <Link href={`/council/motion/${getMotionId(motion)}`}>
+                      {`Motion #${shortMotionId(motion)}`}
                     </Link>
                   </div>
                 ))}
@@ -225,11 +216,11 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                     <div key={key}>
                       <TriangleRight />
                       <Link
-                        href={`/techcomm/proposal/${getTechCommId(
+                        href={`/techcomm/proposal/${getMotionId(
                           techCommMotion
                         )}`}
                       >
-                        {`Tech. Comm. #${shortTechId(techCommMotion)}`}
+                        {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
                       </Link>
                     </div>
                   )
