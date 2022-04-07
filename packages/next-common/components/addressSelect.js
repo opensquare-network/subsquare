@@ -108,7 +108,7 @@ export default function AddressSelect({
       <Select onClick={() => setShow(!show)}>
         {selectedAccount && (
           <>
-            <Avatar address={selectedAccount?.[`${chain}Address`]} />
+            <Avatar address={selectedAccount?.address} />
             <NameWrapper>
               <div>{selectedAccount?.name}</div>
               <div>
