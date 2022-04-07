@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   isWeb3Injected,
-  web3Accounts,
   web3Enable,
 } from "@polkadot/extension-dapp";
 import { useRouter } from "next/router";
@@ -18,6 +17,7 @@ import { setUser } from "next-common/store/reducers/userSlice";
 import { addToast } from "next-common/store/reducers/toastSlice";
 import { encodeAddressToChain } from "next-common/services/address";
 import { signMessage } from "next-common/services/extension/signMessage";
+import { polkadotWeb3Accounts } from "next-common/utils/extensionAccount";
 
 const Label = styled.div`
   font-weight: bold;
@@ -91,17 +91,18 @@ export default function AddressLogin({ chain, onBack }) {
         }
         return;
       }
-      const extensionAccounts = await web3Accounts();
-      const accounts = extensionAccounts.map((item) => {
-        const {
-          address,
-          meta: { name },
-        } = item;
-        return {
-          address,
-          name,
-        };
-      });
+      const extensionAccounts = await polkadotWeb3Accounts();
+      const accounts = extensionAccounts
+        .map((item) => {
+          const {
+            address,
+            meta: { name },
+          } = item;
+          return {
+            address,
+            name,
+          };
+        });
 
       if (isMounted.current) {
         setAccounts(accounts);
