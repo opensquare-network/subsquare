@@ -20,7 +20,7 @@ import { shadow_100 } from "../styles/componentCss";
 import { addressEllipsis } from "../utils";
 import { encodeAddressToChain } from "../services/address";
 import { signMessage } from "../services/extension/signMessage";
-import { polkadotWeb3Accounts } from "../extensionAccount";
+import { polkadotWeb3Accounts } from "../utils/extensionAccount";
 
 const Wrapper = styled.div`
   max-width: 848px;
