@@ -16,6 +16,7 @@ import {
 } from "utils/viewConstants";
 import ArticleContent from "next-common/components/articleContent";
 import { EditablePanel } from "next-common/components/styled/panel";
+import { getMotionId, shortMotionId } from "next-common/utils/motion";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -129,14 +130,6 @@ const getTypeColor = (type) => {
   }
 };
 
-function getTechCommId(techCommMotion) {
-  return `${techCommMotion?.indexer?.blockHeight}_${techCommMotion?.hash}`;
-}
-
-function shortTechId(techCommMotion) {
-  return techCommMotion.hash.slice(0, 6);
-}
-
 export default function DetailItem({ data, user, chain, onReply, type }) {
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
@@ -169,11 +162,9 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                   <div key={key}>
                     <TriangleRight />
                     <Link
-                      href={`/techcomm/proposal/${getTechCommId(
-                        techCommMotion
-                      )}`}
+                      href={`/techcomm/proposal/${getMotionId(techCommMotion)}`}
                     >
-                      {`Tech. Comm. #${shortTechId(techCommMotion)}`}
+                      {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
                     </Link>
                   </div>
                 )
@@ -196,11 +187,9 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                   <div key={key}>
                     <TriangleRight />
                     <Link
-                      href={`/techcomm/proposal/${getTechCommId(
-                        techCommMotion
-                      )}`}
+                      href={`/techcomm/proposal/${getMotionId(techCommMotion)}`}
                     >
-                      {`Tech. Comm. #${shortTechId(techCommMotion)}`}
+                      {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
                     </Link>
                   </div>
                 )
@@ -231,11 +220,11 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                     <div key={key}>
                       <TriangleRight />
                       <Link
-                        href={`/techcomm/proposal/${getTechCommId(
+                        href={`/techcomm/proposal/${getMotionId(
                           techCommMotion
                         )}`}
                       >
-                        {`Tech. Comm. #${shortTechId(techCommMotion)}`}
+                        {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
                       </Link>
                     </div>
                   )
@@ -257,11 +246,11 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                     <div key={key}>
                       <TriangleRight />
                       <Link
-                        href={`/techcomm/proposal/${getTechCommId(
+                        href={`/techcomm/proposal/${getMotionId(
                           techCommMotion
                         )}`}
                       >
-                        {`Tech. Comm. #${shortTechId(techCommMotion)}`}
+                        {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
                       </Link>
                     </div>
                   )
