@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# 1.9.10
+
+- Add council motion to democracy proposal navigation bar.
+- Add pending toast when submitting extrinsic transaction.
+- Show referenda at the top of overview page.
+- Update @polkadot/api dependency to 7.13.1.
+
 # 1.9.9
 
 - Add accordion effect for detail page metadata/timeline
