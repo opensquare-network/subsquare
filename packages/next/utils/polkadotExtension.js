@@ -35,7 +35,7 @@ export function useExtensionAccounts(appName) {
 
       const extensionAccounts = await web3Accounts();
       if (isMounted.current) {
-        setAccounts(extensionAccounts);
+        setAccounts(extensionAccounts.filter((acc) => acc.type === "sr25519"));
         setDetecting(false);
       }
     })();

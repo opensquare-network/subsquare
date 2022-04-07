@@ -92,16 +92,18 @@ export default function AddressLogin({ chain, onBack }) {
         return;
       }
       const extensionAccounts = await web3Accounts();
-      const accounts = extensionAccounts.map((item) => {
-        const {
-          address,
-          meta: { name },
-        } = item;
-        return {
-          address,
-          name,
-        };
-      });
+      const accounts = extensionAccounts
+        .filter((acc) => acc.type === "sr25519")
+        .map((item) => {
+          const {
+            address,
+            meta: { name },
+          } = item;
+          return {
+            address,
+            name,
+          };
+        });
 
       if (isMounted.current) {
         setAccounts(accounts);
