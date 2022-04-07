@@ -6,6 +6,7 @@ import {
   TYPE_COUNCIL_MOTION,
   TYPE_TECH_COMM_MOTION,
 } from "next-common/utils/viewConstants";
+import { getMotionId, shortMotionId } from "next-common/utils/motion";
 
 const ReferendaWrapper = styled(Flex)`
   justify-content: center;
@@ -36,14 +37,6 @@ const ReferendaWrapper = styled(Flex)`
   }
 `;
 
-function getTechCommId(motion) {
-  return `${motion?.indexer?.blockHeight}_${motion?.hash}`;
-}
-
-function shortTechId(motion) {
-  return motion.hash.slice(0, 6);
-}
-
 export default function DemocracyNavigate({ motion, type }) {
   if (motion?.externalProposals?.length !== 1) {
     return null;
@@ -58,11 +51,11 @@ export default function DemocracyNavigate({ motion, type }) {
     <ReferendaWrapper>
       <div>
         {type !== TYPE_COUNCIL_MOTION ? (
-          <Link href={`/council/motion/${getTechCommId(councilMotion)}`}>
-            {`Motion #${shortTechId(councilMotion)}`}
+          <Link href={`/council/motion/${getMotionId(councilMotion)}`}>
+            {`Motion #${shortMotionId(councilMotion)}`}
           </Link>
         ) : (
-          `Motion #${shortTechId(councilMotion)}`
+          `Motion #${shortMotionId(councilMotion)}`
         )}
       </div>
       <div>
@@ -78,11 +71,11 @@ export default function DemocracyNavigate({ motion, type }) {
         <div>
           <TriangleRight />
           {type !== TYPE_TECH_COMM_MOTION ? (
-            <Link href={`/techcomm/proposal/${getTechCommId(techCommMotion)}`}>
-              {`Tech. Comm. #${shortTechId(techCommMotion)}`}
+            <Link href={`/techcomm/proposal/${getMotionId(techCommMotion)}`}>
+              {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
             </Link>
           ) : (
-            `Tech. Comm. #${shortTechId(techCommMotion)}`
+            `Tech. Comm. #${shortMotionId(techCommMotion)}`
           )}
         </div>
       )}
