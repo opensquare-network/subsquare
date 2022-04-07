@@ -1,5 +1,5 @@
 const { MongoClient } = require("mongodb");
-const _ = require("lodash");
+const flatten = require("lodash.flatten");
 
 function getField(data, fieldName) {
   return fieldName.split(".").reduce((data, field) => data?.[field], data);
@@ -210,7 +210,7 @@ async function connectDb(dbName, url) {
       }
     });
 
-    return _.flatten(Array.from(itemsMap.values()));
+    return flatten(Array.from(itemsMap.values()));
   }
 
   async function compoundLookupOne({

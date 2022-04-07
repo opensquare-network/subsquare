@@ -2422,6 +2422,8 @@
   dependencies:
     "@alicloud/pop-core" "^1.7.10"
     "@koa/cors" "^3.1.0"
+    "@polkadot/util" "8.6.1"
+    "@polkadot/util-crypto" "^8.6.1"
     argon2 "^0.28.2"
     cheerio "^1.0.0-rc.10"
     cookies "^0.8.0"
@@ -2433,6 +2435,7 @@
     koa-helmet "^6.1.0"
     koa-logger "^3.2.1"
     koa-router "^10.0.0"
+    lodash.flatten "^4.4.0"
     md5 "^2.3.0"
     mongodb "^4.1.3"
     validator "^13.7.0"
@@ -8956,6 +8959,11 @@ lodash.findlastindex@^4.6.0:
   version "4.6.0"
   resolved "https://registry.npmmirror.com/lodash.findlastindex/-/lodash.findlastindex-4.6.0.tgz#b8375ac0f02e9b926375cdf8dc3ea814abf9c6ac"
   integrity sha512-wghZXum6rpsr8XsE0U3PZNaLtj1Q8m8Vn/hAgHtlDlzh49ZXNpcZmVbyTFRRjkKhzPAZ4CSFyxctNIk1BLmRBg==
+
+lodash.flatten@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/lodash.flatten/-/lodash.flatten-4.4.0.tgz#f31c22225a9632d2bbf8e4addbef240aa765a61f"
+  integrity sha1-8xwiIlqWMtK7+OSt2+8kCqdlph8=
 
 lodash.flow@^3.3.0:
   version "3.5.0"
