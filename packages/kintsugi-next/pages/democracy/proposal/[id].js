@@ -38,7 +38,7 @@ const MetadataProposerWrapper = styled.div`
 `;
 
 export default withLoginUserRedux(
-  ({ loginUser, detail, referendum, comments, chain, siteUrl }) => {
+  ({ loginUser, detail, referendum, comments, chain }) => {
     const postId = detail._id;
 
     const editorWrapperRef = useRef(null);
@@ -113,12 +113,7 @@ export default withLoginUserRedux(
     const desc = getMetaDesc(detail, "Proposal");
     return (
       <Layout user={loginUser} chain={chain}>
-        <SEO
-          title={detail?.title}
-          desc={desc}
-          siteUrl={siteUrl}
-          chain={chain}
-        />
+        <SEO title={detail?.title} desc={desc} chain={chain} />
         <DetailPageWrapper className="post-content">
           <Back href={`/democracy/proposals`} text="Back to Proposals" />
           <DetailItem
@@ -192,7 +187,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       referendum,
       comments: comments ?? EmptyList,
       chain,
-      siteUrl: process.env.SITE_URL,
     },
   };
 });

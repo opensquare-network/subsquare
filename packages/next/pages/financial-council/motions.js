@@ -7,7 +7,7 @@ import { EmptyList } from "next-common/utils/constants";
 import Layout from "components/layout";
 import { toFinancialMotionsListItem } from "utils/viewfuncs";
 
-export default withLoginUserRedux(({ loginUser, motions, chain, siteUrl }) => {
+export default withLoginUserRedux(({ loginUser, motions, chain }) => {
   const items = (motions.items || []).map((item) =>
     toFinancialMotionsListItem(chain, item)
   );
@@ -51,7 +51,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       chain,
       motions: motions ?? EmptyList,
-      siteUrl: process.env.SITE_URL,
     },
   };
 });

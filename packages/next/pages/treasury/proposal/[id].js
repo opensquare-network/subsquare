@@ -30,139 +30,133 @@ const Flex = styled.div`
   align-items: center; ;
 `;
 
-export default withLoginUserRedux(
-  ({ loginUser, detail, comments, chain, siteUrl }) => {
-    const postId = detail._id;
+export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+  const postId = detail._id;
 
-    const editorWrapperRef = useRef(null);
-    const [quillRef, setQuillRef] = useState(null);
-    const [content, setContent] = useState("");
-    const [contentType, setContentType] = useState(
-      loginUser?.preference.editor || "markdown"
-    );
+  const editorWrapperRef = useRef(null);
+  const [quillRef, setQuillRef] = useState(null);
+  const [content, setContent] = useState("");
+  const [contentType, setContentType] = useState(
+    loginUser?.preference.editor || "markdown"
+  );
 
-    const node = getNode(chain);
-    if (!node) {
-      return null;
+  const node = getNode(chain);
+  if (!node) {
+    return null;
+  }
+  const decimals = node.decimals;
+  const symbol = node.symbol;
+
+  const getTimelineData = (args, method) => {
+    switch (method) {
+      case "Proposed":
+        return {
+          Index: `#${args.index}`,
+        };
+      case "Awarded":
+        return {
+          Beneficiary: <User chain={chain} add={args.beneficiary} />,
+          Award: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
+        };
     }
-    const decimals = node.decimals;
-    const symbol = node.symbol;
+    return args;
+  };
 
-    const getTimelineData = (args, method) => {
-      switch (method) {
-        case "Proposed":
-          return {
-            Index: `#${args.index}`,
-          };
-        case "Awarded":
-          return {
-            Beneficiary: <User chain={chain} add={args.beneficiary} />,
-            Award: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
-          };
-      }
-      return args;
+  const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
+    const indexer = item.extrinsicIndexer ?? item.indexer;
+    return {
+      indexer,
+      time: dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+      status: getTimelineStatus("proposal", item.method ?? item.name),
+      data: getTimelineData(item.args, item.method ?? item.name),
     };
+  });
 
-    const timelineData = (detail?.onchainData?.timeline || []).map((item) => {
-      const indexer = item.extrinsicIndexer ?? item.indexer;
-      return {
-        indexer,
-        time: dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-        status: getTimelineStatus("proposal", item.method ?? item.name),
-        data: getTimelineData(item.args, item.method ?? item.name),
-      };
-    });
+  detail?.onchainData?.motions?.forEach((motion) => {
+    const motionTimelineData = createMotionTimelineData(motion, chain);
+    timelineData.push(motionTimelineData);
+  });
+  sortTimeline(timelineData);
 
-    detail?.onchainData?.motions?.forEach((motion) => {
-      const motionTimelineData = createMotionTimelineData(motion, chain);
-      timelineData.push(motionTimelineData);
-    });
-    sortTimeline(timelineData);
+  const users = getMentionList(comments);
 
-    const users = getMentionList(comments);
+  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
-    const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
+  const onReply = getOnReply(
+    contentType,
+    content,
+    setContent,
+    quillRef,
+    focusEditor
+  );
 
-    const onReply = getOnReply(
-      contentType,
-      content,
-      setContent,
-      quillRef,
-      focusEditor
-    );
+  const metadata = detail.onchainData?.meta
+    ? Object.entries(detail.onchainData?.meta)
+    : [];
+  metadata.forEach((item) => {
+    switch (item[0]) {
+      case "proposer":
+      case "beneficiary":
+        item[1] = (
+          <Flex>
+            <User chain={chain} add={item[1]} fontSize={14} />
+            <Links chain={chain} address={item[1]} style={{ marginLeft: 8 }} />
+          </Flex>
+        );
+        break;
+      case "value":
+      case "bond":
+        item[1] = `${toPrecision(item[1] ?? 0, decimals)} ${symbol}`;
+    }
+  });
 
-    const metadata = detail.onchainData?.meta
-      ? Object.entries(detail.onchainData?.meta)
-      : [];
-    metadata.forEach((item) => {
-      switch (item[0]) {
-        case "proposer":
-        case "beneficiary":
-          item[1] = (
-            <Flex>
-              <User chain={chain} add={item[1]} fontSize={14} />
-              <Links
-                chain={chain}
-                address={item[1]}
-                style={{ marginLeft: 8 }}
-              />
-            </Flex>
-          );
-          break;
-        case "value":
-        case "bond":
-          item[1] = `${toPrecision(item[1] ?? 0, decimals)} ${symbol}`;
-      }
-    });
+  detail.status = detail.onchainData?.state?.state;
 
-    detail.status = detail.onchainData?.state?.state;
-
-    const desc = getMetaDesc(detail, "Proposal");
-    return (
-      <Layout
-        user={loginUser}
-        chain={chain}
-        seoInfo={{ title: detail?.title, desc }}
-      >
-        <DetailPageWrapper className="post-content">
-          <Back href={`/treasury/proposals`} text="Back to Proposals" />
-          <DetailItem
-            data={detail}
+  const desc = getMetaDesc(detail, "Proposal");
+  return (
+    <Layout
+      user={loginUser}
+      chain={chain}
+      seoInfo={{ title: detail?.title, desc }}
+    >
+      <DetailPageWrapper className="post-content">
+        <Back href={`/treasury/proposals`} text="Back to Proposals" />
+        <DetailItem
+          data={detail}
+          user={loginUser}
+          chain={chain}
+          onReply={focusEditor}
+          type={TYPE_TREASURY_PROPOSAL}
+        />
+        <KVList title="Metadata" data={metadata} showFold />
+        <Timeline
+          data={timelineData}
+          chain={chain}
+          type={TYPE_TREASURY_PROPOSAL}
+          indent={false}
+        />
+        <CommentsWrapper>
+          <Comments
+            data={comments}
             user={loginUser}
             chain={chain}
-            onReply={focusEditor}
-            type={TYPE_TREASURY_PROPOSAL}
+            onReply={onReply}
           />
-          <KVList title="Metadata" data={metadata} showFold />
-          <Timeline
-            data={timelineData}
-            chain={chain}
-            type={TYPE_TREASURY_PROPOSAL}
-            indent={false}
-          />
-          <CommentsWrapper>
-            <Comments
-              data={comments}
-              user={loginUser}
+          {loginUser && (
+            <Editor
+              postId={postId}
               chain={chain}
-              onReply={onReply}
+              ref={editorWrapperRef}
+              setQuillRef={setQuillRef}
+              {...{ contentType, setContentType, content, setContent, users }}
+              type={TYPE_TREASURY_PROPOSAL}
             />
-            {loginUser && (
-              <Editor
-                postId={postId}
-                chain={chain}
-                ref={editorWrapperRef}
-                setQuillRef={setQuillRef}
-                {...{ contentType, setContentType, content, setContent, users }}
-                type={TYPE_TREASURY_PROPOSAL}
-              />
-            )}
-          </CommentsWrapper>
-        </DetailPageWrapper>
-      </Layout>
-    );
-  }
-);
+          )}
+        </CommentsWrapper>
+      </DetailPageWrapper>
+    </Layout>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
@@ -190,7 +184,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
-      siteUrl: process.env.SITE_URL,
     },
   };
 });

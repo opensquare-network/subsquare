@@ -39,7 +39,7 @@ const Wrapper = styled.div`
 `;
 
 export default withLoginUserRedux(
-  ({ loginUser, detail, publicProposal, comments, chain, siteUrl }) => {
+  ({ loginUser, detail, publicProposal, comments, chain }) => {
     const api = useApi(chain);
     const editorWrapperRef = useRef(null);
     const [quillRef, setQuillRef] = useState(null);
@@ -101,12 +101,7 @@ export default withLoginUserRedux(
     const desc = getMetaDesc(detail, "Referendum");
     return (
       <Layout user={loginUser} chain={chain}>
-        <SEO
-          title={detail?.title}
-          desc={desc}
-          siteUrl={siteUrl}
-          chain={chain}
-        />
+        <SEO title={detail?.title} desc={desc} chain={chain} />
         <OutWrapper>
           <Wrapper className="post-content">
             <Back href={`/democracy/referendums`} text="Back to Referendas" />
@@ -207,7 +202,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       publicProposal,
       comments: comments ?? EmptyList,
       chain,
-      siteUrl: process.env.SITE_URL,
     },
   };
 });

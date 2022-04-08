@@ -8,37 +8,35 @@ import { toPublicProposalListItem } from "utils/viewfuncs";
 import { isSafari } from "../../utils/serverSideUtil";
 import DemocracySummary from "next-common/components/summary/democracySummary";
 
-export default withLoginUserRedux(
-  ({ loginUser, proposals, chain, siteUrl }) => {
-    const items = (proposals.items || []).map((item) =>
-      toPublicProposalListItem(chain, item)
-    );
-    const category = `Democracy Public Proposals`;
-    const seoInfo = { title: category, desc: category };
+export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
+  const items = (proposals.items || []).map((item) =>
+    toPublicProposalListItem(chain, item)
+  );
+  const category = `Democracy Public Proposals`;
+  const seoInfo = { title: category, desc: category };
 
-    return (
-      <Layout
-        user={loginUser}
-        left={<Menu menu={mainMenu} chain={chain} />}
+  return (
+    <Layout
+      user={loginUser}
+      left={<Menu menu={mainMenu} chain={chain} />}
+      chain={chain}
+      seoInfo={seoInfo}
+    >
+      <List
         chain={chain}
-        seoInfo={seoInfo}
-      >
-        <List
-          chain={chain}
-          category={category}
-          create={null}
-          items={items}
-          pagination={{
-            page: proposals.page,
-            pageSize: proposals.pageSize,
-            total: proposals.total,
-          }}
-          summary={<DemocracySummary chain={chain} />}
-        />
-      </Layout>
-    );
-  }
-);
+        category={category}
+        create={null}
+        items={items}
+        pagination={{
+          page: proposals.page,
+          pageSize: proposals.pageSize,
+          total: proposals.total,
+        }}
+        summary={<DemocracySummary chain={chain} />}
+      />
+    </Layout>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
@@ -56,7 +54,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       chain,
       proposals: proposals ?? EmptyList,
-      siteUrl: process.env.SITE_URL,
     },
   };
 });

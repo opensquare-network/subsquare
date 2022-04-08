@@ -8,7 +8,7 @@ import Layout from "components/layout";
 import { toReferendaListItem } from "utils/viewfuncs";
 import DemocracySummary from "next-common/components/summary/democracySummary";
 
-export default withLoginUserRedux(({ loginUser, posts, chain, siteUrl }) => {
+export default withLoginUserRedux(({ loginUser, posts, chain }) => {
   const items = (posts.items || []).map((item) =>
     toReferendaListItem(chain, item)
   );
@@ -54,7 +54,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       chain,
       posts: posts ?? EmptyList,
-      siteUrl: process.env.SITE_URL,
     },
   };
 });

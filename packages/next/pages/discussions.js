@@ -21,7 +21,7 @@ const Create = styled.a`
   cursor: pointer;
 `;
 
-export default withLoginUserRedux(({ loginUser, posts, chain, siteUrl }) => {
+export default withLoginUserRedux(({ loginUser, posts, chain }) => {
   const items = (posts.items || []).map((item) =>
     toDiscussionListItem(chain, item)
   );
@@ -69,7 +69,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       chain,
       posts: posts ?? EmptyList,
-      siteUrl: process.env.SITE_URL,
     },
   };
 });
