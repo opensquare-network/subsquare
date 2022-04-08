@@ -35,130 +35,128 @@ const Wrapper = styled.div`
   }
 `;
 
-export default withLoginUserRedux(
-  ({ loginUser, detail, comments, chain, siteUrl }) => {
-    const api = useApi(chain);
-    const editorWrapperRef = useRef(null);
-    const [quillRef, setQuillRef] = useState(null);
-    const [content, setContent] = useState("");
-    const [contentType, setContentType] = useState(
-      loginUser?.preference.editor || "markdown"
-    );
-    const [referendumStatus, setReferendumStatus] = useState(
-      detail?.onchainData?.status || detail?.onchainData?.info?.ongoing
-    );
-    const isMounted = useIsMounted();
-    const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] =
-      useState(false);
+export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+  const api = useApi(chain);
+  const editorWrapperRef = useRef(null);
+  const [quillRef, setQuillRef] = useState(null);
+  const [content, setContent] = useState("");
+  const [contentType, setContentType] = useState(
+    loginUser?.preference.editor || "markdown"
+  );
+  const [referendumStatus, setReferendumStatus] = useState(
+    detail?.onchainData?.status || detail?.onchainData?.info?.ongoing
+  );
+  const isMounted = useIsMounted();
+  const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] =
+    useState(false);
 
-    const timeline = detail?.onchainData?.timeline || [];
-    const voteFinished = [
-      "Executed",
-      "Passed",
-      "NotPassed",
-      "Cancelled",
-    ].includes(timeline[timeline.length - 1]?.method);
+  const timeline = detail?.onchainData?.timeline || [];
+  const voteFinished = [
+    "Executed",
+    "Passed",
+    "NotPassed",
+    "Cancelled",
+  ].includes(timeline[timeline.length - 1]?.method);
 
-    useEffect(() => {
-      if (voteFinished) {
-        return;
-      }
+  useEffect(() => {
+    if (voteFinished) {
+      return;
+    }
 
-      setIsLoadingReferendumStatus(true);
-      api?.query.democracy
-        .referendumInfoOf(detail?.referendumIndex)
-        .then((referendumInfo) => {
-          const referendumInfoData = referendumInfo.toJSON();
-          if (isMounted.current) {
-            setReferendumStatus(referendumInfoData?.ongoing);
-          }
-        })
-        .finally(() => {
-          setIsLoadingReferendumStatus(false);
-        });
-    }, [api, detail, isMounted, voteFinished]);
+    setIsLoadingReferendumStatus(true);
+    api?.query.democracy
+      .referendumInfoOf(detail?.referendumIndex)
+      .then((referendumInfo) => {
+        const referendumInfoData = referendumInfo.toJSON();
+        if (isMounted.current) {
+          setReferendumStatus(referendumInfoData?.ongoing);
+        }
+      })
+      .finally(() => {
+        setIsLoadingReferendumStatus(false);
+      });
+  }, [api, detail, isMounted, voteFinished]);
 
-    const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
+  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
-    const onReply = getOnReply(
-      contentType,
-      content,
-      setContent,
-      quillRef,
-      focusEditor
-    );
+  const onReply = getOnReply(
+    contentType,
+    content,
+    setContent,
+    quillRef,
+    focusEditor
+  );
 
-    detail.status = detail?.onchainData?.state?.state;
+  detail.status = detail?.onchainData?.state?.state;
 
-    const desc = getMetaDesc(detail, "Referendum");
-    return (
-      <Layout
-        user={loginUser}
-        chain={chain}
-        seoInfo={{ title: detail?.title, desc }}
-      >
-        <OutWrapper>
-          <Wrapper className="post-content">
-            <Back href={`/democracy/referendums`} text="Back to Referendas" />
-            <DetailItem
-              data={detail}
-              onReply={focusEditor}
+  const desc = getMetaDesc(detail, "Referendum");
+  return (
+    <Layout
+      user={loginUser}
+      chain={chain}
+      seoInfo={{ title: detail?.title, desc }}
+    >
+      <OutWrapper>
+        <Wrapper className="post-content">
+          <Back href={`/democracy/referendums`} text="Back to Referendas" />
+          <DetailItem
+            data={detail}
+            onReply={focusEditor}
+            user={loginUser}
+            chain={chain}
+            type={TYPE_DEMOCRACY_REFERENDUM}
+          />
+
+          <Vote
+            referendumInfo={detail?.onchainData?.info}
+            referendumStatus={referendumStatus}
+            setReferendumStatus={setReferendumStatus}
+            chain={chain}
+            referendumIndex={detail?.referendumIndex}
+            isLoadingReferendumStatus={isLoadingReferendumStatus}
+            setIsLoadingReferendumStatus={setIsLoadingReferendumStatus}
+          />
+
+          <ReferendumMetadata
+            api={api}
+            proposer={detail?.proposer}
+            status={referendumStatus}
+            preimage={detail?.onchainData?.preImage}
+            chain={chain}
+            onchainData={detail?.onchainData}
+          />
+
+          <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
+
+          <CommentsWrapper>
+            <Comments
+              data={comments}
               user={loginUser}
               chain={chain}
-              type={TYPE_DEMOCRACY_REFERENDUM}
+              onReply={onReply}
             />
-
-            <Vote
-              referendumInfo={detail?.onchainData?.info}
-              referendumStatus={referendumStatus}
-              setReferendumStatus={setReferendumStatus}
-              chain={chain}
-              referendumIndex={detail?.referendumIndex}
-              isLoadingReferendumStatus={isLoadingReferendumStatus}
-              setIsLoadingReferendumStatus={setIsLoadingReferendumStatus}
-            />
-
-            <ReferendumMetadata
-              api={api}
-              proposer={detail?.proposer}
-              status={referendumStatus}
-              preimage={detail?.onchainData?.preImage}
-              chain={chain}
-              onchainData={detail?.onchainData}
-            />
-
-            <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
-
-            <CommentsWrapper>
-              <Comments
-                data={comments}
-                user={loginUser}
+            {loginUser && (
+              <Editor
+                postId={detail?._id}
                 chain={chain}
-                onReply={onReply}
+                ref={editorWrapperRef}
+                setQuillRef={setQuillRef}
+                {...{
+                  contentType,
+                  setContentType,
+                  content,
+                  setContent,
+                  users: getMentionList(comments),
+                }}
+                type={TYPE_DEMOCRACY_REFERENDUM}
               />
-              {loginUser && (
-                <Editor
-                  postId={detail?._id}
-                  chain={chain}
-                  ref={editorWrapperRef}
-                  setQuillRef={setQuillRef}
-                  {...{
-                    contentType,
-                    setContentType,
-                    content,
-                    setContent,
-                    users: getMentionList(comments),
-                  }}
-                  type={TYPE_DEMOCRACY_REFERENDUM}
-                />
-              )}
-            </CommentsWrapper>
-          </Wrapper>
-        </OutWrapper>
-      </Layout>
-    );
-  }
-);
+            )}
+          </CommentsWrapper>
+        </Wrapper>
+      </OutWrapper>
+    </Layout>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
@@ -188,7 +186,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
-      siteUrl: process.env.SITE_URL,
     },
   };
 });

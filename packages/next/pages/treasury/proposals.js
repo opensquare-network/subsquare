@@ -8,37 +8,35 @@ import Layout from "components/layout";
 import { toTreasuryProposalListItem } from "utils/viewfuncs";
 import Summary from "next-common/components/summary";
 
-export default withLoginUserRedux(
-  ({ loginUser, proposals, chain, siteUrl }) => {
-    const items = (proposals.items || []).map((item) =>
-      toTreasuryProposalListItem(chain, item)
-    );
-    const category = "Treasury Proposals";
-    const seoInfo = { title: category, desc: category };
+export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
+  const items = (proposals.items || []).map((item) =>
+    toTreasuryProposalListItem(chain, item)
+  );
+  const category = "Treasury Proposals";
+  const seoInfo = { title: category, desc: category };
 
-    return (
-      <Layout
-        user={loginUser}
-        left={<Menu menu={mainMenu} chain={chain} />}
+  return (
+    <Layout
+      user={loginUser}
+      left={<Menu menu={mainMenu} chain={chain} />}
+      chain={chain}
+      seoInfo={seoInfo}
+    >
+      <List
         chain={chain}
-        seoInfo={seoInfo}
-      >
-        <List
-          chain={chain}
-          category={category}
-          create={null}
-          items={items}
-          summary={<Summary chain={chain} />}
-          pagination={{
-            page: proposals.page,
-            pageSize: proposals.pageSize,
-            total: proposals.total,
-          }}
-        />
-      </Layout>
-    );
-  }
-);
+        category={category}
+        create={null}
+        items={items}
+        summary={<Summary chain={chain} />}
+        pagination={{
+          page: proposals.page,
+          pageSize: proposals.pageSize,
+          total: proposals.total,
+        }}
+      />
+    </Layout>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
@@ -56,7 +54,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       chain,
       proposals: proposals ?? EmptyList,
-      siteUrl: process.env.SITE_URL,
     },
   };
 });

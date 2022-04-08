@@ -16,65 +16,58 @@ import { to404 } from "next-common/utils/serverSideUtil";
 import { EmptyList } from "next-common/utils/constants";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 
-export default withLoginUserRedux(
-  ({ loginUser, motion, comments, chain, siteUrl }) => {
-    const users = getMentionList(comments);
-    const editorWrapperRef = useRef(null);
-    const [quillRef, setQuillRef] = useState(null);
-    const [content, setContent] = useState("");
-    const [contentType, setContentType] = useState(
-      loginUser?.preference.editor || "markdown"
-    );
-    const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
-    const onReply = getOnReply(
-      contentType,
-      content,
-      setContent,
-      quillRef,
-      focusEditor
-    );
+export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
+  const users = getMentionList(comments);
+  const editorWrapperRef = useRef(null);
+  const [quillRef, setQuillRef] = useState(null);
+  const [content, setContent] = useState("");
+  const [contentType, setContentType] = useState(
+    loginUser?.preference.editor || "markdown"
+  );
+  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
+  const onReply = getOnReply(
+    contentType,
+    content,
+    setContent,
+    quillRef,
+    focusEditor
+  );
 
-    const desc = getMetaDesc(motion, "Proposal");
-    return (
-      <Layout user={loginUser} chain={chain}>
-        <SEO
-          title={motion?.title}
-          desc={desc}
-          siteUrl={siteUrl}
+  const desc = getMetaDesc(motion, "Proposal");
+  return (
+    <Layout user={loginUser} chain={chain}>
+      <SEO title={motion?.title} desc={desc} chain={chain} />
+      <DetailPageWrapper className="post-content">
+        <Back href={`/techcomm/proposals`} text="Back to Proposals" />
+        <TechcommMotionDetail
+          motion={motion}
+          loginUser={loginUser}
           chain={chain}
+          onReply={onReply}
+          type={TYPE_TECH_COMM_MOTION}
         />
-        <DetailPageWrapper className="post-content">
-          <Back href={`/techcomm/proposals`} text="Back to Proposals" />
-          <TechcommMotionDetail
-            motion={motion}
-            loginUser={loginUser}
+        <CommentsWrapper>
+          <Comments
+            data={comments}
+            user={loginUser}
             chain={chain}
             onReply={onReply}
-            type={TYPE_TECH_COMM_MOTION}
           />
-          <CommentsWrapper>
-            <Comments
-              data={comments}
-              user={loginUser}
+          {loginUser && (
+            <Editor
+              postId={motion._id}
               chain={chain}
-              onReply={onReply}
+              ref={editorWrapperRef}
+              setQuillRef={setQuillRef}
+              {...{ contentType, setContentType, content, setContent, users }}
+              type={TYPE_TECH_COMM_MOTION}
             />
-            {loginUser && (
-              <Editor
-                postId={motion._id}
-                chain={chain}
-                ref={editorWrapperRef}
-                setQuillRef={setQuillRef}
-                {...{ contentType, setContentType, content, setContent, users }}
-                type={TYPE_TECH_COMM_MOTION}
-              />
-            )}
-          </CommentsWrapper>
-        </DetailPageWrapper>
-      </Layout>
-    );
-  }
-);
+          )}
+        </CommentsWrapper>
+      </DetailPageWrapper>
+    </Layout>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
@@ -104,7 +97,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       motion: motion ?? null,
       comments: comments ?? EmptyList,
       chain,
-      siteUrl: process.env.SITE_URL,
     },
   };
 });

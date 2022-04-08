@@ -8,7 +8,7 @@ import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
 import { getNode } from "utils";
 
-export default withLoginUserRedux(({ loginUser, chain, siteUrl }) => {
+export default withLoginUserRedux(({ loginUser, chain }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const api = useApi(chain);
@@ -64,7 +64,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       chain,
-      siteUrl: process.env.SITE_URL,
     },
   };
 });

@@ -8,7 +8,7 @@ import Layout from "components/layout";
 import { toTreasuryBountyListItem } from "utils/viewfuncs";
 import Summary from "next-common/components/summary";
 
-export default withLoginUserRedux(({ loginUser, bounties, chain, siteUrl }) => {
+export default withLoginUserRedux(({ loginUser, bounties, chain }) => {
   const items = (bounties.items || []).map((item) =>
     toTreasuryBountyListItem(chain, item)
   );
@@ -54,7 +54,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       chain,
       bounties: bounties ?? EmptyList,
-      siteUrl: process.env.SITE_URL,
     },
   };
 });

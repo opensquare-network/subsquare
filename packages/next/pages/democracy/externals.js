@@ -8,37 +8,35 @@ import Layout from "components/layout";
 import { toExternalProposalListItem } from "utils/viewfuncs";
 import DemocracySummary from "next-common/components/summary/democracySummary";
 
-export default withLoginUserRedux(
-  ({ loginUser, externals, chain, siteUrl }) => {
-    const items = (externals.items || []).map((item) =>
-      toExternalProposalListItem(chain, item)
-    );
-    const category = "Democracy External Proposals";
-    const seoInfo = { title: category, desc: category };
+export default withLoginUserRedux(({ loginUser, externals, chain }) => {
+  const items = (externals.items || []).map((item) =>
+    toExternalProposalListItem(chain, item)
+  );
+  const category = "Democracy External Proposals";
+  const seoInfo = { title: category, desc: category };
 
-    return (
-      <Layout
-        user={loginUser}
-        left={<Menu menu={mainMenu} chain={chain} />}
+  return (
+    <Layout
+      user={loginUser}
+      left={<Menu menu={mainMenu} chain={chain} />}
+      chain={chain}
+      seoInfo={seoInfo}
+    >
+      <List
         chain={chain}
-        seoInfo={seoInfo}
-      >
-        <List
-          chain={chain}
-          category={category}
-          create={null}
-          items={items}
-          pagination={{
-            page: externals.page,
-            pageSize: externals.pageSize,
-            total: externals.total,
-          }}
-          summary={<DemocracySummary chain={chain} />}
-        />
-      </Layout>
-    );
-  }
-);
+        category={category}
+        create={null}
+        items={items}
+        pagination={{
+          page: externals.page,
+          pageSize: externals.pageSize,
+          total: externals.total,
+        }}
+        summary={<DemocracySummary chain={chain} />}
+      />
+    </Layout>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
@@ -56,7 +54,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       chain,
       externals: externals ?? EmptyList,
-      siteUrl: process.env.SITE_URL,
     },
   };
 });
