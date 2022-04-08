@@ -2,7 +2,6 @@ import styled from "styled-components";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import Button from "../button";
 import { accountMenu } from "../../utils/constants";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside.js";
 import useWindowSize from "../../utils/hooks/useWindowSize.js";
