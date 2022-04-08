@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import Input from "next-common/components/input";
 import Button from "next-common/components/button";
 import DeleteAccount from "components/deleteAccount";
 import Menu from "next-common/components/menu";
 import { settingMenu } from "next-common/utils/constants";
-import { userSelector, logout } from "next-common/store/reducers/userSlice";
+import { logout, userSelector } from "next-common/store/reducers/userSlice";
 import { useForm } from "utils/hooks";
 import ErrorText from "next-common/components/ErrorText";
 import nextApi from "next-common/services/nextApi";

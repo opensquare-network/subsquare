@@ -1,20 +1,21 @@
 import styled, { css } from "styled-components";
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import useWindowSize from "next-common/utils/hooks/useWindowSize.js";
-import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside.js";
+import useWindowSize from "../../utils/hooks/useWindowSize";
+import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import {
   currentNodeSelector,
   setCurrentNode,
   nodesSelector,
-} from "next-common/store/reducers/nodeSlice";
-import { DEFAULT_NODES } from "next-common/utils/constants";
+} from "../../store/reducers/nodeSlice";
+import { DEFAULT_NODES } from "../../utils/constants";
 
 const Wrapper = styled.div`
   position: relative;
 `;
 
 const SmallSelect = styled.div`
+  background: #fff;
   width: 38px;
   height: 38px;
   border: 1px solid #e0e4eb;
@@ -30,6 +31,7 @@ const SmallSelect = styled.div`
 `;
 
 const Select = styled.div`
+  background: #ffffff;
   border: 1px solid #e0e4eb;
   border-radius: 4px;
   height: 38px;
@@ -187,12 +189,7 @@ export default function NodeSwitch({ small, chain, node }) {
                   setShow(false);
                   return;
                 }
-                dispatch(
-                  setCurrentNode({
-                    chain,
-                    url: item.url,
-                  })
-                );
+                dispatch(setCurrentNode({ url: item.url }));
                 setShow(false);
               }}
               active={item.url === currentNodeSetting.url}

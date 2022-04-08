@@ -24,7 +24,14 @@ const Wrapper = styled.button`
   ${(p) =>
     p.primary &&
     css`
-      background: ${p.background || "#6848ff"};
+      background: ${p.background || "#1E2134"};
+      color: #ffffff;
+      border: none;
+    `}
+  ${(p) =>
+    p.primaryInverse &&
+    css`
+      background: ${p.background || "#6848FF"};
       color: #ffffff;
       border: none;
     `}
