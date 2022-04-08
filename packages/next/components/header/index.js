@@ -40,15 +40,6 @@ const Left = styled(Flex)`
   }
 `;
 
-const Right = styled(Flex)`
-  > :not(:first-child) {
-    margin-left: 12px;
-  }
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
-`;
-
 const MenuButton = styled(Flex)`
   display: none;
   border: 1px solid #e0e4eb;
@@ -62,8 +53,6 @@ const MenuButton = styled(Flex)`
     margin-right: 12px;
   }
 `;
-
-const NetworkWrapper = styled.div``;
 
 const NodeButton = styled(Flex)`
   display: none;
