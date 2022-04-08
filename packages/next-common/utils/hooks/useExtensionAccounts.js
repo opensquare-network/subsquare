@@ -15,13 +15,17 @@ export default function useExtensionAccounts(appName) {
 
   useEffect(() => {
     (async () => {
-      setHasExtension(isWeb3Injected);
+      const web3Apps = await web3Enable(appName);
+      if (isMounted.current) {
+        setHasExtension(isWeb3Injected);
+      }
       if (!isWeb3Injected) {
-        setDetecting(false);
+        if (isMounted.current) {
+          setDetecting(false);
+        }
         return;
       }
 
-      const web3Apps = await web3Enable(appName);
       const accessEnabled = web3Apps?.length > 0;
       if (isMounted.current) {
         setExtensionAccessible(accessEnabled);
