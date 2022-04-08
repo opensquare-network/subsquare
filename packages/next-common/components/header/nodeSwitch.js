@@ -1,14 +1,14 @@
 import styled, { css } from "styled-components";
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import useWindowSize from "next-common/utils/hooks/useWindowSize.js";
-import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside.js";
+import useWindowSize from "../../utils/hooks/useWindowSize";
+import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import {
   currentNodeSelector,
   setCurrentNode,
   nodesSelector,
-} from "next-common/store/reducers/nodeSlice";
-import { DEFAULT_NODES } from "next-common/utils/constants";
+} from "../../store/reducers/nodeSlice";
+import { DEFAULT_NODES } from "../../utils/constants";
 
 const Wrapper = styled.div`
   position: relative;
@@ -187,12 +187,7 @@ export default function NodeSwitch({ small, chain, node }) {
                   setShow(false);
                   return;
                 }
-                dispatch(
-                  setCurrentNode({
-                    chain,
-                    url: item.url,
-                  })
-                );
+                dispatch(setCurrentNode({ url: item.url }));
                 setShow(false);
               }}
               active={item.url === currentNodeSetting.url}

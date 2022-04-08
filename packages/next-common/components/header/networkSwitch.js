@@ -1,12 +1,12 @@
 import styled, { css } from "styled-components";
-import { useState, useRef, useEffect } from "react";
-import { nodes } from "next-common/utils/constants";
-import useWindowSize from "next-common/utils/hooks/useWindowSize.js";
-import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside.js";
-import { shadow_200 } from "../styles/componentCss";
+import React, { useState, useRef, useEffect } from "react";
+import { nodes } from "../../utils/constants";
+import { shadow_200 } from "../../styles/componentCss";
 import { useSelector } from "react-redux";
-import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
-import LoadingSvg from "public/imgs/icons/members-loading.svg";
+import LoadingSvg from "../../assets/imgs/icons/members-loading.svg";
+import { nodesHeightSelector } from "../../store/reducers/nodeSlice";
+import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
+import useWindowSize from "../../utils/hooks/useWindowSize";
 
 const Wrapper = styled.div`
   position: relative;

@@ -1,14 +1,12 @@
 import styled from "styled-components";
 import { useState } from "react";
-import NetworkSwitch from "components/networkSwitch";
-import HeaderAccount from "next-common/components/header/headerAccount";
 import Sidebar from "./sidebar";
 import SidebarAccount from "./sidebarAccount";
 import { nodes } from "next-common/utils/constants";
-import NodeSwitch from "components/nodeSwitch";
 import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "../../styles/componentCss";
 import Link from "next/link";
+import HeaderRight from "next-common/components/header/right";
 
 const Wrapper = styled.header`
   padding-left: 32px;
@@ -133,17 +131,7 @@ export default function Header({ user, left, chain, isWeb3Login }) {
               />
             </NodeButton>
           </Left>
-          <Right>
-            <HeaderAccount user={user} chain={chain} />
-            {
-              <>
-                <NetworkWrapper>
-                  <NetworkSwitch activeNode={node} isWeb3Login={isWeb3Login} />
-                </NetworkWrapper>
-                <NodeSwitch small chain={chain} node={node} />
-              </>
-            }
-          </Right>
+          <HeaderRight chain={chain} user={user} isWeb3Login={isWeb3Login} />
         </FlexWrapper>
       </div>
       {show && (
