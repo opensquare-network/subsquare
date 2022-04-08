@@ -5,9 +5,9 @@ import Sidebar from "./sidebar";
 import SidebarAccount from "./sidebarAccount";
 import { nodes } from "next-common/utils/constants";
 import Flex from "next-common/components/styled/flex";
-import Link from "next/link";
 import HeaderRight from "next-common/components/header/right";
 import HeaderWrapper from "next-common/components/header/wrapper";
+import ChainLogo from "next-common/components/header/left/chainLogo";
 
 const FlexWrapper = styled(Flex)`
   max-width: 1080px;
@@ -23,6 +23,7 @@ const Left = styled(Flex)`
 `;
 
 const MenuButton = styled(Flex)`
+  background: #fff;
   display: none;
   border: 1px solid #e0e4eb;
   border-radius: 4px;
@@ -47,12 +48,6 @@ const NodeButton = styled(Flex)`
   @media screen and (max-width: 768px) {
     display: flex;
   }
-`;
-
-const LogoImg = styled.img`
-  cursor: pointer;
-  width: 161px;
-  height: 64px;
 `;
 
 export default function Header({ user, left, chain, isWeb3Login }) {
@@ -83,11 +78,7 @@ export default function Header({ user, left, chain, isWeb3Login }) {
                 />
               </MenuButton>
             )}
-            <Link href="/">
-              <a>
-                <LogoImg src="/imgs/logo.svg" alt="" />
-              </a>
-            </Link>
+            <ChainLogo chain={chain} />
             <NodeButton
               onClick={() => {
                 setPosition("right");

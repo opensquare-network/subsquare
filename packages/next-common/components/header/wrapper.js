@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { shadow_100 } from "@subsquare/next/styles/componentCss";
 import Chains from "../../utils/consts/chains";
 import React, { memo } from "react";
+import useWindowSize from "../../utils/hooks/useWindowSize";
 
 const Wrapper = styled.header`
   padding-left: 32px;
@@ -27,9 +28,12 @@ const KintsugiWrapper = styled(Wrapper)`
 
 function HeaderWrapper({ chain, children }) {
   let ChainWrapper = Wrapper;
-  if (Chains.kintsugi === chain) {
-    ChainWrapper = KintsugiWrapper;
-    console.log("kkkk");
+  const { width } = useWindowSize();
+
+  if (parseInt(width) > 768) {
+    if (Chains.kintsugi === chain) {
+      ChainWrapper = KintsugiWrapper;
+    }
   }
 
   return <ChainWrapper>{children}</ChainWrapper>;
