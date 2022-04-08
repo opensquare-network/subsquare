@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  isWeb3Injected,
-  web3Enable,
-} from "@polkadot/extension-dapp";
+import { isWeb3Injected, web3Enable } from "@polkadot/extension-dapp";
 import Button from "./button";
 import nextApi from "../services/nextApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
@@ -188,17 +185,16 @@ export default function LinkedAddress({ chain }) {
       return;
     }
     const extensionAccounts = await polkadotWeb3Accounts();
-    const accounts = extensionAccounts
-      .map((item) => {
-        const {
-          address,
-          meta: { name },
-        } = item;
-        return {
-          address,
-          name,
-        };
-      });
+    const accounts = extensionAccounts.map((item) => {
+      const {
+        address,
+        meta: { name },
+      } = item;
+      return {
+        address,
+        name,
+      };
+    });
 
     if (isMounted.current) {
       setAccounts(accounts);
@@ -280,7 +276,8 @@ export default function LinkedAddress({ chain }) {
     ...(user?.addresses || [])
       .filter((address) =>
         accounts.every(
-          (acc) => acc[`${address.chain}Address`] !== address.address
+          (acc) =>
+            encodeAddressToChain(acc.address, activeChain) !== address.address
         )
       )
       .map((address) => ({
