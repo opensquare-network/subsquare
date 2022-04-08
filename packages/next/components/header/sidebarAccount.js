@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import NetworkSwitch from "components/networkSwitch";
+import NetworkSwitch from "next-common/components/header/networkSwitch";
 import Button from "next-common/components/button";
 import { accountMenu } from "next-common/utils/constants";
 import { logout } from "next-common/store/reducers/userSlice";
 import { nodes } from "next-common/utils/constants";
 import User from "next-common/components/user";
-import NodeSwitch from "components/nodeSwitch";
+import NodeSwitch from "next-common/components/header/nodeSwitch";
 import Flex from "next-common/components/styled/flex";
 
 const Wrapper = styled.div`

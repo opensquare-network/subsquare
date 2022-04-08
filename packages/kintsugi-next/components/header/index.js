@@ -1,32 +1,12 @@
 import styled from "styled-components";
 import { useState } from "react";
-import NetworkSwitch from "components/networkSwitch";
-import HeaderAccount from "next-common/components/header/headerAccount";
 import Sidebar from "./sidebar";
 import SidebarAccount from "./sidebarAccount";
 import { nodes } from "next-common/utils/constants";
-import NodeSwitch from "components/nodeSwitch";
 import Flex from "next-common/components/styled/flex";
-import { shadow_100 } from "../../styles/componentCss";
-import Link from "next/link";
-
-const Wrapper = styled.header`
-  padding-left: 32px;
-  padding-right: 32px;
-  @media screen and (max-width: 768px) {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1;
-  background: #ffffff;
-  ${shadow_100};
-  height: 64px;
-  border-bottom: 1px solid #ebeef4;
-`;
+import HeaderRight from "next-common/components/header/right";
+import HeaderWrapper from "next-common/components/header/wrapper";
+import ChainLogo from "next-common/components/header/left/chainLogo";
 
 const FlexWrapper = styled(Flex)`
   max-width: 1080px;
@@ -41,16 +21,8 @@ const Left = styled(Flex)`
   }
 `;
 
-const Right = styled(Flex)`
-  > :not(:first-child) {
-    margin-left: 12px;
-  }
-  @media screen and (max-width: 768px) {
-    display: none !important;
-  }
-`;
-
 const MenuButton = styled(Flex)`
+  background: #fff;
   display: none !important;
   border: 1px solid #e0e4eb;
   border-radius: 4px;
@@ -63,8 +35,6 @@ const MenuButton = styled(Flex)`
     margin-right: 12px;
   }
 `;
-
-const NetworkWrapper = styled.div``;
 
 const NodeButton = styled(Flex)`
   display: none !important;
@@ -79,12 +49,6 @@ const NodeButton = styled(Flex)`
   }
 `;
 
-const LogoImg = styled.img`
-  cursor: pointer;
-  width: 161px;
-  height: 64px;
-`;
-
 export default function Header({ user, left, chain, isWeb3Login }) {
   const [show, setShow] = useState(false);
   const [position, setPosition] = useState("left");
@@ -93,7 +57,7 @@ export default function Header({ user, left, chain, isWeb3Login }) {
   const node = nodes.find((n) => n.value === chain) || nodes[0];
 
   return (
-    <Wrapper>
+    <HeaderWrapper chain={chain}>
       <div>
         <FlexWrapper>
           <Left>
@@ -113,11 +77,7 @@ export default function Header({ user, left, chain, isWeb3Login }) {
                 />
               </MenuButton>
             )}
-            <Link href="/">
-              <a>
-                <LogoImg src="/imgs/logo.svg" alt="" />
-              </a>
-            </Link>
+            <ChainLogo chain={chain} />
             <NodeButton
               onClick={() => {
                 setPosition("right");
@@ -133,17 +93,7 @@ export default function Header({ user, left, chain, isWeb3Login }) {
               />
             </NodeButton>
           </Left>
-          <Right>
-            <HeaderAccount user={user} chain={chain} />
-            {
-              <>
-                <NetworkWrapper>
-                  <NetworkSwitch activeNode={node} isWeb3Login={isWeb3Login} />
-                </NetworkWrapper>
-                <NodeSwitch small chain={chain} node={node} />
-              </>
-            }
-          </Right>
+          <HeaderRight chain={chain} user={user} isWeb3Login={isWeb3Login} />
         </FlexWrapper>
       </div>
       {show && (
@@ -152,6 +102,6 @@ export default function Header({ user, left, chain, isWeb3Login }) {
           {content === "right" && <SidebarAccount user={user} chain={chain} />}
         </Sidebar>
       )}
-    </Wrapper>
+    </HeaderWrapper>
   );
 }
