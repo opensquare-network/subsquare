@@ -23,7 +23,17 @@ function ChainLogo({ chain }) {
 
   if (width > 768) {
     if (Chains.kintsugi === chain) {
-      logo = <Logo src="/imgs/logos/kintsugi.svg" alt="kintsugi" />;
+      logo = <Logo src="/imgs/logos/kintsugi.svg" alt={chain} />;
+    } else if (Chains.interlay === chain) {
+      logo = <Logo src="/imgs/logos/interlay.svg" alt={chain} />;
+    } else if (Chains.acala === chain) {
+      logo = <Logo src="/imgs/logos/acala.svg" alt={chain} />;
+    } else if (Chains.karura === chain) {
+      logo = <Logo src="/imgs/logos/karura.svg" alt={chain} />;
+    } else if (Chains.khala === chain) {
+      logo = <Logo src="/imgs/logos/khala.svg" alt={chain} />;
+    } else if (Chains.bifrost === chain) {
+      logo = <Logo src="/imgs/logos/bifrost.svg" alt={chain} />;
     }
   }
 

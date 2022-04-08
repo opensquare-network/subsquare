@@ -26,6 +26,10 @@ const KintsugiWrapper = styled(Wrapper)`
   background: #051433;
 `;
 
+const BlackWrapper = styled(Wrapper)`
+  background: #000000;
+`;
+
 function HeaderWrapper({ chain, children }) {
   let ChainWrapper = Wrapper;
   const { width } = useWindowSize();
@@ -33,6 +37,8 @@ function HeaderWrapper({ chain, children }) {
   if (parseInt(width) > 768) {
     if (Chains.kintsugi === chain) {
       ChainWrapper = KintsugiWrapper;
+    } else if ([Chains.khala, Chains.bifrost].includes(chain)) {
+      ChainWrapper = BlackWrapper;
     }
   }
 
