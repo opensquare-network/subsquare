@@ -69,11 +69,6 @@ export default function HeaderAccount({ user, chain }) {
   const windowSize = useWindowSize();
   const dispatch = useDispatch();
 
-  if (!user) {
-    const isLoginPage = router.pathname === "/login";
-    return isLoginPage ? null : <LoginButton chain={chain} />;
-  }
-
   useOnClickOutside(ref, () => setShow(false));
 
   useEffect(() => {
@@ -81,6 +76,11 @@ export default function HeaderAccount({ user, chain }) {
       setShow(false);
     }
   }, [windowSize]);
+
+  if (!user) {
+    const isLoginPage = router.pathname === "/login";
+    return isLoginPage ? null : <LoginButton chain={chain} />;
+  }
 
   const handleAccountMenu = (item) => {
     if (item.value === "logout") {
