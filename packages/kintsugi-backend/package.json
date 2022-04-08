@@ -1,0 +1,24 @@
+{
+  "name": "@subsquare/kintsugi-backend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "node server.js",
+    "build": "next build",
+    "start": "NODE_ENV=production node server.js",
+    "lint": "next lint",
+    "timeupdater": "pm2 start ecosystem.config.js --only subsquare-time-updater-kintsugi --env production"
+  },
+  "dependencies": {
+    "@subsquare/backend-common": "file:../backend-common",
+    "dotenv": "^10.0.0",
+    "koa-router": "^10.0.0",
+    "mongodb": "^4.1.3",
+    "node-cache": "^5.1.2",
+    "socket.io": "^4.1.3"
+  },
+  "devDependencies": {
+    "eslint": "7.32.0",
+    "eslint-config-next": "^11.1.2"
+  }
+}

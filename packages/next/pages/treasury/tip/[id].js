@@ -75,7 +75,7 @@ const getClosedTimelineData = (timeline = []) => {
 };
 
 export default withLoginUserRedux(
-  ({ loginUser, detail: tip, comments, chain, siteUrl }) => {
+  ({ loginUser, detail: tip, comments, chain }) => {
     const [detail, setDetail] = useState(tip);
     const postId = detail._id;
 
@@ -372,7 +372,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
-      siteUrl: process.env.SITE_URL,
     },
   };
 });

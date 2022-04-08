@@ -34,72 +34,70 @@ const Wrapper = styled.div`
   flex-grow: 1;
 `;
 
-export default withLoginUserRedux(
-  ({ loginUser, motion, comments, chain, siteUrl }) => {
-    const users = getMentionList(comments);
-    motion.status = motion.state?.state;
-    const editorWrapperRef = useRef(null);
-    const [quillRef, setQuillRef] = useState(null);
-    const [content, setContent] = useState("");
-    const [contentType, setContentType] = useState(
-      loginUser?.preference.editor || "markdown"
-    );
-    const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
-    const onReply = getOnReply(
-      contentType,
-      content,
-      setContent,
-      quillRef,
-      focusEditor
-    );
+export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
+  const users = getMentionList(comments);
+  motion.status = motion.state?.state;
+  const editorWrapperRef = useRef(null);
+  const [quillRef, setQuillRef] = useState(null);
+  const [content, setContent] = useState("");
+  const [contentType, setContentType] = useState(
+    loginUser?.preference.editor || "markdown"
+  );
+  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
+  const onReply = getOnReply(
+    contentType,
+    content,
+    setContent,
+    quillRef,
+    focusEditor
+  );
 
-    const desc = getMetaDesc(motion, "Motion");
-    return (
-      <Layout
-        user={loginUser}
-        chain={chain}
-        seoInfo={{ title: motion?.title, desc }}
-      >
-        <OutWrapper>
-          <Wrapper className="post-content">
-            <Back href={`/council/motions`} text="Back to Motions" />
-            <MotionDetail
-              motion={motion}
+  const desc = getMetaDesc(motion, "Motion");
+  return (
+    <Layout
+      user={loginUser}
+      chain={chain}
+      seoInfo={{ title: motion?.title, desc }}
+    >
+      <OutWrapper>
+        <Wrapper className="post-content">
+          <Back href={`/council/motions`} text="Back to Motions" />
+          <MotionDetail
+            motion={motion}
+            user={loginUser}
+            chain={chain}
+            type={TYPE_COUNCIL_MOTION}
+            onReply={onReply}
+          />
+          <CommentsWrapper>
+            <Comments
+              data={comments}
               user={loginUser}
               chain={chain}
-              type={TYPE_COUNCIL_MOTION}
               onReply={onReply}
             />
-            <CommentsWrapper>
-              <Comments
-                data={comments}
-                user={loginUser}
+            {loginUser && (
+              <Editor
+                postId={motion._id}
                 chain={chain}
-                onReply={onReply}
+                ref={editorWrapperRef}
+                setQuillRef={setQuillRef}
+                {...{
+                  contentType,
+                  setContentType,
+                  content,
+                  setContent,
+                  users,
+                }}
+                type={TYPE_COUNCIL_MOTION}
               />
-              {loginUser && (
-                <Editor
-                  postId={motion._id}
-                  chain={chain}
-                  ref={editorWrapperRef}
-                  setQuillRef={setQuillRef}
-                  {...{
-                    contentType,
-                    setContentType,
-                    content,
-                    setContent,
-                    users,
-                  }}
-                  type={TYPE_COUNCIL_MOTION}
-                />
-              )}
-            </CommentsWrapper>
-          </Wrapper>
-        </OutWrapper>
-      </Layout>
-    );
-  }
-);
+            )}
+          </CommentsWrapper>
+        </Wrapper>
+      </OutWrapper>
+    </Layout>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
@@ -125,7 +123,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       motion: motion ?? null,
       comments: comments ?? EmptyList,
       chain,
-      siteUrl: process.env.SITE_URL,
     },
   };
 });

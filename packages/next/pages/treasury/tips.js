@@ -8,7 +8,7 @@ import Layout from "components/layout";
 import { toTipListItem } from "utils/viewfuncs";
 import Summary from "next-common/components/summary";
 
-export default withLoginUserRedux(({ loginUser, tips, chain, siteUrl }) => {
+export default withLoginUserRedux(({ loginUser, tips, chain }) => {
   const items = (tips.items || []).map((item) => toTipListItem(chain, item));
   const category = "Tips";
   const seoInfo = { title: `Treasury Tips`, desc: `Treasury Tips` };
@@ -52,7 +52,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       chain,
       tips: tips ?? EmptyList,
-      siteUrl: process.env.SITE_URL,
     },
   };
 });

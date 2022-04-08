@@ -17,72 +17,70 @@ import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import Metadata from "components/publicProposal/metadata";
 import Timeline from "components/publicProposal/timeline";
 
-export default withLoginUserRedux(
-  ({ loginUser, detail, comments, chain, siteUrl }) => {
-    const postId = detail?._id;
+export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+  const postId = detail?._id;
 
-    const editorWrapperRef = useRef(null);
-    const [quillRef, setQuillRef] = useState(null);
-    const [content, setContent] = useState("");
-    const [contentType, setContentType] = useState(
-      loginUser?.preference.editor || "markdown"
-    );
+  const editorWrapperRef = useRef(null);
+  const [quillRef, setQuillRef] = useState(null);
+  const [content, setContent] = useState("");
+  const [contentType, setContentType] = useState(
+    loginUser?.preference.editor || "markdown"
+  );
 
-    const users = getMentionList(comments);
+  const users = getMentionList(comments);
 
-    const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
+  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
-    const onReply = getOnReply(
-      contentType,
-      content,
-      setContent,
-      quillRef,
-      focusEditor
-    );
+  const onReply = getOnReply(
+    contentType,
+    content,
+    setContent,
+    quillRef,
+    focusEditor
+  );
 
-    detail.status = detail?.onchainData?.state?.state;
+  detail.status = detail?.onchainData?.state?.state;
 
-    const desc = getMetaDesc(detail, "Proposal");
-    return (
-      <Layout
-        user={loginUser}
-        chain={chain}
-        seoInfo={{ title: detail?.title, desc }}
-      >
-        <DetailPageWrapper className="post-content">
-          <Back href={`/democracy/proposals`} text="Back to Proposals" />
-          <DetailItem
-            data={detail}
+  const desc = getMetaDesc(detail, "Proposal");
+  return (
+    <Layout
+      user={loginUser}
+      chain={chain}
+      seoInfo={{ title: detail?.title, desc }}
+    >
+      <DetailPageWrapper className="post-content">
+        <Back href={`/democracy/proposals`} text="Back to Proposals" />
+        <DetailItem
+          data={detail}
+          user={loginUser}
+          chain={chain}
+          onReply={focusEditor}
+          type={TYPE_DEMOCRACY_PROPOSAL}
+        />
+        <Metadata proposal={detail?.onchainData} chain={chain} />
+        <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
+        <CommentsWrapper>
+          <Comments
+            data={comments}
             user={loginUser}
             chain={chain}
-            onReply={focusEditor}
-            type={TYPE_DEMOCRACY_PROPOSAL}
+            onReply={onReply}
           />
-          <Metadata proposal={detail?.onchainData} chain={chain} />
-          <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
-          <CommentsWrapper>
-            <Comments
-              data={comments}
-              user={loginUser}
+          {loginUser && (
+            <Editor
+              postId={postId}
               chain={chain}
-              onReply={onReply}
+              ref={editorWrapperRef}
+              setQuillRef={setQuillRef}
+              {...{ contentType, setContentType, content, setContent, users }}
+              type={TYPE_DEMOCRACY_PROPOSAL}
             />
-            {loginUser && (
-              <Editor
-                postId={postId}
-                chain={chain}
-                ref={editorWrapperRef}
-                setQuillRef={setQuillRef}
-                {...{ contentType, setContentType, content, setContent, users }}
-                type={TYPE_DEMOCRACY_PROPOSAL}
-              />
-            )}
-          </CommentsWrapper>
-        </DetailPageWrapper>
-      </Layout>
-    );
-  }
-);
+          )}
+        </CommentsWrapper>
+      </DetailPageWrapper>
+    </Layout>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
@@ -110,7 +108,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
-      siteUrl: process.env.SITE_URL,
     },
   };
 });

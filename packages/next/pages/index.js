@@ -17,7 +17,7 @@ import {
   toTreasuryProposalListItem,
 } from "utils/viewfuncs";
 
-export default withLoginUserRedux(({ overview, loginUser, chain, siteUrl }) => {
+export default withLoginUserRedux(({ overview, loginUser, chain }) => {
   let overviewData = [
     {
       category: "Referenda",
@@ -127,7 +127,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       chain,
       overview: result ?? null,
-      siteUrl: process.env.SITE_URL,
     },
   };
 });
