@@ -11,6 +11,7 @@ import User from "../user";
 import Relative from "../styled/relative";
 import Flex from "../styled/flex";
 import { shadow_200 } from "../../styles/componentCss";
+import LoginButton from "./loginButton";
 
 const Wrapper = Relative;
 
@@ -72,11 +73,7 @@ export default function HeaderAccount({ user, chain }) {
   const isLoginPage = router.pathname === "/login";
 
   if (!user && !isLoginPage) {
-    return (
-      <Button secondary onClick={() => router.push("/login")}>
-        Login
-      </Button>
-    );
+    return <LoginButton chain={chain} />;
   }
 
   useOnClickOutside(ref, () => setShow(false));

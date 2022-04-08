@@ -15,6 +15,7 @@ const Wrapper = styled.div`
 `;
 
 const SmallSelect = styled.div`
+  background: #fff;
   width: 38px;
   height: 38px;
   border: 1px solid #e0e4eb;
@@ -30,6 +31,7 @@ const SmallSelect = styled.div`
 `;
 
 const Select = styled.div`
+  background: #ffffff;
   border: 1px solid #e0e4eb;
   border-radius: 4px;
   height: 38px;

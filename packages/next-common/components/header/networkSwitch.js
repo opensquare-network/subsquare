@@ -14,6 +14,7 @@ const Wrapper = styled.div`
 `;
 
 const Select = styled.div`
+  background: #fff;
   border: 1px solid #e0e4eb;
   border-radius: 4px;
   height: 38px;

@@ -5,27 +5,9 @@ import Sidebar from "./sidebar";
 import SidebarAccount from "./sidebarAccount";
 import { nodes } from "next-common/utils/constants";
 import Flex from "next-common/components/styled/flex";
-import { shadow_100 } from "../../styles/componentCss";
 import Link from "next/link";
 import HeaderRight from "next-common/components/header/right";
-
-const Wrapper = styled.header`
-  padding-left: 32px;
-  padding-right: 32px;
-  @media screen and (max-width: 768px) {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1;
-  background: #ffffff;
-  ${shadow_100};
-  height: 64px;
-  border-bottom: 1px solid #ebeef4;
-`;
+import HeaderWrapper from "next-common/components/header/wrapper";
 
 const FlexWrapper = styled(Flex)`
   max-width: 1080px;
@@ -81,7 +63,7 @@ export default function Header({ user, left, chain, isWeb3Login }) {
   const node = nodes.find((n) => n.value === chain) || nodes[0];
 
   return (
-    <Wrapper>
+    <HeaderWrapper chain={chain}>
       <Container>
         <FlexWrapper>
           <Left>
@@ -130,6 +112,6 @@ export default function Header({ user, left, chain, isWeb3Login }) {
           {content === "right" && <SidebarAccount user={user} chain={chain} />}
         </Sidebar>
       )}
-    </Wrapper>
+    </HeaderWrapper>
   );
 }
