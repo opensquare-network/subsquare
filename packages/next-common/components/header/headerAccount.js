@@ -71,6 +71,14 @@ export default function HeaderAccount({ user, chain }) {
 
   const isLoginPage = router.pathname === "/login";
 
+  if (!user && !isLoginPage) {
+    return (
+      <Button secondary onClick={() => router.push("/login")}>
+        Login
+      </Button>
+    );
+  }
+
   useOnClickOutside(ref, () => setShow(false));
 
   useEffect(() => {
@@ -89,37 +97,28 @@ export default function HeaderAccount({ user, chain }) {
   };
 
   return (
-    <>
-      {user && (
-        <Wrapper ref={ref}>
-          <AccountButton onClick={() => setShow(!show)}>
-            <User user={user} chain={chain} noEvent />
-          </AccountButton>
-          {show && (
-            <Menu>
-              {accountMenu.map((item, index) => (
-                <Fragment key={index}>
-                  {index === accountMenu.length - 1 && <Divider />}
-                  <Item onClick={() => handleAccountMenu(item)}>
-                    <img
-                      src={`/imgs/icons/${item.icon}`}
-                      alt=""
-                      width={24}
-                      height={24}
-                    />
-                    <div>{item.name}</div>
-                  </Item>
-                </Fragment>
-              ))}
-            </Menu>
-          )}
-        </Wrapper>
+    <Wrapper ref={ref}>
+      <AccountButton onClick={() => setShow(!show)}>
+        <User user={user} chain={chain} noEvent />
+      </AccountButton>
+      {show && (
+        <Menu>
+          {accountMenu.map((item, index) => (
+            <Fragment key={index}>
+              {index === accountMenu.length - 1 && <Divider />}
+              <Item onClick={() => handleAccountMenu(item)}>
+                <img
+                  src={`/imgs/icons/${item.icon}`}
+                  alt=""
+                  width={24}
+                  height={24}
+                />
+                <div>{item.name}</div>
+              </Item>
+            </Fragment>
+          ))}
+        </Menu>
       )}
-      {!user && !isLoginPage && (
-        <Button secondary onClick={() => router.push("/login")}>
-          Login
-        </Button>
-      )}
-    </>
+    </Wrapper>
   );
 }
