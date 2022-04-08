@@ -15,6 +15,7 @@ import LoginButton from "./loginButton";
 const Wrapper = Relative;
 
 const AccountButton = styled(Flex)`
+  background: #ffffff;
   justify-content: center;
   border: 1px solid #e0e4eb;
   border-radius: 4px;
