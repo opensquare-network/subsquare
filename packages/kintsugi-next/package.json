@@ -18,7 +18,7 @@
     "dayjs": "^1.10.7",
     "http-proxy": "^1.18.1",
     "lodash.isnil": "^4.0.0",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "next": "^12.1.0",
     "nprogress": "^0.2.0",
     "quill-mention": "^3.0.4",
