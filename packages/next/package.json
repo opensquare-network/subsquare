@@ -18,7 +18,7 @@
     "http-proxy": "^1.18.1",
     "lodash.clonedeep": "^4.5.0",
     "lodash.findlastindex": "^4.6.0",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "next": "^12.1.0",
     "nprogress": "^0.2.0",
     "react": "17.0.2",
