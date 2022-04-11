@@ -231,11 +231,10 @@ function Editor(
             <PreviewMD
               content={content}
               setContent={setContent}
-              maxHeight={editorHeight}
             />
           )}
           {contentType === "html" && (
-            <HtmlRender html={content} maxHeight={editorHeight} />
+            <HtmlRender html={content} />
           )}
         </PreviewWrapper>
       )}

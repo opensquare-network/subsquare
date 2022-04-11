@@ -70,6 +70,7 @@ export default function PostEdit({
         loading={updating}
         setLoading={setUpdating}
         update={editPost}
+        type={type}
       />
     </Wrapper>
   );
