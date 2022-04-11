@@ -100,7 +100,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const [showModal, setShowModal] = useState(false);
   const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
   const [errors, setErrors] = useState();
-  const [editorHeight, setEditorHeight] = useState(200);
+  const [editorHeight, setEditorHeight] = useState(300);
 
   const onCreate = async () => {
     const result = await nextApi.post(`posts`, {
@@ -182,7 +182,6 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
                 content={content}
                 setContent={setContent}
                 visible={!showPreview}
-                isCreate={true}
               />
             )}
             {contentType === "html" && (
@@ -222,11 +221,10 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
                 <PreviewMD
                   content={content}
                   setContent={setContent}
-                  maxHeight={editorHeight}
                 />
               )}
               {contentType === "html" && (
-                <HtmlRender html={content} maxHeight={editorHeight} />
+                <HtmlRender html={content} />
               )}
             </PreviewWrapper>
           )}

@@ -59,13 +59,14 @@ export default function EditInput({
   setQuillRef = null,
   loading,
   setLoading,
+  type,
 }) {
   const [content, setContent] = useState(editContent);
   const [contentType, setContentType] = useState(editContentType);
   const [showPreview, setShowPreview] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState("image");
-  const [editorHeight, setEditorHeight] = useState(100);
+  const [editorHeight, setEditorHeight] = useState(type?.includes('proposal') ?300 :200);
   const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
   const [errors, setErrors] = useState();
 
@@ -165,11 +166,10 @@ export default function EditInput({
             <PreviewMD
               content={content}
               setContent={setContent}
-              maxHeight={editorHeight}
             />
           )}
           {contentType === "html" && (
-            <HtmlRender html={content} maxHeight={editorHeight} />
+            <HtmlRender html={content}/>
           )}
         </PreviewWrapper>
       )}

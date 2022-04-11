@@ -15,18 +15,11 @@ const Wrapper = styled.div`
   > * {
     margin-bottom: 0 !important;
   }
-
-  ${(p) =>
-    p.maxHeight &&
-    css`
-      max-height: ${p.maxHeight + 43}px;
-      overflow-y: scroll;
-    `}
 `;
 
-export default function PreviewMD({ content, maxHeight = null }) {
+export default function PreviewMD({ content }) {
   return (
-    <Wrapper maxHeight={maxHeight >= 300 ? 300 : maxHeight}>
+    <Wrapper>
       <Markdown md={content} contentVersion="2" />
     </Wrapper>
   );
