@@ -25,7 +25,7 @@ const crust = {
   value: Chains.crust,
   name: capitalize(Chains.crust),
   icon: "crust.svg",
-  identity: "kusama", // FIXME, crust has itself identity pallet
+  identity: "crust",
   symbol: "CRU",
   decimals: 12,
   hasElections: false,
