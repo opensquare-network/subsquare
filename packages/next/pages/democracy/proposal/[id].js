@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-key */
+import styled from "styled-components";
 import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import Comments from "next-common/components/comment";
@@ -6,16 +7,36 @@ import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Editor from "next-common/components/comment/editor";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Layout from "components/layout";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import Metadata from "components/publicProposal/metadata";
 import Timeline from "components/publicProposal/timeline";
+import Second from "components/publicProposal/second";
+import OutWrapper from "next-common/components/styled/outWrapper";
+import { useApi } from "utils/hooks";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
+
+const Wrapper = styled.div`
+  margin-right: 312px;
+  overflow: hidden;
+  flex-grow: 1;
+  > :not(:first-child) {
+    margin-top: 16px;
+  }
+  @media screen and (max-width: 1024px) {
+    max-width: 848px;
+    margin: 0 auto;
+  }
+`;
+
+function isNewDepositors(depositors) {
+  return Array.isArray(depositors[0]);
+}
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const postId = detail?._id;
@@ -26,6 +47,62 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const [contentType, setContentType] = useState(
     loginUser?.preference.editor || "markdown"
   );
+
+  const publicProposal = detail?.onchainData;
+  const proposalIndex = publicProposal?.proposalIndex;
+  const state = publicProposal?.state?.state;
+  const isEnded = ["Tabled", "Canceled"].includes(state);
+  const hasTurnIntoReferendum = state === "Tabled";
+  const hasCanceled = state === "Canceled";
+
+  const timeline = publicProposal?.timeline;
+  const lastTimelineBlockHeight =
+    timeline?.[timeline?.length - 1]?.indexer.blockHeight;
+
+  const [seconds, setSeconds] = useState([]);
+  const [depositRequired, setDepositRequired] = useState(0);
+  const [isLoadingSeconds, setIsLoadingSeconds] = useState(true);
+  const api = useApi(chain);
+  const isMounted = useIsMounted();
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setIsLoadingSeconds(true);
+
+    Promise.resolve(api)
+      .then((api) => {
+        if (isEnded) {
+          return api.rpc.chain
+            .getBlockHash(lastTimelineBlockHeight - 1)
+            .then((blockHash) => api.at(blockHash));
+        }
+        return api;
+      })
+      .then((api) => api.query.democracy.depositOf(proposalIndex))
+      .then((res) => {
+        if (isMounted.current) {
+          const deposit = res.toJSON();
+          if (deposit) {
+            if (isNewDepositors(deposit)) {
+              setSeconds(deposit[0]);
+              setDepositRequired(deposit[1]);
+            } else {
+              setSeconds(deposit[1]);
+              setDepositRequired(deposit[0]);
+            }
+          }
+        }
+      })
+      .catch(console.error)
+      .finally(() => {
+        if (isMounted.current) {
+          setIsLoadingSeconds(false);
+        }
+      });
+  }, [proposalIndex, isEnded, api, lastTimelineBlockHeight]);
 
   const users = getMentionList(comments);
 
@@ -48,36 +125,51 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       chain={chain}
       seoInfo={{ title: detail?.title, desc }}
     >
-      <DetailPageWrapper className="post-content">
-        <Back href={`/democracy/proposals`} text="Back to Proposals" />
-        <DetailItem
-          data={detail}
-          user={loginUser}
-          chain={chain}
-          onReply={focusEditor}
-          type={TYPE_DEMOCRACY_PROPOSAL}
-        />
-        <Metadata proposal={detail?.onchainData} chain={chain} />
-        <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
-        <CommentsWrapper>
-          <Comments
-            data={comments}
+      <OutWrapper>
+        <Wrapper className="post-content">
+          <Back href={`/democracy/proposals`} text="Back to Proposals" />
+          <DetailItem
+            data={detail}
             user={loginUser}
             chain={chain}
-            onReply={onReply}
+            onReply={focusEditor}
+            type={TYPE_DEMOCRACY_PROPOSAL}
           />
-          {loginUser && (
-            <Editor
-              postId={postId}
+          <Second
+            chain={chain}
+            proposalIndex={proposalIndex}
+            seconds={seconds}
+            depositRequired={depositRequired}
+            hasTurnIntoReferendum={hasTurnIntoReferendum}
+            hasCanceled={hasCanceled}
+            loading={false}
+            updateSeconds={() => {}}
+            updateTimeline={() => {}}
+            isLoadingSeconds={isLoadingSeconds}
+            setIsLoadingSeconds={setIsLoadingSeconds}
+          />
+          <Metadata proposal={detail?.onchainData} chain={chain} />
+          <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
+          <CommentsWrapper>
+            <Comments
+              data={comments}
+              user={loginUser}
               chain={chain}
-              ref={editorWrapperRef}
-              setQuillRef={setQuillRef}
-              {...{ contentType, setContentType, content, setContent, users }}
-              type={TYPE_DEMOCRACY_PROPOSAL}
+              onReply={onReply}
             />
-          )}
-        </CommentsWrapper>
-      </DetailPageWrapper>
+            {loginUser && (
+              <Editor
+                postId={postId}
+                chain={chain}
+                ref={editorWrapperRef}
+                setQuillRef={setQuillRef}
+                {...{ contentType, setContentType, content, setContent, users }}
+                type={TYPE_DEMOCRACY_PROPOSAL}
+              />
+            )}
+          </CommentsWrapper>
+        </Wrapper>
+      </OutWrapper>
     </Layout>
   );
 });
