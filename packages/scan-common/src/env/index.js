@@ -13,6 +13,7 @@ const CHAINS = {
   INTERLAY: "interlay",
   BIFROST: "bifrost",
   POLKADEX: "polkadex",
+  CRUST: "crust",
 };
 
 let chain = null;

@@ -11,6 +11,7 @@ const Chains = {
   kintsugi: "kintsugi",
   interlay: "interlay",
   polkadex: "polkadex",
+  crust: "crust",
 };
 
 export default Chains;

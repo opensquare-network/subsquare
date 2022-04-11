@@ -34,3 +34,23 @@ export const DEFAULT_KARURA_NODES = [
   },
 ];
 export const DEFAULT_KARURA_NODE_URL = DEFAULT_KARURA_NODES[0]?.url;
+
+export const DEFAULT_CRUST_NODES = [
+  {
+    name: "OnFinality",
+    url: "wss://crust.api.onfinality.io/public-ws",
+  },
+  {
+    name: "Crust",
+    url: "wss://rpc.crust.network",
+  },
+  {
+    name: "Decoo Technologies",
+    url: "wss://rpc-crust-mainnet.decoo.io",
+  },
+  {
+    name: "DCloud Foundation",
+    url: "wss://api.decloudf.com",
+  },
+];
+export const DEFAULT_CRUST_NODE_URL = DEFAULT_CRUST_NODES[0].url;

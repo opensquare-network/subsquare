@@ -1164,6 +1164,13 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@crustio/type-definitions@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/@crustio/type-definitions/-/type-definitions-1.2.0.tgz#221a626b8e18ac77fb9e13e6b018803e78727b71"
+  integrity sha512-i/u3WUuhfC76JirlSwyGIKDwoFrax5QUonxGG/wgX2KEDKM9MIVx4qEsphE/tjAxlX1/qO3c72dzvKR2gndhgg==
+  dependencies:
+    "@open-web3/orml-type-definitions" "^0.8.2-9"
+
 "@csstools/normalize.css@*":
   version "12.0.0"
   resolved "https://registry.npmmirror.com/@csstools/normalize.css/-/normalize.css-12.0.0.tgz#a9583a75c3f150667771f30b60d9f059473e62c4"
@@ -1853,6 +1860,11 @@
   integrity sha512-8IuTzm9habzW9emGNR62BkhV6QnAhDjxdaaI6E+5bc+q8c++fC6YOzK5/q6vpv7/aM5Vp3sePUeBDGZw9M6AFQ==
   dependencies:
     lodash.merge "^4.6.2"
+
+"@open-web3/orml-type-definitions@^0.8.2-9":
+  version "0.8.2-11"
+  resolved "https://registry.npmjs.org/@open-web3/orml-type-definitions/-/orml-type-definitions-0.8.2-11.tgz#56358d371b63f83761234a7b1283ac9008e6dddd"
+  integrity sha512-cUv5+mprnaGNt0tu3FhK1nFRBK7SGjPhA1O0nxWWeRmuuH5fjkr0glbHE9kcKuCBfsh7nt6NGwxwl9emQtUDSA==
 
 "@open-web3/orml-types@^0.9.4-38":
   version "0.9.4-38"
