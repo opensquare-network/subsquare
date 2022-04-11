@@ -19,8 +19,8 @@ import Tooltip from "next-common/components/tooltip";
 import SignerSelect from "next-common/components/signerSelect";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import Loading from "./loading";
-import DisplayValue from "./displayValue";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import ValueDisplay from "next-common/components/displayValue";
 
 const LabelWrapper = styled.div`
   display: flex;
@@ -304,7 +304,7 @@ function PopupContent({
             (addressVote ? (
               <>
                 <div className="value">
-                  <DisplayValue
+                  <ValueDisplay
                     value={toPrecision(addressVote?.balance, node.decimals)}
                     symbol={node?.voteSymbol}
                   />

@@ -1,7 +1,8 @@
+import React from "react";
 import styled from "styled-components";
+import Tooltip from "./tooltip";
+import {abbreviateBigNumber, getEffectiveNumbers} from "../utils/viewfuncs";
 
-import Tooltip from "next-common/components/tooltip";
-import { abbreviateBigNumber, getEffectiveNumbers } from "utils";
 const NotEqual = styled.div`
   ::before {
     content: "≈";
@@ -14,8 +15,8 @@ export default function ValueDisplay({ value, symbol, noWrap }) {
   if (isNaN(value) || noWrap) {
     return `${value} ${symbol}`;
   }
-  if (Number(value) >= 1000000) {
-    const abbreviated = abbreviateBigNumber(value, 5);
+  if (Number(value) >= 1000000 || getEffectiveNumbers(value)?.length >= 11) {
+    const abbreviated = abbreviateBigNumber(value, 2);
     let display = `${abbreviated} ${symbol}`;
     if (getEffectiveNumbers(abbreviated) !== getEffectiveNumbers(value)) {
       display = <NotEqual>{`${abbreviated} ${symbol}`}</NotEqual>;
