@@ -131,7 +131,7 @@ const getTypeColor = (type) => {
 
 export default function DetailItem({ data, user, chain, onReply, type }) {
   const [post, setPost] = useState(data);
-  const [isEdit, setIsEdit] = useState(true);
+  const [isEdit, setIsEdit] = useState(false);
   if (!post) {
     return null;
   }
