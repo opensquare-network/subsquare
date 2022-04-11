@@ -19,10 +19,10 @@ import NayIcon from "public/imgs/icons/nay.svg";
 import TurnoutIcon from "public/imgs/icons/turnout.svg";
 import ElectorateIcon from "public/imgs/icons/electorate.svg";
 import Threshold from "./threshold";
-import DisplayValue from "./displayValue";
 import Loading from "./loading";
 import { useBestNumber } from "next-common/utils/hooks";
 import ExternalLink from "next-common/assets/imgs/icons/external-link.svg";
+import ValueDisplay from "next-common/components/displayValue";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -338,7 +338,7 @@ function Vote({
               Aye
             </Header>
             <span>
-              <DisplayValue
+              <ValueDisplay
                 value={nAyes}
                 symbol={symbol}
                 noWrap={width <= 1024}
@@ -351,7 +351,7 @@ function Vote({
               Nay
             </Header>
             <span>
-              <DisplayValue
+              <ValueDisplay
                 value={nNays}
                 symbol={symbol}
                 noWrap={width <= 1024}
@@ -364,7 +364,7 @@ function Vote({
               Turnout
             </Header>
             <span>
-              <DisplayValue
+              <ValueDisplay
                 value={nTurnout}
                 symbol={symbol}
                 noWrap={width <= 1024}
@@ -377,7 +377,7 @@ function Vote({
               Electorate
             </Header>
             <span>
-              <DisplayValue
+              <ValueDisplay
                 value={BigNumber.max(nTurnout, electorate)}
                 symbol={symbol}
                 noWrap={width <= 1024}
