@@ -3,7 +3,7 @@ const { safeHtml } = require("@subsquare/backend-common/utils/post");
 const {
   ContentType,
   PostTitleLengthLimitation,
-  Day
+  Day,
 } = require("@subsquare/backend-common/constants");
 const {
   getDb: getBusinessDb,
@@ -83,19 +83,19 @@ async function getActivePostsOverview() {
         $or: [
           {
             "state.state": {
-              $nin: ["Tabled", "FastTracked", "Canceled"]
-            }
+              $nin: ["Tabled", "FastTracked", "Cancelled"],
+            },
           },
           {
             "state.indexer.blockTime": {
-              $gt: Date.now() - 3 * Day
+              $gt: Date.now() - 3 * Day,
             },
-          }
-        ]
+          },
+        ],
       },
       {
         projection: {
-          timeline: 0
+          timeline: 0,
         },
       }
     )
@@ -222,9 +222,7 @@ async function getPostById(postId) {
   const chainProposalCol = await getChainPublicProposalCollection();
   const preImageCol = await getPreImageCollection();
   const [author, reactions, chanProposalData] = await Promise.all([
-    post.proposer
-      ? getUserByAddress(post.proposer)
-      : null,
+    post.proposer ? getUserByAddress(post.proposer) : null,
     businessDb.lookupMany({
       from: "reaction",
       for: post,
