@@ -13,6 +13,7 @@ const SS58Format = Object.freeze({
   Kintsugi: 2092,
   Interlay: 2032,
   Polkadex: 88,
+  Crust: 66,
 });
 
 const ContentType = Object.freeze({

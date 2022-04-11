@@ -1,11 +1,12 @@
 import menus from "./consts/menus";
 import {
+  DEFAULT_CRUST_NODES,
   DEFAULT_INTERLAY_NODE_URL,
   DEFAULT_INTERLAY_NODES,
   DEFAULT_KARURA_NODE_URL,
   DEFAULT_KARURA_NODES,
 } from "./consts/endpoints";
-import { interlay, polkadex } from "./consts/networks";
+import { crust, interlay, polkadex } from "./consts/networks";
 
 export const Chains = {
   polkadot: "polkadot",
@@ -20,6 +21,7 @@ export const Chains = {
   kintsugi: "kintsugi",
   interlay: "interlay",
   polkadex: "polkadex",
+  crust: "crust",
 };
 
 export const DEFAULT_KUSAMA_NODES = [
@@ -223,6 +225,7 @@ export const nodes = [
   },
   // polkadex,
   interlay,
+  crust,
 ];
 
 export const accountMenu = [
@@ -293,6 +296,7 @@ export const SS58Prefix = {
   kintsugi: 2092,
   polkadex: 88,
   [Chains.interlay]: 2032,
+  [Chains.crust]: 66,
 };
 
 export const defaultNodes = {
@@ -305,11 +309,13 @@ export const defaultNodes = {
   kintsugi: DEFAULT_KINTSUGI_NODES,
   polkadex: DEFAULT_POLKADEX_NODES,
   [Chains.interlay]: DEFAULT_INTERLAY_NODES,
+  [Chains.crust]: DEFAULT_CRUST_NODES,
 };
 
 export const ChainBlockTime = {
   polkadot: 6000,
   kusama: 6000,
+  [Chains.crust]: 6000,
 };
 
 export const defaultBlockTime = 12000;

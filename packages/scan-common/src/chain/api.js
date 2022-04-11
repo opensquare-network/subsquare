@@ -6,6 +6,7 @@ const { basilisk } = require("./bundle/basilisk");
 const { karuraOptions } = require("./karura/options");
 const { bifrostOptions } = require("./bifrost/options");
 const { definitions: polkadexDefinitions } = require("./polkadex/definitions");
+const { crustOptions } = require("./crust/options");
 
 let provider = null;
 let api = null;
@@ -54,6 +55,11 @@ async function getApi() {
       spec: {
         "node-polkadex": polkadexDefinitions,
       },
+    };
+  } else if (CHAINS.CRUST === chain) {
+    options = {
+      ...crustOptions,
+      ...options,
     };
   }
 

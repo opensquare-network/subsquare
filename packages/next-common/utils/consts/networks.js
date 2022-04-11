@@ -1,3 +1,6 @@
+import Chains from "./chains";
+import capitalize from "../capitalize";
+
 const interlay = {
   value: "interlay",
   name: "Interlay",
@@ -18,4 +21,14 @@ const polkadex = {
   hasElections: true,
 };
 
-export { interlay, polkadex };
+const crust = {
+  value: Chains.crust,
+  name: capitalize(Chains.crust),
+  icon: "crust.svg",
+  identity: "crust",
+  symbol: "CRU",
+  decimals: 12,
+  hasElections: false,
+};
+
+export { interlay, polkadex, crust };

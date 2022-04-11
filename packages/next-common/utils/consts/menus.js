@@ -115,6 +115,7 @@ const menus = [
       Chains.kintsugi,
       Chains.polkadex,
       Chains.interlay,
+      Chains.crust,
     ],
   },
 ];

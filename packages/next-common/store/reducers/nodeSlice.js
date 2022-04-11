@@ -18,6 +18,8 @@ import {
   defaultNodes,
 } from "../../utils/constants";
 import {
+  DEFAULT_CRUST_NODE_URL,
+  DEFAULT_CRUST_NODES,
   DEFAULT_INTERLAY_NODE_URL,
   DEFAULT_INTERLAY_NODES,
   DEFAULT_KARURA_NODE_URL,
@@ -60,6 +62,9 @@ let nodeUrl = (() => {
     [Chains.interlay]:
       DEFAULT_INTERLAY_NODES.find((item) => item.url === localNodeUrl)?.url ||
       DEFAULT_INTERLAY_NODE_URL,
+    [Chains.crust]:
+      DEFAULT_CRUST_NODES.find((item) => item.url === localNodeUrl)?.url ||
+      DEFAULT_CRUST_NODE_URL,
     polkadex:
       DEFAULT_POLKADEX_NODES.find((item) => item.url === localNodeUrl)?.url ||
       DEFAULT_POLKADEX_NODE_URL,

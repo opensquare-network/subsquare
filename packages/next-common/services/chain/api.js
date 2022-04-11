@@ -6,6 +6,7 @@ import interbtc from "./kintsugi/definitions";
 import bifrostOptions from "./bifrost/options";
 import karuraOptions from "./karura/options";
 import polkadex from "./polkadex/definitions";
+import crustOptions from "./crust/options";
 
 const apiInstanceMap = new Map();
 
@@ -45,6 +46,11 @@ export default async function getApi(chain, endpoint) {
       options = {
         ...options,
         typesBundle: { spec: { "node-polkadex": polkadex } },
+      };
+    } else if (chain === Chains.crust) {
+      options = {
+        ...crustOptions,
+        ...options,
       };
     }
 
