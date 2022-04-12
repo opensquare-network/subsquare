@@ -1,8 +1,9 @@
-const { createServer } = require("http");
-const { parse } = require("url");
-const next = require("next");
-const { loadEnvConfig } = require("@next/env");
-const httpProxy = require("http-proxy");
+import { parse } from "url";
+import next from "next";
+import nextEnv from "@next/env";
+const { loadEnvConfig } = nextEnv;
+import httpProxy from "http-proxy";
+import { createServer } from "http";
 
 // Load next env
 const projectDir = process.cwd();

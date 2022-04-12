@@ -102,7 +102,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           setIsLoadingSeconds(false);
         }
       });
-  }, [proposalIndex, isEnded, api, lastTimelineBlockHeight]);
+  }, [proposalIndex, isEnded, api, lastTimelineBlockHeight, isMounted]);
 
   const users = getMentionList(comments);
 
