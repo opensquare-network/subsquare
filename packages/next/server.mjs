@@ -1,9 +1,9 @@
 import { parse } from "url";
 import next from "next";
 import nextEnv from "@next/env";
-const { loadEnvConfig } = nextEnv;
 import httpProxy from "http-proxy";
 import { createServer } from "http";
+const { loadEnvConfig } = nextEnv;
 
 // Load next env
 const projectDir = process.cwd();
