@@ -136,6 +136,67 @@ export default function AddressCombo({ chain, accounts, address, setAddress }) {
     setShow(false);
   });
 
+  let selectContent;
+
+  if (edit) {
+    selectContent = (
+      <>
+        <Avatar address={inputAddress} />
+        <Input
+          value={inputAddress}
+          onChange={(e) => setInputAddress(e.target.value)}
+          onBlur={onBlur}
+        />
+      </>
+    );
+  } else if (selectedAccount){
+    selectContent = (
+      <>
+        <Avatar address={selectedAccount.address} />
+        <NameWrapper>
+          <div>{selectedAccount.name}</div>
+          <div>{shortAddr}</div>
+        </NameWrapper>
+      </>
+    );
+  } else {
+    selectContent = (
+      <>
+        <Avatar address={address} />
+        <NameWrapper>
+          <div>{shortAddr}</div>
+          <div>{shortAddr}</div>
+        </NameWrapper>
+      </>
+    );
+  }
+
+  const listOptions = (
+    <Options>
+      {(accounts || []).map((item, index) => {
+        const ss58Address = encodeAddressToChain(item.address, chain);
+        return (
+          <Item
+            key={index}
+            onClick={() => {
+              setAddress(ss58Address);
+              setInputAddress(ss58Address);
+              setEdit(false);
+              setShow(false);
+            }}
+            selected={item.address === address}
+          >
+            <Avatar address={item.address} />
+            <NameWrapper>
+              <div>{item.name}</div>
+              <div>{addressEllipsis(ss58Address)}</div>
+            </NameWrapper>
+          </Item>
+        );
+      })}
+    </Options>
+  );
+
   return (
     <Wrapper ref={ref}>
       <Select
@@ -145,34 +206,7 @@ export default function AddressCombo({ chain, accounts, address, setAddress }) {
           setTimeout(() => ref.current.querySelector("input")?.focus(), 100);
         }}
       >
-        {edit ? (
-          <>
-            <Avatar address={inputAddress} />
-            <Input
-              value={inputAddress}
-              onChange={(e) => setInputAddress(e.target.value)}
-              onBlur={onBlur}
-            />
-          </>
-        ) : (
-          selectedAccount ? (
-            <>
-              <Avatar address={selectedAccount.address} />
-              <NameWrapper>
-                <div>{selectedAccount.name}</div>
-                <div>{shortAddr}</div>
-              </NameWrapper>
-            </>
-          ) : (
-            <>
-              <Avatar address={address} />
-              <NameWrapper>
-                <div>{shortAddr}</div>
-                <div>{shortAddr}</div>
-              </NameWrapper>
-            </>
-          )
-        )}
+        {selectContent}
         <img
           alt=""
           src={show ? "/imgs/icons/caret-up.svg" : "/imgs/icons/caret-down.svg"}
@@ -182,31 +216,7 @@ export default function AddressCombo({ chain, accounts, address, setAddress }) {
           }}
         />
       </Select>
-      {show && (
-        <Options>
-          {(accounts || []).map((item, index) => {
-            const ss58Address = encodeAddressToChain(item.address, chain);
-            return (
-              <Item
-                key={index}
-                onClick={() => {
-                  setAddress(ss58Address);
-                  setInputAddress(ss58Address);
-                  setEdit(false);
-                  setShow(false);
-                }}
-                selected={item.address === address}
-              >
-                <Avatar address={item.address} />
-                <NameWrapper>
-                  <div>{item.name}</div>
-                  <div>{addressEllipsis(ss58Address)}</div>
-                </NameWrapper>
-              </Item>
-            );
-          })}
-        </Options>
-      )}
+      {show && listOptions}
     </Wrapper>
   );
 }
