@@ -11,7 +11,7 @@ import { logout, userSelector } from "next-common/store/reducers/userSlice";
 import { useForm } from "utils/hooks";
 import ErrorText from "next-common/components/ErrorText";
 import nextApi from "next-common/services/nextApi";
-import { addToast } from "next-common/store/reducers/toastSlice";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import Layout from "components/layout";
 import { shadow_100 } from "styles/componentCss";
@@ -126,12 +126,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       setChangLoading(true);
       const res = await nextApi.post("user/changepassword", formData);
       if (res.result) {
-        dispatch(
-          addToast({
-            type: "success",
-            message: "Change password successfully!",
-          })
-        );
+        dispatch(newSuccessToast("Change password successfully!"));
         reset();
       } else if (res.error) {
         setChangeErrors(res.error);
@@ -145,12 +140,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
     setResendLoading(true);
     const res = await nextApi.post("user/resendverifyemail");
     if (res.result) {
-      dispatch(
-        addToast({
-          type: "success",
-          message: "Resend email successfully!",
-        })
-      );
+      dispatch(newSuccessToast("Resend email successfully!"));
     } else if (res.error) {
       setResendErrors(res.error);
     }

@@ -5,9 +5,11 @@ import { useDispatch } from "react-redux";
 import { useApi } from "utils/hooks";
 import Button from "next-common/components/button";
 import {
-  addToast,
+  newErrorToast,
+  newPendingToast,
   newToastId,
-  updateToast,
+  removeToast,
+  updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
 
 import Loading from "./loading";
@@ -141,14 +143,7 @@ function PopupContent({
   const voteMethod = api?.tx?.[toApiCouncil(chain, type)]?.vote;
   const isMounted = useIsMounted();
 
-  const showErrorToast = (message) => {
-    dispatch(
-      addToast({
-        type: "error",
-        message,
-      })
-    );
-  };
+  const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doVote = async (approve) => {
     if (isLoading) return;
@@ -166,14 +161,7 @@ function PopupContent({
     }
 
     const toastId = newToastId();
-    dispatch(
-      addToast({
-        type: "pending",
-        message: "Waiting for signing...",
-        id: toastId,
-        sticky: true,
-      })
-    );
+    dispatch(newPendingToast(toastId, "Waiting for signing..."));
 
     try {
       setIsLoading(approve ? "Aye" : "Nay");
@@ -191,36 +179,19 @@ function PopupContent({
         }
         if (status.isInBlock) {
           // Transaction went through
-          dispatch(
-            updateToast({
-              type: "success",
-              message: "InBlock",
-              id: toastId,
-              sticky: false,
-            })
-          );
+          dispatch(updatePendingToast(toastId, "InBlock"));
           onInBlock(voterAddress);
         }
       });
 
-      dispatch(
-        updateToast({
-          message: "Broadcasting",
-          id: toastId,
-        })
-      );
+      dispatch(updatePendingToast(toastId, "Broadcasting"));
+
       onSubmitted(voterAddress);
 
       onClose();
     } catch (e) {
-      dispatch(
-        updateToast({
-          type: "error",
-          message: e.message,
-          id: toastId,
-          sticky: false,
-        })
-      );
+      dispatch(removeToast(toastId));
+      dispatch(newErrorToast(e.message));
     } finally {
       if (isMounted.current) {
         setIsLoading(null);

@@ -1,10 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  isWeb3Injected,
-  web3Enable,
-} from "@polkadot/extension-dapp";
+import { isWeb3Injected, web3Enable } from "@polkadot/extension-dapp";
 import { useRouter } from "next/router";
 
 import AddressSelect from "next-common/components/addressSelect";
@@ -14,7 +11,7 @@ import DownloadExtension from "next-common/components/downloadExtension";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { setUser } from "next-common/store/reducers/userSlice";
-import { addToast } from "next-common/store/reducers/toastSlice";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { encodeAddressToChain } from "next-common/services/address";
 import { signMessage } from "next-common/services/extension/signMessage";
 import { polkadotWeb3Accounts } from "next-common/utils/extensionAccount";
@@ -69,13 +66,8 @@ export default function AddressLogin({ chain, onBack }) {
           setWeb3Error(loginError.message);
         }
       } catch (e) {
-        if (e.toString() !== "Error: Cancelled") {
-          dispatch(
-            addToast({
-              type: "error",
-              message: e.toString(),
-            })
-          );
+        if (e.message !== "Cancelled") {
+          dispatch(newErrorToast(e.message));
         }
       }
     }
@@ -92,14 +84,13 @@ export default function AddressLogin({ chain, onBack }) {
         return;
       }
       const extensionAccounts = await polkadotWeb3Accounts();
-      const accounts = extensionAccounts
-        .map((item) => {
-          const {
-            address,
-            meta: { name },
-          } = item;
-          return { address, name };
-        });
+      const accounts = extensionAccounts.map((item) => {
+        const {
+          address,
+          meta: { name },
+        } = item;
+        return { address, name };
+      });
 
       if (isMounted.current) {
         setAccounts(accounts);

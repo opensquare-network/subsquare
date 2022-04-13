@@ -15,7 +15,7 @@ import InsertContentsModal from "next-common/components/editor/modal";
 import QuillEditor from "next-common/components/editor/quillEditor";
 import HtmlRender from "next-common/components/post/htmlRender";
 import { useDispatch } from "react-redux";
-import { addToast } from "next-common/store/reducers/toastSlice";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { fetchUserProfile } from "next-common/store/reducers/userSlice";
 import { shadow_100 } from "styles/componentCss";
 import NextHead from "next-common/components/nextHead";
@@ -113,12 +113,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       if (result.error.data) {
         setErrors(result.error);
       } else {
-        dispatch(
-          addToast({
-            type: "error",
-            message: result.error.message,
-          })
-        );
+        dispatch(newErrorToast(result.error.message));
       }
     } else {
       router.push(`/post/${result.result}`);
@@ -218,14 +213,9 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
           {showPreview && (
             <PreviewWrapper className="preview">
               {contentType === "markdown" && (
-                <PreviewMD
-                  content={content}
-                  setContent={setContent}
-                />
+                <PreviewMD content={content} setContent={setContent} />
               )}
-              {contentType === "html" && (
-                <HtmlRender html={content} />
-              )}
+              {contentType === "html" && <HtmlRender html={content} />}
             </PreviewWrapper>
           )}
           {errors?.data?.content?.[0] && (

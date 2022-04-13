@@ -9,7 +9,10 @@ import {
   fetchUserProfile,
   userSelector,
 } from "next-common/store/reducers/userSlice";
-import { addToast } from "next-common/store/reducers/toastSlice";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "next-common/store/reducers/toastSlice";
 import { nodes } from "next-common/utils/constants";
 import Avatar from "./avatar";
 import DownloadExtension from "./downloadExtension";
@@ -206,21 +209,11 @@ export default function LinkedAddress({ chain }) {
     dispatch(fetchUserProfile());
 
     if (result) {
-      dispatch(
-        addToast({
-          type: "success",
-          message: "Unlink address successfully!",
-        })
-      );
+      dispatch(newSuccessToast("Unlink address successfully!"));
     }
 
     if (error) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: error.message,
-        })
-      );
+      dispatch(newErrorToast(error.message));
     }
   };
 
@@ -243,31 +236,16 @@ export default function LinkedAddress({ chain }) {
 
       dispatch(fetchUserProfile());
       if (confirmResult) {
-        dispatch(
-          addToast({
-            type: "success",
-            message: "Link address successfully!",
-          })
-        );
+        dispatch(newSuccessToast("Link address successfully!"));
       }
 
       if (confirmError) {
-        dispatch(
-          addToast({
-            type: "error",
-            message: confirmError.message,
-          })
-        );
+        dispatch(newErrorToast(confirmError.message));
       }
     }
 
     if (error) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: error.message,
-        })
-      );
+      dispatch(newErrorToast(error.message));
     }
   };
 

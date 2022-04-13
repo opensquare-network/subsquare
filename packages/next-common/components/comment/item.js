@@ -10,7 +10,7 @@ import ThumbUpIcon from "../../assets/imgs/icons/thumb-up.svg";
 import UnfoldIcon from "../../assets/imgs/icons/unfold.svg";
 import FoldIcon from "../../assets/imgs/icons/fold.svg";
 import { useDispatch } from "react-redux";
-import { addToast } from "next-common/store/reducers/toastSlice";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import User from "next-common/components/user";
 import EditInput from "next-common/components/editInput";
 import { useRouter } from "next/router";
@@ -209,12 +209,7 @@ export default function Item({ user, data, chain, onReply }) {
           await updateComment();
         }
         if (error) {
-          dispatch(
-            addToast({
-              type: "error",
-              message: error.message,
-            })
-          );
+          dispatch(newErrorToast(error.message));
         }
       } finally {
         setThumbUpLoading(false);

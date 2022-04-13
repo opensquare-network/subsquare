@@ -12,7 +12,7 @@ import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { useDispatch } from "react-redux";
-import { addToast } from "next-common/store/reducers/toastSlice";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { shadow_100 } from "styles/componentCss";
 import NextHead from "next-common/components/nextHead";
 import UserPolicy from "next-common/components/userPolicy";
@@ -147,14 +147,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   );
   const { username, email, password } = formData;
 
-  const toastError = (message) => {
-    dispatch(
-      addToast({
-        type: "error",
-        message: message,
-      })
-    );
-  };
+  const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const sendVerifyEmail = () => {
     setSendEmailState(false);
@@ -164,18 +157,18 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
         if (result) {
           return setSendEmailState(true);
         }
-        toastError(
+        showErrorToast(
           error?.message ?? "some error occured when sending an Email"
         );
       })
       .catch((err) => {
-        toastError("some error occurred when sending an Email");
+        showErrorToast("some error occurred when sending an Email");
       });
   };
 
   useEffect(() => {
     if (loginUser?.emailVerified) {
-      toastError("You have already verified email address.");
+      showErrorToast("You have already verified email address.");
       return setTimeout(() => {
         // router.replace("/");
       }, 1000);

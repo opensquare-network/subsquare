@@ -7,9 +7,11 @@ import { useApi } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Button from "next-common/components/button";
 import {
-  addToast,
+  newErrorToast,
+  newPendingToast,
   newToastId,
-  updateToast,
+  updatePendingToast,
+  removeToast,
 } from "next-common/store/reducers/toastSlice";
 
 import BalanceInput from "components/balanceInput";
@@ -125,15 +127,11 @@ function PopupContent({
     }
   }, [api, selectedAccount, node.decimals, isMounted]);
 
+  const showErrorToast = (message) => dispatch(newErrorToast(message));
+
   const submit = async () => {
     if (!api) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Chain network is not connected yet",
-        })
-      );
-      return;
+      return showErrorToast("Chain network is not connected yet");
     }
 
     if (!proposalIndex) {
@@ -141,24 +139,11 @@ function PopupContent({
     }
 
     if (!selectedAccount) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Please select an account",
-        })
-      );
-      return;
+      return showErrorToast("Please select an account");
     }
 
     const toastId = newToastId();
-    dispatch(
-      addToast({
-        type: "pending",
-        message: "Waiting for signing...",
-        id: toastId,
-        sticky: true,
-      })
-    );
+    dispatch(newPendingToast(toastId, "Waiting for signing..."));
 
     try {
       setLoading(true);
@@ -174,37 +159,19 @@ function PopupContent({
           }
           if (status.isInBlock) {
             // Transaction went through
-            dispatch(
-              updateToast({
-                type: "success",
-                message: "InBlock",
-                id: toastId,
-                sticky: false,
-              })
-            );
+            dispatch(updatePendingToast(toastId, "InBlock"));
             onInBlock(signerAddress);
           }
         });
 
-      dispatch(
-        updateToast({
-          message: "Broadcasting",
-          id: toastId,
-        })
-      );
+      dispatch(updatePendingToast(toastId, "Broadcasting"));
 
       onSubmitted(signerAddress);
 
       onClose();
     } catch (e) {
-      dispatch(
-        updateToast({
-          type: "error",
-          message: e.message,
-          id: toastId,
-          sticky: false,
-        })
-      );
+      dispatch(removeToast(toastId));
+      showErrorToast(e.message);
     } finally {
       if (isMounted.current) {
         setLoading(null);

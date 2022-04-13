@@ -37,4 +37,30 @@ export const { addToast, removeToast, updateToast } = toastSlice.actions;
 
 export const newToastId = () => count++;
 
+export const newPendingToast = (id, message) =>
+  addToast({
+    id,
+    type: "pending",
+    message,
+    sticky: true,
+  });
+
+export const updatePendingToast = (id, message) =>
+  updateToast({
+    id,
+    message,
+  });
+
+export const newSuccessToast = (message) =>
+  addToast({
+    type: "success",
+    message,
+  });
+
+export const newErrorToast = (message) =>
+  addToast({
+    type: "error",
+    message,
+  });
+
 export default toastSlice.reducer;

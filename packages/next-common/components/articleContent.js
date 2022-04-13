@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { toApiType } from "next-common/utils/viewfuncs";
 import nextApi from "next-common/services/nextApi";
-import { addToast } from "next-common/store/reducers/toastSlice";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import User from "next-common/components/user";
 import HtmlRender from "next-common/components/post/htmlRender";
 import Actions from "next-common/components/actions";
@@ -148,12 +148,7 @@ export default function ArticleContent({
           await updatePost();
         }
         if (error) {
-          dispatch(
-            addToast({
-              type: "error",
-              message: error.message,
-            })
-          );
+          dispatch(newErrorToast(error.message));
         }
       } finally {
         setThumbUpLoading(false);

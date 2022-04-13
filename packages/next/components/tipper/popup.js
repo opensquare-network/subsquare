@@ -7,7 +7,12 @@ import BigNumber from "bignumber.js";
 import { useApi } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Button from "next-common/components/button";
-import { addToast } from "next-common/store/reducers/toastSlice";
+import {
+  newErrorToast,
+  newPendingToast,
+  newToastId,
+  updatePendingToast,
+} from "next-common/store/reducers/toastSlice";
 
 import TipInput from "./tipInput";
 import { getNode, toPrecision } from "utils";
@@ -101,15 +106,11 @@ function PopupContent({
     }
   }, [api, selectedAccount, node.decimals, isMounted]);
 
+  const showErrorToast = (message) => dispatch(newErrorToast(message));
+
   const doEndorse = async () => {
     if (!api) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Chain network is not connected yet",
-        })
-      );
-      return;
+      return showErrorToast("Chain network is not connected yet");
     }
 
     if (!tipHash) {
@@ -117,34 +118,16 @@ function PopupContent({
     }
 
     if (!selectedAccount) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Please select an account",
-        })
-      );
-      return;
+      return showErrorToast("Please select an account");
     }
 
     if (!inputTipValue) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Please input tip value",
-        })
-      );
-      return;
+      return showErrorToast("Please input tip value");
     }
 
     const bnInputTipValue = new BigNumber(inputTipValue);
     if (bnInputTipValue.isNaN() || bnInputTipValue.lt(0)) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Tip value is not valid",
-        })
-      );
-      return;
+      return showErrorToast("Tip value is not valid");
     }
 
     if (!node) {
@@ -154,14 +137,11 @@ function PopupContent({
 
     const bnTipValue = bnInputTipValue.multipliedBy(Math.pow(10, decimals));
     if (!bnTipValue.mod(1).isZero()) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Tip value is not valid",
-        })
-      );
-      return;
+      return showErrorToast("Tip value is not valid");
     }
+
+    const toastId = newToastId();
+    dispatch(newPendingToast(toastId, "Waiting for signing..."));
 
     try {
       setTipping(true);
@@ -177,23 +157,23 @@ function PopupContent({
           }
           if (status.isInBlock) {
             // Transaction went through
+            dispatch(updatePendingToast(toastId, "InBlock"));
             onInBlock(tipperAddress);
           }
-        })
-        .then(() => onSubmitted(tipperAddress));
+        });
+
+      dispatch(updatePendingToast(toastId, "Broadcasting"));
+
+      onSubmitted(tipperAddress);
 
       onClose();
     } catch (e) {
-      if (e.message !== "Cancelled") {
-        dispatch(
-          addToast({
-            type: "error",
-            message: e.message,
-          })
-        );
-      }
+      dispatch(removeToast(toastId));
+      showErrorToast(e.message);
     } finally {
-      setTipping(false);
+      if (isMounted.current) {
+        setTipping(false);
+      }
     }
   };
 
