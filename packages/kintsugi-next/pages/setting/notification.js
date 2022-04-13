@@ -7,7 +7,10 @@ import Menu from "next-common/components/menu";
 import { settingMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "next-common/services/nextApi";
-import { addToast } from "next-common/store/reducers/toastSlice";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import { fetchUserProfile } from "next-common/store/reducers/userSlice";
 import Layout from "components/layout";
@@ -114,9 +117,9 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
     });
     if (result) {
       dispatch(fetchUserProfile());
-      dispatch(addToast({ type: "success", message: "Settings saved" }));
+      dispatch(newSuccessToast("Settings saved"));
     } else if (error) {
-      dispatch(addToast({ type: "error", message: error.message }));
+      dispatch(newErrorToast(error.message));
     }
     setSaving(false);
   };

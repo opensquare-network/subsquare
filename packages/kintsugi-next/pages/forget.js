@@ -10,7 +10,7 @@ import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import { useDispatch } from "react-redux";
-import { addToast } from "next-common/store/reducers/toastSlice";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { shadow_100 } from "styles/componentCss";
 import NextHead from "next-common/components/nextHead";
 
@@ -80,14 +80,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const toastError = (message) => {
-    dispatch(
-      addToast({
-        type: "error",
-        message: message,
-      })
-    );
-  };
+  const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const { formData, handleInputChange, handleSubmit } = useForm(
     {
@@ -103,7 +96,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
           setErrors(res.error);
         }
       } catch (e) {
-        toastError("some error occurred when sending an Email");
+        showErrorToast("some error occurred when sending an Email");
       } finally {
         setLoading(false);
       }
