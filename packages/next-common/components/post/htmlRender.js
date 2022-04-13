@@ -116,6 +116,11 @@ const Wrapper = styled.div`
     color: #0974cd;
   }
 
+  span.mention > a {
+    color: #506176;
+    pointer-events: none;
+  }
+
   img {
     max-width: 100%;
   }
