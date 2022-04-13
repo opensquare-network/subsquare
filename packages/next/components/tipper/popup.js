@@ -79,7 +79,7 @@ function PopupContent({
   const node = getNode(chain);
 
   const selectedAccountIsTipper = councilTippers.includes(
-    selectedAccount?.[`${chain}Address`]
+    selectedAccount?.address
   );
 
   const api = useApi(chain);
