@@ -133,7 +133,7 @@ function PopupContent({
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [isLoading, setIsLoading] = useState();
 
-  const selectedAddress = selectedAccount?.[`${chain}Address`];
+  const selectedAddress = selectedAccount?.address;
   const selectedAccountCanVote = voters.includes(selectedAddress);
   const currentVote = votes.find((item) => item[0] === selectedAddress);
 
