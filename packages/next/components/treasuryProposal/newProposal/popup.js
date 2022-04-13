@@ -16,8 +16,9 @@ import BalanceInput from "components/balanceInput";
 import { getNode, toPrecision } from "utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import SignerSelect from "next-common/components/signerSelect";
-import Loading from "./loading";
+import AddressCombo from "next-common/components/addressCombo";
 import Tooltip from "next-common/components/tooltip";
+import { BN_HUNDRED, BN_MILLION } from "@polkadot/util";
 
 const LabelWrapper = styled.div`
   display: flex;
@@ -36,34 +37,6 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-const BalanceWrapper = styled.div`
-  display: flex;
-  font-size: 12px;
-  line-height: 100%;
-  color: #506176;
-  > :nth-child(2) {
-    color: #1e2134;
-    font-weight: bold;
-    margin-left: 8px;
-  }
-`;
-
-const ErrorMessage = styled.div`
-  display: flex;
-  padding: 12px 16px;
-
-  background: #fff1f0;
-  border-radius: 4px;
-
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 100%;
-
-  color: #f44336;
-  margin-top: 8px !important;
-`;
-
 const TooltipWrapper = styled.div`
   display: flex;
   align-items: flex-start;
@@ -72,14 +45,20 @@ const TooltipWrapper = styled.div`
   }
 `;
 
-const balanceMap = new Map();
+const TextBox = styled.div`
+  display: flex;
+  padding: 12px 16px;
+
+  background: #f6f7fa;
+
+  border: 1px solid #ebeef4;
+  box-sizing: border-box;
+  border-radius: 4px;
+`;
 
 function PopupContent({
   extensionAccounts,
   chain,
-  proposalIndex,
-  depositorUpperBound,
-  depositRequired,
   onClose,
   onInBlock,
   onFinalized,
@@ -88,66 +67,68 @@ function PopupContent({
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const [selectedAccount, setSelectedAccount] = useState(null);
+  const [beneficiary, setBeneficiary] = useState(null);
+  const [inputValue, setInputValue] = useState();
   const [loading, setLoading] = useState(false);
-  const [balance, setBalance] = useState(0);
-  const [loadingBalance, setLoadingBalance] = useState(false);
+  const [bondPercentage, setBondPercentage] = useState("5.00%");
   const node = getNode(chain);
+
+  const accounts = extensionAccounts.map((acc) => ({
+    address: acc.address,
+    name: acc.meta.name,
+  }));
 
   const api = useApi(chain);
 
-  const deposit =
-    depositRequired || api?.consts?.democracy?.minimumDeposit?.toString();
-  const displayDepositRequired = toPrecision(deposit, node.decimals);
-
-  const balanceInsufficient = new BigNumber(balance).lt(deposit);
-
   useEffect(() => {
-    if (balanceMap.has(selectedAccount?.address)) {
-      setBalance(balanceMap.get(selectedAccount?.address));
-      return;
+    if (api) {
+      setBondPercentage(
+        `${api?.consts.treasury.proposalBond
+          .mul(BN_HUNDRED)
+          .div(BN_MILLION)
+          .toNumber()
+          .toFixed(2)}%`
+      );
     }
-    if (api && selectedAccount) {
-      setLoadingBalance(true);
-      api.query.system
-        .account(selectedAccount.address)
-        .then((result) => {
-          if (isMounted.current) {
-            const free = toPrecision(result.data.free, node.decimals);
-            setBalance(free);
-            balanceMap.set(selectedAccount.address, free);
-          }
-        })
-        .finally(() => {
-          if (isMounted.current) {
-            setLoadingBalance(false);
-          }
-        });
-    }
-  }, [api, selectedAccount, node.decimals, isMounted]);
+  }, [api]);
+
+  const showErrorToast = (message) => dispatch(
+    addToast({
+      type: "error",
+      message,
+    })
+  );
 
   const submit = async () => {
     if (!api) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Chain network is not connected yet",
-        })
-      );
-      return;
-    }
-
-    if (!proposalIndex) {
-      return;
+      return showErrorToast("Chain network is not connected yet");
     }
 
     if (!selectedAccount) {
-      dispatch(
-        addToast({
-          type: "error",
-          message: "Please select an account",
-        })
-      );
-      return;
+      return showErrorToast("Please select an account");
+    }
+
+    if (!beneficiary) {
+      return showErrorToast("Please input a beneficiary");
+    }
+
+    if (!inputValue) {
+      return showErrorToast("Please input a value");
+    }
+
+    const bnValue = new BigNumber(inputValue).times(
+      Math.pow(10, node.decimals)
+    );
+    if (bnValue.isNaN()) {
+      return showErrorToast("Invalid value");
+    }
+
+    if (bnValue.lte(0)) {
+      return showErrorToast("Value must be greater than 0");
+    }
+
+    if (!bnValue.mod(1).isZero()) {
+      return showErrorToast("Invalid precision");
     }
 
     const toastId = newToastId();
@@ -165,8 +146,8 @@ function PopupContent({
 
       const signerAddress = selectedAccount.address;
 
-      const unsub = await api.tx.democracy
-        .second(proposalIndex, depositorUpperBound || 0)
+      const unsub = await api.tx.treasury
+        .proposeSpend(bnValue.toString(), beneficiary)
         .signAndSend(signerAddress, ({ events = [], status }) => {
           if (status.isFinalized) {
             onFinalized(signerAddress);
@@ -182,7 +163,16 @@ function PopupContent({
                 sticky: false,
               })
             );
-            onInBlock(signerAddress);
+            for (const event of events) {
+              const { section, method, data } = event.event;
+              if (section !== "treasury" || method !== "Proposed") {
+                continue;
+              }
+              const [proposalIndex] = data.toJSON();
+
+              onInBlock(signerAddress, proposalIndex);
+              break;
+            }
           }
         });
 
@@ -217,10 +207,6 @@ function PopupContent({
       <div>
         <LabelWrapper>
           <Label>Address</Label>
-          <BalanceWrapper>
-            <div>Balance</div>
-            <div>{loadingBalance ? <Loading /> : balance}</div>
-          </BalanceWrapper>
         </LabelWrapper>
         <SignerSelect
           api={api}
@@ -231,29 +217,37 @@ function PopupContent({
         />
       </div>
       <div>
-        <TooltipWrapper>
-          <Label>Deposit</Label>
-          <Tooltip
-            content={
-              "The deposit will be locked for the lifetime of the proposal"
-            }
-          />
-        </TooltipWrapper>
-        <BalanceInput
-          disabled={true}
-          value={displayDepositRequired}
-          symbol={node?.symbol}
+        <LabelWrapper>
+          <Label>Beneficiary</Label>
+        </LabelWrapper>
+        <AddressCombo
+          chain={chain}
+          address={beneficiary}
+          setAddress={setBeneficiary}
+          accounts={accounts}
         />
       </div>
-      {balanceInsufficient && <ErrorMessage>Insufficient balance</ErrorMessage>}
+      <div>
+        <TooltipWrapper>
+          <Label>Value</Label>
+          <Tooltip
+            content={"The amount tha will be allocated from the reasury pot"}
+          />
+        </TooltipWrapper>
+        <BalanceInput setValue={setInputValue} symbol={node?.symbol} />
+      </div>
+      <div>
+        <TooltipWrapper>
+          <Label>Proposal bond</Label>
+          <Tooltip content={"The on-chain percentage for treasury"} />
+        </TooltipWrapper>
+        <TextBox>{bondPercentage}</TextBox>
+      </div>
+
       <ButtonWrapper>
-        {balanceInsufficient ? (
-          <Button disabled>Submit</Button>
-        ) : (
-          <Button secondary isLoading={loading} onClick={submit}>
-            Submit
-          </Button>
-        )}
+        <Button secondary isLoading={loading} onClick={submit}>
+          Submit
+        </Button>
       </ButtonWrapper>
     </>
   );
@@ -261,6 +255,10 @@ function PopupContent({
 
 export default function Popup(props) {
   return (
-    <PopupWithAddress title="Second" Component={PopupContent} {...props} />
+    <PopupWithAddress
+      title="New Treasury Proposal"
+      Component={PopupContent}
+      {...props}
+    />
   );
 }
