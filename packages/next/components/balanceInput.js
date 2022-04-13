@@ -8,9 +8,11 @@ const Wrapper = styled.div`
 `;
 
 const Input = styled.input`
-  ${(p) => p.disabled && css`
-    background: #f6f7fa !important;
-  `}
+  ${(p) =>
+    p.disabled &&
+    css`
+      background: #f6f7fa !important;
+    `}
   all: unset;
   padding: 12px 16px;
   flex-grow: 1;
