@@ -145,25 +145,7 @@ export default function AddressCombo({ chain, accounts, address, setAddress }) {
           setTimeout(() => ref.current.querySelector("input")?.focus(), 100);
         }}
       >
-        {!edit && selectedAccount && (
-          <>
-            <Avatar address={selectedAccount.address} />
-            <NameWrapper>
-              <div>{selectedAccount.name}</div>
-              <div>{shortAddr}</div>
-            </NameWrapper>
-          </>
-        )}
-        {!edit && !selectedAccount && (
-          <>
-            <Avatar address={address} />
-            <NameWrapper>
-              <div>{shortAddr}</div>
-              <div>{shortAddr}</div>
-            </NameWrapper>
-          </>
-        )}
-        {edit && (
+        {edit ? (
           <>
             <Avatar address={inputAddress} />
             <Input
@@ -172,6 +154,24 @@ export default function AddressCombo({ chain, accounts, address, setAddress }) {
               onBlur={onBlur}
             />
           </>
+        ) : (
+          selectedAccount ? (
+            <>
+              <Avatar address={selectedAccount.address} />
+              <NameWrapper>
+                <div>{selectedAccount.name}</div>
+                <div>{shortAddr}</div>
+              </NameWrapper>
+            </>
+          ) : (
+            <>
+              <Avatar address={address} />
+              <NameWrapper>
+                <div>{shortAddr}</div>
+                <div>{shortAddr}</div>
+              </NameWrapper>
+            </>
+          )
         )}
         <img
           alt=""
