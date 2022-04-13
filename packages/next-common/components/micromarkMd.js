@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { micromark } from "micromark";
 import { gfm, gfmHtml } from "micromark-extension-gfm";
@@ -129,6 +129,11 @@ const Wrapper = styled.div`
       color: #0974cd;
     }
 
+    a.mention {
+      color: #506176;
+      pointer-events: none;
+    }
+
     img {
       max-width: 100%;
     }
@@ -169,6 +174,8 @@ const Wrapper = styled.div`
 `;
 
 export default function MicromarkMd({ md = "", contentVersion = "" }) {
+  const ref = useRef();
+
   let displayContent = matchMdLink(md);
   if (contentVersion === "2") {
     displayContent = md.replace(/\n+/g, function (ns) {
@@ -182,6 +189,16 @@ export default function MicromarkMd({ md = "", contentVersion = "" }) {
       "https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/prism.min.js";
     document.body.appendChild(script);
   }, []);
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.querySelectorAll("a").forEach((block) => {
+        if (block.getAttribute("href")?.match(/^\/member\/\w+$/)) {
+          block.classList.add("mention");
+        }
+      });
+    }
+  }, [ref]);
 
   const html = micromark(displayContent, {
     allowDangerousHtml: true,
@@ -207,6 +224,7 @@ export default function MicromarkMd({ md = "", contentVersion = "" }) {
 
   return (
     <Wrapper
+      ref={ref}
       className="markdown-content"
       dangerouslySetInnerHTML={{ __html: cleanHtml }}
     />
