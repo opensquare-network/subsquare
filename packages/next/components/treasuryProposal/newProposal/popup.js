@@ -41,6 +41,7 @@ const ButtonWrapper = styled.div`
 const TooltipWrapper = styled.div`
   display: flex;
   align-items: flex-start;
+  font-size: 14px;
   > :not(:first-child) {
     margin-left: 4px;
   }
@@ -55,6 +56,7 @@ const TextBox = styled.div`
   border: 1px solid #ebeef4;
   box-sizing: border-box;
   border-radius: 4px;
+  font-size: 14px;
 `;
 
 function PopupContent({
