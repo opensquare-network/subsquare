@@ -23,7 +23,7 @@ import {
 } from "next-common/store/reducers/treasuryProposalSlice";
 
 const Popup = dynamic(
-  () => import("components/treasuryProposal/newProposal/popup"),
+  () => import("components/treasuryProposal/popup"),
   {
     ssr: false,
   }

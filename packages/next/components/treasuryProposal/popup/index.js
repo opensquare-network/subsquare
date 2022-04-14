@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import BigNumber from "bignumber.js";
 
@@ -14,51 +14,17 @@ import {
   updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
 
-import BalanceInput from "components/balanceInput";
 import { getNode } from "utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
-import SignerSelect from "next-common/components/signerSelect";
-import AddressCombo from "next-common/components/addressCombo";
-import Tooltip from "next-common/components/tooltip";
-import { encodeAddressToChain } from "next-common/services/address";
 import { emptyFunction } from "next-common/utils";
-
-const LabelWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Label = styled.div`
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 100%;
-  margin-bottom: 8px;
-`;
+import ProposalBond from "./proposalBond";
+import Beneficiary from "./beneficiary";
+import ProposalValue from "./proposalValue";
+import Signer from "./signer";
 
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
-`;
-
-const TooltipWrapper = styled.div`
-  display: flex;
-  align-items: flex-start;
-  font-size: 14px;
-  > :not(:first-child) {
-    margin-left: 4px;
-  }
-`;
-
-const TextBox = styled.div`
-  display: flex;
-  padding: 12px 16px;
-
-  background: #f6f7fa;
-
-  border: 1px solid #ebeef4;
-  box-sizing: border-box;
-  border-radius: 4px;
-  font-size: 14px;
 `;
 
 function PopupContent({
@@ -74,25 +40,11 @@ function PopupContent({
   const [signerAccount, setSignerAccount] = useState(null);
   const [inputValue, setInputValue] = useState();
   const [loading, setLoading] = useState(false);
-  const [bondPercentage, setBondPercentage] = useState("");
   const node = getNode(chain);
 
-  const accounts = extensionAccounts.map((acc) => ({
-    address: acc.address,
-    name: acc.meta.name,
-  }));
-
-  const [beneficiary, setBeneficiary] = useState(
-    accounts[0]?.address && encodeAddressToChain(accounts[0]?.address, chain)
-  );
+  const [beneficiary, setBeneficiary] = useState();
 
   const api = useApi(chain);
-
-  useEffect(() => {
-    if (api) {
-      setBondPercentage(api.consts.treasury.proposalBond.toHuman());
-    }
-  }, [api]);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -176,45 +128,16 @@ function PopupContent({
 
   return (
     <>
-      <div>
-        <LabelWrapper>
-          <Label>Address</Label>
-        </LabelWrapper>
-        <SignerSelect
-          api={api}
-          chain={chain}
-          selectedAccount={signerAccount}
-          setSelectedAccount={setSignerAccount}
-          extensionAccounts={extensionAccounts}
-        />
-      </div>
-      <div>
-        <LabelWrapper>
-          <Label>Beneficiary</Label>
-        </LabelWrapper>
-        <AddressCombo
-          chain={chain}
-          address={beneficiary}
-          setAddress={setBeneficiary}
-          accounts={accounts}
-        />
-      </div>
-      <div>
-        <TooltipWrapper>
-          <Label>Value</Label>
-          <Tooltip
-            content={"The amount that will be allocated from the treasury pot"}
-          />
-        </TooltipWrapper>
-        <BalanceInput setValue={setInputValue} symbol={node?.symbol} />
-      </div>
-      <div>
-        <TooltipWrapper>
-          <Label>Proposal bond</Label>
-          <Tooltip content={"The on-chain percentage for treasury"} />
-        </TooltipWrapper>
-        <TextBox>{bondPercentage}</TextBox>
-      </div>
+      <Signer
+        api={api}
+        chain={chain}
+        signerAccount={signerAccount}
+        setSignerAccount={setSignerAccount}
+        extensionAccounts={extensionAccounts}
+      />
+      <Beneficiary chain={chain} extensionAccounts={extensionAccounts} setAddress={setBeneficiary} />
+      <ProposalValue chain={chain} setValue={setInputValue} />
+      <ProposalBond chain={chain} />
 
       <ButtonWrapper>
         <Button secondary isLoading={loading} onClick={submit}>
