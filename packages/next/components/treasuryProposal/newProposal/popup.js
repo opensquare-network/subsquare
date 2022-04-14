@@ -1,5 +1,5 @@
-import styled, { css } from "styled-components";
-import { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import BigNumber from "bignumber.js";
 
@@ -15,12 +15,11 @@ import {
 } from "next-common/store/reducers/toastSlice";
 
 import BalanceInput from "components/balanceInput";
-import { getNode, toPrecision } from "utils";
+import { getNode } from "utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import SignerSelect from "next-common/components/signerSelect";
 import AddressCombo from "next-common/components/addressCombo";
 import Tooltip from "next-common/components/tooltip";
-import { BN_HUNDRED, BN_MILLION } from "@polkadot/util";
 
 const LabelWrapper = styled.div`
   display: flex;
@@ -42,6 +41,7 @@ const ButtonWrapper = styled.div`
 const TooltipWrapper = styled.div`
   display: flex;
   align-items: flex-start;
+  font-size: 14px;
   > :not(:first-child) {
     margin-left: 4px;
   }
@@ -56,6 +56,7 @@ const TextBox = styled.div`
   border: 1px solid #ebeef4;
   box-sizing: border-box;
   border-radius: 4px;
+  font-size: 14px;
 `;
 
 function PopupContent({
@@ -72,7 +73,7 @@ function PopupContent({
   const [beneficiary, setBeneficiary] = useState(null);
   const [inputValue, setInputValue] = useState();
   const [loading, setLoading] = useState(false);
-  const [bondPercentage, setBondPercentage] = useState("5.00%");
+  const [bondPercentage, setBondPercentage] = useState("");
   const node = getNode(chain);
 
   const accounts = extensionAccounts.map((acc) => ({
@@ -84,13 +85,7 @@ function PopupContent({
 
   useEffect(() => {
     if (api) {
-      setBondPercentage(
-        `${api?.consts.treasury.proposalBond
-          .mul(BN_HUNDRED)
-          .div(BN_MILLION)
-          .toNumber()
-          .toFixed(2)}%`
-      );
+      setBondPercentage(api.consts.treasury.proposalBond.toHuman());
     }
   }, [api]);
 
