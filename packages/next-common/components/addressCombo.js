@@ -112,7 +112,7 @@ const Input = styled.input`
 export default function AddressCombo({ chain, accounts, address, setAddress }) {
   const [show, setShow] = useState(false);
   const [edit, setEdit] = useState(false);
-  const [inputAddress, setInputAddress] = useState("");
+  const [inputAddress, setInputAddress] = useState(address);
   const ref = useRef();
 
   const selectedAccount = accounts.find(
@@ -149,7 +149,7 @@ export default function AddressCombo({ chain, accounts, address, setAddress }) {
         />
       </>
     );
-  } else if (selectedAccount){
+  } else if (selectedAccount) {
     selectContent = (
       <>
         <Avatar address={selectedAccount.address} />
