@@ -221,3 +221,5 @@ export function isMotionEnded(motion) {
     motion?.state?.state
   );
 }
+
+export function emptyFunction() {}

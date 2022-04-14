@@ -20,6 +20,7 @@ import PopupWithAddress from "next-common/components/popupWithAddress";
 import SignerSelect from "next-common/components/signerSelect";
 import AddressCombo from "next-common/components/addressCombo";
 import Tooltip from "next-common/components/tooltip";
+import { emptyFunction } from "next-common/utils";
 
 const LabelWrapper = styled.div`
   display: flex;
@@ -63,9 +64,9 @@ function PopupContent({
   extensionAccounts,
   chain,
   onClose,
-  onInBlock,
-  onFinalized,
-  onSubmitted,
+  onInBlock = emptyFunction,
+  onFinalized = emptyFunction,
+  onSubmitted = emptyFunction,
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();

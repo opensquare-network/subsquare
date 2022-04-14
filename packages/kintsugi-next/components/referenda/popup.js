@@ -23,6 +23,7 @@ import PopupWithAddress from "next-common/components/popupWithAddress";
 import Loading from "./loading";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import ValueDisplay from "next-common/components/displayValue";
+import { emptyFunction } from "next-common/utils";
 
 const LabelWrapper = styled.div`
   display: flex;
@@ -127,9 +128,9 @@ function PopupContent({
   chain,
   referendumIndex,
   onClose,
-  onSubmitted = () => {},
-  onFinalized = () => {},
-  onInBlock = () => {},
+  onSubmitted = emptyFunction,
+  onFinalized = emptyFunction,
+  onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
   const [selectedAccount, setSelectedAccount] = useState(null);
