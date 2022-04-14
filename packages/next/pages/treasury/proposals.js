@@ -150,8 +150,6 @@ export default withLoginUserRedux(
             chain={chain}
             onClose={() => setShowPopup(false)}
             onInBlock={startReload}
-            onFinalized={() => {}}
-            onSubmitted={() => {}}
           />
         )}
       </Layout>
