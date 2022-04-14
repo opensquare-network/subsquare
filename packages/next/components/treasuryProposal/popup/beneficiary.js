@@ -3,11 +3,7 @@ import AddressCombo from "next-common/components/addressCombo";
 import { encodeAddressToChain } from "next-common/services/address";
 import { Label, LabelWrapper } from "./styled";
 
-export default function Beneficiary({
-  extensionAccounts,
-  chain,
-  setAddress,
-}) {
+export default function Beneficiary({ extensionAccounts, chain, setAddress }) {
   const accounts = extensionAccounts.map((acc) => ({
     address: acc.address,
     name: acc.meta.name,
@@ -19,7 +15,7 @@ export default function Beneficiary({
 
   useEffect(() => {
     setAddress(beneficiary);
-  }, [beneficiary]);
+  }, [setAddress, beneficiary]);
 
   return (
     <div>
