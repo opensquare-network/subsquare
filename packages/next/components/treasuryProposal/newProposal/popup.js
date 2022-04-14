@@ -203,7 +203,7 @@ function PopupContent({
         <TooltipWrapper>
           <Label>Value</Label>
           <Tooltip
-            content={"The amount that will be allocated from the reasury pot"}
+            content={"The amount that will be allocated from the treasury pot"}
           />
         </TooltipWrapper>
         <BalanceInput setValue={setInputValue} symbol={node?.symbol} />
