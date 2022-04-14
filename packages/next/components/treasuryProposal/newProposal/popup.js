@@ -21,6 +21,7 @@ import SignerSelect from "next-common/components/signerSelect";
 import AddressCombo from "next-common/components/addressCombo";
 import Tooltip from "next-common/components/tooltip";
 import { BN_HUNDRED, BN_MILLION } from "@polkadot/util";
+import { encodeAddressToChain } from "next-common/services/address";
 
 const LabelWrapper = styled.div`
   display: flex;
@@ -68,8 +69,7 @@ function PopupContent({
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
-  const [selectedAccount, setSelectedAccount] = useState(null);
-  const [beneficiary, setBeneficiary] = useState(null);
+  const [signerAccount, setSignerAccount] = useState(null);
   const [inputValue, setInputValue] = useState();
   const [loading, setLoading] = useState(false);
   const [bondPercentage, setBondPercentage] = useState("5.00%");
@@ -79,6 +79,10 @@ function PopupContent({
     address: acc.address,
     name: acc.meta.name,
   }));
+
+  const [beneficiary, setBeneficiary] = useState(
+    accounts[0]?.address && encodeAddressToChain(accounts[0]?.address, chain)
+  );
 
   const api = useApi(chain);
 
@@ -101,7 +105,7 @@ function PopupContent({
       return showErrorToast("Chain network is not connected yet");
     }
 
-    if (!selectedAccount) {
+    if (!signerAccount) {
       return showErrorToast("Please select an account");
     }
 
@@ -134,7 +138,7 @@ function PopupContent({
     try {
       setLoading(true);
 
-      const signerAddress = selectedAccount.address;
+      const signerAddress = signerAccount.address;
 
       const unsub = await api.tx.treasury
         .proposeSpend(bnValue.toString(), beneficiary)
@@ -183,8 +187,8 @@ function PopupContent({
         <SignerSelect
           api={api}
           chain={chain}
-          selectedAccount={selectedAccount}
-          setSelectedAccount={setSelectedAccount}
+          selectedAccount={signerAccount}
+          setSelectedAccount={setSignerAccount}
           extensionAccounts={extensionAccounts}
         />
       </div>
