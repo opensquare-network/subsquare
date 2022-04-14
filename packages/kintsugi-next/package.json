@@ -10,7 +10,6 @@
     "timeupdater": "pm2 start ecosystem.config.js --only subsquare-time-updater-kintsugi --env production"
   },
   "dependencies": {
-    "@polkadot/extension-dapp": "0.43.1",
     "@interlay/monetary-js": "^0.5.3",
     "@subsquare/next-common": "file:../next-common",
     "@svgr/webpack": "^5.5.0",
