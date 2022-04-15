@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
+// import DocsIcon from "../../assets/imgs/icons/docs.svg";
 import ElementIcon from "../../assets/imgs/icons/element.svg";
 import MailIcon from "../../assets/imgs/icons/mail.svg";
 import FooterLogo from "../../assets/imgs/icons/footerLogo.svg";
@@ -17,20 +18,17 @@ const Wrapper = styled.footer`
   > svg:nth-child(1) {
     margin-bottom: 16px;
   }
+  
+  > div:last-child{
+    margin-top: 16px;
+  }
 `;
 
 const FlexWrapper = styled(Flex)`
+  gap: 8px;
   a {
     display: flex;
     align-items: center;
-  }
-
-  > svg:nth-child(1) {
-    margin-right: 16px;
-  }
-
-  > a:nth-child(2) {
-    margin-right: 8px;
   }
 
   > a svg:hover {
@@ -54,13 +52,19 @@ export default function Footer() {
       </svg>
       <div
         style={{ marginBottom: 8 }}
-      >{`© ${new Date().getFullYear()} SubSquare · Powered by`}</div>
+      >{`© ${new Date().getFullYear()} SubSquare`}</div>
       <FlexWrapper>
+        <span style={{whiteSpace:"nowrap"}}>Powered by</span>
         <FooterLogo />
-        <ExternalLink href="https://app.element.io/#/room/#opensquare:matrix.org">
+      </FlexWrapper>
+      <FlexWrapper>
+        {/*<ExternalLink href="http://docs.subsquare.io/" title="Document">*/}
+        {/*  <DocsIcon />*/}
+        {/*</ExternalLink>*/}
+        <ExternalLink href="https://app.element.io/#/room/#opensquare:matrix.org" title="Element">
           <ElementIcon />
         </ExternalLink>
-        <ExternalLink href="mailto:hi@opensquare.network">
+        <ExternalLink href="mailto:hi@opensquare.network" title="Send EMail">
           <MailIcon />
         </ExternalLink>
       </FlexWrapper>
