@@ -1,12 +1,9 @@
-import styled from "styled-components";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import BigNumber from "bignumber.js";
 import { useApi, useAddressVotingBalance, useAddressVote } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import SignerSelect from "next-common/components/signerSelect";
-import Button from "next-common/components/button";
 import {
   newErrorToast,
   newPendingToast,
@@ -15,55 +12,19 @@ import {
   updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
 
-import { getNode, toPrecision } from "utils";
-import Input from "next-common/components/input";
-import Select from "components/select";
-import Tooltip from "next-common/components/tooltip";
-import Loading from "../loading";
-import { isAye, getConviction } from "utils/referendumUtil";
-import { TooltipWrapper, Label } from "./styled";
+import { getNode, } from "utils";
 import StandardVoteStatus from "./standardVoteStatus";
 import SplitVoteStatus from "./splitVoteStatus";
 import DelegateVoteStatus from "./delegateVoteStatus";
 import NoVoteRecord from "./noVoteRecord";
 import LoadingVoteStatus from "./loadingVoteStatus";
 import Delegating from "./delegating";
-import Delegations from "./delegations";
+import DirectVote from "./directVote";
+import VoteButton from "./voteButton";
+import Signer from "./signer";
 
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import { emptyFunction } from "next-common/utils";
-
-const LabelWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  > first-child {
-    background: #4caf50;
-  }
-  > * {
-    flex-grow: 1;
-  }
-  > :not(:first-child) {
-    margin-left: 12px;
-  }
-`;
-
-const BalanceWrapper = styled.div`
-  display: flex;
-  font-size: 12px;
-  line-height: 100%;
-  color: #506176;
-  > :nth-child(2) {
-    color: #1e2134;
-    font-weight: bold;
-  }
-  > :not(:first-child) {
-    margin-left: 8px;
-  }
-`;
 
 function PopupContent({
   extensionAccounts,
@@ -94,21 +55,7 @@ function PopupContent({
     chain
   );
 
-  const addressVoteStandardBalance = addressVote?.standard?.balance;
-  const addressVoteStandardAye = isAye(addressVote?.standard?.vote);
-  const addressVoteStandardConviction = getConviction(
-    addressVote?.standard?.vote
-  );
-  const addressVoteDelegations = addressVote?.delegations?.votes;
-
-  const addressVoteSplitAye = addressVote?.split?.aye;
-  const addressVoteSplitNay = addressVote?.split?.nay;
-
-  const addressVoteDelegateBalance = addressVote?.delegating?.balance;
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
-  const addressVoteDelegateAye = addressVote?.delegating?.aye;
-  const addressVoteDelegateConviction = addressVote?.delegating?.conviction;
-  const addressVoteDelegateTarget = addressVote?.delegating?.target;
 
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const [voteLock, setVoteLock] = useState(0);
@@ -196,66 +143,34 @@ function PopupContent({
 
   return (
     <>
-      <div>
-        <LabelWrapper>
-          <Label>Address</Label>
-          <BalanceWrapper>
-            <div>Voting Balance</div>
-            {!votingIsLoading && (
-              <div>{toPrecision(votingBalance ?? 0, node.decimals)}</div>
-            )}
-            {votingIsLoading && <Loading />}
-          </BalanceWrapper>
-        </LabelWrapper>
-        <SignerSelect
-          chain={chain}
-          api={api}
-          selectedAccount={selectedAccount}
-          setSelectedAccount={setSelectedAccount}
-          disabled={isLoading}
-          extensionAccounts={extensionAccounts}
-        />
-      </div>
+      <Signer
+        chain={chain}
+        node={node}
+        api={api}
+        votingIsLoading={votingIsLoading}
+        votingBalance={votingBalance}
+        selectedAccount={selectedAccount}
+        setSelectedAccount={setSelectedAccount}
+        isLoading={isLoading}
+        extensionAccounts={extensionAccounts}
+      />
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode
-        <>
-          {addressVoteDelegations ? (
-            <Delegations
-              addressVoteDelegations={addressVoteDelegations}
-              node={node}
-            />
-          ) : null}
-          <div>
-            <TooltipWrapper>
-              <Label>Value</Label>
-              <Tooltip content="The value is locked for the duration of the vote" />
-            </TooltipWrapper>
-            <Input
-              type="text"
-              placeholder="0"
-              disabled={isLoading}
-              value={inputVoteBalance}
-              onChange={(e) =>
-                setInputVoteBalance(e.target.value.replace("。", "."))
-              }
-              symbol={node?.voteSymbol}
-            />
-          </div>
-          <div>
-            <TooltipWrapper>
-              <Label>Vote lock</Label>
-            </TooltipWrapper>
-            <Select value={voteLock} setValue={setVoteLock} disabled={false} />
-          </div>
-        </>
+        <DirectVote
+          addressVoteDelegations={addressVote?.delegations}
+          isLoading={isLoading}
+          inputVoteBalance={inputVoteBalance}
+          setInputVoteBalance={setInputVoteBalance}
+          voteLock={voteLock}
+          setVoteLock={setVoteLock}
+          node={node}
+        />
       )}
 
       {addressVote?.delegating && (
         // If the address has set to delegate mode, show the delegating setting instead
         <Delegating
-          addressVoteDelegateBalance={addressVoteDelegateBalance}
-          addressVoteDelegateConviction={addressVoteDelegateConviction}
-          addressVoteDelegateTarget={addressVoteDelegateTarget}
+          addressVoteDelegate={addressVote?.delegating}
           node={node}
         />
       )}
@@ -265,49 +180,27 @@ function PopupContent({
         !addressVote?.split &&
         (!addressVote?.delegating || !addressVoteDelegateVoted) && (
           <NoVoteRecord />
-        )}
+      )}
       {addressVote?.standard && (
         <StandardVoteStatus
-          addressVoteStandardBalance={addressVoteStandardBalance}
-          addressVoteStandardConviction={addressVoteStandardConviction}
-          addressVoteStandardAye={addressVoteStandardAye}
+          addressVoteStandard={addressVote?.standard}
           node={node}
         />
       )}
       {addressVote?.split && (
         <SplitVoteStatus
-          addressVoteSplitAye={addressVoteSplitAye}
-          addressVoteSplitNay={addressVoteSplitNay}
+          addressVoteSplit={addressVote?.split}
           node={node}
         />
       )}
       {addressVote?.delegating && addressVoteDelegateVoted && (
-        <DelegateVoteStatus addressVoteDelegateAye={addressVoteDelegateAye} />
+        <DelegateVoteStatus addressVoteDelegate={addressVote?.delegating} />
       )}
       {addressVoteIsLoading && <LoadingVoteStatus />}
 
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode
-        <ButtonWrapper>
-          <Button
-            primary
-            background="#4CAF50"
-            onClick={() => doVote(true)}
-            isLoading={isLoading === "Aye"}
-            disabled={isLoading && isLoading !== "Aye"}
-          >
-            Aye
-          </Button>
-          <Button
-            primary
-            background="#F44336"
-            onClick={() => doVote(false)}
-            isLoading={isLoading === "Nay"}
-            disabled={isLoading && isLoading !== "Nay"}
-          >
-            Nay
-          </Button>
-        </ButtonWrapper>
+        <VoteButton isLoading={isLoading} doVote={doVote} />
       )}
     </>
   );

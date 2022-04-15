@@ -13,10 +13,12 @@ import RejectIcon from "next-common/assets/imgs/icons/reject.svg";
 import { toPrecision } from "utils";
 
 export default function SplitVoteStatus({
-  addressVoteSplitAye,
-  addressVoteSplitNay,
+  addressVoteSplit,
   node,
 }) {
+  const addressVoteSplitAye = addressVoteSplit?.aye;
+  const addressVoteSplitNay = addressVoteSplit?.nay;
+
   return (
     <VotingStatusContent>
       <TooltipWrapper>

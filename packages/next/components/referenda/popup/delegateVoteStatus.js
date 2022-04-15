@@ -9,7 +9,9 @@ import Tooltip from "next-common/components/tooltip";
 import ApproveIcon from "next-common/assets/imgs/icons/approve.svg";
 import RejectIcon from "next-common/assets/imgs/icons/reject.svg";
 
-export default function SplitVoteStatus({ addressVoteDelegateAye }) {
+export default function SplitVoteStatus({ addressVoteDelegate }) {
+  const addressVoteDelegateAye = addressVoteDelegate?.aye;
+
   return (
     <VotingStatusContent>
       <TooltipWrapper>

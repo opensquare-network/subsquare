@@ -136,3 +136,16 @@ export const DelegatingValue = styled.div`
     }
   }
 `;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  > first-child {
+    background: #4caf50;
+  }
+  > * {
+    flex-grow: 1;
+  }
+  > :not(:first-child) {
+    margin-left: 12px;
+  }
+`;
