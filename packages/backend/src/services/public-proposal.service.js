@@ -83,7 +83,7 @@ async function getActivePostsOverview() {
         $or: [
           {
             "state.state": {
-              $nin: ["Tabled", "Canceled"],
+              $nin: ["Tabled", "Cancelled"],
             },
           },
           {
