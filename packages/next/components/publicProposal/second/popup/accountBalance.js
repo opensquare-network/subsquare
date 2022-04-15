@@ -24,7 +24,7 @@ export default function AccountBalance({
   chain,
   account,
   balance,
-  setBalance
+  setBalance,
 }) {
   const isMounted = useIsMounted();
   const [loadingBalance, setLoadingBalance] = useState(false);
@@ -53,13 +53,14 @@ export default function AccountBalance({
           }
         });
     }
-  }, [api, account, node.decimals, isMounted]);
+  }, [api, account, node.decimals, isMounted, setBalance]);
 
   return (
     <BalanceWrapper>
       <div>Balance</div>
-      <div>{loadingBalance ? <Loading /> : toPrecision(balance, node.decimals)}</div>
+      <div>
+        {loadingBalance ? <Loading /> : toPrecision(balance, node.decimals)}
+      </div>
     </BalanceWrapper>
   );
 }
-
