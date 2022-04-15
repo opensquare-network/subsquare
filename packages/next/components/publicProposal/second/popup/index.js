@@ -1,11 +1,8 @@
-import styled from "styled-components";
-import { useState } from "react";
+import { useContext } from "react";
 import { useDispatch } from "react-redux";
-import BigNumber from "bignumber.js";
 
 import { useApi } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import Button from "next-common/components/button";
 import {
   newErrorToast,
   newPendingToast,
@@ -16,11 +13,8 @@ import {
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import DepositRequired from "./depositRequired";
 import Signer from "./signer";
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
+import SubmitButton from "./submitButton";
+import { StatusContext, StatusProvider } from "./statusContext";
 
 function PopupContent({
   extensionAccounts,
@@ -35,16 +29,9 @@ function PopupContent({
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
-  const [selectedAccount, setSelectedAccount] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [balance, setBalance] = useState(0);
+  const { signerAccount, setIsSubmitting } = useContext(StatusContext);
 
   const api = useApi(chain);
-
-  const deposit =
-    depositRequired || api?.consts?.democracy?.minimumDeposit?.toString();
-
-  const balanceInsufficient = new BigNumber(balance).lt(deposit);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -57,7 +44,7 @@ function PopupContent({
       return;
     }
 
-    if (!selectedAccount) {
+    if (!signerAccount) {
       return showErrorToast("Please select an account");
     }
 
@@ -65,9 +52,9 @@ function PopupContent({
     dispatch(newPendingToast(toastId, "Waiting for signing..."));
 
     try {
-      setLoading(true);
+      setIsSubmitting(true);
 
-      const signerAddress = selectedAccount.address;
+      const signerAddress = signerAccount.address;
 
       const unsub = await api.tx.democracy
         .second(proposalIndex, depositorUpperBound || 0)
@@ -93,42 +80,28 @@ function PopupContent({
       showErrorToast(e.message);
     } finally {
       if (isMounted.current) {
-        setLoading(null);
+        setIsSubmitting(null);
       }
     }
   };
 
   return (
     <>
-      <Signer
+      <Signer chain={chain} api={api} extensionAccounts={extensionAccounts} />
+      <DepositRequired chain={chain} depositRequired={depositRequired} />
+      <SubmitButton
         chain={chain}
-        api={api}
-        extensionAccounts={extensionAccounts}
-        selectedAccount={selectedAccount}
-        setSelectedAccount={setSelectedAccount}
-        balance={balance}
-        setBalance={setBalance}
-      />
-      <DepositRequired
-        chain={chain}
+        onClick={submit}
         depositRequired={depositRequired}
-        balanceInsufficient={balanceInsufficient}
       />
-      <ButtonWrapper>
-        {balanceInsufficient ? (
-          <Button disabled>Submit</Button>
-        ) : (
-          <Button secondary isLoading={loading} onClick={submit}>
-            Submit
-          </Button>
-        )}
-      </ButtonWrapper>
     </>
   );
 }
 
 export default function Popup(props) {
   return (
-    <PopupWithAddress title="Second" Component={PopupContent} {...props} />
+    <StatusProvider>
+      <PopupWithAddress title="Second" Component={PopupContent} {...props} />
+    </StatusProvider>
   );
 }

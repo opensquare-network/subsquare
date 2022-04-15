@@ -1,10 +1,9 @@
 import styled from "styled-components";
 
-import { useApi } from "utils/hooks";
-
 import BalanceInput from "components/balanceInput";
 import { getNode, toPrecision } from "utils";
 import Tooltip from "next-common/components/tooltip";
+import useDeposit from "./useDeposit";
 
 const Label = styled.div`
   font-weight: bold;
@@ -37,17 +36,10 @@ const ErrorMessage = styled.div`
   margin-top: 8px !important;
 `;
 
-export default function DepositRequired({
-  chain,
-  depositRequired,
-  balanceInsufficient,
-}) {
-  const node = getNode(chain);
-  const api = useApi(chain);
+export default function DepositRequired({ chain, depositRequired }) {
+  const { deposit, balanceInsufficient } = useDeposit(chain, depositRequired);
 
-  const deposit =
-    depositRequired || api?.consts?.democracy?.minimumDeposit?.toString();
-  const displayDepositRequired = toPrecision(deposit, node.decimals);
+  const node = getNode(chain);
 
   return (
     <>
@@ -62,7 +54,7 @@ export default function DepositRequired({
         </TooltipWrapper>
         <BalanceInput
           disabled={true}
-          value={displayDepositRequired}
+          value={toPrecision(deposit, node.decimals)}
           symbol={node?.symbol}
         />
       </div>
