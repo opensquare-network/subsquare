@@ -1,12 +1,13 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
-import { khala } from "@phala/typedefs";
-import { basilisk } from "./bundle/basilisk";
-import interbtc from "./kintsugi/definitions";
-import bifrostOptions from "./bifrost/options";
-import karuraOptions from "./karura/options";
-import polkadex from "./polkadex/definitions";
-import crustOptions from "./crust/options";
 import Chains from "../../utils/consts/chains";
+import {
+  bifrostOptions,
+  karuraOptions,
+  polkadexOptions,
+  crustOptions,
+  khalaOptions,
+  kintsugiOptions,
+} from "@osn/provider-options";
 
 const apiInstanceMap = new Map();
 
@@ -18,43 +19,28 @@ export default async function getApi(chain, endpoint) {
   if (!apiInstanceMap.has(endpoint)) {
     const provider = new WsProvider(endpoint, 1000);
     let options = { provider };
+
+    let customizedOptions = {};
     if (chain === "karura" || chain === "acala") {
-      options = {
-        ...karuraOptions,
-        ...options,
-      };
+      customizedOptions = karuraOptions;
     } else if (chain === "khala") {
-      options.types = khala;
-    } else if (chain === "basilisk") {
-      options.typesBundle = { spec: { basilisk } };
+      customizedOptions = khalaOptions;
     } else if (chain === "bifrost") {
-      options = {
-        ...bifrostOptions,
-        ...options,
-      };
+      customizedOptions = bifrostOptions;
     } else if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
-      options = {
-        ...options,
-        typesBundle: {
-          spec: {
-            "interbtc-parachain": interbtc,
-          },
-        },
-        rpc: interbtc.providerRpc,
-      };
+      customizedOptions = kintsugiOptions;
     } else if (chain === Chains.polkadex) {
-      options = {
-        ...options,
-        typesBundle: { spec: { "node-polkadex": polkadex } },
-      };
+      customizedOptions = polkadexOptions;
     } else if (chain === Chains.crust) {
-      options = {
-        ...crustOptions,
-        ...options,
-      };
+      customizedOptions = crustOptions;
     }
 
-    const api = (await ApiPromise.create(options)).isReady;
+    const api = (
+      await ApiPromise.create({
+        ...customizedOptions,
+        ...options,
+      })
+    ).isReady;
 
     apiInstanceMap.set(endpoint, api);
   }
