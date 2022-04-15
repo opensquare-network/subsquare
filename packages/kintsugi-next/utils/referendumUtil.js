@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import { getTotalSupply } from "./escrow/totalSupply";
-const { getFinalizedBlockNumber } = require("./escrow/utils");
+import { getFinalizedBlockNumber } from "./escrow/utils";
 
 const ONE = new BigNumber(1);
 

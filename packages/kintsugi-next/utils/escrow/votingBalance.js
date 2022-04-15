@@ -1,12 +1,12 @@
-const { decodeAddress } = require("@polkadot/util-crypto");
-const monetary = require("@interlay/monetary-js");
-const BN = require("bn.js");
-const {
+import { decodeAddress } from "@polkadot/util-crypto";
+import monetary from "@interlay/monetary-js";
+import BN from "bn.js";
+import {
   getFinalizedBlockNumber,
   parseEscrowPoint,
   newMonetaryAmount,
   saturatingSub,
-} = require("./utils");
+} from "./utils";
 
 function rawBalanceAt(escrowPoint, height) {
   const heightDiff = saturatingSub(height, escrowPoint.ts);
