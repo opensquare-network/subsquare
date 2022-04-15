@@ -1,28 +1,12 @@
 import menus from "./consts/menus";
 import {
+  DEFAULT_CALAMARI_NODES,
   DEFAULT_CRUST_NODES,
-  DEFAULT_INTERLAY_NODE_URL,
   DEFAULT_INTERLAY_NODES,
-  DEFAULT_KARURA_NODE_URL,
   DEFAULT_KARURA_NODES,
 } from "./consts/endpoints";
-import { crust, interlay, polkadex } from "./consts/networks";
-
-export const Chains = {
-  polkadot: "polkadot",
-  kusama: "kusama",
-  karura: "karura",
-  acala: "acala",
-  khala: "khala",
-  substrate: "substrate",
-  basilisk: "basilisk",
-  kabocha: "kabocha",
-  bifrost: "bifrost",
-  kintsugi: "kintsugi",
-  interlay: "interlay",
-  polkadex: "polkadex",
-  crust: "crust",
-};
+import { calamari, crust, interlay } from "./consts/networks";
+import Chains from "./consts/chains";
 
 export const DEFAULT_KUSAMA_NODES = [
   {
@@ -131,18 +115,6 @@ export const DEFAULT_POLKADEX_NODES = [
 
 export const DEFAULT_POLKADEX_NODE_URL = DEFAULT_POLKADEX_NODES[0].url;
 
-export const DEFAULT_NODES = {
-  kusama: DEFAULT_KUSAMA_NODE_URL,
-  karura: DEFAULT_KARURA_NODE_URL,
-  acala: DEFAULT_ACALA_NODE_URL,
-  khala: DEFAULT_KHALA_NODE_URL,
-  basilisk: DEFAULT_BASILISK_NODE_URL,
-  bifrost: DEFAULT_BIFROST_NODE_URL,
-  kintsugi: DEFAULT_KINTSUGI_NODE_URL,
-  [Chains.interlay]: DEFAULT_INTERLAY_NODE_URL,
-  polkadex: DEFAULT_POLKADEX_NODES,
-};
-
 export const nodes = [
   ...(process.env.NEXT_PUBLIC_DEVELOPMENT === "true"
     ? [
@@ -226,6 +198,7 @@ export const nodes = [
   // polkadex,
   interlay,
   crust,
+  calamari,
 ];
 
 export const accountMenu = [
@@ -297,6 +270,7 @@ export const SS58Prefix = {
   polkadex: 88,
   [Chains.interlay]: 2032,
   [Chains.crust]: 66,
+  [Chains.calamari]: 78,
 };
 
 export const defaultNodes = {
@@ -310,6 +284,7 @@ export const defaultNodes = {
   polkadex: DEFAULT_POLKADEX_NODES,
   [Chains.interlay]: DEFAULT_INTERLAY_NODES,
   [Chains.crust]: DEFAULT_CRUST_NODES,
+  [Chains.calamari]: DEFAULT_CALAMARI_NODES,
 };
 
 export const ChainBlockTime = {

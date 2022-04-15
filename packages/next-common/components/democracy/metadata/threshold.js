@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { Chains } from "../../../utils/constants";
 import { votingThreshold } from "../../../utils/consts/referendum";
 import ExternalLink from "../../../assets/imgs/icons/external-link.svg";
+import Chains from "../../../utils/consts/chains";
 
 const Wrapper = styled.span`
   font-weight: 400;

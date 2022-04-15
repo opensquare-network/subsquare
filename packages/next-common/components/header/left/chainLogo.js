@@ -36,6 +36,8 @@ function ChainLogo({ chain }) {
       logo = <Logo src="/imgs/logos/bifrost.svg" alt={chain} />;
     } else if (Chains.crust === chain) {
       logo = <Logo src="/imgs/logos/crust.svg" alt={chain} />;
+    } else if (Chains.calamari === chain) {
+      logo = <Logo src="/imgs/logos/calamari.svg" alt={chain} />;
     }
   }
 
