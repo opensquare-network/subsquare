@@ -22,7 +22,17 @@ const BalanceWrapper = styled.div`
     margin-left: 8px;
   }
 `;
-export default function Signer({ chain, node, api, votingIsLoading, votingBalance, selectedAccount, setSelectedAccount, isLoading, extensionAccounts }) {
+export default function Signer({
+  chain,
+  node,
+  api,
+  votingIsLoading,
+  votingBalance,
+  selectedAccount,
+  setSelectedAccount,
+  isLoading,
+  extensionAccounts,
+}) {
   return (
     <div>
       <LabelWrapper>

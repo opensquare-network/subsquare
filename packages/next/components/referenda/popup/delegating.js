@@ -2,10 +2,7 @@ import { DelegatingInfo, DelegatingValue } from "./styled";
 import { toPrecision } from "utils";
 import { convictionToLockX } from "utils/referendumUtil";
 
-export default function Delegating({
-  addressVoteDelegate,
-  node,
-}) {
+export default function Delegating({ addressVoteDelegate, node }) {
   const addressVoteDelegateBalance = addressVoteDelegate?.balance;
   const addressVoteDelegateConviction = addressVoteDelegate?.conviction;
   const addressVoteDelegateTarget = addressVoteDelegate?.target;

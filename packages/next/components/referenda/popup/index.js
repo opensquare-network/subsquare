@@ -12,7 +12,7 @@ import {
   updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
 
-import { getNode, } from "utils";
+import { getNode } from "utils";
 import StandardVoteStatus from "./standardVoteStatus";
 import SplitVoteStatus from "./splitVoteStatus";
 import DelegateVoteStatus from "./delegateVoteStatus";
@@ -169,10 +169,7 @@ function PopupContent({
 
       {addressVote?.delegating && (
         // If the address has set to delegate mode, show the delegating setting instead
-        <Delegating
-          addressVoteDelegate={addressVote?.delegating}
-          node={node}
-        />
+        <Delegating addressVoteDelegate={addressVote?.delegating} node={node} />
       )}
 
       {!addressVoteIsLoading &&
@@ -180,7 +177,7 @@ function PopupContent({
         !addressVote?.split &&
         (!addressVote?.delegating || !addressVoteDelegateVoted) && (
           <NoVoteRecord />
-      )}
+        )}
       {addressVote?.standard && (
         <StandardVoteStatus
           addressVoteStandard={addressVote?.standard}
@@ -188,10 +185,7 @@ function PopupContent({
         />
       )}
       {addressVote?.split && (
-        <SplitVoteStatus
-          addressVoteSplit={addressVote?.split}
-          node={node}
-        />
+        <SplitVoteStatus addressVoteSplit={addressVote?.split} node={node} />
       )}
       {addressVote?.delegating && addressVoteDelegateVoted && (
         <DelegateVoteStatus addressVoteDelegate={addressVote?.delegating} />

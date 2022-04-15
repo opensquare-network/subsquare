@@ -2,7 +2,12 @@ import { TooltipWrapper, Label } from "./styled";
 import Input from "next-common/components/input";
 import Tooltip from "next-common/components/tooltip";
 
-export default function VoteValue({ isLoading, inputVoteBalance, setInputVoteBalance, node }) {
+export default function VoteValue({
+  isLoading,
+  inputVoteBalance,
+  setInputVoteBalance,
+  node,
+}) {
   return (
     <div>
       <TooltipWrapper>
@@ -14,9 +19,7 @@ export default function VoteValue({ isLoading, inputVoteBalance, setInputVoteBal
         placeholder="0"
         disabled={isLoading}
         value={inputVoteBalance}
-        onChange={(e) =>
-          setInputVoteBalance(e.target.value.replace("。", "."))
-        }
+        onChange={(e) => setInputVoteBalance(e.target.value.replace("。", "."))}
         symbol={node?.voteSymbol}
       />
     </div>

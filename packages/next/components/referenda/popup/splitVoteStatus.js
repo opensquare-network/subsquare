@@ -12,10 +12,7 @@ import ApproveIcon from "next-common/assets/imgs/icons/approve.svg";
 import RejectIcon from "next-common/assets/imgs/icons/reject.svg";
 import { toPrecision } from "utils";
 
-export default function SplitVoteStatus({
-  addressVoteSplit,
-  node,
-}) {
+export default function SplitVoteStatus({ addressVoteSplit, node }) {
   const addressVoteSplitAye = addressVoteSplit?.aye;
   const addressVoteSplitNay = addressVoteSplit?.nay;
 

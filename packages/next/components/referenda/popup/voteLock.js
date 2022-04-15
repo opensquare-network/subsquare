@@ -7,7 +7,11 @@ export default function VoteLock({ voteLock, setVoteLock }) {
       <TooltipWrapper>
         <Label>Vote lock</Label>
       </TooltipWrapper>
-      <VoteLockSelect value={voteLock} setValue={setVoteLock} disabled={false} />
+      <VoteLockSelect
+        value={voteLock}
+        setValue={setVoteLock}
+        disabled={false}
+      />
     </div>
   );
 }

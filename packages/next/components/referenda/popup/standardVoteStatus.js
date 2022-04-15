@@ -13,10 +13,7 @@ import { toPrecision } from "utils";
 import { convictionToLockX } from "utils/referendumUtil";
 import { isAye, getConviction } from "utils/referendumUtil";
 
-export default function StandardVoteStatus({
-  addressVoteStandard,
-  node,
-}) {
+export default function StandardVoteStatus({ addressVoteStandard, node }) {
   const addressVoteStandardBalance = addressVoteStandard?.balance;
   const addressVoteStandardAye = isAye(addressVoteStandard?.vote);
   const addressVoteStandardConviction = getConviction(
