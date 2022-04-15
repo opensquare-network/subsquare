@@ -1,12 +1,12 @@
-const {
+import {
   getFinalizedBlockNumber,
   parseEscrowPoint,
   newMonetaryAmount,
   saturatingSub,
-} = require("./utils");
-const BN = require("bn.js");
-const monetary = require("@interlay/monetary-js");
-const isNil = require("lodash.isnil");
+} from "./utils";
+import BN from "bn.js";
+import monetary from "@interlay/monetary-js";
+import isNil from "lodash.isnil";
 
 async function getSpan(api) {
   return (await api.consts.escrow.span).toBn();
