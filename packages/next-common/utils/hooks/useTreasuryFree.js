@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import useIsMounted from "./useIsMounted";
 import { u8aConcat } from "@polkadot/util";
-import { Chains } from "../constants";
 import { Kintsugi } from "@interlay/monetary-js";
+import Chains from "../consts/chains";
 
 const EMPTY_U8A_32 = new Uint8Array(32);
 

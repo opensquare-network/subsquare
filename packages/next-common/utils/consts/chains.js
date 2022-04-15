@@ -12,6 +12,7 @@ const Chains = {
   interlay: "interlay",
   polkadex: "polkadex",
   crust: "crust",
+  calamari: "calamari",
 };
 
 export default Chains;

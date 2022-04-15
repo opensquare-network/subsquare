@@ -13,6 +13,10 @@ const imageMap = new Map([
   ["interlay", "bafybeifqabzy3677ms2jihcb4ed4kxcvbjtxskctjboidcoy7pbosqrqyi"],
   ["polkadex", "bafybeickjkgii2nnhwyypiem6jjj3z75u4dfknwcmedru4ytzv6qddfg5y"],
   [Chains.crust, "bafybeicb77dwocjcssmcb75irbsvxly4ep335pky2r7tvwsjnoyzpl3c3y"],
+  [
+    Chains.calamari,
+    "bafybeig2mirpdoj3cowecbxiafo335abg3rlz6uhsfficemwtft75ykpqu",
+  ],
 ]);
 
 export default function SEO({ title, desc, chain }) {

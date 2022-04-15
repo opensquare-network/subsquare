@@ -1,12 +1,12 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { khala } from "@phala/typedefs";
 import { basilisk } from "./bundle/basilisk";
-import { Chains } from "../../utils/constants";
 import interbtc from "./kintsugi/definitions";
 import bifrostOptions from "./bifrost/options";
 import karuraOptions from "./karura/options";
 import polkadex from "./polkadex/definitions";
 import crustOptions from "./crust/options";
+import Chains from "../../utils/consts/chains";
 
 const apiInstanceMap = new Map();
 

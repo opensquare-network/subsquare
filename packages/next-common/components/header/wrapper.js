@@ -37,7 +37,9 @@ function HeaderWrapper({ chain, children }) {
   if (parseInt(width) > 768) {
     if (Chains.kintsugi === chain) {
       ChainWrapper = KintsugiWrapper;
-    } else if ([Chains.khala, Chains.bifrost].includes(chain)) {
+    } else if (
+      [Chains.khala, Chains.bifrost, Chains.calamari].includes(chain)
+    ) {
       ChainWrapper = BlackWrapper;
     }
   }

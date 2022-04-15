@@ -31,4 +31,14 @@ const crust = {
   hasElections: false,
 };
 
+export const calamari = {
+  value: Chains.calamari,
+  name: capitalize(Chains.calamari),
+  icon: "calamari.svg",
+  identity: Chains.kusama,
+  symbol: "KMA",
+  decimals: 12,
+  hasElections: false,
+};
+
 export { interlay, polkadex, crust };

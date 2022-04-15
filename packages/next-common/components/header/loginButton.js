@@ -7,7 +7,11 @@ function LoginButton({ chain }) {
   const router = useRouter();
 
   let isPrimaryInverse = false;
-  if ([Chains.kintsugi, Chains.khala, Chains.bifrost].includes(chain)) {
+  if (
+    [Chains.kintsugi, Chains.khala, Chains.bifrost, Chains.calamari].includes(
+      chain
+    )
+  ) {
     isPrimaryInverse = true;
   }
 

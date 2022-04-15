@@ -1,14 +1,14 @@
 import styled, { css } from "styled-components";
-import React, { useState, useRef, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import useWindowSize from "../../utils/hooks/useWindowSize";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import {
   currentNodeSelector,
-  setCurrentNode,
   nodesSelector,
+  setCurrentNode,
 } from "../../store/reducers/nodeSlice";
-import { DEFAULT_NODES } from "../../utils/constants";
+import { defaultNodes } from "../../utils/constants";
 
 const Wrapper = styled.div`
   position: relative;
@@ -107,14 +107,14 @@ const Item = styled.div`
     `}
 `;
 
-export default function NodeSwitch({ small, chain, node }) {
+export default function NodeSwitch({ small, chain }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
   const windowSize = useWindowSize();
   const currentNode = useSelector(currentNodeSelector);
   const nodes = useSelector(nodesSelector);
   const [currentNodeSetting, setCurrentNodeSetting] = useState(
-    DEFAULT_NODES[chain]
+    defaultNodes[chain]
   );
   const dispatch = useDispatch();
 
