@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import { useApi } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getNode, toPrecision } from "utils";
 import Loading from "./loading";
+import { StatusContext } from "./statusContext";
 
 const BalanceWrapper = styled.div`
   display: flex;
@@ -20,12 +21,10 @@ const BalanceWrapper = styled.div`
 
 const balanceMap = new Map();
 
-export default function AccountBalance({
-  chain,
-  account,
-  balance,
-  setBalance,
-}) {
+export default function AccountBalance({ chain }) {
+  const { signerAccount, signerBalance, setSignerBalance } =
+    useContext(StatusContext);
+
   const isMounted = useIsMounted();
   const [loadingBalance, setLoadingBalance] = useState(false);
   const node = getNode(chain);
@@ -33,18 +32,18 @@ export default function AccountBalance({
   const api = useApi(chain);
 
   useEffect(() => {
-    if (balanceMap.has(account?.address)) {
-      setBalance(balanceMap.get(account?.address));
+    if (balanceMap.has(signerAccount?.address)) {
+      setSignerBalance(balanceMap.get(signerAccount?.address));
       return;
     }
-    if (api && account) {
+    if (api && signerAccount) {
       setLoadingBalance(true);
       api.query.system
-        .account(account.address)
+        .account(signerAccount.address)
         .then((result) => {
           if (isMounted.current) {
-            setBalance(result.data.free);
-            balanceMap.set(account.address, result.data.free);
+            setSignerBalance(result.data.free);
+            balanceMap.set(signerAccount.address, result.data.free);
           }
         })
         .finally(() => {
@@ -53,13 +52,17 @@ export default function AccountBalance({
           }
         });
     }
-  }, [api, account, node.decimals, isMounted, setBalance]);
+  }, [api, signerAccount, node.decimals, isMounted, setSignerBalance]);
 
   return (
     <BalanceWrapper>
       <div>Balance</div>
       <div>
-        {loadingBalance ? <Loading /> : toPrecision(balance, node.decimals)}
+        {loadingBalance ? (
+          <Loading />
+        ) : (
+          toPrecision(signerBalance, node.decimals)
+        )}
       </div>
     </BalanceWrapper>
   );

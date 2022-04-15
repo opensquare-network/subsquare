@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import SignerSelect from "next-common/components/signerSelect";
 import AccountBalance from "./accountBalance";
+import { useContext } from "react";
+import { StatusContext } from "./statusContext";
 
 const LabelWrapper = styled.div`
   display: flex;
@@ -14,31 +16,20 @@ const Label = styled.div`
   margin-bottom: 8px;
 `;
 
-export default function Signer({
-  extensionAccounts,
-  chain,
-  api,
-  selectedAccount,
-  setSelectedAccount,
-  balance,
-  setBalance,
-}) {
+export default function Signer({ extensionAccounts, chain, api }) {
+  const { signerAccount, setSignerAccount } = useContext(StatusContext);
+
   return (
     <div>
       <LabelWrapper>
         <Label>Address</Label>
-        <AccountBalance
-          account={selectedAccount}
-          chain={chain}
-          balance={balance}
-          setBalance={setBalance}
-        />
+        <AccountBalance chain={chain} />
       </LabelWrapper>
       <SignerSelect
         api={api}
         chain={chain}
-        selectedAccount={selectedAccount}
-        setSelectedAccount={setSelectedAccount}
+        selectedAccount={signerAccount}
+        setSelectedAccount={setSignerAccount}
         extensionAccounts={extensionAccounts}
       />
     </div>
