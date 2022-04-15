@@ -2,7 +2,7 @@ import { TooltipWrapper, Label, DelegatingValue } from "./styled";
 import { toPrecision } from "utils";
 import Tooltip from "next-common/components/tooltip";
 
-export default function Delegations({ addressVoteDelegations, node }) {
+export default function Delegations({ delegationsVotes, node }) {
   return (
     <div>
       <TooltipWrapper>
@@ -12,7 +12,7 @@ export default function Delegations({ addressVoteDelegations, node }) {
       <DelegatingValue>
         <div className="vote">
           <div className="balance">
-            {toPrecision(addressVoteDelegations, node.decimals)}{" "}
+            {toPrecision(delegationsVotes, node.decimals)}{" "}
             {node.voteSymbol || node.symbol}
           </div>
         </div>

@@ -11,13 +11,15 @@ import ApproveIcon from "next-common/assets/imgs/icons/approve.svg";
 import RejectIcon from "next-common/assets/imgs/icons/reject.svg";
 import { toPrecision } from "utils";
 import { convictionToLockX } from "utils/referendumUtil";
+import { isAye, getConviction } from "utils/referendumUtil";
 
-export default function StandardVoteStatus({
-  addressVoteStandardBalance,
-  addressVoteStandardConviction,
-  addressVoteStandardAye,
-  node,
-}) {
+export default function StandardVoteStatus({ addressVoteStandard, node }) {
+  const addressVoteStandardBalance = addressVoteStandard?.balance;
+  const addressVoteStandardAye = isAye(addressVoteStandard?.vote);
+  const addressVoteStandardConviction = getConviction(
+    addressVoteStandard?.vote
+  );
+
   return (
     <VotingStatusContent>
       <TooltipWrapper>

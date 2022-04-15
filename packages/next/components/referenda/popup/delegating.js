@@ -2,12 +2,11 @@ import { DelegatingInfo, DelegatingValue } from "./styled";
 import { toPrecision } from "utils";
 import { convictionToLockX } from "utils/referendumUtil";
 
-export default function Delegating({
-  addressVoteDelegateBalance,
-  addressVoteDelegateConviction,
-  addressVoteDelegateTarget,
-  node,
-}) {
+export default function Delegating({ addressVoteDelegate, node }) {
+  const addressVoteDelegateBalance = addressVoteDelegate?.balance;
+  const addressVoteDelegateConviction = addressVoteDelegate?.conviction;
+  const addressVoteDelegateTarget = addressVoteDelegate?.target;
+
   return (
     <div>
       <DelegatingInfo>
@@ -31,11 +30,11 @@ export default function Delegating({
             target="_blank"
             rel="noreferrer"
           >
-            {`${addressVoteDelegateTarget.substr(
+            {`${addressVoteDelegateTarget?.substr(
               0,
               4
-            )}...${addressVoteDelegateTarget.substr(
-              addressVoteDelegateTarget.length - 4
+            )}...${addressVoteDelegateTarget?.substr(
+              addressVoteDelegateTarget?.length - 4
             )}`}
           </a>
         </div>
