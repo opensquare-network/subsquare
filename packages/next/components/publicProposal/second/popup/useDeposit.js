@@ -9,8 +9,7 @@ export default function useDeposit(chain, depositRequired) {
 
   const deposit =
     depositRequired || api?.consts?.democracy?.minimumDeposit?.toString();
-
-  const balanceInsufficient = !(new BigNumber(signerBalance).gte(deposit));
+  const balanceInsufficient = new BigNumber(signerBalance).lt(deposit);
 
   return { deposit, balanceInsufficient };
 }
