@@ -4,10 +4,6 @@ import styled from "styled-components";
 import Chains from "../../../utils/consts/chains";
 import useWindowSize from "../../../utils/hooks/useWindowSize";
 
-const ImageLinkWrapper = styled.a`
-  height: 63px;
-`;
-
 const Logo = styled.img`
   cursor: pointer;
 `;
@@ -43,7 +39,7 @@ function ChainLogo({ chain }) {
 
   return (
     <Link href="/">
-      <ImageLinkWrapper>{logo}</ImageLinkWrapper>
+      <a style={{ height: 63 }}>{logo}</a>
     </Link>
   );
 }

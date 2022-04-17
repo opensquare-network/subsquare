@@ -56,6 +56,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     "Passed",
     "NotPassed",
     "Cancelled",
+    "Canceled",
   ].includes(timeline[timeline.length - 1]?.method);
 
   useEffect(() => {
