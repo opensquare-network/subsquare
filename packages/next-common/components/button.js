@@ -82,9 +82,9 @@ export default function Button({ children, ...props }) {
       {props.isLoading && (
         <LoadingWrapper>
           {props.primary || props.secondary ? (
-            <Loading white={true} />
+            <Loading white={true} size={20} />
           ) : (
-            <Loading />
+            <Loading size={20} />
           )}
         </LoadingWrapper>
       )}
