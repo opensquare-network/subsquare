@@ -12,7 +12,7 @@ import PlusIcon from "public/imgs/icons/plusInCircle.svg";
 import { useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import Loading from "components/loading";
+import Loading from "next-common/components/loading";
 import { useDispatch, useSelector } from "react-redux";
 import {
   pendingProposalsSelector,

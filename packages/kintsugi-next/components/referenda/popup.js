@@ -20,7 +20,7 @@ import RejectIcon from "next-common/assets/imgs/icons/reject.svg";
 import Tooltip from "next-common/components/tooltip";
 import SignerSelect from "next-common/components/signerSelect";
 import PopupWithAddress from "next-common/components/popupWithAddress";
-import Loading from "./loading";
+import Loading from "next-common/components/loading";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import ValueDisplay from "next-common/components/displayValue";
 import { emptyFunction } from "next-common/utils";

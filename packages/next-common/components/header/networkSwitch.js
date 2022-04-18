@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { nodes } from "../../utils/constants";
 import { shadow_200 } from "../../styles/componentCss";
 import { useSelector } from "react-redux";
-import LoadingSvg from "../../assets/imgs/icons/members-loading.svg";
+import Loading from "../loading";
 import { nodesHeightSelector } from "../../store/reducers/nodeSlice";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import useWindowSize from "../../utils/hooks/useWindowSize";
@@ -129,7 +129,7 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
               {nodesHeight ? (
                 <span>{`#${nodesHeight?.toLocaleString()}`}</span>
               ) : (
-                <LoadingSvg />
+                <Loading size={16} />
               )}
             </>
           )}
