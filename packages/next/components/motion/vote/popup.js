@@ -12,7 +12,7 @@ import {
   updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
 
-import Loading from "./loading";
+import Loading from "next-common/components/loading";
 import SignerSelect from "next-common/components/signerSelect";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import toApiCouncil from "../toApiCouncil";

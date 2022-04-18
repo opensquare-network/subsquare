@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import SignerSelect from "next-common/components/signerSelect";
 import { toPrecision } from "utils";
-import Loading from "../loading";
+import Loading from "next-common/components/loading";
 import { Label } from "./styled";
 
 const LabelWrapper = styled.div`

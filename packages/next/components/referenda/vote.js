@@ -20,7 +20,7 @@ import TurnoutIcon from "public/imgs/icons/turnout.svg";
 import ElectorateIcon from "public/imgs/icons/electorate.svg";
 import Threshold from "./threshold";
 import DisplayValue from "next-common/components/displayValue";
-import Loading from "./loading";
+import Loading from "next-common/components/loading";
 import { useBestNumber } from "next-common/utils/hooks";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {

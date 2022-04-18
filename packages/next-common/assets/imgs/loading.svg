@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Keyshape -->
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+    <style>
+@keyframes a0_t { 0% { transform: translate(7px,7px) rotate(0deg) translate(-7px,-7px); } 100% { transform: translate(7px,7px) rotate(360deg) translate(-7px,-7px); } }
+    </style>
+    <path d="M1.75,7C1.75,6.58579,1.41421,6.25,1,6.25C0.585786,6.25,0.25,6.58579,0.25,7L1.75,7ZM7,0.25C6.58579,0.25,6.25,0.585786,6.25,1C6.25,1.41421,6.58579,1.75,7,1.75L7,0.25ZM12.25,7C12.25,9.8995,9.8995,12.25,7,12.25L7,13.75C10.7279,13.75,13.75,10.7279,13.75,7L12.25,7ZM7,12.25C4.10051,12.25,1.75,9.8995,1.75,7L0.25,7C0.25,10.7279,3.27208,13.75,7,13.75L7,12.25ZM7,1.75C9.8995,1.75,12.25,4.10051,12.25,7L13.75,7C13.75,3.27208,10.7279,0.25,7,0.25L7,1.75Z" fill="#D7DEE8" transform="translate(7,7) translate(-7,-7)" style="animation: 1s linear infinite both a0_t;"/>
+</svg>
