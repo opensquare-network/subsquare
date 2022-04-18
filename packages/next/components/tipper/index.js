@@ -173,7 +173,7 @@ export default function Tipper({
         </Content>
         {!loading && action}
       </Wrapper>
-      {showPopup && (
+      {showPopup || (
         <Popup
           chain={chain}
           councilTippers={councilTippers}

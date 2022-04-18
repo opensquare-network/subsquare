@@ -1,5 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import Loading from "./loading";
 
 const Wrapper = styled.button`
   all: unset;
@@ -67,21 +68,6 @@ const LoadingWrapper = styled.div`
   height: 100%;
 `;
 
-const LoadingImg = styled.img`
-  animation: loading 0.5s infinite linear;
-  @keyframes loading {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-    50% {
-      -webkit-transform: rotate(180deg);
-    }
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-`;
-
 const ChildrenWrapper = styled.div`
   ${(p) =>
     p.isLoading &&
@@ -95,13 +81,11 @@ export default function Button({ children, ...props }) {
     <Wrapper {...props}>
       {props.isLoading && (
         <LoadingWrapper>
-          <LoadingImg
-            src={
-              props.primary || props.secondary
-                ? "/imgs/icons/loading-white.svg"
-                : "/imgs/icons/loading.svg"
-            }
-          />
+          {props.primary || props.secondary ? (
+            <Loading white={true} />
+          ) : (
+            <Loading />
+          )}
         </LoadingWrapper>
       )}
       <ChildrenWrapper isLoading={props.isLoading}>{children}</ChildrenWrapper>

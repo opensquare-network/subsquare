@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Flex from "../styled/flex";
 import User from "../user";
 import React, { Fragment } from "react";
-import LoadingSvg from "../../assets/imgs/icons/members-loading.svg";
+import Loading from "../loading";
 
 const Wrapper = styled.div`
   max-width: 848px;
@@ -119,7 +119,7 @@ export default function MembersList({
           ) : (
             <StyledTr>
               <EmptyTd colSpan="3">
-                {loading ? <LoadingSvg /> : "No current members"}
+                {loading ? <Loading size={22} /> : "No current members"}
               </EmptyTd>
             </StyledTr>
           )}

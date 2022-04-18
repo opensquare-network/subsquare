@@ -216,6 +216,9 @@ function PopupContent({
         ) : (
           <Button disabled>Endorse</Button>
         )}
+        <Button secondary isLoading={true} onClick={doEndorse}>
+          Endorse
+        </Button>
       </ButtonWrapper>
     </>
   );
