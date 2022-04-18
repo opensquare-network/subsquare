@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import { useApi } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getNode, toPrecision } from "utils";
-import Loading from "./loading";
+import Loading from "next-common/components/loading";
 import { StatusContext } from "./statusContext";
 
 const BalanceWrapper = styled.div`

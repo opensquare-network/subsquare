@@ -5,7 +5,7 @@ import {
   VotingStatusWrapper,
   Label,
 } from "./styled";
-import Loading from "../loading";
+import Loading from "next-common/components/loading";
 
 export default function LoadingVoteStatus() {
   return (

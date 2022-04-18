@@ -4,8 +4,7 @@ import dynamic from "next/dynamic";
 
 import Button from "next-common/components/button";
 import User from "next-common/components/user";
-import LoadingIcon from "public/imgs/icons/members-loading.svg";
-import Loading from "components/loading";
+import Loading from "next-common/components/loading";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -119,7 +118,7 @@ export default function Vote({
     voteList = (
       <TipperList>
         <LoadingDiv>
-          <LoadingIcon />
+          <Loading size={16} />
         </LoadingDiv>
       </TipperList>
     );
