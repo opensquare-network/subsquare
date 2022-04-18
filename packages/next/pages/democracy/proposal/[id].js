@@ -142,7 +142,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
             depositRequired={depositRequired}
             hasTurnIntoReferendum={hasTurnIntoReferendum}
             hasCanceled={hasCanceled}
-            loading={false}
             updateSeconds={() => {}}
             updateTimeline={() => {}}
             isLoadingSeconds={isLoadingSeconds}
