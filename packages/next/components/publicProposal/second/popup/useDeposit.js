@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import { useContext } from "react";
 import { useApi } from "utils/hooks";
-import { StatusContext } from "./statusContext";
+import { StatusContext } from "./stateContext";
 
 export default function useDeposit(chain, depositRequired) {
   const api = useApi(chain);

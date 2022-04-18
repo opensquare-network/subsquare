@@ -1,5 +1,5 @@
+import PopupLabel from "next-common/components/popup/label";
 import SignerSelect from "next-common/components/signerSelect";
-import { Label, LabelWrapper } from "./styled";
 
 export default function Signer({
   api,
@@ -10,9 +10,9 @@ export default function Signer({
 }) {
   return (
     <div>
-      <LabelWrapper>
-        <Label>Address</Label>
-      </LabelWrapper>
+      <PopupLabel
+        text={"Address"}
+      />
       <SignerSelect
         api={api}
         chain={chain}

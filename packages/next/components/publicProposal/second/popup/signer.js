@@ -2,7 +2,7 @@ import styled from "styled-components";
 import SignerSelect from "next-common/components/signerSelect";
 import AccountBalance from "./accountBalance";
 import { useContext } from "react";
-import { StatusContext } from "./statusContext";
+import { StatusContext } from "./stateContext";
 
 const LabelWrapper = styled.div`
   display: flex;

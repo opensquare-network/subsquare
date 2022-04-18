@@ -1,4 +1,4 @@
-import { DelegatingInfo, DelegatingValue } from "./styled";
+import { DelegatingInfo, DelegatingValue } from "next-common/components/popup/styled";
 import { toPrecision } from "utils";
 import { convictionToLockX } from "utils/referendumUtil";
 

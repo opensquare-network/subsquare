@@ -1,5 +1,5 @@
 import Button from "next-common/components/button";
-import { ButtonWrapper } from "./styled";
+import { ButtonWrapper } from "next-common/components/popup/styled";
 
 export default function VoteButton({ isLoading, doVote }) {
   return (

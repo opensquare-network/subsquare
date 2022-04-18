@@ -1,6 +1,5 @@
-import { TooltipWrapper, Label } from "./styled";
 import Input from "next-common/components/input";
-import Tooltip from "next-common/components/tooltip";
+import PopupLabel from "next-common/components/popup/label";
 
 export default function VoteValue({
   isLoading,
@@ -10,10 +9,10 @@ export default function VoteValue({
 }) {
   return (
     <div>
-      <TooltipWrapper>
-        <Label>Value</Label>
-        <Tooltip content="The value is locked for the duration of the vote" />
-      </TooltipWrapper>
+      <PopupLabel
+        text={"Value"}
+        tooltip={"The value is locked for the duration of the vote"}
+      />
       <Input
         type="text"
         placeholder="0"

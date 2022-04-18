@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Button from "next-common/components/button";
 import useDeposit from "./useDeposit";
 import { useContext } from "react";
-import { StatusContext } from "./statusContext";
+import { StatusContext } from "./stateContext";
 
 const ButtonWrapper = styled.div`
   display: flex;

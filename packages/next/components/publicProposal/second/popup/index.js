@@ -14,7 +14,7 @@ import PopupWithAddress from "next-common/components/popupWithAddress";
 import DepositRequired from "./depositRequired";
 import Signer from "./signer";
 import SubmitButton from "./submitButton";
-import { StatusContext, StatusProvider } from "./statusContext";
+import { StateContext, StateProvider } from "./stateContext";
 
 function PopupContent({
   extensionAccounts,
@@ -29,7 +29,7 @@ function PopupContent({
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
-  const { signerAccount, setIsSubmitting } = useContext(StatusContext);
+  const { signerAccount, setIsSubmitting } = useContext(StateContext);
 
   const api = useApi(chain);
 
@@ -100,8 +100,8 @@ function PopupContent({
 
 export default function Popup(props) {
   return (
-    <StatusProvider>
+    <StateProvider>
       <PopupWithAddress title="Second" Component={PopupContent} {...props} />
-    </StatusProvider>
+    </StateProvider>
   );
 }

@@ -4,7 +4,7 @@ import {
   TooltipWrapper,
   VotingStatusWrapper,
   Label,
-} from "./styled";
+} from "next-common/components/popup/styled";
 import Loading from "next-common/components/loading";
 
 export default function LoadingVoteStatus() {

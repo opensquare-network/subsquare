@@ -17,22 +17,10 @@ import SignerSelect from "next-common/components/signerSelect";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import toApiCouncil from "../toApiCouncil";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-
-const Info = styled.div`
-  background: #f6f7fa;
-  border-radius: 4px;
-  padding: 12px 16px;
-  color: #506176;
-  font-size: 14px;
-  line-height: 140%;
-  margin-top: 8px;
-  ${(p) =>
-    p.danger &&
-    css`
-      color: #f44336;
-      background: #fff1f0;
-    `}
-`;
+import PopupLabel from "next-common/components/popup/label";
+import { WarningMessage } from "next-common/components/popup/styled";
+import VoteStatusBox from "next-common/components/popup/voteStatusBox";
+import NoDataStatusBox from "next-common/components/popup/noDataStatusBox";
 
 const LabelWrapper = styled.div`
   display: flex;
@@ -46,53 +34,10 @@ const Label = styled.div`
   margin-bottom: 8px;
 `;
 
-const Message = styled.div`
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  padding: 12px 16px;
-  background: #f6f7fa;
-  border-radius: 4px;
-  color: rgba(80, 97, 118, 1);
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 140%;
-`;
-
 const CurrentVotingWrapper = styled.div`
   > :not(:first-child) {
     margin-top: 8px;
   }
-`;
-
-const CurrentVoting = styled.div`
-  background: #f6f7fa;
-  border-radius: 4px;
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 100%;
-  color: #1e2134;
-  > :last-child {
-    font-size: 12px;
-    line-height: 100%;
-    color: #506176;
-    display: flex;
-    align-items: center;
-    > img {
-      margin-left: 8px;
-    }
-  }
-`;
-
-const CurrentVotingNoData = styled(Message)`
-  color: #9da9bb;
-  display: block;
-  text-align: center;
 `;
 
 const CurrentVotingLoading = styled.div`
@@ -202,9 +147,7 @@ function PopupContent({
   return (
     <>
       <div>
-        <LabelWrapper>
-          <Label>Address</Label>
-        </LabelWrapper>
+        <PopupLabel text={"Address"} />
         <SignerSelect
           api={api}
           chain={chain}
@@ -213,9 +156,9 @@ function PopupContent({
           setSelectedAccount={setSelectedAccount}
         />
         {!selectedAccountCanVote && (
-          <Info danger={!selectedAccountCanVote}>
+          <WarningMessage danger={!selectedAccountCanVote}>
             Only council members can vote.
-          </Info>
+          </WarningMessage>
         )}
       </div>
       <CurrentVotingWrapper>
@@ -229,27 +172,16 @@ function PopupContent({
         )}
         {!isLoadingVotes &&
           (currentVote ? (
-            <CurrentVoting>
-              <div>Voting</div>
-              {currentVote[1] ? (
-                <div>
-                  Aye
-                  <img src="/imgs/icons/aye.svg" alt="" />
-                </div>
-              ) : (
-                <div>
-                  Nay
-                  <img src="/imgs/icons/nay.svg" alt="" />
-                </div>
-              )}
-            </CurrentVoting>
+            <VoteStatusBox aye={currentVote[1]}>
+              Voting
+            </VoteStatusBox>
           ) : (
-            <CurrentVotingNoData>No voting record</CurrentVotingNoData>
+            <NoDataStatusBox text={"No voting record"} />
           ))}
         {!isLoadingVotes && currentVote && (
-          <Message>
+          <WarningMessage>
             Resubmitting the vote will override the current voting record
-          </Message>
+          </WarningMessage>
         )}
       </CurrentVotingWrapper>
       <ButtonWrapper>

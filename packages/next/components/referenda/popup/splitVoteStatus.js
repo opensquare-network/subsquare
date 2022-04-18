@@ -1,16 +1,8 @@
-import {
-  VotingStatusContent,
-  TooltipWrapper,
-  Label,
-  VotingStatusWrapper,
-  StatusWrapper,
-  WarningWrapper,
-} from "./styled";
-import Tooltip from "next-common/components/tooltip";
+import { VotingStatusContent, WarningMessage } from "next-common/components/popup/styled";
 import DisplayValue from "next-common/components/displayValue";
-import ApproveIcon from "next-common/assets/imgs/icons/approve.svg";
-import RejectIcon from "next-common/assets/imgs/icons/reject.svg";
 import { toPrecision } from "utils";
+import PopupLabel from "next-common/components/popup/label";
+import VoteStatusBox from "next-common/components/popup/voteStatusBox";
 
 export default function SplitVoteStatus({ addressVoteSplit, node }) {
   const addressVoteSplitAye = addressVoteSplit?.aye;
@@ -18,40 +10,26 @@ export default function SplitVoteStatus({ addressVoteSplit, node }) {
 
   return (
     <VotingStatusContent>
-      <TooltipWrapper>
-        <Label>Current voting</Label>
-        <VotingStatusWrapper>
-          <div>Split</div>
-          <Tooltip content="Vote for both aye and nay" />
-        </VotingStatusWrapper>
-      </TooltipWrapper>
-      <StatusWrapper>
-        <div className="value">
-          <DisplayValue
-            value={toPrecision(addressVoteSplitAye, node.decimals)}
-            symbol={node?.voteSymbol || node?.symbol}
-          />
-        </div>
-        <div className="result">
-          Aye
-          <ApproveIcon />
-        </div>
-      </StatusWrapper>
-      <StatusWrapper>
-        <div className="value">
-          <DisplayValue
-            value={toPrecision(addressVoteSplitNay, node.decimals)}
-            symbol={node?.voteSymbol || node?.symbol}
-          />
-        </div>
-        <div className="result">
-          Nay
-          <RejectIcon />
-        </div>
-      </StatusWrapper>
-      <WarningWrapper>
+      <PopupLabel
+        text={"Current voting"}
+        status={"Split"}
+        tooltip={"Vote for both aye and nay"}
+      />
+      <VoteStatusBox aye={true}>
+        <DisplayValue
+          value={toPrecision(addressVoteSplitAye, node.decimals)}
+          symbol={node?.voteSymbol || node?.symbol}
+        />
+      </VoteStatusBox>
+      <VoteStatusBox aye={false}>
+        <DisplayValue
+          value={toPrecision(addressVoteSplitNay, node.decimals)}
+          symbol={node?.voteSymbol || node?.symbol}
+        />
+      </VoteStatusBox>
+      <WarningMessage>
         Resubmitting the vote will override the current voting record
-      </WarningWrapper>
+      </WarningMessage>
     </VotingStatusContent>
   );
 }
