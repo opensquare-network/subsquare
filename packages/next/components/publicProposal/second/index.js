@@ -85,12 +85,6 @@ const Description = styled.div`
   }
 `;
 
-const LoadingDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 const ListMore = styled.div`
   cursor: pointer;
   margin-top: 16px !important;
@@ -106,7 +100,6 @@ export default function Second({
   depositRequired,
   hasTurnIntoReferendum,
   hasCanceled,
-  loading = true,
   updateSeconds = () => {},
   updateTimeline = () => {},
   isLoadingSeconds,
@@ -120,15 +113,7 @@ export default function Second({
 
   let secondsList;
 
-  if (loading) {
-    secondsList = (
-      <SecondsList>
-        <LoadingDiv>
-          <Loading size={16} />
-        </LoadingDiv>
-      </SecondsList>
-    );
-  } else if (seconds.length === 0) {
+  if (seconds.length === 0) {
     secondsList = (
       <SecondsList>
         <NoSeconds>No current seconds</NoSeconds>
@@ -178,7 +163,7 @@ export default function Second({
           </Title>
           {secondsList}
         </Content>
-        {!loading && action}
+        {action}
       </Wrapper>
       {showPopup && (
         <Popup
