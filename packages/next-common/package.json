@@ -12,7 +12,7 @@
   "dependencies": {
     "@interlay/monetary-js": "0.5.4",
     "@osn/polkadot-react-identicon": "^1.0.8",
-    "@osn/provider-options": "^1.0.0",
+    "@osn/provider-options": "^1.0.2",
     "@polkadot/api": "8.0.2",
     "@polkadot/extension-dapp": "0.43.1",
     "@reduxjs/toolkit": "^1.6.1",
