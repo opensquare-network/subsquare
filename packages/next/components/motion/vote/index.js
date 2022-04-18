@@ -118,7 +118,7 @@ export default function Vote({
     voteList = (
       <TipperList>
         <LoadingDiv>
-          <Loading size={22} />
+          <Loading size={16} />
         </LoadingDiv>
       </TipperList>
     );

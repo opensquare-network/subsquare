@@ -129,7 +129,7 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
               {nodesHeight ? (
                 <span>{`#${nodesHeight?.toLocaleString()}`}</span>
               ) : (
-                <Loading size={22} />
+                <Loading size={16} />
               )}
             </>
           )}

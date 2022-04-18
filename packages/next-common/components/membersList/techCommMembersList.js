@@ -119,7 +119,7 @@ export default function MembersList({
           ) : (
             <StyledTr>
               <EmptyTd colSpan="3">
-                {loading ? <Loading size={22} /> : "No current members"}
+                {loading ? <Loading size={16} /> : "No current members"}
               </EmptyTd>
             </StyledTr>
           )}

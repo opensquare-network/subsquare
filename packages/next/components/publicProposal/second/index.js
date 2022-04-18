@@ -124,7 +124,7 @@ export default function Second({
     secondsList = (
       <SecondsList>
         <LoadingDiv>
-          <Loading size={22} />
+          <Loading size={16} />
         </LoadingDiv>
       </SecondsList>
     );

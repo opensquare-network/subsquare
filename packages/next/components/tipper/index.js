@@ -120,7 +120,7 @@ export default function Tipper({
     tipList = (
       <TipperList>
         <LoadingDiv>
-          <Loading size={22} />
+          <Loading size={16} />
         </LoadingDiv>
       </TipperList>
     );
