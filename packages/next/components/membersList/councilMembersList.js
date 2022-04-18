@@ -5,7 +5,7 @@ import { getNode, toPrecision, decimalPlaces } from "utils";
 import { bigNumber2Locale } from "next-common/utils";
 import User from "next-common/components/user";
 import { Fragment, useState } from "react";
-import LoadingSvg from "public/imgs/icons/members-loading.svg";
+import Loading from "next-common/components/loading";
 
 const Wrapper = styled.div`
   max-width: 848px;
@@ -175,7 +175,7 @@ export default function MembersList({
           ) : (
             <StyledTr>
               <EmptyTd colSpan="3">
-                {loading ? <LoadingSvg /> : "No current members"}
+                {loading ? <Loading size={22} /> : "No current members"}
               </EmptyTd>
             </StyledTr>
           )}

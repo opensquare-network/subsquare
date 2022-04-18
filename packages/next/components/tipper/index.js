@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import Button from "next-common/components/button";
 import User from "next-common/components/user";
 import { getNode, toPrecision } from "utils";
-import LoadingIcon from "public/imgs/icons/members-loading.svg";
 import Loading from "next-common/components/loading";
 
 const Popup = dynamic(() => import("./popup"), {
@@ -121,7 +120,7 @@ export default function Tipper({
     tipList = (
       <TipperList>
         <LoadingDiv>
-          <LoadingIcon />
+          <Loading size={22} />
         </LoadingDiv>
       </TipperList>
     );
