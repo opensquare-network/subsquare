@@ -1,6 +1,7 @@
 import React from "react";
 
 import styled, { css } from "styled-components";
+import FlexBetween from "../styled/flexBetween";
 
 export const VotingStatusContent = styled.div`
   > :nth-child(n + 3) {
@@ -172,7 +173,4 @@ export const BalanceWrapper = styled.div`
   }
 `;
 
-export const LabelWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
+export const LabelWrapper = FlexBetween;
