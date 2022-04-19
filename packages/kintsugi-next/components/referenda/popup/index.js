@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import BigNumber from "bignumber.js";
+import isNil from "lodash.isnil";
 import { useApi, useAddressVotingBalance, useAddressVote } from "utils/hooks";
 import {
   newErrorToast,
@@ -48,7 +49,7 @@ function PopupContent({
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doVote = async (aye) => {
-    if (isLoading || referendumIndex == null || !node) {
+    if (isLoading || isNil(referendumIndex) || !node) {
       return;
     }
 

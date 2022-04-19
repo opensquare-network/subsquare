@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@interlay/monetary-js": "^0.5.3",
+    "@next/env": "^12.1.0",
     "@subsquare/next-common": "file:../next-common",
     "@svgr/webpack": "^5.5.0",
     "bignumber.js": "^9.0.2",
@@ -18,11 +19,10 @@
     "cookies": "^0.8.0",
     "dayjs": "^1.10.7",
     "http-proxy": "^1.18.1",
-    "lodash.isnil": "^4.0.0",
     "lodash.findlastindex": "^4.6.0",
+    "lodash.isnil": "^4.0.0",
     "moment": "^2.29.2",
     "next": "^12.1.0",
-    "@next/env": "^12.1.0",
     "nprogress": "^0.2.0",
     "quill-mention": "^3.0.4",
     "react": "17.0.2",
@@ -33,9 +33,9 @@
     "styled-components": "^5.3.3"
   },
   "devDependencies": {
+    "babel-loader": "^8.2.3",
     "eslint": "7.32.0",
     "eslint-config-next": "^11.1.2",
-    "babel-loader": "^8.2.3",
     "next-transpile-modules": "^9.0.0"
   }
 }
