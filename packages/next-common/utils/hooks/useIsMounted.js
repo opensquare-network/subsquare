@@ -23,5 +23,5 @@ export function useIsMountedBool() {
     };
   }, []);
 
-  return isMounted.current;
+  return useCallback(() => isMounted.current, [isMounted]);
 }

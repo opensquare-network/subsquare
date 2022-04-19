@@ -63,7 +63,7 @@ export default function PostEdit({
             await updatePost();
           }
 
-          if (isMounted) {
+          if (isMounted()) {
             setIsEdit(false);
           }
         }}
