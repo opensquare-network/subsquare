@@ -148,7 +148,7 @@ function PopupContent({
       </WarningMessage>
       <div>
         <PopupLabelWithBalance
-          label="Address"
+          text="Address"
           balanceName={"Balance"}
           balance={balance}
           isLoading={!balance}

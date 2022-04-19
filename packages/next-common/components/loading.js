@@ -1,3 +1,5 @@
+import React from "react";
+
 import styled, { css } from "styled-components";
 import LoadingIcon from "../assets/imgs/icons/loading.svg";
 

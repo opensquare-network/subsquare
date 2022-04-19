@@ -5,14 +5,14 @@ import { useApi } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getNode, toPrecision } from "utils";
 import Loading from "next-common/components/loading";
-import { StatusContext } from "./stateContext";
+import { StateContext } from "./stateContext";
 import { BalanceWrapper } from "next-common/components/popup/styled"
 
 const balanceMap = new Map();
 
 export default function AccountBalance({ chain }) {
   const { signerAccount, signerBalance, setSignerBalance } =
-    useContext(StatusContext);
+    useContext(StateContext);
 
   const isMounted = useIsMounted();
   const [loadingBalance, setLoadingBalance] = useState(false);

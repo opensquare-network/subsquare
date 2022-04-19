@@ -1,3 +1,5 @@
+import React from "react";
+
 import { StatusWrapper } from "./styled";
 import ApproveIcon from "next-common/assets/imgs/icons/approve.svg";
 import RejectIcon from "next-common/assets/imgs/icons/reject.svg";

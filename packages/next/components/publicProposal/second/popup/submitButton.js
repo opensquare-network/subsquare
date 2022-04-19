@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Button from "next-common/components/button";
 import useDeposit from "./useDeposit";
 import { useContext } from "react";
-import { StatusContext } from "./stateContext";
+import { StateContext } from "./stateContext";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -11,7 +11,7 @@ const ButtonWrapper = styled.div`
 
 export default function SubmitButton({ chain, onClick, depositRequired }) {
   const { balanceInsufficient } = useDeposit(chain, depositRequired);
-  const { isSubmitting } = useContext(StatusContext);
+  const { isSubmitting } = useContext(StateContext);
 
   return (
     <ButtonWrapper>

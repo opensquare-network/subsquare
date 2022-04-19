@@ -28,6 +28,8 @@ const StatusWrapper = styled.div`
   }
 `;
 
+import React from "react";
+
 export default function PopupLabel({ text, status, tooltip }) {
   return (
     <TooltipWrapper>

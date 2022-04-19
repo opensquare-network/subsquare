@@ -1,4 +1,6 @@
-import styled from "styled-components";
+import React from "react";
+
+import styled, { css } from "styled-components";
 
 export const VotingStatusContent = styled.div`
   > :nth-child(n + 3) {
