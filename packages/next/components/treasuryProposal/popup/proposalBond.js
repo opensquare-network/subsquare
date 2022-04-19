@@ -1,8 +1,8 @@
+import PopupLabel from "next-common/components/popup/label";
 import { useEffect, useState } from "react";
 
 import { useApi } from "utils/hooks";
-import Tooltip from "next-common/components/tooltip";
-import { Label, TooltipWrapper, TextBox } from "./styled";
+import { TextBox } from "./styled";
 
 export default function ProposalBond({ chain }) {
   const [bondPercentage, setBondPercentage] = useState("");
@@ -17,10 +17,10 @@ export default function ProposalBond({ chain }) {
 
   return (
     <div>
-      <TooltipWrapper>
-        <Label>Proposal bond</Label>
-        <Tooltip content={"The on-chain percentage for treasury"} />
-      </TooltipWrapper>
+      <PopupLabel
+        text={"Proposal bond"}
+        tooltip={"The on-chain percentage for treasury"}
+      />
       <TextBox>{bondPercentage}</TextBox>
     </div>
   );

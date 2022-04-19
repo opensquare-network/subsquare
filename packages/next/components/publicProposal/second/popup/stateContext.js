@@ -1,14 +1,14 @@
 import React, { createContext, useState } from "react";
 
-export const StatusContext = createContext();
+export const StateContext = createContext();
 
-export const StatusProvider = ({ children }) => {
+export const StateProvider = ({ children }) => {
   const [signerBalance, setSignerBalance] = useState(0);
   const [signerAccount, setSignerAccount] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
-    <StatusContext.Provider
+    <StateContext.Provider
       value={{
         signerBalance,
         setSignerBalance,
@@ -19,6 +19,6 @@ export const StatusProvider = ({ children }) => {
       }}
     >
       {children}
-    </StatusContext.Provider>
+    </StateContext.Provider>
   );
 };

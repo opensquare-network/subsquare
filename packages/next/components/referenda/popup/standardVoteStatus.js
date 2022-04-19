@@ -1,17 +1,10 @@
-import {
-  VotingStatusContent,
-  TooltipWrapper,
-  Label,
-  VotingStatusWrapper,
-  StatusWrapper,
-  WarningWrapper,
-} from "./styled";
+import { VotingStatusContent, WarningMessage } from "next-common/components/popup/styled";
 import DisplayValue from "next-common/components/displayValue";
-import ApproveIcon from "next-common/assets/imgs/icons/approve.svg";
-import RejectIcon from "next-common/assets/imgs/icons/reject.svg";
 import { toPrecision } from "utils";
 import { convictionToLockX } from "utils/referendumUtil";
 import { isAye, getConviction } from "utils/referendumUtil";
+import PopupLabel from "next-common/components/popup/label";
+import VoteStatusBox from "next-common/components/popup/voteStatusBox";
 
 export default function StandardVoteStatus({ addressVoteStandard, node }) {
   const addressVoteStandardBalance = addressVoteStandard?.balance;
@@ -22,35 +15,17 @@ export default function StandardVoteStatus({ addressVoteStandard, node }) {
 
   return (
     <VotingStatusContent>
-      <TooltipWrapper>
-        <Label>Current voting</Label>
-        <VotingStatusWrapper>
-          <div>Standard</div>
-        </VotingStatusWrapper>
-      </TooltipWrapper>
-      <StatusWrapper>
-        <div className="value">
-          <DisplayValue
-            value={toPrecision(addressVoteStandardBalance, node.decimals)}
-            symbol={node?.voteSymbol || node?.symbol}
-          />
-          <span>{`(${convictionToLockX(addressVoteStandardConviction)})`}</span>
-        </div>
-        {addressVoteStandardAye ? (
-          <div className="result">
-            Aye
-            <ApproveIcon />
-          </div>
-        ) : (
-          <div className="result">
-            Nay
-            <RejectIcon />
-          </div>
-        )}
-      </StatusWrapper>
-      <WarningWrapper>
+      <PopupLabel text={"Current voting"} status={"Standard"} />
+      <VoteStatusBox aye={addressVoteStandardAye}>
+        <DisplayValue
+          value={toPrecision(addressVoteStandardBalance, node.decimals)}
+          symbol={node?.voteSymbol || node?.symbol}
+        />
+        <span>{`(${convictionToLockX(addressVoteStandardConviction)})`}</span>
+      </VoteStatusBox>
+      <WarningMessage>
         Resubmitting the vote will override the current voting record
-      </WarningWrapper>
+      </WarningMessage>
     </VotingStatusContent>
   );
 }

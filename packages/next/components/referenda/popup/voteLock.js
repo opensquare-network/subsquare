@@ -1,12 +1,10 @@
-import { TooltipWrapper, Label } from "./styled";
+import PopupLabel from "next-common/components/popup/label";
 import VoteLockSelect from "./voteLockSelect";
 
 export default function VoteLock({ voteLock, setVoteLock }) {
   return (
     <div>
-      <TooltipWrapper>
-        <Label>Vote lock</Label>
-      </TooltipWrapper>
+      <PopupLabel text={"Vote lock"} />
       <VoteLockSelect
         value={voteLock}
         setValue={setVoteLock}

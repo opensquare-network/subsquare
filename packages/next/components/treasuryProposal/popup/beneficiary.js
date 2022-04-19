@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import AddressCombo from "next-common/components/addressCombo";
 import { encodeAddressToChain } from "next-common/services/address";
-import { Label, LabelWrapper } from "./styled";
+import PopupLabel from "next-common/components/popup/label";
 
 export default function Beneficiary({ extensionAccounts, chain, setAddress }) {
   const accounts = extensionAccounts.map((acc) => ({
@@ -19,9 +19,7 @@ export default function Beneficiary({ extensionAccounts, chain, setAddress }) {
 
   return (
     <div>
-      <LabelWrapper>
-        <Label>Beneficiary</Label>
-      </LabelWrapper>
+      <PopupLabel text={"Beneficiary"} />
       <AddressCombo
         chain={chain}
         address={beneficiary}

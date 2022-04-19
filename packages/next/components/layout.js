@@ -42,13 +42,13 @@ export default function Layout({
   const isMounted = useIsMountedBool();
 
   useEffect(() => {
-    if (blockTime && isMounted) {
+    if (blockTime && isMounted()) {
       dispatch(setBlockTime(blockTime.toNumber()));
     }
   }, [blockTime, dispatch, isMounted]);
 
   useEffect(() => {
-    if (bestNumber && isMounted) {
+    if (bestNumber && isMounted()) {
       dispatch(setFinalizedHeight(bestNumber.toNumber()));
     }
   }, [bestNumber, dispatch, isMounted]);

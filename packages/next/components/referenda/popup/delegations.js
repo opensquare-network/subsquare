@@ -1,14 +1,14 @@
-import { TooltipWrapper, Label, DelegatingValue } from "./styled";
+import { DelegatingValue } from "next-common/components/popup/styled";
 import { toPrecision } from "utils";
-import Tooltip from "next-common/components/tooltip";
+import PopupLabel from "next-common/components/popup/label";
 
 export default function Delegations({ delegationsVotes, node }) {
   return (
     <div>
-      <TooltipWrapper>
-        <Label>Total Proxy Value</Label>
-        <Tooltip content="Voting value for all proxy addresses" />
-      </TooltipWrapper>
+      <PopupLabel
+        text={"Total Proxy Value"}
+        tooltip={"Voting value for all proxy addresses"}
+      />
       <DelegatingValue>
         <div className="vote">
           <div className="balance">

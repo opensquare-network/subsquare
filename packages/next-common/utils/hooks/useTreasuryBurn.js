@@ -13,7 +13,7 @@ export default function useTreasuryBurn(api, free) {
 
     const burn = api.consts.treasury.burn;
     const toBurn = burn.mul(new BN(free));
-    if (isMounted) {
+    if (isMounted()) {
       setBurn(toBurn.toString());
     }
   }, [api, free]);

@@ -18,49 +18,13 @@ import TipInput from "./tipInput";
 import { getNode, toPrecision } from "utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import SignerSelect from "next-common/components/signerSelect";
-
-const Info = styled.div`
-  background: #f6f7fa;
-  border-radius: 4px;
-  padding: 12px 16px;
-  color: #506176;
-  font-size: 14px;
-  line-height: 140%;
-  ${(p) =>
-    p.danger &&
-    css`
-      color: #f44336;
-      background: #fff1f0;
-    `}
-`;
-
-const LabelWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Label = styled.div`
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 100%;
-  margin-bottom: 8px;
-`;
+import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
+import PopupLabel from "next-common/components/popup/label";
+import { WarningMessage } from "next-common/components/popup/styled";
 
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
-`;
-
-const BalanceWrapper = styled.div`
-  display: flex;
-  font-size: 12px;
-  line-height: 100%;
-  color: #506176;
-  > :nth-child(2) {
-    color: #1e2134;
-    font-weight: bold;
-    margin-left: 8px;
-  }
 `;
 
 const balanceMap = new Map();
@@ -179,19 +143,16 @@ function PopupContent({
 
   return (
     <>
-      <Info danger={!selectedAccountIsTipper}>
+      <WarningMessage danger={!selectedAccountIsTipper}>
         Only council members can tip.
-      </Info>
+      </WarningMessage>
       <div>
-        <LabelWrapper>
-          <Label>Address</Label>
-          {balance && (
-            <BalanceWrapper>
-              <div>Balance</div>
-              <div>{balance}</div>
-            </BalanceWrapper>
-          )}
-        </LabelWrapper>
+        <PopupLabelWithBalance
+          text="Address"
+          balanceName={"Balance"}
+          balance={balance}
+          isLoading={!balance}
+        />
         <SignerSelect
           api={api}
           chain={chain}
@@ -201,7 +162,7 @@ function PopupContent({
         />
       </div>
       <div>
-        <Label>Tip Value</Label>
+        <PopupLabel text={"Tip Value"} />
         <TipInput
           value={inputTipValue}
           setValue={setInputTipValue}

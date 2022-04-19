@@ -108,7 +108,7 @@ export default function Summary({ chain }) {
         .multipliedBy(100)
         .toNumber();
       const TimeArray = estimateBlocksTime(spendPeriod - goneBlocks, blockTime);
-      if (isMounted) {
+      if (isMounted()) {
         setSummary({ progress, spendPeriod: TimeArray });
       }
     }

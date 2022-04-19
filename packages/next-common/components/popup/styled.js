@@ -1,4 +1,7 @@
-import styled from "styled-components";
+import React from "react";
+
+import styled, { css } from "styled-components";
+import FlexBetween from "../styled/flexBetween";
 
 export const VotingStatusContent = styled.div`
   > :nth-child(n + 3) {
@@ -70,13 +73,19 @@ export const StatusWrapper = styled.div`
   }
 `;
 
-export const WarningWrapper = styled.div`
+export const WarningMessage = styled.div`
   background: #f6f7fa;
   border-radius: 4px;
   padding: 12px 16px;
+  color: #506176;
   font-size: 14px;
   line-height: 140%;
-  color: #506176;
+  ${(p) =>
+    p.danger &&
+    css`
+      color: #f44336;
+      background: #fff1f0;
+    `}
 `;
 
 export const DelegatingInfo = styled.div`
@@ -149,3 +158,19 @@ export const ButtonWrapper = styled.div`
     margin-left: 12px;
   }
 `;
+
+export const BalanceWrapper = styled.div`
+  display: flex;
+  font-size: 12px;
+  line-height: 100%;
+  color: #506176;
+  > :nth-child(2) {
+    color: #1e2134;
+    font-weight: bold;
+  }
+  > :not(:first-child) {
+    margin-left: 8px;
+  }
+`;
+
+export const LabelWrapper = FlexBetween;

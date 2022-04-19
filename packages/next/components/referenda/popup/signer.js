@@ -1,27 +1,7 @@
-import styled from "styled-components";
 import SignerSelect from "next-common/components/signerSelect";
 import { toPrecision } from "utils";
-import Loading from "next-common/components/loading";
-import { Label } from "./styled";
+import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
 
-const LabelWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const BalanceWrapper = styled.div`
-  display: flex;
-  font-size: 12px;
-  line-height: 100%;
-  color: #506176;
-  > :nth-child(2) {
-    color: #1e2134;
-    font-weight: bold;
-  }
-  > :not(:first-child) {
-    margin-left: 8px;
-  }
-`;
 export default function Signer({
   chain,
   node,
@@ -35,16 +15,12 @@ export default function Signer({
 }) {
   return (
     <div>
-      <LabelWrapper>
-        <Label>Address</Label>
-        <BalanceWrapper>
-          <div>Voting Balance</div>
-          {!votingIsLoading && (
-            <div>{toPrecision(votingBalance ?? 0, node.decimals)}</div>
-          )}
-          {votingIsLoading && <Loading />}
-        </BalanceWrapper>
-      </LabelWrapper>
+      <PopupLabelWithBalance
+        text="Address"
+        isLoading={votingIsLoading}
+        balanceName="Voting balance"
+        balance={toPrecision(votingBalance ?? 0, node.decimals)}
+      />
       <SignerSelect
         chain={chain}
         api={api}

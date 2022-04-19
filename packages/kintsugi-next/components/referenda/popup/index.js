@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import BigNumber from "bignumber.js";
+import isNil from "lodash.isnil";
 import { useApi, useAddressVotingBalance, useAddressVote } from "utils/hooks";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import {
   newErrorToast,
   newPendingToast,
@@ -13,18 +13,13 @@ import {
 } from "next-common/store/reducers/toastSlice";
 
 import { getNode } from "utils";
-import StandardVoteStatus from "./standardVoteStatus";
-import SplitVoteStatus from "./splitVoteStatus";
-import DelegateVoteStatus from "./delegateVoteStatus";
-import NoVoteRecord from "./noVoteRecord";
-import LoadingVoteStatus from "./loadingVoteStatus";
-import Delegating from "./delegating";
-import DirectVote from "./directVote";
-import VoteButton from "next-common/components/popup/voteButton";
-import Signer from "./signer";
-
 import PopupWithAddress from "next-common/components/popupWithAddress";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { emptyFunction } from "next-common/utils";
+import Signer from "./signer";
+import VoteBalance from "./voteBalance";
+import VotingStatus from "./votingStatus";
+import VoteButton from "next-common/components/popup/voteButton";
 
 function PopupContent({
   extensionAccounts,
@@ -36,34 +31,25 @@ function PopupContent({
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
-  const isMounted = useIsMounted();
-
   const [selectedAccount, setSelectedAccount] = useState(null);
-
-  const api = useApi(chain);
   const node = getNode(chain);
-
   const [isLoading, setIsLoading] = useState();
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
-    selectedAccount?.address,
-    chain
+    selectedAccount?.address
   );
-
   const [addressVote, addressVoteIsLoading] = useAddressVote(
     referendumIndex,
-    selectedAccount?.address,
-    chain
+    selectedAccount?.address
   );
-
-  const addressVoteDelegateVoted = addressVote?.delegating?.voted;
-
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
-  const [voteLock, setVoteLock] = useState(0);
+  const isMounted = useIsMounted();
+
+  const api = useApi(chain);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doVote = async (aye) => {
-    if (isLoading || referendumIndex == null || !node) {
+    if (isLoading || isNil(referendumIndex) || !node) {
       return;
     }
 
@@ -84,7 +70,10 @@ function PopupContent({
       return showErrorToast("Invalid vote balance");
     }
 
-    if (bnVoteBalance.gt(votingBalance)) {
+    const bnVotingBalance = new BigNumber(votingBalance).multipliedBy(
+      Math.pow(10, decimals)
+    );
+    if (bnVoteBalance.gt(bnVotingBalance)) {
       return showErrorToast("Insufficient voting balance");
     }
 
@@ -105,15 +94,7 @@ function PopupContent({
       const voteAddress = selectedAccount.address;
 
       const unsub = await api.tx.democracy
-        .vote(referendumIndex, {
-          Standard: {
-            balance: bnVoteBalance.toFixed(),
-            vote: {
-              aye,
-              conviction: voteLock,
-            },
-          },
-        })
+        .vote(referendumIndex, { aye, balance: bnVoteBalance.toFixed() })
         .signAndSend(voteAddress, ({ events = [], status }) => {
           if (status.isFinalized) {
             onFinalized(voteAddress);
@@ -144,58 +125,30 @@ function PopupContent({
   return (
     <>
       <Signer
-        chain={chain}
-        node={node}
         api={api}
-        votingIsLoading={votingIsLoading}
-        votingBalance={votingBalance}
-        selectedAccount={selectedAccount}
-        setSelectedAccount={setSelectedAccount}
+        chain={chain}
         isLoading={isLoading}
         extensionAccounts={extensionAccounts}
+        selectedAccount={selectedAccount}
+        setSelectedAccount={setSelectedAccount}
+        votingIsLoading={votingIsLoading}
+        setInputVoteBalance={setInputVoteBalance}
+        votingBalance={votingBalance}
       />
-      {!addressVote?.delegating && (
-        // Address is not allow to vote directly when it is in delegate mode
-        <DirectVote
-          addressVoteDelegations={addressVote?.delegations}
-          isLoading={isLoading}
-          inputVoteBalance={inputVoteBalance}
-          setInputVoteBalance={setInputVoteBalance}
-          voteLock={voteLock}
-          setVoteLock={setVoteLock}
-          node={node}
-        />
-      )}
-
-      {addressVote?.delegating && (
-        // If the address has set to delegate mode, show the delegating setting instead
-        <Delegating addressVoteDelegate={addressVote?.delegating} node={node} />
-      )}
-
-      {!addressVoteIsLoading &&
-        !addressVote?.standard &&
-        !addressVote?.split &&
-        (!addressVote?.delegating || !addressVoteDelegateVoted) && (
-          <NoVoteRecord />
-        )}
-      {addressVote?.standard && (
-        <StandardVoteStatus
-          addressVoteStandard={addressVote?.standard}
-          node={node}
-        />
-      )}
-      {addressVote?.split && (
-        <SplitVoteStatus addressVoteSplit={addressVote?.split} node={node} />
-      )}
-      {addressVote?.delegating && addressVoteDelegateVoted && (
-        <DelegateVoteStatus addressVoteDelegate={addressVote?.delegating} />
-      )}
-      {addressVoteIsLoading && <LoadingVoteStatus />}
-
-      {!addressVote?.delegating && (
-        // Address is not allow to vote directly when it is in delegate mode
-        <VoteButton isLoading={isLoading} doVote={doVote} />
-      )}
+      <VoteBalance
+        isLoading={isLoading}
+        inputVoteBalance={inputVoteBalance}
+        node={node}
+      />
+      <VotingStatus
+        addressVoteIsLoading={addressVoteIsLoading}
+        addressVote={addressVote}
+        node={node}
+      />
+      <VoteButton
+        isLoading={isLoading}
+        doVote={doVote}
+      />
     </>
   );
 }

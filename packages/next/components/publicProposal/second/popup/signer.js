@@ -2,7 +2,7 @@ import styled from "styled-components";
 import SignerSelect from "next-common/components/signerSelect";
 import AccountBalance from "./accountBalance";
 import { useContext } from "react";
-import { StatusContext } from "./statusContext";
+import { StateContext } from "./stateContext";
 
 const LabelWrapper = styled.div`
   display: flex;
@@ -17,7 +17,7 @@ const Label = styled.div`
 `;
 
 export default function Signer({ extensionAccounts, chain, api }) {
-  const { signerAccount, setSignerAccount } = useContext(StatusContext);
+  const { signerAccount, setSignerAccount } = useContext(StateContext);
 
   return (
     <div>

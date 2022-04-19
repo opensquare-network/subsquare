@@ -301,7 +301,7 @@ export default function Item({ user, data, chain, onReply }) {
             if (reload) {
               await updateComment();
             }
-            if (isMounted) {
+            if (isMounted()) {
               setIsEdit(false);
             }
           }}

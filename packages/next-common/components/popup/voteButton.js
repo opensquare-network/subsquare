@@ -1,4 +1,6 @@
-import Button from "next-common/components/button";
+import React from "react";
+
+import Button from "../button";
 import { ButtonWrapper } from "./styled";
 
 export default function VoteButton({ isLoading, doVote }) {

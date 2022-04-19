@@ -1,7 +1,6 @@
 import BalanceInput from "components/balanceInput";
 import { getNode } from "utils";
-import Tooltip from "next-common/components/tooltip";
-import { Label, TooltipWrapper } from "./styled";
+import PopupLabel from "next-common/components/popup/label";
 
 export default function ProposalValue({
   chain,
@@ -11,12 +10,10 @@ export default function ProposalValue({
 
   return (
     <div>
-      <TooltipWrapper>
-        <Label>Value</Label>
-        <Tooltip
-          content={"The amount that will be allocated from the treasury pot"}
-        />
-      </TooltipWrapper>
+      <PopupLabel
+        text={"Value"}
+        tooltip={"The amount that will be allocated from the treasury pot"}
+      />
       <BalanceInput setValue={setValue} symbol={node?.symbol} />
     </div>
   );

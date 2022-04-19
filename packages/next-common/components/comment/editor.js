@@ -103,14 +103,14 @@ function Editor(
         editor: newContentType,
       })
       .then(({ result }) => {
-        if (result && isMounted) {
+        if (result && isMounted()) {
           dispatch(fetchUserProfile());
         }
       });
   };
 
   const createComment = async () => {
-    if (!isMounted) {
+    if (!isMounted()) {
       return;
     }
 
@@ -125,7 +125,7 @@ function Editor(
         { credentials: "include" }
       );
 
-      if (!isMounted) {
+      if (!isMounted()) {
         return;
       }
 
@@ -138,13 +138,13 @@ function Editor(
           pathname: `${router.query.id}`,
         });
         setTimeout(() => {
-          if (isMounted) {
+          if (isMounted()) {
             window && window.scrollTo(0, document.body.scrollHeight);
           }
         }, 4);
       }
     } finally {
-      if (isMounted) {
+      if (isMounted()) {
         setLoading(false);
       }
     }
@@ -157,7 +157,7 @@ function Editor(
       contentType,
     });
 
-    if (!isMounted) {
+    if (!isMounted()) {
       return;
     }
 
@@ -228,14 +228,9 @@ function Editor(
       {showPreview && (
         <PreviewWrapper className="preview">
           {contentType === "markdown" && (
-            <PreviewMD
-              content={content}
-              setContent={setContent}
-            />
+            <PreviewMD content={content} setContent={setContent} />
           )}
-          {contentType === "html" && (
-            <HtmlRender html={content} />
-          )}
+          {contentType === "html" && <HtmlRender html={content} />}
         </PreviewWrapper>
       )}
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
