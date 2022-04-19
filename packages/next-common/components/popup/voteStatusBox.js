@@ -1,8 +1,8 @@
 import React from "react";
 
 import { StatusWrapper } from "./styled";
-import ApproveIcon from "next-common/assets/imgs/icons/approve.svg";
-import RejectIcon from "next-common/assets/imgs/icons/reject.svg";
+import ApproveIcon from "../../assets/imgs/icons/approve.svg";
+import RejectIcon from "../../assets/imgs/icons/reject.svg";
 
 export default function VoteStatusBox({ children, aye }) {
   return (

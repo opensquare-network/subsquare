@@ -1,6 +1,6 @@
 import React from "react";
 import { LabelWrapper, Label, BalanceWrapper } from "./styled";
-import Loading from "next-common/components/loading";
+import Loading from "../loading";
 
 export default function PopupLabelWithBalance({
   text,
