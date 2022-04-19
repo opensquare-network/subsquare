@@ -419,7 +419,7 @@ function Vote({
         </a>
       </Guide>
 
-      {showVote||true && (
+      {showVote && (
         <Popup
           chain={chain}
           onClose={() => setShowVote(false)}
