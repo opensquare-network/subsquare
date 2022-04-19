@@ -1,3 +1,5 @@
+import React from "react";
+
 import styled from "styled-components";
 import Tooltip from "next-common/components/tooltip";
 
@@ -27,8 +29,6 @@ const StatusWrapper = styled.div`
     margin-left: 4px;
   }
 `;
-
-import React from "react";
 
 export default function PopupLabel({ text, status, tooltip }) {
   return (
