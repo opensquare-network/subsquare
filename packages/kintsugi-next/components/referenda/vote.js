@@ -421,16 +421,15 @@ function Vote({
         </a>
       </Guide>
 
-      {showVote ||
-        (true && (
-          <Popup
-            chain={chain}
-            onClose={() => setShowVote(false)}
-            referendumIndex={referendumIndex}
-            onSubmitted={() => setIsLoadingReferendumStatus(true)}
-            onInBlock={updateVoteProgress}
-          />
-        ))}
+      {showVote || (
+        <Popup
+          chain={chain}
+          onClose={() => setShowVote(false)}
+          referendumIndex={referendumIndex}
+          onSubmitted={() => setIsLoadingReferendumStatus(true)}
+          onInBlock={updateVoteProgress}
+        />
+      )}
     </Wrapper>
   );
 }
