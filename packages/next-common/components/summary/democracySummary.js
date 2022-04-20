@@ -79,6 +79,21 @@ const GreyText = styled.span`
   color: #9da9bb !important;
 `;
 
+async function referendumsActive(api) {
+  if (!api) {
+    return [];
+  }
+  const ids = await api.derive.democracy.referendumIds();
+  const referendumInfos = await api.query.democracy.referendumInfoOf.multi(ids);
+  const ongoingReferendums = (referendumInfos || []).filter(
+    (referendumInfo) => {
+      const info = referendumInfo.toJSON();
+      return info?.ongoing;
+    }
+  );
+  return ongoingReferendums;
+}
+
 export default function DemocracySummary({ chain }) {
   const [summary, setSummary] = useState({});
   const endpoint = useSelector(currentNodeSelector);
@@ -110,7 +125,7 @@ export default function DemocracySummary({ chain }) {
     }
     Promise.all([
       api.query.democracy.publicProps(),
-      api.derive.democracy.referendumsActive(),
+      referendumsActive(api),
       api?.query.democracy.publicPropCount(),
       api?.query.democracy.referendumCount(),
       getLaunchPeriod(),
