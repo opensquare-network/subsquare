@@ -11,9 +11,7 @@ export default function useDeposit(chain, depositRequired) {
 
   const deposit =
     depositRequired || api?.consts?.democracy?.minimumDeposit?.toString();
-  const balanceInsufficient = isNil(deposit)
-    ? true
-    : new BigNumber(signerBalance).lt(deposit);
+  const balanceInsufficient = isNil(deposit) || new BigNumber(signerBalance).lt(deposit);
 
   return { deposit, balanceInsufficient };
 }
