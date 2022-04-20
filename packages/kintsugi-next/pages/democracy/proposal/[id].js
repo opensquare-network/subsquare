@@ -1,6 +1,4 @@
-/* eslint-disable react/jsx-key */
 import styled from "styled-components";
-
 import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import Comments from "next-common/components/comment";
@@ -10,32 +8,39 @@ import { EmptyList } from "next-common/utils/constants";
 import Editor from "next-common/components/comment/editor";
 import { useRef, useState } from "react";
 import Layout from "components/layout";
-import User from "next-common/components/user";
-import { getNode, toPrecision } from "utils";
-import Link from "next/link";
-import Links from "next-common/components/links";
-import Timeline from "next-common/components/timeline";
-import KVList from "next-common/components/listInfo/kvList";
+import Timeline from "components/publicProposal/timeline";
+import Business from "components/publicProposal/business";
+import Metadata from "components/publicProposal/metadata";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { isSafari } from "utils/serverSideUtil";
 import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
-import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
-import sortTimeline from "utils/timeline/sort";
 import { getMetaDesc } from "utils/viewfuncs";
 import SEO from "next-common/components/SEO";
-import Proposal from "next-common/components/proposal";
-import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
+import OutWrapper from "next-common/components/styled/outWrapper";
+import Second from "next-common/components/publicProposal/second";
+import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useEffect } from "react";
+import { useAddressVotingBalance } from "utils/hooks";
 
-const MetadataProposerWrapper = styled.div`
-  display: flex;
-  align-items: center;
-
+const Wrapper = styled.div`
+  margin-right: 312px;
+  overflow: hidden;
+  flex-grow: 1;
   > :not(:first-child) {
-    margin-left: 8px;
+    margin-top: 16px;
+  }
+  @media screen and (max-width: 1024px) {
+    max-width: 848px;
+    margin: 0 auto;
   }
 `;
+
+function isNewDepositors(depositors) {
+  return Array.isArray(depositors[0]);
+}
 
 export default withLoginUserRedux(
   ({ loginUser, detail, referendum, comments, chain }) => {
@@ -48,18 +53,69 @@ export default withLoginUserRedux(
       loginUser?.preference.editor || "markdown"
     );
 
-    const node = getNode(chain);
-    if (!node) {
-      return null;
-    }
-    const decimals = node.decimals;
-    const symbol = node.symbol;
+    const publicProposal = detail?.onchainData;
+    const proposalIndex = publicProposal?.proposalIndex;
+    const state = publicProposal?.state?.state;
+    const isEnded = ["Tabled", "Canceled", "FastTracked"].includes(state);
+    const hasTurnIntoReferendum = state === "Tabled";
+    const hasCanceled = state === "Canceled";
 
-    const completeTimeline = (detail?.onchainData?.timeline || []).concat(
-      referendum?.onchainData?.timeline || []
-    );
-    const timelineData = getDemocracyTimelineData(completeTimeline, chain);
-    sortTimeline(timelineData);
+    const timeline = publicProposal?.timeline;
+    const lastTimelineBlockHeight =
+      timeline?.[timeline?.length - 1]?.indexer.blockHeight;
+
+    const [seconds, setSeconds] = useState([]);
+    const [depositRequired, setDepositRequired] = useState(0);
+    const [isLoadingSeconds, setIsLoadingSeconds] = useState(true);
+    const api = useApi(chain);
+    const isMounted = useIsMounted();
+    const [triggerUpdate, setTriggerUpdate] = useState(0);
+
+    useEffect(() => {
+      if (!api) {
+        return;
+      }
+
+      setIsLoadingSeconds(true);
+
+      Promise.resolve(api)
+        .then((api) => {
+          if (isEnded) {
+            return api.rpc.chain
+              .getBlockHash(lastTimelineBlockHeight - 1)
+              .then((blockHash) => api.at(blockHash));
+          }
+          return api;
+        })
+        .then((api) => api.query.democracy.depositOf(proposalIndex))
+        .then((res) => {
+          if (isMounted.current) {
+            const deposit = res.toJSON();
+            if (deposit) {
+              if (isNewDepositors(deposit)) {
+                setSeconds(deposit[0]);
+                setDepositRequired(deposit[1]);
+              } else {
+                setSeconds(deposit[1]);
+                setDepositRequired(deposit[0]);
+              }
+            }
+          }
+        })
+        .catch(console.error)
+        .finally(() => {
+          if (isMounted.current) {
+            setIsLoadingSeconds(false);
+          }
+        });
+    }, [
+      proposalIndex,
+      isEnded,
+      api,
+      lastTimelineBlockHeight,
+      isMounted,
+      triggerUpdate,
+    ]);
 
     const users = getMentionList(comments);
 
@@ -73,40 +129,7 @@ export default withLoginUserRedux(
       focusEditor
     );
 
-    const deposit = detail.onchainData.deposit;
-    const metadata = [
-      ["hash", detail.onchainData?.hash],
-      [
-        "deposit",
-        `${toPrecision(deposit ? deposit[1] : 0, decimals)} ${symbol}`,
-      ],
-      [
-        "proposer",
-        <MetadataProposerWrapper>
-          <User chain={chain} add={detail.onchainData?.proposer} />
-          <Links chain={chain} address={detail.onchainData?.proposer} />
-        </MetadataProposerWrapper>,
-      ],
-    ];
-
-    if (detail?.onchainData?.preImage) {
-      metadata.push([
-        <Proposal
-          motion={{ proposal: detail.onchainData.preImage.call }}
-          chain={chain}
-        />,
-      ]);
-    }
-
-    const referendumData = [];
-    if ((detail?.referendumIndex ?? null) !== null) {
-      referendumData.push([
-        "Link to",
-        <Link
-          href={`/democracy/referendum/${detail.referendumIndex}`}
-        >{`Democracy Referenda #${detail.referendumIndex}`}</Link>,
-      ]);
-    }
+    const referendumIndex = detail?.referendumIndex;
 
     detail.status = detail.onchainData?.state?.state;
 
@@ -114,39 +137,62 @@ export default withLoginUserRedux(
     return (
       <Layout user={loginUser} chain={chain}>
         <SEO title={detail?.title} desc={desc} chain={chain} />
-        <DetailPageWrapper className="post-content">
-          <Back href={`/democracy/proposals`} text="Back to Proposals" />
-          <DetailItem
-            data={detail}
-            user={loginUser}
-            chain={chain}
-            onReply={focusEditor}
-            type={TYPE_DEMOCRACY_PROPOSAL}
-          />
-          {referendumData.length > 0 && (
-            <KVList title="Business" data={referendumData} showFold />
-          )}
-          <KVList title="Metadata" data={metadata} showFold />
-          <Timeline data={timelineData} chain={chain} />
-          <CommentsWrapper>
-            <Comments
-              data={comments}
+        <OutWrapper>
+          <Wrapper className="post-content">
+            <Back href={`/democracy/proposals`} text="Back to Proposals" />
+            <DetailItem
+              data={detail}
               user={loginUser}
               chain={chain}
-              onReply={onReply}
+              onReply={focusEditor}
+              type={TYPE_DEMOCRACY_PROPOSAL}
             />
-            {loginUser && (
-              <Editor
-                postId={postId}
+            <Second
+              chain={chain}
+              proposalIndex={proposalIndex}
+              seconds={seconds}
+              depositRequired={depositRequired}
+              hasTurnIntoReferendum={hasTurnIntoReferendum}
+              hasCanceled={hasCanceled}
+              updateSeconds={() => setTriggerUpdate(Date.now())}
+              updateTimeline={() => {}}
+              isLoadingSeconds={isLoadingSeconds}
+              setIsLoadingSeconds={setIsLoadingSeconds}
+              useAddressVotingBalance={useAddressVotingBalance}
+            />
+            <Business referendumIndex={referendumIndex} />
+            <Metadata publicProposal={detail?.onchainData} chain={chain} />
+            <Timeline
+              publicProposalTimeline={detail?.onchainData?.timeline}
+              referendumTimeline={referendum?.onchainData?.timeline}
+              chain={chain}
+            />
+            <CommentsWrapper>
+              <Comments
+                data={comments}
+                user={loginUser}
                 chain={chain}
-                ref={editorWrapperRef}
-                setQuillRef={setQuillRef}
-                {...{ contentType, setContentType, content, setContent, users }}
-                type={TYPE_DEMOCRACY_PROPOSAL}
+                onReply={onReply}
               />
-            )}
-          </CommentsWrapper>
-        </DetailPageWrapper>
+              {loginUser && (
+                <Editor
+                  postId={postId}
+                  chain={chain}
+                  ref={editorWrapperRef}
+                  setQuillRef={setQuillRef}
+                  {...{
+                    contentType,
+                    setContentType,
+                    content,
+                    setContent,
+                    users,
+                  }}
+                  type={TYPE_DEMOCRACY_PROPOSAL}
+                />
+              )}
+            </CommentsWrapper>
+          </Wrapper>
+        </OutWrapper>
       </Layout>
     );
   }

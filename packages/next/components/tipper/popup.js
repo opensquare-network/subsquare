@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 
 import BigNumber from "bignumber.js";
 
-import { useApi } from "utils/hooks";
+import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Button from "next-common/components/button";
 import {

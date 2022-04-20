@@ -3,7 +3,8 @@ import { useDispatch } from "react-redux";
 
 import BigNumber from "bignumber.js";
 import isNil from "lodash.isnil";
-import { useApi, useAddressVotingBalance, useAddressVote } from "utils/hooks";
+import { useAddressVotingBalance, useAddressVote } from "utils/hooks";
+import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import {
   newErrorToast,
   newPendingToast,
@@ -34,17 +35,18 @@ function PopupContent({
   const [selectedAccount, setSelectedAccount] = useState(null);
   const node = getNode(chain);
   const [isLoading, setIsLoading] = useState();
+  const api = useApi(chain);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
+    api,
     selectedAccount?.address
   );
   const [addressVote, addressVoteIsLoading] = useAddressVote(
+    api,
     referendumIndex,
     selectedAccount?.address
   );
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const isMounted = useIsMounted();
-
-  const api = useApi(chain);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -145,10 +147,7 @@ function PopupContent({
         addressVote={addressVote}
         node={node}
       />
-      <VoteButton
-        isLoading={isLoading}
-        doVote={doVote}
-      />
+      <VoteButton isLoading={isLoading} doVote={doVote} />
     </>
   );
 }

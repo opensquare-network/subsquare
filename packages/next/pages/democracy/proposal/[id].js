@@ -16,10 +16,11 @@ import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import Metadata from "components/publicProposal/metadata";
 import Timeline from "components/publicProposal/timeline";
-import Second from "components/publicProposal/second";
+import Second from "next-common/components/publicProposal/second";
 import OutWrapper from "next-common/components/styled/outWrapper";
-import { useApi } from "utils/hooks";
+import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 
 const Wrapper = styled.div`
   margin-right: 312px;
@@ -64,6 +65,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const [isLoadingSeconds, setIsLoadingSeconds] = useState(true);
   const api = useApi(chain);
   const isMounted = useIsMounted();
+  const [triggerUpdate, setTriggerUpdate] = useState(0);
 
   useEffect(() => {
     if (!api) {
@@ -102,7 +104,14 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           setIsLoadingSeconds(false);
         }
       });
-  }, [proposalIndex, isEnded, api, lastTimelineBlockHeight, isMounted]);
+  }, [
+    proposalIndex,
+    isEnded,
+    api,
+    lastTimelineBlockHeight,
+    isMounted,
+    triggerUpdate,
+  ]);
 
   const users = getMentionList(comments);
 
@@ -142,10 +151,11 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
             depositRequired={depositRequired}
             hasTurnIntoReferendum={hasTurnIntoReferendum}
             hasCanceled={hasCanceled}
-            updateSeconds={() => {}}
+            updateSeconds={() => setTriggerUpdate(Date.now())}
             updateTimeline={() => {}}
             isLoadingSeconds={isLoadingSeconds}
             setIsLoadingSeconds={setIsLoadingSeconds}
+            useAddressVotingBalance={useAddressBalance}
           />
           <Metadata proposal={detail?.onchainData} chain={chain} />
           <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />

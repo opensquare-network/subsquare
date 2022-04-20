@@ -1,7 +1,7 @@
 import PopupLabel from "next-common/components/popup/label";
 import { useEffect, useState } from "react";
 
-import { useApi } from "utils/hooks";
+import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import { TextBox } from "./styled";
 
 export default function ProposalBond({ chain }) {

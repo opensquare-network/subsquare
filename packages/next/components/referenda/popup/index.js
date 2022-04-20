@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import BigNumber from "bignumber.js";
-import { useApi, useAddressVotingBalance, useAddressVote } from "utils/hooks";
+import { useAddressVotingBalance, useAddressVote } from "utils/hooks";
+import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import {
   newErrorToast,
@@ -45,14 +46,14 @@ function PopupContent({
 
   const [isLoading, setIsLoading] = useState();
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
-    selectedAccount?.address,
-    chain
+    api,
+    selectedAccount?.address
   );
 
   const [addressVote, addressVoteIsLoading] = useAddressVote(
+    api,
     referendumIndex,
-    selectedAccount?.address,
-    chain
+    selectedAccount?.address
   );
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;

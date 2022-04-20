@@ -1,16 +1,17 @@
+import React from "react";
 import { useContext } from "react";
 import { useDispatch } from "react-redux";
 
-import { useApi } from "utils/hooks";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import useApi from "../../../../utils/hooks/useSelectedEnpointApi";
+import useIsMounted from "../../../../utils/hooks/useIsMounted";
 import {
   newErrorToast,
   newPendingToast,
   newToastId,
   updatePendingToast,
   removeToast,
-} from "next-common/store/reducers/toastSlice";
-import PopupWithAddress from "next-common/components/popupWithAddress";
+} from "../../../../store/reducers/toastSlice";
+import PopupWithAddress from "../../../popupWithAddress";
 import DepositRequired from "./depositRequired";
 import Signer from "./signer";
 import SubmitButton from "./submitButton";
@@ -26,6 +27,7 @@ function PopupContent({
   onInBlock,
   onFinalized,
   onSubmitted,
+  useAddressVotingBalance,
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
@@ -87,7 +89,12 @@ function PopupContent({
 
   return (
     <>
-      <Signer chain={chain} api={api} extensionAccounts={extensionAccounts} />
+      <Signer
+        chain={chain}
+        api={api}
+        extensionAccounts={extensionAccounts}
+        useAddressVotingBalance={useAddressVotingBalance}
+      />
       <DepositRequired chain={chain} depositRequired={depositRequired} />
       <SubmitButton
         chain={chain}

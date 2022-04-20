@@ -1,4 +1,4 @@
-import monetary from "@interlay/monetary-js";
+import * as monetary from "@interlay/monetary-js";
 import BN from "bn.js";
 
 export async function getFinalizedBlockNumber(api) {
@@ -10,15 +10,11 @@ export function parseEscrowPoint(e) {
   return {
     bias: e.bias.toBn(),
     slope: e.slope.toBn(),
-    ts: e.ts.toBn()
+    ts: e.ts.toBn(),
   };
 }
 
-export function newMonetaryAmount(
-  amount,
-  currency,
-  base = false
-) {
+export function newMonetaryAmount(amount, currency, base = false) {
   const unit = base ? currency.base : currency.rawBase;
   return new monetary.MonetaryAmount(currency, amount, unit);
 }

@@ -5,7 +5,7 @@ import { removeToast } from "../../store/reducers/toastSlice";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import Flex from "../../components/styled/flex";
 import { shadow_200 } from "../../styles/componentCss";
-import PendingIcon from "../../assets/imgs/icons/toast-pending.svg";
+import Loading from "../loading";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
@@ -77,7 +77,7 @@ const ToastItem = ({ type, message, id, sticky }) => {
   return (
     <Wrapper className={tranClass}>
       {type === "pending" ? (
-        <PendingIcon />
+        <Loading size={20} />
       ) : (
         <img src={`/imgs/icons/toast-${type}.svg`} alt="" />
       )}

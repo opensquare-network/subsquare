@@ -1,10 +1,11 @@
+import React from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 
-import Button from "next-common/components/button";
-import User from "next-common/components/user";
-import Loading from "next-common/components/loading";
+import Button from "../../button";
+import User from "../../user";
+import Loading from "../../loading";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -104,6 +105,7 @@ export default function Second({
   updateTimeline = () => {},
   isLoadingSeconds,
   setIsLoadingSeconds = () => {},
+  useAddressVotingBalance,
 }) {
   const [showPopup, setShowPopup] = useState(false);
   const [expand, setExpand] = useState(false);
@@ -175,6 +177,7 @@ export default function Second({
           onInBlock={updateSeconds}
           onFinalized={updateTimeline}
           onSubmitted={() => setIsLoadingSeconds(true)}
+          useAddressVotingBalance={useAddressVotingBalance}
         />
       )}
     </>

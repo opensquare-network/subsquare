@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { useApi } from "utils/hooks";
+import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import {
   newErrorToast,
   newPendingToast,
