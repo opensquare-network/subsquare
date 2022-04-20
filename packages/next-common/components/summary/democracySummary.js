@@ -86,7 +86,7 @@ async function referendumsActive(api) {
   const ids = await api.derive.democracy.referendumIds();
   const referendumInfos = await api.query.democracy.referendumInfoOf.multi(ids);
   const ongoingReferendums = (referendumInfos || []).filter(
-    (referendumInfo) => referendumInfo.ongoing
+    (referendumInfo) => referendumInfo?.ongoing
   );
   return ongoingReferendums;
 }
