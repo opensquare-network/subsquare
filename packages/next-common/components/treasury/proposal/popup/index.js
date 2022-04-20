@@ -1,22 +1,23 @@
+import React from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import BigNumber from "bignumber.js";
 
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import Button from "next-common/components/button";
+import useApi from "../../../../utils/hooks/useSelectedEnpointApi";
+import useIsMounted from "../../../../utils/hooks/useIsMounted";
+import Button from "../../../button";
 import {
   newErrorToast,
   newPendingToast,
   newToastId,
   removeToast,
   updatePendingToast,
-} from "next-common/store/reducers/toastSlice";
+} from "../../../../store/reducers/toastSlice";
 
 import { getNode } from "utils";
-import PopupWithAddress from "next-common/components/popupWithAddress";
-import { emptyFunction } from "next-common/utils";
+import PopupWithAddress from "../../../popupWithAddress";
+import { emptyFunction } from "../../../../utils";
 import ProposalBond from "./proposalBond";
 import Beneficiary from "./beneficiary";
 import ProposalValue from "./proposalValue";

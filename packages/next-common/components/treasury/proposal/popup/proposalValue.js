@@ -1,6 +1,7 @@
-import BalanceInput from "next-common/components/balanceInput";
+import React from "react";
+import BalanceInput from "../../../balanceInput";
 import { getNode } from "utils";
-import PopupLabel from "next-common/components/popup/label";
+import PopupLabel from "../../../popup/label";
 
 export default function ProposalValue({ chain, setValue }) {
   const node = getNode(chain);

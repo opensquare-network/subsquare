@@ -6,11 +6,53 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import Layout from "components/layout";
 import { toTreasuryProposalListItem } from "utils/viewfuncs";
 import Summary from "next-common/components/summary";
+import PlusIcon from "public/imgs/icons/plusInCircle.svg";
+import {  useState } from "react";
+import dynamic from "next/dynamic";
+import Loading from "next-common/components/loading";
+import { useDispatch } from "react-redux";
+import {
+  addPendingProposal,
+  setCheckTimes,
+} from "next-common/store/reducers/treasuryProposalSlice";
+import { Create, Pending } from "next-common/components/treasury/proposal/styled";
+import usePendingProposal from "next-common/components/treasury/proposal/usePendingProposal";
 
-export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
+const Popup = dynamic(
+  () => import("next-common/components/treasury/proposal/popup"),
+  {
+    ssr: false,
+  }
+);
+
+export default withLoginUserRedux(({ loginUser, proposals: ssrProposals, chain }) => {
+  const dispatch = useDispatch();
+  const [showPopup, setShowPopup] = useState(false);
+  const [proposals, setProposals] = useState(ssrProposals);
+
+  const { pendingReload, pendingProposals } = usePendingProposal({ proposals, setProposals });
+
+  const startReload = (_, proposalIndex) => {
+    dispatch(addPendingProposal(proposalIndex));
+    dispatch(setCheckTimes(6));
+  };
+
   const items = (proposals.items || []).map((item) =>
     toTreasuryProposalListItem(chain, item)
   );
+
+  const create = pendingReload ? (
+    <Pending>
+      <Loading size={14} />
+      <span>{pendingProposals.length} Pending</span>
+    </Pending>
+  ) : (
+    <Create onClick={() => setShowPopup(true)}>
+      <PlusIcon />
+      New Proposal
+    </Create>
+  );
+
   const category = `Treasury Proposals`;
   const seoInfo = { title: category, desc: category };
 
@@ -24,7 +66,7 @@ export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
       <List
         chain={chain}
         category={category}
-        create={null}
+        create={create}
         items={items}
         summary={<Summary chain={chain} />}
         pagination={{
@@ -33,6 +75,13 @@ export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
           total: proposals.total,
         }}
       />
+      {showPopup && (
+        <Popup
+          chain={chain}
+          onClose={() => setShowPopup(false)}
+          onInBlock={startReload}
+        />
+      )}
     </Layout>
   );
 });
