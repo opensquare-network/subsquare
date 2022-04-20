@@ -36,10 +36,6 @@ const Wrapper = styled.div`
   }
 `;
 
-function isNewDepositors(depositors) {
-  return Array.isArray(depositors[0]);
-}
-
 export default withLoginUserRedux(
   ({ loginUser, detail, referendum, comments, chain }) => {
     const postId = detail._id;

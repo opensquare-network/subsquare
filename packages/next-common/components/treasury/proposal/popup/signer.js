@@ -1,5 +1,6 @@
-import PopupLabel from "next-common/components/popup/label";
-import SignerSelect from "next-common/components/signerSelect";
+import React from "react";
+import PopupLabel from "../../../popup/label";
+import SignerSelect from "../../../signerSelect";
 
 export default function Signer({
   api,
