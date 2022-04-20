@@ -20,10 +20,8 @@ import { getMetaDesc } from "utils/viewfuncs";
 import SEO from "next-common/components/SEO";
 import OutWrapper from "next-common/components/styled/outWrapper";
 import Second from "next-common/components/publicProposal/second";
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { useEffect } from "react";
 import { useAddressVotingBalance } from "utils/hooks";
+import isNil from "lodash.isnil";
 
 const Wrapper = styled.div`
   margin-right: 312px;
@@ -57,65 +55,13 @@ export default withLoginUserRedux(
     const proposalIndex = publicProposal?.proposalIndex;
     const state = publicProposal?.state?.state;
     const isEnded = ["Tabled", "Canceled", "FastTracked"].includes(state);
-    const hasTurnIntoReferendum = state === "Tabled";
+    const hasTurnIntoReferendum = !isNil(publicProposal.referendumIndex);
     const hasCanceled = state === "Canceled";
 
     const timeline = publicProposal?.timeline;
     const lastTimelineBlockHeight =
       timeline?.[timeline?.length - 1]?.indexer.blockHeight;
-
-    const [seconds, setSeconds] = useState([]);
-    const [depositRequired, setDepositRequired] = useState(0);
-    const [isLoadingSeconds, setIsLoadingSeconds] = useState(true);
-    const api = useApi(chain);
-    const isMounted = useIsMounted();
-    const [triggerUpdate, setTriggerUpdate] = useState(0);
-
-    useEffect(() => {
-      if (!api) {
-        return;
-      }
-
-      setIsLoadingSeconds(true);
-
-      Promise.resolve(api)
-        .then((api) => {
-          if (isEnded) {
-            return api.rpc.chain
-              .getBlockHash(lastTimelineBlockHeight - 1)
-              .then((blockHash) => api.at(blockHash));
-          }
-          return api;
-        })
-        .then((api) => api.query.democracy.depositOf(proposalIndex))
-        .then((res) => {
-          if (isMounted.current) {
-            const deposit = res.toJSON();
-            if (deposit) {
-              if (isNewDepositors(deposit)) {
-                setSeconds(deposit[0]);
-                setDepositRequired(deposit[1]);
-              } else {
-                setSeconds(deposit[1]);
-                setDepositRequired(deposit[0]);
-              }
-            }
-          }
-        })
-        .catch(console.error)
-        .finally(() => {
-          if (isMounted.current) {
-            setIsLoadingSeconds(false);
-          }
-        });
-    }, [
-      proposalIndex,
-      isEnded,
-      api,
-      lastTimelineBlockHeight,
-      isMounted,
-      triggerUpdate,
-    ]);
+    const secondsAtBlockHeight = isEnded ? lastTimelineBlockHeight - 1 : undefined;
 
     const users = getMentionList(comments);
 
@@ -150,16 +96,11 @@ export default withLoginUserRedux(
             <Second
               chain={chain}
               proposalIndex={proposalIndex}
-              seconds={seconds}
-              depositRequired={depositRequired}
               hasTurnIntoReferendum={hasTurnIntoReferendum}
               hasCanceled={hasCanceled}
-              updateSeconds={() => setTriggerUpdate(Date.now())}
-              updateTimeline={() => {}}
-              isLoadingSeconds={isLoadingSeconds}
-              setIsLoadingSeconds={setIsLoadingSeconds}
               useAddressVotingBalance={useAddressVotingBalance}
-            />
+              atBlockHeight={secondsAtBlockHeight}
+              />
             <Business referendumIndex={referendumIndex} />
             <Metadata publicProposal={detail?.onchainData} chain={chain} />
             <Timeline

@@ -6,6 +6,9 @@ import dynamic from "next/dynamic";
 import Button from "../../button";
 import User from "../../user";
 import Loading from "../../loading";
+import { emptyFunction } from "../../../utils";
+import useDepositOf from "../../../utils/hooks/useDepositOf";
+import useApi from "../../../utils/hooks/useSelectedEnpointApi";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -97,18 +100,22 @@ const ListMore = styled.div`
 export default function Second({
   chain,
   proposalIndex,
-  seconds = [],
-  depositRequired,
   hasTurnIntoReferendum,
   hasCanceled,
-  updateSeconds = () => {},
-  updateTimeline = () => {},
-  isLoadingSeconds,
-  setIsLoadingSeconds = () => {},
   useAddressVotingBalance,
+  atBlockHeight,
 }) {
   const [showPopup, setShowPopup] = useState(false);
   const [expand, setExpand] = useState(false);
+
+  const api = useApi(chain);
+  const [triggerUpdate, setTriggerUpdate] = useState(0);
+  const [seconds, depositRequired, isLoadingSeconds] = useDepositOf(
+    api,
+    proposalIndex,
+    atBlockHeight,
+    triggerUpdate
+  );
 
   const showFold = !expand && seconds.length > 5;
   const showData = showFold ? seconds.slice(0, 5) : seconds;
@@ -174,9 +181,9 @@ export default function Second({
           depositorUpperBound={seconds.length}
           depositRequired={depositRequired}
           onClose={() => setShowPopup(false)}
-          onInBlock={updateSeconds}
-          onFinalized={updateTimeline}
-          onSubmitted={() => setIsLoadingSeconds(true)}
+          onInBlock={() => setTriggerUpdate(Date.now())}
+          onFinalized={emptyFunction}
+          onSubmitted={emptyFunction}
           useAddressVotingBalance={useAddressVotingBalance}
         />
       )}

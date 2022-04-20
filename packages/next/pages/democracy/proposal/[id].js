@@ -7,7 +7,7 @@ import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Editor from "next-common/components/comment/editor";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Layout from "components/layout";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
@@ -18,9 +18,8 @@ import Metadata from "next-common/components/publicProposal/metadata";
 import Timeline from "components/publicProposal/timeline";
 import Second from "next-common/components/publicProposal/second";
 import OutWrapper from "next-common/components/styled/outWrapper";
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
+import isNil from "lodash.isnil";
 
 const Wrapper = styled.div`
   margin-right: 312px;
@@ -34,10 +33,6 @@ const Wrapper = styled.div`
     margin: 0 auto;
   }
 `;
-
-function isNewDepositors(depositors) {
-  return Array.isArray(depositors[0]);
-}
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const postId = detail?._id;
@@ -53,65 +48,13 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const proposalIndex = publicProposal?.proposalIndex;
   const state = publicProposal?.state?.state;
   const isEnded = ["Tabled", "Canceled"].includes(state);
-  const hasTurnIntoReferendum = state === "Tabled";
+  const hasTurnIntoReferendum = !isNil(publicProposal.referendumIndex);
   const hasCanceled = state === "Canceled";
 
   const timeline = publicProposal?.timeline;
   const lastTimelineBlockHeight =
     timeline?.[timeline?.length - 1]?.indexer.blockHeight;
-
-  const [seconds, setSeconds] = useState([]);
-  const [depositRequired, setDepositRequired] = useState(0);
-  const [isLoadingSeconds, setIsLoadingSeconds] = useState(true);
-  const api = useApi(chain);
-  const isMounted = useIsMounted();
-  const [triggerUpdate, setTriggerUpdate] = useState(0);
-
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    setIsLoadingSeconds(true);
-
-    Promise.resolve(api)
-      .then((api) => {
-        if (isEnded) {
-          return api.rpc.chain
-            .getBlockHash(lastTimelineBlockHeight - 1)
-            .then((blockHash) => api.at(blockHash));
-        }
-        return api;
-      })
-      .then((api) => api.query.democracy.depositOf(proposalIndex))
-      .then((res) => {
-        if (isMounted.current) {
-          const deposit = res.toJSON();
-          if (deposit) {
-            if (isNewDepositors(deposit)) {
-              setSeconds(deposit[0]);
-              setDepositRequired(deposit[1]);
-            } else {
-              setSeconds(deposit[1]);
-              setDepositRequired(deposit[0]);
-            }
-          }
-        }
-      })
-      .catch(console.error)
-      .finally(() => {
-        if (isMounted.current) {
-          setIsLoadingSeconds(false);
-        }
-      });
-  }, [
-    proposalIndex,
-    isEnded,
-    api,
-    lastTimelineBlockHeight,
-    isMounted,
-    triggerUpdate,
-  ]);
+  const secondsAtBlockHeight = isEnded ? lastTimelineBlockHeight - 1 : undefined;
 
   const users = getMentionList(comments);
 
@@ -147,15 +90,10 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           <Second
             chain={chain}
             proposalIndex={proposalIndex}
-            seconds={seconds}
-            depositRequired={depositRequired}
             hasTurnIntoReferendum={hasTurnIntoReferendum}
             hasCanceled={hasCanceled}
-            updateSeconds={() => setTriggerUpdate(Date.now())}
-            updateTimeline={() => {}}
-            isLoadingSeconds={isLoadingSeconds}
-            setIsLoadingSeconds={setIsLoadingSeconds}
             useAddressVotingBalance={useAddressBalance}
+            atBlockHeight={secondsAtBlockHeight}
           />
           <Metadata publicProposal={detail?.onchainData} chain={chain} />
           <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
