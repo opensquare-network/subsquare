@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import useChainApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { currentNodeSelector } from "next-common/store/reducers/nodeSlice";
 import {
   getAddressVotingBalance,
   getAddressVote,
@@ -29,13 +26,7 @@ export function useForm(initialState = {}, onSubmit, clearError) {
   return { formData, handleInputChange, handleSubmit, reset };
 }
 
-export function useApi(chain) {
-  const nodeUrl = useSelector(currentNodeSelector);
-  return useChainApi(chain, nodeUrl);
-}
-
-export function useElectorate(height, chain) {
-  const api = useApi(chain);
+export function useElectorate(api, height) {
   const [electorate, setElectorate] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useIsMounted();
@@ -69,8 +60,7 @@ export function useLoaded(isLoading) {
   return loadStatus === 2;
 }
 
-export function useAddressVotingBalance(address, chain) {
-  const api = useApi(chain);
+export function useAddressVotingBalance(api, address) {
   const [balance, setBalance] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useIsMounted();
@@ -93,8 +83,7 @@ export function useAddressVotingBalance(address, chain) {
   return [balance, isLoading];
 }
 
-export function useAddressVote(referendumIndex, address, chain) {
-  const api = useApi(chain);
+export function useAddressVote(api, referendumIndex, address) {
   const [vote, setVote] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useIsMounted();

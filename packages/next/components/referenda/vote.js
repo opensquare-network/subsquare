@@ -11,7 +11,8 @@ import {
   getThresholdOfSuperMajorityAgainst,
   calcPassing,
 } from "utils/referendumUtil";
-import { useElectorate, useApi, useLoaded } from "utils/hooks";
+import { useElectorate, useLoaded } from "utils/hooks";
+import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useWindowSize from "next-common/utils/hooks/useWindowSize.js";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import AyeIcon from "public/imgs/icons/aye.svg";
@@ -221,8 +222,8 @@ function Vote({
 
   const referendumEndHeight = referendumInfo?.finished?.end;
   const [electorate, isElectorateLoading] = useElectorate(
-    referendumEndHeight || blockHeight,
-    chain
+    api,
+    referendumEndHeight || blockHeight
   );
   const isElectorateLoaded = useLoaded(isElectorateLoading);
 

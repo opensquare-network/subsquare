@@ -9,7 +9,7 @@ import Metadata from "./metadata";
 import Timeline from "./timeline";
 import Head from "./head";
 import { isMotionEnded } from "next-common/utils";
-import { useApi } from "utils/hooks";
+import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import toApiCouncil from "./toApiCouncil";
 import { EditablePanel } from "next-common/components/styled/panel";
 

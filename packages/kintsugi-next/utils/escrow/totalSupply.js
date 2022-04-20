@@ -5,7 +5,7 @@ import {
   saturatingSub,
 } from "./utils";
 import BN from "bn.js";
-import monetary from "@interlay/monetary-js";
+import * as monetary from "@interlay/monetary-js";
 import isNil from "lodash.isnil";
 
 async function getSpan(api) {
@@ -73,19 +73,26 @@ export async function getTotalSupply(api, blockNumber) {
   const [epoch, span, rawSlopeChanges] = await Promise.all([
     api.query.escrow.epoch.at(blockHash),
     getSpan(api),
-    api.query.escrow.slopeChanges.entriesAt(blockHash)
+    api.query.escrow.slopeChanges.entriesAt(blockHash),
   ]);
 
   const slopeChanges = new Map();
-  rawSlopeChanges.forEach(
-    ([id, value]) => slopeChanges.set(storageKeyToNthInner(id).toBn(), value.toBn())
+  rawSlopeChanges.forEach(([id, value]) =>
+    slopeChanges.set(storageKeyToNthInner(id).toBn(), value.toBn())
   );
 
   const lastPoint = await api.query.escrow.pointHistory.at(blockHash, epoch);
-  const rawSupply = rawSupplyAt(parseEscrowPoint(lastPoint), new BN(height), span, slopeChanges);
+  const rawSupply = rawSupplyAt(
+    parseEscrowPoint(lastPoint),
+    new BN(height),
+    span,
+    slopeChanges
+  );
 
-  const totalSupply = newMonetaryAmount(rawSupply.toString(), monetary.VoteKintsugi);
+  const totalSupply = newMonetaryAmount(
+    rawSupply.toString(),
+    monetary.VoteKintsugi
+  );
 
   return totalSupply.toHuman();
 }
-

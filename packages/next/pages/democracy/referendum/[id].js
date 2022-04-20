@@ -16,7 +16,7 @@ import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_DEMOCRACY_REFERENDUM } from "utils/viewConstants";
-import { useApi } from "utils/hooks";
+import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import Timeline from "components/referenda/timeline";

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import BigNumber from "bignumber.js";
 
-import { useApi } from "utils/hooks";
+import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Button from "next-common/components/button";
 import {
@@ -135,7 +135,11 @@ function PopupContent({
         setSignerAccount={setSignerAccount}
         extensionAccounts={extensionAccounts}
       />
-      <Beneficiary chain={chain} extensionAccounts={extensionAccounts} setAddress={setBeneficiary} />
+      <Beneficiary
+        chain={chain}
+        extensionAccounts={extensionAccounts}
+        setAddress={setBeneficiary}
+      />
       <ProposalValue chain={chain} setValue={setInputValue} />
       <ProposalBond chain={chain} />
 

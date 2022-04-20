@@ -1,5 +1,5 @@
 import { decodeAddress } from "@polkadot/util-crypto";
-import monetary from "@interlay/monetary-js";
+import * as monetary from "@interlay/monetary-js";
 import BN from "bn.js";
 import {
   getFinalizedBlockNumber,

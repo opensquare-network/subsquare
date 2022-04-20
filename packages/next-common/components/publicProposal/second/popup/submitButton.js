@@ -1,5 +1,6 @@
+import React from "react";
 import styled from "styled-components";
-import Button from "next-common/components/button";
+import Button from "../../../button";
 import useDeposit from "./useDeposit";
 import { useContext } from "react";
 import { StateContext } from "./stateContext";
