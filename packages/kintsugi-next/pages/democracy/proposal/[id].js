@@ -10,7 +10,7 @@ import { useRef, useState } from "react";
 import Layout from "components/layout";
 import Timeline from "components/publicProposal/timeline";
 import Business from "components/publicProposal/business";
-import Metadata from "components/publicProposal/metadata";
+import Metadata from "next-common/components/publicProposal/metadata";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";

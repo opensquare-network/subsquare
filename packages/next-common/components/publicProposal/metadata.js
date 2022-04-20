@@ -1,10 +1,10 @@
 /* eslint-disable react/jsx-key */
 import styled from "styled-components";
-import KVList from "next-common/components/listInfo/kvList";
-import User from "next-common/components/user";
-import Links from "next-common/components/links";
-import Proposal from "next-common/components/proposal";
-import { getNode, toPrecision } from "next-common/utils";
+import User from "../user";
+import Links from "../links";
+import Proposal from "../proposal";
+import KVList from "../listInfo/kvList";
+import { getNode, toPrecision } from "utils";
 
 const MetadataProposerWrapper = styled.div`
   display: flex;
@@ -16,6 +16,10 @@ const MetadataProposerWrapper = styled.div`
 `;
 
 export default function Metadata({ publicProposal, chain }) {
+  if (!publicProposal) {
+    return null;
+  }
+
   const node = getNode(chain);
   if (!node) {
     return null;
@@ -24,7 +28,6 @@ export default function Metadata({ publicProposal, chain }) {
   const symbol = node.symbol;
 
   const deposit = publicProposal.deposit;
-
   const metadata = [
     ["hash", publicProposal?.hash],
     ["deposit", `${toPrecision(deposit ? deposit[1] : 0, decimals)} ${symbol}`],

@@ -14,7 +14,7 @@ import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-import Metadata from "components/publicProposal/metadata";
+import Metadata from "next-common/components/publicProposal/metadata";
 import Timeline from "components/publicProposal/timeline";
 import Second from "next-common/components/publicProposal/second";
 import OutWrapper from "next-common/components/styled/outWrapper";
@@ -157,7 +157,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
             setIsLoadingSeconds={setIsLoadingSeconds}
             useAddressVotingBalance={useAddressBalance}
           />
-          <Metadata proposal={detail?.onchainData} chain={chain} />
+          <Metadata publicProposal={detail?.onchainData} chain={chain} />
           <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
           <CommentsWrapper>
             <Comments
