@@ -152,7 +152,7 @@ export const ButtonWrapper = styled.div`
     background: #4caf50;
   }
   > * {
-    flex-grow: 1;
+    flex-grow: 1 !important;
   }
   > :not(:first-child) {
     margin-left: 12px;
