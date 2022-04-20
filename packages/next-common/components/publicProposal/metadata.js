@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import styled from "styled-components";
 import User from "../user";
 import Links from "../links";
@@ -33,7 +32,7 @@ export default function Metadata({ publicProposal, chain }) {
     ["deposit", `${toPrecision(deposit ? deposit[1] : 0, decimals)} ${symbol}`],
     [
       "proposer",
-      <MetadataProposerWrapper>
+      <MetadataProposerWrapper key={"index-proposer"}>
         <User chain={chain} add={publicProposal?.proposer} />
         <Links chain={chain} address={publicProposal?.proposer} />
       </MetadataProposerWrapper>,
@@ -43,6 +42,7 @@ export default function Metadata({ publicProposal, chain }) {
   if (publicProposal?.preImage) {
     metadata.push([
       <Proposal
+        key={"index-proposal"}
         motion={{ proposal: publicProposal.preImage.call }}
         chain={chain}
       />,
