@@ -257,12 +257,13 @@ function Vote({
 
   const isPassing = calcPassing(
     referendumStatus,
-    new BigNumber(electorate).times(Math.pow(10, decimals))
+    electorate
   );
 
   const nAyes = toPrecision(referendumStatus?.tally?.ayes ?? 0, decimals);
   const nNays = toPrecision(referendumStatus?.tally?.nays ?? 0, decimals);
   const nTurnout = toPrecision(referendumStatus?.tally?.turnout ?? 0, decimals);
+  const nElectorate = toPrecision(electorate ?? 0, decimals);
 
   let nAyesPercent = 50;
   let nNaysPercent = 50;
@@ -304,7 +305,7 @@ function Vote({
               "supermajorityapprove" && (
               <Threshold
                 threshold={getThresholdOfSuperMajorityApprove(
-                  toPrecision(referendumStatus?.tally?.turnout ?? 0, decimals),
+                  referendumStatus?.tally?.turnout ?? 0,
                   electorate
                 )}
               />
@@ -314,7 +315,7 @@ function Vote({
               "supermajorityagainst" && (
               <Threshold
                 threshold={getThresholdOfSuperMajorityAgainst(
-                  toPrecision(referendumStatus?.tally?.turnout ?? 0, decimals),
+                  referendumStatus?.tally?.turnout ?? 0,
                   electorate
                 )}
               />
@@ -380,7 +381,7 @@ function Vote({
             </Header>
             <span>
               <ValueDisplay
-                value={BigNumber.max(nTurnout, electorate)}
+                value={BigNumber.max(nTurnout, nElectorate)}
                 symbol={symbol}
                 noWrap={width <= 1024}
               />

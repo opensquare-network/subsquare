@@ -94,5 +94,5 @@ export async function getTotalSupply(api, blockNumber) {
     monetary.VoteKintsugi
   );
 
-  return totalSupply.toHuman();
+  return totalSupply.toString();
 }

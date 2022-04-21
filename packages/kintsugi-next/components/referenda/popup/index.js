@@ -72,10 +72,7 @@ function PopupContent({
       return showErrorToast("Invalid vote balance");
     }
 
-    const bnVotingBalance = new BigNumber(votingBalance).multipliedBy(
-      Math.pow(10, decimals)
-    );
-    if (bnVoteBalance.gt(bnVotingBalance)) {
+    if (bnVoteBalance.gt(votingBalance)) {
       return showErrorToast("Insufficient voting balance");
     }
 
@@ -140,6 +137,7 @@ function PopupContent({
       <VoteBalance
         isLoading={isLoading}
         inputVoteBalance={inputVoteBalance}
+        setInputVoteBalance={setInputVoteBalance}
         node={node}
       />
       <VotingStatus

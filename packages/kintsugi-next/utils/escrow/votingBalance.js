@@ -27,5 +27,5 @@ export async function getVotingBalance(api, address) {
   const rawBalance = rawBalanceAt(escrowPoint, new BN(nowHeight));
 
   const balance = newMonetaryAmount(rawBalance, monetary.VoteKintsugi);
-  return balance.toHuman();
+  return balance.toString();
 }
