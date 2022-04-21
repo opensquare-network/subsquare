@@ -121,7 +121,6 @@ const ContentItem = styled(Flex)`
 
 const VoteResultWrapper = styled(Flex)`
   justify-content: space-between;
-  margin-bottom: 8px;
   > :last-child {
     display: flex;
     align-items: center;
@@ -131,6 +130,10 @@ const VoteResultWrapper = styled(Flex)`
       margin-left: 4px;
     }
   }
+`;
+
+const LinkWrapper = styled(Flex)`
+  margin-top: 8px;
 `;
 
 export default function Item({
@@ -194,7 +197,9 @@ export default function Item({
             )}
           </VoteResultWrapper>
         )}
-        <Links chain={chain} indexer={data.indexer} />
+        <LinkWrapper>
+          <Links chain={chain} indexer={data.indexer} />
+        </LinkWrapper>
       </Right>
     </Wrapper>
   );
