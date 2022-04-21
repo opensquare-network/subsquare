@@ -4,6 +4,7 @@ import PopupLabel from "next-common/components/popup/label";
 export default function VoteBalance({
   isLoading,
   inputVoteBalance,
+  setInputVoteBalance,
   node,
 }) {
   return (
