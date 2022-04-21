@@ -1,11 +1,11 @@
 import {
   VotingStatusContent,
-  StatusWrapper,
   TooltipWrapper,
   VotingStatusWrapper,
   Label,
 } from "next-common/components/popup/styled";
 import Loading from "next-common/components/loading";
+import LoadingStatus from "next-common/components/popup/loadingVotingStatus";
 
 export default function LoadingVoteStatus() {
   return (
@@ -16,9 +16,7 @@ export default function LoadingVoteStatus() {
           <Loading size={10} />
         </VotingStatusWrapper>
       </TooltipWrapper>
-      <StatusWrapper>
-        <Loading size={14} />
-      </StatusWrapper>
+      <LoadingStatus />
     </VotingStatusContent>
   );
 }
