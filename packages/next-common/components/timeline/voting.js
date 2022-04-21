@@ -75,7 +75,13 @@ export default function Voting({ data, chain }) {
           ))}
         </ArgsWrapper>
       )}
-      <Progress total={data.total} ayes={data.ayes} nays={data.nays} />
+      {
+        data.total !== undefined &&
+          data.ayes !== undefined &&
+          data.nays !== undefined && (
+          <Progress total={data.total} ayes={data.ayes} nays={data.nays} />
+        )
+      }
     </div>
   );
 }
