@@ -7,7 +7,6 @@ import Layout from "components/layout";
 import Button from "next-common/components/button";
 import Input from "next-common/components/input";
 import { useForm } from "utils/hooks";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { withLoginUser, withLoginUserRedux } from "../lib";
@@ -16,6 +15,7 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { shadow_100 } from "../styles/componentCss";
 import NextHead from "next-common/components/nextHead";
 import UserPolicy from "next-common/components/userPolicy";
+import useCountdown from "next-common/utils/hooks/useCountdown";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -116,11 +116,13 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const [success, setSuccess] = useState(!!loginUser);
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
-  const [sendEmailState, setSendEmailState] = useState(false);
-  const [countdown, setCountdown] = useState(3);
   const [checked, setChecked] = useState(false);
   const [agreeError, setAgreeError] = useState();
-  const isMounted = useIsMounted();
+  const { countdown, running: emailSent, startCountdown } = useCountdown({ initSeconds: 3 });
+
+  if (running && countdown === 0) {
+    router.replace("/login");
+  }
 
   const { formData, handleInputChange, handleSubmit } = useForm(
     {
@@ -150,12 +152,12 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const sendVerifyEmail = () => {
-    setSendEmailState(false);
     nextApi
       .post("user/resendverifyemail")
       .then(({ result, error }) => {
         if (result) {
-          return setSendEmailState(true);
+          startCountdown();
+          return;
         }
         showErrorToast(
           error?.message ?? "some error occured when sending an Email"
@@ -174,19 +176,6 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       }, 1000);
     }
   });
-
-  useEffect(() => {
-    if (!sendEmailState) return;
-    if (countdown !== 0) {
-      setTimeout(() => {
-        if (isMounted.current) {
-          setCountdown(countdown - 1);
-        }
-      }, 1000);
-    } else {
-      router.replace("/login");
-    }
-  }, [sendEmailState, countdown, isMounted, router]);
 
   return (
     <Layout user={loginUser} chain={chain}>
@@ -251,9 +240,9 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
         )}
         {success && (
           <ContentWrapper>
-            <Title>{sendEmailState ? "Congrats." : "Sending..."}</Title>
+            <Title>{emailSent ? "Congrats." : "Sending..."}</Title>
             <InfoWrapper>
-              {sendEmailState
+              {emailSent
                 ? "We sent you an email to verify your address. Click on the link in the email."
                 : "Sending an email to verify your address."}
             </InfoWrapper>
@@ -263,7 +252,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
             <Button isFill onClick={sendVerifyEmail}>
               Resend
             </Button>
-            {sendEmailState && (
+            {emailSent && (
               <Redirect>
                 The page will be re-directed in
                 <span className="sec">{countdown}s</span>
