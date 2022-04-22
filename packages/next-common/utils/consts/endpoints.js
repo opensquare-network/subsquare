@@ -57,12 +57,16 @@ export const DEFAULT_CRUST_NODE_URL = DEFAULT_CRUST_NODES[0].url;
 
 export const DEFAULT_CALAMARI_NODES = [
   {
-    name: "Manta Network",
-    url: "wss://ws.calamari.systems/",
-  },
-  {
     name: "OnFinality",
     url: "wss://calamari.api.onfinality.io/public-ws",
+  },
+  {
+    name: "Dwellir",
+    url: "wss://calamari-rpc.dwellir.com",
+  },
+  {
+    name: "Manta Network",
+    url: "wss://ws.calamari.systems/",
   },
 ];
 export const DEFAULT_CALAMARI_NODE_URL = DEFAULT_CALAMARI_NODES[0].url;
