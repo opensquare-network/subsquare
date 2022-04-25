@@ -21,6 +21,7 @@ const Wrapper = styled.button`
       background: #c2c8d4 !important;
       color: #ffffff;
       border: none;
+      cursor: not-allowed;
     `}
   ${(p) =>
     p.primary &&
