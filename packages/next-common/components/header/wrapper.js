@@ -34,14 +34,14 @@ function HeaderWrapper({ chain, children }) {
   let ChainWrapper = Wrapper;
   const { width } = useWindowSize();
 
-  if (parseInt(width) > 768) {
-    if (Chains.kintsugi === chain) {
-      ChainWrapper = KintsugiWrapper;
-    } else if (
-      [Chains.khala, Chains.bifrost, Chains.calamari].includes(chain)
-    ) {
-      ChainWrapper = BlackWrapper;
-    }
+  if (parseInt(width) <= 768) {
+    return <ChainWrapper>{children}</ChainWrapper>;
+  }
+
+  if (Chains.kintsugi === chain) {
+    ChainWrapper = KintsugiWrapper;
+  } else if ([Chains.khala, Chains.bifrost, Chains.calamari].includes(chain)) {
+    ChainWrapper = BlackWrapper;
   }
 
   return <ChainWrapper>{children}</ChainWrapper>;
