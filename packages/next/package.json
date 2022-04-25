@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@next/env": "^12.1.0",
     "@polkadot/extension-dapp": "0.43.1",
     "@subsquare/next-common": "file:../next-common",
     "@svgr/webpack": "^5.5.0",
@@ -18,9 +19,9 @@
     "http-proxy": "^1.18.1",
     "lodash.clonedeep": "^4.5.0",
     "lodash.findlastindex": "^4.6.0",
+    "lodash.isnil": "^4.0.0",
     "moment": "^2.29.2",
     "next": "^12.1.0",
-    "@next/env": "^12.1.0",
     "nprogress": "^0.2.0",
     "react": "17.0.2",
     "react-mde": "^11.5.0",

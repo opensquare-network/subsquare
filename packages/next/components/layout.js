@@ -17,6 +17,8 @@ import {
 import Auth from "next-common/components/auth";
 import Toast from "next-common/components/toast";
 import { useIsMountedBool } from "next-common/utils/hooks/useIsMounted";
+import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import isNil from "lodash.isnil";
 
 const Wrapper = styled.div`
   display: flex;
@@ -52,6 +54,11 @@ export default function Layout({
       dispatch(setFinalizedHeight(bestNumber.toNumber()));
     }
   }, [bestNumber, dispatch, isMounted]);
+
+  const { width } = useWindowSize();
+  if (isNil(width)) {
+    return null;
+  }
 
   return (
     <Wrapper>

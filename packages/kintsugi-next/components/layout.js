@@ -17,6 +17,8 @@ import {
 import { useEffect } from "react";
 import Auth from "next-common/components/auth";
 import Toast from "next-common/components/toast";
+import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import isNil from "lodash.isnil";
 
 const Wrapper = styled.div`
   display: flex;
@@ -51,6 +53,11 @@ export default function Layout({
       dispatch(setFinalizedHeight(bestNumber.toNumber()));
     }
   }, [bestNumber, dispatch]);
+
+  const { width } = useWindowSize();
+  if (isNil(width)) {
+    return null;
+  }
 
   return (
     <Wrapper>
