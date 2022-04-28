@@ -17,6 +17,8 @@ import {
 import Auth from "next-common/components/auth";
 import Toast from "next-common/components/toast";
 import { useIsMountedBool } from "next-common/utils/hooks/useIsMounted";
+import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import isNil from "lodash.isnil";
 
 const Wrapper = styled.div`
   display: flex;
@@ -53,16 +55,24 @@ export default function Layout({
     }
   }, [bestNumber, dispatch, isMounted]);
 
+  const seo = (
+    <SEO
+      title={
+        seoInfo?.title || `SubSquare | ${capitalize(chain)} governance platform`
+      }
+      desc={seoInfo?.desc || DEFAULT_SEO_INFO.desc}
+      chain={chain}
+    />
+  );
+
+  const { width } = useWindowSize();
+  if (isNil(width)) {
+    return <Wrapper>{seo}</Wrapper>;
+  }
+
   return (
     <Wrapper>
-      <SEO
-        title={
-          seoInfo?.title ||
-          `SubSquare | ${capitalize(chain)} governance platform`
-        }
-        desc={seoInfo?.desc || DEFAULT_SEO_INFO.desc}
-        chain={chain}
-      />
+      {seo}
       <Auth chain={chain} />
       <Header user={user} left={left} chain={chain} isWeb3Login={isWeb3Login} />
       <Content left={left}>{children}</Content>
