@@ -120,7 +120,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const [checked, setChecked] = useState(false);
   const [agreeError, setAgreeError] = useState();
   const isMounted = useIsMounted();
-  const { countdown, running: emailSent, startCountdown } = useCountdown({ initSeconds: 3 });
+  const { countdown, counting: emailSent, startCountdown } = useCountdown(3);
 
   if (emailSent && countdown === 0) {
     router.replace("/login");

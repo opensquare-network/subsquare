@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import useIsMounted from "./useIsMounted";
 
-export default function useCountdown({ initSeconds }) {
+export default function useCountdown(initSeconds) {
   const isMounted = useIsMounted();
   const [countdown, setCountdown] = useState(initSeconds);
-  const [running, setRunning] = useState(false);
+  const [counting, setCounting] = useState(false);
 
   useEffect(() => {
-    if (!running) {
+    if (!counting) {
       return;
     }
 
@@ -20,9 +20,9 @@ export default function useCountdown({ initSeconds }) {
         setCountdown(countdown - 1);
       }
     }, 1000);
-  }, [running, countdown, isMounted]);
+  }, [counting, countdown, isMounted]);
 
-  const startCountdown = () => setRunning(true);
+  const startCountdown = () => setCounting(true);
 
-  return { countdown, running, startCountdown };
+  return { countdown, counting, startCountdown };
 }

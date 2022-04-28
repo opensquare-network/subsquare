@@ -66,7 +66,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const router = useRouter();
   const { email, token } = router.query;
   const isMounted = useIsMounted();
-  const { countdown, running: success, startCountdown } = useCountdown({ initSeconds: 3 });
+  const { countdown, counting: success, startCountdown } = useCountdown(3);
 
   if (success && countdown === 0) {
     router.replace("/login");
