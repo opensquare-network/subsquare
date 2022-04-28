@@ -11,6 +11,10 @@ export default function useCountdown({ initSeconds }) {
       return;
     }
 
+    if (countdown === 0) {
+      return;
+    }
+
     setTimeout(() => {
       if (isMounted.current) {
         setCountdown(countdown - 1);
@@ -18,7 +22,7 @@ export default function useCountdown({ initSeconds }) {
     }, 1000);
   }, [running, countdown, isMounted]);
 
-  const startCoundown = () => setRunning(true);
+  const startCountdown = () => setRunning(true);
 
-  return { countdown, running, startCoundown };
+  return { countdown, running, startCountdown };
 }

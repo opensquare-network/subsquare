@@ -7,6 +7,8 @@ import Layout from "components/layout";
 import Button from "next-common/components/button";
 import Input from "next-common/components/input";
 import { useForm } from "utils/hooks";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import useCountdown from "next-common/utils/hooks/useCountdown";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { withLoginUser, withLoginUserRedux } from "../lib";
@@ -15,7 +17,6 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { shadow_100 } from "../styles/componentCss";
 import NextHead from "next-common/components/nextHead";
 import UserPolicy from "next-common/components/userPolicy";
-import useCountdown from "next-common/utils/hooks/useCountdown";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -118,9 +119,10 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const [loading, setLoading] = useState(false);
   const [checked, setChecked] = useState(false);
   const [agreeError, setAgreeError] = useState();
+  const isMounted = useIsMounted();
   const { countdown, running: emailSent, startCountdown } = useCountdown({ initSeconds: 3 });
 
-  if (running && countdown === 0) {
+  if (emailSent && countdown === 0) {
     router.replace("/login");
   }
 
@@ -138,12 +140,18 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       setLoading(true);
       const res = await nextApi.post("auth/signup", formData);
       if (res.result) {
-        setSuccess(true);
+        if (isMounted.current) {
+          setSuccess(true);
+        }
         sendVerifyEmail();
       } else if (res.error) {
-        setErrors(res.error);
+        if (isMounted.current) {
+          setErrors(res.error);
+        }
       }
-      setLoading(false);
+      if (isMounted.current) {
+        setLoading(false);
+      }
     },
     () => setErrors(null)
   );
@@ -156,15 +164,21 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       .post("user/resendverifyemail")
       .then(({ result, error }) => {
         if (result) {
-          startCountdown();
+          if (isMounted.current) {
+            startCountdown();
+          }
           return;
         }
-        showErrorToast(
-          error?.message ?? "some error occured when sending an Email"
-        );
+        if (isMounted.current) {
+          showErrorToast(
+            error?.message ?? "some error occured when sending an Email"
+          );
+        }
       })
       .catch((err) => {
-        showErrorToast("some error occurred when sending an Email");
+        if (isMounted.current) {
+          showErrorToast("some error occurred when sending an Email");
+        }
       });
   };
 
