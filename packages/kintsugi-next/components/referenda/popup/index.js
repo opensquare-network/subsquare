@@ -8,6 +8,7 @@ import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import {
   newErrorToast,
   newPendingToast,
+  newSuccessToast,
   newToastId,
   removeToast,
   updatePendingToast,
@@ -101,7 +102,8 @@ function PopupContent({
           }
           if (status.isInBlock) {
             // Transaction went through
-            dispatch(updatePendingToast(toastId, "InBlock"));
+            dispatch(removeToast(toastId));
+            dispatch(newSuccessToast("InBlock"));
             onInBlock(voteAddress);
           }
         });

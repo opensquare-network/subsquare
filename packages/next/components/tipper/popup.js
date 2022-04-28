@@ -10,6 +10,7 @@ import Button from "next-common/components/button";
 import {
   newErrorToast,
   newPendingToast,
+  newSuccessToast,
   newToastId,
   updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
@@ -121,7 +122,8 @@ function PopupContent({
           }
           if (status.isInBlock) {
             // Transaction went through
-            dispatch(updatePendingToast(toastId, "InBlock"));
+            dispatch(removeToast(toastId));
+            dispatch(newSuccessToast("InBlock"));
             onInBlock(tipperAddress);
           }
         });

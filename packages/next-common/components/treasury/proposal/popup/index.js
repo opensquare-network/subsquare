@@ -10,6 +10,7 @@ import Button from "../../../button";
 import {
   newErrorToast,
   newPendingToast,
+  newSuccessToast,
   newToastId,
   removeToast,
   updatePendingToast,
@@ -98,7 +99,9 @@ function PopupContent({
           }
           if (status.isInBlock) {
             // Transaction went through
-            dispatch(updatePendingToast(toastId, "InBlock"));
+            dispatch(removeToast(toastId));
+            dispatch(newSuccessToast("InBlock"));
+
             for (const event of events) {
               const { section, method, data } = event.event;
               if (section !== "treasury" || method !== "Proposed") {

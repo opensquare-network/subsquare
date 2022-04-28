@@ -10,6 +10,7 @@ import {
   newToastId,
   updatePendingToast,
   removeToast,
+  newSuccessToast,
 } from "../../../../store/reducers/toastSlice";
 import PopupWithAddress from "../../../popupWithAddress";
 import DepositRequired from "./depositRequired";
@@ -67,7 +68,8 @@ function PopupContent({
           }
           if (status.isInBlock) {
             // Transaction went through
-            dispatch(updatePendingToast(toastId, "InBlock"));
+            dispatch(removeToast(toastId));
+            dispatch(newSuccessToast("InBlock"));
             onInBlock(signerAddress);
           }
         });
