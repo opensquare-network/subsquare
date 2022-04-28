@@ -61,7 +61,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       doVerify(email, token);
     } else {
     }
-  }, [email, token, router, isMounted]);
+  }, [email, token, router, isMounted, startCountdown]);
 
   return (
     <Layout user={loginUser} chain={chain}>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import useIsMounted from "./useIsMounted";
 
 export default function useCountdown(initSeconds) {
@@ -22,7 +22,7 @@ export default function useCountdown(initSeconds) {
     }, 1000);
   }, [counting, countdown, isMounted]);
 
-  const startCountdown = () => setCounting(true);
+  const startCountdown = useCallback(() => setCounting(true), []);
 
   return { countdown, counting, startCountdown };
 }
