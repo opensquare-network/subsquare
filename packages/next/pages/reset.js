@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 
 import Layout from "components/layout";
@@ -7,6 +7,7 @@ import Button from "next-common/components/button";
 import Input from "next-common/components/input";
 import { useForm } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import useCountdown from "next-common/utils/hooks/useCountdown";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { withLoginUser, withLoginUserRedux } from "../lib";
@@ -86,13 +87,16 @@ const FormWrapper = styled.form`
 `;
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
-  const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { email, token } = router.query;
-  const [countdown, setCountdown] = useState(3);
   const isMounted = useIsMounted();
+  const { countdown, counting: success, startCountdown } = useCountdown(3);
+
+  if (success && countdown === 0) {
+    router.replace("/login");
+  }
 
   const { formData, handleInputChange, handleSubmit } = useForm(
     {
@@ -106,28 +110,22 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
         ...formData,
       });
       if (res.result) {
-        setSuccess(true);
+        if (isMounted.current) {
+          startCountdown();
+        }
       } else if (res.error) {
-        setErrors(res.error);
+        if (isMounted.current) {
+          setErrors(res.error);
+        }
       }
-      setLoading(false);
+      if (isMounted.current) {
+        setLoading(false);
+      }
     },
     () => setErrors(null)
   );
   const { newPassword } = formData;
 
-  useEffect(() => {
-    if (!success) return;
-    if (countdown !== 0) {
-      setTimeout(() => {
-        if (isMounted.current) {
-          setCountdown(countdown - 1);
-        }
-      }, 1000);
-    } else {
-      router.replace("/login");
-    }
-  }, [success, countdown, isMounted, router]);
 
   return (
     <Layout user={loginUser} chain={chain}>
