@@ -31,7 +31,7 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-export default function AddressLogin({ chain, onBack }) {
+export default function AddressLogin({ chain, setMailLogin }) {
   const isMounted = useIsMounted();
   const [accounts, setAccounts] = useState([]);
   const [hasExtension, setHasExtension] = useState(true);
@@ -131,7 +131,7 @@ export default function AddressLogin({ chain, onBack }) {
             Login
           </Button>
         )}
-        <Button isFill onClick={onBack}>
+        <Button isFill onClick={setMailLogin}>
           Login with username
         </Button>
       </ButtonWrapper>

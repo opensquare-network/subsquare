@@ -12,6 +12,15 @@ import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { withLoginUser, withLoginUserRedux } from "../lib";
 import NextHead from "next-common/components/nextHead";
+import {
+  ContentCenterWrapper,
+  Title,
+  FormWrapper,
+  FormInputsWrapper,
+  Label,
+  InfoWrapper,
+  Redirect,
+} from "components/login/styled";
 
 const Wrapper = styled.div`
   padding: 32px 0;
@@ -19,71 +28,6 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-`;
-
-const ContentWrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
-    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
-  border-radius: 6px;
-  width: 400px;
-  margin: 0 auto;
-  padding: 48px;
-
-  > :not(:first-child) {
-    margin-top: 24px;
-  }
-
-  @media screen and (max-width: 392px) {
-    width: 100%;
-  }
-`;
-
-const Title = styled.div`
-  font-weight: bold;
-  font-size: 20px;
-  text-align: center;
-  line-height: 20px;
-`;
-
-const InputWrapper = styled.div``;
-
-const Label = styled.div`
-  font-weight: bold;
-  font-size: 12px;
-  margin-bottom: 8px;
-  line-height: 12px;
-
-  :not(:first-child) {
-    margin-top: 16px;
-  }
-`;
-
-const InfoWrapper = styled.div`
-  padding: 12px 16px;
-  background: #f6f7fa;
-  border-radius: 4px;
-  line-height: 150%;
-  color: #506176;
-`;
-
-const Redirect = styled.div`
-  text-align: center;
-  color: #506176;
-
-  .sec {
-    font-weight: bold;
-    color: #6848ff;
-    margin-left: 8px;
-  }
-`;
-
-const FormWrapper = styled.form`
-  > :not(:first-child) {
-    margin-top: 24px;
-  }
 `;
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
@@ -132,10 +76,10 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       <NextHead title={`Reset password`} desc={`Reset password`} />
       <Wrapper>
         {!success && (
-          <ContentWrapper>
+          <ContentCenterWrapper>
             <Title>Reset Password</Title>
             <FormWrapper onSubmit={handleSubmit}>
-              <InputWrapper>
+              <FormInputsWrapper>
                 <Label>New Password</Label>
                 <Input
                   placeholder="Please fill new password"
@@ -150,15 +94,15 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
                 {errors?.message && !errors?.data && (
                   <ErrorText>{errors?.message}</ErrorText>
                 )}
-              </InputWrapper>
+              </FormInputsWrapper>
               <Button isFill secondary type="submit" isLoading={loading}>
                 Confirm
               </Button>
             </FormWrapper>
-          </ContentWrapper>
+          </ContentCenterWrapper>
         )}
         {success && (
-          <ContentWrapper>
+          <ContentCenterWrapper>
             <Title>Congrats</Title>
             <InfoWrapper>Your password has been reset.</InfoWrapper>
             <Button isFill secondary onClick={() => router.replace("/login")}>
@@ -168,7 +112,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
               The page will be re-directed in
               <span className="sec">{countdown}s</span>
             </Redirect>
-          </ContentWrapper>
+          </ContentCenterWrapper>
         )}
       </Wrapper>
     </Layout>
