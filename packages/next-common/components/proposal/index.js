@@ -22,7 +22,7 @@ const Header = styled.div`
   font-size: 14px;
   line-height: 140%;
   flex: none;
-  flex: 0 0 128px;
+  flex: 0 0 120px;
 `;
 
 const ArgsWrapper = styled.div`
