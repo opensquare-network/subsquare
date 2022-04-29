@@ -107,7 +107,7 @@ function User({
             <Identity identity={identity} fontSize={fontSize} />
           ) : (
             <Username fontSize={fontSize}>
-              {user?.username ?? addressEllipsis(add)}
+              {(!user?.publicKey && user?.username) || addressEllipsis(address)}
             </Username>
           )}
         </LinkWrapper>
