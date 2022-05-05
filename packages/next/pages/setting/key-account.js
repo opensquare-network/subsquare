@@ -13,13 +13,25 @@ import Web3Address from "components/setting/web3Address";
 import NotificationEmail from "components/setting/notificationEmail";
 import Logout from "components/setting/logout";
 import { encodeAddressToChain } from "next-common/services/address";
+import { useRouter } from "next/router";
+import { isKeyRegisteredUser } from "utils";
+import { useEffect } from "react";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const user = loginUser;
-  const address = user ? encodeAddressToChain(
+  const address = user?.publicKey ? encodeAddressToChain(
     Buffer.from(user?.publicKey, "hex"),
     chain
   ) : "";
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (loginUser && !isKeyRegisteredUser(loginUser)) {
+      router.push("/setting/account");
+      return;
+    }
+  }, [loginUser, router])
 
   return (
     <>
