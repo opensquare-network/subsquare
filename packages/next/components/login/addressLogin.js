@@ -128,7 +128,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
       <ButtonWrapper>
         {hasExtension && (
           <Button isFill secondary onClick={doWeb3Login} isLoading={loading}>
-            Login
+            Next
           </Button>
         )}
         <Button isFill onClick={setMailLogin}>
