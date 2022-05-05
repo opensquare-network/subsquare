@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import ErrorText from "next-common/components/ErrorText";
 import EyeIcon from "../assets/imgs/icons/eye.svg";
 import EyeSlashIcon from "../assets/imgs/icons/eye-slash.svg";
+import { emptyFunction } from "../utils";
 
 const Wrapper = styled.div`
   position: relative;
@@ -102,7 +103,7 @@ const SymbolWrapper = styled.div`
 `;
 const OuterWrapper = styled.div``;
 
-export default function Input({ ...props }) {
+export default function Input({ onChange = emptyFunction, ...props }) {
   const [show, setShow] = useState(false);
   const [focus, setFocus] = useState(false);
 
@@ -117,6 +118,7 @@ export default function Input({ ...props }) {
           autocomplete="off"
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
+          onChange={onChange}
         />
         {props.type === "password" && (
           <ShowButton onClick={() => setShow(!show)}>
