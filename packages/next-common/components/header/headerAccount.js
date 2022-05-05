@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { accountMenu } from "../../utils/constants";
+import { accountMenu, accountMenuForKeyAccount } from "../../utils/constants";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside.js";
 import useWindowSize from "../../utils/hooks/useWindowSize.js";
 import { logout } from "../../store/reducers/userSlice";
@@ -11,6 +11,7 @@ import Relative from "../styled/relative";
 import Flex from "../styled/flex";
 import { shadow_200 } from "../../styles/componentCss";
 import LoginButton from "./loginButton";
+import { isKeyRegisteredUser } from "utils";
 
 const Wrapper = Relative;
 
@@ -83,6 +84,10 @@ export default function HeaderAccount({ user, chain }) {
     return isLoginPage ? null : <LoginButton chain={chain} />;
   }
 
+  const menu = isKeyRegisteredUser(user)
+    ? accountMenuForKeyAccount
+    : accountMenu;
+
   const handleAccountMenu = (item) => {
     if (item.value === "logout") {
       dispatch(logout());
@@ -99,9 +104,9 @@ export default function HeaderAccount({ user, chain }) {
       </AccountButton>
       {show && (
         <Menu>
-          {accountMenu.map((item, index) => (
+          {menu.map((item, index) => (
             <Fragment key={index}>
-              {index === accountMenu.length - 1 && <Divider />}
+              {index === menu.length - 1 && <Divider />}
               <Item onClick={() => handleAccountMenu(item)}>
                 <img
                   src={`/imgs/icons/${item.icon}`}

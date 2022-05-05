@@ -215,6 +215,20 @@ export const accountMenu = [
   },
 ];
 
+export const accountMenuForKeyAccount = [
+  {
+    value: "settings",
+    name: "Settings",
+    icon: "settings.svg",
+    pathname: "/setting/key-account",
+  },
+  {
+    value: "logout",
+    name: "Logout",
+    icon: "logout.svg",
+  },
+];
+
 export const mainMenu = menus;
 
 export const settingMenu = [
@@ -239,6 +253,33 @@ export const settingMenu = [
         value: "linked-address",
         name: "Linked Address",
         pathname: "/setting/linked-address",
+      },
+      {
+        value: "notification",
+        name: "Notification",
+        pathname: "/setting/notification",
+      },
+    ],
+  },
+];
+
+export const settingMenuOfKeyAccount = [
+  {
+    items: [
+      {
+        value: "overview",
+        name: "Back to Overview",
+        pathname: "/",
+      },
+    ],
+  },
+  {
+    name: "SETTING",
+    items: [
+      {
+        value: "account",
+        name: "Account",
+        pathname: "/setting/key-account",
       },
       {
         value: "notification",

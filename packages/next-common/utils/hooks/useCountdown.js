@@ -23,6 +23,10 @@ export default function useCountdown(initSeconds) {
   }, [counting, countdown, isMounted]);
 
   const startCountdown = useCallback(() => setCounting(true), []);
+  const resetCountdown = useCallback(() => {
+    setCountdown(initSeconds);
+    setCounting(false);
+  }, []);
 
-  return { countdown, counting, startCountdown };
+  return { countdown, counting, startCountdown, resetCountdown };
 }
