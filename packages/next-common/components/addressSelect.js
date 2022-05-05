@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useEffect } from "react";
 import styled, { css } from "styled-components";
 import { useState, useRef } from "react";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
@@ -8,6 +8,9 @@ import Flex from "./styled/flex";
 import Relative from "./styled/relative";
 import { shadow_200 } from "../styles/componentCss";
 import { encodeAddressToChain } from "../services/address";
+import { nodes } from "../utils/constants";
+import { fetchIdentity } from "../services/identity";
+import Identity from "./Identity";
 
 const Wrapper = Relative;
 
@@ -92,6 +95,43 @@ const Item = styled(Flex)`
     `}
 `;
 
+
+function Account ({account,chain}){
+  const [identity, setIdentity] = useState(null);
+  useEffect(() => {
+    setIdentity(null);
+    if (account.address) {
+      const identity = nodes.find((n) => n.value === chain)?.identity;
+      if (!identity) return;
+
+      fetchIdentity(identity, encodeAddressToChain(account.address, identity)).then(
+        (identity) => setIdentity(identity)
+      );
+    }
+  }, [account.address, chain]);
+
+  return <>
+    <Avatar address={account.address} />
+    <NameWrapper>
+      <div>{account?.name}</div>
+      {identity && identity?.info?.status !== "NO_ID" ? (
+        <Identity identity={identity} />
+      ) : (
+        <div>{addressEllipsis(encodeAddressToChain(account.address, chain))}</div>
+      )}
+    </NameWrapper>
+  </>;
+}
+
+function Option ({onClick, item, selected,chain }){
+  return <Item
+    onClick={onClick}
+    selected={selected}
+  >
+    <Account account={item} chain={chain}/>
+  </Item>
+}
+
 export default function AddressSelect({
   chain,
   accounts,
@@ -106,19 +146,7 @@ export default function AddressSelect({
   return (
     <Wrapper ref={ref}>
       <Select onClick={() => setShow(!show)}>
-        {selectedAccount && (
-          <>
-            <Avatar address={selectedAccount?.address} />
-            <NameWrapper>
-              <div>{selectedAccount?.name}</div>
-              <div>
-                {addressEllipsis(
-                  encodeAddressToChain(selectedAccount.address, chain)
-                )}
-              </div>
-            </NameWrapper>
-          </>
-        )}
+        {selectedAccount && <Account account={selectedAccount} chain={chain}/>}
         <img
           alt=""
           src={show ? "/imgs/icons/caret-up.svg" : "/imgs/icons/caret-down.svg"}
@@ -127,22 +155,14 @@ export default function AddressSelect({
       {show && (
         <Options>
           {(accounts || []).map((item, index) => (
-            <Item
-              key={index}
-              onClick={() => {
-                onSelect(item);
-                setShow(false);
-              }}
-              selected={item.address === selectedAccount?.address}
-            >
-              <Avatar address={item.address} />
-              <NameWrapper>
-                <div>{item.name}</div>
-                <div>
-                  {addressEllipsis(encodeAddressToChain(item.address, chain))}
-                </div>
-              </NameWrapper>
-            </Item>
+            <Option key={index} onClick={() => {
+              onSelect(item);
+              setShow(false);
+            }}
+                    item={item}
+                    selected={item.address === selectedAccount?.address}
+                    chain={chain}
+            />
           ))}
         </Options>
       )}
