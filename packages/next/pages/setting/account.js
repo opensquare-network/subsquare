@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import Button from "next-common/components/button";
-import DeleteAccount from "components/deleteAccount";
 import Menu from "next-common/components/menu";
 import { settingMenu } from "next-common/utils/constants";
 import { userSelector } from "next-common/store/reducers/userSlice";
@@ -12,9 +10,7 @@ import {
   Wrapper,
   Title,
   ContentWrapper,
-  Label,
   Divider,
-  ButtonWrapper,
 } from "components/setting/styled";
 import Username from "components/setting/username";
 import Email from "components/setting/email";
@@ -25,7 +21,6 @@ import { isKeyRegisteredUser } from "utils";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const user = useSelector(userSelector);
-  const [show, setShow] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -50,18 +45,9 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
             <Divider />
             <Logout />
             <Divider />
-            <div>
-              <Label>Delete account</Label>
-              <ButtonWrapper>
-                <Button isFill danger onClick={() => setShow(true)}>
-                  Delete my account
-                </Button>
-              </ButtonWrapper>
-            </div>
           </ContentWrapper>
         </Wrapper>
       </Layout>
-      {show && <DeleteAccount onClose={() => setShow(false)} />}
     </>
   );
 });
