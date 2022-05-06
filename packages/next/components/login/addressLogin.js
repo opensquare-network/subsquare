@@ -60,7 +60,11 @@ export default function AddressLogin({ chain, setMailLogin }) {
         );
         if (loginResult) {
           dispatch(setUser(loginResult));
-          router.replace("/");
+          if(loginResult.email){
+            router.replace("/");
+          }else {
+            router.replace("/web3setemail");
+          }
         }
         if (loginError) {
           setWeb3Error(loginError.message);
