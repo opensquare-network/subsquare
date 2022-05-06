@@ -216,8 +216,8 @@ const MarkdownEditor = ({
     return new Promise((accept) => {
       const suggestions = (users || [])
         .map((user) => ({
-          preview: user,
-          value: `[@${user}](/member/${user})`,
+          preview: user.name,
+          value: `[@${user.name}](/member/${user.value})`,
         }))
         .filter((i) => i.preview.toLowerCase().includes(text.toLowerCase()));
       accept(suggestions);

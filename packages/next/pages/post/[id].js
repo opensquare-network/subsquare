@@ -6,13 +6,17 @@ import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Editor from "next-common/components/comment/editor";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Layout from "components/layout";
 import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_POST } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
+import { fetchIdentity } from "next-common//services/identity";
+import { addressEllipsis } from "next-common/utils";
+import { encodeAddressToChain } from "next-common/services/address";
+import { nodes } from "next-common/utils/constants";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -32,7 +36,46 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     loginUser?.preference.editor || "markdown"
   );
 
-  const users = getMentionList(comments);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const users = getMentionList(comments);
+    console.log(users);
+
+    const loadSuggestions = async () => {
+      return await Promise.all(
+        (users || [])
+          .map(async (user) => {
+            if (user.startsWith("polkadot-key-0x")) {
+              const publicKey = user.substr(15);
+              const address = encodeAddressToChain(Buffer.from(publicKey, "hex"), chain);
+              const identityChain = nodes.find((n) => n.value === chain)?.identity;
+              if (!identityChain) return;
+
+              const identity = await fetchIdentity(identityChain, address);
+              const displayName = identity?.info?.displayParent
+                ? `${identity?.info?.displayParent}/${identity?.info?.display}`
+                : identity?.info?.display;
+
+              const name = displayName || addressEllipsis(address);
+              return {
+                name,
+                value: user,
+              };
+            }
+            return {
+              name: user,
+              value: user,
+            };
+          })
+      );
+    };
+
+    loadSuggestions().then((suggestions) => {
+      console.log({suggestions});
+      setUsers(suggestions);
+    });
+  }, [comments]);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
