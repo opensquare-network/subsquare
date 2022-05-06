@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import Menu from "next-common/components/menu";
 import { settingMenu } from "next-common/utils/constants";
@@ -15,9 +16,19 @@ import Username from "components/setting/username";
 import Email from "components/setting/email";
 import Password from "components/setting/password";
 import Logout from "components/setting/logout";
+import { useRouter } from "next/router";
+import { isKeyRegisteredUser } from "utils";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const user = useSelector(userSelector);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (loginUser && isKeyRegisteredUser(loginUser)) {
+      router.push("/setting/key-account");
+      return;
+    }
+  }, [loginUser, router])
 
   return (
     <>
