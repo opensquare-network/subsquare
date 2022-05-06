@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+# 1.10.4
+
+- Support public proposal second action
+- Support proposing treasury proposal
+- Support crust and calamari
+- Fix the link to 404 page from user without linked address
+- Improve timing to close popup when extrinsic is wrapped in block
+- Extract common components to better scale democracy vote actions
+
+# 1.10.0
+
+- Prevent error by ethereum address in polkadot extension
+- Customize the header for chains
+- Refactor code to separate backend from main repo
+
 # 1.9.10
 
 - Add council motion to democracy proposal navigation bar.
