@@ -113,17 +113,24 @@ function Account ({account,chain}){
   return <>
     <Avatar address={account.address} />
     <NameWrapper>
-      <div>{account?.name}</div>
+      {/*TODO: use <IdentityOrAddr> after PR merged*/}
       {identity && identity?.info?.status !== "NO_ID" ? (
-        <Identity identity={identity} />
+        <>
+          <Identity identity={identity} />
+          <div>{addressEllipsis(encodeAddressToChain(account.address, chain))}</div>
+        </>
       ) : (
-        <div>{addressEllipsis(encodeAddressToChain(account.address, chain))}</div>
+        <>
+          <div>{account?.name}</div>
+          <div>{addressEllipsis(encodeAddressToChain(account.address, chain))}</div>
+        </>
+
       )}
     </NameWrapper>
   </>;
 }
 
-function Option ({onClick, item, selected,chain }){
+export function Option ({onClick, item, selected,chain }){
   return <Item
     onClick={onClick}
     selected={selected}
