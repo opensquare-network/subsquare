@@ -3,6 +3,7 @@ import "quill-mention";
 import ImageResize from "quill-image-resize-module";
 import MagicUrl from "quill-magic-url";
 import React, { useState, useRef, useEffect, useMemo } from "react";
+import useDeepCompareEffect from "use-deep-compare-effect";
 
 const icons = Quill.import("ui/icons");
 icons["bold"] =
@@ -123,16 +124,16 @@ function MyReactQuill({
 
   const [modules, setModules] = useState(defaultModules);
 
-  useEffect(() => {
-    const atValues = [];
-    users.map((user) => atValues.push({ id: user.value, value: user.name }));
-
+  useDeepCompareEffect(() => {
     setModules({
       ...defaultModules,
       mention: {
         allowedChars: /^[A-Za-z\s]*$/,
         mentionDenotationChars: ["@"],
         source: function (searchTerm, renderList, mentionChar) {
+          const atValues = [];
+          users.map((user) => atValues.push({ id: user.value, value: user.name }));
+
           let values;
           if (mentionChar === "@") {
             values = atValues;
