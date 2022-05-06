@@ -6,6 +6,12 @@ const Wrapper = styled.div`
   border-radius: 4px;
   display: flex;
   overflow: hidden;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 100%;
+  color: #d7dee8;
 `;
 
 const Input = styled.input`
