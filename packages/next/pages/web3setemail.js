@@ -60,7 +60,6 @@ const Text = styled.span`
 
 export default withLoginUserRedux(({loginUser, chain}) => {
   const address = loginUser?.addresses?.find(address => address.chain === chain)?.address
-  // const address = `qAeY4WkoFMYGReUrt6e4N35NrS6DAm1eGBSm8KLnPy8hdbZ`
   const [loading , setLoading] = useState(false);
   const [verifySent, setVerifySent] = useState(false);
   const [errors, setErrors] = useState();
@@ -69,6 +68,12 @@ export default withLoginUserRedux(({loginUser, chain}) => {
   const router = useRouter();
   const counter = useCountdown(4);
   const dispatch = useDispatch();
+
+  useEffect(()=>{
+    if(errors){
+      setErrors(null);
+    }
+  },[email, pin]);
 
   useEffect(()=>{
     if (counter.countdown === 0){
