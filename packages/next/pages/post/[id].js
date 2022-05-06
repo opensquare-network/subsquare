@@ -40,7 +40,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   useEffect(() => {
     const users = getMentionList(comments);
-    console.log(users);
 
     const loadSuggestions = async () => {
       return await Promise.all(
