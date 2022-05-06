@@ -43,7 +43,7 @@ export default function NotificationEmail({ email, verified }) {
     if (counting && countdown % 5 === 0) {
       dispatch(fetchUserProfile());
     }
-  }, [counting, countdown]);
+  }, [dispatch, counting, countdown]);
 
   if (counting && (countdown === 0 || email === inputEmail && verified)) {
     resetCountdown();

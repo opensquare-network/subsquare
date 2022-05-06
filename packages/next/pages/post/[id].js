@@ -73,7 +73,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     loadSuggestions().then((suggestions) => {
       setUsers(suggestions);
     });
-  }, [comments]);
+  }, [chain, comments]);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
