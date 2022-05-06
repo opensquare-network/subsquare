@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import InvalidPreImage from "./invalidPreImage.svg";
+import InvalidPreImage from "./invalidPreImage";
 
 const Wrapper = styled.div`
   overflow-x: auto;

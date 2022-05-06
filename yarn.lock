@@ -1167,10 +1167,10 @@
     util "npm:util"
     web-vitals "^2.1.4"
 
-"@osn/provider-options@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/@osn/provider-options/-/provider-options-1.0.2.tgz#0577c26ebcc41ac773b9718d47f9637bbb4cd952"
-  integrity sha512-1buGMpp5eD/sL3UFb6Fjqo+3KjWNao2MM/RqjR4NKdAeTxVaJmEkdid6BVN9FBVmYYZ2kBIbOTTXEl5uzy6wGg==
+"@osn/provider-options@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.npmjs.org/@osn/provider-options/-/provider-options-1.0.5.tgz#5c35a577f70e91b90bd24af9a968b01274ebe9d5"
+  integrity sha512-DDFrghzYqrSAVzuf7rjaIbEVLYKCzOMGQzZDzY26N7szwU00xAEyCF+HDboKGHZeS/jpwwAgGecvM3WZ0SaSFw==
 
 "@polkadot/api-augment@8.0.2":
   version "8.0.2"
@@ -1526,7 +1526,7 @@
   dependencies:
     "@interlay/monetary-js" "0.5.4"
     "@osn/polkadot-react-identicon" "^1.0.8"
-    "@osn/provider-options" "^1.0.2"
+    "@osn/provider-options" "^1.0.5"
     "@polkadot/api" "8.0.2"
     "@polkadot/extension-dapp" "0.43.1"
     "@reduxjs/toolkit" "^1.6.1"
