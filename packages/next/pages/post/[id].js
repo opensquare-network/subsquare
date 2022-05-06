@@ -72,7 +72,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     };
 
     loadSuggestions().then((suggestions) => {
-      console.log({suggestions});
       setUsers(suggestions);
     });
   }, [comments]);
