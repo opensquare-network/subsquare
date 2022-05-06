@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Input from "next-common/components/input";
 import Button from "next-common/components/button";
@@ -39,9 +39,11 @@ export default function NotificationEmail({ email, verified }) {
   const { countdown, counting, startCountdown, resetCountdown } =
     useCountdown(60);
 
-  if (counting && countdown % 5 === 0) {
-    dispatch(fetchUserProfile());
-  }
+  useEffect(() => {
+    if (counting && countdown % 5 === 0) {
+      dispatch(fetchUserProfile());
+    }
+  }, [counting, countdown]);
 
   if (counting && (countdown === 0 || email === inputEmail && verified)) {
     resetCountdown();
@@ -56,7 +58,7 @@ export default function NotificationEmail({ email, verified }) {
       startCountdown();
       dispatch(
         newSuccessToast(
-          "The verfication link has been send to your email, Please check."
+          "The verification link has been send to your email, Please check."
         )
       );
     } else if (res.error) {
