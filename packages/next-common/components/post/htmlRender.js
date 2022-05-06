@@ -138,12 +138,13 @@ const Wrapper = styled.div`
 
 function HtmlRender({ html }) {
   const r =
-    /<span[^<>]*><span class="ql-mention-denotation-char">@<\/span>(\w+)<\/span>/;
+    /<span class="mention" data-denotation-char="@" data-id="([^"]+)" data-value="([^"]+)">.{0,1}<span><span class="ql-mention-denotation-char">@<\/span>[^<>]+<\/span>.{0,1}<\/span>/;
   while (html.match(r)) {
     const username = html.match(r)[1];
+    const display = html.match(r)[2];
     html = html.replace(
       r,
-      `<a href="/member/${username}" target="_blank">@${username}</a>`
+      `<span class="mention"><a href="/member/${username}" target="_blank">@${display}</a></span>`
     );
   }
   const cleanHtml = sanitizeHtml(html, {

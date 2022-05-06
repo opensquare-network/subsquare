@@ -193,7 +193,7 @@ export default function MicromarkMd({ md = "", contentVersion = "" }) {
   useEffect(() => {
     if (ref.current) {
       ref.current.querySelectorAll("a").forEach((block) => {
-        if (block.getAttribute("href")?.match(/^\/member\/\w+$/)) {
+        if (block.getAttribute("href")?.match(/^\/member\/[-\w]+$/)) {
           block.classList.add("mention");
         }
       });

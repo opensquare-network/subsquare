@@ -2,7 +2,7 @@ import ReactQuill, { Quill } from "react-quill";
 import "quill-mention";
 import ImageResize from "quill-image-resize-module";
 import MagicUrl from "quill-magic-url";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 
 const icons = Quill.import("ui/icons");
 icons["bold"] =
@@ -70,7 +70,7 @@ function MyReactQuill({
   setQuillRef = null,
   readOnly = false,
 }) {
-  const [modules] = useState({
+  const defaultModules = useMemo(() => ({
     clipboard: {
       matchers: [[Node.ELEMENT_NODE, handlePasteElement]],
     },
@@ -118,35 +118,42 @@ function MyReactQuill({
     ImageResize: {
       modules: ["Resize", "DisplaySize"],
     },
-    mention: undefined,
     magicUrl: true,
-  });
+  }), []);
 
-  const atValues = [];
-  users.map((user) => atValues.push({ id: user, value: user }));
-  modules.mention = {
-    allowedChars: /^[A-Za-z\s]*$/,
-    mentionDenotationChars: ["@"],
-    source: function (searchTerm, renderList, mentionChar) {
-      let values;
-      if (mentionChar === "@") {
-        values = atValues;
-      }
-      if (searchTerm.length === 0) {
-        renderList(values, searchTerm);
-      } else {
-        const matches = [];
-        for (let i = 0; i < values.length; i++) {
-          if (
-            ~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())
-          ) {
-            matches.push(values[i]);
+  const [modules, setModules] = useState(defaultModules);
+
+  useEffect(() => {
+    const atValues = [];
+    users.map((user) => atValues.push({ id: user.value, value: user.name }));
+
+    setModules({
+      ...defaultModules,
+      mention: {
+        allowedChars: /^[A-Za-z\s]*$/,
+        mentionDenotationChars: ["@"],
+        source: function (searchTerm, renderList, mentionChar) {
+          let values;
+          if (mentionChar === "@") {
+            values = atValues;
           }
-        }
-        renderList(matches, searchTerm);
+          if (searchTerm.length === 0) {
+            renderList(values, searchTerm);
+          } else {
+            const matches = [];
+            for (let i = 0; i < values.length; i++) {
+              if (
+                ~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())
+              ) {
+                matches.push(values[i]);
+              }
+            }
+            renderList(matches, searchTerm);
+          }
+        },
       }
-    },
-  };
+    });
+  }, [users, defaultModules]);
 
   const ref = useRef();
 
