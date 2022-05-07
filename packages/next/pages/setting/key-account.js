@@ -27,11 +27,13 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const router = useRouter();
 
   useEffect(() => {
+    if (loginUser === null) {
+      router.push("/login");
+    }
     if (loginUser && !isKeyRegisteredUser(loginUser)) {
       router.push("/setting/account");
-      return;
     }
-  }, [loginUser, router])
+  }, [loginUser, router]);
 
   return (
     <>
