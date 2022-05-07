@@ -73,7 +73,7 @@ export default withLoginUserRedux(({loginUser, chain}) => {
   const dispatch = useDispatch();
 
   //todo: extract this into a hook useIdentityEmail()
-  useEffect(()=>{
+  useEffect(()=> {
     const identityChain = nodes.find((n) => n.value === chain)?.identity;
     if (!identityChain) return;
     const identityAddress = encodeAddressToChain(address, identityChain);
