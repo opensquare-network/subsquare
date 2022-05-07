@@ -46,11 +46,11 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
         (users || [])
           .map(async (user) => {
             if (user.startsWith("polkadot-key-0x")) {
-              const publicKey = user.substr(15);
-              const address = encodeAddressToChain(Buffer.from(publicKey, "hex"), chain);
               const identityChain = nodes.find((n) => n.value === chain)?.identity;
               if (!identityChain) return;
 
+              const publicKey = user.substr(15);
+              const address = encodeAddressToChain(Buffer.from(publicKey, "hex"), identityChain);
               const identity = await fetchIdentity(identityChain, address);
               const displayName = identity?.info?.displayParent
                 ? `${identity?.info?.displayParent}/${identity?.info?.display}`
