@@ -18,6 +18,8 @@ import useCountdown from "next-common/utils/hooks/useCountdown";
 import nextApi from "next-common/services/nextApi";
 import { newErrorToast, newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
+import { nodes } from "next-common/utils/constants";
+import { encodeAddressToChain } from "next-common/services/address";
 
 const Label = styled.div`
   font-weight: bold;
@@ -46,7 +48,7 @@ const Hint = styled.p`
   background: #F6F7FA;
 `
 
-const SendButton = styled.button`
+const SubButton = styled.button`
   all: unset;
   font-size: 12px;
   font-weight: 500;
@@ -60,14 +62,28 @@ const Text = styled.span`
 
 export default withLoginUserRedux(({loginUser, chain}) => {
   const address = loginUser?.addresses?.find(address => address.chain === chain)?.address
+  const [identity, setIdentity] =useState();
   const [loading , setLoading] = useState(false);
   const [verifySent, setVerifySent] = useState(false);
   const [errors, setErrors] = useState();
   const [email, setEmail] = useState("");
   const [pin, setPin] = useState("");
   const router = useRouter();
-  const counter = useCountdown(4);
+  const counter = useCountdown(60);
   const dispatch = useDispatch();
+
+  //todo: extract this into a hook useIdentityEmail()
+  useEffect(()=>{
+    const identityChain = nodes.find((n) => n.value === chain)?.identity;
+    if (!identityChain) return;
+    const identityAddress = encodeAddressToChain(address, identityChain);
+    fetch(`${process.env.NEXT_PUBLIC_IDENTITY_SERVER_HOST}/${identityChain}/identity/${identityAddress}`,)
+      .then((res) => res.json())
+      .then((identity) => {
+        setIdentity(identity)
+      })
+      .catch(() => {});
+  },[address, chain]);
 
   useEffect(()=>{
     if(errors){
@@ -136,7 +152,9 @@ export default withLoginUserRedux(({loginUser, chain}) => {
           <Option item={{address}} chain={chain} selected/>
           <FlexBetween>
             <Label>Email</Label>
-            {verifySent ?<Text>{counter.countdown}</Text>: <SendButton onClick={send}>Send Code</SendButton>}
+            {
+              identity?.info?.email &&<SubButton onClick={()=>setEmail(identity?.info?.email)}>Use identity email</SubButton>
+            }
           </FlexBetween>
           <Input
             placeholder="Please fill email"
@@ -146,8 +164,11 @@ export default withLoginUserRedux(({loginUser, chain}) => {
             error={errors?.data?.email}
           />
           {
-            email && <>
+            email && (email !== identity?.info?.email) && <>
+            <FlexBetween>
               <Label>Verify Email</Label>
+              {verifySent ?<Text>{counter.countdown}</Text>: <SubButton onClick={send}>Send Code</SubButton>}
+            </FlexBetween>
               <Input
                 placeholder="Please fill PIN code"
                 name="pin"
