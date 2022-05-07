@@ -17,6 +17,7 @@ import Layout from "components/layout";
 import { shadow_100 } from "styles/componentCss";
 import NextHead from "next-common/components/nextHead";
 import { isKeyRegisteredUser } from "utils";
+import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
   max-width: 848px;
@@ -110,6 +111,14 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const [saving, setSaving] = useState(false);
 
   const disabled = loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (loginUser === null) {
+      router.push("/login");
+    }
+  }, [loginUser, router]);
 
   useEffect(() => {
     setReply(!!loginUser?.notification?.reply);

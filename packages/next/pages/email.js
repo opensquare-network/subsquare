@@ -73,6 +73,14 @@ export default withLoginUserRedux(({loginUser, chain}) => {
   const counter = useCountdown(60);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (loginUser === null) {
+      router.push("/login");
+    }else if (!address){
+      router.push("/");
+    }
+  }, [address, loginUser, router]);
+
   //todo: extract this into a hook useIdentityEmail()
   useEffect(() => {
     const identityChain = nodes.find((n) => n.value === chain)?.identity;
