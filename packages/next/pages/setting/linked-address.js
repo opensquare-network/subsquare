@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import NextHead from "next-common/components/nextHead";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const LinkedAddressComp = dynamic(
   () => import("next-common/components/linkedAddress"),
