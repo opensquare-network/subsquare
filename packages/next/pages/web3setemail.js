@@ -80,16 +80,17 @@ export default withLoginUserRedux(({loginUser, chain}) => {
     fetch(`${process.env.NEXT_PUBLIC_IDENTITY_SERVER_HOST}/${identityChain}/identity/${identityAddress}`,)
       .then((res) => res.json())
       .then((identity) => {
-        setIdentity(identity)
+        const isAuthorized = identity?.info?.judgements?.some(
+          ([, judgement]) =>
+            typeof judgement === "object" &&
+            Object.keys(judgement).some((key) =>
+              ["reasonable", "knownGood"].includes(key)
+            )
+        );
+        setIdentity({isAuthorized,...identity})
       })
       .catch(() => {});
   },[address, chain]);
-
-  useEffect(()=>{
-    if(errors){
-      setErrors(null);
-    }
-  },[email, pin]);
 
   useEffect(()=>{
     if (counter.countdown === 0){
@@ -118,6 +119,11 @@ export default withLoginUserRedux(({loginUser, chain}) => {
   const submit = async () => {
     try {
       setLoading(true);
+      //an identified email address will be bind right after called user/setemail
+      if(identity?.info?.email===email && identity?.isAuthorized){
+        await send();
+        return router.replace("/");
+      }
       const res = await nextApi.post("auth/verify", {
         email,
         token: pin,
@@ -160,11 +166,14 @@ export default withLoginUserRedux(({loginUser, chain}) => {
             placeholder="Please fill email"
             name="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setErrors(null);
+            }}
             error={errors?.data?.email}
           />
           {
-            email && (email !== identity?.info?.email) && <>
+            email && (email !== identity?.info?.email && identity?.isAuthorized) && <>
             <FlexBetween>
               <Label>Verify Email</Label>
               {verifySent ?<Text>{counter.countdown}</Text>: <SubButton onClick={send}>Send Code</SubButton>}
@@ -173,7 +182,10 @@ export default withLoginUserRedux(({loginUser, chain}) => {
                 placeholder="Please fill PIN code"
                 name="pin"
                 value={pin}
-                onChange={(e) => setPin(e.target.value)}
+                onChange={(e) => {
+                  setPin(e.target.value);
+                  setErrors(null);
+                }}
                 error={errors?.data?.token}
               />
             </>
