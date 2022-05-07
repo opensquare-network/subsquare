@@ -173,7 +173,7 @@ export default withLoginUserRedux(({loginUser, chain}) => {
             error={errors?.data?.email}
           />
           {
-            email && (email !== identity?.info?.email || !identity?.isAuthorized) && <>
+            email && (email !== identity?.info?.email && identity?.isAuthorized) && <>
             <FlexBetween>
               <Label>Verify Email</Label>
               {verifySent ?<Text>{counter.countdown}</Text>: <SubButton onClick={send}>Send Code</SubButton>}
