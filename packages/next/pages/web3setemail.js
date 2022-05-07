@@ -33,7 +33,8 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  > div{
+
+  > div {
     > :not(:first-child) {
       margin-top: 12px;
     }
@@ -57,13 +58,13 @@ const SubButton = styled.button`
 `;
 
 const Text = styled.span`
-  color:#9DA9BB;
+  color: #9DA9BB;
 `
 
 export default withLoginUserRedux(({loginUser, chain}) => {
   const address = loginUser?.addresses?.find(address => address.chain === chain)?.address
-  const [identity, setIdentity] =useState();
-  const [loading , setLoading] = useState(false);
+  const [identity, setIdentity] = useState();
+  const [loading, setLoading] = useState(false);
   const [verifySent, setVerifySent] = useState(false);
   const [errors, setErrors] = useState();
   const [email, setEmail] = useState("");
@@ -73,7 +74,7 @@ export default withLoginUserRedux(({loginUser, chain}) => {
   const dispatch = useDispatch();
 
   //todo: extract this into a hook useIdentityEmail()
-  useEffect(()=> {
+  useEffect(() => {
     const identityChain = nodes.find((n) => n.value === chain)?.identity;
     if (!identityChain) return;
     const identityAddress = encodeAddressToChain(address, identityChain);
@@ -87,40 +88,41 @@ export default withLoginUserRedux(({loginUser, chain}) => {
               ["reasonable", "knownGood"].includes(key)
             )
         );
-        setIdentity({isAuthorized,...identity})
+        setIdentity({isAuthorized, ...identity})
       })
-      .catch(() => {});
-  },[address, chain]);
+      .catch(() => {
+      });
+  }, [address, chain]);
 
-  useEffect(()=>{
-    if (counter.countdown === 0){
+  useEffect(() => {
+    if (counter.countdown === 0) {
       setVerifySent(false);
     }
   }, [counter.countdown, verifySent]);
 
   const send = async () => {
-      const res = await nextApi.post("user/setemail", {
-        email,
-        sendCode:true,
-      });
-      if (res.result) {
-        setVerifySent(true);
-        counter.startCountdown();
-        dispatch(
-          newSuccessToast(
-            "The verification code has been send to your email, Please check."
-          )
-        );
-      } else if (res.error) {
-        setErrors(res.error);
-      }
+    const res = await nextApi.post("user/setemail", {
+      email,
+      sendCode: true,
+    });
+    if (res.result) {
+      setVerifySent(true);
+      counter.startCountdown();
+      dispatch(
+        newSuccessToast(
+          "The verification code has been send to your email, Please check."
+        )
+      );
+    } else if (res.error) {
+      setErrors(res.error);
+    }
   };
 
   const submit = async () => {
     try {
       setLoading(true);
       //an identified email address will be bind right after called user/setemail
-      if(identity?.info?.email===email && identity?.isAuthorized){
+      if (identity?.info?.email === email && identity?.isAuthorized) {
         await send();
         return router.replace("/");
       }
@@ -140,9 +142,9 @@ export default withLoginUserRedux(({loginUser, chain}) => {
       } else if (res.error) {
         setErrors(res.error);
       }
-    }catch (e) {
+    } catch (e) {
       dispatch(newErrorToast(e.message));
-    }finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -159,7 +161,8 @@ export default withLoginUserRedux(({loginUser, chain}) => {
           <FlexBetween>
             <Label>Email</Label>
             {
-              identity?.info?.email &&<SubButton onClick={()=>setEmail(identity?.info?.email)}>Use identity email</SubButton>
+              identity?.info?.email &&
+              <SubButton onClick={() => setEmail(identity?.info?.email)}>Use identity email</SubButton>
             }
           </FlexBetween>
           <Input
@@ -174,10 +177,10 @@ export default withLoginUserRedux(({loginUser, chain}) => {
           />
           {
             email && (email !== identity?.info?.email || !identity?.isAuthorized) && <>
-            <FlexBetween>
-              <Label>Verify Email</Label>
-              {verifySent ?<Text>{counter.countdown}</Text>: <SubButton onClick={send}>Send Code</SubButton>}
-            </FlexBetween>
+              <FlexBetween>
+                <Label>Verify Email</Label>
+                {verifySent ? <Text>{counter.countdown}</Text> : <SubButton onClick={send}>Send Code</SubButton>}
+              </FlexBetween>
               <Input
                 placeholder="Please fill PIN code"
                 name="pin"
@@ -193,7 +196,9 @@ export default withLoginUserRedux(({loginUser, chain}) => {
           <Button isFill secondary type="submit" onClick={submit} isLoading={loading}>
             Confirm
           </Button>
-          <Button isFill onClick={()=>{router.replace("/")}}>
+          <Button isFill onClick={() => {
+            router.replace("/")
+          }}>
             Remind me later
           </Button>
         </ContentCenterWrapper>
