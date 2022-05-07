@@ -39,34 +39,44 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const users = [detail.author.username, ...getMentionList(comments)];
+    if (!detail) {
+      return;
+    }
+
+    const users = Array.from(
+      new Set([detail.author.username, ...getMentionList(comments)])
+    );
 
     const loadSuggestions = async () => {
       return await Promise.all(
-        (users || [])
-          .map(async (user) => {
-            if (user.startsWith("polkadot-key-0x")) {
-              const identityChain = nodes.find((n) => n.value === chain)?.identity;
-              if (!identityChain) return;
+        (users || []).map(async (user) => {
+          if (user.startsWith("polkadot-key-0x")) {
+            const identityChain = nodes.find(
+              (n) => n.value === chain
+            )?.identity;
+            if (!identityChain) return;
 
-              const publicKey = user.substr(15);
-              const address = encodeAddressToChain(Buffer.from(publicKey, "hex"), identityChain);
-              const identity = await fetchIdentity(identityChain, address);
-              const displayName = identity?.info?.displayParent
-                ? `${identity?.info?.displayParent}/${identity?.info?.display}`
-                : identity?.info?.display;
+            const publicKey = user.substr(15);
+            const address = encodeAddressToChain(
+              Buffer.from(publicKey, "hex"),
+              identityChain
+            );
+            const identity = await fetchIdentity(identityChain, address);
+            const displayName = identity?.info?.displayParent
+              ? `${identity?.info?.displayParent}/${identity?.info?.display}`
+              : identity?.info?.display;
 
-              const name = displayName || addressEllipsis(address);
-              return {
-                name,
-                value: user,
-              };
-            }
+            const name = displayName || addressEllipsis(address);
             return {
-              name: user,
+              name,
               value: user,
             };
-          })
+          }
+          return {
+            name: user,
+            value: user,
+          };
+        })
       );
     };
 
