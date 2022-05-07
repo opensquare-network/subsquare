@@ -39,7 +39,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const users = getMentionList(comments);
+    const users = [detail.author.username, ...getMentionList(comments)];
 
     const loadSuggestions = async () => {
       return await Promise.all(
@@ -73,7 +73,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     loadSuggestions().then((suggestions) => {
       setUsers(suggestions);
     });
-  }, [chain, comments]);
+  }, [chain, detail, comments]);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
