@@ -344,7 +344,11 @@ export default function TechcommMotionDetail({
           [
             "Proposer",
             <>
-              <User add={motion?.onchainData?.proposer} fontSize={14} />
+              <User
+                add={motion?.onchainData?.proposer}
+                fontSize={14}
+                chain={chain}
+              />
               <Links
                 chain={chain}
                 address={motion?.onchainData?.proposer}
