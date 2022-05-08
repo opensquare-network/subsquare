@@ -17,6 +17,14 @@ export const DEFAULT_KUSAMA_NODES = [
     name: "OnFinality",
     url: "wss://kusama.api.onfinality.io/public-ws",
   },
+  {
+    name: "Dwellir",
+    url: "wss://kusama-rpc.dwellir.com",
+  },
+  {
+    name: "RadiumBlock",
+    url: "wss://kusama.public.curie.radiumblock.co/ws",
+  },
 ];
 export const DEFAULT_KUSAMA_NODE_URL = DEFAULT_KUSAMA_NODES[0]?.url;
 
@@ -116,19 +124,15 @@ export const DEFAULT_POLKADEX_NODES = [
 export const DEFAULT_POLKADEX_NODE_URL = DEFAULT_POLKADEX_NODES[0].url;
 
 export const nodes = [
-  ...(process.env.NEXT_PUBLIC_DEVELOPMENT === "true"
-    ? [
-        {
-          value: "kusama",
-          name: "Kusama",
-          icon: "kusama.svg",
-          identity: "kusama",
-          symbol: "KSM",
-          decimals: 12,
-          hasElections: true,
-        },
-      ]
-    : []),
+  {
+    value: "kusama",
+    name: "Kusama",
+    icon: "kusama.svg",
+    identity: "kusama",
+    symbol: "KSM",
+    decimals: 12,
+    hasElections: true,
+  },
   {
     value: "karura",
     name: "Karura",
