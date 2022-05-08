@@ -36,8 +36,10 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
     if (post?.onchainData) {
       // When there is only one council member, the motion executed immediately
       // No "voting" field, and no "Voted" event in timeline
-      const voting = post.onchainData.voting;
-      if (voting) {
+      const hasVoted = (post.onchainData.timeline || []).some(
+        (item) => item.method === "Voted"
+      );
+      if (hasVoted) {
         return Array.from(
           new Map(
             post.onchainData.timeline

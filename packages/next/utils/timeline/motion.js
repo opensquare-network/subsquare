@@ -22,7 +22,14 @@ export function createArgs(method, args, chain) {
 }
 
 export function createMotionTimelineData(motion = {}, chain) {
-  const { proposer, proposal, voting, timeline = [] } = motion;
+  const {
+    proposer,
+    proposal,
+    voting,
+    tally,
+    threshold,
+    timeline = [],
+  } = motion;
 
   return timeline.map((item) => {
     switch (item.method) {
@@ -36,9 +43,9 @@ export function createMotionTimelineData(motion = {}, chain) {
             proposer: proposer,
             method: proposal.method,
             args: createArgs(proposal.method, proposal.args, chain),
-            total: voting.threshold,
-            ayes: voting.ayes.length,
-            nays: voting.nays.length,
+            total: threshold || voting?.threshold,
+            ayes: tally?.yesVotes || (voting?.ayes || []).length,
+            nays: tally?.noVotes || (voting?.nays || []).length,
           },
           method: item.method,
         };
