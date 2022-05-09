@@ -51,18 +51,18 @@ export default function NotificationEmail({ email, verified }) {
 
   const onResend = async () => {
     setResendLoading(true);
-    const res = await nextApi.post("user/setemail", {
+    const { result, error } = await nextApi.post("user/setemail", {
       email: inputEmail,
     });
-    if (res.result) {
+    if (result) {
       startCountdown();
       dispatch(
         newSuccessToast(
           "The verification link has been send to your email, Please check."
         )
       );
-    } else if (res.error) {
-      setResendErrors(res.error);
+    } else if (error) {
+      setResendErrors(error);
     }
     setResendLoading(false);
   };
@@ -105,7 +105,7 @@ export default function NotificationEmail({ email, verified }) {
           )
         )}
       </InputWrapper>
-      {resendErrors?.message && !resendErrors?.data && (
+      {resendErrors?.message && (
         <ErrorText>{resendErrors?.message}</ErrorText>
       )}
     </div>
