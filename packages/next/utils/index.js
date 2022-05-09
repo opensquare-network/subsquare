@@ -1,12 +1,7 @@
-import moment from "moment";
 import BigNumber from "bignumber.js";
 import { nodes } from "next-common/utils/constants";
 
 BigNumber.config({ EXPONENTIAL_AT: 36 });
-
-export function stringUpperFirst(value) {
-  return value ? value.charAt(0).toUpperCase() + value.slice(1) : "";
-}
 
 export function textEllipsis(text, start, end) {
   if (!text) return;
@@ -21,72 +16,6 @@ export function hexEllipsis(hex, start = 6, end = 4) {
 
 export function addressEllipsis(address, start = 4, end = 4) {
   return textEllipsis(address, start, end);
-}
-
-export function timeDuration(seconds) {
-  if (!seconds) {
-    return "Unknown time";
-  }
-  // return moment.duration(seconds * 1000);
-  let duration = moment.duration(seconds, "seconds");
-  return (
-    duration
-      .toString()
-      .replace("PT", "")
-      .replace("H", "h ")
-      .replace("M", "m ")
-      .replace("S", "s ") + "remaining"
-  );
-}
-
-export function timeDurationFromNow(time) {
-  if (!time) {
-    return "Unknown time";
-  }
-  moment.updateLocale("en", {
-    relativeTime: {
-      future: "in %s",
-      past: "%s ",
-      s: (number) => number + " secs ago ",
-      ss: "%d secs ago",
-      m: "1 min ago",
-      mm: "%d mins ago",
-      h: "1 hour ago ",
-      hh: "%d hours ago",
-      d: "1 day ago",
-      dd: "%dd ago",
-      M: "1 month ago ",
-      MM: "%d months ago ",
-      y: "1 year ago",
-      yy: "%d years ago",
-    },
-  });
-  const now = moment();
-  if (!now.isAfter(time)) {
-    //todo 讨论当客户端时间不准时应当如何处理
-    return moment(time).fromNow();
-  }
-  let mm = now.diff(time, "minutes");
-  let hh = now.diff(time, "hours");
-  let dd = now.diff(time, "days");
-  if (dd) {
-    hh %= 24;
-    if (dd < 3 && hh) {
-      return `${dd} day${dd > 1 ? "s" : ""} ${hh} hr${hh > 1 ? "s" : ""} ago`;
-    }
-    return `${dd} day${dd > 1 ? "s" : ""} ago`;
-  }
-  if (hh) {
-    mm %= 60;
-    if (mm) {
-      return `${hh} hr${hh > 1 ? "s" : ""} ${mm} min${mm > 1 ? "s" : ""} ago`;
-    }
-    return `${hh} hr${hh > 1 ? "s" : ""} ago`;
-  }
-  if (mm) {
-    return `${mm} min${mm > 1 ? "s" : ""} ago`;
-  }
-  return `just now`;
 }
 
 export function encodeURIQuery(q) {

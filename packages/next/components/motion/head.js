@@ -6,7 +6,7 @@ import SectionTag from "next-common/components/sectionTag";
 import Tag from "next-common/components/tag";
 import Flex from "next-common/components/styled/flex";
 import { getPostUpdatedAt } from "utils/viewfuncs";
-import { timeDurationFromNow } from "utils";
+import { timeDurationFromNow } from "next-common/utils";
 import DemocracyNavigate from "./democracyNavigate";
 
 const MotionEndHeader = styled.div`
