@@ -17,6 +17,10 @@ const imageMap = new Map([
     Chains.calamari,
     "bafybeig2mirpdoj3cowecbxiafo335abg3rlz6uhsfficemwtft75ykpqu",
   ],
+  [
+    Chains.kusama,
+    "bafybeifrjrzaajdpfwbxtffsexnxwehsqc3k4ruk5oummlghsxvaityiku",
+  ],
 ]);
 
 export default function SEO({ title, desc, chain }) {

@@ -8,9 +8,13 @@ function LoginButton({ chain }) {
 
   let isPrimaryInverse = false;
   if (
-    [Chains.kintsugi, Chains.khala, Chains.bifrost, Chains.calamari].includes(
-      chain
-    )
+    [
+      Chains.kintsugi,
+      Chains.khala,
+      Chains.bifrost,
+      Chains.calamari,
+      Chains.kusama,
+    ].includes(chain)
   ) {
     isPrimaryInverse = true;
   }
