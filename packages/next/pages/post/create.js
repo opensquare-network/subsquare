@@ -172,6 +172,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
           <InputWrapper>
             {contentType === "markdown" && (
               <MarkdownEditor
+                initialHeight={300}
                 height={editorHeight}
                 setEditorHeight={setEditorHeight}
                 content={content}

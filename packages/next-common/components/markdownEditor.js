@@ -50,7 +50,7 @@ export const StyledTextArea = styled.div`
     max-height: 300px;
     color: #000 !important;
     padding: 0.75rem 1rem !important;
-    line-height: 1.375 !important;
+    line-height: 19px !important;
     outline: none;
     font-size: 0.875rem;
   }
@@ -172,7 +172,6 @@ export const StyledTextArea = styled.div`
   }
 
   .mde-text {
-    border: 1px solid transparent !important;
     border-bottom-left-radius: 0.25rem;
     border-bottom-right-radius: 0.25rem;
   }
@@ -203,45 +202,44 @@ export const StyledTextArea = styled.div`
   }
 `;
 
+const loadSuggestions = async (text) => {
+  return new Promise((accept) => {
+    const suggestions = (users || [])
+      .map((user) => ({
+        preview: user,
+        value: `[@${user}](/member/${user})`,
+      }))
+      .filter((i) => i.preview.toLowerCase().includes(text.toLowerCase()));
+    accept(suggestions);
+  });
+};
+
 const MarkdownEditor = ({
   content,
   setContent,
   setEditorHeight,
   users = [],
+  initialHeight = 100,
   height = 300,
   visible = true,
   readOnly = false,
 }) => {
-  const loadSuggestions = async (text) => {
-    return new Promise((accept) => {
-      const suggestions = (users || [])
-        .map((user) => ({
-          preview: user,
-          value: `[@${user}](/member/${user})`,
-        }))
-        .filter((i) => i.preview.toLowerCase().includes(text.toLowerCase()));
-      accept(suggestions);
-    });
-  };
-
-  const [focused, setFocused] = useState(false);
-  const [userResized, setUserResized] = useState(false);
-
   const ref = useRef();
+  const [focused, setFocused] = useState(false);
 
   useEffect(() => {
     const textarea = ref?.current?.finalRefs?.textarea?.current;
     if (textarea) {
       // MutationObserver is the modern way to observe element resize event
-      new MutationObserver(()=>{
-        if (textarea?.style?.height !== `${height}px`) {
-          setUserResized(true);
-        }
+      const observer =  new MutationObserver(()=>{
+        console.log(parseInt(textarea?.style?.height) - textarea?.scrollHeight );
         // keep user resized editor height in memory
         setEditorHeight(parseInt(textarea?.style?.height));
-      }).observe(textarea, {
+        observer.disconnect();
+      });
+      observer.observe(textarea, {
         attributes: true, attributeFilter: [ "style" ]
-      })
+      });
     }
   }, [height, setEditorHeight]);
 
@@ -257,9 +255,9 @@ const MarkdownEditor = ({
         value={content}
         onChange={(content) => {
           const textarea = ref?.current?.finalRefs?.textarea?.current;
-          if (textarea && !userResized) {
-            textarea.style.height = `${300}px`;
-            textarea.style.height = textarea.scrollHeight + "px";
+          if (textarea) {
+            textarea.style.height = `${initialHeight}px`;
+            textarea.style.height = `${textarea.scrollHeight}px`;
             setEditorHeight(textarea.scrollHeight);
           }
           setContent(content);
