@@ -227,25 +227,26 @@ const MarkdownEditor = ({
   const ref = useRef();
   const [focused, setFocused] = useState(false);
   const [userResized, setUserResized] = useState(false);
+  let observer;
 
   useEffect(() => {
     const textarea = ref?.current?.finalRefs?.textarea?.current;
     if (textarea) {
       // MutationObserver is the modern way to observe element resize event
-      const observer = new MutationObserver((record) => {
+      observer = new MutationObserver((record) => {
         //TODO: maybe we can debounce this to improve performance
         //no value changed && height change => user resized manually
         if (record[0].target.value === content) {
           setUserResized(true);
           setEditorHeight(parseInt(textarea?.style?.height));
+          observer.disconnect();
         }
-        observer.disconnect();
       });
       observer.observe(textarea, {
         attributes: true, attributeFilter: ["style"]
       });
     }
-  }, [height, setEditorHeight]);
+  }, [height, content, setEditorHeight]);
 
   return (
     <StyledTextArea
@@ -263,6 +264,7 @@ const MarkdownEditor = ({
             textarea.style.height = `${initialHeight}px`;
             textarea.style.height = `${textarea.scrollHeight}px`;
             setEditorHeight(textarea.scrollHeight);
+            observer?.disconnect();
           }
           setContent(content);
         }}
