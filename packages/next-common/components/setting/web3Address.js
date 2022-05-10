@@ -1,7 +1,8 @@
+import React from "react";
 import styled from "styled-components";
-import { Label, InputWrapper } from "components/setting/styled";
-import User from "next-common/components/user";
-import { addressEllipsis } from "utils";
+import { Label, InputWrapper } from "./styled";
+import User from "../user";
+import { addressEllipsis } from "../../utils";
 
 const AddressWrapper = styled.div`
   display: flex;

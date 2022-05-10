@@ -4,6 +4,8 @@ import { settingMenu } from "next-common/utils/constants";
 import dynamic from "next/dynamic";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import NextHead from "next-common/components/nextHead";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const LinkedAddressComp = dynamic(
   () => import("next-common/components/linkedAddress"),
@@ -13,6 +15,14 @@ const LinkedAddressComp = dynamic(
 );
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (loginUser === null) {
+      router.push("/login");
+    }
+  }, [loginUser, router]);
+
   return (
     <Layout chain={chain} user={loginUser} left={<Menu menu={settingMenu} />}>
       <NextHead title={`Settings`} desc={``} />

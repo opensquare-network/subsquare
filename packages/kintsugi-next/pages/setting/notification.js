@@ -1,10 +1,10 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useState, useEffect } from "react";
 
 import Toggle from "next-common/components/toggle";
 import Button from "next-common/components/button";
 import Menu from "next-common/components/menu";
-import { settingMenu } from "next-common/utils/constants";
+import { settingMenu, settingMenuOfKeyAccount } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "next-common/services/nextApi";
 import {
@@ -16,7 +16,8 @@ import { fetchUserProfile } from "next-common/store/reducers/userSlice";
 import Layout from "components/layout";
 import { shadow_100 } from "styles/componentCss";
 import NextHead from "next-common/components/nextHead";
-import { isSafari } from "../../utils/serverSideUtil";
+import { isKeyRegisteredUser } from "utils";
+import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
   max-width: 848px;
@@ -85,19 +86,48 @@ const ButtonWrapper = styled.div`
   }
 `;
 
+const WarningMessage = styled.div`
+  background: #f6f7fa;
+  border-radius: 4px;
+  padding: 12px 16px;
+  color: #506176;
+  font-size: 14px;
+  line-height: 140%;
+  margin-bottom: 16px;
+  ${(p) =>
+    p.danger &&
+    css`
+      color: #f44336;
+      background: #fff1f0;
+    `}
+`;
+
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const dispatch = useDispatch();
 
   const [reply, setReply] = useState(!!loginUser?.notification?.reply);
   const [mention, setMention] = useState(!!loginUser?.notification?.mention);
-  const [thumbsUp, setThumbsUp] = useState(!!loginUser?.notification?.thumbsUp);
   const [saving, setSaving] = useState(false);
+
+  const disabled = loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (loginUser === null) {
+      router.push("/login");
+    }
+  }, [loginUser, router]);
 
   useEffect(() => {
     setReply(!!loginUser?.notification?.reply);
     setMention(!!loginUser?.notification?.mention);
-    setThumbsUp(!!loginUser?.notification?.thumbsUp);
   }, [loginUser]);
+
+  let menu = settingMenu;
+  if (loginUser && isKeyRegisteredUser(loginUser)) {
+    menu = settingMenuOfKeyAccount;
+  }
 
   const changeGuard = (setter) => async (data) => {
     if (saving) return;
@@ -113,7 +143,6 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
     const { result, error } = await nextApi.patch("user/notification", {
       reply,
       mention,
-      thumbsUp,
     });
     if (result) {
       dispatch(fetchUserProfile());
@@ -125,29 +154,26 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   };
 
   return (
-    <Layout chain={chain} user={loginUser} left={<Menu menu={settingMenu} />}>
+    <Layout chain={chain} user={loginUser} left={<Menu menu={menu} />}>
       <NextHead title={`Settings`} desc={``} />
       <Wrapper>
         <Title>Notification</Title>
         <ContentWrapper>
+          {disabled && (<WarningMessage danger>Please set the email to receive notifications</WarningMessage>)}
           <div>
             <Label>Email</Label>
             <ToggleItem>
               <div>Notify me about comments on my posts</div>
-              <Toggle isOn={reply} onToggle={changeGuard(setReply)} />
+              <Toggle disabled={disabled} isOn={reply} onToggle={changeGuard(setReply)} />
             </ToggleItem>
             <ToggleItem>
               <div>Notify me about mentions</div>
-              <Toggle isOn={mention} onToggle={changeGuard(setMention)} />
-            </ToggleItem>
-            <ToggleItem>
-              <div>Notify me about supports on my comments</div>
-              <Toggle isOn={thumbsUp} onToggle={changeGuard(setThumbsUp)} />
+              <Toggle disabled={disabled} isOn={mention} onToggle={changeGuard(setMention)} />
             </ToggleItem>
           </div>
           <Divider />
           <ButtonWrapper>
-            <Button secondary onClick={updateNotificationSetting}>
+            <Button secondary disabled={disabled} onClick={updateNotificationSetting}>
               Save
             </Button>
           </ButtonWrapper>
@@ -159,7 +185,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-  isSafari(context);
+
   return {
     props: {
       chain,

@@ -107,7 +107,6 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
   const [reply, setReply] = useState(!!loginUser?.notification?.reply);
   const [mention, setMention] = useState(!!loginUser?.notification?.mention);
-  const [thumbsUp, setThumbsUp] = useState(!!loginUser?.notification?.thumbsUp);
   const [saving, setSaving] = useState(false);
 
   const disabled = loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
@@ -123,7 +122,6 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   useEffect(() => {
     setReply(!!loginUser?.notification?.reply);
     setMention(!!loginUser?.notification?.mention);
-    setThumbsUp(!!loginUser?.notification?.thumbsUp);
   }, [loginUser]);
 
   let menu = settingMenu;
@@ -145,7 +143,6 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
     const { result, error } = await nextApi.patch("user/notification", {
       reply,
       mention,
-      thumbsUp,
     });
     if (result) {
       dispatch(fetchUserProfile());
@@ -172,10 +169,6 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
             <ToggleItem>
               <div>Notify me about mentions</div>
               <Toggle disabled={disabled} isOn={mention} onToggle={changeGuard(setMention)} />
-            </ToggleItem>
-            <ToggleItem>
-              <div>Notify me about supports on my comments</div>
-              <Toggle disabled={disabled} isOn={thumbsUp} onToggle={changeGuard(setThumbsUp)} />
             </ToggleItem>
           </div>
           <Divider />

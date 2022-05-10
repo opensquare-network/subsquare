@@ -11,11 +11,11 @@ import {
   Title,
   ContentWrapper,
   Divider,
-} from "components/setting/styled";
-import Username from "components/setting/username";
-import Email from "components/setting/email";
-import Password from "components/setting/password";
-import Logout from "components/setting/logout";
+} from "next-common/components/setting/styled";
+import Username from "next-common/components/setting/username";
+import Email from "next-common/components/setting/email";
+import Password from "next-common/components/setting/password";
+import Logout from "next-common/components/setting/logout";
 import { useRouter } from "next/router";
 import { isKeyRegisteredUser } from "utils";
 

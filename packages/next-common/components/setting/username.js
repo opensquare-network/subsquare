@@ -1,8 +1,9 @@
-import Input from "next-common/components/input";
+import React from "react";
+import Input from "../input";
 import {
   Label,
   InputWrapper,
-} from "components/setting/styled";
+} from "./styled";
 
 export default function Username({ username }) {
   return (
