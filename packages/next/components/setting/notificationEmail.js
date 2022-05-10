@@ -93,7 +93,10 @@ export default function NotificationEmail({ email, verified }) {
         <Input
           defaultValue={inputEmail}
           post={emailVerified}
-          onChange={(e) => setInputEmail(e.target.value)}
+          onChange={(e) => {
+            setInputEmail(e.target.value);
+            setResendErrors();
+          }}
         />
         {counting ? (
           <CountdownWrapper>{countdown}s</CountdownWrapper>
