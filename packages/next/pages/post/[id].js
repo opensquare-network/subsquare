@@ -51,20 +51,30 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       return await Promise.all(
         (users || []).map(async (user) => {
           if (user.startsWith("polkadot-key-0x")) {
+            const address = encodeAddressToChain(
+              Buffer.from(publicKey, "hex"),
+              chain
+            );
+
+            let displayName;
+
             const identityChain = nodes.find(
               (n) => n.value === chain
             )?.identity;
-            if (!identityChain) return;
-
-            const publicKey = user.substr(15);
-            const address = encodeAddressToChain(
-              Buffer.from(publicKey, "hex"),
-              identityChain
-            );
-            const identity = await fetchIdentity(identityChain, address);
-            const displayName = identity?.info?.displayParent
-              ? `${identity?.info?.displayParent}/${identity?.info?.display}`
-              : identity?.info?.display;
+            if (identityChain) {
+              const publicKey = user.substr(15);
+              const identityAddress = encodeAddressToChain(
+                Buffer.from(publicKey, "hex"),
+                identityChain
+              );
+              const identity = await fetchIdentity(
+                identityChain,
+                identityAddress
+              );
+              displayName = identity?.info?.displayParent
+                ? `${identity?.info?.displayParent}/${identity?.info?.display}`
+                : identity?.info?.display;
+            }
 
             const name = displayName || addressEllipsis(address);
             return {
