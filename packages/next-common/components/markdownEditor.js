@@ -202,7 +202,7 @@ export const StyledTextArea = styled.div`
   }
 `;
 
-const loadSuggestions = async (text) => {
+const getLoadSuggestions = (users) => async (text) => {
   return new Promise((accept) => {
     const suggestions = (users || [])
       .map((user) => ({
@@ -226,19 +226,23 @@ const MarkdownEditor = ({
 }) => {
   const ref = useRef();
   const [focused, setFocused] = useState(false);
+  const [userResized, setUserResized] = useState(false);
 
   useEffect(() => {
     const textarea = ref?.current?.finalRefs?.textarea?.current;
     if (textarea) {
       // MutationObserver is the modern way to observe element resize event
-      const observer =  new MutationObserver(()=>{
-        console.log(parseInt(textarea?.style?.height) - textarea?.scrollHeight );
-        // keep user resized editor height in memory
-        setEditorHeight(parseInt(textarea?.style?.height));
+      const observer = new MutationObserver((record) => {
+        //TODO: maybe we can debounce this to improve performance
+        //no value changed && height change => user resized manually
+        if (record[0].target.value === content) {
+          setUserResized(true);
+          setEditorHeight(parseInt(textarea?.style?.height));
+        }
         observer.disconnect();
       });
       observer.observe(textarea, {
-        attributes: true, attributeFilter: [ "style" ]
+        attributes: true, attributeFilter: ["style"]
       });
     }
   }, [height, setEditorHeight]);
@@ -255,14 +259,14 @@ const MarkdownEditor = ({
         value={content}
         onChange={(content) => {
           const textarea = ref?.current?.finalRefs?.textarea?.current;
-          if (textarea) {
+          if (textarea && !userResized) {
             textarea.style.height = `${initialHeight}px`;
             textarea.style.height = `${textarea.scrollHeight}px`;
             setEditorHeight(textarea.scrollHeight);
           }
           setContent(content);
         }}
-        loadSuggestions={loadSuggestions}
+        loadSuggestions={getLoadSuggestions(users)}
         toolbarCommands={[
           [
             "header",
