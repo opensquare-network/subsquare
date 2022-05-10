@@ -27,7 +27,7 @@ export default function ReferendumMetadata({
 
   const proposerElement = (
     <>
-      <User add={proposer} fontSize={14} />
+      <User add={proposer} fontSize={14} chain={chain} />
       <Links chain={chain} address={proposer} style={{ marginLeft: 8 }} />
     </>
   );
