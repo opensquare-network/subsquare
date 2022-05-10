@@ -57,6 +57,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       return await Promise.all(
         (users || []).map(async (user) => {
           if (user.startsWith("polkadot-key-0x")) {
+            const publicKey = user.substr(15);
             const address = encodeAddressToChain(
               Buffer.from(publicKey, "hex"),
               chain
@@ -68,7 +69,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
               (n) => n.value === chain
             )?.identity;
             if (identityChain) {
-              const publicKey = user.substr(15);
               const identityAddress = encodeAddressToChain(
                 Buffer.from(publicKey, "hex"),
                 identityChain
