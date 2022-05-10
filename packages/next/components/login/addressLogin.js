@@ -63,7 +63,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
           if(loginResult.email){
             router.replace("/");
           }else {
-            router.replace("/web3setemail");
+            router.replace("/email");
           }
         }
         if (loginError) {
