@@ -1,5 +1,6 @@
+import React from "react";
 import styled from "styled-components";
-import { shadow_100 } from "styles/componentCss";
+import { shadow_100 } from "../../styles/componentCss";
 
 export const Wrapper = styled.div`
   max-width: 848px;

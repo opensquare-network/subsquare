@@ -1,20 +1,21 @@
+import React from "react";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { isWeb3Injected, web3Enable } from "@polkadot/extension-dapp";
 import { useRouter } from "next/router";
 
-import AddressSelect from "next-common/components/addressSelect";
-import Button from "next-common/components/button";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import DownloadExtension from "next-common/components/downloadExtension";
-import nextApi from "next-common/services/nextApi";
-import ErrorText from "next-common/components/ErrorText";
-import { setUser } from "next-common/store/reducers/userSlice";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { encodeAddressToChain } from "next-common/services/address";
-import { signMessage } from "next-common/services/extension/signMessage";
-import { polkadotWeb3Accounts } from "next-common/utils/extensionAccount";
+import AddressSelect from "../addressSelect";
+import Button from "../button";
+import useIsMounted from "../../utils/hooks/useIsMounted";
+import DownloadExtension from "../downloadExtension";
+import nextApi from "../../services/nextApi";
+import ErrorText from "../ErrorText";
+import { setUser } from "../../store/reducers/userSlice";
+import { newErrorToast } from "../../store/reducers/toastSlice";
+import { encodeAddressToChain } from "../../services/address";
+import { signMessage } from "../../services/extension/signMessage";
+import { polkadotWeb3Accounts } from "../../utils/extensionAccount";
 
 const Label = styled.div`
   font-weight: bold;
@@ -31,7 +32,7 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-export default function AddressLogin({ chain, onBack }) {
+export default function AddressLogin({ chain, setMailLogin }) {
   const isMounted = useIsMounted();
   const [accounts, setAccounts] = useState([]);
   const [hasExtension, setHasExtension] = useState(true);
@@ -93,7 +94,10 @@ export default function AddressLogin({ chain, onBack }) {
           address,
           meta: { name },
         } = item;
-        return { address, name };
+        return {
+          address,
+          name,
+        };
       });
 
       if (isMounted.current) {
@@ -132,7 +136,7 @@ export default function AddressLogin({ chain, onBack }) {
             Next
           </Button>
         )}
-        <Button isFill onClick={onBack}>
+        <Button isFill onClick={setMailLogin}>
           Login with username
         </Button>
       </ButtonWrapper>

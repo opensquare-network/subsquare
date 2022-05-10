@@ -1,11 +1,12 @@
+import React from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import Button from "next-common/components/button";
-import { logout } from "next-common/store/reducers/userSlice";
+import Button from "../button";
+import { logout } from "../../store/reducers/userSlice";
 import {
   Label,
   ButtonWrapper,
-} from "components/setting/styled";
+} from "./styled";
 
 export default function Logout() {
   const dispatch = useDispatch();

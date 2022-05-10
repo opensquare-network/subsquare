@@ -1,14 +1,15 @@
+import React from "react";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import Input from "next-common/components/input";
-import Button from "next-common/components/button";
-import ErrorText from "next-common/components/ErrorText";
-import nextApi from "next-common/services/nextApi";
-import { newSuccessToast } from "next-common/store/reducers/toastSlice";
-import { fetchUserProfile } from "next-common/store/reducers/userSlice";
-import { Label, InputWrapper, EmailVerify } from "components/setting/styled";
-import useCountdown from "next-common/utils/hooks/useCountdown";
+import Input from "../input";
+import Button from "../button";
+import ErrorText from "../ErrorText";
+import nextApi from "../../services/nextApi";
+import { newSuccessToast } from "../../store/reducers/toastSlice";
+import { fetchUserProfile } from "../../store/reducers/userSlice";
+import { Label, InputWrapper, EmailVerify } from "./styled";
+import useCountdown from "../../utils/hooks/useCountdown";
 
 const CountdownWrapper = styled.div`
   display: flex;

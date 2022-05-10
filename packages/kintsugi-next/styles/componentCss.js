@@ -18,6 +18,14 @@ export const shadow_200_right = css`
     0.4px 0 1.46302px rgba(30, 33, 52, 0.0444282);
 `;
 
+export const p_14_normal = css`
+  font-family: Inter, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 140%;
+`;
+
 export const p_14_medium = css`
   font-family: Inter, sans-serif;
   font-style: normal;

@@ -10,11 +10,11 @@ import {
   ContentCenterWrapper,
   Title,
   LinkWrapper,
-} from "components/login/styled";
-import MailLogin from "components/login/mailLogin";
+} from "next-common/components/login/styled";
+import MailLogin from "next-common/components/login/mailLogin";
 import { p_14_normal } from "../styles/componentCss";
 
-const AddressLogin = dynamic(() => import("components/login/addressLogin"), {
+const AddressLogin = dynamic(() => import("next-common/components/login/addressLogin"), {
   ssr: false,
 });
 
