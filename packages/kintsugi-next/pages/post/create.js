@@ -173,6 +173,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
             {contentType === "markdown" && (
               <MarkdownEditor
                 height={editorHeight}
+                initialHeight={300}
                 setEditorHeight={setEditorHeight}
                 content={content}
                 setContent={setContent}
