@@ -10,7 +10,7 @@ import { newSuccessToast } from "../../store/reducers/toastSlice";
 import {
   Label,
   InputWrapper,
-} from "components/setting/styled";
+} from "./styled";
 
 export default function Password() {
   const dispatch = useDispatch();
