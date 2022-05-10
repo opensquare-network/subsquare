@@ -122,7 +122,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
             api={api}
             proposer={detail?.proposer}
             status={referendumStatus}
-            preimage={detail?.onchainData?.preImage}
+            call={
+              detail?.onchainData?.preImage?.call || detail?.onchainData?.call
+            }
             chain={chain}
             onchainData={detail?.onchainData}
           />

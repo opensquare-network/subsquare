@@ -55,6 +55,12 @@ export function getTimelineStatus(type, method) {
         case "TipClosed":
           return { value: "Tip Closed" };
       }
+      break;
+    case "proposal":
+      switch (method) {
+        case "clearPublicProposals":
+          return { value: "Cleared" };
+      }
   }
   return { value: method };
 }

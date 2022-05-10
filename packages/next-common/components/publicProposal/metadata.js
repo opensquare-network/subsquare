@@ -52,11 +52,12 @@ export default function Metadata({ publicProposal, chain }) {
     ],
   ];
 
-  if (publicProposal?.preImage) {
+  let call = publicProposal?.preImage?.call || publicProposal?.call;
+  if (call) {
     metadata.push([
       <Proposal
         key={"index-proposal"}
-        motion={{ proposal: publicProposal.preImage.call }}
+        motion={{ proposal: call }}
         chain={chain}
       />,
     ]);
