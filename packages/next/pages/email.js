@@ -139,8 +139,6 @@ export default withLoginUserRedux(({loginUser, chain}) => {
         token: pin,
       });
       if (res.result) {
-        setVerifySent(true);
-        counter.startCountdown();
         dispatch(
           newSuccessToast(
             "Verification code has been confirmed, you can subscribe for notifications now."
