@@ -44,7 +44,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     loginUser?.preference.editor || "markdown"
   );
   const [referendumStatus, setReferendumStatus] = useState(
-    detail?.onchainData?.status || detail?.onchainData?.info?.ongoing
+    detail?.onchainData?.status ||
+      detail?.onchainData?.info?.ongoing ||
+      detail?.onchainData?.meta
   );
   const isMounted = useIsMounted();
   const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] =
@@ -68,9 +70,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     api?.query.democracy
       .referendumInfoOf(detail?.referendumIndex)
       .then((referendumInfo) => {
-        const referendumInfoData = referendumInfo.toJSON();
-        if (isMounted.current) {
-          setReferendumStatus(referendumInfoData?.ongoing);
+        const data = referendumInfo.toJSON();
+        if (data?.ongoing && isMounted.current) {
+          setReferendumStatus(data?.ongoing);
         }
       })
       .finally(() => {
