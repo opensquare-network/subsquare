@@ -9,17 +9,13 @@ import {
 } from "next-common/components/login/styled";
 import { p_14_normal } from "../styles/componentCss";
 import { Option } from "next-common/components/addressSelect";
-import Input from "next-common/components/input";
-import FlexBetween from "next-common/components/styled/flexBetween";
 import { useEffect, useState } from "react";
 import Button from "next-common/components/button";
 import { useRouter } from "next/router";
-import useCountdown from "next-common/utils/hooks/useCountdown";
-import nextApi from "next-common/services/nextApi";
-import { newErrorToast, newSuccessToast } from "next-common/store/reducers/toastSlice";
-import { useDispatch } from "react-redux";
-import { nodes } from "next-common/utils/constants";
-import { encodeAddressToChain } from "next-common/services/address";
+import VerifyEmail from "next-common/components/login/verifyEmail";
+import EmailInput from "next-common/components/login/emailInput";
+import ConfirmEmail from "next-common/components/login/confirmEmail";
+import useIdentity from "next-common/utils/hooks/useIdentity";
 
 const Label = styled.div`
   font-weight: bold;
@@ -46,165 +42,67 @@ const Hint = styled.p`
   padding: 12px 16px;
   ${p_14_normal};
   color: #506176;
-  background: #F6F7FA;
-`
-
-const SubButton = styled.button`
-  all: unset;
-  font-size: 12px;
-  font-weight: 500;
-  color: #6848FF;
-  cursor: pointer;
+  background: #f6f7fa;
 `;
 
-const Text = styled.span`
-  color: #9DA9BB;
-`
-
-export default withLoginUserRedux(({loginUser, chain}) => {
-  const address = loginUser?.addresses?.find(address => address.chain === chain)?.address
-  const [identity, setIdentity] = useState();
-  const [loading, setLoading] = useState(false);
-  const [verifySent, setVerifySent] = useState(false);
+export default withLoginUserRedux(({ loginUser, chain }) => {
+  const address = loginUser?.addresses?.find(
+    (address) => address.chain === chain
+  )?.address;
   const [errors, setErrors] = useState();
   const [email, setEmail] = useState("");
   const [pin, setPin] = useState("");
+
+  const identity = useIdentity(address, chain);
+
   const router = useRouter();
-  const counter = useCountdown(60);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (loginUser === null) {
       router.push("/login");
-    }else if (!address){
+    } else if (!address) {
       router.push("/");
     }
   }, [address, loginUser, router]);
 
-  //todo: extract this into a hook useIdentityEmail()
-  useEffect(() => {
-    const identityChain = nodes.find((n) => n.value === chain)?.identity;
-    if (!identityChain) return;
-    const identityAddress = encodeAddressToChain(address, identityChain);
-    fetch(`${process.env.NEXT_PUBLIC_IDENTITY_SERVER_HOST}/${identityChain}/identity/${identityAddress}`,)
-      .then((res) => res.json())
-      .then((identity) => {
-        const isAuthorized = identity?.info?.judgements?.some(
-          ([, judgement]) =>
-            typeof judgement === "object" &&
-            Object.keys(judgement).some((key) =>
-              ["reasonable", "knownGood"].includes(key)
-            )
-        );
-        setIdentity({isAuthorized, ...identity})
-      })
-      .catch(() => {
-      });
-  }, [address, chain]);
-
-  useEffect(() => {
-    if (counter.countdown === 0) {
-      setVerifySent(false);
-    }
-  }, [counter.countdown, verifySent]);
-
-  const send = async () => {
-    const res = await nextApi.post("user/setemail", {
-      email,
-      sendCode: true,
-    });
-    if (res.result) {
-      setVerifySent(true);
-      counter.startCountdown();
-      dispatch(
-        newSuccessToast(
-          "The verification code has been send to your email, Please check."
-        )
-      );
-    } else if (res.error) {
-      setErrors(res.error);
-    }
-  };
-
-  const submit = async () => {
-    try {
-      setLoading(true);
-      //an identified email address will be bind right after called user/setemail
-      if (identity?.info?.email === email && identity?.isAuthorized) {
-        await send();
-        return router.replace("/");
-      }
-      const res = await nextApi.post("auth/verify", {
-        email,
-        token: pin,
-      });
-      if (res.result) {
-        dispatch(
-          newSuccessToast(
-            "Verification code has been confirmed, you can subscribe for notifications now."
-          )
-        );
-        router.replace("/");
-      } else if (res.error) {
-        setErrors(res.error);
-      }
-    } catch (e) {
-      dispatch(newErrorToast(e.message));
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <Layout user={loginUser} chain={chain}>
-      <NextHead title={`Set Email`} desc={`Set Email`}/>
+      <NextHead title={`Set Email`} desc={`Set Email`} />
       <Wrapper>
         <ContentCenterWrapper>
           <Title>Login {` with Web3 address`}</Title>
           <Hint>Set email for receiving notifications</Hint>
           <Label>Web3 address</Label>
-          <Option item={{address}} chain={chain} selected/>
-          <FlexBetween>
-            <Label>Email</Label>
-            {
-              identity?.info?.email &&
-              <SubButton onClick={() => setEmail(identity?.info?.email)}>Use identity email</SubButton>
-            }
-          </FlexBetween>
-          <Input
-            placeholder="Please fill email"
-            name="email"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              setErrors(null);
-            }}
-            error={errors?.data?.email}
+          <Option item={{ address }} chain={chain} selected />
+          <EmailInput
+            identity={identity}
+            email={email}
+            setEmail={setEmail}
+            errors={errors}
+            setErrors={setErrors}
           />
-          {
-            email && (email !== identity?.info?.email || !identity?.isAuthorized) && <>
-              <FlexBetween>
-                <Label>Verify Email</Label>
-                {verifySent ? <Text>{counter.countdown}</Text> : <SubButton onClick={send}>Send Code</SubButton>}
-              </FlexBetween>
-              <Input
-                placeholder="Please fill PIN code"
-                name="pin"
-                value={pin}
-                onChange={(e) => {
-                  setPin(e.target.value);
-                  setErrors(null);
-                }}
-                error={errors?.data?.token}
+          {email &&
+            (email !== identity?.info?.email || !identity?.isAuthorized) && (
+              <VerifyEmail
+                pin={pin}
+                setPin={setPin}
+                email={email}
+                errors={errors}
+                setErrors={setErrors}
               />
-            </>
-          }
-          <Button isFill secondary type="submit" onClick={submit} isLoading={loading}>
-            Confirm
-          </Button>
-          <Button isFill onClick={() => {
-            router.replace("/")
-          }}>
+            )}
+          <ConfirmEmail
+            pin={pin}
+            email={email}
+            identity={identity}
+            setErrors={setErrors}
+          />
+          <Button
+            isFill
+            onClick={() => {
+              router.replace("/");
+            }}
+          >
             Remind me later
           </Button>
         </ContentCenterWrapper>
