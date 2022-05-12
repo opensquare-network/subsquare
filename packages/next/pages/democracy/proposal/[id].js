@@ -10,7 +10,7 @@ import Editor from "next-common/components/comment/editor";
 import { useRef, useState } from "react";
 import Layout from "components/layout";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
-import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
+import { getFocusEditor, getMentionList, getOnReply } from "next-common/utils/post";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";

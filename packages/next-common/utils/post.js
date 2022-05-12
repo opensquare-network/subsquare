@@ -1,7 +1,7 @@
-import { fetchIdentity } from "next-common//services/identity";
-import { addressEllipsis } from "next-common/utils";
-import { encodeAddressToChain } from "next-common/services/address";
-import { nodes } from "next-common/utils/constants";
+import { fetchIdentity } from "../services/identity";
+import { addressEllipsis } from ".";
+import { encodeAddressToChain } from "../services/address";
+import { nodes } from "./constants";
 
 export function getMentionList(comments) {
   function isUniqueInArray(value, index, self) {

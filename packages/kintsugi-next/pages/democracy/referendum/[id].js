@@ -13,7 +13,7 @@ import DetailItem from "components/detailItem";
 import Vote from "components/referenda/vote";
 import Timeline from "next-common/components/timeline";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
-import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
+import { getFocusEditor, getMentionList, getOnReply } from "next-common/utils/post";
 import { isSafari } from "utils/serverSideUtil";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";

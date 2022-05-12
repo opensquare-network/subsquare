@@ -15,7 +15,7 @@ import Links from "next-common/components/links";
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import { getTimelineStatus } from "utils";
-import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
+import { getFocusEditor, getMentionList, getOnReply } from "next-common/utils/post";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_TREASURY_PROPOSAL } from "utils/viewConstants";
