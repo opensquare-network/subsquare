@@ -72,15 +72,15 @@ export function getOnReply(
   focusEditor,
   chain,
 ) {
-  return (username) => {
-    if (!username) {
+  return (user) => {
+    if (!user) {
       return focusEditor();
     }
 
-    getMentionName(username, chain).then((name) => {
+    getMentionName(user, chain).then((name) => {
       let reply = "";
       if (contentType === "markdown") {
-        reply = `[@${name}](/member/${username}) `;
+        reply = `[@${name}](/member/${user.username}) `;
         const at = content ? `${reply}` : reply;
         if (content === reply) {
           setContent(``);
@@ -96,7 +96,7 @@ export function getOnReply(
                 mention: {
                   index: "0",
                   denotationChar: "@",
-                  id: username,
+                  id: user.username,
                   value: name + " &nbsp; ",
                 },
               },
