@@ -28,16 +28,17 @@ export function getFocusEditor(contentType, editorWrapperRef, quillRef) {
 
 export async function getMentionName(user, chain) {
   let address;
-  let username;
+  let mentionName;
   if (user.username.startsWith("polkadot-key-0x")) {
     const publicKey = user.username.substr(15);
     address = encodeAddressToChain(
       Buffer.from(publicKey, "hex"),
       chain
     );
+    mentionName = addressEllipsis(address);
   } else {
-    address = user[`${chain}Address`];
-    username = user.username;
+    address = user.addresses.find(item => item.chain === chain)?.address;
+    mentionName = user.username;
   }
 
   let displayName;
@@ -59,7 +60,7 @@ export async function getMentionName(user, chain) {
       : identity?.info?.display;
   }
 
-  const name = displayName || username || addressEllipsis(address);
+  const name = displayName || mentionName;
   return name;
 }
 

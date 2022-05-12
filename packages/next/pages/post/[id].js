@@ -54,7 +54,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           const name = await getMentionName(user, chain);
           return {
             name,
-            value: user,
+            value: user.username,
           };
         })
       );
