@@ -12,6 +12,7 @@ import { isMotionEnded } from "next-common/utils";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import toApiCouncil from "./toApiCouncil";
 import { EditablePanel } from "next-common/components/styled/panel";
+import Chains from "next-common/utils/consts/chains";
 
 export default function MotionDetail({ user, motion, onReply, chain, type }) {
   const isMounted = useIsMounted();
@@ -40,20 +41,29 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
         (item) => item.method === "Voted"
       );
       if (hasVoted) {
-        return Array.from(
+        const timeline = post.onchainData.timeline || [];
+        const voters = Array.from(
           new Map(
-            post.onchainData.timeline
+            timeline
               .filter((item) => item.method === "Voted")
               .map((item) => [item.args.voter, item.args.approve])
           )
         );
+
+        // special data, in kusama before motion 345, proposer has a default aye vote
+        if (Chains.kusama === chain && post.onchainData.index < 345) {
+          const proposed = timeline.find((item) => item.method === "Proposed");
+          voters.unshift([proposed.args.proposer, true]);
+        }
+
+        return voters;
       }
 
       return [[post.onchainData.proposer, true]];
     }
 
     return [];
-  }, [post]);
+  }, [post, chain]);
 
   const [votes, setVotes] = useState(dbVotes);
   const [readOnchainVotes, setReadOnchainVotes] = useState(0);
