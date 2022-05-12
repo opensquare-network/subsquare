@@ -8,15 +8,11 @@ import { EmptyList } from "next-common/utils/constants";
 import Editor from "next-common/components/comment/editor";
 import { useState, useRef, useEffect } from "react";
 import Layout from "components/layout";
-import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
+import { getFocusEditor, getMentionList, getOnReply, getMentionName } from "utils/post";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_POST } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
-import { fetchIdentity } from "next-common//services/identity";
-import { addressEllipsis } from "next-common/utils";
-import { encodeAddressToChain } from "next-common/services/address";
-import { nodes } from "next-common/utils/constants";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -53,40 +49,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     const loadSuggestions = async () => {
       return await Promise.all(
         (users || []).map(async (user) => {
-          if (user.startsWith("polkadot-key-0x")) {
-            const publicKey = user.substr(15);
-            const address = encodeAddressToChain(
-              Buffer.from(publicKey, "hex"),
-              chain
-            );
-
-            let displayName;
-
-            const identityChain = nodes.find(
-              (n) => n.value === chain
-            )?.identity;
-            if (identityChain) {
-              const identityAddress = encodeAddressToChain(
-                Buffer.from(publicKey, "hex"),
-                identityChain
-              );
-              const identity = await fetchIdentity(
-                identityChain,
-                identityAddress
-              );
-              displayName = identity?.info?.displayParent
-                ? `${identity?.info?.displayParent}/${identity?.info?.display}`
-                : identity?.info?.display;
-            }
-
-            const name = displayName || addressEllipsis(address);
-            return {
-              name,
-              value: user,
-            };
-          }
+          const name = await getMentionName(user, chain);
           return {
-            name: user,
+            name,
             value: user,
           };
         })
@@ -105,7 +70,8 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     content,
     setContent,
     quillRef,
-    focusEditor
+    focusEditor,
+    chain,
   );
 
   const desc = getMetaDesc(detail, "Discussion");
