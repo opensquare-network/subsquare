@@ -10,7 +10,7 @@ import { EmptyList } from "next-common/utils/constants";
 import { getTimelineStatus, getNode, toPrecision } from "utils";
 import { TYPE_TREASURY_TIP } from "utils/viewConstants";
 import { getMetaDesc, getTipState } from "utils/viewfuncs";
-import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
+import { getFocusEditor, getMentionList, getOnReply } from "next-common/utils/post";
 import { to404 } from "next-common/utils/serverSideUtil";
 
 import Back from "next-common/components/back";

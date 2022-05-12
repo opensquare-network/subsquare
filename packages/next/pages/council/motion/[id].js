@@ -17,7 +17,7 @@ import {
   getFocusEditor,
   getMentionList,
   getOnReply,
-} from "../../../utils/post";
+} from "next-common/utils/post";
 import { useRef, useState } from "react";
 
 const Wrapper = styled.div`

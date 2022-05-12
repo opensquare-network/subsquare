@@ -6,7 +6,7 @@ import TechcommMotionDetail from "components/motion/techcommMotionDetail";
 import { TYPE_TECH_COMM_MOTION } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
 import SEO from "next-common/components/SEO";
-import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
+import { getFocusEditor, getMentionList, getOnReply } from "next-common/utils/post";
 import { useRef, useState } from "react";
 import Comments from "next-common/components/comment";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
