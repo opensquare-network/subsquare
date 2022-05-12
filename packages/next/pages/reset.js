@@ -20,7 +20,7 @@ import {
   Label,
   InfoWrapper,
   Redirect,
-} from "components/login/styled";
+} from "next-common/components/login/styled";
 
 const Wrapper = styled.div`
   padding: 32px 0;
