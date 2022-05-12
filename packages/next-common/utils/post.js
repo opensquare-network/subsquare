@@ -2,17 +2,14 @@ import { fetchIdentity } from "../services/identity";
 import { addressEllipsis } from ".";
 import { encodeAddressToChain } from "../services/address";
 import { nodes } from "./constants";
+import uniqBy from "lodash.uniqby";
 
 export function getMentionList(comments) {
-  function isUniqueInArray(value, index, self) {
-    return self.indexOf(value) === index;
-  }
-
   return (
-    comments?.items
-      ?.map((comment) => comment.author?.username)
-      .filter(item => !!item)
-      .filter(isUniqueInArray) ?? []
+    uniqBy(
+      comments?.items?.map((comment) => comment.author).filter(author => !!author) ?? [],
+      (item) => item.username
+    )
   );
 }
 
@@ -29,16 +26,19 @@ export function getFocusEditor(contentType, editorWrapperRef, quillRef) {
   };
 }
 
-export async function getMentionName(username, chain) {
-  if (!username.startsWith("polkadot-key-0x")) {
-    return username;
+export async function getMentionName(user, chain) {
+  let address;
+  let username;
+  if (user.username.startsWith("polkadot-key-0x")) {
+    const publicKey = user.username.substr(15);
+    address = encodeAddressToChain(
+      Buffer.from(publicKey, "hex"),
+      chain
+    );
+  } else {
+    address = user[`${chain}Address`];
+    username = user.username;
   }
-
-  const publicKey = username.substr(15);
-  const address = encodeAddressToChain(
-    Buffer.from(publicKey, "hex"),
-    chain
-  );
 
   let displayName;
 
@@ -47,7 +47,7 @@ export async function getMentionName(username, chain) {
   )?.identity;
   if (identityChain) {
     const identityAddress = encodeAddressToChain(
-      Buffer.from(publicKey, "hex"),
+      address,
       identityChain
     );
     const identity = await fetchIdentity(
@@ -59,7 +59,7 @@ export async function getMentionName(username, chain) {
       : identity?.info?.display;
   }
 
-  const name = displayName || addressEllipsis(address);
+  const name = displayName || username || addressEllipsis(address);
   return name;
 }
 

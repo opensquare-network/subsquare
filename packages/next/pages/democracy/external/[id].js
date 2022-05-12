@@ -42,7 +42,8 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     content,
     setContent,
     quillRef,
-    focusEditor
+    focusEditor,
+    chain,
   );
 
   detail.status = detail?.onchainData?.state?.state;

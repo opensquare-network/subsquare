@@ -93,7 +93,8 @@ export default withLoginUserRedux(
       content,
       setContent,
       quillRef,
-      focusEditor
+      focusEditor,
+      chain,
     );
 
     detail.status = detail.onchainData?.state?.state;

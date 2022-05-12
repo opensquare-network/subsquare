@@ -205,7 +205,8 @@ export default withLoginUserRedux(
       content,
       setContent,
       quillRef,
-      focusEditor
+      focusEditor,
+      chain,
     );
 
     detail.status = getTipState({

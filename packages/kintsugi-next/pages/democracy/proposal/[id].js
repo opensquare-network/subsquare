@@ -68,7 +68,8 @@ export default withLoginUserRedux(
       content,
       setContent,
       quillRef,
-      focusEditor
+      focusEditor,
+      chain,
     );
 
     const referendumIndex = detail?.referendumIndex;

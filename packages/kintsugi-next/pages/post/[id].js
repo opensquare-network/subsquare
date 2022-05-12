@@ -15,6 +15,7 @@ import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_POST } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
 import SEO from "next-common/components/SEO";
+import uniqBy from "lodash.uniqby";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -45,11 +46,12 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       return;
     }
 
-    const users = Array.from(
-      new Set([
-        ...(detail.author ? [detail.author.username] : []),
+    const users = uniqBy(
+      [
+        ...(detail.author ? [detail.author] : []),
         ...getMentionList(comments),
-      ])
+      ],
+      (item) => item.username
     );
 
     const loadSuggestions = async () => {

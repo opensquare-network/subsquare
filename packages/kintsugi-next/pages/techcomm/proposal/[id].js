@@ -30,7 +30,8 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
     content,
     setContent,
     quillRef,
-    focusEditor
+    focusEditor,
+    chain,
   );
 
   const desc = getMetaDesc(motion, "Proposal");
