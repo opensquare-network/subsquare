@@ -50,7 +50,10 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     }
 
     const users = Array.from(
-      new Set([detail.author.username, ...getMentionList(comments)])
+      new Set([
+        ...(detail.author ? [detail.author.username] : []),
+        ...getMentionList(comments),
+      ])
     );
 
     const loadSuggestions = async () => {
