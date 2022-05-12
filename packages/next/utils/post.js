@@ -6,6 +6,7 @@ export function getMentionList(comments) {
   return (
     comments?.items
       ?.map((comment) => comment.author?.username)
+      .filter(item => !!item)
       .filter(isUniqueInArray) ?? []
   );
 }
