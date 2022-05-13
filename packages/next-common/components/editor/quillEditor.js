@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import dynamic from "next/dynamic";
+import { font_family_inter } from "../../styles/componentCss";
 
 const MyReactQuill = dynamic(
   () => import("./quill").catch((e) => console.error(e)),
@@ -33,17 +34,10 @@ export const StyledTextArea = styled.div`
     margin-bottom: 8px;
   }
 
-  textarea {
-    color: #000 !important;
-    padding: 0.75rem 1rem !important;
-    line-height: 1.375 !important;
-    outline: none;
-    font-size: 0.875rem;
-  }
-
   .quill {
     overflow: hidden;
     .ql-editor {
+      ${font_family_inter};
       min-height: 100px;
       height: ${(props) => props.height}px;
       max-height: 300px;

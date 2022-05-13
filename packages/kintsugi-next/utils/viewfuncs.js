@@ -44,6 +44,7 @@ export const toTreasuryProposalListItem = (chain, item) => ({
   time: getPostUpdatedAt(item),
   detailLink: `/treasury/proposal/${item.proposalIndex}`,
   value: item.onchainData.value,
+  index: item.proposalIndex,
 });
 
 export const toReferendaListItem = (chain, item) => ({
