@@ -10,7 +10,7 @@ import { EmptyList } from "next-common/utils/constants";
 import { getTimelineStatus, getNode, toPrecision } from "utils";
 import { TYPE_TREASURY_TIP } from "utils/viewConstants";
 import { getMetaDesc, getTipState } from "utils/viewfuncs";
-import { getFocusEditor, getMentionList, getOnReply } from "next-common/utils/post";
+import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { to404 } from "next-common/utils/serverSideUtil";
 
 import Back from "next-common/components/back";
@@ -28,6 +28,7 @@ import KVList from "next-common/components/listInfo/kvList";
 import Links from "next-common/components/links";
 import ReasonLink from "next-common/components/reasonLink";
 import Tipper from "components/tipper";
+import useMentionList from "next-common/utils/hooks/useMentionList";
 
 const Wrapper = styled.div`
   flex: 1;
@@ -196,7 +197,7 @@ export default withLoginUserRedux(
       timeline = getClosedTimelineData(timeline);
     }
 
-    const users = getMentionList(comments);
+    const users = useMentionList(detail, comments, chain);
 
     const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 

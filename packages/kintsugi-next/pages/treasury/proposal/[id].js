@@ -15,7 +15,7 @@ import Links from "next-common/components/links";
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import { getTimelineStatus } from "utils";
-import { getFocusEditor, getMentionList, getOnReply } from "next-common/utils/post";
+import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_TREASURY_PROPOSAL } from "utils/viewConstants";
@@ -25,6 +25,7 @@ import SEO from "next-common/components/SEO";
 import KVList from "next-common/components/listInfo/kvList";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
+import useMentionList from "next-common/utils/hooks/useMentionList";
 
 const Flex = styled.div`
   display: flex;
@@ -101,7 +102,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   });
   sortTimeline(timelineData);
 
-  const users = getMentionList(comments);
+  const users = useMentionList(detail, comments, chain);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 

@@ -13,7 +13,7 @@ import DetailItem from "components/detailItem";
 import Vote from "components/referenda/vote";
 import Timeline from "next-common/components/timeline";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
-import { getFocusEditor, getMentionList, getOnReply } from "next-common/utils/post";
+import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { isSafari } from "utils/serverSideUtil";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
@@ -24,6 +24,7 @@ import { getMetaDesc } from "utils/viewfuncs";
 import SEO from "next-common/components/SEO";
 import OutWrapper from "next-common/components/styled/outWrapper";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
+import useMentionList from "next-common/utils/hooks/useMentionList";
 
 const Wrapper = styled.div`
   margin-right: 312px;
@@ -85,6 +86,8 @@ export default withLoginUserRedux(
           setIsLoadingReferendumStatus(false);
         });
     }, [api, detail, isMounted, voteFinished]);
+
+    const users = useMentionList(detail, comments, chain);
 
     const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
@@ -153,7 +156,7 @@ export default withLoginUserRedux(
                     setContentType,
                     content,
                     setContent,
-                    users: getMentionList(comments),
+                    users,
                   }}
                   type={TYPE_DEMOCRACY_REFERENDUM}
                 />
