@@ -26,6 +26,20 @@ export function getFocusEditor(contentType, editorWrapperRef, quillRef) {
   };
 }
 
+export function getMemberId(user, chain) {
+  if (user.username.startsWith("polkadot-key-0x")) {
+    const publicKey = user.username.substr(15);
+    const address = encodeAddressToChain(
+      Buffer.from(publicKey, "hex"),
+      chain
+    );
+    return address;
+  } else {
+    const address = user.addresses.find(item => item.chain === chain)?.address;
+    return address || user.username;
+  }
+}
+
 export async function getMentionName(user, chain) {
   let address;
   let mentionName;
@@ -96,7 +110,7 @@ export function getOnReply(
                 mention: {
                   index: "0",
                   denotationChar: "@",
-                  id: user.username,
+                  id: getMemberId(user, chain),
                   value: name + " &nbsp; ",
                 },
               },
