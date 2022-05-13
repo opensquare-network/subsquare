@@ -15,10 +15,10 @@ import OutWrapper from "next-common/components/styled/outWrapper";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import {
   getFocusEditor,
-  getMentionList,
   getOnReply,
-} from "../../../utils/post";
+} from "next-common/utils/post";
 import { useRef, useState } from "react";
+import useMentionList from "next-common/utils/hooks/useMentionList";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -35,7 +35,7 @@ const Wrapper = styled.div`
 `;
 
 export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
-  const users = getMentionList(comments);
+  const users = useMentionList(motion, comments, chain);
   motion.status = motion.state?.state;
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
@@ -49,7 +49,8 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
     content,
     setContent,
     quillRef,
-    focusEditor
+    focusEditor,
+    chain,
   );
 
   const desc = getMetaDesc(motion, "Financial Motion");

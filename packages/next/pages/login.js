@@ -10,10 +10,11 @@ import {
   ContentCenterWrapper,
   Title,
   LinkWrapper,
-} from "components/login/styled";
-import MailLogin from "components/login/mailLogin";
+} from "next-common/components/login/styled";
+import MailLogin from "next-common/components/login/mailLogin";
+import { p_14_normal } from "../styles/componentCss";
 
-const AddressLogin = dynamic(() => import("components/login/addressLogin"), {
+const AddressLogin = dynamic(() => import("next-common/components/login/addressLogin"), {
   ssr: false,
 });
 
@@ -26,20 +27,29 @@ const Wrapper = styled.div`
   justify-content: space-between;
 `;
 
-export default withLoginUserRedux(({ loginUser, chain }) => {
-  const [web3, setWeb3] = useState(false);
+const Hint = styled.p`
+  padding: 12px 16px;
+${p_14_normal};
+  color: #506176;
+  background: #F6F7FA;
+`
 
+export default withLoginUserRedux(({ loginUser, chain }) => {
+  const [web3, setWeb3] = useState(true);
   return (
     <Layout user={loginUser} chain={chain} isWeb3Login={web3}>
       <NextHead title={`Login`} desc={`Login`} />
       <Wrapper>
         <ContentCenterWrapper>
-          <Title>Login</Title>
+          <Title>Login {web3 && ` with Web3 address`}</Title>
+          {web3 && <Hint>Under the {chain} Network</Hint>}
           {!web3 && <MailLogin setAddressLogin={() => setWeb3(true)} />}
           {web3 && <AddressLogin chain={chain} setMailLogin={() => setWeb3(false)} />}
-          <LinkWrapper>
-            Don’t have a account? <Link href="/signup">Sign up</Link>
-          </LinkWrapper>
+          {
+            !web3 && <LinkWrapper>
+              Don’t have a account? <Link href="/signup">Sign up</Link>
+            </LinkWrapper>
+          }
         </ContentCenterWrapper>
       </Wrapper>
     </Layout>

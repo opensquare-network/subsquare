@@ -8,7 +8,8 @@ import { EmptyList } from "next-common/utils/constants";
 import Editor from "next-common/components/comment/editor";
 import { useState, useRef } from "react";
 import Layout from "components/layout";
-import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
+import { getFocusEditor, getOnReply } from "next-common/utils/post";
+import useMentionList from "next-common/utils/hooks/useMentionList";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_POST } from "utils/viewConstants";
@@ -31,8 +32,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const [contentType, setContentType] = useState(
     loginUser?.preference.editor || "markdown"
   );
-
-  const users = getMentionList(comments);
+  const users = useMentionList(detail, comments, chain);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
@@ -41,7 +41,8 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     content,
     setContent,
     quillRef,
-    focusEditor
+    focusEditor,
+    chain,
   );
 
   const desc = getMetaDesc(detail, "Discussion");

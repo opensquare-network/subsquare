@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import styled from "styled-components";
 import { micromark } from "micromark";
 import { gfm, gfmHtml } from "micromark-extension-gfm";
+import { isAddress } from "@polkadot/util-crypto";
 import { matchMdLink } from "../utils";
 import sanitizeHtml from "sanitize-html";
 import { useEffect } from "react";
@@ -129,7 +130,7 @@ const Wrapper = styled.div`
       color: #0974cd;
     }
 
-    a.mention {
+    a.disabled-link {
       color: #506176;
       pointer-events: none;
     }
@@ -193,8 +194,11 @@ export default function MicromarkMd({ md = "", contentVersion = "" }) {
   useEffect(() => {
     if (ref.current) {
       ref.current.querySelectorAll("a").forEach((block) => {
-        if (block.getAttribute("href")?.match(/^\/member\/\w+$/)) {
-          block.classList.add("mention");
+        const [, memberId] = block.getAttribute("href")?.match(/^\/member\/([-\w]+)$/) || [];
+        if (memberId && !isAddress(memberId)) {
+          block.classList.add("disabled-link");
+        } else {
+          block.setAttribute("target", "_blank");
         }
       });
     }

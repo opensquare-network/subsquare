@@ -12,7 +12,7 @@ import OutWrapper from "next-common/components/styled/outWrapper";
 import React, { useEffect, useRef, useState } from "react";
 import DetailItem from "components/detailItem";
 import Vote from "components/referenda/vote";
-import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
+import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_DEMOCRACY_REFERENDUM } from "utils/viewConstants";
@@ -21,6 +21,7 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import Timeline from "components/referenda/timeline";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
+import useMentionList from "next-common/utils/hooks/useMentionList";
 
 const Wrapper = styled.div`
   margin-right: 312px;
@@ -82,12 +83,15 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
+  const users = useMentionList(detail, comments, chain);
+
   const onReply = getOnReply(
     contentType,
     content,
     setContent,
     quillRef,
-    focusEditor
+    focusEditor,
+    chain,
   );
 
   detail.status = detail?.onchainData?.state?.state;
@@ -151,7 +155,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
                   setContentType,
                   content,
                   setContent,
-                  users: getMentionList(comments),
+                  users,
                 }}
                 type={TYPE_DEMOCRACY_REFERENDUM}
               />

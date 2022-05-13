@@ -205,17 +205,9 @@ export const StyledTextArea = styled.div`
   }
 `;
 
-const getLoadSuggestions = (users) => async (text) => {
-  return new Promise((accept) => {
-    const suggestions = (users || [])
-      .map((user) => ({
-        preview: user,
-        value: `[@${user}](/member/${user})`,
-      }))
-      .filter((i) => i.preview.toLowerCase().includes(text.toLowerCase()));
-    accept(suggestions);
-  });
-};
+function escapeLinkText(text) {
+  return text.replace(/\\/g, "\\\\").replace(/([\[\]])/g, "\\$1");
+}
 
 const MarkdownEditor = ({
   content,
@@ -227,6 +219,18 @@ const MarkdownEditor = ({
   visible = true,
   readOnly = false,
 }) => {
+  const loadSuggestions = async (text) => {
+    return new Promise((accept) => {
+      const suggestions = (users || [])
+        .map((user) => ({
+          preview: user.name,
+          value: `[@${escapeLinkText(user.name)}](/member/${user.value})`,
+        }))
+        .filter((i) => i.preview.toLowerCase().includes(text.toLowerCase()));
+      accept(suggestions);
+    });
+  };
+
   const ref = useRef();
   const [focused, setFocused] = useState(false);
   const [userResized, setUserResized] = useState(false);
@@ -246,7 +250,8 @@ const MarkdownEditor = ({
         }
       });
       observer.observe(textarea, {
-        attributes: true, attributeFilter: ["style"]
+        attributes: true,
+        attributeFilter: ["style"],
       });
     }
   }, [height, content, setEditorHeight]);
@@ -271,7 +276,7 @@ const MarkdownEditor = ({
           }
           setContent(content);
         }}
-        loadSuggestions={getLoadSuggestions(users)}
+        loadSuggestions={loadSuggestions}
         toolbarCommands={[
           [
             "header",

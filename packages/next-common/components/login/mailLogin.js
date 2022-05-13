@@ -1,21 +1,22 @@
+import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 
-import Button from "next-common/components/button";
+import Button from "../button";
 import { useForm } from "utils/hooks";
-import nextApi from "next-common/services/nextApi";
-import ErrorText from "next-common/components/ErrorText";
-import { setUser } from "next-common/store/reducers/userSlice";
+import nextApi from "../../services/nextApi";
+import ErrorText from "../ErrorText";
+import { setUser } from "../../store/reducers/userSlice";
 import {
   FormButtonsWrapper,
   FormWrapper,
   FormInputsWrapper,
-} from "components/login/styled";
-import Username from "components/login/username";
-import Password from "components/login/password";
+} from "./styled";
+import Username from "./username";
+import Password from "./password";
 
 const ForgetPassword = styled.div`
   margin-top: 8px;

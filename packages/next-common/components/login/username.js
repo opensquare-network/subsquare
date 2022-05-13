@@ -1,7 +1,8 @@
-import Input from "next-common/components/input";
+import React from "react";
+import Input from "../input";
 import {
   Label,
-} from "components/login/styled";
+} from "./styled";
 
 export default function Username({ value, error, onChange }) {
   return (

@@ -11,7 +11,7 @@ import Layout from "components/layout";
 import Timeline from "components/publicProposal/timeline";
 import Business from "components/publicProposal/business";
 import Metadata from "next-common/components/publicProposal/metadata";
-import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
+import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { isSafari } from "utils/serverSideUtil";
@@ -22,6 +22,7 @@ import OutWrapper from "next-common/components/styled/outWrapper";
 import Second from "next-common/components/publicProposal/second";
 import { useAddressVotingBalance } from "utils/hooks";
 import isNil from "lodash.isnil";
+import useMentionList from "next-common/utils/hooks/useMentionList";
 
 const Wrapper = styled.div`
   margin-right: 312px;
@@ -59,7 +60,7 @@ export default withLoginUserRedux(
       timeline?.[timeline?.length - 1]?.indexer.blockHeight;
     const secondsAtBlockHeight = isEnded ? lastTimelineBlockHeight - 1 : undefined;
 
-    const users = getMentionList(comments);
+    const users = useMentionList(detail, comments, chain);
 
     const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
@@ -68,7 +69,8 @@ export default withLoginUserRedux(
       content,
       setContent,
       quillRef,
-      focusEditor
+      focusEditor,
+      chain,
     );
 
     const referendumIndex = detail?.referendumIndex;

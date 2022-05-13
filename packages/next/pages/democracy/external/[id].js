@@ -9,7 +9,7 @@ import { useRef, useState } from "react";
 import Layout from "components/layout";
 import { getNode } from "utils";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
-import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
+import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_DEMOCRACY_EXTERNAL } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
@@ -17,6 +17,7 @@ import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import Business from "components/external/business";
 import Metadata from "components/external/metadata";
 import Timeline from "components/external/timeline";
+import useMentionList from "next-common/utils/hooks/useMentionList";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const postId = detail?._id;
@@ -33,7 +34,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     return null;
   }
 
-  const users = getMentionList(comments);
+  const users = useMentionList(detail, comments, chain);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
@@ -42,7 +43,8 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     content,
     setContent,
     quillRef,
-    focusEditor
+    focusEditor,
+    chain,
   );
 
   detail.status = detail?.onchainData?.state?.state;

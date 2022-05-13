@@ -10,7 +10,7 @@ import Editor from "next-common/components/comment/editor";
 import { useRef, useState } from "react";
 import Layout from "components/layout";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
-import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
+import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
@@ -20,6 +20,7 @@ import Second from "next-common/components/publicProposal/second";
 import OutWrapper from "next-common/components/styled/outWrapper";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 import isNil from "lodash.isnil";
+import useMentionList from "next-common/utils/hooks/useMentionList";
 
 const Wrapper = styled.div`
   margin-right: 312px;
@@ -56,7 +57,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     timeline?.[timeline?.length - 1]?.indexer.blockHeight;
   const secondsAtBlockHeight = isEnded ? lastTimelineBlockHeight - 1 : undefined;
 
-  const users = getMentionList(comments);
+  const users = useMentionList(detail, comments, chain);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
@@ -65,7 +66,8 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     content,
     setContent,
     quillRef,
-    focusEditor
+    focusEditor,
+    chain,
   );
 
   detail.status = detail?.onchainData?.state?.state;

@@ -1,15 +1,16 @@
+import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import Input from "next-common/components/input";
-import Button from "next-common/components/button";
+import Input from "../input";
+import Button from "../button";
 import { useForm } from "utils/hooks";
-import ErrorText from "next-common/components/ErrorText";
-import nextApi from "next-common/services/nextApi";
-import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import ErrorText from "../ErrorText";
+import nextApi from "../../services/nextApi";
+import { newSuccessToast } from "../../store/reducers/toastSlice";
 import {
   Label,
   InputWrapper,
-} from "components/setting/styled";
+} from "./styled";
 
 export default function Password() {
   const dispatch = useDispatch();

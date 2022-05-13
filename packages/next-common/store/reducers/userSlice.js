@@ -17,7 +17,7 @@ const userSlice = createSlice({
 export const { setUser } = userSlice.actions;
 
 export const fetchUserProfile = () => async (dispatch) => {
-  const { result } = await nextApi.fetch(
+  const { result, error } = await nextApi.fetch(
     "user/profile",
     {},
     {
@@ -26,7 +26,12 @@ export const fetchUserProfile = () => async (dispatch) => {
       headers: { "Content-Type": "application/json" },
     }
   );
-  if (result) dispatch(setUser(result));
+  if (result) {
+    dispatch(setUser(result));
+  }
+  if (error && error.status === 401) {
+    dispatch(setUser(null));
+  }
 };
 
 export const logout = () => async (dispatch) => {

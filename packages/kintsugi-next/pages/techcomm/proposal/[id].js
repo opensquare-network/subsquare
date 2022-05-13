@@ -6,7 +6,7 @@ import TechcommMotionDetail from "components/motion/techcommMotionDetail";
 import { TYPE_TECH_COMM_MOTION } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
 import SEO from "next-common/components/SEO";
-import { getFocusEditor, getMentionList, getOnReply } from "utils/post";
+import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { useRef, useState } from "react";
 import Comments from "next-common/components/comment";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
@@ -15,9 +15,10 @@ import { isSafari } from "utils/serverSideUtil";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { EmptyList } from "next-common/utils/constants";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
+import useMentionList from "next-common/utils/hooks/useMentionList";
 
 export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
-  const users = getMentionList(comments);
+  const users = useMentionList(motion, comments, chain);
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
@@ -30,7 +31,8 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
     content,
     setContent,
     quillRef,
-    focusEditor
+    focusEditor,
+    chain,
   );
 
   const desc = getMetaDesc(motion, "Proposal");

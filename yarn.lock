@@ -2652,7 +2652,7 @@ depd@~2.0.0:
   resolved "https://registry.npmjs.org/depd/-/depd-2.0.0.tgz#b696163cc757560d09cf22cc8fad1571b79e76df"
   integrity sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==
 
-dequal@^2.0.0:
+dequal@^2.0.0, dequal@^2.0.2:
   version "2.0.2"
   resolved "https://registry.npmjs.org/dequal/-/dequal-2.0.2.tgz#85ca22025e3a87e65ef75a7a437b35284a7e319d"
   integrity sha512-q9K8BlJVxK7hQYqa6XISGmBZbtQQWVXSrRrWreHC94rMt1QL/Impruc+7p2CYSYuVIUr+YCt6hjrs1kkdJRTug==
@@ -3996,6 +3996,11 @@ lodash.truncate@^4.4.2:
   version "4.4.2"
   resolved "https://registry.npmjs.org/lodash.truncate/-/lodash.truncate-4.4.2.tgz#5a350da0b1113b837ecfffd5812cbe58d6eae193"
   integrity sha1-WjUNoLERO4N+z//VgSy+WNbq4ZM=
+
+lodash.uniqby@^4.7.0:
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/lodash.uniqby/-/lodash.uniqby-4.7.0.tgz#d99c07a669e9e6d24e1362dfe266c67616af1302"
+  integrity sha1-2ZwHpmnp5tJOE2Lf4mbGdhavEwI=
 
 lodash@^4.17.11, lodash@^4.17.15, lodash@^4.17.4:
   version "4.17.21"
@@ -5690,6 +5695,14 @@ use-composed-ref@^1.0.0:
   version "1.2.1"
   resolved "https://registry.npmjs.org/use-composed-ref/-/use-composed-ref-1.2.1.tgz#9bdcb5ccd894289105da2325e1210079f56bf849"
   integrity sha512-6+X1FLlIcjvFMAeAD/hcxDT8tmyrWnbSPMU0EnxQuDLIxokuFzWliXBiYZuGIx+mrAMLBw0WFfCkaPw8ebzAhw==
+
+use-deep-compare-effect@^1.8.1:
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/use-deep-compare-effect/-/use-deep-compare-effect-1.8.1.tgz#ef0ce3b3271edb801da1ec23bf0754ef4189d0c6"
+  integrity sha512-kbeNVZ9Zkc0RFGpfMN3MNfaKNvcLNyxOAAd9O4CBZ+kCBXXscn9s/4I+8ytUER4RDpEYs5+O6Rs4PqiZ+rHr5Q==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    dequal "^2.0.2"
 
 use-isomorphic-layout-effect@^1.0.0:
   version "1.1.2"

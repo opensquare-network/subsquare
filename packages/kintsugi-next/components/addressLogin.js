@@ -60,7 +60,11 @@ export default function AddressLogin({ chain, onBack }) {
         );
         if (loginResult) {
           dispatch(setUser(loginResult));
-          router.replace("/");
+          if(loginResult.email){
+            router.replace("/");
+          }else {
+            router.replace("/email");
+          }
         }
         if (loginError) {
           setWeb3Error(loginError.message);
@@ -125,7 +129,7 @@ export default function AddressLogin({ chain, onBack }) {
       <ButtonWrapper>
         {hasExtension && (
           <Button isFill secondary onClick={doWeb3Login} isLoading={loading}>
-            Login
+            Next
           </Button>
         )}
         <Button isFill onClick={onBack}>

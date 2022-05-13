@@ -250,7 +250,7 @@ export default function Item({ user, data, chain, onReply }) {
             <ActionItem
               onClick={() => {
                 if (isLoggedIn && !ownComment) {
-                  onReply(comment.author?.username);
+                  onReply(comment.author);
                 }
               }}
               noHover={!isLoggedIn || ownComment}

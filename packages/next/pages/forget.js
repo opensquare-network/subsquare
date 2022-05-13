@@ -19,7 +19,7 @@ import {
   FormInputsWrapper,
   Label,
   InfoWrapper,
-} from "components/login/styled";
+} from "next-common/components/login/styled";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
