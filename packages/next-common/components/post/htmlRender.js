@@ -2,6 +2,7 @@ import React from "react";
 import parse from "html-react-parser";
 import styled from "styled-components";
 import sanitizeHtml from "sanitize-html";
+import { isAddress } from "@polkadot/util-crypto";
 
 const Wrapper = styled.div`
   color: #000;
@@ -116,7 +117,7 @@ const Wrapper = styled.div`
     color: #0974cd;
   }
 
-  span.mention > a {
+  span.disabled-link > a {
     color: #506176;
     pointer-events: none;
   }
@@ -140,13 +141,18 @@ function HtmlRender({ html }) {
   const r =
     /<span class="mention" data-denotation-char="@" data-id="([^"]+)" data-value="([^"]+)">.{0,1}<span><span class="ql-mention-denotation-char">@<\/span>[^<>]+<\/span>.{0,1}<\/span>/;
   while (html.match(r)) {
-    const username = html.match(r)[1];
+    const usernameOrAddr = html.match(r)[1];
     const display = html.match(r)[2];
+
+    let mentionClass = "mention";
+    if (!isAddress(usernameOrAddr)) {
+      mentionClass += " disabled-link";
+    }
     html = html.replace(
       r,
-      `<span class="mention"><a href="/member/${username}" target="_blank">@${display}</a></span>`
+      `<span class="${mentionClass}"><a href="/member/${usernameOrAddr}" target="_blank">@${display}</a></span>`
     );
-  }
+}
   const cleanHtml = sanitizeHtml(html, {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img", "iframe"]),
     allowedAttributes: {
