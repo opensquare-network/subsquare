@@ -129,7 +129,7 @@ const Wrapper = styled.div`
       color: #0974cd;
     }
 
-    a.mention {
+    a.md-mention {
       color: #506176;
       pointer-events: none;
     }
@@ -194,7 +194,7 @@ export default function MicromarkMd({ md = "", contentVersion = "" }) {
     if (ref.current) {
       ref.current.querySelectorAll("a").forEach((block) => {
         if (block.getAttribute("href")?.match(/^\/member\/[-\w]+$/)) {
-          block.classList.add("mention");
+          block.classList.add("md-mention");
         }
       });
     }

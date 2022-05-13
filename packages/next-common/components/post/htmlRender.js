@@ -1,6 +1,6 @@
 import React from "react";
 import parse from "html-react-parser";
-import styled  from "styled-components";
+import styled from "styled-components";
 import sanitizeHtml from "sanitize-html";
 
 const Wrapper = styled.div`
@@ -156,13 +156,7 @@ function HtmlRender({ html }) {
       "*": ["class"],
     },
   });
-  return (
-    <Wrapper
-      className="post-content"
-    >
-      {parse(cleanHtml)}
-    </Wrapper>
-  );
+  return <Wrapper className="post-content">{parse(cleanHtml)}</Wrapper>;
 }
 
 export default HtmlRender;
