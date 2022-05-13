@@ -10,6 +10,7 @@ import UnorderedList from "../assets/imgs/md-icons/unordered-list.svg";
 import Link from "../assets/imgs/md-icons/link.svg";
 import ImageIcon from "../assets/imgs/md-icons/image.svg";
 import Code from "../assets/imgs/md-icons/code.svg";
+import { font_family_inter } from "../styles/componentCss";
 
 const icons = new Map();
 icons.set("header", <Header />);
@@ -44,6 +45,7 @@ export const StyledTextArea = styled.div`
   }
 
   textarea {
+    ${font_family_inter};
     resize: none;
     overflow-y: scroll;
     min-height: 100px;
@@ -129,6 +131,7 @@ export const StyledTextArea = styled.div`
       .mde-header-group {
         display: block;
         padding-right: 80px;
+        height: 42px;
 
         .mde-header-item {
           display: inline-flex;
