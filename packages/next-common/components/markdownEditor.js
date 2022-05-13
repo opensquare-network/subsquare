@@ -202,6 +202,10 @@ export const StyledTextArea = styled.div`
   }
 `;
 
+function escapeLinkText(text) {
+  return text.replace(/\\/g, "\\\\").replace(/([\[\]])/g, "\\$1");
+}
+
 const MarkdownEditor = ({
   content,
   setContent,
@@ -217,7 +221,7 @@ const MarkdownEditor = ({
       const suggestions = (users || [])
         .map((user) => ({
           preview: user.name,
-          value: `[@${user.name}](/member/${user.value})`,
+          value: `[@${escapeLinkText(user.name)}](/member/${user.value})`,
         }))
         .filter((i) => i.preview.toLowerCase().includes(text.toLowerCase()));
       accept(suggestions);
@@ -243,7 +247,8 @@ const MarkdownEditor = ({
         }
       });
       observer.observe(textarea, {
-        attributes: true, attributeFilter: ["style"]
+        attributes: true,
+        attributeFilter: ["style"],
       });
     }
   }, [height, content, setEditorHeight]);
