@@ -61,6 +61,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
         );
         if (loginResult) {
           dispatch(setUser(loginResult));
+          localStorage.setItem("lastLoggedInAddress", selectedAccount.address)
           if(loginResult.email){
             router.replace("/");
           }else {
@@ -108,6 +109,15 @@ export default function AddressLogin({ chain, setMailLogin }) {
 
   useEffect(() => {
     if (accounts && accounts.length > 0 && !selectedAccount) {
+      const address = localStorage.getItem("lastLoggedInAddress");
+      if (address) {
+        const account = accounts.find((item) => item.address === address);
+        if (account) {
+          setSelectedAccount(account);
+          return;
+        }
+      }
+
       setSelectedAccount(accounts[0]);
     }
     setWeb3Error();
