@@ -48,14 +48,16 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const publicProposal = detail?.onchainData;
   const proposalIndex = publicProposal?.proposalIndex;
   const state = publicProposal?.state?.state;
-  const isEnded = ["Tabled", "Canceled"].includes(state);
+  const isEnded = ["Tabled", "Canceled", "Cleared"].includes(state);
   const hasTurnIntoReferendum = !isNil(publicProposal.referendumIndex);
-  const hasCanceled = state === "Canceled";
+  const hasCanceled = ["Canceled", "Cleared"].includes(state);
 
   const timeline = publicProposal?.timeline;
   const lastTimelineBlockHeight =
     timeline?.[timeline?.length - 1]?.indexer.blockHeight;
-  const secondsAtBlockHeight = isEnded ? lastTimelineBlockHeight - 1 : undefined;
+  const secondsAtBlockHeight = isEnded
+    ? lastTimelineBlockHeight - 1
+    : undefined;
 
   const users = useMentionList(detail, comments, chain);
 
@@ -67,7 +69,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     setContent,
     quillRef,
     focusEditor,
-    chain,
+    chain
   );
 
   detail.status = detail?.onchainData?.state?.state;
