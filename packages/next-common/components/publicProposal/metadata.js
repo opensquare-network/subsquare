@@ -15,6 +15,18 @@ const MetadataProposerWrapper = styled.div`
   }
 `;
 
+function getDeposit(scanDepositData) {
+  if (!Array.isArray(scanDepositData)) {
+    return 0;
+  }
+
+  if (!Array.isArray(scanDepositData[0])) {
+    return scanDepositData[0];
+  } else {
+    return scanDepositData[1];
+  }
+}
+
 export default function Metadata({ publicProposal, chain }) {
   if (!publicProposal) {
     return null;
@@ -30,7 +42,7 @@ export default function Metadata({ publicProposal, chain }) {
   const deposit = publicProposal.deposit;
   const metadata = [
     ["hash", publicProposal?.hash],
-    ["deposit", `${toPrecision(deposit ? deposit[1] : 0, decimals)} ${symbol}`],
+    ["deposit", `${toPrecision(getDeposit(deposit), decimals)} ${symbol}`],
     [
       "proposer",
       <MetadataProposerWrapper key={"index-proposer"}>
@@ -40,11 +52,12 @@ export default function Metadata({ publicProposal, chain }) {
     ],
   ];
 
-  if (publicProposal?.preImage) {
+  let call = publicProposal?.preImage?.call || publicProposal?.call;
+  if (call) {
     metadata.push([
       <Proposal
         key={"index-proposal"}
-        motion={{ proposal: publicProposal.preImage.call }}
+        motion={{ proposal: call }}
         chain={chain}
       />,
     ]);

@@ -40,7 +40,11 @@ function HeaderWrapper({ chain, children }) {
 
   if (Chains.kintsugi === chain) {
     ChainWrapper = KintsugiWrapper;
-  } else if ([Chains.khala, Chains.bifrost, Chains.calamari].includes(chain)) {
+  } else if (
+    [Chains.khala, Chains.bifrost, Chains.calamari, Chains.kusama].includes(
+      chain
+    )
+  ) {
     ChainWrapper = BlackWrapper;
   }
 

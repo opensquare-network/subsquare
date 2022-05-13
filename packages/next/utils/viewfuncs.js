@@ -1,4 +1,5 @@
-import { addressEllipsis, stringUpperFirst } from ".";
+import { addressEllipsis } from ".";
+import Chains from "next-common/utils/consts/chains";
 
 const TipStateMap = {
   NewTip: "Tipping",
@@ -27,22 +28,29 @@ export const toDiscussionListItem = (chain, item) => ({
   detailLink: `/post/${item.postUid}`,
 });
 
-export const toCouncilMotionListItem = (chain, item) => ({
-  ...item,
-  index: item.motionIndex,
-  title: `${item?.title}`,
-  author: item.author ?? {
-    username: addressEllipsis(item.proposer),
-    addresses: [{ chain, address: item.proposer }],
-  },
-  status: item.state ?? "Unknown",
-  detailLink: `/council/motion/${item.indexer.blockHeight}_${item.hash}`,
-  isTreasury:
-    item?.onchainData?.treasuryProposals?.length > 0 ||
-    item?.onchainData?.treasuryBounties?.length > 0,
-  isDemocracy: item?.onchainData?.externalProposals?.length > 0,
-  time: getPostUpdatedAt(item),
-});
+export const toCouncilMotionListItem = (chain, item) => {
+  let motionId = `${item.indexer.blockHeight}_${item.hash}`;
+  if (Chains.kusama === chain) {
+    motionId = item.motionIndex;
+  }
+
+  return {
+    ...item,
+    index: item.motionIndex,
+    title: `${item?.title}`,
+    author: item.author ?? {
+      username: addressEllipsis(item.proposer),
+      addresses: [{ chain, address: item.proposer }],
+    },
+    status: item.state ?? "Unknown",
+    detailLink: `/council/motion/${motionId}`,
+    isTreasury:
+      item?.onchainData?.treasuryProposals?.length > 0 ||
+      item?.onchainData?.treasuryBounties?.length > 0,
+    isDemocracy: item?.onchainData?.externalProposals?.length > 0,
+    time: getPostUpdatedAt(item),
+  };
+};
 
 export const toFinancialMotionsListItem = (chain, item) => ({
   ...item,

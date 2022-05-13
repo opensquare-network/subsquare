@@ -204,9 +204,9 @@ function Vote({
     api?.query.democracy
       .referendumInfoOf(referendumIndex)
       .then((referendumInfo) => {
-        const referendumInfoData = referendumInfo.toJSON();
-        if (isMounted.current) {
-          setReferendumStatus(referendumInfoData?.ongoing);
+        const data = referendumInfo.toJSON();
+        if (data?.ongoing && isMounted.current) {
+          setReferendumStatus(data?.ongoing);
         }
       })
       .finally(() => {
