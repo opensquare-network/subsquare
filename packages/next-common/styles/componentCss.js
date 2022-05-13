@@ -42,3 +42,7 @@ export const no_scroll_bar = css`
     display: none;
   }
 `;
+
+export const font_family_inter = css`
+  font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+`;
