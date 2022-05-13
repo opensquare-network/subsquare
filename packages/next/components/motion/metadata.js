@@ -15,7 +15,7 @@ export default function Metadata({ motion, chain }) {
         [
           "Proposer",
           <>
-            <User add={motion?.proposer} fontSize={14} />
+            <User add={motion?.proposer} fontSize={14} chain={chain} />
             <Links
               chain={chain}
               address={motion?.proposer}

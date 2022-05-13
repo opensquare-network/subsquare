@@ -50,7 +50,7 @@ export const StyledTextArea = styled.div`
     max-height: 300px;
     color: #000 !important;
     padding: 0.75rem 1rem !important;
-    line-height: 1.375 !important;
+    line-height: 19px !important;
     outline: none;
     font-size: 0.875rem;
   }
@@ -172,7 +172,6 @@ export const StyledTextArea = styled.div`
   }
 
   .mde-text {
-    border: 1px solid transparent !important;
     border-bottom-left-radius: 0.25rem;
     border-bottom-right-radius: 0.25rem;
   }
@@ -208,6 +207,7 @@ const MarkdownEditor = ({
   setContent,
   setEditorHeight,
   users = [],
+  initialHeight = 100,
   height = 300,
   visible = true,
   readOnly = false,
@@ -224,26 +224,29 @@ const MarkdownEditor = ({
     });
   };
 
+  const ref = useRef();
   const [focused, setFocused] = useState(false);
   const [userResized, setUserResized] = useState(false);
-
-  const ref = useRef();
+  let observer;
 
   useEffect(() => {
     const textarea = ref?.current?.finalRefs?.textarea?.current;
     if (textarea) {
       // MutationObserver is the modern way to observe element resize event
-      new MutationObserver(()=>{
-        if (textarea?.style?.height !== `${height}px`) {
+      observer = new MutationObserver((record) => {
+        //TODO: maybe we can debounce this to improve performance
+        //no value changed && height change => user resized manually
+        if (record[0].target.value === content) {
           setUserResized(true);
+          setEditorHeight(parseInt(textarea?.style?.height));
+          observer.disconnect();
         }
-        // keep user resized editor height in memory
-        setEditorHeight(parseInt(textarea?.style?.height));
-      }).observe(textarea, {
-        attributes: true, attributeFilter: [ "style" ]
-      })
+      });
+      observer.observe(textarea, {
+        attributes: true, attributeFilter: ["style"]
+      });
     }
-  }, [height, setEditorHeight]);
+  }, [height, content, setEditorHeight]);
 
   return (
     <StyledTextArea
@@ -258,9 +261,10 @@ const MarkdownEditor = ({
         onChange={(content) => {
           const textarea = ref?.current?.finalRefs?.textarea?.current;
           if (textarea && !userResized) {
-            textarea.style.height = `${300}px`;
-            textarea.style.height = textarea.scrollHeight + "px";
+            textarea.style.height = `${initialHeight}px`;
+            textarea.style.height = `${textarea.scrollHeight}px`;
             setEditorHeight(textarea.scrollHeight);
+            observer?.disconnect();
           }
           setContent(content);
         }}

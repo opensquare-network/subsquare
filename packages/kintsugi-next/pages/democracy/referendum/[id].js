@@ -131,7 +131,7 @@ export default withLoginUserRedux(
               api={api}
               proposer={detail.proposer}
               status={referendumStatus}
-              preimage={detail?.onchainData?.preImage}
+              call={detail?.onchainData?.preImage?.call}
               chain={chain}
               onchainData={detail.onchainData}
             />

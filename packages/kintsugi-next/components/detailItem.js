@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { useState } from "react";
 import Link from "next/link";
 
-import { timeDurationFromNow } from "utils";
+import { timeDurationFromNow } from "next-common/utils";
 import nextApi from "next-common/services/nextApi";
 import User from "next-common/components/user";
 import TriangleRight from "public/imgs/icons/arrow-triangle-right.svg";

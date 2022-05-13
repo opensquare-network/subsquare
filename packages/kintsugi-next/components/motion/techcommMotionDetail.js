@@ -5,7 +5,8 @@ import Link from "next/link";
 import User from "next-common/components/user";
 import Links from "next-common/components/links";
 import Timeline from "next-common/components/timeline";
-import { getNode, timeDurationFromNow, toPrecision } from "utils";
+import { getNode, toPrecision } from "utils";
+import { timeDurationFromNow } from "next-common/utils";
 import SectionTag from "next-common/components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
 import Flex from "next-common/components/styled/flex";
@@ -344,7 +345,11 @@ export default function TechcommMotionDetail({
           [
             "Proposer",
             <>
-              <User add={motion?.onchainData?.proposer} fontSize={14} />
+              <User
+                add={motion?.onchainData?.proposer}
+                fontSize={14}
+                chain={chain}
+              />
               <Links
                 chain={chain}
                 address={motion?.onchainData?.proposer}
