@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getMentionList, getMentionName } from "next-common/utils/post";
+import { getMentionList, getMentionName, getMemberId } from "next-common/utils/post";
 import uniqBy from "lodash.uniqby";
 
 export default function useMentionList(post, comments, chain) {
@@ -22,9 +22,10 @@ export default function useMentionList(post, comments, chain) {
       return await Promise.all(
         (users || []).map(async (user) => {
           const name = await getMentionName(user, chain);
+          const memberId = getMemberId(user, chain);
           return {
             name,
-            value: user.username,
+            value: memberId,
           };
         })
       );
