@@ -174,6 +174,8 @@ function Editor(
     setErrors(null);
   };
 
+  const isEmpty = content === "" || content === `<p><br></p>`;
+
   return (
     <Wrapper>
       {contentType === "html" && (
@@ -247,6 +249,8 @@ function Editor(
           isLoading={loading}
           secondary
           onClick={isEdit ? updateComment : createComment}
+          disabled={isEmpty}
+          title={isEmpty ? "cannot submit empty content" : ""}
         >
           {isEdit ? "Update" : "Comment"}
         </Button>
