@@ -6,14 +6,14 @@ import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Editor from "next-common/components/comment/editor";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import Layout from "components/layout";
-import { getFocusEditor, getMentionList, getOnReply, getMentionName } from "next-common/utils/post";
+import { getFocusEditor, getOnReply } from "next-common/utils/post";
+import useMentionList from "next-common/utils/hooks/useMentionList";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_POST } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
-import uniqBy from "lodash.uniqby";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -32,38 +32,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const [contentType, setContentType] = useState(
     loginUser?.preference.editor || "markdown"
   );
-
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    if (!detail) {
-      return;
-    }
-
-    const users = uniqBy(
-      [
-        ...(detail.author ? [detail.author] : []),
-        ...getMentionList(comments),
-      ],
-      (item) => item.username
-    );
-
-    const loadSuggestions = async () => {
-      return await Promise.all(
-        (users || []).map(async (user) => {
-          const name = await getMentionName(user, chain);
-          return {
-            name,
-            value: user.username,
-          };
-        })
-      );
-    };
-
-    loadSuggestions().then((suggestions) => {
-      setUsers(suggestions);
-    });
-  }, [chain, detail, comments]);
+  const users = useMentionList(detail, comments, chain);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 

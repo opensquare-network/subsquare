@@ -11,7 +11,7 @@ import User from "next-common/components/user";
 import { getNode, getTimelineStatus, toPrecision } from "utils";
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
-import { getFocusEditor, getMentionList, getOnReply } from "next-common/utils/post";
+import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_TREASURY_BOUNTY } from "utils/viewConstants";
@@ -20,6 +20,7 @@ import sortTimeline from "../../../utils/timeline/sort";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import BountyMetadata from "next-common/components/treasury/bounty/metadata";
+import useMentionList from "next-common/utils/hooks/useMentionList";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const postId = detail._id;
@@ -86,7 +87,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   });
   sortTimeline(timelineData);
 
-  const users = getMentionList(comments);
+  const users = useMentionList(detail, comments, chain);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
