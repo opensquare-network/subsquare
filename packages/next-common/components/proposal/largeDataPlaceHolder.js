@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import OpenIcon from "./open.svg";
+import ExternalLink from "../../assets/imgs/icons/external-link.svg";
 
 const LargeData = styled.div`
   display: flex;
@@ -29,7 +29,7 @@ export default function LargeDataPlaceHolder({
     <LargeData>
       Large data, please check it on subscan
       <a target="_blank" href={subscanLink} style={{ display: "flex" }}>
-        <OpenIcon />
+        <ExternalLink />
       </a>
     </LargeData>
   );
