@@ -91,7 +91,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     setContent,
     quillRef,
     focusEditor,
-    chain,
+    chain
   );
 
   detail.status = detail?.onchainData?.state?.state;
@@ -131,6 +131,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
             call={
               detail?.onchainData?.preImage?.call || detail?.onchainData?.call
             }
+            shorten={detail?.onchainData?.preImage?.shorten}
             chain={chain}
             onchainData={detail?.onchainData}
           />

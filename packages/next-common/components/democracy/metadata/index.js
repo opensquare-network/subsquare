@@ -18,6 +18,7 @@ export default function ReferendumMetadata({
   proposer,
   status = {},
   call,
+  shorten,
   chain,
   onchainData = {},
 }) {
@@ -69,7 +70,13 @@ export default function ReferendumMetadata({
   ];
   if (call) {
     metadata.push([
-      <Proposal key="preimage" motion={{ proposal: call }} chain={chain} />,
+      <Proposal
+        key="preimage"
+        motion={{ proposal: call }}
+        chain={chain}
+        shorten={shorten}
+        referendumIndex={onchainData.referendumIndex}
+      />,
     ]);
   }
 

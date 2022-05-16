@@ -6,6 +6,7 @@ import InnerDataTable from "../table/innerDataTable";
 import BigNumber from "bignumber.js";
 import { hexToString } from "@polkadot/util";
 import { hexEllipsis } from "../../utils";
+import LargeDataPlaceHolder from "./largeDataPlaceHolder";
 
 const LongText = dynamic(() => import("../longText"), {
   ssr: false,
@@ -123,7 +124,7 @@ function convertProposalForTableView(proposal, chain) {
             ) {
               return [arg.name, <LongText text={arg.value} key="0" />];
             }
-            return [arg.name, hexToString(arg.value)];
+            return [arg.name, arg.value];
           }
           case "Balance": {
             const value = new BigNumber(arg.value).toString();
@@ -170,7 +171,7 @@ function convertProposalForJsonView(proposal, chain) {
                 ? arg.value
                 : hexEllipsis(arg.value);
             }
-            return hexToString(arg.value);
+            return arg.value;
           }
           case "Compact<Balance>": {
             const value = new BigNumber(arg.value).toString();
@@ -185,20 +186,48 @@ function convertProposalForJsonView(proposal, chain) {
   };
 }
 
-export default function Proposal({ motion, chain }) {
+export default function Proposal({
+  motion,
+  chain,
+  shorten,
+  proposalIndex,
+  motionIndex,
+  referendumIndex,
+}) {
   const [callType, setCallType] = useState("table");
 
   useEffect(() => {
+    if (shorten) {
+      setCallType("table");
+      return;
+    }
     const item = window.localStorage.getItem("callType");
     if (item) {
       setCallType(JSON.parse(item));
     }
-  }, []);
+  }, [shorten]);
 
   const onClick = (value) => {
     window.localStorage.setItem("callType", JSON.stringify(value));
     setCallType(value);
   };
+
+  let dataTableData;
+  if (shorten) {
+    dataTableData = {
+      ...motion.proposal,
+      args: (
+        <LargeDataPlaceHolder
+          chain={chain}
+          referendumIndex={referendumIndex}
+          motionIndex={motionIndex}
+          proposalIndex={proposalIndex}
+        />
+      ),
+    };
+  } else {
+    dataTableData = convertProposalForTableView(motion.proposal, chain);
+  }
 
   return (
     <Wrapper>
@@ -212,20 +241,20 @@ export default function Proposal({ motion, chain }) {
           >
             Table
           </TagItem>
-          <TagItem
-            className="tag"
-            active={callType === "json"}
-            onClick={() => onClick("json")}
-          >
-            Json
-          </TagItem>
+          {!shorten && (
+            <TagItem
+              className="tag"
+              active={callType === "json"}
+              onClick={() => onClick("json")}
+            >
+              Json
+            </TagItem>
+          )}
         </TagWrapper>
       </HeaderWrapper>
       {callType === "table" && (
         <ArgsWrapper className="wrapper">
-          <InnerDataTable
-            data={convertProposalForTableView(motion.proposal, chain)}
-          />
+          <InnerDataTable data={dataTableData} />
         </ArgsWrapper>
       )}
       {callType === "json" && (
