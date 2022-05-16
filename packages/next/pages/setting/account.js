@@ -46,7 +46,6 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
             <Password />
             <Divider />
             <Logout />
-            <Divider />
           </ContentWrapper>
         </Wrapper>
       </Layout>
