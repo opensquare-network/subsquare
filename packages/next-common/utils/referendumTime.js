@@ -18,7 +18,14 @@ export default function getReferendumTime(
   const endTimelineItem = timeline.find((item) =>
     [referendumState.Passed, referendumState.NotPassed].includes(item.method)
   );
-  if (state?.state === referendumState.Executed) {
+
+  if (
+    [
+      referendumState.Executed,
+      referendumState.PreimageInvalid,
+      referendumState.PreimageMissing,
+    ].includes(state?.state)
+  ) {
     const executedTimelineItem = timeline.find(
       (item) => item.method === referendumState.Executed
     );

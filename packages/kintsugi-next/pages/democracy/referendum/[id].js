@@ -66,6 +66,8 @@ export default withLoginUserRedux(
       "Passed",
       "NotPassed",
       "Cancelled",
+      "PreimageInvalid",
+      "PreimageMissing",
     ].includes(timeline[timeline.length - 1]?.method);
 
     useEffect(() => {
@@ -97,7 +99,7 @@ export default withLoginUserRedux(
       setContent,
       quillRef,
       focusEditor,
-      chain,
+      chain
     );
 
     detail.status = detail.onchainData?.state?.state;

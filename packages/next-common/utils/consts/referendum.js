@@ -4,6 +4,8 @@ export const referendumState = Object.freeze({
   NotPassed: "NotPassed",
   Passed: "Passed",
   Started: "Started",
+  PreimageMissing: "PreimageMissing",
+  PreimageInvalid: "PreimageInvalid",
 });
 
 export const votingThreshold = Object.freeze({

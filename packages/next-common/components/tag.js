@@ -64,6 +64,8 @@ const getTagColor = (name) => {
     case "Slashed":
     case "Disapproved":
     case "NotPassed":
+    case "PreimageMissing":
+    case "PreimageInvalid":
     case "Tip Retracted":
     case "Overwritten":
     case "Canceled":
