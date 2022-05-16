@@ -101,6 +101,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
   const [errors, setErrors] = useState();
   const [editorHeight, setEditorHeight] = useState(300);
+  const isEmpty = content === "" || content === `<p><br></p>`;
 
   const onCreate = async () => {
     const result = await nextApi.post(`posts`, {
@@ -226,7 +227,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
             <Button onClick={() => setShowPreview(!showPreview)}>
               {showPreview ? "Edit" : "Preview"}
             </Button>
-            <Button secondary onClick={onCreate}>
+            <Button onClick={onCreate} disabled={isEmpty} secondary>
               Create
             </Button>
           </ButtonWrapper>

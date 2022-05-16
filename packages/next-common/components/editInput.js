@@ -70,6 +70,8 @@ export default function EditInput({
   const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
   const [errors, setErrors] = useState();
 
+  const isEmpty = content === "" || content === `<p><br></p>`;
+
   const onMarkdownSwitch = () => {
     if (loading) {
       return;
@@ -183,7 +185,7 @@ export default function EditInput({
             {showPreview ? "Edit" : "Preview"}
           </Button>
         )}
-        <Button isLoading={loading} secondary onClick={onUpdate}>
+        <Button isLoading={loading} onClick={onUpdate} disabled={isEmpty} secondary >
           Update
         </Button>
       </ButtonWrapper>
