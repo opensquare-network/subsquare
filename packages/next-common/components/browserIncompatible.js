@@ -1,3 +1,4 @@
+import React from "react";
 import Contacts from "next-common/components/layout/contacts";
 import Hint from "../assets/imgs/oops.svg";
 
