@@ -3,7 +3,7 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser, userSelector } from "next-common/store/reducers/userSlice";
 import { useEffect, useLayoutEffect } from "react";
-import { isSafari } from "../utils/serverSideUtil";
+import { isSafari } from "next-common/utils/serverSideUtil";
 
 export const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
