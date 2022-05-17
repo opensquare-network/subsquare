@@ -11,7 +11,7 @@ import { useRef, useState } from "react";
 import Comments from "next-common/components/comment";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import Editor from "next-common/components/comment/editor";
-
+import { isSafari } from "utils/serverSideUtil";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { EmptyList } from "next-common/utils/constants";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
@@ -73,7 +73,7 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-
+  isSafari(context);
   const { id, page, page_size: pageSize } = context.query;
 
   const [{ result: motion }] = await Promise.all([

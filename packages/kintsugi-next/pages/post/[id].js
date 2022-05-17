@@ -11,7 +11,7 @@ import Layout from "components/layout";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
-
+import { isSafari } from "utils/serverSideUtil";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_POST } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
@@ -91,7 +91,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
   const { id, page, page_size: pageSize } = context.query;
-
+  isSafari(context);
   const [{ result: detail }] = await Promise.all([
     nextApi.fetch(`posts/${id}`),
   ]);
