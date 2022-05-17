@@ -10,7 +10,7 @@ import {
   toReferendaListItem,
   toTechCommMotionListItem,
 } from "utils/viewfuncs";
-import { isSafari } from "../utils/serverSideUtil";
+
 
 export default withLoginUserRedux(({ overview, loginUser, chain }) => {
   let overviewData = [
@@ -64,7 +64,7 @@ export default withLoginUserRedux(({ overview, loginUser, chain }) => {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-  isSafari(context);
+
   const { result, error } = await nextApi.fetch(`overview`);
 
   return {

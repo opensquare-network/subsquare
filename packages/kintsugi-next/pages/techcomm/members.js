@@ -6,7 +6,7 @@ import Layout from "components/layout";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
-import { isSafari } from "../../utils/serverSideUtil";
+
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const [data, setData] = useState([]);
@@ -41,7 +41,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-  isSafari(context);
+
   return {
     props: {
       chain,

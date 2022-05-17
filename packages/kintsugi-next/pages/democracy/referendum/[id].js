@@ -14,7 +14,7 @@ import Vote from "components/referenda/vote";
 import Timeline from "next-common/components/timeline";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
-import { isSafari } from "utils/serverSideUtil";
+
 import { to404 } from "next-common/utils/serverSideUtil";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 import { TYPE_DEMOCRACY_REFERENDUM } from "utils/viewConstants";
@@ -171,7 +171,7 @@ export default withLoginUserRedux(
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-  isSafari(context);
+
   const { id, page, page_size: pageSize } = context.query;
 
   const [{ result: detail }] = await Promise.all([

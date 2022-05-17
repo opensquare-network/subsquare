@@ -14,7 +14,7 @@ import Metadata from "next-common/components/publicProposal/metadata";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
-import { isSafari } from "utils/serverSideUtil";
+
 import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
 import SEO from "next-common/components/SEO";
@@ -143,7 +143,7 @@ export default withLoginUserRedux(
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-  isSafari(context);
+
   const { id, page, page_size: pageSize } = context.query;
 
   const [{ result: detail }] = await Promise.all([
