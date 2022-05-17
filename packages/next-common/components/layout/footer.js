@@ -2,10 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 // import DocsIcon from "../../assets/imgs/icons/docs.svg";
-import ElementIcon from "../../assets/imgs/icons/element.svg";
-import MailIcon from "../../assets/imgs/icons/mail.svg";
 import FooterLogo from "../../assets/imgs/icons/footerLogo.svg";
-import ExternalLink from "next-common/components/externalLink";
+import Contacts from "./contacts";
 
 const Wrapper = styled.footer`
   color: #9da9bb;
@@ -57,17 +55,7 @@ export default function Footer() {
         <span style={{whiteSpace:"nowrap"}}>Powered by</span>
         <FooterLogo />
       </FlexWrapper>
-      <FlexWrapper>
-        {/*<ExternalLink href="http://docs.subsquare.io/" title="Document">*/}
-        {/*  <DocsIcon />*/}
-        {/*</ExternalLink>*/}
-        <ExternalLink href="https://app.element.io/#/room/#opensquare:matrix.org" title="Element">
-          <ElementIcon />
-        </ExternalLink>
-        <ExternalLink href="mailto:hi@opensquare.network" title="Send EMail">
-          <MailIcon />
-        </ExternalLink>
-      </FlexWrapper>
+      <Contacts/>
     </Wrapper>
   );
 }
