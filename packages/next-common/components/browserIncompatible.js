@@ -2,6 +2,7 @@ import React from "react";
 import Contacts from "next-common/components/layout/contacts";
 import Hint from "../assets/imgs/oops.svg";
 import styled from "styled-components";
+import NextHead from "./nextHead";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -13,8 +14,8 @@ const Wrapper = styled.div`
   p{
     margin-top: 24px;
     font-size: 20px;
-    font-weight: 700;
     line-height: 100%;
+    font-weight: 700;
   }
   span{
     max-width: 343px;
@@ -28,6 +29,7 @@ const Wrapper = styled.div`
 export default function BrowserIncompatible() {
   return (
     <Wrapper>
+      <NextHead title={`Browser not Supported`} desc={`Please use Google Chrome, Microsoft Edge or Safari 14.1+ to access for good web experience.`} />
       <Hint/>
       <p>Browser not Supported</p>
       <span>
