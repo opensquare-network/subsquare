@@ -3,7 +3,7 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser, userSelector } from "next-common/store/reducers/userSlice";
 import { useEffect, useLayoutEffect } from "react";
-import { checkBrowserCompatible } from "next-common/utils/serverSideUtil";
+import { checkBrowserCompatibility } from "next-common/utils/serverSideUtil";
 
 export const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -12,7 +12,7 @@ export function withLoginUser(getServerSideProps) {
   return async function (context) {
     const propsPromise = getServerSideProps(context);
 
-    checkBrowserCompatible(context);
+    checkBrowserCompatibility(context);
 
     let options = { credentials: true };
     const cookies = new Cookies(context.req, context.res);

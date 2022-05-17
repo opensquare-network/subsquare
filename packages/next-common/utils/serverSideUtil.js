@@ -8,7 +8,7 @@ export function to404(context) {
   return EMPTY_SERVER_PROPS;
 }
 
-export function checkBrowserCompatible(context) {
+export function checkBrowserCompatibility(context) {
   const userAgent = context?.req?.headers["user-agent"] ?? "";
   const isSafari =
     userAgent.includes("Safari") && !userAgent.includes("Chrome");
