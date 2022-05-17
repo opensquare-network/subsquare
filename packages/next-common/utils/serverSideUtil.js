@@ -8,7 +8,7 @@ export function to404(context) {
   return EMPTY_SERVER_PROPS;
 }
 
-export function isSafari(context) {
+export function checkBrowserCompatible(context) {
   const userAgent = context?.req?.headers["user-agent"] ?? "";
   const isSafari =
     userAgent.includes("Safari") && !userAgent.includes("Chrome");
@@ -16,12 +16,12 @@ export function isSafari(context) {
     const regex = /\bVersion\/(\d+?\.\d+)/;
     const version = regex.exec(userAgent)?.[1];
     if(parseFloat(version) < 14.1){
-      toSafariError(context);
+      toBrowserCompatibleError(context);
     }
   }
 }
 
-export function toSafariError(context) {
+export function toBrowserCompatibleError(context) {
   const { res } = context;
   res.statusCode = 302;
   res.setHeader("Location", `/incompatible`);
