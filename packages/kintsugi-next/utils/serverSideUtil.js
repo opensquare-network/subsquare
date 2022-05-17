@@ -3,7 +3,11 @@ export function isSafari(context) {
   const isSafari =
     userAgent.includes("Safari") && !userAgent.includes("Chrome");
   if (isSafari) {
-    toSafariError(context);
+    const regex = /\bVersion\/(\d+)/g;
+    const version = regex.exec(userAgent)?.[1];
+    if(parseInt(version) < 15){
+      toSafariError(context);
+    }
   }
 }
 
