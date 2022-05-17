@@ -3,9 +3,9 @@ export function isSafari(context) {
   const isSafari =
     userAgent.includes("Safari") && !userAgent.includes("Chrome");
   if (isSafari) {
-    const regex = /\bVersion\/(\d+)/g;
+    const regex = /\bVersion\/(\d+?\.\d+)/;
     const version = regex.exec(userAgent)?.[1];
-    if(parseInt(version) < 15){
+    if(parseFloat(version) < 14.1){
       toSafariError(context);
     }
   }
@@ -14,6 +14,6 @@ export function isSafari(context) {
 export function toSafariError(context) {
   const { res } = context;
   res.statusCode = 302;
-  res.setHeader("Location", `/safari`);
+  res.setHeader("Location", `/incompatible`);
   res.end();
 }
