@@ -5,11 +5,11 @@ import { nodes } from "./constants";
 import uniqBy from "lodash.uniqby";
 
 export function getMentionList(comments) {
-  return (
-    uniqBy(
-      comments?.items?.map((comment) => comment.author).filter(author => !!author) ?? [],
-      (item) => item.username
-    )
+  return uniqBy(
+    comments?.items
+      ?.map((comment) => comment.author)
+      .filter((author) => !!author) ?? [],
+    (item) => item.username
   );
 }
 
@@ -29,13 +29,12 @@ export function getFocusEditor(contentType, editorWrapperRef, quillRef) {
 export function getMemberId(user, chain) {
   if (user.username.startsWith("polkadot-key-0x")) {
     const publicKey = user.username.substr(15);
-    const address = encodeAddressToChain(
-      Buffer.from(publicKey, "hex"),
-      chain
-    );
+    const address = encodeAddressToChain(Buffer.from(publicKey, "hex"), chain);
     return address;
   } else {
-    const address = user.addresses.find(item => item.chain === chain)?.address;
+    const address = user.addresses.find(
+      (item) => item.chain === chain
+    )?.address;
     return address || user.username;
   }
 }
@@ -45,30 +44,19 @@ export async function getMentionName(user, chain) {
   let mentionName;
   if (user.username.startsWith("polkadot-key-0x")) {
     const publicKey = user.username.substr(15);
-    address = encodeAddressToChain(
-      Buffer.from(publicKey, "hex"),
-      chain
-    );
+    address = encodeAddressToChain(Buffer.from(publicKey, "hex"), chain);
     mentionName = addressEllipsis(address);
   } else {
-    address = user.addresses.find(item => item.chain === chain)?.address;
+    address = user.addresses.find((item) => item.chain === chain)?.address;
     mentionName = user.username;
   }
 
   let displayName;
 
-  const identityChain = nodes.find(
-    (n) => n.value === chain
-  )?.identity;
+  const identityChain = nodes.find((n) => n.value === chain)?.identity;
   if (identityChain) {
-    const identityAddress = encodeAddressToChain(
-      address,
-      identityChain
-    );
-    const identity = await fetchIdentity(
-      identityChain,
-      identityAddress
-    );
+    const identityAddress = encodeAddressToChain(address, identityChain);
+    const identity = await fetchIdentity(identityChain, identityAddress);
     displayName = identity?.info?.displayParent
       ? `${identity?.info?.displayParent}/${identity?.info?.display}`
       : identity?.info?.display;
@@ -84,7 +72,7 @@ export function getOnReply(
   setContent,
   quillRef,
   focusEditor,
-  chain,
+  chain
 ) {
   return (user) => {
     if (!user) {
@@ -93,8 +81,9 @@ export function getOnReply(
 
     getMentionName(user, chain).then((name) => {
       let reply = "";
+      const memberId = getMemberId(user, chain);
       if (contentType === "markdown") {
-        reply = `[@${name}](/member/${user.username}) `;
+        reply = `[@${name}](/member/${memberId}) `;
         const at = content ? `${reply}` : reply;
         if (content === reply) {
           setContent(``);
@@ -110,7 +99,7 @@ export function getOnReply(
                 mention: {
                   index: "0",
                   denotationChar: "@",
-                  id: getMemberId(user, chain),
+                  id: memberId,
                   value: name + " &nbsp; ",
                 },
               },
@@ -118,10 +107,11 @@ export function getOnReply(
             { insert: "\n" },
           ],
         };
-        quillRef.current.getEditor().setContents(contents.ops.concat(reply.ops));
+        quillRef.current
+          .getEditor()
+          .setContents(contents.ops.concat(reply.ops));
       }
       focusEditor();
     });
-
   };
 }
