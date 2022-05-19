@@ -108,7 +108,8 @@ export async function getElectorate(api, height) {
     return electorates[blockHeight];
   }
 
-  const value = await api.query.balances.totalIssuance();
+  const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
+  const value = await api.query.balances.totalIssuance.at(blockHash);
   electorates[blockHeight] = value;
   return value;
 }
