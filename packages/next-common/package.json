@@ -22,6 +22,7 @@
     "d3-shape": "^3.1.0",
     "dayjs": "^1.10.7",
     "html-react-parser": "^1.4.5",
+    "lodash.countby": "^4.6.0",
     "md5": "^2.3.0",
     "micromark": "^3.0.10",
     "micromark-extension-gfm": "^2.0.0",
