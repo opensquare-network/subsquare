@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import User from "next-common/components/user";
 import {
+  bigNumber2Locale,
   getNode,
   timeDuration,
   timeDurationFromNow,
@@ -189,7 +190,7 @@ export default function Post({ data, chain, href, type }) {
         </TitleWrapper>
         {data.value && (
           <span>
-            {toPrecision(data.value, decimals)}{" "}
+            {bigNumber2Locale(toPrecision(data.value, decimals))}{" "}
             <span className="symbol">{symbol}</span>
           </span>
         )}
