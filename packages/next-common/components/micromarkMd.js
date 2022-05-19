@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { micromark } from "micromark";
 import { gfm, gfmHtml } from "micromark-extension-gfm";
 import { isAddress } from "@polkadot/util-crypto";
-import { matchMdLink } from "../utils";
 import sanitizeHtml from "sanitize-html";
 import { useEffect } from "react";
 import { no_scroll_bar } from "../styles/componentCss";
@@ -177,7 +176,7 @@ const Wrapper = styled.div`
 export default function MicromarkMd({ md = "", contentVersion = "" }) {
   const ref = useRef();
 
-  let displayContent = matchMdLink(md);
+  let displayContent = md;
   if (contentVersion === "2") {
     displayContent = md.replace(/\n+/g, function (ns) {
       if (ns.length === 1) return "  " + ns;
