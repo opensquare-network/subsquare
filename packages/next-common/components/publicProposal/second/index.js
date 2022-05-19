@@ -8,7 +8,7 @@ import BigNumber from "bignumber.js";
 import Button from "../../button";
 import User from "../../user";
 import Loading from "../../loading";
-import { emptyFunction } from "../../../utils";
+import { decimalPlaces, emptyFunction, toPrecision } from "../../../utils";
 import useDepositOf from "../../../utils/hooks/useDepositOf";
 import useApi from "../../../utils/hooks/useSelectedEnpointApi";
 import { getNode } from "utils";
