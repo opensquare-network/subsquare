@@ -199,7 +199,12 @@ export default function Post({ data, chain, href, type }) {
       <Divider />
       <FooterWrapper>
         <Footer>
-          <User user={data.author} chain={chain} fontSize={12} />
+          <User
+            user={data.author}
+            add={data.address}
+            chain={chain}
+            fontSize={12}
+          />
           {data.isTreasury && <SectionTag name={"Treasury"} />}
           {data.isDemocracy && <SectionTag name={"Democracy"} />}
           {data.time && (

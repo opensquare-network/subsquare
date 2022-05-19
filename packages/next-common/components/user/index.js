@@ -2,12 +2,13 @@ import React, { memo, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { fetchIdentity } from "../../services/identity";
 import { encodeAddressToChain } from "../../services/address";
-import { nodes } from "next-common/utils/constants";
-import Avatar from "next-common/components/avatar";
-import Grvatar from "next-common/components/gravatar";
-import Identity from "next-common/components/Identity";
+import { nodes } from "../../utils/constants";
+import Avatar from "../avatar";
+import Grvatar from "../gravatar";
+import Identity from "../Identity";
 import { addressEllipsis } from "../../utils";
-import Flex from "next-common/components/styled/flex";
+import Flex from "../styled/flex";
+import Tooltip from "../tooltip";
 
 const Wrapper = styled(Flex)`
   a {
@@ -29,8 +30,16 @@ const AvatarWrapper = styled(Flex)`
 
 const Username = styled.div`
   font-weight: 500;
-  word-break: break-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: ${(props) => props.fontSize}px;
+  ${(p) =>
+    p.width &&
+    css`
+      width: ${p.width}px;
+      overflow-x: hidden;
+    `}
 `;
 
 const DeleteAccount = styled(Flex)`
@@ -62,6 +71,7 @@ function User({
   showAvatar = true,
   fontSize = 14,
   noEvent = false,
+  width,
 }) {
   const address =
     add ?? user?.addresses?.find((addr) => addr.chain === chain)?.address;
@@ -87,6 +97,32 @@ function User({
     );
   }
 
+  const addressWithoutIdentity = width ? (
+    <Tooltip content={(!user?.publicKey && user?.username) || address}>
+      <div>
+        <Username fontSize={fontSize} width={width}>
+          {(!user?.publicKey && user?.username) || addressEllipsis(address)}
+        </Username>
+      </div>
+    </Tooltip>
+  ) : (
+    <Username fontSize={fontSize}>
+      {(!user?.publicKey && user?.username) || addressEllipsis(address)}
+    </Username>
+  );
+
+  const noAddress = width ? (
+    <Tooltip content={user?.username}>
+      <div>
+        <Username fontSize={fontSize} width={width}>
+          {user?.username}
+        </Username>
+      </div>
+    </Tooltip>
+  ) : (
+    <Username fontSize={fontSize}>{user?.username}</Username>
+  );
+
   return (
     <Wrapper noEvent={noEvent}>
       {showAvatar && (
@@ -104,15 +140,13 @@ function User({
           target="_blank"
         >
           {identity && identity?.info?.status !== "NO_ID" ? (
-            <Identity identity={identity} fontSize={fontSize} />
+            <Identity identity={identity} fontSize={fontSize} width={width} />
           ) : (
-            <Username fontSize={fontSize}>
-              {(!user?.publicKey && user?.username) || addressEllipsis(address)}
-            </Username>
+            addressWithoutIdentity
           )}
         </LinkWrapper>
       ) : (
-        <Username fontSize={fontSize}>{user?.username}</Username>
+        noAddress
       )}
     </Wrapper>
   );

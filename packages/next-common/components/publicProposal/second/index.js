@@ -6,9 +6,11 @@ import dynamic from "next/dynamic";
 import Button from "../../button";
 import User from "../../user";
 import Loading from "../../loading";
-import { emptyFunction } from "../../../utils";
+import { decimalPlaces, emptyFunction, toPrecision } from "../../../utils";
 import useDepositOf from "../../../utils/hooks/useDepositOf";
 import useApi from "../../../utils/hooks/useSelectedEnpointApi";
+import { getNode } from "utils";
+import Tooltip from "../../tooltip";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -79,6 +81,13 @@ const SecondItem = styled.div`
   }
 `;
 
+const DepositRequired = styled.div`
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 100%;
+  color: #506176;
+`;
+
 const Description = styled.div`
   font-size: 12px;
   line-height: 140%;
@@ -116,6 +125,9 @@ export default function Second({
     atBlockHeight,
     triggerUpdate
   );
+  const node = getNode(chain);
+  const nDepositRequired = toPrecision(depositRequired, node.decimals);
+  const shortDepositRequired = decimalPlaces(nDepositRequired, 4);
 
   const showFold = !expand && seconds.length > 5;
   const showData = showFold ? seconds.slice(0, 5) : seconds;
@@ -133,7 +145,16 @@ export default function Second({
       <SecondsList>
         {showData.map((address, index) => (
           <SecondItem key={index}>
-            <User chain={chain} add={address} fontSize={12} />
+            <User chain={chain} add={address} fontSize={12} width={104} />
+            <Tooltip
+              content={`${nDepositRequired} ${
+                node?.voteSymbol ?? node?.symbol
+              }`}
+            >
+              <DepositRequired>{`${shortDepositRequired} ${
+                node?.voteSymbol ?? node?.symbol
+              }`}</DepositRequired>
+            </Tooltip>
           </SecondItem>
         ))}
         {showFold && (

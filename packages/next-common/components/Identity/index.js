@@ -1,7 +1,8 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import IdentityIcon from "./identityIcon";
 import Flex from "../styled/flex";
+import Tooltip from "../tooltip";
 
 const Wrapper = styled(Flex)`
   display: flex;
@@ -12,13 +13,21 @@ const Wrapper = styled(Flex)`
   }
 `;
 
-const Display = styled.span`
+const Display = styled.div`
   font-size: ${(props) => props.fontSize}px;
   font-weight: 500;
-  word-break: break-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  ${(p) =>
+    p.width &&
+    css`
+      width: ${p.width}px;
+      overflow-x: hidden;
+    `}
 `;
 
-export default function Identity({ identity, fontSize = 14 }) {
+export default function Identity({ identity, fontSize = 14, width }) {
   if (!identity || identity?.info?.status === "NO_ID") {
     return null;
   }
@@ -30,7 +39,17 @@ export default function Identity({ identity, fontSize = 14 }) {
   return (
     <Wrapper>
       <IdentityIcon identity={identity} />
-      <Display fontSize={fontSize}>{displayName}</Display>
+      {width ? (
+        <Tooltip content={displayName}>
+          <div>
+            <Display fontSize={fontSize} width={width}>
+              {displayName}
+            </Display>
+          </div>
+        </Tooltip>
+      ) : (
+        <Display fontSize={fontSize}>{displayName}</Display>
+      )}
     </Wrapper>
   );
 }
