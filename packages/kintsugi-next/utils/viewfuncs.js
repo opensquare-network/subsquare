@@ -24,10 +24,8 @@ function getTechCommMotionId(motion) {
 export const toTechCommMotionListItem = (chain, item) => ({
   ...item,
   title: item.title,
-  author: item.author ?? {
-    username: addressEllipsis(item.proposer),
-    addresses: [{ chain, address: item.proposer }],
-  },
+  author: item.author,
+  address: item.proposer,
   status: item?.state ?? "Unknown",
   detailLink: `/techcomm/proposal/${getTechCommMotionId(item)}`,
   time: getPostUpdatedAt(item),
@@ -36,10 +34,8 @@ export const toTechCommMotionListItem = (chain, item) => ({
 
 export const toTreasuryProposalListItem = (chain, item) => ({
   ...item,
-  author: item.author ?? {
-    username: addressEllipsis(item.proposer),
-    addresses: [{ chain, address: item.proposer }],
-  },
+  author: item.author,
+  address: item.proposer,
   status: item.state ?? "Unknown",
   time: getPostUpdatedAt(item),
   detailLink: `/treasury/proposal/${item.proposalIndex}`,
@@ -52,19 +48,15 @@ export const toReferendaListItem = (chain, item) => ({
   time: getPostUpdatedAt(item),
   status: item.state ?? "Unknown",
   index: item.referendumIndex,
-  author: item.author ?? {
-    username: addressEllipsis(item.proposer),
-    addresses: [{ chain, address: item.proposer }],
-  },
+  author: item.author,
+  address: item.proposer,
   detailLink: `/democracy/referendum/${item.referendumIndex}`,
 });
 
 export const toPublicProposalListItem = (chain, item) => ({
   ...item,
-  author: item.author ?? {
-    username: addressEllipsis(item.proposer),
-    addresses: [{ chain, address: item.proposer }],
-  },
+  author: item.author,
+  address: item.proposer,
   index: item.proposalIndex,
   status: item.state ?? "Unknown",
   time: getPostUpdatedAt(item),
