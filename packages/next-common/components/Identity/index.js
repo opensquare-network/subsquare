@@ -17,13 +17,16 @@ const Display = styled.div`
   font-size: ${(props) => props.fontSize}px;
   font-weight: 500;
   ${(p) =>
-    p.width &&
-    css`
-      width: ${p.width}px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    `}
+    p.width
+      ? css`
+          width: ${p.width}px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        `
+      : css`
+          word-break: break-all;
+        `}
 `;
 
 export default function Identity({ identity, fontSize = 14, width }) {

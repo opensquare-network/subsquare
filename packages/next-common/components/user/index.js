@@ -32,13 +32,16 @@ const Username = styled.div`
   font-weight: 500;
   font-size: ${(props) => props.fontSize}px;
   ${(p) =>
-    p.width &&
-    css`
-      width: ${p.width}px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    `}
+    p.width
+      ? css`
+          width: ${p.width}px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        `
+      : css`
+          word-break: break-all;
+        `}
 `;
 
 const DeleteAccount = styled(Flex)`
