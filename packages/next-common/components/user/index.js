@@ -30,15 +30,14 @@ const AvatarWrapper = styled(Flex)`
 
 const Username = styled.div`
   font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   font-size: ${(props) => props.fontSize}px;
   ${(p) =>
     p.width &&
     css`
       width: ${p.width}px;
-      overflow-x: hidden;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     `}
 `;
 

@@ -16,14 +16,13 @@ const Wrapper = styled(Flex)`
 const Display = styled.div`
   font-size: ${(props) => props.fontSize}px;
   font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   ${(p) =>
     p.width &&
     css`
       width: ${p.width}px;
-      overflow-x: hidden;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     `}
 `;
 
