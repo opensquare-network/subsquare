@@ -259,13 +259,11 @@ function Vote({
     }
   }
 
-  const finished =
-    referendumInfo?.finished || blockHeight > referendumStatus?.end;
-
   const isKsm = Chains.kusama === chain;
-  if (isKsm && !blockHeight) {
-    return null;
-  }
+  const finished =
+    referendumInfo?.finished ||
+    (isKsm && referendumIndex < 198) ||
+    blockHeight > referendumStatus?.end;
 
   let finishedResult;
   if (referendumInfo?.finished) {
