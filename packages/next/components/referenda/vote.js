@@ -23,6 +23,7 @@ import Threshold from "./threshold";
 import DisplayValue from "next-common/components/displayValue";
 import Loading from "next-common/components/loading";
 import { useBestNumber } from "next-common/utils/hooks";
+import Chains from "next-common/utils/consts/chains";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -220,7 +221,8 @@ function Vote({
     isMounted,
   ]);
 
-  const referendumEndHeight = referendumInfo?.finished?.end;
+  const referendumEndHeight =
+    referendumInfo?.finished?.end || referendumStatus.end;
   const [electorate, isElectorateLoading] = useElectorate(
     api,
     referendumEndHeight || blockHeight
@@ -255,6 +257,25 @@ function Vote({
     if (nAyesPercent === 100 || nNaysPercent === 100) {
       gap = 0;
     }
+  }
+
+  const finished =
+    referendumInfo?.finished || blockHeight > referendumStatus?.end;
+
+  const isKsm = Chains.kusama === chain;
+  if (isKsm && !blockHeight) {
+    return null;
+  }
+
+  let finishedResult;
+  if (referendumInfo?.finished) {
+    finishedResult = referendumInfo?.finished?.approved ? (
+      <PassStatus>Passed</PassStatus>
+    ) : (
+      <RejectStatus>Failed</RejectStatus>
+    );
+  } else if (isKsm && referendumIndex < 5) {
+    finishedResult = <PassStatus>Passed</PassStatus>;
   }
 
   return (
@@ -366,12 +387,9 @@ function Vote({
             </span>
           </Row>
         </div>
-        {referendumInfo?.finished?.approved && <PassStatus>Passed</PassStatus>}
-        {referendumInfo?.finished?.approved === false && (
-          <RejectStatus>Failed</RejectStatus>
-        )}
+        {finishedResult}
         {referendumInfo &&
-          !referendumInfo.finished &&
+          !finished &&
           (isPassing ? (
             <PassStatus>Passing</PassStatus>
           ) : (
@@ -379,7 +397,7 @@ function Vote({
           ))}
       </Card>
 
-      {!referendumInfo?.finished && (
+      {!finished && (
         <VoteButton
           onClick={() => {
             setShowVote(true);
