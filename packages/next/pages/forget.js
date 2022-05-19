@@ -51,10 +51,10 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
         if (result) {
           setSuccess(true);
         } else if (error) {
-          setErrors(res.error);
+          setErrors(error);
         }
       } catch (e) {
-        showErrorToast("some error occurred when sending an Email");
+        showErrorToast(e.message);
       } finally {
         setLoading(false);
       }
