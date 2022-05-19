@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import countBy from "lodash.countby";
+import BigNumber from "bignumber.js";
 
 import Button from "../../button";
 import User from "../../user";
@@ -126,11 +128,11 @@ export default function Second({
     triggerUpdate
   );
   const node = getNode(chain);
-  const nDepositRequired = toPrecision(depositRequired, node.decimals);
-  const shortDepositRequired = decimalPlaces(nDepositRequired, 4);
 
+  const secondsCount = countBy(seconds);
+  const secondsAddress = Object.keys(secondsCount);
   const showFold = !expand && seconds.length > 5;
-  const showData = showFold ? seconds.slice(0, 5) : seconds;
+  const showData = showFold ? secondsAddress.slice(0, 5) : secondsAddress;
 
   let secondsList;
 
@@ -147,13 +149,13 @@ export default function Second({
           <SecondItem key={index}>
             <User chain={chain} add={address} fontSize={12} width={104} />
             <Tooltip
-              content={`${nDepositRequired} ${
+              content={`${new BigNumber(depositRequired)
+                .times(secondsCount[address])
+                .div(Math.pow(10, node.decimals))} ${
                 node?.voteSymbol ?? node?.symbol
               }`}
             >
-              <DepositRequired>{`${shortDepositRequired} ${
-                node?.voteSymbol ?? node?.symbol
-              }`}</DepositRequired>
+              <DepositRequired>{`x${secondsCount[address]}`}</DepositRequired>
             </Tooltip>
           </SecondItem>
         ))}
@@ -181,15 +183,25 @@ export default function Second({
     );
   }
 
+  const totalSeconds = isLoadingSeconds ? (
+    <Loading size={16} />
+  ) : (
+    <Tooltip
+      content={`${new BigNumber(depositRequired)
+        .times(seconds.length)
+        .div(Math.pow(10, node.decimals))} ${node?.voteSymbol ?? node?.symbol}`}
+    >
+      {seconds.length}
+    </Tooltip>
+  );
+
   return (
     <>
       <Wrapper>
         <Content>
           <Title>
             <div>Second</div>
-            <div>
-              {isLoadingSeconds ? <Loading size={16} /> : seconds.length}
-            </div>
+            <div>{totalSeconds}</div>
           </Title>
           {secondsList}
         </Content>
