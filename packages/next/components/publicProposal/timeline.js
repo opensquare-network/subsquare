@@ -1,19 +1,7 @@
-import styled from "styled-components";
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import sortTimeline from "utils/timeline/sort";
 import { getNode, getTimelineStatus, toPrecision } from "utils";
-import User from "next-common/components/user";
-
-const DepositorsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-
-  > :not(:first-child) {
-    margin-top: 4px;
-  }
-`;
 
 export function makePublicProposalTimelineData(timeline, chain) {
   const node = getNode(chain);
@@ -33,13 +21,7 @@ export function makePublicProposalTimelineData(timeline, chain) {
         return {
           "Referenda Index": `#${args.referendumIndex}`,
           Deposit: `${toPrecision(args.deposit ?? 0, decimals)} ${symbol}`,
-          Depositors: (
-            <DepositorsWrapper>
-              {(args.depositors || []).map((item, index) => (
-                <User add={item} key={index} chain={chain} />
-              ))}
-            </DepositorsWrapper>
-          ),
+          Depositors: (args.depositors || []).length,
         };
     }
     return args;

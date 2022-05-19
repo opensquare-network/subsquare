@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 import Icon from "next-common/assets/imgs/icons/circle-question.svg";
 
@@ -26,7 +26,6 @@ const Wrapper = styled.span`
 `;
 
 const PopupWrapper = styled.div`
-  cursor: auto;
   display: none;
   position: absolute;
   padding-bottom: 10px;
@@ -34,11 +33,6 @@ const PopupWrapper = styled.div`
   bottom: 100%;
   transform: translateX(-50%);
   z-index: 1;
-  ${(p) =>
-    p.isCopy &&
-    css`
-      cursor: pointer;
-    `}
 `;
 
 const Popup = styled.div`
