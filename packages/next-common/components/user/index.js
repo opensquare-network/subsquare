@@ -32,9 +32,9 @@ const Username = styled.div`
   font-weight: 500;
   font-size: ${(props) => props.fontSize}px;
   ${(p) =>
-    p.width
+    p.maxWidth
       ? css`
-          width: ${p.width}px;
+          max-width: ${p.maxWidth}px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -73,7 +73,7 @@ function User({
   showAvatar = true,
   fontSize = 14,
   noEvent = false,
-  width,
+  maxWidth,
 }) {
   const address =
     add ?? user?.addresses?.find((addr) => addr.chain === chain)?.address;
@@ -99,10 +99,10 @@ function User({
     );
   }
 
-  const addressWithoutIdentity = width ? (
+  const addressWithoutIdentity = maxWidth ? (
     <Tooltip content={(!user?.publicKey && user?.username) || address}>
       <div>
-        <Username fontSize={fontSize} width={width}>
+        <Username fontSize={fontSize} maxWidth={maxWidth}>
           {(!user?.publicKey && user?.username) || addressEllipsis(address)}
         </Username>
       </div>
@@ -113,10 +113,10 @@ function User({
     </Username>
   );
 
-  const noAddress = width ? (
+  const noAddress = maxWidth ? (
     <Tooltip content={user?.username}>
       <div>
-        <Username fontSize={fontSize} width={width}>
+        <Username fontSize={fontSize} maxWidth={maxWidth}>
           {user?.username}
         </Username>
       </div>
@@ -142,7 +142,7 @@ function User({
           target="_blank"
         >
           {identity && identity?.info?.status !== "NO_ID" ? (
-            <Identity identity={identity} fontSize={fontSize} width={width} />
+            <Identity identity={identity} fontSize={fontSize} maxWidth={maxWidth} />
           ) : (
             addressWithoutIdentity
           )}

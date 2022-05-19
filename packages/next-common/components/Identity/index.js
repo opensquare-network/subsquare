@@ -17,9 +17,9 @@ const Display = styled.div`
   font-size: ${(props) => props.fontSize}px;
   font-weight: 500;
   ${(p) =>
-    p.width
+    p.maxWidth
       ? css`
-          width: ${p.width}px;
+          max-width: ${p.maxWidth}px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -29,7 +29,7 @@ const Display = styled.div`
         `}
 `;
 
-export default function Identity({ identity, fontSize = 14, width }) {
+export default function Identity({ identity, fontSize = 14, maxWidth }) {
   if (!identity || identity?.info?.status === "NO_ID") {
     return null;
   }
@@ -41,10 +41,10 @@ export default function Identity({ identity, fontSize = 14, width }) {
   return (
     <Wrapper>
       <IdentityIcon identity={identity} />
-      {width ? (
+      {maxWidth ? (
         <Tooltip content={displayName}>
           <div>
-            <Display fontSize={fontSize} width={width}>
+            <Display fontSize={fontSize} maxWidth={maxWidth}>
               {displayName}
             </Display>
           </div>
