@@ -22,6 +22,7 @@ import SignerSelect from "next-common/components/signerSelect";
 import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
 import PopupLabel from "next-common/components/popup/label";
 import { WarningMessage } from "next-common/components/popup/styled";
+import { encodeAddressToChain } from "next-common/services/address";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -48,9 +49,13 @@ function PopupContent({
   const [balance, setBalance] = useState();
   const node = getNode(chain);
 
-  const selectedAccountIsTipper = councilTippers.includes(
-    selectedAccount?.address
-  );
+  let selectedAccountIsTipper = false;
+  if (selectedAccount?.address) {
+    const encodedSelectedAddress = encodeAddressToChain(selectedAccount?.address, chain);
+    selectedAccountIsTipper = councilTippers.includes(
+      encodedSelectedAddress
+    );
+  }
 
   const api = useApi(chain);
 

@@ -17,6 +17,7 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Signer from "./signer";
 import CurrentVote from "./currentVote";
 import VoteButton from "next-common/components/popup/voteButton";
+import { encodeAddressToChain } from "next-common/services/address";
 
 function PopupContent({
   extensionAccounts,
@@ -37,7 +38,15 @@ function PopupContent({
   const [isLoading, setIsLoading] = useState();
 
   const selectedAddress = selectedAccount?.address;
-  const selectedAccountCanVote = voters.includes(selectedAddress);
+
+  let selectedAccountCanVote = false;
+  if (selectedAccount?.address) {
+    const encodedSelectedAddress = encodeAddressToChain(selectedAddress, chain);
+    selectedAccountCanVote = voters.includes(
+      encodedSelectedAddress
+    );
+  }
+
   const currentVote = votes.find((item) => item[0] === selectedAddress);
 
   const api = useApi(chain);
