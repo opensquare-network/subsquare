@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+#2.0.0
+
+- Support Kusama
+- Implement did login
+- Support safari and improve the compatible page
+- Improve public proposal second list
+- Fix referendum electorate
+- Upgrade dependency to @polkadot/api
+
 # 1.10.4
 
 - Support public proposal second action
