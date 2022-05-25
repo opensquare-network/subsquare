@@ -10,6 +10,7 @@ import Actions from "next-common/components/actions";
 import PostEdit from "next-common/components/post/postEdit";
 import MicromarkMd from "next-common/components/micromarkMd";
 import EditIcon from "../assets/imgs/icons/edit.svg";
+import PostDataSource from "./postDataSource";
 
 const Wrapper = styled.div`
   :hover {
@@ -200,6 +201,9 @@ export default function ArticleContent({
           {post.contentType === "html" && <HtmlRender html={post.content} />}
           {post.createdAt !== post.updatedAt && (
             <EditedLabel>Edited</EditedLabel>
+          )}
+          {["kusama", "polkadot"].includes(chain) && (
+            <PostDataSource type={type} post={post} />
           )}
           <Actions
             highlight={isLoggedIn && thumbUp}
