@@ -61,6 +61,10 @@ export const DEFAULT_KHALA_NODES = [
     name: "OnFinality",
     url: "wss://khala.api.onfinality.io/public-ws",
   },
+  {
+    name: "Dwellir",
+    url: "wss://khala-rpc.dwellir.com",
+  },
 ];
 export const DEFAULT_KHALA_NODE_URL = DEFAULT_KHALA_NODES[0]?.url;
 
