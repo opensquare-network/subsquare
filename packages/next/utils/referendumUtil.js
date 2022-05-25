@@ -101,7 +101,7 @@ const electorates = {};
 export async function getElectorate(api, height) {
   let blockHeight = height;
   if (!blockHeight) {
-    blockHeight = await getFinalizedBlockNumber(api);
+    return await api.query.balances.totalIssuance();
   }
 
   if (electorates[blockHeight]) {
