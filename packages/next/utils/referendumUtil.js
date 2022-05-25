@@ -104,8 +104,6 @@ export async function getElectorate(api, height) {
     return await api.query.balances.totalIssuance();
   }
 
-  console.log("height", height);
-
   if (electorates[blockHeight]) {
     return electorates[blockHeight];
   }
