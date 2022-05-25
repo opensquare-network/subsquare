@@ -202,7 +202,9 @@ export default function ArticleContent({
           {post.createdAt !== post.updatedAt && (
             <EditedLabel>Edited</EditedLabel>
           )}
-          <PostDataSource type={type} post={post} />
+          {["kusama", "polkadot"].includes(chain) && (
+            <PostDataSource type={type} post={post} />
+          )}
           <Actions
             highlight={isLoggedIn && thumbUp}
             noHover={!isLoggedIn || ownPost}
