@@ -77,22 +77,21 @@ function getPolkassemblyLink(type, post) {
 }
 
 export default function PostDataSource({ type, post }) {
-  let dataSource = null;
-
-  if (post.dataSource === "polkassembly") {
-    let paLink = getPolkassemblyLink(type, post);
-
-    if (paLink) {
-      dataSource = (
-        <ExternalReference>
-          <span>Polkassembly</span>
-          <a href={paLink} target="_blank">
-            <ExternalLinkIcon />
-          </a>
-        </ExternalReference>
-      );
-    }
+  if (post.dataSource !== "polkassembly") {
+    return null;
   }
 
-  return dataSource;
+  const paLink = getPolkassemblyLink(type, post);
+  if (!paLink) {
+    return null;
+  }
+
+  return (
+    <ExternalReference>
+      <span>Polkassembly</span>
+      <a href={paLink} target="_blank">
+        <ExternalLinkIcon />
+      </a>
+    </ExternalReference>
+  );
 }
