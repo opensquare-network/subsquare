@@ -90,7 +90,7 @@ export default function PostDataSource({ type, post }) {
     <ExternalReference>
       <span>Polkassembly</span>
       <a href={paLink} target="_blank">
-        <ExternalLinkIcon />
+        <ExternalLinkIcon color="#6848FF" />
       </a>
     </ExternalReference>
   );
