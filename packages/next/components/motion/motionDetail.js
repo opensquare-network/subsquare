@@ -36,27 +36,25 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
   const motionEnd = isMotionEnded(post.onchainData);
 
   useEffect(() => {
-    if (type !== TYPE_COUNCIL_MOTION) {
+    if (type !== TYPE_COUNCIL_MOTION || !api) {
       return;
     }
 
-    if (api) {
-      (motionEnd
-        ? api.at(post.onchainData?.state?.indexer?.blockHash)
-        : Promise.resolve(api)
-      )
-        .then((blockApi) => {
-          return blockApi.query[toApiCouncil(chain, type)]?.prime?.();
-        })
-        .then((prime) => {
-          if (!prime) return;
+    (motionEnd
+      ? api.at(post.onchainData?.state?.indexer?.blockHash)
+      : Promise.resolve(api)
+    )
+      .then((blockApi) => {
+        return blockApi.query[toApiCouncil(chain, type)]?.prime?.();
+      })
+      .then((prime) => {
+        if (!prime) return;
 
-          const primeAddr = prime.toJSON();
-          if (isMounted.current) {
-            setPrime(primeAddr);
-          }
-        });
-    }
+        const primeAddr = prime.toJSON();
+        if (isMounted.current) {
+          setPrime(primeAddr);
+        }
+      });
   }, [api, post, motionEnd, chain, type, isMounted]);
 
   const dbVotes = useMemo(() => {
