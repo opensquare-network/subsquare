@@ -15,6 +15,8 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const node = getNode(chain);
   const electionsInfo = useCall(api?.derive?.elections?.info, []);
   const allVotes = useCall(api?.derive?.council?.votes, []);
+  const prime = useCall(api?.query?.council?.prime, [])?.toJSON();
+
   useEffect(() => {
     if (electionsInfo) {
       const votesMap = {};
@@ -51,6 +53,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
         chain={chain}
         category={category}
         items={data}
+        prime={prime}
         loading={loading}
         hasElections={node?.hasElections}
       />

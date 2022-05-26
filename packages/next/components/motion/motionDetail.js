@@ -13,12 +13,14 @@ import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import toApiCouncil from "./toApiCouncil";
 import { EditablePanel } from "next-common/components/styled/panel";
 import Chains from "next-common/utils/consts/chains";
+import { TYPE_COUNCIL_MOTION } from "utils/viewConstants";
 
 export default function MotionDetail({ user, motion, onReply, chain, type }) {
   const isMounted = useIsMounted();
 
   const [post, setPost] = useState(motion);
   const [isEdit, setIsEdit] = useState(false);
+  const [prime, setPrime] = useState();
 
   const api = useApi(chain);
 
@@ -32,6 +34,30 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
     )
   );
   const motionEnd = isMotionEnded(post.onchainData);
+
+  useEffect(() => {
+    if (type !== TYPE_COUNCIL_MOTION) {
+      return;
+    }
+
+    if (api) {
+      (motionEnd
+        ? api.at(post.onchainData?.state?.indexer?.blockHash)
+        : Promise.resolve(api)
+      )
+        .then((blockApi) => {
+          return blockApi.query[toApiCouncil(chain, type)]?.prime?.();
+        })
+        .then((prime) => {
+          if (!prime) return;
+
+          const primeAddr = prime.toJSON();
+          if (isMounted.current) {
+            setPrime(primeAddr);
+          }
+        });
+    }
+  }, [api, post, motionEnd, chain, type, isMounted]);
 
   const dbVotes = useMemo(() => {
     if (post?.onchainData) {
@@ -136,6 +162,7 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
         chain={chain}
         votes={votes}
         voters={voters}
+        prime={prime}
         userCanVote={userCanVote}
         motionIsFinal={motionEnd}
         motionHash={post.hash}
