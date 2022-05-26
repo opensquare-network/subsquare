@@ -21,6 +21,10 @@ const imageMap = new Map([
     Chains.kusama,
     "bafybeifrjrzaajdpfwbxtffsexnxwehsqc3k4ruk5oummlghsxvaityiku",
   ],
+  [
+    Chains.turing,
+    "bafybeidmqvyfi467agi4cum26idgh5h56wmegrjh7jnl5wvtkzbvgucmpm",
+  ],
 ]);
 
 export default function SEO({ title, desc, chain }) {

@@ -4,8 +4,10 @@ import {
   DEFAULT_CRUST_NODES,
   DEFAULT_INTERLAY_NODES,
   DEFAULT_KARURA_NODES,
+  DEFAULT_TURING_NODES,
+  DEFAULT_TURING_NODE_URL,
 } from "./consts/endpoints";
-import { calamari, crust, interlay } from "./consts/networks";
+import { calamari, crust, interlay, turing } from "./consts/networks";
 import Chains from "./consts/chains";
 
 export const DEFAULT_KUSAMA_NODES = [
@@ -207,6 +209,7 @@ export const nodes = [
   interlay,
   crust,
   calamari,
+  turing,
 ];
 
 export const accountMenu = [
@@ -320,6 +323,7 @@ export const SS58Prefix = {
   [Chains.interlay]: 2032,
   [Chains.crust]: 66,
   [Chains.calamari]: 78,
+  [Chains.turing]: 51,
 };
 
 export const defaultNodes = {
@@ -334,6 +338,7 @@ export const defaultNodes = {
   [Chains.interlay]: DEFAULT_INTERLAY_NODES,
   [Chains.crust]: DEFAULT_CRUST_NODES,
   [Chains.calamari]: DEFAULT_CALAMARI_NODES,
+  [Chains.turing]: DEFAULT_TURING_NODES,
 };
 
 export const ChainBlockTime = {

@@ -70,3 +70,20 @@ export const DEFAULT_CALAMARI_NODES = [
   },
 ];
 export const DEFAULT_CALAMARI_NODE_URL = DEFAULT_CALAMARI_NODES[0].url;
+
+export const DEFAULT_TURING_NODES = [
+  {
+    name: "OnFinality",
+    url: "wss://turing.api.onfinality.io/public-ws",
+  },
+  {
+    name: "OAK",
+    url: "wss://rpc.turing.oak.tech",
+  },
+  {
+    name: "Dwellir",
+    url: "wss://turing-rpc.dwellir.com",
+  },
+];
+
+export const DEFAULT_TURING_NODE_URL = DEFAULT_TURING_NODES[0].url;
