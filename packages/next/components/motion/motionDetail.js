@@ -50,9 +50,8 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
       .then((prime) => {
         if (!prime) return;
 
-        const primeAddr = prime.toJSON();
         if (isMounted.current) {
-          setPrime(primeAddr);
+          setPrime(prime.toJSON());
         }
       });
   }, [api, post, motionEnd, chain, type, isMounted]);
