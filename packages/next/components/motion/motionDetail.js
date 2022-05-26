@@ -10,9 +10,10 @@ import Timeline from "./timeline";
 import Head from "./head";
 import { isMotionEnded } from "next-common/utils";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
-import toApiCouncil from "./toApiCouncil";
+import toApiCouncil from "next-common/utils/toApiCouncil";
 import { EditablePanel } from "next-common/components/styled/panel";
 import Chains from "next-common/utils/consts/chains";
+import usePrime from "next-common/utils/hooks/usePrime";
 
 export default function MotionDetail({ user, motion, onReply, chain, type }) {
   const isMounted = useIsMounted();
@@ -32,6 +33,9 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
     )
   );
   const motionEnd = isMotionEnded(post.onchainData);
+
+  const blockHash = motionEnd ? post.onchainData?.state?.indexer?.blockHash : null;
+  const prime = usePrime({ blockHash, chain, type });
 
   const dbVotes = useMemo(() => {
     if (post?.onchainData) {
@@ -112,11 +116,6 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
     setReadOnchainVotes(Date.now());
   }, []);
 
-  const external =
-    post?.onchainData?.externalProposals?.length === 1
-      ? post.onchainData.externalProposals[0]
-      : null;
-
   return (
     <div>
       <EditablePanel>
@@ -136,6 +135,7 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
         chain={chain}
         votes={votes}
         voters={voters}
+        prime={prime}
         userCanVote={userCanVote}
         motionIsFinal={motionEnd}
         motionHash={post.hash}

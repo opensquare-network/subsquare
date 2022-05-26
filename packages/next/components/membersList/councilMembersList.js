@@ -6,6 +6,7 @@ import { bigNumber2Locale } from "next-common/utils";
 import User from "next-common/components/user";
 import { Fragment, useState } from "react";
 import Loading from "next-common/components/loading";
+import PrimeAddressMark from "next-common/components/primeAddressMark";
 
 const Wrapper = styled.div`
   max-width: 848px;
@@ -79,6 +80,12 @@ const EmptyTd = styled.td`
   color: #9da9bb;
 `;
 
+const Member = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
 const RowSpliter = ({ backgroundColor, padding }) => (
   <tr>
     <td colSpan="3" style={{ padding }}>
@@ -102,6 +109,7 @@ export default function MembersList({
   chain,
   category,
   items,
+  prime,
   loading = false,
   hasElections = false,
 }) {
@@ -148,7 +156,10 @@ export default function MembersList({
               <Fragment key={index}>
                 <StyledTr>
                   <StyledTd style={{ textAlign: "left" }}>
-                    <User add={item.address} chain={chain} fontSize={14} />
+                    <Member>
+                      <User add={item.address} chain={chain} fontSize={14} />
+                      {item.address === prime && <PrimeAddressMark />}
+                    </Member>
                   </StyledTd>
                   {hasElections && (
                     <>

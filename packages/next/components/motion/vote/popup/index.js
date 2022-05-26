@@ -12,7 +12,7 @@ import {
 } from "next-common/store/reducers/toastSlice";
 
 import PopupWithAddress from "next-common/components/popupWithAddress";
-import toApiCouncil from "../../toApiCouncil";
+import toApiCouncil from "next-common/utils/toApiCouncil";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Signer from "./signer";
 import CurrentVote from "./currentVote";

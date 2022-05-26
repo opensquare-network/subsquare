@@ -6,12 +6,15 @@ import Layout from "components/layout";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
+import usePrime from "next-common/utils/hooks/usePrime";
+import { TYPE_TECH_COMM_MOTION } from "next-common/utils/viewConstants";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const api = useApi(chain);
   const members = useCall(api?.derive.technicalCommittee.members, []);
+  const prime = usePrime({ chain, type: TYPE_TECH_COMM_MOTION });
   useEffect(() => {
     if (members) {
       setData(members.toJSON() || []);
@@ -30,6 +33,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
     >
       <MembersList
         chain={chain}
+        prime={prime}
         category={category}
         items={data}
         loading={loading}

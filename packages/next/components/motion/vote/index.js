@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import Button from "next-common/components/button";
 import User from "next-common/components/user";
 import Loading from "next-common/components/loading";
+import PrimeAddressMark from "next-common/components/primeAddressMark";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -96,6 +97,12 @@ const LoadingDiv = styled.div`
   justify-content: center;
 `;
 
+const VoterAddr = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
 export default function Vote({
   chain,
   motionIsFinal = false,
@@ -103,6 +110,7 @@ export default function Vote({
   loading = false,
   votes = [],
   voters = [],
+  prime,
   motionHash,
   motionIndex,
   type,
@@ -133,7 +141,10 @@ export default function Vote({
       <TipperList>
         {votes.map(([voter, approve], index) => (
           <TipperItem key={index}>
-            <User add={voter} chain={chain} fontSize={12} />
+            <VoterAddr>
+              <User add={voter} chain={chain} fontSize={12} />
+              {voter === prime && <PrimeAddressMark />}
+            </VoterAddr>
             {approve ? (
               <div>
                 Aye
