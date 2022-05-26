@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import ExternalLinkIcon from "next-common/components/icons/externalLink";
 import {

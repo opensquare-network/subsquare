@@ -1,3 +1,4 @@
+import React from "react";
 import PrimeIcon from "../assets/imgs/icons/prime.svg";
 import Tooltip from "./tooltip";
 

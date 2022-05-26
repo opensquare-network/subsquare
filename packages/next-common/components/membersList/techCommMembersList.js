@@ -4,6 +4,7 @@ import Flex from "../styled/flex";
 import User from "../user";
 import React, { Fragment } from "react";
 import Loading from "../loading";
+import PrimeAddressMark from "../primeAddressMark";
 
 const Wrapper = styled.div`
   max-width: 848px;
@@ -78,6 +79,12 @@ const EmptyTd = styled.td`
   color: #9da9bb;
 `;
 
+const Member = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
 const RowSplitter = ({ backgroundColor, padding }) => (
   <tr>
     <td colSpan="3" style={{ padding }}>
@@ -90,6 +97,7 @@ export default function MembersList({
   chain,
   category,
   items,
+  prime,
   loading = false,
 }) {
   return (
@@ -108,7 +116,10 @@ export default function MembersList({
               <Fragment key={index}>
                 <StyledTr>
                   <StyledTd style={{ textAlign: "left" }}>
-                    <User add={item} chain={chain} fontSize={14} />
+                    <Member>
+                      <User add={item} chain={chain} fontSize={14} />
+                      {item === prime && <PrimeAddressMark />}
+                    </Member>
                   </StyledTd>
                 </StyledTr>
                 {index !== items.length - 1 && (

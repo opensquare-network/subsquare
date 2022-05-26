@@ -10,17 +10,16 @@ import Timeline from "./timeline";
 import Head from "./head";
 import { isMotionEnded } from "next-common/utils";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
-import toApiCouncil from "./toApiCouncil";
+import toApiCouncil from "next-common/utils/toApiCouncil";
 import { EditablePanel } from "next-common/components/styled/panel";
 import Chains from "next-common/utils/consts/chains";
-import { TYPE_COUNCIL_MOTION } from "utils/viewConstants";
+import usePrime from "next-common/utils/hooks/usePrime";
 
 export default function MotionDetail({ user, motion, onReply, chain, type }) {
   const isMounted = useIsMounted();
 
   const [post, setPost] = useState(motion);
   const [isEdit, setIsEdit] = useState(false);
-  const [prime, setPrime] = useState();
 
   const api = useApi(chain);
 
@@ -35,26 +34,8 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
   );
   const motionEnd = isMotionEnded(post.onchainData);
 
-  useEffect(() => {
-    if (type !== TYPE_COUNCIL_MOTION || !api) {
-      return;
-    }
-
-    (motionEnd
-      ? api.at(post.onchainData?.state?.indexer?.blockHash)
-      : Promise.resolve(api)
-    )
-      .then((blockApi) => {
-        return blockApi.query[toApiCouncil(chain, type)]?.prime?.();
-      })
-      .then((prime) => {
-        if (!prime) return;
-
-        if (isMounted.current) {
-          setPrime(prime.toJSON());
-        }
-      });
-  }, [api, post, motionEnd, chain, type, isMounted]);
+  const blockHash = motionEnd ? post.onchainData?.state?.indexer?.blockHash : null;
+  const prime = usePrime({ blockHash, chain, type });
 
   const dbVotes = useMemo(() => {
     if (post?.onchainData) {
@@ -134,11 +115,6 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
   const updateVotes = useCallback(() => {
     setReadOnchainVotes(Date.now());
   }, []);
-
-  const external =
-    post?.onchainData?.externalProposals?.length === 1
-      ? post.onchainData.externalProposals[0]
-      : null;
 
   return (
     <div>
