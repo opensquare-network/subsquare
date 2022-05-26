@@ -13,6 +13,7 @@ const Chains = {
   polkadex: "polkadex",
   crust: "crust",
   calamari: "calamari",
+  turing: "turing",
 };
 
 export default Chains;

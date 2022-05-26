@@ -117,6 +117,7 @@ const menus = [
       Chains.interlay,
       Chains.crust,
       Chains.calamari,
+      Chains.turing,
     ],
   },
 ];

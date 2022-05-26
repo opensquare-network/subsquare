@@ -41,4 +41,14 @@ export const calamari = {
   hasElections: false,
 };
 
+export const turing = {
+  value: Chains.turing,
+  name: capitalize(Chains.turing),
+  icon: "turing.svg",
+  identity: Chains.kusama,
+  symbol: "TUR",
+  decimals: 10,
+  hasElections: false,
+};
+
 export { interlay, polkadex, crust };
