@@ -9,7 +9,6 @@ import {
   TYPE_TREASURY_PROPOSAL,
   TYPE_TREASURY_BOUNTY,
   TYPE_TREASURY_TIP,
-  TYPE_DEMOCRACY_EXTERNAL,
 } from "utils/viewConstants";
 
 const ExternalReference = styled.div`
@@ -62,15 +61,6 @@ function getPolkassemblyLink(type, post) {
     case TYPE_TREASURY_TIP: {
       return `https://${chain}.polkassembly.io/tip/${post.hash}`;
     }
-    case TYPE_DEMOCRACY_EXTERNAL: {
-      if (post.referendumIndex !== undefined) {
-        return `https://${chain}.polkassembly.io/referendum/${post.referendumIndex}`;
-      } else if (post.motionIndex !== undefined) {
-        return `https://${chain}.polkassembly.io/motion/${post.motionIndex}`;
-      } else {
-        return null;
-      }
-    }
     default: {
       return null;
     }
@@ -78,10 +68,6 @@ function getPolkassemblyLink(type, post) {
 }
 
 export default function PostDataSource({ type, post }) {
-  if (post.dataSource !== "polkassembly") {
-    return null;
-  }
-
   const paLink = getPolkassemblyLink(type, post);
   if (!paLink) {
     return null;
