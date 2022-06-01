@@ -9,7 +9,10 @@ const imageMap = new Map([
   ["bifrost", "bafybeibu7lmjymi5x6gjixdawmc4rjufruc6qwazailfnpzpoaqtuq6khe"],
   ["karura", "bafybeiaoq7r32qsnpjqcey3x5hxfikbq3artjzi32he7dkretvesqgf3ny"],
   ["khala", "bafybeifo4hsd3ue5ivsbcrb77fp2uvglxyc2royqvg52eo5eggnppdjxp4"],
-  ["kintsugi", "bafybeid66326gcwrriitsffgrhljk4i7uf54am25arkqjz4j6o3gfwyime"],
+  [
+    Chains.kintsugi,
+    "bafybeifddx4p4ouofy2mj3pt5o62alnpfywbu7w7iedws3shpiu547tszi",
+  ],
   ["interlay", "bafybeifqabzy3677ms2jihcb4ed4kxcvbjtxskctjboidcoy7pbosqrqyi"],
   ["polkadex", "bafybeickjkgii2nnhwyypiem6jjj3z75u4dfknwcmedru4ytzv6qddfg5y"],
   [Chains.crust, "bafybeicb77dwocjcssmcb75irbsvxly4ep335pky2r7tvwsjnoyzpl3c3y"],
