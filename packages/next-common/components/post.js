@@ -20,6 +20,8 @@ import {
   text_primary,
 } from "next-common/styles/componentCss";
 import MotionElapse from "next-common/components/motionElapse";
+import UpdateIcon from "../assets/imgs/icons/line-chart.svg";
+import CommentIcon from "../assets/imgs/icons/comment.svg";
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -87,6 +89,9 @@ const Info = styled.div`
   align-items: center;
   font-size: 12px;
   color: #506176;
+  svg{
+    margin-right: 4px;
+  }
   .elapseIcon > * {
     margin-left: 8px;
   }
@@ -210,13 +215,17 @@ export default function Post({ data, chain, href, type }) {
           {data.isDemocracy && <SectionTag name={"Democracy"} />}
           {data.time && (
             <Info>
-              <span>{`Updated ${timeDurationFromNow(data.time)}`}</span>
+              <UpdateIcon/>
+              <span>{`${timeDurationFromNow(data.time)}`}</span>
               <Flex className="elapseIcon">{elapseIcon}</Flex>
             </Info>
           )}
           {data.remaining && <Info>{`${timeDuration(data.remaining)}`}</Info>}
           {data.commentsCount > -1 && (
-            <AutHideInfo>{`${data.commentsCount} Comments`}</AutHideInfo>
+            <AutHideInfo>
+              <CommentIcon/>
+              {`${data.commentsCount}`}
+            </AutHideInfo>
           )}
         </Footer>
         {data.status && <Tag name={data.status} />}
