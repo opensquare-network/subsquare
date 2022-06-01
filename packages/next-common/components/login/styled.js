@@ -23,7 +23,6 @@ export const Title = styled.div`
   font-size: 20px;
   text-align: center;
   line-height: 20px;
-  border-radius: 4px;
 `;
 
 export const LinkWrapper = styled.div`

@@ -32,6 +32,7 @@ const Hint = styled.p`
 ${p_14_normal};
   color: #506176;
   background: #F6F7FA;
+  border-radius: 4px;
 `
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
