@@ -114,7 +114,7 @@ const Wrapper = styled.div`
   }
 
   a {
-    color: #0974cd;
+    color: #1f70c7;
   }
 
   span.disabled-link > a {

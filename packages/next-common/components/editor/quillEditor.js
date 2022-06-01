@@ -50,7 +50,7 @@ export const StyledTextArea = styled.div`
       span.mention,
       span.mention span {
         background-color: #fff;
-        color: #0974cd;
+        color: #1f70c7;
       }
     }
 
