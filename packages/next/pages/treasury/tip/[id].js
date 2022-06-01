@@ -228,7 +228,7 @@ export default withLoginUserRedux(
         <>
           <User
             chain={chain}
-            add={detail.onchainData?.meta?.finder}
+            add={detail.onchainData?.finder}
             fontSize={14}
           />
           <Links
