@@ -77,7 +77,7 @@ let nodeUrl = (() => {
     [Chains.turing]:
       DEFAULT_TURING_NODES.find((item) => item.url === localNodeUrl)?.url ||
       DEFAULT_TURING_NODE_URL,
-    [Chains.turing]:
+    [Chains.crab]:
       DEFAULT_CRAB_NODES.find((item) => item.url === localNodeUrl)?.url ||
       DEFAULT_CRAB_NODE_URL,
     polkadex:
