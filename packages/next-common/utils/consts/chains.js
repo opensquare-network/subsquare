@@ -14,6 +14,7 @@ const Chains = {
   crust: "crust",
   calamari: "calamari",
   turing: "turing",
+  crab: "crab",
 };
 
 export default Chains;

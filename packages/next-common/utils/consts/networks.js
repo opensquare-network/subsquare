@@ -51,4 +51,14 @@ export const turing = {
   hasElections: false,
 };
 
+export const crab = {
+  value: Chains.crab,
+  name: capitalize(Chains.crab),
+  icon: "crab.svg",
+  identity: Chains.crab,
+  symbol: "CRAB",
+  decimals: 9,
+  hasElections: true,
+};
+
 export { interlay, polkadex, crust };

@@ -87,3 +87,20 @@ export const DEFAULT_TURING_NODES = [
 ];
 
 export const DEFAULT_TURING_NODE_URL = DEFAULT_TURING_NODES[0].url;
+
+export const DEFAULT_CRAB_NODES = [
+  {
+    name: "Darwinia",
+    url: "wss://crab-rpc.darwinia.network",
+  },
+  {
+    name: "Dwellir",
+    url: "wss://darwiniacrab-rpc.dwellir.com",
+  },
+  {
+    name: "OnFinality",
+    url: "wss://darwinia-crab.api.onfinality.io/public-ws",
+  },
+];
+
+export const DEFAULT_CRAB_NODE_URL = DEFAULT_CRAB_NODES[0].url;
