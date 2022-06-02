@@ -3,6 +3,7 @@ import { primary_purple_500 } from "next-common/styles/colors";
 import { p_12_medium } from "next-common/styles/componentCss";
 
 const Text = styled.div`
+  user-select: none;
   ${p_12_medium};
   color: ${primary_purple_500};
   &:hover {
@@ -10,13 +11,13 @@ const Text = styled.div`
   }
 `;
 
-function ToggleText({ isToggleOpen, setIsToggleOpen = () => {} }) {
+function ToggleText({ isSetBanner, setIsSetBanner = () => {} }) {
   const handleSwitch = () => {
-    setIsToggleOpen(!isToggleOpen);
+    setIsSetBanner(!isSetBanner);
   };
 
   return (
-    <Text onClick={handleSwitch}>{isToggleOpen ? "Cancel" : "Set Banner"}</Text>
+    <Text onClick={handleSwitch}>{isSetBanner ? "Cancel" : "Set Banner"}</Text>
   );
 }
 
