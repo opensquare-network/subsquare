@@ -1,10 +1,22 @@
 import styled from "styled-components";
 import { grey_400, primary_purple_500 } from "next-common/styles/colors";
-import { text_accessory, p_12_normal } from "next-common/styles/componentCss";
+import {
+  text_accessory,
+  text_secondary,
+  p_12_normal,
+} from "next-common/styles/componentCss";
+import Flex from "next-common/components/styled/flex";
+import Image from "next/image";
+import { useRef } from "react";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  .hidden {
+    display: none;
+  }
+`;
 
-const UploadArea = styled.div`
+const UploadArea = styled(Flex)`
+  justify-content: center;
   border: 1px dashed;
   border-color: ${grey_400};
   height: 116px;
@@ -29,11 +41,42 @@ const Tips = styled.ul`
     }
   }
 `;
+const Hint = styled.span`
+  ${text_accessory}
+  line-height: 19.6px;
+`;
+
+const SelectFile = styled.span`
+  ${text_secondary};
+  margin-left: 8px;
+  line-height: 19.6px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
+const UploadTip = styled.p`
+  display: flex;
+  align-items: center;
+`;
 
 function Uploader() {
+  const inputEl = useRef();
+
+  const handleSelectFile = () => {
+    inputEl.current?.click();
+  };
+
   return (
     <Wrapper>
-      <UploadArea></UploadArea>
+      <UploadArea>
+        <UploadTip>
+          <Hint>Drag and drop image or </Hint>
+          <SelectFile onClick={handleSelectFile}>
+            <Image width="20" height="20" src="/imgs/icons/upload.svg" />
+            Upload
+          </SelectFile>
+        </UploadTip>
+      </UploadArea>
       <Tips>
         <li>We recommand a 16:9 image.</li>
         <li>
@@ -41,6 +84,8 @@ function Uploader() {
           on social media.
         </li>
       </Tips>
+
+      <input className="hidden" type="file" ref={inputEl} />
     </Wrapper>
   );
 }
