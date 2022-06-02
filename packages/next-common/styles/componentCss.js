@@ -34,6 +34,14 @@ export const p_12_medium = css`
   line-height: 12px;
 `;
 
+export const p_12_normal = css`
+  font-family: Inter, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16.8px;
+`;
+
 export const text_primary = css`
   color: #1e2134;
 `;
