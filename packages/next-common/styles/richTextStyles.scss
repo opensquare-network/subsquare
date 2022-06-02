@@ -810,6 +810,7 @@
 
   ul > li::before {
     content: "\2022";
+    float: left;
   }
 
   span.mention,
