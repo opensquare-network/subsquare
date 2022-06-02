@@ -18,6 +18,7 @@ const UploadArea = styled.div`
 const Tips = styled.ul`
   padding: 0;
   list-style: none;
+  margin: 8px 0;
 
   li {
     ${text_accessory};
