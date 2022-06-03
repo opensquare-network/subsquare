@@ -38,6 +38,8 @@ function ChainLogo({ chain }) {
       logo = <Logo src="/imgs/logos/kusama.svg" alt={chain} />;
     } else if (Chains.turing === chain) {
       logo = <Logo src="/imgs/logos/turing.svg" alt={chain} />;
+    } else if (Chains.polkadex === chain) {
+      logo = <Logo src="/imgs/logos/polkadex.svg" alt={chain} />;
     }
   }
 
