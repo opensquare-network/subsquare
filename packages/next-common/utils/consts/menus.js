@@ -107,6 +107,7 @@ const menus = [
       },
     ],
     excludeToChains: [
+      Chains.polkadot,
       Chains.khala,
       Chains.kusama,
       Chains.basilisk,
