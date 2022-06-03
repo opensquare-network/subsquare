@@ -5,9 +5,8 @@ import {
   DEFAULT_INTERLAY_NODES,
   DEFAULT_KARURA_NODES,
   DEFAULT_TURING_NODES,
-  DEFAULT_TURING_NODE_URL,
 } from "./consts/endpoints";
-import { calamari, crust, interlay, turing } from "./consts/networks";
+import { calamari, crust, interlay, turing, polkadex } from "./consts/networks";
 import Chains from "./consts/chains";
 
 export const DEFAULT_KUSAMA_NODES = [
@@ -125,6 +124,10 @@ export const DEFAULT_POLKADEX_NODES = [
     name: "Polkadex-JP",
     url: "wss://mainnet-jp-1.polkadex.trade",
   },
+  {
+    name: "OnFinality",
+    url: "wss://polkadex.api.onfinality.io/public-ws",
+  },
 ];
 
 export const DEFAULT_POLKADEX_NODE_URL = DEFAULT_POLKADEX_NODES[0].url;
@@ -205,8 +208,8 @@ export const nodes = [
     decimals: 12,
     hasElections: false,
   },
-  // polkadex,
   interlay,
+  polkadex,
   crust,
   calamari,
   turing,
