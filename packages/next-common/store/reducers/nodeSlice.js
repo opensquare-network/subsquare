@@ -30,6 +30,8 @@ import {
   DEFAULT_TURING_NODE_URL,
   DEFAULT_CRAB_NODES,
   DEFAULT_CRAB_NODE_URL,
+  defaultPolkadotNodes,
+  defaultPolkadotNodeUrl,
 } from "../../utils/consts/endpoints";
 import Chains from "../../utils/consts/chains";
 
@@ -44,6 +46,9 @@ let nodeUrl = (() => {
   }
 
   return {
+    [Chains.polkadot]:
+      defaultPolkadotNodes.find((item) => item.url === localNodeUrl)?.url ||
+      defaultPolkadotNodeUrl,
     kusama:
       DEFAULT_KUSAMA_NODES.find((item) => item.url === localNodeUrl)?.url ||
       DEFAULT_KUSAMA_NODE_URL,

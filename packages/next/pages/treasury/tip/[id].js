@@ -207,7 +207,7 @@ export default withLoginUserRedux(
       setContent,
       quillRef,
       focusEditor,
-      chain,
+      chain
     );
 
     detail.status = getTipState({
@@ -226,11 +226,7 @@ export default withLoginUserRedux(
       [
         "Finder",
         <>
-          <User
-            chain={chain}
-            add={detail.onchainData?.meta?.finder}
-            fontSize={14}
-          />
+          <User chain={chain} add={detail.onchainData?.finder} fontSize={14} />
           <Links
             chain={chain}
             address={detail.onchainData?.meta?.finder}

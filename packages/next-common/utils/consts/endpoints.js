@@ -4,8 +4,23 @@ export const DEFAULT_INTERLAY_NODES = [
     url: "wss://api.interlay.io/parachain",
   },
 ];
-
 export const DEFAULT_INTERLAY_NODE_URL = DEFAULT_INTERLAY_NODES[0]?.url;
+
+export const defaultPolkadotNodes = [
+  {
+    name: "Parity",
+    url: "wss://rpc.polkadot.io",
+  },
+  {
+    name: "OnFinality",
+    url: "wss://polkadot.api.onfinality.io/public-ws",
+  },
+  {
+    name: "Dwellir",
+    url: "wss://polkadot-rpc.dwellir.com",
+  },
+];
+export const defaultPolkadotNodeUrl = defaultPolkadotNodes[0].url;
 
 export const DEFAULT_KARURA_NODES = [
   {

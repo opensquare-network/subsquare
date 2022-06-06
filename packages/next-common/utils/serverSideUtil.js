@@ -15,7 +15,7 @@ export function checkBrowserCompatibility(context) {
   if (isSafari) {
     const regex = /\bVersion\/(\d+?\.\d+)/;
     const version = regex.exec(userAgent)?.[1];
-    if(parseFloat(version) < 14.1){
+    if (parseFloat(version) < 14) {
       toBrowserCompatibleError(context);
     }
   }

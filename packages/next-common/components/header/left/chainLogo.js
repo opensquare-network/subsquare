@@ -36,10 +36,14 @@ function ChainLogo({ chain }) {
       logo = <Logo src="/imgs/logos/calamari.svg" alt={chain} />;
     } else if (Chains.kusama === chain) {
       logo = <Logo src="/imgs/logos/kusama.svg" alt={chain} />;
+    } else if (Chains.polkadot === chain) {
+      logo = <Logo src="/imgs/logos/polkadot.svg" alt={chain} />;
     } else if (Chains.turing === chain) {
       logo = <Logo src="/imgs/logos/turing.svg" alt={chain} />;
     } else if (Chains.crab === chain) {
       logo = <Logo src="/imgs/logos/crab.svg" alt={chain} />;
+    } else if (Chains.polkadex === chain) {
+      logo = <Logo src="/imgs/logos/polkadex.svg" alt={chain} />;
     }
   }
 

@@ -6,8 +6,16 @@ import {
   DEFAULT_INTERLAY_NODES,
   DEFAULT_KARURA_NODES,
   DEFAULT_TURING_NODES,
+  defaultPolkadotNodes,
 } from "./consts/endpoints";
-import { calamari, crab, crust, interlay, turing } from "./consts/networks";
+import {
+  polkadot,
+  calamari,
+  crust,
+  interlay,
+  turing,
+  polkadex,
+} from "./consts/networks";
 import Chains from "./consts/chains";
 
 export const DEFAULT_KUSAMA_NODES = [
@@ -125,11 +133,16 @@ export const DEFAULT_POLKADEX_NODES = [
     name: "Polkadex-JP",
     url: "wss://mainnet-jp-1.polkadex.trade",
   },
+  {
+    name: "OnFinality",
+    url: "wss://polkadex.api.onfinality.io/public-ws",
+  },
 ];
 
 export const DEFAULT_POLKADEX_NODE_URL = DEFAULT_POLKADEX_NODES[0].url;
 
 export const nodes = [
+  polkadot,
   {
     value: "kusama",
     name: "Kusama",
@@ -205,8 +218,8 @@ export const nodes = [
     decimals: 12,
     hasElections: false,
   },
-  // polkadex,
   interlay,
+  polkadex,
   crust,
   calamari,
   turing,
@@ -329,6 +342,7 @@ export const SS58Prefix = {
 };
 
 export const defaultNodes = {
+  [Chains.polkadot]: defaultPolkadotNodes,
   kusama: DEFAULT_KUSAMA_NODES,
   karura: DEFAULT_KARURA_NODES,
   acala: DEFAULT_ACALA_NODES,
@@ -345,8 +359,8 @@ export const defaultNodes = {
 };
 
 export const ChainBlockTime = {
-  polkadot: 6000,
-  kusama: 6000,
+  [Chains.polkadot]: 6000,
+  [Chains.kusama]: 6000,
   [Chains.crust]: 6000,
   [Chains.crab]: 6000,
 };
