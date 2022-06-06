@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { grey_400, primary_purple_500 } from "next-common/styles/colors";
 import {
   text_accessory,
@@ -7,7 +7,7 @@ import {
 } from "next-common/styles/componentCss";
 import Flex from "next-common/components/styled/flex";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 const Wrapper = styled.div`
   .hidden {
@@ -22,9 +22,11 @@ const UploadArea = styled(Flex)`
   height: 116px;
   border-radius: 4px;
 
-  &.active {
-    border-color: ${primary_purple_500};
-  }
+  ${(p) =>
+    p.active &&
+    css`
+      border-color: ${primary_purple_500};
+    `}
 `;
 
 const Tips = styled.ul`
@@ -61,14 +63,35 @@ const UploadTip = styled.p`
 
 function Uploader() {
   const inputEl = useRef();
+  const [dragging, setDragging] = useState();
 
   const handleSelectFile = () => {
     inputEl.current?.click();
   };
 
+  const onDragOver = (e) => {
+    e.preventDefault();
+    setDragging(true);
+  };
+
+  const onDragLeave = (e) => {
+    e.preventDefault();
+    setDragging(false);
+  };
+
+  const onDrop = (e) => {
+    e.preventDefault();
+    setDragging(false);
+  };
+
   return (
     <Wrapper>
-      <UploadArea>
+      <UploadArea
+        onDragOver={onDragOver}
+        onDragLeave={onDragLeave}
+        onDrop={onDrop}
+        active={dragging}
+      >
         <UploadTip>
           <Hint>Drag and drop image or </Hint>
           <SelectFile onClick={handleSelectFile}>
