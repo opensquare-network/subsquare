@@ -28,6 +28,8 @@ import {
   DEFAULT_KARURA_NODES,
   DEFAULT_TURING_NODES,
   DEFAULT_TURING_NODE_URL,
+  defaultPolkadotNodes,
+  defaultPolkadotNodeUrl,
 } from "../../utils/consts/endpoints";
 import Chains from "../../utils/consts/chains";
 
@@ -42,6 +44,9 @@ let nodeUrl = (() => {
   }
 
   return {
+    [Chains.polkadot]:
+      defaultPolkadotNodes.find((item) => item.url === localNodeUrl)?.url ||
+      defaultPolkadotNodeUrl,
     kusama:
       DEFAULT_KUSAMA_NODES.find((item) => item.url === localNodeUrl)?.url ||
       DEFAULT_KUSAMA_NODE_URL,

@@ -51,4 +51,14 @@ export const turing = {
   hasElections: false,
 };
 
+export const polkadot = {
+  value: "polkadot",
+  name: "Polkadot",
+  icon: "polkadot.svg",
+  identity: "polkadot",
+  symbol: "DOT",
+  decimals: 10,
+  hasElections: true,
+};
+
 export { interlay, polkadex, crust };
