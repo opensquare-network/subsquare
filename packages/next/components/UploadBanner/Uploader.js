@@ -8,6 +8,7 @@ import {
 import Flex from "next-common/components/styled/flex";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import nextApi from "next-common/services/nextApi";
 
 const Wrapper = styled.div`
   .hidden {
@@ -82,6 +83,17 @@ function Uploader() {
   const onDrop = (e) => {
     e.preventDefault();
     setDragging(false);
+    const { files } = e.dataTransfer;
+    if (files && files.length) {
+      uploadImage(files[0]);
+    }
+  };
+
+  // TODO: upload to server
+  const uploadImage = (image) => {
+    // const formData = new FormData();
+    // formData.append("file", file, fileName);
+    // nextApi.postFormData("files/upload", formData);
   };
 
   return (
