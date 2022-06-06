@@ -63,7 +63,7 @@ const UploadTip = styled.p`
 
 function Uploader() {
   const inputEl = useRef();
-  const [dragging, setDragging] = useState();
+  const [dragging, setDragging] = useState(false);
 
   const handleSelectFile = () => {
     inputEl.current?.click();
