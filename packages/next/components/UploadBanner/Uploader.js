@@ -84,13 +84,20 @@ function Uploader() {
     e.preventDefault();
     setDragging(false);
     const { files } = e.dataTransfer;
-    if (files && files.length) {
-      uploadImage(files[0]);
-    }
+    uploadImage(files);
+  };
+
+  const onSelectFile = (e) => {
+    e.preventDefault();
+    const { files } = e.target;
+    uploadImage(files);
   };
 
   // TODO: upload to server
-  const uploadImage = (image) => {
+  const uploadImage = (files) => {
+    console.log(files);
+    if (files && files.length) {
+    }
     // const formData = new FormData();
     // formData.append("file", file, fileName);
     // nextApi.postFormData("files/upload", formData);
@@ -120,7 +127,13 @@ function Uploader() {
         </li>
       </Tips>
 
-      <input className="hidden" type="file" ref={inputEl} />
+      <input
+        className="hidden"
+        type="file"
+        ref={inputEl}
+        accept="image/*"
+        onChange={onSelectFile}
+      />
     </Wrapper>
   );
 }
