@@ -61,10 +61,28 @@ const UploadTip = styled.p`
   display: flex;
   align-items: center;
 `;
+const BannerPreview = styled(Flex)`
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding: 8px 17.5px;
 
+  img {
+    height: 100%;
+  }
+`;
+const RemoveBannerButton = styled.div`
+  cursor: pointer;
+`;
+
+const GoogleLogo =
+  "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png";
+
+// FIXME: expose the `url` to parent component
 function Uploader() {
   const inputEl = useRef();
   const [dragging, setDragging] = useState(false);
+  const [currentBanner, setCurrentBanner] = useState(GoogleLogo);
 
   const handleSelectFile = () => {
     inputEl.current?.click();
@@ -93,15 +111,21 @@ function Uploader() {
     uploadImage(files);
   };
 
-  // TODO: callback handler
   const uploadImage = (files) => {
     if (files && files.length) {
       const image = files[0];
 
       const formData = new FormData();
       formData.append("file", image, image.name);
-      nextApi.postFormData("files/upload", formData);
+      // FIXME: should be success
+      nextApi.postFormData("files/upload", formData).finally(() => {
+        setCurrentBanner(GoogleLogo);
+      });
     }
+  };
+
+  const handleRemoveBanner = () => {
+    setCurrentBanner(null);
   };
 
   return (
@@ -112,13 +136,23 @@ function Uploader() {
         onDrop={onDrop}
         active={dragging}
       >
-        <UploadTip>
-          <Hint>Drag and drop image or </Hint>
-          <SelectFile onClick={handleSelectFile}>
-            <Image width="20" height="20" src="/imgs/icons/upload.svg" />
-            Upload
-          </SelectFile>
-        </UploadTip>
+        {currentBanner ? (
+          <BannerPreview>
+            <div />
+            <img src={currentBanner} />
+            <RemoveBannerButton role="button" onClick={handleRemoveBanner}>
+              <Image src="/imgs/icons/delete.svg" width={12} height={12} />
+            </RemoveBannerButton>
+          </BannerPreview>
+        ) : (
+          <UploadTip>
+            <Hint>Drag and drop image or </Hint>
+            <SelectFile onClick={handleSelectFile}>
+              <Image width="20" height="20" src="/imgs/icons/upload.svg" />
+              Upload
+            </SelectFile>
+          </UploadTip>
+        )}
       </UploadArea>
       <Tips>
         <li>We recommand a 16:9 image.</li>
