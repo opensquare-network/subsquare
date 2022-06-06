@@ -11,6 +11,17 @@ const interlay = {
   hasElections: false,
 };
 
+export const kintsugi = {
+  value: "kintsugi",
+  name: "Kintsugi",
+  icon: "kintsugi.png",
+  identity: "kusama",
+  symbol: "KINT",
+  voteSymbol: "vKINT",
+  decimals: 12,
+  hasElections: false,
+};
+
 const polkadex = {
   value: "polkadex",
   name: "Polkadex",
@@ -68,6 +79,67 @@ export const polkadot = {
   identity: "polkadot",
   symbol: "DOT",
   decimals: 10,
+  hasElections: true,
+};
+
+export const kusama = {
+  value: "kusama",
+  name: "Kusama",
+  icon: "kusama.svg",
+  identity: "kusama",
+  symbol: "KSM",
+  decimals: 12,
+  hasElections: true,
+};
+
+export const karura = {
+  value: "karura",
+  name: "Karura",
+  icon: "karura.svg",
+  identity: "kusama",
+  symbol: "KAR",
+  decimals: 12,
+  hasElections: false,
+};
+
+export const acala = {
+  value: "acala",
+  name: "Acala",
+  icon: "acala.svg",
+  identity: "polkadot",
+  symbol: "ACA",
+  decimals: 12,
+  hasElections: false,
+};
+
+export const khala = {
+  value: "khala",
+  name: "Khala",
+  icon: "khala.svg",
+  identity: "khala",
+  symbol: "PHA",
+  decimals: 12,
+  hasElections: true,
+};
+
+export const bifrost = {
+  value: "bifrost",
+  name: "Bifrost",
+  icon: "bifrost.svg",
+  hideHeight: false,
+  identity: "bifrost",
+  symbol: "bnc",
+  decimals: 12,
+  hasElections: true,
+};
+
+export const basilisk = {
+  value: "basilisk",
+  name: "Basilisk",
+  icon: "basilisk.svg",
+  identity: "basilisk",
+  symbol: "BSX",
+  decimals: 12,
   hasElections: true,
 };
 
