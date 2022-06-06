@@ -28,6 +28,7 @@ const imageMap = new Map([
     Chains.turing,
     "bafybeidmqvyfi467agi4cum26idgh5h56wmegrjh7jnl5wvtkzbvgucmpm",
   ],
+  [Chains.crab, "bafybeihxlzbqo54y5llxp4p5kd77bgxpgjppfk33gfgdbo6kjraxclefcu"],
   [
     Chains.polkadot,
     "bafybeifsztkok4p4vzjbhacvr2o4dxc5xgb7ynxsgnvmicttpqce34xdwe",

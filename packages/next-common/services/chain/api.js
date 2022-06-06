@@ -8,6 +8,7 @@ import {
   khalaOptions,
   kintsugiOptions,
 } from "@osn/provider-options";
+import crabOptions from "./crab";
 
 const apiInstanceMap = new Map();
 
@@ -33,6 +34,8 @@ export default async function getApi(chain, endpoint) {
       customizedOptions = polkadexOptions;
     } else if (chain === Chains.crust) {
       customizedOptions = crustOptions;
+    } else if (chain === Chains.crab) {
+      customizedOptions = crabOptions;
     }
 
     const api = (

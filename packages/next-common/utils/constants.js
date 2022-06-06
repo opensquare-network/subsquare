@@ -1,6 +1,7 @@
 import menus from "./consts/menus";
 import {
   DEFAULT_CALAMARI_NODES,
+  DEFAULT_CRAB_NODES,
   DEFAULT_CRUST_NODES,
   DEFAULT_INTERLAY_NODES,
   DEFAULT_KARURA_NODES,
@@ -222,6 +223,7 @@ export const nodes = [
   crust,
   calamari,
   turing,
+  crab,
 ];
 
 export const accountMenu = [
@@ -336,6 +338,7 @@ export const SS58Prefix = {
   [Chains.crust]: 66,
   [Chains.calamari]: 78,
   [Chains.turing]: 51,
+  [Chains.crab]: 42,
 };
 
 export const defaultNodes = {
@@ -352,12 +355,14 @@ export const defaultNodes = {
   [Chains.crust]: DEFAULT_CRUST_NODES,
   [Chains.calamari]: DEFAULT_CALAMARI_NODES,
   [Chains.turing]: DEFAULT_TURING_NODES,
+  [Chains.crab]: DEFAULT_CRAB_NODES,
 };
 
 export const ChainBlockTime = {
   [Chains.polkadot]: 6000,
   [Chains.kusama]: 6000,
   [Chains.crust]: 6000,
+  [Chains.crab]: 6000,
 };
 
 export const defaultBlockTime = 12000;

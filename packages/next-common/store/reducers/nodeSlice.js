@@ -28,6 +28,8 @@ import {
   DEFAULT_KARURA_NODES,
   DEFAULT_TURING_NODES,
   DEFAULT_TURING_NODE_URL,
+  DEFAULT_CRAB_NODES,
+  DEFAULT_CRAB_NODE_URL,
   defaultPolkadotNodes,
   defaultPolkadotNodeUrl,
 } from "../../utils/consts/endpoints";
@@ -80,6 +82,9 @@ let nodeUrl = (() => {
     [Chains.turing]:
       DEFAULT_TURING_NODES.find((item) => item.url === localNodeUrl)?.url ||
       DEFAULT_TURING_NODE_URL,
+    [Chains.crab]:
+      DEFAULT_CRAB_NODES.find((item) => item.url === localNodeUrl)?.url ||
+      DEFAULT_CRAB_NODE_URL,
     polkadex:
       DEFAULT_POLKADEX_NODES.find((item) => item.url === localNodeUrl)?.url ||
       DEFAULT_POLKADEX_NODE_URL,

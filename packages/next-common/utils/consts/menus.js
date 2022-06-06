@@ -119,6 +119,7 @@ const menus = [
       Chains.crust,
       Chains.calamari,
       Chains.turing,
+      Chains.crab,
     ],
   },
 ];
