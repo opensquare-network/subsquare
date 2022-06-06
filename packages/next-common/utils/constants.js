@@ -9,14 +9,14 @@ import {
   defaultPolkadotNodes,
 } from "./consts/endpoints";
 import {
-  // polkadot,
+  polkadot,
   kusama,
   karura,
   acala,
   khala,
   bifrost,
-  // calamari,
-  // crust,
+  calamari,
+  crust,
   interlay,
   kintsugi,
   turing,
@@ -149,7 +149,7 @@ export const DEFAULT_POLKADEX_NODES = [
 export const DEFAULT_POLKADEX_NODE_URL = DEFAULT_POLKADEX_NODES[0].url;
 
 export const nodes = [
-  // polkadot,
+  polkadot,
   kusama,
   karura,
   acala,
@@ -169,8 +169,8 @@ export const nodes = [
   kintsugi,
   interlay,
   polkadex,
-  // crust,
-  // calamari,
+  crust,
+  calamari,
   turing,
   crab,
 ];
