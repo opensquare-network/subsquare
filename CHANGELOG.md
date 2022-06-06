@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+#2.0.1
+
+- Support safari >= 14.0
+- Fix electorate query
+- Show polkassembly lik for polkadot and kusama
+- Change kintsugi SNS preview cover
+- Fix tip finder
+
 #2.0.0
 
 - Support Kusama
