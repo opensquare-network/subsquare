@@ -93,14 +93,15 @@ function Uploader() {
     uploadImage(files);
   };
 
-  // TODO: upload to server
+  // TODO: callback handler
   const uploadImage = (files) => {
-    console.log(files);
     if (files && files.length) {
+      const image = files[0];
+
+      const formData = new FormData();
+      formData.append("file", image, image.name);
+      nextApi.postFormData("files/upload", formData);
     }
-    // const formData = new FormData();
-    // formData.append("file", file, fileName);
-    // nextApi.postFormData("files/upload", formData);
   };
 
   return (
