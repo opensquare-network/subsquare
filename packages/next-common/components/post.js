@@ -165,6 +165,14 @@ const Method = styled.span`
   color: #9da9bb !important;
 `;
 
+const Anchor = styled.a`
+  :hover {
+    text-decoration: underline;
+    cursor:  pointer;
+  }
+`
+
+
 export default function Post({ data, chain, href, type }) {
   const node = getNode(chain);
   if (!node) {
@@ -227,6 +235,15 @@ export default function Post({ data, chain, href, type }) {
               {`${data.commentsCount}`}
             </AutHideInfo>
           )}
+          {
+            data.parentIndex !== undefined && (
+              <AutHideInfo>
+                <Anchor href={`/treasury/bounty/${data.parentIndex}`} passHref>
+                  {`Parent #${data.parentIndex}`}
+                </Anchor>
+              </AutHideInfo>
+            )
+          }
         </Footer>
         {data.status && <Tag name={data.status} />}
       </FooterWrapper>
