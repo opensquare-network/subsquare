@@ -157,6 +157,11 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   };
 
   const [isSetBanner, setIsSetBanner] = useState(false);
+  useEffect(() => {
+    if (!isSetBanner) {
+      setBannerUrl("");
+    }
+  }, [isSetBanner]);
 
   return (
     <Layout user={loginUser} chain={chain}>
