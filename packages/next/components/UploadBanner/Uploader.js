@@ -110,7 +110,6 @@ function Uploader() {
     uploadImage(files);
   };
 
-  // TODO: check is image file
   const uploadImage = (files) => {
     if (files && files.length) {
       const image = files[0];
