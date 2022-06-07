@@ -105,6 +105,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const [contentType, setContentType] = useState(
     loginUser?.preference.editor || "markdown"
   );
+  const [bannerUrl, setBannerUrl] = useState("");
   const [modalType, setModalType] = useState("image");
   const [showModal, setShowModal] = useState(false);
   const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
@@ -118,6 +119,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       title,
       content,
       contentType,
+      bannerUrl,
     });
     if (result.error) {
       if (result.error.data) {
@@ -179,7 +181,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
           {isSetBanner && (
             <UploaderWrapper>
-              <Uploader />
+              <Uploader setUrl={setBannerUrl} />
             </UploaderWrapper>
           )}
 
