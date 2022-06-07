@@ -76,10 +76,10 @@ const RemoveBannerButton = styled.div`
   cursor: pointer;
 `;
 
-function Uploader({ onSuccess = () => {} }) {
+function Uploader({ bannerUrl, onSuccess = () => {} }) {
   const inputEl = useRef();
   const [dragging, setDragging] = useState(false);
-  const [currentBanner, setCurrentBanner] = useState("");
+  const [currentBanner, setCurrentBanner] = useState(bannerUrl || "");
   const [uploading, setUploading] = useState(false);
 
   const handleSelectFile = () => {
