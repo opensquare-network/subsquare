@@ -24,6 +24,7 @@ import UpdateIcon from "../assets/imgs/icons/line-chart.svg";
 import CommentIcon from "../assets/imgs/icons/comment.svg";
 
 const Wrapper = styled.div`
+  display: flex;
   background: #ffffff;
   border: 1px solid #ebeef4;
   ${shadow_100};
@@ -89,7 +90,7 @@ const Info = styled.div`
   align-items: center;
   font-size: 12px;
   color: #506176;
-  svg{
+  svg {
     margin-right: 4px;
   }
   .elapseIcon > * {
@@ -165,6 +166,22 @@ const Method = styled.span`
   color: #9da9bb !important;
 `;
 
+const ContentWrapper = styled.div`
+  flex: 1;
+`;
+
+const BannerWrapper = styled.div`
+  margin-left: 24px;
+  width: 160px;
+  height: 67px;
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    object-fit: cover;
+  }
+`;
+
 export default function Post({ data, chain, href, type }) {
   const node = getNode(chain);
   if (!node) {
@@ -185,51 +202,59 @@ export default function Post({ data, chain, href, type }) {
 
   return (
     <Wrapper>
-      <HeadWrapper>
-        <TitleWrapper>
-          {data?.index !== undefined && <Index>{`#${data.index}`}</Index>}
-          <Link href={href} passHref>
-            <Title>{data.title}</Title>
-          </Link>
-          <ReasonLink text={data.title} hideText={true} />
-        </TitleWrapper>
-        {data.value && (
-          <span>
-            {bigNumber2Locale(toPrecision(data.value, decimals))}{" "}
-            <span className="symbol">{symbol}</span>
-          </span>
-        )}
-        {method && <Method>{method}</Method>}
-      </HeadWrapper>
+      <ContentWrapper>
+        <HeadWrapper>
+          <TitleWrapper>
+            {data?.index !== undefined && <Index>{`#${data.index}`}</Index>}
+            <Link href={href} passHref>
+              <Title>{data.title}</Title>
+            </Link>
+            <ReasonLink text={data.title} hideText={true} />
+          </TitleWrapper>
+          {data.value && (
+            <span>
+              {bigNumber2Locale(toPrecision(data.value, decimals))}{" "}
+              <span className="symbol">{symbol}</span>
+            </span>
+          )}
+          {method && <Method>{method}</Method>}
+        </HeadWrapper>
 
-      <Divider />
-      <FooterWrapper>
-        <Footer>
-          <User
-            user={data.author}
-            add={data.address}
-            chain={chain}
-            fontSize={12}
-          />
-          {data.isTreasury && <SectionTag name={"Treasury"} />}
-          {data.isDemocracy && <SectionTag name={"Democracy"} />}
-          {data.time && (
-            <Info>
-              <UpdateIcon/>
-              <span>{`${timeDurationFromNow(data.time)}`}</span>
-              <Flex className="elapseIcon">{elapseIcon}</Flex>
-            </Info>
-          )}
-          {data.remaining && <Info>{`${timeDuration(data.remaining)}`}</Info>}
-          {data.commentsCount > -1 && (
-            <AutHideInfo>
-              <CommentIcon/>
-              {`${data.commentsCount}`}
-            </AutHideInfo>
-          )}
-        </Footer>
-        {data.status && <Tag name={data.status} />}
-      </FooterWrapper>
+        <Divider />
+        <FooterWrapper>
+          <Footer>
+            <User
+              user={data.author}
+              add={data.address}
+              chain={chain}
+              fontSize={12}
+            />
+            {data.isTreasury && <SectionTag name={"Treasury"} />}
+            {data.isDemocracy && <SectionTag name={"Democracy"} />}
+            {data.time && (
+              <Info>
+                <UpdateIcon />
+                <span>{`${timeDurationFromNow(data.time)}`}</span>
+                <Flex className="elapseIcon">{elapseIcon}</Flex>
+              </Info>
+            )}
+            {data.remaining && <Info>{`${timeDuration(data.remaining)}`}</Info>}
+            {data.commentsCount > -1 && (
+              <AutHideInfo>
+                <CommentIcon />
+                {`${data.commentsCount}`}
+              </AutHideInfo>
+            )}
+          </Footer>
+          {data.status && <Tag name={data.status} />}
+        </FooterWrapper>
+      </ContentWrapper>
+
+      {data.bannerUrl && (
+        <BannerWrapper>
+          <img src={data.bannerUrl} alt="banner image" />
+        </BannerWrapper>
+      )}
     </Wrapper>
   );
 }
