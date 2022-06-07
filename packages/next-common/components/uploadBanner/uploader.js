@@ -77,7 +77,6 @@ const RemoveBannerButton = styled.div`
 `;
 
 function Uploader({ bannerUrl, onSuccess = () => {} }) {
-  console.log(bannerUrl);
   const inputEl = useRef();
   const [dragging, setDragging] = useState(false);
   const [currentBanner, setCurrentBanner] = useState(bannerUrl || "");
