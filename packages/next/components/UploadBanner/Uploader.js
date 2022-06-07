@@ -122,11 +122,11 @@ function Uploader({ onSuccess = () => {} }) {
       nextApi
         .postFormData("files/upload", formData)
         .then(({ result }) => {
-          setCurrentBanner(result.url);
-          onSuccess(result.url);
+          if (result) {
+            setCurrentBanner(result.url);
+            onSuccess(result.url);
+          }
         })
-        // TODO: error toast
-        .catch(() => {})
         .finally(() => {
           setUploading(false);
         });
