@@ -53,6 +53,11 @@ const menus = [
         excludeToChains: ["basilisk", Chains.kintsugi, Chains.interlay],
       },
       {
+        value: "child-bounties",
+        name: "Child Bounties",
+        pathname: "/treasury/child-bounties",
+      },
+      {
         value: "tips",
         name: "Tips",
         pathname: "/treasury/tips",

@@ -102,6 +102,17 @@ export const toTreasuryBountyListItem = (chain, item) => ({
   value: item.onchainData.value,
 });
 
+export const toTreasuryChildBountyListItem = (chain, item) => ({
+  ...item,
+  author: item.author,
+  address: item.proposer,
+  status: item.state ?? "Unknown",
+  time: getPostUpdatedAt(item),
+  value: item.onchainData.value,
+  detailLink: `/treasury/child-bounty/${item.parentBountyId}_${item.index}`,
+  parentIndex: item.parentBountyId,
+});
+
 export const toReferendaListItem = (chain, item) => ({
   ...item,
   time: getPostUpdatedAt(item),
