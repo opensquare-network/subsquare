@@ -113,12 +113,12 @@ function Uploader() {
   // TODO: check is image file
   const uploadImage = (files) => {
     if (files && files.length) {
-      setUploading(true);
       const image = files[0];
       if (!/image\/\w+/.exec(image.type)) {
         return;
       }
 
+      setUploading(true);
       const formData = new FormData();
       formData.append("file", image, image.name);
       nextApi
