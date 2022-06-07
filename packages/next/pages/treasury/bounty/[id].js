@@ -21,8 +21,9 @@ import { getMetaDesc } from "../../../utils/viewfuncs";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import BountyMetadata from "next-common/components/treasury/bounty/metadata";
 import useMentionList from "next-common/utils/hooks/useMentionList";
+import ChildBountiesTable from "../../../components/bounty/childBountiesTable";
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+export default withLoginUserRedux(({loginUser, detail, childBounties, comments, chain}) => {
   const postId = detail._id;
 
   const editorWrapperRef = useRef(null);
@@ -57,9 +58,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
         };
       case "Awarded":
         return {
-          Beneficiary: (
-            <User chain={chain} add={args.beneficiary} fontSize={14} />
-          ),
+          Beneficiary: <User chain={chain} add={args.beneficiary} fontSize={14}/>,
           Award: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
         };
       case "BountyClaimed":
@@ -107,10 +106,10 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     <Layout
       user={loginUser}
       chain={chain}
-      seoInfo={{ title: detail?.title, desc }}
+      seoInfo={{title: detail?.title, desc}}
     >
       <DetailPageWrapper className="post-content">
-        <Back href={`/treasury/bounties`} text="Back to Bounties" />
+        <Back href={`/treasury/bounties`} text="Back to Bounties"/>
         <DetailItem
           data={detail}
           user={loginUser}
@@ -118,7 +117,8 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           onReply={focusEditor}
           type={TYPE_TREASURY_BOUNTY}
         />
-        <BountyMetadata meta={detail.onchainData?.meta} chain={chain} />
+        <BountyMetadata meta={detail.onchainData?.meta} chain={chain}/>
+        <ChildBountiesTable {...{childBounties, decimals, symbol}}/>
         <Timeline
           data={timelineData}
           chain={chain}
@@ -137,7 +137,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
               chain={chain}
               ref={editorWrapperRef}
               setQuillRef={setQuillRef}
-              {...{ contentType, setContentType, content, setContent, users }}
+              {...{contentType, setContentType, content, setContent, users}}
               type={TYPE_TREASURY_BOUNTY}
             />
           )}
@@ -150,17 +150,21 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
 
-  const { id, page, page_size: pageSize } = context.query;
+  const {id, page, page_size: pageSize} = context.query;
 
-  const [{ result: detail }] = await Promise.all([
+  const [
+    {result: detail},
+    {result: childBounties},
+  ] = await Promise.all([
     nextApi.fetch(`treasury/bounties/${id}`),
+    nextApi.fetch(`/treasury/bounties/${id}/child-bounties`),
   ]);
 
   if (!detail) {
     return to404(context);
   }
 
-  const { result: comments } = await nextApi.fetch(
+  const {result: comments} = await nextApi.fetch(
     `treasury/bounties/${detail._id}/comments`,
     {
       page: page ?? "last",
@@ -171,6 +175,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       detail,
+      childBounties: childBounties ?? [],
       comments: comments ?? EmptyList,
       chain,
     },
