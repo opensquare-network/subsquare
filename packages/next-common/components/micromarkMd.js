@@ -122,7 +122,6 @@ const Wrapper = styled.div`
       white-space: nowrap !important;
       word-break: keep-all;
       overflow-x: scroll;
-      display: block;
     }
 
     a {
