@@ -9,6 +9,7 @@ import Flex from "next-common/components/styled/flex";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import nextApi from "next-common/services/nextApi";
+import Loading from "next-common/components/loading";
 
 const Wrapper = styled.div`
   .hidden {
@@ -75,14 +76,12 @@ const RemoveBannerButton = styled.div`
   cursor: pointer;
 `;
 
-const GoogleLogo =
-  "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png";
-
 // FIXME: expose the `url` to parent component
 function Uploader() {
   const inputEl = useRef();
   const [dragging, setDragging] = useState(false);
-  const [currentBanner, setCurrentBanner] = useState(GoogleLogo);
+  const [currentBanner, setCurrentBanner] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   const handleSelectFile = () => {
     inputEl.current?.click();
@@ -111,16 +110,24 @@ function Uploader() {
     uploadImage(files);
   };
 
+  // TODO: check is image file
   const uploadImage = (files) => {
     if (files && files.length) {
+      setUploading(true);
       const image = files[0];
 
       const formData = new FormData();
       formData.append("file", image, image.name);
-      // FIXME: should be success
-      nextApi.postFormData("files/upload", formData).finally(() => {
-        setCurrentBanner(GoogleLogo);
-      });
+      nextApi
+        .postFormData("files/upload", formData)
+        .then(({ result }) => {
+          setCurrentBanner(result.url);
+        })
+        // TODO: error toast
+        .catch(() => {})
+        .finally(() => {
+          setUploading(false);
+        });
     }
   };
 
@@ -136,22 +143,28 @@ function Uploader() {
         onDrop={onDrop}
         active={dragging}
       >
-        {currentBanner ? (
-          <BannerPreview>
-            <div />
-            <img src={currentBanner} />
-            <RemoveBannerButton role="button" onClick={handleRemoveBanner}>
-              <Image src="/imgs/icons/delete.svg" width={12} height={12} />
-            </RemoveBannerButton>
-          </BannerPreview>
+        {uploading ? (
+          <Loading />
         ) : (
-          <UploadTip>
-            <Hint>Drag and drop image or </Hint>
-            <SelectFile onClick={handleSelectFile}>
-              <Image width="20" height="20" src="/imgs/icons/upload.svg" />
-              Upload
-            </SelectFile>
-          </UploadTip>
+          <>
+            {currentBanner ? (
+              <BannerPreview>
+                <div />
+                <img src={currentBanner} />
+                <RemoveBannerButton role="button" onClick={handleRemoveBanner}>
+                  <Image src="/imgs/icons/delete.svg" width={12} height={12} />
+                </RemoveBannerButton>
+              </BannerPreview>
+            ) : (
+              <UploadTip>
+                <Hint>Drag and drop image or </Hint>
+                <SelectFile onClick={handleSelectFile}>
+                  <Image width="20" height="20" src="/imgs/icons/upload.svg" />
+                  Upload
+                </SelectFile>
+              </UploadTip>
+            )}
+          </>
         )}
       </UploadArea>
       <Tips>
