@@ -115,6 +115,9 @@ function Uploader() {
     if (files && files.length) {
       setUploading(true);
       const image = files[0];
+      if (!/image\/\w+/.exec(image.type)) {
+        return;
+      }
 
       const formData = new FormData();
       formData.append("file", image, image.name);
