@@ -76,7 +76,7 @@ const RemoveBannerButton = styled.div`
   cursor: pointer;
 `;
 
-function Uploader({ setUrl = () => {} }) {
+function Uploader({ onSuccess = () => {} }) {
   const inputEl = useRef();
   const [dragging, setDragging] = useState(false);
   const [currentBanner, setCurrentBanner] = useState("");
@@ -123,7 +123,7 @@ function Uploader({ setUrl = () => {} }) {
         .postFormData("files/upload", formData)
         .then(({ result }) => {
           setCurrentBanner(result.url);
-          setUrl(result.url);
+          onSuccess(result.url);
         })
         // TODO: error toast
         .catch(() => {})
