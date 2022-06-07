@@ -76,8 +76,7 @@ const RemoveBannerButton = styled.div`
   cursor: pointer;
 `;
 
-// FIXME: expose the `url` to parent component
-function Uploader() {
+function Uploader({ setUrl = () => {} }) {
   const inputEl = useRef();
   const [dragging, setDragging] = useState(false);
   const [currentBanner, setCurrentBanner] = useState("");
@@ -124,6 +123,7 @@ function Uploader() {
         .postFormData("files/upload", formData)
         .then(({ result }) => {
           setCurrentBanner(result.url);
+          setUrl(result.url);
         })
         // TODO: error toast
         .catch(() => {})
