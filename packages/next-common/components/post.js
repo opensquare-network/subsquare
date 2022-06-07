@@ -25,6 +25,7 @@ import CommentIcon from "../assets/imgs/icons/comment.svg";
 
 const Wrapper = styled.div`
   display: flex;
+  align-items: center;
   background: #ffffff;
   border: 1px solid #ebeef4;
   ${shadow_100};
@@ -171,8 +172,8 @@ const ContentWrapper = styled.div`
 `;
 
 const BannerWrapper = styled.div`
-  margin-left: 24px;
-  width: 160px;
+  margin-left: 16px;
+  width: 120px;
   height: 67px;
   img {
     width: 100%;
