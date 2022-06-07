@@ -19,6 +19,9 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { fetchUserProfile } from "next-common/store/reducers/userSlice";
 import { shadow_100 } from "styles/componentCss";
 import NextHead from "next-common/components/nextHead";
+import ToggleText from "../../components/UploadBanner/ToggleText";
+import Uploader from "../../components/UploadBanner/Uploader";
+import FlexBetweenCenter from "next-common/components/styled/flexBetweenCenter";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -48,10 +51,12 @@ const Title = styled.div`
   margin-bottom: 24px;
 `;
 
+const LabelWrapper = styled(FlexBetweenCenter)`
+  margin: 16px 0 8px;
+`;
 const Label = styled.div`
   font-weight: bold;
   font-size: 12px;
-  margin: 16px 0 8px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -87,6 +92,10 @@ const PreviewWrapper = styled.div`
   min-height: 244px;
 `;
 
+const UploaderWrapper = styled.div`
+  margin-top: 16px;
+`;
+
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -96,6 +105,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const [contentType, setContentType] = useState(
     loginUser?.preference.editor || "markdown"
   );
+  const [bannerUrl, setBannerUrl] = useState("");
   const [modalType, setModalType] = useState("image");
   const [showModal, setShowModal] = useState(false);
   const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
@@ -109,6 +119,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       title,
       content,
       contentType,
+      bannerUrl,
     });
     if (result.error) {
       if (result.error.data) {
@@ -145,19 +156,40 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       });
   };
 
+  const [isSetBanner, setIsSetBanner] = useState(false);
+  useEffect(() => {
+    if (!isSetBanner) {
+      setBannerUrl("");
+    }
+  }, [isSetBanner]);
+
   return (
     <Layout user={loginUser} chain={chain}>
       <NextHead title={`Create post`} desc={``} />
+
       <Wrapper>
         <Back href={`/discussions`} text="Back to Discussions" />
         <ContentWrapper>
           <Title>New Post</Title>
-          <Label>Title</Label>
+          <LabelWrapper>
+            <Label>Title</Label>
+            <ToggleText
+              isSetBanner={isSetBanner}
+              setIsSetBanner={setIsSetBanner}
+            />
+          </LabelWrapper>
           <Input
             placeholder="Please fill the title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
+
+          {isSetBanner && (
+            <UploaderWrapper>
+              <Uploader onSuccess={setBannerUrl} />
+            </UploaderWrapper>
+          )}
+
           {errors?.data?.title?.[0] && (
             <ErrorText>{errors?.data?.title?.[0]}</ErrorText>
           )}
@@ -169,7 +201,11 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
               type={modalType}
             />
           )}
-          <Label>Issue</Label>
+
+          <LabelWrapper>
+            <Label>Issue</Label>
+          </LabelWrapper>
+
           <InputWrapper>
             {contentType === "markdown" && (
               <MarkdownEditor

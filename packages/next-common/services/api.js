@@ -96,6 +96,21 @@ class Api {
     );
     return result;
   };
+
+  postFormData = async (path, formData) => {
+    const result = await this.fetch(
+      path,
+      {},
+      {
+        method: "POST",
+        credentials: "same-origin",
+        body: formData,
+        redirect: "follow",
+      }
+    );
+
+    return result;
+  };
 }
 
 export default Api;
