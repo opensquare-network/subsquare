@@ -133,6 +133,9 @@ function Uploader() {
 
   const handleRemoveBanner = () => {
     setCurrentBanner(null);
+    if (inputEl.current) {
+      inputEl.current.value = "";
+    }
   };
 
   return (
