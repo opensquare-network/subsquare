@@ -56,6 +56,7 @@ const menus = [
         value: "child-bounties",
         name: "Child Bounties",
         pathname: "/treasury/child-bounties",
+        excludeToChains: [Chains.karura, Chains.acala, Chains.khala, Chains.substrate, Chains.basilisk, Chains.kabocha, Chains.bifrost, Chains.kintsugi, Chains.interlay, Chains.polkadex, Chains.crust, Chains.calamari, Chains.turing, Chains.crab],
       },
       {
         value: "tips",
