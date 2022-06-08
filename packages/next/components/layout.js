@@ -57,7 +57,6 @@ export default function Layout({
 
   const seo = (
     <SEO
-      {...seoInfo}
       title={
         seoInfo?.title || `SubSquare | ${capitalize(chain)} governance platform`
       }

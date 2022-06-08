@@ -50,7 +50,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     <Layout
       user={loginUser}
       chain={chain}
-      seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
+      seoInfo={{ title: detail?.title, desc }}
     >
       <Wrapper className="post-content">
         <Back href={`/discussions`} text="Back to Discussions" />
