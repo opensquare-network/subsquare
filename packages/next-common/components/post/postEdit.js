@@ -72,12 +72,13 @@ export default function PostEdit({
       <Title>Edit</Title>
       <LabelWrapper>
         <Label>Title</Label>
-        {isDiscussion && (
-          <ToggleText
-            isSetBanner={isSetBanner}
-            setIsSetBanner={setIsSetBanner}
-          />
-        )}
+        {/* TODO: set banner feature */}
+        {/* {isDiscussion && ( */}
+        {/*   <ToggleText */}
+        {/*     isSetBanner={isSetBanner} */}
+        {/*     setIsSetBanner={setIsSetBanner} */}
+        {/*   /> */}
+        {/* )} */}
       </LabelWrapper>
       <Input
         disabled={updating}
