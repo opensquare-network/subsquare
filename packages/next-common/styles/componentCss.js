@@ -26,32 +26,12 @@ export const p_14_medium = css`
   line-height: 100%;
 `;
 
-export const p_12_medium = css`
-  font-family: Inter, sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 12px;
-`;
-
-export const p_12_normal = css`
-  font-family: Inter, sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 16.8px;
-`;
-
 export const text_primary = css`
   color: #1e2134;
 `;
 
 export const text_accessory = css`
   color: #9da9bb;
-`;
-
-export const text_secondary = css`
-  color: #506176;
 `;
 
 export const no_scroll_bar = css`
@@ -64,6 +44,5 @@ export const no_scroll_bar = css`
 `;
 
 export const font_family_inter = css`
-  font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 `;
