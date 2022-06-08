@@ -186,7 +186,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
           {isSetBanner && (
             <UploaderWrapper>
-              <Uploader onSuccess={setBannerUrl} />
+              <Uploader onSetImageUrl={setBannerUrl} />
             </UploaderWrapper>
           )}
 

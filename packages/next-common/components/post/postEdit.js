@@ -87,7 +87,7 @@ export default function PostEdit({
 
       {isSetBanner && (
         <UploaderWrapper>
-          <Uploader bannerUrl={bannerUrl} onSuccess={setBannerUrl} />
+          <Uploader imageUrl={bannerUrl} onSetImageUrl={setBannerUrl} />
         </UploaderWrapper>
       )}
 
