@@ -90,6 +90,7 @@ const Accessory = styled.span`
 const DomesticLink = styled.a`
   margin-top: 16px;
   display: block;
+  width: 60px;
   font-size: 12px;
   font-weight: 500;
   color: #6848FF;
@@ -101,20 +102,20 @@ function ChildBountiesTable({
                               decimals,
                               symbol,
                             }) {
-  if (!childBounties || !childBounties.length) {
+  if (!childBounties?.items || !childBounties?.items?.length) {
     return null;
   }
   return <Accordion title="Child Bounties">
     {
-      childBounties.map((bounty, index) => {
+      childBounties.items.map((bounty, index) => {
           return (<ChildBountyWrapper key={index}>
               <Row
                 row={[`#${bounty.index}`,
                   // eslint-disable-next-line react/jsx-key
                   <ChildBounty>
-                    <Anchor title={bounty.description}>
-                      {bounty.description}
-                    </Anchor>
+                    <Anchor href={`/treasury/child-bounty/${bounty.parentBountyId}_${bounty.index}`}
+                            title={bounty.description}
+                    >{bounty.description}</Anchor>
                     <span>
                       <SemiBold>
                         {toPrecision(bounty.value, decimals)}
@@ -151,7 +152,9 @@ function ChildBountiesTable({
       )
     }
 
-    <DomesticLink href={`/treasury/child-bounties?parentBountyId=${childBounties[0].parentBountyId}`}>View all</DomesticLink>
+    {
+      childBounties.total > 5 && <DomesticLink href={`/treasury/child-bounties?parentBountyId=${childBounties.items[0].parentBountyId}`}>View all</DomesticLink>
+    }
   </Accordion>
 }
 
