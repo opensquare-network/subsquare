@@ -175,7 +175,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       detail,
-      childBounties: childBounties ?? [],
+      childBounties: childBounties ?? EmptyList,
       comments: comments ?? EmptyList,
       chain,
     },
