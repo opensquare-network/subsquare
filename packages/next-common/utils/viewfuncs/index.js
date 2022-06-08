@@ -4,6 +4,9 @@ export function toApiType(type) {
   if (type === "treasury/bounty") {
     return "treasury/bounties";
   }
+  if (type === "treasury/child-bounty") {
+    return "treasury/child-bounties";
+  }
   return `${type}s`;
 }
 
