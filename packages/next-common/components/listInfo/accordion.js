@@ -6,7 +6,7 @@ import Caret from "../icons/caret";
 const Wrapper = styled(Panel)`
   margin: 16px 0;
 
-  div {
+  > div {
     background: none !important;
   }
 

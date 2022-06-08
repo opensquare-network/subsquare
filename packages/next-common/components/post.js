@@ -22,6 +22,7 @@ import {
 import MotionElapse from "next-common/components/motionElapse";
 import UpdateIcon from "../assets/imgs/icons/line-chart.svg";
 import CommentIcon from "../assets/imgs/icons/comment.svg";
+import Anchor from "next-common/components/styled/anchor";
 
 const Wrapper = styled.div`
   display: flex;
@@ -246,6 +247,15 @@ export default function Post({ data, chain, href, type }) {
                 {`${data.commentsCount}`}
               </AutHideInfo>
             )}
+            {
+              data.parentIndex !== undefined && (
+                <AutHideInfo>
+                  <Anchor href={`/treasury/bounty/${data.parentIndex}`} passHref>
+                    {`Parent #${data.parentIndex}`}
+                  </Anchor>
+                </AutHideInfo>
+              )
+            }
           </Footer>
           {data.status && <Tag name={data.status} />}
         </FooterWrapper>

@@ -1,8 +1,12 @@
 import BigNumber from "bignumber.js";
+import Chains from "../consts/chains";
 
 export function toApiType(type) {
   if (type === "treasury/bounty") {
     return "treasury/bounties";
+  }
+  if (type === "treasury/child-bounty") {
+    return "treasury/child-bounties";
   }
   return `${type}s`;
 }
@@ -44,4 +48,8 @@ export function abbreviateBigNumber(x, fixed = 2) {
   });
   BigNumber.config({ FORMAT: fmt });
   return new BigNumber(n.dividedBy(divideBy).toFixed(fixed)).toFormat();
+}
+
+export const getExcludeChains = (includeChains) => {
+  return Object.values(Chains).filter(chain => !includeChains.includes(chain))
 }

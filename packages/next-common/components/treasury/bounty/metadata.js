@@ -4,6 +4,7 @@ import Links from "../../links";
 import Flex from "../../styled/flex";
 import KVList from "../../listInfo/kvList";
 import { getNode, toPrecision } from "../../../utils";
+import Anchor from "../../styled/anchor";
 
 /**
  *
@@ -27,6 +28,11 @@ function BountyMetadata({ meta, chain }) {
     let normalizedValue = value;
 
     switch (key) {
+      case "parentBounty":
+        normalizedValue = (
+          <Anchor href={`/treasury/bounty/${value}`}> #{value} </Anchor>
+        );
+        break;
       case "proposer":
       case "beneficiary":
         normalizedValue = (

@@ -90,6 +90,7 @@ export default function Menu({ menu, chain }) {
   iconMap.set("tips", <TipIcon />);
   iconMap.set("proposals", <ProposalIcon />);
   iconMap.set("bounties", <BountyIcon />);
+  iconMap.set("child-bounties", <BountyIcon />);
   iconMap.set("motions", <MotionIcon />);
   iconMap.set("referenda", <ReferendaIcon />);
   iconMap.set("democracyProposals", <DemocracyProposalIcon />);
