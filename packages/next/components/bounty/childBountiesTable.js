@@ -8,34 +8,26 @@ import Flex from "next-common/components/styled/flex";
 import FlexBetween from "next-common/components/styled/flexBetween";
 
 const ChildBountyWrapper = styled.div`
-  > div:first-child{
+  > div:first-child {
     @media screen and (max-width: 768px) {
       display: none;
     }
   }
 `
 
-const ChildBounty = styled(Flex)`
+const ChildBounty = styled(FlexBetween)`
   flex-grow: 1;
 
   a {
-    flex-basis: 100%;
-    max-width: 392px;
-    padding-right: 30px;
+    font-weight: 400;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     color: #1E2134;
   }
 
-  span {
-    flex-basis: 120px;
-  }
-
   > div {
-    flex-basis: 120px;
-    display: flex;
-    justify-content: flex-end;
+    flex-basis: 240px;
   }
 `
 
@@ -109,29 +101,25 @@ function ChildBountiesTable({
     {
       childBounties.items.map((bounty, index) => {
           return (<ChildBountyWrapper key={index}>
-              <Row
-                row={[`#${bounty.index}`,
-                  // eslint-disable-next-line react/jsx-key
-                  <ChildBounty>
-                    <Anchor href={`/treasury/child-bounty/${bounty.parentBountyId}_${bounty.index}`}
-                            title={bounty.description}
-                    >{bounty.description}</Anchor>
-                    <span>
-                      <SemiBold>
-                        {toPrecision(bounty.value, decimals)}
-                        {" "}
-                        <Accessory>
+            <Row
+              row={[`#${bounty.index}`,
+                // eslint-disable-next-line react/jsx-key
+                <ChildBounty>
+                  <Anchor href={`/treasury/child-bounty/${bounty.parentBountyId}_${bounty.index}`}
+                          title={bounty.description}
+                  >{bounty.description}</Anchor>
+                  <FlexBetween>
+                    <SemiBold>
+                      {toPrecision(bounty.value, decimals)}
+                      {" "}
+                      <Accessory>
                         {symbol}
-                        </Accessory>
-                      </SemiBold>
-
-
-                    </span>
-                    <div>
-                      <Tag name={bounty.state.state}/>
-                    </div>
-                  </ChildBounty>
-                ]}/>
+                      </Accessory>
+                    </SemiBold>
+                    <Tag name={bounty.state.state}/>
+                  </FlexBetween>
+                </ChildBounty>
+              ]}/>
 
             <ChildBountyMobile key={index}>
               <Anchor href={`/treasury/child-bounty/${bounty.parentBountyId}_${bounty.index}`}
@@ -153,7 +141,9 @@ function ChildBountiesTable({
     }
 
     {
-      childBounties.total > 5 && <DomesticLink href={`/treasury/child-bounties?parentBountyId=${childBounties.items[0].parentBountyId}`}>View all</DomesticLink>
+      childBounties.total > 5 &&
+      <DomesticLink href={`/treasury/child-bounties?parentBountyId=${childBounties.items[0].parentBountyId}`}>View
+        all</DomesticLink>
     }
   </Accordion>
 }
