@@ -35,7 +35,7 @@ const imageMap = new Map([
   ],
 ]);
 
-export default function SEO({ title, desc, chain }) {
+export default function SEO({ title, desc, chain, ogImage }) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
   const route = useRouter();
   const endpoint =
@@ -43,7 +43,7 @@ export default function SEO({ title, desc, chain }) {
     "https://ipfs.fleek.co/ipfs";
   const images = [
     {
-      url: `${endpoint}/${imageMap.get(chain)}`,
+      url: ogImage || `${endpoint}/${imageMap.get(chain)}`,
       width: 1200,
       height: 628,
     },
