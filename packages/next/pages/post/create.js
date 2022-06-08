@@ -19,8 +19,8 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { fetchUserProfile } from "next-common/store/reducers/userSlice";
 import { shadow_100 } from "styles/componentCss";
 import NextHead from "next-common/components/nextHead";
-import ToggleText from "next-common/components/uploadBanner/toggleText";
-import Uploader from "next-common/components/uploadBanner/uploader";
+import ToggleText from "../../components/UploadBanner/ToggleText";
+import Uploader from "../../components/UploadBanner/Uploader";
 import FlexBetweenCenter from "next-common/components/styled/flexBetweenCenter";
 
 const Wrapper = styled.div`
