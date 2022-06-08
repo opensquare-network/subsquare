@@ -47,7 +47,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     nextApi.fetch(`treasury/child-bounties`, {
       page: page ?? 1,
       pageSize: pageSize ?? 50,
-      parentBountyId: parentBountyId ?? "",
+      parent: parentBountyId ?? "",
     }),
   ]);
 
