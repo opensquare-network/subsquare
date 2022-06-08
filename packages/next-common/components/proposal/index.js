@@ -124,6 +124,11 @@ function convertProposalForTableView(proposal, chain) {
             ) {
               return [arg.name, <LongText text={arg.value} key="0" />];
             }
+
+            if (proposal.section === "system" && proposal.method === "remark") {
+              return [arg.name, hexToString(arg.value)];
+            }
+
             return [arg.name, arg.value];
           }
           case "Balance": {
@@ -171,6 +176,11 @@ function convertProposalForJsonView(proposal, chain) {
                 ? arg.value
                 : hexEllipsis(arg.value);
             }
+
+            if (proposal.section === "system" && proposal.method === "remark") {
+              return hexToString(arg.value);
+            }
+
             return arg.value;
           }
           case "Compact<Balance>": {
