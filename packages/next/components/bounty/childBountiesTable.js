@@ -151,7 +151,7 @@ function ChildBountiesTable({
       )
     }
 
-    <DomesticLink href="/treasury/child-bounties">View all</DomesticLink>
+    <DomesticLink href={`/treasury/child-bounties?parentBountyId=${childBounties[0].parentBountyId}`}>View all</DomesticLink>
   </Accordion>
 }
 
