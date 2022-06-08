@@ -76,10 +76,10 @@ const RemoveBannerButton = styled.div`
   cursor: pointer;
 `;
 
-function Uploader({ bannerUrl, onSuccess = () => {} }) {
+function Uploader({ imageUrl, onSetImageUrl = () => {} }) {
   const inputEl = useRef();
   const [dragging, setDragging] = useState(false);
-  const [currentBanner, setCurrentBanner] = useState(bannerUrl || "");
+  const [currentBanner, setCurrentBanner] = useState(imageUrl || "");
   const [uploading, setUploading] = useState(false);
 
   const handleSelectFile = () => {
@@ -130,7 +130,7 @@ function Uploader({ bannerUrl, onSuccess = () => {} }) {
         .then(({ result }) => {
           if (result) {
             setCurrentBanner(result.url);
-            onSuccess(result.url);
+            onSetImageUrl(result.url);
           }
         })
         .finally(() => {
@@ -142,6 +142,7 @@ function Uploader({ bannerUrl, onSuccess = () => {} }) {
 
   const handleRemoveBanner = () => {
     setCurrentBanner(null);
+    onSetImageUrl("");
     resetSelectedFile();
   };
 
