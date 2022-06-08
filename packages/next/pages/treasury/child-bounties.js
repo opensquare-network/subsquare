@@ -41,12 +41,13 @@ export default withLoginUserRedux(({ loginUser, bounties, chain }) => {
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
 
-  const { page, page_size: pageSize } = context.query;
+  const { page, page_size: pageSize, parentBountyId } = context.query;
 
   const [{ result: bounties }] = await Promise.all([
     nextApi.fetch(`treasury/child-bounties`, {
       page: page ?? 1,
       pageSize: pageSize ?? 50,
+      parent: parentBountyId ?? "",
     }),
   ]);
 
