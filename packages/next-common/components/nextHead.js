@@ -6,6 +6,7 @@ export default function NextHead({
   desc = "MetaDescription",
   type = null,
   url = "",
+  ogImage = "",
 }) {
   return (
     <Head>
@@ -21,7 +22,7 @@ export default function NextHead({
       {type === "post" && <meta property="twitter:card" content="summary" />}
       <meta
         property="og:image"
-        content={`${process.env.NEXT_PUBLIC_SITE_URL}/imgs/logo.png`}
+        content={ogImage ?? `${process.env.NEXT_PUBLIC_SITE_URL}/imgs/logo.png`}
       />
       <meta
         property="twitter:image"
