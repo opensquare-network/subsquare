@@ -14,7 +14,7 @@ import Timeline from "next-common/components/timeline";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
-import { TYPE_TREASURY_BOUNTY } from "utils/viewConstants";
+import { TYPE_TREASURY_CHILD_BOUNTY } from "utils/viewConstants";
 import { createMotionTimelineData } from "../../../utils/timeline/motion";
 import sortTimeline from "../../../utils/timeline/sort";
 import { getMetaDesc } from "../../../utils/viewfuncs";
@@ -129,13 +129,13 @@ export default withLoginUserRedux(({loginUser, detail, comments, chain}) => {
           user={loginUser}
           chain={chain}
           onReply={focusEditor}
-          type={TYPE_TREASURY_BOUNTY}
+          type={TYPE_TREASURY_CHILD_BOUNTY}
         />
         <BountyMetadata meta={detail.onchainData?.meta} chain={chain}/>
         <Timeline
           data={timelineData}
           chain={chain}
-          type={TYPE_TREASURY_BOUNTY}
+          type={TYPE_TREASURY_CHILD_BOUNTY}
         />
         <CommentsWrapper>
           <Comments
@@ -151,7 +151,7 @@ export default withLoginUserRedux(({loginUser, detail, comments, chain}) => {
               ref={editorWrapperRef}
               setQuillRef={setQuillRef}
               {...{contentType, setContentType, content, setContent, users}}
-              type={TYPE_TREASURY_BOUNTY}
+              type={TYPE_TREASURY_CHILD_BOUNTY}
             />
           )}
         </CommentsWrapper>
