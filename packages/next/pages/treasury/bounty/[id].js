@@ -157,7 +157,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     {result: childBounties},
   ] = await Promise.all([
     nextApi.fetch(`treasury/bounties/${id}`),
-    nextApi.fetch(`/treasury/bounties/${id}/child-bounties`),
+    nextApi.fetch(`/treasury/bounties/${id}/child-bounties`,{pageSize:5}),
   ]);
 
   if (!detail) {

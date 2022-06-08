@@ -102,12 +102,12 @@ function ChildBountiesTable({
                               decimals,
                               symbol,
                             }) {
-  if (!childBounties || !childBounties.length) {
+  if (!childBounties?.items || !childBounties?.items?.length) {
     return null;
   }
   return <Accordion title="Child Bounties">
     {
-      childBounties.slice(0, 5).map((bounty, index) => {
+      childBounties.items.map((bounty, index) => {
           return (<ChildBountyWrapper key={index}>
               <Row
                 row={[`#${bounty.index}`,
@@ -153,7 +153,7 @@ function ChildBountiesTable({
     }
 
     {
-      childBounties.length > 5 && <DomesticLink href={`/treasury/child-bounties?parentBountyId=${childBounties[0].parentBountyId}`}>View all</DomesticLink>
+      childBounties.total > 5 && <DomesticLink href={`/treasury/child-bounties?parentBountyId=${childBounties.items[0].parentBountyId}`}>View all</DomesticLink>
     }
   </Accordion>
 }
