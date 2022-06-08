@@ -109,12 +109,6 @@ function Uploader({ bannerUrl, onSuccess = () => {} }) {
     uploadImage(files);
   };
 
-  const resetSelectedFile = () => {
-    if (inputEl.current) {
-      inputEl.current.value = "";
-    }
-  };
-
   const uploadImage = (files) => {
     if (files && files.length) {
       const image = files[0];
@@ -135,14 +129,15 @@ function Uploader({ bannerUrl, onSuccess = () => {} }) {
         })
         .finally(() => {
           setUploading(false);
-          resetSelectedFile();
         });
     }
   };
 
   const handleRemoveBanner = () => {
     setCurrentBanner(null);
-    resetSelectedFile();
+    if (inputEl.current) {
+      inputEl.current.value = "";
+    }
   };
 
   return (
