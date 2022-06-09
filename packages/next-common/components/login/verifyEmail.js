@@ -68,7 +68,6 @@ export default function VerifyEmail({pin, setPin, email, errors, setErrors}) {
           dispatch(newErrorToast(error.message));
         }
       }
-    }catch (e) {
     }
     finally {
       setSending(false);
