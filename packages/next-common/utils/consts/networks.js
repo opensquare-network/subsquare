@@ -7,6 +7,7 @@ const interlay = {
   icon: "interlay.svg",
   identity: "kusama",
   symbol: "INTR",
+  voteSymbol: "vINTR",
   decimals: 10,
   hasElections: false,
 };
