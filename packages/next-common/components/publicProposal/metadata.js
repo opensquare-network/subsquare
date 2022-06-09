@@ -37,7 +37,7 @@ export default function Metadata({ publicProposal, chain }) {
     return null;
   }
   const decimals = node.decimals;
-  const symbol = node.symbol;
+  const symbol = node.voteSymbol || node.symbol;
 
   const deposit = publicProposal.deposit;
   const metadata = [
