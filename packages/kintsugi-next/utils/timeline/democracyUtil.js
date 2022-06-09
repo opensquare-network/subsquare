@@ -14,7 +14,7 @@ const DepositorsWrapper = styled.div`
 `;
 
 function getTimelineData(args, method, chain) {
-  const { decimals, symbol } = getNode(chain);
+  const { decimals, symbol, voteSymbol } = getNode(chain);
   switch (method) {
     case "Proposed":
       return {
@@ -23,7 +23,7 @@ function getTimelineData(args, method, chain) {
     case "Tabled":
       return {
         "Referenda Index": `#${args.referendumIndex}`,
-        Deposit: `${toPrecision(args.deposit ?? 0, decimals)} ${symbol}`,
+        Deposit: `${toPrecision(args.deposit ?? 0, decimals)} ${voteSymbol || symbol}`,
         Depositors: (
           <DepositorsWrapper>
             {(args.depositors || []).map((item, index) => (
