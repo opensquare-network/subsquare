@@ -8,6 +8,8 @@ import Flex from "next-common/components/styled/flex";
 import { getPostUpdatedAt } from "utils/viewfuncs";
 import { timeDurationFromNow } from "next-common/utils";
 import DemocracyNavigate from "./democracyNavigate";
+import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
+import Info from "next-common/components/styled/info";
 
 const MotionEndHeader = styled.div`
   display: flex;
@@ -76,11 +78,6 @@ const DividerWrapper = styled(Flex)`
   }
 `;
 
-const Info = styled.div`
-  font-size: 12px;
-  color: #506176;
-`;
-
 export default function MotionHead({ motion, chain, type }) {
   const showMotionEnd = useShowMotionEnd(motion?.onchainData);
 
@@ -115,7 +112,10 @@ export default function MotionHead({ motion, chain, type }) {
             <SectionTag name={"Democracy"} />
           )}
           {postUpdateTime && (
-            <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
+            <Info>
+              <UpdateIcon />
+              {timeDurationFromNow(postUpdateTime)}
+            </Info>
           )}
         </DividerWrapper>
         {motion.state && <Tag name={motion.state} />}
