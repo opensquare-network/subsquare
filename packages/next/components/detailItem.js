@@ -16,6 +16,8 @@ import {
 import ArticleContent from "next-common/components/articleContent";
 import { EditablePanel } from "next-common/components/styled/panel";
 import { getMotionId, shortMotionId } from "next-common/utils/motion";
+import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
+import Info from "next-common/components/styled/info";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -37,10 +39,6 @@ const Index = styled.div`
   line-height: 140%;
 `;
 
-const Info = styled.div`
-  font-size: 12px;
-  color: #506176;
-`;
 
 const Title = styled.div`
   max-width: 750px;
@@ -263,7 +261,10 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
                 </div>
               )}
               {postUpdatedTime && (
-                <Info>Updated {timeDurationFromNow(postUpdatedTime)}</Info>
+                <Info>
+                  <UpdateIcon />
+                  <span>{timeDurationFromNow(postUpdatedTime)}</span>
+                </Info>
               )}
               {post.commentsCount > -1 && (
                 <Info>{`${post.commentsCount} Comments`}</Info>

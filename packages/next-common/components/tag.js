@@ -36,6 +36,7 @@ const getTagColor = (name) => {
     case "Started":
     case "externalProposeMajority":
     case "Report Awesome":
+    case "tipNew":
     case "Added":
       return START;
     case "Tipping":
@@ -49,6 +50,8 @@ const getTagColor = (name) => {
     case "Active":
     case "proposeCurator":
     case "PendingPayout":
+    case "CuratorProposed":
+    case "BountyExtended":
       return ACTIVE;
     case "Passed":
     case "Claimed":
