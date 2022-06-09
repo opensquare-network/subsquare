@@ -6,7 +6,8 @@ import Input from "../input";
 import useCountdown from "../../utils/hooks/useCountdown";
 import FlexBetween from "../styled/flexBetween";
 import nextApi from "../../services/nextApi";
-import { newSuccessToast } from "../../store/reducers/toastSlice";
+import { newErrorToast, newSuccessToast } from "../../store/reducers/toastSlice";
+import Loading from "../loading";
 
 const Label = styled.div`
   font-weight: bold;
@@ -25,11 +26,21 @@ const SubButton = styled.button`
   cursor: pointer;
 `;
 
-export default function VerifyEmail({ pin, setPin, email, errors, setErrors }) {
-  const dispatch = useDispatch();
-  const { countdown, startCountdown } = useCountdown(60);
-  const [verifySent, setVerifySent] = useState(false);
+const SendButton = ({
+                      loading = false, onClick = () => {
+  }
+                    }) => {
+  if (loading) {
+    return <Loading/>;
+  }
+  return <SubButton onClick={onClick}>Send Code</SubButton>
+}
 
+export default function VerifyEmail({pin, setPin, email, errors, setErrors}) {
+  const dispatch = useDispatch();
+  const {countdown, startCountdown} = useCountdown(60);
+  const [verifySent, setVerifySent] = useState(false);
+  const [sending, setSending] = useState(false);
   useEffect(() => {
     if (countdown === 0) {
       setVerifySent(false);
@@ -37,20 +48,30 @@ export default function VerifyEmail({ pin, setPin, email, errors, setErrors }) {
   }, [countdown, verifySent]);
 
   const send = async () => {
-    const { result, error } = await nextApi.post("user/setemail", {
-      email,
-      sendCode: true,
-    });
-    if (result) {
-      setVerifySent(true);
-      startCountdown();
-      dispatch(
-        newSuccessToast(
-          "The verification code has been send to your email, Please check."
-        )
-      );
-    } else if (error) {
-      setErrors(error);
+    setSending(true);
+    try {
+      const {result, error} = await nextApi.post("user/setemail", {
+        email,
+        sendCode: true,
+      });
+      if (result) {
+        setVerifySent(true);
+        startCountdown();
+        dispatch(
+          newSuccessToast(
+            "The verification code has been send to your email, Please check."
+          )
+        );
+      } else if (error) {
+        setErrors(error);
+        if(error.message) {
+          dispatch(newErrorToast(error.message));
+        }
+      }
+    }catch (e) {
+    }
+    finally {
+      setSending(false);
     }
   };
 
@@ -61,7 +82,7 @@ export default function VerifyEmail({ pin, setPin, email, errors, setErrors }) {
         {verifySent ? (
           <Text>{countdown}</Text>
         ) : (
-          <SubButton onClick={send}>Send Code</SubButton>
+          <SendButton onClick={send} loading={sending} />
         )}
       </FlexBetween>
       <Input
