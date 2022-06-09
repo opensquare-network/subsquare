@@ -173,11 +173,10 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
           <Title>New Post</Title>
           <LabelWrapper>
             <Label>Title</Label>
-            {/* TODO: set banner feature */}
-            {/* <ToggleText */}
-            {/*   isSetBanner={isSetBanner} */}
-            {/*   setIsSetBanner={setIsSetBanner} */}
-            {/* /> */}
+            <ToggleText
+              isSetBanner={isSetBanner}
+              setIsSetBanner={setIsSetBanner}
+            />
           </LabelWrapper>
           <Input
             placeholder="Please fill the title"
