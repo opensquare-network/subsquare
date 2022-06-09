@@ -22,6 +22,8 @@ import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import Proposal from "next-common/components/proposal";
 import { finalizedHeightSelector } from "next-common/store/reducers/chainSlice";
 import { EditablePanel } from "next-common/components/styled/panel";
+import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
+import Info from "next-common/components/styled/info";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -82,11 +84,6 @@ const FlexWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: nowrap;
-`;
-
-const Info = styled.div`
-  font-size: 12px;
-  color: #506176;
 `;
 
 const TimelineMotionEnd = styled.div`
@@ -317,7 +314,10 @@ export default function TechcommMotionDetail({
                   <SectionTag name={"Democracy"} />
                 )}
                 {postUpdateTime && (
-                  <Info>Updated {timeDurationFromNow(postUpdateTime)}</Info>
+                  <Info>
+                    <UpdateIcon />
+                    {timeDurationFromNow(postUpdateTime)}
+                  </Info>
                 )}
               </DividerWrapper>
               {motion.state && <StatusWrapper>{motion.state}</StatusWrapper>}
