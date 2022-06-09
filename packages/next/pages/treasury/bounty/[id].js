@@ -42,6 +42,16 @@ export default withLoginUserRedux(({loginUser, detail, childBounties, comments, 
 
   const getTimelineData = (args, method) => {
     switch (method) {
+      case "BountyExtended":
+        return {
+          ...args,
+          caller: <User chain={chain} add={args.caller} fontSize={14}/>,
+        };
+      case "acceptCurator":
+        return {
+          ...args,
+          curator: <User chain={chain} add={args.curator} fontSize={14}/>,
+        };
       case "proposeBounty":
         return {
           ...args,
@@ -56,15 +66,16 @@ export default withLoginUserRedux(({loginUser, detail, childBounties, comments, 
         return {
           Index: `#${args.index}`,
         };
+      case "BountyClaimed":
+        return {
+          Beneficiary: <User chain={chain} add={args.beneficiary} fontSize={14}/>,
+          Payout: `${toPrecision(args.payout ?? 0, decimals)} ${symbol}`,
+        };
       case "Awarded":
+      case "BountyAwarded":
         return {
           Beneficiary: <User chain={chain} add={args.beneficiary} fontSize={14}/>,
           Award: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
-        };
-      case "BountyClaimed":
-        return {
-          Beneficiary: args.beneficiary,
-          Payout: `${toPrecision(args.payout ?? 0, decimals)} ${symbol}`,
         };
     }
     return args;
