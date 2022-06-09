@@ -9,6 +9,7 @@ import {
   toPublicProposalListItem,
   toReferendaListItem,
   toTechCommMotionListItem,
+  toTreasuryProposalListItem,
 } from "utils/viewfuncs";
 
 export default withLoginUserRedux(({ overview, loginUser, chain }) => {
@@ -17,6 +18,12 @@ export default withLoginUserRedux(({ overview, loginUser, chain }) => {
       category: "Discussions",
       items: (overview?.discussions ?? []).map((item) =>
         toDiscussionListItem(chain, item)
+      ),
+    },
+    {
+      category: "Treasury Proposals",
+      items: (overview?.treasury?.proposals ?? []).map((item) =>
+        toTreasuryProposalListItem(chain, item)
       ),
     },
     {
