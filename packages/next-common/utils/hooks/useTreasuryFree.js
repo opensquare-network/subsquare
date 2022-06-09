@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useIsMounted from "./useIsMounted";
 import { u8aConcat } from "@polkadot/util";
-import { Kintsugi } from "@interlay/monetary-js";
+import { Kintsugi, Interlay } from "@interlay/monetary-js";
 import Chains from "../consts/chains";
 
 const EMPTY_U8A_32 = new Uint8Array(32);
@@ -37,9 +37,12 @@ export default function useTreasuryFree(api, chain) {
       return;
     }
 
-    if (chain === Chains.kintsugi) {
+    if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
+      const token =
+        Chains.kintsugi === chain ? Kintsugi.ticker : Interlay.ticker;
+
       api.query.tokens
-        .accounts(treasuryAccount, { token: Kintsugi.ticker })
+        .accounts(treasuryAccount, { token })
         .then((accountData) => {
           if (isMounted.current) {
             setFree(accountData ? accountData.free.toString() : "0");
