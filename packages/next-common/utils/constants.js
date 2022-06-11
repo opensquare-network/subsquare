@@ -1,142 +1,19 @@
 import menus from "./consts/menus";
-import {
-  DEFAULT_CALAMARI_NODES,
-  DEFAULT_CRAB_NODES,
-  DEFAULT_CRUST_NODES,
-  DEFAULT_INTERLAY_NODES,
-  DEFAULT_KARURA_NODES,
-  DEFAULT_TURING_NODES,
-  defaultPolkadotNodes,
-} from "./consts/endpoints";
-import {
-  polkadot,
-  kusama,
-  karura,
-  acala,
-  khala,
-  bifrost,
-  calamari,
-  crust,
-  interlay,
-  kintsugi,
-  turing,
-  polkadex,
-  crab,
-} from "./consts/networks";
 import Chains from "./consts/chains";
-
-export const DEFAULT_KUSAMA_NODES = [
-  {
-    name: "Parity",
-    url: "wss://kusama-rpc.polkadot.io",
-  },
-  {
-    name: "OnFinality",
-    url: "wss://kusama.api.onfinality.io/public-ws",
-  },
-  {
-    name: "Dwellir",
-    url: "wss://kusama-rpc.dwellir.com",
-  },
-  {
-    name: "RadiumBlock",
-    url: "wss://kusama.public.curie.radiumblock.co/ws",
-  },
-];
-
-export const DEFAULT_ACALA_NODES = [
-  {
-    name: "OnFinality",
-    url: "wss://acala-polkadot.api.onfinality.io/public-ws",
-  },
-  {
-    name: "Polkawallet",
-    url: "wss://acala.polkawallet.io/",
-  },
-  {
-    name: "Acala Foundation 0",
-    url: "wss://acala-rpc-0.aca-api.network/",
-  },
-  {
-    name: "Acala Foundation 1",
-    url: "wss://acala-rpc-1.aca-api.network/",
-  },
-  {
-    name: "Acala Foundation 2",
-    url: "wss://acala-rpc-2.aca-api.network/ws",
-  },
-  {
-    name: "Acala Foundation 3",
-    url: "wss://acala-rpc-3.aca-api.network/ws",
-  },
-];
-
-export const DEFAULT_KHALA_NODES = [
-  {
-    name: "OnFinality",
-    url: "wss://khala.api.onfinality.io/public-ws",
-  },
-  {
-    name: "Dwellir",
-    url: "wss://khala-rpc.dwellir.com",
-  },
-];
-
-export const DEFAULT_BASILISK_NODES = [
-  {
-    name: "OnFinality",
-    url: "wss://basilisk.api.onfinality.io/public-ws",
-  },
-  {
-    name: "HydraDX",
-    url: "wss://rpc-01.basilisk.hydradx.io",
-  },
-];
-
-export const DEFAULT_BIFROST_NODES = [
-  {
-    name: "OnFinality",
-    url: "wss://bifrost-parachain.api.onfinality.io/public-ws",
-  },
-  {
-    name: "Liebi",
-    url: "wss://bifrost-rpc.liebi.com/ws",
-  },
-];
-
-export const DEFAULT_KINTSUGI_NODES =
-  process.env.NEXT_PUBLIC_DEVELOPMENT === "true"
-    ? [
-        {
-          name: "Kintsugi Test Endpoint",
-          url: "wss://api-dev-kintsugi.interlay.io/parachain",
-        },
-      ]
-    : [
-        {
-          name: "OnFinality",
-          url: "wss://kintsugi.api.onfinality.io/public-ws",
-        },
-        {
-          name: "Kintsugi Labs",
-          url: "wss://api-kusama.interlay.io/parachain",
-        },
-      ];
-
-export const DEFAULT_POLKADEX_NODES = [
-  {
-    name: "Polkadex",
-    url: "wss://mainnet.polkadex.trade/",
-  },
-  {
-    name: "Polkadex-JP",
-    url: "wss://mainnet-jp-1.polkadex.trade",
-  },
-  {
-    name: "OnFinality",
-    url: "wss://polkadex.api.onfinality.io/public-ws",
-  },
-];
+import polkadot from "./consts/settings/polkadot";
+import kusama from "./consts/settings/kusama";
+import crab from "./consts/settings/crab";
+import karura from "./consts/settings/karura";
+import bifrost from "./consts/settings/bifrost";
+import acala from "./consts/settings/acala";
+import calamari from "./consts/settings/calamari";
+import crust from "./consts/settings/crust";
+import interlay from "./consts/settings/interlay";
+import kintsugi from "./consts/settings/kintsugi";
+import khala from "./consts/settings/khala";
+import polkadex from "./consts/settings/polkadex";
+import turing from "./consts/settings/turing";
+import basilisk from "./consts/settings/basilisk";
 
 export const nodes = [
   polkadot,
@@ -281,20 +158,20 @@ export const SS58Prefix = {
 };
 
 export const defaultNodes = {
-  [Chains.polkadot]: defaultPolkadotNodes,
-  kusama: DEFAULT_KUSAMA_NODES,
-  karura: DEFAULT_KARURA_NODES,
-  acala: DEFAULT_ACALA_NODES,
-  khala: DEFAULT_KHALA_NODES,
-  basilisk: DEFAULT_BASILISK_NODES,
-  bifrost: DEFAULT_BIFROST_NODES,
-  kintsugi: DEFAULT_KINTSUGI_NODES,
-  polkadex: DEFAULT_POLKADEX_NODES,
-  [Chains.interlay]: DEFAULT_INTERLAY_NODES,
-  [Chains.crust]: DEFAULT_CRUST_NODES,
-  [Chains.calamari]: DEFAULT_CALAMARI_NODES,
-  [Chains.turing]: DEFAULT_TURING_NODES,
-  [Chains.crab]: DEFAULT_CRAB_NODES,
+  [Chains.polkadot]: polkadot.endpoints,
+  kusama: kusama.endpoints,
+  karura: karura.endpoints,
+  acala: acala.endpoints,
+  khala: khala.endpoints,
+  basilisk: basilisk.endpoints,
+  bifrost: bifrost.endpoints,
+  kintsugi: kintsugi.endpoints,
+  polkadex: polkadex.endpoints,
+  [Chains.interlay]: interlay.endpoints,
+  [Chains.crust]: crust.endpoints,
+  [Chains.calamari]: calamari.endpoints,
+  [Chains.turing]: turing.endpoints,
+  [Chains.crab]: crab.endpoints,
 };
 
 export const ChainBlockTime = {
