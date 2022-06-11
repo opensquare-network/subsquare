@@ -17,6 +17,7 @@ const khala = {
   symbol: "PHA",
   decimals: 12,
   hasElections: true,
+  ss58Format: 30,
   endpoints: DEFAULT_KHALA_NODES,
 };
 

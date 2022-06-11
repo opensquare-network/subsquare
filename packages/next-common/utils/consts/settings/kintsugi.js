@@ -26,6 +26,7 @@ const kintsugi = {
   voteSymbol: "vKINT",
   decimals: 12,
   hasElections: false,
+  ss58Format: 2092,
   endpoints: DEFAULT_KINTSUGI_NODES,
 };
 

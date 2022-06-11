@@ -14,6 +14,7 @@ const interlay = {
   voteSymbol: "vINTR",
   decimals: 10,
   hasElections: false,
+  ss58Format: 2032,
   endpoints: DEFAULT_INTERLAY_NODES,
 };
 

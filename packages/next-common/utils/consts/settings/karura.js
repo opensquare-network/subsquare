@@ -33,6 +33,7 @@ const karura = {
   symbol: "KAR",
   decimals: 12,
   hasElections: false,
+  ss58Format: 8,
   endpoints: DEFAULT_KARURA_NODES,
 };
 

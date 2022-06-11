@@ -24,6 +24,7 @@ const turing = {
   symbol: "TUR",
   decimals: 10,
   hasElections: false,
+  ss58Format: 51,
   endpoints: DEFAULT_TURING_NODES,
 };
 

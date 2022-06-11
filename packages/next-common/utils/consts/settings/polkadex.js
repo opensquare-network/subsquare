@@ -21,6 +21,8 @@ const polkadex = {
   symbol: "PDEX",
   decimals: 12,
   hasElections: true,
+  ss58Format: 88,
+  blockTime: 6000,
   endpoints: DEFAULT_POLKADEX_NODES,
 };
 

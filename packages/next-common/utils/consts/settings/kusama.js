@@ -25,6 +25,8 @@ const kusama = {
   symbol: "KSM",
   decimals: 12,
   hasElections: true,
+  ss58Format: 2,
+  blockTime: 6000,
   endpoints: DEFAULT_KUSAMA_NODES,
 };
 

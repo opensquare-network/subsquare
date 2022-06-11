@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { defaultNodes } from "../../utils/constants";
+import getChainSettings from "../../utils/consts/settings";
 
 const chain = process.env.NEXT_PUBLIC_CHAIN;
 
@@ -11,7 +11,8 @@ function getInitNodeUrl(chain) {
     // ignore parse error
   }
 
-  const chainNodes = defaultNodes[chain];
+  const settings = getChainSettings(chain);
+  const chainNodes = settings.endpoints;
   const node = (chainNodes || []).find(({ url }) => url === localNodeUrl);
   if (node) {
     return node.url;
@@ -26,7 +27,7 @@ const nodeSlice = createSlice({
   name: "node",
   initialState: {
     currentNode: getInitNodeUrl(chain),
-    nodes: defaultNodes[chain],
+    nodes: getChainSettings(chain).endpoints,
     nodesHeight: 0,
   },
   reducers: {

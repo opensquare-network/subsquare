@@ -17,6 +17,7 @@ const basilisk = {
   symbol: "BSX",
   decimals: 12,
   hasElections: true,
+  ss58Format: 10041,
   endpoints: DEFAULT_BASILISK_NODES,
 };
 

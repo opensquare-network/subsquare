@@ -33,6 +33,7 @@ const acala = {
   symbol: "ACA",
   decimals: 12,
   hasElections: false,
+  ss58Format: 10,
   endpoints: DEFAULT_ACALA_NODES,
 };
 

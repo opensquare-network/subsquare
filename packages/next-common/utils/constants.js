@@ -1,5 +1,4 @@
 import menus from "./consts/menus";
-import Chains from "./consts/chains";
 import polkadot from "./consts/settings/polkadot";
 import kusama from "./consts/settings/kusama";
 import crab from "./consts/settings/crab";
@@ -13,7 +12,6 @@ import kintsugi from "./consts/settings/kintsugi";
 import khala from "./consts/settings/khala";
 import polkadex from "./consts/settings/polkadex";
 import turing from "./consts/settings/turing";
-import basilisk from "./consts/settings/basilisk";
 
 export const nodes = [
   polkadot,
@@ -136,49 +134,6 @@ export const EmptyList = {
   page: 1,
   pageSize: 10,
   items: [],
-};
-
-export const SS58Prefix = {
-  polkadot: 0,
-  kusama: 2,
-  karura: 8,
-  acala: 10,
-  khala: 30,
-  substrate: 42,
-  basilisk: 10041,
-  kabocha: 27,
-  bifrost: 6,
-  kintsugi: 2092,
-  polkadex: 88,
-  [Chains.interlay]: 2032,
-  [Chains.crust]: 66,
-  [Chains.calamari]: 78,
-  [Chains.turing]: 51,
-  [Chains.crab]: 42,
-};
-
-export const defaultNodes = {
-  [Chains.polkadot]: polkadot.endpoints,
-  kusama: kusama.endpoints,
-  karura: karura.endpoints,
-  acala: acala.endpoints,
-  khala: khala.endpoints,
-  basilisk: basilisk.endpoints,
-  bifrost: bifrost.endpoints,
-  kintsugi: kintsugi.endpoints,
-  polkadex: polkadex.endpoints,
-  [Chains.interlay]: interlay.endpoints,
-  [Chains.crust]: crust.endpoints,
-  [Chains.calamari]: calamari.endpoints,
-  [Chains.turing]: turing.endpoints,
-  [Chains.crab]: crab.endpoints,
-};
-
-export const ChainBlockTime = {
-  [Chains.polkadot]: 6000,
-  [Chains.kusama]: 6000,
-  [Chains.crust]: 6000,
-  [Chains.crab]: 6000,
 };
 
 export const defaultBlockTime = 12000;

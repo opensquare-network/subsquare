@@ -18,6 +18,7 @@ const bifrost = {
   symbol: "bnc",
   decimals: 12,
   hasElections: true,
+  ss58Format: 6,
   endpoints: DEFAULT_BIFROST_NODES,
 };
 

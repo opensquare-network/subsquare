@@ -24,6 +24,8 @@ const crab = {
   symbol: "CRAB",
   decimals: 9,
   hasElections: true,
+  ss58Format: 42,
+  blockTime: 6000,
   endpoints: DEFAULT_CRAB_NODES,
 };
 

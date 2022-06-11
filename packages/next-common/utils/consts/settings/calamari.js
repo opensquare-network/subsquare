@@ -24,6 +24,7 @@ const calamari = {
   symbol: "KMA",
   decimals: 12,
   hasElections: false,
+  ss58Format: 78,
   endpoints: DEFAULT_CALAMARI_NODES,
 };
 

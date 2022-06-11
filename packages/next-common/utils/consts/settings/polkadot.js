@@ -25,6 +25,7 @@ const polkadot = {
   symbol: "DOT",
   decimals: 10,
   hasElections: true,
+  ss58Format: 0,
   endpoints: defaultPolkadotNodes,
 };
 

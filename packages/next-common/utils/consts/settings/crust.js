@@ -28,6 +28,8 @@ const crust = {
   symbol: "CRU",
   decimals: 12,
   hasElections: false,
+  ss58Format: 66,
+  blockTime: 6000,
   endpoints: DEFAULT_CRUST_NODES,
 };
 
