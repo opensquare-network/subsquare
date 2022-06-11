@@ -7,6 +7,10 @@ const DEFAULT_KHALA_NODES = [
     name: "Dwellir",
     url: "wss://khala-rpc.dwellir.com",
   },
+  {
+    name: "Pinknode",
+    url: "wss://public-rpc.pinknode.io/khala",
+  },
 ];
 
 const khala = {

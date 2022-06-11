@@ -3,6 +3,10 @@ const DEFAULT_INTERLAY_NODES = [
     name: "Kintsugi Labs",
     url: "wss://api.interlay.io/parachain",
   },
+  {
+    name: "OnFinality",
+    url: "wss://interlay.api.onfinality.io/public-ws",
+  },
 ];
 
 const interlay = {
