@@ -43,7 +43,6 @@ export const DEFAULT_KUSAMA_NODES = [
     url: "wss://kusama.public.curie.radiumblock.co/ws",
   },
 ];
-export const DEFAULT_KUSAMA_NODE_URL = DEFAULT_KUSAMA_NODES[0]?.url;
 
 export const DEFAULT_ACALA_NODES = [
   {
@@ -71,7 +70,6 @@ export const DEFAULT_ACALA_NODES = [
     url: "wss://acala-rpc-3.aca-api.network/ws",
   },
 ];
-export const DEFAULT_ACALA_NODE_URL = DEFAULT_ACALA_NODES[0]?.url;
 
 export const DEFAULT_KHALA_NODES = [
   {
@@ -83,7 +81,6 @@ export const DEFAULT_KHALA_NODES = [
     url: "wss://khala-rpc.dwellir.com",
   },
 ];
-export const DEFAULT_KHALA_NODE_URL = DEFAULT_KHALA_NODES[0]?.url;
 
 export const DEFAULT_BASILISK_NODES = [
   {
@@ -95,7 +92,6 @@ export const DEFAULT_BASILISK_NODES = [
     url: "wss://rpc-01.basilisk.hydradx.io",
   },
 ];
-export const DEFAULT_BASILISK_NODE_URL = DEFAULT_BASILISK_NODES[0]?.url;
 
 export const DEFAULT_BIFROST_NODES = [
   {
@@ -107,8 +103,6 @@ export const DEFAULT_BIFROST_NODES = [
     url: "wss://bifrost-rpc.liebi.com/ws",
   },
 ];
-
-export const DEFAULT_BIFROST_NODE_URL = DEFAULT_BIFROST_NODES[0]?.url;
 
 export const DEFAULT_KINTSUGI_NODES =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true"
@@ -129,8 +123,6 @@ export const DEFAULT_KINTSUGI_NODES =
         },
       ];
 
-export const DEFAULT_KINTSUGI_NODE_URL = DEFAULT_KINTSUGI_NODES[0]?.url;
-
 export const DEFAULT_POLKADEX_NODES = [
   {
     name: "Polkadex",
@@ -145,8 +137,6 @@ export const DEFAULT_POLKADEX_NODES = [
     url: "wss://polkadex.api.onfinality.io/public-ws",
   },
 ];
-
-export const DEFAULT_POLKADEX_NODE_URL = DEFAULT_POLKADEX_NODES[0].url;
 
 export const nodes = [
   polkadot,

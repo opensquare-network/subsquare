@@ -4,7 +4,6 @@ export const DEFAULT_INTERLAY_NODES = [
     url: "wss://api.interlay.io/parachain",
   },
 ];
-export const DEFAULT_INTERLAY_NODE_URL = DEFAULT_INTERLAY_NODES[0]?.url;
 
 export const defaultPolkadotNodes = [
   {
@@ -48,7 +47,6 @@ export const DEFAULT_KARURA_NODES = [
     url: "wss://karura-rpc-3.aca-api.network/ws",
   },
 ];
-export const DEFAULT_KARURA_NODE_URL = DEFAULT_KARURA_NODES[0]?.url;
 
 export const DEFAULT_CRUST_NODES = [
   {
@@ -68,7 +66,6 @@ export const DEFAULT_CRUST_NODES = [
     url: "wss://api.decloudf.com",
   },
 ];
-export const DEFAULT_CRUST_NODE_URL = DEFAULT_CRUST_NODES[0].url;
 
 export const DEFAULT_CALAMARI_NODES = [
   {
@@ -84,7 +81,6 @@ export const DEFAULT_CALAMARI_NODES = [
     url: "wss://ws.calamari.systems/",
   },
 ];
-export const DEFAULT_CALAMARI_NODE_URL = DEFAULT_CALAMARI_NODES[0].url;
 
 export const DEFAULT_TURING_NODES = [
   {
@@ -101,8 +97,6 @@ export const DEFAULT_TURING_NODES = [
   },
 ];
 
-export const DEFAULT_TURING_NODE_URL = DEFAULT_TURING_NODES[0].url;
-
 export const DEFAULT_CRAB_NODES = [
   {
     name: "Darwinia",
@@ -117,5 +111,3 @@ export const DEFAULT_CRAB_NODES = [
     url: "wss://darwinia-crab.api.onfinality.io/public-ws",
   },
 ];
-
-export const DEFAULT_CRAB_NODE_URL = DEFAULT_CRAB_NODES[0].url;
