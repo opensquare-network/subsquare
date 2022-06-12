@@ -1,4 +1,3 @@
-import menus from "./consts/menus";
 import polkadot from "./consts/settings/polkadot";
 import kusama from "./consts/settings/kusama";
 import crab from "./consts/settings/crab";
@@ -12,6 +11,7 @@ import kintsugi from "./consts/settings/kintsugi";
 import khala from "./consts/settings/khala";
 import polkadex from "./consts/settings/polkadex";
 import turing from "./consts/settings/turing";
+import menus from "./consts/menu";
 
 export const nodes = [
   polkadot,
