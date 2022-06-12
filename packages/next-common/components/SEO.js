@@ -36,6 +36,10 @@ const imageMap = new Map([
     Chains.polkadot,
     "bafybeifsztkok4p4vzjbhacvr2o4dxc5xgb7ynxsgnvmicttpqce34xdwe",
   ],
+  [
+    Chains.centrifuge,
+    "bafybeigik7gv4e2tasibkgjhvlfyjzdlbw4p33x6o64jhdypmgqhmo3a54",
+  ],
 ]);
 
 export default function SEO({ title, desc, chain, ogImage }) {

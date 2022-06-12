@@ -1,6 +1,7 @@
 import capitalize from "../../capitalize";
+import Chains from "../chains";
 
-const name = "polkadot";
+const name = Chains.polkadot;
 
 export const defaultPolkadotNodes = [
   {

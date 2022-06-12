@@ -3,7 +3,7 @@ import { getExcludeChains } from "../../viewfuncs";
 
 const treasury = {
   name: "TREASURY",
-  excludeToChains: [Chains.kabocha],
+  excludeToChains: [Chains.kabocha, Chains.centrifuge],
   items: [
     {
       value: "proposals",

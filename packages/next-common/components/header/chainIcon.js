@@ -14,6 +14,7 @@ import Khala from "../../assets/icons/chain/khala.svg";
 import Polkadex from "../../assets/icons/chain/polkadex.svg";
 import Turing from "../../assets/icons/chain/turing.svg";
 import Kintsugi from "../../assets/icons/chain/kintsugi.png";
+import Centrifuge from "../../assets/icons/chain/centrifuge.svg";
 
 const iconMap = {
   [Chains.kusama]: <Kusama />,
@@ -21,6 +22,7 @@ const iconMap = {
   [Chains.acala]: <Acala />,
   [Chains.bifrost]: <Bifrost />,
   [Chains.calamari]: <Calamari />,
+  [Chains.centrifuge]: <Centrifuge />,
   [Chains.crab]: (
     <img width={24} height={24} src={Crab.src} alt="" className="logo" />
   ),
