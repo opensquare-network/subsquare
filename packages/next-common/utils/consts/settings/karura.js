@@ -34,6 +34,7 @@ const karura = {
   decimals: 12,
   hasElections: false,
   ss58Format: 8,
+  snsCoverCid: "bafybeiaoq7r32qsnpjqcey3x5hxfikbq3artjzi32he7dkretvesqgf3ny",
   endpoints: DEFAULT_KARURA_NODES,
 };
 

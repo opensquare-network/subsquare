@@ -31,6 +31,7 @@ const bifrost = {
   decimals: 12,
   hasElections: true,
   ss58Format: 6,
+  snsCoverCid: "bafybeibu7lmjymi5x6gjixdawmc4rjufruc6qwazailfnpzpoaqtuq6khe",
   endpoints: DEFAULT_BIFROST_NODES,
 };
 

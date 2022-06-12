@@ -1,46 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import NextSeo from "./nextSeo";
-import Chains from "../utils/consts/chains";
-
-const imageMap = new Map([
-  [
-    Chains.kabocha,
-    "bafybeibind6xq3c3xuu2moy2jr4bmoaodjbyhdgfnrnfo7hkpvotyrhssi",
-  ],
-  ["acala", "bafybeiafirhri4nsnvxm6usej6fcfyrz4hty5jikupag7fufsniamnyauy"],
-  ["bifrost", "bafybeibu7lmjymi5x6gjixdawmc4rjufruc6qwazailfnpzpoaqtuq6khe"],
-  ["karura", "bafybeiaoq7r32qsnpjqcey3x5hxfikbq3artjzi32he7dkretvesqgf3ny"],
-  ["khala", "bafybeifo4hsd3ue5ivsbcrb77fp2uvglxyc2royqvg52eo5eggnppdjxp4"],
-  [
-    Chains.kintsugi,
-    "bafybeifddx4p4ouofy2mj3pt5o62alnpfywbu7w7iedws3shpiu547tszi",
-  ],
-  ["interlay", "bafybeifqabzy3677ms2jihcb4ed4kxcvbjtxskctjboidcoy7pbosqrqyi"],
-  ["polkadex", "bafybeickjkgii2nnhwyypiem6jjj3z75u4dfknwcmedru4ytzv6qddfg5y"],
-  [Chains.crust, "bafybeicb77dwocjcssmcb75irbsvxly4ep335pky2r7tvwsjnoyzpl3c3y"],
-  [
-    Chains.calamari,
-    "bafybeig2mirpdoj3cowecbxiafo335abg3rlz6uhsfficemwtft75ykpqu",
-  ],
-  [
-    Chains.kusama,
-    "bafybeifrjrzaajdpfwbxtffsexnxwehsqc3k4ruk5oummlghsxvaityiku",
-  ],
-  [
-    Chains.turing,
-    "bafybeidmqvyfi467agi4cum26idgh5h56wmegrjh7jnl5wvtkzbvgucmpm",
-  ],
-  [Chains.crab, "bafybeihxlzbqo54y5llxp4p5kd77bgxpgjppfk33gfgdbo6kjraxclefcu"],
-  [
-    Chains.polkadot,
-    "bafybeifsztkok4p4vzjbhacvr2o4dxc5xgb7ynxsgnvmicttpqce34xdwe",
-  ],
-  [
-    Chains.centrifuge,
-    "bafybeigik7gv4e2tasibkgjhvlfyjzdlbw4p33x6o64jhdypmgqhmo3a54",
-  ],
-]);
+import getChainSettings from "../utils/consts/settings";
 
 export default function SEO({ title, desc, chain, ogImage }) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
@@ -48,9 +9,11 @@ export default function SEO({ title, desc, chain, ogImage }) {
   const endpoint =
     process.env.NEXT_PUBLIC_PREVIEW_IMG_ENDPOINT ||
     "https://ipfs.fleek.co/ipfs";
+
+  const settings = getChainSettings(chain);
   const images = [
     {
-      url: ogImage || `${endpoint}/${imageMap.get(chain)}`,
+      url: ogImage || `${endpoint}/${settings.snsCoverCid}`,
       width: 1200,
       height: 628,
     },

@@ -30,6 +30,7 @@ const crust = {
   hasElections: false,
   ss58Format: 66,
   blockTime: 6000,
+  snsCoverCid: "bafybeicb77dwocjcssmcb75irbsvxly4ep335pky2r7tvwsjnoyzpl3c3y",
   endpoints: DEFAULT_CRUST_NODES,
 };
 
