@@ -3,6 +3,19 @@ import Link from "next/link";
 import styled from "styled-components";
 import Chains from "../../../utils/consts/chains";
 import useWindowSize from "../../../utils/hooks/useWindowSize";
+import Kusama from "../../../assets/header-logos/kusama.svg";
+import Polkadot from "../../../assets/header-logos/polkadot.svg";
+import Turing from "../../../assets/header-logos/turing.svg";
+import Kintsugi from "../../../assets/header-logos/kintsugi.svg";
+import Interlay from "../../../assets/header-logos/interlay.svg";
+import Crust from "../../../assets/header-logos/crust.svg";
+import Crab from "../../../assets/header-logos/crab.svg";
+import Karura from "../../../assets/header-logos/karura.svg";
+import Khala from "../../../assets/header-logos/khala.svg";
+import Acala from "../../../assets/header-logos/acala.svg";
+import Bifrost from "../../../assets/header-logos/bifrost.svg";
+import Calamari from "../../../assets/header-logos/calamari.svg";
+import Polkadex from "../../../assets/header-logos/polkadex.svg";
 
 const Logo = styled.img`
   cursor: pointer;
@@ -19,37 +32,45 @@ function ChainLogo({ chain }) {
 
   if (width > 768) {
     if (Chains.kintsugi === chain) {
-      logo = <Logo src="/imgs/logos/kintsugi.svg" alt={chain} />;
+      logo = <Kintsugi />;
     } else if (Chains.interlay === chain) {
-      logo = <Logo src="/imgs/logos/interlay.svg" alt={chain} />;
+      logo = <Interlay />;
     } else if (Chains.acala === chain) {
-      logo = <Logo src="/imgs/logos/acala.svg" alt={chain} />;
+      logo = <Acala />;
     } else if (Chains.karura === chain) {
-      logo = <Logo src="/imgs/logos/karura.svg" alt={chain} />;
+      logo = <Karura />;
     } else if (Chains.khala === chain) {
-      logo = <Logo src="/imgs/logos/khala.svg" alt={chain} />;
+      logo = <Khala />;
     } else if (Chains.bifrost === chain) {
-      logo = <Logo src="/imgs/logos/bifrost.svg" alt={chain} />;
+      logo = <Bifrost />;
     } else if (Chains.crust === chain) {
-      logo = <Logo src="/imgs/logos/crust.svg" alt={chain} />;
+      logo = <Crust />;
     } else if (Chains.calamari === chain) {
-      logo = <Logo src="/imgs/logos/calamari.svg" alt={chain} />;
+      logo = <Calamari />;
     } else if (Chains.kusama === chain) {
-      logo = <Logo src="/imgs/logos/kusama.svg" alt={chain} />;
+      logo = <Kusama />;
     } else if (Chains.polkadot === chain) {
-      logo = <Logo src="/imgs/logos/polkadot.svg" alt={chain} />;
+      logo = <Polkadot />;
     } else if (Chains.turing === chain) {
-      logo = <Logo src="/imgs/logos/turing.svg" alt={chain} />;
+      logo = <Turing />;
     } else if (Chains.crab === chain) {
-      logo = <Logo src="/imgs/logos/crab.svg" alt={chain} />;
+      logo = <Crab />;
     } else if (Chains.polkadex === chain) {
-      logo = <Logo src="/imgs/logos/polkadex.svg" alt={chain} />;
+      logo = <Polkadex />;
     }
   }
 
   return (
     <Link href="/">
-      <a style={{ height: 63 }}>{logo}</a>
+      <a
+        style={{
+          height: 63,
+          display: "inline-flex",
+          alignItems: "center",
+        }}
+      >
+        {logo}
+      </a>
     </Link>
   );
 }
