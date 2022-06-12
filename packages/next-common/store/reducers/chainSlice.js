@@ -1,12 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ChainBlockTime, defaultBlockTime } from "../../utils/constants";
+import { defaultBlockTime } from "../../utils/constants";
+import getChainSettings from "../../utils/consts/settings";
 
 const chain = process.env.NEXT_PUBLIC_CHAIN;
 
 const chainSlice = createSlice({
   name: "chain",
   initialState: {
-    blockTime: ChainBlockTime[chain] || defaultBlockTime,
+    blockTime: getChainSettings(chain).blockTime || defaultBlockTime,
     finalizedHeight: 0,
   },
   reducers: {
