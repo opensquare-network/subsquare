@@ -7,6 +7,7 @@ import Flex from "next-common/components/styled/flex";
 import HeaderRight from "next-common/components/header/right";
 import HeaderWrapper from "next-common/components/header/wrapper";
 import ChainLogo from "next-common/components/header/left/chainLogo";
+import ChainIcon from "next-common/components/header/chainIcon";
 
 const FlexWrapper = styled(Flex)`
   max-width: 1080px;
@@ -85,12 +86,7 @@ export default function Header({ user, left, chain, isWeb3Login }) {
                 setShow(true);
               }}
             >
-              <img
-                src={`/imgs/icons/${node.icon}`}
-                alt=""
-                width={24}
-                height={24}
-              />
+              <ChainIcon chain={node.value} />
             </NodeButton>
           </Left>
           <HeaderRight chain={chain} user={user} isWeb3Login={isWeb3Login} />

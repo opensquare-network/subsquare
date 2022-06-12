@@ -21,7 +21,7 @@ const polkadot = {
   value: name,
   name: capitalize(name),
   icon: "polkadot.svg",
-  identity: "name",
+  identity: name,
   symbol: "DOT",
   decimals: 10,
   hasElections: true,
