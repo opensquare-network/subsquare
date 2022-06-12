@@ -15,6 +15,7 @@ const Chains = {
   calamari: "calamari",
   turing: "turing",
   crab: "crab",
+  centrifuge: "centrifuge",
 };
 
 export default Chains;

@@ -16,6 +16,7 @@ import Acala from "../../../assets/header-logos/acala.svg";
 import Bifrost from "../../../assets/header-logos/bifrost.svg";
 import Calamari from "../../../assets/header-logos/calamari.svg";
 import Polkadex from "../../../assets/header-logos/polkadex.svg";
+import Centrifuge from "../../../assets/header-logos/centrifuge.svg";
 
 const Logo = styled.img`
   cursor: pointer;
@@ -57,6 +58,8 @@ function ChainLogo({ chain }) {
       logo = <Crab />;
     } else if (Chains.polkadex === chain) {
       logo = <Polkadex />;
+    } else if (Chains.centrifuge === chain) {
+      logo = <Centrifuge />;
     }
   }
 
