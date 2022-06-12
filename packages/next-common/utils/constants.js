@@ -12,6 +12,7 @@ import khala from "./consts/settings/khala";
 import polkadex from "./consts/settings/polkadex";
 import turing from "./consts/settings/turing";
 import menus from "./consts/menu";
+import centrifuge from "./consts/settings/centrifuge";
 
 export const nodes = [
   polkadot,
@@ -38,7 +39,7 @@ export const nodes = [
   calamari,
   turing,
   crab,
-  // centrifuge,
+  centrifuge,
 ];
 
 export const accountMenu = [
