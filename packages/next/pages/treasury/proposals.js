@@ -16,7 +16,10 @@ import {
   addPendingProposal,
   setCheckTimes,
 } from "next-common/store/reducers/treasuryProposalSlice";
-import { Create, Pending } from "next-common/components/treasury/proposal/styled";
+import {
+  Create,
+  Pending,
+} from "next-common/components/treasury/proposal/styled";
 import usePendingProposal from "next-common/components/treasury/proposal/usePendingProposal";
 
 const Popup = dynamic(
@@ -30,9 +33,13 @@ export default withLoginUserRedux(
   ({ loginUser, proposals: ssrProposals, chain }) => {
     const dispatch = useDispatch();
     const [showPopup, setShowPopup] = useState(false);
-    const [proposals, setProposals] = useState(ssrProposals);
+    const [updatedProposals, setProposals] = useState();
+    const proposals = updatedProposals || ssrProposals;
 
-    const { pendingReload, pendingProposals } = usePendingProposal({ proposals, setProposals });
+    const { pendingReload, pendingProposals } = usePendingProposal({
+      proposals: ssrProposals,
+      setProposals,
+    });
 
     const startReload = (_, proposalIndex) => {
       dispatch(addPendingProposal(proposalIndex));
