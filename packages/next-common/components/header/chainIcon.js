@@ -5,7 +5,7 @@ import Polkadot from "../../assets/icons/chain/polkadot.svg";
 import Acala from "../../assets/icons/chain/acala.svg";
 import Bifrost from "../../assets/icons/chain/bifrost.svg";
 import Calamari from "../../assets/icons/chain/calamari.svg";
-import Crab from "../../assets/icons/chain/crab.svg";
+import Crab from "../../assets/icons/chain/crab.png";
 import Crust from "../../assets/icons/chain/crust.svg";
 import Interlay from "../../assets/icons/chain/interlay.svg";
 import Kabocha from "../../assets/icons/chain/kabocha.svg";
@@ -21,7 +21,9 @@ const iconMap = {
   [Chains.acala]: <Acala />,
   [Chains.bifrost]: <Bifrost />,
   [Chains.calamari]: <Calamari />,
-  [Chains.crab]: <Crab />,
+  [Chains.crab]: (
+    <img width={24} height={24} src={Crab.src} alt="" className="logo" />
+  ),
   [Chains.crust]: <Crust />,
   [Chains.interlay]: <Interlay />,
   [Chains.kabocha]: <Kabocha />,
