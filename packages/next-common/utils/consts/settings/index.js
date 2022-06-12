@@ -12,6 +12,7 @@ import kintsugi from "./kintsugi";
 import polkadex from "./polkadex";
 import turing from "./turing";
 import crust from "./crust";
+import centrifuge from "./centrifuge";
 
 const settingsMap = {
   polkadot,
@@ -20,6 +21,7 @@ const settingsMap = {
   basilisk,
   bifrost,
   calamari,
+  centrifuge,
   crust,
   crab,
   interlay,

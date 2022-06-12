@@ -2,7 +2,7 @@ import Chains from "../chains";
 
 const techComm = {
   name: "TECH.COMM.",
-  excludeToChains: [Chains.kabocha],
+  excludeToChains: [Chains.kabocha, Chains.centrifuge],
   items: [
     {
       value: "techCommProposals",
