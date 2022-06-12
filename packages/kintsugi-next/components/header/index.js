@@ -86,7 +86,7 @@ export default function Header({ user, left, chain, isWeb3Login }) {
               }}
             >
               <img
-                src={`/imgs/icons/${node.icon}`}
+                src={`/imgs/icons/chain/${node.icon}`}
                 alt=""
                 width={24}
                 height={24}

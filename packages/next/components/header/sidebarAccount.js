@@ -103,7 +103,7 @@ export default function SidebarAccount({ user, chain }) {
           {accountMenu.map((item, index) => (
             <Item key={index} onClick={() => handleAccountMenu(item)}>
               <img
-                src={`/imgs/icons/${item.icon}`}
+                src={`/imgs/icons/chain/${item.icon}`}
                 alt="icon"
                 width={24}
                 height={24}

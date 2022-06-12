@@ -109,7 +109,7 @@ export default function HeaderAccount({ user, chain }) {
               {index === menu.length - 1 && <Divider />}
               <Item onClick={() => handleAccountMenu(item)}>
                 <img
-                  src={`/imgs/icons/${item.icon}`}
+                  src={`/imgs/icons/chain/${item.icon}`}
                   alt=""
                   width={24}
                   height={24}

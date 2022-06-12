@@ -116,7 +116,7 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
         <img
           width={24}
           height={24}
-          src={`/imgs/icons/${activeNode.icon}`}
+          src={`/imgs/icons/chain/${activeNode.icon}`}
           alt=""
           className="logo"
         />
@@ -156,7 +156,7 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
               <img
                 width={24}
                 height={24}
-                src={`/imgs/icons/${item.icon}`}
+                src={`/imgs/icons/chain/${item.icon}`}
                 alt=""
                 className="logo"
               />
