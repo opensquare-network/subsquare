@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { nodes } from "../../utils/constants";
 import { shadow_200 } from "../../styles/componentCss";
 import { useSelector } from "react-redux";
@@ -7,6 +7,7 @@ import Loading from "../loading";
 import { nodesHeightSelector } from "../../store/reducers/nodeSlice";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import useWindowSize from "../../utils/hooks/useWindowSize";
+import ChainIcon from "./chainIcon";
 
 const Wrapper = styled.div`
   position: relative;
@@ -113,13 +114,7 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
   return (
     <Wrapper ref={ref}>
       <Select onClick={() => setShow(!show)}>
-        <img
-          width={24}
-          height={24}
-          src={`/imgs/icons/chain/${activeNode.icon}`}
-          alt=""
-          className="logo"
-        />
+        <ChainIcon chain={activeNode.value} />
         <NetworkBlock>
           {activeNode?.hideHeight ? (
             <div>{activeNode?.name}</div>
@@ -153,13 +148,7 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
                   : `https://${item.value}.subsquare.io`
               }
             >
-              <img
-                width={24}
-                height={24}
-                src={`/imgs/icons/chain/${item.icon}`}
-                alt=""
-                className="logo"
-              />
+              <ChainIcon chain={item.value} />
               <div>{item.name}</div>
             </Item>
           ))}

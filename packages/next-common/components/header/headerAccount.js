@@ -12,6 +12,7 @@ import Flex from "../styled/flex";
 import { shadow_200 } from "../../styles/componentCss";
 import LoginButton from "./loginButton";
 import { isKeyRegisteredUser } from "utils";
+import ChainIcon from "./chainIcon";
 
 const Wrapper = Relative;
 
@@ -109,7 +110,7 @@ export default function HeaderAccount({ user, chain }) {
               {index === menu.length - 1 && <Divider />}
               <Item onClick={() => handleAccountMenu(item)}>
                 <img
-                  src={`/imgs/icons/chain/${item.icon}`}
+                  src={`/imgs/icons/${item.icon}`}
                   alt=""
                   width={24}
                   height={24}
