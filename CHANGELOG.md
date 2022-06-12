@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.1.0
+
+- Support new network: polkadot, kusama, crab, polkadex, turing
+- Replace updated time icon
+- Correct interlay vote symbol
+- Fix interlay treasury value
+- Show council prime voter
+- Style fix: bullets, inline code
+
 #2.0.1
 
 - Support safari >= 14.0
