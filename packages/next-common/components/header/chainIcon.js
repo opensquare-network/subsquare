@@ -15,40 +15,32 @@ import Polkadex from "../../assets/icons/chain/polkadex.svg";
 import Turing from "../../assets/icons/chain/turing.svg";
 import Kintsugi from "../../assets/icons/chain/kintsugi.png";
 
+const iconMap = {
+  [Chains.kusama]: <Kusama />,
+  [Chains.polkadot]: <Polkadot />,
+  [Chains.acala]: <Acala />,
+  [Chains.bifrost]: <Bifrost />,
+  [Chains.calamari]: <Calamari />,
+  [Chains.crab]: <Crab />,
+  [Chains.crust]: <Crust />,
+  [Chains.interlay]: <Interlay />,
+  [Chains.kabocha]: <Kabocha />,
+  [Chains.karura]: <Karura />,
+  [Chains.khala]: <Khala />,
+  [Chains.polkadex]: <Polkadex />,
+  [Chains.turing]: <Turing />,
+  [Chains.kintsugi]: (
+    <img width={24} height={24} src={Kintsugi.src} alt="" className="logo" />
+  ),
+};
+
 function ChainIcon({ chain }) {
-  if (Chains.kusama === chain) {
-    return <Kusama />;
-  } else if (Chains.polkadot === chain) {
-    return <Polkadot />;
-  } else if (Chains.acala === chain) {
-    return <Acala />;
-  } else if (Chains.bifrost === chain) {
-    return <Bifrost />;
-  } else if (Chains.calamari === chain) {
-    return <Calamari />;
-  } else if (Chains.crab === chain) {
-    return <Crab />;
-  } else if (Chains.crust === chain) {
-    return <Crust />;
-  } else if (Chains.interlay === chain) {
-    return <Interlay />;
-  } else if (Chains.kabocha === chain) {
-    return <Kabocha />;
-  } else if (Chains.karura === chain) {
-    return <Karura />;
-  } else if (Chains.khala === chain) {
-    return <Khala />;
-  } else if (Chains.polkadex === chain) {
-    return <Polkadex />;
-  } else if (Chains.turing === chain) {
-    return <Turing />;
-  } else if (Chains.kintsugi === chain) {
-    return (
-      <img width={24} height={24} src={Kintsugi.src} alt="" className="logo" />
-    );
+  const icon = iconMap[chain];
+  if (!icon) {
+    throw new Error(`Can not get icon of ${chain}`);
   }
 
-  throw new Error(`Can not get icon of ${chain}`);
+  return icon;
 }
 
 export default memo(ChainIcon);

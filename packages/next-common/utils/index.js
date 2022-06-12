@@ -216,4 +216,8 @@ export function isMotionEnded(motion) {
   );
 }
 
+export function isKeyRegisteredUser(user) {
+  return !!user.publicKey;
+}
+
 export function emptyFunction() {}

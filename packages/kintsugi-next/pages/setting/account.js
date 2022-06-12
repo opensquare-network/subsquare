@@ -17,7 +17,7 @@ import Email from "next-common/components/setting/email";
 import Password from "next-common/components/setting/password";
 import Logout from "next-common/components/setting/logout";
 import { useRouter } from "next/router";
-import { isKeyRegisteredUser } from "utils";
+import { isKeyRegisteredUser } from "next-common/utils";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const user = useSelector(userSelector);

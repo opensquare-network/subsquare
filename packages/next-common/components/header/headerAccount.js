@@ -11,8 +11,7 @@ import Relative from "../styled/relative";
 import Flex from "../styled/flex";
 import { shadow_200 } from "../../styles/componentCss";
 import LoginButton from "./loginButton";
-import { isKeyRegisteredUser } from "utils";
-import ChainIcon from "./chainIcon";
+import { isKeyRegisteredUser } from "../../utils";
 
 const Wrapper = Relative;
 

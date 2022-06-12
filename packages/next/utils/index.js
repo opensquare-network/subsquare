@@ -70,7 +70,3 @@ export function isMotionEnded(motion) {
     motion.state.state
   );
 }
-
-export function isKeyRegisteredUser(user) {
-  return !!user.publicKey;
-}

@@ -58,7 +58,3 @@ export function getTimelineStatus(type, method) {
   }
   return { value: method };
 }
-
-export function isKeyRegisteredUser(user) {
-  return !!user.publicKey;
-}
