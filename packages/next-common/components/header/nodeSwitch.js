@@ -8,7 +8,7 @@ import {
   nodesSelector,
   setCurrentNode,
 } from "../../store/reducers/nodeSlice";
-import { defaultNodes } from "../../utils/constants";
+import getChainSettings from "../../utils/consts/settings";
 
 const Wrapper = styled.div`
   position: relative;
@@ -114,7 +114,7 @@ export default function NodeSwitch({ small, chain }) {
   const currentNode = useSelector(currentNodeSelector);
   const nodes = useSelector(nodesSelector);
   const [currentNodeSetting, setCurrentNodeSetting] = useState(
-    defaultNodes[chain]
+    getChainSettings(chain).endpoints
   );
   const dispatch = useDispatch();
 

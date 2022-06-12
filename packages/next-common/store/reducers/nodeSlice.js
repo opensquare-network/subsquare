@@ -1,43 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-import {
-  DEFAULT_KUSAMA_NODE_URL,
-  DEFAULT_KUSAMA_NODES,
-  DEFAULT_ACALA_NODES,
-  DEFAULT_ACALA_NODE_URL,
-  DEFAULT_KHALA_NODE_URL,
-  DEFAULT_KHALA_NODES,
-  DEFAULT_BASILISK_NODE_URL,
-  DEFAULT_BASILISK_NODES,
-  DEFAULT_BIFROST_NODES,
-  DEFAULT_BIFROST_NODE_URL,
-  DEFAULT_KINTSUGI_NODES,
-  DEFAULT_KINTSUGI_NODE_URL,
-  DEFAULT_POLKADEX_NODES,
-  DEFAULT_POLKADEX_NODE_URL,
-  defaultNodes,
-} from "../../utils/constants";
-import {
-  DEFAULT_CALAMARI_NODE_URL,
-  DEFAULT_CALAMARI_NODES,
-  DEFAULT_CRUST_NODE_URL,
-  DEFAULT_CRUST_NODES,
-  DEFAULT_INTERLAY_NODE_URL,
-  DEFAULT_INTERLAY_NODES,
-  DEFAULT_KARURA_NODE_URL,
-  DEFAULT_KARURA_NODES,
-  DEFAULT_TURING_NODES,
-  DEFAULT_TURING_NODE_URL,
-  DEFAULT_CRAB_NODES,
-  DEFAULT_CRAB_NODE_URL,
-  defaultPolkadotNodes,
-  defaultPolkadotNodeUrl,
-} from "../../utils/consts/endpoints";
-import Chains from "../../utils/consts/chains";
+import getChainSettings from "../../utils/consts/settings";
 
 const chain = process.env.NEXT_PUBLIC_CHAIN;
 
-let nodeUrl = (() => {
+function getInitNodeUrl(chain) {
   let localNodeUrl = null;
   try {
     localNodeUrl = localStorage.getItem("nodeUrl");
@@ -45,57 +11,23 @@ let nodeUrl = (() => {
     // ignore parse error
   }
 
-  return {
-    [Chains.polkadot]:
-      defaultPolkadotNodes.find((item) => item.url === localNodeUrl)?.url ||
-      defaultPolkadotNodeUrl,
-    kusama:
-      DEFAULT_KUSAMA_NODES.find((item) => item.url === localNodeUrl)?.url ||
-      DEFAULT_KUSAMA_NODE_URL,
-    karura:
-      DEFAULT_KARURA_NODES.find((item) => item.url === localNodeUrl)?.url ||
-      DEFAULT_KARURA_NODE_URL,
-    acala:
-      DEFAULT_ACALA_NODES.find((item) => item.url === localNodeUrl)?.url ||
-      DEFAULT_ACALA_NODE_URL,
-    khala:
-      DEFAULT_KHALA_NODES.find((item) => item.url === localNodeUrl)?.url ||
-      DEFAULT_KHALA_NODE_URL,
-    basilisk:
-      DEFAULT_BASILISK_NODES.find((item) => item.url === localNodeUrl)?.url ||
-      DEFAULT_BASILISK_NODE_URL,
-    bifrost:
-      DEFAULT_BIFROST_NODES.find((item) => item.url === localNodeUrl)?.url ||
-      DEFAULT_BIFROST_NODE_URL,
-    [Chains.kintsugi]:
-      DEFAULT_KINTSUGI_NODES.find((item) => item.url === localNodeUrl)?.url ||
-      DEFAULT_KINTSUGI_NODE_URL,
-    [Chains.interlay]:
-      DEFAULT_INTERLAY_NODES.find((item) => item.url === localNodeUrl)?.url ||
-      DEFAULT_INTERLAY_NODE_URL,
-    [Chains.crust]:
-      DEFAULT_CRUST_NODES.find((item) => item.url === localNodeUrl)?.url ||
-      DEFAULT_CRUST_NODE_URL,
-    [Chains.calamari]:
-      DEFAULT_CALAMARI_NODES.find((item) => item.url === localNodeUrl)?.url ||
-      DEFAULT_CALAMARI_NODE_URL,
-    [Chains.turing]:
-      DEFAULT_TURING_NODES.find((item) => item.url === localNodeUrl)?.url ||
-      DEFAULT_TURING_NODE_URL,
-    [Chains.crab]:
-      DEFAULT_CRAB_NODES.find((item) => item.url === localNodeUrl)?.url ||
-      DEFAULT_CRAB_NODE_URL,
-    polkadex:
-      DEFAULT_POLKADEX_NODES.find((item) => item.url === localNodeUrl)?.url ||
-      DEFAULT_POLKADEX_NODE_URL,
-  };
-})();
+  const settings = getChainSettings(chain);
+  const chainNodes = settings.endpoints;
+  const node = (chainNodes || []).find(({ url }) => url === localNodeUrl);
+  if (node) {
+    return node.url;
+  } else if (chainNodes) {
+    return chainNodes[0].url;
+  }
+
+  throw new Error(`Can not find nodes for ${chain}`);
+}
 
 const nodeSlice = createSlice({
   name: "node",
   initialState: {
-    currentNode: nodeUrl[chain],
-    nodes: defaultNodes[chain],
+    currentNode: getInitNodeUrl(chain),
+    nodes: getChainSettings(chain).endpoints,
     nodesHeight: 0,
   },
   reducers: {
