@@ -39,7 +39,7 @@ export const nodes = [
   calamari,
   turing,
   crab,
-  centrifuge,
+  // centrifuge,
 ];
 
 export const accountMenu = [
