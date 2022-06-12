@@ -4,7 +4,10 @@ import NextSeo from "./nextSeo";
 import Chains from "../utils/consts/chains";
 
 const imageMap = new Map([
-  ["kabocha", "bafybeibind6xq3c3xuu2moy2jr4bmoaodjbyhdgfnrnfo7hkpvotyrhssi"],
+  [
+    Chains.kabocha,
+    "bafybeibind6xq3c3xuu2moy2jr4bmoaodjbyhdgfnrnfo7hkpvotyrhssi",
+  ],
   ["acala", "bafybeiafirhri4nsnvxm6usej6fcfyrz4hty5jikupag7fufsniamnyauy"],
   ["bifrost", "bafybeibu7lmjymi5x6gjixdawmc4rjufruc6qwazailfnpzpoaqtuq6khe"],
   ["karura", "bafybeiaoq7r32qsnpjqcey3x5hxfikbq3artjzi32he7dkretvesqgf3ny"],
