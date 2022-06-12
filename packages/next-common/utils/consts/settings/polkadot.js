@@ -27,6 +27,7 @@ const polkadot = {
   decimals: 10,
   hasElections: true,
   ss58Format: 0,
+  snsCoverCid: "bafybeifsztkok4p4vzjbhacvr2o4dxc5xgb7ynxsgnvmicttpqce34xdwe",
   endpoints: defaultPolkadotNodes,
 };
 

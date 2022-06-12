@@ -11,7 +11,6 @@ import kintsugi from "./consts/settings/kintsugi";
 import khala from "./consts/settings/khala";
 import polkadex from "./consts/settings/polkadex";
 import turing from "./consts/settings/turing";
-import centrifuge from "./consts/settings/centrifuge";
 import menus from "./consts/menu";
 
 export const nodes = [

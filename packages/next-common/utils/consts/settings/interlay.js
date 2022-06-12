@@ -19,6 +19,7 @@ const interlay = {
   decimals: 10,
   hasElections: false,
   ss58Format: 2032,
+  snsCoverCid: "bafybeifqabzy3677ms2jihcb4ed4kxcvbjtxskctjboidcoy7pbosqrqyi",
   endpoints: DEFAULT_INTERLAY_NODES,
 };
 

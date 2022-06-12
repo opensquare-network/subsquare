@@ -26,6 +26,7 @@ const crab = {
   hasElections: true,
   ss58Format: 42,
   blockTime: 6000,
+  snsCoverCid: "bafybeihxlzbqo54y5llxp4p5kd77bgxpgjppfk33gfgdbo6kjraxclefcu",
   endpoints: DEFAULT_CRAB_NODES,
 };
 
