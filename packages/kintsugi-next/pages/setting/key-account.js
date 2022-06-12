@@ -14,15 +14,14 @@ import NotificationEmail from "next-common/components/setting/notificationEmail"
 import Logout from "next-common/components/setting/logout";
 import { encodeAddressToChain } from "next-common/services/address";
 import { useRouter } from "next/router";
-import { isKeyRegisteredUser } from "utils";
+import { isKeyRegisteredUser } from "next-common/utils";
 import { useEffect } from "react";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const user = loginUser;
-  const address = user?.publicKey ? encodeAddressToChain(
-    Buffer.from(user?.publicKey, "hex"),
-    chain
-  ) : "";
+  const address = user?.publicKey
+    ? encodeAddressToChain(Buffer.from(user?.publicKey, "hex"), chain)
+    : "";
 
   const router = useRouter();
 

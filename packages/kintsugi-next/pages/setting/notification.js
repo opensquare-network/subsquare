@@ -4,7 +4,10 @@ import { useState, useEffect } from "react";
 import Toggle from "next-common/components/toggle";
 import Button from "next-common/components/button";
 import Menu from "next-common/components/menu";
-import { settingMenu, settingMenuOfKeyAccount } from "next-common/utils/constants";
+import {
+  settingMenu,
+  settingMenuOfKeyAccount,
+} from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import nextApi from "next-common/services/nextApi";
 import {
@@ -16,7 +19,7 @@ import { fetchUserProfile } from "next-common/store/reducers/userSlice";
 import Layout from "components/layout";
 import { shadow_100 } from "styles/componentCss";
 import NextHead from "next-common/components/nextHead";
-import { isKeyRegisteredUser } from "utils";
+import { isKeyRegisteredUser } from "next-common/utils";
 import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
@@ -109,7 +112,8 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const [mention, setMention] = useState(!!loginUser?.notification?.mention);
   const [saving, setSaving] = useState(false);
 
-  const disabled = loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
+  const disabled =
+    loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
 
   const router = useRouter();
 
@@ -159,21 +163,37 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       <Wrapper>
         <Title>Notification</Title>
         <ContentWrapper>
-          {disabled && (<WarningMessage danger>Please set the email to receive notifications</WarningMessage>)}
+          {disabled && (
+            <WarningMessage danger>
+              Please set the email to receive notifications
+            </WarningMessage>
+          )}
           <div>
             <Label>Email</Label>
             <ToggleItem>
               <div>Notify me about comments on my posts</div>
-              <Toggle disabled={disabled} isOn={reply} onToggle={changeGuard(setReply)} />
+              <Toggle
+                disabled={disabled}
+                isOn={reply}
+                onToggle={changeGuard(setReply)}
+              />
             </ToggleItem>
             <ToggleItem>
               <div>Notify me about mentions</div>
-              <Toggle disabled={disabled} isOn={mention} onToggle={changeGuard(setMention)} />
+              <Toggle
+                disabled={disabled}
+                isOn={mention}
+                onToggle={changeGuard(setMention)}
+              />
             </ToggleItem>
           </div>
           <Divider />
           <ButtonWrapper>
-            <Button secondary disabled={disabled} onClick={updateNotificationSetting}>
+            <Button
+              secondary
+              disabled={disabled}
+              onClick={updateNotificationSetting}
+            >
               Save
             </Button>
           </ButtonWrapper>
