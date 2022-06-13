@@ -12,6 +12,7 @@ import nextApi from "next-common/services/nextApi";
 import Loading from "next-common/components/loading";
 
 const Wrapper = styled.div`
+  position: relative;
   .hidden {
     display: none;
   }
@@ -68,6 +69,12 @@ const BannerPreview = styled(Flex)`
   height: 100%;
   padding: 8px 17.5px;
 
+  ${(p) =>
+    p.disabled &&
+    css`
+      background-color: #f6f7fa;
+    `}
+
   img {
     height: 100%;
   }
@@ -76,7 +83,16 @@ const RemoveBannerButton = styled.div`
   cursor: pointer;
 `;
 
-function Uploader({ imageUrl, onSetImageUrl = () => {} }) {
+const DisabledMask = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+`;
+
+function Uploader({ disabled = false, imageUrl, onSetImageUrl = () => {} }) {
   const inputEl = useRef();
   const [dragging, setDragging] = useState(false);
   const [currentBanner, setCurrentBanner] = useState(imageUrl || "");
@@ -148,6 +164,7 @@ function Uploader({ imageUrl, onSetImageUrl = () => {} }) {
 
   return (
     <Wrapper>
+      {disabled && <DisabledMask />}
       <UploadArea
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
@@ -159,7 +176,7 @@ function Uploader({ imageUrl, onSetImageUrl = () => {} }) {
         ) : (
           <>
             {currentBanner ? (
-              <BannerPreview>
+              <BannerPreview disabled={disabled}>
                 <div />
                 <img src={currentBanner} />
                 <RemoveBannerButton role="button" onClick={handleRemoveBanner}>
