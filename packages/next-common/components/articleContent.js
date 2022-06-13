@@ -86,6 +86,10 @@ const Edit = styled.div`
   }
 `;
 
+const BannerImage = styled.img`
+  width: 100%;
+`;
+
 export default function ArticleContent({
   user,
   post,
@@ -193,10 +197,15 @@ export default function ArticleContent({
             </GreyWrapper>
           )}
           {post.contentType === "markdown" && (
-            <MicromarkMd
-              md={post.content}
-              contentVersion={post.contentVersion}
-            />
+            <>
+              {post.bannerUrl && (
+                <BannerImage src={post.bannerUrl} alt="banner image" />
+              )}
+              <MicromarkMd
+                md={post.content}
+                contentVersion={post.contentVersion}
+              />
+            </>
           )}
           {post.contentType === "html" && <HtmlRender html={post.content} />}
           {post.createdAt !== post.updatedAt && (
