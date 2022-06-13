@@ -196,16 +196,14 @@ export default function ArticleContent({
               ))}
             </GreyWrapper>
           )}
+          {post.bannerUrl && (
+            <BannerImage src={post.bannerUrl} alt="banner image" />
+          )}
           {post.contentType === "markdown" && (
-            <>
-              {post.bannerUrl && (
-                <BannerImage src={post.bannerUrl} alt="banner image" />
-              )}
               <MicromarkMd
                 md={post.content}
                 contentVersion={post.contentVersion}
               />
-            </>
           )}
           {post.contentType === "html" && <HtmlRender html={post.content} />}
           {post.createdAt !== post.updatedAt && (
