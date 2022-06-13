@@ -28,7 +28,6 @@ export const DEFAULT_KARURA_NODES = [
 const karura = {
   value: "karura",
   name: "Karura",
-  icon: "karura.svg",
   identity: "kusama",
   symbol: "KAR",
   decimals: 12,

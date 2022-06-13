@@ -9,7 +9,7 @@ import Crab from "../../assets/icons/chain/crab.png";
 import Crust from "../../assets/icons/chain/crust.svg";
 import Interlay from "../../assets/icons/chain/interlay.svg";
 import Kabocha from "../../assets/icons/chain/kabocha.svg";
-import Karura from "../../assets/icons/chain/karura.svg";
+import Karura from "../../assets/icons/chain/karura.png";
 import Khala from "../../assets/icons/chain/khala.svg";
 import Polkadex from "../../assets/icons/chain/polkadex.svg";
 import Turing from "../../assets/icons/chain/turing.svg";
@@ -29,7 +29,9 @@ const iconMap = {
   [Chains.crust]: <Crust />,
   [Chains.interlay]: <Interlay />,
   [Chains.kabocha]: <Kabocha />,
-  [Chains.karura]: <Karura />,
+  [Chains.karura]: (
+    <img width={24} height={24} src={Karura.src} alt="" className="logo" />
+  ),
   [Chains.khala]: <Khala />,
   [Chains.polkadex]: <Polkadex />,
   [Chains.turing]: <Turing />,
