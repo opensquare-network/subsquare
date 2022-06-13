@@ -19,6 +19,13 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
   const isMounted = useIsMounted();
 
   const [post, setPost] = useState(motion);
+
+  useEffect(() => {
+    if (isMounted.current) {
+      setPost(motion);
+    }
+  }, [motion, isMounted]);
+
   const [isEdit, setIsEdit] = useState(false);
 
   const api = useApi(chain);
