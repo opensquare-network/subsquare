@@ -28,9 +28,13 @@ const Popup = dynamic(
 export default withLoginUserRedux(({ loginUser, proposals: ssrProposals, chain }) => {
   const dispatch = useDispatch();
   const [showPopup, setShowPopup] = useState(false);
-  const [proposals, setProposals] = useState(ssrProposals);
+  const [updatedProposals, setProposals] = useState();
+  const proposals = updatedProposals || ssrProposals;
 
-  const { pendingReload, pendingProposals } = usePendingProposal({ proposals, setProposals });
+  const { pendingReload, pendingProposals } = usePendingProposal({
+    proposals: ssrProposals,
+    setProposals,
+  });
 
   const startReload = (_, proposalIndex) => {
     dispatch(addPendingProposal(proposalIndex));
