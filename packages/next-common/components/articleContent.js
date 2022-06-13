@@ -87,7 +87,6 @@ const Edit = styled.div`
 `;
 
 const BannerImage = styled.img`
-  border-radius: 4px;
   width: 100%;
 `;
 
