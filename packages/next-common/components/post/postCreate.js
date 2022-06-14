@@ -124,7 +124,7 @@ export default function PostCreate({ chain, type, loginUser }) {
   const onMarkdownSwitch = () => {
     if (
       content &&
-      !confirm(`Togging editor will empty all typed contents, are you sure ?`)
+      !confirm(`Toggling editor will empty all typed contents, are you sure ?`)
     ) {
       return;
     }
