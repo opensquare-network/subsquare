@@ -125,7 +125,10 @@ function convertProposalForTableView(proposal, chain) {
               return [arg.name, <LongText text={arg.value} key="0" />];
             }
 
-            if (proposal.section === "system" && proposal.method === "remark") {
+            if (
+              proposal.section === "system" &&
+              ["remark", "remarkWithEvent"].includes(proposal.method)
+            ) {
               return [arg.name, hexToString(arg.value)];
             }
 
@@ -177,7 +180,10 @@ function convertProposalForJsonView(proposal, chain) {
                 : hexEllipsis(arg.value);
             }
 
-            if (proposal.section === "system" && proposal.method === "remark") {
+            if (
+              proposal.section === "system" &&
+              ["remark", "remarkWithEvent"].includes(proposal.method)
+            ) {
               return hexToString(arg.value);
             }
 
