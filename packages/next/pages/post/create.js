@@ -4,7 +4,6 @@ import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import NextHead from "next-common/components/nextHead";
 import PostCreate from "next-common/components/post/postCreate";
-import { TYPE_POST } from "utils/viewConstants";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -20,7 +19,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       <NextHead title={`Create post`} desc={``} />
       <Wrapper>
         <Back href={`/discussions`} text="Back to Discussions" />
-        <PostCreate chain={chain} type={TYPE_POST} loginUser={loginUser} />
+        <PostCreate chain={chain} loginUser={loginUser} />
       </Wrapper>
     </Layout>
   );
