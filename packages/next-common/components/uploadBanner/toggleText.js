@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { primary_purple_500 } from "next-common/styles/colors";
 import { p_12_medium } from "next-common/styles/componentCss";
