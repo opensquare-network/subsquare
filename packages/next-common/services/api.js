@@ -97,11 +97,12 @@ class Api {
     return result;
   };
 
-  postFormData = async (path, formData) => {
+  postFormData = async (path, formData, options = {}) => {
     const result = await this.fetch(
       path,
       {},
       {
+        ...options,
         method: "POST",
         credentials: "same-origin",
         body: formData,
