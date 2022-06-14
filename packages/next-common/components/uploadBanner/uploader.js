@@ -1,3 +1,4 @@
+import React from "react";
 import styled, { css } from "styled-components";
 import { grey_400, primary_purple_500 } from "next-common/styles/colors";
 import {
@@ -12,6 +13,8 @@ import nextApi from "next-common/services/nextApi";
 import Loading from "next-common/components/loading";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
+import DeleteIcon from "next-common/assets/imgs/icons/delete.svg";
+import LinkIcon from "next-common/assets/imgs/icons/link.svg";
 
 const Wrapper = styled.div`
   position: relative;
@@ -186,14 +189,14 @@ function Uploader({ disabled = false, imageUrl, onSetImageUrl = () => {} }) {
                 <div />
                 <img src={currentBanner} />
                 <RemoveBannerButton role="button" onClick={handleRemoveBanner}>
-                  <Image src="/imgs/icons/delete.svg" width={12} height={12} />
+                  <DeleteIcon />
                 </RemoveBannerButton>
               </BannerPreview>
             ) : (
               <UploadTip>
                 <Hint>Drag and drop image or </Hint>
                 <SelectFile onClick={handleSelectFile}>
-                  <Image width="20" height="20" src="/imgs/icons/upload.svg" />
+                  <LinkIcon />
                   Upload
                 </SelectFile>
               </UploadTip>
