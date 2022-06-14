@@ -10,6 +10,8 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import nextApi from "next-common/services/nextApi";
 import Loading from "next-common/components/loading";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { useDispatch } from "react-redux";
 
 const Wrapper = styled.div`
   position: relative;
@@ -93,6 +95,7 @@ const DisabledMask = styled.div`
 `;
 
 function Uploader({ disabled = false, imageUrl, onSetImageUrl = () => {} }) {
+  const dispatch = useDispatch();
   const inputEl = useRef();
   const [dragging, setDragging] = useState(false);
   const [currentBanner, setCurrentBanner] = useState(imageUrl || "");
@@ -143,10 +146,13 @@ function Uploader({ disabled = false, imageUrl, onSetImageUrl = () => {} }) {
       formData.append("file", image, image.name);
       nextApi
         .postFormData("files/upload", formData)
-        .then(({ result }) => {
+        .then(({ result, error }) => {
           if (result) {
             setCurrentBanner(result.url);
             onSetImageUrl(result.url);
+          }
+          if (error) {
+            dispatch(newErrorToast(error.message));
           }
         })
         .finally(() => {
