@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import Input from "../input";
 import nextApi from "../../services/nextApi";
-import { TYPE_POST } from "../../utils/viewConstants";
 import ToggleText from "../uploadBanner/toggleText";
 import Uploader from "../uploadBanner/uploader";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
@@ -85,7 +84,7 @@ const UploaderWrapper = styled.div`
   margin-top: 16px;
 `;
 
-export default function PostCreate({ chain, type, loginUser }) {
+export default function PostCreate({ chain, loginUser }) {
   const router = useRouter();
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
@@ -152,19 +151,12 @@ export default function PostCreate({ chain, type, loginUser }) {
     }
   }, [isSetBanner]);
 
-  const isDiscussion = type === TYPE_POST;
-
   return (
     <Wrapper>
       <Title>New Post</Title>
       <LabelWrapper>
         <Label>Title</Label>
-        {isDiscussion && (
-          <ToggleText
-            isSetBanner={isSetBanner}
-            setIsSetBanner={setIsSetBanner}
-          />
-        )}
+        <ToggleText isSetBanner={isSetBanner} setIsSetBanner={setIsSetBanner} />
       </LabelWrapper>
       <Input
         placeholder="Please fill the title"
