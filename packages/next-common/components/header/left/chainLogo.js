@@ -1,11 +1,10 @@
 import React, { memo } from "react";
 import Link from "next/link";
-import styled from "styled-components";
 import Chains from "../../../utils/consts/chains";
 import useWindowSize from "../../../utils/hooks/useWindowSize";
 import Kusama from "../../../assets/header-logos/kusama.svg";
 import Polkadot from "../../../assets/header-logos/polkadot.svg";
-import Turing from "../../../assets/header-logos/turing.svg";
+import Turing from "../../../assets/header-logos/turing.png";
 import Kintsugi from "../../../assets/header-logos/kintsugi.svg";
 import Interlay from "../../../assets/header-logos/interlay.svg";
 import Crust from "../../../assets/header-logos/crust.svg";
@@ -17,18 +16,10 @@ import Bifrost from "../../../assets/header-logos/bifrost.svg";
 import Calamari from "../../../assets/header-logos/calamari.svg";
 import Polkadex from "../../../assets/header-logos/polkadex.svg";
 import Centrifuge from "../../../assets/header-logos/centrifuge.svg";
-
-const Logo = styled.img`
-  cursor: pointer;
-`;
-
-const LogoImg = styled(Logo)`
-  width: 161px;
-  height: 64px;
-`;
+import SubSquare from "../../../assets/header-logos/logo.svg";
 
 function ChainLogo({ chain }) {
-  let logo = <LogoImg src="/imgs/logo.svg" alt="" />;
+  let logo = <SubSquare />;
   const { width } = useWindowSize();
 
   if (width > 768) {
@@ -53,7 +44,9 @@ function ChainLogo({ chain }) {
     } else if (Chains.polkadot === chain) {
       logo = <Polkadot />;
     } else if (Chains.turing === chain) {
-      logo = <Turing />;
+      logo = (
+        <img width={240} height={64} src={Turing.src} alt="" className="logo" />
+      );
     } else if (Chains.crab === chain) {
       logo = <Crab />;
     } else if (Chains.polkadex === chain) {

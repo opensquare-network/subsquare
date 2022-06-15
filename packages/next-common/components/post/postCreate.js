@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import Input from "../input";
 import nextApi from "../../services/nextApi";
-import { TYPE_POST } from "../../utils/viewConstants";
 import ToggleText from "../uploadBanner/toggleText";
 import Uploader from "../uploadBanner/uploader";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
@@ -26,6 +25,10 @@ const Wrapper = styled.div`
   border: 1px solid #ebeef4;
   ${shadow_100};
   border-radius: 6px;
+  textarea:read-only,
+  div.ql-disabled {
+    background-color: #f6f7fa !important;
+  }
   @media screen and (max-width: 768px) {
     margin-left: -16px;
     margin-right: -16px;
@@ -85,10 +88,11 @@ const UploaderWrapper = styled.div`
   margin-top: 16px;
 `;
 
-export default function PostCreate({ chain, type, loginUser }) {
+export default function PostCreate({ chain, loginUser }) {
   const router = useRouter();
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
+  const [creating, setCreating] = useState(false);
   const [content, setContent] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [contentType, setContentType] = useState(
@@ -103,13 +107,18 @@ export default function PostCreate({ chain, type, loginUser }) {
   const isEmpty = content === "" || content === `<p><br></p>`;
 
   const createPost = async () => {
-    const result = await nextApi.post(`posts`, {
-      chain,
-      title,
-      content,
-      contentType,
-      bannerUrl,
-    });
+    setCreating(true);
+    const result = await nextApi
+      .post(`posts`, {
+        chain,
+        title,
+        content,
+        contentType,
+        bannerUrl,
+      })
+      .finally(() => {
+        setCreating(false);
+      });
     if (result.error) {
       if (result.error.data) {
         setErrors(result.error);
@@ -152,21 +161,19 @@ export default function PostCreate({ chain, type, loginUser }) {
     }
   }, [isSetBanner]);
 
-  const isDiscussion = type === TYPE_POST;
-
   return (
     <Wrapper>
       <Title>New Post</Title>
       <LabelWrapper>
         <Label>Title</Label>
-        {isDiscussion && (
-          <ToggleText
-            isSetBanner={isSetBanner}
-            setIsSetBanner={setIsSetBanner}
-          />
-        )}
+        <ToggleText
+          disabled={creating}
+          isSetBanner={isSetBanner}
+          setIsSetBanner={setIsSetBanner}
+        />
       </LabelWrapper>
       <Input
+        disabled={creating}
         placeholder="Please fill the title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
@@ -174,7 +181,7 @@ export default function PostCreate({ chain, type, loginUser }) {
 
       {isSetBanner && (
         <UploaderWrapper>
-          <Uploader onSetImageUrl={setBannerUrl} />
+          <Uploader disabled={creating} onSetImageUrl={setBannerUrl} />
         </UploaderWrapper>
       )}
 
@@ -203,6 +210,7 @@ export default function PostCreate({ chain, type, loginUser }) {
             content={content}
             setContent={setContent}
             visible={!showPreview}
+            readOnly={creating}
           />
         )}
         {contentType === "html" && (
@@ -218,6 +226,7 @@ export default function PostCreate({ chain, type, loginUser }) {
               setInsetQuillContentsFunc(insetQuillContentFunc);
             }}
             isCreate={true}
+            readOnly={creating}
           />
         )}
         {!showPreview && (
@@ -251,7 +260,12 @@ export default function PostCreate({ chain, type, loginUser }) {
         <Button onClick={() => setShowPreview(!showPreview)}>
           {showPreview ? "Edit" : "Preview"}
         </Button>
-        <Button onClick={createPost} disabled={isEmpty} secondary>
+        <Button
+          isLoading={creating}
+          onClick={createPost}
+          disabled={isEmpty}
+          secondary
+        >
           Create
         </Button>
       </ButtonWrapper>
