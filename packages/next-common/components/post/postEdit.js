@@ -5,7 +5,6 @@ import EditInput from "../editInput";
 import nextApi from "../../services/nextApi";
 import { toApiType } from "../../utils/viewfuncs";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
-import { TYPE_POST } from "../../utils/viewConstants";
 import ToggleText from "../uploadBanner/toggleText";
 import Uploader from "../uploadBanner/uploader";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
@@ -65,19 +64,15 @@ export default function PostEdit({
 
   const isMounted = useIsMountedBool();
 
-  const isDiscussion = type === TYPE_POST;
-
   return (
     <Wrapper>
       <Title>Edit</Title>
       <LabelWrapper>
         <Label>Title</Label>
-        {isDiscussion && (
-          <ToggleText
-            isSetBanner={isSetBanner}
-            setIsSetBanner={setIsSetBanner}
-          />
-        )}
+        <ToggleText
+          isSetBanner={isSetBanner}
+          setIsSetBanner={setIsSetBanner}
+        />
       </LabelWrapper>
       <Input
         disabled={updating}
