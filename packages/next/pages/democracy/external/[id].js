@@ -54,7 +54,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     <Layout
       user={loginUser}
       chain={chain}
-      seoInfo={{ title: detail?.title, desc }}
+      seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
     >
       <DetailPageWrapper className="post-content">
         <Back href={`/democracy/externals`} text="Back to Externals" />
