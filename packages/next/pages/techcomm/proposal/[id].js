@@ -55,7 +55,7 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
     <Layout
       user={loginUser}
       chain={chain}
-      seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
+      seoInfo={{ title: motion?.title, desc, ogImage: motion?.bannerUrl }}
     >
       <OutWrapper>
         <Wrapper className="post-content">
