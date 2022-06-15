@@ -8,7 +8,7 @@ import {
   settingMenu,
   settingMenuOfKeyAccount,
 } from "next-common/utils/constants";
-import { withLoginUser, withLoginUserRedux } from "lib";
+import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import {
   newErrorToast,

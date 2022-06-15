@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Layout from "next-common/components/layout";
 import Back from "next-common/components/back";
-import { withLoginUser, withLoginUserRedux } from "lib";
+import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import PostCreate from "next-common/components/post/postCreate";
 

@@ -10,7 +10,7 @@ import { useForm } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
-import { withLoginUser, withLoginUserRedux } from "lib";
+import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { shadow_100 } from "styles/componentCss";

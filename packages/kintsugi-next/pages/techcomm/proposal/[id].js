@@ -1,5 +1,5 @@
 import Back from "next-common/components/back";
-import { withLoginUser, withLoginUserRedux } from "lib";
+import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import Layout from "next-common/components/layout";
 import TechcommMotionDetail from "components/motion/techcommMotionDetail";

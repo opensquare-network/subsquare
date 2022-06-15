@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import Menu from "next-common/components/menu";
 import { settingMenu } from "next-common/utils/constants";
 import { userSelector } from "next-common/store/reducers/userSlice";
-import { withLoginUser, withLoginUserRedux } from "lib";
 import Layout from "next-common/components/layout";
+import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import {
   Wrapper,
