@@ -26,7 +26,7 @@ import Anchor from "next-common/components/styled/anchor";
 
 const Wrapper = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   background: #ffffff;
   border: 1px solid #ebeef4;
   ${shadow_100};
