@@ -1,6 +1,5 @@
 import React, { memo } from "react";
 import Link from "next/link";
-import styled from "styled-components";
 import Chains from "../../../utils/consts/chains";
 import useWindowSize from "../../../utils/hooks/useWindowSize";
 import Kusama from "../../../assets/header-logos/kusama.svg";
@@ -17,18 +16,10 @@ import Bifrost from "../../../assets/header-logos/bifrost.svg";
 import Calamari from "../../../assets/header-logos/calamari.svg";
 import Polkadex from "../../../assets/header-logos/polkadex.svg";
 import Centrifuge from "../../../assets/header-logos/centrifuge.svg";
-
-const Logo = styled.img`
-  cursor: pointer;
-`;
-
-const LogoImg = styled(Logo)`
-  width: 161px;
-  height: 64px;
-`;
+import SubSquare from "../../../assets/header-logos/logo.svg";
 
 function ChainLogo({ chain }) {
-  let logo = <LogoImg src="/imgs/logo.svg" alt="" />;
+  let logo = <SubSquare />;
   const { width } = useWindowSize();
 
   if (width > 768) {
