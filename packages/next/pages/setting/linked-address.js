@@ -1,4 +1,4 @@
-import Layout from "components/layout";
+import Layout from "next-common/components/layout";
 import Menu from "next-common/components/menu";
 import { settingMenu } from "next-common/utils/constants";
 import dynamic from "next/dynamic";

@@ -5,7 +5,7 @@ import { withLoginUser, withLoginUserRedux } from "lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import styled from "styled-components";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
-import Layout from "components/layout";
+import Layout from "next-common/components/layout";
 import { toDiscussionListItem } from "utils/viewfuncs";
 
 const Create = styled.a`

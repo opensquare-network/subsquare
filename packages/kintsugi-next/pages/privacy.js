@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Link from "next/link";
 
-import Layout from "components/layout";
+import Layout from "next-common/components/layout";
 import { withLoginUser, withLoginUserRedux } from "lib";
 import NextHead from "next-common/components/nextHead";
 import privacyMd from "public/privacy-policy.md";

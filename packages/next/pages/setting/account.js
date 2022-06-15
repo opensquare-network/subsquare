@@ -4,7 +4,7 @@ import Menu from "next-common/components/menu";
 import { settingMenu } from "next-common/utils/constants";
 import { userSelector } from "next-common/store/reducers/userSlice";
 import { withLoginUser, withLoginUserRedux } from "lib";
-import Layout from "components/layout";
+import Layout from "next-common/components/layout";
 import NextHead from "next-common/components/nextHead";
 import {
   Wrapper,
