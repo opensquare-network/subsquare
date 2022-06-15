@@ -20,7 +20,7 @@ import OutWrapper from "next-common/components/styled/outWrapper";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import Editor from "next-common/components/comment/editor";
-import Layout from "components/layout";
+import Layout from "next-common/components/layout";
 import Timeline from "next-common/components/timeline";
 import dayjs from "dayjs";
 import User from "next-common/components/user";

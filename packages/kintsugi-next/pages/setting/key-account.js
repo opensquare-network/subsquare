@@ -1,7 +1,7 @@
 import Menu from "next-common/components/menu";
 import { settingMenuOfKeyAccount } from "next-common/utils/constants";
+import Layout from "next-common/components/layout";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import Layout from "components/layout";
 import NextHead from "next-common/components/nextHead";
 import {
   Wrapper,

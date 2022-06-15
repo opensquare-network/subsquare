@@ -7,7 +7,7 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Editor from "next-common/components/comment/editor";
 import { useState, useRef } from "react";
-import Layout from "components/layout";
+import Layout from "next-common/components/layout";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";

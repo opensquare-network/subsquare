@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Layout from "components/layout";
+import Layout from "next-common/components/layout";
 import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";

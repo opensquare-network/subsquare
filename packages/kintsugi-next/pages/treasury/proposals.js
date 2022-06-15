@@ -3,7 +3,7 @@ import Menu from "next-common/components/menu";
 import { EmptyList, mainMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import Layout from "components/layout";
+import Layout from "next-common/components/layout";
 import { toTreasuryProposalListItem } from "utils/viewfuncs";
 import Summary from "next-common/components/summary";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";

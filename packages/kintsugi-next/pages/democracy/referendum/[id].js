@@ -6,7 +6,7 @@ import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import Layout from "components/layout";
+import Layout from "next-common/components/layout";
 import Comments from "next-common/components/comment";
 import Editor from "next-common/components/comment/editor";
 import DetailItem from "components/detailItem";

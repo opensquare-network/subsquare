@@ -4,7 +4,7 @@ import { mainMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import Layout from "components/layout";
+import Layout from "next-common/components/layout";
 import { toFinancialMotionsListItem } from "utils/viewfuncs";
 
 export default withLoginUserRedux(({ loginUser, motions, chain }) => {
