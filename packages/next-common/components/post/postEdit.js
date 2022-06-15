@@ -69,7 +69,11 @@ export default function PostEdit({
       <Title>Edit</Title>
       <LabelWrapper>
         <Label>Title</Label>
-        <ToggleText isSetBanner={isSetBanner} setIsSetBanner={setIsSetBanner} />
+        <ToggleText
+          disabled={updating}
+          isSetBanner={isSetBanner}
+          setIsSetBanner={setIsSetBanner}
+        />
       </LabelWrapper>
       <Input
         disabled={updating}
