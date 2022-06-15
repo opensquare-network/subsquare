@@ -16,7 +16,6 @@ import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
-import SEO from "next-common/components/SEO";
 import OutWrapper from "next-common/components/styled/outWrapper";
 import Second from "next-common/components/publicProposal/second";
 import { useAddressVotingBalance } from "utils/hooks";
@@ -82,8 +81,11 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail, "Proposal");
     return (
-      <Layout user={loginUser} chain={chain}>
-        <SEO title={detail?.title} desc={desc} chain={chain} />
+      <Layout
+        user={loginUser}
+        chain={chain}
+        seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
+      >
         <OutWrapper>
           <Wrapper className="post-content">
             <Back href={`/democracy/proposals`} text="Back to Proposals" />

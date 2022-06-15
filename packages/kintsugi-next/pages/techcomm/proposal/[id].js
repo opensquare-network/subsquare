@@ -5,7 +5,6 @@ import Layout from "next-common/components/layout";
 import TechcommMotionDetail from "components/motion/techcommMotionDetail";
 import { TYPE_TECH_COMM_MOTION } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
-import SEO from "next-common/components/SEO";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { useRef, useState } from "react";
 import Comments from "next-common/components/comment";
@@ -36,8 +35,11 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
 
   const desc = getMetaDesc(motion, "Proposal");
   return (
-    <Layout user={loginUser} chain={chain}>
-      <SEO title={motion?.title} desc={desc} chain={chain} />
+    <Layout
+      user={loginUser}
+      chain={chain}
+      seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
+    >
       <DetailPageWrapper className="post-content">
         <Back href={`/techcomm/proposals`} text="Back to Proposals" />
         <TechcommMotionDetail
