@@ -5,7 +5,7 @@ import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState, useRef } from "react";
 import findLastIndex from "lodash.findlastindex";
 
-import { withLoginUser, withLoginUserRedux } from "lib";
+import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { EmptyList } from "next-common/utils/constants";
 import { getTimelineStatus, getNode, toPrecision } from "utils";
 import { TYPE_TREASURY_TIP } from "utils/viewConstants";

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import Back from "next-common/components/back";
-import { withLoginUser, withLoginUserRedux } from "lib";
+import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import Layout from "components/layout";
 import MotionDetail from "components/motion/motionDetail";
@@ -13,10 +13,7 @@ import Comments from "next-common/components/comment";
 import OutWrapper from "next-common/components/styled/outWrapper";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import Editor from "next-common/components/comment/editor";
-import {
-  getFocusEditor,
-  getOnReply,
-} from "next-common/utils/post";
+import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { useRef, useState } from "react";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 
@@ -50,7 +47,7 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
     setContent,
     quillRef,
     focusEditor,
-    chain,
+    chain
   );
 
   const desc = getMetaDesc(motion, "Proposal");
