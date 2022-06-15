@@ -38,7 +38,7 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
     <Layout
       user={loginUser}
       chain={chain}
-      seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
+      seoInfo={{ title: motion?.title, desc, ogImage: motion?.bannerUrl }}
     >
       <DetailPageWrapper className="post-content">
         <Back href={`/techcomm/proposals`} text="Back to Proposals" />
