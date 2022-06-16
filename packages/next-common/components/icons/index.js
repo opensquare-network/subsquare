@@ -8,10 +8,10 @@ import {
 
 const Icon = styled.span`
   ${(p) => css`
-      svg {
-        path {
-          fill: ${p.color};
-        }
+    svg {
+      path {
+        fill: ${p.color};
+      }
   `}
 
   ${(p) => {
