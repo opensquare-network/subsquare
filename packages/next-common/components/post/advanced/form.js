@@ -1,16 +1,24 @@
+import { useState } from "react";
 import PollForm from "./polls/form";
 import { FormTitleWrapper, FormTitle } from "./elements";
 import Toggler from "./toggler.js";
 
-function AdvancedForm() {
+function AdvancedForm(props = {}) {
+  const { formValue = {}, setFormValue = () => {} } = props;
+  const [isAdvanced, setIsAdvanced] = useState(true);
+
   return (
     <>
       <FormTitleWrapper>
         <FormTitle>Advanced</FormTitle>
-        <Toggler />
+        <Toggler isAdvanced={isAdvanced} setIsAdvanced={setIsAdvanced} />
       </FormTitleWrapper>
 
-      <PollForm />
+      <PollForm
+        isCreatePoll={isAdvanced}
+        formValue={formValue}
+        setFormValue={setFormValue}
+      />
     </>
   );
 }
