@@ -1,19 +1,12 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
 import Input from "../../../input";
-
-const FormItem = styled.div`
-  margin: 16px 0;
-`;
-const FormLabel = styled.div`
-  font-weight: bold;
-  font-size: 12px;
-  margin-bottom: 8px;
-`;
+import { FormItem, FormLabel, PollFormAnonymousFormItem } from "../elements";
+import Toggle from "../../../toggle";
 
 function PollForm({ isCreatePoll, setFormValue = () => {} }) {
   const initValue = {
     title: "",
+    anonymous: true,
   };
 
   const [value, setValue] = useState(initValue);
@@ -53,6 +46,22 @@ function PollForm({ isCreatePoll, setFormValue = () => {} }) {
           }}
           placeholder="Please fill the title..."
         />
+      </FormItem>
+
+      <FormItem>
+        <FormLabel>Setting</FormLabel>
+        <PollFormAnonymousFormItem>
+          <div>Anonymous (Voters' names will not be displayed)</div>
+          <Toggle
+            isOn={value.anonymous}
+            onToggle={(v) => {
+              setValue({
+                ...value,
+                anonymous: v,
+              });
+            }}
+          />
+        </PollFormAnonymousFormItem>
       </FormItem>
     </div>
   );
