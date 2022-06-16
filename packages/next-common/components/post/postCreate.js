@@ -18,6 +18,7 @@ import Button from "next-common/components/button";
 import PreviewMD from "next-common/components/previewMD";
 import Toggle from "next-common/components/toggle";
 import ErrorText from "next-common/components/ErrorText";
+import AdvancedForm from "next-common/components/post/advanced/form";
 
 const Wrapper = styled.div`
   padding: 48px;
@@ -256,6 +257,9 @@ export default function PostCreate({ chain, loginUser }) {
       {errors?.data?.content?.[0] && (
         <ErrorText>{errors?.data?.content?.[0]}</ErrorText>
       )}
+
+      <AdvancedForm />
+
       <ButtonWrapper>
         <Button onClick={() => setShowPreview(!showPreview)}>
           {showPreview ? "Edit" : "Preview"}
