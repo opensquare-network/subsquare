@@ -8,6 +8,8 @@ export const FormTitleWrapper = styled(FlexBetweenCenter)`
 
 export const FormTitle = styled.h4`
   font-weight: bold;
-  font-size: 12px;
+  font-size: 16px;
+  line-height: 16px;
   margin: 0;
+  font-weight: 700;
 `;
