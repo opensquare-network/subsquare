@@ -24,12 +24,14 @@ export default function ProposalBond({ chain, inputValue, node, setBond }) {
   }
 
   if (bondMinimum) {
-    bond = bond.isNaN() ? new BigNumber(bondMinimum) : BigNumber.max(bond, bondMinimum);
+    bond = bond.isNaN()
+      ? new BigNumber(bondMinimum)
+      : BigNumber.max(bond, bondMinimum);
   }
 
   useEffect(() => {
     setBond(bond.toFixed());
-  }, [bond.toFixed()])
+  }, [bond.toFixed()]);
 
   useEffect(() => {
     if (api) {

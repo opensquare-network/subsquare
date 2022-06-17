@@ -139,7 +139,7 @@ function PopupContent({
   };
 
   const balanceInsufficient = new BigNumber(bond).gt(balance);
-  const disabled = balanceInsufficient || !(new BigNumber(inputValue).gt(0));
+  const disabled = balanceInsufficient || !new BigNumber(inputValue).gt(0);
 
   return (
     <>
@@ -159,12 +159,23 @@ function PopupContent({
         setAddress={setBeneficiary}
       />
       <ProposalValue chain={chain} setValue={setInputValue} />
-      <ProposalBond chain={chain} inputValue={inputValue} node={node} balance={balance} setBond={setBond} />
+      <ProposalBond
+        chain={chain}
+        inputValue={inputValue}
+        node={node}
+        balance={balance}
+        setBond={setBond}
+      />
       {balanceInsufficient && (
         <WarningMessage danger>Insufficient balance</WarningMessage>
       )}
       <ButtonWrapper>
-        <Button secondary disabled={disabled} isLoading={loading} onClick={submit}>
+        <Button
+          secondary
+          disabled={disabled}
+          isLoading={loading}
+          onClick={submit}
+        >
           Submit
         </Button>
       </ButtonWrapper>
