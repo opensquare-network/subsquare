@@ -10,7 +10,7 @@ const Icon = styled.span`
   ${(p) => css`
     svg {
       path {
-        fill: ${p.color};
+        fill: ${p.fill};
       }
   `}
 
@@ -24,7 +24,7 @@ const Icon = styled.span`
         :hover {
           svg {
             path {
-              fill: ${p.hoverColor};
+              fill: ${p.hoverFill};
             }
           }
         }
@@ -40,12 +40,12 @@ const Icon = styled.span`
 function createIcon(component) {
   return (props) => {
     const {
-      color = light_text_tertiary,
-      hoverColor = light_text_secondary,
+      fill = light_text_tertiary,
+      hoverFill = light_text_secondary,
       ...rest
     } = props;
     return (
-      <Icon color={color} hoverColor={hoverColor} {...rest}>
+      <Icon fill={fill} hoverFill={hoverFill} {...rest}>
         {component}
       </Icon>
     );
