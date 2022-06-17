@@ -1,8 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Input from "../../../input";
-import { PollFormAnonymousFormItem } from "../elements";
+import {
+  PollFormAnonymousFormItem,
+  PollFormOptionAddOptionButton,
+} from "../elements";
 import Toggle from "../../../toggle";
 import Select from "../../../select";
+import InputOptions from "./inputOptions";
 import FormItem from "../formItem";
 
 function PollForm({ isCreatePoll, setFormValue = () => {} }) {
@@ -10,6 +14,7 @@ function PollForm({ isCreatePoll, setFormValue = () => {} }) {
     title: "",
     anonymous: true,
     votingLength: 15,
+    options: ["", ""],
   };
 
   const VotingLengthOptions = [7, 15, 30].map((d) => {
@@ -20,6 +25,7 @@ function PollForm({ isCreatePoll, setFormValue = () => {} }) {
   });
 
   const [value, setValue] = useState(initValue);
+  const inputOptionsRef = useRef();
 
   useEffect(() => {
     setFormValue({
@@ -37,6 +43,10 @@ function PollForm({ isCreatePoll, setFormValue = () => {} }) {
       });
     }
   }, [isCreatePoll]);
+
+  const handleAddOption = () => {
+    inputOptionsRef.current?.addOption?.();
+  };
 
   if (!isCreatePoll) {
     return null;
@@ -57,7 +67,24 @@ function PollForm({ isCreatePoll, setFormValue = () => {} }) {
         />
       </FormItem>
 
-      <FormItem label="Option" labelExternal={<span>1</span>}>
+      <FormItem
+        label="Option"
+        labelExternal={
+          <PollFormOptionAddOptionButton onClick={handleAddOption}>
+            Add an option
+          </PollFormOptionAddOptionButton>
+        }
+      >
+        <InputOptions
+          ref={inputOptionsRef}
+          value={value.options}
+          onChange={(options) => {
+            setValue({
+              ...value,
+              options,
+            });
+          }}
+        />
       </FormItem>
 
       <FormItem label="Voting length">
