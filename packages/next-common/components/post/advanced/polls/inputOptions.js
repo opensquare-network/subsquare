@@ -1,7 +1,12 @@
 import Input from "../../../input";
 import { Trash } from "../../../icons";
 import { PollFormOptionFormItem } from "../elements";
-import { forwardRef, useEffect, useState, useImperativeHandle } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useState,
+  useImperativeHandle,
+} from "react";
 
 function InputOptions({ value, onChange = () => {} }, ref) {
   const [options, setOptions] = useState(value);
