@@ -5,7 +5,7 @@ import Toggler from "./toggler.js";
 
 function AdvancedForm(props = {}) {
   const { formValue = {}, setFormValue = () => {} } = props;
-  const [isAdvanced, setIsAdvanced] = useState(true);
+  const [isAdvanced, setIsAdvanced] = useState(false);
 
   return (
     <>
