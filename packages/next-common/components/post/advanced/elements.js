@@ -15,17 +15,33 @@ export const FormTitle = styled.h4`
   font-weight: 700;
 `;
 
-export const FormItem = styled.div`
+export const FormItemWrapper = styled.div`
   margin: 16px 0;
+`;
+
+export const FormLabelWrapper = styled(FlexBetweenCenter)`
+  justify-content: space-between;
+  margin-bottom: 8px;
+`;
+
+export const FormExternalLabel = styled.div`
+  font-size: 12px;
+  line-height: 12px;
 `;
 
 export const FormLabel = styled.div`
   font-weight: 700;
   font-size: 12px;
   line-height: 12px;
-  margin-bottom: 8px;
 `;
 
 export const PollFormAnonymousFormItem = styled(FlexBetweenCenter)`
   ${p_14_normal}
+`;
+
+export const PollFormOptionsFormItem = styled.div`
+  /* Input.OuterWrapper */
+  > div:not(:last-child) {
+    margin-bottom: 8px;
+  }
 `;
