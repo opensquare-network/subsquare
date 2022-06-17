@@ -8,6 +8,7 @@ import Toggle from "../../../toggle";
 import Select from "../../../select";
 import InputOptions from "./inputOptions";
 import FormItem from "../formItem";
+import dayjs from "dayjs";
 
 function PollForm({ isCreatePoll, setFormValue = () => {} }) {
   const initValue = {
@@ -29,7 +30,10 @@ function PollForm({ isCreatePoll, setFormValue = () => {} }) {
 
   useEffect(() => {
     setFormValue({
-      polls: value,
+      polls: {
+        ...value,
+        expiresTime: dayjs().add(value.expiresTime, "day").valueOf(),
+      },
     });
   }, [value]);
 
