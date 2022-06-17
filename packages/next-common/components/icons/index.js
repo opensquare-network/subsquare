@@ -8,6 +8,8 @@ import {
 } from "next-common/styles/colors";
 
 const Icon = styled.span`
+  display: inline-flex;
+
   ${(p) => css`
     svg {
       path {
