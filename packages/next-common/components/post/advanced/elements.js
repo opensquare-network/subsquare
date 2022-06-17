@@ -20,7 +20,6 @@ export const FormItem = styled.div`
 `;
 
 export const FormLabel = styled.div`
-  font-family: Inter, sans-serif;
   font-weight: 700;
   font-size: 12px;
   line-height: 12px;
