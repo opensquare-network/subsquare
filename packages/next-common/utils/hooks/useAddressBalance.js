@@ -20,8 +20,8 @@ export default function useAddressBalance(api, address) {
         .account(address)
         .then((result) => {
           if (isMounted.current) {
-            setBalance(result.data.free);
-            balanceMap.set(address, result.data.free);
+            setBalance(result.data.free.toJSON());
+            balanceMap.set(address, result.data.free.toJSON());
           }
         })
         .finally(() => {
