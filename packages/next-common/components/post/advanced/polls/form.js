@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import Input from "../../../input";
-import { FormItem, FormLabel, PollFormAnonymousFormItem } from "../elements";
+import { PollFormAnonymousFormItem } from "../elements";
 import Toggle from "../../../toggle";
 import Select from "../../../select";
+import FormItem from "../formItem";
 
 function PollForm({ isCreatePoll, setFormValue = () => {} }) {
   const initValue = {
@@ -43,8 +44,7 @@ function PollForm({ isCreatePoll, setFormValue = () => {} }) {
 
   return (
     <div>
-      <FormItem>
-        <FormLabel>Title</FormLabel>
+      <FormItem label="Title">
         <Input
           value={value.title}
           onChange={(event) => {
@@ -57,12 +57,10 @@ function PollForm({ isCreatePoll, setFormValue = () => {} }) {
         />
       </FormItem>
 
-      <FormItem>
-        <FormLabel>Option</FormLabel>
+      <FormItem label="Option" labelExternal={<span>1</span>}>
       </FormItem>
 
-      <FormItem>
-        <FormLabel>Voting length</FormLabel>
+      <FormItem label="Voting length">
         <Select
           value={value.votingLength}
           options={VotingLengthOptions}
@@ -75,8 +73,7 @@ function PollForm({ isCreatePoll, setFormValue = () => {} }) {
         />
       </FormItem>
 
-      <FormItem>
-        <FormLabel>Setting</FormLabel>
+      <FormItem label="Setting">
         <PollFormAnonymousFormItem>
           <div>Anonymous (Voters' names will not be displayed)</div>
           <Toggle
