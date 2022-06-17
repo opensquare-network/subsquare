@@ -47,7 +47,7 @@ function Select({ value, options = [], onChange = () => {} }) {
   };
 
   const displayValue = useMemo(
-    () => options.find((option) => option.value === value).label,
+    () => options.find((option) => option.value === value)?.label,
     [value]
   );
 
