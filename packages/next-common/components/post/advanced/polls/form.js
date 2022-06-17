@@ -38,7 +38,7 @@ function PollForm({ isCreatePoll, setFormValue = () => {} }) {
       setValue(initValue);
     } else {
       setFormValue((v) => {
-        delete v.poll;
+        delete v.polls;
         return v;
       });
     }
