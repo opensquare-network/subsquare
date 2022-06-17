@@ -12,12 +12,12 @@ import FormItem from "../formItem";
 function PollForm({ isCreatePoll, setFormValue = () => {} }) {
   const initValue = {
     title: "",
-    anonymous: true,
-    votingLength: 15,
     options: ["", ""],
+    expiresTime: 15,
+    anonymous: true,
   };
 
-  const VotingLengthOptions = [7, 15, 30].map((d) => {
+  const expiresTimeOptions = [7, 15, 30].map((d) => {
     return {
       label: `${d} days`,
       value: d,
@@ -29,7 +29,7 @@ function PollForm({ isCreatePoll, setFormValue = () => {} }) {
 
   useEffect(() => {
     setFormValue({
-      poll: value,
+      polls: value,
     });
   }, [value]);
 
@@ -89,12 +89,12 @@ function PollForm({ isCreatePoll, setFormValue = () => {} }) {
 
       <FormItem label="Voting length">
         <Select
-          value={value.votingLength}
-          options={VotingLengthOptions}
+          value={value.expiresTime}
+          options={expiresTimeOptions}
           onChange={(option) => {
             setValue({
               ...value,
-              votingLength: option.value,
+              expiresTime: option.value,
             });
           }}
         />
