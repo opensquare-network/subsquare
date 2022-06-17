@@ -1,5 +1,5 @@
 import React from "react";
-import PopupLabelWithBalance from "../../..//popup/balanceLabel";
+import PopupLabelWithBalance from "../../../popup/balanceLabel";
 import SignerSelect from "../../../signerSelect";
 import { toPrecision } from "utils";
 
