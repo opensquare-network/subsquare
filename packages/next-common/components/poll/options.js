@@ -18,7 +18,7 @@ const Title = styled.div`
   color: #1E2134;
 `;
 
-function Option({ text, votes }) {
+function Option({ text, votes, anonymous }) {
   return (
     <OptionWrapper>
       <Title>{text}</Title>
@@ -31,7 +31,7 @@ export default function PollOptions({ options, votes, anonymous }) {
   return (
     <Wrapper>
       {options.map((option, index) => (
-        <Option index={index} text={option} votes={votes} />
+        <Option key={index} text={option} votes={votes[options]} anonymous={anonymous} />
       ))}
     </Wrapper>
   )
