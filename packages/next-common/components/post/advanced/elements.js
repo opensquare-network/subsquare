@@ -2,6 +2,7 @@
 import styled from "styled-components";
 import FlexBetweenCenter from "next-common/components/styled/flexBetweenCenter";
 import { p_14_normal } from "../../../styles/componentCss";
+import { primary_purple_500 } from "../../../styles/colors";
 
 export const FormTitleWrapper = styled(FlexBetweenCenter)`
   margin: 16px 0 8px;
@@ -39,9 +40,16 @@ export const PollFormAnonymousFormItem = styled(FlexBetweenCenter)`
   ${p_14_normal}
 `;
 
-export const PollFormOptionsFormItem = styled.div`
+export const PollFormOptionFormItem = styled.div`
   /* Input.OuterWrapper */
   > div:not(:last-child) {
     margin-bottom: 8px;
   }
+`;
+
+export const PollFormOptionAddOptionButton = styled.button`
+  background-color: transparent;
+  border: none;
+  color: ${primary_purple_500};
+  cursor: pointer;
 `;
