@@ -25,6 +25,7 @@ import ProposalValue from "./proposalValue";
 import Signer from "./signer";
 import useAddressBalance from "../../../../utils/hooks/useAddressBalance";
 import { WarningMessage } from "../../../popup/styled";
+import useBond from "../../../../utils/hooks/useBond";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -44,12 +45,20 @@ function PopupContent({
   const [signerAccount, setSignerAccount] = useState(null);
   const [inputValue, setInputValue] = useState();
   const [loading, setLoading] = useState(false);
-  const [bond, setBond] = useState();
+
   const node = getNode(chain);
 
-  const [beneficiary, setBeneficiary] = useState();
-
   const api = useApi(chain);
+
+  const proposalValue = new BigNumber(inputValue).times(
+    Math.pow(10, node.decimals)
+  );
+  const bond = useBond({
+    api,
+    proposalValue,
+  });
+
+  const [beneficiary, setBeneficiary] = useState();
 
   const [balance, balanceIsLoading] = useAddressBalance(
     api,
@@ -159,13 +168,7 @@ function PopupContent({
         setAddress={setBeneficiary}
       />
       <ProposalValue chain={chain} setValue={setInputValue} />
-      <ProposalBond
-        chain={chain}
-        inputValue={inputValue}
-        node={node}
-        balance={balance}
-        setBond={setBond}
-      />
+      <ProposalBond bond={bond} node={node} />
       {balanceInsufficient && (
         <WarningMessage danger>Insufficient balance</WarningMessage>
       )}
