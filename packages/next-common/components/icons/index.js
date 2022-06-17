@@ -38,7 +38,7 @@ const Icon = styled.span`
   }}
 `;
 
-function createIcon(component) {
+function createIcon(component, optionsProps) {
   return (props) => {
     const {
       fill = light_text_tertiary,
@@ -47,7 +47,7 @@ function createIcon(component) {
     } = props;
 
     return (
-      <Icon fill={fill} hoverFill={hoverFill} {...rest}>
+      <Icon fill={fill} hoverFill={hoverFill} {...rest} {...optionsProps}>
         {component}
       </Icon>
     );
@@ -55,4 +55,7 @@ function createIcon(component) {
 }
 
 export const Trash = createIcon(<TrashIcon />);
-export const CaretDown = createIcon(<CaretDownIcon />);
+export const CaretDown = createIcon(<CaretDownIcon />, {
+  fill: "",
+  hoverFill: "",
+});
