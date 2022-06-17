@@ -94,6 +94,8 @@ const BannerImage = styled.img`
 export default function ArticleContent({
   user,
   post,
+  votes,
+  myVote,
   setPost,
   chain,
   onReply,
@@ -201,10 +203,10 @@ export default function ArticleContent({
             <BannerImage src={post.bannerUrl} alt="banner image" />
           )}
           {post.contentType === "markdown" && (
-              <MicromarkMd
-                md={post.content}
-                contentVersion={post.contentVersion}
-              />
+            <MicromarkMd
+              md={post.content}
+              contentVersion={post.contentVersion}
+            />
           )}
           {post.contentType === "html" && <HtmlRender html={post.content} />}
           {post.createdAt !== post.updatedAt && (
@@ -213,7 +215,7 @@ export default function ArticleContent({
           {post.poll && (
             <>
               <Divider />
-              <Poll data={post.poll} />
+              <Poll poll={post.poll} votes={votes} myVote={myVote} />
             </>
           )}
           {["kusama", "polkadot"].includes(chain) && (
