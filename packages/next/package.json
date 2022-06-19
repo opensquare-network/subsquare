@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@next/env": "^12.1.0",
-    "@polkadot/extension-dapp": "0.43.2",
+    "@polkadot/extension-dapp": "0.44.2-3",
     "@subsquare/next-common": "file:../next-common",
     "@svgr/webpack": "^5.5.0",
     "bignumber.js": "^9.0.2",
