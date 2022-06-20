@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React from "react";
+import styled, { css } from "styled-components";
 import CheckedSvg from "./checked.svg";
+import VoterList from "./votersList";
 
 const Wrapper = styled.div`
   display: flex;
@@ -14,12 +15,21 @@ const OptionWrapper = styled.div`
   padding: 12px 16px;
   background: #f6f7fa;
   border-radius: 4px;
-  :hover {
-    background: #ebeef4;
-  }
-  cursor: pointer;
   color: #1e2134;
-  ${(p) => p.selected && `background: #F5F2FF; color:#6848FF;`}
+  ${(p) =>
+    p.selectable &&
+    css`
+      cursor: pointer;
+      :hover {
+        background: #ebeef4;
+      }
+    `}
+  ${(p) =>
+    p.selected &&
+    css`
+      background: #f5f2ff;
+      color: #6848ff;
+    `}
 `;
 
 const Title = styled.div`
@@ -71,25 +81,35 @@ const TotalVotes = styled.div`
 `;
 
 function Option({
-  text,
+  chain,
+  option,
   votes,
   myVote,
   anonymous,
   totalVotesCount,
   selected,
+  selectable,
   onClick = () => {},
 }) {
   const count = (anonymous ? votes : votes?.length) || 0;
-  const precent = totalVotesCount === 0 ? 0 : parseInt((count / totalVotesCount) * 100);
+  const precent =
+    totalVotesCount === 0 ? 0 : parseInt((count / totalVotesCount) * 100);
   return (
-    <OptionWrapper selected={selected} onClick={() => onClick(text)}>
-      <Title>{text}</Title>
-      <StatsNumbers>
-        <Checked>{text === myVote && <CheckedSvg />}</Checked>
-        <VotesCount>{count}</VotesCount>
-        <VotesPrecent>{precent}%</VotesPrecent>
-      </StatsNumbers>
-    </OptionWrapper>
+    <div>
+      <OptionWrapper
+        selectable={selectable}
+        selected={selected}
+        onClick={() => selectable && onClick(option)}
+      >
+        <Title>{option}</Title>
+        <StatsNumbers>
+          <Checked>{option === myVote && <CheckedSvg />}</Checked>
+          <VotesCount>{count}</VotesCount>
+          <VotesPrecent>{precent}%</VotesPrecent>
+        </StatsNumbers>
+      </OptionWrapper>
+      {!anonymous && <VoterList voters={votes} chain={chain} />}
+    </div>
   );
 }
 
@@ -100,6 +120,8 @@ export default function PollOptions({
   anonymous,
   selectedOption,
   setSelectedOption,
+  selectable,
+  chain,
 }) {
   const totalVotesCount = Object.values(votes)
     .map((item) => (anonymous ? item : item.length))
@@ -110,13 +132,15 @@ export default function PollOptions({
       {options.map((option, index) => (
         <Option
           key={index}
-          text={option}
+          option={option}
           votes={votes[option]}
           myVote={myVote?.option}
           anonymous={anonymous}
           totalVotesCount={totalVotesCount}
           onClick={setSelectedOption}
           selected={selectedOption === option}
+          selectable={selectable}
+          chain={chain}
         />
       ))}
       <TotalVotes>{`Total ${totalVotesCount} votes`}</TotalVotes>

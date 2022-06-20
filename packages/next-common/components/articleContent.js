@@ -215,7 +215,12 @@ export default function ArticleContent({
           {post.poll && (
             <>
               <Divider />
-              <Poll poll={post.poll} votes={votes} myVote={myVote} />
+              <Poll
+                chain={chain}
+                poll={post.poll}
+                votes={votes}
+                myVote={myVote}
+              />
             </>
           )}
           {["kusama", "polkadot"].includes(chain) && (

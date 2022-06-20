@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { timeDurationFromNow } from "../../utils";
 
 const Wrapper = styled.div`
   display: flex;
@@ -33,7 +34,7 @@ const Title = styled.div`
   font-weight: 700;
   font-size: 14px;
   line-height: 140%;
-  color: #1E2134;
+  color: #1e2134;
 `;
 
 export default function PollHeader({ title, expiresTime, anonymous }) {
@@ -42,8 +43,8 @@ export default function PollHeader({ title, expiresTime, anonymous }) {
       <Title>{title}</Title>
       <Info>
         <Item>Single</Item>
-        <Item>Anonymous</Item>
-        <Item>Expired in 3 days</Item>
+        {anonymous && <Item>Anonymous</Item>}
+        <Item>{`Expired ${timeDurationFromNow(expiresTime)}`}</Item>
       </Info>
     </Wrapper>
   );
