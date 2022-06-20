@@ -18,6 +18,7 @@ import Button from "next-common/components/button";
 import PreviewMD from "next-common/components/previewMD";
 import Toggle from "next-common/components/toggle";
 import ErrorText from "next-common/components/ErrorText";
+import AdvancedForm from "next-common/components/post/advanced/form";
 
 const Wrapper = styled.div`
   padding: 48px;
@@ -99,6 +100,7 @@ export default function PostCreate({ chain, loginUser }) {
     loginUser?.preference.editor || "markdown"
   );
   const [bannerUrl, setBannerUrl] = useState("");
+  const [formValue, setFormValue] = useState({});
   const [modalType, setModalType] = useState("image");
   const [showModal, setShowModal] = useState(false);
   const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
@@ -115,6 +117,7 @@ export default function PostCreate({ chain, loginUser }) {
         content,
         contentType,
         bannerUrl,
+        ...formValue,
       })
       .finally(() => {
         setCreating(false);
@@ -256,6 +259,9 @@ export default function PostCreate({ chain, loginUser }) {
       {errors?.data?.content?.[0] && (
         <ErrorText>{errors?.data?.content?.[0]}</ErrorText>
       )}
+
+      <AdvancedForm formValue={formValue} setFormValue={setFormValue} />
+
       <ButtonWrapper>
         <Button onClick={() => setShowPreview(!showPreview)}>
           {showPreview ? "Edit" : "Preview"}
