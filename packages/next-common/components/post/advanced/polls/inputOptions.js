@@ -8,7 +8,7 @@ import React, {
   useImperativeHandle,
 } from "react";
 
-function InputOptions({ value, onChange = () => {} }, ref) {
+function InputOptions({ disabled, value, onChange = () => {} }, ref) {
   const [options, setOptions] = useState(value);
 
   const handleAddOption = () => {
@@ -34,6 +34,7 @@ function InputOptions({ value, onChange = () => {} }, ref) {
     <PollFormOptionFormItem>
       {options.map((v, idx) => (
         <Input
+          disabled={disabled}
           value={v}
           onChange={(event) => {
             setOptions((v) => {
