@@ -32,6 +32,14 @@ const Username = styled.div`
   font-weight: 500;
   font-size: ${(props) => props.fontSize}px;
   ${(p) =>
+    p.color
+      ? css`
+          color: ${p.color} !important;
+        `
+      : css`
+          color: #1e2134 !important;
+        `}
+  ${(p) =>
     p.maxWidth
       ? css`
           max-width: ${p.maxWidth}px;
@@ -57,8 +65,16 @@ const DeleteAccount = styled(Flex)`
 `;
 
 const LinkWrapper = styled.a`
-  color: #1e2134 !important;
-  text-decoration-color: #1e2134 !important;
+  ${(p) =>
+    p.color
+      ? css`
+          color: ${p.color} !important;
+          text-decoration-color: ${p.color} !important;
+        `
+      : css`
+          color: #1e2134 !important;
+          text-decoration-color: #1e2134 !important;
+        `}
   display: block;
   :hover {
     text-decoration: underline;
@@ -74,6 +90,7 @@ function User({
   fontSize = 14,
   noEvent = false,
   maxWidth,
+  color,
 }) {
   const address =
     add ?? user?.addresses?.find((addr) => addr.chain === chain)?.address;
@@ -102,13 +119,13 @@ function User({
   const addressWithoutIdentity = maxWidth ? (
     <Tooltip content={(!user?.publicKey && user?.username) || address}>
       <div>
-        <Username fontSize={fontSize} maxWidth={maxWidth}>
+        <Username fontSize={fontSize} maxWidth={maxWidth} color={color}>
           {(!user?.publicKey && user?.username) || addressEllipsis(address)}
         </Username>
       </div>
     </Tooltip>
   ) : (
-    <Username fontSize={fontSize}>
+    <Username fontSize={fontSize} color={color}>
       {(!user?.publicKey && user?.username) || addressEllipsis(address)}
     </Username>
   );
@@ -116,13 +133,15 @@ function User({
   const noAddress = maxWidth ? (
     <Tooltip content={user?.username}>
       <div>
-        <Username fontSize={fontSize} maxWidth={maxWidth}>
+        <Username fontSize={fontSize} maxWidth={maxWidth} color={color}>
           {user?.username}
         </Username>
       </div>
     </Tooltip>
   ) : (
-    <Username fontSize={fontSize}>{user?.username}</Username>
+    <Username fontSize={fontSize} color={color}>
+      {user?.username}
+    </Username>
   );
 
   return (
@@ -138,11 +157,16 @@ function User({
       )}
       {address ? (
         <LinkWrapper
+          color={color}
           href={`https://${chain}.subscan.io/account/${address}`}
           target="_blank"
         >
           {identity && identity?.info?.status !== "NO_ID" ? (
-            <Identity identity={identity} fontSize={fontSize} maxWidth={maxWidth} />
+            <Identity
+              identity={identity}
+              fontSize={fontSize}
+              maxWidth={maxWidth}
+            />
           ) : (
             addressWithoutIdentity
           )}

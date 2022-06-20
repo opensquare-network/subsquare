@@ -26,6 +26,14 @@ export const p_14_medium = css`
   line-height: 100%;
 `;
 
+export const p_14_normal = css`
+  font-family: Inter, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19.6px;
+`;
+
 export const p_12_medium = css`
   font-family: Inter, sans-serif;
   font-style: normal;
