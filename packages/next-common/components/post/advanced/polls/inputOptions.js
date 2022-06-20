@@ -22,6 +22,8 @@ function InputOptions({ value, onChange = () => {} }, ref) {
     });
   };
 
+  const isExtraOption = (idx) => idx >= 2;
+
   useImperativeHandle(ref, () => ({
     addOption: handleAddOption,
   }));
@@ -40,7 +42,14 @@ function InputOptions({ value, onChange = () => {} }, ref) {
             });
           }}
           key={idx}
-          suffix={idx >= 2 && <Trash onClick={() => handleDeleteOption(idx)} />}
+          placeholder={`Option${
+            isExtraOption(idx) ? "" : ` ${idx + 1} (required)`
+          }`}
+          suffix={
+            isExtraOption(idx) && (
+              <Trash onClick={() => handleDeleteOption(idx)} />
+            )
+          }
         />
       ))}
     </PollFormOptionFormItem>
