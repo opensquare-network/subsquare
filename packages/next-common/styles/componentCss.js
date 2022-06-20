@@ -63,6 +63,14 @@ export const no_scroll_bar = css`
   }
 `;
 
+export const p_14_normal = css`
+  font-family: Inter, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 140%;
+`;
+
 export const font_family_inter = css`
   font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
     Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
