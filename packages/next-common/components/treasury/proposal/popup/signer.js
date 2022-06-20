@@ -1,6 +1,7 @@
 import React from "react";
-import PopupLabel from "../../../popup/label";
+import PopupLabelWithBalance from "../../../popup/balanceLabel";
 import SignerSelect from "../../../signerSelect";
+import { toPrecision } from "utils";
 
 export default function Signer({
   api,
@@ -8,11 +9,17 @@ export default function Signer({
   chain,
   signerAccount,
   setSignerAccount,
+  balanceIsLoading,
+  balance,
+  node,
 }) {
   return (
     <div>
-      <PopupLabel
+      <PopupLabelWithBalance
         text={"Address"}
+        isLoading={balanceIsLoading}
+        balanceName="Balance"
+        balance={toPrecision(balance ?? 0, node.decimals)}
       />
       <SignerSelect
         api={api}

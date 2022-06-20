@@ -23,6 +23,9 @@ import ProposalBond from "./proposalBond";
 import Beneficiary from "./beneficiary";
 import ProposalValue from "./proposalValue";
 import Signer from "./signer";
+import useAddressBalance from "../../../../utils/hooks/useAddressBalance";
+import { WarningMessage } from "../../../popup/styled";
+import useBond from "../../../../utils/hooks/useBond";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -42,11 +45,25 @@ function PopupContent({
   const [signerAccount, setSignerAccount] = useState(null);
   const [inputValue, setInputValue] = useState();
   const [loading, setLoading] = useState(false);
+
   const node = getNode(chain);
+
+  const api = useApi(chain);
+
+  const proposalValue = new BigNumber(inputValue).times(
+    Math.pow(10, node.decimals)
+  );
+  const bond = useBond({
+    api,
+    proposalValue,
+  });
 
   const [beneficiary, setBeneficiary] = useState();
 
-  const api = useApi(chain);
+  const [balance, balanceIsLoading] = useAddressBalance(
+    api,
+    signerAccount?.address
+  );
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -130,6 +147,9 @@ function PopupContent({
     }
   };
 
+  const balanceInsufficient = new BigNumber(bond).gt(balance);
+  const disabled = balanceInsufficient || !new BigNumber(inputValue).gt(0);
+
   return (
     <>
       <Signer
@@ -138,6 +158,9 @@ function PopupContent({
         signerAccount={signerAccount}
         setSignerAccount={setSignerAccount}
         extensionAccounts={extensionAccounts}
+        node={node}
+        balance={balance}
+        balanceIsLoading={balanceIsLoading}
       />
       <Beneficiary
         chain={chain}
@@ -145,10 +168,17 @@ function PopupContent({
         setAddress={setBeneficiary}
       />
       <ProposalValue chain={chain} setValue={setInputValue} />
-      <ProposalBond chain={chain} />
-
+      <ProposalBond bond={bond} node={node} />
+      {balanceInsufficient && (
+        <WarningMessage danger>Insufficient balance</WarningMessage>
+      )}
       <ButtonWrapper>
-        <Button secondary isLoading={loading} onClick={submit}>
+        <Button
+          secondary
+          disabled={disabled}
+          isLoading={loading}
+          onClick={submit}
+        >
           Submit
         </Button>
       </ButtonWrapper>

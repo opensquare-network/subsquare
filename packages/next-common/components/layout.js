@@ -1,22 +1,23 @@
 import React from "react";
 import styled from "styled-components";
 
-import Header from "./header";
+import Header from "next-common/components/header";
 import Content from "next-common/components/layout/content";
 import SEO from "next-common/components/SEO";
-import { DEFAULT_SEO_INFO } from "next-common/utils/constants";
 import capitalize from "next-common/utils/capitalize";
+import { DEFAULT_SEO_INFO } from "next-common/utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { currentNodeSelector } from "next-common/store/reducers/nodeSlice";
 import useApi from "next-common/utils/hooks/useApi";
 import { useBestNumber, useBlockTime } from "next-common/utils/hooks";
+import { useEffect } from "react";
 import {
   setBlockTime,
   setFinalizedHeight,
 } from "next-common/store/reducers/chainSlice";
-import { useEffect } from "react";
 import Auth from "next-common/components/auth";
 import Toast from "next-common/components/toast";
+import { useIsMountedBool } from "next-common/utils/hooks/useIsMounted";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import isNil from "lodash.isnil";
 
@@ -41,21 +42,23 @@ export default function Layout({
   const blockTime = useBlockTime(api);
   const bestNumber = useBestNumber(api);
   const dispatch = useDispatch();
+  const isMounted = useIsMountedBool();
 
   useEffect(() => {
-    if (blockTime) {
+    if (blockTime && isMounted()) {
       dispatch(setBlockTime(blockTime.toNumber()));
     }
-  }, [blockTime, dispatch]);
+  }, [blockTime, dispatch, isMounted]);
 
   useEffect(() => {
-    if (bestNumber) {
+    if (bestNumber && isMounted()) {
       dispatch(setFinalizedHeight(bestNumber.toNumber()));
     }
-  }, [bestNumber, dispatch]);
+  }, [bestNumber, dispatch, isMounted]);
 
   const seo = (
     <SEO
+      {...seoInfo}
       title={
         seoInfo?.title || `SubSquare | ${capitalize(chain)} governance platform`
       }

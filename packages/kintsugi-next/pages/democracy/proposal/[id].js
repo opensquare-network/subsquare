@@ -2,12 +2,12 @@ import styled from "styled-components";
 import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import Comments from "next-common/components/comment";
-import { withLoginUser, withLoginUserRedux } from "lib";
+import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Editor from "next-common/components/comment/editor";
 import { useRef, useState } from "react";
-import Layout from "components/layout";
+import Layout from "next-common/components/layout";
 import Timeline from "components/publicProposal/timeline";
 import Business from "components/publicProposal/business";
 import Metadata from "next-common/components/publicProposal/metadata";
@@ -16,7 +16,6 @@ import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
-import SEO from "next-common/components/SEO";
 import OutWrapper from "next-common/components/styled/outWrapper";
 import Second from "next-common/components/publicProposal/second";
 import { useAddressVotingBalance } from "utils/hooks";
@@ -82,8 +81,11 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail, "Proposal");
     return (
-      <Layout user={loginUser} chain={chain}>
-        <SEO title={detail?.title} desc={desc} chain={chain} />
+      <Layout
+        user={loginUser}
+        chain={chain}
+        seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
+      >
         <OutWrapper>
           <Wrapper className="post-content">
             <Back href={`/democracy/proposals`} text="Back to Proposals" />

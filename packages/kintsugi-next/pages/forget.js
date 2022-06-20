@@ -2,13 +2,13 @@ import styled from "styled-components";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
-import Layout from "components/layout";
+import Layout from "next-common/components/layout";
 import Button from "next-common/components/button";
 import Input from "next-common/components/input";
 import { useForm } from "utils/hooks";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
-import { withLoginUser, withLoginUserRedux } from "../lib";
+import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import NextHead from "next-common/components/nextHead";

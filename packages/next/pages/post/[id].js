@@ -2,12 +2,12 @@ import styled from "styled-components";
 import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import Comments from "next-common/components/comment";
-import { withLoginUser, withLoginUserRedux } from "lib";
+import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Editor from "next-common/components/comment/editor";
 import { useState, useRef } from "react";
-import Layout from "components/layout";
+import Layout from "next-common/components/layout";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
@@ -42,7 +42,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     setContent,
     quillRef,
     focusEditor,
-    chain,
+    chain
   );
 
   const desc = getMetaDesc(detail, "Discussion");

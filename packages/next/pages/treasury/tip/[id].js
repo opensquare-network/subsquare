@@ -5,7 +5,7 @@ import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState, useRef } from "react";
 import findLastIndex from "lodash.findlastindex";
 
-import { withLoginUser, withLoginUserRedux } from "lib";
+import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { EmptyList } from "next-common/utils/constants";
 import { getTimelineStatus, getNode, toPrecision } from "utils";
 import { TYPE_TREASURY_TIP } from "utils/viewConstants";
@@ -20,7 +20,7 @@ import OutWrapper from "next-common/components/styled/outWrapper";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import Editor from "next-common/components/comment/editor";
-import Layout from "components/layout";
+import Layout from "next-common/components/layout";
 import Timeline from "next-common/components/timeline";
 import dayjs from "dayjs";
 import User from "next-common/components/user";
@@ -286,7 +286,7 @@ export default withLoginUserRedux(
       <Layout
         user={loginUser}
         chain={chain}
-        seoInfo={{ title: detail?.title, desc }}
+        seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
       >
         <OutWrapper>
           <Wrapper className="post-content">

@@ -1,6 +1,6 @@
+import React from "react";
 import styled from "styled-components";
 import { useState } from "react";
-import Container from "components/container";
 import Sidebar from "./sidebar";
 import SidebarAccount from "./sidebarAccount";
 import { nodes } from "next-common/utils/constants";
@@ -25,7 +25,7 @@ const Left = styled(Flex)`
 
 const MenuButton = styled(Flex)`
   background: #fff;
-  display: none;
+  display: none !important;
   border: 1px solid #e0e4eb;
   border-radius: 4px;
   width: 38px;
@@ -33,13 +33,13 @@ const MenuButton = styled(Flex)`
   justify-content: center;
   cursor: pointer;
   @media screen and (max-width: 1024px) {
-    display: flex;
+    display: flex !important;
     margin-right: 12px;
   }
 `;
 
 const NodeButton = styled(Flex)`
-  display: none;
+  display: none !important;
   border: 1px solid #e0e4eb;
   border-radius: 4px;
   width: 38px;
@@ -47,7 +47,7 @@ const NodeButton = styled(Flex)`
   justify-content: center;
   cursor: pointer;
   @media screen and (max-width: 768px) {
-    display: flex;
+    display: flex !important;
   }
 `;
 
@@ -60,7 +60,7 @@ export default function Header({ user, left, chain, isWeb3Login }) {
 
   return (
     <HeaderWrapper chain={chain}>
-      <Container>
+      <div>
         <FlexWrapper>
           <Left>
             {left && (
@@ -92,7 +92,7 @@ export default function Header({ user, left, chain, isWeb3Login }) {
           </Left>
           <HeaderRight chain={chain} user={user} isWeb3Login={isWeb3Login} />
         </FlexWrapper>
-      </Container>
+      </div>
       {show && (
         <Sidebar onClose={() => setShow(false)} position={position}>
           {content === "left" && <>{left}</>}

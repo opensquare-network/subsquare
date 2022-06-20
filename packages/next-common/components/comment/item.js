@@ -22,6 +22,10 @@ const Wrapper = styled.div`
   position: relative;
   padding: 16px 48px;
   margin: 0 -48px;
+  @media screen and (max-width: 768px) {
+    padding: 16px 0;
+    margin: 0;
+  }
 
   :not(:last-child)::after {
     content: "";
@@ -30,6 +34,10 @@ const Wrapper = styled.div`
     bottom: 0;
     left: 76px;
     width: calc(100% - 124px);
+    @media screen and (max-width: 768px) {
+      left: 28px;
+      width: calc(100% - 28px);
+    }
     background-color: #ebeef4;
   }
 
