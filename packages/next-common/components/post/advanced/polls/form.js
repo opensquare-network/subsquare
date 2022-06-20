@@ -10,7 +10,7 @@ import InputOptions from "./inputOptions";
 import FormItem from "../formItem";
 import dayjs from "dayjs";
 
-function PollForm({ isCreatePoll, setFormValue = () => {} }) {
+function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }) {
   const initValue = {
     title: "",
     options: ["", ""],
@@ -49,6 +49,9 @@ function PollForm({ isCreatePoll, setFormValue = () => {} }) {
   }, [isCreatePoll]);
 
   const handleAddOption = () => {
+    if (disabled) {
+      return;
+    }
     inputOptionsRef.current?.addOption?.();
   };
 
@@ -60,6 +63,7 @@ function PollForm({ isCreatePoll, setFormValue = () => {} }) {
     <div>
       <FormItem label="Title">
         <Input
+          disabled={disabled}
           value={value.title}
           onChange={(event) => {
             setValue({
@@ -74,13 +78,17 @@ function PollForm({ isCreatePoll, setFormValue = () => {} }) {
       <FormItem
         label="Option"
         labelExternal={
-          <PollFormOptionAddOptionButton onClick={handleAddOption}>
+          <PollFormOptionAddOptionButton
+            disabled={disabled}
+            onClick={handleAddOption}
+          >
             Add an option
           </PollFormOptionAddOptionButton>
         }
       >
         <InputOptions
           ref={inputOptionsRef}
+          disabled={disabled}
           value={value.options}
           onChange={(options) => {
             setValue({
@@ -93,6 +101,7 @@ function PollForm({ isCreatePoll, setFormValue = () => {} }) {
 
       <FormItem label="Voting length">
         <Select
+          disabled={disabled}
           value={value.expiresTime}
           options={expiresTimeOptions}
           onChange={(option) => {
@@ -108,6 +117,7 @@ function PollForm({ isCreatePoll, setFormValue = () => {} }) {
         <PollFormAnonymousFormItem>
           <div>Anonymous (Voters' names will not be displayed)</div>
           <Toggle
+            disabled={disabled}
             isOn={value.anonymous}
             onToggle={(v) => {
               setValue({

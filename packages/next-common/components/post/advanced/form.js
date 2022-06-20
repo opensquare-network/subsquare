@@ -1,20 +1,30 @@
 import { useState } from "react";
 import PollForm from "./polls/form";
-import { FormTitleWrapper, FormTitle } from "./elements";
-import Toggler from "./toggler.js";
+import { FormTitleWrapper, FormTitle, FormToggler } from "./elements";
 
 function AdvancedForm(props = {}) {
-  const { formValue = {}, setFormValue = () => {} } = props;
+  const { disabled = false, formValue = {}, setFormValue = () => {} } = props;
   const [isAdvanced, setIsAdvanced] = useState(false);
+
+  const handleToggle = () => {
+    if (disabled) {
+      return;
+    }
+
+    setIsAdvanced(!isAdvanced);
+  };
 
   return (
     <>
       <FormTitleWrapper>
         <FormTitle>Advanced</FormTitle>
-        <Toggler isAdvanced={isAdvanced} setIsAdvanced={setIsAdvanced} />
+        <FormToggler disabled={disabled} onClick={handleToggle}>
+          {isAdvanced ? "Cancel" : "Create a poll"}
+        </FormToggler>
       </FormTitleWrapper>
 
       <PollForm
+        disabled={disabled}
         isCreatePoll={isAdvanced}
         formValue={formValue}
         setFormValue={setFormValue}

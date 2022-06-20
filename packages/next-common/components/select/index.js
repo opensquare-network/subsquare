@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Option from "./option";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import { shadow_200 } from "../../styles/componentCss";
@@ -17,6 +17,20 @@ const SelectWrapper = styled(FlexBetweenCenter)`
   height: ${selectorHeight}px;
   padding: 0 12px;
   cursor: pointer;
+
+  ${(p) =>
+    p.disabled &&
+    css`
+      background-color: #f6f7fa;
+      color: #e0e5ed;
+      cursor: default;
+
+      svg {
+        path {
+          stroke: #e0e5ed;
+        }
+      }
+    `}
 `;
 
 const SelectInner = styled(FlexBetweenCenter)`
@@ -36,13 +50,22 @@ const OptionsWrapper = styled.div`
   z-index: 999999;
 `;
 
-function Select({ value, options = [], onChange = () => {} }) {
+function Select({
+  disabled = false,
+  value,
+  options = [],
+  onChange = () => {},
+}) {
   const ref = useRef();
   const [showOptions, setShowOptions] = useState(false);
 
   useOnClickOutside(ref, () => setShowOptions(false));
 
   const handleShowOptions = () => {
+    if (disabled) {
+      return;
+    }
+
     setShowOptions(!showOptions);
   };
 
@@ -52,10 +75,10 @@ function Select({ value, options = [], onChange = () => {} }) {
   );
 
   return (
-    <SelectWrapper ref={ref} onClick={handleShowOptions}>
+    <SelectWrapper ref={ref} disabled={disabled} onClick={handleShowOptions}>
       <SelectInner>
         <span>{displayValue}</span>
-        <CaretDown width={14} height={14} />
+        <CaretDown className="select-caret-down" width={14} height={14} />
       </SelectInner>
 
       {showOptions && (

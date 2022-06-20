@@ -8,7 +8,7 @@ import React, {
   useImperativeHandle,
 } from "react";
 
-function InputOptions({ value, onChange = () => {} }, ref) {
+function InputOptions({ disabled, value, onChange = () => {} }, ref) {
   const [options, setOptions] = useState(value);
 
   const handleAddOption = () => {
@@ -22,6 +22,8 @@ function InputOptions({ value, onChange = () => {} }, ref) {
     });
   };
 
+  const isExtraOption = (idx) => idx >= 2;
+
   useImperativeHandle(ref, () => ({
     addOption: handleAddOption,
   }));
@@ -32,6 +34,7 @@ function InputOptions({ value, onChange = () => {} }, ref) {
     <PollFormOptionFormItem>
       {options.map((v, idx) => (
         <Input
+          disabled={disabled}
           value={v}
           onChange={(event) => {
             setOptions((v) => {
@@ -40,7 +43,14 @@ function InputOptions({ value, onChange = () => {} }, ref) {
             });
           }}
           key={idx}
-          suffix={idx >= 2 && <Trash onClick={() => handleDeleteOption(idx)} />}
+          placeholder={`Option${
+            isExtraOption(idx) ? "" : ` ${idx + 1} (required)`
+          }`}
+          suffix={
+            isExtraOption(idx) && (
+              <Trash onClick={() => handleDeleteOption(idx)} />
+            )
+          }
         />
       ))}
     </PollFormOptionFormItem>

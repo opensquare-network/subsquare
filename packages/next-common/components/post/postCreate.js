@@ -260,7 +260,11 @@ export default function PostCreate({ chain, loginUser }) {
         <ErrorText>{errors?.data?.content?.[0]}</ErrorText>
       )}
 
-      <AdvancedForm formValue={formValue} setFormValue={setFormValue} />
+      <AdvancedForm
+        disabled={creating}
+        formValue={formValue}
+        setFormValue={setFormValue}
+      />
 
       <ButtonWrapper>
         <Button onClick={() => setShowPreview(!showPreview)}>
