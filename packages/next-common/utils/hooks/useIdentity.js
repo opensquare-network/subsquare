@@ -6,6 +6,10 @@ export default function useIdentity(address, chain) {
   const [identity, setIdentity] = useState();
 
   useEffect(() => {
+    if (!address) {
+      return;
+    }
+
     const identityChain = nodes.find((n) => n.value === chain)?.identity;
     if (!identityChain) return;
     const identityAddress = encodeAddressToChain(address, identityChain);

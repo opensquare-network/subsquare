@@ -6,6 +6,7 @@ import {
   BalanceWrapper,
 } from "next-common/components/popup/styled";
 import { getNode, toPrecision } from "next-common/utils";
+import { formatBalance } from "next-common/utils/viewfuncs";
 
 export default function Signer({
   api,
@@ -17,6 +18,7 @@ export default function Signer({
   votingIsLoading,
   setInputVoteBalance,
   votingBalance,
+  symbol,
 }) {
   const node = getNode(chain);
   const balance = toPrecision(votingBalance, node.decimals);
@@ -32,7 +34,7 @@ export default function Signer({
               className="balance"
               onClick={() => setInputVoteBalance(balance ?? 0)}
             >
-              {balance ?? 0}
+              {formatBalance(balance, symbol) ?? 0}
             </div>
           )}
           {votingIsLoading && <Loading />}

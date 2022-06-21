@@ -20,6 +20,7 @@ export default function Signer({
         isLoading={votingIsLoading}
         balanceName="Voting balance"
         balance={toPrecision(votingBalance ?? 0, node.decimals)}
+        symbol={node.symbol}
       />
       <SignerSelect
         chain={chain}

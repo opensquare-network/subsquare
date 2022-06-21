@@ -38,7 +38,7 @@ function InputOptions({ disabled, value, onChange = () => {} }, ref) {
           value={v}
           onChange={(event) => {
             setOptions((v) => {
-              v[idx] = event.target.value;
+              v[idx] = event.target.value?.trimStart();
               return [...v];
             });
           }}

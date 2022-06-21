@@ -154,6 +154,7 @@ function PopupContent({
           balanceName={"Balance"}
           balance={balance}
           isLoading={!balance}
+          symbol={node.symbol}
         />
         <SignerSelect
           api={api}
