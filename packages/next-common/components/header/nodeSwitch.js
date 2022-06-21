@@ -9,6 +9,7 @@ import {
   setCurrentNode,
 } from "../../store/reducers/nodeSlice";
 import getChainSettings from "../../utils/consts/settings";
+import Caret from "../icons/caret";
 
 const Wrapper = styled.div`
   position: relative;
@@ -176,7 +177,7 @@ export default function NodeSwitch({ small, chain }) {
             height={24}
           />
           <div>{currentNodeSetting?.name}</div>
-          <img src="/imgs/icons/caret-down.svg" alt="" width={14} height={14} />
+          <Caret />
         </Select>
       )}
       {show && (
