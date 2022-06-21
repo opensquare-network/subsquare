@@ -1,4 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import Input from "../../../input";
 import {
   PollFormAnonymousFormItem,
@@ -10,7 +16,7 @@ import InputOptions from "./inputOptions";
 import FormItem from "../formItem";
 import dayjs from "dayjs";
 
-function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }) {
+function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
   const initValue = {
     title: "",
     options: ["", ""],
@@ -55,6 +61,21 @@ function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }) {
     }
     inputOptionsRef.current?.addOption?.();
   };
+
+  const validateForm = () => {
+    if (!isCreatePoll) {
+      return true;
+    }
+
+    let result = false;
+    result = !!value.title && value.options.every((i) => i);
+
+    return result;
+  };
+
+  useImperativeHandle(ref, () => ({
+    validateForm,
+  }));
 
   if (!isCreatePoll) {
     return null;
@@ -133,4 +154,4 @@ function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }) {
   );
 }
 
-export default PollForm;
+export default forwardRef(PollForm);
