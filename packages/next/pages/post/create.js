@@ -20,7 +20,12 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
   useEffect(() => {
     if (loginUser === null) {
-      router.push("/login");
+      router.push({
+        pathname: "/login",
+        query: {
+          redirect: router.route,
+        },
+      });
     }
   }, [loginUser, router]);
 

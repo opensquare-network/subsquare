@@ -17,7 +17,18 @@ export default function LoginButtons() {
 
   return (
     <Wrapper>
-      <Button onClick={() => router.push("/login")}>Login</Button>
+      <Button
+        onClick={() =>
+          router.push({
+            pathname: "/login",
+            query: {
+              redirect: router.asPath,
+            },
+          })
+        }
+      >
+        Login
+      </Button>
       <Button onClick={() => router.push("/signup")} secondary>
         Sign up
       </Button>
