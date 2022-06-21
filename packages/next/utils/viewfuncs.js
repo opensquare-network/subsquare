@@ -87,7 +87,7 @@ export const toTreasuryProposalListItem = (chain, item) => ({
   status: item.state ?? "Unknown",
   time: getPostUpdatedAt(item),
   detailLink: `/treasury/proposal/${item.proposalIndex}`,
-  value: item.onchainData.value,
+  value: item.onchainData?.value,
   index: item.proposalIndex,
 });
 
