@@ -1,10 +1,17 @@
-import { useState } from "react";
+import { forwardRef, useImperativeHandle, useRef } from "react";
 import PollForm from "./polls/form";
 import { FormTitleWrapper, FormTitle, FormToggler } from "./elements";
 
-function AdvancedForm(props = {}) {
-  const { disabled = false, formValue = {}, setFormValue = () => {} } = props;
-  const [isAdvanced, setIsAdvanced] = useState(false);
+function AdvancedForm(props = {}, ref) {
+  const {
+    isAdvanced,
+    setIsAdvanced,
+    disabled = false,
+    formValue = {},
+    setFormValue = () => {},
+  } = props;
+
+  const pollForm = useRef();
 
   const handleToggle = () => {
     if (disabled) {
@@ -13,6 +20,21 @@ function AdvancedForm(props = {}) {
 
     setIsAdvanced(!isAdvanced);
   };
+
+  const validateForm = () => {
+    if (!isAdvanced) {
+      return true;
+    }
+
+    let result = false;
+    result = pollForm.current?.validateForm();
+
+    return result;
+  };
+
+  useImperativeHandle(ref, () => ({
+    validateForm,
+  }));
 
   return (
     <>
@@ -24,6 +46,7 @@ function AdvancedForm(props = {}) {
       </FormTitleWrapper>
 
       <PollForm
+        ref={pollForm}
         disabled={disabled}
         isCreatePoll={isAdvanced}
         formValue={formValue}
@@ -33,4 +56,4 @@ function AdvancedForm(props = {}) {
   );
 }
 
-export default AdvancedForm;
+export default forwardRef(AdvancedForm);
