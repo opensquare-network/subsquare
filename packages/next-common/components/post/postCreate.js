@@ -56,7 +56,7 @@ const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin-top: 16px;
+  margin-top: 32px;
 
   > :not(:first-child) {
     margin-left: 12px;
