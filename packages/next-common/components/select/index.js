@@ -5,6 +5,7 @@ import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import { shadow_200 } from "../../styles/componentCss";
 import { CaretDown } from "../icons";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
+import { light_text_primary } from "../../styles/colors";
 
 const selectorHeight = 38;
 
@@ -17,6 +18,7 @@ const SelectWrapper = styled(FlexBetweenCenter)`
   height: ${selectorHeight}px;
   padding: 0 12px;
   cursor: pointer;
+  color: ${light_text_primary};
 
   ${(p) =>
     p.disabled &&
