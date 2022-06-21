@@ -135,6 +135,7 @@ function PopupContent({
         votingIsLoading={votingIsLoading}
         setInputVoteBalance={setInputVoteBalance}
         votingBalance={votingBalance}
+        symbol={node.voteSymbol ?? node.symbol}
       />
       <VoteBalance
         isLoading={isLoading}

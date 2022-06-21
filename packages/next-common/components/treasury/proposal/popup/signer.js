@@ -20,6 +20,7 @@ export default function Signer({
         isLoading={balanceIsLoading}
         balanceName="Balance"
         balance={toPrecision(balance ?? 0, node.decimals)}
+        symbol={node.symbol}
       />
       <SignerSelect
         api={api}

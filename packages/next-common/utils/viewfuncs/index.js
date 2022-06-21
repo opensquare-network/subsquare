@@ -1,5 +1,6 @@
 import BigNumber from "bignumber.js";
 import Chains from "../consts/chains";
+import { BalanceDecimals } from "../constants";
 
 export function toApiType(type) {
   if (type === "treasury/bounty") {
@@ -52,4 +53,8 @@ export function abbreviateBigNumber(x, fixed = 2) {
 
 export const getExcludeChains = (includeChains) => {
   return Object.values(Chains).filter(chain => !includeChains.includes(chain))
+}
+
+export const formatBalance = (x, symbol) => {
+  return new BigNumber(x).toFixed(BalanceDecimals[symbol] ?? 2, BigNumber.ROUND_DOWN)
 }
