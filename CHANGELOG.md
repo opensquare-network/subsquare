@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.1.1
+
+- Support set post banner
+- Refactor chain settings which will benefit new chain support
+- Support centrifuge. Support track motion `fast_track` external proposal.
+- Add loading state when setting verification email on email page
+- Fix bugs by missing of React imports
+- Set all signatories to be the authors of a proposal
+
 # 2.1.0
 
 - Support new network: polkadot, kusama, crab, polkadex, turing
