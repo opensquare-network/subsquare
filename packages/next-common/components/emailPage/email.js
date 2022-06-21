@@ -100,7 +100,7 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
           <Button
             isFill
             onClick={() => {
-              router.replace("/");
+              router.back();
             }}
           >
             Remind me later
