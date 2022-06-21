@@ -32,6 +32,7 @@ function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }) {
     setFormValue({
       polls: {
         ...value,
+        options: value.options.map((option) => option?.trim()),
         expiresTime: dayjs().add(value.expiresTime, "day").valueOf(),
       },
     });
