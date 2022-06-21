@@ -2,6 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import TrashIcon from "next-common/assets/imgs/icons/delete.svg";
 import CaretDownIcon from "next-common/assets/imgs/icons/caret-down.svg";
+import CloseIcon from "next-common/assets/imgs/icons/close.svg";
 import {
   light_text_tertiary,
   light_text_secondary,
@@ -61,3 +62,4 @@ export const CaretDown = createIcon(<CaretDownIcon />, {
   fill: "",
   hoverFill: "",
 });
+export const Close = createIcon(<CloseIcon />);
