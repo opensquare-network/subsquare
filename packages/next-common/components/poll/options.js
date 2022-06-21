@@ -37,6 +37,7 @@ const Title = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 100%;
+  word-break: break-word;
 `;
 
 const StatsNumbers = styled.div`
