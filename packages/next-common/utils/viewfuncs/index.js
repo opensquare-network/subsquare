@@ -56,5 +56,5 @@ export const getExcludeChains = (includeChains) => {
 }
 
 export const formatBalance = (x, symbol) => {
-  return abbreviateBigNumber(x, BalanceDecimals[symbol] ?? 2);
+  return new BigNumber(x).toFixed(BalanceDecimals[symbol] ?? 2, BigNumber.ROUND_DOWN)
 }
