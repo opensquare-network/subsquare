@@ -1,3 +1,4 @@
+import React from "react";
 import styled, { css } from "styled-components";
 import { no_scroll_bar } from "styles/componentCss";
 import Flex from "next-common/components/styled/flex";
