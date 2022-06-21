@@ -1,14 +1,16 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import { light_text_primary } from "../../styles/colors";
 
 const OptionWrapper = styled.div`
   display: flex;
   align-items: center;
   padding: 0 12px;
   height: 36px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 400;
   cursor: pointer;
-  color: #506176;
+  color: ${light_text_primary};
   :hover {
     background-color: #f6f7fa;
   }

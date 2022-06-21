@@ -1,6 +1,12 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import Loading from "./loading";
+import {
+  grey_400,
+  primary_purple_500,
+  primary_red_500,
+  primary_space,
+} from "../styles/colors";
 
 const Wrapper = styled.button`
   all: unset;
@@ -18,37 +24,37 @@ const Wrapper = styled.button`
   ${(p) =>
     p.disabled &&
     css`
-      background: #c2c8d4 !important;
+      background: ${grey_400} !important;
       color: #ffffff;
-      border: none;
+      border-color: ${grey_400} !important;
       cursor: not-allowed;
     `}
   ${(p) =>
     p.primary &&
     css`
-      background: ${p.background || "#1E2134"};
+      background: ${p.background || primary_space};
       color: #ffffff;
-      border: none;
+      border-color: ${primary_space};
     `}
   ${(p) =>
     p.primaryInverse &&
     css`
-      background: ${p.background || "#6848FF"};
+      background: ${p.background || primary_purple_500};
       color: #ffffff;
-      border: none;
+      border-color: ${primary_purple_500};
     `}
   ${(p) =>
     p.secondary &&
     css`
-      background: #1e2134;
+      background: ${p.background || primary_space};
       color: #ffffff;
-      border: none;
+      border-color: ${primary_space};
     `}
   ${(p) =>
     p.danger &&
     css`
-      color: #f44336;
-      border-color: #f44336;
+      color: ${primary_red_500};
+      border-color: ${primary_red_500};
     `}
   ${(p) =>
     p.isFill &&
