@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
@@ -106,6 +106,7 @@ export default function PostCreate({ chain, loginUser }) {
   const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
   const [errors, setErrors] = useState();
   const [editorHeight, setEditorHeight] = useState(300);
+  const [isAdvanced, setIsAdvanced] = useState(false);
   const isEmpty = content === "" || content === `<p><br></p>`;
 
   const createPost = async () => {
@@ -163,6 +164,18 @@ export default function PostCreate({ chain, loginUser }) {
       setBannerUrl("");
     }
   }, [isSetBanner]);
+
+  const advancedForm = useRef();
+
+  const isDisableCreate = useMemo(() => {
+    let result = true;
+    const validatePass = isAdvanced
+      ? advancedForm.current?.validateForm()
+      : true;
+    result = isEmpty || !validatePass;
+
+    return result;
+  }, [isEmpty, formValue, isAdvanced]);
 
   return (
     <Wrapper>
@@ -261,6 +274,9 @@ export default function PostCreate({ chain, loginUser }) {
       )}
 
       <AdvancedForm
+        isAdvanced={isAdvanced}
+        setIsAdvanced={setIsAdvanced}
+        ref={advancedForm}
         disabled={creating}
         formValue={formValue}
         setFormValue={setFormValue}
@@ -273,7 +289,7 @@ export default function PostCreate({ chain, loginUser }) {
         <Button
           isLoading={creating}
           onClick={createPost}
-          disabled={isEmpty}
+          disabled={isDisableCreate}
           secondary
         >
           Create
