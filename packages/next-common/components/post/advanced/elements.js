@@ -1,7 +1,7 @@
 // These elements only for advanced form
 import styled, { css } from "styled-components";
 import FlexBetweenCenter from "next-common/components/styled/flexBetweenCenter";
-import { p_14_normal } from "../../../styles/componentCss";
+import { p_14_normal, p_12_medium } from "../../../styles/componentCss";
 import { primary_purple_500 } from "../../../styles/colors";
 
 const notAllowedCss = css`
@@ -66,6 +66,7 @@ export const PollFormOptionFormItem = styled.div`
 export const PollFormOptionAddOptionButton = styled.button`
   background-color: transparent;
   border: none;
+  ${p_12_medium};
   color: ${primary_purple_500};
   cursor: pointer;
 
