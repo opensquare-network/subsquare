@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useRef } from "react";
+import React, { forwardRef, useImperativeHandle, useRef } from "react";
 import PollForm from "./polls/form";
 import { FormTitleWrapper, FormTitle, FormToggler } from "./elements";
 
