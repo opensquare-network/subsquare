@@ -127,7 +127,15 @@ const getTypeColor = (type) => {
   }
 };
 
-export default function DetailItem({ data, user, chain, onReply, type }) {
+export default function DetailItem({
+  data,
+  user,
+  chain,
+  onReply,
+  votes,
+  myVote,
+  type,
+}) {
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
   if (!post) {
@@ -300,6 +308,8 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
         onReply={onReply}
         isEdit={isEdit}
         setIsEdit={setIsEdit}
+        votes={votes}
+        myVote={myVote}
       />
     </EditablePanel>
   );
