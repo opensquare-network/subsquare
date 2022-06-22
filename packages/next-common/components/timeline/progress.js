@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Flex from "../styled/flex";
+import { Approve, Reject } from "../icons";
 const Wrapper = styled.div`
   padding: 10px 0;
   font-size: 12px;
@@ -37,9 +38,7 @@ const DetailWrapper = styled(Flex)`
     margin-left: 18px;
     display: flex;
     align-items: center;
-    > img {
-      width: 14px;
-      height: 14px;
+    > span {
       margin-left: 8px;
     }
   }
@@ -62,11 +61,11 @@ export default function Progress({ total, ayes, nays }) {
         <div>{`${ayes}/${total}`}</div>
         <div>
           <div>{`Aye(${ayes})`}</div>
-          <img src="/imgs/icons/approve.svg" alt="" />
+          <Approve />
         </div>
         <div>
           <div>{`Nay(${nays})`}</div>
-          <img src="/imgs/icons/reject.svg" alt="" />
+          <Reject />
         </div>
       </DetailWrapper>
     </Wrapper>
