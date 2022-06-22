@@ -5,6 +5,7 @@ import Voting from "./voting";
 import User from "../user";
 import Tag from "../tag";
 import Flex from "../styled/flex";
+import { Approve, Reject } from "../icons";
 
 const Wrapper = styled.div`
   display: flex;
@@ -124,9 +125,7 @@ const VoteResultWrapper = styled(Flex)`
   > :last-child {
     display: flex;
     align-items: center;
-    > img {
-      width: 14px;
-      height: 14px;
+    > span {
       margin-left: 4px;
     }
   }
@@ -187,12 +186,12 @@ export default function Item({
             {data.voteResult.value ? (
               <div>
                 Aye
-                <img src="/imgs/icons/approve.svg" alt="" />
+                <Approve />
               </div>
             ) : (
               <div>
                 Nay
-                <img src="/imgs/icons/reject.svg" alt="" />
+                <Reject />
               </div>
             )}
           </VoteResultWrapper>

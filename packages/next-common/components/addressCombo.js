@@ -9,6 +9,7 @@ import Relative from "./styled/relative";
 import { shadow_200 } from "../styles/componentCss";
 import { encodeAddressToChain } from "../services/address";
 import { isAddress } from "@polkadot/util-crypto";
+import Caret from "./icons/caret";
 
 const Wrapper = Relative;
 
@@ -21,17 +22,6 @@ const Select = styled(Flex)`
   cursor: pointer;
   > :not(:first-child) {
     margin-left: 16px;
-  }
-  > img:first-child {
-    width: 32px;
-    height: 32px;
-    flex: 0 0 auto;
-  }
-  > img:last-child {
-    width: 14px;
-    height: 14px;
-    flex: 0 0 auto;
-    margin-left: auto;
   }
 `;
 
@@ -207,14 +197,14 @@ export default function AddressCombo({ chain, accounts, address, setAddress }) {
         }}
       >
         {selectContent}
-        <img
-          alt=""
-          src={show ? "/imgs/icons/caret-up.svg" : "/imgs/icons/caret-down.svg"}
+        <span
           onClick={(e) => {
             setShow(!show);
             e.stopPropagation();
           }}
-        />
+        >
+          <Caret down={!show} />
+        </span>
       </Select>
       {show && listOptions}
     </Wrapper>

@@ -8,6 +8,7 @@ import { nodesHeightSelector } from "../../store/reducers/nodeSlice";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import useWindowSize from "../../utils/hooks/useWindowSize";
 import ChainIcon from "./chainIcon";
+import Caret from "../icons/caret";
 
 const Wrapper = styled.div`
   position: relative;
@@ -129,7 +130,7 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
             </>
           )}
         </NetworkBlock>
-        <img width={14} height={14} src="/imgs/icons/caret-down.svg" alt="" />
+        <Caret />
       </Select>
       {show && (
         <Options>

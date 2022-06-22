@@ -3,6 +3,7 @@ import styled from "styled-components";
 import User from "next-common/components/user";
 import Progress from "./progress";
 import Flex from "next-common/components/styled/flex";
+import { Approve } from "../icons";
 
 const TitleWrapper = styled(Flex)`
   justify-content: space-between;
@@ -11,7 +12,7 @@ const TitleWrapper = styled(Flex)`
     display: flex;
     align-items: center;
     color: #506176;
-    > img {
+    > span {
       margin-left: 4px;
     }
   }
@@ -57,7 +58,7 @@ export default function Voting({ data, chain }) {
         <User chain={chain} add={data.proposer} fontSize={14} />
         <div>
           <div>{data.method}</div>
-          <img src="/imgs/icons/approve.svg" alt="" />
+          <Approve />
         </div>
       </TitleWrapper>
       {data.args?.length > 0 && (
@@ -75,13 +76,11 @@ export default function Voting({ data, chain }) {
           ))}
         </ArgsWrapper>
       )}
-      {
-        data.total !== undefined &&
-          data.ayes !== undefined &&
-          data.nays !== undefined && (
+      {data.total !== undefined &&
+        data.ayes !== undefined &&
+        data.nays !== undefined && (
           <Progress total={data.total} ayes={data.ayes} nays={data.nays} />
-        )
-      }
+        )}
     </div>
   );
 }
