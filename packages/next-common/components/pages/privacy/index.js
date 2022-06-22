@@ -7,6 +7,7 @@ import { withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import privacyMd from "./privacy-policy.md";
 import Markdown from "next-common/components/micromarkMd";
+import ArrowLeft from "../../icons/arrowLeft";
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -21,9 +22,7 @@ const BackButton = styled.div`
   line-height: 100%;
   align-items: center;
   cursor: pointer;
-  > img {
-    width: 14px;
-    height: 14px;
+  > svg {
     margin-right: 12px;
   }
 `;
@@ -55,7 +54,7 @@ const Privacy = withLoginUserRedux(({ loginUser, chain }) => {
         <Link passHref={true} href="/signup">
           <a>
             <BackButton>
-              <img src="/imgs/icons/arrow-left.svg" alt="" />
+              <ArrowLeft />
               <div>Back</div>
             </BackButton>
           </a>
