@@ -1,7 +1,8 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { no_scroll_bar } from "styles/componentCss";
 import Flex from "next-common/components/styled/flex";
+import { no_scroll_bar } from "../../styles/componentCss";
+import { Close } from "../icons";
 const Wrapper = styled.div`
   position: fixed;
   width: 100vw;
@@ -92,7 +93,7 @@ export default function Sidebar({ onClose, position, children }) {
         <CloseWrapper position={position}>
           <Container>
             <CloseButton onClick={onClose}>
-              <img src="/imgs/icons/close.svg" alt="" />
+              <Close />
             </CloseButton>
           </Container>
         </CloseWrapper>

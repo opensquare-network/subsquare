@@ -1,4 +1,4 @@
-import React,{ useEffect } from "react";
+import React, { useEffect } from "react";
 import styled, { css } from "styled-components";
 import { useState, useRef } from "react";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
@@ -11,6 +11,7 @@ import { encodeAddressToChain } from "../services/address";
 import { nodes } from "../utils/constants";
 import { fetchIdentity } from "../services/identity";
 import Identity from "./Identity";
+import Caret from "./icons/caret";
 
 const Wrapper = Relative;
 
@@ -95,8 +96,7 @@ const Item = styled(Flex)`
     `}
 `;
 
-
-function Account ({account,chain}){
+function Account({ account, chain }) {
   const [identity, setIdentity] = useState(null);
   useEffect(() => {
     setIdentity(null);
@@ -104,39 +104,44 @@ function Account ({account,chain}){
       const identity = nodes.find((n) => n.value === chain)?.identity;
       if (!identity) return;
 
-      fetchIdentity(identity, encodeAddressToChain(account.address, identity)).then(
-        (identity) => setIdentity(identity)
-      );
+      fetchIdentity(
+        identity,
+        encodeAddressToChain(account.address, identity)
+      ).then((identity) => setIdentity(identity));
     }
   }, [account.address, chain]);
 
-  return <>
-    <Avatar address={account.address} />
-    <NameWrapper>
-      {/*TODO: use <IdentityOrAddr> after PR merged*/}
-      {identity && identity?.info?.status !== "NO_ID" ? (
-        <>
-          <Identity identity={identity} />
-          <div>{addressEllipsis(encodeAddressToChain(account.address, chain))}</div>
-        </>
-      ) : (
-        <>
-          <div>{account?.name}</div>
-          <div>{addressEllipsis(encodeAddressToChain(account.address, chain))}</div>
-        </>
-
-      )}
-    </NameWrapper>
-  </>;
+  return (
+    <>
+      <Avatar address={account.address} />
+      <NameWrapper>
+        {/*TODO: use <IdentityOrAddr> after PR merged*/}
+        {identity && identity?.info?.status !== "NO_ID" ? (
+          <>
+            <Identity identity={identity} />
+            <div>
+              {addressEllipsis(encodeAddressToChain(account.address, chain))}
+            </div>
+          </>
+        ) : (
+          <>
+            <div>{account?.name}</div>
+            <div>
+              {addressEllipsis(encodeAddressToChain(account.address, chain))}
+            </div>
+          </>
+        )}
+      </NameWrapper>
+    </>
+  );
 }
 
-export function Option ({onClick, item, selected,chain }){
-  return <Item
-    onClick={onClick}
-    selected={selected}
-  >
-    <Account account={item} chain={chain}/>
-  </Item>
+export function Option({ onClick, item, selected, chain }) {
+  return (
+    <Item onClick={onClick} selected={selected}>
+      <Account account={item} chain={chain} />
+    </Item>
+  );
 }
 
 export default function AddressSelect({
@@ -153,22 +158,21 @@ export default function AddressSelect({
   return (
     <Wrapper ref={ref}>
       <Select onClick={() => setShow(!show)}>
-        {selectedAccount && <Account account={selectedAccount} chain={chain}/>}
-        <img
-          alt=""
-          src={show ? "/imgs/icons/caret-up.svg" : "/imgs/icons/caret-down.svg"}
-        />
+        {selectedAccount && <Account account={selectedAccount} chain={chain} />}
+        <Caret down={!show} />
       </Select>
       {show && (
         <Options>
           {(accounts || []).map((item, index) => (
-            <Option key={index} onClick={() => {
-              onSelect(item);
-              setShow(false);
-            }}
-                    item={item}
-                    selected={item.address === selectedAccount?.address}
-                    chain={chain}
+            <Option
+              key={index}
+              onClick={() => {
+                onSelect(item);
+                setShow(false);
+              }}
+              item={item}
+              selected={item.address === selectedAccount?.address}
+              chain={chain}
             />
           ))}
         </Options>

@@ -1,7 +1,8 @@
 import styled, { css } from "styled-components";
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 
 import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside.js";
+import Caret from "next-common/components/icons/caret";
 
 const Wrapper = styled.div`
   position: relative;
@@ -18,11 +19,6 @@ const Selector = styled.div`
   cursor: pointer;
   > div {
     flex-grow: 1;
-  }
-  > img {
-    width: 14px;
-    height: 14px;
-    margin-left: 8px;
   }
   ${(p) =>
     p.active &&
@@ -114,10 +110,7 @@ export default function Select({ value, setValue, options, disabled }) {
               ?.text
           }
         </div>
-        <img
-          alt=""
-          src={show ? "/imgs/icons/caret-up.svg" : "/imgs/icons/caret-down.svg"}
-        />
+        <Caret down={!show} />
       </Selector>
       {show && !disabled && (
         <Options>
