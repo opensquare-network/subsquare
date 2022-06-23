@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { extractLinks, getLinkNameAndLogo } from "../utils/viewfuncs/tip";
+import {
+  defaultLinkSvg,
+  extractLinks,
+  getLinkIcon,
+} from "../utils/viewfuncs/tip";
 
 const ReasonText = styled.span``;
 
@@ -8,13 +12,13 @@ const LogoLink = styled.a`
   margin-left: 9px;
   margin-right: 20px;
   position: relative;
-`;
 
-const Logo = styled.img`
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  > svg {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 `;
 
 export default function ReasonLink({ text, hideText = false }) {
@@ -27,10 +31,16 @@ export default function ReasonLink({ text, hideText = false }) {
     <>
       {!hideText && <ReasonText>{text}</ReasonText>}
       {links.map((link, index) => {
-        const [name, logo] = getLinkNameAndLogo(link);
+        let SvgIcon;
+        try {
+          SvgIcon = getLinkIcon(link);
+        } catch (e) {
+          SvgIcon = defaultLinkSvg;
+        }
+
         return (
           <LogoLink key={index} href={link} target="_blank">
-            <Logo src={logo} alt={name} />
+            <SvgIcon />
           </LogoLink>
         );
       })}
