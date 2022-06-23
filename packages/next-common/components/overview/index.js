@@ -1,7 +1,8 @@
+import React from "react";
 import styled from "styled-components";
 
 import List from "next-common/components/list";
-import PlusIcon from "public/imgs/icons/plusInCircle.svg";
+import PlusIcon from "../../assets/imgs/icons/plusInCircle.svg";
 import EmptyOverview from "./emptyOverview";
 
 const Wrapper = styled.div`

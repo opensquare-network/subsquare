@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { removeToast } from "../../store/reducers/toastSlice";
@@ -6,6 +6,8 @@ import useIsMounted from "../../utils/hooks/useIsMounted";
 import Flex from "../../components/styled/flex";
 import { shadow_200 } from "../../styles/componentCss";
 import Loading from "../loading";
+import ToastSuccessIcon from "../../assets/imgs/icons/toast-success.svg";
+import ToastErrorIcon from "../../assets/imgs/icons/toast-error.svg";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
@@ -21,8 +23,12 @@ const Wrapper = styled(Flex)`
   font-weight: 400;
   color: #1e2134;
 
-  > img:first-child,
-  svg:first-child {
+  & > svg:first-child {
+    margin-right: 12px;
+    margin-top: 5px;
+  }
+
+  > img:first-child {
     width: 20px;
     height: 20px;
     margin-right: 8px;
@@ -78,9 +84,11 @@ const ToastItem = ({ type, message, id, sticky }) => {
     <Wrapper className={tranClass}>
       {type === "pending" ? (
         <Loading size={20} />
-      ) : (
-        <img src={`/imgs/icons/toast-${type}.svg`} alt="" />
-      )}
+      ) : type === "success" ? (
+        <ToastSuccessIcon />
+      ) : type === "error" ? (
+        <ToastErrorIcon />
+      ) : null}
       <div>{message}</div>
       <img
         src={`/imgs/icons/toast-reject.svg`}
