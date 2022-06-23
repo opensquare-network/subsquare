@@ -10,6 +10,10 @@ import {
 } from "../../store/reducers/nodeSlice";
 import getChainSettings from "../../utils/consts/settings";
 import Caret from "../icons/caret";
+import signalDefault from "../../assets/imgs/icons/signal-default.png";
+import signalMedium from "../../assets/imgs/icons/signal-medium.png";
+import signalSlow from "../../assets/imgs/icons/signal-slow.png";
+import signalFast from "../../assets/imgs/icons/signal-fast.png";
 
 const Wrapper = styled.div`
   position: relative;
@@ -138,10 +142,16 @@ export default function NodeSwitch({ small, chain }) {
   }, [currentNode, nodes, chain]);
 
   const getSignalImg = (delay) => {
-    if (!delay || isNaN(delay)) return "signal-default.png";
-    if (delay >= 300) return "signal-slow.png";
-    if (delay >= 100) return "signal-medium.png";
-    return "signal-fast.png";
+    if (!delay || isNaN(delay)) {
+      return signalDefault;
+    }
+    if (delay >= 300) {
+      return signalSlow;
+    }
+    if (delay >= 100) {
+      return signalMedium;
+    }
+    return signalFast;
   };
 
   const getSignalColor = (delay) => {
@@ -161,7 +171,7 @@ export default function NodeSwitch({ small, chain }) {
         <SmallSelect onClick={() => setShow(!show)}>
           <img
             alt=""
-            src={`/imgs/icons/${getSignalImg(currentNodeSetting?.delay)}`}
+            src={`${getSignalImg(currentNodeSetting?.delay).src}`}
             width={24}
             height={24}
           />
@@ -171,7 +181,7 @@ export default function NodeSwitch({ small, chain }) {
         <Select onClick={() => setShow(!show)}>
           <img
             alt=""
-            src={`/imgs/icons/${getSignalImg(currentNodeSetting?.delay)}`}
+            src={`${getSignalImg(currentNodeSetting?.delay).src}`}
             className="signal"
             width={24}
             height={24}
@@ -198,7 +208,7 @@ export default function NodeSwitch({ small, chain }) {
             >
               <img
                 alt=""
-                src={`/imgs/icons/${getSignalImg(item?.delay)}`}
+                src={`${getSignalImg(item?.delay).src}`}
                 width={24}
                 height={24}
               />

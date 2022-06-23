@@ -9,7 +9,7 @@ import {
   TYPE_TREASURY_PROPOSAL,
   TYPE_TREASURY_BOUNTY,
   TYPE_TREASURY_TIP,
-} from "utils/viewConstants";
+} from "../utils/viewConstants";
 
 const ExternalReference = styled.div`
   display: flex;
@@ -19,7 +19,7 @@ const ExternalReference = styled.div`
 
   height: 41px;
 
-  background: #F6F7FA;
+  background: #f6f7fa;
   border-radius: 4px;
 
   span {
@@ -28,7 +28,7 @@ const ExternalReference = styled.div`
     font-size: 12px;
     line-height: 140%;
 
-    color: #9DA9BB;
+    color: #9da9bb;
   }
 
   a {
