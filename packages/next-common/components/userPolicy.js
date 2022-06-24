@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import ErrorText from "next-common/components/ErrorText";
+import CheckBoxOn from "../assets/imgs/icons/check-box-on.svg";
+import CheckBoxOff from "../assets/imgs/icons/check-box-off.svg";
 
 const Wrapper = styled.div`
   margin-top: 16px !important;
@@ -15,7 +17,7 @@ const ClickWrapper = styled.div`
   align-items: flex-start;
 `;
 
-const CheckBox = styled.img`
+const CheckBoxWrapper = styled.span`
   margin-top: 3px;
   margin-right: 8px;
   cursor: pointer;
@@ -31,6 +33,19 @@ const Text = styled.div`
   }
 `;
 
+function CheckBox({ checked, setChecked, setAgreeError }) {
+  return (
+    <CheckBoxWrapper
+      onClick={() => {
+        setChecked(!checked);
+        setAgreeError(null);
+      }}
+    >
+      {checked ? <CheckBoxOn /> : <CheckBoxOff />}
+    </CheckBoxWrapper>
+  );
+}
+
 export default function UserPolicy({
   checked,
   setChecked,
@@ -41,15 +56,9 @@ export default function UserPolicy({
     <Wrapper>
       <ClickWrapper>
         <CheckBox
-          src={
-            checked
-              ? "/imgs/icons/check-box-on.svg"
-              : "/imgs/icons/check-box-off.svg"
-          }
-          onClick={() => {
-            setChecked(!checked);
-            setAgreeError(null);
-          }}
+          checked={checked}
+          setChecked={setChecked}
+          setAgreeError={setAgreeError}
         />
         <Text>
           I have read and agree to the{" "}
