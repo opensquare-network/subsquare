@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.1.2
+
+- Support discussions post polls
+- Upgrade dependency to @polkadot/api
+- Refactor part of icons
+
 # 2.1.1
 
 - Support set post banner
