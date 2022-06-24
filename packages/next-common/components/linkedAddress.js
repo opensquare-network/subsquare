@@ -21,6 +21,8 @@ import { addressEllipsis } from "../utils";
 import { encodeAddressToChain } from "../services/address";
 import { signMessage } from "../services/extension/signMessage";
 import { polkadotWeb3Accounts } from "../utils/extensionAccount";
+import AddressLinkIcon from "../assets/imgs/icons/address-link.svg";
+import UnLinkIcon from "../assets/imgs/icons/unlink.svg";
 
 const Wrapper = styled.div`
   max-width: 848px;
@@ -111,12 +113,8 @@ const LinkWrapper = styled.div`
   :hover {
     text-decoration: underline;
   }
-  > img {
-    width: 14px;
-    height: 14px;
+  > svg {
     margin-right: 8px;
-    filter: invert(37%) sepia(13%) saturate(941%) hue-rotate(173deg)
-      brightness(92%) contrast(86%);
   }
 `;
 
@@ -324,7 +322,7 @@ export default function LinkedAddress({ chain }) {
                           unlinkAddress(activeChain, activeChainAddress);
                         }}
                       >
-                        <img alt="" src="/imgs/icons/link-unlink.svg" />
+                        <AddressLinkIcon />
                         <div>Unlink</div>
                       </LinkWrapper>
                     ) : (
@@ -333,7 +331,7 @@ export default function LinkedAddress({ chain }) {
                           linkAddress(activeChain, activeChainAddress);
                         }}
                       >
-                        <img alt="" src="/imgs/icons/link-linked.svg" />
+                        <UnLinkIcon />
                         <div>Link</div>
                       </LinkWrapper>
                     )}
