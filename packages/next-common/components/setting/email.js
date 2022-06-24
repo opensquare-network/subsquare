@@ -6,11 +6,9 @@ import Button from "../button";
 import ErrorText from "../ErrorText";
 import nextApi from "../../services/nextApi";
 import { newSuccessToast } from "../../store/reducers/toastSlice";
-import {
-  Label,
-  InputWrapper,
-  EmailVerify,
-} from "./styled";
+import { Label, InputWrapper, EmailVerify } from "./styled";
+import CircleCheck from "../../assets/imgs/icons/circle-check.svg";
+import CircleWarning from "../../assets/imgs/icons/circle-warning.svg";
 
 export default function Email({ email, verified }) {
   const dispatch = useDispatch();
@@ -38,23 +36,19 @@ export default function Email({ email, verified }) {
           post={
             verified ? (
               <EmailVerify>
-                <img alt="" src="/imgs/icons/circle-check.svg" />
+                <CircleCheck />
                 <div>Verified</div>
               </EmailVerify>
             ) : (
               <EmailVerify>
-                <img alt="" src="/imgs/icons/circle-warning.svg" />
+                <CircleWarning />
                 <div>Unverified</div>
               </EmailVerify>
             )
           }
         />
         {!verified && (
-          <Button
-            secondary
-            onClick={onResend}
-            isLoading={resendLoading}
-          >
+          <Button secondary onClick={onResend} isLoading={resendLoading}>
             Resend
           </Button>
         )}
@@ -63,5 +57,5 @@ export default function Email({ email, verified }) {
         <ErrorText>{resendErrors?.message}</ErrorText>
       )}
     </div>
-  )
+  );
 }

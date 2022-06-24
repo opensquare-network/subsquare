@@ -86,6 +86,10 @@ export const EmailVerify = styled.div`
     height: 14px;
     margin-right: 8px;
   }
+
+  > svg {
+    margin-right: 8px;
+  }
 `;
 
 export const ButtonWrapper = styled.div`

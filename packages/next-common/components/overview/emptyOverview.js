@@ -1,8 +1,9 @@
+import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
 
 import Flex from "next-common/components/styled/flex";
-import Icon from "public/imgs/icons/new-discussion.svg";
+import Icon from "../../assets/imgs/icons/new-discussion.svg";
 
 const Wrapper = styled.div`
   max-width: 848px;
@@ -32,10 +33,12 @@ const EmptyPanel = styled.div`
   justify-content: center;
   flex-direction: column;
   padding: 48px;
-  background: #FFFFFF;
-  border: 1px solid #EBEEF4;
+  background: #ffffff;
+  border: 1px solid #ebeef4;
   box-sizing: border-box;
-  box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02), 0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221), 0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
+    0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+    0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
 
   > .title {
@@ -44,7 +47,7 @@ const EmptyPanel = styled.div`
     font-size: 20px;
     line-height: 100%;
     text-align: center;
-    color: #1E2134;
+    color: #1e2134;
     margin-bottom: 16px;
   }
 
@@ -77,7 +80,7 @@ const EmptyPanel = styled.div`
     min-width: 153px;
     height: 38px;
 
-    background: #6848FF;
+    background: #6848ff;
     border-radius: 4px;
 
     font-style: normal;
@@ -85,7 +88,7 @@ const EmptyPanel = styled.div`
     font-size: 14px;
     line-height: 100%;
     text-align: center;
-    color: #FFFFFF;
+    color: #ffffff;
   }
 `;
 
@@ -94,11 +97,10 @@ export default function EmptyOverview() {
     <Wrapper>
       <Title>Overview</Title>
       <EmptyPanel>
-        <div className="title">
-          Welcome to SubSquare
-        </div>
+        <div className="title">Welcome to SubSquare</div>
         <div className="desc">
-          Latest events will be displayed on this page. Any ideas? Start a discussion.
+          Latest events will be displayed on this page. Any ideas? Start a
+          discussion.
         </div>
         <Link href={"/post/create"}>
           <a className="button">

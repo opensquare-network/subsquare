@@ -1,4 +1,5 @@
-import Overview from "components/overview";
+import React from "react";
+import Overview from "next-common/components/overview";
 import Menu from "next-common/components/menu";
 import { mainMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";

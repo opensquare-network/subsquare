@@ -35,34 +35,6 @@ export const nodes = [
   // centrifuge,
 ];
 
-export const accountMenu = [
-  {
-    value: "settings",
-    name: "Settings",
-    icon: "settings.svg",
-    pathname: "/setting/account",
-  },
-  {
-    value: "logout",
-    name: "Logout",
-    icon: "logout.svg",
-  },
-];
-
-export const accountMenuForKeyAccount = [
-  {
-    value: "settings",
-    name: "Settings",
-    icon: "settings.svg",
-    pathname: "/setting/key-account",
-  },
-  {
-    value: "logout",
-    name: "Logout",
-    icon: "logout.svg",
-  },
-];
-
 export const mainMenu = menus;
 
 export const settingMenu = [
@@ -141,4 +113,4 @@ export const DEFAULT_SEO_INFO = {
 export const BalanceDecimals = {
   DOT: 2,
   KSM: 2,
-}
+};

@@ -9,6 +9,7 @@ import HeaderRight from "next-common/components/header/right";
 import HeaderWrapper from "next-common/components/header/wrapper";
 import ChainLogo from "next-common/components/header/left/chainLogo";
 import ChainIcon from "next-common/components/header/chainIcon";
+import MenuLine from "../../assets/imgs/icons/menu-line.svg";
 
 const FlexWrapper = styled(Flex)`
   max-width: 1080px;
@@ -71,12 +72,7 @@ export default function Header({ user, left, chain, isWeb3Login }) {
                   setShow(true);
                 }}
               >
-                <img
-                  src="/imgs/icons/menu-line.svg"
-                  alt=""
-                  width={20}
-                  height={20}
-                />
+                <MenuLine />
               </MenuButton>
             )}
             <ChainLogo chain={chain} />

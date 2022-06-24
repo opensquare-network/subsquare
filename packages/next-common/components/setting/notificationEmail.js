@@ -10,6 +10,8 @@ import { newSuccessToast } from "../../store/reducers/toastSlice";
 import { fetchUserProfile } from "../../store/reducers/userSlice";
 import { Label, InputWrapper, EmailVerify } from "./styled";
 import useCountdown from "../../utils/hooks/useCountdown";
+import CircleCheck from "../../assets/imgs/icons/circle-check.svg";
+import CircleWarning from "../../assets/imgs/icons/circle-warning.svg";
 
 const CountdownWrapper = styled.div`
   display: flex;
@@ -20,7 +22,7 @@ const CountdownWrapper = styled.div`
   width: 80px;
   height: 38px;
 
-  border: 1px solid #E0E4EB;
+  border: 1px solid #e0e4eb;
   border-radius: 4px;
 
   font-style: normal;
@@ -29,7 +31,7 @@ const CountdownWrapper = styled.div`
   line-height: 100%;
 
   text-align: center;
-  color: #1E2134;
+  color: #1e2134;
 `;
 
 export default function NotificationEmail({ email, verified }) {
@@ -46,7 +48,7 @@ export default function NotificationEmail({ email, verified }) {
     }
   }, [dispatch, counting, countdown]);
 
-  if (counting && (countdown === 0 || email === inputEmail && verified)) {
+  if (counting && (countdown === 0 || (email === inputEmail && verified))) {
     resetCountdown();
   }
 
@@ -73,14 +75,14 @@ export default function NotificationEmail({ email, verified }) {
     if (verified && inputEmail === email) {
       emailVerified = (
         <EmailVerify>
-          <img alt="" src="/imgs/icons/circle-check.svg" />
+          <CircleCheck />
           <div>Verified</div>
         </EmailVerify>
       );
     } else {
       emailVerified = (
         <EmailVerify>
-          <img alt="" src="/imgs/icons/circle-warning.svg" />
+          <CircleWarning />
           <div>Unverified</div>
         </EmailVerify>
       );
@@ -109,9 +111,7 @@ export default function NotificationEmail({ email, verified }) {
           )
         )}
       </InputWrapper>
-      {resendErrors?.message && (
-        <ErrorText>{resendErrors?.message}</ErrorText>
-      )}
+      {resendErrors?.message && <ErrorText>{resendErrors?.message}</ErrorText>}
     </div>
   );
 }
