@@ -1,8 +1,8 @@
 import MembersList from "components/membersList/councilMembersList";
 import Menu from "next-common/components/menu";
 import { mainMenu } from "next-common/utils/constants";
-import { withLoginUser, withLoginUserRedux } from "lib";
-import Layout from "components/layout";
+import Layout from "next-common/components/layout";
+import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";

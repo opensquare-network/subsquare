@@ -20,7 +20,7 @@ const turing = {
   value: Chains.turing,
   name: capitalize(Chains.turing),
   icon: "turing.svg",
-  identity: Chains.kusama,
+  identity: Chains.turing,
   symbol: "TUR",
   decimals: 10,
   hasElections: false,

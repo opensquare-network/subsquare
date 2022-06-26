@@ -2,19 +2,19 @@ import styled from "styled-components";
 import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import Comments from "next-common/components/comment";
-import { withLoginUser, withLoginUserRedux } from "lib";
+import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Editor from "next-common/components/comment/editor";
 import { useState, useRef } from "react";
-import Layout from "components/layout";
+import Layout from "next-common/components/layout";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_POST } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
-import SEO from "next-common/components/SEO";
+import Cookies from "cookies";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -28,64 +28,71 @@ const Wrapper = styled.div`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
-  const postId = detail._id;
+export default withLoginUserRedux(
+  ({ loginUser, detail, comments, chain, votes, myVote }) => {
+    const postId = detail._id;
 
-  const editorWrapperRef = useRef(null);
-  const [quillRef, setQuillRef] = useState(null);
-  const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown"
-  );
+    const editorWrapperRef = useRef(null);
+    const [quillRef, setQuillRef] = useState(null);
+    const [content, setContent] = useState("");
+    const [contentType, setContentType] = useState(
+      loginUser?.preference.editor || "markdown"
+    );
 
-  const users = useMentionList(detail, comments, chain);
+    const users = useMentionList(detail, comments, chain);
 
-  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
+    const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
-  const onReply = getOnReply(
-    contentType,
-    content,
-    setContent,
-    quillRef,
-    focusEditor,
-    chain,
-  );
+    const onReply = getOnReply(
+      contentType,
+      content,
+      setContent,
+      quillRef,
+      focusEditor,
+      chain
+    );
 
-  const desc = getMetaDesc(detail, "Discussion");
-  return (
-    <Layout user={loginUser} chain={chain}>
-      <SEO title={detail?.title} desc={desc} chain={chain} />
-      <Wrapper className="post-content">
-        <Back href={`/discussions`} text="Back to Discussions" />
-        <DetailItem
-          data={detail}
-          user={loginUser}
-          chain={chain}
-          onReply={focusEditor}
-          type={TYPE_POST}
-        />
-        <CommentsWrapper>
-          <Comments
-            data={comments}
+    const desc = getMetaDesc(detail, "Discussion");
+    return (
+      <Layout
+        user={loginUser}
+        chain={chain}
+        seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
+      >
+        <Wrapper className="post-content">
+          <Back href={`/discussions`} text="Back to Discussions" />
+          <DetailItem
+            data={detail}
+            votes={votes}
+            myVote={myVote}
             user={loginUser}
             chain={chain}
-            onReply={onReply}
+            onReply={focusEditor}
+            type={TYPE_POST}
           />
-          {loginUser && (
-            <Editor
-              postId={postId}
+          <CommentsWrapper>
+            <Comments
+              data={comments}
+              user={loginUser}
               chain={chain}
-              ref={editorWrapperRef}
-              setQuillRef={setQuillRef}
-              {...{ contentType, setContentType, content, setContent, users }}
-              type={TYPE_POST}
+              onReply={onReply}
             />
-          )}
-        </CommentsWrapper>
-      </Wrapper>
-    </Layout>
-  );
-});
+            {loginUser && (
+              <Editor
+                postId={postId}
+                chain={chain}
+                ref={editorWrapperRef}
+                setQuillRef={setQuillRef}
+                {...{ contentType, setContentType, content, setContent, users }}
+                type={TYPE_POST}
+              />
+            )}
+          </CommentsWrapper>
+        </Wrapper>
+      </Layout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
@@ -105,10 +112,34 @@ export const getServerSideProps = withLoginUser(async (context) => {
     pageSize: Math.min(pageSize ?? 50, 100),
   });
 
+  let options;
+  const cookies = new Cookies(context.req, context.res);
+  const authToken = cookies.get("auth-token");
+  if (authToken) {
+    options = {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    };
+  }
+
+  let votes = null;
+  let myVote = null;
+  if (detail.poll) {
+    ({ result: votes } = await nextApi.fetch(`polls/${detail.poll._id}/votes`));
+    ({ result: myVote } = await nextApi.fetch(
+      `polls/${detail.poll._id}/myvote`,
+      {},
+      options
+    ));
+  }
+
   return {
     props: {
       detail,
       comments: comments ?? EmptyList,
+      votes,
+      myVote: myVote ?? null,
       chain,
     },
   };

@@ -4,12 +4,9 @@ import crab from "./consts/settings/crab";
 import karura from "./consts/settings/karura";
 import bifrost from "./consts/settings/bifrost";
 import acala from "./consts/settings/acala";
-import calamari from "./consts/settings/calamari";
-import crust from "./consts/settings/crust";
 import interlay from "./consts/settings/interlay";
 import kintsugi from "./consts/settings/kintsugi";
 import khala from "./consts/settings/khala";
-import polkadex from "./consts/settings/polkadex";
 import turing from "./consts/settings/turing";
 import menus from "./consts/menu";
 import centrifuge from "./consts/settings/centrifuge";
@@ -34,9 +31,6 @@ export const nodes = [
   // basilisk,
   kintsugi,
   interlay,
-  polkadex,
-  crust,
-  calamari,
   turing,
   crab,
   centrifuge,
@@ -144,3 +138,8 @@ export const DEFAULT_SEO_INFO = {
   title: `SubSquare`,
   desc: `A platform that scans and normalizes the blockchain governance data. It enables community members to propose, vote proposals and discuss the corresponding topics.`,
 };
+
+export const BalanceDecimals = {
+  DOT: 2,
+  KSM: 2,
+}

@@ -3,10 +3,10 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import Back from "next-common/components/back";
-import { withLoginUser, withLoginUserRedux } from "lib";
+import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import Layout from "components/layout";
+import Layout from "next-common/components/layout";
 import Comments from "next-common/components/comment";
 import Editor from "next-common/components/comment/editor";
 import DetailItem from "components/detailItem";
@@ -20,7 +20,6 @@ import { TYPE_DEMOCRACY_REFERENDUM } from "utils/viewConstants";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "utils/viewfuncs";
-import SEO from "next-common/components/SEO";
 import OutWrapper from "next-common/components/styled/outWrapper";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
 import useMentionList from "next-common/utils/hooks/useMentionList";
@@ -105,8 +104,11 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail, "Referendum");
     return (
-      <Layout user={loginUser} chain={chain}>
-        <SEO title={detail?.title} desc={desc} chain={chain} />
+      <Layout
+        user={loginUser}
+        chain={chain}
+        seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
+      >
         <OutWrapper>
           <Wrapper className="post-content">
             <Back href={`/democracy/referendums`} text="Back to Referendas" />

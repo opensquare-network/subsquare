@@ -1,24 +1,11 @@
 import styled from "styled-components";
-import { useState } from "react";
-import { useRouter } from "next/router";
-import Layout from "components/layout";
+import Layout from "next-common/components/layout";
 import Back from "next-common/components/back";
-import { withLoginUser, withLoginUserRedux } from "lib";
-import Input from "next-common/components/input";
-import MarkdownEditor from "next-common/components/markdownEditor";
-import Button from "next-common/components/button";
-import nextApi from "next-common/services/nextApi";
-import PreviewMD from "next-common/components/previewMD";
-import Toggle from "next-common/components/toggle";
-import ErrorText from "next-common/components/ErrorText";
-import InsertContentsModal from "next-common/components/editor/modal";
-import QuillEditor from "next-common/components/editor/quillEditor";
-import HtmlRender from "next-common/components/post/htmlRender";
-import { useDispatch } from "react-redux";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { fetchUserProfile } from "next-common/store/reducers/userSlice";
-import { shadow_100 } from "styles/componentCss";
+import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
+import PostCreate from "next-common/components/post/postCreate";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -28,209 +15,26 @@ const Wrapper = styled.div`
   margin: auto;
 `;
 
-const ContentWrapper = styled.div`
-  padding: 48px;
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 6px;
-  @media screen and (max-width: 768px) {
-    margin-left: -16px;
-    margin-right: -16px;
-    border-radius: 0;
-    padding: 24px;
-  }
-`;
-
-const Title = styled.div`
-  font-weight: bold;
-  font-size: 16px;
-  margin-bottom: 24px;
-`;
-
-const Label = styled.div`
-  font-weight: bold;
-  font-size: 12px;
-  margin: 16px 0 8px;
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-top: 16px;
-
-  > :not(:first-child) {
-    margin-left: 12px;
-  }
-`;
-
-const InputWrapper = styled.div`
-  position: relative;
-`;
-
-const InputSwitch = styled.div`
-  height: 24px;
-  top: 10px;
-  right: 16px;
-  position: absolute;
-  display: flex;
-  align-items: center;
-
-  > img {
-    margin-right: 12px;
-  }
-`;
-
-const PreviewWrapper = styled.div`
-  display: flex;
-  min-height: 244px;
-`;
-
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const router = useRouter();
-  const dispatch = useDispatch();
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [showPreview, setShowPreview] = useState(false);
-  const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown"
-  );
-  const [modalType, setModalType] = useState("image");
-  const [showModal, setShowModal] = useState(false);
-  const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
-  const [errors, setErrors] = useState();
-  const [editorHeight, setEditorHeight] = useState(300);
 
-  const onCreate = async () => {
-    const result = await nextApi.post(`posts`, {
-      chain,
-      title,
-      content,
-      contentType,
-    });
-    if (result.error) {
-      if (result.error.data) {
-        setErrors(result.error);
-      } else {
-        dispatch(newErrorToast(result.error.message));
-      }
-    } else {
-      router.push(`/post/${result.result}`);
-    }
-  };
-
-  const onMarkdownSwitch = () => {
-    if (
-      content &&
-      !confirm(`Togging editor will empty all typed contents, are you sure ?`)
-    ) {
-      return;
-    }
-
-    const newContentType = contentType === "html" ? "markdown" : "html";
-    setContent("");
-    setContentType(newContentType);
-
-    // Save to user preference
-    nextApi
-      .patch("user/preference", {
-        editor: newContentType,
-      })
-      .then(({ result }) => {
-        if (result) {
-          dispatch(fetchUserProfile());
-        }
+  useEffect(() => {
+    if (loginUser === null) {
+      router.push({
+        pathname: "/login",
+        query: {
+          redirect: router.route,
+        },
       });
-  };
+    }
+  }, [loginUser, router]);
 
   return (
     <Layout user={loginUser} chain={chain}>
       <NextHead title={`Create post`} desc={``} />
       <Wrapper>
         <Back href={`/discussions`} text="Back to Discussions" />
-        <ContentWrapper>
-          <Title>New Post</Title>
-          <Label>Title</Label>
-          <Input
-            placeholder="Please fill the title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          {errors?.data?.title?.[0] && (
-            <ErrorText>{errors?.data?.title?.[0]}</ErrorText>
-          )}
-          {contentType === "html" && (
-            <InsertContentsModal
-              showModal={showModal}
-              setShowModal={setShowModal}
-              insetQuillContentsFunc={insetQuillContentsFunc}
-              type={modalType}
-            />
-          )}
-          <Label>Issue</Label>
-          <InputWrapper>
-            {contentType === "markdown" && (
-              <MarkdownEditor
-                height={editorHeight}
-                initialHeight={300}
-                setEditorHeight={setEditorHeight}
-                content={content}
-                setContent={setContent}
-                visible={!showPreview}
-              />
-            )}
-            {contentType === "html" && (
-              <QuillEditor
-                visible={!showPreview}
-                content={content}
-                setContent={setContent}
-                height={editorHeight}
-                setEditorHeight={setEditorHeight}
-                setModalInsetFunc={(insetQuillContentFunc, type = "image") => {
-                  setModalType(type);
-                  setShowModal(true);
-                  setInsetQuillContentsFunc(insetQuillContentFunc);
-                }}
-                isCreate={true}
-              />
-            )}
-            {!showPreview && (
-              <InputSwitch>
-                <img
-                  src="/imgs/icons/markdown-mark.svg"
-                  alt=""
-                  width={26}
-                  height={16}
-                />
-                <Toggle
-                  size="small"
-                  isOn={contentType === "markdown"}
-                  onToggle={onMarkdownSwitch}
-                />
-              </InputSwitch>
-            )}
-          </InputWrapper>
-          {showPreview && (
-            <PreviewWrapper className="preview">
-              {contentType === "markdown" && (
-                <PreviewMD content={content} setContent={setContent} />
-              )}
-              {contentType === "html" && <HtmlRender html={content} />}
-            </PreviewWrapper>
-          )}
-          {errors?.data?.content?.[0] && (
-            <ErrorText>{errors?.data?.content?.[0]}</ErrorText>
-          )}
-          <ButtonWrapper>
-            <Button onClick={() => setShowPreview(!showPreview)}>
-              {showPreview ? "Edit" : "Preview"}
-            </Button>
-            <Button secondary onClick={onCreate}>
-              Create
-            </Button>
-          </ButtonWrapper>
-        </ContentWrapper>
+        <PostCreate chain={chain} loginUser={loginUser} />
       </Wrapper>
     </Layout>
   );

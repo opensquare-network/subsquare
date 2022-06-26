@@ -23,7 +23,14 @@ function LoginButton({ chain }) {
     <Button
       primary={!isPrimaryInverse}
       primaryInverse={isPrimaryInverse}
-      onClick={() => router.push("/login")}
+      onClick={() =>
+        router.push({
+          pathname: "/login",
+          query: {
+            redirect: router.asPath,
+          },
+        })
+      }
     >
       Login
     </Button>

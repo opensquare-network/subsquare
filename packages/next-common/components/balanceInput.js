@@ -23,6 +23,7 @@ const Input = styled.input`
   all: unset;
   padding: 12px 16px;
   flex-grow: 1;
+  color: #1E2134
 `;
 
 const Unit = styled.div`
@@ -32,6 +33,11 @@ const Unit = styled.div`
   font-size: 14px;
   line-height: 100%;
   border-left: 1px solid #e0e4eb;
+  ${(p) =>
+    !p.disabled &&
+    css`
+      color: #1e2134 !important;
+    `}
 `;
 
 export default function BalanceInput({
@@ -50,7 +56,7 @@ export default function BalanceInput({
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
-      <Unit>{symbol}</Unit>
+      <Unit disabled={disabled}>{symbol}</Unit>
     </Wrapper>
   );
 }

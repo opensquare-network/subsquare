@@ -4,6 +4,7 @@ import ErrorText from "next-common/components/ErrorText";
 import EyeIcon from "../assets/imgs/icons/eye.svg";
 import EyeSlashIcon from "../assets/imgs/icons/eye-slash.svg";
 import { emptyFunction } from "../utils";
+import FlexBetweenCenter from "./styled/flexBetweenCenter";
 
 const Wrapper = styled.div`
   position: relative;
@@ -46,6 +47,7 @@ const Wrapper = styled.div`
       }
     `}
   display:flex;
+  align-items: center;
   overflow: hidden;
 `;
 
@@ -103,7 +105,12 @@ const SymbolWrapper = styled.div`
 `;
 const OuterWrapper = styled.div``;
 
-export default function Input({ onChange = emptyFunction, ...props }) {
+const Suffix = styled(FlexBetweenCenter)`
+  position: absolute;
+  right: 13px;
+`;
+
+export default function Input({ onChange = emptyFunction, suffix, ...props }) {
   const [show, setShow] = useState(false);
   const [focus, setFocus] = useState(false);
 
@@ -120,6 +127,9 @@ export default function Input({ onChange = emptyFunction, ...props }) {
           onBlur={() => setFocus(false)}
           onChange={onChange}
         />
+
+        {suffix && <Suffix>{suffix}</Suffix>}
+
         {props.type === "password" && (
           <ShowButton onClick={() => setShow(!show)}>
             {show ? <EyeIcon /> : <EyeSlashIcon />}

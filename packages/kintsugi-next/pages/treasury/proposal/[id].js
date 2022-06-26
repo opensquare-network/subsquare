@@ -3,12 +3,12 @@ import styled from "styled-components";
 import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import Comments from "next-common/components/comment";
-import { withLoginUser, withLoginUserRedux } from "lib";
+import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Editor from "next-common/components/comment/editor";
 import { useState, useRef } from "react";
-import Layout from "components/layout";
+import Layout from "next-common/components/layout";
 import User from "next-common/components/user";
 import { getNode, toPrecision } from "utils";
 import Links from "next-common/components/links";
@@ -21,7 +21,6 @@ import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_TREASURY_PROPOSAL } from "utils/viewConstants";
 import sortTimeline from "../../../utils/timeline/sort";
 import { getMetaDesc } from "../../../utils/viewfuncs";
-import SEO from "next-common/components/SEO";
 import KVList from "next-common/components/listInfo/kvList";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
@@ -112,7 +111,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     setContent,
     quillRef,
     focusEditor,
-    chain,
+    chain
   );
 
   const metadata = detail.onchainData?.meta
@@ -139,8 +138,11 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   const desc = getMetaDesc(detail, "Proposal");
   return (
-    <Layout user={loginUser} chain={chain}>
-      <SEO title={detail?.title} desc={desc} chain={chain} />
+    <Layout
+      user={loginUser}
+      chain={chain}
+      seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
+    >
       <DetailPageWrapper className="post-content">
         <Back href={`/treasury/proposals`} text="Back to Proposals" />
         <DetailItem

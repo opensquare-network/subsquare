@@ -39,7 +39,6 @@ const Index = styled.div`
   line-height: 140%;
 `;
 
-
 const Title = styled.div`
   max-width: 750px;
   word-break: break-all;
@@ -127,7 +126,15 @@ const getTypeColor = (type) => {
   }
 };
 
-export default function DetailItem({ data, user, chain, onReply, type }) {
+export default function DetailItem({
+  data,
+  user,
+  chain,
+  onReply,
+  type,
+  votes,
+  myVote,
+}) {
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
   if (!post) {
@@ -301,6 +308,8 @@ export default function DetailItem({ data, user, chain, onReply, type }) {
       <ArticleContent
         chain={chain}
         post={post}
+        votes={votes}
+        myVote={myVote}
         setPost={setPost}
         user={user}
         type={type}

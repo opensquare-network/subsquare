@@ -8,7 +8,7 @@ import {
   settingMenu,
   settingMenuOfKeyAccount,
 } from "next-common/utils/constants";
-import { withLoginUser, withLoginUserRedux } from "lib";
+import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import {
   newErrorToast,
@@ -16,7 +16,7 @@ import {
 } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import { fetchUserProfile } from "next-common/store/reducers/userSlice";
-import Layout from "components/layout";
+import Layout from "next-common/components/layout";
 import { shadow_100 } from "styles/componentCss";
 import NextHead from "next-common/components/nextHead";
 import { isKeyRegisteredUser } from "next-common/utils";

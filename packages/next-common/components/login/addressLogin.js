@@ -61,11 +61,16 @@ export default function AddressLogin({ chain, setMailLogin }) {
         );
         if (loginResult) {
           dispatch(setUser(loginResult));
-          localStorage.setItem("lastLoggedInAddress", selectedAccount.address)
-          if(loginResult.email){
-            router.replace("/");
-          }else {
-            router.replace("/email");
+          localStorage.setItem("lastLoggedInAddress", selectedAccount.address);
+          if (loginResult.email) {
+            router.replace(router.query?.redirect || "/");
+          } else {
+            router.replace({
+              pathname: "/email",
+              query: {
+                redirect: router.query?.redirect,
+              },
+            });
           }
         }
         if (loginError) {

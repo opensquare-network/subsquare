@@ -11,6 +11,7 @@ import PostEdit from "next-common/components/post/postEdit";
 import MicromarkMd from "next-common/components/micromarkMd";
 import EditIcon from "../assets/imgs/icons/edit.svg";
 import PostDataSource from "./postDataSource";
+import Poll from "./poll";
 
 const Wrapper = styled.div`
   :hover {
@@ -93,6 +94,8 @@ const BannerImage = styled.img`
 export default function ArticleContent({
   user,
   post,
+  votes,
+  myVote,
   setPost,
   chain,
   onReply,
@@ -196,20 +199,29 @@ export default function ArticleContent({
               ))}
             </GreyWrapper>
           )}
+          {post.bannerUrl && (
+            <BannerImage src={post.bannerUrl} alt="banner image" />
+          )}
           {post.contentType === "markdown" && (
-            <>
-              {post.bannerUrl && (
-                <BannerImage src={post.bannerUrl} alt="banner image" />
-              )}
-              <MicromarkMd
-                md={post.content}
-                contentVersion={post.contentVersion}
-              />
-            </>
+            <MicromarkMd
+              md={post.content}
+              contentVersion={post.contentVersion}
+            />
           )}
           {post.contentType === "html" && <HtmlRender html={post.content} />}
           {post.createdAt !== post.updatedAt && (
             <EditedLabel>Edited</EditedLabel>
+          )}
+          {post.poll && (
+            <>
+              <Divider />
+              <Poll
+                chain={chain}
+                poll={post.poll}
+                votes={votes}
+                myVote={myVote}
+              />
+            </>
           )}
           {["kusama", "polkadot"].includes(chain) && (
             <PostDataSource type={type} post={post} />

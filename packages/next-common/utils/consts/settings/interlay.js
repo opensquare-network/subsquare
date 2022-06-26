@@ -13,7 +13,7 @@ const interlay = {
   value: "interlay",
   name: "Interlay",
   icon: "interlay.svg",
-  identity: "kusama",
+  identity: "polkadot",
   symbol: "INTR",
   voteSymbol: "vINTR",
   decimals: 10,

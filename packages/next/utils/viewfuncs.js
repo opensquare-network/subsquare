@@ -87,7 +87,7 @@ export const toTreasuryProposalListItem = (chain, item) => ({
   status: item.state ?? "Unknown",
   time: getPostUpdatedAt(item),
   detailLink: `/treasury/proposal/${item.proposalIndex}`,
-  value: item.onchainData.value,
+  value: item.onchainData?.value,
   index: item.proposalIndex,
 });
 
@@ -109,7 +109,7 @@ export const toTreasuryChildBountyListItem = (chain, item) => ({
   status: item.state ?? "Unknown",
   time: getPostUpdatedAt(item),
   value: item.onchainData.value,
-  detailLink: `/treasury/child-bounty/${item.parentBountyId}_${item.index}`,
+  detailLink: `/treasury/child-bounty/${item.index}`,
   parentIndex: item.parentBountyId,
 });
 
