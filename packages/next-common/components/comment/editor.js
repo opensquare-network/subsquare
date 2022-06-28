@@ -124,7 +124,7 @@ function Editor(
     return (users || [])
       .map((user) => ({
         preview: user.name,
-        value: `[@${escapeLinkText(user.name)}](/member/${user.value})`,
+        value: `[@${escapeLinkText(user.name)}](/member/${user.value}) `,
         address: user.name,
       }))
       .filter((i) => i.preview.toLowerCase().includes(text.toLowerCase()));
