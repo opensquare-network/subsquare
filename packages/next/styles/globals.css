@@ -41,3 +41,10 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+.ql-toolbar.ql-snow, .ql-container.ql-snow{
+  border: none !important;
+}
+
+.ql-toolbar.ql-snow .ql-formats {
+  margin-right: 8px !important;
+}

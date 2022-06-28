@@ -19,6 +19,9 @@ import PreviewMD from "next-common/components/previewMD";
 import Toggle from "next-common/components/toggle";
 import ErrorText from "next-common/components/ErrorText";
 import AdvancedForm from "next-common/components/post/advanced/form";
+import dynamic from 'next/dynamic'
+const UniverseEditor = dynamic(() => import("@osn/rich-text-editor").then(mod=> mod.UniverseEditor),{ssr:false})
+
 
 const Wrapper = styled.div`
   padding: 48px;
@@ -101,11 +104,7 @@ export default function PostCreate({ chain, loginUser }) {
   );
   const [bannerUrl, setBannerUrl] = useState("");
   const [formValue, setFormValue] = useState({});
-  const [modalType, setModalType] = useState("image");
-  const [showModal, setShowModal] = useState(false);
-  const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
   const [errors, setErrors] = useState();
-  const [editorHeight, setEditorHeight] = useState(300);
   const [isAdvanced, setIsAdvanced] = useState(false);
   const isEmpty = content === "" || content === `<p><br></p>`;
 
@@ -132,30 +131,6 @@ export default function PostCreate({ chain, loginUser }) {
     } else {
       router.push(`/post/${result.result}`);
     }
-  };
-
-  const onMarkdownSwitch = () => {
-    if (
-      content &&
-      !confirm(`Toggling editor will empty all typed contents, are you sure ?`)
-    ) {
-      return;
-    }
-
-    const newContentType = contentType === "html" ? "markdown" : "html";
-    setContent("");
-    setContentType(newContentType);
-
-    // Save to user preference
-    nextApi
-      .patch("user/preference", {
-        editor: newContentType,
-      })
-      .then(({ result }) => {
-        if (result) {
-          dispatch(fetchUserProfile());
-        }
-      });
   };
 
   const [isSetBanner, setIsSetBanner] = useState(false);
@@ -204,71 +179,19 @@ export default function PostCreate({ chain, loginUser }) {
       {errors?.data?.title?.[0] && (
         <ErrorText>{errors?.data?.title?.[0]}</ErrorText>
       )}
-      {contentType === "html" && (
-        <InsertContentsModal
-          showModal={showModal}
-          setShowModal={setShowModal}
-          insetQuillContentsFunc={insetQuillContentsFunc}
-          type={modalType}
-        />
-      )}
-
       <LabelWrapper>
         <Label>Issue</Label>
       </LabelWrapper>
 
       <InputWrapper>
-        {contentType === "markdown" && (
-          <MarkdownEditor
-            initialHeight={300}
-            height={editorHeight}
-            setEditorHeight={setEditorHeight}
-            content={content}
-            setContent={setContent}
-            visible={!showPreview}
-            readOnly={creating}
-          />
-        )}
-        {contentType === "html" && (
-          <QuillEditor
-            visible={!showPreview}
-            content={content}
-            setContent={setContent}
-            height={editorHeight}
-            setEditorHeight={setEditorHeight}
-            setModalInsetFunc={(insetQuillContentFunc, type = "image") => {
-              setModalType(type);
-              setShowModal(true);
-              setInsetQuillContentsFunc(insetQuillContentFunc);
-            }}
-            isCreate={true}
-            readOnly={creating}
-          />
-        )}
-        {!showPreview && (
-          <InputSwitch>
-            <img
-              src="/imgs/icons/markdown-mark.svg"
-              alt=""
-              width={26}
-              height={16}
-            />
-            <Toggle
-              size="small"
-              isOn={contentType === "markdown"}
-              onToggle={onMarkdownSwitch}
-            />
-          </InputSwitch>
-        )}
+        <UniverseEditor
+          value={content}
+          onChange={setContent}
+          contentType={contentType}
+          setContentType={setContentType}
+          loadSuggestions={()=> []}
+        />
       </InputWrapper>
-      {showPreview && (
-        <PreviewWrapper className="preview">
-          {contentType === "markdown" && (
-            <PreviewMD content={content} setContent={setContent} />
-          )}
-          {contentType === "html" && <HtmlRender html={content} />}
-        </PreviewWrapper>
-      )}
       {errors?.data?.content?.[0] && (
         <ErrorText>{errors?.data?.content?.[0]}</ErrorText>
       )}
