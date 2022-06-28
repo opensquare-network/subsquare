@@ -9,6 +9,7 @@ import Flex from "next-common/components/styled/flex";
 import { toApiType } from "../../utils/viewfuncs";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import dynamic from 'next/dynamic'
+
 const UniverseEditor = dynamic(() => import("@osn/rich-text-editor").then(mod=> mod.UniverseEditor),{ssr:false})
 
 const Wrapper = styled.div`
@@ -28,6 +29,11 @@ const ButtonWrapper = styled(Flex)`
     margin-left: 12px;
   }
 `;
+
+function escapeLinkText(text) {
+  return text.replace(/\\/g, "\\\\").replace(/([\[\]])/g, "\\$1");
+}
+
 
 function Editor(
   {
@@ -114,6 +120,16 @@ function Editor(
 
   const isEmpty = content === "" || content === `<p><br></p>`;
 
+  const loadSuggestions =  (text) => {
+    return (users || [])
+      .map((user) => ({
+        preview: user.name,
+        value: `[@${escapeLinkText(user.name)}](/member/${user.value})`,
+        address: user.name,
+      }))
+      .filter((i) => i.preview.toLowerCase().includes(text.toLowerCase()));
+  };
+
   return (
     <Wrapper>
       <Relative ref={ref}>
@@ -122,7 +138,7 @@ function Editor(
           onChange={setContent}
           contentType={contentType}
           setContentType={setContentType}
-          loadSuggestions={()=> []}
+          loadSuggestions={loadSuggestions}
           minHeight={100}
         />
       </Relative>
