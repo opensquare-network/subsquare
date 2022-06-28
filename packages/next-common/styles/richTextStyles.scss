@@ -144,6 +144,13 @@
     padding-inline-start: 20px;
   }
 
+  ul.mention-list{
+    padding: 0;
+    li::before{
+      display: none;
+    }
+  }
+
   #quill-mention-list {
     padding-inline-start: 0;
   }
