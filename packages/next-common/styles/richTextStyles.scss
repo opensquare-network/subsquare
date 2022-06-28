@@ -167,14 +167,13 @@
   }
 
   .ql-toolbar.ql-snow {
-    border: none !important;
-    padding: 9px 8px;
+    border-bottom: 1px solid #e0e4eb !important;
   }
-
-  .ql-container.ql-snow {
-    border: none !important;
-    border-top: 1px solid #dddddd !important;
-  }
+  //
+  //.ql-container.ql-snow {
+  //  border: none !important;
+  //  border-top: 1px solid #edf0f5 !important;
+  //}
 
   .ql-indent-1:not(.ql-direction-rtl) {
     padding-left: 3em;
