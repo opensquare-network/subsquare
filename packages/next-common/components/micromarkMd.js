@@ -213,6 +213,8 @@ export default function MicromarkMd({ md = "", contentVersion = "" }) {
       "img",
       "iframe",
       "br",
+      "ins",
+      "del",
     ]),
     allowedAttributes: {
       img: ["src", "size", "width", "height"],
