@@ -1184,10 +1184,10 @@
   resolved "https://registry.npmjs.org/@osn/provider-options/-/provider-options-1.0.7.tgz#bd7fce7426b44c370812376704aa9092ca6cc216"
   integrity sha512-8P45Pc/N9FrFJz4R922J47w2u8ZCQ8e7/UpMpUmRKayCgQ3oCSH1xtsKYNozbSUsuGNsWJ+UZaap2AfIJIrgjA==
 
-"@osn/rich-text-editor@^0.1.19":
-  version "0.1.19"
-  resolved "https://registry.yarnpkg.com/@osn/rich-text-editor/-/rich-text-editor-0.1.19.tgz#b830e3ff52a5c6c0a5a8675af3fc2b7e86be6893"
-  integrity sha512-y39KjPln4CBO0/v76oHxzULcVtpAyvXZpKtuGRR8mE9bOC4JFHzcl84J9Ai6KR5JOYMrrv1DxmS31M5UjiAnGQ==
+"@osn/rich-text-editor@^0.1.20":
+  version "0.1.20"
+  resolved "https://registry.yarnpkg.com/@osn/rich-text-editor/-/rich-text-editor-0.1.20.tgz#e7ccc119ece5c96bfccac3419c31e52f6e51ebbf"
+  integrity sha512-l2/MZ2F8zdkQ6xpwDnWB/aWJswFI8U/ty9pP9rucHpieHdwINJTuZ+3Niy4VfYAXJmh3OsPphs3AzNjnWIq9jw==
   dependencies:
     marked "^4.0.15"
     prismjs "^1.28.0"
