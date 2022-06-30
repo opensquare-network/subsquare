@@ -126,8 +126,15 @@ function convertProposalForTableView(proposal, chain) {
             }
 
             if (
-              proposal.section === "system" &&
-              ["remark", "remarkWithEvent"].includes(proposal.method)
+              (
+                proposal.section === "system" &&
+                ["remark", "remarkWithEvent"].includes(proposal.method)
+              ) ||
+              (
+                proposal.section === "automationTime" &&
+                proposal.method === "scheduleNotifyTask" &&
+                arg.name === "message"
+              )
             ) {
               return [arg.name, hexToString(arg.value)];
             }
@@ -181,8 +188,15 @@ function convertProposalForJsonView(proposal, chain) {
             }
 
             if (
-              proposal.section === "system" &&
-              ["remark", "remarkWithEvent"].includes(proposal.method)
+              (
+                proposal.section === "system" &&
+                ["remark", "remarkWithEvent"].includes(proposal.method)
+              ) ||
+              (
+                proposal.section === "automationTime" &&
+                proposal.method === "scheduleNotifyTask" &&
+                arg.name === "message"
+              )
             ) {
               return hexToString(arg.value);
             }
