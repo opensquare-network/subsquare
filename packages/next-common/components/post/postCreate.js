@@ -91,7 +91,6 @@ export default function PostCreate({ chain, loginUser }) {
   const [title, setTitle] = useState("");
   const [creating, setCreating] = useState(false);
   const [content, setContent] = useState("");
-  const [showPreview, setShowPreview] = useState(false);
   const [contentType, setContentType] = useState(
     loginUser?.preference.editor || "markdown"
   );
@@ -200,9 +199,6 @@ export default function PostCreate({ chain, loginUser }) {
       />
 
       <ButtonWrapper>
-        <Button onClick={() => setShowPreview(!showPreview)}>
-          {showPreview ? "Edit" : "Preview"}
-        </Button>
         <Button
           isLoading={creating}
           onClick={createPost}

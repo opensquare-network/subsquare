@@ -34,7 +34,6 @@ export default function EditInput({
 }) {
   const [content, setContent] = useState(editContent);
   const [contentType, setContentType] = useState(editContentType);
-  const [showPreview, setShowPreview] = useState(false);
   const [errors, setErrors] = useState();
 
   const isEmpty = content === "" || content === `<p><br></p>`;
@@ -73,11 +72,6 @@ export default function EditInput({
       <ButtonWrapper>
         {!loading && (
           <Button onClick={() => onFinishedEdit(false)}>Cancel</Button>
-        )}
-        {!loading && (
-          <Button onClick={() => setShowPreview(!showPreview)}>
-            {showPreview ? "Edit" : "Preview"}
-          </Button>
         )}
         <Button isLoading={loading} onClick={onUpdate} disabled={isEmpty} secondary >
           Update
