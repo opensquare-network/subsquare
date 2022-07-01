@@ -53,7 +53,6 @@ function Editor(
   ref
 ) {
   const router = useRouter();
-  const [showPreview, setShowPreview] = useState(false);
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const isMounted = useIsMountedBool();
@@ -81,7 +80,6 @@ function Editor(
       if (result.error) {
         setErrors(result.error);
       } else {
-        setShowPreview(false);
         setContent("");
         await router.replace(`[id]`, {
           pathname: `${router.query.id}`,
@@ -144,11 +142,6 @@ function Editor(
       </Relative>
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
       <ButtonWrapper>
-        {!isEdit && (
-          <Button onClick={() => setShowPreview(!showPreview)}>
-            {showPreview ? "Edit" : "Preview"}
-          </Button>
-        )}
         {isEdit && (
           <Button onClick={() => onFinishedEdit(false)}>Cancel</Button>
         )}
