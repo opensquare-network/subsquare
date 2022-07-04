@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import Comments from "next-common/components/comment";
@@ -15,14 +14,7 @@ import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_POST } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
 import Cookies from "cookies";
-
-const Wrapper = styled.div`
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-  max-width: 852px;
-  margin: auto;
-`;
+import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, votes, myVote, chain }) => {
@@ -54,7 +46,7 @@ export default withLoginUserRedux(
         chain={chain}
         seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
       >
-        <Wrapper className="post-content">
+        <DetailPageWrapper className="post-content">
           <Back href={`/discussions`} text="Back to Discussions" />
           <DetailItem
             data={detail}
@@ -83,7 +75,7 @@ export default withLoginUserRedux(
               />
             )}
           </CommentsWrapper>
-        </Wrapper>
+        </DetailPageWrapper>
       </Layout>
     );
   }

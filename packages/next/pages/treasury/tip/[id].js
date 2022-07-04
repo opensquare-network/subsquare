@@ -29,18 +29,7 @@ import Links from "next-common/components/links";
 import ReasonLink from "next-common/components/reasonLink";
 import Tipper from "components/tipper";
 import useMentionList from "next-common/utils/hooks/useMentionList";
-
-const Wrapper = styled.div`
-  flex: 1;
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-  margin-right: 332px;
-  @media screen and (max-width: 1024px) {
-    max-width: 852px;
-    margin: 0 auto;
-  }
-`;
+import MainCard from "../../../components/mainCard";
 
 const FlexEnd = styled.div`
   display: flex;
@@ -289,7 +278,7 @@ export default withLoginUserRedux(
         seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
       >
         <OutWrapper>
-          <Wrapper className="post-content">
+          <MainCard className="post-content">
             <Back href={`/treasury/tips`} text="Back to Tips" />
             <DetailItem
               data={detail}
@@ -337,7 +326,7 @@ export default withLoginUserRedux(
                 />
               )}
             </CommentsWrapper>
-          </Wrapper>
+          </MainCard>
         </OutWrapper>
       </Layout>
     );
