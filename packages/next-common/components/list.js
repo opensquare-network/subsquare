@@ -6,7 +6,7 @@ import EmptyList from "next-common/components/emptyList";
 import Flex from "next-common/components/styled/flex";
 
 const Wrapper = styled.div`
-  max-width: 848px;
+  max-width: 932px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }

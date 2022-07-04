@@ -26,12 +26,12 @@ const ContentWrapper = styled.div`
 
 const Left = styled.div`
   position: fixed;
-  left: max(calc((100vw - 1080px) / 2), 32px);
+  left: max(calc((100vw - 1184px) / 2), 32px);
   padding-bottom: 32px;
   height: calc(100vh - 90px);
   overflow-y: scroll;
   ${no_scroll_bar};
-  width: 200px;
+  width: 220px;
   flex: 0 0 200px;
   @media screen and (max-width: 1024px) {
     display: none;

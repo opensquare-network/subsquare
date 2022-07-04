@@ -137,7 +137,7 @@ function Editor(
           contentType={contentType}
           setContentType={setContentType}
           loadSuggestions={loadSuggestions}
-          minHeight={144}
+          minHeight={100}
         />
       </Relative>
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}

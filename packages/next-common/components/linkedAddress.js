@@ -25,7 +25,7 @@ import AddressLinkIcon from "../assets/imgs/icons/address-link.svg";
 import UnLinkIcon from "../assets/imgs/icons/unlink.svg";
 
 const Wrapper = styled.div`
-  max-width: 848px;
+  max-width: 932px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }

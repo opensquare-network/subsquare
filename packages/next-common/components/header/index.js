@@ -12,7 +12,7 @@ import ChainIcon from "next-common/components/header/chainIcon";
 import MenuLine from "../../assets/imgs/icons/menu-line.svg";
 
 const FlexWrapper = styled(Flex)`
-  max-width: 1080px;
+  max-width: 1184px;
   margin: auto;
   justify-content: space-between;
 `;

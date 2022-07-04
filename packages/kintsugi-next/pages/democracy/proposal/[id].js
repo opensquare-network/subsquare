@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import Comments from "next-common/components/comment";
@@ -21,19 +20,8 @@ import Second from "next-common/components/publicProposal/second";
 import { useAddressVotingBalance } from "utils/hooks";
 import isNil from "lodash.isnil";
 import useMentionList from "next-common/utils/hooks/useMentionList";
+import MainCard from "next-common/components/styled/mainCard";
 
-const Wrapper = styled.div`
-  margin-right: 312px;
-  overflow: hidden;
-  flex-grow: 1;
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-  @media screen and (max-width: 1024px) {
-    max-width: 848px;
-    margin: 0 auto;
-  }
-`;
 
 export default withLoginUserRedux(
   ({ loginUser, detail, referendum, comments, chain }) => {
@@ -87,7 +75,7 @@ export default withLoginUserRedux(
         seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
       >
         <OutWrapper>
-          <Wrapper className="post-content">
+          <MainCard className="post-content">
             <Back href={`/democracy/proposals`} text="Back to Proposals" />
             <DetailItem
               data={detail}
@@ -135,7 +123,7 @@ export default withLoginUserRedux(
                 />
               )}
             </CommentsWrapper>
-          </Wrapper>
+          </MainCard>
         </OutWrapper>
       </Layout>
     );
