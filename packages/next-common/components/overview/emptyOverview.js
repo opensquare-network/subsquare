@@ -6,7 +6,7 @@ import Flex from "next-common/components/styled/flex";
 import Icon from "../../assets/imgs/icons/new-discussion.svg";
 
 const Wrapper = styled.div`
-  max-width: 848px;
+  max-width: 852px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }

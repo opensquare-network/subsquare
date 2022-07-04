@@ -1,7 +1,5 @@
 /* eslint-disable react/jsx-key */
 import React, { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
-
 import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
@@ -23,19 +21,8 @@ import { getMetaDesc } from "utils/viewfuncs";
 import OutWrapper from "next-common/components/styled/outWrapper";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
 import useMentionList from "next-common/utils/hooks/useMentionList";
+import MainCard from "next-common/components/styled/mainCard";
 
-const Wrapper = styled.div`
-  margin-right: 312px;
-  overflow: hidden;
-  flex-grow: 1;
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-  @media screen and (max-width: 1024px) {
-    max-width: 848px;
-    margin: 0 auto;
-  }
-`;
 
 export default withLoginUserRedux(
   ({ loginUser, detail, publicProposal, comments, chain }) => {
@@ -110,7 +97,7 @@ export default withLoginUserRedux(
         seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
       >
         <OutWrapper>
-          <Wrapper className="post-content">
+          <MainCard className="post-content">
             <Back href={`/democracy/referendums`} text="Back to Referendas" />
             <DetailItem
               data={detail}
@@ -165,7 +152,7 @@ export default withLoginUserRedux(
                 />
               )}
             </CommentsWrapper>
-          </Wrapper>
+          </MainCard>
         </OutWrapper>
       </Layout>
     );

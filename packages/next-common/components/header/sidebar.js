@@ -33,7 +33,7 @@ const Content = styled.div`
   left: -32px;
   @media screen and (max-width: 768px) {
     padding: 0;
-    min-width: 200px;
+    min-width: 220px;
     left: -16px;
     ${(p) =>
       p.position === "right" &&

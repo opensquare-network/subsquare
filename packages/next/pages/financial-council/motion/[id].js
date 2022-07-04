@@ -1,5 +1,3 @@
-import styled from "styled-components";
-
 import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
@@ -16,20 +14,8 @@ import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { useRef, useState } from "react";
 import useMentionList from "next-common/utils/hooks/useMentionList";
+import MainCard from "next-common/components/styled/mainCard";
 
-const Wrapper = styled.div`
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-
-  margin-right: 312px;
-  @media screen and (max-width: 1024px) {
-    max-width: 848px;
-    margin: 0 auto;
-  }
-  overflow: hidden;
-  flex-grow: 1;
-`;
 
 export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
   const users = useMentionList(motion, comments, chain);
@@ -58,7 +44,7 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
       seoInfo={{ title: motion?.title, desc, ogImage: motion?.bannerUrl }}
     >
       <OutWrapper>
-        <Wrapper className="post-content">
+        <MainCard className="post-content">
           <Back href={`/financial-council/motions`} text="Back to Motions" />
           <MotionDetail
             motion={motion}
@@ -91,7 +77,7 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
               />
             )}
           </CommentsWrapper>
-        </Wrapper>
+        </MainCard>
       </OutWrapper>
     </Layout>
   );
