@@ -11,7 +11,7 @@ import ArrowLeft from "../../icons/arrowLeft";
 
 const Wrapper = styled.div`
   margin: 0 auto;
-  max-width: 848px;
+  max-width: 852px;
 `;
 
 const BackButton = styled.div`

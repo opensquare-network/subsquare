@@ -20,7 +20,7 @@ const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
-  max-width: 848px;
+  max-width: 852px;
   margin: auto;
   @media screen and (max-width: 768px) {
     margin-left: -16px;

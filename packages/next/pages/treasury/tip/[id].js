@@ -35,9 +35,9 @@ const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
-  margin-right: 312px;
+  margin-right: 332px;
   @media screen and (max-width: 1024px) {
-    max-width: 848px;
+    max-width: 852px;
     margin: 0 auto;
   }
 `;

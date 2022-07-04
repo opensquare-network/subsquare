@@ -22,9 +22,9 @@ const Wrapper = styled.div`
     margin-top: 16px;
   }
 
-  margin-right: 312px;
+  margin-right: 332px;
   @media screen and (max-width: 1024px) {
-    max-width: 848px;
+    max-width: 852px;
     margin: 0 auto;
   }
   overflow: hidden;

@@ -23,7 +23,7 @@ import { isKeyRegisteredUser } from "next-common/utils";
 import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
-  max-width: 848px;
+  max-width: 852px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }

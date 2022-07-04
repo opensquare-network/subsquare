@@ -24,14 +24,14 @@ import ReferendumMetadata from "next-common/components/democracy/metadata";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 
 const Wrapper = styled.div`
-  margin-right: 312px;
+  margin-right: 332px;
   overflow: hidden;
   flex-grow: 1;
   > :not(:first-child) {
     margin-top: 16px;
   }
   @media screen and (max-width: 1024px) {
-    max-width: 848px;
+    max-width: 852px;
     margin: 0 auto;
   }
 `;

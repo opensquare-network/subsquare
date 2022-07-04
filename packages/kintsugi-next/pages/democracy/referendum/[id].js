@@ -32,7 +32,7 @@ const Wrapper = styled.div`
     margin-top: 16px;
   }
   @media screen and (max-width: 1024px) {
-    max-width: 848px;
+    max-width: 852px;
     margin: 0 auto;
   }
 `;
