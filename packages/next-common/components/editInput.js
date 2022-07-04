@@ -65,7 +65,7 @@ export default function EditInput({
           contentType={contentType}
           setContentType={setContentType}
           loadSuggestions={()=> []}
-          minHeight={144}
+          minHeight={100}
         />
       </InputWrapper>
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
