@@ -21,7 +21,7 @@ import { getMetaDesc } from "utils/viewfuncs";
 import OutWrapper from "next-common/components/styled/outWrapper";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
 import useMentionList from "next-common/utils/hooks/useMentionList";
-import MainCard from "@subsquare/next/components/mainCard";
+import MainCard from "next-common/components/styled/mainCard";
 
 
 export default withLoginUserRedux(

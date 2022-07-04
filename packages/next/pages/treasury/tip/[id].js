@@ -29,7 +29,7 @@ import Links from "next-common/components/links";
 import ReasonLink from "next-common/components/reasonLink";
 import Tipper from "components/tipper";
 import useMentionList from "next-common/utils/hooks/useMentionList";
-import MainCard from "../../../components/mainCard";
+import MainCard from "next-common/components/styled/mainCard";
 
 const FlexEnd = styled.div`
   display: flex;

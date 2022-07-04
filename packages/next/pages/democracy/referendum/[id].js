@@ -20,7 +20,7 @@ import { getMetaDesc } from "../../../utils/viewfuncs";
 import Timeline from "components/referenda/timeline";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
 import useMentionList from "next-common/utils/hooks/useMentionList";
-import MainCard from "../../../components/mainCard";
+import MainCard from "next-common/components/styled/mainCard";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const api = useApi(chain);

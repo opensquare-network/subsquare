@@ -20,7 +20,7 @@ import Second from "next-common/components/publicProposal/second";
 import { useAddressVotingBalance } from "utils/hooks";
 import isNil from "lodash.isnil";
 import useMentionList from "next-common/utils/hooks/useMentionList";
-import MainCard from "@subsquare/next/components/mainCard";
+import MainCard from "next-common/components/styled/mainCard";
 
 
 export default withLoginUserRedux(

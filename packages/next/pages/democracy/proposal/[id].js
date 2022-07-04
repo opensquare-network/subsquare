@@ -20,7 +20,7 @@ import OutWrapper from "next-common/components/styled/outWrapper";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 import isNil from "lodash.isnil";
 import useMentionList from "next-common/utils/hooks/useMentionList";
-import MainCard from "../../../components/mainCard";
+import MainCard from "next-common/components/styled/mainCard";
 
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {

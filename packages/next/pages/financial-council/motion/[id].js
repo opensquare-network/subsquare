@@ -14,7 +14,7 @@ import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { useRef, useState } from "react";
 import useMentionList from "next-common/utils/hooks/useMentionList";
-import MainCard from "../../../components/mainCard";
+import MainCard from "next-common/components/styled/mainCard";
 
 
 export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
