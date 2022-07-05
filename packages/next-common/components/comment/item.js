@@ -2,7 +2,6 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { timeDurationFromNow } from "next-common/utils";
 import Edit from "../edit";
-import HtmlRender from "../post/htmlRender";
 import nextApi from "next-common/services/nextApi";
 import { useEffect, useState } from "react";
 import ReplyIcon from "../../assets/imgs/icons/reply.svg";
@@ -15,8 +14,8 @@ import User from "next-common/components/user";
 import EditInput from "next-common/components/editInput";
 import { useRouter } from "next/router";
 import Flex from "next-common/components/styled/flex";
-import MicromarkMd from "next-common/components/micromarkMd";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
+import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
 
 const Wrapper = styled.div`
   position: relative;
@@ -241,15 +240,8 @@ export default function Item({ user, data, chain, onReply }) {
       {!isEdit && (
         <>
           <ContentWrapper>
-            {comment.contentType === "markdown" && (
-              <MicromarkMd
-                md={comment.content}
-                contentVersion={comment.contentVersion}
-              />
-            )}
-            {comment.contentType === "html" && (
-              <HtmlRender html={comment.content} />
-            )}
+            {comment.contentType === "markdown" && (<MarkdownPreviewer content={comment.content}/>)}
+            {comment.contentType === "html" && (<HtmlPreviewer content={post.content}/>)}
             {comment.createdAt !== comment.updatedAt && (
               <EditedLabel>Edited</EditedLabel>
             )}

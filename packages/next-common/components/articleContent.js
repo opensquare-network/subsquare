@@ -5,14 +5,12 @@ import { toApiType } from "next-common/utils/viewfuncs";
 import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import User from "next-common/components/user";
-import HtmlRender from "next-common/components/post/htmlRender";
 import Actions from "next-common/components/actions";
 import PostEdit from "next-common/components/post/postEdit";
-import MicromarkMd from "next-common/components/micromarkMd";
 import EditIcon from "../assets/imgs/icons/edit.svg";
 import PostDataSource from "./postDataSource";
 import Poll from "./poll";
-
+import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
 const Wrapper = styled.div`
   :hover {
     .edit {
@@ -202,13 +200,8 @@ export default function ArticleContent({
           {post.bannerUrl && (
             <BannerImage src={post.bannerUrl} alt="banner image" />
           )}
-          {post.contentType === "markdown" && (
-            <MicromarkMd
-              md={post.content}
-              contentVersion={post.contentVersion}
-            />
-          )}
-          {post.contentType === "html" && <HtmlRender html={post.content} />}
+          {post.contentType === "markdown" && <MarkdownPreviewer content={post.content}/>}
+          {post.contentType === "html" && <HtmlPreviewer content={post.content}/>}
           {post.createdAt !== post.updatedAt && (
             <EditedLabel>Edited</EditedLabel>
           )}
