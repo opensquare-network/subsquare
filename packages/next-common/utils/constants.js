@@ -8,6 +8,7 @@ import interlay from "./consts/settings/interlay";
 import kintsugi from "./consts/settings/kintsugi";
 import khala from "./consts/settings/khala";
 import turing from "./consts/settings/turing";
+import crust from "./consts/settings/crust";
 import menus from "./consts/menu";
 
 export const nodes = [
@@ -33,6 +34,7 @@ export const nodes = [
   turing,
   crab,
   // centrifuge,
+  crust,
 ];
 
 export const accountMenu = [
@@ -141,4 +143,4 @@ export const DEFAULT_SEO_INFO = {
 export const BalanceDecimals = {
   DOT: 2,
   KSM: 2,
-}
+};
