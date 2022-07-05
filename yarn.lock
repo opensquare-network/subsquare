@@ -1179,6 +1179,14 @@
     util "npm:util"
     web-vitals "^2.1.4"
 
+"@osn/previewer@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@osn/previewer/-/previewer-0.8.0.tgz#99751da51d97ca16dd9c98e7e2e00b9b17def010"
+  integrity sha512-jT8ePOuxNpQ1NsCMemBMII9XfTTnvbMAGYMpy4wzr+MyiWdGaYF2WGo7fPcQJzNhOsDb4nsSCVQ30nrZjp2POg==
+  dependencies:
+    marked "^4.0.17"
+    sanitize-html "^2.7.0"
+
 "@osn/provider-options@1.0.7":
   version "1.0.7"
   resolved "https://registry.npmjs.org/@osn/provider-options/-/provider-options-1.0.7.tgz#bd7fce7426b44c370812376704aa9092ca6cc216"
@@ -4172,7 +4180,7 @@ make-dir@^3.0.2, make-dir@^3.1.0:
   dependencies:
     semver "^6.0.0"
 
-marked@^4.0.15:
+marked@^4.0.15, marked@^4.0.17:
   version "4.0.17"
   resolved "https://registry.yarnpkg.com/marked/-/marked-4.0.17.tgz#1186193d85bb7882159cdcfc57d1dfccaffb3fe9"
   integrity sha512-Wfk0ATOK5iPxM4ptrORkFemqroz0ZDxp5MWfYA7H/F+wO17NRWV5Ypxi6p3g2Xmw2bKeiYOl6oVnLHKxBA0VhA==
