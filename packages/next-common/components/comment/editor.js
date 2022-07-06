@@ -9,6 +9,10 @@ import Flex from "next-common/components/styled/flex";
 import { toApiType } from "../../utils/viewfuncs";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import dynamic from 'next/dynamic'
+import IdentityOrAddr from "../IdentityOrAddr";
+import { isAddress } from "@polkadot/util-crypto";
+import { addressEllipsis } from "../../utils";
+
 
 const UniverseEditor = dynamic(() => import("@osn/rich-text-editor").then(mod=> mod.UniverseEditor),{ssr:false})
 
@@ -122,8 +126,9 @@ function Editor(
     return (users || [])
       .map((user) => ({
         preview: user.name,
-        value: `[@${escapeLinkText(user.name)}](/member/${user.value}) `,
-        address: user.name,
+        value:  user.isKeyRegistered ? `[@${addressEllipsis(user.name)}](${user.value}-${chain})` : `[@${escapeLinkText(user.name)}](/member/${user.value}) `,
+        address: user.value,
+        isKeyRegistered: user.isKeyRegistered,
       }))
       .filter((i) => i.preview.toLowerCase().includes(text.toLowerCase()));
   };
@@ -138,6 +143,7 @@ function Editor(
           setContentType={setContentType}
           loadSuggestions={loadSuggestions}
           minHeight={100}
+          identifier={<IdentityOrAddr/>}
         />
       </Relative>
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
