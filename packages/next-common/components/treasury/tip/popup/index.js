@@ -24,6 +24,7 @@ import TipReason from "./tipReason";
 import Signer from "./signer";
 import Tab, { ReportAwesome, NewTip } from "./tab";
 import TipValue from "./tipValue";
+import useAddressBalance from "../../../../utils/hooks/useAddressBalance";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -51,6 +52,10 @@ function PopupContent({
   const api = useApi(chain);
 
   const [beneficiary, setBeneficiary] = useState();
+  const [balance, balanceIsLoading] = useAddressBalance(
+    api,
+    signerAccount?.address
+  );
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -161,6 +166,8 @@ function PopupContent({
         setSignerAccount={setSignerAccount}
         extensionAccounts={extensionAccounts}
         node={node}
+        balance={balance}
+        balanceIsLoading={balanceIsLoading}
       />
       <Beneficiary
         chain={chain}
