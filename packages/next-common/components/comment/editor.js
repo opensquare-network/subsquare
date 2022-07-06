@@ -129,6 +129,7 @@ function Editor(
         value:  user.isKeyRegistered ? `[@${addressEllipsis(user.name)}](${user.value}-${chain})` : `[@${escapeLinkText(user.name)}](/member/${user.value}) `,
         address: user.value,
         isKeyRegistered: user.isKeyRegistered,
+        chain: chain,
       }))
       .filter((i) => i.preview.toLowerCase().includes(text.toLowerCase()));
   };

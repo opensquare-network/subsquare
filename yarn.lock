@@ -1191,10 +1191,18 @@
     util "npm:util"
     web-vitals "^2.1.4"
 
-"@osn/previewer@0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@osn/previewer/-/previewer-0.8.0.tgz#99751da51d97ca16dd9c98e7e2e00b9b17def010"
-  integrity sha512-jT8ePOuxNpQ1NsCMemBMII9XfTTnvbMAGYMpy4wzr+MyiWdGaYF2WGo7fPcQJzNhOsDb4nsSCVQ30nrZjp2POg==
+"@osn/previewer@0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@osn/previewer/-/previewer-0.9.0.tgz#94b200d350c0a2d3b9bb7b4c430f8faaae051fa4"
+  integrity sha512-pEM6rYdLZg1LN304aUjpZQa5eqIlSttrRM3f8yr22UHTpLwHl5zjSUpPPN7QqxcQoopVRq3l5L29ojN5KGW5tA==
+  dependencies:
+    marked "^4.0.17"
+    sanitize-html "^2.7.0"
+
+"@osn/previewer@0.9.1":
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/@osn/previewer/-/previewer-0.9.1.tgz#c6a02c3d1f7928746755646196d799cc3e46ddb6"
+  integrity sha512-tTt5u1mzfFXtMmbDZBV4owehpsfok8ov+rc/ZTvMVTS0uIKn1LGa8wkz6Jt+Jr7ENkY0/4Pi+lxGN6BVd3zyyA==
   dependencies:
     marked "^4.0.17"
     sanitize-html "^2.7.0"
@@ -1204,12 +1212,12 @@
   resolved "https://registry.npmjs.org/@osn/provider-options/-/provider-options-1.0.7.tgz#bd7fce7426b44c370812376704aa9092ca6cc216"
   integrity sha512-8P45Pc/N9FrFJz4R922J47w2u8ZCQ8e7/UpMpUmRKayCgQ3oCSH1xtsKYNozbSUsuGNsWJ+UZaap2AfIJIrgjA==
 
-"@osn/rich-text-editor@^0.1.27":
-  version "0.1.27"
-  resolved "https://registry.yarnpkg.com/@osn/rich-text-editor/-/rich-text-editor-0.1.27.tgz#0827ad8aa69072cb55cea141546d14ca2d5421c1"
-  integrity sha512-wx2ePXJZ8EykWLosjowLIf03O6tcsahYCseaHURNhPg/Oa84bK7C+eO5ZbXeoNbkcTRapG+i+1yCsKZuMQwuhw==
+"@osn/rich-text-editor@^0.1.29":
+  version "0.1.29"
+  resolved "https://registry.yarnpkg.com/@osn/rich-text-editor/-/rich-text-editor-0.1.29.tgz#856878e1fb5b03fb8798f91740158d1327f31d82"
+  integrity sha512-lgY1Q+glHw30f+t3V1ZoT37mbU8SNTgp/dGLOmoOlzBwu1mOEZbrF5TbUdba2BhtxlVBwaeajUNprcB9VsIwSA==
   dependencies:
-    "@osn/previewer" "0.8.0"
+    "@osn/previewer" "0.9.0"
     "@polkadot/keyring" "^9.6.2"
     "@types/lodash" "^4.14.182"
     "@types/lodash.debounce" "^4.0.7"
