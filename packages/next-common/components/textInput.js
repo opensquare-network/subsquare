@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   color: #d7dee8;
 `;
 
-const Input = styled.input`
+const Input = styled.textarea`
   ${(p) =>
     p.disabled &&
     css`
@@ -23,7 +23,14 @@ const Input = styled.input`
   all: unset;
   padding: 12px 16px;
   flex-grow: 1;
-  color: #1E2134
+  color: #1E2134;
+
+  height: 40px;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
 `;
 
 export default function TextInput({
@@ -36,7 +43,7 @@ export default function TextInput({
       <Input
         disabled={disabled}
         type="text"
-        placeholder=""
+        placeholder="Please fill the reason..."
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />

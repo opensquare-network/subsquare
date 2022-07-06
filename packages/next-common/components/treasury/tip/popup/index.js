@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import BigNumber from "bignumber.js";
 
 import useApi from "../../../../utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "../../../../utils/hooks/useIsMounted";
@@ -21,6 +22,8 @@ import { emptyFunction } from "../../../../utils";
 import Beneficiary from "./beneficiary";
 import TipReason from "./tipReason";
 import Signer from "./signer";
+import Tab, { ReportAwesome, NewTip } from "./tab";
+import TipValue from "./tipValue";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -40,6 +43,8 @@ function PopupContent({
   const [signerAccount, setSignerAccount] = useState(null);
   const [reason, setReason] = useState("");
   const [loading, setLoading] = useState(false);
+  const [tabIndex, setTabIndex] = useState(ReportAwesome);
+  const [inputValue, setInputValue] = useState("0");
 
   const node = getNode(chain);
 
@@ -68,6 +73,33 @@ function PopupContent({
 
     const hexReason = "0x" + Buffer.from(reason).toString("hex");
 
+    let tx;
+
+    if (tabIndex === NewTip) {
+      if (!inputValue) {
+        return showErrorToast("Please input a value");
+      }
+
+      const bnValue = new BigNumber(inputValue).times(
+        Math.pow(10, node.decimals)
+      );
+      if (bnValue.isNaN()) {
+        return showErrorToast("Invalid value");
+      }
+
+      if (bnValue.lte(0)) {
+        return showErrorToast("Value must be greater than 0");
+      }
+
+      if (!bnValue.mod(1).isZero()) {
+        return showErrorToast("Invalid precision");
+      }
+
+      tx = api.tx.tips.tipNew(hexReason, beneficiary, bnValue.toFixed());
+    } else {
+      tx = api.tx.tips.reportAwesome(hexReason, beneficiary);
+    }
+
     const toastId = newToastId();
     dispatch(newPendingToast(toastId, "Waiting for signing..."));
 
@@ -76,9 +108,9 @@ function PopupContent({
 
       const signerAddress = signerAccount.address;
 
-      const unsub = await api.tx.tips
-        .reportAwesome(hexReason, beneficiary)
-        .signAndSend(signerAddress, ({ events = [], status }) => {
+      const unsub = await tx.signAndSend(
+        signerAddress,
+        ({ events = [], status }) => {
           if (status.isFinalized) {
             onFinalized(signerAddress);
             unsub();
@@ -118,6 +150,10 @@ function PopupContent({
 
   return (
     <>
+      <Tab
+        tabIndex={tabIndex}
+        setTabIndex={setTabIndex}
+      />
       <Signer
         api={api}
         chain={chain}
@@ -132,6 +168,7 @@ function PopupContent({
         setAddress={setBeneficiary}
       />
       <TipReason setValue={setReason} />
+      {tabIndex === NewTip && <TipValue chain={chain} setValue={setInputValue} />}
       <ButtonWrapper>
         <Button
           secondary
