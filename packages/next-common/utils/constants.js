@@ -7,6 +7,7 @@ import acala from "./consts/settings/acala";
 import interlay from "./consts/settings/interlay";
 import kintsugi from "./consts/settings/kintsugi";
 import khala from "./consts/settings/khala";
+import phala from "./consts/settings/phala";
 import turing from "./consts/settings/turing";
 import menus from "./consts/menu";
 
@@ -16,6 +17,7 @@ export const nodes = [
   karura,
   acala,
   khala,
+  phala,
   {
     value: "kabocha",
     name: "Kabocha",

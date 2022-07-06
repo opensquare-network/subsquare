@@ -8,6 +8,7 @@ import crab from "./crab";
 import interlay from "./interlay";
 import karura from "./karura";
 import khala from "./khala";
+import phala from "./phala";
 import kintsugi from "./kintsugi";
 import polkadex from "./polkadex";
 import turing from "./turing";
@@ -26,6 +27,7 @@ const settingsMap = {
   crab,
   interlay,
   karura,
+  phala,
   khala,
   kintsugi,
   polkadex,
