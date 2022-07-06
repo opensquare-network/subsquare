@@ -21,6 +21,7 @@ import {
 import usePendingTip from "next-common/components/treasury/tip/usePendingTip";
 import dynamic from "next/dynamic";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
+import Loading from "next-common/components/loading";
 
 const Popup = dynamic(
   () => import("next-common/components/treasury/tip/popup"),

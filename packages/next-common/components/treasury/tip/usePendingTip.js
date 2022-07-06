@@ -27,8 +27,8 @@ export default function usePendingTip({ tips, setTips }) {
       });
       if (result) {
         for (const tip of result.items) {
-          if (pendingTips.includes(tip.tipHash)) {
-            dispatch(removePendingTip(tip.tipHash));
+          if (pendingTips.includes(tip.hash)) {
+            dispatch(removePendingTip(tip.hash));
           }
         }
         if (tips.page === 1) {

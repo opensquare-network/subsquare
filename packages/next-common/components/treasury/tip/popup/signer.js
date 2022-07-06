@@ -12,7 +12,7 @@ export default function Signer({
   return (
     <div>
       <PopupLabel
-        text={"Finder"}
+        text={"Address"}
       />
       <SignerSelect
         api={api}
