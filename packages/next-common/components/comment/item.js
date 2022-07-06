@@ -15,7 +15,8 @@ import EditInput from "next-common/components/editInput";
 import { useRouter } from "next/router";
 import Flex from "next-common/components/styled/flex";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
-import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
+import { HtmlPreviewer, MarkdownPreviewer, renderIdentityOrAddressPlugin } from "@osn/previewer";
+import IdentityOrAddr from "../IdentityOrAddr";
 
 const Wrapper = styled.div`
   position: relative;
@@ -240,8 +241,8 @@ export default function Item({ user, data, chain, onReply }) {
       {!isEdit && (
         <>
           <ContentWrapper>
-            {comment.contentType === "markdown" && (<MarkdownPreviewer content={comment.content}/>)}
-            {comment.contentType === "html" && (<HtmlPreviewer content={post.content}/>)}
+            {comment.contentType === "markdown" && (<MarkdownPreviewer content={comment.content} plugins={[renderIdentityOrAddressPlugin(<IdentityOrAddr/>)]}/>)}
+            {comment.contentType === "html" && (<HtmlPreviewer content={post.content} plugins={[renderIdentityOrAddressPlugin(<IdentityOrAddr/>)]}/>)}
             {comment.createdAt !== comment.updatedAt && (
               <EditedLabel>Edited</EditedLabel>
             )}
