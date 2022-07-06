@@ -126,7 +126,7 @@ function Editor(
     return (users || [])
       .map((user) => ({
         preview: user.name,
-        value:  user.isKeyRegistered ? `[@${addressEllipsis(user.name)}](${user.value}-${chain})` : `[@${escapeLinkText(user.name)}](/member/${user.value}) `,
+        value:  user.isKeyRegistered ? `[@${addressEllipsis(user.name)}](${user.value}-${chain}) ` : `[@${escapeLinkText(user.name)}](/member/${user.value}) `,
         address: user.value,
         isKeyRegistered: user.isKeyRegistered,
         chain: chain,
