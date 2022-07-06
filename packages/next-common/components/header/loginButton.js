@@ -11,6 +11,7 @@ function LoginButton({ chain }) {
     [
       Chains.kintsugi,
       Chains.khala,
+      Chains.phala,
       Chains.bifrost,
       Chains.calamari,
       Chains.kusama,
