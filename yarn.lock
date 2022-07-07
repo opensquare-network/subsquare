@@ -1200,25 +1200,16 @@
     prismjs "^1.28.0"
     sanitize-html "^2.7.0"
 
-"@osn/previewer@0.9.0":
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/@osn/previewer/-/previewer-0.9.0.tgz#94b200d350c0a2d3b9bb7b4c430f8faaae051fa4"
-  integrity sha512-pEM6rYdLZg1LN304aUjpZQa5eqIlSttrRM3f8yr22UHTpLwHl5zjSUpPPN7QqxcQoopVRq3l5L29ojN5KGW5tA==
-  dependencies:
-    marked "^4.0.17"
-    sanitize-html "^2.7.0"
-
 "@osn/provider-options@1.0.7":
   version "1.0.7"
   resolved "https://registry.npmjs.org/@osn/provider-options/-/provider-options-1.0.7.tgz#bd7fce7426b44c370812376704aa9092ca6cc216"
   integrity sha512-8P45Pc/N9FrFJz4R922J47w2u8ZCQ8e7/UpMpUmRKayCgQ3oCSH1xtsKYNozbSUsuGNsWJ+UZaap2AfIJIrgjA==
 
-"@osn/rich-text-editor@^0.1.31":
-  version "0.1.31"
-  resolved "https://registry.yarnpkg.com/@osn/rich-text-editor/-/rich-text-editor-0.1.31.tgz#390b27c39086137ce57d6335371779fcb1d02193"
-  integrity sha512-fCgstO2jVfIB/FtJ4SyjquwW3AmRgcQdsSDIkO+GAHE5pdV5APUxCdLqKxEOpYrP2Jmdk5FqNmXbS/UfDgWbQQ==
+"@osn/rich-text-editor@^0.1.32":
+  version "0.1.32"
+  resolved "https://registry.yarnpkg.com/@osn/rich-text-editor/-/rich-text-editor-0.1.32.tgz#2f0465fea432affb69a07c5ebc9a77769bb8b4b4"
+  integrity sha512-NdGGXpzMHUVZo2gHVjJNE0ZWZxN2xQE37k9n82A9IhXjMZe5k/7dBr2NiBrkmJr25K7zV2OjEeMcBoQMvp0N7Q==
   dependencies:
-    "@osn/previewer" "0.9.0"
     "@polkadot/keyring" "^9.6.2"
     "@types/lodash" "^4.14.182"
     "@types/lodash.debounce" "^4.0.7"
