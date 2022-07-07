@@ -7,6 +7,10 @@
   font-size: 14px;
   color: #34373c;
 
+  .mention-identity-user-app{
+    height: 22px;
+  }
+
   ul > li::before {
     margin-right: 4px;
   }
@@ -145,7 +149,7 @@
   }
 
   ul.mention-list{
-    padding: 0;
+    padding-left: 0;
     li::before{
       display: none;
     }
