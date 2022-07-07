@@ -1191,10 +1191,10 @@
     util "npm:util"
     web-vitals "^2.1.4"
 
-"@osn/previewer@0.10.1":
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/@osn/previewer/-/previewer-0.10.1.tgz#1c60eab249974c7ae677f334ecbe9130fa06409d"
-  integrity sha512-Bau3654Tv3Vty72srERYIgKRI30xsRgWu3tYJqvXFTYkUNHRcOlCzhhzNJDGt5+PWUDeaKizCI+GB6BjYc8GLg==
+"@osn/previewer@^0.10.2":
+  version "0.10.2"
+  resolved "https://registry.npmjs.org/@osn/previewer/-/previewer-0.10.2.tgz#59f835159c1d1760e30e871f6afd040ba47ad269"
+  integrity sha512-FZunTZyGQ3RLDI7RYcNcMiLSCN0jtS6Qr+2bRZaismZkRSiKmw1Rh3s7zRfEB869WlnS5gg04OOvYe7B5Cl70A==
   dependencies:
     marked "^4.0.17"
     prismjs "^1.28.0"
