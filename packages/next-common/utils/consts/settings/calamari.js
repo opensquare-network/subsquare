@@ -28,6 +28,7 @@ const calamari = {
   snsCoverCid: "bafybeig2mirpdoj3cowecbxiafo335abg3rlz6uhsfficemwtft75ykpqu",
   endpoints: DEFAULT_CALAMARI_NODES,
   loginButtonPrimary: true,
+  headerBackgroundColor: "#000000",
 };
 
 export default calamari;

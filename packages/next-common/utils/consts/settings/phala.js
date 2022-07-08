@@ -17,6 +17,7 @@ const phala = {
   snsCoverCid: "bafybeibte36v2qk5wg352hk7ewvkuhoke6iwb7l5gvjt7wy446yayxjie4",
   endpoints: DEFAULT_PHALA_NODES,
   loginButtonPrimary: true,
+  headerBackgroundColor: "#000000",
 };
 
 export default phala;

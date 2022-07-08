@@ -30,6 +30,7 @@ const kusama = {
   snsCoverCid: "bafybeifrjrzaajdpfwbxtffsexnxwehsqc3k4ruk5oummlghsxvaityiku",
   endpoints: DEFAULT_KUSAMA_NODES,
   loginButtonPrimary: true,
+  headerBackgroundColor: "#000000",
 };
 
 export default kusama;
