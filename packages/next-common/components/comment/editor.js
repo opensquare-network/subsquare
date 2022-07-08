@@ -10,7 +10,6 @@ import { toApiType } from "../../utils/viewfuncs";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import dynamic from 'next/dynamic'
 import IdentityOrAddr from "../IdentityOrAddr";
-import { isAddress } from "@polkadot/util-crypto";
 import { addressEllipsis } from "../../utils";
 
 

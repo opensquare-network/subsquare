@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled, { css } from "styled-components";
 import { timeDurationFromNow } from "next-common/utils";
 import Edit from "../edit";
@@ -17,6 +17,7 @@ import Flex from "next-common/components/styled/flex";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import { HtmlPreviewer, MarkdownPreviewer, renderMentionIdentityUserPlugin } from "@osn/previewer";
 import IdentityOrAddr from "../IdentityOrAddr";
+import { isAddress } from "@polkadot/util-crypto";
 
 const Wrapper = styled.div`
   position: relative;
@@ -163,6 +164,7 @@ const EditedLabel = styled.div`
 export default function Item({ user, data, chain, onReply }) {
   const dispatch = useDispatch();
   const router = useRouter();
+  const ref = useRef();
   const [comment, setComment] = useState(data);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -232,6 +234,17 @@ export default function Item({ user, data, chain, onReply }) {
     });
   };
 
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.querySelectorAll("a").forEach((block) => {
+        const [, memberId] = block.getAttribute("href")?.match(/^\/member\/([-\w]+)$/) || [];
+        if (memberId && !isAddress(memberId)) {
+          block.classList.add("disabled-link");
+        }
+      });
+    }
+  }, [ref]);
+
   return (
     <Wrapper id={comment.height} highlight={highlight}>
       <InfoWrapper>
@@ -240,7 +253,7 @@ export default function Item({ user, data, chain, onReply }) {
       </InfoWrapper>
       {!isEdit && (
         <>
-          <ContentWrapper>
+          <ContentWrapper ref={ref}>
             {comment.contentType === "markdown" && (<MarkdownPreviewer content={comment.content} plugins={[renderMentionIdentityUserPlugin(<IdentityOrAddr/>)]}/>)}
             {comment.contentType === "html" && (<HtmlPreviewer content={comment.content} plugins={[renderMentionIdentityUserPlugin(<IdentityOrAddr/>, {targetElement:{tag:"span"}})]}/>)}
             {comment.createdAt !== comment.updatedAt && (

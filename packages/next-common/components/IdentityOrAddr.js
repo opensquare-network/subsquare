@@ -12,7 +12,7 @@ const NameWrapper = styled.div`
   color: #1F70C7;
 `;
 
-const MentionBox = styled.div`
+const MentionBox = styled.a`
   display: flex;
   padding: 0 8px;
   gap: 2px;
@@ -39,13 +39,13 @@ function IdentityOrAddr({address, network}) {
   return (
     <NameWrapper>
       {identity && identity?.info?.status !== "NO_ID" ? (
-        <MentionBox>
+        <MentionBox href={`/member/${address}`} target="_blank">
           <span>@</span>
           <Identity identity={identity}/>
         </MentionBox>
       ) : (
         <>
-          <MentionBox>
+          <MentionBox href={`/member/${address}`} target="_blank">
             <span>@</span>
             {addressEllipsis(encodeAddressToChain(address, network))}
           </MentionBox>
