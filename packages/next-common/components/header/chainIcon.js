@@ -11,6 +11,7 @@ import Interlay from "../../assets/icons/chain/interlay.png";
 import Kabocha from "../../assets/icons/chain/kabocha.png";
 import Karura from "../../assets/icons/chain/karura.png";
 import Khala from "../../assets/icons/chain/khala.png";
+import Phala from "../../assets/icons/chain/phala.png";
 import Polkadex from "../../assets/icons/chain/polkadex.png";
 import Turing from "../../assets/icons/chain/turing.png";
 import Kintsugi from "../../assets/icons/chain/kintsugi.png";
@@ -29,6 +30,7 @@ const imageMap = {
   [Chains.kabocha]: Kabocha,
   [Chains.karura]: Karura,
   [Chains.khala]: Khala,
+  [Chains.phala]: Phala,
   [Chains.polkadex]: Polkadex,
   [Chains.turing]: Turing,
   [Chains.kintsugi]: Kintsugi,
