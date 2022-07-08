@@ -1191,10 +1191,10 @@
     util "npm:util"
     web-vitals "^2.1.4"
 
-"@osn/previewer@^0.10.2":
-  version "0.10.2"
-  resolved "https://registry.npmjs.org/@osn/previewer/-/previewer-0.10.2.tgz#59f835159c1d1760e30e871f6afd040ba47ad269"
-  integrity sha512-FZunTZyGQ3RLDI7RYcNcMiLSCN0jtS6Qr+2bRZaismZkRSiKmw1Rh3s7zRfEB869WlnS5gg04OOvYe7B5Cl70A==
+"@osn/previewer@^0.10.3":
+  version "0.10.3"
+  resolved "https://registry.yarnpkg.com/@osn/previewer/-/previewer-0.10.3.tgz#87e358762d8ede9aadcf4251b35e6487d8e133e7"
+  integrity sha512-NdVqzY4kH7I674jClSWDFoVXv4jZ5f5mpFcRmhbN8WD25UpOmYLMX97VvOgmtCl3pj/u/J5SZ8BlgWsCTcGCiQ==
   dependencies:
     marked "^4.0.17"
     prismjs "^1.28.0"
@@ -1205,10 +1205,10 @@
   resolved "https://registry.npmjs.org/@osn/provider-options/-/provider-options-1.0.7.tgz#bd7fce7426b44c370812376704aa9092ca6cc216"
   integrity sha512-8P45Pc/N9FrFJz4R922J47w2u8ZCQ8e7/UpMpUmRKayCgQ3oCSH1xtsKYNozbSUsuGNsWJ+UZaap2AfIJIrgjA==
 
-"@osn/rich-text-editor@^0.1.33":
-  version "0.1.33"
-  resolved "https://registry.yarnpkg.com/@osn/rich-text-editor/-/rich-text-editor-0.1.33.tgz#310095f8a9807a3da01bcedfebe9b0720998654e"
-  integrity sha512-TFqmIzblOSK8RZka2AZUhPl2JUPKXxMlZF04C8hrPlu2u3Y3hDDFb6ahuIYclTtjybj4KCpJenpWOG6x8Zx4Bg==
+"@osn/rich-text-editor@^0.1.35":
+  version "0.1.35"
+  resolved "https://registry.yarnpkg.com/@osn/rich-text-editor/-/rich-text-editor-0.1.35.tgz#ef44ecea9b7b66ee771cc5efecf20949e36f15a8"
+  integrity sha512-rrNtleh7iIN/XjD0njiJxggNCyGNcTKDUNEUmcCB/y5pUWadrMyCFt38AiSKs/g8izE+Im2G/EBE1T5ba71m0g==
   dependencies:
     "@polkadot/keyring" "^9.6.2"
     "@types/lodash" "^4.14.182"
