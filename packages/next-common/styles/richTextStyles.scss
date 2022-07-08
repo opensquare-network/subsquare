@@ -7,6 +7,11 @@
   font-size: 14px;
   color: #34373c;
 
+  a.disabled-link {
+    color: #506176;
+    pointer-events: none;
+  }
+
   .mention-identity-user-app{
     height: 22px;
   }
