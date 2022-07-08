@@ -29,6 +29,7 @@ const kusama = {
   blockTime: 6000,
   snsCoverCid: "bafybeifrjrzaajdpfwbxtffsexnxwehsqc3k4ruk5oummlghsxvaityiku",
   endpoints: DEFAULT_KUSAMA_NODES,
+  loginButtonPrimary: true,
 };
 
 export default kusama;

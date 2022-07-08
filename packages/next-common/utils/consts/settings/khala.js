@@ -24,6 +24,7 @@ const khala = {
   ss58Format: 30,
   snsCoverCid: "bafybeifo4hsd3ue5ivsbcrb77fp2uvglxyc2royqvg52eo5eggnppdjxp4",
   endpoints: DEFAULT_KHALA_NODES,
+  loginButtonPrimary: true,
 };
 
 export default khala;

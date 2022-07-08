@@ -1,24 +1,13 @@
 import React, { memo } from "react";
 import Button from "../button";
-import Chains from "../../utils/consts/chains";
 import { useRouter } from "next/router";
+import getChainSettings from "../../utils/consts/settings";
 
 function LoginButton({ chain }) {
   const router = useRouter();
 
-  let isPrimaryInverse = false;
-  if (
-    [
-      Chains.kintsugi,
-      Chains.khala,
-      Chains.phala,
-      Chains.bifrost,
-      Chains.calamari,
-      Chains.kusama,
-    ].includes(chain)
-  ) {
-    isPrimaryInverse = true;
-  }
+  const setting = getChainSettings(chain);
+  let isPrimaryInverse = setting.loginButtonPrimary;
 
   return (
     <Button

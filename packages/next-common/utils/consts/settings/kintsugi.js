@@ -33,6 +33,7 @@ const kintsugi = {
   ss58Format: 2092,
   snsCoverCid: "bafybeifddx4p4ouofy2mj3pt5o62alnpfywbu7w7iedws3shpiu547tszi",
   endpoints: DEFAULT_KINTSUGI_NODES,
+  loginButtonPrimary: true,
 };
 
 export default kintsugi;

@@ -27,6 +27,7 @@ const calamari = {
   ss58Format: 78,
   snsCoverCid: "bafybeig2mirpdoj3cowecbxiafo335abg3rlz6uhsfficemwtft75ykpqu",
   endpoints: DEFAULT_CALAMARI_NODES,
+  loginButtonPrimary: true,
 };
 
 export default calamari;
