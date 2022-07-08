@@ -161,6 +161,14 @@ const EditedLabel = styled.div`
   color: #9da9bb;
 `;
 
+//fixme: this a for mention insert from replay button
+//find a elegant way to do this
+const prettyHTML = (html)=>{
+  return html
+    .replaceAll(`data-osn-polka-network`,`osn-polka-network`)
+    .replaceAll(`data-osn-polka-address`,`osn-polka-address`);
+}
+
 export default function Item({ user, data, chain, onReply }) {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -273,7 +281,7 @@ export default function Item({ user, data, chain, onReply }) {
         <>
           <ContentWrapper ref={ref}>
             {comment.contentType === "markdown" && (<MarkdownPreviewer content={comment.content} plugins={[renderMentionIdentityUserPlugin(<IdentityOrAddr/>)]}/>)}
-            {comment.contentType === "html" && (<HtmlPreviewer content={comment.content} plugins={[renderMentionIdentityUserPlugin(<IdentityOrAddr/>, {targetElement:{tag:"span"}})]}/>)}
+            {comment.contentType === "html" && (<HtmlPreviewer content={prettyHTML(comment.content)} plugins={[renderMentionIdentityUserPlugin(<IdentityOrAddr/>, {targetElement:{tag:"span"}})]}/>)}
             {comment.createdAt !== comment.updatedAt && (
               <EditedLabel>Edited</EditedLabel>
             )}
