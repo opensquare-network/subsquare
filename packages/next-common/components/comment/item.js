@@ -18,6 +18,7 @@ import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import { HtmlPreviewer, MarkdownPreviewer, renderMentionIdentityUserPlugin } from "@osn/previewer";
 import IdentityOrAddr from "../IdentityOrAddr";
 import { isAddress } from "@polkadot/util-crypto";
+import { prettyHTML } from "../../utils/viewfuncs";
 
 const Wrapper = styled.div`
   position: relative;
@@ -161,13 +162,6 @@ const EditedLabel = styled.div`
   color: #9da9bb;
 `;
 
-//fixme: this a for mention insert from replay button
-//find a elegant way to do this
-const prettyHTML = (html)=>{
-  return html
-    .replaceAll(`data-osn-polka-network`,`osn-polka-network`)
-    .replaceAll(`data-osn-polka-address`,`osn-polka-address`);
-}
 
 export default function Item({ user, data, chain, onReply }) {
   const dispatch = useDispatch();
@@ -237,7 +231,7 @@ export default function Item({ user, data, chain, onReply }) {
 
   const editComment = async (content, contentType) => {
     return await nextApi.patch(`comments/${commentId}`, {
-      content,
+      content: contentType === "html" ? prettyHTML(content) : content,
       contentType,
     });
   };
