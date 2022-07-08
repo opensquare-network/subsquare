@@ -19,7 +19,7 @@ export function getFocusEditor(contentType, editorWrapperRef, quillRef) {
       editorWrapperRef.current?.querySelector("textarea")?.focus();
     } else if (contentType === "html") {
       setTimeout(() => {
-        quillRef.current.getEditor().setSelection(99999, 0, "api"); //always put caret to the end
+        quillRef.setSelection(99999, 0, "api"); //always put caret to the end
       }, 4);
     }
     editorWrapperRef.current?.scrollIntoView();
@@ -91,7 +91,7 @@ export function getOnReply(
           setContent(content + at);
         }
       } else if (contentType === "html") {
-        const contents = quillRef.current.getEditor().getContents();
+        const contents = quillRef.getContents();
         reply = {
           ops: [
             {
@@ -107,9 +107,7 @@ export function getOnReply(
             { insert: "\n" },
           ],
         };
-        quillRef.current
-          .getEditor()
-          .setContents(contents.ops.concat(reply.ops));
+        quillRef.setContents(contents.ops.concat(reply.ops));
       }
       focusEditor();
     });

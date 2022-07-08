@@ -144,6 +144,7 @@ function Editor(
           loadSuggestions={loadSuggestions}
           minHeight={100}
           identifier={<IdentityOrAddr/>}
+          setQuillRef={setQuillRef}
         />
       </Relative>
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
