@@ -248,6 +248,13 @@ export default function Item({ user, data, chain, onReply }) {
             block.setAttribute("target", "_blank");
           }
         });
+        ref.current.querySelectorAll("span.mention").forEach(block => {
+          const p = block.parentElement;
+          const address = block.getAttribute("osn-polka-address");
+          if (isAddress(address)) {
+            p.innerHTML = `<a href="/member/${address}" target="_blank">${block.innerText}</a>`;
+          }
+        });
       }, 10);
     }
   }, [ref]);
