@@ -241,7 +241,7 @@ export default function Item({ user, data, chain, onReply }) {
         if (memberId && !isAddress(memberId)) {
           block.classList.add("disabled-link");
         }else{
-          xblock.setAttribute("target", "_blank");
+          block.setAttribute("target", "_blank");
         }
       });
     }
