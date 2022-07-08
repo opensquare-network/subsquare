@@ -239,7 +239,6 @@ export default function Item({ user, data, chain, onReply }) {
       // fixme : maybe we can do without setTimeout
       // but for somehow it wont work with more than one [a]
       // and it works with a delay
-      // something wrong with our @osn/previewer
       setTimeout(() => {
         ref.current.querySelectorAll("a").forEach((block) => {
           const [, memberId] = block.getAttribute("href")?.match(/^\/member\/([-\w]+)$/) || [];
