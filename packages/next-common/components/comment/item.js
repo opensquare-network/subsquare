@@ -240,6 +240,8 @@ export default function Item({ user, data, chain, onReply }) {
         const [, memberId] = block.getAttribute("href")?.match(/^\/member\/([-\w]+)$/) || [];
         if (memberId && !isAddress(memberId)) {
           block.classList.add("disabled-link");
+        }else{
+          xblock.setAttribute("target", "_blank");
         }
       });
     }
