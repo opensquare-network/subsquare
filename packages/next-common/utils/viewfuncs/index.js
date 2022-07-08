@@ -58,3 +58,11 @@ export const getExcludeChains = (includeChains) => {
 export const formatBalance = (x, symbol) => {
   return new BigNumber(x).toFixed(BalanceDecimals[symbol] ?? 2, BigNumber.ROUND_DOWN)
 }
+
+//fixme: this a for mention insert from replay button
+//find a elegant way to do this
+export const prettyHTML = (html)=>{
+  return html
+    .replaceAll(`data-osn-polka-network`,`osn-polka-network`)
+    .replaceAll(`data-osn-polka-address`,`osn-polka-address`);
+}

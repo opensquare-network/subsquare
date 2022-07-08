@@ -6,7 +6,7 @@ import nextApi from "../../services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import Relative from "next-common/components/styled/relative";
 import Flex from "next-common/components/styled/flex";
-import { toApiType } from "../../utils/viewfuncs";
+import { prettyHTML, toApiType } from "../../utils/viewfuncs";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import dynamic from 'next/dynamic'
 import IdentityOrAddr from "../IdentityOrAddr";
@@ -70,7 +70,7 @@ function Editor(
       const result = await nextApi.post(
         `${toApiType(type)}/${postId}/comments`,
         {
-          content,
+          content: contentType === "html" ? prettyHTML(content) : content,
           contentType,
         },
         { credentials: "include" }
@@ -103,7 +103,7 @@ function Editor(
   const updateComment = async () => {
     setLoading(true);
     const { result, error } = await nextApi.patch(`comments/${commentId}`, {
-      content,
+      content: contentType === "html" ? prettyHTML(content) : content,
       contentType,
     });
 
