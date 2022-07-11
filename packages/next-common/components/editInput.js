@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Button from "next-common/components/button";
 import ErrorText from "next-common/components/ErrorText";
 import dynamic from 'next/dynamic'
+import { renderDisableNonAddressLink } from "../utils/viewfuncs";
 const UniverseEditor = dynamic(() => import("@osn/rich-text-editor").then(mod=> mod.UniverseEditor),{ssr:false})
 
 const Wrapper = styled.div`
@@ -66,6 +67,12 @@ export default function EditInput({
           setContentType={setContentType}
           loadSuggestions={()=> []}
           minHeight={100}
+          previewerPlugins={[
+            {
+              name: "disable-non-address-link",
+              onRenderedHtml: renderDisableNonAddressLink,
+            }
+          ]}
         />
       </InputWrapper>
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}

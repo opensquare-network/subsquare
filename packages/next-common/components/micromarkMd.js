@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import styled from "styled-components";
 import { micromark } from "micromark";
 import { gfm, gfmHtml } from "micromark-extension-gfm";
-import { isAddress } from "@polkadot/util-crypto";
 import sanitizeHtml from "sanitize-html";
 import { useEffect } from "react";
 import { no_scroll_bar } from "../styles/componentCss";
@@ -188,19 +187,6 @@ export default function MicromarkMd({ md = "", contentVersion = "" }) {
       "https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/prism.min.js";
     document.body.appendChild(script);
   }, []);
-
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.querySelectorAll("a").forEach((block) => {
-        const [, memberId] = block.getAttribute("href")?.match(/^\/member\/([-\w]+)$/) || [];
-        if (memberId && !isAddress(memberId)) {
-          block.classList.add("disabled-link");
-        } else {
-          block.setAttribute("target", "_blank");
-        }
-      });
-    }
-  }, [ref]);
 
   const html = micromark(displayContent, {
     allowDangerousHtml: true,

@@ -66,3 +66,24 @@ export const prettyHTML = (html)=>{
     .replaceAll(`data-osn-polka-network`,`osn-polka-network`)
     .replaceAll(`data-osn-polka-address`,`osn-polka-address`);
 }
+
+const isBase58 = (value)  =>
+  /^[A-HJ-NP-Za-km-z1-9]*$/.test(value);
+
+export const isAddress = (address) => {
+  return [46, 47, 48].includes(address.length) && isBase58(address);
+};
+
+export const renderDisableNonAddressLink = (el) =>{
+  const targets = el?.querySelectorAll?.(`a`);
+  targets?.forEach(target => {
+    const [, memberId] =
+    target.getAttribute("href")?.match(/^\/member\/([-\w]+)$/) ||
+    [];
+    if (memberId && !isAddress(memberId)) {
+      target.classList.add("disabled-link");
+    } else {
+      target.setAttribute("target", "_blank");
+    }
+  });
+}
