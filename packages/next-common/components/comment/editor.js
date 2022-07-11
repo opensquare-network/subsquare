@@ -6,7 +6,7 @@ import nextApi from "../../services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import Relative from "next-common/components/styled/relative";
 import Flex from "next-common/components/styled/flex";
-import { prettyHTML, toApiType } from "../../utils/viewfuncs";
+import { prettyHTML, renderDisableNonAddressLink, toApiType } from "../../utils/viewfuncs";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import dynamic from 'next/dynamic'
 import IdentityOrAddr from "../IdentityOrAddr";
@@ -145,6 +145,12 @@ function Editor(
           minHeight={100}
           identifier={<IdentityOrAddr/>}
           setQuillRef={setQuillRef}
+          previewerPlugins={[
+            {
+              name: "disable-non-address-link",
+              onRenderedHtml: renderDisableNonAddressLink,
+            }
+          ]}
         />
       </Relative>
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}

@@ -15,10 +15,14 @@ import EditInput from "next-common/components/editInput";
 import { useRouter } from "next/router";
 import Flex from "next-common/components/styled/flex";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
-import { HtmlPreviewer, MarkdownPreviewer, renderMentionIdentityUserPlugin } from "@osn/previewer";
+import {
+  HtmlPreviewer,
+  MarkdownPreviewer,
+  renderMentionIdentityUserPlugin,
+} from "@osn/previewer";
 import IdentityOrAddr from "../IdentityOrAddr";
 import { isAddress } from "@polkadot/util-crypto";
-import { prettyHTML } from "../../utils/viewfuncs";
+import { prettyHTML, renderDisableNonAddressLink } from "../../utils/viewfuncs";
 
 const Wrapper = styled.div`
   position: relative;
@@ -86,8 +90,10 @@ const ActionItem = styled(Flex)`
     !p.noHover &&
     css`
       cursor: pointer;
+
       :hover {
         color: #506176;
+
         > svg {
           path {
             fill: #506176;
@@ -100,6 +106,7 @@ const ActionItem = styled(Flex)`
     p.highlight
       ? css`
           color: #506176;
+
           > svg {
             path {
               fill: #506176;
@@ -108,6 +115,7 @@ const ActionItem = styled(Flex)`
         `
       : css`
           color: #9da9bb;
+
           > svg {
             path {
               fill: #9da9bb;
@@ -149,6 +157,7 @@ const SupporterWrapper = styled(Flex)`
 const SupporterItem = styled.div`
   display: inline-block;
   margin-right: 12px;
+
   > .username {
     color: #506176;
   }
@@ -161,7 +170,6 @@ const EditedLabel = styled.div`
   font-size: 12px;
   color: #9da9bb;
 `;
-
 
 export default function Item({ user, data, chain, onReply }) {
   const dispatch = useDispatch();
@@ -236,35 +244,6 @@ export default function Item({ user, data, chain, onReply }) {
     });
   };
 
-  useEffect(() => {
-    if (ref.current) {
-      // fixme : maybe we can do without setTimeout
-      // but for somehow it wont work with more than one [a]
-      // and it works with a delay
-      setTimeout(() => {
-        ref.current.querySelectorAll("a").forEach((block) => {
-          const [, memberId] = block.getAttribute("href")?.match(/^\/member\/([-\w]+)$/) || [];
-          if (memberId && !isAddress(memberId)) {
-            block.classList.add("disabled-link");
-          } else {
-            block.setAttribute("target", "_blank");
-          }
-        });
-        ref.current.querySelectorAll("span.mention").forEach(block => {
-          const p = block.parentElement;
-          const address = block.getAttribute("osn-polka-address");
-          if (isAddress(address)) {
-            const a = document.createElement('a');
-            a.href = `/member/${address}`;
-            a.target = '_blank';
-            a.innerHTML = block.innerText;
-            p.replaceChild(a, block);
-          }
-        });
-      }, 10);
-    }
-  }, [ref]);
-
   return (
     <Wrapper id={comment.height} highlight={highlight}>
       <InfoWrapper>
@@ -274,8 +253,28 @@ export default function Item({ user, data, chain, onReply }) {
       {!isEdit && (
         <>
           <ContentWrapper ref={ref}>
-            {comment.contentType === "markdown" && (<MarkdownPreviewer content={comment.content} plugins={[renderMentionIdentityUserPlugin(<IdentityOrAddr/>)]}/>)}
-            {comment.contentType === "html" && (<HtmlPreviewer content={prettyHTML(comment.content)} plugins={[renderMentionIdentityUserPlugin(<IdentityOrAddr/>, {targetElement:{tag:"span"}})]}/>)}
+            {comment.contentType === "markdown" && (
+              <MarkdownPreviewer
+                content={comment.content}
+                plugins={[
+                  {
+                    name: "disable-non-address-link",
+                    onRenderedHtml: renderDisableNonAddressLink,
+                  },
+                  renderMentionIdentityUserPlugin(<IdentityOrAddr />),
+                ]}
+              />
+            )}
+            {comment.contentType === "html" && (
+              <HtmlPreviewer
+                content={prettyHTML(comment.content)}
+                plugins={[
+                  renderMentionIdentityUserPlugin(<IdentityOrAddr />, {
+                    targetElement: { tag: "span" },
+                  }),
+                ]}
+              />
+            )}
             {comment.createdAt !== comment.updatedAt && (
               <EditedLabel>Edited</EditedLabel>
             )}
