@@ -269,6 +269,10 @@ export default function Item({ user, data, chain, onReply }) {
               <HtmlPreviewer
                 content={prettyHTML(comment.content)}
                 plugins={[
+                  {
+                    name: "disable-non-address-link",
+                    onRenderedHtml: renderDisableNonAddressLink,
+                  },
                   renderMentionIdentityUserPlugin(<IdentityOrAddr />, {
                     targetElement: { tag: "span" },
                   }),
