@@ -21,8 +21,8 @@ import {
   renderMentionIdentityUserPlugin,
 } from "@osn/previewer";
 import IdentityOrAddr from "../IdentityOrAddr";
-import { isAddress } from "@polkadot/util-crypto";
 import { prettyHTML, renderDisableNonAddressLink } from "../../utils/viewfuncs";
+import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   position: relative;
@@ -45,6 +45,11 @@ const Wrapper = styled.div`
       width: calc(100% - 28px);
     }
     background-color: #ebeef4;
+    ${(props) =>
+      props?.theme === "dark" &&
+      css`
+        background: #272a3a;
+      `};
   }
 
   :hover {
@@ -135,6 +140,13 @@ const ActionItem = styled(Flex)`
   > svg {
     margin-right: 8px;
   }
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      div {
+        color: rgba(255, 255, 255, 0.25);
+      }
+    `};
 `;
 
 const UnfoldWrapper = styled(ActionItem)`
@@ -198,6 +210,7 @@ export default function Item({ user, data, chain, onReply }) {
     isLoggedIn &&
     comment?.reactions?.findIndex((r) => r.user?.username === user.username) >
       -1;
+  const [theme] = useDarkMode();
 
   const updateComment = async () => {
     const { result: updatedComment } = await nextApi.fetch(
@@ -245,7 +258,7 @@ export default function Item({ user, data, chain, onReply }) {
   };
 
   return (
-    <Wrapper id={comment.height} highlight={highlight}>
+    <Wrapper id={comment.height} highlight={highlight} theme={theme}>
       <InfoWrapper>
         <User user={comment.author} chain={chain} />
         <div>{timeDurationFromNow(comment.createdAt)}</div>
@@ -291,6 +304,7 @@ export default function Item({ user, data, chain, onReply }) {
                 }
               }}
               noHover={!isLoggedIn || ownComment}
+              theme={theme}
             >
               <ReplyIcon />
               <div>Reply</div>
@@ -299,6 +313,7 @@ export default function Item({ user, data, chain, onReply }) {
               noHover={!isLoggedIn || ownComment}
               highlight={isLoggedIn && thumbUp}
               onClick={toggleThumbUp}
+              theme={theme}
             >
               <ThumbUpIcon />
               <div>Up ({comment?.reactions?.length ?? 0})</div>

@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import BigNumber from "bignumber.js";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { getNode, toPrecision } from "utils";
 import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "styles/componentCss";
@@ -24,6 +24,7 @@ import DisplayValue from "next-common/components/displayValue";
 import Loading from "next-common/components/loading";
 import { useBestNumber } from "next-common/utils/hooks";
 import Chains from "next-common/utils/consts/chains";
+import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -57,6 +58,17 @@ const Card = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      color: #ffffff;
+      background: #212433;
+      border-color: #272a3a;
+      *,
+      span {
+        color: #ffffff;
+      }
+    `};
 `;
 
 const Title = styled.div`
@@ -196,6 +208,7 @@ function Vote({
   chain,
 }) {
   const [showVote, setShowVote] = useState(false);
+  const [theme] = useDarkMode();
   const isMounted = useIsMounted();
   const api = useApi(chain);
   const bestNumber = useBestNumber(api);
@@ -278,7 +291,7 @@ function Vote({
 
   return (
     <Wrapper>
-      <Card>
+      <Card theme={theme}>
         <Title>
           <span>Votes</span>
           <div>

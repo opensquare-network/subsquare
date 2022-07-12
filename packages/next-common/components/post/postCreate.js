@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Input from "../input";
 import nextApi from "../../services/nextApi";
 import ToggleText from "../uploadBanner/toggleText";
@@ -12,9 +12,12 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import Button from "next-common/components/button";
 import ErrorText from "next-common/components/ErrorText";
 import AdvancedForm from "next-common/components/post/advanced/form";
-import dynamic from 'next/dynamic'
-const UniverseEditor = dynamic(() => import("@osn/rich-text-editor").then(mod=> mod.UniverseEditor),{ssr:false})
-
+import dynamic from "next/dynamic";
+import useDarkMode from "../../utils/hooks/useDarkMode";
+const UniverseEditor = dynamic(
+  () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
+  { ssr: false }
+);
 
 const Wrapper = styled.div`
   padding: 48px;
@@ -32,6 +35,20 @@ const Wrapper = styled.div`
     border-radius: 0;
     padding: 24px;
   }
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #212433;
+      border-color: #363a4d;
+      div {
+        border-color: #363a4d !important;
+      }
+      color: white;
+      div + textarea {
+        background: #212433;
+        border-color: #363a4d;
+      }
+    `};
 `;
 
 const Title = styled.div`
@@ -63,24 +80,6 @@ const InputWrapper = styled.div`
   position: relative;
 `;
 
-const InputSwitch = styled.div`
-  height: 24px;
-  top: 10px;
-  right: 16px;
-  position: absolute;
-  display: flex;
-  align-items: center;
-
-  > img {
-    margin-right: 12px;
-  }
-`;
-
-const PreviewWrapper = styled.div`
-  display: flex;
-  min-height: 244px;
-`;
-
 const UploaderWrapper = styled.div`
   margin-top: 16px;
 `;
@@ -88,6 +87,7 @@ const UploaderWrapper = styled.div`
 export default function PostCreate({ chain, loginUser }) {
   const router = useRouter();
   const dispatch = useDispatch();
+  const [theme] = useDarkMode();
   const [title, setTitle] = useState("");
   const [creating, setCreating] = useState(false);
   const [content, setContent] = useState("");
@@ -145,7 +145,7 @@ export default function PostCreate({ chain, loginUser }) {
   }, [isEmpty, formValue, isAdvanced]);
 
   return (
-    <Wrapper>
+    <Wrapper theme={theme}>
       <Title>New Post</Title>
       <LabelWrapper>
         <Label>Title</Label>
@@ -181,7 +181,7 @@ export default function PostCreate({ chain, loginUser }) {
           onChange={setContent}
           contentType={contentType}
           setContentType={setContentType}
-          loadSuggestions={()=> []}
+          loadSuggestions={() => []}
           minHeight={300}
         />
       </InputWrapper>

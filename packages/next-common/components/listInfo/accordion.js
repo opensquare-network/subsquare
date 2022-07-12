@@ -2,6 +2,7 @@ import React, { useState, memo } from "react";
 import styled from "styled-components";
 import Panel from "../styled/panel";
 import Caret from "../icons/caret";
+import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const Wrapper = styled(Panel)`
   margin: 16px 0;
@@ -37,9 +38,10 @@ const Items = styled.article`
 
 function Accordion({ children, title, showFold = true }) {
   const [fold, setFold] = useState(false);
+  const [theme] = useDarkMode();
 
   return (
-    <Wrapper>
+    <Wrapper theme={theme}>
       <Title>
         <span>{title}</span>
         {showFold && (

@@ -18,6 +18,7 @@ import { EditablePanel } from "next-common/components/styled/panel";
 import { getMotionId, shortMotionId } from "next-common/utils/motion";
 import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
+import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -65,6 +66,12 @@ const TitleWrapper = styled.div`
 const FlexWrapper = styled(Flex)`
   justify-content: space-between;
   flex-wrap: nowrap;
+  color: red !important;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      color: rgba(255, 255, 255, 0.25);
+    `};
 `;
 
 const TypeWrapper = styled.div`
@@ -137,6 +144,7 @@ export default function DetailItem({
 }) {
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
+  const [theme] = useDarkMode();
   if (!post) {
     return null;
   }
@@ -144,7 +152,7 @@ export default function DetailItem({
   const postUpdatedTime = getPostUpdatedAt(post);
 
   return (
-    <EditablePanel>
+    <EditablePanel theme={theme}>
       {!isEdit && (
         <>
           {type === TYPE_DEMOCRACY_EXTERNAL && (

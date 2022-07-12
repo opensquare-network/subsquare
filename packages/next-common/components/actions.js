@@ -7,12 +7,20 @@ import Edit from "./edit";
 import UnfoldIcon from "../assets/imgs/icons/unfold.svg";
 import FoldIcon from "../assets/imgs/icons/fold.svg";
 import Flex from "./styled/flex";
+import useDarkMode from "../utils/hooks/useDarkMode";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
   flex-wrap: wrap;
   margin-top: 16px;
   height: 22px;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      div {
+        color: rgba(255, 255, 255, 0.25);
+      }
+    `};
 `;
 
 const Item = styled(Flex)`
@@ -80,8 +88,10 @@ export default function Actions({
   showThumbsUpList,
   setShowThumbsUpList,
 }) {
+  const [theme] = useDarkMode();
+
   return (
-    <Wrapper>
+    <Wrapper theme={theme}>
       <Item
         onClick={() => {
           if (!noHover) {
