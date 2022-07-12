@@ -39,8 +39,8 @@ const Left = styled.div`
 `;
 
 const LeftPlaceHolder = styled.div`
-  width: 232px;
-  flex: 0 0 232px;
+  width: 252px;
+  flex: 0 0 252px;
   @media screen and (max-width: 1024px) {
     display: none;
   }
