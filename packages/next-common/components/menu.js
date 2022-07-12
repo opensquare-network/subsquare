@@ -15,6 +15,7 @@ import BellIcon from "../assets/imgs/icons/bell.svg";
 import MembersIcon from "../assets/imgs/icons/members.svg";
 import BountyIcon from "../assets/imgs/icons/bounties.svg";
 import ExternalLink from "./icons/externalLink";
+import useDarkMode from "../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   padding-top: 37px;
@@ -44,6 +45,11 @@ const Item = styled.div`
   font-weight: 500;
   cursor: pointer;
   font-size: 14px;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      color: rgba(255, 255, 255, 0.6);
+    `};
 
   :hover {
     color: #6848ff;
@@ -70,6 +76,11 @@ const Item = styled.div`
     css`
       font-weight: 600;
       background: #ebeef4;
+      ${(props) =>
+        props?.theme === "dark" &&
+        css`
+          background: #272a3a;
+        `};
       color: #6848ff;
 
       > svg {
@@ -82,6 +93,7 @@ const Item = styled.div`
 
 export default function Menu({ menu, chain }) {
   const router = useRouter();
+  const [theme] = useDarkMode();
 
   const iconMap = new Map();
   iconMap.set("overview", <OverviewIcon />);
@@ -124,6 +136,7 @@ export default function Menu({ menu, chain }) {
                   <Link href={item?.pathname} passHref>
                     <a target={isExternalLink ? "_blank" : "_self"}>
                       <Item
+                        theme={theme}
                         active={
                           router.pathname === item.pathname ||
                           (router.pathname === "/[chain]" &&

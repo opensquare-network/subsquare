@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Link from "next/link";
 import User from "next-common/components/user";
 import {
@@ -23,6 +23,7 @@ import MotionElapse from "next-common/components/motionElapse";
 import UpdateIcon from "../assets/imgs/icons/line-chart.svg";
 import CommentIcon from "../assets/imgs/icons/comment.svg";
 import Anchor from "next-common/components/styled/anchor";
+import useDarkMode from "../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   display: flex;
@@ -38,6 +39,12 @@ const Wrapper = styled.div`
       0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
       0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
   }
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #212433;
+      border-color: #212433;
+    `};
 `;
 
 const DividerWrapper = styled(Flex)`
@@ -98,6 +105,11 @@ const Info = styled.div`
   .elapseIcon > * {
     margin-left: 8px;
   }
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      color: rgba(255, 255, 255, 0.6);
+    `};
 `;
 
 const AutHideInfo = styled(Info)`
@@ -122,6 +134,11 @@ const Divider = styled.div`
   height: 1px;
   background: #ebeef4;
   margin: 12px 0;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #272a3a;
+    `};
 `;
 
 const FooterWrapper = styled(Flex)`
@@ -131,6 +148,11 @@ const FooterWrapper = styled(Flex)`
 
 const TitleWrapper = styled.div`
   overflow: hidden;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      color: #ffffff;
+    `};
 `;
 
 const HeadWrapper = styled.div`
@@ -201,12 +223,13 @@ export default function Post({ data, chain, href, type }) {
   ) {
     elapseIcon = <MotionElapse motion={data.onchainData} chain={chain} />;
   }
+  const [theme] = useDarkMode();
 
   return (
-    <Wrapper>
+    <Wrapper theme={theme}>
       <ContentWrapper>
         <HeadWrapper>
-          <TitleWrapper>
+          <TitleWrapper theme={theme}>
             {data?.index !== undefined && <Index>{`#${data.index}`}</Index>}
             <Link href={href} passHref>
               <Title>{data.title}</Title>
@@ -222,7 +245,7 @@ export default function Post({ data, chain, href, type }) {
           {method && <Method>{method}</Method>}
         </HeadWrapper>
 
-        <Divider />
+        <Divider theme={theme} />
         <FooterWrapper>
           <Footer>
             <User
@@ -234,28 +257,28 @@ export default function Post({ data, chain, href, type }) {
             {data.isTreasury && <SectionTag name={"Treasury"} />}
             {data.isDemocracy && <SectionTag name={"Democracy"} />}
             {data.time && (
-              <Info>
+              <Info theme={theme}>
                 <UpdateIcon />
                 <span>{`${timeDurationFromNow(data.time)}`}</span>
                 <Flex className="elapseIcon">{elapseIcon}</Flex>
               </Info>
             )}
-            {data.remaining && <Info>{`${timeDuration(data.remaining)}`}</Info>}
+            {data.remaining && (
+              <Info theme={theme}>{`${timeDuration(data.remaining)}`}</Info>
+            )}
             {data.commentsCount > -1 && (
               <AutHideInfo>
                 <CommentIcon />
                 {`${data.commentsCount}`}
               </AutHideInfo>
             )}
-            {
-              data.parentIndex !== undefined && (
-                <AutHideInfo>
-                  <Anchor href={`/treasury/bounty/${data.parentIndex}`} passHref>
-                    {`Parent #${data.parentIndex}`}
-                  </Anchor>
-                </AutHideInfo>
-              )
-            }
+            {data.parentIndex !== undefined && (
+              <AutHideInfo>
+                <Anchor href={`/treasury/bounty/${data.parentIndex}`} passHref>
+                  {`Parent #${data.parentIndex}`}
+                </Anchor>
+              </AutHideInfo>
+            )}
           </Footer>
           {data.status && <Tag name={data.status} />}
         </FooterWrapper>

@@ -9,6 +9,7 @@ import Identity from "../Identity";
 import { addressEllipsis } from "../../utils";
 import Flex from "../styled/flex";
 import Tooltip from "../tooltip";
+import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const Wrapper = styled(Flex)`
   a {
@@ -21,6 +22,14 @@ const Wrapper = styled(Flex)`
     css`
       pointer-events: none;
     `}
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      a,
+      div {
+        color: white !important;
+      }
+    `};
 `;
 
 const AvatarWrapper = styled(Flex)`
@@ -92,6 +101,7 @@ function User({
   maxWidth,
   color,
 }) {
+  const [theme] = useDarkMode();
   const address =
     add ?? user?.addresses?.find((addr) => addr.chain === chain)?.address;
   const [identity, setIdentity] = useState(null);
@@ -145,7 +155,7 @@ function User({
   );
 
   return (
-    <Wrapper noEvent={noEvent}>
+    <Wrapper noEvent={noEvent} theme={theme}>
       {showAvatar && (
         <AvatarWrapper>
           {address ? (
