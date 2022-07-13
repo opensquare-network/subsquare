@@ -1205,10 +1205,10 @@
   resolved "https://registry.npmjs.org/@osn/provider-options/-/provider-options-1.0.7.tgz#bd7fce7426b44c370812376704aa9092ca6cc216"
   integrity sha512-8P45Pc/N9FrFJz4R922J47w2u8ZCQ8e7/UpMpUmRKayCgQ3oCSH1xtsKYNozbSUsuGNsWJ+UZaap2AfIJIrgjA==
 
-"@osn/rich-text-editor@^0.1.49":
-  version "0.1.49"
-  resolved "https://registry.yarnpkg.com/@osn/rich-text-editor/-/rich-text-editor-0.1.49.tgz#d2f7290fe89fb02060c9f564fa3eb6a972124483"
-  integrity sha512-qVPA9esq2MxSCv0yqpqIW7Q77Wmb4FCOHRi5+7sBXQecBIe+FugiMRyoyRfHpt9faJ5mSbP18fvKCQJqxsBrFw==
+"@osn/rich-text-editor@^0.1.50":
+  version "0.1.50"
+  resolved "https://registry.yarnpkg.com/@osn/rich-text-editor/-/rich-text-editor-0.1.50.tgz#ee35edbf75daf35f9351ac3092f8935db958507e"
+  integrity sha512-sY9esqRL0IfaZCywgS8Inoy9ArQlc7WI3rn9SPsyPlAGVFakg4PcEhDRd9XRjsWU/UtZEUXEcz5mOqsfrB32Bg==
   dependencies:
     "@polkadot/keyring" "^9.6.2"
     "@types/lodash" "^4.14.182"

@@ -78,6 +78,39 @@ const ButtonWrapper = styled.div`
 
 const InputWrapper = styled.div`
   position: relative;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      .editor-toolbar,
+      .ql-toolbar.ql-snow,
+      span.ql-formats {
+        background-color: #1d1e2c !important;
+        border-color: #212433 !important;
+      }
+      .editor-toolbar-buttons > div {
+        background-color: #363a4d !important;
+      }
+      button:first-child {
+        box-shadow: 1px 0 0 0 #363a4d !important;
+      }
+      button:last-child {
+        box-shadow: 1px 0 0 0 #363a4d !important;
+      }
+      button.active {
+        background-color: #212433 !important;
+        border-color: #212433 !important;
+        color: white !important;
+        box-shadow: 0 1px 0 0 #1d1e2c !important;
+      }
+      button svg {
+        path {
+          fill: rgba(255, 255, 255, 0.6);
+        }
+      }
+      button:hover svg path {
+        fill: white !important;
+      }
+    `};
 `;
 
 const UploaderWrapper = styled.div`
@@ -175,7 +208,7 @@ export default function PostCreate({ chain, loginUser }) {
         <Label>Issue</Label>
       </LabelWrapper>
 
-      <InputWrapper>
+      <InputWrapper theme={theme}>
         <UniverseEditor
           value={content}
           onChange={setContent}
@@ -183,6 +216,7 @@ export default function PostCreate({ chain, loginUser }) {
           setContentType={setContentType}
           loadSuggestions={() => []}
           minHeight={300}
+          setQuillRef={() => {}}
         />
       </InputWrapper>
       {errors?.data?.content?.[0] && (

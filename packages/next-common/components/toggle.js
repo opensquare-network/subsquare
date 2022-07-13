@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   cursor: pointer;
   width: 38px;
   height: 22px;
-  background: #c2c8d5;
+  background: #c2c8d5 !important;
   border-radius: 16px;
   > div {
     width: 14px;
@@ -14,7 +14,7 @@ const Wrapper = styled.div`
     position: absolute;
     top: 4px;
     left: 4px;
-    background: #ffffff;
+    background: #ffffff !important;
     border-radius: 7px;
   }
   ${(p) =>
@@ -29,7 +29,7 @@ const Wrapper = styled.div`
         `
       : p.active
       ? css`
-          background: #6848ff;
+          background: #6848ff !important;
           > div {
             left: auto;
             right: 4px;
@@ -51,7 +51,7 @@ const Wrapper = styled.div`
       ${(p) =>
         p.active &&
         css`
-          background: #6848ff;
+          background: #6848ff !important;
           > div {
             left: auto;
             right: 3px;
