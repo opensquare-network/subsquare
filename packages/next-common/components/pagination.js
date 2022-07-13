@@ -2,6 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import useDarkMode from "../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   padding-top: 8px;
@@ -63,6 +64,11 @@ const Item = styled.a`
 
   :hover {
     background: #ebeef4;
+    ${(props) =>
+      props?.theme === "dark" &&
+      css`
+        background: #1d1e2c;
+      `};
   }
 
   ${(p) =>
@@ -73,6 +79,13 @@ const Item = styled.a`
       cursor: auto;
       pointer-events: none;
     `}
+  ${(props) =>
+    props?.theme === "dark" &&
+    props.active &&
+    css`
+      background: #272a3a;
+      color: white;
+    `};
 `;
 
 const Ellipsis = styled.div`
@@ -92,7 +105,7 @@ const encodeURIQuery = (q) =>
 
 export default function Pagination({ page, pageSize, total }) {
   const router = useRouter();
-
+  const [theme] = useDarkMode();
   const totalPages = Math.ceil(total / pageSize)
     ? Math.ceil(total / pageSize)
     : 1;
@@ -127,7 +140,9 @@ export default function Pagination({ page, pageSize, total }) {
             })}`}
             passHref
           >
-            <Item active={page === index + 1}>{index + 1}</Item>
+            <Item theme={theme} active={page === index + 1}>
+              {index + 1}
+            </Item>
           </Link>
         )
       )}

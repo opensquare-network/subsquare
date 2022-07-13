@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import CountDown from "next-common/components/summary/countDown";
 import useApi from "../../utils/hooks/useApi";
 import { estimateBlocksTime } from "../../utils";
@@ -10,6 +10,7 @@ import {
   finalizedHeightSelector,
 } from "../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
+import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   display: flex;
@@ -38,6 +39,13 @@ const Card = styled.div`
   flex: 0 1 33.33%;
   height: 88px;
   padding: 26px 24px;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #212433;
+      border-color: #363a4d;
+      color: #fff;
+    `};
 `;
 
 const Title = styled.div`
@@ -67,6 +75,11 @@ const Content = styled.div`
   > :not(:first-child) {
     margin-left: 4px;
   }
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      color: #fff;
+    `};
 `;
 
 const CountDownWrapper = styled.div`
@@ -100,6 +113,7 @@ export default function DemocracySummary({ chain }) {
   const api = useApi(chain, endpoint);
   const blockTime = useSelector(blockTimeSelector);
   const finalizedHeight = useSelector(finalizedHeightSelector);
+  const [theme] = useDarkMode();
 
   const getLaunchPeriod = async function () {
     if (api && finalizedHeight) {
@@ -151,27 +165,27 @@ export default function DemocracySummary({ chain }) {
 
   return (
     <Wrapper>
-      <Card>
+      <Card theme={theme}>
         <Title>Proposals</Title>
-        <Content>
+        <Content theme={theme}>
           <span>
             {summary.activeProposalsCount || 0}
             <GreyText> / {summary.publicPropCount || 0}</GreyText>
           </span>
         </Content>
       </Card>
-      <Card>
+      <Card theme={theme}>
         <Title>Referenda</Title>
-        <Content>
+        <Content theme={theme}>
           <span>
             {summary.referendumCount || 0}
             <GreyText> / {summary.referendumTotal || 0}</GreyText>
           </span>
         </Content>
       </Card>
-      <Card>
+      <Card theme={theme}>
         <Title>Launch period</Title>
-        <Content>
+        <Content theme={theme}>
           {(summary?.launchPeriod || []).map((item, index) => (
             <span className={index % 2 === 1 ? "unit" : ""} key={index}>
               {item}

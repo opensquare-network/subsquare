@@ -25,6 +25,7 @@ const Wrapper = styled.header`
     props?.theme === "dark" &&
     css`
       background: #212433;
+      border-color: #272a3a;
     `};
 `;
 

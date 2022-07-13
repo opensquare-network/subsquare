@@ -21,6 +21,10 @@ const CommentsWrapper = styled.div`
       * {
         color: #ffffff;
       }
+      span.mention,
+      span.mention span {
+        background-color: transparent;
+      }
     `};
 `;
 

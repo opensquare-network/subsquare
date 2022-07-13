@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
 import CountDown from "./countDown";
 import {
@@ -18,6 +18,7 @@ import {
 } from "../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
+import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   display: flex;
@@ -46,6 +47,13 @@ const Card = styled.div`
   flex: 0 1 33.33%;
   height: 88px;
   padding: 26px 24px;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #212433;
+      border-color: #363a4d;
+      color: #fff;
+    `};
 `;
 
 const Title = styled.div`
@@ -74,6 +82,11 @@ const Content = styled.div`
   > :not(:first-child) {
     margin-left: 4px;
   }
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      color: #fff;
+    `};
 `;
 
 const CountDownWrapper = styled.div`
@@ -89,6 +102,7 @@ export default function Summary({ chain }) {
   const node = getNode(chain);
   const blockTime = useSelector(blockTimeSelector);
   const finalizedHeight = useSelector(finalizedHeightSelector);
+  const [theme] = useDarkMode();
 
   const decimals = node?.decimals;
   const symbol = node?.symbol;
@@ -116,23 +130,23 @@ export default function Summary({ chain }) {
 
   return (
     <Wrapper>
-      <Card>
+      <Card theme={theme}>
         <Title>AVAILABLE</Title>
-        <Content>
+        <Content theme={theme}>
           <span>{abbreviateBigNumber(toPrecision(free, decimals))}</span>
           <span className="unit upper">{symbol}</span>
         </Content>
       </Card>
-      <Card>
+      <Card theme={theme}>
         <Title>NEXT BURN</Title>
-        <Content>
+        <Content theme={theme}>
           <span>{abbreviateBigNumber(toPrecision(nextBurn, decimals))}</span>
           <span className="unit upper">{symbol}</span>
         </Content>
       </Card>
-      <Card>
+      <Card theme={theme}>
         <Title>SPEND PERIOD</Title>
-        <Content>
+        <Content theme={theme}>
           {(summary?.spendPeriod || []).map((item, index) => (
             <span className={index % 2 === 1 ? "unit" : ""} key={index}>
               {item}

@@ -118,6 +118,12 @@ const ReferendaWrapper = styled(Flex)`
   > :not(:first-child) {
     margin-left: 8px;
   }
+
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #1d1e2c;
+    `};
 `;
 
 const getTypeColor = (type) => {
@@ -156,7 +162,7 @@ export default function DetailItem({
       {!isEdit && (
         <>
           {type === TYPE_DEMOCRACY_EXTERNAL && (
-            <ReferendaWrapper>
+            <ReferendaWrapper theme={theme}>
               {post?.onchainData?.motions?.map((motion, key) => (
                 <div key={key}>
                   <Link href={`/council/motion/${getMotionId(motion)}`}>
@@ -191,7 +197,7 @@ export default function DetailItem({
             </ReferendaWrapper>
           )}
           {type === TYPE_DEMOCRACY_PROPOSAL && (
-            <ReferendaWrapper>
+            <ReferendaWrapper theme={theme}>
               <div>{`Proposal #${post.proposalIndex}`}</div>
               {post?.referendumIndex !== undefined && (
                 <div>
@@ -205,7 +211,7 @@ export default function DetailItem({
           )}
           {type === TYPE_DEMOCRACY_REFERENDUM &&
             post.externalProposalHash !== undefined && (
-              <ReferendaWrapper>
+              <ReferendaWrapper theme={theme}>
                 {post?.onchainData?.motions?.map((motion, key) => (
                   <div key={key}>
                     <Link href={`/council/motion/${getMotionId(motion)}`}>
@@ -246,7 +252,7 @@ export default function DetailItem({
             )}
           {type === TYPE_DEMOCRACY_REFERENDUM &&
             post.proposalIndex !== undefined && (
-              <ReferendaWrapper>
+              <ReferendaWrapper theme={theme}>
                 <Link href={`/democracy/proposal/${post.proposalIndex}`}>
                   {`Proposal #${post.proposalIndex}`}
                 </Link>

@@ -1,10 +1,11 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import Flex from "../styled/flex";
 import User from "../user";
 import React, { Fragment } from "react";
 import Loading from "../loading";
 import PrimeAddressMark from "../primeAddressMark";
+import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   max-width: 852px;
@@ -46,6 +47,13 @@ const StyledTable = styled.table`
       pointer-events: auto;
     }
   }
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #212433;
+      border-color: #363a4d;
+      color: #fff;
+    `};
 `;
 
 const StyledTr = styled.tr``;
@@ -100,15 +108,19 @@ export default function MembersList({
   prime,
   loading = false,
 }) {
+  const [theme] = useDarkMode();
   return (
     <Wrapper>
       <Title>{category}</Title>
-      <StyledTable>
+      <StyledTable theme={theme}>
         <thead>
           <StyledTr>
             <StyledTh style={{ textAlign: "left" }}>MEMBERS</StyledTh>
           </StyledTr>
-          <RowSplitter backgroundColor={"#EBEEF4"} padding={"16px 0 4px 0"} />
+          <RowSplitter
+            backgroundColor={theme === "dark" ? "#272A3A" : "#F6F7FA"}
+            padding={"16px 0 4px 0"}
+          />
         </thead>
         <tbody>
           {items?.length > 0 ? (
@@ -123,7 +135,9 @@ export default function MembersList({
                   </StyledTd>
                 </StyledTr>
                 {index !== items.length - 1 && (
-                  <RowSplitter backgroundColor={"#F6F7FA"} />
+                  <RowSplitter
+                    backgroundColor={theme === "dark" ? "#272A3A" : "#F6F7FA"}
+                  />
                 )}
               </Fragment>
             ))

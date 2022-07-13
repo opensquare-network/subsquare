@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useDispatch } from "react-redux";
 import { toApiType } from "next-common/utils/viewfuncs";
 import nextApi from "next-common/services/nextApi";
@@ -11,6 +11,7 @@ import EditIcon from "../assets/imgs/icons/edit.svg";
 import PostDataSource from "./postDataSource";
 import Poll from "./poll";
 import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
+import useDarkMode from "../utils/hooks/useDarkMode";
 const Wrapper = styled.div`
   :hover {
     .edit {
@@ -23,6 +24,11 @@ const Divider = styled.div`
   height: 1px;
   background: #ebeef4;
   margin: 16px 0;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #272a3a;
+    `};
 `;
 
 const PlaceHolder = styled.div`
@@ -49,6 +55,12 @@ const GreyWrapper = styled.div`
   background: #f6f7fa;
   border-radius: 4px;
   margin-top: 16px;
+
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #1d1e2c;
+    `};
 `;
 
 const GreyItem = styled.div`
@@ -104,6 +116,7 @@ export default function ArticleContent({
   const dispatch = useDispatch();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
+  const [theme] = useDarkMode();
   if (!post) {
     return null;
   }
@@ -166,7 +179,7 @@ export default function ArticleContent({
     <Wrapper>
       {!isEdit && (
         <>
-          <Divider />
+          <Divider theme={theme} />
           {post.content === "" && (
             <PlaceHolder>
               {`The ${type} has not been edited by creator.`}
@@ -183,7 +196,7 @@ export default function ArticleContent({
             </PlaceHolder>
           )}
           {post.content === "" && (
-            <GreyWrapper>
+            <GreyWrapper theme={theme}>
               <span style={{ marginRight: 12 }}>Who can edit?</span>
               {(post.authors || []).map((author) => (
                 <GreyItem key={author}>
@@ -200,8 +213,12 @@ export default function ArticleContent({
           {post.bannerUrl && (
             <BannerImage src={post.bannerUrl} alt="banner image" />
           )}
-          {post.contentType === "markdown" && <MarkdownPreviewer content={post.content}/>}
-          {post.contentType === "html" && <HtmlPreviewer content={post.content}/>}
+          {post.contentType === "markdown" && (
+            <MarkdownPreviewer content={post.content} />
+          )}
+          {post.contentType === "html" && (
+            <HtmlPreviewer content={post.content} />
+          )}
           {post.createdAt !== post.updatedAt && (
             <EditedLabel>Edited</EditedLabel>
           )}
@@ -231,7 +248,7 @@ export default function ArticleContent({
             onReply={onReply}
           />
           {showThumbsUpList && post.reactions?.length > 0 && (
-            <GreyWrapper style={{ marginTop: 10 }}>
+            <GreyWrapper style={{ marginTop: 10 }} theme={theme}>
               {post.reactions
                 .filter((r) => r.user)
                 .map((r, index) => (
