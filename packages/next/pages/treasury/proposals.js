@@ -33,11 +33,14 @@ export default withLoginUserRedux(
   ({ loginUser, proposals: ssrProposals, chain }) => {
     const dispatch = useDispatch();
     const [showPopup, setShowPopup] = useState(false);
-    const [updatedProposals, setProposals] = useState();
-    const proposals = updatedProposals || ssrProposals;
+    const [proposals, setProposals] = useState(ssrProposals);
+
+    useEffect(() => {
+      setProposals(ssrProposals);
+    }, [ssrProposals])
 
     const { pendingReload, pendingProposals } = usePendingProposal({
-      proposals: ssrProposals,
+      proposals,
       setProposals,
     });
 
