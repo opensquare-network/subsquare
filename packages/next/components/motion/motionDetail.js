@@ -26,12 +26,13 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
   const votingMethod = api?.query?.[toApiCouncil(chain, type)]?.voting;
   const membersMethod = api?.query?.[toApiCouncil(chain, type)]?.members;
 
-  const voters = useCall(membersMethod, []) || [];
+  const voters = useCall(membersMethod, [])?.toJSON() || [];
   const userCanVote = voters?.some((address) =>
     user?.addresses?.some(
       (item) => item.address === address && item.chain === chain
     )
   );
+  console.log({ voters, user, userCanVote })
   const motionEnd = isMotionEnded(post.onchainData);
 
   const blockHash = motionEnd ? post.onchainData?.state?.indexer?.blockHash : null;
