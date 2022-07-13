@@ -32,7 +32,6 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
       (item) => item.address === address && item.chain === chain
     )
   );
-  console.log({ voters, user, userCanVote })
   const motionEnd = isMotionEnded(post.onchainData);
 
   const blockHash = motionEnd ? post.onchainData?.state?.indexer?.blockHash : null;
