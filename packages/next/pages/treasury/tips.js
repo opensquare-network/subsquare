@@ -14,10 +14,7 @@ import {
   addPendingTip,
   setCheckTimes,
 } from "next-common/store/reducers/tipSlice";
-import {
-  Create,
-  Pending,
-} from "next-common/components/treasury/tip/styled";
+import { Create, Pending } from "next-common/components/treasury/common/styled";
 import usePendingTip from "next-common/components/treasury/tip/usePendingTip";
 import dynamic from "next/dynamic";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
@@ -37,7 +34,7 @@ export default withLoginUserRedux(({ loginUser, tips: ssrTips, chain }) => {
 
   useEffect(() => {
     setTips(ssrTips);
-  }, [ssrTips])
+  }, [ssrTips]);
 
   const { pendingReload, pendingTips } = usePendingTip({
     tips,
