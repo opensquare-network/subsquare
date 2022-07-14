@@ -19,13 +19,12 @@ import {
 import { getNode } from "../../../../utils";
 import PopupWithAddress from "../../../popupWithAddress";
 import { emptyFunction } from "../../../../utils";
-import ProposalBond from "./proposalBond";
 import Beneficiary from "../../common/beneficiary";
-import ProposalValue from "./proposalValue";
+import TipReason from "./tipReason";
 import Signer from "./signer";
+import Tab, { ReportAwesome, NewTip } from "./tab";
+import TipValue from "./tipValue";
 import useAddressBalance from "../../../../utils/hooks/useAddressBalance";
-import { WarningMessage } from "../../../popup/styled";
-import useBond from "../../../../utils/hooks/useBond";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -43,23 +42,16 @@ function PopupContent({
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const [signerAccount, setSignerAccount] = useState(null);
-  const [inputValue, setInputValue] = useState();
+  const [reason, setReason] = useState("");
   const [loading, setLoading] = useState(false);
+  const [tabIndex, setTabIndex] = useState(ReportAwesome);
+  const [inputValue, setInputValue] = useState("0");
 
   const node = getNode(chain);
 
   const api = useApi(chain);
 
-  const proposalValue = new BigNumber(inputValue).times(
-    Math.pow(10, node.decimals)
-  );
-  const bond = useBond({
-    api,
-    proposalValue,
-  });
-
   const [beneficiary, setBeneficiary] = useState();
-
   const [balance, balanceIsLoading] = useAddressBalance(
     api,
     signerAccount?.address
@@ -80,23 +72,35 @@ function PopupContent({
       return showErrorToast("Please input a beneficiary");
     }
 
-    if (!inputValue) {
-      return showErrorToast("Please input a value");
+    if (!reason) {
+      return showErrorToast("Please input a reason");
     }
 
-    const bnValue = new BigNumber(inputValue).times(
-      Math.pow(10, node.decimals)
-    );
-    if (bnValue.isNaN()) {
-      return showErrorToast("Invalid value");
-    }
+    let tx;
 
-    if (bnValue.lte(0)) {
-      return showErrorToast("Value must be greater than 0");
-    }
+    if (tabIndex === NewTip) {
+      if (!inputValue) {
+        return showErrorToast("Please input a value");
+      }
 
-    if (!bnValue.mod(1).isZero()) {
-      return showErrorToast("Invalid precision");
+      const bnValue = new BigNumber(inputValue).times(
+        Math.pow(10, node.decimals)
+      );
+      if (bnValue.isNaN()) {
+        return showErrorToast("Invalid value");
+      }
+
+      if (bnValue.lte(0)) {
+        return showErrorToast("Value must be greater than 0");
+      }
+
+      if (!bnValue.mod(1).isZero()) {
+        return showErrorToast("Invalid precision");
+      }
+
+      tx = api.tx.tips.tipNew(reason, beneficiary, bnValue.toNumber());
+    } else {
+      tx = api.tx.tips.reportAwesome(reason, beneficiary);
     }
 
     const toastId = newToastId();
@@ -107,9 +111,9 @@ function PopupContent({
 
       const signerAddress = signerAccount.address;
 
-      const unsub = await api.tx.treasury
-        .proposeSpend(bnValue.toNumber(), beneficiary)
-        .signAndSend(signerAddress, ({ events = [], status }) => {
+      const unsub = await tx.signAndSend(
+        signerAddress,
+        ({ events = [], status }) => {
           if (status.isFinalized) {
             onFinalized(signerAddress);
             unsub();
@@ -121,21 +125,21 @@ function PopupContent({
 
             for (const event of events) {
               const { section, method, data } = event.event;
-              if (section !== "treasury" || method !== "Proposed") {
+              if (section !== "tips" || method !== "NewTip") {
                 continue;
               }
-              const [proposalIndex] = data.toJSON();
 
-              onInBlock(signerAddress, proposalIndex);
+              const [tipHash] = data.toJSON();
+              onInBlock(signerAddress, tipHash);
               break;
             }
           }
-        });
+        }
+      );
 
       dispatch(updatePendingToast(toastId, "Broadcasting"));
 
       onSubmitted(signerAddress);
-
       onClose();
     } catch (e) {
       dispatch(removeToast(toastId));
@@ -147,11 +151,9 @@ function PopupContent({
     }
   };
 
-  const balanceInsufficient = new BigNumber(bond).gt(balance);
-  const disabled = balanceInsufficient || !new BigNumber(inputValue).gt(0);
-
   return (
     <>
+      <Tab tabIndex={tabIndex} setTabIndex={setTabIndex} />
       <Signer
         api={api}
         chain={chain}
@@ -167,18 +169,12 @@ function PopupContent({
         extensionAccounts={extensionAccounts}
         setAddress={setBeneficiary}
       />
-      <ProposalValue chain={chain} setValue={setInputValue} />
-      <ProposalBond bond={bond} node={node} />
-      {balanceInsufficient && (
-        <WarningMessage danger>Insufficient balance</WarningMessage>
+      <TipReason setValue={setReason} />
+      {tabIndex === NewTip && (
+        <TipValue chain={chain} setValue={setInputValue} />
       )}
       <ButtonWrapper>
-        <Button
-          secondary
-          disabled={disabled}
-          isLoading={loading}
-          onClick={submit}
-        >
+        <Button secondary isLoading={loading} onClick={submit}>
           Submit
         </Button>
       </ButtonWrapper>
@@ -188,10 +184,6 @@ function PopupContent({
 
 export default function Popup(props) {
   return (
-    <PopupWithAddress
-      title="New Treasury Proposal"
-      Component={PopupContent}
-      {...props}
-    />
+    <PopupWithAddress title="New Tip" Component={PopupContent} {...props} />
   );
 }

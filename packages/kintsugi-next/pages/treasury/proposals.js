@@ -15,10 +15,7 @@ import {
   addPendingProposal,
   setCheckTimes,
 } from "next-common/store/reducers/treasuryProposalSlice";
-import {
-  Create,
-  Pending,
-} from "next-common/components/treasury/proposal/styled";
+import { Create, Pending } from "next-common/components/treasury/common/styled";
 import usePendingProposal from "next-common/components/treasury/proposal/usePendingProposal";
 
 const Popup = dynamic(
