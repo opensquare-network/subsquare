@@ -76,8 +76,6 @@ function PopupContent({
       return showErrorToast("Please input a reason");
     }
 
-    const hexReason = "0x" + Buffer.from(reason).toString("hex");
-
     let tx;
 
     if (tabIndex === NewTip) {
@@ -100,9 +98,9 @@ function PopupContent({
         return showErrorToast("Invalid precision");
       }
 
-      tx = api.tx.tips.tipNew(hexReason, beneficiary, bnValue.toNumber());
+      tx = api.tx.tips.tipNew(reason, beneficiary, bnValue.toNumber());
     } else {
-      tx = api.tx.tips.reportAwesome(hexReason, beneficiary);
+      tx = api.tx.tips.reportAwesome(reason, beneficiary);
     }
 
     const toastId = newToastId();
