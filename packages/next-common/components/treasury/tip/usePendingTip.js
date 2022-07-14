@@ -1,5 +1,5 @@
 import nextApi from "next-common/services/nextApi";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -9,50 +9,53 @@ import {
   setCheckTimes,
 } from "next-common/store/reducers/tipSlice";
 
-const fiveSeconds = 5000;
-
 export default function usePendingTip({ tips, setTips }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const pendingTips = useSelector(pendingTipsSelector);
   const checkTimes = useSelector(checkTimesSelector);
 
+  const pendingReload = checkTimes > 0 && pendingTips?.length > 0;
+
   const fetchTips = useCallback(async () => {
-    const { result } = await nextApi.fetch(`treasury/tips`, {
-      page: 1,
-      pageSize: tips.pageSize,
-    });
-    if (result) {
-      for (const tip of result.items) {
-        if (pendingTips.includes(tip.hash)) {
-          dispatch(removePendingTip(tip.hash));
+    setTimeout(async () => {
+      dispatch(setCheckTimes(checkTimes - 1));
+
+      const { result } = await nextApi.fetch(`treasury/tips`, {
+        page: 1,
+        pageSize: tips.pageSize,
+      });
+      if (result) {
+        for (const tip of result.items) {
+          if (pendingTips.includes(tip.hash)) {
+            dispatch(removePendingTip(tip.hash));
+          }
+        }
+        if (tips.page === 1) {
+          if (isMounted.current) {
+            setTips(result);
+          }
         }
       }
+    }, 5000);
+  }, [dispatch, checkTimes, pendingTips, tips, setTips, isMounted]);
 
-      if (tips.page === 1 && isMounted.current) {
-        setTips(result);
-      }
-    }
-  }, [dispatch, pendingTips, tips, setTips, isMounted]);
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
-    if (checkTimes <= 0 || (pendingTips || []).length <= 0) {
+    if (!reload) {
       return;
     }
+    setReload(false);
+    fetchTips();
+  }, [reload, fetchTips]);
 
-    setTimeout(() => {
-      dispatch(setCheckTimes(checkTimes - 1));
-    }, fiveSeconds);
+  useEffect(() => {
+    if (!pendingReload) {
+      return;
+    }
+    setReload(true);
+  }, [pendingReload, checkTimes]);
 
-    fetchTips().then(() => {
-      if (checkTimes > 1) {
-        console.log(`Will fetch pending tips again in 5 secs`);
-      }
-    });
-  }, [checkTimes, pendingTips, dispatch, fetchTips]);
-
-  return {
-    pendingReload: checkTimes > 0 && pendingTips?.length > 0,
-    pendingTips,
-  };
+  return { pendingReload, pendingTips };
 }
