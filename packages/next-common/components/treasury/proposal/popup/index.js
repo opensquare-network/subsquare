@@ -20,7 +20,7 @@ import { getNode } from "utils";
 import PopupWithAddress from "../../../popupWithAddress";
 import { emptyFunction } from "../../../../utils";
 import ProposalBond from "./proposalBond";
-import Beneficiary from "./beneficiary";
+import Beneficiary from "../../common/beneficiary";
 import ProposalValue from "./proposalValue";
 import Signer from "./signer";
 import useAddressBalance from "../../../../utils/hooks/useAddressBalance";

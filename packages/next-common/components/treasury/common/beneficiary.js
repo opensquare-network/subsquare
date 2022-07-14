@@ -1,8 +1,8 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import AddressCombo from "../../../addressCombo";
-import { encodeAddressToChain } from "../../../../services/address";
-import PopupLabel from "../../../popup/label";
+import AddressCombo from "../../addressCombo";
+import { encodeAddressToChain } from "../../../services/address";
+import PopupLabel from "../../popup/label";
 
 export default function Beneficiary({ extensionAccounts, chain, setAddress }) {
   const accounts = extensionAccounts.map((acc) => ({

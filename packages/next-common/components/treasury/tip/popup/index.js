@@ -19,7 +19,7 @@ import {
 import { getNode } from "utils";
 import PopupWithAddress from "../../../popupWithAddress";
 import { emptyFunction } from "../../../../utils";
-import Beneficiary from "./beneficiary";
+import Beneficiary from "../../common/beneficiary";
 import TipReason from "./tipReason";
 import Signer from "./signer";
 import Tab, { ReportAwesome, NewTip } from "./tab";
