@@ -16,7 +16,7 @@ import {
   updatePendingToast,
 } from "../../../../store/reducers/toastSlice";
 
-import { getNode } from "utils";
+import { getNode } from "../../../../utils";
 import PopupWithAddress from "../../../popupWithAddress";
 import { emptyFunction } from "../../../../utils";
 import Beneficiary from "../../common/beneficiary";
@@ -125,21 +125,21 @@ function PopupContent({
 
             for (const event of events) {
               const { section, method, data } = event.event;
-              if (section !== "treasury" || method !== "NewTip") {
+              if (section !== "tips" || method !== "NewTip") {
                 continue;
               }
-              const [tipHash] = data.toJSON();
 
+              const [tipHash] = data.toJSON();
               onInBlock(signerAddress, tipHash);
               break;
             }
           }
-        });
+        }
+      );
 
       dispatch(updatePendingToast(toastId, "Broadcasting"));
 
       onSubmitted(signerAddress);
-
       onClose();
     } catch (e) {
       dispatch(removeToast(toastId));
@@ -153,10 +153,7 @@ function PopupContent({
 
   return (
     <>
-      <Tab
-        tabIndex={tabIndex}
-        setTabIndex={setTabIndex}
-      />
+      <Tab tabIndex={tabIndex} setTabIndex={setTabIndex} />
       <Signer
         api={api}
         chain={chain}
@@ -173,13 +170,11 @@ function PopupContent({
         setAddress={setBeneficiary}
       />
       <TipReason setValue={setReason} />
-      {tabIndex === NewTip && <TipValue chain={chain} setValue={setInputValue} />}
+      {tabIndex === NewTip && (
+        <TipValue chain={chain} setValue={setInputValue} />
+      )}
       <ButtonWrapper>
-        <Button
-          secondary
-          isLoading={loading}
-          onClick={submit}
-        >
+        <Button secondary isLoading={loading} onClick={submit}>
           Submit
         </Button>
       </ButtonWrapper>
@@ -189,10 +184,6 @@ function PopupContent({
 
 export default function Popup(props) {
   return (
-    <PopupWithAddress
-      title="New Tip"
-      Component={PopupContent}
-      {...props}
-    />
+    <PopupWithAddress title="New Tip" Component={PopupContent} {...props} />
   );
 }
