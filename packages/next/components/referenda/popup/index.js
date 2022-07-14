@@ -109,7 +109,7 @@ function PopupContent({
       const unsub = await api.tx.democracy
         .vote(referendumIndex, {
           Standard: {
-            balance: bnVoteBalance.toFixed(),
+            balance: bnVoteBalance.toNumber(),
             vote: {
               aye,
               conviction: voteLock,

@@ -108,7 +108,7 @@ function PopupContent({
       const signerAddress = signerAccount.address;
 
       const unsub = await api.tx.treasury
-        .proposeSpend(bnValue.toString(), beneficiary)
+        .proposeSpend(bnValue.toNumber(), beneficiary)
         .signAndSend(signerAddress, ({ events = [], status }) => {
           if (status.isFinalized) {
             onFinalized(signerAddress);
