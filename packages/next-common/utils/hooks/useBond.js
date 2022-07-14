@@ -28,5 +28,5 @@ export default function useBond({ api, proposalValue }) {
       : BigNumber.max(bond, bondMinimum);
   }
 
-  return bond;
+  return bond.isNaN() ? new BigNumber(0) : bond;
 }
