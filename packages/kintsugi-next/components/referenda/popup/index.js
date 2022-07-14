@@ -94,7 +94,7 @@ function PopupContent({
       const voteAddress = selectedAccount.address;
 
       const unsub = await api.tx.democracy
-        .vote(referendumIndex, { aye, balance: bnVoteBalance.toFixed() })
+        .vote(referendumIndex, { aye, balance: bnVoteBalance.toNumber() })
         .signAndSend(voteAddress, ({ events = [], status }) => {
           if (status.isFinalized) {
             onFinalized(voteAddress);

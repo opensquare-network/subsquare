@@ -114,7 +114,7 @@ function PopupContent({
       const tipperAddress = selectedAccount.address;
 
       const unsub = await api.tx.tips
-        .tip(tipHash, bnTipValue.toFixed())
+        .tip(tipHash, bnTipValue.toNumber())
         .signAndSend(tipperAddress, ({ events = [], status }) => {
           if (status.isFinalized) {
             onFinalized(tipperAddress);
