@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { isWeb3Injected, web3Enable } from "@polkadot/extension-dapp";
@@ -16,6 +16,7 @@ import { newErrorToast } from "../../store/reducers/toastSlice";
 import { encodeAddressToChain } from "../../services/address";
 import { signMessage } from "../../services/extension/signMessage";
 import { polkadotWeb3Accounts } from "../../utils/extensionAccount";
+import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const Label = styled.div`
   font-weight: bold;
@@ -30,6 +31,13 @@ const ButtonWrapper = styled.div`
   > :not(:first-child) {
     margin-top: 12px;
   }
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      button > div {
+        background: none;
+      }
+    `}
 `;
 
 export default function AddressLogin({ chain, setMailLogin }) {
@@ -41,6 +49,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
+  const [theme] = useDarkMode();
 
   const doWeb3Login = async () => {
     setLoading(true);
@@ -145,9 +154,15 @@ export default function AddressLogin({ chain, setMailLogin }) {
         </div>
       )}
       {!hasExtension && <DownloadExtension />}
-      <ButtonWrapper>
+      <ButtonWrapper theme={theme}>
         {hasExtension && (
-          <Button isFill secondary onClick={doWeb3Login} isLoading={loading}>
+          <Button
+            theme={theme}
+            isFill
+            secondary
+            onClick={doWeb3Login}
+            isLoading={loading}
+          >
             Next
           </Button>
         )}

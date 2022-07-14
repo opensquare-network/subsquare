@@ -66,6 +66,12 @@ const Wrapper = styled.button`
     css`
       pointer-events: none;
     `}
+  ${(p) =>
+    p.theme === "dark" &&
+    p.secondary &&
+    css`
+      background: #515571 !important;
+    `}
 `;
 
 const LoadingWrapper = styled.div`
