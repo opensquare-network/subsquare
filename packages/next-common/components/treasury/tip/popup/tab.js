@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled, { css } from "styled-components";
 
 const Wrapper = styled.div`
@@ -11,7 +10,7 @@ const Wrapper = styled.div`
   height: 48px;
   flex-grow: 1;
 
-  background: #F6F7FA;
+  background: #f6f7fa;
   border-radius: 4px;
 
   justify-content: space-between;
@@ -33,19 +32,21 @@ const Button = styled.div`
   font-size: 14px;
   line-height: 20px;
 
-  ${p => p.highlight
-    ? css`
-        color: #1E2134;
+  ${(p) =>
+    p.highlight
+      ? css`
+          color: #1e2134;
 
-        background: #FFFFFF;
+          background: #ffffff;
 
-        box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02), 0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221), 0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
-        border-radius: 2px;
-      `
-    : css`
-        color: #9DA9BB;
-      `
-  }
+          box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
+            0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
+            0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+          border-radius: 2px;
+        `
+      : css`
+          color: #9da9bb;
+        `}
 `;
 
 export const ReportAwesome = "ReportAwesome";
@@ -58,13 +59,13 @@ export default function Tab({ tabIndex, setTabIndex }) {
         highlight={tabIndex === ReportAwesome}
         onClick={() => setTabIndex(ReportAwesome)}
       >
-      Repoty Awesome
+        Report Awesome
       </Button>
       <Button
         highlight={tabIndex === NewTip}
         onClick={() => setTabIndex(NewTip)}
       >
-      Tip New
+        Tip New
       </Button>
     </Wrapper>
   );
