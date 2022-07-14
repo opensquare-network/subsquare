@@ -1,15 +1,11 @@
 import React from "react";
 import TextInput from "../../../textInput";
-import PopupLabel from "../../../popup/label";
+import Labeled from "../../../Labeled";
 
 export default function TipReason({ setValue }) {
   return (
-    <div>
-      <PopupLabel
-        text={"Reason"}
-        tooltip={"The tip reason"}
-      />
+    <Labeled text={"Reason"} tooltip={"The tip reason"}>
       <TextInput setValue={setValue} />
-    </div>
+    </Labeled>
   );
 }

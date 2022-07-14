@@ -16,7 +16,7 @@ import {
   updatePendingToast,
 } from "../../../../store/reducers/toastSlice";
 
-import { getNode } from "utils";
+import { getNode } from "../../../../utils";
 import PopupWithAddress from "../../../popupWithAddress";
 import { emptyFunction } from "../../../../utils";
 import ProposalBond from "./proposalBond";
