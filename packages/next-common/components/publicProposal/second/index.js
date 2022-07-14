@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import countBy from "lodash.countby";
@@ -13,6 +13,7 @@ import useDepositOf from "../../../utils/hooks/useDepositOf";
 import useApi from "../../../utils/hooks/useSelectedEnpointApi";
 import { getNode } from "utils";
 import Tooltip from "../../tooltip";
+import useDarkMode from "../../../utils/hooks/useDarkMode";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -38,6 +39,12 @@ const Content = styled.div`
   padding: 24px;
   background: #ebeef4;
   border-radius: 6px;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background-color: #212433;
+      color: rgba(255, 255, 255, 0.6);
+    `}
 `;
 
 const Title = styled.div`
@@ -128,7 +135,7 @@ export default function Second({
     triggerUpdate
   );
   const node = getNode(chain);
-
+  const [theme] = useDarkMode();
   const secondsCount = countBy(seconds);
   const secondsAddress = Object.keys(secondsCount);
   const showFold = !expand && seconds.length > 5;
@@ -198,7 +205,7 @@ export default function Second({
   return (
     <>
       <Wrapper>
-        <Content>
+        <Content theme={theme}>
           <Title>
             <div>Second</div>
             <div>{totalSeconds}</div>

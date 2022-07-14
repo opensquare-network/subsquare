@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Link from "next/link";
 import { useState } from "react";
 import dynamic from "next/dynamic";
@@ -14,6 +14,7 @@ import {
 } from "next-common/components/login/styled";
 import MailLogin from "next-common/components/login/mailLogin";
 import { p_14_normal } from "../../styles/componentCss";
+import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const AddressLogin = dynamic(() => import("../login/addressLogin"), {
   ssr: false,
@@ -34,17 +35,24 @@ const Hint = styled.p`
   color: #506176;
   background: #f6f7fa;
   border-radius: 4px;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background-color: #1d1e2c !important;
+      color: rgba(255, 255, 255, 0.6);
+    `}
 `;
 
 const Login = withLoginUserRedux(({ loginUser, chain }) => {
   const [web3, setWeb3] = useState(true);
+  const [theme] = useDarkMode();
   return (
     <Layout user={loginUser} chain={chain} isWeb3Login={web3}>
       <NextHead title={`Login`} desc={`Login`} />
       <Wrapper>
-        <ContentCenterWrapper>
+        <ContentCenterWrapper theme={theme}>
           <Title>Login {web3 && ` with Web3 address`}</Title>
-          {web3 && <Hint>Under the {chain} Network</Hint>}
+          {web3 && <Hint theme={theme}>Under the {chain} Network</Hint>}
           {!web3 && <MailLogin setAddressLogin={() => setWeb3(true)} />}
           {web3 && (
             <AddressLogin chain={chain} setMailLogin={() => setWeb3(false)} />
