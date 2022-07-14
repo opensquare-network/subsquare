@@ -30,6 +30,7 @@ export default function useMentionList(post, comments, chain) {
           return {
             name,
             value: memberId,
+            isKeyRegistered: user.username.includes(`polkadot-key`),
           };
         })
       );

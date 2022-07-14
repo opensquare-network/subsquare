@@ -7,7 +7,10 @@ import acala from "./consts/settings/acala";
 import interlay from "./consts/settings/interlay";
 import kintsugi from "./consts/settings/kintsugi";
 import khala from "./consts/settings/khala";
+import phala from "./consts/settings/phala";
 import turing from "./consts/settings/turing";
+// import kabocha from "./consts/settings/kabocha";
+import crust from "./consts/settings/crust";
 import menus from "./consts/menu";
 
 export const nodes = [
@@ -16,16 +19,8 @@ export const nodes = [
   karura,
   acala,
   khala,
-  {
-    value: "kabocha",
-    name: "Kabocha",
-    icon: "kabocha.svg",
-    hideHeight: true,
-    // identity: "kabocha",
-    // symbol: "",
-    // decimals: 0,
-    // hasElections: true,
-  },
+  phala,
+  // kabocha,
   bifrost,
   // basilisk,
   kintsugi,
@@ -33,6 +28,7 @@ export const nodes = [
   turing,
   crab,
   // centrifuge,
+  crust,
 ];
 
 export const mainMenu = menus;

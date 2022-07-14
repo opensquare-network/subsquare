@@ -6,9 +6,12 @@ import nextApi from "../../services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import Relative from "next-common/components/styled/relative";
 import Flex from "next-common/components/styled/flex";
-import { toApiType } from "../../utils/viewfuncs";
+import { prettyHTML, renderDisableNonAddressLink, toApiType } from "../../utils/viewfuncs";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import dynamic from 'next/dynamic'
+import IdentityOrAddr from "../IdentityOrAddr";
+import { addressEllipsis } from "../../utils";
+
 
 const UniverseEditor = dynamic(() => import("@osn/rich-text-editor").then(mod=> mod.UniverseEditor),{ssr:false})
 
@@ -67,7 +70,7 @@ function Editor(
       const result = await nextApi.post(
         `${toApiType(type)}/${postId}/comments`,
         {
-          content,
+          content: contentType === "html" ? prettyHTML(content) : content,
           contentType,
         },
         { credentials: "include" }
@@ -100,7 +103,7 @@ function Editor(
   const updateComment = async () => {
     setLoading(true);
     const { result, error } = await nextApi.patch(`comments/${commentId}`, {
-      content,
+      content: contentType === "html" ? prettyHTML(content) : content,
       contentType,
     });
 
@@ -122,8 +125,10 @@ function Editor(
     return (users || [])
       .map((user) => ({
         preview: user.name,
-        value: `[@${escapeLinkText(user.name)}](/member/${user.value}) `,
-        address: user.name,
+        value:  user.isKeyRegistered ? `[@${addressEllipsis(user.name)}](${user.value}-${chain}) ` : `[@${escapeLinkText(user.name)}](/member/${user.value}) `,
+        address: user.value,
+        isKeyRegistered: user.isKeyRegistered,
+        chain: chain,
       }))
       .filter((i) => i.preview.toLowerCase().includes(text.toLowerCase()));
   };
@@ -138,6 +143,14 @@ function Editor(
           setContentType={setContentType}
           loadSuggestions={loadSuggestions}
           minHeight={100}
+          identifier={<IdentityOrAddr/>}
+          setQuillRef={setQuillRef}
+          previewerPlugins={[
+            {
+              name: "disable-non-address-link",
+              onRenderedHtml: renderDisableNonAddressLink,
+            }
+          ]}
         />
       </Relative>
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}

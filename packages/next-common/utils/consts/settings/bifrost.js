@@ -33,6 +33,8 @@ const bifrost = {
   ss58Format: 6,
   snsCoverCid: "bafybeibu7lmjymi5x6gjixdawmc4rjufruc6qwazailfnpzpoaqtuq6khe",
   endpoints: DEFAULT_BIFROST_NODES,
+  loginButtonPrimary: true,
+  headerBackgroundColor: "#000000",
 };
 
 export default bifrost;

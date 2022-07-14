@@ -7,6 +7,15 @@
   font-size: 14px;
   color: #34373c;
 
+  a.disabled-link {
+    color: #506176;
+    pointer-events: none;
+  }
+
+  .mention-identity-user-app{
+    height: 22px;
+  }
+
   ul > li::before {
     margin-right: 4px;
   }
@@ -42,26 +51,26 @@
 
   div.ql-snow .ql-editor h1,
   h1 {
-    line-height: 2rem;
-    font-size: 1.25rem;
+    line-height: 28px;
+    font-size: 20px;
   }
 
   div.ql-snow .ql-editor h2,
   h2 {
-    line-height: 1.875rem;
-    font-size: 1.1875rem;
+    line-height: 26px;
+    font-size: 18px;
   }
 
   div.ql-snow .ql-editor h3,
   h3 {
-    line-height: 1.75rem;
-    font-size: 1.125rem;
+    line-height: 24px;
+    font-size: 16px;
   }
 
   div.ql-snow .ql-editor h4,
   h4 {
-    line-height: 1.625rem;
-    font-size: 1rem;
+    line-height: 20px;
+    font-size: 14px;
   }
 
   div.ql-snow .ql-editor h5,
@@ -145,7 +154,7 @@
   }
 
   ul.mention-list{
-    padding: 0;
+    padding-left: 0;
     li::before{
       display: none;
     }
@@ -159,14 +168,29 @@
     list-style-type: none;
   }
 
+  .html-body >*{
+    margin-top: 0;
+  }
+
   .ql-editor ol,
   .ql-editor ul {
-    padding-left: 20px !important;
+    padding-left: 27.5px !important;
   }
 
   /*div .ql-editor ol > li, div .ql-editor ul > li {*/
   /*    list-style-type: inherit;*/
   /*}*/
+
+  .ql-editor ol > li[data-list="bullet"]{
+    padding-left:0 !important;
+    ::before{
+      margin: 0 !important;
+    }
+  }
+
+  .html-body ol > li[data-list="bullet"]::before {
+    content: "•";
+  }
 
   div.ql-editor ol li:not(.ql-direction-rtl),
   div.ql-editor ul li:not(.ql-direction-rtl) {

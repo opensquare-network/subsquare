@@ -1,8 +1,8 @@
+import React, { memo } from "react";
 import styled from "styled-components";
 import { shadow_100 } from "@subsquare/next/styles/componentCss";
-import Chains from "../../utils/consts/chains";
-import React, { memo } from "react";
 import useWindowSize from "../../utils/hooks/useWindowSize";
+import getChainSettings from "../../utils/consts/settings";
 
 const Wrapper = styled.header`
   padding-left: 32px;
@@ -16,39 +16,26 @@ const Wrapper = styled.header`
   left: 0;
   right: 0;
   z-index: 1;
-  background: #ffffff;
+  background: ${(props) => props?.background || "#ffffff;"};
   ${shadow_100};
   height: 64px;
   border-bottom: 1px solid #ebeef4;
 `;
 
-const KintsugiWrapper = styled(Wrapper)`
-  background: #051433;
-`;
-
-const BlackWrapper = styled(Wrapper)`
-  background: #000000;
-`;
-
 function HeaderWrapper({ chain, children }) {
   let ChainWrapper = Wrapper;
-  const { width } = useWindowSize();
 
+  const { width } = useWindowSize();
   if (parseInt(width) <= 768) {
     return <ChainWrapper>{children}</ChainWrapper>;
   }
 
-  if (Chains.kintsugi === chain) {
-    ChainWrapper = KintsugiWrapper;
-  } else if (
-    [Chains.khala, Chains.bifrost, Chains.calamari, Chains.kusama].includes(
-      chain
-    )
-  ) {
-    ChainWrapper = BlackWrapper;
-  }
-
-  return <ChainWrapper>{children}</ChainWrapper>;
+  const setting = getChainSettings(chain);
+  return (
+    <ChainWrapper background={setting.headerBackgroundColor}>
+      {children}
+    </ChainWrapper>
+  );
 }
 
 export default memo(HeaderWrapper);

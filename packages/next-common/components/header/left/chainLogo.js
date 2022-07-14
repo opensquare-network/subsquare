@@ -11,6 +11,7 @@ import Crust from "../../../assets/header-logos/crust.svg";
 import Crab from "../../../assets/header-logos/crab.svg";
 import Karura from "../../../assets/header-logos/karura.svg";
 import Khala from "../../../assets/header-logos/khala.svg";
+import Phala from "../../../assets/header-logos/phala.svg";
 import Acala from "../../../assets/header-logos/acala.svg";
 import Bifrost from "../../../assets/header-logos/bifrost.svg";
 import Calamari from "../../../assets/header-logos/calamari.svg";
@@ -31,6 +32,8 @@ function ChainLogo({ chain }) {
       logo = <Acala />;
     } else if (Chains.karura === chain) {
       logo = <Karura />;
+    } else if (Chains.phala === chain) {
+      logo = <Phala />;
     } else if (Chains.khala === chain) {
       logo = <Khala />;
     } else if (Chains.bifrost === chain) {

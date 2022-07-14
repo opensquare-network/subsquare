@@ -19,7 +19,7 @@ export function getFocusEditor(contentType, editorWrapperRef, quillRef) {
       editorWrapperRef.current?.querySelector("textarea")?.focus();
     } else if (contentType === "html") {
       setTimeout(() => {
-        quillRef.current.getEditor().setSelection(99999, 0, "api"); //always put caret to the end
+        quillRef.setSelection(99999, 0, "api"); //always put caret to the end
       }, 4);
     }
     editorWrapperRef.current?.scrollIntoView();
@@ -84,6 +84,9 @@ export function getOnReply(
       const memberId = getMemberId(user, chain);
       if (contentType === "markdown") {
         reply = `[@${name}](/member/${memberId}) `;
+        if(user.username.startsWith("polkadot-key-0x")) {
+          reply = `[@${name}](${memberId}-${chain}) `;
+        }
         const at = content ? `${reply}` : reply;
         if (content === reply) {
           setContent(``);
@@ -91,7 +94,9 @@ export function getOnReply(
           setContent(content + at);
         }
       } else if (contentType === "html") {
-        const contents = quillRef.current.getEditor().getContents();
+        const contents = quillRef.getContents();
+        const isKeyRegistered= user.username.startsWith("polkadot-key-0x");
+        const address =  user.addresses?.[0]?.address ?? "";
         reply = {
           ops: [
             {
@@ -99,17 +104,25 @@ export function getOnReply(
                 mention: {
                   index: "0",
                   denotationChar: "@",
-                  id: memberId,
+                  id: isKeyRegistered ? address :  memberId,
                   value: name + " &nbsp; ",
+                  isKeyRegistered,
+                  chain,
+                  address,
+                  ...(isKeyRegistered ? {
+                    osnPolkaAddress:address,
+                    osnPolkaNetwork: chain,
+                  } : {}),
                 },
               },
             },
-            { insert: "\n" },
           ],
         };
-        quillRef.current
-          .getEditor()
-          .setContents(contents.ops.concat(reply.ops));
+        if( JSON.stringify(contents.ops) === `[{"insert":"\\n"}]`){
+          quillRef.setContents(reply.ops);
+        }else{
+          quillRef.setContents(contents.ops.concat(reply.ops));
+        }
       }
       focusEditor();
     });

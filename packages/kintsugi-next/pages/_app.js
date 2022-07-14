@@ -7,8 +7,6 @@ import { store } from "next-common/store";
 import "nprogress/nprogress.css";
 import "../styles/globals.css";
 import "next-common/styles/richTextStyles.scss";
-import "react-quill/dist/quill.snow.css";
-import "quill-mention/dist/quill.mention.css";
 import "next-common/styles/prism.min.css";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import { connect } from "next-common/services/websocket";

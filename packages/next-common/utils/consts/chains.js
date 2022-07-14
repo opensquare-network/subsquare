@@ -3,6 +3,7 @@ const Chains = {
   kusama: "kusama",
   karura: "karura",
   acala: "acala",
+  phala: "phala",
   khala: "khala",
   substrate: "substrate",
   basilisk: "basilisk",

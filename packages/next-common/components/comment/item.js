@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled, { css } from "styled-components";
 import { timeDurationFromNow } from "next-common/utils";
 import Edit from "../edit";
@@ -15,7 +15,14 @@ import EditInput from "next-common/components/editInput";
 import { useRouter } from "next/router";
 import Flex from "next-common/components/styled/flex";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
-import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
+import {
+  HtmlPreviewer,
+  MarkdownPreviewer,
+  renderMentionIdentityUserPlugin,
+} from "@osn/previewer";
+import IdentityOrAddr from "../IdentityOrAddr";
+import { isAddress } from "@polkadot/util-crypto";
+import { prettyHTML, renderDisableNonAddressLink } from "../../utils/viewfuncs";
 
 const Wrapper = styled.div`
   position: relative;
@@ -83,8 +90,10 @@ const ActionItem = styled(Flex)`
     !p.noHover &&
     css`
       cursor: pointer;
+
       :hover {
         color: #506176;
+
         > svg {
           path {
             fill: #506176;
@@ -97,6 +106,7 @@ const ActionItem = styled(Flex)`
     p.highlight
       ? css`
           color: #506176;
+
           > svg {
             path {
               fill: #506176;
@@ -105,6 +115,7 @@ const ActionItem = styled(Flex)`
         `
       : css`
           color: #9da9bb;
+
           > svg {
             path {
               fill: #9da9bb;
@@ -146,6 +157,7 @@ const SupporterWrapper = styled(Flex)`
 const SupporterItem = styled.div`
   display: inline-block;
   margin-right: 12px;
+
   > .username {
     color: #506176;
   }
@@ -162,6 +174,7 @@ const EditedLabel = styled.div`
 export default function Item({ user, data, chain, onReply }) {
   const dispatch = useDispatch();
   const router = useRouter();
+  const ref = useRef();
   const [comment, setComment] = useState(data);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -226,7 +239,7 @@ export default function Item({ user, data, chain, onReply }) {
 
   const editComment = async (content, contentType) => {
     return await nextApi.patch(`comments/${commentId}`, {
-      content,
+      content: contentType === "html" ? prettyHTML(content) : content,
       contentType,
     });
   };
@@ -239,9 +252,33 @@ export default function Item({ user, data, chain, onReply }) {
       </InfoWrapper>
       {!isEdit && (
         <>
-          <ContentWrapper>
-            {comment.contentType === "markdown" && (<MarkdownPreviewer content={comment.content}/>)}
-            {comment.contentType === "html" && (<HtmlPreviewer content={post.content}/>)}
+          <ContentWrapper ref={ref}>
+            {comment.contentType === "markdown" && (
+              <MarkdownPreviewer
+                content={comment.content}
+                plugins={[
+                  {
+                    name: "disable-non-address-link",
+                    onRenderedHtml: renderDisableNonAddressLink,
+                  },
+                  renderMentionIdentityUserPlugin(<IdentityOrAddr />),
+                ]}
+              />
+            )}
+            {comment.contentType === "html" && (
+              <HtmlPreviewer
+                content={prettyHTML(comment.content)}
+                plugins={[
+                  {
+                    name: "disable-non-address-link",
+                    onRenderedHtml: renderDisableNonAddressLink,
+                  },
+                  renderMentionIdentityUserPlugin(<IdentityOrAddr />, {
+                    targetElement: { tag: "span" },
+                  }),
+                ]}
+              />
+            )}
             {comment.createdAt !== comment.updatedAt && (
               <EditedLabel>Edited</EditedLabel>
             )}

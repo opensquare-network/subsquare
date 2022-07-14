@@ -27,7 +27,7 @@
     "md5": "^2.3.0",
     "micromark": "^3.0.10",
     "micromark-extension-gfm": "^2.0.0",
-    "moment": "^2.29.2",
+    "moment": "^2.29.4",
     "quill-image-resize-module": "^3.0.0",
     "quill-magic-url": "^4.1.2",
     "quill-mention": "^3.0.4",
