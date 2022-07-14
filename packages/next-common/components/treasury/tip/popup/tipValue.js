@@ -1,6 +1,6 @@
 import React from "react";
 import BalanceInput from "../../../balanceInput";
-import { getNode } from "utils";
+import { getNode } from "../../../../utils";
 import PopupLabel from "../../../popup/label";
 
 export default function TipValue({ chain, setValue }) {
@@ -8,10 +8,7 @@ export default function TipValue({ chain, setValue }) {
 
   return (
     <div>
-      <PopupLabel
-        text={"Value"}
-        tooltip={"The amount of tip value"}
-      />
+      <PopupLabel text={"Value"} tooltip={"The amount of tip value"} />
       <BalanceInput setValue={setValue} symbol={node?.symbol} />
     </div>
   );
