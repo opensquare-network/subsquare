@@ -23,12 +23,21 @@ const FlexWrapper = styled(Flex)`
 `;
 
 const Divider = styled.div`
+  margin-left: 8px;
+  margin-right: 8px;
   width: 1px;
   height: 8px;
   background-color: #363a4d;
+  ${(props) =>
+    props?.theme === "light" &&
+    css`
+      background-color: #e0e4eb;
+    `};
 `;
 
 const ThemeToggle = styled.div`
+  display: flex;
+  align-items: center;
   cursor: pointer;
   &:hover {
     svg path {
@@ -58,7 +67,7 @@ export default function Contacts() {
       <ExternalLink href="mailto:hi@opensquare.network" title="Send EMail">
         <MailIcon />
       </ExternalLink>
-      <Divider />
+      <Divider theme={theme} />
       <ThemeToggle onClick={themeToggler} theme={theme}>
         {theme === "light" ? <Moon /> : <Sun />}
       </ThemeToggle>
