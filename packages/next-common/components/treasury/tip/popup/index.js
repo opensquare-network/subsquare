@@ -100,7 +100,7 @@ function PopupContent({
         return showErrorToast("Invalid precision");
       }
 
-      tx = api.tx.tips.tipNew(hexReason, beneficiary, bnValue.toFixed());
+      tx = api.tx.tips.tipNew(hexReason, beneficiary, bnValue.toNumber());
     } else {
       tx = api.tx.tips.reportAwesome(hexReason, beneficiary);
     }
