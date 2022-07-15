@@ -94,6 +94,17 @@ const InputWrapper = styled.div`
         color: white !important;
       }
 
+      div.markdown-body pre,
+      div.markdown-body code,
+      div.html-body pre,
+      div.html-body code {
+        background: #1d1e2c !important;
+        code {
+          color: white !important;
+          text-shadow: none !important;
+        }
+      }
+
       .editor-toolbar,
       .ql-toolbar.ql-snow,
       span.ql-formats {
@@ -142,6 +153,9 @@ const InputWrapper = styled.div`
         }
       }
       caret-color: white !important;
+      textarea {
+        color: white;
+      }
     `};
 `;
 
