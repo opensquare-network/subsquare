@@ -78,6 +78,18 @@ const InfoWrapper = styled(Flex)`
 
 const ContentWrapper = styled.div`
   margin: 8px 0 0 28px;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      div.markdown-body pre,
+      div.html-body pre {
+        background: #1d1e2c !important;
+        code {
+          color: white !important;
+          text-shadow: none !important;
+        }
+      }
+    `};
 `;
 
 const ActionWrapper = styled(Flex)`
@@ -265,7 +277,7 @@ export default function Item({ user, data, chain, onReply }) {
       </InfoWrapper>
       {!isEdit && (
         <>
-          <ContentWrapper ref={ref}>
+          <ContentWrapper ref={ref} theme={theme}>
             {comment.contentType === "markdown" && (
               <MarkdownPreviewer
                 content={comment.content}

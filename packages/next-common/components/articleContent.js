@@ -18,6 +18,18 @@ const Wrapper = styled.div`
       display: block;
     }
   }
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      div.markdown-body pre,
+      div.html-body pre {
+        background: #1d1e2c !important;
+        code {
+          color: white !important;
+          text-shadow: none !important;
+        }
+      }
+    `};
 `;
 
 const Divider = styled.div`
@@ -176,7 +188,7 @@ export default function ArticleContent({
   };
 
   return (
-    <Wrapper>
+    <Wrapper theme={theme}>
       {!isEdit && (
         <>
           <Divider theme={theme} />
