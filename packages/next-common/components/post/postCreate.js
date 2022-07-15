@@ -81,6 +81,16 @@ const InputWrapper = styled.div`
   ${(props) =>
     props?.theme === "dark" &&
     css`
+      div.modal {
+        background-color: #1d1e2c !important;
+        border-color: #212433 !important;
+      }
+      .modal textarea {
+        background-color: #212433 !important;
+        border-color: #212433 !important;
+        color: white !important;
+      }
+
       .editor-toolbar,
       .ql-toolbar.ql-snow,
       span.ql-formats {
@@ -110,6 +120,25 @@ const InputWrapper = styled.div`
       button:hover svg path {
         fill: white !important;
       }
+      .modal p {
+        background-color: #1d1e2c;
+      }
+      .html-body,
+      .markdown-body {
+        color: white;
+      }
+      span.ql-picker-options {
+        background-color: #212433;
+      }
+      span.ql-picker-label.ql-active {
+        color: white !important;
+      }
+      .ql-picker-options .ql-picker-item {
+        &:hover {
+          color: white !important;
+        }
+      }
+      caret-color: white !important;
     `};
 `;
 

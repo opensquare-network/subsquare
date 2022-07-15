@@ -6,14 +6,21 @@ import nextApi from "../../services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import Relative from "next-common/components/styled/relative";
 import Flex from "next-common/components/styled/flex";
-import { prettyHTML, renderDisableNonAddressLink, toApiType } from "../../utils/viewfuncs";
+import {
+  prettyHTML,
+  renderDisableNonAddressLink,
+  toApiType,
+} from "../../utils/viewfuncs";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
-import dynamic from 'next/dynamic'
+import dynamic from "next/dynamic";
 import IdentityOrAddr from "../IdentityOrAddr";
 import { addressEllipsis } from "../../utils";
+import useDarkMode from "../../utils/hooks/useDarkMode";
 
-
-const UniverseEditor = dynamic(() => import("@osn/rich-text-editor").then(mod=> mod.UniverseEditor),{ssr:false})
+const UniverseEditor = dynamic(
+  () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
+  { ssr: false }
+);
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -21,6 +28,33 @@ const Wrapper = styled.div`
     p.isEdit &&
     css`
       margin-top: 8px;
+    `}
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      div.modal {
+        background-color: #1d1e2c !important;
+        border-color: #212433 !important;
+      }
+      .modal textarea {
+        background-color: #212433 !important;
+        border-color: #212433 !important;
+        color: white !important;
+      }
+      .html-body,
+      .markdown-body {
+        color: white;
+      }
+      .modal p {
+        background-color: #1d1e2c;
+      }
+      span.ql-picker-options {
+        background-color: #212433;
+      }
+      span.ql-picker-label.ql-active {
+        color: white !important;
+      }
+      caret-color: white !important;
     `}
 `;
 
@@ -36,7 +70,6 @@ const ButtonWrapper = styled(Flex)`
 function escapeLinkText(text) {
   return text.replace(/\\/g, "\\\\").replace(/([\[\]])/g, "\\$1");
 }
-
 
 function Editor(
   {
@@ -59,6 +92,7 @@ function Editor(
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const isMounted = useIsMountedBool();
+  const [theme] = useDarkMode();
 
   const createComment = async () => {
     if (!isMounted()) {
@@ -121,11 +155,13 @@ function Editor(
 
   const isEmpty = content === "" || content === `<p><br></p>`;
 
-  const loadSuggestions =  (text) => {
+  const loadSuggestions = (text) => {
     return (users || [])
       .map((user) => ({
         preview: user.name,
-        value:  user.isKeyRegistered ? `[@${addressEllipsis(user.name)}](${user.value}-${chain}) ` : `[@${escapeLinkText(user.name)}](/member/${user.value}) `,
+        value: user.isKeyRegistered
+          ? `[@${addressEllipsis(user.name)}](${user.value}-${chain}) `
+          : `[@${escapeLinkText(user.name)}](/member/${user.value}) `,
         address: user.value,
         isKeyRegistered: user.isKeyRegistered,
         chain: chain,
@@ -134,7 +170,7 @@ function Editor(
   };
 
   return (
-    <Wrapper>
+    <Wrapper theme={theme}>
       <Relative ref={ref}>
         <UniverseEditor
           value={content}
@@ -143,13 +179,13 @@ function Editor(
           setContentType={setContentType}
           loadSuggestions={loadSuggestions}
           minHeight={100}
-          identifier={<IdentityOrAddr/>}
+          identifier={<IdentityOrAddr />}
           setQuillRef={setQuillRef}
           previewerPlugins={[
             {
               name: "disable-non-address-link",
               onRenderedHtml: renderDisableNonAddressLink,
-            }
+            },
           ]}
         />
       </Relative>
