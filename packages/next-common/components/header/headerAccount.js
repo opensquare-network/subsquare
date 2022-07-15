@@ -86,6 +86,11 @@ const Divider = styled.div`
   background: #ebeef4;
   height: 1px;
   margin: 8px 0;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #272a3a;
+    `};
 `;
 
 export default function HeaderAccount({ user, chain }) {
@@ -131,7 +136,7 @@ export default function HeaderAccount({ user, chain }) {
         <Menu theme={theme}>
           {menu.map((item, index) => (
             <Fragment key={index}>
-              {index === menu.length - 1 && <Divider />}
+              {index === menu.length - 1 && <Divider theme={theme} />}
               <Item onClick={() => handleAccountMenu(item)} theme={theme}>
                 {item.icon}
                 <div>{item.name}</div>
