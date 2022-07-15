@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import styled, { css } from "styled-components";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside";
 import { shadow_200 } from "../styles/componentCss";
+import useDarkMode from "../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   margin-left: auto;
@@ -30,6 +31,13 @@ const OptionWrapper = styled.div`
   padding: 8px 0;
   border-radius: 4px;
   ${shadow_200};
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #212433;
+      border-color: #363a4d;
+      color: white;
+    `}
 `;
 
 const OptionItem = styled.div`
@@ -41,12 +49,19 @@ const OptionItem = styled.div`
 
   :hover {
     background: #f6f7fa;
+    ${(props) =>
+      props?.theme === "dark" &&
+      css`
+        background: #1d1e2c;
+        color: white;
+      `}
   }
 `;
 
 export default function Edit({ edit, setIsEdit, alwaysShow }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
+  const [theme] = useDarkMode();
 
   useOnClickOutside(ref, () => setShow(false));
 
@@ -60,13 +75,14 @@ export default function Edit({ edit, setIsEdit, alwaysShow }) {
         height={24}
       />
       {show && (
-        <OptionWrapper>
+        <OptionWrapper theme={theme}>
           {edit && (
             <OptionItem
               onClick={() => {
                 setIsEdit(true);
                 setShow(false);
               }}
+              theme={theme}
             >
               Edit
             </OptionItem>
