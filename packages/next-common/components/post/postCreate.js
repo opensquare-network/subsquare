@@ -49,6 +49,9 @@ const Wrapper = styled.div`
         border-color: #363a4d;
       }
     `};
+  input {
+    color: #ffffff;
+  }
 `;
 
 const Title = styled.div`
