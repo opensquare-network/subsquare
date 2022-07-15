@@ -67,7 +67,7 @@ const Item = styled.a`
     ${(props) =>
       props?.theme === "dark" &&
       css`
-        background: #1d1e2c;
+        background: #272a3a;
       `};
   }
 
