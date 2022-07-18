@@ -28,6 +28,25 @@ export const toDiscussionListItem = (chain, item) => ({
   detailLink: `/post/${item.postUid}`,
 });
 
+export const toPolkassemblyDiscussionListItem = (chain, item) => ({
+  ...item,
+  time: item.lastActivityAt,
+  author: {
+    ...item.author,
+    ...(item.author.address
+      ? {
+          addresses: [
+            {
+              address: item.author.address,
+              chain,
+            },
+          ],
+        }
+      : {}),
+  },
+  detailLink: `/polkassembly-discussion/${item.polkassemblyId}`,
+});
+
 export const toCouncilMotionListItem = (chain, item) => {
   let motionId = `${item.indexer.blockHeight}_${item.hash}`;
   if (Chains.kusama === chain) {

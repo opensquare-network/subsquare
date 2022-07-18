@@ -10,6 +10,15 @@ const commonMenus = {
       name: "Discussions",
       pathname: "/discussions",
     },
+    ...(["polkadot", "kusama"].includes(process.env.NEXT_PUBLIC_CHAIN)
+      ? [
+          {
+            value: "polkassembly-discussions",
+            name: "Polkassembly",
+            pathname: "/polkassembly-discussions",
+          },
+        ]
+      : []),
   ],
 };
 
