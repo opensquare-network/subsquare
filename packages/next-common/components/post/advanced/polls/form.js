@@ -15,6 +15,7 @@ import Select from "../../../select";
 import InputOptions from "./inputOptions";
 import FormItem from "../formItem";
 import dayjs from "dayjs";
+import DatePicker from "../../../datePicker";
 
 function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
   const initValue = {
@@ -121,17 +122,18 @@ function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
       </FormItem>
 
       <FormItem label="Voting length">
-        <Select
-          disabled={disabled}
-          value={value.expiresTime}
-          options={expiresTimeOptions}
-          onChange={(option) => {
-            setValue({
-              ...value,
-              expiresTime: option.value,
-            });
-          }}
-        />
+        {/*<Select*/}
+        {/*  disabled={disabled}*/}
+        {/*  value={value.expiresTime}*/}
+        {/*  options={expiresTimeOptions}*/}
+        {/*  onChange={(option) => {*/}
+        {/*    setValue({*/}
+        {/*      ...value,*/}
+        {/*      expiresTime: option.value,*/}
+        {/*    });*/}
+        {/*  }}*/}
+        {/*/>*/}
+        <DatePicker />
       </FormItem>
 
       <FormItem label="Setting">
