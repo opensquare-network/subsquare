@@ -28,6 +28,9 @@ export const ContentCenterWrapper = styled.div`
         border-color: #363a4d;
         color: white;
       }
+      button div {
+        background-color: initial;
+      }
       * {
         color: white;
       }

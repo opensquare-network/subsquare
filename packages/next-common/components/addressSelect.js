@@ -12,6 +12,7 @@ import { nodes } from "../utils/constants";
 import { fetchIdentity } from "../services/identity";
 import Identity from "./Identity";
 import Caret from "./icons/caret";
+import useDarkMode from "../utils/hooks/useDarkMode";
 
 const Wrapper = Relative;
 
@@ -89,6 +90,14 @@ const Item = styled(Flex)`
   :hover {
     background: #f6f7fa;
   }
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      :hover,
+      :hover div {
+        background: #272a3a;
+      }
+    `};
   ${(p) =>
     p.selected &&
     css`
@@ -137,8 +146,9 @@ function Account({ account, chain }) {
 }
 
 export function Option({ onClick, item, selected, chain }) {
+  const [theme] = useDarkMode();
   return (
-    <Item onClick={onClick} selected={selected}>
+    <Item onClick={onClick} selected={selected} theme={theme}>
       <Account account={item} chain={chain} />
     </Item>
   );

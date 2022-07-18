@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Link from "next/link";
 
 import Layout from "next-common/components/layout";
@@ -8,6 +8,7 @@ import NextHead from "next-common/components/nextHead";
 import privacyMd from "./privacy-policy.md";
 import Markdown from "next-common/components/micromarkMd";
 import ArrowLeft from "../../icons/arrowLeft";
+import useDarkMode from "../../../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -36,6 +37,18 @@ const Content = styled.div`
     0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
   padding: 48px;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #212433;
+      border-color: #363a4d;
+      color: white;
+      p,
+      h2,
+      li {
+        color: white !important;
+      }
+    `}
 `;
 
 const Title = styled.h1`
@@ -47,6 +60,7 @@ const Title = styled.h1`
 `;
 
 const Privacy = withLoginUserRedux(({ loginUser, chain }) => {
+  const [theme] = useDarkMode();
   return (
     <Layout user={loginUser} chain={chain}>
       <NextHead title="Privacy Policy" desc="Privacy Policy" />
@@ -59,7 +73,7 @@ const Privacy = withLoginUserRedux(({ loginUser, chain }) => {
             </BackButton>
           </a>
         </Link>
-        <Content>
+        <Content theme={theme}>
           <Title>Privacy Policy</Title>
           <Markdown md={privacyMd} />
         </Content>

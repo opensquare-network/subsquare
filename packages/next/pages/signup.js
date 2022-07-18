@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -17,6 +17,7 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { shadow_100 } from "../styles/componentCss";
 import NextHead from "next-common/components/nextHead";
 import UserPolicy from "next-common/components/userPolicy";
+import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -48,6 +49,26 @@ const ContentWrapper = styled.div`
   @media screen and (max-width: 392px) {
     width: 100%;
   }
+
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background-color: #212433 !important;
+      border-color: #212433 !important;
+      div,
+      input,
+      button {
+        background-color: #212433;
+        border-color: #363a4d;
+        color: white;
+      }
+      button div {
+        background-color: initial;
+      }
+      * {
+        color: white;
+      }
+    `}
 `;
 
 const Title = styled.div`
@@ -121,6 +142,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const [agreeError, setAgreeError] = useState();
   const isMounted = useIsMounted();
   const { countdown, counting: emailSent, startCountdown } = useCountdown(3);
+  const [theme] = useDarkMode();
 
   if (emailSent && countdown === 0) {
     router.replace("/login");
@@ -196,7 +218,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       <NextHead title={`Signup`} desc={`Signup`} />
       <Wrapper>
         {!success && (
-          <ContentWrapper>
+          <ContentWrapper theme={theme}>
             <Title>Sign up</Title>
             <FormWrapper onSubmit={handleSubmit}>
               <InputWrapper>
