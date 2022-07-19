@@ -9,7 +9,7 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { getNode } from "utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { emptyFunction } from "next-common/utils";
+import { checkInputValue, emptyFunction } from "next-common/utils";
 import Signer from "./signer";
 import VoteBalance from "./voteBalance";
 import VotingStatus from "./votingStatus";
