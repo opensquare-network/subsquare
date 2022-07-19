@@ -8,12 +8,14 @@ import Relative from "next-common/components/styled/relative";
 import Flex from "next-common/components/styled/flex";
 import { prettyHTML, renderDisableNonAddressLink, toApiType } from "../../utils/viewfuncs";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
-import dynamic from 'next/dynamic'
+import dynamic from "next/dynamic";
 import IdentityOrAddr from "../IdentityOrAddr";
 import { addressEllipsis } from "../../utils";
 
-
-const UniverseEditor = dynamic(() => import("@osn/rich-text-editor").then(mod=> mod.UniverseEditor),{ssr:false})
+const UniverseEditor = dynamic(
+  () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
+  { ssr: false }
+);
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -37,7 +39,6 @@ function escapeLinkText(text) {
   return text.replace(/\\/g, "\\\\").replace(/([\[\]])/g, "\\$1");
 }
 
-
 function Editor(
   {
     postId,
@@ -49,7 +50,7 @@ function Editor(
     setContent,
     contentType,
     setContentType,
-    setQuillRef = null,
+    setQuillRef = () => {},
     users = [],
     type,
   },
@@ -121,11 +122,13 @@ function Editor(
 
   const isEmpty = content === "" || content === `<p><br></p>`;
 
-  const loadSuggestions =  (text) => {
+  const loadSuggestions = (text) => {
     return (users || [])
       .map((user) => ({
         preview: user.name,
-        value:  user.isKeyRegistered ? `[@${addressEllipsis(user.name)}](${user.value}-${chain}) ` : `[@${escapeLinkText(user.name)}](/member/${user.value}) `,
+        value: user.isKeyRegistered
+          ? `[@${addressEllipsis(user.name)}](${user.value}-${chain}) `
+          : `[@${escapeLinkText(user.name)}](/member/${user.value}) `,
         address: user.value,
         isKeyRegistered: user.isKeyRegistered,
         chain: chain,
@@ -143,7 +146,7 @@ function Editor(
           setContentType={setContentType}
           loadSuggestions={loadSuggestions}
           minHeight={100}
-          identifier={<IdentityOrAddr/>}
+          identifier={<IdentityOrAddr />}
           setQuillRef={setQuillRef}
           previewerPlugins={[
             {
