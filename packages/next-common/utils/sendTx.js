@@ -40,7 +40,7 @@ export async function sendTx({
           for (const event of events) {
             const { section, method } = event.event;
             if (section === "system" && method === "ExtrinsicFailed") {
-              dispatch(newErrorToast(`Extrinsic failed`));
+              dispatch(newErrorToast(`Extrinsic Failed`));
               return;
             }
           }

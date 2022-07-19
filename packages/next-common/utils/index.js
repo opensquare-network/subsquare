@@ -224,7 +224,7 @@ export function emptyFunction() {}
 
 export const capitailize = (text) => text[0].toUpperCase() + text.slice(1);
 
-export function checkInputValue(inputValue, decimals, valueName = "value") {
+export function checkInputValue(inputValue, decimals) {
   if (!inputValue) {
     throw new Error(`Please input a ${valueName}`);
   }

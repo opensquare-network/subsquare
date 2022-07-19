@@ -14,6 +14,7 @@ import Signer from "./signer";
 import VoteBalance from "./voteBalance";
 import VotingStatus from "./votingStatus";
 import VoteButton from "next-common/components/popup/voteButton";
+import { sendTx } from "next-common/utils/sendTx";
 
 function PopupContent({
   extensionAccounts,

@@ -80,7 +80,7 @@ function PopupContent({
 
     let bnValue;
     try {
-      bnValue = checkInputValue(inputValue, node.decimals, "tip value");
+      bnValue = checkInputValue(inputValue, node.decimals);
     } catch (err) {
       return showErrorToast(err.message);
     }
