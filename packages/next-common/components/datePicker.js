@@ -1,21 +1,48 @@
 import styled, { css } from "styled-components";
-import * as ReactDatePicker from "react-datepicker";
+import ReactDatePicker from "react-datepicker";
 import { useState, useRef } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
-
-import { useOnClickOutside } from "frontedUtils/hooks";
-import { ReactComponent as CaretRight } from "/public/imgs/icons/caret-right.svg";
-import { ReactComponent as ArrowLeft } from "/public/imgs/icons/arrow-left.svg";
-import { ReactComponent as ArrowRight } from "/public/imgs/icons/arrow-right.svg";
-import Button from "@osn/common-ui/es/styled/Button";
+import useOnClickOutside from "../utils/hooks/useOnClickOutside";
+import ArrowLeft from "../assets/imgs/icons/caret-left-16.svg";
+import ArrowRight from "../assets/imgs/icons/caret-right-16.svg";
+import Close from "../assets/imgs/icons/close-16.svg";
+import Button from "./button";
 import {
   p_14_medium,
   p_14_normal,
-  p_16_normal,
   p_16_semibold,
 } from "../styles/componentCss";
-import { Flex, FlexBetween } from "@osn/common-ui";
+import Flex from "./styled/flex";
+import FlexBetween from "./styled/flexBetween";
+import Input from "./input";
+
+const CaretWrapper = styled.div`
+  cursor: pointer;
+  padding: 6px 7px 5px 7px;
+  border: 1px solid #e0e4eb;
+  border-radius: 4px;
+
+  :hover {
+    border-color: #1e2134;
+  }
+`;
+
+const CaretLeft = ({ onClick }) => {
+  return (
+    <CaretWrapper onClick={onClick}>
+      <ArrowLeft />
+    </CaretWrapper>
+  );
+};
+
+const CaretRight = ({ onClick }) => {
+  return (
+    <CaretWrapper onClick={onClick}>
+      <ArrowRight />
+    </CaretWrapper>
+  );
+};
 
 const Wrapper = styled.div`
   position: relative;
@@ -23,27 +50,48 @@ const Wrapper = styled.div`
 
 const DateTimeWrapper = styled.div``;
 
+const Label = styled.span`
+  width: 91px;
+  line-height: 40px;
+  background: #f6f7fa;
+  border-right: 1px solid #e0e4eb;
+  text-align: center;
+`;
+
+const DateTime = styled.span`
+  padding-left: 16px;
+  flex-grow: 1;
+  text-align: left;
+`;
+
 const DateButton = styled.div`
-  padding: 12px 16px;
   border: 1px solid #e2e8f0;
+
   :hover {
     border-color: #b7c0cc;
   }
+
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   cursor: pointer;
   font-weight: 500;
   font-size: 14px;
   line-height: 24px;
+
   .placeholder {
     color: #9da9bb;
   }
+
   > div {
     flex-grow: 1;
   }
+
   > svg {
     flex: 0 0 24px;
     fill: #506176;
   }
+
   ${(p) =>
     p.active &&
     css`
@@ -57,8 +105,40 @@ const DateWrapper = styled.div`
   right: 0;
   padding: 24px;
   background: #ffffff;
-  box-shadow: 0px 4px 31px rgba(26, 33, 44, 0.06),
-    0px 0.751293px 8px rgba(26, 33, 44, 0.04);
+  border: 1px solid #ebeef4;
+  box-shadow: 0px 6px 22px rgba(30, 33, 52, 0.11),
+    0px 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
+    0px 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
+  border-radius: 8px;
+
+  h2 {
+    margin-top: 0;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  h6 {
+    margin-top: 16px;
+    margin-bottom: 8px;
+  }
+
+  h2 + button {
+    all: unset;
+    cursor: pointer;
+  }
+
+  h2 + span {
+    font-size: 12px;
+    font-weight: 500;
+    color: #9da9bb;
+  }
+
+  .react-datepicker {
+    margin-bottom: 16px;
+    padding: 8px;
+    border: 1px solid #e0e4eb;
+    border-radius: 4px;
+  }
 
   .react-datepicker__header {
     background: transparent;
@@ -67,7 +147,7 @@ const DateWrapper = styled.div`
   }
 
   .react-datepicker__day-name {
-    width: 40px;
+    width: 47.85px;
     font-family: Inter, sans-serif;
     ${p_14_medium};
     text-align: center;
@@ -76,12 +156,7 @@ const DateWrapper = styled.div`
   }
 
   .react-datepicker__day-names {
-    margin-bottom: 8px;
-  }
-
-  .react-datepicker {
-    border-radius: 0;
-    border: none;
+    line-height: 32px;
   }
 
   .react-datepicker__month {
@@ -89,8 +164,8 @@ const DateWrapper = styled.div`
   }
 
   .react-datepicker__day {
-    width: 40px;
-    height: 40px;
+    width: 47.85px;
+    height: 32px;
     font-family: Inter, sans-serif;
     ${p_14_normal};
     color: #1e2134;
@@ -99,6 +174,7 @@ const DateWrapper = styled.div`
     justify-content: center;
     border-radius: 0;
     margin: 0 !important;
+
     :hover {
       background: #f0f3f8;
     }
@@ -124,6 +200,7 @@ const DateWrapper = styled.div`
   .react-datepicker__day--disabled {
     color: #9da9bb;
     cursor: not-allowed;
+
     &:hover {
       background: none;
     }
@@ -131,73 +208,47 @@ const DateWrapper = styled.div`
 `;
 
 const DateHeader = styled(Flex)`
-  > div {
+  margin-bottom: 8px;
+
+  > b {
     font-family: Inter, sans-serif;
     ${p_16_semibold};
     text-align: center;
     color: #1e2134;
     flex: 1 1 auto;
   }
+
   > svg {
     cursor: pointer;
+
     path {
       fill: #506176;
     }
   }
 `;
 
-const Divider = styled.div`
-  height: 1px;
-  background: #f0f3f8;
-  margin: 16px 0;
-`;
-
 const ButtonWrapper = styled(Flex)`
   margin-top: 20px;
   justify-content: flex-end;
+
   > :not(:first-child) {
     margin-left: 16px;
   }
 `;
 
-const TimeWrapper = styled.div`
-  z-index: 2;
-  position: absolute;
-  right: 0;
-  padding: 24px;
-  background: #ffffff;
-  box-shadow: 0px 4px 31px rgba(26, 33, 44, 0.06),
-    0px 0.751293px 8px rgba(26, 33, 44, 0.04);
-`;
+const TimeWrapper = styled(FlexBetween)`
+  gap: 8px;
+  align-items: center;
 
-const TimeHeaderWrapper = styled(FlexBetween)`
-  ${p_16_normal};
-  white-space: nowrap;
-  > :first-child {
-    font-weight: 600;
-    color: #1e2134;
+  input {
+    width: 132px;
+    line-height: 20px;
+    text-align: center;
   }
-  > :last-child {
-    color: #9da9bb;
-    font-size: 14px;
+
+  span {
+    line-height: 40px;
   }
-`;
-
-const TimeInputWrapper = styled(FlexBetween)`
-  margin: 20px 0;
-  padding: 12px 4px;
-  width: 280px;
-  height: 48px;
-  border-bottom: 1px solid #e2e8f0;
-  ${p_14_normal};
-  background: #fbfcfe;
-`;
-
-const TimeInput = styled.input`
-  all: unset;
-  width: 128px;
-  height: 24px;
-  text-align: center;
 `;
 
 export default function DatePicker({
@@ -212,8 +263,6 @@ export default function DatePicker({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [show, setShow] = useState("date");
-  const [hour, setHour] = useState("");
-  const [minute, setMinute] = useState("");
   const ref = useRef();
   const today = moment()
     .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
@@ -242,36 +291,11 @@ export default function DatePicker({
       setDate(today);
     }
   };
-  const checkInt = (value) => {
-    if (value && value.indexOf(".") > 0) return false;
-    return !(isNaN(value) && !Number.isInteger(Number(value)));
-  };
+
   const isToday = (date) => {
     return date.getTime() === today.getTime();
   };
-  const onHourChange = (e) => {
-    let value = e.target.value;
-    if (value.length > 2 && value[0] === "0") {
-      value = value.slice(1, 3);
-    }
-    if (!checkInt(value)) return;
-    if (Number(value) > 23 || Number(value) < 0) return;
-    setHour(value);
-  };
-  const onMinuteChange = (e) => {
-    let value = e.target.value;
-    if (value.length > 2 && value[0] === "0") {
-      value = value.slice(1, 3);
-    }
-    if (!checkInt(value)) return;
-    if (Number(value) > 59 || Number(value) < 0) return;
-    setMinute(value);
-  };
-  const format = (value) => {
-    if (value === null || value === undefined) return "";
-    if (value < 10) return "0" + value;
-    return "" + value;
-  };
+
   const formatTime = () => {
     let hour = defaultTime?.split(":")?.[0] || "00";
     let minute = defaultTime?.split(":")?.[1] || "00";
@@ -284,17 +308,7 @@ export default function DatePicker({
         minute = now.getMinutes();
       }
     }
-    setHour(format(hour));
-    setMinute(format(minute));
     setDate(moment(date).set({ hour, minute }).toDate());
-  };
-  const onSelectTime = () => {
-    setDate(
-      moment(date)
-        .set({ hour: Number(hour), minute: Number(minute) })
-        .toDate()
-    );
-    onSelect();
   };
 
   return (
@@ -304,18 +318,32 @@ export default function DatePicker({
           <div onClick={handleClick}>{button}</div>
         ) : (
           <DateButton onClick={handleClick} active={isOpen}>
-            {date && <div>{moment(date).format("MMM,DD YYYY HH:mm")}</div>}
-            {!date && <div className="placeholder">{placeholder}</div>}
-            <CaretRight />
+            <Label>End time</Label>
+            <DateTime>{moment(date).format("YYYY-MM-DD, HH:mm")}</DateTime>
+
+            {/*{!date && <div className="placeholder">{placeholder}</div>}*/}
+
+            <ArrowRight />
           </DateButton>
         )}
         {isOpen && (
           <>
             {show === "date" && (
               <DateWrapper>
+                <FlexBetween>
+                  <h2>Select End Time</h2>
+                  <button
+                    onClick={() => {
+                      setIsOpen(false);
+                    }}
+                  >
+                    <Close />
+                  </button>
+                </FlexBetween>
+                <h6>Date</h6>
                 <ReactDatePicker
                   selected={date}
-                  minDate={minDate}
+                  minDate={new Date()}
                   maxDate={maxDate}
                   onChange={handleChange}
                   inline
@@ -326,63 +354,36 @@ export default function DatePicker({
                   }) => (
                     <div>
                       <DateHeader>
-                        <ArrowLeft onClick={decreaseMonth} />
-                        <div>{moment(date).format("MMM, YYYY")}</div>
-                        <ArrowRight onClick={increaseMonth} />
+                        <CaretLeft onClick={decreaseMonth} />
+                        <b>{moment(date).format("YYYY-MM")}</b>
+                        <CaretRight onClick={increaseMonth} />
                       </DateHeader>
-                      <Divider />
                     </div>
                   )}
-                  formatWeekDay={(nameOfDay) => nameOfDay.substr(0, 3)}
+                  formatWeekDay={(nameOfDay) => nameOfDay.substr(0, 1)}
                 />
+                <FlexBetween>
+                  <h2>Time</h2>
+                  <span>24-hour clock</span>
+                </FlexBetween>
+
+                <TimeWrapper>
+                  <Input placeholder="00" />
+                  <span>:</span>
+                  <Input placeholder="00" />
+                </TimeWrapper>
                 <ButtonWrapper>
                   <Button
                     primary
-                    disabled={!date}
                     onClick={() => {
                       if (!date) onToday();
                       formatTime();
-                      setShow("time");
                     }}
                   >
-                    Next
+                    Confirm
                   </Button>
                 </ButtonWrapper>
               </DateWrapper>
-            )}
-            {show === "time" && (
-              <TimeWrapper>
-                <TimeHeaderWrapper>
-                  <div>Select Time</div>
-                  <div>{moment(date).format("MMM,DD YYYY")}</div>
-                </TimeHeaderWrapper>
-                <Divider />
-                <TimeInputWrapper>
-                  <TimeInput
-                    value={hour}
-                    onChange={onHourChange}
-                    placeholder="00"
-                  />
-                  <div>:</div>
-                  <TimeInput
-                    value={minute}
-                    onChange={onMinuteChange}
-                    placeholder="00"
-                  />
-                </TimeInputWrapper>
-                <ButtonWrapper>
-                  <Button onClick={() => setIsOpen(false)}>Cancel</Button>
-                  <Button
-                    primary
-                    onClick={() => {
-                      onSelectTime();
-                      setIsOpen(false);
-                    }}
-                  >
-                    Select
-                  </Button>
-                </ButtonWrapper>
-              </TimeWrapper>
             )}
           </>
         )}
