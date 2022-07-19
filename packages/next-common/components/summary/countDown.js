@@ -33,7 +33,12 @@ const InnerCircleWrapper = styled.div`
   position: absolute;
   width: 48px;
   height: 48px;
-  background: #212433;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #212433;
+      border-color: #363a4d;
+    `};
 `;
 
 const InnerCircle = styled.div`
