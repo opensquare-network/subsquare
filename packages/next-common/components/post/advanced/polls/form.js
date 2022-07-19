@@ -13,23 +13,17 @@ import {
 import Toggle from "../../../toggle";
 import InputOptions from "./inputOptions";
 import FormItem from "../formItem";
-import dayjs from "dayjs";
 import DatePicker from "../../../datePicker";
 
 function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
+  const [endTime, setEndTime] = useState(null);
+  const onSelectDatetime = (timestamp) => setEndTime(timestamp);
+
   const initValue = {
     title: "",
     options: ["", ""],
-    expiresTime: 15,
     anonymous: true,
   };
-
-  const expiresTimeOptions = [7, 15, 30].map((d) => {
-    return {
-      label: `${d} days`,
-      value: d,
-    };
-  });
 
   const [value, setValue] = useState(initValue);
   const inputOptionsRef = useRef();
@@ -39,10 +33,10 @@ function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
       polls: {
         ...value,
         options: value.options.map((option) => option?.trim()),
-        expiresTime: dayjs().add(value.expiresTime, "day").valueOf(),
+        expiresTime: endTime,
       },
     });
-  }, [value]);
+  }, [value, endTime]);
 
   useEffect(() => {
     setValue(initValue);
@@ -66,10 +60,7 @@ function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
       return true;
     }
 
-    let result = false;
-    result = !!value.title && value.options.every((i) => i);
-
-    return result;
+    return !!value.title && value.options.every((i) => i);
   };
 
   useImperativeHandle(ref, () => ({
@@ -121,7 +112,10 @@ function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
       </FormItem>
 
       <FormItem label="Voting length">
-        <DatePicker setDate={() => {}} />
+        <DatePicker
+          onSelectDatetime={onSelectDatetime}
+          placeholder="Please select the time..."
+        />
       </FormItem>
 
       <FormItem label="Setting">

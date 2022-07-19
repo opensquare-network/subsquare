@@ -12,9 +12,11 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import Button from "next-common/components/button";
 import ErrorText from "next-common/components/ErrorText";
 import AdvancedForm from "next-common/components/post/advanced/form";
-import dynamic from 'next/dynamic'
-const UniverseEditor = dynamic(() => import("@osn/rich-text-editor").then(mod=> mod.UniverseEditor),{ssr:false})
-
+import dynamic from "next/dynamic";
+const UniverseEditor = dynamic(
+  () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
+  { ssr: false }
+);
 
 const Wrapper = styled.div`
   padding: 48px;
@@ -103,14 +105,18 @@ export default function PostCreate({ chain, loginUser }) {
   const createPost = async () => {
     setCreating(true);
     const result = await nextApi
-      .post(`posts`, {
-        chain,
-        title,
-        content,
-        contentType,
-        bannerUrl,
-        ...formValue,
-      })
+      .post(
+        `posts`,
+        {
+          chain,
+          title,
+          content,
+          contentType,
+          bannerUrl,
+          ...formValue,
+        },
+        { credentials: "include" }
+      )
       .finally(() => {
         setCreating(false);
       });
@@ -181,7 +187,7 @@ export default function PostCreate({ chain, loginUser }) {
           onChange={setContent}
           contentType={contentType}
           setContentType={setContentType}
-          loadSuggestions={()=> []}
+          loadSuggestions={() => []}
           minHeight={300}
         />
       </InputWrapper>

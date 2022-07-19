@@ -26,11 +26,25 @@ const CaretWrapper = styled.div`
   :hover {
     border-color: #1e2134;
   }
+  * {
+    stroke: rgb(30, 33, 52);
+  }
+
+  ${(p) =>
+    p.disabled &&
+    css`
+      cursor: not-allowed;
+      pointer-events: none;
+      background: #ebeef4;
+      :hover {
+        border-color: #e0e4eb;
+      }
+    `}
 `;
 
-const CaretLeft = ({ onClick }) => {
+const CaretLeft = ({ onClick, disabled }) => {
   return (
-    <CaretWrapper onClick={onClick}>
+    <CaretWrapper disabled={disabled} onClick={onClick}>
       <ArrowLeft />
     </CaretWrapper>
   );
@@ -60,6 +74,13 @@ const Label = styled.span`
 
 const DateTime = styled.span`
   padding-left: 16px;
+  flex-grow: 1;
+  text-align: left;
+`;
+
+const PlaceHolder = styled.span`
+  padding-left: 16px;
+  color: #d7dee8;
   flex-grow: 1;
   text-align: left;
 `;
@@ -252,21 +273,17 @@ const TimeWrapper = styled(FlexBetween)`
 `;
 
 export default function DatePicker({
-  date,
-  setDate,
   placeholder,
-  minDate,
   maxDate,
   button,
-  onSelect = () => {},
-  defaultTime = "00:00",
+  onSelectDatetime = () => {},
 }) {
+  const [date, setDate] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [show, setShow] = useState("date");
+  const [hour, setHour] = useState("");
+  const [minute, setMinute] = useState("");
   const ref = useRef();
-  const today = moment()
-    .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-    .toDate();
   useOnClickOutside(ref, () => setIsOpen(false));
   const handleChange = (e) => {
     setDate(e);
@@ -276,39 +293,15 @@ export default function DatePicker({
     setShow("date");
     setIsOpen(!isOpen);
   };
-  const onToday = () => {
-    if (date) {
-      setDate(
-        moment(date)
-          .set({
-            year: today.year(),
-            month: today.month(),
-            date: today.date(),
-          })
-          .toDate()
-      );
-    } else {
-      setDate(today);
-    }
-  };
 
-  const isToday = (date) => {
-    return date.getTime() === today.getTime();
-  };
-
-  const formatTime = () => {
-    let hour = defaultTime?.split(":")?.[0] || "00";
-    let minute = defaultTime?.split(":")?.[1] || "00";
-    if (date) {
-      hour = moment(date).hour();
-      minute = moment(date).minute();
-      if (isToday(date) && defaultTime === "now") {
-        const now = new Date();
-        hour = now.getHours();
-        minute = now.getMinutes();
-      }
-    }
-    setDate(moment(date).set({ hour, minute }).toDate());
+  const getFormattedTime = () => {
+    if (!date || !hour || !minute) return "";
+    const datetime = new Date(
+      Date.parse(
+        `${moment(date ?? new Date()).format("YYYY-MM-DD")} ${hour}:${minute}`
+      )
+    );
+    return moment(datetime).format("YYYY-MM-DD, HH:mm");
   };
 
   return (
@@ -319,10 +312,11 @@ export default function DatePicker({
         ) : (
           <DateButton onClick={handleClick} active={isOpen}>
             <Label>End time</Label>
-            <DateTime>{moment(date).format("YYYY-MM-DD, HH:mm")}</DateTime>
-
-            {/*{!date && <div className="placeholder">{placeholder}</div>}*/}
-
+            {date ? (
+              <DateTime>{getFormattedTime()}</DateTime>
+            ) : (
+              <PlaceHolder>{placeholder}</PlaceHolder>
+            )}
             <ArrowRight />
           </DateButton>
         )}
@@ -354,7 +348,13 @@ export default function DatePicker({
                   }) => (
                     <div>
                       <DateHeader>
-                        <CaretLeft onClick={decreaseMonth} />
+                        <CaretLeft
+                          disabled={
+                            moment(date).format("YYYY-MM") ===
+                            moment(new Date()).format("YYYY-MM")
+                          }
+                          onClick={decreaseMonth}
+                        />
                         <b>{moment(date).format("YYYY-MM")}</b>
                         <CaretRight onClick={increaseMonth} />
                       </DateHeader>
@@ -368,16 +368,52 @@ export default function DatePicker({
                 </FlexBetween>
 
                 <TimeWrapper>
-                  <Input placeholder="00" />
+                  <Input
+                    type="number"
+                    value={hour}
+                    onChange={(e) => {
+                      const value = parseInt(e.target.value);
+                      if (0 <= value && value < 24) {
+                        setHour(value.toString());
+                      }
+                      if (e.target.value === "") {
+                        setHour("");
+                      }
+                    }}
+                    placeholder="00"
+                  />
                   <span>:</span>
-                  <Input placeholder="00" />
+                  <Input
+                    type="number"
+                    value={minute}
+                    onChange={(e) => {
+                      const value = parseInt(e.target.value);
+                      if (0 <= value && value < 60) {
+                        setMinute(value.toString());
+                      }
+                      if (e.target.value === "") {
+                        setMinute("");
+                      }
+                    }}
+                    placeholder="00"
+                  />
                 </TimeWrapper>
                 <ButtonWrapper>
                   <Button
                     primary
+                    disabled={hour === "" || minute === ""}
                     onClick={() => {
-                      if (!date) onToday();
-                      formatTime();
+                      if (!date) {
+                        setDate(new Date());
+                      }
+                      onSelectDatetime(
+                        Date.parse(
+                          `${moment(date ?? new Date()).format(
+                            "YYYY-MM-DD"
+                          )} ${hour}:${minute}`
+                        )
+                      );
+                      setIsOpen(false);
                     }}
                   >
                     Confirm
