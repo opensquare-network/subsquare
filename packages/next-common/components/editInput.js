@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "next-common/components/button";
 import ErrorText from "next-common/components/ErrorText";
-import dynamic from 'next/dynamic'
-const UniverseEditor = dynamic(() => import("@osn/rich-text-editor").then(mod=> mod.UniverseEditor),{ssr:false})
+import dynamic from "next/dynamic";
+const UniverseEditor = dynamic(
+  () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
+  { ssr: false }
+);
 
 const Wrapper = styled.div`
   margin-top: 8px;
@@ -64,8 +67,9 @@ export default function EditInput({
           onChange={setContent}
           contentType={contentType}
           setContentType={setContentType}
-          loadSuggestions={()=> []}
+          loadSuggestions={() => []}
           minHeight={100}
+          setQuillRef={() => {}}
         />
       </InputWrapper>
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
@@ -73,7 +77,12 @@ export default function EditInput({
         {!loading && (
           <Button onClick={() => onFinishedEdit(false)}>Cancel</Button>
         )}
-        <Button isLoading={loading} onClick={onUpdate} disabled={isEmpty} secondary >
+        <Button
+          isLoading={loading}
+          onClick={onUpdate}
+          disabled={isEmpty}
+          secondary
+        >
           Update
         </Button>
       </ButtonWrapper>
