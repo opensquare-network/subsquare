@@ -2,14 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
-import {
-  newErrorToast,
-  newPendingToast,
-  newSuccessToast,
-  newToastId,
-  removeToast,
-  updatePendingToast,
-} from "next-common/store/reducers/toastSlice";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import toApiCouncil from "next-common/utils/toApiCouncil";
@@ -17,6 +10,8 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Signer from "./signer";
 import CurrentVote from "./currentVote";
 import VoteButton from "next-common/components/popup/voteButton";
+import { sendTx } from "next-common/utils/sendTx";
+import { emptyFunction } from "next-common/utils";
 
 function PopupContent({
   extensionAccounts,
@@ -27,9 +22,9 @@ function PopupContent({
   motionHash,
   motionIndex,
   onClose,
-  onInBlock,
-  onFinalized,
-  onSubmitted,
+  onSubmitted = emptyFunction,
+  onFinalized = emptyFunction,
+  onInBlock = emptyFunction,
   type,
 }) {
   const dispatch = useDispatch();
@@ -61,44 +56,27 @@ function PopupContent({
       return showErrorToast("Please select an account");
     }
 
-    const toastId = newToastId();
-    dispatch(newPendingToast(toastId, "Waiting for signing..."));
+    const tx = voteMethod(motionHash, motionIndex, approve);
 
-    try {
-      setIsLoading(approve ? "Aye" : "Nay");
+    const signerAddress = selectedAccount.address;
 
-      const voterAddress = selectedAccount.address;
-
-      const unsub = await voteMethod(
-        motionHash,
-        motionIndex,
-        approve
-      ).signAndSend(voterAddress, ({ events = [], status }) => {
-        if (status.isFinalized) {
-          onFinalized(voterAddress);
-          unsub();
+    await sendTx({
+      tx,
+      dispatch,
+      setLoading: (loading) => {
+        if (loading) {
+          setIsLoading(approve ? "Aye" : "Nay");
+        } else {
+          setIsLoading(null);
         }
-        if (status.isInBlock) {
-          // Transaction went through
-          dispatch(removeToast(toastId));
-          dispatch(newSuccessToast("InBlock"));
-          onInBlock(voterAddress);
-        }
-      });
-
-      dispatch(updatePendingToast(toastId, "Broadcasting"));
-
-      onSubmitted(voterAddress);
-
-      onClose();
-    } catch (e) {
-      dispatch(removeToast(toastId));
-      dispatch(newErrorToast(e.message));
-    } finally {
-      if (isMounted.current) {
-        setIsLoading(null);
-      }
-    }
+      },
+      onFinalized,
+      onInBlock,
+      onSubmitted,
+      onClose,
+      signerAddress,
+      isMounted,
+    });
   };
 
   return (
