@@ -19,6 +19,7 @@ import {
 import BigNumber from "bignumber.js";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import useDarkMode from "../../utils/hooks/useDarkMode";
+import { dark_grey_200, dark_neutral } from "../../styles/componentCss";
 
 const Wrapper = styled.div`
   display: flex;
@@ -50,8 +51,8 @@ const Card = styled.div`
   ${(props) =>
     props?.theme === "dark" &&
     css`
-      background: #212433;
-      border-color: #363a4d;
+      background: ${dark_neutral};
+      border-color: ${dark_grey_200};
       color: #fff;
     `};
 `;
