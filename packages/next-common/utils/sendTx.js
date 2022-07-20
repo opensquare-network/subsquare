@@ -8,7 +8,6 @@ import {
   updatePendingToast,
 } from "../store/reducers/toastSlice";
 
-
 export function getDispatchError(dispatchError) {
   let message = dispatchError.type;
 
@@ -62,8 +61,8 @@ export async function sendTx({
             const { section, method, data } = event.event;
             if (section === "system" && method === "ExtrinsicFailed") {
               const [dispatchError] = data;
-              const message = getDispatchError(dispatchError)
-              dispatch(newErrorToast(`Extrinsic failed, ${message}`));
+              const message = getDispatchError(dispatchError);
+              dispatch(newErrorToast(`Extrinsic failed: ${message}`));
               return;
             }
           }
