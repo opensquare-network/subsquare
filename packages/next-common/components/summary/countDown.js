@@ -1,17 +1,12 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import useDarkMode from "../../utils/hooks/useDarkMode";
+import { dark_neutral } from "../../styles/componentCss";
 
 const CircleWrapper = styled.div`
   position: relative;
   width: 48px;
   height: 48px;
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background: #212433;
-      border-color: #363a4d;
-    `};
 `;
 
 const BackCircle = styled.div`
@@ -24,8 +19,8 @@ const BackCircle = styled.div`
   ${(props) =>
     props?.theme === "dark" &&
     css`
-      background: #212433;
-      border-color: #363a4d;
+      background: ${dark_neutral};
+      border-color: rgba(104, 72, 255, 0.1);
     `};
 `;
 
@@ -33,12 +28,6 @@ const InnerCircleWrapper = styled.div`
   position: absolute;
   width: 48px;
   height: 48px;
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background: #212433;
-      border-color: #363a4d;
-    `};
 `;
 
 const InnerCircle = styled.div`
@@ -53,8 +42,7 @@ const InnerCircle = styled.div`
   ${(props) =>
     props?.theme === "dark" &&
     css`
-      background: #212433;
-      border-color: #363a4d;
+      background: ${dark_neutral};
     `};
 `;
 
