@@ -29,7 +29,7 @@ function PopupContent({
   const dispatch = useDispatch();
   const [selectedAccount, setSelectedAccount] = useState(null);
   const node = getNode(chain);
-  const [loadingButton, setLoadingButton] = useState(VoteLoadingEnum.None);
+  const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
   const api = useApi(chain);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
@@ -46,7 +46,7 @@ function PopupContent({
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doVote = async (aye) => {
-    if (loadingButton !== VoteLoadingEnum.None || isNil(referendumIndex) || !node) {
+    if (loadingState !== VoteLoadingEnum.None || isNil(referendumIndex) || !node) {
       return;
     }
 
@@ -85,9 +85,9 @@ function PopupContent({
       dispatch,
       setLoading: (loading) => {
         if (loading) {
-          setLoadingButton(aye ? VoteLoadingEnum.Aye : VoteLoadingEnum.Nay);
+          setLoadingState(aye ? VoteLoadingEnum.Aye : VoteLoadingEnum.Nay);
         } else {
-          setLoadingButton(VoteLoadingEnum.None);
+          setLoadingState(VoteLoadingEnum.None);
         }
       },
       onFinalized,
@@ -104,7 +104,7 @@ function PopupContent({
       <Signer
         api={api}
         chain={chain}
-        isLoading={loadingButton !== VoteLoadingEnum.None}
+        isLoading={loadingState !== VoteLoadingEnum.None}
         extensionAccounts={extensionAccounts}
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}
@@ -114,7 +114,7 @@ function PopupContent({
         symbol={node.voteSymbol ?? node.symbol}
       />
       <VoteBalance
-        isLoading={loadingButton !== VoteLoadingEnum.None}
+        isLoading={loadingState !== VoteLoadingEnum.None}
         inputVoteBalance={inputVoteBalance}
         setInputVoteBalance={setInputVoteBalance}
         node={node}
@@ -124,7 +124,7 @@ function PopupContent({
         addressVote={addressVote}
         node={node}
       />
-      <VoteButton loadingButton={loadingButton} doVote={doVote} />
+      <VoteButton loadingState={loadingState} doVote={doVote} />
     </>
   );
 }

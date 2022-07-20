@@ -30,7 +30,7 @@ function PopupContent({
 }) {
   const dispatch = useDispatch();
   const [selectedAccount, setSelectedAccount] = useState(null);
-  const [loadingButton, setLoadingButton] = useState(VoteLoadingEnum.None);
+  const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
 
   const selectedAddress = selectedAccount?.address;
   const selectedAccountCanVote = voters.includes(selectedAddress);
@@ -43,7 +43,7 @@ function PopupContent({
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doVote = async (approve) => {
-    if (loadingButton !== VoteLoadingEnum.None) return;
+    if (loadingState !== VoteLoadingEnum.None) return;
 
     if (!voteMethod) {
       return showErrorToast("Chain network is not connected yet");
@@ -66,9 +66,9 @@ function PopupContent({
       dispatch,
       setLoading: (loading) => {
         if (loading) {
-          setLoadingButton(approve ? VoteLoadingEnum.Aye : VoteLoadingEnum.Nay);
+          setLoadingState(approve ? VoteLoadingEnum.Aye : VoteLoadingEnum.Nay);
         } else {
-          setLoadingButton(VoteLoadingEnum.None);
+          setLoadingState(VoteLoadingEnum.None);
         }
       },
       onFinalized,
@@ -91,7 +91,7 @@ function PopupContent({
         selectedAccountCanVote={selectedAccountCanVote}
       />
       <CurrentVote currentVote={currentVote} isLoadingVotes={isLoadingVotes} />
-      <VoteButton doVote={doVote} loadingButton={loadingButton} />
+      <VoteButton doVote={doVote} loadingState={loadingState} />
     </>
   );
 }

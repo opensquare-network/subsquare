@@ -39,7 +39,7 @@ function PopupContent({
   const api = useApi(chain);
   const node = getNode(chain);
 
-  const [loadingButton, setLoadingButton] = useState(VoteLoadingEnum.None);
+  const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
     selectedAccount?.address
@@ -59,7 +59,7 @@ function PopupContent({
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doVote = async (aye) => {
-    if (loadingButton !== VoteLoadingEnum.None || referendumIndex == null || !node) {
+    if (loadingState !== VoteLoadingEnum.None || referendumIndex == null || !node) {
       return;
     }
 
@@ -107,9 +107,9 @@ function PopupContent({
       dispatch,
       setLoading: (loading) => {
         if (loading) {
-          setLoadingButton(aye ? VoteLoadingEnum.Aye : VoteLoadingEnum.Nay);
+          setLoadingState(aye ? VoteLoadingEnum.Aye : VoteLoadingEnum.Nay);
         } else {
-          setLoadingButton(VoteLoadingEnum.None);
+          setLoadingState(VoteLoadingEnum.None);
         }
       },
       onFinalized,
@@ -131,14 +131,14 @@ function PopupContent({
         votingBalance={votingBalance}
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}
-        isLoading={loadingButton !== VoteLoadingEnum.None}
+        isLoading={loadingState !== VoteLoadingEnum.None}
         extensionAccounts={extensionAccounts}
       />
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode
         <DirectVote
           addressVoteDelegations={addressVote?.delegations}
-          isLoading={loadingButton !== VoteLoadingEnum.None}
+          isLoading={loadingState !== VoteLoadingEnum.None}
           inputVoteBalance={inputVoteBalance}
           setInputVoteBalance={setInputVoteBalance}
           voteLock={voteLock}
@@ -174,7 +174,7 @@ function PopupContent({
 
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode
-        <VoteButton loadingButton={loadingButton} doVote={doVote} />
+        <VoteButton loadingState={loadingState} doVote={doVote} />
       )}
     </>
   );
