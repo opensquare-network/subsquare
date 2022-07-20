@@ -10,10 +10,12 @@ import {
   PollFormAnonymousFormItem,
   PollFormOptionAddOptionButton,
 } from "../elements";
+import Select from "../../../select";
 import Toggle from "../../../toggle";
 import InputOptions from "./inputOptions";
 import FormItem from "../formItem";
 import DatePicker from "../../../datePicker";
+import dayjs from "dayjs";
 
 function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
   const [endTime, setEndTime] = useState(null);
@@ -23,8 +25,16 @@ function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
     title: "",
     options: ["", ""],
     anonymous: true,
+    expiresTime: 15,
   };
-
+  const expiresTimeOptions = [7, 15, 30]
+    .map((d) => {
+      return {
+        label: `${d} days`,
+        value: d,
+      };
+    })
+    .concat({ label: `custom`, value: null });
   const [value, setValue] = useState(initValue);
   const inputOptionsRef = useRef();
 
@@ -33,7 +43,9 @@ function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
       polls: {
         ...value,
         options: value.options.map((option) => option?.trim()),
-        expiresTime: endTime,
+        expiresTime: value.expiresTime
+          ? dayjs().add(value.expiresTime, "day").valueOf()
+          : endTime,
       },
     });
   }, [value, endTime]);
@@ -112,10 +124,23 @@ function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
       </FormItem>
 
       <FormItem label="Voting length">
-        <DatePicker
-          onSelectDatetime={onSelectDatetime}
-          placeholder="Please select the time..."
+        <Select
+          disabled={disabled}
+          value={value.expiresTime}
+          options={expiresTimeOptions}
+          onChange={(option) => {
+            setValue({
+              ...value,
+              expiresTime: option.value,
+            });
+          }}
         />
+        {value.expiresTime === null && (
+          <DatePicker
+            onSelectDatetime={onSelectDatetime}
+            placeholder="Please select the time..."
+          />
+        )}
       </FormItem>
 
       <FormItem label="Setting">

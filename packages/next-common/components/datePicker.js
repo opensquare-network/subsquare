@@ -24,7 +24,7 @@ const CaretWrapper = styled.div`
   border-radius: 4px;
 
   :hover {
-    border-color: #1e2134;
+    border-color: #c2c8d5;
   }
   * {
     stroke: rgb(30, 33, 52);
@@ -35,7 +35,9 @@ const CaretWrapper = styled.div`
     css`
       cursor: not-allowed;
       pointer-events: none;
-      background: #ebeef4;
+      * {
+        stroke: #d7dee8;
+      }
       :hover {
         border-color: #e0e4eb;
       }
@@ -59,6 +61,7 @@ const CaretRight = ({ onClick }) => {
 };
 
 const Wrapper = styled.div`
+  margin-top: 8px;
   position: relative;
 `;
 
@@ -66,7 +69,7 @@ const DateTimeWrapper = styled.div``;
 
 const Label = styled.span`
   width: 91px;
-  line-height: 40px;
+  line-height: 36px;
   background: #f6f7fa;
   border-right: 1px solid #e0e4eb;
   text-align: center;
@@ -86,7 +89,10 @@ const PlaceHolder = styled.span`
 `;
 
 const DateButton = styled.div`
+  overflow: hidden;
+  padding-right: 12px;
   border: 1px solid #e2e8f0;
+  border-radius: 4px;
 
   :hover {
     border-color: #b7c0cc;
@@ -108,11 +114,6 @@ const DateButton = styled.div`
     flex-grow: 1;
   }
 
-  > svg {
-    flex: 0 0 24px;
-    fill: #506176;
-  }
-
   ${(p) =>
     p.active &&
     css`
@@ -124,6 +125,7 @@ const DateWrapper = styled.div`
   position: absolute;
   z-index: 1;
   right: 0;
+  bottom: 40px;
   padding: 24px;
   background: #ffffff;
   border: 1px solid #ebeef4;
@@ -156,7 +158,7 @@ const DateWrapper = styled.div`
 
   .react-datepicker {
     margin-bottom: 16px;
-    padding: 8px;
+    padding: 20px 12px;
     border: 1px solid #e0e4eb;
     border-radius: 4px;
   }
@@ -168,7 +170,7 @@ const DateWrapper = styled.div`
   }
 
   .react-datepicker__day-name {
-    width: 47.85px;
+    width: 46.86px;
     font-family: Inter, sans-serif;
     ${p_14_medium};
     text-align: center;
@@ -185,7 +187,7 @@ const DateWrapper = styled.div`
   }
 
   .react-datepicker__day {
-    width: 47.85px;
+    width: 46.86px;
     height: 32px;
     font-family: Inter, sans-serif;
     ${p_14_normal};
@@ -197,17 +199,21 @@ const DateWrapper = styled.div`
     margin: 0 !important;
 
     :hover {
-      background: #f0f3f8;
+      background: #f6f7fa;
     }
   }
 
   .react-datepicker__day--today {
     font-weight: 600;
     border: 1px solid #e2e8f0;
+    border-radius: 4px;
   }
 
   .react-datepicker__day--selected {
-    background: #f0f3f8;
+    background: #ebeef4;
+    &:hover {
+      background: #ebeef4;
+    }
   }
 
   .react-datepicker__day--outside-month {
@@ -317,7 +323,28 @@ export default function DatePicker({
             ) : (
               <PlaceHolder>{placeholder}</PlaceHolder>
             )}
-            <ArrowRight />
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g clipPath="url(#clip0_6974_40460)">
+                <path
+                  d="M6.85693 4.57153L10.2855 8.0001L6.85693 11.4287"
+                  stroke="#1E2134"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_6974_40460">
+                  <rect width="16" height="16" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
           </DateButton>
         )}
         {isOpen && (
