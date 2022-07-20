@@ -1,3 +1,4 @@
+import { emptyFunction } from ".";
 import {
   newErrorToast,
   newPendingToast,
@@ -10,11 +11,11 @@ import {
 export async function sendTx({
   tx,
   dispatch,
-  setLoading,
-  onFinalized,
-  onInBlock,
-  onSubmitted,
-  onClose,
+  setLoading = emptyFunction,
+  onFinalized = emptyFunction,
+  onInBlock = emptyFunction,
+  onSubmitted = emptyFunction,
+  onClose = emptyFunction,
   signerAddress,
   isMounted,
   section: sectionName,
