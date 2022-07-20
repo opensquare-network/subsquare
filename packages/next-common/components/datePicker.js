@@ -16,6 +16,7 @@ import {
 import Flex from "./styled/flex";
 import FlexBetween from "./styled/flexBetween";
 import Input from "./input";
+import Background from "./styled/backgroundShade";
 
 const CaretWrapper = styled.div`
   cursor: pointer;
@@ -124,8 +125,10 @@ const DateButton = styled.div`
 const DateWrapper = styled.div`
   position: absolute;
   z-index: 1;
-  right: 0;
-  bottom: 40px;
+  right: 50%;
+  margin-right: -200px;
+  bottom: 50%;
+  margin-bottom: -280px;
   padding: 24px;
   background: #ffffff;
   border: 1px solid #ebeef4;
@@ -135,7 +138,7 @@ const DateWrapper = styled.div`
   border-radius: 8px;
 
   h2 {
-    margin-top: 0;
+    margin: 0;
     font-size: 14px;
     line-height: 20px;
   }
@@ -157,7 +160,6 @@ const DateWrapper = styled.div`
   }
 
   .react-datepicker {
-    margin-bottom: 16px;
     padding: 20px 12px;
     border: 1px solid #e0e4eb;
     border-radius: 4px;
@@ -173,6 +175,7 @@ const DateWrapper = styled.div`
     width: 46.86px;
     font-family: Inter, sans-serif;
     ${p_14_medium};
+    line-height: 32px;
     text-align: center;
     color: #506176;
     margin: 0 !important;
@@ -184,19 +187,20 @@ const DateWrapper = styled.div`
 
   .react-datepicker__month {
     margin: 0;
+    padding-top: 8px;
   }
 
   .react-datepicker__day {
     width: 46.86px;
-    height: 32px;
     font-family: Inter, sans-serif;
     ${p_14_normal};
+    line-height: 32px;
     color: #1e2134;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 0;
     margin: 0 !important;
+    border-radius: 4px;
 
     :hover {
       background: #f6f7fa;
@@ -255,7 +259,7 @@ const DateHeader = styled(Flex)`
 `;
 
 const ButtonWrapper = styled(Flex)`
-  margin-top: 20px;
+  margin-top: 16px;
   justify-content: flex-end;
 
   > :not(:first-child) {
@@ -311,7 +315,7 @@ export default function DatePicker({
   };
 
   return (
-    <Wrapper ref={ref}>
+    <Wrapper>
       <DateTimeWrapper>
         {button ? (
           <div onClick={handleClick}>{button}</div>
@@ -350,103 +354,105 @@ export default function DatePicker({
         {isOpen && (
           <>
             {show === "date" && (
-              <DateWrapper>
-                <FlexBetween>
-                  <h2>Select End Time</h2>
-                  <button
-                    onClick={() => {
-                      setIsOpen(false);
-                    }}
-                  >
-                    <Close />
-                  </button>
-                </FlexBetween>
-                <h6>Date</h6>
-                <ReactDatePicker
-                  selected={date}
-                  minDate={new Date()}
-                  maxDate={maxDate}
-                  onChange={handleChange}
-                  inline
-                  renderCustomHeader={({
-                    date,
-                    decreaseMonth,
-                    increaseMonth,
-                  }) => (
-                    <div>
-                      <DateHeader>
-                        <CaretLeft
-                          disabled={
-                            moment(date).format("YYYY-MM") ===
-                            moment(new Date()).format("YYYY-MM")
-                          }
-                          onClick={decreaseMonth}
-                        />
-                        <b>{moment(date).format("YYYY-MM")}</b>
-                        <CaretRight onClick={increaseMonth} />
-                      </DateHeader>
-                    </div>
-                  )}
-                  formatWeekDay={(nameOfDay) => nameOfDay.substr(0, 1)}
-                />
-                <FlexBetween>
-                  <h2>Time</h2>
-                  <span>24-hour clock</span>
-                </FlexBetween>
+              <Background>
+                <DateWrapper ref={ref}>
+                  <FlexBetween>
+                    <h2>Select End Time</h2>
+                    <button
+                      onClick={() => {
+                        setIsOpen(false);
+                      }}
+                    >
+                      <Close />
+                    </button>
+                  </FlexBetween>
+                  <h6>Date</h6>
+                  <ReactDatePicker
+                    selected={date}
+                    minDate={new Date()}
+                    maxDate={maxDate}
+                    onChange={handleChange}
+                    inline
+                    renderCustomHeader={({
+                      date,
+                      decreaseMonth,
+                      increaseMonth,
+                    }) => (
+                      <div>
+                        <DateHeader>
+                          <CaretLeft
+                            disabled={
+                              moment(date).format("YYYY-MM") ===
+                              moment(new Date()).format("YYYY-MM")
+                            }
+                            onClick={decreaseMonth}
+                          />
+                          <b>{moment(date).format("YYYY-MM")}</b>
+                          <CaretRight onClick={increaseMonth} />
+                        </DateHeader>
+                      </div>
+                    )}
+                    formatWeekDay={(nameOfDay) => nameOfDay.substr(0, 1)}
+                  />
+                  <FlexBetween style={{ marginTop: 14, marginBottom: 8 }}>
+                    <h2>Time</h2>
+                    <span>24-hour clock</span>
+                  </FlexBetween>
 
-                <TimeWrapper>
-                  <Input
-                    type="number"
-                    value={hour}
-                    onChange={(e) => {
-                      const value = parseInt(e.target.value);
-                      if (0 <= value && value < 24) {
-                        setHour(value.toString());
-                      }
-                      if (e.target.value === "") {
-                        setHour("");
-                      }
-                    }}
-                    placeholder="00"
-                  />
-                  <span>:</span>
-                  <Input
-                    type="number"
-                    value={minute}
-                    onChange={(e) => {
-                      const value = parseInt(e.target.value);
-                      if (0 <= value && value < 60) {
-                        setMinute(value.toString());
-                      }
-                      if (e.target.value === "") {
-                        setMinute("");
-                      }
-                    }}
-                    placeholder="00"
-                  />
-                </TimeWrapper>
-                <ButtonWrapper>
-                  <Button
-                    primary
-                    disabled={hour === "" || minute === ""}
-                    onClick={() => {
-                      if (!date) {
-                        setDate(new Date());
-                      }
-                      onSelectDatetime(
-                        Date.parse(
-                          `${moment(date ?? new Date()).format(
-                            "YYYY-MM-DD"
-                          )} ${hour}:${minute}`
-                        )
-                      );
-                      setIsOpen(false);
-                    }}
-                  >
-                    Confirm
-                  </Button>
-                </ButtonWrapper>
-              </DateWrapper>
+                  <TimeWrapper>
+                    <Input
+                      type="number"
+                      value={hour}
+                      onChange={(e) => {
+                        const value = parseInt(e.target.value);
+                        if (0 <= value && value < 24) {
+                          setHour(value.toString());
+                        }
+                        if (e.target.value === "") {
+                          setHour("");
+                        }
+                      }}
+                      placeholder="00"
+                    />
+                    <span>:</span>
+                    <Input
+                      type="number"
+                      value={minute}
+                      onChange={(e) => {
+                        const value = parseInt(e.target.value);
+                        if (0 <= value && value < 60) {
+                          setMinute(value.toString());
+                        }
+                        if (e.target.value === "") {
+                          setMinute("");
+                        }
+                      }}
+                      placeholder="00"
+                    />
+                  </TimeWrapper>
+                  <ButtonWrapper>
+                    <Button
+                      primary
+                      disabled={hour === "" || minute === ""}
+                      onClick={() => {
+                        if (!date) {
+                          setDate(new Date());
+                        }
+                        onSelectDatetime(
+                          Date.parse(
+                            `${moment(date ?? new Date()).format(
+                              "YYYY-MM-DD"
+                            )} ${hour}:${minute}`
+                          )
+                        );
+                        setIsOpen(false);
+                      }}
+                    >
+                      Confirm
+                    </Button>
+                  </ButtonWrapper>
+                </DateWrapper>
+              </Background>
             )}
           </>
         )}

@@ -7,17 +7,7 @@ import ClosePanelIcon from "../../assets/imgs/icons/close-panel.svg";
 import NoExtension from "./noExtension";
 import Inaccessible from "./inaccessible";
 import NoAccounts from "./noAccounts";
-
-const Background = styled.div`
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.24);
-  z-index: 999;
-  top: 0;
-  left: 0;
-  margin-top: 0 !important;
-`;
+import Background from "../styled/backgroundShade";
 
 const Wrapper = styled.div`
   position: fixed;

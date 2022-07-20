@@ -34,7 +34,7 @@ function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
         value: d,
       };
     })
-    .concat({ label: `custom`, value: null });
+    .concat({ label: `Custom`, value: null });
   const [value, setValue] = useState(initValue);
   const inputOptionsRef = useRef();
 
