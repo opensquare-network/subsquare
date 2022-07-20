@@ -8,6 +8,26 @@ import {
   updatePendingToast,
 } from "../store/reducers/toastSlice";
 
+
+export function getDispatchError(dispatchError) {
+  let message = dispatchError.type;
+
+  if (dispatchError.isModule) {
+    try {
+      const mod = dispatchError.asModule;
+      const error = dispatchError.registry.findMetaError(mod);
+
+      message = `${error.section}.${error.name}`;
+    } catch (error) {
+      // swallow
+    }
+  } else if (dispatchError.isToken) {
+    message = `${dispatchError.type}.${dispatchError.asToken.type}`;
+  }
+
+  return message;
+}
+
 export async function sendTx({
   tx,
   dispatch,
@@ -39,9 +59,11 @@ export async function sendTx({
           dispatch(removeToast(toastId));
 
           for (const event of events) {
-            const { section, method } = event.event;
+            const { section, method, data } = event.event;
             if (section === "system" && method === "ExtrinsicFailed") {
-              dispatch(newErrorToast(`Extrinsic Failed`));
+              const [dispatchError] = data;
+              const message = getDispatchError(dispatchError)
+              dispatch(newErrorToast(`Extrinsic failed, ${message}`));
               return;
             }
           }
