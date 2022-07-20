@@ -230,17 +230,17 @@ export function checkInputValue(inputValue, decimals, valueName = "value") {
   }
 
   const bnValue = new BigNumber(inputValue).times(Math.pow(10, decimals));
-  // if (bnValue.isNaN()) {
-  //   throw new Error(`Invalid ${valueName}`);
-  // }
+  if (bnValue.isNaN()) {
+    throw new Error(`Invalid ${valueName}`);
+  }
 
-  // if (bnValue.lte(0)) {
-  //   throw new Error(`${capitailize(valueName)} must be greater than 0`);
-  // }
+  if (bnValue.lte(0)) {
+    throw new Error(`${capitailize(valueName)} must be greater than 0`);
+  }
 
-  // if (!bnValue.mod(1).isZero()) {
-  //   throw new Error("Invalid precision");
-  // }
+  if (!bnValue.mod(1).isZero()) {
+    throw new Error("Invalid precision");
+  }
 
   return bnValue;
 }
