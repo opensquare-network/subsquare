@@ -189,6 +189,7 @@ export default function PostCreate({ chain, loginUser }) {
           setContentType={setContentType}
           loadSuggestions={() => []}
           minHeight={300}
+          setQuillRef={() => {}}
         />
       </InputWrapper>
       {errors?.data?.content?.[0] && (

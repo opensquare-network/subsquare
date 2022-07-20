@@ -15,6 +15,7 @@ const ExternalReference = styled.div`
   display: flex;
   align-items: center;
   padding: 12px;
+  margin-top: 16px;
   gap: 8px;
 
   height: 41px;
