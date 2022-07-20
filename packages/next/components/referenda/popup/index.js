@@ -20,6 +20,7 @@ import Signer from "./signer";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import { checkInputValue, emptyFunction } from "next-common/utils";
 import { sendTx } from "next-common/utils/sendTx";
+import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 
 function PopupContent({
   extensionAccounts,
@@ -38,7 +39,7 @@ function PopupContent({
   const api = useApi(chain);
   const node = getNode(chain);
 
-  const [isLoading, setIsLoading] = useState();
+  const [loadingButton, setLoadingButton] = useState(VoteLoadingEnum.None);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
     selectedAccount?.address
@@ -58,7 +59,7 @@ function PopupContent({
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doVote = async (aye) => {
-    if (isLoading || referendumIndex == null || !node) {
+    if (loadingButton !== VoteLoadingEnum.None || referendumIndex == null || !node) {
       return;
     }
 
@@ -99,16 +100,16 @@ function PopupContent({
       },
     });
 
-    const signerAddress = signerAccount.address;
+    const signerAddress = selectedAccount.address;
 
     await sendTx({
       tx,
       dispatch,
       setLoading: (loading) => {
         if (loading) {
-          setIsLoading(aye ? "Aye" : "Nay");
+          setLoadingButton(aye ? VoteLoadingEnum.Aye : VoteLoadingEnum.Nay);
         } else {
-          setIsLoading(null);
+          setLoadingButton(VoteLoadingEnum.None);
         }
       },
       onFinalized,
@@ -130,14 +131,14 @@ function PopupContent({
         votingBalance={votingBalance}
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}
-        isLoading={isLoading}
+        isLoading={loadingButton !== VoteLoadingEnum.None}
         extensionAccounts={extensionAccounts}
       />
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode
         <DirectVote
           addressVoteDelegations={addressVote?.delegations}
-          isLoading={isLoading}
+          isLoading={loadingButton !== VoteLoadingEnum.None}
           inputVoteBalance={inputVoteBalance}
           setInputVoteBalance={setInputVoteBalance}
           voteLock={voteLock}
@@ -173,7 +174,7 @@ function PopupContent({
 
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode
-        <VoteButton isLoading={isLoading} doVote={doVote} />
+        <VoteButton loadingButton={loadingButton} doVote={doVote} />
       )}
     </>
   );

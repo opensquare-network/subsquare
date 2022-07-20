@@ -15,6 +15,7 @@ import VoteBalance from "./voteBalance";
 import VotingStatus from "./votingStatus";
 import VoteButton from "next-common/components/popup/voteButton";
 import { sendTx } from "next-common/utils/sendTx";
+import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 
 function PopupContent({
   extensionAccounts,
@@ -28,7 +29,7 @@ function PopupContent({
   const dispatch = useDispatch();
   const [selectedAccount, setSelectedAccount] = useState(null);
   const node = getNode(chain);
-  const [isLoading, setIsLoading] = useState();
+  const [loadingButton, setLoadingButton] = useState(VoteLoadingEnum.None);
   const api = useApi(chain);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
@@ -45,11 +46,7 @@ function PopupContent({
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doVote = async (aye) => {
-    if (isLoading || isNil(referendumIndex) || !node) {
-      return;
-    }
-
-    if (!node) {
+    if (loadingButton !== VoteLoadingEnum.None || isNil(referendumIndex) || !node) {
       return;
     }
 
@@ -88,9 +85,9 @@ function PopupContent({
       dispatch,
       setLoading: (loading) => {
         if (loading) {
-          setIsLoading(aye ? "Aye" : "Nay");
+          setLoadingButton(aye ? VoteLoadingEnum.Aye : VoteLoadingEnum.Nay);
         } else {
-          setIsLoading(null);
+          setLoadingButton(VoteLoadingEnum.None);
         }
       },
       onFinalized,
@@ -107,7 +104,7 @@ function PopupContent({
       <Signer
         api={api}
         chain={chain}
-        isLoading={isLoading}
+        isLoading={loadingButton !== VoteLoadingEnum.None}
         extensionAccounts={extensionAccounts}
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}
@@ -117,7 +114,7 @@ function PopupContent({
         symbol={node.voteSymbol ?? node.symbol}
       />
       <VoteBalance
-        isLoading={isLoading}
+        isLoading={loadingButton !== VoteLoadingEnum.None}
         inputVoteBalance={inputVoteBalance}
         setInputVoteBalance={setInputVoteBalance}
         node={node}
@@ -127,7 +124,7 @@ function PopupContent({
         addressVote={addressVote}
         node={node}
       />
-      <VoteButton isLoading={isLoading} doVote={doVote} />
+      <VoteButton loadingButton={loadingButton} doVote={doVote} />
     </>
   );
 }

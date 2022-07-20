@@ -12,6 +12,7 @@ import CurrentVote from "./currentVote";
 import VoteButton from "next-common/components/popup/voteButton";
 import { sendTx } from "next-common/utils/sendTx";
 import { emptyFunction } from "next-common/utils";
+import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 
 function PopupContent({
   extensionAccounts,
@@ -29,7 +30,7 @@ function PopupContent({
 }) {
   const dispatch = useDispatch();
   const [selectedAccount, setSelectedAccount] = useState(null);
-  const [isLoading, setIsLoading] = useState();
+  const [loadingButton, setLoadingButton] = useState(VoteLoadingEnum.None);
 
   const selectedAddress = selectedAccount?.address;
   const selectedAccountCanVote = voters.includes(selectedAddress);
@@ -42,7 +43,7 @@ function PopupContent({
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doVote = async (approve) => {
-    if (isLoading) return;
+    if (loadingButton !== VoteLoadingEnum.None) return;
 
     if (!voteMethod) {
       return showErrorToast("Chain network is not connected yet");
@@ -65,9 +66,9 @@ function PopupContent({
       dispatch,
       setLoading: (loading) => {
         if (loading) {
-          setIsLoading(approve ? "Aye" : "Nay");
+          setLoadingButton(approve ? VoteLoadingEnum.Aye : VoteLoadingEnum.Nay);
         } else {
-          setIsLoading(null);
+          setLoadingButton(VoteLoadingEnum.None);
         }
       },
       onFinalized,
@@ -90,7 +91,7 @@ function PopupContent({
         selectedAccountCanVote={selectedAccountCanVote}
       />
       <CurrentVote currentVote={currentVote} isLoadingVotes={isLoadingVotes} />
-      <VoteButton doVote={doVote} isLoading={isLoading} />
+      <VoteButton doVote={doVote} loadingButton={loadingButton} />
     </>
   );
 }

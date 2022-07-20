@@ -1,17 +1,18 @@
 import React from "react";
+import { VoteLoadingEnum } from "../../utils/voteEnum";
 
 import Button from "../button";
 import { ButtonWrapper } from "./styled";
 
-export default function VoteButton({ isLoading, doVote }) {
+export default function VoteButton({ loadingButton, doVote }) {
   return (
     <ButtonWrapper>
       <Button
         primary
         background="#4CAF50"
         onClick={() => doVote(true)}
-        isLoading={isLoading === "Aye"}
-        disabled={isLoading && isLoading !== "Aye"}
+        isLoading={loadingButton === VoteLoadingEnum.Aye}
+        disabled={loadingButton === VoteLoadingEnum.Nay}
       >
         Aye
       </Button>
@@ -19,8 +20,8 @@ export default function VoteButton({ isLoading, doVote }) {
         primary
         background="#F44336"
         onClick={() => doVote(false)}
-        isLoading={isLoading === "Nay"}
-        disabled={isLoading && isLoading !== "Nay"}
+        isLoading={loadingButton === VoteLoadingEnum.Nay}
+        disabled={loadingButton === VoteLoadingEnum.Aye}
       >
         Nay
       </Button>
