@@ -2,21 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import BigNumber from "bignumber.js";
 
 import useApi from "../../../../utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "../../../../utils/hooks/useIsMounted";
 import Button from "../../../button";
-import {
-  newErrorToast,
-  newPendingToast,
-  newSuccessToast,
-  newToastId,
-  removeToast,
-  updatePendingToast,
-} from "../../../../store/reducers/toastSlice";
+import { newErrorToast } from "../../../../store/reducers/toastSlice";
 
-import { getNode } from "../../../../utils";
+import { checkInputValue, getNode } from "../../../../utils";
 import PopupWithAddress from "../../../popupWithAddress";
 import { emptyFunction } from "../../../../utils";
 import Beneficiary from "../../common/beneficiary";
@@ -25,6 +17,7 @@ import Signer from "./signer";
 import Tab, { ReportAwesome, NewTip } from "./tab";
 import TipValue from "./tipValue";
 import useAddressBalance from "../../../../utils/hooks/useAddressBalance";
+import { sendTx } from "../../../../utils/sendTx";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -76,26 +69,18 @@ function PopupContent({
       return showErrorToast("Please input a reason");
     }
 
+    if (!node) {
+      return;
+    }
+
     let tx;
 
     if (tabIndex === NewTip) {
-      if (!inputValue) {
-        return showErrorToast("Please input a value");
-      }
-
-      const bnValue = new BigNumber(inputValue).times(
-        Math.pow(10, node.decimals)
-      );
-      if (bnValue.isNaN()) {
-        return showErrorToast("Invalid value");
-      }
-
-      if (bnValue.lte(0)) {
-        return showErrorToast("Value must be greater than 0");
-      }
-
-      if (!bnValue.mod(1).isZero()) {
-        return showErrorToast("Invalid precision");
+      let bnValue;
+      try {
+        bnValue = checkInputValue(inputValue, node.decimals, "tip value");
+      } catch (err) {
+        return showErrorToast(err.message);
       }
 
       tx = api.tx.tips.tipNew(reason, beneficiary, bnValue.toNumber());
@@ -103,52 +88,22 @@ function PopupContent({
       tx = api.tx.tips.reportAwesome(reason, beneficiary);
     }
 
-    const toastId = newToastId();
-    dispatch(newPendingToast(toastId, "Waiting for signing..."));
+    const signerAddress = signerAccount.address;
 
-    try {
-      setLoading(true);
-
-      const signerAddress = signerAccount.address;
-
-      const unsub = await tx.signAndSend(
-        signerAddress,
-        ({ events = [], status }) => {
-          if (status.isFinalized) {
-            onFinalized(signerAddress);
-            unsub();
-          }
-          if (status.isInBlock) {
-            // Transaction went through
-            dispatch(removeToast(toastId));
-            dispatch(newSuccessToast("InBlock"));
-
-            for (const event of events) {
-              const { section, method, data } = event.event;
-              if (section !== "tips" || method !== "NewTip") {
-                continue;
-              }
-
-              const [tipHash] = data.toJSON();
-              onInBlock(signerAddress, tipHash);
-              break;
-            }
-          }
-        }
-      );
-
-      dispatch(updatePendingToast(toastId, "Broadcasting"));
-
-      onSubmitted(signerAddress);
-      onClose();
-    } catch (e) {
-      dispatch(removeToast(toastId));
-      showErrorToast(e.message);
-    } finally {
-      if (isMounted.current) {
-        setLoading(null);
-      }
-    }
+    await sendTx({
+      tx,
+      dispatch,
+      setLoading,
+      onFinalized,
+      onInBlock: (eventData) => {
+        const [tipHash] = eventData;
+        onInBlock(signerAddress, tipHash);
+      },
+      onSubmitted,
+      onClose,
+      signerAddress,
+      isMounted,
+    });
   };
 
   return (

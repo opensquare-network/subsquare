@@ -4,19 +4,14 @@ import { useDispatch } from "react-redux";
 
 import useApi from "../../../../utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "../../../../utils/hooks/useIsMounted";
-import {
-  newErrorToast,
-  newPendingToast,
-  newToastId,
-  updatePendingToast,
-  removeToast,
-  newSuccessToast,
-} from "../../../../store/reducers/toastSlice";
+import { newErrorToast } from "../../../../store/reducers/toastSlice";
 import PopupWithAddress from "../../../popupWithAddress";
 import DepositRequired from "./depositRequired";
 import Signer from "./signer";
 import SubmitButton from "./submitButton";
 import { StateContext, StateProvider } from "./stateContext";
+import { sendTx } from "../../../../utils/sendTx";
+import { emptyFunction } from "../../../../utils";
 
 function PopupContent({
   extensionAccounts,
@@ -25,9 +20,9 @@ function PopupContent({
   depositorUpperBound,
   depositRequired,
   onClose,
-  onInBlock,
-  onFinalized,
-  onSubmitted,
+  onSubmitted = emptyFunction,
+  onFinalized = emptyFunction,
+  onInBlock = emptyFunction,
   useAddressVotingBalance,
 }) {
   const dispatch = useDispatch();
@@ -51,42 +46,21 @@ function PopupContent({
       return showErrorToast("Please select an account");
     }
 
-    const toastId = newToastId();
-    dispatch(newPendingToast(toastId, "Waiting for signing..."));
+    const tx = api.tx.democracy.second(proposalIndex, depositorUpperBound || 0);
 
-    try {
-      setIsSubmitting(true);
+    const signerAddress = signerAccount.address;
 
-      const signerAddress = signerAccount.address;
-
-      const unsub = await api.tx.democracy
-        .second(proposalIndex, depositorUpperBound || 0)
-        .signAndSend(signerAddress, ({ events = [], status }) => {
-          if (status.isFinalized) {
-            onFinalized(signerAddress);
-            unsub();
-          }
-          if (status.isInBlock) {
-            // Transaction went through
-            dispatch(removeToast(toastId));
-            dispatch(newSuccessToast("InBlock"));
-            onInBlock(signerAddress);
-          }
-        });
-
-      dispatch(updatePendingToast(toastId, "Broadcasting"));
-
-      onSubmitted(signerAddress);
-
-      onClose();
-    } catch (e) {
-      dispatch(removeToast(toastId));
-      showErrorToast(e.message);
-    } finally {
-      if (isMounted.current) {
-        setIsSubmitting(null);
-      }
-    }
+    await sendTx({
+      tx,
+      dispatch,
+      setLoading: setIsSubmitting,
+      onFinalized,
+      onInBlock,
+      onSubmitted,
+      onClose,
+      signerAddress,
+      isMounted,
+    });
   };
 
   return (

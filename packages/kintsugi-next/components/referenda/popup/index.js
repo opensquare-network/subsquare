@@ -1,27 +1,21 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import BigNumber from "bignumber.js";
 import isNil from "lodash.isnil";
 import { useAddressVotingBalance, useAddressVote } from "utils/hooks";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
-import {
-  newErrorToast,
-  newPendingToast,
-  newSuccessToast,
-  newToastId,
-  removeToast,
-  updatePendingToast,
-} from "next-common/store/reducers/toastSlice";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 import { getNode } from "utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { emptyFunction } from "next-common/utils";
+import { checkInputValue, emptyFunction } from "next-common/utils";
 import Signer from "./signer";
 import VoteBalance from "./voteBalance";
 import VotingStatus from "./votingStatus";
 import VoteButton from "next-common/components/popup/voteButton";
+import { sendTx } from "next-common/utils/sendTx";
+import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 
 function PopupContent({
   extensionAccounts,
@@ -35,7 +29,7 @@ function PopupContent({
   const dispatch = useDispatch();
   const [selectedAccount, setSelectedAccount] = useState(null);
   const node = getNode(chain);
-  const [isLoading, setIsLoading] = useState();
+  const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
   const api = useApi(chain);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
@@ -52,25 +46,19 @@ function PopupContent({
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doVote = async (aye) => {
-    if (isLoading || isNil(referendumIndex) || !node) {
+    if (loadingState !== VoteLoadingEnum.None || isNil(referendumIndex) || !node) {
       return;
     }
 
-    if (!inputVoteBalance) {
-      return showErrorToast("Please input vote balance");
-    }
-
-    const decimals = node.decimals;
-    const bnVoteBalance = new BigNumber(inputVoteBalance).multipliedBy(
-      Math.pow(10, decimals)
-    );
-
-    if (bnVoteBalance.isNaN()) {
-      return showErrorToast("Invalid vote balance");
-    }
-
-    if (bnVoteBalance.lte(0) || !bnVoteBalance.mod(1).isZero()) {
-      return showErrorToast("Invalid vote balance");
+    let bnVoteBalance;
+    try {
+      bnVoteBalance = checkInputValue(
+        inputVoteBalance,
+        node.decimals,
+        "vote balance"
+      );
+    } catch (err) {
+      return showErrorToast(err.message);
     }
 
     if (bnVoteBalance.gt(votingBalance)) {
@@ -85,42 +73,30 @@ function PopupContent({
       return showErrorToast("Chain network is not connected yet");
     }
 
-    const toastId = newToastId();
-    dispatch(newPendingToast(toastId, "Waiting for signing..."));
+    const tx = api.tx.democracy.vote(referendumIndex, {
+      aye,
+      balance: bnVoteBalance.toNumber(),
+    });
 
-    try {
-      setIsLoading(aye ? "Aye" : "Nay");
+    const signerAddress = selectedAccount.address;
 
-      const voteAddress = selectedAccount.address;
-
-      const unsub = await api.tx.democracy
-        .vote(referendumIndex, { aye, balance: bnVoteBalance.toNumber() })
-        .signAndSend(voteAddress, ({ events = [], status }) => {
-          if (status.isFinalized) {
-            onFinalized(voteAddress);
-            unsub();
-          }
-          if (status.isInBlock) {
-            // Transaction went through
-            dispatch(removeToast(toastId));
-            dispatch(newSuccessToast("InBlock"));
-            onInBlock(voteAddress);
-          }
-        });
-
-      dispatch(updatePendingToast(toastId, "Broadcasting"));
-
-      onSubmitted(voteAddress);
-
-      onClose();
-    } catch (e) {
-      dispatch(removeToast(toastId));
-      showErrorToast(e.message);
-    } finally {
-      if (isMounted.current) {
-        setIsLoading(null);
-      }
-    }
+    await sendTx({
+      tx,
+      dispatch,
+      setLoading: (loading) => {
+        if (loading) {
+          setLoadingState(aye ? VoteLoadingEnum.Aye : VoteLoadingEnum.Nay);
+        } else {
+          setLoadingState(VoteLoadingEnum.None);
+        }
+      },
+      onFinalized,
+      onInBlock,
+      onSubmitted,
+      onClose,
+      signerAddress,
+      isMounted,
+    });
   };
 
   return (
@@ -128,7 +104,7 @@ function PopupContent({
       <Signer
         api={api}
         chain={chain}
-        isLoading={isLoading}
+        isLoading={loadingState !== VoteLoadingEnum.None}
         extensionAccounts={extensionAccounts}
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}
@@ -138,7 +114,7 @@ function PopupContent({
         symbol={node.voteSymbol ?? node.symbol}
       />
       <VoteBalance
-        isLoading={isLoading}
+        isLoading={loadingState !== VoteLoadingEnum.None}
         inputVoteBalance={inputVoteBalance}
         setInputVoteBalance={setInputVoteBalance}
         node={node}
@@ -148,7 +124,7 @@ function PopupContent({
         addressVote={addressVote}
         node={node}
       />
-      <VoteButton isLoading={isLoading} doVote={doVote} />
+      <VoteButton loadingState={loadingState} doVote={doVote} />
     </>
   );
 }
