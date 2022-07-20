@@ -127,8 +127,8 @@ const DateWrapper = styled.div`
   z-index: 1;
   right: 50%;
   margin-right: -200px;
-  bottom: 50%;
-  margin-bottom: -280px;
+  top: 50%;
+  margin-top: -280px;
   padding: 24px;
   background: #ffffff;
   border: 1px solid #ebeef4;
@@ -153,7 +153,7 @@ const DateWrapper = styled.div`
     cursor: pointer;
   }
 
-  h2 + span {
+  h6 + span {
     font-size: 12px;
     font-weight: 500;
     color: #9da9bb;
@@ -395,7 +395,7 @@ export default function DatePicker({
                     formatWeekDay={(nameOfDay) => nameOfDay.substr(0, 1)}
                   />
                   <FlexBetween style={{ marginTop: 14, marginBottom: 8 }}>
-                    <h2>Time</h2>
+                    <h6 style={{ margin: 0 }}>Time</h6>
                     <span>24-hour clock</span>
                   </FlexBetween>
 
