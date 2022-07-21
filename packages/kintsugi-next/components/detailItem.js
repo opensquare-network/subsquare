@@ -268,7 +268,7 @@ export default function DetailItem({
             )}
           <TitleWrapper>
             {post?.index !== undefined && <Index>{`#${post.index}`}</Index>}
-            <Title>{post.title.trim() || "--"}</Title>
+            <Title>{post.title?.trim() || "--"}</Title>
           </TitleWrapper>
           <FlexWrapper>
             <DividerWrapper>
