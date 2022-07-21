@@ -6,8 +6,9 @@ import BigNumber from "bignumber.js";
 
 const balanceMap = new Map();
 
-async function queryKintsugiBalance(api, address) {
-  const account = await api.query.tokens.accounts(address, { token: "KINT" });
+async function queryKintsugiBalance(api, address, chain) {
+  const token = Chains.kintsugi === chain ? "KINT" : "INTR";
+  const account = await api.query.tokens.accounts(address, { token });
   return new BigNumber(account.free.toJSON())
     .plus(account.reserved.toJSON())
     .toString();
@@ -37,7 +38,7 @@ export default function useAddressBalance(api, address, chain) {
 
     let promise;
     if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
-      promise = queryKintsugiBalance(api, address);
+      promise = queryKintsugiBalance(api, address, chain);
     } else {
       promise = querySystemAccountBalance(api, address);
     }
