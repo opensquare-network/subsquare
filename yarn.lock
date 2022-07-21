@@ -1205,10 +1205,10 @@
   resolved "https://registry.npmjs.org/@osn/provider-options/-/provider-options-1.0.7.tgz#bd7fce7426b44c370812376704aa9092ca6cc216"
   integrity sha512-8P45Pc/N9FrFJz4R922J47w2u8ZCQ8e7/UpMpUmRKayCgQ3oCSH1xtsKYNozbSUsuGNsWJ+UZaap2AfIJIrgjA==
 
-"@osn/rich-text-editor@0.1.48":
-  version "0.1.48"
-  resolved "https://registry.npmjs.org/@osn/rich-text-editor/-/rich-text-editor-0.1.48.tgz#fe545df935df84bc07fee489699d2545476f7de9"
-  integrity sha512-Qa/MZcTDOUbuu6NPYgT2BBaMe4r3lbOmd4JdJTWU9cCcYYPhY5RDFZnmKuWYVzIciIAqaWqrnj2z0eZtVnMxjw==
+"@osn/rich-text-editor@^0.1.49":
+  version "0.1.51"
+  resolved "https://registry.npmjs.org/@osn/rich-text-editor/-/rich-text-editor-0.1.51.tgz#ad9f69901dfaf288107a14d15f0633c8d00f757d"
+  integrity sha512-j85G51eFv0pmZ/FGyAL02e7D97pX2bz6InwxgNmjn4fGsFv+krDbhPZdv28jBCqTGm851aLMq35azlCQ9uYzWg==
   dependencies:
     "@polkadot/keyring" "^9.6.2"
     "@types/lodash" "^4.14.182"
@@ -1741,6 +1741,7 @@
   dependencies:
     "@interlay/monetary-js" "0.5.4"
     "@osn/polkadot-react-identicon" "^1.0.8"
+    "@osn/previewer" "^0.11.2"
     "@osn/provider-options" "1.0.7"
     "@polkadot/api" "8.9.1"
     "@polkadot/extension-dapp" "0.44.2-3"
