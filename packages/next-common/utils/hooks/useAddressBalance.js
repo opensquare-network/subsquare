@@ -1,10 +1,26 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import useIsMounted from "./useIsMounted";
+import Chains from "../consts/chains";
+import BigNumber from "bignumber.js";
 
 const balanceMap = new Map();
 
-export default function useAddressBalance(api, address) {
+async function queryKintsugiBalance(api, address) {
+  const account = await api.query.tokens.accounts(address, { token: "KINT" });
+  return new BigNumber(account.free.toJSON())
+    .plus(account.reserved.toJSON())
+    .toString();
+}
+
+async function querySystemAccountBalance(api, address) {
+  const account = await api.query.system.account(address);
+  return new BigNumber(account.data.free.toJSON())
+    .plus(account.data.reserved.toJSON())
+    .toString();
+}
+
+export default function useAddressBalance(api, address, chain) {
   const isMounted = useIsMounted();
   const [balance, setBalance] = useState(0);
   const [loadingBalance, setLoadingBalance] = useState(false);
@@ -14,23 +30,33 @@ export default function useAddressBalance(api, address) {
       setBalance(balanceMap.get(address));
       return;
     }
-    if (api) {
-      setLoadingBalance(true);
-      api.query.system
-        .account(address)
-        .then((result) => {
-          if (isMounted.current) {
-            setBalance(result.data.free.toJSON());
-            balanceMap.set(address, result.data.free.toJSON());
-          }
-        })
-        .finally(() => {
-          if (isMounted.current) {
-            setLoadingBalance(false);
-          }
-        });
+
+    if (!api) {
+      return;
     }
-  }, [api, address, isMounted]);
+
+    let promise;
+    if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
+      promise = queryKintsugiBalance(api, address);
+    } else {
+      promise = querySystemAccountBalance(api, address);
+    }
+
+    setLoadingBalance(true);
+    promise
+      .then((balance) => {
+        console.log("balance", balance);
+        if (isMounted.current) {
+          setBalance(balance);
+          balanceMap.set(address, balance);
+        }
+      })
+      .finally(() => {
+        if (isMounted.current) {
+          setLoadingBalance(false);
+        }
+      });
+  }, [api, chain, address, isMounted]);
 
   return [balance, loadingBalance];
 }

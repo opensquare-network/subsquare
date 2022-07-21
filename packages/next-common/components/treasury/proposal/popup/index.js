@@ -62,7 +62,8 @@ function PopupContent({
 
   const [balance, balanceIsLoading] = useAddressBalance(
     api,
-    signerAccount?.address
+    signerAccount?.address,
+    chain
   );
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
