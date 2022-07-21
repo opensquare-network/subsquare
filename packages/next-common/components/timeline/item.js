@@ -117,6 +117,7 @@ const ContentItem = styled(Flex)`
     line-height: 19.6px;
     text-align: right;
     flex: 1 1 auto;
+    font-size: 14px;
   }
 `;
 
