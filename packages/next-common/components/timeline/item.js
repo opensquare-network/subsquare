@@ -103,6 +103,7 @@ const ContentItem = styled(Flex)`
   align-items: flex-start !important;
   justify-content: space-between;
   word-break: break-word;
+  font-size: 14px;
   > :first-child {
     color: #506176;
     line-height: 28px;
@@ -117,7 +118,6 @@ const ContentItem = styled(Flex)`
     line-height: 19.6px;
     text-align: right;
     flex: 1 1 auto;
-    font-size: 14px;
   }
 `;
 
