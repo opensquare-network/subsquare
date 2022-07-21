@@ -105,14 +105,18 @@ export default function PostCreate({ chain, loginUser }) {
   const createPost = async () => {
     setCreating(true);
     const result = await nextApi
-      .post(`posts`, {
-        chain,
-        title,
-        content,
-        contentType,
-        bannerUrl,
-        ...formValue,
-      })
+      .post(
+        `posts`,
+        {
+          chain,
+          title,
+          content,
+          contentType,
+          bannerUrl,
+          ...formValue,
+        },
+        { credentials: "include" }
+      )
       .finally(() => {
         setCreating(false);
       });
