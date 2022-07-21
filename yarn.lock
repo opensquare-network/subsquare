@@ -1192,9 +1192,18 @@
     web-vitals "^2.1.4"
 
 "@osn/previewer@^0.10.3":
-  version "0.10.3"
-  resolved "https://registry.yarnpkg.com/@osn/previewer/-/previewer-0.10.3.tgz#87e358762d8ede9aadcf4251b35e6487d8e133e7"
-  integrity sha512-NdVqzY4kH7I674jClSWDFoVXv4jZ5f5mpFcRmhbN8WD25UpOmYLMX97VvOgmtCl3pj/u/J5SZ8BlgWsCTcGCiQ==
+  version "0.10.4"
+  resolved "https://registry.npmjs.org/@osn/previewer/-/previewer-0.10.4.tgz#48b4b90fbcf8131542a4c37f0793ec1412b7d9fd"
+  integrity sha512-p4f2qeXqPSJQZ9PmPHMYoKYxjRePXqmxslebdAJY0V9OJJL8tT3GQvlC/ugoDRgCM7iRCEW+GCgKAapP4lNuUQ==
+  dependencies:
+    marked "^4.0.17"
+    prismjs "^1.28.0"
+    sanitize-html "^2.7.0"
+
+"@osn/previewer@^0.11.2":
+  version "0.11.2"
+  resolved "https://registry.npmjs.org/@osn/previewer/-/previewer-0.11.2.tgz#78b498b81ccdb2fe3104ee017f0ee6055ec51ac8"
+  integrity sha512-T4/H6HEhLL2dQa6m+bFBeKZ7c3yXLwimxTGvv7rpQWTK9u/ljKHJ37oK5vnfj/MG8IOjW3WWgbt4A0xmV7jWNA==
   dependencies:
     marked "^4.0.17"
     prismjs "^1.28.0"
@@ -1746,6 +1755,7 @@
   dependencies:
     "@interlay/monetary-js" "0.5.4"
     "@osn/polkadot-react-identicon" "^1.0.8"
+    "@osn/previewer" "^0.11.2"
     "@osn/provider-options" "1.0.7"
     "@polkadot/api" "8.9.1"
     "@polkadot/extension-dapp" "0.44.2-3"
@@ -1766,6 +1776,7 @@
     quill-magic-url "^4.1.2"
     quill-mention "^3.0.4"
     react "^17.0.2"
+    react-datepicker "^4.8.0"
     react-dom "^17.0.2"
     react-json-view "^1.21.3"
     react-mde "^11.5.0"

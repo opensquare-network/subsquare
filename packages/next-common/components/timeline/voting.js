@@ -8,6 +8,7 @@ import { Approve } from "../icons";
 const TitleWrapper = styled(Flex)`
   justify-content: space-between;
   min-height: 28px;
+  font-size: 14px;
   > :last-child {
     display: flex;
     align-items: center;
