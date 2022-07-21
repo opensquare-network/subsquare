@@ -43,19 +43,31 @@ const CaretWrapper = styled.div`
         border-color: #e0e4eb;
       }
     `}
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      * {
+        stroke: white;
+      }
+    `};
 `;
 
-const CaretLeft = ({ onClick, disabled }) => {
+const CaretLeft = ({ onClick, theme, disabled }) => {
   return (
-    <CaretWrapper disabled={disabled} onClick={onClick}>
+    <CaretWrapper
+      className="caret"
+      theme={theme}
+      disabled={disabled}
+      onClick={onClick}
+    >
       <ArrowLeft />
     </CaretWrapper>
   );
 };
 
-const CaretRight = ({ onClick }) => {
+const CaretRight = ({ onClick, theme }) => {
   return (
-    <CaretWrapper onClick={onClick}>
+    <CaretWrapper className="caret" theme={theme} onClick={onClick}>
       <ArrowRight />
     </CaretWrapper>
   );
@@ -74,12 +86,24 @@ const Label = styled.span`
   background: #f6f7fa;
   border-right: 1px solid #e0e4eb;
   text-align: center;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #1d1e2c;
+      color: white;
+      border-color: #363a4d;
+    `};
 `;
 
 const DateTime = styled.span`
   padding-left: 16px;
   flex-grow: 1;
   text-align: left;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      color: white;
+    `};
 `;
 
 const PlaceHolder = styled.span`
@@ -87,6 +111,11 @@ const PlaceHolder = styled.span`
   color: #d7dee8;
   flex-grow: 1;
   text-align: left;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      color: rgba(255, 255, 255, 0.15);
+    `};
 `;
 
 const DateButton = styled.div`
@@ -120,6 +149,12 @@ const DateButton = styled.div`
     css`
       border-color: #b7c0cc;
     `}
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #212433;
+      border-color: #363a4d;
+    `};
 `;
 
 const DateWrapper = styled.div`
@@ -157,6 +192,11 @@ const DateWrapper = styled.div`
     font-size: 12px;
     font-weight: 500;
     color: #9da9bb;
+    ${(props) =>
+      props?.theme === "dark" &&
+      css`
+        color: rgba(255, 255, 255, 0.2);
+      `}
   }
 
   .react-datepicker {
@@ -236,6 +276,52 @@ const DateWrapper = styled.div`
       background: none;
     }
   }
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      .react-datepicker {
+        border-color: #363a4d !important;
+        user-select: none;
+      }
+      background: #212433;
+
+      color: white;
+      b {
+        color: white !important;
+      }
+      .react-datepicker {
+        background-color: #212433;
+      }
+      .react-datepicker__day--today {
+        color: white;
+        border-color: #575c72;
+      }
+      .react-datepicker__day,
+      .react-datepicker__day--selected {
+        color: white;
+        &:hover {
+          background-color: #272a3a;
+        }
+      }
+      .react-datepicker__day--outside-month {
+        color: rgba(255, 255, 255, 0.2);
+      }
+      .react-datepicker__day--disabled {
+        color: rgba(255, 255, 255, 0.15);
+      }
+      .react-datepicker__day--selected {
+        background-color: #272a3a;
+        color: white;
+      }
+      input,
+      .input,
+      .caret {
+        color: white;
+        border-color: #363a4d !important;
+      }
+      .caret {
+      }
+    `};
 `;
 
 const DateHeader = styled(Flex)`
@@ -288,6 +374,8 @@ export default function DatePicker({
   button,
   onSelectDatetime = () => {},
 }) {
+  // todo ： fixme
+  const [theme] = ["dark"];
   const [date, setDate] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [show, setShow] = useState("date");
@@ -320,12 +408,12 @@ export default function DatePicker({
         {button ? (
           <div onClick={handleClick}>{button}</div>
         ) : (
-          <DateButton onClick={handleClick} active={isOpen}>
-            <Label>End time</Label>
+          <DateButton theme={theme} onClick={handleClick} active={isOpen}>
+            <Label theme={theme}>End time</Label>
             {date ? (
-              <DateTime>{getFormattedTime()}</DateTime>
+              <DateTime theme={theme}>{getFormattedTime()}</DateTime>
             ) : (
-              <PlaceHolder>{placeholder}</PlaceHolder>
+              <PlaceHolder theme={theme}>{placeholder}</PlaceHolder>
             )}
             <ArrowRight />
           </DateButton>
@@ -334,7 +422,7 @@ export default function DatePicker({
           <>
             {show === "date" && (
               <Background>
-                <DateWrapper ref={ref}>
+                <DateWrapper theme={theme} ref={ref}>
                   <FlexBetween>
                     <h2>Select End Time</h2>
                     <button
@@ -360,6 +448,7 @@ export default function DatePicker({
                       <div>
                         <DateHeader>
                           <CaretLeft
+                            theme={theme}
                             disabled={
                               moment(date).format("YYYY-MM") ===
                               moment(new Date()).format("YYYY-MM")
@@ -367,7 +456,7 @@ export default function DatePicker({
                             onClick={decreaseMonth}
                           />
                           <b>{moment(date).format("YYYY-MM")}</b>
-                          <CaretRight onClick={increaseMonth} />
+                          <CaretRight theme={theme} onClick={increaseMonth} />
                         </DateHeader>
                       </div>
                     )}
@@ -380,6 +469,7 @@ export default function DatePicker({
 
                   <TimeWrapper>
                     <Input
+                      className="input"
                       type="number"
                       value={hour}
                       onChange={(e) => {
@@ -395,6 +485,7 @@ export default function DatePicker({
                     />
                     <span>:</span>
                     <Input
+                      className="input"
                       type="number"
                       value={minute}
                       onChange={(e) => {
