@@ -10,8 +10,7 @@
   },
   "dependencies": {
     "@next/env": "^12.1.0",
-    "@osn/previewer": "^0.10.3",
-    "@osn/rich-text-editor": "0.1.48",
+    "@osn/rich-text-editor": "^0.1.49",
     "@polkadot/extension-dapp": "0.44.2-3",
     "@subsquare/next-common": "file:../next-common",
     "@svgr/webpack": "^5.5.0",
