@@ -106,33 +106,33 @@ function ChildBountiesTable({
                 // eslint-disable-next-line react/jsx-key
                 <ChildBounty>
                   <Anchor href={`/treasury/child-bounty/${bounty.parentBountyId}_${bounty.index}`}
-                          title={bounty.description}
-                  >{bounty.description}</Anchor>
+                          title={bounty.title}
+                  >{bounty.title}</Anchor>
                   <FlexBetween>
                     <SemiBold>
-                      {toPrecision(bounty.value, decimals)}
+                      {toPrecision(bounty.onchainData?.value, decimals)}
                       {" "}
                       <Accessory>
                         {symbol}
                       </Accessory>
                     </SemiBold>
-                    <Tag name={bounty.state.state}/>
+                    <Tag name={bounty.onchainData?.state?.state}/>
                   </FlexBetween>
                 </ChildBounty>
               ]}/>
 
             <ChildBountyMobile key={index}>
               <Anchor href={`/treasury/child-bounty/${bounty.parentBountyId}_${bounty.index}`}
-                      title={bounty.description}>
-                {bounty.description}
+                      title={bounty.title}>
+                {bounty.title}
               </Anchor>
               <Divider/>
               <FlexBetween>
                 <DividerWrapper>
                   <SemiBold>#{bounty.index}</SemiBold>
-                  <span> <SemiBold> {toPrecision(bounty.value, decimals)}</SemiBold>  <Accessory>{symbol}</Accessory></span>
+                  <span> <SemiBold> {toPrecision(bounty.onchainData?.value, decimals)}</SemiBold>  <Accessory>{symbol}</Accessory></span>
                 </DividerWrapper>
-                <Tag name={bounty.state.state}/>
+                <Tag name={bounty.onchainData?.state?.state}/>
               </FlexBetween>
             </ChildBountyMobile>
           </ChildBountyWrapper>)
