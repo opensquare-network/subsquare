@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { timeDurationFromNow } from "next-common/utils";
 import User from "next-common/components/user";
 import Tag from "next-common/components/tag";
