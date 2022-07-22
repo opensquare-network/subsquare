@@ -8,6 +8,7 @@ import "nprogress/nprogress.css";
 import "../styles/globals.css";
 import "next-common/styles/prism.min.css";
 import "react-mde/lib/styles/css/react-mde-all.css";
+import "react-datepicker/dist/react-datepicker.css";
 import { connect } from "next-common/services/websocket";
 
 NProgress.configure({
