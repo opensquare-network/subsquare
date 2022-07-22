@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import ReactDatePicker from "react-datepicker";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import moment from "moment";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside";
 import ArrowLeft from "../assets/imgs/icons/caret-left-16.svg";
@@ -288,7 +288,7 @@ export default function DatePicker({
   onSelectDatetime = () => {},
 }) {
   const now = new Date();
-  const [date, setDate] = useState(new Date(now.setDate(now.getDate() + 7)));
+  const [date, setDate] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [show, setShow] = useState("date");
   const [hour, setHour] = useState(now.getHours());
@@ -303,6 +303,12 @@ export default function DatePicker({
     setShow("date");
     setIsOpen(!isOpen);
   };
+
+  useEffect(() => {
+    if (isOpen && date === null) {
+      setDate(new Date(now.setDate(now.getDate() + 7)));
+    }
+  }, [isOpen]);
 
   const getFormattedTime = () => {
     if (!date || !hour || !minute) return "";
