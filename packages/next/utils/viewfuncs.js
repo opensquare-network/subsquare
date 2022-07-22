@@ -28,6 +28,40 @@ export const toDiscussionListItem = (chain, item) => ({
   detailLink: `/post/${item.postUid}`,
 });
 
+export const convertPolkassemblyUser = (chain, paUser) =>
+  paUser?.[`${chain}_default_address`]
+    ? {
+        username: paUser?.username,
+        addresses: [
+          {
+            address: paUser?.[`${chain}_default_address`],
+            chain,
+          },
+        ],
+      }
+    : {
+        username: paUser?.username,
+      };
+
+export const convertPolkassemblyReaction = (chain, paReaction) => ({
+  user: convertPolkassemblyUser(chain, paReaction?.reacting_user),
+  reaction: paReaction.reaction === "👍" ? 1 : 0,
+  createdAt: paReaction.created_at,
+  updatedAt: paReaction.updated_at,
+});
+
+export const convertPolkassemblyComment = (chain, comment) => ({
+  reactions: comment.comment_reactions?.map((r) =>
+    convertPolkassemblyReaction(chain, r)
+  ),
+  id: comment.id,
+  content: comment.content,
+  contentType: "markdown",
+  createdAt: comment.created_at,
+  updatedAt: comment.updated_at,
+  author: convertPolkassemblyUser(chain, comment.author),
+});
+
 export const toPolkassemblyDiscussionListItem = (chain, item) => ({
   ...item,
   time: item.lastActivityAt,
@@ -45,6 +79,11 @@ export const toPolkassemblyDiscussionListItem = (chain, item) => ({
       : {}),
   },
   detailLink: `/polkassembly-discussion/${item.polkassemblyId}`,
+});
+
+export const toPolkassemblyCommentListItem = (chain, item) => ({
+  ...convertPolkassemblyComment(chain, item),
+  replies: item.replies?.map((r) => convertPolkassemblyComment(chain, r)),
 });
 
 export const toCouncilMotionListItem = (chain, item) => {

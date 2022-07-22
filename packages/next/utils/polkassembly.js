@@ -13,14 +13,14 @@ async function fetchGraphql(query) {
     setTimeout(() => controller.abort(), 10000);
 
     if (!resp.ok) {
-      return [];
+      return null;
     }
 
     const result = await resp.json();
     return result;
   } catch (e) {
     console.error(e.message);
-    return [];
+    return null;
   }
 }
 
