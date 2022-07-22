@@ -287,11 +287,13 @@ export default function DatePicker({
   button,
   onSelectDatetime = () => {},
 }) {
-  const [date, setDate] = useState(null);
+  const now = new Date();
+  const [theme] = useDarkMode();
+  const [date, setDate] = useState(new Date(now.setDate(now.getDate() + 7)));
   const [isOpen, setIsOpen] = useState(false);
   const [show, setShow] = useState("date");
-  const [hour, setHour] = useState("");
-  const [minute, setMinute] = useState("");
+  const [hour, setHour] = useState(now.getHours());
+  const [minute, setMinute] = useState(now.getMinutes());
   const ref = useRef();
   useOnClickOutside(ref, () => setIsOpen(false));
   const handleChange = (e) => {
