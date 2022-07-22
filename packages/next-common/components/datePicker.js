@@ -1,7 +1,6 @@
 import styled, { css } from "styled-components";
 import ReactDatePicker from "react-datepicker";
-import { useState, useRef } from "react";
-import "react-datepicker/dist/react-datepicker.css";
+import React, { useState, useRef } from "react";
 import moment from "moment";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside";
 import ArrowLeft from "../assets/imgs/icons/caret-left-16.svg";

@@ -10,7 +10,7 @@ import PrimeAddressMark from "next-common/components/primeAddressMark";
 import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
-  max-width: 852px;
+  max-width: 932px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }
