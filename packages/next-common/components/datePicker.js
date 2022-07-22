@@ -8,11 +8,7 @@ import ArrowLeft from "../assets/imgs/icons/caret-left-16.svg";
 import ArrowRight from "../assets/imgs/icons/caret-right-16.svg";
 import Close from "../assets/imgs/icons/close-16.svg";
 import Button from "./button";
-import {
-  p_14_medium,
-  p_14_normal,
-  p_16_semibold,
-} from "../styles/componentCss";
+import { p_14_medium, p_14_normal } from "../styles/componentCss";
 import Flex from "./styled/flex";
 import FlexBetween from "./styled/flexBetween";
 import Input from "./input";
@@ -330,7 +326,6 @@ const DateHeader = styled(Flex)`
 
   > b {
     font-family: Inter, sans-serif;
-    ${p_16_semibold};
     text-align: center;
     color: #1e2134;
     flex: 1 1 auto;
