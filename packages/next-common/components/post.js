@@ -232,7 +232,7 @@ export default function Post({ data, chain, href, type }) {
           <TitleWrapper theme={theme}>
             {data?.index !== undefined && <Index>{`#${data.index}`}</Index>}
             <Link href={href} passHref>
-              <Title>{data.title}</Title>
+              <Title>{data.title?.trim() || "--"}</Title>
             </Link>
             <ReasonLink text={data.title} hideText={true} />
           </TitleWrapper>

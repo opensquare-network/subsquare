@@ -9,9 +9,9 @@ export default function useBond({ api, proposalValue }) {
 
   useEffect(() => {
     if (api) {
-      setBondPercentage(api.consts.treasury.proposalBond.toJSON());
-      setBondMaximum(api.consts.treasury.proposalBondMaximum.toJSON());
-      setBondMinimum(api.consts.treasury.proposalBondMinimum.toJSON());
+      setBondPercentage(api.consts.treasury?.proposalBond?.toJSON());
+      setBondMaximum(api.consts.treasury?.proposalBondMaximum?.toJSON());
+      setBondMinimum(api.consts.treasury?.proposalBondMinimum?.toJSON());
     }
   }, [api]);
 
@@ -28,5 +28,5 @@ export default function useBond({ api, proposalValue }) {
       : BigNumber.max(bond, bondMinimum);
   }
 
-  return bond;
+  return bond.isNaN() ? new BigNumber(0) : bond;
 }

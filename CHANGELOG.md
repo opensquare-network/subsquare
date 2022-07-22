@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.1.3
+
+- Support phala and turn on crust
+- Apply OpenSquare editor and markdown renderer
+- Refactor icons and remove redundant icons in next and kintsugi-next package
+- Hotfix: vote button not shown for council members on motion detail page
+- Handle post empty title
+- Fix child bounty title and style on parent bounty detail page
+- Fix kintsugi/interlay treasury modal balance
+
 # 2.1.2
 
 - Support discussions post polls

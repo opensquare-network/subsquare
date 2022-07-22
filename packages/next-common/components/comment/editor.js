@@ -82,7 +82,7 @@ function Editor(
     setContent,
     contentType,
     setContentType,
-    setQuillRef = null,
+    setQuillRef = () => {},
     users = [],
     type,
   },

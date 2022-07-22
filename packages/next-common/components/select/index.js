@@ -20,7 +20,9 @@ const SelectWrapper = styled(FlexBetweenCenter)`
   padding: 0 12px;
   cursor: pointer;
   color: ${light_text_primary};
-
+  :hover {
+    border-color: #c2c8d5;
+  }
   ${(p) =>
     p.disabled &&
     css`

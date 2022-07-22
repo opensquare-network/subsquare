@@ -6,6 +6,7 @@ import nodeReducer from "./nodeSlice";
 import chainReducer from "./chainSlice";
 import treasuryProposalReducer from "./treasuryProposalSlice";
 import themeReducer from "./themeSlice";
+import tipReducer from "./tipSlice";
 
 export default combineReducers({
   user: userReducer,
@@ -14,4 +15,5 @@ export default combineReducers({
   chain: chainReducer,
   treasuryProposal: treasuryProposalReducer,
   theme: themeReducer,
+  tip: tipReducer,
 });

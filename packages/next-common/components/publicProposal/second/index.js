@@ -138,7 +138,8 @@ export default function Second({
   const [theme] = useDarkMode();
   const secondsCount = countBy(seconds);
   const secondsAddress = Object.keys(secondsCount);
-  const showFold = !expand && seconds.length > 5;
+
+  const showFold = !expand && secondsAddress.length > 5;
   const showData = showFold ? secondsAddress.slice(0, 5) : secondsAddress;
 
   let secondsList;

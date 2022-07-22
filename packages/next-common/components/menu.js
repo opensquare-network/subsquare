@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import OverviewIcon from "../assets/imgs/icons/overview.svg";
 import DiscussionIcon from "../assets/imgs/icons/discussions.svg";
+import PolkassemblyDiscussionIcon from "../assets/imgs/icons/polkassembly-discussion.svg";
 import TipIcon from "../assets/imgs/icons/tips.svg";
 import ProposalIcon from "../assets/imgs/icons/proposals.svg";
 import MotionIcon from "../assets/imgs/icons/type-motions.svg";
@@ -98,6 +99,7 @@ export default function Menu({ menu, chain }) {
   const iconMap = new Map();
   iconMap.set("overview", <OverviewIcon />);
   iconMap.set("discussions", <DiscussionIcon />);
+  iconMap.set("polkassembly-discussions", <PolkassemblyDiscussionIcon />);
   iconMap.set("offChainVoting", <ReferendaIcon />);
   iconMap.set("tips", <TipIcon />);
   iconMap.set("proposals", <ProposalIcon />);

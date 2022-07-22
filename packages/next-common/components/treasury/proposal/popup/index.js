@@ -7,25 +7,19 @@ import BigNumber from "bignumber.js";
 import useApi from "../../../../utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "../../../../utils/hooks/useIsMounted";
 import Button from "../../../button";
-import {
-  newErrorToast,
-  newPendingToast,
-  newSuccessToast,
-  newToastId,
-  removeToast,
-  updatePendingToast,
-} from "../../../../store/reducers/toastSlice";
+import { newErrorToast } from "../../../../store/reducers/toastSlice";
 
-import { getNode } from "utils";
+import { checkInputValue, getNode } from "../../../../utils";
 import PopupWithAddress from "../../../popupWithAddress";
 import { emptyFunction } from "../../../../utils";
 import ProposalBond from "./proposalBond";
-import Beneficiary from "./beneficiary";
+import Beneficiary from "../../common/beneficiary";
 import ProposalValue from "./proposalValue";
 import Signer from "./signer";
 import useAddressBalance from "../../../../utils/hooks/useAddressBalance";
 import { WarningMessage } from "../../../popup/styled";
 import useBond from "../../../../utils/hooks/useBond";
+import { sendTx } from "../../../../utils/sendTx";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -62,7 +56,8 @@ function PopupContent({
 
   const [balance, balanceIsLoading] = useAddressBalance(
     api,
-    signerAccount?.address
+    signerAccount?.address,
+    chain
   );
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
@@ -80,71 +75,35 @@ function PopupContent({
       return showErrorToast("Please input a beneficiary");
     }
 
-    if (!inputValue) {
-      return showErrorToast("Please input a value");
+    if (!node) {
+      return;
     }
 
-    const bnValue = new BigNumber(inputValue).times(
-      Math.pow(10, node.decimals)
-    );
-    if (bnValue.isNaN()) {
-      return showErrorToast("Invalid value");
-    }
-
-    if (bnValue.lte(0)) {
-      return showErrorToast("Value must be greater than 0");
-    }
-
-    if (!bnValue.mod(1).isZero()) {
-      return showErrorToast("Invalid precision");
-    }
-
-    const toastId = newToastId();
-    dispatch(newPendingToast(toastId, "Waiting for signing..."));
-
+    let bnValue;
     try {
-      setLoading(true);
-
-      const signerAddress = signerAccount.address;
-
-      const unsub = await api.tx.treasury
-        .proposeSpend(bnValue.toString(), beneficiary)
-        .signAndSend(signerAddress, ({ events = [], status }) => {
-          if (status.isFinalized) {
-            onFinalized(signerAddress);
-            unsub();
-          }
-          if (status.isInBlock) {
-            // Transaction went through
-            dispatch(removeToast(toastId));
-            dispatch(newSuccessToast("InBlock"));
-
-            for (const event of events) {
-              const { section, method, data } = event.event;
-              if (section !== "treasury" || method !== "Proposed") {
-                continue;
-              }
-              const [proposalIndex] = data.toJSON();
-
-              onInBlock(signerAddress, proposalIndex);
-              break;
-            }
-          }
-        });
-
-      dispatch(updatePendingToast(toastId, "Broadcasting"));
-
-      onSubmitted(signerAddress);
-
-      onClose();
-    } catch (e) {
-      dispatch(removeToast(toastId));
-      showErrorToast(e.message);
-    } finally {
-      if (isMounted.current) {
-        setLoading(null);
-      }
+      bnValue = checkInputValue(inputValue, node.decimals);
+    } catch (err) {
+      return showErrorToast(err.message);
     }
+
+    const tx = api.tx.treasury.proposeSpend(bnValue.toNumber(), beneficiary);
+
+    const signerAddress = signerAccount.address;
+
+    await sendTx({
+      tx,
+      dispatch,
+      setLoading,
+      onFinalized,
+      onInBlock: (eventData) => {
+        const [proposalIndex] = eventData;
+        onInBlock(signerAddress, proposalIndex);
+      },
+      onSubmitted,
+      onClose,
+      signerAddress,
+      isMounted,
+    });
   };
 
   const balanceInsufficient = new BigNumber(bond).gt(balance);
