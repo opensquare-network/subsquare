@@ -1,13 +1,17 @@
 import Back from "next-common/components/back";
-import DetailItem from "components/detailItem";
-import PolkassemblyComments from "next-common/components/comment";
+import DetailItem from "components/polkassembly/detailItem";
+import PolkassemblyComments from "components/polkassembly/comment";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import Layout from "next-common/components/layout";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_PA_POST } from "utils/viewConstants";
-import { getMetaDesc } from "utils/viewfuncs";
+import {
+  convertPolkassemblyReaction,
+  getMetaDesc,
+  toPolkassemblyCommentListItem,
+} from "utils/viewfuncs";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import { emptyFunction } from "next-common/utils";
 import { useEffect, useState } from "react";
@@ -15,9 +19,10 @@ import { queryPostComments } from "utils/polkassembly";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 
 export default withLoginUserRedux(
-  ({ loginUser, detail, chain }) => {
+  ({ loginUser, detail, chain, page, pageSize }) => {
     const isMounted = useIsMounted();
     const [comments, setComments] = useState([]);
+    const [postReactions, setPostReactions] = useState([]);
     const [loadingComments, setLoadingComments] = useState(false);
 
     useEffect(() => {
@@ -26,10 +31,17 @@ export default withLoginUserRedux(
       }
 
       setLoadingComments(true);
-      queryPostComments(detail?.polkassemblyId)
-        .then((comments) => {
+      queryPostComments(detail?.polkassemblyId, page, pageSize)
+        .then((result) => {
           if (isMounted.current) {
+            const comments = result?.comments?.map((item) =>
+              toPolkassemblyCommentListItem(chain, item)
+            );
+            const postReactions = result?.post_reactions?.map((item) =>
+              convertPolkassemblyReaction(chain, item)
+            );
             setComments(comments);
+            setPostReactions(postReactions);
           }
         })
         .finally(() => {
@@ -37,7 +49,7 @@ export default withLoginUserRedux(
             setLoadingComments(false);
           }
         });
-    }, [detail.polkassemblyId, isMounted]);
+    }, [detail?.polkassemblyId, chain, page, pageSize, isMounted]);
 
     const desc = getMetaDesc(detail, "Polkassembly Discussions");
     return (
@@ -47,18 +59,25 @@ export default withLoginUserRedux(
         seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
       >
         <DetailPageWrapper className="post-content">
-          <Back href={`/polkassembly-discussions`} text="Back to Polkassembly Discussions" />
+          <Back
+            href={`/polkassembly-discussions`}
+            text="Back to Polkassembly Discussions"
+          />
           <DetailItem
             data={{ ...detail, contentType: "markdown" }}
-            user={loginUser}
             chain={chain}
-            onReply={emptyFunction}
+            postReactions={postReactions}
             type={TYPE_PA_POST}
           />
           <CommentsWrapper>
             <PolkassemblyComments
               isLoading={loadingComments}
-              data={comments}
+              data={{
+                items: comments,
+                page: page + 1,
+                pageSize,
+                total: detail.commentsCount,
+              }}
               user={loginUser}
               chain={chain}
               onReply={emptyFunction}
@@ -72,7 +91,7 @@ export default withLoginUserRedux(
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-  const { id } = context.query;
+  const { id, page } = context.query;
   const [{ result: detail }] = await Promise.all([
     nextApi.fetch(`polkassembly-discussions/${id}`),
   ]);
@@ -85,6 +104,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       detail,
       chain,
+      page: (page ?? 1) - 1,
+      pageSize: 10,
     },
   };
 });
