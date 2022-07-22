@@ -1,9 +1,10 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Post from "next-common/components/post";
 import Pagination from "next-common/components/pagination";
 import EmptyList from "next-common/components/emptyList";
 import Flex from "next-common/components/styled/flex";
+import useDarkMode from "../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -25,6 +26,11 @@ const Title = styled(Flex)`
   justify-content: space-between;
   font-weight: bold;
   font-size: 16px;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      color: #ffffff;
+    `};
 `;
 
 export default function List({
@@ -35,9 +41,10 @@ export default function List({
   create = null,
   summary,
 }) {
+  const [theme] = useDarkMode();
   return (
     <Wrapper>
-      <Title>
+      <Title theme={theme}>
         {category}
         {create}
       </Title>

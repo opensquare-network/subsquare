@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Input from "../input";
 import nextApi from "../../services/nextApi";
 import ToggleText from "../uploadBanner/toggleText";
@@ -13,6 +13,7 @@ import Button from "next-common/components/button";
 import ErrorText from "next-common/components/ErrorText";
 import AdvancedForm from "next-common/components/post/advanced/form";
 import dynamic from "next/dynamic";
+import useDarkMode from "../../utils/hooks/useDarkMode";
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
   { ssr: false }
@@ -33,6 +34,23 @@ const Wrapper = styled.div`
     margin-right: -16px;
     border-radius: 0;
     padding: 24px;
+  }
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #212433;
+      border-color: #363a4d;
+      div {
+        border-color: #363a4d !important;
+      }
+      color: white;
+      div + textarea {
+        background: #212433;
+        border-color: #363a4d;
+      }
+    `};
+  input {
+    color: #ffffff;
   }
 `;
 
@@ -63,24 +81,82 @@ const ButtonWrapper = styled.div`
 
 const InputWrapper = styled.div`
   position: relative;
-`;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      div.modal {
+        background-color: #1d1e2c !important;
+        border-color: #212433 !important;
+      }
+      .modal textarea {
+        background-color: #212433 !important;
+        border-color: #212433 !important;
+        color: white !important;
+      }
 
-const InputSwitch = styled.div`
-  height: 24px;
-  top: 10px;
-  right: 16px;
-  position: absolute;
-  display: flex;
-  align-items: center;
+      div.markdown-body pre,
+      div.markdown-body code,
+      div.html-body pre,
+      div.html-body code {
+        background: #1d1e2c !important;
+        code {
+          color: white !important;
+          text-shadow: none !important;
+        }
+      }
 
-  > img {
-    margin-right: 12px;
-  }
-`;
-
-const PreviewWrapper = styled.div`
-  display: flex;
-  min-height: 244px;
+      .editor-toolbar,
+      .ql-toolbar.ql-snow,
+      span.ql-formats {
+        background-color: #1d1e2c !important;
+        border-color: #212433 !important;
+      }
+      .editor-toolbar-buttons > div {
+        background-color: #363a4d !important;
+      }
+      button:first-child {
+        box-shadow: 1px 0 0 0 #363a4d !important;
+      }
+      button:last-child {
+        box-shadow: 1px 0 0 0 #363a4d !important;
+      }
+      button.active {
+        background-color: #212433 !important;
+        border-color: #212433 !important;
+        color: white !important;
+        box-shadow: 0 1px 0 0 #1d1e2c !important;
+      }
+      button svg {
+        path {
+          fill: rgba(255, 255, 255, 0.6);
+        }
+      }
+      button:hover svg path {
+        fill: white !important;
+      }
+      .modal p {
+        background-color: #1d1e2c;
+      }
+      .html-body,
+      .markdown-body {
+        color: white;
+      }
+      span.ql-picker-options {
+        background-color: #212433;
+      }
+      span.ql-picker-label.ql-active {
+        color: white !important;
+      }
+      .ql-picker-options .ql-picker-item {
+        &:hover {
+          color: white !important;
+        }
+      }
+      caret-color: white !important;
+      textarea {
+        color: white;
+      }
+    `};
 `;
 
 const UploaderWrapper = styled.div`
@@ -90,6 +166,7 @@ const UploaderWrapper = styled.div`
 export default function PostCreate({ chain, loginUser }) {
   const router = useRouter();
   const dispatch = useDispatch();
+  const [theme] = useDarkMode();
   const [title, setTitle] = useState("");
   const [creating, setCreating] = useState(false);
   const [content, setContent] = useState("");
@@ -151,7 +228,7 @@ export default function PostCreate({ chain, loginUser }) {
   }, [isEmpty, formValue, isAdvanced]);
 
   return (
-    <Wrapper>
+    <Wrapper theme={theme}>
       <Title>New Post</Title>
       <LabelWrapper>
         <Label>Title</Label>
@@ -181,7 +258,7 @@ export default function PostCreate({ chain, loginUser }) {
         <Label>Issue</Label>
       </LabelWrapper>
 
-      <InputWrapper>
+      <InputWrapper theme={theme}>
         <UniverseEditor
           value={content}
           onChange={setContent}

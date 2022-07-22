@@ -14,6 +14,7 @@ import signalDefault from "../../assets/imgs/icons/signal-default.png";
 import signalMedium from "../../assets/imgs/icons/signal-medium.png";
 import signalSlow from "../../assets/imgs/icons/signal-slow.png";
 import signalFast from "../../assets/imgs/icons/signal-fast.png";
+import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   position: relative;
@@ -24,6 +25,15 @@ const SmallSelect = styled.div`
   width: 38px;
   height: 38px;
   border: 1px solid #e0e4eb;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #212433;
+      border-color: #363a4d;
+      > div > span:last-child {
+        color: #fff;
+      }
+    `};
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -78,6 +88,12 @@ const Options = styled.div`
       width: auto;
       min-width: 192px;
     `}
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #212433;
+      color: #fff;
+    `};
 `;
 
 const Item = styled.div`
@@ -104,8 +120,19 @@ const Item = styled.div`
     margin-left: auto;
     color: ${(p) => p.color};
   }
-  ${(p) =>
-    p.active &&
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      color: rgba(255, 255, 255, 0.6);
+      color: #ffffff;
+      background: #212433;
+      :hover {
+        background-color: #272a3a;
+      }
+    `};
+  ${(props) =>
+    props?.theme === "light" &&
+    props.active &&
     css`
       color: #1e2134;
       background: #f6f7fa;
@@ -115,6 +142,7 @@ const Item = styled.div`
 export default function NodeSwitch({ small, chain }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
+  const [theme] = useDarkMode();
   const windowSize = useWindowSize();
   const currentNode = useSelector(currentNodeSelector);
   const nodes = useSelector(nodesSelector);
@@ -168,7 +196,7 @@ export default function NodeSwitch({ small, chain }) {
   return (
     <Wrapper ref={ref}>
       {small && (
-        <SmallSelect onClick={() => setShow(!show)}>
+        <SmallSelect onClick={() => setShow(!show)} theme={theme}>
           <img
             alt=""
             src={`${getSignalImg(currentNodeSetting?.delay).src}`}
@@ -191,7 +219,7 @@ export default function NodeSwitch({ small, chain }) {
         </Select>
       )}
       {show && (
-        <Options small={small}>
+        <Options small={small} theme={theme}>
           {(nodes || []).map((item, index) => (
             <Item
               key={index}
@@ -203,6 +231,7 @@ export default function NodeSwitch({ small, chain }) {
                 dispatch(setCurrentNode({ url: item.url }));
                 setShow(false);
               }}
+              theme={theme}
               active={item.url === currentNodeSetting.url}
               color={getSignalColor(item?.delay)}
             >

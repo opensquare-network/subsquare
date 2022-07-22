@@ -2,6 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import CheckedSvg from "./checked.svg";
 import VoterList from "./votersList";
+import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   display: flex;
@@ -28,6 +29,23 @@ const OptionWrapper = styled.div`
     p.selected &&
     css`
       background: #f5f2ff;
+      color: #6848ff;
+    `}
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #1d1e2c;
+      border-color: #363a4d;
+      color: white;
+      :hover {
+        background: #272a3a;
+      }
+    `}
+  ${(p) =>
+    p.selected &&
+    p?.theme === "dark" &&
+    css`
+      background: #272a3a;
       color: #6848ff;
     `}
 `;
@@ -95,12 +113,14 @@ function Option({
   const count = (anonymous ? votes : votes?.length) || 0;
   const precent =
     totalVotesCount === 0 ? 0 : parseInt((count / totalVotesCount) * 100);
+  const [theme] = useDarkMode();
   return (
     <div>
       <OptionWrapper
         selectable={selectable}
         selected={selected}
         onClick={() => selectable && onClick(option)}
+        theme={theme}
       >
         <Title>{option}</Title>
         <StatsNumbers>

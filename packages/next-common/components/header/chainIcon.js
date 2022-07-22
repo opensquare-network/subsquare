@@ -16,6 +16,12 @@ import Polkadex from "../../assets/icons/chain/polkadex.png";
 import Turing from "../../assets/icons/chain/turing.png";
 import Kintsugi from "../../assets/icons/chain/kintsugi.png";
 import Centrifuge from "../../assets/icons/chain/centrifuge.png";
+import CrustDark from "../../assets/icons/chain/crust-dark.png";
+import CentrifugeDark from "../../assets/icons/chain/centrifuge-dark.png";
+import InterlayDark from "../../assets/icons/chain/interlay-dark.png";
+import KusamaDark from "../../assets/icons/chain/kusama-dark.png";
+import PolkadexDark from "../../assets/icons/chain/polkadex-dark.png";
+import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const imageMap = {
   [Chains.kusama]: Kusama,
@@ -36,8 +42,21 @@ const imageMap = {
   [Chains.kintsugi]: Kintsugi,
 };
 
+const darkImageMap = {
+  [Chains.kusama]: KusamaDark,
+  [Chains.centrifuge]: CentrifugeDark,
+  [Chains.crust]: CrustDark,
+  [Chains.interlay]: InterlayDark,
+  [Chains.polkadex]: PolkadexDark,
+};
+
 function ChainIcon({ chain }) {
-  const image = imageMap[chain];
+  let image = imageMap[chain];
+  const [theme] = useDarkMode();
+  if (theme === "dark" && darkImageMap[chain]) {
+    image = darkImageMap[chain];
+  }
+
   if (!image) {
     throw new Error(`Can not get icon of ${chain}`);
   }

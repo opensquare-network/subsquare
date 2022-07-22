@@ -21,6 +21,7 @@ import Timeline from "components/referenda/timeline";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import MainCard from "next-common/components/styled/mainCard";
+import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const api = useApi(chain);
@@ -85,6 +86,8 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   detail.status = detail?.onchainData?.state?.state;
 
   const desc = getMetaDesc(detail, "Referendum");
+  const [theme] = useDarkMode();
+
   return (
     <Layout
       user={loginUser}
@@ -126,7 +129,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
           <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
 
-          <CommentsWrapper>
+          <CommentsWrapper theme={theme}>
             <Comments
               data={comments}
               user={loginUser}

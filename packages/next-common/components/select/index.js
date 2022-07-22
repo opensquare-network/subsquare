@@ -6,6 +6,7 @@ import { shadow_200 } from "../../styles/componentCss";
 import { CaretDown } from "../icons";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
 import { light_text_primary } from "../../styles/colors";
+import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const selectorHeight = 38;
 
@@ -35,6 +36,13 @@ const SelectWrapper = styled(FlexBetweenCenter)`
         }
       }
     `}
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #212433;
+      border-color: #363a4d;
+      color: white;
+    `}
 `;
 
 const SelectInner = styled(FlexBetweenCenter)`
@@ -52,6 +60,13 @@ const OptionsWrapper = styled.div`
   padding: 8px 0;
   width: 100%;
   z-index: 999999;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #212433;
+      border-color: #363a4d;
+      color: white !important;
+    `}
 `;
 
 function Select({
@@ -62,7 +77,7 @@ function Select({
 }) {
   const ref = useRef();
   const [showOptions, setShowOptions] = useState(false);
-
+  const [theme] = useDarkMode();
   useOnClickOutside(ref, () => setShowOptions(false));
 
   const handleShowOptions = () => {
@@ -79,14 +94,19 @@ function Select({
   );
 
   return (
-    <SelectWrapper ref={ref} disabled={disabled} onClick={handleShowOptions}>
+    <SelectWrapper
+      ref={ref}
+      disabled={disabled}
+      onClick={handleShowOptions}
+      theme={theme}
+    >
       <SelectInner>
         <span>{displayValue}</span>
         <CaretDown className="select-caret-down" width={14} height={14} />
       </SelectInner>
 
       {showOptions && (
-        <OptionsWrapper>
+        <OptionsWrapper theme={theme}>
           {options.map((option) => (
             <Option
               key={option.value}

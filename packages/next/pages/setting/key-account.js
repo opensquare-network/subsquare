@@ -16,6 +16,7 @@ import { encodeAddressToChain } from "next-common/services/address";
 import { useRouter } from "next/router";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { useEffect } from "react";
+import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const user = loginUser;
@@ -24,6 +25,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
     : "";
 
   const router = useRouter();
+  const [theme] = useDarkMode();
 
   useEffect(() => {
     if (loginUser === null) {
@@ -44,14 +46,14 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
         <NextHead title={`Settings`} desc={``} />
         <Wrapper>
           <Title>Account</Title>
-          <ContentWrapper>
+          <ContentWrapper theme={theme}>
             <Web3Address address={address} chain={chain} />
-            <Divider />
+            <Divider theme={theme} />
             <NotificationEmail
               email={user?.email}
               verified={user?.emailVerified}
             />
-            <Divider />
+            <Divider theme={theme} />
             <Logout />
           </ContentWrapper>
         </Wrapper>

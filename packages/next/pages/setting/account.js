@@ -18,8 +18,10 @@ import Password from "next-common/components/setting/password";
 import Logout from "next-common/components/setting/logout";
 import { useRouter } from "next/router";
 import { isKeyRegisteredUser } from "next-common/utils";
+import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
+  const [theme] = useDarkMode();
   const user = useSelector(userSelector);
   const router = useRouter();
 
@@ -38,13 +40,13 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
         <NextHead title={`Settings`} desc={``} />
         <Wrapper>
           <Title>Account</Title>
-          <ContentWrapper>
+          <ContentWrapper theme={theme}>
             <Username username={user?.username} />
-            <Divider />
+            <Divider theme={theme} />
             <Email email={user?.email} verified={user?.emailVerified} />
-            <Divider />
+            <Divider theme={theme} />
             <Password />
-            <Divider />
+            <Divider theme={theme} />
             <Logout />
           </ContentWrapper>
         </Wrapper>

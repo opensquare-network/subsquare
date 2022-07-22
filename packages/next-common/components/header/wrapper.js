@@ -1,8 +1,9 @@
 import React, { memo } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { shadow_100 } from "@subsquare/next/styles/componentCss";
 import useWindowSize from "../../utils/hooks/useWindowSize";
 import getChainSettings from "../../utils/consts/settings";
+import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const Wrapper = styled.header`
   padding-left: 32px;
@@ -20,6 +21,12 @@ const Wrapper = styled.header`
   ${shadow_100};
   height: 64px;
   border-bottom: 1px solid #ebeef4;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #212433;
+      border-color: #272a3a;
+    `};
 `;
 
 function HeaderWrapper({ chain, children }) {
@@ -29,10 +36,11 @@ function HeaderWrapper({ chain, children }) {
   if (parseInt(width) <= 768) {
     return <ChainWrapper>{children}</ChainWrapper>;
   }
+  const [theme] = useDarkMode();
 
   const setting = getChainSettings(chain);
   return (
-    <ChainWrapper background={setting.headerBackgroundColor}>
+    <ChainWrapper theme={theme} background={setting.headerBackgroundColor}>
       {children}
     </ChainWrapper>
   );

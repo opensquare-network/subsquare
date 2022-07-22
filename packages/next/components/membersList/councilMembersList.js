@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import Flex from "next-common/components/styled/flex";
 import { getNode, toPrecision, decimalPlaces } from "utils";
@@ -7,6 +7,7 @@ import User from "next-common/components/user";
 import { Fragment, useState } from "react";
 import Loading from "next-common/components/loading";
 import PrimeAddressMark from "next-common/components/primeAddressMark";
+import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   max-width: 852px;
@@ -47,6 +48,13 @@ const StyledTable = styled.table`
       pointer-events: auto;
     }
   }
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #212433;
+      border-color: #363a4d;
+      color: #fff;
+    `};
 `;
 
 const StyledTr = styled.tr``;
@@ -114,7 +122,7 @@ export default function MembersList({
   hasElections = false,
 }) {
   const [hideColumn, setHideColumn] = useState("votes");
-
+  const [theme] = useDarkMode();
   const node = getNode(chain);
   if (!node) {
     return null;
@@ -123,7 +131,7 @@ export default function MembersList({
   return (
     <Wrapper>
       <Title>{category}</Title>
-      <StyledTable>
+      <StyledTable theme={theme}>
         <thead>
           <StyledTr>
             <StyledTh style={{ textAlign: "left" }}>MEMBERS</StyledTh>
@@ -148,7 +156,10 @@ export default function MembersList({
               </>
             )}
           </StyledTr>
-          <RowSpliter backgroundColor={"#EBEEF4"} padding={"16px 0 4px 0"} />
+          <RowSpliter
+            backgroundColor={theme === "dark" ? "#272A3A" : "#F6F7FA"}
+            padding={"16px 0 4px 0"}
+          />
         </thead>
         <tbody>
           {items?.length > 0 ? (
@@ -179,7 +190,9 @@ export default function MembersList({
                   )}
                 </StyledTr>
                 {index !== items.length - 1 && (
-                  <RowSpliter backgroundColor={"#F6F7FA"} />
+                  <RowSpliter
+                    backgroundColor={theme === "dark" ? "#272A3A" : "#F6F7FA"}
+                  />
                 )}
               </Fragment>
             ))

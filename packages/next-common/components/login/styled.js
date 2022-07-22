@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { shadow_100 } from "../../styles/componentCss";
 
 export const ContentCenterWrapper = styled.div`
@@ -16,6 +16,25 @@ export const ContentCenterWrapper = styled.div`
   @media screen and (max-width: 392px) {
     width: 100%;
   }
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background-color: #212433 !important;
+      border-color: #212433 !important;
+      div,
+      input,
+      button {
+        background-color: #212433;
+        border-color: #363a4d;
+        color: white;
+      }
+      button div {
+        background-color: initial;
+      }
+      * {
+        color: white;
+      }
+    `}
 `;
 
 export const Title = styled.div`

@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import Header from "next-common/components/header";
 import Content from "next-common/components/layout/content";
@@ -20,6 +20,7 @@ import Toast from "next-common/components/toast";
 import { useIsMountedBool } from "next-common/utils/hooks/useIsMounted";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import isNil from "lodash.isnil";
+import useDarkMode from "../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   display: flex;
@@ -27,6 +28,11 @@ const Wrapper = styled.div`
   min-height: 100vh;
   justify-content: center;
   padding-top: 64px;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #1d1e2c;
+    `};
 `;
 
 export default function Layout({
@@ -43,6 +49,7 @@ export default function Layout({
   const bestNumber = useBestNumber(api);
   const dispatch = useDispatch();
   const isMounted = useIsMountedBool();
+  const [theme] = useDarkMode();
 
   useEffect(() => {
     if (blockTime && isMounted()) {
@@ -73,7 +80,7 @@ export default function Layout({
   }
 
   return (
-    <Wrapper>
+    <Wrapper theme={theme}>
       {seo}
       <Auth chain={chain} />
       <Header user={user} left={left} chain={chain} isWeb3Login={isWeb3Login} />

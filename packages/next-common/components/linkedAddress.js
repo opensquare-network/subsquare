@@ -23,6 +23,7 @@ import { signMessage } from "../services/extension/signMessage";
 import { polkadotWeb3Accounts } from "../utils/extensionAccount";
 import AddressLinkIcon from "../assets/imgs/icons/address-link.svg";
 import UnLinkIcon from "../assets/imgs/icons/unlink.svg";
+import useDarkMode from "../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -52,6 +53,22 @@ const ContentWrapper = styled.div`
   @media screen and (max-width: 768px) {
     padding: 24px;
   }
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background-color: #212433 !important;
+      border-color: #212433 !important;
+      div,
+      input,
+      button {
+        background-color: #212433;
+        border-color: #363a4d;
+        color: white;
+      }
+      * {
+        color: white;
+      }
+    `}
 `;
 
 const InfoWrapper = styled.div`
@@ -165,6 +182,7 @@ export default function LinkedAddress({ chain }) {
   const [accounts, setAccounts] = useState([]);
   const [activeChain, setActiveChain] = useState(chain);
   const dispatch = useDispatch();
+  const [theme] = useDarkMode();
 
   useEffect(() => {
     (async () => {
@@ -266,7 +284,7 @@ export default function LinkedAddress({ chain }) {
   return (
     <Wrapper>
       <Title>Linked address</Title>
-      <ContentWrapper>
+      <ContentWrapper theme={theme}>
         {hasExtension ? (
           <div>
             <InfoWrapper>{`Associate your account with an on-chain address using the Polkadot{.js} extension.`}</InfoWrapper>

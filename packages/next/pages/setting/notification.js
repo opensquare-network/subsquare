@@ -21,6 +21,7 @@ import { shadow_100 } from "styles/componentCss";
 import NextHead from "next-common/components/nextHead";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { useRouter } from "next/router";
+import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -52,6 +53,22 @@ const ContentWrapper = styled.div`
   @media screen and (max-width: 768px) {
     padding: 24px;
   }
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background-color: #212433 !important;
+      border-color: #212433 !important;
+      div,
+      input,
+      button {
+        background-color: #212433;
+        border-color: #363a4d;
+        color: white;
+      }
+      * {
+        color: white;
+      }
+    `}
 `;
 
 const Label = styled.div`
@@ -107,7 +124,7 @@ const WarningMessage = styled.div`
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const dispatch = useDispatch();
-
+  const [theme] = useDarkMode();
   const [reply, setReply] = useState(!!loginUser?.notification?.reply);
   const [mention, setMention] = useState(!!loginUser?.notification?.mention);
   const [saving, setSaving] = useState(false);
@@ -162,7 +179,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       <NextHead title={`Settings`} desc={``} />
       <Wrapper>
         <Title>Notification</Title>
-        <ContentWrapper>
+        <ContentWrapper theme={theme}>
           {disabled && (
             <WarningMessage danger>
               Please set the email to receive notifications
@@ -187,7 +204,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
               />
             </ToggleItem>
           </div>
-          <Divider />
+          <Divider theme={theme} />
           <ButtonWrapper>
             <Button
               secondary

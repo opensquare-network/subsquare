@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { shadow_100 } from "../../styles/componentCss";
 
 export const Wrapper = styled.div`
@@ -30,6 +30,22 @@ export const ContentWrapper = styled.div`
   @media screen and (max-width: 768px) {
     padding: 24px;
   }
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background-color: #212433 !important;
+      border-color: #212433 !important;
+      div,
+      input,
+      button {
+        background-color: #212433;
+        border-color: #363a4d;
+        color: white;
+      }
+      * {
+        color: white;
+      }
+    `}
 `;
 
 export const Label = styled.div`
@@ -72,6 +88,11 @@ export const Divider = styled.div`
   background: #ebeef4;
   height: 1px;
   margin: 24px 0;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background-color: #272a3a !important;
+    `}
 `;
 
 export const EmailVerify = styled.div`

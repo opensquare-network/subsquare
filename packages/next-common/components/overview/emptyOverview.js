@@ -1,9 +1,10 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Link from "next/link";
 
 import Flex from "next-common/components/styled/flex";
 import Icon from "../../assets/imgs/icons/new-discussion.svg";
+import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -34,6 +35,11 @@ const EmptyPanel = styled.div`
   flex-direction: column;
   padding: 48px;
   background: #ffffff;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #212433;
+    `};
   border: 1px solid #ebeef4;
   box-sizing: border-box;
   box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
@@ -48,6 +54,11 @@ const EmptyPanel = styled.div`
     line-height: 100%;
     text-align: center;
     color: #1e2134;
+    ${(props) =>
+      props?.theme === "dark" &&
+      css`
+        color: #ffffff;
+      `};
     margin-bottom: 16px;
   }
 
@@ -58,6 +69,11 @@ const EmptyPanel = styled.div`
     line-height: 140%;
     text-align: center;
     color: #506176;
+    ${(props) =>
+      props?.theme === "dark" &&
+      css`
+        color: #ffffff;
+      `};
     margin-bottom: 24px;
     max-width: 343px;
   }
@@ -93,10 +109,11 @@ const EmptyPanel = styled.div`
 `;
 
 export default function EmptyOverview() {
+  const [theme] = useDarkMode();
   return (
     <Wrapper>
       <Title>Overview</Title>
-      <EmptyPanel>
+      <EmptyPanel theme={theme}>
         <div className="title">Welcome to SubSquare</div>
         <div className="desc">
           Latest events will be displayed on this page. Any ideas? Start a

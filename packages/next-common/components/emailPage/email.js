@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Layout from "next-common/components/layout";
 import { withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
@@ -15,6 +15,7 @@ import EmailInput from "next-common/components/login/emailInput";
 import ConfirmEmail from "next-common/components/login/confirmEmail";
 import useIdentity from "next-common/utils/hooks/useIdentity";
 import { p_14_normal } from "../../styles/componentCss";
+import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const Label = styled.div`
   font-weight: bold;
@@ -42,13 +43,20 @@ const Hint = styled.p`
   ${p_14_normal};
   color: #506176;
   background: #f6f7fa;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background-color: #1d1e2c;
+      border-color: #363a4d;
+      color: white;
+    `}
 `;
 
 const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
   const address = loginUser?.addresses?.find(
     (address) => address.chain === chain
   )?.address;
-
+  const [theme] = useDarkMode();
   const [errors, setErrors] = useState();
   const [email, setEmail] = useState("");
   const [pin, setPin] = useState("");
@@ -69,9 +77,9 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
     <Layout user={loginUser} chain={chain}>
       <NextHead title={`Set Email`} desc={`Set Email`} />
       <Wrapper>
-        <ContentCenterWrapper>
+        <ContentCenterWrapper theme={theme}>
           <Title>Login {` with Web3 address`}</Title>
-          <Hint>Set email for receiving notifications</Hint>
+          <Hint theme={theme}>Set email for receiving notifications</Hint>
           <Label>Web3 address</Label>
           <Option item={{ address }} chain={chain} selected />
           <EmailInput

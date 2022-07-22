@@ -16,8 +16,8 @@ const Wrapper = styled.footer`
   > svg:nth-child(1) {
     margin-bottom: 16px;
   }
-  
-  > div:last-child{
+
+  > div:last-child {
     margin-top: 16px;
   }
 `;
@@ -52,10 +52,10 @@ export default function Footer() {
         style={{ marginBottom: 8 }}
       >{`© ${new Date().getFullYear()} SubSquare`}</div>
       <FlexWrapper>
-        <span style={{whiteSpace:"nowrap"}}>Powered by</span>
+        <span style={{ whiteSpace: "nowrap" }}>Powered by</span>
         <FooterLogo />
       </FlexWrapper>
-      <Contacts/>
+      <Contacts />
     </Wrapper>
   );
 }

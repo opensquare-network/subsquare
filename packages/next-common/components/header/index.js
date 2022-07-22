@@ -10,6 +10,7 @@ import HeaderWrapper from "next-common/components/header/wrapper";
 import ChainLogo from "next-common/components/header/left/chainLogo";
 import ChainIcon from "next-common/components/header/chainIcon";
 import MenuLine from "../../assets/imgs/icons/menu-line.svg";
+import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const FlexWrapper = styled(Flex)`
   max-width: 1184px;

@@ -15,11 +15,12 @@ import { TYPE_POST } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
 import Cookies from "cookies";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
+import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, votes, myVote, chain }) => {
     const postId = detail._id;
-
+    const [theme] = useDarkMode();
     const editorWrapperRef = useRef(null);
     const [quillRef, setQuillRef] = useState(null);
     const [content, setContent] = useState("");
@@ -57,7 +58,7 @@ export default withLoginUserRedux(
             onReply={focusEditor}
             type={TYPE_POST}
           />
-          <CommentsWrapper>
+          <CommentsWrapper theme={theme}>
             <Comments
               data={comments}
               user={loginUser}

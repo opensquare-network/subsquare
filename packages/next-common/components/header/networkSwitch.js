@@ -9,6 +9,7 @@ import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import useWindowSize from "../../utils/hooks/useWindowSize";
 import ChainIcon from "./chainIcon";
 import Caret from "../icons/caret";
+import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   position: relative;
@@ -18,6 +19,15 @@ const Wrapper = styled.div`
 const Select = styled.div`
   background: #fff;
   border: 1px solid #e0e4eb;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #212433;
+      border-color: #363a4d;
+      > div > span:last-child {
+        color: #fff;
+      }
+    `};
   border-radius: 4px;
   height: 38px;
   display: flex;
@@ -46,6 +56,16 @@ const Select = styled.div`
 const Options = styled.div`
   position: absolute;
   background: #ffffff;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background: #212433;
+      border-color: #363a4d;
+      > div > span:last-child {
+        color: #fff;
+      }
+      color: rgba(255, 255, 255, 0.6);
+    `};
   ${shadow_200};
   border-radius: 4px;
   padding: 8px 0;
@@ -74,8 +94,19 @@ const Item = styled.a`
   > img.logo {
     flex: 0 0 24px;
   }
-  ${(p) =>
-    p.active &&
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      color: rgba(255, 255, 255, 0.6);
+      color: #ffffff;
+      background: #212433;
+      :hover {
+        background-color: #272a3a;
+      }
+    `};
+  ${(props) =>
+    props?.theme === "light" &&
+    props.active &&
     css`
       color: #1e2134;
       background: #f6f7fa;
@@ -101,6 +132,7 @@ const NetworkBlock = styled.div`
 export default function NetworkSwitch({ activeNode, isWeb3Login }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
+  const [theme] = useDarkMode();
   const windowSize = useWindowSize();
   const nodesHeight = useSelector(nodesHeightSelector);
 
@@ -114,7 +146,7 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
 
   return (
     <Wrapper ref={ref}>
-      <Select onClick={() => setShow(!show)}>
+      <Select onClick={() => setShow(!show)} theme={theme}>
         <ChainIcon chain={activeNode.value} />
         <NetworkBlock>
           {activeNode?.hideHeight ? (
@@ -133,13 +165,14 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
         <Caret />
       </Select>
       {show && (
-        <Options>
+        <Options theme={theme}>
           {nodes.map((item, index) => (
             <Item
               key={index}
               onClick={() => {
                 setShow(false);
               }}
+              theme={theme}
               active={activeNode.value === nodes[index].value}
               href={
                 activeNode.value === item.value

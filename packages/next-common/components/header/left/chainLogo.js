@@ -4,7 +4,7 @@ import Chains from "../../../utils/consts/chains";
 import useWindowSize from "../../../utils/hooks/useWindowSize";
 import Kusama from "../../../assets/header-logos/kusama.svg";
 import Polkadot from "../../../assets/header-logos/polkadot.svg";
-import Turing from "../../../assets/header-logos/turing.png";
+import Turing from "../../../assets/header-logos/turing.svg";
 import Kintsugi from "../../../assets/header-logos/kintsugi.svg";
 import Interlay from "../../../assets/header-logos/interlay.svg";
 import Crust from "../../../assets/header-logos/crust.svg";
@@ -18,10 +18,27 @@ import Calamari from "../../../assets/header-logos/calamari.svg";
 import Polkadex from "../../../assets/header-logos/polkadex.svg";
 import Centrifuge from "../../../assets/header-logos/centrifuge.svg";
 import SubSquare from "../../../assets/header-logos/logo.svg";
+import KusamaDark from "../../../assets/header-logos/kusama-dark.svg";
+import PolkadotDark from "../../../assets/header-logos/polkadot-dark.svg";
+import TuringDark from "../../../assets/header-logos/turing-dark.svg";
+import KintsugiDark from "../../../assets/header-logos/kintsugi-dark.svg";
+import InterlayDark from "../../../assets/header-logos/interlay-dark.svg";
+import CrustDark from "../../../assets/header-logos/crust-dark.svg";
+import CrabDark from "../../../assets/header-logos/crab-dark.svg";
+import KaruraDark from "../../../assets/header-logos/karura-dark.svg";
+import KhalaDark from "../../../assets/header-logos/khala-dark.svg";
+import PhalaDark from "../../../assets/header-logos/phala-dark.svg";
+import AcalaDark from "../../../assets/header-logos/acala-dark.svg";
+import BifrostDark from "../../../assets/header-logos/bifrost-dark.svg";
+import CalamariDark from "../../../assets/header-logos/calamari-dark.svg";
+import PolkadexDark from "../../../assets/header-logos/polkadex-dark.svg";
+import CentrifugeDark from "../../../assets/header-logos/centrifuge-dark.svg";
+import useDarkMode from "../../../utils/hooks/useDarkMode";
 
 function ChainLogo({ chain }) {
   let logo = <SubSquare />;
   const { width } = useWindowSize();
+  const [theme] = useDarkMode();
 
   if (width > 768) {
     if (Chains.kintsugi === chain) {
@@ -47,15 +64,46 @@ function ChainLogo({ chain }) {
     } else if (Chains.polkadot === chain) {
       logo = <Polkadot />;
     } else if (Chains.turing === chain) {
-      logo = (
-        <img width={240} height={64} src={Turing.src} alt="" className="logo" />
-      );
+      logo = <Turing />;
     } else if (Chains.crab === chain) {
       logo = <Crab />;
     } else if (Chains.polkadex === chain) {
       logo = <Polkadex />;
     } else if (Chains.centrifuge === chain) {
       logo = <Centrifuge />;
+    }
+    if (theme === "dark") {
+      if (Chains.kintsugi === chain) {
+        logo = <KintsugiDark />;
+      } else if (Chains.interlay === chain) {
+        logo = <InterlayDark />;
+      } else if (Chains.acala === chain) {
+        logo = <AcalaDark />;
+      } else if (Chains.karura === chain) {
+        logo = <KaruraDark />;
+      } else if (Chains.phala === chain) {
+        logo = <PhalaDark />;
+      } else if (Chains.khala === chain) {
+        logo = <KhalaDark />;
+      } else if (Chains.bifrost === chain) {
+        logo = <BifrostDark />;
+      } else if (Chains.crust === chain) {
+        logo = <CrustDark />;
+      } else if (Chains.calamari === chain) {
+        logo = <CalamariDark />;
+      } else if (Chains.kusama === chain) {
+        logo = <KusamaDark />;
+      } else if (Chains.polkadot === chain) {
+        logo = <PolkadotDark />;
+      } else if (Chains.turing === chain) {
+        logo = <TuringDark />;
+      } else if (Chains.crab === chain) {
+        logo = <CrabDark />;
+      } else if (Chains.polkadex === chain) {
+        logo = <PolkadexDark />;
+      } else if (Chains.centrifuge === chain) {
+        logo = <CentrifugeDark />;
+      }
     }
   }
 

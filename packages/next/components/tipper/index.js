@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 
@@ -6,6 +6,7 @@ import Button from "next-common/components/button";
 import User from "next-common/components/user";
 import { getNode, toPrecision } from "utils";
 import Loading from "next-common/components/loading";
+import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -31,6 +32,12 @@ const Content = styled.div`
   padding: 24px;
   background: #ebeef4;
   border-radius: 6px;
+  ${(props) =>
+    props?.theme === "dark" &&
+    css`
+      background-color: #212433;
+      color: rgba(255, 255, 255, 0.6);
+    `}
 `;
 
 const Title = styled.div`
@@ -106,7 +113,7 @@ export default function Tipper({
   setIsLoadingTip = () => {},
 }) {
   const [showPopup, setShowPopup] = useState(false);
-
+  const [theme] = useDarkMode();
   const node = getNode(chain);
   if (!node) {
     return null;
@@ -164,7 +171,7 @@ export default function Tipper({
   return (
     <>
       <Wrapper>
-        <Content>
+        <Content theme={theme}>
           <Title>
             <div>Tippers</div>
             <div>{isLoadingTip && <Loading size={16} />}</div>
