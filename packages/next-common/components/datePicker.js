@@ -288,7 +288,6 @@ export default function DatePicker({
   onSelectDatetime = () => {},
 }) {
   const now = new Date();
-  const [theme] = useDarkMode();
   const [date, setDate] = useState(new Date(now.setDate(now.getDate() + 7)));
   const [isOpen, setIsOpen] = useState(false);
   const [show, setShow] = useState("date");
