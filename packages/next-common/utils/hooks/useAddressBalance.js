@@ -24,15 +24,17 @@ async function querySystemAccountBalance(api, address) {
 export default function useAddressBalance(api, address, chain) {
   const isMounted = useIsMounted();
   const [balance, setBalance] = useState(0);
-  const [loadingBalance, setLoadingBalance] = useState(false);
+  const [loadingBalance, setLoadingBalance] = useState(true);
 
   useEffect(() => {
     if (balanceMap.has(address)) {
       setBalance(balanceMap.get(address));
+      setLoadingBalance(false);
       return;
     }
 
     if (!api) {
+      setLoadingBalance(false);
       return;
     }
 
@@ -46,7 +48,6 @@ export default function useAddressBalance(api, address, chain) {
     setLoadingBalance(true);
     promise
       .then((balance) => {
-        console.log("balance", balance);
         if (isMounted.current) {
           setBalance(balance);
           balanceMap.set(address, balance);

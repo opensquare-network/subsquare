@@ -1,11 +1,11 @@
-import React from "react";
-import { useEffect, useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import useApi from "../../../../utils/hooks/useSelectedEnpointApi";
-import { getNode, toPrecision } from "utils";
+import { getNode, toPrecision } from "../../../../utils";
 import Loading from "../../../loading";
 import { StateContext } from "./stateContext";
 import { BalanceWrapper } from "../../../popup/styled";
+import { formatBalance } from "../../../../utils/viewfuncs";
 
 export default function AccountBalance({ chain, useAddressVotingBalance }) {
   const { signerAccount, setSignerBalance } = useContext(StateContext);
@@ -29,7 +29,11 @@ export default function AccountBalance({ chain, useAddressVotingBalance }) {
     <BalanceWrapper>
       <div>Balance</div>
       <div>
-        {loadingBalance ? <Loading /> : toPrecision(balance, node.decimals)}
+        {loadingBalance ? (
+          <Loading />
+        ) : (
+          formatBalance(toPrecision(balance ?? 0, node.decimals), node.symbol)
+        )}
       </div>
     </BalanceWrapper>
   );
