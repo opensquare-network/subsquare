@@ -43,6 +43,7 @@ export const EditablePanel = ({ children, ...props }) => {
 };
 
 export default function ({ children, ...props }) {
+  const [theme] = useDarkMode();
   return (
     <Panel theme={theme} {...props}>
       {children}
