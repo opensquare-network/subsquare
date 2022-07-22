@@ -15,7 +15,7 @@ export default function PolkassemblyCommentButton({ chain, paId, type }) {
   let link = `https://${chain}.polkassembly.io/post/${paId}`;
   return (
     <Wrapper>
-      <a href={link} target="_blank">
+      <a href={link} target="_blank" rel="noreferrer">
         <Button secondary>
           Comment on Polkassembly
         </Button>
