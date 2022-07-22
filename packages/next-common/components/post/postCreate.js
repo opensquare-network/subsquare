@@ -48,10 +48,10 @@ const Wrapper = styled.div`
         background: #212433;
         border-color: #363a4d;
       }
+      input {
+        color: #ffffff;
+      }
     `};
-  input {
-    color: #ffffff;
-  }
 `;
 
 const Title = styled.div`
