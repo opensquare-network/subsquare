@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { shadow_100 } from "../../styles/componentCss";
+import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const Panel = styled.div`
   background: #ffffff;
@@ -24,7 +25,7 @@ const Panel = styled.div`
     `};
 `;
 
-export const EditablePanel = styled(Panel)`
+const EditablePanelWrapper = styled(Panel)`
   :hover {
     .edit {
       display: block;
@@ -32,4 +33,19 @@ export const EditablePanel = styled(Panel)`
   }
 `;
 
-export default Panel;
+export const EditablePanel = ({ children, ...props }) => {
+  const [theme] = useDarkMode();
+  return (
+    <EditablePanelWrapper theme={theme} {...props}>
+      {children}
+    </EditablePanelWrapper>
+  );
+};
+
+export default function ({ children, ...props }) {
+  return (
+    <Panel theme={theme} {...props}>
+      {children}
+    </Panel>
+  );
+}
