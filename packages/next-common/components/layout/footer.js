@@ -16,8 +16,8 @@ const Wrapper = styled.footer`
   > svg:nth-child(1) {
     margin-bottom: 16px;
   }
-  
-  > div:last-child{
+
+  > div:last-child {
     margin-top: 16px;
   }
 `;
@@ -32,6 +32,11 @@ const FlexWrapper = styled(Flex)`
   > a svg:hover {
     * {
       fill: #9da9bb;
+    }
+  }
+  > a.opensquare svg:hover {
+    * {
+      fill: #506176;
     }
   }
 `;
@@ -52,10 +57,17 @@ export default function Footer() {
         style={{ marginBottom: 8 }}
       >{`© ${new Date().getFullYear()} SubSquare`}</div>
       <FlexWrapper>
-        <span style={{whiteSpace:"nowrap"}}>Powered by</span>
-        <FooterLogo />
+        <span style={{ whiteSpace: "nowrap" }}>Powered by</span>
+        <a
+          className="opensquare"
+          target="_blank"
+          rel="noreferrer"
+          href="https://www.opensquare.network/"
+        >
+          <FooterLogo />
+        </a>
       </FlexWrapper>
-      <Contacts/>
+      <Contacts />
     </Wrapper>
   );
 }
