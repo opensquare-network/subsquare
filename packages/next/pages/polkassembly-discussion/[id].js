@@ -13,7 +13,6 @@ import {
   toPolkassemblyCommentListItem,
 } from "utils/viewfuncs";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
-import { emptyFunction } from "next-common/utils";
 import { useEffect, useState } from "react";
 import { queryPostComments } from "utils/polkassembly";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
@@ -64,7 +63,7 @@ export default withLoginUserRedux(
             text="Back to Polkassembly Discussions"
           />
           <DetailItem
-            data={{ ...detail, contentType: "markdown" }}
+            data={detail}
             chain={chain}
             postReactions={postReactions}
             type={TYPE_PA_POST}
@@ -78,9 +77,9 @@ export default withLoginUserRedux(
                 pageSize,
                 total: detail.commentsCount,
               }}
-              user={loginUser}
               chain={chain}
-              onReply={emptyFunction}
+              type={TYPE_PA_POST}
+              paId={detail?.polkassemblyId}
             />
           </CommentsWrapper>
         </DetailPageWrapper>

@@ -26,13 +26,7 @@ export default withLoginUserRedux(({ loginUser, posts, chain }) => {
     toPolkassemblyDiscussionListItem(chain, item)
   );
 
-  const create = (
-    <Create href="post/create">
-      <PlusIcon />
-      New Post
-    </Create>
-  );
-  const category = "Discussions";
+  const category = "Polkassembly Discussions";
   const seoInfo = { title: category, desc: category };
 
   return (
@@ -45,7 +39,6 @@ export default withLoginUserRedux(({ loginUser, posts, chain }) => {
       <List
         chain={chain}
         category={category}
-        create={create}
         items={items}
         pagination={{
           page: posts.page,

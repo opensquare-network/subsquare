@@ -56,7 +56,6 @@ export const convertPolkassemblyComment = (chain, comment) => ({
   ),
   id: comment.id,
   content: comment.content,
-  contentType: "markdown",
   createdAt: comment.created_at,
   updatedAt: comment.updated_at,
   author: convertPolkassemblyUser(chain, comment.author),
