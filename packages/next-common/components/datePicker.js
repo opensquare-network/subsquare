@@ -17,6 +17,7 @@ import Flex from "./styled/flex";
 import FlexBetween from "./styled/flexBetween";
 import Input from "./input";
 import Background from "./styled/backgroundShade";
+import useDarkMode from "../utils/hooks/useDarkMode";
 
 const CaretWrapper = styled.div`
   cursor: pointer;
@@ -374,8 +375,7 @@ export default function DatePicker({
   button,
   onSelectDatetime = () => {},
 }) {
-  // todo ： fixme
-  const [theme] = ["dark"];
+  const [theme] = useDarkMode();
   const [date, setDate] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [show, setShow] = useState("date");
