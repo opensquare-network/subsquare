@@ -76,18 +76,16 @@ export default function Item({ data, chain, isSecondLevel }) {
         <div>{timeDurationFromNow(comment.createdAt)}</div>
       </InfoWrapper>
       <ContentWrapper>
-        {comment.contentType === "markdown" && (
-          <MarkdownPreviewer
-            content={comment.content}
-            plugins={[
-              {
-                name: "disable-non-address-link",
-                onRenderedHtml: renderDisableNonAddressLink,
-              },
-              renderMentionIdentityUserPlugin(<IdentityOrAddr />),
-            ]}
-          />
-        )}
+        <MarkdownPreviewer
+          content={comment.content}
+          plugins={[
+            {
+              name: "disable-non-address-link",
+              onRenderedHtml: renderDisableNonAddressLink,
+            },
+            renderMentionIdentityUserPlugin(<IdentityOrAddr />),
+          ]}
+        />
         {comment.createdAt !== comment.updatedAt && (
           <EditedLabel>Edited</EditedLabel>
         )}
