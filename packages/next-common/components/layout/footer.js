@@ -34,6 +34,11 @@ const FlexWrapper = styled(Flex)`
       fill: #9da9bb;
     }
   }
+  > a.opensquare svg:hover {
+    * {
+      fill: #506176;
+    }
+  }
 `;
 
 export default function Footer() {
@@ -53,7 +58,14 @@ export default function Footer() {
       >{`© ${new Date().getFullYear()} SubSquare`}</div>
       <FlexWrapper>
         <span style={{ whiteSpace: "nowrap" }}>Powered by</span>
-        <FooterLogo />
+        <a
+          className="opensquare"
+          target="_blank"
+          rel="noreferrer"
+          href="https://www.opensquare.network/"
+        >
+          <FooterLogo />
+        </a>
       </FlexWrapper>
       <Contacts />
     </Wrapper>
