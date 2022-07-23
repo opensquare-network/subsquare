@@ -17,6 +17,7 @@ import Bifrost from "../../../assets/header-logos/bifrost.svg";
 import Calamari from "../../../assets/header-logos/calamari.svg";
 import Polkadex from "../../../assets/header-logos/polkadex.svg";
 import Centrifuge from "../../../assets/header-logos/centrifuge.svg";
+import Litmus from "../../../assets/header-logos/litmus.svg";
 import SubSquare from "../../../assets/header-logos/logo.svg";
 
 function ChainLogo({ chain }) {
@@ -56,6 +57,8 @@ function ChainLogo({ chain }) {
       logo = <Polkadex />;
     } else if (Chains.centrifuge === chain) {
       logo = <Centrifuge />;
+    } else if (Chains.litmus === chain) {
+      logo = <Litmus />;
     }
   }
 

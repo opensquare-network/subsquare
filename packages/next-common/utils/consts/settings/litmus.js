@@ -1,0 +1,26 @@
+import Chains from "../chains";
+import capitalize from "../../capitalize";
+
+const DEFAULT_LITMUS_NODES = [
+  {
+    name: "Litentry",
+    url: "wss://rpc.litmus-parachain.litentry.io",
+  },
+];
+
+const litmus = {
+  value: Chains.litmus,
+  name: capitalize(Chains.litmus),
+  icon: "litmus.svg",
+  identity: Chains.kusama,
+  symbol: "LIT",
+  decimals: 12,
+  hasElections: false,
+  ss58Format: 131,
+  snsCoverCid: "bafybeiexfrkdte6eruqghlc66xpnfoyadkgq5we3ql5elqjwgdzbxmez6q",
+  endpoints: DEFAULT_LITMUS_NODES,
+  loginButtonPrimary: true,
+  headerBackgroundColor: "#000000",
+};
+
+export default litmus;
