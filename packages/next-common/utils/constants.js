@@ -11,6 +11,7 @@ import phala from "./consts/settings/phala";
 import turing from "./consts/settings/turing";
 // import kabocha from "./consts/settings/kabocha";
 import crust from "./consts/settings/crust";
+import litmus from "./consts/settings/litmus";
 import menus from "./consts/menu";
 
 export const nodes = [
@@ -29,6 +30,7 @@ export const nodes = [
   crab,
   // centrifuge,
   crust,
+  litmus,
 ];
 
 export const mainMenu = menus;

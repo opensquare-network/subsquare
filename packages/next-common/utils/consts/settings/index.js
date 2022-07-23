@@ -14,6 +14,7 @@ import polkadex from "./polkadex";
 import turing from "./turing";
 import crust from "./crust";
 import centrifuge from "./centrifuge";
+import litmus from "./litmus";
 
 const settingsMap = {
   polkadot,
@@ -32,6 +33,7 @@ const settingsMap = {
   kintsugi,
   polkadex,
   turing,
+  litmus,
 };
 
 export default function getChainSettings(chain) {

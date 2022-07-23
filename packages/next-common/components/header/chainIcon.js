@@ -16,6 +16,7 @@ import Polkadex from "../../assets/icons/chain/polkadex.png";
 import Turing from "../../assets/icons/chain/turing.png";
 import Kintsugi from "../../assets/icons/chain/kintsugi.png";
 import Centrifuge from "../../assets/icons/chain/centrifuge.png";
+import Litmus from "../../assets/icons/chain/litmus.png";
 
 const imageMap = {
   [Chains.kusama]: Kusama,
@@ -34,6 +35,7 @@ const imageMap = {
   [Chains.polkadex]: Polkadex,
   [Chains.turing]: Turing,
   [Chains.kintsugi]: Kintsugi,
+  [Chains.litmus]: Litmus,
 };
 
 function ChainIcon({ chain }) {
