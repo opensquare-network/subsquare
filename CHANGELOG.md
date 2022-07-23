@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.1.4
+
+- Support customize poll end data.
+- Improve balance loading on treasury proposal modal.
+- Fix council/TC members page layout.
+- Show extrinsic failed info on toast.
+- Support democracy `ProposalCanceled` scan.
+
 # 2.1.3
 
 - Support phala and turn on crust
