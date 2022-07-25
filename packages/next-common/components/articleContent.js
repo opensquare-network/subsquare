@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { toApiType } from "next-common/utils/viewfuncs";
 import nextApi from "next-common/services/nextApi";
@@ -11,7 +11,6 @@ import EditIcon from "../assets/imgs/icons/edit.svg";
 import PostDataSource from "./postDataSource";
 import Poll from "./poll";
 import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
-import useDarkMode from "../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   :hover {
@@ -22,9 +21,9 @@ const Wrapper = styled.div`
 
   div.markdown-body pre,
   div.html-body pre {
-    background: ${(props) => props.theme.bg};
+    background: ${(props) => props.theme.grey100Bg} !important;
     code {
-      color: ${(props) => props.theme.textPrimary};
+      color: ${(props) => props.theme.textPrimary} !important;
       text-shadow: none !important;
     }
   }
@@ -32,13 +31,8 @@ const Wrapper = styled.div`
 
 const Divider = styled.div`
   height: 1px;
-  background: #ebeef4;
+  background: ${(props) => props.theme.grey200Border};
   margin: 16px 0;
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background: #272a3a;
-    `};
 `;
 
 const PlaceHolder = styled.div`
@@ -62,15 +56,9 @@ const GreyWrapper = styled.div`
   font-size: 12px;
   line-height: 22px;
   padding: 8px 12px;
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
   margin-top: 16px;
-
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background: #1d1e2c;
-    `};
 `;
 
 const GreyItem = styled.div`
@@ -126,7 +114,6 @@ export default function ArticleContent({
   const dispatch = useDispatch();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
-  const [theme] = useDarkMode();
   if (!post) {
     return null;
   }
@@ -186,10 +173,10 @@ export default function ArticleContent({
   };
 
   return (
-    <Wrapper theme={theme}>
+    <Wrapper>
       {!isEdit && (
         <>
-          <Divider theme={theme} />
+          <Divider />
           {post.content === "" && (
             <PlaceHolder>
               {`The ${type} has not been edited by creator.`}
@@ -206,7 +193,7 @@ export default function ArticleContent({
             </PlaceHolder>
           )}
           {post.content === "" && (
-            <GreyWrapper theme={theme}>
+            <GreyWrapper>
               <span style={{ marginRight: 12 }}>Who can edit?</span>
               {(post.authors || []).map((author) => (
                 <GreyItem key={author}>
@@ -258,7 +245,7 @@ export default function ArticleContent({
             onReply={onReply}
           />
           {showThumbsUpList && post.reactions?.length > 0 && (
-            <GreyWrapper style={{ marginTop: 10 }} theme={theme}>
+            <GreyWrapper style={{ marginTop: 10 }}>
               {post.reactions
                 .filter((r) => r.user)
                 .map((r, index) => (
