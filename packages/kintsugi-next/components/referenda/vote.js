@@ -24,6 +24,7 @@ import Loading from "next-common/components/loading";
 import { useBestNumber } from "next-common/utils/hooks";
 import ExternalLink from "next-common/assets/imgs/icons/external-link.svg";
 import ValueDisplay from "next-common/components/displayValue";
+import { capitailize } from "next-common/utils";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -255,10 +256,7 @@ function Vote({
   const decimals = node.decimals;
   const symbol = node.voteSymbol ?? node.symbol;
 
-  const isPassing = calcPassing(
-    referendumStatus,
-    electorate
-  );
+  const isPassing = calcPassing(referendumStatus, electorate);
 
   const nAyes = toPrecision(referendumStatus?.tally?.ayes ?? 0, decimals);
   const nNays = toPrecision(referendumStatus?.tally?.nays ?? 0, decimals);
@@ -412,9 +410,9 @@ function Vote({
       )}
 
       <Guide>
-        How Kintsugi Governance Works.
+        How {capitailize(chain)} Governance Works.
         <a
-          href="https://docs.interlay.io/#/kintsugi/governance"
+          href={`https://docs.interlay.io/#/${chain}/governance`}
           target="_blank"
           rel="noreferrer"
         >
