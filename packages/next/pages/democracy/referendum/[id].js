@@ -4,14 +4,10 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "next-common/components/layout";
-import Comments from "next-common/components/comment";
-import Editor from "next-common/components/comment/editor";
 import OutWrapper from "next-common/components/styled/outWrapper";
 import React, { useEffect, useRef, useState } from "react";
 import DetailItem from "components/detailItem";
 import Vote from "components/referenda/vote";
-import { getFocusEditor, getOnReply } from "next-common/utils/post";
-import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_DEMOCRACY_REFERENDUM } from "utils/viewConstants";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
@@ -19,18 +15,20 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import Timeline from "components/referenda/timeline";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
-import useMentionList from "next-common/utils/hooks/useMentionList";
 import MainCard from "next-common/components/styled/mainCard";
-import useDarkMode from "next-common/utils/hooks/useDarkMode";
+import useUniversalComments from "components/universalComments";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+  const { CommentComponent, focusEditor } = useUniversalComments({
+    detail,
+    comments,
+    loginUser,
+    chain,
+    type: TYPE_DEMOCRACY_REFERENDUM,
+  });
+
   const api = useApi(chain);
-  const editorWrapperRef = useRef(null);
-  const [quillRef, setQuillRef] = useState(null);
-  const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown"
-  );
+
   const [referendumStatus, setReferendumStatus] = useState(
     detail?.onchainData?.status ||
       detail?.onchainData?.info?.ongoing ||
@@ -70,23 +68,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       });
   }, [api, detail, isMounted, voteFinished]);
 
-  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
-
-  const users = useMentionList(detail, comments, chain);
-
-  const onReply = getOnReply(
-    contentType,
-    content,
-    setContent,
-    quillRef,
-    focusEditor,
-    chain
-  );
-
   detail.status = detail?.onchainData?.state?.state;
 
   const desc = getMetaDesc(detail, "Referendum");
-  const [theme] = useDarkMode();
 
   return (
     <Layout
@@ -128,31 +112,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           />
 
           <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
-
-          <CommentsWrapper theme={theme}>
-            <Comments
-              data={comments}
-              user={loginUser}
-              chain={chain}
-              onReply={onReply}
-            />
-            {loginUser && (
-              <Editor
-                postId={detail?._id}
-                chain={chain}
-                ref={editorWrapperRef}
-                setQuillRef={setQuillRef}
-                {...{
-                  contentType,
-                  setContentType,
-                  content,
-                  setContent,
-                  users,
-                }}
-                type={TYPE_DEMOCRACY_REFERENDUM}
-              />
-            )}
-          </CommentsWrapper>
+          {CommentComponent}
         </MainCard>
       </OutWrapper>
     </Layout>

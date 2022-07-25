@@ -7,34 +7,20 @@ import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_FINANCIAL_MOTION } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import { EmptyList } from "next-common/utils/constants";
-import Comments from "next-common/components/comment";
-import Editor from "next-common/components/comment/editor";
 import OutWrapper from "next-common/components/styled/outWrapper";
-import CommentsWrapper from "next-common/components/styled/commentsWrapper";
-import { getFocusEditor, getOnReply } from "next-common/utils/post";
-import { useRef, useState } from "react";
-import useMentionList from "next-common/utils/hooks/useMentionList";
 import MainCard from "next-common/components/styled/mainCard";
-
+import useUniversalComments from "components/universalComments";
 
 export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
-  const users = useMentionList(motion, comments, chain);
+  const { CommentComponent, focusEditor } = useUniversalComments({
+    detail: motion,
+    comments,
+    loginUser,
+    chain,
+    type: TYPE_FINANCIAL_MOTION,
+  });
+
   motion.status = motion.state?.state;
-  const editorWrapperRef = useRef(null);
-  const [quillRef, setQuillRef] = useState(null);
-  const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown"
-  );
-  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
-  const onReply = getOnReply(
-    contentType,
-    content,
-    setContent,
-    quillRef,
-    focusEditor,
-    chain
-  );
 
   const desc = getMetaDesc(motion, "Financial Motion");
   return (
@@ -51,32 +37,9 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
             user={loginUser}
             chain={chain}
             type={TYPE_FINANCIAL_MOTION}
-            onReply={onReply}
+            onReply={focusEditor}
           />
-          <CommentsWrapper>
-            <Comments
-              data={comments}
-              user={loginUser}
-              chain={chain}
-              onReply={onReply}
-            />
-            {loginUser && (
-              <Editor
-                postId={motion._id}
-                chain={chain}
-                ref={editorWrapperRef}
-                setQuillRef={setQuillRef}
-                {...{
-                  contentType,
-                  setContentType,
-                  content,
-                  setContent,
-                  users,
-                }}
-                type={TYPE_FINANCIAL_MOTION}
-              />
-            )}
-          </CommentsWrapper>
+          {CommentComponent}
         </MainCard>
       </OutWrapper>
     </Layout>

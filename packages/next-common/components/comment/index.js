@@ -5,6 +5,11 @@ import Pagination from "next-common/components/pagination";
 import NoComment from "./noComment";
 import LoginButtons from "./loginButtons";
 
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const Title = styled.div`
   font-weight: bold;
   font-size: 16px;
@@ -16,10 +21,14 @@ export default function Comments({
   data: { items, page, pageSize, total } = {},
   chain,
   onReply,
+  tabs = null,
 }) {
   return (
     <div>
-      <Title>Comments</Title>
+      <Header>
+        <Title>Comments</Title>
+        {tabs}
+      </Header>
       {items?.length > 0 && (
         <>
           <div>

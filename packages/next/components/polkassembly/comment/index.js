@@ -5,6 +5,13 @@ import NoComment from "next-common/components/comment/noComment";
 import Pagination from "next-common/components/pagination";
 import PolkassemblyCommentButton from "./commentButton";
 import Loading from "next-common/components/loading";
+import CommentsWrapper from "next-common/components/styled/commentsWrapper";
+import useDarkMode from "next-common/utils/hooks/useDarkMode";
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 const Title = styled.div`
   font-weight: bold;
@@ -25,32 +32,36 @@ export default function PolkassemblyComments({
   chain,
   paId,
   type,
+  tabs = null,
 }) {
+  const [theme] = useDarkMode();
+
   return (
-    <div>
-      <Title>Comments</Title>
-      {
-        isLoading ? (
+    <CommentsWrapper theme={theme}>
+      <div>
+        <Header>
+          <Title>Comments</Title>
+          {tabs}
+        </Header>
+        {isLoading ? (
           <LoadingDiv>
             <Loading size={14} />
           </LoadingDiv>
+        ) : items?.length > 0 ? (
+          <>
+            <div>
+              {(items || []).map((item) => (
+                <Item key={item.id} data={item} user={user} chain={chain} />
+              ))}
+            </div>
+            <Pagination page={page} pageSize={pageSize} total={total} />
+          </>
         ) : (
-          items?.length > 0 ? (
-            <>
-              <div>
-                {(items || []).map((item) => (
-                  <Item key={item.id} data={item} user={user} chain={chain} />
-                ))}
-              </div>
-              <Pagination page={page} pageSize={pageSize} total={total} />
-            </>
-          ) :(
-            <NoComment />
-          )
-        )
-      }
+          <NoComment />
+        )}
+        <PolkassemblyCommentButton chain={chain} paId={paId} type={type} />
+      </div>
 
-      <PolkassemblyCommentButton chain={chain} paId={paId} type={type} />
-    </div>
+    </CommentsWrapper>
   );
 }

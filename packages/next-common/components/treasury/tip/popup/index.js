@@ -108,7 +108,9 @@ function PopupContent({
 
   return (
     <>
-      <Tab tabIndex={tabIndex} setTabIndex={setTabIndex} />
+      <div style={{ marginTop: "16px", marginBottom: "16px" }}>
+        <Tab tabIndex={tabIndex} setTabIndex={setTabIndex} />
+      </div>
       <Signer
         api={api}
         chain={chain}
