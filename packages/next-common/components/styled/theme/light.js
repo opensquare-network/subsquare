@@ -1,4 +1,5 @@
 const light = {
+  isDark: false,
   bg: "#FFFFFF",
   textPrimary: "#1E2134",
   textSecondary: "#506176",

@@ -12,24 +12,22 @@ import PostDataSource from "./postDataSource";
 import Poll from "./poll";
 import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
 import useDarkMode from "../utils/hooks/useDarkMode";
+
 const Wrapper = styled.div`
   :hover {
     .edit {
       display: block;
     }
   }
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      div.markdown-body pre,
-      div.html-body pre {
-        background: #1d1e2c !important;
-        code {
-          color: white !important;
-          text-shadow: none !important;
-        }
-      }
-    `};
+
+  div.markdown-body pre,
+  div.html-body pre {
+    background: ${(props) => props.theme.bg};
+    code {
+      color: ${(props) => props.theme.textPrimary};
+      text-shadow: none !important;
+    }
+  }
 `;
 
 const Divider = styled.div`

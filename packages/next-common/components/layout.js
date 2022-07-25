@@ -29,7 +29,7 @@ const Wrapper = styled.div`
   min-height: 100vh;
   justify-content: center;
   padding-top: 64px;
-  background: ${(props) => props.theme.bg};
+  background: ${(props) => props.theme.grey100Bg};
 `;
 
 export default function Layout({

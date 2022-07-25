@@ -2,14 +2,10 @@ import React, { useState, memo } from "react";
 import styled from "styled-components";
 import Panel from "../styled/panel";
 import Caret from "../icons/caret";
-import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const Wrapper = styled(Panel)`
   margin: 16px 0;
-
-  > div {
-    background: none !important;
-  }
+  background: ${(props) => props.theme.neutral};
 
   div:last-child {
     border-bottom: none;
@@ -20,6 +16,7 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  color: ${(props) => props.theme.textPrimary};
 
   span {
     font-weight: bold;
@@ -38,10 +35,9 @@ const Items = styled.article`
 
 function Accordion({ children, title, showFold = true }) {
   const [fold, setFold] = useState(false);
-  const [theme] = useDarkMode();
 
   return (
-    <Wrapper theme={theme}>
+    <Wrapper>
       <Title>
         <span>{title}</span>
         {showFold && (

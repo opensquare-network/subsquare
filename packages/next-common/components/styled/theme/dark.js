@@ -1,6 +1,7 @@
 import light from "./light";
 
 const dark = {
+  isDark: true,
   bg: "#1D1E2C",
   textPrimary: "#FFFFFF",
   textSecondary: "rgba(255, 255, 255, 0.5)",
