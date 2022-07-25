@@ -12,13 +12,12 @@ import { nodes } from "../utils/constants";
 import { fetchIdentity } from "../services/identity";
 import Identity from "./Identity";
 import Caret from "./icons/caret";
-import useDarkMode from "../utils/hooks/useDarkMode";
 
 const Wrapper = Relative;
 
 const Select = styled(Flex)`
-  background: #ffffff;
-  border: 1px solid #e0e4eb;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
   height: 56px;
   padding: 0 16px;
@@ -57,7 +56,7 @@ const Options = styled.div`
   width: 100%;
   margin-top: 4px;
   padding: 8px 0;
-  background: #ffffff;
+  background: ${(props) => props.theme.neutral};
   ${shadow_200};
   border-radius: 4px;
   max-height: 320px;
@@ -75,7 +74,7 @@ const Options = styled.div`
 `;
 
 const Item = styled(Flex)`
-  background: #ffffff;
+  background: ${(props) => props.theme.neutral};
   height: 56px;
   padding: 0 16px;
   cursor: pointer;
@@ -88,10 +87,10 @@ const Item = styled(Flex)`
     flex: 0 0 auto;
   }
   :hover {
-    background: #f6f7fa;
+    background: ${(props) => props.theme.grey100Bg};
   }
   ${(props) =>
-    props?.theme === "dark" &&
+    props?.theme.isDark &&
     css`
       :hover,
       :hover div {
@@ -146,9 +145,8 @@ function Account({ account, chain }) {
 }
 
 export function Option({ onClick, item, selected, chain }) {
-  const [theme] = useDarkMode();
   return (
-    <Item onClick={onClick} selected={selected} theme={theme}>
+    <Item onClick={onClick} selected={selected}>
       <Account account={item} chain={chain} />
     </Item>
   );

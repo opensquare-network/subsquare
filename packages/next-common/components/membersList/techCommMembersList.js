@@ -1,11 +1,10 @@
-import styled, { css } from "styled-components";
+import styled, { withTheme } from "styled-components";
 
 import Flex from "../styled/flex";
 import User from "../user";
 import React, { Fragment } from "react";
 import Loading from "../loading";
 import PrimeAddressMark from "../primeAddressMark";
-import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -27,8 +26,9 @@ const Title = styled(Flex)`
 
 const StyledTable = styled.table`
   width: 100%;
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
+  color: ${(props) => props.theme.textPrimary};
   box-sizing: border-box;
   box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
     0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
@@ -47,13 +47,6 @@ const StyledTable = styled.table`
       pointer-events: auto;
     }
   }
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background: #212433;
-      border-color: #363a4d;
-      color: #fff;
-    `};
 `;
 
 const StyledTr = styled.tr``;
@@ -64,7 +57,7 @@ const StyledTh = styled.th`
   font-size: 12px;
   line-height: 100%;
   letter-spacing: 0.16em;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   pointer-events: none;
 `;
 
@@ -74,7 +67,7 @@ const StyledTd = styled.td`
   font-weight: normal;
   font-size: 14px;
   line-height: 100%;
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 const EmptyTd = styled.td`
@@ -84,7 +77,7 @@ const EmptyTd = styled.td`
   font-size: 14px;
   line-height: 140%;
   text-align: center;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 const Member = styled.div`
@@ -101,24 +94,24 @@ const RowSplitter = ({ backgroundColor, padding }) => (
   </tr>
 );
 
-export default function MembersList({
+function MembersList({
   chain,
   category,
   items,
   prime,
   loading = false,
+  theme,
 }) {
-  const [theme] = useDarkMode();
   return (
     <Wrapper>
       <Title>{category}</Title>
-      <StyledTable theme={theme}>
+      <StyledTable>
         <thead>
           <StyledTr>
             <StyledTh style={{ textAlign: "left" }}>MEMBERS</StyledTh>
           </StyledTr>
           <RowSplitter
-            backgroundColor={theme === "dark" ? "#272A3A" : "#F6F7FA"}
+            backgroundColor={theme.isDark ? "#272A3A" : "#F6F7FA"}
             padding={"16px 0 4px 0"}
           />
         </thead>
@@ -136,7 +129,7 @@ export default function MembersList({
                 </StyledTr>
                 {index !== items.length - 1 && (
                   <RowSplitter
-                    backgroundColor={theme === "dark" ? "#272A3A" : "#F6F7FA"}
+                    backgroundColor={theme.isDark ? "#272A3A" : "#F6F7FA"}
                   />
                 )}
               </Fragment>
@@ -153,3 +146,5 @@ export default function MembersList({
     </Wrapper>
   );
 }
+
+export default withTheme(MembersList);

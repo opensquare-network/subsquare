@@ -3,8 +3,8 @@ import styled, { css } from "styled-components";
 import { shadow_100 } from "../../styles/componentCss";
 
 export const ContentCenterWrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
   ${shadow_100};
   border-radius: 6px;
   width: 400px;
@@ -16,23 +16,21 @@ export const ContentCenterWrapper = styled.div`
   @media screen and (max-width: 392px) {
     width: 100%;
   }
+  div,
+  input,
+  button {
+    border-color: ${(props) => props.theme.grey300Border};
+    color: ${(props) => props.theme.textPrimary};
+  }
+  * {
+    color: ${(props) => props.theme.textPrimary};
+  }
+
   ${(props) =>
-    props?.theme === "dark" &&
+    props?.theme.isDark &&
     css`
-      background-color: #212433 !important;
-      border-color: #212433 !important;
-      div,
-      input,
-      button {
-        background-color: #212433;
-        border-color: #363a4d;
-        color: white;
-      }
       button div {
         background-color: initial;
-      }
-      * {
-        color: white;
       }
     `}
 `;

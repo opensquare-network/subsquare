@@ -29,8 +29,10 @@ const Wrapper = styled.div`
 
 const Content = styled.div`
   padding: 24px;
-  background: #ebeef4;
+  background: ${(props) => props.theme.neutral};
   border-radius: 6px;
+  border: 1px solid ${(props) => props.theme.grey200Border};
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 const Title = styled.div`
@@ -54,13 +56,13 @@ const NoTippers = styled.div`
   text-align: center;
   font-size: 12px;
   line-height: 140%;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 const Description = styled.div`
   font-size: 12px;
   line-height: 140%;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   > span {
     color: #6848ff;
     cursor: pointer;
@@ -68,7 +70,7 @@ const Description = styled.div`
 `;
 
 const TipperList = styled.div`
-  padding: 8px 0px;
+  padding: 8px 0;
   > :not(:first-child) {
     margin-top: 8px;
   }
@@ -80,7 +82,7 @@ const TipperItem = styled.div`
   justify-content: space-between;
   font-size: 12px;
   line-height: 100%;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   > :last-child {
     white-space: nowrap;
     display: flex;

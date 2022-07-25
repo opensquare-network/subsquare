@@ -1,13 +1,12 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import Button from "../button";
-import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   ${(props) =>
-    props?.theme === "dark" &&
+    props?.theme.isDark &&
     css`
       button {
         :hover {
@@ -18,9 +17,8 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function VoteButton({ onClick, disabled, isSubmitting }) {
-  const [theme] = useDarkMode();
   return (
-    <ButtonWrapper theme={theme}>
+    <ButtonWrapper>
       {disabled ? (
         <Button disabled>Vote</Button>
       ) : (

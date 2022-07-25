@@ -1,8 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside";
 import { shadow_200 } from "../styles/componentCss";
-import useDarkMode from "../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   margin-left: auto;
@@ -26,18 +25,15 @@ const OptionWrapper = styled.div`
   position: absolute;
   right: 0;
   bottom: 100%;
-  background: #ffffff;
+  background: ${(props) => props.theme.neutral};
   width: 96px;
   padding: 8px 0;
   border-radius: 4px;
+  border-width: ${(props) => (props.theme.isDark ? 1 : 0)} px;
+  border-style: ${(props) => (props.theme.isDark ? "solid" : "none")};
+  border-color: ${(props) => props.theme.grey200Border};
+  color: ${(props) => props.theme.textPrimary};
   ${shadow_200};
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background: #212433;
-      border-color: #363a4d;
-      color: white;
-    `}
 `;
 
 const OptionItem = styled.div`
@@ -46,22 +42,16 @@ const OptionItem = styled.div`
   cursor: pointer;
   padding: 0 12px;
   font-weight: 500;
+  color: ${(props) => props.theme.textPrimary};
 
   :hover {
-    background: #f6f7fa;
-    ${(props) =>
-      props?.theme === "dark" &&
-      css`
-        background: #1d1e2c;
-        color: white;
-      `}
+    background: ${(props) => props.theme.grey100Bg};
   }
 `;
 
 export default function Edit({ edit, setIsEdit, alwaysShow }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
-  const [theme] = useDarkMode();
 
   useOnClickOutside(ref, () => setShow(false));
 
@@ -75,14 +65,13 @@ export default function Edit({ edit, setIsEdit, alwaysShow }) {
         height={24}
       />
       {show && (
-        <OptionWrapper theme={theme}>
+        <OptionWrapper>
           {edit && (
             <OptionItem
               onClick={() => {
                 setIsEdit(true);
                 setShow(false);
               }}
-              theme={theme}
             >
               Edit
             </OptionItem>

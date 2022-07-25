@@ -3,7 +3,6 @@ import styled, { css } from "styled-components";
 import Link from "next/link";
 import Flex from "./styled/flex";
 import ArrowLeft from "./icons/arrowLeft";
-import useDarkMode from "../utils/hooks/useDarkMode";
 
 const Wrapper = styled(Flex)`
   font-size: 16px;
@@ -19,10 +18,11 @@ const Wrapper = styled(Flex)`
     margin-left: 16px;
   }
 
+  color: ${(props) => props.theme.textPrimary};
+
   ${(props) =>
-    props?.theme === "dark" &&
+    props?.theme.isDark &&
     css`
-      color: #fff;
       > svg {
         fill: white;
         path {
@@ -33,11 +33,9 @@ const Wrapper = styled(Flex)`
 `;
 
 export default function Back({ href, text }) {
-  const [theme] = useDarkMode();
-
   return (
     <Link href={href} passHref>
-      <Wrapper theme={theme}>
+      <Wrapper>
         <ArrowLeft />
         <span>{text}</span>
       </Wrapper>

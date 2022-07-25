@@ -3,7 +3,6 @@ import styled, { css } from "styled-components";
 import { shadow_100 } from "../../styles/componentCss";
 
 const Wrapper = styled.div`
-  background: #ffffff;
   border-width: 1px;
   border-style: solid;
   ${shadow_100};
@@ -15,10 +14,10 @@ const Wrapper = styled.div`
   }
 
   background: ${(props) => props.theme.neutral};
-  color: ${(props) => props.theme.textContrast};
+  color: ${(props) => props.theme.textPrimary};
   border-color: ${(props) => props.theme.grey200Border};
   * {
-    color: ${(props) => props.theme.textContrast};
+    color: ${(props) => props.theme.textPrimary};
   }
 
   .editor-toolbar,

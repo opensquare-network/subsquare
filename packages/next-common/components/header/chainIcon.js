@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React from "react";
 import Chains from "../../utils/consts/chains";
 import Kusama from "../../assets/icons/chain/kusama.png";
 import Polkadot from "../../assets/icons/chain/polkadot.png";
@@ -23,6 +23,7 @@ import KusamaDark from "../../assets/icons/chain/kusama-dark.png";
 import PolkadexDark from "../../assets/icons/chain/polkadex-dark.png";
 import useDarkMode from "../../utils/hooks/useDarkMode";
 import Litmus from "../../assets/icons/chain/litmus.png";
+import { withTheme } from "styled-components";
 
 const imageMap = {
   [Chains.kusama]: Kusama,
@@ -52,10 +53,9 @@ const darkImageMap = {
   [Chains.polkadex]: PolkadexDark,
 };
 
-function ChainIcon({ chain }) {
+function ChainIcon({ chain, theme }) {
   let image = imageMap[chain];
-  const [theme] = useDarkMode();
-  if (theme === "dark" && darkImageMap[chain]) {
+  if (theme.isDark && darkImageMap[chain]) {
     image = darkImageMap[chain];
   }
 
@@ -66,4 +66,4 @@ function ChainIcon({ chain }) {
   return <img width={24} height={24} src={image.src} alt="" className="logo" />;
 }
 
-export default memo(ChainIcon);
+export default withTheme(ChainIcon);

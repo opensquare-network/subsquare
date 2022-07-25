@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { useState } from "react";
+import ArrowTriangleUp from "../../assets/imgs/icons/arrow-triangle-up.svg";
 
 import Item from "./item";
 

@@ -61,7 +61,6 @@ const Card = styled.div`
 
   color: ${(props) => props.theme.textPrimary};
   background: ${(props) => props.theme.neutral};
-  border-color: ${(props) => props.theme.grey200Border};
 
   *,
   span {

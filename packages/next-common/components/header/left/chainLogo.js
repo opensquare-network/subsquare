@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React from "react";
 import Link from "next/link";
 import Chains from "../../../utils/consts/chains";
 import useWindowSize from "../../../utils/hooks/useWindowSize";
@@ -34,12 +34,11 @@ import BifrostDark from "../../../assets/header-logos/bifrost-dark.svg";
 import CalamariDark from "../../../assets/header-logos/calamari-dark.svg";
 import PolkadexDark from "../../../assets/header-logos/polkadex-dark.svg";
 import CentrifugeDark from "../../../assets/header-logos/centrifuge-dark.svg";
-import useDarkMode from "../../../utils/hooks/useDarkMode";
+import { withTheme } from "styled-components";
 
-function ChainLogo({ chain }) {
+function ChainLogo({ chain, theme }) {
   let logo = <SubSquare />;
   const { width } = useWindowSize();
-  const [theme] = useDarkMode();
 
   if (width > 768) {
     if (Chains.kintsugi === chain) {
@@ -75,7 +74,7 @@ function ChainLogo({ chain }) {
     } else if (Chains.litmus === chain) {
       logo = <Litmus />;
     }
-    if (theme === "dark") {
+    if (theme.isDark) {
       if (Chains.kintsugi === chain) {
         logo = <KintsugiDark />;
       } else if (Chains.interlay === chain) {
@@ -125,4 +124,4 @@ function ChainLogo({ chain }) {
   );
 }
 
-export default memo(ChainLogo);
+export default withTheme(ChainLogo);
