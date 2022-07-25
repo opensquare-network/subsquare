@@ -75,6 +75,7 @@ export default function Tab({ small, tabs, selectedTabId, setSelectedTabId }) {
     <Wrapper small={small}>
       {tabs?.map(({ tabId, tabTitle }) => (
         <Button
+          key={tabId}
           small={small}
           highlight={selectedTabId === tabId}
           onClick={() => setSelectedTabId(tabId)}

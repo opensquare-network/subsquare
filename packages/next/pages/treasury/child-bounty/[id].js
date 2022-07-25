@@ -12,45 +12,53 @@ import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import Metadata from "next-common/components/treasury/bounty/metadata";
 import useUniversalComments from "components/universalComments";
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
-  const { CommentComponent, focusEditor } = useUniversalComments({
-    detail,
-    comments,
-    loginUser,
-    chain,
-    type: TYPE_TREASURY_CHILD_BOUNTY,
-  });
+export default withLoginUserRedux(
+  ({ loginUser, detail, comments, chain, page, pageSize }) => {
+    const { CommentComponent, focusEditor } = useUniversalComments({
+      detail,
+      comments,
+      loginUser,
+      chain,
+      type: TYPE_TREASURY_CHILD_BOUNTY,
+      page,
+      pageSize,
+    });
 
-  detail.status = detail.onchainData?.state?.state;
+    detail.status = detail.onchainData?.state?.state;
 
-  const desc = getMetaDesc(detail, "Bounty");
-  return (
-    <Layout
-      user={loginUser}
-      chain={chain}
-      seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
-    >
-      <DetailPageWrapper className="post-content">
-        <Back href={`/treasury/child-bounties`} text="Back to Child Bounties" />
-        <DetailItem
-          data={detail}
-          user={loginUser}
-          chain={chain}
-          onReply={focusEditor}
-          type={TYPE_TREASURY_CHILD_BOUNTY}
-        />
-        <Metadata meta={detail.onchainData?.meta} chain={chain} />
-        <Timeline childBounty={detail.onchainData} chain={chain} />
-        {CommentComponent}
-      </DetailPageWrapper>
-    </Layout>
-  );
-});
+    const desc = getMetaDesc(detail, "Bounty");
+    return (
+      <Layout
+        user={loginUser}
+        chain={chain}
+        seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
+      >
+        <DetailPageWrapper className="post-content">
+          <Back
+            href={`/treasury/child-bounties`}
+            text="Back to Child Bounties"
+          />
+          <DetailItem
+            data={detail}
+            user={loginUser}
+            chain={chain}
+            onReply={focusEditor}
+            type={TYPE_TREASURY_CHILD_BOUNTY}
+          />
+          <Metadata meta={detail.onchainData?.meta} chain={chain} />
+          <Timeline childBounty={detail.onchainData} chain={chain} />
+          {CommentComponent}
+        </DetailPageWrapper>
+      </Layout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
 
-  const { id, page, page_size: pageSize } = context.query;
+  const { id, page, page_size } = context.query;
+  const pageSize = Math.min(page_size ?? 50, 100);
 
   const [{ result: detail }] = await Promise.all([
     nextApi.fetch(`treasury/child-bounties/${id}`),
@@ -64,7 +72,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     `treasury/child-bounties/${detail._id}/comments`,
     {
       page: page ?? "last",
-      pageSize: Math.min(pageSize ?? 50, 100),
+      pageSize,
     }
   );
 
@@ -73,6 +81,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
+      page: page ?? "last",
+      pageSize,
     },
   };
 });

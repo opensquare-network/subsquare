@@ -7,4 +7,5 @@ export const TYPE_DEMOCRACY_EXTERNAL = "democracy/external";
 export const TYPE_DEMOCRACY_PROPOSAL = "democracy/proposal";
 export const TYPE_TREASURY_PROPOSAL = "treasury/proposal";
 export const TYPE_TREASURY_BOUNTY = "treasury/bounty";
+export const TYPE_TREASURY_CHILD_BOUNTY = "treasury/child-bounty";
 export const TYPE_TREASURY_TIP = "treasury/tip";

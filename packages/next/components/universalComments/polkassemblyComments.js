@@ -11,24 +11,29 @@ export default function PolkassemblyCommentsWithData({
   type,
   page,
   pageSize,
+  btnRef,
 }) {
   const polkassemblyId = detail?.polkassemblyId;
 
-  const { comments: paComments, loadingComments } = usePolkassemblyPostData({
+  // Don't support fetching last page
+  page = page === "last" ? 1 : parseInt(page);
+
+  const { comments, loadingComments, commentsCount } = usePolkassemblyPostData({
     polkassemblyId,
     chain,
-    page,
+    page: page - 1,
     pageSize,
   });
 
   return (
     <PolkassemblyComments
+      detail={detail}
       isLoading={loadingComments}
       data={{
-        items: paComments,
-        page: page + 1,
+        items: comments,
+        page,
         pageSize,
-        total: detail?.commentsCount,
+        total: commentsCount,
       }}
       chain={chain}
       type={type}
@@ -38,6 +43,7 @@ export default function PolkassemblyCommentsWithData({
           <SourceTabs tabIndex={tabIndex} setTabIndex={setTabIndex} />
         </div>
       }
+      btnRef={btnRef}
     />
   );
 }

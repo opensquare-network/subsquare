@@ -11,45 +11,51 @@ import OutWrapper from "next-common/components/styled/outWrapper";
 import MainCard from "next-common/components/styled/mainCard";
 import useUniversalComments from "components/universalComments";
 
-export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
-  const { CommentComponent, focusEditor } = useUniversalComments({
-    detail: motion,
-    comments,
-    loginUser,
-    chain,
-    type: TYPE_FINANCIAL_MOTION,
-  });
+export default withLoginUserRedux(
+  ({ loginUser, motion, comments, chain, page, pageSize }) => {
+    const { CommentComponent, focusEditor } = useUniversalComments({
+      detail: motion,
+      comments,
+      loginUser,
+      chain,
+      type: TYPE_FINANCIAL_MOTION,
+      page,
+      pageSize,
+    });
 
-  motion.status = motion.state?.state;
+    motion.status = motion.state?.state;
 
-  const desc = getMetaDesc(motion, "Financial Motion");
-  return (
-    <Layout
-      user={loginUser}
-      chain={chain}
-      seoInfo={{ title: motion?.title, desc, ogImage: motion?.bannerUrl }}
-    >
-      <OutWrapper>
-        <MainCard className="post-content">
-          <Back href={`/financial-council/motions`} text="Back to Motions" />
-          <MotionDetail
-            motion={motion}
-            user={loginUser}
-            chain={chain}
-            type={TYPE_FINANCIAL_MOTION}
-            onReply={focusEditor}
-          />
-          {CommentComponent}
-        </MainCard>
-      </OutWrapper>
-    </Layout>
-  );
-});
+    const desc = getMetaDesc(motion, "Financial Motion");
+    return (
+      <Layout
+        user={loginUser}
+        chain={chain}
+        seoInfo={{ title: motion?.title, desc, ogImage: motion?.bannerUrl }}
+      >
+        <OutWrapper>
+          <MainCard className="post-content">
+            <Back href={`/financial-council/motions`} text="Back to Motions" />
+            <MotionDetail
+              motion={motion}
+              user={loginUser}
+              chain={chain}
+              type={TYPE_FINANCIAL_MOTION}
+              onReply={focusEditor}
+            />
+            {CommentComponent}
+          </MainCard>
+        </OutWrapper>
+      </Layout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
 
-  const { id, page, page_size: pageSize } = context.query;
+  const { id, page, page_size } = context.query;
+  const pageSize = Math.min(page_size ?? 50, 100);
+
   const { result: motion } = await nextApi.fetch(`financial-motions/${id}`);
   if (!motion) {
     return to404(context);
@@ -61,7 +67,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     `financial-motions/${motionId}/comments`,
     {
       page: page ?? "last",
-      pageSize: Math.min(pageSize ?? 50, 100),
+      pageSize,
     }
   );
 
@@ -70,6 +76,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
       motion,
       comments: comments ?? EmptyList,
       chain,
+      page: page ?? "last",
+      pageSize,
     },
   };
 });

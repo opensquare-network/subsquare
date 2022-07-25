@@ -14,51 +14,56 @@ import Metadata from "components/external/metadata";
 import Timeline from "components/external/timeline";
 import useUniversalComments from "components/universalComments";
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
-  const { CommentComponent, focusEditor } = useUniversalComments({
-    detail,
-    comments,
-    loginUser,
-    chain,
-    type: TYPE_DEMOCRACY_EXTERNAL,
-  });
+export default withLoginUserRedux(
+  ({ loginUser, detail, comments, chain, page, pageSize }) => {
+    const { CommentComponent, focusEditor } = useUniversalComments({
+      detail,
+      comments,
+      loginUser,
+      chain,
+      type: TYPE_DEMOCRACY_EXTERNAL,
+      page,
+      pageSize,
+    });
 
-  const node = getNode(chain);
-  if (!node) {
-    return null;
+    const node = getNode(chain);
+    if (!node) {
+      return null;
+    }
+
+    detail.status = detail?.onchainData?.state?.state;
+
+    const desc = getMetaDesc(detail, "External");
+    return (
+      <Layout
+        user={loginUser}
+        chain={chain}
+        seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
+      >
+        <DetailPageWrapper className="post-content">
+          <Back href={`/democracy/externals`} text="Back to Externals" />
+          <DetailItem
+            data={detail}
+            user={loginUser}
+            chain={chain}
+            onReply={focusEditor}
+            type={TYPE_DEMOCRACY_EXTERNAL}
+          />
+          <Business external={detail?.onchainData} chain={chain} />
+          <Metadata external={detail?.onchainData} chain={chain} />
+          <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
+          {CommentComponent}
+        </DetailPageWrapper>
+      </Layout>
+    );
   }
-
-  detail.status = detail?.onchainData?.state?.state;
-
-  const desc = getMetaDesc(detail, "External");
-  return (
-    <Layout
-      user={loginUser}
-      chain={chain}
-      seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
-    >
-      <DetailPageWrapper className="post-content">
-        <Back href={`/democracy/externals`} text="Back to Externals" />
-        <DetailItem
-          data={detail}
-          user={loginUser}
-          chain={chain}
-          onReply={focusEditor}
-          type={TYPE_DEMOCRACY_EXTERNAL}
-        />
-        <Business external={detail?.onchainData} chain={chain} />
-        <Metadata external={detail?.onchainData} chain={chain} />
-        <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
-        {CommentComponent}
-      </DetailPageWrapper>
-    </Layout>
-  );
-});
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
 
-  const { id, page, page_size: pageSize } = context.query;
+  const { id, page, page_size } = context.query;
+  const pageSize = Math.min(page_size ?? 50, 100);
 
   const [{ result: detail }] = await Promise.all([
     nextApi.fetch(`democracy/externals/${id}`),
@@ -72,7 +77,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     `democracy/externals/${detail._id}/comments`,
     {
       page: page ?? "last",
-      pageSize: Math.min(pageSize ?? 50, 100),
+      pageSize,
     }
   );
 
@@ -81,6 +86,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
+      page: page ?? "last",
+      pageSize,
     },
   };
 });

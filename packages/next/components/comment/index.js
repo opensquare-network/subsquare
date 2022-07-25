@@ -39,6 +39,16 @@ export default function useComment({
     chain
   );
 
+  let tabs = null;
+  if (detail?.polkassemblyId) {
+    // Allow to switch to polkassembly comments if has corresponding pa post
+    tabs = (
+      <div style={{ width: "240px", marginTop: "-6px" }}>
+        <SourceTabs tabIndex={tabIndex} setTabIndex={setTabIndex} />
+      </div>
+    );
+  }
+
   const CommentComponent = (
     <CommentsWrapper theme={theme}>
       <Comments
@@ -46,11 +56,7 @@ export default function useComment({
         user={loginUser}
         chain={chain}
         onReply={onReply}
-        tabs={
-          <div style={{ width: "240px", marginTop: "-6px" }}>
-            <SourceTabs tabIndex={tabIndex} setTabIndex={setTabIndex} />
-          </div>
-        }
+        tabs={tabs}
       />
       {loginUser && (
         <Editor

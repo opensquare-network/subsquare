@@ -26,6 +26,7 @@ const LoadingDiv = styled.div`
 `;
 
 export default function PolkassemblyComments({
+  detail,
   isLoading,
   user,
   data: { items, page, pageSize, total } = {},
@@ -33,6 +34,7 @@ export default function PolkassemblyComments({
   paId,
   type,
   tabs = null,
+  btnRef = null,
 }) {
   const [theme] = useDarkMode();
 
@@ -59,9 +61,14 @@ export default function PolkassemblyComments({
         ) : (
           <NoComment />
         )}
-        <PolkassemblyCommentButton chain={chain} paId={paId} type={type} />
+        <PolkassemblyCommentButton
+          detail={detail}
+          chain={chain}
+          paId={paId}
+          type={type}
+          btnRef={btnRef}
+        />
       </div>
-
     </CommentsWrapper>
   );
 }

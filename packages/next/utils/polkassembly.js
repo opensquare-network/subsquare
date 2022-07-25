@@ -49,6 +49,13 @@ export async function queryPostComments(postId, page = 0, pageSize = 10) {
             ...postReactionFields
             __typename
           }
+          comments_aggregate {
+            aggregate {
+              count
+              __typename
+            }
+            __typename
+          }
           comments(
             order_by: {created_at: asc}
             offset: $offset

@@ -6,6 +6,8 @@ import {
 } from "utils/viewfuncs";
 import { queryPostComments } from "utils/polkassembly";
 
+const dataCache = {};
+
 export default function usePostComments({
   polkassemblyId,
   chain,
@@ -16,9 +18,18 @@ export default function usePostComments({
   const [comments, setComments] = useState([]);
   const [postReactions, setPostReactions] = useState([]);
   const [loadingComments, setLoadingComments] = useState(false);
+  const [commentsCount, setCommentsCount] = useState(0);
 
   useEffect(() => {
     if (polkassemblyId === undefined) {
+      return;
+    }
+
+    if (dataCache[polkassemblyId]) {
+      const data = dataCache[polkassemblyId];
+      setComments(data.comments);
+      setPostReactions(data.postReactions);
+      setCommentsCount(data.commentsCount);
       return;
     }
 
@@ -32,8 +43,18 @@ export default function usePostComments({
           const postReactions = result?.post_reactions?.map((item) =>
             convertPolkassemblyReaction(chain, item)
           );
+          const commentsCount = result?.comments_aggregate?.aggregate?.count;
+
+          const data = {
+            comments,
+            postReactions,
+            commentsCount,
+          };
+          dataCache[polkassemblyId] = data;
+
           setComments(comments);
           setPostReactions(postReactions);
+          setCommentsCount(commentsCount);
         }
       })
       .finally(() => {
@@ -47,5 +68,6 @@ export default function usePostComments({
     comments,
     postReactions,
     loadingComments,
+    commentsCount,
   };
 }

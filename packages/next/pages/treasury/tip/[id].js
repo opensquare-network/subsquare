@@ -21,7 +21,7 @@ import MainCard from "next-common/components/styled/mainCard";
 import useUniversalComments from "components/universalComments";
 
 export default withLoginUserRedux(
-  ({ loginUser, detail: tip, comments, chain }) => {
+  ({ loginUser, detail: tip, comments, chain, page, pageSize }) => {
     const [detail, setDetail] = useState(tip);
 
     const { CommentComponent, focusEditor } = useUniversalComments({
@@ -30,6 +30,8 @@ export default withLoginUserRedux(
       loginUser,
       chain,
       type: TYPE_TREASURY_TIP,
+      page,
+      pageSize,
     });
 
     const [tipIsFinal, setTipIsFinal] = useState(
@@ -160,7 +162,8 @@ export default withLoginUserRedux(
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
 
-  const { id, page, page_size: pageSize } = context.query;
+  const { id, page, page_size } = context.query;
+  const pageSize = Math.min(page_size ?? 50, 100);
 
   const [{ result: detail }] = await Promise.all([
     nextApi.fetch(`treasury/tips/${id}`),
@@ -174,7 +177,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     `treasury/tips/${detail._id}/comments`,
     {
       page: page ?? "last",
-      pageSize: Math.min(pageSize ?? 50, 100),
+      pageSize,
     }
   );
 
@@ -183,6 +186,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
+      page: page ?? "last",
+      pageSize,
     },
   };
 });
