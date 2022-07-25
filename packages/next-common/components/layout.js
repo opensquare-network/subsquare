@@ -1,5 +1,5 @@
-import React from "react";
-import styled, { css } from "styled-components";
+import React, { useEffect } from "react";
+import styled, { ThemeProvider } from "styled-components";
 
 import Header from "next-common/components/header";
 import Content from "next-common/components/layout/content";
@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { currentNodeSelector } from "next-common/store/reducers/nodeSlice";
 import useApi from "next-common/utils/hooks/useApi";
 import { useBestNumber, useBlockTime } from "next-common/utils/hooks";
-import { useEffect } from "react";
 import {
   setBlockTime,
   setFinalizedHeight,
@@ -21,6 +20,8 @@ import { useIsMountedBool } from "next-common/utils/hooks/useIsMounted";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import isNil from "lodash.isnil";
 import useDarkMode from "../utils/hooks/useDarkMode";
+import dark from "./styled/theme/dark";
+import light from "./styled/theme/light";
 
 const Wrapper = styled.div`
   display: flex;
@@ -28,11 +29,7 @@ const Wrapper = styled.div`
   min-height: 100vh;
   justify-content: center;
   padding-top: 64px;
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background: #1d1e2c;
-    `};
+  background: ${(props) => props.theme.bg};
 `;
 
 export default function Layout({
@@ -49,7 +46,8 @@ export default function Layout({
   const bestNumber = useBestNumber(api);
   const dispatch = useDispatch();
   const isMounted = useIsMountedBool();
-  const [theme] = useDarkMode();
+  const [mode] = useDarkMode();
+  const theme = mode === "dark" ? dark : light;
 
   useEffect(() => {
     if (blockTime && isMounted()) {
@@ -80,12 +78,19 @@ export default function Layout({
   }
 
   return (
-    <Wrapper theme={theme}>
-      {seo}
-      <Auth chain={chain} />
-      <Header user={user} left={left} chain={chain} isWeb3Login={isWeb3Login} />
-      <Content left={left}>{children}</Content>
-      <Toast />
-    </Wrapper>
+    <ThemeProvider theme={theme}>
+      <Wrapper>
+        {seo}
+        <Auth chain={chain} />
+        <Header
+          user={user}
+          left={left}
+          chain={chain}
+          isWeb3Login={isWeb3Login}
+        />
+        <Content left={left}>{children}</Content>
+        <Toast />
+      </Wrapper>
+    </ThemeProvider>
   );
 }
