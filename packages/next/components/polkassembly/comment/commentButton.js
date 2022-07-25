@@ -1,7 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import Button from "next-common/components/button";
-import { TYPE_COUNCIL_MOTION, TYPE_DEMOCRACY_PROPOSAL, TYPE_DEMOCRACY_REFERENDUM, TYPE_TECH_COMM_MOTION, TYPE_TREASURY_BOUNTY, TYPE_TREASURY_CHILD_BOUNTY, TYPE_TREASURY_PROPOSAL, TYPE_TREASURY_TIP } from "next-common/utils/viewConstants";
+import {
+  TYPE_COUNCIL_MOTION,
+  TYPE_DEMOCRACY_PROPOSAL,
+  TYPE_DEMOCRACY_REFERENDUM,
+  TYPE_TECH_COMM_MOTION,
+  TYPE_TREASURY_BOUNTY,
+  TYPE_TREASURY_CHILD_BOUNTY,
+  TYPE_TREASURY_PROPOSAL,
+  TYPE_TREASURY_TIP,
+} from "next-common/utils/viewConstants";
 
 const Wrapper = styled.div`
   margin-top: 48px;
