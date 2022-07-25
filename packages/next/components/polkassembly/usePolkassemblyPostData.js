@@ -6,24 +6,30 @@ import {
 } from "utils/viewfuncs";
 import { queryPostComments } from "utils/polkassembly";
 
-export default function usePostComments({
-  polkassemblyId,
-  chain,
-  page,
-  pageSize,
-}) {
+const dataCache = {};
+
+export default function usePolkassemblyPostData({ polkassemblyId, chain }) {
   const isMounted = useIsMounted();
   const [comments, setComments] = useState([]);
   const [postReactions, setPostReactions] = useState([]);
   const [loadingComments, setLoadingComments] = useState(false);
+  const [commentsCount, setCommentsCount] = useState(0);
 
   useEffect(() => {
     if (polkassemblyId === undefined) {
       return;
     }
 
+    if (dataCache[polkassemblyId]) {
+      const data = dataCache[polkassemblyId];
+      setComments(data.comments);
+      setPostReactions(data.postReactions);
+      setCommentsCount(data.commentsCount);
+      return;
+    }
+
     setLoadingComments(true);
-    queryPostComments(polkassemblyId, page, pageSize)
+    queryPostComments(polkassemblyId)
       .then((result) => {
         if (isMounted.current) {
           const comments = result?.comments?.map((item) =>
@@ -32,8 +38,18 @@ export default function usePostComments({
           const postReactions = result?.post_reactions?.map((item) =>
             convertPolkassemblyReaction(chain, item)
           );
+          const commentsCount = result?.comments_aggregate?.aggregate?.count;
+
+          const data = {
+            comments,
+            postReactions,
+            commentsCount,
+          };
+          dataCache[polkassemblyId] = data;
+
           setComments(comments);
           setPostReactions(postReactions);
+          setCommentsCount(commentsCount);
         }
       })
       .finally(() => {
@@ -41,11 +57,12 @@ export default function usePostComments({
           setLoadingComments(false);
         }
       });
-  }, [polkassemblyId, chain, page, pageSize, isMounted]);
+  }, [polkassemblyId, chain, isMounted]);
 
   return {
     comments,
     postReactions,
     loadingComments,
+    commentsCount,
   };
 }

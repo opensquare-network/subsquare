@@ -14,45 +14,48 @@ import { getMetaDesc } from "../../../utils/viewfuncs";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import useUniversalComments from "components/universalComments";
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
-  const { CommentComponent, focusEditor } = useUniversalComments({
-    detail,
-    comments,
-    loginUser,
-    chain,
-    type: TYPE_TREASURY_PROPOSAL,
-  });
+export default withLoginUserRedux(
+  ({ loginUser, detail, comments, chain }) => {
+    const { CommentComponent, focusEditor } = useUniversalComments({
+      detail,
+      comments,
+      loginUser,
+      chain,
+      type: TYPE_TREASURY_PROPOSAL,
+    });
 
-  detail.status = detail.onchainData?.state?.state;
+    detail.status = detail.onchainData?.state?.state;
 
-  const desc = getMetaDesc(detail, "Proposal");
-  return (
-    <Layout
-      user={loginUser}
-      chain={chain}
-      seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
-    >
-      <DetailPageWrapper className="post-content">
-        <Back href={`/treasury/proposals`} text="Back to Proposals" />
-        <DetailItem
-          data={detail}
-          user={loginUser}
-          chain={chain}
-          onReply={focusEditor}
-          type={TYPE_TREASURY_PROPOSAL}
-        />
-        <Metadata treasuryProposal={detail?.onchainData} chain={chain} />
-        <Timeline treasuryProposal={detail?.onchainData} chain={chain} />
-        {CommentComponent}
-      </DetailPageWrapper>
-    </Layout>
-  );
-});
+    const desc = getMetaDesc(detail, "Proposal");
+    return (
+      <Layout
+        user={loginUser}
+        chain={chain}
+        seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
+      >
+        <DetailPageWrapper className="post-content">
+          <Back href={`/treasury/proposals`} text="Back to Proposals" />
+          <DetailItem
+            data={detail}
+            user={loginUser}
+            chain={chain}
+            onReply={focusEditor}
+            type={TYPE_TREASURY_PROPOSAL}
+          />
+          <Metadata treasuryProposal={detail?.onchainData} chain={chain} />
+          <Timeline treasuryProposal={detail?.onchainData} chain={chain} />
+          {CommentComponent}
+        </DetailPageWrapper>
+      </Layout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
 
-  const { id, page, page_size: pageSize } = context.query;
+  const { id, page, page_size } = context.query;
+  const pageSize = Math.min(page_size ?? 50, 100);
 
   const [{ result: detail }] = await Promise.all([
     nextApi.fetch(`treasury/proposals/${id}`),
@@ -66,7 +69,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     `treasury/proposals/${detail._id}/comments`,
     {
       page: page ?? "last",
-      pageSize: Math.min(pageSize ?? 50, 100),
+      pageSize,
     }
   );
 

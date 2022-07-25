@@ -18,111 +18,114 @@ import ReferendumMetadata from "next-common/components/democracy/metadata";
 import MainCard from "next-common/components/styled/mainCard";
 import useUniversalComments from "components/universalComments";
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
-  const { CommentComponent, focusEditor } = useUniversalComments({
-    detail,
-    comments,
-    loginUser,
-    chain,
-    type: TYPE_DEMOCRACY_REFERENDUM,
-  });
+export default withLoginUserRedux(
+  ({ loginUser, detail, comments, chain }) => {
+    const { CommentComponent, focusEditor } = useUniversalComments({
+      detail,
+      comments,
+      loginUser,
+      chain,
+      type: TYPE_DEMOCRACY_REFERENDUM,
+    });
 
-  const api = useApi(chain);
+    const api = useApi(chain);
 
-  const [referendumStatus, setReferendumStatus] = useState(
-    detail?.onchainData?.status ||
-      detail?.onchainData?.info?.ongoing ||
-      detail?.onchainData?.meta
-  );
-  const isMounted = useIsMounted();
-  const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] =
-    useState(false);
+    const [referendumStatus, setReferendumStatus] = useState(
+      detail?.onchainData?.status ||
+        detail?.onchainData?.info?.ongoing ||
+        detail?.onchainData?.meta
+    );
+    const isMounted = useIsMounted();
+    const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] =
+      useState(false);
 
-  const timeline = detail?.onchainData?.timeline || [];
-  const voteFinished = [
-    "Executed",
-    "Passed",
-    "NotPassed",
-    "Cancelled",
-    "Canceled",
-    "PreimageInvalid",
-    "PreimageMissing",
-  ].includes(timeline[timeline.length - 1]?.method);
+    const timeline = detail?.onchainData?.timeline || [];
+    const voteFinished = [
+      "Executed",
+      "Passed",
+      "NotPassed",
+      "Cancelled",
+      "Canceled",
+      "PreimageInvalid",
+      "PreimageMissing",
+    ].includes(timeline[timeline.length - 1]?.method);
 
-  useEffect(() => {
-    if (voteFinished) {
-      return;
-    }
+    useEffect(() => {
+      if (voteFinished) {
+        return;
+      }
 
-    setIsLoadingReferendumStatus(true);
-    api?.query.democracy
-      .referendumInfoOf(detail?.referendumIndex)
-      .then((referendumInfo) => {
-        const data = referendumInfo.toJSON();
-        if (data?.ongoing && isMounted.current) {
-          setReferendumStatus(data?.ongoing);
-        }
-      })
-      .finally(() => {
-        setIsLoadingReferendumStatus(false);
-      });
-  }, [api, detail, isMounted, voteFinished]);
+      setIsLoadingReferendumStatus(true);
+      api?.query.democracy
+        .referendumInfoOf(detail?.referendumIndex)
+        .then((referendumInfo) => {
+          const data = referendumInfo.toJSON();
+          if (data?.ongoing && isMounted.current) {
+            setReferendumStatus(data?.ongoing);
+          }
+        })
+        .finally(() => {
+          setIsLoadingReferendumStatus(false);
+        });
+    }, [api, detail, isMounted, voteFinished]);
 
-  detail.status = detail?.onchainData?.state?.state;
+    detail.status = detail?.onchainData?.state?.state;
 
-  const desc = getMetaDesc(detail, "Referendum");
+    const desc = getMetaDesc(detail, "Referendum");
 
-  return (
-    <Layout
-      user={loginUser}
-      chain={chain}
-      seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
-    >
-      <OutWrapper>
-        <MainCard className="post-content">
-          <Back href={`/democracy/referendums`} text="Back to Referendas" />
-          <DetailItem
-            data={detail}
-            onReply={focusEditor}
-            user={loginUser}
-            chain={chain}
-            type={TYPE_DEMOCRACY_REFERENDUM}
-          />
+    return (
+      <Layout
+        user={loginUser}
+        chain={chain}
+        seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
+      >
+        <OutWrapper>
+          <MainCard className="post-content">
+            <Back href={`/democracy/referendums`} text="Back to Referendas" />
+            <DetailItem
+              data={detail}
+              onReply={focusEditor}
+              user={loginUser}
+              chain={chain}
+              type={TYPE_DEMOCRACY_REFERENDUM}
+            />
 
-          <Vote
-            referendumInfo={detail?.onchainData?.info}
-            referendumStatus={referendumStatus}
-            setReferendumStatus={setReferendumStatus}
-            chain={chain}
-            referendumIndex={detail?.referendumIndex}
-            isLoadingReferendumStatus={isLoadingReferendumStatus}
-            setIsLoadingReferendumStatus={setIsLoadingReferendumStatus}
-          />
+            <Vote
+              referendumInfo={detail?.onchainData?.info}
+              referendumStatus={referendumStatus}
+              setReferendumStatus={setReferendumStatus}
+              chain={chain}
+              referendumIndex={detail?.referendumIndex}
+              isLoadingReferendumStatus={isLoadingReferendumStatus}
+              setIsLoadingReferendumStatus={setIsLoadingReferendumStatus}
+            />
 
-          <ReferendumMetadata
-            api={api}
-            proposer={detail?.proposer}
-            status={referendumStatus}
-            call={
-              detail?.onchainData?.preImage?.call || detail?.onchainData?.call
-            }
-            shorten={detail?.onchainData?.preImage?.shorten}
-            chain={chain}
-            onchainData={detail?.onchainData}
-          />
+            <ReferendumMetadata
+              api={api}
+              proposer={detail?.proposer}
+              status={referendumStatus}
+              call={
+                detail?.onchainData?.preImage?.call || detail?.onchainData?.call
+              }
+              shorten={detail?.onchainData?.preImage?.shorten}
+              chain={chain}
+              onchainData={detail?.onchainData}
+            />
 
-          <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
-          {CommentComponent}
-        </MainCard>
-      </OutWrapper>
-    </Layout>
-  );
-});
+            <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
+            {CommentComponent}
+          </MainCard>
+        </OutWrapper>
+      </Layout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
 
-  const { id, page, page_size: pageSize } = context.query;
+  const { id, page, page_size } = context.query;
+  const pageSize = Math.min(page_size ?? 50, 100);
 
   const [{ result: detail }] = await Promise.all([
     nextApi.fetch(`democracy/referendums/${id}`),
@@ -138,7 +141,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     `democracy/referendums/${postId}/comments`,
     {
       page: page ?? "last",
-      pageSize: Math.min(pageSize ?? 50, 100),
+      pageSize,
     }
   );
 

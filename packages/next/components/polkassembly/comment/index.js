@@ -26,13 +26,15 @@ const LoadingDiv = styled.div`
 `;
 
 export default function PolkassemblyComments({
+  detail,
   isLoading,
   user,
-  data: { items, page, pageSize, total } = {},
+  comments = [],
   chain,
   paId,
   type,
   tabs = null,
+  btnRef = null,
 }) {
   const [theme] = useDarkMode();
 
@@ -47,21 +49,25 @@ export default function PolkassemblyComments({
           <LoadingDiv>
             <Loading size={14} />
           </LoadingDiv>
-        ) : items?.length > 0 ? (
+        ) : comments?.length > 0 ? (
           <>
             <div>
-              {(items || []).map((item) => (
+              {(comments || []).map((item) => (
                 <Item key={item.id} data={item} user={user} chain={chain} />
               ))}
             </div>
-            <Pagination page={page} pageSize={pageSize} total={total} />
           </>
         ) : (
           <NoComment />
         )}
-        <PolkassemblyCommentButton chain={chain} paId={paId} type={type} />
+        <PolkassemblyCommentButton
+          detail={detail}
+          chain={chain}
+          paId={paId}
+          type={type}
+          btnRef={btnRef}
+        />
       </div>
-
     </CommentsWrapper>
   );
 }

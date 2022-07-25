@@ -62,7 +62,8 @@ export default withLoginUserRedux(
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
 
-  const { id, page, page_size: pageSize } = context.query;
+  const { id, page, page_size } = context.query;
+  const pageSize = Math.min(page_size ?? 50, 100);
 
   const [{ result: detail }, { result: childBounties }] = await Promise.all([
     nextApi.fetch(`treasury/bounties/${id}`),
@@ -77,7 +78,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     `treasury/bounties/${detail._id}/comments`,
     {
       page: page ?? "last",
-      pageSize: Math.min(pageSize ?? 50, 100),
+      pageSize,
     }
   );
 

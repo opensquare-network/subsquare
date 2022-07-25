@@ -17,69 +17,72 @@ import isNil from "lodash.isnil";
 import MainCard from "next-common/components/styled/mainCard";
 import useUniversalComments from "components/universalComments";
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
-  const { CommentComponent, focusEditor } = useUniversalComments({
-    detail,
-    comments,
-    loginUser,
-    chain,
-    type: TYPE_DEMOCRACY_PROPOSAL,
-  });
+export default withLoginUserRedux(
+  ({ loginUser, detail, comments, chain }) => {
+    const { CommentComponent, focusEditor } = useUniversalComments({
+      detail,
+      comments,
+      loginUser,
+      chain,
+      type: TYPE_DEMOCRACY_PROPOSAL,
+    });
 
-  const publicProposal = detail?.onchainData;
-  const proposalIndex = publicProposal?.proposalIndex;
-  const state = publicProposal?.state?.state;
-  const isEnded = ["Tabled", "Canceled", "Cleared"].includes(state);
-  const hasTurnIntoReferendum = !isNil(publicProposal.referendumIndex);
-  const hasCanceled = ["Canceled", "Cleared"].includes(state);
+    const publicProposal = detail?.onchainData;
+    const proposalIndex = publicProposal?.proposalIndex;
+    const state = publicProposal?.state?.state;
+    const isEnded = ["Tabled", "Canceled", "Cleared"].includes(state);
+    const hasTurnIntoReferendum = !isNil(publicProposal.referendumIndex);
+    const hasCanceled = ["Canceled", "Cleared"].includes(state);
 
-  const timeline = publicProposal?.timeline;
-  const lastTimelineBlockHeight =
-    timeline?.[timeline?.length - 1]?.indexer.blockHeight;
-  const secondsAtBlockHeight = isEnded
-    ? lastTimelineBlockHeight - 1
-    : undefined;
+    const timeline = publicProposal?.timeline;
+    const lastTimelineBlockHeight =
+      timeline?.[timeline?.length - 1]?.indexer.blockHeight;
+    const secondsAtBlockHeight = isEnded
+      ? lastTimelineBlockHeight - 1
+      : undefined;
 
-  detail.status = detail?.onchainData?.state?.state;
+    detail.status = detail?.onchainData?.state?.state;
 
-  const desc = getMetaDesc(detail, "Proposal");
-  return (
-    <Layout
-      user={loginUser}
-      chain={chain}
-      seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
-    >
-      <OutWrapper>
-        <MainCard className="post-content">
-          <Back href={`/democracy/proposals`} text="Back to Proposals" />
-          <DetailItem
-            data={detail}
-            user={loginUser}
-            chain={chain}
-            onReply={focusEditor}
-            type={TYPE_DEMOCRACY_PROPOSAL}
-          />
-          <Second
-            chain={chain}
-            proposalIndex={proposalIndex}
-            hasTurnIntoReferendum={hasTurnIntoReferendum}
-            hasCanceled={hasCanceled}
-            useAddressVotingBalance={useAddressBalance}
-            atBlockHeight={secondsAtBlockHeight}
-          />
-          <Metadata publicProposal={detail?.onchainData} chain={chain} />
-          <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
-          {CommentComponent}
-        </MainCard>
-      </OutWrapper>
-    </Layout>
-  );
-});
+    const desc = getMetaDesc(detail, "Proposal");
+    return (
+      <Layout
+        user={loginUser}
+        chain={chain}
+        seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
+      >
+        <OutWrapper>
+          <MainCard className="post-content">
+            <Back href={`/democracy/proposals`} text="Back to Proposals" />
+            <DetailItem
+              data={detail}
+              user={loginUser}
+              chain={chain}
+              onReply={focusEditor}
+              type={TYPE_DEMOCRACY_PROPOSAL}
+            />
+            <Second
+              chain={chain}
+              proposalIndex={proposalIndex}
+              hasTurnIntoReferendum={hasTurnIntoReferendum}
+              hasCanceled={hasCanceled}
+              useAddressVotingBalance={useAddressBalance}
+              atBlockHeight={secondsAtBlockHeight}
+            />
+            <Metadata publicProposal={detail?.onchainData} chain={chain} />
+            <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
+            {CommentComponent}
+          </MainCard>
+        </OutWrapper>
+      </Layout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
 
-  const { id, page, page_size: pageSize } = context.query;
+  const { id, page, page_size } = context.query;
+  const pageSize = Math.min(page_size ?? 50, 100);
 
   const [{ result: detail }] = await Promise.all([
     nextApi.fetch(`democracy/proposals/${id}`),
@@ -93,7 +96,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     `democracy/proposals/${detail._id}/comments`,
     {
       page: page ?? "last",
-      pageSize: Math.min(pageSize ?? 50, 100),
+      pageSize,
     }
   );
 
