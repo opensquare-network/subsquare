@@ -13,8 +13,6 @@ export default function useUniversalComments({
   loginUser,
   chain,
   type,
-  page,
-  pageSize,
 }) {
   const paBtnRef = useRef();
   const [tabIndex, setTabIndex] = useState(SubSquare);
@@ -37,8 +35,6 @@ export default function useUniversalComments({
         detail={detail}
         chain={chain}
         type={type}
-        page={page}
-        pageSize={pageSize}
         btnRef={paBtnRef}
       />
     );

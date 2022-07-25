@@ -1,7 +1,7 @@
 import Back from "next-common/components/back";
 import DetailItem from "components/polkassembly/detailItem";
 import PolkassemblyComments from "components/polkassembly/comment";
-import usePostComments from "components/polkassembly/usePostComments";
+import usePolkassemblyPostData from "components/polkassembly/usePolkassemblyPostData";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import Layout from "next-common/components/layout";
@@ -11,13 +11,11 @@ import { TYPE_PA_POST } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
 
 export default withLoginUserRedux(
-  ({ loginUser, detail, chain, page, pageSize }) => {
+  ({ loginUser, detail, chain }) => {
     const polkassemblyId = detail?.polkassemblyId;
-    const { comments, postReactions, loadingComments } = usePostComments({
+    const { comments, postReactions, loadingComments } = usePolkassemblyPostData({
       polkassemblyId,
       chain,
-      page,
-      pageSize,
     });
 
     const desc = getMetaDesc(detail, "Polkassembly Discussions");
@@ -40,12 +38,7 @@ export default withLoginUserRedux(
           />
           <PolkassemblyComments
             isLoading={loadingComments}
-            data={{
-              items: comments,
-              page: page + 1,
-              pageSize,
-              total: detail?.commentsCount,
-            }}
+            comments={comments}
             chain={chain}
             type={TYPE_PA_POST}
             paId={polkassemblyId}
@@ -58,7 +51,7 @@ export default withLoginUserRedux(
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-  const { id, page } = context.query;
+  const { id } = context.query;
   const [{ result: detail }] = await Promise.all([
     nextApi.fetch(`polkassembly-discussions/${id}`),
   ]);
@@ -71,8 +64,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       detail,
       chain,
-      page: (page ?? 1) - 1,
-      pageSize: 10,
     },
   };
 });

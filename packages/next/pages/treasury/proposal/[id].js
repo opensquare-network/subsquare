@@ -15,15 +15,13 @@ import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import useUniversalComments from "components/universalComments";
 
 export default withLoginUserRedux(
-  ({ loginUser, detail, comments, chain, page, pageSize }) => {
+  ({ loginUser, detail, comments, chain }) => {
     const { CommentComponent, focusEditor } = useUniversalComments({
       detail,
       comments,
       loginUser,
       chain,
       type: TYPE_TREASURY_PROPOSAL,
-      page,
-      pageSize,
     });
 
     detail.status = detail.onchainData?.state?.state;
@@ -80,8 +78,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
-      page: page ?? "last",
-      pageSize,
     },
   };
 });

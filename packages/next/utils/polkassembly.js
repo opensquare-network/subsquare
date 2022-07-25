@@ -24,17 +24,12 @@ async function fetchGraphql(query) {
   }
 }
 
-export async function queryPostComments(postId, page = 0, pageSize = 10) {
-  const offset = page * pageSize;
-  const limit = pageSize;
-
+export async function queryPostComments(postId) {
   const query = `
     {
       "operationName": "PostComments",
       "variables": {
-          "id": ${postId},
-          "offset": ${offset},
-          "limit": ${limit}
+          "id": ${postId}
       },
       "query": "
         query PostComments($id: Int!, $offset: Int! = 0, $limit: Int! = 20) {
@@ -58,8 +53,6 @@ export async function queryPostComments(postId, page = 0, pageSize = 10) {
           }
           comments(
             order_by: {created_at: asc}
-            offset: $offset
-            limit: $limit
           ) {
             ...commentFields
             __typename

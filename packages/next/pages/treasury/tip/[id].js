@@ -21,7 +21,7 @@ import MainCard from "next-common/components/styled/mainCard";
 import useUniversalComments from "components/universalComments";
 
 export default withLoginUserRedux(
-  ({ loginUser, detail: tip, comments, chain, page, pageSize }) => {
+  ({ loginUser, detail: tip, comments, chain }) => {
     const [detail, setDetail] = useState(tip);
 
     const { CommentComponent, focusEditor } = useUniversalComments({
@@ -30,8 +30,6 @@ export default withLoginUserRedux(
       loginUser,
       chain,
       type: TYPE_TREASURY_TIP,
-      page,
-      pageSize,
     });
 
     const [tipIsFinal, setTipIsFinal] = useState(
@@ -186,8 +184,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
-      page: page ?? "last",
-      pageSize,
     },
   };
 });

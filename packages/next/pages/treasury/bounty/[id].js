@@ -15,15 +15,13 @@ import ChildBountiesTable from "../../../components/bounty/childBountiesTable";
 import useUniversalComments from "components/universalComments";
 
 export default withLoginUserRedux(
-  ({ loginUser, detail, childBounties, comments, chain, page, pageSize }) => {
+  ({ loginUser, detail, childBounties, comments, chain }) => {
     const { CommentComponent, focusEditor } = useUniversalComments({
       detail,
       comments,
       loginUser,
       chain,
       type: TYPE_TREASURY_BOUNTY,
-      page,
-      pageSize,
     });
 
     const node = getNode(chain);
@@ -90,8 +88,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       childBounties: childBounties ?? EmptyList,
       comments: comments ?? EmptyList,
       chain,
-      page: page ?? "last",
-      pageSize: 10,
     },
   };
 });

@@ -12,15 +12,13 @@ import MainCard from "next-common/components/styled/mainCard";
 import useUniversalComments from "components/universalComments";
 
 export default withLoginUserRedux(
-  ({ loginUser, motion, comments, chain, page, pageSize }) => {
+  ({ loginUser, motion, comments, chain }) => {
     const { CommentComponent, focusEditor } = useUniversalComments({
       detail: motion,
       comments,
       loginUser,
       chain,
       type: TYPE_COUNCIL_MOTION,
-      page,
-      pageSize,
     });
 
     motion.status = motion.state?.state;
@@ -76,8 +74,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       motion: motion ?? null,
       comments: comments ?? EmptyList,
       chain,
-      page: page ?? "last",
-      pageSize,
     },
   };
 });

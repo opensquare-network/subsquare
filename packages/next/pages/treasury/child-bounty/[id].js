@@ -13,15 +13,13 @@ import Metadata from "next-common/components/treasury/bounty/metadata";
 import useUniversalComments from "components/universalComments";
 
 export default withLoginUserRedux(
-  ({ loginUser, detail, comments, chain, page, pageSize }) => {
+  ({ loginUser, detail, comments, chain }) => {
     const { CommentComponent, focusEditor } = useUniversalComments({
       detail,
       comments,
       loginUser,
       chain,
       type: TYPE_TREASURY_CHILD_BOUNTY,
-      page,
-      pageSize,
     });
 
     detail.status = detail.onchainData?.state?.state;
@@ -81,8 +79,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
-      page: page ?? "last",
-      pageSize,
     },
   };
 });

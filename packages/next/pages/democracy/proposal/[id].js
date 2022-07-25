@@ -18,15 +18,13 @@ import MainCard from "next-common/components/styled/mainCard";
 import useUniversalComments from "components/universalComments";
 
 export default withLoginUserRedux(
-  ({ loginUser, detail, comments, chain, page, pageSize }) => {
+  ({ loginUser, detail, comments, chain }) => {
     const { CommentComponent, focusEditor } = useUniversalComments({
       detail,
       comments,
       loginUser,
       chain,
       type: TYPE_DEMOCRACY_PROPOSAL,
-      page,
-      pageSize,
     });
 
     const publicProposal = detail?.onchainData;
@@ -107,8 +105,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
-      page: page ?? "last",
-      pageSize,
     },
   };
 });

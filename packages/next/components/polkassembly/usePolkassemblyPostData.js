@@ -8,12 +8,7 @@ import { queryPostComments } from "utils/polkassembly";
 
 const dataCache = {};
 
-export default function usePostComments({
-  polkassemblyId,
-  chain,
-  page,
-  pageSize,
-}) {
+export default function usePolkassemblyPostData({ polkassemblyId, chain }) {
   const isMounted = useIsMounted();
   const [comments, setComments] = useState([]);
   const [postReactions, setPostReactions] = useState([]);
@@ -34,7 +29,7 @@ export default function usePostComments({
     }
 
     setLoadingComments(true);
-    queryPostComments(polkassemblyId, page, pageSize)
+    queryPostComments(polkassemblyId)
       .then((result) => {
         if (isMounted.current) {
           const comments = result?.comments?.map((item) =>
@@ -62,7 +57,7 @@ export default function usePostComments({
           setLoadingComments(false);
         }
       });
-  }, [polkassemblyId, chain, page, pageSize, isMounted]);
+  }, [polkassemblyId, chain, isMounted]);
 
   return {
     comments,

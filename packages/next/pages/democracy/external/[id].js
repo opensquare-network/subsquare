@@ -15,15 +15,13 @@ import Timeline from "components/external/timeline";
 import useUniversalComments from "components/universalComments";
 
 export default withLoginUserRedux(
-  ({ loginUser, detail, comments, chain, page, pageSize }) => {
+  ({ loginUser, detail, comments, chain }) => {
     const { CommentComponent, focusEditor } = useUniversalComments({
       detail,
       comments,
       loginUser,
       chain,
       type: TYPE_DEMOCRACY_EXTERNAL,
-      page,
-      pageSize,
     });
 
     const node = getNode(chain);
@@ -86,8 +84,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
-      page: page ?? "last",
-      pageSize,
     },
   };
 });
