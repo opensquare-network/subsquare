@@ -58,7 +58,7 @@ export default withLoginUserRedux(
             onReply={focusEditor}
             type={TYPE_POST}
           />
-          <CommentsWrapper theme={theme}>
+          <CommentsWrapper>
             <Comments
               data={comments}
               user={loginUser}

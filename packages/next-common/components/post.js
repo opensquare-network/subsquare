@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import Link from "next/link";
 import User from "next-common/components/user";
 import {
@@ -23,13 +23,12 @@ import MotionElapse from "next-common/components/motionElapse";
 import UpdateIcon from "../assets/imgs/icons/line-chart.svg";
 import CommentIcon from "../assets/imgs/icons/comment.svg";
 import Anchor from "next-common/components/styled/anchor";
-import useDarkMode from "../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   display: flex;
   align-items: flex-start;
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
   ${shadow_100};
   border-radius: 6px;
   padding: 24px;
@@ -39,12 +38,6 @@ const Wrapper = styled.div`
       0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
       0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
   }
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background: #212433;
-      border-color: #272a3a;
-    `};
 `;
 
 const DividerWrapper = styled(Flex)`
@@ -60,7 +53,7 @@ const DividerWrapper = styled(Flex)`
     ::before {
       content: "·";
       font-size: 12px;
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary};
       margin: 0 8px;
     }
   }
@@ -89,7 +82,7 @@ const Index = styled.div`
     content: "·";
     font-size: 16px;
     line-height: 22.4px;
-    color: #9da9bb;
+    color: ${(props) => props.theme.textTertiary};
     margin: 0 8px;
   }
 `;
@@ -98,18 +91,13 @@ const Info = styled.div`
   display: flex;
   align-items: center;
   font-size: 12px;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   svg {
     margin-right: 4px;
   }
   .elapseIcon > * {
     margin-left: 8px;
   }
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      color: rgba(255, 255, 255, 0.6);
-    `};
 `;
 
 const AutHideInfo = styled(Info)`
@@ -132,13 +120,8 @@ const Title = styled.a`
 
 const Divider = styled.div`
   height: 1px;
-  background: #ebeef4;
+  background: ${(props) => props.theme.grey200Border};
   margin: 12px 0;
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background: #272a3a;
-    `};
 `;
 
 const FooterWrapper = styled(Flex)`
@@ -148,11 +131,7 @@ const FooterWrapper = styled(Flex)`
 
 const TitleWrapper = styled.div`
   overflow: hidden;
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      color: #ffffff;
-    `};
+  color: ${(props) => props.theme.textPrimary}; ;
 `;
 
 const HeadWrapper = styled.div`
@@ -223,13 +202,12 @@ export default function Post({ data, chain, href, type }) {
   ) {
     elapseIcon = <MotionElapse motion={data.onchainData} chain={chain} />;
   }
-  const [theme] = useDarkMode();
 
   return (
-    <Wrapper theme={theme}>
+    <Wrapper>
       <ContentWrapper>
         <HeadWrapper>
-          <TitleWrapper theme={theme}>
+          <TitleWrapper>
             {data?.index !== undefined && <Index>{`#${data.index}`}</Index>}
             <Link href={href} passHref>
               <Title>{data.title?.trim() || "--"}</Title>
@@ -245,7 +223,7 @@ export default function Post({ data, chain, href, type }) {
           {method && <Method>{method}</Method>}
         </HeadWrapper>
 
-        <Divider theme={theme} />
+        <Divider />
         <FooterWrapper>
           <Footer>
             <User
@@ -257,15 +235,13 @@ export default function Post({ data, chain, href, type }) {
             {data.isTreasury && <SectionTag name={"Treasury"} />}
             {data.isDemocracy && <SectionTag name={"Democracy"} />}
             {data.time && (
-              <Info theme={theme}>
+              <Info>
                 <UpdateIcon />
                 <span>{`${timeDurationFromNow(data.time)}`}</span>
                 <Flex className="elapseIcon">{elapseIcon}</Flex>
               </Info>
             )}
-            {data.remaining && (
-              <Info theme={theme}>{`${timeDuration(data.remaining)}`}</Info>
-            )}
+            {data.remaining && <Info>{`${timeDuration(data.remaining)}`}</Info>}
             {data.commentsCount > -1 && (
               <AutHideInfo>
                 <CommentIcon />

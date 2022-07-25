@@ -65,8 +65,8 @@ const StyledTd = styled.td`
   height: 40px;
   border-style: solid;
   border-width: 1px 0 0 1px;
-  border-color: #eeeeee;
-  background-color: #ffffff;
+  border-color: ${(props) => props.theme.grey200Border};
+  background-color: ${(props) => props.theme.neutral};
 
   :last-child {
     border-width: 1px 1px 0 1px;

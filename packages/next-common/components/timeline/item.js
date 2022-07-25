@@ -6,6 +6,7 @@ import User from "../user";
 import Tag from "../tag";
 import Flex from "../styled/flex";
 import { Approve, Reject } from "../icons";
+import ArrowTriangleUp from "../../assets/imgs/icons/arrow-triangle-up.svg";
 
 const Wrapper = styled.div`
   display: flex;
@@ -77,21 +78,22 @@ const FoldButton = styled.div`
   display: none;
   height: 20px;
   width: 20px;
-  border: 1px solid #e0e4eb;
+  border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 2px;
   margin-left: 8px;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  > div {
-    width: 14px;
-    height: 14px;
-    background: url("/imgs/icons/arrow-triangle-up.svg");
+
+  > svg {
     ${(p) =>
       p.isFold &&
       css`
-        background: url("/imgs/icons/arrow-triangle-down.svg");
+        transform: rotate(180deg);
       `}
+    path {
+      fill: ${(props) => props.theme.textPrimary};
+    }
   }
 `;
 
@@ -163,7 +165,7 @@ export default function Item({
             isFold={isFold}
             onClick={() => setIsFold(!isFold)}
           >
-            <div />
+            <ArrowTriangleUp />
           </FoldButton>
         </TitleWrapper>
         <ContentWrapper>

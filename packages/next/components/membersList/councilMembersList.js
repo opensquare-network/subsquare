@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled, { css, withTheme } from "styled-components";
 
 import Flex from "next-common/components/styled/flex";
 import { getNode, toPrecision, decimalPlaces } from "utils";
@@ -29,8 +29,9 @@ const Title = styled(Flex)`
 
 const StyledTable = styled.table`
   width: 100%;
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
+  color: ${(props) => props.theme.textPrimary};
   box-sizing: border-box;
   box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
     0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
@@ -48,13 +49,6 @@ const StyledTable = styled.table`
       pointer-events: auto;
     }
   }
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background: #212433;
-      border-color: #363a4d;
-      color: #fff;
-    `};
 `;
 
 const StyledTr = styled.tr``;
@@ -65,7 +59,7 @@ const StyledTh = styled.th`
   font-size: 12px;
   line-height: 100%;
   letter-spacing: 0.16em;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   pointer-events: none;
 `;
 
@@ -75,7 +69,7 @@ const StyledTd = styled.td`
   font-weight: normal;
   font-size: 14px;
   line-height: 100%;
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 const EmptyTd = styled.td`
@@ -85,7 +79,7 @@ const EmptyTd = styled.td`
   font-size: 14px;
   line-height: 140%;
   text-align: center;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 const Member = styled.div`
@@ -102,27 +96,36 @@ const RowSpliter = ({ backgroundColor, padding }) => (
   </tr>
 );
 
+const BalanceWrapper = styled.span`
+  color: ${(props) => props.theme.textPrimary};
+`;
+const SymbolWrapper = styled.span`
+  color: ${(props) => props.theme.textTertiary};
+`;
+
 const Balance = ({ value, node }) => (
   <div>
-    <span style={{ color: "#1E2134" }}>
+    <BalanceWrapper>
       {bigNumber2Locale(
         decimalPlaces(toPrecision(value ?? 0, node.decimals), 4)
       )}
-    </span>
-    <span style={{ color: "#9DA9BB", marginLeft: "8px" }}>{node.symbol}</span>
+    </BalanceWrapper>
+    <SymbolWrapper style={{ color: "#9DA9BB", marginLeft: "8px" }}>
+      {node.symbol}
+    </SymbolWrapper>
   </div>
 );
 
-export default function MembersList({
+function MembersList({
   chain,
   category,
   items,
   prime,
   loading = false,
   hasElections = false,
+  theme,
 }) {
   const [hideColumn, setHideColumn] = useState("votes");
-  const [theme] = useDarkMode();
   const node = getNode(chain);
   if (!node) {
     return null;
@@ -131,7 +134,7 @@ export default function MembersList({
   return (
     <Wrapper>
       <Title>{category}</Title>
-      <StyledTable theme={theme}>
+      <StyledTable>
         <thead>
           <StyledTr>
             <StyledTh style={{ textAlign: "left" }}>MEMBERS</StyledTh>
@@ -157,7 +160,7 @@ export default function MembersList({
             )}
           </StyledTr>
           <RowSpliter
-            backgroundColor={theme === "dark" ? "#272A3A" : "#F6F7FA"}
+            backgroundColor={theme.isDark ? "#272A3A" : "#F6F7FA"}
             padding={"16px 0 4px 0"}
           />
         </thead>
@@ -191,7 +194,7 @@ export default function MembersList({
                 </StyledTr>
                 {index !== items.length - 1 && (
                   <RowSpliter
-                    backgroundColor={theme === "dark" ? "#272A3A" : "#F6F7FA"}
+                    backgroundColor={theme.isDark ? "#272A3A" : "#F6F7FA"}
                   />
                 )}
               </Fragment>
@@ -208,3 +211,5 @@ export default function MembersList({
     </Wrapper>
   );
 }
+
+export default withTheme(MembersList);

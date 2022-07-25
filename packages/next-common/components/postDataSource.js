@@ -20,7 +20,7 @@ const ExternalReference = styled.div`
 
   height: 41px;
 
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
 
   span {
@@ -29,7 +29,7 @@ const ExternalReference = styled.div`
     font-size: 12px;
     line-height: 140%;
 
-    color: #9da9bb;
+    color: ${(props) => props.theme.textTertiary};
   }
 
   a {

@@ -67,7 +67,7 @@ const Wrapper = styled.button`
       pointer-events: none;
     `}
   ${(p) =>
-    p.theme === "dark" &&
+    p.theme.isDark &&
     p.secondary &&
     css`
       background: #515571 !important;

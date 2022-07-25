@@ -1,15 +1,15 @@
 import { useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import BigNumber from "bignumber.js";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { getNode, toPrecision } from "utils";
 import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "styles/componentCss";
 import {
-  getThresholdOfSimplyMajority,
-  getThresholdOfSuperMajorityApprove,
-  getThresholdOfSuperMajorityAgainst,
   calcPassing,
+  getThresholdOfSimplyMajority,
+  getThresholdOfSuperMajorityAgainst,
+  getThresholdOfSuperMajorityApprove,
 } from "utils/referendumUtil";
 import { useElectorate, useLoaded } from "utils/hooks";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
@@ -24,7 +24,6 @@ import DisplayValue from "next-common/components/displayValue";
 import Loading from "next-common/components/loading";
 import { useBestNumber } from "next-common/utils/hooks";
 import Chains from "next-common/utils/consts/chains";
-import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -48,27 +47,25 @@ const Wrapper = styled.div`
 
 const Card = styled.div`
   background: #ffffff;
-  border: 1px solid #ebeef4;
+  border: 1px solid ${(props) => props.theme.grey200Border};
   ${shadow_100};
   border-radius: 6px;
   padding: 24px;
   @media screen and (max-width: 768px) {
     border-radius: 0;
   }
+
   > :not(:first-child) {
     margin-top: 16px;
   }
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      color: #ffffff;
-      background: #212433;
-      border-color: #272a3a;
-      *,
-      span {
-        color: #ffffff;
-      }
-    `};
+
+  color: ${(props) => props.theme.textPrimary};
+  background: ${(props) => props.theme.neutral};
+
+  *,
+  span {
+    color: ${(props) => props.theme.textPrimary};
+  }
 `;
 
 const Title = styled.div`
@@ -83,7 +80,7 @@ const Title = styled.div`
 const Headers = styled(Flex)`
   justify-content: space-between;
   font-size: 12px;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
 
   span:nth-child(2) {
     text-align: center;
@@ -97,7 +94,7 @@ const Headers = styled(Flex)`
 
 const Contents = styled(Headers)`
   font-weight: 500;
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
   margin-top: 8px !important;
   margin-bottom: 16px;
 `;
@@ -114,13 +111,13 @@ const Status = styled.div`
 `;
 
 const PassStatus = styled(Status)`
-  color: #4caf50;
-  background: #edf7ed;
+  color: ${(props) => props.theme.secondaryGreen500};
+  background: ${(props) => props.theme.secondaryGreen100};
 `;
 
 const RejectStatus = styled(Status)`
-  color: #f44336;
-  background: #fff1f0;
+  color: ${(props) => props.theme.secondaryRed500};
+  background: ${(props) => props.theme.secondaryRed100};
 `;
 
 const Row = styled(Flex)`
@@ -136,7 +133,7 @@ const Row = styled(Flex)`
 
 const BorderedRow = styled(Flex)`
   height: 44px;
-  border-bottom: 1px solid #ebeef4;
+  border-bottom: 1px solid ${(props) => props.theme.grey200Border};
   justify-content: space-between;
   white-space: nowrap;
   font-size: 14px;
@@ -173,13 +170,13 @@ const BarContainer = styled.div`
 `;
 
 const AyesBar = styled.div`
-  background-color: #4caf50;
+  background-color: ${(props) => props.theme.secondaryGreen500};
   width: ${(p) => p.precent}%;
   height: 100%;
 `;
 
 const NaysBar = styled.div`
-  background-color: #f44336;
+  background-color: ${(props) => props.theme.secondaryRed500};
   width: ${(p) => p.precent}%;
   height: 100%;
 `;
@@ -190,8 +187,8 @@ const VoteButton = styled.button`
   margin-top: 16px;
   width: 100%;
   line-height: 38px;
-  background-color: #1e2134;
-  color: white;
+  background-color: ${(props) => props.theme.primaryDarkBlue};
+  color: ${(props) => props.theme.textContrast};
   font-weight: 500;
   font-size: 14px;
   text-align: center;
@@ -208,7 +205,6 @@ function Vote({
   chain,
 }) {
   const [showVote, setShowVote] = useState(false);
-  const [theme] = useDarkMode();
   const isMounted = useIsMounted();
   const api = useApi(chain);
   const bestNumber = useBestNumber(api);
@@ -291,7 +287,7 @@ function Vote({
 
   return (
     <Wrapper>
-      <Card theme={theme}>
+      <Card>
         <Title>
           <span>Votes</span>
           <div>

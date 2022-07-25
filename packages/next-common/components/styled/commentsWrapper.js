@@ -1,13 +1,10 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { shadow_100 } from "../../styles/componentCss";
-import Footer from "../layout/footer";
-import Main from "../main";
-import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  border-width: 1px;
+  border-style: solid;
   ${shadow_100};
   border-radius: 6px;
   padding: 48px;
@@ -15,37 +12,39 @@ const Wrapper = styled.div`
     padding: 24px;
     border-radius: 0;
   }
+
+  background: ${(props) => props.theme.neutral};
+  color: ${(props) => props.theme.textPrimary};
+  border-color: ${(props) => props.theme.grey200Border};
+  * {
+    color: ${(props) => props.theme.textPrimary};
+  }
+
+  .editor-toolbar,
+  .ql-toolbar.ql-snow,
+  span.ql-formats {
+    background-color: ${(props) => props.theme.grey100Bg} !important;
+    border-color: ${(props) => props.theme.neutral} !important;
+  }
+
+  .editor-toolbar-buttons > div {
+    background-color: ${(props) => props.theme.grey300Border} !important;
+  }
+
+  button:first-child {
+    box-shadow: 1px 0 0 0 ${(props) => props.theme.grey300Border} !important;
+  }
+
+  button:last-child {
+    box-shadow: 1px 0 0 0 ${(props) => props.theme.grey300Border} !important;
+  }
+
   ${(props) =>
-    props?.theme === "dark" &&
+    props?.theme.isDark &&
     css`
-      color: #ffffff;
-      background: #212433;
-      border-color: #272a3a;
-      * {
-        color: #ffffff;
-      }
       span.mention,
       span.mention span {
         background-color: transparent;
-      }
-
-      .editor-toolbar,
-      .ql-toolbar.ql-snow,
-      span.ql-formats {
-        background-color: #1d1e2c !important;
-        border-color: #212433 !important;
-      }
-
-      .editor-toolbar-buttons > div {
-        background-color: #363a4d !important;
-      }
-
-      button:first-child {
-        box-shadow: 1px 0 0 0 #363a4d !important;
-      }
-
-      button:last-child {
-        box-shadow: 1px 0 0 0 #363a4d !important;
       }
 
       button.active {
@@ -75,6 +74,5 @@ const Wrapper = styled.div`
 `;
 
 export default function CommentsWrapper({ children }) {
-  const [theme] = useDarkMode();
-  return <Wrapper theme={theme}>{children}</Wrapper>;
+  return <Wrapper>{children}</Wrapper>;
 }

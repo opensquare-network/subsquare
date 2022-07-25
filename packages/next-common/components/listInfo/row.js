@@ -1,6 +1,5 @@
 import React, { memo } from "react";
-import styled, { css } from "styled-components";
-import useDarkMode from "../../utils/hooks/useDarkMode";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
   display: flex;
@@ -9,18 +8,8 @@ const Wrapper = styled.div`
   align-items: start;
   padding-top: 12px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #ebeef4;
-  background-color: white;
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      color: #ffffff;
-      background: #212433;
-      border-color: #272a3a;
-      * {
-        color: #ffffff;
-      }
-    `};
+  color: ${(props) => props.theme.textPrimary};
+  border-bottom: 1px solid ${(props) => props.theme.grey200Border};
 `;
 const Header = styled.div`
   width: 120px;
@@ -39,7 +28,7 @@ const Content = styled.div`
   font-weight: normal;
   font-size: 14px;
   line-height: 140%;
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
   word-break: break-all;
 
   a {
@@ -56,10 +45,9 @@ function Row({ row = [] }) {
   if (!row) {
     return null;
   }
-  const [theme] = useDarkMode();
 
   return (
-    <Wrapper theme={theme}>
+    <Wrapper>
       {row.length === 1 && row[0]}
       {row.length === 2 && (
         <>

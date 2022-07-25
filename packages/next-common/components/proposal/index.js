@@ -28,8 +28,8 @@ const Header = styled.div`
 
 const ArgsWrapper = styled.div`
   border-radius: 4px;
-  border: 24px solid #f6f7fa;
-  border-bottom: 24px solid #f6f7fa !important;
+  border: 24px solid ${(props) => props.theme.grey100Bg};
+  border-bottom: 24px solid ${(props) => props.theme.grey100Bg} !important;
   font-size: 14px;
   line-height: 20px;
   word-wrap: break-word;
@@ -63,20 +63,20 @@ const TagItem = styled.div`
   padding: 4px 8px;
 
   &.tag {
-    background: #f6f7fa !important;
+    background: ${(props) => props.theme.grey100Bg};
   }
 
   border-radius: 2px;
   font-weight: 500;
   font-size: 12px;
   line-height: 100%;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   cursor: pointer;
   ${(p) =>
     p.active &&
     css`
-      background: #f5f2ff;
-      color: #6848ff;
+      background: ${(props) => props.theme.primaryPurple100} !important;
+      color: ${(props) => props.theme.primaryPurple500};
     `}
 `;
 
@@ -126,15 +126,11 @@ function convertProposalForTableView(proposal, chain) {
             }
 
             if (
-              (
-                proposal.section === "system" &&
-                ["remark", "remarkWithEvent"].includes(proposal.method)
-              ) ||
-              (
-                proposal.section === "automationTime" &&
+              (proposal.section === "system" &&
+                ["remark", "remarkWithEvent"].includes(proposal.method)) ||
+              (proposal.section === "automationTime" &&
                 proposal.method === "scheduleNotifyTask" &&
-                arg.name === "message"
-              )
+                arg.name === "message")
             ) {
               return [arg.name, hexToString(arg.value)];
             }
@@ -188,15 +184,11 @@ function convertProposalForJsonView(proposal, chain) {
             }
 
             if (
-              (
-                proposal.section === "system" &&
-                ["remark", "remarkWithEvent"].includes(proposal.method)
-              ) ||
-              (
-                proposal.section === "automationTime" &&
+              (proposal.section === "system" &&
+                ["remark", "remarkWithEvent"].includes(proposal.method)) ||
+              (proposal.section === "automationTime" &&
                 proposal.method === "scheduleNotifyTask" &&
-                arg.name === "message"
-              )
+                arg.name === "message")
             ) {
               return hexToString(arg.value);
             }

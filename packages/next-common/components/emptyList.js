@@ -1,13 +1,11 @@
 import React from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import { shadow_100 } from "../styles/componentCss";
-import useDarkMode from "../utils/hooks/useDarkMode";
 
 const Wrapper = styled(Flex)`
   justify-content: center;
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  border: 1px solid ${(props) => props.theme.grey200Border};
   ${shadow_100};
   border-radius: 6px;
   padding: 24px;
@@ -15,21 +13,14 @@ const Wrapper = styled(Flex)`
   font-weight: normal;
   font-size: 14px;
   text-align: center;
-  color: #9da9bb;
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background: #212433;
-      border-color: #363a4d;
-      color: #fff;
-    `};
+  background: ${(props) => props.theme.neutral};
+  border-color: ${(props) => props.theme.grey300Border};
+  color: ${(props) => props.theme.textTertiary}; ;
 `;
 
 export default function EmptyList({ type = "discussions" }) {
-  const [theme] = useDarkMode();
-
   return (
-    <Wrapper theme={theme}>
+    <Wrapper>
       <span>
         No current <span style={{ textTransform: "lowercase" }}>{type}</span>
       </span>
