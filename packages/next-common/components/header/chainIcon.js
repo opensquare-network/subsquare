@@ -22,6 +22,7 @@ import InterlayDark from "../../assets/icons/chain/interlay-dark.png";
 import KusamaDark from "../../assets/icons/chain/kusama-dark.png";
 import PolkadexDark from "../../assets/icons/chain/polkadex-dark.png";
 import useDarkMode from "../../utils/hooks/useDarkMode";
+import Litmus from "../../assets/icons/chain/litmus.png";
 
 const imageMap = {
   [Chains.kusama]: Kusama,
@@ -40,6 +41,7 @@ const imageMap = {
   [Chains.polkadex]: Polkadex,
   [Chains.turing]: Turing,
   [Chains.kintsugi]: Kintsugi,
+  [Chains.litmus]: Litmus,
 };
 
 const darkImageMap = {

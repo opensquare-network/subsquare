@@ -14,7 +14,12 @@ const treasury = {
       value: "bounties",
       name: "Bounties",
       pathname: "/treasury/bounties",
-      excludeToChains: ["basilisk", Chains.kintsugi, Chains.interlay],
+      excludeToChains: [
+        "basilisk",
+        Chains.kintsugi,
+        Chains.interlay,
+        Chains.litmus,
+      ],
     },
     {
       value: "child-bounties",
@@ -26,7 +31,7 @@ const treasury = {
       value: "tips",
       name: "Tips",
       pathname: "/treasury/tips",
-      excludeToChains: [Chains.kintsugi, Chains.interlay],
+      excludeToChains: [Chains.kintsugi, Chains.interlay, Chains.litmus],
     },
   ],
 };

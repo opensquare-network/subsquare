@@ -17,6 +17,7 @@ const Chains = {
   turing: "turing",
   crab: "crab",
   centrifuge: "centrifuge",
+  litmus: "litmus",
 };
 
 export default Chains;
