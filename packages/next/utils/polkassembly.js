@@ -24,7 +24,7 @@ async function fetchGraphql(query) {
   }
 }
 
-export async function queryPostComments(postId, page, pageSize) {
+export async function queryPostComments(postId, page = 0, pageSize = 10) {
   const offset = page * pageSize;
   const limit = pageSize;
 

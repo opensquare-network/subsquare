@@ -1,15 +1,10 @@
 /* eslint-disable react/jsx-key */
 import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
-import Comments from "next-common/components/comment";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import Editor from "next-common/components/comment/editor";
-import { useRef, useState } from "react";
 import Layout from "next-common/components/layout";
-import CommentsWrapper from "next-common/components/styled/commentsWrapper";
-import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
@@ -19,19 +14,17 @@ import Second from "next-common/components/publicProposal/second";
 import OutWrapper from "next-common/components/styled/outWrapper";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 import isNil from "lodash.isnil";
-import useMentionList from "next-common/utils/hooks/useMentionList";
 import MainCard from "next-common/components/styled/mainCard";
-
+import useUniversalComments from "components/universalComments";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
-  const postId = detail?._id;
-
-  const editorWrapperRef = useRef(null);
-  const [quillRef, setQuillRef] = useState(null);
-  const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown"
-  );
+  const { CommentComponent, focusEditor } = useUniversalComments({
+    detail,
+    comments,
+    loginUser,
+    chain,
+    type: TYPE_DEMOCRACY_PROPOSAL,
+  });
 
   const publicProposal = detail?.onchainData;
   const proposalIndex = publicProposal?.proposalIndex;
@@ -46,19 +39,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const secondsAtBlockHeight = isEnded
     ? lastTimelineBlockHeight - 1
     : undefined;
-
-  const users = useMentionList(detail, comments, chain);
-
-  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
-
-  const onReply = getOnReply(
-    contentType,
-    content,
-    setContent,
-    quillRef,
-    focusEditor,
-    chain
-  );
 
   detail.status = detail?.onchainData?.state?.state;
 
@@ -89,24 +69,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           />
           <Metadata publicProposal={detail?.onchainData} chain={chain} />
           <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
-          <CommentsWrapper>
-            <Comments
-              data={comments}
-              user={loginUser}
-              chain={chain}
-              onReply={onReply}
-            />
-            {loginUser && (
-              <Editor
-                postId={postId}
-                chain={chain}
-                ref={editorWrapperRef}
-                setQuillRef={setQuillRef}
-                {...{ contentType, setContentType, content, setContent, users }}
-                type={TYPE_DEMOCRACY_PROPOSAL}
-              />
-            )}
-          </CommentsWrapper>
+          {CommentComponent}
         </MainCard>
       </OutWrapper>
     </Layout>
