@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 import { useRef, useState } from "react";
-import {
+import SourceTabs, {
   Polkassembly,
   SubSquare,
 } from "next-common/components/comment/sourceTabs";
@@ -17,21 +17,29 @@ export default function useUniversalComments({
   const paBtnRef = useRef();
   const [tabIndex, setTabIndex] = useState(SubSquare);
 
+  let tabs = null;
+  if (detail?.polkassemblyId) {
+    // Allow to switch to polkassembly comments if has corresponding pa post
+    tabs = (
+      <div style={{ width: "240px", marginTop: "-6px" }}>
+        <SourceTabs tabIndex={tabIndex} setTabIndex={setTabIndex} />
+      </div>
+    );
+  }
+
   let { CommentComponent, focusEditor } = useCommentComponent({
     detail,
     comments,
     loginUser,
     chain,
     type,
-    tabIndex,
-    setTabIndex,
+    tabs,
   });
 
   if (tabIndex === Polkassembly) {
     CommentComponent = (
       <PolkassemblyComments
-        tabIndex={tabIndex}
-        setTabIndex={setTabIndex}
+        tabs={tabs}
         detail={detail}
         chain={chain}
         type={type}

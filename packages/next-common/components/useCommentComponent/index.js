@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
-import SourceTabs from "next-common/components/comment/sourceTabs";
 import Comments from "next-common/components/comment";
 import Editor from "next-common/components/comment/editor";
 import useMentionList from "next-common/utils/hooks/useMentionList";
@@ -13,8 +12,7 @@ export default function useCommentComponent({
   loginUser,
   chain,
   type,
-  tabIndex,
-  setTabIndex,
+  tabs = null,
 }) {
   const [theme] = useDarkMode();
   const postId = detail._id;
@@ -38,16 +36,6 @@ export default function useCommentComponent({
     focusEditor,
     chain
   );
-
-  let tabs = null;
-  if (detail?.polkassemblyId) {
-    // Allow to switch to polkassembly comments if has corresponding pa post
-    tabs = (
-      <div style={{ width: "240px", marginTop: "-6px" }}>
-        <SourceTabs tabIndex={tabIndex} setTabIndex={setTabIndex} />
-      </div>
-    );
-  }
 
   const CommentComponent = (
     <CommentsWrapper theme={theme}>
