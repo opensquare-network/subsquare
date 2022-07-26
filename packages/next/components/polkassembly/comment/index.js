@@ -5,7 +5,6 @@ import NoComment from "next-common/components/comment/noComment";
 import PolkassemblyCommentButton from "./commentButton";
 import Loading from "next-common/components/loading";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
-import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 const Header = styled.div`
   display: flex;
@@ -41,10 +40,8 @@ export default function PolkassemblyComments({
   tabs = null,
   btnRef = null,
 }) {
-  const [theme] = useDarkMode();
-
   return (
-    <CommentsWrapper theme={theme}>
+    <CommentsWrapper>
       <div>
         <Header>
           <Title>Comments</Title>

@@ -5,7 +5,7 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Editor from "next-common/components/comment/editor";
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import Layout from "next-common/components/layout";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import useMentionList from "next-common/utils/hooks/useMentionList";
@@ -15,12 +15,10 @@ import { TYPE_POST } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
 import Cookies from "cookies";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
-import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, votes, myVote, chain }) => {
     const postId = detail._id;
-    const [theme] = useDarkMode();
     const editorWrapperRef = useRef(null);
     const [quillRef, setQuillRef] = useState(null);
     const [content, setContent] = useState("");

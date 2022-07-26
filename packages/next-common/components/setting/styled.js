@@ -22,30 +22,24 @@ export const Title = styled.div`
 `;
 
 export const ContentWrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
   ${shadow_100};
   border-radius: 4px;
   padding: 48px;
   @media screen and (max-width: 768px) {
     padding: 24px;
   }
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background-color: #212433 !important;
-      border-color: #212433 !important;
-      div,
-      input,
-      button {
-        background-color: #212433;
-        border-color: #363a4d;
-        color: white;
-      }
-      * {
-        color: white;
-      }
-    `}
+  div,
+  input,
+  button {
+    background-color: ${(props) => props.theme.neutral};
+    border-color: ${(props) => props.theme.grey300Border};
+    color: ${(props) => props.theme.textPrimary};
+  }
+  * {
+    color: ${(props) => props.theme.textPrimary};
+  }
 `;
 
 export const Label = styled.div`
@@ -85,14 +79,9 @@ export const InputWrapper = styled.div`
 `;
 
 export const Divider = styled.div`
-  background: #ebeef4;
+  background: ${(props) => props.theme.grey200Border};
   height: 1px;
   margin: 24px 0;
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background-color: #272a3a !important;
-    `}
 `;
 
 export const EmailVerify = styled.div`

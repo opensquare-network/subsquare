@@ -4,10 +4,10 @@ import Layout from "next-common/components/layout";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import {
-  Wrapper,
-  Title,
   ContentWrapper,
   Divider,
+  Title,
+  Wrapper,
 } from "next-common/components/setting/styled";
 import Web3Address from "next-common/components/setting/web3Address";
 import NotificationEmail from "next-common/components/setting/notificationEmail";
@@ -16,7 +16,6 @@ import { encodeAddressToChain } from "next-common/services/address";
 import { useRouter } from "next/router";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { useEffect } from "react";
-import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const user = loginUser;
@@ -25,7 +24,6 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
     : "";
 
   const router = useRouter();
-  const [theme] = useDarkMode();
 
   useEffect(() => {
     if (loginUser === null) {
@@ -46,14 +44,14 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
         <NextHead title={`Settings`} desc={``} />
         <Wrapper>
           <Title>Account</Title>
-          <ContentWrapper theme={theme}>
+          <ContentWrapper>
             <Web3Address address={address} chain={chain} />
-            <Divider theme={theme} />
+            <Divider />
             <NotificationEmail
               email={user?.email}
               verified={user?.emailVerified}
             />
-            <Divider theme={theme} />
+            <Divider />
             <Logout />
           </ContentWrapper>
         </Wrapper>

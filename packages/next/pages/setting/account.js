@@ -7,10 +7,10 @@ import Layout from "next-common/components/layout";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import {
-  Wrapper,
-  Title,
   ContentWrapper,
   Divider,
+  Title,
+  Wrapper,
 } from "next-common/components/setting/styled";
 import Username from "next-common/components/setting/username";
 import Email from "next-common/components/setting/email";
@@ -18,10 +18,8 @@ import Password from "next-common/components/setting/password";
 import Logout from "next-common/components/setting/logout";
 import { useRouter } from "next/router";
 import { isKeyRegisteredUser } from "next-common/utils";
-import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
-  const [theme] = useDarkMode();
   const user = useSelector(userSelector);
   const router = useRouter();
 
@@ -40,13 +38,13 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
         <NextHead title={`Settings`} desc={``} />
         <Wrapper>
           <Title>Account</Title>
-          <ContentWrapper theme={theme}>
+          <ContentWrapper>
             <Username username={user?.username} />
-            <Divider theme={theme} />
+            <Divider />
             <Email email={user?.email} verified={user?.emailVerified} />
-            <Divider theme={theme} />
+            <Divider />
             <Password />
-            <Divider theme={theme} />
+            <Divider />
             <Logout />
           </ContentWrapper>
         </Wrapper>

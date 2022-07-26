@@ -15,7 +15,6 @@ import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import dynamic from "next/dynamic";
 import IdentityOrAddr from "../IdentityOrAddr";
 import { addressEllipsis } from "../../utils";
-import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
@@ -30,7 +29,7 @@ const Wrapper = styled.div`
       margin-top: 8px;
     `}
   ${(props) =>
-    props?.theme === "dark" &&
+    props?.theme.isDark &&
     css`
       div.modal {
         background-color: #1d1e2c !important;
@@ -92,7 +91,6 @@ function Editor(
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const isMounted = useIsMountedBool();
-  const [theme] = useDarkMode();
 
   const createComment = async () => {
     if (!isMounted()) {
@@ -170,7 +168,7 @@ function Editor(
   };
 
   return (
-    <Wrapper theme={theme}>
+    <Wrapper>
       <Relative ref={ref}>
         <UniverseEditor
           value={content}

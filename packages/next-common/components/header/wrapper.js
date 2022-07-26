@@ -1,9 +1,8 @@
 import React, { memo } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { shadow_100 } from "@subsquare/next/styles/componentCss";
 import useWindowSize from "../../utils/hooks/useWindowSize";
 import getChainSettings from "../../utils/consts/settings";
-import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const Wrapper = styled.header`
   padding-left: 32px;
@@ -17,22 +16,15 @@ const Wrapper = styled.header`
   left: 0;
   right: 0;
   z-index: 1;
-  background: ${(props) => props?.background || "#ffffff;"};
+  background: ${(props) => props?.background || props.theme.neutral};
   ${shadow_100};
   height: 64px;
-  border-bottom: 1px solid #ebeef4;
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background: #212433;
-      border-color: #272a3a;
-    `};
+  border-bottom: 1px solid ${(props) => props.theme.grey200Border};
 `;
 
 function HeaderWrapper({ chain, children }) {
   let ChainWrapper = Wrapper;
 
-  const [theme] = useDarkMode();
   const { width } = useWindowSize();
   if (parseInt(width) <= 768) {
     return <ChainWrapper>{children}</ChainWrapper>;
@@ -40,7 +32,7 @@ function HeaderWrapper({ chain, children }) {
 
   const setting = getChainSettings(chain);
   return (
-    <ChainWrapper theme={theme} background={setting.headerBackgroundColor}>
+    <ChainWrapper background={setting.headerBackgroundColor}>
       {children}
     </ChainWrapper>
   );

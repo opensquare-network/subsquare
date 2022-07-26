@@ -43,7 +43,7 @@ const Username = styled.div`
           color: ${p.color} !important;
         `
       : css`
-          color: #1e2134 !important;
+          color: ${(props) => props.theme.textPrimary}; !important;
         `}
   ${(p) =>
     p.maxWidth
@@ -62,7 +62,7 @@ const DeleteAccount = styled(Flex)`
   font-weight: 500;
   word-break: break-all;
   font-size: ${(props) => props.fontSize}px;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textSecondary};
   > img {
     width: 20px;
     height: 20px;
@@ -78,8 +78,9 @@ const LinkWrapper = styled.a`
           text-decoration-color: ${p.color} !important;
         `
       : css`
-          color: #1e2134 !important;
-          text-decoration-color: #1e2134 !important;
+          color: ${(props) => props.theme.textPrimary} !important;
+          text-decoration-color: ${(props) =>
+            props.theme.textPrimary} !important;
         `}
   display: block;
   :hover {

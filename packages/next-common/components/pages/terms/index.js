@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import Link from "next/link";
 
 import Layout from "next-common/components/layout";
@@ -8,7 +8,6 @@ import NextHead from "next-common/components/nextHead";
 import termsMd from "./terms-of-service.md";
 import Markdown from "next-common/components/micromarkMd";
 import ArrowLeft from "../../icons/arrowLeft";
-import useDarkMode from "../../../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -30,25 +29,20 @@ const BackButton = styled.div`
 
 const Content = styled.div`
   margin-top: 16px;
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
   box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
     0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
     0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 6px;
   padding: 48px;
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background: #212433;
-      border-color: #363a4d;
-      color: white;
-      p,
-      h2,
-      li {
-        color: white !important;
-      }
-    `}
+  color: ${(props) => props.theme.textPrimary};
+
+  p,
+  h2,
+  li {
+    color: ${(props) => props.theme.textPrimary} !important;
+  }
 `;
 
 const Title = styled.h1`
@@ -60,7 +54,6 @@ const Title = styled.h1`
 `;
 
 const Terms = withLoginUserRedux(({ loginUser, chain }) => {
-  const [theme] = useDarkMode();
   return (
     <Layout user={loginUser} chain={chain}>
       <NextHead title="Terms of Service" desc="Terms of Service" />
@@ -71,7 +64,7 @@ const Terms = withLoginUserRedux(({ loginUser, chain }) => {
             <div>Back</div>
           </BackButton>
         </Link>
-        <Content theme={theme}>
+        <Content>
           <Title>Terms of Service</Title>
           <Markdown md={termsMd} />
         </Content>

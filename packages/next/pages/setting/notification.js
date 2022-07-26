@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Toggle from "next-common/components/toggle";
 import Button from "next-common/components/button";
@@ -21,7 +21,6 @@ import { shadow_100 } from "styles/componentCss";
 import NextHead from "next-common/components/nextHead";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { useRouter } from "next/router";
-import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -44,31 +43,26 @@ const Title = styled.div`
 
 const ContentWrapper = styled.div`
   font-size: 14px;
-  color: #1e2134;
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  color: ${(props) => props.theme.textPrimary};
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
   ${shadow_100};
   border-radius: 4px;
   padding: 48px;
   @media screen and (max-width: 768px) {
     padding: 24px;
   }
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background-color: #212433 !important;
-      border-color: #212433 !important;
-      div,
-      input,
-      button {
-        background-color: #212433;
-        border-color: #363a4d;
-        color: white;
-      }
-      * {
-        color: white;
-      }
-    `}
+
+  div,
+  input,
+  button {
+    background: ${(props) => props.theme.neutral};
+    border-color: ${(props) => props.theme.grey300Border};
+    color: ${(props) => props.theme.textPrimary};
+  }
+  * {
+    color: ${(props) => props.theme.textPrimary};
+  }
 `;
 
 const Label = styled.div`
@@ -93,7 +87,7 @@ const ToggleItem = styled.div`
 `;
 
 const Divider = styled.div`
-  background: #ebeef4;
+  background: ${(props) => props.theme.grey200Border};
   height: 1px;
   margin: 24px 0;
 `;
@@ -124,7 +118,6 @@ const WarningMessage = styled.div`
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const dispatch = useDispatch();
-  const [theme] = useDarkMode();
   const [reply, setReply] = useState(!!loginUser?.notification?.reply);
   const [mention, setMention] = useState(!!loginUser?.notification?.mention);
   const [saving, setSaving] = useState(false);
@@ -179,7 +172,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       <NextHead title={`Settings`} desc={``} />
       <Wrapper>
         <Title>Notification</Title>
-        <ContentWrapper theme={theme}>
+        <ContentWrapper>
           {disabled && (
             <WarningMessage danger>
               Please set the email to receive notifications
@@ -204,7 +197,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
               />
             </ToggleItem>
           </div>
-          <Divider theme={theme} />
+          <Divider />
           <ButtonWrapper>
             <Button
               secondary

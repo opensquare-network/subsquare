@@ -23,7 +23,6 @@ import { signMessage } from "../services/extension/signMessage";
 import { polkadotWeb3Accounts } from "../utils/extensionAccount";
 import AddressLinkIcon from "../assets/imgs/icons/address-link.svg";
 import UnLinkIcon from "../assets/imgs/icons/unlink.svg";
-import useDarkMode from "../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -45,40 +44,35 @@ const Title = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
   ${shadow_100};
   border-radius: 4px;
   padding: 48px;
   @media screen and (max-width: 768px) {
     padding: 24px;
   }
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background-color: #212433 !important;
-      border-color: #212433 !important;
-      div,
-      input,
-      button {
-        background-color: #212433;
-        border-color: #363a4d;
-        color: white;
-      }
-      * {
-        color: white;
-      }
-    `}
+
+  div,
+  input,
+  button {
+    background: ${(props) => props.theme.neutral};
+    border-color: ${(props) => props.theme.grey300Border};
+    color: ${(props) => props.theme.textPrimary};
+  }
+  * {
+    color: ${(props) => props.theme.textPrimary};
+  }
 `;
 
 const InfoWrapper = styled.div`
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
   padding: 12px 16px;
   line-height: 150%;
   font-size: 14px;
   margin-bottom: 16px;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
 `;
 
 const AddressWrapper = styled.div`
@@ -182,7 +176,6 @@ export default function LinkedAddress({ chain }) {
   const [accounts, setAccounts] = useState([]);
   const [activeChain, setActiveChain] = useState(chain);
   const dispatch = useDispatch();
-  const [theme] = useDarkMode();
 
   useEffect(() => {
     (async () => {
@@ -284,7 +277,7 @@ export default function LinkedAddress({ chain }) {
   return (
     <Wrapper>
       <Title>Linked address</Title>
-      <ContentWrapper theme={theme}>
+      <ContentWrapper>
         {hasExtension ? (
           <div>
             <InfoWrapper>{`Associate your account with an on-chain address using the Polkadot{.js} extension.`}</InfoWrapper>

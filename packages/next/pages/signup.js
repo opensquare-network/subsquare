@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import Layout from "next-common/components/layout";
@@ -17,7 +17,6 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { shadow_100 } from "../styles/componentCss";
 import NextHead from "next-common/components/nextHead";
 import UserPolicy from "next-common/components/userPolicy";
-import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -30,8 +29,8 @@ const Wrapper = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
   ${shadow_100};
   border-radius: 6px;
   width: 400px;
@@ -50,23 +49,22 @@ const ContentWrapper = styled.div`
     width: 100%;
   }
 
+  div,
+  input,
+  button {
+    background: ${(props) => props.theme.neutral};
+    border-color: ${(props) => props.theme.grey300Border};
+    color: ${(props) => props.theme.textPrimary};
+  }
+  * {
+    color: ${(props) => props.theme.textPrimary};
+  }
+
   ${(props) =>
-    props?.theme === "dark" &&
+    props?.theme.isDark &&
     css`
-      background-color: #212433 !important;
-      border-color: #212433 !important;
-      div,
-      input,
-      button {
-        background-color: #212433;
-        border-color: #363a4d;
-        color: white;
-      }
       button div {
         background-color: initial;
-      }
-      * {
-        color: white;
       }
     `}
 `;
@@ -142,7 +140,6 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const [agreeError, setAgreeError] = useState();
   const isMounted = useIsMounted();
   const { countdown, counting: emailSent, startCountdown } = useCountdown(3);
-  const [theme] = useDarkMode();
 
   if (emailSent && countdown === 0) {
     router.replace("/login");
@@ -218,7 +215,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       <NextHead title={`Signup`} desc={`Signup`} />
       <Wrapper>
         {!success && (
-          <ContentWrapper theme={theme}>
+          <ContentWrapper>
             <Title>Sign up</Title>
             <FormWrapper onSubmit={handleSubmit}>
               <InputWrapper>
