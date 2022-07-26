@@ -1,9 +1,10 @@
-import React, { memo } from "react";
+import React from "react";
 import Button from "../button";
 import { useRouter } from "next/router";
 import getChainSettings from "../../utils/consts/settings";
+import { withTheme } from "styled-components";
 
-function LoginButton({ chain }) {
+function LoginButton({ chain, theme }) {
   const router = useRouter();
 
   const setting = getChainSettings(chain);
@@ -12,7 +13,7 @@ function LoginButton({ chain }) {
   return (
     <Button
       primary={!isPrimaryInverse}
-      primaryInverse={isPrimaryInverse}
+      primaryInverse={isPrimaryInverse || theme.isDark}
       onClick={() =>
         router.push({
           pathname: "/login",
@@ -27,4 +28,4 @@ function LoginButton({ chain }) {
   );
 }
 
-export default memo(LoginButton);
+export default withTheme(LoginButton);
