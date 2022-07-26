@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useEffect, useState } from "react";
 
 import Toggle from "next-common/components/toggle";
@@ -53,14 +53,9 @@ const ContentWrapper = styled.div`
     padding: 24px;
   }
 
-  div,
-  input,
-  button {
+  input {
     background: ${(props) => props.theme.neutral};
     border-color: ${(props) => props.theme.grey300Border};
-    color: ${(props) => props.theme.textPrimary};
-  }
-  * {
     color: ${(props) => props.theme.textPrimary};
   }
 `;
@@ -69,7 +64,7 @@ const Label = styled.div`
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 16px;
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 const ToggleItem = styled.div`
@@ -101,19 +96,13 @@ const ButtonWrapper = styled.div`
 `;
 
 const WarningMessage = styled.div`
-  background: #f6f7fa;
+  color: ${(props) => props.theme.secondaryRed500};
+  background: ${(props) => props.theme.secondaryRed100};
   border-radius: 4px;
   padding: 12px 16px;
-  color: #506176;
   font-size: 14px;
   line-height: 140%;
   margin-bottom: 16px;
-  ${(p) =>
-    p.danger &&
-    css`
-      color: #f44336;
-      background: #fff1f0;
-    `}
 `;
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
@@ -174,7 +163,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
         <Title>Notification</Title>
         <ContentWrapper>
           {disabled && (
-            <WarningMessage danger>
+            <WarningMessage>
               Please set the email to receive notifications
             </WarningMessage>
           )}

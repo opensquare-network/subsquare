@@ -1,5 +1,5 @@
-import styled, { css } from "styled-components";
-import { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useEffect, useState } from "react";
 
 import Toggle from "next-common/components/toggle";
 import Button from "next-common/components/button";
@@ -43,14 +43,20 @@ const Title = styled.div`
 
 const ContentWrapper = styled.div`
   font-size: 14px;
-  color: #1e2134;
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  color: ${(props) => props.theme.textPrimary};
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
   ${shadow_100};
   border-radius: 4px;
   padding: 48px;
   @media screen and (max-width: 768px) {
     padding: 24px;
+  }
+
+  input {
+    background: ${(props) => props.theme.neutral};
+    border-color: ${(props) => props.theme.grey300Border};
+    color: ${(props) => props.theme.textPrimary};
   }
 `;
 
@@ -58,7 +64,7 @@ const Label = styled.div`
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 16px;
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 const ToggleItem = styled.div`
@@ -76,7 +82,7 @@ const ToggleItem = styled.div`
 `;
 
 const Divider = styled.div`
-  background: #ebeef4;
+  background: ${(props) => props.theme.grey200Border};
   height: 1px;
   margin: 24px 0;
 `;
@@ -90,19 +96,13 @@ const ButtonWrapper = styled.div`
 `;
 
 const WarningMessage = styled.div`
-  background: #f6f7fa;
+  color: ${(props) => props.theme.secondaryRed500};
+  background: ${(props) => props.theme.secondaryRed100};
   border-radius: 4px;
   padding: 12px 16px;
-  color: #506176;
   font-size: 14px;
   line-height: 140%;
   margin-bottom: 16px;
-  ${(p) =>
-    p.danger &&
-    css`
-      color: #f44336;
-      background: #fff1f0;
-    `}
 `;
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
