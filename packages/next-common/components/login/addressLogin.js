@@ -5,7 +5,6 @@ import { isWeb3Injected, web3Enable } from "@polkadot/extension-dapp";
 import { useRouter } from "next/router";
 
 import AddressSelect from "../addressSelect";
-import Button from "../button";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import DownloadExtension from "../downloadExtension";
 import nextApi from "../../services/nextApi";
@@ -15,6 +14,8 @@ import { newErrorToast } from "../../store/reducers/toastSlice";
 import { encodeAddressToChain } from "../../services/address";
 import { signMessage } from "../../services/extension/signMessage";
 import { polkadotWeb3Accounts } from "../../utils/extensionAccount";
+import GhostButton from "../buttons/ghostButton";
+import SecondaryButton from "../buttons/secondaryButton";
 
 const Label = styled.div`
   font-weight: bold;
@@ -146,13 +147,13 @@ export default function AddressLogin({ chain, setMailLogin }) {
       {!hasExtension && <DownloadExtension />}
       <ButtonWrapper>
         {hasExtension && (
-          <Button isFill secondary onClick={doWeb3Login} isLoading={loading}>
+          <SecondaryButton isFill isLoading={loading} onClick={doWeb3Login}>
             Next
-          </Button>
+          </SecondaryButton>
         )}
-        <Button isFill onClick={setMailLogin}>
+        <GhostButton isFill onClick={setMailLogin}>
           Login with username
-        </Button>
+        </GhostButton>
       </ButtonWrapper>
     </>
   );

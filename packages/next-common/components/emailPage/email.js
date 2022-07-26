@@ -8,13 +8,13 @@ import {
   Title,
 } from "next-common/components/login/styled";
 import { Option } from "next-common/components/addressSelect";
-import Button from "next-common/components/button";
 import { useRouter } from "next/router";
 import VerifyEmail from "next-common/components/login/verifyEmail";
 import EmailInput from "next-common/components/login/emailInput";
 import ConfirmEmail from "next-common/components/login/confirmEmail";
 import useIdentity from "next-common/utils/hooks/useIdentity";
 import { p_14_normal } from "../../styles/componentCss";
+import GhostButton from "../buttons/ghostButton";
 
 const Label = styled.div`
   font-weight: bold;
@@ -97,14 +97,14 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
             identity={identity}
             setErrors={setErrors}
           />
-          <Button
+          <GhostButton
             isFill
             onClick={() => {
               router.replace(router.query?.redirect || "/");
             }}
           >
             Remind me later
-          </Button>
+          </GhostButton>
         </ContentCenterWrapper>
       </Wrapper>
     </Layout>

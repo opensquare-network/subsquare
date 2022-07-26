@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import Button from "next-common/components/button";
 import {
   TYPE_COUNCIL_MOTION,
   TYPE_DEMOCRACY_PROPOSAL,
@@ -11,6 +10,7 @@ import {
   TYPE_TREASURY_PROPOSAL,
   TYPE_TREASURY_TIP,
 } from "next-common/utils/viewConstants";
+import SecondaryButton from "../../../../next-common/components/buttons/secondaryButton";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -50,7 +50,7 @@ export default function PolkassemblyCommentButton({
   return (
     <Wrapper ref={btnRef}>
       <a href={link} target="_blank" rel="noreferrer">
-        <Button secondary>Comment on Polkassembly</Button>
+        <SecondaryButton>Comment on Polkassembly</SecondaryButton>
       </a>
     </Wrapper>
   );

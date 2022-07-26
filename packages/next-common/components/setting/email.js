@@ -1,14 +1,13 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Input from "../input";
-import Button from "../button";
 import ErrorText from "../ErrorText";
 import nextApi from "../../services/nextApi";
 import { newSuccessToast } from "../../store/reducers/toastSlice";
-import { Label, InputWrapper, EmailVerify } from "./styled";
+import { EmailVerify, InputWrapper, Label } from "./styled";
 import CircleCheck from "../../assets/imgs/icons/circle-check.svg";
 import CircleWarning from "../../assets/imgs/icons/circle-warning.svg";
+import SecondaryButton from "../buttons/secondaryButton";
 
 export default function Email({ email, verified }) {
   const dispatch = useDispatch();
@@ -48,9 +47,9 @@ export default function Email({ email, verified }) {
           }
         />
         {!verified && (
-          <Button secondary onClick={onResend} isLoading={resendLoading}>
+          <SecondaryButton onClick={onResend} isLoading={resendLoading}>
             Resend
-          </Button>
+          </SecondaryButton>
         )}
       </InputWrapper>
       {resendErrors?.message && !resendErrors?.data && (

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { isWeb3Injected, web3Enable } from "@polkadot/extension-dapp";
-import Button from "./button";
 import nextApi from "../services/nextApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import {
@@ -23,6 +22,7 @@ import { signMessage } from "../services/extension/signMessage";
 import { polkadotWeb3Accounts } from "../utils/extensionAccount";
 import AddressLinkIcon from "../assets/imgs/icons/address-link.svg";
 import UnLinkIcon from "../assets/imgs/icons/unlink.svg";
+import SecondaryButton from "./buttons/secondaryButton";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -54,13 +54,9 @@ const ContentWrapper = styled.div`
   }
 
   div,
-  input,
-  button {
+  input {
     background: ${(props) => props.theme.neutral};
     border-color: ${(props) => props.theme.grey300Border};
-    color: ${(props) => props.theme.textPrimary};
-  }
-  * {
     color: ${(props) => props.theme.textPrimary};
   }
 `;
@@ -281,9 +277,9 @@ export default function LinkedAddress({ chain }) {
         {hasExtension ? (
           <div>
             <InfoWrapper>{`Associate your account with an on-chain address using the Polkadot{.js} extension.`}</InfoWrapper>
-            <Button secondary onClick={loadExtensionAddresses}>
+            <SecondaryButton onClick={loadExtensionAddresses}>
               Show available accounts
-            </Button>
+            </SecondaryButton>
           </div>
         ) : (
           <DownloadExtension />

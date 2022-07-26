@@ -1,31 +1,33 @@
 import React from "react";
-import Button from "../button";
 import { useRouter } from "next/router";
 import getChainSettings from "../../utils/consts/settings";
 import { withTheme } from "styled-components";
+import { emptyFunction } from "../../utils";
+import PrimaryButton from "../buttons/primaryButton";
+import GhostButton from "../buttons/ghostButton";
 
 function LoginButton({ chain, theme }) {
   const router = useRouter();
 
+  const gotoLogin = () => {
+    router
+      .push({
+        pathname: "/login",
+        query: {
+          redirect: router.asPath,
+        },
+      })
+      .then(emptyFunction);
+  };
+
   const setting = getChainSettings(chain);
   let isPrimaryInverse = setting.loginButtonPrimary;
 
-  return (
-    <Button
-      primary={!isPrimaryInverse}
-      primaryInverse={isPrimaryInverse || theme.isDark}
-      onClick={() =>
-        router.push({
-          pathname: "/login",
-          query: {
-            redirect: router.asPath,
-          },
-        })
-      }
-    >
-      Login
-    </Button>
-  );
+  let TargetButton = GhostButton;
+  if (isPrimaryInverse || theme.isDark) {
+    TargetButton = PrimaryButton;
+  }
+  return <TargetButton onClick={gotoLogin}>Login</TargetButton>;
 }
 
 export default withTheme(LoginButton);

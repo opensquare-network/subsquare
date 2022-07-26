@@ -3,13 +3,14 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import NetworkSwitch from "next-common/components/header/networkSwitch";
-import Button from "next-common/components/button";
 import { nodes } from "next-common/utils/constants";
 import { logout } from "next-common/store/reducers/userSlice";
 import User from "next-common/components/user";
 import NodeSwitch from "next-common/components/header/nodeSwitch";
 import Flex from "next-common/components/styled/flex";
 import { accountMenu } from "./consts";
+import GhostButton from "../buttons/ghostButton";
+import SecondaryButton from "../buttons/secondaryButton";
 
 const Wrapper = styled.div`
   padding: 32px 0 0;
@@ -83,12 +84,12 @@ export default function SidebarAccount({ user, chain }) {
       <Title>ACCOUNT</Title>
       {!user && (
         <ButtonWrapper>
-          <Button onClick={() => router.push("/signup")} primary>
+          <GhostButton onClick={() => router.push("/signup")}>
             Sign up
-          </Button>
-          <Button onClick={() => router.push("/login")} secondary>
+          </GhostButton>
+          <SecondaryButton onClick={() => router.push("/login")}>
             Login
-          </Button>
+          </SecondaryButton>
         </ButtonWrapper>
       )}
       {user && (

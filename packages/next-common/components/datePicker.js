@@ -6,12 +6,12 @@ import useOnClickOutside from "../utils/hooks/useOnClickOutside";
 import ArrowLeft from "../assets/imgs/icons/caret-left-16.svg";
 import ArrowRight from "../assets/imgs/icons/caret-right-16.svg";
 import Close from "../assets/imgs/icons/close-16.svg";
-import Button from "./button";
 import { p_14_medium, p_14_normal } from "../styles/componentCss";
 import Flex from "./styled/flex";
 import FlexBetween from "./styled/flexBetween";
 import Input from "./input";
 import Background from "./styled/backgroundShade";
+import SecondaryButton from "./buttons/secondaryButton";
 
 const CaretWrapper = styled.div`
   cursor: pointer;
@@ -166,7 +166,7 @@ const DateWrapper = styled.div`
 
   .react-datepicker {
     padding: 20px 12px;
-    border: 1px solid #e0e4eb;
+    border: 1px solid ${(props) => props.theme.grey300Border};
     border-radius: 4px;
   }
 
@@ -219,14 +219,14 @@ const DateWrapper = styled.div`
   }
 
   .react-datepicker__day--selected {
-    background: #ebeef4;
+    background: ${(props) => props.theme.grey200Border};
     &:hover {
-      background: #ebeef4;
+      background: ${(props) => props.theme.grey200Border};
     }
   }
 
   .react-datepicker__day--outside-month {
-    color: #9da9bb;
+    color: ${(props) => props.theme.textTertiary};
   }
 
   .react-datepicker__day--keyboard-selected {
@@ -234,7 +234,7 @@ const DateWrapper = styled.div`
   }
 
   .react-datepicker__day--disabled {
-    color: #9da9bb;
+    color: ${(props) => props.theme.textTertiary};
     cursor: not-allowed;
 
     &:hover {
@@ -242,7 +242,7 @@ const DateWrapper = styled.div`
     }
   }
   ${(props) =>
-    props?.theme === "dark" &&
+    props?.theme.isDark &&
     css`
       .react-datepicker {
         border-color: #363a4d !important;
@@ -295,7 +295,7 @@ const DateHeader = styled(Flex)`
   > b {
     font-family: Inter, sans-serif;
     text-align: center;
-    color: #1e2134;
+    color: ${(props) => props.theme.textPrimary};
     flex: 1 1 auto;
   }
 
@@ -303,7 +303,7 @@ const DateHeader = styled(Flex)`
     cursor: pointer;
 
     path {
-      fill: #506176;
+      fill: ${(props) => props.theme.textSecondary};
     }
   }
 `;
@@ -469,8 +469,7 @@ export default function DatePicker({
                     />
                   </TimeWrapper>
                   <ButtonWrapper>
-                    <Button
-                      primary
+                    <SecondaryButton
                       disabled={hour === "" || minute === ""}
                       onClick={() => {
                         if (!date) {
@@ -487,7 +486,7 @@ export default function DatePicker({
                       }}
                     >
                       Confirm
-                    </Button>
+                    </SecondaryButton>
                   </ButtonWrapper>
                 </DateWrapper>
               </Background>

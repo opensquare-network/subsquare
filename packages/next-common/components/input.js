@@ -57,10 +57,10 @@ const InputWrapper = styled.input`
   display: block;
   padding: 10px 16px;
   font-size: 14px;
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
   background: transparent;
   ::placeholder {
-    color: #d7dee8;
+    color: ${(props) => props.theme.textPlaceholder};
   }
 `;
 
@@ -101,7 +101,7 @@ const SymbolWrapper = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 100%;
-  border-left: 1px solid #e0e4eb;
+  border-left: 1px solid ${(props) => props.theme.grey300Border};
 `;
 const OuterWrapper = styled.div``;
 

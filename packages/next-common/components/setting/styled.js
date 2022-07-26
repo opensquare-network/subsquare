@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { shadow_100 } from "../../styles/componentCss";
 
 export const Wrapper = styled.div`
@@ -34,17 +34,9 @@ export const ContentWrapper = styled.div`
   input {
     background-color: ${(props) => props.theme.neutral};
     border-color: ${(props) => props.theme.grey300Border};
-    color: ${(props) => props.theme.textPrimary};
   }
   button {
     overflow: hidden;
-  }
-  button,
-  button div {
-    background-color: ${(props) => props.theme.primaryDarkBlue};
-  }
-  * {
-    color: ${(props) => props.theme.textPrimary};
   }
 `;
 
@@ -52,6 +44,7 @@ export const Label = styled.div`
   margin-bottom: 8px;
   font-weight: bold;
   font-size: 12px;
+  color: ${(props) => props.theme.textPrimary};
   :not(:first-child) {
     margin-top: 16px;
   }
