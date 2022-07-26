@@ -18,7 +18,6 @@ import { EditablePanel } from "next-common/components/styled/panel";
 import { getMotionId, shortMotionId } from "next-common/utils/motion";
 import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
-import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -95,11 +94,11 @@ const ReferendaWrapper = styled(Flex)`
   justify-content: center;
   flex-wrap: wrap;
   padding: 12px;
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
   margin-bottom: 16px;
   font-weight: 500;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
 
   > div {
     display: flex;
@@ -108,22 +107,16 @@ const ReferendaWrapper = styled(Flex)`
 
   > div > svg {
     margin-right: 8px;
-    fill: #9da9bb;
+    fill: ${(props) => props.theme.textTertiary};
   }
 
   a {
-    color: #1f70c7;
+    color: ${(props) => props.theme.secondarySapphire500};
   }
 
   > :not(:first-child) {
     margin-left: 8px;
   }
-
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background: #1d1e2c;
-    `};
 `;
 
 const getTypeColor = (type) => {
@@ -150,7 +143,6 @@ export default function DetailItem({
 }) {
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
-  const [theme] = useDarkMode();
   if (!post) {
     return null;
   }
@@ -158,11 +150,11 @@ export default function DetailItem({
   const postUpdatedTime = getPostUpdatedAt(post);
 
   return (
-    <EditablePanel theme={theme}>
+    <EditablePanel>
       {!isEdit && (
         <>
           {type === TYPE_DEMOCRACY_EXTERNAL && (
-            <ReferendaWrapper theme={theme}>
+            <ReferendaWrapper>
               {post?.onchainData?.motions?.map((motion, key) => (
                 <div key={key}>
                   <Link href={`/council/motion/${getMotionId(motion)}`}>
@@ -197,7 +189,7 @@ export default function DetailItem({
             </ReferendaWrapper>
           )}
           {type === TYPE_DEMOCRACY_PROPOSAL && (
-            <ReferendaWrapper theme={theme}>
+            <ReferendaWrapper>
               <div>{`Proposal #${post.proposalIndex}`}</div>
               {post?.referendumIndex !== undefined && (
                 <div>
@@ -211,7 +203,7 @@ export default function DetailItem({
           )}
           {type === TYPE_DEMOCRACY_REFERENDUM &&
             post.externalProposalHash !== undefined && (
-              <ReferendaWrapper theme={theme}>
+              <ReferendaWrapper>
                 {post?.onchainData?.motions?.map((motion, key) => (
                   <div key={key}>
                     <Link href={`/council/motion/${getMotionId(motion)}`}>
@@ -252,7 +244,7 @@ export default function DetailItem({
             )}
           {type === TYPE_DEMOCRACY_REFERENDUM &&
             post.proposalIndex !== undefined && (
-              <ReferendaWrapper theme={theme}>
+              <ReferendaWrapper>
                 <Link href={`/democracy/proposal/${post.proposalIndex}`}>
                   {`Proposal #${post.proposalIndex}`}
                 </Link>

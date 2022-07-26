@@ -1,11 +1,10 @@
-import { useEffect, useState, useRef } from "react";
+import { useRef, useState } from "react";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import SourceTabs from "next-common/components/comment/sourceTabs";
 import Comments from "next-common/components/comment";
 import Editor from "next-common/components/comment/editor";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
-import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 export default function useComment({
   detail,
@@ -16,7 +15,6 @@ export default function useComment({
   tabIndex,
   setTabIndex,
 }) {
-  const [theme] = useDarkMode();
   const postId = detail._id;
 
   const editorWrapperRef = useRef(null);
@@ -50,7 +48,7 @@ export default function useComment({
   }
 
   const CommentComponent = (
-    <CommentsWrapper theme={theme}>
+    <CommentsWrapper>
       <Comments
         data={comments}
         user={loginUser}

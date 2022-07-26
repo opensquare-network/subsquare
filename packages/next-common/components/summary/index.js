@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useSelector } from "react-redux";
 import CountDown from "./countDown";
 import {
@@ -18,8 +18,6 @@ import {
 } from "../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
-import useDarkMode from "../../utils/hooks/useDarkMode";
-import { dark_grey_200, dark_neutral } from "../../styles/componentCss";
 
 const Wrapper = styled.div`
   display: flex;
@@ -39,8 +37,9 @@ const Wrapper = styled.div`
 
 const Card = styled.div`
   position: relative;
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
+  color: ${(props) => props.theme.textPrimary};
   box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
     0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
     0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
@@ -48,13 +47,6 @@ const Card = styled.div`
   flex: 0 1 33.33%;
   height: 88px;
   padding: 26px 24px;
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background: ${dark_neutral};
-      border-color: ${dark_grey_200};
-      color: #fff;
-    `};
 `;
 
 const Title = styled.div`
@@ -62,7 +54,7 @@ const Title = styled.div`
   font-size: 12px;
   line-height: 100%;
   letter-spacing: 0.16em;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   margin-bottom: 8px;
 `;
 
@@ -70,10 +62,10 @@ const Content = styled.div`
   font-weight: bold;
   font-size: 16px;
   line-height: 100%;
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
 
   > .unit {
-    color: #9da9bb;
+    color: ${(props) => props.theme.textTertiary};
   }
 
   > .upper {
@@ -83,11 +75,6 @@ const Content = styled.div`
   > :not(:first-child) {
     margin-left: 4px;
   }
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      color: #fff;
-    `};
 `;
 
 const CountDownWrapper = styled.div`
@@ -103,7 +90,6 @@ export default function Summary({ chain }) {
   const node = getNode(chain);
   const blockTime = useSelector(blockTimeSelector);
   const finalizedHeight = useSelector(finalizedHeightSelector);
-  const [theme] = useDarkMode();
 
   const decimals = node?.decimals;
   const symbol = node?.symbol;
@@ -131,23 +117,23 @@ export default function Summary({ chain }) {
 
   return (
     <Wrapper>
-      <Card theme={theme}>
+      <Card>
         <Title>AVAILABLE</Title>
-        <Content theme={theme}>
+        <Content>
           <span>{abbreviateBigNumber(toPrecision(free, decimals))}</span>
           <span className="unit upper">{symbol}</span>
         </Content>
       </Card>
-      <Card theme={theme}>
+      <Card>
         <Title>NEXT BURN</Title>
-        <Content theme={theme}>
+        <Content>
           <span>{abbreviateBigNumber(toPrecision(nextBurn, decimals))}</span>
           <span className="unit upper">{symbol}</span>
         </Content>
       </Card>
-      <Card theme={theme}>
+      <Card>
         <Title>SPEND PERIOD</Title>
-        <Content theme={theme}>
+        <Content>
           {(summary?.spendPeriod || []).map((item, index) => (
             <span className={index % 2 === 1 ? "unit" : ""} key={index}>
               {item}

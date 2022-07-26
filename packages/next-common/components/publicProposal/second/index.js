@@ -1,6 +1,5 @@
-import React from "react";
-import styled, { css } from "styled-components";
-import { useState } from "react";
+import React, { useState } from "react";
+import styled from "styled-components";
 import dynamic from "next/dynamic";
 import countBy from "lodash.countby";
 import BigNumber from "bignumber.js";
@@ -13,7 +12,6 @@ import useDepositOf from "../../../utils/hooks/useDepositOf";
 import useApi from "../../../utils/hooks/useSelectedEnpointApi";
 import { getNode } from "utils";
 import Tooltip from "../../tooltip";
-import useDarkMode from "../../../utils/hooks/useDarkMode";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -37,14 +35,9 @@ const Wrapper = styled.div`
 
 const Content = styled.div`
   padding: 24px;
-  background: #ebeef4;
+  background: ${(props) => props.theme.neutral};
+  color: ${(props) => props.theme.textPrimary};
   border-radius: 6px;
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background-color: #212433;
-      color: rgba(255, 255, 255, 0.6);
-    `}
 `;
 
 const Title = styled.div`
@@ -68,7 +61,7 @@ const NoSeconds = styled.div`
   text-align: center;
   font-size: 12px;
   line-height: 140%;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 const SecondsList = styled.div`
@@ -84,7 +77,7 @@ const SecondItem = styled.div`
   justify-content: space-between;
   font-size: 12px;
   line-height: 100%;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   > :last-child {
     white-space: nowrap;
   }
@@ -94,15 +87,15 @@ const DepositRequired = styled.div`
   font-weight: 400;
   font-size: 12px;
   line-height: 100%;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
 `;
 
 const Description = styled.div`
   font-size: 12px;
   line-height: 140%;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   > span {
-    color: #6848ff;
+    color: ${(props) => props.theme.primaryPurple500};
     cursor: pointer;
   }
 `;
@@ -112,7 +105,7 @@ const ListMore = styled.div`
   margin-top: 16px !important;
   font-weight: 500;
   font-size: 12px;
-  color: #6848ff;
+  color: ${(props) => props.theme.primaryPurple500}; ;
 `;
 
 export default function Second({
@@ -135,7 +128,6 @@ export default function Second({
     triggerUpdate
   );
   const node = getNode(chain);
-  const [theme] = useDarkMode();
   const secondsCount = countBy(seconds);
   const secondsAddress = Object.keys(secondsCount);
 
@@ -206,7 +198,7 @@ export default function Second({
   return (
     <>
       <Wrapper>
-        <Content theme={theme}>
+        <Content>
           <Title>
             <div>Second</div>
             <div>{totalSeconds}</div>

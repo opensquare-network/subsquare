@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import CountDown from "next-common/components/summary/countDown";
 import useApi from "../../utils/hooks/useApi";
 import { estimateBlocksTime } from "../../utils";
@@ -10,8 +10,6 @@ import {
   finalizedHeightSelector,
 } from "../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
-import useDarkMode from "../../utils/hooks/useDarkMode";
-import { dark_grey_200, dark_neutral } from "../../styles/componentCss";
 
 const Wrapper = styled.div`
   display: flex;
@@ -31,8 +29,9 @@ const Wrapper = styled.div`
 
 const Card = styled.div`
   position: relative;
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
+  color: ${(props) => props.theme.textPrimary};
   box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
     0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
     0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
@@ -40,13 +39,6 @@ const Card = styled.div`
   flex: 0 1 33.33%;
   height: 88px;
   padding: 26px 24px;
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background: ${dark_neutral};
-      border-color: ${dark_grey_200};
-      color: #fff;
-    `};
 `;
 
 const Title = styled.div`
@@ -54,7 +46,7 @@ const Title = styled.div`
   font-size: 12px;
   line-height: 100%;
   letter-spacing: 0.16em;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   margin-bottom: 8px;
   text-transform: uppercase;
 `;
@@ -63,10 +55,10 @@ const Content = styled.div`
   font-weight: bold;
   font-size: 16px;
   line-height: 100%;
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
 
   > .unit {
-    color: #9da9bb;
+    color: ${(props) => props.theme.textTertiary};
   }
 
   > .upper {
@@ -76,11 +68,6 @@ const Content = styled.div`
   > :not(:first-child) {
     margin-left: 4px;
   }
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      color: #fff;
-    `};
 `;
 
 const CountDownWrapper = styled.div`
@@ -114,7 +101,6 @@ export default function DemocracySummary({ chain }) {
   const api = useApi(chain, endpoint);
   const blockTime = useSelector(blockTimeSelector);
   const finalizedHeight = useSelector(finalizedHeightSelector);
-  const [theme] = useDarkMode();
 
   const getLaunchPeriod = async function () {
     if (api && finalizedHeight) {
@@ -166,27 +152,27 @@ export default function DemocracySummary({ chain }) {
 
   return (
     <Wrapper>
-      <Card theme={theme}>
+      <Card>
         <Title>Proposals</Title>
-        <Content theme={theme}>
+        <Content>
           <span>
             {summary.activeProposalsCount || 0}
             <GreyText> / {summary.publicPropCount || 0}</GreyText>
           </span>
         </Content>
       </Card>
-      <Card theme={theme}>
+      <Card>
         <Title>Referenda</Title>
-        <Content theme={theme}>
+        <Content>
           <span>
             {summary.referendumCount || 0}
             <GreyText> / {summary.referendumTotal || 0}</GreyText>
           </span>
         </Content>
       </Card>
-      <Card theme={theme}>
+      <Card>
         <Title>Launch period</Title>
-        <Content theme={theme}>
+        <Content>
           {(summary?.launchPeriod || []).map((item, index) => (
             <span className={index % 2 === 1 ? "unit" : ""} key={index}>
               {item}

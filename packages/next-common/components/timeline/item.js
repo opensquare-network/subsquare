@@ -46,14 +46,14 @@ const Left = styled.div`
 const Cirtcle = styled.div`
   height: 12px;
   width: 12px;
-  border: 3px solid #6848ff;
+  border: 3px solid ${(props) => props.theme.primaryPurple500};
   border-radius: 50%;
   margin: 4px 0;
 `;
 
 const Bar = styled.div`
   width: 2px;
-  background-color: #b4a3ff;
+  background-color: ${(props) => props.theme.primaryPurple300};
   margin: 0 auto;
   flex-grow: 1;
 `;
@@ -107,7 +107,7 @@ const ContentItem = styled(Flex)`
   word-break: break-word;
   font-size: 14px;
   > :first-child {
-    color: #506176;
+    color: ${(props) => props.theme.textSecondary};
     line-height: 28px;
     flex: 0 0 120px;
   }

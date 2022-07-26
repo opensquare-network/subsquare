@@ -2,7 +2,6 @@ import React from "react";
 import styled, { css } from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import useDarkMode from "../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   padding-top: 8px;
@@ -60,32 +59,20 @@ const Item = styled.a`
   justify-content: center;
   font-size: 14px;
   font-weight: 500;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
 
   :hover {
-    background: #ebeef4;
-    ${(props) =>
-      props?.theme === "dark" &&
-      css`
-        background: #272a3a;
-      `};
+    background: ${(props) => props.theme.grey200Border};
   }
 
   ${(p) =>
     p.active &&
     css`
-      background: #ebeef4;
-      color: #1e2134;
+      background: ${(props) => props.theme.grey200Border};
+      color: ${(props) => props.theme.textPrimary};
       cursor: auto;
       pointer-events: none;
     `}
-  ${(props) =>
-    props?.theme === "dark" &&
-    props.active &&
-    css`
-      background: #272a3a;
-      color: white;
-    `};
 `;
 
 const Ellipsis = styled.div`
@@ -105,7 +92,6 @@ const encodeURIQuery = (q) =>
 
 export default function Pagination({ page, pageSize, total }) {
   const router = useRouter();
-  const [theme] = useDarkMode();
   const totalPages = Math.ceil(total / pageSize)
     ? Math.ceil(total / pageSize)
     : 1;
@@ -140,9 +126,7 @@ export default function Pagination({ page, pageSize, total }) {
             })}`}
             passHref
           >
-            <Item theme={theme} active={page === index + 1}>
-              {index + 1}
-            </Item>
+            <Item active={page === index + 1}>{index + 1}</Item>
           </Link>
         )
       )}

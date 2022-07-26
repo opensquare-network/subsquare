@@ -1,13 +1,12 @@
-import styled, { css, withTheme } from "styled-components";
+import styled, { withTheme } from "styled-components";
 
 import Flex from "next-common/components/styled/flex";
-import { getNode, toPrecision, decimalPlaces } from "utils";
+import { decimalPlaces, getNode, toPrecision } from "utils";
 import { bigNumber2Locale } from "next-common/utils";
 import User from "next-common/components/user";
 import { Fragment, useState } from "react";
 import Loading from "next-common/components/loading";
 import PrimeAddressMark from "next-common/components/primeAddressMark";
-import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   max-width: 932px;

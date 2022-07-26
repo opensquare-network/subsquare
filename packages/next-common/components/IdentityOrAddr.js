@@ -10,7 +10,7 @@ import useDarkMode from "../utils/hooks/useDarkMode";
 const NameWrapper = styled.div`
   font-size: 14px;
   font-weight: 500;
-  color: #1f70c7;
+  color: ${(props) => props.theme.secondarySapphire500};
   ${(props) =>
     props?.theme === "dark" &&
     css`

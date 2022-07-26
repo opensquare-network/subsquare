@@ -1,31 +1,22 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { shadow_100 } from "../../styles/componentCss";
 import React, { memo, useState } from "react";
 import { timeDurationFromNow } from "../../utils";
 import Caret from "../icons/caret";
-import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
   ${shadow_100};
   border-radius: 4px;
   padding: 48px;
+  color: ${(props) => props.theme.textPrimary};
+
   @media screen and (max-width: 768px) {
     max-width: 100%;
     padding: 24px;
     border-radius: 0;
   }
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      color: #ffffff;
-      background: #212433;
-      border-color: #272a3a;
-      * {
-        color: #ffffff;
-      }
-    `};
 `;
 
 const TitleWrapper = styled.div`
@@ -42,7 +33,7 @@ const TitleWrapper = styled.div`
     > :last-child {
       margin-left: 12px;
       font-size: 12px;
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary};
       display: inline-flex;
     }
   }
@@ -63,10 +54,9 @@ function TimelineAccordion({
   children,
 }) {
   const [fold, setFold] = useState(false);
-  const [theme] = useDarkMode();
 
   return (
-    <Wrapper theme={theme}>
+    <Wrapper>
       <TitleWrapper>
         <div className="title">
           <span>Timeline</span>

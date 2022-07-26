@@ -5,28 +5,23 @@ import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import { shadow_200 } from "../../styles/componentCss";
 import { CaretDown } from "../icons";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
-import { light_text_primary } from "../../styles/colors";
-import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const selectorHeight = 38;
 
 const SelectWrapper = styled(FlexBetweenCenter)`
   position: relative;
   font-size: 14px;
-  background-color: #fff;
-  border: 1px solid #e0e4eb;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
   height: ${selectorHeight}px;
   padding: 0 12px;
   cursor: pointer;
-  color: ${light_text_primary};
-  :hover {
-    border-color: #c2c8d5;
-  }
+  color: ${(props) => props.theme.textPrimary};
   ${(p) =>
     p.disabled &&
     css`
-      background-color: #f6f7fa;
+      background-color: ${(props) => props.theme.grey100Bg};
       color: #e0e5ed;
       cursor: default;
 
@@ -35,13 +30,6 @@ const SelectWrapper = styled(FlexBetweenCenter)`
           stroke: #e0e5ed;
         }
       }
-    `}
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background: #212433;
-      border-color: #363a4d;
-      color: white;
     `}
 `;
 
@@ -54,19 +42,15 @@ const OptionsWrapper = styled.div`
   left: 0;
   right: 0;
   top: ${selectorHeight + 4}px;
-  background-color: #ffffff;
+  background: ${(props) => props.theme.neutral};
   ${shadow_200};
   border-radius: 4px;
   padding: 8px 0;
   width: 100%;
+  border-width: ${(props) => (props.theme.isDark ? 1 : 0)} px;
+  border-color: ${(props) => props.theme.grey300Border};
   z-index: 999999;
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background: #212433;
-      border-color: #363a4d;
-      color: white !important;
-    `}
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 function Select({
@@ -77,7 +61,6 @@ function Select({
 }) {
   const ref = useRef();
   const [showOptions, setShowOptions] = useState(false);
-  const [theme] = useDarkMode();
   useOnClickOutside(ref, () => setShowOptions(false));
 
   const handleShowOptions = () => {
@@ -94,19 +77,14 @@ function Select({
   );
 
   return (
-    <SelectWrapper
-      ref={ref}
-      disabled={disabled}
-      onClick={handleShowOptions}
-      theme={theme}
-    >
+    <SelectWrapper ref={ref} disabled={disabled} onClick={handleShowOptions}>
       <SelectInner>
         <span>{displayValue}</span>
         <CaretDown className="select-caret-down" width={14} height={14} />
       </SelectInner>
 
       {showOptions && (
-        <OptionsWrapper theme={theme}>
+        <OptionsWrapper>
           {options.map((option) => (
             <Option
               key={option.value}

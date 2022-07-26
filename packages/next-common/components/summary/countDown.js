@@ -1,7 +1,5 @@
 import React from "react";
-import styled, { css } from "styled-components";
-import useDarkMode from "../../utils/hooks/useDarkMode";
-import { dark_neutral } from "../../styles/componentCss";
+import styled from "styled-components";
 
 const CircleWrapper = styled.div`
   position: relative;
@@ -14,14 +12,8 @@ const BackCircle = styled.div`
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  border: 8px solid #f5f2ff;
-  background: white;
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background: ${dark_neutral};
-      border-color: rgba(104, 72, 255, 0.1);
-    `};
+  border: 8px solid ${(props) => props.theme.primaryPurple100};
+  background: ${(props) => props.theme.neutral};
 `;
 
 const InnerCircleWrapper = styled.div`
@@ -36,14 +28,9 @@ const InnerCircle = styled.div`
   height: 46px;
   left: 1px;
   top: 1px;
-  background: white;
+  background: ${(props) => props.theme.neutral};
   border-radius: 50%;
-  border: 6px solid #6848ff;
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      background: ${dark_neutral};
-    `};
+  border: 6px solid ${(props) => props.theme.primaryPurple500};
 `;
 
 const InnerCircleLeft = styled(InnerCircle)`
@@ -72,16 +59,10 @@ const PercentLable = styled.div`
   left: 50%;
   font-size: 12px;
   font-weight: bold;
-  color: rgba(0, 0, 0, 0.9);
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      color: white;
-    `};
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 const CountDown = ({ percent = 0 }) => {
-  const [theme] = useDarkMode();
   let percentInt = parseInt(percent);
   if (isNaN(percentInt) || percentInt < 0) {
     percentInt = 0;
@@ -92,15 +73,15 @@ const CountDown = ({ percent = 0 }) => {
   }
   const overHalf = percentInt > 50;
   return (
-    <CircleWrapper theme={theme}>
-      <BackCircle theme={theme} />
-      <InnerCircleWrapper theme={theme}>
-        <InnerCircleLeft theme={theme} turn={turn} overHalf={overHalf} />
-        <InnerCircleMaskLeft theme={theme} overHalf={overHalf} />
-        <InnerCircleMaskRight theme={theme} overHalf={overHalf} />
-        <InnerCircleRight theme={theme} overHalf={overHalf} />
+    <CircleWrapper>
+      <BackCircle />
+      <InnerCircleWrapper>
+        <InnerCircleLeft turn={turn} overHalf={overHalf} />
+        <InnerCircleMaskLeft overHalf={overHalf} />
+        <InnerCircleMaskRight overHalf={overHalf} />
+        <InnerCircleRight overHalf={overHalf} />
       </InnerCircleWrapper>
-      <PercentLable theme={theme}>{`${percentInt}%`}</PercentLable>
+      <PercentLable>{`${percentInt}%`}</PercentLable>
     </CircleWrapper>
   );
 };

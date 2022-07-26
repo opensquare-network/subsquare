@@ -1,9 +1,8 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { timeDurationFromNow } from "next-common/utils";
 import Edit from "../edit";
 import nextApi from "next-common/services/nextApi";
-import { useEffect, useState } from "react";
 import ReplyIcon from "../../assets/imgs/icons/reply.svg";
 import ThumbUpIcon from "../../assets/imgs/icons/thumb-up.svg";
 import UnfoldIcon from "../../assets/imgs/icons/unfold.svg";
@@ -22,7 +21,6 @@ import {
 } from "@osn/previewer";
 import IdentityOrAddr from "../IdentityOrAddr";
 import { prettyHTML, renderDisableNonAddressLink } from "../../utils/viewfuncs";
-import useDarkMode from "../../utils/hooks/useDarkMode";
 
 const Wrapper = styled.div`
   position: relative;
@@ -44,12 +42,7 @@ const Wrapper = styled.div`
       left: 28px;
       width: calc(100% - 28px);
     }
-    background-color: #ebeef4;
-    ${(props) =>
-      props?.theme === "dark" &&
-      css`
-        background: #272a3a;
-      `};
+    background-color: ${(props) => props.theme.grey200Border};
   }
 
   :hover {
@@ -79,7 +72,7 @@ const InfoWrapper = styled(Flex)`
 const ContentWrapper = styled.div`
   margin: 8px 0 0 28px;
   ${(props) =>
-    props?.theme === "dark" &&
+    props?.theme.isDark &&
     css`
       div.markdown-body pre,
       div.html-body pre {
@@ -109,11 +102,11 @@ const ActionItem = styled(Flex)`
       cursor: pointer;
 
       :hover {
-        color: #506176;
+        color: ${(props) => props.theme.textSecondary};
 
         > svg {
           path {
-            fill: #506176;
+            fill: ${(props) => props.theme.textSecondary};
           }
         }
       }
@@ -122,20 +115,20 @@ const ActionItem = styled(Flex)`
   ${(p) =>
     p.highlight
       ? css`
-          color: #506176;
+          color: ${(props) => props.theme.textSecondary};
 
           > svg {
             path {
-              fill: #506176;
+              fill: ${(props) => props.theme.textSecondary};
             }
           }
         `
       : css`
-          color: #9da9bb;
+          color: ${(props) => props.theme.textTertiary};
 
           > svg {
             path {
-              fill: #9da9bb;
+              fill: ${(props) => props.theme.textTertiary};
             }
           }
         `}
@@ -153,7 +146,7 @@ const ActionItem = styled(Flex)`
     margin-right: 8px;
   }
   ${(props) =>
-    props?.theme === "dark" &&
+    props?.theme.isDark &&
     css`
       div {
         color: rgba(255, 255, 255, 0.25);
@@ -222,7 +215,6 @@ export default function Item({ user, data, chain, onReply }) {
     isLoggedIn &&
     comment?.reactions?.findIndex((r) => r.user?.username === user.username) >
       -1;
-  const [theme] = useDarkMode();
 
   const updateComment = async () => {
     const { result: updatedComment } = await nextApi.fetch(
@@ -270,14 +262,14 @@ export default function Item({ user, data, chain, onReply }) {
   };
 
   return (
-    <Wrapper id={comment.height} highlight={highlight} theme={theme}>
+    <Wrapper id={comment.height} highlight={highlight}>
       <InfoWrapper>
         <User user={comment.author} chain={chain} />
         <div>{timeDurationFromNow(comment.createdAt)}</div>
       </InfoWrapper>
       {!isEdit && (
         <>
-          <ContentWrapper ref={ref} theme={theme}>
+          <ContentWrapper ref={ref}>
             {comment.contentType === "markdown" && (
               <MarkdownPreviewer
                 content={comment.content}
@@ -316,7 +308,6 @@ export default function Item({ user, data, chain, onReply }) {
                 }
               }}
               noHover={!isLoggedIn || ownComment}
-              theme={theme}
             >
               <ReplyIcon />
               <div>Reply</div>
@@ -325,7 +316,6 @@ export default function Item({ user, data, chain, onReply }) {
               noHover={!isLoggedIn || ownComment}
               highlight={isLoggedIn && thumbUp}
               onClick={toggleThumbUp}
-              theme={theme}
             >
               <ThumbUpIcon />
               <div>Up ({comment?.reactions?.length ?? 0})</div>

@@ -2,7 +2,7 @@ import React from "react";
 import ExternalLink from "../externalLink";
 import ElementIcon from "../../assets/imgs/icons/element.svg";
 import MailIcon from "../../assets/imgs/icons/mail.svg";
-import styled, { css } from "styled-components";
+import styled, { css, withTheme } from "styled-components";
 import Flex from "../styled/flex";
 import useDarkMode from "../../utils/hooks/useDarkMode";
 import Sun from "../../assets/imgs/icons/sun.svg";
@@ -27,12 +27,7 @@ const Divider = styled.div`
   margin-right: 8px;
   width: 1px;
   height: 8px;
-  background-color: #363a4d;
-  ${(props) =>
-    props?.theme === "light" &&
-    css`
-      background-color: #e0e4eb;
-    `};
+  background-color: ${(props) => props.theme.grey200Border};
 `;
 
 const ThemeToggle = styled.div`
@@ -42,7 +37,7 @@ const ThemeToggle = styled.div`
   &:hover {
     svg path {
       ${(props) =>
-        props?.theme === "light" &&
+        props?.theme.isDark &&
         css`
           fill: rgb(157, 169, 187);
         `};
@@ -51,8 +46,8 @@ const ThemeToggle = styled.div`
   }
 `;
 
-export default function Contacts() {
-  const [theme, themeToggler] = useDarkMode();
+function Contacts({ theme }) {
+  const [, themeToggler] = useDarkMode();
   return (
     <FlexWrapper>
       {/*<ExternalLink href="http://docs.subsquare.io/" title="Document">*/}
@@ -67,10 +62,12 @@ export default function Contacts() {
       <ExternalLink href="mailto:hi@opensquare.network" title="Send EMail">
         <MailIcon />
       </ExternalLink>
-      <Divider theme={theme} />
-      <ThemeToggle onClick={themeToggler} theme={theme}>
-        {theme === "light" ? <Moon /> : <Sun />}
+      <Divider />
+      <ThemeToggle onClick={themeToggler}>
+        {theme?.isDark ? <Sun /> : <Moon />}
       </ThemeToggle>
     </FlexWrapper>
   );
 }
+
+export default withTheme(Contacts);

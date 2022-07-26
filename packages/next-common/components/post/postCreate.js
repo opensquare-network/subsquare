@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import styled, { css } from "styled-components";
@@ -13,7 +13,7 @@ import Button from "next-common/components/button";
 import ErrorText from "next-common/components/ErrorText";
 import AdvancedForm from "next-common/components/post/advanced/form";
 import dynamic from "next/dynamic";
-import useDarkMode from "../../utils/hooks/useDarkMode";
+
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
   { ssr: false }
@@ -21,14 +21,23 @@ const UniverseEditor = dynamic(
 
 const Wrapper = styled.div`
   padding: 48px;
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
+  color: ${(props) => props.theme.textPrimary};
   ${shadow_100};
   border-radius: 6px;
   textarea:read-only,
   div.ql-disabled {
-    background-color: #f6f7fa !important;
+    background-color: ${(props) => props.theme.grey100Bg} !important;
   }
+
+  div + textarea {
+    border-color: ${(props) => props.theme.grey300Border};
+  }
+  input {
+    color: ${(props) => props.theme.textPrimary};
+  }
+
   @media screen and (max-width: 768px) {
     margin-left: -16px;
     margin-right: -16px;
@@ -36,20 +45,10 @@ const Wrapper = styled.div`
     padding: 24px;
   }
   ${(props) =>
-    props?.theme === "dark" &&
+    props?.theme.isDark &&
     css`
-      background: #212433;
-      border-color: #363a4d;
       div {
         border-color: #363a4d !important;
-      }
-      color: white;
-      div + textarea {
-        background: #212433;
-        border-color: #363a4d;
-      }
-      input {
-        color: #ffffff;
       }
     `};
 `;
@@ -82,7 +81,7 @@ const ButtonWrapper = styled.div`
 const InputWrapper = styled.div`
   position: relative;
   ${(props) =>
-    props?.theme === "dark" &&
+    props?.theme.isDark &&
     css`
       div.modal {
         background-color: #1d1e2c !important;
@@ -166,7 +165,6 @@ const UploaderWrapper = styled.div`
 export default function PostCreate({ chain, loginUser }) {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [theme] = useDarkMode();
   const [title, setTitle] = useState("");
   const [creating, setCreating] = useState(false);
   const [content, setContent] = useState("");
@@ -228,7 +226,7 @@ export default function PostCreate({ chain, loginUser }) {
   }, [isEmpty, formValue, isAdvanced]);
 
   return (
-    <Wrapper theme={theme}>
+    <Wrapper>
       <Title>New Post</Title>
       <LabelWrapper>
         <Label>Title</Label>
@@ -258,7 +256,7 @@ export default function PostCreate({ chain, loginUser }) {
         <Label>Issue</Label>
       </LabelWrapper>
 
-      <InputWrapper theme={theme}>
+      <InputWrapper>
         <UniverseEditor
           value={content}
           onChange={setContent}
