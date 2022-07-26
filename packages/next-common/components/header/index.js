@@ -24,9 +24,9 @@ const Left = styled(Flex)`
 `;
 
 const MenuButton = styled(Flex)`
-  background: #fff;
+  background: ${(props) => props.theme.neutral};
   display: none !important;
-  border: 1px solid #e0e4eb;
+  border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
   width: 38px;
   height: 38px;
@@ -35,6 +35,9 @@ const MenuButton = styled(Flex)`
   @media screen and (max-width: 1024px) {
     display: flex !important;
     margin-right: 12px;
+  }
+  svg path {
+    stroke: ${(props) => props.theme.textTertiary};
   }
 `;
 
