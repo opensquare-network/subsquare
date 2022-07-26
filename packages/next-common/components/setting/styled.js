@@ -31,11 +31,17 @@ export const ContentWrapper = styled.div`
     padding: 24px;
   }
   div,
-  input,
-  button {
+  input {
     background-color: ${(props) => props.theme.neutral};
     border-color: ${(props) => props.theme.grey300Border};
     color: ${(props) => props.theme.textPrimary};
+  }
+  button {
+    overflow: hidden;
+  }
+  button,
+  button div {
+    background-color: ${(props) => props.theme.primaryDarkBlue};
   }
   * {
     color: ${(props) => props.theme.textPrimary};
