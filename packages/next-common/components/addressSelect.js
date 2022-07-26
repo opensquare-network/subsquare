@@ -94,13 +94,13 @@ const Item = styled(Flex)`
     css`
       :hover,
       :hover div {
-        background: #272a3a;
+        background: ${(props) => props.theme.grey200Border};
       }
     `};
   ${(p) =>
     p.selected &&
     css`
-      background: #f6f7fa;
+      background: ${(props) => props.theme.grey100Bg};
     `}
 `;
 
