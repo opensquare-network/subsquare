@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   padding: 4px 8px;
   background: ${(p) => p.color ?? "#c2c8d5"};
   border-radius: 2px;
-  color: #ffffff;
+  color: #ffffff !important;
   font-weight: 500;
   font-size: 12px;
   line-height: 100%;

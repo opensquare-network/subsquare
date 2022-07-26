@@ -78,8 +78,7 @@ const TypeWrapper = styled.div`
   height: 20px;
   line-height: 20px;
   border-radius: 10px;
-  background: #1e2134;
-  color: #e81f66;
+  color: #ffffff !important;
   font-weight: 500;
   font-size: 12px;
   padding: 0 8px;
