@@ -16,7 +16,7 @@ const Wrapper = styled.div`
 
   flex-grow: 1;
 
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
 
   justify-content: space-between;
@@ -58,7 +58,7 @@ const Button = styled.div`
       ? css`
           color: #1e2134;
 
-          background: #ffffff;
+          background: ${(props) => props.theme.neutral};
 
           box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
             0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
