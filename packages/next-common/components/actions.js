@@ -44,10 +44,10 @@ const Item = styled(Flex)`
           }
         `
       : css`
-          color: #9da9bb;
+          color: ${(props) => props.theme.textTertiary};
           > svg {
             path {
-              fill: #9da9bb;
+              fill: ${(props) => props.theme.textTertiary};
             }
           }
         `}
