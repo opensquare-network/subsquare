@@ -4,7 +4,7 @@ import {
   Polkassembly,
   SubSquare,
 } from "next-common/components/comment/sourceTabs";
-import useComment from "components/comment";
+import useCommentComponent from "next-common/components/useCommentComponent";
 import PolkassemblyComments from "./polkassemblyComments";
 
 export default function useUniversalComments({
@@ -17,7 +17,7 @@ export default function useUniversalComments({
   const paBtnRef = useRef();
   const [tabIndex, setTabIndex] = useState(SubSquare);
 
-  let { CommentComponent, focusEditor } = useComment({
+  let { CommentComponent, focusEditor } = useCommentComponent({
     detail,
     comments,
     loginUser,

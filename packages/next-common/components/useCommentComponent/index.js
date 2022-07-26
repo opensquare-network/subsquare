@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import SourceTabs from "next-common/components/comment/sourceTabs";
 import Comments from "next-common/components/comment";
@@ -7,7 +7,7 @@ import useMentionList from "next-common/utils/hooks/useMentionList";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
-export default function useComment({
+export default function useCommentComponent({
   detail,
   comments,
   loginUser,

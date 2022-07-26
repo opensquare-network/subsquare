@@ -5,33 +5,19 @@ import Layout from "next-common/components/layout";
 import TechcommMotionDetail from "components/motion/techcommMotionDetail";
 import { TYPE_TECH_COMM_MOTION } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
-import { getFocusEditor, getOnReply } from "next-common/utils/post";
-import { useRef, useState } from "react";
-import Comments from "next-common/components/comment";
-import CommentsWrapper from "next-common/components/styled/commentsWrapper";
-import Editor from "next-common/components/comment/editor";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { EmptyList } from "next-common/utils/constants";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
-import useMentionList from "next-common/utils/hooks/useMentionList";
+import useCommentComponent from "next-common/components/useCommentComponent";
 
 export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
-  const users = useMentionList(motion, comments, chain);
-  const editorWrapperRef = useRef(null);
-  const [quillRef, setQuillRef] = useState(null);
-  const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown"
-  );
-  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
-  const onReply = getOnReply(
-    contentType,
-    content,
-    setContent,
-    quillRef,
-    focusEditor,
-    chain
-  );
+  const { CommentComponent, focusEditor } = useCommentComponent({
+    detail: motion,
+    comments,
+    loginUser,
+    chain,
+    type: TYPE_TECH_COMM_MOTION,
+  });
 
   const desc = getMetaDesc(motion, "Proposal");
   return (
@@ -46,27 +32,10 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
           motion={motion}
           loginUser={loginUser}
           chain={chain}
-          onReply={onReply}
+          onReply={focusEditor}
           type={TYPE_TECH_COMM_MOTION}
         />
-        <CommentsWrapper>
-          <Comments
-            data={comments}
-            user={loginUser}
-            chain={chain}
-            onReply={onReply}
-          />
-          {loginUser && (
-            <Editor
-              postId={motion._id}
-              chain={chain}
-              ref={editorWrapperRef}
-              setQuillRef={setQuillRef}
-              {...{ contentType, setContentType, content, setContent, users }}
-              type={TYPE_TECH_COMM_MOTION}
-            />
-          )}
-        </CommentsWrapper>
+        {CommentComponent}
       </DetailPageWrapper>
     </Layout>
   );
