@@ -7,7 +7,13 @@ import LoginButtons from "./loginButtons";
 
 const Header = styled.div`
   display: flex;
-  justify-content: space-between;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  @media screen and (min-width: 768px) {
+    justify-content: space-between;
+  }
 `;
 
 const Title = styled.div`
