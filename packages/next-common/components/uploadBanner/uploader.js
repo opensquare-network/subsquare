@@ -1,14 +1,12 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import styled, { css } from "styled-components";
-import { grey_400, primary_purple_500 } from "next-common/styles/colors";
+import { grey_400 } from "next-common/styles/colors";
 import {
+  p_12_normal,
   text_accessory,
   text_secondary,
-  p_12_normal,
 } from "next-common/styles/componentCss";
 import Flex from "next-common/components/styled/flex";
-import Image from "next/image";
-import { useRef, useState } from "react";
 import nextApi from "next-common/services/nextApi";
 import Loading from "next-common/components/loading";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -33,7 +31,7 @@ const UploadArea = styled(Flex)`
   ${(p) =>
     p.active &&
     css`
-      border-color: ${primary_purple_500};
+      border-color: ${(props) => props.theme.primaryPurple500};
     `}
 `;
 

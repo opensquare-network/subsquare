@@ -16,9 +16,6 @@ const Wrapper = styled.div`
   background: ${(props) => props.theme.neutral};
   color: ${(props) => props.theme.textPrimary};
   border-color: ${(props) => props.theme.grey200Border};
-  * {
-    color: ${(props) => props.theme.textPrimary};
-  }
 
   .editor-toolbar,
   .ql-toolbar.ql-snow,
@@ -29,14 +26,6 @@ const Wrapper = styled.div`
 
   .editor-toolbar-buttons > div {
     background-color: ${(props) => props.theme.grey300Border} !important;
-  }
-
-  button:first-child {
-    box-shadow: 1px 0 0 0 ${(props) => props.theme.grey300Border} !important;
-  }
-
-  button:last-child {
-    box-shadow: 1px 0 0 0 ${(props) => props.theme.grey300Border} !important;
   }
 
   ${(props) =>

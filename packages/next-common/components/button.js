@@ -1,12 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import Loading from "./loading";
-import {
-  grey_400,
-  primary_purple_500,
-  primary_red_500,
-  primary_space,
-} from "../styles/colors";
 
 const Wrapper = styled.button`
   all: unset;
@@ -14,7 +8,7 @@ const Wrapper = styled.button`
   height: 38px;
   border-radius: 4px;
   cursor: pointer;
-  border: 1px solid #c2c8d5;
+  border: 1px solid ${(props) => props.theme.grey300Border}
   line-height: 38px;
   text-align: center;
   display: inline-block;
@@ -24,37 +18,37 @@ const Wrapper = styled.button`
   ${(p) =>
     p.disabled &&
     css`
-      background: ${grey_400} !important;
-      color: #ffffff;
-      border-color: ${grey_400} !important;
+      background: ${p.theme.grey400Border} !important;
+      color: ${p.theme.textContrast};
+      border-color: ${p.theme.grey400Border} !important;
       cursor: not-allowed;
     `}
   ${(p) =>
     p.primary &&
     css`
-      background: ${p.background || primary_space};
-      color: #ffffff;
-      border-color: ${primary_space};
+      background: ${p.background || p.theme.primaryDarkBlue};
+      color: ${p.theme.textContrast};
+      border-color: ${p.theme.primaryDarkBlue};
     `}
   ${(p) =>
     p.primaryInverse &&
     css`
-      background: ${p.background || primary_purple_500};
-      color: #ffffff;
-      border-color: ${primary_purple_500};
+      background: ${p.background || p.theme.primaryPurple500};
+      color: ${p.theme.textContrast};
+      border-color: ${p.theme.primaryPurple500};
     `}
   ${(p) =>
     p.secondary &&
     css`
-      background: ${p.background || primary_space};
-      color: #ffffff;
-      border-color: ${primary_space};
+      background: ${p.background || p.theme.primaryDarkBlue};
+      color: ${p.theme.textContrast};
+      border-color: ${p.theme.primaryPurple500};
     `}
   ${(p) =>
     p.danger &&
     css`
-      color: ${primary_red_500};
-      border-color: ${primary_red_500};
+      color: ${p.theme.secondaryRed500};
+      border-color: ${p.theme.secondaryRed500};
     `}
   ${(p) =>
     p.isFill &&

@@ -1,12 +1,11 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { primary_purple_500 } from "next-common/styles/colors";
 import { p_12_medium } from "next-common/styles/componentCss";
 
 const Text = styled.button`
   user-select: none;
   ${p_12_medium};
-  color: ${primary_purple_500};
+  color: ${(props) => props.theme.primaryPurple500};
   background-color: transparent;
   border: none;
 

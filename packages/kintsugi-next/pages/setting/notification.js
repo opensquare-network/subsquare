@@ -164,7 +164,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
         <Title>Notification</Title>
         <ContentWrapper>
           {disabled && (
-            <WarningMessage danger>
+            <WarningMessage>
               Please set the email to receive notifications
             </WarningMessage>
           )}
