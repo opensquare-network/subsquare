@@ -32,11 +32,11 @@ const Wrapper = styled.header`
 function HeaderWrapper({ chain, children }) {
   let ChainWrapper = Wrapper;
 
+  const [theme] = useDarkMode();
   const { width } = useWindowSize();
   if (parseInt(width) <= 768) {
     return <ChainWrapper>{children}</ChainWrapper>;
   }
-  const [theme] = useDarkMode();
 
   const setting = getChainSettings(chain);
   return (

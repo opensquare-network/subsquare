@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import Item from "./item";
 import NoComment from "next-common/components/comment/noComment";
-import Pagination from "next-common/components/pagination";
 import PolkassemblyCommentButton from "./commentButton";
 import Loading from "next-common/components/loading";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
@@ -10,7 +9,13 @@ import useDarkMode from "next-common/utils/hooks/useDarkMode";
 
 const Header = styled.div`
   display: flex;
-  justify-content: space-between;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  @media screen and (min-width: 768px) {
+    justify-content: space-between;
+  }
 `;
 
 const Title = styled.div`

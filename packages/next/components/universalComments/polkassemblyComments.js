@@ -1,15 +1,13 @@
 /* eslint-disable react/jsx-key */
-import SourceTabs from "next-common/components/comment/sourceTabs";
 import usePolkassemblyPostData from "components/polkassembly/usePolkassemblyPostData";
 import PolkassemblyComments from "components/polkassembly/comment";
 
 export default function PolkassemblyCommentsWithData({
-  tabIndex,
-  setTabIndex,
   detail,
   chain,
   type,
   btnRef,
+  tabs,
 }) {
   const polkassemblyId = detail?.polkassemblyId;
 
@@ -17,12 +15,6 @@ export default function PolkassemblyCommentsWithData({
     polkassemblyId,
     chain,
   });
-
-  const tabs = (
-    <div style={{ width: "240px", marginTop: "-6px" }}>
-      <SourceTabs tabIndex={tabIndex} setTabIndex={setTabIndex} />
-    </div>
-  );
 
   return (
     <PolkassemblyComments
