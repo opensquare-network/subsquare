@@ -4,10 +4,10 @@ import Tab from "../tab";
 export const SubSquare = "SubSquare";
 export const Polkassembly = "Polkassembly";
 
-export default function SourceTabs({ tabIndex, setTabIndex }) {
+export default function SourceTabs({ small = true, tabIndex, setTabIndex }) {
   return (
     <Tab
-      small
+      small={small}
       tabs={[
         {
           tabId: SubSquare,
