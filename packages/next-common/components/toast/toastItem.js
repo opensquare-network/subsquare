@@ -12,16 +12,16 @@ import ToastErrorIcon from "../../assets/imgs/icons/toast-error.svg";
 const Wrapper = styled(Flex)`
   align-items: flex-start;
   padding: 16px 16px;
-  background: #ffffff;
+  background: ${(props) => props.theme.neutral};
   ${shadow_200};
   border-radius: 6px;
-  border: 1px solid #ebeef4;
+  border: 1px solid ${(props) => props.theme.grey200Border};
   font-size: 14px;
   line-height: 140%;
   width: 246px;
   font-style: normal;
   font-weight: 400;
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
 
   & > svg:first-child {
     margin-right: 12px;
@@ -49,7 +49,7 @@ const Wrapper = styled(Flex)`
   transform: translateX(200%);
   transition: all 0.25s ease-out;
   &.tran {
-    transform: translateX( min(calc((1248px - 100vw)/2), 0px)) !important;
+    transform: translateX(min(calc((1248px - 100vw) / 2), 0px)) !important;
     @media screen and (max-width: 768px) {
       transform: translateX(32px) !important;
     }

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Flex from "../styled/flex";
-import WarningIcon  from "./warning.svg";
+import WarningIcon from "./warning.svg";
 
 const Wrapper = styled(Flex)`
   justify-content: center;
@@ -9,12 +9,16 @@ const Wrapper = styled(Flex)`
   gap: 8px;
   font-size: 14px;
   line-height: 140%;
-  color: #1E2134;
+  color: ${(props) => props.theme.textPrimary};
   background-color: white;
-  border: 1px solid #EBEEF4;
+  border: 1px solid ${(props) => props.theme.grey200Border};
+`;
 
-`
-
-export default function InvalidPreImage(){
-    return <Wrapper><WarningIcon/><span>Invalid image</span></Wrapper>
+export default function InvalidPreImage() {
+  return (
+    <Wrapper>
+      <WarningIcon />
+      <span>Invalid image</span>
+    </Wrapper>
+  );
 }

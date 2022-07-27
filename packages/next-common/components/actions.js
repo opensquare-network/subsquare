@@ -24,10 +24,10 @@ const Item = styled(Flex)`
     css`
       cursor: pointer;
       :hover {
-        color: #506176;
+        color: ${(props) => props.theme.textSecondary};
         > svg {
           path {
-            fill: #506176;
+            fill: ${(props) => props.theme.textSecondary};
           }
         }
       }
@@ -36,10 +36,10 @@ const Item = styled(Flex)`
   ${(p) =>
     p.highlight
       ? css`
-          color: #506176;
+          color: ${(props) => props.theme.textSecondary};
           > svg {
             path {
-              fill: #506176;
+              fill: ${(props) => props.theme.textSecondary};
             }
           }
         `

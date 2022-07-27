@@ -20,7 +20,7 @@ const CaretWrapper = styled.div`
   border-radius: 4px;
 
   :hover {
-    border-color: #c2c8d5;
+    border-color: ${(props) => props.theme.grey400Border};
   }
   * {
     stroke: rgb(30, 33, 52);
@@ -32,19 +32,15 @@ const CaretWrapper = styled.div`
       cursor: not-allowed;
       pointer-events: none;
       * {
-        stroke: #d7dee8;
+        stroke: ${(props) => props.theme.textPlaceholder};
       }
       :hover {
-        border-color: #e0e4eb;
+        border-color: ${(props) => props.theme.grey300Border};
       }
     `}
-  ${(props) =>
-    props?.theme.isDark &&
-    css`
-      * {
-        stroke: white;
-      }
-    `};
+  * {
+    stroke: ${(props) => props.theme.textPrimary};
+  }
 `;
 
 const CaretLeft = ({ onClick, disabled }) => {

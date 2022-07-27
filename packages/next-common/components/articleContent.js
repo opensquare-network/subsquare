@@ -41,7 +41,7 @@ const PlaceHolder = styled.div`
   font-size: 14px;
   line-height: 140%;
   text-align: center;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   height: 68px;
   display: flex;
   align-items: center;
@@ -66,7 +66,7 @@ const GreyItem = styled.div`
   margin-right: 12px;
 
   > .username {
-    color: #506176;
+    color: ${(props) => props.theme.textSecondary};
   }
 `;
 
@@ -75,7 +75,7 @@ const EditedLabel = styled.div`
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 const Edit = styled.div`
@@ -85,7 +85,7 @@ const Edit = styled.div`
   font-size: 14px;
   line-height: 140%;
   text-align: center;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   display: flex;
   align-items: center;
 

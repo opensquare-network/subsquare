@@ -30,7 +30,7 @@ const Bar = styled.div`
 const DetailWrapper = styled(Flex)`
   min-height: 14px;
   margin-top: 8px;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   > :not(:first-child) {
     :nth-child(2) {
       margin-left: auto;

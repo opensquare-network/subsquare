@@ -20,16 +20,12 @@ const Wrapper = styled(Flex)`
 
   color: ${(props) => props.theme.textPrimary};
 
-  ${(props) =>
-    props?.theme.isDark &&
-    css`
-      > svg {
-        fill: white;
-        path {
-          stroke: white;
-        }
-      }
-    `};
+  > svg {
+    fill: ${(props) => props.theme.textPrimary};
+    path {
+      stroke: ${(props) => props.theme.textPrimary};
+    }
+  }
 `;
 
 export default function Back({ href, text }) {
