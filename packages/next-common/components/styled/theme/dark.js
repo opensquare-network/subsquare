@@ -30,6 +30,11 @@ const dark = {
   grey200Border: "#272A3A",
   grey300Border: "#363A4D",
   grey400Border: "#575C72",
+  //todo : confirm this
+  shadow100:
+    "0px 6px 7px rgba(30, 33, 52, 0.02),0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786)",
+  shadow200:
+    "0px 6px 22px rgba(30, 33, 52, 0.11), 0px 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718), 0px 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282)",
 };
 
 export default dark;
