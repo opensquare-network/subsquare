@@ -6,7 +6,10 @@ import Input from "../input";
 import useCountdown from "../../utils/hooks/useCountdown";
 import FlexBetween from "../styled/flexBetween";
 import nextApi from "../../services/nextApi";
-import { newErrorToast, newSuccessToast } from "../../store/reducers/toastSlice";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "../../store/reducers/toastSlice";
 import Loading from "../loading";
 
 const Label = styled.div`
@@ -22,23 +25,20 @@ const SubButton = styled.button`
   all: unset;
   font-size: 12px;
   font-weight: 500;
-  color: #6848ff;
+  color: ${(props) => props.theme.primaryPurple500};
   cursor: pointer;
 `;
 
-const SendButton = ({
-                      loading = false, onClick = () => {
-  }
-                    }) => {
+const SendButton = ({ loading = false, onClick = () => {} }) => {
   if (loading) {
-    return <Loading/>;
+    return <Loading />;
   }
-  return <SubButton onClick={onClick}>Send Code</SubButton>
-}
+  return <SubButton onClick={onClick}>Send Code</SubButton>;
+};
 
-export default function VerifyEmail({pin, setPin, email, errors, setErrors}) {
+export default function VerifyEmail({ pin, setPin, email, errors, setErrors }) {
   const dispatch = useDispatch();
-  const {countdown, startCountdown} = useCountdown(60);
+  const { countdown, startCountdown } = useCountdown(60);
   const [verifySent, setVerifySent] = useState(false);
   const [sending, setSending] = useState(false);
   useEffect(() => {
@@ -50,7 +50,7 @@ export default function VerifyEmail({pin, setPin, email, errors, setErrors}) {
   const send = async () => {
     setSending(true);
     try {
-      const {result, error} = await nextApi.post("user/setemail", {
+      const { result, error } = await nextApi.post("user/setemail", {
         email,
         sendCode: true,
       });
@@ -64,12 +64,11 @@ export default function VerifyEmail({pin, setPin, email, errors, setErrors}) {
         );
       } else if (error) {
         setErrors(error);
-        if(error.message) {
+        if (error.message) {
           dispatch(newErrorToast(error.message));
         }
       }
-    }
-    finally {
+    } finally {
       setSending(false);
     }
   };

@@ -36,9 +36,7 @@ const EmptyPanel = styled.div`
   background: ${(props) => props.theme.neutral};
   border: 1px solid ${(props) => props.theme.grey200Border};
   box-sizing: border-box;
-  box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
-    0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow: ${(props) => props.theme.shadow100};
   border-radius: 6px;
 
   > .title {
