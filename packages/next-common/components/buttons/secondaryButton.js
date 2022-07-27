@@ -10,10 +10,6 @@ const RawButton = styled(CommonButton)`
 
 export const Disabled = styled(DisabledButton)`
   background: ${(props) => props.theme.grey400Border};
-`;
-
-const RawPositiveButton = styled(CommonButton)`
-  background: ${(props) => props.theme.secondaryGreen500};
   color: ${(props) => props.theme.textContrast};
 `;
 
@@ -28,8 +24,14 @@ export default function SecondaryButton({
     TargetButton = Disabled;
   }
 
+  const allProps = {
+    isLoading,
+    disabled,
+    ...props,
+  };
+
   return (
-    <TargetButton {...props} isLoading={isLoading}>
+    <TargetButton {...allProps}>
       {isLoading ? <LightLoading /> : children}
     </TargetButton>
   );

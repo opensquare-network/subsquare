@@ -9,6 +9,7 @@ const RawButton = styled(BackgroundButton)`
 
 const Disabled = styled(DisabledButton)`
   background: ${(props) => props.theme.grey400Border};
+  color: ${(props) => props.theme.textContrast};
 `;
 
 export default function PrimaryButton({
@@ -22,8 +23,14 @@ export default function PrimaryButton({
     TargetButton = Disabled;
   }
 
+  const allProps = {
+    isLoading,
+    disabled,
+    ...props,
+  };
+
   return (
-    <TargetButton {...props} isLoading={isLoading}>
+    <TargetButton {...allProps}>
       {isLoading ? <LightLoading /> : children}
     </TargetButton>
   );

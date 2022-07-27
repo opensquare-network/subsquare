@@ -24,8 +24,14 @@ function ColorButton({
     TargetButton = Disabled;
   }
 
+  const allProps = {
+    isLoading,
+    disabled,
+    ...props,
+  };
+
   return (
-    <TargetButton {...props} isLoading={isLoading}>
+    <TargetButton {...allProps}>
       {isLoading ? <LightLoading /> : children}
     </TargetButton>
   );

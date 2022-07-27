@@ -25,8 +25,14 @@ export default function GhostButton({
     TargetButton = Disabled;
   }
 
+  const allProps = {
+    isLoading,
+    disabled,
+    ...props,
+  };
+
   return (
-    <TargetButton {...props} isLoading={isLoading}>
+    <TargetButton {...allProps}>
       {isLoading ? <DarkLoading /> : children}
     </TargetButton>
   );
