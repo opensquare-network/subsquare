@@ -54,15 +54,15 @@ const NoTippers = styled.div`
   text-align: center;
   font-size: 12px;
   line-height: 140%;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 const Description = styled.div`
   font-size: 12px;
   line-height: 140%;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   > span {
-    color: #6848ff;
+    color: ${(props) => props.theme.primaryPurple500};
     cursor: pointer;
   }
 `;
@@ -80,7 +80,7 @@ const TipperItem = styled.div`
   justify-content: space-between;
   font-size: 12px;
   line-height: 100%;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   > :last-child {
     white-space: nowrap;
   }

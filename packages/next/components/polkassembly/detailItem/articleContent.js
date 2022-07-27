@@ -8,7 +8,7 @@ const Wrapper = styled.div``;
 
 const Divider = styled.div`
   height: 1px;
-  background: #ebeef4;
+  background: ${(props) => props.theme.grey200Border};
   margin: 16px 0;
 `;
 
@@ -18,7 +18,7 @@ const PlaceHolder = styled.div`
   font-size: 14px;
   line-height: 140%;
   text-align: center;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   height: 68px;
   display: flex;
   align-items: center;
@@ -30,7 +30,7 @@ const EditedLabel = styled.div`
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 export default function ArticleContent({ post, chain, type, postReactions }) {

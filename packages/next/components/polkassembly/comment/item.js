@@ -34,7 +34,7 @@ const Wrapper = styled.div`
           left: 28px;
           width: calc(100% - 28px);
         }
-        background-color: #ebeef4;
+        background-color: ${(props) => props.theme.grey200Border};
       }
     `}
 `;
@@ -46,7 +46,7 @@ const InfoWrapper = styled(Flex)`
 
   > :last-child {
     font-size: 14px;
-    color: #9da9bb;
+    color: ${(props) => props.theme.textTertiary};
   }
 `;
 
@@ -63,7 +63,7 @@ const EditedLabel = styled.div`
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 export default function Item({ data, chain, isSecondLevel }) {

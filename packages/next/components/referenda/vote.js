@@ -4,7 +4,6 @@ import BigNumber from "bignumber.js";
 import styled from "styled-components";
 import { getNode, toPrecision } from "utils";
 import Flex from "next-common/components/styled/flex";
-import { shadow_100 } from "styles/componentCss";
 import {
   calcPassing,
   getThresholdOfSimplyMajority,
@@ -46,9 +45,9 @@ const Wrapper = styled.div`
 `;
 
 const Card = styled.div`
-  background: #ffffff;
+  background: ${(props) => props.theme.neutral};
   border: 1px solid ${(props) => props.theme.grey200Border};
-  ${shadow_100};
+  box-shadow: ${(props) => props.theme.shadow100};
   border-radius: 6px;
   padding: 24px;
   @media screen and (max-width: 768px) {
@@ -148,7 +147,7 @@ const Header = styled.span`
   align-items: center;
   font-size: 14px;
   font-weight: 500;
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
 
   svg {
     margin-right: 8px;

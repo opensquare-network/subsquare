@@ -16,7 +16,6 @@ import {
 import { useDispatch } from "react-redux";
 import { fetchUserProfile } from "next-common/store/reducers/userSlice";
 import Layout from "next-common/components/layout";
-import { shadow_100 } from "styles/componentCss";
 import NextHead from "next-common/components/nextHead";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { useRouter } from "next/router";
@@ -46,7 +45,7 @@ const ContentWrapper = styled.div`
   color: ${(props) => props.theme.textPrimary};
   background: ${(props) => props.theme.neutral};
   border: 1px solid ${(props) => props.theme.grey200Border};
-  ${shadow_100};
+  box-shadow: ${(props) => props.theme.shadow100};
   border-radius: 4px;
   padding: 48px;
   @media screen and (max-width: 768px) {

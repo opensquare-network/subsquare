@@ -12,7 +12,6 @@ import ErrorText from "next-common/components/ErrorText";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { shadow_100 } from "styles/componentCss";
 import NextHead from "next-common/components/nextHead";
 import UserPolicy from "next-common/components/userPolicy";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
@@ -31,7 +30,7 @@ const Wrapper = styled.div`
 const ContentWrapper = styled.div`
   background: ${(props) => props.theme.neutral};
   border: 1px solid ${(props) => props.theme.grey200Border};
-  ${shadow_100};
+  box-shadow: ${(props) => props.theme.shadow100};
   border-radius: 6px;
   width: 400px;
   margin: 0 auto;
@@ -96,11 +95,11 @@ const InfoWrapper = styled.div`
 
 const Redirect = styled.div`
   text-align: center;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
 
   .sec {
     font-weight: bold;
-    color: #6848ff;
+    color: ${(props) => props.theme.primaryPurple500};
     margin-left: 8px;
   }
 `;

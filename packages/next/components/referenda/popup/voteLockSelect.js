@@ -28,7 +28,7 @@ const Selector = styled.div`
   ${(p) =>
     p.disabled &&
     css`
-      background: #f6f7fa;
+      background: ${(props) => props.theme.grey100Bg};
       pointer-events: none;
     `}
 `;
@@ -36,10 +36,8 @@ const Selector = styled.div`
 const Options = styled.div`
   position: absolute;
   padding: 8px 0;
-  background: #ffffff;
-  box-shadow: 0px 6px 22px rgba(30, 33, 52, 0.11),
-    0px 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
-    0px 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
+  background: ${(props) => props.theme.neutral};
+  box-shadow: ${(props) => props.theme.shadow200};
   border-radius: 4px;
   left: 0;
   margin-top: 4px;
@@ -51,12 +49,12 @@ const Item = styled.div`
   padding: 12px 16px;
   cursor: pointer;
   :hover {
-    background: #f6f7fa;
+    background: ${(props) => props.theme.grey100Bg};
   }
   ${(p) =>
     p.active &&
     css`
-      background: #f6f7fa;
+      background: ${(props) => props.theme.grey100Bg};
     `}
 `;
 

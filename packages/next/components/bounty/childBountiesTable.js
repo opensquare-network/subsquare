@@ -24,7 +24,7 @@ const ChildBounty = styled(FlexBetween)`
     white-space: pre-wrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: #1e2134;
+    color: ${(props) => props.theme.textPrimary};
   }
 
   > div {
@@ -74,14 +74,14 @@ const DividerWrapper = styled(FlexBetween)`
     ::before {
       content: "·";
       font-size: 12px;
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary};
       margin: 0 8px;
     }
   }
 `;
 
 const Accessory = styled.span`
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 const DomesticLink = styled.a`
@@ -90,7 +90,7 @@ const DomesticLink = styled.a`
   width: 60px;
   font-size: 12px;
   font-weight: 500;
-  color: #6848ff;
+  color: ${(props) => props.theme.primaryPurple500};
   cursor: pointer;
 `;
 

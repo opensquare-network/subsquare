@@ -13,7 +13,6 @@ import ErrorText from "next-common/components/ErrorText";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { shadow_100 } from "../styles/componentCss";
 import NextHead from "next-common/components/nextHead";
 import UserPolicy from "next-common/components/userPolicy";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
@@ -32,7 +31,7 @@ const Wrapper = styled.div`
 const ContentWrapper = styled.div`
   background: ${(props) => props.theme.neutral};
   border: 1px solid ${(props) => props.theme.grey200Border};
-  ${shadow_100};
+  box-shadow: ${(props) => props.theme.shadow100};
   border-radius: 6px;
   width: 400px;
   margin: 0 auto;
@@ -65,12 +64,12 @@ const ButtonWrapper = styled.div`
 `;
 
 const LinkWrapper = styled.div`
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   text-align: center;
 
   a {
     font-weight: bold;
-    color: #6848ff;
+    color: ${(props) => props.theme.primaryPurple500};
   }
 `;
 
@@ -89,19 +88,19 @@ const Label = styled.div`
 
 const InfoWrapper = styled.div`
   padding: 12px 16px;
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
   line-height: 150%;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
 `;
 
 const Redirect = styled.div`
   text-align: center;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
 
   .sec {
     font-weight: bold;
-    color: #6848ff;
+    color: ${(props) => props.theme.primaryPurple500};
     margin-left: 8px;
   }
 `;

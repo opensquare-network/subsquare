@@ -12,11 +12,11 @@ const ReferendaWrapper = styled(Flex)`
   justify-content: center;
   flex-wrap: wrap;
   padding: 12px;
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
   margin-bottom: 16px;
   font-weight: 500;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
 
   > div {
     display: flex;
@@ -25,7 +25,7 @@ const ReferendaWrapper = styled(Flex)`
 
   > div > svg {
     margin-right: 8px;
-    fill: #9da9bb;
+    fill: ${(props) => props.theme.textTertiary};
   }
 
   a {
