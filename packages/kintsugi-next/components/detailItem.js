@@ -27,7 +27,7 @@ const DividerWrapper = styled(Flex)`
     ::before {
       content: "·";
       font-size: 12px;
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary}
       margin: 0 8px;
     }
   }
@@ -57,7 +57,7 @@ const TitleWrapper = styled.div`
       content: "·";
       font-size: 20px;
       line-height: 28px;
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary}
       margin: 0 8px;
     }
   }
@@ -73,8 +73,8 @@ const TypeWrapper = styled.div`
   height: 20px;
   line-height: 20px;
   border-radius: 10px;
-  background: #1e2134;
-  color: #e81f66;
+  background: ${(props) => props.theme.primaryDarkBlue};
+  color: ${(props) => props.theme.secondaryPink500};
   font-weight: 500;
   font-size: 12px;
   padding: 0 8px;
@@ -89,11 +89,11 @@ const ReferendaWrapper = styled(Flex)`
   justify-content: center;
   flex-wrap: wrap;
   padding: 12px;
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
   margin-bottom: 16px;
   font-weight: 500;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
 
   > div {
     display: flex;
@@ -102,11 +102,11 @@ const ReferendaWrapper = styled(Flex)`
 
   > div > svg {
     margin-right: 8px;
-    fill: #9da9bb;
+    fill: ${(props) => props.theme.textTertiary};
   }
 
   a {
-    color: #1f70c7;
+    color: ${(props) => props.theme.secondarySapphire500};
   }
 
   > :not(:first-child) {

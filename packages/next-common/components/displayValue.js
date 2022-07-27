@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import Tooltip from "./tooltip";
-import {abbreviateBigNumber, getEffectiveNumbers} from "../utils/viewfuncs";
+import { abbreviateBigNumber, getEffectiveNumbers } from "../utils/viewfuncs";
 
 const NotEqual = styled.div`
   ::before {
     content: "≈";
-    color: #9da9bb;
+    color: ${(props) => props.theme.textPrimary};
     margin-right: 2px;
   }
 `;

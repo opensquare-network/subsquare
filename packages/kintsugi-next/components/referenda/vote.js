@@ -25,6 +25,7 @@ import { useBestNumber } from "next-common/utils/hooks";
 import ExternalLink from "next-common/assets/imgs/icons/external-link.svg";
 import ValueDisplay from "next-common/components/displayValue";
 import { capitailize } from "next-common/utils";
+import SecondaryButton from "next-common/components/buttons/secondaryButton";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -47,8 +48,8 @@ const Wrapper = styled.div`
 `;
 
 const Card = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
   ${shadow_100};
   border-radius: 6px;
   padding: 24px;
@@ -67,12 +68,13 @@ const Title = styled.div`
   font-weight: bold;
   font-size: 16px;
   margin-bottom: 16px;
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 const Headers = styled(Flex)`
   justify-content: space-between;
   font-size: 12px;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
 
   span:nth-child(2) {
     text-align: center;
@@ -86,7 +88,7 @@ const Headers = styled(Flex)`
 
 const Contents = styled(Headers)`
   font-weight: 500;
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
   margin-top: 8px !important;
   margin-bottom: 16px;
 `;
@@ -103,13 +105,13 @@ const Status = styled.div`
 `;
 
 const PassStatus = styled(Status)`
-  color: #4caf50;
-  background: #edf7ed;
+  color: ${(props) => props.theme.secondaryGreen500};
+  background: ${(props) => props.theme.secondaryGreen100};
 `;
 
 const RejectStatus = styled(Status)`
-  color: #f44336;
-  background: #fff1f0;
+  color: ${(props) => props.theme.secondaryRed500};
+  background: ${(props) => props.theme.secondaryRed100};
 `;
 
 const Row = styled(Flex)`
@@ -125,7 +127,7 @@ const Row = styled(Flex)`
 
 const BorderedRow = styled(Flex)`
   height: 44px;
-  border-bottom: 1px solid #ebeef4;
+  border-bottom: 1px solid ${(props) => props.theme.grey200Border};
   justify-content: space-between;
   white-space: nowrap;
   font-size: 14px;
@@ -140,11 +142,15 @@ const Header = styled.span`
   align-items: center;
   font-size: 14px;
   font-weight: 500;
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
 
   svg {
     margin-right: 8px;
   }
+`;
+
+const Value = styled.span`
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 const BarWrapper = styled.div`
@@ -162,29 +168,15 @@ const BarContainer = styled.div`
 `;
 
 const AyesBar = styled.div`
-  background-color: #4caf50;
+  background-color: ${(props) => props.theme.secondaryGreen500};
   width: ${(p) => p.precent}%;
   height: 100%;
 `;
 
 const NaysBar = styled.div`
-  background-color: #f44336;
+  background-color: ${(props) => props.theme.secondaryRed500};
   width: ${(p) => p.precent}%;
   height: 100%;
-`;
-
-const VoteButton = styled.button`
-  all: unset;
-  cursor: pointer;
-  margin-top: 16px;
-  width: 100%;
-  line-height: 38px;
-  background-color: #1e2134;
-  color: white;
-  font-weight: 500;
-  font-size: 14px;
-  text-align: center;
-  border-radius: 4px;
 `;
 
 const Guide = styled.p`
@@ -192,7 +184,7 @@ const Guide = styled.p`
   white-space: nowrap;
   display: flex;
   align-items: center;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   a {
     margin-left: 2px;
     svg {
@@ -201,7 +193,7 @@ const Guide = styled.p`
     font-size: 12px !important;
     display: flex;
     align-items: center;
-    color: #6848ff !important;
+    color: ${(props) => props.theme.primaryPurple500} !important;
   }
 `;
 
@@ -338,52 +330,52 @@ function Vote({
               <AyeIcon />
               Aye
             </Header>
-            <span>
+            <Value>
               <ValueDisplay
                 value={nAyes}
                 symbol={symbol}
                 noWrap={width <= 1024}
               />
-            </span>
+            </Value>
           </BorderedRow>
           <BorderedRow>
             <Header>
               <NayIcon />
               Nay
             </Header>
-            <span>
+            <Value>
               <ValueDisplay
                 value={nNays}
                 symbol={symbol}
                 noWrap={width <= 1024}
               />
-            </span>
+            </Value>
           </BorderedRow>
           <BorderedRow>
             <Header>
               <TurnoutIcon />
               Turnout
             </Header>
-            <span>
+            <Value>
               <ValueDisplay
                 value={nTurnout}
                 symbol={symbol}
                 noWrap={width <= 1024}
               />
-            </span>
+            </Value>
           </BorderedRow>
           <Row>
             <Header>
               <ElectorateIcon />
               Electorate
             </Header>
-            <span>
+            <Value>
               <ValueDisplay
                 value={BigNumber.max(nTurnout, nElectorate)}
                 symbol={symbol}
                 noWrap={width <= 1024}
               />
-            </span>
+            </Value>
           </Row>
         </div>
         {referendumInfo?.finished?.approved && <PassStatus>Passed</PassStatus>}
@@ -400,13 +392,14 @@ function Vote({
       </Card>
 
       {!referendumInfo?.finished && (
-        <VoteButton
+        <SecondaryButton
+          isFill
           onClick={() => {
             setShowVote(true);
           }}
         >
           Vote
-        </VoteButton>
+        </SecondaryButton>
       )}
 
       <Guide>
