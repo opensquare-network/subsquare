@@ -3,8 +3,6 @@ import styled from "styled-components";
 import dynamic from "next/dynamic";
 import countBy from "lodash.countby";
 import BigNumber from "bignumber.js";
-
-import Button from "../../button";
 import User from "../../user";
 import Loading from "../../loading";
 import { emptyFunction } from "../../../utils";
@@ -12,6 +10,7 @@ import useDepositOf from "../../../utils/hooks/useDepositOf";
 import useApi from "../../../utils/hooks/useSelectedEnpointApi";
 import { getNode } from "utils";
 import Tooltip from "../../tooltip";
+import SecondaryButton from "../../buttons/secondaryButton";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -177,9 +176,9 @@ export default function Second({
     action = <Description>This proposal has been canceled.</Description>;
   } else {
     action = (
-      <Button secondary isFill onClick={() => setShowPopup(true)}>
+      <SecondaryButton isFill onClick={() => setShowPopup(true)}>
         Second
-      </Button>
+      </SecondaryButton>
     );
   }
 

@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-
-import Button from "next-common/components/button";
 import User from "next-common/components/user";
 import { getNode, toPrecision } from "utils";
 import Loading from "next-common/components/loading";
+import SecondaryButton from "next-common/components/buttons/secondaryButton";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -148,9 +147,9 @@ export default function Tipper({
     action = <Description>This tip has been closed.</Description>;
   } else if (userIsTipper) {
     action = (
-      <Button secondary isFill onClick={() => setShowPopup(true)}>
+      <SecondaryButton isFill onClick={() => setShowPopup(true)}>
         Endorse
-      </Button>
+      </SecondaryButton>
     );
   } else {
     action = (

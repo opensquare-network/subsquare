@@ -9,10 +9,10 @@ import Uploader from "../uploadBanner/uploader";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
 import { shadow_100 } from "styles/componentCss";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import Button from "next-common/components/button";
 import ErrorText from "next-common/components/ErrorText";
 import AdvancedForm from "next-common/components/post/advanced/form";
 import dynamic from "next/dynamic";
+import SecondaryButton from "../buttons/secondaryButton";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
@@ -281,14 +281,13 @@ export default function PostCreate({ chain, loginUser }) {
       />
 
       <ButtonWrapper>
-        <Button
+        <SecondaryButton
           isLoading={creating}
           onClick={createPost}
           disabled={isDisableCreate}
-          secondary
         >
           Create
-        </Button>
+        </SecondaryButton>
       </ButtonWrapper>
     </Wrapper>
   );

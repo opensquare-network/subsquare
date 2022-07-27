@@ -1,10 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useState } from "react";
 import { useRouter } from "next/router";
 
 import Layout from "next-common/components/layout";
-import Button from "next-common/components/button";
 import Input from "next-common/components/input";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useCountdown from "next-common/utils/hooks/useCountdown";
@@ -22,6 +20,7 @@ import {
   Title,
 } from "next-common/components/login/styled";
 import useForm from "../../utils/hooks/useForm";
+import SecondaryButton from "../buttons/secondaryButton";
 
 const Wrapper = styled.div`
   padding: 32px 0;
@@ -95,9 +94,9 @@ const Reset = withLoginUserRedux(({ loginUser, chain }) => {
                   <ErrorText>{errors?.message}</ErrorText>
                 )}
               </FormInputsWrapper>
-              <Button isFill secondary type="submit" isLoading={loading}>
+              <SecondaryButton isFill type="submit" isLoading={loading}>
                 Confirm
-              </Button>
+              </SecondaryButton>
             </FormWrapper>
           </ContentCenterWrapper>
         )}
@@ -105,9 +104,13 @@ const Reset = withLoginUserRedux(({ loginUser, chain }) => {
           <ContentCenterWrapper>
             <Title>Congrats</Title>
             <InfoWrapper>Your password has been reset.</InfoWrapper>
-            <Button isFill secondary onClick={() => router.replace("/login")}>
+            <SecondaryButton
+              isFill
+              secondary
+              onClick={() => router.replace("/login")}
+            >
               Got it
-            </Button>
+            </SecondaryButton>
             <Redirect>
               The page will be re-directed in
               <span className="sec">{countdown}s</span>
