@@ -1,9 +1,8 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import Layout from "next-common/components/layout";
-import Button from "next-common/components/button";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useCountdown from "next-common/utils/hooks/useCountdown";
 import nextApi from "next-common/services/nextApi";
@@ -12,10 +11,11 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import {
   ContentCenterWrapper,
-  Title,
   InfoWrapper,
   Redirect,
+  Title,
 } from "next-common/components/login/styled";
+import SecondaryButton from "../../next-common/components/buttons/secondaryButton";
 
 const Wrapper = styled.div`
   padding: 32px 0;
@@ -78,9 +78,9 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
           <ContentCenterWrapper>
             <Title>Congrats</Title>
             <InfoWrapper>Your email has been verified.</InfoWrapper>
-            <Button isFill secondary onClick={() => router.replace("/")}>
+            <SecondaryButton isFill onClick={() => router.replace("/")}>
               Got it
-            </Button>
+            </SecondaryButton>
             <Redirect>
               The page will be re-directed in
               <span className="sec">{countdown}s</span>

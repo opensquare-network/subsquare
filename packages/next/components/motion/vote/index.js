@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-
-import Button from "next-common/components/button";
 import User from "next-common/components/user";
 import Loading from "next-common/components/loading";
 import PrimeAddressMark from "next-common/components/primeAddressMark";
+import SecondaryButton from "../../../../next-common/components/buttons/secondaryButton";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -169,9 +168,9 @@ export default function Vote({
     action = <Description>This vote has been closed.</Description>;
   } else if (userCanVote) {
     action = (
-      <Button secondary isFill onClick={() => setShowPopup(true)}>
+      <SecondaryButton secondary isFill onClick={() => setShowPopup(true)}>
         Vote
-      </Button>
+      </SecondaryButton>
     );
   } else {
     action = (

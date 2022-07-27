@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 
 import Toggle from "next-common/components/toggle";
-import Button from "next-common/components/button";
 import Menu from "next-common/components/menu";
 import {
   settingMenu,
@@ -21,6 +20,7 @@ import { shadow_100 } from "styles/componentCss";
 import NextHead from "next-common/components/nextHead";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { useRouter } from "next/router";
+import SecondaryButton from "../../../next-common/components/buttons/secondaryButton";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -188,13 +188,12 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
           </div>
           <Divider />
           <ButtonWrapper>
-            <Button
-              secondary
+            <SecondaryButton
               disabled={disabled}
               onClick={updateNotificationSetting}
             >
               Save
-            </Button>
+            </SecondaryButton>
           </ButtonWrapper>
         </ContentWrapper>
       </Wrapper>

@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-import Button from "../../../button";
 import useDeposit from "./useDeposit";
-import { useContext } from "react";
 import { StateContext } from "./stateContext";
+import SecondaryButton from "../../../buttons/secondaryButton";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -17,11 +16,11 @@ export default function SubmitButton({ chain, onClick, depositRequired }) {
   return (
     <ButtonWrapper>
       {balanceInsufficient ? (
-        <Button disabled>Submit</Button>
+        <SecondaryButton disabled>Submit</SecondaryButton>
       ) : (
-        <Button secondary isLoading={isSubmitting} onClick={onClick}>
+        <SecondaryButton isLoading={isSubmitting} onClick={onClick}>
           Submit
-        </Button>
+        </SecondaryButton>
       )}
     </ButtonWrapper>
   );

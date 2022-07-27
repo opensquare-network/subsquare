@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Button from "next-common/components/button";
 import ErrorText from "next-common/components/ErrorText";
 import { renderDisableNonAddressLink } from "../utils/viewfuncs";
 import dynamic from "next/dynamic";
+import GhostButton from "./buttons/ghostButton";
+import SecondaryButton from "./buttons/secondaryButton";
+
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
   { ssr: false }
@@ -74,7 +76,7 @@ export default function EditInput({
             {
               name: "disable-non-address-link",
               onRenderedHtml: renderDisableNonAddressLink,
-            }
+            },
           ]}
           setQuillRef={() => {}}
         />
@@ -82,16 +84,17 @@ export default function EditInput({
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
       <ButtonWrapper>
         {!loading && (
-          <Button onClick={() => onFinishedEdit(false)}>Cancel</Button>
+          <GhostButton onClick={() => onFinishedEdit(false)}>
+            Cancel
+          </GhostButton>
         )}
-        <Button
+        <SecondaryButton
           isLoading={loading}
           onClick={onUpdate}
           disabled={isEmpty}
-          secondary
         >
           Update
-        </Button>
+        </SecondaryButton>
       </ButtonWrapper>
     </Wrapper>
   );
