@@ -1,10 +1,8 @@
 import React from "react";
 import { getNode, toPrecision } from "@subsquare/next/utils";
-import User from "../../user";
-import Links from "../../links";
 import KVList from "../../listInfo/kvList";
-import Flex from "../../styled/flex";
 import capitalize from "../../../utils/capitalize";
+import UserWithLink from "../../user/userWithLink";
 
 const keys = {
   proposer: "proposer",
@@ -24,13 +22,7 @@ export default function TreasuryProposalMetadata({ chain, treasuryProposal }) {
   const metadata = Object.entries(treasuryProposal?.meta || {});
   const data = metadata.map(([key, value]) => {
     if ([keys.proposer, keys.beneficiary].includes(key)) {
-      return [
-        capitalize(key),
-        <Flex>
-          <User chain={chain} add={value} fontSize={14} />
-          <Links chain={chain} address={value} style={{ marginLeft: 8 }} />
-        </Flex>,
-      ];
+      return [capitalize(key), <UserWithLink address={value} chain={chain} />];
     } else if ([keys.value, keys.bond].includes(key)) {
       return [
         capitalize(key),

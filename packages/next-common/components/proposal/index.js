@@ -209,7 +209,7 @@ function convertProposalForJsonView(proposal, chain) {
 }
 
 export default function Proposal({
-  motion,
+  call = {},
   chain,
   shorten,
   proposalIndex,
@@ -237,7 +237,7 @@ export default function Proposal({
   let dataTableData;
   if (shorten) {
     dataTableData = {
-      ...motion.proposal,
+      ...call,
       args: (
         <LargeDataPlaceHolder
           chain={chain}
@@ -248,7 +248,7 @@ export default function Proposal({
       ),
     };
   } else {
-    dataTableData = convertProposalForTableView(motion.proposal, chain);
+    dataTableData = convertProposalForTableView(call, chain);
   }
 
   return (
@@ -281,7 +281,7 @@ export default function Proposal({
       )}
       {callType === "json" && (
         <ArgsWrapper className="wrapper">
-          <JsonView src={convertProposalForJsonView(motion.proposal, chain)} />
+          <JsonView src={convertProposalForJsonView(call, chain)} />
         </ArgsWrapper>
       )}
     </Wrapper>

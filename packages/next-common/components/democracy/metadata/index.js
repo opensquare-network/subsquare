@@ -68,11 +68,12 @@ export default function ReferendumMetadata({
     ],
     ["Threshold", <Threshold chain={chain} threshold={threshold} />],
   ];
+
   if (call) {
     metadata.push([
       <Proposal
         key="preimage"
-        motion={{ proposal: call }}
+        call={call}
         chain={chain}
         shorten={shorten}
         referendumIndex={onchainData.referendumIndex}

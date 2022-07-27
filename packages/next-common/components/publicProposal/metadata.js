@@ -57,7 +57,7 @@ export default function Metadata({ publicProposal, chain }) {
     metadata.push([
       <Proposal
         key={"index-proposal"}
-        motion={{ proposal: call }}
+        call={call}
         shorten={publicProposal.preImage?.shorten}
         proposalIndex={publicProposal.proposalIndex}
         referendumIndex={publicProposal.referendumIndex}
