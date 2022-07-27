@@ -1,11 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import CommonButton, { DisabledButton } from "./styled";
+import { BackgroundButton, DisabledButton } from "./styled";
 import { LightLoading } from "./loading";
 
-const RawButton = styled(CommonButton)`
+const RawButton = styled(BackgroundButton)`
   background: ${(props) => props.theme.primaryPurple500};
-  color: ${(props) => props.theme.textContrast};
 `;
 
 const Disabled = styled(DisabledButton)`

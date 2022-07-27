@@ -8,8 +8,13 @@ const RawButton = styled(CommonButton)`
   color: ${(props) => props.theme.textContrast};
 `;
 
-const Disabled = styled(DisabledButton)`
+export const Disabled = styled(DisabledButton)`
   background: ${(props) => props.theme.grey400Border};
+`;
+
+const RawPositiveButton = styled(CommonButton)`
+  background: ${(props) => props.theme.secondaryGreen500};
+  color: ${(props) => props.theme.textContrast};
 `;
 
 export default function SecondaryButton({
