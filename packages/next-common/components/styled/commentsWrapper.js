@@ -17,47 +17,12 @@ const Wrapper = styled.div`
   color: ${(props) => props.theme.textPrimary};
   border-color: ${(props) => props.theme.grey200Border};
 
-  .editor-toolbar,
-  .ql-toolbar.ql-snow,
-  span.ql-formats {
-    background-color: ${(props) => props.theme.grey100Bg} !important;
-    border-color: ${(props) => props.theme.neutral} !important;
-  }
-
-  .editor-toolbar-buttons > div {
-    background-color: ${(props) => props.theme.grey300Border} !important;
-  }
-
   ${(props) =>
     props?.theme.isDark &&
     css`
       span.mention,
       span.mention span {
         background-color: transparent;
-      }
-
-      button.active {
-        background-color: #212433 !important;
-        border-color: #212433 !important;
-        color: white !important;
-        box-shadow: 0 1px 0 0 #1d1e2c !important;
-      }
-
-      button svg {
-        path {
-          fill: rgba(255, 255, 255, 0.6);
-        }
-      }
-
-      button:hover svg path {
-        fill: white !important;
-      }
-      div {
-        border-color: #363a4d !important;
-      }
-      div + textarea {
-        background: #212433;
-        border-color: #363a4d;
       }
     `};
 `;
