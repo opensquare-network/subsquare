@@ -2,7 +2,6 @@
 import styled from "styled-components";
 import Link from "next/link";
 import User from "next-common/components/user";
-import Links from "next-common/components/links";
 import Timeline from "next-common/components/timeline";
 import { getNode, toPrecision } from "utils";
 import { isMotionEnded, timeDurationFromNow } from "next-common/utils";
@@ -22,6 +21,7 @@ import { EditablePanel } from "next-common/components/styled/panel";
 import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
 import CollectiveMetadata from "next-common/components/collective/metadata";
+import UserWithLink from "next-common/components/user/userWithLink";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -226,18 +226,10 @@ export default function TechcommMotionDetail({
       ],
       [
         "Beneficiary",
-        <Flex>
-          <User
-            chain={chain}
-            add={treasuryProposalMeta.beneficiary}
-            fontSize={14}
-          />
-          <Links
-            chain={chain}
-            address={treasuryProposalMeta.beneficiary}
-            style={{ marginLeft: 8 }}
-          />
-        </Flex>,
+        <UserWithLink
+          chain={chain}
+          address={treasuryProposalMeta.beneficiary}
+        />,
       ],
       [
         "Value",
@@ -262,10 +254,7 @@ export default function TechcommMotionDetail({
         ["Hash", proposal.hash],
         [
           "Proposer",
-          <Flex>
-            <User chain={chain} add={proposal?.proposer} />
-            <Links chain={chain} address={proposal?.proposer} />
-          </Flex>,
+          <UserWithLink chain={chain} address={proposal?.proposer} />,
         ],
       ]);
     });

@@ -5,6 +5,7 @@ import Links from "../links";
 import Proposal from "../proposal";
 import KVList from "../listInfo/kvList";
 import { getNode, toPrecision } from "utils";
+import UserWithLink from "../user/userWithLink";
 
 const MetadataProposerWrapper = styled.div`
   display: flex;
@@ -45,10 +46,7 @@ export default function Metadata({ publicProposal, chain }) {
     ["deposit", `${toPrecision(getDeposit(deposit), decimals)} ${symbol}`],
     [
       "proposer",
-      <MetadataProposerWrapper key={"index-proposer"}>
-        <User chain={chain} add={publicProposal?.proposer} />
-        <Links chain={chain} address={publicProposal?.proposer} />
-      </MetadataProposerWrapper>,
+      <UserWithLink chain={chain} address={publicProposal?.proposer} />,
     ],
   ];
 

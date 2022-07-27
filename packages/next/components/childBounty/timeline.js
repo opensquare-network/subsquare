@@ -7,7 +7,7 @@ import { createMotionTimelineData } from "utils/timeline/motion";
 import sortTimeline from "utils/timeline/sort";
 import Anchor from "next-common/components/styled/anchor";
 
-export default function ChildBountTimeline({ chain, childBounty }) {
+export default function ChildBountyTimeline({ chain, childBounty }) {
   const node = getNode(chain);
   if (!node) {
     return null;

@@ -1,5 +1,3 @@
-import User from "../../user";
-import Links from "../../links";
 import KVList from "../../listInfo/kvList";
 import React from "react";
 import useLatestBlockTime from "../../../utils/hooks/useBlockTime";
@@ -12,6 +10,7 @@ import {
   blockTimeSelector,
   finalizedHeightSelector,
 } from "../../../store/reducers/chainSlice";
+import UserWithLink from "../../user/userWithLink";
 
 export default function ReferendumMetadata({
   api,
@@ -25,13 +24,6 @@ export default function ReferendumMetadata({
   const oneBlockTime = useSelector(blockTimeSelector);
   const blockHeight = useSelector(finalizedHeightSelector);
   const latestBlockTime = useLatestBlockTime(api, blockHeight);
-
-  const proposerElement = (
-    <>
-      <User add={proposer} fontSize={14} chain={chain} />
-      <Links chain={chain} address={proposer} style={{ marginLeft: 8 }} />
-    </>
-  );
 
   const { delay = 0, end = 0, threshold } = status;
   const { state, timeline = [] } = onchainData;
@@ -47,7 +39,7 @@ export default function ReferendumMetadata({
     );
 
   const metadata = [
-    ["Proposer", proposerElement],
+    ["Proposer", <UserWithLink chain={chain} address={proposer} />],
     [
       "Delay",
       <BlockValue
