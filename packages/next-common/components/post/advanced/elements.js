@@ -4,7 +4,7 @@ import FlexBetweenCenter from "next-common/components/styled/flexBetweenCenter";
 import { p_14_normal, p_12_medium } from "../../../styles/componentCss";
 
 const notAllowedCss = css`
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   cursor: not-allowed !important;
 `;
 
