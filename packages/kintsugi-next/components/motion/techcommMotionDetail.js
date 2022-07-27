@@ -1,12 +1,11 @@
 /* eslint-disable react/jsx-key */
 import styled from "styled-components";
-import KVList from "next-common/components/listInfo/kvList";
 import Link from "next/link";
 import User from "next-common/components/user";
 import Links from "next-common/components/links";
 import Timeline from "next-common/components/timeline";
 import { getNode, toPrecision } from "utils";
-import { timeDurationFromNow } from "next-common/utils";
+import { isMotionEnded, timeDurationFromNow } from "next-common/utils";
 import SectionTag from "next-common/components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
 import Flex from "next-common/components/styled/flex";
@@ -16,14 +15,13 @@ import { createMotionTimelineData } from "utils/timeline/motion";
 import { getPostUpdatedAt } from "utils/viewfuncs";
 import MultiKVList from "next-common/components/listInfo/multiKVList";
 import MotionEnd from "next-common/components/motionEnd";
-import { isMotionEnded } from "next-common/utils";
 import { useSelector } from "react-redux";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
-import Proposal from "next-common/components/proposal";
 import { finalizedHeightSelector } from "next-common/store/reducers/chainSlice";
 import { EditablePanel } from "next-common/components/styled/panel";
 import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
+import CollectiveMetadata from "next-common/components/collective/metadata";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -338,34 +336,13 @@ export default function TechcommMotionDetail({
 
       <MultiKVList title="Business" data={business} />
 
-      <KVList
-        title={"Metadata"}
-        showFold
-        data={[
-          [
-            "Proposer",
-            <>
-              <User
-                add={motion?.onchainData?.proposer}
-                fontSize={14}
-                chain={chain}
-              />
-              <Links
-                chain={chain}
-                address={motion?.onchainData?.proposer}
-                style={{ marginLeft: 8 }}
-              />
-            </>,
-          ],
-          ...[
-            Number.isInteger(motion?.motionIndex)
-              ? ["Index", motion?.motionIndex]
-              : null,
-          ],
-          ["Threshold", motion?.onchainData?.threshold],
-          ["Hash", motion.hash],
-          [<Proposal motion={motion?.onchainData} chain={chain} />],
-        ]}
+      <CollectiveMetadata
+        chain={chain}
+        index={motion?.motionIndex}
+        proposer={motion?.onchainData?.proposer}
+        threshold={motion?.onchainData?.threshold}
+        hash={motion?.hash}
+        call={motion?.onchainData?.proposal}
       />
 
       <Timeline
