@@ -1,19 +1,19 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import Input from "../input";
 import nextApi from "../../services/nextApi";
 import ToggleText from "../uploadBanner/toggleText";
 import Uploader from "../uploadBanner/uploader";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
-import { shadow_100 } from "styles/componentCss";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import ErrorText from "next-common/components/ErrorText";
 import AdvancedForm from "next-common/components/post/advanced/form";
 import dynamic from "next/dynamic";
 import SecondaryButton from "../buttons/secondaryButton";
 import EditorWrapper from "../editor/editorWrapper";
+import { shadow_100 } from "../../styles/componentCss";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
