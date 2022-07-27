@@ -48,25 +48,6 @@ const ContentWrapper = styled.div`
   @media screen and (max-width: 392px) {
     width: 100%;
   }
-
-  div,
-  input,
-  button {
-    background: ${(props) => props.theme.neutral};
-    border-color: ${(props) => props.theme.grey300Border};
-    color: ${(props) => props.theme.textPrimary};
-  }
-  * {
-    color: ${(props) => props.theme.textPrimary};
-  }
-
-  ${(props) =>
-    props?.theme.isDark &&
-    css`
-      button div {
-        background-color: initial;
-      }
-    `}
 `;
 
 const Title = styled.div`
