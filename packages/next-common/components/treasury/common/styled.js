@@ -20,5 +20,5 @@ export const Pending = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 100%;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
 `;

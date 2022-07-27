@@ -1,7 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { useState } from "react";
-import ArrowTriangleUp from "../../assets/imgs/icons/arrow-triangle-up.svg";
 
 import Item from "./item";
 
@@ -49,7 +48,7 @@ const Bar = styled.div`
   ${(p) =>
     !p.isFold &&
     css`
-      background-color: #ebeef4;
+      background-color: ${(props) => props.theme.grey200Border};
     `}
 `;
 

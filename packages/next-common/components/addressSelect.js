@@ -47,7 +47,7 @@ const NameWrapper = styled.div`
   > :last-child {
     margin-top: 4px;
     font-size: 12px;
-    color: #9da9bb;
+    color: ${(props) => props.theme.textTertiary};
   }
 `;
 
@@ -68,7 +68,7 @@ const Options = styled.div`
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #c2c8d5;
+    background: ${(props) => props.theme.grey400Border};
     border-right: 4px solid white;
   }
 `;

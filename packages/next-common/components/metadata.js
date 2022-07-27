@@ -2,11 +2,9 @@ import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
-    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
+  box-shadow: ${(props) => props.theme.shadow100};
   border-radius: 6px;
   padding: 48px;
 `;
@@ -22,7 +20,7 @@ const Item = styled.div`
   display: flex;
   align-items: center;
   :not(:last-child) {
-    border-bottom: 1px solid #ebeef4;
+    border-bottom: 1px solid ${(props) => props.theme.grey200Border};
   }
 `;
 

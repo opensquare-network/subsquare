@@ -34,9 +34,7 @@ const Wrapper = styled.div`
   padding: 24px;
 
   :hover {
-    box-shadow: 0 6px 22px rgba(30, 33, 52, 0.11),
-      0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
-      0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
+    box-shadow: ${(props) => props.theme.shadow200};
   }
 `;
 
@@ -166,7 +164,7 @@ const HeadWrapper = styled.div`
 const Method = styled.span`
   font-size: 12px;
   font-weight: 400 !important;
-  color: #9da9bb !important;
+  color: ${(props) => props.theme.textTertiary}; !important;
 `;
 
 const ContentWrapper = styled.div`

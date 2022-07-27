@@ -32,9 +32,7 @@ const Card = styled.div`
   background: ${(props) => props.theme.neutral};
   border: 1px solid ${(props) => props.theme.grey200Border};
   color: ${(props) => props.theme.textPrimary};
-  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
-    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow: ${(props) => props.theme.shadow100};
   border-radius: 6px;
   flex: 0 1 33.33%;
   height: 88px;
@@ -77,7 +75,7 @@ const CountDownWrapper = styled.div`
 `;
 
 const GreyText = styled.span`
-  color: #9da9bb !important;
+  color: ${(props) => props.theme.textTertiary}; !important;
 `;
 
 async function referendumsActive(api) {
@@ -86,13 +84,10 @@ async function referendumsActive(api) {
   }
   const ids = await api.derive.democracy.referendumIds();
   const referendumInfos = await api.query.democracy.referendumInfoOf.multi(ids);
-  const ongoingReferendums = (referendumInfos || []).filter(
-    (referendumInfo) => {
-      const info = referendumInfo.toJSON();
-      return info?.ongoing;
-    }
-  );
-  return ongoingReferendums;
+  return (referendumInfos || []).filter((referendumInfo) => {
+    const info = referendumInfo.toJSON();
+    return info?.ongoing;
+  });
 }
 
 export default function DemocracySummary({ chain }) {

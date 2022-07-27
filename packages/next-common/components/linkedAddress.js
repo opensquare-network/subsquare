@@ -82,7 +82,7 @@ const AddressItem = styled.div`
   padding: 0 16px;
   display: flex;
   align-items: center;
-  border: 1px solid #e0e4eb;
+  border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
   > :not(:first-child) {
     margin-left: 16px;
@@ -94,8 +94,8 @@ const AddressItem = styled.div`
   ${(p) =>
     p.linked &&
     css`
-      background: #f6f7fa;
-      border-color: #f6f7fa;
+      background: ${(props) => props.theme.grey100Bg};
+      border-color: ${(props) => props.theme.grey100Bg};
     `}
 `;
 
@@ -114,7 +114,7 @@ const NameWrapper = styled.div`
 const LinkWrapper = styled.div`
   display: flex;
   font-size: 14px;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   cursor: pointer;
   align-items: center;
   :hover {
@@ -128,7 +128,7 @@ const LinkWrapper = styled.div`
 const NodesWrapper = styled.div`
   display: flex;
   margin: 24px 0;
-  border-bottom: 1px solid #ebeef4;
+  border-bottom: 1px solid ${(props) => props.theme.grey200Border};
   > :not(:first-child) {
     margin-left: 24px;
   }
@@ -162,7 +162,7 @@ const EmptyList = styled.div`
   font-size: 14px;
   line-height: 140%;
   text-align: center;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 export default function LinkedAddress({ chain }) {

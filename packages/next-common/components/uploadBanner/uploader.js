@@ -75,7 +75,7 @@ const BannerPreview = styled(Flex)`
   ${(p) =>
     p.disabled &&
     css`
-      background-color: #f6f7fa;
+      background-color: ${(props) => props.theme.grey100Bg}; ;
     `}
 
   img {

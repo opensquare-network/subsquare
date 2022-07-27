@@ -26,10 +26,10 @@ const CheckBoxWrapper = styled.span`
 const Text = styled.div`
   font-size: 14px;
   line-height: 140%;
-  color: #506176;
+  color: ${(props) => props.theme.textTertiary};
   a {
     font-weight: bold;
-    color: #6848ff;
+    color: ${(props) => props.theme.primaryPurple500};
   }
 `;
 

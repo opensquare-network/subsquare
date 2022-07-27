@@ -29,7 +29,7 @@ const Nav = styled.div`
   }
 
   :hover {
-    background: #ebeef4;
+    background: ${(props) => props.theme.grey100Bg};
   }
 
   ${(p) =>
@@ -78,7 +78,7 @@ const Item = styled.a`
 const Ellipsis = styled.div`
   font-size: 14px;
   font-weight: 500;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
 
   & + & {
     display: none;
