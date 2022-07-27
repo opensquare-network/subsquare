@@ -9,9 +9,6 @@ const Panel = styled.div`
   border-radius: 6px;
   padding: 48px;
   color: ${(props) => props.theme.textPrimary};
-  * {
-    color: ${(props) => props.theme.textPrimary};
-  }
   @media screen and (max-width: 768px) {
     padding: 24px;
     border-radius: 0;

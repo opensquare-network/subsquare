@@ -10,21 +10,13 @@ import PostEdit from "next-common/components/post/postEdit";
 import EditIcon from "../assets/imgs/icons/edit.svg";
 import PostDataSource from "./postDataSource";
 import Poll from "./poll";
-import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
+import Markdown from "./content/markdown";
+import HtmlRenderer from "./content/html";
 
 const Wrapper = styled.div`
   :hover {
     .edit {
       display: block;
-    }
-  }
-
-  div.markdown-body pre,
-  div.html-body pre {
-    background: ${(props) => props.theme.grey100Bg} !important;
-    code {
-      color: ${(props) => props.theme.textPrimary} !important;
-      text-shadow: none !important;
     }
   }
 `;
@@ -211,10 +203,10 @@ export default function ArticleContent({
             <BannerImage src={post.bannerUrl} alt="banner image" />
           )}
           {post.contentType === "markdown" && (
-            <MarkdownPreviewer content={post.content} />
+            <Markdown content={post.content} />
           )}
           {post.contentType === "html" && (
-            <HtmlPreviewer content={post.content} />
+            <HtmlRenderer content={post.content} />
           )}
           {post.createdAt !== post.updatedAt && (
             <EditedLabel>Edited</EditedLabel>
