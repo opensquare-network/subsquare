@@ -10,21 +10,21 @@ const AddressWrapper = styled.div`
   align-items: center;
   padding: 12px 16px;
 
-  background: #F6F7FA;
+  background: ${(props) => props.theme.grey100Bg};
 
-  border: 1px solid #EBEEF4;
+  border: 1px solid ${(props) => props.theme.grey200Border};
   border-radius: 4px;
 `;
 
 const FullAddress = styled.div`
-  color: #9DA9BB;
+  color: ${(props) => props.theme.textTertiary};
   @media screen and (max-width: 1024px) {
     display: none;
   }
 `;
 
 const ShortAddress = styled.div`
-  color: #9DA9BB;
+  color: ${(props) => props.theme.textTertiary};
   @media screen and (min-width: 1024px) {
     display: none;
   }

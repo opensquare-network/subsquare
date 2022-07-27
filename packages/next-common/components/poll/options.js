@@ -30,6 +30,7 @@ const OptionWrapper = styled.div`
       background: ${(props) => props.theme.primaryPurple100};
       color: ${(props) => props.theme.primaryPurple500};
     `}
+  //todo : this needs to be fixed
   ${(props) =>
     props?.theme.isDark &&
     css`
@@ -39,6 +40,7 @@ const OptionWrapper = styled.div`
         background: #272a3a;
       }
     `}
+    //todo : this needs to be fixed
   ${(p) =>
     p.selected &&
     p?.theme === "dark" &&

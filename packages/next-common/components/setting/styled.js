@@ -86,7 +86,7 @@ export const Divider = styled.div`
 export const EmailVerify = styled.div`
   display: flex;
   align-items: center;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   height: 38px;
   padding-right: 16px;
   font-size: 14px;

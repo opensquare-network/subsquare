@@ -45,13 +45,9 @@ const Wrapper = styled.div`
     border-radius: 0;
     padding: 24px;
   }
-  ${(props) =>
-    props?.theme.isDark &&
-    css`
-      div {
-        border-color: #363a4d !important;
-      }
-    `};
+  div {
+    border-color: ${(props) => props.theme.grey300Border} !important;
+  }
 `;
 
 const Title = styled.div`
