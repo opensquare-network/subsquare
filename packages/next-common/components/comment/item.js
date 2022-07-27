@@ -54,7 +54,7 @@ const Wrapper = styled.div`
   ${(p) =>
     p.highlight &&
     css`
-      background-color: #f6f7fa;
+      background-color: ${(props) => props.theme.grey100Bg};
     `}
 `;
 
@@ -65,12 +65,13 @@ const InfoWrapper = styled(Flex)`
 
   > :last-child {
     font-size: 14px;
-    color: #9da9bb;
+    color: ${(props) => props.theme.textTertiary};
   }
 `;
 
 const ContentWrapper = styled.div`
   margin: 8px 0 0 28px;
+  color: ${(props) => props.theme.textPrimary};
   ${(props) =>
     props?.theme.isDark &&
     css`
@@ -166,7 +167,7 @@ const SupporterWrapper = styled(Flex)`
   font-size: 12px;
   line-height: 22px;
   padding: 8px 12px;
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
   margin: 10px 0 0 28px;
 `;
@@ -176,7 +177,7 @@ const SupporterItem = styled.div`
   margin-right: 12px;
 
   > .username {
-    color: #506176;
+    color: ${(props) => props.theme.textSecondary};
   }
 `;
 
@@ -185,7 +186,7 @@ const EditedLabel = styled.div`
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 export default function Item({ user, data, chain, onReply }) {
