@@ -14,12 +14,12 @@ const RawNegativeButton = styled(BackgroundButton)`
 
 function ColorButton({
   children,
-  isPositive = true,
+  positive = true,
   isLoading = false,
   disabled = false,
   ...props
 }) {
-  let TargetButton = isPositive ? RawPositiveButton : RawNegativeButton;
+  let TargetButton = positive ? RawPositiveButton : RawNegativeButton;
   if (disabled) {
     TargetButton = Disabled;
   }
@@ -32,9 +32,9 @@ function ColorButton({
 }
 
 export function PositiveButton(props) {
-  return <ColorButton {...props} isPositive={true} />;
+  return <ColorButton {...props} positive={true} />;
 }
 
 export function NegativeButton(props) {
-  return <ColorButton {...props} isPositive={false} />;
+  return <ColorButton {...props} positive={false} />;
 }
