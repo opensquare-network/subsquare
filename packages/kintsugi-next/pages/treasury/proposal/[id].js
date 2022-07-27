@@ -5,7 +5,7 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "next-common/components/layout";
 import Timeline from "components/treasuryProposal/timeline";
-import Metadata from "components/treasuryProposal/metadata";
+import Metadata from "next-common/components/treasury/proposal/metadata";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { TYPE_TREASURY_PROPOSAL } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
