@@ -26,7 +26,7 @@ const DividerWrapper = styled(Flex)`
     ::before {
       content: "·";
       font-size: 12px;
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary};
       margin: 0 8px;
     }
   }
@@ -56,7 +56,7 @@ const TitleWrapper = styled.div`
       content: "·";
       font-size: 20px;
       line-height: 28px;
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary};
       margin: 0 8px;
     }
   }
@@ -67,7 +67,7 @@ const FlexWrapper = styled(Flex)`
   flex-wrap: nowrap;
   color: red !important;
   ${(props) =>
-    props?.theme === "dark" &&
+    props?.theme.isDark &&
     css`
       color: rgba(255, 255, 255, 0.25);
     `};
