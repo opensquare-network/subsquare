@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   text-align: center;
   font-size: 14px;
   line-height: 140%;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 export default function NoComment() {

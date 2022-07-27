@@ -17,7 +17,7 @@ const FlexWrapper = styled(Flex)`
 
   > a svg:hover {
     * {
-      fill: #9da9bb;
+      fill: ${(props) => props.theme.textTertiary};
     }
   }
 `;

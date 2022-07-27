@@ -20,7 +20,7 @@ const Wrapper = styled.div`
 `;
 
 const SmallSelect = styled.div`
-  background: #fff;
+  background: ${(props) => props.theme.neutral};
   width: 38px;
   height: 38px;
   background: ${(props) => props.theme.neutral};
@@ -40,8 +40,8 @@ const SmallSelect = styled.div`
 `;
 
 const Select = styled.div`
-  background: #ffffff;
-  border: 1px solid #e0e4eb;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
   height: 38px;
   display: flex;
@@ -65,10 +65,8 @@ const Select = styled.div`
 `;
 
 const Options = styled.div`
-  background: #ffffff;
-  box-shadow: 0px 6px 22px rgba(30, 33, 52, 0.11),
-    0px 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
-    0px 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
+  background: ${(props) => props.theme.neutral};
+  box-shadow: ${(props) => props.theme.shadow200};
   border-radius: 4px;
   position: absolute;
   right: 0;

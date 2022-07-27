@@ -43,7 +43,7 @@ const MenuButton = styled(Flex)`
 
 const NodeButton = styled(Flex)`
   display: none !important;
-  border: 1px solid #e0e4eb;
+  border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
   width: 38px;
   height: 38px;

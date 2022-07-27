@@ -15,7 +15,7 @@ import SecondaryButton from "../buttons/secondaryButton";
 
 const ForgetPassword = styled.div`
   margin-top: 8px;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   font-size: 12px;
 `;
 

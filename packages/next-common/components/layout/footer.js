@@ -31,12 +31,12 @@ const FlexWrapper = styled(Flex)`
 
   > a svg:hover {
     * {
-      fill: #9da9bb;
+      fill: ${(props) => props.theme.textTertiary};
     }
   }
   > a.opensquare svg:hover {
     * {
-      fill: #506176;
+      fill: ${(props) => props.theme.textSecondary};
     }
   }
 `;
