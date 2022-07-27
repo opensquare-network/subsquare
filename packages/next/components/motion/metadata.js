@@ -8,7 +8,7 @@ export default function Metadata({ motion, chain }) {
   return (
     <CollectiveMetadata
       chain={chain}
-      index={motion?.motionIndex}
+      index={motion?.index}
       proposer={motion?.proposer}
       threshold={motion?.threshold}
       hash={motion?.hash}
