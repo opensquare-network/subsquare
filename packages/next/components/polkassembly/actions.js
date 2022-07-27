@@ -22,7 +22,7 @@ const GreyWrapper = styled.div`
   font-size: 12px;
   line-height: 22px;
   padding: 8px 12px;
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
   margin-top: 16px;
 `;
@@ -32,17 +32,17 @@ const GreyItem = styled.div`
   margin-right: 12px;
 
   > .username {
-    color: #506176;
+    color: ${(props) => props.theme.textSecondary};
   }
 `;
 
 const ActionItem = styled(Flex)`
   cursor: default;
 
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   > svg {
     path {
-      fill: #9da9bb;
+      fill: ${(props) => props.theme.textTertiary};
     }
   }
 
@@ -66,10 +66,10 @@ const UnfoldWrapper = styled(ActionItem)`
   cursor: pointer;
 
   :hover {
-    color: #506176;
+    color: ${(props) => props.theme.textSecondary};
     > svg {
       path {
-        fill: #506176;
+        fill: ${(props) => props.theme.textSecondary};
       }
     }
   }

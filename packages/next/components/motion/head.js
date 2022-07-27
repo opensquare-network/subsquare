@@ -21,7 +21,7 @@ const MotionEndHeader = styled.div`
   position: static;
   height: 38px;
 
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
 
   margin-bottom: 16px;
@@ -37,7 +37,7 @@ const TitleWrapper = styled.div`
       content: "·";
       font-size: 20px;
       line-height: 28px;
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary};
       margin: 0 8px;
     }
   }
@@ -72,7 +72,7 @@ const DividerWrapper = styled(Flex)`
     ::before {
       content: "·";
       font-size: 12px;
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary};
       margin: 0 8px;
     }
   }

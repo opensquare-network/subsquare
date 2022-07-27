@@ -10,13 +10,13 @@ const Item = styled.div`
   border-left: 3px solid #e0e4eb;
   padding-left: 12px;
   line-height: 36px;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   font-weight: 500;
   ${(p) =>
     p.active &&
     css`
-      color: #6848ff;
-      border-color: #6848ff;
+      color: ${(props) => props.theme.primaryPurple500};
+      border-color: ${(props) => props.theme.primaryPurple500};
     `}
 `;
 

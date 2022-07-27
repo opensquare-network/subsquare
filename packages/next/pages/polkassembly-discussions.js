@@ -12,7 +12,7 @@ import { toPolkassemblyDiscussionListItem } from "utils/viewfuncs";
 const Create = styled.a`
   display: flex;
   align-items: center;
-  color: #6848ff;
+  color: ${(props) => props.theme.primaryPurple500};
   font-size: 14px;
   white-space: nowrap;
   svg {

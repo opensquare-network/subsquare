@@ -63,7 +63,7 @@ const Description = styled.div`
   line-height: 140%;
   color: ${(props) => props.theme.textTertiary};
   > span {
-    color: #6848ff;
+    color: ${(props) => props.theme.primaryPurple500};
     cursor: pointer;
   }
 `;

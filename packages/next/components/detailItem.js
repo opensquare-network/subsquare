@@ -78,7 +78,7 @@ const TypeWrapper = styled.div`
   height: 20px;
   line-height: 20px;
   border-radius: 10px;
-  color: #ffffff !important;
+  color: ${(props) => props.theme.textContrast} !important;
   font-weight: 500;
   font-size: 12px;
   padding: 0 8px;

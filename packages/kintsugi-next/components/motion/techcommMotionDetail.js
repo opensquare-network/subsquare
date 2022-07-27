@@ -30,7 +30,7 @@ const DividerWrapper = styled(Flex)`
     ::before {
       content: "·";
       font-size: 12px;
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary}
       margin: 0 8px;
     }
   }
@@ -61,14 +61,14 @@ const Title = styled.div`
 `;
 
 const StatusWrapper = styled.div`
-  background: #2196f3;
+  background: ${(props) => props.theme.secondaryAzure500};
   border-radius: 2px;
   font-weight: 500;
   font-size: 12px;
   height: 20px;
   line-height: 20px;
   padding: 0 8px;
-  color: #ffffff;
+  color: ${(props) => props.theme.textContrast};
 `;
 
 const Index = styled.div`
@@ -102,7 +102,7 @@ const MotionEndHeader = styled.div`
   position: static;
   height: 38px;
 
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
 
   margin-bottom: 16px;
