@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import User from "next-common/components/user";
 import { getNode, toPrecision } from "utils";
 import Loading from "next-common/components/loading";
-import SecondaryButton from "../../../next-common/components/buttons/secondaryButton";
+import SecondaryButton from "next-common/components/buttons/secondaryButton";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,

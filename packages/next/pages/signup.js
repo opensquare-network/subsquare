@@ -16,8 +16,8 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { shadow_100 } from "../styles/componentCss";
 import NextHead from "next-common/components/nextHead";
 import UserPolicy from "next-common/components/userPolicy";
-import SecondaryButton from "../../next-common/components/buttons/secondaryButton";
-import GhostButton from "../../next-common/components/buttons/ghostButton";
+import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import GhostButton from "next-common/components/buttons/ghostButton";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;

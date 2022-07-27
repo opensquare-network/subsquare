@@ -10,7 +10,7 @@ import {
   TYPE_TREASURY_PROPOSAL,
   TYPE_TREASURY_TIP,
 } from "next-common/utils/viewConstants";
-import SecondaryButton from "../../../../next-common/components/buttons/secondaryButton";
+import SecondaryButton from "next-common/components/buttons/secondaryButton";
 
 const Wrapper = styled.div`
   margin-top: 48px;

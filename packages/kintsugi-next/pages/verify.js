@@ -15,7 +15,7 @@ import {
   Redirect,
   Title,
 } from "next-common/components/login/styled";
-import SecondaryButton from "../../next-common/components/buttons/secondaryButton";
+import SecondaryButton from "next-common/components/buttons/secondaryButton";
 
 const Wrapper = styled.div`
   padding: 32px 0;

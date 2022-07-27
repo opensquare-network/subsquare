@@ -20,7 +20,7 @@ import { shadow_100 } from "styles/componentCss";
 import NextHead from "next-common/components/nextHead";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { useRouter } from "next/router";
-import SecondaryButton from "../../../next-common/components/buttons/secondaryButton";
+import SecondaryButton from "next-common/components/buttons/secondaryButton";
 
 const Wrapper = styled.div`
   max-width: 852px;

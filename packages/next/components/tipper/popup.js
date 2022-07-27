@@ -15,7 +15,7 @@ import PopupLabel from "next-common/components/popup/label";
 import { WarningMessage } from "next-common/components/popup/styled";
 import { checkInputValue, emptyFunction } from "next-common/utils";
 import { sendTx } from "next-common/utils/sendTx";
-import SecondaryButton from "../../../next-common/components/buttons/secondaryButton";
+import SecondaryButton from "next-common/components/buttons/secondaryButton";
 
 const ButtonWrapper = styled.div`
   display: flex;
