@@ -16,7 +16,7 @@ const Wrapper = styled.div`
 
   flex-grow: 1;
 
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
 
   justify-content: space-between;
@@ -30,10 +30,12 @@ const Button = styled.div`
   ${(p) =>
     p.small
       ? css`
-          padding: 4px auto;
+          padding-top: 4px;
+          padding-bottom: 4px;
         `
       : css`
-          padding: 10px auto;
+          padding-top: 10px;
+          padding-bottom: 10px;
         `}
 
   cursor: pointer;
@@ -56,17 +58,15 @@ const Button = styled.div`
   ${(p) =>
     p.highlight
       ? css`
-          color: #1e2134;
+          color: ${(props) => props.theme.textPrimary};
 
-          background: #ffffff;
+          background: ${(props) => props.theme.neutral};
 
-          box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
-            0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-            0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+          box-shadow: ${(props) => props.theme.shadow100};
           border-radius: 2px;
         `
       : css`
-          color: #9da9bb;
+          color: ${(props) => props.theme.textTertiary};
         `}
 `;
 

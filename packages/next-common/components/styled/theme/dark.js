@@ -30,6 +30,8 @@ const dark = {
   grey200Border: "#272A3A",
   grey300Border: "#363A4D",
   grey400Border: "#575C72",
+  shadow100: light.shadow100,
+  shadow200: light.shadow200,
 };
 
 export default dark;
