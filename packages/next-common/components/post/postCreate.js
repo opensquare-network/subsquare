@@ -80,80 +80,82 @@ const ButtonWrapper = styled.div`
 
 const InputWrapper = styled.div`
   position: relative;
+  textarea {
+    background: ${(props) => props.theme.neutral};
+    color: ${(props) => props.theme.textPrimary};
+  }
+  .ql-picker-label:hover,
+  .ql-picker-item.ql-selected {
+    color: ${(props) => props.theme.textPrimary} !important;
+  }
+  .editor-toolbar-buttons button.active {
+    box-shadow: ${(props) => props.theme.neutral} 0px 1px 0px 0px;
+  }
+  div button:last-child {
+    box-shadow: 1px 0 0 0 ${(props) => props.theme.grey400Border};
+  }
+  div button.active {
+    background-color: ${(props) => props.theme.neutral} !important;
+    border-color: ${(props) => props.theme.neutral} !important;
+    color: ${(props) => props.theme.textPrimary} !important;
+    box-shadow: 1px 0 0 0 ${(props) => props.theme.grey400Border};
+    :last-child {
+      box-shadow: ${(props) => props.theme.grey400Border} -1px 0px 0px 0px,
+        ${(props) => props.theme.grey400Border} 1px 0px 0px 0px;
+    }
+  }
+  div.modal {
+    background-color: ${(props) => props.theme.textPrimary} !important;
+    border-color: ${(props) => props.theme.grey200Border} !important;
+  }
+  .modal textarea {
+    background-color: #${(props) => props.theme.neutral} !important;
+    border-color: ${(props) => props.theme.grey200Border} !important;
+    color: ${(props) => props.theme.textPrimary} !important;
+  }
+  .editor-toolbar,
+  .ql-toolbar.ql-snow,
+  span.ql-formats {
+    background-color: ${(props) => props.theme.grey100Bg} !important;
+    border-color: ${(props) => props.theme.grey400Border} !important;
+  }
+  .editor-toolbar-buttons > div {
+    background-color: ${(props) => props.theme.grey400Border} !important;
+  }
+  button svg {
+    path {
+      fill: ${(props) => props.theme.textSecondary};
+    }
+  }
+  button:hover svg path {
+    fill: ${(props) => props.theme.textPrimary} !important;
+  }
+  .modal p,
+  span.ql-picker-options {
+    background-color: ${(props) => props.theme.neutral};
+  }
+  .html-body,
+  .markdown-body,
+  span.ql-picker-label.ql-active,
+  .ql-picker-options .ql-picker-item {
+    color: ${(props) => props.theme.textPrimary} !important;
+    &:hover {
+      color: ${(props) => props.theme.textPrimary} !important;
+    }
+  }
+  caret-color: ${(props) => props.theme.textPrimary} !important;
   ${(props) =>
     props?.theme.isDark &&
     css`
-      div.modal {
-        background-color: #1d1e2c !important;
-        border-color: #212433 !important;
-      }
-      .modal textarea {
-        background-color: #212433 !important;
-        border-color: #212433 !important;
-        color: white !important;
-      }
-
       div.markdown-body pre,
       div.markdown-body code,
       div.html-body pre,
       div.html-body code {
-        background: #1d1e2c !important;
+        background: ${(props) => props.theme.grey100Bg} !important;
         code {
-          color: white !important;
+          color: ${(props) => props.theme.textPrimary} !important;
           text-shadow: none !important;
         }
-      }
-
-      .editor-toolbar,
-      .ql-toolbar.ql-snow,
-      span.ql-formats {
-        background-color: #1d1e2c !important;
-        border-color: #212433 !important;
-      }
-      .editor-toolbar-buttons > div {
-        background-color: #363a4d !important;
-      }
-      button:first-child {
-        box-shadow: 1px 0 0 0 #363a4d !important;
-      }
-      button:last-child {
-        box-shadow: 1px 0 0 0 #363a4d !important;
-      }
-      button.active {
-        background-color: #212433 !important;
-        border-color: #212433 !important;
-        color: white !important;
-        box-shadow: 0 1px 0 0 #1d1e2c !important;
-      }
-      button svg {
-        path {
-          fill: rgba(255, 255, 255, 0.6);
-        }
-      }
-      button:hover svg path {
-        fill: white !important;
-      }
-      .modal p {
-        background-color: #1d1e2c;
-      }
-      .html-body,
-      .markdown-body {
-        color: white;
-      }
-      span.ql-picker-options {
-        background-color: #212433;
-      }
-      span.ql-picker-label.ql-active {
-        color: white !important;
-      }
-      .ql-picker-options .ql-picker-item {
-        &:hover {
-          color: white !important;
-        }
-      }
-      caret-color: white !important;
-      textarea {
-        color: white;
       }
     `};
 `;
