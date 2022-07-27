@@ -4,6 +4,7 @@ import User from "../../user";
 import Links from "../../links";
 import KVList from "../../listInfo/kvList";
 import Flex from "../../styled/flex";
+import capitalize from "../../../utils/capitalize";
 
 const keys = {
   proposer: "proposer",
@@ -24,16 +25,19 @@ export default function TreasuryProposalMetadata({ chain, treasuryProposal }) {
   const data = metadata.map(([key, value]) => {
     if ([keys.proposer, keys.beneficiary].includes(key)) {
       return [
-        key,
+        capitalize(key),
         <Flex>
           <User chain={chain} add={value} fontSize={14} />
           <Links chain={chain} address={value} style={{ marginLeft: 8 }} />
         </Flex>,
       ];
     } else if ([keys.value, keys.bond].includes(key)) {
-      return [key, `${toPrecision(value ?? 0, decimals)} ${symbol}`];
+      return [
+        capitalize(key),
+        `${toPrecision(value ?? 0, decimals)} ${symbol}`,
+      ];
     } else {
-      return [key, value];
+      return [capitalize(key), value];
     }
   });
 
