@@ -16,45 +16,19 @@ import IdentityOrAddr from "../IdentityOrAddr";
 import { addressEllipsis } from "../../utils";
 import SecondaryButton from "../buttons/secondaryButton";
 import GhostButton from "../buttons/ghostButton";
+import EditorWrapper from "../editor/editorWrapper";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
   { ssr: false }
 );
 
-const Wrapper = styled.div`
+const Wrapper = styled(EditorWrapper)`
   margin-top: 48px;
   ${(p) =>
     p.isEdit &&
     css`
       margin-top: 8px;
-    `}
-  ${(props) =>
-    props?.theme.isDark &&
-    css`
-      div.modal {
-        background-color: #1d1e2c !important;
-        border-color: #212433 !important;
-      }
-      .modal textarea {
-        background-color: #212433 !important;
-        border-color: #212433 !important;
-        color: white !important;
-      }
-      .html-body,
-      .markdown-body {
-        color: white;
-      }
-      .modal p {
-        background-color: #1d1e2c;
-      }
-      span.ql-picker-options {
-        background-color: #212433;
-      }
-      span.ql-picker-label.ql-active {
-        color: white !important;
-      }
-      caret-color: white !important;
     `}
 `;
 
