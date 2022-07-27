@@ -25,7 +25,7 @@ import { useBestNumber } from "next-common/utils/hooks";
 import ExternalLink from "next-common/assets/imgs/icons/external-link.svg";
 import ValueDisplay from "next-common/components/displayValue";
 import { capitailize } from "next-common/utils";
-import SecondaryButton from "../../../next-common/components/buttons/secondaryButton";
+import SecondaryButton from "next-common/components/buttons/secondaryButton";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
