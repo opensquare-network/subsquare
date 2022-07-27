@@ -21,14 +21,14 @@ const OptionWrapper = styled.div`
     css`
       cursor: pointer;
       :hover {
-        background: #ebeef4;
+        background: ${(props) => props.theme.grey200Border};
       }
     `}
   ${(p) =>
     p.selected &&
     css`
-      background: #f5f2ff;
-      color: #6848ff;
+      background: ${(props) => props.theme.primaryPurple100};
+      color: ${(props) => props.theme.primaryPurple500};
     `}
   ${(props) =>
     props?.theme.isDark &&
