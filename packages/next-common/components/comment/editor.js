@@ -16,21 +16,20 @@ import IdentityOrAddr from "../IdentityOrAddr";
 import { addressEllipsis } from "../../utils";
 import SecondaryButton from "../buttons/secondaryButton";
 import GhostButton from "../buttons/ghostButton";
-import { editorOverride } from "../../styles/editorOverride";
+import EditorWrapper from "../editor/editorWrapper";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
   { ssr: false }
 );
 
-const Wrapper = styled.div`
+const Wrapper = styled(EditorWrapper)`
   margin-top: 48px;
   ${(p) =>
     p.isEdit &&
     css`
       margin-top: 8px;
     `}
-  ${editorOverride};
 `;
 
 const ButtonWrapper = styled(Flex)`

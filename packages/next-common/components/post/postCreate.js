@@ -13,7 +13,7 @@ import ErrorText from "next-common/components/ErrorText";
 import AdvancedForm from "next-common/components/post/advanced/form";
 import dynamic from "next/dynamic";
 import SecondaryButton from "../buttons/secondaryButton";
-import { editorOverride } from "../../styles/editorOverride";
+import EditorWrapper from "../editor/editorWrapper";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
@@ -79,9 +79,8 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const InputWrapper = styled.div`
+const InputWrapper = styled(EditorWrapper)`
   position: relative;
-  ${editorOverride};
 `;
 
 const UploaderWrapper = styled.div`
