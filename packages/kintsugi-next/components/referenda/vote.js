@@ -26,6 +26,7 @@ import ValueDisplay from "next-common/components/displayValue";
 import { capitailize } from "next-common/utils";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -45,16 +46,6 @@ const Wrapper = styled.div`
     width: auto;
     margin-top: 16px !important;
   }
-`;
-
-const Title = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: bold;
-  font-size: 16px;
-  margin-bottom: 16px;
-  color: ${(props) => props.theme.textPrimary};
 `;
 
 const Headers = styled(Flex)`
@@ -258,14 +249,14 @@ function Vote({
   return (
     <Wrapper>
       <SecondaryCardDetail>
-        <Title>
+        <TitleContainer>
           <span>Votes</span>
           <div>
             {isLoadingReferendumStatus || !isElectorateLoaded ? (
               <Loading size={16} />
             ) : null}
           </div>
-        </Title>
+        </TitleContainer>
 
         <BarWrapper>
           <BarContainer gap={gap}>

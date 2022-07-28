@@ -19,13 +19,6 @@ export const ContentCenterWrapper = styled.div`
   }
 `;
 
-export const Title = styled.div`
-  font-weight: bold;
-  font-size: 20px;
-  text-align: center;
-  line-height: 20px;
-`;
-
 export const LinkWrapper = styled.div`
   font-size: 14px;
   color: ${(props) => props.theme.textSecondary};

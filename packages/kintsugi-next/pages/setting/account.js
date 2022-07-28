@@ -7,10 +7,9 @@ import Layout from "next-common/components/layout";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import {
-  Wrapper,
-  Title,
   ContentWrapper,
   Divider,
+  Wrapper,
 } from "next-common/components/setting/styled";
 import Username from "next-common/components/setting/username";
 import Email from "next-common/components/setting/email";
@@ -18,6 +17,7 @@ import Password from "next-common/components/setting/password";
 import Logout from "next-common/components/setting/logout";
 import { useRouter } from "next/router";
 import { isKeyRegisteredUser } from "next-common/utils";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const user = useSelector(userSelector);
@@ -37,7 +37,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       <Layout chain={chain} user={loginUser} left={<Menu menu={settingMenu} />}>
         <NextHead title={`Settings`} desc={``} />
         <Wrapper>
-          <Title>Account</Title>
+          <TitleContainer>Account</TitleContainer>
           <ContentWrapper>
             <Username username={user?.username} />
             <Divider />

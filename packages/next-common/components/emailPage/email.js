@@ -3,10 +3,7 @@ import styled from "styled-components";
 import Layout from "next-common/components/layout";
 import { withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
-import {
-  ContentCenterWrapper,
-  Title,
-} from "next-common/components/login/styled";
+import { ContentCenterWrapper } from "next-common/components/login/styled";
 import { Option } from "next-common/components/addressSelect";
 import { useRouter } from "next/router";
 import VerifyEmail from "next-common/components/login/verifyEmail";
@@ -15,6 +12,7 @@ import ConfirmEmail from "next-common/components/login/confirmEmail";
 import useIdentity from "next-common/utils/hooks/useIdentity";
 import { p_14_normal } from "../../styles/componentCss";
 import GhostButton from "../buttons/ghostButton";
+import { PageTitleContainer } from "../styled/containers/titleContainer";
 
 const Label = styled.div`
   font-weight: bold;
@@ -70,7 +68,7 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
       <NextHead title={`Set Email`} desc={`Set Email`} />
       <Wrapper>
         <ContentCenterWrapper>
-          <Title>Login {` with Web3 address`}</Title>
+          <PageTitleContainer>Login {` with Web3 address`}</PageTitleContainer>
           <Hint>Set email for receiving notifications</Hint>
           <Label>Web3 address</Label>
           <Option item={{ address }} chain={chain} selected />

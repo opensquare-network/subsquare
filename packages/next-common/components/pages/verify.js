@@ -13,9 +13,9 @@ import {
   ContentCenterWrapper,
   InfoWrapper,
   Redirect,
-  Title,
 } from "next-common/components/login/styled";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import { PageTitleContainer } from "../styled/containers/titleContainer";
 
 const Wrapper = styled.div`
   padding: 32px 0;
@@ -69,14 +69,14 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       <Wrapper>
         {!success && (
           <ContentCenterWrapper>
-            <Title>Verify Email</Title>
+            <PageTitleContainer>Verify Email</PageTitleContainer>
             {loading && <InfoWrapper>Please wait for a moment...</InfoWrapper>}
             {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
           </ContentCenterWrapper>
         )}
         {success && (
           <ContentCenterWrapper>
-            <Title>Congrats</Title>
+            <PageTitleContainer>Congrats</PageTitleContainer>
             <InfoWrapper>Your email has been verified.</InfoWrapper>
             <SecondaryButton isFill onClick={() => router.replace("/")}>
               Got it

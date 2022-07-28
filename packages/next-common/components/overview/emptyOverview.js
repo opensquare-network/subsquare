@@ -1,9 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
-
-import Flex from "next-common/components/styled/flex";
 import Icon from "../../assets/imgs/icons/new-discussion.svg";
+import { TitleContainer } from "../styled/containers/titleContainer";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -19,12 +18,6 @@ const Wrapper = styled.div`
     margin-left: 16px;
     margin-right: 16px;
   }
-`;
-
-const Title = styled(Flex)`
-  justify-content: space-between;
-  font-weight: bold;
-  font-size: 16px;
 `;
 
 const EmptyPanel = styled.div`
@@ -93,7 +86,7 @@ const EmptyPanel = styled.div`
 export default function EmptyOverview() {
   return (
     <Wrapper>
-      <Title>Overview</Title>
+      <TitleContainer>Overview</TitleContainer>
       <EmptyPanel>
         <div className="title">Welcome to SubSquare</div>
         <div className="desc">

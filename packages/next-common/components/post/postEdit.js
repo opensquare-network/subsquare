@@ -8,18 +8,13 @@ import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import ToggleText from "../uploadBanner/toggleText";
 import Uploader from "../uploadBanner/uploader";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
+import { TitleContainer } from "../styled/containers/titleContainer";
 
 const Wrapper = styled.div`
   textarea:read-only,
   div.ql-disabled {
     background-color: #f6f7fa !important;
   }
-`;
-
-const Title = styled.div`
-  font-weight: bold;
-  font-size: 16px;
-  margin-bottom: 24px;
 `;
 
 const Label = styled.div`
@@ -66,7 +61,7 @@ export default function PostEdit({
 
   return (
     <Wrapper>
-      <Title>Edit</Title>
+      <TitleContainer>Edit</TitleContainer>
       <LabelWrapper>
         <Label>Title</Label>
         <ToggleText

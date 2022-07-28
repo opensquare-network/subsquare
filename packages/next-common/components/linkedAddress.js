@@ -23,6 +23,7 @@ import AddressLinkIcon from "../assets/imgs/icons/address-link.svg";
 import UnLinkIcon from "../assets/imgs/icons/unlink.svg";
 import SecondaryButton from "./buttons/secondaryButton";
 import { PrimaryCard } from "./styled/containers/primaryCard";
+import { TitleContainer } from "./styled/containers/titleContainer";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -36,11 +37,6 @@ const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
-`;
-
-const Title = styled.div`
-  font-weight: bold;
-  font-size: 16px;
 `;
 
 const ContentWrapper = styled(PrimaryCard)`
@@ -263,7 +259,7 @@ export default function LinkedAddress({ chain }) {
 
   return (
     <Wrapper>
-      <Title>Linked address</Title>
+      <TitleContainer>Linked address</TitleContainer>
       <ContentWrapper>
         {hasExtension ? (
           <div>

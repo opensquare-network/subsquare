@@ -6,7 +6,6 @@ import NextHead from "next-common/components/nextHead";
 import {
   ContentWrapper,
   Divider,
-  Title,
   Wrapper,
 } from "next-common/components/setting/styled";
 import Web3Address from "next-common/components/setting/web3Address";
@@ -16,6 +15,7 @@ import { encodeAddressToChain } from "next-common/services/address";
 import { useRouter } from "next/router";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { useEffect } from "react";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const user = loginUser;
@@ -43,7 +43,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       >
         <NextHead title={`Settings`} desc={``} />
         <Wrapper>
-          <Title>Account</Title>
+          <TitleContainer>Account</TitleContainer>
           <ContentWrapper>
             <Web3Address address={address} chain={chain} />
             <Divider />

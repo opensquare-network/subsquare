@@ -20,6 +20,7 @@ import NextHead from "next-common/components/nextHead";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { useRouter } from "next/router";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 
 const Wrapper = styled.div`
   max-width: 852px;
@@ -33,11 +34,6 @@ const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
-`;
-
-const Title = styled.div`
-  font-weight: bold;
-  font-size: 16px;
 `;
 
 const ContentWrapper = styled.div`
@@ -160,7 +156,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
     <Layout chain={chain} user={loginUser} left={<Menu menu={menu} />}>
       <NextHead title={`Settings`} desc={``} />
       <Wrapper>
-        <Title>Notification</Title>
+        <TitleContainer>Notification</TitleContainer>
         <ContentWrapper>
           {disabled && (
             <WarningMessage>

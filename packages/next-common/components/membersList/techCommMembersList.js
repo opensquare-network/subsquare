@@ -1,10 +1,9 @@
 import styled, { withTheme } from "styled-components";
-
-import Flex from "../styled/flex";
 import User from "../user";
 import React, { Fragment } from "react";
 import Loading from "../loading";
 import PrimeAddressMark from "../primeAddressMark";
+import { TitleContainer } from "../styled/containers/titleContainer";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -16,13 +15,6 @@ const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
-`;
-
-const Title = styled(Flex)`
-  justify-content: space-between;
-  font-weight: bold;
-  font-size: 16px;
-  color: ${(props) => props.theme.textPrimary};
 `;
 
 const StyledTable = styled.table`
@@ -103,7 +95,7 @@ function MembersList({
 }) {
   return (
     <Wrapper>
-      <Title>{category}</Title>
+      <TitleContainer>{category}</TitleContainer>
       <StyledTable>
         <thead>
           <StyledTr>

@@ -1,12 +1,11 @@
 import styled, { withTheme } from "styled-components";
-
-import Flex from "next-common/components/styled/flex";
 import { decimalPlaces, getNode, toPrecision } from "utils";
 import { bigNumber2Locale } from "next-common/utils";
 import User from "next-common/components/user";
 import { Fragment, useState } from "react";
 import Loading from "next-common/components/loading";
 import PrimeAddressMark from "next-common/components/primeAddressMark";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -18,13 +17,6 @@ const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
-`;
-
-const Title = styled(Flex)`
-  justify-content: space-between;
-  font-weight: bold;
-  font-size: 16px;
-  color: ${(props) => props.theme.textPrimary};
 `;
 
 const StyledTable = styled.table`
@@ -131,7 +123,7 @@ function MembersList({
 
   return (
     <Wrapper>
-      <Title>{category}</Title>
+      <TitleContainer>{category}</TitleContainer>
       <StyledTable>
         <thead>
           <StyledTr>
