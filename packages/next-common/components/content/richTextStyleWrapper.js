@@ -3,7 +3,11 @@ import styled, { css } from "styled-components";
 const RichTextStyleWrapper = styled.div`
   color: ${(props) => props.theme.textPrimary};
 
-  div.ql-editor,
+  div.osn-previewer > div {
+    color: ${(props) => props.theme.textPrimary};
+    //fixme: @osn-previewer has built-in CSS text color, better remove it later
+  }
+
   div.html-body,
   div.markdown-body {
     table tbody {
