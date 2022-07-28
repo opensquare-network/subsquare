@@ -17,7 +17,6 @@ export const Wrapper = styled.div`
 `;
 
 export const ContentWrapper = styled(PrimaryCard)`
-  div,
   input {
     background-color: ${(props) => props.theme.neutral};
     border-color: ${(props) => props.theme.grey300Border};
