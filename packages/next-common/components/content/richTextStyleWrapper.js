@@ -10,11 +10,15 @@ const RichTextStyleWrapper = styled.div`
 
   div.html-body,
   div.markdown-body {
-    table tbody {
-      tr th {
+    table {
+      text-align: center;
+      thead tr th {
         background: ${(props) => props.theme.grey200Border};
+        border-color: ${(props) => props.theme.grey300Border};
+        color: ${(props) => props.theme.textPrimary};
       }
-
+    }
+    table tbody {
       tr:nth-child(even) {
         background: ${(props) => props.theme.grey100Bg};
       }
