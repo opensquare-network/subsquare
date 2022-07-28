@@ -5,6 +5,7 @@ import User from "next-common/components/user";
 import Loading from "next-common/components/loading";
 import PrimeAddressMark from "next-common/components/primeAddressMark";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import { GhostCard } from "next-common/components/styled/containers/ghostCard";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -26,19 +27,12 @@ const Wrapper = styled.div`
   }
 `;
 
-const Content = styled.div`
-  padding: 24px;
-  background: ${(props) => props.theme.neutral};
-  border-radius: 6px;
-  border: 1px solid ${(props) => props.theme.grey200Border};
-  color: ${(props) => props.theme.textPrimary};
-`;
-
 const Title = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
+  color: ${(props) => props.theme.textPrimary};
   > :first-child {
     font-style: normal;
     font-weight: bold;
@@ -184,13 +178,13 @@ export default function Vote({
   return (
     <>
       <Wrapper>
-        <Content>
+        <GhostCard>
           <Title>
             <div>Votes</div>
             <div>{isLoadingVote && <Loading size={16} />}</div>
           </Title>
           {voteList}
-        </Content>
+        </GhostCard>
         {!loading && action}
       </Wrapper>
       {showPopup && (

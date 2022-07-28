@@ -5,6 +5,7 @@ import User from "next-common/components/user";
 import { getNode, toPrecision } from "utils";
 import Loading from "next-common/components/loading";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import { GhostCard } from "next-common/components/styled/containers/ghostCard";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -26,18 +27,12 @@ const Wrapper = styled.div`
   }
 `;
 
-const Content = styled.div`
-  padding: 24px;
-  background: ${(props) => props.theme.grey200Border};
-  border-radius: 6px;
-  color: ${(props) => props.theme.textSecondary};
-`;
-
 const Title = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
+  color: ${(props) => props.theme.textPrimary};
   > :first-child {
     font-style: normal;
     font-weight: bold;
@@ -163,13 +158,13 @@ export default function Tipper({
   return (
     <>
       <Wrapper>
-        <Content>
+        <GhostCard>
           <Title>
             <div>Tippers</div>
             <div>{isLoadingTip && <Loading size={16} />}</div>
           </Title>
           {tipList}
-        </Content>
+        </GhostCard>
         {!loading && action}
       </Wrapper>
       {showPopup && (

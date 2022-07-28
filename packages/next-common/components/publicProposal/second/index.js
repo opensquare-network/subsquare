@@ -11,6 +11,7 @@ import useApi from "../../../utils/hooks/useSelectedEnpointApi";
 import { getNode } from "utils";
 import Tooltip from "../../tooltip";
 import SecondaryButton from "../../buttons/secondaryButton";
+import { GhostCard } from "../../styled/containers/ghostCard";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -32,18 +33,12 @@ const Wrapper = styled.div`
   }
 `;
 
-const Content = styled.div`
-  padding: 24px;
-  background: ${(props) => props.theme.neutral};
-  color: ${(props) => props.theme.textPrimary};
-  border-radius: 6px;
-`;
-
 const Title = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
+  color: ${(props) => props.theme.textPrimary};
   > :first-child {
     font-style: normal;
     font-weight: bold;
@@ -197,13 +192,13 @@ export default function Second({
   return (
     <>
       <Wrapper>
-        <Content>
+        <GhostCard>
           <Title>
             <div>Second</div>
             <div>{totalSeconds}</div>
           </Title>
           {secondsList}
-        </Content>
+        </GhostCard>
         {action}
       </Wrapper>
       {showPopup && (
