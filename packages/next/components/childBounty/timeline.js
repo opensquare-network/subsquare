@@ -3,7 +3,6 @@ import { getNode, getTimelineStatus, toPrecision } from "utils";
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import { TYPE_TREASURY_CHILD_BOUNTY } from "utils/viewConstants";
-import { createMotionTimelineData } from "utils/timeline/motion";
 import sortTimeline from "next-common/utils/timeline/sort";
 import Anchor from "next-common/components/styled/anchor";
 
@@ -74,11 +73,6 @@ export default function ChildBountyTimeline({ chain, childBounty }) {
       status: getTimelineStatus("bounty", item.method ?? item.name),
       data: getTimelineData(item.args, item.method ?? item.name),
     };
-  });
-
-  childBounty?.motions?.forEach((motion) => {
-    const motionTimelineData = createMotionTimelineData(motion, chain);
-    timelineData.push(motionTimelineData);
   });
   sortTimeline(timelineData);
 
