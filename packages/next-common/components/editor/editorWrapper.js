@@ -7,6 +7,22 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
     color: ${(props) => props.theme.textPrimary};
   }
 
+  ul.mention-list,
+  div.ql-mention-list-container {
+    background: ${(props) => props.theme.neutral};
+    li[aria-selected="true"],
+    li.ql-mention-list-item.selected,
+    li:hover {
+      background: ${(props) => props.theme.grey100Bg};
+      background-color: ${(props) => props.theme.grey100Bg};
+      color: ${(props) => props.theme.textPrimary};
+    }
+    li,
+    li.ql-mention-list-item {
+      color: ${(props) => props.theme.textPrimary};
+    }
+  }
+
   .ql-picker-label:hover,
   .ql-picker-item.ql-selected {
     color: ${(props) => props.theme.textPrimary} !important;
