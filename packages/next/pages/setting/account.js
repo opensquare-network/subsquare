@@ -6,11 +6,7 @@ import { userSelector } from "next-common/store/reducers/userSlice";
 import Layout from "next-common/components/layout";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
-import {
-  ContentWrapper,
-  Divider,
-  Wrapper,
-} from "next-common/components/setting/styled";
+import { ContentWrapper, Wrapper } from "next-common/components/setting/styled";
 import Username from "next-common/components/setting/username";
 import Email from "next-common/components/setting/email";
 import Password from "next-common/components/setting/password";
@@ -18,6 +14,7 @@ import Logout from "next-common/components/setting/logout";
 import { useRouter } from "next/router";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import Divider from "next-common/components/styled/layout/divider";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const user = useSelector(userSelector);

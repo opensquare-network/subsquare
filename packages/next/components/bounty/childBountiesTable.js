@@ -6,6 +6,7 @@ import Accordion from "next-common/components/listInfo/accordion";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import FlexBetween from "next-common/components/styled/flexBetween";
+import Divider from "next-common/components/styled/layout/divider";
 
 const ChildBountyWrapper = styled.div`
   > div:first-child {
@@ -55,12 +56,6 @@ const ChildBountyMobile = styled(Flex)`
   > div {
     width: 100%;
   }
-`;
-
-const Divider = styled.div`
-  margin: 8px 0;
-  height: 1px;
-  background-color: #e6e6e6;
 `;
 
 const SemiBold = styled.span`
@@ -132,7 +127,7 @@ function ChildBountiesTable({ childBounties, decimals, symbol }) {
               >
                 {bounty.title}
               </Anchor>
-              <Divider />
+              <Divider margin={8} />
               <FlexBetween>
                 <DividerWrapper>
                   <SemiBold>#{bounty.index}</SemiBold>

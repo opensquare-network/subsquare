@@ -63,12 +63,6 @@ export const InputWrapper = styled.div`
   }
 `;
 
-export const Divider = styled.div`
-  background: ${(props) => props.theme.grey200Border};
-  height: 1px;
-  margin: 24px 0;
-`;
-
 export const EmailVerify = styled.div`
   display: flex;
   align-items: center;

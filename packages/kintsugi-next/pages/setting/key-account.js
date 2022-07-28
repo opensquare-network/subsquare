@@ -3,11 +3,7 @@ import { settingMenuOfKeyAccount } from "next-common/utils/constants";
 import Layout from "next-common/components/layout";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
-import {
-  ContentWrapper,
-  Divider,
-  Wrapper,
-} from "next-common/components/setting/styled";
+import { ContentWrapper, Wrapper } from "next-common/components/setting/styled";
 import Web3Address from "next-common/components/setting/web3Address";
 import NotificationEmail from "next-common/components/setting/notificationEmail";
 import Logout from "next-common/components/setting/logout";
@@ -16,6 +12,7 @@ import { useRouter } from "next/router";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { useEffect } from "react";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import Divider from "next-common/components/styled/layout/divider";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const user = loginUser;
