@@ -46,9 +46,6 @@
 
 // quilljs
 .post-content {
-  .html-body ol > li[data-list="bullet"]::before {
-    content: "•";
-  }
 
   .html-body > * {
     margin-top: 0;

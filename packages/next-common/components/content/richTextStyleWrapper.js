@@ -10,6 +10,14 @@ const RichTextStyleWrapper = styled.div`
 
   div.html-body,
   div.markdown-body {
+    blockquote {
+      border-color: ${(props) => props.theme.grey200Border};
+    }
+
+    ol > li[data-list="bullet"]::before {
+      content: "•";
+    }
+
     table {
       text-align: center;
       thead tr th {
