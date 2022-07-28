@@ -12,6 +12,12 @@ export const SecondaryCard = styled.div`
   }
 `;
 
+export const HoverSecondaryCard = styled(SecondaryCard)`
+  :hover {
+    box-shadow: ${(props) => props.theme.shadow200};
+  }
+`;
+
 // Used for cards on detail page
 export const SecondaryCardDetail = styled(SecondaryCard)`
   @media screen and (max-width: 768px) {

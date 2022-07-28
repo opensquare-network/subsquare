@@ -24,6 +24,7 @@ const Title = styled(Flex)`
   justify-content: space-between;
   font-weight: bold;
   font-size: 16px;
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 const StyledTable = styled.table`
