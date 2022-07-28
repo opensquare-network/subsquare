@@ -10,6 +10,7 @@ import {
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import { renderDisableNonAddressLink } from "next-common/utils/viewfuncs";
 import Actions from "../actions";
+import RichTextStyleWrapper from "next-common/components/content/richTextStyleWrapper";
 
 const Wrapper = styled.div`
   position: relative;
@@ -50,7 +51,7 @@ const InfoWrapper = styled(Flex)`
   }
 `;
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled(RichTextStyleWrapper)`
   margin: 8px 0 0 28px;
 `;
 
