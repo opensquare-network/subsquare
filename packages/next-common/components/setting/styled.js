@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { shadow_100 } from "../../styles/componentCss";
+import { PrimaryCard } from "../styled/containers/primaryCard";
 
 export const Wrapper = styled.div`
   max-width: 932px;
@@ -21,15 +21,7 @@ export const Title = styled.div`
   font-size: 16px;
 `;
 
-export const ContentWrapper = styled.div`
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey200Border};
-  ${shadow_100};
-  border-radius: 4px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-  }
+export const ContentWrapper = styled(PrimaryCard)`
   div,
   input {
     background-color: ${(props) => props.theme.neutral};

@@ -15,7 +15,6 @@ import SectionTag from "next-common/components/sectionTag";
 import Flex from "next-common/components/styled/flex";
 import {
   p_14_medium,
-  shadow_100,
   text_accessory,
   text_primary,
 } from "next-common/styles/componentCss";
@@ -23,19 +22,11 @@ import MotionElapse from "next-common/components/motionElapse";
 import UpdateIcon from "../assets/imgs/icons/line-chart.svg";
 import CommentIcon from "../assets/imgs/icons/comment.svg";
 import Anchor from "next-common/components/styled/anchor";
+import { HoverSecondaryCard } from "./styled/containers/secondaryCard";
 
-const Wrapper = styled.div`
+const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
   align-items: flex-start;
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey200Border};
-  ${shadow_100};
-  border-radius: 6px;
-  padding: 24px;
-
-  :hover {
-    box-shadow: ${(props) => props.theme.shadow200};
-  }
 `;
 
 const DividerWrapper = styled(Flex)`
