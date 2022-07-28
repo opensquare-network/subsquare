@@ -10,6 +10,7 @@ import {
 const stateTagMap = {
   Proposed: StartTag,
   Awarded: PositiveTag,
+  Approved: PositiveTag,
   Rejected: NegativeTag,
   ApproveVoting: PositiveTag,
   RejectVoting: NegativeTag,

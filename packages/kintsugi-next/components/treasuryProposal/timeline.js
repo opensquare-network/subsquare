@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import { getTimelineStatus } from "utils";
 import { TYPE_TREASURY_PROPOSAL } from "utils/viewConstants";
-import sortTimeline from "utils/timeline/sort";
+import sortTimeline from "next-common/utils/timeline/sort";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 
 export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {

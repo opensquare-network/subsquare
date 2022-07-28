@@ -5,7 +5,7 @@ import Timeline from "next-common/components/timeline";
 import { getTimelineStatus } from "utils";
 import { TYPE_TREASURY_PROPOSAL } from "utils/viewConstants";
 import { createMotionTimelineData } from "utils/timeline/motion";
-import sortTimeline from "utils/timeline/sort";
+import sortTimeline from "next-common/utils/timeline/sort";
 
 export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
   const node = getNode(chain);
@@ -40,10 +40,10 @@ export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
     };
   });
 
-  treasuryProposal?.motions?.forEach((motion) => {
-    const motionTimelineData = createMotionTimelineData(motion, chain);
-    timelineData.push(motionTimelineData);
+  const motions = treasuryProposal?.motions?.map((motion) => {
+    return createMotionTimelineData(motion, chain);
   });
+  timelineData.push(...motions);
   sortTimeline(timelineData);
 
   return (

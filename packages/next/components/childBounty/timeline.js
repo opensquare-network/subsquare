@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import { TYPE_TREASURY_CHILD_BOUNTY } from "utils/viewConstants";
 import { createMotionTimelineData } from "utils/timeline/motion";
-import sortTimeline from "utils/timeline/sort";
+import sortTimeline from "next-common/utils/timeline/sort";
 import Anchor from "next-common/components/styled/anchor";
 
 export default function ChildBountyTimeline({ chain, childBounty }) {

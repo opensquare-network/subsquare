@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import { TYPE_TREASURY_BOUNTY } from "utils/viewConstants";
 import { createMotionTimelineData } from "utils/timeline/motion";
-import sortTimeline from "utils/timeline/sort";
+import sortTimeline from "next-common/utils/timeline/sort";
 
 export default function BountyTimeline({ chain, bounty }) {
   const node = getNode(chain);
