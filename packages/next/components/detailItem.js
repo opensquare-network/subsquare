@@ -5,19 +5,15 @@ import Link from "next/link";
 import { timeDurationFromNow } from "next-common/utils";
 import User from "next-common/components/user";
 import TriangleRight from "../public/imgs/icons/arrow-triangle-right.svg";
-import Tag from "next-common/components/tag";
+import Tag from "next-common/components/tags/state/tag";
 import Flex from "next-common/components/styled/flex";
 import { getPostUpdatedAt } from "utils/viewfuncs";
-import {
-  TYPE_DEMOCRACY_EXTERNAL,
-  TYPE_DEMOCRACY_PROPOSAL,
-  TYPE_DEMOCRACY_REFERENDUM,
-} from "utils/viewConstants";
 import ArticleContent from "next-common/components/articleContent";
 import { EditablePanel } from "next-common/components/styled/panel";
 import { getMotionId, shortMotionId } from "next-common/utils/motion";
 import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -152,7 +148,7 @@ export default function DetailItem({
     <EditablePanel>
       {!isEdit && (
         <>
-          {type === TYPE_DEMOCRACY_EXTERNAL && (
+          {type === detailPageCategory.DEMOCRACY_EXTERNAL && (
             <ReferendaWrapper>
               {post?.onchainData?.motions?.map((motion, key) => (
                 <div key={key}>
@@ -187,7 +183,7 @@ export default function DetailItem({
               )}
             </ReferendaWrapper>
           )}
-          {type === TYPE_DEMOCRACY_PROPOSAL && (
+          {type === detailPageCategory.DEMOCRACY_PROPOSAL && (
             <ReferendaWrapper>
               <div>{`Proposal #${post.proposalIndex}`}</div>
               {post?.referendumIndex !== undefined && (
@@ -200,7 +196,7 @@ export default function DetailItem({
               )}
             </ReferendaWrapper>
           )}
-          {type === TYPE_DEMOCRACY_REFERENDUM &&
+          {type === detailPageCategory.DEMOCRACY_REFERENDUM &&
             post.externalProposalHash !== undefined && (
               <ReferendaWrapper>
                 {post?.onchainData?.motions?.map((motion, key) => (
@@ -241,7 +237,7 @@ export default function DetailItem({
                 </div>
               </ReferendaWrapper>
             )}
-          {type === TYPE_DEMOCRACY_REFERENDUM &&
+          {type === detailPageCategory.DEMOCRACY_REFERENDUM &&
             post.proposalIndex !== undefined && (
               <ReferendaWrapper>
                 <Link href={`/democracy/proposal/${post.proposalIndex}`}>
@@ -282,7 +278,7 @@ export default function DetailItem({
                 <Info>{`${post.commentsCount} Comments`}</Info>
               )}
             </DividerWrapper>
-            {post.status && <Tag name={post.status} />}
+            {post.status && <Tag state={post.status} category={type} />}
           </FlexWrapper>
         </>
       )}
