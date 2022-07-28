@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
+import RichTextStyleWrapper from "../content/richTextStyleWrapper";
 
-const EditorWrapper = styled.div`
+const EditorWrapper = styled(RichTextStyleWrapper)`
   textarea {
     background: ${(props) => props.theme.neutral};
     color: ${(props) => props.theme.textPrimary};

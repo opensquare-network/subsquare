@@ -1,12 +1,12 @@
-import React from "react";
 import styled from "styled-components";
-import { HtmlPreviewer } from "@osn/previewer";
 
-const Wrapper = styled(HtmlPreviewer)`
+const RichTextStyleWrapper = styled.div`
   color: ${(props) => props.theme.textPrimary};
 
   .html-body pre,
-  .html-body code {
+  .html-body code,
+  .markdown-body pre,
+  .markdown-body code {
     background: ${(props) => props.theme.grey100Bg} !important;
     code {
       color: ${(props) => props.theme.textPrimary} !important;
@@ -15,6 +15,4 @@ const Wrapper = styled(HtmlPreviewer)`
   }
 `;
 
-export default function HtmlRenderer({ content }) {
-  return <Wrapper content={content} />;
-}
+export default RichTextStyleWrapper;

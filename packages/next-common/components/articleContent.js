@@ -10,10 +10,10 @@ import PostEdit from "next-common/components/post/postEdit";
 import EditIcon from "../assets/imgs/icons/edit.svg";
 import PostDataSource from "./postDataSource";
 import Poll from "./poll";
-import Markdown from "./content/markdown";
-import HtmlRenderer from "./content/html";
+import { MarkdownPreviewer, HtmlPreviewer } from "@osn/previewer";
+import RichTextStyleWrapper from "./content/richTextStyleWrapper";
 
-const Wrapper = styled.div`
+const Wrapper = styled(RichTextStyleWrapper)`
   :hover {
     .edit {
       display: block;
@@ -203,10 +203,10 @@ export default function ArticleContent({
             <BannerImage src={post.bannerUrl} alt="banner image" />
           )}
           {post.contentType === "markdown" && (
-            <Markdown content={post.content} />
+            <MarkdownPreviewer content={post.content} />
           )}
           {post.contentType === "html" && (
-            <HtmlRenderer content={post.content} />
+            <HtmlPreviewer content={post.content} />
           )}
           {post.createdAt !== post.updatedAt && (
             <EditedLabel>Edited</EditedLabel>
