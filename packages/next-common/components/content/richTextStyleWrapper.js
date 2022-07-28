@@ -6,6 +6,20 @@ const RichTextStyleWrapper = styled.div`
   div.ql-editor,
   div.html-body,
   div.markdown-body {
+    tr th {
+      background: ${(props) => props.theme.grey200Border} !important;
+    }
+
+    tr:nth-child(even) {
+      background: ${(props) => props.theme.grey100Bg} !important;
+    }
+
+    th,
+    td {
+      border-color: ${(props) => props.theme.grey300Border} !important;
+      color: ${(props) => props.theme.textPrimary} !important;
+    }
+
     pre,
     code {
       background: ${(props) => props.theme.grey100Bg} !important;
