@@ -5,6 +5,7 @@ import { renderDisableNonAddressLink } from "../utils/viewfuncs";
 import dynamic from "next/dynamic";
 import GhostButton from "./buttons/ghostButton";
 import SecondaryButton from "./buttons/secondaryButton";
+import RichTextStyleWrapper from "./content/richTextStyleWrapper";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
@@ -15,7 +16,7 @@ const Wrapper = styled.div`
   margin-top: 8px;
 `;
 
-const InputWrapper = styled.div`
+const InputWrapper = styled(RichTextStyleWrapper)`
   position: relative;
 `;
 

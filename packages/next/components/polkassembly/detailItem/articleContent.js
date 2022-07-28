@@ -3,8 +3,9 @@ import styled from "styled-components";
 import Actions from "../actions";
 import PostDataSource from "next-common/components/postDataSource";
 import { MarkdownPreviewer } from "@osn/previewer";
+import RichTextStyleWrapper from "next-common/components/content/richTextStyleWrapper";
 
-const Wrapper = styled.div``;
+const Wrapper = styled(RichTextStyleWrapper);
 
 const Divider = styled.div`
   height: 1px;

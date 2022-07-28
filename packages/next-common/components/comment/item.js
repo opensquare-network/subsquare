@@ -14,11 +14,14 @@ import EditInput from "next-common/components/editInput";
 import { useRouter } from "next/router";
 import Flex from "next-common/components/styled/flex";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
-import { renderMentionIdentityUserPlugin } from "@osn/previewer";
+import {
+  MarkdownPreviewer,
+  HtmlPreviewer,
+  renderMentionIdentityUserPlugin,
+} from "@osn/previewer";
 import IdentityOrAddr from "../IdentityOrAddr";
 import { prettyHTML, renderDisableNonAddressLink } from "../../utils/viewfuncs";
-import MarkdownRenderer from "../content/markdown";
-import HtmlRenderer from "../content/html";
+import RichTextStyleWrapper from "../content/richTextStyleWrapper";
 
 const Wrapper = styled.div`
   position: relative;
@@ -67,9 +70,8 @@ const InfoWrapper = styled(Flex)`
   }
 `;
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled(RichTextStyleWrapper)`
   margin: 8px 0 0 28px;
-  color: ${(props) => props.theme.textPrimary};
 `;
 
 const ActionWrapper = styled(Flex)`
@@ -258,7 +260,7 @@ export default function Item({ user, data, chain, onReply }) {
         <>
           <ContentWrapper ref={ref}>
             {comment.contentType === "markdown" && (
-              <MarkdownRenderer
+              <MarkdownPreviewer
                 content={comment.content}
                 plugins={[
                   {
@@ -270,7 +272,7 @@ export default function Item({ user, data, chain, onReply }) {
               />
             )}
             {comment.contentType === "html" && (
-              <HtmlRenderer
+              <HtmlPreviewer
                 content={prettyHTML(comment.content)}
                 plugins={[
                   {
