@@ -9,7 +9,7 @@ const Title = styled.div`
   font-weight: 700;
   font-size: 12px;
   line-height: 16px;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   margin-right: 12px;
 `;
 

@@ -12,6 +12,7 @@ import { getNode } from "utils";
 import Tooltip from "../../tooltip";
 import SecondaryButton from "../../buttons/secondaryButton";
 import { GhostCard } from "../../styled/containers/ghostCard";
+import { TitleContainer } from "../../styled/containers/titleContainer";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -33,12 +34,8 @@ const Wrapper = styled.div`
   }
 `;
 
-const Title = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+const Title = styled(TitleContainer)`
   margin-bottom: 16px;
-  color: ${(props) => props.theme.textPrimary};
   > :first-child {
     font-style: normal;
     font-weight: bold;

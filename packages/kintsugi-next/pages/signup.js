@@ -16,6 +16,7 @@ import NextHead from "next-common/components/nextHead";
 import UserPolicy from "next-common/components/userPolicy";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import GhostButton from "next-common/components/buttons/ghostButton";
+import { PageTitleContainer } from "next-common/components/styled/containers/titleContainer";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -47,13 +48,6 @@ const ContentWrapper = styled.div`
   @media screen and (max-width: 392px) {
     width: 100%;
   }
-`;
-
-const Title = styled.div`
-  font-weight: bold;
-  font-size: 20px;
-  text-align: center;
-  line-height: 20px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -194,7 +188,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       <Wrapper>
         {!success && (
           <ContentWrapper>
-            <Title>Sign up</Title>
+            <PageTitleContainer>Sign up</PageTitleContainer>
             <FormWrapper onSubmit={handleSubmit}>
               <InputWrapper>
                 <Label>Username</Label>
@@ -251,7 +245,9 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
         )}
         {success && (
           <ContentWrapper>
-            <Title>{sendEmailState ? "Congrats." : "Sending..."}</Title>
+            <PageTitleContainer>
+              {sendEmailState ? "Congrats." : "Sending..."}
+            </PageTitleContainer>
             <InfoWrapper>
               {sendEmailState
                 ? "We sent you an email to verify your address. Click on the link in the email."

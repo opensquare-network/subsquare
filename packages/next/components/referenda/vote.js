@@ -24,6 +24,7 @@ import Loading from "next-common/components/loading";
 import { useBestNumber } from "next-common/utils/hooks";
 import Chains from "next-common/utils/consts/chains";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -45,14 +46,8 @@ const Wrapper = styled.div`
   }
 `;
 
-const Title = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: bold;
-  font-size: 16px;
+const Title = styled(TitleContainer)`
   margin-bottom: 16px;
-  color: ${(props) => props.theme.textPrimary};
 `;
 
 const Headers = styled(Flex)`

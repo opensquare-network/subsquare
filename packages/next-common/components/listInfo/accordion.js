@@ -2,6 +2,7 @@ import React, { memo, useState } from "react";
 import styled from "styled-components";
 import Caret from "../icons/caret";
 import { PrimaryCard } from "../styled/containers/primaryCard";
+import { TitleContainer } from "../styled/containers/titleContainer";
 
 const Wrapper = styled(PrimaryCard)`
   margin: 16px 0;
@@ -11,15 +12,11 @@ const Wrapper = styled(PrimaryCard)`
   }
 `;
 
-const Title = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: ${(props) => props.theme.textPrimary};
-
+const Title = styled(TitleContainer)`
   span {
+    display: inline-flex;
+    align-items: center;
     font-weight: bold;
-    font-size: 16px;
   }
 
   svg {

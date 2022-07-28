@@ -14,6 +14,7 @@ import dynamic from "next/dynamic";
 import SecondaryButton from "../buttons/secondaryButton";
 import EditorWrapper from "../editor/editorWrapper";
 import { shadow_100 } from "../../styles/componentCss";
+import { TitleContainer } from "../styled/containers/titleContainer";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
@@ -48,12 +49,6 @@ const Wrapper = styled.div`
   div {
     border-color: ${(props) => props.theme.grey300Border} !important;
   }
-`;
-
-const Title = styled.div`
-  font-weight: bold;
-  font-size: 16px;
-  margin-bottom: 24px;
 `;
 
 const LabelWrapper = styled(FlexBetweenCenter)`
@@ -148,7 +143,7 @@ export default function PostCreate({ chain, loginUser }) {
 
   return (
     <Wrapper>
-      <Title>New Post</Title>
+      <TitleContainer>New Post</TitleContainer>
       <LabelWrapper>
         <Label>Title</Label>
         <ToggleText

@@ -16,10 +16,10 @@ import {
   FormWrapper,
   InfoWrapper,
   Label,
-  Title,
 } from "next-common/components/login/styled";
 import useForm from "../../utils/hooks/useForm";
 import SecondaryButton from "../buttons/secondaryButton";
+import { PageTitleContainer } from "../styled/containers/titleContainer";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -69,7 +69,7 @@ const Forget = withLoginUserRedux(({ loginUser, chain }) => {
       <Wrapper>
         {!success && (
           <ContentCenterWrapper>
-            <Title>Reset Password</Title>
+            <PageTitleContainer>Reset Password</PageTitleContainer>
             <FormWrapper onSubmit={handleSubmit}>
               <FormInputsWrapper>
                 <Label>Email</Label>
@@ -94,7 +94,7 @@ const Forget = withLoginUserRedux(({ loginUser, chain }) => {
         )}
         {success && (
           <ContentCenterWrapper>
-            <Title>Reset Password</Title>
+            <PageTitleContainer>Reset Password</PageTitleContainer>
             <InfoWrapper>
               The reset password link was sent to this email, if it exists in
               our database.

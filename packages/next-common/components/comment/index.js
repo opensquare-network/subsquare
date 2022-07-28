@@ -4,6 +4,7 @@ import Item from "./item";
 import Pagination from "next-common/components/pagination";
 import NoComment from "./noComment";
 import LoginButtons from "./loginButtons";
+import { TitleContainer } from "../styled/containers/titleContainer";
 
 const Header = styled.div`
   display: flex;
@@ -16,12 +17,6 @@ const Header = styled.div`
   }
 `;
 
-const Title = styled.div`
-  font-weight: bold;
-  font-size: 16px;
-  margin-bottom: 16px;
-`;
-
 export default function Comments({
   user,
   data: { items, page, pageSize, total } = {},
@@ -32,7 +27,7 @@ export default function Comments({
   return (
     <div>
       <Header>
-        <Title>Comments</Title>
+        <TitleContainer>Comments</TitleContainer>
         {tabs}
       </Header>
       {items?.length > 0 && (

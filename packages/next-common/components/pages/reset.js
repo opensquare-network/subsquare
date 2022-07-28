@@ -17,10 +17,10 @@ import {
   InfoWrapper,
   Label,
   Redirect,
-  Title,
 } from "next-common/components/login/styled";
 import useForm from "../../utils/hooks/useForm";
 import SecondaryButton from "../buttons/secondaryButton";
+import { PageTitleContainer } from "../styled/containers/titleContainer";
 
 const Wrapper = styled.div`
   padding: 32px 0;
@@ -76,7 +76,7 @@ const Reset = withLoginUserRedux(({ loginUser, chain }) => {
       <Wrapper>
         {!success && (
           <ContentCenterWrapper>
-            <Title>Reset Password</Title>
+            <PageTitleContainer>Reset Password</PageTitleContainer>
             <FormWrapper onSubmit={handleSubmit}>
               <FormInputsWrapper>
                 <Label>New Password</Label>
@@ -102,7 +102,7 @@ const Reset = withLoginUserRedux(({ loginUser, chain }) => {
         )}
         {success && (
           <ContentCenterWrapper>
-            <Title>Congrats</Title>
+            <PageTitleContainer>Congrats</PageTitleContainer>
             <InfoWrapper>Your password has been reset.</InfoWrapper>
             <SecondaryButton
               isFill

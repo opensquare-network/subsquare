@@ -16,11 +16,6 @@ export const Wrapper = styled.div`
   }
 `;
 
-export const Title = styled.div`
-  font-weight: bold;
-  font-size: 16px;
-`;
-
 export const ContentWrapper = styled(PrimaryCard)`
   div,
   input {

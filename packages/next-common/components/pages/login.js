@@ -9,10 +9,10 @@ import NextHead from "next-common/components/nextHead";
 import {
   ContentCenterWrapper,
   LinkWrapper,
-  Title,
 } from "next-common/components/login/styled";
 import MailLogin from "next-common/components/login/mailLogin";
 import { p_14_normal } from "../../styles/componentCss";
+import { PageTitleContainer } from "../styled/containers/titleContainer";
 
 const AddressLogin = dynamic(() => import("../login/addressLogin"), {
   ssr: false,
@@ -43,7 +43,9 @@ const Login = withLoginUserRedux(({ loginUser, chain }) => {
       <NextHead title={`Login`} desc={`Login`} />
       <Wrapper>
         <ContentCenterWrapper>
-          <Title>Login {web3 && ` with Web3 address`}</Title>
+          <PageTitleContainer>
+            Login {web3 && ` with Web3 address`}
+          </PageTitleContainer>
           {web3 && <Hint>Under the {chain} Network</Hint>}
           {!web3 && <MailLogin setAddressLogin={() => setWeb3(true)} />}
           {web3 && (
