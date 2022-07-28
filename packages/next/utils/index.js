@@ -10,18 +10,8 @@ export function textEllipsis(text, start, end) {
   return `${text.slice(0, start)}...${text.slice(-end)}`;
 }
 
-export function hexEllipsis(hex, start = 6, end = 4) {
-  return textEllipsis(hex, start, end);
-}
-
 export function addressEllipsis(address, start = 4, end = 4) {
   return textEllipsis(address, start, end);
-}
-
-export function encodeURIQuery(q) {
-  Object.keys(q)
-    .map((k) => `${k}=${encodeURIComponent(q[k])}`)
-    .join("&");
 }
 
 export function getNode(chain) {
@@ -63,10 +53,4 @@ export function getTimelineStatus(type, method) {
       }
   }
   return { value: method };
-}
-
-export function isMotionEnded(motion) {
-  return ["Closed", "Approved", "Executed", "Disapproved"].includes(
-    motion.state.state
-  );
 }
