@@ -10,6 +10,7 @@ import {
   finalizedHeightSelector,
 } from "../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
+import { SecondaryCard } from "../styled/containers/secondaryCard";
 
 const Wrapper = styled.div`
   display: flex;
@@ -27,16 +28,11 @@ const Wrapper = styled.div`
   }
 `;
 
-const Card = styled.div`
+const Card = styled(SecondaryCard)`
   position: relative;
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey200Border};
   color: ${(props) => props.theme.textPrimary};
-  box-shadow: ${(props) => props.theme.shadow100};
-  border-radius: 6px;
   flex: 0 1 33.33%;
   height: 88px;
-  padding: 26px 24px;
 `;
 
 const Title = styled.div`
