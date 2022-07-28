@@ -19,6 +19,7 @@ export default function Timeline({
   if (Array.isArray(lastTimelineItem)) {
     lastTimelineItem = lastTimelineItem[lastTimelineItem.length - 1];
   }
+
   return (
     <TimelineAccordion
       motionEndInfo={motionEndInfo}

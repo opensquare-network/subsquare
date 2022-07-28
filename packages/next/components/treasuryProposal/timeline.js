@@ -6,6 +6,7 @@ import { getTimelineStatus } from "utils";
 import { TYPE_TREASURY_PROPOSAL } from "utils/viewConstants";
 import { createMotionTimelineData } from "utils/timeline/motion";
 import sortTimeline from "next-common/utils/timeline/sort";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
   const node = getNode(chain);
@@ -35,13 +36,16 @@ export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
     return {
       indexer,
       time: dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-      status: getTimelineStatus("proposal", item.method ?? item.name),
+      status: getTimelineStatus(
+        detailPageCategory.TREASURY_PROPOSAL,
+        item.method ?? item.name
+      ),
       data: getTimelineData(item.args, item.method ?? item.name),
     };
   });
 
   const motions = treasuryProposal?.motions?.map((motion) => {
-    return createMotionTimelineData(motion, chain);
+    return createMotionTimelineData(motion, chain, true, "/council/motion");
   });
   timelineData.push(...motions);
   sortTimeline(timelineData);

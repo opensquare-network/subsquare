@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import Links from "../links";
 import Voting from "./voting";
 import User from "../user";
-import Tag from "../tag";
+import Tag from "../tags/state/tag";
 import Flex from "../styled/flex";
 import { Approve, Reject } from "../icons";
 import ArrowTriangleUp from "../../assets/imgs/icons/arrow-triangle-up.svg";
@@ -157,7 +157,11 @@ export default function Item({
           <div>{data.time}</div>
           {data.status && data.status.value && (
             <TagWrapper>
-              <Tag name={data.status.value} data={data} type={type} />
+              <Tag
+                state={data.status.value}
+                link={data.status?.link}
+                category={data.status?.type}
+              />
             </TagWrapper>
           )}
           <FoldButton
@@ -168,6 +172,7 @@ export default function Item({
             <ArrowTriangleUp />
           </FoldButton>
         </TitleWrapper>
+
         <ContentWrapper>
           {data.data &&
             Object.entries(data.data).map((item, index) => (
@@ -182,6 +187,7 @@ export default function Item({
               </ContentItem>
             ))}
         </ContentWrapper>
+
         {data.voting && <Voting data={data.voting} chain={chain} />}
         {data.voteResult && (
           <VoteResultWrapper>

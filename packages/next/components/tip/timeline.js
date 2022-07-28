@@ -5,6 +5,7 @@ import { getTimelineStatus, getNode, toPrecision } from "utils";
 import Timeline from "next-common/components/timeline";
 import dayjs from "dayjs";
 import User from "next-common/components/user";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 const FlexEnd = styled.div`
   display: flex;
@@ -90,7 +91,7 @@ export default function TipTimeline({ tip, chain }) {
     return {
       time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
       indexer: item.indexer,
-      status: getTimelineStatus("tip", item.method),
+      status: getTimelineStatus(detailPageCategory.TREASURY_TIP, item.method),
       data: getTimelineData(item.args, item.method),
       method: item.method,
     };

@@ -5,6 +5,7 @@ import Timeline from "next-common/components/timeline";
 import { TYPE_TREASURY_BOUNTY } from "utils/viewConstants";
 import { createMotionTimelineData } from "utils/timeline/motion";
 import sortTimeline from "next-common/utils/timeline/sort";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export default function BountyTimeline({ chain, bounty }) {
   const node = getNode(chain);
@@ -64,15 +65,18 @@ export default function BountyTimeline({ chain, bounty }) {
     return {
       indexer,
       time: dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-      status: getTimelineStatus("bounty", item.method ?? item.name),
+      status: getTimelineStatus(
+        detailPageCategory.TREASURY_BOUNTY,
+        item.method ?? item.name
+      ),
       data: getTimelineData(item.args, item.method ?? item.name),
     };
   });
 
-  bounty?.motions?.forEach((motion) => {
-    const motionTimelineData = createMotionTimelineData(motion, chain);
-    timelineData.push(motionTimelineData);
+  const motions = bounty?.motions?.map((motion) => {
+    return createMotionTimelineData(motion, chain, true, "/council/motion");
   });
+  timelineData.push(...motions);
   sortTimeline(timelineData);
 
   return (

@@ -5,6 +5,7 @@ import Timeline from "next-common/components/timeline";
 import { TYPE_TREASURY_CHILD_BOUNTY } from "utils/viewConstants";
 import sortTimeline from "next-common/utils/timeline/sort";
 import Anchor from "next-common/components/styled/anchor";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export default function ChildBountyTimeline({ chain, childBounty }) {
   const node = getNode(chain);
@@ -70,7 +71,10 @@ export default function ChildBountyTimeline({ chain, childBounty }) {
     return {
       indexer,
       time: dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-      status: getTimelineStatus("bounty", item.method ?? item.name),
+      status: getTimelineStatus(
+        detailPageCategory.TREASURY_CHILD_BOUNTY,
+        item.method ?? item.name
+      ),
       data: getTimelineData(item.args, item.method ?? item.name),
     };
   });

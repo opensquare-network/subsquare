@@ -2,6 +2,7 @@ import React from "react";
 import {
   ActiveTag,
   ClosedTag,
+  MotionTag,
   NegativeTag,
   PositiveTag,
   StartTag,
@@ -14,9 +15,13 @@ const stateTagMap = {
   Disapproved: NegativeTag,
   Executed: PositiveTag,
   Closed: ClosedTag,
+
+  // timeline
+  Voted: MotionTag,
+  Vote: MotionTag,
 };
 
 export function CollectiveTag({ state }) {
-  let Tag = stateTagMap[state] || ClosedTag;
+  let Tag = stateTagMap[state] || MotionTag;
   return <Tag>{state}</Tag>;
 }

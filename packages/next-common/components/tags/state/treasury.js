@@ -20,6 +20,12 @@ const tipStateTagMap = {
   Tipping: StartTag,
   Retracted: NegativeTag,
   Closed: ClosedTag,
+
+  "Report Awesome": StartTag,
+  tipNew: StartTag,
+  Tip: ActiveTag,
+  "Tip Retracted": NegativeTag,
+  "Tip Closed": ClosedTag,
 };
 
 const bountyStateTagMap = {
@@ -31,6 +37,13 @@ const bountyStateTagMap = {
   Rejected: NegativeTag,
   Canceled: NegativeTag,
   Claimed: PositiveTag,
+
+  "Propose Bounty": StartTag,
+  BountyBecameActive: ActiveTag,
+  acceptCurator: PositiveTag,
+  BountyExtended: ActiveTag,
+  BountyAwarded: PositiveTag,
+  BountyClaimed: PositiveTag,
 };
 
 const childBountyStateTagMap = {

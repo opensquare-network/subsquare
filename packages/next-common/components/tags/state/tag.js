@@ -27,6 +27,7 @@ const categoryTagMap = {
   [detailPageCategory.COUNCIL_MOTION]: CollectiveTag,
   [businessCategory.tcProposals]: CollectiveTag,
   [detailPageCategory.TECH_COMM_MOTION]: CollectiveTag,
+  [businessCategory.collective]: CollectiveTag,
 
   [businessCategory.democracyProposals]: DemocracyProposalTag,
   [detailPageCategory.DEMOCRACY_PROPOSAL]: DemocracyProposalTag,
@@ -38,11 +39,16 @@ const categoryTagMap = {
   [detailPageCategory.DEMOCRACY_REFERENDUM]: DemocracyReferendumTag,
 };
 
-export default function Tag({ category, state }) {
-  const Tag = categoryTagMap[category];
-  if (Tag) {
-    return <Tag state={state} />;
+export default function Tag({ category, state, link }) {
+  let element = state;
+  if (link) {
+    element = <a href={link}>{state}</a>;
   }
 
-  return <ClosedTag>{state}</ClosedTag>;
+  const Tag = categoryTagMap[category];
+  if (Tag) {
+    return <Tag state={element} />;
+  }
+
+  return <ClosedTag>{element}</ClosedTag>;
 }

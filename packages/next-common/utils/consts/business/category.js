@@ -8,6 +8,7 @@ const businessCategory = {
   democracyProposals: "Democracy Public Proposals",
   democracyExternals: "Democracy External Proposals",
   democracyReferenda: "Referenda",
+  collective: "collective",
 };
 
 export const detailPageCategory = {

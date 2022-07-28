@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import sortTimeline from "next-common/utils/timeline/sort";
 import { getNode, getTimelineStatus, toPrecision } from "utils";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export function makePublicProposalTimelineData(timeline, chain) {
   const node = getNode(chain);
@@ -31,7 +32,10 @@ export function makePublicProposalTimelineData(timeline, chain) {
     return {
       time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
       indexer: item.indexer,
-      status: getTimelineStatus("proposal", item.method ?? item.name),
+      status: getTimelineStatus(
+        detailPageCategory.DEMOCRACY_PROPOSAL,
+        item.method ?? item.name
+      ),
       data: getTimelineData(item.args, item.method ?? item.name, chain),
     };
   });
