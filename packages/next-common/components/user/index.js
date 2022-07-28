@@ -123,32 +123,32 @@ function User({
     );
   }
 
-  const addressWithoutIdentity = maxWidth ? (
-    <Tooltip content={(!user?.publicKey && user?.username) || address}>
-      <div>
-        <Username fontSize={fontSize} maxWidth={maxWidth} color={color}>
-          {(!user?.publicKey && user?.username) || addressEllipsis(address)}
-        </Username>
-      </div>
-    </Tooltip>
-  ) : (
+  const elmUsernameOrAddr = (
     <Username fontSize={fontSize} color={color}>
       {(!user?.publicKey && user?.username) || addressEllipsis(address)}
     </Username>
   );
 
-  const noAddress = maxWidth ? (
-    <Tooltip content={user?.username}>
-      <div>
-        <Username fontSize={fontSize} maxWidth={maxWidth} color={color}>
-          {user?.username}
-        </Username>
-      </div>
+  const addressWithoutIdentity = maxWidth ? (
+    <Tooltip content={(!user?.publicKey && user?.username) || address}>
+      <div>{elmUsernameOrAddr}</div>
     </Tooltip>
   ) : (
-    <Username fontSize={fontSize} color={color}>
+    elmUsernameOrAddr
+  );
+
+  const elmUsername = (
+    <Username fontSize={fontSize} maxWidth={maxWidth} color={color}>
       {user?.username}
     </Username>
+  );
+
+  const noAddress = maxWidth ? (
+    <Tooltip content={user?.username}>
+      <div>{elmUsername}</div>
+    </Tooltip>
+  ) : (
+    elmUsername
   );
 
   return (

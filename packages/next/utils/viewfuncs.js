@@ -31,7 +31,7 @@ export const toDiscussionListItem = (chain, item) => ({
 export const convertPolkassemblyUser = (chain, paUser) =>
   paUser?.[`${chain}_default_address`]
     ? {
-        username: paUser?.username,
+        username: addressEllipsis(paUser?.[`${chain}_default_address`]) || paUser?.username,
         addresses: [
           {
             address: paUser?.[`${chain}_default_address`],
