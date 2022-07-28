@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import RichTextStyleWrapper from "../content/richTextStyleWrapper";
 
 const EditorWrapper = styled(RichTextStyleWrapper)`
@@ -81,21 +81,6 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
   }
 
   caret-color: ${(props) => props.theme.textPrimary} !important;
-  ${(props) =>
-    props?.theme.isDark &&
-    css`
-      div.markdown-body pre,
-      div.markdown-body code,
-      div.html-body pre,
-      div.html-body code {
-        background: ${(props) => props.theme.grey100Bg} !important;
-
-        code {
-          color: ${(props) => props.theme.textPrimary} !important;
-          text-shadow: none !important;
-        }
-      }
-    `};
 
   > div > div {
     border-color: ${(props) => props.theme.grey300Border};
