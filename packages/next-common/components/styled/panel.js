@@ -13,7 +13,3 @@ const EditablePanelWrapper = styled(PrimaryCard)`
 export const EditablePanel = ({ children, ...props }) => {
   return <EditablePanelWrapper {...props}>{children}</EditablePanelWrapper>;
 };
-
-export default function ({ children, ...props }) {
-  return <PrimaryCard {...props}>{children}</PrimaryCard>;
-}

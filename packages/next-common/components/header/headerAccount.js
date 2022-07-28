@@ -64,12 +64,6 @@ const Item = styled(Flex)`
   }
 `;
 
-const Divider = styled.div`
-  height: 1px;
-  margin: 8px 0;
-  background: ${(props) => props.theme.grey200Border};
-`;
-
 export default function HeaderAccount({ user, chain }) {
   const router = useRouter();
   const [show, setShow] = useState(false);
@@ -112,7 +106,7 @@ export default function HeaderAccount({ user, chain }) {
         <Menu>
           {menu.map((item, index) => (
             <Fragment key={index}>
-              {index === menu.length - 1 && <Divider />}
+              {index === menu.length - 1 && <Divider margin={8} />}
               <Item onClick={() => handleAccountMenu(item)}>
                 {item.icon}
                 <div>{item.name}</div>

@@ -22,6 +22,7 @@ import { useRouter } from "next/router";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { PrimaryCard } from "next-common/components/styled/containers/primaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import Divider from "next-common/components/styled/layout/divider";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -66,12 +67,6 @@ const ToggleItem = styled.div`
     flex: 0 0 auto;
     margin-left: 16px;
   }
-`;
-
-const Divider = styled.div`
-  background: ${(props) => props.theme.grey200Border};
-  height: 1px;
-  margin: 24px 0;
 `;
 
 const ButtonWrapper = styled.div`

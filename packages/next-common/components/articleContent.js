@@ -12,6 +12,7 @@ import PostDataSource from "./postDataSource";
 import Poll from "./poll";
 import { MarkdownPreviewer, HtmlPreviewer } from "@osn/previewer";
 import RichTextStyleWrapper from "./content/richTextStyleWrapper";
+import Divider from "./styled/layout/divider";
 
 const Wrapper = styled(RichTextStyleWrapper)`
   :hover {
@@ -19,12 +20,6 @@ const Wrapper = styled(RichTextStyleWrapper)`
       display: block;
     }
   }
-`;
-
-const Divider = styled.div`
-  height: 1px;
-  background: ${(props) => props.theme.grey200Border};
-  margin: 16px 0;
 `;
 
 const PlaceHolder = styled.div`
@@ -168,7 +163,7 @@ export default function ArticleContent({
     <Wrapper>
       {!isEdit && (
         <>
-          <Divider />
+          <Divider margin={16} />
           {post.content === "" && (
             <PlaceHolder>
               {`The ${type} has not been edited by creator.`}

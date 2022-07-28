@@ -23,6 +23,7 @@ import UpdateIcon from "../assets/imgs/icons/line-chart.svg";
 import CommentIcon from "../assets/imgs/icons/comment.svg";
 import Anchor from "next-common/components/styled/anchor";
 import { HoverSecondaryCard } from "./styled/containers/secondaryCard";
+import Divider from "./styled/layout/divider";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -105,12 +106,6 @@ const Title = styled.a`
   :hover {
     text-decoration: underline;
   }
-`;
-
-const Divider = styled.div`
-  height: 1px;
-  background: ${(props) => props.theme.grey200Border};
-  margin: 12px 0;
 `;
 
 const FooterWrapper = styled(Flex)`
@@ -212,7 +207,7 @@ export default function Post({ data, chain, href, type }) {
           {method && <Method>{method}</Method>}
         </HeadWrapper>
 
-        <Divider />
+        <Divider margin={12} />
         <FooterWrapper>
           <Footer>
             <User

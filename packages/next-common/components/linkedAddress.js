@@ -40,7 +40,6 @@ const Wrapper = styled.div`
 `;
 
 const ContentWrapper = styled(PrimaryCard)`
-  div,
   input {
     background: ${(props) => props.theme.neutral};
     border-color: ${(props) => props.theme.grey300Border};

@@ -17,7 +17,6 @@ export const Wrapper = styled.div`
 `;
 
 export const ContentWrapper = styled(PrimaryCard)`
-  div,
   input {
     background-color: ${(props) => props.theme.neutral};
     border-color: ${(props) => props.theme.grey300Border};
@@ -62,12 +61,6 @@ export const InputWrapper = styled.div`
       margin-top: 8px;
     }
   }
-`;
-
-export const Divider = styled.div`
-  background: ${(props) => props.theme.grey200Border};
-  height: 1px;
-  margin: 24px 0;
 `;
 
 export const EmailVerify = styled.div`
