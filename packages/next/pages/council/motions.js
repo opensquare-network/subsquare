@@ -6,12 +6,13 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "next-common/components/layout";
 import { toCouncilMotionListItem } from "utils/viewfuncs";
+import businessCategory from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(({ loginUser, motions, chain }) => {
   const items = (motions.items || []).map((item) =>
     toCouncilMotionListItem(chain, item)
   );
-  const category = "Council Motions";
+  const category = businessCategory.councilMotions;
   const seoInfo = { title: category, desc: category };
 
   return (

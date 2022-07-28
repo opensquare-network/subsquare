@@ -1,4 +1,3 @@
-import { addressEllipsis } from ".";
 import Chains from "next-common/utils/consts/chains";
 
 const TipStateMap = {

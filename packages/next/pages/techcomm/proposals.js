@@ -6,12 +6,13 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "next-common/components/layout";
 import { toTechCommMotionListItem } from "utils/viewfuncs";
+import businessCategory from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
   const items = (proposals.items || []).map((item) =>
     toTechCommMotionListItem(chain, item)
   );
-  const category = "Tech. Comm. Proposals";
+  const category = businessCategory.tcProposals;
   const seoInfo = {
     title: `Technical Committee Proposals`,
     desc: `Technical Committee Proposals`,

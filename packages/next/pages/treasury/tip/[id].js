@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { EmptyList } from "next-common/utils/constants";
-import { TYPE_TREASURY_TIP } from "utils/viewConstants";
 import { getMetaDesc, getTipState } from "utils/viewfuncs";
 import { to404 } from "next-common/utils/serverSideUtil";
 
@@ -19,6 +18,7 @@ import Metadata from "components/tip/metadata";
 import Tipper from "components/tipper";
 import MainCard from "next-common/components/styled/mainCard";
 import useUniversalComments from "components/universalComments";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(
   ({ loginUser, detail: tip, comments, chain }) => {
@@ -29,7 +29,7 @@ export default withLoginUserRedux(
       comments,
       loginUser,
       chain,
-      type: TYPE_TREASURY_TIP,
+      type: detailPageCategory.TREASURY_TIP,
     });
 
     const [tipIsFinal, setTipIsFinal] = useState(
@@ -132,7 +132,7 @@ export default withLoginUserRedux(
               user={loginUser}
               chain={chain}
               onReply={focusEditor}
-              type={TYPE_TREASURY_TIP}
+              type={detailPageCategory.TREASURY_TIP}
             />
             <Tipper
               chain={chain}

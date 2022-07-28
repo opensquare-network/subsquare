@@ -17,6 +17,7 @@ import {
 } from "next-common/store/reducers/treasuryProposalSlice";
 import { Create, Pending } from "next-common/components/treasury/common/styled";
 import usePendingProposal from "next-common/components/treasury/proposal/usePendingProposal";
+import businessCategory from "next-common/utils/consts/business/category";
 
 const Popup = dynamic(
   () => import("next-common/components/treasury/proposal/popup"),
@@ -58,7 +59,7 @@ export default withLoginUserRedux(
       </Create>
     );
 
-    const category = `Treasury Proposals`;
+    const category = businessCategory.treasuryProposals;
     const seoInfo = { title: category, desc: category };
 
     return (
