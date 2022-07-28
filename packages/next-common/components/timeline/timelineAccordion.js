@@ -1,23 +1,8 @@
 import styled from "styled-components";
-import { shadow_100 } from "../../styles/componentCss";
 import React, { memo, useState } from "react";
 import { timeDurationFromNow } from "../../utils";
 import Caret from "../icons/caret";
-
-const Wrapper = styled.div`
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey200Border};
-  ${shadow_100};
-  border-radius: 4px;
-  padding: 48px;
-  color: ${(props) => props.theme.textPrimary};
-
-  @media screen and (max-width: 768px) {
-    max-width: 100%;
-    padding: 24px;
-    border-radius: 0;
-  }
-`;
+import { PrimaryCard } from "../styled/containers/primaryCard";
 
 const TitleWrapper = styled.div`
   display: flex;
@@ -56,7 +41,7 @@ function TimelineAccordion({
   const [fold, setFold] = useState(false);
 
   return (
-    <Wrapper>
+    <PrimaryCard>
       <TitleWrapper>
         <div className="title">
           <span>Timeline</span>
@@ -71,7 +56,7 @@ function TimelineAccordion({
       </TitleWrapper>
 
       <Detail show={!fold}>{children}</Detail>
-    </Wrapper>
+    </PrimaryCard>
   );
 }
 

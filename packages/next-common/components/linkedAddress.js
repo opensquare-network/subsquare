@@ -15,7 +15,6 @@ import {
 import { nodes } from "next-common/utils/constants";
 import Avatar from "./avatar";
 import DownloadExtension from "./downloadExtension";
-import { shadow_100 } from "../styles/componentCss";
 import { addressEllipsis } from "../utils";
 import { encodeAddressToChain } from "../services/address";
 import { signMessage } from "../services/extension/signMessage";
@@ -23,6 +22,7 @@ import { polkadotWeb3Accounts } from "../utils/extensionAccount";
 import AddressLinkIcon from "../assets/imgs/icons/address-link.svg";
 import UnLinkIcon from "../assets/imgs/icons/unlink.svg";
 import SecondaryButton from "./buttons/secondaryButton";
+import { PrimaryCard } from "./styled/containers/primaryCard";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -43,16 +43,7 @@ const Title = styled.div`
   font-size: 16px;
 `;
 
-const ContentWrapper = styled.div`
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey200Border};
-  ${shadow_100};
-  border-radius: 4px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-  }
-
+const ContentWrapper = styled(PrimaryCard)`
   div,
   input {
     background: ${(props) => props.theme.neutral};

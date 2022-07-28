@@ -1,11 +1,10 @@
-import React, { useState, memo } from "react";
+import React, { memo, useState } from "react";
 import styled from "styled-components";
-import Panel from "../styled/panel";
 import Caret from "../icons/caret";
+import { PrimaryCard } from "../styled/containers/primaryCard";
 
-const Wrapper = styled(Panel)`
+const Wrapper = styled(PrimaryCard)`
   margin: 16px 0;
-  background: ${(props) => props.theme.neutral};
 
   div:last-child {
     border-bottom: none;

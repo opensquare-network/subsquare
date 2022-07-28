@@ -20,6 +20,7 @@ import NextHead from "next-common/components/nextHead";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { useRouter } from "next/router";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import { PrimaryCard } from "next-common/components/styled/containers/primaryCard";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -40,17 +41,8 @@ const Title = styled.div`
   font-size: 16px;
 `;
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled(PrimaryCard)`
   font-size: 14px;
-  color: ${(props) => props.theme.textPrimary};
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey200Border};
-  box-shadow: ${(props) => props.theme.shadow100};
-  border-radius: 4px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-  }
 
   input {
     background: ${(props) => props.theme.neutral};
