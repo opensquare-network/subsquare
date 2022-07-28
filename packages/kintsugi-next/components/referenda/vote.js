@@ -5,10 +5,10 @@ import styled from "styled-components";
 import { getNode, toPrecision } from "utils";
 import Flex from "next-common/components/styled/flex";
 import {
-  getThresholdOfSimplyMajority,
-  getThresholdOfSuperMajorityApprove,
-  getThresholdOfSuperMajorityAgainst,
   calcPassing,
+  getThresholdOfSimplyMajority,
+  getThresholdOfSuperMajorityAgainst,
+  getThresholdOfSuperMajorityApprove,
 } from "utils/referendumUtil";
 import { useElectorate, useLoaded } from "utils/hooks";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
@@ -25,6 +25,7 @@ import ExternalLink from "next-common/assets/imgs/icons/external-link.svg";
 import ValueDisplay from "next-common/components/displayValue";
 import { capitailize } from "next-common/utils";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -43,20 +44,6 @@ const Wrapper = styled.div`
     position: static;
     width: auto;
     margin-top: 16px !important;
-  }
-`;
-
-const Card = styled.div`
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey200Border};
-  box-shadow: ${(props) => props.theme.shadow100};
-  border-radius: 6px;
-  padding: 24px;
-  @media screen and (max-width: 768px) {
-    border-radius: 0;
-  }
-  > :not(:first-child) {
-    margin-top: 16px;
   }
 `;
 
@@ -270,7 +257,7 @@ function Vote({
 
   return (
     <Wrapper>
-      <Card>
+      <SecondaryCardDetail>
         <Title>
           <span>Votes</span>
           <div>
@@ -388,7 +375,7 @@ function Vote({
           ) : (
             <RejectStatus>Failing</RejectStatus>
           ))}
-      </Card>
+      </SecondaryCardDetail>
 
       {!referendumInfo?.finished && (
         <SecondaryButton

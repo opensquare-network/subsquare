@@ -23,6 +23,7 @@ import DisplayValue from "next-common/components/displayValue";
 import Loading from "next-common/components/loading";
 import { useBestNumber } from "next-common/utils/hooks";
 import Chains from "next-common/utils/consts/chains";
+import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -44,29 +45,6 @@ const Wrapper = styled.div`
   }
 `;
 
-const Card = styled.div`
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey200Border};
-  box-shadow: ${(props) => props.theme.shadow100};
-  border-radius: 6px;
-  padding: 24px;
-  @media screen and (max-width: 768px) {
-    border-radius: 0;
-  }
-
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-
-  color: ${(props) => props.theme.textPrimary};
-  background: ${(props) => props.theme.neutral};
-
-  *,
-  span {
-    color: ${(props) => props.theme.textPrimary};
-  }
-`;
-
 const Title = styled.div`
   display: flex;
   align-items: center;
@@ -74,6 +52,7 @@ const Title = styled.div`
   font-weight: bold;
   font-size: 16px;
   margin-bottom: 16px;
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 const Headers = styled(Flex)`
@@ -152,6 +131,10 @@ const Header = styled.span`
   svg {
     margin-right: 8px;
   }
+`;
+
+const Value = styled.span`
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 const BarWrapper = styled.div`
@@ -286,7 +269,7 @@ function Vote({
 
   return (
     <Wrapper>
-      <Card>
+      <SecondaryCardDetail>
         <Title>
           <span>Votes</span>
           <div>
@@ -345,52 +328,52 @@ function Vote({
               <AyeIcon />
               Aye
             </Header>
-            <span>
+            <Value>
               <DisplayValue
                 value={nAyes}
                 symbol={symbol}
                 noWrap={width <= 1024}
               />
-            </span>
+            </Value>
           </BorderedRow>
           <BorderedRow>
             <Header>
               <NayIcon />
               Nay
             </Header>
-            <span>
+            <Value>
               <DisplayValue
                 value={nNays}
                 symbol={symbol}
                 noWrap={width <= 1024}
               />
-            </span>
+            </Value>
           </BorderedRow>
           <BorderedRow>
             <Header>
               <TurnoutIcon />
               Turnout
             </Header>
-            <span>
+            <Value>
               <DisplayValue
                 value={nTurnout}
                 symbol={symbol}
                 noWrap={width <= 1024}
               />
-            </span>
+            </Value>
           </BorderedRow>
           <Row>
             <Header>
               <ElectorateIcon />
               Electorate
             </Header>
-            <span>
+            <Value>
               <DisplayValue
                 value={nElectorate}
                 symbol={symbol}
                 noWrap={width <= 1024}
               />
-            </span>
+            </Value>
           </Row>
         </div>
         {finishedResult}
@@ -401,7 +384,7 @@ function Vote({
           ) : (
             <RejectStatus>Failing</RejectStatus>
           ))}
-      </Card>
+      </SecondaryCardDetail>
 
       {!finished && (
         <VoteButton
