@@ -32,7 +32,7 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
     box-shadow: ${(props) => props.theme.neutral} 0px 1px 0px 0px;
   }
 
-  div button:last-child {
+  div button:last-child {g
     box-shadow: 1px 0 0 0 ${(props) => props.theme.grey400Border};
   }
 
