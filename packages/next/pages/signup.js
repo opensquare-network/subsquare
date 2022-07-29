@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 
 import Layout from "next-common/components/layout";
 import Input from "next-common/components/input";
-import { useForm } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useCountdown from "next-common/utils/hooks/useCountdown";
 import nextApi from "next-common/services/nextApi";
@@ -17,6 +16,7 @@ import NextHead from "next-common/components/nextHead";
 import UserPolicy from "next-common/components/userPolicy";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import GhostButton from "next-common/components/buttons/ghostButton";
+import useForm from "next-common/utils/hooks/useForm";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
