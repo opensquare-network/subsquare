@@ -111,7 +111,11 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
             onchainData={detail?.onchainData}
           />
 
-          <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
+          <Timeline
+            timeline={detail?.onchainData?.timeline}
+            chain={chain}
+            type={detailPageCategory.DEMOCRACY_REFERENDUM}
+          />
           {CommentComponent}
         </MainCard>
       </OutWrapper>

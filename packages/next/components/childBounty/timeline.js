@@ -2,7 +2,6 @@ import User from "next-common/components/user";
 import { getNode, getTimelineStatus, toPrecision } from "utils";
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
-import { TYPE_TREASURY_CHILD_BOUNTY } from "utils/viewConstants";
 import sortTimeline from "next-common/utils/timeline/sort";
 import Anchor from "next-common/components/styled/anchor";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
@@ -84,7 +83,7 @@ export default function ChildBountyTimeline({ chain, childBounty }) {
     <Timeline
       data={timelineData}
       chain={chain}
-      type={TYPE_TREASURY_CHILD_BOUNTY}
+      type={detailPageCategory.TREASURY_CHILD_BOUNTY}
     />
   );
 }

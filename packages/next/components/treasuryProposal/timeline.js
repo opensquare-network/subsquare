@@ -1,9 +1,7 @@
 import User from "next-common/components/user";
-import { getNode, toPrecision } from "utils";
+import { getNode, getTimelineStatus, toPrecision } from "utils";
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
-import { getTimelineStatus } from "utils";
-import { TYPE_TREASURY_PROPOSAL } from "utils/viewConstants";
 import { createMotionTimelineData } from "utils/timeline/motion";
 import sortTimeline from "next-common/utils/timeline/sort";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
@@ -54,7 +52,7 @@ export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
     <Timeline
       data={timelineData}
       chain={chain}
-      type={TYPE_TREASURY_PROPOSAL}
+      type={detailPageCategory.TREASURY_PROPOSAL}
       indent={false}
     />
   );

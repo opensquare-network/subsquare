@@ -25,6 +25,10 @@ const externalTagMap = {
   Tabled: PositiveTag,
   Overwritten: NegativeTag,
   Vetoed: NegativeTag,
+
+  // In timeline
+  externalProposeMajority: StartTag,
+  ExternalTabled: PositiveTag,
 };
 
 export function DemocracyExternalTag({ state }) {

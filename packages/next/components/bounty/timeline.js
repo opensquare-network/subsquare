@@ -2,7 +2,6 @@ import User from "next-common/components/user";
 import { getNode, getTimelineStatus, toPrecision } from "utils";
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
-import { TYPE_TREASURY_BOUNTY } from "utils/viewConstants";
 import { createMotionTimelineData } from "utils/timeline/motion";
 import sortTimeline from "next-common/utils/timeline/sort";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
@@ -80,6 +79,10 @@ export default function BountyTimeline({ chain, bounty }) {
   sortTimeline(timelineData);
 
   return (
-    <Timeline data={timelineData} chain={chain} type={TYPE_TREASURY_BOUNTY} />
+    <Timeline
+      data={timelineData}
+      chain={chain}
+      type={detailPageCategory.TREASURY_BOUNTY}
+    />
   );
 }
