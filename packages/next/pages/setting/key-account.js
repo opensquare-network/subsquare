@@ -43,12 +43,12 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
           <TitleContainer>Account</TitleContainer>
           <ContentWrapper>
             <Web3Address address={address} chain={chain} />
-            <Divider />
+            <Divider margin={24} />
             <NotificationEmail
               email={user?.email}
               verified={user?.emailVerified}
             />
-            <Divider />
+            <Divider margin={24} />
             <Logout />
           </ContentWrapper>
         </Wrapper>

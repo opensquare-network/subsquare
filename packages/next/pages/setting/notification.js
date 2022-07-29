@@ -168,7 +168,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
               />
             </ToggleItem>
           </div>
-          <Divider />
+          <Divider margin={24} />
           <ButtonWrapper>
             <SecondaryButton
               disabled={disabled}
