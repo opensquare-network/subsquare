@@ -13,7 +13,7 @@ const OptionWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 12px 16px;
-  background: ${(props) => props.theme.grey100Bg}
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
   color: ${(props) => props.theme.textPrimary};
   ${(p) =>
