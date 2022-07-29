@@ -1,3 +1,11 @@
+import Chains from "../chains";
+
+let polkassemblyMenu = {
+  value: "polkassembly",
+  name: "Polkassembly",
+  pathname: "/polkassembly/discussions",
+};
+
 const commonMenus = {
   items: [
     {
@@ -10,17 +18,12 @@ const commonMenus = {
       name: "Discussions",
       pathname: "/discussions",
     },
-    ...(["polkadot", "kusama"].includes(process.env.NEXT_PUBLIC_CHAIN)
-      ? [
-          {
-            value: "polkassembly-discussions",
-            name: "Polkassembly",
-            pathname: "/polkassembly-discussions",
-          },
-        ]
-      : []),
   ],
 };
+
+if ([Chains.polkadot, Chains.kusama].includes(process.env.NEXT_PUBLIC_CHAIN)) {
+  commonMenus.items.push(polkassemblyMenu);
+}
 
 const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
 if (space) {

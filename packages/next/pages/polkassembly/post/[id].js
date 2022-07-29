@@ -26,7 +26,7 @@ export default withLoginUserRedux(({ loginUser, detail, chain }) => {
     >
       <DetailPageWrapper className="post-content">
         <Back
-          href={`/polkassembly-discussions`}
+          href={`/polkassembly/discussions`}
           text="Back to Polkassembly Discussions"
         />
         <DetailItem

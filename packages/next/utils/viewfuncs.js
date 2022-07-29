@@ -80,7 +80,7 @@ export const toPolkassemblyDiscussionListItem = (chain, item) => ({
         }
       : {}),
   },
-  detailLink: `/polkassembly-discussion/${item.polkassemblyId}`,
+  detailLink: `/polkassembly/post/${item.polkassemblyId}`,
 });
 
 export const toPolkassemblyCommentListItem = (chain, item) => ({

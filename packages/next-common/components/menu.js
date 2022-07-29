@@ -98,7 +98,7 @@ export default function Menu({ menu, chain }) {
   const iconMap = new Map();
   iconMap.set("overview", <OverviewIcon />);
   iconMap.set("discussions", <DiscussionIcon />);
-  iconMap.set("polkassembly-discussions", <PolkassemblyDiscussionIcon />);
+  iconMap.set("polkassembly", <PolkassemblyDiscussionIcon />);
   iconMap.set("offChainVoting", <ReferendaIcon />);
   iconMap.set("tips", <TipIcon />);
   iconMap.set("proposals", <ProposalIcon />);
