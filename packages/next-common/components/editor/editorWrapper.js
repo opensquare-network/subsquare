@@ -39,18 +39,18 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
   }
 
   div button:last-child {
-    box-shadow: 1px 0 0 0 ${(props) => props.theme.grey400Border};
+    box-shadow: 1px 0 0 0 ${(props) => props.theme.grey300Border};
   }
 
   div button.active {
     background-color: ${(props) => props.theme.neutral} !important;
     border-color: ${(props) => props.theme.neutral} !important;
     color: ${(props) => props.theme.textPrimary} !important;
-    box-shadow: 1px 0 0 0 ${(props) => props.theme.grey400Border};
+    box-shadow: 1px 0 0 0 ${(props) => props.theme.grey300Border};
 
     :last-child {
-      box-shadow: ${(props) => props.theme.grey400Border} -1px 0px 0px 0px,
-        ${(props) => props.theme.grey400Border} 1px 0px 0px 0px;
+      box-shadow: ${(props) => props.theme.grey300Border} -1px 0px 0px 0px,
+        ${(props) => props.theme.grey300Border} 1px 0px 0px 0px;
     }
   }
 
@@ -69,11 +69,11 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
   .ql-toolbar.ql-snow,
   span.ql-formats {
     background-color: ${(props) => props.theme.grey100Bg} !important;
-    border-color: ${(props) => props.theme.grey400Border} !important;
+    border-color: ${(props) => props.theme.grey300Border} !important;
   }
 
   .editor-toolbar-buttons > div {
-    background-color: ${(props) => props.theme.grey400Border} !important;
+    background-color: ${(props) => props.theme.grey300Border} !important;
   }
 
   button svg {

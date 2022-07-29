@@ -80,6 +80,9 @@ const Info = styled.div`
   color: ${(props) => props.theme.textSecondary};
   svg {
     margin-right: 4px;
+    path {
+      stroke: ${(props) => props.theme.textTertiary};
+    }
   }
   .elapseIcon > * {
     margin-left: 8px;
