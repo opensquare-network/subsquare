@@ -307,7 +307,12 @@ export default function Item({ user, data, chain, onReply }) {
               onClick={toggleThumbUp}
             >
               <ThumbUpIcon />
-              <div>Up ({comment?.reactions?.length ?? 0})</div>
+              <div>
+                Up
+                {comment?.reactions?.length > 0
+                  ? ` ${comment?.reactions?.length}`
+                  : ``}
+              </div>
             </ActionItem>
             {comment?.reactions?.length > 0 && (
               <UnfoldWrapper

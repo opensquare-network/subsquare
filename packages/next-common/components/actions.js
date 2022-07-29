@@ -100,7 +100,7 @@ export default function Actions({
         onClick={() => toggleThumbUp && toggleThumbUp()}
       >
         <ThumbUpIcon />
-        <div>Up ({count ?? 0})</div>
+        <div>Up{count > 0 ? ` ${count}` : ``}</div>
       </Item>
       {count > 0 && (
         <UnfoldWrapper onClick={() => setShowThumbsUpList(!showThumbsUpList)}>

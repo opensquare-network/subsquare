@@ -75,6 +75,12 @@ const UnfoldWrapper = styled(ActionItem)`
   }
 `;
 
+const DisabledThumbUp = styled(ThumbUpIcon)`
+  & > path {
+    fill: #d7dee8 !important;
+  }
+`;
+
 export default function Actions({ chain, reactions }) {
   const count = reactions?.length;
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
@@ -83,8 +89,8 @@ export default function Actions({ chain, reactions }) {
     <>
       <Wrapper>
         <ActionItem>
-          <ThumbUpIcon />
-          <div>Up ({count ?? 0})</div>
+          <DisabledThumbUp />
+          <div>Up{count > 0 ? ` ${count}` : ``}</div>
         </ActionItem>
         {count > 0 && (
           <UnfoldWrapper onClick={() => setShowThumbsUpList(!showThumbsUpList)}>
