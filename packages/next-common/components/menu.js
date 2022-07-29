@@ -46,13 +46,18 @@ const Item = styled.div`
   cursor: pointer;
   font-size: 14px;
   color: ${(props) => props.theme.textSecondary};
+  > svg {
+    path {
+      fill: ${(props) => props.theme.textSecondary};
+    }
+  }
 
   :hover {
     color: ${(props) => props.theme.primaryPurple500};
 
     > svg {
       &:first-child {
-        * {
+        path {
           fill: ${(props) => props.theme.primaryPurple500};
         }
       }
@@ -75,7 +80,7 @@ const Item = styled.div`
       color: ${(props) => props.theme.primaryPurple500};
 
       > svg {
-        * {
+        path {
           fill: ${(props) => props.theme.primaryPurple500};
         }
       }

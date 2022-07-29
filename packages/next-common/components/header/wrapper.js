@@ -15,7 +15,10 @@ const Wrapper = styled.header`
   left: 0;
   right: 0;
   z-index: 1;
-  background: ${(props) => props?.background || props.theme.neutral};
+  background: ${(props) =>
+    props?.theme.isDark
+      ? props.theme.neutral
+      : props?.background || props.theme.neutral};
   box-shadow: ${(props) => props.theme.shadow100};
   height: 64px;
   border-bottom: 1px solid ${(props) => props.theme.grey200Border};
