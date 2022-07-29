@@ -79,7 +79,7 @@ const EmptyPanel = styled.div`
     font-size: 14px;
     line-height: 100%;
     text-align: center;
-    color: ${(props) => props.theme.textPrimary};
+    color: white;
   }
 `;
 
