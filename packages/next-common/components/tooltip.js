@@ -44,7 +44,7 @@ const Popup = styled.div`
   padding: 6px 12px;
   font-size: 12px;
   line-height: 16px;
-  color: ${(props) => props.theme.neutral}; !important;
+  color: ${(props) => props.theme.textContrast} !important;
   word-wrap: break-word;
   text-align: center;
 `;
