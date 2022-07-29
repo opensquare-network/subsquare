@@ -77,7 +77,7 @@ const UnfoldWrapper = styled(ActionItem)`
 
 const DisabledThumbUp = styled(ThumbUpIcon)`
   & > path {
-    fill: #d7dee8 !important;
+    fill: ${(props) => props.theme.textPlaceholder} !important;
   }
 `;
 
