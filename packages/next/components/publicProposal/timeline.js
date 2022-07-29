@@ -1,7 +1,8 @@
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import sortTimeline from "next-common/utils/timeline/sort";
-import { getNode, getTimelineStatus, toPrecision } from "utils";
+import { getTimelineStatus } from "utils";
+import { getNode, toPrecision } from "next-common/utils";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export function makePublicProposalTimelineData(timeline, chain) {

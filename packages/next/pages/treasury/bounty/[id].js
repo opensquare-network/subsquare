@@ -4,7 +4,7 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "next-common/components/layout";
-import { getNode } from "utils";
+import { getNode } from "next-common/utils";
 import Timeline from "components/bounty/timeline";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { getMetaDesc } from "../../../utils/viewfuncs";

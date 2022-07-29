@@ -1,11 +1,12 @@
 /* eslint-disable react/jsx-key */
 import styled from "styled-components";
 import findLastIndex from "lodash.findlastindex";
-import { getTimelineStatus, getNode, toPrecision } from "utils";
+import { getTimelineStatus } from "utils";
 import Timeline from "next-common/components/timeline";
 import dayjs from "dayjs";
 import User from "next-common/components/user";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import { getNode, toPrecision } from "next-common/utils";
 
 const FlexEnd = styled.div`
   display: flex;

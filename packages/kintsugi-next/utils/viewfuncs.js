@@ -1,5 +1,3 @@
-import { addressEllipsis, stringUpperFirst } from ".";
-
 export function getPostUpdatedAt(post) {
   if (post.createdAt === post.lastActivityAt) {
     return post?.indexer?.blockTime ?? post.createdAt;

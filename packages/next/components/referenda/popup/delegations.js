@@ -1,5 +1,5 @@
 import { DelegatingValue } from "next-common/components/popup/styled";
-import { toPrecision } from "utils";
+import { toPrecision } from "next-common/utils";
 import PopupLabel from "next-common/components/popup/label";
 
 export default function Delegations({ delegationsVotes, node }) {

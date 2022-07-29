@@ -7,13 +7,17 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 import TipInput from "./tipInput";
-import { getNode, toPrecision } from "utils";
+import {
+  checkInputValue,
+  emptyFunction,
+  getNode,
+  toPrecision,
+} from "next-common/utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import SignerSelect from "next-common/components/signerSelect";
 import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
 import PopupLabel from "next-common/components/popup/label";
 import { WarningMessage } from "next-common/components/popup/styled";
-import { checkInputValue, emptyFunction } from "next-common/utils";
 import { sendTx } from "next-common/utils/sendTx";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 

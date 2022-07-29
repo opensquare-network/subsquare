@@ -1,20 +1,8 @@
 import React from "react";
-import styled from "styled-components";
-import User from "../user";
-import Links from "../links";
 import Proposal from "../proposal";
 import KVList from "../listInfo/kvList";
-import { getNode, toPrecision } from "utils";
+import { getNode, toPrecision } from "next-common/utils";
 import UserWithLink from "../user/userWithLink";
-
-const MetadataProposerWrapper = styled.div`
-  display: flex;
-  align-items: center;
-
-  > :not(:first-child) {
-    margin-left: 8px;
-  }
-`;
 
 function getDeposit(scanDepositData) {
   if (!Array.isArray(scanDepositData)) {

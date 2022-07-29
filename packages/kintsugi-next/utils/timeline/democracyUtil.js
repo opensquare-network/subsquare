@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import dayjs from "dayjs";
-import { toPrecision, getTimelineStatus, getNode } from "utils";
+import { getTimelineStatus } from "utils";
+import { getNode, toPrecision } from "next-common/utils";
 import User from "next-common/components/user";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 

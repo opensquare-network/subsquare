@@ -1,6 +1,6 @@
 import Row from "next-common/components/listInfo/row";
 import Anchor from "next-common/components/styled/anchor";
-import { toPrecision } from "../../utils";
+import { toPrecision } from "next-common/utils";
 import Tag from "next-common/components/tags/state/tag";
 import Accordion from "next-common/components/listInfo/accordion";
 import styled from "styled-components";

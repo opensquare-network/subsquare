@@ -6,7 +6,7 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
-import { getNode } from "utils";
+import { getNode } from "next-common/utils";
 import usePrime from "next-common/utils/hooks/usePrime";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 

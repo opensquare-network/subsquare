@@ -1,6 +1,6 @@
 import styled, { withTheme } from "styled-components";
-import { decimalPlaces, getNode, toPrecision } from "utils";
-import { bigNumber2Locale } from "next-common/utils";
+import { decimalPlaces } from "utils";
+import { bigNumber2Locale, getNode, toPrecision } from "next-common/utils";
 import User from "next-common/components/user";
 import { Fragment, useState } from "react";
 import Loading from "next-common/components/loading";

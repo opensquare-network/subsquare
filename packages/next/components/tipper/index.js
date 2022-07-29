@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import User from "next-common/components/user";
-import { getNode, toPrecision } from "utils";
+import { getNode, toPrecision } from "next-common/utils";
 import Loading from "next-common/components/loading";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { GhostCard } from "next-common/components/styled/containers/ghostCard";

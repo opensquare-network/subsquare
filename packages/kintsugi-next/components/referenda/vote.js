@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import BigNumber from "bignumber.js";
 import styled from "styled-components";
-import { getNode, toPrecision } from "utils";
+import { capitailize, getNode, toPrecision } from "next-common/utils";
 import Flex from "next-common/components/styled/flex";
 import {
   calcPassing,
@@ -23,7 +23,6 @@ import Loading from "next-common/components/loading";
 import { useBestNumber } from "next-common/utils/hooks";
 import ExternalLink from "next-common/assets/imgs/icons/external-link.svg";
 import ValueDisplay from "next-common/components/displayValue";
-import { capitailize } from "next-common/utils";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
