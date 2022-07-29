@@ -48,12 +48,5 @@ export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
   timelineData.push(...motions);
   sortTimeline(timelineData);
 
-  return (
-    <Timeline
-      data={timelineData}
-      chain={chain}
-      type={detailPageCategory.TREASURY_PROPOSAL}
-      indent={false}
-    />
-  );
+  return <Timeline data={timelineData} chain={chain} indent={false} />;
 }

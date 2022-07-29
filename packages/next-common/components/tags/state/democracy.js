@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  ActiveTag,
-  ClosedTag,
-  NegativeTag,
-  PositiveTag,
-  StartTag,
-} from "./styled";
+import { ClosedTag, NegativeTag, PositiveTag, StartTag } from "./styled";
 
 const proposalTagMap = {
   Proposed: StartTag,
@@ -13,10 +7,18 @@ const proposalTagMap = {
   Canceled: NegativeTag,
   Cleared: NegativeTag,
   ProposalCanceled: NegativeTag,
+
+  // In timeline
+  FastTracked: PositiveTag,
 };
 
 export function DemocracyProposalTag({ state }) {
-  const Tag = proposalTagMap[state] || ClosedTag;
+  let Tag = proposalTagMap[state] || ClosedTag;
+  console.log("state", state);
+  if ((state || "").startsWith("Public proposal")) {
+    Tag = StartTag;
+  }
+
   return <Tag>{state}</Tag>;
 }
 
@@ -37,6 +39,9 @@ export function DemocracyExternalTag({ state }) {
 }
 
 const referendumTagMap = {
+  Tabled: PositiveTag,
+  FastTrack: PositiveTag,
+
   Started: StartTag,
   Passed: PositiveTag,
   NotPassed: NegativeTag,

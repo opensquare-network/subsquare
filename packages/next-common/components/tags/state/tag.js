@@ -3,7 +3,7 @@ import businessCategory, {
   detailPageCategory,
 } from "../../../utils/consts/business/category";
 import { TreasuryTag, TipTag, BountyTag, ChildBountyTag } from "./treasury";
-import { ClosedTag } from "./styled";
+import { ClosedTag, MotionTag } from "./styled";
 import { CollectiveTag } from "./collective";
 import {
   DemocracyExternalTag,
@@ -43,6 +43,7 @@ export default function Tag({ category, state, link }) {
   let element = state;
   if (link) {
     element = <a href={link}>{state}</a>;
+    return <MotionTag>{element}</MotionTag>;
   }
 
   const Tag = categoryTagMap[category];

@@ -36,5 +36,5 @@ export function getTimelineStatus(type, method) {
       }
       break;
   }
-  return { value: method };
+  return { value: method, type };
 }

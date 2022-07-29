@@ -51,14 +51,15 @@ function getTimelineData(args, method, chain) {
   return args;
 }
 
-export function getDemocracyTimelineData(timeline, chain) {
+export function getDemocracyTimelineData(
+  timeline,
+  chain,
+  type = detailPageCategory.DEMOCRACY_PROPOSAL
+) {
   return timeline.map((item) => ({
     time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
     indexer: item.indexer,
-    status: getTimelineStatus(
-      detailPageCategory.DEMOCRACY_PROPOSAL,
-      item.method ?? item.name
-    ),
+    status: getTimelineStatus(type, item.method ?? item.name),
     data: getTimelineData(item.args, item.method ?? item.name, chain),
   }));
 }

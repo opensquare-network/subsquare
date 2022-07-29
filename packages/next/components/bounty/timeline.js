@@ -78,11 +78,5 @@ export default function BountyTimeline({ chain, bounty }) {
   timelineData.push(...motions);
   sortTimeline(timelineData);
 
-  return (
-    <Timeline
-      data={timelineData}
-      chain={chain}
-      type={detailPageCategory.TREASURY_BOUNTY}
-    />
-  );
+  return <Timeline data={timelineData} chain={chain} />;
 }

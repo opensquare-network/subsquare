@@ -138,14 +138,7 @@ const LinkWrapper = styled(Flex)`
   margin-top: 8px;
 `;
 
-export default function Item({
-  data,
-  foldable,
-  isFold,
-  setIsFold,
-  chain,
-  type = "",
-}) {
+export default function Item({ data, foldable, isFold, setIsFold, chain }) {
   return (
     <Wrapper foldable={foldable} isFold={isFold}>
       <Left>
