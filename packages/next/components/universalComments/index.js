@@ -15,13 +15,19 @@ export default function useUniversalComments({
   chain,
   type,
 }) {
+  const defaultTabIndex =
+    detail?.polkassemblyId !== undefined &&
+    detail?.dataSource === "polkassembly" &&
+    !detail?.edited
+      ? Polkassembly
+      : SubSquare;
   const paBtnRef = useRef();
-  const [tabIndex, setTabIndex] = useState(SubSquare);
+  const [tabIndex, setTabIndex] = useState(defaultTabIndex);
   const { width } = useWindowSize();
 
   let tabs = null;
 
-  if (detail?.polkassemblyId) {
+  if (detail?.polkassemblyId !== undefined) {
     // Allow to switch to polkassembly comments if has corresponding pa post
     if (parseInt(width) <= 768) {
       tabs = (
