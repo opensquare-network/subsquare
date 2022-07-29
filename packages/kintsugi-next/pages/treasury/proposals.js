@@ -1,6 +1,6 @@
 import List from "next-common/components/list";
 import Menu from "next-common/components/menu";
-import { EmptyList, mainMenu } from "next-common/utils/constants";
+import { EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import Layout from "next-common/components/layout";
@@ -18,6 +18,7 @@ import {
 import { Create, Pending } from "next-common/components/treasury/common/styled";
 import usePendingProposal from "next-common/components/treasury/proposal/usePendingProposal";
 import businessCategory from "next-common/utils/consts/business/category";
+import homeMenus from "next-common/utils/consts/menu";
 
 const Popup = dynamic(
   () => import("next-common/components/treasury/proposal/popup"),
@@ -65,7 +66,7 @@ export default withLoginUserRedux(
     return (
       <Layout
         user={loginUser}
-        left={<Menu menu={mainMenu} chain={chain} />}
+        left={<Menu menu={homeMenus} chain={chain} />}
         chain={chain}
         seoInfo={seoInfo}
       >

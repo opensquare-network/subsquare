@@ -6,7 +6,7 @@ import Menu from "next-common/components/menu";
 import {
   settingMenu,
   settingMenuOfKeyAccount,
-} from "next-common/utils/constants";
+} from "next-common/utils/consts/menu/settings";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import {

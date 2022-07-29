@@ -1,6 +1,5 @@
 import Overview from "next-common/components/overview";
 import Menu from "next-common/components/menu";
-import { mainMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import Layout from "next-common/components/layout";
@@ -16,6 +15,7 @@ import {
   toTreasuryBountyListItem,
   toTreasuryProposalListItem,
 } from "utils/viewfuncs";
+import homeMenus from "next-common/utils/consts/menu";
 
 export default withLoginUserRedux(({ overview, loginUser, chain }) => {
   let overviewData = [
@@ -110,7 +110,7 @@ export default withLoginUserRedux(({ overview, loginUser, chain }) => {
   return (
     <Layout
       user={loginUser}
-      left={<Menu menu={mainMenu} chain={chain} />}
+      left={<Menu menu={homeMenus} chain={chain} />}
       chain={chain}
     >
       <Overview overviewData={filteredOverviewData} chain={chain} />
