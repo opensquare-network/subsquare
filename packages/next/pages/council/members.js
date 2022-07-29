@@ -8,7 +8,7 @@ import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
 import { getNode } from "utils";
 import usePrime from "next-common/utils/hooks/usePrime";
-import { TYPE_COUNCIL_MOTION } from "next-common/utils/viewConstants";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const [data, setData] = useState([]);
@@ -17,7 +17,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const node = getNode(chain);
   const electionsInfo = useCall(api?.derive?.elections?.info, []);
   const allVotes = useCall(api?.derive?.council?.votes, []);
-  const prime = usePrime({ chain, type: TYPE_COUNCIL_MOTION });
+  const prime = usePrime({ chain, type: detailPageCategory.COUNCIL_MOTION });
 
   useEffect(() => {
     if (electionsInfo) {

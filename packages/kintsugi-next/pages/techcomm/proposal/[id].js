@@ -3,12 +3,12 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import Layout from "next-common/components/layout";
 import TechcommMotionDetail from "components/motion/techcommMotionDetail";
-import { TYPE_TECH_COMM_MOTION } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { EmptyList } from "next-common/utils/constants";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import useCommentComponent from "next-common/components/useCommentComponent";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
   const { CommentComponent, focusEditor } = useCommentComponent({
@@ -16,7 +16,7 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
     comments,
     loginUser,
     chain,
-    type: TYPE_TECH_COMM_MOTION,
+    type: detailPageCategory.TECH_COMM_MOTION,
   });
 
   const desc = getMetaDesc(motion, "Proposal");
@@ -33,7 +33,7 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
           loginUser={loginUser}
           chain={chain}
           onReply={focusEditor}
-          type={TYPE_TECH_COMM_MOTION}
+          type={detailPageCategory.TECH_COMM_MOTION}
         />
         {CommentComponent}
       </DetailPageWrapper>

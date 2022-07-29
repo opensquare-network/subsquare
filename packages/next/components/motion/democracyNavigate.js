@@ -2,11 +2,8 @@ import styled from "styled-components";
 import Link from "next/link";
 import Flex from "next-common/components/styled/flex";
 import TriangleRight from "public/imgs/icons/arrow-triangle-right.svg";
-import {
-  TYPE_COUNCIL_MOTION,
-  TYPE_TECH_COMM_MOTION,
-} from "next-common/utils/viewConstants";
 import { getMotionId, shortMotionId } from "next-common/utils/motion";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 const ReferendaWrapper = styled(Flex)`
   justify-content: center;
@@ -50,7 +47,7 @@ export default function DemocracyNavigate({ motion, type }) {
   return (
     <ReferendaWrapper>
       <div>
-        {type !== TYPE_COUNCIL_MOTION ? (
+        {type !== detailPageCategory.COUNCIL_MOTION ? (
           <Link href={`/council/motion/${getMotionId(councilMotion)}`}>
             {`Motion #${shortMotionId(councilMotion)}`}
           </Link>
@@ -70,7 +67,7 @@ export default function DemocracyNavigate({ motion, type }) {
       {techCommMotion && (
         <div>
           <TriangleRight />
-          {type !== TYPE_TECH_COMM_MOTION ? (
+          {type !== detailPageCategory.TECH_COMM_MOTION ? (
             <Link href={`/techcomm/proposal/${getMotionId(techCommMotion)}`}>
               {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
             </Link>
