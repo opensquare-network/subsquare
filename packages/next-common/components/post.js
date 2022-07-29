@@ -154,6 +154,7 @@ const ContentWrapper = styled.div`
 `;
 
 const BannerWrapper = styled.div`
+  margin-top: 0 !important;
   margin-left: 16px;
   width: 120px;
   height: 67px;
