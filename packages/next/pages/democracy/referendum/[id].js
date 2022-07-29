@@ -11,7 +11,7 @@ import Vote from "components/referenda/vote";
 import { to404 } from "next-common/utils/serverSideUtil";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { getMetaDesc } from "../../../utils/viewfuncs";
+import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Timeline from "components/referenda/timeline";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
 import MainCard from "next-common/components/styled/mainCard";
@@ -70,7 +70,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   detail.status = detail?.onchainData?.state?.state;
 
-  const desc = getMetaDesc(detail, "Referendum");
+  const desc = getMetaDesc(detail);
 
   return (
     <Layout

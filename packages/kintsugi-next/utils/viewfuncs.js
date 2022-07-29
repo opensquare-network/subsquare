@@ -61,16 +61,3 @@ export function toApiType(type) {
   }
   return `${type}s`;
 }
-
-export const getMetaDesc = (post, type = "Discussion") => {
-  let contentDesc = "";
-  const maxDescLength = 60;
-  if (post.content) {
-    if (post.content.length > maxDescLength) {
-      contentDesc = post.content.substr(0, maxDescLength) + "...";
-    } else {
-      contentDesc = post.content;
-    }
-  }
-  return contentDesc;
-};

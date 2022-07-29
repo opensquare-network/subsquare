@@ -5,7 +5,7 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "next-common/components/layout";
 import { to404 } from "next-common/utils/serverSideUtil";
-import { getMetaDesc } from "utils/viewfuncs";
+import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Cookies from "cookies";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import useCommentComponent from "next-common/components/useCommentComponent";
@@ -21,7 +21,7 @@ export default withLoginUserRedux(
       type: detailPageCategory.POST,
     });
 
-    const desc = getMetaDesc(detail, "Discussion");
+    const desc = getMetaDesc(detail);
     return (
       <Layout
         user={loginUser}

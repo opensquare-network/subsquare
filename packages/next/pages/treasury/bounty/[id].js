@@ -7,7 +7,7 @@ import Layout from "next-common/components/layout";
 import { getNode } from "next-common/utils";
 import Timeline from "components/bounty/timeline";
 import { to404 } from "next-common/utils/serverSideUtil";
-import { getMetaDesc } from "../../../utils/viewfuncs";
+import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import Metadata from "next-common/components/treasury/bounty/metadata";
 import ChildBountiesTable from "../../../components/bounty/childBountiesTable";
@@ -33,7 +33,7 @@ export default withLoginUserRedux(
 
     detail.status = detail.onchainData?.state?.state;
 
-    const desc = getMetaDesc(detail, "Bounty");
+    const desc = getMetaDesc(detail);
     return (
       <Layout
         user={loginUser}
