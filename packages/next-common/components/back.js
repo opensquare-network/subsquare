@@ -21,7 +21,6 @@ const Wrapper = styled(Flex)`
   color: ${(props) => props.theme.textPrimary};
 
   > svg {
-    fill: ${(props) => props.theme.textPrimary};
     path {
       stroke: ${(props) => props.theme.textPrimary};
     }
