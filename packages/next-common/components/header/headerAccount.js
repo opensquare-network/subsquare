@@ -12,6 +12,7 @@ import { shadow_200 } from "../../styles/componentCss";
 import LoginButton from "./loginButton";
 import { isKeyRegisteredUser } from "../../utils";
 import { accountMenu, accountMenuForKeyAccount } from "./consts";
+import Divider from "../styled/layout/divider";
 
 const Wrapper = Relative;
 
