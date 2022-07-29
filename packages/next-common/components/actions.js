@@ -2,11 +2,10 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 import ReplyIcon from "../assets/imgs/icons/reply.svg";
-import ThumbUpIcon from "../assets/imgs/icons/thumb-up.svg";
 import Edit from "./edit";
-import UnfoldIcon from "../assets/imgs/icons/unfold.svg";
-import FoldIcon from "../assets/imgs/icons/fold.svg";
 import Flex from "./styled/flex";
+import User from "next-common/components/user";
+import useThumbsUp from "./thumbsUp";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
@@ -14,6 +13,28 @@ const Wrapper = styled(Flex)`
   margin-top: 16px;
   height: 22px;
   color: ${(props) => props.theme.textSecondary};
+`;
+
+const GreyWrapper = styled.div`
+  display: flex;
+  flex-flow: wrap;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 22px;
+  padding: 8px 12px;
+  background: ${(props) => props.theme.grey100Bg};
+  border-radius: 4px;
+  margin-top: 16px;
+`;
+
+const GreyItem = styled.div`
+  display: inline-block;
+  margin-right: 12px;
+
+  > .username {
+    color: ${(props) => props.theme.textSecondary};
+  }
 `;
 
 const Item = styled(Flex)`
@@ -66,48 +87,60 @@ const Item = styled(Flex)`
   }
 `;
 
-const UnfoldWrapper = styled(Item)`
-  margin-left: 7px !important;
-`;
-
 export default function Actions({
+  chain,
   onReply,
   noHover,
   highlight,
   toggleThumbUp,
-  count,
+  reactions,
   edit,
   setIsEdit,
-  showThumbsUpList,
-  setShowThumbsUpList,
 }) {
+  const count = reactions?.length;
+
+  const { ThumbsUpComponent, showThumbsUpList } = useThumbsUp({
+    count,
+    noHover,
+    highlight,
+    toggleThumbUp,
+  });
+
   return (
-    <Wrapper>
-      <Item
-        onClick={() => {
-          if (!noHover) {
-            onReply && onReply();
-          }
-        }}
-        noHover={noHover}
-      >
-        <ReplyIcon />
-        <div>Reply</div>
-      </Item>
-      <Item
-        noHover={noHover}
-        highlight={highlight}
-        onClick={() => toggleThumbUp && toggleThumbUp()}
-      >
-        <ThumbUpIcon />
-        <div>Up ({count ?? 0})</div>
-      </Item>
-      {count > 0 && (
-        <UnfoldWrapper onClick={() => setShowThumbsUpList(!showThumbsUpList)}>
-          {showThumbsUpList ? <UnfoldIcon /> : <FoldIcon />}
-        </UnfoldWrapper>
+    <>
+      <Wrapper>
+        <Item
+          onClick={() => {
+            if (!noHover) {
+              onReply && onReply();
+            }
+          }}
+          noHover={noHover}
+        >
+          <ReplyIcon />
+          <div>Reply</div>
+        </Item>
+        {ThumbsUpComponent}
+        {edit && <Edit edit={edit} setIsEdit={setIsEdit} alwaysShow />}
+      </Wrapper>
+
+      {showThumbsUpList && reactions?.length > 0 && (
+        <GreyWrapper style={{ marginTop: 10 }}>
+          {reactions
+            .filter((r) => r.user)
+            .map((r, index) => (
+              <GreyItem key={index}>
+                <User
+                  user={r.user}
+                  fontSize={12}
+                  chain={chain}
+                  showAvatar={false}
+                />
+              </GreyItem>
+            ))}
+        </GreyWrapper>
       )}
-      {edit && <Edit edit={edit} setIsEdit={setIsEdit} alwaysShow />}
-    </Wrapper>
+    </>
+
   );
 }
