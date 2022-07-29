@@ -8,6 +8,7 @@ const RichTextStyleWrapper = styled.div`
     //fixme: @osn-previewer has built-in CSS text color, better remove it later
   }
 
+  div.ql-editor,
   div.html-body,
   div.markdown-body {
     blockquote {

@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import GhostButton from "./buttons/ghostButton";
 import SecondaryButton from "./buttons/secondaryButton";
 import RichTextStyleWrapper from "./content/richTextStyleWrapper";
+import EditorWrapper from "./editor/editorWrapper";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
@@ -16,7 +17,7 @@ const Wrapper = styled.div`
   margin-top: 8px;
 `;
 
-const InputWrapper = styled(RichTextStyleWrapper)`
+const InputWrapper = styled(EditorWrapper)`
   position: relative;
 `;
 
