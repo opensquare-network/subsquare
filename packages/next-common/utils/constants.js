@@ -13,6 +13,10 @@ import turing from "./consts/settings/turing";
 import crust from "./consts/settings/crust";
 import litmus from "./consts/settings/litmus";
 import menus from "./consts/menu";
+import UserIcon from "../assets/imgs/icons/user.svg";
+import React from "react";
+import AddressIcon from "../assets/imgs/icons/address.svg";
+import BellIcon from "../assets/imgs/icons/bell.svg";
 
 export const nodes = [
   polkadot,
@@ -52,16 +56,19 @@ export const settingMenu = [
         value: "account",
         name: "Account",
         pathname: "/setting/account",
+        icon: <UserIcon />,
       },
       {
         value: "linked-address",
         name: "Linked Address",
         pathname: "/setting/linked-address",
+        icon: <AddressIcon />,
       },
       {
         value: "notification",
         name: "Notification",
         pathname: "/setting/notification",
+        icon: <BellIcon />,
       },
     ],
   },
@@ -84,11 +91,13 @@ export const settingMenuOfKeyAccount = [
         value: "account",
         name: "Account",
         pathname: "/setting/key-account",
+        icon: <UserIcon />,
       },
       {
         value: "notification",
         name: "Notification",
         pathname: "/setting/notification",
+        icon: <BellIcon />,
       },
     ],
   },
