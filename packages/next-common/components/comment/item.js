@@ -134,13 +134,6 @@ const ActionItem = styled(Flex)`
   > svg {
     margin-right: 8px;
   }
-  ${(props) =>
-    props?.theme.isDark &&
-    css`
-      div {
-        color: rgba(255, 255, 255, 0.25);
-      }
-    `};
 `;
 
 const UnfoldWrapper = styled(ActionItem)`
