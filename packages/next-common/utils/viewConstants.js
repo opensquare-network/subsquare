@@ -9,3 +9,4 @@ export const TYPE_TREASURY_PROPOSAL = "treasury/proposal";
 export const TYPE_TREASURY_BOUNTY = "treasury/bounty";
 export const TYPE_TREASURY_CHILD_BOUNTY = "treasury/child-bounty";
 export const TYPE_TREASURY_TIP = "treasury/tip";
+export const TYPE_PA_POST = "polkassembly-discussion";

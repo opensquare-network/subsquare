@@ -9,6 +9,7 @@ import {
   TYPE_TREASURY_PROPOSAL,
   TYPE_TREASURY_BOUNTY,
   TYPE_TREASURY_TIP,
+  TYPE_PA_POST,
 } from "../utils/viewConstants";
 
 const ExternalReference = styled.div`
@@ -61,6 +62,9 @@ function getPolkassemblyLink(type, post) {
     }
     case TYPE_TREASURY_TIP: {
       return `https://${chain}.polkassembly.io/tip/${post.hash}`;
+    }
+    case TYPE_PA_POST: {
+      return `https://${chain}.polkassembly.io/post/${post.polkassemblyId}`;
     }
     default: {
       return null;

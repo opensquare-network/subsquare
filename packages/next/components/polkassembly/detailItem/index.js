@@ -73,7 +73,6 @@ export default function DetailItem({ data, chain, type, postReactions }) {
         <DividerWrapper>
           <User
             user={post.author}
-            add={post.proposer || post.finder}
             chain={chain}
             fontSize={12}
           />
