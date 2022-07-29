@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import Menu from "next-common/components/menu";
-import { settingMenu } from "next-common/utils/constants";
+import { settingMenu } from "next-common/utils/consts/menu/settings";
 import { userSelector } from "next-common/store/reducers/userSlice";
 import Layout from "next-common/components/layout";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";

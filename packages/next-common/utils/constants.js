@@ -12,7 +12,7 @@ import turing from "./consts/settings/turing";
 // import kabocha from "./consts/settings/kabocha";
 import crust from "./consts/settings/crust";
 import litmus from "./consts/settings/litmus";
-import menus from "./consts/menu";
+import React from "react";
 
 export const nodes = [
   polkadot,
@@ -31,67 +31,6 @@ export const nodes = [
   // centrifuge,
   crust,
   litmus,
-];
-
-export const mainMenu = menus;
-
-export const settingMenu = [
-  {
-    items: [
-      {
-        value: "overview",
-        name: "Back to Overview",
-        pathname: "/",
-      },
-    ],
-  },
-  {
-    name: "SETTING",
-    items: [
-      {
-        value: "account",
-        name: "Account",
-        pathname: "/setting/account",
-      },
-      {
-        value: "linked-address",
-        name: "Linked Address",
-        pathname: "/setting/linked-address",
-      },
-      {
-        value: "notification",
-        name: "Notification",
-        pathname: "/setting/notification",
-      },
-    ],
-  },
-];
-
-export const settingMenuOfKeyAccount = [
-  {
-    items: [
-      {
-        value: "overview",
-        name: "Back to Overview",
-        pathname: "/",
-      },
-    ],
-  },
-  {
-    name: "SETTING",
-    items: [
-      {
-        value: "account",
-        name: "Account",
-        pathname: "/setting/key-account",
-      },
-      {
-        value: "notification",
-        name: "Notification",
-        pathname: "/setting/notification",
-      },
-    ],
-  },
 ];
 
 export const EmptyList = {

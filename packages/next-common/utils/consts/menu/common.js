@@ -1,9 +1,15 @@
+import React from "react";
 import Chains from "../chains";
+import OverviewIcon from "../../../assets/imgs/icons/overview.svg";
+import DiscussionIcon from "../../../assets/imgs/icons/discussions.svg";
+import PolkassemblyIcon from "../../../assets/imgs/icons/polkassembly.svg";
+import ReferendaIcon from "../../../assets/imgs/icons/type-referenda.svg";
 
 let polkassemblyMenu = {
   value: "polkassembly",
   name: "Polkassembly",
   pathname: "/polkassembly/discussions",
+  icon: <PolkassemblyIcon />,
 };
 
 const commonMenus = {
@@ -12,11 +18,13 @@ const commonMenus = {
       value: "overview",
       name: "Overview",
       pathname: "/",
+      icon: <OverviewIcon />,
     },
     {
       value: "discussions",
       name: "Discussions",
       pathname: "/discussions",
+      icon: <DiscussionIcon />,
     },
   ],
 };
@@ -31,6 +39,7 @@ if (space) {
     value: "offChainVoting",
     name: "Off-chain",
     pathname: `https://voting.opensquare.io/space/${space}`,
+    icon: <ReferendaIcon />,
   });
 }
 

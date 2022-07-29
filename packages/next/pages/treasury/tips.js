@@ -1,15 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import List from "next-common/components/list";
 import Menu from "next-common/components/menu";
-import { mainMenu } from "next-common/utils/constants";
+import { EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import { EmptyList } from "next-common/utils/constants";
 import Layout from "next-common/components/layout";
 import { toTipListItem } from "utils/viewfuncs";
 import Summary from "next-common/components/summary";
-import { useEffect } from "react";
 import {
   addPendingTip,
   setCheckTimes,
@@ -19,6 +17,7 @@ import usePendingTip from "next-common/components/treasury/tip/usePendingTip";
 import dynamic from "next/dynamic";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
 import Loading from "next-common/components/loading";
+import homeMenus from "next-common/utils/consts/menu";
 
 const Popup = dynamic(
   () => import("next-common/components/treasury/tip/popup"),
@@ -65,7 +64,7 @@ export default withLoginUserRedux(({ loginUser, tips: ssrTips, chain }) => {
   return (
     <Layout
       user={loginUser}
-      left={<Menu menu={mainMenu} chain={chain} />}
+      left={<Menu menu={homeMenus} chain={chain} />}
       chain={chain}
       seoInfo={seoInfo}
     >
