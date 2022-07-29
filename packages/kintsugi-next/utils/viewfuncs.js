@@ -1,4 +1,4 @@
-import { addressEllipsis, stringUpperFirst } from ".";
+import getMotionId from "next-common/utils/collective/motionId";
 
 export function getPostUpdatedAt(post) {
   if (post.createdAt === post.lastActivityAt) {
@@ -13,21 +13,13 @@ export const toDiscussionListItem = (chain, item) => ({
   detailLink: `/post/${item.postUid}`,
 });
 
-function getTechCommMotionId(motion) {
-  if (motion.index !== null && motion.index !== undefined) {
-    return motion.index;
-  }
-
-  return `${motion.indexer.blockHeight}_${motion.hash}`;
-}
-
 export const toTechCommMotionListItem = (chain, item) => ({
   ...item,
   title: item.title,
   author: item.author,
   address: item.proposer,
   status: item?.state ?? "Unknown",
-  detailLink: `/techcomm/proposal/${getTechCommMotionId(item)}`,
+  detailLink: `/techcomm/proposal/${getMotionId(item)}`,
   time: getPostUpdatedAt(item),
   isDemocracy: item?.onchainData?.publicProposals?.length > 0,
 });
@@ -69,16 +61,3 @@ export function toApiType(type) {
   }
   return `${type}s`;
 }
-
-export const getMetaDesc = (post, type = "Discussion") => {
-  let contentDesc = "";
-  const maxDescLength = 60;
-  if (post.content) {
-    if (post.content.length > maxDescLength) {
-      contentDesc = post.content.substr(0, maxDescLength) + "...";
-    } else {
-      contentDesc = post.content;
-    }
-  }
-  return contentDesc;
-};

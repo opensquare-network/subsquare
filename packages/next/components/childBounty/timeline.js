@@ -1,5 +1,6 @@
 import User from "next-common/components/user";
-import { getNode, getTimelineStatus, toPrecision } from "utils";
+import { getTimelineStatus } from "utils";
+import { getNode, toPrecision } from "next-common/utils";
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import sortTimeline from "next-common/utils/timeline/sort";

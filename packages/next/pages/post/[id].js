@@ -11,7 +11,7 @@ import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
-import { getMetaDesc } from "utils/viewfuncs";
+import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Cookies from "cookies";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
@@ -38,7 +38,7 @@ export default withLoginUserRedux(
       chain
     );
 
-    const desc = getMetaDesc(detail, "Discussion");
+    const desc = getMetaDesc(detail);
     return (
       <Layout
         user={loginUser}

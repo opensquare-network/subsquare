@@ -6,7 +6,7 @@ import { EmptyList } from "next-common/utils/constants";
 import Layout from "next-common/components/layout";
 import Timeline from "components/childBounty/timeline";
 import { to404 } from "next-common/utils/serverSideUtil";
-import { getMetaDesc } from "utils/viewfuncs";
+import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import Metadata from "next-common/components/treasury/bounty/metadata";
 import useUniversalComments from "components/universalComments";
@@ -23,7 +23,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   detail.status = detail.onchainData?.state?.state;
 
-  const desc = getMetaDesc(detail, "Bounty");
+  const desc = getMetaDesc(detail);
   return (
     <Layout
       user={loginUser}

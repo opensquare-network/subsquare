@@ -1,8 +1,8 @@
 import React from "react";
-import { getNode, toPrecision } from "@subsquare/next/utils";
 import KVList from "../../listInfo/kvList";
 import capitalize from "../../../utils/capitalize";
 import UserWithLink from "../../user/userWithLink";
+import { getNode, toPrecision } from "../../../utils";
 
 const keys = {
   proposer: "proposer",

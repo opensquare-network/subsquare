@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { EmptyList } from "next-common/utils/constants";
-import { getMetaDesc, getTipState } from "utils/viewfuncs";
+import { getTipState } from "utils/viewfuncs";
+import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { to404 } from "next-common/utils/serverSideUtil";
 
 import Back from "next-common/components/back";
@@ -117,7 +118,7 @@ export default withLoginUserRedux(
       setTimeout(doUpdate, 10 * 1000);
     };
 
-    const desc = getMetaDesc(detail, "Tip");
+    const desc = getMetaDesc(detail);
     return (
       <Layout
         user={loginUser}

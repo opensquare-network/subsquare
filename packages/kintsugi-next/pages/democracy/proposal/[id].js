@@ -8,7 +8,7 @@ import Timeline from "components/publicProposal/timeline";
 import Business from "components/publicProposal/business";
 import Metadata from "next-common/components/publicProposal/metadata";
 import { to404 } from "next-common/utils/serverSideUtil";
-import { getMetaDesc } from "utils/viewfuncs";
+import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import OutWrapper from "next-common/components/styled/outWrapper";
 import Second from "next-common/components/publicProposal/second";
 import { useAddressVotingBalance } from "utils/hooks";
@@ -47,7 +47,7 @@ export default withLoginUserRedux(
 
     detail.status = detail.onchainData?.state?.state;
 
-    const desc = getMetaDesc(detail, "Proposal");
+    const desc = getMetaDesc(detail);
     return (
       <Layout
         user={loginUser}

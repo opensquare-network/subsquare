@@ -7,7 +7,7 @@ import Layout from "next-common/components/layout";
 import Timeline from "components/treasuryProposal/timeline";
 import Metadata from "next-common/components/treasury/proposal/metadata";
 import { to404 } from "next-common/utils/serverSideUtil";
-import { getMetaDesc } from "../../../utils/viewfuncs";
+import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
@@ -23,7 +23,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   detail.status = detail.onchainData?.state?.state;
 
-  const desc = getMetaDesc(detail, "Proposal");
+  const desc = getMetaDesc(detail);
   return (
     <Layout
       user={loginUser}

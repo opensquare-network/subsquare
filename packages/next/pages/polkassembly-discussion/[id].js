@@ -7,7 +7,7 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import Layout from "next-common/components/layout";
 import { to404 } from "next-common/utils/serverSideUtil";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
-import { getMetaDesc } from "utils/viewfuncs";
+import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(({ loginUser, detail, chain }) => {
@@ -17,7 +17,7 @@ export default withLoginUserRedux(({ loginUser, detail, chain }) => {
     chain,
   });
 
-  const desc = getMetaDesc(detail, "Polkassembly Discussions");
+  const desc = getMetaDesc(detail);
   return (
     <Layout
       user={loginUser}

@@ -4,7 +4,7 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import Layout from "next-common/components/layout";
 import MotionDetail from "components/motion/motionDetail";
 import { to404 } from "next-common/utils/serverSideUtil";
-import { getMetaDesc } from "../../../utils/viewfuncs";
+import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { EmptyList } from "next-common/utils/constants";
 import OutWrapper from "next-common/components/styled/outWrapper";
 import MainCard from "next-common/components/styled/mainCard";
@@ -22,7 +22,7 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
 
   motion.status = motion.state?.state;
 
-  const desc = getMetaDesc(motion, "Financial Motion");
+  const desc = getMetaDesc(motion);
   return (
     <Layout
       user={loginUser}

@@ -6,7 +6,7 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "next-common/components/layout";
 import { to404 } from "next-common/utils/serverSideUtil";
-import { getMetaDesc } from "../../../utils/viewfuncs";
+import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Metadata from "next-common/components/publicProposal/metadata";
 import Timeline from "components/publicProposal/timeline";
 import Second from "next-common/components/publicProposal/second";
@@ -42,7 +42,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   detail.status = detail?.onchainData?.state?.state;
 
-  const desc = getMetaDesc(detail, "Proposal");
+  const desc = getMetaDesc(detail);
   return (
     <Layout
       user={loginUser}

@@ -4,15 +4,15 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "next-common/components/layout";
-import { getNode } from "utils";
+import { getNode } from "next-common/utils";
 import { to404 } from "next-common/utils/serverSideUtil";
-import { getMetaDesc } from "../../../utils/viewfuncs";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import Business from "components/external/business";
 import Metadata from "components/external/metadata";
 import Timeline from "components/external/timeline";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import getMetaDesc from "next-common/utils/post/getMetaDesc";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -30,7 +30,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   detail.status = detail?.onchainData?.state?.state;
 
-  const desc = getMetaDesc(detail, "External");
+  const desc = getMetaDesc(detail);
   return (
     <Layout
       user={loginUser}

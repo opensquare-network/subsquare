@@ -3,7 +3,7 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import Layout from "next-common/components/layout";
 import TechcommMotionDetail from "components/motion/techcommMotionDetail";
-import { getMetaDesc } from "utils/viewfuncs";
+import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { EmptyList } from "next-common/utils/constants";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
@@ -19,7 +19,7 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
     type: detailPageCategory.TECH_COMM_MOTION,
   });
 
-  const desc = getMetaDesc(motion, "Proposal");
+  const desc = getMetaDesc(motion);
   return (
     <Layout
       user={loginUser}

@@ -8,7 +8,7 @@ import Loading from "../../loading";
 import { emptyFunction } from "../../../utils";
 import useDepositOf from "../../../utils/hooks/useDepositOf";
 import useApi from "../../../utils/hooks/useSelectedEnpointApi";
-import { getNode } from "utils";
+import { getNode } from "next-common/utils";
 import Tooltip from "../../tooltip";
 import SecondaryButton from "../../buttons/secondaryButton";
 import { GhostCard } from "../../styled/containers/ghostCard";

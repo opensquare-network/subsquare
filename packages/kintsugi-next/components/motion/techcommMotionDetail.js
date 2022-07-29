@@ -3,8 +3,12 @@ import styled from "styled-components";
 import Link from "next/link";
 import User from "next-common/components/user";
 import Timeline from "next-common/components/timeline";
-import { getNode, toPrecision } from "utils";
-import { isMotionEnded, timeDurationFromNow } from "next-common/utils";
+import {
+  getNode,
+  isMotionEnded,
+  timeDurationFromNow,
+  toPrecision,
+} from "next-common/utils";
 import SectionTag from "next-common/components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
 import Flex from "next-common/components/styled/flex";
