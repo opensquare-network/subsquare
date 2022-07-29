@@ -11,10 +11,10 @@ import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
-import { TYPE_POST } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
 import Cookies from "cookies";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, votes, myVote, chain }) => {
@@ -54,7 +54,7 @@ export default withLoginUserRedux(
             user={loginUser}
             chain={chain}
             onReply={focusEditor}
-            type={TYPE_POST}
+            type={detailPageCategory.POST}
           />
           <CommentsWrapper>
             <Comments
@@ -70,7 +70,7 @@ export default withLoginUserRedux(
                 ref={editorWrapperRef}
                 setQuillRef={setQuillRef}
                 {...{ contentType, setContentType, content, setContent, users }}
-                type={TYPE_POST}
+                type={detailPageCategory.POST}
               />
             )}
           </CommentsWrapper>
