@@ -5,6 +5,7 @@ import NoComment from "next-common/components/comment/noComment";
 import PolkassemblyCommentButton from "./commentButton";
 import Loading from "next-common/components/loading";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 
 const Header = styled.div`
   display: flex;
@@ -17,9 +18,7 @@ const Header = styled.div`
   }
 `;
 
-const Title = styled.div`
-  font-weight: bold;
-  font-size: 16px;
+const Title = styled(TitleContainer)`
   margin-bottom: 16px;
 `;
 

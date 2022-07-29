@@ -17,6 +17,10 @@ const Header = styled.div`
   }
 `;
 
+const Title = styled(TitleContainer)`
+  margin-bottom: 16px;
+`;
+
 export default function Comments({
   user,
   data: { items, page, pageSize, total } = {},
@@ -27,7 +31,7 @@ export default function Comments({
   return (
     <div>
       <Header>
-        <TitleContainer>Comments</TitleContainer>
+        <Title>Comments</Title>
         {tabs}
       </Header>
       {items?.length > 0 && (
