@@ -10,14 +10,21 @@ import Moon from "../../assets/imgs/icons/moon.svg";
 
 const FlexWrapper = styled(Flex)`
   gap: 8px;
+
   a {
     display: flex;
     align-items: center;
   }
 
-  > a svg:hover {
-    * {
-      fill: ${(props) => props.theme.textTertiary};
+  svg {
+    path {
+      fill: ${(props) => props.theme.textPlaceholder};
+      fill-opacity: 1;
+    }
+    &:hover {
+      path {
+        fill: ${(props) => props.theme.textTertiary};
+      }
     }
   }
 `;
@@ -34,16 +41,6 @@ const ThemeToggle = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
-  &:hover {
-    svg path {
-      ${(props) =>
-        props?.theme.isDark &&
-        css`
-          fill: rgb(157, 169, 187);
-        `};
-      fill-opacity: 0.8;
-    }
-  }
 `;
 
 function Contacts({ theme }) {
