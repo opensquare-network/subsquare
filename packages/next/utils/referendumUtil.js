@@ -91,11 +91,6 @@ export function calcPassing(referendumInfo, totalIssuance) {
   return false;
 }
 
-async function getFinalizedBlockNumber(api) {
-  const head = await api.rpc.chain.getFinalizedHead();
-  return (await api.query.system.number.at(head)).toNumber();
-}
-
 const electorates = {};
 
 export async function getElectorate(api, height) {
