@@ -207,7 +207,7 @@ export default function ArticleContent({
           )}
           {post.poll && (
             <>
-              <Divider />
+              <Divider margin={16} />
               <Poll
                 chain={chain}
                 poll={post.poll}
