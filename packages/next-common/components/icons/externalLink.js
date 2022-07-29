@@ -8,6 +8,7 @@ const Wrapper = styled.svg`
 export default function ExternalLinkIcon({ color = "#9DA9BB", size = 14 }) {
   return (
     <Wrapper
+      className="external-link-icon"
       color={color}
       width={size}
       height={size}

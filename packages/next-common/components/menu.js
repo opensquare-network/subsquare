@@ -46,9 +46,14 @@ const Item = styled.div`
   cursor: pointer;
   font-size: 14px;
   color: ${(props) => props.theme.textSecondary};
-  > svg {
+  > svg:first-child {
     path {
       fill: ${(props) => props.theme.textSecondary};
+    }
+  }
+  > svg.external-link-icon {
+    path {
+      stroke: ${(props) => props.theme.textPlaceholder};
     }
   }
 
