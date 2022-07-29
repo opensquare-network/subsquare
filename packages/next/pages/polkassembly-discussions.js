@@ -4,22 +4,8 @@ import { mainMenu } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import styled from "styled-components";
-import PlusIcon from "public/imgs/icons/plusInCircle.svg";
 import Layout from "next-common/components/layout";
 import { toPolkassemblyDiscussionListItem } from "utils/viewfuncs";
-
-const Create = styled.a`
-  display: flex;
-  align-items: center;
-  color: ${(props) => props.theme.primaryPurple500};
-  font-size: 14px;
-  white-space: nowrap;
-  svg {
-    margin-right: 8px;
-  }
-  cursor: pointer;
-`;
 
 export default withLoginUserRedux(({ loginUser, posts, chain }) => {
   const items = (posts.items || []).map((item) =>
