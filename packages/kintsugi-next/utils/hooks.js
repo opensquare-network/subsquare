@@ -3,26 +3,6 @@ import { getAddressVote, getElectorate } from "./referendumUtil";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getVotingBalance } from "./escrow/votingBalance";
 
-export function useForm(initialState = {}, onSubmit, clearError) {
-  const [formData, setFormData] = useState(initialState);
-
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    if (clearError) clearError();
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit?.(formData);
-  };
-
-  const reset = () => {
-    setFormData(initialState);
-  };
-
-  return { formData, handleInputChange, handleSubmit, reset };
-}
-
 export function useElectorate(api, height) {
   const [electorate, setElectorate] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
