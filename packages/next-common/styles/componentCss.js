@@ -50,18 +50,6 @@ export const p_12_normal = css`
   line-height: 16.8px;
 `;
 
-export const text_primary = css`
-  color: #1e2134;
-`;
-
-export const text_accessory = css`
-  color: #9da9bb;
-`;
-
-export const text_secondary = css`
-  color: #506176;
-`;
-
 export const no_scroll_bar = css`
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -75,7 +63,3 @@ export const font_family_inter = css`
   font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
     Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 `;
-
-export const dark_neutral = `#212433`;
-
-export const dark_grey_200 = `#272A3A`;
