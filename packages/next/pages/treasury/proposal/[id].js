@@ -7,10 +7,10 @@ import Layout from "next-common/components/layout";
 import Timeline from "components/treasuryProposal/timeline";
 import Metadata from "next-common/components/treasury/proposal/metadata";
 import { to404 } from "next-common/utils/serverSideUtil";
-import { TYPE_TREASURY_PROPOSAL } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import useUniversalComments from "components/universalComments";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -18,7 +18,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     comments,
     loginUser,
     chain,
-    type: TYPE_TREASURY_PROPOSAL,
+    type: detailPageCategory.TREASURY_PROPOSAL,
   });
 
   detail.status = detail.onchainData?.state?.state;
@@ -37,7 +37,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           user={loginUser}
           chain={chain}
           onReply={focusEditor}
-          type={TYPE_TREASURY_PROPOSAL}
+          type={detailPageCategory.TREASURY_PROPOSAL}
         />
         <Metadata treasuryProposal={detail?.onchainData} chain={chain} />
         <Timeline treasuryProposal={detail?.onchainData} chain={chain} />

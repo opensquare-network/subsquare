@@ -1,11 +1,10 @@
 import User from "next-common/components/user";
-import { getNode, toPrecision } from "utils";
+import { getNode, getTimelineStatus, toPrecision } from "utils";
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
-import { getTimelineStatus } from "utils";
-import { TYPE_TREASURY_PROPOSAL } from "utils/viewConstants";
-import sortTimeline from "utils/timeline/sort";
+import sortTimeline from "next-common/utils/timeline/sort";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
   const node = getNode(chain);
@@ -35,7 +34,10 @@ export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
     return {
       indexer,
       time: dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-      status: getTimelineStatus("proposal", item.method ?? item.name),
+      status: getTimelineStatus(
+        detailPageCategory.TREASURY_PROPOSAL,
+        item.method ?? item.name
+      ),
       data: getTimelineData(item.args, item.method ?? item.name),
     };
   });
@@ -52,7 +54,8 @@ export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
         time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
         status: {
           value: `Public proposal #${item.args.index}`,
-          color: "#6848FF",
+          link: `/democracy/proposal/${item.args.index}`,
+          type: detailPageCategory.DEMOCRACY_PROPOSAL,
         },
         voting: {
           proposer: publicProposal.proposer,
@@ -62,18 +65,16 @@ export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
         method: item.method,
         link: `/democracy/proposal/${item.args.index}`,
       })),
-      ...getDemocracyTimelineData(completeTimeline.slice(1), chain),
+      ...getDemocracyTimelineData(
+        completeTimeline.slice(1),
+        chain,
+        detailPageCategory.DEMOCRACY_REFERENDUM
+      ),
     ];
     timelineData.push(publicProposalTimelineData);
   });
   sortTimeline(timelineData);
+  console.log("timelineData", timelineData);
 
-  return (
-    <Timeline
-      data={timelineData}
-      chain={chain}
-      type={TYPE_TREASURY_PROPOSAL}
-      indent={false}
-    />
-  );
+  return <Timeline data={timelineData} chain={chain} indent={false} />;
 }

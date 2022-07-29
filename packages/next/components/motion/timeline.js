@@ -53,7 +53,7 @@ export function makeMotionTimelineData(motion, chain) {
   return timelineData;
 }
 
-export default function MotionTimeline({ motion, chain, type }) {
+export default function MotionTimeline({ motion, chain }) {
   const showMotionEnd = useShowMotionEnd(motion);
   if (!motion) {
     return null;
@@ -73,7 +73,6 @@ export default function MotionTimeline({ motion, chain, type }) {
       data={timelineData}
       chain={chain}
       indent={false}
-      type={type}
     />
   );
 }

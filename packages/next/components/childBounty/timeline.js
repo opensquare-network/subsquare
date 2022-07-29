@@ -2,10 +2,9 @@ import User from "next-common/components/user";
 import { getNode, getTimelineStatus, toPrecision } from "utils";
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
-import { TYPE_TREASURY_CHILD_BOUNTY } from "utils/viewConstants";
-import { createMotionTimelineData } from "utils/timeline/motion";
-import sortTimeline from "utils/timeline/sort";
+import sortTimeline from "next-common/utils/timeline/sort";
 import Anchor from "next-common/components/styled/anchor";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export default function ChildBountyTimeline({ chain, childBounty }) {
   const node = getNode(chain);
@@ -71,14 +70,12 @@ export default function ChildBountyTimeline({ chain, childBounty }) {
     return {
       indexer,
       time: dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-      status: getTimelineStatus("bounty", item.method ?? item.name),
+      status: getTimelineStatus(
+        detailPageCategory.TREASURY_CHILD_BOUNTY,
+        item.method ?? item.name
+      ),
       data: getTimelineData(item.args, item.method ?? item.name),
     };
-  });
-
-  childBounty?.motions?.forEach((motion) => {
-    const motionTimelineData = createMotionTimelineData(motion, chain);
-    timelineData.push(motionTimelineData);
   });
   sortTimeline(timelineData);
 
@@ -86,7 +83,7 @@ export default function ChildBountyTimeline({ chain, childBounty }) {
     <Timeline
       data={timelineData}
       chain={chain}
-      type={TYPE_TREASURY_CHILD_BOUNTY}
+      type={detailPageCategory.TREASURY_CHILD_BOUNTY}
     />
   );
 }

@@ -1,5 +1,6 @@
 import BigNumber from "bignumber.js";
 import { nodes } from "next-common/utils/constants";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 BigNumber.config({ EXPONENTIAL_AT: 36 });
 
@@ -26,35 +27,14 @@ export function toPrecision(value, decimals) {
   return new BigNumber(value).dividedBy(Math.pow(10, decimals)).toString();
 }
 
-export function decimalPlaces(value, n) {
-  return new BigNumber(value).dp(n).toString();
-}
-
 export function getTimelineStatus(type, method) {
   switch (type) {
-    case "proposal":
+    case detailPageCategory.DEMOCRACY_PROPOSAL:
       switch (method) {
         case "FastTrack":
-          return { value: "FastTracked" };
+          return { value: "FastTracked", type };
       }
       break;
-    case "bounty":
-      switch (method) {
-        case "proposeBounty":
-          return { value: "Propose Bounty" };
-      }
-      break;
-    case "tip":
-      switch (method) {
-        case "reportAwesome":
-          return { value: "Report Awesome" };
-        case "TipRetracted":
-          return { value: "Tip Retracted" };
-        case "tip":
-          return { value: "Tip" };
-        case "TipClosed":
-          return { value: "Tip Closed" };
-      }
   }
-  return { value: method };
+  return { value: method, type };
 }

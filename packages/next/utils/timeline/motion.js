@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import User from "next-common/components/user";
+import businessCategory from "next-common/utils/consts/business/category";
 
 export function createArgs(method, args, chain) {
   switch (method) {
@@ -21,8 +22,15 @@ export function createArgs(method, args, chain) {
   }
 }
 
-export function createMotionTimelineData(motion = {}, chain) {
+export function createMotionTimelineData(
+  motion = {},
+  chain,
+  linkable = false,
+  linkPrefix = ""
+) {
   const {
+    indexer,
+    hash,
     proposer,
     proposal,
     voting,
@@ -31,14 +39,26 @@ export function createMotionTimelineData(motion = {}, chain) {
     timeline = [],
   } = motion;
 
+  const type = businessCategory.collective;
+
   return timeline.map((item) => {
     switch (item.method) {
       case "Proposed": {
+        const urlSuffix = `${indexer.blockHeight}_${hash}`;
+        let link;
+        if (linkable) {
+          link = [linkPrefix, urlSuffix].join("/");
+        }
+
         return {
           indexer: item.indexer,
           hash: motion.hash,
           time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-          status: { value: `Motion #${motion.index}`, color: "#6848FF" },
+          status: {
+            value: linkable ? `Motion #${motion.index}` : "Proposed",
+            link,
+            type,
+          },
           voting: {
             proposer: proposer,
             method: proposal.method,
@@ -55,7 +75,7 @@ export function createMotionTimelineData(motion = {}, chain) {
           indexer: item.indexer,
           hash: motion.hash,
           time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-          status: { value: "Vote", color: "#6848FF" },
+          status: { value: "Vote", type },
           voteResult: {
             name: item.args.voter,
             value: item.args.approve,
@@ -68,7 +88,7 @@ export function createMotionTimelineData(motion = {}, chain) {
           indexer: item.indexer,
           hash: motion.hash,
           time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-          status: { value: item.method },
+          status: { value: item.method, type },
           method: item.method,
         };
       }

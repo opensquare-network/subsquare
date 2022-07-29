@@ -103,12 +103,6 @@ export function timeDurationFromNow(time) {
   return `${ss}s ago`;
 }
 
-export function encodeURIQuery(q) {
-  Object.keys(q)
-    .map((k) => `${k}=${encodeURIComponent(q[k])}`)
-    .join("&");
-}
-
 export function getNode(chain) {
   return nodes.find((n) => n.value === chain);
 }

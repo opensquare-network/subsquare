@@ -1,7 +1,9 @@
 import dayjs from "dayjs";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export function createMotionTimelineData(motion = {}) {
   const { proposer, proposal, voting, timeline = [] } = motion;
+  const type = detailPageCategory.TECH_COMM_MOTION;
 
   return timeline.map((item) => {
     switch (item.method) {
@@ -10,7 +12,7 @@ export function createMotionTimelineData(motion = {}) {
           indexer: item.indexer,
           hash: motion.hash,
           time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-          status: { value: `Motion #${motion.index}`, color: "#6848FF" },
+          status: { value: `Motion #${motion.index}`, type },
           voting: {
             proposer: proposer,
             method: proposal.method,
@@ -27,7 +29,7 @@ export function createMotionTimelineData(motion = {}) {
           indexer: item.indexer,
           hash: motion.hash,
           time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-          status: { value: "Vote", color: "#6848FF" },
+          status: { value: "Vote", type },
           voteResult: {
             name: item.args.voter,
             value: item.args.approve,
@@ -45,7 +47,7 @@ export function createMotionTimelineData(motion = {}) {
           indexer: item.indexer,
           hash: motion.hash,
           time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-          status: { value: method, color: "#6848FF" },
+          status: { value: method, type },
           method,
         };
       }

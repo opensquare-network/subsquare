@@ -7,12 +7,13 @@ import { EmptyList } from "next-common/utils/constants";
 import Layout from "next-common/components/layout";
 import { toPublicProposalListItem } from "utils/viewfuncs";
 import DemocracySummary from "next-common/components/summary/democracySummary";
+import businessCategory from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
   const items = (proposals.items || []).map((item) =>
     toPublicProposalListItem(chain, item)
   );
-  const category = "Democracy Public Proposals";
+  const category = businessCategory.democracyProposals;
   const seoInfo = { title: category, desc: category };
 
   return (

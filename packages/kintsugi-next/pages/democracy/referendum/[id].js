@@ -18,6 +18,7 @@ import OutWrapper from "next-common/components/styled/outWrapper";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
 import MainCard from "next-common/components/styled/mainCard";
 import useCommentComponent from "next-common/components/useCommentComponent";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, publicProposal, comments, chain }) => {
@@ -37,10 +38,17 @@ export default withLoginUserRedux(
     const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] =
       useState(false);
 
-    const completeTimeline = (
-      publicProposal?.onchainData?.timeline || []
-    ).concat(detail?.onchainData?.timeline || []);
-    const timelineData = getDemocracyTimelineData(completeTimeline, chain);
+    const proposalData = getDemocracyTimelineData(
+      publicProposal?.onchainData?.timeline || [],
+      chain,
+      detailPageCategory.DEMOCRACY_PROPOSAL
+    );
+    const referendumData = getDemocracyTimelineData(
+      detail?.onchainData?.timeline || [],
+      chain,
+      detailPageCategory.DEMOCRACY_REFERENDUM
+    );
+    const timelineData = proposalData.concat(referendumData);
 
     const timeline = detail?.onchainData?.timeline || [];
     const voteFinished = [

@@ -8,7 +8,6 @@ import Timeline from "components/publicProposal/timeline";
 import Business from "components/publicProposal/business";
 import Metadata from "next-common/components/publicProposal/metadata";
 import { to404 } from "next-common/utils/serverSideUtil";
-import { TYPE_DEMOCRACY_PROPOSAL } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
 import OutWrapper from "next-common/components/styled/outWrapper";
 import Second from "next-common/components/publicProposal/second";
@@ -16,6 +15,7 @@ import { useAddressVotingBalance } from "utils/hooks";
 import isNil from "lodash.isnil";
 import MainCard from "next-common/components/styled/mainCard";
 import useCommentComponent from "next-common/components/useCommentComponent";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, referendum, comments, chain }) => {
@@ -24,7 +24,7 @@ export default withLoginUserRedux(
       comments,
       loginUser,
       chain,
-      type: TYPE_DEMOCRACY_PROPOSAL,
+      type: detailPageCategory.DEMOCRACY_PROPOSAL,
     });
 
     const publicProposal = detail?.onchainData;
@@ -62,7 +62,7 @@ export default withLoginUserRedux(
               user={loginUser}
               chain={chain}
               onReply={focusEditor}
-              type={TYPE_DEMOCRACY_PROPOSAL}
+              type={detailPageCategory.DEMOCRACY_PROPOSAL}
             />
             <Second
               chain={chain}

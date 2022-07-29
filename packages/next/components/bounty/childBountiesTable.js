@@ -1,12 +1,13 @@
 import Row from "next-common/components/listInfo/row";
 import Anchor from "next-common/components/styled/anchor";
 import { toPrecision } from "../../utils";
-import Tag from "next-common/components/tag";
+import Tag from "next-common/components/tags/state/tag";
 import Accordion from "next-common/components/listInfo/accordion";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import FlexBetween from "next-common/components/styled/flexBetween";
 import Divider from "next-common/components/styled/layout/divider";
+import businessCategory from "next-common/utils/consts/business/category";
 
 const ChildBountyWrapper = styled.div`
   > div:first-child {
@@ -114,7 +115,10 @@ function ChildBountiesTable({ childBounties, decimals, symbol }) {
                       {toPrecision(bounty.onchainData?.value, decimals)}{" "}
                       <Accessory>{symbol}</Accessory>
                     </SemiBold>
-                    <Tag name={bounty.onchainData?.state?.state} />
+                    <Tag
+                      state={bounty.onchainData?.state?.state}
+                      category={businessCategory.treasuryChildBounties}
+                    />
                   </FlexBetween>
                 </ChildBounty>,
               ]}
@@ -140,7 +144,10 @@ function ChildBountiesTable({ childBounties, decimals, symbol }) {
                     <Accessory>{symbol}</Accessory>
                   </span>
                 </DividerWrapper>
-                <Tag name={bounty.onchainData?.state?.state} />
+                <Tag
+                  state={bounty.onchainData?.state?.state}
+                  category={businessCategory.treasuryChildBounties}
+                />
               </FlexBetween>
             </ChildBountyMobile>
           </ChildBountyWrapper>
