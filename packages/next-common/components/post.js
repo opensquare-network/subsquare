@@ -13,11 +13,7 @@ import Tag from "next-common/components/tags/state/tag";
 import ReasonLink from "next-common/components/reasonLink";
 import SectionTag from "next-common/components/sectionTag";
 import Flex from "next-common/components/styled/flex";
-import {
-  p_14_medium,
-  text_accessory,
-  text_primary,
-} from "next-common/styles/componentCss";
+import { p_14_medium } from "next-common/styles/componentCss";
 import MotionElapse from "next-common/components/motionElapse";
 import UpdateIcon from "../assets/imgs/icons/line-chart.svg";
 import CommentIcon from "../assets/imgs/icons/comment.svg";
@@ -126,7 +122,7 @@ const HeadWrapper = styled.div`
     display: block;
     ${p_14_medium};
     line-height: 22.4px;
-    ${text_primary};
+    color: ${(props) => props.theme.textPrimary};
     white-space: nowrap;
     flex-basis: 120px;
     flex-grow: 0;
@@ -135,7 +131,7 @@ const HeadWrapper = styled.div`
   }
 
   .symbol {
-    ${text_accessory};
+    color: ${(props) => props.theme.textTertiary};
   }
 
   @media screen and (max-width: 768px) {

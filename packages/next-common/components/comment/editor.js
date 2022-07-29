@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import nextApi from "../../services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
-import Relative from "next-common/components/styled/relative";
 import Flex from "next-common/components/styled/flex";
 import {
   prettyHTML,
@@ -23,13 +22,17 @@ const UniverseEditor = dynamic(
   { ssr: false }
 );
 
-const Wrapper = styled(EditorWrapper)`
+const Wrapper = styled.div`
   margin-top: 48px;
   ${(p) =>
     p.isEdit &&
     css`
       margin-top: 8px;
     `}
+`;
+
+const Relative = styled(EditorWrapper)`
+  position: relative;
 `;
 
 const ButtonWrapper = styled(Flex)`

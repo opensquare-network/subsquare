@@ -1,11 +1,7 @@
 import React, { useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { grey_400 } from "next-common/styles/colors";
-import {
-  p_12_normal,
-  text_accessory,
-  text_secondary,
-} from "next-common/styles/componentCss";
+import { p_12_normal } from "next-common/styles/componentCss";
 import Flex from "next-common/components/styled/flex";
 import nextApi from "next-common/services/nextApi";
 import Loading from "next-common/components/loading";
@@ -41,7 +37,7 @@ const Tips = styled.ul`
   margin: 8px 0;
 
   li {
-    ${text_accessory};
+    color: ${(props) => props.theme.textTertiary};
     ${p_12_normal};
     &::before {
       content: "\\2022";
@@ -50,12 +46,12 @@ const Tips = styled.ul`
   }
 `;
 const Hint = styled.span`
-  ${text_accessory}
+  color: ${(props) => props.theme.textTertiary};
   line-height: 19.6px;
 `;
 
 const SelectFile = styled.span`
-  ${text_secondary};
+  color: ${(props) => props.theme.textSecondary};
   margin-left: 8px;
   line-height: 19.6px;
   display: flex;
