@@ -6,7 +6,6 @@ import UnfoldIcon from "../../assets/imgs/icons/unfold.svg";
 import FoldIcon from "../../assets/imgs/icons/fold.svg";
 import Flex from "../styled/flex";
 
-
 const ActionItem = styled(Flex)`
   cursor: default;
   white-space: nowrap;
@@ -60,13 +59,6 @@ const ActionItem = styled(Flex)`
   > svg {
     margin-right: 8px;
   }
-  ${(props) =>
-    props?.theme.isDark &&
-    css`
-      div {
-        color: rgba(255, 255, 255, 0.25);
-      }
-    `};
 `;
 
 const UnfoldWrapper = styled(ActionItem)`
@@ -90,7 +82,13 @@ const DisabledThumbUp = styled(ThumbUpIcon)`
   }
 `;
 
-export default function useThumbsUp({ disabled, count, noHover, highlight, toggleThumbUp }) {
+export default function useThumbsUp({
+  disabled,
+  count,
+  noHover,
+  highlight,
+  toggleThumbUp,
+}) {
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
 
   const ThumbsUpComponent = (
