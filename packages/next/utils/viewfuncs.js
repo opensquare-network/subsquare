@@ -1,5 +1,6 @@
 import Chains from "next-common/utils/consts/chains";
 import { addressEllipsis } from "next-common/utils";
+import { getMotionId } from "next-common/utils/motion";
 
 const TipStateMap = {
   NewTip: "Tipping",
@@ -120,21 +121,13 @@ export const toFinancialMotionsListItem = (chain, item) => ({
   time: getPostUpdatedAt(item),
 });
 
-function getTechCommMotionId(motion) {
-  if (motion.index !== null && motion.index !== undefined) {
-    return motion.index;
-  }
-
-  return `${motion.indexer.blockHeight}_${motion.hash}`;
-}
-
 export const toTechCommMotionListItem = (chain, item) => ({
   ...item,
   title: item.title,
   author: item.author,
   address: item.proposer,
   status: item?.state ?? "Unknown",
-  detailLink: `/techcomm/proposal/${getTechCommMotionId(item)}`,
+  detailLink: `/techcomm/proposal/${getMotionId(item)}`,
   time: getPostUpdatedAt(item),
   isDemocracy: item?.onchainData?.externalProposals?.length > 0,
 });

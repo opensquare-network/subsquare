@@ -1,3 +1,5 @@
+import getMotionId from "next-common/utils/collective/motionId";
+
 export function getPostUpdatedAt(post) {
   if (post.createdAt === post.lastActivityAt) {
     return post?.indexer?.blockTime ?? post.createdAt;
@@ -11,21 +13,13 @@ export const toDiscussionListItem = (chain, item) => ({
   detailLink: `/post/${item.postUid}`,
 });
 
-function getTechCommMotionId(motion) {
-  if (motion.index !== null && motion.index !== undefined) {
-    return motion.index;
-  }
-
-  return `${motion.indexer.blockHeight}_${motion.hash}`;
-}
-
 export const toTechCommMotionListItem = (chain, item) => ({
   ...item,
   title: item.title,
   author: item.author,
   address: item.proposer,
   status: item?.state ?? "Unknown",
-  detailLink: `/techcomm/proposal/${getTechCommMotionId(item)}`,
+  detailLink: `/techcomm/proposal/${getMotionId(item)}`,
   time: getPostUpdatedAt(item),
   isDemocracy: item?.onchainData?.publicProposals?.length > 0,
 });
