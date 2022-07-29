@@ -5,11 +5,11 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Layout from "next-common/components/layout";
 import { to404 } from "next-common/utils/serverSideUtil";
-import { TYPE_POST } from "utils/viewConstants";
 import { getMetaDesc } from "utils/viewfuncs";
 import Cookies from "cookies";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import useCommentComponent from "next-common/components/useCommentComponent";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, chain, votes, myVote }) => {
@@ -18,7 +18,7 @@ export default withLoginUserRedux(
       comments,
       loginUser,
       chain,
-      type: TYPE_POST,
+      type: detailPageCategory.POST,
     });
 
     const desc = getMetaDesc(detail, "Discussion");
@@ -37,7 +37,7 @@ export default withLoginUserRedux(
             user={loginUser}
             chain={chain}
             onReply={focusEditor}
-            type={TYPE_POST}
+            type={detailPageCategory.POST}
           />
           {CommentComponent}
         </DetailPageWrapper>

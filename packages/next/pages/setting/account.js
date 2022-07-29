@@ -37,11 +37,11 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
           <TitleContainer>Account</TitleContainer>
           <ContentWrapper>
             <Username username={user?.username} />
-            <Divider />
+            <Divider margin={24} />
             <Email email={user?.email} verified={user?.emailVerified} />
-            <Divider />
+            <Divider margin={24} />
             <Password />
-            <Divider />
+            <Divider margin={24} />
             <Logout />
           </ContentWrapper>
         </Wrapper>

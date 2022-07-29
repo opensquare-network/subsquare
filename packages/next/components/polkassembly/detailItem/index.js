@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { timeDurationFromNow } from "next-common/utils";
 import User from "next-common/components/user";
-import Tag from "next-common/components/tag";
 import Flex from "next-common/components/styled/flex";
 import ArticleContent from "./articleContent";
 import { EditablePanel } from "next-common/components/styled/panel";
@@ -71,18 +70,13 @@ export default function DetailItem({ data, chain, type, postReactions }) {
       </TitleWrapper>
       <FlexWrapper>
         <DividerWrapper>
-          <User
-            user={post.author}
-            chain={chain}
-            fontSize={12}
-          />
+          <User user={post.author} chain={chain} fontSize={12} />
           <Info>
             <UpdateIcon />
             <span>{timeDurationFromNow(post.updatedAt || post.createdAt)}</span>
           </Info>
           <Info>{`${post.commentsCount} Comments`}</Info>
         </DividerWrapper>
-        {post.status && <Tag name={post.status} />}
       </FlexWrapper>
       <ArticleContent
         chain={chain}

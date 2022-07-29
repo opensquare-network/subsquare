@@ -1,5 +1,5 @@
-import { addressEllipsis } from ".";
 import Chains from "next-common/utils/consts/chains";
+import { addressEllipsis } from "next-common/utils";
 
 const TipStateMap = {
   NewTip: "Tipping",
@@ -31,7 +31,9 @@ export const toDiscussionListItem = (chain, item) => ({
 export const convertPolkassemblyUser = (chain, paUser) =>
   paUser?.[`${chain}_default_address`]
     ? {
-        username: addressEllipsis(paUser?.[`${chain}_default_address`]) || paUser?.username,
+        username:
+          addressEllipsis(paUser?.[`${chain}_default_address`]) ||
+          paUser?.username,
         addresses: [
           {
             address: paUser?.[`${chain}_default_address`],

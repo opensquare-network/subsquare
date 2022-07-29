@@ -9,7 +9,7 @@ import {
   timeDurationFromNow,
   toPrecision,
 } from "next-common/utils";
-import Tag from "next-common/components/tag";
+import Tag from "next-common/components/tags/state/tag";
 import ReasonLink from "next-common/components/reasonLink";
 import SectionTag from "next-common/components/sectionTag";
 import Flex from "next-common/components/styled/flex";
@@ -240,7 +240,7 @@ export default function Post({ data, chain, href, type }) {
               </AutHideInfo>
             )}
           </Footer>
-          {data.status && <Tag name={data.status} />}
+          {data.status && <Tag state={data.status} category={type} />}
         </FooterWrapper>
       </ContentWrapper>
 

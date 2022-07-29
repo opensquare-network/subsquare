@@ -3,7 +3,7 @@ import User from "next-common/components/user";
 import useShowMotionEnd from "./useShowMotionEnd";
 import MotionEnd from "next-common/components/motionEnd";
 import SectionTag from "next-common/components/sectionTag";
-import Tag from "next-common/components/tag";
+import Tag from "next-common/components/tags/state/tag";
 import Flex from "next-common/components/styled/flex";
 import { getPostUpdatedAt } from "utils/viewfuncs";
 import { timeDurationFromNow } from "next-common/utils";
@@ -118,7 +118,7 @@ export default function MotionHead({ motion, chain, type }) {
             </Info>
           )}
         </DividerWrapper>
-        {motion.state && <Tag name={motion.state} />}
+        {motion.state && <Tag state={motion.state} category={type} />}
       </FlexWrapper>
     </div>
   );

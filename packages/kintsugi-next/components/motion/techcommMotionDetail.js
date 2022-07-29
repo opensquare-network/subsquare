@@ -338,7 +338,6 @@ export default function TechcommMotionDetail({
         data={timelineData}
         chain={chain}
         indent={false}
-        type={type}
         motionEndInfo={motionEndInfo}
       />
     </div>

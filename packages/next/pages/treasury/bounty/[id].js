@@ -7,12 +7,12 @@ import Layout from "next-common/components/layout";
 import { getNode } from "utils";
 import Timeline from "components/bounty/timeline";
 import { to404 } from "next-common/utils/serverSideUtil";
-import { TYPE_TREASURY_BOUNTY } from "utils/viewConstants";
 import { getMetaDesc } from "../../../utils/viewfuncs";
 import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import Metadata from "next-common/components/treasury/bounty/metadata";
 import ChildBountiesTable from "../../../components/bounty/childBountiesTable";
 import useUniversalComments from "components/universalComments";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, childBounties, comments, chain }) => {
@@ -21,7 +21,7 @@ export default withLoginUserRedux(
       comments,
       loginUser,
       chain,
-      type: TYPE_TREASURY_BOUNTY,
+      type: detailPageCategory.TREASURY_BOUNTY,
     });
 
     const node = getNode(chain);
@@ -47,7 +47,7 @@ export default withLoginUserRedux(
             user={loginUser}
             chain={chain}
             onReply={focusEditor}
-            type={TYPE_TREASURY_BOUNTY}
+            type={detailPageCategory.TREASURY_BOUNTY}
           />
           <Metadata meta={detail.onchainData?.meta} chain={chain} />
           <ChildBountiesTable {...{ childBounties, decimals, symbol }} />

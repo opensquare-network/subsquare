@@ -38,9 +38,7 @@ export default function CollectiveMetadata({
   );
 
   if (call) {
-    data.push([
-      [capitalize(keys.call), <Proposal call={call} chain={chain} />],
-    ]);
+    data.push([<Proposal call={call} chain={chain} />]);
   }
 
   return <KVList title="Metadata" data={data} />;

@@ -20,19 +20,19 @@ const getTimelineData = (args, method) => {
   return args;
 };
 
-export function makeReferendumTimelineData(timeline) {
+export function makeReferendumTimelineData(timeline, type) {
   return (timeline || []).map((item) => {
     return {
       time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
       indexer: item.indexer,
-      status: { value: item.method ?? item.name },
+      status: { value: item.method ?? item.name, type },
       data: getTimelineData(item.args, item.method ?? item.name),
     };
   });
 }
 
-export default function ReferendumTimeline({ timeline, chain }) {
-  const timelineData = makeReferendumTimelineData(timeline);
+export default function ReferendumTimeline({ timeline, chain, type }) {
+  const timelineData = makeReferendumTimelineData(timeline, type);
 
   return <Timeline data={timelineData} chain={chain} />;
 }

@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
@@ -10,7 +10,6 @@ import Vote from "components/referenda/vote";
 import Timeline from "next-common/components/timeline";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
-import { TYPE_DEMOCRACY_REFERENDUM } from "utils/viewConstants";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getMetaDesc } from "utils/viewfuncs";
@@ -18,6 +17,7 @@ import OutWrapper from "next-common/components/styled/outWrapper";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
 import MainCard from "next-common/components/styled/mainCard";
 import useCommentComponent from "next-common/components/useCommentComponent";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, publicProposal, comments, chain }) => {
@@ -26,7 +26,7 @@ export default withLoginUserRedux(
       comments,
       loginUser,
       chain,
-      type: TYPE_DEMOCRACY_REFERENDUM,
+      type: detailPageCategory.DEMOCRACY_REFERENDUM,
     });
 
     const api = useApi(chain);
@@ -37,10 +37,17 @@ export default withLoginUserRedux(
     const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] =
       useState(false);
 
-    const completeTimeline = (
-      publicProposal?.onchainData?.timeline || []
-    ).concat(detail?.onchainData?.timeline || []);
-    const timelineData = getDemocracyTimelineData(completeTimeline, chain);
+    const proposalData = getDemocracyTimelineData(
+      publicProposal?.onchainData?.timeline || [],
+      chain,
+      detailPageCategory.DEMOCRACY_PROPOSAL
+    );
+    const referendumData = getDemocracyTimelineData(
+      detail?.onchainData?.timeline || [],
+      chain,
+      detailPageCategory.DEMOCRACY_REFERENDUM
+    );
+    const timelineData = proposalData.concat(referendumData);
 
     const timeline = detail?.onchainData?.timeline || [];
     const voteFinished = [
@@ -88,7 +95,7 @@ export default withLoginUserRedux(
               onReply={focusEditor}
               user={loginUser}
               chain={chain}
-              type={TYPE_DEMOCRACY_REFERENDUM}
+              type={detailPageCategory.DEMOCRACY_REFERENDUM}
             />
 
             <Vote

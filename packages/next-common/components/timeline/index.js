@@ -8,7 +8,6 @@ export default function Timeline({
   data,
   chain,
   indent = true,
-  type = "",
   motionEndInfo = null,
 }) {
   if (!data || data?.length === 0) {
@@ -19,6 +18,7 @@ export default function Timeline({
   if (Array.isArray(lastTimelineItem)) {
     lastTimelineItem = lastTimelineItem[lastTimelineItem.length - 1];
   }
+
   return (
     <TimelineAccordion
       motionEndInfo={motionEndInfo}
@@ -27,14 +27,9 @@ export default function Timeline({
       {data.map((item, index) => (
         <Fragment key={index}>
           {Array.isArray(item) ? (
-            <FoldableItem
-              data={item}
-              chain={chain}
-              indent={indent}
-              type={type}
-            />
+            <FoldableItem data={item} chain={chain} indent={indent} />
           ) : (
-            <Item data={item} chain={chain} type={type} />
+            <Item data={item} chain={chain} />
           )}
         </Fragment>
       ))}

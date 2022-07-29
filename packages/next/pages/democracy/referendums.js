@@ -7,12 +7,13 @@ import { EmptyList } from "next-common/utils/constants";
 import Layout from "next-common/components/layout";
 import { toReferendaListItem } from "utils/viewfuncs";
 import DemocracySummary from "next-common/components/summary/democracySummary";
+import businessCategory from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(({ loginUser, posts, chain }) => {
   const items = (posts.items || []).map((item) =>
     toReferendaListItem(chain, item)
   );
-  const category = "Referenda";
+  const category = businessCategory.democracyReferenda;
   const seoInfo = { title: `Democracy Referenda`, desc: `Democracy Referenda` };
 
   return (
