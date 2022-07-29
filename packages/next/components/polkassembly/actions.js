@@ -1,11 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-
-import ThumbUpIcon from "next-common/assets/imgs/icons/thumb-up.svg";
-import UnfoldIcon from "next-common/assets/imgs/icons/unfold.svg";
-import FoldIcon from "next-common/assets/imgs/icons/fold.svg";
 import Flex from "next-common/components/styled/flex";
 import User from "next-common/components/user";
+import useThumbsUp from "next-common/components/thumbsUp";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
@@ -36,67 +33,14 @@ const GreyItem = styled.div`
   }
 `;
 
-const ActionItem = styled(Flex)`
-  cursor: default;
-
-  color: ${(props) => props.theme.textTertiary};
-  > svg {
-    path {
-      fill: ${(props) => props.theme.textTertiary};
-    }
-  }
-
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 100%;
-
-  :not(:first-child) {
-    margin-left: 17px;
-  }
-
-  > svg {
-    margin-right: 8px;
-  }
-`;
-
-const UnfoldWrapper = styled(ActionItem)`
-  margin-left: 7px !important;
-
-  cursor: pointer;
-
-  :hover {
-    color: ${(props) => props.theme.textSecondary};
-    > svg {
-      path {
-        fill: ${(props) => props.theme.textSecondary};
-      }
-    }
-  }
-`;
-
-const DisabledThumbUp = styled(ThumbUpIcon)`
-  & > path {
-    fill: ${(props) => props.theme.textPlaceholder} !important;
-  }
-`;
-
 export default function Actions({ chain, reactions }) {
   const count = reactions?.length;
-  const [showThumbsUpList, setShowThumbsUpList] = useState(false);
 
+  const { ThumbsUpComponent, showThumbsUpList } = useThumbsUp({ disabled: true, count, noHover: true, highlight: false });
   return (
     <>
       <Wrapper>
-        <ActionItem>
-          <DisabledThumbUp />
-          <div>Up{count > 0 ? ` ${count}` : ``}</div>
-        </ActionItem>
-        {count > 0 && (
-          <UnfoldWrapper onClick={() => setShowThumbsUpList(!showThumbsUpList)}>
-            {showThumbsUpList ? <UnfoldIcon /> : <FoldIcon />}
-          </UnfoldWrapper>
-        )}
+        {ThumbsUpComponent}
       </Wrapper>
       {showThumbsUpList && count > 0 && (
         <GreyWrapper style={{ marginTop: 10 }}>

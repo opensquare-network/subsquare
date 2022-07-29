@@ -100,7 +100,6 @@ export default function ArticleContent({
 }) {
   const dispatch = useDispatch();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
-  const [showThumbsUpList, setShowThumbsUpList] = useState(false);
   if (!post) {
     return null;
   }
@@ -221,32 +220,15 @@ export default function ArticleContent({
             <PostDataSource type={type} post={post} />
           )}
           <Actions
+            chain={chain}
             highlight={isLoggedIn && thumbUp}
             noHover={!isLoggedIn || ownPost}
             edit={ownPost}
             setIsEdit={setIsEdit}
             toggleThumbUp={toggleThumbUp}
-            count={post.reactions?.length}
-            showThumbsUpList={showThumbsUpList}
-            setShowThumbsUpList={setShowThumbsUpList}
+            reactions={post?.reactions}
             onReply={onReply}
           />
-          {showThumbsUpList && post.reactions?.length > 0 && (
-            <GreyWrapper style={{ marginTop: 10 }}>
-              {post.reactions
-                .filter((r) => r.user)
-                .map((r, index) => (
-                  <GreyItem key={index}>
-                    <User
-                      user={r.user}
-                      fontSize={12}
-                      chain={chain}
-                      showAvatar={false}
-                    />
-                  </GreyItem>
-                ))}
-            </GreyWrapper>
-          )}
         </>
       )}
       {isEdit && (
