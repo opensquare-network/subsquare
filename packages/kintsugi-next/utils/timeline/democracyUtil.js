@@ -2,6 +2,7 @@ import styled from "styled-components";
 import dayjs from "dayjs";
 import { toPrecision, getTimelineStatus, getNode } from "utils";
 import User from "next-common/components/user";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 const DepositorsWrapper = styled.div`
   display: flex;
@@ -23,7 +24,9 @@ function getTimelineData(args, method, chain) {
     case "Tabled":
       return {
         "Referenda Index": `#${args.referendumIndex}`,
-        Deposit: `${toPrecision(args.deposit ?? 0, decimals)} ${voteSymbol || symbol}`,
+        Deposit: `${toPrecision(args.deposit ?? 0, decimals)} ${
+          voteSymbol || symbol
+        }`,
         Depositors: (
           <DepositorsWrapper>
             {(args.depositors || []).map((item, index) => (
@@ -52,7 +55,10 @@ export function getDemocracyTimelineData(timeline, chain) {
   return timeline.map((item) => ({
     time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
     indexer: item.indexer,
-    status: getTimelineStatus("proposal", item.method ?? item.name),
+    status: getTimelineStatus(
+      detailPageCategory.DEMOCRACY_PROPOSAL,
+      item.method ?? item.name
+    ),
     data: getTimelineData(item.args, item.method ?? item.name, chain),
   }));
 }
