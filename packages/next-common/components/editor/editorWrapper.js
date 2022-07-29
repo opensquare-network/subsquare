@@ -2,6 +2,12 @@ import styled from "styled-components";
 import RichTextStyleWrapper from "../content/richTextStyleWrapper";
 
 const EditorWrapper = styled(RichTextStyleWrapper)`
+  > div:first-child {
+    border-color: ${(props) => props.theme.grey300Border};
+    &:hover {
+      border-color: ${(props) => props.theme.grey400Border};
+    }
+  }
   textarea {
     background: ${(props) => props.theme.neutral};
     color: ${(props) => props.theme.textPrimary};
@@ -99,11 +105,7 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
   caret-color: ${(props) => props.theme.textPrimary} !important;
 
   > div > div {
-    border-color: ${(props) => props.theme.grey300Border};
-
-    :hover {
-      border-color: ${(props) => props.theme.grey400Border};
-    }
+    border-color: ${(props) => props.theme.grey200Border};
   }
 
   > div > div > div + div {
