@@ -1,13 +1,11 @@
 import MembersList from "next-common/components/membersList/techCommMembersList";
-import Menu from "next-common/components/menu";
-import Layout from "next-common/components/layout";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
 import usePrime from "next-common/utils/hooks/usePrime";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import homeMenus from "next-common/utils/consts/menu";
+import HomeLayout from "next-common/components/layout/HomeLayout";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const [data, setData] = useState([]);
@@ -25,12 +23,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <Layout
-      user={loginUser}
-      left={<Menu menu={homeMenus} chain={chain} />}
-      chain={chain}
-      seoInfo={seoInfo}
-    >
+    <HomeLayout user={loginUser} seoInfo={seoInfo}>
       <MembersList
         chain={chain}
         prime={prime}
@@ -38,7 +31,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
         items={data}
         loading={loading}
       />
-    </Layout>
+    </HomeLayout>
   );
 });
 

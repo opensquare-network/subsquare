@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { useForm } from "utils/hooks";
 import nextApi from "../../services/nextApi";
 import ErrorText from "../ErrorText";
 import { setUser } from "../../store/reducers/userSlice";
@@ -12,6 +11,7 @@ import Username from "./username";
 import Password from "./password";
 import GhostButton from "../buttons/ghostButton";
 import SecondaryButton from "../buttons/secondaryButton";
+import useForm from "../../utils/hooks/useForm";
 
 const ForgetPassword = styled.div`
   margin-top: 8px;

@@ -1,13 +1,11 @@
 import List from "next-common/components/list";
-import Menu from "next-common/components/menu";
 import { EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import styled from "styled-components";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
-import Layout from "next-common/components/layout";
 import { toDiscussionListItem } from "utils/viewfuncs";
-import homeMenus from "next-common/utils/consts/menu";
+import HomeLayout from "next-common/components/layout/HomeLayout";
 
 const Create = styled.a`
   display: flex;
@@ -36,12 +34,7 @@ export default withLoginUserRedux(({ loginUser, posts, chain }) => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <Layout
-      user={loginUser}
-      left={<Menu menu={homeMenus} chain={chain} />}
-      chain={chain}
-      seoInfo={seoInfo}
-    >
+    <HomeLayout user={loginUser} seoInfo={seoInfo}>
       <List
         chain={chain}
         category={"Discussions"}
@@ -53,7 +46,7 @@ export default withLoginUserRedux(({ loginUser, posts, chain }) => {
           total: posts.total,
         }}
       />
-    </Layout>
+    </HomeLayout>
   );
 });
 

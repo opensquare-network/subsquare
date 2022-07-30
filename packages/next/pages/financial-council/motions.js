@@ -1,11 +1,9 @@
 import List from "next-common/components/list";
-import Menu from "next-common/components/menu";
 import { EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import Layout from "next-common/components/layout";
 import { toFinancialMotionsListItem } from "utils/viewfuncs";
-import homeMenus from "next-common/utils/consts/menu";
+import HomeLayout from "next-common/components/layout/HomeLayout";
 
 export default withLoginUserRedux(({ loginUser, motions, chain }) => {
   const items = (motions.items || []).map((item) =>
@@ -15,12 +13,7 @@ export default withLoginUserRedux(({ loginUser, motions, chain }) => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <Layout
-      user={loginUser}
-      left={<Menu menu={homeMenus} chain={chain} />}
-      chain={chain}
-      seoInfo={seoInfo}
-    >
+    <HomeLayout user={loginUser} seoInfo={seoInfo}>
       <List
         chain={chain}
         category={category}
@@ -32,7 +25,7 @@ export default withLoginUserRedux(({ loginUser, motions, chain }) => {
           total: motions.total,
         }}
       />
-    </Layout>
+    </HomeLayout>
   );
 });
 

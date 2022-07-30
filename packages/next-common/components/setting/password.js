@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Input from "../input";
-import { useForm } from "utils/hooks";
 import ErrorText from "../ErrorText";
 import nextApi from "../../services/nextApi";
 import { newSuccessToast } from "../../store/reducers/toastSlice";
 import { InputWrapper, Label } from "./styled";
 import SecondaryButton from "../buttons/secondaryButton";
+import useForm from "../../utils/hooks/useForm";
 
 export default function Password() {
   const dispatch = useDispatch();

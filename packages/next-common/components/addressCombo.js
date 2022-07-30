@@ -2,7 +2,6 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { useState, useRef } from "react";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
-import { addressEllipsis } from "utils";
 import Avatar from "./avatar";
 import Flex from "./styled/flex";
 import Relative from "./styled/relative";
@@ -10,6 +9,7 @@ import { shadow_200 } from "../styles/componentCss";
 import { encodeAddressToChain } from "../services/address";
 import { isAddress } from "@polkadot/util-crypto";
 import Caret from "./icons/caret";
+import { addressEllipsis } from "../utils";
 
 const Wrapper = Relative;
 
