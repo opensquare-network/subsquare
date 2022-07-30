@@ -32,13 +32,7 @@ const Wrapper = styled.div`
   background: ${(props) => props.theme.grey100Bg};
 `;
 
-export default function LayoutBase({
-  user,
-  left,
-  children,
-  isWeb3Login,
-  seoInfo,
-}) {
+export default function LayoutBase({ user, left, children, seoInfo }) {
   let chain = process.env.NEXT_PUBLIC_CHAIN;
 
   const endpoint = useSelector(currentNodeSelector);
@@ -83,12 +77,7 @@ export default function LayoutBase({
       <Wrapper>
         {seo}
         <Auth chain={chain} />
-        <Header
-          user={user}
-          left={left}
-          chain={chain}
-          isWeb3Login={isWeb3Login}
-        />
+        <Header user={user} left={left} chain={chain} />
         <Content left={left}>{children}</Content>
         <Toast />
       </Wrapper>

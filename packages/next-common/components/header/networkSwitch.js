@@ -101,7 +101,7 @@ const NetworkBlock = styled.div`
   }
 `;
 
-export default function NetworkSwitch({ activeNode, isWeb3Login }) {
+export default function NetworkSwitch({ activeNode }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
   const windowSize = useWindowSize();
@@ -147,8 +147,6 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
               href={
                 activeNode.value === item.value
                   ? null
-                  : isWeb3Login
-                  ? `https://${item.value}.subsquare.io/login`
                   : `https://${item.value}.subsquare.io`
               }
             >

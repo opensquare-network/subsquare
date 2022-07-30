@@ -32,14 +32,7 @@ const Wrapper = styled.div`
   background: ${(props) => props.theme.grey100Bg};
 `;
 
-export default function Layout({
-  user,
-  left,
-  children,
-  chain,
-  isWeb3Login,
-  seoInfo,
-}) {
+export default function Layout({ user, left, children, chain, seoInfo }) {
   const endpoint = useSelector(currentNodeSelector);
   const api = useApi(chain, endpoint);
   const blockTime = useBlockTime(api);
@@ -82,12 +75,7 @@ export default function Layout({
       <Wrapper>
         {seo}
         <Auth chain={chain} />
-        <Header
-          user={user}
-          left={left}
-          chain={chain}
-          isWeb3Login={isWeb3Login}
-        />
+        <Header user={user} left={left} chain={chain} />
         <Content left={left}>{children}</Content>
         <Toast />
       </Wrapper>

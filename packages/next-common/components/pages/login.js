@@ -39,7 +39,7 @@ const Hint = styled.p`
 const Login = withLoginUserRedux(({ loginUser, chain }) => {
   const [web3, setWeb3] = useState(true);
   return (
-    <Layout user={loginUser} chain={chain} isWeb3Login={web3}>
+    <Layout user={loginUser} chain={chain}>
       <NextHead title={`Login`} desc={`Login`} />
       <Wrapper>
         <ContentCenterWrapper>

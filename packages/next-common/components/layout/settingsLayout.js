@@ -5,7 +5,6 @@ import { settingMenu } from "../../utils/consts/menu/settings";
 export default function SettingsLayout({
   user,
   children,
-  isWeb3Login,
   seoInfo,
   menu = settingMenu,
 }) {
@@ -13,7 +12,6 @@ export default function SettingsLayout({
     <LayoutBase
       user={user}
       children={children}
-      isWeb3Login={isWeb3Login}
       seoInfo={seoInfo}
       left={<Menu menu={menu} chain={process.env.NEXT_PUBLIC_CHAIN} />}
     />

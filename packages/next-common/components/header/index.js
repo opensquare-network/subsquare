@@ -54,7 +54,7 @@ const NodeButton = styled(Flex)`
   }
 `;
 
-export default function Header({ user, left, chain, isWeb3Login }) {
+export default function Header({ user, left, chain }) {
   const [show, setShow] = useState(false);
   const [position, setPosition] = useState("left");
   const [content, setContent] = useState();
@@ -88,7 +88,7 @@ export default function Header({ user, left, chain, isWeb3Login }) {
               <ChainIcon chain={node.value} />
             </NodeButton>
           </Left>
-          <HeaderRight chain={chain} user={user} isWeb3Login={isWeb3Login} />
+          <HeaderRight chain={chain} user={user} />
         </FlexWrapper>
       </div>
       {show && (

@@ -2,14 +2,9 @@ import LayoutBase from "./layoutBase";
 import OutWrapper from "../styled/outWrapper";
 import MainCard from "../styled/mainCard";
 
-export default function DetailWithRightLayout({
-  user,
-  children,
-  isWeb3Login,
-  seoInfo,
-}) {
+export default function DetailWithRightLayout({ user, children, seoInfo }) {
   return (
-    <LayoutBase user={user} isWeb3Login={isWeb3Login} seoInfo={seoInfo}>
+    <LayoutBase user={user} seoInfo={seoInfo}>
       <OutWrapper>
         <MainCard className="post-content">{children}</MainCard>
       </OutWrapper>
