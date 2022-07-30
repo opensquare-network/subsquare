@@ -1,15 +1,13 @@
 import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import Layout from "next-common/components/layout";
 import MotionDetail from "components/motion/motionDetail";
 import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { EmptyList } from "next-common/utils/constants";
-import OutWrapper from "next-common/components/styled/outWrapper";
-import MainCard from "next-common/components/styled/mainCard";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 
 export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -24,25 +22,20 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
 
   const desc = getMetaDesc(motion);
   return (
-    <Layout
+    <DetailWithRightLayout
       user={loginUser}
-      chain={chain}
       seoInfo={{ title: motion?.title, desc, ogImage: motion?.bannerUrl }}
     >
-      <OutWrapper>
-        <MainCard className="post-content">
-          <Back href={`/council/motions`} text="Back to Motions" />
-          <MotionDetail
-            motion={motion}
-            user={loginUser}
-            chain={chain}
-            type={detailPageCategory.COUNCIL_MOTION}
-            onReply={focusEditor}
-          />
-          {CommentComponent}
-        </MainCard>
-      </OutWrapper>
-    </Layout>
+      <Back href={`/council/motions`} text="Back to Motions" />
+      <MotionDetail
+        motion={motion}
+        user={loginUser}
+        chain={chain}
+        type={detailPageCategory.COUNCIL_MOTION}
+        onReply={focusEditor}
+      />
+      {CommentComponent}
+    </DetailWithRightLayout>
   );
 });
 

@@ -3,16 +3,15 @@ import DetailItem from "components/detailItem";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import Layout from "next-common/components/layout";
 import { getNode } from "next-common/utils";
 import Timeline from "components/bounty/timeline";
 import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import Metadata from "next-common/components/treasury/bounty/metadata";
 import ChildBountiesTable from "../../../components/bounty/childBountiesTable";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, childBounties, comments, chain }) => {
@@ -35,26 +34,23 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail);
     return (
-      <Layout
+      <DetailLayout
         user={loginUser}
-        chain={chain}
         seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
       >
-        <DetailPageWrapper className="post-content">
-          <Back href={`/treasury/bounties`} text="Back to Bounties" />
-          <DetailItem
-            data={detail}
-            user={loginUser}
-            chain={chain}
-            onReply={focusEditor}
-            type={detailPageCategory.TREASURY_BOUNTY}
-          />
-          <Metadata meta={detail.onchainData?.meta} chain={chain} />
-          <ChildBountiesTable {...{ childBounties, decimals, symbol }} />
-          <Timeline bounty={detail?.onchainData} chain={chain} />
-          {CommentComponent}
-        </DetailPageWrapper>
-      </Layout>
+        <Back href={`/treasury/bounties`} text="Back to Bounties" />
+        <DetailItem
+          data={detail}
+          user={loginUser}
+          chain={chain}
+          onReply={focusEditor}
+          type={detailPageCategory.TREASURY_BOUNTY}
+        />
+        <Metadata meta={detail.onchainData?.meta} chain={chain} />
+        <ChildBountiesTable {...{ childBounties, decimals, symbol }} />
+        <Timeline bounty={detail?.onchainData} chain={chain} />
+        {CommentComponent}
+      </DetailLayout>
     );
   }
 );

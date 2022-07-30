@@ -3,16 +3,15 @@ import DetailItem from "components/detailItem";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import Layout from "next-common/components/layout";
 import { getNode } from "next-common/utils";
 import { to404 } from "next-common/utils/serverSideUtil";
-import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import Business from "components/external/business";
 import Metadata from "components/external/metadata";
 import Timeline from "components/external/timeline";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -32,26 +31,23 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   const desc = getMetaDesc(detail);
   return (
-    <Layout
+    <DetailLayout
       user={loginUser}
-      chain={chain}
       seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
     >
-      <DetailPageWrapper className="post-content">
-        <Back href={`/democracy/externals`} text="Back to Externals" />
-        <DetailItem
-          data={detail}
-          user={loginUser}
-          chain={chain}
-          onReply={focusEditor}
-          type={detailPageCategory.DEMOCRACY_EXTERNAL}
-        />
-        <Business external={detail?.onchainData} chain={chain} />
-        <Metadata external={detail?.onchainData} chain={chain} />
-        <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
-        {CommentComponent}
-      </DetailPageWrapper>
-    </Layout>
+      <Back href={`/democracy/externals`} text="Back to Externals" />
+      <DetailItem
+        data={detail}
+        user={loginUser}
+        chain={chain}
+        onReply={focusEditor}
+        type={detailPageCategory.DEMOCRACY_EXTERNAL}
+      />
+      <Business external={detail?.onchainData} chain={chain} />
+      <Metadata external={detail?.onchainData} chain={chain} />
+      <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
+      {CommentComponent}
+    </DetailLayout>
   );
 });
 

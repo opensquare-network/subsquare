@@ -4,18 +4,16 @@ import DetailItem from "components/detailItem";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import Layout from "next-common/components/layout";
 import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Metadata from "next-common/components/publicProposal/metadata";
 import Timeline from "components/publicProposal/timeline";
 import Second from "next-common/components/publicProposal/second";
-import OutWrapper from "next-common/components/styled/outWrapper";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 import isNil from "lodash.isnil";
-import MainCard from "next-common/components/styled/mainCard";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -44,35 +42,30 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   const desc = getMetaDesc(detail);
   return (
-    <Layout
+    <DetailWithRightLayout
       user={loginUser}
-      chain={chain}
       seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
     >
-      <OutWrapper>
-        <MainCard className="post-content">
-          <Back href={`/democracy/proposals`} text="Back to Proposals" />
-          <DetailItem
-            data={detail}
-            user={loginUser}
-            chain={chain}
-            onReply={focusEditor}
-            type={detailPageCategory.DEMOCRACY_PROPOSAL}
-          />
-          <Second
-            chain={chain}
-            proposalIndex={proposalIndex}
-            hasTurnIntoReferendum={hasTurnIntoReferendum}
-            hasCanceled={hasCanceled}
-            useAddressVotingBalance={useAddressBalance}
-            atBlockHeight={secondsAtBlockHeight}
-          />
-          <Metadata publicProposal={detail?.onchainData} chain={chain} />
-          <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
-          {CommentComponent}
-        </MainCard>
-      </OutWrapper>
-    </Layout>
+      <Back href={`/democracy/proposals`} text="Back to Proposals" />
+      <DetailItem
+        data={detail}
+        user={loginUser}
+        chain={chain}
+        onReply={focusEditor}
+        type={detailPageCategory.DEMOCRACY_PROPOSAL}
+      />
+      <Second
+        chain={chain}
+        proposalIndex={proposalIndex}
+        hasTurnIntoReferendum={hasTurnIntoReferendum}
+        hasCanceled={hasCanceled}
+        useAddressVotingBalance={useAddressBalance}
+        atBlockHeight={secondsAtBlockHeight}
+      />
+      <Metadata publicProposal={detail?.onchainData} chain={chain} />
+      <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
+      {CommentComponent}
+    </DetailWithRightLayout>
   );
 });
 

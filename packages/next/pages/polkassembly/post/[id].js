@@ -4,11 +4,10 @@ import PolkassemblyComments from "components/polkassembly/comment";
 import usePolkassemblyPostData from "components/polkassembly/usePolkassemblyPostData";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import Layout from "next-common/components/layout";
 import { to404 } from "next-common/utils/serverSideUtil";
-import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 
 export default withLoginUserRedux(({ loginUser, detail, chain }) => {
   const polkassemblyId = detail?.polkassemblyId;
@@ -19,31 +18,28 @@ export default withLoginUserRedux(({ loginUser, detail, chain }) => {
 
   const desc = getMetaDesc(detail);
   return (
-    <Layout
+    <DetailLayout
       user={loginUser}
-      chain={chain}
       seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
     >
-      <DetailPageWrapper className="post-content">
-        <Back
-          href={`/polkassembly/discussions`}
-          text="Back to Polkassembly Discussions"
-        />
-        <DetailItem
-          data={detail}
-          chain={chain}
-          postReactions={postReactions}
-          type={detailPageCategory.PA_POST}
-        />
-        <PolkassemblyComments
-          isLoading={loadingComments}
-          comments={comments}
-          chain={chain}
-          type={detailPageCategory.PA_POST}
-          paId={polkassemblyId}
-        />
-      </DetailPageWrapper>
-    </Layout>
+      <Back
+        href={`/polkassembly/discussions`}
+        text="Back to Polkassembly Discussions"
+      />
+      <DetailItem
+        data={detail}
+        chain={chain}
+        postReactions={postReactions}
+        type={detailPageCategory.PA_POST}
+      />
+      <PolkassemblyComments
+        isLoading={loadingComments}
+        comments={comments}
+        chain={chain}
+        type={detailPageCategory.PA_POST}
+        paId={polkassemblyId}
+      />
+    </DetailLayout>
   );
 });
 
