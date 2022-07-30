@@ -14,7 +14,7 @@ import Timeline from "components/referenda/timeline";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import DetailWithRightLayout from "../../../../next-common/components/layout/detailWithRightLayout";
+import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({

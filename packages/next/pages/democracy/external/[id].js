@@ -11,7 +11,7 @@ import Timeline from "components/external/timeline";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import DetailLayout from "../../../../next-common/components/layout/DetailLayout";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({

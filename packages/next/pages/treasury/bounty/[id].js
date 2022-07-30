@@ -11,7 +11,7 @@ import Metadata from "next-common/components/treasury/bounty/metadata";
 import ChildBountiesTable from "../../../components/bounty/childBountiesTable";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import DetailLayout from "../../../../next-common/components/layout/DetailLayout";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, childBounties, comments, chain }) => {

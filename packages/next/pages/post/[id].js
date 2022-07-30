@@ -13,7 +13,7 @@ import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Cookies from "cookies";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import DetailLayout from "../../../next-common/components/layout/DetailLayout";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, votes, myVote, chain }) => {

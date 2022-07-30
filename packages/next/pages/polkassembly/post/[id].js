@@ -7,7 +7,7 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import DetailLayout from "../../../../next-common/components/layout/DetailLayout";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 
 export default withLoginUserRedux(({ loginUser, detail, chain }) => {
   const polkassemblyId = detail?.polkassemblyId;

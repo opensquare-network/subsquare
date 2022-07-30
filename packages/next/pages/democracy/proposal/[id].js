@@ -13,7 +13,7 @@ import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 import isNil from "lodash.isnil";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import DetailWithRightLayout from "../../../../next-common/components/layout/detailWithRightLayout";
+import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({

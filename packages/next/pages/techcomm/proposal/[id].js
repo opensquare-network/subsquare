@@ -7,7 +7,7 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { EmptyList } from "next-common/utils/constants";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import DetailWithRightLayout from "../../../../next-common/components/layout/detailWithRightLayout";
+import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 
 export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
