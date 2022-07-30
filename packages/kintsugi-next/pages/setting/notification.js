@@ -16,7 +16,7 @@ import { useRouter } from "next/router";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Divider from "next-common/components/styled/layout/divider";
-import SettingsLayout from "../../../next-common/components/layout/settingsLayout";
+import SettingsLayout from "next-common/components/layout/settingsLayout";
 
 const Wrapper = styled.div`
   max-width: 852px;
