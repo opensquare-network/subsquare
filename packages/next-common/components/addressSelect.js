@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import styled, { css } from "styled-components";
 import { useState, useRef } from "react";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
-import { addressEllipsis } from "utils";
 import Avatar from "./avatar";
 import Flex from "./styled/flex";
 import Relative from "./styled/relative";
@@ -12,6 +11,7 @@ import { nodes } from "../utils/constants";
 import { fetchIdentity } from "../services/identity";
 import Identity from "./Identity";
 import Caret from "./icons/caret";
+import { addressEllipsis } from "../utils";
 
 const Wrapper = Relative;
 

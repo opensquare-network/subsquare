@@ -18,6 +18,7 @@ import {
 import { Create, Pending } from "next-common/components/treasury/common/styled";
 import usePendingProposal from "next-common/components/treasury/proposal/usePendingProposal";
 import homeMenus from "next-common/utils/consts/menu";
+import HomeLayout from "next-common/components/layout/HomeLayout";
 
 const Popup = dynamic(
   () => import("next-common/components/treasury/proposal/popup"),
@@ -66,12 +67,7 @@ export default withLoginUserRedux(
     const seoInfo = { title: category, desc: category };
 
     return (
-      <Layout
-        user={loginUser}
-        left={<Menu menu={homeMenus} chain={chain} />}
-        chain={chain}
-        seoInfo={seoInfo}
-      >
+      <HomeLayout user={loginUser} seoInfo={seoInfo}>
         <List
           chain={chain}
           category={category}
@@ -91,7 +87,7 @@ export default withLoginUserRedux(
             onInBlock={startReload}
           />
         )}
-      </Layout>
+      </HomeLayout>
     );
   }
 );

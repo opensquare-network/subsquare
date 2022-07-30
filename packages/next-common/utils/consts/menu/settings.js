@@ -16,8 +16,13 @@ const back = {
 const accountSetting = {
   value: "account",
   name: "Account",
-  pathname: "/setting/key-account",
+  pathname: "/setting/account",
   icon: <UserIcon />,
+};
+
+const keyAccountSetting = {
+  ...accountSetting,
+  pathname: "/setting/key-account",
 };
 
 const notificationSetting = {
@@ -31,7 +36,7 @@ export const settingMenuOfKeyAccount = [
   back,
   {
     name: "SETTING",
-    items: [accountSetting, notificationSetting],
+    items: [keyAccountSetting, notificationSetting],
   },
 ];
 
