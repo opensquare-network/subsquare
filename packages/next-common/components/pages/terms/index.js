@@ -1,13 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
-
-import Layout from "next-common/components/layout";
 import { withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import termsMd from "./terms-of-service.md";
 import Markdown from "next-common/components/micromarkMd";
 import ArrowLeft from "../../icons/arrowLeft";
+import BaseLayout from "../../layout/baseLayout";
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -53,7 +52,7 @@ const Title = styled.h1`
 
 const Terms = withLoginUserRedux(({ loginUser, chain }) => {
   return (
-    <Layout user={loginUser} chain={chain}>
+    <BaseLayout user={loginUser} chain={chain}>
       <NextHead title="Terms of Service" desc="Terms of Service" />
       <Wrapper>
         <Link href="/signup" passHref>
@@ -67,7 +66,7 @@ const Terms = withLoginUserRedux(({ loginUser, chain }) => {
           <Markdown md={termsMd} />
         </Content>
       </Wrapper>
-    </Layout>
+    </BaseLayout>
   );
 });
 

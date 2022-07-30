@@ -1,14 +1,13 @@
 import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import Layout from "next-common/components/layout";
 import TechcommMotionDetail from "components/motion/techcommMotionDetail";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { EmptyList } from "next-common/utils/constants";
-import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import useCommentComponent from "next-common/components/useCommentComponent";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 
 export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
   const { CommentComponent, focusEditor } = useCommentComponent({
@@ -21,23 +20,20 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
 
   const desc = getMetaDesc(motion);
   return (
-    <Layout
+    <DetailLayout
       user={loginUser}
-      chain={chain}
       seoInfo={{ title: motion?.title, desc, ogImage: motion?.bannerUrl }}
     >
-      <DetailPageWrapper className="post-content">
-        <Back href={`/techcomm/proposals`} text="Back to Proposals" />
-        <TechcommMotionDetail
-          motion={motion}
-          loginUser={loginUser}
-          chain={chain}
-          onReply={focusEditor}
-          type={detailPageCategory.TECH_COMM_MOTION}
-        />
-        {CommentComponent}
-      </DetailPageWrapper>
-    </Layout>
+      <Back href={`/techcomm/proposals`} text="Back to Proposals" />
+      <TechcommMotionDetail
+        motion={motion}
+        loginUser={loginUser}
+        chain={chain}
+        onReply={focusEditor}
+        type={detailPageCategory.TECH_COMM_MOTION}
+      />
+      {CommentComponent}
+    </DetailLayout>
   );
 });
 

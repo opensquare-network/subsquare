@@ -1,13 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
-
-import Layout from "next-common/components/layout";
 import { withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import privacyMd from "./privacy-policy.md";
 import Markdown from "next-common/components/micromarkMd";
 import ArrowLeft from "../../icons/arrowLeft";
+import BaseLayout from "../../layout/baseLayout";
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -52,7 +51,7 @@ const Title = styled.h1`
 
 const Privacy = withLoginUserRedux(({ loginUser, chain }) => {
   return (
-    <Layout user={loginUser} chain={chain}>
+    <BaseLayout user={loginUser} chain={chain}>
       <NextHead title="Privacy Policy" desc="Privacy Policy" />
       <Wrapper>
         <Link passHref={true} href="/signup">
@@ -68,7 +67,7 @@ const Privacy = withLoginUserRedux(({ loginUser, chain }) => {
           <Markdown md={privacyMd} />
         </Content>
       </Wrapper>
-    </Layout>
+    </BaseLayout>
   );
 });
 

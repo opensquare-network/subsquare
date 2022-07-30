@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import List from "next-common/components/list";
-import Menu from "next-common/components/menu";
 import { EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
-import Layout from "next-common/components/layout";
 import { toTreasuryProposalListItem } from "utils/viewfuncs";
 import Summary from "next-common/components/summary";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
@@ -17,7 +15,6 @@ import {
 } from "next-common/store/reducers/treasuryProposalSlice";
 import { Create, Pending } from "next-common/components/treasury/common/styled";
 import usePendingProposal from "next-common/components/treasury/proposal/usePendingProposal";
-import homeMenus from "next-common/utils/consts/menu";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 
 const Popup = dynamic(

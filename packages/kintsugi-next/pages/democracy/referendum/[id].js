@@ -4,7 +4,6 @@ import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import Layout from "next-common/components/layout";
 import DetailItem from "components/detailItem";
 import Vote from "components/referenda/vote";
 import Timeline from "next-common/components/timeline";
@@ -13,11 +12,10 @@ import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import OutWrapper from "next-common/components/styled/outWrapper";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
-import MainCard from "next-common/components/styled/mainCard";
 import useCommentComponent from "next-common/components/useCommentComponent";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, publicProposal, comments, chain }) => {
@@ -82,46 +80,41 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail);
     return (
-      <Layout
+      <DetailWithRightLayout
         user={loginUser}
-        chain={chain}
         seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
       >
-        <OutWrapper>
-          <MainCard className="post-content">
-            <Back href={`/democracy/referendums`} text="Back to Referendas" />
-            <DetailItem
-              data={detail}
-              onReply={focusEditor}
-              user={loginUser}
-              chain={chain}
-              type={detailPageCategory.DEMOCRACY_REFERENDUM}
-            />
+        <Back href={`/democracy/referendums`} text="Back to Referendas" />
+        <DetailItem
+          data={detail}
+          onReply={focusEditor}
+          user={loginUser}
+          chain={chain}
+          type={detailPageCategory.DEMOCRACY_REFERENDUM}
+        />
 
-            <Vote
-              referendumInfo={detail?.onchainData?.info}
-              referendumStatus={referendumStatus}
-              setReferendumStatus={setReferendumStatus}
-              chain={chain}
-              referendumIndex={detail?.referendumIndex}
-              isLoadingReferendumStatus={isLoadingReferendumStatus}
-              setIsLoadingReferendumStatus={setIsLoadingReferendumStatus}
-            />
+        <Vote
+          referendumInfo={detail?.onchainData?.info}
+          referendumStatus={referendumStatus}
+          setReferendumStatus={setReferendumStatus}
+          chain={chain}
+          referendumIndex={detail?.referendumIndex}
+          isLoadingReferendumStatus={isLoadingReferendumStatus}
+          setIsLoadingReferendumStatus={setIsLoadingReferendumStatus}
+        />
 
-            <ReferendumMetadata
-              api={api}
-              proposer={detail.proposer}
-              status={referendumStatus}
-              call={detail?.onchainData?.preImage?.call}
-              chain={chain}
-              onchainData={detail.onchainData}
-            />
+        <ReferendumMetadata
+          api={api}
+          proposer={detail.proposer}
+          status={referendumStatus}
+          call={detail?.onchainData?.preImage?.call}
+          chain={chain}
+          onchainData={detail.onchainData}
+        />
 
-            <Timeline data={timelineData} chain={chain} />
-            {CommentComponent}
-          </MainCard>
-        </OutWrapper>
-      </Layout>
+        <Timeline data={timelineData} chain={chain} />
+        {CommentComponent}
+      </DetailWithRightLayout>
     );
   }
 );

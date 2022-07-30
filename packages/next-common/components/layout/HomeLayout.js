@@ -1,10 +1,11 @@
-import LayoutBase from "./layoutBase";
+import React from "react";
+import BaseLayout from "./baseLayout";
 import homeMenus from "../../utils/consts/menu";
 import Menu from "../menu";
 
 export default function HomeLayout({ user, children, seoInfo }) {
   return (
-    <LayoutBase
+    <BaseLayout
       user={user}
       children={children}
       seoInfo={seoInfo}

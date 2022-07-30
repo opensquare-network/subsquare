@@ -29,7 +29,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
   return (
     <>
-      <SettingsLayout chain={chain} user={loginUser}>
+      <SettingsLayout user={loginUser}>
         <NextHead title={`Settings`} desc={``} />
         <Wrapper>
           <TitleContainer>Account</TitleContainer>

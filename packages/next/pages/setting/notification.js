@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 
 import Toggle from "next-common/components/toggle";
-import Menu from "next-common/components/menu";
 import {
   settingMenu,
   settingMenuOfKeyAccount,
@@ -15,7 +14,6 @@ import {
 } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import { fetchUserProfile } from "next-common/store/reducers/userSlice";
-import Layout from "next-common/components/layout";
 import NextHead from "next-common/components/nextHead";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { useRouter } from "next/router";
@@ -23,6 +21,7 @@ import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { PrimaryCard } from "next-common/components/styled/containers/primaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Divider from "next-common/components/styled/layout/divider";
+import SettingsLayout from "../../../next-common/components/layout/settingsLayout";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -139,7 +138,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   };
 
   return (
-    <Layout chain={chain} user={loginUser} left={<Menu menu={menu} />}>
+    <SettingsLayout user={loginUser}>
       <NextHead title={`Settings`} desc={``} />
       <Wrapper>
         <TitleContainer>Notification</TitleContainer>
@@ -179,7 +178,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
           </ButtonWrapper>
         </ContentWrapper>
       </Wrapper>
-    </Layout>
+    </SettingsLayout>
   );
 });
 

@@ -3,13 +3,12 @@ import DetailItem from "components/detailItem";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import Layout from "next-common/components/layout";
 import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Cookies from "cookies";
-import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
 import useCommentComponent from "next-common/components/useCommentComponent";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, chain, votes, myVote }) => {
@@ -23,25 +22,22 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail);
     return (
-      <Layout
+      <DetailLayout
         user={loginUser}
-        chain={chain}
         seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
       >
-        <DetailPageWrapper className="post-content">
-          <Back href={`/discussions`} text="Back to Discussions" />
-          <DetailItem
-            data={detail}
-            votes={votes}
-            myVote={myVote}
-            user={loginUser}
-            chain={chain}
-            onReply={focusEditor}
-            type={detailPageCategory.POST}
-          />
-          {CommentComponent}
-        </DetailPageWrapper>
-      </Layout>
+        <Back href={`/discussions`} text="Back to Discussions" />
+        <DetailItem
+          data={detail}
+          votes={votes}
+          myVote={myVote}
+          user={loginUser}
+          chain={chain}
+          onReply={focusEditor}
+          type={detailPageCategory.POST}
+        />
+        {CommentComponent}
+      </DetailLayout>
     );
   }
 );

@@ -1,15 +1,19 @@
-import LayoutBase from "./layoutBase";
+import React from "react";
+import BaseLayout from "./baseLayout";
 import Menu from "../menu";
-import { settingMenu } from "../../utils/consts/menu/settings";
+import {
+  settingMenu,
+  settingMenuOfKeyAccount,
+} from "../../utils/consts/menu/settings";
+import { isKeyRegisteredUser } from "../../utils";
 
-export default function SettingsLayout({
-  user,
-  children,
-  seoInfo,
-  menu = settingMenu,
-}) {
+export default function SettingsLayout({ user, children, seoInfo }) {
+  const menu = isKeyRegisteredUser(user)
+    ? settingMenuOfKeyAccount
+    : settingMenu;
+
   return (
-    <LayoutBase
+    <BaseLayout
       user={user}
       children={children}
       seoInfo={seoInfo}

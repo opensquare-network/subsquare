@@ -22,7 +22,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   }, [loginUser, router]);
 
   return (
-    <SettingsLayout chain={chain} user={loginUser}>
+    <SettingsLayout user={loginUser}>
       <NextHead title={`Settings`} desc={``} />
       <LinkedAddressComp chain={chain} />
     </SettingsLayout>

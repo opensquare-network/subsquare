@@ -32,7 +32,7 @@ const Wrapper = styled.div`
   background: ${(props) => props.theme.grey100Bg};
 `;
 
-export default function LayoutBase({ user, left, children, seoInfo }) {
+export default function BaseLayout({ user, left, children, seoInfo }) {
   let chain = process.env.NEXT_PUBLIC_CHAIN;
 
   const endpoint = useSelector(currentNodeSelector);

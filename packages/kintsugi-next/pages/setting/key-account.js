@@ -1,6 +1,4 @@
-import Menu from "next-common/components/menu";
 import { settingMenuOfKeyAccount } from "next-common/utils/consts/menu/settings";
-import Layout from "next-common/components/layout";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import { ContentWrapper, Wrapper } from "next-common/components/setting/styled";
@@ -34,11 +32,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
   return (
     <>
-      <SettingsLayout
-        chain={chain}
-        user={loginUser}
-        menu={settingMenuOfKeyAccount}
-      >
+      <SettingsLayout user={loginUser} menu={settingMenuOfKeyAccount}>
         <NextHead title={`Settings`} desc={``} />
         <Wrapper>
           <TitleContainer>Account</TitleContainer>

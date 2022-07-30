@@ -1,13 +1,14 @@
-import LayoutBase from "./layoutBase";
+import React from "react";
+import BaseLayout from "./baseLayout";
 import OutWrapper from "../styled/outWrapper";
 import MainCard from "../styled/mainCard";
 
 export default function DetailWithRightLayout({ user, children, seoInfo }) {
   return (
-    <LayoutBase user={user} seoInfo={seoInfo}>
+    <BaseLayout user={user} seoInfo={seoInfo}>
       <OutWrapper>
         <MainCard className="post-content">{children}</MainCard>
       </OutWrapper>
-    </LayoutBase>
+    </BaseLayout>
   );
 }

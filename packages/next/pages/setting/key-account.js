@@ -1,6 +1,3 @@
-import Menu from "next-common/components/menu";
-import { settingMenuOfKeyAccount } from "next-common/utils/consts/menu/settings";
-import Layout from "next-common/components/layout";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import { ContentWrapper, Wrapper } from "next-common/components/setting/styled";
@@ -13,6 +10,7 @@ import { isKeyRegisteredUser } from "next-common/utils";
 import { useEffect } from "react";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Divider from "next-common/components/styled/layout/divider";
+import SettingsLayout from "../../../next-common/components/layout/settingsLayout";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const user = loginUser;
@@ -33,11 +31,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
   return (
     <>
-      <Layout
-        chain={chain}
-        user={loginUser}
-        left={<Menu menu={settingMenuOfKeyAccount} />}
-      >
+      <SettingsLayout user={loginUser}>
         <NextHead title={`Settings`} desc={``} />
         <Wrapper>
           <TitleContainer>Account</TitleContainer>
@@ -52,7 +46,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
             <Logout />
           </ContentWrapper>
         </Wrapper>
-      </Layout>
+      </SettingsLayout>
     </>
   );
 });

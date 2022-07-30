@@ -11,15 +11,13 @@ import { to404 } from "next-common/utils/serverSideUtil";
 
 import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
-import OutWrapper from "next-common/components/styled/outWrapper";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import Layout from "next-common/components/layout";
 import Timeline from "components/tip/timeline";
 import Metadata from "components/tip/metadata";
 import Tipper from "components/tipper";
-import MainCard from "next-common/components/styled/mainCard";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import DetailWithRightLayout from "../../../../next-common/components/layout/detailWithRightLayout";
 
 export default withLoginUserRedux(
   ({ loginUser, detail: tip, comments, chain }) => {
@@ -120,40 +118,35 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail);
     return (
-      <Layout
+      <DetailWithRightLayout
         user={loginUser}
-        chain={chain}
         seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
       >
-        <OutWrapper>
-          <MainCard className="post-content">
-            <Back href={`/treasury/tips`} text="Back to Tips" />
-            <DetailItem
-              data={detail}
-              user={loginUser}
-              chain={chain}
-              onReply={focusEditor}
-              type={detailPageCategory.TREASURY_TIP}
-            />
-            <Tipper
-              chain={chain}
-              tipIsFinal={tipIsFinal}
-              userIsTipper={userIsTipper}
-              loading={loading}
-              tips={tips}
-              councilTippers={councilTippers}
-              tipHash={tipHash}
-              updateTips={updateTips}
-              updateTimeline={updateTimeline}
-              isLoadingTip={isLoadingTip}
-              setIsLoadingTip={setIsLoadingTip}
-            />
-            <Metadata tip={detail?.onchainData} chain={chain} />
-            <Timeline tip={detail?.onchainData} chain={chain} />
-            {CommentComponent}
-          </MainCard>
-        </OutWrapper>
-      </Layout>
+        <Back href={`/treasury/tips`} text="Back to Tips" />
+        <DetailItem
+          data={detail}
+          user={loginUser}
+          chain={chain}
+          onReply={focusEditor}
+          type={detailPageCategory.TREASURY_TIP}
+        />
+        <Tipper
+          chain={chain}
+          tipIsFinal={tipIsFinal}
+          userIsTipper={userIsTipper}
+          loading={loading}
+          tips={tips}
+          councilTippers={councilTippers}
+          tipHash={tipHash}
+          updateTips={updateTips}
+          updateTimeline={updateTimeline}
+          isLoadingTip={isLoadingTip}
+          setIsLoadingTip={setIsLoadingTip}
+        />
+        <Metadata tip={detail?.onchainData} chain={chain} />
+        <Timeline tip={detail?.onchainData} chain={chain} />
+        {CommentComponent}
+      </DetailWithRightLayout>
     );
   }
 );
