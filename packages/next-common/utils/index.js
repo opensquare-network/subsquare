@@ -104,7 +104,12 @@ export function timeDurationFromNow(time) {
 }
 
 export function getNode(chain) {
-  return nodes.find((n) => n.value === chain);
+  const target = nodes.find((n) => n.value === chain);
+  if (!target) {
+    throw new Error(`Not supported chain ${chain}`);
+  }
+
+  return target;
 }
 
 export function toPrecision(value, decimals) {
