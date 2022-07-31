@@ -45,6 +45,8 @@ const Title = styled(TitleContainer)`
   > :last-child {
     display: flex;
     align-items: center;
+    font-size: 14px;
+    font-weight: normal;
   }
 `;
 
