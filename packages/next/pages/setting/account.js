@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Divider from "next-common/components/styled/layout/divider";
-import SettingsLayout from "../../../next-common/components/layout/settingsLayout";
+import SettingsLayout from "next-common/components/layout/settingsLayout";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const user = useSelector(userSelector);

@@ -3,7 +3,7 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import SettingsLayout from "../../../next-common/components/layout/settingsLayout";
+import SettingsLayout from "next-common/components/layout/settingsLayout";
 
 const LinkedAddressComp = dynamic(
   () => import("next-common/components/linkedAddress"),
