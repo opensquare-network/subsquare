@@ -2,8 +2,6 @@ import styled from "styled-components";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-
-import Layout from "next-common/components/layout";
 import Input from "next-common/components/input";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import nextApi from "next-common/services/nextApi";
@@ -17,6 +15,7 @@ import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import GhostButton from "next-common/components/buttons/ghostButton";
 import { PageTitleContainer } from "next-common/components/styled/containers/titleContainer";
 import useForm from "next-common/utils/hooks/useForm";
+import BaseLayout from "next-common/components/layout/baseLayout";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -183,7 +182,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   }, [sendEmailState, countdown, isMounted, router]);
 
   return (
-    <Layout user={loginUser} chain={chain}>
+    <BaseLayout user={loginUser} chain={chain}>
       <NextHead title={`Signup`} desc={`Signup`} />
       <Wrapper>
         {!success && (
@@ -268,7 +267,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
           </ContentWrapper>
         )}
       </Wrapper>
-    </Layout>
+    </BaseLayout>
   );
 });
 

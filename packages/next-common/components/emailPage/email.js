@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Layout from "next-common/components/layout";
 import { withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import { ContentCenterWrapper } from "next-common/components/login/styled";
@@ -13,6 +12,7 @@ import useIdentity from "next-common/utils/hooks/useIdentity";
 import { p_14_normal } from "../../styles/componentCss";
 import GhostButton from "../buttons/ghostButton";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
+import BaseLayout from "../layout/baseLayout";
 
 const Label = styled.div`
   font-weight: bold;
@@ -64,7 +64,7 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
   }, [address, loginUser, router]);
 
   return (
-    <Layout user={loginUser} chain={chain}>
+    <BaseLayout user={loginUser} chain={chain}>
       <NextHead title={`Set Email`} desc={`Set Email`} />
       <Wrapper>
         <ContentCenterWrapper>
@@ -105,7 +105,7 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
           </GhostButton>
         </ContentCenterWrapper>
       </Wrapper>
-    </Layout>
+    </BaseLayout>
   );
 });
 

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-
-import Layout from "next-common/components/layout";
 import Input from "next-common/components/input";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useCountdown from "next-common/utils/hooks/useCountdown";
@@ -21,6 +19,7 @@ import {
 import useForm from "../../utils/hooks/useForm";
 import SecondaryButton from "../buttons/secondaryButton";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
+import BaseLayout from "../layout/baseLayout";
 
 const Wrapper = styled.div`
   padding: 32px 0;
@@ -71,7 +70,7 @@ const Reset = withLoginUserRedux(({ loginUser, chain }) => {
   const { newPassword } = formData;
 
   return (
-    <Layout user={loginUser} chain={chain}>
+    <BaseLayout user={loginUser} chain={chain}>
       <NextHead title={`Reset password`} desc={`Reset password`} />
       <Wrapper>
         {!success && (
@@ -118,7 +117,7 @@ const Reset = withLoginUserRedux(({ loginUser, chain }) => {
           </ContentCenterWrapper>
         )}
       </Wrapper>
-    </Layout>
+    </BaseLayout>
   );
 });
 

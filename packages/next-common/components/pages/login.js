@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-
-import Layout from "next-common/components/layout";
 import { withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import {
@@ -13,6 +11,7 @@ import {
 import MailLogin from "next-common/components/login/mailLogin";
 import { p_14_normal } from "../../styles/componentCss";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
+import BaseLayout from "../layout/baseLayout";
 
 const AddressLogin = dynamic(() => import("../login/addressLogin"), {
   ssr: false,
@@ -39,7 +38,7 @@ const Hint = styled.p`
 const Login = withLoginUserRedux(({ loginUser, chain }) => {
   const [web3, setWeb3] = useState(true);
   return (
-    <Layout user={loginUser} chain={chain}>
+    <BaseLayout user={loginUser} chain={chain}>
       <NextHead title={`Login`} desc={`Login`} />
       <Wrapper>
         <ContentCenterWrapper>
@@ -58,7 +57,7 @@ const Login = withLoginUserRedux(({ loginUser, chain }) => {
           )}
         </ContentCenterWrapper>
       </Wrapper>
-    </Layout>
+    </BaseLayout>
   );
 });
 

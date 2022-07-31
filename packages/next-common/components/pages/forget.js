@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-
-import Layout from "next-common/components/layout";
 import Input from "next-common/components/input";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
@@ -20,6 +18,7 @@ import {
 import useForm from "../../utils/hooks/useForm";
 import SecondaryButton from "../buttons/secondaryButton";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
+import BaseLayout from "../layout/baseLayout";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -64,7 +63,7 @@ const Forget = withLoginUserRedux(({ loginUser, chain }) => {
   const { email } = formData;
 
   return (
-    <Layout user={loginUser} chain={chain}>
+    <BaseLayout user={loginUser} chain={chain}>
       <NextHead title={`Forget password`} desc={`Forget password`} />
       <Wrapper>
         {!success && (
@@ -105,7 +104,7 @@ const Forget = withLoginUserRedux(({ loginUser, chain }) => {
           </ContentCenterWrapper>
         )}
       </Wrapper>
-    </Layout>
+    </BaseLayout>
   );
 });
 
