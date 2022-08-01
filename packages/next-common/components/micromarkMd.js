@@ -156,7 +156,7 @@ const Wrapper = styled.div`
 
     th {
       padding: 10px 16px;
-      background: #f6f7fa;
+      background: ${(props) => props.theme.grey100Bg};
       font-weight: bold;
       font-size: 14px;
       color: #1e2134;

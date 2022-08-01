@@ -84,7 +84,7 @@ export const WarningMessage = styled.div`
     p.danger &&
     css`
       color: ${(props) => props.theme.secondaryRed500};
-      background: #fff1f0;
+      background: ${(props) => props.theme.secondaryRed100};
     `}
 `;
 

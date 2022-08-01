@@ -22,6 +22,7 @@ const Content = styled.div`
   padding: 48px;
   p,
   h2,
+  h3,
   li {
     color: ${(props) => props.theme.textPrimary} !important;
   }

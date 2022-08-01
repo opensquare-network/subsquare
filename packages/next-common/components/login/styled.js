@@ -55,7 +55,7 @@ export const Label = styled.div`
 
 export const InfoWrapper = styled.div`
   padding: 12px 16px;
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
   line-height: 150%;
   color: #506176;
