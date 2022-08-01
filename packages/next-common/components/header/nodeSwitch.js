@@ -24,9 +24,9 @@ const SmallSelect = styled.div`
   width: 38px;
   height: 38px;
   background: ${(props) => props.theme.neutral};
-  border-width: ${(props) => (props.theme.isDark ? 1 : 0)} px;
+  border-width: ${(props) => (props.theme.isDark ? 1 : 0)}px;
   border-style: ${(props) => (props.theme.isDark ? "solid" : "none")};
-  border-color: ${(props) => props.theme.grey200Border};
+  border-color: ${(props) => props.theme.grey300Border};
   color: ${(props) => props.theme.textPrimary};
   border-radius: 4px;
   display: flex;
