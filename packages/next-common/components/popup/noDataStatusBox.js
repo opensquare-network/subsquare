@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 
 const StatusWrapper = styled.div`
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
   padding: 12px 16px;
   display: flex;

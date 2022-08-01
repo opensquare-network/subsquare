@@ -13,7 +13,7 @@ import { TitleContainer } from "../styled/containers/titleContainer";
 const Wrapper = styled.div`
   textarea:read-only,
   div.ql-disabled {
-    background-color: #f6f7fa !important;
+    background-color: ${(props) => props.theme.grey100Bg} !important;
   }
 `;
 

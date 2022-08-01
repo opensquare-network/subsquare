@@ -33,6 +33,11 @@ const Wrapper = styled(Flex)`
 const AvatarWrapper = styled(Flex)`
   display: flex;
   margin-right: 8px;
+  svg {
+    circle:first-child {
+      fill: ${(props) => props.theme.grey100Bg};
+    }
+  }
 `;
 
 const Username = styled.div`
