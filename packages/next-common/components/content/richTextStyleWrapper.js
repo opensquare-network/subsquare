@@ -11,6 +11,12 @@ const RichTextStyleWrapper = styled.div`
   div.ql-editor,
   div.html-body,
   div.markdown-body {
+    span.mention,
+    span.mention span {
+      background-color: ${(props) => props.theme.neutral};
+      color: ${(props) => props.theme.secondarySapphire500};
+    }
+
     blockquote {
       border-color: ${(props) => props.theme.grey200Border};
     }
