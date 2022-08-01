@@ -76,6 +76,7 @@ const Options = styled.div`
   z-index: 1;
   background: ${(props) => props.theme.neutral};
   color: ${(props) => props.theme.textPrimary};
+  border: 1px solid ${(props) => props.theme.grey300Border};
 
   ${(p) =>
     p.small &&

@@ -23,7 +23,7 @@ const FlexWrapper = styled(Flex)`
     }
     &:hover {
       path {
-        fill: ${(props) => props.theme.textTertiary};
+        fill: ${(props) => props.theme.textSecondary};
       }
     }
   }

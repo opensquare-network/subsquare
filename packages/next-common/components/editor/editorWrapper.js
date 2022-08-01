@@ -13,6 +13,15 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
     color: ${(props) => props.theme.textPrimary};
   }
 
+  svg[width="26"] {
+    path {
+      fill: ${(props) => props.theme.textPrimary};
+    }
+    rect {
+      stroke: ${(props) => props.theme.textPrimary};
+    }
+  }
+
   ul.mention-list,
   div.ql-mention-list-container {
     background: ${(props) => props.theme.neutral};
@@ -28,10 +37,21 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
       color: ${(props) => props.theme.textPrimary};
     }
   }
+  span.ql-picker-options {
+    border: 1px solid ${(props) => props.theme.grey200Border};
+  }
 
+  .ql-picker-label {
+    color: ${(props) => props.theme.textSecondary};
+  }
   .ql-picker-label:hover,
   .ql-picker-item.ql-selected {
     color: ${(props) => props.theme.textPrimary} !important;
+    svg {
+      polygon {
+        stroke: ${(props) => props.theme.textPrimary} !important;
+      }
+    }
   }
 
   .editor-toolbar-buttons button.active {
