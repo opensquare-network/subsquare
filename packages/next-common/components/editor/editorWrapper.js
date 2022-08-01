@@ -38,6 +38,14 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
     box-shadow: ${(props) => props.theme.neutral} 0px 1px 0px 0px;
   }
 
+  div button {
+    //todo: add a className in editor repo later
+    color: ${(props) => props.theme.textTertiary};
+    &:hover {
+      color: ${(props) => props.theme.textSecondary};
+    }
+  }
+
   div button:last-child {
     box-shadow: 1px 0 0 0 ${(props) => props.theme.grey300Border};
   }
