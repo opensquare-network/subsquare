@@ -11,7 +11,6 @@ import {
 } from "next-common/utils";
 import Tag from "next-common/components/tags/state/tag";
 import ReasonLink from "next-common/components/reasonLink";
-import SectionTag from "next-common/components/sectionTag";
 import Flex from "next-common/components/styled/flex";
 import { p_14_medium } from "next-common/styles/componentCss";
 import MotionElapse from "next-common/components/motionElapse";
@@ -20,6 +19,7 @@ import CommentIcon from "../assets/imgs/icons/comment.svg";
 import Anchor from "next-common/components/styled/anchor";
 import { HoverSecondaryCard } from "./styled/containers/secondaryCard";
 import Divider from "./styled/layout/divider";
+import { DemocracyTag, TreasuryTag } from "./tags/business";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -216,8 +216,16 @@ export default function Post({ data, chain, href, type }) {
               chain={chain}
               fontSize={12}
             />
-            {data.isTreasury && <SectionTag name={"Treasury"} />}
-            {data.isDemocracy && <SectionTag name={"Democracy"} />}
+            {data.isTreasury && (
+              <div>
+                <TreasuryTag />
+              </div>
+            )}
+            {data.isDemocracy && (
+              <div>
+                <DemocracyTag />
+              </div>
+            )}
             {data.time && (
               <Info>
                 <UpdateIcon />
