@@ -55,7 +55,7 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
   }
 
   div.modal {
-    background-color: ${(props) => props.theme.textPrimary} !important;
+    background-color: ${(props) => props.theme.neutral} !important;
     border-color: ${(props) => props.theme.grey200Border} !important;
   }
 
