@@ -2,7 +2,6 @@ import styled from "styled-components";
 import User from "next-common/components/user";
 import useShowMotionEnd from "./useShowMotionEnd";
 import MotionEnd from "next-common/components/motionEnd";
-import SectionTag from "next-common/components/sectionTag";
 import Tag from "next-common/components/tags/state/tag";
 import Flex from "next-common/components/styled/flex";
 import { getPostUpdatedAt } from "utils/viewfuncs";
@@ -10,6 +9,10 @@ import { timeDurationFromNow } from "next-common/utils";
 import DemocracyNavigate from "./democracyNavigate";
 import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
+import {
+  DemocracyTag,
+  TreasuryTag,
+} from "next-common/components/tags/business";
 
 const MotionEndHeader = styled.div`
   display: flex;
@@ -107,9 +110,15 @@ export default function MotionHead({ motion, chain, type }) {
             chain={chain}
             fontSize={12}
           />
-          {motion.isTreasury && <SectionTag name={"Treasury"} />}
+          {motion.isTreasury && (
+            <div>
+              <TreasuryTag />
+            </div>
+          )}
           {motion?.onchainData?.externalProposals?.length > 0 && (
-            <SectionTag name={"Democracy"} />
+            <div>
+              <DemocracyTag />
+            </div>
           )}
           {postUpdateTime && (
             <Info>

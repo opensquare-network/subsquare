@@ -9,7 +9,6 @@ import {
   timeDurationFromNow,
   toPrecision,
 } from "next-common/utils";
-import SectionTag from "next-common/components/sectionTag";
 import findLastIndex from "lodash.findlastindex";
 import Flex from "next-common/components/styled/flex";
 import ArticleContent from "next-common/components/articleContent";
@@ -26,6 +25,10 @@ import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
 import CollectiveMetadata from "next-common/components/collective/metadata";
 import UserWithLink from "next-common/components/user/userWithLink";
+import {
+  DemocracyTag,
+  TreasuryTag,
+} from "next-common/components/tags/business";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -300,9 +303,15 @@ export default function TechcommMotionDetail({
                   chain={chain}
                   fontSize={12}
                 />
-                {motion.isTreasury && <SectionTag name={"Treasury"} />}
+                {motion.isTreasury && (
+                  <div>
+                    <TreasuryTag />
+                  </div>
+                )}
                 {motion?.onchainData?.externalProposals?.length > 0 && (
-                  <SectionTag name={"Democracy"} />
+                  <div>
+                    <DemocracyTag />
+                  </div>
                 )}
                 {postUpdateTime && (
                   <Info>
