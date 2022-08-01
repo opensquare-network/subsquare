@@ -10,7 +10,7 @@ import {
 } from "../../store/reducers/nodeSlice";
 import getChainSettings from "../../utils/consts/settings";
 import Caret from "../icons/caret";
-import signalDefault from "../../assets/imgs/icons/signal-default.png";
+import SignalDefault from "../../assets/imgs/icons/signal-default.svg";
 import signalMedium from "../../assets/imgs/icons/signal-medium.png";
 import signalSlow from "../../assets/imgs/icons/signal-slow.png";
 import signalFast from "../../assets/imgs/icons/signal-fast.png";
@@ -20,6 +20,12 @@ import darkSignalFast from "../../assets/imgs/icons/dark-signal-fast.png";
 import useDarkMode from "../../utils/hooks/useDarkMode";
 import light from "../styled/theme/light";
 import dark from "../styled/theme/dark";
+
+const SignalDefaultIcon = styled(SignalDefault)`
+  path {
+    fill: ${(props) => props.theme.grey400Border};
+  }
+`;
 
 const Wrapper = styled.div`
   position: relative;
@@ -154,16 +160,17 @@ export default function NodeSwitch({ small, chain }) {
   }, [currentNode, nodes, chain]);
 
   const getSignalImg = (delay) => {
+    let imgFile;
     if (!delay || isNaN(delay)) {
-      return signalDefault;
+      return <SignalDefaultIcon />;
+    } else if (delay >= 300) {
+      imgFile = mode === "dark" ? darkSignalSlow : signalSlow;
+    } else if (delay >= 100) {
+      imgFile = mode === "dark" ? darkSignalMedium : signalMedium;
+    } else {
+      imgFile = mode === "dark" ? darkSignalFast : signalFast;
     }
-    if (delay >= 300) {
-      return mode === "dark" ? darkSignalSlow : signalSlow;
-    }
-    if (delay >= 100) {
-      return mode === "dark" ? darkSignalMedium : signalMedium;
-    }
-    return mode === "dark" ? darkSignalFast : signalFast;
+    return <img alt="" src={`${imgFile.src}`} width={24} height={24} />;
   };
 
   const getSignalColor = (delay) => {
@@ -182,23 +189,12 @@ export default function NodeSwitch({ small, chain }) {
     <Wrapper ref={ref}>
       {small && (
         <SmallSelect onClick={() => setShow(!show)}>
-          <img
-            alt=""
-            src={`${getSignalImg(currentNodeSetting?.delay).src}`}
-            width={24}
-            height={24}
-          />
+          {getSignalImg(currentNodeSetting?.delay)}
         </SmallSelect>
       )}
       {!small && (
         <Select onClick={() => setShow(!show)}>
-          <img
-            alt=""
-            src={`${getSignalImg(currentNodeSetting?.delay).src}`}
-            className="signal"
-            width={24}
-            height={24}
-          />
+          {getSignalImg(currentNodeSetting?.delay)}
           <div>{currentNodeSetting?.name}</div>
           <Caret />
         </Select>
@@ -219,12 +215,7 @@ export default function NodeSwitch({ small, chain }) {
               active={item.url === currentNodeSetting.url}
               color={getSignalColor(item?.delay)}
             >
-              <img
-                alt=""
-                src={`${getSignalImg(item?.delay).src}`}
-                width={24}
-                height={24}
-              />
+              {getSignalImg(item?.delay)}
               <div>{`${item?.name}`}</div>
               <div className="delay">
                 {item?.delay && !isNaN(item?.delay) ? `${item.delay} ms` : ""}
