@@ -9,6 +9,7 @@ import Identity from "../Identity";
 import { addressEllipsis } from "../../utils";
 import Flex from "../styled/flex";
 import Tooltip from "../tooltip";
+import AvatarDeleted from "../../assets/imgs/icons/avatar-deleted.svg";
 
 const Wrapper = styled(Flex)`
   a {
@@ -63,10 +64,15 @@ const DeleteAccount = styled(Flex)`
   word-break: break-all;
   font-size: ${(props) => props.fontSize}px;
   color: ${(props) => props.theme.textSecondary};
-  > img {
+  > svg {
     width: 20px;
     height: 20px;
     margin-right: 8px;
+    circle:last-child {
+      fill: ${(props) => props.theme.grey300Border};
+    }
+    circle:first-child {fill: ${(props) => props.theme.grey100Bg}}
+    }
   }
 `;
 
@@ -117,7 +123,7 @@ function User({
   if (!user && !add) {
     return (
       <DeleteAccount fontSize={fontSize}>
-        <img src="/imgs/icons/avatar-deleted.svg" alt="" />
+        <AvatarDeleted />
         [Deleted Account]
       </DeleteAccount>
     );

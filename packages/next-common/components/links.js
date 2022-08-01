@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import Flex from "./styled/flex";
+import LinkSubScanIcon from "../assets/imgs/icons/link-subscan.svg";
+import LinkSubScanIconActive from "../assets/imgs/icons/link-subscan-active.svg";
 
 const Wrapper = styled(Flex)`
   height: 20px;
@@ -13,10 +15,24 @@ const Wrapper = styled(Flex)`
 const SubscanLink = styled.a`
   width: 20px;
   height: 20px;
-  background: url("/imgs/icons/link-subscan.svg");
-
-  :hover {
-    background: url("/imgs/icons/link-subscan-active.svg");
+  overflow: hidden;
+  svg:first-child {
+    path:first-child {
+      fill: ${(props) => props.theme.grey200Border};
+    }
+    path:last-child {
+      fill: ${(props) => props.theme.grey400Border};
+    }
+  }
+  &:hover {
+    svg:first-child {
+      display: none;
+    }
+    svg:last-child {
+      path:first-child {
+        fill: ${(props) => props.theme.grey200Border};
+      }
+    }
   }
 `;
 
@@ -51,7 +67,10 @@ export default function Links({
         }
         target="_blank"
         rel="noreferrer"
-      />
+      >
+        <LinkSubScanIcon />
+        <LinkSubScanIconActive />
+      </SubscanLink>
     </Wrapper>
   );
 }

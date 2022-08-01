@@ -14,6 +14,12 @@ import signalDefault from "../../assets/imgs/icons/signal-default.png";
 import signalMedium from "../../assets/imgs/icons/signal-medium.png";
 import signalSlow from "../../assets/imgs/icons/signal-slow.png";
 import signalFast from "../../assets/imgs/icons/signal-fast.png";
+import darkSignalMedium from "../../assets/imgs/icons/dark-signal-medium.png";
+import darkSignalSlow from "../../assets/imgs/icons/dark-signal-slow.png";
+import darkSignalFast from "../../assets/imgs/icons/dark-signal-fast.png";
+import useDarkMode from "../../utils/hooks/useDarkMode";
+import light from "../styled/theme/light";
+import dark from "../styled/theme/dark";
 
 const Wrapper = styled.div`
   position: relative;
@@ -24,9 +30,9 @@ const SmallSelect = styled.div`
   width: 38px;
   height: 38px;
   background: ${(props) => props.theme.neutral};
-  border-width: ${(props) => (props.theme.isDark ? 1 : 0)} px;
+  border-width: ${(props) => (props.theme.isDark ? 1 : 0)}px;
   border-style: ${(props) => (props.theme.isDark ? "solid" : "none")};
-  border-color: ${(props) => props.theme.grey200Border};
+  border-color: ${(props) => props.theme.grey300Border};
   color: ${(props) => props.theme.textPrimary};
   border-radius: 4px;
   display: flex;
@@ -127,6 +133,7 @@ export default function NodeSwitch({ small, chain }) {
     getChainSettings(chain).endpoints
   );
   const dispatch = useDispatch();
+  const [mode] = useDarkMode();
 
   useOnClickOutside(ref, () => setShow(false));
 
@@ -151,19 +158,20 @@ export default function NodeSwitch({ small, chain }) {
       return signalDefault;
     }
     if (delay >= 300) {
-      return signalSlow;
+      return mode === "dark" ? darkSignalSlow : signalSlow;
     }
     if (delay >= 100) {
-      return signalMedium;
+      return mode === "dark" ? darkSignalMedium : signalMedium;
     }
-    return signalFast;
+    return mode === "dark" ? darkSignalFast : signalFast;
   };
 
   const getSignalColor = (delay) => {
-    if (!delay || isNaN(delay)) return "#C2C8D5";
-    if (delay >= 300) return "#F44336";
-    if (delay >= 100) return "#FF9800";
-    return "#4CAF50";
+    if (!delay || isNaN(delay))
+      return mode === "dark" ? dark.grey400Border : light.grey400Border;
+    if (delay >= 300) return light.secondaryRed500;
+    if (delay >= 100) return light.secondaryYellow500;
+    return light.secondaryGreen500;
   };
 
   if (!currentNodeSetting) {
