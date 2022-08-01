@@ -6,6 +6,7 @@ import ArticleContent from "./articleContent";
 import { EditablePanel } from "next-common/components/styled/panel";
 import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
+import { toPolkassemblyDiscussionAuthor } from "utils/viewfuncs";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -70,7 +71,7 @@ export default function DetailItem({ data, chain, type, postReactions }) {
       </TitleWrapper>
       <FlexWrapper>
         <DividerWrapper>
-          <User user={post.author} chain={chain} fontSize={12} />
+          <User user={toPolkassemblyDiscussionAuthor(post.author, chain)} chain={chain} fontSize={12} />
           <Info>
             <UpdateIcon />
             <span>{timeDurationFromNow(post.updatedAt || post.createdAt)}</span>
