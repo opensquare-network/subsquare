@@ -46,6 +46,23 @@ const LeftPlaceHolder = styled.div`
   }
 `;
 
+const MobileFooterWrapper = styled.div`
+  display: none;
+  @media screen and (max-width: 1024px) {
+    display: flex;
+  }
+  justify-content: center;
+  padding-top: 16px;
+  margin-bottom: -16px;
+  footer > svg {
+    display: none;
+  }
+  footer > div:last-child {
+    justify-content: center;
+  }
+  text-align: center;
+`;
+
 export default function Content({ left, children }) {
   return (
     <Wrapper>
@@ -61,6 +78,9 @@ export default function Content({ left, children }) {
           <Main>{children}</Main>
         </ContentWrapper>
       </div>
+      <MobileFooterWrapper>
+        <Footer />
+      </MobileFooterWrapper>
     </Wrapper>
   );
 }
