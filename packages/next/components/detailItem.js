@@ -144,6 +144,8 @@ export default function DetailItem({
 
   const postUpdatedTime = getPostUpdatedAt(post);
 
+  const commentsCount = (post.commentsCount || 0) + (post.polkassemblyCommentsCount || 0);
+
   return (
     <EditablePanel>
       {!isEdit && (
@@ -274,8 +276,8 @@ export default function DetailItem({
                   <span>{timeDurationFromNow(postUpdatedTime)}</span>
                 </Info>
               )}
-              {post.commentsCount > -1 && (
-                <Info>{`${post.commentsCount} Comments`}</Info>
+              {commentsCount > -1 && (
+                <Info>{`${commentsCount} Comments`}</Info>
               )}
             </DividerWrapper>
             {post.status && <Tag state={post.status} category={type} />}

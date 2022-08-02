@@ -187,6 +187,8 @@ export default function Post({ data, chain, href, type }) {
     elapseIcon = <MotionElapse motion={data.onchainData} chain={chain} />;
   }
 
+  const commentsCount = (data.commentsCount || 0) + (data.polkassemblyCommentsCount || 0);
+
   return (
     <Wrapper>
       <ContentWrapper>
@@ -234,10 +236,10 @@ export default function Post({ data, chain, href, type }) {
               </Info>
             )}
             {data.remaining && <Info>{`${timeDuration(data.remaining)}`}</Info>}
-            {data.commentsCount > -1 && (
+            {commentsCount > -1 && (
               <AutHideInfo>
                 <CommentIcon />
-                {`${data.commentsCount}`}
+                {`${commentsCount}`}
               </AutHideInfo>
             )}
             {data.parentIndex !== undefined && (
