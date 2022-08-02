@@ -19,6 +19,7 @@ import {
 import BigNumber from "bignumber.js";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
+import Content from "./cardContent";
 
 const Wrapper = styled.div`
   display: flex;
@@ -50,25 +51,6 @@ const Title = styled.div`
   letter-spacing: 0.16em;
   color: ${(props) => props.theme.textTertiary};
   margin-bottom: 8px;
-`;
-
-const Content = styled.div`
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 100%;
-  color: ${(props) => props.theme.textPrimary};
-
-  > .unit {
-    color: ${(props) => props.theme.textTertiary};
-  }
-
-  > .upper {
-    text-transform: uppercase;
-  }
-
-  > :not(:first-child) {
-    margin-left: 4px;
-  }
 `;
 
 const CountDownWrapper = styled.div`
@@ -105,7 +87,11 @@ export default function Summary({ chain }) {
         .toNumber();
       const TimeArray = estimateBlocksTime(spendPeriod - goneBlocks, blockTime);
       if (isMounted()) {
-        setSummary({ progress, spendPeriod: TimeArray });
+        setSummary({
+          progress,
+          spendPeriod: TimeArray,
+          totalPeriod: ["/"].concat(estimateBlocksTime(spendPeriod, blockTime)),
+        });
       }
     }
   }, [api, finalizedHeight]);
@@ -131,6 +117,14 @@ export default function Summary({ chain }) {
         <Content>
           {(summary?.spendPeriod || []).map((item, index) => (
             <span className={index % 2 === 1 ? "unit" : ""} key={index}>
+              {item}
+            </span>
+          ))}
+          {(summary?.totalPeriod || []).map((item, index) => (
+            <span
+              className={index % 2 === 1 ? "unit total" : "total"}
+              key={index}
+            >
               {item}
             </span>
           ))}

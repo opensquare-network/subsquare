@@ -11,6 +11,7 @@ import {
 } from "../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
+import Content from "./cardContent";
 
 const Wrapper = styled.div`
   display: flex;
@@ -43,25 +44,6 @@ const Title = styled.div`
   color: ${(props) => props.theme.textTertiary};
   margin-bottom: 8px;
   text-transform: uppercase;
-`;
-
-const Content = styled.div`
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 100%;
-  color: ${(props) => props.theme.textPrimary};
-
-  > .unit {
-    color: ${(props) => props.theme.textTertiary};
-  }
-
-  > .upper {
-    text-transform: uppercase;
-  }
-
-  > :not(:first-child) {
-    margin-left: 4px;
-  }
 `;
 
 const CountDownWrapper = styled.div`
@@ -108,7 +90,11 @@ export default function DemocracySummary({ chain }) {
         launchPeriod - goneBlocks,
         blockTime
       );
-      return { progress, launchPeriod: TimeArray };
+      return {
+        progress,
+        launchPeriod: TimeArray,
+        totalPeriod: ["/"].concat(estimateBlocksTime(launchPeriod, blockTime)),
+      };
     }
   };
 
@@ -167,6 +153,14 @@ export default function DemocracySummary({ chain }) {
         <Content>
           {(summary?.launchPeriod || []).map((item, index) => (
             <span className={index % 2 === 1 ? "unit" : ""} key={index}>
+              {item}
+            </span>
+          ))}
+          {(summary?.totalPeriod || []).map((item, index) => (
+            <span
+              className={index % 2 === 1 ? "unit total" : "total"}
+              key={index}
+            >
               {item}
             </span>
           ))}
