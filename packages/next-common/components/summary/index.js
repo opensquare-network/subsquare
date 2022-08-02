@@ -75,6 +75,7 @@ const CountDownWrapper = styled.div`
   position: absolute;
   top: 20px;
   right: 24px;
+  margin-top: 0 !important;
 `;
 
 export default function Summary({ chain }) {
