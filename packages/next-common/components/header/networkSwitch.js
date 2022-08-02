@@ -47,7 +47,7 @@ const Select = styled.div`
 const Options = styled.div`
   position: absolute;
   background: ${(props) => props.theme.neutral};
-  border-width: ${(props) => (props.theme.isDark ? 1 : 0)} px;
+  border-width: ${(props) => (props.theme.isDark ? 1 : 0)}px;
   border-style: ${(props) => (props.theme.isDark ? "solid" : "none")};
   border-color: ${(props) => props.theme.grey200Border};
   color: ${(props) => props.theme.textPrimary};
