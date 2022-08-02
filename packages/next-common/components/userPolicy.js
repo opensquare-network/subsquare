@@ -5,6 +5,15 @@ import ErrorText from "next-common/components/ErrorText";
 import CheckBoxOn from "../assets/imgs/icons/check-box-on.svg";
 import CheckBoxOff from "../assets/imgs/icons/check-box-off.svg";
 
+const CheckBoxOffIcon = styled(CheckBoxOff)`
+  rect {
+    fill: ${(props) => props.theme.grey300Border};
+  }
+  path {
+    stroke: ${(props) => props.theme.textContrast};
+  }
+`;
+
 const Wrapper = styled.div`
   margin-top: 16px !important;
   > :not(:first-child) {
@@ -41,7 +50,7 @@ function CheckBox({ checked, setChecked, setAgreeError }) {
         setAgreeError(null);
       }}
     >
-      {checked ? <CheckBoxOn /> : <CheckBoxOff />}
+      {checked ? <CheckBoxOn /> : <CheckBoxOffIcon />}
     </CheckBoxWrapper>
   );
 }

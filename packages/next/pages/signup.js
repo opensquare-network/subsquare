@@ -54,6 +54,7 @@ const Title = styled.div`
   font-size: 20px;
   text-align: center;
   line-height: 20px;
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 const ButtonWrapper = styled.div`
@@ -79,7 +80,7 @@ const Label = styled.div`
   font-size: 12px;
   margin-bottom: 8px;
   line-height: 12px;
-
+  color: ${(props) => props.theme.textPrimary};
   :not(:first-child) {
     margin-top: 16px;
   }
