@@ -31,6 +31,7 @@ const externalTagMap = {
   // In timeline
   externalProposeMajority: StartTag,
   ExternalTabled: PositiveTag,
+  fastTrack: PositiveTag,
 };
 
 export function DemocracyExternalTag({ state }) {

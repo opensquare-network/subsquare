@@ -44,6 +44,7 @@ const bountyStateTagMap = {
   BountyExtended: ActiveTag,
   BountyAwarded: PositiveTag,
   BountyClaimed: PositiveTag,
+  BountyRejected: NegativeTag,
 };
 
 const childBountyStateTagMap = {
