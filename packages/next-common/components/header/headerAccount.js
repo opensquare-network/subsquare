@@ -36,13 +36,12 @@ const Menu = styled.div`
   ${shadow_200};
   border-radius: 4px;
   position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0);
+  right: 0;
   margin-top: 4px;
   padding: 8px 0;
   z-index: 999999;
   background: ${(props) => props.theme.neutral};
-  border-width: ${(props) => (props.theme.isDark ? 1 : 0)} px;
+  border-width: ${(props) => (props.theme.isDark ? 1 : 0)}px;
   border-style: ${(props) => (props.theme.isDark ? "solid" : "none")};
   border-color: ${(props) => props.theme.grey200Border};
   color: ${(props) => props.theme.textPrimary};
