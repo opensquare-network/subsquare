@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { userSelector } from "next-common/store/reducers/userSlice";
-import { withLoginUserRedux } from "next-common/lib";
+import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import { ContentWrapper, Wrapper } from "next-common/components/setting/styled";
 import Username from "next-common/components/setting/username";
