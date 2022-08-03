@@ -65,8 +65,8 @@ export const convertPolkassemblyComment = (chain, comment) => ({
 });
 
 export const toPolkassemblyDiscussionAuthor = (author, chain) => ({
-  ...author,
-  ...(author.address
+  username: addressEllipsis(author?.address) || author?.username,
+  ...(author?.address
     ? {
         addresses: [
           {
