@@ -14,7 +14,6 @@ const proposalTagMap = {
 
 export function DemocracyProposalTag({ state }) {
   let Tag = proposalTagMap[state] || ClosedTag;
-  console.log("state", state);
   if ((state || "").startsWith("Public proposal")) {
     Tag = StartTag;
   }
