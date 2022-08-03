@@ -2,6 +2,9 @@ import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
 import { select } from "d3-selection";
 import { arc } from "d3-shape";
+import useDarkMode from "../utils/hooks/useDarkMode";
+import dark from "./styled/theme/dark";
+import light from "./styled/theme/light";
 
 const Wrapper = styled.div`
   display: flex;
@@ -10,6 +13,8 @@ const Wrapper = styled.div`
 
 const CountDown = ({ percent = 0, size = 12 }) => {
   const svgRef = useRef(null);
+  const [mode] = useDarkMode();
+  const theme = mode === "dark" ? dark : light;
 
   useEffect(() => {
     const outerRadius = size / 2;
@@ -30,7 +35,7 @@ const CountDown = ({ percent = 0, size = 12 }) => {
     svg
       .append("path")
       .attr("d", arc1)
-      .style("fill", "#2196f3")
+      .style("fill", theme.secondaryAzure500)
       .style("stroke-width", "0");
 
     const arc2 = arc()
@@ -41,7 +46,7 @@ const CountDown = ({ percent = 0, size = 12 }) => {
     svg
       .append("path")
       .attr("d", arc2)
-      .style("fill", "#d3eafd")
+      .style("fill", theme.secondaryAzure100)
       .style("stroke-width", "0");
   }, [percent, size, svgRef]);
 
