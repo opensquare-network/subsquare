@@ -199,7 +199,7 @@ function Uploader({ disabled = false, imageUrl, onSetImageUrl = () => {} }) {
         )}
       </UploadArea>
       <Tips>
-        <li>We recommand a 16:9 image.</li>
+        <li>We recommend a 16:9 image.</li>
         <li>
           The banner will be displayed in the post list and as a shared preview
           on social media.
