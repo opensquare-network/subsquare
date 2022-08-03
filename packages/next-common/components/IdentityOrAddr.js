@@ -3,11 +3,12 @@ import { nodes } from "../utils/constants";
 import { fetchIdentity } from "../services/identity";
 import { encodeAddressToChain } from "../services/address";
 import Identity from "./Identity";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { addressEllipsis } from "../utils";
-import useDarkMode from "../utils/hooks/useDarkMode";
 import dark from "./styled/theme/dark";
 import light from "./styled/theme/light";
+import { modeSelector } from "../store/reducers/settingSlice";
+import { useSelector } from "react-redux";
 
 const NameWrapper = styled.div`
   font-size: 14px;
@@ -26,7 +27,7 @@ const MentionBox = styled.a`
 
 function IdentityOrAddr({ address, network }) {
   const [identity, setIdentity] = useState(null);
-  const [mode] = useDarkMode();
+  const mode = useSelector(modeSelector);
   const theme = mode === "dark" ? dark : light;
 
   useEffect(() => {
