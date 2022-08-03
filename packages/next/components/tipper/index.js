@@ -6,6 +6,7 @@ import { getNode, toPrecision } from "next-common/utils";
 import Loading from "next-common/components/loading";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { GhostCard } from "next-common/components/styled/containers/ghostCard";
+import useWindowSize from "next-common/utils/hooks/useWindowSize";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -102,6 +103,7 @@ export default function Tipper({
 }) {
   const [showPopup, setShowPopup] = useState(false);
   const node = getNode(chain);
+  const { width: windowWidth } = useWindowSize();
   if (!node) {
     return null;
   }
@@ -129,7 +131,12 @@ export default function Tipper({
       <TipperList>
         {tips.map(([address, amount]) => (
           <TipperItem key={address}>
-            <User chain={chain} add={address} fontSize={12} />
+            <User
+              chain={chain}
+              add={address}
+              fontSize={12}
+              {...(windowWidth > 1024 ? { maxWidth: 150 } : {})}
+            />
             <div>{`${toPrecision(amount ?? 0, decimals)} ${symbol}`}</div>
           </TipperItem>
         ))}
