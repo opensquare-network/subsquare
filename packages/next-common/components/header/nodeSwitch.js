@@ -10,20 +10,36 @@ import {
 } from "../../store/reducers/nodeSlice";
 import getChainSettings from "../../utils/consts/settings";
 import Caret from "../icons/caret";
-import signalDefault from "../../assets/imgs/icons/signal-default.png";
+import SignalDefault from "../../assets/imgs/icons/signal-default.svg";
 import signalMedium from "../../assets/imgs/icons/signal-medium.png";
 import signalSlow from "../../assets/imgs/icons/signal-slow.png";
 import signalFast from "../../assets/imgs/icons/signal-fast.png";
+import darkSignalMedium from "../../assets/imgs/icons/dark-signal-medium.png";
+import darkSignalSlow from "../../assets/imgs/icons/dark-signal-slow.png";
+import darkSignalFast from "../../assets/imgs/icons/dark-signal-fast.png";
+import useDarkMode from "../../utils/hooks/useDarkMode";
+import light from "../styled/theme/light";
+import dark from "../styled/theme/dark";
+
+const SignalDefaultIcon = styled(SignalDefault)`
+  path {
+    fill: ${(props) => props.theme.grey400Border};
+  }
+`;
 
 const Wrapper = styled.div`
   position: relative;
 `;
 
 const SmallSelect = styled.div`
-  background: #fff;
+  background: ${(props) => props.theme.neutral};
   width: 38px;
   height: 38px;
-  border: 1px solid #e0e4eb;
+  background: ${(props) => props.theme.neutral};
+  border-width: ${(props) => (props.theme.isDark ? 1 : 0)}px;
+  border-style: ${(props) => (props.theme.isDark ? "solid" : "none")};
+  border-color: ${(props) => props.theme.grey300Border};
+  color: ${(props) => props.theme.textPrimary};
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -36,8 +52,8 @@ const SmallSelect = styled.div`
 `;
 
 const Select = styled.div`
-  background: #ffffff;
-  border: 1px solid #e0e4eb;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
   height: 38px;
   display: flex;
@@ -61,10 +77,8 @@ const Select = styled.div`
 `;
 
 const Options = styled.div`
-  background: #ffffff;
-  box-shadow: 0px 6px 22px rgba(30, 33, 52, 0.11),
-    0px 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
-    0px 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
+  background: ${(props) => props.theme.neutral};
+  box-shadow: ${(props) => props.theme.shadow200};
   border-radius: 4px;
   position: absolute;
   right: 0;
@@ -72,6 +86,10 @@ const Options = styled.div`
   padding: 8px 0;
   width: 100%;
   z-index: 1;
+  background: ${(props) => props.theme.neutral};
+  color: ${(props) => props.theme.textPrimary};
+  border: 1px solid ${(props) => props.theme.grey300Border};
+
   ${(p) =>
     p.small &&
     css`
@@ -89,10 +107,15 @@ const Item = styled.div`
   line-height: 100%;
   cursor: pointer;
   white-space: nowrap;
-  color: #506176;
+  color: ${(props) => props.theme.textPrimary};
   :hover {
-    background: #f6f7fa;
+    background: ${(props) => props.theme.grey100Bg};
   }
+  ${(p) =>
+    p.active &&
+    css`
+      background: ${(props) => props.theme.grey100Bg};
+    `}
   > img {
     width: 24px;
     height: 24px;
@@ -104,12 +127,6 @@ const Item = styled.div`
     margin-left: auto;
     color: ${(p) => p.color};
   }
-  ${(p) =>
-    p.active &&
-    css`
-      color: #1e2134;
-      background: #f6f7fa;
-    `}
 `;
 
 export default function NodeSwitch({ small, chain }) {
@@ -122,6 +139,7 @@ export default function NodeSwitch({ small, chain }) {
     getChainSettings(chain).endpoints
   );
   const dispatch = useDispatch();
+  const [mode] = useDarkMode();
 
   useOnClickOutside(ref, () => setShow(false));
 
@@ -142,23 +160,25 @@ export default function NodeSwitch({ small, chain }) {
   }, [currentNode, nodes, chain]);
 
   const getSignalImg = (delay) => {
+    let imgFile;
     if (!delay || isNaN(delay)) {
-      return signalDefault;
+      return <SignalDefaultIcon />;
+    } else if (delay >= 300) {
+      imgFile = mode === "dark" ? darkSignalSlow : signalSlow;
+    } else if (delay >= 100) {
+      imgFile = mode === "dark" ? darkSignalMedium : signalMedium;
+    } else {
+      imgFile = mode === "dark" ? darkSignalFast : signalFast;
     }
-    if (delay >= 300) {
-      return signalSlow;
-    }
-    if (delay >= 100) {
-      return signalMedium;
-    }
-    return signalFast;
+    return <img alt="" src={`${imgFile.src}`} width={24} height={24} />;
   };
 
   const getSignalColor = (delay) => {
-    if (!delay || isNaN(delay)) return "#C2C8D5";
-    if (delay >= 300) return "#F44336";
-    if (delay >= 100) return "#FF9800";
-    return "#4CAF50";
+    if (!delay || isNaN(delay))
+      return mode === "dark" ? dark.grey400Border : light.grey400Border;
+    if (delay >= 300) return light.secondaryRed500;
+    if (delay >= 100) return light.secondaryYellow500;
+    return light.secondaryGreen500;
   };
 
   if (!currentNodeSetting) {
@@ -169,23 +189,12 @@ export default function NodeSwitch({ small, chain }) {
     <Wrapper ref={ref}>
       {small && (
         <SmallSelect onClick={() => setShow(!show)}>
-          <img
-            alt=""
-            src={`${getSignalImg(currentNodeSetting?.delay).src}`}
-            width={24}
-            height={24}
-          />
+          {getSignalImg(currentNodeSetting?.delay)}
         </SmallSelect>
       )}
       {!small && (
         <Select onClick={() => setShow(!show)}>
-          <img
-            alt=""
-            src={`${getSignalImg(currentNodeSetting?.delay).src}`}
-            className="signal"
-            width={24}
-            height={24}
-          />
+          {getSignalImg(currentNodeSetting?.delay)}
           <div>{currentNodeSetting?.name}</div>
           <Caret />
         </Select>
@@ -206,12 +215,7 @@ export default function NodeSwitch({ small, chain }) {
               active={item.url === currentNodeSetting.url}
               color={getSignalColor(item?.delay)}
             >
-              <img
-                alt=""
-                src={`${getSignalImg(item?.delay).src}`}
-                width={24}
-                height={24}
-              />
+              {getSignalImg(item?.delay)}
               <div>{`${item?.name}`}</div>
               <div className="delay">
                 {item?.delay && !isNaN(item?.delay) ? `${item.delay} ms` : ""}

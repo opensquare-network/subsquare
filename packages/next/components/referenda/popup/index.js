@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { useAddressVotingBalance, useAddressVote } from "utils/hooks";
+import { useAddressVote, useAddressVotingBalance } from "utils/hooks";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-
-import { getNode } from "utils";
+import { checkInputValue, emptyFunction, getNode } from "next-common/utils";
 import StandardVoteStatus from "./standardVoteStatus";
 import SplitVoteStatus from "./splitVoteStatus";
 import DelegateVoteStatus from "./delegateVoteStatus";
@@ -18,7 +17,6 @@ import VoteButton from "next-common/components/popup/voteButton";
 import Signer from "./signer";
 
 import PopupWithAddress from "next-common/components/popupWithAddress";
-import { checkInputValue, emptyFunction } from "next-common/utils";
 import { sendTx } from "next-common/utils/sendTx";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 
@@ -59,7 +57,11 @@ function PopupContent({
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doVote = async (aye) => {
-    if (loadingState !== VoteLoadingEnum.None || referendumIndex == null || !node) {
+    if (
+      loadingState !== VoteLoadingEnum.None ||
+      referendumIndex == null ||
+      !node
+    ) {
       return;
     }
 

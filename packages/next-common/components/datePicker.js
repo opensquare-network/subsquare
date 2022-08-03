@@ -1,26 +1,26 @@
 import styled, { css } from "styled-components";
 import ReactDatePicker from "react-datepicker";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import moment from "moment";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside";
 import ArrowLeft from "../assets/imgs/icons/caret-left-16.svg";
 import ArrowRight from "../assets/imgs/icons/caret-right-16.svg";
 import Close from "../assets/imgs/icons/close-16.svg";
-import Button from "./button";
 import { p_14_medium, p_14_normal } from "../styles/componentCss";
 import Flex from "./styled/flex";
 import FlexBetween from "./styled/flexBetween";
 import Input from "./input";
 import Background from "./styled/backgroundShade";
+import SecondaryButton from "./buttons/secondaryButton";
 
 const CaretWrapper = styled.div`
   cursor: pointer;
   padding: 6px 7px 5px 7px;
-  border: 1px solid #e0e4eb;
+  border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
 
   :hover {
-    border-color: #c2c8d5;
+    border-color: ${(props) => props.theme.grey400Border};
   }
   * {
     stroke: rgb(30, 33, 52);
@@ -32,17 +32,20 @@ const CaretWrapper = styled.div`
       cursor: not-allowed;
       pointer-events: none;
       * {
-        stroke: #d7dee8;
+        stroke: ${(props) => props.theme.textPlaceholder};
       }
       :hover {
-        border-color: #e0e4eb;
+        border-color: ${(props) => props.theme.grey300Border};
       }
     `}
+  * {
+    stroke: ${(props) => props.theme.textPrimary};
+  }
 `;
 
 const CaretLeft = ({ onClick, disabled }) => {
   return (
-    <CaretWrapper disabled={disabled} onClick={onClick}>
+    <CaretWrapper className="caret" disabled={disabled} onClick={onClick}>
       <ArrowLeft />
     </CaretWrapper>
   );
@@ -50,7 +53,7 @@ const CaretLeft = ({ onClick, disabled }) => {
 
 const CaretRight = ({ onClick }) => {
   return (
-    <CaretWrapper onClick={onClick}>
+    <CaretWrapper className="caret" onClick={onClick}>
       <ArrowRight />
     </CaretWrapper>
   );
@@ -66,32 +69,35 @@ const DateTimeWrapper = styled.div``;
 const Label = styled.span`
   width: 91px;
   line-height: 36px;
-  background: #f6f7fa;
-  border-right: 1px solid #e0e4eb;
+  background: ${(props) => props.theme.grey100Bg};
+  border-right: 1px solid ${(props) => props.theme.grey300Border};
   text-align: center;
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 const DateTime = styled.span`
   padding-left: 16px;
   flex-grow: 1;
   text-align: left;
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 const PlaceHolder = styled.span`
   padding-left: 16px;
-  color: #d7dee8;
   flex-grow: 1;
   text-align: left;
+  color: ${(props) => props.theme.textPlaceholder};
 `;
 
 const DateButton = styled.div`
   overflow: hidden;
   padding-right: 12px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
+  background: ${(props) => props.theme.neutral};
 
   :hover {
-    border-color: #b7c0cc;
+    border-color: ${(props) => props.theme.grey200Border};
   }
 
   display: flex;
@@ -103,7 +109,7 @@ const DateButton = styled.div`
   line-height: 24px;
 
   .placeholder {
-    color: #9da9bb;
+    color: ${(props) => props.theme.textTertiary};
   }
 
   > div {
@@ -113,7 +119,7 @@ const DateButton = styled.div`
   ${(p) =>
     p.active &&
     css`
-      border-color: #b7c0cc;
+      border-color: ${(props) => props.theme.grey300Border};
     `}
 `;
 
@@ -125,8 +131,8 @@ const DateWrapper = styled.div`
   top: 50%;
   margin-top: -280px;
   padding: 24px;
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border}
   box-shadow: 0px 6px 22px rgba(30, 33, 52, 0.11),
     0px 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
     0px 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
@@ -151,12 +157,12 @@ const DateWrapper = styled.div`
   h6 + span {
     font-size: 12px;
     font-weight: 500;
-    color: #9da9bb;
+    color: ${(props) => props.theme.textTertiary};
   }
 
   .react-datepicker {
     padding: 20px 12px;
-    border: 1px solid #e0e4eb;
+    border: 1px solid ${(props) => props.theme.grey300Border};
     border-radius: 4px;
   }
 
@@ -172,7 +178,7 @@ const DateWrapper = styled.div`
     ${p_14_medium};
     line-height: 32px;
     text-align: center;
-    color: #506176;
+    color: ${(props) => props.theme.textSecondary};
     margin: 0 !important;
   }
 
@@ -190,7 +196,7 @@ const DateWrapper = styled.div`
     font-family: Inter, sans-serif;
     ${p_14_normal};
     line-height: 32px;
-    color: #1e2134;
+    color: ${(props) => props.theme.textPrimary};
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -198,7 +204,7 @@ const DateWrapper = styled.div`
     border-radius: 4px;
 
     :hover {
-      background: #f6f7fa;
+      background: ${(props) => props.theme.grey100Bg};
     }
   }
 
@@ -209,14 +215,14 @@ const DateWrapper = styled.div`
   }
 
   .react-datepicker__day--selected {
-    background: #ebeef4;
+    background: ${(props) => props.theme.grey200Border};
     &:hover {
-      background: #ebeef4;
+      background: ${(props) => props.theme.grey200Border};
     }
   }
 
   .react-datepicker__day--outside-month {
-    color: #9da9bb;
+    color: ${(props) => props.theme.textTertiary};
   }
 
   .react-datepicker__day--keyboard-selected {
@@ -224,13 +230,59 @@ const DateWrapper = styled.div`
   }
 
   .react-datepicker__day--disabled {
-    color: #9da9bb;
+    color: ${(props) => props.theme.textTertiary};
     cursor: not-allowed;
 
     &:hover {
       background: none;
     }
   }
+  ${(props) =>
+    props?.theme.isDark &&
+    css`
+      .react-datepicker {
+        border-color: #363a4d !important;
+        user-select: none;
+      }
+      background: #212433;
+
+      color: white;
+      b {
+        color: white !important;
+      }
+      .react-datepicker {
+        background-color: #212433;
+      }
+      .react-datepicker__day--today {
+        color: white;
+        border-color: #575c72;
+      }
+      .react-datepicker__day,
+      .react-datepicker__day--selected {
+        color: white;
+        &:hover {
+          background-color: #272a3a;
+        }
+      }
+      .react-datepicker__day--outside-month {
+        color: rgba(255, 255, 255, 0.2);
+      }
+      .react-datepicker__day--disabled {
+        color: rgba(255, 255, 255, 0.15);
+      }
+      .react-datepicker__day--selected {
+        background-color: #272a3a;
+        color: white;
+      }
+      input,
+      .input,
+      .caret {
+        color: white;
+        border-color: #363a4d !important;
+      }
+      .caret {
+      }
+    `};
 `;
 
 const DateHeader = styled(Flex)`
@@ -239,7 +291,7 @@ const DateHeader = styled(Flex)`
   > b {
     font-family: Inter, sans-serif;
     text-align: center;
-    color: #1e2134;
+    color: ${(props) => props.theme.textPrimary};
     flex: 1 1 auto;
   }
 
@@ -247,7 +299,7 @@ const DateHeader = styled(Flex)`
     cursor: pointer;
 
     path {
-      fill: #506176;
+      fill: ${(props) => props.theme.textSecondary};
     }
   }
 `;
@@ -381,6 +433,7 @@ export default function DatePicker({
 
                   <TimeWrapper>
                     <Input
+                      className="input"
                       type="number"
                       value={hour}
                       onChange={(e) => {
@@ -396,6 +449,7 @@ export default function DatePicker({
                     />
                     <span>:</span>
                     <Input
+                      className="input"
                       type="number"
                       value={minute}
                       onChange={(e) => {
@@ -411,8 +465,7 @@ export default function DatePicker({
                     />
                   </TimeWrapper>
                   <ButtonWrapper>
-                    <Button
-                      primary
+                    <SecondaryButton
                       disabled={hour === "" || minute === ""}
                       onClick={() => {
                         if (!date) {
@@ -429,7 +482,7 @@ export default function DatePicker({
                       }}
                     >
                       Confirm
-                    </Button>
+                    </SecondaryButton>
                   </ButtonWrapper>
                 </DateWrapper>
               </Background>

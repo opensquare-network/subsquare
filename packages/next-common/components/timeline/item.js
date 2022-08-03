@@ -3,9 +3,10 @@ import styled, { css } from "styled-components";
 import Links from "../links";
 import Voting from "./voting";
 import User from "../user";
-import Tag from "../tag";
+import Tag from "../tags/state/tag";
 import Flex from "../styled/flex";
 import { Approve, Reject } from "../icons";
+import ArrowTriangleUp from "../../assets/imgs/icons/arrow-triangle-up.svg";
 
 const Wrapper = styled.div`
   display: flex;
@@ -45,14 +46,14 @@ const Left = styled.div`
 const Cirtcle = styled.div`
   height: 12px;
   width: 12px;
-  border: 3px solid #6848ff;
+  border: 3px solid ${(props) => props.theme.primaryPurple500};
   border-radius: 50%;
   margin: 4px 0;
 `;
 
 const Bar = styled.div`
   width: 2px;
-  background-color: #b4a3ff;
+  background-color: ${(props) => props.theme.primaryPurple300};
   margin: 0 auto;
   flex-grow: 1;
 `;
@@ -77,21 +78,22 @@ const FoldButton = styled.div`
   display: none;
   height: 20px;
   width: 20px;
-  border: 1px solid #e0e4eb;
+  border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 2px;
   margin-left: 8px;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  > div {
-    width: 14px;
-    height: 14px;
-    background: url("/imgs/icons/arrow-triangle-up.svg");
+
+  > svg {
     ${(p) =>
       p.isFold &&
       css`
-        background: url("/imgs/icons/arrow-triangle-down.svg");
+        transform: rotate(180deg);
       `}
+    path {
+      fill: ${(props) => props.theme.textPrimary};
+    }
   }
 `;
 
@@ -105,7 +107,7 @@ const ContentItem = styled(Flex)`
   word-break: break-word;
   font-size: 14px;
   > :first-child {
-    color: #506176;
+    color: ${(props) => props.theme.textSecondary};
     line-height: 28px;
     flex: 0 0 120px;
   }
@@ -136,14 +138,7 @@ const LinkWrapper = styled(Flex)`
   margin-top: 8px;
 `;
 
-export default function Item({
-  data,
-  foldable,
-  isFold,
-  setIsFold,
-  chain,
-  type = "",
-}) {
+export default function Item({ data, foldable, isFold, setIsFold, chain }) {
   return (
     <Wrapper foldable={foldable} isFold={isFold}>
       <Left>
@@ -155,7 +150,11 @@ export default function Item({
           <div>{data.time}</div>
           {data.status && data.status.value && (
             <TagWrapper>
-              <Tag name={data.status.value} data={data} type={type} />
+              <Tag
+                state={data.status.value}
+                link={data.status?.link}
+                category={data.status?.type}
+              />
             </TagWrapper>
           )}
           <FoldButton
@@ -163,9 +162,10 @@ export default function Item({
             isFold={isFold}
             onClick={() => setIsFold(!isFold)}
           >
-            <div />
+            <ArrowTriangleUp />
           </FoldButton>
         </TitleWrapper>
+
         <ContentWrapper>
           {data.data &&
             Object.entries(data.data).map((item, index) => (
@@ -180,6 +180,7 @@ export default function Item({
               </ContentItem>
             ))}
         </ContentWrapper>
+
         {data.voting && <Voting data={data.voting} chain={chain} />}
         {data.voteResult && (
           <VoteResultWrapper>

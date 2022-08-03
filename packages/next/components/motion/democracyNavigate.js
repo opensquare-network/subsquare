@@ -2,21 +2,18 @@ import styled from "styled-components";
 import Link from "next/link";
 import Flex from "next-common/components/styled/flex";
 import TriangleRight from "public/imgs/icons/arrow-triangle-right.svg";
-import {
-  TYPE_COUNCIL_MOTION,
-  TYPE_TECH_COMM_MOTION,
-} from "next-common/utils/viewConstants";
 import { getMotionId, shortMotionId } from "next-common/utils/motion";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 const ReferendaWrapper = styled(Flex)`
   justify-content: center;
   flex-wrap: wrap;
   padding: 12px;
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
   margin-bottom: 16px;
   font-weight: 500;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
 
   > div {
     display: flex;
@@ -25,7 +22,7 @@ const ReferendaWrapper = styled(Flex)`
 
   > div > svg {
     margin-right: 8px;
-    fill: #9da9bb;
+    fill: ${(props) => props.theme.textTertiary};
   }
 
   a {
@@ -50,7 +47,7 @@ export default function DemocracyNavigate({ motion, type }) {
   return (
     <ReferendaWrapper>
       <div>
-        {type !== TYPE_COUNCIL_MOTION ? (
+        {type !== detailPageCategory.COUNCIL_MOTION ? (
           <Link href={`/council/motion/${getMotionId(councilMotion)}`}>
             {`Motion #${shortMotionId(councilMotion)}`}
           </Link>
@@ -70,7 +67,7 @@ export default function DemocracyNavigate({ motion, type }) {
       {techCommMotion && (
         <div>
           <TriangleRight />
-          {type !== TYPE_TECH_COMM_MOTION ? (
+          {type !== detailPageCategory.TECH_COMM_MOTION ? (
             <Link href={`/techcomm/proposal/${getMotionId(techCommMotion)}`}>
               {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
             </Link>

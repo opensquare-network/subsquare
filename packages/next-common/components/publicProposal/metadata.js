@@ -1,19 +1,8 @@
 import React from "react";
-import styled from "styled-components";
-import User from "../user";
-import Links from "../links";
 import Proposal from "../proposal";
 import KVList from "../listInfo/kvList";
-import { getNode, toPrecision } from "utils";
-
-const MetadataProposerWrapper = styled.div`
-  display: flex;
-  align-items: center;
-
-  > :not(:first-child) {
-    margin-left: 8px;
-  }
-`;
+import { getNode, toPrecision } from "next-common/utils";
+import UserWithLink from "../user/userWithLink";
 
 function getDeposit(scanDepositData) {
   if (!Array.isArray(scanDepositData)) {
@@ -45,10 +34,7 @@ export default function Metadata({ publicProposal, chain }) {
     ["deposit", `${toPrecision(getDeposit(deposit), decimals)} ${symbol}`],
     [
       "proposer",
-      <MetadataProposerWrapper key={"index-proposer"}>
-        <User chain={chain} add={publicProposal?.proposer} />
-        <Links chain={chain} address={publicProposal?.proposer} />
-      </MetadataProposerWrapper>,
+      <UserWithLink chain={chain} address={publicProposal?.proposer} />,
     ],
   ];
 
@@ -57,7 +43,7 @@ export default function Metadata({ publicProposal, chain }) {
     metadata.push([
       <Proposal
         key={"index-proposal"}
-        motion={{ proposal: call }}
+        call={call}
         shorten={publicProposal.preImage?.shorten}
         proposalIndex={publicProposal.proposalIndex}
         referendumIndex={publicProposal.referendumIndex}

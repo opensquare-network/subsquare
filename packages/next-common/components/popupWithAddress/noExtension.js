@@ -4,7 +4,7 @@ import { Message } from "./styled";
 import ExternalLink from "../externalLink";
 
 const Download = styled.div`
-  color: #2196f3;
+  color: ${(props) => props.theme.secondaryAzure500};
 `;
 
 export default function NoExtension() {

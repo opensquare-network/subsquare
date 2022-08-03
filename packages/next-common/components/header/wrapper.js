@@ -1,6 +1,5 @@
 import React, { memo } from "react";
 import styled from "styled-components";
-import { shadow_100 } from "@subsquare/next/styles/componentCss";
 import useWindowSize from "../../utils/hooks/useWindowSize";
 import getChainSettings from "../../utils/consts/settings";
 
@@ -16,10 +15,13 @@ const Wrapper = styled.header`
   left: 0;
   right: 0;
   z-index: 1;
-  background: ${(props) => props?.background || "#ffffff;"};
-  ${shadow_100};
+  background: ${(props) =>
+    props?.theme.isDark
+      ? props.theme.neutral
+      : props?.background || props.theme.neutral};
+  box-shadow: ${(props) => props.theme.shadow100};
   height: 64px;
-  border-bottom: 1px solid #ebeef4;
+  border-bottom: 1px solid ${(props) => props.theme.grey200Border};
 `;
 
 function HeaderWrapper({ chain, children }) {

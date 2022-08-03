@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-
-import Button from "next-common/components/button";
 import User from "next-common/components/user";
 import Loading from "next-common/components/loading";
 import PrimeAddressMark from "next-common/components/primeAddressMark";
+import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import { GhostCard } from "next-common/components/styled/containers/ghostCard";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -27,17 +27,12 @@ const Wrapper = styled.div`
   }
 `;
 
-const Content = styled.div`
-  padding: 24px;
-  background: #ebeef4;
-  border-radius: 6px;
-`;
-
 const Title = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
+  color: ${(props) => props.theme.textPrimary};
   > :first-child {
     font-style: normal;
     font-weight: bold;
@@ -54,21 +49,21 @@ const NoTippers = styled.div`
   text-align: center;
   font-size: 12px;
   line-height: 140%;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 const Description = styled.div`
   font-size: 12px;
   line-height: 140%;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   > span {
-    color: #6848ff;
+    color: ${(props) => props.theme.primaryPurple500};
     cursor: pointer;
   }
 `;
 
 const TipperList = styled.div`
-  padding: 8px 0px;
+  padding: 8px 0;
   > :not(:first-child) {
     margin-top: 8px;
   }
@@ -80,7 +75,7 @@ const TipperItem = styled.div`
   justify-content: space-between;
   font-size: 12px;
   line-height: 100%;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   > :last-child {
     white-space: nowrap;
     display: flex;
@@ -167,9 +162,9 @@ export default function Vote({
     action = <Description>This vote has been closed.</Description>;
   } else if (userCanVote) {
     action = (
-      <Button secondary isFill onClick={() => setShowPopup(true)}>
+      <SecondaryButton secondary isFill onClick={() => setShowPopup(true)}>
         Vote
-      </Button>
+      </SecondaryButton>
     );
   } else {
     action = (
@@ -183,13 +178,13 @@ export default function Vote({
   return (
     <>
       <Wrapper>
-        <Content>
+        <GhostCard>
           <Title>
             <div>Votes</div>
             <div>{isLoadingVote && <Loading size={16} />}</div>
           </Title>
           {voteList}
-        </Content>
+        </GhostCard>
         {!loading && action}
       </Wrapper>
       {showPopup && (

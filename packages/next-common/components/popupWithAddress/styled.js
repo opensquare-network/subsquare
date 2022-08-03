@@ -5,9 +5,9 @@ export const Message = styled.div`
   align-items: flex-start;
   flex-direction: column;
   padding: 12px 16px;
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
-  color: rgba(80, 97, 118, 1);
+  color: ${(props) => props.theme.textSecondary};
   font-style: normal;
   font-weight: normal;
   font-size: 14px;

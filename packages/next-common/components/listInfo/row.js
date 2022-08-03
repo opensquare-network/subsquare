@@ -8,8 +8,8 @@ const Wrapper = styled.div`
   align-items: start;
   padding-top: 12px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #ebeef4;
-  background-color: white;
+  color: ${(props) => props.theme.textPrimary};
+  border-bottom: 1px solid ${(props) => props.theme.grey200Border};
 `;
 const Header = styled.div`
   width: 120px;
@@ -28,11 +28,11 @@ const Content = styled.div`
   font-weight: normal;
   font-size: 14px;
   line-height: 140%;
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
   word-break: break-all;
 
   a {
-    color: #1f70c7;
+    color: ${(props) => props.theme.secondarySapphire500};
     font-weight: 500;
 
     &:hover {

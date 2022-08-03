@@ -1,10 +1,8 @@
 import React, { memo } from "react";
-import User from "../../user";
-import Links from "../../links";
-import Flex from "../../styled/flex";
 import KVList from "../../listInfo/kvList";
 import { getNode, toPrecision } from "../../../utils";
 import Anchor from "../../styled/anchor";
+import UserWithLink from "../../user/userWithLink";
 
 /**
  *
@@ -35,12 +33,7 @@ function BountyMetadata({ meta, chain }) {
         break;
       case "proposer":
       case "beneficiary":
-        normalizedValue = (
-          <Flex>
-            <User chain={chain} add={value} fontSize={14} />
-            <Links chain={chain} address={value} style={{ marginLeft: 8 }} />
-          </Flex>
-        );
+        normalizedValue = <UserWithLink chain={chain} address={value} />;
         break;
       case "value":
       case "fee":

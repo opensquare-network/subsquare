@@ -18,6 +18,8 @@ import {
 } from "../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
+import { SecondaryCard } from "../styled/containers/secondaryCard";
+import Content from "./cardContent";
 
 const Wrapper = styled.div`
   display: flex;
@@ -35,17 +37,11 @@ const Wrapper = styled.div`
   }
 `;
 
-const Card = styled.div`
+const Card = styled(SecondaryCard)`
   position: relative;
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
-    0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
-  border-radius: 6px;
+  color: ${(props) => props.theme.textPrimary};
   flex: 0 1 33.33%;
   height: 88px;
-  padding: 26px 24px;
 `;
 
 const Title = styled.div`
@@ -53,33 +49,15 @@ const Title = styled.div`
   font-size: 12px;
   line-height: 100%;
   letter-spacing: 0.16em;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   margin-bottom: 8px;
-`;
-
-const Content = styled.div`
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 100%;
-  color: #1e2134;
-
-  > .unit {
-    color: #9da9bb;
-  }
-
-  > .upper {
-    text-transform: uppercase;
-  }
-
-  > :not(:first-child) {
-    margin-left: 4px;
-  }
 `;
 
 const CountDownWrapper = styled.div`
   position: absolute;
   top: 20px;
   right: 24px;
+  margin-top: 0 !important;
 `;
 
 export default function Summary({ chain }) {
@@ -109,7 +87,11 @@ export default function Summary({ chain }) {
         .toNumber();
       const TimeArray = estimateBlocksTime(spendPeriod - goneBlocks, blockTime);
       if (isMounted()) {
-        setSummary({ progress, spendPeriod: TimeArray });
+        setSummary({
+          progress,
+          spendPeriod: TimeArray,
+          totalPeriod: ["/"].concat(estimateBlocksTime(spendPeriod, blockTime)),
+        });
       }
     }
   }, [api, finalizedHeight]);
@@ -135,6 +117,14 @@ export default function Summary({ chain }) {
         <Content>
           {(summary?.spendPeriod || []).map((item, index) => (
             <span className={index % 2 === 1 ? "unit" : ""} key={index}>
+              {item}
+            </span>
+          ))}
+          {(summary?.totalPeriod || []).map((item, index) => (
+            <span
+              className={index % 2 === 1 ? "unit total" : "total"}
+              key={index}
+            >
               {item}
             </span>
           ))}

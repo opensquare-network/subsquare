@@ -1,12 +1,9 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import Button from "../button";
 import { logout } from "../../store/reducers/userSlice";
-import {
-  Label,
-  ButtonWrapper,
-} from "./styled";
+import { ButtonWrapper, Label } from "./styled";
+import GhostButton from "../buttons/ghostButton";
 
 export default function Logout() {
   const dispatch = useDispatch();
@@ -16,7 +13,7 @@ export default function Logout() {
     <div>
       <Label>Logout</Label>
       <ButtonWrapper>
-        <Button
+        <GhostButton
           isFill
           onClick={() => {
             dispatch(logout());
@@ -24,7 +21,7 @@ export default function Logout() {
           }}
         >
           Logout my account
-        </Button>
+        </GhostButton>
       </ButtonWrapper>
     </div>
   );

@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 const Wrapper = styled.div`
-  border: 1px solid #e0e4eb;
+  border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
   display: flex;
   overflow: hidden;
@@ -11,19 +11,19 @@ const Wrapper = styled.div`
   font-weight: 400;
   font-size: 14px;
   line-height: 100%;
-  color: #d7dee8;
+  color: ${(props) => props.theme.textPlaceholder};
 `;
 
 const Input = styled.textarea`
   ${(p) =>
     p.disabled &&
     css`
-      background: #f6f7fa !important;
+      background: ${(props) => props.theme.grey100Bg}; !important;
     `}
   all: unset;
   padding: 12px 16px;
   flex-grow: 1;
-  color: #1E2134;
+  color: ${(props) => props.theme.textPrimary};
 
   height: 40px;
 

@@ -1,13 +1,7 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { timeDurationFromNow } from "next-common/utils";
-import Edit from "../edit";
 import nextApi from "next-common/services/nextApi";
-import { useEffect, useState } from "react";
-import ReplyIcon from "../../assets/imgs/icons/reply.svg";
-import ThumbUpIcon from "../../assets/imgs/icons/thumb-up.svg";
-import UnfoldIcon from "../../assets/imgs/icons/unfold.svg";
-import FoldIcon from "../../assets/imgs/icons/fold.svg";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import User from "next-common/components/user";
@@ -16,13 +10,14 @@ import { useRouter } from "next/router";
 import Flex from "next-common/components/styled/flex";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import {
-  HtmlPreviewer,
   MarkdownPreviewer,
+  HtmlPreviewer,
   renderMentionIdentityUserPlugin,
 } from "@osn/previewer";
 import IdentityOrAddr from "../IdentityOrAddr";
-import { isAddress } from "@polkadot/util-crypto";
 import { prettyHTML, renderDisableNonAddressLink } from "../../utils/viewfuncs";
+import RichTextStyleWrapper from "../content/richTextStyleWrapper";
+import Actions from "../actions";
 
 const Wrapper = styled.div`
   position: relative;
@@ -44,7 +39,7 @@ const Wrapper = styled.div`
       left: 28px;
       width: calc(100% - 28px);
     }
-    background-color: #ebeef4;
+    background-color: ${(props) => props.theme.grey200Border};
   }
 
   :hover {
@@ -56,7 +51,7 @@ const Wrapper = styled.div`
   ${(p) =>
     p.highlight &&
     css`
-      background-color: #f6f7fa;
+      background-color: ${(props) => props.theme.grey100Bg};
     `}
 `;
 
@@ -67,100 +62,12 @@ const InfoWrapper = styled(Flex)`
 
   > :last-child {
     font-size: 14px;
-    color: #9da9bb;
+    color: ${(props) => props.theme.textTertiary};
   }
 `;
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled(RichTextStyleWrapper)`
   margin: 8px 0 0 28px;
-`;
-
-const ActionWrapper = styled(Flex)`
-  margin: 16px 0 0 28px;
-  align-items: flex-start;
-  height: 22px;
-  flex-wrap: wrap;
-`;
-
-const ActionItem = styled(Flex)`
-  cursor: default;
-  white-space: nowrap;
-
-  ${(p) =>
-    !p.noHover &&
-    css`
-      cursor: pointer;
-
-      :hover {
-        color: #506176;
-
-        > svg {
-          path {
-            fill: #506176;
-          }
-        }
-      }
-    `}
-
-  ${(p) =>
-    p.highlight
-      ? css`
-          color: #506176;
-
-          > svg {
-            path {
-              fill: #506176;
-            }
-          }
-        `
-      : css`
-          color: #9da9bb;
-
-          > svg {
-            path {
-              fill: #9da9bb;
-            }
-          }
-        `}
-
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 100%;
-
-  :not(:first-child) {
-    margin-left: 17px;
-  }
-
-  > svg {
-    margin-right: 8px;
-  }
-`;
-
-const UnfoldWrapper = styled(ActionItem)`
-  margin-left: 7px !important;
-`;
-
-const SupporterWrapper = styled(Flex)`
-  align-items: initial;
-  flex-flow: wrap;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 22px;
-  padding: 8px 12px;
-  background: #f6f7fa;
-  border-radius: 4px;
-  margin: 10px 0 0 28px;
-`;
-
-const SupporterItem = styled.div`
-  display: inline-block;
-  margin-right: 12px;
-
-  > .username {
-    color: #506176;
-  }
 `;
 
 const EditedLabel = styled.div`
@@ -168,7 +75,7 @@ const EditedLabel = styled.div`
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 export default function Item({ user, data, chain, onReply }) {
@@ -180,7 +87,6 @@ export default function Item({ user, data, chain, onReply }) {
   const [isEdit, setIsEdit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [highlight, setHighlight] = useState(false);
-  const [showThumbsUpList, setShowThumbsUpList] = useState(false);
   const isMounted = useIsMountedBool();
 
   useEffect(() => {
@@ -283,51 +189,22 @@ export default function Item({ user, data, chain, onReply }) {
               <EditedLabel>Edited</EditedLabel>
             )}
           </ContentWrapper>
-          <ActionWrapper>
-            <ActionItem
-              onClick={() => {
+          <div style={{margin: "8px 0 0 28px"}}>
+            <Actions
+              chain={chain}
+              highlight={isLoggedIn && thumbUp}
+              noHover={!isLoggedIn || ownComment}
+              edit={ownComment}
+              setIsEdit={setIsEdit}
+              toggleThumbUp={toggleThumbUp}
+              reactions={comment.reactions}
+              onReply={() => {
                 if (isLoggedIn && !ownComment) {
                   onReply(comment.author);
                 }
               }}
-              noHover={!isLoggedIn || ownComment}
-            >
-              <ReplyIcon />
-              <div>Reply</div>
-            </ActionItem>
-            <ActionItem
-              noHover={!isLoggedIn || ownComment}
-              highlight={isLoggedIn && thumbUp}
-              onClick={toggleThumbUp}
-            >
-              <ThumbUpIcon />
-              <div>Up ({comment?.reactions?.length ?? 0})</div>
-            </ActionItem>
-            {comment?.reactions?.length > 0 && (
-              <UnfoldWrapper
-                onClick={() => setShowThumbsUpList(!showThumbsUpList)}
-              >
-                {showThumbsUpList ? <UnfoldIcon /> : <FoldIcon />}
-              </UnfoldWrapper>
-            )}
-            {ownComment && <Edit edit={ownComment} setIsEdit={setIsEdit} />}
-          </ActionWrapper>
-          {showThumbsUpList && comment?.reactions?.length > 0 && (
-            <SupporterWrapper>
-              {comment.reactions
-                .filter((r) => r.user)
-                .map((r, index) => (
-                  <SupporterItem key={index}>
-                    <User
-                      user={r.user}
-                      chain={chain}
-                      showAvatar={false}
-                      fontSize={12}
-                    />
-                  </SupporterItem>
-                ))}
-            </SupporterWrapper>
-          )}
+            />
+          </div>
         </>
       )}
       {isEdit && (

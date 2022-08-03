@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
@@ -7,12 +7,15 @@ import nextApi from "../../services/nextApi";
 import ToggleText from "../uploadBanner/toggleText";
 import Uploader from "../uploadBanner/uploader";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
-import { shadow_100 } from "styles/componentCss";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import Button from "next-common/components/button";
 import ErrorText from "next-common/components/ErrorText";
 import AdvancedForm from "next-common/components/post/advanced/form";
 import dynamic from "next/dynamic";
+import SecondaryButton from "../buttons/secondaryButton";
+import EditorWrapper from "../editor/editorWrapper";
+import { shadow_100 } from "../../styles/componentCss";
+import { TitleContainer } from "../styled/containers/titleContainer";
+
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
   { ssr: false }
@@ -20,26 +23,32 @@ const UniverseEditor = dynamic(
 
 const Wrapper = styled.div`
   padding: 48px;
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
+  color: ${(props) => props.theme.textPrimary};
   ${shadow_100};
   border-radius: 6px;
   textarea:read-only,
   div.ql-disabled {
-    background-color: #f6f7fa !important;
+    background-color: ${(props) => props.theme.grey100Bg} !important;
   }
+
+  div + textarea {
+    border-color: ${(props) => props.theme.grey300Border};
+  }
+  input {
+    color: ${(props) => props.theme.textPrimary};
+  }
+
   @media screen and (max-width: 768px) {
     margin-left: -16px;
     margin-right: -16px;
     border-radius: 0;
     padding: 24px;
   }
-`;
-
-const Title = styled.div`
-  font-weight: bold;
-  font-size: 16px;
-  margin-bottom: 24px;
+  div {
+    border-color: ${(props) => props.theme.grey300Border} !important;
+  }
 `;
 
 const LabelWrapper = styled(FlexBetweenCenter)`
@@ -61,26 +70,8 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const InputWrapper = styled.div`
+const InputWrapper = styled(EditorWrapper)`
   position: relative;
-`;
-
-const InputSwitch = styled.div`
-  height: 24px;
-  top: 10px;
-  right: 16px;
-  position: absolute;
-  display: flex;
-  align-items: center;
-
-  > img {
-    margin-right: 12px;
-  }
-`;
-
-const PreviewWrapper = styled.div`
-  display: flex;
-  min-height: 244px;
 `;
 
 const UploaderWrapper = styled.div`
@@ -152,7 +143,7 @@ export default function PostCreate({ chain, loginUser }) {
 
   return (
     <Wrapper>
-      <Title>New Post</Title>
+      <TitleContainer>New Post</TitleContainer>
       <LabelWrapper>
         <Label>Title</Label>
         <ToggleText
@@ -206,14 +197,13 @@ export default function PostCreate({ chain, loginUser }) {
       />
 
       <ButtonWrapper>
-        <Button
+        <SecondaryButton
           isLoading={creating}
           onClick={createPost}
           disabled={isDisableCreate}
-          secondary
         >
           Create
-        </Button>
+        </SecondaryButton>
       </ButtonWrapper>
     </Wrapper>
   );

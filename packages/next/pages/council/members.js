@@ -1,14 +1,12 @@
 import MembersList from "components/membersList/councilMembersList";
-import Menu from "next-common/components/menu";
-import { mainMenu } from "next-common/utils/constants";
-import Layout from "next-common/components/layout";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
-import { getNode } from "utils";
+import { getNode } from "next-common/utils";
 import usePrime from "next-common/utils/hooks/usePrime";
-import { TYPE_COUNCIL_MOTION } from "next-common/utils/viewConstants";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
+import HomeLayout from "next-common/components/layout/HomeLayout";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const [data, setData] = useState([]);
@@ -17,7 +15,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const node = getNode(chain);
   const electionsInfo = useCall(api?.derive?.elections?.info, []);
   const allVotes = useCall(api?.derive?.council?.votes, []);
-  const prime = usePrime({ chain, type: TYPE_COUNCIL_MOTION });
+  const prime = usePrime({ chain, type: detailPageCategory.COUNCIL_MOTION });
 
   useEffect(() => {
     if (electionsInfo) {
@@ -45,12 +43,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <Layout
-      user={loginUser}
-      left={<Menu menu={mainMenu} chain={chain} />}
-      chain={chain}
-      seoInfo={seoInfo}
-    >
+    <HomeLayout user={loginUser} seoInfo={seoInfo}>
       <MembersList
         chain={chain}
         category={category}
@@ -59,7 +52,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
         loading={loading}
         hasElections={node?.hasElections}
       />
-    </Layout>
+    </HomeLayout>
   );
 });
 

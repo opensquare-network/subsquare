@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Layout from "next-common/components/layout";
 import { withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
-import {
-  ContentCenterWrapper,
-  Title,
-} from "next-common/components/login/styled";
+import { ContentCenterWrapper } from "next-common/components/login/styled";
 import { Option } from "next-common/components/addressSelect";
-import Button from "next-common/components/button";
 import { useRouter } from "next/router";
 import VerifyEmail from "next-common/components/login/verifyEmail";
 import EmailInput from "next-common/components/login/emailInput";
 import ConfirmEmail from "next-common/components/login/confirmEmail";
 import useIdentity from "next-common/utils/hooks/useIdentity";
 import { p_14_normal } from "../../styles/componentCss";
+import GhostButton from "../buttons/ghostButton";
+import { PageTitleContainer } from "../styled/containers/titleContainer";
+import BaseLayout from "../layout/baseLayout";
 
 const Label = styled.div`
   font-weight: bold;
@@ -40,15 +38,15 @@ const Hint = styled.p`
   margin-top: 24px !important;
   padding: 12px 16px;
   ${p_14_normal};
-  color: #506176;
-  background: #f6f7fa;
+  color: ${(props) => props.theme.textSecondary};
+  background: ${(props) => props.theme.grey100Bg};
+  border-color: ${(props) => props.theme.grey300Border};
 `;
 
 const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
   const address = loginUser?.addresses?.find(
     (address) => address.chain === chain
   )?.address;
-
   const [errors, setErrors] = useState();
   const [email, setEmail] = useState("");
   const [pin, setPin] = useState("");
@@ -59,18 +57,18 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
 
   useEffect(() => {
     if (loginUser === null) {
-      router.push("/login");
+      // router.push("/login");
     } else if (!address) {
-      router.push("/");
+      // router.push("/");
     }
   }, [address, loginUser, router]);
 
   return (
-    <Layout user={loginUser} chain={chain}>
+    <BaseLayout user={loginUser} chain={chain}>
       <NextHead title={`Set Email`} desc={`Set Email`} />
       <Wrapper>
         <ContentCenterWrapper>
-          <Title>Login {` with Web3 address`}</Title>
+          <PageTitleContainer>Login {` with Web3 address`}</PageTitleContainer>
           <Hint>Set email for receiving notifications</Hint>
           <Label>Web3 address</Label>
           <Option item={{ address }} chain={chain} selected />
@@ -97,17 +95,17 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
             identity={identity}
             setErrors={setErrors}
           />
-          <Button
+          <GhostButton
             isFill
             onClick={() => {
               router.replace(router.query?.redirect || "/");
             }}
           >
             Remind me later
-          </Button>
+          </GhostButton>
         </ContentCenterWrapper>
       </Wrapper>
-    </Layout>
+    </BaseLayout>
   );
 });
 

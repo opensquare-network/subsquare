@@ -9,6 +9,7 @@ import Identity from "../Identity";
 import { addressEllipsis } from "../../utils";
 import Flex from "../styled/flex";
 import Tooltip from "../tooltip";
+import AvatarDeleted from "../../assets/imgs/icons/avatar-deleted.svg";
 
 const Wrapper = styled(Flex)`
   a {
@@ -16,6 +17,12 @@ const Wrapper = styled(Flex)`
       text-decoration: underline;
     }
   }
+
+  a,
+  div {
+    color: ${(props) => props.theme.textPrimary};
+  }
+
   ${(p) =>
     p.noEvent &&
     css`
@@ -26,6 +33,11 @@ const Wrapper = styled(Flex)`
 const AvatarWrapper = styled(Flex)`
   display: flex;
   margin-right: 8px;
+  svg {
+    circle:first-child {
+      fill: ${(props) => props.theme.grey100Bg};
+    }
+  }
 `;
 
 const Username = styled.div`
@@ -37,7 +49,7 @@ const Username = styled.div`
           color: ${p.color} !important;
         `
       : css`
-          color: #1e2134 !important;
+          color: ${(props) => props.theme.textPrimary}; !important;
         `}
   ${(p) =>
     p.maxWidth
@@ -56,11 +68,16 @@ const DeleteAccount = styled(Flex)`
   font-weight: 500;
   word-break: break-all;
   font-size: ${(props) => props.fontSize}px;
-  color: #9da9bb;
-  > img {
+  color: ${(props) => props.theme.textSecondary};
+  > svg {
     width: 20px;
     height: 20px;
     margin-right: 8px;
+    circle:last-child {
+      fill: ${(props) => props.theme.grey300Border};
+    }
+    circle:first-child {fill: ${(props) => props.theme.grey100Bg}}
+    }
   }
 `;
 
@@ -72,8 +89,9 @@ const LinkWrapper = styled.a`
           text-decoration-color: ${p.color} !important;
         `
       : css`
-          color: #1e2134 !important;
-          text-decoration-color: #1e2134 !important;
+          color: ${(props) => props.theme.textPrimary} !important;
+          text-decoration-color: ${(props) =>
+            props.theme.textPrimary} !important;
         `}
   display: block;
   :hover {
@@ -110,38 +128,38 @@ function User({
   if (!user && !add) {
     return (
       <DeleteAccount fontSize={fontSize}>
-        <img src="/imgs/icons/avatar-deleted.svg" alt="" />
+        <AvatarDeleted />
         [Deleted Account]
       </DeleteAccount>
     );
   }
 
-  const addressWithoutIdentity = maxWidth ? (
-    <Tooltip content={(!user?.publicKey && user?.username) || address}>
-      <div>
-        <Username fontSize={fontSize} maxWidth={maxWidth} color={color}>
-          {(!user?.publicKey && user?.username) || addressEllipsis(address)}
-        </Username>
-      </div>
-    </Tooltip>
-  ) : (
+  const elmUsernameOrAddr = (
     <Username fontSize={fontSize} color={color}>
       {(!user?.publicKey && user?.username) || addressEllipsis(address)}
     </Username>
   );
 
-  const noAddress = maxWidth ? (
-    <Tooltip content={user?.username}>
-      <div>
-        <Username fontSize={fontSize} maxWidth={maxWidth} color={color}>
-          {user?.username}
-        </Username>
-      </div>
+  const addressWithoutIdentity = maxWidth ? (
+    <Tooltip content={(!user?.publicKey && user?.username) || address}>
+      <div>{elmUsernameOrAddr}</div>
     </Tooltip>
   ) : (
-    <Username fontSize={fontSize} color={color}>
+    elmUsernameOrAddr
+  );
+
+  const elmUsername = (
+    <Username fontSize={fontSize} maxWidth={maxWidth} color={color}>
       {user?.username}
     </Username>
+  );
+
+  const noAddress = maxWidth ? (
+    <Tooltip content={user?.username}>
+      <div>{elmUsername}</div>
+    </Tooltip>
+  ) : (
+    elmUsername
   );
 
   return (

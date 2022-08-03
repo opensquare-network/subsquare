@@ -1,6 +1,9 @@
-import { VotingStatusContent, WarningMessage } from "next-common/components/popup/styled";
+import {
+  VotingStatusContent,
+  WarningMessage,
+} from "next-common/components/popup/styled";
 import DisplayValue from "next-common/components/displayValue";
-import { toPrecision } from "utils";
+import { toPrecision } from "next-common/utils";
 import PopupLabel from "next-common/components/popup/label";
 import VoteStatusBox from "next-common/components/popup/voteStatusBox";
 

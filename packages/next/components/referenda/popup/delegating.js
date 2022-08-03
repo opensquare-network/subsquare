@@ -1,5 +1,8 @@
-import { DelegatingInfo, DelegatingValue } from "next-common/components/popup/styled";
-import { toPrecision } from "utils";
+import {
+  DelegatingInfo,
+  DelegatingValue,
+} from "next-common/components/popup/styled";
+import { toPrecision } from "next-common/utils";
 import { convictionToLockX } from "utils/referendumUtil";
 
 export default function Delegating({ addressVoteDelegate, node }) {

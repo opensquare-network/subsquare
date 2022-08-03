@@ -28,7 +28,7 @@ export const VotingStatusWrapper = styled.div`
   font-weight: bold;
   font-size: 12px;
   line-height: 100%;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   margin-left: auto !important;
   display: flex;
   > :not(:first-child) {
@@ -37,7 +37,7 @@ export const VotingStatusWrapper = styled.div`
 `;
 
 export const StatusWrapper = styled.div`
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
   padding: 12px 16px;
   display: flex;
@@ -49,14 +49,14 @@ export const StatusWrapper = styled.div`
     line-height: 100%;
     font-weight: 500;
     > span {
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary};
       margin-left: 2px;
     }
   }
   > div.result {
     display: flex;
     align-items: center;
-    color: #506176;
+    color: ${(props) => props.theme.textSecondary};
     > svg {
       margin-left: 8px;
     }
@@ -67,24 +67,24 @@ export const StatusWrapper = styled.div`
   > div.no-data {
     font-size: 14px;
     line-height: 100%;
-    color: #9da9bb;
+    color: ${(props) => props.theme.textTertiary};
     flex-grow: 1;
     text-align: center;
   }
 `;
 
 export const WarningMessage = styled.div`
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
   padding: 12px 16px;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   font-size: 14px;
   line-height: 140%;
   ${(p) =>
     p.danger &&
     css`
-      color: #f44336;
-      background: #fff1f0;
+      color: ${(props) => props.theme.secondaryRed500};
+      background: ${(props) => props.theme.secondaryRed100};
     `}
 `;
 
@@ -92,14 +92,14 @@ export const DelegatingInfo = styled.div`
   display: flex;
   padding: 12px 16px;
   height: 64px;
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
 
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
   line-height: 140%;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
 `;
 
 export const DelegatingValue = styled.div`
@@ -107,7 +107,7 @@ export const DelegatingValue = styled.div`
   justify-content: space-between;
   padding: 12px 16px;
   height: 38px;
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
   margin-top: 8px;
 
@@ -119,11 +119,11 @@ export const DelegatingValue = styled.div`
     line-height: 100%;
 
     > .balance {
-      color: #1e2134;
+      color: ${(props) => props.theme.textPrimary};
     }
 
     > .conviction {
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary};
       margin-left: 2px;
     }
   }
@@ -136,11 +136,11 @@ export const DelegatingValue = styled.div`
     line-height: 100%;
 
     > .proxy-label {
-      color: #506176;
+      color: ${(props) => props.theme.textSecondary};
     }
 
     > .proxy-addr {
-      color: #1f70c7;
+      color: ${(props) => props.theme.secondarySapphire500};
       margin-left: 8px;
     }
   }
@@ -148,8 +148,8 @@ export const DelegatingValue = styled.div`
 
 export const ButtonWrapper = styled.div`
   display: flex;
-  > first-child {
-    background: #4caf50;
+  > :first-child {
+    background: ${(props) => props.theme.secondaryGreen500};
   }
   > * {
     flex-grow: 1 !important;
@@ -163,9 +163,9 @@ export const BalanceWrapper = styled.div`
   display: flex;
   font-size: 12px;
   line-height: 100%;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   > :nth-child(2) {
-    color: #1e2134;
+    color: ${(props) => props.theme.textPrimary};
     font-weight: bold;
   }
   > :not(:first-child) {

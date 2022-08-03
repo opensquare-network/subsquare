@@ -1,18 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useState } from "react";
 import dynamic from "next/dynamic";
 import countBy from "lodash.countby";
 import BigNumber from "bignumber.js";
-
-import Button from "../../button";
 import User from "../../user";
 import Loading from "../../loading";
 import { emptyFunction } from "../../../utils";
 import useDepositOf from "../../../utils/hooks/useDepositOf";
 import useApi from "../../../utils/hooks/useSelectedEnpointApi";
-import { getNode } from "utils";
+import { getNode } from "next-common/utils";
 import Tooltip from "../../tooltip";
+import SecondaryButton from "../../buttons/secondaryButton";
+import { GhostCard } from "../../styled/containers/ghostCard";
+import { TitleContainer } from "../../styled/containers/titleContainer";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -22,7 +22,7 @@ const Wrapper = styled.div`
   position: absolute;
   right: 0;
   top: 32px;
-  width: 280px;
+  width: 300px;
   margin-top: 0 !important;
   > :not(:first-child) {
     margin-top: 16px;
@@ -34,16 +34,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const Content = styled.div`
-  padding: 24px;
-  background: #ebeef4;
-  border-radius: 6px;
-`;
-
-const Title = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+const Title = styled(TitleContainer)`
   margin-bottom: 16px;
   > :first-child {
     font-style: normal;
@@ -54,6 +45,8 @@ const Title = styled.div`
   > :last-child {
     display: flex;
     align-items: center;
+    font-size: 14px;
+    font-weight: normal;
   }
 `;
 
@@ -61,7 +54,7 @@ const NoSeconds = styled.div`
   text-align: center;
   font-size: 12px;
   line-height: 140%;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 const SecondsList = styled.div`
@@ -77,7 +70,7 @@ const SecondItem = styled.div`
   justify-content: space-between;
   font-size: 12px;
   line-height: 100%;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   > :last-child {
     white-space: nowrap;
   }
@@ -87,15 +80,15 @@ const DepositRequired = styled.div`
   font-weight: 400;
   font-size: 12px;
   line-height: 100%;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
 `;
 
 const Description = styled.div`
   font-size: 12px;
   line-height: 140%;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   > span {
-    color: #6848ff;
+    color: ${(props) => props.theme.primaryPurple500};
     cursor: pointer;
   }
 `;
@@ -105,7 +98,7 @@ const ListMore = styled.div`
   margin-top: 16px !important;
   font-weight: 500;
   font-size: 12px;
-  color: #6848ff;
+  color: ${(props) => props.theme.primaryPurple500}; ;
 `;
 
 export default function Second({
@@ -128,7 +121,6 @@ export default function Second({
     triggerUpdate
   );
   const node = getNode(chain);
-
   const secondsCount = countBy(seconds);
   const secondsAddress = Object.keys(secondsCount);
 
@@ -178,9 +170,9 @@ export default function Second({
     action = <Description>This proposal has been canceled.</Description>;
   } else {
     action = (
-      <Button secondary isFill onClick={() => setShowPopup(true)}>
+      <SecondaryButton isFill onClick={() => setShowPopup(true)}>
         Second
-      </Button>
+      </SecondaryButton>
     );
   }
 
@@ -199,13 +191,13 @@ export default function Second({
   return (
     <>
       <Wrapper>
-        <Content>
+        <GhostCard>
           <Title>
             <div>Second</div>
             <div>{totalSeconds}</div>
           </Title>
           {secondsList}
-        </Content>
+        </GhostCard>
         {action}
       </Wrapper>
       {showPopup && (

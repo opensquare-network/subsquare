@@ -1,16 +1,21 @@
 import styled, { css } from "styled-components";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import Button from "next-common/components/button";
 import nextApi from "../../services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
-import Relative from "next-common/components/styled/relative";
 import Flex from "next-common/components/styled/flex";
-import { prettyHTML, renderDisableNonAddressLink, toApiType } from "../../utils/viewfuncs";
+import {
+  prettyHTML,
+  renderDisableNonAddressLink,
+  toApiType,
+} from "../../utils/viewfuncs";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import dynamic from "next/dynamic";
 import IdentityOrAddr from "../IdentityOrAddr";
 import { addressEllipsis } from "../../utils";
+import SecondaryButton from "../buttons/secondaryButton";
+import GhostButton from "../buttons/ghostButton";
+import EditorWrapper from "../editor/editorWrapper";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
@@ -24,6 +29,10 @@ const Wrapper = styled.div`
     css`
       margin-top: 8px;
     `}
+`;
+
+const Relative = styled(EditorWrapper)`
+  position: relative;
 `;
 
 const ButtonWrapper = styled(Flex)`
@@ -152,24 +161,25 @@ function Editor(
             {
               name: "disable-non-address-link",
               onRenderedHtml: renderDisableNonAddressLink,
-            }
+            },
           ]}
         />
       </Relative>
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
       <ButtonWrapper>
         {isEdit && (
-          <Button onClick={() => onFinishedEdit(false)}>Cancel</Button>
+          <GhostButton onClick={() => onFinishedEdit(false)}>
+            Cancel
+          </GhostButton>
         )}
-        <Button
+        <SecondaryButton
           isLoading={loading}
-          secondary
           onClick={isEdit ? updateComment : createComment}
           disabled={isEmpty}
           title={isEmpty ? "cannot submit empty content" : ""}
         >
           {isEdit ? "Update" : "Comment"}
-        </Button>
+        </SecondaryButton>
       </ButtonWrapper>
     </Wrapper>
   );

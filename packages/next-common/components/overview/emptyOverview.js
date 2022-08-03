@@ -1,9 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
-
-import Flex from "next-common/components/styled/flex";
 import Icon from "../../assets/imgs/icons/new-discussion.svg";
+import { TitleContainer } from "../styled/containers/titleContainer";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -21,24 +20,16 @@ const Wrapper = styled.div`
   }
 `;
 
-const Title = styled(Flex)`
-  justify-content: space-between;
-  font-weight: bold;
-  font-size: 16px;
-`;
-
 const EmptyPanel = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   padding: 48px;
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
   box-sizing: border-box;
-  box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
-    0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow: ${(props) => props.theme.shadow100};
   border-radius: 6px;
 
   > .title {
@@ -47,7 +38,7 @@ const EmptyPanel = styled.div`
     font-size: 20px;
     line-height: 100%;
     text-align: center;
-    color: #1e2134;
+    color: ${(props) => props.theme.textPrimary};
     margin-bottom: 16px;
   }
 
@@ -57,7 +48,7 @@ const EmptyPanel = styled.div`
     font-size: 14px;
     line-height: 140%;
     text-align: center;
-    color: #506176;
+    color: ${(props) => props.theme.textSecondary};
     margin-bottom: 24px;
     max-width: 343px;
   }
@@ -80,7 +71,7 @@ const EmptyPanel = styled.div`
     min-width: 153px;
     height: 38px;
 
-    background: #6848ff;
+    background: ${(props) => props.theme.primaryPurple500};
     border-radius: 4px;
 
     font-style: normal;
@@ -88,14 +79,14 @@ const EmptyPanel = styled.div`
     font-size: 14px;
     line-height: 100%;
     text-align: center;
-    color: #ffffff;
+    color: white;
   }
 `;
 
 export default function EmptyOverview() {
   return (
     <Wrapper>
-      <Title>Overview</Title>
+      <TitleContainer>Overview</TitleContainer>
       <EmptyPanel>
         <div className="title">Welcome to SubSquare</div>
         <div className="desc">

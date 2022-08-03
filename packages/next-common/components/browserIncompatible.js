@@ -11,32 +11,36 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  p{
+  p {
     margin-top: 24px;
     font-size: 20px;
     line-height: 100%;
     font-weight: 700;
   }
-  span{
+  span {
     max-width: 343px;
     font-size: 14px;
     line-height: 140%;
     text-align: center;
-    color: #506176;
-   }
+    color: ${(props) => props.theme.textSecondary};
+  }
 `;
 
 export default function BrowserIncompatible() {
   return (
     <Wrapper>
-      <NextHead title={`Browser not Supported`} desc={`Please use Google Chrome, Microsoft Edge or Safari 14.1+ to access for good web experience.`} />
-      <Hint/>
+      <NextHead
+        title={`Browser not Supported`}
+        desc={`Please use Google Chrome, Microsoft Edge or Safari 14.1+ to access for good web experience.`}
+      />
+      <Hint />
       <p>Browser not Supported</p>
       <span>
-        Please use Google Chrome, Microsoft Edge or Safari 14.1+ to access for good web experience.
+        Please use Google Chrome, Microsoft Edge or Safari 14.1+ to access for
+        good web experience.
       </span>
-      <p style={{fontSize:14}}>Contact Us</p>
-      <Contacts/>
+      <p style={{ fontSize: 14 }}>Contact Us</p>
+      <Contacts />
     </Wrapper>
   );
 }

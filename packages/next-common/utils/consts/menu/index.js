@@ -5,7 +5,7 @@ import council from "./council";
 import techComm from "./tc";
 import financialCouncil from "./financilCouncil";
 
-const menus = [
+const homeMenus = [
   commonMenus,
   democracy,
   treasury,
@@ -14,4 +14,4 @@ const menus = [
   financialCouncil,
 ];
 
-export default menus;
+export default homeMenus;

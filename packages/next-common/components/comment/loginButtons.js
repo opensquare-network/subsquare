@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import Button from "next-common/components/button";
+import GhostButton from "../buttons/ghostButton";
+import SecondaryButton from "../buttons/secondaryButton";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -17,7 +18,7 @@ export default function LoginButtons() {
 
   return (
     <Wrapper>
-      <Button
+      <GhostButton
         onClick={() =>
           router.push({
             pathname: "/login",
@@ -28,10 +29,10 @@ export default function LoginButtons() {
         }
       >
         Login
-      </Button>
-      <Button onClick={() => router.push("/signup")} secondary>
+      </GhostButton>
+      <SecondaryButton onClick={() => router.push("/signup")}>
         Sign up
-      </Button>
+      </SecondaryButton>
     </Wrapper>
   );
 }

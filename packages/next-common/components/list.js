@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Post from "next-common/components/post";
 import Pagination from "next-common/components/pagination";
 import EmptyList from "next-common/components/emptyList";
-import Flex from "next-common/components/styled/flex";
+import { TitleContainer } from "./styled/containers/titleContainer";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -21,12 +21,6 @@ const Wrapper = styled.div`
   }
 `;
 
-const Title = styled(Flex)`
-  justify-content: space-between;
-  font-weight: bold;
-  font-size: 16px;
-`;
-
 export default function List({
   chain,
   category,
@@ -37,10 +31,10 @@ export default function List({
 }) {
   return (
     <Wrapper>
-      <Title>
+      <TitleContainer>
         {category}
         {create}
-      </Title>
+      </TitleContainer>
       {summary}
       {items?.length > 0 ? (
         items.map((item, index) => (

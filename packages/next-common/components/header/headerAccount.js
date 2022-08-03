@@ -12,13 +12,19 @@ import { shadow_200 } from "../../styles/componentCss";
 import LoginButton from "./loginButton";
 import { isKeyRegisteredUser } from "../../utils";
 import { accountMenu, accountMenuForKeyAccount } from "./consts";
+import Divider from "../styled/layout/divider";
 
 const Wrapper = Relative;
 
 const AccountButton = styled(Flex)`
-  background: #ffffff;
+  background: ${(props) => props.theme.neutral};
   justify-content: center;
-  border: 1px solid #e0e4eb;
+  border: 1px solid ${(props) => props.theme.grey300Border};
+  border-color: ${(props) => props.theme.grey300Border};
+  > div > span:last-child {
+    color: ${(props) => props.theme.textContrast};
+  }
+
   border-radius: 4px;
   padding: 0 12px;
   height: 38px;
@@ -30,34 +36,32 @@ const Menu = styled.div`
   ${shadow_200};
   border-radius: 4px;
   position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0);
+  right: 0;
   margin-top: 4px;
-  background: #ffffff;
   padding: 8px 0;
   z-index: 999999;
+  background: ${(props) => props.theme.neutral};
+  border-width: ${(props) => (props.theme.isDark ? 1 : 0)}px;
+  border-style: ${(props) => (props.theme.isDark ? "solid" : "none")};
+  border-color: ${(props) => props.theme.grey200Border};
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 const Item = styled(Flex)`
   min-width: 160px;
-  color: #506176;
   cursor: pointer;
   padding: 0 12px;
   height: 36px;
   font-size: 14px;
   font-weight: 500;
   :hover {
-    background: #f6f7fa;
+    background: ${(props) => props.theme.grey100Bg};
   }
+  color: ${(props) => props.theme.textPrimary};
+
   > :not(:first-child) {
     margin-left: 8px;
   }
-`;
-
-const Divider = styled.div`
-  background: #ebeef4;
-  height: 1px;
-  margin: 8px 0;
 `;
 
 export default function HeaderAccount({ user, chain }) {
@@ -102,7 +106,7 @@ export default function HeaderAccount({ user, chain }) {
         <Menu>
           {menu.map((item, index) => (
             <Fragment key={index}>
-              {index === menu.length - 1 && <Divider />}
+              {index === menu.length - 1 && <Divider margin={8} />}
               <Item onClick={() => handleAccountMenu(item)}>
                 {item.icon}
                 <div>{item.name}</div>

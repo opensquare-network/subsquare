@@ -1,17 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 import BigNumber from "bignumber.js";
 
 import useApi from "../../../../utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "../../../../utils/hooks/useIsMounted";
-import Button from "../../../button";
 import { newErrorToast } from "../../../../store/reducers/toastSlice";
 
-import { checkInputValue, getNode } from "../../../../utils";
+import { checkInputValue, emptyFunction, getNode } from "../../../../utils";
 import PopupWithAddress from "../../../popupWithAddress";
-import { emptyFunction } from "../../../../utils";
 import ProposalBond from "./proposalBond";
 import Beneficiary from "../../common/beneficiary";
 import ProposalValue from "./proposalValue";
@@ -20,6 +17,7 @@ import useAddressBalance from "../../../../utils/hooks/useAddressBalance";
 import { WarningMessage } from "../../../popup/styled";
 import useBond from "../../../../utils/hooks/useBond";
 import { sendTx } from "../../../../utils/sendTx";
+import SecondaryButton from "../../../buttons/secondaryButton";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -132,14 +130,13 @@ function PopupContent({
         <WarningMessage danger>Insufficient balance</WarningMessage>
       )}
       <ButtonWrapper>
-        <Button
-          secondary
+        <SecondaryButton
           disabled={disabled}
           isLoading={loading}
           onClick={submit}
         >
           Submit
-        </Button>
+        </SecondaryButton>
       </ButtonWrapper>
     </>
   );

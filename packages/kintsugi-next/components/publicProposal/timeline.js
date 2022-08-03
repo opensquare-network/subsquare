@@ -1,4 +1,4 @@
-import sortTimeline from "utils/timeline/sort";
+import sortTimeline from "next-common/utils/timeline/sort";
 import Timeline from "next-common/components/timeline";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 

@@ -2,7 +2,6 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { useState, useRef } from "react";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
-import { addressEllipsis } from "utils";
 import Avatar from "./avatar";
 import Flex from "./styled/flex";
 import Relative from "./styled/relative";
@@ -10,12 +9,13 @@ import { shadow_200 } from "../styles/componentCss";
 import { encodeAddressToChain } from "../services/address";
 import { isAddress } from "@polkadot/util-crypto";
 import Caret from "./icons/caret";
+import { addressEllipsis } from "../utils";
 
 const Wrapper = Relative;
 
 const Select = styled(Flex)`
-  background: #ffffff;
-  border: 1px solid #e0e4eb;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
   height: 56px;
   padding: 0 16px;
@@ -34,7 +34,7 @@ const NameWrapper = styled.div`
   > :last-child {
     margin-top: 4px;
     font-size: 12px;
-    color: #9da9bb;
+    color: ${(props) => props.theme.textTertiary};
   }
 `;
 
@@ -43,7 +43,7 @@ const Options = styled.div`
   width: 100%;
   margin-top: 4px;
   padding: 8px 0;
-  background: #ffffff;
+  background: ${(props) => props.theme.neutral};
   ${shadow_200};
   border-radius: 4px;
   max-height: 320px;
@@ -55,13 +55,13 @@ const Options = styled.div`
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #c2c8d5;
+    background: ${(props) => props.theme.grey400Border};
     border-right: 4px solid white;
   }
 `;
 
 const Item = styled(Flex)`
-  background: #ffffff;
+  background: ${(props) => props.theme.neutral};
   height: 56px;
   padding: 0 16px;
   cursor: pointer;
@@ -74,12 +74,12 @@ const Item = styled(Flex)`
     flex: 0 0 auto;
   }
   :hover {
-    background: #f6f7fa;
+    background: ${(props) => props.theme.grey100Bg};
   }
   ${(p) =>
     p.selected &&
     css`
-      background: #f6f7fa;
+      background: ${(props) => props.theme.grey100Bg};
     `}
 `;
 
@@ -94,7 +94,7 @@ const Input = styled.input`
   font-size: 14px;
   line-height: 100%;
 
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
 
   margin: 4px 16px;
 `;

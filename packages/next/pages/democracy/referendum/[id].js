@@ -3,33 +3,30 @@ import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import Layout from "next-common/components/layout";
-import Comments from "next-common/components/comment";
-import Editor from "next-common/components/comment/editor";
-import OutWrapper from "next-common/components/styled/outWrapper";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import DetailItem from "components/detailItem";
 import Vote from "components/referenda/vote";
-import { getFocusEditor, getOnReply } from "next-common/utils/post";
-import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
-import { TYPE_DEMOCRACY_REFERENDUM } from "utils/viewConstants";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { getMetaDesc } from "../../../utils/viewfuncs";
+import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Timeline from "components/referenda/timeline";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
-import useMentionList from "next-common/utils/hooks/useMentionList";
-import MainCard from "next-common/components/styled/mainCard";
+import useUniversalComments from "components/universalComments";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
+import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+  const { CommentComponent, focusEditor } = useUniversalComments({
+    detail,
+    comments,
+    loginUser,
+    chain,
+    type: detailPageCategory.DEMOCRACY_REFERENDUM,
+  });
+
   const api = useApi(chain);
-  const editorWrapperRef = useRef(null);
-  const [quillRef, setQuillRef] = useState(null);
-  const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown"
-  );
+
   const [referendumStatus, setReferendumStatus] = useState(
     detail?.onchainData?.status ||
       detail?.onchainData?.info?.ongoing ||
@@ -69,97 +66,59 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       });
   }, [api, detail, isMounted, voteFinished]);
 
-  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
-
-  const users = useMentionList(detail, comments, chain);
-
-  const onReply = getOnReply(
-    contentType,
-    content,
-    setContent,
-    quillRef,
-    focusEditor,
-    chain
-  );
-
   detail.status = detail?.onchainData?.state?.state;
 
-  const desc = getMetaDesc(detail, "Referendum");
+  const desc = getMetaDesc(detail);
+
   return (
-    <Layout
+    <DetailWithRightLayout
       user={loginUser}
-      chain={chain}
       seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
     >
-      <OutWrapper>
-        <MainCard className="post-content">
-          <Back href={`/democracy/referendums`} text="Back to Referendas" />
-          <DetailItem
-            data={detail}
-            onReply={focusEditor}
-            user={loginUser}
-            chain={chain}
-            type={TYPE_DEMOCRACY_REFERENDUM}
-          />
+      <Back href={`/democracy/referendums`} text="Back to Referendas" />
+      <DetailItem
+        data={detail}
+        onReply={focusEditor}
+        user={loginUser}
+        chain={chain}
+        type={detailPageCategory.DEMOCRACY_REFERENDUM}
+      />
 
-          <Vote
-            referendumInfo={detail?.onchainData?.info}
-            referendumStatus={referendumStatus}
-            setReferendumStatus={setReferendumStatus}
-            chain={chain}
-            referendumIndex={detail?.referendumIndex}
-            isLoadingReferendumStatus={isLoadingReferendumStatus}
-            setIsLoadingReferendumStatus={setIsLoadingReferendumStatus}
-          />
+      <Vote
+        referendumInfo={detail?.onchainData?.info}
+        referendumStatus={referendumStatus}
+        setReferendumStatus={setReferendumStatus}
+        chain={chain}
+        referendumIndex={detail?.referendumIndex}
+        isLoadingReferendumStatus={isLoadingReferendumStatus}
+        setIsLoadingReferendumStatus={setIsLoadingReferendumStatus}
+      />
 
-          <ReferendumMetadata
-            api={api}
-            proposer={detail?.proposer}
-            status={referendumStatus}
-            call={
-              detail?.onchainData?.preImage?.call || detail?.onchainData?.call
-            }
-            shorten={detail?.onchainData?.preImage?.shorten}
-            chain={chain}
-            onchainData={detail?.onchainData}
-          />
+      <ReferendumMetadata
+        api={api}
+        proposer={detail?.proposer}
+        status={referendumStatus}
+        call={detail?.onchainData?.preImage?.call || detail?.onchainData?.call}
+        shorten={detail?.onchainData?.preImage?.shorten}
+        chain={chain}
+        onchainData={detail?.onchainData}
+      />
 
-          <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
-
-          <CommentsWrapper>
-            <Comments
-              data={comments}
-              user={loginUser}
-              chain={chain}
-              onReply={onReply}
-            />
-            {loginUser && (
-              <Editor
-                postId={detail?._id}
-                chain={chain}
-                ref={editorWrapperRef}
-                setQuillRef={setQuillRef}
-                {...{
-                  contentType,
-                  setContentType,
-                  content,
-                  setContent,
-                  users,
-                }}
-                type={TYPE_DEMOCRACY_REFERENDUM}
-              />
-            )}
-          </CommentsWrapper>
-        </MainCard>
-      </OutWrapper>
-    </Layout>
+      <Timeline
+        timeline={detail?.onchainData?.timeline}
+        chain={chain}
+        type={detailPageCategory.DEMOCRACY_REFERENDUM}
+      />
+      {CommentComponent}
+    </DetailWithRightLayout>
   );
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
 
-  const { id, page, page_size: pageSize } = context.query;
+  const { id, page, page_size } = context.query;
+  const pageSize = Math.min(page_size ?? 50, 100);
 
   const [{ result: detail }] = await Promise.all([
     nextApi.fetch(`democracy/referendums/${id}`),
@@ -175,7 +134,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     `democracy/referendums/${postId}/comments`,
     {
       page: page ?? "last",
-      pageSize: Math.min(pageSize ?? 50, 100),
+      pageSize,
     }
   );
 

@@ -1,5 +1,5 @@
 import SignerSelect from "next-common/components/signerSelect";
-import { toPrecision } from "utils";
+import { toPrecision } from "next-common/utils";
 import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
 
 export default function Signer({

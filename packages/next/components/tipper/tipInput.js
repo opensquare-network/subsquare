@@ -15,7 +15,7 @@ const Input = styled.input`
 
 const Unit = styled.div`
   padding: 12px 16px;
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   font-weight: 500;
   font-size: 14px;
   line-height: 100%;

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { isWeb3Injected, web3Enable } from "@polkadot/extension-dapp";
-import Button from "./button";
 import nextApi from "../services/nextApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import {
@@ -16,13 +15,15 @@ import {
 import { nodes } from "next-common/utils/constants";
 import Avatar from "./avatar";
 import DownloadExtension from "./downloadExtension";
-import { shadow_100 } from "../styles/componentCss";
 import { addressEllipsis } from "../utils";
 import { encodeAddressToChain } from "../services/address";
 import { signMessage } from "../services/extension/signMessage";
 import { polkadotWeb3Accounts } from "../utils/extensionAccount";
 import AddressLinkIcon from "../assets/imgs/icons/address-link.svg";
 import UnLinkIcon from "../assets/imgs/icons/unlink.svg";
+import SecondaryButton from "./buttons/secondaryButton";
+import { PrimaryCard } from "./styled/containers/primaryCard";
+import { TitleContainer } from "./styled/containers/titleContainer";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -38,30 +39,22 @@ const Wrapper = styled.div`
   }
 `;
 
-const Title = styled.div`
-  font-weight: bold;
-  font-size: 16px;
-`;
-
-const ContentWrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 4px;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
+const ContentWrapper = styled(PrimaryCard)`
+  input {
+    background: ${(props) => props.theme.neutral};
+    border-color: ${(props) => props.theme.grey300Border};
+    color: ${(props) => props.theme.textPrimary};
   }
 `;
 
 const InfoWrapper = styled.div`
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
   padding: 12px 16px;
   line-height: 150%;
   font-size: 14px;
   margin-bottom: 16px;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
 `;
 
 const AddressWrapper = styled.div`
@@ -75,7 +68,7 @@ const AddressItem = styled.div`
   padding: 0 16px;
   display: flex;
   align-items: center;
-  border: 1px solid #e0e4eb;
+  border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
   > :not(:first-child) {
     margin-left: 16px;
@@ -87,8 +80,8 @@ const AddressItem = styled.div`
   ${(p) =>
     p.linked &&
     css`
-      background: #f6f7fa;
-      border-color: #f6f7fa;
+      background: ${(props) => props.theme.grey100Bg};
+      border-color: ${(props) => props.theme.grey100Bg};
     `}
 `;
 
@@ -107,7 +100,7 @@ const NameWrapper = styled.div`
 const LinkWrapper = styled.div`
   display: flex;
   font-size: 14px;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   cursor: pointer;
   align-items: center;
   :hover {
@@ -121,7 +114,7 @@ const LinkWrapper = styled.div`
 const NodesWrapper = styled.div`
   display: flex;
   margin: 24px 0;
-  border-bottom: 1px solid #ebeef4;
+  border-bottom: 1px solid ${(props) => props.theme.grey200Border};
   > :not(:first-child) {
     margin-left: 24px;
   }
@@ -155,7 +148,7 @@ const EmptyList = styled.div`
   font-size: 14px;
   line-height: 140%;
   text-align: center;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 export default function LinkedAddress({ chain }) {
@@ -265,14 +258,14 @@ export default function LinkedAddress({ chain }) {
 
   return (
     <Wrapper>
-      <Title>Linked address</Title>
+      <TitleContainer>Linked address</TitleContainer>
       <ContentWrapper>
         {hasExtension ? (
           <div>
             <InfoWrapper>{`Associate your account with an on-chain address using the Polkadot{.js} extension.`}</InfoWrapper>
-            <Button secondary onClick={loadExtensionAddresses}>
+            <SecondaryButton onClick={loadExtensionAddresses}>
               Show available accounts
-            </Button>
+            </SecondaryButton>
           </div>
         ) : (
           <DownloadExtension />

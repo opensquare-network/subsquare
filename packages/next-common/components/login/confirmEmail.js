@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Button from "next-common/components/button";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 
@@ -8,6 +7,7 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
+import SecondaryButton from "../buttons/secondaryButton";
 
 export default function ConfirmEmail({ pin, email, identity, setErrors }) {
   const dispatch = useDispatch();
@@ -45,8 +45,8 @@ export default function ConfirmEmail({ pin, email, identity, setErrors }) {
   };
 
   return (
-    <Button isFill secondary type="submit" onClick={submit} isLoading={loading}>
+    <SecondaryButton isFill isLoading={loading} onClick={submit}>
       Confirm
-    </Button>
+    </SecondaryButton>
   );
 }

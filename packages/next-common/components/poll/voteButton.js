@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Button from "../button";
+import SecondaryButton from "../buttons/secondaryButton";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -11,11 +11,15 @@ export default function VoteButton({ onClick, disabled, isSubmitting }) {
   return (
     <ButtonWrapper>
       {disabled ? (
-        <Button disabled>Vote</Button>
+        <SecondaryButton disabled>Vote</SecondaryButton>
       ) : (
-        <Button secondary isLoading={isSubmitting} onClick={onClick}>
+        <SecondaryButton
+          isLoading={isSubmitting}
+          onClick={onClick}
+          disabled={disabled}
+        >
           Vote
-        </Button>
+        </SecondaryButton>
       )}
     </ButtonWrapper>
   );

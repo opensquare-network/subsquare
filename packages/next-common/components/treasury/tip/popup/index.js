@@ -1,23 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import useApi from "../../../../utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "../../../../utils/hooks/useIsMounted";
-import Button from "../../../button";
 import { newErrorToast } from "../../../../store/reducers/toastSlice";
 
-import { checkInputValue, getNode } from "../../../../utils";
+import { checkInputValue, emptyFunction, getNode } from "../../../../utils";
 import PopupWithAddress from "../../../popupWithAddress";
-import { emptyFunction } from "../../../../utils";
 import Beneficiary from "../../common/beneficiary";
 import TipReason from "./tipReason";
 import Signer from "./signer";
-import Tab, { ReportAwesome, NewTip } from "./tab";
+import Tab, { NewTip, ReportAwesome } from "./tab";
 import TipValue from "./tipValue";
 import useAddressBalance from "../../../../utils/hooks/useAddressBalance";
 import { sendTx } from "../../../../utils/sendTx";
+import SecondaryButton from "../../../buttons/secondaryButton";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -108,7 +106,9 @@ function PopupContent({
 
   return (
     <>
-      <Tab tabIndex={tabIndex} setTabIndex={setTabIndex} />
+      <div style={{ marginTop: "16px", marginBottom: "16px" }}>
+        <Tab tabIndex={tabIndex} setTabIndex={setTabIndex} />
+      </div>
       <Signer
         api={api}
         chain={chain}
@@ -129,9 +129,9 @@ function PopupContent({
         <TipValue chain={chain} setValue={setInputValue} />
       )}
       <ButtonWrapper>
-        <Button secondary isLoading={loading} onClick={submit}>
+        <SecondaryButton isLoading={loading} onClick={submit}>
           Submit
-        </Button>
+        </SecondaryButton>
       </ButtonWrapper>
     </>
   );

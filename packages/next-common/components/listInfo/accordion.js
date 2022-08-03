@@ -1,28 +1,22 @@
-import React, { useState, memo } from "react";
+import React, { memo, useState } from "react";
 import styled from "styled-components";
-import Panel from "../styled/panel";
 import Caret from "../icons/caret";
+import { PrimaryCard } from "../styled/containers/primaryCard";
+import { TitleContainer } from "../styled/containers/titleContainer";
 
-const Wrapper = styled(Panel)`
+const Wrapper = styled(PrimaryCard)`
   margin: 16px 0;
-
-  > div {
-    background: none !important;
-  }
 
   div:last-child {
     border-bottom: none;
   }
 `;
 
-const Title = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
+const Title = styled(TitleContainer)`
   span {
+    display: inline-flex;
+    align-items: center;
     font-weight: bold;
-    font-size: 16px;
   }
 
   svg {

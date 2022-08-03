@@ -1,21 +1,25 @@
-import styled, { css } from "styled-components";
-import { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import Button from "next-common/components/button";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 import TipInput from "./tipInput";
-import { getNode, toPrecision } from "utils";
+import {
+  checkInputValue,
+  emptyFunction,
+  getNode,
+  toPrecision,
+} from "next-common/utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import SignerSelect from "next-common/components/signerSelect";
 import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
 import PopupLabel from "next-common/components/popup/label";
 import { WarningMessage } from "next-common/components/popup/styled";
-import { checkInputValue, emptyFunction } from "next-common/utils";
 import { sendTx } from "next-common/utils/sendTx";
+import SecondaryButton from "next-common/components/buttons/secondaryButton";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -139,11 +143,11 @@ function PopupContent({
       </div>
       <ButtonWrapper>
         {selectedAccountIsTipper && api && inputTipValue ? (
-          <Button secondary isLoading={tipping} onClick={doEndorse}>
+          <SecondaryButton isLoading={tipping} onClick={doEndorse}>
             Endorse
-          </Button>
+          </SecondaryButton>
         ) : (
-          <Button disabled>Endorse</Button>
+          <SecondaryButton disabled>Endorse</SecondaryButton>
         )}
       </ButtonWrapper>
     </>

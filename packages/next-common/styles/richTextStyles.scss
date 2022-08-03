@@ -20,11 +20,6 @@
     margin-right: 4px;
   }
 
-  pre {
-    background: #eee !important;
-    color: #000 !important;
-  }
-
   ol,
   ul {
     padding-inline-start: 20px;
@@ -36,12 +31,6 @@
       display: none;
     }
   }
-
-  span.mention,
-  span.mention span {
-    background-color: #fff;
-    color: #1f70c7;
-  }
 }
 
 /*markdown*/
@@ -51,9 +40,6 @@
 
 // quilljs
 .post-content {
-  .html-body ol > li[data-list="bullet"]::before {
-    content: "•";
-  }
 
   .html-body > * {
     margin-top: 0;

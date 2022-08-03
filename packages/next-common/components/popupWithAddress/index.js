@@ -17,13 +17,11 @@ const Wrapper = styled.div`
   width: 400px;
   padding: 24px;
   transform: translate(-50%, -50%);
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  box-shadow: 0 6px 22px rgba(30, 33, 52, 0.11),
-    0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
-    0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
+  box-shadow: ${(props) => props.theme.shadow200};
   border-radius: 6px;
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
   > :not(:first-child) {
     margin-top: 16px;
   }

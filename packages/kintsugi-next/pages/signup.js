@@ -1,21 +1,21 @@
 import styled from "styled-components";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-
-import Layout from "next-common/components/layout";
-import Button from "next-common/components/button";
 import Input from "next-common/components/input";
-import { useForm } from "utils/hooks";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { shadow_100 } from "styles/componentCss";
 import NextHead from "next-common/components/nextHead";
 import UserPolicy from "next-common/components/userPolicy";
+import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import GhostButton from "next-common/components/buttons/ghostButton";
+import { PageTitleContainer } from "next-common/components/styled/containers/titleContainer";
+import useForm from "next-common/utils/hooks/useForm";
+import BaseLayout from "next-common/components/layout/baseLayout";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -28,9 +28,9 @@ const Wrapper = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
+  box-shadow: ${(props) => props.theme.shadow100};
   border-radius: 6px;
   width: 400px;
   margin: 0 auto;
@@ -49,13 +49,6 @@ const ContentWrapper = styled.div`
   }
 `;
 
-const Title = styled.div`
-  font-weight: bold;
-  font-size: 20px;
-  text-align: center;
-  line-height: 20px;
-`;
-
 const ButtonWrapper = styled.div`
   > :not(:first-child) {
     margin-top: 12px;
@@ -63,12 +56,12 @@ const ButtonWrapper = styled.div`
 `;
 
 const LinkWrapper = styled.div`
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   text-align: center;
 
   a {
     font-weight: bold;
-    color: #6848ff;
+    color: ${(props) => props.theme.primaryPurple500};
   }
 `;
 
@@ -79,6 +72,7 @@ const Label = styled.div`
   font-size: 12px;
   margin-bottom: 8px;
   line-height: 12px;
+  color: ${(props) => props.theme.textPrimary};
 
   :not(:first-child) {
     margin-top: 16px;
@@ -87,19 +81,19 @@ const Label = styled.div`
 
 const InfoWrapper = styled.div`
   padding: 12px 16px;
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
   line-height: 150%;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
 `;
 
 const Redirect = styled.div`
   text-align: center;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
 
   .sec {
     font-weight: bold;
-    color: #6848ff;
+    color: ${(props) => props.theme.primaryPurple500};
     margin-left: 8px;
   }
 `;
@@ -189,12 +183,12 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   }, [sendEmailState, countdown, isMounted, router]);
 
   return (
-    <Layout user={loginUser} chain={chain}>
+    <BaseLayout user={loginUser} chain={chain}>
       <NextHead title={`Signup`} desc={`Signup`} />
       <Wrapper>
         {!success && (
           <ContentWrapper>
-            <Title>Sign up</Title>
+            <PageTitleContainer>Sign up</PageTitleContainer>
             <FormWrapper onSubmit={handleSubmit}>
               <InputWrapper>
                 <Label>Username</Label>
@@ -239,9 +233,9 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
                 setAgreeError={setAgreeError}
               />
               <ButtonWrapper>
-                <Button isFill secondary type="submit" isLoading={loading}>
+                <SecondaryButton isFill type="submit" isLoading={loading}>
                   Sign up
-                </Button>
+                </SecondaryButton>
               </ButtonWrapper>
             </FormWrapper>
             <LinkWrapper>
@@ -251,18 +245,20 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
         )}
         {success && (
           <ContentWrapper>
-            <Title>{sendEmailState ? "Congrats." : "Sending..."}</Title>
+            <PageTitleContainer>
+              {sendEmailState ? "Congrats." : "Sending..."}
+            </PageTitleContainer>
             <InfoWrapper>
               {sendEmailState
                 ? "We sent you an email to verify your address. Click on the link in the email."
                 : "Sending an email to verify your address."}
             </InfoWrapper>
-            <Button isFill secondary onClick={() => router.replace("/")}>
+            <SecondaryButton isFill onClick={() => router.replace("/")}>
               Got it
-            </Button>
-            <Button isFill onClick={sendVerifyEmail}>
+            </SecondaryButton>
+            <GhostButton isFill onClick={sendVerifyEmail}>
               Resend
-            </Button>
+            </GhostButton>
             {sendEmailState && (
               <Redirect>
                 The page will be re-directed in
@@ -272,7 +268,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
           </ContentWrapper>
         )}
       </Wrapper>
-    </Layout>
+    </BaseLayout>
   );
 });
 

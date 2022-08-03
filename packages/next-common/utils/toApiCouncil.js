@@ -1,19 +1,15 @@
-import {
-  TYPE_COUNCIL_MOTION,
-  TYPE_FINANCIAL_MOTION,
-  TYPE_TECH_COMM_MOTION,
-} from "./viewConstants";
+import { detailPageCategory } from "./consts/business/category";
 
 export default function toApiCouncil(chain, type) {
-  if (type === TYPE_COUNCIL_MOTION) {
+  if (type === detailPageCategory.COUNCIL_MOTION) {
     if (["karura", "acala"].includes(chain)) {
       return "generalCouncil";
     } else {
       return "council";
     }
-  } else if (type === TYPE_FINANCIAL_MOTION) {
+  } else if (type === detailPageCategory.FINANCIAL_MOTION) {
     return "financialCouncil";
-  } else if (type === TYPE_TECH_COMM_MOTION) {
+  } else if (type === detailPageCategory.TECH_COMM_MOTION) {
     return "technicalCommittee";
   }
 

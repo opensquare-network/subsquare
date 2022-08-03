@@ -10,19 +10,16 @@ import PostEdit from "next-common/components/post/postEdit";
 import EditIcon from "../assets/imgs/icons/edit.svg";
 import PostDataSource from "./postDataSource";
 import Poll from "./poll";
-import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
-const Wrapper = styled.div`
+import { MarkdownPreviewer, HtmlPreviewer } from "@osn/previewer";
+import RichTextStyleWrapper from "./content/richTextStyleWrapper";
+import Divider from "./styled/layout/divider";
+
+const Wrapper = styled(RichTextStyleWrapper)`
   :hover {
     .edit {
       display: block;
     }
   }
-`;
-
-const Divider = styled.div`
-  height: 1px;
-  background: #ebeef4;
-  margin: 16px 0;
 `;
 
 const PlaceHolder = styled.div`
@@ -31,7 +28,7 @@ const PlaceHolder = styled.div`
   font-size: 14px;
   line-height: 140%;
   text-align: center;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   height: 68px;
   display: flex;
   align-items: center;
@@ -46,7 +43,7 @@ const GreyWrapper = styled.div`
   font-size: 12px;
   line-height: 22px;
   padding: 8px 12px;
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
   margin-top: 16px;
 `;
@@ -56,7 +53,7 @@ const GreyItem = styled.div`
   margin-right: 12px;
 
   > .username {
-    color: #506176;
+    color: ${(props) => props.theme.textSecondary};
   }
 `;
 
@@ -65,7 +62,7 @@ const EditedLabel = styled.div`
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 const Edit = styled.div`
@@ -75,7 +72,7 @@ const Edit = styled.div`
   font-size: 14px;
   line-height: 140%;
   text-align: center;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   display: flex;
   align-items: center;
 
@@ -103,7 +100,6 @@ export default function ArticleContent({
 }) {
   const dispatch = useDispatch();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
-  const [showThumbsUpList, setShowThumbsUpList] = useState(false);
   if (!post) {
     return null;
   }
@@ -166,7 +162,7 @@ export default function ArticleContent({
     <Wrapper>
       {!isEdit && (
         <>
-          <Divider />
+          <Divider margin={16} />
           {post.content === "" && (
             <PlaceHolder>
               {`The ${type} has not been edited by creator.`}
@@ -200,14 +196,18 @@ export default function ArticleContent({
           {post.bannerUrl && (
             <BannerImage src={post.bannerUrl} alt="banner image" />
           )}
-          {post.contentType === "markdown" && <MarkdownPreviewer content={post.content}/>}
-          {post.contentType === "html" && <HtmlPreviewer content={post.content}/>}
+          {post.contentType === "markdown" && (
+            <MarkdownPreviewer content={post.content} />
+          )}
+          {post.contentType === "html" && (
+            <HtmlPreviewer content={post.content} />
+          )}
           {post.createdAt !== post.updatedAt && (
             <EditedLabel>Edited</EditedLabel>
           )}
           {post.poll && (
             <>
-              <Divider />
+              <Divider margin={16} />
               <Poll
                 chain={chain}
                 poll={post.poll}
@@ -220,32 +220,15 @@ export default function ArticleContent({
             <PostDataSource type={type} post={post} />
           )}
           <Actions
+            chain={chain}
             highlight={isLoggedIn && thumbUp}
             noHover={!isLoggedIn || ownPost}
             edit={ownPost}
             setIsEdit={setIsEdit}
             toggleThumbUp={toggleThumbUp}
-            count={post.reactions?.length}
-            showThumbsUpList={showThumbsUpList}
-            setShowThumbsUpList={setShowThumbsUpList}
+            reactions={post?.reactions}
             onReply={onReply}
           />
-          {showThumbsUpList && post.reactions?.length > 0 && (
-            <GreyWrapper style={{ marginTop: 10 }}>
-              {post.reactions
-                .filter((r) => r.user)
-                .map((r, index) => (
-                  <GreyItem key={index}>
-                    <User
-                      user={r.user}
-                      fontSize={12}
-                      chain={chain}
-                      showAvatar={false}
-                    />
-                  </GreyItem>
-                ))}
-            </GreyWrapper>
-          )}
         </>
       )}
       {isEdit && (

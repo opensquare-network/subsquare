@@ -5,9 +5,9 @@ export const TextBox = styled.div`
   display: flex;
   padding: 12px 16px;
 
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
 
-  border: 1px solid #ebeef4;
+  border: 1px solid ${(props) => props.theme.grey200Border};
   box-sizing: border-box;
   border-radius: 4px;
   font-size: 14px;

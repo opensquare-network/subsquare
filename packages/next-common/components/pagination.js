@@ -2,6 +2,8 @@ import React from "react";
 import styled, { css } from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import CaretLeft from "../assets/imgs/icons/pager-caret-left.svg";
+import CaretRight from "../assets/imgs/icons/pager-caret-right.svg";
 
 const Wrapper = styled.div`
   padding-top: 8px;
@@ -23,13 +25,14 @@ const Nav = styled.div`
   align-items: center;
   justify-content: center;
 
-  > img {
-    filter: invert(37%) sepia(45%) saturate(261%) hue-rotate(173deg)
-      brightness(89%) contrast(90%);
+  svg {
+    path {
+      stroke: ${(props) => props.theme.textSecondary};
+    }
   }
 
   :hover {
-    background: #ebeef4;
+    background: ${(props) => props.theme.grey100Bg};
   }
 
   ${(p) =>
@@ -37,9 +40,10 @@ const Nav = styled.div`
     css`
       cursor: auto;
       pointer-events: none;
-      > img {
-        filter: invert(82%) sepia(19%) saturate(265%) hue-rotate(177deg)
-          brightness(81%) contrast(83%);
+      svg {
+        path {
+          stroke: ${(props) => props.theme.textTertiary};
+        }
       }
 
       :hover {
@@ -59,17 +63,17 @@ const Item = styled.a`
   justify-content: center;
   font-size: 14px;
   font-weight: 500;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
 
   :hover {
-    background: #ebeef4;
+    background: ${(props) => props.theme.grey200Border};
   }
 
   ${(p) =>
     p.active &&
     css`
-      background: #ebeef4;
-      color: #1e2134;
+      background: ${(props) => props.theme.grey200Border};
+      color: ${(props) => props.theme.textPrimary};
       cursor: auto;
       pointer-events: none;
     `}
@@ -78,7 +82,7 @@ const Item = styled.a`
 const Ellipsis = styled.div`
   font-size: 14px;
   font-weight: 500;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
 
   & + & {
     display: none;
@@ -92,7 +96,6 @@ const encodeURIQuery = (q) =>
 
 export default function Pagination({ page, pageSize, total }) {
   const router = useRouter();
-
   const totalPages = Math.ceil(total / pageSize)
     ? Math.ceil(total / pageSize)
     : 1;
@@ -110,7 +113,7 @@ export default function Pagination({ page, pageSize, total }) {
           })}`}
           passHref
         >
-          <img src="/imgs/icons/caret-left.svg" alt="" width={20} height={20} />
+          <CaretLeft />
         </Link>
       </Nav>
       {Array.from(Array(totalPages)).map((_, index) =>
@@ -139,12 +142,7 @@ export default function Pagination({ page, pageSize, total }) {
           })}`}
           passHref
         >
-          <img
-            src="/imgs/icons/caret-right.svg"
-            alt=""
-            width={20}
-            height={20}
-          />
+          <CaretRight />
         </Link>
       </Nav>
     </Wrapper>

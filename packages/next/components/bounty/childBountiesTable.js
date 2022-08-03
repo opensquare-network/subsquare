@@ -1,11 +1,13 @@
 import Row from "next-common/components/listInfo/row";
 import Anchor from "next-common/components/styled/anchor";
-import { toPrecision } from "../../utils";
-import Tag from "next-common/components/tag";
+import { toPrecision } from "next-common/utils";
+import Tag from "next-common/components/tags/state/tag";
 import Accordion from "next-common/components/listInfo/accordion";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import FlexBetween from "next-common/components/styled/flexBetween";
+import Divider from "next-common/components/styled/layout/divider";
+import businessCategory from "next-common/utils/consts/business/category";
 
 const ChildBountyWrapper = styled.div`
   > div:first-child {
@@ -24,7 +26,7 @@ const ChildBounty = styled(FlexBetween)`
     white-space: pre-wrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: #1e2134;
+    color: ${(props) => props.theme.textPrimary};
   }
 
   > div {
@@ -57,12 +59,6 @@ const ChildBountyMobile = styled(Flex)`
   }
 `;
 
-const Divider = styled.div`
-  margin: 8px 0;
-  height: 1px;
-  background-color: #e6e6e6;
-`;
-
 const SemiBold = styled.span`
   font-weight: 500;
 `;
@@ -74,14 +70,14 @@ const DividerWrapper = styled(FlexBetween)`
     ::before {
       content: "·";
       font-size: 12px;
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary};
       margin: 0 8px;
     }
   }
 `;
 
 const Accessory = styled.span`
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 const DomesticLink = styled.a`
@@ -90,7 +86,7 @@ const DomesticLink = styled.a`
   width: 60px;
   font-size: 12px;
   font-weight: 500;
-  color: #6848ff;
+  color: ${(props) => props.theme.primaryPurple500};
   cursor: pointer;
 `;
 
@@ -119,7 +115,10 @@ function ChildBountiesTable({ childBounties, decimals, symbol }) {
                       {toPrecision(bounty.onchainData?.value, decimals)}{" "}
                       <Accessory>{symbol}</Accessory>
                     </SemiBold>
-                    <Tag name={bounty.onchainData?.state?.state} />
+                    <Tag
+                      state={bounty.onchainData?.state?.state}
+                      category={businessCategory.treasuryChildBounties}
+                    />
                   </FlexBetween>
                 </ChildBounty>,
               ]}
@@ -132,7 +131,7 @@ function ChildBountiesTable({ childBounties, decimals, symbol }) {
               >
                 {bounty.title}
               </Anchor>
-              <Divider />
+              <Divider margin={8} />
               <FlexBetween>
                 <DividerWrapper>
                   <SemiBold>#{bounty.index}</SemiBold>
@@ -145,7 +144,10 @@ function ChildBountiesTable({ childBounties, decimals, symbol }) {
                     <Accessory>{symbol}</Accessory>
                   </span>
                 </DividerWrapper>
-                <Tag name={bounty.onchainData?.state?.state} />
+                <Tag
+                  state={bounty.onchainData?.state?.state}
+                  category={businessCategory.treasuryChildBounties}
+                />
               </FlexBetween>
             </ChildBountyMobile>
           </ChildBountyWrapper>

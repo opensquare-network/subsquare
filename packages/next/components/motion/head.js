@@ -2,14 +2,17 @@ import styled from "styled-components";
 import User from "next-common/components/user";
 import useShowMotionEnd from "./useShowMotionEnd";
 import MotionEnd from "next-common/components/motionEnd";
-import SectionTag from "next-common/components/sectionTag";
-import Tag from "next-common/components/tag";
+import Tag from "next-common/components/tags/state/tag";
 import Flex from "next-common/components/styled/flex";
 import { getPostUpdatedAt } from "utils/viewfuncs";
 import { timeDurationFromNow } from "next-common/utils";
 import DemocracyNavigate from "./democracyNavigate";
 import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
+import {
+  DemocracyTag,
+  TreasuryTag,
+} from "next-common/components/tags/business";
 
 const MotionEndHeader = styled.div`
   display: flex;
@@ -21,7 +24,7 @@ const MotionEndHeader = styled.div`
   position: static;
   height: 38px;
 
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
 
   margin-bottom: 16px;
@@ -37,7 +40,7 @@ const TitleWrapper = styled.div`
       content: "·";
       font-size: 20px;
       line-height: 28px;
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary};
       margin: 0 8px;
     }
   }
@@ -72,7 +75,7 @@ const DividerWrapper = styled(Flex)`
     ::before {
       content: "·";
       font-size: 12px;
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary};
       margin: 0 8px;
     }
   }
@@ -107,9 +110,15 @@ export default function MotionHead({ motion, chain, type }) {
             chain={chain}
             fontSize={12}
           />
-          {motion.isTreasury && <SectionTag name={"Treasury"} />}
+          {motion.isTreasury && (
+            <div>
+              <TreasuryTag />
+            </div>
+          )}
           {motion?.onchainData?.externalProposals?.length > 0 && (
-            <SectionTag name={"Democracy"} />
+            <div>
+              <DemocracyTag />
+            </div>
           )}
           {postUpdateTime && (
             <Info>
@@ -118,7 +127,7 @@ export default function MotionHead({ motion, chain, type }) {
             </Info>
           )}
         </DividerWrapper>
-        {motion.state && <Tag name={motion.state} />}
+        {motion.state && <Tag state={motion.state} category={type} />}
       </FlexWrapper>
     </div>
   );

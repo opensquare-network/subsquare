@@ -12,8 +12,8 @@ const BackCircle = styled.div`
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  border: 8px solid #f5f2ff;
-  background: white;
+  border: 8px solid ${(props) => props.theme.primaryPurple100};
+  background: ${(props) => props.theme.neutral};
 `;
 
 const InnerCircleWrapper = styled.div`
@@ -28,9 +28,9 @@ const InnerCircle = styled.div`
   height: 46px;
   left: 1px;
   top: 1px;
-  background: white;
+  background: ${(props) => props.theme.neutral};
   border-radius: 50%;
-  border: 6px solid #6848ff;
+  border: 6px solid ${(props) => props.theme.primaryPurple500};
 `;
 
 const InnerCircleLeft = styled(InnerCircle)`
@@ -59,7 +59,7 @@ const PercentLable = styled.div`
   left: 50%;
   font-size: 12px;
   font-weight: bold;
-  color: rgba(0, 0, 0, 0.9);
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 const CountDown = ({ percent = 0 }) => {

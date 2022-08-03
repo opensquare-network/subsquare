@@ -1,74 +1,39 @@
 import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import Layout from "next-common/components/layout";
 import TechcommMotionDetail from "components/motion/techcommMotionDetail";
-import { TYPE_TECH_COMM_MOTION } from "utils/viewConstants";
-import { getMetaDesc } from "utils/viewfuncs";
-import { getFocusEditor, getOnReply } from "next-common/utils/post";
-import { useRef, useState } from "react";
-import Comments from "next-common/components/comment";
-import CommentsWrapper from "next-common/components/styled/commentsWrapper";
-import Editor from "next-common/components/comment/editor";
+import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { EmptyList } from "next-common/utils/constants";
-import DetailPageWrapper from "next-common/components/styled/detailPageWrapper";
-import useMentionList from "next-common/utils/hooks/useMentionList";
+import useCommentComponent from "next-common/components/useCommentComponent";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 
 export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
-  const users = useMentionList(motion, comments, chain);
-  const editorWrapperRef = useRef(null);
-  const [quillRef, setQuillRef] = useState(null);
-  const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown"
-  );
-  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
-  const onReply = getOnReply(
-    contentType,
-    content,
-    setContent,
-    quillRef,
-    focusEditor,
-    chain
-  );
+  const { CommentComponent, focusEditor } = useCommentComponent({
+    detail: motion,
+    comments,
+    loginUser,
+    chain,
+    type: detailPageCategory.TECH_COMM_MOTION,
+  });
 
-  const desc = getMetaDesc(motion, "Proposal");
+  const desc = getMetaDesc(motion);
   return (
-    <Layout
+    <DetailLayout
       user={loginUser}
-      chain={chain}
       seoInfo={{ title: motion?.title, desc, ogImage: motion?.bannerUrl }}
     >
-      <DetailPageWrapper className="post-content">
-        <Back href={`/techcomm/proposals`} text="Back to Proposals" />
-        <TechcommMotionDetail
-          motion={motion}
-          loginUser={loginUser}
-          chain={chain}
-          onReply={onReply}
-          type={TYPE_TECH_COMM_MOTION}
-        />
-        <CommentsWrapper>
-          <Comments
-            data={comments}
-            user={loginUser}
-            chain={chain}
-            onReply={onReply}
-          />
-          {loginUser && (
-            <Editor
-              postId={motion._id}
-              chain={chain}
-              ref={editorWrapperRef}
-              setQuillRef={setQuillRef}
-              {...{ contentType, setContentType, content, setContent, users }}
-              type={TYPE_TECH_COMM_MOTION}
-            />
-          )}
-        </CommentsWrapper>
-      </DetailPageWrapper>
-    </Layout>
+      <Back href={`/techcomm/proposals`} text="Back to Proposals" />
+      <TechcommMotionDetail
+        motion={motion}
+        loginUser={loginUser}
+        chain={chain}
+        onReply={focusEditor}
+        type={detailPageCategory.TECH_COMM_MOTION}
+      />
+      {CommentComponent}
+    </DetailLayout>
   );
 });
 

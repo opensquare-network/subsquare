@@ -2,18 +2,6 @@ import styled, { css } from "styled-components";
 import React, { Fragment } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import OverviewIcon from "../assets/imgs/icons/overview.svg";
-import DiscussionIcon from "../assets/imgs/icons/discussions.svg";
-import TipIcon from "../assets/imgs/icons/tips.svg";
-import ProposalIcon from "../assets/imgs/icons/proposals.svg";
-import MotionIcon from "../assets/imgs/icons/type-motions.svg";
-import ReferendaIcon from "../assets/imgs/icons/type-referenda.svg";
-import DemocracyProposalIcon from "../assets/imgs/icons/type-proposals.svg";
-import UserIcon from "../assets/imgs/icons/user.svg";
-import AddressIcon from "../assets/imgs/icons/address.svg";
-import BellIcon from "../assets/imgs/icons/bell.svg";
-import MembersIcon from "../assets/imgs/icons/members.svg";
-import BountyIcon from "../assets/imgs/icons/bounties.svg";
 import ExternalLink from "./icons/externalLink";
 
 const Wrapper = styled.div`
@@ -32,7 +20,7 @@ const Title = styled.div`
   font-weight: bold;
   font-size: 12px;
   letter-spacing: 0.16em;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 const Item = styled.div`
@@ -44,14 +32,25 @@ const Item = styled.div`
   font-weight: 500;
   cursor: pointer;
   font-size: 14px;
+  color: ${(props) => props.theme.textSecondary};
+  > svg:first-child {
+    path {
+      fill: ${(props) => props.theme.textSecondary};
+    }
+  }
+  > svg.external-link-icon {
+    path {
+      stroke: ${(props) => props.theme.textPlaceholder};
+    }
+  }
 
   :hover {
-    color: #6848ff;
+    color: ${(props) => props.theme.primaryPurple500};
 
     > svg {
       &:first-child {
-        * {
-          fill: #6848ff;
+        path {
+          fill: ${(props) => props.theme.primaryPurple500};
         }
       }
     }
@@ -69,12 +68,12 @@ const Item = styled.div`
     p.active &&
     css`
       font-weight: 600;
-      background: #ebeef4;
-      color: #6848ff;
+      background: ${(props) => props.theme.grey200Border};
+      color: ${(props) => props.theme.primaryPurple500};
 
       > svg {
-        * {
-          fill: #6848ff;
+        &:first-child path {
+          fill: ${(props) => props.theme.primaryPurple500};
         }
       }
     `}
@@ -83,37 +82,16 @@ const Item = styled.div`
 export default function Menu({ menu, chain }) {
   const router = useRouter();
 
-  const iconMap = new Map();
-  iconMap.set("overview", <OverviewIcon />);
-  iconMap.set("discussions", <DiscussionIcon />);
-  iconMap.set("offChainVoting", <ReferendaIcon />);
-  iconMap.set("tips", <TipIcon />);
-  iconMap.set("proposals", <ProposalIcon />);
-  iconMap.set("bounties", <BountyIcon />);
-  iconMap.set("child-bounties", <BountyIcon />);
-  iconMap.set("motions", <MotionIcon />);
-  iconMap.set("referenda", <ReferendaIcon />);
-  iconMap.set("democracyProposals", <DemocracyProposalIcon />);
-  iconMap.set("democracyExternals", <DemocracyProposalIcon />);
-  iconMap.set("techCommProposals", <DemocracyProposalIcon />);
-  iconMap.set("account", <UserIcon />);
-  iconMap.set("linked-address", <AddressIcon />);
-  iconMap.set("notification", <BellIcon />);
-  iconMap.set("councilMembers", <MembersIcon />);
-  iconMap.set("techCommMembers", <MembersIcon />);
-  iconMap.set("financialCouncilMembers", <MembersIcon />);
-  iconMap.set("financialMotions", <MotionIcon />);
-
   return (
     <Wrapper>
-      {menu.map((item, index) => {
-        if (item?.excludeToChains?.includes(chain)) {
+      {menu.map((menu, index) => {
+        if (menu?.excludeToChains?.includes(chain)) {
           return null;
         }
         return (
           <div key={index}>
-            {item.name && <Title>{item.name}</Title>}
-            {item.items.map((item, index) => {
+            {menu.name && <Title>{menu.name}</Title>}
+            {menu.items.map((item, index) => {
               const isExternalLink = (item.pathname || "").startsWith("http");
 
               if (item?.excludeToChains?.includes(chain)) {
@@ -130,7 +108,7 @@ export default function Menu({ menu, chain }) {
                             item.pathname === "/")
                         }
                       >
-                        {iconMap.get(item.value)}
+                        {item.icon}
                         <span>{item.name}</span>
                         {isExternalLink && <ExternalLink color="#D7DEE8" />}
                       </Item>

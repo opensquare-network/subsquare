@@ -1,17 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Input from "../input";
-import Button from "../button";
 import ErrorText from "../ErrorText";
 import nextApi from "../../services/nextApi";
 import { newSuccessToast } from "../../store/reducers/toastSlice";
 import { fetchUserProfile } from "../../store/reducers/userSlice";
-import { Label, InputWrapper, EmailVerify } from "./styled";
+import { EmailVerify, InputWrapper, Label } from "./styled";
 import useCountdown from "../../utils/hooks/useCountdown";
 import CircleCheck from "../../assets/imgs/icons/circle-check.svg";
 import CircleWarning from "../../assets/imgs/icons/circle-warning.svg";
+import SecondaryButton from "../buttons/secondaryButton";
 
 const CountdownWrapper = styled.div`
   display: flex;
@@ -22,7 +21,7 @@ const CountdownWrapper = styled.div`
   width: 80px;
   height: 38px;
 
-  border: 1px solid #e0e4eb;
+  border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
 
   font-style: normal;
@@ -31,7 +30,7 @@ const CountdownWrapper = styled.div`
   line-height: 100%;
 
   text-align: center;
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 export default function NotificationEmail({ email, verified }) {
@@ -105,9 +104,9 @@ export default function NotificationEmail({ email, verified }) {
           <CountdownWrapper>{countdown}s</CountdownWrapper>
         ) : (
           (!verified || inputEmail !== email) && (
-            <Button secondary onClick={onResend} isLoading={resendLoading}>
+            <SecondaryButton onClick={onResend} isLoading={resendLoading}>
               Verify
-            </Button>
+            </SecondaryButton>
           )
         )}
       </InputWrapper>
