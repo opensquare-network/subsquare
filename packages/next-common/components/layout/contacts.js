@@ -2,11 +2,12 @@ import React from "react";
 import ExternalLink from "../externalLink";
 import ElementIcon from "../../assets/imgs/icons/element.svg";
 import MailIcon from "../../assets/imgs/icons/mail.svg";
-import styled, { css, withTheme } from "styled-components";
+import styled, { withTheme } from "styled-components";
 import Flex from "../styled/flex";
-import useDarkMode from "../../utils/hooks/useDarkMode";
 import Sun from "../../assets/imgs/icons/sun.svg";
 import Moon from "../../assets/imgs/icons/moon.svg";
+import { useDispatch } from "react-redux";
+import { toggleMode } from "../../store/reducers/settingSlice";
 
 const FlexWrapper = styled(Flex)`
   gap: 8px;
@@ -44,7 +45,9 @@ const ThemeToggle = styled.div`
 `;
 
 function Contacts({ theme }) {
-  const [, themeToggler] = useDarkMode();
+  const dispatch = useDispatch();
+  const toggle = () => dispatch(toggleMode());
+
   return (
     <FlexWrapper>
       {/*<ExternalLink href="http://docs.subsquare.io/" title="Document">*/}
@@ -60,7 +63,7 @@ function Contacts({ theme }) {
         <MailIcon />
       </ExternalLink>
       <Divider />
-      <ThemeToggle onClick={themeToggler}>
+      <ThemeToggle onClick={toggle}>
         {theme?.isDark ? <Sun /> : <Moon />}
       </ThemeToggle>
     </FlexWrapper>

@@ -17,9 +17,9 @@ import signalFast from "../../assets/imgs/icons/signal-fast.png";
 import darkSignalMedium from "../../assets/imgs/icons/dark-signal-medium.png";
 import darkSignalSlow from "../../assets/imgs/icons/dark-signal-slow.png";
 import darkSignalFast from "../../assets/imgs/icons/dark-signal-fast.png";
-import useDarkMode from "../../utils/hooks/useDarkMode";
 import light from "../styled/theme/light";
 import dark from "../styled/theme/dark";
+import { modeSelector } from "../../store/reducers/settingSlice";
 
 const SignalDefaultIcon = styled(SignalDefault)`
   path {
@@ -139,7 +139,7 @@ export default function NodeSwitch({ small, chain }) {
     getChainSettings(chain).endpoints
   );
   const dispatch = useDispatch();
-  const [mode] = useDarkMode();
+  const mode = useSelector(modeSelector);
 
   useOnClickOutside(ref, () => setShow(false));
 

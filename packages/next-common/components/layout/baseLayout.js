@@ -5,7 +5,6 @@ import { currentNodeSelector } from "../../store/reducers/nodeSlice";
 import useApi from "../../utils/hooks/useApi";
 import { useBestNumber, useBlockTime } from "../../utils/hooks";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
-import useDarkMode from "../../utils/hooks/useDarkMode";
 import dark from "../styled/theme/dark";
 import light from "../styled/theme/light";
 import {
@@ -22,6 +21,7 @@ import Auth from "../auth";
 import Header from "../header";
 import Content from "./content";
 import Toast from "../toast";
+import { modeSelector } from "../../store/reducers/settingSlice";
 
 const Wrapper = styled.div`
   display: flex;
@@ -41,7 +41,7 @@ export default function BaseLayout({ user, left, children, seoInfo }) {
   const bestNumber = useBestNumber(api);
   const dispatch = useDispatch();
   const isMounted = useIsMountedBool();
-  const [mode] = useDarkMode();
+  const mode = useSelector(modeSelector);
   const theme = mode === "dark" ? dark : light;
 
   useEffect(() => {

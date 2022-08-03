@@ -2,9 +2,10 @@ import React from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { useRouter } from "next/router";
 import NextHead from "next-common/components/nextHead";
-import useDarkMode from "../../utils/hooks/useDarkMode";
 import dark from "../styled/theme/dark";
 import light from "../styled/theme/light";
+import { useSelector } from "react-redux";
+import { modeSelector } from "../../store/reducers/settingSlice";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -60,7 +61,7 @@ const P = styled.p`
 
 const Page404 = function Custom404() {
   const router = useRouter();
-  const [mode] = useDarkMode();
+  const mode = useSelector(modeSelector);
   const theme = mode === "dark" ? dark : light;
   return (
     <ThemeProvider theme={theme}>
