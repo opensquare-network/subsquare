@@ -61,12 +61,6 @@ const TitleWrapper = styled.div`
 const FlexWrapper = styled(Flex)`
   justify-content: space-between;
   flex-wrap: nowrap;
-  color: red !important;
-  ${(props) =>
-    props?.theme.isDark &&
-    css`
-      color: rgba(255, 255, 255, 0.25);
-    `};
 `;
 
 const TypeWrapper = styled.div`
@@ -144,7 +138,8 @@ export default function DetailItem({
 
   const postUpdatedTime = getPostUpdatedAt(post);
 
-  const commentsCount = (post.commentsCount || 0) + (post.polkassemblyCommentsCount || 0);
+  const commentsCount =
+    (post.commentsCount || 0) + (post.polkassemblyCommentsCount || 0);
 
   return (
     <EditablePanel>
@@ -276,9 +271,7 @@ export default function DetailItem({
                   <span>{timeDurationFromNow(postUpdatedTime)}</span>
                 </Info>
               )}
-              {commentsCount > -1 && (
-                <Info>{`${commentsCount} Comments`}</Info>
-              )}
+              {commentsCount > -1 && <Info>{`${commentsCount} Comments`}</Info>}
             </DividerWrapper>
             {post.status && <Tag state={post.status} category={type} />}
           </FlexWrapper>

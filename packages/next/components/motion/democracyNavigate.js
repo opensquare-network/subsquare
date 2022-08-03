@@ -26,7 +26,7 @@ const ReferendaWrapper = styled(Flex)`
   }
 
   a {
-    color: #1f70c7;
+    color: ${(props) => props.theme.secondarySapphire500};
   }
 
   > :not(:first-child) {
