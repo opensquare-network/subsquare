@@ -6,22 +6,14 @@ import Identity from "./Identity";
 import styled, { css } from "styled-components";
 import { addressEllipsis } from "../utils";
 import useDarkMode from "../utils/hooks/useDarkMode";
+import dark from "./styled/theme/dark";
+import light from "./styled/theme/light";
 
 const NameWrapper = styled.div`
   font-size: 14px;
   font-weight: 500;
   color: ${(props) => props.theme.secondarySapphire500};
-  ${(props) =>
-    props?.theme === "dark" &&
-    css`
-      a {
-        background: rgba(31, 112, 199, 0.07);
-      }
-      span,
-      div {
-        color: #1f70c7;
-      }
-    `};
+  background: ${(props) => props.theme.secondarySapphire100};
 `;
 
 const MentionBox = styled.a`
@@ -29,13 +21,13 @@ const MentionBox = styled.a`
   padding: 0 8px;
   gap: 2px;
   line-height: 20px;
-  background: #eff5fb;
   border-radius: 4px;
 `;
 
 function IdentityOrAddr({ address, network }) {
   const [identity, setIdentity] = useState(null);
-  const [theme] = useDarkMode();
+  const [mode] = useDarkMode();
+  const theme = mode === "dark" ? dark : light;
 
   useEffect(() => {
     setIdentity(null);

@@ -14,7 +14,7 @@ const Selector = styled.div`
   padding: 11px 15px;
   display: flex;
   align-items: center;
-  border: 1px solid #e0e4eb;
+  border: 1px solid ${(p) => p.theme.grey300Border};
   border-radius: 4px;
   cursor: pointer;
   > div {
@@ -23,7 +23,7 @@ const Selector = styled.div`
   ${(p) =>
     p.active &&
     css`
-      border: 1px solid #c2c8d5;
+      border: 1px solid ${(props) => props.theme.grey400Border};
     `}
   ${(p) =>
     p.disabled &&

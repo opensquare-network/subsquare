@@ -23,7 +23,7 @@ const CaretWrapper = styled.div`
     border-color: ${(props) => props.theme.grey400Border};
   }
   * {
-    stroke: rgb(30, 33, 52);
+    stroke: ${(props) => props.theme.textPrimary};
   }
 
   ${(p) =>

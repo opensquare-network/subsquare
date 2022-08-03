@@ -113,7 +113,7 @@ const MotionEndHeader = styled.div`
   border-radius: 4px;
 
   margin-bottom: 16px;
-  color: rgba(80, 97, 118, 1);
+  color: ${(props) => props.theme.textSecondary};
 `;
 
 function createMotionBusinessData(motion, chain) {

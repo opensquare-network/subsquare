@@ -16,7 +16,7 @@ const Wrapper = styled.div`
 `;
 
 const Select = styled.div`
-  background: #fff;
+  background: ${(props) => props.theme.textContrast};
   border: 1px solid ${(props) => props.theme.grey300Border};
   background: ${(props) => props.theme.neutral};
   border-radius: 4px;
