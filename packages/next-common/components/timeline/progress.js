@@ -12,7 +12,11 @@ const BarWrapper = styled(Flex)``;
 const Bar = styled.div`
   height: 4px;
   background: ${(p) =>
-    p.value === true ? "#4caf50" : p.value === false ? "#f44336" : "#ebeef4"};
+    p.value === true
+      ? p.theme.secondaryGreen500
+      : p.value === false
+      ? p.theme.secondaryRed500
+      : p.theme.grey200Border};
   flex-grow: 1;
   :not(:first-child) {
     margin-left: 4px;
