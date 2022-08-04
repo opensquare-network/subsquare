@@ -8,6 +8,7 @@ import Flex from "next-common/components/styled/flex";
 import FlexBetween from "next-common/components/styled/flexBetween";
 import Divider from "next-common/components/styled/layout/divider";
 import businessCategory from "next-common/utils/consts/business/category";
+import ValueDisplay from "next-common/components/displayValue";
 
 const ChildBountyWrapper = styled.div`
   > div:first-child {
@@ -31,10 +32,15 @@ const ChildBounty = styled(FlexBetween)`
 
   > div {
     flex-basis: 240px;
+    .figures {
+    }
+    .symbol {
+      color: ${(props) => props.theme.textTertiary};
+    }
   }
   > div > span {
-    flex-basis: 120px;
     text-align: right;
+    line-height: 14px;
   }
 `;
 
@@ -74,6 +80,10 @@ const DividerWrapper = styled(FlexBetween)`
       margin: 0 8px;
     }
   }
+
+  > div {
+    display: flex;
+  }
 `;
 
 const Accessory = styled.span`
@@ -111,10 +121,10 @@ function ChildBountiesTable({ childBounties, decimals, symbol }) {
                     {bounty.title}
                   </Anchor>
                   <FlexBetween style={{ height: 20 }}>
-                    <SemiBold>
-                      {toPrecision(bounty.onchainData?.value, decimals)}{" "}
-                      <Accessory>{symbol}</Accessory>
-                    </SemiBold>
+                    <ValueDisplay
+                      value={toPrecision(bounty.onchainData?.value, decimals)}
+                      symbol={symbol}
+                    />
                     <Tag
                       state={bounty.onchainData?.state?.state}
                       category={businessCategory.treasuryChildBounties}
@@ -135,14 +145,10 @@ function ChildBountiesTable({ childBounties, decimals, symbol }) {
               <FlexBetween>
                 <DividerWrapper>
                   <SemiBold>#{bounty.index}</SemiBold>
-                  <span>
-                    {" "}
-                    <SemiBold>
-                      {" "}
-                      {toPrecision(bounty.onchainData?.value, decimals)}
-                    </SemiBold>{" "}
-                    <Accessory>{symbol}</Accessory>
-                  </span>
+                  <ValueDisplay
+                    value={toPrecision(bounty.onchainData?.value, decimals)}
+                    symbol={symbol}
+                  />
                 </DividerWrapper>
                 <Tag
                   state={bounty.onchainData?.state?.state}

@@ -347,7 +347,7 @@ function Vote({
             </Header>
             <Value>
               <ValueDisplay
-                value={BigNumber.max(nTurnout, nElectorate)}
+                value={BigNumber.max(nTurnout, nElectorate).toNumber()}
                 symbol={symbol}
                 noWrap={width <= 1024}
               />
