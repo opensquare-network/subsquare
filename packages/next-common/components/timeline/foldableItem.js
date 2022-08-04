@@ -35,14 +35,14 @@ const Left = styled.div`
 const Circle = styled.div`
   height: 12px;
   width: 12px;
-  border: 3px solid #6848ff;
+  border: 3px solid ${(props) => props.theme.primaryPurple500};
   border-radius: 50%;
   margin: 4px 0;
 `;
 
 const Bar = styled.div`
   width: 2px;
-  background-color: #b4a3ff;
+  background-color: ${(props) => props.theme.primaryPurple300};
   margin: 0 auto;
   flex-grow: 1;
   ${(p) =>
@@ -56,7 +56,7 @@ const Mid = styled.div`
   height: 2px;
   width: 8px;
   margin: 9px 4px 0;
-  background-color: #b4a3ff;
+  background-color: ${(props) => props.theme.primaryPurple300};
 `;
 
 const Right = styled.div`
