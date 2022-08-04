@@ -46,7 +46,8 @@ export default function ValueDisplay({ value, symbol, noWrap }) {
   }
   return (
     <div>
-      <span className="figures">{value}</span>{" "}
+      <span className="figures">{value} </span>
+      <span style={{ width: 4 }} />
       <span className="symbol">{symbol}</span>
     </div>
   );
