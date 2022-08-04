@@ -11,6 +11,10 @@ const RichTextStyleWrapper = styled.div`
   div.ql-editor,
   div.html-body,
   div.markdown-body {
+    hr {
+      background-color: ${(props) => props.theme.grey200Border};
+    }
+
     span.mention,
     span.mention span {
       background-color: ${(props) => props.theme.neutral};

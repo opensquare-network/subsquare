@@ -36,8 +36,8 @@ const SmallSelect = styled.div`
   width: 38px;
   height: 38px;
   background: ${(props) => props.theme.neutral};
-  border-width: ${(props) => (props.theme.isDark ? 1 : 0)}px;
-  border-style: ${(props) => (props.theme.isDark ? "solid" : "none")};
+  border-width: 1px;
+  border-style: solid;
   border-color: ${(props) => props.theme.grey300Border};
   color: ${(props) => props.theme.textPrimary};
   border-radius: 4px;

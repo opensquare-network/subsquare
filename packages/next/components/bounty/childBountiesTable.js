@@ -32,7 +32,10 @@ const ChildBounty = styled(FlexBetween)`
 
   > div {
     flex-basis: 240px;
-    .figures {
+    > div:first-child {
+      flex-basis: 120px;
+      display: flex;
+      justify-content: end;
     }
     .symbol {
       color: ${(props) => props.theme.textTertiary};
@@ -40,7 +43,7 @@ const ChildBounty = styled(FlexBetween)`
   }
   > div > span {
     text-align: right;
-    line-height: 14px;
+    line-height: 15px;
   }
 `;
 
@@ -86,10 +89,6 @@ const DividerWrapper = styled(FlexBetween)`
   }
 `;
 
-const Accessory = styled.span`
-  color: ${(props) => props.theme.textTertiary};
-`;
-
 const DomesticLink = styled.a`
   margin-top: 16px;
   display: block;
@@ -120,7 +119,7 @@ function ChildBountiesTable({ childBounties, decimals, symbol }) {
                   >
                     {bounty.title}
                   </Anchor>
-                  <FlexBetween style={{ height: 20 }}>
+                  <FlexBetween style={{ height: 23 }}>
                     <ValueDisplay
                       value={toPrecision(bounty.onchainData?.value, decimals)}
                       symbol={symbol}
