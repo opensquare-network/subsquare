@@ -5,10 +5,6 @@ import { encodeAddressToChain } from "../services/address";
 import Identity from "./Identity";
 import styled from "styled-components";
 import { addressEllipsis } from "../utils";
-import dark from "./styled/theme/dark";
-import light from "./styled/theme/light";
-import { modeSelector } from "../store/reducers/settingSlice";
-import { useSelector } from "react-redux";
 
 const NameWrapper = styled.div`
   font-size: 14px;
@@ -27,8 +23,6 @@ const MentionBox = styled.a`
 
 function IdentityOrAddr({ address, network }) {
   const [identity, setIdentity] = useState(null);
-  const mode = useSelector(modeSelector);
-  const theme = mode === "dark" ? dark : light;
 
   useEffect(() => {
     setIdentity(null);
@@ -43,7 +37,7 @@ function IdentityOrAddr({ address, network }) {
   }, [address, network]);
 
   return (
-    <NameWrapper theme={theme}>
+    <NameWrapper>
       {identity && identity?.info?.status !== "NO_ID" ? (
         <MentionBox href={`/member/${address}`} target="_blank">
           <span>@</span>
