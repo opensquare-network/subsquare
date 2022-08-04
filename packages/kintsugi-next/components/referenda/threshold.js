@@ -20,7 +20,7 @@ const Threshold = styled.div`
         `}
   width: 2px;
   height: 1rem;
-  background-color: ${(props) => props.theme.grey400Border}
+  background-color: ${(props) => props.theme.grey400Border};
   transform: translateX(-50%);
 `;
 
