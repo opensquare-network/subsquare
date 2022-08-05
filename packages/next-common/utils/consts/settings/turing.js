@@ -3,10 +3,6 @@ import capitalize from "../../capitalize";
 
 export const DEFAULT_TURING_NODES = [
   {
-    name: "OnFinality",
-    url: "wss://turing.api.onfinality.io/public-ws",
-  },
-  {
     name: "OAK",
     url: "wss://rpc.turing.oak.tech",
   },
