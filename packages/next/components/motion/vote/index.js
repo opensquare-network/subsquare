@@ -6,6 +6,8 @@ import Loading from "next-common/components/loading";
 import PrimeAddressMark from "next-common/components/primeAddressMark";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { GhostCard } from "next-common/components/styled/containers/ghostCard";
+import SubLink from "next-common/components/styled/subLink";
+import Link from "next/link";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -98,6 +100,12 @@ const VoterAddr = styled.div`
   gap: 8px;
 `;
 
+const Anchor = styled(SubLink)`
+  display: block;
+  margin-top: 20px !important;
+  margin-bottom: -8px;
+`;
+
 export default function Vote({
   chain,
   motionIsFinal = false,
@@ -153,6 +161,9 @@ export default function Vote({
             )}
           </TipperItem>
         ))}
+        <Link href="/council/members" passHref>
+          <Anchor>Check all councilors</Anchor>
+        </Link>
       </TipperList>
     );
   }
