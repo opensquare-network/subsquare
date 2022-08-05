@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.2.0
+
+- Support dark mode.
+- Sync polkassembly discussion posts and all comments for Kusama/Polkadot.
+- Code refactor including new layout, tags, buttons, etc.
+
 # 2.1.4
 
 - Support customize poll end data.
