@@ -13,6 +13,7 @@ import Tooltip from "../../tooltip";
 import SecondaryButton from "../../buttons/secondaryButton";
 import { GhostCard } from "../../styled/containers/ghostCard";
 import { TitleContainer } from "../../styled/containers/titleContainer";
+import SubLink from "../../styled/subLink";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -93,12 +94,8 @@ const Description = styled.div`
   }
 `;
 
-const ListMore = styled.div`
-  cursor: pointer;
+const ListMore = styled(SubLink)`
   margin-top: 16px !important;
-  font-weight: 500;
-  font-size: 12px;
-  color: ${(props) => props.theme.primaryPurple500}; ;
 `;
 
 export default function Second({
