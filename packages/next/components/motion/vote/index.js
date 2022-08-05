@@ -6,6 +6,7 @@ import Loading from "next-common/components/loading";
 import PrimeAddressMark from "next-common/components/primeAddressMark";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { GhostCard } from "next-common/components/styled/containers/ghostCard";
+import SubLink from "next-common/components/styled/subLink";
 import Link from "next/link";
 
 const Popup = dynamic(() => import("./popup"), {
@@ -99,15 +100,10 @@ const VoterAddr = styled.div`
   gap: 8px;
 `;
 
-const Anchor = styled.a`
+const Anchor = styled(SubLink)`
   display: block;
   margin-top: 20px !important;
   margin-bottom: -8px;
-  font-size: 12px;
-  line-height: 16px;
-  font-weight: 500;
-  color: ${(props) => props.theme.primaryPurple500};
-  cursor: pointer;
 `;
 
 export default function Vote({
