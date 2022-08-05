@@ -53,7 +53,7 @@ const StyledTh = styled.th`
 `;
 
 const StyledTd = styled.td`
-  padding: 15px 0 15px 0;
+  padding: 12px 0 12px 0;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;

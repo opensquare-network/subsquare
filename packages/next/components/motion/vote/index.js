@@ -98,6 +98,16 @@ const VoterAddr = styled.div`
   gap: 8px;
 `;
 
+const Link = styled.a`
+  display: block;
+  margin-top: 20px !important;
+  margin-bottom: -8px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  color: ${(props) => props.theme.primaryPurple500};
+`;
+
 export default function Vote({
   chain,
   motionIsFinal = false,
@@ -153,6 +163,7 @@ export default function Vote({
             )}
           </TipperItem>
         ))}
+        <Link href="/council/members">Check all councilors</Link>
       </TipperList>
     );
   }

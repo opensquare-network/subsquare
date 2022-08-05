@@ -49,7 +49,7 @@ const Username = styled.div`
           color: ${p.color} !important;
         `
       : css`
-          color: ${(props) => props.theme.textPrimary}; !important;
+          color: ${(props) => props.theme.textPrimary} !important;
         `}
   ${(p) =>
     p.maxWidth
