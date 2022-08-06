@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Item from "./item";
-import Pagination from "next-common/components/pagination";
+import Pagination from "next-common/components/pagination/index.js";
 import NoComment from "./noComment";
 import LoginButtons from "./loginButtons";
 import { TitleContainer } from "../styled/containers/titleContainer";
