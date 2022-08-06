@@ -149,7 +149,7 @@ export default function DetailItem({
             <ReferendaWrapper>
               {post?.onchainData?.motions?.map((motion, key) => (
                 <div key={key}>
-                  <Link href={`/council/motion/${getMotionId(motion)}`}>
+                  <Link href={`/council/motion/${getMotionId(motion, chain)}`}>
                     {`Motion #${shortMotionId(motion)}`}
                   </Link>
                 </div>
@@ -163,7 +163,10 @@ export default function DetailItem({
                   <div key={key}>
                     <TriangleRight />
                     <Link
-                      href={`/techcomm/proposal/${getMotionId(techCommMotion)}`}
+                      href={`/techcomm/proposal/${getMotionId(
+                        techCommMotion,
+                        chain
+                      )}`}
                     >
                       {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
                     </Link>
@@ -198,7 +201,9 @@ export default function DetailItem({
               <ReferendaWrapper>
                 {post?.onchainData?.motions?.map((motion, key) => (
                   <div key={key}>
-                    <Link href={`/council/motion/${getMotionId(motion)}`}>
+                    <Link
+                      href={`/council/motion/${getMotionId(motion, chain)}`}
+                    >
                       {`Motion #${shortMotionId(motion)}`}
                     </Link>
                   </div>
@@ -220,7 +225,8 @@ export default function DetailItem({
                       <TriangleRight />
                       <Link
                         href={`/techcomm/proposal/${getMotionId(
-                          techCommMotion
+                          techCommMotion,
+                          chain
                         )}`}
                       >
                         {`Tech. Comm. #${shortMotionId(techCommMotion)}`}

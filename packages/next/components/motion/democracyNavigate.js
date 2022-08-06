@@ -35,6 +35,8 @@ const ReferendaWrapper = styled(Flex)`
 `;
 
 export default function DemocracyNavigate({ motion, type }) {
+  const chain = process.env.NEXT_PUBLIC_CHAIN;
+
   if (motion?.externalProposals?.length !== 1) {
     return null;
   }
@@ -48,7 +50,7 @@ export default function DemocracyNavigate({ motion, type }) {
     <ReferendaWrapper>
       <div>
         {type !== detailPageCategory.COUNCIL_MOTION ? (
-          <Link href={`/council/motion/${getMotionId(councilMotion)}`}>
+          <Link href={`/council/motion/${getMotionId(councilMotion, chain)}`}>
             {`Motion #${shortMotionId(councilMotion)}`}
           </Link>
         ) : (
@@ -68,7 +70,9 @@ export default function DemocracyNavigate({ motion, type }) {
         <div>
           <TriangleRight />
           {type !== detailPageCategory.TECH_COMM_MOTION ? (
-            <Link href={`/techcomm/proposal/${getMotionId(techCommMotion)}`}>
+            <Link
+              href={`/techcomm/proposal/${getMotionId(techCommMotion, chain)}`}
+            >
               {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
             </Link>
           ) : (

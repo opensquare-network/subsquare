@@ -3,12 +3,11 @@ import { useState } from "react";
 import Link from "next/link";
 
 import { timeDurationFromNow } from "next-common/utils";
-import nextApi from "next-common/services/nextApi";
 import User from "next-common/components/user";
 import TriangleRight from "public/imgs/icons/arrow-triangle-right.svg";
 import Tag from "next-common/components/tags/state/tag";
 import Flex from "next-common/components/styled/flex";
-import { getPostUpdatedAt, toApiType } from "utils/viewfuncs";
+import { getPostUpdatedAt } from "utils/viewfuncs";
 import ArticleContent from "next-common/components/articleContent";
 import { EditablePanel } from "next-common/components/styled/panel";
 import { getMotionId, shortMotionId } from "next-common/utils/motion";
@@ -138,14 +137,6 @@ export default function DetailItem({
     return null;
   }
 
-  const updatePost = async () => {
-    const url = `${toApiType(type)}/${post._id}`;
-    const { result: newPost } = await nextApi.fetch(url);
-    if (newPost) {
-      setPost(newPost);
-    }
-  };
-
   const postUpdatedTime = getPostUpdatedAt(post);
 
   return (
@@ -163,7 +154,10 @@ export default function DetailItem({
                   <div key={key}>
                     <TriangleRight />
                     <Link
-                      href={`/techcomm/proposal/${getMotionId(techCommMotion)}`}
+                      href={`/techcomm/proposal/${getMotionId(
+                        techCommMotion,
+                        chain
+                      )}`}
                     >
                       {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
                     </Link>
@@ -188,7 +182,10 @@ export default function DetailItem({
                   <div key={key}>
                     <TriangleRight />
                     <Link
-                      href={`/techcomm/proposal/${getMotionId(techCommMotion)}`}
+                      href={`/techcomm/proposal/${getMotionId(
+                        techCommMotion,
+                        chain
+                      )}`}
                     >
                       {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
                     </Link>
@@ -222,7 +219,8 @@ export default function DetailItem({
                       <TriangleRight />
                       <Link
                         href={`/techcomm/proposal/${getMotionId(
-                          techCommMotion
+                          techCommMotion,
+                          chain
                         )}`}
                       >
                         {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
@@ -248,7 +246,8 @@ export default function DetailItem({
                       <TriangleRight />
                       <Link
                         href={`/techcomm/proposal/${getMotionId(
-                          techCommMotion
+                          techCommMotion,
+                          chain
                         )}`}
                       >
                         {`Tech. Comm. #${shortMotionId(techCommMotion)}`}

@@ -1,4 +1,3 @@
-import Chains from "next-common/utils/consts/chains";
 import { addressEllipsis } from "next-common/utils";
 import { getMotionId } from "next-common/utils/motion";
 
@@ -91,11 +90,6 @@ export const toPolkassemblyCommentListItem = (chain, item) => ({
 });
 
 export const toCouncilMotionListItem = (chain, item) => {
-  let motionId = `${item.indexer.blockHeight}_${item.hash}`;
-  if (Chains.kusama === chain) {
-    motionId = item.motionIndex;
-  }
-
   return {
     ...item,
     index: item.motionIndex,
@@ -103,7 +97,7 @@ export const toCouncilMotionListItem = (chain, item) => {
     author: item.author,
     address: item.proposer,
     status: item.state ?? "Unknown",
-    detailLink: `/council/motion/${motionId}`,
+    detailLink: `/council/motion/${getMotionId(item, chain)}`,
     isTreasury:
       item?.onchainData?.treasuryProposals?.length > 0 ||
       item?.onchainData?.treasuryBounties?.length > 0,
@@ -129,7 +123,7 @@ export const toTechCommMotionListItem = (chain, item) => ({
   author: item.author,
   address: item.proposer,
   status: item?.state ?? "Unknown",
-  detailLink: `/techcomm/proposal/${getMotionId(item)}`,
+  detailLink: `/techcomm/proposal/${getMotionId(item, chain)}`,
   time: getPostUpdatedAt(item),
   isDemocracy: item?.onchainData?.externalProposals?.length > 0,
 });
