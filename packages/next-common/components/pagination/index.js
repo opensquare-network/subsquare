@@ -1,9 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import PageCaret from "./caret";
-import encodeUriQuery from "./encodeUriQuery";
+import Items from "./items";
 
 const Wrapper = styled.div`
   padding-top: 8px;
@@ -52,46 +50,9 @@ const Nav = styled.div`
     `}
 `;
 
-const Item = styled.a`
-  padding: 0 8px;
-  cursor: pointer;
-  min-width: 28px;
-  height: 28px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 500;
-  color: ${(props) => props.theme.textSecondary};
-
-  :hover {
-    background: ${(props) => props.theme.grey200Border};
-  }
-
-  ${(p) =>
-    p.active &&
-    css`
-      background: ${(props) => props.theme.grey200Border};
-      color: ${(props) => props.theme.textPrimary};
-      cursor: auto;
-      pointer-events: none;
-    `}
-`;
-
-const Ellipsis = styled.div`
-  font-size: 14px;
-  font-weight: 500;
-  color: ${(props) => props.theme.textSecondary};
-
-  & + & {
-    display: none;
-  }
-`;
 const PAGE_OFFSET = 1;
 
 export default function Pagination({ page, pageSize, total }) {
-  const router = useRouter();
   const totalPages = Math.ceil(total / pageSize)
     ? Math.ceil(total / pageSize)
     : 1;
@@ -104,24 +65,7 @@ export default function Pagination({ page, pageSize, total }) {
       <Nav disabled={page === 1}>
         <PageCaret isPre={true} page={prevPage} />
       </Nav>
-      {Array.from(Array(totalPages)).map((_, index) =>
-        index + 1 > 2 &&
-        index + 1 < totalPages - 1 &&
-        Math.abs(index + 1 - page) >= 2 ? (
-          <Ellipsis key={index}>...</Ellipsis>
-        ) : (
-          <Link
-            key={index}
-            href={`${router.pathname}?${encodeUriQuery({
-              ...router.query,
-              page: index + 1 + 1 - PAGE_OFFSET,
-            })}`}
-            passHref
-          >
-            <Item active={page === index + 1}>{index + 1}</Item>
-          </Link>
-        )
-      )}
+      <Items page={ page } total={ totalPages - 1 } />
       <Nav disabled={page === totalPages}>
         <PageCaret isPre={false} page={nextPage} />
       </Nav>
