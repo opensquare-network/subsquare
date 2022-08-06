@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Post from "next-common/components/post";
-import Pagination from "next-common/components/pagination";
+import Pagination from "next-common/components/pagination/index.js";
 import EmptyList from "next-common/components/emptyList";
 import { TitleContainer } from "./styled/containers/titleContainer";
 

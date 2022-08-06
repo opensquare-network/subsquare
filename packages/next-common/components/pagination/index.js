@@ -2,8 +2,8 @@ import React from "react";
 import styled, { css } from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import CaretLeft from "../assets/imgs/icons/pager-caret-left.svg";
-import CaretRight from "../assets/imgs/icons/pager-caret-right.svg";
+import PageCaret from "./caret";
+import encodeUriQuery from "./encodeUriQuery";
 
 const Wrapper = styled.div`
   padding-top: 8px;
@@ -89,10 +89,6 @@ const Ellipsis = styled.div`
   }
 `;
 const PAGE_OFFSET = 1;
-const encodeURIQuery = (q) =>
-  Object.keys(q)
-    .map((k) => `${k}=${encodeURIComponent(q[k])}`)
-    .join("&");
 
 export default function Pagination({ page, pageSize, total }) {
   const router = useRouter();
@@ -106,15 +102,7 @@ export default function Pagination({ page, pageSize, total }) {
   return (
     <Wrapper>
       <Nav disabled={page === 1}>
-        <Link
-          href={`${router.pathname}?${encodeURIQuery({
-            ...router.query,
-            page: prevPage,
-          })}`}
-          passHref
-        >
-          <CaretLeft />
-        </Link>
+        <PageCaret isPre={true} page={prevPage} />
       </Nav>
       {Array.from(Array(totalPages)).map((_, index) =>
         index + 1 > 2 &&
@@ -124,7 +112,7 @@ export default function Pagination({ page, pageSize, total }) {
         ) : (
           <Link
             key={index}
-            href={`${router.pathname}?${encodeURIQuery({
+            href={`${router.pathname}?${encodeUriQuery({
               ...router.query,
               page: index + 1 + 1 - PAGE_OFFSET,
             })}`}
@@ -135,15 +123,7 @@ export default function Pagination({ page, pageSize, total }) {
         )
       )}
       <Nav disabled={page === totalPages}>
-        <Link
-          href={`${router.pathname}?${encodeURIQuery({
-            ...router.query,
-            page: nextPage,
-          })}`}
-          passHref
-        >
-          <CaretRight />
-        </Link>
+        <PageCaret isPre={false} page={nextPage} />
       </Nav>
     </Wrapper>
   );
