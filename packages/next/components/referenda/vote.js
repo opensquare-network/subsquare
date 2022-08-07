@@ -211,7 +211,8 @@ function Vote({
     referendumInfo?.finished?.end || referendumStatus.end;
   const [electorate, isElectorateLoading] = useElectorate(
     api,
-    Math.min(referendumEndHeight, blockHeight)
+    Math.min(referendumEndHeight, blockHeight),
+    referendumStatus?.tally
   );
   const isElectorateLoaded = useLoaded(isElectorateLoading);
 
