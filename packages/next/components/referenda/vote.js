@@ -10,7 +10,7 @@ import {
   getThresholdOfSuperMajorityAgainst,
   getThresholdOfSuperMajorityApprove,
 } from "utils/referendumUtil";
-import { useElectorate, useLoaded } from "utils/hooks";
+import { useElectorate } from "utils/hooks";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useWindowSize from "next-common/utils/hooks/useWindowSize.js";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
@@ -211,9 +211,9 @@ function Vote({
     referendumInfo?.finished?.end || referendumStatus.end;
   const [electorate, isElectorateLoading] = useElectorate(
     api,
-    Math.min(referendumEndHeight, blockHeight)
+    Math.min(referendumEndHeight, blockHeight),
+    referendumStatus?.tally
   );
-  const isElectorateLoaded = useLoaded(isElectorateLoading);
 
   const { width } = useWindowSize();
 
@@ -268,7 +268,7 @@ function Vote({
         <Title>
           <span>Votes</span>
           <div>
-            {isLoadingReferendumStatus || !isElectorateLoaded ? (
+            {isLoadingReferendumStatus || isElectorateLoading ? (
               <Loading size={16} />
             ) : null}
           </div>

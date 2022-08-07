@@ -6,24 +6,31 @@ import {
   getElectorate,
 } from "./referendumUtil";
 
-export function useElectorate(api, height) {
+export function useElectorate(api, height, tally) {
   const [electorate, setElectorate] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useIsMounted();
+
   useEffect(() => {
-    if (api) {
-      setIsLoading(true);
-      getElectorate(api, height)
-        .then((value) => {
-          if (isMounted.current) {
-            setElectorate(value);
-          }
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
+    if (tally?.electorate && isMounted.current) {
+      setElectorate(tally.electorate);
+      return
     }
-  }, [api, height]);
+
+    if (!api) {
+      return
+    }
+
+    setIsLoading(true);
+    getElectorate(api, height).then((value) => {
+      if (isMounted.current) {
+        setElectorate(value);
+      }
+    }).finally(() => {
+      setIsLoading(false);
+    });
+  }, [api, height, tally, isMounted]);
+
   return [electorate, isLoading];
 }
 
@@ -37,6 +44,7 @@ export function useLoaded(isLoading) {
       setLoadStatus(2);
     }
   }, [isLoading]);
+
   return loadStatus === 2;
 }
 
@@ -80,6 +88,6 @@ export function useAddressVote(api, referendumIndex, address) {
           setIsLoading(false);
         });
     }
-  }, [api, referendumIndex, address]);
+  }, [api, referendumIndex, address, isMounted]);
   return [vote, isLoading];
 }
