@@ -46,6 +46,7 @@ export function useLoaded(isLoading) {
       setLoadStatus(2);
     }
   }, [isLoading]);
+
   return loadStatus === 2;
 }
 
