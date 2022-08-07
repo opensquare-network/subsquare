@@ -12,10 +12,8 @@ export function useElectorate(api, height, tally) {
   const isMounted = useIsMounted();
 
   useEffect(() => {
-    if (tally.electorate) {
-      if (isMounted.current) {
-        setElectorate(tally.electorate);
-      }
+    if (tally?.electorate && isMounted.current) {
+      setElectorate(tally.electorate);
       return
     }
 
@@ -90,6 +88,6 @@ export function useAddressVote(api, referendumIndex, address) {
           setIsLoading(false);
         });
     }
-  }, [api, referendumIndex, address]);
+  }, [api, referendumIndex, address, isMounted]);
   return [vote, isLoading];
 }
