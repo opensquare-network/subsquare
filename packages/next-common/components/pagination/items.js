@@ -10,10 +10,6 @@ const Ellipsis = styled.div`
 `;
 
 export default function Items({ total = 0, page }) {
-  if (total <= 0) {
-    return null
-  }
-
   let key = 0;
   const items = [];
   const groups = constructGroups(total, page - 1);
