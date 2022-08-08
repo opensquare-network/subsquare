@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { toApiType } from "next-common/utils/viewfuncs";
+import { richTextCopy, toApiType } from "next-common/utils/viewfuncs";
 import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import User from "next-common/components/user";
@@ -98,6 +98,7 @@ export default function ArticleContent({
   isEdit,
   setIsEdit,
 }) {
+  const ref = useRef();
   const dispatch = useDispatch();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   if (!post) {
@@ -196,12 +197,14 @@ export default function ArticleContent({
           {post.bannerUrl && (
             <BannerImage src={post.bannerUrl} alt="banner image" />
           )}
-          {post.contentType === "markdown" && (
-            <MarkdownPreviewer content={post.content} />
-          )}
-          {post.contentType === "html" && (
-            <HtmlPreviewer content={post.content} />
-          )}
+          <RichTextStyleWrapper ref={ref}>
+            {post.contentType === "markdown" && (
+              <MarkdownPreviewer content={post.content} />
+            )}
+            {post.contentType === "html" && (
+              <HtmlPreviewer content={post.content} />
+            )}
+          </RichTextStyleWrapper>
           {post.createdAt !== post.updatedAt && (
             <EditedLabel>Edited</EditedLabel>
           )}
@@ -228,6 +231,12 @@ export default function ArticleContent({
             toggleThumbUp={toggleThumbUp}
             reactions={post?.reactions}
             onReply={onReply}
+            onCopy={() => {
+              richTextCopy(
+                ref?.current?.getElementsByClassName("osn-previewer")[0]
+                  ?.firstChild?.innerHTML
+              );
+            }}
           />
         </>
       )}
