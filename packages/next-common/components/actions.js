@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 import ReplyIcon from "../assets/imgs/icons/reply.svg";
-import ContentMenu from "./contentMenu";
+import Edit from "./edit";
 import Flex from "./styled/flex";
 import User from "next-common/components/user";
 import useThumbsUp from "./thumbsUp";
@@ -96,7 +96,6 @@ export default function Actions({
   reactions,
   edit,
   setIsEdit,
-  onCopy,
 }) {
   const count = reactions?.length;
 
@@ -122,12 +121,7 @@ export default function Actions({
           <div>Reply</div>
         </Item>
         {ThumbsUpComponent}
-        <ContentMenu
-          edit={edit}
-          setIsEdit={setIsEdit}
-          onCopy={onCopy}
-          alwaysShow
-        />
+        {edit && <Edit edit={edit} setIsEdit={setIsEdit} alwaysShow />}
       </Wrapper>
 
       {showThumbsUpList && reactions?.length > 0 && (
@@ -147,5 +141,6 @@ export default function Actions({
         </GreyWrapper>
       )}
     </>
+
   );
 }

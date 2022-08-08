@@ -15,11 +15,7 @@ import {
   renderMentionIdentityUserPlugin,
 } from "@osn/previewer";
 import IdentityOrAddr from "../IdentityOrAddr";
-import {
-  prettyHTML,
-  renderDisableNonAddressLink,
-  richTextCopy,
-} from "../../utils/viewfuncs";
+import { prettyHTML, renderDisableNonAddressLink } from "../../utils/viewfuncs";
 import RichTextStyleWrapper from "../content/richTextStyleWrapper";
 import Actions from "../actions";
 
@@ -193,7 +189,7 @@ export default function Item({ user, data, chain, onReply }) {
               <EditedLabel>Edited</EditedLabel>
             )}
           </ContentWrapper>
-          <div style={{ margin: "8px 0 0 28px" }}>
+          <div style={{margin: "8px 0 0 28px"}}>
             <Actions
               chain={chain}
               highlight={isLoggedIn && thumbUp}
@@ -206,12 +202,6 @@ export default function Item({ user, data, chain, onReply }) {
                 if (isLoggedIn && !ownComment) {
                   onReply(comment.author);
                 }
-              }}
-              onCopy={() => {
-                richTextCopy(
-                  ref?.current?.getElementsByClassName("osn-previewer")[0]
-                    ?.firstChild?.innerHTML
-                );
               }}
             />
           </div>
