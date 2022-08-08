@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import styled from "styled-components";
 import dynamic from "next/dynamic";
 import countBy from "lodash.countby";
@@ -59,7 +59,7 @@ const NoSeconds = styled.div`
 `;
 
 const SecondsList = styled.div`
-  padding: 8px 0px;
+  padding: 2px 0px;
   > :not(:first-child) {
     margin-top: 8px;
   }
@@ -134,27 +134,30 @@ export default function Second({
     );
   } else {
     secondsList = (
-      <SecondsList>
-        {showData.map((address, index) => (
-          <SecondItem key={index}>
-            <User chain={chain} add={address} fontSize={12} maxWidth={104} />
-            <Tooltip
-              content={`${new BigNumber(depositRequired)
-                .times(secondsCount[address])
-                .div(Math.pow(10, node.decimals))} ${
-                node?.voteSymbol ?? node?.symbol
-              }`}
-            >
-              <DepositRequired>{`x${secondsCount[address]}`}</DepositRequired>
-            </Tooltip>
-          </SecondItem>
-        ))}
+      <Fragment>
+        <SecondsList>
+          {showData.map((address, index) => (
+            <SecondItem key={index}>
+              <User chain={chain} add={address} fontSize={12} maxWidth={104} />
+              <Tooltip
+                content={`${new BigNumber(depositRequired)
+                  .times(secondsCount[address])
+                  .div(Math.pow(10, node.decimals))} ${
+                  node?.voteSymbol ?? node?.symbol
+                }`}
+              >
+                <DepositRequired>{`x${secondsCount[address]}`}</DepositRequired>
+              </Tooltip>
+            </SecondItem>
+          ))}
+        </SecondsList>
+
         {showFold && (
           <ListMore onClick={() => setExpand(!expand)}>
             Show more results
           </ListMore>
         )}
-      </SecondsList>
+      </Fragment>
     );
   }
 

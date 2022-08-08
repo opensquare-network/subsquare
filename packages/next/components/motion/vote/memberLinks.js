@@ -5,7 +5,6 @@ import styled from "styled-components";
 import SubLink from "next-common/components/styled/subLink";
 
 const Anchor = styled(SubLink)`
-  display: inline-block;
   margin-top: 16px !important;
 `;
 
