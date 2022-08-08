@@ -17,6 +17,9 @@ export default function IdentityIcon({ identity }) {
   ]);
 
   const StatusIcon = statusIconMap.get(identity?.info?.status) ?? ErrorIcon;
-
-  return <StatusIcon />;
+  return (
+    <div className={identity?.info?.status}>
+      <StatusIcon />
+    </div>
+  );
 }
