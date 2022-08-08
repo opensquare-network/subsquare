@@ -19,6 +19,7 @@
     "@reduxjs/toolkit": "^1.6.1",
     "bignumber.js": "^9.0.2",
     "bn.js": "^5.2.0",
+    "copy-to-clipboard": "^3.3.2",
     "d3-selection": "^3.0.0",
     "d3-shape": "^3.1.0",
     "dayjs": "^1.10.7",
