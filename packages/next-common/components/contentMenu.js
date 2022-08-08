@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside";
 import { shadow_200 } from "../styles/componentCss";
@@ -49,9 +49,24 @@ const OptionItem = styled.div`
   }
 `;
 
-export default function Edit({ edit, setIsEdit, alwaysShow }) {
+export default function ContentMenu({
+  edit,
+  setIsEdit,
+  copy = false,
+  onCopy,
+  alwaysShow,
+}) {
   const [show, setShow] = useState(false);
+  const [copyState, setCopyState] = useState(false);
   const ref = useRef();
+
+  useEffect(() => {
+    if (copyState) {
+      setTimeout(() => {
+        setCopyState(false);
+      }, 3000);
+    }
+  }, [copyState]);
 
   useOnClickOutside(ref, () => setShow(false));
 
@@ -74,6 +89,20 @@ export default function Edit({ edit, setIsEdit, alwaysShow }) {
               }}
             >
               Edit
+            </OptionItem>
+          )}
+          {copy && (
+            <OptionItem
+              onClick={() => {
+                try {
+                  onCopy && onCopy();
+                } catch (e) {
+                } finally {
+                  setCopyState(true);
+                }
+              }}
+            >
+              {copyState ? "Copied" : "Copy Link"}
             </OptionItem>
           )}
         </OptionWrapper>

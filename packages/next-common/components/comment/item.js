@@ -18,6 +18,7 @@ import IdentityOrAddr from "../IdentityOrAddr";
 import { prettyHTML, renderDisableNonAddressLink } from "../../utils/viewfuncs";
 import RichTextStyleWrapper from "../content/richTextStyleWrapper";
 import Actions from "../actions";
+import copy from "copy-to-clipboard";
 
 const Wrapper = styled.div`
   position: relative;
@@ -189,7 +190,7 @@ export default function Item({ user, data, chain, onReply }) {
               <EditedLabel>Edited</EditedLabel>
             )}
           </ContentWrapper>
-          <div style={{margin: "8px 0 0 28px"}}>
+          <div style={{ margin: "8px 0 0 28px" }}>
             <Actions
               chain={chain}
               highlight={isLoggedIn && thumbUp}
@@ -202,6 +203,12 @@ export default function Item({ user, data, chain, onReply }) {
                 if (isLoggedIn && !ownComment) {
                   onReply(comment.author);
                 }
+              }}
+              copy
+              onCopy={() => {
+                copy(
+                  `${process.env.NEXT_PUBLIC_SITE_URL}/${router.asPath}#${comment.height}`
+                );
               }}
             />
           </div>
