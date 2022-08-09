@@ -25,7 +25,7 @@ import Chains from "next-common/utils/consts/chains";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useSelector } from "react-redux";
-import { finalizedHeightSelector } from "next-common/store/reducers/chainSlice";
+import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -185,7 +185,7 @@ function Vote({
   const [showVote, setShowVote] = useState(false);
   const isMounted = useIsMounted();
   const api = useApi(chain);
-  const blockHeight = useSelector(finalizedHeightSelector);
+  const blockHeight = useSelector(latestHeightSelector);
 
   const updateVoteProgress = useCallback(() => {
     api?.query.democracy

@@ -4,29 +4,29 @@ import CountDown from "next-common/components/countDown";
 import Tooltip from "next-common/components/tooltip";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { bigNumber2Locale, isMotionEnded } from "next-common/utils";
-import { finalizedHeightSelector } from "../store/reducers/chainSlice";
+import { latestHeightSelector } from "../store/reducers/chainSlice";
 
 export default function MotionElapse({ motion }) {
-  const currentFinalHeight = useSelector(finalizedHeightSelector);
+  const latestHeight = useSelector(latestHeightSelector);
   const motionEndHeight = motion?.voting?.end;
   const motionStartHeight = motion?.indexer?.blockHeight;
   const estimatedBlocksTime = useEstimateBlocksTime(
-    currentFinalHeight - motionEndHeight
+    latestHeight - motionEndHeight
   );
   const motionEnd = isMotionEnded(motion);
 
   if (
     motionEnd ||
     !motionEndHeight ||
-    !currentFinalHeight ||
-    currentFinalHeight >= motionEndHeight ||
+    !latestHeight ||
+    latestHeight >= motionEndHeight ||
     !estimatedBlocksTime
   ) {
     return null;
   }
 
   const elapsePercent =
-    (currentFinalHeight - motionStartHeight) /
+    (latestHeight - motionStartHeight) /
     (motionEndHeight - motionStartHeight);
   return (
     <Tooltip

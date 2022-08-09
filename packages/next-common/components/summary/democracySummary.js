@@ -5,10 +5,7 @@ import useApi from "../../utils/hooks/useApi";
 import { estimateBlocksTime } from "../../utils";
 import { useSelector } from "react-redux";
 import { currentNodeSelector } from "next-common/store/reducers/nodeSlice";
-import {
-  blockTimeSelector,
-  finalizedHeightSelector,
-} from "../../store/reducers/chainSlice";
+import { blockTimeSelector, latestHeightSelector, } from "../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
 import Content from "./cardContent";
@@ -74,12 +71,12 @@ export default function DemocracySummary({ chain }) {
   const endpoint = useSelector(currentNodeSelector);
   const api = useApi(chain, endpoint);
   const blockTime = useSelector(blockTimeSelector);
-  const finalizedHeight = useSelector(finalizedHeightSelector);
+  const blockHeight = useSelector(latestHeightSelector);
 
   const getLaunchPeriod = async function () {
-    if (api && finalizedHeight) {
+    if (api && blockHeight) {
       const launchPeriod = api.consts.democracy.launchPeriod.toNumber();
-      const goneBlocks = new BigNumber(finalizedHeight)
+      const goneBlocks = new BigNumber(blockHeight)
         .mod(launchPeriod)
         .toNumber();
       const progress = new BigNumber(goneBlocks)
@@ -126,7 +123,7 @@ export default function DemocracySummary({ chain }) {
         });
       }
     );
-  }, [chain, api, blockTime, finalizedHeight]);
+  }, [chain, api, blockTime, blockHeight]);
 
   return (
     <Wrapper>

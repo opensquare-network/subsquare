@@ -6,10 +6,7 @@ import BlockValue from "./blockValue";
 import Proposal from "../../proposal";
 import Threshold from "./threshold";
 import { useSelector } from "react-redux";
-import {
-  blockTimeSelector,
-  finalizedHeightSelector,
-} from "../../../store/reducers/chainSlice";
+import { blockTimeSelector, latestHeightSelector, } from "../../../store/reducers/chainSlice";
 import UserWithLink from "../../user/userWithLink";
 
 export default function ReferendumMetadata({
@@ -22,7 +19,7 @@ export default function ReferendumMetadata({
   onchainData = {},
 }) {
   const oneBlockTime = useSelector(blockTimeSelector);
-  const blockHeight = useSelector(finalizedHeightSelector);
+  const blockHeight = useSelector(latestHeightSelector);
   const latestBlockTime = useLatestBlockTime(api, blockHeight);
 
   const { delay = 0, end = 0, threshold } = status;

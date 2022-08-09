@@ -38,7 +38,7 @@ export function useBestNumber(api) {
   const isMounted = useIsMounted();
   useEffect(() => {
     if (api) {
-      api.rpc.chain.subscribeFinalizedHeads(header => {
+      api.rpc.chain.subscribeNewHeads(header => {
         const latestUnFinalizedHeight = header.number.toNumber();
         if (isMounted.current) {
           setBestNumber(latestUnFinalizedHeight);
