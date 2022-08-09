@@ -55,6 +55,10 @@ const childBountyStateTagMap = {
   Rejected: NegativeTag,
   Canceled: NegativeTag,
   Claimed: PositiveTag,
+
+  // in timeline
+  acceptCurator: ActiveTag,
+  Awarded: PositiveTag,
 };
 
 export function TreasuryTag({ state }) {
