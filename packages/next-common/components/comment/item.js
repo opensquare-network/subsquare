@@ -207,7 +207,7 @@ export default function Item({ user, data, chain, onReply }) {
               copy
               onCopy={() => {
                 copy(
-                  `${process.env.NEXT_PUBLIC_SITE_URL}/${router.asPath}#${comment.height}`
+                  `${process.env.NEXT_PUBLIC_SITE_URL}${router.asPath}#${comment.height}`
                 );
               }}
             />
