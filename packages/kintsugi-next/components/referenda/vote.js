@@ -20,12 +20,13 @@ import TurnoutIcon from "public/imgs/icons/turnout.svg";
 import ElectorateIcon from "public/imgs/icons/electorate.svg";
 import Threshold from "./threshold";
 import Loading from "next-common/components/loading";
-import { useBestNumber } from "next-common/utils/hooks";
 import ExternalLink from "next-common/assets/imgs/icons/external-link.svg";
 import ValueDisplay from "next-common/components/displayValue";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import { useSelector } from "react-redux";
+import { finalizedHeightSelector } from "next-common/store/reducers/chainSlice";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -185,8 +186,7 @@ function Vote({
   const [showVote, setShowVote] = useState(false);
   const isMounted = useIsMounted();
   const api = useApi(chain);
-  const bestNumber = useBestNumber(api);
-  const blockHeight = bestNumber?.toNumber() || 0;
+  const blockHeight = useSelector(finalizedHeightSelector);
 
   const updateVoteProgress = useCallback(() => {
     api?.query.democracy

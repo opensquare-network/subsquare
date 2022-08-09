@@ -15,7 +15,7 @@ const chainSlice = createSlice({
       state.blockTime = payload;
     },
     setFinalizedHeight(state, { payload }) {
-      state.finalizedHeight = payload;
+      state.finalizedHeight = payload || 0;
     },
   },
 });

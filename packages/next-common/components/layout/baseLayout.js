@@ -52,7 +52,7 @@ export default function BaseLayout({ user, left, children, seoInfo }) {
 
   useEffect(() => {
     if (bestNumber && isMounted()) {
-      dispatch(setFinalizedHeight(bestNumber.toNumber()));
+      dispatch(setFinalizedHeight(bestNumber));
     }
   }, [bestNumber, dispatch, isMounted]);
 
