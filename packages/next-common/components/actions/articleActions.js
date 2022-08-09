@@ -4,6 +4,7 @@ import useThumbsUp from "../thumbsUp";
 import { Wrapper } from "./styled";
 import ThumbUpList from "./thumbUpList";
 import ReplyButton from "./replyButton";
+import Share from "../shareSNS";
 
 export default function ArticleActions({
   chain,
@@ -28,6 +29,7 @@ export default function ArticleActions({
         <ReplyButton onReply={onReply} noHover={noHover} />
         {ThumbsUpComponent}
         {edit && <ContentMenu edit={edit} setIsEdit={setIsEdit} alwaysShow />}
+        <Share />
       </Wrapper>
 
       <ThumbUpList
