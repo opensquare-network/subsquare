@@ -57,6 +57,9 @@ function getPolkassemblyLink(type, post) {
     case detailPageCategory.PA_POST: {
       return `https://${chain}.polkassembly.io/post/${post.polkassemblyId}`;
     }
+    case detailPageCategory.TREASURY_CHILD_BOUNTY: {
+      return `https://${chain}.polkassembly.io/child_bounty/${post.index}`;
+    }
     default: {
       return null;
     }
