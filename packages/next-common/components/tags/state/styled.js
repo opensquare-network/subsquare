@@ -2,8 +2,9 @@ import React from "react";
 import styled from "styled-components";
 
 const Common = styled.span`
-  padding: 4px 8px;
+  padding: 2px 8px;
   font-size: 12px;
+  line-height: 16px;
   font-weight: 500;
   border-radius: 4px;
   color: ${(props) => props.theme.textContrast};

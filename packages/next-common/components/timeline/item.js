@@ -79,7 +79,7 @@ const FoldButton = styled.div`
   height: 20px;
   width: 20px;
   border: 1px solid ${(props) => props.theme.grey300Border};
-  border-radius: 2px;
+  border-radius: 4px;
   margin-left: 8px;
   align-items: center;
   justify-content: center;
