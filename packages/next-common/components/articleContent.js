@@ -5,7 +5,7 @@ import { toApiType } from "next-common/utils/viewfuncs";
 import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import User from "next-common/components/user";
-import Actions from "next-common/components/actions";
+import ArticleActions from "./actions/articleActions";
 import PostEdit from "next-common/components/post/postEdit";
 import EditIcon from "../assets/imgs/icons/edit.svg";
 import PostDataSource from "./postDataSource";
@@ -219,7 +219,7 @@ export default function ArticleContent({
           {["kusama", "polkadot"].includes(chain) && (
             <PostDataSource type={type} post={post} />
           )}
-          <Actions
+          <ArticleActions
             chain={chain}
             highlight={isLoggedIn && thumbUp}
             noHover={!isLoggedIn || ownPost}

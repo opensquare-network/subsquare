@@ -17,7 +17,7 @@ import {
 import IdentityOrAddr from "../IdentityOrAddr";
 import { prettyHTML, renderDisableNonAddressLink } from "../../utils/viewfuncs";
 import RichTextStyleWrapper from "../content/richTextStyleWrapper";
-import Actions from "../actions";
+import CommentActions from "../actions/commentActions";
 import copy from "copy-to-clipboard";
 
 const Wrapper = styled.div`
@@ -191,7 +191,7 @@ export default function Item({ user, data, chain, onReply }) {
             )}
           </ContentWrapper>
           <div style={{ margin: "8px 0 0 28px" }}>
-            <Actions
+            <CommentActions
               chain={chain}
               highlight={isLoggedIn && thumbUp}
               noHover={!isLoggedIn || ownComment}
