@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import BigNumber from "bignumber.js";
 import styled from "styled-components";
@@ -26,6 +26,7 @@ import { SecondaryCardDetail } from "next-common/components/styled/containers/se
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useSelector } from "react-redux";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
+import useVotes from "next-common/utils/hooks/useVotes";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -174,6 +175,7 @@ const VoteButton = styled.button`
 `;
 
 function Vote({
+  voteInfo,
   referendumInfo,
   referendumStatus,
   setReferendumStatus,
@@ -186,6 +188,8 @@ function Vote({
   const isMounted = useIsMounted();
   const api = useApi(chain);
   const blockHeight = useSelector(latestHeightSelector);
+
+  useVotes(api, referendumIndex, voteInfo.voteFinishedHeight);
 
   const updateVoteProgress = useCallback(() => {
     api?.query.democracy
@@ -403,4 +407,4 @@ function Vote({
   );
 }
 
-export default Vote;
+export default memo(Vote);
