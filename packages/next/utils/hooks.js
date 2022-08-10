@@ -8,12 +8,13 @@ import {
 
 export function useElectorate(api, height, tally) {
   const [electorate, setElectorate] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const isMounted = useIsMounted();
 
   useEffect(() => {
     if (tally?.electorate && isMounted.current) {
       setElectorate(tally.electorate);
+      setIsLoading(false);
       return
     }
 
