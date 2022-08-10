@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { getReferendumVotesByHeight } from "./passed";
+import { getOnChainReferendum } from "./onChain";
 
 export default function useVotes(api, referendumIndex, passedHeight) {
   useEffect(() => {
@@ -14,7 +15,7 @@ export default function useVotes(api, referendumIndex, passedHeight) {
         })
       // todo: query legacy version, check `api.query.democracy.votingOf`
     } else {
-      console.log('hello world')
+      getOnChainReferendum(api, referendumIndex).then(votes => console.log(votes));
       // todo: query the latest active votes
     }
 
