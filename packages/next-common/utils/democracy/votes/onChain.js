@@ -3,7 +3,8 @@ function normalize({ accountId, balance, isDelegating, vote }) {
     account: accountId.toString(),
     isDelegating,
     balance: balance.toBigInt().toString(),
-    vote,
+    aye: vote.isAye,
+    conviction: vote.conviction.toNumber(),
   }
 }
 
