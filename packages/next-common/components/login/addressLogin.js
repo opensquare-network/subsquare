@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useDispatch } from "react-redux";
 import { isWeb3Injected, web3Enable } from "@polkadot/extension-dapp";
 import { useRouter } from "next/router";
@@ -16,6 +16,8 @@ import { signMessage } from "../../services/extension/signMessage";
 import { polkadotWeb3Accounts } from "../../utils/extensionAccount";
 import GhostButton from "../buttons/ghostButton";
 import SecondaryButton from "../buttons/secondaryButton";
+import Flex from "../styled/flex";
+import { WALLETS } from "../../utils/consts/connect";
 
 const Label = styled.div`
   font-weight: bold;
@@ -32,6 +34,73 @@ const ButtonWrapper = styled.div`
   }
 `;
 
+const WalletOptions = styled.ul`
+  all: unset;
+
+  li:first-child {
+    margin-top: 24px;
+  }
+
+  li:not(:first-child) {
+    margin-top: 8px;
+  }
+`;
+
+const WalletOption = styled.li`
+  all: unset;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  > div {
+    gap: 16px;
+  }
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 700;
+  color: ${(props) => props.theme.textPrimary};
+  background: ${(props) => props.theme.grey100Bg};
+
+  ${(props) =>
+    props.installed &&
+    css`
+      &:hover {
+        background: ${(props) => props.theme.grey200Border};
+      }
+    `}
+
+  border-radius: 4px;
+  cursor: pointer;
+
+  img.SubWallet {
+    border-radius: 16px;
+  }
+  ${(props) =>
+    !props.installed &&
+    css`
+      color: ${props.theme.textTertiary};
+      cursor: not-allowed;
+    `}
+  span.wallet-not-installed {
+    font-size: 12px;
+    font-weight: 400;
+  }
+`;
+
+const Wallet = ({ wallet, onClick }) => {
+  return (
+    <WalletOption onClick={onClick} installed={!!wallet?.installed}>
+      <Flex>
+        <img className={wallet.title} src={wallet.logo} alt={wallet.title} />
+        <span className="wallet-title">{wallet.title}</span>
+      </Flex>
+      {!wallet.installed && (
+        <span className="wallet-not-installed">Not installed</span>
+      )}
+    </WalletOption>
+  );
+};
+
 export default function AddressLogin({ chain, setMailLogin }) {
   const isMounted = useIsMounted();
   const [accounts, setAccounts] = useState([]);
@@ -39,6 +108,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [web3Error, setWeb3Error] = useState();
   const [loading, setLoading] = useState(false);
+  const [selectedWallet, setSelectWallet] = useState("polkadot-js");
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -110,7 +180,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
         setAccounts(accounts);
       }
     })();
-  }, [isMounted]);
+  }, [selectedWallet, isMounted]);
 
   useEffect(() => {
     if (accounts && accounts.length > 0 && !selectedAccount) {
@@ -130,6 +200,23 @@ export default function AddressLogin({ chain, setMailLogin }) {
 
   return (
     <>
+      <WalletOptions>
+        {WALLETS.map((wallet, index) => {
+          const installed = !!(
+            typeof window !== "undefined" &&
+            window.injectedWeb3 &&
+            window?.injectedWeb3?.[wallet.extensionName]
+          );
+          const walletInfo = { ...wallet, installed };
+          return (
+            <Wallet
+              wallet={walletInfo}
+              onClick={() => setSelectWallet(wallet.extensionName)}
+              key={index}
+            />
+          );
+        })}
+      </WalletOptions>
       {hasExtension && (
         <div>
           <Label>Choose linked address</Label>
