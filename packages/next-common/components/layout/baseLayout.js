@@ -7,7 +7,7 @@ import { useBestNumber, useBlockTime } from "../../utils/hooks";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import dark from "../styled/theme/dark";
 import light from "../styled/theme/light";
-import { setBlockTime, setLatestHeight, } from "../../store/reducers/chainSlice";
+import { setBlockTime, setLatestHeight } from "../../store/reducers/chainSlice";
 import SEO from "../SEO";
 import capitalize from "../../utils/capitalize";
 import { DEFAULT_SEO_INFO } from "../../utils/constants";
@@ -66,7 +66,7 @@ export default function BaseLayout({ user, left, children, seoInfo }) {
 
   const { width } = useWindowSize();
   if (isNil(width)) {
-    return <Wrapper>{seo}</Wrapper>;
+    return <div>{seo}</div>;
   }
 
   return (
