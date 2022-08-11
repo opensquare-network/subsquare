@@ -16,8 +16,9 @@ import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import extractVoteInfo from "next-common/utils/democracy/referendum";
-import { useDispatch } from "react-redux";
-import { fetchVotes } from "next-common/store/reducers/referendumSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchElectorate, fetchVotes } from "next-common/store/reducers/referendumSlice";
+import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -40,12 +41,19 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const dispatch = useDispatch();
   const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] =
     useState(false);
+  const latestHeight = useSelector(latestHeightSelector)
 
   useEffect(() => {
     if (api) {
       dispatch(fetchVotes(api, referendumIndex, voteFinishedHeight))
     }
   }, [api, dispatch, referendumIndex, voteFinishedHeight])
+
+  useEffect(() => {
+    if (api) {
+      dispatch(fetchElectorate(api, voteFinishedHeight || latestHeight))
+    }
+  }, [api, dispatch, voteFinishedHeight, latestHeight])
 
   useEffect(() => {
     if (voteFinished) {

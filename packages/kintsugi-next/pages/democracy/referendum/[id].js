@@ -17,8 +17,9 @@ import useCommentComponent from "next-common/components/useCommentComponent";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import extractVoteInfo from "next-common/utils/democracy/referendum";
-import { fetchVotes } from "next-common/store/reducers/referendumSlice";
-import { useDispatch } from "react-redux";
+import { fetchElectorate, fetchVotes } from "next-common/store/reducers/referendumSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, publicProposal, comments, chain }) => {
@@ -39,6 +40,7 @@ export default withLoginUserRedux(
     const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] =
       useState(false);
     const dispatch = useDispatch();
+    const latestHeight = useSelector(latestHeightSelector)
 
     const proposalData = getDemocracyTimelineData(
       publicProposal?.onchainData?.timeline || [],
@@ -57,6 +59,12 @@ export default withLoginUserRedux(
         dispatch(fetchVotes(api, referendumIndex, voteFinishedHeight))
       }
     }, [api, dispatch, referendumIndex, voteFinishedHeight])
+
+    useEffect(() => {
+      if (api) {
+        dispatch(fetchElectorate(api, voteFinishedHeight || latestHeight))
+      }
+    }, [api, dispatch, voteFinishedHeight, latestHeight])
 
     useEffect(() => {
       if (voteFinished) {

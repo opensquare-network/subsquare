@@ -10,7 +10,6 @@ import {
   getThresholdOfSuperMajorityAgainst,
   getThresholdOfSuperMajorityApprove,
 } from "utils/referendumUtil";
-import { useElectorate } from "utils/hooks";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useWindowSize from "next-common/utils/hooks/useWindowSize.js";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
@@ -26,6 +25,7 @@ import { SecondaryCardDetail } from "next-common/components/styled/containers/se
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useSelector } from "react-redux";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
+import { electorateSelector, isLoadingElectorateSelector } from "next-common/store/reducers/referendumSlice";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -187,6 +187,9 @@ function Vote({
   const api = useApi(chain);
   const blockHeight = useSelector(latestHeightSelector);
 
+  const electorate = useSelector(electorateSelector)
+  const isElectorateLoading = useSelector(isLoadingElectorateSelector)
+
   const updateVoteProgress = useCallback(() => {
     api?.query.democracy
       .referendumInfoOf(referendumIndex)
@@ -206,14 +209,6 @@ function Vote({
     setIsLoadingReferendumStatus,
     isMounted,
   ]);
-
-  const referendumEndHeight =
-    referendumInfo?.finished?.end || referendumStatus.end;
-  const [electorate, isElectorateLoading] = useElectorate(
-    api,
-    Math.min(referendumEndHeight, blockHeight),
-    referendumStatus?.tally
-  );
 
   const { width } = useWindowSize();
 

@@ -10,7 +10,6 @@ import {
   getThresholdOfSuperMajorityAgainst,
   getThresholdOfSuperMajorityApprove,
 } from "utils/referendumUtil";
-import { useElectorate, useLoaded } from "utils/hooks";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useWindowSize from "next-common/utils/hooks/useWindowSize.js";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
@@ -26,7 +25,7 @@ import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useSelector } from "react-redux";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
+import { electorateSelector, isLoadingElectorateSelector } from "next-common/store/reducers/referendumSlice";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -186,7 +185,9 @@ function Vote({
   const [showVote, setShowVote] = useState(false);
   const isMounted = useIsMounted();
   const api = useApi(chain);
-  const blockHeight = useSelector(latestHeightSelector);
+
+  const electorate = useSelector(electorateSelector)
+  const isElectorateLoading = useSelector(isLoadingElectorateSelector)
 
   const updateVoteProgress = useCallback(() => {
     api?.query.democracy
@@ -207,13 +208,6 @@ function Vote({
     setIsLoadingReferendumStatus,
     isMounted,
   ]);
-
-  const referendumEndHeight = referendumInfo?.finished?.end;
-  const [electorate, isElectorateLoading] = useElectorate(
-    api,
-    referendumEndHeight || blockHeight
-  );
-  const isElectorateLoaded = useLoaded(isElectorateLoading);
 
   const { width } = useWindowSize();
 
@@ -251,7 +245,7 @@ function Vote({
         <TitleContainer>
           <span>Votes</span>
           <div>
-            {isLoadingReferendumStatus || !isElectorateLoaded ? (
+            {isLoadingReferendumStatus || isElectorateLoading ? (
               <Loading size={16} />
             ) : null}
           </div>
