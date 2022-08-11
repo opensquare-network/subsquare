@@ -17,6 +17,8 @@ import useCommentComponent from "next-common/components/useCommentComponent";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import extractVoteInfo from "next-common/utils/democracy/referendum";
+import { fetchVotes } from "next-common/store/reducers/referendumSlice";
+import { useDispatch } from "react-redux";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, publicProposal, comments, chain }) => {
@@ -28,7 +30,7 @@ export default withLoginUserRedux(
       type: detailPageCategory.DEMOCRACY_REFERENDUM,
     });
 
-    const { voteInfo } = detail;
+    const { voteInfo: { voteFinished, voteFinishedHeight }, referendumIndex } = detail;
     const api = useApi(chain);
     const [referendumStatus, setReferendumStatus] = useState(
       detail?.onchainData?.status || detail?.onchainData?.info?.ongoing
@@ -36,6 +38,7 @@ export default withLoginUserRedux(
     const isMounted = useIsMounted();
     const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] =
       useState(false);
+    const dispatch = useDispatch();
 
     const proposalData = getDemocracyTimelineData(
       publicProposal?.onchainData?.timeline || [],
@@ -50,7 +53,13 @@ export default withLoginUserRedux(
     const timelineData = proposalData.concat(referendumData);
 
     useEffect(() => {
-      if (voteInfo.voteFinished) {
+      if (api) {
+        dispatch(fetchVotes(api, referendumIndex, voteFinishedHeight))
+      }
+    }, [api, dispatch, referendumIndex, voteFinishedHeight])
+
+    useEffect(() => {
+      if (voteFinished) {
         return;
       }
 
@@ -66,7 +75,7 @@ export default withLoginUserRedux(
         .finally(() => {
           setIsLoadingReferendumStatus(false);
         });
-    }, [api, detail, isMounted, voteInfo]);
+    }, [api, detail, isMounted, voteFinished]);
 
     detail.status = detail.onchainData?.state?.state;
 
@@ -86,7 +95,6 @@ export default withLoginUserRedux(
         />
 
         <Vote
-          voteInfo={voteInfo}
           referendumInfo={detail?.onchainData?.info}
           referendumStatus={referendumStatus}
           setReferendumStatus={setReferendumStatus}

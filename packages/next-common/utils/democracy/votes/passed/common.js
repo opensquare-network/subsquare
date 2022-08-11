@@ -5,6 +5,18 @@ export const emptyVotes = {
   allNay: [],
 }
 
+export function objectSpread(dest, ...sources) {
+  for (let i = 0; i < sources.length; i++) {
+    const src = sources[i];
+
+    if (src) {
+      Object.assign(dest, src);
+    }
+  }
+
+  return dest;
+}
+
 export function sortVotes(votes = []) {
   return votes.sort((a, b) => {
     return new BigNumber(a.balance).gt(b.balance) ? -1 : 1;

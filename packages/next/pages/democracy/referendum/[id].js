@@ -16,6 +16,8 @@ import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import extractVoteInfo from "next-common/utils/democracy/referendum";
+import { useDispatch } from "react-redux";
+import { fetchVotes } from "next-common/store/reducers/referendumSlice";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -26,7 +28,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     type: detailPageCategory.DEMOCRACY_REFERENDUM,
   });
 
-  const { voteInfo } = detail;
+  const { voteInfo: { voteFinished, voteFinishedHeight }, referendumIndex } = detail;
   const api = useApi(chain);
 
   const [referendumStatus, setReferendumStatus] = useState(
@@ -35,11 +37,18 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       detail?.onchainData?.meta
   );
   const isMounted = useIsMounted();
+  const dispatch = useDispatch();
   const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] =
     useState(false);
 
   useEffect(() => {
-    if (voteInfo.voteFinished) {
+    if (api) {
+      dispatch(fetchVotes(api, referendumIndex, voteFinishedHeight))
+    }
+  }, [api, dispatch, referendumIndex, voteFinishedHeight])
+
+  useEffect(() => {
+    if (voteFinished) {
       return;
     }
 
@@ -55,7 +64,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       .finally(() => {
         setIsLoadingReferendumStatus(false);
       });
-  }, [api, detail, isMounted, voteInfo]);
+  }, [api, detail, isMounted, voteFinished]);
 
   detail.status = detail?.onchainData?.state?.state;
 
@@ -76,7 +85,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       />
 
       <Vote
-        voteInfo={voteInfo}
         referendumInfo={detail?.onchainData?.info}
         referendumStatus={referendumStatus}
         setReferendumStatus={setReferendumStatus}

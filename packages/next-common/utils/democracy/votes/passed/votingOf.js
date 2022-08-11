@@ -1,5 +1,4 @@
-import objectSpread from "../utils";
-import { normalizeVotingOfEntry, sortVotes } from "./common";
+import { normalizeVotingOfEntry, objectSpread, sortVotes } from "./common";
 
 function extractVotes(mapped, targetReferendumIndex) {
   return mapped.filter(({ voting }) => voting.isDirect)
@@ -29,7 +28,8 @@ function extractVotes(mapped, targetReferendumIndex) {
             isDelegating: false
           }, {
             balance,
-            vote: standard.vote,
+            aye: standard.vote.isAye,
+            conviction: standard.vote.conviction.toNumber(),
           })
         );
       }
@@ -58,7 +58,8 @@ function extractDelegations(mapped, directVotes = [], blockApi) {
         account,
         balance: balance.toBigInt().toString(),
         isDelegating: true,
-        vote: blockApi.registry.createType('Vote', { aye: to.vote.isAye, conviction })
+        aye: to.aye,
+        conviction: conviction.toNumber(),
       })
     }
   })
@@ -73,7 +74,7 @@ export async function getReferendumVotesFromVotingOf(blockApi, referendumIndex) 
   const votesViaDelegating = extractDelegations(mapped, directVotes, blockApi);
   const sorted = sortVotes([...directVotes, ...votesViaDelegating]);
 
-  const allAye = sorted.filter(v => v.vote.isAye);
-  const allNay = sorted.filter(v => !v.vote.isAye);
+  const allAye = sorted.filter(v => v.aye);
+  const allNay = sorted.filter(v => !v.aye);
   return { allAye, allNay };
 }

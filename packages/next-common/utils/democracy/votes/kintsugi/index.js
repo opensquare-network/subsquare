@@ -1,4 +1,4 @@
-import { normalizeVotingOfEntry, sortVotes } from "next-common/utils/hooks/useVotes/passed/common";
+import { normalizeVotingOfEntry, sortVotes } from "../passed/common";
 
 function extractVotes(mapped = [], targetReferendumIndex) {
   return mapped.reduce((result, accountVoting) => {
@@ -7,6 +7,7 @@ function extractVotes(mapped = [], targetReferendumIndex) {
       if (vote[0].toNumber() === targetReferendumIndex) {
         result.push({
           account,
+          isDelegating: false,
           ...vote[1].toJSON()
         })
       }
@@ -16,7 +17,7 @@ function extractVotes(mapped = [], targetReferendumIndex) {
   }, [])
 }
 
-export default async function getReferendumVotes(api, referendumIndex, height) {
+export default async function getKintsugiReferendumVotes(api, referendumIndex, height) {
   let blockApi = api;
   if (height) {
     const blockHash = await api.rpc.chain.getBlockHash(height);

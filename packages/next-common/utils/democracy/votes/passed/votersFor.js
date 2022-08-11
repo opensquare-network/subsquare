@@ -30,10 +30,12 @@ export async function getReferendumVotesFromVotersFor(blockApi, blockHash, refer
   const balances = await Promise.all(balancePromises);
 
   const normalizedVotes = votersFor.map((voter, index) => {
+    const vote = votes[index] || blockApi.registry.createType('Vote');
     return {
       account: voter.toString(),
       isDelegating: false,
-      vote: votes[index] || blockApi.registry.createType('Vote'),
+      aye: vote.isAye,
+      conviction: vote.conviction.toNumber(),
       balance: balances[index] || 0,
     }
   })
