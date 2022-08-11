@@ -1,5 +1,6 @@
 import { getReferendumVotesFromVotingOf } from "./votingOf";
 import { getReferendumVotesFromVotersFor } from "./votersFor";
+import { emptyVotes } from "./common";
 
 export async function getReferendumVotesByHeight(api, height, referendumIndex) {
   const blockHash = await api.rpc.chain.getBlockHash(height);
@@ -11,5 +12,5 @@ export async function getReferendumVotesByHeight(api, height, referendumIndex) {
     return await getReferendumVotesFromVotersFor(blockApi, blockHash, referendumIndex);
   }
 
-  return { allAye: [], allNay: [] }
+  return emptyVotes;
 }

@@ -1,22 +1,7 @@
 import objectSpread from "../utils";
-import BigNumber from "bignumber.js";
-import { sortVotes } from "./common";
+import { normalizeVotingOfEntry, sortVotes } from "./common";
 
-function normalizeEntry([storageKey, voting], blockApi) {
-  let pubKeyU8a;
-  if (storageKey.length === 72) {
-    pubKeyU8a = storageKey.slice(40);
-  }
-  if (!pubKeyU8a) {
-    throw new Error(`Unexpected storage key length ${ storageKey.length }`)
-  }
-
-  const accountId = blockApi.registry.createType("AccountId", pubKeyU8a);
-  const account = accountId.toString();
-  return { account, voting };
-}
-
-function extractVotes(mapped, targetReferendumIndex, blockApi) {
+function extractVotes(mapped, targetReferendumIndex) {
   return mapped.filter(({ voting }) => voting.isDirect)
     .map(({ account, voting }) => {
       return {
@@ -83,7 +68,7 @@ function extractDelegations(mapped, directVotes = [], blockApi) {
 
 export async function getReferendumVotesFromVotingOf(blockApi, referendumIndex) {
   const voting = await blockApi.query.democracy.votingOf.entries();
-  const mapped = voting.map(item => normalizeEntry(item, blockApi));
+  const mapped = voting.map(item => normalizeVotingOfEntry(item, blockApi));
   const directVotes = extractVotes(mapped, referendumIndex, blockApi);
   const votesViaDelegating = extractDelegations(mapped, directVotes, blockApi);
   const sorted = sortVotes([...directVotes, ...votesViaDelegating]);

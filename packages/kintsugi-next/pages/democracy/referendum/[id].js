@@ -16,6 +16,7 @@ import ReferendumMetadata from "next-common/components/democracy/metadata";
 import useCommentComponent from "next-common/components/useCommentComponent";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
+import extractVoteInfo from "next-common/utils/democracy/referendum";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, publicProposal, comments, chain }) => {
@@ -27,6 +28,7 @@ export default withLoginUserRedux(
       type: detailPageCategory.DEMOCRACY_REFERENDUM,
     });
 
+    const { voteInfo } = detail;
     const api = useApi(chain);
     const [referendumStatus, setReferendumStatus] = useState(
       detail?.onchainData?.status || detail?.onchainData?.info?.ongoing
@@ -47,18 +49,8 @@ export default withLoginUserRedux(
     );
     const timelineData = proposalData.concat(referendumData);
 
-    const timeline = detail?.onchainData?.timeline || [];
-    const voteFinished = [
-      "Executed",
-      "Passed",
-      "NotPassed",
-      "Cancelled",
-      "PreimageInvalid",
-      "PreimageMissing",
-    ].includes(timeline[timeline.length - 1]?.method);
-
     useEffect(() => {
-      if (voteFinished) {
+      if (voteInfo.voteFinished) {
         return;
       }
 
@@ -74,7 +66,7 @@ export default withLoginUserRedux(
         .finally(() => {
           setIsLoadingReferendumStatus(false);
         });
-    }, [api, detail, isMounted, voteFinished]);
+    }, [api, detail, isMounted, voteInfo]);
 
     detail.status = detail.onchainData?.state?.state;
 
@@ -94,6 +86,7 @@ export default withLoginUserRedux(
         />
 
         <Vote
+          voteInfo={voteInfo}
           referendumInfo={detail?.onchainData?.info}
           referendumStatus={referendumStatus}
           setReferendumStatus={setReferendumStatus}
@@ -140,6 +133,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
   }
 
   const postId = detail?._id;
+  const voteInfo = extractVoteInfo(detail?.onchainData?.timeline)
+  Object.assign(detail, { voteInfo });
 
   const { result: comments } = await nextApi.fetch(
     `democracy/referendums/${postId}/comments`,

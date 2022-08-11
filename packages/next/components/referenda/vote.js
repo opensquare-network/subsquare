@@ -189,7 +189,8 @@ function Vote({
   const api = useApi(chain);
   const blockHeight = useSelector(latestHeightSelector);
 
-  useVotes(api, referendumIndex, voteInfo.voteFinishedHeight);
+  const [isLoadingVotes, { allAye, allNay }] = useVotes(api, referendumIndex, voteInfo.voteFinishedHeight);
+  console.log('isLoadingVotes', isLoadingVotes, 'allAye', allAye, 'allNay', allNay);
 
   const updateVoteProgress = useCallback(() => {
     api?.query.democracy
