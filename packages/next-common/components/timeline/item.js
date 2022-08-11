@@ -72,6 +72,7 @@ const TitleWrapper = styled(Flex)`
 
 const TagWrapper = styled.div`
   margin-left: auto;
+  display: flex;
 `;
 
 const FoldButton = styled.div`
