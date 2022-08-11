@@ -1,5 +1,6 @@
-import objectSpread from "./utils";
+import objectSpread from "../utils";
 import BigNumber from "bignumber.js";
+import { sortVotes } from "./common";
 
 function normalizeEntry([storageKey, voting], blockApi) {
   let pubKeyU8a;
@@ -80,17 +81,12 @@ function extractDelegations(mapped, directVotes = [], blockApi) {
   return newVotes;
 }
 
-export async function getReferendumVotesByHeight(api, height, referendumIndex) {
-  const blockHash = await api.rpc.chain.getBlockHash(height);
-  const blockApi = await api.at(blockHash);
-
+export async function getReferendumVotesFromVotingOf(blockApi, referendumIndex) {
   const voting = await blockApi.query.democracy.votingOf.entries();
   const mapped = voting.map(item => normalizeEntry(item, blockApi));
   const directVotes = extractVotes(mapped, referendumIndex, blockApi);
   const votesViaDelegating = extractDelegations(mapped, directVotes, blockApi);
-  const sorted = [...directVotes, ...votesViaDelegating].sort((a, b) => {
-    return new BigNumber(a.balance).gt(b.balance) ? -1 : 1;
-  });
+  const sorted = sortVotes([...directVotes, ...votesViaDelegating]);
 
   const allAye = sorted.filter(v => v.vote.isAye);
   const allNay = sorted.filter(v => !v.vote.isAye);

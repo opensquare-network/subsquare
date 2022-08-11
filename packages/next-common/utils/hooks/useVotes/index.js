@@ -18,6 +18,5 @@ export default function useVotes(api, referendumIndex, passedHeight) {
       getOnChainReferendum(api, referendumIndex).then(votes => console.log(votes));
       // todo: query the latest active votes
     }
-
   }, [api, passedHeight])
 }
