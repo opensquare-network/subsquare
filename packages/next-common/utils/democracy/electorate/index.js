@@ -13,6 +13,7 @@ export default async function getElectorate(api, height) {
 
   const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
   const value = await api.query.balances.totalIssuance.at(blockHash);
-  electorates[blockHeight] = value;
-  return value.toBigInt().toString();
+  const stringValue = value.toBigInt().toString();
+  electorates[blockHeight] = stringValue;
+  return stringValue;
 }
