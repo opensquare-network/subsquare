@@ -31,6 +31,10 @@ const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
 });
 
+const VotesPopup = dynamic(() => import("next-common/components/democracy/votesPopup"), {
+  ssr: false,
+});
+
 const Wrapper = styled.div`
   position: absolute;
   right: 0;
@@ -394,6 +398,7 @@ function Vote({
           onInBlock={updateVoteProgress}
         />
       )}
+      <VotesPopup/>
     </Wrapper>
   );
 }
