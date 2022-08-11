@@ -18,7 +18,7 @@ import DetailWithRightLayout from "next-common/components/layout/detailWithRight
 import extractVoteInfo from "next-common/utils/democracy/referendum";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchElectorate, fetchVotes } from "next-common/store/reducers/referendumSlice";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
+import { nowHeightSelector } from "next-common/store/reducers/chainSlice";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -37,11 +37,12 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       detail?.onchainData?.info?.ongoing ||
       detail?.onchainData?.meta
   );
+
   const isMounted = useIsMounted();
   const dispatch = useDispatch();
   const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] =
     useState(false);
-  const latestHeight = useSelector(latestHeightSelector)
+  const nowHeight = useSelector(nowHeightSelector)
 
   useEffect(() => {
     if (api) {
@@ -51,9 +52,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   useEffect(() => {
     if (api) {
-      dispatch(fetchElectorate(api, voteFinishedHeight || latestHeight))
+      dispatch(fetchElectorate(api, voteFinishedHeight || nowHeight))
     }
-  }, [api, dispatch, voteFinishedHeight, latestHeight])
+  }, [api, dispatch, voteFinishedHeight, nowHeight])
 
   useEffect(() => {
     if (voteFinished) {

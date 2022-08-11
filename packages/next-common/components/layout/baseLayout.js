@@ -3,11 +3,11 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { currentNodeSelector } from "../../store/reducers/nodeSlice";
 import useApi from "../../utils/hooks/useApi";
-import { useBestNumber, useBlockTime } from "../../utils/hooks";
+import { useSubscribeChainHead, useBlockTime, useChainHeight } from "../../utils/hooks";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import dark from "../styled/theme/dark";
 import light from "../styled/theme/light";
-import { setBlockTime, setLatestHeight } from "../../store/reducers/chainSlice";
+import { setBlockTime, setLatestHeight, setNowHeight } from "../../store/reducers/chainSlice";
 import SEO from "../SEO";
 import capitalize from "../../utils/capitalize";
 import { DEFAULT_SEO_INFO } from "../../utils/constants";
@@ -35,7 +35,9 @@ export default function BaseLayout({ user, left, children, seoInfo }) {
   const endpoint = useSelector(currentNodeSelector);
   const api = useApi(chain, endpoint);
   const blockTime = useBlockTime(api);
-  const bestNumber = useBestNumber(api);
+  const latestHeight = useSubscribeChainHead(api);
+  const nowHeight = useChainHeight(api);
+
   const dispatch = useDispatch();
   const isMounted = useIsMountedBool();
   const mode = useSelector(modeSelector);
@@ -48,10 +50,14 @@ export default function BaseLayout({ user, left, children, seoInfo }) {
   }, [blockTime, dispatch, isMounted]);
 
   useEffect(() => {
-    if (bestNumber && isMounted()) {
-      dispatch(setLatestHeight(bestNumber));
+    if (latestHeight && isMounted()) {
+      dispatch(setLatestHeight(latestHeight));
     }
-  }, [bestNumber, dispatch, isMounted]);
+  }, [latestHeight, dispatch, isMounted]);
+
+  useEffect(() => {
+    dispatch(setNowHeight(nowHeight));
+  }, [nowHeight, dispatch])
 
   const seo = (
     <SEO
