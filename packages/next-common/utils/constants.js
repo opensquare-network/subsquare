@@ -13,6 +13,7 @@ import turing from "./consts/settings/turing";
 import crust from "./consts/settings/crust";
 import litmus from "./consts/settings/litmus";
 import React from "react";
+import zeitgeist from "./consts/settings/zeitgeist";
 
 export const nodes = [
   polkadot,
@@ -31,6 +32,7 @@ export const nodes = [
   // centrifuge,
   crust,
   litmus,
+  zeitgeist,
 ];
 
 export const EmptyList = {

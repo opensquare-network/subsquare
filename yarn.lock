@@ -1209,10 +1209,10 @@
     prismjs "^1.28.0"
     sanitize-html "^2.7.0"
 
-"@osn/provider-options@1.0.7":
-  version "1.0.7"
-  resolved "https://registry.npmjs.org/@osn/provider-options/-/provider-options-1.0.7.tgz#bd7fce7426b44c370812376704aa9092ca6cc216"
-  integrity sha512-8P45Pc/N9FrFJz4R922J47w2u8ZCQ8e7/UpMpUmRKayCgQ3oCSH1xtsKYNozbSUsuGNsWJ+UZaap2AfIJIrgjA==
+"@osn/provider-options@1.0.8":
+  version "1.0.8"
+  resolved "https://registry.npmjs.org/@osn/provider-options/-/provider-options-1.0.8.tgz#426c7d19f7da35ab210e85b80dba2d3d2eed161d"
+  integrity sha512-ZK3f9++5GwLh1BPH2uiq3rwDIPL4zI4FYzoM0WtiVxnYrV01+nTvLCRzV/ismWeByqVxVayDheOk93BCb05ZCA==
 
 "@osn/rich-text-editor@^0.1.51":
   version "0.1.51"
@@ -1756,12 +1756,13 @@
     "@interlay/monetary-js" "0.5.4"
     "@osn/polkadot-react-identicon" "^1.0.8"
     "@osn/previewer" "^0.11.2"
-    "@osn/provider-options" "1.0.7"
+    "@osn/provider-options" "1.0.8"
     "@polkadot/api" "8.9.1"
     "@polkadot/extension-dapp" "0.44.2-3"
     "@reduxjs/toolkit" "^1.6.1"
     bignumber.js "^9.0.2"
     bn.js "^5.2.0"
+    copy-to-clipboard "^3.3.2"
     d3-selection "^3.0.0"
     d3-shape "^3.1.0"
     dayjs "^1.10.7"

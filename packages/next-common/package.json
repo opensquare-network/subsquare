@@ -13,7 +13,7 @@
     "@interlay/monetary-js": "0.5.4",
     "@osn/polkadot-react-identicon": "^1.0.8",
     "@osn/previewer": "^0.11.2",
-    "@osn/provider-options": "1.0.7",
+    "@osn/provider-options": "1.0.8",
     "@polkadot/api": "8.9.1",
     "@polkadot/extension-dapp": "0.44.2-3",
     "@reduxjs/toolkit": "^1.6.1",

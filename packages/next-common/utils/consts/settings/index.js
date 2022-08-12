@@ -15,6 +15,7 @@ import turing from "./turing";
 import crust from "./crust";
 import centrifuge from "./centrifuge";
 import litmus from "./litmus";
+import zeitgeist from "./zeitgeist";
 
 const settingsMap = {
   polkadot,
@@ -34,12 +35,13 @@ const settingsMap = {
   polkadex,
   turing,
   litmus,
+  zeitgeist,
 };
 
 export default function getChainSettings(chain) {
   const settings = settingsMap[chain];
   if (!settings) {
-    throw `can not get chain settings of ${chain}`;
+    throw `can not get chain settings of ${ chain }`;
   }
 
   return settings;
