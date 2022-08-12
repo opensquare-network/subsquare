@@ -38,6 +38,8 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       detail?.onchainData?.meta
   );
 
+  const possibleElectorate = referendumStatus?.tally?.electorate;
+
   const isMounted = useIsMounted();
   const dispatch = useDispatch();
   const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] =
@@ -52,9 +54,9 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   useEffect(() => {
     if (api) {
-      dispatch(fetchElectorate(api, voteFinishedHeight || nowHeight))
+      dispatch(fetchElectorate(api, voteFinishedHeight || nowHeight, possibleElectorate))
     }
-  }, [api, dispatch, voteFinishedHeight, nowHeight])
+  }, [api, dispatch, voteFinishedHeight, nowHeight, possibleElectorate])
 
   useEffect(() => {
     if (voteFinished) {

@@ -72,7 +72,12 @@ export const fetchVotes =
     }
   };
 
-export const fetchElectorate = (api, height) => async (dispatch) => {
+export const fetchElectorate = (api, height, possibleElectorate) => async (dispatch) => {
+  if (possibleElectorate) {
+    dispatch(setElectorate(possibleElectorate));
+    return
+  }
+
   let electorate;
   dispatch(setIsLoadingElectorate(true));
   try {
