@@ -1,3 +1,4 @@
+import React from "react";
 import styled, { withTheme } from "styled-components";
 import { getNode, toPrecision } from "next-common/utils";
 import User from "next-common/components/user";
@@ -7,6 +8,7 @@ import Loading from "../../loading";
 
 import { EmptyTd, RowSpliter, StyledTable, StyledTd, StyledTh, StyledTr, } from "next-common/components/styled/table";
 import VoteLabel from "./voteLabel";
+import Chains from "../../../utils/consts/chains";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -37,6 +39,8 @@ function VotesList({ chain, items, theme, loading = true }) {
     return null;
   }
 
+  const hasLabel = ![Chains.kintsugi, Chains.interlay].includes(chain);
+
   return (
     <Wrapper>
       <StyledTable>
@@ -45,9 +49,12 @@ function VotesList({ chain, items, theme, loading = true }) {
             <StyledTh style={{ textAlign: "left", width: 176 }}>
               VOTERS
             </StyledTh>
-            <StyledTh style={{ textAlign: "center", width: 40 }}>
-              LABEL
-            </StyledTh>
+            {
+              hasLabel &&
+              <StyledTh style={ { textAlign: "center", width: 40 } }>
+                LABEL
+              </StyledTh>
+            }
             <StyledTh style={{ textAlign: "right" }}>VOTES</StyledTh>
           </StyledTr>
           <RowSpliter
@@ -70,9 +77,12 @@ function VotesList({ chain, items, theme, loading = true }) {
                       maxWidth={132}
                     />
                   </StyledTd>
-                  <StyledTd style={{ textAlign: "center" }}>
-                    <VoteLabel conviction={ item.conviction } isDelegating={ item.isDelegating } />
-                  </StyledTd>
+                  {
+                    hasLabel &&
+                    <StyledTd style={{ textAlign: "center" }}>
+                      <VoteLabel conviction={ item.conviction } isDelegating={ item.isDelegating } />
+                    </StyledTd>
+                  }
                   <StyledTd style={{ textAlign: "right" }}>
                     <ValueDisplay
                       value={toPrecision(item.balance, node.decimals)}
