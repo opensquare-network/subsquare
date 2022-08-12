@@ -10,7 +10,6 @@ import {
   getThresholdOfSuperMajorityAgainst,
   getThresholdOfSuperMajorityApprove,
 } from "utils/referendumUtil";
-import { useElectorate, useLoaded } from "utils/hooks";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useWindowSize from "next-common/utils/hooks/useWindowSize.js";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
@@ -26,11 +25,24 @@ import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useSelector } from "react-redux";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
+import {
+  electorateSelector,
+  isLoadingElectorateSelector,
+  isLoadingVotesSelector, votesSelector
+} from "next-common/store/reducers/referendumSlice";
+import VotesCount from "next-common/components/democracy/referendum/votesCount";
+import SubLink from "next-common/components/styled/subLink";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
 });
+
+const VotesPopup = dynamic(
+  () => import("next-common/components/democracy/votesPopup"),
+  {
+    ssr: false,
+  }
+);
 
 const Wrapper = styled.div`
   position: absolute;
@@ -174,6 +186,10 @@ const Guide = styled.p`
   }
 `;
 
+const ActionLink = styled(SubLink)`
+  margin-top: 8px !important;
+`
+
 function Vote({
   referendumInfo,
   referendumStatus,
@@ -184,9 +200,12 @@ function Vote({
   chain,
 }) {
   const [showVote, setShowVote] = useState(false);
+  const [showVoteList, setShowVoteList] = useState(false);
   const isMounted = useIsMounted();
   const api = useApi(chain);
-  const blockHeight = useSelector(latestHeightSelector);
+
+  const electorate = useSelector(electorateSelector)
+  const isElectorateLoading = useSelector(isLoadingElectorateSelector)
 
   const updateVoteProgress = useCallback(() => {
     api?.query.democracy
@@ -208,13 +227,6 @@ function Vote({
     isMounted,
   ]);
 
-  const referendumEndHeight = referendumInfo?.finished?.end;
-  const [electorate, isElectorateLoading] = useElectorate(
-    api,
-    referendumEndHeight || blockHeight
-  );
-  const isElectorateLoaded = useLoaded(isElectorateLoading);
-
   const { width } = useWindowSize();
 
   const node = getNode(chain);
@@ -230,6 +242,8 @@ function Vote({
   const nNays = toPrecision(referendumStatus?.tally?.nays ?? 0, decimals);
   const nTurnout = toPrecision(referendumStatus?.tally?.turnout ?? 0, decimals);
   const nElectorate = toPrecision(electorate ?? 0, decimals);
+  const isLoadingVotes = useSelector(isLoadingVotesSelector);
+  const { allAye = [], allNay = [] } = useSelector(votesSelector);
 
   let nAyesPercent = 50;
   let nNaysPercent = 50;
@@ -251,7 +265,7 @@ function Vote({
         <TitleContainer>
           <span>Votes</span>
           <div>
-            {isLoadingReferendumStatus || !isElectorateLoaded ? (
+            {isLoadingReferendumStatus || isElectorateLoading ? (
               <Loading size={16} />
             ) : null}
           </div>
@@ -305,6 +319,7 @@ function Vote({
             <Header>
               <AyeIcon />
               Aye
+              { !isLoadingVotes ? <VotesCount>{ allAye.length }</VotesCount> : null }
             </Header>
             <Value>
               <ValueDisplay
@@ -318,6 +333,7 @@ function Vote({
             <Header>
               <NayIcon />
               Nay
+              { !isLoadingVotes ? <VotesCount>{ allNay.length }</VotesCount> : null }
             </Header>
             <Value>
               <ValueDisplay
@@ -354,6 +370,11 @@ function Vote({
             </Value>
           </Row>
         </div>
+
+        <ActionLink onClick={() => setShowVoteList(true)}>
+          Check all votes
+        </ActionLink>
+
         {referendumInfo?.finished?.approved && <PassStatus>Passed</PassStatus>}
         {referendumInfo?.finished?.approved === false && (
           <RejectStatus>Failed</RejectStatus>
@@ -397,6 +418,10 @@ function Vote({
           onSubmitted={() => setIsLoadingReferendumStatus(true)}
           onInBlock={updateVoteProgress}
         />
+      )}
+
+      {showVoteList && (
+        <VotesPopup setShowVoteList={setShowVoteList} chain={chain} />
       )}
     </Wrapper>
   );

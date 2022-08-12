@@ -33,20 +33,40 @@ export function useBlockTime(api) {
   return blockTime;
 }
 
-export function useBestNumber(api) {
-  const [bestNumber, setBestNumber] = useState();
+export function useSubscribeChainHead(api) {
+  const [latestHeight, setLatestHeight] = useState(0);
   const isMounted = useIsMounted();
   useEffect(() => {
     if (api) {
       api.rpc.chain.subscribeNewHeads(header => {
         const latestUnFinalizedHeight = header.number.toNumber();
         if (isMounted.current) {
-          setBestNumber(latestUnFinalizedHeight);
+          setLatestHeight(latestUnFinalizedHeight);
         }
       });
     }
   }, [api]);
-  return bestNumber;
+
+  return latestHeight;
+}
+
+export function useChainHeight(api) {
+  const [height, setHeight] = useState(0);
+  const isMounted = useIsMounted();
+  useEffect(() => {
+    if (!api) {
+      return
+    }
+
+    api.derive.chain.bestNumber().then(best => {
+      if (isMounted.current) {
+        setHeight(best.toNumber());
+      }
+    })
+
+  }, [api])
+
+  return height;
 }
 
 export function useEstimateBlocksTime(blocks) {
