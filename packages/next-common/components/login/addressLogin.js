@@ -1,23 +1,19 @@
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { useDispatch } from "react-redux";
-import { isWeb3Injected, web3Enable } from "@polkadot/extension-dapp";
 import { useRouter } from "next/router";
-
 import AddressSelect from "../addressSelect";
 import useIsMounted from "../../utils/hooks/useIsMounted";
-import DownloadExtension from "../downloadExtension";
 import nextApi from "../../services/nextApi";
 import ErrorText from "../ErrorText";
 import { setUser } from "../../store/reducers/userSlice";
 import { newErrorToast } from "../../store/reducers/toastSlice";
 import { encodeAddressToChain } from "../../services/address";
-import { signMessage } from "../../services/extension/signMessage";
-import { polkadotWeb3Accounts } from "../../utils/extensionAccount";
-import GhostButton from "../buttons/ghostButton";
 import SecondaryButton from "../buttons/secondaryButton";
 import Flex from "../styled/flex";
 import { WALLETS } from "../../utils/consts/connect";
+import { stringToHex } from "@polkadot/util";
+import { LinkWrapper } from "./styled";
 
 const Label = styled.div`
   font-weight: bold;
@@ -87,6 +83,20 @@ const WalletOption = styled.li`
   }
 `;
 
+const getIsInstalled = (extensionName) => {
+  const installed = !!(
+    typeof window !== "undefined" &&
+    window.injectedWeb3 &&
+    window?.injectedWeb3?.[extensionName]
+  );
+
+  if (installed) {
+    return true;
+  }
+
+  return false;
+};
+
 const Wallet = ({ wallet, onClick }) => {
   return (
     <WalletOption onClick={onClick} installed={!!wallet?.installed}>
@@ -103,12 +113,12 @@ const Wallet = ({ wallet, onClick }) => {
 
 export default function AddressLogin({ chain, setMailLogin }) {
   const isMounted = useIsMounted();
+  const [wallet, setWallet] = useState();
   const [accounts, setAccounts] = useState([]);
-  const [hasExtension, setHasExtension] = useState(true);
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [web3Error, setWeb3Error] = useState();
   const [loading, setLoading] = useState(false);
-  const [selectedWallet, setSelectWallet] = useState("polkadot-js");
+  const [selectedWallet, setSelectWallet] = useState("");
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -121,10 +131,12 @@ export default function AddressLogin({ chain, setMailLogin }) {
     }
     if (result?.challenge) {
       try {
-        const signature = await signMessage(
-          result?.challenge,
-          selectedAccount.address
-        );
+        const { signature } = await wallet.signer.signRaw({
+          type: "bytes",
+          data: stringToHex(result?.challenge),
+          address: selectedAccount.address,
+        });
+
         const { result: loginResult, error: loginError } = await nextApi.post(
           `auth/login/${result?.attemptId}`,
           { challengeAnswer: signature }
@@ -157,27 +169,15 @@ export default function AddressLogin({ chain, setMailLogin }) {
 
   useEffect(() => {
     (async () => {
-      await web3Enable("subsquare");
-      if (!isWeb3Injected) {
-        if (isMounted.current) {
-          setHasExtension(false);
-        }
+      const extension = window?.injectedWeb3?.[selectedWallet];
+      if (!extension) {
         return;
       }
-      const extensionAccounts = await polkadotWeb3Accounts();
-      const accounts = extensionAccounts.map((item) => {
-        const {
-          address,
-          meta: { name },
-        } = item;
-        return {
-          address,
-          name,
-        };
-      });
-
+      const wallet = await extension.enable("subsquare");
+      setWallet(wallet);
+      const extensionAccounts = await wallet.accounts.get();
       if (isMounted.current) {
-        setAccounts(accounts);
+        setAccounts(extensionAccounts);
       }
     })();
   }, [selectedWallet, isMounted]);
@@ -198,16 +198,20 @@ export default function AddressLogin({ chain, setMailLogin }) {
     setWeb3Error();
   }, [chain, accounts, selectedAccount]);
 
+  useEffect(() => {
+    if (accounts?.length > 0) {
+      setSelectedAccount(accounts[0]);
+    }
+  }, [selectedWallet, accounts]);
+
   return (
     <>
       <WalletOptions>
         {WALLETS.map((wallet, index) => {
-          const installed = !!(
-            typeof window !== "undefined" &&
-            window.injectedWeb3 &&
-            window?.injectedWeb3?.[wallet.extensionName]
-          );
-          const walletInfo = { ...wallet, installed };
+          const walletInfo = {
+            ...wallet,
+            installed: getIsInstalled(wallet.extensionName),
+          };
           return (
             <Wallet
               wallet={walletInfo}
@@ -217,7 +221,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
           );
         })}
       </WalletOptions>
-      {hasExtension && (
+      {selectedWallet && (
         <div>
           <Label>Choose linked address</Label>
           <AddressSelect
@@ -231,16 +235,15 @@ export default function AddressLogin({ chain, setMailLogin }) {
           {web3Error && <ErrorText>{web3Error}</ErrorText>}
         </div>
       )}
-      {!hasExtension && <DownloadExtension />}
       <ButtonWrapper>
-        {hasExtension && (
+        {selectedWallet && (
           <SecondaryButton isFill isLoading={loading} onClick={doWeb3Login}>
             Next
           </SecondaryButton>
         )}
-        <GhostButton isFill onClick={setMailLogin}>
-          Login with username
-        </GhostButton>
+        <LinkWrapper>
+          <a onClick={setMailLogin}>Login </a>with username
+        </LinkWrapper>
       </ButtonWrapper>
     </>
   );

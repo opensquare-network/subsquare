@@ -1,7 +1,7 @@
 export const WALLETS = [
   {
     extensionName: "polkadot-js",
-    title: "Polkadot{.js}",
+    title: "Polkadot.js",
     installUrl:
       "https://chrome.google.com/webstore/detail/polkadot%7Bjs%7D-extension/mopnmbcafieddcagagdcbnhejhlodfdd",
     logo: "/imgs/icons/wallet/polkadot.svg",
