@@ -75,6 +75,7 @@ function VotesList({ chain, items, theme, loading = true }) {
                       chain={chain}
                       fontSize={14}
                       maxWidth={132}
+                      noTooltip={true}
                     />
                   </StyledTd>
                   {

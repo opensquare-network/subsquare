@@ -108,10 +108,12 @@ function User({
   fontSize = 14,
   noEvent = false,
   maxWidth,
+  noTooltip = false,
   color,
 }) {
   const address =
     add ?? user?.addresses?.find((addr) => addr.chain === chain)?.address;
+
   const [identity, setIdentity] = useState(null);
   useEffect(() => {
     setIdentity(null);
@@ -140,7 +142,7 @@ function User({
     </Username>
   );
 
-  const addressWithoutIdentity = maxWidth ? (
+  const addressWithoutIdentity = maxWidth && !noTooltip ? (
     <Tooltip content={(!user?.publicKey && user?.username) || address}>
       <div>{elmUsernameOrAddr}</div>
     </Tooltip>
