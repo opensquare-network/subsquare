@@ -3,7 +3,7 @@ import { getReferendumVotesFromVotersFor } from "./votersFor";
 import { emptyVotes } from "./common";
 
 export async function getReferendumVotesByHeight(api, height, referendumIndex) {
-  const blockHash = await api.rpc.chain.getBlockHash(height);
+  const blockHash = await api.rpc.chain.getBlockHash(height - 1);
   const blockApi = await api.at(blockHash);
 
   if (blockApi.query.democracy.votingOf) {

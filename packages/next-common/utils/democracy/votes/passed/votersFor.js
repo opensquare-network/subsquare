@@ -41,7 +41,7 @@ export async function getReferendumVotesFromVotersFor(blockApi, blockHash, refer
   })
 
   const sorted = sortVotes(normalizedVotes);
-  const allAye = sorted.filter(v => v.vote.isAye);
-  const allNay = sorted.filter(v => !v.vote.isAye);
+  const allAye = sorted.filter(v => v.aye);
+  const allNay = sorted.filter(v => !v.aye);
   return { allAye, allNay };
 }
