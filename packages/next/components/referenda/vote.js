@@ -379,7 +379,7 @@ function Vote({
           </Row>
         </div>
         <SubLink onClick={() => setShowVoteList(true)}>
-          Check vote detail
+          Check all votes
         </SubLink>
         {finishedResult}
         {referendumInfo &&
