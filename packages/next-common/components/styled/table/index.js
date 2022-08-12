@@ -35,7 +35,7 @@ export const StyledTh = styled.th`
 `;
 
 export const StyledTd = styled.td`
-  padding: 12px 0 12px 0;
+  padding: 10px 0 10px 0;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -44,7 +44,7 @@ export const StyledTd = styled.td`
 `;
 
 export const EmptyTd = styled.td`
-  padding: 12px 0 12px 0;
+  padding: 10px 0;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;

@@ -1,19 +1,12 @@
 import styled, { withTheme } from "styled-components";
-import { getNode } from "next-common/utils";
+import { getNode, toPrecision } from "next-common/utils";
 import User from "next-common/components/user";
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import ValueDisplay from "../../displayValue";
-import { no_scroll_bar } from "../../../styles/componentCss";
 import Loading from "../../loading";
 
-import {
-  EmptyTd,
-  RowSpliter,
-  StyledTable,
-  StyledTd,
-  StyledTh,
-  StyledTr,
-} from "next-common/components/styled/table";
+import { EmptyTd, RowSpliter, StyledTable, StyledTd, StyledTh, StyledTr, } from "next-common/components/styled/table";
+import VoteLabel from "./voteLabel";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -26,13 +19,11 @@ const Wrapper = styled.div`
     margin-top: 16px;
   }
   max-height: 500px;
-  overflow-y: scroll;
-  ${no_scroll_bar};
+  overflow-y: auto;
   table {
     border: none;
     padding: 0;
     thead {
-      position: sticky;
       top: 0;
       background-color: ${(props) => props.theme.neutral};
       border-color: ${(props) => props.theme.neutral};
@@ -80,11 +71,12 @@ function VotesList({ chain, items, theme, loading = true }) {
                     />
                   </StyledTd>
                   <StyledTd style={{ textAlign: "center" }}>
-                    {item.conviction}
-                    {item.isDelegating && "/d"}
+                    <VoteLabel conviction={ item.conviction } isDelegating={ item.isDelegating } />
                   </StyledTd>
                   <StyledTd style={{ textAlign: "right" }}>
-                    <ValueDisplay value={item.balance} symbol={node.symbol} />
+                    <ValueDisplay
+                      value={toPrecision(item.balance, node.decimals)}
+                      symbol={node.symbol} />
                   </StyledTd>
                 </StyledTr>
                 {index !== items.length - 1 && (
