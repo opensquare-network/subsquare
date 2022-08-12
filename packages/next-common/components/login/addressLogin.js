@@ -65,6 +65,12 @@ const WalletOption = styled.li`
       }
     `}
 
+  ${(props) =>
+    props.selected &&
+    css`
+      background: ${(props) => props.theme.grey200Border};
+    `}
+
   border-radius: 4px;
   cursor: pointer;
 
@@ -83,23 +89,28 @@ const WalletOption = styled.li`
   }
 `;
 
+const ErrorMessage = styled.div`
+  padding: 10px 16px;
+  background: ${props.theme.secondaryRed100};
+  color: ${props.theme.secondaryRed500};
+  border-radius: 4px;
+`;
+
 const getIsInstalled = (extensionName) => {
-  const installed = !!(
+  return !!(
     typeof window !== "undefined" &&
     window.injectedWeb3 &&
     window?.injectedWeb3?.[extensionName]
   );
-
-  if (installed) {
-    return true;
-  }
-
-  return false;
 };
 
-const Wallet = ({ wallet, onClick }) => {
+const Wallet = ({ wallet, onClick, selected = false }) => {
   return (
-    <WalletOption onClick={onClick} installed={!!wallet?.installed}>
+    <WalletOption
+      selected={selected}
+      onClick={onClick}
+      installed={!!wallet?.installed}
+    >
       <Flex>
         <img className={wallet.title} src={wallet.logo} alt={wallet.title} />
         <span className="wallet-title">{wallet.title}</span>
@@ -217,11 +228,12 @@ export default function AddressLogin({ chain, setMailLogin }) {
               wallet={walletInfo}
               onClick={() => setSelectWallet(wallet.extensionName)}
               key={index}
+              selected={wallet.extensionName === selectedWallet}
             />
           );
         })}
       </WalletOptions>
-      {selectedWallet && (
+      {selectedWallet && accounts.length > 0 && (
         <div>
           <Label>Choose linked address</Label>
           <AddressSelect
@@ -233,10 +245,11 @@ export default function AddressLogin({ chain, setMailLogin }) {
             }}
           />
           {web3Error && <ErrorText>{web3Error}</ErrorText>}
+          <ErrorMessage>13123</ErrorMessage>
         </div>
       )}
       <ButtonWrapper>
-        {selectedWallet && (
+        {selectedWallet && accounts.length > 0 && (
           <SecondaryButton isFill isLoading={loading} onClick={doWeb3Login}>
             Next
           </SecondaryButton>
