@@ -13,7 +13,7 @@ import capitalize from "../../utils/capitalize";
 import { DEFAULT_SEO_INFO } from "../../utils/constants";
 import useWindowSize from "../../utils/hooks/useWindowSize";
 import isNil from "lodash.isnil";
-import styled, { ThemeProvider } from "styled-components";
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import Auth from "../auth";
 import Header from "../header";
 import Content from "./content";
@@ -28,6 +28,12 @@ const Wrapper = styled.div`
   padding-top: 64px;
   background: ${(props) => props.theme.grey100Bg};
 `;
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    background: ${(props) => props.theme.grey100Bg};
+  }
+`
 
 export default function BaseLayout({ user, left, children, seoInfo }) {
   let chain = process.env.NEXT_PUBLIC_CHAIN;
@@ -79,6 +85,7 @@ export default function BaseLayout({ user, left, children, seoInfo }) {
     <ThemeProvider theme={theme}>
       <Wrapper>
         {seo}
+        <GlobalStyle />
         <Auth chain={chain} />
         <Header user={user} left={left} chain={chain} />
         <Content left={left}>{children}</Content>
