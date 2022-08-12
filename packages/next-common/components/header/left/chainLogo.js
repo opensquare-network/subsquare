@@ -19,6 +19,7 @@ import Polkadex from "../../../assets/header-logos/polkadex.svg";
 import Centrifuge from "../../../assets/header-logos/centrifuge.svg";
 import Litmus from "../../../assets/header-logos/litmus.svg";
 import SubSquare from "../../../assets/header-logos/logo.svg";
+import SubSquareDark from "../../../assets/header-logos/subsquare-dark.svg";
 import KusamaDark from "../../../assets/header-logos/kusama-dark.svg";
 import PolkadotDark from "../../../assets/header-logos/polkadot-dark.svg";
 import TuringDark from "../../../assets/header-logos/turing-dark.svg";
@@ -38,7 +39,7 @@ import Zeitgeist from "../../../assets/header-logos/zeitgeist.svg";
 import { withTheme } from "styled-components";
 
 function ChainLogo({ chain, theme }) {
-  let logo = <SubSquare />;
+  let logo = theme.isDark ? <SubSquareDark /> : <SubSquare />;
   const { width } = useWindowSize();
 
   if (width > 768) {
