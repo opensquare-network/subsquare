@@ -114,7 +114,7 @@ const FooterWrapper = styled(Flex)`
 
 const TitleWrapper = styled.div`
   overflow: hidden;
-  color: ${(props) => props.theme.textPrimary}; ;
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 const HeadWrapper = styled.div`
@@ -149,7 +149,7 @@ const HeadWrapper = styled.div`
 const Method = styled.span`
   font-size: 12px;
   font-weight: 400 !important;
-  color: ${(props) => props.theme.textTertiary}; !important;
+  color: ${(props) => props.theme.textTertiary} !important;
 `;
 
 const ContentWrapper = styled.div`

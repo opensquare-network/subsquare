@@ -15,7 +15,7 @@ const Wrapper = styled(Flex)`
   text-align: center;
   background: ${(props) => props.theme.neutral};
   border-color: ${(props) => props.theme.grey300Border};
-  color: ${(props) => props.theme.textTertiary}; ;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 export default function EmptyList({ type = "discussions" }) {
