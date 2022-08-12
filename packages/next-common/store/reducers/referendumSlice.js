@@ -5,6 +5,7 @@ import Chains from "../../utils/consts/chains";
 import getKintsugiReferendumVotes from "../../utils/democracy/votes/kintsugi";
 import getKintElectorate from "../../utils/democracy/electorate/kintsugi";
 import getElectorate from "../../utils/democracy/electorate";
+import { useEffect } from "react";
 
 const chain = process.env.NEXT_PUBLIC_CHAIN;
 
@@ -13,7 +14,7 @@ const referendumSlice = createSlice({
   initialState: {
     isLoadingElectorate: false,
     electorate: 0,
-    isLoadingVotes: false,
+    isLoadingVotes: true,
     votes: emptyVotes,
   },
   reducers: {
@@ -28,9 +29,9 @@ const referendumSlice = createSlice({
     },
     setElectorate(state, { payload }) {
       state.electorate = payload;
-    }
-  }
-})
+    },
+  },
+});
 
 export const {
   setVotes,
@@ -39,26 +40,38 @@ export const {
   setIsLoadingElectorate,
 } = referendumSlice.actions;
 
-export const isLoadingElectorateSelector = (state) => state.referendum.isLoadingElectorate;
+export const isLoadingElectorateSelector = (state) =>
+  state.referendum.isLoadingElectorate;
 export const electorateSelector = (state) => state.referendum.electorate;
-export const isLoadingVotesSelector = (state) => state.referendum.isLoadingVotes;
+export const isLoadingVotesSelector = (state) =>
+  state.referendum.isLoadingVotes;
 export const votesSelector = (state) => state.referendum.votes;
 
-export const fetchVotes = (api, referendumIndex, passedHeight) => async (dispatch) => {
-  let votes;
-  dispatch(setIsLoadingVotes(true));
-  try {
-    if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
-      votes = await getKintsugiReferendumVotes(api, referendumIndex, passedHeight);
-    } else {
-      votes = await getReferendumVotes(api, referendumIndex, passedHeight)
-    }
+export const clearVotes = () => async (dispatch) => {
+  dispatch(setVotes(emptyVotes));
+};
 
-    dispatch(setVotes(votes));
-  } finally {
-    dispatch(setIsLoadingVotes(false));
-  }
-}
+export const fetchVotes =
+  (api, referendumIndex, passedHeight) => async (dispatch) => {
+    let votes;
+    dispatch(clearVotes());
+    dispatch(setIsLoadingVotes(true));
+    try {
+      if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
+        votes = await getKintsugiReferendumVotes(
+          api,
+          referendumIndex,
+          passedHeight
+        );
+      } else {
+        votes = await getReferendumVotes(api, referendumIndex, passedHeight);
+      }
+
+      dispatch(setVotes(votes));
+    } finally {
+      dispatch(setIsLoadingVotes(false));
+    }
+  };
 
 export const fetchElectorate = (api, height) => async (dispatch) => {
   let electorate;
@@ -69,10 +82,10 @@ export const fetchElectorate = (api, height) => async (dispatch) => {
     } else {
       electorate = await getElectorate(api, height);
     }
-    dispatch(setElectorate(electorate))
+    dispatch(setElectorate(electorate));
   } finally {
     dispatch(setIsLoadingElectorate(false));
   }
-}
+};
 
-export default referendumSlice.reducer
+export default referendumSlice.reducer;

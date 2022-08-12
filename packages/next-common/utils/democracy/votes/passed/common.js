@@ -3,7 +3,7 @@ import BigNumber from "bignumber.js";
 export const emptyVotes = {
   allAye: [],
   allNay: [],
-}
+};
 
 export function objectSpread(dest, ...sources) {
   for (let i = 0; i < sources.length; i++) {
@@ -29,7 +29,7 @@ export function normalizeVotingOfEntry([storageKey, voting], blockApi) {
     pubKeyU8a = storageKey.slice(40);
   }
   if (!pubKeyU8a) {
-    throw new Error(`Unexpected storage key length ${ storageKey.length }`)
+    throw new Error(`Unexpected storage key length ${storageKey.length}`);
   }
 
   const accountId = blockApi.registry.createType("AccountId", pubKeyU8a);

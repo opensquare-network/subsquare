@@ -25,15 +25,22 @@ import { SecondaryCardDetail } from "next-common/components/styled/containers/se
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useSelector } from "react-redux";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
-import { electorateSelector, isLoadingElectorateSelector } from "next-common/store/reducers/referendumSlice";
+import {
+  electorateSelector,
+  isLoadingElectorateSelector,
+} from "next-common/store/reducers/referendumSlice";
+import SubLink from "next-common/components/styled/subLink";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
 });
 
-const VotesPopup = dynamic(() => import("next-common/components/democracy/votesPopup"), {
-  ssr: false,
-});
+const VotesPopup = dynamic(
+  () => import("next-common/components/democracy/votesPopup"),
+  {
+    ssr: false,
+  }
+);
 
 const Wrapper = styled.div`
   position: absolute;
@@ -187,12 +194,13 @@ function Vote({
   chain,
 }) {
   const [showVote, setShowVote] = useState(false);
+  const [showVoteList, setShowVoteList] = useState(false);
   const isMounted = useIsMounted();
   const api = useApi(chain);
   const blockHeight = useSelector(latestHeightSelector);
 
-  const electorate = useSelector(electorateSelector)
-  const isElectorateLoading = useSelector(isLoadingElectorateSelector)
+  const electorate = useSelector(electorateSelector);
+  const isElectorateLoading = useSelector(isLoadingElectorateSelector);
 
   const updateVoteProgress = useCallback(() => {
     api?.query.democracy
@@ -370,6 +378,9 @@ function Vote({
             </Value>
           </Row>
         </div>
+        <SubLink onClick={() => setShowVoteList(true)}>
+          Check vote detail
+        </SubLink>
         {finishedResult}
         {referendumInfo &&
           !finished &&
@@ -398,7 +409,9 @@ function Vote({
           onInBlock={updateVoteProgress}
         />
       )}
-      <VotesPopup/>
+      {showVoteList && (
+        <VotesPopup setShowVoteList={setShowVoteList} chain={chain} />
+      )}
     </Wrapper>
   );
 }
