@@ -5,7 +5,6 @@ import Chains from "../../utils/consts/chains";
 import getKintsugiReferendumVotes from "../../utils/democracy/votes/kintsugi";
 import getKintElectorate from "../../utils/democracy/electorate/kintsugi";
 import getElectorate from "../../utils/democracy/electorate";
-import { useEffect } from "react";
 
 const chain = process.env.NEXT_PUBLIC_CHAIN;
 
