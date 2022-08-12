@@ -22,6 +22,8 @@ import InterlayDark from "../../assets/icons/chain/interlay-dark.png";
 import KusamaDark from "../../assets/icons/chain/kusama-dark.png";
 import PolkadexDark from "../../assets/icons/chain/polkadex-dark.png";
 import Litmus from "../../assets/icons/chain/litmus.png";
+import Zeitgeist from "../../assets/icons/chain/zeitgeist.png";
+import ZeitgeistDark from "../../assets/icons/chain/zeitgeist-dark.png";
 import { withTheme } from "styled-components";
 
 const imageMap = {
@@ -42,6 +44,7 @@ const imageMap = {
   [Chains.turing]: Turing,
   [Chains.kintsugi]: Kintsugi,
   [Chains.litmus]: Litmus,
+  [Chains.zeitgeist]: Zeitgeist,
 };
 
 const darkImageMap = {
@@ -50,6 +53,7 @@ const darkImageMap = {
   [Chains.crust]: CrustDark,
   [Chains.interlay]: InterlayDark,
   [Chains.polkadex]: PolkadexDark,
+  [Chains.zeitgeist]: ZeitgeistDark,
 };
 
 function ChainIcon({ chain, theme }) {

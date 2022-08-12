@@ -34,6 +34,7 @@ import BifrostDark from "../../../assets/header-logos/bifrost-dark.svg";
 import CalamariDark from "../../../assets/header-logos/calamari-dark.svg";
 import PolkadexDark from "../../../assets/header-logos/polkadex-dark.svg";
 import CentrifugeDark from "../../../assets/header-logos/centrifuge-dark.svg";
+import Zeitgeist from "../../../assets/header-logos/zeitgeist.svg";
 import { withTheme } from "styled-components";
 
 function ChainLogo({ chain, theme }) {
@@ -73,7 +74,10 @@ function ChainLogo({ chain, theme }) {
       logo = <Centrifuge />;
     } else if (Chains.litmus === chain) {
       logo = <Litmus />;
+    } else if (Chains.zeitgeist === chain) {
+      logo = <Zeitgeist />;
     }
+
     if (theme.isDark) {
       if (Chains.kintsugi === chain) {
         logo = <KintsugiDark />;
@@ -105,6 +109,8 @@ function ChainLogo({ chain, theme }) {
         logo = <PolkadexDark />;
       } else if (Chains.centrifuge === chain) {
         logo = <CentrifugeDark />;
+      } else if (Chains.zeitgeist === chain) {
+        logo = <Zeitgeist />;
       }
     }
   }
