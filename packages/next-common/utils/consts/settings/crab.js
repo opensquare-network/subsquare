@@ -7,16 +7,16 @@ import capitalize from "../../capitalize";
 
 const DEFAULT_CRAB_NODES = [
   {
+    name: "OnFinality",
+    url: "wss://darwinia-crab.api.onfinality.io/public-ws",
+  },
+  {
     name: "Darwinia",
     url: "wss://crab-rpc.darwinia.network",
   },
   {
     name: "Dwellir",
     url: "wss://darwiniacrab-rpc.dwellir.com",
-  },
-  {
-    name: "OnFinality",
-    url: "wss://darwinia-crab.api.onfinality.io/public-ws",
   },
 ];
 
