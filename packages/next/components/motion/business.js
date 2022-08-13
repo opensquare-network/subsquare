@@ -115,5 +115,24 @@ export default function Business({ motion, chain }) {
     });
   }
 
+  if (motion?.operateExternals?.length > 0) {
+    motion?.operateExternals?.forEach((external) => {
+      business.push([
+        [
+          "Link to",
+          <Link
+            key="external-link"
+            href={`/democracy/external/${external?.indexer?.blockHeight}_${external?.proposalHash}`}
+          >{`Democracy External #${external?.proposalHash?.slice(
+            0,
+            6
+          )}`}</Link>,
+        ],
+        ["hash", external.proposalHash],
+        ["voteThreshould", external.voteThreshold],
+      ]);
+    });
+  }
+
   return <MultiKVList title="Business" data={business} />;
 }

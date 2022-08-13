@@ -173,6 +173,18 @@ export default function DetailItem({
                   </div>
                 )
               )}
+              {post?.onchainData?.councilMotions?.map(
+                (motion, key) => (
+                  <div key={key}>
+                    <TriangleRight />
+                    <Link
+                      href={`/council/motion/${getMotionId(motion)}`}
+                    >
+                      {`Motion #${shortMotionId(motion)}`}
+                    </Link>
+                  </div>
+                )
+              )}
               {post?.referendumIndex !== undefined && (
                 <div>
                   <TriangleRight />
@@ -230,6 +242,18 @@ export default function DetailItem({
                         )}`}
                       >
                         {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
+                      </Link>
+                    </div>
+                  )
+                )}
+                {post?.onchainData?.councilMotions?.map(
+                  (motion, key) => (
+                    <div key={key}>
+                      <TriangleRight />
+                      <Link
+                        href={`/council/motion/${getMotionId(motion)}`}
+                      >
+                        {`Motion #${shortMotionId(motion)}`}
                       </Link>
                     </div>
                   )
