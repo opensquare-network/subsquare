@@ -185,7 +185,7 @@ function PopupContent({
 export default function Popup(props) {
   return (
     <PopupWithAddress
-      title="Referenda vote"
+      title="Referendum vote"
       Component={PopupContent}
       {...props}
     />

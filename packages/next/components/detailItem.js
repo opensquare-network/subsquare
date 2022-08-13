@@ -189,7 +189,7 @@ export default function DetailItem({
                 <div>
                   <TriangleRight />
                   <Link href={`/democracy/referendum/${post?.referendumIndex}`}>
-                    {`Referenda #${post?.referendumIndex}`}
+                    {`Referendum #${post?.referendumIndex}`}
                   </Link>
                 </div>
               )}
@@ -202,7 +202,7 @@ export default function DetailItem({
                 <div>
                   <TriangleRight />
                   <Link href={`/democracy/referendum/${post.referendumIndex}`}>
-                    {`Referenda #${post?.referendumIndex}`}
+                    {`Referendum #${post?.referendumIndex}`}
                   </Link>
                 </div>
               )}
@@ -260,7 +260,7 @@ export default function DetailItem({
                 )}
                 <div>
                   <TriangleRight />
-                  <div>{`Referenda #${post?.referendumIndex}`}</div>
+                  <div>{`Referendum #${post?.referendumIndex}`}</div>
                 </div>
               </ReferendaWrapper>
             )}
@@ -272,7 +272,7 @@ export default function DetailItem({
                 </Link>
                 <div>
                   <TriangleRight />
-                  <div>{`Referenda #${post?.referendumIndex}`}</div>
+                  <div>{`Referendum #${post?.referendumIndex}`}</div>
                 </div>
               </ReferendaWrapper>
             )}

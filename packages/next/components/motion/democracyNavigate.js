@@ -113,7 +113,7 @@ export default function DemocracyNavigate({ motion, type }) {
         <div>
           <TriangleRight />
           <Link href={`/democracy/referendum/${referendumIndex}`}>
-            {`Referenda #${referendumIndex}`}
+            {`Referendum #${referendumIndex}`}
           </Link>
         </div>
       )}
