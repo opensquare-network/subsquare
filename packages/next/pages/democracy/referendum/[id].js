@@ -86,7 +86,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       user={loginUser}
       seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
     >
-      <Back href={`/democracy/referendums`} text="Back to Referendas" />
+      <Back href={`/democracy/referendums`} text="Back to Referenda" />
       <DetailItem
         data={detail}
         onReply={focusEditor}
