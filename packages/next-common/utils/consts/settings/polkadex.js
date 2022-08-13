@@ -1,3 +1,8 @@
+import Logo from "../../../assets/header-logos/polkadex.svg";
+import DarkModeLogo from "../../../assets/header-logos/polkadex-dark.svg";
+import Avatar from "../../../assets/icons/chain/polkadex.png";
+import DarkAvatar from "../../../assets/icons/chain/polkadex-dark.png";
+
 const DEFAULT_POLKADEX_NODES = [
   {
     name: "Polkadex",
@@ -25,6 +30,10 @@ const polkadex = {
   blockTime: 6000,
   snsCoverCid: "bafybeickjkgii2nnhwyypiem6jjj3z75u4dfknwcmedru4ytzv6qddfg5y",
   endpoints: DEFAULT_POLKADEX_NODES,
+  headerLogo: Logo,
+  darkHeaderLogo: DarkModeLogo,
+  avatar: Avatar,
+  darkAvatar: DarkAvatar,
 };
 
 export default polkadex;

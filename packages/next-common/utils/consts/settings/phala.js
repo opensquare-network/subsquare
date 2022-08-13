@@ -1,3 +1,7 @@
+import Logo from "../../../assets/header-logos/phala.svg";
+import DarkModeLogo from "../../../assets/header-logos/phala-dark.svg";
+import Avatar from "../../../assets/icons/chain/phala.png";
+
 const DEFAULT_PHALA_NODES = [
   {
     name: "Phala",
@@ -18,6 +22,9 @@ const phala = {
   endpoints: DEFAULT_PHALA_NODES,
   loginButtonPrimary: true,
   headerBackgroundColor: "#000000",
+  headerLogo: Logo,
+  darkHeaderLogo: DarkModeLogo,
+  avatar: Avatar,
 };
 
 export default phala;

@@ -1,3 +1,7 @@
+import Logo from "../../../assets/header-logos/zeitgeist.svg";
+import Avatar from "../../../assets/icons/chain/zeitgeist.png";
+import DarkAvatar from "../../../assets/icons/chain/zeitgeist-dark.png";
+
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 
@@ -30,6 +34,10 @@ const zeitgeist = {
   loginButtonPrimary: true,
   endpoints: defaultNodes,
   headerBackgroundColor: "#000000",
+  headerLogo: Logo,
+  darkHeaderLogo: Logo,
+  avatar: Avatar,
+  darkAvatar: DarkAvatar,
 };
 
 export default zeitgeist;

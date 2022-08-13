@@ -1,3 +1,7 @@
+import Logo from "../../../assets/header-logos/acala.svg";
+import DarkModeLogo from "../../../assets/header-logos/acala-dark.svg";
+import Avatar from "../../../assets/icons/chain/acala.png";
+
 const DEFAULT_ACALA_NODES = [
   {
     name: "OnFinality",
@@ -36,6 +40,9 @@ const acala = {
   ss58Format: 10,
   snsCoverCid: "bafybeiafirhri4nsnvxm6usej6fcfyrz4hty5jikupag7fufsniamnyauy",
   endpoints: DEFAULT_ACALA_NODES,
+  headerLogo: Logo,
+  darkHeaderLogo: DarkModeLogo,
+  avatar: Avatar,
 };
 
 export default acala;
