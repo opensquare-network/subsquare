@@ -1,106 +1,50 @@
-import styled from "styled-components";
-
 import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import Layout from "next-common/components/layout";
 import MotionDetail from "components/motion/motionDetail";
 import { to404 } from "next-common/utils/serverSideUtil";
-import { TYPE_COUNCIL_MOTION } from "utils/viewConstants";
-import { getMetaDesc } from "../../../utils/viewfuncs";
+import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { EmptyList } from "next-common/utils/constants";
-import Comments from "next-common/components/comment";
-import OutWrapper from "next-common/components/styled/outWrapper";
-import CommentsWrapper from "next-common/components/styled/commentsWrapper";
-import Editor from "next-common/components/comment/editor";
-import { getFocusEditor, getOnReply } from "next-common/utils/post";
-import { useRef, useState } from "react";
-import useMentionList from "next-common/utils/hooks/useMentionList";
-
-const Wrapper = styled.div`
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-
-  margin-right: 312px;
-  @media screen and (max-width: 1024px) {
-    max-width: 848px;
-    margin: 0 auto;
-  }
-  overflow: hidden;
-  flex-grow: 1;
-`;
+import useUniversalComments from "components/universalComments";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
+import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 
 export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
-  const users = useMentionList(motion, comments, chain);
-  motion.status = motion.state?.state;
-  const editorWrapperRef = useRef(null);
-  const [quillRef, setQuillRef] = useState(null);
-  const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown"
-  );
-  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
-  const onReply = getOnReply(
-    contentType,
-    content,
-    setContent,
-    quillRef,
-    focusEditor,
-    chain
-  );
+  const { CommentComponent, focusEditor } = useUniversalComments({
+    detail: motion,
+    comments,
+    loginUser,
+    chain,
+    type: detailPageCategory.COUNCIL_MOTION,
+  });
 
-  const desc = getMetaDesc(motion, "Motion");
+  motion.status = motion.state?.state;
+
+  const desc = getMetaDesc(motion);
   return (
-    <Layout
+    <DetailWithRightLayout
       user={loginUser}
-      chain={chain}
       seoInfo={{ title: motion?.title, desc, ogImage: motion?.bannerUrl }}
     >
-      <OutWrapper>
-        <Wrapper className="post-content">
-          <Back href={`/council/motions`} text="Back to Motions" />
-          <MotionDetail
-            motion={motion}
-            user={loginUser}
-            chain={chain}
-            type={TYPE_COUNCIL_MOTION}
-            onReply={onReply}
-          />
-          <CommentsWrapper>
-            <Comments
-              data={comments}
-              user={loginUser}
-              chain={chain}
-              onReply={onReply}
-            />
-            {loginUser && (
-              <Editor
-                postId={motion._id}
-                chain={chain}
-                ref={editorWrapperRef}
-                setQuillRef={setQuillRef}
-                {...{
-                  contentType,
-                  setContentType,
-                  content,
-                  setContent,
-                  users,
-                }}
-                type={TYPE_COUNCIL_MOTION}
-              />
-            )}
-          </CommentsWrapper>
-        </Wrapper>
-      </OutWrapper>
-    </Layout>
+      <Back href={`/council/motions`} text="Back to Motions" />
+      <MotionDetail
+        motion={motion}
+        user={loginUser}
+        chain={chain}
+        type={detailPageCategory.COUNCIL_MOTION}
+        onReply={focusEditor}
+      />
+      {CommentComponent}
+    </DetailWithRightLayout>
   );
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
 
-  const { id, page, page_size: pageSize } = context.query;
+  const { id, page, page_size } = context.query;
+  const pageSize = Math.min(page_size ?? 50, 100);
+
   const { result: motion } = await nextApi.fetch(`motions/${id}`);
   if (!motion) {
     return to404(context);
@@ -112,7 +56,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     `motions/${motionId}/comments`,
     {
       page: page ?? "last",
-      pageSize: Math.min(pageSize ?? 50, 100),
+      pageSize,
     }
   );
 

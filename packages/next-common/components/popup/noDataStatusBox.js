@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 
 const StatusWrapper = styled.div`
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
   padding: 12px 16px;
   display: flex;
@@ -15,14 +15,14 @@ const StatusWrapper = styled.div`
     line-height: 100%;
     font-weight: 500;
     > span {
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary};
       margin-left: 2px;
     }
   }
   > div.result {
     display: flex;
     align-items: center;
-    color: #506176;
+    color: ${(props) => props.theme.textSecondary};
     > svg {
       margin-left: 8px;
     }
@@ -33,7 +33,7 @@ const StatusWrapper = styled.div`
   > div.no-data {
     font-size: 14px;
     line-height: 100%;
-    color: #9da9bb;
+    color: ${(props) => props.theme.textTertiary};
     flex-grow: 1;
     text-align: center;
   }

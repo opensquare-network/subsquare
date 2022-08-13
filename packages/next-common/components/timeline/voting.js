@@ -8,10 +8,11 @@ import { Approve } from "../icons";
 const TitleWrapper = styled(Flex)`
   justify-content: space-between;
   min-height: 28px;
+  font-size: 14px;
   > :last-child {
     display: flex;
     align-items: center;
-    color: #506176;
+    color: ${(props) => props.theme.textSecondary};
     > span {
       margin-left: 4px;
     }
@@ -24,7 +25,7 @@ const ArgsWrapper = styled.div`
   align-items: flex-start;
   padding: 8px 28px;
 
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
 `;
 
@@ -33,21 +34,21 @@ const ArgItem = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 7px 0px;
+  padding: 7px 0;
   > :first-child {
     text-transform: capitalize;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
     line-height: 100%;
-    color: #506176;
+    color: ${(props) => props.theme.textSecondary};
   }
   > :last-child {
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
     line-height: 100%;
-    color: #1e2134;
+    color: ${(props) => props.theme.textPrimary};
   }
 `;
 

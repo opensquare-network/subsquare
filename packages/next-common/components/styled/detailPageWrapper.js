@@ -6,7 +6,7 @@ const DetailPageWrapper = styled.div`
     margin-top: 16px;
   }
 
-  max-width: 848px;
+  max-width: 852px;
   margin: auto;
 `;
 

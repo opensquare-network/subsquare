@@ -2,10 +2,9 @@
 import styled, { css } from "styled-components";
 import FlexBetweenCenter from "next-common/components/styled/flexBetweenCenter";
 import { p_14_normal, p_12_medium } from "../../../styles/componentCss";
-import { primary_purple_500 } from "../../../styles/colors";
 
 const notAllowedCss = css`
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   cursor: not-allowed !important;
 `;
 
@@ -14,7 +13,6 @@ export const FormTitleWrapper = styled(FlexBetweenCenter)`
 `;
 
 export const FormTitle = styled.h4`
-  font-weight: bold;
   font-size: 16px;
   line-height: 16px;
   margin: 0;
@@ -25,7 +23,7 @@ export const FormToggler = styled.button`
   user-select: none;
   background-color: transparent;
   border: none;
-  color: ${primary_purple_500};
+  color: ${(props) => props.theme.primaryPurple500};
   font-weight: 700;
   cursor: pointer;
 
@@ -67,7 +65,7 @@ export const PollFormOptionAddOptionButton = styled.button`
   background-color: transparent;
   border: none;
   ${p_12_medium};
-  color: ${primary_purple_500};
+  color: ${(props) => props.theme.primaryPurple500};
   cursor: pointer;
 
   ${(p) => p.disabled && notAllowedCss}

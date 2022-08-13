@@ -1,3 +1,8 @@
+import Logo from "../../../assets/header-logos/kusama.svg";
+import DarkModeLogo from "../../../assets/header-logos/kusama-dark.svg";
+import Avatar from "../../../assets/icons/chain/kusama.png";
+import DarkAvatar from "../../../assets/icons/chain/kusama-dark.png";
+
 const DEFAULT_KUSAMA_NODES = [
   {
     name: "Parity",
@@ -29,6 +34,12 @@ const kusama = {
   blockTime: 6000,
   snsCoverCid: "bafybeifrjrzaajdpfwbxtffsexnxwehsqc3k4ruk5oummlghsxvaityiku",
   endpoints: DEFAULT_KUSAMA_NODES,
+  loginButtonPrimary: true,
+  headerBackgroundColor: "#000000",
+  headerLogo: Logo,
+  darkHeaderLogo: DarkModeLogo,
+  avatar: Avatar,
+  darkAvatar: DarkAvatar,
 };
 
 export default kusama;

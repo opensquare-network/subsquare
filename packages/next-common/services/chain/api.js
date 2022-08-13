@@ -7,6 +7,7 @@ import {
   crustOptions,
   khalaOptions,
   kintsugiOptions,
+  zeitgeistOptions,
 } from "@osn/provider-options";
 import crabOptions from "./crab";
 
@@ -14,7 +15,7 @@ const apiInstanceMap = new Map();
 
 export default async function getApi(chain, endpoint) {
   if (!Object.keys(Chains).includes(chain)) {
-    throw new Error(`Invalid chain: ${chain} to construct api`);
+    throw new Error(`Invalid chain: ${ chain } to construct api`);
   }
 
   if (!apiInstanceMap.has(endpoint)) {
@@ -22,9 +23,9 @@ export default async function getApi(chain, endpoint) {
     let options = { provider };
 
     let customizedOptions = {};
-    if (chain === "karura" || chain === "acala") {
+    if ([Chains.karura, Chains.acala].includes(chain)) {
       customizedOptions = karuraOptions;
-    } else if (chain === "khala") {
+    } else if ([Chains.khala, Chains.phala].includes(chain)) {
       customizedOptions = khalaOptions;
     } else if (chain === "bifrost") {
       customizedOptions = bifrostOptions;
@@ -36,6 +37,8 @@ export default async function getApi(chain, endpoint) {
       customizedOptions = crustOptions;
     } else if (chain === Chains.crab) {
       customizedOptions = crabOptions;
+    } else if (chain === Chains.zeitgeist) {
+      customizedOptions = zeitgeistOptions;
     }
 
     const api = (

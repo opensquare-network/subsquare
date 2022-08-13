@@ -1,14 +1,8 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import styled, { css } from "styled-components";
-import { grey_400, primary_purple_500 } from "next-common/styles/colors";
-import {
-  text_accessory,
-  text_secondary,
-  p_12_normal,
-} from "next-common/styles/componentCss";
+import { grey_400 } from "next-common/styles/colors";
+import { p_12_normal } from "next-common/styles/componentCss";
 import Flex from "next-common/components/styled/flex";
-import Image from "next/image";
-import { useRef, useState } from "react";
 import nextApi from "next-common/services/nextApi";
 import Loading from "next-common/components/loading";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -33,7 +27,7 @@ const UploadArea = styled(Flex)`
   ${(p) =>
     p.active &&
     css`
-      border-color: ${primary_purple_500};
+      border-color: ${(props) => props.theme.primaryPurple500};
     `}
 `;
 
@@ -43,7 +37,7 @@ const Tips = styled.ul`
   margin: 8px 0;
 
   li {
-    ${text_accessory};
+    color: ${(props) => props.theme.textTertiary};
     ${p_12_normal};
     &::before {
       content: "\\2022";
@@ -52,12 +46,12 @@ const Tips = styled.ul`
   }
 `;
 const Hint = styled.span`
-  ${text_accessory}
+  color: ${(props) => props.theme.textTertiary};
   line-height: 19.6px;
 `;
 
 const SelectFile = styled.span`
-  ${text_secondary};
+  color: ${(props) => props.theme.textSecondary};
   margin-left: 8px;
   line-height: 19.6px;
   display: flex;
@@ -77,7 +71,7 @@ const BannerPreview = styled(Flex)`
   ${(p) =>
     p.disabled &&
     css`
-      background-color: #f6f7fa;
+      background-color: ${(props) => props.theme.grey100Bg}; ;
     `}
 
   img {
@@ -205,7 +199,7 @@ function Uploader({ disabled = false, imageUrl, onSetImageUrl = () => {} }) {
         )}
       </UploadArea>
       <Tips>
-        <li>We recommand a 16:9 image.</li>
+        <li>We recommend a 16:9 image.</li>
         <li>
           The banner will be displayed in the post list and as a shared preview
           on social media.

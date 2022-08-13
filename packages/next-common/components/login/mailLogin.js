@@ -1,26 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
-import { useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-
-import Button from "../button";
-import { useForm } from "utils/hooks";
 import nextApi from "../../services/nextApi";
 import ErrorText from "../ErrorText";
 import { setUser } from "../../store/reducers/userSlice";
-import {
-  FormButtonsWrapper,
-  FormWrapper,
-  FormInputsWrapper,
-} from "./styled";
+import { FormButtonsWrapper, FormInputsWrapper, FormWrapper } from "./styled";
 import Username from "./username";
 import Password from "./password";
+import GhostButton from "../buttons/ghostButton";
+import SecondaryButton from "../buttons/secondaryButton";
+import useForm from "../../utils/hooks/useForm";
 
 const ForgetPassword = styled.div`
   margin-top: 8px;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   font-size: 12px;
 `;
 
@@ -73,12 +68,12 @@ export default function MailLogin({ setAddressLogin }) {
         </ForgetPassword>
       </FormInputsWrapper>
       <FormButtonsWrapper>
-        <Button isFill secondary type="submit" isLoading={loading}>
+        <SecondaryButton isFill isLoading={loading} type="submit">
           Login
-        </Button>
-        <Button isFill onClick={setAddressLogin}>
+        </SecondaryButton>
+        <GhostButton isFill onClick={setAddressLogin}>
           Login with web3 address
-        </Button>
+        </GhostButton>
       </FormButtonsWrapper>
     </FormWrapper>
   );

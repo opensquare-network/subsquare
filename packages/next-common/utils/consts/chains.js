@@ -3,6 +3,7 @@ const Chains = {
   kusama: "kusama",
   karura: "karura",
   acala: "acala",
+  phala: "phala",
   khala: "khala",
   substrate: "substrate",
   basilisk: "basilisk",
@@ -16,6 +17,8 @@ const Chains = {
   turing: "turing",
   crab: "crab",
   centrifuge: "centrifuge",
+  litmus: "litmus",
+  zeitgeist: "zeitgeist",
 };
 
 export default Chains;

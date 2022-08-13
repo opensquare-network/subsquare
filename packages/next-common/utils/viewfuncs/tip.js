@@ -1,68 +1,49 @@
-import { stringUpperFirst } from "@subsquare/kintsugi-next/utils";
+import YoutubeSvg from "../../assets/imgs/icons/youtube-logo.svg";
+import GithubSvg from "../../assets/imgs/icons/github-logo.svg";
+import LinkSvg from "../../assets/imgs/icons/link-icon.svg";
+import MediumSvg from "../../assets/imgs/icons/medium-logo.svg";
+import PolkassemblySvg from "../../assets/imgs/icons/polkassembly-logo.svg";
+import TwitterSvg from "../../assets/imgs/icons/twitter-logo.svg";
+import TelegramSvg from "../../assets/imgs/icons/telegram-logo.svg";
+import googleDocSvg from "../../assets/imgs/icons/googledoc-logo.svg";
+import googleDriveSvg from "../../assets/imgs/icons/googledrive-logo.svg";
+import OpenSquareSvg from "../../assets/imgs/icons/opensquare-logo.svg";
+import dotreasurySvg from "../../assets/imgs/icons/dotreasury-logo.svg";
+import subSquareSvg from "../../assets/imgs/icons/subsquare-logo.svg";
 
 export const extractLinks = (text) =>
   [...text.matchAll(/(https?:\/\/[^ ]+)/g)].map((item) => item[0]);
 
-export const getLinkNameAndLogo = (link) => {
-  try {
-    const url = new URL(link);
+export const defaultLinkSvg = LinkSvg;
 
-    let src;
-    let name = "";
-    if (url.host.endsWith("youtube.com") || url.host.endsWith("youtu.be")) {
-      src = "/imgs/icons/youtube-logo.svg";
-      name = "YouTube";
-    } else if (
-      url.host.endsWith("github.com") ||
-      url.host.endsWith("github.io")
-    ) {
-      src = "/imgs/icons/github-logo.svg";
-      name = "GitHub";
-    } else if (url.host.endsWith("medium.com")) {
-      src = "/imgs/icons/medium-logo.svg";
-      name = "Medium";
-    } else if (url.host.endsWith("polkassembly.io")) {
-      src = "/imgs/icons/polkassembly-logo.svg";
-      name = "Polkassembly";
-    } else if (url.host.endsWith("twitter.com")) {
-      src = "/imgs/icons/twitter-logo.svg";
-      name = "Twitter";
-    } else if (url.host === "t.me") {
-      src = "/imgs/icons/telegram-logo.svg";
-      name = "Telegram";
-    } else if (url.host.endsWith("docs.google.com")) {
-      src = "/imgs/icons/googledoc-logo.svg";
-      name = "Google Docs";
-    } else if (url.host.endsWith("drive.google.com")) {
-      src = "/imgs/icons/googledrive-logo.svg";
-      name = "Google Drive";
-    } else if (url.host.endsWith("opensquare.network")) {
-      src = "/imgs/icons/opensquare-icon-logo.svg";
-      name = "OpenSquare";
-    } else if (url.host.endsWith("dotreasury.com")) {
-      src = "/imgs/icons/dotreasury-logo.svg";
-      name = "doTreasury";
-    } else if (url.host.endsWith("subsquare.io")) {
-      src = "/imgs/icons/subsquare-logo.svg";
-      name = "SubSquare";
-    } else {
-      src = "/imgs/icons/link-icon.svg";
-    }
-
-    if (!name) {
-      [, name] = url.host.match(/([^.]*)(?:\.[a-z]+)?$/);
-      if (["co", "com"].includes(name)) {
-        const m = url.host.match(/([^.]*)(?:\.[a-z]+){2}$/);
-        if (m) {
-          [, name] = m;
-        }
-      }
-      name = stringUpperFirst(name);
-    }
-
-    return [name, src];
-  } catch (e) {
-    // Broken link or other errors
-    return [];
+export function getLinkIcon(link) {
+  const url = new URL(link);
+  if (url.host.endsWith("youtube.com") || url.host.endsWith("youtu.be")) {
+    return YoutubeSvg;
+  } else if (
+    url.host.endsWith("github.com") ||
+    url.host.endsWith("github.io")
+  ) {
+    return GithubSvg;
+  } else if (url.host.endsWith("medium.com")) {
+    return MediumSvg;
+  } else if (url.host.endsWith("polkassembly.io")) {
+    return PolkassemblySvg;
+  } else if (url.host.endsWith("twitter.com")) {
+    return TwitterSvg;
+  } else if (url.host === "t.me") {
+    return TelegramSvg;
+  } else if (url.host.endsWith("docs.google.com")) {
+    return googleDocSvg;
+  } else if (url.host.endsWith("drive.google.com")) {
+    return googleDriveSvg;
+  } else if (url.host.endsWith("opensquare.network")) {
+    return OpenSquareSvg;
+  } else if (url.host.endsWith("dotreasury.com")) {
+    return dotreasurySvg;
+  } else if (url.host.endsWith("subsquare.io")) {
+    return subSquareSvg;
   }
-};
+
+  return LinkSvg;
+}

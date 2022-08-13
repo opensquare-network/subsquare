@@ -1,23 +1,18 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import Menu from "next-common/components/menu";
-import { settingMenu } from "next-common/utils/constants";
 import { userSelector } from "next-common/store/reducers/userSlice";
-import Layout from "next-common/components/layout";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
-import {
-  Wrapper,
-  Title,
-  ContentWrapper,
-  Divider,
-} from "next-common/components/setting/styled";
+import { ContentWrapper, Wrapper } from "next-common/components/setting/styled";
 import Username from "next-common/components/setting/username";
 import Email from "next-common/components/setting/email";
 import Password from "next-common/components/setting/password";
 import Logout from "next-common/components/setting/logout";
 import { useRouter } from "next/router";
 import { isKeyRegisteredUser } from "next-common/utils";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import Divider from "next-common/components/styled/layout/divider";
+import SettingsLayout from "next-common/components/layout/settingsLayout";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
   const user = useSelector(userSelector);
@@ -34,10 +29,10 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
   return (
     <>
-      <Layout chain={chain} user={loginUser} left={<Menu menu={settingMenu} />}>
+      <SettingsLayout user={loginUser}>
         <NextHead title={`Settings`} desc={``} />
         <Wrapper>
-          <Title>Account</Title>
+          <TitleContainer>Account</TitleContainer>
           <ContentWrapper>
             <Username username={user?.username} />
             <Divider />
@@ -48,7 +43,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
             <Logout />
           </ContentWrapper>
         </Wrapper>
-      </Layout>
+      </SettingsLayout>
     </>
   );
 });

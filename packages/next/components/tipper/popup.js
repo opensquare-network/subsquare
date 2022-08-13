@@ -1,27 +1,25 @@
-import styled, { css } from "styled-components";
-import { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-
-import BigNumber from "bignumber.js";
 
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import Button from "next-common/components/button";
-import {
-  newErrorToast,
-  newPendingToast,
-  newSuccessToast,
-  newToastId,
-  updatePendingToast,
-} from "next-common/store/reducers/toastSlice";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 import TipInput from "./tipInput";
-import { getNode, toPrecision } from "utils";
+import {
+  checkInputValue,
+  emptyFunction,
+  getNode,
+  toPrecision,
+} from "next-common/utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import SignerSelect from "next-common/components/signerSelect";
 import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
 import PopupLabel from "next-common/components/popup/label";
 import { WarningMessage } from "next-common/components/popup/styled";
+import { sendTx } from "next-common/utils/sendTx";
+import SecondaryButton from "next-common/components/buttons/secondaryButton";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -36,9 +34,9 @@ function PopupContent({
   councilTippers,
   tipHash,
   onClose,
-  onInBlock,
-  onFinalized,
-  onSubmitted,
+  onSubmitted = emptyFunction,
+  onFinalized = emptyFunction,
+  onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
@@ -86,61 +84,32 @@ function PopupContent({
       return showErrorToast("Please select an account");
     }
 
-    if (!inputTipValue) {
-      return showErrorToast("Please input tip value");
-    }
-
-    const bnInputTipValue = new BigNumber(inputTipValue);
-    if (bnInputTipValue.isNaN() || bnInputTipValue.lt(0)) {
-      return showErrorToast("Tip value is not valid");
-    }
-
     if (!node) {
       return;
     }
-    const decimals = node.decimals;
 
-    const bnTipValue = bnInputTipValue.multipliedBy(Math.pow(10, decimals));
-    if (!bnTipValue.mod(1).isZero()) {
-      return showErrorToast("Tip value is not valid");
-    }
-
-    const toastId = newToastId();
-    dispatch(newPendingToast(toastId, "Waiting for signing..."));
-
+    let bnTipValue;
     try {
-      setTipping(true);
-
-      const tipperAddress = selectedAccount.address;
-
-      const unsub = await api.tx.tips
-        .tip(tipHash, bnTipValue.toFixed())
-        .signAndSend(tipperAddress, ({ events = [], status }) => {
-          if (status.isFinalized) {
-            onFinalized(tipperAddress);
-            unsub();
-          }
-          if (status.isInBlock) {
-            // Transaction went through
-            dispatch(removeToast(toastId));
-            dispatch(newSuccessToast("InBlock"));
-            onInBlock(tipperAddress);
-          }
-        });
-
-      dispatch(updatePendingToast(toastId, "Broadcasting"));
-
-      onSubmitted(tipperAddress);
-
-      onClose();
-    } catch (e) {
-      dispatch(removeToast(toastId));
-      showErrorToast(e.message);
-    } finally {
-      if (isMounted.current) {
-        setTipping(false);
-      }
+      bnTipValue = checkInputValue(inputTipValue, node.decimals, "tip value");
+    } catch (err) {
+      return showErrorToast(err.message);
     }
+
+    const tx = api.tx.tips.tip(tipHash, bnTipValue.toNumber());
+
+    const signerAddress = selectedAccount.address;
+
+    await sendTx({
+      tx,
+      dispatch,
+      setLoading: setTipping,
+      onFinalized,
+      onInBlock,
+      onSubmitted,
+      onClose,
+      signerAddress,
+      isMounted,
+    });
   };
 
   return (
@@ -174,11 +143,11 @@ function PopupContent({
       </div>
       <ButtonWrapper>
         {selectedAccountIsTipper && api && inputTipValue ? (
-          <Button secondary isLoading={tipping} onClick={doEndorse}>
+          <SecondaryButton isLoading={tipping} onClick={doEndorse}>
             Endorse
-          </Button>
+          </SecondaryButton>
         ) : (
-          <Button disabled>Endorse</Button>
+          <SecondaryButton disabled>Endorse</SecondaryButton>
         )}
       </ButtonWrapper>
     </>

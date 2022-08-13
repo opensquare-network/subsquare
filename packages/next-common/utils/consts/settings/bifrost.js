@@ -1,3 +1,7 @@
+import Logo from "../../../assets/header-logos/bifrost.svg";
+import DarkModeLogo from "../../../assets/header-logos/bifrost-dark.svg";
+import Avatar from "../../../assets/icons/chain/bifrost.png";
+
 const DEFAULT_BIFROST_NODES = [
   {
     name: "OnFinality",
@@ -33,6 +37,11 @@ const bifrost = {
   ss58Format: 6,
   snsCoverCid: "bafybeibu7lmjymi5x6gjixdawmc4rjufruc6qwazailfnpzpoaqtuq6khe",
   endpoints: DEFAULT_BIFROST_NODES,
+  loginButtonPrimary: true,
+  headerBackgroundColor: "#000000",
+  headerLogo: Logo,
+  darkHeaderLogo: DarkModeLogo,
+  avatar: Avatar,
 };
 
 export default bifrost;

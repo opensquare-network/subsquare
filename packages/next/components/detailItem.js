@@ -5,19 +5,15 @@ import Link from "next/link";
 import { timeDurationFromNow } from "next-common/utils";
 import User from "next-common/components/user";
 import TriangleRight from "../public/imgs/icons/arrow-triangle-right.svg";
-import Tag from "next-common/components/tag";
+import Tag from "next-common/components/tags/state/tag";
 import Flex from "next-common/components/styled/flex";
 import { getPostUpdatedAt } from "utils/viewfuncs";
-import {
-  TYPE_DEMOCRACY_EXTERNAL,
-  TYPE_DEMOCRACY_PROPOSAL,
-  TYPE_DEMOCRACY_REFERENDUM,
-} from "utils/viewConstants";
 import ArticleContent from "next-common/components/articleContent";
 import { EditablePanel } from "next-common/components/styled/panel";
 import { getMotionId, shortMotionId } from "next-common/utils/motion";
 import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -26,7 +22,7 @@ const DividerWrapper = styled(Flex)`
     ::before {
       content: "·";
       font-size: 12px;
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary};
       margin: 0 8px;
     }
   }
@@ -56,7 +52,7 @@ const TitleWrapper = styled.div`
       content: "·";
       font-size: 20px;
       line-height: 28px;
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary};
       margin: 0 8px;
     }
   }
@@ -72,8 +68,7 @@ const TypeWrapper = styled.div`
   height: 20px;
   line-height: 20px;
   border-radius: 10px;
-  background: #1e2134;
-  color: #e81f66;
+  color: ${(props) => props.theme.textContrast} !important;
   font-weight: 500;
   font-size: 12px;
   padding: 0 8px;
@@ -88,11 +83,11 @@ const ReferendaWrapper = styled(Flex)`
   justify-content: center;
   flex-wrap: wrap;
   padding: 12px;
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
   margin-bottom: 16px;
   font-weight: 500;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
 
   > div {
     display: flex;
@@ -101,11 +96,11 @@ const ReferendaWrapper = styled(Flex)`
 
   > div > svg {
     margin-right: 8px;
-    fill: #9da9bb;
+    fill: ${(props) => props.theme.textTertiary};
   }
 
   a {
-    color: #1f70c7;
+    color: ${(props) => props.theme.secondarySapphire500};
   }
 
   > :not(:first-child) {
@@ -143,15 +138,18 @@ export default function DetailItem({
 
   const postUpdatedTime = getPostUpdatedAt(post);
 
+  const commentsCount =
+    (post.commentsCount || 0) + (post.polkassemblyCommentsCount || 0);
+
   return (
     <EditablePanel>
       {!isEdit && (
         <>
-          {type === TYPE_DEMOCRACY_EXTERNAL && (
+          {type === detailPageCategory.DEMOCRACY_EXTERNAL && (
             <ReferendaWrapper>
               {post?.onchainData?.motions?.map((motion, key) => (
                 <div key={key}>
-                  <Link href={`/council/motion/${getMotionId(motion)}`}>
+                  <Link href={`/council/motion/${getMotionId(motion, chain)}`}>
                     {`Motion #${shortMotionId(motion)}`}
                   </Link>
                 </div>
@@ -165,7 +163,10 @@ export default function DetailItem({
                   <div key={key}>
                     <TriangleRight />
                     <Link
-                      href={`/techcomm/proposal/${getMotionId(techCommMotion)}`}
+                      href={`/techcomm/proposal/${getMotionId(
+                        techCommMotion,
+                        chain
+                      )}`}
                     >
                       {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
                     </Link>
@@ -194,7 +195,7 @@ export default function DetailItem({
               )}
             </ReferendaWrapper>
           )}
-          {type === TYPE_DEMOCRACY_PROPOSAL && (
+          {type === detailPageCategory.DEMOCRACY_PROPOSAL && (
             <ReferendaWrapper>
               <div>{`Proposal #${post.proposalIndex}`}</div>
               {post?.referendumIndex !== undefined && (
@@ -207,12 +208,14 @@ export default function DetailItem({
               )}
             </ReferendaWrapper>
           )}
-          {type === TYPE_DEMOCRACY_REFERENDUM &&
+          {type === detailPageCategory.DEMOCRACY_REFERENDUM &&
             post.externalProposalHash !== undefined && (
               <ReferendaWrapper>
                 {post?.onchainData?.motions?.map((motion, key) => (
                   <div key={key}>
-                    <Link href={`/council/motion/${getMotionId(motion)}`}>
+                    <Link
+                      href={`/council/motion/${getMotionId(motion, chain)}`}
+                    >
                       {`Motion #${shortMotionId(motion)}`}
                     </Link>
                   </div>
@@ -234,7 +237,8 @@ export default function DetailItem({
                       <TriangleRight />
                       <Link
                         href={`/techcomm/proposal/${getMotionId(
-                          techCommMotion
+                          techCommMotion,
+                          chain
                         )}`}
                       >
                         {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
@@ -260,7 +264,7 @@ export default function DetailItem({
                 </div>
               </ReferendaWrapper>
             )}
-          {type === TYPE_DEMOCRACY_REFERENDUM &&
+          {type === detailPageCategory.DEMOCRACY_REFERENDUM &&
             post.proposalIndex !== undefined && (
               <ReferendaWrapper>
                 <Link href={`/democracy/proposal/${post.proposalIndex}`}>
@@ -274,7 +278,7 @@ export default function DetailItem({
             )}
           <TitleWrapper>
             {post?.index !== undefined && <Index>{`#${post.index}`}</Index>}
-            <Title>{post.title}</Title>
+            <Title>{post.title?.trim() || "--"}</Title>
           </TitleWrapper>
           <FlexWrapper>
             <DividerWrapper>
@@ -297,11 +301,9 @@ export default function DetailItem({
                   <span>{timeDurationFromNow(postUpdatedTime)}</span>
                 </Info>
               )}
-              {post.commentsCount > -1 && (
-                <Info>{`${post.commentsCount} Comments`}</Info>
-              )}
+              {commentsCount > -1 && <Info>{`${commentsCount} Comments`}</Info>}
             </DividerWrapper>
-            {post.status && <Tag name={post.status} />}
+            {post.status && <Tag state={post.status} category={type} />}
           </FlexWrapper>
         </>
       )}

@@ -6,7 +6,7 @@ import FooterLogo from "../../assets/imgs/icons/footerLogo.svg";
 import Contacts from "./contacts";
 
 const Wrapper = styled.footer`
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   font-size: 12px;
 
   > a:first-child {
@@ -16,9 +16,14 @@ const Wrapper = styled.footer`
   > svg:nth-child(1) {
     margin-bottom: 16px;
   }
-  
-  > div:last-child{
+
+  > div:last-child {
     margin-top: 16px;
+  }
+  svg.divider {
+    rect {
+      fill: ${(props) => props.theme.grey300Border};
+    }
   }
 `;
 
@@ -28,10 +33,14 @@ const FlexWrapper = styled(Flex)`
     display: flex;
     align-items: center;
   }
-
-  > a svg:hover {
-    * {
-      fill: #9da9bb;
+  > a.opensquare svg {
+    path {
+      fill: ${(props) => props.theme.textTertiary};
+    }
+    &:hover {
+      path {
+        fill: ${(props) => props.theme.textSecondary};
+      }
     }
   }
 `;
@@ -40,22 +49,30 @@ export default function Footer() {
   return (
     <Wrapper className="footer">
       <svg
+        className="divider"
         xmlns="http://www.w3.org/2000/svg"
         width="80"
         height="1"
         viewBox="0 0 80 1"
         fill="none"
       >
-        <rect width="80" height="1" fill="#E0E4EB" />
+        <rect width="80" height="1" />
       </svg>
       <div
         style={{ marginBottom: 8 }}
       >{`© ${new Date().getFullYear()} SubSquare`}</div>
       <FlexWrapper>
-        <span style={{whiteSpace:"nowrap"}}>Powered by</span>
-        <FooterLogo />
+        <span style={{ whiteSpace: "nowrap" }}>Powered by</span>
+        <a
+          className="opensquare"
+          target="_blank"
+          rel="noreferrer"
+          href="https://www.opensquare.network/"
+        >
+          <FooterLogo />
+        </a>
       </FlexWrapper>
-      <Contacts/>
+      <Contacts />
     </Wrapper>
   );
 }

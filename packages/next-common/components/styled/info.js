@@ -3,7 +3,7 @@ import Flex from "./flex";
 
 const Info = styled(Flex)`
   font-size: 12px;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   svg {
     margin-right: 4px;
   }

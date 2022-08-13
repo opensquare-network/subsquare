@@ -1,15 +1,26 @@
-import styled from "styled-components";
-
-import Flex from "next-common/components/styled/flex";
-import { getNode, toPrecision, decimalPlaces } from "utils";
-import { bigNumber2Locale } from "next-common/utils";
+import styled, { withTheme } from "styled-components";
+import {
+  bigNumber2Locale,
+  decimalPlaces,
+  getNode,
+  toPrecision,
+} from "next-common/utils";
 import User from "next-common/components/user";
 import { Fragment, useState } from "react";
 import Loading from "next-common/components/loading";
 import PrimeAddressMark from "next-common/components/primeAddressMark";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import {
+  EmptyTd,
+  RowSpliter,
+  StyledTable,
+  StyledTd,
+  StyledTh,
+  StyledTr,
+} from "next-common/components/styled/table";
 
 const Wrapper = styled.div`
-  max-width: 848px;
+  max-width: 932px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }
@@ -20,101 +31,42 @@ const Wrapper = styled.div`
   }
 `;
 
-const Title = styled(Flex)`
-  justify-content: space-between;
-  font-weight: bold;
-  font-size: 16px;
-`;
-
-const StyledTable = styled.table`
-  width: 100%;
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  box-sizing: border-box;
-  box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
-    0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
-  border-radius: 6px;
-  padding: 24px;
-
-  @media screen and (max-width: 392px) {
-    .autohide {
-      display: none;
-    }
-    th.clickable {
-      color: #506176;
-      cursor: pointer;
-      pointer-events: auto;
-    }
-  }
-`;
-
-const StyledTr = styled.tr``;
-
-const StyledTh = styled.th`
-  font-style: normal;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 100%;
-  letter-spacing: 0.16em;
-  color: #9da9bb;
-  pointer-events: none;
-`;
-
-const StyledTd = styled.td`
-  padding: 15px 0 15px 0;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 100%;
-  color: #1e2134;
-`;
-
-const EmptyTd = styled.td`
-  padding: 12px 0 12px 0;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 140%;
-  text-align: center;
-  color: #9da9bb;
-`;
-
 const Member = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
 `;
 
-const RowSpliter = ({ backgroundColor, padding }) => (
-  <tr>
-    <td colSpan="3" style={{ padding }}>
-      <div style={{ height: "1px", backgroundColor }} />
-    </td>
-  </tr>
-);
+const BalanceWrapper = styled.span`
+  color: ${(props) => props.theme.textPrimary};
+`;
+const SymbolWrapper = styled.span`
+  color: ${(props) => props.theme.textTertiary};
+`;
 
 const Balance = ({ value, node }) => (
   <div>
-    <span style={{ color: "#1E2134" }}>
+    <BalanceWrapper>
       {bigNumber2Locale(
         decimalPlaces(toPrecision(value ?? 0, node.decimals), 4)
       )}
-    </span>
-    <span style={{ color: "#9DA9BB", marginLeft: "8px" }}>{node.symbol}</span>
+    </BalanceWrapper>
+    <SymbolWrapper style={{ color: "#9DA9BB", marginLeft: "8px" }}>
+      {node.symbol}
+    </SymbolWrapper>
   </div>
 );
 
-export default function MembersList({
+function MembersList({
   chain,
   category,
   items,
   prime,
   loading = false,
   hasElections = false,
+  theme,
 }) {
   const [hideColumn, setHideColumn] = useState("votes");
-
   const node = getNode(chain);
   if (!node) {
     return null;
@@ -122,7 +74,7 @@ export default function MembersList({
 
   return (
     <Wrapper>
-      <Title>{category}</Title>
+      <TitleContainer>{category}</TitleContainer>
       <StyledTable>
         <thead>
           <StyledTr>
@@ -148,7 +100,12 @@ export default function MembersList({
               </>
             )}
           </StyledTr>
-          <RowSpliter backgroundColor={"#EBEEF4"} padding={"16px 0 4px 0"} />
+          <RowSpliter
+            backgroundColor={
+              theme.isDark ? theme.grey200Border : theme.grey100Bg
+            }
+            padding={"16px 0 4px 0"}
+          />
         </thead>
         <tbody>
           {items?.length > 0 ? (
@@ -179,7 +136,11 @@ export default function MembersList({
                   )}
                 </StyledTr>
                 {index !== items.length - 1 && (
-                  <RowSpliter backgroundColor={"#F6F7FA"} />
+                  <RowSpliter
+                    backgroundColor={
+                      theme.isDark ? theme.grey200Border : theme.grey100Bg
+                    }
+                  />
                 )}
               </Fragment>
             ))
@@ -195,3 +156,5 @@ export default function MembersList({
     </Wrapper>
   );
 }
+
+export default withTheme(MembersList);

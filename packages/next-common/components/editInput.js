@@ -1,34 +1,24 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import MarkdownEditor from "next-common/components/markdownEditor";
-import Toggle from "next-common/components/toggle";
-import Button from "next-common/components/button";
-import PreviewMD from "next-common/components/previewMD";
 import ErrorText from "next-common/components/ErrorText";
-import QuillEditor from "next-common/components/editor/quillEditor";
-import HtmlRender from "next-common/components/post/htmlRender";
-import InsertContentsModal from "next-common/components/editor/modal";
+import { renderDisableNonAddressLink } from "../utils/viewfuncs";
+import dynamic from "next/dynamic";
+import GhostButton from "./buttons/ghostButton";
+import SecondaryButton from "./buttons/secondaryButton";
+import RichTextStyleWrapper from "./content/richTextStyleWrapper";
+import EditorWrapper from "./editor/editorWrapper";
+
+const UniverseEditor = dynamic(
+  () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
+  { ssr: false }
+);
 
 const Wrapper = styled.div`
   margin-top: 8px;
 `;
 
-const InputWrapper = styled.div`
+const InputWrapper = styled(EditorWrapper)`
   position: relative;
-`;
-
-const InputSwitch = styled.div`
-  height: 24px;
-  top: 10px;
-  right: 1px;
-  padding-right: 15px;
-  position: absolute;
-  display: flex;
-  align-items: center;
-
-  > img {
-    margin-right: 12px;
-  }
 `;
 
 const ButtonWrapper = styled.div`
@@ -41,50 +31,20 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const PreviewWrapper = styled.div`
-  display: flex;
-  min-height: 157px;
-
-  > * {
-    flex-grow: 1;
-    min-height: 157px;
-  }
-`;
-
 export default function EditInput({
   editContent,
   editContentType,
   onFinishedEdit,
   update,
-  setQuillRef = null,
   loading,
   setLoading,
   type,
 }) {
   const [content, setContent] = useState(editContent);
   const [contentType, setContentType] = useState(editContentType);
-  const [showPreview, setShowPreview] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [modalType, setModalType] = useState("image");
-  const [editorHeight, setEditorHeight] = useState(type?.includes('proposal') ?300 :200);
-  const [insetQuillContentsFunc, setInsetQuillContentsFunc] = useState(null);
   const [errors, setErrors] = useState();
 
   const isEmpty = content === "" || content === `<p><br></p>`;
-
-  const onMarkdownSwitch = () => {
-    if (loading) {
-      return;
-    }
-    if (
-      content &&
-      !confirm(`Togging editor will empty all typed contents, are you sure ?`)
-    ) {
-      return;
-    }
-    setContent("");
-    setContentType(contentType === "html" ? "markdown" : "html");
-  };
 
   const onUpdate = async () => {
     try {
@@ -104,90 +64,39 @@ export default function EditInput({
     }
   };
 
-  const onInputChange = (value) => {
-    setContent(value);
-    setErrors(null);
-  };
-
   return (
     <Wrapper>
-      {contentType === "html" && (
-        <InsertContentsModal
-          showModal={showModal}
-          type={modalType}
-          setShowModal={setShowModal}
-          insetQuillContentsFunc={insetQuillContentsFunc}
-        />
-      )}
       <InputWrapper>
-        {contentType === "markdown" && (
-          <MarkdownEditor
-            height={editorHeight}
-            setEditorHeight={setEditorHeight}
-            content={content}
-            setContent={onInputChange}
-            visible={!showPreview}
-            readOnly={loading}
-          />
-        )}
-        {contentType === "html" && (
-          <QuillEditor
-            visible={!showPreview}
-            content={content}
-            setContent={onInputChange}
-            setEditorHeight={setEditorHeight}
-            height={editorHeight}
-            setModalInsetFunc={(insetImgFunc, type) => {
-              setModalType(type);
-              setShowModal(true);
-              setInsetQuillContentsFunc(insetImgFunc);
-            }}
-            setQuillRef={setQuillRef}
-            readOnly={loading}
-          />
-        )}
-        {!showPreview && (
-          <InputSwitch>
-            <img
-              src="/imgs/icons/markdown-mark.svg"
-              alt=""
-              width={26}
-              height={16}
-            />
-            <Toggle
-              size="small"
-              isOn={contentType === "markdown"}
-              onToggle={onMarkdownSwitch}
-            />
-          </InputSwitch>
-        )}
+        <UniverseEditor
+          value={content}
+          onChange={setContent}
+          contentType={contentType}
+          setContentType={setContentType}
+          loadSuggestions={() => []}
+          minHeight={100}
+          previewerPlugins={[
+            {
+              name: "disable-non-address-link",
+              onRenderedHtml: renderDisableNonAddressLink,
+            },
+          ]}
+          setQuillRef={() => {}}
+        />
       </InputWrapper>
-      {showPreview && (
-        <PreviewWrapper className="preview">
-          {contentType === "markdown" && (
-            <PreviewMD
-              content={content}
-              setContent={setContent}
-            />
-          )}
-          {contentType === "html" && (
-            <HtmlRender html={content}/>
-          )}
-        </PreviewWrapper>
-      )}
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
       <ButtonWrapper>
         {!loading && (
-          <Button onClick={() => onFinishedEdit(false)}>Cancel</Button>
+          <GhostButton onClick={() => onFinishedEdit(false)}>
+            Cancel
+          </GhostButton>
         )}
-        {!loading && (
-          <Button onClick={() => setShowPreview(!showPreview)}>
-            {showPreview ? "Edit" : "Preview"}
-          </Button>
-        )}
-        <Button isLoading={loading} onClick={onUpdate} disabled={isEmpty} secondary >
+        <SecondaryButton
+          isLoading={loading}
+          onClick={onUpdate}
+          disabled={isEmpty}
+        >
           Update
-        </Button>
+        </SecondaryButton>
       </ButtonWrapper>
     </Wrapper>
   );

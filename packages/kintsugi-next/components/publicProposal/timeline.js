@@ -1,17 +1,22 @@
-import sortTimeline from "utils/timeline/sort";
+import sortTimeline from "next-common/utils/timeline/sort";
 import Timeline from "next-common/components/timeline";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export default function PublicProposalTimeline({
-  publicProposalTimeline,
-  referendumTimeline,
+  publicProposalTimeline = [],
+  referendumTimeline = [],
   chain,
 }) {
-  const completeTimeline = (publicProposalTimeline || []).concat(
-    referendumTimeline || []
+  const proposal = getDemocracyTimelineData(publicProposalTimeline, chain);
+  const referendum = getDemocracyTimelineData(
+    referendumTimeline,
+    chain,
+    detailPageCategory.DEMOCRACY_REFERENDUM
   );
-  const timelineData = getDemocracyTimelineData(completeTimeline, chain);
-  sortTimeline(timelineData);
+  const all = [...proposal, ...referendum];
 
-  return <Timeline data={timelineData} chain={chain} />;
+  sortTimeline(all);
+
+  return <Timeline data={all} chain={chain} />;
 }

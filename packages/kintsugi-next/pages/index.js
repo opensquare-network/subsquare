@@ -1,9 +1,7 @@
-import Overview from "components/overview";
-import Menu from "next-common/components/menu";
-import { mainMenu } from "next-common/utils/constants";
+import React from "react";
+import Overview from "next-common/components/overview";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import Layout from "next-common/components/layout";
 import {
   toDiscussionListItem,
   toPublicProposalListItem,
@@ -11,6 +9,7 @@ import {
   toTechCommMotionListItem,
   toTreasuryProposalListItem,
 } from "utils/viewfuncs";
+import HomeLayout from "next-common/components/layout/HomeLayout";
 
 export default withLoginUserRedux(({ overview, loginUser, chain }) => {
   let overviewData = [
@@ -58,13 +57,9 @@ export default withLoginUserRedux(({ overview, loginUser, chain }) => {
   );
 
   return (
-    <Layout
-      user={loginUser}
-      left={<Menu menu={mainMenu} chain={chain} />}
-      chain={chain}
-    >
+    <HomeLayout user={loginUser}>
       <Overview overviewData={filteredOverviewData} chain={chain} />
-    </Layout>
+    </HomeLayout>
   );
 });
 

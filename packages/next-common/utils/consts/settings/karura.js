@@ -1,3 +1,7 @@
+import Logo from "../../../assets/header-logos/karura.svg";
+import DarkModeLogo from "../../../assets/header-logos/karura-dark.svg";
+import Avatar from "../../../assets/icons/chain/karura.png";
+
 export const DEFAULT_KARURA_NODES = [
   {
     name: "OnFinality",
@@ -35,6 +39,9 @@ const karura = {
   ss58Format: 8,
   snsCoverCid: "bafybeiaoq7r32qsnpjqcey3x5hxfikbq3artjzi32he7dkretvesqgf3ny",
   endpoints: DEFAULT_KARURA_NODES,
+  headerLogo: Logo,
+  darkHeaderLogo: DarkModeLogo,
+  avatar: Avatar,
 };
 
 export default karura;

@@ -1,27 +1,21 @@
 import List from "next-common/components/list";
-import Menu from "next-common/components/menu";
-import { mainMenu } from "next-common/utils/constants";
+import { EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import { EmptyList } from "next-common/utils/constants";
-import Layout from "next-common/components/layout";
 import { toExternalProposalListItem } from "utils/viewfuncs";
 import DemocracySummary from "next-common/components/summary/democracySummary";
+import businessCategory from "next-common/utils/consts/business/category";
+import HomeLayout from "next-common/components/layout/HomeLayout";
 
 export default withLoginUserRedux(({ loginUser, externals, chain }) => {
   const items = (externals.items || []).map((item) =>
     toExternalProposalListItem(chain, item)
   );
-  const category = "Democracy External Proposals";
+  const category = businessCategory.democracyExternals;
   const seoInfo = { title: category, desc: category };
 
   return (
-    <Layout
-      user={loginUser}
-      left={<Menu menu={mainMenu} chain={chain} />}
-      chain={chain}
-      seoInfo={seoInfo}
-    >
+    <HomeLayout user={loginUser} seoInfo={seoInfo}>
       <List
         chain={chain}
         category={category}
@@ -34,7 +28,7 @@ export default withLoginUserRedux(({ loginUser, externals, chain }) => {
         }}
         summary={<DemocracySummary chain={chain} />}
       />
-    </Layout>
+    </HomeLayout>
   );
 });
 

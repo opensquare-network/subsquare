@@ -1,13 +1,9 @@
 /* eslint-disable react/jsx-key */
 import styled from "styled-components";
-import KVList from "next-common/components/listInfo/kvList";
 import Link from "next/link";
 import User from "next-common/components/user";
-import Links from "next-common/components/links";
 import Timeline from "next-common/components/timeline";
-import { getNode, toPrecision } from "utils";
-import { timeDurationFromNow } from "next-common/utils";
-import SectionTag from "next-common/components/sectionTag";
+import { getNode, isMotionEnded, timeDurationFromNow, toPrecision, } from "next-common/utils";
 import findLastIndex from "lodash.findlastindex";
 import Flex from "next-common/components/styled/flex";
 import ArticleContent from "next-common/components/articleContent";
@@ -16,14 +12,15 @@ import { createMotionTimelineData } from "utils/timeline/motion";
 import { getPostUpdatedAt } from "utils/viewfuncs";
 import MultiKVList from "next-common/components/listInfo/multiKVList";
 import MotionEnd from "next-common/components/motionEnd";
-import { isMotionEnded } from "next-common/utils";
 import { useSelector } from "react-redux";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
-import Proposal from "next-common/components/proposal";
-import { finalizedHeightSelector } from "next-common/store/reducers/chainSlice";
+import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { EditablePanel } from "next-common/components/styled/panel";
 import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
+import CollectiveMetadata from "next-common/components/collective/metadata";
+import UserWithLink from "next-common/components/user/userWithLink";
+import { DemocracyTag, TreasuryTag, } from "next-common/components/tags/business";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -32,7 +29,7 @@ const DividerWrapper = styled(Flex)`
     ::before {
       content: "·";
       font-size: 12px;
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary};
       margin: 0 8px;
     }
   }
@@ -47,7 +44,7 @@ const TitleWrapper = styled.div`
       content: "·";
       font-size: 20px;
       line-height: 28px;
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary};
       margin: 0 8px;
     }
   }
@@ -63,14 +60,14 @@ const Title = styled.div`
 `;
 
 const StatusWrapper = styled.div`
-  background: #2196f3;
+  background: ${(props) => props.theme.secondaryAzure500};
   border-radius: 2px;
   font-weight: 500;
   font-size: 12px;
   height: 20px;
   line-height: 20px;
   padding: 0 8px;
-  color: #ffffff;
+  color: ${(props) => props.theme.textContrast};
 `;
 
 const Index = styled.div`
@@ -104,11 +101,11 @@ const MotionEndHeader = styled.div`
   position: static;
   height: 38px;
 
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
 
   margin-bottom: 16px;
-  color: rgba(80, 97, 118, 1);
+  color: ${(props) => props.theme.textSecondary};
 `;
 
 function createMotionBusinessData(motion, chain) {
@@ -181,9 +178,9 @@ export default function TechcommMotionDetail({
   const [post, setPost] = useState(motion);
   const [isEdit, setIsEdit] = useState(false);
   const motionEndHeight = motion.onchainData?.voting?.end;
-  const currentFinalHeight = useSelector(finalizedHeightSelector);
+  const blockHeight = useSelector(latestHeightSelector);
   const estimatedBlocksTime = useEstimateBlocksTime(
-    currentFinalHeight - motionEndHeight
+    blockHeight - motionEndHeight
   );
   if (!node) {
     return null;
@@ -198,8 +195,8 @@ export default function TechcommMotionDetail({
   const showMotionEnd =
     !motionEnd &&
     motionEndHeight &&
-    currentFinalHeight &&
-    currentFinalHeight <= motionEndHeight &&
+    blockHeight &&
+    blockHeight <= motionEndHeight &&
     estimatedBlocksTime;
 
   let timelineData;
@@ -228,18 +225,10 @@ export default function TechcommMotionDetail({
       ],
       [
         "Beneficiary",
-        <Flex>
-          <User
-            chain={chain}
-            add={treasuryProposalMeta.beneficiary}
-            fontSize={14}
-          />
-          <Links
-            chain={chain}
-            address={treasuryProposalMeta.beneficiary}
-            style={{ marginLeft: 8 }}
-          />
-        </Flex>,
+        <UserWithLink
+          chain={chain}
+          address={treasuryProposalMeta.beneficiary}
+        />,
       ],
       [
         "Value",
@@ -264,10 +253,7 @@ export default function TechcommMotionDetail({
         ["Hash", proposal.hash],
         [
           "Proposer",
-          <Flex>
-            <User chain={chain} add={proposal?.proposer} />
-            <Links chain={chain} address={proposal?.proposer} />
-          </Flex>,
+          <UserWithLink chain={chain} address={proposal?.proposer} />,
         ],
       ]);
     });
@@ -309,9 +295,15 @@ export default function TechcommMotionDetail({
                   chain={chain}
                   fontSize={12}
                 />
-                {motion.isTreasury && <SectionTag name={"Treasury"} />}
+                {motion.isTreasury && (
+                  <div>
+                    <TreasuryTag />
+                  </div>
+                )}
                 {motion?.onchainData?.externalProposals?.length > 0 && (
-                  <SectionTag name={"Democracy"} />
+                  <div>
+                    <DemocracyTag />
+                  </div>
                 )}
                 {postUpdateTime && (
                   <Info>
@@ -338,41 +330,19 @@ export default function TechcommMotionDetail({
 
       <MultiKVList title="Business" data={business} />
 
-      <KVList
-        title={"Metadata"}
-        showFold
-        data={[
-          [
-            "Proposer",
-            <>
-              <User
-                add={motion?.onchainData?.proposer}
-                fontSize={14}
-                chain={chain}
-              />
-              <Links
-                chain={chain}
-                address={motion?.onchainData?.proposer}
-                style={{ marginLeft: 8 }}
-              />
-            </>,
-          ],
-          ...[
-            Number.isInteger(motion?.motionIndex)
-              ? ["Index", motion?.motionIndex]
-              : null,
-          ],
-          ["Threshold", motion?.onchainData?.threshold],
-          ["Hash", motion.hash],
-          [<Proposal motion={motion?.onchainData} chain={chain} />],
-        ]}
+      <CollectiveMetadata
+        chain={chain}
+        index={motion?.motionIndex}
+        proposer={motion?.onchainData?.proposer}
+        threshold={motion?.onchainData?.threshold}
+        hash={motion?.hash}
+        call={motion?.onchainData?.proposal}
       />
 
       <Timeline
         data={timelineData}
         chain={chain}
         indent={false}
-        type={type}
         motionEndInfo={motionEndInfo}
       />
     </div>

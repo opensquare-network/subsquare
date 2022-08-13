@@ -1,16 +1,12 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Input from "../input";
-import Button from "../button";
-import { useForm } from "utils/hooks";
 import ErrorText from "../ErrorText";
 import nextApi from "../../services/nextApi";
 import { newSuccessToast } from "../../store/reducers/toastSlice";
-import {
-  Label,
-  InputWrapper,
-} from "./styled";
+import { InputWrapper, Label } from "./styled";
+import SecondaryButton from "../buttons/secondaryButton";
+import useForm from "../../utils/hooks/useForm";
 
 export default function Password() {
   const dispatch = useDispatch();
@@ -65,9 +61,9 @@ export default function Password() {
           }}
           error={changeErrors?.data?.newPassword}
         />
-        <Button secondary typt="submit" isLoading={changeLoading}>
+        <SecondaryButton typt="submit" isLoading={changeLoading}>
           Change
-        </Button>
+        </SecondaryButton>
       </InputWrapper>
       {changeErrors?.message && !changeErrors?.data && (
         <ErrorText>{changeErrors?.message}</ErrorText>

@@ -1,19 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
-import { useState } from "react";
 import dynamic from "next/dynamic";
-
-import Layout from "next-common/components/layout";
 import { withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import {
   ContentCenterWrapper,
   LinkWrapper,
-  Title,
 } from "next-common/components/login/styled";
 import MailLogin from "next-common/components/login/mailLogin";
 import { p_14_normal } from "../../styles/componentCss";
+import { PageTitleContainer } from "../styled/containers/titleContainer";
+import BaseLayout from "../layout/baseLayout";
 
 const AddressLogin = dynamic(() => import("../login/addressLogin"), {
   ssr: false,
@@ -31,19 +29,22 @@ const Wrapper = styled.div`
 const Hint = styled.p`
   padding: 12px 16px;
   ${p_14_normal};
-  color: #506176;
-  background: #f6f7fa;
   border-radius: 4px;
+  color: ${(props) => props.theme.textSecondary};
+  background: ${(props) => props.theme.grey100Bg};
+  border-color: ${(props) => props.theme.grey300Border};
 `;
 
 const Login = withLoginUserRedux(({ loginUser, chain }) => {
   const [web3, setWeb3] = useState(true);
   return (
-    <Layout user={loginUser} chain={chain} isWeb3Login={web3}>
+    <BaseLayout user={loginUser} chain={chain}>
       <NextHead title={`Login`} desc={`Login`} />
       <Wrapper>
         <ContentCenterWrapper>
-          <Title>Login {web3 && ` with Web3 address`}</Title>
+          <PageTitleContainer>
+            Login {web3 && ` with Web3 address`}
+          </PageTitleContainer>
           {web3 && <Hint>Under the {chain} Network</Hint>}
           {!web3 && <MailLogin setAddressLogin={() => setWeb3(true)} />}
           {web3 && (
@@ -56,7 +57,7 @@ const Login = withLoginUserRedux(({ loginUser, chain }) => {
           )}
         </ContentCenterWrapper>
       </Wrapper>
-    </Layout>
+    </BaseLayout>
   );
 });
 

@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import Comments from "next-common/components/comment";
@@ -6,28 +5,19 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Editor from "next-common/components/comment/editor";
-import { useState, useRef } from "react";
-import Layout from "next-common/components/layout";
+import { useRef, useState } from "react";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
-import { TYPE_POST } from "utils/viewConstants";
-import { getMetaDesc } from "utils/viewfuncs";
+import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Cookies from "cookies";
-
-const Wrapper = styled.div`
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-  max-width: 848px;
-  margin: auto;
-`;
+import { detailPageCategory } from "next-common/utils/consts/business/category";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, votes, myVote, chain }) => {
     const postId = detail._id;
-
     const editorWrapperRef = useRef(null);
     const [quillRef, setQuillRef] = useState(null);
     const [content, setContent] = useState("");
@@ -47,44 +37,42 @@ export default withLoginUserRedux(
       chain
     );
 
-    const desc = getMetaDesc(detail, "Discussion");
+    const desc = getMetaDesc(detail);
     return (
-      <Layout
+      <DetailLayout
         user={loginUser}
         chain={chain}
         seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
       >
-        <Wrapper className="post-content">
-          <Back href={`/discussions`} text="Back to Discussions" />
-          <DetailItem
-            data={detail}
-            votes={votes}
-            myVote={myVote}
+        <Back href={`/discussions`} text="Back to Discussions" />
+        <DetailItem
+          data={detail}
+          votes={votes}
+          myVote={myVote}
+          user={loginUser}
+          chain={chain}
+          onReply={focusEditor}
+          type={detailPageCategory.POST}
+        />
+        <CommentsWrapper>
+          <Comments
+            data={comments}
             user={loginUser}
             chain={chain}
-            onReply={focusEditor}
-            type={TYPE_POST}
+            onReply={onReply}
           />
-          <CommentsWrapper>
-            <Comments
-              data={comments}
-              user={loginUser}
+          {loginUser && (
+            <Editor
+              postId={postId}
               chain={chain}
-              onReply={onReply}
+              ref={editorWrapperRef}
+              setQuillRef={setQuillRef}
+              {...{ contentType, setContentType, content, setContent, users }}
+              type={detailPageCategory.POST}
             />
-            {loginUser && (
-              <Editor
-                postId={postId}
-                chain={chain}
-                ref={editorWrapperRef}
-                setQuillRef={setQuillRef}
-                {...{ contentType, setContentType, content, setContent, users }}
-                type={TYPE_POST}
-              />
-            )}
-          </CommentsWrapper>
-        </Wrapper>
-      </Layout>
+          )}
+        </CommentsWrapper>
+      </DetailLayout>
     );
   }
 );

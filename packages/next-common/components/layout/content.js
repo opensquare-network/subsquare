@@ -26,12 +26,12 @@ const ContentWrapper = styled.div`
 
 const Left = styled.div`
   position: fixed;
-  left: max(calc((100vw - 1080px) / 2), 32px);
+  left: max(calc((100vw - 1184px) / 2), 32px);
   padding-bottom: 32px;
   height: calc(100vh - 90px);
   overflow-y: scroll;
   ${no_scroll_bar};
-  width: 200px;
+  width: 220px;
   flex: 0 0 200px;
   @media screen and (max-width: 1024px) {
     display: none;
@@ -39,11 +39,28 @@ const Left = styled.div`
 `;
 
 const LeftPlaceHolder = styled.div`
-  width: 232px;
-  flex: 0 0 232px;
+  width: 252px;
+  flex: 0 0 252px;
   @media screen and (max-width: 1024px) {
     display: none;
   }
+`;
+
+const MobileFooterWrapper = styled.div`
+  display: none;
+  @media screen and (max-width: 1024px) {
+    display: flex;
+  }
+  justify-content: center;
+  padding-top: 16px;
+  margin-bottom: -16px;
+  footer > svg {
+    display: none;
+  }
+  footer > div:last-child {
+    justify-content: center;
+  }
+  text-align: center;
 `;
 
 export default function Content({ left, children }) {
@@ -61,6 +78,9 @@ export default function Content({ left, children }) {
           <Main>{children}</Main>
         </ContentWrapper>
       </div>
+      <MobileFooterWrapper>
+        <Footer />
+      </MobileFooterWrapper>
     </Wrapper>
   );
 }

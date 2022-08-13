@@ -103,14 +103,13 @@ export function timeDurationFromNow(time) {
   return `${ss}s ago`;
 }
 
-export function encodeURIQuery(q) {
-  Object.keys(q)
-    .map((k) => `${k}=${encodeURIComponent(q[k])}`)
-    .join("&");
-}
-
 export function getNode(chain) {
-  return nodes.find((n) => n.value === chain);
+  const target = nodes.find((n) => n.value === chain);
+  if (!target) {
+    throw new Error(`Not supported chain ${chain}`);
+  }
+
+  return target;
 }
 
 export function toPrecision(value, decimals) {
@@ -217,7 +216,30 @@ export function isMotionEnded(motion) {
 }
 
 export function isKeyRegisteredUser(user) {
-  return !!user.publicKey;
+  return !!user?.publicKey;
 }
 
 export function emptyFunction() {}
+
+export const capitailize = (text) => text[0].toUpperCase() + text.slice(1);
+
+export function checkInputValue(inputValue, decimals, valueName = "value") {
+  if (!inputValue) {
+    throw new Error(`Please input a ${valueName}`);
+  }
+
+  const bnValue = new BigNumber(inputValue).times(Math.pow(10, decimals));
+  if (bnValue.isNaN()) {
+    throw new Error(`Invalid ${valueName}`);
+  }
+
+  if (bnValue.lte(0)) {
+    throw new Error(`${capitailize(valueName)} must be greater than 0`);
+  }
+
+  if (!bnValue.mod(1).isZero()) {
+    throw new Error("Invalid precision");
+  }
+
+  return bnValue;
+}

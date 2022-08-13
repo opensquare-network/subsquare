@@ -15,7 +15,7 @@ export default function Metadata({ external, chain }) {
   if (external.preImage) {
     metadata.push([
       <Proposal
-        motion={{ proposal: external.preImage.call }}
+        call={external.preImage.call}
         chain={chain}
         shorten={external.preImage.shorten}
         motionIndex={external.motionIndex}

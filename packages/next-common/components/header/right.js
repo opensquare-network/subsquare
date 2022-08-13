@@ -17,14 +17,14 @@ const Right = styled(Flex)`
 
 const NetworkWrapper = styled.div``;
 
-function HeaderRight({ user, chain, isWeb3Login }) {
+function HeaderRight({ user, chain }) {
   const node = nodes.find((n) => n.value === chain) || nodes[0];
 
   return (
     <Right>
       <HeaderAccount user={user} chain={chain} />
       <NetworkWrapper>
-        <NetworkSwitch activeNode={node} isWeb3Login={isWeb3Login} />
+        <NetworkSwitch activeNode={node} />
       </NetworkWrapper>
       <NodeSwitch small chain={chain} node={node} />
     </Right>

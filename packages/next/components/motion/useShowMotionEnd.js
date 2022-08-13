@@ -1,21 +1,21 @@
 import { isMotionEnded } from "next-common/utils";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { useSelector } from "react-redux";
-import { finalizedHeightSelector } from "next-common/store/reducers/chainSlice";
+import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 
 export default function useShowMotionEnd(motion) {
-  const currentFinalHeight = useSelector(finalizedHeightSelector);
+  const latestHeight = useSelector(latestHeightSelector);
   const motionEndHeight = motion?.voting?.end;
   const estimatedBlocksTime = useEstimateBlocksTime(
-    currentFinalHeight - motionEndHeight
+    latestHeight - motionEndHeight
   );
   const motionEnd = isMotionEnded(motion);
 
   const showMotionEnd =
     !motionEnd &&
     motionEndHeight &&
-    currentFinalHeight &&
-    currentFinalHeight <= motionEndHeight &&
+    latestHeight &&
+    latestHeight <= motionEndHeight &&
     estimatedBlocksTime;
 
   return showMotionEnd;

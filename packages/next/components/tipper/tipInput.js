@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  border: 1px solid #e0e4eb;
+  border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
   display: flex;
   overflow: hidden;
@@ -15,11 +15,11 @@ const Input = styled.input`
 
 const Unit = styled.div`
   padding: 12px 16px;
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   font-weight: 500;
   font-size: 14px;
   line-height: 100%;
-  border-left: 1px solid #e0e4eb;
+  border-left: 1px solid ${(props) => props.theme.grey300Border};
 `;
 
 export default function TipInput({ symbol, value, setValue = () => {} }) {

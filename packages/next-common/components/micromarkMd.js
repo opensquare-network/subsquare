@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import styled from "styled-components";
 import { micromark } from "micromark";
 import { gfm, gfmHtml } from "micromark-extension-gfm";
-import { isAddress } from "@polkadot/util-crypto";
 import sanitizeHtml from "sanitize-html";
 import { useEffect } from "react";
 import { no_scroll_bar } from "../styles/componentCss";
@@ -157,7 +156,7 @@ const Wrapper = styled.div`
 
     th {
       padding: 10px 16px;
-      background: #f6f7fa;
+      background: ${(props) => props.theme.grey100Bg};
       font-weight: bold;
       font-size: 14px;
       color: #1e2134;
@@ -189,19 +188,6 @@ export default function MicromarkMd({ md = "", contentVersion = "" }) {
     document.body.appendChild(script);
   }, []);
 
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.querySelectorAll("a").forEach((block) => {
-        const [, memberId] = block.getAttribute("href")?.match(/^\/member\/([-\w]+)$/) || [];
-        if (memberId && !isAddress(memberId)) {
-          block.classList.add("disabled-link");
-        } else {
-          block.setAttribute("target", "_blank");
-        }
-      });
-    }
-  }, [ref]);
-
   const html = micromark(displayContent, {
     allowDangerousHtml: true,
     extensions: [gfm()],
@@ -213,6 +199,8 @@ export default function MicromarkMd({ md = "", contentVersion = "" }) {
       "img",
       "iframe",
       "br",
+      "ins",
+      "del",
     ]),
     allowedAttributes: {
       img: ["src", "size", "width", "height"],

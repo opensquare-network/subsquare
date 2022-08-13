@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useState } from "react";
 import Sidebar from "./sidebar";
 import SidebarAccount from "./sidebarAccount";
 import { nodes } from "next-common/utils/constants";
@@ -9,9 +8,10 @@ import HeaderRight from "next-common/components/header/right";
 import HeaderWrapper from "next-common/components/header/wrapper";
 import ChainLogo from "next-common/components/header/left/chainLogo";
 import ChainIcon from "next-common/components/header/chainIcon";
+import MenuLine from "../../assets/imgs/icons/menu-line.svg";
 
 const FlexWrapper = styled(Flex)`
-  max-width: 1080px;
+  max-width: 1184px;
   margin: auto;
   justify-content: space-between;
 `;
@@ -24,9 +24,9 @@ const Left = styled(Flex)`
 `;
 
 const MenuButton = styled(Flex)`
-  background: #fff;
+  background: ${(props) => props.theme.neutral};
   display: none !important;
-  border: 1px solid #e0e4eb;
+  border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
   width: 38px;
   height: 38px;
@@ -36,11 +36,14 @@ const MenuButton = styled(Flex)`
     display: flex !important;
     margin-right: 12px;
   }
+  svg path {
+    stroke: ${(props) => props.theme.textTertiary};
+  }
 `;
 
 const NodeButton = styled(Flex)`
   display: none !important;
-  border: 1px solid #e0e4eb;
+  border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
   width: 38px;
   height: 38px;
@@ -51,7 +54,7 @@ const NodeButton = styled(Flex)`
   }
 `;
 
-export default function Header({ user, left, chain, isWeb3Login }) {
+export default function Header({ user, left, chain }) {
   const [show, setShow] = useState(false);
   const [position, setPosition] = useState("left");
   const [content, setContent] = useState();
@@ -71,12 +74,7 @@ export default function Header({ user, left, chain, isWeb3Login }) {
                   setShow(true);
                 }}
               >
-                <img
-                  src="/imgs/icons/menu-line.svg"
-                  alt=""
-                  width={20}
-                  height={20}
-                />
+                <MenuLine />
               </MenuButton>
             )}
             <ChainLogo chain={chain} />
@@ -90,7 +88,7 @@ export default function Header({ user, left, chain, isWeb3Login }) {
               <ChainIcon chain={node.value} />
             </NodeButton>
           </Left>
-          <HeaderRight chain={chain} user={user} isWeb3Login={isWeb3Login} />
+          <HeaderRight chain={chain} user={user} />
         </FlexWrapper>
       </div>
       {show && (

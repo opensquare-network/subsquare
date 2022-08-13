@@ -13,21 +13,39 @@ const OptionWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 12px 16px;
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
   ${(p) =>
     p.selectable &&
     css`
       cursor: pointer;
       :hover {
-        background: #ebeef4;
+        background: ${(props) => props.theme.grey200Border};
       }
     `}
   ${(p) =>
     p.selected &&
     css`
-      background: #f5f2ff;
+      background: ${(props) => props.theme.primaryPurple100};
+      color: ${(props) => props.theme.primaryPurple500};
+    `}
+  //todo : this needs to be fixed
+  ${(props) =>
+    props?.theme.isDark &&
+    css`
+      border-color: #363a4d;
+      color: white;
+      :hover {
+        background: #272a3a;
+      }
+    `}
+    //todo : this needs to be fixed
+  ${(p) =>
+    p.selected &&
+    p?.theme === "dark" &&
+    css`
+      background: #272a3a;
       color: #6848ff;
     `}
 `;
@@ -46,7 +64,7 @@ const StatsNumbers = styled.div`
   font-weight: 400;
   font-size: 14px;
   line-height: 100%;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   gap: 8px;
 `;
 
@@ -78,7 +96,7 @@ const TotalVotes = styled.div`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 function Option({

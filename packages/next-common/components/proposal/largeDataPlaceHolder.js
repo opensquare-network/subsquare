@@ -8,7 +8,7 @@ const LargeData = styled.div`
   font-weight: 400;
   font-size: 14px;
   line-height: 140%;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   gap: 10px;
 `;
 

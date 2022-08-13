@@ -1,3 +1,7 @@
+import Logo from "../../../assets/header-logos/calamari.svg";
+import DarkModeLogo from "../../../assets/header-logos/calamari-dark.svg";
+import Avatar from "../../../assets/icons/chain/calamari.png";
+
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 
@@ -27,6 +31,11 @@ const calamari = {
   ss58Format: 78,
   snsCoverCid: "bafybeig2mirpdoj3cowecbxiafo335abg3rlz6uhsfficemwtft75ykpqu",
   endpoints: DEFAULT_CALAMARI_NODES,
+  loginButtonPrimary: true,
+  headerBackgroundColor: "#000000",
+  headerLogo: Logo,
+  darkHeaderLogo: DarkModeLogo,
+  avatar: Avatar,
 };
 
 export default calamari;

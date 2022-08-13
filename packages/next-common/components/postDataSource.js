@@ -1,25 +1,18 @@
 import React from "react";
 import styled from "styled-components";
 import ExternalLinkIcon from "next-common/components/icons/externalLink";
-import {
-  TYPE_DEMOCRACY_PROPOSAL,
-  TYPE_DEMOCRACY_REFERENDUM,
-  TYPE_COUNCIL_MOTION,
-  TYPE_TECH_COMM_MOTION,
-  TYPE_TREASURY_PROPOSAL,
-  TYPE_TREASURY_BOUNTY,
-  TYPE_TREASURY_TIP,
-} from "utils/viewConstants";
+import { detailPageCategory } from "../utils/consts/business/category";
 
 const ExternalReference = styled.div`
   display: flex;
   align-items: center;
   padding: 12px;
+  margin-top: 16px;
   gap: 8px;
 
   height: 41px;
 
-  background: #F6F7FA;
+  background: ${(props) => props.theme.grey100Bg};
   border-radius: 4px;
 
   span {
@@ -28,7 +21,7 @@ const ExternalReference = styled.div`
     font-size: 12px;
     line-height: 140%;
 
-    color: #9DA9BB;
+    color: ${(props) => props.theme.textTertiary};
   }
 
   a {
@@ -40,26 +33,32 @@ function getPolkassemblyLink(type, post) {
   const chain = process.env.NEXT_PUBLIC_CHAIN;
 
   switch (type) {
-    case TYPE_DEMOCRACY_PROPOSAL: {
+    case detailPageCategory.DEMOCRACY_PROPOSAL: {
       return `https://${chain}.polkassembly.io/proposal/${post.proposalIndex}`;
     }
-    case TYPE_DEMOCRACY_REFERENDUM: {
+    case detailPageCategory.DEMOCRACY_REFERENDUM: {
       return `https://${chain}.polkassembly.io/referendum/${post.referendumIndex}`;
     }
-    case TYPE_COUNCIL_MOTION: {
+    case detailPageCategory.COUNCIL_MOTION: {
       return `https://${chain}.polkassembly.io/motion/${post.motionIndex}`;
     }
-    case TYPE_TECH_COMM_MOTION: {
+    case detailPageCategory.TECH_COMM_MOTION: {
       return `https://${chain}.polkassembly.io/tech/${post.motionIndex}`;
     }
-    case TYPE_TREASURY_PROPOSAL: {
+    case detailPageCategory.TREASURY_PROPOSAL: {
       return `https://${chain}.polkassembly.io/treasury/${post.proposalIndex}`;
     }
-    case TYPE_TREASURY_BOUNTY: {
+    case detailPageCategory.TREASURY_BOUNTY: {
       return `https://${chain}.polkassembly.io/bounty/${post.bountyIndex}`;
     }
-    case TYPE_TREASURY_TIP: {
+    case detailPageCategory.TREASURY_TIP: {
       return `https://${chain}.polkassembly.io/tip/${post.hash}`;
+    }
+    case detailPageCategory.PA_POST: {
+      return `https://${chain}.polkassembly.io/post/${post.polkassemblyId}`;
+    }
+    case detailPageCategory.TREASURY_CHILD_BOUNTY: {
+      return `https://${chain}.polkassembly.io/child_bounty/${post.index}`;
     }
     default: {
       return null;

@@ -22,16 +22,16 @@ const Wrapper = styled.div`
   input[type="number"] {
     -moz-appearance: textfield;
   }
-  border: 1px solid #e0e4eb;
+  border: 1px solid ${(props) => props.theme.grey300Border};
   width: 100%;
   border-radius: 4px;
   :hover {
-    border-color: #c2c8d5;
+    border-color: ${(props) => props.theme.grey400Border};
   }
   ${(p) =>
     p.focus &&
     css`
-      border-color: #c2c8d5;
+      border-color: ${(props) => props.theme.grey400Border};
     `}
   ${(p) =>
     p.error &&
@@ -41,9 +41,9 @@ const Wrapper = styled.div`
   ${(p) =>
     p.disabled &&
     css`
-      background: #f6f7fa;
+      background: ${(props) => props.theme.grey100Bg};
       :hover {
-        border-color: #e0e4eb;
+        border-color: ${(props) => props.theme.grey300Border};
       }
     `}
   display:flex;
@@ -57,10 +57,10 @@ const InputWrapper = styled.input`
   display: block;
   padding: 10px 16px;
   font-size: 14px;
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
   background: transparent;
   ::placeholder {
-    color: #d7dee8;
+    color: ${(props) => props.theme.textPlaceholder};
   }
 `;
 
@@ -77,11 +77,11 @@ const ShowButton = styled.div`
   > svg {
     width: 14px;
     height: 14px;
-    fill: #d7dee8;
+    fill: ${(props) => props.theme.textPlaceholder};
   }
   :hover {
     > svg {
-      fill: #9da9bb;
+      fill: ${(props) => props.theme.textTertiary};
     }
   }
 `;
@@ -93,7 +93,7 @@ const PostWrapper = styled.div`
 `;
 
 const SymbolWrapper = styled.div`
-  background: #f6f7fa;
+  background: ${(props) => props.theme.grey100Bg};
   padding: 0 16px;
   display: flex;
   align-items: center;
@@ -101,7 +101,7 @@ const SymbolWrapper = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 100%;
-  border-left: 1px solid #e0e4eb;
+  border-left: 1px solid ${(props) => props.theme.grey300Border};
 `;
 const OuterWrapper = styled.div``;
 

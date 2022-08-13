@@ -1,40 +1,33 @@
-import React, { memo } from "react";
-import Button from "../button";
-import Chains from "../../utils/consts/chains";
+import React from "react";
 import { useRouter } from "next/router";
+import getChainSettings from "../../utils/consts/settings";
+import { withTheme } from "styled-components";
+import { emptyFunction } from "../../utils";
+import PrimaryButton from "../buttons/primaryButton";
+import SecondaryButton from "../buttons/secondaryButton";
 
-function LoginButton({ chain }) {
+function LoginButton({ chain, theme }) {
   const router = useRouter();
 
-  let isPrimaryInverse = false;
-  if (
-    [
-      Chains.kintsugi,
-      Chains.khala,
-      Chains.bifrost,
-      Chains.calamari,
-      Chains.kusama,
-    ].includes(chain)
-  ) {
-    isPrimaryInverse = true;
-  }
+  const gotoLogin = () => {
+    router
+      .push({
+        pathname: "/login",
+        query: {
+          redirect: router.asPath,
+        },
+      })
+      .then(emptyFunction);
+  };
 
-  return (
-    <Button
-      primary={!isPrimaryInverse}
-      primaryInverse={isPrimaryInverse}
-      onClick={() =>
-        router.push({
-          pathname: "/login",
-          query: {
-            redirect: router.asPath,
-          },
-        })
-      }
-    >
-      Login
-    </Button>
-  );
+  const setting = getChainSettings(chain);
+  let isPrimaryInverse = setting.loginButtonPrimary;
+
+  let TargetButton = SecondaryButton;
+  if (isPrimaryInverse || theme.isDark) {
+    TargetButton = PrimaryButton;
+  }
+  return <TargetButton onClick={gotoLogin}>Login</TargetButton>;
 }
 
-export default memo(LoginButton);
+export default withTheme(LoginButton);

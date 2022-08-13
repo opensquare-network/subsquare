@@ -1,20 +1,24 @@
 import React from "react";
 import ReactJson from "react-json-view";
-import styled from "styled-components";
+import styled, { withTheme } from "styled-components";
 
 const Wrapper = styled.div`
-  background-color: #ffffff;
+  background-color: ${(props) =>
+    props.theme.isDark ? "#2C303B" : props.theme.neutral};
   padding: 8px;
   overflow-x: auto;
-  border: 1px solid #eeeeee;
+  border: 1px solid
+    ${(props) => (props.theme.isDark ? "#2C303B" : props.theme.grey200Border)};
 `;
 
-export default function JsonView({ src }) {
+function JsonView({ src, theme }) {
+  const jsonTheme = theme?.isDark ? "ocean" : "bright:inverted";
+
   return (
     <Wrapper>
       <ReactJson
         src={src}
-        theme="bright:inverted"
+        theme={jsonTheme}
         iconStyle="circle"
         enableClipboard={false}
         collapseStringsAfterLength={false}
@@ -24,3 +28,5 @@ export default function JsonView({ src }) {
     </Wrapper>
   );
 }
+
+export default withTheme(JsonView);

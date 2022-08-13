@@ -1,14 +1,11 @@
+import { useEffect, useState } from "react";
 import List from "next-common/components/list";
-import Menu from "next-common/components/menu";
-import { mainMenu } from "next-common/utils/constants";
+import { EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
-import { EmptyList } from "next-common/utils/constants";
-import Layout from "next-common/components/layout";
 import { toTreasuryProposalListItem } from "utils/viewfuncs";
 import Summary from "next-common/components/summary";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
-import { useState } from "react";
 import dynamic from "next/dynamic";
 import Loading from "next-common/components/loading";
 import { useDispatch } from "react-redux";
@@ -16,11 +13,9 @@ import {
   addPendingProposal,
   setCheckTimes,
 } from "next-common/store/reducers/treasuryProposalSlice";
-import {
-  Create,
-  Pending,
-} from "next-common/components/treasury/proposal/styled";
+import { Create, Pending } from "next-common/components/treasury/common/styled";
 import usePendingProposal from "next-common/components/treasury/proposal/usePendingProposal";
+import HomeLayout from "next-common/components/layout/HomeLayout";
 
 const Popup = dynamic(
   () => import("next-common/components/treasury/proposal/popup"),
@@ -33,11 +28,14 @@ export default withLoginUserRedux(
   ({ loginUser, proposals: ssrProposals, chain }) => {
     const dispatch = useDispatch();
     const [showPopup, setShowPopup] = useState(false);
-    const [updatedProposals, setProposals] = useState();
-    const proposals = updatedProposals || ssrProposals;
+    const [proposals, setProposals] = useState(ssrProposals);
+
+    useEffect(() => {
+      setProposals(ssrProposals);
+    }, [ssrProposals]);
 
     const { pendingReload, pendingProposals } = usePendingProposal({
-      proposals: ssrProposals,
+      proposals,
       setProposals,
     });
 
@@ -66,12 +64,7 @@ export default withLoginUserRedux(
     const seoInfo = { title: category, desc: category };
 
     return (
-      <Layout
-        user={loginUser}
-        left={<Menu menu={mainMenu} chain={chain} />}
-        chain={chain}
-        seoInfo={seoInfo}
-      >
+      <HomeLayout user={loginUser} seoInfo={seoInfo}>
         <List
           chain={chain}
           category={category}
@@ -91,7 +84,7 @@ export default withLoginUserRedux(
             onInBlock={startReload}
           />
         )}
-      </Layout>
+      </HomeLayout>
     );
   }
 );

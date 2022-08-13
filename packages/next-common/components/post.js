@@ -9,35 +9,21 @@ import {
   timeDurationFromNow,
   toPrecision,
 } from "next-common/utils";
-import Tag from "next-common/components/tag";
+import Tag from "next-common/components/tags/state/tag";
 import ReasonLink from "next-common/components/reasonLink";
-import SectionTag from "next-common/components/sectionTag";
 import Flex from "next-common/components/styled/flex";
-import {
-  p_14_medium,
-  shadow_100,
-  text_accessory,
-  text_primary,
-} from "next-common/styles/componentCss";
+import { p_14_medium } from "next-common/styles/componentCss";
 import MotionElapse from "next-common/components/motionElapse";
 import UpdateIcon from "../assets/imgs/icons/line-chart.svg";
 import CommentIcon from "../assets/imgs/icons/comment.svg";
 import Anchor from "next-common/components/styled/anchor";
+import { HoverSecondaryCard } from "./styled/containers/secondaryCard";
+import Divider from "./styled/layout/divider";
+import { DemocracyTag, TreasuryTag } from "./tags/business";
 
-const Wrapper = styled.div`
+const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
   align-items: flex-start;
-  background: #ffffff;
-  border: 1px solid #ebeef4;
-  ${shadow_100};
-  border-radius: 6px;
-  padding: 24px;
-
-  :hover {
-    box-shadow: 0 6px 22px rgba(30, 33, 52, 0.11),
-      0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
-      0 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
-  }
 `;
 
 const DividerWrapper = styled(Flex)`
@@ -53,7 +39,7 @@ const DividerWrapper = styled(Flex)`
     ::before {
       content: "·";
       font-size: 12px;
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary};
       margin: 0 8px;
     }
   }
@@ -82,7 +68,7 @@ const Index = styled.div`
     content: "·";
     font-size: 16px;
     line-height: 22.4px;
-    color: #9da9bb;
+    color: ${(props) => props.theme.textTertiary};
     margin: 0 8px;
   }
 `;
@@ -91,9 +77,12 @@ const Info = styled.div`
   display: flex;
   align-items: center;
   font-size: 12px;
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   svg {
     margin-right: 4px;
+    path {
+      stroke: ${(props) => props.theme.textTertiary};
+    }
   }
   .elapseIcon > * {
     margin-left: 8px;
@@ -118,12 +107,6 @@ const Title = styled.a`
   }
 `;
 
-const Divider = styled.div`
-  height: 1px;
-  background: #ebeef4;
-  margin: 12px 0;
-`;
-
 const FooterWrapper = styled(Flex)`
   justify-content: space-between;
   flex-wrap: nowrap;
@@ -131,6 +114,7 @@ const FooterWrapper = styled(Flex)`
 
 const TitleWrapper = styled.div`
   overflow: hidden;
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 const HeadWrapper = styled.div`
@@ -141,7 +125,7 @@ const HeadWrapper = styled.div`
     display: block;
     ${p_14_medium};
     line-height: 22.4px;
-    ${text_primary};
+    color: ${(props) => props.theme.textPrimary};
     white-space: nowrap;
     flex-basis: 120px;
     flex-grow: 0;
@@ -150,7 +134,7 @@ const HeadWrapper = styled.div`
   }
 
   .symbol {
-    ${text_accessory};
+    color: ${(props) => props.theme.textTertiary};
   }
 
   @media screen and (max-width: 768px) {
@@ -165,7 +149,7 @@ const HeadWrapper = styled.div`
 const Method = styled.span`
   font-size: 12px;
   font-weight: 400 !important;
-  color: #9da9bb !important;
+  color: ${(props) => props.theme.textTertiary} !important;
 `;
 
 const ContentWrapper = styled.div`
@@ -173,6 +157,7 @@ const ContentWrapper = styled.div`
 `;
 
 const BannerWrapper = styled.div`
+  margin-top: 0 !important;
   margin-left: 16px;
   width: 120px;
   height: 67px;
@@ -202,6 +187,8 @@ export default function Post({ data, chain, href, type }) {
     elapseIcon = <MotionElapse motion={data.onchainData} chain={chain} />;
   }
 
+  const commentsCount = (data.commentsCount || 0) + (data.polkassemblyCommentsCount || 0);
+
   return (
     <Wrapper>
       <ContentWrapper>
@@ -209,7 +196,7 @@ export default function Post({ data, chain, href, type }) {
           <TitleWrapper>
             {data?.index !== undefined && <Index>{`#${data.index}`}</Index>}
             <Link href={href} passHref>
-              <Title>{data.title}</Title>
+              <Title>{data.title?.trim() || "--"}</Title>
             </Link>
             <ReasonLink text={data.title} hideText={true} />
           </TitleWrapper>
@@ -222,7 +209,7 @@ export default function Post({ data, chain, href, type }) {
           {method && <Method>{method}</Method>}
         </HeadWrapper>
 
-        <Divider />
+        <Divider margin={12} />
         <FooterWrapper>
           <Footer>
             <User
@@ -231,8 +218,16 @@ export default function Post({ data, chain, href, type }) {
               chain={chain}
               fontSize={12}
             />
-            {data.isTreasury && <SectionTag name={"Treasury"} />}
-            {data.isDemocracy && <SectionTag name={"Democracy"} />}
+            {data.isTreasury && (
+              <div>
+                <TreasuryTag />
+              </div>
+            )}
+            {data.isDemocracy && (
+              <div>
+                <DemocracyTag />
+              </div>
+            )}
             {data.time && (
               <Info>
                 <UpdateIcon />
@@ -241,23 +236,21 @@ export default function Post({ data, chain, href, type }) {
               </Info>
             )}
             {data.remaining && <Info>{`${timeDuration(data.remaining)}`}</Info>}
-            {data.commentsCount > -1 && (
+            {commentsCount > -1 && (
               <AutHideInfo>
                 <CommentIcon />
-                {`${data.commentsCount}`}
+                {`${commentsCount}`}
               </AutHideInfo>
             )}
-            {
-              data.parentIndex !== undefined && (
-                <AutHideInfo>
-                  <Anchor href={`/treasury/bounty/${data.parentIndex}`} passHref>
-                    {`Parent #${data.parentIndex}`}
-                  </Anchor>
-                </AutHideInfo>
-              )
-            }
+            {data.parentIndex !== undefined && (
+              <AutHideInfo>
+                <Anchor href={`/treasury/bounty/${data.parentIndex}`} passHref>
+                  {`Parent #${data.parentIndex}`}
+                </Anchor>
+              </AutHideInfo>
+            )}
           </Footer>
-          {data.status && <Tag name={data.status} />}
+          {data.status && <Tag state={data.status} category={type} />}
         </FooterWrapper>
       </ContentWrapper>
 

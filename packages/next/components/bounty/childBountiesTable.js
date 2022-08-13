@@ -1,11 +1,14 @@
 import Row from "next-common/components/listInfo/row";
 import Anchor from "next-common/components/styled/anchor";
-import { toPrecision } from "../../utils";
-import Tag from "next-common/components/tag";
+import { toPrecision } from "next-common/utils";
+import Tag from "next-common/components/tags/state/tag";
 import Accordion from "next-common/components/listInfo/accordion";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import FlexBetween from "next-common/components/styled/flexBetween";
+import Divider from "next-common/components/styled/layout/divider";
+import businessCategory from "next-common/utils/consts/business/category";
+import ValueDisplay from "next-common/components/displayValue";
 
 const ChildBountyWrapper = styled.div`
   > div:first-child {
@@ -13,23 +16,36 @@ const ChildBountyWrapper = styled.div`
       display: none;
     }
   }
-`
+`;
 
 const ChildBounty = styled(FlexBetween)`
   flex-grow: 1;
 
   a {
+    flex-basis: 392px;
     font-weight: 400;
-    white-space: nowrap;
+    white-space: pre-wrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: #1E2134;
+    color: ${(props) => props.theme.textPrimary};
   }
 
   > div {
     flex-basis: 240px;
+    > div:first-child {
+      flex-basis: 120px;
+      display: flex;
+      justify-content: end;
+    }
+    .symbol {
+      color: ${(props) => props.theme.textTertiary};
+    }
   }
-`
+  > div > span {
+    text-align: right;
+    line-height: 15px;
+  }
+`;
 
 const ChildBountyMobile = styled(Flex)`
   display: none;
@@ -50,17 +66,11 @@ const ChildBountyMobile = styled(Flex)`
   > div {
     width: 100%;
   }
-`
-
-const Divider = styled.div`
-  margin: 8px 0;
-  height: 1px;
-  background-color: #e6e6e6;
-`
+`;
 
 const SemiBold = styled.span`
   font-weight: 500;
-`
+`;
 
 const DividerWrapper = styled(FlexBetween)`
   flex-wrap: wrap;
@@ -69,15 +79,15 @@ const DividerWrapper = styled(FlexBetween)`
     ::before {
       content: "·";
       font-size: 12px;
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary};
       margin: 0 8px;
     }
   }
-`;
 
-const Accessory = styled.span`
-  color: #9da9bb;
-`
+  > div {
+    display: flex;
+  }
+`;
 
 const DomesticLink = styled.a`
   margin-top: 16px;
@@ -85,67 +95,79 @@ const DomesticLink = styled.a`
   width: 60px;
   font-size: 12px;
   font-weight: 500;
-  color: #6848FF;
+  color: ${(props) => props.theme.primaryPurple500};
   cursor: pointer;
-`
+`;
 
-function ChildBountiesTable({
-                              childBounties,
-                              decimals,
-                              symbol,
-                            }) {
+function ChildBountiesTable({ childBounties, decimals, symbol }) {
   if (!childBounties?.items || !childBounties?.items?.length) {
     return null;
   }
-  return <Accordion title="Child Bounties">
-    {
-      childBounties.items.map((bounty, index) => {
-          return (<ChildBountyWrapper key={index}>
+  return (
+    <Accordion title="Child Bounties">
+      {childBounties.items.map((bounty, index) => {
+        return (
+          <ChildBountyWrapper key={index}>
             <Row
-              row={[`#${bounty.index}`,
+              row={[
+                `#${bounty.index}`,
                 // eslint-disable-next-line react/jsx-key
                 <ChildBounty>
-                  <Anchor href={`/treasury/child-bounty/${bounty.parentBountyId}_${bounty.index}`}
-                          title={bounty.description}
-                  >{bounty.description}</Anchor>
-                  <FlexBetween>
-                    <SemiBold>
-                      {toPrecision(bounty.value, decimals)}
-                      {" "}
-                      <Accessory>
-                        {symbol}
-                      </Accessory>
-                    </SemiBold>
-                    <Tag name={bounty.state.state}/>
+                  <Anchor
+                    href={`/treasury/child-bounty/${bounty.parentBountyId}_${bounty.index}`}
+                    title={bounty.title}
+                  >
+                    {bounty.title}
+                  </Anchor>
+                  <FlexBetween style={{ height: 23 }}>
+                    <ValueDisplay
+                      value={toPrecision(bounty.onchainData?.value, decimals)}
+                      symbol={symbol}
+                    />
+                    <Tag
+                      state={bounty.onchainData?.state?.state}
+                      category={businessCategory.treasuryChildBounties}
+                    />
                   </FlexBetween>
-                </ChildBounty>
-              ]}/>
+                </ChildBounty>,
+              ]}
+            />
 
             <ChildBountyMobile key={index}>
-              <Anchor href={`/treasury/child-bounty/${bounty.parentBountyId}_${bounty.index}`}
-                      title={bounty.description}>
-                {bounty.description}
+              <Anchor
+                href={`/treasury/child-bounty/${bounty.parentBountyId}_${bounty.index}`}
+                title={bounty.title}
+              >
+                {bounty.title}
               </Anchor>
-              <Divider/>
+              <Divider margin={8} />
               <FlexBetween>
                 <DividerWrapper>
                   <SemiBold>#{bounty.index}</SemiBold>
-                  <span> <SemiBold> {toPrecision(bounty.value, decimals)}</SemiBold>  <Accessory>{symbol}</Accessory></span>
+                  <ValueDisplay
+                    value={toPrecision(bounty.onchainData?.value, decimals)}
+                    symbol={symbol}
+                  />
                 </DividerWrapper>
-                <Tag name={bounty.state.state}/>
+                <Tag
+                  state={bounty.onchainData?.state?.state}
+                  category={businessCategory.treasuryChildBounties}
+                />
               </FlexBetween>
             </ChildBountyMobile>
-          </ChildBountyWrapper>)
-        }
-      )
-    }
+          </ChildBountyWrapper>
+        );
+      })}
 
-    {
-      childBounties.total > 5 &&
-      <DomesticLink href={`/treasury/child-bounties?parentBountyId=${childBounties.items[0].parentBountyId}`}>View
-        all</DomesticLink>
-    }
-  </Accordion>
+      {childBounties.total > 5 && (
+        <DomesticLink
+          href={`/treasury/child-bounties?parentBountyId=${childBounties.items[0].parentBountyId}`}
+        >
+          View all
+        </DomesticLink>
+      )}
+    </Accordion>
+  );
 }
 
 export default ChildBountiesTable;

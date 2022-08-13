@@ -1,5 +1,5 @@
-import { addressEllipsis } from ".";
-import Chains from "next-common/utils/consts/chains";
+import { addressEllipsis } from "next-common/utils";
+import { getMotionId } from "next-common/utils/motion";
 
 const TipStateMap = {
   NewTip: "Tipping",
@@ -28,12 +28,68 @@ export const toDiscussionListItem = (chain, item) => ({
   detailLink: `/post/${item.postUid}`,
 });
 
-export const toCouncilMotionListItem = (chain, item) => {
-  let motionId = `${item.indexer.blockHeight}_${item.hash}`;
-  if (Chains.kusama === chain) {
-    motionId = item.motionIndex;
-  }
+export const convertPolkassemblyUser = (chain, paUser) =>
+  paUser?.[`${chain}_default_address`]
+    ? {
+        username:
+          addressEllipsis(paUser?.[`${chain}_default_address`]) ||
+          paUser?.username,
+        addresses: [
+          {
+            address: paUser?.[`${chain}_default_address`],
+            chain,
+          },
+        ],
+      }
+    : {
+        username: paUser?.username,
+      };
 
+export const convertPolkassemblyReaction = (chain, paReaction) => ({
+  user: convertPolkassemblyUser(chain, paReaction?.reacting_user),
+  reaction: paReaction.reaction === "👍" ? 1 : 0,
+  createdAt: paReaction.created_at,
+  updatedAt: paReaction.updated_at,
+});
+
+export const convertPolkassemblyComment = (chain, comment) => ({
+  reactions: comment.comment_reactions?.map((r) =>
+    convertPolkassemblyReaction(chain, r)
+  ),
+  id: comment.id,
+  content: comment.content,
+  createdAt: comment.created_at,
+  updatedAt: comment.updated_at,
+  author: convertPolkassemblyUser(chain, comment.author),
+});
+
+export const toPolkassemblyDiscussionAuthor = (author, chain) => ({
+  username: addressEllipsis(author?.address) || author?.username,
+  ...(author?.address
+    ? {
+        addresses: [
+          {
+            address: author.address,
+            chain,
+          },
+        ],
+      }
+    : {}),
+});
+
+export const toPolkassemblyDiscussionListItem = (chain, item) => ({
+  ...item,
+  time: item.lastActivityAt,
+  author: toPolkassemblyDiscussionAuthor(item.author, chain),
+  detailLink: `/polkassembly/post/${item.polkassemblyId}`,
+});
+
+export const toPolkassemblyCommentListItem = (chain, item) => ({
+  ...convertPolkassemblyComment(chain, item),
+  replies: item.replies?.map((r) => convertPolkassemblyComment(chain, r)),
+});
+
+export const toCouncilMotionListItem = (chain, item) => {
   return {
     ...item,
     index: item.motionIndex,
@@ -41,7 +97,7 @@ export const toCouncilMotionListItem = (chain, item) => {
     author: item.author,
     address: item.proposer,
     status: item.state ?? "Unknown",
-    detailLink: `/council/motion/${motionId}`,
+    detailLink: `/council/motion/${getMotionId(item, chain)}`,
     isTreasury:
       item?.onchainData?.treasuryProposals?.length > 0 ||
       item?.onchainData?.treasuryBounties?.length > 0,
@@ -61,21 +117,13 @@ export const toFinancialMotionsListItem = (chain, item) => ({
   time: getPostUpdatedAt(item),
 });
 
-function getTechCommMotionId(motion) {
-  if (motion.index !== null && motion.index !== undefined) {
-    return motion.index;
-  }
-
-  return `${motion.indexer.blockHeight}_${motion.hash}`;
-}
-
 export const toTechCommMotionListItem = (chain, item) => ({
   ...item,
   title: item.title,
   author: item.author,
   address: item.proposer,
   status: item?.state ?? "Unknown",
-  detailLink: `/techcomm/proposal/${getTechCommMotionId(item)}`,
+  detailLink: `/techcomm/proposal/${getMotionId(item, chain)}`,
   time: getPostUpdatedAt(item),
   isDemocracy: item?.onchainData?.externalProposals?.length > 0,
 });
@@ -152,42 +200,3 @@ export const toExternalProposalListItem = (chain, item) => ({
   status: item.state ?? "Unknown",
   detailLink: `/democracy/external/${item.indexer.blockHeight}_${item.externalProposalHash}`,
 });
-
-export function toApiType(type) {
-  if (type === "treasury/bounty") {
-    return "treasury/bounties";
-  }
-  return `${type}s`;
-}
-
-export const isMotionCompleted = (motion) => {
-  if (motion?.state?.state !== "Executed") {
-    return false;
-  }
-  if (!motion.proposalHash) {
-    return false;
-  }
-  const ok = motion.state.data.some((data) =>
-    Object.keys(data).some((rawData) => rawData === "ok")
-  );
-  if (!ok) {
-    return false;
-  }
-  const error = motion.state.data.some((data) =>
-    Object.keys(data).some((rawData) => rawData === "error")
-  );
-  return !error;
-};
-
-export const getMetaDesc = (post, type = "Discussion") => {
-  let contentDesc = "";
-  const maxDescLength = 60;
-  if (post.content) {
-    if (post.content.length > maxDescLength) {
-      contentDesc = post.content.substr(0, maxDescLength) + "...";
-    } else {
-      contentDesc = post.content;
-    }
-  }
-  return contentDesc;
-};

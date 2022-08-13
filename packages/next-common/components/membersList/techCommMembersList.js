@@ -1,13 +1,12 @@
-import styled from "styled-components";
-
-import Flex from "../styled/flex";
+import styled, { withTheme } from "styled-components";
 import User from "../user";
 import React, { Fragment } from "react";
 import Loading from "../loading";
 import PrimeAddressMark from "../primeAddressMark";
+import { TitleContainer } from "../styled/containers/titleContainer";
 
 const Wrapper = styled.div`
-  max-width: 848px;
+  max-width: 932px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }
@@ -18,20 +17,13 @@ const Wrapper = styled.div`
   }
 `;
 
-const Title = styled(Flex)`
-  justify-content: space-between;
-  font-weight: bold;
-  font-size: 16px;
-`;
-
 const StyledTable = styled.table`
   width: 100%;
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
+  color: ${(props) => props.theme.textPrimary};
   box-sizing: border-box;
-  box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
-    0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow: ${(props) => props.theme.shadow100};
   border-radius: 6px;
   padding: 24px;
 
@@ -41,7 +33,7 @@ const StyledTable = styled.table`
     }
 
     th.clickable {
-      color: #506176;
+      color: ${(props) => props.theme.textSecondary};
       cursor: pointer;
       pointer-events: auto;
     }
@@ -56,17 +48,17 @@ const StyledTh = styled.th`
   font-size: 12px;
   line-height: 100%;
   letter-spacing: 0.16em;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   pointer-events: none;
 `;
 
 const StyledTd = styled.td`
-  padding: 15px 0 15px 0;
+  padding: 12px 0 12px 0;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
   line-height: 100%;
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 const EmptyTd = styled.td`
@@ -76,7 +68,7 @@ const EmptyTd = styled.td`
   font-size: 14px;
   line-height: 140%;
   text-align: center;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 const Member = styled.div`
@@ -93,22 +85,26 @@ const RowSplitter = ({ backgroundColor, padding }) => (
   </tr>
 );
 
-export default function MembersList({
+function MembersList({
   chain,
   category,
   items,
   prime,
   loading = false,
+  theme,
 }) {
   return (
     <Wrapper>
-      <Title>{category}</Title>
+      <TitleContainer>{category}</TitleContainer>
       <StyledTable>
         <thead>
           <StyledTr>
             <StyledTh style={{ textAlign: "left" }}>MEMBERS</StyledTh>
           </StyledTr>
-          <RowSplitter backgroundColor={"#EBEEF4"} padding={"16px 0 4px 0"} />
+          <RowSplitter
+            backgroundColor={theme.isDark ? "#272A3A" : "#F6F7FA"}
+            padding={"16px 0 4px 0"}
+          />
         </thead>
         <tbody>
           {items?.length > 0 ? (
@@ -123,7 +119,9 @@ export default function MembersList({
                   </StyledTd>
                 </StyledTr>
                 {index !== items.length - 1 && (
-                  <RowSplitter backgroundColor={"#F6F7FA"} />
+                  <RowSplitter
+                    backgroundColor={theme.isDark ? "#272A3A" : "#F6F7FA"}
+                  />
                 )}
               </Fragment>
             ))
@@ -139,3 +137,5 @@ export default function MembersList({
     </Wrapper>
   );
 }
+
+export default withTheme(MembersList);

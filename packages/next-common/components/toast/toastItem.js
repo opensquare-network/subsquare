@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { removeToast } from "../../store/reducers/toastSlice";
@@ -6,23 +6,29 @@ import useIsMounted from "../../utils/hooks/useIsMounted";
 import Flex from "../../components/styled/flex";
 import { shadow_200 } from "../../styles/componentCss";
 import Loading from "../loading";
+import ToastSuccessIcon from "../../assets/imgs/icons/toast-success.svg";
+import ToastErrorIcon from "../../assets/imgs/icons/toast-error.svg";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
   padding: 16px 16px;
-  background: #ffffff;
+  background: ${(props) => props.theme.neutral};
   ${shadow_200};
   border-radius: 6px;
-  border: 1px solid #ebeef4;
+  border: 1px solid ${(props) => props.theme.grey200Border};
   font-size: 14px;
   line-height: 140%;
   width: 246px;
   font-style: normal;
   font-weight: 400;
-  color: #1e2134;
+  color: ${(props) => props.theme.textPrimary};
 
-  > img:first-child,
-  svg:first-child {
+  & > svg:first-child {
+    margin-right: 12px;
+    margin-top: 5px;
+  }
+
+  > img:first-child {
     width: 20px;
     height: 20px;
     margin-right: 8px;
@@ -43,7 +49,10 @@ const Wrapper = styled(Flex)`
   transform: translateX(200%);
   transition: all 0.25s ease-out;
   &.tran {
-    transform: translateX(0) !important;
+    transform: translateX(min(calc((1248px - 100vw) / 2), 0px)) !important;
+    @media screen and (max-width: 768px) {
+      transform: translateX(32px) !important;
+    }
   }
   @media screen and (max-width: 375px) {
     width: 100%;
@@ -78,9 +87,11 @@ const ToastItem = ({ type, message, id, sticky }) => {
     <Wrapper className={tranClass}>
       {type === "pending" ? (
         <Loading size={20} />
-      ) : (
-        <img src={`/imgs/icons/toast-${type}.svg`} alt="" />
-      )}
+      ) : type === "success" ? (
+        <ToastSuccessIcon />
+      ) : type === "error" ? (
+        <ToastErrorIcon />
+      ) : null}
       <div>{message}</div>
       <img
         src={`/imgs/icons/toast-reject.svg`}

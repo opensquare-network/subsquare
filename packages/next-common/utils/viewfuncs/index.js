@@ -15,7 +15,8 @@ export function toApiType(type) {
 export function getEffectiveNumbers(n) {
   const result = [];
   let flag = false;
-  n.toString().split("")
+  n.toString()
+    .split("")
     .reverse()
     .forEach((dig) => {
       if (!isNaN(parseInt(dig))) {
@@ -52,9 +53,49 @@ export function abbreviateBigNumber(x, fixed = 2) {
 }
 
 export const getExcludeChains = (includeChains) => {
-  return Object.values(Chains).filter(chain => !includeChains.includes(chain))
-}
+  return Object.values(Chains).filter(
+    (chain) => !includeChains.includes(chain)
+  );
+};
 
 export const formatBalance = (x, symbol) => {
-  return new BigNumber(x).toFixed(BalanceDecimals[symbol] ?? 2, BigNumber.ROUND_DOWN)
-}
+  return new BigNumber(x).toFixed(
+    BalanceDecimals[symbol] ?? 2,
+    BigNumber.ROUND_DOWN
+  );
+};
+
+//fixme: this a for mention insert from replay button
+//find a elegant way to do this
+export const prettyHTML = (html) => {
+  return html
+    .replaceAll(`data-osn-polka-network`, `osn-polka-network`)
+    .replaceAll(`data-osn-polka-address`, `osn-polka-address`);
+};
+
+const isBase58 = (value) => /^[A-HJ-NP-Za-km-z1-9]*$/.test(value);
+
+export const isAddress = (address) => {
+  return [46, 47, 48].includes(address?.length) && isBase58(address);
+};
+
+export const renderDisableNonAddressLink = (el) => {
+  const targets = el?.querySelectorAll?.(`a`);
+  targets?.forEach((target) => {
+    const [, memberId] =
+      target.getAttribute("href")?.match(/^\/member\/([-\w]+)$/) || [];
+    if (memberId && !isAddress(memberId)) {
+      target.classList.add("disabled-link");
+    } else {
+      target.setAttribute("target", "_blank");
+    }
+  });
+
+  el?.querySelectorAll("span.mention").forEach((block) => {
+    const p = block.parentElement;
+    const address = block.getAttribute("osn-polka-address");
+    if (isAddress(address)) {
+      p.innerHTML = `<a href="/member/${address}" target="_blank">${block.innerText}</a>`;
+    }
+  });
+};

@@ -16,8 +16,9 @@ const Wrapper = styled.div`
 `;
 
 const Select = styled.div`
-  background: #fff;
-  border: 1px solid #e0e4eb;
+  background: ${(props) => props.theme.textContrast};
+  border: 1px solid ${(props) => props.theme.grey300Border};
+  background: ${(props) => props.theme.neutral};
   border-radius: 4px;
   height: 38px;
   display: flex;
@@ -31,11 +32,11 @@ const Select = styled.div`
     flex-grow: 1;
     display: flex;
     > :first-child {
-      color: #9da9bb;
+      color: ${(props) => props.theme.textTertiary};
     }
     > :last-child {
       font-weight: 500;
-      color: #1e2134;
+      color: ${(props) => props.theme.textPrimary};
     }
   }
   > img.logo {
@@ -45,7 +46,11 @@ const Select = styled.div`
 
 const Options = styled.div`
   position: absolute;
-  background: #ffffff;
+  background: ${(props) => props.theme.neutral};
+  border-width: ${(props) => (props.theme.isDark ? 1 : 0)}px;
+  border-style: ${(props) => (props.theme.isDark ? "solid" : "none")};
+  border-color: ${(props) => props.theme.grey200Border};
+  color: ${(props) => props.theme.textPrimary};
   ${shadow_200};
   border-radius: 4px;
   padding: 8px 0;
@@ -61,10 +66,15 @@ const Item = styled.a`
   height: 36px;
   font-weight: 500;
   cursor: pointer;
-  color: #506176;
+  color: ${(props) => props.theme.textPrimary};
   :hover {
-    background: #f6f7fa;
+    background: ${(props) => props.theme.grey100Bg};
   }
+  ${(p) =>
+    p.active &&
+    css`
+      background: ${(props) => props.theme.grey100Bg};
+    `}
   > :not(:first-child) {
     margin-left: 8px;
   }
@@ -74,23 +84,16 @@ const Item = styled.a`
   > img.logo {
     flex: 0 0 24px;
   }
-  ${(p) =>
-    p.active &&
-    css`
-      color: #1e2134;
-      background: #f6f7fa;
-    `}
 `;
 
 const NetworkBlock = styled.div`
   display: flex;
   align-items: center;
   margin-left: 12px;
-  > div {
-  }
   > span {
     margin-left: 4px;
     margin-right: 12px;
+    color: ${(props) => props.theme.textPrimary};
   }
   > svg {
     margin-left: 7px;
@@ -98,7 +101,7 @@ const NetworkBlock = styled.div`
   }
 `;
 
-export default function NetworkSwitch({ activeNode, isWeb3Login }) {
+export default function NetworkSwitch({ activeNode }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
   const windowSize = useWindowSize();
@@ -144,8 +147,6 @@ export default function NetworkSwitch({ activeNode, isWeb3Login }) {
               href={
                 activeNode.value === item.value
                   ? null
-                  : isWeb3Login
-                  ? `https://${item.value}.subsquare.io/login`
                   : `https://${item.value}.subsquare.io`
               }
             >

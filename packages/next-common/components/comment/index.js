@@ -1,13 +1,23 @@
 import React from "react";
 import styled from "styled-components";
 import Item from "./item";
-import Pagination from "next-common/components/pagination";
+import Pagination from "next-common/components/pagination/index.js";
 import NoComment from "./noComment";
 import LoginButtons from "./loginButtons";
+import { TitleContainer } from "../styled/containers/titleContainer";
 
-const Title = styled.div`
-  font-weight: bold;
-  font-size: 16px;
+const Header = styled.div`
+  display: flex;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  @media screen and (min-width: 768px) {
+    justify-content: space-between;
+  }
+`;
+
+const Title = styled(TitleContainer)`
   margin-bottom: 16px;
 `;
 
@@ -16,10 +26,14 @@ export default function Comments({
   data: { items, page, pageSize, total } = {},
   chain,
   onReply,
+  tabs = null,
 }) {
   return (
     <div>
-      <Title>Comments</Title>
+      <Header>
+        <Title>Comments</Title>
+        {tabs}
+      </Header>
       {items?.length > 0 && (
         <>
           <div>

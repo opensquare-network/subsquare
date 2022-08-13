@@ -4,7 +4,7 @@ import Flex from "next-common/components/styled/flex";
 import User from "next-common/components/user";
 import Links from "next-common/components/links";
 import CapitalText from "../capitalText";
-import { getNode, toPrecision } from "utils";
+import { getNode, toPrecision } from "next-common/utils";
 
 export default function Business({ motion, chain }) {
   if (!motion) {

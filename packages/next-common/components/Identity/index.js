@@ -11,6 +11,35 @@ const Wrapper = styled(Flex)`
   svg {
     margin-right: 4px;
   }
+  .VERIFIED,
+  VERIFIED_LINKED {
+    path:first-child {
+      fill: ${(props) => props.theme.secondaryGreen500};
+    }
+    path:last-child {
+      fill: ${(props) => props.theme.textContrast};
+    }
+  }
+
+  .NOT_VERIFIED,
+  .NOT_VERIFIED_LINKED {
+    path:first-child {
+      fill: ${(props) => props.theme.grey300Border};
+    }
+    path:last-child {
+      fill: ${(props) => props.theme.grey400Border};
+    }
+  }
+
+  .ERRONEOUS,
+  .ERRONEOUS_LINKED {
+    path:first-child {
+      fill: ${(props) => props.theme.secondaryRed500};
+    }
+    path:last-child {
+      fill: ${(props) => props.theme.textContrast};
+    }
+  }
 `;
 
 const Display = styled.div`
@@ -50,7 +79,10 @@ export default function Identity({ identity, fontSize = 14, maxWidth }) {
           </div>
         </Tooltip>
       ) : (
-        <Display fontSize={fontSize}>{displayName}</Display>
+        <Display
+          fontSize={fontSize}
+          maxWidth={maxWidth}
+        >{displayName}</Display>
       )}
     </Wrapper>
   );

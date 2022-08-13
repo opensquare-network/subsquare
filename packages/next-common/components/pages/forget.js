@@ -1,10 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useState } from "react";
 import { useRouter } from "next/router";
-
-import Layout from "next-common/components/layout";
-import Button from "next-common/components/button";
 import Input from "next-common/components/input";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
@@ -14,13 +10,15 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import NextHead from "next-common/components/nextHead";
 import {
   ContentCenterWrapper,
-  Title,
-  FormWrapper,
   FormInputsWrapper,
-  Label,
+  FormWrapper,
   InfoWrapper,
+  Label,
 } from "next-common/components/login/styled";
 import useForm from "../../utils/hooks/useForm";
+import SecondaryButton from "../buttons/secondaryButton";
+import { PageTitleContainer } from "../styled/containers/titleContainer";
+import BaseLayout from "../layout/baseLayout";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
@@ -65,12 +63,12 @@ const Forget = withLoginUserRedux(({ loginUser, chain }) => {
   const { email } = formData;
 
   return (
-    <Layout user={loginUser} chain={chain}>
+    <BaseLayout user={loginUser} chain={chain}>
       <NextHead title={`Forget password`} desc={`Forget password`} />
       <Wrapper>
         {!success && (
           <ContentCenterWrapper>
-            <Title>Reset Password</Title>
+            <PageTitleContainer>Reset Password</PageTitleContainer>
             <FormWrapper onSubmit={handleSubmit}>
               <FormInputsWrapper>
                 <Label>Email</Label>
@@ -87,26 +85,26 @@ const Forget = withLoginUserRedux(({ loginUser, chain }) => {
               {errors?.message && !errors?.data && (
                 <ErrorText>{errors?.message}</ErrorText>
               )}
-              <Button isFill secondary type="submit" isLoading={loading}>
+              <SecondaryButton isFill type="submit" isLoading={loading}>
                 Confirm
-              </Button>
+              </SecondaryButton>
             </FormWrapper>
           </ContentCenterWrapper>
         )}
         {success && (
           <ContentCenterWrapper>
-            <Title>Reset Password</Title>
+            <PageTitleContainer>Reset Password</PageTitleContainer>
             <InfoWrapper>
               The reset password link was sent to this email, if it exists in
               our database.
             </InfoWrapper>
-            <Button isFill secondary onClick={() => router.replace("/")}>
+            <SecondaryButton isFill onClick={() => router.replace("/")}>
               Confirm
-            </Button>
+            </SecondaryButton>
           </ContentCenterWrapper>
         )}
       </Wrapper>
-    </Layout>
+    </BaseLayout>
   );
 });
 

@@ -3,12 +3,14 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import NetworkSwitch from "next-common/components/header/networkSwitch";
-import Button from "next-common/components/button";
-import { accountMenu, nodes } from "next-common/utils/constants";
+import { nodes } from "next-common/utils/constants";
 import { logout } from "next-common/store/reducers/userSlice";
 import User from "next-common/components/user";
 import NodeSwitch from "next-common/components/header/nodeSwitch";
 import Flex from "next-common/components/styled/flex";
+import { accountMenu } from "./consts";
+import GhostButton from "../buttons/ghostButton";
+import SecondaryButton from "../buttons/secondaryButton";
 
 const Wrapper = styled.div`
   padding: 32px 0 0;
@@ -18,7 +20,7 @@ const Title = styled.div`
   font-weight: bold;
   font-size: 12px;
   letter-spacing: 0.16em;
-  color: #9da9bb;
+  color: ${(props) => props.theme.textTertiary};
   margin-bottom: 16px;
   margin-top: 24px;
   :first-child {
@@ -35,26 +37,21 @@ const ButtonWrapper = styled.div`
 `;
 
 const Item = styled(Flex)`
-  color: #506176;
+  color: ${(props) => props.theme.textSecondary};
   cursor: pointer;
   padding: 0 12px;
   height: 36px;
   border-radius: 4px;
   :hover {
-    background: #f6f7fa;
+    background: ${(props) => props.theme.grey100Bg};
   }
   > :not(:first-child) {
     margin-left: 8px;
   }
-  > img {
-    flex: 0 0 24px;
-    filter: invert(34%) sepia(48%) saturate(275%) hue-rotate(174deg)
-      brightness(93%) contrast(85%);
-  }
 `;
 
 const UserWrapper = styled(Flex)`
-  border: 1px solid #e0e4eb;
+  border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
   padding: 0 12px;
   height: 38px;
@@ -87,12 +84,12 @@ export default function SidebarAccount({ user, chain }) {
       <Title>ACCOUNT</Title>
       {!user && (
         <ButtonWrapper>
-          <Button onClick={() => router.push("/signup")} primary>
+          <GhostButton onClick={() => router.push("/signup")}>
             Sign up
-          </Button>
-          <Button onClick={() => router.push("/login")} secondary>
+          </GhostButton>
+          <SecondaryButton onClick={() => router.push("/login")}>
             Login
-          </Button>
+          </SecondaryButton>
         </ButtonWrapper>
       )}
       {user && (
@@ -102,12 +99,7 @@ export default function SidebarAccount({ user, chain }) {
           </UserWrapper>
           {accountMenu.map((item, index) => (
             <Item key={index} onClick={() => handleAccountMenu(item)}>
-              <img
-                src={`/imgs/icons/${item.icon}`}
-                alt="icon"
-                width={24}
-                height={24}
-              />
+              {item.icon}
               <div>{item.name}</div>
             </Item>
           ))}
