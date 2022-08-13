@@ -1,3 +1,6 @@
+import Logo from "../../../assets/header-logos/litmus.svg";
+import Avatar from "../../../assets/icons/chain/litmus.png";
+
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 
@@ -21,6 +24,9 @@ const litmus = {
   endpoints: DEFAULT_LITMUS_NODES,
   loginButtonPrimary: true,
   headerBackgroundColor: "#000000",
+  headerLogo: Logo,
+  darkHeaderLogo: Logo,
+  avatar: Avatar,
 };
 
 export default litmus;
