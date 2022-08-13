@@ -40,23 +40,50 @@ export default function DemocracyNavigate({ motion, type }) {
     return null;
   }
 
+  const motionId = getMotionId(motion, chain)
   const external = motion.externalProposals?.[0] || motion.operateExternals?.[0];
-  const councilMotion = external.motions?.[0];
+
+  const motions = external.motions || [];
+  const motionElements = motions.map((item, index) => {
+    const itemId = getMotionId(item, chain);
+
+    const isPageMotion = itemId === motionId;
+    return <div key={getMotionId(item, chain)}>
+      {
+        index <= 0 ? null : <TriangleRight />
+      }
+      {type === detailPageCategory.COUNCIL_MOTION && isPageMotion ? (
+        `Motion #${ shortMotionId(item) }`
+      ) : (
+        <Link href={ `/council/motion/${ getMotionId(item) }` }>
+          { `Motion #${ shortMotionId(item) }` }
+        </Link>
+      )}
+    </div>
+  });
+
   const techCommMotion = external.techCommMotions?.[0];
-  const externalCouncilMotion = external.councilMotions?.[0];
+  const handleExternalCouncilMotions = external.councilMotions || [];
+  const handleExternalMotionElements = handleExternalCouncilMotions.map((item, index) => {
+    const itemId = getMotionId(item, chain);
+    const isPageMotion = itemId === motionId;
+    return <div key={ getMotionId(item, chain) }>
+      <TriangleRight />
+      {type === detailPageCategory.COUNCIL_MOTION && isPageMotion ? (
+        `Motion #${ shortMotionId(item) }`
+      ) : (
+        <Link href={ `/council/motion/${ getMotionId(item) }` }>
+          { `Motion #${ shortMotionId(item) }` }
+        </Link>
+      )}
+    </div>
+  });
+
   const referendumIndex = external.referendumIndex;
 
   return (
     <ReferendaWrapper>
-      <div>
-        {type !== detailPageCategory.COUNCIL_MOTION || motion.hash !== councilMotion.hash ? (
-          <Link href={`/council/motion/${getMotionId(councilMotion)}`}>
-            {`Motion #${shortMotionId(councilMotion)}`}
-          </Link>
-        ) : (
-          `Motion #${shortMotionId(councilMotion)}`
-        )}
-      </div>
+      { motionElements }
       <div>
         <TriangleRight />
         <Link
@@ -80,18 +107,7 @@ export default function DemocracyNavigate({ motion, type }) {
           )}
         </div>
       ) : (
-        externalCouncilMotion && (
-          <div>
-            <TriangleRight />
-            {type !== detailPageCategory.COUNCIL_MOTION || motion.hash !== externalCouncilMotion.hash ? (
-              <Link href={`/council/motion/${getMotionId(externalCouncilMotion)}`}>
-                {`Motion #${shortMotionId(externalCouncilMotion)}`}
-              </Link>
-            ) : (
-              `Motion #${shortMotionId(externalCouncilMotion)}`
-            )}
-          </div>
-        )
+        handleExternalMotionElements.length > 0 ? handleExternalMotionElements : null
       )}
       {referendumIndex !== undefined && (
         <div>
