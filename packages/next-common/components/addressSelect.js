@@ -5,7 +5,7 @@ import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
 import Avatar from "./avatar";
 import Flex from "./styled/flex";
 import Relative from "./styled/relative";
-import { shadow_200 } from "../styles/componentCss";
+import { pretty_scroll_bar, shadow_200 } from "../styles/componentCss";
 import { encodeAddressToChain } from "../services/address";
 import { nodes } from "../utils/constants";
 import { fetchIdentity } from "../services/identity";

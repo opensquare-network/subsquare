@@ -16,7 +16,7 @@ import {
 } from "next-common/components/styled/table";
 import VoteLabel from "./voteLabel";
 import Chains from "../../../utils/consts/chains";
-import { no_scroll_bar } from "../../../styles/componentCss";
+import { pretty_scroll_bar } from "../../../styles/componentCss";
 
 const Wrapper = styled.div`
   max-width: 932px;
