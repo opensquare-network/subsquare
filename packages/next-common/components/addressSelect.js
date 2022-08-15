@@ -60,17 +60,10 @@ const Options = styled.div`
   ${shadow_200};
   border-radius: 4px;
   max-height: 320px;
-  overflow-y: auto;
+  overflow-y: overlay;
   z-index: 1;
 
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: ${(props) => props.theme.grey400Border};
-    border-right: 4px solid white;
-  }
+  ${pretty_scroll_bar};
 `;
 
 const Item = styled(Flex)`
