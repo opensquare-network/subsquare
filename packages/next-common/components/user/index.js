@@ -10,6 +10,7 @@ import { addressEllipsis } from "../../utils";
 import Flex from "../styled/flex";
 import Tooltip from "../tooltip";
 import AvatarDeleted from "../../assets/imgs/icons/avatar-deleted.svg";
+import useIsMounted from "../../utils/hooks/useIsMounted";
 
 const Wrapper = styled(Flex)`
   a {
@@ -113,7 +114,7 @@ function User({
 }) {
   const address =
     add ?? user?.addresses?.find((addr) => addr.chain === chain)?.address;
-
+  const isMounted = useIsMounted();
   const [identity, setIdentity] = useState(null);
   useEffect(() => {
     setIdentity(null);
@@ -122,7 +123,7 @@ function User({
       if (!identity) return;
 
       fetchIdentity(identity, encodeAddressToChain(address, identity)).then(
-        (identity) => setIdentity(identity)
+        (identity) => isMounted.current && setIdentity(identity)
       );
     }
   }, [address, chain]);
@@ -142,13 +143,14 @@ function User({
     </Username>
   );
 
-  const addressWithoutIdentity = maxWidth && !noTooltip ? (
-    <Tooltip content={(!user?.publicKey && user?.username) || address}>
-      <div>{elmUsernameOrAddr}</div>
-    </Tooltip>
-  ) : (
-    elmUsernameOrAddr
-  );
+  const addressWithoutIdentity =
+    maxWidth && !noTooltip ? (
+      <Tooltip content={(!user?.publicKey && user?.username) || address}>
+        <div>{elmUsernameOrAddr}</div>
+      </Tooltip>
+    ) : (
+      elmUsernameOrAddr
+    );
 
   const elmUsername = (
     <Username fontSize={fontSize} maxWidth={maxWidth} color={color}>
