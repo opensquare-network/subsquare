@@ -55,7 +55,7 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
   }
 
   .editor-toolbar-buttons button {
-    background-color: ${(props) => props.theme.grey300Border} !important;
+    background-color: ${(props) => props.theme.grey100Bg} !important;
   }
 
   .editor-toolbar-buttons button.active {
