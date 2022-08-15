@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
 import { getBlockTimeByHeight } from "../blockTime";
 
-export default function useLatestBlockTime(api, blockHeight) {
+export default function useLatestBlockTime(api, blockHeight, isMounted) {
   const [time, setTime] = useState(0);
-  let unmounted = false;
+
   useEffect(() => {
     if (api) {
       getBlockTimeByHeight(api, blockHeight).then(
-        (blockTime) => !unmounted && setTime(blockTime)
+        (blockTime) => isMounted.current && setTime(blockTime)
       );
     }
-    return () => {
-      unmounted = true;
-    };
   }, [api, blockHeight]);
 
   return time;

@@ -10,6 +10,7 @@ import { addressEllipsis } from "../../utils";
 import Flex from "../styled/flex";
 import Tooltip from "../tooltip";
 import AvatarDeleted from "../../assets/imgs/icons/avatar-deleted.svg";
+import useIsMounted from "../../utils/hooks/useIsMounted";
 
 const Wrapper = styled(Flex)`
   a {
@@ -113,7 +114,7 @@ function User({
 }) {
   const address =
     add ?? user?.addresses?.find((addr) => addr.chain === chain)?.address;
-  let unmounted = false;
+  const isMounted = useIsMounted();
   const [identity, setIdentity] = useState(null);
   useEffect(() => {
     setIdentity(null);
@@ -122,12 +123,9 @@ function User({
       if (!identity) return;
 
       fetchIdentity(identity, encodeAddressToChain(address, identity)).then(
-        (identity) => !unmounted && setIdentity(identity)
+        (identity) => isMounted.current && setIdentity(identity)
       );
     }
-    return () => {
-      unmounted = true;
-    };
   }, [address, chain]);
 
   if (!user && !add) {
