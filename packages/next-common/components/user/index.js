@@ -113,7 +113,7 @@ function User({
 }) {
   const address =
     add ?? user?.addresses?.find((addr) => addr.chain === chain)?.address;
-
+  let unmounted = false;
   const [identity, setIdentity] = useState(null);
   useEffect(() => {
     setIdentity(null);
@@ -122,9 +122,12 @@ function User({
       if (!identity) return;
 
       fetchIdentity(identity, encodeAddressToChain(address, identity)).then(
-        (identity) => setIdentity(identity)
+        (identity) => !unmounted && setIdentity(identity)
       );
     }
+    return () => {
+      unmounted = true;
+    };
   }, [address, chain]);
 
   if (!user && !add) {
@@ -142,13 +145,14 @@ function User({
     </Username>
   );
 
-  const addressWithoutIdentity = maxWidth && !noTooltip ? (
-    <Tooltip content={(!user?.publicKey && user?.username) || address}>
-      <div>{elmUsernameOrAddr}</div>
-    </Tooltip>
-  ) : (
-    elmUsernameOrAddr
-  );
+  const addressWithoutIdentity =
+    maxWidth && !noTooltip ? (
+      <Tooltip content={(!user?.publicKey && user?.username) || address}>
+        <div>{elmUsernameOrAddr}</div>
+      </Tooltip>
+    ) : (
+      elmUsernameOrAddr
+    );
 
   const elmUsername = (
     <Username fontSize={fontSize} maxWidth={maxWidth} color={color}>

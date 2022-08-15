@@ -6,7 +6,10 @@ import BlockValue from "./blockValue";
 import Proposal from "../../proposal";
 import Threshold from "./threshold";
 import { useSelector } from "react-redux";
-import { blockTimeSelector, latestHeightSelector, } from "../../../store/reducers/chainSlice";
+import {
+  blockTimeSelector,
+  latestHeightSelector,
+} from "../../../store/reducers/chainSlice";
 import UserWithLink from "../../user/userWithLink";
 
 export default function ReferendumMetadata({
