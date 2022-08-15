@@ -62,6 +62,7 @@ const InputWrapper = styled.input`
   ::placeholder {
     color: ${(props) => props.theme.textPlaceholder};
   }
+  caret-color: ${(props) => props.theme.textPrimary};
 `;
 
 const ShowButton = styled.div`
