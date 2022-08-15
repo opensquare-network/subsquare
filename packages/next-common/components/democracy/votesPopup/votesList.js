@@ -6,9 +6,17 @@ import { Fragment } from "react";
 import ValueDisplay from "../../displayValue";
 import Loading from "../../loading";
 
-import { EmptyTd, RowSpliter, StyledTable, StyledTd, StyledTh, StyledTr, } from "next-common/components/styled/table";
+import {
+  EmptyTd,
+  RowSpliter,
+  StyledTable,
+  StyledTd,
+  StyledTh,
+  StyledTr,
+} from "next-common/components/styled/table";
 import VoteLabel from "./voteLabel";
 import Chains from "../../../utils/consts/chains";
+import { pretty_scroll_bar } from "../../../styles/componentCss";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -20,16 +28,24 @@ const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
-  max-height: 500px;
-  overflow-y: auto;
   table {
     border: none;
     padding: 0;
-    thead {
-      top: 0;
-      background-color: ${(props) => props.theme.neutral};
-      border-color: ${(props) => props.theme.neutral};
+    tbody {
+      display: block;
+      max-height: 400px;
+      overflow-y: overlay;
+      overflow-x: hidden;
+
+      ${pretty_scroll_bar};
     }
+    thead,
+    tbody tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+    box-shadow: none;
   }
 `;
 
@@ -49,12 +65,11 @@ function VotesList({ chain, items, theme, loading = true }) {
             <StyledTh style={{ textAlign: "left", width: 176 }}>
               VOTERS
             </StyledTh>
-            {
-              hasLabel &&
-              <StyledTh style={ { textAlign: "center", width: 40 } }>
+            {hasLabel && (
+              <StyledTh style={{ textAlign: "center", width: 40 }}>
                 LABEL
               </StyledTh>
-            }
+            )}
             <StyledTh style={{ textAlign: "right" }}>VOTES</StyledTh>
           </StyledTr>
           <RowSpliter
@@ -69,7 +84,7 @@ function VotesList({ chain, items, theme, loading = true }) {
             items.map((item, index) => (
               <Fragment key={index}>
                 <StyledTr>
-                  <StyledTd style={{ textAlign: "left" }}>
+                  <StyledTd style={{ textAlign: "left", width: 176 }}>
                     <User
                       add={item.account}
                       chain={chain}
@@ -78,16 +93,19 @@ function VotesList({ chain, items, theme, loading = true }) {
                       noTooltip={true}
                     />
                   </StyledTd>
-                  {
-                    hasLabel &&
-                    <StyledTd style={{ textAlign: "center" }}>
-                      <VoteLabel conviction={ item.conviction } isDelegating={ item.isDelegating } />
+                  {hasLabel && (
+                    <StyledTd style={{ textAlign: "center", width: 40 }}>
+                      <VoteLabel
+                        conviction={item.conviction}
+                        isDelegating={item.isDelegating}
+                      />
                     </StyledTd>
-                  }
+                  )}
                   <StyledTd style={{ textAlign: "right" }}>
                     <ValueDisplay
                       value={toPrecision(item.balance, node.decimals)}
-                      symbol={node.symbol} />
+                      symbol={node.symbol}
+                    />
                   </StyledTd>
                 </StyledTr>
                 {index !== items.length - 1 && (

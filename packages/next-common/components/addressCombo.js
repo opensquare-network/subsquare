@@ -5,7 +5,7 @@ import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
 import Avatar from "./avatar";
 import Flex from "./styled/flex";
 import Relative from "./styled/relative";
-import { shadow_200 } from "../styles/componentCss";
+import { pretty_scroll_bar, shadow_200 } from "../styles/componentCss";
 import { encodeAddressToChain } from "../services/address";
 import { isAddress } from "@polkadot/util-crypto";
 import Caret from "./icons/caret";
@@ -47,17 +47,10 @@ const Options = styled.div`
   ${shadow_200};
   border-radius: 4px;
   max-height: 320px;
-  overflow-y: auto;
+  overflow-y: overlay;
   z-index: 1;
 
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: ${(props) => props.theme.grey400Border};
-    border-right: 4px solid white;
-  }
+  ${pretty_scroll_bar};
 `;
 
 const Item = styled(Flex)`
