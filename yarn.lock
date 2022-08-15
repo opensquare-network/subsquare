@@ -1200,10 +1200,10 @@
     prismjs "^1.28.0"
     sanitize-html "^2.7.0"
 
-"@osn/previewer@^0.11.2":
-  version "0.11.2"
-  resolved "https://registry.npmjs.org/@osn/previewer/-/previewer-0.11.2.tgz#78b498b81ccdb2fe3104ee017f0ee6055ec51ac8"
-  integrity sha512-T4/H6HEhLL2dQa6m+bFBeKZ7c3yXLwimxTGvv7rpQWTK9u/ljKHJ37oK5vnfj/MG8IOjW3WWgbt4A0xmV7jWNA==
+"@osn/previewer@^0.12.1":
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/@osn/previewer/-/previewer-0.12.1.tgz#c8af88beb827cd60c085a90ced5569d3d94d2e78"
+  integrity sha512-sfplV/ow0MfuBznMNc7FPlpJ4pnqpEhmw/k9tF2VZ4I0Le9WZd4yT/cUPQVKxRkgz2PGqUGkDNH5plBWekD4pw==
   dependencies:
     marked "^4.0.17"
     prismjs "^1.28.0"
@@ -1755,7 +1755,7 @@
   dependencies:
     "@interlay/monetary-js" "0.5.4"
     "@osn/polkadot-react-identicon" "^1.0.8"
-    "@osn/previewer" "^0.11.2"
+    "@osn/previewer" "^0.12.1"
     "@osn/provider-options" "1.0.8"
     "@polkadot/api" "8.9.1"
     "@polkadot/extension-dapp" "0.44.2-3"
