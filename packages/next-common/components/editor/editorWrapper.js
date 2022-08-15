@@ -54,6 +54,10 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
     }
   }
 
+  .editor-toolbar-buttons button {
+    background-color: ${(props) => props.theme.grey300Border} !important;
+  }
+
   .editor-toolbar-buttons button.active {
     box-shadow: ${(props) => props.theme.neutral} 0px 1px 0px 0px;
   }
@@ -97,6 +101,10 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
   .ql-toolbar.ql-snow,
   span.ql-formats {
     background-color: ${(props) => props.theme.grey100Bg} !important;
+    border-color: ${(props) => props.theme.grey300Border} !important;
+  }
+
+  .editor-toolbar > div {
     border-color: ${(props) => props.theme.grey300Border} !important;
   }
 
