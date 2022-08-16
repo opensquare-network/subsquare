@@ -65,7 +65,7 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
         return voters;
       }
 
-      return [[post.onchainData.proposer, true]];
+      return [];
     }
 
     return [];
