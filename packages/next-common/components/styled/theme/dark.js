@@ -10,7 +10,7 @@ const dark = {
   primaryPurple100: light.primaryPurple100,
   primaryPurple300: light.primaryPurple300,
   primaryPurple500: light.primaryPurple500,
-  primaryDarkBlue: "#515571",
+  primaryDarkBlue: "#6848FF",
   secondaryPink100: light.secondaryPink100,
   secondaryPink500: light.secondaryPink500,
   secondaryRed100: light.secondaryRed100,
