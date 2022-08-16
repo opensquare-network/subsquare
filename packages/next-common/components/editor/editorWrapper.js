@@ -22,7 +22,15 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
     }
   }
 
-  ul.mention-list,
+  div.off {
+    background: ${(props) => props.theme.grey400Border};
+  }
+
+  div.on {
+    background: ${(props) => props.theme.primaryPurple500};
+  }
+
+  div ul.mention-list,
   div.ql-mention-list-container {
     background: ${(props) => props.theme.neutral};
     li[aria-selected="true"],
