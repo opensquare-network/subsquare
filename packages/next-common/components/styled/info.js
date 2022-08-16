@@ -6,6 +6,9 @@ const Info = styled(Flex)`
   color: ${(props) => props.theme.textSecondary};
   svg {
     margin-right: 4px;
+    path {
+      stroke: ${(props) => props.theme.textTertiary};
+    }
   }
 `;
 
