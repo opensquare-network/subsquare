@@ -27,7 +27,9 @@ import { useSelector } from "react-redux";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import {
   electorateSelector,
-  isLoadingElectorateSelector, isLoadingVotesSelector, votesSelector,
+  isLoadingElectorateSelector,
+  isLoadingVotesSelector,
+  votesSelector,
 } from "next-common/store/reducers/referendumSlice";
 import SubLink from "next-common/components/styled/subLink";
 import VotesCount from "next-common/components/democracy/referendum/votesCount";
@@ -86,6 +88,7 @@ const Contents = styled(Headers)`
 `;
 
 const Status = styled.div`
+  margin-top: 8px !important;
   width: 100%;
   line-height: 38px;
   border-width: 0;
@@ -185,10 +188,6 @@ const VoteButton = styled.button`
   border-radius: 4px;
 `;
 
-const ActionLink = styled(SubLink)`
-  margin-top: 8px !important;
-`
-
 function Vote({
   referendumInfo,
   referendumStatus,
@@ -206,8 +205,8 @@ function Vote({
 
   const electorate = useSelector(electorateSelector);
   const isElectorateLoading = useSelector(isLoadingElectorateSelector);
-  const isLoadingVotes = useSelector(isLoadingVotesSelector)
-  const { allAye = [], allNay = [] } = useSelector(votesSelector)
+  const isLoadingVotes = useSelector(isLoadingVotesSelector);
+  const { allAye = [], allNay = [] } = useSelector(votesSelector);
 
   const updateVoteProgress = useCallback(() => {
     api?.query.democracy
@@ -336,7 +335,9 @@ function Vote({
             <Header>
               <AyeIcon />
               Aye
-              { !isLoadingVotes ? <VotesCount>{ allAye.length }</VotesCount> : null }
+              {!isLoadingVotes ? (
+                <VotesCount>{allAye.length}</VotesCount>
+              ) : null}
             </Header>
             <Value>
               <DisplayValue
@@ -350,7 +351,9 @@ function Vote({
             <Header>
               <NayIcon />
               Nay
-              { !isLoadingVotes ? <VotesCount>{ allNay.length }</VotesCount> : null }
+              {!isLoadingVotes ? (
+                <VotesCount>{allNay.length}</VotesCount>
+              ) : null}
             </Header>
             <Value>
               <DisplayValue
@@ -387,10 +390,8 @@ function Vote({
             </Value>
           </Row>
         </div>
-        <ActionLink onClick={() => setShowVoteList(true)}>
-          Check all votes
-        </ActionLink>
         {finishedResult}
+        <SubLink onClick={() => setShowVoteList(true)}>Check all votes</SubLink>
         {referendumInfo &&
           !finished &&
           (isPassing ? (
