@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
+import Flex from "../styled/flex";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import AddressSelect from "../addressSelect";
@@ -10,7 +11,6 @@ import { setUser } from "../../store/reducers/userSlice";
 import { newErrorToast } from "../../store/reducers/toastSlice";
 import { encodeAddressToChain } from "../../services/address";
 import SecondaryButton from "../buttons/secondaryButton";
-import Flex from "../styled/flex";
 import { WALLETS } from "../../utils/consts/connect";
 import { stringToHex } from "@polkadot/util";
 import { LinkWrapper } from "./styled";
@@ -91,8 +91,8 @@ const WalletOption = styled.li`
 
 const ErrorMessage = styled.div`
   padding: 10px 16px;
-  background: ${props.theme.secondaryRed100};
-  color: ${props.theme.secondaryRed500};
+  // background: ${props.theme.secondaryRed100};
+  // color: ${props.theme.secondaryRed500};
   border-radius: 4px;
 `;
 
