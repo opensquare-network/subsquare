@@ -3,6 +3,12 @@ import styled from "styled-components";
 
 import Icon from "next-common/assets/imgs/icons/circle-question.svg";
 
+const QuestionIcon = styled(Icon)`
+  path {
+    fill: ${(props) => props.theme.textPlaceholder};
+  }
+`;
+
 const Wrapper = styled.span`
   display: inline-block;
   position: relative;
@@ -89,7 +95,7 @@ export default function Tooltip({ content, children, label }) {
       ) : (
         <Wrapper>
           {label && label}
-          {!label && <Icon />}
+          {!label && <QuestionIcon />}
           {content && (
             <PopupWrapper>
               <Popup>
