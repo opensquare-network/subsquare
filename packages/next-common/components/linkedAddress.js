@@ -186,7 +186,7 @@ export default function LinkedAddress({ chain }) {
 
   const showSelectWalletModal = () => setShowSelectWallet(true);
 
-  useEffect(() => {
+  const loadAccounts = () => {
     (async () => {
       const extension = window?.injectedWeb3?.[selectedWallet];
       if (!extension) {
@@ -198,7 +198,7 @@ export default function LinkedAddress({ chain }) {
         setAccounts(extensionAccounts);
       }
     })();
-  }, [selectedWallet, isMounted]);
+  };
 
   const unlinkAddress = async (chain, address) => {
     const { error, result } = await nextApi.delete(`user/linkaddr/${address}`);
@@ -348,6 +348,7 @@ export default function LinkedAddress({ chain }) {
           <ConfirmButton
             onClick={() => {
               if (selectedWallet) {
+                loadAccounts();
                 setShowSelectWallet(false);
               } else {
                 dispatch(newErrorToast("Please select wallet"));
