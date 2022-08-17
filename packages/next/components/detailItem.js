@@ -173,11 +173,23 @@ export default function DetailItem({
                   </div>
                 )
               )}
+              {post?.onchainData?.councilMotions?.map(
+                (motion, key) => (
+                  <div key={key}>
+                    <TriangleRight />
+                    <Link
+                      href={`/council/motion/${getMotionId(motion)}`}
+                    >
+                      {`Motion #${shortMotionId(motion)}`}
+                    </Link>
+                  </div>
+                )
+              )}
               {post?.referendumIndex !== undefined && (
                 <div>
                   <TriangleRight />
                   <Link href={`/democracy/referendum/${post?.referendumIndex}`}>
-                    {`Referenda #${post?.referendumIndex}`}
+                    {`Referendum #${post?.referendumIndex}`}
                   </Link>
                 </div>
               )}
@@ -190,7 +202,7 @@ export default function DetailItem({
                 <div>
                   <TriangleRight />
                   <Link href={`/democracy/referendum/${post.referendumIndex}`}>
-                    {`Referenda #${post?.referendumIndex}`}
+                    {`Referendum #${post?.referendumIndex}`}
                   </Link>
                 </div>
               )}
@@ -234,9 +246,21 @@ export default function DetailItem({
                     </div>
                   )
                 )}
+                {post?.onchainData?.councilMotions?.map(
+                  (motion, key) => (
+                    <div key={key}>
+                      <TriangleRight />
+                      <Link
+                        href={`/council/motion/${getMotionId(motion)}`}
+                      >
+                        {`Motion #${shortMotionId(motion)}`}
+                      </Link>
+                    </div>
+                  )
+                )}
                 <div>
                   <TriangleRight />
-                  <div>{`Referenda #${post?.referendumIndex}`}</div>
+                  <div>{`Referendum #${post?.referendumIndex}`}</div>
                 </div>
               </ReferendaWrapper>
             )}
@@ -248,7 +272,7 @@ export default function DetailItem({
                 </Link>
                 <div>
                   <TriangleRight />
-                  <div>{`Referenda #${post?.referendumIndex}`}</div>
+                  <div>{`Referendum #${post?.referendumIndex}`}</div>
                 </div>
               </ReferendaWrapper>
             )}

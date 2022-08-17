@@ -1,3 +1,7 @@
+import Logo from "../../../assets/header-logos/khala.svg";
+import DarkModeLogo from "../../../assets/header-logos/khala-dark.svg";
+import Avatar from "../../../assets/icons/chain/khala.png";
+
 const DEFAULT_KHALA_NODES = [
   {
     name: "OnFinality",
@@ -26,6 +30,9 @@ const khala = {
   endpoints: DEFAULT_KHALA_NODES,
   loginButtonPrimary: true,
   headerBackgroundColor: "#000000",
+  headerLogo: Logo,
+  darkHeaderLogo: DarkModeLogo,
+  avatar: Avatar,
 };
 
 export default khala;

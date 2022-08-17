@@ -3,10 +3,10 @@ import * as monetary from "@interlay/monetary-js";
 import BN from "bn.js";
 import {
   getFinalizedBlockNumber,
-  parseEscrowPoint,
   newMonetaryAmount,
-  saturatingSub,
-} from "./utils";
+  parseEscrowPoint,
+  saturatingSub
+} from "next-common/utils/democracy/kintsugi/escrow/utils";
 
 function rawBalanceAt(escrowPoint, height) {
   const heightDiff = saturatingSub(height, escrowPoint.ts);

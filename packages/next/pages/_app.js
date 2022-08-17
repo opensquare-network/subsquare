@@ -1,4 +1,3 @@
-import Script from "next/script";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { Provider } from "react-redux";
@@ -9,7 +8,6 @@ import { store } from "next-common/store";
 import "next-common/styles/richTextStyles.scss";
 // import "react-quill/dist/quill.snow.css";
 import "react-mde/lib/styles/css/react-mde-all.css";
-import "next-common/styles/prism.min.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { connect } from "next-common/services/websocket";
 import React, { useEffect } from "react";
@@ -42,9 +40,6 @@ function MyApp({ Component, pageProps }) {
   return (
     <Provider store={store}>
       <Component {...pageProps} />
-      <Script
-        src={"https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/prism.min.js"}
-      />
     </Provider>
   );
 }

@@ -21,7 +21,7 @@ export function makePublicProposalTimelineData(timeline, chain) {
         };
       case "Tabled":
         return {
-          "Referenda Index": `#${args.referendumIndex}`,
+          "Referendum Index": `#${args.referendumIndex}`,
           Deposit: `${toPrecision(args.deposit ?? 0, decimals)} ${symbol}`,
           Depositors: (args.depositors || []).length,
         };

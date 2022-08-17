@@ -15,6 +15,10 @@ import ReferendumMetadata from "next-common/components/democracy/metadata";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
+import extractVoteInfo from "next-common/utils/democracy/referendum";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchElectorate, fetchVotes } from "next-common/store/reducers/referendumSlice";
+import { nowHeightSelector } from "next-common/store/reducers/chainSlice";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -25,6 +29,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     type: detailPageCategory.DEMOCRACY_REFERENDUM,
   });
 
+  const { voteInfo: { voteFinished, voteFinishedHeight }, referendumIndex } = detail;
   const api = useApi(chain);
 
   const [referendumStatus, setReferendumStatus] = useState(
@@ -32,20 +37,26 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       detail?.onchainData?.info?.ongoing ||
       detail?.onchainData?.meta
   );
+
+  const possibleElectorate = referendumStatus?.tally?.electorate;
+
   const isMounted = useIsMounted();
+  const dispatch = useDispatch();
   const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] =
     useState(false);
+  const nowHeight = useSelector(nowHeightSelector)
 
-  const timeline = detail?.onchainData?.timeline || [];
-  const voteFinished = [
-    "Executed",
-    "Passed",
-    "NotPassed",
-    "Cancelled",
-    "Canceled",
-    "PreimageInvalid",
-    "PreimageMissing",
-  ].includes(timeline[timeline.length - 1]?.method);
+  useEffect(() => {
+    if (api) {
+      dispatch(fetchVotes(api, referendumIndex, voteFinishedHeight))
+    }
+  }, [api, dispatch, referendumIndex, voteFinishedHeight])
+
+  useEffect(() => {
+    if (api) {
+      dispatch(fetchElectorate(api, voteFinishedHeight || nowHeight, possibleElectorate))
+    }
+  }, [api, dispatch, voteFinishedHeight, nowHeight, possibleElectorate])
 
   useEffect(() => {
     if (voteFinished) {
@@ -75,7 +86,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       user={loginUser}
       seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
     >
-      <Back href={`/democracy/referendums`} text="Back to Referendas" />
+      <Back href={`/democracy/referendums`} text="Back to Referenda" />
       <DetailItem
         data={detail}
         onReply={focusEditor}
@@ -129,6 +140,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
   }
 
   const postId = detail?._id;
+  const voteInfo = extractVoteInfo(detail?.onchainData?.timeline)
+  Object.assign(detail, { voteInfo });
 
   const { result: comments } = await nextApi.fetch(
     `democracy/referendums/${postId}/comments`,

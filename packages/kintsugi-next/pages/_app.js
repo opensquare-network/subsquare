@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import Script from "next/script";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { Provider } from "react-redux";
@@ -40,7 +39,6 @@ function MyApp({ Component, pageProps }) {
   return (
     <Provider store={store}>
       <Component {...pageProps} />
-      <Script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/prism.min.js" />
     </Provider>
   );
 }

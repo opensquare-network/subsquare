@@ -75,7 +75,6 @@ export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
     timelineData.push(publicProposalTimelineData);
   });
   sortTimeline(timelineData);
-  console.log("timelineData", timelineData);
 
   return <Timeline data={timelineData} chain={chain} indent={false} />;
 }

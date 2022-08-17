@@ -10,6 +10,14 @@ import { Fragment, useState } from "react";
 import Loading from "next-common/components/loading";
 import PrimeAddressMark from "next-common/components/primeAddressMark";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import {
+  EmptyTd,
+  RowSpliter,
+  StyledTable,
+  StyledTd,
+  StyledTh,
+  StyledTr,
+} from "next-common/components/styled/table";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -23,72 +31,11 @@ const Wrapper = styled.div`
   }
 `;
 
-const StyledTable = styled.table`
-  width: 100%;
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey200Border};
-  color: ${(props) => props.theme.textPrimary};
-  box-sizing: border-box;
-  box-shadow: ${(props) => props.theme.shadow100};
-  border-radius: 6px;
-  padding: 24px;
-
-  @media screen and (max-width: 392px) {
-    .autohide {
-      display: none;
-    }
-    th.clickable {
-      color: ${(props) => props.theme.textSecondary};
-      cursor: pointer;
-      pointer-events: auto;
-    }
-  }
-`;
-
-const StyledTr = styled.tr``;
-
-const StyledTh = styled.th`
-  font-style: normal;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 100%;
-  letter-spacing: 0.16em;
-  color: ${(props) => props.theme.textTertiary};
-  pointer-events: none;
-`;
-
-const StyledTd = styled.td`
-  padding: 12px 0 12px 0;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 100%;
-  color: ${(props) => props.theme.textPrimary};
-`;
-
-const EmptyTd = styled.td`
-  padding: 12px 0 12px 0;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 140%;
-  text-align: center;
-  color: ${(props) => props.theme.textTertiary};
-`;
-
 const Member = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
 `;
-
-const RowSpliter = ({ backgroundColor, padding }) => (
-  <tr>
-    <td colSpan="3" style={{ padding }}>
-      <div style={{ height: "1px", backgroundColor }} />
-    </td>
-  </tr>
-);
 
 const BalanceWrapper = styled.span`
   color: ${(props) => props.theme.textPrimary};
@@ -154,7 +101,9 @@ function MembersList({
             )}
           </StyledTr>
           <RowSpliter
-            backgroundColor={theme.isDark ? "#272A3A" : "#F6F7FA"}
+            backgroundColor={
+              theme.isDark ? theme.grey200Border : theme.grey100Bg
+            }
             padding={"16px 0 4px 0"}
           />
         </thead>
@@ -188,7 +137,9 @@ function MembersList({
                 </StyledTr>
                 {index !== items.length - 1 && (
                   <RowSpliter
-                    backgroundColor={theme.isDark ? "#272A3A" : "#F6F7FA"}
+                    backgroundColor={
+                      theme.isDark ? theme.grey200Border : theme.grey100Bg
+                    }
                   />
                 )}
               </Fragment>

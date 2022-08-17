@@ -6,8 +6,12 @@ import BlockValue from "./blockValue";
 import Proposal from "../../proposal";
 import Threshold from "./threshold";
 import { useSelector } from "react-redux";
-import { blockTimeSelector, latestHeightSelector, } from "../../../store/reducers/chainSlice";
+import {
+  blockTimeSelector,
+  latestHeightSelector,
+} from "../../../store/reducers/chainSlice";
 import UserWithLink from "../../user/userWithLink";
+import useIsMounted from "../../../utils/hooks/useIsMounted";
 
 export default function ReferendumMetadata({
   api,
@@ -18,11 +22,12 @@ export default function ReferendumMetadata({
   chain,
   onchainData = {},
 }) {
+  const isMounted = useIsMounted();
   const oneBlockTime = useSelector(blockTimeSelector);
   const blockHeight = useSelector(latestHeightSelector);
-  const latestBlockTime = useLatestBlockTime(api, blockHeight);
+  const latestBlockTime = useLatestBlockTime(api, blockHeight, isMounted);
 
-  const { delay = 0, end = 0, threshold } = status;
+  const { delay = 0, end = 0, threshold, proposalHash } = status;
   const { state, timeline = [] } = onchainData;
 
   const { endTime, delayTime, isEndEstimated, isDelayEstimated } =
@@ -37,6 +42,7 @@ export default function ReferendumMetadata({
 
   const metadata = [
     ["Proposer", <UserWithLink chain={chain} address={proposer} />],
+    ["Hash", proposalHash],
     [
       "Delay",
       <BlockValue

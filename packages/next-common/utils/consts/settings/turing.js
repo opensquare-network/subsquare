@@ -1,3 +1,7 @@
+import Logo from "../../../assets/header-logos/turing.svg";
+import DarkModeLogo from "../../../assets/header-logos/turing-dark.svg";
+import Avatar from "../../../assets/icons/chain/turing.png";
+
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 
@@ -23,6 +27,9 @@ const turing = {
   ss58Format: 51,
   snsCoverCid: "bafybeidmqvyfi467agi4cum26idgh5h56wmegrjh7jnl5wvtkzbvgucmpm",
   endpoints: DEFAULT_TURING_NODES,
+  headerLogo: Logo,
+  darkHeaderLogo: DarkModeLogo,
+  avatar: Avatar,
 };
 
 export default turing;

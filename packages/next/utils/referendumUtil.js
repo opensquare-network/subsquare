@@ -65,24 +65,6 @@ export function calcPassing(referendumInfo, totalIssuance) {
   return false;
 }
 
-const electorates = {};
-
-export async function getElectorate(api, height) {
-  let blockHeight = height;
-  if (!blockHeight) {
-    return await api.query.balances.totalIssuance();
-  }
-
-  if (electorates[blockHeight]) {
-    return electorates[blockHeight];
-  }
-
-  const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
-  const value = await api.query.balances.totalIssuance.at(blockHash);
-  electorates[blockHeight] = value;
-  return value;
-}
-
 export async function getAddressVotingBalance(api, address) {
   const account = await api.query.system.account(address);
   const jsonAccount = account?.toJSON();
