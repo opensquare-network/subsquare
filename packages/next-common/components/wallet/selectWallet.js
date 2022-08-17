@@ -1,7 +1,7 @@
 import { WALLETS } from "../../utils/consts/connect";
 import styled, { css } from "styled-components";
 import Flex from "../styled/flex";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const WalletOptions = styled.ul`
   all: unset;
