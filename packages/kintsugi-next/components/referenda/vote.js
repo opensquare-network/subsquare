@@ -28,7 +28,8 @@ import { useSelector } from "react-redux";
 import {
   electorateSelector,
   isLoadingElectorateSelector,
-  isLoadingVotesSelector, votesSelector
+  isLoadingVotesSelector,
+  votesSelector,
 } from "next-common/store/reducers/referendumSlice";
 import VotesCount from "next-common/components/democracy/referendum/votesCount";
 import SubLink from "next-common/components/styled/subLink";
@@ -188,7 +189,7 @@ const Guide = styled.p`
 
 const ActionLink = styled(SubLink)`
   margin-top: 8px !important;
-`
+`;
 
 function Vote({
   referendumInfo,
@@ -204,8 +205,8 @@ function Vote({
   const isMounted = useIsMounted();
   const api = useApi(chain);
 
-  const electorate = useSelector(electorateSelector)
-  const isElectorateLoading = useSelector(isLoadingElectorateSelector)
+  const electorate = useSelector(electorateSelector);
+  const isElectorateLoading = useSelector(isLoadingElectorateSelector);
 
   const updateVoteProgress = useCallback(() => {
     api?.query.democracy
@@ -228,6 +229,8 @@ function Vote({
   ]);
 
   const { width } = useWindowSize();
+  const isLoadingVotes = useSelector(isLoadingVotesSelector);
+  const { allAye = [], allNay = [] } = useSelector(votesSelector);
 
   const node = getNode(chain);
   if (!node) {
@@ -242,8 +245,6 @@ function Vote({
   const nNays = toPrecision(referendumStatus?.tally?.nays ?? 0, decimals);
   const nTurnout = toPrecision(referendumStatus?.tally?.turnout ?? 0, decimals);
   const nElectorate = toPrecision(electorate ?? 0, decimals);
-  const isLoadingVotes = useSelector(isLoadingVotesSelector);
-  const { allAye = [], allNay = [] } = useSelector(votesSelector);
 
   let nAyesPercent = 50;
   let nNaysPercent = 50;
@@ -319,7 +320,9 @@ function Vote({
             <Header>
               <AyeIcon />
               Aye
-              { !isLoadingVotes ? <VotesCount>{ allAye.length }</VotesCount> : null }
+              {!isLoadingVotes ? (
+                <VotesCount>{allAye.length}</VotesCount>
+              ) : null}
             </Header>
             <Value>
               <ValueDisplay
@@ -333,7 +336,9 @@ function Vote({
             <Header>
               <NayIcon />
               Nay
-              { !isLoadingVotes ? <VotesCount>{ allNay.length }</VotesCount> : null }
+              {!isLoadingVotes ? (
+                <VotesCount>{allNay.length}</VotesCount>
+              ) : null}
             </Header>
             <Value>
               <ValueDisplay
