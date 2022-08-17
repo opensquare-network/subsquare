@@ -82,6 +82,8 @@ const WalletOption = styled.li`
     css`
       color: ${props.theme.textTertiary};
       cursor: not-allowed;
+      pointer-events: none;
+      user-select: none;
     `}
   span.wallet-not-installed {
     font-size: 12px;
