@@ -27,7 +27,7 @@ function LoginButton({ chain, theme }) {
   if (isPrimaryInverse || theme.isDark) {
     TargetButton = PrimaryButton;
   }
-  return <TargetButton onClick={gotoLogin}>Connect</TargetButton>;
+  return <TargetButton onClick={gotoLogin}>Login</TargetButton>;
 }
 
 export default withTheme(LoginButton);

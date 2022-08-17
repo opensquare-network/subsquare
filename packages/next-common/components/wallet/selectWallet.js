@@ -101,19 +101,25 @@ const Wallet = ({ wallet, onClick, selected = false }) => {
       {!installed && (
         <span className="wallet-not-installed">Not installed</span>
       )}
-      {selected && <Linked>Linked</Linked>}
     </WalletOption>
   );
 };
 
-export default function SelectWallet({ selectedWallet, setSelectWallet }) {
+export default function SelectWallet({
+  selectedWallet,
+  setSelectWallet,
+  onSelect = () => {},
+}) {
   return (
     <WalletOptions>
       {WALLETS.map((wallet, index) => {
         return (
           <Wallet
             wallet={wallet}
-            onClick={() => setSelectWallet(wallet.extensionName)}
+            onClick={() => {
+              setSelectWallet(wallet.extensionName);
+              onSelect && onSelect(wallet.extensionName);
+            }}
             key={index}
             selected={wallet.extensionName === selectedWallet}
           />

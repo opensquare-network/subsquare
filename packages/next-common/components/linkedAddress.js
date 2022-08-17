@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { isWeb3Injected, web3Enable } from "@polkadot/extension-dapp";
 import nextApi from "../services/nextApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import {
@@ -18,7 +17,6 @@ import DownloadExtension from "./downloadExtension";
 import { addressEllipsis } from "../utils";
 import { encodeAddressToChain } from "../services/address";
 import { signMessage } from "../services/extension/signMessage";
-import { polkadotWeb3Accounts } from "../utils/extensionAccount";
 import AddressLinkIcon from "../assets/imgs/icons/address-link.svg";
 import UnLinkIcon from "../assets/imgs/icons/unlink.svg";
 import SecondaryButton from "./buttons/secondaryButton";
@@ -26,7 +24,6 @@ import { PrimaryCard } from "./styled/containers/primaryCard";
 import { TitleContainer } from "./styled/containers/titleContainer";
 import Popup from "./popup/wrapper/Popup";
 import SelectWallet from "./wallet/selectWallet";
-import PrimaryButton from "./buttons/primaryButton";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -163,11 +160,6 @@ const EmptyList = styled.div`
   color: ${(props) => props.theme.textTertiary};
 `;
 
-const ConfirmButton = styled(SecondaryButton)`
-  display: block;
-  margin-left: auto;
-`;
-
 export default function LinkedAddress({ chain }) {
   const isMounted = useIsMounted();
   const user = useSelector(userSelector);
@@ -186,7 +178,7 @@ export default function LinkedAddress({ chain }) {
 
   const showSelectWalletModal = () => setShowSelectWallet(true);
 
-  const loadAccounts = () => {
+  const loadAccounts = (selectedWallet) => {
     (async () => {
       const extension = window?.injectedWeb3?.[selectedWallet];
       if (!extension) {
@@ -344,19 +336,11 @@ export default function LinkedAddress({ chain }) {
           <SelectWallet
             selectedWallet={selectedWallet}
             setSelectWallet={setSelectWallet}
-          />
-          <ConfirmButton
-            onClick={() => {
-              if (selectedWallet) {
-                loadAccounts();
-                setShowSelectWallet(false);
-              } else {
-                dispatch(newErrorToast("Please select wallet"));
-              }
+            onSelect={(selectedWallet) => {
+              loadAccounts(selectedWallet);
+              setShowSelectWallet(false);
             }}
-          >
-            Confirm
-          </ConfirmButton>
+          />
         </Popup>
       )}
     </Wrapper>
