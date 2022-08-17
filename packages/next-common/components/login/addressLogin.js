@@ -100,6 +100,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
   };
 
   useEffect(() => {
+    setAccounts(null);
     (async () => {
       const extension = window?.injectedWeb3?.[selectedWallet];
       if (!extension) {
@@ -107,7 +108,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
       }
       const wallet = await extension.enable("subsquare");
       setWallet(wallet);
-      const extensionAccounts = await wallet.accounts.get();
+      const extensionAccounts = await wallet.accounts?.get();
       if (isMounted.current) {
         setAccounts(extensionAccounts);
       }
@@ -115,10 +116,10 @@ export default function AddressLogin({ chain, setMailLogin }) {
   }, [selectedWallet, isMounted]);
 
   useEffect(() => {
-    if (accounts && accounts.length > 0 && !selectedAccount) {
+    if (accounts && accounts?.length > 0 && !selectedAccount) {
       const address = localStorage.getItem("lastLoggedInAddress");
       if (address) {
-        const account = accounts.find((item) => item.address === address);
+        const account = accounts?.find((item) => item.address === address);
         if (account) {
           setSelectedAccount(account);
           return;
@@ -142,7 +143,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
         selectedWallet={selectedWallet}
         setSelectWallet={setSelectWallet}
       />
-      {selectedWallet && accounts.length > 0 && (
+      {selectedWallet && accounts?.length > 0 && (
         <div>
           <Label>Choose linked address</Label>
           <AddressSelect
@@ -157,14 +158,14 @@ export default function AddressLogin({ chain, setMailLogin }) {
         </div>
       )}
 
-      {wallet && accounts.length === 0 && (
+      {wallet && accounts?.length === 0 && (
         <ErrorMessage>
           Address not detected, please create an available address.
         </ErrorMessage>
       )}
 
       <ButtonWrapper>
-        {selectedWallet && accounts.length > 0 && (
+        {selectedWallet && accounts?.length > 0 && (
           <SecondaryButton isFill isLoading={loading} onClick={doWeb3Login}>
             Next
           </SecondaryButton>
