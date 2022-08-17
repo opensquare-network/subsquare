@@ -17,7 +17,7 @@ import useCommentComponent from "next-common/components/useCommentComponent";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import extractVoteInfo from "next-common/utils/democracy/referendum";
-import { fetchElectorate, fetchVotes } from "next-common/store/reducers/referendumSlice";
+import { fetchElectorate, fetchVotes, setElectorate } from "next-common/store/reducers/referendumSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 
@@ -63,7 +63,9 @@ export default withLoginUserRedux(
     }, [api, dispatch, referendumIndex, voteFinishedHeight])
 
     useEffect(() => {
-      if (api) {
+      if (possibleElectorate) {
+        dispatch(setElectorate(possibleElectorate));
+      } else if (api) {
         dispatch(fetchElectorate(api, voteFinishedHeight || latestHeight, possibleElectorate))
       }
     }, [api, dispatch, voteFinishedHeight, latestHeight, possibleElectorate])
