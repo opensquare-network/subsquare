@@ -24,6 +24,9 @@ import UnLinkIcon from "../assets/imgs/icons/unlink.svg";
 import SecondaryButton from "./buttons/secondaryButton";
 import { PrimaryCard } from "./styled/containers/primaryCard";
 import { TitleContainer } from "./styled/containers/titleContainer";
+import Popup from "./popup/wrapper/Popup";
+import SelectWallet from "./wallet/selectWallet";
+import PrimaryButton from "./buttons/primaryButton";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -34,6 +37,7 @@ const Wrapper = styled.div`
   @media screen and (min-width: 1080px) {
     padding-bottom: 16px;
   }
+
   > :not(:first-child) {
     margin-top: 16px;
   }
@@ -70,13 +74,16 @@ const AddressItem = styled.div`
   align-items: center;
   border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
+
   > :not(:first-child) {
     margin-left: 16px;
   }
+
   > img:first-child {
     width: 32px;
     height: 32px;
   }
+
   ${(p) =>
     p.linked &&
     css`
@@ -87,9 +94,11 @@ const AddressItem = styled.div`
 
 const NameWrapper = styled.div`
   flex-grow: 1;
+
   > :first-child {
     font-size: 14px;
   }
+
   > :last-child {
     margin-top: 4px;
     font-size: 12px;
@@ -103,9 +112,11 @@ const LinkWrapper = styled.div`
   color: ${(props) => props.theme.textSecondary};
   cursor: pointer;
   align-items: center;
+
   :hover {
     text-decoration: underline;
   }
+
   > svg {
     margin-right: 8px;
   }
@@ -115,6 +126,7 @@ const NodesWrapper = styled.div`
   display: flex;
   margin: 24px 0;
   border-bottom: 1px solid ${(props) => props.theme.grey200Border};
+
   > :not(:first-child) {
     margin-left: 24px;
   }
@@ -151,49 +163,42 @@ const EmptyList = styled.div`
   color: ${(props) => props.theme.textTertiary};
 `;
 
+const ConfirmButton = styled(SecondaryButton)`
+  display: block;
+  margin-left: auto;
+`;
+
 export default function LinkedAddress({ chain }) {
   const isMounted = useIsMounted();
   const user = useSelector(userSelector);
+  const [showSelectWallet, setShowSelectWallet] = useState(false);
+  const [selectedWallet, setSelectWallet] = useState("");
   const [hasExtension, setHasExtension] = useState(true);
   const [accounts, setAccounts] = useState([]);
   const [activeChain, setActiveChain] = useState(chain);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    (async () => {
-      await web3Enable("subsquare");
-      if (!isWeb3Injected) {
-        if (isMounted.current) {
-          setHasExtension(false);
-        }
-      }
-    })();
+    if (Object.keys(injectedWeb3 ?? {}).length > 0) {
+      setHasExtension(true);
+    }
   }, [isMounted]);
 
-  const loadExtensionAddresses = async () => {
-    await web3Enable("subsquare");
-    if (!isWeb3Injected) {
-      if (isMounted.current) {
-        console.error("Polkadot Extension is not installed");
-      }
-      return;
-    }
-    const extensionAccounts = await polkadotWeb3Accounts();
-    const accounts = extensionAccounts.map((item) => {
-      const {
-        address,
-        meta: { name },
-      } = item;
-      return {
-        address,
-        name,
-      };
-    });
+  const showSelectWalletModal = () => setShowSelectWallet(true);
 
-    if (isMounted.current) {
-      setAccounts(accounts);
-    }
-  };
+  useEffect(() => {
+    (async () => {
+      const extension = window?.injectedWeb3?.[selectedWallet];
+      if (!extension) {
+        return;
+      }
+      const wallet = await extension.enable("subsquare");
+      const extensionAccounts = await wallet.accounts.get();
+      if (isMounted.current) {
+        setAccounts(extensionAccounts);
+      }
+    })();
+  }, [selectedWallet, isMounted]);
 
   const unlinkAddress = async (chain, address) => {
     const { error, result } = await nextApi.delete(`user/linkaddr/${address}`);
@@ -263,8 +268,8 @@ export default function LinkedAddress({ chain }) {
         {hasExtension ? (
           <div>
             <InfoWrapper>{`Associate your account with an on-chain address using the Polkadot{.js} extension.`}</InfoWrapper>
-            <SecondaryButton onClick={loadExtensionAddresses}>
-              Show available accounts
+            <SecondaryButton onClick={showSelectWalletModal}>
+              Select wallet
             </SecondaryButton>
           </div>
         ) : (
@@ -334,6 +339,25 @@ export default function LinkedAddress({ chain }) {
           </AddressWrapper>
         </div>
       </ContentWrapper>
+      {showSelectWallet && (
+        <Popup title="Select wallet" onClose={() => setShowSelectWallet(false)}>
+          <SelectWallet
+            selectedWallet={selectedWallet}
+            setSelectWallet={setSelectWallet}
+          />
+          <ConfirmButton
+            onClick={() => {
+              if (selectedWallet) {
+                setShowSelectWallet(false);
+              } else {
+                dispatch(newErrorToast("Please select wallet"));
+              }
+            }}
+          >
+            Confirm
+          </ConfirmButton>
+        </Popup>
+      )}
     </Wrapper>
   );
 }

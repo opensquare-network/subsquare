@@ -14,6 +14,7 @@ import SecondaryButton from "../buttons/secondaryButton";
 import { WALLETS } from "../../utils/consts/connect";
 import { stringToHex } from "@polkadot/util";
 import { LinkWrapper } from "./styled";
+import SelectWallet from "../wallet/selectWallet";
 
 const Label = styled.div`
   font-weight: bold;
@@ -30,67 +31,6 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const WalletOptions = styled.ul`
-  all: unset;
-
-  li:first-child {
-    margin-top: 24px;
-  }
-
-  li:not(:first-child) {
-    margin-top: 8px;
-  }
-`;
-
-const WalletOption = styled.li`
-  all: unset;
-  padding: 10px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  > div {
-    gap: 16px;
-  }
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 700;
-  color: ${(props) => props.theme.textPrimary};
-  background: ${(props) => props.theme.grey100Bg};
-
-  ${(props) =>
-    props.installed &&
-    css`
-      &:hover {
-        background: ${(props) => props.theme.grey200Border};
-      }
-    `}
-
-  ${(props) =>
-    props.selected &&
-    css`
-      background: ${(props) => props.theme.grey200Border};
-    `}
-
-  border-radius: 4px;
-  cursor: pointer;
-
-  img.SubWallet {
-    border-radius: 16px;
-  }
-  ${(props) =>
-    !props.installed &&
-    css`
-      color: ${props.theme.textTertiary};
-      cursor: not-allowed;
-      pointer-events: none;
-      user-select: none;
-    `}
-  span.wallet-not-installed {
-    font-size: 12px;
-    font-weight: 400;
-  }
-`;
-
 const ErrorMessage = styled.div`
   padding: 10px 16px;
   margin-top: 24px;
@@ -102,40 +42,6 @@ const ErrorMessage = styled.div`
   font-size: 14px;
   line-height: 20px;
 `;
-
-const Linked = styled.span`
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
-  color: ${(props) => props.theme.textTertiary};
-`;
-
-const getIsInstalled = (extensionName) => {
-  return !!(
-    typeof window !== "undefined" &&
-    window.injectedWeb3 &&
-    window?.injectedWeb3?.[extensionName]
-  );
-};
-
-const Wallet = ({ wallet, onClick, selected = false }) => {
-  return (
-    <WalletOption
-      selected={selected}
-      onClick={onClick}
-      installed={!!wallet?.installed}
-    >
-      <Flex>
-        <img className={wallet.title} src={wallet.logo} alt={wallet.title} />
-        <span className="wallet-title">{wallet.title}</span>
-      </Flex>
-      {!wallet.installed && (
-        <span className="wallet-not-installed">Not installed</span>
-      )}
-      {selected && <Linked>Linked</Linked>}
-    </WalletOption>
-  );
-};
 
 export default function AddressLogin({ chain, setMailLogin }) {
   const isMounted = useIsMounted();
@@ -232,22 +138,10 @@ export default function AddressLogin({ chain, setMailLogin }) {
 
   return (
     <>
-      <WalletOptions>
-        {WALLETS.map((wallet, index) => {
-          const walletInfo = {
-            ...wallet,
-            installed: getIsInstalled(wallet.extensionName),
-          };
-          return (
-            <Wallet
-              wallet={walletInfo}
-              onClick={() => setSelectWallet(wallet.extensionName)}
-              key={index}
-              selected={wallet.extensionName === selectedWallet}
-            />
-          );
-        })}
-      </WalletOptions>
+      <SelectWallet
+        selectedWallet={selectedWallet}
+        setSelectWallet={setSelectWallet}
+      />
       {selectedWallet && accounts.length > 0 && (
         <div>
           <Label>Choose linked address</Label>
