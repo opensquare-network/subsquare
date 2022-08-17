@@ -11,7 +11,7 @@ export const WALLETS = [
     title: "SubWallet",
     installUrl:
       "https://chrome.google.com/webstore/detail/subwallet/onhogfjeacnfoofkfgppdlbmlmnplgbn",
-    logo: "/imgs/icons/wallet/subwallet.svg",
+    logo: "/imgs/icons/wallet/subWallet.svg",
   },
   {
     extensionName: "talisman",
