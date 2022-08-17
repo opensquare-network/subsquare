@@ -91,9 +91,21 @@ const WalletOption = styled.li`
 
 const ErrorMessage = styled.div`
   padding: 10px 16px;
-  // background: ${props.theme.secondaryRed100};
-  // color: ${props.theme.secondaryRed500};
+  margin-top: 24px;
+  //fixme: somehow theme won't work
+  background: rgba(244, 67, 54, 0.1);
+  color: #f44336;
   border-radius: 4px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+`;
+
+const Linked = styled.span`
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 const getIsInstalled = (extensionName) => {
@@ -118,6 +130,7 @@ const Wallet = ({ wallet, onClick, selected = false }) => {
       {!wallet.installed && (
         <span className="wallet-not-installed">Not installed</span>
       )}
+      {selected && <Linked>Linked</Linked>}
     </WalletOption>
   );
 };
@@ -245,9 +258,15 @@ export default function AddressLogin({ chain, setMailLogin }) {
             }}
           />
           {web3Error && <ErrorText>{web3Error}</ErrorText>}
-          <ErrorMessage>13123</ErrorMessage>
         </div>
       )}
+
+      {selectedWallet && accounts.length === 0 && (
+        <ErrorMessage>
+          Address not detected, please create an available address.
+        </ErrorMessage>
+      )}
+
       <ButtonWrapper>
         {selectedWallet && accounts.length > 0 && (
           <SecondaryButton isFill isLoading={loading} onClick={doWeb3Login}>
