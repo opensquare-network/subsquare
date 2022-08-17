@@ -261,7 +261,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
         </div>
       )}
 
-      {selectedWallet && accounts.length === 0 && (
+      {wallet && accounts.length === 0 && (
         <ErrorMessage>
           Address not detected, please create an available address.
         </ErrorMessage>
