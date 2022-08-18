@@ -70,6 +70,7 @@ const WalletOption = styled.li`
 `;
 
 const getIsInstalled = (extensionName) => {
+  console.log(window?.injectedWeb3);
   return !!(
     typeof window !== "undefined" &&
     window.injectedWeb3 &&
