@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.2.2
+
+- Refactor pagination component.
+- Use scanned electorate for vote finished referendum.
+- Add all referenda votes.
+- Fix typescript markdown preview.
+- Support centrifuge and zeitgeist.
+- Support copy comment url.
+- Style and typo fix.
+
+# 2.2.1
+
+- Add check all councilors and TC members link.
+- Fix motion id.
+- Fix motion voter, no proposer as default aye vote.
+- Fix styles:
+  1. Caret color on dark mode.
+  2. Markdown text no-wrap.
+  3. Tag color
+
 # 2.2.0
 
 - Support dark mode.
