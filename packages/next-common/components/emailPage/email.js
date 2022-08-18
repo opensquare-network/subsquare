@@ -15,6 +15,7 @@ import { PageTitleContainer } from "../styled/containers/titleContainer";
 import BaseLayout from "../layout/baseLayout";
 
 const Label = styled.div`
+  margin-bottom: 8px;
   font-weight: bold;
   font-size: 12px;
 `;
