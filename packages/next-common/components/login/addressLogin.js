@@ -129,6 +129,13 @@ export default function AddressLogin({ chain, setMailLogin }) {
         setAccounts={setAccounts}
         setWallet={setWallet}
       />
+
+      {wallet && accounts?.length === 0 && (
+        <ErrorMessage>
+          Address not detected, please create an available address.
+        </ErrorMessage>
+      )}
+
       {selectedWallet && (
         <div>
           <Label>Choose linked address</Label>
@@ -144,15 +151,14 @@ export default function AddressLogin({ chain, setMailLogin }) {
         </div>
       )}
 
-      {wallet && accounts?.length === 0 && (
-        <ErrorMessage>
-          Address not detected, please create an available address.
-        </ErrorMessage>
-      )}
-
       <ButtonWrapper>
         {selectedWallet && (
-          <SecondaryButton isFill isLoading={loading} onClick={doWeb3Login}>
+          <SecondaryButton
+            isFill
+            isLoading={loading}
+            onClick={doWeb3Login}
+            disabled={!selectedAccount}
+          >
             Next
           </SecondaryButton>
         )}
