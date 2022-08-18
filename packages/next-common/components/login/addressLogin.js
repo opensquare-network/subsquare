@@ -129,18 +129,20 @@ export default function AddressLogin({ chain, setMailLogin }) {
         setAccounts={setAccounts}
         setWallet={setWallet}
       />
-      <div>
-        <Label>Choose linked address</Label>
-        <AddressSelect
-          chain={chain}
-          accounts={accounts}
-          selectedAccount={selectedAccount}
-          onSelect={(account) => {
-            setSelectedAccount(account);
-          }}
-        />
-        {web3Error && <ErrorText>{web3Error}</ErrorText>}
-      </div>
+      {selectedWallet && (
+        <div>
+          <Label>Choose linked address</Label>
+          <AddressSelect
+            chain={chain}
+            accounts={accounts}
+            selectedAccount={selectedAccount}
+            onSelect={(account) => {
+              setSelectedAccount(account);
+            }}
+          />
+          {web3Error && <ErrorText>{web3Error}</ErrorText>}
+        </div>
+      )}
 
       {wallet && accounts?.length === 0 && (
         <ErrorMessage>
