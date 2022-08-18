@@ -145,6 +145,13 @@ export default function AddressLogin({ chain, setMailLogin }) {
             selectedAccount={selectedAccount}
             onSelect={(account) => {
               setSelectedAccount(account);
+
+              const accountMap = JSON.parse(
+                localStorage.getItem("accountMap") ?? "{}"
+              );
+              accountMap[encodeAddressToChain(account.address, chain)] =
+                account.name;
+              localStorage.setItem("accountMap", JSON.stringify(accountMap));
             }}
           />
           {web3Error && <ErrorText>{web3Error}</ErrorText>}

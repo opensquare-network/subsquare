@@ -47,6 +47,7 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
   const address = loginUser?.addresses?.find(
     (address) => address.chain === chain
   )?.address;
+  const [accountName, setAccountName] = useState("");
   const [errors, setErrors] = useState();
   const [email, setEmail] = useState("");
   const [pin, setPin] = useState("");
@@ -54,6 +55,14 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
   const identity = useIdentity(address, chain);
 
   const router = useRouter();
+
+  useEffect(() => {
+    try {
+      const accountMap = JSON.parse(localStorage.getItem("accountMap") ?? "{}");
+      const accountName = accountMap[address];
+      setAccountName(accountName);
+    } catch (e) {}
+  }, []);
 
   useEffect(() => {
     if (loginUser === null) {
@@ -71,7 +80,11 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
           <PageTitleContainer>Login {` with Web3 address`}</PageTitleContainer>
           <Hint>Set email for receiving notifications</Hint>
           <Label>Web3 address</Label>
-          <Option item={{ address }} chain={chain} selected />
+          <Option
+            item={{ address, name: accountName }}
+            chain={chain}
+            selected
+          />
           <EmailInput
             identity={identity}
             email={email}
