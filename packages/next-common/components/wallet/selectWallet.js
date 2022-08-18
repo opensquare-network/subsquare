@@ -70,7 +70,6 @@ const WalletOption = styled.li`
 `;
 
 const getIsInstalled = (extensionName) => {
-  console.log(window?.injectedWeb3);
   return !!(
     typeof window !== "undefined" &&
     window.injectedWeb3 &&
@@ -79,13 +78,24 @@ const getIsInstalled = (extensionName) => {
 };
 
 const Wallet = ({ wallet, onClick, selected = false, loading = false }) => {
+  const [timerCount, setTimerCount] = useState(0);
+  const [timerId, setTimerId] = useState(null);
   const [installed, setInstalled] = useState(
     getIsInstalled(wallet.extensionName)
   );
+  useEffect(() => {
+    if (timerCount > 10) {
+      clearInterval(timerId);
+    }
+  }, [timerCount]);
 
   useEffect(() => {
     // update if installed changes
-    setInstalled(getIsInstalled(wallet.extensionName));
+    const timerId = setInterval(() => {
+      setInstalled(getIsInstalled(wallet.extensionName));
+      setTimerCount((prevTimer) => prevTimer + 1);
+    }, 1000);
+    setTimerId(timerId);
   }, []);
 
   return (
