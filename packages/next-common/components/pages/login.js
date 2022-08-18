@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -34,14 +34,16 @@ const Login = withLoginUserRedux(({ loginUser, chain }) => {
         <ContentCenterWrapper>
           <PageTitleContainer>Connect Wallet</PageTitleContainer>
 
-          {!web3 && <MailLogin setAddressLogin={() => setWeb3(true)} />}
+          {!web3 &&
+            <Fragment>
+              <MailLogin setAddressLogin={() => setWeb3(true)} />
+              <LinkWrapper>
+                Don’t have a account? <Link href="/signup">Sign up</Link>
+              </LinkWrapper>
+            </Fragment>
+          }
           {web3 && (
             <AddressLogin chain={chain} setMailLogin={() => setWeb3(false)} />
-          )}
-          {!web3 && (
-            <LinkWrapper>
-              Don’t have a account? <Link href="/signup">Sign up</Link>
-            </LinkWrapper>
           )}
         </ContentCenterWrapper>
       </Wrapper>
