@@ -178,20 +178,6 @@ export default function LinkedAddress({ chain }) {
 
   const showSelectWalletModal = () => setShowSelectWallet(true);
 
-  const loadAccounts = (selectedWallet) => {
-    (async () => {
-      const extension = window?.injectedWeb3?.[selectedWallet];
-      if (!extension) {
-        return;
-      }
-      const wallet = await extension.enable("subsquare");
-      const extensionAccounts = await wallet.accounts.get();
-      if (isMounted.current) {
-        setAccounts(extensionAccounts);
-      }
-    })();
-  };
-
   const unlinkAddress = async (chain, address) => {
     const { error, result } = await nextApi.delete(`user/linkaddr/${address}`);
     dispatch(fetchUserProfile());
@@ -238,10 +224,10 @@ export default function LinkedAddress({ chain }) {
   };
 
   const mergedAccounts = [
-    ...accounts,
+    ...(accounts ?? []),
     ...(user?.addresses || [])
       .filter((address) =>
-        accounts.every(
+        (accounts ?? []).every(
           (acc) =>
             encodeAddressToChain(acc.address, activeChain) !== address.address
         )
@@ -336,10 +322,10 @@ export default function LinkedAddress({ chain }) {
           <SelectWallet
             selectedWallet={selectedWallet}
             setSelectWallet={setSelectWallet}
-            onSelect={(selectedWallet) => {
-              loadAccounts(selectedWallet);
+            onAccessGranted={() => {
               setShowSelectWallet(false);
             }}
+            setAccounts={setAccounts}
           />
         </Popup>
       )}

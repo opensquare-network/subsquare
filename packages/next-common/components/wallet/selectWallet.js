@@ -2,6 +2,8 @@ import { WALLETS } from "../../utils/consts/connect";
 import styled, { css } from "styled-components";
 import Flex from "../styled/flex";
 import React, { useEffect, useState } from "react";
+import useIsMounted from "../../utils/hooks/useIsMounted";
+import Loading from "../loading";
 
 const WalletOptions = styled.ul`
   all: unset;
@@ -67,13 +69,6 @@ const WalletOption = styled.li`
   }
 `;
 
-const Linked = styled.span`
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
-  color: ${(props) => props.theme.textTertiary};
-`;
-
 const getIsInstalled = (extensionName) => {
   return !!(
     typeof window !== "undefined" &&
@@ -82,7 +77,7 @@ const getIsInstalled = (extensionName) => {
   );
 };
 
-const Wallet = ({ wallet, onClick, selected = false }) => {
+const Wallet = ({ wallet, onClick, selected = false, loading = false }) => {
   const [installed, setInstalled] = useState(
     getIsInstalled(wallet.extensionName)
   );
@@ -101,6 +96,7 @@ const Wallet = ({ wallet, onClick, selected = false }) => {
       {!installed && (
         <span className="wallet-not-installed">Not installed</span>
       )}
+      {loading && <Loading />}
     </WalletOption>
   );
 };
@@ -108,20 +104,52 @@ const Wallet = ({ wallet, onClick, selected = false }) => {
 export default function SelectWallet({
   selectedWallet,
   setSelectWallet,
+  setAccounts,
+  setWallet = () => {},
   onSelect = () => {},
+  onAccessGranted = () => {},
 }) {
+  const isMounted = useIsMounted();
+  const [waitingPermissionWallet, setWaitingPermissionWallet] = useState(null);
+
+  const loadAccounts = (selectedWallet) => {
+    (async () => {
+      setAccounts(null);
+      const extension = window?.injectedWeb3?.[selectedWallet];
+      if (!extension) {
+        return;
+      }
+      try {
+        setWaitingPermissionWallet(selectedWallet);
+        const wallet = await extension.enable("subsquare");
+        setSelectWallet(selectedWallet);
+        setWallet(wallet);
+        const extensionAccounts = await wallet.accounts?.get();
+        if (isMounted.current) {
+          setAccounts(extensionAccounts);
+        }
+        onAccessGranted && onAccessGranted();
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setWaitingPermissionWallet(null);
+      }
+    })();
+  };
+
   return (
     <WalletOptions>
       {WALLETS.map((wallet, index) => {
         return (
           <Wallet
+            key={index}
             wallet={wallet}
             onClick={() => {
-              setSelectWallet(wallet.extensionName);
+              loadAccounts(wallet.extensionName);
               onSelect && onSelect(wallet.extensionName);
             }}
-            key={index}
             selected={wallet.extensionName === selectedWallet}
+            loading={wallet.extensionName === waitingPermissionWallet}
           />
         );
       })}

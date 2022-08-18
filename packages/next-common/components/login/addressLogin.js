@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import Flex from "../styled/flex";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import AddressSelect from "../addressSelect";
-import useIsMounted from "../../utils/hooks/useIsMounted";
 import nextApi from "../../services/nextApi";
 import ErrorText from "../ErrorText";
 import { setUser } from "../../store/reducers/userSlice";
 import { newErrorToast } from "../../store/reducers/toastSlice";
 import { encodeAddressToChain } from "../../services/address";
 import SecondaryButton from "../buttons/secondaryButton";
-import { WALLETS } from "../../utils/consts/connect";
 import { stringToHex } from "@polkadot/util";
 import { LinkWrapper } from "./styled";
 import SelectWallet from "../wallet/selectWallet";
@@ -44,7 +41,6 @@ const ErrorMessage = styled.div`
 `;
 
 export default function AddressLogin({ chain, setMailLogin }) {
-  const isMounted = useIsMounted();
   const [wallet, setWallet] = useState();
   const [accounts, setAccounts] = useState([]);
   const [selectedAccount, setSelectedAccount] = useState(null);
@@ -100,22 +96,6 @@ export default function AddressLogin({ chain, setMailLogin }) {
   };
 
   useEffect(() => {
-    setAccounts(null);
-    (async () => {
-      const extension = window?.injectedWeb3?.[selectedWallet];
-      if (!extension) {
-        return;
-      }
-      const wallet = await extension.enable("subsquare");
-      setWallet(wallet);
-      const extensionAccounts = await wallet.accounts?.get();
-      if (isMounted.current) {
-        setAccounts(extensionAccounts);
-      }
-    })();
-  }, [selectedWallet, isMounted]);
-
-  useEffect(() => {
     if (accounts && accounts?.length > 0 && !selectedAccount) {
       const address = localStorage.getItem("lastLoggedInAddress");
       if (address) {
@@ -142,6 +122,8 @@ export default function AddressLogin({ chain, setMailLogin }) {
       <SelectWallet
         selectedWallet={selectedWallet}
         setSelectWallet={setSelectWallet}
+        setAccounts={setAccounts}
+        setWallet={setWallet}
       />
       {selectedWallet && accounts?.length > 0 && (
         <div>
