@@ -43,6 +43,13 @@ const Hint = styled.p`
   border-color: ${(props) => props.theme.grey300Border};
 `;
 
+const BorderRadiusWrapper = styled.div`
+  > div,
+  p {
+    border-radius: 4px;
+  }
+`;
+
 const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
   const address = loginUser?.addresses?.find(
     (address) => address.chain === chain
@@ -78,13 +85,15 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
       <Wrapper>
         <ContentCenterWrapper>
           <PageTitleContainer>Login {` with Web3 address`}</PageTitleContainer>
-          <Hint>Set email for receiving notifications</Hint>
-          <Label>Web3 address</Label>
-          <Option
-            item={{ address, name: accountName }}
-            chain={chain}
-            selected
-          />
+          <BorderRadiusWrapper>
+            <Hint>Set email for receiving notifications</Hint>
+            <Label>Web3 address</Label>
+            <Option
+              item={{ address, name: accountName }}
+              chain={chain}
+              selected
+            />
+          </BorderRadiusWrapper>
           <EmailInput
             identity={identity}
             email={email}
