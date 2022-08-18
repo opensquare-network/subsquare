@@ -51,6 +51,10 @@ export default function AddressLogin({ chain, setMailLogin }) {
   const router = useRouter();
 
   const doWeb3Login = async () => {
+    if (!selectedAccount?.address) {
+      dispatch(newErrorToast("Please select an account"));
+      return;
+    }
     setLoading(true);
     const address = encodeAddressToChain(selectedAccount.address, chain);
     const { result, error } = await nextApi.fetch(`auth/login/${address}`);
@@ -125,20 +129,18 @@ export default function AddressLogin({ chain, setMailLogin }) {
         setAccounts={setAccounts}
         setWallet={setWallet}
       />
-      {selectedWallet && accounts?.length > 0 && (
-        <div>
-          <Label>Choose linked address</Label>
-          <AddressSelect
-            chain={chain}
-            accounts={accounts}
-            selectedAccount={selectedAccount}
-            onSelect={(account) => {
-              setSelectedAccount(account);
-            }}
-          />
-          {web3Error && <ErrorText>{web3Error}</ErrorText>}
-        </div>
-      )}
+      <div>
+        <Label>Choose linked address</Label>
+        <AddressSelect
+          chain={chain}
+          accounts={accounts}
+          selectedAccount={selectedAccount}
+          onSelect={(account) => {
+            setSelectedAccount(account);
+          }}
+        />
+        {web3Error && <ErrorText>{web3Error}</ErrorText>}
+      </div>
 
       {wallet && accounts?.length === 0 && (
         <ErrorMessage>
@@ -147,7 +149,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
       )}
 
       <ButtonWrapper>
-        {selectedWallet && accounts?.length > 0 && (
+        {selectedWallet && (
           <SecondaryButton isFill isLoading={loading} onClick={doWeb3Login}>
             Next
           </SecondaryButton>
