@@ -72,11 +72,14 @@ const WalletOption = styled.li`
 `;
 
 const useInjectedWeb3 = () => {
+  const isMounted = useIsMounted();
   const [injectedWeb3, setInjectedWeb3] = useState(null);
   useEffect(() => {
     if (typeof window !== "undefined" && window.injectedWeb3) {
       setTimeout(() => {
-        setInjectedWeb3(window.injectedWeb3);
+        if (isMounted.current) {
+          setInjectedWeb3(window.injectedWeb3);
+        }
       }, 1000);
     }
   }, []);
@@ -86,10 +89,13 @@ const useInjectedWeb3 = () => {
 const Wallet = ({ wallet, onClick, selected = false, loading = false }) => {
   const [installed, setInstalled] = useState(null);
   const injectedWeb3 = useInjectedWeb3();
+  const isMounted = useIsMounted();
 
   useEffect(() => {
     // update if installed changes
-    injectedWeb3 && setInstalled(!!injectedWeb3?.[wallet?.extensionName]);
+    if (injectedWeb3 && isMounted.current) {
+      setInstalled(!!injectedWeb3?.[wallet?.extensionName]);
+    }
   }, [injectedWeb3]);
 
   return (
@@ -160,17 +166,19 @@ export default function SelectWallet({
       try {
         setWaitingPermissionWallet(selectedWallet);
         const wallet = await extension.enable("subsquare");
-        setSelectWallet(selectedWallet);
-        setWallet(wallet);
         const extensionAccounts = await wallet.accounts?.get();
         if (isMounted.current) {
+          setSelectWallet(selectedWallet);
+          setWallet(wallet);
           setAccounts(extensionAccounts);
         }
         onAccessGranted && onAccessGranted();
       } catch (e) {
         console.error(e);
       } finally {
-        setWaitingPermissionWallet(null);
+        if (isMounted.current) {
+          setWaitingPermissionWallet(null);
+        }
       }
     })();
   };
