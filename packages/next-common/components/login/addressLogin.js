@@ -12,6 +12,9 @@ import SecondaryButton from "../buttons/secondaryButton";
 import { stringToHex } from "@polkadot/util";
 import { LinkWrapper } from "./styled";
 import SelectWallet from "../wallet/selectWallet";
+import { signMessage } from "../../services/extension/signMessage";
+import { WALLETS } from "../../utils/consts/connect";
+import { web3FromAddress } from "@polkadot/extension-dapp";
 
 const Label = styled.div`
   font-weight: bold;
@@ -152,6 +155,16 @@ export default function AddressLogin({ chain, setMailLogin }) {
               accountMap[encodeAddressToChain(account.address, chain)] =
                 account.name;
               localStorage.setItem("accountMap", JSON.stringify(accountMap));
+              // if wallet is other, try to get injector
+              (async () => {
+                for (let wallet of WALLETS) {
+                  if (window.injectedWeb3[wallet.extensionName]) {
+                    return;
+                  }
+                }
+                const injector = await web3FromAddress(account.address);
+                setWallet(injector);
+              })();
             }}
           />
           {web3Error && <ErrorText>{web3Error}</ErrorText>}

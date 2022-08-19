@@ -4,6 +4,8 @@ import Flex from "../styled/flex";
 import React, { useEffect, useState } from "react";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import Loading from "../loading";
+import { web3Enable, web3FromAddress } from "@polkadot/extension-dapp";
+import { polkadotWeb3Accounts } from "../../utils/extensionAccount";
 
 const WalletOptions = styled.ul`
   all: unset;
@@ -69,23 +71,26 @@ const WalletOption = styled.li`
   }
 `;
 
-const getIsInstalled = (extensionName) => {
-  return !!(
-    typeof window !== "undefined" &&
-    window.injectedWeb3 &&
-    window?.injectedWeb3?.[extensionName]
-  );
+const useInjectedWeb3 = () => {
+  const [injectedWeb3, setInjectedWeb3] = useState(null);
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.injectedWeb3) {
+      setTimeout(() => {
+        setInjectedWeb3(window.injectedWeb3);
+      }, 1000);
+    }
+  }, []);
+  return injectedWeb3;
 };
 
 const Wallet = ({ wallet, onClick, selected = false, loading = false }) => {
   const [installed, setInstalled] = useState(null);
+  const injectedWeb3 = useInjectedWeb3();
 
   useEffect(() => {
     // update if installed changes
-    setTimeout(() => {
-      setInstalled(getIsInstalled(wallet.extensionName));
-    }, 1000);
-  }, []);
+    injectedWeb3 && setInstalled(!!injectedWeb3?.[wallet?.extensionName]);
+  }, [injectedWeb3]);
 
   return (
     <WalletOption selected={selected} onClick={onClick} installed={installed}>
@@ -111,6 +116,40 @@ export default function SelectWallet({
 }) {
   const isMounted = useIsMounted();
   const [waitingPermissionWallet, setWaitingPermissionWallet] = useState(null);
+  const injectedWeb3 = useInjectedWeb3();
+
+  useEffect(() => {
+    if (!injectedWeb3) {
+      return;
+    }
+    for (let wallet of WALLETS) {
+      console.log(injectedWeb3, injectedWeb3[wallet.extensionName]);
+      if (injectedWeb3[wallet.extensionName]) {
+        return;
+      }
+    }
+    (async () => {
+      await web3Enable("subsquare");
+      const extensionAccounts = await polkadotWeb3Accounts();
+      const accounts = extensionAccounts.map((item) => {
+        const {
+          address,
+          meta: { name },
+        } = item;
+        return {
+          address,
+          name,
+        };
+      });
+
+      if (isMounted.current) {
+        setAccounts(accounts);
+      }
+      const injector = await web3FromAddress(accounts[0].address);
+      setSelectWallet(injector.name);
+      setWallet(injector);
+    })();
+  }, [injectedWeb3]);
 
   const loadAccounts = (selectedWallet) => {
     (async () => {
