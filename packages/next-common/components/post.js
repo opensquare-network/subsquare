@@ -20,6 +20,7 @@ import Anchor from "next-common/components/styled/anchor";
 import { HoverSecondaryCard } from "./styled/containers/secondaryCard";
 import Divider from "./styled/layout/divider";
 import { DemocracyTag, TreasuryTag } from "./tags/business";
+import isNil from "lodash.isnil";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -187,7 +188,8 @@ export default function Post({ data, chain, href, type }) {
     elapseIcon = <MotionElapse motion={data.onchainData} chain={chain} />;
   }
 
-  const commentsCount = (data.commentsCount || 0) + (data.polkassemblyCommentsCount || 0);
+  const commentsCount =
+    (data.commentsCount || 0) + (data.polkassemblyCommentsCount || 0);
 
   return (
     <Wrapper>
@@ -200,7 +202,7 @@ export default function Post({ data, chain, href, type }) {
             </Link>
             <ReasonLink text={data.title} hideText={true} />
           </TitleWrapper>
-          {data.value && (
+          {!isNil(data.value) && (
             <span>
               {bigNumber2Locale(toPrecision(data.value, decimals))}{" "}
               <span className="symbol">{symbol}</span>
