@@ -16,7 +16,6 @@ import Avatar from "./avatar";
 import DownloadExtension from "./downloadExtension";
 import { addressEllipsis } from "../utils";
 import { encodeAddressToChain } from "../services/address";
-import { signMessage } from "../services/extension/signMessage";
 import AddressLinkIcon from "../assets/imgs/icons/address-link.svg";
 import UnLinkIcon from "../assets/imgs/icons/unlink.svg";
 import SecondaryButton from "./buttons/secondaryButton";
@@ -24,6 +23,7 @@ import { PrimaryCard } from "./styled/containers/primaryCard";
 import { TitleContainer } from "./styled/containers/titleContainer";
 import Popup from "./popup/wrapper/Popup";
 import SelectWallet from "./wallet/selectWallet";
+import { stringToHex } from "@polkadot/util";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -163,6 +163,7 @@ const EmptyList = styled.div`
 export default function LinkedAddress({ chain }) {
   const isMounted = useIsMounted();
   const user = useSelector(userSelector);
+  const [wallet, setWallet] = useState();
   const [showSelectWallet, setShowSelectWallet] = useState(false);
   const [selectedWallet, setSelectWallet] = useState("");
   const [hasExtension, setHasExtension] = useState(true);
@@ -197,7 +198,12 @@ export default function LinkedAddress({ chain }) {
       let signature;
 
       try {
-        signature = await signMessage(result?.challenge, address);
+        const result = await wallet.signer.signRaw({
+          type: "bytes",
+          data: stringToHex(result?.challenge),
+          address: selectedAccount.address,
+        });
+        signature = result.signature;
       } catch (e) {
         console.log("Sign request is cancelled");
         return;
@@ -326,6 +332,7 @@ export default function LinkedAddress({ chain }) {
               setShowSelectWallet(false);
             }}
             setAccounts={setAccounts}
+            setWallet={setWallet}
           />
         </Popup>
       )}
