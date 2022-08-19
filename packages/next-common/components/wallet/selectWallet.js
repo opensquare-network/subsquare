@@ -123,7 +123,6 @@ export default function SelectWallet({
       return;
     }
     for (let wallet of WALLETS) {
-      console.log(injectedWeb3, injectedWeb3[wallet.extensionName]);
       if (injectedWeb3[wallet.extensionName]) {
         return;
       }
