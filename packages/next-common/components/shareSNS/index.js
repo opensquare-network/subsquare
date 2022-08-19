@@ -1,22 +1,29 @@
-import { useCallback } from "react";
+import { useCallback, useRef, useState } from "react";
 import styled from "styled-components";
-import Twitter from "../../assets/imgs/icons/share.svg";
+import ShareIcon from "../../assets/imgs/icons/share.svg";
 import { shadow_200 } from "../../styles/componentCss";
+import Flex from "../styled/flex";
+import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 
 const Wrapper = styled.div`
   position: relative;
   display: flex;
-  gap: 8px;
-  margin-bottom: 32px;
+  height: 14px;
+  > div {
+    gap: 8px;
+  }
+  cursor: pointer;
 `;
 
 const ShareItem = styled.span`
   cursor: pointer;
+
   &:hover {
-    .twitter {
+    .share {
       rect {
         fill: #e6f4fe;
       }
+
       path {
         fill: #33a2f2;
       }
@@ -26,8 +33,8 @@ const ShareItem = styled.span`
 
 const OptionWrapper = styled.div`
   position: absolute;
-  right: 0;
-  bottom: 100%;
+  right: -60px;
+  bottom: calc(100% + 10px);
   background: ${(props) => props.theme.neutral};
   width: 96px;
   padding: 8px 0;
@@ -53,6 +60,8 @@ const OptionItem = styled.div`
 `;
 
 export default function Share({}) {
+  const ref = useRef();
+  const [showShare, setShowShare] = useState(false);
   const tweet = useCallback(() => {
     const url =
       "https://twitter.com/share?url=" +
@@ -66,16 +75,26 @@ export default function Share({}) {
     );
   }, []);
 
+  useOnClickOutside(ref, () => setShowShare(false));
+
   return (
-    <Wrapper>
-      <Twitter className="twitter" />
-      Share
-      <OptionWrapper>
-        <OptionItem>
-          <ShareItem onClick={tweet}>Twitter</ShareItem>
-        </OptionItem>
-        <OptionItem>Copy Link</OptionItem>
-      </OptionWrapper>
+    <Wrapper ref={ref}>
+      <Flex
+        onClick={() => {
+          setShowShare(true);
+        }}
+      >
+        <ShareIcon className="share" />
+        <span>Share</span>
+      </Flex>
+      {showShare && (
+        <OptionWrapper>
+          <OptionItem>
+            <ShareItem onClick={tweet}>Twitter</ShareItem>
+          </OptionItem>
+          <OptionItem>Copy Link</OptionItem>
+        </OptionWrapper>
+      )}
     </Wrapper>
   );
 }
