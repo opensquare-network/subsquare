@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import AddressSelect from "../addressSelect";
@@ -12,9 +12,9 @@ import SecondaryButton from "../buttons/secondaryButton";
 import { stringToHex } from "@polkadot/util";
 import { LinkWrapper } from "./styled";
 import SelectWallet from "../wallet/selectWallet";
-import { signMessage } from "../../services/extension/signMessage";
 import { WALLETS } from "../../utils/consts/connect";
 import { web3FromAddress } from "@polkadot/extension-dapp";
+import { CACHE_KEY } from "../../utils/constants";
 
 const Label = styled.div`
   font-weight: bold;
@@ -78,7 +78,10 @@ export default function AddressLogin({ chain, setMailLogin }) {
         );
         if (loginResult) {
           dispatch(setUser(loginResult));
-          localStorage.setItem("lastLoggedInAddress", selectedAccount.address);
+          localStorage.setItem(
+            CACHE_KEY.lastLoginAddress,
+            selectedAccount.address
+          );
           if (loginResult.email) {
             router.replace(router.query?.redirect || "/");
           } else {
@@ -104,7 +107,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
 
   useEffect(() => {
     if (accounts && accounts?.length > 0 && !selectedAccount) {
-      const address = localStorage.getItem("lastLoggedInAddress");
+      const address = localStorage.getItem(CACHE_KEY.lastLoginAddress);
       if (address) {
         const account = accounts?.find((item) => item.address === address);
         if (account) {
@@ -150,11 +153,14 @@ export default function AddressLogin({ chain, setMailLogin }) {
               setSelectedAccount(account);
 
               const accountMap = JSON.parse(
-                localStorage.getItem("accountMap") ?? "{}"
+                localStorage.getItem(CACHE_KEY.accountMap) ?? "{}"
               );
               accountMap[encodeAddressToChain(account.address, chain)] =
                 account.name;
-              localStorage.setItem("accountMap", JSON.stringify(accountMap));
+              localStorage.setItem(
+                CACHE_KEY.accountMap,
+                JSON.stringify(accountMap)
+              );
               // if wallet is other, try to get injector
               (async () => {
                 for (let wallet of WALLETS) {

@@ -13,6 +13,7 @@ import { p_14_normal } from "../../styles/componentCss";
 import GhostButton from "../buttons/ghostButton";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import BaseLayout from "../layout/baseLayout";
+import { CACHE_KEY } from "../../utils/constants";
 
 const Label = styled.div`
   margin-bottom: 8px;
@@ -66,7 +67,9 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
 
   useEffect(() => {
     try {
-      const accountMap = JSON.parse(localStorage.getItem("accountMap") ?? "{}");
+      const accountMap = JSON.parse(
+        localStorage.getItem(CACHE_KEY.accountMap) ?? "{}"
+      );
       const accountName = accountMap[address];
       setAccountName(accountName);
     } catch (e) {}
