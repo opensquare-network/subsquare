@@ -11,9 +11,7 @@ import { encodeAddressToChain } from "../../services/address";
 import SecondaryButton from "../buttons/secondaryButton";
 import { stringToHex } from "@polkadot/util";
 import { LinkWrapper } from "./styled";
-import SelectWallet from "../wallet/selectWallet";
-import { WALLETS } from "../../utils/consts/connect";
-import { web3FromAddress } from "@polkadot/extension-dapp";
+import SelectWallet, { setOtherWallet } from "../wallet/selectWallet";
 import { CACHE_KEY } from "../../utils/constants";
 
 const Label = styled.div`
@@ -106,7 +104,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
   };
 
   useEffect(() => {
-    if (accounts && accounts?.length > 0 && !selectedAccount) {
+    if (accounts?.length > 0 && !selectedAccount) {
       const address = localStorage.getItem(CACHE_KEY.lastLoginAddress);
       if (address) {
         const account = accounts?.find((item) => item.address === address);
@@ -162,15 +160,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
                 JSON.stringify(accountMap)
               );
               // if wallet is other, try to get injector
-              (async () => {
-                for (let wallet of WALLETS) {
-                  if (window.injectedWeb3[wallet.extensionName]) {
-                    return;
-                  }
-                }
-                const injector = await web3FromAddress(account.address);
-                setWallet(injector);
-              })();
+              setOtherWallet(account.address, setWallet);
             }}
           />
           {web3Error && <ErrorText>{web3Error}</ErrorText>}

@@ -71,6 +71,16 @@ const WalletOption = styled.li`
   }
 `;
 
+export const setOtherWallet = async (address, setWallet) => {
+  for (let wallet of WALLETS) {
+    if (window.injectedWeb3[wallet.extensionName]) {
+      return;
+    }
+  }
+  const injector = await web3FromAddress(address);
+  setWallet(injector);
+};
+
 const useInjectedWeb3 = () => {
   const isMounted = useIsMounted();
   const [injectedWeb3, setInjectedWeb3] = useState(null);
@@ -149,10 +159,9 @@ export default function SelectWallet({
 
       if (isMounted.current) {
         setAccounts(accounts);
+        setSelectWallet(injector.name);
+        setOtherWallet(accounts[0].address, setWallet);
       }
-      const injector = await web3FromAddress(accounts[0].address);
-      setSelectWallet(injector.name);
-      setWallet(injector);
     })();
   }, [injectedWeb3]);
 
