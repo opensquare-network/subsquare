@@ -206,6 +206,8 @@ function Vote({
 
   const electorate = useSelector(electorateSelector)
   const isElectorateLoading = useSelector(isLoadingElectorateSelector)
+  const isLoadingVotes = useSelector(isLoadingVotesSelector);
+  const { allAye = [], allNay = [] } = useSelector(votesSelector);
 
   const updateVoteProgress = useCallback(() => {
     api?.query.democracy
@@ -242,8 +244,6 @@ function Vote({
   const nNays = toPrecision(referendumStatus?.tally?.nays ?? 0, decimals);
   const nTurnout = toPrecision(referendumStatus?.tally?.turnout ?? 0, decimals);
   const nElectorate = toPrecision(electorate ?? 0, decimals);
-  const isLoadingVotes = useSelector(isLoadingVotesSelector);
-  const { allAye = [], allNay = [] } = useSelector(votesSelector);
 
   let nAyesPercent = 50;
   let nNaysPercent = 50;
