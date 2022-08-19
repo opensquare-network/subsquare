@@ -201,7 +201,7 @@ export default function LinkedAddress({ chain }) {
         const result = await wallet.signer.signRaw({
           type: "bytes",
           data: stringToHex(result?.challenge),
-          address: selectedAccount.address,
+          address,
         });
         signature = result.signature;
       } catch (e) {
