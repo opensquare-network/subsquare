@@ -35,7 +35,7 @@ const WalletOption = styled.li`
   background: ${(props) => props.theme.grey100Bg};
 
   ${(props) =>
-    props.installed &&
+    props.installed === true &&
     css`
       &:hover {
         background: ${(props) => props.theme.grey200Border};
@@ -56,7 +56,7 @@ const WalletOption = styled.li`
   }
 
   ${(props) =>
-    !props.installed &&
+    props.installed === false &&
     css`
       color: ${props.theme.textTertiary};
       cursor: not-allowed;
@@ -78,24 +78,13 @@ const getIsInstalled = (extensionName) => {
 };
 
 const Wallet = ({ wallet, onClick, selected = false, loading = false }) => {
-  const [timerCount, setTimerCount] = useState(0);
-  const [timerId, setTimerId] = useState(null);
-  const [installed, setInstalled] = useState(
-    getIsInstalled(wallet.extensionName)
-  );
-  useEffect(() => {
-    if (timerCount > 10) {
-      clearInterval(timerId);
-    }
-  }, [timerCount]);
+  const [installed, setInstalled] = useState(null);
 
   useEffect(() => {
     // update if installed changes
-    const timerId = setInterval(() => {
+    setTimeout(() => {
       setInstalled(getIsInstalled(wallet.extensionName));
-      setTimerCount((prevTimer) => prevTimer + 1);
     }, 1000);
-    setTimerId(timerId);
   }, []);
 
   return (
@@ -104,10 +93,10 @@ const Wallet = ({ wallet, onClick, selected = false, loading = false }) => {
         <img className={wallet.title} src={wallet.logo} alt={wallet.title} />
         <span className="wallet-title">{wallet.title}</span>
       </Flex>
-      {!installed && (
+      {installed === false && (
         <span className="wallet-not-installed">Not installed</span>
       )}
-      {loading && <Loading />}
+      {(loading || installed === null) && <Loading />}
     </WalletOption>
   );
 };
