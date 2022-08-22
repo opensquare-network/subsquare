@@ -1,9 +1,10 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ShareIcon from "../../assets/imgs/icons/share.svg";
 import { shadow_200 } from "../../styles/componentCss";
 import Flex from "../styled/flex";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
+import copy from "copy-to-clipboard";
 
 const Wrapper = styled.div`
   position: relative;
@@ -61,7 +62,16 @@ const OptionItem = styled.div`
 
 export default function Share({}) {
   const ref = useRef();
+  const [copyState, setCopyState] = useState(false);
   const [showShare, setShowShare] = useState(false);
+  useEffect(() => {
+    if (copyState) {
+      setTimeout(() => {
+        setCopyState(false);
+      }, 3000);
+    }
+  }, [copyState]);
+
   const tweet = useCallback(() => {
     const url =
       "https://twitter.com/share?url=" +
@@ -92,7 +102,18 @@ export default function Share({}) {
           <OptionItem>
             <ShareItem onClick={tweet}>Twitter</ShareItem>
           </OptionItem>
-          <OptionItem>Copy Link</OptionItem>
+          <OptionItem
+            onClick={() => {
+              try {
+                copy(window.location.href);
+              } catch (e) {
+              } finally {
+                setCopyState(true);
+              }
+            }}
+          >
+            {copyState ? "Copied" : "Copy Link"}
+          </OptionItem>
         </OptionWrapper>
       )}
     </Wrapper>
