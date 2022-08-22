@@ -32,16 +32,16 @@ const Login = withLoginUserRedux(({ loginUser, chain }) => {
       <NextHead title={`Login`} desc={`Login`} />
       <Wrapper>
         <ContentCenterWrapper>
-          <PageTitleContainer>Connect Wallet</PageTitleContainer>
+          <PageTitleContainer>Login</PageTitleContainer>
 
-          {!web3 &&
+          {!web3 && (
             <Fragment>
               <MailLogin setAddressLogin={() => setWeb3(true)} />
               <LinkWrapper>
                 Don’t have a account? <Link href="/signup">Sign up</Link>
               </LinkWrapper>
             </Fragment>
-          }
+          )}
           {web3 && (
             <AddressLogin chain={chain} setMailLogin={() => setWeb3(false)} />
           )}
