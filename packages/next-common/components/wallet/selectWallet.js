@@ -53,7 +53,7 @@ const WalletOption = styled.li`
   border-radius: 4px;
   cursor: pointer;
 
-  img.SubWallet {
+  svg.SubWallet {
     border-radius: 16px;
   }
 
@@ -100,6 +100,7 @@ const Wallet = ({ wallet, onClick, selected = false, loading = false }) => {
   const [installed, setInstalled] = useState(null);
   const injectedWeb3 = useInjectedWeb3();
   const isMounted = useIsMounted();
+  const Logo = wallet.logo;
 
   useEffect(() => {
     // update if installed changes
@@ -111,7 +112,7 @@ const Wallet = ({ wallet, onClick, selected = false, loading = false }) => {
   return (
     <WalletOption selected={selected} onClick={onClick} installed={installed}>
       <Flex>
-        <img className={wallet.title} src={wallet.logo} alt={wallet.title} />
+        <Logo className={wallet.title} alt={wallet.title} />
         <span className="wallet-title">{wallet.title}</span>
       </Flex>
       {installed === false && (
