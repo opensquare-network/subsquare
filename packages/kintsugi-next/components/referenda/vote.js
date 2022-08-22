@@ -205,9 +205,11 @@ function Vote({
   const isMounted = useIsMounted();
   const api = useApi(chain);
 
-  const electorate = useSelector(electorateSelector);
-  const isElectorateLoading = useSelector(isLoadingElectorateSelector);
-
+  const electorate = useSelector(electorateSelector)
+  const isElectorateLoading = useSelector(isLoadingElectorateSelector)
+  const isLoadingVotes = useSelector(isLoadingVotesSelector);
+  const { allAye = [], allNay = [] } = useSelector(votesSelector);
+  
   const updateVoteProgress = useCallback(() => {
     api?.query.democracy
       .referendumInfoOf(referendumIndex)
