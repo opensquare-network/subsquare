@@ -1,35 +1,40 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import ShareIcon from "../../assets/imgs/icons/share.svg";
+import ShareSvg from "../../assets/imgs/icons/share.svg";
 import { shadow_200 } from "../../styles/componentCss";
 import Flex from "../styled/flex";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import copy from "copy-to-clipboard";
 
+const ShareIcon = styled(ShareSvg)``;
+
 const Wrapper = styled.div`
   position: relative;
   display: flex;
+  padding-left: 16px;
   height: 14px;
+
   > div {
     gap: 8px;
   }
+
   cursor: pointer;
+
+  > div:hover {
+    svg {
+      rect {
+        fill: ${(props) => props.theme.textSecondary};
+      }
+
+      path {
+        fill: ${(props) => props.theme.textSecondary};
+      }
+    }
+  }
 `;
 
 const ShareItem = styled.span`
   cursor: pointer;
-
-  &:hover {
-    .share {
-      rect {
-        fill: #e6f4fe;
-      }
-
-      path {
-        fill: #33a2f2;
-      }
-    }
-  }
 `;
 
 const OptionWrapper = styled.div`
@@ -60,7 +65,7 @@ const OptionItem = styled.div`
   }
 `;
 
-export default function Share({}) {
+export default function Share({ share2SNStext = "" }) {
   const ref = useRef();
   const [copyState, setCopyState] = useState(false);
   const [showShare, setShowShare] = useState(false);
@@ -72,20 +77,20 @@ export default function Share({}) {
     }
   }, [copyState]);
 
-  const tweet = useCallback(() => {
+  useOnClickOutside(ref, () => setShowShare(false));
+
+  const tweet = () => {
     const url =
       "https://twitter.com/share?url=" +
       encodeURIComponent(window.location.href) +
       "&text=" +
-      encodeURIComponent(document.title);
+      encodeURIComponent(share2SNStext ?? document.title);
     window.open(
       url,
       "",
       "menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600"
     );
-  }, []);
-
-  useOnClickOutside(ref, () => setShowShare(false));
+  };
 
   return (
     <Wrapper ref={ref}>

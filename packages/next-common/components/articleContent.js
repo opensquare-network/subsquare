@@ -13,6 +13,7 @@ import Poll from "./poll";
 import { MarkdownPreviewer, HtmlPreviewer } from "@osn/previewer";
 import RichTextStyleWrapper from "./content/richTextStyleWrapper";
 import Divider from "./styled/layout/divider";
+import { getShare2SNStext } from "../utils/post/share";
 
 const Wrapper = styled(RichTextStyleWrapper)`
   :hover {
@@ -228,6 +229,7 @@ export default function ArticleContent({
             toggleThumbUp={toggleThumbUp}
             reactions={post?.reactions}
             onReply={onReply}
+            share2SNStext={getShare2SNStext(post, type)}
           />
         </>
       )}
