@@ -4,6 +4,7 @@ import useThumbsUp from "../thumbsUp";
 import { Wrapper } from "./styled";
 import ThumbUpList from "./thumbUpList";
 import ReplyButton from "./replyButton";
+import Share from "../shareSNS";
 
 export default function ArticleActions({
   chain,
@@ -14,6 +15,7 @@ export default function ArticleActions({
   reactions,
   edit,
   setIsEdit,
+  share2SNStext = "",
 }) {
   const { ThumbsUpComponent, showThumbsUpList } = useThumbsUp({
     count: reactions?.length,
@@ -28,6 +30,7 @@ export default function ArticleActions({
         <ReplyButton onReply={onReply} noHover={noHover} />
         {ThumbsUpComponent}
         {edit && <ContentMenu edit={edit} setIsEdit={setIsEdit} alwaysShow />}
+        <Share share2SNStext={share2SNStext} />
       </Wrapper>
 
       <ThumbUpList
