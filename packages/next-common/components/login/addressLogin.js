@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { isWeb3Injected, web3Enable } from "@polkadot/extension-dapp";
 import { useRouter } from "next/router";
-
 import AddressSelect from "../addressSelect";
-import useIsMounted from "../../utils/hooks/useIsMounted";
-import DownloadExtension from "../downloadExtension";
 import nextApi from "../../services/nextApi";
 import ErrorText from "../ErrorText";
 import { setUser } from "../../store/reducers/userSlice";
 import { newErrorToast } from "../../store/reducers/toastSlice";
 import { encodeAddressToChain } from "../../services/address";
-import { signMessage } from "../../services/extension/signMessage";
-import { polkadotWeb3Accounts } from "../../utils/extensionAccount";
-import GhostButton from "../buttons/ghostButton";
 import SecondaryButton from "../buttons/secondaryButton";
+import { stringToHex } from "@polkadot/util";
+import { LinkWrapper } from "./styled";
+import SelectWallet, { setOtherWallet } from "../wallet/selectWallet";
+import { CACHE_KEY } from "../../utils/constants";
 
 const Label = styled.div`
   font-weight: bold;
@@ -32,17 +29,33 @@ const ButtonWrapper = styled.div`
   }
 `;
 
+const ErrorMessage = styled.div`
+  padding: 10px 16px;
+  margin-top: 24px;
+  //fixme: somehow theme won't work
+  background: rgba(244, 67, 54, 0.1);
+  color: #f44336;
+  border-radius: 4px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+`;
+
 export default function AddressLogin({ chain, setMailLogin }) {
-  const isMounted = useIsMounted();
+  const [wallet, setWallet] = useState();
   const [accounts, setAccounts] = useState([]);
-  const [hasExtension, setHasExtension] = useState(true);
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [web3Error, setWeb3Error] = useState();
   const [loading, setLoading] = useState(false);
+  const [selectedWallet, setSelectWallet] = useState("");
   const dispatch = useDispatch();
   const router = useRouter();
 
   const doWeb3Login = async () => {
+    if (!selectedAccount?.address) {
+      dispatch(newErrorToast("Please select an account"));
+      return;
+    }
     setLoading(true);
     const address = encodeAddressToChain(selectedAccount.address, chain);
     const { result, error } = await nextApi.fetch(`auth/login/${address}`);
@@ -51,17 +64,22 @@ export default function AddressLogin({ chain, setMailLogin }) {
     }
     if (result?.challenge) {
       try {
-        const signature = await signMessage(
-          result?.challenge,
-          selectedAccount.address
-        );
+        const { signature } = await wallet.signer.signRaw({
+          type: "bytes",
+          data: stringToHex(result?.challenge),
+          address: selectedAccount.address,
+        });
+
         const { result: loginResult, error: loginError } = await nextApi.post(
           `auth/login/${result?.attemptId}`,
           { challengeAnswer: signature }
         );
         if (loginResult) {
           dispatch(setUser(loginResult));
-          localStorage.setItem("lastLoggedInAddress", selectedAccount.address);
+          localStorage.setItem(
+            CACHE_KEY.lastLoginAddress,
+            selectedAccount.address
+          );
           if (loginResult.email) {
             router.replace(router.query?.redirect || "/");
           } else {
@@ -86,37 +104,10 @@ export default function AddressLogin({ chain, setMailLogin }) {
   };
 
   useEffect(() => {
-    (async () => {
-      await web3Enable("subsquare");
-      if (!isWeb3Injected) {
-        if (isMounted.current) {
-          setHasExtension(false);
-        }
-        return;
-      }
-      const extensionAccounts = await polkadotWeb3Accounts();
-      const accounts = extensionAccounts.map((item) => {
-        const {
-          address,
-          meta: { name },
-        } = item;
-        return {
-          address,
-          name,
-        };
-      });
-
-      if (isMounted.current) {
-        setAccounts(accounts);
-      }
-    })();
-  }, [isMounted]);
-
-  useEffect(() => {
-    if (accounts && accounts.length > 0 && !selectedAccount) {
-      const address = localStorage.getItem("lastLoggedInAddress");
+    if (accounts?.length > 0 && !selectedAccount) {
+      const address = localStorage.getItem(CACHE_KEY.lastLoginAddress);
       if (address) {
-        const account = accounts.find((item) => item.address === address);
+        const account = accounts?.find((item) => item.address === address);
         if (account) {
           setSelectedAccount(account);
           return;
@@ -128,9 +119,28 @@ export default function AddressLogin({ chain, setMailLogin }) {
     setWeb3Error();
   }, [chain, accounts, selectedAccount]);
 
+  useEffect(() => {
+    if (accounts?.length > 0) {
+      setSelectedAccount(accounts[0]);
+    }
+  }, [selectedWallet, accounts]);
+
   return (
     <>
-      {hasExtension && (
+      <SelectWallet
+        selectedWallet={selectedWallet}
+        setSelectWallet={setSelectWallet}
+        setAccounts={setAccounts}
+        setWallet={setWallet}
+      />
+
+      {wallet && accounts?.length === 0 && (
+        <ErrorMessage>
+          Address not detected, please create an available address.
+        </ErrorMessage>
+      )}
+
+      {selectedWallet && (
         <div>
           <Label>Choose linked address</Label>
           <AddressSelect
@@ -139,21 +149,38 @@ export default function AddressLogin({ chain, setMailLogin }) {
             selectedAccount={selectedAccount}
             onSelect={(account) => {
               setSelectedAccount(account);
+
+              const accountMap = JSON.parse(
+                localStorage.getItem(CACHE_KEY.accountMap) ?? "{}"
+              );
+              accountMap[encodeAddressToChain(account.address, chain)] =
+                account.name;
+              localStorage.setItem(
+                CACHE_KEY.accountMap,
+                JSON.stringify(accountMap)
+              );
+              // if wallet is other, try to get injector
+              setOtherWallet(account.address, setWallet);
             }}
           />
           {web3Error && <ErrorText>{web3Error}</ErrorText>}
         </div>
       )}
-      {!hasExtension && <DownloadExtension />}
+
       <ButtonWrapper>
-        {hasExtension && (
-          <SecondaryButton isFill isLoading={loading} onClick={doWeb3Login}>
+        {selectedWallet && (
+          <SecondaryButton
+            isFill
+            isLoading={loading}
+            onClick={doWeb3Login}
+            disabled={!selectedAccount}
+          >
             Next
           </SecondaryButton>
         )}
-        <GhostButton isFill onClick={setMailLogin}>
-          Login with username
-        </GhostButton>
+        <LinkWrapper>
+          <a onClick={setMailLogin}>Login </a>with username
+        </LinkWrapper>
       </ButtonWrapper>
     </>
   );

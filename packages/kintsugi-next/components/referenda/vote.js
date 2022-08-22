@@ -28,7 +28,8 @@ import { useSelector } from "react-redux";
 import {
   electorateSelector,
   isLoadingElectorateSelector,
-  isLoadingVotesSelector, votesSelector
+  isLoadingVotesSelector,
+  votesSelector,
 } from "next-common/store/reducers/referendumSlice";
 import VotesCount from "next-common/components/democracy/referendum/votesCount";
 import SubLink from "next-common/components/styled/subLink";
@@ -188,7 +189,7 @@ const Guide = styled.p`
 
 const ActionLink = styled(SubLink)`
   margin-top: 8px !important;
-`
+`;
 
 function Vote({
   referendumInfo,
@@ -208,7 +209,7 @@ function Vote({
   const isElectorateLoading = useSelector(isLoadingElectorateSelector)
   const isLoadingVotes = useSelector(isLoadingVotesSelector);
   const { allAye = [], allNay = [] } = useSelector(votesSelector);
-
+  
   const updateVoteProgress = useCallback(() => {
     api?.query.democracy
       .referendumInfoOf(referendumIndex)
@@ -230,6 +231,8 @@ function Vote({
   ]);
 
   const { width } = useWindowSize();
+  const isLoadingVotes = useSelector(isLoadingVotesSelector);
+  const { allAye = [], allNay = [] } = useSelector(votesSelector);
 
   const node = getNode(chain);
   if (!node) {
@@ -319,7 +322,9 @@ function Vote({
             <Header>
               <AyeIcon />
               Aye
-              { !isLoadingVotes ? <VotesCount>{ allAye.length }</VotesCount> : null }
+              {!isLoadingVotes ? (
+                <VotesCount>{allAye.length}</VotesCount>
+              ) : null}
             </Header>
             <Value>
               <ValueDisplay
@@ -333,7 +338,9 @@ function Vote({
             <Header>
               <NayIcon />
               Nay
-              { !isLoadingVotes ? <VotesCount>{ allNay.length }</VotesCount> : null }
+              {!isLoadingVotes ? (
+                <VotesCount>{allNay.length}</VotesCount>
+              ) : null}
             </Header>
             <Value>
               <ValueDisplay

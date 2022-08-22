@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -9,7 +9,6 @@ import {
   LinkWrapper,
 } from "next-common/components/login/styled";
 import MailLogin from "next-common/components/login/mailLogin";
-import { p_14_normal } from "../../styles/componentCss";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import BaseLayout from "../layout/baseLayout";
 
@@ -26,15 +25,6 @@ const Wrapper = styled.div`
   justify-content: space-between;
 `;
 
-const Hint = styled.p`
-  padding: 12px 16px;
-  ${p_14_normal};
-  border-radius: 4px;
-  color: ${(props) => props.theme.textSecondary};
-  background: ${(props) => props.theme.grey100Bg};
-  border-color: ${(props) => props.theme.grey300Border};
-`;
-
 const Login = withLoginUserRedux(({ loginUser, chain }) => {
   const [web3, setWeb3] = useState(true);
   return (
@@ -42,18 +32,18 @@ const Login = withLoginUserRedux(({ loginUser, chain }) => {
       <NextHead title={`Login`} desc={`Login`} />
       <Wrapper>
         <ContentCenterWrapper>
-          <PageTitleContainer>
-            Login {web3 && ` with Web3 address`}
-          </PageTitleContainer>
-          {web3 && <Hint>Under the {chain} Network</Hint>}
-          {!web3 && <MailLogin setAddressLogin={() => setWeb3(true)} />}
+          <PageTitleContainer>Connect Wallet</PageTitleContainer>
+
+          {!web3 &&
+            <Fragment>
+              <MailLogin setAddressLogin={() => setWeb3(true)} />
+              <LinkWrapper>
+                Don’t have a account? <Link href="/signup">Sign up</Link>
+              </LinkWrapper>
+            </Fragment>
+          }
           {web3 && (
             <AddressLogin chain={chain} setMailLogin={() => setWeb3(false)} />
-          )}
-          {!web3 && (
-            <LinkWrapper>
-              Don’t have a account? <Link href="/signup">Sign up</Link>
-            </LinkWrapper>
           )}
         </ContentCenterWrapper>
       </Wrapper>

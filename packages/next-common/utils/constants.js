@@ -54,3 +54,8 @@ export const BalanceDecimals = {
   DOT: 2,
   KSM: 2,
 };
+
+export const CACHE_KEY = {
+  lastLoginAddress: "lastLoggedInAddress",
+  accountMap: "accountMap",
+};

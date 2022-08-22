@@ -13,8 +13,10 @@ import { p_14_normal } from "../../styles/componentCss";
 import GhostButton from "../buttons/ghostButton";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import BaseLayout from "../layout/baseLayout";
+import { CACHE_KEY } from "../../utils/constants";
 
 const Label = styled.div`
+  margin-bottom: 8px;
   font-weight: bold;
   font-size: 12px;
 `;
@@ -43,10 +45,18 @@ const Hint = styled.p`
   border-color: ${(props) => props.theme.grey300Border};
 `;
 
+const BorderRadiusWrapper = styled.div`
+  > div,
+  p {
+    border-radius: 4px;
+  }
+`;
+
 const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
   const address = loginUser?.addresses?.find(
     (address) => address.chain === chain
   )?.address;
+  const [accountName, setAccountName] = useState("");
   const [errors, setErrors] = useState();
   const [email, setEmail] = useState("");
   const [pin, setPin] = useState("");
@@ -54,6 +64,16 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
   const identity = useIdentity(address, chain);
 
   const router = useRouter();
+
+  useEffect(() => {
+    try {
+      const accountMap = JSON.parse(
+        localStorage.getItem(CACHE_KEY.accountMap) ?? "{}"
+      );
+      const accountName = accountMap[address];
+      setAccountName(accountName);
+    } catch (e) {}
+  }, []);
 
   useEffect(() => {
     if (loginUser === null) {
@@ -69,9 +89,15 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
       <Wrapper>
         <ContentCenterWrapper>
           <PageTitleContainer>Login {` with Web3 address`}</PageTitleContainer>
-          <Hint>Set email for receiving notifications</Hint>
-          <Label>Web3 address</Label>
-          <Option item={{ address }} chain={chain} selected />
+          <BorderRadiusWrapper>
+            <Hint>Set email for receiving notifications</Hint>
+            <Label>Web3 address</Label>
+            <Option
+              item={{ address, name: accountName }}
+              chain={chain}
+              selected
+            />
+          </BorderRadiusWrapper>
           <EmailInput
             identity={identity}
             email={email}

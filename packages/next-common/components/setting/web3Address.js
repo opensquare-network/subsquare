@@ -17,6 +17,7 @@ const AddressWrapper = styled.div`
 `;
 
 const FullAddress = styled.div`
+  font-size: 14px;
   color: ${(props) => props.theme.textTertiary};
   @media screen and (max-width: 1024px) {
     display: none;
@@ -24,6 +25,7 @@ const FullAddress = styled.div`
 `;
 
 const ShortAddress = styled.div`
+  font-size: 14px;
   color: ${(props) => props.theme.textTertiary};
   @media screen and (min-width: 1024px) {
     display: none;
