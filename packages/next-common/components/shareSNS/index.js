@@ -52,16 +52,13 @@ export default function Share({ share2SNStext = "" }) {
   useOnClickOutside(ref, () => setShowShare(false));
 
   const tweet = () => {
+    setShowShare(false);
     const url =
       "https://twitter.com/share?url=" +
       encodeURIComponent(window.location.href) +
       "&text=" +
       encodeURIComponent(share2SNStext ?? document.title);
-    window.open(
-      url,
-      "",
-      "menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600"
-    );
+    window.open(url, "_blank");
   };
 
   return (
