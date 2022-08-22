@@ -3,12 +3,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import User from "next-common/components/user";
 import Timeline from "next-common/components/timeline";
-import {
-  getNode,
-  isMotionEnded,
-  timeDurationFromNow,
-  toPrecision,
-} from "next-common/utils";
+import { getNode, isMotionEnded, timeDurationFromNow, toPrecision, } from "next-common/utils";
 import findLastIndex from "lodash.findlastindex";
 import Flex from "next-common/components/styled/flex";
 import ArticleContent from "next-common/components/articleContent";
@@ -19,16 +14,13 @@ import MultiKVList from "next-common/components/listInfo/multiKVList";
 import MotionEnd from "next-common/components/motionEnd";
 import { useSelector } from "react-redux";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
-import { finalizedHeightSelector } from "next-common/store/reducers/chainSlice";
+import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { EditablePanel } from "next-common/components/styled/panel";
 import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
 import CollectiveMetadata from "next-common/components/collective/metadata";
 import UserWithLink from "next-common/components/user/userWithLink";
-import {
-  DemocracyTag,
-  TreasuryTag,
-} from "next-common/components/tags/business";
+import { DemocracyTag, TreasuryTag, } from "next-common/components/tags/business";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -37,7 +29,7 @@ const DividerWrapper = styled(Flex)`
     ::before {
       content: "·";
       font-size: 12px;
-      color: ${(props) => props.theme.textTertiary}
+      color: ${(props) => props.theme.textTertiary};
       margin: 0 8px;
     }
   }
@@ -186,9 +178,9 @@ export default function TechcommMotionDetail({
   const [post, setPost] = useState(motion);
   const [isEdit, setIsEdit] = useState(false);
   const motionEndHeight = motion.onchainData?.voting?.end;
-  const currentFinalHeight = useSelector(finalizedHeightSelector);
+  const blockHeight = useSelector(latestHeightSelector);
   const estimatedBlocksTime = useEstimateBlocksTime(
-    currentFinalHeight - motionEndHeight
+    blockHeight - motionEndHeight
   );
   if (!node) {
     return null;
@@ -203,8 +195,8 @@ export default function TechcommMotionDetail({
   const showMotionEnd =
     !motionEnd &&
     motionEndHeight &&
-    currentFinalHeight &&
-    currentFinalHeight <= motionEndHeight &&
+    blockHeight &&
+    blockHeight <= motionEndHeight &&
     estimatedBlocksTime;
 
   let timelineData;

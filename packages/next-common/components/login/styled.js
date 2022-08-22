@@ -26,6 +26,7 @@ export const LinkWrapper = styled.div`
   a {
     font-weight: bold;
     color: ${(props) => props.theme.primaryPurple500};
+    cursor: pointer;
   }
 `;
 

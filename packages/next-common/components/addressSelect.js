@@ -5,13 +5,14 @@ import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
 import Avatar from "./avatar";
 import Flex from "./styled/flex";
 import Relative from "./styled/relative";
-import { shadow_200 } from "../styles/componentCss";
+import { pretty_scroll_bar, shadow_200 } from "../styles/componentCss";
 import { encodeAddressToChain } from "../services/address";
 import { nodes } from "../utils/constants";
 import { fetchIdentity } from "../services/identity";
 import Identity from "./Identity";
 import Caret from "./icons/caret";
 import { addressEllipsis } from "../utils";
+import PseudoAvatar from "../assets/imgs/pesudoAvatar.svg";
 
 const Wrapper = Relative;
 
@@ -36,6 +37,12 @@ const Select = styled(Flex)`
     flex: 0 0 auto;
     margin-left: auto;
   }
+  ${(props) =>
+    props.disabled &&
+    css`
+      background: ${props.theme.grey100Bg};
+      pointer-events: none;
+    `};
 `;
 
 const NameWrapper = styled.div`
@@ -60,17 +67,10 @@ const Options = styled.div`
   ${shadow_200};
   border-radius: 4px;
   max-height: 320px;
-  overflow-y: auto;
+  overflow-y: overlay;
   z-index: 1;
 
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: ${(props) => props.theme.grey400Border};
-    border-right: 4px solid white;
-  }
+  ${pretty_scroll_bar};
 `;
 
 const Item = styled(Flex)`
@@ -135,11 +135,27 @@ function Account({ account, chain }) {
           <>
             <div>{account?.name}</div>
             <div>
-              {addressEllipsis(encodeAddressToChain(account.address, chain))}
+              {addressEllipsis(encodeAddressToChain(account.address, chain)) ??
+                "--"}
             </div>
           </>
         )}
       </NameWrapper>
+    </>
+  );
+}
+
+function EmptyAccount({ chain }) {
+  return (
+    <>
+      <PseudoAvatar />
+      <Account
+        account={{
+          address: "--",
+          name: "--",
+        }}
+        chain={chain}
+      />
     </>
   );
 }
@@ -165,8 +181,12 @@ export default function AddressSelect({
 
   return (
     <Wrapper ref={ref}>
-      <Select onClick={() => setShow(!show)}>
-        {selectedAccount && <Account account={selectedAccount} chain={chain} />}
+      <Select onClick={() => setShow(!show)} disabled={accounts?.length === 0}>
+        {selectedAccount ? (
+          <Account account={selectedAccount} chain={chain} />
+        ) : (
+          <EmptyAccount chain={chain} />
+        )}
         <Caret down={!show} />
       </Select>
       {show && (

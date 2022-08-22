@@ -6,7 +6,7 @@ const Common = styled.div`
   height: unset;
   align-items: center;
 
-  padding: 4px 8px;
+  padding: 2px 8px;
   border-radius: 10px;
 
   font-style: normal;

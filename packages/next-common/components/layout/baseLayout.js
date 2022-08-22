@@ -3,20 +3,17 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { currentNodeSelector } from "../../store/reducers/nodeSlice";
 import useApi from "../../utils/hooks/useApi";
-import { useBestNumber, useBlockTime } from "../../utils/hooks";
+import { useSubscribeChainHead, useBlockTime, useChainHeight } from "../../utils/hooks";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import dark from "../styled/theme/dark";
 import light from "../styled/theme/light";
-import {
-  setBlockTime,
-  setFinalizedHeight,
-} from "../../store/reducers/chainSlice";
+import { setBlockTime, setLatestHeight, setNowHeight } from "../../store/reducers/chainSlice";
 import SEO from "../SEO";
 import capitalize from "../../utils/capitalize";
 import { DEFAULT_SEO_INFO } from "../../utils/constants";
 import useWindowSize from "../../utils/hooks/useWindowSize";
 import isNil from "lodash.isnil";
-import styled, { ThemeProvider } from "styled-components";
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import Auth from "../auth";
 import Header from "../header";
 import Content from "./content";
@@ -32,13 +29,21 @@ const Wrapper = styled.div`
   background: ${(props) => props.theme.grey100Bg};
 `;
 
+const GlobalStyle = createGlobalStyle`
+  body {
+    background: ${(props) => props.theme.grey100Bg};
+  }
+`
+
 export default function BaseLayout({ user, left, children, seoInfo }) {
   let chain = process.env.NEXT_PUBLIC_CHAIN;
 
   const endpoint = useSelector(currentNodeSelector);
   const api = useApi(chain, endpoint);
   const blockTime = useBlockTime(api);
-  const bestNumber = useBestNumber(api);
+  const latestHeight = useSubscribeChainHead(api);
+  const nowHeight = useChainHeight(api);
+
   const dispatch = useDispatch();
   const isMounted = useIsMountedBool();
   const mode = useSelector(modeSelector);
@@ -51,10 +56,14 @@ export default function BaseLayout({ user, left, children, seoInfo }) {
   }, [blockTime, dispatch, isMounted]);
 
   useEffect(() => {
-    if (bestNumber && isMounted()) {
-      dispatch(setFinalizedHeight(bestNumber.toNumber()));
+    if (latestHeight && isMounted()) {
+      dispatch(setLatestHeight(latestHeight));
     }
-  }, [bestNumber, dispatch, isMounted]);
+  }, [latestHeight, dispatch, isMounted]);
+
+  useEffect(() => {
+    dispatch(setNowHeight(nowHeight));
+  }, [nowHeight, dispatch])
 
   const seo = (
     <SEO
@@ -69,13 +78,14 @@ export default function BaseLayout({ user, left, children, seoInfo }) {
 
   const { width } = useWindowSize();
   if (isNil(width)) {
-    return <Wrapper>{seo}</Wrapper>;
+    return <div>{seo}</div>;
   }
 
   return (
     <ThemeProvider theme={theme}>
       <Wrapper>
         {seo}
+        <GlobalStyle />
         <Auth chain={chain} />
         <Header user={user} left={left} chain={chain} />
         <Content left={left}>{children}</Content>

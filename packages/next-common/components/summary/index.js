@@ -2,20 +2,12 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import CountDown from "./countDown";
-import {
-  abbreviateBigNumber,
-  estimateBlocksTime,
-  getNode,
-  toPrecision,
-} from "../../utils";
+import { abbreviateBigNumber, estimateBlocksTime, getNode, toPrecision, } from "../../utils";
 import { currentNodeSelector } from "next-common/store/reducers/nodeSlice";
 import useApi from "../../utils/hooks/useApi";
 import useTreasuryFree from "../../utils/hooks/useTreasuryFree";
 import useTreasuryBurn from "../../utils/hooks/useTreasuryBurn";
-import {
-  blockTimeSelector,
-  finalizedHeightSelector,
-} from "../../store/reducers/chainSlice";
+import { blockTimeSelector, latestHeightSelector, } from "../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
@@ -66,7 +58,7 @@ export default function Summary({ chain }) {
   const api = useApi(chain, endpoint);
   const node = getNode(chain);
   const blockTime = useSelector(blockTimeSelector);
-  const finalizedHeight = useSelector(finalizedHeightSelector);
+  const blockHeight = useSelector(latestHeightSelector);
 
   const decimals = node?.decimals;
   const symbol = node?.symbol;
@@ -76,9 +68,9 @@ export default function Summary({ chain }) {
   const isMounted = useIsMountedBool();
 
   useEffect(() => {
-    if (api && finalizedHeight) {
+    if (api && blockHeight) {
       const spendPeriod = api.consts.treasury.spendPeriod.toNumber();
-      const goneBlocks = new BigNumber(finalizedHeight)
+      const goneBlocks = new BigNumber(blockHeight)
         .mod(spendPeriod)
         .toNumber();
       const progress = new BigNumber(goneBlocks)
@@ -94,7 +86,7 @@ export default function Summary({ chain }) {
         });
       }
     }
-  }, [api, finalizedHeight]);
+  }, [api, blockHeight]);
 
   return (
     <Wrapper>

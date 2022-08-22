@@ -1,6 +1,4 @@
 import BigNumber from "bignumber.js";
-import { getTotalSupply } from "./escrow/totalSupply";
-import { getFinalizedBlockNumber } from "./escrow/utils";
 import compareRationals from "next-common/utils/democracy/rational";
 
 const ONE = new BigNumber(1);
@@ -65,23 +63,6 @@ export function calcPassing(referendumInfo, totalIssuance) {
   }
 
   return false;
-}
-
-const electorates = {};
-
-export async function getElectorate(api, height) {
-  let blockHeight = height;
-  if (!blockHeight) {
-    blockHeight = await getFinalizedBlockNumber(api);
-  }
-
-  if (electorates[blockHeight]) {
-    return electorates[blockHeight];
-  }
-
-  const value = await getTotalSupply(api, blockHeight);
-  electorates[blockHeight] = value;
-  return value;
 }
 
 export async function getAddressVote(api, referendumIndex, address) {

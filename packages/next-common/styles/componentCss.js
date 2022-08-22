@@ -59,6 +59,17 @@ export const no_scroll_bar = css`
   }
 `;
 
+export const pretty_scroll_bar = css`
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: ${(props) => props.theme.grey400Border};
+    border-radius: 4px;
+  }
+`;
+
 export const font_family_inter = css`
   font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
     Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;

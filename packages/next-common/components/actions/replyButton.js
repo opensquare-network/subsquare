@@ -1,3 +1,4 @@
+import React from "react";
 import ReplyIcon from "../../assets/imgs/icons/reply.svg";
 import { Item } from "./styled";
 

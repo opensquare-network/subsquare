@@ -7,7 +7,7 @@ import TipIcon from "../../../assets/imgs/icons/tips.svg";
 
 const treasury = {
   name: "TREASURY",
-  excludeToChains: [Chains.kabocha, Chains.centrifuge],
+  excludeToChains: [Chains.kabocha],
   items: [
     {
       value: "proposals",
@@ -24,6 +24,8 @@ const treasury = {
         Chains.kintsugi,
         Chains.interlay,
         Chains.litmus,
+        Chains.zeitgeist,
+        Chains.centrifuge,
       ],
       icon: <BountyIcon />,
     },
@@ -38,7 +40,13 @@ const treasury = {
       value: "tips",
       name: "Tips",
       pathname: "/treasury/tips",
-      excludeToChains: [Chains.kintsugi, Chains.interlay, Chains.litmus],
+      excludeToChains: [
+        Chains.kintsugi,
+        Chains.interlay,
+        Chains.litmus,
+        Chains.zeitgeist,
+        Chains.centrifuge,
+      ],
       icon: <TipIcon />,
     },
   ],

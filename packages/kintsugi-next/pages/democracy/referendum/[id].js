@@ -16,6 +16,10 @@ import ReferendumMetadata from "next-common/components/democracy/metadata";
 import useCommentComponent from "next-common/components/useCommentComponent";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
+import extractVoteInfo from "next-common/utils/democracy/referendum";
+import { fetchElectorate, fetchVotes, setElectorate } from "next-common/store/reducers/referendumSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, publicProposal, comments, chain }) => {
@@ -27,13 +31,18 @@ export default withLoginUserRedux(
       type: detailPageCategory.DEMOCRACY_REFERENDUM,
     });
 
+    const { voteInfo: { voteFinished, voteFinishedHeight }, referendumIndex } = detail;
     const api = useApi(chain);
     const [referendumStatus, setReferendumStatus] = useState(
       detail?.onchainData?.status || detail?.onchainData?.info?.ongoing
     );
+    const possibleElectorate = referendumStatus?.tally?.electorate;
+
     const isMounted = useIsMounted();
     const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] =
       useState(false);
+    const dispatch = useDispatch();
+    const latestHeight = useSelector(latestHeightSelector)
 
     const proposalData = getDemocracyTimelineData(
       publicProposal?.onchainData?.timeline || [],
@@ -47,15 +56,19 @@ export default withLoginUserRedux(
     );
     const timelineData = proposalData.concat(referendumData);
 
-    const timeline = detail?.onchainData?.timeline || [];
-    const voteFinished = [
-      "Executed",
-      "Passed",
-      "NotPassed",
-      "Cancelled",
-      "PreimageInvalid",
-      "PreimageMissing",
-    ].includes(timeline[timeline.length - 1]?.method);
+    useEffect(() => {
+      if (api) {
+        dispatch(fetchVotes(api, referendumIndex, voteFinishedHeight))
+      }
+    }, [api, dispatch, referendumIndex, voteFinishedHeight])
+
+    useEffect(() => {
+      if (possibleElectorate) {
+        dispatch(setElectorate(possibleElectorate));
+      } else if (api) {
+        dispatch(fetchElectorate(api, voteFinishedHeight || latestHeight, possibleElectorate))
+      }
+    }, [api, dispatch, voteFinishedHeight, latestHeight, possibleElectorate])
 
     useEffect(() => {
       if (voteFinished) {
@@ -140,6 +153,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
   }
 
   const postId = detail?._id;
+  const voteInfo = extractVoteInfo(detail?.onchainData?.timeline)
+  Object.assign(detail, { voteInfo });
 
   const { result: comments } = await nextApi.fetch(
     `democracy/referendums/${postId}/comments`,

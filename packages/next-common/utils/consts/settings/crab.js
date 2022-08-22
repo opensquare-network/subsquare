@@ -1,7 +1,15 @@
+import Logo from "../../../assets/header-logos/crab.svg";
+import DarkModeLogo from "../../../assets/header-logos/crab-dark.svg";
+import Avatar from "../../../assets/icons/chain/crab.png";
+
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 
 const DEFAULT_CRAB_NODES = [
+  {
+    name: "OnFinality",
+    url: "wss://darwinia-crab.api.onfinality.io/public-ws",
+  },
   {
     name: "Darwinia",
     url: "wss://crab-rpc.darwinia.network",
@@ -9,10 +17,6 @@ const DEFAULT_CRAB_NODES = [
   {
     name: "Dwellir",
     url: "wss://darwiniacrab-rpc.dwellir.com",
-  },
-  {
-    name: "OnFinality",
-    url: "wss://darwinia-crab.api.onfinality.io/public-ws",
   },
 ];
 
@@ -28,6 +32,10 @@ const crab = {
   blockTime: 6000,
   snsCoverCid: "bafybeihxlzbqo54y5llxp4p5kd77bgxpgjppfk33gfgdbo6kjraxclefcu",
   endpoints: DEFAULT_CRAB_NODES,
+  headerLogo: Logo,
+  darkHeaderLogo: DarkModeLogo,
+  avatar: Avatar,
+
 };
 
 export default crab;

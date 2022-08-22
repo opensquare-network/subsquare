@@ -1,3 +1,4 @@
+import React from "react";
 import polkadot from "./consts/settings/polkadot";
 import kusama from "./consts/settings/kusama";
 import crab from "./consts/settings/crab";
@@ -9,10 +10,11 @@ import kintsugi from "./consts/settings/kintsugi";
 import khala from "./consts/settings/khala";
 import phala from "./consts/settings/phala";
 import turing from "./consts/settings/turing";
+import centrifuge from "./consts/settings/centrifuge";
 // import kabocha from "./consts/settings/kabocha";
 import crust from "./consts/settings/crust";
 import litmus from "./consts/settings/litmus";
-import React from "react";
+import zeitgeist from "./consts/settings/zeitgeist";
 
 export const nodes = [
   polkadot,
@@ -28,9 +30,10 @@ export const nodes = [
   interlay,
   turing,
   crab,
-  // centrifuge,
+  centrifuge,
   crust,
   litmus,
+  zeitgeist,
 ];
 
 export const EmptyList = {
@@ -50,4 +53,9 @@ export const DEFAULT_SEO_INFO = {
 export const BalanceDecimals = {
   DOT: 2,
   KSM: 2,
+};
+
+export const CACHE_KEY = {
+  lastLoginAddress: "lastLoggedInAddress",
+  accountMap: "accountMap",
 };

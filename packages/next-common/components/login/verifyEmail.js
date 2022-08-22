@@ -18,7 +18,10 @@ const Label = styled.div`
 `;
 
 const Text = styled.span`
-  color: #9da9bb;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 const SubButton = styled.button`
@@ -78,7 +81,7 @@ export default function VerifyEmail({ pin, setPin, email, errors, setErrors }) {
       <FlexBetween>
         <Label>Verify Email</Label>
         {verifySent ? (
-          <Text>{countdown}</Text>
+          <Text>{countdown}s</Text>
         ) : (
           <SendButton onClick={send} loading={sending} />
         )}

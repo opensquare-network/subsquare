@@ -22,7 +22,15 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
     }
   }
 
-  ul.mention-list,
+  div.off {
+    background: ${(props) => props.theme.grey400Border};
+  }
+
+  div.on {
+    background: ${(props) => props.theme.primaryPurple500};
+  }
+
+  div ul.mention-list,
   div.ql-mention-list-container {
     background: ${(props) => props.theme.neutral};
     li[aria-selected="true"],
@@ -52,6 +60,10 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
         stroke: ${(props) => props.theme.textPrimary} !important;
       }
     }
+  }
+
+  .editor-toolbar-buttons button {
+    background-color: ${(props) => props.theme.grey100Bg} !important;
   }
 
   .editor-toolbar-buttons button.active {
@@ -97,6 +109,10 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
   .ql-toolbar.ql-snow,
   span.ql-formats {
     background-color: ${(props) => props.theme.grey100Bg} !important;
+    border-color: ${(props) => props.theme.grey300Border} !important;
+  }
+
+  .editor-toolbar > div {
     border-color: ${(props) => props.theme.grey300Border} !important;
   }
 

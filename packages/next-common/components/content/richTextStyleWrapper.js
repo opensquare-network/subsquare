@@ -11,8 +11,9 @@ const RichTextStyleWrapper = styled.div`
   div.ql-editor,
   div.html-body,
   div.markdown-body {
+    word-break: break-all;
     hr {
-      background-color: ${(props) => props.theme.grey200Border};
+      background-color: ${(props) => props.theme.grey300Border};
     }
 
     span.mention,

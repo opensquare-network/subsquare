@@ -18,7 +18,7 @@ const Wrapper = styled(Flex)`
   border: 1px solid ${(props) => props.theme.grey200Border};
   font-size: 14px;
   line-height: 140%;
-  width: 246px;
+  width: 320px;
   font-style: normal;
   font-weight: 400;
   color: ${(props) => props.theme.textPrimary};
@@ -35,15 +35,15 @@ const Wrapper = styled(Flex)`
     flex: 0 0 auto;
   }
   > img:last-child {
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     margin-left: 8px;
     cursor: pointer;
     flex: 0 0 auto;
   }
   > div {
     flex-grow: 1;
-    width: 150px;
+    width: 224px;
     word-wrap: break-word;
   }
   transform: translateX(200%);
@@ -86,7 +86,7 @@ const ToastItem = ({ type, message, id, sticky }) => {
   return (
     <Wrapper className={tranClass}>
       {type === "pending" ? (
-        <Loading size={20} />
+        <Loading size={16} />
       ) : type === "success" ? (
         <ToastSuccessIcon />
       ) : type === "error" ? (

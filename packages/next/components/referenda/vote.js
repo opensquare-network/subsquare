@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import BigNumber from "bignumber.js";
 import styled from "styled-components";
@@ -10,7 +10,6 @@ import {
   getThresholdOfSuperMajorityAgainst,
   getThresholdOfSuperMajorityApprove,
 } from "utils/referendumUtil";
-import { useElectorate } from "utils/hooks";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useWindowSize from "next-common/utils/hooks/useWindowSize.js";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
@@ -21,14 +20,30 @@ import ElectorateIcon from "public/imgs/icons/electorate.svg";
 import Threshold from "./threshold";
 import DisplayValue from "next-common/components/displayValue";
 import Loading from "next-common/components/loading";
-import { useBestNumber } from "next-common/utils/hooks";
 import Chains from "next-common/utils/consts/chains";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import { useSelector } from "react-redux";
+import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
+import {
+  electorateSelector,
+  isLoadingElectorateSelector,
+  isLoadingVotesSelector,
+  votesSelector,
+} from "next-common/store/reducers/referendumSlice";
+import SubLink from "next-common/components/styled/subLink";
+import VotesCount from "next-common/components/democracy/referendum/votesCount";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
 });
+
+const VotesPopup = dynamic(
+  () => import("next-common/components/democracy/votesPopup"),
+  {
+    ssr: false,
+  }
+);
 
 const Wrapper = styled.div`
   position: absolute;
@@ -73,6 +88,7 @@ const Contents = styled(Headers)`
 `;
 
 const Status = styled.div`
+  margin-top: 8px !important;
   width: 100%;
   line-height: 38px;
   border-width: 0;
@@ -182,10 +198,15 @@ function Vote({
   chain,
 }) {
   const [showVote, setShowVote] = useState(false);
+  const [showVoteList, setShowVoteList] = useState(false);
   const isMounted = useIsMounted();
   const api = useApi(chain);
-  const bestNumber = useBestNumber(api);
-  const blockHeight = bestNumber?.toNumber() || 0;
+  const blockHeight = useSelector(latestHeightSelector);
+
+  const electorate = useSelector(electorateSelector);
+  const isElectorateLoading = useSelector(isLoadingElectorateSelector);
+  const isLoadingVotes = useSelector(isLoadingVotesSelector);
+  const { allAye = [], allNay = [] } = useSelector(votesSelector);
 
   const updateVoteProgress = useCallback(() => {
     api?.query.democracy
@@ -206,14 +227,6 @@ function Vote({
     setIsLoadingReferendumStatus,
     isMounted,
   ]);
-
-  const referendumEndHeight =
-    referendumInfo?.finished?.end || referendumStatus.end;
-  const [electorate, isElectorateLoading] = useElectorate(
-    api,
-    Math.min(referendumEndHeight, blockHeight),
-    referendumStatus?.tally
-  );
 
   const { width } = useWindowSize();
 
@@ -322,6 +335,9 @@ function Vote({
             <Header>
               <AyeIcon />
               Aye
+              {!isLoadingVotes ? (
+                <VotesCount>{allAye.length}</VotesCount>
+              ) : null}
             </Header>
             <Value>
               <DisplayValue
@@ -335,6 +351,9 @@ function Vote({
             <Header>
               <NayIcon />
               Nay
+              {!isLoadingVotes ? (
+                <VotesCount>{allNay.length}</VotesCount>
+              ) : null}
             </Header>
             <Value>
               <DisplayValue
@@ -372,6 +391,7 @@ function Vote({
           </Row>
         </div>
         {finishedResult}
+        <SubLink onClick={() => setShowVoteList(true)}>Check all votes</SubLink>
         {referendumInfo &&
           !finished &&
           (isPassing ? (
@@ -399,8 +419,11 @@ function Vote({
           onInBlock={updateVoteProgress}
         />
       )}
+      {showVoteList && (
+        <VotesPopup setShowVoteList={setShowVoteList} chain={chain} />
+      )}
     </Wrapper>
   );
 }
 
-export default Vote;
+export default memo(Vote);
