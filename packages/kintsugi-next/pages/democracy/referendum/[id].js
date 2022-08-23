@@ -15,7 +15,7 @@ import ReferendumMetadata from "next-common/components/democracy/metadata";
 import useCommentComponent from "next-common/components/useCommentComponent";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
-import { useReferendumVoteData } from "next-common/components/referenda/hooks";
+import useReferendumVoteData from "next-common/utils/hooks/referenda/useReferendumVoteData";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, publicProposal, comments, chain }) => {

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import extractVoteInfo from "../../utils/democracy/referendum";
-import useIsMounted from "../../utils/hooks/useIsMounted";
+import extractVoteInfo from "../../democracy/referendum";
+import useIsMounted from "../useIsMounted";
 import {
   fetchElectorate,
   fetchVotes,
   setElectorate,
-} from "../../store/reducers/referendumSlice";
-import { nowHeightSelector } from "../../store/reducers/chainSlice";
+} from "../../../store/reducers/referendumSlice";
+import { nowHeightSelector } from "../../../store/reducers/chainSlice";
 
-export function useReferendumVoteData(referendum, api) {
+export default function useReferendumVoteData(referendum, api) {
   const { voteFinished, voteFinishedHeight } = extractVoteInfo(
     referendum?.timeline
   );

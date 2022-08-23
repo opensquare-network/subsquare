@@ -1,5 +1,5 @@
 import VoteBar from "components/referenda/voteBar";
-import { useReferendumVoteData } from "next-common/components/referenda/hooks";
+import useReferendumVoteData from "next-common/utils/hooks/referenda/useReferendumVoteData";
 import { electorateSelector } from "next-common/store/reducers/referendumSlice";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import { useSelector } from "react-redux";

@@ -14,7 +14,7 @@ import ReferendumMetadata from "next-common/components/democracy/metadata";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
-import { useReferendumVoteData } from "next-common/components/referenda/hooks";
+import useReferendumVoteData from "next-common/utils/hooks/referenda/useReferendumVoteData";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
