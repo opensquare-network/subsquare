@@ -1,3 +1,4 @@
+import React from "react";
 import { detailPageCategory } from "../consts/business/category";
 
 export const getShare2SNStext = (post, type) => {
