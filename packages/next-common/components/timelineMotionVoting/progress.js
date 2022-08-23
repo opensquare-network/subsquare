@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Flex from "../styled/flex";
 import { Approve, Reject } from "../icons";
+
 const Wrapper = styled.div`
   padding: 10px 0;
   font-size: 12px;

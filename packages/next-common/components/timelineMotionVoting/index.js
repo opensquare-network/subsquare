@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import User from "next-common/components/user";
+import User from "../user";
 import Progress from "./progress";
-import Flex from "next-common/components/styled/flex";
+import Flex from "../styled/flex";
 import { Approve } from "../icons";
 
 const TitleWrapper = styled(Flex)`

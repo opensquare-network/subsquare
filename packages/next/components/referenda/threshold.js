@@ -20,14 +20,19 @@ const Threshold = styled.div`
         `}
   width: 2px;
   height: 1rem;
+  ${(p) =>
+    p.thin &&
+    css`
+      height: 12px;
+    `}
   background-color: ${(props) => props.theme.grey400Border};
   transform: translateX(-50%);
 `;
 
-export default function ThresholdComponent({ threshold }) {
+export default function ThresholdComponent({ threshold, thin = false }) {
   return (
     <ThresholdScope>
-      <Threshold threshold={threshold} />
+      <Threshold threshold={threshold} thin={thin} />
     </ThresholdScope>
   );
 }
