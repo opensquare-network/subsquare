@@ -29,8 +29,8 @@ export default function ArticleActions({
       <Wrapper>
         <ReplyButton onReply={onReply} noHover={noHover} />
         {ThumbsUpComponent}
-        {edit && <ContentMenu edit={edit} setIsEdit={setIsEdit} alwaysShow />}
         <Share share2SNStext={share2SNStext} />
+        {edit && <ContentMenu edit={edit} setIsEdit={setIsEdit} alwaysShow />}
       </Wrapper>
 
       <ThumbUpList
