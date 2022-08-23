@@ -231,8 +231,6 @@ function Vote({
   ]);
 
   const { width } = useWindowSize();
-  const isLoadingVotes = useSelector(isLoadingVotesSelector);
-  const { allAye = [], allNay = [] } = useSelector(votesSelector);
 
   const node = getNode(chain);
   if (!node) {
