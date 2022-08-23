@@ -1,6 +1,7 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import Chains from "../../utils/consts/chains";
 import {
+  altairOptions,
   bifrostOptions,
   karuraOptions,
   polkadexOptions,
@@ -39,6 +40,8 @@ export default async function getApi(chain, endpoint) {
       customizedOptions = crabOptions;
     } else if (chain === Chains.zeitgeist) {
       customizedOptions = zeitgeistOptions;
+    } else if (chain === Chains.altair) {
+      customizedOptions = altairOptions;
     }
 
     const api = (

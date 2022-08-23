@@ -16,6 +16,7 @@ import crust from "./crust";
 import centrifuge from "./centrifuge";
 import litmus from "./litmus";
 import zeitgeist from "./zeitgeist";
+import altair from "./altair";
 
 const settingsMap = {
   polkadot,
@@ -25,6 +26,7 @@ const settingsMap = {
   bifrost,
   calamari,
   centrifuge,
+  altair,
   crust,
   crab,
   interlay,
