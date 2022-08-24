@@ -3,17 +3,20 @@ import dynamic from "next/dynamic";
 import styled from "styled-components";
 import { calcPassing } from "utils/referendumUtil";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Loading from "next-common/components/loading";
 import Chains from "next-common/utils/consts/chains";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import {
   electorateSelector,
+  fetchReferendumStatus,
   isLoadingElectorateSelector,
+  isLoadingReferendumStatusSelector,
   isLoadingVotesSelector,
+  referendumStatusSelector,
+  setIsLoadingReferendumStatus,
   votesSelector,
 } from "next-common/store/reducers/referendumSlice";
 import SubLink from "next-common/components/styled/subLink";
@@ -89,16 +92,12 @@ const VoteButton = styled.button`
 
 function Vote({
   referendumInfo,
-  referendumStatus,
-  setReferendumStatus,
-  isLoadingReferendumStatus,
-  setIsLoadingReferendumStatus,
   referendumIndex,
   chain,
 }) {
+  const dispatch = useDispatch();
   const [showVote, setShowVote] = useState(false);
   const [showVoteList, setShowVoteList] = useState(false);
-  const isMounted = useIsMounted();
   const api = useApi(chain);
   const blockHeight = useSelector(latestHeightSelector);
 
@@ -106,26 +105,12 @@ function Vote({
   const isElectorateLoading = useSelector(isLoadingElectorateSelector);
   const isLoadingVotes = useSelector(isLoadingVotesSelector);
   const { allAye = [], allNay = [] } = useSelector(votesSelector);
+  const referendumStatus = useSelector(referendumStatusSelector);
+  const isLoadingReferendumStatus = useSelector(isLoadingReferendumStatusSelector);
 
   const updateVoteProgress = useCallback(() => {
-    api?.query.democracy
-      .referendumInfoOf(referendumIndex)
-      .then((referendumInfo) => {
-        const data = referendumInfo.toJSON();
-        if (data?.ongoing && isMounted.current) {
-          setReferendumStatus(data?.ongoing);
-        }
-      })
-      .finally(() => {
-        setIsLoadingReferendumStatus(false);
-      });
-  }, [
-    api,
-    referendumIndex,
-    setReferendumStatus,
-    setIsLoadingReferendumStatus,
-    isMounted,
-  ]);
+    dispatch(fetchReferendumStatus(api, referendumIndex));
+  }, [dispatch, api, referendumIndex]);
 
   const isPassing = calcPassing(referendumStatus, electorate);
 
@@ -198,7 +183,7 @@ function Vote({
           chain={chain}
           onClose={() => setShowVote(false)}
           referendumIndex={referendumIndex}
-          onSubmitted={() => setIsLoadingReferendumStatus(true)}
+          onSubmitted={() => dispatch(setIsLoadingReferendumStatus(true))}
           onInBlock={updateVoteProgress}
         />
       )}

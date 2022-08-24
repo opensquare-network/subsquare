@@ -1,13 +1,12 @@
 import VoteBar from "components/referenda/voteBar";
-import useReferendumVoteData from "next-common/utils/hooks/referenda/useReferendumVoteData";
-import { electorateSelector } from "next-common/store/reducers/referendumSlice";
+import useMaybeFetchReferendumStatus from "next-common/utils/hooks/referenda/useMaybeFetchReferendumStatus";
+import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
-import { useSelector } from "react-redux";
 
 export default function TimelineReferendumVote({ referendum, chain }) {
   const api = useApi(chain);
-  const { referendumStatus } = useReferendumVoteData(referendum, api);
-  const electorate = useSelector(electorateSelector);
+  const { referendumStatus } = useMaybeFetchReferendumStatus(referendum, api);
+  const electorate = useMaybeFetchElectorate(referendum, api);
 
   return (
     <VoteBar

@@ -15,7 +15,9 @@ import ReferendumMetadata from "next-common/components/democracy/metadata";
 import useCommentComponent from "next-common/components/useCommentComponent";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
-import useReferendumVoteData from "next-common/utils/hooks/referenda/useReferendumVoteData";
+import useMaybeFetchReferendumStatus from "next-common/utils/hooks/referenda/useMaybeFetchReferendumStatus";
+import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
+import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, publicProposal, comments, chain }) => {
@@ -28,12 +30,9 @@ export default withLoginUserRedux(
     });
 
     const api = useApi(chain);
-    const {
-      referendumStatus,
-      setReferendumStatus,
-      isLoadingReferendumStatus,
-      setIsLoadingReferendumStatus,
-    } = useReferendumVoteData(detail?.onchainData, api);
+    const { referendumStatus } = useMaybeFetchReferendumStatus(detail?.onchainData, api);
+    useMaybeFetchElectorate(detail?.onchainData, api);
+    useFetchVotes(detail?.onchainData, api);
 
     detail.status = detail.onchainData?.state?.state;
 
@@ -66,12 +65,8 @@ export default withLoginUserRedux(
 
         <Vote
           referendumInfo={detail?.onchainData?.info}
-          referendumStatus={referendumStatus}
-          setReferendumStatus={setReferendumStatus}
           chain={chain}
           referendumIndex={detail?.referendumIndex}
-          isLoadingReferendumStatus={isLoadingReferendumStatus}
-          setIsLoadingReferendumStatus={setIsLoadingReferendumStatus}
         />
 
         <ReferendumMetadata
