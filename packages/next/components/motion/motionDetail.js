@@ -151,6 +151,7 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
         motionIndex={post.motionIndex}
         updateVotes={updateVotes}
         isLoadingVote={isLoadingVote}
+        onChainData={post.onchainData}
         type={type}
       />
       <Business motion={post?.onchainData} chain={chain} />
