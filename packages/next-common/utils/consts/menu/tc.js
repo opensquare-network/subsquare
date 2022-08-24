@@ -5,7 +5,7 @@ import MembersIcon from "../../../assets/imgs/icons/members.svg";
 
 const techComm = {
   name: "TECH.COMM.",
-  excludeToChains: [Chains.kabocha, Chains.centrifuge],
+  excludeToChains: [Chains.kabocha, Chains.centrifuge, Chains.altair],
   items: [
     {
       value: "techCommProposals",

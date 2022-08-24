@@ -19,6 +19,7 @@ const Chains = {
   centrifuge: "centrifuge",
   litmus: "litmus",
   zeitgeist: "zeitgeist",
+  altair: "altair",
 };
 
 export default Chains;

@@ -15,6 +15,7 @@ import centrifuge from "./consts/settings/centrifuge";
 import crust from "./consts/settings/crust";
 import litmus from "./consts/settings/litmus";
 import zeitgeist from "./consts/settings/zeitgeist";
+import altair from "./consts/settings/altair";
 
 export const nodes = [
   polkadot,
@@ -31,6 +32,7 @@ export const nodes = [
   turing,
   crab,
   centrifuge,
+  altair,
   crust,
   litmus,
   zeitgeist,
