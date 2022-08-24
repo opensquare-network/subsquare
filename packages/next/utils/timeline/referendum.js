@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import businessCategory from "next-common/utils/consts/business/category";
 import TimelineReferendumVote from "components/timelineReferendumVote";
 
+// used in treasury proposal timeline
 export function createReferendumTimelineData(
   referendum = {},
   chain,
