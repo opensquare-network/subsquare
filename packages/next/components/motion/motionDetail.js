@@ -45,37 +45,35 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
     ? post.onchainData?.state?.indexer?.blockHash
     : null;
   const prime = usePrime({ blockHash, chain, type });
+  const singleApprovalMotion = post.onchainData.threshold === 1;
 
   const dbVotes = useMemo(() => {
-    if (post?.onchainData) {
-      // When there is only one council member, the motion executed immediately
-      // No "voting" field, and no "Voted" event in timeline
-      const hasVoted = (post.onchainData.timeline || []).some(
-        (item) => item.method === "Voted"
-      );
-      if (hasVoted) {
-        const timeline = post.onchainData.timeline || [];
-        const voters = Array.from(
-          new Map(
-            timeline
-              .filter((item) => item.method === "Voted")
-              .map((item) => [item.args.voter, item.args.approve])
-          )
-        );
-
-        // special data, in kusama before motion 345, proposer has a default aye vote
-        if (Chains.kusama === chain && post.onchainData.index < 345) {
-          const proposed = timeline.find((item) => item.method === "Proposed");
-          voters.unshift([proposed.args.proposer, true]);
-        }
-
-        return voters;
-      }
-
+    if (!post?.onchainData) {
       return [];
     }
 
-    return [];
+    if (singleApprovalMotion) {
+      return [
+        [post.onchainData.authors[0], true]
+      ];
+    }
+
+    const timeline = post.onchainData.timeline || [];
+    const voters = Array.from(
+      new Map(
+        timeline
+          .filter((item) => item.method === "Voted")
+          .map((item) => [item.args.voter, item.args.approve])
+      )
+    );
+
+    // special data, in kusama before motion 345, proposer has a default aye vote
+    if (Chains.kusama === chain && post.onchainData.index < 345) {
+      const proposed = timeline.find((item) => item.method === "Proposed");
+      voters.unshift([proposed.args.proposer, true]);
+    }
+
+    return voters;
   }, [post, chain]);
 
   const [votes, setVotes] = useState(dbVotes);
@@ -83,7 +81,7 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
   const [isLoadingVote, setIsLoadingVote] = useState(false);
 
   useEffect(() => {
-    if (!votingMethod || !readOnchainVotes) {
+    if (!votingMethod || !readOnchainVotes || singleApprovalMotion) {
       return;
     }
 
