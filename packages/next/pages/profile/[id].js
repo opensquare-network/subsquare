@@ -22,6 +22,7 @@ const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
+
   @media screen and (max-width: 768px) {
     margin-left: 16px;
     margin-right: 16px;
@@ -84,6 +85,21 @@ const CategoryOption = styled.li`
   cursor: pointer;
 `;
 
+const getFirstCategoryCount = (firstCategory, summary) => {
+  if (firstCategory === "comments" || firstCategory === "discussions") {
+    return summary[firstCategory];
+  }
+  return Object.keys(summary[firstCategory])
+    .map((secondCategory) => {
+      return summary[firstCategory][secondCategory];
+    })
+    .reduce((partialSum, a) => partialSum + a, 0);
+};
+
+const getSecondCategoryCount = (firstCategory, secondCategory, summary) => {
+  return summary[firstCategory][secondCategory];
+};
+
 const Category = ({ type, count, selected, onClick }) => {
   return (
     <CategoryOption selected={selected} onClick={onClick}>
@@ -93,99 +109,105 @@ const Category = ({ type, count, selected, onClick }) => {
   );
 };
 
-export default withLoginUserRedux(({ loginUser, posts, chain, id }) => {
-  const categories = [
-    {
-      id: "treasury",
-      name: "Treasury",
-      children: [
-        { id: "proposals", name: "Proposed Proposals" },
-        { id: "tips", name: "Proposed Tips" },
-      ],
-    },
-    {
-      id: "democracy",
-      name: "Democracy",
-      children: [{ id: "posts", name: "Discussions" }],
-    },
-    {
-      id: "posts",
-      name: "Discussions",
-      children: [{ id: "posts", name: "Discussions" }],
-    },
-    {
-      id: "comments",
-      name: "Comments",
-      children: [{ id: "comments", name: "Comments" }],
-    },
-  ];
+export default withLoginUserRedux(
+  ({ loginUser, discussions, summary, chain, id }) => {
+    const categories = [
+      {
+        id: "treasury",
+        name: "Treasury",
+        children: [
+          { id: "proposals", name: "Proposed Proposals" },
+          { id: "tips", name: "Proposed Tips" },
+        ],
+      },
+      {
+        id: "democracy",
+        name: "Democracy",
+        children: [{ id: "proposals", name: "Proposals" }],
+      },
+      {
+        id: "discussions",
+        name: "Discussions",
+        children: [{ id: "discussions", name: "Discussions" }],
+      },
+      {
+        id: "comments",
+        name: "Comments",
+        children: [{ id: "comments", name: "Comments" }],
+      },
+    ];
 
-  const [items, setItems] = React.useState(
-    (posts.items || []).map((item) => toDiscussionListItem(chain, item))
-  );
-  const [firstCategory, setFirstCategory] = React.useState(categories[0]);
-  const [secondCategory, setSecondCategory] = React.useState(
-    categories[0].children[0]
-  );
+    const [items, setItems] = React.useState(
+      (discussions.items || []).map((item) => toDiscussionListItem(chain, item))
+    );
+    const [firstCategory, setFirstCategory] = React.useState(categories[0]);
+    const [secondCategory, setSecondCategory] = React.useState(
+      categories[0].children[0]
+    );
 
-  return (
-    <DetailLayout user={loginUser} chain={chain}>
-      <Back href={` / `} text="Profile" />
-      <Wrapper>
-        <BioWrapper>
-          <Avatar address={id} size={48} />
-          <div>
-            <User chain={chain} add={id} showAvatar={false} fontSize={16} />
-            <Flex style={{ gap: 8, marginTop: 4 }}>
-              <Tertiary>{id}</Tertiary>
-              <Links chain={chain} address={id} />
-            </Flex>
-          </div>
-        </BioWrapper>
-        <CategoryWrapper>
-          <ul>
-            {categories.map((c, index) => (
-              <Category
-                onClick={() => {
-                  setFirstCategory(c);
-                  setSecondCategory(c.children[0]);
-                }}
-                key={index}
-                type={c.name}
-                count={1}
-                selected={c.id === firstCategory.id}
-              />
-            ))}
-          </ul>
-          <ul>
-            {firstCategory.children.map((c, index) => (
-              <Category
-                onClick={() => {
-                  setSecondCategory(c);
-                }}
-                key={index}
-                type={c.name}
-                count={1}
-                selected={c.id === secondCategory.id}
-              />
-            ))}
-          </ul>
-        </CategoryWrapper>
-      </Wrapper>
+    return (
+      <DetailLayout user={loginUser} chain={chain}>
+        <Back href={` / `} text="Profile" />
+        <Wrapper>
+          <BioWrapper>
+            <Avatar address={id} size={48} />
+            <div>
+              <User chain={chain} add={id} showAvatar={false} fontSize={16} />
+              <Flex style={{ gap: 8, marginTop: 4 }}>
+                <Tertiary>{id}</Tertiary>
+                <Links chain={chain} address={id} />
+              </Flex>
+            </div>
+          </BioWrapper>
+          <CategoryWrapper>
+            <ul>
+              {categories.map((c, index) => (
+                <Category
+                  onClick={() => {
+                    setFirstCategory(c);
+                    setSecondCategory(c.children[0]);
+                  }}
+                  key={index}
+                  type={c.name}
+                  count={getFirstCategoryCount(c.id, summary)}
+                  selected={c.id === firstCategory.id}
+                />
+              ))}
+            </ul>
+            <ul>
+              {firstCategory.children.map((c, index) => (
+                <Category
+                  onClick={() => {
+                    setSecondCategory(c);
+                  }}
+                  key={index}
+                  type={c.name}
+                  count={getSecondCategoryCount(
+                    firstCategory.id,
+                    c.id,
+                    summary
+                  )}
+                  selected={c.id === secondCategory.id}
+                />
+              ))}
+            </ul>
+          </CategoryWrapper>
+        </Wrapper>
 
-      <List
-        chain={chain}
-        category={`${firstCategory.name} ${secondCategory.name}`}
-        items={items}
-        pagination={{
-          page: posts.page,
-          pageSize: posts.pageSize,
-          total: posts.total,
-        }}
-      />
-    </DetailLayout>
-  );
-});
+        <List
+          chain={chain}
+          category={`${firstCategory.name} ${secondCategory.name}`}
+          items={items}
+          pagination={{
+            page: discussions.page,
+            pageSize: discussions.pageSize,
+            total: discussions.total,
+          }}
+        />
+      </DetailLayout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
@@ -193,15 +215,17 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   //fixme: this is mock
 
-  const [{ result: posts }] = await Promise.all([
+  const [{ result: discussions }, { result: summary }] = await Promise.all([
     nextApi.fetch("posts", { page: 1, pageSize: 3 }),
+    nextApi.fetch(`users/${id}/counts`),
   ]);
 
   return {
     props: {
       id,
       chain,
-      posts,
+      discussions,
+      summary,
     },
   };
 });
