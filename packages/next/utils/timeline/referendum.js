@@ -8,16 +8,7 @@ export function createReferendumTimelineData(
   linkable = false,
   linkPrefix = ""
 ) {
-  const {
-    indexer,
-    referendumIndex,
-    meta,
-    method,
-    state,
-    timeline = [],
-  } = referendum;
-
-  const type = businessCategory.collective;
+  const { referendumIndex, timeline = [] } = referendum;
 
   return timeline.map((item) => {
     switch (item.method) {
@@ -35,7 +26,7 @@ export function createReferendumTimelineData(
           status: {
             value: linkable ? `Referendum #${referendumIndex}` : "Started",
             link,
-            type,
+            type: businessCategory.collective,
           },
           method: item.method,
           data: (
@@ -48,7 +39,7 @@ export function createReferendumTimelineData(
           indexer: item.indexer,
           referendumIndex: referendum.referendumIndex,
           time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-          status: { value: item.method, type },
+          status: { value: item.method, type: businessCategory.democracyReferenda },
           method: item.method,
         };
       }
