@@ -36,6 +36,7 @@ const Title = styled.div`
   margin-bottom: 16px;
   color: ${(props) => props.theme.textPrimary};
   > :first-child {
+    align-items: baseline;
     gap: 8px;
     font-style: normal;
     font-weight: bold;
@@ -193,7 +194,7 @@ export default function Vote({
             <Flex>
               <span>Votes</span>
               <Statistics>
-                {onChainData?.tally?.yesVotes} / {onChainData?.threshold}
+                {onChainData?.tally?.yesVotes}/{onChainData?.threshold}
               </Statistics>
             </Flex>
             <div>{isLoadingVote && <Loading size={16} />}</div>
