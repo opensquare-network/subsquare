@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.2.4
+
+- Support altair.
+- Fix twitter share location in post author view.
+- Fix tc and council motions on democracy navigation.
+
+# 2.2.3
+- Support login with talisman and subwallet.
+- Support share post to twitter.
+
 # 2.2.2
 
 - Refactor pagination component.
