@@ -150,7 +150,7 @@ export const toTreasuryBountyListItem = (chain, item) => ({
   status: item.state ?? "Unknown",
   time: getPostUpdatedAt(item),
   detailLink: `/treasury/bounty/${item.bountyIndex}`,
-  value: item.onchainData.value,
+  value: item.onchainData?.value,
 });
 
 export const toTreasuryChildBountyListItem = (chain, item) => ({
