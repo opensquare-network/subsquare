@@ -6,6 +6,7 @@ import Timeline from "next-common/components/timeline";
 import { createMotionTimelineData } from "utils/timeline/motion";
 import sortTimeline from "next-common/utils/timeline/sort";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import { createReferendumTimelineData } from "utils/timeline/referendum";
 
 export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
   const node = getNode(chain);
@@ -47,6 +48,17 @@ export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
     return createMotionTimelineData(motion, chain, true, "/council/motion");
   });
   timelineData.push(...motions);
+
+  const referendums = treasuryProposal?.referendums?.map((referendum) => {
+    return createReferendumTimelineData(
+      referendum,
+      chain,
+      true,
+      "/democracy/referendum"
+    );
+  });
+  timelineData.push(...referendums);
+
   sortTimeline(timelineData);
 
   return <Timeline data={timelineData} chain={chain} indent={false} />;

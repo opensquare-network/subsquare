@@ -1,6 +1,21 @@
 import dayjs from "dayjs";
 import User from "next-common/components/user";
+import Voting from "next-common/components/timelineMotionVoting";
 import businessCategory from "next-common/utils/consts/business/category";
+import { Approve, Reject } from "next-common/components/icons";
+import styled from "styled-components";
+import Flex from "next-common/components/styled/flex";
+
+const VoteResultWrapper = styled(Flex)`
+  justify-content: space-between;
+  > :last-child {
+    display: flex;
+    align-items: center;
+    > span {
+      margin-left: 4px;
+    }
+  }
+`;
 
 export function createArgs(method, args, chain) {
   switch (method) {
@@ -59,14 +74,19 @@ export function createMotionTimelineData(
             link,
             type,
           },
-          voting: {
-            proposer: proposer,
-            method: proposal.method,
-            args: createArgs(proposal.method, proposal.args, chain),
-            total: threshold || voting?.threshold,
-            ayes: tally?.yesVotes || (voting?.ayes || []).length,
-            nays: tally?.noVotes || (voting?.nays || []).length,
-          },
+          data: (
+            <Voting
+              data={{
+                proposer: proposer,
+                method: proposal.method,
+                args: createArgs(proposal.method, proposal.args, chain),
+                total: threshold || voting?.threshold,
+                ayes: tally?.yesVotes || (voting?.ayes || []).length,
+                nays: tally?.noVotes || (voting?.nays || []).length,
+              }}
+              chain={chain}
+            />
+          ),
           method: item.method,
         };
       }
@@ -76,10 +96,22 @@ export function createMotionTimelineData(
           hash: motion.hash,
           time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
           status: { value: "Vote", type },
-          voteResult: {
-            name: item.args.voter,
-            value: item.args.approve,
-          },
+          data: (
+            <VoteResultWrapper>
+              <User chain={chain} add={item.args.voter} />
+              {item.args.approve ? (
+                <div>
+                  Aye
+                  <Approve />
+                </div>
+              ) : (
+                <div>
+                  Nay
+                  <Reject />
+                </div>
+              )}
+            </VoteResultWrapper>
+          ),
           method: item.method,
         };
       }

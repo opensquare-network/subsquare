@@ -1,11 +1,8 @@
-import React from "react";
+import React, { isValidElement } from "react";
 import styled, { css } from "styled-components";
 import Links from "../links";
-import Voting from "./voting";
-import User from "../user";
 import Tag from "../tags/state/tag";
 import Flex from "../styled/flex";
-import { Approve, Reject } from "../icons";
 import ArrowTriangleUp from "../../assets/imgs/icons/arrow-triangle-up.svg";
 
 const Wrapper = styled.div`
@@ -124,17 +121,6 @@ const ContentItem = styled(Flex)`
   }
 `;
 
-const VoteResultWrapper = styled(Flex)`
-  justify-content: space-between;
-  > :last-child {
-    display: flex;
-    align-items: center;
-    > span {
-      margin-left: 4px;
-    }
-  }
-`;
-
 const LinkWrapper = styled(Flex)`
   margin-top: 8px;
 `;
@@ -169,36 +155,21 @@ export default function Item({ data, foldable, isFold, setIsFold, chain }) {
 
         <ContentWrapper>
           {data.data &&
-            Object.entries(data.data).map((item, index) => (
-              <ContentItem key={index}>
-                <div>{item[0]}</div>
-                <div>
-                  {["boolean", "number", "string"].includes(typeof item[1]) ||
-                  React.isValidElement(item[1])
-                    ? item[1]
-                    : JSON.stringify(item[1])}
-                </div>
-              </ContentItem>
-            ))}
+            (React.isValidElement(data.data)
+              ? data.data
+              : Object.entries(data.data).map((item, index) => (
+                  <ContentItem key={index}>
+                    <div>{item[0]}</div>
+                    <div>
+                      {["boolean", "number", "string"].includes(
+                        typeof item[1]
+                      ) || React.isValidElement(item[1])
+                        ? item[1]
+                        : JSON.stringify(item[1])}
+                    </div>
+                  </ContentItem>
+                )))}
         </ContentWrapper>
-
-        {data.voting && <Voting data={data.voting} chain={chain} />}
-        {data.voteResult && (
-          <VoteResultWrapper>
-            <User chain={chain} add={data.voteResult.name} />
-            {data.voteResult.value ? (
-              <div>
-                Aye
-                <Approve />
-              </div>
-            ) : (
-              <div>
-                Nay
-                <Reject />
-              </div>
-            )}
-          </VoteResultWrapper>
-        )}
         <LinkWrapper>
           <Links chain={chain} indexer={data.indexer} />
         </LinkWrapper>
