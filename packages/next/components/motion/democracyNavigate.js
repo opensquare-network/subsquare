@@ -2,8 +2,9 @@ import styled from "styled-components";
 import Link from "next/link";
 import Flex from "next-common/components/styled/flex";
 import TriangleRight from "public/imgs/icons/arrow-triangle-right.svg";
-import { getMotionId, shortMotionId } from "next-common/utils/motion";
+import { getMotionId } from "next-common/utils/motion";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import MotionNavigationItem from "./motionNavigationItem";
 
 const ReferendaWrapper = styled(Flex)`
   justify-content: center;
@@ -45,53 +46,39 @@ export default function DemocracyNavigate({ motion, type }) {
 
   const motions = external.motions || [];
   const motionElements = motions.map((item, index) => {
-    const itemId = getMotionId(item, chain);
-
-    const isPageMotion = itemId === motionId;
     return <div key={getMotionId(item, chain)}>
       {
         index <= 0 ? null : <TriangleRight />
       }
-      {type === detailPageCategory.COUNCIL_MOTION && isPageMotion ? (
-        `Motion #${ shortMotionId(item) }`
-      ) : (
-        <Link href={ `/council/motion/${ getMotionId(item) }` }>
-          { `Motion #${ shortMotionId(item) }` }
-        </Link>
-      )}
+      <MotionNavigationItem
+        motion={ item }
+        type={ detailPageCategory.COUNCIL_MOTION }
+        pageMotionId={ motionId }
+        chain={ chain } />
     </div>
   });
 
   const externalTechCommMotions = external.techCommMotions || [];
   const externalTechCommMotionElements = externalTechCommMotions.map(item => {
-    const itemId = getMotionId(item, chain);
-    const isPageMotion = itemId === motionId;
-
     return <div key={ getMotionId(item, chain) }>
       <TriangleRight />
-      {type === detailPageCategory.TECH_COMM_MOTION && isPageMotion ? (
-        `Tech. Comm. #${ shortMotionId(item) }`
-      ) : (
-        <Link href={ `/techcomm/proposal/${ getMotionId(item) }` }>
-          { `Tech. Comm. #${ shortMotionId(item) }` }
-        </Link>
-      )}
+      <MotionNavigationItem
+        motion={ item }
+        type={ detailPageCategory.TECH_COMM_MOTION }
+        pageMotionId={ motionId }
+        chain={ chain } />
     </div>
   })
 
   const handleExternalCouncilMotions = external.councilMotions || [];
-  const handleExternalMotionElements = handleExternalCouncilMotions.map((item, index) => {
-    const itemId = getMotionId(item, chain);
-    const isPageMotion = itemId === motionId;
+  const handleExternalMotionElements = handleExternalCouncilMotions.map((item) => {
     return <div key={ getMotionId(item, chain) }>
       <TriangleRight />
-      {type === detailPageCategory.COUNCIL_MOTION && isPageMotion ? (
-        `Motion #${ shortMotionId(item) }`
-      ) : (
-        <Link href={ `/council/motion/${ getMotionId(item) }` }>
-          { `Motion #${ shortMotionId(item) }` }
-        </Link>
-      )}
+      <MotionNavigationItem
+        motion={ item }
+        type={ detailPageCategory.COUNCIL_MOTION }
+        pageMotionId={ motionId }
+        chain={ chain } />
     </div>
   });
 
