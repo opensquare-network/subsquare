@@ -2,7 +2,6 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import Back from "next-common/components/back";
 import styled, { css } from "styled-components";
-import { PrimaryCard } from "next-common/components/styled/containers/primaryCard";
 import Avatar from "next-common/components/avatar";
 import Links from "next-common/components/links";
 import User from "next-common/components/user";
@@ -96,20 +95,39 @@ const Category = ({ type, count, selected, onClick }) => {
 
 export default withLoginUserRedux(({ loginUser, posts, chain, id }) => {
   const categories = [
-    "Discussions",
-    "Economy",
-    "Environment",
-    "Health",
-    "Politics",
-    "Science",
-    "Society",
-    "Technology",
+    {
+      id: "treasury",
+      name: "Treasury",
+      children: [
+        { id: "proposals", name: "Proposed Proposals" },
+        { id: "tips", name: "Proposed Tips" },
+      ],
+    },
+    {
+      id: "democracy",
+      name: "Democracy",
+      children: [{ id: "posts", name: "Discussions" }],
+    },
+    {
+      id: "posts",
+      name: "Discussions",
+      children: [{ id: "posts", name: "Discussions" }],
+    },
+    {
+      id: "comments",
+      name: "Comments",
+      children: [{ id: "comments", name: "Comments" }],
+    },
   ];
-  const items = (posts.items || []).map((item) =>
-    toDiscussionListItem(chain, item)
+
+  const [items, setItems] = React.useState(
+    (posts.items || []).map((item) => toDiscussionListItem(chain, item))
+  );
+  const [firstCategory, setFirstCategory] = React.useState(categories[0]);
+  const [secondCategory, setSecondCategory] = React.useState(
+    categories[0].children[0]
   );
 
-  const [category, setCategory] = React.useState(categories[0]);
   return (
     <DetailLayout user={loginUser} chain={chain}>
       <Back href={` / `} text="Profile" />
@@ -129,12 +147,26 @@ export default withLoginUserRedux(({ loginUser, posts, chain, id }) => {
             {categories.map((c, index) => (
               <Category
                 onClick={() => {
-                  setCategory(c);
+                  setFirstCategory(c);
+                  setSecondCategory(c.children[0]);
                 }}
                 key={index}
-                type={c}
+                type={c.name}
                 count={1}
-                selected={c === category}
+                selected={c.id === firstCategory.id}
+              />
+            ))}
+          </ul>
+          <ul>
+            {firstCategory.children.map((c, index) => (
+              <Category
+                onClick={() => {
+                  setSecondCategory(c);
+                }}
+                key={index}
+                type={c.name}
+                count={1}
+                selected={c.id === secondCategory.id}
               />
             ))}
           </ul>
@@ -143,7 +175,7 @@ export default withLoginUserRedux(({ loginUser, posts, chain, id }) => {
 
       <List
         chain={chain}
-        category={category}
+        category={`${firstCategory.name} ${secondCategory.name}`}
         items={items}
         pagination={{
           page: posts.page,
@@ -159,12 +191,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
   const { id } = context.query;
 
+  //fixme: this is mock
+
   const [{ result: posts }] = await Promise.all([
-    nextApi.fetch(
-      `
-posts`,
-      { page: 1, pageSize: 3 }
-    ),
+    nextApi.fetch("posts", { page: 1, pageSize: 3 }),
   ]);
 
   return {
