@@ -126,6 +126,7 @@ export default function Vote({
   setIsLoadingVote = () => {},
 }) {
   const [showPopup, setShowPopup] = useState(false);
+  const ayeVotesCount = votes.filter(([approval]) => approval).length;
 
   let voteList;
   if (loading) {
@@ -194,7 +195,7 @@ export default function Vote({
             <Flex>
               <span>Votes</span>
               <Statistics>
-                {onChainData?.tally?.yesVotes}/{onChainData?.threshold}
+                {ayeVotesCount}/{onChainData?.threshold}
               </Statistics>
             </Flex>
             <div>{isLoadingVote && <Loading size={16} />}</div>
