@@ -62,7 +62,23 @@ export default function DemocracyNavigate({ motion, type }) {
     </div>
   });
 
-  const techCommMotion = external.techCommMotions?.[0];
+  const externalTechCommMotions = external.techCommMotions || [];
+  const externalTechCommMotionElements = externalTechCommMotions.map(item => {
+    const itemId = getMotionId(item, chain);
+    const isPageMotion = itemId === motionId;
+
+    return <div key={ getMotionId(item, chain) }>
+      <TriangleRight />
+      {type === detailPageCategory.TECH_COMM_MOTION && isPageMotion ? (
+        `Tech. Comm. #${ shortMotionId(item) }`
+      ) : (
+        <Link href={ `/techcomm/proposal/${ getMotionId(item) }` }>
+          { `Tech. Comm. #${ shortMotionId(item) }` }
+        </Link>
+      )}
+    </div>
+  })
+
   const handleExternalCouncilMotions = external.councilMotions || [];
   const handleExternalMotionElements = handleExternalCouncilMotions.map((item, index) => {
     const itemId = getMotionId(item, chain);
@@ -93,22 +109,9 @@ export default function DemocracyNavigate({ motion, type }) {
           <a>{`External #${external.proposalHash?.slice(0, 6)}`}</a>
         </Link>
       </div>
-      {techCommMotion ? (
-        <div>
-          <TriangleRight />
-          {type !== detailPageCategory.TECH_COMM_MOTION ? (
-            <Link
-              href={`/techcomm/proposal/${getMotionId(techCommMotion, chain)}`}
-            >
-              {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
-            </Link>
-          ) : (
-            `Tech. Comm. #${shortMotionId(techCommMotion)}`
-          )}
-        </div>
-      ) : (
-        handleExternalMotionElements.length > 0 ? handleExternalMotionElements : null
-      )}
+
+      { externalTechCommMotionElements.length > 0 ? externalTechCommMotionElements : null }
+      { handleExternalMotionElements.length > 0 ? handleExternalMotionElements : null }
       {referendumIndex !== undefined && (
         <div>
           <TriangleRight />
