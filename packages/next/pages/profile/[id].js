@@ -116,153 +116,156 @@ const Category = ({ type, count, selected, onClick }) => {
   );
 };
 
-const CommentsList = ({ comments }) => {};
+const categories = [
+  {
+    id: "treasury",
+    name: "Treasury",
+    children: [
+      {
+        id: "proposals",
+        name: "Proposed Proposals",
+        routePath: "treasury-proposals",
+      },
+      { id: "tips", name: "Proposed Tips", routePath: "tips" },
+    ],
+  },
+  {
+    id: "democracy",
+    name: "Democracy",
+    children: [
+      { id: "proposals", name: "Proposals", routePath: "public-proposals" },
+    ],
+  },
+  {
+    id: "discussions",
+    name: "Discussions",
+    children: [{ id: "discussions", name: "Discussions", routePath: "posts" }],
+  },
+  {
+    id: "comments",
+    name: "Comments",
+    children: [{ id: "comments", name: "Comments", routePath: "comments" }],
+  },
+];
 
-export default withLoginUserRedux(
-  ({ loginUser, discussions, summary, chain, id }) => {
-    const categories = [
-      {
-        id: "treasury",
-        name: "Treasury",
-        children: [
-          { id: "proposals", name: "Proposed Proposals" },
-          { id: "tips", name: "Proposed Tips" },
-        ],
-      },
-      {
-        id: "democracy",
-        name: "Democracy",
-        children: [{ id: "proposals", name: "Proposals" }],
-      },
-      {
-        id: "discussions",
-        name: "Discussions",
-        children: [{ id: "discussions", name: "Discussions" }],
-      },
-      {
-        id: "comments",
-        name: "Comments",
-        children: [{ id: "comments", name: "Comments" }],
-      },
-    ];
+export default withLoginUserRedux(({ loginUser, summary, chain, id }) => {
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [pagination, setPagination] = React.useState({
+    page: 1,
+    pageSize: 10,
+    total: 0,
+  });
+  const [items, setItems] = React.useState([]);
+  const [firstCategory, setFirstCategory] = React.useState(categories[0]);
+  const [secondCategory, setSecondCategory] = React.useState(
+    categories[0].children[0]
+  );
 
-    const [isLoading, setIsLoading] = React.useState(false);
-    const [list, setList] = React.useState(discussions);
-    const [items, setItems] = React.useState(
-      (discussions.items || []).map((item) => toDiscussionListItem(chain, item))
-    );
-    const [firstCategory, setFirstCategory] = React.useState(categories[0]);
-    const [secondCategory, setSecondCategory] = React.useState(
-      categories[0].children[0]
-    );
-
-    useEffect(() => {
-      try {
-        setIsLoading(true);
-        nextApi.fetch(`users/${id}/comments`).then(({ result: { items } }) => {
+  useEffect(() => {
+    try {
+      setIsLoading(true);
+      nextApi
+        .fetch(`users/${id}/${secondCategory.routePath}`)
+        .then(({ result: { items, pageSize, total } }) => {
           // console.log(res);
-          setItems(items);
+          if (secondCategory.id === "comments") {
+            setItems(items);
+          } else {
+            setItems(
+              items.map((item) => toTreasuryProposalListItem(chain, item))
+            );
+          }
+          setPagination({ page: 1, pageSize, total });
         });
-      } catch (e) {
-      } finally {
-        setIsLoading(false);
-      }
-    }, [chain, id, secondCategory]);
+    } catch (e) {
+    } finally {
+      setIsLoading(false);
+    }
+  }, [chain, id, secondCategory]);
 
-    const username = isAddress(id) ? (
-      <User chain={chain} add={id} showAvatar={false} fontSize={16} />
-    ) : (
-      <span>{id}</span>
-    );
+  const username = isAddress(id) ? (
+    <User chain={chain} add={id} showAvatar={false} fontSize={16} />
+  ) : (
+    <span>{id}</span>
+  );
 
-    console.log(items);
-    return (
-      <DetailLayout user={loginUser} chain={chain}>
-        <Back href={`/`} text="Profile" />
-        <Wrapper>
-          <BioWrapper>
-            {isAddress(id) ? (
-              <Avatar address={id} size={48} />
-            ) : (
-              //fixme: make this email
-              <Grvatar email={id} emailMd5={id} size={48} />
+  return (
+    <DetailLayout user={loginUser} chain={chain}>
+      <Back href={`/`} text="Profile" />
+      <Wrapper>
+        <BioWrapper>
+          {isAddress(id) ? (
+            <Avatar address={id} size={48} />
+          ) : (
+            //fixme: make this email
+            <Grvatar email={id} emailMd5={id} size={48} />
+          )}
+
+          <Flex style={{ marginTop: 0, flexWrap: "wrap" }}>
+            {username}
+            {isAddress(id) && (
+              <Flex style={{ gap: 8, marginTop: 4, flexBasis: "100%" }}>
+                <Tertiary>{id}</Tertiary>
+                <Links chain={chain} address={id} />
+              </Flex>
             )}
+          </Flex>
+        </BioWrapper>
+        <CategoryWrapper>
+          <ul>
+            {categories.map((c, index) => (
+              <Category
+                onClick={() => {
+                  setFirstCategory(c);
+                  setSecondCategory(c.children[0]);
+                }}
+                key={index}
+                type={c.name}
+                count={getFirstCategoryCount(c.id, summary)}
+                selected={c.id === firstCategory.id}
+              />
+            ))}
+          </ul>
+          <ul>
+            {firstCategory.children.map((c, index) => (
+              <Category
+                onClick={() => {
+                  setSecondCategory(c);
+                }}
+                key={index}
+                type={c.name}
+                count={getSecondCategoryCount(firstCategory.id, c.id, summary)}
+                selected={c.id === secondCategory.id}
+              />
+            ))}
+          </ul>
+        </CategoryWrapper>
+      </Wrapper>
 
-            <Flex style={{ marginTop: 0 }}>
-              {username}
-              {isAddress(id) && (
-                <Flex style={{ gap: 8, marginTop: 4 }}>
-                  <Tertiary>{id}</Tertiary>
-                  <Links chain={chain} address={id} />
-                </Flex>
-              )}
-            </Flex>
-          </BioWrapper>
-          <CategoryWrapper>
-            <ul>
-              {categories.map((c, index) => (
-                <Category
-                  onClick={() => {
-                    setFirstCategory(c);
-                    setSecondCategory(c.children[0]);
-                  }}
-                  key={index}
-                  type={c.name}
-                  count={getFirstCategoryCount(c.id, summary)}
-                  selected={c.id === firstCategory.id}
-                />
-              ))}
-            </ul>
-            <ul>
-              {firstCategory.children.map((c, index) => (
-                <Category
-                  onClick={() => {
-                    setSecondCategory(c);
-                  }}
-                  key={index}
-                  type={c.name}
-                  count={getSecondCategoryCount(
-                    firstCategory.id,
-                    c.id,
-                    summary
-                  )}
-                  selected={c.id === secondCategory.id}
-                />
-              ))}
-            </ul>
-          </CategoryWrapper>
-        </Wrapper>
-
-        {/*<PostList*/}
-        {/*  chain={chain}*/}
-        {/*  category={`${firstCategory.name} ${secondCategory.name}`}*/}
-        {/*  items={items}*/}
-        {/*  pagination={{*/}
-        {/*    page: discussions.page,*/}
-        {/*    pageSize: discussions.pageSize,*/}
-        {/*    total: discussions.total,*/}
-        {/*  }}*/}
-        {/*/>*/}
-
+      {firstCategory.id === "comments" ? (
         <CommentList
           items={items}
           chain={chain}
           category={"cate"}
-          pagination={{}}
+          pagination={pagination}
         />
-      </DetailLayout>
-    );
-  }
-);
+      ) : (
+        <PostList
+          chain={chain}
+          category={`${firstCategory.name} ${secondCategory.name}`}
+          items={items}
+          pagination={pagination}
+        />
+      )}
+    </DetailLayout>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
   const { id } = context.query;
 
-  //fixme: this is mock
-
-  const [{ result: discussions }, { result: summary }] = await Promise.all([
-    nextApi.fetch("posts", { page: 1, pageSize: 3 }),
+  const [{ result: summary }] = await Promise.all([
     nextApi.fetch(`users/${id}/counts`),
   ]);
 
@@ -270,7 +273,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       id,
       chain,
-      discussions,
       summary,
     },
   };
