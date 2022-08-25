@@ -8,8 +8,11 @@ import User from "next-common/components/user";
 import Flex from "next-common/components/styled/flex";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import List from "next-common/components/list";
-import React from "react";
-import { toDiscussionListItem } from "../../utils/viewfuncs";
+import React, { useEffect } from "react";
+import {
+  toDiscussionListItem,
+  toTreasuryProposalListItem,
+} from "../../utils/viewfuncs";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 
 const Wrapper = styled.div`
@@ -83,6 +86,7 @@ const CategoryOption = styled.li`
       background: ${props.theme.grey100Bg};
     `};
   cursor: pointer;
+  user-select: none;
 `;
 
 const getFirstCategoryCount = (firstCategory, summary) => {
@@ -137,6 +141,8 @@ export default withLoginUserRedux(
       },
     ];
 
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [list, setList] = React.useState(discussions);
     const [items, setItems] = React.useState(
       (discussions.items || []).map((item) => toDiscussionListItem(chain, item))
     );
@@ -145,13 +151,32 @@ export default withLoginUserRedux(
       categories[0].children[0]
     );
 
+    useEffect(() => {
+      try {
+        setIsLoading(true);
+        nextApi
+          .fetch(`users/${id}/treasury-proposals`)
+          .then(({ result: { items } }) => {
+            // console.log(res);
+            setItems(
+              (items || []).map((item) =>
+                toTreasuryProposalListItem(chain, item)
+              )
+            );
+          });
+      } catch (e) {
+      } finally {
+        setIsLoading(false);
+      }
+    }, [chain, id, secondCategory]);
+
     return (
       <DetailLayout user={loginUser} chain={chain}>
-        <Back href={` / `} text="Profile" />
+        <Back href={`/`} text="Profile" />
         <Wrapper>
           <BioWrapper>
             <Avatar address={id} size={48} />
-            <div>
+            <div style={{ marginTop: 0 }}>
               <User chain={chain} add={id} showAvatar={false} fontSize={16} />
               <Flex style={{ gap: 8, marginTop: 4 }}>
                 <Tertiary>{id}</Tertiary>
