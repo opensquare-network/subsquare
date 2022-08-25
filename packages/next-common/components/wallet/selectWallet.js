@@ -4,8 +4,6 @@ import Flex from "../styled/flex";
 import React, { useEffect, useState } from "react";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import Loading from "../loading";
-import { web3Enable, web3FromAddress } from "@polkadot/extension-dapp";
-import { polkadotWeb3Accounts } from "../../utils/extensionAccount";
 
 const WalletOptions = styled.ul`
   all: unset;
@@ -134,6 +132,17 @@ export default function SelectWallet({
   const isMounted = useIsMounted();
   const [waitingPermissionWallet, setWaitingPermissionWallet] = useState(null);
   const injectedWeb3 = useInjectedWeb3();
+  let web3Enable, web3FromAddress, polkadotWeb3Accounts;
+
+  useEffect(() => {
+    (async () => {
+      const polkadotDapp = await import("@polkadot/extension-dapp");
+      const extensionUtils = await import("../../utils/extensionAccount");
+      web3Enable = polkadotDapp.web3Enable;
+      web3FromAddress = polkadotDapp.web3FromAddress;
+      polkadotWeb3Accounts = extensionUtils.polkadotWeb3Accounts;
+    })();
+  }, []);
 
   useEffect(() => {
     if (!injectedWeb3) {
