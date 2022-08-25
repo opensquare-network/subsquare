@@ -176,10 +176,12 @@ export default withLoginUserRedux(({ loginUser, summary, chain, id }) => {
             );
           }
           setPagination({ page: 1, pageSize, total });
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     } catch (e) {
     } finally {
-      setIsLoading(false);
     }
   }, [chain, id, secondCategory]);
 
@@ -242,7 +244,9 @@ export default withLoginUserRedux(({ loginUser, summary, chain, id }) => {
         </CategoryWrapper>
       </Wrapper>
 
-      {firstCategory.id === "comments" ? (
+      {isLoading ? (
+        <h1>Loading</h1>
+      ) : firstCategory.id === "comments" ? (
         <CommentList
           items={items}
           chain={chain}
