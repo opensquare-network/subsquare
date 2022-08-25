@@ -1,7 +1,6 @@
 import React, { Fragment, useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import { withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import {
@@ -11,10 +10,7 @@ import {
 import MailLogin from "next-common/components/login/mailLogin";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import BaseLayout from "../layout/baseLayout";
-
-const AddressLogin = dynamic(() => import("../login/addressLogin"), {
-  ssr: false,
-});
+import AddressLogin from "../login/addressLogin";
 
 const Wrapper = styled.div`
   padding: 32px 0 6px;
