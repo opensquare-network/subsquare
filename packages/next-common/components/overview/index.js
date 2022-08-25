@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import List from "next-common/components/list";
+import PostList from "next-common/components/postList";
 import PlusIcon from "../../assets/imgs/icons/plusInCircle.svg";
 import EmptyOverview from "./emptyOverview";
 
@@ -45,7 +45,7 @@ export default function Overview({ overviewData, chain }) {
       {overviewData.map((item, index) => {
         if (item) {
           return (
-            <List
+            <PostList
               chain={chain}
               key={index}
               category={item.category}

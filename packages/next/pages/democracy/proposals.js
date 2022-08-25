@@ -1,4 +1,4 @@
-import List from "next-common/components/list";
+import PostList from "next-common/components/postList";
 import { EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
@@ -16,7 +16,7 @@ export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
 
   return (
     <HomeLayout user={loginUser} seoInfo={seoInfo}>
-      <List
+      <PostList
         chain={chain}
         category={category}
         create={null}

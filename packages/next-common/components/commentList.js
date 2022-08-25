@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import Post from "next-common/components/post";
 import Pagination from "next-common/components/pagination/index.js";
 import EmptyList from "next-common/components/emptyList";
 import { TitleContainer } from "./styled/containers/titleContainer";
+import Comment from "./comment.js";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function List({
+export default function CommentList({
   chain,
   category,
   items,
@@ -38,13 +38,7 @@ export default function List({
       {summary}
       {items?.length > 0 ? (
         items.map((item, index) => (
-          <Post
-            key={index}
-            data={item}
-            chain={chain}
-            href={item.detailLink}
-            type={category}
-          />
+          <Comment key={index} data={item} chain={chain} type={category} />
         ))
       ) : (
         <EmptyList type={category} />

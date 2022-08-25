@@ -7,13 +7,16 @@ import Links from "next-common/components/links";
 import User from "next-common/components/user";
 import Flex from "next-common/components/styled/flex";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import List from "next-common/components/list";
+import PostList from "next-common/components/postList";
 import React, { useEffect } from "react";
 import {
   toDiscussionListItem,
   toTreasuryProposalListItem,
 } from "../../utils/viewfuncs";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import { isAddress } from "next-common/utils/viewfuncs";
+import Grvatar from "next-common/components/gravatar";
+import CommentList from "next-common/components/commentList";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -113,6 +116,8 @@ const Category = ({ type, count, selected, onClick }) => {
   );
 };
 
+const CommentsList = ({ comments }) => {};
+
 export default withLoginUserRedux(
   ({ loginUser, discussions, summary, chain, id }) => {
     const categories = [
@@ -154,35 +159,44 @@ export default withLoginUserRedux(
     useEffect(() => {
       try {
         setIsLoading(true);
-        nextApi
-          .fetch(`users/${id}/treasury-proposals`)
-          .then(({ result: { items } }) => {
-            // console.log(res);
-            setItems(
-              (items || []).map((item) =>
-                toTreasuryProposalListItem(chain, item)
-              )
-            );
-          });
+        nextApi.fetch(`users/${id}/comments`).then(({ result: { items } }) => {
+          // console.log(res);
+          setItems(items);
+        });
       } catch (e) {
       } finally {
         setIsLoading(false);
       }
     }, [chain, id, secondCategory]);
 
+    const username = isAddress(id) ? (
+      <User chain={chain} add={id} showAvatar={false} fontSize={16} />
+    ) : (
+      <span>{id}</span>
+    );
+
+    console.log(items);
     return (
       <DetailLayout user={loginUser} chain={chain}>
         <Back href={`/`} text="Profile" />
         <Wrapper>
           <BioWrapper>
-            <Avatar address={id} size={48} />
-            <div style={{ marginTop: 0 }}>
-              <User chain={chain} add={id} showAvatar={false} fontSize={16} />
-              <Flex style={{ gap: 8, marginTop: 4 }}>
-                <Tertiary>{id}</Tertiary>
-                <Links chain={chain} address={id} />
-              </Flex>
-            </div>
+            {isAddress(id) ? (
+              <Avatar address={id} size={48} />
+            ) : (
+              //fixme: make this email
+              <Grvatar email={id} emailMd5={id} size={48} />
+            )}
+
+            <Flex style={{ marginTop: 0 }}>
+              {username}
+              {isAddress(id) && (
+                <Flex style={{ gap: 8, marginTop: 4 }}>
+                  <Tertiary>{id}</Tertiary>
+                  <Links chain={chain} address={id} />
+                </Flex>
+              )}
+            </Flex>
           </BioWrapper>
           <CategoryWrapper>
             <ul>
@@ -219,15 +233,22 @@ export default withLoginUserRedux(
           </CategoryWrapper>
         </Wrapper>
 
-        <List
-          chain={chain}
-          category={`${firstCategory.name} ${secondCategory.name}`}
+        {/*<PostList*/}
+        {/*  chain={chain}*/}
+        {/*  category={`${firstCategory.name} ${secondCategory.name}`}*/}
+        {/*  items={items}*/}
+        {/*  pagination={{*/}
+        {/*    page: discussions.page,*/}
+        {/*    pageSize: discussions.pageSize,*/}
+        {/*    total: discussions.total,*/}
+        {/*  }}*/}
+        {/*/>*/}
+
+        <CommentList
           items={items}
-          pagination={{
-            page: discussions.page,
-            pageSize: discussions.pageSize,
-            total: discussions.total,
-          }}
+          chain={chain}
+          category={"cate"}
+          pagination={{}}
         />
       </DetailLayout>
     );
