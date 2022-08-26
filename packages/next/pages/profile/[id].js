@@ -11,6 +11,8 @@ import PostList from "next-common/components/postList";
 import React, { useEffect } from "react";
 import {
   toDiscussionListItem,
+  toPublicProposalListItem,
+  toTipListItem,
   toTreasuryProposalListItem,
 } from "../../utils/viewfuncs";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
@@ -92,6 +94,13 @@ const CategoryOption = styled.li`
   user-select: none;
 `;
 
+const Username = styled.span`
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  color: ${(props) => props.theme.textPrimary};
+`;
+
 const getFirstCategoryCount = (firstCategory, summary) => {
   if (firstCategory === "comments" || firstCategory === "discussions") {
     return summary[firstCategory];
@@ -125,30 +134,56 @@ const categories = [
         id: "proposals",
         name: "Proposed Proposals",
         routePath: "treasury-proposals",
+        formatter: toTreasuryProposalListItem,
       },
-      { id: "tips", name: "Proposed Tips", routePath: "tips" },
+      {
+        id: "tips",
+        name: "Proposed Tips",
+        routePath: "tips",
+        formatter: toTipListItem,
+      },
     ],
   },
   {
     id: "democracy",
     name: "Democracy",
     children: [
-      { id: "proposals", name: "Proposals", routePath: "public-proposals" },
+      {
+        id: "proposals",
+        name: "Proposals",
+        routePath: "public-proposals",
+        formatter: toPublicProposalListItem,
+      },
     ],
   },
   {
     id: "discussions",
     name: "Discussions",
-    children: [{ id: "discussions", name: "Discussions", routePath: "posts" }],
+    children: [
+      {
+        id: "discussions",
+        name: "Discussions",
+        routePath: "posts",
+        formatter: toDiscussionListItem,
+      },
+    ],
   },
   {
     id: "comments",
     name: "Comments",
-    children: [{ id: "comments", name: "Comments", routePath: "comments" }],
+    children: [
+      {
+        id: "comments",
+        name: "Comments",
+        routePath: "comments",
+        formatter: (chain, comment) => comment,
+      },
+    ],
   },
 ];
 
-export default withLoginUserRedux(({ loginUser, summary, chain, id }) => {
+export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
+  const address = isAddress(id) ? id : user?.addresses?.[0]?.address;
   const [isLoading, setIsLoading] = React.useState(false);
   const [pagination, setPagination] = React.useState({
     page: 1,
@@ -156,39 +191,31 @@ export default withLoginUserRedux(({ loginUser, summary, chain, id }) => {
     total: 0,
   });
   const [items, setItems] = React.useState([]);
-  const [firstCategory, setFirstCategory] = React.useState(categories[0]);
+  const [firstCategory, setFirstCategory] = React.useState(categories[2]);
   const [secondCategory, setSecondCategory] = React.useState(
-    categories[0].children[0]
+    categories[2].children[0]
   );
 
   useEffect(() => {
-    try {
-      setIsLoading(true);
-      nextApi
-        .fetch(`users/${id}/${secondCategory.routePath}`)
-        .then(({ result: { items, pageSize, total } }) => {
-          // console.log(res);
-          if (secondCategory.id === "comments") {
-            setItems(items);
-          } else {
-            setItems(
-              items.map((item) => toTreasuryProposalListItem(chain, item))
-            );
-          }
-          setPagination({ page: 1, pageSize, total });
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    } catch (e) {
-    } finally {
-    }
-  }, [chain, id, secondCategory]);
+    setIsLoading(true);
+    nextApi
+      .fetch(`users/${id}/${secondCategory.routePath}`, {
+        page: pagination.page,
+        pageSize: pagination.pageSize,
+      })
+      .then(({ result: { items, pageSize, total } }) => {
+        setItems(items.map((item) => secondCategory.formatter(chain, item)));
+        setPagination({ page: 1, pageSize, total });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [chain, id, pagination.page, pagination.pageSize, secondCategory]);
 
   const username = isAddress(id) ? (
     <User chain={chain} add={id} showAvatar={false} fontSize={16} />
   ) : (
-    <span>{id}</span>
+    <Username>{id}</Username>
   );
 
   return (
@@ -196,19 +223,18 @@ export default withLoginUserRedux(({ loginUser, summary, chain, id }) => {
       <Back href={`/`} text="Profile" />
       <Wrapper>
         <BioWrapper>
-          {isAddress(id) ? (
-            <Avatar address={id} size={48} />
+          {address ? (
+            <Avatar address={address} size={48} />
           ) : (
-            //fixme: make this email
-            <Grvatar email={id} emailMd5={id} size={48} />
+            <Grvatar emailMd5={user?.emmailMd5} size={48} />
           )}
 
           <Flex style={{ marginTop: 0, flexWrap: "wrap" }}>
             {username}
-            {isAddress(id) && (
+            {address && (
               <Flex style={{ gap: 8, marginTop: 4, flexBasis: "100%" }}>
-                <Tertiary>{id}</Tertiary>
-                <Links chain={chain} address={id} />
+                <Tertiary>{address}</Tertiary>
+                <Links chain={chain} address={address} />
               </Flex>
             )}
           </Flex>
@@ -218,6 +244,7 @@ export default withLoginUserRedux(({ loginUser, summary, chain, id }) => {
             {categories.map((c, index) => (
               <Category
                 onClick={() => {
+                  setItems(null);
                   setFirstCategory(c);
                   setSecondCategory(c.children[0]);
                 }}
@@ -246,11 +273,11 @@ export default withLoginUserRedux(({ loginUser, summary, chain, id }) => {
 
       {isLoading ? (
         <h1>Loading</h1>
-      ) : firstCategory.id === "comments" ? (
+      ) : secondCategory.id === "comments" ? (
         <CommentList
           items={items}
           chain={chain}
-          category={"cate"}
+          category={"Comments"}
           pagination={pagination}
         />
       ) : (
@@ -269,8 +296,9 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
   const { id } = context.query;
 
-  const [{ result: summary }] = await Promise.all([
+  const [{ result: summary }, { result: user }] = await Promise.all([
     nextApi.fetch(`users/${id}/counts`),
+    nextApi.fetch(`users/${id}`),
   ]);
 
   return {
@@ -278,6 +306,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       id,
       chain,
       summary,
+      user,
     },
   };
 });

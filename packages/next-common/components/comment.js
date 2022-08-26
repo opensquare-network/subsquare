@@ -7,6 +7,7 @@ import Anchor from "next-common/components/styled/anchor";
 import { HoverSecondaryCard } from "./styled/containers/secondaryCard";
 import Divider from "./styled/layout/divider";
 import { MarkdownPreviewer } from "@osn/previewer";
+import { getMotionId } from "../utils/motion";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -66,6 +67,13 @@ const AutHideInfo = styled(Info)`
   @media screen and (max-width: 768px) {
     display: none;
   }
+  a {
+    display: block;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;
 
 const FooterWrapper = styled(Flex)`
@@ -111,13 +119,75 @@ const ContentWrapper = styled.div`
   flex: 1;
 `;
 
-export default function Comment({ data, type }) {
+const getCommentSource = (comment, chain) => {
+  if (comment?.post) {
+    return ["Discussion", comment.post.title, `/post/${comment.post.postUid}`];
+  }
+  if (comment?.democracy?.externalProposalHash) {
+    return ["Democracy External Proposals", comment.democracy.title];
+  }
+  if (comment?.motion) {
+    return [
+      "Council Motions",
+      comment?.motion.title,
+      `/council/motion/${getMotionId(comment?.motion, chain)}`,
+    ];
+  }
+  if (comment?.tip) {
+    return [
+      "Treasury Tips",
+      comment?.tip.title,
+      `/treasury/tip/${comment?.tip.height}_${comment?.tip.hash}`,
+    ];
+  }
+  if (comment?.childBounty) {
+    return [
+      "Treasury Child Bounties",
+      comment?.childBounty.title,
+      `/treasury/bounty/${comment?.childBounty?.bountyIndex}`,
+    ];
+  }
+  if (comment?.bounty) {
+    return [
+      "Treasury Bounties",
+      comment?.bounty.title,
+      `/treasury/bounty/${comment?.bounty.bountyIndex}`,
+    ];
+  }
+  if (comment?.treasuryProposal) {
+    return [
+      "Treasury Proposals",
+      comment?.treasuryProposal.title,
+      `/treasury/proposal/${comment?.treasuryProposal.proposalIndex}`,
+    ];
+  }
+  if (comment?.democracy?.proposalIndex) {
+    return ["Democracy Public Proposals", comment?.democracy?.title];
+  }
+  if (comment?.democracy?.referendumIndex > -1) {
+    return [
+      "Democracy Referendums",
+      comment?.democracy?.title,
+      `/democracy/referendum/${comment?.democracy?.referendumIndex}`,
+    ];
+  }
+  return ["Unknown"];
+};
+
+export default function Comment({ data, chain }) {
+  const [type, title, route] = getCommentSource(data, chain);
   return (
     <Wrapper>
       <ContentWrapper>
         <HeadWrapper>
           <TitleWrapper>
-            <MarkdownPreviewer content={data.content} />
+            <Anchor href={`${route}#${data.height}`} passHref>
+              <MarkdownPreviewer
+                content={data.content}
+                allowedTags={["a"]}
+                maxLines={2}
+              />
+            </Anchor>
           </TitleWrapper>
         </HeadWrapper>
 
@@ -126,8 +196,8 @@ export default function Comment({ data, type }) {
           <Footer>
             <div>{type}</div>
             <AutHideInfo>
-              <Anchor href={`/treasury/bounty/${data.parentIndex}`} passHref>
-                {data?.post?.title}
+              <Anchor href={route} passHref>
+                {title}
               </Anchor>
             </AutHideInfo>
             {data.updatedAt && (
