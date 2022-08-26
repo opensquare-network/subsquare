@@ -42,7 +42,7 @@ else
   else
     is_remote=$(is_in_remote $branch_name);
     if [ "$is_remote" = 1 ]; then
-      git pull && git checkout -t $branch_name && yarn && yarn build && yarn restart $pid;
+      git pull && git checkout -t origin/$branch_name && yarn && yarn build && yarn restart $pid;
       echo "remote branch ${1}";
     fi
   fi
