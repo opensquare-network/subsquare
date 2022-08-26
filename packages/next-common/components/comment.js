@@ -119,12 +119,12 @@ const ContentWrapper = styled.div`
   flex: 1;
 `;
 
+// todo: fix this `/financial-council/motion/${item.indexer.blockHeight}_${item.hash}`,
 const getCommentSource = (comment, chain) => {
+  console.log(comment);
+
   if (comment?.post) {
     return ["Discussion", comment.post.title, `/post/${comment.post.postUid}`];
-  }
-  if (comment?.democracy?.externalProposalHash) {
-    return ["Democracy External Proposals", comment.democracy.title];
   }
   if (comment?.motion) {
     return [
@@ -162,13 +162,31 @@ const getCommentSource = (comment, chain) => {
     ];
   }
   if (comment?.democracy?.proposalIndex) {
-    return ["Democracy Public Proposals", comment?.democracy?.title];
+    return [
+      "Democracy Public Proposals",
+      comment?.democracy?.title,
+      `/democracy/proposal/${comment?.democracy?.proposalIndex}`,
+    ];
+  }
+  if (comment?.democracy?.externalProposalHash) {
+    return [
+      "Democracy External Proposals",
+      comment.democracy.title,
+      `/democracy/external/${comment?.democracy.indexer.blockHeight}_${comment?.democracy.externalProposalHash}`,
+    ];
   }
   if (comment?.democracy?.referendumIndex > -1) {
     return [
       "Democracy Referendums",
       comment?.democracy?.title,
       `/democracy/referendum/${comment?.democracy?.referendumIndex}`,
+    ];
+  }
+  if (comment?.techCommMotion) {
+    return [
+      "Tech. Comm. Proposals",
+      comment?.techCommMotion?.title,
+      `/techcomm/proposal/${getMotionId(comment?.techCommMotion, chain)}`,
     ];
   }
   return ["Unknown"];

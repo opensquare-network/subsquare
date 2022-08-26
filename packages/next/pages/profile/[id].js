@@ -113,7 +113,10 @@ const getFirstCategoryCount = (firstCategory, summary) => {
 };
 
 const getSecondCategoryCount = (firstCategory, secondCategory, summary) => {
-  return summary[firstCategory][secondCategory];
+  if (Number.isInteger(summary[firstCategory])) {
+    return summary[firstCategory];
+  }
+  return summary[firstCategory][secondCategory] ?? 0;
 };
 
 const Category = ({ type, count, selected, onClick }) => {
