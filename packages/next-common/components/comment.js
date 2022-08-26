@@ -64,9 +64,6 @@ const Info = styled.div`
 `;
 
 const AutHideInfo = styled(Info)`
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
   a {
     display: block;
     max-width: 200px;
