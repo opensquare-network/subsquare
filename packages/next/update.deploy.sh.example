@@ -37,12 +37,12 @@ if [ -z "$1" ]; then
 else
   is_local=$(is_in_local $branch_name);
   if [ "$is_local" = 1 ]; then
-    git checkout $branch_name && git pull && yarn && yarn build && yarn restart $pid;
+    git checkout $branch_name && git pull && yarn && yarn build && pm2 restart $pid;
     echo "local branch ${1}";
   else
     is_remote=$(is_in_remote $branch_name);
     if [ "$is_remote" = 1 ]; then
-      git pull && git checkout -t origin/$branch_name && yarn && yarn build && yarn restart $pid;
+      git pull && git checkout -t origin/$branch_name && yarn && yarn build && pm2 restart $pid;
       echo "remote branch ${1}";
     fi
   fi

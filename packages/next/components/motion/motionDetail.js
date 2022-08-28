@@ -74,7 +74,7 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
     }
 
     return voters;
-  }, [post, chain]);
+  }, [post, chain, singleApprovalMotion]);
 
   const [votes, setVotes] = useState(dbVotes);
   const [readOnchainVotes, setReadOnchainVotes] = useState(0);
@@ -117,7 +117,7 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
         }
       })
       .finally(() => setIsLoadingVote(false));
-  }, [votingMethod, readOnchainVotes, post, dbVotes, isMounted]);
+  }, [votingMethod, readOnchainVotes, post, dbVotes, isMounted, singleApprovalMotion]);
 
   const updateVotes = useCallback(() => {
     setReadOnchainVotes(Date.now());
