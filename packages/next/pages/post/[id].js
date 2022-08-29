@@ -1,6 +1,6 @@
 import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
-import Comments from "next-common/components/comment/index.js";
+import Comments from "next-common/components/comment";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";

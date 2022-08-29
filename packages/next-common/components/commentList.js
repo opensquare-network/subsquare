@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Pagination from "next-common/components/pagination/index.js";
 import EmptyList from "next-common/components/emptyList";
 import { TitleContainer } from "./styled/containers/titleContainer";
-import Comment from "./comment.js";
+import CommentSimple from "./commentSimple.js";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -38,7 +38,12 @@ export default function CommentList({
       {summary}
       {items?.length > 0 ? (
         items.map((item, index) => (
-          <Comment key={index} data={item} chain={chain} type={category} />
+          <CommentSimple
+            key={index}
+            data={item}
+            chain={chain}
+            type={category}
+          />
         ))
       ) : (
         <EmptyList type={category} />

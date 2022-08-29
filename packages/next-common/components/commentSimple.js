@@ -189,7 +189,7 @@ const getCommentSource = (comment, chain) => {
   return ["Unknown"];
 };
 
-export default function Comment({ data, chain }) {
+export default function CommentSimple({ data, chain }) {
   const [type, title, route] = getCommentSource(data, chain);
   return (
     <Wrapper>

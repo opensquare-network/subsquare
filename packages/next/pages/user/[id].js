@@ -66,20 +66,20 @@ const Tertiary = styled.span`
   line-height: 20px;
 `;
 
-const CategoryWrapper = styled(SecondaryCard)`
-  ul {
-    all: unset;
+const CategoryWrapper = styled(SecondaryCard)``;
+
+const CategoryList = styled.ul`
+  all: unset;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  li {
     display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
+    gap: 4px;
 
-    li {
-      display: flex;
-      gap: 4px;
-
-      :first-child {
-        font-weight: 500;
-      }
+    :first-child {
+      font-weight: 500;
     }
   }
 `;
@@ -106,6 +106,9 @@ const Username = styled.span`
 `;
 
 const getFirstCategoryCount = (firstCategory, summary) => {
+  if (!summary[firstCategory]) {
+    return 0;
+  }
   if (firstCategory === "comments" || firstCategory === "discussions") {
     return summary[firstCategory];
   }
@@ -117,6 +120,9 @@ const getFirstCategoryCount = (firstCategory, summary) => {
 };
 
 const getSecondCategoryCount = (firstCategory, secondCategory, summary) => {
+  if (!summary[firstCategory]) {
+    return 0;
+  }
   if (Number.isInteger(summary[firstCategory])) {
     return summary[firstCategory];
   }
@@ -214,6 +220,9 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
         setItems(items.map((item) => secondCategory.formatter(chain, item)));
         setPagination({ page: 1, pageSize, total });
       })
+      .catch((e) => {
+        console.error(e);
+      })
       .finally(() => {
         setIsLoading(false);
       });
@@ -247,7 +256,7 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
           </Flex>
         </BioWrapper>
         <CategoryWrapper>
-          <ul>
+          <CategoryList>
             {categories.map((c, index) => (
               <Category
                 onClick={() => {
@@ -261,8 +270,8 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
                 selected={c.id === firstCategory.id}
               />
             ))}
-          </ul>
-          <ul>
+          </CategoryList>
+          <CategoryList>
             {firstCategory.children.map((c, index) => (
               <Category
                 onClick={() => {
@@ -274,7 +283,7 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
                 selected={c.id === secondCategory.id}
               />
             ))}
-          </ul>
+          </CategoryList>
         </CategoryWrapper>
       </Wrapper>
 
