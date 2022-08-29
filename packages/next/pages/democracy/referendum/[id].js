@@ -28,7 +28,10 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   });
 
   const api = useApi(chain);
-  const { referendumStatus } = useMaybeFetchReferendumStatus(detail?.onchainData, api);
+  const { referendumStatus } = useMaybeFetchReferendumStatus(
+    detail?.onchainData,
+    api
+  );
   useMaybeFetchElectorate(detail?.onchainData, api);
   useFetchVotes(detail?.onchainData, api);
 
@@ -41,7 +44,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       user={loginUser}
       seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
     >
-      <Back href={`/democracy/referendums`} text="Back to Referenda" />
+      <Back href={`/democracy/referenda`} text="Back to Referenda" />
       <DetailItem
         data={detail}
         onReply={focusEditor}

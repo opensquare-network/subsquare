@@ -1,4 +1,13 @@
 module.exports = {
+  async redirects() {
+    return [
+      {
+        source: "/democracy/referendums",
+        destination: "/democracy/referenda",
+        permanent: true,
+      },
+    ];
+  },
   webpack(config, { webpack }) {
     config.module.rules.push(
       {
