@@ -19,6 +19,7 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import { isAddress } from "next-common/utils/viewfuncs";
 import Grvatar from "next-common/components/gravatar";
 import CommentList from "next-common/components/commentList";
+import { no_scroll_bar } from "next-common/styles/componentCss";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -64,15 +65,21 @@ const Tertiary = styled.span`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
+  white-space: pre-wrap;
+  word-break: break-all;
 `;
 
 const CategoryWrapper = styled(SecondaryCard)``;
 
 const CategoryList = styled.ul`
   all: unset;
+  padding-inline-start: 0 !important;
   display: flex;
+  height: 28px;
   gap: 16px;
-  flex-wrap: wrap;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  ${no_scroll_bar};
 
   li {
     display: flex;
@@ -80,6 +87,9 @@ const CategoryList = styled.ul`
 
     :first-child {
       font-weight: 500;
+    }
+    > span {
+      height: 20px;
     }
   }
 `;
@@ -248,7 +258,14 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
           <Flex style={{ marginTop: 0, flexWrap: "wrap" }}>
             {username}
             {address && (
-              <Flex style={{ gap: 8, marginTop: 4, flexBasis: "100%" }}>
+              <Flex
+                style={{
+                  gap: 8,
+                  marginTop: 4,
+                  flexBasis: "100%",
+                  flexWrap: "wrap",
+                }}
+              >
                 <Tertiary>{address}</Tertiary>
                 <Links chain={chain} address={address} />
               </Flex>

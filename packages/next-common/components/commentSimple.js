@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { timeDurationFromNow } from "next-common/utils";
 import Flex from "next-common/components/styled/flex";
-import { p_14_medium } from "next-common/styles/componentCss";
+import { no_scroll_bar, p_14_medium } from "next-common/styles/componentCss";
 import Anchor from "next-common/components/styled/anchor";
 import { HoverSecondaryCard } from "./styled/containers/secondaryCard";
 import Divider from "./styled/layout/divider";
@@ -15,7 +15,7 @@ const Wrapper = styled(HoverSecondaryCard)`
 `;
 
 const DividerWrapper = styled(Flex)`
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   min-height: 20px;
 
   > span {
@@ -114,11 +114,19 @@ const HeadWrapper = styled.div`
 
 const ContentWrapper = styled.div`
   flex: 1;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  ${no_scroll_bar};
 `;
 
-// todo: fix this `/financial-council/motion/${item.indexer.blockHeight}_${item.hash}`,
 const getCommentSource = (comment, chain) => {
-  console.log(comment);
+  if (comment?.financialMotion) {
+    return [
+      "Financial Motion",
+      comment.financialMotion.title,
+      `/financial-council/motion/${comment?.financialMotion.indexer.blockHeight}_${comment?.financialMotion.hash}`,
+    ];
+  }
 
   if (comment?.post) {
     return ["Discussion", comment.post.title, `/post/${comment.post.postUid}`];
@@ -209,7 +217,7 @@ export default function CommentSimple({ data, chain }) {
         <Divider margin={12} />
         <FooterWrapper>
           <Footer>
-            <div>{type}</div>
+            <div style={{ whiteSpace: "nowrap" }}>{type}</div>
             <AutHideInfo>
               <Anchor href={route} passHref>
                 {title}
