@@ -10,7 +10,7 @@ const democracy = {
     {
       value: "referenda",
       name: "Referenda",
-      pathname: "/democracy/referendums",
+      pathname: "/democracy/referenda",
       icon: <ReferendaIcon />,
     },
     {

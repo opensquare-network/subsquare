@@ -1,6 +1,15 @@
 const withTM = require("next-transpile-modules")(["@subsquare/next-common"]);
 
 module.exports = {
+  async redirects() {
+    return [
+      {
+        source: "/democracy/referendums",
+        destination: "/democracy/referenda",
+        permanent: true,
+      },
+    ];
+  },
   ...withTM(),
   webpack(config, { webpack }) {
     config.module.rules.push(

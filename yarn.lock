@@ -1209,10 +1209,10 @@
     prismjs "^1.28.0"
     sanitize-html "^2.7.0"
 
-"@osn/provider-options@1.0.8":
-  version "1.0.8"
-  resolved "https://registry.npmjs.org/@osn/provider-options/-/provider-options-1.0.8.tgz#426c7d19f7da35ab210e85b80dba2d3d2eed161d"
-  integrity sha512-ZK3f9++5GwLh1BPH2uiq3rwDIPL4zI4FYzoM0WtiVxnYrV01+nTvLCRzV/ismWeByqVxVayDheOk93BCb05ZCA==
+"@osn/provider-options@1.0.10":
+  version "1.0.10"
+  resolved "https://registry.npmjs.org/@osn/provider-options/-/provider-options-1.0.10.tgz#843fee24ebcce7d0d6a1e87b02ba3a81acf32bb3"
+  integrity sha512-R+WPASW/qmg4JCLcCLjn5pBDBSdBtJz9IHBV0eQc9X49ZzkTuoEtfszs/QVB64BthLix0qtolMyMs0Ysy2Jl7w==
 
 "@osn/rich-text-editor@^0.1.53":
   version "0.1.53"
@@ -1756,7 +1756,7 @@
     "@interlay/monetary-js" "0.5.4"
     "@osn/polkadot-react-identicon" "^1.0.8"
     "@osn/previewer" "^0.12.1"
-    "@osn/provider-options" "1.0.8"
+    "@osn/provider-options" "1.0.10"
     "@polkadot/api" "8.9.1"
     "@polkadot/extension-dapp" "0.44.2-3"
     "@reduxjs/toolkit" "^1.6.1"

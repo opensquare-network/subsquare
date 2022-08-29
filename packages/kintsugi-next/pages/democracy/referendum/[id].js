@@ -10,16 +10,14 @@ import Timeline from "next-common/components/timeline";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
 import useCommentComponent from "next-common/components/useCommentComponent";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
-import extractVoteInfo from "next-common/utils/democracy/referendum";
-import { fetchElectorate, fetchVotes, setElectorate } from "next-common/store/reducers/referendumSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
+import useMaybeFetchReferendumStatus from "next-common/utils/hooks/referenda/useMaybeFetchReferendumStatus";
+import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
+import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, publicProposal, comments, chain }) => {
@@ -31,18 +29,15 @@ export default withLoginUserRedux(
       type: detailPageCategory.DEMOCRACY_REFERENDUM,
     });
 
-    const { voteInfo: { voteFinished, voteFinishedHeight }, referendumIndex } = detail;
     const api = useApi(chain);
-    const [referendumStatus, setReferendumStatus] = useState(
-      detail?.onchainData?.status || detail?.onchainData?.info?.ongoing
+    const { referendumStatus } = useMaybeFetchReferendumStatus(
+      detail?.onchainData,
+      api
     );
-    const possibleElectorate = referendumStatus?.tally?.electorate;
+    useMaybeFetchElectorate(detail?.onchainData, api);
+    useFetchVotes(detail?.onchainData, api);
 
-    const isMounted = useIsMounted();
-    const [isLoadingReferendumStatus, setIsLoadingReferendumStatus] =
-      useState(false);
-    const dispatch = useDispatch();
-    const latestHeight = useSelector(latestHeightSelector)
+    detail.status = detail.onchainData?.state?.state;
 
     const proposalData = getDemocracyTimelineData(
       publicProposal?.onchainData?.timeline || [],
@@ -56,48 +51,13 @@ export default withLoginUserRedux(
     );
     const timelineData = proposalData.concat(referendumData);
 
-    useEffect(() => {
-      if (api) {
-        dispatch(fetchVotes(api, referendumIndex, voteFinishedHeight))
-      }
-    }, [api, dispatch, referendumIndex, voteFinishedHeight])
-
-    useEffect(() => {
-      if (possibleElectorate) {
-        dispatch(setElectorate(possibleElectorate));
-      } else if (api) {
-        dispatch(fetchElectorate(api, voteFinishedHeight || latestHeight, possibleElectorate))
-      }
-    }, [api, dispatch, voteFinishedHeight, latestHeight, possibleElectorate])
-
-    useEffect(() => {
-      if (voteFinished) {
-        return;
-      }
-
-      setIsLoadingReferendumStatus(true);
-      api?.query.democracy
-        .referendumInfoOf(detail.referendumIndex)
-        .then((referendumInfo) => {
-          const referendumInfoData = referendumInfo.toJSON();
-          if (isMounted.current) {
-            setReferendumStatus(referendumInfoData?.ongoing);
-          }
-        })
-        .finally(() => {
-          setIsLoadingReferendumStatus(false);
-        });
-    }, [api, detail, isMounted, voteFinished]);
-
-    detail.status = detail.onchainData?.state?.state;
-
     const desc = getMetaDesc(detail);
     return (
       <DetailWithRightLayout
         user={loginUser}
         seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
       >
-        <Back href={`/democracy/referendums`} text="Back to Referendas" />
+        <Back href={`/democracy/referenda`} text="Back to Referenda" />
         <DetailItem
           data={detail}
           onReply={focusEditor}
@@ -108,12 +68,8 @@ export default withLoginUserRedux(
 
         <Vote
           referendumInfo={detail?.onchainData?.info}
-          referendumStatus={referendumStatus}
-          setReferendumStatus={setReferendumStatus}
           chain={chain}
           referendumIndex={detail?.referendumIndex}
-          isLoadingReferendumStatus={isLoadingReferendumStatus}
-          setIsLoadingReferendumStatus={setIsLoadingReferendumStatus}
         />
 
         <ReferendumMetadata
@@ -153,8 +109,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
   }
 
   const postId = detail?._id;
-  const voteInfo = extractVoteInfo(detail?.onchainData?.timeline)
-  Object.assign(detail, { voteInfo });
 
   const { result: comments } = await nextApi.fetch(
     `democracy/referendums/${postId}/comments`,

@@ -7,6 +7,7 @@ import PrimeAddressMark from "next-common/components/primeAddressMark";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { GhostCard } from "next-common/components/styled/containers/ghostCard";
 import MemberLinks from "./memberLinks";
+import Flex from "next-common/components/styled/flex";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -35,6 +36,8 @@ const Title = styled.div`
   margin-bottom: 16px;
   color: ${(props) => props.theme.textPrimary};
   > :first-child {
+    align-items: baseline;
+    gap: 8px;
     font-style: normal;
     font-weight: bold;
     font-size: 16px;
@@ -99,6 +102,13 @@ const VoterAddr = styled.div`
   gap: 8px;
 `;
 
+const Statistics = styled.span`
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${(props) => props.theme.textTertiary};
+`;
+
 export default function Vote({
   chain,
   motionIsFinal = false,
@@ -109,12 +119,14 @@ export default function Vote({
   prime,
   motionHash,
   motionIndex,
+  onChainData,
   type,
   updateVotes = () => {},
   isLoadingVote = false,
   setIsLoadingVote = () => {},
 }) {
   const [showPopup, setShowPopup] = useState(false);
+  const ayeVotesCount = votes.filter(([approval]) => approval).length;
 
   let voteList;
   if (loading) {
@@ -180,7 +192,12 @@ export default function Vote({
       <Wrapper>
         <GhostCard>
           <Title>
-            <div>Votes</div>
+            <Flex>
+              <span>Votes</span>
+              <Statistics>
+                {ayeVotesCount}/{onChainData?.threshold}
+              </Statistics>
+            </Flex>
             <div>{isLoadingVote && <Loading size={16} />}</div>
           </Title>
           {voteList}
