@@ -54,6 +54,9 @@ const Secondary = styled.span`
       font-weight: 700 !important;
       color: ${(props) => props.theme.textPrimary};
     `}
+  :hover {
+    color: ${(props) => props.theme.textPrimary};
+  }
 `;
 
 const Tertiary = styled.span`
@@ -85,6 +88,7 @@ const CategoryOption = styled.li`
   all: unset;
   padding: 4px 8px;
   border-radius: 4px;
+
   ${(props) =>
     props.selected &&
     css`
