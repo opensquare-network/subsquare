@@ -9,17 +9,13 @@ import Flex from "next-common/components/styled/flex";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import PostList from "next-common/components/postList";
 import React, { useEffect } from "react";
-import {
-  toDiscussionListItem,
-  toPublicProposalListItem,
-  toTipListItem,
-  toTreasuryProposalListItem,
-} from "../../utils/viewfuncs";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { isAddress } from "next-common/utils/viewfuncs";
 import Grvatar from "next-common/components/gravatar";
 import CommentList from "next-common/components/commentList";
 import { no_scroll_bar } from "next-common/styles/componentCss";
+import Loading from "next-common/components/loading";
+import { CATEGORIES } from "next-common/utils/consts/profile";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -115,6 +111,13 @@ const Username = styled.span`
   color: ${(props) => props.theme.textPrimary};
 `;
 
+const AddressWrapper = styled(Flex)`
+  gap: 8px;
+  margin-top: 4px;
+  flex-basis: 100%;
+  flex-wrap: wrap;
+`;
+
 const getFirstCategoryCount = (firstCategory, summary) => {
   if (!summary[firstCategory]) {
     return 0;
@@ -148,75 +151,15 @@ const Category = ({ type, count, selected, onClick }) => {
   );
 };
 
-const categories = [
-  {
-    id: "treasury",
-    name: "Treasury",
-    children: [
-      {
-        id: "proposals",
-        name: "Proposed Proposals",
-        routePath: "treasury-proposals",
-        formatter: toTreasuryProposalListItem,
-      },
-      {
-        id: "tips",
-        name: "Proposed Tips",
-        routePath: "tips",
-        formatter: toTipListItem,
-      },
-    ],
-  },
-  {
-    id: "democracy",
-    name: "Democracy",
-    children: [
-      {
-        id: "proposals",
-        name: "Proposals",
-        routePath: "public-proposals",
-        formatter: toPublicProposalListItem,
-      },
-    ],
-  },
-  {
-    id: "discussions",
-    name: "Discussions",
-    children: [
-      {
-        id: "discussions",
-        name: "Discussions",
-        routePath: "posts",
-        formatter: toDiscussionListItem,
-      },
-    ],
-  },
-  {
-    id: "comments",
-    name: "Comments",
-    children: [
-      {
-        id: "comments",
-        name: "Comments",
-        routePath: "comments",
-        formatter: (chain, comment) => comment,
-      },
-    ],
-  },
-];
-
 export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
+  const defaultPage = { page: 1, pageSize: 10, total: 0 };
   const address = isAddress(id) ? id : user?.addresses?.[0]?.address;
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [pagination, setPagination] = React.useState({
-    page: 1,
-    pageSize: 10,
-    total: 0,
-  });
   const [items, setItems] = React.useState([]);
-  const [firstCategory, setFirstCategory] = React.useState(categories[2]);
+  const [pagination, setPagination] = React.useState(defaultPage);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [firstCategory, setFirstCategory] = React.useState(CATEGORIES[0]);
   const [secondCategory, setSecondCategory] = React.useState(
-    categories[2].children[0]
+    CATEGORIES[0].children[0]
   );
 
   useEffect(() => {
@@ -244,6 +187,23 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
     <Username>{id}</Username>
   );
 
+  const list =
+    secondCategory.id === "comments" ? (
+      <CommentList
+        items={items}
+        chain={chain}
+        category={"Comments"}
+        pagination={pagination}
+      />
+    ) : (
+      <PostList
+        chain={chain}
+        category={`${firstCategory.name} ${secondCategory.name}`}
+        items={items}
+        pagination={pagination}
+      />
+    );
+
   return (
     <DetailLayout user={loginUser} chain={chain}>
       <Back href={`/`} text="Profile" />
@@ -254,27 +214,19 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
           ) : (
             <Grvatar emailMd5={user?.emmailMd5} size={48} />
           )}
-
           <Flex style={{ marginTop: 0, flexWrap: "wrap" }}>
             {username}
             {address && (
-              <Flex
-                style={{
-                  gap: 8,
-                  marginTop: 4,
-                  flexBasis: "100%",
-                  flexWrap: "wrap",
-                }}
-              >
+              <AddressWrapper>
                 <Tertiary>{address}</Tertiary>
                 <Links chain={chain} address={address} />
-              </Flex>
+              </AddressWrapper>
             )}
           </Flex>
         </BioWrapper>
         <CategoryWrapper>
           <CategoryList>
-            {categories.map((c, index) => (
+            {CATEGORIES.map((c, index) => (
               <Category
                 onClick={() => {
                   setItems(null);
@@ -305,21 +257,11 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
       </Wrapper>
 
       {isLoading ? (
-        <h1>Loading</h1>
-      ) : secondCategory.id === "comments" ? (
-        <CommentList
-          items={items}
-          chain={chain}
-          category={"Comments"}
-          pagination={pagination}
-        />
+        <Flex style={{ flexBasis: "100%", justifyContent: "center" }}>
+          <Loading size={40} />
+        </Flex>
       ) : (
-        <PostList
-          chain={chain}
-          category={`${firstCategory.name} ${secondCategory.name}`}
-          items={items}
-          pagination={pagination}
-        />
+        list
       )}
     </DetailLayout>
   );
