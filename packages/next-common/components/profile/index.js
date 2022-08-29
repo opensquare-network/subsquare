@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { withLoginUserRedux } from "../../lib";
 import { isAddress } from "../../utils/viewfuncs";
 import { CATEGORIES } from "../../utils/consts/profile";
-import { ssrNextApi as nextApi } from "../../services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import User from "../user";
 import CommentList from "../commentList";
 import PostList from "../postList";
