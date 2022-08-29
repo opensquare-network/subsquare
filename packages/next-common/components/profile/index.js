@@ -35,6 +35,7 @@ const Wrapper = styled.div`
 `;
 
 const BioWrapper = styled(SecondaryCard)`
+  padding: 48px;
   margin-top: 0;
   display: flex;
   gap: 16px;
@@ -57,12 +58,12 @@ const Secondary = styled.span`
 `;
 
 const Tertiary = styled.span`
-  color: ${(props) => props.theme.textTertiary};
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
   white-space: pre-wrap;
   word-break: break-all;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 const CategoryWrapper = styled(SecondaryCard)``;
@@ -76,22 +77,20 @@ const CategoryList = styled.ul`
   overflow-x: scroll;
   overflow-y: hidden;
   ${no_scroll_bar};
-
-  li {
-    display: flex;
-    gap: 4px;
-
-    :first-child {
-      font-weight: 500;
-    }
-    > span {
-      height: 20px;
-    }
-  }
 `;
 
 const CategoryOption = styled.li`
   all: unset;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  :first-child {
+    font-weight: 500;
+  }
+  > span {
+    height: 20px;
+  }
   padding: 4px 8px;
   border-radius: 4px;
 
@@ -146,7 +145,7 @@ const Category = ({ type, count, selected, onClick }) => {
   return (
     <CategoryOption selected={selected} onClick={onClick}>
       <Secondary selected={selected}>{type}</Secondary>
-      {count && <Tertiary>{count}</Tertiary>}
+      <Tertiary>{count}</Tertiary>
     </CategoryOption>
   );
 };
