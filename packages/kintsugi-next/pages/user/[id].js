@@ -1,6 +1,6 @@
+import React from "react";
 import { withLoginUser } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import React from "react";
 import Profile from "next-common/components/profile";
 
 export default Profile;
