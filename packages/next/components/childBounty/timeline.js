@@ -52,7 +52,6 @@ export default function ChildBountyTimeline({ chain, childBounty }) {
           Beneficiary: (
             <User chain={chain} add={args.beneficiary} fontSize={14} />
           ),
-          Award: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
         };
       case "BountyClaimed":
       case "Claimed":
