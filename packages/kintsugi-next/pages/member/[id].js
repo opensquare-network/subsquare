@@ -6,9 +6,10 @@ export function getServerSideProps(context) {
   const { res } = context;
   const { id } = context.query;
 
+  //todo: remove this & use a next.config
   res.statusCode = 302;
-  res.setHeader("Location", `https://${process.env.CHAIN}.subscan.io/account/${id}`);
+  res.setHeader("Location", `/user/${id}`);
   res.end();
 
   return { props: {} };
-};
+}

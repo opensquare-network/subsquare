@@ -95,7 +95,7 @@ export const renderDisableNonAddressLink = (el) => {
     const p = block.parentElement;
     const address = block.getAttribute("osn-polka-address");
     if (isAddress(address)) {
-      p.innerHTML = `<a href="/member/${address}" target="_blank">${block.innerText}</a>`;
+      p.innerHTML = `<a href="/user/${address}" target="_blank">${block.innerText}</a>`;
     }
   });
 };

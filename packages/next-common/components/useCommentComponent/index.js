@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
-import Comments from "next-common/components/comment";
+import Comments from "next-common/components/comment/index";
 import Editor from "next-common/components/comment/editor";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";

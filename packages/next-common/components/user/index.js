@@ -177,13 +177,13 @@ function User({
           )}
         </AvatarWrapper>
       )}
-      {address ? (
-        <LinkWrapper
-          color={color}
-          href={`https://${chain}.subscan.io/account/${address}`}
-          target="_blank"
-        >
-          {identity && identity?.info?.status !== "NO_ID" ? (
+      <LinkWrapper
+        color={color}
+        href={`/user/${user?.username ?? address}`}
+        target="_blank"
+      >
+        {address ? (
+          identity && identity?.info?.status !== "NO_ID" ? (
             <Identity
               identity={identity}
               fontSize={fontSize}
@@ -191,11 +191,11 @@ function User({
             />
           ) : (
             addressWithoutIdentity
-          )}
-        </LinkWrapper>
-      ) : (
-        noAddress
-      )}
+          )
+        ) : (
+          noAddress
+        )}
+      </LinkWrapper>
     </Wrapper>
   );
 }
