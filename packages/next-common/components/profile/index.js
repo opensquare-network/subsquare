@@ -16,6 +16,7 @@ import Loading from "../loading";
 import styled, { css } from "styled-components";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
 import { no_scroll_bar } from "../../styles/componentCss";
+import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -154,16 +155,20 @@ const Category = ({ type, count, selected, onClick }) => {
 };
 
 export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
-  const defaultPage = { page: 1, pageSize: 10, total: 0 };
+  const router = useRouter();
+  const defaultPage = {
+    page: parseInt(router?.query?.page ?? 1),
+    pageSize: 10,
+    total: 0,
+  };
   const address = isAddress(id) ? id : user?.addresses?.[0]?.address;
   const [items, setItems] = React.useState([]);
   const [pagination, setPagination] = React.useState(defaultPage);
   const [isLoading, setIsLoading] = React.useState(false);
-  const [firstCategory, setFirstCategory] = React.useState(CATEGORIES[0]);
+  const [firstCategory, setFirstCategory] = React.useState(CATEGORIES[4]);
   const [secondCategory, setSecondCategory] = React.useState(
-    CATEGORIES[0].children[0]
+    CATEGORIES[4].children[0]
   );
-
   const overview = {
     ...summary,
     collectives: {
@@ -173,15 +178,20 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
   };
 
   useEffect(() => {
+    setPagination({ ...pagination, page: parseInt(router?.query?.page ?? 1) });
     setIsLoading(true);
     nextApi
       .fetch(`users/${id}/${secondCategory.routePath}`, {
-        page: pagination.page,
+        page: parseInt(router?.query?.page ?? 1),
         pageSize: pagination.pageSize,
       })
       .then(({ result: { items, pageSize, total } }) => {
         setItems(items.map((item) => secondCategory.formatter(chain, item)));
-        setPagination({ page: 1, pageSize, total });
+        setPagination({
+          page: parseInt(router?.query?.page ?? 1),
+          pageSize,
+          total,
+        });
       })
       .catch((e) => {
         console.error(e);
@@ -189,7 +199,7 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [chain, id, pagination.page, pagination.pageSize, secondCategory]);
+  }, [chain, id, router?.query?.page, pagination.pageSize, secondCategory]);
 
   const username = isAddress(id) ? (
     <User chain={chain} add={id} showAvatar={false} fontSize={16} />
