@@ -2,6 +2,7 @@ import {
   toCouncilMotionListItem,
   toDiscussionListItem,
   toPublicProposalListItem,
+  toTechCommMotionListItem,
   toTipListItem,
   toTreasuryProposalListItem,
 } from "@subsquare/next/utils/viewfuncs";
@@ -51,7 +52,7 @@ export const CATEGORIES = [
         id: "techCommProposals",
         name: "Tech. Comm. Proposals",
         routePath: "techcomm-proposals",
-        formatter: toCouncilMotionListItem,
+        formatter: toTechCommMotionListItem,
       },
     ],
   },
