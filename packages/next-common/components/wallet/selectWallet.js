@@ -104,6 +104,8 @@ const Wallet = ({ wallet, onClick, selected = false, loading = false }) => {
     // update if installed changes
     if (injectedWeb3 && isMounted.current) {
       setInstalled(!!injectedWeb3?.[wallet?.extensionName]);
+    } else {
+      setInstalled(false);
     }
   }, [injectedWeb3]);
 
@@ -186,7 +188,9 @@ export default function SelectWallet({
         setWaitingPermissionWallet(selectedWallet);
         const wallet = await extension.enable("subsquare");
         const extensionAccounts = await wallet.accounts?.get();
-        const excludeEthExtensionAccounts = extensionAccounts?.filter((acc) => acc.type !== "ethereum")
+        const excludeEthExtensionAccounts = extensionAccounts?.filter(
+          (acc) => acc.type !== "ethereum"
+        );
         if (isMounted.current) {
           setSelectWallet(selectedWallet);
           setWallet(wallet);
