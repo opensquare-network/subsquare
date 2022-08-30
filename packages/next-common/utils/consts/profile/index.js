@@ -1,4 +1,5 @@
 import {
+  toCouncilMotionListItem,
   toDiscussionListItem,
   toPublicProposalListItem,
   toTipListItem,
@@ -33,6 +34,24 @@ export const CATEGORIES = [
         name: "Proposals",
         routePath: "public-proposals",
         formatter: toPublicProposalListItem,
+      },
+    ],
+  },
+  {
+    id: "collectives",
+    name: "Collectives",
+    children: [
+      {
+        id: "councilMotions",
+        name: "Council Motions",
+        routePath: "council-motions",
+        formatter: toCouncilMotionListItem,
+      },
+      {
+        id: "techCommProposals",
+        name: "Tech. Comm. Proposals",
+        routePath: "techcomm-proposals",
+        formatter: toCouncilMotionListItem,
       },
     ],
   },

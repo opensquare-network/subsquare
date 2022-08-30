@@ -46,6 +46,7 @@ const Secondary = styled.span`
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
+
   ${(props) =>
     props.selected &&
     css`
@@ -88,9 +89,11 @@ const CategoryOption = styled.li`
   :first-child {
     font-weight: 500;
   }
+
   > span {
     height: 20px;
   }
+
   padding: 4px 8px;
   border-radius: 4px;
 
@@ -160,6 +163,14 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
   const [secondCategory, setSecondCategory] = React.useState(
     CATEGORIES[0].children[0]
   );
+
+  const overview = {
+    ...summary,
+    collectives: {
+      councilMotions: summary?.council?.motions ?? 0,
+      techCommProposals: summary?.techComm?.proposals ?? 0,
+    },
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -234,7 +245,7 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
                 }}
                 key={index}
                 type={c.name}
-                count={getFirstCategoryCount(c.id, summary)}
+                count={getFirstCategoryCount(c.id, overview)}
                 selected={c.id === firstCategory.id}
               />
             ))}
@@ -247,7 +258,7 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
                 }}
                 key={index}
                 type={c.name}
-                count={getSecondCategoryCount(firstCategory.id, c.id, summary)}
+                count={getSecondCategoryCount(firstCategory.id, c.id, overview)}
                 selected={c.id === secondCategory.id}
               />
             ))}
