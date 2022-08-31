@@ -6,8 +6,12 @@ import Timeline from "next-common/components/timeline";
 import sortTimeline from "next-common/utils/timeline/sort";
 import Anchor from "next-common/components/styled/anchor";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import CountDown from "next-common/components/_CountDown";
+import { useSelector } from "react-redux";
+import { nowHeightSelector } from "next-common/store/reducers/chainSlice";
 
 export default function ChildBountyTimeline({ chain, childBounty }) {
+  const nowHeight = useSelector(nowHeightSelector);
   const node = getNode(chain);
   if (!node) {
     return null;
@@ -15,7 +19,7 @@ export default function ChildBountyTimeline({ chain, childBounty }) {
   const decimals = node.decimals;
   const symbol = node.symbol;
 
-  const getTimelineData = (args, method) => {
+  const getTimelineData = (args, method, indexer) => {
     switch (method) {
       case "Added":
         return {
@@ -48,11 +52,27 @@ export default function ChildBountyTimeline({ chain, childBounty }) {
           Index: `#${args.index}`,
         };
       case "Awarded":
-        return {
+        const AwardedTimelineNode = {
           Beneficiary: (
             <User chain={chain} add={args.beneficiary} fontSize={14} />
           ),
         };
+        if (childBounty?.state?.state === "PendingPayout") {
+          const { unlockAt } = childBounty;
+          const { blockHeight: awardedAt } = indexer;
+
+          AwardedTimelineNode.PendingPayout = (
+            <CountDown
+              numerator={Math.min(unlockAt, nowHeight) - awardedAt}
+              denominator={unlockAt - awardedAt}
+              tooltipContent={`${nowHeight} / ${unlockAt}, ${Math.max(
+                0,
+                unlockAt - nowHeight
+              )} blocks left`}
+            />
+          );
+        }
+        return AwardedTimelineNode;
       case "BountyClaimed":
       case "Claimed":
         return {
@@ -74,7 +94,7 @@ export default function ChildBountyTimeline({ chain, childBounty }) {
         detailPageCategory.TREASURY_CHILD_BOUNTY,
         item.method ?? item.name
       ),
-      data: getTimelineData(item.args, item.method ?? item.name),
+      data: getTimelineData(item.args, item.method ?? item.name, indexer),
     };
   });
   sortTimeline(timelineData);
