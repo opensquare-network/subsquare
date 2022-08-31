@@ -6,7 +6,7 @@ import {
   toTipListItem,
   toTreasuryProposalListItem,
 } from "@subsquare/next/utils/viewfuncs";
-import { detailPageCategory } from "../business/category";
+import businessCategory from "../business/category";
 
 export const CATEGORIES = [
   {
@@ -17,7 +17,7 @@ export const CATEGORIES = [
         id: "proposals",
         name: "Proposed Proposals",
         categoryName: "Proposed treasury proposals",
-        categoryId: detailPageCategory.TREASURY_PROPOSAL,
+        categoryId: businessCategory.treasuryProposals,
         routePath: "treasury-proposals",
         formatter: toTreasuryProposalListItem,
       },
@@ -25,7 +25,7 @@ export const CATEGORIES = [
         id: "tips",
         name: "Proposed Tips",
         categoryName: "Proposed treasury tips",
-        categoryId: detailPageCategory.TREASURY_TIP,
+        categoryId: businessCategory.treasuryTips,
         routePath: "tips",
         formatter: toTipListItem,
       },
@@ -39,7 +39,7 @@ export const CATEGORIES = [
         id: "proposals",
         name: "Proposals",
         categoryName: "Proposed democracy proposals",
-        categoryId: detailPageCategory.DEMOCRACY_PROPOSALS,
+        categoryId: businessCategory.democracyProposals,
         routePath: "public-proposals",
         formatter: toPublicProposalListItem,
       },
@@ -53,7 +53,7 @@ export const CATEGORIES = [
         id: "councilMotions",
         name: "Council Motions",
         categoryName: "Council motions",
-        categoryId: detailPageCategory.COUNCIL_MOTION,
+        categoryId: businessCategory.councilMotions,
         routePath: "council-motions",
         formatter: toCouncilMotionListItem,
       },
@@ -61,7 +61,7 @@ export const CATEGORIES = [
         id: "techCommProposals",
         name: "Tech. Comm. Proposals",
         categoryName: "Tech. Comm. proposals",
-        categoryId: detailPageCategory.TECH_COMM_MOTION,
+        categoryId: businessCategory.tcProposals,
         routePath: "techcomm-proposals",
         formatter: toTechCommMotionListItem,
       },
@@ -75,7 +75,7 @@ export const CATEGORIES = [
         id: "discussions",
         name: "Discussions",
         categoryName: "Discussions",
-        categoryId: detailPageCategory.POST,
+        categoryId: "Discussions",
         routePath: "posts",
         formatter: toDiscussionListItem,
       },
@@ -89,7 +89,7 @@ export const CATEGORIES = [
         id: "comments",
         name: "Comments",
         categoryName: "Comments",
-        categoryId: detailPageCategory.POST,
+        categoryId: "Comments",
         routePath: "comments",
         formatter: (chain, comment) => comment,
       },
