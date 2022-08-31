@@ -11,7 +11,7 @@ const LinkInnerWrapper = styled.a`
   align-items: center;
 `;
 
-export default function PageCaret({ isPre = true, page }) {
+export default function PageCaret({ isPre = true, page, onPageChange = null }) {
   const router = useRouter();
 
   return (
@@ -22,7 +22,11 @@ export default function PageCaret({ isPre = true, page }) {
       })}`}
       passHref
     >
-      <LinkInnerWrapper>
+      <LinkInnerWrapper
+        onClick={(e) => {
+          onPageChange && onPageChange(e, page);
+        }}
+      >
         {isPre ? <CaretLeft /> : <CaretRight />}
       </LinkInnerWrapper>
     </Link>

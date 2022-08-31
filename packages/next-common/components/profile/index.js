@@ -16,7 +16,6 @@ import Loading from "../loading";
 import styled, { css } from "styled-components";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
 import { no_scroll_bar } from "../../styles/componentCss";
-import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -183,7 +182,6 @@ const DisplayUserAvatar = ({ address, user }) => {
 };
 
 export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
-  const router = useRouter();
   const defaultPage = { page: 1, pageSize: 10, total: 0 };
   const address = isAddress(id) ? id : user?.addresses?.[0]?.address;
   const [items, setItems] = React.useState([]);
@@ -201,9 +199,7 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
     },
   };
 
-  useEffect(() => {
-    setPagination({ ...pagination, page: parseInt(router?.query?.page ?? 1) });
-  }, [router?.query?.page]);
+  const resetPage = () => setPagination({ ...pagination, page: 1 });
 
   useEffect(() => {
     setIsLoading(true);
@@ -222,7 +218,12 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [chain, id, pagination.pageSize, secondCategory]);
+  }, [chain, id, pagination.page, pagination.pageSize, secondCategory]);
+
+  const onPageChange = (e, target) => {
+    e.preventDefault();
+    setPagination({ ...pagination, page: target });
+  };
 
   const list =
     secondCategory.id === "comments" ? (
@@ -230,7 +231,7 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
         items={items}
         chain={chain}
         category={secondCategory.categoryName}
-        pagination={pagination}
+        pagination={{ ...pagination, onPageChange }}
       />
     ) : (
       <PostList
@@ -238,7 +239,7 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
         title={secondCategory.categoryName}
         category={secondCategory.categoryId}
         items={items}
-        pagination={pagination}
+        pagination={{ ...pagination, onPageChange }}
       />
     );
 
@@ -261,6 +262,7 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
                   setItems(null);
                   setFirstCategory(c);
                   setSecondCategory(c.children[0]);
+                  resetPage();
                 }}
                 key={index}
                 type={c.name}
@@ -274,6 +276,7 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
               <Category
                 onClick={() => {
                   setSecondCategory(c);
+                  resetPage();
                 }}
                 key={index}
                 type={c.name}

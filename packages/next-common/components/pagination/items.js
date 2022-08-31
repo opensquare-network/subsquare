@@ -9,7 +9,7 @@ const Ellipsis = styled.div`
   color: ${(props) => props.theme.textSecondary};
 `;
 
-export default function Items({ total = 0, page }) {
+export default function Items({ total = 0, page, onPageChange = null }) {
   let key = 0;
   const items = [];
   const groups = constructGroups(total, page - 1);
@@ -17,18 +17,19 @@ export default function Items({ total = 0, page }) {
     const group = groups[i];
     for (let j = 0; j < group.length; j++) {
       items.push(
-        <PageItem now={ page } page={ group[j] } key={key++} />
-      )
+        <PageItem
+          now={page}
+          page={group[j]}
+          key={key++}
+          onPageChange={onPageChange}
+        />
+      );
     }
 
     if (i < groups.length - 1) {
-      items.push(<Ellipsis key={ key++ }>...</Ellipsis>)
+      items.push(<Ellipsis key={key++}>...</Ellipsis>);
     }
   }
 
-  return <Fragment>
-    {
-      items
-    }
-  </Fragment>
+  return <Fragment>{items}</Fragment>;
 }
