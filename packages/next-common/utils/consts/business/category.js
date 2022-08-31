@@ -20,14 +20,10 @@ export const detailPageCategory = {
   DEMOCRACY_REFERENDUM: "democracy/referendum",
   DEMOCRACY_EXTERNAL: "democracy/external",
   DEMOCRACY_PROPOSAL: "democracy/proposal",
-  DEMOCRACY_PROPOSALS: "Democracy Proposals",
   TREASURY_PROPOSAL: "treasury/proposal",
   TREASURY_BOUNTY: "treasury/bounty",
   TREASURY_CHILD_BOUNTY: "treasury/child-bounty",
   TREASURY_TIP: "treasury/tip",
-  COLLECTIVE_MOTIONS: "Collectives Council Motions",
-  TREASURY_PROPOSED_PROPOSALS: "Treasury Proposed Proposals",
-  TREASURY_PROPOSED_TIPS: "Treasury Proposed Tips",
 };
 
 export default businessCategory;
