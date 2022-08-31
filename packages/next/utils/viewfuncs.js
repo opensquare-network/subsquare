@@ -25,6 +25,10 @@ export function getTipState(state) {
     : TipStateMap[state.state ?? state];
 }
 
+function getTitle(item) {
+  return `${item?.title ?? "--"}`;
+}
+
 export const toDiscussionListItem = (chain, item) => ({
   ...item,
   time: item.lastActivityAt,
@@ -96,7 +100,7 @@ export const toCouncilMotionListItem = (chain, item) => {
   return {
     ...item,
     index: item.motionIndex,
-    title: `${item?.title}`,
+    title: getTitle(item),
     author: item.author,
     address: item.proposer,
     status: item.state ?? "Unknown",
@@ -112,7 +116,7 @@ export const toCouncilMotionListItem = (chain, item) => {
 export const toFinancialMotionsListItem = (chain, item) => ({
   ...item,
   index: item.motionIndex,
-  title: `${item?.title}`,
+  title: getTitle(item),
   author: item.author,
   address: item.proposer,
   status: item.state ?? "Unknown",
@@ -122,7 +126,7 @@ export const toFinancialMotionsListItem = (chain, item) => ({
 
 export const toTechCommMotionListItem = (chain, item) => ({
   ...item,
-  title: item.title,
+  title: getTitle(item),
   author: item.author,
   address: item.proposer,
   status: item?.state ?? "Unknown",
@@ -133,6 +137,7 @@ export const toTechCommMotionListItem = (chain, item) => ({
 
 export const toTreasuryProposalListItem = (chain, item) => ({
   ...item,
+  title: getTitle(item),
   author: item.author,
   address: item.proposer,
   status: item.state ?? "Unknown",
@@ -144,6 +149,7 @@ export const toTreasuryProposalListItem = (chain, item) => ({
 
 export const toTreasuryBountyListItem = (chain, item) => ({
   ...item,
+  title: getTitle(item),
   index: item.bountyIndex,
   author: item.author,
   address: item.proposer,
@@ -155,6 +161,7 @@ export const toTreasuryBountyListItem = (chain, item) => ({
 
 export const toTreasuryChildBountyListItem = (chain, item) => ({
   ...item,
+  title: getTitle(item),
   author: item.author,
   address: item.proposer,
   status: item.state ?? "Unknown",
@@ -166,6 +173,7 @@ export const toTreasuryChildBountyListItem = (chain, item) => ({
 
 export const toReferendaListItem = (chain, item) => ({
   ...item,
+  title: getTitle(item),
   time: getPostUpdatedAt(item),
   status: item.state ?? "Unknown",
   index: item.referendumIndex,
@@ -176,6 +184,7 @@ export const toReferendaListItem = (chain, item) => ({
 
 export const toTipListItem = (chain, item) => ({
   ...item,
+  title: getTitle(item),
   author: item.author,
   address: item.finder,
   status: getTipState(item.state),
@@ -189,6 +198,7 @@ export const toTipListItem = (chain, item) => ({
 
 export const toPublicProposalListItem = (chain, item) => ({
   ...item,
+  title: getTitle(item),
   author: item.author,
   address: item.proposer,
   index: item.proposalIndex,
@@ -199,6 +209,7 @@ export const toPublicProposalListItem = (chain, item) => ({
 
 export const toExternalProposalListItem = (chain, item) => ({
   ...item,
+  title: getTitle(item),
   author: item.author,
   address: item.proposer,
   time: getPostUpdatedAt(item),
