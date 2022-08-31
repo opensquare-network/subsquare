@@ -50,6 +50,5 @@ export default function Tag({ category, state, link }) {
   if (Tag) {
     return <Tag state={element} />;
   }
-
   return <ClosedTag>{element}</ClosedTag>;
 }
