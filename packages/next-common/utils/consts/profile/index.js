@@ -6,6 +6,7 @@ import {
   toTipListItem,
   toTreasuryProposalListItem,
 } from "@subsquare/next/utils/viewfuncs";
+import { detailPageCategory } from "../business/category";
 
 export const CATEGORIES = [
   {
@@ -15,12 +16,16 @@ export const CATEGORIES = [
       {
         id: "proposals",
         name: "Proposed Proposals",
+        categoryName: "Proposed treasury proposals",
+        categoryId: detailPageCategory.TREASURY_PROPOSAL,
         routePath: "treasury-proposals",
         formatter: toTreasuryProposalListItem,
       },
       {
         id: "tips",
         name: "Proposed Tips",
+        categoryName: "Proposed treasury tips",
+        categoryId: detailPageCategory.TREASURY_TIP,
         routePath: "tips",
         formatter: toTipListItem,
       },
@@ -33,6 +38,8 @@ export const CATEGORIES = [
       {
         id: "proposals",
         name: "Proposals",
+        categoryName: "Proposed democracy proposals",
+        categoryId: detailPageCategory.DEMOCRACY_PROPOSALS,
         routePath: "public-proposals",
         formatter: toPublicProposalListItem,
       },
@@ -45,12 +52,16 @@ export const CATEGORIES = [
       {
         id: "councilMotions",
         name: "Council Motions",
+        categoryName: "Council motions",
+        categoryId: detailPageCategory.COUNCIL_MOTION,
         routePath: "council-motions",
         formatter: toCouncilMotionListItem,
       },
       {
         id: "techCommProposals",
         name: "Tech. Comm. Proposals",
+        categoryName: "Tech. Comm. proposals",
+        categoryId: detailPageCategory.TECH_COMM_MOTION,
         routePath: "techcomm-proposals",
         formatter: toTechCommMotionListItem,
       },
@@ -63,6 +74,8 @@ export const CATEGORIES = [
       {
         id: "discussions",
         name: "Discussions",
+        categoryName: "Discussions",
+        categoryId: detailPageCategory.POST,
         routePath: "posts",
         formatter: toDiscussionListItem,
       },
@@ -75,6 +88,8 @@ export const CATEGORIES = [
       {
         id: "comments",
         name: "Comments",
+        categoryName: "Comments",
+        categoryId: detailPageCategory.POST,
         routePath: "comments",
         formatter: (chain, comment) => comment,
       },

@@ -23,6 +23,7 @@ const Wrapper = styled.div`
 
 export default function PostList({
   chain,
+  title,
   category,
   items,
   pagination,
@@ -32,7 +33,7 @@ export default function PostList({
   return (
     <Wrapper>
       <TitleContainer>
-        {category}
+        {title ?? category}
         {create}
       </TitleContainer>
       {summary}

@@ -154,20 +154,44 @@ const Category = ({ type, count, selected, onClick }) => {
   );
 };
 
+const DisplayUser = ({ id, chain }) => {
+  if (isAddress(id)) {
+    return <User chain={chain} add={id} showAvatar={false} fontSize={16} />;
+  }
+
+  return <Username>{id}</Username>;
+};
+
+const DisplayUserAddress = ({ address, chain }) => {
+  if (!address) {
+    return null;
+  }
+  return (
+    <AddressWrapper>
+      <Tertiary>{address}</Tertiary>
+      <Links chain={chain} address={address} />
+    </AddressWrapper>
+  );
+};
+
+const DisplayUserAvatar = ({ address, user }) => {
+  return address ? (
+    <Avatar address={address} size={48} />
+  ) : (
+    <Grvatar emailMd5={user?.emmailMd5} size={48} />
+  );
+};
+
 export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
   const router = useRouter();
-  const defaultPage = {
-    page: parseInt(router?.query?.page ?? 1),
-    pageSize: 10,
-    total: 0,
-  };
+  const defaultPage = { page: 1, pageSize: 10, total: 0 };
   const address = isAddress(id) ? id : user?.addresses?.[0]?.address;
   const [items, setItems] = React.useState([]);
   const [pagination, setPagination] = React.useState(defaultPage);
   const [isLoading, setIsLoading] = React.useState(false);
-  const [firstCategory, setFirstCategory] = React.useState(CATEGORIES[4]);
+  const [firstCategory, setFirstCategory] = React.useState(CATEGORIES[0]);
   const [secondCategory, setSecondCategory] = React.useState(
-    CATEGORIES[4].children[0]
+    CATEGORIES[0].children[0]
   );
   const overview = {
     ...summary,
@@ -179,19 +203,18 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
 
   useEffect(() => {
     setPagination({ ...pagination, page: parseInt(router?.query?.page ?? 1) });
+  }, [router?.query?.page]);
+
+  useEffect(() => {
     setIsLoading(true);
     nextApi
       .fetch(`users/${id}/${secondCategory.routePath}`, {
-        page: parseInt(router?.query?.page ?? 1),
+        page: pagination.page,
         pageSize: pagination.pageSize,
       })
-      .then(({ result: { items, pageSize, total } }) => {
+      .then(({ result: { items, page, pageSize, total } }) => {
         setItems(items.map((item) => secondCategory.formatter(chain, item)));
-        setPagination({
-          page: parseInt(router?.query?.page ?? 1),
-          pageSize,
-          total,
-        });
+        setPagination({ page, pageSize, total });
       })
       .catch((e) => {
         console.error(e);
@@ -199,26 +222,21 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [chain, id, router?.query?.page, pagination.pageSize, secondCategory]);
-
-  const username = isAddress(id) ? (
-    <User chain={chain} add={id} showAvatar={false} fontSize={16} />
-  ) : (
-    <Username>{id}</Username>
-  );
+  }, [chain, id, pagination.pageSize, secondCategory]);
 
   const list =
     secondCategory.id === "comments" ? (
       <CommentList
         items={items}
         chain={chain}
-        category={"Comments"}
+        category={secondCategory.categoryName}
         pagination={pagination}
       />
     ) : (
       <PostList
         chain={chain}
-        category={`${firstCategory.name} ${secondCategory.name}`}
+        title={secondCategory.categoryName}
+        category={secondCategory.categoryId}
         items={items}
         pagination={pagination}
       />
@@ -229,19 +247,10 @@ export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
       <Back href={`/`} text="Profile" />
       <Wrapper>
         <BioWrapper>
-          {address ? (
-            <Avatar address={address} size={48} />
-          ) : (
-            <Grvatar emailMd5={user?.emmailMd5} size={48} />
-          )}
+          <DisplayUserAvatar address={address} user={user} />
           <Flex style={{ marginTop: 0, flexWrap: "wrap" }}>
-            {username}
-            {address && (
-              <AddressWrapper>
-                <Tertiary>{address}</Tertiary>
-                <Links chain={chain} address={address} />
-              </AddressWrapper>
-            )}
+            <DisplayUser id={id} chain={chain} />
+            <DisplayUserAddress address={address} chain={chain} />
           </Flex>
         </BioWrapper>
         <CategoryWrapper>
