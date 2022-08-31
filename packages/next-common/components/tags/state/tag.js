@@ -14,9 +14,11 @@ import {
 const categoryTagMap = {
   [businessCategory.treasuryProposals]: TreasuryTag,
   [detailPageCategory.TREASURY_PROPOSAL]: TreasuryTag,
+  [detailPageCategory.TREASURY_PROPOSED_PROPOSALS]: TreasuryTag,
 
   [businessCategory.treasuryTips]: TipTag,
   [detailPageCategory.TREASURY_TIP]: TipTag,
+  [detailPageCategory.TREASURY_PROPOSED_TIPS]: TipTag,
 
   [businessCategory.treasuryBounties]: BountyTag,
   [detailPageCategory.TREASURY_BOUNTY]: BountyTag,
@@ -31,12 +33,14 @@ const categoryTagMap = {
 
   [businessCategory.democracyProposals]: DemocracyProposalTag,
   [detailPageCategory.DEMOCRACY_PROPOSAL]: DemocracyProposalTag,
+  [detailPageCategory.DEMOCRACY_PROPOSALS]: DemocracyProposalTag,
 
   [businessCategory.democracyExternals]: DemocracyExternalTag,
   [detailPageCategory.DEMOCRACY_EXTERNAL]: DemocracyExternalTag,
 
   [businessCategory.democracyReferenda]: DemocracyReferendumTag,
   [detailPageCategory.DEMOCRACY_REFERENDUM]: DemocracyReferendumTag,
+  [detailPageCategory.COLLECTIVE_MOTIONS]: CollectiveTag,
 };
 
 export default function Tag({ category, state, link }) {
@@ -50,6 +54,5 @@ export default function Tag({ category, state, link }) {
   if (Tag) {
     return <Tag state={element} />;
   }
-
   return <ClosedTag>{element}</ClosedTag>;
 }
