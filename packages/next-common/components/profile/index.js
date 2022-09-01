@@ -16,6 +16,7 @@ import Loading from "../loading";
 import styled, { css } from "styled-components";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
 import { no_scroll_bar } from "../../styles/componentCss";
+import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -181,120 +182,152 @@ const DisplayUserAvatar = ({ address, user }) => {
   );
 };
 
-export default withLoginUserRedux(({ loginUser, summary, user, chain, id }) => {
-  const defaultPage = { page: 1, pageSize: 10, total: 0 };
-  const address = isAddress(id) ? id : user?.addresses?.[0]?.address;
-  const [items, setItems] = React.useState([]);
-  const [pagination, setPagination] = React.useState(defaultPage);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [firstCategory, setFirstCategory] = React.useState(CATEGORIES[0]);
-  const [secondCategory, setSecondCategory] = React.useState(
-    CATEGORIES[0].children[0]
-  );
-  const overview = {
-    ...summary,
-    collectives: {
-      councilMotions: summary?.council?.motions ?? 0,
-      techCommProposals: summary?.techComm?.proposals ?? 0,
-    },
-  };
+const getCategoryByRoute = (route) => {
+  let category;
+  CATEGORIES.forEach((firstCategory) => {
+    firstCategory.children.forEach((secondCategory) => {
+      if (secondCategory.routePath === route) {
+        category = [firstCategory, secondCategory];
+      }
+    });
+  });
+  if (category) {
+    return category;
+  }
+  return [CATEGORIES[0], CATEGORIES[0].children[0]];
+};
 
-  const resetPage = () => setPagination({ ...pagination, page: 1 });
-
-  useEffect(() => {
-    setIsLoading(true);
-    nextApi
-      .fetch(`users/${id}/${secondCategory.routePath}`, {
-        page: pagination.page,
-        pageSize: pagination.pageSize,
-      })
-      .then(({ result: { items, page, pageSize, total } }) => {
-        setItems(items.map((item) => secondCategory.formatter(chain, item)));
-        setPagination({ page, pageSize, total });
-      })
-      .catch((e) => {
-        console.error(e);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [chain, id, pagination.page, pagination.pageSize, secondCategory]);
-
-  const onPageChange = (e, target) => {
-    e.preventDefault();
-    setPagination({ ...pagination, page: target });
-  };
-
-  const list =
-    secondCategory.id === "comments" ? (
-      <CommentList
-        items={items}
-        chain={chain}
-        category={secondCategory.categoryName}
-        pagination={{ ...pagination, onPageChange }}
-      />
-    ) : (
-      <PostList
-        chain={chain}
-        title={secondCategory.categoryName}
-        category={secondCategory.categoryId}
-        items={items}
-        pagination={{ ...pagination, onPageChange }}
-      />
+export default withLoginUserRedux(
+  ({ loginUser, route, summary, user, chain, id }) => {
+    const defaultPage = { page: 1, pageSize: 10, total: 0 };
+    const address = isAddress(id) ? id : user?.addresses?.[0]?.address;
+    const [items, setItems] = React.useState([]);
+    const [pagination, setPagination] = React.useState(defaultPage);
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [firstCategory, setFirstCategory] = React.useState(
+      getCategoryByRoute(route)[0]
     );
+    const [secondCategory, setSecondCategory] = React.useState(
+      getCategoryByRoute(route)[1]
+    );
+    const router = useRouter();
 
-  return (
-    <DetailLayout user={loginUser} chain={chain}>
-      <Back href={`/`} text="Profile" />
-      <Wrapper>
-        <BioWrapper>
-          <DisplayUserAvatar address={address} user={user} />
-          <Flex style={{ marginTop: 0, flexWrap: "wrap" }}>
-            <DisplayUser id={id} chain={chain} />
-            <DisplayUserAddress address={address} chain={chain} />
-          </Flex>
-        </BioWrapper>
-        <CategoryWrapper>
-          <CategoryList>
-            {CATEGORIES.map((c, index) => (
-              <Category
-                onClick={() => {
-                  setItems(null);
-                  setFirstCategory(c);
-                  setSecondCategory(c.children[0]);
-                  resetPage();
-                }}
-                key={index}
-                type={c.name}
-                count={getFirstCategoryCount(c.id, overview)}
-                selected={c.id === firstCategory.id}
-              />
-            ))}
-          </CategoryList>
-          <CategoryList>
-            {firstCategory.children.map((c, index) => (
-              <Category
-                onClick={() => {
-                  setSecondCategory(c);
-                  resetPage();
-                }}
-                key={index}
-                type={c.name}
-                count={getSecondCategoryCount(firstCategory.id, c.id, overview)}
-                selected={c.id === secondCategory.id}
-              />
-            ))}
-          </CategoryList>
-        </CategoryWrapper>
-      </Wrapper>
+    const overview = {
+      ...summary,
+      collectives: {
+        councilMotions: summary?.council?.motions ?? 0,
+        techCommProposals: summary?.techComm?.proposals ?? 0,
+      },
+    };
 
-      {isLoading ? (
-        <Flex style={{ flexBasis: "100%", justifyContent: "center" }}>
-          <Loading size={40} />
-        </Flex>
+    const resetPage = () => setPagination({ ...pagination, page: 1 });
+
+    useEffect(() => {
+      setIsLoading(true);
+      router.push(
+        {
+          pathname: `/user/${id}/${secondCategory.routePath}`,
+        },
+        undefined,
+        { shallow: true }
+      );
+      nextApi
+        .fetch(`users/${id}/${secondCategory.apiPath}`, {
+          page: pagination.page,
+          pageSize: pagination.pageSize,
+        })
+        .then(({ result: { items, page, pageSize, total } }) => {
+          setItems(items.map((item) => secondCategory.formatter(chain, item)));
+          setPagination({ page, pageSize, total });
+        })
+        .catch((e) => {
+          console.error(e);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }, [chain, id, pagination.page, pagination.pageSize, secondCategory]);
+
+    const onPageChange = (e, target) => {
+      e.preventDefault();
+      setPagination({ ...pagination, page: target });
+    };
+
+    const list =
+      secondCategory.id === "comments" ? (
+        <CommentList
+          items={items}
+          chain={chain}
+          category={secondCategory.categoryName}
+          pagination={{ ...pagination, onPageChange }}
+        />
       ) : (
-        list
-      )}
-    </DetailLayout>
-  );
-});
+        <PostList
+          chain={chain}
+          title={secondCategory.categoryName}
+          category={secondCategory.categoryId}
+          items={items}
+          pagination={{ ...pagination, onPageChange }}
+        />
+      );
+
+    return (
+      <DetailLayout user={loginUser} chain={chain}>
+        <Back href={`/`} text="Profile" />
+        <Wrapper>
+          <BioWrapper>
+            <DisplayUserAvatar address={address} user={user} />
+            <Flex style={{ marginTop: 0, flexWrap: "wrap" }}>
+              <DisplayUser id={id} chain={chain} />
+              <DisplayUserAddress address={address} chain={chain} />
+            </Flex>
+          </BioWrapper>
+          <CategoryWrapper>
+            <CategoryList>
+              {CATEGORIES.map((c, index) => (
+                <Category
+                  onClick={() => {
+                    setItems(null);
+                    setFirstCategory(c);
+                    setSecondCategory(c.children[0]);
+                    resetPage();
+                  }}
+                  key={index}
+                  type={c.name}
+                  count={getFirstCategoryCount(c.id, overview)}
+                  selected={c.id === firstCategory.id}
+                />
+              ))}
+            </CategoryList>
+            <CategoryList>
+              {firstCategory.children.map((c, index) => (
+                <Category
+                  onClick={() => {
+                    setSecondCategory(c);
+                    resetPage();
+                  }}
+                  key={index}
+                  type={c.name}
+                  count={getSecondCategoryCount(
+                    firstCategory.id,
+                    c.id,
+                    overview
+                  )}
+                  selected={c.id === secondCategory.id}
+                />
+              ))}
+            </CategoryList>
+          </CategoryWrapper>
+        </Wrapper>
+
+        {isLoading ? (
+          <Flex style={{ flexBasis: "100%", justifyContent: "center" }}>
+            <Loading size={40} />
+          </Flex>
+        ) : (
+          list
+        )}
+      </DetailLayout>
+    );
+  }
+);
