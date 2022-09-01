@@ -34,11 +34,12 @@ export const PopperArrow = styled.div`
 `;
 
 export const PopperContainer = styled.div`
-  background: #333;
+  background: rgba(51, 51, 51, 0.8);
   color: white;
-  font-weight: bold;
+  font-weight: 400;
   padding: 4px 8px;
-  font-size: 13px;
+  font-size: 12px;
+  line-height: 16px;
   border-radius: 4px;
   display: none;
 
