@@ -6,12 +6,9 @@ import Timeline from "next-common/components/timeline";
 import sortTimeline from "next-common/utils/timeline/sort";
 import Anchor from "next-common/components/styled/anchor";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import CountDown from "next-common/components/_CountDown";
-import { useSelector } from "react-redux";
-import { nowHeightSelector } from "next-common/store/reducers/chainSlice";
+import Countdown from "./countdown";
 
-export default function ChildBountyTimeline({ chain, childBounty }) {
-  const nowHeight = useSelector(nowHeightSelector);
+export default function ChildBountyTimeline({ chain, onchainData }) {
   const node = getNode(chain);
   if (!node) {
     return null;
@@ -57,19 +54,9 @@ export default function ChildBountyTimeline({ chain, childBounty }) {
             <User chain={chain} add={args.beneficiary} fontSize={14} />
           ),
         };
-        if (childBounty?.state?.state === "PendingPayout") {
-          const { unlockAt } = childBounty;
-          const { blockHeight: awardedAt } = indexer;
-
+        if (onchainData?.state?.state === "PendingPayout") {
           AwardedTimelineNode.PendingPayout = (
-            <CountDown
-              numerator={Math.min(unlockAt, nowHeight) - awardedAt}
-              denominator={unlockAt - awardedAt}
-              tooltipContent={`${nowHeight} / ${unlockAt}, ${Math.max(
-                0,
-                unlockAt - nowHeight
-              )} blocks left`}
-            />
+            <Countdown onchainData={onchainData} indexer={indexer} />
           );
         }
         return AwardedTimelineNode;
@@ -85,7 +72,7 @@ export default function ChildBountyTimeline({ chain, childBounty }) {
     return args;
   };
 
-  const timelineData = (childBounty?.timeline || []).map((item) => {
+  const timelineData = (onchainData?.timeline || []).map((item) => {
     const indexer = item.extrinsicIndexer ?? item.indexer;
     return {
       indexer,
