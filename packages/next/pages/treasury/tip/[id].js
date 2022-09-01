@@ -21,6 +21,9 @@ import DetailWithRightLayout from "next-common/components/layout/detailWithRight
 
 export default withLoginUserRedux(
   ({ loginUser, detail: tip, comments, chain }) => {
+    //fixme: remove this mock before PR
+    tip.onchainData.meta.closes = 11955158;
+    console.log(tip);
     const [detail, setDetail] = useState(tip);
 
     const { CommentComponent, focusEditor } = useUniversalComments({
