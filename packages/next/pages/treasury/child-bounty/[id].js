@@ -10,6 +10,31 @@ import Metadata from "next-common/components/treasury/bounty/metadata";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailLayout from "next-common/components/layout/DetailLayout";
+import Countdown from "../../../components/childBounty/countdown";
+import styled from "styled-components";
+import Flex from "next-common/components/styled/flex";
+
+const CountDownWrapper = styled(Flex)`
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 12px;
+  background: ${(props) => props.theme.grey100Bg};
+  border-radius: 4px;
+  margin-bottom: 16px;
+  font-weight: 500;
+  color: ${(props) => props.theme.textSecondary};
+`;
+
+const ChildBountyCountDown = ({ data }) => {
+  if (data?.onchainData?.state?.state === "PendingPayout") {
+    return (
+      <CountDownWrapper>
+        <Countdown onchainData={data?.onchainData} />
+      </CountDownWrapper>
+    );
+  }
+  return null;
+};
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -35,9 +60,10 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
         chain={chain}
         onReply={focusEditor}
         type={detailPageCategory.TREASURY_CHILD_BOUNTY}
+        countDown={<ChildBountyCountDown data={detail} />}
       />
       <Metadata meta={detail.onchainData?.meta} chain={chain} />
-      <Timeline childBounty={detail.onchainData} chain={chain} />
+      <Timeline onchainData={detail.onchainData} chain={chain} />
       {CommentComponent}
     </DetailLayout>
   );

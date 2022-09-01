@@ -6,8 +6,9 @@ import Timeline from "next-common/components/timeline";
 import sortTimeline from "next-common/utils/timeline/sort";
 import Anchor from "next-common/components/styled/anchor";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import Countdown from "./countdown";
 
-export default function ChildBountyTimeline({ chain, childBounty }) {
+export default function ChildBountyTimeline({ chain, onchainData }) {
   const node = getNode(chain);
   if (!node) {
     return null;
@@ -15,7 +16,7 @@ export default function ChildBountyTimeline({ chain, childBounty }) {
   const decimals = node.decimals;
   const symbol = node.symbol;
 
-  const getTimelineData = (args, method) => {
+  const getTimelineData = (args, method, indexer) => {
     switch (method) {
       case "Added":
         return {
@@ -48,11 +49,17 @@ export default function ChildBountyTimeline({ chain, childBounty }) {
           Index: `#${args.index}`,
         };
       case "Awarded":
-        return {
+        const AwardedTimelineNode = {
           Beneficiary: (
             <User chain={chain} add={args.beneficiary} fontSize={14} />
           ),
         };
+        if (onchainData?.state?.state === "PendingPayout") {
+          AwardedTimelineNode.PendingPayout = (
+            <Countdown onchainData={onchainData} indexer={indexer} />
+          );
+        }
+        return AwardedTimelineNode;
       case "BountyClaimed":
       case "Claimed":
         return {
@@ -65,7 +72,7 @@ export default function ChildBountyTimeline({ chain, childBounty }) {
     return args;
   };
 
-  const timelineData = (childBounty?.timeline || []).map((item) => {
+  const timelineData = (onchainData?.timeline || []).map((item) => {
     const indexer = item.extrinsicIndexer ?? item.indexer;
     return {
       indexer,
@@ -74,7 +81,7 @@ export default function ChildBountyTimeline({ chain, childBounty }) {
         detailPageCategory.TREASURY_CHILD_BOUNTY,
         item.method ?? item.name
       ),
-      data: getTimelineData(item.args, item.method ?? item.name),
+      data: getTimelineData(item.args, item.method ?? item.name, indexer),
     };
   });
   sortTimeline(timelineData);

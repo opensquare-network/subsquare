@@ -14,6 +14,7 @@ import { getMotionId, shortMotionId } from "next-common/utils/motion";
 import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import Countdown from "./childBounty/countdown";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -129,6 +130,7 @@ export default function DetailItem({
   type,
   votes,
   myVote,
+  countDown = null,
 }) {
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
@@ -173,18 +175,14 @@ export default function DetailItem({
                   </div>
                 )
               )}
-              {post?.onchainData?.councilMotions?.map(
-                (motion, key) => (
-                  <div key={key}>
-                    <TriangleRight />
-                    <Link
-                      href={`/council/motion/${getMotionId(motion)}`}
-                    >
-                      {`Motion #${shortMotionId(motion)}`}
-                    </Link>
-                  </div>
-                )
-              )}
+              {post?.onchainData?.councilMotions?.map((motion, key) => (
+                <div key={key}>
+                  <TriangleRight />
+                  <Link href={`/council/motion/${getMotionId(motion)}`}>
+                    {`Motion #${shortMotionId(motion)}`}
+                  </Link>
+                </div>
+              ))}
               {post?.referendumIndex !== undefined && (
                 <div>
                   <TriangleRight />
@@ -246,18 +244,14 @@ export default function DetailItem({
                     </div>
                   )
                 )}
-                {post?.onchainData?.councilMotions?.map(
-                  (motion, key) => (
-                    <div key={key}>
-                      <TriangleRight />
-                      <Link
-                        href={`/council/motion/${getMotionId(motion)}`}
-                      >
-                        {`Motion #${shortMotionId(motion)}`}
-                      </Link>
-                    </div>
-                  )
-                )}
+                {post?.onchainData?.councilMotions?.map((motion, key) => (
+                  <div key={key}>
+                    <TriangleRight />
+                    <Link href={`/council/motion/${getMotionId(motion)}`}>
+                      {`Motion #${shortMotionId(motion)}`}
+                    </Link>
+                  </div>
+                ))}
                 <div>
                   <TriangleRight />
                   <div>{`Referendum #${post?.referendumIndex}`}</div>
@@ -276,6 +270,7 @@ export default function DetailItem({
                 </div>
               </ReferendaWrapper>
             )}
+          {countDown}
           <TitleWrapper>
             {post?.index !== undefined && <Index>{`#${post.index}`}</Index>}
             <Title>{post.title?.trim() || "--"}</Title>

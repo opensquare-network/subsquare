@@ -20,7 +20,7 @@ export function addressEllipsis(address, start = 4, end = 4) {
   return textEllipsis(address, start, end);
 }
 
-export function timeDuration(seconds) {
+export function timeDuration(seconds, suffix = "remaining") {
   if (!seconds) {
     return "Unknown time";
   }
@@ -32,7 +32,7 @@ export function timeDuration(seconds) {
       .replace("PT", "")
       .replace("H", "h ")
       .replace("M", "m ")
-      .replace("S", "s ") + "remaining"
+      .replace("S", "s ") + suffix
   );
 }
 
