@@ -128,7 +128,7 @@ export default function DetailItem({
   if (!post) {
     return null;
   }
-  console.log(data);
+
   const postUpdatedTime = getPostUpdatedAt(post);
 
   const commentsCount =
