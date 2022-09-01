@@ -109,8 +109,6 @@ const ReferendaWrapper = styled(Flex)`
   }
 `;
 
-const CountDownWrapper = styled(ReferendaWrapper)``;
-
 const getTypeColor = (type) => {
   switch (type) {
     case "Democracy":
