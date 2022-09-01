@@ -109,6 +109,8 @@ const ReferendaWrapper = styled(Flex)`
   }
 `;
 
+const CountDownWrapper = styled(ReferendaWrapper)``;
+
 const getTypeColor = (type) => {
   switch (type) {
     case "Democracy":
@@ -137,7 +139,7 @@ export default function DetailItem({
   if (!post) {
     return null;
   }
-
+  console.log(data);
   const postUpdatedTime = getPostUpdatedAt(post);
 
   const commentsCount =
