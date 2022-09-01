@@ -31,6 +31,7 @@ export const CATEGORIES = [
         routePath: "tips",
         formatter: toTipListItem,
       },
+      //todo: add bounties
     ],
   },
   {
@@ -38,12 +39,12 @@ export const CATEGORIES = [
     name: "Democracy",
     children: [
       {
-        id: "proposals",
-        name: "Proposals",
-        categoryName: "Proposed democracy proposals",
+        id: "referendums",
+        name: "Referenda",
+        categoryName: "Proposed democracy referenda",
         categoryId: businessCategory.democracyProposals,
-        routePath: "public-proposals",
-        formatter: toPublicProposalListItem,
+        routePath: "referendums",
+        formatter: toReferendaListItem,
       },
       {
         id: "externals",
@@ -54,12 +55,12 @@ export const CATEGORIES = [
         formatter: toExternalProposalListItem,
       },
       {
-        id: "referendums",
-        name: "Referenda",
-        categoryName: "Proposed democracy referenda",
+        id: "proposals",
+        name: "Proposals",
+        categoryName: "Proposed democracy proposals",
         categoryId: businessCategory.democracyProposals,
-        routePath: "referendums",
-        formatter: toReferendaListItem,
+        routePath: "public-proposals",
+        formatter: toPublicProposalListItem,
       },
     ],
   },
