@@ -289,7 +289,11 @@ export default withLoginUserRedux(
                   onClick={() => {
                     setItems(null);
                     setFirstCategory(c);
-                    setSecondCategory(c.children[0]);
+                    setSecondCategory(
+                      c.children.find(
+                        (child) => !child?.excludeChains?.includes(chain)
+                      )
+                    );
                     resetPage();
                   }}
                   key={index}
