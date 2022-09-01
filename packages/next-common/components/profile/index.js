@@ -300,22 +300,27 @@ export default withLoginUserRedux(
               ))}
             </CategoryList>
             <CategoryList>
-              {firstCategory.children.map((c, index) => (
-                <Category
-                  onClick={() => {
-                    setSecondCategory(c);
-                    resetPage();
-                  }}
-                  key={index}
-                  type={c.name}
-                  count={getSecondCategoryCount(
-                    firstCategory.id,
-                    c.id,
-                    overview
-                  )}
-                  selected={c.id === secondCategory.id}
-                />
-              ))}
+              {firstCategory.children.map((c, index) => {
+                if (c?.excludeChains?.includes(chain)) {
+                  return null;
+                }
+                return (
+                  <Category
+                    onClick={() => {
+                      setSecondCategory(c);
+                      resetPage();
+                    }}
+                    key={index}
+                    type={c.name}
+                    count={getSecondCategoryCount(
+                      firstCategory.id,
+                      c.id,
+                      overview
+                    )}
+                    selected={c.id === secondCategory.id}
+                  />
+                );
+              })}
             </CategoryList>
           </CategoryWrapper>
         </Wrapper>
