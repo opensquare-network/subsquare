@@ -7,7 +7,9 @@ export default Profile;
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-  const { id } = context.query;
+  const {
+    params: [id],
+  } = context.query;
 
   const [{ result: summary }, { result: user }] = await Promise.all([
     nextApi.fetch(`users/${id}/counts`),
@@ -20,6 +22,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       chain,
       summary: summary ?? {},
       user: user ?? {},
+      route: context.query?.params?.slice(1)?.join("/") ?? "",
     },
   };
 });
