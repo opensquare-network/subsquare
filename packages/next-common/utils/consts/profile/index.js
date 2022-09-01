@@ -9,6 +9,7 @@ import {
   toTreasuryProposalListItem,
 } from "@subsquare/next/utils/viewfuncs";
 import businessCategory from "../business/category";
+import Chains from "../chains";
 
 export const CATEGORIES = [
   {
@@ -32,6 +33,7 @@ export const CATEGORIES = [
         routePath: "treasury/tips",
         apiPath: "tips",
         formatter: toTipListItem,
+        excludeChains: [Chains.kintsugi],
       },
       //todo: add bounties
     ],
@@ -57,6 +59,7 @@ export const CATEGORIES = [
         routePath: "democracy/external",
         apiPath: "external-proposals",
         formatter: toExternalProposalListItem,
+        excludeChains: [Chains.kintsugi],
       },
       {
         id: "proposals",
@@ -81,6 +84,7 @@ export const CATEGORIES = [
         routePath: "collective/council/motions",
         apiPath: "council-motions",
         formatter: toCouncilMotionListItem,
+        excludeChains: [Chains.kintsugi],
       },
       {
         id: "techCommProposals",
