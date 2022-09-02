@@ -6,7 +6,7 @@ export default function getReferendumTime(
   status,
   timeline,
   oneBlockTime,
-  blockHeight,
+  blockHeight = 0,
   latestBlockTime
 ) {
   let delayTime, endTime;
