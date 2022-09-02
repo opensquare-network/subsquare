@@ -222,7 +222,7 @@ export default function DetailItem({
                   <TriangleRight />
                   <Link
                     passHref={true}
-                    href={`/democracy/external/${post.indexer.blockHeight}_${post.externalProposalHash}`}
+                    href={`/democracy/external/${post.externalProposalIndexer.blockHeight}_${post.externalProposalHash}`}
                   >
                     <a>
                       {`External #${post?.externalProposalHash?.slice(0, 6)}`}
