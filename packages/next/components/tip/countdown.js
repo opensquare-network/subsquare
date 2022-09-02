@@ -6,12 +6,16 @@ import {
   blockTimeSelector,
   nowHeightSelector,
 } from "next-common/store/reducers/chainSlice";
+import Loading from "next-common/components/loading";
 
 export default function Countdown({ onchainData, indexer }) {
   const nowHeight = useSelector(nowHeightSelector);
   const blockTime = useSelector(blockTimeSelector);
   if (!onchainData) {
     return null;
+  }
+  if (!nowHeight) {
+    return <Loading />;
   }
   try {
     const {
@@ -33,7 +37,7 @@ export default function Countdown({ onchainData, indexer }) {
           )} blocks left`}
         />
         <span>
-          Closing{" "}
+          Closable{" "}
           {!closed &&
             `in ${timeDuration((blockTime * (closes - nowHeight)) / 1000, "")}`}
         </span>
