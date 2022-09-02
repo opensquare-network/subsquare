@@ -8,7 +8,7 @@ const chainSlice = createSlice({
   name: "chain",
   initialState: {
     blockTime: getChainSettings(chain).blockTime || defaultBlockTime,
-    latestHeight: 0,
+    latestHeight: null,
     nowHeight: 0,
   },
   reducers: {
