@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { EmptyList } from "next-common/utils/constants";
-import { getTipState, TipStateMap } from "utils/viewfuncs";
+import { getTipState } from "utils/viewfuncs";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { to404 } from "next-common/utils/serverSideUtil";
 
@@ -19,26 +19,11 @@ import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import Countdown from "../../../components/tip/countdown";
-import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
-
-const TipCountDown = ({ data }) => {
-  const showCountDown =
-    TipStateMap[data?.state?.state ?? data?.state] === "Tipping" &&
-    data?.onchainData?.meta?.closes;
-  if (showCountDown) {
-    return (
-      <NoticeWrapper>
-        <Countdown onchainData={data?.onchainData} indexer={data.indexer} />
-      </NoticeWrapper>
-    );
-  }
-  return null;
-};
 
 export default withLoginUserRedux(
   ({ loginUser, detail: tip, comments, chain }) => {
     const [detail, setDetail] = useState(tip);
-
+    tip.onchainData.meta.closes = 11955158;
     const { CommentComponent, focusEditor } = useUniversalComments({
       detail,
       comments,
@@ -145,7 +130,7 @@ export default withLoginUserRedux(
           chain={chain}
           onReply={focusEditor}
           type={detailPageCategory.TREASURY_TIP}
-          countDown={<TipCountDown data={detail} />}
+          countDown={<Countdown tip={tip} indexer={tip?.indexer} />}
         />
         <Tipper
           chain={chain}
