@@ -1,44 +1,42 @@
 import CountDown from "next-common/components/_CountDown";
-import { timeDuration } from "next-common/utils";
 import Flex from "next-common/components/styled/flex";
 import { useSelector } from "react-redux";
-import {
-  blockTimeSelector,
-  nowHeightSelector,
-} from "next-common/store/reducers/chainSlice";
+import { nowHeightSelector, } from "next-common/store/reducers/chainSlice";
 import Loading from "next-common/components/loading";
-import { TipStateMap } from "../../utils/viewfuncs";
+import { tipCountDownBlockNumSelector } from "next-common/store/reducers/tipSlice";
+import { useEstimateBlocksTime } from "next-common/utils/hooks";
+import isNil from "lodash.isnil";
 
-export default function Countdown({ tip, indexer }) {
+export default function Countdown({ closes }) {
   const nowHeight = useSelector(nowHeightSelector);
-  const blockTime = useSelector(blockTimeSelector);
-  if (!nowHeight) {
+  const tipCountdownBlockNum = useSelector(tipCountDownBlockNumSelector);
+  const estimatedBlocksTime = useEstimateBlocksTime(Math.abs(closes - nowHeight));
+
+  if (!nowHeight || isNil(tipCountdownBlockNum)) {
     return <Loading />;
   }
-  const closes = tip?.onchainData?.meta?.closes;
-  const showCountDown =
-    TipStateMap[tip?.state?.state ?? tip?.state] === "Tipping" && closes;
 
-  if (!showCountDown) {
-    return null;
+  const start = closes - tipCountdownBlockNum;
+  const goneBlocks = nowHeight - start;
+  const allBlocks = tipCountdownBlockNum;
+  const reachedClosableHeight = nowHeight >= closes;
+
+  let text = `Closable`
+  if (!reachedClosableHeight) {
+    text += ` in ${estimatedBlocksTime}`;
   }
-  const { blockHeight: tipHeight } = indexer;
-  const closed = nowHeight >= closes;
+
   return (
     <Flex style={{ gap: 8 }}>
       <CountDown
-        numerator={nowHeight - tipHeight}
-        denominator={closes - tipHeight}
+        numerator={goneBlocks}
+        denominator={allBlocks}
         tooltipContent={`${nowHeight} / ${closes}, ${Math.max(
           0,
           closes - nowHeight
         )} blocks left`}
       />
-      <span>
-        Closable{" "}
-        {!closed &&
-          `in ${timeDuration((blockTime * (closes - nowHeight)) / 1000, "")}`}
-      </span>
+      <span>{ text }</span>
     </Flex>
   );
 }

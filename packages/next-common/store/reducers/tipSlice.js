@@ -5,6 +5,7 @@ const tipSlice = createSlice({
   initialState: {
     pendingTips: [],
     checkTimes: 0,
+    countDownBlockNum: null,
   },
   reducers: {
     addPendingTip(state, { payload }) {
@@ -18,14 +19,18 @@ const tipSlice = createSlice({
     setCheckTimes(state, { payload }) {
       state.checkTimes = payload;
     },
+    setCountDownBlockNum(state, { payload }) {
+      state.countDownBlockNum = payload;
+    }
   },
 });
 
 export const pendingTipsSelector = (state) =>
   state.tip.pendingTips;
 export const checkTimesSelector = (state) => state.tip.checkTimes;
+export const tipCountDownBlockNumSelector = state => state.tip.countDownBlockNum;
 
-export const { addPendingTip, removePendingTip, setCheckTimes } =
+export const { addPendingTip, removePendingTip, setCheckTimes, setCountDownBlockNum: setTipCountDownBlockNum } =
   tipSlice.actions;
 
 export default tipSlice.reducer;
