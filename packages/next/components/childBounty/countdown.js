@@ -6,12 +6,16 @@ import {
   blockTimeSelector,
   nowHeightSelector,
 } from "next-common/store/reducers/chainSlice";
+import Loading from "next-common/components/loading";
 
 export default function Countdown({ onchainData, indexer }) {
   const nowHeight = useSelector(nowHeightSelector);
   const blockTime = useSelector(blockTimeSelector);
   if (!onchainData) {
     return null;
+  }
+  if (!nowHeight) {
+    return <Loading />;
   }
   try {
     const { unlockAt } = onchainData;

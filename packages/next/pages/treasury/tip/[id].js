@@ -34,10 +34,10 @@ const CountDownWrapper = styled(Flex)`
 `;
 
 const TipCountDown = ({ data }) => {
-  //fixme : use tip state
   const showCountDown =
-    TipStateMap[data?.state?.state ?? data?.state] === "Tipping";
-  if (true) {
+    TipStateMap[data?.state?.state ?? data?.state] === "Tipping" &&
+    data?.onchainData?.meta?.closes;
+  if (showCountDown) {
     return (
       <CountDownWrapper>
         <Countdown onchainData={data?.onchainData} indexer={data.indexer} />
@@ -49,9 +49,6 @@ const TipCountDown = ({ data }) => {
 
 export default withLoginUserRedux(
   ({ loginUser, detail: tip, comments, chain }) => {
-    //fixme: remove this mock before PR
-    tip.onchainData.meta.closes = 11955158;
-    console.log(tip);
     const [detail, setDetail] = useState(tip);
 
     const { CommentComponent, focusEditor } = useUniversalComments({
