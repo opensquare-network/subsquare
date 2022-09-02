@@ -1,7 +1,7 @@
 import { addressEllipsis } from "next-common/utils";
 import { getMotionId } from "next-common/utils/motion";
 
-const TipStateMap = {
+export const TipStateMap = {
   NewTip: "Tipping",
   tip: "Tipping",
   Tipping: "Tipping",

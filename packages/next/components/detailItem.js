@@ -14,7 +14,7 @@ import { getMotionId, shortMotionId } from "next-common/utils/motion";
 import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import Countdown from "./childBounty/countdown";
+import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -80,16 +80,7 @@ const TypeWrapper = styled.div`
     `}
 `;
 
-const ReferendaWrapper = styled(Flex)`
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 12px;
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
-  margin-bottom: 16px;
-  font-weight: 500;
-  color: ${(props) => props.theme.textSecondary};
-
+const ReferendaWrapper = styled(NoticeWrapper)`
   > div {
     display: flex;
     align-items: center;

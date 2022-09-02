@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { EmptyList } from "next-common/utils/constants";
-import { getTipState } from "utils/viewfuncs";
+import { getTipState, TipStateMap } from "utils/viewfuncs";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { to404 } from "next-common/utils/serverSideUtil";
 
@@ -18,11 +18,31 @@ import Tipper from "components/tipper";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
+import Countdown from "../../../components/tip/countdown";
+import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
+import { useDispatch, useSelector } from "react-redux";
+import { setTipCountDownBlockNum } from "next-common/store/reducers/tipSlice";
+import isNil from "lodash.isnil";
+import { nowHeightSelector } from "next-common/store/reducers/chainSlice";
+
+const TipCountDown = ({ meta = {}, state }) => {
+  const nowHeight = useSelector(nowHeightSelector);
+  const closes = meta.closes;
+  if (isNil(closes) || isNil(nowHeight) || !state || state !== TipStateMap.Tipping) {
+    return null;
+  }
+
+  return (
+    <NoticeWrapper>
+      <Countdown closes={ closes } />
+    </NoticeWrapper>
+  );
+};
 
 export default withLoginUserRedux(
   ({ loginUser, detail: tip, comments, chain }) => {
     const [detail, setDetail] = useState(tip);
-
+    const chainData = detail?.onchainData ?? {};
     const { CommentComponent, focusEditor } = useUniversalComments({
       detail,
       comments,
@@ -30,6 +50,7 @@ export default withLoginUserRedux(
       chain,
       type: detailPageCategory.TREASURY_TIP,
     });
+    const dispatch = useDispatch();
 
     const [tipIsFinal, setTipIsFinal] = useState(
       ["TipClosed", "TipRetracted"].includes(detail?.onchainData?.state?.state)
@@ -57,6 +78,12 @@ export default withLoginUserRedux(
     // Used to trigger tips updating
     const [tipsNeedUpdate, setTipsNeedUpdate] = useState(Date.now());
     const [isLoadingTip, setIsLoadingTip] = useState(false);
+
+    useEffect(() => {
+      if (api) {
+        dispatch(setTipCountDownBlockNum(api.consts.tips.tipCountdown.toNumber()))
+      }
+    }, [api])
 
     useEffect(() => {
       if ((shouldGetTipsFromNode || tipsNeedUpdate) && api) {
@@ -95,7 +122,7 @@ export default withLoginUserRedux(
       let times = 6;
       const doUpdate = async () => {
         const { result: newTipDetail } = await nextApi.fetch(
-          `treasury/tips/${`${detail._id}`}`
+          `treasury/tips/${ `${ detail._id }` }`
         );
 
         // Check if user's tip is present in DB
@@ -119,33 +146,34 @@ export default withLoginUserRedux(
     const desc = getMetaDesc(detail);
     return (
       <DetailWithRightLayout
-        user={loginUser}
-        seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
+        user={ loginUser }
+        seoInfo={ { title: detail?.title, desc, ogImage: detail?.bannerUrl } }
       >
-        <Back href={`/treasury/tips`} text="Back to Tips" />
+        <Back href={ `/treasury/tips` } text="Back to Tips" />
         <DetailItem
-          data={detail}
-          user={loginUser}
-          chain={chain}
-          onReply={focusEditor}
-          type={detailPageCategory.TREASURY_TIP}
+          data={ detail }
+          user={ loginUser }
+          chain={ chain }
+          onReply={ focusEditor }
+          type={ detailPageCategory.TREASURY_TIP }
+          countDown={ <TipCountDown meta={ chainData.meta } state={chainData.state?.state} /> }
         />
         <Tipper
-          chain={chain}
-          tipIsFinal={tipIsFinal}
-          userIsTipper={userIsTipper}
-          loading={loading}
-          tips={tips}
-          councilTippers={councilTippers}
-          tipHash={tipHash}
-          updateTips={updateTips}
-          updateTimeline={updateTimeline}
-          isLoadingTip={isLoadingTip}
-          setIsLoadingTip={setIsLoadingTip}
+          chain={ chain }
+          tipIsFinal={ tipIsFinal }
+          userIsTipper={ userIsTipper }
+          loading={ loading }
+          tips={ tips }
+          councilTippers={ councilTippers }
+          tipHash={ tipHash }
+          updateTips={ updateTips }
+          updateTimeline={ updateTimeline }
+          isLoadingTip={ isLoadingTip }
+          setIsLoadingTip={ setIsLoadingTip }
         />
-        <Metadata tip={detail?.onchainData} chain={chain} />
-        <Timeline tip={detail?.onchainData} chain={chain} />
-        {CommentComponent}
+        <Metadata tip={ detail?.onchainData } chain={ chain } />
+        <Timeline tip={ detail?.onchainData } chain={ chain } />
+        { CommentComponent }
       </DetailWithRightLayout>
     );
   }
@@ -158,7 +186,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const pageSize = Math.min(page_size ?? 50, 100);
 
   const [{ result: detail }] = await Promise.all([
-    nextApi.fetch(`treasury/tips/${id}`),
+    nextApi.fetch(`treasury/tips/${ id }`),
   ]);
 
   if (!detail) {
@@ -166,7 +194,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   }
 
   const { result: comments } = await nextApi.fetch(
-    `treasury/tips/${detail._id}/comments`,
+    `treasury/tips/${ detail._id }/comments`,
     {
       page: page ?? "last",
       pageSize,
