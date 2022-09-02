@@ -13,6 +13,40 @@ import Chains from "../chains";
 
 export const CATEGORIES = [
   {
+    id: "democracy",
+    name: "Democracy",
+    children: [
+      {
+        id: "referendums",
+        name: "Referenda",
+        categoryName: "Proposed democracy referenda",
+        categoryId: businessCategory.democracyReferenda,
+        routePath: "democracy/referenda",
+        apiPath: "referendums",
+        formatter: toReferendaListItem,
+      },
+      {
+        id: "externals",
+        name: "Externals",
+        categoryName: "Proposed democracy externals",
+        categoryId: businessCategory.democracyExternals,
+        routePath: "democracy/external",
+        apiPath: "external-proposals",
+        formatter: toExternalProposalListItem,
+        excludeChains: [Chains.kintsugi],
+      },
+      {
+        id: "proposals",
+        name: "Proposals",
+        categoryName: "Proposed democracy proposals",
+        categoryId: businessCategory.democracyProposals,
+        routePath: "democracy/proposals",
+        apiPath: "public-proposals",
+        formatter: toPublicProposalListItem,
+      },
+    ],
+  },
+  {
     id: "treasury",
     name: "Treasury",
     children: [
@@ -36,40 +70,6 @@ export const CATEGORIES = [
         excludeChains: [Chains.kintsugi],
       },
       //todo: add bounties
-    ],
-  },
-  {
-    id: "democracy",
-    name: "Democracy",
-    children: [
-      {
-        id: "referendums",
-        name: "Referenda",
-        categoryName: "Proposed democracy referenda",
-        categoryId: businessCategory.democracyProposals,
-        routePath: "democracy/referenda",
-        apiPath: "referendums",
-        formatter: toReferendaListItem,
-      },
-      {
-        id: "externals",
-        name: "Externals",
-        categoryName: "Proposed democracy externals",
-        categoryId: businessCategory.democracyProposals,
-        routePath: "democracy/external",
-        apiPath: "external-proposals",
-        formatter: toExternalProposalListItem,
-        excludeChains: [Chains.kintsugi],
-      },
-      {
-        id: "proposals",
-        name: "Proposals",
-        categoryName: "Proposed democracy proposals",
-        categoryId: businessCategory.democracyProposals,
-        routePath: "democracy/proposals",
-        apiPath: "public-proposals",
-        formatter: toPublicProposalListItem,
-      },
     ],
   },
   {
