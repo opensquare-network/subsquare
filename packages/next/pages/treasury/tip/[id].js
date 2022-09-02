@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { EmptyList } from "next-common/utils/constants";
-import { getTipState } from "utils/viewfuncs";
+import { getTipState, TipStateMap } from "utils/viewfuncs";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { to404 } from "next-common/utils/serverSideUtil";
 
@@ -33,12 +33,14 @@ const CountDownWrapper = styled(Flex)`
   color: ${(props) => props.theme.textSecondary};
 `;
 
-const ChildBountyCountDown = ({ data }) => {
-  console.log('data', data)
+const TipCountDown = ({ data }) => {
+  //fixme : use tip state
+  const showCountDown =
+    TipStateMap[data?.state?.state ?? data?.state] === "Tipping";
   if (true) {
     return (
       <CountDownWrapper>
-        <Countdown onchainData ={data?.onchainData} />
+        <Countdown onchainData={data?.onchainData} indexer={data.indexer} />
       </CountDownWrapper>
     );
   }
@@ -155,7 +157,7 @@ export default withLoginUserRedux(
           chain={chain}
           onReply={focusEditor}
           type={detailPageCategory.TREASURY_TIP}
-          countDown={<ChildBountyCountDown data={detail} />}
+          countDown={<TipCountDown data={detail} />}
         />
         <Tipper
           chain={chain}
