@@ -11,26 +11,14 @@ import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import Countdown from "../../../components/childBounty/countdown";
-import styled from "styled-components";
-import Flex from "next-common/components/styled/flex";
-
-const CountDownWrapper = styled(Flex)`
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 12px;
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
-  margin-bottom: 16px;
-  font-weight: 500;
-  color: ${(props) => props.theme.textSecondary};
-`;
+import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
 
 const ChildBountyCountDown = ({ data }) => {
   if (data?.onchainData?.state?.state === "PendingPayout") {
     return (
-      <CountDownWrapper>
+      <NoticeWrapper>
         <Countdown onchainData={data?.onchainData} />
-      </CountDownWrapper>
+      </NoticeWrapper>
     );
   }
   return null;

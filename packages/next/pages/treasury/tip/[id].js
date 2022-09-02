@@ -19,19 +19,7 @@ import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import Countdown from "../../../components/tip/countdown";
-import styled from "styled-components";
-import Flex from "next-common/components/styled/flex";
-
-const CountDownWrapper = styled(Flex)`
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 12px;
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
-  margin-bottom: 16px;
-  font-weight: 500;
-  color: ${(props) => props.theme.textSecondary};
-`;
+import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
 
 const TipCountDown = ({ data }) => {
   const showCountDown =
@@ -39,9 +27,9 @@ const TipCountDown = ({ data }) => {
     data?.onchainData?.meta?.closes;
   if (showCountDown) {
     return (
-      <CountDownWrapper>
+      <NoticeWrapper>
         <Countdown onchainData={data?.onchainData} indexer={data.indexer} />
-      </CountDownWrapper>
+      </NoticeWrapper>
     );
   }
   return null;
