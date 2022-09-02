@@ -14,26 +14,28 @@ export default function Countdown({ onchainData, indexer }) {
     return null;
   }
   try {
-    const { unlockAt } = onchainData;
-    const { blockHeight: awardedAt } =
+    const {
+      meta: { closes },
+    } = onchainData;
+    const { blockHeight: tipHeight } =
       indexer ??
       onchainData?.timeline?.reverse().find((item) => item.name === "Awarded")
         ?.indexer;
-    const claimable = nowHeight >= unlockAt;
+    const closed = nowHeight >= closes;
     return (
       <Flex style={{ gap: 8 }}>
         <CountDown
-          numerator={nowHeight - tip.height}
-          denominator={tip.onchainData.meta.closes - tip.height}
-          tooltipContent={`${nowHeight} / ${unlockAt}, ${Math.max(
+          numerator={nowHeight - tipHeight}
+          denominator={closes - tipHeight}
+          tooltipContent={`${nowHeight} / ${closes}, ${Math.max(
             0,
-            unlockAt - nowHeight
+            closes - nowHeight
           )} blocks left`}
         />
         <span>
-          Claimable{" "}
-          {!claimable &&
-            `in ${timeDuration((blockTime * (unlockAt - nowHeight)) / 1000)}`}
+          Closing{" "}
+          {!closed &&
+            `in ${timeDuration((blockTime * (closes - nowHeight)) / 1000, "")}`}
         </span>
       </Flex>
     );

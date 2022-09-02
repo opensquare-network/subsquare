@@ -33,7 +33,10 @@ export default function Countdown({ onchainData, indexer }) {
         <span>
           Claimable{" "}
           {!claimable &&
-            `in ${timeDuration((blockTime * (unlockAt - nowHeight)) / 1000)}`}
+            `in ${timeDuration(
+              (blockTime * (unlockAt - nowHeight)) / 1000,
+              ""
+            )}`}
         </span>
       </Flex>
     );
