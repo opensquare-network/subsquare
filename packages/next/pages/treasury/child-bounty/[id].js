@@ -10,8 +10,8 @@ import Metadata from "next-common/components/treasury/bounty/metadata";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailLayout from "next-common/components/layout/DetailLayout";
-import Countdown from "../../../components/childBounty/countdown";
 import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
+import TreasuryCountDown from "next-common/components/treasury/common/countdown";
 
 const ChildBountyCountDown = ({ data = {} }) => {
   if (data.state?.state !== "PendingPayout") {
@@ -26,9 +26,11 @@ const ChildBountyCountDown = ({ data = {} }) => {
 
   return (
     <NoticeWrapper>
-      <Countdown
-        unlockAt={data.unlockAt}
-        indexer={awardedItem.indexer} />
+      <TreasuryCountDown
+        startHeight={ awardedItem.indexer?.blockHeight }
+        targetHeight={ data.unlockAt }
+        prefix="Claimable"
+      />
     </NoticeWrapper>
   );
 };

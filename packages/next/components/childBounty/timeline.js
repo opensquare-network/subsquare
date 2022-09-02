@@ -6,7 +6,7 @@ import Timeline from "next-common/components/timeline";
 import sortTimeline from "next-common/utils/timeline/sort";
 import Anchor from "next-common/components/styled/anchor";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import Countdown from "./countdown";
+import TreasuryCountDown from "next-common/components/treasury/common/countdown";
 
 export default function ChildBountyTimeline({ chain, onchainData }) {
   const node = getNode(chain);
@@ -56,7 +56,11 @@ export default function ChildBountyTimeline({ chain, onchainData }) {
         };
         if (onchainData?.state?.state === "PendingPayout") {
           AwardedTimelineNode.PendingPayout = (
-            <Countdown unlockAt={onchainData.unlockAt} indexer={indexer} />
+            <TreasuryCountDown
+              startHeight={ indexer?.blockHeight }
+              targetHeight={ onchainData.unlockAt }
+              prefix="Claimable"
+            />
           );
         }
         return AwardedTimelineNode;

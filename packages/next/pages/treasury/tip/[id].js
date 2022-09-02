@@ -18,23 +18,31 @@ import Tipper from "components/tipper";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
-import Countdown from "../../../components/tip/countdown";
 import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
 import { useDispatch, useSelector } from "react-redux";
-import { setTipCountDownBlockNum } from "next-common/store/reducers/tipSlice";
+import { setTipCountDownBlockNum, tipCountDownBlockNumSelector } from "next-common/store/reducers/tipSlice";
 import isNil from "lodash.isnil";
-import { nowHeightSelector } from "next-common/store/reducers/chainSlice";
+import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
+import Loading from "next-common/components/loading";
+import TreasuryCountDown from "next-common/components/treasury/common/countdown";
 
 const TipCountDown = ({ meta = {}, state }) => {
-  const nowHeight = useSelector(nowHeightSelector);
+  const nowHeight = useSelector(latestHeightSelector);
+  const tipCountdownBlockNum = useSelector(tipCountDownBlockNumSelector);
   const closes = meta.closes;
-  if (isNil(closes) || isNil(nowHeight) || !state || state !== TipStateMap.Tipping) {
+  if (isNil(closes) || !state || state !== TipStateMap.Tipping) {
     return null;
   }
 
+  if (isNil(nowHeight) || isNil(tipCountdownBlockNum)) {
+    return <Loading />;
+  }
+
+  const startHeight = closes - tipCountdownBlockNum;
+
   return (
     <NoticeWrapper>
-      <Countdown closes={ closes } />
+      <TreasuryCountDown startHeight={ startHeight } targetHeight={ closes } prefix="Closable" />
     </NoticeWrapper>
   );
 };

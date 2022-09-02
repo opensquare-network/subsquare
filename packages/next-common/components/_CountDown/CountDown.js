@@ -1,3 +1,4 @@
+import React from "react";
 import { primary_yellow_100, primary_yellow_500 } from "./styles";
 import { select } from "d3-selection";
 import { arc } from "d3-shape";
