@@ -7,45 +7,41 @@ import {
   nowHeightSelector,
 } from "next-common/store/reducers/chainSlice";
 import Loading from "next-common/components/loading";
+import isNil from "lodash.isnil";
 
 export default function Countdown({ onchainData, indexer }) {
   const nowHeight = useSelector(nowHeightSelector);
   const blockTime = useSelector(blockTimeSelector);
-  if (!onchainData) {
-    return null;
-  }
   if (!nowHeight) {
     return <Loading />;
   }
-  try {
-    const { unlockAt } = onchainData;
-    const { blockHeight: awardedAt } =
-      indexer ??
-      onchainData?.timeline?.reverse().find((item) => item.name === "Awarded")
-        ?.indexer;
-    const claimable = nowHeight >= unlockAt;
-    return (
-      <Flex style={{ gap: 8 }}>
-        <CountDown
-          numerator={Math.min(unlockAt, nowHeight) - awardedAt}
-          denominator={unlockAt - awardedAt}
-          tooltipContent={`${nowHeight} / ${unlockAt}, ${Math.max(
-            0,
-            unlockAt - nowHeight
-          )} blocks left`}
-        />
-        <span>
-          Claimable{" "}
-          {!claimable &&
-            `in ${timeDuration(
-              (blockTime * (unlockAt - nowHeight)) / 1000,
-              ""
-            )}`}
-        </span>
-      </Flex>
-    );
-  } catch (e) {
-    console.error(e);
+  const timeline = onchainData?.timeline ?? [];
+  const awardedIndexer =
+    indexer ??
+    timeline?.reverse().find((item) => item.name === "Awarded")?.indexer;
+
+  if (!onchainData || isNil(timeline) || isNil(awardedIndexer)) {
+    return null;
   }
-  return null;
+
+  const { unlockAt } = onchainData;
+  const { blockHeight: awardedAt } = awardedIndexer;
+  const claimable = nowHeight >= unlockAt;
+  return (
+    <Flex style={{ gap: 8 }}>
+      <CountDown
+        numerator={Math.min(unlockAt, nowHeight) - awardedAt}
+        denominator={unlockAt - awardedAt}
+        tooltipContent={`${nowHeight} / ${unlockAt}, ${Math.max(
+          0,
+          unlockAt - nowHeight
+        )} blocks left`}
+      />
+      <span>
+        Claimable{" "}
+        {!claimable &&
+          `in ${timeDuration((blockTime * (unlockAt - nowHeight)) / 1000, "")}`}
+      </span>
+    </Flex>
+  );
 }

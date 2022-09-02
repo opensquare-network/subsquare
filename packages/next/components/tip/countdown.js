@@ -7,26 +7,26 @@ import {
   nowHeightSelector,
 } from "next-common/store/reducers/chainSlice";
 import Loading from "next-common/components/loading";
+import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
+import { TipStateMap } from "../../utils/viewfuncs";
 
-export default function Countdown({ onchainData, indexer }) {
+export default function Countdown({ tip, indexer }) {
   const nowHeight = useSelector(nowHeightSelector);
   const blockTime = useSelector(blockTimeSelector);
-  if (!onchainData) {
-    return null;
-  }
   if (!nowHeight) {
     return <Loading />;
   }
-  try {
-    const {
-      meta: { closes },
-    } = onchainData;
-    const { blockHeight: tipHeight } =
-      indexer ??
-      onchainData?.timeline?.reverse().find((item) => item.name === "Awarded")
-        ?.indexer;
-    const closed = nowHeight >= closes;
-    return (
+  const closes = tip?.onchainData?.meta?.closes;
+  const showCountDown =
+    TipStateMap[tip?.state?.state ?? data?.state] === "Tipping" && closes;
+
+  if (!showCountDown) {
+    return null;
+  }
+  const { blockHeight: tipHeight } = indexer;
+  const closed = nowHeight >= closes;
+  return (
+    <NoticeWrapper>
       <Flex style={{ gap: 8 }}>
         <CountDown
           numerator={nowHeight - tipHeight}
@@ -42,9 +42,6 @@ export default function Countdown({ onchainData, indexer }) {
             `in ${timeDuration((blockTime * (closes - nowHeight)) / 1000, "")}`}
         </span>
       </Flex>
-    );
-  } catch (e) {
-    console.error(e);
-  }
-  return null;
+    </NoticeWrapper>
+  );
 }
