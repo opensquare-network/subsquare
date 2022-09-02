@@ -18,14 +18,12 @@ import Tipper from "components/tipper";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
+import Countdown from "../../../components/tip/countdown";
 
 export default withLoginUserRedux(
   ({ loginUser, detail: tip, comments, chain }) => {
-    //fixme: remove this mock before PR
-    tip.onchainData.meta.closes = 11955158;
-    console.log(tip);
     const [detail, setDetail] = useState(tip);
-
+    tip.onchainData.meta.closes = 11955158;
     const { CommentComponent, focusEditor } = useUniversalComments({
       detail,
       comments,
@@ -132,6 +130,7 @@ export default withLoginUserRedux(
           chain={chain}
           onReply={focusEditor}
           type={detailPageCategory.TREASURY_TIP}
+          countDown={<Countdown tip={tip} indexer={tip?.indexer} />}
         />
         <Tipper
           chain={chain}
