@@ -1,3 +1,4 @@
+import React from "react";
 import { GreyItem, GreyWrapper } from "./styled";
 import User from "../user";
 
