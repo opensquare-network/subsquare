@@ -13,15 +13,24 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import Countdown from "../../../components/childBounty/countdown";
 import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
 
-const ChildBountyCountDown = ({ data }) => {
-  if (data?.onchainData?.state?.state === "PendingPayout") {
-    return (
-      <NoticeWrapper>
-        <Countdown onchainData={data?.onchainData} />
-      </NoticeWrapper>
-    );
+const ChildBountyCountDown = ({ data = {} }) => {
+  if (data.state?.state !== "PendingPayout") {
+    return null;
   }
-  return null;
+
+  const timeline = data.timeline ?? [];
+  const awardedItem = [...timeline].reverse().find(((item) => item.name === "Awarded"));
+  if (!awardedItem) {
+    return null
+  }
+
+  return (
+    <NoticeWrapper>
+      <Countdown
+        unlockAt={data.unlockAt}
+        indexer={awardedItem.indexer} />
+    </NoticeWrapper>
+  );
 };
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
@@ -48,7 +57,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
         chain={chain}
         onReply={focusEditor}
         type={detailPageCategory.TREASURY_CHILD_BOUNTY}
-        countDown={<ChildBountyCountDown data={detail} />}
+        countDown={<ChildBountyCountDown data={detail.onchainData} />}
       />
       <Metadata meta={detail.onchainData?.meta} chain={chain} />
       <Timeline onchainData={detail.onchainData} chain={chain} />

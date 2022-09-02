@@ -56,7 +56,7 @@ export default function ChildBountyTimeline({ chain, onchainData }) {
         };
         if (onchainData?.state?.state === "PendingPayout") {
           AwardedTimelineNode.PendingPayout = (
-            <Countdown onchainData={onchainData} indexer={indexer} />
+            <Countdown unlockAt={onchainData.unlockAt} indexer={indexer} />
           );
         }
         return AwardedTimelineNode;

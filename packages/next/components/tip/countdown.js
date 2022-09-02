@@ -1,14 +1,14 @@
 import CountDown from "next-common/components/_CountDown";
 import Flex from "next-common/components/styled/flex";
 import { useSelector } from "react-redux";
-import { nowHeightSelector, } from "next-common/store/reducers/chainSlice";
+import { latestHeightSelector, } from "next-common/store/reducers/chainSlice";
 import Loading from "next-common/components/loading";
 import { tipCountDownBlockNumSelector } from "next-common/store/reducers/tipSlice";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import isNil from "lodash.isnil";
 
 export default function Countdown({ closes }) {
-  const nowHeight = useSelector(nowHeightSelector);
+  const nowHeight = useSelector(latestHeightSelector);
   const tipCountdownBlockNum = useSelector(tipCountDownBlockNumSelector);
   const estimatedBlocksTime = useEstimateBlocksTime(Math.abs(closes - nowHeight));
 
