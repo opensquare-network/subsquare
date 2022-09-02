@@ -18,6 +18,32 @@ import Tipper from "components/tipper";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
+import Countdown from "../../../components/tip/countdown";
+import styled from "styled-components";
+import Flex from "next-common/components/styled/flex";
+
+const CountDownWrapper = styled(Flex)`
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 12px;
+  background: ${(props) => props.theme.grey100Bg};
+  border-radius: 4px;
+  margin-bottom: 16px;
+  font-weight: 500;
+  color: ${(props) => props.theme.textSecondary};
+`;
+
+const ChildBountyCountDown = ({ data }) => {
+  console.log('data', data)
+  if (true) {
+    return (
+      <CountDownWrapper>
+        <Countdown onchainData ={data?.onchainData} />
+      </CountDownWrapper>
+    );
+  }
+  return null;
+};
 
 export default withLoginUserRedux(
   ({ loginUser, detail: tip, comments, chain }) => {
@@ -129,6 +155,7 @@ export default withLoginUserRedux(
           chain={chain}
           onReply={focusEditor}
           type={detailPageCategory.TREASURY_TIP}
+          countDown={<ChildBountyCountDown data={detail} />}
         />
         <Tipper
           chain={chain}
