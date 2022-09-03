@@ -91,7 +91,7 @@ export default withLoginUserRedux(
       if (api) {
         dispatch(setTipCountDownBlockNum(api.consts.tips.tipCountdown.toNumber()))
       }
-    }, [api])
+    }, [api, dispatch])
 
     useEffect(() => {
       if ((shouldGetTipsFromNode || tipsNeedUpdate) && api) {
