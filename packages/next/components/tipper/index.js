@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import User from "next-common/components/user";
 import { getNode, toPrecision } from "next-common/utils";
@@ -7,6 +7,8 @@ import Loading from "next-common/components/loading";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { GhostCard } from "next-common/components/styled/containers/ghostCard";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import Flex from "next-common/components/styled/flex";
+import floor from "lodash.floor";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -35,6 +37,8 @@ const Title = styled.div`
   margin-bottom: 16px;
   color: ${(props) => props.theme.textPrimary};
   > :first-child {
+    align-items: baseline;
+    gap: 8px;
     font-style: normal;
     font-weight: bold;
     font-size: 16px;
@@ -44,6 +48,13 @@ const Title = styled.div`
     display: flex;
     align-items: center;
   }
+`;
+
+const Statistics = styled.span`
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${(props) => props.theme.textTertiary};
 `;
 
 const NoTippers = styled.div`
@@ -101,6 +112,10 @@ export default function Tipper({
   isLoadingTip,
   setIsLoadingTip = () => {},
 }) {
+  const allTippersCount = councilTippers.length
+  const threshold = useMemo(() => {
+    return floor((allTippersCount + 1) / 2)
+  }, [allTippersCount]);
   const [showPopup, setShowPopup] = useState(false);
   const node = getNode(chain);
   const { width: windowWidth } = useWindowSize();
@@ -167,7 +182,12 @@ export default function Tipper({
       <Wrapper>
         <GhostCard>
           <Title>
-            <div>Tippers</div>
+            <Flex>
+              <span>Tippers</span>
+              <Statistics>
+                {tips.length}/{threshold}
+              </Statistics>
+            </Flex>
             <div>{isLoadingTip && <Loading size={16} />}</div>
           </Title>
           {tipList}
