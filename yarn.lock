@@ -4332,6 +4332,11 @@ lodash.findlastindex@^4.6.0:
   resolved "https://registry.npmjs.org/lodash.findlastindex/-/lodash.findlastindex-4.6.0.tgz#b8375ac0f02e9b926375cdf8dc3ea814abf9c6ac"
   integrity sha1-uDdawPAum5Jjdc343D6oFKv5xqw=
 
+lodash.floor@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.npmjs.org/lodash.floor/-/lodash.floor-4.0.4.tgz#11401c54238723fb4d618be752e4d96eb3fcab54"
+  integrity sha512-eQflubSNKDRZEtB48US+RGb9tfwXgzqnejmVXsC26QKkTel49PPKbXFerrSg7yGX6TFxglMGT7NXrjw2WRvd8Q==
+
 lodash.flow@^3.3.0:
   version "3.5.0"
   resolved "https://registry.npmjs.org/lodash.flow/-/lodash.flow-3.5.0.tgz#87bf40292b8cf83e4e8ce1a3ae4209e20071675a"

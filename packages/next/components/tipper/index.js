@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import User from "next-common/components/user";
 import { getNode, toPrecision } from "next-common/utils";
@@ -7,6 +7,10 @@ import Loading from "next-common/components/loading";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { GhostCard } from "next-common/components/styled/containers/ghostCard";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import Flex from "next-common/components/styled/flex";
+import floor from "lodash.floor";
+import { StatisticTitleContainer } from "next-common/components/styled/containers/titleContainer";
+import Statistics from "next-common/components/styled/paragraph/statistic";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -28,24 +32,6 @@ const Wrapper = styled.div`
   }
 `;
 
-const Title = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  color: ${(props) => props.theme.textPrimary};
-  > :first-child {
-    font-style: normal;
-    font-weight: bold;
-    font-size: 16px;
-    line-height: 16px;
-  }
-  > :last-child {
-    display: flex;
-    align-items: center;
-  }
-`;
-
 const NoTippers = styled.div`
   text-align: center;
   font-size: 12px;
@@ -64,6 +50,7 @@ const Description = styled.div`
 `;
 
 const TipperList = styled.div`
+  margin-top: 16px;
   padding: 8px 0px;
   > :not(:first-child) {
     margin-top: 8px;
@@ -101,6 +88,10 @@ export default function Tipper({
   isLoadingTip,
   setIsLoadingTip = () => {},
 }) {
+  const allTippersCount = councilTippers.length
+  const threshold = useMemo(() => {
+    return floor((allTippersCount + 1) / 2)
+  }, [allTippersCount]);
   const [showPopup, setShowPopup] = useState(false);
   const node = getNode(chain);
   const { width: windowWidth } = useWindowSize();
@@ -166,10 +157,18 @@ export default function Tipper({
     <>
       <Wrapper>
         <GhostCard>
-          <Title>
-            <div>Tippers</div>
+          <StatisticTitleContainer>
+            <Flex>
+              <span>Tippers</span>
+              {
+                !loading &&
+                <Statistics>
+                  { tips.length }/{ threshold }
+                </Statistics>
+              }
+            </Flex>
             <div>{isLoadingTip && <Loading size={16} />}</div>
-          </Title>
+          </StatisticTitleContainer>
           {tipList}
         </GhostCard>
         {!loading && action}
