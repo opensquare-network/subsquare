@@ -9,7 +9,7 @@ import PostList from "../postList";
 import DetailLayout from "../layout/DetailLayout";
 import Back from "../back";
 import Avatar from "../avatar";
-import Grvatar from "../gravatar";
+import Gravatar from "../gravatar";
 import Flex from "../styled/flex";
 import Links from "../links";
 import Loading from "../loading";
@@ -178,7 +178,7 @@ const DisplayUserAvatar = ({ address, user }) => {
   return address ? (
     <Avatar address={address} size={48} />
   ) : (
-    <Grvatar emailMd5={user?.emmailMd5} size={48} />
+    <Gravatar emailMd5={user?.emmailMd5} size={48} />
   );
 };
 

@@ -4,7 +4,7 @@ import { fetchIdentity } from "../../services/identity";
 import { encodeAddressToChain } from "../../services/address";
 import { nodes } from "../../utils/constants";
 import Avatar from "../avatar";
-import Grvatar from "../gravatar";
+import Gravatar from "../gravatar";
 import Identity from "../Identity";
 import { addressEllipsis } from "../../utils";
 import Flex from "../styled/flex";
@@ -173,7 +173,7 @@ function User({
           {address ? (
             <Avatar address={address} size={20} />
           ) : (
-            <Grvatar email={user?.email} emailMd5={user?.emailMd5} size={20} />
+            <Gravatar email={user?.email} emailMd5={user?.emailMd5} size={20} />
           )}
         </AvatarWrapper>
       )}
