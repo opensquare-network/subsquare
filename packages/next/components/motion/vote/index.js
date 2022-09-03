@@ -49,6 +49,7 @@ const Description = styled.div`
 `;
 
 const TipperList = styled.div`
+  margin-top: 16px;
   padding: 8px 0;
   > :not(:first-child) {
     margin-top: 8px;

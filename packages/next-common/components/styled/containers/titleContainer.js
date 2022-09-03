@@ -14,7 +14,6 @@ export const TitleContainer = styled.title`
 `;
 
 export const StatisticTitleContainer = styled(TitleContainer)`
-  margin-bottom: 16px;
   > :first-child {
     align-items: baseline;
     gap: 8px;
