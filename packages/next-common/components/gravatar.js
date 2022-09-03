@@ -6,7 +6,7 @@ const AvatarImg = styled.img`
   border-radius: 50%;
 `;
 
-export default function Grvatar({ email = null, emailMd5 = null, size = 24 }) {
+export default function Gravatar({ email = null, emailMd5 = null, size = 24 }) {
   let src = `https://gravatar.loli.net/avatar/ba25ffeebfa51822fff28c02fd6d981f?d=retro&s=${size}`;
   if (email || emailMd5) {
     src = `https://gravatar.loli.net/avatar/${
