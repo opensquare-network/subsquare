@@ -13,6 +13,22 @@ export const TitleContainer = styled.title`
   color: ${(props) => props.theme.textPrimary};
 `;
 
+export const StatisticTitleContainer = styled(TitleContainer)`
+  margin-bottom: 16px;
+  > :first-child {
+    align-items: baseline;
+    gap: 8px;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 16px;
+  }
+  > :last-child {
+    display: flex;
+    align-items: center;
+  }
+`;
+
 // used for pages like signup, login, verification, reset password, etc
 export const PageTitleContainer = styled.title`
   display: flex;

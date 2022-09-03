@@ -8,6 +8,8 @@ import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { GhostCard } from "next-common/components/styled/containers/ghostCard";
 import MemberLinks from "./memberLinks";
 import Flex from "next-common/components/styled/flex";
+import { StatisticTitleContainer } from "next-common/components/styled/containers/titleContainer";
+import Statistics from "next-common/components/styled/paragraph/statistic";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -26,26 +28,6 @@ const Wrapper = styled.div`
     position: static;
     width: auto;
     margin-top: 16px !important;
-  }
-`;
-
-const Title = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  color: ${(props) => props.theme.textPrimary};
-  > :first-child {
-    align-items: baseline;
-    gap: 8px;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 16px;
-    line-height: 16px;
-  }
-  > :last-child {
-    display: flex;
-    align-items: center;
   }
 `;
 
@@ -100,13 +82,6 @@ const VoterAddr = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-`;
-
-const Statistics = styled.span`
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
-  color: ${(props) => props.theme.textTertiary};
 `;
 
 export default function Vote({
@@ -191,7 +166,7 @@ export default function Vote({
     <>
       <Wrapper>
         <GhostCard>
-          <Title>
+          <StatisticTitleContainer>
             <Flex>
               <span>Votes</span>
               <Statistics>
@@ -199,7 +174,7 @@ export default function Vote({
               </Statistics>
             </Flex>
             <div>{isLoadingVote && <Loading size={16} />}</div>
-          </Title>
+          </StatisticTitleContainer>
           {voteList}
           <MemberLinks type={type} />
         </GhostCard>

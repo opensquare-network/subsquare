@@ -9,6 +9,8 @@ import { GhostCard } from "next-common/components/styled/containers/ghostCard";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import Flex from "next-common/components/styled/flex";
 import floor from "lodash.floor";
+import { StatisticTitleContainer } from "next-common/components/styled/containers/titleContainer";
+import Statistics from "next-common/components/styled/paragraph/statistic";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -28,33 +30,6 @@ const Wrapper = styled.div`
     width: auto;
     margin-top: 16px !important;
   }
-`;
-
-const Title = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  color: ${(props) => props.theme.textPrimary};
-  > :first-child {
-    align-items: baseline;
-    gap: 8px;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 16px;
-    line-height: 16px;
-  }
-  > :last-child {
-    display: flex;
-    align-items: center;
-  }
-`;
-
-const Statistics = styled.span`
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
-  color: ${(props) => props.theme.textTertiary};
 `;
 
 const NoTippers = styled.div`
@@ -181,15 +156,18 @@ export default function Tipper({
     <>
       <Wrapper>
         <GhostCard>
-          <Title>
+          <StatisticTitleContainer>
             <Flex>
               <span>Tippers</span>
-              <Statistics>
-                {tips.length}/{threshold}
-              </Statistics>
+              {
+                !loading &&
+                <Statistics>
+                  { tips.length }/{ threshold }
+                </Statistics>
+              }
             </Flex>
             <div>{isLoadingTip && <Loading size={16} />}</div>
-          </Title>
+          </StatisticTitleContainer>
           {tipList}
         </GhostCard>
         {!loading && action}
