@@ -23,5 +23,9 @@ const stateTagMap = {
 
 export function CollectiveTag({ state }) {
   let Tag = stateTagMap[state] || MotionTag;
+  if ((state || "").startsWith("Voting")) {
+    Tag = ActiveTag;
+  }
+
   return <Tag>{state}</Tag>;
 }
