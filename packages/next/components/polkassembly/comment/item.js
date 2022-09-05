@@ -125,15 +125,16 @@ export default function Item({ data, chain, isSecondLevel }) {
             {folded ? `${comment.replies?.length} Replies` : "Hide Replies"}
           </FoldButton>
 
-          {!folded &&
-            (comment.replies || []).map((item) => (
-              <Item
-                key={item.id}
-                data={item}
-                chain={chain}
-                isSecondLevel={true}
-              />
-            ))}
+          {!folded
+            ? (comment.replies || []).map((item) => (
+                <Item
+                  key={item.id}
+                  data={item}
+                  chain={chain}
+                  isSecondLevel={true}
+                />
+              ))
+            : null}
         </IndentWrapper>
       )}
     </Wrapper>
