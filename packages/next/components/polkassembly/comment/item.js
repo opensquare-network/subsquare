@@ -57,6 +57,23 @@ const ContentWrapper = styled(RichTextStyleWrapper)`
 
 const IndentWrapper = styled.div`
   margin: 16px 0 0 28px;
+  ${(p) =>
+    p.quoted &&
+    css`
+      padding-left: 16px;
+      border-left: 3px solid ${(props) => props.theme.grey200Border};
+    `};
+`;
+
+const FoldButton = styled.button`
+  all: unset;
+  line-height: 20px;
+  height: 28px;
+  color: ${(props) => props.theme.textTertiary};
+  &:hover {
+    color: ${(props) => props.theme.textPrimary};
+    cursor: pointer;
+  }
 `;
 
 const EditedLabel = styled.div`
@@ -69,6 +86,8 @@ const EditedLabel = styled.div`
 
 export default function Item({ data, chain, isSecondLevel }) {
   const comment = data;
+
+  const [folded, setFolded] = React.useState(true);
 
   return (
     <Wrapper isSecondLevel={isSecondLevel}>
@@ -97,15 +116,25 @@ export default function Item({ data, chain, isSecondLevel }) {
         </IndentWrapper>
       )}
       {comment.replies?.length > 0 && (
-        <IndentWrapper>
-          {(comment.replies || []).map((item) => (
-            <Item
-              key={item.id}
-              data={item}
-              chain={chain}
-              isSecondLevel={true}
-            />
-          ))}
+        <IndentWrapper quoted>
+          <FoldButton
+            onClick={() => {
+              setFolded(!folded);
+            }}
+          >
+            {folded ? `${comment.replies?.length} Replies` : "Hide Replies"}
+          </FoldButton>
+
+          {!folded
+            ? (comment.replies || []).map((item) => (
+                <Item
+                  key={item.id}
+                  data={item}
+                  chain={chain}
+                  isSecondLevel={true}
+                />
+              ))
+            : null}
         </IndentWrapper>
       )}
     </Wrapper>
