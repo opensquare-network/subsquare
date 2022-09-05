@@ -111,8 +111,10 @@ function getMotionState(item = {}) {
     tally: {
       yesVotes,
     } = {},
+    voting: { ayes = [] } = {},
   } = item.onchainData || {};
-  return isNil(yesVotes) ? voting : `${ voting } (${ yesVotes })`;
+  const ayeCount = isNil(yesVotes) ? ayes.length : yesVotes;
+  return isNil(yesVotes) ? voting : `${ voting } (${ ayeCount })`;
 }
 
 export const toCouncilMotionListItem = (chain, item) => {
