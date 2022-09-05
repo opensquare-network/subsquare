@@ -125,9 +125,6 @@ const getFirstCategoryCount = (firstCategory, summary) => {
   if (!summary[firstCategory]) {
     return 0;
   }
-  if (firstCategory === "comments" || firstCategory === "discussions") {
-    return summary[firstCategory];
-  }
   return Object.keys(summary[firstCategory])
     .map((secondCategory) => {
       return summary[firstCategory][secondCategory];
@@ -217,6 +214,10 @@ export default withLoginUserRedux(
       collectives: {
         councilMotions: summary?.council?.motions ?? 0,
         techCommProposals: summary?.techComm?.proposals ?? 0,
+      },
+      discussions: {
+        posts: summary?.discussions ?? 0,
+        comments: summary?.comments ?? 0,
       },
     };
 
@@ -311,6 +312,7 @@ export default withLoginUserRedux(
                 return (
                   <Category
                     onClick={() => {
+                      setIsLoading(true);
                       setSecondCategory(c);
                       resetPage();
                     }}

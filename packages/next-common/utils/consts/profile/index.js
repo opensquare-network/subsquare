@@ -102,20 +102,14 @@ export const CATEGORIES = [
     name: "Discussions",
     children: [
       {
-        id: "discussions",
-        name: "Discussions",
+        id: "posts",
+        name: "Posts",
         categoryName: "Discussions",
         categoryId: "Discussions",
         routePath: "posts",
         apiPath: "posts",
         formatter: toDiscussionListItem,
       },
-    ],
-  },
-  {
-    id: "comments",
-    name: "Comments",
-    children: [
       {
         id: "comments",
         name: "Comments",
