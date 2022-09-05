@@ -72,7 +72,7 @@ export function TreasuryTag({ state }) {
 export function TipTag({ state }) {
   let Tag = tipStateTagMap[state] || ClosedTag;
   if ((state || "").startsWith("Tipping")) {
-    Tag = StartTag;
+    Tag = ActiveTag;
   }
 
   return <Tag>{state}</Tag>;

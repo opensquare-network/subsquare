@@ -1,5 +1,6 @@
 import { addressEllipsis } from "next-common/utils";
 import { getMotionId } from "next-common/utils/motion";
+import isNil from "lodash.isnil";
 
 export const TipStateMap = {
   NewTip: "Tipping",
@@ -96,6 +97,24 @@ export const toPolkassemblyCommentListItem = (chain, item) => ({
   replies: item.replies?.map((r) => convertPolkassemblyComment(chain, r)),
 });
 
+function getMotionState(item = {}) {
+  if (!item.state) {
+    return "Unknown";
+  }
+
+  const voting = "Voting"
+  if (item.state !== voting) {
+    return item.state;
+  }
+
+  const {
+    tally: {
+      yesVotes,
+    } = {},
+  } = item.onchainData || {};
+  return isNil(yesVotes) ? voting : `${ voting } (${ yesVotes })`;
+}
+
 export const toCouncilMotionListItem = (chain, item) => {
   return {
     ...item,
@@ -103,7 +122,7 @@ export const toCouncilMotionListItem = (chain, item) => {
     title: getTitle(item),
     author: item.author,
     address: item.proposer,
-    status: item.state ?? "Unknown",
+    status: getMotionState(item),
     detailLink: `/council/motion/${getMotionId(item, chain)}`,
     isTreasury:
       item?.onchainData?.treasuryProposals?.length > 0 ||
