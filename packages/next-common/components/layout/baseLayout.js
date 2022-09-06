@@ -3,16 +3,22 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { currentNodeSelector } from "../../store/reducers/nodeSlice";
 import useApi from "../../utils/hooks/useApi";
-import { useSubscribeChainHead, useBlockTime, useChainHeight } from "../../utils/hooks";
+import {
+  useSubscribeChainHead,
+  useBlockTime,
+  useChainHeight,
+} from "../../utils/hooks";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import dark from "../styled/theme/dark";
 import light from "../styled/theme/light";
-import { setBlockTime, setLatestHeight, setNowHeight } from "../../store/reducers/chainSlice";
+import {
+  setBlockTime,
+  setLatestHeight,
+  setNowHeight,
+} from "../../store/reducers/chainSlice";
 import SEO from "../SEO";
 import capitalize from "../../utils/capitalize";
 import { DEFAULT_SEO_INFO } from "../../utils/constants";
-import useWindowSize from "../../utils/hooks/useWindowSize";
-import isNil from "lodash.isnil";
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import Auth from "../auth";
 import Header from "../header";
@@ -33,7 +39,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     background: ${(props) => props.theme.grey100Bg};
   }
-`
+`;
 
 export default function BaseLayout({ user, left, children, seoInfo }) {
   let chain = process.env.NEXT_PUBLIC_CHAIN;
@@ -63,7 +69,7 @@ export default function BaseLayout({ user, left, children, seoInfo }) {
 
   useEffect(() => {
     dispatch(setNowHeight(nowHeight));
-  }, [nowHeight, dispatch])
+  }, [nowHeight, dispatch]);
 
   const seo = (
     <SEO
@@ -75,11 +81,6 @@ export default function BaseLayout({ user, left, children, seoInfo }) {
       chain={chain}
     />
   );
-
-  const { width } = useWindowSize();
-  if (isNil(width)) {
-    return <div>{seo}</div>;
-  }
 
   return (
     <ThemeProvider theme={theme}>
