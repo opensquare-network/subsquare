@@ -21,6 +21,7 @@ import { HoverSecondaryCard } from "./styled/containers/secondaryCard";
 import Divider from "./styled/layout/divider";
 import { DemocracyTag, TreasuryTag } from "./tags/business";
 import isNil from "lodash.isnil";
+import { getBannerUrl } from "../utils/banner";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -191,6 +192,8 @@ export default function Post({ data, chain, href, type }) {
   const commentsCount =
     (data.commentsCount || 0) + (data.polkassemblyCommentsCount || 0);
 
+  const bannerUrl = getBannerUrl(data.bannerCid);
+
   return (
     <Wrapper>
       <ContentWrapper>
@@ -256,9 +259,9 @@ export default function Post({ data, chain, href, type }) {
         </FooterWrapper>
       </ContentWrapper>
 
-      {data.bannerUrl && (
+      {bannerUrl && (
         <BannerWrapper>
-          <img src={data.bannerUrl} alt="banner image" />
+          <img src={bannerUrl} alt="banner image" />
         </BannerWrapper>
       )}
     </Wrapper>

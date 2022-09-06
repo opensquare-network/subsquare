@@ -14,6 +14,7 @@ import { MarkdownPreviewer, HtmlPreviewer } from "@osn/previewer";
 import RichTextStyleWrapper from "./content/richTextStyleWrapper";
 import Divider from "./styled/layout/divider";
 import { getShare2SNStext } from "../utils/post/share";
+import { getBannerUrl } from "../utils/banner";
 
 const Wrapper = styled(RichTextStyleWrapper)`
   :hover {
@@ -159,6 +160,8 @@ export default function ArticleContent({
     }
   };
 
+  const bannerUrl = getBannerUrl(post.bannerCid);
+
   return (
     <Wrapper>
       {!isEdit && (
@@ -194,8 +197,8 @@ export default function ArticleContent({
               ))}
             </GreyWrapper>
           )}
-          {post.bannerUrl && (
-            <BannerImage src={post.bannerUrl} alt="banner image" />
+          {bannerUrl && (
+            <BannerImage src={bannerUrl} alt="banner image" />
           )}
           {post.contentType === "markdown" && (
             <MarkdownPreviewer content={post.content} />

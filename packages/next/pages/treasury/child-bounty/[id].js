@@ -12,6 +12,7 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
 import TreasuryCountDown from "next-common/components/treasury/common/countdown";
+import { getBannerUrl } from "next-common/utils/banner";
 
 const ChildBountyCountDown = ({ data = {} }) => {
   if (data.state?.state !== "PendingPayout") {
@@ -50,7 +51,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   return (
     <DetailLayout
       user={loginUser}
-      seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
+      seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
     >
       <Back href={`/treasury/child-bounties`} text="Back to Child Bounties" />
       <DetailItem

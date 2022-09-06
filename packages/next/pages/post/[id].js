@@ -14,6 +14,7 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Cookies from "cookies";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailLayout from "next-common/components/layout/DetailLayout";
+import { getBannerUrl } from "next-common/utils/banner";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, votes, myVote, chain }) => {
@@ -42,7 +43,7 @@ export default withLoginUserRedux(
       <DetailLayout
         user={loginUser}
         chain={chain}
-        seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
+        seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
       >
         <Back href={`/discussions`} text="Back to Discussions" />
         <DetailItem

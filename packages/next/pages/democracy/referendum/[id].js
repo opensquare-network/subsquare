@@ -17,6 +17,7 @@ import DetailWithRightLayout from "next-common/components/layout/detailWithRight
 import useMaybeFetchReferendumStatus from "next-common/utils/hooks/referenda/useMaybeFetchReferendumStatus";
 import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
 import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
+import { getBannerUrl } from "next-common/utils/banner";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -42,7 +43,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   return (
     <DetailWithRightLayout
       user={loginUser}
-      seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
+      seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
     >
       <Back href={`/democracy/referenda`} text="Back to Referenda" />
       <DetailItem

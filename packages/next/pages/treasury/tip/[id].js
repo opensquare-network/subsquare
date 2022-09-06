@@ -25,6 +25,7 @@ import isNil from "lodash.isnil";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import Loading from "next-common/components/loading";
 import TreasuryCountDown from "next-common/components/treasury/common/countdown";
+import { getBannerUrl } from "next-common/utils/banner";
 
 const TipCountDown = ({ meta = {}, state }) => {
   const nowHeight = useSelector(latestHeightSelector);
@@ -155,7 +156,7 @@ export default withLoginUserRedux(
     return (
       <DetailWithRightLayout
         user={ loginUser }
-        seoInfo={ { title: detail?.title, desc, ogImage: detail?.bannerUrl } }
+        seoInfo={ { title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) } }
       >
         <Back href={ `/treasury/tips` } text="Back to Tips" />
         <DetailItem

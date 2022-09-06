@@ -87,7 +87,7 @@ export default function PostCreate({ chain, loginUser }) {
   const [contentType, setContentType] = useState(
     loginUser?.preference.editor || "markdown"
   );
-  const [bannerUrl, setBannerUrl] = useState("");
+  const [bannerCid, setBannerCid] = useState(null);
   const [formValue, setFormValue] = useState({});
   const [errors, setErrors] = useState();
   const [isAdvanced, setIsAdvanced] = useState(false);
@@ -103,7 +103,7 @@ export default function PostCreate({ chain, loginUser }) {
           title,
           content,
           contentType,
-          bannerUrl,
+          bannerCid,
           ...formValue,
         },
         { credentials: "include" }
@@ -125,7 +125,7 @@ export default function PostCreate({ chain, loginUser }) {
   const [isSetBanner, setIsSetBanner] = useState(false);
   useEffect(() => {
     if (!isSetBanner) {
-      setBannerUrl("");
+      setBannerCid(null);
     }
   }, [isSetBanner]);
 
@@ -161,7 +161,7 @@ export default function PostCreate({ chain, loginUser }) {
 
       {isSetBanner && (
         <UploaderWrapper>
-          <Uploader disabled={creating} onSetImageUrl={setBannerUrl} />
+          <Uploader disabled={creating} onSetImageCid={setBannerCid} />
         </UploaderWrapper>
       )}
 

@@ -8,6 +8,7 @@ import { EmptyList } from "next-common/utils/constants";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
+import { getBannerUrl } from "next-common/utils/banner";
 
 export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -24,7 +25,7 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
   return (
     <DetailWithRightLayout
       user={loginUser}
-      seoInfo={{ title: motion?.title, desc, ogImage: motion?.bannerUrl }}
+      seoInfo={{ title: motion?.title, desc, ogImage: getBannerUrl(motion?.bannerCid) }}
     >
       <Back href={`/council/motions`} text="Back to Motions" />
       <MotionDetail

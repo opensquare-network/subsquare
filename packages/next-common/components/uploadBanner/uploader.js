@@ -9,6 +9,7 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import DeleteIcon from "next-common/assets/imgs/icons/delete.svg";
 import LinkIcon from "next-common/assets/imgs/icons/link.svg";
+import { getBannerUrl } from "../../utils/banner";
 
 const Wrapper = styled.div`
   position: relative;
@@ -91,11 +92,11 @@ const DisabledMask = styled.div`
   z-index: 1;
 `;
 
-function Uploader({ disabled = false, imageUrl, onSetImageUrl = () => {} }) {
+function Uploader({ disabled = false, imageCid, onSetImageCid = () => {} }) {
   const dispatch = useDispatch();
   const inputEl = useRef();
   const [dragging, setDragging] = useState(false);
-  const [currentBanner, setCurrentBanner] = useState(imageUrl || "");
+  const [currentBanner, setCurrentBanner] = useState(imageCid || null);
   const [uploading, setUploading] = useState(false);
 
   const handleSelectFile = () => {
@@ -142,11 +143,11 @@ function Uploader({ disabled = false, imageUrl, onSetImageUrl = () => {} }) {
       const formData = new FormData();
       formData.append("file", image, image.name);
       nextApi
-        .postFormData("files/upload", formData)
+        .postFormData("ipfs/files", formData)
         .then(({ result, error }) => {
           if (result) {
-            setCurrentBanner(result.url);
-            onSetImageUrl(result.url);
+            setCurrentBanner(result.cid);
+            onSetImageCid(result.cid);
           }
           if (error) {
             dispatch(newErrorToast(error.message));
@@ -161,7 +162,7 @@ function Uploader({ disabled = false, imageUrl, onSetImageUrl = () => {} }) {
 
   const handleRemoveBanner = () => {
     setCurrentBanner(null);
-    onSetImageUrl("");
+    onSetImageCid(null);
     resetSelectedFile();
   };
 
@@ -181,7 +182,7 @@ function Uploader({ disabled = false, imageUrl, onSetImageUrl = () => {} }) {
             {currentBanner ? (
               <BannerPreview disabled={disabled}>
                 <div />
-                <img src={currentBanner} />
+                <img src={getBannerUrl(currentBanner)} />
                 <RemoveBannerButton role="button" onClick={handleRemoveBanner}>
                   <DeleteIcon />
                 </RemoveBannerButton>

@@ -10,6 +10,7 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import useCommentComponent from "next-common/components/useCommentComponent";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailLayout from "next-common/components/layout/DetailLayout";
+import { getBannerUrl } from "next-common/utils/banner";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const { CommentComponent, focusEditor } = useCommentComponent({
@@ -26,7 +27,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   return (
     <DetailLayout
       user={loginUser}
-      seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
+      seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
     >
       <Back href={`/treasury/proposals`} text="Back to Proposals" />
       <DetailItem
