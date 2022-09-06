@@ -91,7 +91,7 @@ export default function Item({ data, chain, isSecondLevel }) {
   return (
     <Wrapper isSecondLevel={isSecondLevel}>
       <InfoWrapper>
-        <User user={comment.author} chain={chain} />
+        <User user={comment.author} chain={chain} noEvent />
         <div>{timeDurationFromNow(comment.createdAt)}</div>
       </InfoWrapper>
       <ContentWrapper>
