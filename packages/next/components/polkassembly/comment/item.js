@@ -8,7 +8,6 @@ import {
   renderMentionIdentityUserPlugin,
 } from "@osn/previewer";
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
-import { renderDisableNonAddressLink } from "next-common/utils/viewfuncs";
 import Actions from "../actions";
 import RichTextStyleWrapper from "next-common/components/content/richTextStyleWrapper";
 
@@ -98,13 +97,7 @@ export default function Item({ data, chain, isSecondLevel }) {
       <ContentWrapper>
         <MarkdownPreviewer
           content={comment.content}
-          plugins={[
-            {
-              name: "disable-non-address-link",
-              onRenderedHtml: renderDisableNonAddressLink,
-            },
-            renderMentionIdentityUserPlugin(<IdentityOrAddr />),
-          ]}
+          plugins={[renderMentionIdentityUserPlugin(<IdentityOrAddr />)]}
         />
         {comment.createdAt !== comment.updatedAt && (
           <EditedLabel>Edited</EditedLabel>
