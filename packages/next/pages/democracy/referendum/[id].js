@@ -43,7 +43,11 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   return (
     <DetailWithRightLayout
       user={loginUser}
-      seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
+      seoInfo={{
+        title: detail?.title,
+        desc,
+        ogImage: getBannerUrl(detail?.bannerCid),
+      }}
     >
       <Back href={`/democracy/referenda`} text="Back to Referenda" />
       <DetailItem
@@ -63,7 +67,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       <ReferendumMetadata
         api={api}
         proposer={detail?.proposer}
-        status={referendumStatus}
+        status={referendumStatus ?? {}}
         call={detail?.onchainData?.preImage?.call || detail?.onchainData?.call}
         shorten={detail?.onchainData?.preImage?.shorten}
         chain={chain}
