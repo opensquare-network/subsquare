@@ -104,8 +104,6 @@ const Wallet = ({ wallet, onClick, selected = false, loading = false }) => {
     // update if installed changes
     if (injectedWeb3 && isMounted.current) {
       setInstalled(!!injectedWeb3?.[wallet?.extensionName]);
-    } else {
-      setInstalled(false);
     }
   }, [injectedWeb3]);
 
