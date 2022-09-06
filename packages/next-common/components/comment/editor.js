@@ -4,11 +4,7 @@ import { useRouter } from "next/router";
 import nextApi from "../../services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import Flex from "next-common/components/styled/flex";
-import {
-  prettyHTML,
-  renderDisableNonAddressLink,
-  toApiType,
-} from "../../utils/viewfuncs";
+import { prettyHTML, toApiType } from "../../utils/viewfuncs";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import dynamic from "next/dynamic";
 import IdentityOrAddr from "../IdentityOrAddr";
@@ -137,7 +133,7 @@ function Editor(
         preview: user.name,
         value: user.isKeyRegistered
           ? `[@${addressEllipsis(user.name)}](${user.value}-${chain}) `
-          : `[@${escapeLinkText(user.name)}](/member/${user.value}) `,
+          : `[@${escapeLinkText(user.name)}](/user/${user.value}) `,
         address: user.value,
         isKeyRegistered: user.isKeyRegistered,
         chain: chain,
@@ -157,12 +153,7 @@ function Editor(
           minHeight={100}
           identifier={<IdentityOrAddr />}
           setQuillRef={setQuillRef}
-          previewerPlugins={[
-            {
-              name: "disable-non-address-link",
-              onRenderedHtml: renderDisableNonAddressLink,
-            },
-          ]}
+          previewerPlugins={[]}
         />
       </Relative>
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}

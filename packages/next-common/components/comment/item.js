@@ -15,7 +15,7 @@ import {
   renderMentionIdentityUserPlugin,
 } from "@osn/previewer";
 import IdentityOrAddr from "../IdentityOrAddr";
-import { prettyHTML, renderDisableNonAddressLink } from "../../utils/viewfuncs";
+import { prettyHTML } from "../../utils/viewfuncs";
 import RichTextStyleWrapper from "../content/richTextStyleWrapper";
 import CommentActions from "../actions/commentActions";
 import copy from "copy-to-clipboard";
@@ -163,23 +163,13 @@ export default function Item({ user, data, chain, onReply }) {
             {comment.contentType === "markdown" && (
               <MarkdownPreviewer
                 content={comment.content}
-                plugins={[
-                  {
-                    name: "disable-non-address-link",
-                    onRenderedHtml: renderDisableNonAddressLink,
-                  },
-                  renderMentionIdentityUserPlugin(<IdentityOrAddr />),
-                ]}
+                plugins={[renderMentionIdentityUserPlugin(<IdentityOrAddr />)]}
               />
             )}
             {comment.contentType === "html" && (
               <HtmlPreviewer
                 content={prettyHTML(comment.content)}
                 plugins={[
-                  {
-                    name: "disable-non-address-link",
-                    onRenderedHtml: renderDisableNonAddressLink,
-                  },
                   renderMentionIdentityUserPlugin(<IdentityOrAddr />, {
                     targetElement: { tag: "span" },
                   }),

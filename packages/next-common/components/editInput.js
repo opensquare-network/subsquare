@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import ErrorText from "next-common/components/ErrorText";
-import { renderDisableNonAddressLink } from "../utils/viewfuncs";
 import dynamic from "next/dynamic";
 import GhostButton from "./buttons/ghostButton";
 import SecondaryButton from "./buttons/secondaryButton";
-import RichTextStyleWrapper from "./content/richTextStyleWrapper";
 import EditorWrapper from "./editor/editorWrapper";
 
 const UniverseEditor = dynamic(
@@ -74,12 +72,7 @@ export default function EditInput({
           setContentType={setContentType}
           loadSuggestions={() => []}
           minHeight={100}
-          previewerPlugins={[
-            {
-              name: "disable-non-address-link",
-              onRenderedHtml: renderDisableNonAddressLink,
-            },
-          ]}
+          previewerPlugins={[]}
           setQuillRef={() => {}}
         />
       </InputWrapper>
