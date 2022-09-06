@@ -8,6 +8,7 @@ import { EmptyList } from "next-common/utils/constants";
 import useCommentComponent from "next-common/components/useCommentComponent";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailLayout from "next-common/components/layout/DetailLayout";
+import { getBannerUrl } from "next-common/utils/banner";
 
 export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
   const { CommentComponent, focusEditor } = useCommentComponent({
@@ -22,7 +23,7 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
   return (
     <DetailLayout
       user={loginUser}
-      seoInfo={{ title: motion?.title, desc, ogImage: motion?.bannerUrl }}
+      seoInfo={{ title: motion?.title, desc, ogImage: getBannerUrl(motion?.bannerCid) }}
     >
       <Back href={`/techcomm/proposals`} text="Back to Proposals" />
       <TechcommMotionDetail

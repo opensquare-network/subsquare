@@ -45,15 +45,15 @@ export default function PostEdit({
       title,
       content,
       contentType,
-      bannerUrl,
+      bannerCid,
     });
   };
-  const [bannerUrl, setBannerUrl] = useState(postData.bannerUrl);
+  const [bannerCid, setBannerCid] = useState(postData.bannerCid);
 
-  const [isSetBanner, setIsSetBanner] = useState(!!postData.bannerUrl);
+  const [isSetBanner, setIsSetBanner] = useState(!!postData.bannerCid);
   useEffect(() => {
     if (!isSetBanner) {
-      setBannerUrl("");
+      setBannerCid(null);
     }
   }, [isSetBanner]);
 
@@ -80,8 +80,8 @@ export default function PostEdit({
         <UploaderWrapper>
           <Uploader
             disabled={updating}
-            imageUrl={bannerUrl}
-            onSetImageUrl={setBannerUrl}
+            imageCid={bannerCid}
+            onSetImageCid={setBannerCid}
           />
         </UploaderWrapper>
       )}

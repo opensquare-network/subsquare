@@ -14,6 +14,7 @@ import isNil from "lodash.isnil";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
+import { getBannerUrl } from "next-common/utils/banner";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -44,7 +45,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   return (
     <DetailWithRightLayout
       user={loginUser}
-      seoInfo={{ title: detail?.title, desc, ogImage: detail?.bannerUrl }}
+      seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
     >
       <Back href={`/democracy/proposals`} text="Back to Proposals" />
       <DetailItem
