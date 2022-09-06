@@ -36,12 +36,15 @@ const GreyItem = styled.div`
 export default function Actions({ chain, reactions }) {
   const count = reactions?.length;
 
-  const { ThumbsUpComponent, showThumbsUpList } = useThumbsUp({ disabled: true, count, noHover: true, highlight: false });
+  const { ThumbsUpComponent, showThumbsUpList } = useThumbsUp({
+    disabled: true,
+    count,
+    noHover: true,
+    highlight: false,
+  });
   return (
     <>
-      <Wrapper>
-        {ThumbsUpComponent}
-      </Wrapper>
+      <Wrapper>{ThumbsUpComponent}</Wrapper>
       {showThumbsUpList && count > 0 && (
         <GreyWrapper style={{ marginTop: 10 }}>
           {reactions
@@ -53,6 +56,7 @@ export default function Actions({ chain, reactions }) {
                   fontSize={12}
                   chain={chain}
                   showAvatar={false}
+                  noEvent
                 />
               </GreyItem>
             ))}
