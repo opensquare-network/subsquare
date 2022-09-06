@@ -1,9 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import CountDown from "next-common/components/countDown";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { bigNumber2Locale, isMotionEnded } from "next-common/utils";
 import { latestHeightSelector } from "../store/reducers/chainSlice";
+import CountDown from "./_CountDown";
 
 export default function MotionEnd({ motion, type = "full" }) {
   const blockHeight = useSelector(latestHeightSelector);
@@ -24,12 +24,15 @@ export default function MotionEnd({ motion, type = "full" }) {
     return null;
   }
 
-  const elapsePercent =
-    (blockHeight - motionStartHeight) /
-    (motionEndHeight - motionStartHeight);
   return (
     <>
-      <CountDown percent={parseInt(elapsePercent * 100)} />
+      <CountDown
+        numerator={blockHeight - motionStartHeight}
+        denominator={motionEndHeight - motionStartHeight}
+        tooltipContent={`End in ${estimatedBlocksTime}, #${bigNumber2Locale(
+          motionEndHeight.toString()
+        )}`}
+      />
       {type === "full" ? (
         <span>{`End in ${estimatedBlocksTime}, #${bigNumber2Locale(
           motionEndHeight.toString()
