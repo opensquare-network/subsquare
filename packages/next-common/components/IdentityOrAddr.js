@@ -5,12 +5,18 @@ import { encodeAddressToChain } from "../services/address";
 import Identity from "./Identity";
 import styled from "styled-components";
 import { addressEllipsis } from "../utils";
+import { useSelector } from "react-redux";
+import { getInitMode, modeSelector } from "../store/reducers/settingSlice";
+import dark from "./styled/theme/dark";
+import light from "./styled/theme/light";
+import { isAddress } from "../utils/viewfuncs";
 
 const NameWrapper = styled.div`
   font-size: 14px;
   font-weight: 500;
   color: ${(props) => props.theme.secondarySapphire500};
   background: ${(props) => props.theme.secondarySapphire100};
+  ${(props) => console.log(props.theme)};
 `;
 
 const MentionBox = styled.a`
@@ -23,10 +29,12 @@ const MentionBox = styled.a`
 
 function IdentityOrAddr({ address, network }) {
   const [identity, setIdentity] = useState(null);
+  const mode = getInitMode();
+  const theme = mode === "dark" ? dark : light;
 
   useEffect(() => {
     setIdentity(null);
-    if (address) {
+    if (isAddress(address)) {
       const identity = nodes.find((n) => n.value === network)?.identity;
       if (!identity) return;
 
@@ -36,8 +44,17 @@ function IdentityOrAddr({ address, network }) {
     }
   }, [address, network]);
 
+  if (!isAddress(address)) {
+    return (
+      <MentionBox href={`/user/${address}`} target="_blank">
+        <span>@</span>
+        {address}
+      </MentionBox>
+    );
+  }
+
   return (
-    <NameWrapper>
+    <NameWrapper theme={theme}>
       {identity && identity?.info?.status !== "NO_ID" ? (
         <MentionBox href={`/user/${address}`} target="_blank">
           <span>@</span>

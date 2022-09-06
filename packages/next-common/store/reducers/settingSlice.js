@@ -7,7 +7,7 @@ const mode = Object.freeze({
 
 const localstorageKey = "subsquare-mode";
 
-function getInitMode() {
+export function getInitMode() {
   let result;
   try {
     result = localStorage.getItem(localstorageKey);
