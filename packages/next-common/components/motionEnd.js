@@ -24,19 +24,19 @@ export default function MotionEnd({ motion, type = "full" }) {
     return null;
   }
 
+  const tooltipContent = `End in ${estimatedBlocksTime}, #${bigNumber2Locale(
+    motionEndHeight.toString()
+  )}`;
+
   return (
     <>
       <CountDown
         numerator={blockHeight - motionStartHeight}
         denominator={motionEndHeight - motionStartHeight}
-        tooltipContent={`End in ${estimatedBlocksTime}, #${bigNumber2Locale(
-          motionEndHeight.toString()
-        )}`}
+        tooltipContent={tooltipContent}
       />
       {type === "full" ? (
-        <span>{`End in ${estimatedBlocksTime}, #${bigNumber2Locale(
-          motionEndHeight.toString()
-        )}`}</span>
+        <span>{tooltipContent}</span>
       ) : type === "simple" ? (
         <span>{`End in ${estimatedBlocksTime}`}</span>
       ) : null}
