@@ -131,6 +131,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
 
     if (!WALLETS.some(({ extensionName }) => extensionName === selectedWallet)) {
       const extensionDapp = await import("@polkadot/extension-dapp");
+      await extensionDapp.web3Enable("subsquare");
       const injector = await extensionDapp.web3FromAddress(account.address);
       setWallet(injector);
     }
@@ -145,7 +146,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
       CACHE_KEY.accountMap,
       JSON.stringify(accountMap)
     );
-  }, []);
+  }, [selectedWallet]);
 
   return (
     <>
