@@ -1,9 +1,9 @@
-import { withLoginUser } from "next-common/lib";
+import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import React from "react";
 import Profile from "next-common/components/profile";
 
-export default Profile;
+export default withLoginUserRedux(Profile);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;

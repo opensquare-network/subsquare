@@ -1,16 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { CACHE_KEY } from "../../utils/constants";
+import { getCookie, setCookie } from "../../utils/viewfuncs/cookies";
 
 const mode = Object.freeze({
   light: "light",
   dark: "dark",
 });
 
-const localstorageKey = "subsquare-mode";
-
 export function getInitMode() {
   let result;
   try {
-    result = localStorage.getItem(localstorageKey);
+    result = getCookie(CACHE_KEY.themeMode) ?? mode.light;
   } catch (e) {
     // ignore parse error
     result = mode.light;
@@ -28,14 +28,18 @@ const settingSlice = createSlice({
     toggleMode(state) {
       const target =
         state.mode === mode.light || !state.mode ? mode.dark : mode.light;
-      localStorage.setItem(localstorageKey, target);
+      setCookie(CACHE_KEY.themeMode, target);
       state.mode = target;
+    },
+    setMode(state, { payload }) {
+      setCookie(CACHE_KEY.themeMode, payload);
+      state.mode = payload;
     },
   },
 });
 
 export const modeSelector = (state) => state.setting.mode;
 
-export const { toggleMode } = settingSlice.actions;
+export const { toggleMode, setMode } = settingSlice.actions;
 
 export default settingSlice.reducer;
