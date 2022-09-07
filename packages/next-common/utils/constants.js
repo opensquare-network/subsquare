@@ -60,6 +60,6 @@ export const BalanceDecimals = {
 export const CACHE_KEY = {
   lastLoginAddress: "lastLoggedInAddress",
   accountMap: "accountMap",
-  themeMode: "themeMode",
+  themeMode: "theme-mode",
   authToken: "auth-token",
 };
