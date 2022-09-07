@@ -42,8 +42,7 @@ const ChildBounty = styled(FlexBetween)`
     }
   }
   > div > span {
-    text-align: right;
-    line-height: 15px;
+    height: 20px;
   }
 `;
 
