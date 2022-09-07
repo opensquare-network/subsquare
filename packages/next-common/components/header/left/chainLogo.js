@@ -7,22 +7,20 @@ import { withTheme } from "styled-components";
 import getChainSettings from "../../../utils/consts/settings";
 
 function ChainLogo({ chain, theme }) {
-  let logo = theme.isDark ? <SubSquareDark /> : <SubSquare />;
   const { width } = useWindowSize();
-
   const chainSetting = getChainSettings(chain);
   if (!chainSetting) {
-    throw new Error(`Unsupported chain in ChainLogo: ${ process.env.CHAIN }`);
+    throw new Error(`Unsupported chain in ChainLogo: ${process.env.CHAIN}`);
+  }
+  const Element = chainSetting.headerLogo;
+  let logo = <Element />;
+  if (theme.isDark) {
+    const DarkElement = chainSetting.darkHeaderLogo;
+    logo = <DarkElement />;
   }
 
-  if (width > 768) {
-    const Element = chainSetting.headerLogo;
-    logo = <Element />
-
-    if (theme.isDark) {
-      const DarkElement = chainSetting.darkHeaderLogo
-      logo = <DarkElement />
-    }
+  if (width <= 768) {
+    logo = theme.isDark ? <SubSquareDark /> : <SubSquare />;
   }
 
   return (
