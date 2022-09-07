@@ -104,7 +104,7 @@ const Wallet = ({ wallet, onClick, selected = false, loading = false }) => {
     if (isMounted.current) {
       setInstalled(!!injectedWeb3?.[wallet?.extensionName]);
     }
-  }, [loadingInjectedWeb3, injectedWeb3]);
+  }, [loadingInjectedWeb3, injectedWeb3, wallet?.extensionName, isMounted]);
 
   return (
     <WalletOption selected={selected} onClick={() => onClick(wallet)} installed={installed}>
@@ -174,39 +174,37 @@ export default function SelectWallet({
         }
       }
     })();
-  }, [injectedWeb3]);
+  }, [injectedWeb3, setAccounts, setSelectWallet, setWallet, isMounted]);
 
-  const loadAccounts = useCallback((selectedWallet) => {
-    (async () => {
-      setAccounts(null);
-      const extension = window?.injectedWeb3?.[selectedWallet];
-      if (!extension) {
-        return;
+  const loadAccounts = useCallback(async (selectedWallet) => {
+    setAccounts(null);
+    const extension = window?.injectedWeb3?.[selectedWallet];
+    if (!extension) {
+      return;
+    }
+
+    try {
+      setWaitingPermissionWallet(selectedWallet);
+      const wallet = await extension.enable("subsquare");
+      const extensionAccounts = await wallet.accounts?.get();
+      const excludeEthExtensionAccounts = extensionAccounts?.filter(
+        (acc) => acc.type !== "ethereum"
+      );
+
+      if (isMounted.current) {
+        setSelectWallet(selectedWallet);
+        setWallet(wallet);
+        setAccounts(excludeEthExtensionAccounts);
       }
 
-      try {
-        setWaitingPermissionWallet(selectedWallet);
-        const wallet = await extension.enable("subsquare");
-        const extensionAccounts = await wallet.accounts?.get();
-        const excludeEthExtensionAccounts = extensionAccounts?.filter(
-          (acc) => acc.type !== "ethereum"
-        );
-
-        if (isMounted.current) {
-          setSelectWallet(selectedWallet);
-          setWallet(wallet);
-          setAccounts(excludeEthExtensionAccounts);
-        }
-
-        onAccessGranted && onAccessGranted();
-      } catch (e) {
-        console.error(e);
-      } finally {
-        if (isMounted.current) {
-          setWaitingPermissionWallet(null);
-        }
+      onAccessGranted && onAccessGranted();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      if (isMounted.current) {
+        setWaitingPermissionWallet(null);
       }
-    })();
+    }
   }, [setAccounts, setSelectWallet, setWallet, onAccessGranted, isMounted]);
 
   const onWalletClick = useCallback((wallet) => {
