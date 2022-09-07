@@ -173,6 +173,10 @@ export default function LinkedAddress({ chain }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (typeof injectedWeb3 === "undefined") {
+      setHasExtension(false);
+      return;
+    }
     if (Object.keys(injectedWeb3 ?? {}).length > 0) {
       setHasExtension(true);
     }
@@ -199,7 +203,9 @@ export default function LinkedAddress({ chain }) {
       let signature;
 
       let injector = wallet;
-      if (!WALLETS.some(({ extensionName }) => extensionName === selectedWallet)) {
+      if (
+        !WALLETS.some(({ extensionName }) => extensionName === selectedWallet)
+      ) {
         const extensionDapp = await import("@polkadot/extension-dapp");
         injector = await extensionDapp.web3FromAddress(address);
       }
