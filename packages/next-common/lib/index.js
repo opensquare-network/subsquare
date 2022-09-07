@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUser, userSelector } from "next-common/store/reducers/userSlice";
 import { useEffect, useLayoutEffect } from "react";
 import { checkBrowserCompatibility } from "next-common/utils/serverSideUtil";
-import { toggleMode } from "../store/reducers/settingSlice";
+import { setMode } from "../store/reducers/settingSlice";
+import { CACHE_KEY } from "../utils/constants";
 
 export const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -17,8 +18,8 @@ export function withLoginUser(getServerSideProps) {
 
     let options = { credentials: true };
     const cookies = new Cookies(context.req, context.res);
-    const themeMode = cookies.get("subsquare-mode");
-    const authToken = cookies.get("auth-token");
+    const themeMode = cookies.get(CACHE_KEY.themeMode);
+    const authToken = cookies.get(CACHE_KEY.authToken);
     if (authToken) {
       options = {
         headers: {
@@ -60,8 +61,9 @@ export function withLoginUserRedux(fnComponent) {
     useIsomorphicLayoutEffect(() => {
       dispatch(setUser(loginUser));
     }, [loginUser]);
-
-    dispatch(toggleMode({ state: themeMode }));
+    if (themeMode) {
+      dispatch(setMode(themeMode));
+    }
 
     const storeUser = useSelector(userSelector);
     return fnComponent({

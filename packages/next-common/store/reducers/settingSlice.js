@@ -31,11 +31,15 @@ const settingSlice = createSlice({
       setCookie(CACHE_KEY.themeMode, target);
       state.mode = target;
     },
+    setMode(state, { payload }) {
+      setCookie(CACHE_KEY.themeMode, payload);
+      state.mode = payload;
+    },
   },
 });
 
 export const modeSelector = (state) => state.setting.mode;
 
-export const { toggleMode } = settingSlice.actions;
+export const { toggleMode, setMode } = settingSlice.actions;
 
 export default settingSlice.reducer;
