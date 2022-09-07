@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Flex from "../flex";
 
 // used for card titles, list page titles
-export const TitleContainer = styled.title`
+export const TitleContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
