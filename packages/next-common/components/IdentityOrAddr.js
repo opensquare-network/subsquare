@@ -5,8 +5,7 @@ import { encodeAddressToChain } from "../services/address";
 import Identity from "./Identity";
 import styled from "styled-components";
 import { addressEllipsis } from "../utils";
-import { useSelector } from "react-redux";
-import { getInitMode, modeSelector } from "../store/reducers/settingSlice";
+import { getInitMode } from "../store/reducers/settingSlice";
 import dark from "./styled/theme/dark";
 import light from "./styled/theme/light";
 import { isAddress } from "../utils/viewfuncs";
@@ -16,7 +15,6 @@ const NameWrapper = styled.div`
   font-weight: 500;
   color: ${(props) => props.theme.secondarySapphire500};
   background: ${(props) => props.theme.secondarySapphire100};
-  ${(props) => console.log(props.theme)};
 `;
 
 const MentionBox = styled.a`
