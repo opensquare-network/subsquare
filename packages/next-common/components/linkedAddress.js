@@ -24,6 +24,7 @@ import { TitleContainer } from "./styled/containers/titleContainer";
 import Popup from "./popup/wrapper/Popup";
 import SelectWallet from "./wallet/selectWallet";
 import { stringToHex } from "@polkadot/util";
+import { WALLETS } from "../utils/consts/connect";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -197,8 +198,14 @@ export default function LinkedAddress({ chain }) {
     if (result) {
       let signature;
 
+      let injector = wallet;
+      if (!WALLETS.some(({ extensionName }) => extensionName === selectedWallet)) {
+        const extensionDapp = await import("@polkadot/extension-dapp");
+        injector = await extensionDapp.web3FromAddress(address);
+      }
+
       try {
-        const result = await wallet.signer.signRaw({
+        const result = await injector.signer.signRaw({
           type: "bytes",
           data: stringToHex(result?.challenge),
           address,

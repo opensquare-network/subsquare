@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
@@ -11,8 +11,9 @@ import { encodeAddressToChain } from "../../services/address";
 import SecondaryButton from "../buttons/secondaryButton";
 import { stringToHex } from "@polkadot/util";
 import { LinkWrapper } from "./styled";
-import SelectWallet, { setOtherWallet } from "../wallet/selectWallet";
+import SelectWallet from "../wallet/selectWallet";
 import { CACHE_KEY } from "../../utils/constants";
+import { WALLETS } from "../../utils/consts/connect";
 
 const Label = styled.div`
   font-weight: bold;
@@ -125,6 +126,27 @@ export default function AddressLogin({ chain, setMailLogin }) {
     }
   }, [selectedWallet, accounts]);
 
+  const onSelectAccount = useCallback(async (account) => {
+    setSelectedAccount(account);
+
+    if (!WALLETS.some(({ extensionName }) => extensionName === selectedWallet)) {
+      const extensionDapp = await import("@polkadot/extension-dapp");
+      const injector = await extensionDapp.web3FromAddress(account.address);
+      setWallet(injector);
+    }
+
+    // Save account name for Email page
+    const accountMap = JSON.parse(
+      localStorage.getItem(CACHE_KEY.accountMap) ?? "{}"
+    );
+    accountMap[encodeAddressToChain(account.address, chain)] =
+      account.name;
+    localStorage.setItem(
+      CACHE_KEY.accountMap,
+      JSON.stringify(accountMap)
+    );
+  }, []);
+
   return (
     <>
       <SelectWallet
@@ -147,21 +169,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
             chain={chain}
             accounts={accounts}
             selectedAccount={selectedAccount}
-            onSelect={(account) => {
-              setSelectedAccount(account);
-
-              const accountMap = JSON.parse(
-                localStorage.getItem(CACHE_KEY.accountMap) ?? "{}"
-              );
-              accountMap[encodeAddressToChain(account.address, chain)] =
-                account.name;
-              localStorage.setItem(
-                CACHE_KEY.accountMap,
-                JSON.stringify(accountMap)
-              );
-              // if wallet is other, try to get injector
-              setOtherWallet(account.address, setWallet);
-            }}
+            onSelect={onSelectAccount}
           />
           {web3Error && <ErrorText>{web3Error}</ErrorText>}
         </div>
