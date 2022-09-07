@@ -1,9 +1,10 @@
+import React, { useEffect, useState, useCallback } from "react";
 import { WALLETS } from "../../utils/consts/connect";
 import styled, { css } from "styled-components";
 import Flex from "../styled/flex";
-import React, { useEffect, useState } from "react";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import Loading from "../loading";
+import { emptyFunction } from "../../utils";
 
 const WalletOptions = styled.ul`
   all: unset;
@@ -69,46 +70,44 @@ const WalletOption = styled.li`
   }
 `;
 
-export const setOtherWallet = async (address, setWallet) => {
-  for (let wallet of WALLETS) {
-    if (window.injectedWeb3[wallet.extensionName]) {
-      return;
-    }
-  }
-  const injector = await web3FromAddress(address);
-  setWallet(injector);
-};
-
 const useInjectedWeb3 = () => {
   const isMounted = useIsMounted();
   const [injectedWeb3, setInjectedWeb3] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    if (typeof window !== "undefined" && window.injectedWeb3) {
+    if (typeof window !== "undefined") {
       setTimeout(() => {
         if (isMounted.current) {
+          setLoading(false);
           setInjectedWeb3(window.injectedWeb3);
         }
       }, 1000);
     }
   }, []);
-  return injectedWeb3;
+
+  return { loading, injectedWeb3 };
 };
 
 const Wallet = ({ wallet, onClick, selected = false, loading = false }) => {
   const [installed, setInstalled] = useState(null);
-  const injectedWeb3 = useInjectedWeb3();
+  const { loading: loadingInjectedWeb3, injectedWeb3 } = useInjectedWeb3();
   const isMounted = useIsMounted();
   const Logo = wallet.logo;
 
   useEffect(() => {
     // update if installed changes
-    if (injectedWeb3 && isMounted.current) {
+    if (loadingInjectedWeb3) {
+      return;
+    }
+
+    if (isMounted.current) {
       setInstalled(!!injectedWeb3?.[wallet?.extensionName]);
     }
-  }, [injectedWeb3]);
+  }, [loadingInjectedWeb3, injectedWeb3]);
 
   return (
-    <WalletOption selected={selected} onClick={onClick} installed={installed}>
+    <WalletOption selected={selected} onClick={() => onClick(wallet)} installed={installed}>
       <Flex>
         <Logo className={wallet.title} alt={wallet.title} />
         <span className="wallet-title">{wallet.title}</span>
@@ -125,35 +124,33 @@ export default function SelectWallet({
   selectedWallet,
   setSelectWallet,
   setAccounts,
-  setWallet = () => {},
-  onSelect = () => {},
-  onAccessGranted = () => {},
+  setWallet = emptyFunction,
+  onSelect = emptyFunction,
+  onAccessGranted = emptyFunction,
 }) {
   const isMounted = useIsMounted();
   const [waitingPermissionWallet, setWaitingPermissionWallet] = useState(null);
-  const injectedWeb3 = useInjectedWeb3();
-  let web3Enable, web3FromAddress, polkadotWeb3Accounts;
-
-  useEffect(() => {
-    (async () => {
-      const polkadotDapp = await import("@polkadot/extension-dapp");
-      const extensionUtils = await import("../../utils/extensionAccount");
-      web3Enable = polkadotDapp.web3Enable;
-      web3FromAddress = polkadotDapp.web3FromAddress;
-      polkadotWeb3Accounts = extensionUtils.polkadotWeb3Accounts;
-    })();
-  }, []);
+  const { injectedWeb3 } = useInjectedWeb3();
 
   useEffect(() => {
     if (!injectedWeb3) {
       return;
     }
+
     for (let wallet of WALLETS) {
       if (injectedWeb3[wallet.extensionName]) {
         return;
       }
     }
+
+    // For unknown wallet extensions
     (async () => {
+      const polkadotDapp = await import("@polkadot/extension-dapp");
+      const extensionUtils = await import("../../utils/extensionAccount");
+      const web3Enable = polkadotDapp.web3Enable;
+      const web3FromAddress = polkadotDapp.web3FromAddress;
+      const polkadotWeb3Accounts = extensionUtils.polkadotWeb3Accounts;
+
       await web3Enable("subsquare");
       const extensionAccounts = await polkadotWeb3Accounts();
       const accounts = extensionAccounts.map((item) => {
@@ -169,29 +166,38 @@ export default function SelectWallet({
 
       if (isMounted.current) {
         setAccounts(accounts);
-        setSelectWallet(injector.name);
-        setOtherWallet(accounts[0].address, setWallet);
+        if (accounts?.length > 0) {
+          const address = accounts[0].address;
+          const injector = await web3FromAddress(address);
+          setSelectWallet(injector.name);
+          setWallet(injector);
+        }
       }
     })();
   }, [injectedWeb3]);
 
-  const loadAccounts = (selectedWallet) => {
+  const loadAccounts = useCallback((selectedWallet) => {
     (async () => {
       setAccounts(null);
       const extension = window?.injectedWeb3?.[selectedWallet];
       if (!extension) {
         return;
       }
+
       try {
         setWaitingPermissionWallet(selectedWallet);
         const wallet = await extension.enable("subsquare");
         const extensionAccounts = await wallet.accounts?.get();
-        const excludeEthExtensionAccounts = extensionAccounts?.filter((acc) => acc.type !== "ethereum")
+        const excludeEthExtensionAccounts = extensionAccounts?.filter(
+          (acc) => acc.type !== "ethereum"
+        );
+
         if (isMounted.current) {
           setSelectWallet(selectedWallet);
           setWallet(wallet);
           setAccounts(excludeEthExtensionAccounts);
         }
+
         onAccessGranted && onAccessGranted();
       } catch (e) {
         console.error(e);
@@ -201,7 +207,12 @@ export default function SelectWallet({
         }
       }
     })();
-  };
+  }, [setAccounts, setSelectWallet, setWallet, onAccessGranted, isMounted]);
+
+  const onWalletClick = useCallback((wallet) => {
+    loadAccounts(wallet.extensionName);
+    onSelect && onSelect(wallet.extensionName);
+  }, [loadAccounts, onSelect]);
 
   return (
     <WalletOptions>
@@ -210,10 +221,7 @@ export default function SelectWallet({
           <Wallet
             key={index}
             wallet={wallet}
-            onClick={() => {
-              loadAccounts(wallet.extensionName);
-              onSelect && onSelect(wallet.extensionName);
-            }}
+            onClick={onWalletClick}
             selected={wallet.extensionName === selectedWallet}
             loading={wallet.extensionName === waitingPermissionWallet}
           />
