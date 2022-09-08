@@ -2,6 +2,7 @@ import React from "react";
 import { withLoginUser } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import Profile from "next-common/components/profile";
+import { isKeyRegisteredUser } from "next-common/utils";
 
 export default Profile;
 
@@ -16,9 +17,13 @@ export const getServerSideProps = withLoginUser(async (context) => {
     nextApi.fetch(`users/${id}`),
   ]);
 
+  let username = id;
+  if (user?.username && !isKeyRegisteredUser(user)) {
+    username = user?.username;
+  }
   return {
     props: {
-      id,
+      id: username,
       chain,
       summary: summary ?? {},
       user: user ?? {},
