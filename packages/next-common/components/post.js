@@ -194,13 +194,13 @@ export default function Post({ data, chain, href, type }) {
     (data.commentsCount || 0) + (data.polkassemblyCommentsCount || 0);
 
   const bannerUrl = getBannerUrl(data.bannerCid);
-  let author = { ...data.author };
+  let userLinkAnchor = "";
   let userNoClickEvent = false;
   if (type === businessCategory.polkassemblyDiscussions) {
     if (!data?.author.addresses) {
       userNoClickEvent = true;
     } else {
-      author.publicKey = data?.author?.addresses?.find(
+      userLinkAnchor = data?.author?.addresses?.find(
         (addr) => addr.chain === chain
       )?.address;
     }
@@ -230,11 +230,12 @@ export default function Post({ data, chain, href, type }) {
         <FooterWrapper>
           <Footer>
             <User
-              user={author}
+              user={data?.author}
               add={data.address}
               chain={chain}
               fontSize={12}
               noEvent={userNoClickEvent}
+              userLinkAnchor={userLinkAnchor}
             />
             {data.isTreasury && (
               <div>

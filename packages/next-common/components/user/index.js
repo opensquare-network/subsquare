@@ -111,6 +111,7 @@ function User({
   maxWidth,
   noTooltip = false,
   color,
+  userLinkAnchor = "",
 }) {
   const address =
     add ?? user?.addresses?.find((addr) => addr.chain === chain)?.address;
@@ -185,7 +186,7 @@ function User({
       )}
       <LinkWrapper
         color={color}
-        href={`/user/${profileAnchor}`}
+        href={`/user/${userLinkAnchor ?? profileAnchor}`}
         target="_blank"
       >
         {address ? (
