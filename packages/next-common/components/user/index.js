@@ -6,7 +6,7 @@ import { nodes } from "../../utils/constants";
 import Avatar from "../avatar";
 import Gravatar from "../gravatar";
 import Identity from "../Identity";
-import { addressEllipsis } from "../../utils";
+import { addressEllipsis, isKeyRegisteredUser } from "../../utils";
 import Flex from "../styled/flex";
 import Tooltip from "../tooltip";
 import AvatarDeleted from "../../assets/imgs/icons/avatar-deleted.svg";
@@ -101,11 +101,6 @@ const LinkWrapper = styled.a`
   }
 `;
 
-function isKeyRegistered(username) {
-  const userid = username?.toLowerCase();
-  return !!userid?.match(/^[a-z0-9]+-key-0x/);
-}
-
 function User({
   user,
   chain,
@@ -172,7 +167,7 @@ function User({
   );
 
   const profileAnchor = user?.username
-    ? isKeyRegistered(user?.username)
+    ? isKeyRegisteredUser(user)
       ? address
       : user?.username
     : address;
