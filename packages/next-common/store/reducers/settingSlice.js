@@ -32,7 +32,9 @@ const settingSlice = createSlice({
       state.mode = target;
     },
     setMode(state, { payload }) {
-      setCookie(CACHE_KEY.themeMode, payload);
+      if (getCookie(CACHE_KEY.themeMode) !== payload) {
+        setCookie(CACHE_KEY.themeMode, payload);
+      }
       state.mode = payload;
     },
   },
