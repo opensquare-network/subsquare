@@ -4,13 +4,14 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { toPolkassemblyDiscussionListItem } from "utils/viewfuncs";
 import HomeLayout from "next-common/components/layout/HomeLayout";
+import businessCategory from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(({ loginUser, posts, chain }) => {
   const items = (posts.items || []).map((item) =>
     toPolkassemblyDiscussionListItem(chain, item)
   );
 
-  const category = "Polkassembly Discussions";
+  const category = businessCategory.polkassemblyDiscussions;
   const seoInfo = { title: category, desc: category };
 
   return (

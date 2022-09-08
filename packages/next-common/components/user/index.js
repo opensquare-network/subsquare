@@ -6,7 +6,7 @@ import { nodes } from "../../utils/constants";
 import Avatar from "../avatar";
 import Gravatar from "../gravatar";
 import Identity from "../Identity";
-import { addressEllipsis, isKeyRegisteredUser } from "../../utils";
+import { addressEllipsis } from "../../utils";
 import Flex from "../styled/flex";
 import Tooltip from "../tooltip";
 import AvatarDeleted from "../../assets/imgs/icons/avatar-deleted.svg";
@@ -166,12 +166,6 @@ function User({
     elmUsername
   );
 
-  let profileAnchor = address;
-
-  if (user?.username && !isKeyRegisteredUser(user)) {
-    profileAnchor = user?.username;
-  }
-
   return (
     <Wrapper noEvent={noEvent}>
       {showAvatar && (
@@ -185,7 +179,7 @@ function User({
       )}
       <LinkWrapper
         color={color}
-        href={`/user/${profileAnchor}`}
+        href={`/user/${address ?? user?.username}`}
         target="_blank"
       >
         {address ? (
