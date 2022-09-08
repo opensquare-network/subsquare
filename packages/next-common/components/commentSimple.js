@@ -34,6 +34,9 @@ const DividerWrapper = styled(Flex)`
 `;
 
 const Footer = styled(DividerWrapper)`
+  > div:first-child {
+    color: ${(props) => props.theme.textSecondary};
+  }
   @media screen and (max-width: 768px) {
     > :nth-child(3) {
       display: none;
@@ -81,6 +84,10 @@ const FooterWrapper = styled(Flex)`
 const TitleWrapper = styled.div`
   overflow: hidden;
   color: ${(props) => props.theme.textPrimary};
+  div.markdown-body,
+  div.html-body {
+    color: ${(props) => props.theme.textPrimary};
+  }
 `;
 
 const HeadWrapper = styled.div`
