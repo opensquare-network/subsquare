@@ -6,6 +6,7 @@ import {
   toReferendaListItem,
   toTechCommMotionListItem,
   toTipListItem,
+  toTreasuryBountyListItem,
   toTreasuryProposalListItem,
 } from "@subsquare/next/utils/viewfuncs";
 import businessCategory from "../business/category";
@@ -60,6 +61,16 @@ export const CATEGORIES = [
         formatter: toTreasuryProposalListItem,
       },
       {
+        id: "bounties",
+        name: "Bounties",
+        categoryName: "Proposed treasury bounties",
+        categoryId: businessCategory.treasuryBounties,
+        routePath: "treasury/bounties",
+        apiPath: "bounties",
+        formatter: toTreasuryBountyListItem,
+        excludeChains: [Chains.kintsugi],
+      },
+      {
         id: "tips",
         name: "Proposed Tips",
         categoryName: "Proposed treasury tips",
@@ -69,7 +80,6 @@ export const CATEGORIES = [
         formatter: toTipListItem,
         excludeChains: [Chains.kintsugi],
       },
-      //todo: add bounties
     ],
   },
   {
