@@ -83,8 +83,8 @@ export function getOnReply(
       let reply = "";
       const memberId = getMemberId(user, chain);
       if (contentType === "markdown") {
-        reply = `[@${name}](/member/${memberId}) `;
-        if(user.username.startsWith("polkadot-key-0x")) {
+        reply = `[@${name}](/user/${memberId}) `;
+        if (user.username.startsWith("polkadot-key-0x")) {
           reply = `[@${name}](${memberId}-${chain}) `;
         }
         const at = content ? `${reply}` : reply;
@@ -95,8 +95,8 @@ export function getOnReply(
         }
       } else if (contentType === "html") {
         const contents = quillRef.getContents();
-        const isKeyRegistered= user.username.startsWith("polkadot-key-0x");
-        const address =  user.addresses?.[0]?.address ?? "";
+        const isKeyRegistered = user.username.startsWith("polkadot-key-0x");
+        const address = user.addresses?.[0]?.address ?? "";
         reply = {
           ops: [
             {
@@ -104,23 +104,25 @@ export function getOnReply(
                 mention: {
                   index: "0",
                   denotationChar: "@",
-                  id: isKeyRegistered ? address :  memberId,
+                  id: isKeyRegistered ? address : memberId,
                   value: name + " &nbsp; ",
                   isKeyRegistered,
                   chain,
                   address,
-                  ...(isKeyRegistered ? {
-                    osnPolkaAddress:address,
-                    osnPolkaNetwork: chain,
-                  } : {}),
+                  ...(isKeyRegistered
+                    ? {
+                        osnPolkaAddress: address,
+                        osnPolkaNetwork: chain,
+                      }
+                    : {}),
                 },
               },
             },
           ],
         };
-        if( JSON.stringify(contents.ops) === `[{"insert":"\\n"}]`){
+        if (JSON.stringify(contents.ops) === `[{"insert":"\\n"}]`) {
           quillRef.setContents(reply.ops);
-        }else{
+        } else {
           quillRef.setContents(contents.ops.concat(reply.ops));
         }
       }
