@@ -211,12 +211,12 @@ export default function LinkedAddress({ chain }) {
       }
 
       try {
-        const result = await injector.signer.signRaw({
+        const signResult = await injector.signer.signRaw({
           type: "bytes",
           data: stringToHex(result?.challenge),
           address,
         });
-        signature = result.signature;
+        signature = signResult.signature;
       } catch (e) {
         console.log("Sign request is cancelled");
         return;
