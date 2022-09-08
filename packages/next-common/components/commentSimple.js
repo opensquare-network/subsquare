@@ -6,8 +6,12 @@ import { no_scroll_bar, p_14_medium } from "next-common/styles/componentCss";
 import Anchor from "next-common/components/styled/anchor";
 import { HoverSecondaryCard } from "./styled/containers/secondaryCard";
 import Divider from "./styled/layout/divider";
-import { MarkdownPreviewer } from "@osn/previewer";
+import {
+  MarkdownPreviewer,
+  renderMentionIdentityUserPlugin,
+} from "@osn/previewer";
 import { getMotionId } from "../utils/motion";
+import IdentityOrAddr from "./IdentityOrAddr";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -206,6 +210,7 @@ const getCommentSource = (comment, chain) => {
 
 export default function CommentSimple({ data, chain }) {
   const [type, title, route] = getCommentSource(data, chain);
+  console.log(data);
   return (
     <Wrapper>
       <ContentWrapper>
@@ -214,8 +219,9 @@ export default function CommentSimple({ data, chain }) {
             <Anchor href={`${route}#${data.height}`} passHref>
               <MarkdownPreviewer
                 content={data.content}
-                allowedTags={["a"]}
+                allowedTags={["span", "a"]}
                 maxLines={2}
+                plugins={[renderMentionIdentityUserPlugin(<IdentityOrAddr />)]}
               />
             </Anchor>
           </TitleWrapper>
