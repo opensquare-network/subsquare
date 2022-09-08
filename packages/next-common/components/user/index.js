@@ -101,6 +101,11 @@ const LinkWrapper = styled.a`
   }
 `;
 
+function isKeyRegistered(username) {
+  const userid = username?.toLowerCase();
+  return !!userid?.match(/^[a-z0-9]+-key-0x/);
+}
+
 function User({
   user,
   chain,
@@ -166,6 +171,12 @@ function User({
     elmUsername
   );
 
+  const profileAnchor = user?.username
+    ? isKeyRegistered(user?.username)
+      ? address
+      : user?.username
+    : address;
+
   return (
     <Wrapper noEvent={noEvent}>
       {showAvatar && (
@@ -179,7 +190,7 @@ function User({
       )}
       <LinkWrapper
         color={color}
-        href={`/user/${user?.username ?? address}`}
+        href={`/user/${profileAnchor}`}
         target="_blank"
       >
         {address ? (
