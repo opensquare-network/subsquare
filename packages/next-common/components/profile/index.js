@@ -218,6 +218,7 @@ export default withLoginUserRedux(
       discussions: {
         posts: summary?.discussions ?? 0,
         comments: summary?.comments ?? 0,
+        polkassemblyDiscussions: summary?.polkassemblyDiscussions ?? 0,
       },
     };
 

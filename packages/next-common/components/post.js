@@ -22,6 +22,7 @@ import Divider from "./styled/layout/divider";
 import { DemocracyTag, TreasuryTag } from "./tags/business";
 import isNil from "lodash.isnil";
 import { getBannerUrl } from "../utils/banner";
+import businessCategory from "../utils/consts/business/category";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -193,6 +194,17 @@ export default function Post({ data, chain, href, type }) {
     (data.commentsCount || 0) + (data.polkassemblyCommentsCount || 0);
 
   const bannerUrl = getBannerUrl(data.bannerCid);
+  let author = { ...data.author };
+  let userNoClickEvent = false;
+  if (type === businessCategory.polkassemblyDiscussions) {
+    if (!data?.author.addresses) {
+      userNoClickEvent = true;
+    } else {
+      author.publicKey = data?.author?.addresses?.find(
+        (addr) => addr.chain === chain
+      )?.address;
+    }
+  }
 
   return (
     <Wrapper>
@@ -218,10 +230,11 @@ export default function Post({ data, chain, href, type }) {
         <FooterWrapper>
           <Footer>
             <User
-              user={data.author}
+              user={author}
               add={data.address}
               chain={chain}
               fontSize={12}
+              noEvent={userNoClickEvent}
             />
             {data.isTreasury && (
               <div>
