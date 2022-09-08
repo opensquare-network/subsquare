@@ -166,11 +166,11 @@ function User({
     elmUsername
   );
 
-  const profileAnchor = user?.username
-    ? isKeyRegisteredUser(user)
-      ? address
-      : user?.username
-    : address;
+  let profileAnchor = address;
+
+  if (user?.username && !isKeyRegisteredUser(user)) {
+    profileAnchor = user?.username;
+  }
 
   return (
     <Wrapper noEvent={noEvent}>
