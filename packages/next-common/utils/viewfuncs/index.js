@@ -76,5 +76,5 @@ export const prettyHTML = (html) => {
 const isBase58 = (value) => /^[A-HJ-NP-Za-km-z1-9]*$/.test(value);
 
 export const isAddress = (address) => {
-  return [46, 47, 48].includes(address?.length) && isBase58(address);
+  return [46, 47, 48, 49].includes(address?.length) && isBase58(address);
 };
