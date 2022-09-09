@@ -7,6 +7,7 @@ import BigNumber from "bignumber.js";
 import { hexToString } from "@polkadot/util";
 import { hexEllipsis } from "../../utils";
 import LargeDataPlaceHolder from "./largeDataPlaceHolder";
+import { hexIsValidUTF8 } from "../../utils/utf8validate";
 
 const LongText = dynamic(() => import("../longText"), {
   ssr: false,
@@ -126,11 +127,11 @@ function convertProposalForTableView(proposal, chain) {
             }
 
             if (
-              (proposal.section === "system" &&
-                ["remark", "remarkWithEvent"].includes(proposal.method)) ||
-              (proposal.section === "automationTime" &&
-                proposal.method === "scheduleNotifyTask" &&
-                arg.name === "message")
+              ((proposal.section === "system" &&
+                 ["remark", "remarkWithEvent"].includes(proposal.method)) ||
+               (proposal.section === "automationTime" &&
+                 proposal.method === "scheduleNotifyTask" &&
+                 arg.name === "message")) && hexIsValidUTF8(arg.value)
             ) {
               return [arg.name, hexToString(arg.value)];
             }
@@ -184,11 +185,11 @@ function convertProposalForJsonView(proposal, chain) {
             }
 
             if (
-              (proposal.section === "system" &&
+              ((proposal.section === "system" &&
                 ["remark", "remarkWithEvent"].includes(proposal.method)) ||
               (proposal.section === "automationTime" &&
                 proposal.method === "scheduleNotifyTask" &&
-                arg.name === "message")
+                arg.name === "message")) && hexIsValidUTF8(arg.value)
             ) {
               return hexToString(arg.value);
             }
