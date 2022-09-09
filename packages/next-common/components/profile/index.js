@@ -333,8 +333,14 @@ export default withLoginUserRedux(
         </Wrapper>
 
         {isLoading ? (
-          <Flex style={{ flexBasis: "100%", justifyContent: "center" }}>
-            <Loading size={40} />
+          <Flex
+            style={{
+              marginTop: 28,
+              flexBasis: "100%",
+              justifyContent: "center",
+            }}
+          >
+            <Loading size={16} />
           </Flex>
         ) : (
           list
