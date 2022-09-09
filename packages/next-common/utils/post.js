@@ -3,6 +3,7 @@ import { addressEllipsis } from ".";
 import { encodeAddressToChain } from "../services/address";
 import { nodes } from "./constants";
 import uniqBy from "lodash.uniqby";
+import { isAddress } from "./viewfuncs";
 
 export function getMentionList(comments) {
   return uniqBy(
@@ -45,10 +46,14 @@ export async function getMentionName(user, chain) {
   if (user.username.startsWith("polkadot-key-0x")) {
     const publicKey = user.username.substr(15);
     address = encodeAddressToChain(Buffer.from(publicKey, "hex"), chain);
-    mentionName = addressEllipsis(address);
+    mentionName = address;
   } else {
     address = user.addresses.find((item) => item.chain === chain)?.address;
     mentionName = user.username;
+  }
+
+  if (isAddress(mentionName)) {
+    mentionName = addressEllipsis(mentionName);
   }
 
   let displayName;
@@ -62,8 +67,7 @@ export async function getMentionName(user, chain) {
       : identity?.info?.display;
   }
 
-  const name = displayName || mentionName;
-  return name;
+  return displayName || mentionName;
 }
 
 export function getOnReply(
