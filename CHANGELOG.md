@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.3.0
+
+- Add profile page to show user governance activities.
+- Add countdown component for tips, child bounties, and bounties.
+- Add tip status to the tip card.
+- Improve system#remakr view by checking whether bytes are utf8.
+
+# 2.2.5
+
+- Add referendum to treasury proposal's timeline.
+- Show motion vote status.
+- Fix address login page SSR.
+- Fix typo: referendums -> referenda.
+- Fix bounty/child bounty award timeline item.
+- Hotfix kintsugi/interlay thumbs up expand crash bug.
+
 # 2.2.4
 
 - Support altair.
