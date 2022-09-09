@@ -5,6 +5,7 @@ import ErrorIcon from "./icons/error.svg";
 import UnauthorizedIcon from "./icons/error-grey.svg";
 import SubGreyIcon from "./icons/sub-grey.svg";
 import SubRedIcon from "./icons/sub-red.svg";
+import Flex from "../styled/flex";
 
 export default function IdentityIcon({ identity }) {
   const statusIconMap = new Map([
@@ -18,8 +19,8 @@ export default function IdentityIcon({ identity }) {
 
   const StatusIcon = statusIconMap.get(identity?.info?.status) ?? ErrorIcon;
   return (
-    <div className={identity?.info?.status}>
+    <Flex className={identity?.info?.status}>
       <StatusIcon />
-    </div>
+    </Flex>
   );
 }
