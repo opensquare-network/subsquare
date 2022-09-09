@@ -200,7 +200,7 @@ export default withLoginUserRedux(
     const address = isAddress(id) ? id : user?.addresses?.[0]?.address;
     const [items, setItems] = React.useState([]);
     const [pagination, setPagination] = React.useState(defaultPage);
-    const [isLoading, setIsLoading] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(true);
     const [firstCategory, setFirstCategory] = React.useState(
       getCategoryByRoute(route)[0]
     );
