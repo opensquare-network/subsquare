@@ -8,10 +8,12 @@ import { HoverSecondaryCard } from "./styled/containers/secondaryCard";
 import Divider from "./styled/layout/divider";
 import {
   MarkdownPreviewer,
+  HtmlPreviewer,
   renderMentionIdentityUserPlugin,
 } from "@osn/previewer";
 import { getMotionId } from "../utils/motion";
 import IdentityOrAddr from "./IdentityOrAddr";
+import { prettyHTML } from "../utils/viewfuncs";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -210,19 +212,32 @@ const getCommentSource = (comment, chain) => {
 
 export default function CommentSimple({ data, chain }) {
   const [type, title, route] = getCommentSource(data, chain);
-  console.log(data);
   return (
     <Wrapper>
       <ContentWrapper>
         <HeadWrapper>
           <TitleWrapper>
             <Anchor href={`${route}#${data.height}`} passHref>
-              <MarkdownPreviewer
-                content={data.content}
-                allowedTags={["span", "a"]}
-                maxLines={2}
-                plugins={[renderMentionIdentityUserPlugin(<IdentityOrAddr />)]}
-              />
+              {data.contentType === "markdown" && (
+                <MarkdownPreviewer
+                  content={data.content}
+                  plugins={[
+                    renderMentionIdentityUserPlugin(<IdentityOrAddr />),
+                  ]}
+                  maxLines={2}
+                />
+              )}
+              {data.contentType === "html" && (
+                <HtmlPreviewer
+                  content={prettyHTML(data.content)}
+                  plugins={[
+                    renderMentionIdentityUserPlugin(<IdentityOrAddr />, {
+                      targetElement: { tag: "span" },
+                    }),
+                  ]}
+                  maxLines={2}
+                />
+              )}
             </Anchor>
           </TitleWrapper>
         </HeadWrapper>
