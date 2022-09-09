@@ -17,10 +17,19 @@ export default function useMentionList(post, comments, chain) {
       return;
     }
 
+    //combine post author(s) and comment authors but exclude current user
     const users = uniqBy(
       [...(post.author ? [post.author] : []), ...getMentionList(comments)],
       (item) => item.username
-    ).filter((item) => item.username !== currentUser?.username);
+    )
+      .concat(
+        (post.authors ?? []).map((address) => ({
+          username: address,
+          addresses: [{ address, chain }],
+          isKeyRegistered: true,
+        }))
+      )
+      .filter((item) => item.username !== currentUser?.username);
 
     const loadSuggestions = async () => {
       return await Promise.all(
@@ -30,7 +39,8 @@ export default function useMentionList(post, comments, chain) {
           return {
             name,
             value: memberId,
-            isKeyRegistered: user.username.includes(`polkadot-key`),
+            isKeyRegistered:
+              user.isKeyRegistered ?? user.username.includes(`polkadot-key`),
           };
         })
       );
