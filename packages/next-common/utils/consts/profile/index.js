@@ -138,7 +138,10 @@ export const CATEGORIES = [
         routePath: "polkassembly-discussions",
         apiPath: "polkassembly-discussions",
         formatter: toPolkassemblyDiscussionListItem,
-        excludeChains: [Chains.kintsugi],
+        excludeChains: (() => {
+          const { kusama, polakdot, ...others } = Chains;
+          return Object.values(others);
+        })(),
       },
     ],
   },
