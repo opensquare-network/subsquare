@@ -17,13 +17,13 @@ export const getServerSideProps = withLoginUser(async (context) => {
     nextApi.fetch(`users/${id}`),
   ]);
 
-  let username = id;
-  if (user?.username && !isKeyRegisteredUser(user)) {
-    username = user?.username;
-  }
+  // let username = id;
+  // if (user?.username && !isKeyRegisteredUser(user)) {
+  //   username = user?.username;
+  // }
   return {
     props: {
-      id: username,
+      id,
       chain,
       summary: summary ?? {},
       user: user ?? {},
