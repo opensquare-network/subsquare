@@ -1179,19 +1179,10 @@
     util "npm:util"
     web-vitals "^2.1.4"
 
-"@osn/previewer@^0.10.3":
-  version "0.10.4"
-  resolved "https://registry.npmjs.org/@osn/previewer/-/previewer-0.10.4.tgz#48b4b90fbcf8131542a4c37f0793ec1412b7d9fd"
-  integrity sha512-p4f2qeXqPSJQZ9PmPHMYoKYxjRePXqmxslebdAJY0V9OJJL8tT3GQvlC/ugoDRgCM7iRCEW+GCgKAapP4lNuUQ==
-  dependencies:
-    marked "^4.0.17"
-    prismjs "^1.28.0"
-    sanitize-html "^2.7.0"
-
-"@osn/previewer@^0.12.1":
-  version "0.12.1"
-  resolved "https://registry.yarnpkg.com/@osn/previewer/-/previewer-0.12.1.tgz#c8af88beb827cd60c085a90ced5569d3d94d2e78"
-  integrity sha512-sfplV/ow0MfuBznMNc7FPlpJ4pnqpEhmw/k9tF2VZ4I0Le9WZd4yT/cUPQVKxRkgz2PGqUGkDNH5plBWekD4pw==
+"@osn/previewer@^0.12.3":
+  version "0.12.3"
+  resolved "https://registry.npmjs.org/@osn/previewer/-/previewer-0.12.3.tgz#e2f970462a84bb53fdaf66e1390b69e6bc00bda9"
+  integrity sha512-aNTP1qdGXb4xQUpHbLQuzqbSRgKMGShK3rTR7PFrVHbWMsnIgYkFm0mA7tZAzOr6rAgcLJxESId9CcCJoV5MOQ==
   dependencies:
     marked "^4.0.17"
     prismjs "^1.28.0"
@@ -1600,7 +1591,7 @@
   dependencies:
     "@interlay/monetary-js" "0.5.4"
     "@osn/polkadot-react-identicon" "^1.0.8"
-    "@osn/previewer" "^0.12.1"
+    "@osn/previewer" "^0.12.3"
     "@osn/provider-options" "1.0.10"
     "@polkadot/api" "8.9.1"
     "@polkadot/extension-dapp" "0.44.2-3"
@@ -1612,6 +1603,7 @@
     d3-shape "^3.1.0"
     dayjs "^1.10.7"
     html-react-parser "^1.4.5"
+    is-utf8 "^0.2.1"
     lodash.countby "^4.6.0"
     lodash.debounce "^4.0.8"
     md5 "^2.3.0"
