@@ -94,7 +94,7 @@ function PopupContent({
 
     const tx = api.tx.democracy.vote(referendumIndex, {
       Standard: {
-        balance: bnVoteBalance.toNumber(),
+        balance: bnVoteBalance.toString(),
         vote: {
           aye,
           conviction: voteLock,
