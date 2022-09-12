@@ -7,6 +7,7 @@ import SourceTabs, {
 import useCommentComponent from "next-common/components/useCommentComponent";
 import PolkassemblyComments from "./polkassemblyComments";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import Chains from "next-common/utils/consts/chains";
 
 export default function useUniversalComments({
   detail,
@@ -25,9 +26,11 @@ export default function useUniversalComments({
   const [tabIndex, setTabIndex] = useState(defaultTabIndex);
   const { width } = useWindowSize();
 
+  const isDotsama = [Chains.kusama, Chains.polkadot].includes(chain);
+
   let tabs = null;
 
-  if (detail?.polkassemblyId !== undefined) {
+  if (detail?.polkassemblyId !== undefined && isDotsama) {
     // Allow to switch to polkassembly comments if has corresponding pa post
     if (parseInt(width) <= 768) {
       tabs = (
@@ -39,7 +42,7 @@ export default function useUniversalComments({
           />
         </div>
       );
-    } else {
+    } else if (isDotsama) {
       tabs = (
         <div style={{ width: "240px", marginTop: "-6px" }}>
           <SourceTabs tabIndex={tabIndex} setTabIndex={setTabIndex} />
