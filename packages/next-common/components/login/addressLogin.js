@@ -42,6 +42,26 @@ const ErrorMessage = styled.div`
   line-height: 20px;
 `;
 
+function rememberLoginExtension(extensionName) {
+  localStorage.setItem(CACHE_KEY.lastLoginExtension, extensionName);
+}
+
+function rememberLoginAddress(address) {
+  localStorage.setItem(CACHE_KEY.lastLoginAddress, address);
+}
+
+function rememberAccountName(account, chain) {
+  const accountMap = JSON.parse(
+    localStorage.getItem(CACHE_KEY.accountMap) ?? "{}"
+  );
+  accountMap[encodeAddressToChain(account.address, chain)] =
+    account.name;
+  localStorage.setItem(
+    CACHE_KEY.accountMap,
+    JSON.stringify(accountMap)
+  );
+}
+
 export default function AddressLogin({ chain, setMailLogin }) {
   const [wallet, setWallet] = useState();
   const [accounts, setAccounts] = useState([]);
@@ -77,10 +97,10 @@ export default function AddressLogin({ chain, setMailLogin }) {
         );
         if (loginResult) {
           dispatch(setUser(loginResult));
-          localStorage.setItem(
-            CACHE_KEY.lastLoginAddress,
-            selectedAccount.address
-          );
+
+          rememberLoginAddress(selectedAccount.address)
+          rememberLoginExtension(selectedAccount.meta?.source || selectedWallet);
+
           if (loginResult.email) {
             router.replace(router.query?.redirect || "/");
           } else {
@@ -132,20 +152,12 @@ export default function AddressLogin({ chain, setMailLogin }) {
     if (!WALLETS.some(({ extensionName }) => extensionName === selectedWallet)) {
       const extensionDapp = await import("@polkadot/extension-dapp");
       await extensionDapp.web3Enable("subsquare");
-      const injector = await extensionDapp.web3FromAddress(account.address);
+      const injector = await extensionDapp.web3FromSource(account.meta?.source);
       setWallet(injector);
     }
 
     // Save account name for Email page
-    const accountMap = JSON.parse(
-      localStorage.getItem(CACHE_KEY.accountMap) ?? "{}"
-    );
-    accountMap[encodeAddressToChain(account.address, chain)] =
-      account.name;
-    localStorage.setItem(
-      CACHE_KEY.accountMap,
-      JSON.stringify(accountMap)
-    );
+    rememberAccountName(account, chain);
   }, [selectedWallet]);
 
   return (

@@ -197,7 +197,7 @@ export default function LinkedAddress({ chain }) {
     }
   };
 
-  const linkAddress = async (chain, address) => {
+  const linkAddress = async (chain, address, source) => {
     const { result, error } = await nextApi.fetch(`user/linkaddr/${address}`);
     if (result) {
       let signature;
@@ -207,7 +207,11 @@ export default function LinkedAddress({ chain }) {
         !WALLETS.some(({ extensionName }) => extensionName === selectedWallet)
       ) {
         const extensionDapp = await import("@polkadot/extension-dapp");
-        injector = await extensionDapp.web3FromAddress(address);
+        if (source) {
+          injector = await extensionDapp.web3FromSource(source);
+        } else {
+          injector = await extensionDapp.web3FromAddress(address);
+        }
       }
 
       try {
@@ -245,10 +249,10 @@ export default function LinkedAddress({ chain }) {
   const mergedAccounts = [
     ...(accounts ?? []),
     ...(user?.addresses || [])
-      .filter((address) =>
+      .filter((item) =>
         (accounts ?? []).every(
           (acc) =>
-            encodeAddressToChain(acc.address, activeChain) !== address.address
+            encodeAddressToChain(acc.address, activeChain) !== item.address
         )
       )
       .map((address) => ({
@@ -323,7 +327,7 @@ export default function LinkedAddress({ chain }) {
                     ) : (
                       <LinkWrapper
                         onClick={() => {
-                          linkAddress(activeChain, activeChainAddress);
+                          linkAddress(activeChain, activeChainAddress, item.meta?.source);
                         }}
                       >
                         <UnLinkIcon />

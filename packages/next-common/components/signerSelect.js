@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { web3FromAddress } from "@polkadot/extension-dapp";
+import { web3FromSource } from "@polkadot/extension-dapp";
 import AddressSelect from "./addressSelect";
 
 export default function SignerSelect({
@@ -13,9 +13,10 @@ export default function SignerSelect({
   const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
-    const accounts = extensionAccounts?.map(({ address, meta: { name } }) => ({
+    const accounts = extensionAccounts?.map(({ address, meta }) => ({
+      meta,
       address,
-      name,
+      name: meta.name,
     }));
 
     setAccounts(accounts || []);
@@ -29,7 +30,7 @@ export default function SignerSelect({
 
   useEffect(() => {
     if (api && selectedAccount) {
-      web3FromAddress(selectedAccount.address).then((injector) => {
+      web3FromSource(selectedAccount.meta?.source).then((injector) => {
         api.setSigner(injector.signer);
       });
     }

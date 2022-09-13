@@ -24,6 +24,10 @@ export default function Signer({
   useAddressVotingBalance,
 }) {
   const { signerAccount, setSignerAccount } = useContext(StateContext);
+  const { isKeyUser } = useMaybeWeb3Signer(api, setSignerAccount);
+  if (isKeyUser) {
+    return null;
+  }
 
   return (
     <div>

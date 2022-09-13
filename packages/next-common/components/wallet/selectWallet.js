@@ -148,28 +148,23 @@ export default function SelectWallet({
       const polkadotDapp = await import("@polkadot/extension-dapp");
       const extensionUtils = await import("../../utils/extensionAccount");
       const web3Enable = polkadotDapp.web3Enable;
-      const web3FromAddress = polkadotDapp.web3FromAddress;
+      const web3FromSource = polkadotDapp.web3FromSource;
       const polkadotWeb3Accounts = extensionUtils.polkadotWeb3Accounts;
 
       await web3Enable("subsquare");
       const extensionAccounts = await polkadotWeb3Accounts();
       const accounts = extensionAccounts.map((item) => {
-        const {
-          address,
-          meta: { name },
-        } = item;
         return {
-          address,
-          name,
+          ...item,
+          name: item.meta?.name,
         };
       });
 
       if (isMounted.current) {
         setAccounts(accounts);
         if (accounts?.length > 0) {
-          const address = accounts[0].address;
-          const injector = await web3FromAddress(address);
-          setSelectWallet(injector.name);
+          const injector = await web3FromSource(accounts[0].meta.source);
+          setSelectWallet("other");
           setWallet(injector);
         }
       }
@@ -178,7 +173,7 @@ export default function SelectWallet({
 
   const loadAccounts = useCallback(async (selectedWallet) => {
     setAccounts(null);
-    const extension = window?.injectedWeb3?.[selectedWallet];
+    const extension = injectedWeb3?.[selectedWallet];
     if (!extension) {
       return;
     }
@@ -205,7 +200,7 @@ export default function SelectWallet({
         setWaitingPermissionWallet(null);
       }
     }
-  }, [setAccounts, setSelectWallet, setWallet, onAccessGranted, isMounted]);
+  }, [injectedWeb3, setAccounts, setSelectWallet, setWallet, onAccessGranted, isMounted]);
 
   const onWalletClick = useCallback((wallet) => {
     loadAccounts(wallet.extensionName);
