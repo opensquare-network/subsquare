@@ -39,5 +39,5 @@ export default function useSetDefaultSigner(
       ...account,
       name: account.meta?.name,
     });
-  }, [extensionAccounts, address]);
+  }, [extensionAccounts, address, setSignerAccount]);
 }
