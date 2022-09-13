@@ -125,7 +125,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
   };
 
   useEffect(() => {
-    if (accounts?.length > 0 && !selectedAccount) {
+    if (accounts?.length > 0) {
       const address = localStorage.getItem(CACHE_KEY.lastLoginAddress);
       if (address) {
         const account = accounts?.find((item) => item.address === address);
@@ -138,12 +138,6 @@ export default function AddressLogin({ chain, setMailLogin }) {
       setSelectedAccount(accounts[0]);
     }
     setWeb3Error();
-  }, [chain, accounts, selectedAccount]);
-
-  useEffect(() => {
-    if (accounts?.length > 0) {
-      setSelectedAccount(accounts[0]);
-    }
   }, [selectedWallet, accounts]);
 
   const onSelectAccount = useCallback(async (account) => {
@@ -158,7 +152,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
 
     // Save account name for Email page
     rememberAccountName(account, chain);
-  }, [selectedWallet]);
+  }, [selectedWallet, chain]);
 
   return (
     <>
