@@ -23,11 +23,6 @@ const Wrapper = styled(Flex)`
   font-weight: 400;
   color: ${(props) => props.theme.textPrimary};
 
-  & > svg:first-child {
-    margin-right: 12px;
-    margin-top: 5px;
-  }
-
   > img:first-child {
     width: 20px;
     height: 20px;
@@ -59,6 +54,14 @@ const Wrapper = styled(Flex)`
   }
 `;
 
+const IconWrapper = styled.span`
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+  width: 20px;
+  height: 20px;
+`;
+
 const ToastItem = ({ type, message, id, sticky }) => {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
@@ -85,13 +88,15 @@ const ToastItem = ({ type, message, id, sticky }) => {
 
   return (
     <Wrapper className={tranClass}>
-      {type === "pending" ? (
-        <Loading size={16} />
-      ) : type === "success" ? (
-        <ToastSuccessIcon />
-      ) : type === "error" ? (
-        <ToastErrorIcon />
-      ) : null}
+      <IconWrapper>
+        {type === "pending" ? (
+          <Loading size={16} />
+        ) : type === "success" ? (
+          <ToastSuccessIcon />
+        ) : type === "error" ? (
+          <ToastErrorIcon />
+        ) : null}
+      </IconWrapper>
       <div>{message}</div>
       <img
         src={`/imgs/icons/toast-reject.svg`}
