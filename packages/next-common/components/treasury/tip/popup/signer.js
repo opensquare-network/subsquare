@@ -2,6 +2,7 @@ import React from "react";
 import PopupLabelWithBalance from "../../../popup/balanceLabel";
 import SignerSelect from "../../../signerSelect";
 import { toPrecision } from "../../../../utils";
+import useSetDefaultSigner from "../../../../utils/hooks/useSetDefaultSigner";
 
 export default function Signer({
   api,
@@ -13,6 +14,8 @@ export default function Signer({
   balance,
   node,
 }) {
+  useSetDefaultSigner(extensionAccounts, setSignerAccount);
+
   return (
     <div>
       <PopupLabelWithBalance

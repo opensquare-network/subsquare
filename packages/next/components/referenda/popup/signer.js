@@ -1,6 +1,7 @@
 import SignerSelect from "next-common/components/signerSelect";
 import { toPrecision } from "next-common/utils";
 import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
+import useSetDefaultSigner from "next-common/utils/hooks/useSetDefaultSigner";
 
 export default function Signer({
   chain,
@@ -13,6 +14,8 @@ export default function Signer({
   isLoading,
   extensionAccounts,
 }) {
+  useSetDefaultSigner(extensionAccounts, setSelectedAccount);
+
   return (
     <div>
       <PopupLabelWithBalance

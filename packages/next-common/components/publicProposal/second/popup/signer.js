@@ -4,6 +4,7 @@ import SignerSelect from "../../../signerSelect";
 import AccountBalance from "./accountBalance";
 import { useContext } from "react";
 import { StateContext } from "./stateContext";
+import useSetDefaultSigner from "../../../../utils/hooks/useSetDefaultSigner";
 
 const LabelWrapper = styled.div`
   display: flex;
@@ -24,6 +25,8 @@ export default function Signer({
   useAddressVotingBalance,
 }) {
   const { signerAccount, setSignerAccount } = useContext(StateContext);
+
+  useSetDefaultSigner(extensionAccounts, setSignerAccount);
 
   return (
     <div>

@@ -199,7 +199,7 @@ export default function AddressSelect({
                 setShow(false);
               }}
               item={item}
-              selected={item.address === selectedAccount?.address}
+              selected={item.address === selectedAccount?.address && item.meta?.source === selectedAccount.meta?.source}
               chain={chain}
             />
           ))}

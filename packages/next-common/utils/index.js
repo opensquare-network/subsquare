@@ -2,6 +2,7 @@ import moment from "moment";
 import BigNumber from "bignumber.js";
 import { nodes } from "./constants";
 import { extractTime } from "@polkadot/util";
+import { encodeAddress } from "@polkadot/util-crypto";
 
 BigNumber.config({ EXPONENTIAL_AT: 36 });
 
@@ -242,4 +243,12 @@ export function checkInputValue(inputValue, decimals, valueName = "value") {
   }
 
   return bnValue;
+}
+
+export function isSameAddress(addr1, addr2) {
+  try {
+    return encodeAddress(addr1, 42) === encodeAddress(addr2, 42);
+  } catch (e) {
+    return false;
+  }
 }
