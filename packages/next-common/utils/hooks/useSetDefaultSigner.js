@@ -18,31 +18,26 @@ export default function useSetDefaultSigner(
       return;
     }
 
+    let account = null;
     if (isKeyUser) {
       const extensionName = localStorage.getItem(CACHE_KEY.lastLoginExtension);
-      const account = extensionAccounts.find(
+      account = extensionAccounts.find(
         (item) =>
           item.address === encodeAddress(address, 42) &&
           item.meta?.source === extensionName
       );
-      if (!account) {
-        return;
-      }
-      setSignerAccount({
-        ...account,
-        name: account.meta?.name,
-      });
     } else {
-      const account = extensionAccounts.find(
+      account = extensionAccounts.find(
         (item) => item.address === encodeAddress(address, 42)
       );
-      if (!account) {
-        return;
-      }
-      setSignerAccount({
-        ...account,
-        name: account.meta?.name,
-      });
     }
+
+    if (!account) {
+      return;
+    }
+    setSignerAccount({
+      ...account,
+      name: account.meta?.name,
+    });
   }, [extensionAccounts, address]);
 }
