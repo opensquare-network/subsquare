@@ -2,7 +2,7 @@ import React from "react";
 import PopupLabelWithBalance from "../../../popup/balanceLabel";
 import SignerSelect from "../../../signerSelect";
 import { toPrecision } from "../../../../utils";
-import useMaybeWeb3Signer from "../../../../utils/hooks/useMaybeWeb3Signer";
+import useSetDefaultSigner from "../../../../utils/hooks/useSetDefaultSigner";
 
 export default function Signer({
   api,
@@ -14,10 +14,7 @@ export default function Signer({
   balance,
   node,
 }) {
-  const { isKeyUser } = useMaybeWeb3Signer(api, setSignerAccount);
-  if (isKeyUser) {
-    return null;
-  }
+  useSetDefaultSigner(extensionAccounts, setSignerAccount);
 
   return (
     <div>

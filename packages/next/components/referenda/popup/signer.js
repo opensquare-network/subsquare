@@ -1,7 +1,7 @@
 import SignerSelect from "next-common/components/signerSelect";
 import { toPrecision } from "next-common/utils";
 import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
-import useMaybeWeb3Signer from "next-common/utils/hooks/useMaybeWeb3Signer";
+import useSetDefaultSigner from "next-common/utils/hooks/useSetDefaultSigner";
 
 export default function Signer({
   chain,
@@ -14,10 +14,7 @@ export default function Signer({
   isLoading,
   extensionAccounts,
 }) {
-  const { isKeyUser } = useMaybeWeb3Signer(api, setSelectedAccount);
-  if (isKeyUser) {
-    return null;
-  }
+  useSetDefaultSigner(extensionAccounts, setSelectedAccount);
 
   return (
     <div>

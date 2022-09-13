@@ -13,7 +13,6 @@ import VoteButton from "next-common/components/popup/voteButton";
 import { sendTx } from "next-common/utils/sendTx";
 import { emptyFunction } from "next-common/utils";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
-import useMaybeWeb3Signer from "next-common/utils/hooks/useMaybeWeb3Signer";
 
 function PopupContent({
   extensionAccounts,
@@ -40,11 +39,6 @@ function PopupContent({
   const api = useApi(chain);
   const voteMethod = api?.tx?.[toApiCouncil(chain, type)]?.vote;
   const isMounted = useIsMounted();
-
-  const { isKeyUser } = useMaybeWeb3Signer(api, setSelectedAccount);
-  if (isKeyUser) {
-    return null;
-  }
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
