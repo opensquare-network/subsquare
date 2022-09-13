@@ -53,6 +53,7 @@ export async function sendTx({
           onFinalized(signerAddress);
           unsub();
         }
+
         if (status.isInBlock) {
           // Transaction went through
           dispatch(removeToast(toastId));
@@ -77,6 +78,10 @@ export async function sendTx({
             const eventData = data.toJSON();
             onInBlock(eventData);
             break;
+          }
+
+          if (!sectionName || !methodName) {
+            onInBlock();
           }
         }
       }

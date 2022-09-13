@@ -16,7 +16,6 @@ import {
   isLoadingReferendumStatusSelector,
   isLoadingVotesSelector,
   referendumStatusSelector,
-  setIsLoadingReferendumStatus,
   votesSelector,
 } from "next-common/store/reducers/referendumSlice";
 import SubLink from "next-common/components/styled/subLink";
@@ -183,7 +182,6 @@ function Vote({
           chain={chain}
           onClose={() => setShowVote(false)}
           referendumIndex={referendumIndex}
-          onSubmitted={() => dispatch(setIsLoadingReferendumStatus(true))}
           onInBlock={updateVoteProgress}
         />
       )}

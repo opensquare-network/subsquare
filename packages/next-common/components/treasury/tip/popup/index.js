@@ -101,6 +101,8 @@ function PopupContent({
       onClose,
       signerAddress,
       isMounted,
+      section: "tips",
+      method: "NewTip",
     });
   };
 
