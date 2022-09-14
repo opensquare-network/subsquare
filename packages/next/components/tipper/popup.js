@@ -20,6 +20,7 @@ import PopupLabel from "next-common/components/popup/label";
 import { WarningMessage } from "next-common/components/popup/styled";
 import { sendTx } from "next-common/utils/sendTx";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import useSetDefaultSigner from "next-common/utils/hooks/useSetDefaultSigner";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -45,6 +46,8 @@ function PopupContent({
   const [tipping, setTipping] = useState(false);
   const [balance, setBalance] = useState();
   const node = getNode(chain);
+
+  useSetDefaultSigner(extensionAccounts, setSelectedAccount);
 
   const selectedAccountIsTipper = councilTippers.includes(
     selectedAccount?.address

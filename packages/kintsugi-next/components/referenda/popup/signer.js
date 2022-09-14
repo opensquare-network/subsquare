@@ -7,6 +7,7 @@ import {
 } from "next-common/components/popup/styled";
 import { getNode, toPrecision } from "next-common/utils";
 import { formatBalance } from "next-common/utils/viewfuncs";
+import useSetDefaultSigner from "next-common/utils/hooks/useSetDefaultSigner";
 
 export default function Signer({
   api,
@@ -22,6 +23,8 @@ export default function Signer({
 }) {
   const node = getNode(chain);
   const balance = toPrecision(votingBalance, node.decimals);
+
+  useSetDefaultSigner(extensionAccounts, setSelectedAccount);
 
   return (
     <div>
