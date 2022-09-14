@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { getNode, toPrecision } from "next-common/utils";
+import { getNode, isSameAddress, toPrecision } from "next-common/utils";
 import Loading from "next-common/components/loading";
 import { GhostCard } from "next-common/components/styled/containers/ghostCard";
 import Flex from "next-common/components/styled/flex";
@@ -14,6 +14,7 @@ import { userSelector } from "next-common/store/reducers/userSlice";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { shadow_100 } from "next-common/styles/componentCss";
+import ValueDisplay from "next-common/components/displayValue";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -91,15 +92,13 @@ const ClaimInfoText = styled.div`
   }
 `;
 
-export default function Claim({
-  chain,
-  childBounty,
-}) {
+export default function Claim({ chain, childBounty }) {
   const user = useSelector(userSelector);
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  const [isClaimed, setIsClaimed] = useState(childBounty.state?.state === "Claimed");
-  const [isPendingPayout, setIsPendingPayout] = useState(childBounty.state?.state === "PendingPayout");
+  const [isClaimed, setIsClaimed] = useState(
+    childBounty.state?.state === "Claimed"
+  );
   const isMounted = useIsMounted();
 
   const api = useApi(chain);
@@ -112,7 +111,6 @@ export default function Claim({
         const json = meta.toJSON();
         if (isMounted.current) {
           const isPendingPayout = !!json?.status?.pendingPayout;
-          setIsPendingPayout(isPendingPayout);
           setIsClaimed(!isPendingPayout);
         }
       })
@@ -132,12 +130,9 @@ export default function Claim({
 
     // Double check if child bounty onchain status is still in pending payout status
     updateChildBountyStatus();
-  }, [api, childBounty, updateChildBountyStatus])
+  }, [api, childBounty, updateChildBountyStatus]);
 
-  if (![
-    "PendingPayout",
-    "Claimed",
-  ].includes(childBounty.state?.state)) {
+  if (!["PendingPayout", "Claimed"].includes(childBounty.state?.state)) {
     return null;
   }
 
@@ -149,7 +144,7 @@ export default function Claim({
   const decimals = node.decimals;
   const symbol = node.symbol;
 
-  const isBeneficiary = user?.address === childBounty?.beneficiary;
+  const isBeneficiary = isSameAddress(user?.address, childBounty?.beneficiary);
 
   const hasBeenClaimedText = (
     <ClaimInfoText>This child bounty has been claimed.</ClaimInfoText>
@@ -157,7 +152,8 @@ export default function Claim({
 
   const stillClaimText = (
     <ClaimInfoText>
-      Only beneficiary can claim, no account found from the bounty. <span onClick={() => setShowPopup(true)}>Still claim</span>
+      Only beneficiary can claim, no account found from the bounty.{" "}
+      <span onClick={() => setShowPopup(true)}>Still claim</span>
     </ClaimInfoText>
   );
 
@@ -166,6 +162,17 @@ export default function Claim({
       Claim
     </SecondaryButton>
   );
+
+  let actionContent = null;
+  if (!isLoading) {
+    if (isClaimed) {
+      actionContent = hasBeenClaimedText;
+    } else if (isBeneficiary) {
+      actionContent = actionBtn;
+    } else {
+      actionContent = stillClaimText;
+    }
+  }
 
   return (
     <>
@@ -181,20 +188,30 @@ export default function Claim({
             <InfoItem>
               <InfoItemName>Beneficiary</InfoItemName>
               <InfoItemValue>
-                <User chain={chain} add={childBounty.beneficiary} fontSize={14} />
+                <User
+                  chain={chain}
+                  add={childBounty.beneficiary}
+                  fontSize={14}
+                />
               </InfoItemValue>
             </InfoItem>
             <InfoItem>
               <InfoItemName>Value</InfoItemName>
-              <InfoItemValue>{`${
-                toPrecision(childBounty.meta.value ?? 0, decimals)
-              } ${symbol}`}</InfoItemValue>
+              <InfoItemValue>
+                <ValueDisplay
+                  value={toPrecision(childBounty.meta.value ?? 0, decimals)}
+                  symbol={symbol}
+                />
+              </InfoItemValue>
             </InfoItem>
             <InfoItem>
               <InfoItemName>Curator fee</InfoItemName>
-              <InfoItemValue>{`${
-                toPrecision(childBounty.meta.fee ?? 0, decimals)
-              } ${symbol}`}</InfoItemValue>
+              <InfoItemValue>
+                <ValueDisplay
+                  value={toPrecision(childBounty.meta.fee ?? 0, decimals)}
+                  symbol={symbol}
+                />
+              </InfoItemValue>
             </InfoItem>
             <InfoItem>
               <InfoItemName>Parent bounty</InfoItemName>
@@ -206,12 +223,7 @@ export default function Claim({
             </InfoItem>
           </Info>
         </MyGhostCard>
-        {!isLoading && (
-          <>
-            {isClaimed && hasBeenClaimedText}
-            {isPendingPayout && (isBeneficiary ? actionBtn : stillClaimText)}
-          </>
-        )}
+        {actionContent}
       </Wrapper>
       {showPopup && (
         <Popup
