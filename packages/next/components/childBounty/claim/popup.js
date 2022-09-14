@@ -80,8 +80,6 @@ function PopupContent({
 
     const tx = api.tx.childBounties.claimChildBounty(childBounty.parentBountyId, childBounty.index);
 
-    const signerAddress = selectedAccount.address;
-
     await sendTx({
       tx,
       dispatch,
@@ -90,7 +88,7 @@ function PopupContent({
       onInBlock,
       onSubmitted,
       onClose,
-      signerAddress,
+      signerAddress: selectedAccount.address,
       isMounted,
     });
   };
