@@ -105,7 +105,6 @@ export default function Claim({
   const api = useApi(chain);
 
   const updateChildBountyStatus = useCallback(() => {
-    console.log(1);
     setIsLoading(true);
     api.query.childBounties
       .childBounties(childBounty?.parentBountyId, childBounty?.index)
