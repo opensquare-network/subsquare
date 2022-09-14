@@ -144,7 +144,7 @@ export default function Claim({ chain, childBounty }) {
   const decimals = node.decimals;
   const symbol = node.symbol;
 
-  const isBeneficiary = isSameAddress(user?.address, childBounty?.beneficiary);
+  const isBeneficiary = isSameAddress(user?.addresses?.[0]?.address, childBounty?.beneficiary);
 
   const hasBeenClaimedText = (
     <ClaimInfoText>This child bounty has been claimed.</ClaimInfoText>
