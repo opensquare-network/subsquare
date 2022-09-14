@@ -9,10 +9,11 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Metadata from "next-common/components/treasury/bounty/metadata";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import DetailLayout from "next-common/components/layout/DetailLayout";
 import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
 import TreasuryCountDown from "next-common/components/treasury/common/countdown";
 import { getBannerUrl } from "next-common/utils/banner";
+import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
+import Claim from "components/childBounty/claim";
 
 const ChildBountyCountDown = ({ data = {} }) => {
   if (data.state?.state !== "PendingPayout") {
@@ -49,7 +50,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   const desc = getMetaDesc(detail);
   return (
-    <DetailLayout
+    <DetailWithRightLayout
       user={loginUser}
       seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
     >
@@ -62,10 +63,11 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
         type={detailPageCategory.TREASURY_CHILD_BOUNTY}
         countDown={<ChildBountyCountDown data={detail.onchainData} />}
       />
+      <Claim chain={chain} childBounty={detail?.onchainData} />
       <Metadata meta={detail.onchainData?.meta} chain={chain} />
       <Timeline onchainData={detail.onchainData} chain={chain} />
       {CommentComponent}
-    </DetailLayout>
+    </DetailWithRightLayout>
   );
 });
 
