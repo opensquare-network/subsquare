@@ -35,13 +35,16 @@ export function withLoginUser(getServerSideProps) {
     ]);
 
     if (context.resolvedUrl?.startsWith("/setting/") && !user) {
-      return {
-        redirect: {
-          permanent: false,
-          destination: `/login?redirect=${context.resolvedUrl}`,
-        },
-        props: {},
-      };
+      const { unsubscribe } = context.query;
+      if (!unsubscribe) {
+        return {
+          redirect: {
+            permanent: false,
+            destination: `/login?redirect=${context.resolvedUrl}`,
+          },
+          props: {},
+        };
+      }
     }
 
     return {

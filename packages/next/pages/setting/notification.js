@@ -2,10 +2,6 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 
 import Toggle from "next-common/components/toggle";
-import {
-  settingMenu,
-  settingMenuOfKeyAccount,
-} from "next-common/utils/consts/menu/settings";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import {
@@ -86,32 +82,36 @@ const WarningMessage = styled.div`
   margin-bottom: 16px;
 `;
 
-export default withLoginUserRedux(({ loginUser, chain }) => {
+export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
   const dispatch = useDispatch();
   const [reply, setReply] = useState(!!loginUser?.notification?.reply);
   const [mention, setMention] = useState(!!loginUser?.notification?.mention);
   const [saving, setSaving] = useState(false);
+  const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
 
-  const disabled =
+  const emailVerified =
     loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
+  const disabled = !loginUser || !loginUser.emailVerified;
 
   const router = useRouter();
 
   useEffect(() => {
+    if (unsubscribe) {
+      if (loginUser === null) {
+        setShowLoginToUnsubscribe(true);
+      }
+      return;
+    }
+
     if (loginUser === null) {
       router.push("/login");
     }
-  }, [loginUser, router]);
+  }, [loginUser, router, unsubscribe]);
 
   useEffect(() => {
     setReply(!!loginUser?.notification?.reply);
     setMention(!!loginUser?.notification?.mention);
   }, [loginUser]);
-
-  let menu = settingMenu;
-  if (loginUser && isKeyRegisteredUser(loginUser)) {
-    menu = settingMenuOfKeyAccount;
-  }
 
   const changeGuard = (setter) => async (data) => {
     if (saving) return;
@@ -143,7 +143,12 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       <Wrapper>
         <TitleContainer>Notification</TitleContainer>
         <ContentWrapper>
-          {disabled && (
+          {showLoginToUnsubscribe && (
+            <WarningMessage>
+              Please login to unsubscribe notifications
+            </WarningMessage>
+          )}
+          {emailVerified && (
             <WarningMessage>
               Please set the email to receive notifications
             </WarningMessage>
@@ -184,10 +189,12 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
+  const { unsubscribe } = context.query;
 
   return {
     props: {
       chain,
+      unsubscribe,
     },
   };
 });
