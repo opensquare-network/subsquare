@@ -246,6 +246,10 @@ export function checkInputValue(inputValue, decimals, valueName = "value") {
 }
 
 export function isSameAddress(addr1, addr2) {
+  if (!addr1 || !addr2) {
+    return false;
+  }
+
   try {
     return encodeAddress(addr1, 42) === encodeAddress(addr2, 42);
   } catch (e) {
