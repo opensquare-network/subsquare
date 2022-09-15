@@ -2,7 +2,7 @@ import Chains from "./consts/chains";
 
 export function getMotionId(motion, chain) {
   if ([Chains.kusama, Chains.polkadot].includes(chain)) {
-    return motion.motionIndex || motion.index;
+    return motion.motionIndex === undefined ? motion.index : motion.motionIndex;
   }
 
   return `${motion?.indexer?.blockHeight}_${motion?.hash}`;
