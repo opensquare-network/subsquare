@@ -96,7 +96,7 @@ export default withLoginUserRedux(
     );
 
     const onClaimInBlock = useCallback(() => {
-      dispatch(newPendingToast(toastId, "Waiting to syncing on-chain data..."));
+      dispatch(newPendingToast(toastId, "Waiting to sync on-chain data..."));
     }, [dispatch, toastId]);
 
     detail.status = detail.onchainData?.state?.state;
