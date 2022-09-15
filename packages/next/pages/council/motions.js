@@ -7,8 +7,9 @@ import businessCategory from "next-common/utils/consts/business/category";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 
 export default withLoginUserRedux(({ loginUser, motions, chain }) => {
-  const items = (motions.items || []).map((item) =>
-    toCouncilMotionListItem(chain, item)
+  const items = (motions.items || [])
+    .filter(item => item.motionIndex !== undefined && item.motionIndex !== null)
+    .map((item) => toCouncilMotionListItem(chain, item)
   );
   const category = businessCategory.councilMotions;
   const seoInfo = { title: category, desc: category };

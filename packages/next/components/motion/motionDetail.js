@@ -57,21 +57,17 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
     }
 
     const timeline = post.onchainData.timeline || [];
-    const voters = Array.from(
-      new Map(
-        timeline
-          .filter((item) => item.method === "Voted")
-          .map((item) => [item.args.voter, item.args.approve])
-      )
-    );
-
+    const rawVoters = timeline
+      .filter((item) => item.method === "Voted")
+      .map((item) => [item.args.voter, item.args.approve])
     // special data, in kusama before motion 345, proposer has a default aye vote
-    if (Chains.kusama === chain && post.onchainData.index < 345) {
+    if (Chains.kusama === chain && post.onchainData.index < 345 ||
+      Chains.polkadot === chain && post.onchainData.index <= 107
+    ) {
       const proposed = timeline.find((item) => item.method === "Proposed");
-      voters.unshift([proposed.args.proposer, true]);
+      rawVoters.unshift([proposed.args.proposer, true]);
     }
-
-    return voters;
+    return Array.from(new Map(rawVoters));
   }, [post, chain, singleApprovalMotion]);
 
   const [votes, setVotes] = useState(dbVotes);
