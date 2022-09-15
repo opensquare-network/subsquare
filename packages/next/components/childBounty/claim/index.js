@@ -92,7 +92,7 @@ const ClaimInfoText = styled.div`
   }
 `;
 
-export default function Claim({ chain, childBounty }) {
+export default function Claim({ chain, childBounty, onInBlock, onFinalized }) {
   const user = useSelector(userSelector);
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -132,6 +132,11 @@ export default function Claim({ chain, childBounty }) {
     updateChildBountyStatus();
   }, [api, childBounty, updateChildBountyStatus]);
 
+  const onClaimInBlock = useCallback(() => {
+    updateChildBountyStatus();
+    onInBlock();
+  }, [updateChildBountyStatus, onInBlock]);
+
   if (!["PendingPayout", "Claimed"].includes(childBounty.state?.state)) {
     return null;
   }
@@ -144,7 +149,10 @@ export default function Claim({ chain, childBounty }) {
   const decimals = node.decimals;
   const symbol = node.symbol;
 
-  const isBeneficiary = isSameAddress(user?.addresses?.[0]?.address, childBounty?.beneficiary);
+  const isBeneficiary = isSameAddress(
+    user?.addresses?.[0]?.address,
+    childBounty?.beneficiary
+  );
 
   const hasBeenClaimedText = (
     <ClaimInfoText>This child bounty has been claimed.</ClaimInfoText>
@@ -230,7 +238,8 @@ export default function Claim({ chain, childBounty }) {
           chain={chain}
           childBounty={childBounty}
           onClose={() => setShowPopup(false)}
-          onInBlock={updateChildBountyStatus}
+          onInBlock={onClaimInBlock}
+          onFinalized={onFinalized}
           onSubmitted={() => setIsLoading(true)}
         />
       )}
