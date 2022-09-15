@@ -124,7 +124,7 @@ export default withLoginUserRedux(
           chain={chain}
           childBounty={detail?.onchainData}
           onInBlock={onClaimInBlock}
-          onFinalized={() => updateDetailForState("Awarded")}
+          onFinalized={() => updateDetailForState("Claimed")}
         />
         <Metadata meta={detail.onchainData?.meta} chain={chain} />
         <Timeline onchainData={detail.onchainData} chain={chain} />
