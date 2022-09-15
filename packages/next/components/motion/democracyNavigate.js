@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import Flex from "next-common/components/styled/flex";
 import TriangleRight from "public/imgs/icons/arrow-triangle-right.svg";
-import { getMotionId } from "next-common/utils/motion";
+import { getUniqueMotionId } from "next-common/utils/motion";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import MotionNavigationItem from "./motionNavigationItem";
 
@@ -41,12 +41,12 @@ export default function DemocracyNavigate({ motion, type }) {
     return null;
   }
 
-  const motionId = getMotionId(motion, chain)
+  const motionId = getUniqueMotionId(motion, chain)
   const external = motion.externalProposals?.[0] || motion.operateExternals?.[0];
 
   const motions = external.motions || [];
   const motionElements = motions.map((item, index) => {
-    return <div key={getMotionId(item, chain)}>
+    return <div key={getUniqueMotionId(item, chain)}>
       {
         index <= 0 ? null : <TriangleRight />
       }
@@ -60,7 +60,7 @@ export default function DemocracyNavigate({ motion, type }) {
 
   const externalTechCommMotions = external.techCommMotions || [];
   const externalTechCommMotionElements = externalTechCommMotions.map(item => {
-    return <div key={ getMotionId(item, chain) }>
+    return <div key={ getUniqueMotionId(item, chain) }>
       <TriangleRight />
       <MotionNavigationItem
         motion={ item }
@@ -72,7 +72,7 @@ export default function DemocracyNavigate({ motion, type }) {
 
   const handleExternalCouncilMotions = external.councilMotions || [];
   const handleExternalMotionElements = handleExternalCouncilMotions.map((item) => {
-    return <div key={ getMotionId(item, chain) }>
+    return <div key={ getUniqueMotionId(item, chain) }>
       <TriangleRight />
       <MotionNavigationItem
         motion={ item }
