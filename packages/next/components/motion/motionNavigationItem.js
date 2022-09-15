@@ -1,9 +1,9 @@
-import { getMotionId, shortMotionId } from "next-common/utils/motion";
+import { getMotionId, getUniqueMotionId, shortMotionId } from "next-common/utils/motion";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import Link from "next/link";
 
 export default function MotionNavigationItem({ motion, pageMotionId, type, chain }) {
-  const itemId = getMotionId(motion, chain);
+  const itemId = getUniqueMotionId(motion, chain);
   const isPageMotion = itemId === pageMotionId;
 
   const isTechComm = type === detailPageCategory.TECH_COMM_MOTION;
@@ -18,6 +18,7 @@ export default function MotionNavigationItem({ motion, pageMotionId, type, chain
     return text;
   }
 
-  const link = isTechComm ? `/techcomm/proposal/${ itemId }` : `/council/motion/${ itemId }`;
+  const linkId = getMotionId(motion, chain);
+  const link = isTechComm ? `/techcomm/proposal/${ linkId }` : `/council/motion/${ linkId }`;
   return <Link href={ link }>{ text }</Link>
 }
