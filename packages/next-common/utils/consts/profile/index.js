@@ -139,7 +139,7 @@ export const CATEGORIES = [
         apiPath: "polkassembly-discussions",
         formatter: toPolkassemblyDiscussionListItem,
         excludeChains: (() => {
-          const { kusama, polakdot, ...others } = Chains;
+          const { kusama, polkadot, ...others } = Chains;
           return Object.values(others);
         })(),
       },
