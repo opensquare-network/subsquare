@@ -20,11 +20,11 @@ import SEO from "../SEO";
 import capitalize from "../../utils/capitalize";
 import { DEFAULT_SEO_INFO } from "../../utils/constants";
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
-import Auth from "../auth";
 import Header from "../header";
 import Content from "./content";
 import Toast from "../toast";
 import { modeSelector } from "../../store/reducers/settingSlice";
+import useUpdateNodesDelay from "../../utils/hooks/useUpdateNodesDelay";
 
 const Wrapper = styled.div`
   display: flex;
@@ -42,7 +42,7 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 export default function BaseLayout({ user, left, children, seoInfo }) {
-  let chain = process.env.NEXT_PUBLIC_CHAIN;
+  const chain = process.env.NEXT_PUBLIC_CHAIN;
 
   const endpoint = useSelector(currentNodeSelector);
   const api = useApi(chain, endpoint);
@@ -54,6 +54,8 @@ export default function BaseLayout({ user, left, children, seoInfo }) {
   const isMounted = useIsMountedBool();
   const mode = useSelector(modeSelector);
   const theme = mode === "dark" ? dark : light;
+
+  useUpdateNodesDelay(chain);
 
   useEffect(() => {
     if (blockTime && isMounted()) {
@@ -87,7 +89,6 @@ export default function BaseLayout({ user, left, children, seoInfo }) {
       <Wrapper>
         {seo}
         <GlobalStyle />
-        <Auth chain={chain} />
         <Header user={user} left={left} chain={chain} />
         <Content left={left}>{children}</Content>
         <Toast />

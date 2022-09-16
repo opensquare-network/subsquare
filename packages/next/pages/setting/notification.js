@@ -194,7 +194,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       chain,
-      unsubscribe,
+      unsubscribe: unsubscribe ?? null,
     },
   };
 });
