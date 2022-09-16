@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.3.1
+
+- Use the login web3 address as the default signer for actions.
+- Support claiming child bounty.
+- Add unsubscription link in notification emails.
+- Remove useless user profile query in `Auth` component.
+- Fix toast item style.
+
 # 2.3.0
 
 - Add profile page to show user governance activities.
