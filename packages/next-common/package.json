@@ -27,6 +27,7 @@
     "is-utf8": "^0.2.1",
     "lodash.countby": "^4.6.0",
     "lodash.debounce": "^4.0.8",
+    "lodash.isnil": "^4.0.0",
     "md5": "^2.3.0",
     "micromark": "^3.0.10",
     "micromark-extension-gfm": "^2.0.0",

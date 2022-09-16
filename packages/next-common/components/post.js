@@ -207,7 +207,7 @@ export default function Post({ data, chain, href, type }) {
       <ContentWrapper>
         <HeadWrapper>
           <TitleWrapper>
-            {data?.index !== undefined && <Index>{`#${data.index}`}</Index>}
+            {!isNil(data?.index) && <Index>{`#${data.index}`}</Index>}
             <Link href={href} passHref>
               <Title>{data.title?.trim() || "--"}</Title>
             </Link>

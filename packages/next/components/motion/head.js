@@ -13,6 +13,7 @@ import {
   DemocracyTag,
   TreasuryTag,
 } from "next-common/components/tags/business";
+import isNil from "lodash.isnil";
 
 const MotionEndHeader = styled.div`
   display: flex;
@@ -97,9 +98,9 @@ export default function MotionHead({ motion, chain, type }) {
       <DemocracyNavigate motion={motion.onchainData} type={type} />
       {motionEndHeader}
       <TitleWrapper>
-        {motion?.motionIndex !== undefined && (
-          <Index>{`#${motion.motionIndex}`}</Index>
-        )}
+        { !isNil(motion?.motionIndex) && (
+          <Index>{ `#${ motion.motionIndex }` }</Index>
+        ) }
         <Title>{motion?.title}</Title>
       </TitleWrapper>
       <FlexWrapper>

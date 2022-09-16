@@ -8,7 +8,6 @@ import HomeLayout from "next-common/components/layout/HomeLayout";
 
 export default withLoginUserRedux(({ loginUser, motions, chain }) => {
   const items = (motions.items || [])
-    .filter(item => item.motionIndex !== undefined && item.motionIndex !== null)
     .map((item) => toCouncilMotionListItem(chain, item)
   );
   const category = businessCategory.councilMotions;
