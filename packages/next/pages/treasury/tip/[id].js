@@ -26,7 +26,6 @@ import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import Loading from "next-common/components/loading";
 import TreasuryCountDown from "next-common/components/treasury/common/countdown";
 import { getBannerUrl } from "next-common/utils/banner";
-import { isSameAddress } from "next-common/utils";
 
 const TipCountDown = ({ meta = {}, state }) => {
   const nowHeight = useSelector(latestHeightSelector);
@@ -81,7 +80,9 @@ export default withLoginUserRedux(
     );
     const councilTippers = councilMembers?.toJSON() || [];
     const userIsTipper = councilTippers?.some((address) =>
-      isSameAddress(loginUser?.address, address)
+      loginUser?.addresses?.some(
+        (item) => item.address === address && item.chain === chain
+      )
     );
     // Used to trigger tips updating
     const [tipsNeedUpdate, setTipsNeedUpdate] = useState(Date.now());

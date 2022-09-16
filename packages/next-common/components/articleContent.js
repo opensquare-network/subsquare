@@ -113,7 +113,9 @@ export default function ArticleContent({
   } else {
     ownPost =
       isLoggedIn &&
-      post?.authors?.includes(user.address);
+      !!(user.addresses || []).find((item) =>
+        post?.authors?.includes(item.address)
+      );
   }
 
   const thumbUp =

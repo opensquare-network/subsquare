@@ -150,7 +150,7 @@ export default function Claim({ chain, childBounty, onInBlock, onFinalized }) {
   const symbol = node.symbol;
 
   const isBeneficiary = isSameAddress(
-    user?.address,
+    user?.addresses?.[0]?.address,
     childBounty?.beneficiary
   );
 

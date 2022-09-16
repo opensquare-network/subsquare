@@ -25,7 +25,7 @@ export default function useMentionList(post, comments, chain) {
       .concat(
         (post.authors ?? []).map((address) => ({
           username: address,
-          address,
+          addresses: [{ address, chain }],
           isKeyRegistered: true,
         }))
       )

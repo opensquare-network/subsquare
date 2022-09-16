@@ -8,7 +8,7 @@ import Business from "./business";
 import Metadata from "./metadata";
 import Timeline from "./timeline";
 import Head from "./head";
-import { isMotionEnded, isSameAddress } from "next-common/utils";
+import { isMotionEnded } from "next-common/utils";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import toApiCouncil from "next-common/utils/toApiCouncil";
 import { EditablePanel } from "next-common/components/styled/panel";
@@ -35,7 +35,9 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
 
   const voters = useCall(membersMethod, [])?.toJSON() || [];
   const userCanVote = voters?.some((address) =>
-    isSameAddress(user?.address, address)
+    user?.addresses?.some(
+      (item) => item.address === address && item.chain === chain
+    )
   );
   const motionEnd = isMotionEnded(post.onchainData);
 

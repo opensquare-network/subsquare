@@ -33,7 +33,10 @@ export function getMemberId(user, chain) {
     const address = encodeAddressToChain(Buffer.from(publicKey, "hex"), chain);
     return address;
   } else {
-    return user.address || user.username;
+    const address = user.addresses.find(
+      (item) => item.chain === chain
+    )?.address;
+    return address || user.username;
   }
 }
 
@@ -45,7 +48,7 @@ export async function getMentionName(user, chain) {
     address = encodeAddressToChain(Buffer.from(publicKey, "hex"), chain);
     mentionName = address;
   } else {
-    address = user.address;
+    address = user.addresses.find((item) => item.chain === chain)?.address;
     mentionName = user.username;
   }
 
@@ -97,7 +100,7 @@ export function getOnReply(
       } else if (contentType === "html") {
         const contents = quillRef.getContents();
         const isKeyRegistered = user.username.startsWith("polkadot-key-0x");
-        const address = user.address ?? "";
+        const address = user.addresses?.[0]?.address ?? "";
         reply = {
           ops: [
             {
