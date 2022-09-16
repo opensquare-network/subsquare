@@ -113,7 +113,7 @@ function User({
   color,
 }) {
   const address =
-    add ?? user?.address;
+    add ?? user?.addresses?.find((addr) => addr.chain === chain)?.address;
   const isMounted = useIsMounted();
   const [identity, setIdentity] = useState(null);
   useEffect(() => {

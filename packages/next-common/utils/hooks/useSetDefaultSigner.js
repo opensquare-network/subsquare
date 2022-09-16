@@ -10,7 +10,7 @@ export default function useSetDefaultSigner(
 ) {
   const user = useSelector(userSelector);
   const isKeyUser = isKeyRegisteredUser(user);
-  const address = user?.address;
+  const address = user?.addresses?.[0]?.address;
 
   useEffect(() => {
     if (!address) {

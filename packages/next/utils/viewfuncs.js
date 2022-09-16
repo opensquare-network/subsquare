@@ -42,7 +42,12 @@ export const convertPolkassemblyUser = (chain, paUser) =>
         username:
           addressEllipsis(paUser?.[`${chain}_default_address`]) ||
           paUser?.username,
-        address: paUser?.[`${chain}_default_address`],
+        addresses: [
+          {
+            address: paUser?.[`${chain}_default_address`],
+            chain,
+          },
+        ],
       }
     : {
         username: paUser?.username,
@@ -70,7 +75,12 @@ export const toPolkassemblyDiscussionAuthor = (author, chain) => ({
   username: addressEllipsis(author?.address) || author?.username,
   ...(author?.address
     ? {
-        address: author.address,
+        addresses: [
+          {
+            address: author.address,
+            chain,
+          },
+        ],
       }
     : {}),
 });

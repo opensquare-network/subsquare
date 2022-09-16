@@ -197,7 +197,7 @@ const getCategoryByRoute = (route) => {
 export default withLoginUserRedux(
   ({ loginUser, route, summary, user, chain, id }) => {
     const defaultPage = { page: 1, pageSize: 10, total: 0 };
-    const address = isAddress(id) ? id : user?.address;
+    const address = isAddress(id) ? id : user?.addresses?.[0]?.address;
     const [items, setItems] = React.useState([]);
     const [pagination, setPagination] = React.useState(defaultPage);
     const [isLoading, setIsLoading] = React.useState(true);
