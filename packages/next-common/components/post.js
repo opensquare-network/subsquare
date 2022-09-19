@@ -197,7 +197,7 @@ export default function Post({ data, chain, href, type }) {
 
   let userNoClickEvent = false;
   if (type === businessCategory.polkassemblyDiscussions) {
-    if (!data?.author.addresses) {
+    if (!data?.author.address) {
       userNoClickEvent = true;
     }
   }
