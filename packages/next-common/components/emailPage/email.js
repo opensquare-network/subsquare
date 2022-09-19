@@ -53,9 +53,7 @@ const BorderRadiusWrapper = styled.div`
 `;
 
 const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
-  const address = loginUser?.addresses?.find(
-    (address) => address.chain === chain
-  )?.address;
+  const address = loginUser?.address;
   const [accountName, setAccountName] = useState("");
   const [errors, setErrors] = useState();
   const [email, setEmail] = useState("");

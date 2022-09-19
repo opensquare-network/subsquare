@@ -14,7 +14,7 @@ import {
 import { nodes } from "next-common/utils/constants";
 import Avatar from "./avatar";
 import DownloadExtension from "./downloadExtension";
-import { addressEllipsis } from "../utils";
+import { addressEllipsis, isSameAddress } from "../utils";
 import { encodeAddressToChain } from "../services/address";
 import AddressLinkIcon from "../assets/imgs/icons/address-link.svg";
 import UnLinkIcon from "../assets/imgs/icons/unlink.svg";
@@ -248,15 +248,15 @@ export default function LinkedAddress({ chain }) {
 
   const mergedAccounts = [
     ...(accounts ?? []),
-    ...(user?.addresses || [])
+    ...(user?.address ? [user?.address] : [])
       .filter((item) =>
         (accounts ?? []).every(
           (acc) =>
-            encodeAddressToChain(acc.address, activeChain) !== item.address
+            !isSameAddress(acc.address, item)
         )
       )
       .map((address) => ({
-        address: address.address,
+        address,
         name: "--",
       })),
   ];
@@ -304,18 +304,14 @@ export default function LinkedAddress({ chain }) {
                 return (
                   <AddressItem
                     key={index}
-                    linked={user?.addresses?.some(
-                      (i) => i.address === activeChainAddress
-                    )}
+                    linked={isSameAddress(user?.address, activeChainAddress)}
                   >
                     <Avatar address={activeChainAddress} size={32} />
                     <NameWrapper>
                       <div>{item.name}</div>
                       <div>{addressEllipsis(activeChainAddress)}</div>
                     </NameWrapper>
-                    {user?.addresses?.some(
-                      (i) => i.address === activeChainAddress
-                    ) ? (
+                    {isSameAddress(user?.address, activeChainAddress) ? (
                       <LinkWrapper
                         onClick={() => {
                           unlinkAddress(activeChain, activeChainAddress);
