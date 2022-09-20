@@ -14,7 +14,6 @@ const Wrapper = styled(Flex)`
   font-size: 14px;
   text-align: center;
   background: ${(props) => props.theme.neutral};
-  border-color: ${(props) => props.theme.grey300Border};
   color: ${(props) => props.theme.textTertiary};
 `;
 
