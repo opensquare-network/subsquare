@@ -3,6 +3,7 @@ import Avatar from "../../../assets/icons/chain/litmus.png";
 
 import Chains from "../chains";
 import capitalize from "../../capitalize";
+import MenuGroups from "./menuGroups";
 
 const DEFAULT_LITMUS_NODES = [
   {
@@ -27,6 +28,7 @@ const litmus = {
   headerLogo: Logo,
   darkHeaderLogo: Logo,
   avatar: Avatar,
+  group: MenuGroups.KusamaAndParachains,
 };
 
 export default litmus;

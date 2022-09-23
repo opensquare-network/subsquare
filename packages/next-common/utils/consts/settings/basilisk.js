@@ -1,3 +1,5 @@
+import MenuGroups from "./menuGroups";
+
 const DEFAULT_BASILISK_NODES = [
   {
     name: "OnFinality",
@@ -19,6 +21,7 @@ const basilisk = {
   hasElections: true,
   ss58Format: 10041,
   endpoints: DEFAULT_BASILISK_NODES,
+  group: MenuGroups.KusamaAndParachains,
 };
 
 export default basilisk;

@@ -2,6 +2,7 @@ import Logo from "../../../assets/header-logos/interlay.svg";
 import DarkModeLogo from "../../../assets/header-logos/interlay-dark.svg";
 import Avatar from "../../../assets/icons/chain/interlay.png";
 import DarkAvatar from "../../../assets/icons/chain/interlay-dark.png";
+import MenuGroups from "./menuGroups";
 
 const DEFAULT_INTERLAY_NODES = [
   {
@@ -30,6 +31,7 @@ const interlay = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
+  group: MenuGroups.PolkadotAndParachains,
 };
 
 export default interlay;

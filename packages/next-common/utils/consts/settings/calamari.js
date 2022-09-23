@@ -4,6 +4,7 @@ import Avatar from "../../../assets/icons/chain/calamari.png";
 
 import Chains from "../chains";
 import capitalize from "../../capitalize";
+import MenuGroups from "./menuGroups";
 
 const DEFAULT_CALAMARI_NODES = [
   {
@@ -36,6 +37,7 @@ const calamari = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  group: MenuGroups.KusamaAndParachains,
 };
 
 export default calamari;

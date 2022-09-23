@@ -2,6 +2,7 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import Logo from "../../../assets/header-logos/altair.svg";
 import Avatar from "../../../assets/icons/chain/altair.png";
+import MenuGroups from "./menuGroups";
 
 const nodes = [
   {
@@ -29,6 +30,7 @@ const altair = {
   headerLogo: Logo,
   darkHeaderLogo: Logo,
   avatar: Avatar,
+  group: MenuGroups.KusamaAndParachains,
 }
 
 export default altair;

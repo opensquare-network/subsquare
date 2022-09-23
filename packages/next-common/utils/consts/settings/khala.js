@@ -1,6 +1,7 @@
 import Logo from "../../../assets/header-logos/khala.svg";
 import DarkModeLogo from "../../../assets/header-logos/khala-dark.svg";
 import Avatar from "../../../assets/icons/chain/khala.png";
+import MenuGroups from "./menuGroups";
 
 const DEFAULT_KHALA_NODES = [
   {
@@ -33,6 +34,7 @@ const khala = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  group: MenuGroups.KusamaAndParachains,
 };
 
 export default khala;

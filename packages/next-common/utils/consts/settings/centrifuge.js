@@ -5,6 +5,7 @@ import DarkAvatar from "../../../assets/icons/chain/centrifuge-dark.png";
 
 import Chains from "../chains";
 import capitalize from "../../capitalize";
+import MenuGroups from "./menuGroups";
 
 const name = Chains.centrifuge;
 
@@ -37,6 +38,7 @@ const centrifuge = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
+  group: MenuGroups.PolkadotAndParachains,
 };
 
 export default centrifuge;
