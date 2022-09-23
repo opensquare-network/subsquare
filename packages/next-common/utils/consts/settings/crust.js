@@ -5,7 +5,7 @@ import DarkAvatar from "../../../assets/icons/chain/crust-dark.png";
 
 import Chains from "../chains";
 import capitalize from "../../capitalize";
-import OptionGroups from "./menuGroups";
+import MenuGroups from "./menuGroups";
 
 const DEFAULT_CRUST_NODES = [
   {
@@ -42,7 +42,7 @@ const crust = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
-  group: MenuGroup.Mainnet,
+  group: MenuGroups.Mainnet,
 };
 
 export default crust;

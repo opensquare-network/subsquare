@@ -1,7 +1,7 @@
 import Logo from "../../../assets/header-logos/acala.svg";
 import DarkModeLogo from "../../../assets/header-logos/acala-dark.svg";
 import Avatar from "../../../assets/icons/chain/acala.png";
-import OptionGroups from "./menuGroups";
+import MenuGroups from "./menuGroups";
 
 const DEFAULT_ACALA_NODES = [
   {
@@ -44,7 +44,7 @@ const acala = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
-  group: MenuGroup.PolkadotAndParachains,
+  group: MenuGroups.PolkadotAndParachains,
 };
 
 export default acala;

@@ -1,7 +1,7 @@
 import Logo from "../../../assets/header-logos/bifrost.svg";
 import DarkModeLogo from "../../../assets/header-logos/bifrost-dark.svg";
 import Avatar from "../../../assets/icons/chain/bifrost.png";
-import OptionGroups from "./menuGroups";
+import MenuGroups from "./menuGroups";
 
 const DEFAULT_BIFROST_NODES = [
   {
@@ -43,7 +43,7 @@ const bifrost = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
-  group: MenuGroup.KusamaAndParachains,
+  group: MenuGroups.KusamaAndParachains,
 };
 
 export default bifrost;

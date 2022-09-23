@@ -1,4 +1,4 @@
-import OptionGroups from "./menuGroups";
+import MenuGroups from "./menuGroups";
 
 const DEFAULT_BASILISK_NODES = [
   {
@@ -21,7 +21,7 @@ const basilisk = {
   hasElections: true,
   ss58Format: 10041,
   endpoints: DEFAULT_BASILISK_NODES,
-  group: MenuGroup.KusamaAndParachains,
+  group: MenuGroups.KusamaAndParachains,
 };
 
 export default basilisk;
