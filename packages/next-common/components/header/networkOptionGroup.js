@@ -8,8 +8,6 @@ const Wrapper = styled.div`
 `;
 
 const GroupName = styled(Flex)`
-  display: flex;
-  align-items: center;
   padding: 12px;
 
   font-weight: 700;
