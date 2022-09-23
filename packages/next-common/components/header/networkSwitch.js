@@ -1,7 +1,5 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import React, { useEffect, useRef, useState } from "react";
-import { nodes } from "../../utils/constants";
-import { shadow_200 } from "../../styles/componentCss";
 import { useSelector } from "react-redux";
 import Loading from "../loading";
 import { nodesHeightSelector } from "../../store/reducers/nodeSlice";
@@ -9,6 +7,7 @@ import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import useWindowSize from "../../utils/hooks/useWindowSize";
 import ChainIcon from "./chainIcon";
 import Caret from "../icons/caret";
+import NetworkOptions from "./networkOptions";
 
 const Wrapper = styled.div`
   position: relative;
@@ -38,48 +37,6 @@ const Select = styled.div`
       font-weight: 500;
       color: ${(props) => props.theme.textPrimary};
     }
-  }
-  > img.logo {
-    flex: 0 0 24px;
-  }
-`;
-
-const Options = styled.div`
-  position: absolute;
-  background: ${(props) => props.theme.neutral};
-  border-width: ${(props) => (props.theme.isDark ? 1 : 0)}px;
-  border-style: ${(props) => (props.theme.isDark ? "solid" : "none")};
-  border-color: ${(props) => props.theme.grey200Border};
-  color: ${(props) => props.theme.textPrimary};
-  ${shadow_200};
-  border-radius: 4px;
-  padding: 8px 0;
-  width: 100%;
-  margin-top: 4px;
-  z-index: 999999;
-`;
-
-const Item = styled.a`
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-  height: 36px;
-  font-weight: 500;
-  cursor: pointer;
-  color: ${(props) => props.theme.textPrimary};
-  :hover {
-    background: ${(props) => props.theme.grey100Bg};
-  }
-  ${(p) =>
-    p.active &&
-    css`
-      background: ${(props) => props.theme.grey100Bg};
-    `}
-  > :not(:first-child) {
-    margin-left: 8px;
-  }
-  > div {
-    flex-grow: 1;
   }
   > img.logo {
     flex: 0 0 24px;
@@ -135,27 +92,7 @@ export default function NetworkSwitch({ activeNode }) {
         </NetworkBlock>
         <Caret />
       </Select>
-      {show && (
-        <Options>
-          {nodes.map((item, index) => (
-            <Item
-              key={index}
-              onClick={() => {
-                setShow(false);
-              }}
-              active={activeNode.value === nodes[index].value}
-              href={
-                activeNode.value === item.value
-                  ? null
-                  : `https://${item.value}.subsquare.io`
-              }
-            >
-              <ChainIcon chain={item.value} />
-              <div>{item.name}</div>
-            </Item>
-          ))}
-        </Options>
-      )}
+      {show && <NetworkOptions activeNode={activeNode} />}
     </Wrapper>
   );
 }

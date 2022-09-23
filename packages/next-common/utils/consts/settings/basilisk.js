@@ -19,6 +19,7 @@ const basilisk = {
   hasElections: true,
   ss58Format: 10041,
   endpoints: DEFAULT_BASILISK_NODES,
+  group: "kusama",
 };
 
 export default basilisk;

@@ -27,6 +27,7 @@ const litmus = {
   headerLogo: Logo,
   darkHeaderLogo: Logo,
   avatar: Avatar,
+  group: "kusama",
 };
 
 export default litmus;

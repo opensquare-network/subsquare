@@ -43,6 +43,7 @@ const acala = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  group: "polkadot",
 };
 
 export default acala;

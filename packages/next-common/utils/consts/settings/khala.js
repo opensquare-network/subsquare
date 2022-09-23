@@ -33,6 +33,7 @@ const khala = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  group: "kusama",
 };
 
 export default khala;

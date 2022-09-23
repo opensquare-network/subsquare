@@ -30,6 +30,7 @@ const interlay = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
+  group: "polkadot",
 };
 
 export default interlay;

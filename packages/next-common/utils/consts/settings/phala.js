@@ -25,6 +25,7 @@ const phala = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  group: "polkadot",
 };
 
 export default phala;

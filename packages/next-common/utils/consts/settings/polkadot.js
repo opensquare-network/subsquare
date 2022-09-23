@@ -36,6 +36,7 @@ const polkadot = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  group: "polkadot",
 };
 
 export default polkadot;

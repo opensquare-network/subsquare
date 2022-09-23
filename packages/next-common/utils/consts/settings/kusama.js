@@ -40,6 +40,7 @@ const kusama = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
+  group: "kusama",
 };
 
 export default kusama;

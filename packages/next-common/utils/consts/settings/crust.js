@@ -41,6 +41,7 @@ const crust = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
+  group: "mainnet",
 };
 
 export default crust;

@@ -38,6 +38,7 @@ const zeitgeist = {
   darkHeaderLogo: Logo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
+  group: "kusama",
 };
 
 export default zeitgeist;

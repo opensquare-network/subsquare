@@ -34,6 +34,7 @@ const polkadex = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
+  group: "mainnet",
 };
 
 export default polkadex;

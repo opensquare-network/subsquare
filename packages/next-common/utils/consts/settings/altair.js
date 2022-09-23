@@ -29,6 +29,7 @@ const altair = {
   headerLogo: Logo,
   darkHeaderLogo: Logo,
   avatar: Avatar,
+  group: "kusama",
 }
 
 export default altair;
