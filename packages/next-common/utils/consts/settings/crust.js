@@ -42,7 +42,7 @@ const crust = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
-  group: MenuGroups.Mainnet,
+  group: MenuGroups.Solochain,
 };
 
 export default crust;

@@ -36,7 +36,7 @@ const crab = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
-  group: MenuGroups.KusamaAndParachains,
+  group: MenuGroups.Solochain,
 };
 
 export default crab;

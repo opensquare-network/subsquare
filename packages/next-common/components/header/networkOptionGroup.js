@@ -4,9 +4,6 @@ import ChainIcon from "./chainIcon";
 import { nodes } from "../../utils/constants";
 
 const Wrapper = styled.div`
-  @media screen and (min-width: 1280px) {
-    width: 240px;
-  }
 `;
 
 const GroupName = styled.div`
@@ -27,9 +24,6 @@ const GroupOptions = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   @media screen and (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-  @media screen and (min-width: 1280px) {
     grid-template-columns: 1fr;
   }
   padding: 0px;

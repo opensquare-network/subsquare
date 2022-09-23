@@ -16,13 +16,11 @@ const Options = styled.div`
   display: flex;
   gap: 8px;
   padding: 8px;
+  flex-direction: column;
+  width: 384px;
   @media screen and (max-width: 768px) {
     width: 100% !important;
     padding: 8px 0;
-  }
-  @media screen and (max-width: 1280px) {
-    flex-direction: column;
-    width: 384px;
   }
   margin-top: 4px;
   right: 0;
@@ -41,7 +39,7 @@ export default function NetworkOptions({ activeNode }) {
         activeNode={activeNode}
       />
       <NetworkOptionGroup
-        groupName={MenuGroups.Mainnet}
+        groupName={MenuGroups.Solochain}
         activeNode={activeNode}
       />
     </Options>
