@@ -21,7 +21,7 @@ const basilisk = {
   hasElections: true,
   ss58Format: 10041,
   endpoints: DEFAULT_BASILISK_NODES,
-  group: OptionGroups.KusamaAndParachains,
+  group: MenuGroup.KusamaAndParachains,
 };
 
 export default basilisk;

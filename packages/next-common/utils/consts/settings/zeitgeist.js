@@ -39,7 +39,7 @@ const zeitgeist = {
   darkHeaderLogo: Logo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
-  group: OptionGroups.KusamaAndParachains,
+  group: MenuGroup.KusamaAndParachains,
 };
 
 export default zeitgeist;

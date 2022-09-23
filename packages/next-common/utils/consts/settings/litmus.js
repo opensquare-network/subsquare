@@ -28,7 +28,7 @@ const litmus = {
   headerLogo: Logo,
   darkHeaderLogo: Logo,
   avatar: Avatar,
-  group: OptionGroups.KusamaAndParachains,
+  group: MenuGroup.KusamaAndParachains,
 };
 
 export default litmus;

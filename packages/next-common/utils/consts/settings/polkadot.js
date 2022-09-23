@@ -37,7 +37,7 @@ const polkadot = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
-  group: OptionGroups.PolkadotAndParachains,
+  group: MenuGroup.PolkadotAndParachains,
 };
 
 export default polkadot;

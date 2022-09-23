@@ -26,7 +26,7 @@ const phala = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
-  group: OptionGroups.PolkadotAndParachains,
+  group: MenuGroup.PolkadotAndParachains,
 };
 
 export default phala;

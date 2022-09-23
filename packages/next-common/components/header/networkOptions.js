@@ -33,15 +33,15 @@ export default function NetworkOptions({ activeNode }) {
   return (
     <Options>
       <NetworkOptionGroup
-        groupName={OptionGroups.PolkadotAndParachains}
+        groupName={MenuGroup.PolkadotAndParachains}
         activeNode={activeNode}
       />
       <NetworkOptionGroup
-        groupName={OptionGroups.KusamaAndParachains}
+        groupName={MenuGroup.KusamaAndParachains}
         activeNode={activeNode}
       />
       <NetworkOptionGroup
-        groupName={OptionGroups.Mainnet}
+        groupName={MenuGroup.Mainnet}
         activeNode={activeNode}
       />
     </Options>

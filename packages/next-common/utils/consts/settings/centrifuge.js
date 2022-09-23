@@ -38,7 +38,7 @@ const centrifuge = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
-  group: OptionGroups.PolkadotAndParachains,
+  group: MenuGroup.PolkadotAndParachains,
 };
 
 export default centrifuge;

@@ -42,7 +42,7 @@ const crust = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
-  group: OptionGroups.Mainnet,
+  group: MenuGroup.Mainnet,
 };
 
 export default crust;

@@ -43,7 +43,7 @@ const bifrost = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
-  group: OptionGroups.KusamaAndParachains,
+  group: MenuGroup.KusamaAndParachains,
 };
 
 export default bifrost;

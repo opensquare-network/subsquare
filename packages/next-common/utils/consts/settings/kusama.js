@@ -41,7 +41,7 @@ const kusama = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
-  group: OptionGroups.KusamaAndParachains,
+  group: MenuGroup.KusamaAndParachains,
 };
 
 export default kusama;

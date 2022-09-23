@@ -35,7 +35,7 @@ const polkadex = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
-  group: OptionGroups.Mainnet,
+  group: MenuGroup.Mainnet,
 };
 
 export default polkadex;
