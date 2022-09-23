@@ -64,17 +64,18 @@ const Item = styled.a`
 `;
 
 export default function NetworkOptionGroup({ groupName, activeNode }) {
+  const filteredNodes = nodes.filter(({ group }) => group === groupName);
   return (
     <Wrapper>
       <GroupName>{groupName}</GroupName>
       <GroupOptions>
-        {nodes.filter(({ group }) => group === groupName).map((item, index) => (
+        {filteredNodes.map((item, index) => (
           <Item
             key={index}
             onClick={() => {
               setShow(false);
             }}
-            active={activeNode.value === nodes[index].value}
+            active={activeNode.value === filteredNodes[index].value}
             href={
               activeNode.value === item.value
                 ? null
