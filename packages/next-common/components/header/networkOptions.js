@@ -27,20 +27,23 @@ const Options = styled.div`
   z-index: 999999;
 `;
 
-export default function NetworkOptions({ activeNode }) {
+export default function NetworkOptions({ activeNode, setShow }) {
   return (
     <Options>
       <NetworkOptionGroup
         groupName={MenuGroups.PolkadotAndParachains}
         activeNode={activeNode}
+        setShow={setShow}
       />
       <NetworkOptionGroup
         groupName={MenuGroups.KusamaAndParachains}
         activeNode={activeNode}
+        setShow={setShow}
       />
       <NetworkOptionGroup
         groupName={MenuGroups.Solochain}
         activeNode={activeNode}
+        setShow={setShow}
       />
     </Options>
   );

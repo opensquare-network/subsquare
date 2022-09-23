@@ -92,7 +92,7 @@ export default function NetworkSwitch({ activeNode }) {
         </NetworkBlock>
         <Caret />
       </Select>
-      {show && <NetworkOptions activeNode={activeNode} />}
+      {show && <NetworkOptions activeNode={activeNode} setShow={setShow} />}
     </Wrapper>
   );
 }

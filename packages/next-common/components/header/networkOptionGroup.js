@@ -2,11 +2,12 @@ import styled, { css } from "styled-components";
 import React from "react";
 import ChainIcon from "./chainIcon";
 import { nodes } from "../../utils/constants";
+import Flex from "../styled/flex";
 
 const Wrapper = styled.div`
 `;
 
-const GroupName = styled.div`
+const GroupName = styled(Flex)`
   display: flex;
   align-items: center;
   padding: 12px;
@@ -57,7 +58,7 @@ const Item = styled.a`
   }
 `;
 
-export default function NetworkOptionGroup({ groupName, activeNode }) {
+export default function NetworkOptionGroup({ groupName, activeNode, setShow }) {
   const filteredNodes = nodes.filter(({ group }) => group === groupName);
   return (
     <Wrapper>
