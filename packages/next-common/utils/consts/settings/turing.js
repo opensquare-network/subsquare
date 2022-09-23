@@ -4,6 +4,7 @@ import Avatar from "../../../assets/icons/chain/turing.png";
 
 import Chains from "../chains";
 import capitalize from "../../capitalize";
+import OptionGroups from "./menuGroups";
 
 export const DEFAULT_TURING_NODES = [
   {
@@ -30,7 +31,7 @@ const turing = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
-  group: "kusama",
+  group: OptionGroups.KusamaAndParachains,
 };
 
 export default turing;

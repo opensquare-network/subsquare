@@ -1,6 +1,7 @@
 import Logo from "../../../assets/header-logos/kintsugi.svg";
 import DarkModeLogo from "../../../assets/header-logos/kintsugi-dark.svg";
 import Avatar from "../../../assets/icons/chain/kintsugi.png";
+import OptionGroups from "./menuGroups";
 
 const DEFAULT_KINTSUGI_NODES =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true"
@@ -42,7 +43,7 @@ const kintsugi = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
-  group: "kusama",
+  group: OptionGroups.KusamaAndParachains,
 };
 
 export default kintsugi;

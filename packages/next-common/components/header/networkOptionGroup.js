@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import React from "react";
 import ChainIcon from "./chainIcon";
+import { nodes } from "../../utils/constants";
 
 const Wrapper = styled.div`
   @media screen and (min-width: 1280px) {
@@ -62,12 +63,12 @@ const Item = styled.a`
   }
 `;
 
-export default function NetworkOptionGroup({ groupName, nodes, activeNode }) {
+export default function NetworkOptionGroup({ groupName, activeNode }) {
   return (
     <Wrapper>
       <GroupName>{groupName}</GroupName>
       <GroupOptions>
-        {nodes.map((item, index) => (
+        {nodes.filter(({ group }) => group === groupName).map((item, index) => (
           <Item
             key={index}
             onClick={() => {

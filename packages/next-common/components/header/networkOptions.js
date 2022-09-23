@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import React from "react";
-import { nodes } from "../../utils/constants";
 import { shadow_200 } from "../../styles/componentCss";
 import NetworkOptionGroup from "./networkOptionGroup";
+import OptionGroups from "../../utils/consts/settings/menuGroups";
 
 const Options = styled.div`
   position: absolute;
@@ -33,18 +33,15 @@ export default function NetworkOptions({ activeNode }) {
   return (
     <Options>
       <NetworkOptionGroup
-        groupName={"Polkadot & Parachains"}
-        nodes={nodes.filter(({group}) => group === "polkadot")}
+        groupName={OptionGroups.PolkadotAndParachains}
         activeNode={activeNode}
       />
       <NetworkOptionGroup
-        groupName={"Kusama & Parachains"}
-        nodes={nodes.filter(({group}) => group === "kusama")}
+        groupName={OptionGroups.KusamaAndParachains}
         activeNode={activeNode}
       />
       <NetworkOptionGroup
-        groupName={"Mainnet"}
-        nodes={nodes.filter(({group}) => group === "mainnet")}
+        groupName={OptionGroups.Mainnet}
         activeNode={activeNode}
       />
     </Options>

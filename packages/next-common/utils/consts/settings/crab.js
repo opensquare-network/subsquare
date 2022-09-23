@@ -4,6 +4,7 @@ import Avatar from "../../../assets/icons/chain/crab.png";
 
 import Chains from "../chains";
 import capitalize from "../../capitalize";
+import OptionGroups from "./menuGroups";
 
 const DEFAULT_CRAB_NODES = [
   {
@@ -35,7 +36,7 @@ const crab = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
-  group: "kusama",
+  group: OptionGroups.KusamaAndParachains,
 };
 
 export default crab;

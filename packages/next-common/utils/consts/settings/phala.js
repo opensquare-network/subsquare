@@ -1,6 +1,7 @@
 import Logo from "../../../assets/header-logos/phala.svg";
 import DarkModeLogo from "../../../assets/header-logos/phala-dark.svg";
 import Avatar from "../../../assets/icons/chain/phala.png";
+import OptionGroups from "./menuGroups";
 
 const DEFAULT_PHALA_NODES = [
   {
@@ -25,7 +26,7 @@ const phala = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
-  group: "polkadot",
+  group: OptionGroups.PolkadotAndParachains,
 };
 
 export default phala;

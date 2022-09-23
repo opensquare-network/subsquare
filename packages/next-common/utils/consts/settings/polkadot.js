@@ -4,6 +4,7 @@ import Avatar from "../../../assets/icons/chain/polkadot.png";
 
 import capitalize from "../../capitalize";
 import Chains from "../chains";
+import OptionGroups from "./menuGroups";
 
 const name = Chains.polkadot;
 
@@ -36,7 +37,7 @@ const polkadot = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
-  group: "polkadot",
+  group: OptionGroups.PolkadotAndParachains,
 };
 
 export default polkadot;

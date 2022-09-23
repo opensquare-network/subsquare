@@ -2,6 +2,7 @@ import Logo from "../../../assets/header-logos/polkadex.svg";
 import DarkModeLogo from "../../../assets/header-logos/polkadex-dark.svg";
 import Avatar from "../../../assets/icons/chain/polkadex.png";
 import DarkAvatar from "../../../assets/icons/chain/polkadex-dark.png";
+import OptionGroups from "./menuGroups";
 
 const DEFAULT_POLKADEX_NODES = [
   {
@@ -34,7 +35,7 @@ const polkadex = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
-  group: "mainnet",
+  group: OptionGroups.Mainnet,
 };
 
 export default polkadex;
