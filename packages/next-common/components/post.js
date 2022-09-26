@@ -246,7 +246,7 @@ export default function Post({ data, chain, href, type }) {
             {data.time && (
               <Info>
                 <UpdateIcon />
-                <span>{`${duration}`}</span>
+                <span>{duration}</span>
                 <Flex className="elapseIcon">{elapseIcon}</Flex>
               </Info>
             )}
