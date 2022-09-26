@@ -1,6 +1,5 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { timeDurationFromNow } from "next-common/utils";
 import User from "next-common/components/user";
 import Flex from "next-common/components/styled/flex";
 import {
@@ -10,6 +9,7 @@ import {
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import Actions from "../actions";
 import RichTextStyleWrapper from "next-common/components/content/richTextStyleWrapper";
+import useDuration from "next-common/utils/hooks/useDuration";
 
 const Wrapper = styled.div`
   position: relative;
@@ -87,12 +87,13 @@ export default function Item({ data, chain, isSecondLevel }) {
   const comment = data;
 
   const [folded, setFolded] = React.useState(true);
+  const duration = useDuration(comment.createdAt);
 
   return (
     <Wrapper isSecondLevel={isSecondLevel}>
       <InfoWrapper>
         <User user={comment.author} chain={chain} noEvent />
-        <div>{timeDurationFromNow(comment.createdAt)}</div>
+        <div>{duration}</div>
       </InfoWrapper>
       <ContentWrapper>
         <MarkdownPreviewer

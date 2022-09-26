@@ -2,7 +2,6 @@ import styled, { css } from "styled-components";
 import { useState } from "react";
 import Link from "next/link";
 
-import { timeDurationFromNow } from "next-common/utils";
 import User from "next-common/components/user";
 import TriangleRight from "../public/imgs/icons/arrow-triangle-right.svg";
 import Tag from "next-common/components/tags/state/tag";
@@ -15,6 +14,7 @@ import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
+import useDuration from "next-common/utils/hooks/useDuration";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -125,11 +125,12 @@ export default function DetailItem({
 }) {
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
+  const postUpdatedTime = getPostUpdatedAt(post);
+  const duration = useDuration(postUpdatedTime);
   if (!post) {
     return null;
   }
 
-  const postUpdatedTime = getPostUpdatedAt(post);
 
   const commentsCount =
     (post.commentsCount || 0) + (post.polkassemblyCommentsCount || 0);
@@ -284,7 +285,7 @@ export default function DetailItem({
               {postUpdatedTime && (
                 <Info>
                   <UpdateIcon />
-                  <span>{timeDurationFromNow(postUpdatedTime)}</span>
+                  <span>{duration}</span>
                 </Info>
               )}
               {commentsCount > -1 && <Info>{`${commentsCount} Comments`}</Info>}

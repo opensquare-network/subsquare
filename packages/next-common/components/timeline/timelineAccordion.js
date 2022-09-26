@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import React, { memo, useState } from "react";
-import { timeDurationFromNow } from "../../utils";
 import Caret from "../icons/caret";
 import { PrimaryCard } from "../styled/containers/primaryCard";
+import useDuration from "../../utils/hooks/useDuration";
 
 const TitleWrapper = styled.div`
   display: flex;
@@ -39,6 +39,7 @@ function TimelineAccordion({
   children,
 }) {
   const [fold, setFold] = useState(false);
+  const duration = useDuration(lastActivityTime);
 
   return (
     <PrimaryCard>
@@ -47,7 +48,7 @@ function TimelineAccordion({
           <span>Timeline</span>
           <span>
             {motionEndInfo ||
-              `Latest activity ${timeDurationFromNow(lastActivityTime)}`}
+              `Latest activity ${duration}`}
           </span>
         </div>
         <span onClick={() => setFold(!fold)}>

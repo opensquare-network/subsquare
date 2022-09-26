@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { timeDurationFromNow } from "next-common/utils";
 import User from "next-common/components/user";
 import Flex from "next-common/components/styled/flex";
 import ArticleContent from "./articleContent";
@@ -7,6 +6,7 @@ import { EditablePanel } from "next-common/components/styled/panel";
 import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
 import { toPolkassemblyDiscussionAuthor } from "utils/viewfuncs";
+import useDuration from "next-common/utils/hooks/useDuration";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -58,6 +58,8 @@ const FlexWrapper = styled(Flex)`
 
 export default function DetailItem({ data, chain, type, postReactions }) {
   const post = data;
+  const postUpdateTime = post?.updatedAt || post?.createdAt;
+  const duration = useDuration(postUpdateTime);
 
   if (!post) {
     return null;
@@ -74,7 +76,7 @@ export default function DetailItem({ data, chain, type, postReactions }) {
           <User user={toPolkassemblyDiscussionAuthor(post.author, chain)} chain={chain} fontSize={12} />
           <Info>
             <UpdateIcon />
-            <span>{timeDurationFromNow(post.updatedAt || post.createdAt)}</span>
+            <span>{duration}</span>
           </Info>
           <Info>{`${post.commentsCount} Comments`}</Info>
         </DividerWrapper>

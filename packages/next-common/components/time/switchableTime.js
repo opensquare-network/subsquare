@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import dayjs from "dayjs";
-import { timeDurationFromNow } from "../../utils";
+import useDuration from "../../utils/hooks/useDuration";
 
 const Wrapper = styled.span`
   font-weight: 400;
@@ -27,7 +27,7 @@ function SwitchableTime({
   const [isDuration, setIsDuration] = useState(showDuration);
 
   const timeStr = dayjs(timestamp).format("YYYY-MM-DD HH:mm:ss");
-  const duration = timeDurationFromNow(timestamp);
+  const duration = useDuration(timestamp);
 
   return (
     <Wrapper onClick={() => setIsDuration(!isDuration)}>

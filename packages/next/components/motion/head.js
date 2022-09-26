@@ -5,7 +5,6 @@ import MotionEnd from "next-common/components/motionEnd";
 import Tag from "next-common/components/tags/state/tag";
 import Flex from "next-common/components/styled/flex";
 import { getPostUpdatedAt } from "utils/viewfuncs";
-import { timeDurationFromNow } from "next-common/utils";
 import DemocracyNavigate from "./democracyNavigate";
 import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
@@ -14,6 +13,7 @@ import {
   TreasuryTag,
 } from "next-common/components/tags/business";
 import isNil from "lodash.isnil";
+import useDuration from "next-common/utils/hooks/useDuration";
 
 const MotionEndHeader = styled.div`
   display: flex;
@@ -92,6 +92,7 @@ export default function MotionHead({ motion, chain, type }) {
   ) : null;
 
   const postUpdateTime = getPostUpdatedAt(motion);
+  const duration = useDuration(postUpdateTime);
 
   return (
     <div>
@@ -124,7 +125,7 @@ export default function MotionHead({ motion, chain, type }) {
           {postUpdateTime && (
             <Info>
               <UpdateIcon />
-              {timeDurationFromNow(postUpdateTime)}
+              {duration}
             </Info>
           )}
         </DividerWrapper>
