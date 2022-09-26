@@ -102,7 +102,7 @@ export default function Vote({
   setIsLoadingVote = () => {},
 }) {
   const [showPopup, setShowPopup] = useState(false);
-  const ayeVotesCount = votes.filter(([approval]) => approval).length;
+  const ayeVotesCount = votes.filter(([, approval]) => approval).length;
 
   let voteList;
   if (loading) {
