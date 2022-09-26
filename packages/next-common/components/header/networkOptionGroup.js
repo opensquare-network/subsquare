@@ -36,6 +36,7 @@ const Item = styled.a`
   height: 36px;
   font-weight: 500;
   cursor: pointer;
+  border-radius: 4px;
   color: ${(props) => props.theme.textPrimary};
   :hover {
     background: ${(props) => props.theme.grey100Bg};
