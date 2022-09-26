@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import User from "next-common/components/user";
 import Timeline from "next-common/components/timeline";
-import { getNode, isMotionEnded, timeDurationFromNow, toPrecision, } from "next-common/utils";
+import { getNode, isMotionEnded, toPrecision, } from "next-common/utils";
 import findLastIndex from "lodash.findlastindex";
 import Flex from "next-common/components/styled/flex";
 import ArticleContent from "next-common/components/articleContent";
@@ -21,6 +21,7 @@ import Info from "next-common/components/styled/info";
 import CollectiveMetadata from "next-common/components/collective/metadata";
 import UserWithLink from "next-common/components/user/userWithLink";
 import { DemocracyTag, TreasuryTag, } from "next-common/components/tags/business";
+import useDuration from "next-common/utils/hooks/useDuration";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -182,13 +183,14 @@ export default function TechcommMotionDetail({
   const estimatedBlocksTime = useEstimateBlocksTime(
     blockHeight - motionEndHeight
   );
+  const postUpdateTime = getPostUpdatedAt(post);
+  const duration = useDuration(postUpdateTime);
   if (!node) {
     return null;
   }
   const decimals = node.decimals;
   const symbol = node.symbol;
   const treasuryProposalMeta = motion.treasuryProposal?.meta;
-  const postUpdateTime = getPostUpdatedAt(post);
   const timeline = createMotionTimelineData(motion.onchainData);
   const motionEnd = isMotionEnded(motion.onchainData);
 
@@ -308,7 +310,7 @@ export default function TechcommMotionDetail({
                 {postUpdateTime && (
                   <Info>
                     <UpdateIcon />
-                    {timeDurationFromNow(postUpdateTime)}
+                    {duration}
                   </Info>
                 )}
               </DividerWrapper>

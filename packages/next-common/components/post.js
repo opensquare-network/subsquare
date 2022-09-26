@@ -6,7 +6,6 @@ import {
   bigNumber2Locale,
   getNode,
   timeDuration,
-  timeDurationFromNow,
   toPrecision,
 } from "next-common/utils";
 import Tag from "next-common/components/tags/state/tag";
@@ -23,6 +22,7 @@ import { DemocracyTag, TreasuryTag } from "./tags/business";
 import isNil from "lodash.isnil";
 import { getBannerUrl } from "../utils/banner";
 import businessCategory from "../utils/consts/business/category";
+import useDuration from "../utils/hooks/useDuration";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -173,6 +173,7 @@ const BannerWrapper = styled.div`
 `;
 
 export default function Post({ data, chain, href, type }) {
+  const duration = useDuration(data.time);
   const node = getNode(chain);
   if (!node) {
     return null;
@@ -245,7 +246,7 @@ export default function Post({ data, chain, href, type }) {
             {data.time && (
               <Info>
                 <UpdateIcon />
-                <span>{`${timeDurationFromNow(data.time)}`}</span>
+                <span>{duration}</span>
                 <Flex className="elapseIcon">{elapseIcon}</Flex>
               </Info>
             )}

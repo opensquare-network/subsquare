@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { timeDurationFromNow } from "next-common/utils";
 import Flex from "next-common/components/styled/flex";
 import { no_scroll_bar, p_14_medium } from "next-common/styles/componentCss";
 import Anchor from "next-common/components/styled/anchor";
@@ -14,6 +13,7 @@ import {
 import { getMotionId } from "../utils/motion";
 import IdentityOrAddr from "./IdentityOrAddr";
 import { prettyHTML } from "../utils/viewfuncs";
+import useDuration from "../utils/hooks/useDuration";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -212,6 +212,7 @@ const getCommentSource = (comment, chain) => {
 
 export default function CommentSimple({ data, chain }) {
   const [type, title, route] = getCommentSource(data, chain);
+  const duration = useDuration(data.updatedAt);
   return (
     <Wrapper>
       <ContentWrapper>
@@ -252,7 +253,7 @@ export default function CommentSimple({ data, chain }) {
               </Anchor>
             </AutHideInfo>
             {data.updatedAt && (
-              <Info>{`${timeDurationFromNow(data.updatedAt)}`}</Info>
+              <Info>{duration}</Info>
             )}
           </Footer>
         </FooterWrapper>

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
-import { timeDurationFromNow } from "next-common/utils";
 import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -19,6 +18,7 @@ import { prettyHTML } from "../../utils/viewfuncs";
 import RichTextStyleWrapper from "../content/richTextStyleWrapper";
 import CommentActions from "../actions/commentActions";
 import copy from "copy-to-clipboard";
+import useDuration from "../../utils/hooks/useDuration";
 
 const Wrapper = styled.div`
   position: relative;
@@ -89,6 +89,7 @@ export default function Item({ user, data, chain, onReply }) {
   const [loading, setLoading] = useState(false);
   const [highlight, setHighlight] = useState(false);
   const isMounted = useIsMountedBool();
+  const duration = useDuration(comment.createdAt);
 
   useEffect(() => {
     if (window?.location?.hash === "") {
@@ -155,7 +156,7 @@ export default function Item({ user, data, chain, onReply }) {
     <Wrapper id={comment.height} highlight={highlight}>
       <InfoWrapper>
         <User user={comment.author} chain={chain} />
-        <div>{timeDurationFromNow(comment.createdAt)}</div>
+        <div>{duration}</div>
       </InfoWrapper>
       {!isEdit && (
         <>
