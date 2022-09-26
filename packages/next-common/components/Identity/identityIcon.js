@@ -13,7 +13,7 @@ export default function IdentityIcon({ identity }) {
     ["VERIFIED", AuthIcon],
     ["ERRONEOUS", ErrorIcon],
     ["VERIFIED_LINKED", SubIcon],
-    ["NOT_VERIFIED_LINKED", SubGreyIcon],
+    ["LINKED", SubGreyIcon],
     ["ERRONEOUS_LINKED", SubRedIcon],
   ]);
 
