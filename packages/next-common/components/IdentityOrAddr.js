@@ -9,6 +9,7 @@ import { getInitMode } from "../store/reducers/settingSlice";
 import dark from "./styled/theme/dark";
 import light from "./styled/theme/light";
 import { isAddress } from "../utils/viewfuncs";
+import Link from "next/link";
 
 const NameWrapper = styled.div`
   font-size: 14px;
@@ -44,28 +45,30 @@ function IdentityOrAddr({ address, network }) {
 
   if (!isAddress(address)) {
     return (
-      <MentionBox href={`/user/${address}`}>
-        <span>@</span>
-        {address}
-      </MentionBox>
+      <Link href={`/user/${address}`} passHref>
+        <MentionBox>
+          <span>@</span>
+          {address}
+        </MentionBox>
+      </Link>
     );
   }
 
   return (
     <NameWrapper theme={theme}>
-      {identity && identity?.info?.status !== "NO_ID" ? (
-        <MentionBox href={`/user/${address}`}>
-          <span>@</span>
-          <Identity identity={identity} />
-        </MentionBox>
-      ) : (
-        <>
+      <Link href={`/user/${address}`} passHref>
+        {identity && identity?.info?.status !== "NO_ID" ? (
+          <MentionBox href={`/user/${address}`}>
+            <span>@</span>
+            <Identity identity={identity} />
+          </MentionBox>
+        ) : (
           <MentionBox href={`/user/${address}`}>
             <span>@</span>
             {addressEllipsis(encodeAddressToChain(address, network))}
           </MentionBox>
-        </>
-      )}
+        )}
+      </Link>
     </NameWrapper>
   );
 }
