@@ -44,7 +44,7 @@ function IdentityOrAddr({ address, network }) {
 
   if (!isAddress(address)) {
     return (
-      <MentionBox href={`/user/${address}`} target="_blank">
+      <MentionBox href={`/user/${address}`}>
         <span>@</span>
         {address}
       </MentionBox>
@@ -54,13 +54,13 @@ function IdentityOrAddr({ address, network }) {
   return (
     <NameWrapper theme={theme}>
       {identity && identity?.info?.status !== "NO_ID" ? (
-        <MentionBox href={`/user/${address}`} target="_blank">
+        <MentionBox href={`/user/${address}`}>
           <span>@</span>
           <Identity identity={identity} />
         </MentionBox>
       ) : (
         <>
-          <MentionBox href={`/user/${address}`} target="_blank">
+          <MentionBox href={`/user/${address}`}>
             <span>@</span>
             {addressEllipsis(encodeAddressToChain(address, network))}
           </MentionBox>
