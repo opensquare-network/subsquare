@@ -51,6 +51,7 @@ export default function TipTimeline({ tip, chain }) {
 
   const getTimelineData = (args, method) => {
     switch (method) {
+      case "tipNew":
       case "reportAwesome":
         return {
           Finder: (
