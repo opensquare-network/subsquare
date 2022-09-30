@@ -51,6 +51,7 @@ export default function TipTimeline({ tip, chain }) {
 
   const getTimelineData = (args, method) => {
     switch (method) {
+      case "tipNew":
       case "reportAwesome":
         return {
           Finder: (
@@ -60,7 +61,7 @@ export default function TipTimeline({ tip, chain }) {
           ),
           Beneficiary: (
             <FlexEnd>
-              <User chain={chain} add={args.beneficiary} />
+              <User chain={chain} add={args.beneficiary?.id || args.beneficiary} />
             </FlexEnd>
           ),
           Reason: args.reason,
