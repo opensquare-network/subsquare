@@ -13,6 +13,7 @@ import Info from "next-common/components/styled/info";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
 import UpdatedTime from "next-common/components/detail/common/UpdatedTime";
+import TypeTag from "next-common/components/detail/common/TypeTag";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -60,22 +61,6 @@ const TitleWrapper = styled.div`
 const FlexWrapper = styled(Flex)`
   justify-content: space-between;
   flex-wrap: nowrap;
-`;
-
-const TypeWrapper = styled.div`
-  display: inline-block;
-  height: 20px;
-  line-height: 20px;
-  border-radius: 10px;
-  color: ${(props) => props.theme.textContrast} !important;
-  font-weight: 500;
-  font-size: 12px;
-  padding: 0 8px;
-  ${(p) =>
-    p.color &&
-    css`
-      background: ${p.color};
-    `}
 `;
 
 const ReferendaWrapper = styled(NoticeWrapper)`
@@ -271,13 +256,7 @@ export default function DetailItem({
                 chain={chain}
                 fontSize={12}
               />
-              {post.type && (
-                <div>
-                  <TypeWrapper color={getTypeColor(post.type)}>
-                    {post.type}
-                  </TypeWrapper>
-                </div>
-              )}
+              <TypeTag type={type}/>
               <UpdatedTime post={ post } />
               {commentsCount > -1 && <Info>{`${commentsCount} Comments`}</Info>}
             </DividerWrapper>
