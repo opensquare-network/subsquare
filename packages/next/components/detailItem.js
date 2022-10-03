@@ -6,15 +6,13 @@ import User from "next-common/components/user";
 import TriangleRight from "../public/imgs/icons/arrow-triangle-right.svg";
 import Tag from "next-common/components/tags/state/tag";
 import Flex from "next-common/components/styled/flex";
-import { getPostUpdatedAt } from "utils/viewfuncs";
 import ArticleContent from "next-common/components/articleContent";
 import { EditablePanel } from "next-common/components/styled/panel";
 import { getMotionId, shortMotionId } from "next-common/utils/motion";
-import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
-import useDuration from "next-common/utils/hooks/useDuration";
+import UpdatedTime from "next-common/components/detail/common/UpdatedTime";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -125,8 +123,6 @@ export default function DetailItem({
 }) {
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
-  const postUpdatedTime = getPostUpdatedAt(post);
-  const duration = useDuration(postUpdatedTime);
   if (!post) {
     return null;
   }
@@ -282,12 +278,7 @@ export default function DetailItem({
                   </TypeWrapper>
                 </div>
               )}
-              {postUpdatedTime && (
-                <Info>
-                  <UpdateIcon />
-                  <span>{duration}</span>
-                </Info>
-              )}
+              <UpdatedTime post={ post } />
               {commentsCount > -1 && <Info>{`${commentsCount} Comments`}</Info>}
             </DividerWrapper>
             {post.status && <Tag state={post.status} category={type} />}
