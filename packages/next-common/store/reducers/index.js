@@ -8,6 +8,7 @@ import treasuryProposalReducer from "./treasuryProposalSlice";
 import tipReducer from "./tipSlice";
 import settingReducer from "./settingSlice";
 import referendumReducer from "./referendumSlice";
+import postReducer from "./postSlice";
 
 export default combineReducers({
   user: userReducer,
@@ -18,4 +19,5 @@ export default combineReducers({
   tip: tipReducer,
   setting: settingReducer,
   referendum: referendumReducer,
+  post: postReducer,
 });

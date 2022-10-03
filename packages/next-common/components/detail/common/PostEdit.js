@@ -1,6 +1,6 @@
+import React from "react";
 import styled from "styled-components";
 import EditIcon from "../../../assets/imgs/icons/edit.svg";
-import React from "react";
 import { emptyFunction } from "../../../utils";
 
 const Edit = styled.div`
