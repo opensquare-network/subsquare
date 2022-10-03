@@ -4,10 +4,8 @@ import { useDispatch } from "react-redux";
 import { toApiType } from "next-common/utils/viewfuncs";
 import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import User from "next-common/components/user";
 import ArticleActions from "./actions/articleActions";
 import PostEdit from "next-common/components/post/postEdit";
-import EditIcon from "../assets/imgs/icons/edit.svg";
 import PostDataSource from "./postDataSource";
 import Poll from "./poll";
 import { MarkdownPreviewer, HtmlPreviewer } from "@osn/previewer";
@@ -15,6 +13,7 @@ import RichTextStyleWrapper from "./content/richTextStyleWrapper";
 import Divider from "./styled/layout/divider";
 import { getShare2SNStext } from "../utils/post/share";
 import { getBannerUrl } from "../utils/banner";
+import NonEdited from "./detail/common/NonEdited";
 
 const Wrapper = styled(RichTextStyleWrapper)`
   :hover {
@@ -24,64 +23,12 @@ const Wrapper = styled(RichTextStyleWrapper)`
   }
 `;
 
-const PlaceHolder = styled.div`
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 140%;
-  text-align: center;
-  color: ${(props) => props.theme.textTertiary};
-  height: 68px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const GreyWrapper = styled.div`
-  display: flex;
-  flex-flow: wrap;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 22px;
-  padding: 8px 12px;
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
-  margin-top: 16px;
-`;
-
-const GreyItem = styled.div`
-  display: inline-block;
-  margin-right: 12px;
-
-  > .username {
-    color: ${(props) => props.theme.textSecondary};
-  }
-`;
-
 const EditedLabel = styled.div`
   margin-top: 8px;
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
   color: ${(props) => props.theme.textTertiary};
-`;
-
-const Edit = styled.div`
-  cursor: pointer;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 140%;
-  text-align: center;
-  color: ${(props) => props.theme.textSecondary};
-  display: flex;
-  align-items: center;
-
-  svg {
-    margin-left: 8px;
-    margin-right: 4px;
-  }
 `;
 
 const BannerImage = styled.img`
@@ -166,34 +113,7 @@ export default function ArticleContent({
         <>
           <Divider margin={16} />
           {post.content === "" && (
-            <PlaceHolder>
-              {`The ${type} has not been edited by creator.`}
-              {ownPost && (
-                <Edit
-                  onClick={() => {
-                    setIsEdit(true);
-                  }}
-                >
-                  <EditIcon />
-                  Edit
-                </Edit>
-              )}
-            </PlaceHolder>
-          )}
-          {post.content === "" && (
-            <GreyWrapper>
-              <span style={{ marginRight: 12 }}>Who can edit?</span>
-              {(post.authors || []).map((author) => (
-                <GreyItem key={author}>
-                  <User
-                    add={author}
-                    chain={chain}
-                    showAvatar={false}
-                    fontSize={12}
-                  />
-                </GreyItem>
-              ))}
-            </GreyWrapper>
+            <NonEdited type={type} isAuthor={ownPost} setIsEdit={setIsEdit} authors={post.authors}/>
           )}
           {bannerUrl && (
             <BannerImage src={bannerUrl} alt="banner image" />
