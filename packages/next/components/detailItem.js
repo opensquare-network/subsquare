@@ -1,38 +1,14 @@
-import styled  from "styled-components";
+import styled from "styled-components";
 import { useState } from "react";
 import Link from "next/link";
-
-import User from "next-common/components/user";
 import TriangleRight from "../public/imgs/icons/arrow-triangle-right.svg";
-import Tag from "next-common/components/tags/state/tag";
-import Flex from "next-common/components/styled/flex";
 import ArticleContent from "next-common/components/articleContent";
 import { EditablePanel } from "next-common/components/styled/panel";
 import { getMotionId, shortMotionId } from "next-common/utils/motion";
-import Info from "next-common/components/styled/info";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
-import UpdatedTime from "next-common/components/detail/common/UpdatedTime";
-import TypeTag from "next-common/components/detail/common/TypeTag";
 import PostTitle from "next-common/components/detail/common/Title";
-
-const DividerWrapper = styled(Flex)`
-  flex-wrap: wrap;
-
-  > :not(:first-child) {
-    ::before {
-      content: "·";
-      font-size: 12px;
-      color: ${(props) => props.theme.textTertiary};
-      margin: 0 8px;
-    }
-  }
-`;
-
-const FlexWrapper = styled(Flex)`
-  justify-content: space-between;
-  flex-wrap: nowrap;
-`;
+import PostMeta from "next-common/components/detail/container/Meta";
 
 const ReferendaWrapper = styled(NoticeWrapper)`
   > div {
@@ -203,20 +179,7 @@ export default function DetailItem({
             )}
           {countDown}
           <PostTitle post={post}/>
-          <FlexWrapper>
-            <DividerWrapper>
-              <User
-                user={post.author}
-                add={post.proposer || post.finder}
-                chain={chain}
-                fontSize={12}
-              />
-              <TypeTag type={type}/>
-              <UpdatedTime post={ post } />
-              {commentsCount > -1 && <Info>{`${commentsCount} Comments`}</Info>}
-            </DividerWrapper>
-            {post.status && <Tag state={post.status} category={type} />}
-          </FlexWrapper>
+          <PostMeta post={post} type={type}/>
         </>
       )}
       <ArticleContent

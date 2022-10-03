@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { chainSelector } from "../../../store/reducers/chainSlice";
 
 const TitleWrapper = styled.div`
   margin-bottom: 8px;
