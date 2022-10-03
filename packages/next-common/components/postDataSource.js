@@ -2,6 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import ExternalLinkIcon from "next-common/components/icons/externalLink";
 import { detailPageCategory } from "../utils/consts/business/category";
+import { useSelector } from "react-redux";
+import { chainSelector } from "../store/reducers/chainSlice";
+import Chains from "../utils/consts/chains";
 
 const ExternalReference = styled.div`
   display: flex;
@@ -67,6 +70,11 @@ function getPolkassemblyLink(type, post) {
 }
 
 export default function PostDataSource({ type, post }) {
+  const chain = useSelector(chainSelector)
+  if (![Chains.kusama, Chains.polkadot].includes(chain)) {
+    return null;
+  }
+
   const paLink = getPolkassemblyLink(type, post);
   if (!paLink) {
     return null;

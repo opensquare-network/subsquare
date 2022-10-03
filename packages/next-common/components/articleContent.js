@@ -138,9 +138,7 @@ export default function ArticleContent({
               />
             </>
           )}
-          {["kusama", "polkadot"].includes(chain) && (
-            <PostDataSource type={type} post={post} />
-          )}
+          <PostDataSource type={type} post={post} />
           <ArticleActions
             chain={chain}
             highlight={isLoggedIn && thumbUp}
