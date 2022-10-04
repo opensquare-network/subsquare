@@ -17,6 +17,8 @@ import {
   TechCommMotionNavigator
 } from "next-common/components/detail/navigation/navigators";
 import isNil from "lodash.isnil";
+import PostTitle from "next-common/components/detail/common/Title";
+import UpdatedTime from "next-common/components/detail/common/UpdatedTime";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -26,36 +28,6 @@ const DividerWrapper = styled(Flex)`
       content: "·";
       font-size: 12px;
       color: ${(props) => props.theme.textTertiary};
-      margin: 0 8px;
-    }
-  }
-`;
-
-const Index = styled.div`
-  float: left;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 140%;
-`;
-
-const Title = styled.div`
-  max-width: 750px;
-  word-break: break-all;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 140%;
-  margin-bottom: 12px;
-`;
-
-const TitleWrapper = styled.div`
-  margin-bottom: 8px;
-  overflow: hidden;
-  > :not(:first-child) {
-    ::before {
-      content: "·";
-      font-size: 20px;
-      line-height: 28px;
-      color: ${(props) => props.theme.textTertiary}
       margin: 0 8px;
     }
   }
@@ -136,12 +108,9 @@ export default function DetailItem({
 }) {
   const [post, setPost] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
-  const postUpdatedTime = getPostUpdatedAt(post);
-  const duration = useDuration(postUpdatedTime);
   if (!post) {
     return null;
   }
-
 
   return (
     <EditablePanel>
@@ -167,10 +136,7 @@ export default function DetailItem({
                 <ReferendumNavigationItem referendumIndex={post?.referendumIndex} isLink={false}/>
               </ReferendaWrapper>
             )}
-          <TitleWrapper>
-            {post?.index !== undefined && <Index>{`#${post.index}`}</Index>}
-            <Title>{post.title?.trim() || "--"}</Title>
-          </TitleWrapper>
+          <PostTitle index={post.index} title={post.title}/>
           <FlexWrapper>
             <DividerWrapper>
               <User
@@ -186,12 +152,7 @@ export default function DetailItem({
                   </TypeWrapper>
                 </div>
               )}
-              {postUpdatedTime && (
-                <Info>
-                  <UpdateIcon />
-                  <span>{duration}</span>
-                </Info>
-              )}
+              <UpdatedTime post={ post } />
               {post.commentsCount > -1 && (
                 <Info>{`${post.commentsCount} Comments`}</Info>
               )}
