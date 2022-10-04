@@ -21,6 +21,7 @@ import UpdatedTime from "next-common/components/detail/common/UpdatedTime";
 import { CollectiveTag } from "next-common/components/tags/state/collective";
 import PostTitle from "next-common/components/detail/common/Title";
 import TechCommNavigation from "./techCommNavigation";
+import Info from "next-common/components/styled/info";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -249,6 +250,7 @@ export default function TechcommMotionDetail({
                   fontSize={12}
                 />
                 <UpdatedTime post={ motion } />
+                { motion?.commentsCount > -1 && <Info>{`${motion?.commentsCount} Comments`}</Info>}
               </DividerWrapper>
               {motion.state && <CollectiveTag state={motion.state}/>}
             </FlexWrapper>
