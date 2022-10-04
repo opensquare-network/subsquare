@@ -46,10 +46,6 @@ export default function DetailItem({
     return null;
   }
 
-
-  const commentsCount =
-    (post.commentsCount || 0) + (post.polkassemblyCommentsCount || 0);
-
   return (
     <EditablePanel>
       {!isEdit && (
