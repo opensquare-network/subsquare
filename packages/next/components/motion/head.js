@@ -9,6 +9,7 @@ import { DemocracyTag, TreasuryTag, } from "next-common/components/tags/business
 import UpdatedTime from "next-common/components/detail/common/UpdatedTime";
 import PostTitle from "next-common/components/detail/common/Title";
 import { isDemocracyMotion, isTreasuryMotion } from "next-common/utils/viewfuncs/motion";
+import PostMeta from "next-common/components/detail/container/Meta";
 
 const MotionEndHeader = styled.div`
   display: flex;

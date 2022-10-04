@@ -34,6 +34,7 @@ export default function PostMeta({ post, type }) {
   const noCommentsCount = isNil(post.commentsCount) && isNil(post.polkassemblyCommentsCount);
   const commentsCount =
     (post.commentsCount || 0) + (post.polkassemblyCommentsCount || 0);
+  let state = post.status || post.state;
 
   return <FlexWrapper>
     <DividerWrapper>
@@ -47,6 +48,6 @@ export default function PostMeta({ post, type }) {
       <UpdatedTime post={ post } />
       {(!noCommentsCount && commentsCount > -1) && <Info>{`${commentsCount} Comments`}</Info>}
     </DividerWrapper>
-    {post.status && <Tag state={post.status} category={type} />}
+    {state && <Tag state={state} category={type} />}
   </FlexWrapper>
 }

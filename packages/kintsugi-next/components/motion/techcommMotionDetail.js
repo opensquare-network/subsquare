@@ -1,11 +1,9 @@
 /* eslint-disable react/jsx-key */
 import styled from "styled-components";
 import Link from "next/link";
-import User from "next-common/components/user";
 import Timeline from "next-common/components/timeline";
 import { getNode, isMotionEnded, toPrecision, } from "next-common/utils";
 import findLastIndex from "lodash.findlastindex";
-import Flex from "next-common/components/styled/flex";
 import ArticleContent from "next-common/components/articleContent";
 import { useState } from "react";
 import { createMotionTimelineData } from "utils/timeline/motion";
@@ -17,30 +15,9 @@ import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { EditablePanel } from "next-common/components/styled/panel";
 import CollectiveMetadata from "next-common/components/collective/metadata";
 import UserWithLink from "next-common/components/user/userWithLink";
-import UpdatedTime from "next-common/components/detail/common/UpdatedTime";
-import { CollectiveTag } from "next-common/components/tags/state/collective";
 import PostTitle from "next-common/components/detail/common/Title";
 import TechCommNavigation from "./techCommNavigation";
-import Info from "next-common/components/styled/info";
-
-const DividerWrapper = styled(Flex)`
-  flex-wrap: wrap;
-
-  > :not(:first-child) {
-    ::before {
-      content: "·";
-      font-size: 12px;
-      color: ${(props) => props.theme.textTertiary};
-      margin: 0 8px;
-    }
-  }
-`;
-
-const FlexWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-`;
+import PostMeta from "next-common/components/detail/container/Meta";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -67,7 +44,7 @@ const MotionEndHeader = styled.div`
   color: ${(props) => props.theme.textSecondary};
 `;
 
-function createMotionBusinessData(motion, chain) {
+function createMotionBusinessData(motion) {
   const height = motion.state.indexer.blockHeight;
   return [
     [
@@ -241,19 +218,7 @@ export default function TechcommMotionDetail({
             </div>
           )}
           {!isEdit && (
-            <FlexWrapper>
-              <DividerWrapper>
-                <User
-                  user={motion?.author}
-                  add={motion.proposer}
-                  chain={chain}
-                  fontSize={12}
-                />
-                <UpdatedTime post={ motion } />
-                { motion?.commentsCount > -1 && <Info>{`${motion?.commentsCount} Comments`}</Info>}
-              </DividerWrapper>
-              {motion.state && <CollectiveTag state={motion.state}/>}
-            </FlexWrapper>
+            <PostMeta post={motion} type={type}/>
           )}
           <ArticleContent
             chain={chain}
