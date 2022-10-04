@@ -35,7 +35,7 @@ const ReferendaWrapper = styled(Flex)`
   }
 `;
 
-export default function DemocracyNavigate({ motion, type }) {
+export default function DemocracyNavigate({ motion }) {
   const chain = process.env.NEXT_PUBLIC_CHAIN;
   if (motion?.externalProposals?.length !== 1 && motion?.operateExternals?.length !== 1) {
     return null;

@@ -72,7 +72,7 @@ export default function MotionHead({ motion, chain, type }) {
 
   return (
     <div>
-      <DemocracyNavigate motion={motion.onchainData} type={type} />
+      <DemocracyNavigate motion={motion.onchainData} />
       {motionEndHeader}
       <PostTitle index={motion?.motionIndex} title={motion?.title}/>
       <FlexWrapper>
