@@ -104,7 +104,7 @@ export default function DetailItem({
               </ReferendaWrapper>
             )}
           {countDown}
-          <PostTitle post={post}/>
+          <PostTitle index={post.index} title={post.title}/>
           <PostMeta post={post} type={type}/>
         </>
       )}

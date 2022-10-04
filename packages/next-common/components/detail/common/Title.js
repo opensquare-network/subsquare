@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../../store/reducers/chainSlice";
+import isNil from "lodash.isnil";
 
 const TitleWrapper = styled.div`
   margin-bottom: 8px;
@@ -32,11 +33,11 @@ const Index = styled.div`
   line-height: 140%;
 `;
 
-export default function PostTitle({ post }) {
+export default function PostTitle({ index, title = "" }) {
   return (
     <TitleWrapper>
-      {post?.index !== undefined && <Index>{`#${post.index}`}</Index>}
-      <Title>{post.title?.trim() || "--"}</Title>
+      {!isNil(index) && <Index>{`#${index}`}</Index>}
+      <Title>{title?.trim() || "--"}</Title>
     </TitleWrapper>
   )
 }
