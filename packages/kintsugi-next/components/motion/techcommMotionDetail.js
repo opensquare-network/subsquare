@@ -9,19 +9,17 @@ import Flex from "next-common/components/styled/flex";
 import ArticleContent from "next-common/components/articleContent";
 import { useState } from "react";
 import { createMotionTimelineData } from "utils/timeline/motion";
-import { getPostUpdatedAt } from "utils/viewfuncs";
 import MultiKVList from "next-common/components/listInfo/multiKVList";
 import MotionEnd from "next-common/components/motionEnd";
 import { useSelector } from "react-redux";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { EditablePanel } from "next-common/components/styled/panel";
-import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
-import Info from "next-common/components/styled/info";
 import CollectiveMetadata from "next-common/components/collective/metadata";
 import UserWithLink from "next-common/components/user/userWithLink";
-import { DemocracyTag, TreasuryTag, } from "next-common/components/tags/business";
-import useDuration from "next-common/utils/hooks/useDuration";
+import UpdatedTime from "next-common/components/detail/common/UpdatedTime";
+import { CollectiveTag } from "next-common/components/tags/state/collective";
+import PostTitle from "next-common/components/detail/common/Title";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -58,17 +56,6 @@ const Title = styled.div`
   font-size: 20px;
   line-height: 140%;
   margin-bottom: 12px;
-`;
-
-const StatusWrapper = styled.div`
-  background: ${(props) => props.theme.secondaryAzure500};
-  border-radius: 2px;
-  font-weight: 500;
-  font-size: 12px;
-  height: 20px;
-  line-height: 20px;
-  padding: 0 8px;
-  color: ${(props) => props.theme.textContrast};
 `;
 
 const Index = styled.div`
@@ -175,6 +162,7 @@ export default function TechcommMotionDetail({
   loginUser,
   type,
 }) {
+  console.log('motion', motion);
   const node = getNode(chain);
   const [post, setPost] = useState(motion);
   const [isEdit, setIsEdit] = useState(false);
@@ -183,8 +171,6 @@ export default function TechcommMotionDetail({
   const estimatedBlocksTime = useEstimateBlocksTime(
     blockHeight - motionEndHeight
   );
-  const postUpdateTime = getPostUpdatedAt(post);
-  const duration = useDuration(postUpdateTime);
   if (!node) {
     return null;
   }
@@ -280,12 +266,7 @@ export default function TechcommMotionDetail({
           {!isEdit && (
             <div>
               {motionEndHeader}
-              <TitleWrapper>
-                {motion?.index !== undefined && (
-                  <Index>{`#${motion.index}`}</Index>
-                )}
-                <Title>{post?.title}</Title>
-              </TitleWrapper>
+              <PostTitle index={motion?.motionIndex} title={motion?.title}/>
             </div>
           )}
           {!isEdit && (
@@ -297,24 +278,9 @@ export default function TechcommMotionDetail({
                   chain={chain}
                   fontSize={12}
                 />
-                {motion.isTreasury && (
-                  <div>
-                    <TreasuryTag />
-                  </div>
-                )}
-                {motion?.onchainData?.externalProposals?.length > 0 && (
-                  <div>
-                    <DemocracyTag />
-                  </div>
-                )}
-                {postUpdateTime && (
-                  <Info>
-                    <UpdateIcon />
-                    {duration}
-                  </Info>
-                )}
+                <UpdatedTime post={ motion } />
               </DividerWrapper>
-              {motion.state && <StatusWrapper>{motion.state}</StatusWrapper>}
+              {motion.state && <CollectiveTag state={motion.state}/>}
             </FlexWrapper>
           )}
           <ArticleContent
