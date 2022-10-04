@@ -1,3 +1,4 @@
+import React from "react";
 import isNil from "lodash.isnil";
 import {
   CouncilMotionNavigator, DemocracyExternalNavigator,
@@ -36,4 +37,20 @@ export default function ReferendumNavigation({ post = {} }) {
 
     <ReferendumNavigationItem referendumIndex={ post?.referendumIndex } isLink={ false } />
   </NavigationWrapper>
+}
+
+export function KintsugiReferendumNavigation({ post }) {
+  if (isNil(post.proposalIndex)) {
+    return null;
+  }
+
+  return <NavigationWrapper>
+    <DemocracyProposalNavigator proposalIndex={post.proposalIndex}/>
+    {post?.onchainData?.techCommMotions?.map(
+      (techCommMotion, key) =>
+        <TechCommMotionNavigator motion={ techCommMotion } key={ key } />
+    )}
+    <ReferendumNavigationItem referendumIndex={post?.referendumIndex} isLink={false}/>
+  </NavigationWrapper>
+
 }

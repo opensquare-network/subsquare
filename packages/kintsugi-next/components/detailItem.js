@@ -4,21 +4,14 @@ import { useState } from "react";
 import User from "next-common/components/user";
 import Tag from "next-common/components/tags/state/tag";
 import Flex from "next-common/components/styled/flex";
-import { getPostUpdatedAt } from "utils/viewfuncs";
 import ArticleContent from "next-common/components/articleContent";
 import { EditablePanel } from "next-common/components/styled/panel";
-import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import useDuration from "next-common/utils/hooks/useDuration";
-import {
-  DemocracyProposalNavigator,
-  ReferendumNavigationItem,
-  TechCommMotionNavigator
-} from "next-common/components/detail/navigation/navigators";
-import isNil from "lodash.isnil";
 import PostTitle from "next-common/components/detail/common/Title";
 import UpdatedTime from "next-common/components/detail/common/UpdatedTime";
+import { KintsugiDemocracyProposalNavigation } from "next-common/components/detail/navigation/democracyProposal";
+import { KintsugiReferendumNavigation } from "next-common/components/detail/navigation/ReferendumNavigation";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -116,26 +109,8 @@ export default function DetailItem({
     <EditablePanel>
       {!isEdit && (
         <>
-          {type === detailPageCategory.DEMOCRACY_PROPOSAL && (
-            <ReferendaWrapper>
-              <div>{`Proposal #${post.proposalIndex}`}</div>
-              {post?.onchainData?.techCommMotions?.map(
-                (techCommMotion, key) => <TechCommMotionNavigator motion={ techCommMotion } key={ key } />
-              )}
-              { !isNil(post?.referendumIndex) && <ReferendumNavigationItem referendumIndex={ post.referendumIndex } /> }
-            </ReferendaWrapper>
-          )}
-          {type === detailPageCategory.DEMOCRACY_REFERENDUM &&
-            post.proposalIndex !== undefined && (
-              <ReferendaWrapper>
-                <DemocracyProposalNavigator proposalIndex={post.proposalIndex}/>
-                {post?.onchainData?.techCommMotions?.map(
-                  (techCommMotion, key) =>
-                    <TechCommMotionNavigator motion={ techCommMotion } key={ key } />
-                )}
-                <ReferendumNavigationItem referendumIndex={post?.referendumIndex} isLink={false}/>
-              </ReferendaWrapper>
-            )}
+          {type === detailPageCategory.DEMOCRACY_PROPOSAL && <KintsugiDemocracyProposalNavigation post={post}/>}
+          { type === detailPageCategory.DEMOCRACY_REFERENDUM && <KintsugiReferendumNavigation post={ post } /> }
           <PostTitle index={post.index} title={post.title}/>
           <FlexWrapper>
             <DividerWrapper>
