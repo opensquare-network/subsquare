@@ -1,19 +1,22 @@
 import styled, { css } from "styled-components";
 import { useState } from "react";
-import Link from "next/link";
 
 import User from "next-common/components/user";
-import TriangleRight from "public/imgs/icons/arrow-triangle-right.svg";
 import Tag from "next-common/components/tags/state/tag";
 import Flex from "next-common/components/styled/flex";
 import { getPostUpdatedAt } from "utils/viewfuncs";
 import ArticleContent from "next-common/components/articleContent";
 import { EditablePanel } from "next-common/components/styled/panel";
-import { getMotionId, shortMotionId } from "next-common/utils/motion";
 import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import useDuration from "next-common/utils/hooks/useDuration";
+import {
+  DemocracyProposalNavigator,
+  ReferendumNavigationItem,
+  TechCommMotionNavigator
+} from "next-common/components/detail/navigation/navigators";
+import isNil from "lodash.isnil";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -144,122 +147,24 @@ export default function DetailItem({
     <EditablePanel>
       {!isEdit && (
         <>
-          {type === detailPageCategory.DEMOCRACY_EXTERNAL && (
-            <ReferendaWrapper>
-              <div>{`External #${post?.externalProposalHash?.slice(
-                0,
-                6
-              )}`}</div>
-              {post?.onchainData?.techCommMotions?.map(
-                (techCommMotion, key) => (
-                  <div key={key}>
-                    <TriangleRight />
-                    <Link
-                      href={`/techcomm/proposal/${getMotionId(
-                        techCommMotion,
-                        chain
-                      )}`}
-                    >
-                      {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
-                    </Link>
-                  </div>
-                )
-              )}
-              {post?.referendumIndex !== undefined && (
-                <div>
-                  <TriangleRight />
-                  <Link href={`/democracy/referendum/${post?.referendumIndex}`}>
-                    {`Referenda #${post?.referendumIndex}`}
-                  </Link>
-                </div>
-              )}
-            </ReferendaWrapper>
-          )}
           {type === detailPageCategory.DEMOCRACY_PROPOSAL && (
             <ReferendaWrapper>
               <div>{`Proposal #${post.proposalIndex}`}</div>
               {post?.onchainData?.techCommMotions?.map(
-                (techCommMotion, key) => (
-                  <div key={key}>
-                    <TriangleRight />
-                    <Link
-                      href={`/techcomm/proposal/${getMotionId(
-                        techCommMotion,
-                        chain
-                      )}`}
-                    >
-                      {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
-                    </Link>
-                  </div>
-                )
+                (techCommMotion, key) => <TechCommMotionNavigator motion={ techCommMotion } key={ key } />
               )}
-              {post?.referendumIndex !== undefined && (
-                <div>
-                  <TriangleRight />
-                  <Link href={`/democracy/referendum/${post.referendumIndex}`}>
-                    {`Referenda #${post?.referendumIndex}`}
-                  </Link>
-                </div>
-              )}
+              { !isNil(post?.referendumIndex) && <ReferendumNavigationItem referendumIndex={ post.referendumIndex } /> }
             </ReferendaWrapper>
           )}
           {type === detailPageCategory.DEMOCRACY_REFERENDUM &&
-            post.externalProposalHash !== undefined && (
-              <ReferendaWrapper>
-                <Link
-                  passHref={true}
-                  href={`/democracy/external/${post.indexer.blockHeight}_${post.externalProposalHash}`}
-                >
-                  <a>
-                    {`External #${post?.externalProposalHash?.slice(0, 6)}`}
-                  </a>
-                </Link>
-                {post?.onchainData?.techCommMotions?.map(
-                  (techCommMotion, key) => (
-                    <div key={key}>
-                      <TriangleRight />
-                      <Link
-                        href={`/techcomm/proposal/${getMotionId(
-                          techCommMotion,
-                          chain
-                        )}`}
-                      >
-                        {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
-                      </Link>
-                    </div>
-                  )
-                )}
-                <div>
-                  <TriangleRight />
-                  <div>{`Referenda #${post?.referendumIndex}`}</div>
-                </div>
-              </ReferendaWrapper>
-            )}
-          {type === detailPageCategory.DEMOCRACY_REFERENDUM &&
             post.proposalIndex !== undefined && (
               <ReferendaWrapper>
-                <Link href={`/democracy/proposal/${post.proposalIndex}`}>
-                  {`Proposal #${post.proposalIndex}`}
-                </Link>
+                <DemocracyProposalNavigator proposalIndex={post.proposalIndex}/>
                 {post?.onchainData?.techCommMotions?.map(
-                  (techCommMotion, key) => (
-                    <div key={key}>
-                      <TriangleRight />
-                      <Link
-                        href={`/techcomm/proposal/${getMotionId(
-                          techCommMotion,
-                          chain
-                        )}`}
-                      >
-                        {`Tech. Comm. #${shortMotionId(techCommMotion)}`}
-                      </Link>
-                    </div>
-                  )
+                  (techCommMotion, key) =>
+                    <TechCommMotionNavigator motion={ techCommMotion } key={ key } />
                 )}
-                <div>
-                  <TriangleRight />
-                  <div>{`Referenda #${post?.referendumIndex}`}</div>
-                </div>
+                <ReferendumNavigationItem referendumIndex={post?.referendumIndex} isLink={false}/>
               </ReferendaWrapper>
             )}
           <TitleWrapper>
