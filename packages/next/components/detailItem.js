@@ -1,38 +1,17 @@
-import styled from "styled-components";
 import { useState } from "react";
 import ArticleContent from "next-common/components/articleContent";
 import { EditablePanel } from "next-common/components/styled/panel";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
 import PostTitle from "next-common/components/detail/common/Title";
 import PostMeta from "next-common/components/detail/container/Meta";
 import {
   CouncilMotionNavigator,
   DemocracyExternalNavigator,
   DemocracyProposalNavigator,
+  NavigationWrapper,
   ReferendumNavigationItem,
   TechCommMotionNavigator
 } from "next-common/components/detail/navigation/navigators";
-
-const ReferendaWrapper = styled(NoticeWrapper)`
-  > div {
-    display: flex;
-    align-items: center;
-  }
-
-  > div > svg {
-    margin-right: 8px;
-    fill: ${(props) => props.theme.textTertiary};
-  }
-
-  a {
-    color: ${(props) => props.theme.secondarySapphire500};
-  }
-
-  > :not(:first-child) {
-    margin-left: 8px;
-  }
-`;
 
 export default function DetailItem({
   data,
@@ -55,7 +34,7 @@ export default function DetailItem({
       {!isEdit && (
         <>
           {type === detailPageCategory.DEMOCRACY_EXTERNAL && (
-            <ReferendaWrapper>
+            <NavigationWrapper>
               {post?.onchainData?.motions?.map((motion, key) => (
                 <CouncilMotionNavigator key={ key } motion={ motion } hasTriangle={ false } />
               ))}
@@ -67,17 +46,17 @@ export default function DetailItem({
                 <CouncilMotionNavigator key={key} motion={motion}/>
               ))}
               <ReferendumNavigationItem referendumIndex={ post?.referendumIndex } />
-            </ReferendaWrapper>
+            </NavigationWrapper>
           )}
           { type === detailPageCategory.DEMOCRACY_PROPOSAL &&
-            <ReferendaWrapper>
+            <NavigationWrapper>
               <DemocracyProposalNavigator proposalIndex={post.proposalIndex} isLink={false}/>
               <ReferendumNavigationItem referendumIndex={ post?.referendumIndex }/>
-            </ReferendaWrapper>
+            </NavigationWrapper>
           }
           {type === detailPageCategory.DEMOCRACY_REFERENDUM &&
             post.externalProposalHash !== undefined && (
-              <ReferendaWrapper>
+              <NavigationWrapper>
                 {post?.onchainData?.motions?.map((motion, key) =>
                   <CouncilMotionNavigator key={key} motion={motion} hasTriangle={false}/>)}
                 <DemocracyExternalNavigator
@@ -94,14 +73,14 @@ export default function DetailItem({
                 ))}
 
                 <ReferendumNavigationItem referendumIndex={ post?.referendumIndex } isLink={ false } />
-              </ReferendaWrapper>
+              </NavigationWrapper>
             )}
           {type === detailPageCategory.DEMOCRACY_REFERENDUM &&
             post.proposalIndex !== undefined && (
-              <ReferendaWrapper>
+              <NavigationWrapper>
                 <DemocracyProposalNavigator proposalIndex={post.proposalIndex}/>
                 <ReferendumNavigationItem referendumIndex={ post?.referendumIndex } isLink={ false } />
-              </ReferendaWrapper>
+              </NavigationWrapper>
             )}
           {countDown}
           <PostTitle index={post.index} title={post.title}/>

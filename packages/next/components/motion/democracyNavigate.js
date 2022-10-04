@@ -1,41 +1,11 @@
-import styled from "styled-components";
 import Link from "next/link";
-import Flex from "next-common/components/styled/flex";
 import TriangleRight from "public/imgs/icons/arrow-triangle-right.svg";
 import { getUniqueMotionId } from "next-common/utils/motion";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import MotionNavigationItem from "./motionNavigationItem";
 import { useSelector } from "react-redux";
 import { chainSelector } from "next-common/store/reducers/chainSlice";
-
-const ReferendaWrapper = styled(Flex)`
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 12px;
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
-  margin-bottom: 16px;
-  font-weight: 500;
-  color: ${(props) => props.theme.textSecondary};
-
-  > div {
-    display: flex;
-    align-items: center;
-  }
-
-  > div > svg {
-    margin-right: 8px;
-    fill: ${(props) => props.theme.textTertiary};
-  }
-
-  a {
-    color: ${(props) => props.theme.secondarySapphire500};
-  }
-
-  > :not(:first-child) {
-    margin-left: 8px;
-  }
-`;
+import { NavigationWrapper } from "next-common/components/detail/navigation/navigators";
 
 export default function DemocracyNavigate({ motion }) {
   const chain = useSelector(chainSelector);
@@ -87,7 +57,7 @@ export default function DemocracyNavigate({ motion }) {
   const referendumIndex = external.referendumIndex;
 
   return (
-    <ReferendaWrapper>
+    <NavigationWrapper>
       { motionElements }
       <div>
         <TriangleRight />
@@ -109,6 +79,6 @@ export default function DemocracyNavigate({ motion }) {
           </Link>
         </div>
       )}
-    </ReferendaWrapper>
+    </NavigationWrapper>
   );
 }
