@@ -20,6 +20,7 @@ import UserWithLink from "next-common/components/user/userWithLink";
 import UpdatedTime from "next-common/components/detail/common/UpdatedTime";
 import { CollectiveTag } from "next-common/components/tags/state/collective";
 import PostTitle from "next-common/components/detail/common/Title";
+import TechCommNavigation from "./techCommNavigation";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -265,6 +266,7 @@ export default function TechcommMotionDetail({
         <div>
           {!isEdit && (
             <div>
+              <TechCommNavigation motion={motion}/>
               {motionEndHeader}
               <PostTitle index={motion?.motionIndex} title={motion?.title}/>
             </div>

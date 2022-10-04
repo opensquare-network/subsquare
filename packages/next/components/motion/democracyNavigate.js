@@ -5,6 +5,8 @@ import TriangleRight from "public/imgs/icons/arrow-triangle-right.svg";
 import { getUniqueMotionId } from "next-common/utils/motion";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import MotionNavigationItem from "./motionNavigationItem";
+import { useSelector } from "react-redux";
+import { chainSelector } from "next-common/store/reducers/chainSlice";
 
 const ReferendaWrapper = styled(Flex)`
   justify-content: center;
@@ -36,7 +38,7 @@ const ReferendaWrapper = styled(Flex)`
 `;
 
 export default function DemocracyNavigate({ motion }) {
-  const chain = process.env.NEXT_PUBLIC_CHAIN;
+  const chain = useSelector(chainSelector);
   if (motion?.externalProposals?.length !== 1 && motion?.operateExternals?.length !== 1) {
     return null;
   }
