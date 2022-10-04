@@ -211,14 +211,12 @@ export default function TechcommMotionDetail({
       <EditablePanel>
         <div>
           {!isEdit && (
-            <div>
+            <>
               <TechCommNavigation motion={motion}/>
               {motionEndHeader}
               <PostTitle index={motion?.motionIndex} title={motion?.title}/>
-            </div>
-          )}
-          {!isEdit && (
-            <PostMeta post={motion} type={type}/>
+              <PostMeta post={motion} type={type}/>
+            </>
           )}
           <ArticleContent
             chain={chain}
