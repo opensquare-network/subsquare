@@ -77,16 +77,13 @@ export function CouncilMotionNavigator({ motion, hasTriangle = true }) {
 export function TechCommMotionNavigator({motion = {}, isLink = true}) {
   const chain = useSelector(chainSelector);
 
-  let link = <Link
-    href={ `/techcomm/proposal/${ getMotionId(motion, chain) }` }
-  >
+  let link = <Link href={ `/techcomm/proposal/${ getMotionId(motion, chain) }` }>
     { `Tech. Comm. #${ shortMotionId(motion) }` }
   </Link>
 
   if (!isLink) {
     link = `External #${motion.hash?.slice(0, 6)}`
   }
-
 
   return <div>
     <TriangleRight />
