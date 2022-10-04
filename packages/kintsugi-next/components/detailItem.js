@@ -48,35 +48,6 @@ const TypeWrapper = styled.div`
     `}
 `;
 
-const ReferendaWrapper = styled(Flex)`
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 12px;
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
-  margin-bottom: 16px;
-  font-weight: 500;
-  color: ${(props) => props.theme.textSecondary};
-
-  > div {
-    display: flex;
-    align-items: center;
-  }
-
-  > div > svg {
-    margin-right: 8px;
-    fill: ${(props) => props.theme.textTertiary};
-  }
-
-  a {
-    color: ${(props) => props.theme.secondarySapphire500};
-  }
-
-  > :not(:first-child) {
-    margin-left: 8px;
-  }
-`;
-
 const getTypeColor = (type) => {
   switch (type) {
     case "Democracy":
