@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import Flex from "../../styled/flex";
 import User from "../../user";
@@ -7,6 +8,7 @@ import Info from "../../styled/info";
 import Tag from "../../tags/state/tag";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../../store/reducers/chainSlice";
+import isNil from "lodash.isnil";
 
 const FlexWrapper = styled(Flex)`
   justify-content: space-between;
@@ -28,6 +30,8 @@ const DividerWrapper = styled(Flex)`
 
 export default function PostMeta({ post, type }) {
   const chain = useSelector(chainSelector);
+  // fixme: kintsugi post has no commentsCount field
+  const noCommentsCount = isNil(post.commentsCount) && isNil(post.polkassemblyCommentsCount);
   const commentsCount =
     (post.commentsCount || 0) + (post.polkassemblyCommentsCount || 0);
 
@@ -41,7 +45,7 @@ export default function PostMeta({ post, type }) {
       />
       <TypeTag type={type}/>
       <UpdatedTime post={ post } />
-      {commentsCount > -1 && <Info>{`${commentsCount} Comments`}</Info>}
+      {(!noCommentsCount && commentsCount > -1) && <Info>{`${commentsCount} Comments`}</Info>}
     </DividerWrapper>
     {post.status && <Tag state={post.status} category={type} />}
   </FlexWrapper>

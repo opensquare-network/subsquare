@@ -1,36 +1,11 @@
-import styled from "styled-components";
 import { useState } from "react";
-
-import User from "next-common/components/user";
-import Tag from "next-common/components/tags/state/tag";
-import Flex from "next-common/components/styled/flex";
 import ArticleContent from "next-common/components/articleContent";
 import { EditablePanel } from "next-common/components/styled/panel";
-import Info from "next-common/components/styled/info";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import PostTitle from "next-common/components/detail/common/Title";
-import UpdatedTime from "next-common/components/detail/common/UpdatedTime";
 import { KintsugiDemocracyProposalNavigation } from "next-common/components/detail/navigation/democracyProposal";
 import { KintsugiReferendumNavigation } from "next-common/components/detail/navigation/ReferendumNavigation";
-import TypeTag from "next-common/components/detail/common/TypeTag";
-
-const DividerWrapper = styled(Flex)`
-  flex-wrap: wrap;
-
-  > :not(:first-child) {
-    ::before {
-      content: "·";
-      font-size: 12px;
-      color: ${(props) => props.theme.textTertiary};
-      margin: 0 8px;
-    }
-  }
-`;
-
-const FlexWrapper = styled(Flex)`
-  justify-content: space-between;
-  flex-wrap: nowrap;
-`;
+import PostMeta from "next-common/components/detail/container/Meta";
 
 export default function DetailItem({
   data,
@@ -54,22 +29,7 @@ export default function DetailItem({
           {type === detailPageCategory.DEMOCRACY_PROPOSAL && <KintsugiDemocracyProposalNavigation post={post}/>}
           { type === detailPageCategory.DEMOCRACY_REFERENDUM && <KintsugiReferendumNavigation post={ post } /> }
           <PostTitle index={post.index} title={post.title}/>
-          <FlexWrapper>
-            <DividerWrapper>
-              <User
-                user={post.author}
-                add={post.proposer || post.finder}
-                chain={chain}
-                fontSize={12}
-              />
-              <TypeTag type={type}/>
-              <UpdatedTime post={ post } />
-              {post.commentsCount > -1 && (
-                <Info>{`${post.commentsCount} Comments`}</Info>
-              )}
-            </DividerWrapper>
-            {post.status && <Tag state={post.status} category={type} />}
-          </FlexWrapper>
+          <PostMeta post={post} type={type}/>
         </>
       )}
       <ArticleContent
