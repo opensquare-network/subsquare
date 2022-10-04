@@ -44,9 +44,7 @@ export default function ArticleContent({ post, chain, type, postReactions }) {
       )}
       <MarkdownPreviewer content={post.content} />
       {post.createdAt !== post.updatedAt && <EditedLabel>Edited</EditedLabel>}
-      {["kusama", "polkadot"].includes(chain) && (
-        <PostDataSource type={type} post={post} />
-      )}
+      <PostDataSource type={type} post={post} />
       <Actions chain={chain} reactions={postReactions} />
     </Wrapper>
   );

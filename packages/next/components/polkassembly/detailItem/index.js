@@ -7,6 +7,7 @@ import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
 import { toPolkassemblyDiscussionAuthor } from "utils/viewfuncs";
 import useDuration from "next-common/utils/hooks/useDuration";
+import PostTitle from "next-common/components/detail/common/Title";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -15,36 +16,6 @@ const DividerWrapper = styled(Flex)`
     ::before {
       content: "·";
       font-size: 12px;
-      color: ${(props) => props.theme.textTertiary};
-      margin: 0 8px;
-    }
-  }
-`;
-
-const Index = styled.div`
-  float: left;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 140%;
-`;
-
-const Title = styled.div`
-  max-width: 750px;
-  word-break: break-all;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 140%;
-  margin-bottom: 12px;
-`;
-
-const TitleWrapper = styled.div`
-  margin-bottom: 8px;
-  overflow: hidden;
-  > :not(:first-child) {
-    ::before {
-      content: "·";
-      font-size: 20px;
-      line-height: 28px;
       color: ${(props) => props.theme.textTertiary};
       margin: 0 8px;
     }
@@ -67,10 +38,7 @@ export default function DetailItem({ data, chain, type, postReactions }) {
 
   return (
     <EditablePanel>
-      <TitleWrapper>
-        {post?.index !== undefined && <Index>{`#${post.index}`}</Index>}
-        <Title>{post.title?.trim() || "--"}</Title>
-      </TitleWrapper>
+      <PostTitle post={post}/>
       <FlexWrapper>
         <DividerWrapper>
           <User user={toPolkassemblyDiscussionAuthor(post.author, chain)} chain={chain} fontSize={12} />

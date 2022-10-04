@@ -1,88 +1,23 @@
 /* eslint-disable react/jsx-key */
 import styled from "styled-components";
 import Link from "next/link";
-import User from "next-common/components/user";
 import Timeline from "next-common/components/timeline";
 import { getNode, isMotionEnded, toPrecision, } from "next-common/utils";
 import findLastIndex from "lodash.findlastindex";
-import Flex from "next-common/components/styled/flex";
 import ArticleContent from "next-common/components/articleContent";
 import { useState } from "react";
 import { createMotionTimelineData } from "utils/timeline/motion";
-import { getPostUpdatedAt } from "utils/viewfuncs";
 import MultiKVList from "next-common/components/listInfo/multiKVList";
 import MotionEnd from "next-common/components/motionEnd";
 import { useSelector } from "react-redux";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { EditablePanel } from "next-common/components/styled/panel";
-import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
-import Info from "next-common/components/styled/info";
 import CollectiveMetadata from "next-common/components/collective/metadata";
 import UserWithLink from "next-common/components/user/userWithLink";
-import { DemocracyTag, TreasuryTag, } from "next-common/components/tags/business";
-import useDuration from "next-common/utils/hooks/useDuration";
-
-const DividerWrapper = styled(Flex)`
-  flex-wrap: wrap;
-
-  > :not(:first-child) {
-    ::before {
-      content: "·";
-      font-size: 12px;
-      color: ${(props) => props.theme.textTertiary};
-      margin: 0 8px;
-    }
-  }
-`;
-
-const TitleWrapper = styled.div`
-  margin-bottom: 8px;
-  overflow: hidden;
-
-  > :not(:first-child) {
-    ::before {
-      content: "·";
-      font-size: 20px;
-      line-height: 28px;
-      color: ${(props) => props.theme.textTertiary};
-      margin: 0 8px;
-    }
-  }
-`;
-
-const Title = styled.div`
-  max-width: 750px;
-  word-break: break-all;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 140%;
-  margin-bottom: 12px;
-`;
-
-const StatusWrapper = styled.div`
-  background: ${(props) => props.theme.secondaryAzure500};
-  border-radius: 2px;
-  font-weight: 500;
-  font-size: 12px;
-  height: 20px;
-  line-height: 20px;
-  padding: 0 8px;
-  color: ${(props) => props.theme.textContrast};
-`;
-
-const Index = styled.div`
-  float: left;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 140%;
-`;
-
-const FlexWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-`;
+import PostTitle from "next-common/components/detail/common/Title";
+import TechCommNavigation from "./techCommNavigation";
+import PostMeta from "next-common/components/detail/container/Meta";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -109,7 +44,7 @@ const MotionEndHeader = styled.div`
   color: ${(props) => props.theme.textSecondary};
 `;
 
-function createMotionBusinessData(motion, chain) {
+function createMotionBusinessData(motion) {
   const height = motion.state.indexer.blockHeight;
   return [
     [
@@ -183,8 +118,6 @@ export default function TechcommMotionDetail({
   const estimatedBlocksTime = useEstimateBlocksTime(
     blockHeight - motionEndHeight
   );
-  const postUpdateTime = getPostUpdatedAt(post);
-  const duration = useDuration(postUpdateTime);
   if (!node) {
     return null;
   }
@@ -278,44 +211,12 @@ export default function TechcommMotionDetail({
       <EditablePanel>
         <div>
           {!isEdit && (
-            <div>
+            <>
+              <TechCommNavigation motion={motion}/>
               {motionEndHeader}
-              <TitleWrapper>
-                {motion?.index !== undefined && (
-                  <Index>{`#${motion.index}`}</Index>
-                )}
-                <Title>{post?.title}</Title>
-              </TitleWrapper>
-            </div>
-          )}
-          {!isEdit && (
-            <FlexWrapper>
-              <DividerWrapper>
-                <User
-                  user={motion?.author}
-                  add={motion.proposer}
-                  chain={chain}
-                  fontSize={12}
-                />
-                {motion.isTreasury && (
-                  <div>
-                    <TreasuryTag />
-                  </div>
-                )}
-                {motion?.onchainData?.externalProposals?.length > 0 && (
-                  <div>
-                    <DemocracyTag />
-                  </div>
-                )}
-                {postUpdateTime && (
-                  <Info>
-                    <UpdateIcon />
-                    {duration}
-                  </Info>
-                )}
-              </DividerWrapper>
-              {motion.state && <StatusWrapper>{motion.state}</StatusWrapper>}
-            </FlexWrapper>
+              <PostTitle index={motion?.motionIndex} title={motion?.title}/>
+              <PostMeta post={motion} type={type}/>
+            </>
           )}
           <ArticleContent
             chain={chain}
