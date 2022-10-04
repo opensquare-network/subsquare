@@ -4,14 +4,9 @@ import { EditablePanel } from "next-common/components/styled/panel";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import PostTitle from "next-common/components/detail/common/Title";
 import PostMeta from "next-common/components/detail/container/Meta";
-import {
-  CouncilMotionNavigator,
-  DemocracyExternalNavigator,
-  DemocracyProposalNavigator,
-  NavigationWrapper,
-  ReferendumNavigationItem,
-  TechCommMotionNavigator
-} from "next-common/components/detail/navigation/navigators";
+import ExternalNavigation from "next-common/components/detail/navigation/external";
+import DemocracyProposalNavigation from "next-common/components/detail/navigation/democracyProposal";
+import ReferendumNavigation from "next-common/components/detail/navigation/ReferendumNavigation";
 
 export default function DetailItem({
   data,
@@ -33,55 +28,14 @@ export default function DetailItem({
     <EditablePanel>
       {!isEdit && (
         <>
-          {type === detailPageCategory.DEMOCRACY_EXTERNAL && (
-            <NavigationWrapper>
-              {post?.onchainData?.motions?.map((motion, key) => (
-                <CouncilMotionNavigator key={ key } motion={ motion } hasTriangle={ false } />
-              ))}
-              <DemocracyExternalNavigator hash={post?.externalProposalHash} isLink={false}/>
-              {post?.onchainData?.techCommMotions?.map(
-                (techCommMotion, key) => <TechCommMotionNavigator motion={ techCommMotion } key={ key } />
-              )}
-              {post?.onchainData?.councilMotions?.map((motion, key) => (
-                <CouncilMotionNavigator key={key} motion={motion}/>
-              ))}
-              <ReferendumNavigationItem referendumIndex={ post?.referendumIndex } />
-            </NavigationWrapper>
-          )}
-          { type === detailPageCategory.DEMOCRACY_PROPOSAL &&
-            <NavigationWrapper>
-              <DemocracyProposalNavigator proposalIndex={post.proposalIndex} isLink={false}/>
-              <ReferendumNavigationItem referendumIndex={ post?.referendumIndex }/>
-            </NavigationWrapper>
+          {type === detailPageCategory.DEMOCRACY_EXTERNAL && <ExternalNavigation post={post}/> }
+          {
+            type === detailPageCategory.DEMOCRACY_PROPOSAL && <DemocracyProposalNavigation
+              proposalIndex={ post.proposalIndex }
+              referendumIndex={ post?.referendumIndex }
+            />
           }
-          {type === detailPageCategory.DEMOCRACY_REFERENDUM &&
-            post.externalProposalHash !== undefined && (
-              <NavigationWrapper>
-                {post?.onchainData?.motions?.map((motion, key) =>
-                  <CouncilMotionNavigator key={key} motion={motion} hasTriangle={false}/>)}
-                <DemocracyExternalNavigator
-                  blockHeight={post.externalProposalIndexer?.blockHeight}
-                  hash={post.externalProposalHash}
-                />
-                {post?.onchainData?.techCommMotions?.map(
-                  (techCommMotion, key) => <TechCommMotionNavigator motion={ techCommMotion } key={ key } />
-                )}
-
-                {/* used for centrifuge/altair, they use council to fast_track external proposal */}
-                {post?.onchainData?.councilMotions?.map((motion, key) => (
-                  <CouncilMotionNavigator key={key} motion={motion} hasTriangle={false}/>
-                ))}
-
-                <ReferendumNavigationItem referendumIndex={ post?.referendumIndex } isLink={ false } />
-              </NavigationWrapper>
-            )}
-          {type === detailPageCategory.DEMOCRACY_REFERENDUM &&
-            post.proposalIndex !== undefined && (
-              <NavigationWrapper>
-                <DemocracyProposalNavigator proposalIndex={post.proposalIndex}/>
-                <ReferendumNavigationItem referendumIndex={ post?.referendumIndex } isLink={ false } />
-              </NavigationWrapper>
-            )}
+          {type === detailPageCategory.DEMOCRACY_REFERENDUM && <ReferendumNavigation post={post}/>}
           {countDown}
           <PostTitle index={post.index} title={post.title}/>
           <PostMeta post={post} type={type}/>
