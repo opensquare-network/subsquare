@@ -165,9 +165,12 @@ export default function DetailItem({
                 {post?.onchainData?.techCommMotions?.map(
                   (techCommMotion, key) => <TechCommMotionNavigator motion={ techCommMotion } key={ key } />
                 )}
+
+                {/* used for centrifuge/altair, they use council to fast_track external proposal */}
                 {post?.onchainData?.councilMotions?.map((motion, key) => (
                   <CouncilMotionNavigator key={key} motion={motion} hasTriangle={false}/>
                 ))}
+
                 <ReferendumNavigationItem referendumIndex={ post?.referendumIndex } isLink={ false } />
               </ReferendaWrapper>
             )}
