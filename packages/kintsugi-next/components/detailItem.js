@@ -12,6 +12,7 @@ import PostTitle from "next-common/components/detail/common/Title";
 import UpdatedTime from "next-common/components/detail/common/UpdatedTime";
 import { KintsugiDemocracyProposalNavigation } from "next-common/components/detail/navigation/democracyProposal";
 import { KintsugiReferendumNavigation } from "next-common/components/detail/navigation/ReferendumNavigation";
+import TypeTag from "next-common/components/detail/common/TypeTag";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -91,13 +92,7 @@ export default function DetailItem({
                 chain={chain}
                 fontSize={12}
               />
-              {post.type && (
-                <div>
-                  <TypeWrapper color={getTypeColor(post.type)}>
-                    {post.type}
-                  </TypeWrapper>
-                </div>
-              )}
+              <TypeTag type={type}/>
               <UpdatedTime post={ post } />
               {post.commentsCount > -1 && (
                 <Info>{`${post.commentsCount} Comments`}</Info>

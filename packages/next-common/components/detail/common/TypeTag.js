@@ -1,3 +1,4 @@
+import React from "react";
 import { detailPageCategory } from "../../../utils/consts/business/category";
 import { DemocracyTag, TreasuryTag } from "../../tags/business";
 
