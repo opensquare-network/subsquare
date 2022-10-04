@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useState } from "react";
 
 import User from "next-common/components/user";
@@ -31,36 +31,6 @@ const FlexWrapper = styled(Flex)`
   justify-content: space-between;
   flex-wrap: nowrap;
 `;
-
-const TypeWrapper = styled.div`
-  display: inline-block;
-  height: 20px;
-  line-height: 20px;
-  border-radius: 10px;
-  background: ${(props) => props.theme.primaryDarkBlue};
-  color: ${(props) => props.theme.secondaryPink500};
-  font-weight: 500;
-  font-size: 12px;
-  padding: 0 8px;
-  ${(p) =>
-    p.color &&
-    css`
-      background: ${p.color};
-    `}
-`;
-
-const getTypeColor = (type) => {
-  switch (type) {
-    case "Democracy":
-      return "linear-gradient(0deg, #FEF4F7, #FEF4F7), #E81F66";
-    case "Council":
-      return "#E81F66";
-    case "Treasury":
-      return "#FF9800";
-    default:
-      return null;
-  }
-};
 
 export default function DetailItem({
   data,
