@@ -57,13 +57,14 @@ function ReferendumNavigationItem({referendumIndex, isLink = true}) {
   </div>
 }
 
-function DemocracyPublicProposalNavigator({post}) {
-  return (
-    <ReferendaWrapper>
-      <div>{`Proposal #${post.proposalIndex}`}</div>
-      <ReferendumNavigationItem referendumIndex={ post?.referendumIndex }/>
-    </ReferendaWrapper>
-  )
+function DemocracyProposalNavigator({proposalIndex, isLink = true}) {
+  if (!isLink) {
+    return <div>{`Proposal #${proposalIndex}`}</div>
+  }
+
+  return <Link href={`/democracy/proposal/${proposalIndex}`}>
+    {`Proposal #${proposalIndex}`}
+  </Link>
 }
 
 function DemocracyExternalNavigator({blockHeight, hash = "", isLink = true}) {
@@ -146,7 +147,12 @@ export default function DetailItem({
               <ReferendumNavigationItem referendumIndex={ post?.referendumIndex } />
             </ReferendaWrapper>
           )}
-          { type === detailPageCategory.DEMOCRACY_PROPOSAL && <DemocracyPublicProposalNavigator post={ post } /> }
+          { type === detailPageCategory.DEMOCRACY_PROPOSAL &&
+            <ReferendaWrapper>
+              <DemocracyProposalNavigator proposalIndex={post.proposalIndex} isLink={false}/>
+              <ReferendumNavigationItem referendumIndex={ post?.referendumIndex }/>
+            </ReferendaWrapper>
+          }
           {type === detailPageCategory.DEMOCRACY_REFERENDUM &&
             post.externalProposalHash !== undefined && (
               <ReferendaWrapper>
@@ -168,9 +174,7 @@ export default function DetailItem({
           {type === detailPageCategory.DEMOCRACY_REFERENDUM &&
             post.proposalIndex !== undefined && (
               <ReferendaWrapper>
-                <Link href={`/democracy/proposal/${post.proposalIndex}`}>
-                  {`Proposal #${post.proposalIndex}`}
-                </Link>
+                <DemocracyProposalNavigator proposalIndex={post.proposalIndex}/>
                 <ReferendumNavigationItem referendumIndex={ post?.referendumIndex } isLink={ false } />
               </ReferendaWrapper>
             )}
