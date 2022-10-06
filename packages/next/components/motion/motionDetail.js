@@ -18,6 +18,7 @@ import PostEdit from "next-common/components/post/postEdit";
 import updatePost from "next-common/utils/viewfuncs/updatePost";
 
 export default function MotionDetail({ user, motion, onReply, chain, type }) {
+  const api = useApi(chain);
   const isMounted = useIsMounted();
 
   const [post, setPost] = useState(motion);
@@ -28,23 +29,12 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
     }
   }, [motion, isMounted]);
 
-  const [isEdit, setIsEdit] = useState(false);
-
-  if (isEdit) {
-    return <PostEdit
-      postData={ post }
-      setIsEdit={ setIsEdit }
-      updatePost={ () => updatePost(type, post._id, setPost) }
-      type={ type }
-    />
-  }
-
-  const api = useApi(chain);
-
   const votingMethod = api?.query?.[toApiCouncil(chain, type)]?.voting;
   const membersMethod = api?.query?.[toApiCouncil(chain, type)]?.members;
-
   const voters = useCall(membersMethod, [])?.toJSON() || [];
+
+  const [isEdit, setIsEdit] = useState(false);
+
   const userCanVote = voters?.some((address) =>
     isSameAddress(user?.address, address)
   );
@@ -127,6 +117,15 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
   const updateVotes = useCallback(() => {
     setReadOnchainVotes(Date.now());
   }, []);
+
+  if (isEdit) {
+    return <PostEdit
+      postData={ post }
+      setIsEdit={ setIsEdit }
+      updatePost={ () => updatePost(type, post._id, setPost) }
+      type={ type }
+    />
+  }
 
   return (
     <div>
