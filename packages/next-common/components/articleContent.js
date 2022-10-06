@@ -154,7 +154,6 @@ export default function ArticleContent({
       )}
       {isEdit && (
         <PostEdit
-          chain={chain}
           postData={post}
           setIsEdit={setIsEdit}
           updatePost={updatePost}

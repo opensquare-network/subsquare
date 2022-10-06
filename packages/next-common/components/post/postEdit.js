@@ -31,7 +31,6 @@ const UploaderWrapper = styled.div`
 `;
 
 export default function PostEdit({
-  chain,
   postData,
   setIsEdit,
   updatePost,
