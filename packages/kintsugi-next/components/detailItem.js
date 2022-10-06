@@ -35,14 +35,10 @@ export default function DetailItem({
 
   return (
     <EditablePanel>
-      {!isEdit && (
-        <>
-          {type === detailPageCategory.DEMOCRACY_PROPOSAL && <KintsugiDemocracyProposalNavigation post={post}/>}
-          { type === detailPageCategory.DEMOCRACY_REFERENDUM && <KintsugiReferendumNavigation post={ post } /> }
-          <PostTitle index={post.index} title={post.title}/>
-          <PostMeta post={post} type={type}/>
-        </>
-      )}
+      {type === detailPageCategory.DEMOCRACY_PROPOSAL && <KintsugiDemocracyProposalNavigation post={post}/>}
+      { type === detailPageCategory.DEMOCRACY_REFERENDUM && <KintsugiReferendumNavigation post={ post } /> }
+      <PostTitle index={post.index} title={post.title}/>
+      <PostMeta post={post} type={type}/>
       <ArticleContent
         chain={chain}
         post={post}
