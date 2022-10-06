@@ -75,6 +75,15 @@ export default function ArticleContent({
     }
   };
 
+  if (isEdit) {
+    return <PostEdit
+      postData={ post }
+      setIsEdit={ setIsEdit }
+      updatePost={ updatePost }
+      type={ type }
+    />
+  }
+
   const toggleThumbUp = async () => {
     if (isLoggedIn && !ownPost && !thumbUpLoading) {
       setThumbUpLoading(true);
@@ -109,57 +118,45 @@ export default function ArticleContent({
 
   return (
     <Wrapper>
-      {!isEdit && (
+      <Divider margin={16} />
+      {post.content === "" && (
+        <NonEdited type={type} isAuthor={ownPost} setIsEdit={setIsEdit} authors={post.authors}/>
+      )}
+      {bannerUrl && (
+        <BannerImage src={bannerUrl} alt="banner image" />
+      )}
+      {post.contentType === "markdown" && (
+        <MarkdownPreviewer content={post.content} />
+      )}
+      {post.contentType === "html" && (
+        <HtmlPreviewer content={post.content} />
+      )}
+      {post.createdAt !== post.updatedAt && (
+        <EditedLabel>Edited</EditedLabel>
+      )}
+      {post.poll && (
         <>
           <Divider margin={16} />
-          {post.content === "" && (
-            <NonEdited type={type} isAuthor={ownPost} setIsEdit={setIsEdit} authors={post.authors}/>
-          )}
-          {bannerUrl && (
-            <BannerImage src={bannerUrl} alt="banner image" />
-          )}
-          {post.contentType === "markdown" && (
-            <MarkdownPreviewer content={post.content} />
-          )}
-          {post.contentType === "html" && (
-            <HtmlPreviewer content={post.content} />
-          )}
-          {post.createdAt !== post.updatedAt && (
-            <EditedLabel>Edited</EditedLabel>
-          )}
-          {post.poll && (
-            <>
-              <Divider margin={16} />
-              <Poll
-                chain={chain}
-                poll={post.poll}
-                votes={votes}
-                myVote={myVote}
-              />
-            </>
-          )}
-          <PostDataSource type={type} post={post} />
-          <ArticleActions
+          <Poll
             chain={chain}
-            highlight={isLoggedIn && thumbUp}
-            noHover={!isLoggedIn || ownPost}
-            edit={ownPost}
-            setIsEdit={setIsEdit}
-            toggleThumbUp={toggleThumbUp}
-            reactions={post?.reactions}
-            onReply={onReply}
-            share2SNStext={getShare2SNStext(post, type)}
+            poll={post.poll}
+            votes={votes}
+            myVote={myVote}
           />
         </>
       )}
-      {isEdit && (
-        <PostEdit
-          postData={post}
-          setIsEdit={setIsEdit}
-          updatePost={updatePost}
-          type={type}
-        />
-      )}
+      <PostDataSource type={type} post={post} />
+      <ArticleActions
+        chain={chain}
+        highlight={isLoggedIn && thumbUp}
+        noHover={!isLoggedIn || ownPost}
+        edit={ownPost}
+        setIsEdit={setIsEdit}
+        toggleThumbUp={toggleThumbUp}
+        reactions={post?.reactions}
+        onReply={onReply}
+        share2SNStext={getShare2SNStext(post, type)}
+      />
     </Wrapper>
   );
 }
