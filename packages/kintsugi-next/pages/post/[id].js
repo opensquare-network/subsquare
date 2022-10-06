@@ -90,6 +90,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
       votes,
       myVote: myVote ?? null,
       chain,
+      redux: {
+        detail,
+        detailType: detailPageCategory.POST
+      },
     },
   };
 });

@@ -5,6 +5,9 @@ import Flex from "../styled/flex";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import copy from "copy-to-clipboard";
 import { OptionItem, OptionWrapper } from "../internalDropdown/styled";
+import { useSelector } from "react-redux";
+import { detailTypeSelector, postSelector } from "../../store/reducers/postSlice";
+import { getShare2SNStext } from "../../utils/post/share";
 
 const ShareIcon = styled(ShareSvg)``;
 
@@ -37,7 +40,11 @@ const ShareItem = styled.span`
   cursor: pointer;
 `;
 
-export default function Share({ share2SNStext = "" }) {
+export default function Share() {
+  const post = useSelector(postSelector);
+  const type = useSelector(detailTypeSelector);
+  const text = getShare2SNStext(post, type);
+
   const ref = useRef();
   const [copyState, setCopyState] = useState(false);
   const [showShare, setShowShare] = useState(false);
@@ -57,7 +64,7 @@ export default function Share({ share2SNStext = "" }) {
       "https://twitter.com/share?url=" +
       encodeURIComponent(window.location.href) +
       "&text=" +
-      encodeURIComponent(share2SNStext ?? document.title);
+      encodeURIComponent(text ?? document.title);
     window.open(url, "_blank");
   };
 

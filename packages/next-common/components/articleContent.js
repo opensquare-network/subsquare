@@ -136,7 +136,6 @@ export default function ArticleContent({
         toggleThumbUp={toggleThumbUp}
         reactions={post?.reactions}
         onReply={onReply}
-        share2SNStext={getShare2SNStext(post, type)}
       />
     </Wrapper>
   );
