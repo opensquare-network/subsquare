@@ -139,7 +139,6 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
           user={user}
           onReply={onReply}
           type={type}
-          isEdit={isEdit}
           setIsEdit={setIsEdit}
         />
       </EditablePanel>

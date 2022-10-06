@@ -57,7 +57,6 @@ export default function DetailItem({
         user={user}
         type={type}
         onReply={onReply}
-        isEdit={isEdit}
         setIsEdit={setIsEdit}
       />
     </EditablePanel>

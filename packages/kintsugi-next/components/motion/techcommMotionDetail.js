@@ -233,7 +233,6 @@ export default function TechcommMotionDetail({
             user={loginUser}
             onReply={onReply}
             type={type}
-            isEdit={isEdit}
             setIsEdit={setIsEdit}
           />
         </div>
