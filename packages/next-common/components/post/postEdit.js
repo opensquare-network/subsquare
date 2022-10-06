@@ -9,8 +9,9 @@ import ToggleText from "../uploadBanner/toggleText";
 import Uploader from "../uploadBanner/uploader";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
 import { TitleContainer } from "../styled/containers/titleContainer";
+import { EditablePanel } from "../styled/panel";
 
-const Wrapper = styled.div`
+const Wrapper = styled(EditablePanel)`
   textarea:read-only,
   div.ql-disabled {
     background-color: ${(props) => props.theme.grey100Bg} !important;
@@ -104,7 +105,6 @@ export default function PostEdit({
         loading={updating}
         setLoading={setUpdating}
         update={editPost}
-        type={type}
       />
     </Wrapper>
   );

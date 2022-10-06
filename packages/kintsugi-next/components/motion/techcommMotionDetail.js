@@ -18,6 +18,8 @@ import UserWithLink from "next-common/components/user/userWithLink";
 import PostTitle from "next-common/components/detail/common/Title";
 import TechCommNavigation from "./techCommNavigation";
 import PostMeta from "next-common/components/detail/container/Meta";
+import PostEdit from "next-common/components/post/postEdit";
+import updatePost from "next-common/utils/viewfuncs/updatePost";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -121,6 +123,16 @@ export default function TechcommMotionDetail({
   if (!node) {
     return null;
   }
+
+  if (isEdit) {
+    return <PostEdit
+      postData={ post }
+      setIsEdit={ setIsEdit }
+      updatePost={ () => updatePost(type, post._id, setPost) }
+      type={ type }
+    />
+  }
+
   const decimals = node.decimals;
   const symbol = node.symbol;
   const treasuryProposalMeta = motion.treasuryProposal?.meta;
@@ -210,14 +222,10 @@ export default function TechcommMotionDetail({
     <div>
       <EditablePanel>
         <div>
-          {!isEdit && (
-            <>
-              <TechCommNavigation motion={motion}/>
-              {motionEndHeader}
-              <PostTitle index={motion?.motionIndex} title={motion?.title}/>
-              <PostMeta post={motion} type={type}/>
-            </>
-          )}
+          <TechCommNavigation motion={motion}/>
+          {motionEndHeader}
+          <PostTitle index={motion?.motionIndex} title={motion?.title}/>
+          <PostMeta post={motion} type={type}/>
           <ArticleContent
             chain={chain}
             post={post}

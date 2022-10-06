@@ -14,6 +14,7 @@ import Divider from "./styled/layout/divider";
 import { getShare2SNStext } from "../utils/post/share";
 import { getBannerUrl } from "../utils/banner";
 import NonEdited from "./detail/common/NonEdited";
+import updatePost from "../utils/viewfuncs/updatePost";
 
 const Wrapper = styled(RichTextStyleWrapper)`
   :hover {
@@ -40,11 +41,9 @@ export default function ArticleContent({
   post,
   votes,
   myVote,
-  setPost,
   chain,
   onReply,
   type,
-  isEdit,
   setIsEdit,
 }) {
   const dispatch = useDispatch();
@@ -66,23 +65,6 @@ export default function ArticleContent({
   const thumbUp =
     isLoggedIn &&
     post.reactions?.findIndex((r) => r.user?.username === user.username) > -1;
-
-  const updatePost = async () => {
-    const url = `${toApiType(type)}/${post._id}`;
-    const { result: newPost } = await nextApi.fetch(url);
-    if (newPost) {
-      setPost(newPost);
-    }
-  };
-
-  if (isEdit) {
-    return <PostEdit
-      postData={ post }
-      setIsEdit={ setIsEdit }
-      updatePost={ updatePost }
-      type={ type }
-    />
-  }
 
   const toggleThumbUp = async () => {
     if (isLoggedIn && !ownPost && !thumbUpLoading) {

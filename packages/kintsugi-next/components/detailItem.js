@@ -6,6 +6,8 @@ import PostTitle from "next-common/components/detail/common/Title";
 import { KintsugiDemocracyProposalNavigation } from "next-common/components/detail/navigation/democracyProposal";
 import { KintsugiReferendumNavigation } from "next-common/components/detail/navigation/ReferendumNavigation";
 import PostMeta from "next-common/components/detail/container/Meta";
+import PostEdit from "next-common/components/post/postEdit";
+import updatePost from "next-common/utils/viewfuncs/updatePost";
 
 export default function DetailItem({
   data,
@@ -20,6 +22,15 @@ export default function DetailItem({
   const [isEdit, setIsEdit] = useState(false);
   if (!post) {
     return null;
+  }
+
+  if (isEdit) {
+    return <PostEdit
+      postData={ post }
+      setIsEdit={ setIsEdit }
+      updatePost={ () => updatePost(type, post._id, setPost) }
+      type={ type }
+    />
   }
 
   return (
