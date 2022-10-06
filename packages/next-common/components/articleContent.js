@@ -10,7 +10,6 @@ import Poll from "./poll";
 import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
 import RichTextStyleWrapper from "./content/richTextStyleWrapper";
 import Divider from "./styled/layout/divider";
-import { getShare2SNStext } from "../utils/post/share";
 import { getBannerUrl } from "../utils/banner";
 import NonEdited from "./detail/common/NonEdited";
 import updatePost from "../utils/viewfuncs/updatePost";
@@ -44,6 +43,7 @@ export default function ArticleContent({
   onReply,
   type,
   setIsEdit,
+  setPost,
 }) {
   const dispatch = useDispatch();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
@@ -84,7 +84,7 @@ export default function ArticleContent({
         }
 
         if (result) {
-          await updatePost();
+          await updatePost(type, post._id, setPost);
         }
         if (error) {
           dispatch(newErrorToast(error.message));
@@ -126,7 +126,7 @@ export default function ArticleContent({
           />
         </>
       )}
-      <PostDataSource type={type} post={post} />
+      <PostDataSource />
       <ArticleActions
         chain={chain}
         highlight={isLoggedIn && thumbUp}
