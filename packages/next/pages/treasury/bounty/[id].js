@@ -68,8 +68,6 @@ export default withLoginUserRedux(
     const decimals = node.decimals;
     const symbol = node.symbol;
 
-    detail.status = detail.onchainData?.state?.state;
-
     const desc = getMetaDesc(detail);
     return (
       <DetailLayout

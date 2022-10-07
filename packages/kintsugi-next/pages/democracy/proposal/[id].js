@@ -44,8 +44,6 @@ export default withLoginUserRedux(
 
     const referendumIndex = detail?.referendumIndex;
 
-    detail.status = detail.onchainData?.state?.state;
-
     const desc = getMetaDesc(detail);
     return (
       <DetailWithRightLayout

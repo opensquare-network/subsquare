@@ -28,8 +28,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     return null;
   }
 
-  detail.status = detail?.onchainData?.state?.state;
-
   const desc = getMetaDesc(detail);
   return (
     <DetailLayout

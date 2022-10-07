@@ -36,8 +36,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   useMaybeFetchElectorate(detail?.onchainData, api);
   useFetchVotes(detail?.onchainData, api);
 
-  detail.status = detail?.onchainData?.state?.state;
-
   const desc = getMetaDesc(detail);
 
   return (

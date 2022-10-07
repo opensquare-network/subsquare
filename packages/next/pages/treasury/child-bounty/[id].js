@@ -99,8 +99,6 @@ export default withLoginUserRedux(
       dispatch(newPendingToast(toastId, "Waiting to sync on-chain data..."));
     }, [dispatch, toastId]);
 
-    detail.status = detail.onchainData?.state?.state;
-
     const desc = getMetaDesc(detail);
     return (
       <DetailWithRightLayout

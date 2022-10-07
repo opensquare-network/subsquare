@@ -24,4 +24,8 @@ export const postAuthorsSelector = createSelector(postSelector, post => {
   return post?.authors
 });
 
+export const postStateSelector = createSelector(postSelector, post => {
+  return post?.onchainData?.state?.state
+})
+
 export default postSlice.reducer;
