@@ -7,6 +7,8 @@ import PostMeta from "next-common/components/detail/container/Meta";
 import ExternalNavigation from "next-common/components/detail/navigation/external";
 import DemocracyProposalNavigation from "next-common/components/detail/navigation/democracyProposal";
 import ReferendumNavigation from "next-common/components/detail/navigation/ReferendumNavigation";
+import PostEdit from "next-common/components/post/postEdit";
+import updatePost from "next-common/utils/viewfuncs/updatePost";
 
 export default function DetailItem({
   data,
@@ -24,23 +26,28 @@ export default function DetailItem({
     return null;
   }
 
+  if (isEdit) {
+    return <PostEdit
+      postData={ post }
+      setIsEdit={ setIsEdit }
+      updatePost={ () => updatePost(type, post._id, setPost) }
+      type={ type }
+    />
+  }
+
   return (
     <EditablePanel>
-      {!isEdit && (
-        <>
-          {type === detailPageCategory.DEMOCRACY_EXTERNAL && <ExternalNavigation post={post}/> }
-          {
-            type === detailPageCategory.DEMOCRACY_PROPOSAL && <DemocracyProposalNavigation
-              proposalIndex={ post.proposalIndex }
-              referendumIndex={ post?.referendumIndex }
-            />
-          }
-          {type === detailPageCategory.DEMOCRACY_REFERENDUM && <ReferendumNavigation post={post}/>}
-          {countDown}
-          <PostTitle index={post.index} title={post.title}/>
-          <PostMeta post={post} type={type}/>
-        </>
-      )}
+      {type === detailPageCategory.DEMOCRACY_EXTERNAL && <ExternalNavigation post={post}/> }
+      {
+        type === detailPageCategory.DEMOCRACY_PROPOSAL && <DemocracyProposalNavigation
+          proposalIndex={ post.proposalIndex }
+          referendumIndex={ post?.referendumIndex }
+        />
+      }
+      {type === detailPageCategory.DEMOCRACY_REFERENDUM && <ReferendumNavigation post={post}/>}
+      {countDown}
+      <PostTitle index={post.index} title={post.title}/>
+      <PostMeta post={post} type={type}/>
       <ArticleContent
         chain={chain}
         post={post}
@@ -50,7 +57,6 @@ export default function DetailItem({
         user={user}
         type={type}
         onReply={onReply}
-        isEdit={isEdit}
         setIsEdit={setIsEdit}
       />
     </EditablePanel>

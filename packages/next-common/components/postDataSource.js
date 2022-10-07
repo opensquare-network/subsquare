@@ -5,6 +5,7 @@ import { detailPageCategory } from "../utils/consts/business/category";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../store/reducers/chainSlice";
 import Chains from "../utils/consts/chains";
+import { detailTypeSelector, postSelector } from "../store/reducers/postSlice";
 
 const ExternalReference = styled.div`
   display: flex;
@@ -69,8 +70,11 @@ function getPolkassemblyLink(type, post) {
   }
 }
 
-export default function PostDataSource({ type, post }) {
+export default function PostDataSource() {
+  const post = useSelector(postSelector);
+  const type = useSelector(detailTypeSelector);
   const chain = useSelector(chainSelector)
+
   if (![Chains.kusama, Chains.polkadot].includes(chain)) {
     return null;
   }

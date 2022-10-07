@@ -71,6 +71,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
+      redux: {
+        detail,
+        detailType: detailPageCategory.TREASURY_PROPOSAL,
+      },
     },
   };
 });

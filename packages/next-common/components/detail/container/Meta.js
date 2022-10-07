@@ -34,7 +34,14 @@ export default function PostMeta({ post, type }) {
   const noCommentsCount = isNil(post.commentsCount) && isNil(post.polkassemblyCommentsCount);
   const commentsCount =
     (post.commentsCount || 0) + (post.polkassemblyCommentsCount || 0);
-  let state = post.status || post.state;
+  let state = post.status;
+  if (!state) {
+    if (typeof post.state === 'object') {
+      state = post.state.state;
+    } else if (typeof post.state === 'string') {
+      state = post.state;
+    }
+  }
 
   return <FlexWrapper>
     <DividerWrapper>

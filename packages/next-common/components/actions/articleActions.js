@@ -15,7 +15,6 @@ export default function ArticleActions({
   reactions,
   edit,
   setIsEdit,
-  share2SNStext = "",
 }) {
   const { ThumbsUpComponent, showThumbsUpList } = useThumbsUp({
     count: reactions?.length,
@@ -29,7 +28,7 @@ export default function ArticleActions({
       <Wrapper>
         <ReplyButton onReply={onReply} noHover={noHover} />
         {ThumbsUpComponent}
-        <Share share2SNStext={share2SNStext} />
+        <Share />
         {edit && <ContentMenu edit={edit} setIsEdit={setIsEdit} alwaysShow />}
       </Wrapper>
 
