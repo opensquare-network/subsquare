@@ -59,6 +59,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       detail,
       chain,
+      redux: {
+        detail,
+        detailType: detailPageCategory.PA_POST,
+      },
     },
   };
 });
