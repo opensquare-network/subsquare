@@ -224,7 +224,7 @@ export default function TechcommMotionDetail({
           <TechCommNavigation motion={motion}/>
           {motionEndHeader}
           <PostTitle index={motion?.motionIndex} title={motion?.title}/>
-          <PostMeta post={motion} />
+          <PostMeta />
           <ArticleContent
             chain={chain}
             post={post}

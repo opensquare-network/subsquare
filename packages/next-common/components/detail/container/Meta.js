@@ -9,7 +9,7 @@ import Tag from "../../tags/state/tag";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../../store/reducers/chainSlice";
 import isNil from "lodash.isnil";
-import { detailTypeSelector, postStateSelector } from "../../../store/reducers/postSlice";
+import { detailTypeSelector, postSelector, postStateSelector } from "../../../store/reducers/postSlice";
 
 const FlexWrapper = styled(Flex)`
   justify-content: space-between;
@@ -29,10 +29,11 @@ const DividerWrapper = styled(Flex)`
   }
 `;
 
-export default function PostMeta({ post }) {
+export default function PostMeta() {
   const chain = useSelector(chainSelector);
   const postState = useSelector(postStateSelector);
   const detailType = useSelector(detailTypeSelector)
+  const post = useSelector(postSelector);
   // fixme: kintsugi post has no commentsCount field
   const noCommentsCount = isNil(post.commentsCount) && isNil(post.polkassemblyCommentsCount);
   const commentsCount =
