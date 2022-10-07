@@ -45,7 +45,7 @@ export default function DetailItem({
       }
       {type === detailPageCategory.DEMOCRACY_REFERENDUM && <ReferendumNavigation post={post}/>}
       {countDown}
-      <PostTitle index={post.index} title={post.title}/>
+      <PostTitle />
       <PostMeta />
       <ArticleContent
         chain={chain}

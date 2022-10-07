@@ -74,7 +74,7 @@ export default function MotionHead({ motion, chain, type }) {
     <div>
       <DemocracyNavigate motion={motion.onchainData} />
       {motionEndHeader}
-      <PostTitle index={motion?.motionIndex} title={motion?.title}/>
+      <PostTitle />
       <FlexWrapper>
         <DividerWrapper>
           <User

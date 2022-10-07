@@ -36,7 +36,7 @@ export default function DetailItem({
     <EditablePanel>
       {type === detailPageCategory.DEMOCRACY_PROPOSAL && <KintsugiDemocracyProposalNavigation post={post}/>}
       { type === detailPageCategory.DEMOCRACY_REFERENDUM && <KintsugiReferendumNavigation post={ post } /> }
-      <PostTitle index={post.index} title={post.title}/>
+      <PostTitle />
       <PostMeta />
       <ArticleContent
         chain={chain}

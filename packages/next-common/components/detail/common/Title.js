@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import isNil from "lodash.isnil";
+import { useSelector } from "react-redux";
+import { postSelector } from "../../../store/reducers/postSlice";
 
 const TitleWrapper = styled.div`
   margin-bottom: 8px;
@@ -32,7 +34,11 @@ const Index = styled.div`
   line-height: 140%;
 `;
 
-export default function PostTitle({ index, title = "" }) {
+export default function PostTitle() {
+  const post = useSelector(postSelector)
+  const index = post.index || post.motionIndex;
+  const title = post.title;
+
   return (
     <TitleWrapper>
       {!isNil(index) && <Index>{`#${index}`}</Index>}
