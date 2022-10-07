@@ -9,6 +9,7 @@ import Tag from "../../tags/state/tag";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../../store/reducers/chainSlice";
 import isNil from "lodash.isnil";
+import { detailTypeSelector, postSelector, postStateSelector } from "../../../store/reducers/postSlice";
 
 const FlexWrapper = styled(Flex)`
   justify-content: space-between;
@@ -28,20 +29,15 @@ const DividerWrapper = styled(Flex)`
   }
 `;
 
-export default function PostMeta({ post, type }) {
+export default function PostMeta() {
   const chain = useSelector(chainSelector);
+  const postState = useSelector(postStateSelector);
+  const detailType = useSelector(detailTypeSelector)
+  const post = useSelector(postSelector);
   // fixme: kintsugi post has no commentsCount field
   const noCommentsCount = isNil(post.commentsCount) && isNil(post.polkassemblyCommentsCount);
   const commentsCount =
     (post.commentsCount || 0) + (post.polkassemblyCommentsCount || 0);
-  let state = post.status;
-  if (!state) {
-    if (typeof post.state === 'object') {
-      state = post.state.state;
-    } else if (typeof post.state === 'string') {
-      state = post.state;
-    }
-  }
 
   return <FlexWrapper>
     <DividerWrapper>
@@ -51,10 +47,10 @@ export default function PostMeta({ post, type }) {
         chain={chain}
         fontSize={12}
       />
-      <TypeTag type={type}/>
+      <TypeTag type={detailType}/>
       <UpdatedTime post={ post } />
       {(!noCommentsCount && commentsCount > -1) && <Info>{`${commentsCount} Comments`}</Info>}
     </DividerWrapper>
-    {state && <Tag state={state} category={type} />}
+    {postState && <Tag state={postState} category={detailType} />}
   </FlexWrapper>
 }

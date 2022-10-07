@@ -39,8 +39,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     ? lastTimelineBlockHeight - 1
     : undefined;
 
-  detail.status = detail?.onchainData?.state?.state;
-
   const desc = getMetaDesc(detail);
   return (
     <DetailWithRightLayout

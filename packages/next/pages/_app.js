@@ -36,7 +36,7 @@ Router.events.on(
 function MyApp({ Component, pageProps }) {
   const { redux: { detail, detailType } = {} } = pageProps || {};
   if (detail && detailType) {
-    store.dispatch(setPost({ ...pageProps.detail }));
+    store.dispatch(setPost({ ...detail }));
     store.dispatch(setDetailType(detailType));
   }
 

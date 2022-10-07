@@ -38,8 +38,6 @@ export default withLoginUserRedux(
     useMaybeFetchElectorate(detail?.onchainData, api);
     useFetchVotes(detail?.onchainData, api);
 
-    detail.status = detail.onchainData?.state?.state;
-
     const proposalData = getDemocracyTimelineData(
       publicProposal?.onchainData?.timeline || [],
       chain,

@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toApiType } from "next-common/utils/viewfuncs";
 import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import ArticleActions from "./actions/articleActions";
 import PostDataSource from "./postDataSource";
 import Poll from "./poll";
-import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
 import RichTextStyleWrapper from "./content/richTextStyleWrapper";
 import Divider from "./styled/layout/divider";
 import { getBannerUrl } from "../utils/banner";
 import NonEdited from "./detail/common/NonEdited";
 import updatePost from "../utils/viewfuncs/updatePost";
+import PostContent from "./detail/common/PostContent";
+import { isLoginSelector } from "../store/reducers/userSlice";
+import { isPostAuthorSelector, thumbsUpSelector } from "../store/selectors/post";
 
 const Wrapper = styled(RichTextStyleWrapper)`
   :hover {
@@ -35,7 +37,6 @@ const BannerImage = styled.img`
 `;
 
 export default function ArticleContent({
-  user,
   post,
   votes,
   myVote,
@@ -43,7 +44,6 @@ export default function ArticleContent({
   onReply,
   type,
   setIsEdit,
-  setPost,
 }) {
   const dispatch = useDispatch();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
@@ -51,47 +51,39 @@ export default function ArticleContent({
     return null;
   }
 
-  const isLoggedIn = !!user;
-  let ownPost = false;
-  if (type === "post") {
-    ownPost = isLoggedIn && post.author?.username === user.username;
-  } else {
-    ownPost =
-      isLoggedIn &&
-      post?.authors?.includes(user.address);
-  }
-
-  const thumbUp =
-    isLoggedIn &&
-    post.reactions?.findIndex((r) => r.user?.username === user.username) > -1;
+  const isLogin = useSelector(isLoginSelector);
+  const isAuthor = useSelector(isPostAuthorSelector);
+  const thumbUp = useSelector(thumbsUpSelector);
 
   const toggleThumbUp = async () => {
-    if (isLoggedIn && !ownPost && !thumbUpLoading) {
-      setThumbUpLoading(true);
-      try {
-        let result, error;
+    if (!isLogin || isAuthor || thumbUpLoading) {
+      return
+    }
 
-        if (thumbUp) {
-          ({ result, error } = await nextApi.delete(
-            `${toApiType(type)}/${post._id}/reaction`
-          ));
-        } else {
-          ({ result, error } = await nextApi.put(
-            `${toApiType(type)}/${post._id}/reaction`,
-            { reaction: 1 },
-            { credentials: "include" }
-          ));
-        }
+    setThumbUpLoading(true);
+    try {
+      let result, error;
 
-        if (result) {
-          await updatePost(type, post._id, setPost);
-        }
-        if (error) {
-          dispatch(newErrorToast(error.message));
-        }
-      } finally {
-        setThumbUpLoading(false);
+      if (thumbUp) {
+        ({ result, error } = await nextApi.delete(
+          `${toApiType(type)}/${post._id}/reaction`
+        ));
+      } else {
+        ({ result, error } = await nextApi.put(
+          `${toApiType(type)}/${post._id}/reaction`,
+          { reaction: 1 },
+          { credentials: "include" }
+        ));
       }
+
+      if (result) {
+        await updatePost(type, post._id);
+      }
+      if (error) {
+        dispatch(newErrorToast(error.message));
+      }
+    } finally {
+      setThumbUpLoading(false);
     }
   };
 
@@ -101,17 +93,12 @@ export default function ArticleContent({
     <Wrapper>
       <Divider margin={16} />
       {post.content === "" && (
-        <NonEdited type={type} isAuthor={ownPost} setIsEdit={setIsEdit} authors={post.authors}/>
+        <NonEdited type={type} setIsEdit={setIsEdit} authors={post.authors}/>
       )}
       {bannerUrl && (
         <BannerImage src={bannerUrl} alt="banner image" />
       )}
-      {post.contentType === "markdown" && (
-        <MarkdownPreviewer content={post.content} />
-      )}
-      {post.contentType === "html" && (
-        <HtmlPreviewer content={post.content} />
-      )}
+      <PostContent />
       {post.createdAt !== post.updatedAt && (
         <EditedLabel>Edited</EditedLabel>
       )}
@@ -129,12 +116,8 @@ export default function ArticleContent({
       <PostDataSource />
       <ArticleActions
         chain={chain}
-        highlight={isLoggedIn && thumbUp}
-        noHover={!isLoggedIn || ownPost}
-        edit={ownPost}
         setIsEdit={setIsEdit}
         toggleThumbUp={toggleThumbUp}
-        reactions={post?.reactions}
         onReply={onReply}
       />
     </Wrapper>

@@ -21,8 +21,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     type: detailPageCategory.TREASURY_PROPOSAL,
   });
 
-  detail.status = detail.onchainData?.state?.state;
-
   const desc = getMetaDesc(detail);
   return (
     <DetailLayout

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { EmptyList } from "next-common/utils/constants";
-import { getTipState, TipStateMap } from "utils/viewfuncs";
+import { TipStateMap } from "utils/viewfuncs";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { to404 } from "next-common/utils/serverSideUtil";
 
@@ -115,11 +115,6 @@ export default withLoginUserRedux(
           });
       }
     }, [api, shouldGetTipsFromNode, tipHash, tipsNeedUpdate]);
-
-    detail.status = getTipState({
-      state: detail.onchainData?.state?.state,
-      tipsCount: (detail.onchainData?.meta?.tips || []).length,
-    });
 
     const updateTips = () => {
       // Trigger tips update
