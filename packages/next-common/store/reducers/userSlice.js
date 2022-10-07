@@ -40,5 +40,6 @@ export const logout = () => async (dispatch) => {
 };
 
 export const userSelector = (state) => state.user.user;
+export const isLoginSelector = (state) => !!state.user.user;
 
 export default userSlice.reducer;

@@ -6,6 +6,7 @@ import PostEdit from "./PostEdit";
 import User from "../../user";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../../store/reducers/chainSlice";
+import { isPostAuthorSelector } from "../../../store/selectors/post";
 
 const PlaceHolder = styled.div`
   font-style: normal;
@@ -62,7 +63,8 @@ function WhoCanEdit({ authors = [] }) {
   )
 }
 
-export default function NonEdited({ type, setIsEdit, isAuthor = false, authors }) {
+export default function NonEdited({ type, setIsEdit, authors }) {
+  const isAuthor = useSelector(isPostAuthorSelector)
   return (
     <>
       <PlaceHolder>

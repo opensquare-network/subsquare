@@ -100,7 +100,7 @@ export default function ArticleContent({
     <Wrapper>
       <Divider margin={16} />
       {post.content === "" && (
-        <NonEdited type={type} isAuthor={ownPost} setIsEdit={setIsEdit} authors={post.authors}/>
+        <NonEdited type={type} setIsEdit={setIsEdit} authors={post.authors}/>
       )}
       {bannerUrl && (
         <BannerImage src={bannerUrl} alt="banner image" />
