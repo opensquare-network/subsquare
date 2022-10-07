@@ -7,12 +7,12 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import ArticleActions from "./actions/articleActions";
 import PostDataSource from "./postDataSource";
 import Poll from "./poll";
-import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
 import RichTextStyleWrapper from "./content/richTextStyleWrapper";
 import Divider from "./styled/layout/divider";
 import { getBannerUrl } from "../utils/banner";
 import NonEdited from "./detail/common/NonEdited";
 import updatePost from "../utils/viewfuncs/updatePost";
+import PostContent from "./detail/common/PostContent";
 
 const Wrapper = styled(RichTextStyleWrapper)`
   :hover {
@@ -43,7 +43,6 @@ export default function ArticleContent({
   onReply,
   type,
   setIsEdit,
-  setPost,
 }) {
   const dispatch = useDispatch();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
@@ -84,7 +83,7 @@ export default function ArticleContent({
         }
 
         if (result) {
-          await updatePost(type, post._id, setPost);
+          await updatePost(type, post._id);
         }
         if (error) {
           dispatch(newErrorToast(error.message));
@@ -106,12 +105,7 @@ export default function ArticleContent({
       {bannerUrl && (
         <BannerImage src={bannerUrl} alt="banner image" />
       )}
-      {post.contentType === "markdown" && (
-        <MarkdownPreviewer content={post.content} />
-      )}
-      {post.contentType === "html" && (
-        <HtmlPreviewer content={post.content} />
-      )}
+      <PostContent />
       {post.createdAt !== post.updatedAt && (
         <EditedLabel>Edited</EditedLabel>
       )}

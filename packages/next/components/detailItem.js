@@ -20,7 +20,7 @@ export default function DetailItem({
   myVote,
   countDown = null,
 }) {
-  const [post, setPost] = useState(data);
+  const [post] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
   if (!post) {
     return null;
@@ -28,9 +28,8 @@ export default function DetailItem({
 
   if (isEdit) {
     return <PostEdit
-      postData={ post }
       setIsEdit={ setIsEdit }
-      updatePost={ () => updatePost(type, post._id, setPost) }
+      updatePost={ () => updatePost(type, post._id) }
       type={ type }
     />
   }
@@ -53,7 +52,6 @@ export default function DetailItem({
         post={post}
         votes={votes}
         myVote={myVote}
-        setPost={setPost}
         user={user}
         type={type}
         onReply={onReply}

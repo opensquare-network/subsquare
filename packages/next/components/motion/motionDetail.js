@@ -120,9 +120,8 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
 
   if (isEdit) {
     return <PostEdit
-      postData={ post }
       setIsEdit={ setIsEdit }
-      updatePost={ () => updatePost(type, post._id, setPost) }
+      updatePost={ () => updatePost(type, post._id) }
       type={ type }
     />
   }
@@ -134,7 +133,6 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
         <ArticleContent
           chain={chain}
           post={post}
-          setPost={setPost}
           user={user}
           onReply={onReply}
           type={type}

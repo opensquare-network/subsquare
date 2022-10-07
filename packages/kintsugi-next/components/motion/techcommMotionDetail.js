@@ -113,7 +113,7 @@ export default function TechcommMotionDetail({
   type,
 }) {
   const node = getNode(chain);
-  const [post, setPost] = useState(motion);
+  const [post] = useState(motion);
   const [isEdit, setIsEdit] = useState(false);
   const motionEndHeight = motion.onchainData?.voting?.end;
   const blockHeight = useSelector(latestHeightSelector);
@@ -126,9 +126,8 @@ export default function TechcommMotionDetail({
 
   if (isEdit) {
     return <PostEdit
-      postData={ post }
       setIsEdit={ setIsEdit }
-      updatePost={ () => updatePost(type, post._id, setPost) }
+      updatePost={ () => updatePost(type, post._id) }
       type={ type }
     />
   }
@@ -229,7 +228,6 @@ export default function TechcommMotionDetail({
           <ArticleContent
             chain={chain}
             post={post}
-            setPost={setPost}
             user={loginUser}
             onReply={onReply}
             type={type}
