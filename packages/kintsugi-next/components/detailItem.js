@@ -37,7 +37,7 @@ export default function DetailItem({
       {type === detailPageCategory.DEMOCRACY_PROPOSAL && <KintsugiDemocracyProposalNavigation post={post}/>}
       { type === detailPageCategory.DEMOCRACY_REFERENDUM && <KintsugiReferendumNavigation post={ post } /> }
       <PostTitle index={post.index} title={post.title}/>
-      <PostMeta post={post} type={type}/>
+      <PostMeta post={post} />
       <ArticleContent
         chain={chain}
         post={post}

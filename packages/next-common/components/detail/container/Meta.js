@@ -29,7 +29,7 @@ const DividerWrapper = styled(Flex)`
   }
 `;
 
-export default function PostMeta({ post, type }) {
+export default function PostMeta({ post }) {
   const chain = useSelector(chainSelector);
   const postState = useSelector(postStateSelector);
   const detailType = useSelector(detailTypeSelector)
@@ -46,7 +46,7 @@ export default function PostMeta({ post, type }) {
         chain={chain}
         fontSize={12}
       />
-      <TypeTag type={type}/>
+      <TypeTag type={detailType}/>
       <UpdatedTime post={ post } />
       {(!noCommentsCount && commentsCount > -1) && <Info>{`${commentsCount} Comments`}</Info>}
     </DividerWrapper>
