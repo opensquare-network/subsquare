@@ -228,7 +228,6 @@ export default function TechcommMotionDetail({
           <ArticleContent
             chain={chain}
             post={post}
-            user={loginUser}
             onReply={onReply}
             type={type}
             setIsEdit={setIsEdit}

@@ -14,7 +14,7 @@ import NonEdited from "./detail/common/NonEdited";
 import updatePost from "../utils/viewfuncs/updatePost";
 import PostContent from "./detail/common/PostContent";
 import { isLoginSelector } from "../store/reducers/userSlice";
-import { isPostAuthorSelector } from "../store/selectors/post";
+import { isPostAuthorSelector, thumbsUpSelector } from "../store/selectors/post";
 
 const Wrapper = styled(RichTextStyleWrapper)`
   :hover {
@@ -37,7 +37,6 @@ const BannerImage = styled.img`
 `;
 
 export default function ArticleContent({
-  user,
   post,
   votes,
   myVote,
@@ -54,7 +53,7 @@ export default function ArticleContent({
 
   const isLogin = useSelector(isLoginSelector);
   const isAuthor = useSelector(isPostAuthorSelector);
-  const thumbUp = isLogin && post.reactions?.findIndex((r) => r.user?.username === user.username) > -1;
+  const thumbUp = useSelector(thumbsUpSelector);
 
   const toggleThumbUp = async () => {
     if (!isLogin || isAuthor || thumbUpLoading) {
@@ -117,10 +116,8 @@ export default function ArticleContent({
       <PostDataSource />
       <ArticleActions
         chain={chain}
-        highlight={thumbUp}
         setIsEdit={setIsEdit}
         toggleThumbUp={toggleThumbUp}
-        reactions={post?.reactions}
         onReply={onReply}
       />
     </Wrapper>

@@ -133,7 +133,6 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
         <ArticleContent
           chain={chain}
           post={post}
-          user={user}
           onReply={onReply}
           type={type}
           setIsEdit={setIsEdit}

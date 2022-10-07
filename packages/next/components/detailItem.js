@@ -52,7 +52,6 @@ export default function DetailItem({
         post={post}
         votes={votes}
         myVote={myVote}
-        user={user}
         type={type}
         onReply={onReply}
         setIsEdit={setIsEdit}

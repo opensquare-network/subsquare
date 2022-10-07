@@ -41,7 +41,6 @@ export default function DetailItem({
       <ArticleContent
         chain={chain}
         post={post}
-        user={user}
         type={type}
         onReply={onReply}
         setIsEdit={setIsEdit}

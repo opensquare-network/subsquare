@@ -13,3 +13,12 @@ export const isPostAuthorSelector = createSelector(postSelector, detailTypeSelec
 
   return post?.authors?.includes(user.address);
 })
+
+// Show has the login user giver thumbs up to the post
+export const thumbsUpSelector = createSelector(postSelector, userSelector, (post, user) => {
+  if (!user) {
+    return false
+  }
+
+  return post.reactions?.findIndex((r) => r.user?.username === user.username) > -1;
+})
