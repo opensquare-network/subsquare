@@ -3,7 +3,7 @@ import { detailTypeSelector, postSelector } from "../reducers/postSlice";
 import { userSelector } from "../reducers/userSlice";
 
 export const isPostAuthorSelector = createSelector(postSelector, detailTypeSelector, userSelector, (post, type, user) => {
-  if (!!user) {
+  if (!user) {
     return false;
   }
 

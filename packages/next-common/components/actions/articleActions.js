@@ -5,20 +5,23 @@ import { Wrapper } from "./styled";
 import ThumbUpList from "./thumbUpList";
 import ReplyButton from "./replyButton";
 import Share from "../shareSNS";
+import { useSelector } from "react-redux";
+import { isPostAuthorSelector } from "../../store/selectors/post";
+import { isLoginSelector } from "../../store/reducers/userSlice";
 
 export default function ArticleActions({
   chain,
   onReply,
-  noHover,
   highlight,
   toggleThumbUp,
   reactions,
-  edit,
   setIsEdit,
 }) {
+  const isLogin = useSelector(isLoginSelector);
+  const isAuthor = useSelector(isPostAuthorSelector);
   const { ThumbsUpComponent, showThumbsUpList } = useThumbsUp({
     count: reactions?.length,
-    noHover,
+    noHover: !isLogin || isAuthor,
     highlight,
     toggleThumbUp,
   });
@@ -26,10 +29,10 @@ export default function ArticleActions({
   return (
     <>
       <Wrapper>
-        <ReplyButton onReply={onReply} noHover={noHover} />
+        <ReplyButton onReply={onReply} noHover={!isLogin || isAuthor} />
         {ThumbsUpComponent}
         <Share />
-        {edit && <ContentMenu edit={edit} setIsEdit={setIsEdit} alwaysShow />}
+        {isAuthor && <ContentMenu edit={isAuthor} setIsEdit={setIsEdit} alwaysShow />}
       </Wrapper>
 
       <ThumbUpList
