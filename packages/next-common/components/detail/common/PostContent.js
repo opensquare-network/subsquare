@@ -5,6 +5,9 @@ import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
 
 export default function PostContent() {
   const post = useSelector(postSelector);
+  if (!post) {
+    return null;
+  }
 
   if (post.contentType === "markdown") {
     return <MarkdownPreviewer content={post.content} />

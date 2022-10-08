@@ -43,7 +43,6 @@ const ShareItem = styled.span`
 export default function Share() {
   const post = useSelector(postSelector);
   const type = useSelector(detailTypeSelector);
-  const text = getShare2SNStext(post, type);
 
   const ref = useRef();
   const [copyState, setCopyState] = useState(false);
@@ -57,6 +56,12 @@ export default function Share() {
   }, [copyState]);
 
   useOnClickOutside(ref, () => setShowShare(false));
+
+  if (!post) {
+    return null;
+  }
+
+  const text = getShare2SNStext(post, type);
 
   const tweet = () => {
     setShowShare(false);

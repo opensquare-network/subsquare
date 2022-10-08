@@ -9,6 +9,8 @@ import { DemocracyTag, TreasuryTag, } from "next-common/components/tags/business
 import UpdatedTime from "next-common/components/detail/common/UpdatedTime";
 import PostTitle from "next-common/components/detail/common/Title";
 import { isDemocracyMotion, isTreasuryMotion } from "next-common/utils/viewfuncs/motion";
+import Info from "next-common/components/styled/info";
+import isNil from "lodash.isnil";
 
 const MotionEndHeader = styled.div`
   display: flex;
@@ -70,6 +72,10 @@ export default function MotionHead({ motion, chain, type }) {
     </MotionEndHeader>
   ) : null;
 
+  const noCommentsCount = isNil(motion.commentsCount) && isNil(motion.polkassemblyCommentsCount);
+  const commentsCount =
+    (motion.commentsCount || 0) + (motion.polkassemblyCommentsCount || 0);
+
   return (
     <div>
       <DemocracyNavigate motion={motion.onchainData} />
@@ -85,6 +91,7 @@ export default function MotionHead({ motion, chain, type }) {
           />
           <MotionTag motion={motion.onchainData}/>
           <UpdatedTime post={ motion } />
+          {(!noCommentsCount && commentsCount > -1) && <Info>{`${commentsCount} Comments`}</Info>}
         </DividerWrapper>
         {motion.state && <Tag state={motion.state} category={type} />}
       </FlexWrapper>

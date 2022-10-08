@@ -36,6 +36,10 @@ const Index = styled.div`
 
 export default function PostTitle() {
   const post = useSelector(postSelector)
+  if (!post) {
+    return null;
+  }
+
   const index = post.index || post.motionIndex;
   const title = post.title;
 
