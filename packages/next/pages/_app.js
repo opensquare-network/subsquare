@@ -12,6 +12,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { connect } from "next-common/services/websocket";
 import React, { useEffect } from "react";
 import { setDetailType, setPost } from "next-common/store/reducers/postSlice";
+import { setMode } from "next-common/store/reducers/settingSlice";
+import { setUser } from "next-common/store/reducers/userSlice";
 
 NProgress.configure({
   minimum: 0.3,
@@ -34,11 +36,22 @@ Router.events.on(
 );
 
 function MyApp({ Component, pageProps }) {
-  const { redux: { detail, detailType } = {} } = pageProps || {};
+  const {
+    redux: { detail, detailType } = {},
+    themeMode,
+    loginUser,
+  } = pageProps || {};
   const store = newReduxStore();
   if (detail && detailType) {
     store.dispatch(setPost({ ...detail }));
     store.dispatch(setDetailType(detailType));
+  }
+
+  if (themeMode) {
+    store.dispatch(setMode(themeMode));
+  }
+  if (loginUser) {
+    store.dispatch(setUser(loginUser));
   }
 
   useEffect(() => {
