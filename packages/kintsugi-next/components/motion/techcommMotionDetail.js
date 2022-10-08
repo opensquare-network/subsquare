@@ -9,7 +9,7 @@ import { useState } from "react";
 import { createMotionTimelineData } from "utils/timeline/motion";
 import MultiKVList from "next-common/components/listInfo/multiKVList";
 import MotionEnd from "next-common/components/motionEnd";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { EditablePanel } from "next-common/components/styled/panel";
@@ -112,6 +112,7 @@ export default function TechcommMotionDetail({
   loginUser,
   type,
 }) {
+  const dispatch = useDispatch();
   const node = getNode(chain);
   const [post] = useState(motion);
   const [isEdit, setIsEdit] = useState(false);

@@ -9,6 +9,7 @@ import DemocracyProposalNavigation from "next-common/components/detail/navigatio
 import ReferendumNavigation from "next-common/components/detail/navigation/ReferendumNavigation";
 import PostEdit from "next-common/components/post/postEdit";
 import { fetchPost } from "next-common/store/reducers/postSlice";
+import { useDispatch } from "react-redux";
 
 export default function DetailItem({
   data,
@@ -20,6 +21,7 @@ export default function DetailItem({
   myVote,
   countDown = null,
 }) {
+  const dispatch = useDispatch();
   const [post] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
   if (!post) {

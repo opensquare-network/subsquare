@@ -16,10 +16,12 @@ import Chains from "next-common/utils/consts/chains";
 import usePrime from "next-common/utils/hooks/usePrime";
 import PostEdit from "next-common/components/post/postEdit";
 import { fetchPost } from "next-common/store/reducers/postSlice";
+import { useDispatch } from "react-redux";
 
 export default function MotionDetail({ user, motion, onReply, chain, type }) {
   const api = useApi(chain);
   const isMounted = useIsMounted();
+  const dispatch = useDispatch();
 
   const [post, setPost] = useState(motion);
 

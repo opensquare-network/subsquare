@@ -8,6 +8,7 @@ import { KintsugiReferendumNavigation } from "next-common/components/detail/navi
 import PostMeta from "next-common/components/detail/container/Meta";
 import PostEdit from "next-common/components/post/postEdit";
 import { fetchPost } from "next-common/store/reducers/postSlice";
+import { useDispatch } from "react-redux";
 
 export default function DetailItem({
   data,
@@ -18,6 +19,7 @@ export default function DetailItem({
   myVote,
   type,
 }) {
+  const dispatch = useDispatch();
   const [post] = useState(data);
   const [isEdit, setIsEdit] = useState(false);
   if (!post) {
