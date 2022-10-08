@@ -14,6 +14,7 @@ export default function ArticleActions({
   chain,
   onReply,
   toggleThumbUp,
+  thumbUpLoading,
   setIsEdit,
 }) {
   const isLogin = useSelector(isLoginSelector);
@@ -25,6 +26,7 @@ export default function ArticleActions({
     noHover: !isLogin || isAuthor,
     highlight: thumbsUp,
     toggleThumbUp,
+    thumbUpLoading,
   });
 
   return (

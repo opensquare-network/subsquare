@@ -118,6 +118,7 @@ export default function ArticleContent({
         chain={chain}
         setIsEdit={setIsEdit}
         toggleThumbUp={toggleThumbUp}
+        thumbUpLoading={thumbUpLoading}
         onReply={onReply}
       />
     </Wrapper>
