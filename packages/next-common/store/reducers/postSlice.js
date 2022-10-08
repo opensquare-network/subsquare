@@ -1,5 +1,7 @@
 // used for on chain proposal data
 import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { toApiType } from "../../utils/viewfuncs";
+import nextApi from "../../services/nextApi";
 
 const postSlice = createSlice({
   name: "post",
@@ -27,5 +29,13 @@ export const postAuthorsSelector = createSelector(postSelector, post => {
 export const postStateSelector = createSelector(postSelector, post => {
   return post?.onchainData?.state?.state
 })
+
+export const fetchPost = (type, postId) => async (dispatch) => {
+  const url = `${ toApiType(type) }/${ postId }`;
+  const { result: newPost } = await nextApi.fetch(url);
+  if (newPost) {
+    dispatch(setPost(newPost));
+  }
+}
 
 export default postSlice.reducer;

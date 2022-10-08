@@ -7,7 +7,7 @@ import { KintsugiDemocracyProposalNavigation } from "next-common/components/deta
 import { KintsugiReferendumNavigation } from "next-common/components/detail/navigation/ReferendumNavigation";
 import PostMeta from "next-common/components/detail/container/Meta";
 import PostEdit from "next-common/components/post/postEdit";
-import updatePost from "next-common/utils/viewfuncs/updatePost";
+import { fetchPost } from "next-common/store/reducers/postSlice";
 
 export default function DetailItem({
   data,
@@ -27,7 +27,7 @@ export default function DetailItem({
   if (isEdit) {
     return <PostEdit
       setIsEdit={ setIsEdit }
-      updatePost={ () => updatePost(type, post._id) }
+      updatePost={ () => dispatch(fetchPost(type, post._id)) }
       type={ type }
     />
   }

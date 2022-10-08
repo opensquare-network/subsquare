@@ -11,10 +11,10 @@ import RichTextStyleWrapper from "./content/richTextStyleWrapper";
 import Divider from "./styled/layout/divider";
 import { getBannerUrl } from "../utils/banner";
 import NonEdited from "./detail/common/NonEdited";
-import updatePost from "../utils/viewfuncs/updatePost";
 import PostContent from "./detail/common/PostContent";
 import { isLoginSelector } from "../store/reducers/userSlice";
 import { isPostAuthorSelector, thumbsUpSelector } from "../store/selectors/post";
+import { fetchPost } from "../store/reducers/postSlice";
 
 const Wrapper = styled(RichTextStyleWrapper)`
   :hover {
@@ -77,7 +77,7 @@ export default function ArticleContent({
       }
 
       if (result) {
-        await updatePost(type, post._id);
+        dispatch(fetchPost(type, post._id))
       }
       if (error) {
         dispatch(newErrorToast(error.message));

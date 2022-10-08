@@ -1,13 +1,11 @@
 import io from "socket.io-client";
-
-import { store } from "../store";
 import { setNodeBlockHeight } from "../store/reducers/nodeSlice";
 
 const chainStatusRoom = "CHAIN_STATUS_ROOM";
 
 export let socket = null;
 
-export function connect() {
+export function connect(store) {
   if (socket) {
     socket.emit("unsubscribe", chainStatusRoom);
     socket.disconnect();
