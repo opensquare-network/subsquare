@@ -27,6 +27,10 @@ export default function ArticleActions({
     toggleThumbUp,
   });
 
+  if (!post) {
+    return null;
+  }
+
   return (
     <>
       <Wrapper>

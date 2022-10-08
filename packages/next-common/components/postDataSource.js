@@ -75,6 +75,10 @@ export default function PostDataSource() {
   const type = useSelector(detailTypeSelector);
   const chain = useSelector(chainSelector)
 
+  if (!post) {
+    return null;
+  }
+
   if (![Chains.kusama, Chains.polkadot].includes(chain)) {
     return null;
   }

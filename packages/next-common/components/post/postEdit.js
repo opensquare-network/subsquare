@@ -39,8 +39,23 @@ export default function PostEdit({
   type,
 }) {
   const post = useSelector(postSelector);
-  const [title, setTitle] = useState(post.title);
+  const [title, setTitle] = useState(post?.title);
   const [updating, setUpdating] = useState(false);
+  const [bannerCid, setBannerCid] = useState(post?.bannerCid);
+
+  const [isSetBanner, setIsSetBanner] = useState(!!post?.bannerCid);
+  useEffect(() => {
+    if (!isSetBanner) {
+      setBannerCid(null);
+    }
+  }, [isSetBanner]);
+
+  const isMounted = useIsMountedBool();
+
+  if (!post) {
+    return null;
+  }
+
   const editPost = async (content, contentType) => {
     const url = `${toApiType(type)}/${post._id}`;
     return await nextApi.patch(url, {
@@ -50,16 +65,6 @@ export default function PostEdit({
       bannerCid,
     });
   };
-  const [bannerCid, setBannerCid] = useState(post.bannerCid);
-
-  const [isSetBanner, setIsSetBanner] = useState(!!post.bannerCid);
-  useEffect(() => {
-    if (!isSetBanner) {
-      setBannerCid(null);
-    }
-  }, [isSetBanner]);
-
-  const isMounted = useIsMountedBool();
 
   return (
     <Wrapper>
