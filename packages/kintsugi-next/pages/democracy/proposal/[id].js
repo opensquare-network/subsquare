@@ -53,7 +53,6 @@ export default withLoginUserRedux(
         <Back href={`/democracy/proposals`} text="Back to Proposals" />
         <DetailItem
           data={detail}
-          user={loginUser}
           chain={chain}
           onReply={focusEditor}
           type={detailPageCategory.DEMOCRACY_PROPOSAL}

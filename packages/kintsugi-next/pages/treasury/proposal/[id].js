@@ -30,7 +30,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       <Back href={`/treasury/proposals`} text="Back to Proposals" />
       <DetailItem
         data={detail}
-        user={loginUser}
         chain={chain}
         onReply={focusEditor}
         type={detailPageCategory.TREASURY_PROPOSAL}

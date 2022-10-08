@@ -109,7 +109,6 @@ export default function TechcommMotionDetail({
   motion,
   chain,
   onReply,
-  loginUser,
   type,
 }) {
   const dispatch = useDispatch();

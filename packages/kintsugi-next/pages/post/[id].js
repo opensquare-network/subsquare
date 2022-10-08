@@ -32,7 +32,6 @@ export default withLoginUserRedux(
           data={detail}
           votes={votes}
           myVote={myVote}
-          user={loginUser}
           chain={chain}
           onReply={focusEditor}
           type={detailPageCategory.POST}

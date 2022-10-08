@@ -64,7 +64,6 @@ export default withLoginUserRedux(
         <DetailItem
           data={detail}
           onReply={focusEditor}
-          user={loginUser}
           chain={chain}
           type={detailPageCategory.DEMOCRACY_REFERENDUM}
         />

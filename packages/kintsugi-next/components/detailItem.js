@@ -12,7 +12,6 @@ import { useDispatch } from "react-redux";
 
 export default function DetailItem({
   data,
-  user,
   chain,
   onReply,
   votes,
