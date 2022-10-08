@@ -4,7 +4,6 @@ import { Provider } from "react-redux";
 
 import "nprogress/nprogress.css";
 import "../styles/globals.css";
-import newReduxStore from "next-common/store";
 import "next-common/styles/richTextStyles.scss";
 // import "react-quill/dist/quill.snow.css";
 import "react-mde/lib/styles/css/react-mde-all.css";
@@ -14,6 +13,7 @@ import React, { useEffect } from "react";
 import { setDetailType, setPost } from "next-common/store/reducers/postSlice";
 import { setMode } from "next-common/store/reducers/settingSlice";
 import { setUser } from "next-common/store/reducers/userSlice";
+import { store } from "next-common/store";
 
 NProgress.configure({
   minimum: 0.3,
@@ -41,7 +41,6 @@ function MyApp({ Component, pageProps }) {
     themeMode,
     loginUser,
   } = pageProps || {};
-  const store = newReduxStore();
   if (detail && detailType) {
     store.dispatch(setPost({ ...detail }));
     store.dispatch(setDetailType(detailType));
@@ -55,7 +54,7 @@ function MyApp({ Component, pageProps }) {
   }
 
   useEffect(() => {
-    connect(store);
+    connect();
   }, []);
 
   return (

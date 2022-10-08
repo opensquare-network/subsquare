@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { Provider } from "react-redux";
-import newReduxStore from "next-common/store";
+import { store } from "next-common/store";
 import "nprogress/nprogress.css";
 import "../styles/globals.css";
 import "next-common/styles/richTextStyles.scss";
@@ -40,7 +40,6 @@ function MyApp({ Component, pageProps }) {
     themeMode,
     loginUser,
   } = pageProps || {};
-  const store = newReduxStore();
   if (detail && detailType) {
     store.dispatch(setPost({ ...detail }));
     store.dispatch(setDetailType(detailType));
@@ -54,7 +53,7 @@ function MyApp({ Component, pageProps }) {
   }
 
   useEffect(() => {
-    connect(store);
+    connect();
   }, []);
 
   return (
