@@ -19,6 +19,7 @@ import useMaybeFetchReferendumStatus from "next-common/utils/hooks/referenda/use
 import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
 import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 import { getBannerUrl } from "next-common/utils/banner";
+import { PostProvider } from "next-common/context/post";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, publicProposal, comments, chain }) => {
@@ -52,41 +53,43 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail);
     return (
-      <DetailWithRightLayout
-        user={loginUser}
-        seoInfo={{
-          title: detail?.title,
-          desc,
-          ogImage: getBannerUrl(detail?.bannerCid),
-        }}
-      >
-        <Back href={`/democracy/referenda`} text="Back to Referenda" />
-        <DetailItem
-          data={detail}
-          onReply={focusEditor}
+      <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_REFERENDUM}>
+        <DetailWithRightLayout
           user={loginUser}
-          chain={chain}
-          type={detailPageCategory.DEMOCRACY_REFERENDUM}
-        />
+          seoInfo={{
+            title: detail?.title,
+            desc,
+            ogImage: getBannerUrl(detail?.bannerCid),
+          }}
+        >
+          <Back href={`/democracy/referenda`} text="Back to Referenda" />
+          <DetailItem
+            data={detail}
+            onReply={focusEditor}
+            user={loginUser}
+            chain={chain}
+            type={detailPageCategory.DEMOCRACY_REFERENDUM}
+          />
 
-        <Vote
-          referendumInfo={detail?.onchainData?.info}
-          chain={chain}
-          referendumIndex={detail?.referendumIndex}
-        />
+          <Vote
+            referendumInfo={detail?.onchainData?.info}
+            chain={chain}
+            referendumIndex={detail?.referendumIndex}
+          />
 
-        <ReferendumMetadata
-          api={api}
-          proposer={detail.proposer}
-          status={referendumStatus ?? {}}
-          call={detail?.onchainData?.preImage?.call}
-          chain={chain}
-          onchainData={detail.onchainData}
-        />
+          <ReferendumMetadata
+            api={api}
+            proposer={detail.proposer}
+            status={referendumStatus ?? {}}
+            call={detail?.onchainData?.preImage?.call}
+            chain={chain}
+            onchainData={detail.onchainData}
+          />
 
-        <Timeline data={timelineData} chain={chain} />
-        {CommentComponent}
-      </DetailWithRightLayout>
+          <Timeline data={timelineData} chain={chain} />
+          {CommentComponent}
+        </DetailWithRightLayout>
+      </PostProvider>
     );
   }
 );

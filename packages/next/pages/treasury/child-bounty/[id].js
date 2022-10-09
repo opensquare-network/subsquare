@@ -23,6 +23,7 @@ import {
   removeToast,
 } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
+import { PostProvider } from "next-common/context/post";
 
 const ChildBountyCountDown = ({ data = {} }) => {
   if (data.state?.state !== "PendingPayout") {
@@ -101,33 +102,35 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail);
     return (
-      <DetailWithRightLayout
-        user={loginUser}
-        seoInfo={{
-          title: detail?.title,
-          desc,
-          ogImage: getBannerUrl(detail?.bannerCid),
-        }}
-      >
-        <Back href={`/treasury/child-bounties`} text="Back to Child Bounties" />
-        <DetailItem
-          data={detail}
+      <PostProvider post={detail} type={detailPageCategory.TREASURY_CHILD_BOUNTY}>
+        <DetailWithRightLayout
           user={loginUser}
-          chain={chain}
-          onReply={focusEditor}
-          type={detailPageCategory.TREASURY_CHILD_BOUNTY}
-          countDown={<ChildBountyCountDown data={detail.onchainData} />}
-        />
-        <Claim
-          chain={chain}
-          childBounty={detail?.onchainData}
-          onInBlock={onClaimInBlock}
-          onFinalized={() => updateDetailForState("Claimed")}
-        />
-        <Metadata meta={detail.onchainData?.meta} chain={chain} />
-        <Timeline onchainData={detail.onchainData} chain={chain} />
-        {CommentComponent}
-      </DetailWithRightLayout>
+          seoInfo={{
+            title: detail?.title,
+            desc,
+            ogImage: getBannerUrl(detail?.bannerCid),
+          }}
+        >
+          <Back href={`/treasury/child-bounties`} text="Back to Child Bounties" />
+          <DetailItem
+            data={detail}
+            user={loginUser}
+            chain={chain}
+            onReply={focusEditor}
+            type={detailPageCategory.TREASURY_CHILD_BOUNTY}
+            countDown={<ChildBountyCountDown data={detail.onchainData} />}
+          />
+          <Claim
+            chain={chain}
+            childBounty={detail?.onchainData}
+            onInBlock={onClaimInBlock}
+            onFinalized={() => updateDetailForState("Claimed")}
+          />
+          <Metadata meta={detail.onchainData?.meta} chain={chain} />
+          <Timeline onchainData={detail.onchainData} chain={chain} />
+          {CommentComponent}
+        </DetailWithRightLayout>
+      </PostProvider>
     );
   }
 );

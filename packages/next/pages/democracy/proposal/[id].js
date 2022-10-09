@@ -15,6 +15,7 @@ import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import { getBannerUrl } from "next-common/utils/banner";
+import { PostProvider } from "next-common/context/post";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -41,30 +42,32 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
   const desc = getMetaDesc(detail);
   return (
-    <DetailWithRightLayout
-      user={loginUser}
-      seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
-    >
-      <Back href={`/democracy/proposals`} text="Back to Proposals" />
-      <DetailItem
-        data={detail}
+    <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_PROPOSAL}>
+      <DetailWithRightLayout
         user={loginUser}
-        chain={chain}
-        onReply={focusEditor}
-        type={detailPageCategory.DEMOCRACY_PROPOSAL}
-      />
-      <Second
-        chain={chain}
-        proposalIndex={proposalIndex}
-        hasTurnIntoReferendum={hasTurnIntoReferendum}
-        hasCanceled={hasCanceled}
-        useAddressVotingBalance={useAddressBalance}
-        atBlockHeight={secondsAtBlockHeight}
-      />
-      <Metadata publicProposal={detail?.onchainData} chain={chain} />
-      <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
-      {CommentComponent}
-    </DetailWithRightLayout>
+        seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
+      >
+        <Back href={`/democracy/proposals`} text="Back to Proposals" />
+        <DetailItem
+          data={detail}
+          user={loginUser}
+          chain={chain}
+          onReply={focusEditor}
+          type={detailPageCategory.DEMOCRACY_PROPOSAL}
+        />
+        <Second
+          chain={chain}
+          proposalIndex={proposalIndex}
+          hasTurnIntoReferendum={hasTurnIntoReferendum}
+          hasCanceled={hasCanceled}
+          useAddressVotingBalance={useAddressBalance}
+          atBlockHeight={secondsAtBlockHeight}
+        />
+        <Metadata publicProposal={detail?.onchainData} chain={chain} />
+        <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
+        {CommentComponent}
+      </DetailWithRightLayout>
+    </PostProvider>
   );
 });
 

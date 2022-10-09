@@ -15,6 +15,7 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
 import TreasuryCountDown from "next-common/components/treasury/common/countdown";
 import { getBannerUrl } from "next-common/utils/banner";
+import { PostProvider } from "next-common/context/post";
 
 /**
  *
@@ -70,24 +71,26 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail);
     return (
-      <DetailLayout
-        user={ loginUser }
-        seoInfo={ { title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) } }
-      >
-        <Back href={ `/treasury/bounties` } text="Back to Bounties" />
-        <DetailItem
-          data={ detail }
+      <PostProvider post={detail} type={detailPageCategory.TREASURY_BOUNTY}>
+        <DetailLayout
           user={ loginUser }
-          chain={ chain }
-          onReply={ focusEditor }
-          type={ detailPageCategory.TREASURY_BOUNTY }
-          countDown={ <BountyCountDown data={ detail.onchainData } /> }
-        />
-        <Metadata meta={ detail.onchainData?.meta } chain={ chain } />
-        <ChildBountiesTable { ...{ childBounties, decimals, symbol } } />
-        <Timeline bounty={ detail?.onchainData } chain={ chain } />
-        { CommentComponent }
-      </DetailLayout>
+          seoInfo={ { title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) } }
+        >
+          <Back href={ `/treasury/bounties` } text="Back to Bounties" />
+          <DetailItem
+            data={ detail }
+            user={ loginUser }
+            chain={ chain }
+            onReply={ focusEditor }
+            type={ detailPageCategory.TREASURY_BOUNTY }
+            countDown={ <BountyCountDown data={ detail.onchainData } /> }
+          />
+          <Metadata meta={ detail.onchainData?.meta } chain={ chain } />
+          <ChildBountiesTable { ...{ childBounties, decimals, symbol } } />
+          <Timeline bounty={ detail?.onchainData } chain={ chain } />
+          { CommentComponent }
+        </DetailLayout>
+      </PostProvider>
     );
   }
 );

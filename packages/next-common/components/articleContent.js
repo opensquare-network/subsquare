@@ -1,20 +1,21 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { toApiType } from "next-common/utils/viewfuncs";
-import nextApi from "next-common/services/nextApi";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import ArticleActions from "./actions/articleActions";
 import PostDataSource from "./postDataSource";
 import Poll from "./poll";
 import RichTextStyleWrapper from "./content/richTextStyleWrapper";
 import Divider from "./styled/layout/divider";
-import { getBannerUrl } from "../utils/banner";
 import NonEdited from "./detail/common/NonEdited";
-import updatePost from "../utils/viewfuncs/updatePost";
 import PostContent from "./detail/common/PostContent";
-import { isLoginSelector } from "../store/reducers/userSlice";
-import { isPostAuthorSelector, thumbsUpSelector } from "../store/selectors/post";
+import { useDispatch, useSelector } from "react-redux";
+import { usePost, usePostDispatch, usePostType } from "../context/post";
+import isPostAuthor from "../context/post/isPostAuthor";
+import { getBannerUrl } from "../utils/banner";
+import { toApiType } from "../utils/viewfuncs";
+import updatePost from "../utils/viewfuncs/updatePost";
+import { newErrorToast } from "../store/reducers/toastSlice";
+import { isLoginSelector, userSelector } from "../store/reducers/userSlice";
+import isThumbUp from "../context/post/isThumbUp";
 
 const Wrapper = styled(RichTextStyleWrapper)`
   :hover {
@@ -37,23 +38,22 @@ const BannerImage = styled.img`
 `;
 
 export default function ArticleContent({
-  post,
   votes,
   myVote,
   chain,
   onReply,
-  type,
   setIsEdit,
 }) {
+  const postDispatch = usePostDispatch();
   const dispatch = useDispatch();
+  const post = usePost();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
-  if (!post) {
-    return null;
-  }
 
   const isLogin = useSelector(isLoginSelector);
-  const isAuthor = useSelector(isPostAuthorSelector);
-  const thumbUp = useSelector(thumbsUpSelector);
+  const user = useSelector(userSelector);
+  const type = usePostType();
+  const isAuthor = isPostAuthor(user, post, type);
+  const thumbUp = isThumbUp(user, post);
 
   const toggleThumbUp = async () => {
     if (!isLogin || isAuthor || thumbUpLoading) {
@@ -77,7 +77,7 @@ export default function ArticleContent({
       }
 
       if (result) {
-        await updatePost(type, post._id);
+        await updatePost(type, post._id, postDispatch);
       }
       if (error) {
         dispatch(newErrorToast(error.message));
@@ -93,7 +93,7 @@ export default function ArticleContent({
     <Wrapper>
       <Divider margin={16} />
       {post.content === "" && (
-        <NonEdited type={type} setIsEdit={setIsEdit} authors={post.authors}/>
+        <NonEdited setIsEdit={setIsEdit} authors={post.authors}/>
       )}
       {bannerUrl && (
         <BannerImage src={bannerUrl} alt="banner image" />

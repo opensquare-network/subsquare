@@ -16,8 +16,10 @@ import Chains from "next-common/utils/consts/chains";
 import usePrime from "next-common/utils/hooks/usePrime";
 import PostEdit from "next-common/components/post/postEdit";
 import updatePost from "next-common/utils/viewfuncs/updatePost";
+import { usePostDispatch } from "next-common/context/post";
 
 export default function MotionDetail({ user, motion, onReply, chain, type }) {
+  const postDispatch = usePostDispatch();
   const api = useApi(chain);
   const isMounted = useIsMounted();
 
@@ -121,7 +123,7 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
   if (isEdit) {
     return <PostEdit
       setIsEdit={ setIsEdit }
-      updatePost={ () => updatePost(type, post._id) }
+      updatePost={ () => updatePost(type, post._id, postDispatch) }
       type={ type }
     />
   }

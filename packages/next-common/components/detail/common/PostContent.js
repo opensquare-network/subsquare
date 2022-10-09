@@ -1,10 +1,9 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { postSelector } from "../../../store/reducers/postSlice";
 import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
+import { usePost } from "../../../context/post";
 
 export default function PostContent() {
-  const post = useSelector(postSelector);
+  const post = usePost();
 
   if (post.contentType === "markdown") {
     return <MarkdownPreviewer content={post.content} />

@@ -1,12 +1,14 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { detailTypeSelector, postSelector } from "../reducers/postSlice";
 import { userSelector } from "../reducers/userSlice";
+import { usePost, usePostType } from "../../context/post";
 
-export const isPostAuthorSelector = createSelector(postSelector, detailTypeSelector, userSelector, (post, type, user) => {
+export const isPostAuthorSelector = createSelector(userSelector, (user) => {
   if (!user) {
     return false;
   }
 
+  const type = usePostType();
+  const post = usePost();
   if (type === "post") {
     return post.author?.username === user.username;
   }
@@ -15,10 +17,11 @@ export const isPostAuthorSelector = createSelector(postSelector, detailTypeSelec
 })
 
 // Show has the login user giver thumbs up to the post
-export const thumbsUpSelector = createSelector(postSelector, userSelector, (post, user) => {
+export const thumbsUpSelector = createSelector(userSelector, (user) => {
   if (!user) {
     return false
   }
 
+  const post = usePost();
   return post.reactions?.findIndex((r) => r.user?.username === user.username) > -1;
 })

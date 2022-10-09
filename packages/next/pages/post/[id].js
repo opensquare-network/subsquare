@@ -15,6 +15,7 @@ import Cookies from "cookies";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
+import { PostProvider } from "next-common/context/post";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, votes, myVote, chain }) => {
@@ -40,40 +41,42 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail);
     return (
-      <DetailLayout
-        user={loginUser}
-        chain={chain}
-        seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
-      >
-        <Back href={`/discussions`} text="Back to Discussions" />
-        <DetailItem
-          data={detail}
-          votes={votes}
-          myVote={myVote}
+      <PostProvider post={detail} type={detailPageCategory.POST}>
+        <DetailLayout
           user={loginUser}
           chain={chain}
-          onReply={focusEditor}
-          type={detailPageCategory.POST}
-        />
-        <CommentsWrapper>
-          <Comments
-            data={comments}
+          seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
+        >
+          <Back href={`/discussions`} text="Back to Discussions" />
+          <DetailItem
+            data={detail}
+            votes={votes}
+            myVote={myVote}
             user={loginUser}
             chain={chain}
-            onReply={onReply}
+            onReply={focusEditor}
+            type={detailPageCategory.POST}
           />
-          {loginUser && (
-            <Editor
-              postId={postId}
+          <CommentsWrapper>
+            <Comments
+              data={comments}
+              user={loginUser}
               chain={chain}
-              ref={editorWrapperRef}
-              setQuillRef={setQuillRef}
-              {...{ contentType, setContentType, content, setContent, users }}
-              type={detailPageCategory.POST}
+              onReply={onReply}
             />
-          )}
-        </CommentsWrapper>
-      </DetailLayout>
+            {loginUser && (
+              <Editor
+                postId={postId}
+                chain={chain}
+                ref={editorWrapperRef}
+                setQuillRef={setQuillRef}
+                {...{ contentType, setContentType, content, setContent, users }}
+                type={detailPageCategory.POST}
+              />
+            )}
+          </CommentsWrapper>
+        </DetailLayout>
+      </PostProvider>
     );
   }
 );

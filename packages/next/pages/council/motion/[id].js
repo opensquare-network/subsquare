@@ -9,6 +9,7 @@ import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import { getBannerUrl } from "next-common/utils/banner";
+import { PostProvider } from "next-common/context/post";
 
 export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -23,20 +24,22 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
 
   const desc = getMetaDesc(motion);
   return (
-    <DetailWithRightLayout
-      user={loginUser}
-      seoInfo={{ title: motion?.title, desc, ogImage: getBannerUrl(motion?.bannerCid) }}
-    >
-      <Back href={`/council/motions`} text="Back to Motions" />
-      <MotionDetail
-        motion={motion}
+    <PostProvider post={detail} type={detailPageCategory.COUNCIL_MOTION}>
+      <DetailWithRightLayout
         user={loginUser}
-        chain={chain}
-        type={detailPageCategory.COUNCIL_MOTION}
-        onReply={focusEditor}
-      />
-      {CommentComponent}
-    </DetailWithRightLayout>
+        seoInfo={{ title: motion?.title, desc, ogImage: getBannerUrl(motion?.bannerCid) }}
+      >
+        <Back href={`/council/motions`} text="Back to Motions" />
+        <MotionDetail
+          motion={motion}
+          user={loginUser}
+          chain={chain}
+          type={detailPageCategory.COUNCIL_MOTION}
+          onReply={focusEditor}
+        />
+        {CommentComponent}
+      </DetailWithRightLayout>
+    </PostProvider>
   );
 });
 

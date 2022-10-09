@@ -9,6 +9,7 @@ import useCommentComponent from "next-common/components/useCommentComponent";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
+import { PostProvider } from "next-common/context/post";
 
 export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
   const { CommentComponent, focusEditor } = useCommentComponent({
@@ -21,20 +22,22 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
 
   const desc = getMetaDesc(motion);
   return (
-    <DetailLayout
-      user={loginUser}
-      seoInfo={{ title: motion?.title, desc, ogImage: getBannerUrl(motion?.bannerCid) }}
-    >
-      <Back href={`/techcomm/proposals`} text="Back to Proposals" />
-      <TechcommMotionDetail
-        motion={motion}
-        loginUser={loginUser}
-        chain={chain}
-        onReply={focusEditor}
-        type={detailPageCategory.TECH_COMM_MOTION}
-      />
-      {CommentComponent}
-    </DetailLayout>
+    <PostProvider post={detail} type={detailPageCategory.TECH_COMM_MOTION}>
+      <DetailLayout
+        user={loginUser}
+        seoInfo={{ title: motion?.title, desc, ogImage: getBannerUrl(motion?.bannerCid) }}
+      >
+        <Back href={`/techcomm/proposals`} text="Back to Proposals" />
+        <TechcommMotionDetail
+          motion={motion}
+          loginUser={loginUser}
+          chain={chain}
+          onReply={focusEditor}
+          type={detailPageCategory.TECH_COMM_MOTION}
+        />
+        {CommentComponent}
+      </DetailLayout>
+    </PostProvider>
   );
 });
 
