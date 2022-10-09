@@ -9,13 +9,13 @@ import NonEdited from "./detail/common/NonEdited";
 import PostContent from "./detail/common/PostContent";
 import { useDispatch } from "react-redux";
 import { usePost, usePostDispatch, usePostType } from "../context/post";
-import isPostAuthor from "../context/post/isPostAuthor";
+import { useIsPostAuthor } from "../context/post/useIsPostAuthor";
 import { getBannerUrl } from "../utils/banner";
 import { toApiType } from "../utils/viewfuncs";
 import updatePost from "../utils/viewfuncs/updatePost";
 import { newErrorToast } from "../store/reducers/toastSlice";
-import isThumbUp from "../context/post/isThumbUp";
-import { useIsLogin, useUser } from "../context/user";
+import { useIsThumbUp } from "../context/post/isThumbUp";
+import { useIsLogin } from "../context/user";
 import nextApi from "next-common/services/nextApi";
 
 const Wrapper = styled(RichTextStyleWrapper)`
@@ -51,10 +51,9 @@ export default function ArticleContent({
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
 
   const isLogin = useIsLogin();
-  const user = useUser();
   const type = usePostType();
-  const isAuthor = isPostAuthor(user, post, type);
-  const thumbUp = isThumbUp(user, post);
+  const isAuthor = useIsPostAuthor();
+  const thumbUp = useIsThumbUp();
 
   const toggleThumbUp = async () => {
     if (!isLogin || isAuthor || thumbUpLoading) {

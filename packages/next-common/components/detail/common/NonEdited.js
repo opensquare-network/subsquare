@@ -6,9 +6,8 @@ import PostEdit from "./PostEdit";
 import User from "../../user";
 import { useSelector } from "react-redux";
 import { chainSelector } from "../../../store/reducers/chainSlice";
-import { usePost, usePostType } from "../../../context/post";
-import isPostAuthor from "../../../context/post/isPostAuthor";
-import { useUser } from "../../../context/user";
+import { usePostType } from "../../../context/post";
+import { useIsPostAuthor } from "../../../context/post/useIsPostAuthor";
 
 const PlaceHolder = styled.div`
   font-style: normal;
@@ -66,10 +65,8 @@ function WhoCanEdit({ authors = [] }) {
 }
 
 export default function NonEdited({ setIsEdit, authors }) {
-  const user = useUser();
-  const post = usePost();
   const type = usePostType();
-  const isAuthor = isPostAuthor(user, post, type);
+  const isAuthor = useIsPostAuthor();
   return (
     <>
       <PlaceHolder>
