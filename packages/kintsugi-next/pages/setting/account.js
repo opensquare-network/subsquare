@@ -1,6 +1,4 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { userSelector } from "next-common/store/reducers/userSlice";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import { ContentWrapper, Wrapper } from "next-common/components/setting/styled";
@@ -15,7 +13,6 @@ import Divider from "next-common/components/styled/layout/divider";
 import SettingsLayout from "next-common/components/layout/settingsLayout";
 
 export default withLoginUserRedux(({ loginUser, chain }) => {
-  const user = useSelector(userSelector);
   const router = useRouter();
 
   useEffect(() => {
@@ -34,9 +31,9 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
         <Wrapper>
           <TitleContainer>Account</TitleContainer>
           <ContentWrapper>
-            <Username username={user?.username} />
+            <Username username={loginUser?.username} />
             <Divider margin={24} />
-            <Email email={user?.email} verified={user?.emailVerified} />
+            <Email email={loginUser?.email} verified={loginUser?.emailVerified} />
             <Divider margin={24} />
             <Password />
             <Divider margin={24} />

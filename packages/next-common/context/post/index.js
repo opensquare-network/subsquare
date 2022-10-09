@@ -24,7 +24,7 @@ function postReducer(post, action) {
     throw new Error(`Unknown post action: ${ action.type }`)
   }
 
-  return post;
+  return action.post;
 }
 
 export function usePostDispatch() {

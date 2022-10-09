@@ -7,15 +7,16 @@ import RichTextStyleWrapper from "./content/richTextStyleWrapper";
 import Divider from "./styled/layout/divider";
 import NonEdited from "./detail/common/NonEdited";
 import PostContent from "./detail/common/PostContent";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { usePost, usePostDispatch, usePostType } from "../context/post";
 import isPostAuthor from "../context/post/isPostAuthor";
 import { getBannerUrl } from "../utils/banner";
 import { toApiType } from "../utils/viewfuncs";
 import updatePost from "../utils/viewfuncs/updatePost";
 import { newErrorToast } from "../store/reducers/toastSlice";
-import { isLoginSelector, userSelector } from "../store/reducers/userSlice";
 import isThumbUp from "../context/post/isThumbUp";
+import { useIsLogin, useUser } from "../context/user";
+import nextApi from "next-common/services/nextApi";
 
 const Wrapper = styled(RichTextStyleWrapper)`
   :hover {
@@ -49,8 +50,8 @@ export default function ArticleContent({
   const post = usePost();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
 
-  const isLogin = useSelector(isLoginSelector);
-  const user = useSelector(userSelector);
+  const isLogin = useIsLogin();
+  const user = useUser();
   const type = usePostType();
   const isAuthor = isPostAuthor(user, post, type);
   const thumbUp = isThumbUp(user, post);
