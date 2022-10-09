@@ -2,9 +2,9 @@ import React from "react";
 import { Wrapper } from "./styled";
 import ReplyButton from "./replyButton";
 import Share from "../shareSNS";
-import { usePost, usePostType } from "../../context/post";
-import isPostAuthor from "../../context/post/isPostAuthor";
-import isThumbUp from "../../context/post/isThumbUp";
+import { usePost } from "../../context/post";
+import { useIsPostAuthor } from "../../context/post/useIsPostAuthor";
+import { useIsThumbUp } from "../../context/post/isThumbUp";
 import useThumbsUp from "../thumbsUp";
 import ContentMenu from "../contentMenu";
 import ThumbUpList from "./thumbUpList";
@@ -20,9 +20,8 @@ export default function ArticleActions({
   const user = useUser();
   const isLogin = useIsLogin();
   const post = usePost();
-  const type = usePostType();
-  const isAuthor = isPostAuthor(user, post, type);
-  const thumbsUp = isThumbUp(user, post);
+  const isAuthor = useIsPostAuthor();
+  const thumbsUp = useIsThumbUp();
   const { ThumbsUpComponent, showThumbsUpList } = useThumbsUp({
     count: post?.reactions?.length,
     noHover: !isLogin || isAuthor,
