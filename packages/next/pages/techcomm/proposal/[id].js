@@ -31,7 +31,6 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
       >
         <Back href={`/techcomm/proposals`} text="Back to Proposals" />
         <MotionDetail
-          motion={motion}
           user={loginUser}
           chain={chain}
           type={detailPageCategory.TECH_COMM_MOTION}

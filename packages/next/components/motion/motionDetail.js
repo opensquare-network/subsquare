@@ -15,21 +15,14 @@ import { EditablePanel } from "next-common/components/styled/panel";
 import Chains from "next-common/utils/consts/chains";
 import usePrime from "next-common/utils/hooks/usePrime";
 import PostEdit from "next-common/components/post/postEdit";
-import { usePostDispatch } from "next-common/context/post";
+import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
 
-export default function MotionDetail({ user, motion, onReply, chain, type }) {
+export default function MotionDetail({ user, onReply, chain, type }) {
   const postDispatch = usePostDispatch();
   const api = useApi(chain);
   const isMounted = useIsMounted();
-
-  const [post, setPost] = useState(motion);
-
-  useEffect(() => {
-    if (isMounted.current) {
-      setPost(motion);
-    }
-  }, [motion, isMounted]);
+  const post = usePost();
 
   const votingMethod = api?.query?.[toApiCouncil(chain, type)]?.voting;
   const membersMethod = api?.query?.[toApiCouncil(chain, type)]?.members;
