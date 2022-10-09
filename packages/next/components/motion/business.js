@@ -36,7 +36,7 @@ export default function Business({ motion, chain }) {
         [
           "Beneficiary",
           <Flex key="proposal-beneficiary">
-            <User chain={chain} add={proposal.meta.beneficiary} fontSize={14} />
+            <User add={proposal.meta.beneficiary} fontSize={14} />
             <Links
               chain={chain}
               address={proposal.meta.beneficiary}
@@ -73,7 +73,7 @@ export default function Business({ motion, chain }) {
                 {item[0]}
               </CapitalText>,
               <Flex key="bounty-beneficiary-value">
-                <User chain={chain} add={item[1]} fontSize={14} />
+                <User add={item[1]} fontSize={14} />
                 <Links
                   chain={chain}
                   address={item[1]}

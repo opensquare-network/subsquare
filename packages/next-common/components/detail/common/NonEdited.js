@@ -54,7 +54,6 @@ function WhoCanEdit({ authors = [] }) {
         <GreyItem key={ author }>
           <User
             add={ author }
-            chain={ chain }
             showAvatar={ false }
             fontSize={ 12 }
           />

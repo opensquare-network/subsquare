@@ -31,7 +31,7 @@ function getTimelineData(args, method, chain) {
         Depositors: (
           <DepositorsWrapper>
             {(args.depositors || []).map((item, index) => (
-              <User add={item} key={index} chain={chain} />
+              <User add={item} key={index} />
             ))}
           </DepositorsWrapper>
         ),

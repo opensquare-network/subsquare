@@ -56,12 +56,12 @@ export default function TipTimeline({ tip, chain }) {
         return {
           Finder: (
             <FlexEnd>
-              <User chain={chain} add={args.finder} />
+              <User add={args.finder} />
             </FlexEnd>
           ),
           Beneficiary: (
             <FlexEnd>
-              <User chain={chain} add={args.beneficiary?.id || args.beneficiary} />
+              <User add={args.beneficiary?.id || args.beneficiary} />
             </FlexEnd>
           ),
           Reason: args.reason,
@@ -71,7 +71,7 @@ export default function TipTimeline({ tip, chain }) {
         return {
           Tipper: (
             <FlexEnd>
-              <User chain={chain} add={args.tipper} />
+              <User add={args.tipper} />
             </FlexEnd>
           ),
           Value: `${toPrecision(value ?? 0, decimals)} ${symbol}`,
@@ -80,7 +80,7 @@ export default function TipTimeline({ tip, chain }) {
         return {
           Beneficiary: (
             <FlexEnd>
-              <User chain={chain} add={args.beneficiary} />
+              <User add={args.beneficiary} />
             </FlexEnd>
           ),
           Payout: `${toPrecision(args.payout ?? 0, decimals)} ${symbol}`,

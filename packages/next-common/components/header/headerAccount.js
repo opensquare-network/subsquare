@@ -100,7 +100,7 @@ export default function HeaderAccount({ user, chain }) {
   return (
     <Wrapper ref={ref}>
       <AccountButton onClick={() => setShow(!show)}>
-        <User user={user} chain={chain} noEvent />
+        <User user={user} noEvent />
       </AccountButton>
       {show && (
         <Menu>

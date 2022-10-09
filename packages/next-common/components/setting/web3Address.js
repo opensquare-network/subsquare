@@ -38,7 +38,7 @@ export default function Web3Address({ address, chain }) {
       <Label>Web3 Address</Label>
       <InputWrapper>
         <AddressWrapper>
-          <User add={address} chain={chain} />
+          <User add={address} />
           <FullAddress>{address}</FullAddress>
           <ShortAddress>{addressEllipsis(address)}</ShortAddress>
         </AddressWrapper>

@@ -114,7 +114,7 @@ function MembersList({
                 <StyledTr>
                   <StyledTd style={{ textAlign: "left" }}>
                     <Member>
-                      <User add={item.address} chain={chain} fontSize={14} />
+                      <User add={item.address} fontSize={14} />
                       {item.address === prime && <PrimeAddressMark />}
                     </Member>
                   </StyledTd>

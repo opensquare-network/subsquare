@@ -125,7 +125,7 @@ export default function Vote({
         {votes.map(([voter, approve], index) => (
           <TipperItem key={index}>
             <VoterAddr>
-              <User add={voter} chain={chain} fontSize={12} />
+              <User add={voter} fontSize={12} />
               {voter === prime && <PrimeAddressMark />}
             </VoterAddr>
             {approve ? (
