@@ -27,6 +27,7 @@ import Loading from "next-common/components/loading";
 import TreasuryCountDown from "next-common/components/treasury/common/countdown";
 import { getBannerUrl } from "next-common/utils/banner";
 import { isSameAddress } from "next-common/utils";
+import { PostProvider } from "next-common/context/post";
 
 const TipCountDown = ({ meta = {}, state }) => {
   const nowHeight = useSelector(latestHeightSelector);
@@ -148,36 +149,36 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail);
     return (
-      <DetailWithRightLayout
-        user={ loginUser }
-        seoInfo={ { title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) } }
-      >
-        <Back href={ `/treasury/tips` } text="Back to Tips" />
-        <DetailItem
-          data={ detail }
+      <PostProvider post={detail} type={detailPageCategory.TREASURY_TIP}>
+        <DetailWithRightLayout
           user={ loginUser }
-          chain={ chain }
-          onReply={ focusEditor }
-          type={ detailPageCategory.TREASURY_TIP }
-          countDown={ <TipCountDown meta={ chainData.meta } state={chainData.state?.state} /> }
-        />
-        <Tipper
-          chain={ chain }
-          tipIsFinal={ tipIsFinal }
-          userIsTipper={ userIsTipper }
-          loading={ loading }
-          tips={ tips }
-          councilTippers={ councilTippers }
-          tipHash={ tipHash }
-          updateTips={ updateTips }
-          updateTimeline={ updateTimeline }
-          isLoadingTip={ isLoadingTip }
-          setIsLoadingTip={ setIsLoadingTip }
-        />
-        <Metadata tip={ detail?.onchainData } chain={ chain } />
-        <Timeline tip={ detail?.onchainData } chain={ chain } />
-        { CommentComponent }
-      </DetailWithRightLayout>
+          seoInfo={ { title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) } }
+        >
+          <Back href={ `/treasury/tips` } text="Back to Tips" />
+          <DetailItem
+            chain={ chain }
+            onReply={ focusEditor }
+            type={ detailPageCategory.TREASURY_TIP }
+            countDown={ <TipCountDown meta={ chainData.meta } state={chainData.state?.state} /> }
+          />
+          <Tipper
+            chain={ chain }
+            tipIsFinal={ tipIsFinal }
+            userIsTipper={ userIsTipper }
+            loading={ loading }
+            tips={ tips }
+            councilTippers={ councilTippers }
+            tipHash={ tipHash }
+            updateTips={ updateTips }
+            updateTimeline={ updateTimeline }
+            isLoadingTip={ isLoadingTip }
+            setIsLoadingTip={ setIsLoadingTip }
+          />
+          <Metadata tip={ detail?.onchainData } chain={ chain } />
+          <Timeline tip={ detail?.onchainData } chain={ chain } />
+          { CommentComponent }
+        </DetailWithRightLayout>
+      </PostProvider>
     );
   }
 );
@@ -209,10 +210,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
-      redux: {
-        detail,
-        detailType: detailPageCategory.TREASURY_TIP,
-      },
     },
   };
 });

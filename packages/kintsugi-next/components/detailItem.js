@@ -8,17 +8,17 @@ import { KintsugiReferendumNavigation } from "next-common/components/detail/navi
 import PostMeta from "next-common/components/detail/container/Meta";
 import PostEdit from "next-common/components/post/postEdit";
 import updatePost from "next-common/utils/viewfuncs/updatePost";
+import { usePost, usePostDispatch } from "next-common/context/post";
 
 export default function DetailItem({
-  data,
-  user,
   chain,
   onReply,
   votes,
   myVote,
   type,
 }) {
-  const [post] = useState(data);
+  const postDispatch = usePostDispatch();
+  const post = usePost();
   const [isEdit, setIsEdit] = useState(false);
   if (!post) {
     return null;
@@ -27,7 +27,7 @@ export default function DetailItem({
   if (isEdit) {
     return <PostEdit
       setIsEdit={ setIsEdit }
-      updatePost={ () => updatePost(type, post._id) }
+      updatePost={ () => updatePost(type, post._id, postDispatch) }
       type={ type }
     />
   }

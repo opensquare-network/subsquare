@@ -15,6 +15,7 @@ import useCommentComponent from "next-common/components/useCommentComponent";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import { getBannerUrl } from "next-common/utils/banner";
+import { PostProvider } from "next-common/context/post";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, referendum, comments, chain }) => {
@@ -46,35 +47,35 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail);
     return (
-      <DetailWithRightLayout
-        user={loginUser}
-        seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
-      >
-        <Back href={`/democracy/proposals`} text="Back to Proposals" />
-        <DetailItem
-          data={detail}
+      <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_PROPOSAL}>
+        <DetailWithRightLayout
           user={loginUser}
-          chain={chain}
-          onReply={focusEditor}
-          type={detailPageCategory.DEMOCRACY_PROPOSAL}
-        />
-        <Second
-          chain={chain}
-          proposalIndex={proposalIndex}
-          hasTurnIntoReferendum={hasTurnIntoReferendum}
-          hasCanceled={hasCanceled}
-          useAddressVotingBalance={useAddressVotingBalance}
-          atBlockHeight={secondsAtBlockHeight}
-        />
-        <Business referendumIndex={referendumIndex} />
-        <Metadata publicProposal={detail?.onchainData} chain={chain} />
-        <Timeline
-          publicProposalTimeline={detail?.onchainData?.timeline}
-          referendumTimeline={referendum?.onchainData?.timeline}
-          chain={chain}
-        />
-        {CommentComponent}
-      </DetailWithRightLayout>
+          seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
+        >
+          <Back href={`/democracy/proposals`} text="Back to Proposals" />
+          <DetailItem
+            chain={chain}
+            onReply={focusEditor}
+            type={detailPageCategory.DEMOCRACY_PROPOSAL}
+          />
+          <Second
+            chain={chain}
+            proposalIndex={proposalIndex}
+            hasTurnIntoReferendum={hasTurnIntoReferendum}
+            hasCanceled={hasCanceled}
+            useAddressVotingBalance={useAddressVotingBalance}
+            atBlockHeight={secondsAtBlockHeight}
+          />
+          <Business referendumIndex={referendumIndex} />
+          <Metadata publicProposal={detail?.onchainData} chain={chain} />
+          <Timeline
+            publicProposalTimeline={detail?.onchainData?.timeline}
+            referendumTimeline={referendum?.onchainData?.timeline}
+            chain={chain}
+          />
+          {CommentComponent}
+        </DetailWithRightLayout>
+      </PostProvider>
     );
   }
 );
@@ -113,10 +114,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       referendum,
       comments: comments ?? EmptyList,
       chain,
-      redux: {
-        detail,
-        detailType: detailPageCategory.DEMOCRACY_PROPOSAL
-      },
     },
   };
 });

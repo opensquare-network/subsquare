@@ -10,6 +10,7 @@ import useCommentComponent from "next-common/components/useCommentComponent";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
+import { PostProvider } from "next-common/context/post";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, chain, votes, myVote }) => {
@@ -23,22 +24,22 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail);
     return (
-      <DetailLayout
-        user={loginUser}
-        seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
-      >
-        <Back href={`/discussions`} text="Back to Discussions" />
-        <DetailItem
-          data={detail}
-          votes={votes}
-          myVote={myVote}
+      <PostProvider post={detail} type={detailPageCategory.POST}>
+        <DetailLayout
           user={loginUser}
-          chain={chain}
-          onReply={focusEditor}
-          type={detailPageCategory.POST}
-        />
-        {CommentComponent}
-      </DetailLayout>
+          seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
+        >
+          <Back href={`/discussions`} text="Back to Discussions" />
+          <DetailItem
+            votes={votes}
+            myVote={myVote}
+            chain={chain}
+            onReply={focusEditor}
+            type={detailPageCategory.POST}
+          />
+          {CommentComponent}
+        </DetailLayout>
+      </PostProvider>
     );
   }
 );
@@ -90,10 +91,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       votes,
       myVote: myVote ?? null,
       chain,
-      redux: {
-        detail,
-        detailType: detailPageCategory.POST
-      },
     },
   };
 });

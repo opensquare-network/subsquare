@@ -18,6 +18,7 @@ import useMaybeFetchReferendumStatus from "next-common/utils/hooks/referenda/use
 import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
 import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 import { getBannerUrl } from "next-common/utils/banner";
+import { PostProvider } from "next-common/context/post";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -39,46 +40,46 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const desc = getMetaDesc(detail);
 
   return (
-    <DetailWithRightLayout
-      user={loginUser}
-      seoInfo={{
-        title: detail?.title,
-        desc,
-        ogImage: getBannerUrl(detail?.bannerCid),
-      }}
-    >
-      <Back href={`/democracy/referenda`} text="Back to Referenda" />
-      <DetailItem
-        data={detail}
-        onReply={focusEditor}
+    <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_REFERENDUM}>
+      <DetailWithRightLayout
         user={loginUser}
-        chain={chain}
-        type={detailPageCategory.DEMOCRACY_REFERENDUM}
-      />
+        seoInfo={{
+          title: detail?.title,
+          desc,
+          ogImage: getBannerUrl(detail?.bannerCid),
+        }}
+      >
+        <Back href={`/democracy/referenda`} text="Back to Referenda" />
+        <DetailItem
+          onReply={focusEditor}
+          chain={chain}
+          type={detailPageCategory.DEMOCRACY_REFERENDUM}
+        />
 
-      <Vote
-        referendumInfo={detail?.onchainData?.info}
-        chain={chain}
-        referendumIndex={detail?.referendumIndex}
-      />
+        <Vote
+          referendumInfo={detail?.onchainData?.info}
+          chain={chain}
+          referendumIndex={detail?.referendumIndex}
+        />
 
-      <ReferendumMetadata
-        api={api}
-        proposer={detail?.proposer}
-        status={referendumStatus ?? {}}
-        call={detail?.onchainData?.preImage?.call || detail?.onchainData?.call}
-        shorten={detail?.onchainData?.preImage?.shorten}
-        chain={chain}
-        onchainData={detail?.onchainData}
-      />
+        <ReferendumMetadata
+          api={api}
+          proposer={detail?.proposer}
+          status={referendumStatus ?? {}}
+          call={detail?.onchainData?.preImage?.call || detail?.onchainData?.call}
+          shorten={detail?.onchainData?.preImage?.shorten}
+          chain={chain}
+          onchainData={detail?.onchainData}
+        />
 
-      <Timeline
-        timeline={detail?.onchainData?.timeline}
-        chain={chain}
-        type={detailPageCategory.DEMOCRACY_REFERENDUM}
-      />
-      {CommentComponent}
-    </DetailWithRightLayout>
+        <Timeline
+          timeline={detail?.onchainData?.timeline}
+          chain={chain}
+          type={detailPageCategory.DEMOCRACY_REFERENDUM}
+        />
+        {CommentComponent}
+      </DetailWithRightLayout>
+    </PostProvider>
   );
 });
 
@@ -111,10 +112,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
       chain,
-      redux: {
-        detail,
-        detailType: detailPageCategory.DEMOCRACY_REFERENDUM
-      },
     },
   };
 });

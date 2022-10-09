@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Input from "../input";
 import EditInput from "../editInput";
@@ -10,8 +10,7 @@ import Uploader from "../uploadBanner/uploader";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
 import { TitleContainer } from "../styled/containers/titleContainer";
 import { EditablePanel } from "../styled/panel";
-import { useSelector } from "react-redux";
-import { postSelector } from "../../store/reducers/postSlice";
+import { usePost } from "../../context/post";
 
 const Wrapper = styled(EditablePanel)`
   textarea:read-only,
@@ -38,7 +37,7 @@ export default function PostEdit({
   updatePost,
   type,
 }) {
-  const post = useSelector(postSelector);
+  const post = usePost();
   const [title, setTitle] = useState(post.title);
   const [updating, setUpdating] = useState(false);
   const editPost = async (content, contentType) => {

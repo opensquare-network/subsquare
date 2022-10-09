@@ -9,6 +9,7 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
+import { PostProvider } from "next-common/context/post";
 
 export default withLoginUserRedux(({ loginUser, detail, chain }) => {
   const polkassemblyId = detail?.polkassemblyId;
@@ -19,28 +20,29 @@ export default withLoginUserRedux(({ loginUser, detail, chain }) => {
 
   const desc = getMetaDesc(detail);
   return (
-    <DetailLayout
-      user={loginUser}
-      seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
-    >
-      <Back
-        href={`/polkassembly/discussions`}
-        text="Back to Polkassembly Discussions"
-      />
-      <DetailItem
-        data={detail}
-        chain={chain}
-        postReactions={postReactions}
-        type={detailPageCategory.PA_POST}
-      />
-      <PolkassemblyComments
-        isLoading={loadingComments}
-        comments={comments}
-        chain={chain}
-        type={detailPageCategory.PA_POST}
-        paId={polkassemblyId}
-      />
-    </DetailLayout>
+    <PostProvider post={detail} type={detailPageCategory.PA_POST}>
+      <DetailLayout
+        user={loginUser}
+        seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
+      >
+        <Back
+          href={`/polkassembly/discussions`}
+          text="Back to Polkassembly Discussions"
+        />
+        <DetailItem
+          chain={chain}
+          postReactions={postReactions}
+          type={detailPageCategory.PA_POST}
+        />
+        <PolkassemblyComments
+          isLoading={loadingComments}
+          comments={comments}
+          chain={chain}
+          type={detailPageCategory.PA_POST}
+          paId={polkassemblyId}
+        />
+      </DetailLayout>
+    </PostProvider>
   );
 });
 
@@ -59,10 +61,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       detail,
       chain,
-      redux: {
-        detail,
-        detailType: detailPageCategory.PA_POST,
-      },
     },
   };
 });

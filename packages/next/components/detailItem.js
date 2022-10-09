@@ -9,10 +9,9 @@ import DemocracyProposalNavigation from "next-common/components/detail/navigatio
 import ReferendumNavigation from "next-common/components/detail/navigation/ReferendumNavigation";
 import PostEdit from "next-common/components/post/postEdit";
 import updatePost from "next-common/utils/viewfuncs/updatePost";
+import { usePost, usePostDispatch } from "next-common/context/post";
 
 export default function DetailItem({
-  data,
-  user,
   chain,
   onReply,
   type,
@@ -20,7 +19,8 @@ export default function DetailItem({
   myVote,
   countDown = null,
 }) {
-  const [post] = useState(data);
+  const postDispatch = usePostDispatch();
+  const post = usePost();
   const [isEdit, setIsEdit] = useState(false);
   if (!post) {
     return null;
@@ -29,7 +29,7 @@ export default function DetailItem({
   if (isEdit) {
     return <PostEdit
       setIsEdit={ setIsEdit }
-      updatePost={ () => updatePost(type, post._id) }
+      updatePost={ () => updatePost(type, post._id, postDispatch) }
       type={ type }
     />
   }

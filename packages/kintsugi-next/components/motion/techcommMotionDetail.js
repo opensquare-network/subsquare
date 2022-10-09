@@ -20,6 +20,7 @@ import TechCommNavigation from "./techCommNavigation";
 import PostMeta from "next-common/components/detail/container/Meta";
 import PostEdit from "next-common/components/post/postEdit";
 import updatePost from "next-common/utils/viewfuncs/updatePost";
+import { usePostDispatch } from "next-common/context/post";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -112,6 +113,7 @@ export default function TechcommMotionDetail({
   loginUser,
   type,
 }) {
+  const postDispatch = usePostDispatch();
   const node = getNode(chain);
   const [post] = useState(motion);
   const [isEdit, setIsEdit] = useState(false);
@@ -127,7 +129,7 @@ export default function TechcommMotionDetail({
   if (isEdit) {
     return <PostEdit
       setIsEdit={ setIsEdit }
-      updatePost={ () => updatePost(type, post._id) }
+      updatePost={ () => updatePost(type, post._id, postDispatch) }
       type={ type }
     />
   }

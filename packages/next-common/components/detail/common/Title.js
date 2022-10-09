@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import isNil from "lodash.isnil";
-import { useSelector } from "react-redux";
-import { postSelector } from "../../../store/reducers/postSlice";
+import { usePost } from "../../../context/post";
 
 const TitleWrapper = styled.div`
   margin-bottom: 8px;
@@ -35,7 +34,7 @@ const Index = styled.div`
 `;
 
 export default function PostTitle() {
-  const post = useSelector(postSelector)
+  const post = usePost();
   const index = post.index || post.motionIndex;
   const title = post.title;
 
