@@ -156,8 +156,6 @@ export default withLoginUserRedux(
         >
           <Back href={ `/treasury/tips` } text="Back to Tips" />
           <DetailItem
-            data={ detail }
-            user={ loginUser }
             chain={ chain }
             onReply={ focusEditor }
             type={ detailPageCategory.TREASURY_TIP }

@@ -12,8 +12,6 @@ import updatePost from "next-common/utils/viewfuncs/updatePost";
 import { usePost, usePostDispatch } from "next-common/context/post";
 
 export default function DetailItem({
-  data,
-  user,
   chain,
   onReply,
   type,

@@ -8,6 +8,7 @@ import Info from "next-common/components/styled/info";
 import { toPolkassemblyDiscussionAuthor } from "utils/viewfuncs";
 import useDuration from "next-common/utils/hooks/useDuration";
 import PostTitle from "next-common/components/detail/common/Title";
+import { usePost } from "next-common/context/post";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -27,8 +28,8 @@ const FlexWrapper = styled(Flex)`
   flex-wrap: nowrap;
 `;
 
-export default function DetailItem({ data, chain, type, postReactions }) {
-  const post = data;
+export default function DetailItem({ chain, type, postReactions }) {
+  const post = usePost();
   const postUpdateTime = post?.updatedAt || post?.createdAt;
   const duration = useDuration(postUpdateTime);
 

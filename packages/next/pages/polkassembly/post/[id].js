@@ -30,7 +30,6 @@ export default withLoginUserRedux(({ loginUser, detail, chain }) => {
           text="Back to Polkassembly Discussions"
         />
         <DetailItem
-          data={detail}
           chain={chain}
           postReactions={postReactions}
           type={detailPageCategory.PA_POST}

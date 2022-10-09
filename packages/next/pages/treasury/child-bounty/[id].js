@@ -113,8 +113,6 @@ export default withLoginUserRedux(
         >
           <Back href={`/treasury/child-bounties`} text="Back to Child Bounties" />
           <DetailItem
-            data={detail}
-            user={loginUser}
             chain={chain}
             onReply={focusEditor}
             type={detailPageCategory.TREASURY_CHILD_BOUNTY}

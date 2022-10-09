@@ -51,9 +51,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       >
         <Back href={`/democracy/referenda`} text="Back to Referenda" />
         <DetailItem
-          data={detail}
           onReply={focusEditor}
-          user={loginUser}
           chain={chain}
           type={detailPageCategory.DEMOCRACY_REFERENDUM}
         />
