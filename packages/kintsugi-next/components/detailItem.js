@@ -20,9 +20,6 @@ export default function DetailItem({
   const postDispatch = usePostDispatch();
   const post = usePost();
   const [isEdit, setIsEdit] = useState(false);
-  if (!post) {
-    return null;
-  }
 
   if (isEdit) {
     return <PostEdit

@@ -2,14 +2,13 @@ import React from "react";
 import { Wrapper } from "./styled";
 import ReplyButton from "./replyButton";
 import Share from "../shareSNS";
-import { useSelector } from "react-redux";
-import { isLoginSelector, userSelector } from "../../store/reducers/userSlice";
 import { usePost, usePostType } from "../../context/post";
 import isPostAuthor from "../../context/post/isPostAuthor";
 import isThumbUp from "../../context/post/isThumbUp";
 import useThumbsUp from "../thumbsUp";
 import ContentMenu from "../contentMenu";
 import ThumbUpList from "./thumbUpList";
+import { useIsLogin, useUser } from "../../context/user";
 
 export default function ArticleActions({
   chain,
@@ -18,8 +17,8 @@ export default function ArticleActions({
   thumbUpLoading,
   setIsEdit,
 }) {
-  const user = useSelector(userSelector);
-  const isLogin = useSelector(isLoginSelector);
+  const user = useUser();
+  const isLogin = useIsLogin();
   const post = usePost();
   const type = usePostType();
   const isAuthor = isPostAuthor(user, post, type);

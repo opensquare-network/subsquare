@@ -25,6 +25,7 @@ import Content from "./content";
 import Toast from "../toast";
 import { modeSelector } from "../../store/reducers/settingSlice";
 import useUpdateNodesDelay from "../../utils/hooks/useUpdateNodesDelay";
+import UserProvider from "../../context/user";
 
 const Wrapper = styled.div`
   display: flex;
@@ -85,14 +86,16 @@ export default function BaseLayout({ user, left, children, seoInfo }) {
   );
 
   return (
-    <ThemeProvider theme={theme}>
-      <Wrapper>
-        {seo}
-        <GlobalStyle />
-        <Header user={user} left={left} chain={chain} />
-        <Content left={left}>{children}</Content>
-        <Toast />
-      </Wrapper>
-    </ThemeProvider>
+    <UserProvider user={user}>
+      <ThemeProvider theme={theme}>
+        <Wrapper>
+          {seo}
+          <GlobalStyle />
+          <Header left={left} chain={chain} />
+          <Content left={left}>{children}</Content>
+          <Toast />
+        </Wrapper>
+      </ThemeProvider>
+    </UserProvider>
   );
 }

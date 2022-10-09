@@ -1,13 +1,12 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { logout } from "../../store/reducers/userSlice";
 import { ButtonWrapper, Label } from "./styled";
 import GhostButton from "../buttons/ghostButton";
+import { logoutUser, useUserDispatch } from "../../context/user";
 
 export default function Logout() {
-  const dispatch = useDispatch();
   const router = useRouter();
+  const userDispatch = useUserDispatch();
 
   return (
     <div>
@@ -15,9 +14,9 @@ export default function Logout() {
       <ButtonWrapper>
         <GhostButton
           isFill
-          onClick={() => {
-            dispatch(logout());
-            router.replace("/");
+          onClick={async () => {
+            await logoutUser(userDispatch);
+            await router.replace("/");
           }}
         >
           Logout my account

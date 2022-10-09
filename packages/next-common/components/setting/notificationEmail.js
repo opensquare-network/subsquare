@@ -5,12 +5,12 @@ import Input from "../input";
 import ErrorText from "../ErrorText";
 import nextApi from "../../services/nextApi";
 import { newSuccessToast } from "../../store/reducers/toastSlice";
-import { fetchUserProfile } from "../../store/reducers/userSlice";
 import { EmailVerify, InputWrapper, Label } from "./styled";
 import useCountdown from "../../utils/hooks/useCountdown";
 import CircleCheck from "../../assets/imgs/icons/circle-check.svg";
 import CircleWarning from "../../assets/imgs/icons/circle-warning.svg";
 import SecondaryButton from "../buttons/secondaryButton";
+import { fetchAndUpdateUser } from "../../context/user";
 
 const CountdownWrapper = styled.div`
   display: flex;
@@ -43,7 +43,9 @@ export default function NotificationEmail({ email, verified }) {
 
   useEffect(() => {
     if (counting && countdown % 5 === 0) {
-      dispatch(fetchUserProfile());
+      fetchAndUpdateUser().then(() => {
+        // todo: maybe log the count
+      });
     }
   }, [dispatch, counting, countdown]);
 

@@ -1,14 +1,9 @@
 import Cookies from "cookies";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import { useDispatch, useSelector } from "react-redux";
-import { setUser, userSelector } from "next-common/store/reducers/userSlice";
-import { useEffect, useLayoutEffect } from "react";
+import { useDispatch } from "react-redux";
 import { checkBrowserCompatibility } from "next-common/utils/serverSideUtil";
 import { setMode } from "../store/reducers/settingSlice";
 import { CACHE_KEY } from "../utils/constants";
-
-export const useIsomorphicLayoutEffect =
-  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 export function withLoginUser(getServerSideProps) {
   return async function (context) {
@@ -61,16 +56,12 @@ export function withLoginUser(getServerSideProps) {
 export function withLoginUserRedux(fnComponent) {
   return ({ loginUser, themeMode, ...props }) => {
     const dispatch = useDispatch();
-    useIsomorphicLayoutEffect(() => {
-      dispatch(setUser(loginUser));
-    }, [loginUser]);
     if (themeMode) {
       dispatch(setMode(themeMode));
     }
 
-    const storeUser = useSelector(userSelector);
     return fnComponent({
-      loginUser: storeUser === undefined ? loginUser : storeUser,
+      loginUser,
       ...props,
     });
   };
