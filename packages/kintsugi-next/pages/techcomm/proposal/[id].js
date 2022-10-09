@@ -22,7 +22,7 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
 
   const desc = getMetaDesc(motion);
   return (
-    <PostProvider post={detail} type={detailPageCategory.TECH_COMM_MOTION}>
+    <PostProvider post={motion} type={detailPageCategory.TECH_COMM_MOTION}>
       <DetailLayout
         user={loginUser}
         seoInfo={{ title: motion?.title, desc, ogImage: getBannerUrl(motion?.bannerCid) }}

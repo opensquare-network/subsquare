@@ -24,7 +24,7 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
 
   const desc = getMetaDesc(motion);
   return (
-    <PostProvider post={detail} type={detailPageCategory.FINANCIAL_MOTION}>
+    <PostProvider post={motion} type={detailPageCategory.FINANCIAL_MOTION}>
       <DetailWithRightLayout
         user={loginUser}
         chain={chain}
