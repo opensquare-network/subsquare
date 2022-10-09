@@ -79,19 +79,19 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
   }
 
   div button.active {
-          background-color: ${(props) => props.theme.neutral} !important;
-          border-color: ${(props) => props.theme.neutral} !important;
-          color: ${(props) => props.theme.textPrimary} !important;
-          box-shadow: 1px 0 0 0 ${(props) => props.theme.grey300Border};
+    background-color: ${(props) => props.theme.neutral} !important;
+    border-color: ${(props) => props.theme.neutral} !important;
+    color: ${(props) => props.theme.textPrimary} !important;
+    box-shadow: 1px 0 0 0 ${(props) => props.theme.grey300Border};
 
-          + button {
-                  box-shadow: 1px 0 0 0 ${(props) => props.theme.grey300Border};
-          }
+    + button {
+      box-shadow: 1px 0 0 0 ${(props) => props.theme.grey300Border};
+    }
 
-          :last-child {
-                  box-shadow: ${(props) => props.theme.grey300Border} -1px 0px 0px 0px,
-                  ${(props) => props.theme.grey300Border} 1px 0px 0px 0px;
-          }
+    :last-child {
+      box-shadow: ${(props) => props.theme.grey300Border} -1px 0px 0px 0px,
+      ${(props) => props.theme.grey300Border} 1px 0px 0px 0px;
+    }
   }
 
   div.modal {
