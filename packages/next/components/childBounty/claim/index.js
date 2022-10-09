@@ -9,12 +9,11 @@ import { StatisticTitleContainer } from "next-common/components/styled/container
 import Anchor from "next-common/components/styled/anchor";
 import User from "next-common/components/user";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import { useSelector } from "react-redux";
-import { userSelector } from "next-common/store/reducers/userSlice";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { shadow_100 } from "next-common/styles/componentCss";
 import ValueDisplay from "next-common/components/displayValue";
+import { useUser } from "next-common/context/user";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -93,7 +92,7 @@ const ClaimInfoText = styled.div`
 `;
 
 export default function Claim({ chain, childBounty, onInBlock, onFinalized }) {
-  const user = useSelector(userSelector);
+  const user = useUser();
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [isClaimed, setIsClaimed] = useState(

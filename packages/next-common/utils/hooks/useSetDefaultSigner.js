@@ -1,14 +1,13 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
 import { isKeyRegisteredUser, isSameAddress } from "..";
-import { userSelector } from "../../store/reducers/userSlice";
 import { CACHE_KEY } from "../constants";
+import { useUser } from "../../context/user";
 
 export default function useSetDefaultSigner(
   extensionAccounts,
   setSignerAccount
 ) {
-  const user = useSelector(userSelector);
+  const user = useUser();
   const isKeyUser = isKeyRegisteredUser(user);
   const address = user?.address;
 

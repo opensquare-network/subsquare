@@ -91,7 +91,7 @@ export default function BaseLayout({ user, left, children, seoInfo }) {
         <Wrapper>
           {seo}
           <GlobalStyle />
-          <Header user={user} left={left} chain={chain} />
+          <Header left={left} chain={chain} />
           <Content left={left}>{children}</Content>
           <Toast />
         </Wrapper>

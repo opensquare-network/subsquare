@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import nextApi from "../services/nextApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import {
-  fetchUserProfile,
-  userSelector,
-} from "next-common/store/reducers/userSlice";
-import {
-  newErrorToast,
-  newSuccessToast,
-} from "next-common/store/reducers/toastSlice";
+import { newErrorToast, newSuccessToast, } from "next-common/store/reducers/toastSlice";
 import { nodes } from "next-common/utils/constants";
 import Avatar from "./avatar";
 import DownloadExtension from "./downloadExtension";
@@ -25,6 +18,7 @@ import Popup from "./popup/wrapper/Popup";
 import SelectWallet from "./wallet/selectWallet";
 import { stringToHex } from "@polkadot/util";
 import { WALLETS } from "../utils/consts/connect";
+import { fetchAndUpdateUser, useUser } from "../context/user";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -163,7 +157,7 @@ const EmptyList = styled.div`
 
 export default function LinkedAddress({ chain }) {
   const isMounted = useIsMounted();
-  const user = useSelector(userSelector);
+  const user = useUser();
   const [wallet, setWallet] = useState();
   const [showSelectWallet, setShowSelectWallet] = useState(false);
   const [selectedWallet, setSelectWallet] = useState("");
@@ -186,7 +180,7 @@ export default function LinkedAddress({ chain }) {
 
   const unlinkAddress = async (chain, address) => {
     const { error, result } = await nextApi.delete(`user/linkaddr/${address}`);
-    dispatch(fetchUserProfile());
+    await fetchAndUpdateUser();
 
     if (result) {
       dispatch(newSuccessToast("Unlink address successfully!"));
@@ -231,7 +225,7 @@ export default function LinkedAddress({ chain }) {
         { challengeAnswer: signature }
       );
 
-      dispatch(fetchUserProfile());
+      await fetchAndUpdateUser();
       if (confirmResult) {
         dispatch(newSuccessToast("Link address successfully!"));
       }
