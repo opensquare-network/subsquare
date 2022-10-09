@@ -70,10 +70,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       motion,
       comments: comments ?? EmptyList,
       chain,
-      redux: {
-        detail: motion,
-        detailType: detailPageCategory.FINANCIAL_MOTION,
-      },
     },
   };
 });

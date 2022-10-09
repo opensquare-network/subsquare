@@ -124,10 +124,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       childBounties: childBounties ?? EmptyList,
       comments: comments ?? EmptyList,
       chain,
-      redux: {
-        detail,
-        detailType: detailPageCategory.TREASURY_BOUNTY,
-      },
     },
   };
 });

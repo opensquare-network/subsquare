@@ -130,10 +130,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       publicProposal,
       comments: comments ?? EmptyList,
       chain,
-      redux: {
-        detail,
-        detailType: detailPageCategory.DEMOCRACY_REFERENDUM
-      },
     },
   };
 });
