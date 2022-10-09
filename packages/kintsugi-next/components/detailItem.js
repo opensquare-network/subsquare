@@ -36,7 +36,6 @@ export default function DetailItem({
       <PostTitle />
       <PostMeta />
       <ArticleContent
-        chain={chain}
         post={post}
         type={type}
         onReply={onReply}

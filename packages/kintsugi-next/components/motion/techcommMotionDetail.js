@@ -224,7 +224,6 @@ export default function TechcommMotionDetail({
           <PostTitle />
           <PostMeta />
           <ArticleContent
-            chain={chain}
             post={post}
             onReply={onReply}
             type={type}

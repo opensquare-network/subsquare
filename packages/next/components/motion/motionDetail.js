@@ -126,7 +126,6 @@ export default function MotionDetail({ user, onReply, chain, type }) {
       <EditablePanel>
         {!isEdit && <Head motion={post} chain={chain} type={type} />}
         <ArticleContent
-          chain={chain}
           post={post}
           onReply={onReply}
           type={type}

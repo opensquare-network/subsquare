@@ -48,7 +48,6 @@ export default function DetailItem({
       <PostTitle />
       <PostMeta />
       <ArticleContent
-        chain={chain}
         post={post}
         votes={votes}
         myVote={myVote}

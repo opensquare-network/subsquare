@@ -46,7 +46,6 @@ export default function CommentActions({
       <ThumbUpList
         showThumbsUpList={showThumbsUpList}
         reactions={reactions}
-        chain={chain}
       />
     </>
   );

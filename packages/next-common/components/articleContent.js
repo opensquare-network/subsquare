@@ -115,7 +115,6 @@ export default function ArticleContent({
       )}
       <PostDataSource />
       <ArticleActions
-        chain={chain}
         setIsEdit={setIsEdit}
         toggleThumbUp={toggleThumbUp}
         thumbUpLoading={thumbUpLoading}
