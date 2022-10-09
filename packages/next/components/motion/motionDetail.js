@@ -15,8 +15,8 @@ import { EditablePanel } from "next-common/components/styled/panel";
 import Chains from "next-common/utils/consts/chains";
 import usePrime from "next-common/utils/hooks/usePrime";
 import PostEdit from "next-common/components/post/postEdit";
-import updatePost from "next-common/utils/viewfuncs/updatePost";
 import { usePostDispatch } from "next-common/context/post";
+import fetchAndUpdatePost from "next-common/context/post/update";
 
 export default function MotionDetail({ user, motion, onReply, chain, type }) {
   const postDispatch = usePostDispatch();
@@ -123,7 +123,7 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
   if (isEdit) {
     return <PostEdit
       setIsEdit={ setIsEdit }
-      updatePost={ () => updatePost(type, post._id, postDispatch) }
+      updatePost={ () => fetchAndUpdatePost(postDispatch, type, post._id) }
       type={ type }
     />
   }

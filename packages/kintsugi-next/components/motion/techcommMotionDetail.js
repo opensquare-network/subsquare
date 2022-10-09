@@ -19,8 +19,8 @@ import PostTitle from "next-common/components/detail/common/Title";
 import TechCommNavigation from "./techCommNavigation";
 import PostMeta from "next-common/components/detail/container/Meta";
 import PostEdit from "next-common/components/post/postEdit";
-import updatePost from "next-common/utils/viewfuncs/updatePost";
-import { usePostDispatch } from "next-common/context/post";
+import { usePost, usePostDispatch } from "next-common/context/post";
+import fetchAndUpdatePost from "next-common/context/post/update";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -110,26 +110,22 @@ export default function TechcommMotionDetail({
   motion,
   chain,
   onReply,
-  loginUser,
   type,
 }) {
   const postDispatch = usePostDispatch();
   const node = getNode(chain);
-  const [post] = useState(motion);
+  const post = usePost();
   const [isEdit, setIsEdit] = useState(false);
   const motionEndHeight = motion.onchainData?.voting?.end;
   const blockHeight = useSelector(latestHeightSelector);
   const estimatedBlocksTime = useEstimateBlocksTime(
     blockHeight - motionEndHeight
   );
-  if (!node) {
-    return null;
-  }
 
   if (isEdit) {
     return <PostEdit
       setIsEdit={ setIsEdit }
-      updatePost={ () => updatePost(type, post._id, postDispatch) }
+      updatePost={ () => fetchAndUpdatePost(postDispatch, type, post._id) }
       type={ type }
     />
   }
