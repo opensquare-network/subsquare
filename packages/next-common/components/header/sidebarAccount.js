@@ -1,16 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
 import NetworkSwitch from "next-common/components/header/networkSwitch";
 import { nodes } from "next-common/utils/constants";
-import { logout } from "next-common/store/reducers/userSlice";
 import User from "next-common/components/user";
 import NodeSwitch from "next-common/components/header/nodeSwitch";
 import Flex from "next-common/components/styled/flex";
 import { accountMenu } from "./consts";
 import GhostButton from "../buttons/ghostButton";
 import SecondaryButton from "../buttons/secondaryButton";
+import { logoutUser, useUserDispatch } from "../../context/user";
 
 const Wrapper = styled.div`
   padding: 32px 0 0;
@@ -64,14 +63,14 @@ const UserWrapper = styled(Flex)`
 
 export default function SidebarAccount({ user, chain }) {
   const router = useRouter();
-  const dispatch = useDispatch();
   const node = nodes.find((n) => n.value === chain) || nodes[0];
+  const userDispatch = useUserDispatch();
 
-  const handleAccountMenu = (item) => {
+  const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
-      dispatch(logout());
+      await logoutUser(userDispatch);
     } else if (item.pathname) {
-      router.push(item.pathname);
+      await router.push(item.pathname);
     }
   };
 

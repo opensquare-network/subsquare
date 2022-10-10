@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside.js";
 import useWindowSize from "../../utils/hooks/useWindowSize.js";
-import { logout } from "../../store/reducers/userSlice";
 import User from "../user";
 import Relative from "../styled/relative";
 import Flex from "../styled/flex";
@@ -13,6 +12,7 @@ import LoginButton from "./loginButton";
 import { isKeyRegisteredUser } from "../../utils";
 import { accountMenu, accountMenuForKeyAccount } from "./consts";
 import Divider from "../styled/layout/divider";
+import { logoutUser, useUserDispatch } from "../../context/user";
 
 const Wrapper = Relative;
 
@@ -69,7 +69,7 @@ export default function HeaderAccount({ user, chain }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
   const windowSize = useWindowSize();
-  const dispatch = useDispatch();
+  const userDispatch = useUserDispatch();
 
   useOnClickOutside(ref, () => setShow(false));
 
@@ -88,11 +88,11 @@ export default function HeaderAccount({ user, chain }) {
     ? accountMenuForKeyAccount
     : accountMenu;
 
-  const handleAccountMenu = (item) => {
+  const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
-      dispatch(logout());
+      await logoutUser(userDispatch);
     } else if (item.pathname) {
-      router.push(item.pathname);
+      await router.push(item.pathname);
     }
     setShow(false);
   };

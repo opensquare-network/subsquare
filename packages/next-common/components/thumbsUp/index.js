@@ -5,6 +5,7 @@ import ThumbUpIcon from "../../assets/imgs/icons/thumb-up.svg";
 import UnfoldIcon from "../../assets/imgs/icons/unfold.svg";
 import FoldIcon from "../../assets/imgs/icons/fold.svg";
 import Flex from "../styled/flex";
+import Loading from "../loading";
 
 const ActionItem = styled(Flex)`
   cursor: default;
@@ -88,6 +89,7 @@ export default function useThumbsUp({
   noHover,
   highlight,
   toggleThumbUp,
+  thumbUpLoading,
 }) {
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
 
@@ -98,7 +100,7 @@ export default function useThumbsUp({
         highlight={highlight}
         onClick={() => toggleThumbUp && toggleThumbUp()}
       >
-        {disabled ? <DisabledThumbUp /> : <ThumbUpIcon />}
+        {thumbUpLoading ? <Loading size={14} /> : disabled ? <DisabledThumbUp /> : <ThumbUpIcon />}
         <div>Up{count > 0 ? ` ${count}` : ``}</div>
       </ActionItem>
       {count > 0 && (

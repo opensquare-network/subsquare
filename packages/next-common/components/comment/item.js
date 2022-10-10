@@ -189,6 +189,7 @@ export default function Item({ user, data, chain, onReply }) {
               edit={ownComment}
               setIsEdit={setIsEdit}
               toggleThumbUp={toggleThumbUp}
+              thumbUpLoading={thumbUpLoading}
               reactions={comment.reactions}
               onReply={() => {
                 if (isLoggedIn && !ownComment) {

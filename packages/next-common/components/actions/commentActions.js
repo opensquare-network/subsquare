@@ -11,6 +11,7 @@ export default function CommentActions({
   noHover,
   highlight,
   toggleThumbUp,
+  thumbUpLoading,
   reactions,
   edit,
   setIsEdit,
@@ -24,6 +25,7 @@ export default function CommentActions({
     noHover,
     highlight,
     toggleThumbUp,
+    thumbUpLoading,
   });
 
   return (

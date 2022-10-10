@@ -9,6 +9,7 @@ import HeaderWrapper from "next-common/components/header/wrapper";
 import ChainLogo from "next-common/components/header/left/chainLogo";
 import ChainIcon from "next-common/components/header/chainIcon";
 import MenuLine from "../../assets/imgs/icons/menu-line.svg";
+import { useUser } from "../../context/user";
 
 const FlexWrapper = styled(Flex)`
   max-width: 1184px;
@@ -54,7 +55,8 @@ const NodeButton = styled(Flex)`
   }
 `;
 
-export default function Header({ user, left, chain }) {
+export default function Header({ left, chain }) {
+  const user = useUser();
   const [show, setShow] = useState(false);
   const [position, setPosition] = useState("left");
   const [content, setContent] = useState();

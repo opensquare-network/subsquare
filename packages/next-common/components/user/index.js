@@ -11,6 +11,7 @@ import Flex from "../styled/flex";
 import Tooltip from "../tooltip";
 import AvatarDeleted from "../../assets/imgs/icons/avatar-deleted.svg";
 import useIsMounted from "../../utils/hooks/useIsMounted";
+import Link from "next/link";
 
 const Wrapper = styled(Flex)`
   a {
@@ -112,8 +113,7 @@ function User({
   noTooltip = false,
   color,
 }) {
-  const address =
-    add ?? user?.address;
+  const address = add ?? user?.address;
   const isMounted = useIsMounted();
   const [identity, setIdentity] = useState(null);
   useEffect(() => {
@@ -177,25 +177,23 @@ function User({
           )}
         </AvatarWrapper>
       )}
-      <LinkWrapper
-        color={color}
-        href={`/user/${address ?? user?.username}`}
-        target="_blank"
-      >
-        {address ? (
-          identity && identity?.info?.status !== "NO_ID" ? (
-            <Identity
-              identity={identity}
-              fontSize={fontSize}
-              maxWidth={maxWidth}
-            />
+      <Link href={`/user/${address ?? user?.username}`} passHref>
+        <LinkWrapper color={color}>
+          {address ? (
+            identity && identity?.info?.status !== "NO_ID" ? (
+              <Identity
+                identity={identity}
+                fontSize={fontSize}
+                maxWidth={maxWidth}
+              />
+            ) : (
+              addressWithoutIdentity
+            )
           ) : (
-            addressWithoutIdentity
-          )
-        ) : (
-          noAddress
-        )}
-      </LinkWrapper>
+            noAddress
+          )}
+        </LinkWrapper>
+      </Link>
     </Wrapper>
   );
 }

@@ -3,12 +3,8 @@ import { useEffect, useState } from "react";
 
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
-import {
-  newErrorToast,
-  newSuccessToast,
-} from "next-common/store/reducers/toastSlice";
+import { newErrorToast, newSuccessToast, } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
-import { fetchUserProfile } from "next-common/store/reducers/userSlice";
 import NextHead from "next-common/components/nextHead";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { useRouter } from "next/router";
@@ -19,6 +15,7 @@ import Divider from "next-common/components/styled/layout/divider";
 import SettingsLayout from "next-common/components/layout/settingsLayout";
 import useDiscussionOptions from "components/setting/notification/useDiscussionOptions";
 import useTreasuryOptions from "components/setting/notification/useTreasuryOptions";
+import { fetchAndUpdateUser } from "next-common/context/user";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -128,7 +125,7 @@ export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
 
     const { result, error } = await nextApi.patch("user/notification", data);
     if (result) {
-      dispatch(fetchUserProfile());
+      await fetchAndUpdateUser();
       dispatch(newSuccessToast("Settings saved"));
     } else if (error) {
       dispatch(newErrorToast(error.message));

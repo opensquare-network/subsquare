@@ -5,7 +5,6 @@ import User from "next-common/components/user";
 import {
   bigNumber2Locale,
   getNode,
-  timeDuration,
   toPrecision,
 } from "next-common/utils";
 import Tag from "next-common/components/tags/state/tag";
@@ -250,7 +249,6 @@ export default function Post({ data, chain, href, type }) {
                 <Flex className="elapseIcon">{elapseIcon}</Flex>
               </Info>
             )}
-            {data.remaining && <Info>{`${timeDuration(data.remaining)}`}</Info>}
             {commentsCount > -1 && (
               <AutHideInfo>
                 <CommentIcon />

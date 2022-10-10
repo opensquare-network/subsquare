@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  getMentionList,
-  getMentionName,
-  getMemberId,
-} from "next-common/utils/post";
+import { getMemberId, getMentionList, getMentionName, } from "next-common/utils/post";
 import uniqBy from "lodash.uniqby";
-import { useSelector } from "react-redux";
-import { userSelector } from "../../store/reducers/userSlice";
+import { useUser } from "../../context/user";
 
 export default function useMentionList(post, comments, chain) {
   const [users, setUsers] = useState([]);
-  const currentUser = useSelector(userSelector);
+  const currentUser = useUser();
 
   useEffect(() => {
     if (!post) {

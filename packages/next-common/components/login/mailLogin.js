@@ -12,6 +12,7 @@ import Password from "./password";
 import GhostButton from "../buttons/ghostButton";
 import SecondaryButton from "../buttons/secondaryButton";
 import useForm from "../../utils/hooks/useForm";
+import { updateUser, useUserDispatch } from "../../context/user";
 
 const ForgetPassword = styled.div`
   margin-top: 8px;
@@ -23,7 +24,7 @@ export default function MailLogin({ setAddressLogin }) {
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const dispatch = useDispatch();
+  const userDispatch = useUserDispatch();
 
   const { redirect } = router.query;
 
@@ -36,7 +37,7 @@ export default function MailLogin({ setAddressLogin }) {
       setLoading(true);
       const res = await nextApi.post("auth/login", formData);
       if (res.result) {
-        dispatch(setUser(res.result));
+        updateUser(res.result, userDispatch);
         router.replace(redirect || `/`);
       } else if (res.error) {
         setErrors(res.error);

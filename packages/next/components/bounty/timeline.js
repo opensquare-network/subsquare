@@ -25,7 +25,7 @@ export default function BountyTimeline({ chain, bounty }) {
       case "acceptCurator":
         return {
           ...args,
-          curator: <User chain={chain} add={args.curator} fontSize={14} />,
+          curator: <User chain={chain} add={args.curator.id ?? args.curator} fontSize={14} />,
         };
       case "proposeBounty":
         return {

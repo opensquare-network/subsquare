@@ -36,7 +36,6 @@ export default function EditInput({
   update,
   loading,
   setLoading,
-  type,
 }) {
   const [content, setContent] = useState(editContent);
   const [contentType, setContentType] = useState(editContentType);

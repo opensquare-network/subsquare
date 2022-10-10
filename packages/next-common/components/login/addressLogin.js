@@ -14,6 +14,7 @@ import { LinkWrapper } from "./styled";
 import SelectWallet from "../wallet/selectWallet";
 import { CACHE_KEY } from "../../utils/constants";
 import { WALLETS } from "../../utils/consts/connect";
+import { updateUser, useUserDispatch } from "../../context/user";
 
 const Label = styled.div`
   font-weight: bold;
@@ -70,6 +71,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
   const [loading, setLoading] = useState(false);
   const [selectedWallet, setSelectWallet] = useState("");
   const dispatch = useDispatch();
+  const userDispatch = useUserDispatch();
   const router = useRouter();
 
   const doWeb3Login = async () => {
@@ -96,7 +98,7 @@ export default function AddressLogin({ chain, setMailLogin }) {
           { challengeAnswer: signature }
         );
         if (loginResult) {
-          dispatch(setUser(loginResult));
+          updateUser(loginResult, userDispatch);
 
           rememberLoginAddress(selectedAccount.address)
           rememberLoginExtension(selectedAccount.meta?.source || selectedWallet);

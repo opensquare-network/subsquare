@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Input from "../input";
 import EditInput from "../editInput";
@@ -9,8 +9,10 @@ import ToggleText from "../uploadBanner/toggleText";
 import Uploader from "../uploadBanner/uploader";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
 import { TitleContainer } from "../styled/containers/titleContainer";
+import { EditablePanel } from "../styled/panel";
+import { usePost } from "../../context/post";
 
-const Wrapper = styled.div`
+const Wrapper = styled(EditablePanel)`
   textarea:read-only,
   div.ql-disabled {
     background-color: ${(props) => props.theme.grey100Bg} !important;
@@ -31,16 +33,15 @@ const UploaderWrapper = styled.div`
 `;
 
 export default function PostEdit({
-  chain,
-  postData,
   setIsEdit,
   updatePost,
   type,
 }) {
-  const [title, setTitle] = useState(postData.title);
+  const post = usePost();
+  const [title, setTitle] = useState(post.title);
   const [updating, setUpdating] = useState(false);
   const editPost = async (content, contentType) => {
-    const url = `${toApiType(type)}/${postData._id}`;
+    const url = `${toApiType(type)}/${post._id}`;
     return await nextApi.patch(url, {
       title,
       content,
@@ -48,9 +49,9 @@ export default function PostEdit({
       bannerCid,
     });
   };
-  const [bannerCid, setBannerCid] = useState(postData.bannerCid);
+  const [bannerCid, setBannerCid] = useState(post.bannerCid);
 
-  const [isSetBanner, setIsSetBanner] = useState(!!postData.bannerCid);
+  const [isSetBanner, setIsSetBanner] = useState(!!post.bannerCid);
   useEffect(() => {
     if (!isSetBanner) {
       setBannerCid(null);
@@ -91,8 +92,8 @@ export default function PostEdit({
       </LabelWrapper>
 
       <EditInput
-        editContent={postData.content}
-        editContentType={postData.contentType}
+        editContent={post.content}
+        editContentType={post.contentType}
         onFinishedEdit={async (reload) => {
           if (reload) {
             await updatePost();
@@ -105,7 +106,6 @@ export default function PostEdit({
         loading={updating}
         setLoading={setUpdating}
         update={editPost}
-        type={type}
       />
     </Wrapper>
   );

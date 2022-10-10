@@ -4,16 +4,13 @@ import useShowMotionEnd from "./useShowMotionEnd";
 import MotionEnd from "next-common/components/motionEnd";
 import Tag from "next-common/components/tags/state/tag";
 import Flex from "next-common/components/styled/flex";
-import { getPostUpdatedAt } from "utils/viewfuncs";
 import DemocracyNavigate from "./democracyNavigate";
-import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
+import { DemocracyTag, TreasuryTag, } from "next-common/components/tags/business";
+import UpdatedTime from "next-common/components/detail/common/UpdatedTime";
+import PostTitle from "next-common/components/detail/common/Title";
+import { isDemocracyMotion, isTreasuryMotion } from "next-common/utils/viewfuncs/motion";
 import Info from "next-common/components/styled/info";
-import {
-  DemocracyTag,
-  TreasuryTag,
-} from "next-common/components/tags/business";
 import isNil from "lodash.isnil";
-import useDuration from "next-common/utils/hooks/useDuration";
 
 const MotionEndHeader = styled.div`
   display: flex;
@@ -30,37 +27,6 @@ const MotionEndHeader = styled.div`
 
   margin-bottom: 16px;
   color: ${(props) => props.theme.textSecondary};
-`;
-
-const TitleWrapper = styled.div`
-  margin-bottom: 8px;
-  overflow: hidden;
-
-  > :not(:first-child) {
-    ::before {
-      content: "·";
-      font-size: 20px;
-      line-height: 28px;
-      color: ${(props) => props.theme.textTertiary};
-      margin: 0 8px;
-    }
-  }
-`;
-
-const Index = styled.div`
-  float: left;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 140%;
-`;
-
-const Title = styled.div`
-  max-width: 750px;
-  word-break: break-all;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 140%;
-  margin-bottom: 12px;
 `;
 
 const FlexWrapper = styled.div`
@@ -82,6 +48,21 @@ const DividerWrapper = styled(Flex)`
   }
 `;
 
+function MotionTag({motion}){
+  let tag = null;
+  if (isTreasuryMotion(motion)) {
+    tag = <TreasuryTag />;
+  } else if (isDemocracyMotion(motion)) {
+    tag = <DemocracyTag />
+  }
+
+  if (!tag) {
+    return null
+  }
+
+  return <div>{tag}</div>
+}
+
 export default function MotionHead({ motion, chain, type }) {
   const showMotionEnd = useShowMotionEnd(motion?.onchainData);
 
@@ -91,19 +72,15 @@ export default function MotionHead({ motion, chain, type }) {
     </MotionEndHeader>
   ) : null;
 
-  const postUpdateTime = getPostUpdatedAt(motion);
-  const duration = useDuration(postUpdateTime);
+  const noCommentsCount = isNil(motion.commentsCount) && isNil(motion.polkassemblyCommentsCount);
+  const commentsCount =
+    (motion.commentsCount || 0) + (motion.polkassemblyCommentsCount || 0);
 
   return (
     <div>
-      <DemocracyNavigate motion={motion.onchainData} type={type} />
+      <DemocracyNavigate motion={motion.onchainData} />
       {motionEndHeader}
-      <TitleWrapper>
-        { !isNil(motion?.motionIndex) && (
-          <Index>{ `#${ motion.motionIndex }` }</Index>
-        ) }
-        <Title>{motion?.title}</Title>
-      </TitleWrapper>
+      <PostTitle />
       <FlexWrapper>
         <DividerWrapper>
           <User
@@ -112,22 +89,9 @@ export default function MotionHead({ motion, chain, type }) {
             chain={chain}
             fontSize={12}
           />
-          {motion.isTreasury && (
-            <div>
-              <TreasuryTag />
-            </div>
-          )}
-          {motion?.onchainData?.externalProposals?.length > 0 && (
-            <div>
-              <DemocracyTag />
-            </div>
-          )}
-          {postUpdateTime && (
-            <Info>
-              <UpdateIcon />
-              {duration}
-            </Info>
-          )}
+          <MotionTag motion={motion.onchainData}/>
+          <UpdatedTime post={ motion } />
+          {(!noCommentsCount && commentsCount > -1) && <Info>{`${commentsCount} Comments`}</Info>}
         </DividerWrapper>
         {motion.state && <Tag state={motion.state} category={type} />}
       </FlexWrapper>

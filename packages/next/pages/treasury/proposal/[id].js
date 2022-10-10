@@ -11,6 +11,7 @@ import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
+import { PostProvider } from "next-common/context/post";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -21,26 +22,24 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     type: detailPageCategory.TREASURY_PROPOSAL,
   });
 
-  detail.status = detail.onchainData?.state?.state;
-
   const desc = getMetaDesc(detail);
   return (
-    <DetailLayout
-      user={loginUser}
-      seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
-    >
-      <Back href={`/treasury/proposals`} text="Back to Proposals" />
-      <DetailItem
-        data={detail}
+    <PostProvider post={detail} type={detailPageCategory.TREASURY_PROPOSAL}>
+      <DetailLayout
         user={loginUser}
-        chain={chain}
-        onReply={focusEditor}
-        type={detailPageCategory.TREASURY_PROPOSAL}
-      />
-      <Metadata treasuryProposal={detail?.onchainData} chain={chain} />
-      <Timeline treasuryProposal={detail?.onchainData} chain={chain} />
-      {CommentComponent}
-    </DetailLayout>
+        seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
+      >
+        <Back href={`/treasury/proposals`} text="Back to Proposals" />
+        <DetailItem
+          chain={chain}
+          onReply={focusEditor}
+          type={detailPageCategory.TREASURY_PROPOSAL}
+        />
+        <Metadata treasuryProposal={detail?.onchainData} chain={chain} />
+        <Timeline treasuryProposal={detail?.onchainData} chain={chain} />
+        {CommentComponent}
+      </DetailLayout>
+    </PostProvider>
   );
 });
 

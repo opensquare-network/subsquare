@@ -14,8 +14,13 @@ import toApiCouncil from "next-common/utils/toApiCouncil";
 import { EditablePanel } from "next-common/components/styled/panel";
 import Chains from "next-common/utils/consts/chains";
 import usePrime from "next-common/utils/hooks/usePrime";
+import PostEdit from "next-common/components/post/postEdit";
+import updatePost from "next-common/utils/viewfuncs/updatePost";
+import { usePostDispatch } from "next-common/context/post";
 
 export default function MotionDetail({ user, motion, onReply, chain, type }) {
+  const postDispatch = usePostDispatch();
+  const api = useApi(chain);
   const isMounted = useIsMounted();
 
   const [post, setPost] = useState(motion);
@@ -26,14 +31,12 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
     }
   }, [motion, isMounted]);
 
-  const [isEdit, setIsEdit] = useState(false);
-
-  const api = useApi(chain);
-
   const votingMethod = api?.query?.[toApiCouncil(chain, type)]?.voting;
   const membersMethod = api?.query?.[toApiCouncil(chain, type)]?.members;
-
   const voters = useCall(membersMethod, [])?.toJSON() || [];
+
+  const [isEdit, setIsEdit] = useState(false);
+
   const userCanVote = voters?.some((address) =>
     isSameAddress(user?.address, address)
   );
@@ -117,6 +120,14 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
     setReadOnchainVotes(Date.now());
   }, []);
 
+  if (isEdit) {
+    return <PostEdit
+      setIsEdit={ setIsEdit }
+      updatePost={ () => updatePost(type, post._id, postDispatch) }
+      type={ type }
+    />
+  }
+
   return (
     <div>
       <EditablePanel>
@@ -124,11 +135,8 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
         <ArticleContent
           chain={chain}
           post={post}
-          setPost={setPost}
-          user={user}
           onReply={onReply}
           type={type}
-          isEdit={isEdit}
           setIsEdit={setIsEdit}
         />
       </EditablePanel>

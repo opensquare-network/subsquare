@@ -32,7 +32,7 @@ export default function ChildBountyTimeline({ chain, onchainData }) {
       case "proposeCurator":
       case "acceptCurator":
         return {
-          Curator: <User chain={chain} add={args.curator} fontSize={14} />,
+          Curator: <User chain={chain} add={args.curator.id ?? args.curator} fontSize={14} />,
         };
       case "proposeBounty":
         return {
