@@ -20,12 +20,12 @@ export default function BountyTimeline({ chain, bounty }) {
       case "BountyExtended":
         return {
           ...args,
-          caller: <User chain={chain} add={args.caller} fontSize={14} />,
+          caller: <User add={args.caller} fontSize={14} />,
         };
       case "acceptCurator":
         return {
           ...args,
-          curator: <User chain={chain} add={args.curator.id ?? args.curator} fontSize={14} />,
+          curator: <User add={args.curator.id ?? args.curator} fontSize={14} />,
         };
       case "proposeBounty":
         return {
@@ -44,7 +44,7 @@ export default function BountyTimeline({ chain, bounty }) {
       case "BountyClaimed":
         return {
           Beneficiary: (
-            <User chain={chain} add={args.beneficiary} fontSize={14} />
+            <User add={args.beneficiary} fontSize={14} />
           ),
           Payout: `${toPrecision(args.payout ?? 0, decimals)} ${symbol}`,
         };
@@ -52,7 +52,7 @@ export default function BountyTimeline({ chain, bounty }) {
       case "BountyAwarded":
         return {
           Beneficiary: (
-            <User chain={chain} add={args.beneficiary} fontSize={14} />
+            <User add={args.beneficiary} fontSize={14} />
           ),
         };
     }

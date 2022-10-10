@@ -52,11 +52,11 @@ const ArgItem = styled.div`
   }
 `;
 
-export default function Voting({ data, chain }) {
+export default function Voting({ data  }) {
   return (
     <div>
       <TitleWrapper>
-        <User chain={chain} add={data.proposer} fontSize={14} />
+        <User add={data.proposer} fontSize={14} />
         <div>
           <div>{data.method}</div>
           <Approve />

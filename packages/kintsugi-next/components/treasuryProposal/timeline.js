@@ -9,9 +9,6 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
   const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
   const decimals = node.decimals;
   const symbol = node.symbol;
 
@@ -23,7 +20,7 @@ export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
         };
       case "Awarded":
         return {
-          Beneficiary: <User chain={chain} add={args.beneficiary} />,
+          Beneficiary: <User add={args.beneficiary} />,
           Award: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
         };
     }

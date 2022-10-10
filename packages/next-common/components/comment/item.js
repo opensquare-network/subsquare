@@ -155,7 +155,7 @@ export default function Item({ user, data, chain, onReply }) {
   return (
     <Wrapper id={comment.height} highlight={highlight}>
       <InfoWrapper>
-        <User user={comment.author} chain={chain} />
+        <User user={comment.author} />
         <div>{duration}</div>
       </InfoWrapper>
       {!isEdit && (

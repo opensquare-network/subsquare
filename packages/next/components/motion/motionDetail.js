@@ -15,21 +15,14 @@ import { EditablePanel } from "next-common/components/styled/panel";
 import Chains from "next-common/utils/consts/chains";
 import usePrime from "next-common/utils/hooks/usePrime";
 import PostEdit from "next-common/components/post/postEdit";
-import updatePost from "next-common/utils/viewfuncs/updatePost";
-import { usePostDispatch } from "next-common/context/post";
+import { usePost, usePostDispatch } from "next-common/context/post";
+import fetchAndUpdatePost from "next-common/context/post/update";
 
-export default function MotionDetail({ user, motion, onReply, chain, type }) {
+export default function MotionDetail({ user, onReply, chain, type }) {
   const postDispatch = usePostDispatch();
   const api = useApi(chain);
   const isMounted = useIsMounted();
-
-  const [post, setPost] = useState(motion);
-
-  useEffect(() => {
-    if (isMounted.current) {
-      setPost(motion);
-    }
-  }, [motion, isMounted]);
+  const post = usePost();
 
   const votingMethod = api?.query?.[toApiCouncil(chain, type)]?.voting;
   const membersMethod = api?.query?.[toApiCouncil(chain, type)]?.members;
@@ -123,7 +116,7 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
   if (isEdit) {
     return <PostEdit
       setIsEdit={ setIsEdit }
-      updatePost={ () => updatePost(type, post._id, postDispatch) }
+      updatePost={ () => fetchAndUpdatePost(postDispatch, type, post._id) }
       type={ type }
     />
   }
@@ -133,7 +126,6 @@ export default function MotionDetail({ user, motion, onReply, chain, type }) {
       <EditablePanel>
         {!isEdit && <Head motion={post} chain={chain} type={type} />}
         <ArticleContent
-          chain={chain}
           post={post}
           onReply={onReply}
           type={type}

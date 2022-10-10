@@ -28,7 +28,7 @@ export function createArgs(method, args, chain) {
         },
         {
           name: curator.name,
-          value: <User chain={chain} add={curator.value.id} fontSize={14} />,
+          value: <User add={curator.value.id} fontSize={14} />,
         },
       ];
     }
@@ -98,7 +98,7 @@ export function createMotionTimelineData(
           status: { value: "Vote", type },
           data: (
             <VoteResultWrapper>
-              <User chain={chain} add={item.args.voter} />
+              <User add={item.args.voter} />
               {item.args.approve ? (
                 <div>
                   Aye

@@ -12,11 +12,11 @@ import { usePost, usePostDispatch, usePostType } from "../context/post";
 import { useIsPostAuthor } from "../context/post/useIsPostAuthor";
 import { getBannerUrl } from "../utils/banner";
 import { toApiType } from "../utils/viewfuncs";
-import updatePost from "../utils/viewfuncs/updatePost";
 import { newErrorToast } from "../store/reducers/toastSlice";
 import { useIsThumbUp } from "../context/post/isThumbUp";
 import { useIsLogin } from "../context/user";
 import nextApi from "next-common/services/nextApi";
+import fetchAndUpdatePost from "../context/post/update";
 
 const Wrapper = styled(RichTextStyleWrapper)`
   :hover {
@@ -77,7 +77,7 @@ export default function ArticleContent({
       }
 
       if (result) {
-        await updatePost(type, post._id, postDispatch);
+        await fetchAndUpdatePost(postDispatch, type, post._id);
       }
       if (error) {
         dispatch(newErrorToast(error.message));
@@ -115,7 +115,6 @@ export default function ArticleContent({
       )}
       <PostDataSource />
       <ArticleActions
-        chain={chain}
         setIsEdit={setIsEdit}
         toggleThumbUp={toggleThumbUp}
         thumbUpLoading={thumbUpLoading}
