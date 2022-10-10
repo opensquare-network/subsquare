@@ -13,7 +13,7 @@ import { PrimaryCard } from "next-common/components/styled/containers/primaryCar
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Divider from "next-common/components/styled/layout/divider";
 import SettingsLayout from "next-common/components/layout/settingsLayout";
-import useDiscussionOptions from "components/setting/notification/useDiscussionOptions";
+import useTreasuryOptions from "components/setting/notification/useTreasuryOptions";
 import { fetchAndUpdateUser, useUserDispatch } from "next-common/context/user";
 
 const Wrapper = styled.div`
@@ -64,6 +64,22 @@ const Options = styled.div`
   gap: 24px;
 `;
 
+const Info = styled.div`
+  display: flex;
+  padding: 10px 16px;
+
+  background: ${p => p.theme.grey100Bg};
+  border-radius: 4px;
+
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+
+  color: ${p => p.theme.textSecondary};
+
+  margin-bottom: 16px;
+`;
+
 export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
   const dispatch = useDispatch();
   const userDispatch = useUserDispatch();
@@ -75,13 +91,14 @@ export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
   const disabled = !loginUser || !loginUser.emailVerified;
 
   const {
-    discussionOptionsComponent,
-    getDiscussionOptionValues,
-  } = useDiscussionOptions({
+    treasuryOptionsComponent,
+    getTreasuryOptionValues,
+  } = useTreasuryOptions({
     disabled,
     saving,
-    reply: !!loginUser?.notification?.reply,
-    mention: !!loginUser?.notification?.mention,
+    newTreasuryProposal: !!loginUser?.notification?.newTreasuryProposal,
+    treasuryProposalApprove: !!loginUser?.notification?.treasuryProposalApprove,
+    treasuryProposalAwardOrReject: !!loginUser?.notification?.treasuryProposalAwardOrReject,
   });
 
   const router = useRouter();
@@ -107,7 +124,7 @@ export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
     setSaving(true);
 
     const data = {
-      ...getDiscussionOptionValues(),
+      ...getTreasuryOptionValues(),
     };
 
     const { result, error } = await nextApi.patch("user/notification", data);
@@ -124,21 +141,26 @@ export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
     <SettingsLayout user={loginUser}>
       <NextHead title={`Settings`} desc={``} />
       <Wrapper>
-        <TitleContainer>Notification</TitleContainer>
+        <TitleContainer>Subscription</TitleContainer>
         <ContentWrapper>
-          {showLoginToUnsubscribe && (
+          {showLoginToUnsubscribe ? (
             <WarningMessage>
               Please login to unsubscribe notifications
             </WarningMessage>
-          )}
-          {emailVerified && (
-            <WarningMessage>
-              Please set the email to receive notifications
-            </WarningMessage>
+          ) : (
+            emailVerified ? (
+              <WarningMessage>
+                Please set the email to receive notifications
+              </WarningMessage>
+            ) : (
+              <Info>
+                Subscribe to messages to receive email from activity changes.
+              </Info>
+            )
           )}
 
           <Options>
-            {discussionOptionsComponent}
+            {treasuryOptionsComponent}
           </Options>
 
           <Divider margin={24} />
