@@ -35,6 +35,11 @@ export function usePost() {
   return useContext(PostContext);
 }
 
+export function usePostOnChainData() {
+  const post = useContext(PostContext);
+  return post?.onchainData;
+}
+
 export function usePostType() {
   return useContext(PostTypeContext);
 }

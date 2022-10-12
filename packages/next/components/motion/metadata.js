@@ -1,6 +1,8 @@
 import CollectiveMetadata from "next-common/components/collective/metadata";
+import { usePostOnChainData } from "next-common/context/post";
 
-export default function Metadata({ motion, chain }) {
+export default function Metadata({ chain }) {
+  const motion = usePostOnChainData();
   if (!motion) {
     return null;
   }
