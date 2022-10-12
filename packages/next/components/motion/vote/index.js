@@ -10,7 +10,7 @@ import MemberLinks from "./memberLinks";
 import Flex from "next-common/components/styled/flex";
 import { StatisticTitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Statistics from "next-common/components/styled/paragraph/statistic";
-import AyeNay from "./AyeNay";
+import AyeNay from "next-common/components/collective/AyeNay";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,

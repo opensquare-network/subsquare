@@ -1,5 +1,6 @@
-import AyeIcon from "public/imgs/icons/aye.svg";
-import NayIcon from "public/imgs/icons/nay.svg";
+import React from "react";
+import AyeIcon from "../../assets/imgs/icons/aye.svg";
+import NayIcon from "../../assets/imgs/icons/nay.svg";
 import styled from "styled-components";
 
 const Wrapper = styled.span`
