@@ -8,13 +8,6 @@ import AyeNay from "next-common/components/collective/AyeNay";
 
 const VoteResultWrapper = styled(Flex)`
   justify-content: space-between;
-  > :last-child {
-    display: flex;
-    align-items: center;
-    > span {
-      margin-left: 4px;
-    }
-  }
 `;
 
 export function createArgs(method, args) {
