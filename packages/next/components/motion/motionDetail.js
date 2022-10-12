@@ -147,7 +147,7 @@ export default function MotionDetail({ user, onReply, chain, type }) {
         type={type}
       />
       <Business motion={post?.onchainData} chain={chain} />
-      <Metadata chain={chain} />
+      <Metadata />
       <Timeline motion={post?.onchainData} chain={chain} />
     </div>
   );

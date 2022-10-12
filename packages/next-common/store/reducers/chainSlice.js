@@ -7,7 +7,6 @@ const chain = process.env.NEXT_PUBLIC_CHAIN;
 const chainSlice = createSlice({
   name: "chain",
   initialState: {
-    chain,
     blockTime: getChainSettings(chain).blockTime || defaultBlockTime,
     latestHeight: null,
     nowHeight: 0,
@@ -30,6 +29,5 @@ export const { setBlockTime, setLatestHeight, setNowHeight } = chainSlice.action
 export const blockTimeSelector = (state) => state.chain.blockTime;
 export const latestHeightSelector = (state) => state.chain.latestHeight;
 export const nowHeightSelector = (state) => state.chain.nowHeight;
-export const chainSelector = (state) => state.chain.chain;
 
 export default chainSlice.reducer;

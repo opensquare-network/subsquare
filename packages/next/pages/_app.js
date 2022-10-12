@@ -33,6 +33,10 @@ Router.events.on(
 );
 
 function MyApp({ Component, pageProps }) {
+  if (!process.env.NEXT_PUBLIC_CHAIN) {
+    throw new Error(`NEXT_PUBLIC_CHAIN env not set`);
+  }
+
   useEffect(() => {
     connect();
   }, []);

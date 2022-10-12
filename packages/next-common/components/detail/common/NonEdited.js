@@ -4,8 +4,6 @@ import React from "react";
 import styled from "styled-components";
 import PostEdit from "./PostEdit";
 import User from "../../user";
-import { useSelector } from "react-redux";
-import { chainSelector } from "../../../store/reducers/chainSlice";
 import { usePostType } from "../../../context/post";
 import { useIsPostAuthor } from "../../../context/post/useIsPostAuthor";
 
@@ -45,8 +43,6 @@ const GreyItem = styled.div`
 `;
 
 function WhoCanEdit({ authors = [] }) {
-  const chain = useSelector(chainSelector);
-
   return (
     <GreyWrapper>
       <span style={ { marginRight: 12 } }>Who can edit?</span>
