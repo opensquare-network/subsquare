@@ -6,10 +6,9 @@ import TypeTag from "../common/TypeTag";
 import UpdatedTime from "../common/UpdatedTime";
 import Info from "../../styled/info";
 import Tag from "../../tags/state/tag";
-import { useSelector } from "react-redux";
-import { chainSelector } from "../../../store/reducers/chainSlice";
 import isNil from "lodash.isnil";
 import { usePost, usePostState, usePostType } from "../../../context/post";
+import { useChain } from "../../../context/chain";
 
 const FlexWrapper = styled(Flex)`
   justify-content: space-between;
@@ -30,7 +29,7 @@ const DividerWrapper = styled(Flex)`
 `;
 
 export default function PostMeta() {
-  const chain = useSelector(chainSelector);
+  const chain = useChain();
   const postState = usePostState();
   const detailType = usePostType();
   const post = usePost();

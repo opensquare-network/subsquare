@@ -17,7 +17,7 @@ const Wrapper = styled(Flex)`
   color: ${(props) => props.theme.textTertiary};
 `;
 
-export default function EmptyList({ type = "discussions" }) {
+export function EmptyList({ type = "discussions" }) {
   return (
     <Wrapper>
       <span>
@@ -25,4 +25,12 @@ export default function EmptyList({ type = "discussions" }) {
       </span>
     </Wrapper>
   );
+}
+
+export default function MaybeEmpty({ items = [], type, children }) {
+  if (items.length <= 0) {
+    return <EmptyList type={type}/>
+  }
+
+  return children;
 }

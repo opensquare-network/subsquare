@@ -2,22 +2,15 @@ import dayjs from "dayjs";
 import User from "next-common/components/user";
 import Voting from "next-common/components/timelineMotionVoting";
 import businessCategory from "next-common/utils/consts/business/category";
-import { Approve, Reject } from "next-common/components/icons";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
+import AyeNay from "next-common/components/collective/AyeNay";
 
 const VoteResultWrapper = styled(Flex)`
   justify-content: space-between;
-  > :last-child {
-    display: flex;
-    align-items: center;
-    > span {
-      margin-left: 4px;
-    }
-  }
 `;
 
-export function createArgs(method, args, chain) {
+export function createArgs(method, args) {
   switch (method) {
     case "proposeCurator": {
       const [bountyId, curator] = args;
@@ -99,17 +92,7 @@ export function createMotionTimelineData(
           data: (
             <VoteResultWrapper>
               <User add={item.args.voter} />
-              {item.args.approve ? (
-                <div>
-                  Aye
-                  <Approve />
-                </div>
-              ) : (
-                <div>
-                  Nay
-                  <Reject />
-                </div>
-              )}
+              <AyeNay isAye={item.args.approve}/>
             </VoteResultWrapper>
           ),
           method: item.method,
