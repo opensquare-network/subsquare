@@ -4,6 +4,8 @@ import { createMotionTimelineData } from "../../utils/timeline/motion";
 import useShowMotionEnd from "./useShowMotionEnd";
 import MotionEnd from "next-common/components/motionEnd";
 import Timeline from "next-common/components/timeline";
+import { usePostOnChainData } from "next-common/context/post";
+import { useChain } from "next-common/context/chain";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -43,17 +45,17 @@ const getClosedTimelineData = (timeline = []) => {
 export function makeMotionTimelineData(motion, chain) {
   const timeline = createMotionTimelineData(motion, chain);
 
-  let timelineData;
+  let timelineData = timeline;
   if (isClosed(timeline)) {
     timelineData = getClosedTimelineData(timeline);
-  } else {
-    timelineData = timeline;
   }
 
   return timelineData;
 }
 
-export default function MotionTimeline({ motion, chain }) {
+export default function MotionTimeline() {
+  const motion = usePostOnChainData();
+  const chain = useChain();
   const showMotionEnd = useShowMotionEnd(motion);
   if (!motion) {
     return null;
