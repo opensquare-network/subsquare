@@ -17,7 +17,7 @@ const VoteResultWrapper = styled(Flex)`
   }
 `;
 
-export function createArgs(method, args, chain) {
+export function createArgs(method, args) {
   switch (method) {
     case "proposeCurator": {
       const [bountyId, curator] = args;
