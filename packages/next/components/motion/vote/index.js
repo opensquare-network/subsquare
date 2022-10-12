@@ -10,6 +10,7 @@ import MemberLinks from "./memberLinks";
 import Flex from "next-common/components/styled/flex";
 import { StatisticTitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Statistics from "next-common/components/styled/paragraph/statistic";
+import AyeNay from "./AyeNay";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -63,14 +64,6 @@ const TipperItem = styled.div`
   font-size: 12px;
   line-height: 100%;
   color: ${(props) => props.theme.textSecondary};
-  > :last-child {
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    > img {
-      margin-left: 8px;
-    }
-  }
 `;
 
 const LoadingDiv = styled.div`
@@ -128,17 +121,7 @@ export default function Vote({
               <User add={voter} fontSize={12} />
               {voter === prime && <PrimeAddressMark />}
             </VoterAddr>
-            {approve ? (
-              <div>
-                Aye
-                <img src="/imgs/icons/aye.svg" alt="" />
-              </div>
-            ) : (
-              <div>
-                Nay
-                <img src="/imgs/icons/nay.svg" alt="" />
-              </div>
-            )}
+            <AyeNay isAye={approve}/>
           </TipperItem>
         ))}
       </TipperList>
