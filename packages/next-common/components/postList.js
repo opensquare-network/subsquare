@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import Post from "next-common/components/post";
 import Pagination from "next-common/components/pagination/index.js";
-import EmptyList from "next-common/components/emptyList";
 import { TitleContainer } from "./styled/containers/titleContainer";
+import MaybeEmpty from "./emptyList";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -37,19 +37,19 @@ export default function PostList({
         {create}
       </TitleContainer>
       {summary}
-      {items?.length > 0 ? (
-        items.map((item, index) => (
-          <Post
-            key={index}
-            data={item}
-            chain={chain}
-            href={item.detailLink}
-            type={category}
-          />
-        ))
-      ) : (
-        <EmptyList type={category} />
-      )}
+      <MaybeEmpty items={items} type={category}>
+        {
+          items.map((item, index) => (
+            <Post
+              key={index}
+              data={item}
+              chain={chain}
+              href={item.detailLink}
+              type={category}
+            />
+          ))
+        }
+      </MaybeEmpty>
       {pagination && <Pagination {...pagination} />}
     </Wrapper>
   );

@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import Pagination from "next-common/components/pagination/index.js";
-import EmptyList from "next-common/components/emptyList";
 import { TitleContainer } from "./styled/containers/titleContainer";
 import CommentSimple from "./commentSimple.js";
+import MaybeEmpty from "./emptyList";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -36,18 +36,18 @@ export default function CommentList({
         {create}
       </TitleContainer>
       {summary}
-      {items?.length > 0 ? (
-        items.map((item, index) => (
-          <CommentSimple
-            key={index}
-            data={item}
-            chain={chain}
-            type={category}
-          />
-        ))
-      ) : (
-        <EmptyList type={category} />
-      )}
+      <MaybeEmpty items={items} type={category}>
+        {
+          items.map((item, index) => (
+            <CommentSimple
+              key={index}
+              data={item}
+              chain={chain}
+              type={category}
+            />
+          ))
+        }
+      </MaybeEmpty>
       {pagination && <Pagination {...pagination} />}
     </Wrapper>
   );
