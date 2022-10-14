@@ -1,3 +1,4 @@
+import React from "react";
 import ChainProvider from "./chain";
 import UserProvider from "./user";
 

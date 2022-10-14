@@ -1,3 +1,4 @@
+import React from "react";
 import { createContext, useContext, useReducer, useState } from "react";
 
 const PostContext = createContext(null);

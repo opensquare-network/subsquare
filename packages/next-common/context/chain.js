@@ -1,3 +1,4 @@
+import React from "react";
 import { createContext, useContext } from "react";
 
 const ChainContext = createContext(process.env.NEXT_PUBLIC_CHAIN);

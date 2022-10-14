@@ -13,7 +13,7 @@ import { PrimaryCard } from "next-common/components/styled/containers/primaryCar
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Divider from "next-common/components/styled/layout/divider";
 import SettingsLayout from "next-common/components/layout/settingsLayout";
-import useDiscussionOptions from "components/setting/notification/useDiscussionOptions";
+import useDiscussionOptions from "next-common/components/setting/notification/useDiscussionOptions";
 import { fetchAndUpdateUser, useUserDispatch } from "next-common/context/user";
 
 const Wrapper = styled.div`

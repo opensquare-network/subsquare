@@ -1,3 +1,4 @@
+import React from "react";
 import Toggle from "next-common/components/toggle";
 import { useCallback, useState } from "react";
 import { Label, Sections, SubLabel, ToggleItem } from "./styled";

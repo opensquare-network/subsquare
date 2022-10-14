@@ -1,5 +1,6 @@
+import React from "react";
 import { Label, ToggleItem } from "./styled";
-import Toggle from "next-common/components/toggle";
+import Toggle from "../../toggle";
 import { useCallback, useState } from "react";
 
 export default function useDiscussionOptions({ saving, disabled, ...data }) {
