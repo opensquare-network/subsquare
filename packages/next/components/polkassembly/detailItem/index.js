@@ -42,7 +42,7 @@ export default function DetailItem({ chain, type, postReactions }) {
       <PostTitle post={post}/>
       <FlexWrapper>
         <DividerWrapper>
-          <User user={toPolkassemblyDiscussionAuthor(post.author, chain)} chain={chain} fontSize={12} />
+          <User user={toPolkassemblyDiscussionAuthor(post.author, chain)} fontSize={12} />
           <Info>
             <UpdateIcon />
             <span>{duration}</span>

@@ -3,12 +3,11 @@ import TriangleRight from "public/imgs/icons/arrow-triangle-right.svg";
 import { getUniqueMotionId } from "next-common/utils/motion";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import MotionNavigationItem from "./motionNavigationItem";
-import { useSelector } from "react-redux";
-import { chainSelector } from "next-common/store/reducers/chainSlice";
 import { NavigationWrapper } from "next-common/components/detail/navigation/navigators";
+import { useChain } from "next-common/context/chain";
 
 export default function DemocracyNavigate({ motion }) {
-  const chain = useSelector(chainSelector);
+  const chain = useChain();
   if (motion?.externalProposals?.length !== 1 && motion?.operateExternals?.length !== 1) {
     return null;
   }

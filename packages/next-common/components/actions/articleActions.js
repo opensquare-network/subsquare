@@ -8,16 +8,14 @@ import { useIsThumbUp } from "../../context/post/isThumbUp";
 import useThumbsUp from "../thumbsUp";
 import ContentMenu from "../contentMenu";
 import ThumbUpList from "./thumbUpList";
-import { useIsLogin, useUser } from "../../context/user";
+import { useIsLogin } from "../../context/user";
 
 export default function ArticleActions({
-  chain,
   onReply,
   toggleThumbUp,
   thumbUpLoading,
   setIsEdit,
 }) {
-  const user = useUser();
   const isLogin = useIsLogin();
   const post = usePost();
   const isAuthor = useIsPostAuthor();
@@ -42,7 +40,6 @@ export default function ArticleActions({
       <ThumbUpList
         showThumbsUpList={showThumbsUpList}
         reactions={post?.reactions}
-        chain={chain}
       />
     </>
   );

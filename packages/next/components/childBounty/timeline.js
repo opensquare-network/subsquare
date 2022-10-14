@@ -32,7 +32,7 @@ export default function ChildBountyTimeline({ chain, onchainData }) {
       case "proposeCurator":
       case "acceptCurator":
         return {
-          Curator: <User chain={chain} add={args.curator.id ?? args.curator} fontSize={14} />,
+          Curator: <User add={args.curator.id ?? args.curator} fontSize={14} />,
         };
       case "proposeBounty":
         return {
@@ -51,7 +51,7 @@ export default function ChildBountyTimeline({ chain, onchainData }) {
       case "Awarded":
         const AwardedTimelineNode = {
           Beneficiary: (
-            <User chain={chain} add={args.beneficiary} fontSize={14} />
+            <User add={args.beneficiary} fontSize={14} />
           ),
         };
         if (onchainData?.state?.state === "PendingPayout") {
@@ -68,7 +68,7 @@ export default function ChildBountyTimeline({ chain, onchainData }) {
       case "Claimed":
         return {
           Beneficiary: (
-            <User chain={chain} add={args.beneficiary} fontSize={14} />
+            <User add={args.beneficiary} fontSize={14} />
           ),
           Payout: `${toPrecision(args.payout ?? 0, decimals)} ${symbol}`,
         };

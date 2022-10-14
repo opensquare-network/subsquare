@@ -94,7 +94,7 @@ export default function SidebarAccount({ user, chain }) {
       {user && (
         <div>
           <UserWrapper>
-            <User user={user} chain={chain} noEvent />
+            <User user={user} noEvent />
           </UserWrapper>
           {accountMenu.map((item, index) => (
             <Item key={index} onClick={() => handleAccountMenu(item)}>

@@ -151,9 +151,9 @@ const Category = ({ type, count, selected, onClick }) => {
   );
 };
 
-const DisplayUser = ({ id, chain }) => {
+const DisplayUser = ({ id  }) => {
   if (isAddress(id)) {
-    return <User chain={chain} add={id} showAvatar={false} fontSize={16} />;
+    return <User add={id} showAvatar={false} fontSize={16} />;
   }
 
   return <Username>{id}</Username>;

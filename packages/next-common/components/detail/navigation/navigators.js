@@ -2,11 +2,10 @@ import React from "react";
 import Link from "next/link";
 import isNil from "lodash.isnil";
 import TriangleRight from "@subsquare/next/public/imgs/icons/arrow-triangle-right.svg";
-import { useSelector } from "react-redux";
-import { chainSelector } from "../../../store/reducers/chainSlice";
 import { getMotionId, shortMotionId } from "../../../utils/motion";
 import styled from "styled-components";
 import { NoticeWrapper } from "../../styled/containers/titleContainer";
+import { useChain } from "../../../context/chain";
 
 export function ReferendumLink({referendumIndex}) {
   return (
@@ -64,7 +63,7 @@ export function DemocracyExternalNavigator({blockHeight, hash = "", isLink = tru
 
 export function CouncilMotionNavigator({ motion, hasTriangle = true }) {
   let triangle = hasTriangle ? <TriangleRight /> : null;
-  const chain = useSelector(chainSelector);
+  const chain = useChain();
 
   return <div>
     {triangle}
@@ -75,7 +74,7 @@ export function CouncilMotionNavigator({ motion, hasTriangle = true }) {
 }
 
 export function TechCommMotionNavigator({motion = {}, isLink = true}) {
-  const chain = useSelector(chainSelector);
+  const chain = useChain();
 
   let link = <Link href={ `/techcomm/proposal/${ getMotionId(motion, chain) }` }>
     { `Tech. Comm. #${ shortMotionId(motion) }` }

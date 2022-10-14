@@ -12,6 +12,7 @@ import Tooltip from "../tooltip";
 import AvatarDeleted from "../../assets/imgs/icons/avatar-deleted.svg";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import Link from "next/link";
+import { useChain } from "../../context/chain";
 
 const Wrapper = styled(Flex)`
   a {
@@ -104,7 +105,6 @@ const LinkWrapper = styled.a`
 
 function User({
   user,
-  chain,
   add,
   showAvatar = true,
   fontSize = 14,
@@ -113,6 +113,7 @@ function User({
   noTooltip = false,
   color,
 }) {
+  const chain = useChain();
   const address = add ?? user?.address;
   const isMounted = useIsMounted();
   const [identity, setIdentity] = useState(null);

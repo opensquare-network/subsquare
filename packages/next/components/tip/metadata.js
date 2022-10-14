@@ -16,7 +16,7 @@ export default function TipMetadata({ tip, chain }) {
     [
       "Finder",
       <>
-        <User chain={chain} add={tip?.finder} fontSize={14} />
+        <User add={tip?.finder} fontSize={14} />
         <Links
           chain={chain}
           address={tip?.meta?.finder}
@@ -27,7 +27,7 @@ export default function TipMetadata({ tip, chain }) {
     [
       "Beneficiary",
       <>
-        <User chain={chain} add={tip?.meta?.who} fontSize={14} />
+        <User add={tip?.meta?.who} fontSize={14} />
         <Links
           chain={chain}
           address={tip?.meta?.who}
