@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import nextApi, { ssrNextApi } from "next-common/services/nextApi";
 import { newErrorToast, newSuccessToast, } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import NextHead from "next-common/components/nextHead";
@@ -15,6 +15,8 @@ import Divider from "next-common/components/styled/layout/divider";
 import SettingsLayout from "next-common/components/layout/settingsLayout";
 import useTreasuryOptions from "next-common/components/setting/notification/useTreasuryOptions";
 import { fetchAndUpdateUser, useUserDispatch } from "next-common/context/user";
+import Cookies from "cookies";
+import { CACHE_KEY } from "next-common/utils/constants";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -80,7 +82,7 @@ const Info = styled.div`
   margin-bottom: 16px;
 `;
 
-export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
+export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe }) => {
   const dispatch = useDispatch();
   const userDispatch = useUserDispatch();
   const [saving, setSaving] = useState(false);
@@ -96,9 +98,10 @@ export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
   } = useTreasuryOptions({
     disabled,
     saving,
-    newTreasuryProposal: !!loginUser?.notification?.newTreasuryProposal,
-    treasuryProposalApprove: !!loginUser?.notification?.treasuryProposalApprove,
-    treasuryProposalAwardOrReject: !!loginUser?.notification?.treasuryProposalAwardOrReject,
+    treasuryProposalNew: subscription?.treasuryProposalNew,
+    treasuryProposalApproved: subscription?.treasuryProposalApproved,
+    treasuryProposalAwarded: subscription?.treasuryProposalAwarded,
+    treasuryProposalRejected: subscription?.treasuryProposalRejected,
   });
 
   const router = useRouter();
@@ -127,7 +130,7 @@ export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
       ...getTreasuryOptionValues(),
     };
 
-    const { result, error } = await nextApi.patch("user/notification", data);
+    const { result, error } = await nextApi.patch("user/subscription", data);
     if (result) {
       await fetchAndUpdateUser(userDispatch);
       dispatch(newSuccessToast("Settings saved"));
@@ -182,9 +185,23 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
   const { unsubscribe } = context.query;
 
+  const cookies = new Cookies(context.req, context.res);
+  const authToken = cookies.get(CACHE_KEY.authToken);
+  let options = { credentials: true };
+  if (authToken) {
+    options = {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    };
+  }
+
+  const { result: subscription } = await ssrNextApi.fetch(`user/subscription`, {}, options);
+
   return {
     props: {
       chain,
+      subscription: subscription ?? null,
       unsubscribe: unsubscribe ?? null,
     },
   };

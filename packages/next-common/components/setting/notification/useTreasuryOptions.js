@@ -4,9 +4,10 @@ import { useCallback, useState } from "react";
 import { Label, Sections, SubLabel, ToggleItem } from "./styled";
 
 export default function useTreasuryOptions({ saving, disabled, ...data }) {
-  const [newTreasuryProposal, setNewTreasuryProposal] = useState(data.newTreasuryProposal);
-  const [treasuryProposalApprove, setTreasuryProposalApprove] = useState(data.treasuryProposalApprove);
-  const [treasuryProposalAwardOrReject, setTreasuryProposalAwardOrReject] = useState(data.treasuryProposalAwardOrReject);
+  const [treasuryProposalNew, setTreasuryProposalNew] = useState(data.treasuryProposalNew?.isOn);
+  const [treasuryProposalApproved, setTreasuryProposalApproved] = useState(data.treasuryProposalApproved?.isOn);
+  const [treasuryProposalAwarded, settreasuryProposalAwarded] = useState(data.treasuryProposalAwarded?.isOn);
+  const [treasuryProposalRejected, settreasuryProposalRejected] = useState(data.treasuryProposalRejected?.isOn);
 
   const changeGuard = (setter) => (data) => {
     if (!saving) {
@@ -16,14 +17,16 @@ export default function useTreasuryOptions({ saving, disabled, ...data }) {
 
   const getTreasuryOptionValues = useCallback(
     () => ({
-      newTreasuryProposal,
-      treasuryProposalApprove,
-      treasuryProposalAwardOrReject,
+      treasuryProposalNew,
+      treasuryProposalApproved,
+      treasuryProposalAwarded,
+      treasuryProposalRejected,
     }),
     [
-      newTreasuryProposal,
-      treasuryProposalApprove,
-      treasuryProposalAwardOrReject,
+      treasuryProposalNew,
+      treasuryProposalApproved,
+      treasuryProposalAwarded,
+      treasuryProposalRejected,
     ]
   );
 
@@ -37,24 +40,27 @@ export default function useTreasuryOptions({ saving, disabled, ...data }) {
             <div>New treasury proposals</div>
             <Toggle
               disabled={disabled}
-              isOn={newTreasuryProposal}
-              onToggle={changeGuard(setNewTreasuryProposal)}
+              isOn={treasuryProposalNew}
+              onToggle={changeGuard(setTreasuryProposalNew)}
             />
           </ToggleItem>
           <ToggleItem>
             <div>Treasury proposals approved</div>
             <Toggle
               disabled={disabled}
-              isOn={treasuryProposalApprove}
-              onToggle={changeGuard(setTreasuryProposalApprove)}
+              isOn={treasuryProposalApproved}
+              onToggle={changeGuard(setTreasuryProposalApproved)}
             />
           </ToggleItem>
           <ToggleItem>
             <div>Treasury proposals awareded or rejected</div>
             <Toggle
               disabled={disabled}
-              isOn={treasuryProposalAwardOrReject}
-              onToggle={changeGuard(setTreasuryProposalAwardOrReject)}
+              isOn={treasuryProposalAwarded || treasuryProposalRejected}
+              onToggle={changeGuard((isOn) => {
+                settreasuryProposalAwarded(isOn);
+                settreasuryProposalRejected(isOn);
+              })}
             />
           </ToggleItem>
         </div>
