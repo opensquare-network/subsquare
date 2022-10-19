@@ -5,6 +5,7 @@ import businessCategory from "next-common/utils/consts/business/category";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import AyeNay from "next-common/components/collective/AyeNay";
+import getMotionExecutedResult, { isMotionExecutedSucceed } from "next-common/utils/collective/result";
 
 const VoteResultWrapper = styled(Flex)`
   justify-content: space-between;
@@ -27,6 +28,16 @@ export function createArgs(method, args) {
     }
     default:
       return [];
+  }
+}
+
+function getTimelineItemCommonData(item, motion, type) {
+  return {
+    indexer: item.indexer,
+    hash: motion.hash,
+    time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+    method: item.method,
+    status: { value: item.method, type },
   }
 }
 
@@ -59,9 +70,7 @@ export function createMotionTimelineData(
         }
 
         return {
-          indexer: item.indexer,
-          hash: motion.hash,
-          time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+          ...getTimelineItemCommonData(item, motion, type),
           status: {
             value: linkable ? `Motion #${motion.index}` : "Proposed",
             link,
@@ -80,14 +89,11 @@ export function createMotionTimelineData(
               chain={chain}
             />
           ),
-          method: item.method,
         };
       }
       case "Voted": {
         return {
-          indexer: item.indexer,
-          hash: motion.hash,
-          time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+          ...getTimelineItemCommonData(item, motion, type),
           status: { value: "Vote", type },
           data: (
             <VoteResultWrapper>
@@ -95,17 +101,17 @@ export function createMotionTimelineData(
               <AyeNay isAye={item.args.approve}/>
             </VoteResultWrapper>
           ),
-          method: item.method,
         };
       }
-      default: {
+      case "Executed": {
         return {
-          indexer: item.indexer,
-          hash: motion.hash,
-          time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-          status: { value: item.method, type },
-          method: item.method,
-        };
+          ...getTimelineItemCommonData(item, motion, type),
+          data: getMotionExecutedResult(item.args?.dispatchResult),
+          status: { value: "Executed", type, args: { isOk: isMotionExecutedSucceed(item.args?.dispatchResult) } },
+        }
+      }
+      default: {
+        return getTimelineItemCommonData(item, motion);
       }
     }
   });
