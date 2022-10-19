@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import nextApi, { ssrNextApi } from "next-common/services/nextApi";
 import { newErrorToast, newSuccessToast, } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import NextHead from "next-common/components/nextHead";
@@ -13,8 +13,10 @@ import { PrimaryCard } from "next-common/components/styled/containers/primaryCar
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Divider from "next-common/components/styled/layout/divider";
 import SettingsLayout from "next-common/components/layout/settingsLayout";
-import useDiscussionOptions from "next-common/components/setting/notification/useDiscussionOptions";
+import useTreasuryOptions from "next-common/components/setting/notification/useTreasuryOptions";
 import { fetchAndUpdateUser, useUserDispatch } from "next-common/context/user";
+import Cookies from "cookies";
+import { CACHE_KEY } from "next-common/utils/constants";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -64,7 +66,23 @@ const Options = styled.div`
   gap: 24px;
 `;
 
-export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
+const Info = styled.div`
+  display: flex;
+  padding: 10px 16px;
+
+  background: ${p => p.theme.grey100Bg};
+  border-radius: 4px;
+
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+
+  color: ${p => p.theme.textSecondary};
+
+  margin-bottom: 16px;
+`;
+
+export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe }) => {
   const dispatch = useDispatch();
   const userDispatch = useUserDispatch();
   const [saving, setSaving] = useState(false);
@@ -75,13 +93,15 @@ export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
   const disabled = !loginUser || !loginUser.emailVerified;
 
   const {
-    discussionOptionsComponent,
-    getDiscussionOptionValues,
-  } = useDiscussionOptions({
+    treasuryOptionsComponent,
+    getTreasuryOptionValues,
+  } = useTreasuryOptions({
     disabled,
     saving,
-    reply: !!loginUser?.notification?.reply,
-    mention: !!loginUser?.notification?.mention,
+    treasuryProposalNew: subscription?.treasuryProposalNew,
+    treasuryProposalApproved: subscription?.treasuryProposalApproved,
+    treasuryProposalAwarded: subscription?.treasuryProposalAwarded,
+    treasuryProposalRejected: subscription?.treasuryProposalRejected,
   });
 
   const router = useRouter();
@@ -107,10 +127,10 @@ export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
     setSaving(true);
 
     const data = {
-      ...getDiscussionOptionValues(),
+      ...getTreasuryOptionValues(),
     };
 
-    const { result, error } = await nextApi.patch("user/notification", data);
+    const { result, error } = await nextApi.patch("user/subscription", data);
     if (result) {
       await fetchAndUpdateUser(userDispatch);
       dispatch(newSuccessToast("Settings saved"));
@@ -124,21 +144,26 @@ export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
     <SettingsLayout user={loginUser}>
       <NextHead title={`Settings`} desc={``} />
       <Wrapper>
-        <TitleContainer>Notification</TitleContainer>
+        <TitleContainer>Subscription</TitleContainer>
         <ContentWrapper>
-          {showLoginToUnsubscribe && (
+          {showLoginToUnsubscribe ? (
             <WarningMessage>
               Please login to unsubscribe notifications
             </WarningMessage>
-          )}
-          {emailVerified && (
-            <WarningMessage>
-              Please set the email to receive notifications
-            </WarningMessage>
+          ) : (
+            emailVerified ? (
+              <WarningMessage>
+                Please set the email to receive notifications
+              </WarningMessage>
+            ) : (
+              <Info>
+                Subscribe to messages to receive email from activity changes.
+              </Info>
+            )
           )}
 
           <Options>
-            {discussionOptionsComponent}
+            {treasuryOptionsComponent}
           </Options>
 
           <Divider margin={24} />
@@ -160,9 +185,23 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
   const { unsubscribe } = context.query;
 
+  const cookies = new Cookies(context.req, context.res);
+  const authToken = cookies.get(CACHE_KEY.authToken);
+  let options = { credentials: true };
+  if (authToken) {
+    options = {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    };
+  }
+
+  const { result: subscription } = await ssrNextApi.fetch(`user/subscription`, {}, options);
+
   return {
     props: {
       chain,
+      subscription: subscription ?? null,
       unsubscribe: unsubscribe ?? null,
     },
   };

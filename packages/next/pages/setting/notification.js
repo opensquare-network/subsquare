@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 
-import Toggle from "next-common/components/toggle";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import { newErrorToast, newSuccessToast, } from "next-common/store/reducers/toastSlice";
@@ -14,7 +13,8 @@ import { PrimaryCard } from "next-common/components/styled/containers/primaryCar
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Divider from "next-common/components/styled/layout/divider";
 import SettingsLayout from "next-common/components/layout/settingsLayout";
-import { fetchAndUpdateUser } from "next-common/context/user";
+import useDiscussionOptions from "next-common/components/setting/notification/useDiscussionOptions";
+import { fetchAndUpdateUser, useUserDispatch } from "next-common/context/user";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -40,27 +40,6 @@ const ContentWrapper = styled(PrimaryCard)`
   }
 `;
 
-const Label = styled.div`
-  font-size: 14px;
-  font-weight: bold;
-  margin-bottom: 16px;
-  color: ${(props) => props.theme.textPrimary};
-`;
-
-const ToggleItem = styled.div`
-  display: flex;
-  align-items: center;
-  line-height: 150%;
-  padding: 8px 0;
-  > :first-child {
-    flex-grow: 1;
-  }
-  > :last-child {
-    flex: 0 0 auto;
-    margin-left: 16px;
-  }
-`;
-
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -79,16 +58,31 @@ const WarningMessage = styled.div`
   margin-bottom: 16px;
 `;
 
+const Options = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+`;
+
 export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
   const dispatch = useDispatch();
-  const [reply, setReply] = useState(!!loginUser?.notification?.reply);
-  const [mention, setMention] = useState(!!loginUser?.notification?.mention);
+  const userDispatch = useUserDispatch();
   const [saving, setSaving] = useState(false);
   const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
 
   const emailVerified =
     loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
   const disabled = !loginUser || !loginUser.emailVerified;
+
+  const {
+    discussionOptionsComponent,
+    getDiscussionOptionValues,
+  } = useDiscussionOptions({
+    disabled,
+    saving,
+    reply: !!loginUser?.notification?.reply,
+    mention: !!loginUser?.notification?.mention,
+  });
 
   const router = useRouter();
 
@@ -105,28 +99,20 @@ export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
     }
   }, [loginUser, router, unsubscribe]);
 
-  useEffect(() => {
-    setReply(!!loginUser?.notification?.reply);
-    setMention(!!loginUser?.notification?.mention);
-  }, [loginUser]);
-
-  const changeGuard = (setter) => async (data) => {
-    if (saving) return;
-    setter(data);
-  };
-
   const updateNotificationSetting = async () => {
     if (saving) {
       return;
     }
 
     setSaving(true);
-    const { result, error } = await nextApi.patch("user/notification", {
-      reply,
-      mention,
-    });
+
+    const data = {
+      ...getDiscussionOptionValues(),
+    };
+
+    const { result, error } = await nextApi.patch("user/notification", data);
     if (result) {
-      await fetchAndUpdateUser();
+      await fetchAndUpdateUser(userDispatch);
       dispatch(newSuccessToast("Settings saved"));
     } else if (error) {
       dispatch(newErrorToast(error.message));
@@ -150,25 +136,11 @@ export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
               Please set the email to receive notifications
             </WarningMessage>
           )}
-          <div>
-            <Label>Email</Label>
-            <ToggleItem>
-              <div>Notify me about comments on my posts</div>
-              <Toggle
-                disabled={disabled}
-                isOn={reply}
-                onToggle={changeGuard(setReply)}
-              />
-            </ToggleItem>
-            <ToggleItem>
-              <div>Notify me about mentions</div>
-              <Toggle
-                disabled={disabled}
-                isOn={mention}
-                onToggle={changeGuard(setMention)}
-              />
-            </ToggleItem>
-          </div>
+
+          <Options>
+            {discussionOptionsComponent}
+          </Options>
+
           <Divider margin={24} />
           <ButtonWrapper>
             <SecondaryButton
