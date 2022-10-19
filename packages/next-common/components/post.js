@@ -22,6 +22,7 @@ import isNil from "lodash.isnil";
 import { getBannerUrl } from "../utils/banner";
 import businessCategory from "../utils/consts/business/category";
 import useDuration from "../utils/hooks/useDuration";
+import { getMotionStateArgs } from "../utils/collective/result";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -172,6 +173,10 @@ const BannerWrapper = styled.div`
 `;
 
 export default function Post({ data, chain, href, type }) {
+  let stateArgs;
+  if ([businessCategory.councilMotions, businessCategory.collective, businessCategory.tcProposals].includes(type)) {
+    stateArgs = getMotionStateArgs(data.onchainData.state);
+  }
   const duration = useDuration(data.time);
   const node = getNode(chain);
   if (!node) {
@@ -263,7 +268,7 @@ export default function Post({ data, chain, href, type }) {
               </AutHideInfo>
             )}
           </Footer>
-          {data.status && <Tag state={data.status} category={type} />}
+          {data.status && <Tag state={data.status} category={type} args={stateArgs} />}
         </FooterWrapper>
       </ContentWrapper>
 

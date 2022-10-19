@@ -11,6 +11,7 @@ import PostTitle from "next-common/components/detail/common/Title";
 import { isDemocracyMotion, isTreasuryMotion } from "next-common/utils/viewfuncs/motion";
 import Info from "next-common/components/styled/info";
 import isNil from "lodash.isnil";
+import { getMotionStateArgs } from "next-common/utils/collective/result";
 
 const MotionEndHeader = styled.div`
   display: flex;
@@ -76,6 +77,8 @@ export default function MotionHead({ motion, chain, type }) {
   const commentsCount =
     (motion.commentsCount || 0) + (motion.polkassemblyCommentsCount || 0);
 
+  const stateArgs = getMotionStateArgs(motion.onchainData.state);
+
   return (
     <div>
       <DemocracyNavigate motion={motion.onchainData} />
@@ -93,7 +96,7 @@ export default function MotionHead({ motion, chain, type }) {
           <UpdatedTime post={ motion } />
           {(!noCommentsCount && commentsCount > -1) && <Info>{`${commentsCount} Comments`}</Info>}
         </DividerWrapper>
-        {motion.state && <Tag state={motion.state} category={type} />}
+        {motion.state && <Tag state={motion.state} category={type} args={stateArgs} />}
       </FlexWrapper>
     </div>
   );

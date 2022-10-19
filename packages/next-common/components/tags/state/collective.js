@@ -21,11 +21,14 @@ const stateTagMap = {
   Vote: MotionTag,
 };
 
-export function CollectiveTag({ state }) {
+export function CollectiveTag({ state, args }) {
   let Tag = stateTagMap[state] || MotionTag;
   if ((state || "").startsWith("Voting")) {
     Tag = ActiveTag;
   }
+  if ("Executed" === state && args?.isOk === false) {
+    Tag = NegativeTag;
+  }
 
-  return <Tag>{state}</Tag>;
+  return <Tag args={args}>{state}</Tag>;
 }

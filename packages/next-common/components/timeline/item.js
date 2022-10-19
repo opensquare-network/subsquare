@@ -141,6 +141,7 @@ export default function Item({ data, foldable, isFold, setIsFold, chain }) {
                 state={data.status.value}
                 link={data.status?.link}
                 category={data.status?.type}
+                args={data.status?.args}
               />
             </TagWrapper>
           )}
