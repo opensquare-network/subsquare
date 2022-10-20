@@ -11,7 +11,7 @@ import Back from "../back";
 import Avatar from "../avatar";
 import Gravatar from "../gravatar";
 import Flex from "../styled/flex";
-import Links from "../links";
+import { AccountLinks } from "../links";
 import Loading from "../loading";
 import styled, { css } from "styled-components";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
@@ -159,14 +159,14 @@ const DisplayUser = ({ id  }) => {
   return <Username>{id}</Username>;
 };
 
-const DisplayUserAddress = ({ address, chain }) => {
+const DisplayUserAddress = ({ address }) => {
   if (!address) {
     return null;
   }
   return (
     <AddressWrapper>
       <Tertiary>{address}</Tertiary>
-      <Links chain={chain} address={address} />
+      <AccountLinks address={address} />
     </AddressWrapper>
   );
 };
@@ -281,7 +281,7 @@ export default withLoginUserRedux(
             <DisplayUserAvatar address={address} user={user} />
             <Flex style={{ marginTop: 0, flexWrap: "wrap" }}>
               <DisplayUser id={id} chain={chain} />
-              <DisplayUserAddress address={address} chain={chain} />
+              <DisplayUserAddress address={address} />
             </Flex>
           </BioWrapper>
           <CategoryWrapper>

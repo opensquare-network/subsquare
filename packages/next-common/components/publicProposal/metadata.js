@@ -2,7 +2,7 @@ import React from "react";
 import Proposal from "../proposal";
 import KVList from "../listInfo/kvList";
 import { getNode, toPrecision } from "next-common/utils";
-import UserWithLink from "../user/userWithLink";
+import User from "../user";
 
 function getDeposit(scanDepositData) {
   if (!Array.isArray(scanDepositData)) {
@@ -34,7 +34,7 @@ export default function Metadata({ publicProposal, chain }) {
     ["deposit", `${toPrecision(getDeposit(deposit), decimals)} ${symbol}`],
     [
       "proposer",
-      <UserWithLink chain={chain} address={publicProposal?.proposer} />,
+      <User address={publicProposal?.proposer} fontSize={14}/>,
     ],
   ];
 

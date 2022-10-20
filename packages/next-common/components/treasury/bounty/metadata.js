@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import KVList from "../../listInfo/kvList";
 import { getNode, toPrecision } from "../../../utils";
 import Anchor from "../../styled/anchor";
-import UserWithLink from "../../user/userWithLink";
+import User from "../../user";
 
 /**
  *
@@ -33,7 +33,7 @@ function BountyMetadata({ meta, chain }) {
         break;
       case "proposer":
       case "beneficiary":
-        normalizedValue = <UserWithLink chain={chain} address={value} />;
+        normalizedValue = <User address={value} fontSize={14}/>;
         break;
       case "value":
       case "fee":
