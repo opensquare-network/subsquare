@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import Flex from "../styled/flex";
-import { useChain } from "../../context/chain";
 import DotreasuryAccountLink from "./dotreasuryLink";
 import SubScanLink, { SubScanAccountLink } from "./subscanLink";
 
@@ -13,21 +12,8 @@ const Wrapper = styled(Flex)`
   }
 `;
 
-export default function ExtrinsicLinks({
-                                indexer = "",
-                                style = {},
-                              }) {
-  const chain = useChain();
-  const supportedChains = [
-    "karura",
-    "acala",
-    "khala",
-    "basilisk",
-    "acala",
-    "kintsugi",
-    "polkadex",
-  ];
-  if (!indexer && !address && supportedChains.includes(chain)) {
+export default function ExtrinsicLinks({ indexer = "", style = {} }) {
+  if (!indexer) {
     return null;
   }
 
@@ -39,29 +25,15 @@ export default function ExtrinsicLinks({
 }
 
 
-export function AccountLinks({
-                               style = {},
-                               address,
-                             }) {
-  const chain = useChain();
-  const supportedChains = [
-    "karura",
-    "acala",
-    "khala",
-    "basilisk",
-    "acala",
-    "kintsugi",
-    "polkadex",
-  ];
-  if (!address || supportedChains.includes(chain)) {
-    return null;
+export function AccountLinks({ address }) {
+  if (!address) {
+    throw new Error("No address provided");
   }
 
   return (
-    <Wrapper style={style}>
+    <Wrapper>
       <SubScanAccountLink address={address}/>
       <DotreasuryAccountLink address={address}/>
     </Wrapper>
   );
 }
-
