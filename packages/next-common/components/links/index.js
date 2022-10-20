@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Flex from "../styled/flex";
 import DotreasuryAccountLink from "./dotreasuryLink";
 import SubScanLink, { SubScanAccountLink } from "./subscanLink";
+import isEmpty from "lodash.isempty";
 
 const Wrapper = styled(Flex)`
   height: 20px;
@@ -12,8 +13,8 @@ const Wrapper = styled(Flex)`
   }
 `;
 
-export default function ExtrinsicLinks({ indexer = "", style = {} }) {
-  if (!indexer) {
+export default function ExtrinsicLinks({ indexer = {}, style = {} }) {
+  if (isEmpty(indexer)) {
     return null;
   }
 
