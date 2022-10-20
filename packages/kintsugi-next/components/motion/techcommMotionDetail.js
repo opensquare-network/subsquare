@@ -14,13 +14,13 @@ import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { EditablePanel } from "next-common/components/styled/panel";
 import CollectiveMetadata from "next-common/components/collective/metadata";
-import UserWithLink from "next-common/components/user/userWithLink";
 import PostTitle from "next-common/components/detail/common/Title";
 import TechCommNavigation from "./techCommNavigation";
 import PostMeta from "next-common/components/detail/container/Meta";
 import PostEdit from "next-common/components/post/postEdit";
 import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
+import User from "next-common/components/user";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -169,10 +169,7 @@ export default function TechcommMotionDetail({
       ],
       [
         "Beneficiary",
-        <UserWithLink
-          chain={chain}
-          address={treasuryProposalMeta.beneficiary}
-        />,
+        <User add={address} fontSize={14} />,
       ],
       [
         "Value",
@@ -197,7 +194,7 @@ export default function TechcommMotionDetail({
         ["Hash", proposal.hash],
         [
           "Proposer",
-          <UserWithLink chain={chain} address={proposal?.proposer} />,
+          <User add={address} fontSize={14} />,
         ],
       ]);
     });

@@ -10,8 +10,8 @@ import {
   blockTimeSelector,
   latestHeightSelector,
 } from "../../../store/reducers/chainSlice";
-import UserWithLink from "../../user/userWithLink";
 import useIsMounted from "../../../utils/hooks/useIsMounted";
+import User from "../../user";
 
 export default function ReferendumMetadata({
   api,
@@ -41,7 +41,7 @@ export default function ReferendumMetadata({
     );
 
   const metadata = [
-    ["Proposer", <UserWithLink chain={chain} address={proposer} />],
+    ["Proposer", <User add={proposer} fontSize={14} />],
     ["Hash", proposalHash],
     [
       "Delay",

@@ -2,7 +2,7 @@ import Link from "next/link";
 import MultiKVList from "next-common/components/listInfo/multiKVList";
 import Flex from "next-common/components/styled/flex";
 import User from "next-common/components/user";
-import Links from "next-common/components/links";
+import ExtrinsicLinks from "next-common/components/links";
 import CapitalText from "../capitalText";
 import { getNode, toPrecision } from "next-common/utils";
 
@@ -37,7 +37,7 @@ export default function Business({ motion, chain }) {
           "Beneficiary",
           <Flex key="proposal-beneficiary">
             <User add={proposal.meta.beneficiary} fontSize={14} />
-            <Links
+            <ExtrinsicLinks
               chain={chain}
               address={proposal.meta.beneficiary}
               style={{ marginLeft: 8 }}
@@ -74,7 +74,7 @@ export default function Business({ motion, chain }) {
               </CapitalText>,
               <Flex key="bounty-beneficiary-value">
                 <User add={item[1]} fontSize={14} />
-                <Links
+                <ExtrinsicLinks
                   chain={chain}
                   address={item[1]}
                   style={{ marginLeft: 8 }}

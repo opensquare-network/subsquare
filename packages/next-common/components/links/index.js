@@ -1,12 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import Flex from "../styled/flex";
-import LinkSubScanIcon from "../../assets/imgs/icons/link-subscan.svg";
-import LinkSubScanIconActive from "../../assets/imgs/icons/link-subscan-active.svg";
 import { useChain } from "../../context/chain";
-import ThirdPartyLink from "./thirdPartyLink";
-import DotreasuryLink from "./dotreasuryLink";
-import SubScanLink from "./subscanLink";
+import DotreasuryAccountLink from "./dotreasuryLink";
+import SubScanLink, { SubScanAccountLink } from "./subscanLink";
 
 const Wrapper = styled(Flex)`
   height: 20px;
@@ -16,10 +13,9 @@ const Wrapper = styled(Flex)`
   }
 `;
 
-export default function Links({
+export default function ExtrinsicLinks({
                                 indexer = "",
                                 style = {},
-                                address,
                               }) {
   const chain = useChain();
   const supportedChains = [
@@ -37,8 +33,35 @@ export default function Links({
 
   return (
     <Wrapper style={style}>
-      <SubScanLink address={address} indexer={indexer}/>
-      <DotreasuryLink address={address}/>
+      <SubScanLink indexer={indexer}/>
     </Wrapper>
   );
 }
+
+
+export function AccountLinks({
+                               style = {},
+                               address,
+                             }) {
+  const chain = useChain();
+  const supportedChains = [
+    "karura",
+    "acala",
+    "khala",
+    "basilisk",
+    "acala",
+    "kintsugi",
+    "polkadex",
+  ];
+  if (!address || supportedChains.includes(chain)) {
+    return null;
+  }
+
+  return (
+    <Wrapper style={style}>
+      <SubScanAccountLink address={address}/>
+      <DotreasuryAccountLink address={address}/>
+    </Wrapper>
+  );
+}
+

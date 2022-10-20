@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
 import User from "next-common/components/user";
 import KVList from "next-common/components/listInfo/kvList";
-import Links from "next-common/components/links";
+import ExtrinsicLinks from "next-common/components/links";
 import ReasonLink from "next-common/components/reasonLink";
 
 export default function TipMetadata({ tip, chain }) {
@@ -17,7 +17,7 @@ export default function TipMetadata({ tip, chain }) {
       "Finder",
       <>
         <User add={tip?.finder} fontSize={14} />
-        <Links
+        <ExtrinsicLinks
           chain={chain}
           address={tip?.meta?.finder}
           style={{ marginLeft: 8 }}
@@ -28,7 +28,7 @@ export default function TipMetadata({ tip, chain }) {
       "Beneficiary",
       <>
         <User add={tip?.meta?.who} fontSize={14} />
-        <Links
+        <ExtrinsicLinks
           chain={chain}
           address={tip?.meta?.who}
           style={{ marginLeft: 8 }}

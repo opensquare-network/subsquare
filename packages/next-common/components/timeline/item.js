@@ -1,6 +1,6 @@
 import React, { isValidElement } from "react";
 import styled, { css } from "styled-components";
-import Links from "../links";
+import ExtrinsicLinks from "../links";
 import Tag from "../tags/state/tag";
 import Flex from "../styled/flex";
 import ArrowTriangleUp from "../../assets/imgs/icons/arrow-triangle-up.svg";
@@ -172,7 +172,7 @@ export default function Item({ data, foldable, isFold, setIsFold, chain }) {
                 )))}
         </ContentWrapper>
         <LinkWrapper>
-          <Links chain={chain} indexer={data.indexer} />
+          <ExtrinsicLinks chain={chain} indexer={data.indexer} />
         </LinkWrapper>
       </Right>
     </Wrapper>
