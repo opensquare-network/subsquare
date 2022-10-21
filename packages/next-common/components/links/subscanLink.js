@@ -1,3 +1,4 @@
+import React from "react";
 import LinkSubScanIcon from "../../assets/imgs/icons/link-subscan.svg";
 import LinkSubScanIconActive from "../../assets/imgs/icons/link-subscan-active.svg";
 import ThirdPartyLink from "./thirdPartyLink";
