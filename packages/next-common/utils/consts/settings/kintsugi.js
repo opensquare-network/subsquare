@@ -30,7 +30,7 @@ const kintsugi = {
   value: "kintsugi",
   name: "Kintsugi",
   icon: "kintsugi.png",
-  identity: "kusama",
+  identity: "kintsugi",
   symbol: "KINT",
   voteSymbol: "vKINT",
   decimals: 12,
