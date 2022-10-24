@@ -72,13 +72,14 @@ export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
 
   const emailVerified =
     loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
-  const disabled = !loginUser || !loginUser.emailVerified;
+  const isVerifiedUser = !loginUser || !loginUser.emailVerified;
 
   const {
     discussionOptionsComponent,
     getDiscussionOptionValues,
+    isChanged,
   } = useDiscussionOptions({
-    disabled,
+    disabled: isVerifiedUser,
     saving,
     reply: !!loginUser?.notification?.reply,
     mention: !!loginUser?.notification?.mention,
@@ -144,8 +145,9 @@ export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
           <Divider margin={24} />
           <ButtonWrapper>
             <SecondaryButton
-              disabled={disabled}
+              disabled={isVerifiedUser || !isChanged}
               onClick={updateNotificationSetting}
+              isLoading={saving}
             >
               Save
             </SecondaryButton>
