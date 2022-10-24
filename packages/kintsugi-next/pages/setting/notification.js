@@ -72,7 +72,7 @@ export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
 
   const emailVerified =
     loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
-    const isVerifiedUser = !loginUser || !loginUser.emailVerified;
+  const isVerifiedUser = !loginUser || !loginUser.emailVerified;
 
   const {
     discussionOptionsComponent,
