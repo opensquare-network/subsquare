@@ -90,14 +90,14 @@ export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe
 
   const emailVerified =
     loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
-  const isVerifiedUser = !loginUser || !loginUser.emailVerified;
+  const isVerifiedUser = loginUser?.emailVerified;
 
   const {
     treasuryOptionsComponent,
     getTreasuryOptionValues,
     isChanged,
   } = useTreasuryOptions({
-    disabled: isVerifiedUser,
+    disabled: !isVerifiedUser,
     saving,
     treasuryProposalProposed: subscription?.treasuryProposalProposed,
     treasuryProposalApproved: subscription?.treasuryProposalApproved,
@@ -170,7 +170,7 @@ export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe
           <Divider margin={24} />
           <ButtonWrapper>
             <SecondaryButton
-              disabled={isVerifiedUser || !isChanged}
+              disabled={!isVerifiedUser || !isChanged}
               onClick={updateNotificationSetting}
               isLoading={saving}
             >

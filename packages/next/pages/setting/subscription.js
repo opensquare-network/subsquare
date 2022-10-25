@@ -14,6 +14,7 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import Divider from "next-common/components/styled/layout/divider";
 import SettingsLayout from "next-common/components/layout/settingsLayout";
 import useTreasuryOptions from "next-common/components/setting/notification/useTreasuryOptions";
+import useCouncilOptions from "next-common/components/setting/notification/useCouncilOptions";
 import { fetchAndUpdateUser, useUserDispatch } from "next-common/context/user";
 import Cookies from "cookies";
 import { CACHE_KEY } from "next-common/utils/constants";
@@ -90,20 +91,35 @@ export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe
 
   const emailVerified =
     loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
-  const isVerifiedUser = !loginUser || !loginUser.emailVerified;
+  const isVerifiedUser = loginUser?.emailVerified;
 
   const {
     treasuryOptionsComponent,
     getTreasuryOptionValues,
-    isChanged,
+    isChanged: isTreasuryOptionsChanged,
   } = useTreasuryOptions({
-    disabled: isVerifiedUser,
+    disabled: !isVerifiedUser,
     saving,
     treasuryProposalProposed: subscription?.treasuryProposalProposed,
     treasuryProposalApproved: subscription?.treasuryProposalApproved,
     treasuryProposalAwarded: subscription?.treasuryProposalAwarded,
     treasuryProposalRejected: subscription?.treasuryProposalRejected,
   });
+
+  const {
+    councilOptionsComponent,
+    getCouncilOptionValues,
+    isChanged: isCouncilOptionsChanged,
+  } = useCouncilOptions({
+    disabled: !isVerifiedUser,
+    saving,
+    councilMotionProposed: subscription?.councilMotionProposed,
+    councilMotionVoted: subscription?.councilMotionVoted,
+    councilMotionApproved: subscription?.councilMotionApproved,
+    councilMotionDisApproved: subscription?.councilMotionDisApproved,
+  });
+
+  const canSave = isVerifiedUser && (isTreasuryOptionsChanged || isCouncilOptionsChanged);
 
   const router = useRouter();
 
@@ -129,6 +145,7 @@ export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe
 
     const data = {
       ...getTreasuryOptionValues(),
+      ...getCouncilOptionValues(),
     };
 
     const { result, error } = await nextApi.patch("user/subscription", data);
@@ -165,12 +182,13 @@ export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe
 
           <Options>
             {treasuryOptionsComponent}
+            {councilOptionsComponent}
           </Options>
 
           <Divider margin={24} />
           <ButtonWrapper>
             <SecondaryButton
-              disabled={isVerifiedUser || !isChanged}
+              disabled={!canSave}
               onClick={updateNotificationSetting}
               isLoading={saving}
             >
