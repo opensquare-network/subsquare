@@ -7,8 +7,8 @@ export default function useTreasuryOptions({ saving, disabled, ...data }) {
   const [isChanged, setIsChanged] = useState(false);
   const [treasuryProposalProposed, setTreasuryProposalProposed] = useState(data.treasuryProposalProposed?.isOn);
   const [treasuryProposalApproved, setTreasuryProposalApproved] = useState(data.treasuryProposalApproved?.isOn);
-  const [treasuryProposalAwarded, settreasuryProposalAwarded] = useState(data.treasuryProposalAwarded?.isOn);
-  const [treasuryProposalRejected, settreasuryProposalRejected] = useState(data.treasuryProposalRejected?.isOn);
+  const [treasuryProposalAwarded, setTreasuryProposalAwarded] = useState(data.treasuryProposalAwarded?.isOn);
+  const [treasuryProposalRejected, setTreasuryProposalRejected] = useState(data.treasuryProposalRejected?.isOn);
 
   const changeGuard = (setter) => (data) => {
     if (!saving && !disabled) {
@@ -60,8 +60,8 @@ export default function useTreasuryOptions({ saving, disabled, ...data }) {
               disabled={disabled}
               isOn={treasuryProposalAwarded || treasuryProposalRejected}
               onToggle={changeGuard((isOn) => {
-                settreasuryProposalAwarded(isOn);
-                settreasuryProposalRejected(isOn);
+                setTreasuryProposalAwarded(isOn);
+                setTreasuryProposalRejected(isOn);
               })}
             />
           </ToggleItem>
