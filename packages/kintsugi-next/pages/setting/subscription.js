@@ -99,7 +99,7 @@ export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe
   } = useTreasuryOptions({
     disabled: isVerifiedUser,
     saving,
-    treasuryProposalNew: subscription?.treasuryProposalNew,
+    treasuryProposalProposed: subscription?.treasuryProposalProposed,
     treasuryProposalApproved: subscription?.treasuryProposalApproved,
     treasuryProposalAwarded: subscription?.treasuryProposalAwarded,
     treasuryProposalRejected: subscription?.treasuryProposalRejected,
