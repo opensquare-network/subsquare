@@ -20,8 +20,12 @@ export default function PolkassemblyCommentButton({
   btnRef,
 }) {
   // For external post, use the motion link if it is ref to a motion
-  if (type === detailPageCategory.DEMOCRACY_EXTERNAL && detail.refToPost?.postType === "motion") {
-    type = detailPageCategory.COUNCIL_MOTION;
+  if (type === detailPageCategory.DEMOCRACY_EXTERNAL) {
+    if (detail?.refToPost?.postType === "motion") {
+      type = detailPageCategory.COUNCIL_MOTION;
+    } else if (detail?.refToPost?.postType === "democracy" && detail?.referendumIndex !== undefined) {
+      type = detailPageCategory.DEMOCRACY_REFERENDUM;
+    }
   }
 
   let link = `https://${chain}.polkassembly.io/post/${paId}`;
