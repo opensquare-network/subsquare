@@ -19,6 +19,11 @@ export default function PolkassemblyCommentButton({
   type,
   btnRef,
 }) {
+  // For external post, use the ref post type
+  if (type === detailPageCategory.DEMOCRACY_EXTERNAL) {
+    type = detail.refToPost?.postType;
+  }
+
   let link = `https://${chain}.polkassembly.io/post/${paId}`;
   if (type === detailPageCategory.COUNCIL_MOTION) {
     link = `https://${chain}.polkassembly.io/motion/${detail?.motionIndex}`;
