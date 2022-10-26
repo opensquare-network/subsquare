@@ -22,7 +22,7 @@ export default function PolkassemblyCommentButton({
   let link = `https://${chain}.polkassembly.io/post/${paId}`;
   if (type === detailPageCategory.COUNCIL_MOTION) {
     link = `https://${chain}.polkassembly.io/motion/${detail?.motionIndex}`;
-  } else if (type === detailPageCategory.DEMOCRACY_REFERENDUM) {
+  } else if (type === detailPageCategory.DEMOCRACY_PROPOSAL) {
     link = `https://${chain}.polkassembly.io/proposal/${detail?.proposalIndex}`;
   } else if (type === detailPageCategory.DEMOCRACY_REFERENDUM) {
     link = `https://${chain}.polkassembly.io/referendum/${detail?.referendumIndex}`;
