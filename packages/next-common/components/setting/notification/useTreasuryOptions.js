@@ -4,15 +4,20 @@ import { useCallback, useState } from "react";
 import { Label, Sections, SubLabel, ToggleItem } from "./styled";
 
 export default function useTreasuryOptions({ saving, disabled, ...data }) {
-  const [isChanged, setIsChanged] = useState(false);
   const [treasuryProposalProposed, setTreasuryProposalProposed] = useState(data.treasuryProposalProposed?.isOn);
   const [treasuryProposalApproved, setTreasuryProposalApproved] = useState(data.treasuryProposalApproved?.isOn);
   const [treasuryProposalAwarded, setTreasuryProposalAwarded] = useState(data.treasuryProposalAwarded?.isOn);
   const [treasuryProposalRejected, setTreasuryProposalRejected] = useState(data.treasuryProposalRejected?.isOn);
 
+  const isChanged = (
+    treasuryProposalProposed !== data.treasuryProposalProposed?.isOn ||
+    treasuryProposalApproved !== data.treasuryProposalApproved?.isOn ||
+    treasuryProposalAwarded !== data.treasuryProposalAwarded?.isOn ||
+    treasuryProposalRejected !== data.treasuryProposalRejected?.isOn
+  );
+
   const changeGuard = (setter) => (data) => {
     if (!saving && !disabled) {
-      setIsChanged(true);
       setter(data);
     }
   };

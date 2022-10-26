@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { checkBrowserCompatibility } from "next-common/utils/serverSideUtil";
 import { setMode } from "../store/reducers/settingSlice";
 import { CACHE_KEY } from "../utils/constants";
+import { useUser } from "../context/user";
 
 export function withLoginUser(getServerSideProps) {
   return async function (context) {
@@ -54,15 +55,17 @@ export function withLoginUser(getServerSideProps) {
 }
 
 export function withLoginUserRedux(fnComponent) {
-  return ({ loginUser, themeMode, ...props }) => {
+  return ({ themeMode, ...props }) => {
     const dispatch = useDispatch();
+    const loginUser = useUser();
+
     if (themeMode) {
       dispatch(setMode(themeMode));
     }
 
     return fnComponent({
-      loginUser,
       ...props,
+      loginUser,
     });
   };
 }

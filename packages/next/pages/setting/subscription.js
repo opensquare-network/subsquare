@@ -15,7 +15,6 @@ import Divider from "next-common/components/styled/layout/divider";
 import SettingsLayout from "next-common/components/layout/settingsLayout";
 import useTreasuryOptions from "next-common/components/setting/notification/useTreasuryOptions";
 import useCouncilOptions from "next-common/components/setting/notification/useCouncilOptions";
-import { fetchAndUpdateUser, useUserDispatch } from "next-common/context/user";
 import Cookies from "cookies";
 import { CACHE_KEY } from "next-common/utils/constants";
 
@@ -83,11 +82,11 @@ const Info = styled.div`
   margin-bottom: 16px;
 `;
 
-export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe }) => {
+export default withLoginUserRedux(({ loginUser, chain, subscription: _subscription, unsubscribe }) => {
   const dispatch = useDispatch();
-  const userDispatch = useUserDispatch();
   const [saving, setSaving] = useState(false);
   const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
+  const [subscription, setSubscription] = useState(_subscription);
 
   const emailVerified =
     loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
@@ -136,6 +135,13 @@ export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe
     }
   }, [loginUser, router, unsubscribe]);
 
+  const fetchSubscriptionSetting = async () => {
+    const { result } = await nextApi.fetch(`user/subscription`);
+    if (result) {
+      setSubscription(result);
+    }
+  }
+
   const updateNotificationSetting = async () => {
     if (saving) {
       return;
@@ -150,8 +156,8 @@ export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe
 
     const { result, error } = await nextApi.patch("user/subscription", data);
     if (result) {
-      await fetchAndUpdateUser(userDispatch);
       dispatch(newSuccessToast("Settings saved"));
+      await fetchSubscriptionSetting();
     } else if (error) {
       dispatch(newErrorToast(error.message));
     }

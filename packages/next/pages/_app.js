@@ -11,6 +11,7 @@ import "react-mde/lib/styles/css/react-mde-all.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { connect } from "next-common/services/websocket";
 import React, { useEffect } from "react";
+import GlobalProvider from "next-common/context/global";
 
 NProgress.configure({
   minimum: 0.3,
@@ -41,9 +42,15 @@ function MyApp({ Component, pageProps }) {
     connect();
   }, []);
 
+  const { loginUser, ...otherProps } = pageProps;
   return (
     <Provider store={store}>
-      <Component {...pageProps} />
+      <GlobalProvider
+        user={loginUser}
+        chain={process.env.NEXT_PUBLIC_CHAIN}
+      >
+        <Component {...otherProps} />
+      </GlobalProvider>
     </Provider>
   );
 }
