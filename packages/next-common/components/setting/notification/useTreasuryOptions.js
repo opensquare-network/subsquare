@@ -74,5 +74,6 @@ export default function useTreasuryOptions({ saving, disabled, ...data }) {
     treasuryOptionsComponent,
     getTreasuryOptionValues,
     isChanged,
+    setIsChanged,
   };
 }

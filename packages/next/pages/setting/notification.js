@@ -78,6 +78,7 @@ export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
     discussionOptionsComponent,
     getDiscussionOptionValues,
     isChanged,
+    setIsChanged,
   } = useDiscussionOptions({
     disabled: !isVerifiedUser,
     saving,
@@ -115,6 +116,7 @@ export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
     if (result) {
       await fetchAndUpdateUser(userDispatch);
       dispatch(newSuccessToast("Settings saved"));
+      setIsChanged(false);
     } else if (error) {
       dispatch(newErrorToast(error.message));
     }

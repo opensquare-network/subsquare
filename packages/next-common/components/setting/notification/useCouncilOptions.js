@@ -74,5 +74,6 @@ export default function useCouncilOptions({ saving, disabled, ...data }) {
     councilOptionsComponent,
     getCouncilOptionValues,
     isChanged,
+    setIsChanged,
   };
 }

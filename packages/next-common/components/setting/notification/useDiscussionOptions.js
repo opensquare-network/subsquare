@@ -46,5 +46,6 @@ export default function useDiscussionOptions({ saving, disabled, ...data }) {
     discussionOptionsComponent,
     getDiscussionOptionValues,
     isChanged,
+    setIsChanged,
   };
 }

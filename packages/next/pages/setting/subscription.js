@@ -97,6 +97,7 @@ export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe
     treasuryOptionsComponent,
     getTreasuryOptionValues,
     isChanged: isTreasuryOptionsChanged,
+    setIsChanged: setIsTreasuryOptionsChanged,
   } = useTreasuryOptions({
     disabled: !isVerifiedUser,
     saving,
@@ -110,6 +111,7 @@ export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe
     councilOptionsComponent,
     getCouncilOptionValues,
     isChanged: isCouncilOptionsChanged,
+    setIsChanged: setIsCouncilOptionsChanged,
   } = useCouncilOptions({
     disabled: !isVerifiedUser,
     saving,
@@ -150,8 +152,9 @@ export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe
 
     const { result, error } = await nextApi.patch("user/subscription", data);
     if (result) {
-      await fetchAndUpdateUser(userDispatch);
       dispatch(newSuccessToast("Settings saved"));
+      setIsTreasuryOptionsChanged(false);
+      setIsCouncilOptionsChanged(false);
     } else if (error) {
       dispatch(newErrorToast(error.message));
     }

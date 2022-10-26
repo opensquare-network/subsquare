@@ -96,6 +96,7 @@ export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe
     treasuryOptionsComponent,
     getTreasuryOptionValues,
     isChanged,
+    setIsChanged,
   } = useTreasuryOptions({
     disabled: !isVerifiedUser,
     saving,
@@ -133,8 +134,8 @@ export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe
 
     const { result, error } = await nextApi.patch("user/subscription", data);
     if (result) {
-      await fetchAndUpdateUser(userDispatch);
       dispatch(newSuccessToast("Settings saved"));
+      setIsChanged(true);
     } else if (error) {
       dispatch(newErrorToast(error.message));
     }
