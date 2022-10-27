@@ -13,10 +13,11 @@ import { PrimaryCard } from "next-common/components/styled/containers/primaryCar
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Divider from "next-common/components/styled/layout/divider";
 import SettingsLayout from "next-common/components/layout/settingsLayout";
-import useTreasuryOptions from "next-common/components/setting/notification/useTreasuryOptions";
+import useTreasuryProposalOptions from "next-common/components/setting/notification/useTreasuryProposalOptions";
 import { fetchAndUpdateUser, useUserDispatch } from "next-common/context/user";
 import Cookies from "cookies";
 import { CACHE_KEY } from "next-common/utils/constants";
+import { Label, Sections } from "next-common/components/setting/notification/styled";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -93,10 +94,10 @@ export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe
   const isVerifiedUser = loginUser?.emailVerified;
 
   const {
-    treasuryOptionsComponent,
-    getTreasuryOptionValues,
+    treasuryProposalOptionsComponent,
+    getTreasuryProposalOptionValues,
     isChanged,
-  } = useTreasuryOptions({
+  } = useTreasuryProposalOptions({
     disabled: !isVerifiedUser,
     saving,
     treasuryProposalProposed: subscription?.treasuryProposalProposed,
@@ -128,7 +129,7 @@ export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe
     setSaving(true);
 
     const data = {
-      ...getTreasuryOptionValues(),
+      ...getTreasuryProposalOptionValues(),
     };
 
     const { result, error } = await nextApi.patch("user/subscription", data);
@@ -164,7 +165,12 @@ export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe
           )}
 
           <Options>
-            {treasuryOptionsComponent}
+            <div>
+              <Label>Treasury</Label>
+              <Sections>
+                {treasuryProposalOptionsComponent}
+              </Sections>
+            </div>
           </Options>
 
           <Divider margin={24} />
