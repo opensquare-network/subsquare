@@ -23,6 +23,7 @@ import {
   removeToast,
 } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 
 const ChildBountyCountDown = ({ data = {} }) => {
   if (data.state?.state !== "PendingPayout") {
@@ -102,8 +103,13 @@ export default withLoginUserRedux(
     detail.status = detail.onchainData?.state?.state;
 
     const desc = getMetaDesc(detail);
+
+    const showRightSidePanel = ["PendingPayout", "Claimed"].includes(detail?.onchainData?.state?.state);
+
+    const Layout = showRightSidePanel ? DetailWithRightLayout : DetailLayout;
+
     return (
-      <DetailWithRightLayout
+      <Layout
         user={loginUser}
         seoInfo={{
           title: detail?.title,
@@ -129,7 +135,7 @@ export default withLoginUserRedux(
         <Metadata meta={detail.onchainData?.meta} chain={chain} />
         <Timeline onchainData={detail.onchainData} chain={chain} />
         {CommentComponent}
-      </DetailWithRightLayout>
+      </Layout>
     );
   }
 );
