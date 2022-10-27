@@ -13,10 +13,12 @@ import { PrimaryCard } from "next-common/components/styled/containers/primaryCar
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Divider from "next-common/components/styled/layout/divider";
 import SettingsLayout from "next-common/components/layout/settingsLayout";
-import useTreasuryOptions from "next-common/components/setting/notification/useTreasuryOptions";
-import useCouncilOptions from "next-common/components/setting/notification/useCouncilOptions";
+import useTreasuryProposalOptions from "next-common/components/setting/notification/useTreasuryProposalOptions";
+import useTreasuryTipOptions from "next-common/components/setting/notification/useTreasuryTipOptions";
+import useCouncilMotionOptions from "next-common/components/setting/notification/useCouncilMotionOptions";
 import Cookies from "cookies";
 import { CACHE_KEY } from "next-common/utils/constants";
+import { Label, Sections } from "next-common/components/setting/notification/styled";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -93,10 +95,10 @@ export default withLoginUserRedux(({ loginUser, chain, subscription: _subscripti
   const isVerifiedUser = loginUser?.emailVerified;
 
   const {
-    treasuryOptionsComponent,
-    getTreasuryOptionValues,
-    isChanged: isTreasuryOptionsChanged,
-  } = useTreasuryOptions({
+    treasuryProposalOptionsComponent,
+    getTreasuryProposalOptionValues,
+    isChanged: isTreasuryProposalOptionsChanged,
+  } = useTreasuryProposalOptions({
     disabled: !isVerifiedUser,
     saving,
     treasuryProposalProposed: subscription?.treasuryProposalProposed,
@@ -106,10 +108,23 @@ export default withLoginUserRedux(({ loginUser, chain, subscription: _subscripti
   });
 
   const {
-    councilOptionsComponent,
-    getCouncilOptionValues,
-    isChanged: isCouncilOptionsChanged,
-  } = useCouncilOptions({
+    treasuryTipOptionsComponent,
+    getTreasuryTipOptionValues,
+    isChanged: isTreasuryTipOptionsChanged,
+  } = useTreasuryTipOptions({
+    disabled: !isVerifiedUser,
+    saving,
+    treasuryTipNew: subscription?.treasuryTipNew,
+    treasuryTipTip: subscription?.treasuryTipTip,
+    treasuryTipClosed: subscription?.treasuryTipClosed,
+    treasuryTipRetracted: subscription?.treasuryTipRetracted
+  });
+
+  const {
+    councilMotionOptionsComponent,
+    getCouncilMotionOptionValues,
+    isChanged: isCouncilMotionOptionsChanged,
+  } = useCouncilMotionOptions({
     disabled: !isVerifiedUser,
     saving,
     councilMotionProposed: subscription?.councilMotionProposed,
@@ -118,7 +133,11 @@ export default withLoginUserRedux(({ loginUser, chain, subscription: _subscripti
     councilMotionDisApproved: subscription?.councilMotionDisApproved,
   });
 
-  const canSave = isVerifiedUser && (isTreasuryOptionsChanged || isCouncilOptionsChanged);
+  const canSave = isVerifiedUser && (
+    isTreasuryProposalOptionsChanged ||
+    isTreasuryTipOptionsChanged ||
+    isCouncilMotionOptionsChanged
+  );
 
   const router = useRouter();
 
@@ -150,8 +169,9 @@ export default withLoginUserRedux(({ loginUser, chain, subscription: _subscripti
     setSaving(true);
 
     const data = {
-      ...getTreasuryOptionValues(),
-      ...getCouncilOptionValues(),
+      ...getTreasuryProposalOptionValues(),
+      ...getTreasuryTipOptionValues(),
+      ...getCouncilMotionOptionValues(),
     };
 
     const { result, error } = await nextApi.patch("user/subscription", data);
@@ -187,8 +207,19 @@ export default withLoginUserRedux(({ loginUser, chain, subscription: _subscripti
           )}
 
           <Options>
-            {treasuryOptionsComponent}
-            {councilOptionsComponent}
+            <div>
+              <Label>Treasury</Label>
+              <Sections>
+                {treasuryProposalOptionsComponent}
+                {treasuryTipOptionsComponent}
+              </Sections>
+            </div>
+            <div>
+              <Label>Council</Label>
+              <Sections>
+                {councilMotionOptionsComponent}
+              </Sections>
+            </div>
           </Options>
 
           <Divider margin={24} />
