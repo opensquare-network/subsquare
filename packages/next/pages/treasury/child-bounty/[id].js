@@ -24,6 +24,7 @@ import {
 } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import { PostProvider } from "next-common/context/post";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 
 const ChildBountyCountDown = ({ data = {} }) => {
   if (data.state?.state !== "PendingPayout") {
@@ -101,9 +102,14 @@ export default withLoginUserRedux(
     }, [dispatch, toastId]);
 
     const desc = getMetaDesc(detail);
+
+    const showRightSidePanel = ["PendingPayout", "Claimed"].includes(detail?.onchainData?.state?.state);
+
+    const Layout = showRightSidePanel ? DetailWithRightLayout : DetailLayout;
+
     return (
       <PostProvider post={detail} type={detailPageCategory.TREASURY_CHILD_BOUNTY}>
-        <DetailWithRightLayout
+        <Layout
           user={loginUser}
           seoInfo={{
             title: detail?.title,
@@ -127,7 +133,7 @@ export default withLoginUserRedux(
           <Metadata meta={detail.onchainData?.meta} chain={chain} />
           <Timeline onchainData={detail.onchainData} chain={chain} />
           {CommentComponent}
-        </DetailWithRightLayout>
+        </Layout>
       </PostProvider>
     );
   }
