@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-
 import {
   emptyFunction,
   getNode,
@@ -18,6 +17,7 @@ import { WarningMessage } from "next-common/components/popup/styled";
 import { sendTx } from "next-common/utils/sendTx";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import useSetDefaultSigner from "next-common/utils/hooks/useSetDefaultSigner";
+import { isSameAddress } from "next-common/utils";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -93,7 +93,7 @@ function PopupContent({
     });
   };
 
-  const showWarning = selectedAccount?.address !== childBounty?.beneficiary;
+  const showWarning = !isSameAddress(selectedAccount?.address, childBounty?.beneficiary);
   const warningContent = showWarning && (
     <WarningMessage danger>Only beneficiary can claim rewards.</WarningMessage>
   );
