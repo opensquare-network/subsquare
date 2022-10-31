@@ -19,6 +19,7 @@ import useCouncilMotionOptions from "next-common/components/setting/notification
 import Cookies from "cookies";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { Label, Sections } from "next-common/components/setting/notification/styled";
+import homeMenus from "next-common/utils/consts/menu";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -84,11 +85,24 @@ const Info = styled.div`
   margin-bottom: 16px;
 `;
 
+function checkSubMenu(menus, menuName) {
+  const chain = process.env.NEXT_PUBLIC_CHAIN;
+  const menu = menus?.find(item => item.name === menuName);
+  const hasMenu = menu && !menu.excludeToChains?.includes(chain);
+  return { hasMenu, menu };
+}
+
 export default withLoginUserRedux(({ loginUser, chain, subscription: _subscription, unsubscribe }) => {
   const dispatch = useDispatch();
   const [saving, setSaving] = useState(false);
   const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
   const [subscription, setSubscription] = useState(_subscription);
+
+  const { hasMenu: hasTreasury, menu: treasuryMenu } = checkSubMenu(homeMenus, "TREASURY");
+  const { hasMenu: hasTreasuryProposal } = checkSubMenu(treasuryMenu?.items, "Proposals");
+  const { hasMenu: hasTreasuryTip } = checkSubMenu(treasuryMenu?.items, "Tips");
+  const { hasMenu: hasCouncil, menu: councilMenu } = checkSubMenu(homeMenus, "COUNCIL");
+  const { hasMenu: hasCouncilMotion } = checkSubMenu(councilMenu?.items, "Motions");
 
   const emailVerified =
     loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
@@ -169,9 +183,9 @@ export default withLoginUserRedux(({ loginUser, chain, subscription: _subscripti
     setSaving(true);
 
     const data = {
-      ...getTreasuryProposalOptionValues(),
-      ...getTreasuryTipOptionValues(),
-      ...getCouncilMotionOptionValues(),
+      ...(hasTreasury && hasTreasuryProposal ? getTreasuryProposalOptionValues() : {}),
+      ...(hasTreasury && hasTreasuryTip ? getTreasuryTipOptionValues() : {}),
+      ...(hasCouncil && hasCouncilMotion ? getCouncilMotionOptionValues() : {}),
     };
 
     const { result, error } = await nextApi.patch("user/subscription", data);
@@ -183,6 +197,31 @@ export default withLoginUserRedux(({ loginUser, chain, subscription: _subscripti
     }
     setSaving(false);
   };
+
+  let treasuryOptions = null;
+  if (hasTreasury && (hasTreasuryProposal || hasTreasuryTip)) {
+    treasuryOptions = (
+      <div>
+        <Label>Treasury</Label>
+        <Sections>
+          {hasTreasuryProposal && treasuryProposalOptionsComponent}
+          {hasTreasuryTip && treasuryTipOptionsComponent}
+        </Sections>
+      </div>
+    );
+  }
+
+  let councilOptions = null;
+  if (hasCouncil && hasCouncilMotion) {
+    councilOptions = (
+      <div>
+        <Label>Council</Label>
+        <Sections>
+          {hasCouncilMotion && councilMotionOptionsComponent}
+        </Sections>
+      </div>
+    );
+  }
 
   return (
     <SettingsLayout user={loginUser}>
@@ -207,19 +246,8 @@ export default withLoginUserRedux(({ loginUser, chain, subscription: _subscripti
           )}
 
           <Options>
-            <div>
-              <Label>Treasury</Label>
-              <Sections>
-                {treasuryProposalOptionsComponent}
-                {treasuryTipOptionsComponent}
-              </Sections>
-            </div>
-            <div>
-              <Label>Council</Label>
-              <Sections>
-                {councilMotionOptionsComponent}
-              </Sections>
-            </div>
+            {treasuryOptions}
+            {councilOptions}
           </Options>
 
           <Divider margin={24} />
