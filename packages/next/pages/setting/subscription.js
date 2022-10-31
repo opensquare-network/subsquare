@@ -16,6 +16,7 @@ import SettingsLayout from "next-common/components/layout/settingsLayout";
 import useTreasuryProposalOptions from "next-common/components/setting/notification/useTreasuryProposalOptions";
 import useTreasuryTipOptions from "next-common/components/setting/notification/useTreasuryTipOptions";
 import useCouncilMotionOptions from "next-common/components/setting/notification/useCouncilMotionOptions";
+import useTreasuryBountyOptions from "next-common/components/setting/notification/useTreasuryBountyOptions";
 import Cookies from "cookies";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { Label, Sections } from "next-common/components/setting/notification/styled";
@@ -101,6 +102,7 @@ export default withLoginUserRedux(({ loginUser, chain, subscription: _subscripti
   const { hasMenu: hasTreasury, menu: treasuryMenu } = checkSubMenu(homeMenus, "TREASURY");
   const { hasMenu: hasTreasuryProposal } = checkSubMenu(treasuryMenu?.items, "Proposals");
   const { hasMenu: hasTreasuryTip } = checkSubMenu(treasuryMenu?.items, "Tips");
+  const { hasMenu: hasTreasuryBounty } = checkSubMenu(treasuryMenu?.items, "Bounties");
   const { hasMenu: hasCouncil, menu: councilMenu } = checkSubMenu(homeMenus, "COUNCIL");
   const { hasMenu: hasCouncilMotion } = checkSubMenu(councilMenu?.items, "Motions");
 
@@ -135,6 +137,21 @@ export default withLoginUserRedux(({ loginUser, chain, subscription: _subscripti
   });
 
   const {
+    treasuryBountyOptionsComponent,
+    getTreasuryBountyOptionValues,
+    isChanged: isTreasuryBountyOptionsChanged,
+  } = useTreasuryBountyOptions({
+    disabled: !isVerifiedUser,
+    saving,
+    treasuryBountyProposed: subscription?.treasuryBountyProposed,
+    treasuryBountyAwarded: subscription?.treasuryBountyAwarded,
+    treasuryBountyApproved: subscription?.treasuryBountyApproved,
+    treasuryBountyCanceled: subscription?.treasuryBountyCanceled,
+    treasuryBountyClaimed: subscription?.treasuryBountyClaimed,
+    treasuryBountyRejected: subscription?.treasuryBountyRejected,
+  });
+
+  const {
     councilMotionOptionsComponent,
     getCouncilMotionOptionValues,
     isChanged: isCouncilMotionOptionsChanged,
@@ -150,7 +167,8 @@ export default withLoginUserRedux(({ loginUser, chain, subscription: _subscripti
   const canSave = isVerifiedUser && (
     isTreasuryProposalOptionsChanged ||
     isTreasuryTipOptionsChanged ||
-    isCouncilMotionOptionsChanged
+    isCouncilMotionOptionsChanged ||
+    isTreasuryBountyOptionsChanged
   );
 
   const router = useRouter();
@@ -185,6 +203,7 @@ export default withLoginUserRedux(({ loginUser, chain, subscription: _subscripti
     const data = {
       ...(hasTreasury && hasTreasuryProposal ? getTreasuryProposalOptionValues() : {}),
       ...(hasTreasury && hasTreasuryTip ? getTreasuryTipOptionValues() : {}),
+      ...(hasTreasury && hasTreasuryBounty ? getTreasuryBountyOptionValues() : {}),
       ...(hasCouncil && hasCouncilMotion ? getCouncilMotionOptionValues() : {}),
     };
 
@@ -199,13 +218,14 @@ export default withLoginUserRedux(({ loginUser, chain, subscription: _subscripti
   };
 
   let treasuryOptions = null;
-  if (hasTreasury && (hasTreasuryProposal || hasTreasuryTip)) {
+  if (hasTreasury && (hasTreasuryProposal || hasTreasuryTip || hasTreasuryBounty)) {
     treasuryOptions = (
       <div>
         <Label>Treasury</Label>
         <Sections>
           {hasTreasuryProposal && treasuryProposalOptionsComponent}
           {hasTreasuryTip && treasuryTipOptionsComponent}
+          {hasTreasuryBounty && treasuryBountyOptionsComponent}
         </Sections>
       </div>
     );

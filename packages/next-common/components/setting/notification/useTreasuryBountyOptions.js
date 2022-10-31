@@ -47,7 +47,7 @@ export default function useTreasuryBountyOptions({ saving, disabled, ...data }) 
 
   const treasuryBountyOptionsComponent = (
     <div>
-      <SubLabel>Treasury tips</SubLabel>
+      <SubLabel>Treasury bounties</SubLabel>
       <ToggleItem>
         <div>Treasury bounties proposed or canceled</div>
         <Toggle
