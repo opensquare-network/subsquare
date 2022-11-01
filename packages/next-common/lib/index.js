@@ -12,7 +12,7 @@ export function withLoginUser(getServerSideProps) {
 
     checkBrowserCompatibility(context);
 
-    let options = { credentials: true };
+    let options = {};
     const cookies = new Cookies(context.req, context.res);
     const themeMode = cookies.get(CACHE_KEY.themeMode);
     const authToken = cookies.get(CACHE_KEY.authToken);
@@ -23,12 +23,14 @@ export function withLoginUser(getServerSideProps) {
         },
       };
     }
+    console.log(options);
     const profilePromise = nextApi.fetch("user/profile", {}, options);
 
-    const [props, { result: user }] = await Promise.all([
+    const [props, { error, result: user }] = await Promise.all([
       propsPromise,
       profilePromise,
     ]);
+    console.log(error, user);
 
     if (context.resolvedUrl?.startsWith("/setting/") && !user) {
       const { unsubscribe } = context.query;
