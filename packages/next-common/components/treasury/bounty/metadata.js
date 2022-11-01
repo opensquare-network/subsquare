@@ -33,7 +33,7 @@ function BountyMetadata({ meta, chain }) {
         break;
       case "proposer":
       case "beneficiary":
-        normalizedValue = <User address={value} fontSize={14}/>;
+        normalizedValue = <User add={value} fontSize={14}/>;
         break;
       case "value":
       case "fee":
