@@ -130,7 +130,7 @@ function MembersList({
                         className={hideColumn === "votes" ? "autohide" : ""}
                         style={{ textAlign: "right" }}
                       >
-                        {item.votes}
+                        {item.votes ?? "--"}
                       </StyledTd>
                     </>
                   )}
