@@ -17,6 +17,7 @@ import useTreasuryProposalOptions from "next-common/components/setting/notificat
 import useTreasuryTipOptions from "next-common/components/setting/notification/useTreasuryTipOptions";
 import useCouncilMotionOptions from "next-common/components/setting/notification/useCouncilMotionOptions";
 import useTreasuryBountyOptions from "next-common/components/setting/notification/useTreasuryBountyOptions";
+import useTreasuryChildBountyOptions from "next-common/components/setting/notification/useTreasuryChildBountyOptions";
 import Cookies from "cookies";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { Label, Sections } from "next-common/components/setting/notification/styled";
@@ -103,6 +104,7 @@ export default withLoginUserRedux(({ loginUser, chain, subscription: _subscripti
   const { hasMenu: hasTreasuryProposal } = checkSubMenu(treasuryMenu?.items, "Proposals");
   const { hasMenu: hasTreasuryTip } = checkSubMenu(treasuryMenu?.items, "Tips");
   const { hasMenu: hasTreasuryBounty } = checkSubMenu(treasuryMenu?.items, "Bounties");
+  const { hasMenu: hasTreasuryChildBounty } = checkSubMenu(treasuryMenu?.items, "Child Bounties");
   const { hasMenu: hasCouncil, menu: councilMenu } = checkSubMenu(homeMenus, "COUNCIL");
   const { hasMenu: hasCouncilMotion } = checkSubMenu(councilMenu?.items, "Motions");
 
@@ -152,6 +154,19 @@ export default withLoginUserRedux(({ loginUser, chain, subscription: _subscripti
   });
 
   const {
+    treasuryChildBountyOptionsComponent,
+    getTreasuryChildBountyOptionValues,
+    isChanged: isTreasuryChildBountyOptionsChanged,
+  } = useTreasuryChildBountyOptions({
+    disabled: !isVerifiedUser,
+    saving,
+    treasuryChildBountyAdded: subscription?.treasuryChildBountyAdded,
+    treasuryChildBountyAwarded: subscription?.treasuryChildBountyAwarded,
+    treasuryChildBountyCanceled: subscription?.treasuryChildBountyCanceled,
+    treasuryChildBountyClaimed: subscription?.treasuryChildBountyClaimed,
+  });
+
+  const {
     councilMotionOptionsComponent,
     getCouncilMotionOptionValues,
     isChanged: isCouncilMotionOptionsChanged,
@@ -168,7 +183,8 @@ export default withLoginUserRedux(({ loginUser, chain, subscription: _subscripti
     isTreasuryProposalOptionsChanged ||
     isTreasuryTipOptionsChanged ||
     isCouncilMotionOptionsChanged ||
-    isTreasuryBountyOptionsChanged
+    isTreasuryBountyOptionsChanged ||
+    isTreasuryChildBountyOptionsChanged
   );
 
   const router = useRouter();
@@ -204,6 +220,7 @@ export default withLoginUserRedux(({ loginUser, chain, subscription: _subscripti
       ...(hasTreasury && hasTreasuryProposal ? getTreasuryProposalOptionValues() : {}),
       ...(hasTreasury && hasTreasuryTip ? getTreasuryTipOptionValues() : {}),
       ...(hasTreasury && hasTreasuryBounty ? getTreasuryBountyOptionValues() : {}),
+      ...(hasTreasury && hasTreasuryChildBounty ? getTreasuryChildBountyOptionValues() : {}),
       ...(hasCouncil && hasCouncilMotion ? getCouncilMotionOptionValues() : {}),
     };
 
@@ -218,7 +235,12 @@ export default withLoginUserRedux(({ loginUser, chain, subscription: _subscripti
   };
 
   let treasuryOptions = null;
-  if (hasTreasury && (hasTreasuryProposal || hasTreasuryTip || hasTreasuryBounty)) {
+  if (hasTreasury && (
+    hasTreasuryProposal ||
+    hasTreasuryTip ||
+    hasTreasuryBounty ||
+    hasTreasuryChildBounty
+  )) {
     treasuryOptions = (
       <div>
         <Label>Treasury</Label>
@@ -226,6 +248,7 @@ export default withLoginUserRedux(({ loginUser, chain, subscription: _subscripti
           {hasTreasuryProposal && treasuryProposalOptionsComponent}
           {hasTreasuryTip && treasuryTipOptionsComponent}
           {hasTreasuryBounty && treasuryBountyOptionsComponent}
+          {hasTreasuryChildBounty && treasuryChildBountyOptionsComponent}
         </Sections>
       </div>
     );
