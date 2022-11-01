@@ -22,7 +22,7 @@ export default function TreasuryProposalMetadata({ chain, treasuryProposal }) {
   const metadata = Object.entries(treasuryProposal?.meta || {});
   const data = metadata.map(([key, value]) => {
     if ([keys.proposer, keys.beneficiary].includes(key)) {
-      return [capitalize(key), <User address={value} fontSize={14}/>];
+      return [capitalize(key), <User add={value} fontSize={14}/>];
     } else if ([keys.value, keys.bond].includes(key)) {
       return [
         capitalize(key),

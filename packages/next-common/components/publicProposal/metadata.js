@@ -34,7 +34,7 @@ export default function Metadata({ publicProposal, chain }) {
     ["deposit", `${toPrecision(getDeposit(deposit), decimals)} ${symbol}`],
     [
       "proposer",
-      <User address={publicProposal?.proposer} fontSize={14}/>,
+      <User add={publicProposal?.proposer} fontSize={14}/>,
     ],
   ];
 
