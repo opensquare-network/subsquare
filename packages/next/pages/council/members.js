@@ -32,7 +32,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
         return {
           address,
           backing: item[1]?.toJSON(),
-          votes: votesMap[address] || 0,
+          votes: votesMap[address],
         };
       });
       setData(data);
