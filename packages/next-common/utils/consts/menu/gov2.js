@@ -4,7 +4,7 @@ import BackIcon from "../../../assets/imgs/icons/back.svg";
 import Gov2Button from "../../../components/menu/gov2Button";
 
 // for v1 entry
-const gov2Entry = {
+const gov2EntryItem = {
   value: "gov2",
   name: "Governance V2",
   pathname: "/gov2",
@@ -37,4 +37,4 @@ const gov2Menus = [
     ],
   },
 ];
-export { gov2Entry, gov2Menus };
+export { gov2EntryItem, gov2Menus };
