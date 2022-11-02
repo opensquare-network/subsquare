@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   padding-top: 41px;
   padding-bottom: 32px;
   > :not(:first-child) {
-    margin-top: 16px;
+    margin-top: 8px;
   }
   a {
     display: block;
@@ -17,7 +17,8 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.div`
-  padding: 0 12px 12px;
+  height: 36px;
+  padding: 12px;
   font-weight: bold;
   font-size: 12px;
   letter-spacing: 0.16em;
