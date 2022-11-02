@@ -39,9 +39,9 @@ export default function useTreasuryTipOptions({ saving, disabled, ...data }) {
 
   const treasuryTipOptionsComponent = (
     <div>
-      <SubLabel>Treasury tips</SubLabel>
+      <SubLabel>Tips</SubLabel>
       <ToggleItem>
-        <div>New treasury tips</div>
+        <div>New tips</div>
         <Toggle
           disabled={disabled}
           isOn={treasuryTipNew}
@@ -49,7 +49,7 @@ export default function useTreasuryTipOptions({ saving, disabled, ...data }) {
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Treasury tips tipped</div>
+        <div>Tips tipped</div>
         <Toggle
           disabled={disabled}
           isOn={treasuryTipTip}
@@ -57,7 +57,7 @@ export default function useTreasuryTipOptions({ saving, disabled, ...data }) {
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Treasury tips closed or retracted</div>
+        <div>Tips closed or retracted</div>
         <Toggle
           disabled={disabled}
           isOn={treasuryTipClosed || treasuryTipRetracted}
