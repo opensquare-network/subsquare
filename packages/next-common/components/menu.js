@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import ExternalLink from "./icons/externalLink";
 
 const Wrapper = styled.div`
-  padding-top: 37px;
+  padding-top: 41px;
   padding-bottom: 32px;
   > :not(:first-child) {
     margin-top: 16px;

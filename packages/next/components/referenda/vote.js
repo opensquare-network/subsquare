@@ -89,11 +89,7 @@ const VoteButton = styled.button`
   border-radius: 4px;
 `;
 
-function Vote({
-  referendumInfo,
-  referendumIndex,
-  chain,
-}) {
+function Vote({ referendumInfo, referendumIndex, chain }) {
   const dispatch = useDispatch();
   const [showVote, setShowVote] = useState(false);
   const [showVoteList, setShowVoteList] = useState(false);
@@ -105,7 +101,9 @@ function Vote({
   const isLoadingVotes = useSelector(isLoadingVotesSelector);
   const { allAye = [], allNay = [] } = useSelector(votesSelector);
   const referendumStatus = useSelector(referendumStatusSelector);
-  const isLoadingReferendumStatus = useSelector(isLoadingReferendumStatusSelector);
+  const isLoadingReferendumStatus = useSelector(
+    isLoadingReferendumStatusSelector
+  );
 
   const updateVoteProgress = useCallback(() => {
     dispatch(fetchReferendumStatus(api, referendumIndex));
@@ -158,7 +156,6 @@ function Vote({
         />
 
         {finishedResult}
-        <SubLink onClick={() => setShowVoteList(true)}>Check all votes</SubLink>
         {referendumInfo &&
           !finished &&
           (isPassing ? (
@@ -166,6 +163,8 @@ function Vote({
           ) : (
             <RejectStatus>Failing</RejectStatus>
           ))}
+
+        <SubLink onClick={() => setShowVoteList(true)}>Check all votes</SubLink>
       </SecondaryCardDetail>
 
       {!finished && (
