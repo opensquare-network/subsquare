@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import React, { Fragment } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import ExternalLink from "./icons/externalLink";
+import ExternalLink from "../icons/externalLink";
 
 const Wrapper = styled.div`
   padding-top: 41px;
