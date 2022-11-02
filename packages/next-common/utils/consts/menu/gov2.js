@@ -1,7 +1,7 @@
 import Gov2Icon from "../../../assets/imgs/icons/type-gov2.svg";
 import GovernanceV2Button from "../../../components/menu/governanceV2Button";
 
-const governanceV2Menu = {
+const gov2Menu = {
   value: "gov2",
   name: "Governance V2",
   pathname: "/gov2",
@@ -9,4 +9,4 @@ const governanceV2Menu = {
   itemRender: (icon, name) => <GovernanceV2Button icon={icon} name={name} />,
 };
 
-export default governanceV2Menu;
+export default gov2Menu;
