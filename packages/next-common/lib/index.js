@@ -23,14 +23,12 @@ export function withLoginUser(getServerSideProps) {
         },
       };
     }
-    console.log(options);
     const profilePromise = nextApi.fetch("user/profile", {}, options);
 
     const [props, { error, result: user }] = await Promise.all([
       propsPromise,
       profilePromise,
     ]);
-    console.log(error, user);
 
     if (context.resolvedUrl?.startsWith("/setting/") && !user) {
       const { unsubscribe } = context.query;
