@@ -27,7 +27,7 @@ const Wrapper = styled(flexBetweenCenter)`
   gap: 8px;
 `;
 
-export default function GovernanceV2Button({ icon, name }) {
+export default function Gov2Button({ icon, name }) {
   return (
     <Wrapper>
       <LabelWrapper>
