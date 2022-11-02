@@ -39,9 +39,9 @@ export default function useTreasuryProposalOptions({ saving, disabled, ...data }
 
   const treasuryProposalOptionsComponent = (
     <div>
-      <SubLabel>Treasury proposals</SubLabel>
+      <SubLabel>Proposals</SubLabel>
       <ToggleItem>
-        <div>New treasury proposals</div>
+        <div>New proposals</div>
         <Toggle
           disabled={disabled}
           isOn={treasuryProposalProposed}
@@ -49,7 +49,7 @@ export default function useTreasuryProposalOptions({ saving, disabled, ...data }
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Treasury proposals approved</div>
+        <div>Proposals approved</div>
         <Toggle
           disabled={disabled}
           isOn={treasuryProposalApproved}
@@ -57,7 +57,7 @@ export default function useTreasuryProposalOptions({ saving, disabled, ...data }
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Treasury proposals awareded or rejected</div>
+        <div>Proposals awareded or rejected</div>
         <Toggle
           disabled={disabled}
           isOn={treasuryProposalAwarded || treasuryProposalRejected}

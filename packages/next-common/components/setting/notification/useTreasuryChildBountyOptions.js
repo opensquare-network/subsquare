@@ -39,9 +39,9 @@ export default function useTreasuryChildBountyOptions({ saving, disabled, ...dat
 
   const treasuryChildBountyOptionsComponent = (
     <div>
-      <SubLabel>Treasury child bounties</SubLabel>
+      <SubLabel>Child bounties</SubLabel>
       <ToggleItem>
-        <div>Treasury child bounties added or canceled</div>
+        <div>Child bounties added or canceled</div>
         <Toggle
           disabled={disabled}
           isOn={treasuryChildBountyAdded || treasuryChildBountyCanceled}
@@ -52,7 +52,7 @@ export default function useTreasuryChildBountyOptions({ saving, disabled, ...dat
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Treasury child bounties claimed or awarded</div>
+        <div>Child bounties claimed or awarded</div>
         <Toggle
           disabled={disabled}
           isOn={treasuryChildBountyAwarded || treasuryChildBountyClaimed}
