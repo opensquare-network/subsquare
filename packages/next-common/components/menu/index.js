@@ -3,6 +3,7 @@ import React, { Fragment } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import ExternalLink from "../icons/externalLink";
+import Flex from "../styled/flex";
 
 const Wrapper = styled.div`
   padding-top: 41px;
@@ -23,12 +24,17 @@ const Title = styled.div`
   color: ${(props) => props.theme.textTertiary};
 `;
 
+const ItemInner = styled(Flex)`
+  height: inherit;
+  width: inherit;
+  gap: 8px;
+  padding: 0 12px;
+`;
 const Item = styled.div`
-  height: 36px;
+  height: 40px;
   display: flex;
   align-items: center;
-  padding: 0 12px;
-  border-radius: 6px;
+  border-radius: 4px;
   font-weight: 500;
   cursor: pointer;
   font-size: 14px;
@@ -82,6 +88,15 @@ const Item = styled.div`
 export default function Menu({ menu, chain }) {
   const router = useRouter();
 
+  function defaultItemRender(icon, name) {
+    return (
+      <ItemInner>
+        {icon}
+        <span>{name}</span>
+      </ItemInner>
+    );
+  }
+
   return (
     <Wrapper>
       {menu.map((menu, index) => {
@@ -108,8 +123,8 @@ export default function Menu({ menu, chain }) {
                             item.pathname === "/")
                         }
                       >
-                        {item.icon}
-                        <span>{item.name}</span>
+                        {item.itemRender?.(item.icon, item.name) ??
+                          defaultItemRender(item.icon, item.name)}
                         {isExternalLink && <ExternalLink color="#D7DEE8" />}
                       </Item>
                     </a>
