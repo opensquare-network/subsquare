@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import capitalize from "../capitalize";
 import {
   gov2BackMenu,
   gov2FellowshipMenu,
@@ -7,8 +6,7 @@ import {
 } from "../consts/menu/gov2";
 import TrackIconMap from "../../components/icons/track";
 import mockTracks from "../mocks/gov2-tracks.json";
-
-const parseName = (name = "") => name.split("_").map(capitalize).join(" ");
+import { parseGov2Name } from "../gov2";
 
 export function useGov2Menu() {
   const [referendaMenu, setReferendaMenu] = useState(gov2ReferendaMenu);
@@ -20,7 +18,7 @@ export function useGov2Menu() {
     const trackItems = mockTracks.map((track) => {
       return {
         value: track.id,
-        name: parseName(track.name),
+        name: parseGov2Name(track.name),
         pathname: `/gov2/${track.name}`,
         icon: TrackIconMap[track.id] ?? TrackIconMap.Default,
       };
