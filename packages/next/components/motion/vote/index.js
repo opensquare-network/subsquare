@@ -11,6 +11,7 @@ import Flex from "next-common/components/styled/flex";
 import { StatisticTitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Statistics from "next-common/components/styled/paragraph/statistic";
 import AyeNay from "next-common/components/collective/AyeNay";
+import { emptyFunction } from "next-common/utils";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -90,9 +91,9 @@ export default function Vote({
   motionIndex,
   onChainData,
   type,
-  updateVotes = () => {},
   isLoadingVote = false,
-  setIsLoadingVote = () => {},
+  onInBlock = emptyFunction,
+  onFinalized = emptyFunction,
 }) {
   const [showPopup, setShowPopup] = useState(false);
   const ayeVotesCount = votes.filter(([, approval]) => approval).length;
@@ -173,8 +174,8 @@ export default function Vote({
           motionIndex={motionIndex}
           type={type}
           onClose={() => setShowPopup(false)}
-          onInBlock={updateVotes}
-          onSubmitted={() => setIsLoadingVote(true)}
+          onInBlock={onInBlock}
+          onFinalized={onFinalized}
         />
       )}
     </>

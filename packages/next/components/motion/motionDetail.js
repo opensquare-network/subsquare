@@ -17,6 +17,7 @@ import usePrime from "next-common/utils/hooks/usePrime";
 import PostEdit from "next-common/components/post/postEdit";
 import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
+import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 
 export default function MotionDetail({ user, onReply, chain, type }) {
   const postDispatch = usePostDispatch();
@@ -113,10 +114,13 @@ export default function MotionDetail({ user, onReply, chain, type }) {
     setReadOnchainVotes(Date.now());
   }, []);
 
+  const refreshPageData = () => fetchAndUpdatePost(postDispatch, type, post._id)
+  const onVoteFinalized = useWaitSyncBlock("Motion voted", refreshPageData);
+
   if (isEdit) {
     return <PostEdit
       setIsEdit={ setIsEdit }
-      updatePost={ () => fetchAndUpdatePost(postDispatch, type, post._id) }
+      updatePost={ refreshPageData }
       type={ type }
     />
   }
@@ -141,7 +145,8 @@ export default function MotionDetail({ user, onReply, chain, type }) {
         motionIsFinal={motionEnd}
         motionHash={post.hash}
         motionIndex={post.motionIndex}
-        updateVotes={updateVotes}
+        onInBlock={updateVotes}
+        onFinalized={onVoteFinalized}
         isLoadingVote={isLoadingVote}
         onChainData={post.onchainData}
         type={type}
