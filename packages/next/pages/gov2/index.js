@@ -33,6 +33,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
 
   const { page, page_size: pageSize } = context.query;
+  // TODO: fetch posts
 
   return {
     props: {
