@@ -15,9 +15,9 @@ import crabOptions from "./crab";
 const apiInstanceMap = new Map();
 
 export default async function getApi(chain, endpoint) {
-  // if (!Object.keys(Chains).includes(chain)) {
-  //   throw new Error(`Invalid chain: ${ chain } to construct api`);
-  // }
+  if (!Object.keys(Chains).includes(chain)) {
+    throw new Error(`Invalid chain: ${ chain } to construct api`);
+  }
 
   if (!apiInstanceMap.has(endpoint)) {
     const provider = new WsProvider(endpoint, 1000);
