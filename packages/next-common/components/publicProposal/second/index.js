@@ -107,7 +107,7 @@ export default function Second({
   atBlockHeight,
   onFinalized = emptyFunction,
 }) {
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
   const [expand, setExpand] = useState(false);
 
   const api = useApi(chain);
