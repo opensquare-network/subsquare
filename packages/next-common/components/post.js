@@ -273,7 +273,12 @@ export default function Post({ data, chain, href, type }) {
             {data.gov2Name && <Info>{data.gov2Name}</Info>}
           </Footer>
           {data.status && (
-            <Tag state={data.status} category={type} args={stateArgs} />
+            <Tag
+              state={data.status}
+              category={type}
+              args={stateArgs}
+              data={data}
+            />
           )}
         </FooterWrapper>
       </ContentWrapper>

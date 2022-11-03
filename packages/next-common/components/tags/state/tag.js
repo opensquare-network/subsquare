@@ -39,7 +39,7 @@ const categoryTagMap = {
   [detailPageCategory.DEMOCRACY_REFERENDUM]: DemocracyReferendumTag,
 };
 
-export default function Tag({ category, state, link, args }) {
+export default function Tag({ category, state, link, args, data }) {
   let element = state;
   if (link) {
     element = <a href={link}>{state}</a>;
@@ -48,7 +48,7 @@ export default function Tag({ category, state, link, args }) {
 
   const Tag = categoryTagMap[category];
   if (Tag) {
-    return <Tag state={element} args={args} />;
+    return <Tag state={element} args={args} data={data} />;
   }
   return <ClosedTag>{element}</ClosedTag>;
 }
