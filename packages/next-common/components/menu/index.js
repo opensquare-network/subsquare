@@ -2,33 +2,48 @@ import styled, { css } from "styled-components";
 import React, { Fragment } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import ExternalLink from "./icons/externalLink";
+import ExternalLink from "../icons/externalLink";
+import Flex from "../styled/flex";
+import { p_12_normal } from "../../styles/componentCss";
 
 const Wrapper = styled.div`
   padding-top: 41px;
   padding-bottom: 32px;
   > :not(:first-child) {
-    margin-top: 16px;
+    margin-top: 8px;
   }
   a {
     display: block;
   }
 `;
 
+const TitleTip = styled.span`
+  color: ${(p) => p.theme.textPlaceholder};
+  letter-spacing: 0;
+  margin-left: 8px;
+  ${p_12_normal};
+`;
+
 const Title = styled.div`
-  padding: 0 12px 12px;
+  height: 36px;
+  padding: 12px;
   font-weight: bold;
   font-size: 12px;
   letter-spacing: 0.16em;
   color: ${(props) => props.theme.textTertiary};
 `;
 
+const ItemInner = styled(Flex)`
+  height: inherit;
+  width: inherit;
+  gap: 8px;
+  padding: 0 12px;
+`;
 const Item = styled.div`
-  height: 36px;
+  height: 40px;
   display: flex;
   align-items: center;
-  padding: 0 12px;
-  border-radius: 6px;
+  border-radius: 4px;
   font-weight: 500;
   cursor: pointer;
   font-size: 14px;
@@ -82,6 +97,15 @@ const Item = styled.div`
 export default function Menu({ menu, chain }) {
   const router = useRouter();
 
+  function defaultItemRender(icon, name) {
+    return (
+      <ItemInner>
+        {icon}
+        <span>{name}</span>
+      </ItemInner>
+    );
+  }
+
   return (
     <Wrapper>
       {menu.map((menu, index) => {
@@ -90,7 +114,12 @@ export default function Menu({ menu, chain }) {
         }
         return (
           <div key={index}>
-            {menu.name && <Title>{menu.name}</Title>}
+            {menu.name && (
+              <Title>
+                {menu.name}
+                {menu.tip && <TitleTip>{menu.tip}</TitleTip>}
+              </Title>
+            )}
             {menu.items.map((item, index) => {
               const isExternalLink = (item.pathname || "").startsWith("http");
 
@@ -108,8 +137,8 @@ export default function Menu({ menu, chain }) {
                             item.pathname === "/")
                         }
                       >
-                        {item.icon}
-                        <span>{item.name}</span>
+                        {item.itemRender?.(item.icon, item.name) ??
+                          defaultItemRender(item.icon, item.name)}
                         {isExternalLink && <ExternalLink color="#D7DEE8" />}
                       </Item>
                     </a>
