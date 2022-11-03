@@ -133,6 +133,7 @@ export default function Menu({ menu, chain }) {
                       <Item
                         active={
                           router.pathname === item.pathname ||
+                          router.asPath === item.pathname ||
                           (router.pathname === "/[chain]" &&
                             item.pathname === "/")
                         }
