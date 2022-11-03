@@ -4,20 +4,24 @@ import Gov2Layout from "next-common/components/layout/Gov2Layout";
 import PostList from "next-common/components/postList";
 // TODO: use this directly?
 import DemocracySummary from "next-common/components/summary/democracySummary";
-import businessCategory from "next-common/utils/consts/business/category";
+import { toGov2ReferendaListItem } from "utils/viewfuncs";
+import mockGov2Posts from "next-common/utils/mocks/gov2-posts.json";
 
-export default withLoginUserRedux(({ loginUser, chain, posts }) => {
+export default withLoginUserRedux(({ loginUser, chain, posts, title }) => {
   // FIXME: seo
-  const category = businessCategory.democracyReferenda;
   const seoInfo = { title: "", desc: "" };
+  const items = (posts.items || []).map((item) =>
+    toGov2ReferendaListItem(chain, item)
+  );
 
   return (
     <Gov2Layout user={loginUser} seoInfo={seoInfo}>
       <PostList
         chain={chain}
-        category={category}
+        title={title}
+        category="gov2"
         create={null}
-        items={[]}
+        items={items}
         pagination={{
           page: posts.page,
           pageSize: posts.pageSize,
@@ -35,10 +39,17 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { page, page_size: pageSize } = context.query;
   // TODO: fetch posts
 
+  const posts = {
+    items: mockGov2Posts,
+    page: 1,
+    pageSize: 50,
+  };
+
   return {
     props: {
       chain,
-      posts: EmptyList,
+      posts: posts ?? EmptyList,
+      title: "All Referenda",
     },
   };
 });
