@@ -134,7 +134,7 @@ function PopupContent({
       )}
       <ButtonWrapper>
         <SecondaryButton
-          disabled={disabled}
+          // disabled={disabled}
           isLoading={loading}
           onClick={submit}
         >

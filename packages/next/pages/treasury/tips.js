@@ -1,21 +1,16 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useCallback, useEffect, useState } from "react";
 import PostList from "next-common/components/postList";
 import { EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
+import nextApi, { ssrNextApi } from "next-common/services/nextApi";
 import { toTipListItem } from "utils/viewfuncs";
 import Summary from "next-common/components/summary";
-import {
-  addPendingTip,
-  setCheckTimes,
-} from "next-common/store/reducers/tipSlice";
-import { Create, Pending } from "next-common/components/treasury/common/styled";
-import usePendingTip from "next-common/components/treasury/tip/usePendingTip";
+import { Create } from "next-common/components/treasury/common/styled";
 import dynamic from "next/dynamic";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
-import Loading from "next-common/components/loading";
 import HomeLayout from "next-common/components/layout/HomeLayout";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 
 const Popup = dynamic(
   () => import("next-common/components/treasury/tip/popup"),
@@ -25,34 +20,28 @@ const Popup = dynamic(
 );
 
 export default withLoginUserRedux(({ loginUser, tips: ssrTips, chain }) => {
-  const dispatch = useDispatch();
   const [showPopup, setShowPopup] = useState(false);
   const [tips, setTips] = useState(ssrTips);
+  useEffect(() => setTips(ssrTips), [ssrTips]);
+  const isMounted = useIsMounted();
 
-  useEffect(() => {
-    setTips(ssrTips);
-  }, [ssrTips]);
+  const refreshPageData = useCallback(
+    async () => {
+        const { result } = await nextApi.fetch(`treasury/tips`);
+        if (result && isMounted.current) {
+          setTips(result);
+        }
+    },
+    [isMounted]
+  );
 
-  const { pendingReload, pendingTips } = usePendingTip({
-    tips,
-    setTips,
-  });
-
-  const startReload = (_, tipHash) => {
-    dispatch(addPendingTip(tipHash));
-    dispatch(setCheckTimes(6));
-  };
+  const onNewTipFinalized = useWaitSyncBlock("Tip created", refreshPageData);
 
   const items = (tips.items || []).map((item) => toTipListItem(chain, item));
   const category = "Tips";
   const seoInfo = { title: `Treasury Tips`, desc: `Treasury Tips` };
 
-  const create = pendingReload ? (
-    <Pending>
-      <Loading size={14} />
-      <span>{pendingTips.length} Pending</span>
-    </Pending>
-  ) : (
+  const create = (
     <Create onClick={() => setShowPopup(true)}>
       <PlusIcon />
       New Tip
@@ -77,7 +66,7 @@ export default withLoginUserRedux(({ loginUser, tips: ssrTips, chain }) => {
         <Popup
           chain={chain}
           onClose={() => setShowPopup(false)}
-          onInBlock={startReload}
+          onFinalized={onNewTipFinalized}
         />
       )}
     </HomeLayout>
@@ -90,7 +79,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { page, page_size: pageSize } = context.query;
 
   const [{ result: tips }] = await Promise.all([
-    nextApi.fetch(`treasury/tips`, {
+    ssrNextApi.fetch(`treasury/tips`, {
       page: page ?? 1,
       pageSize: pageSize ?? 50,
     }),
