@@ -80,9 +80,9 @@ function PopupContent({
       return showErrorToast(err.message);
     }
 
-    if (bnVoteBalance.gt(votingBalance)) {
-      return showErrorToast("Insufficient voting balance");
-    }
+    // if (bnVoteBalance.gt(votingBalance)) {
+    //   return showErrorToast("Insufficient voting balance");
+    // }
 
     if (!selectedAccount) {
       return showErrorToast("Please select an account");

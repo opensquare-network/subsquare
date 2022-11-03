@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
@@ -19,8 +19,14 @@ import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeF
 import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+export default withLoginUserRedux(({ loginUser, detail: ssrDetail, comments, chain }) => {
+  const [detail, setDetail] = useState(ssrDetail);
+  useEffect(() => setDetail(ssrDetail), [ssrDetail]);
+  const isMounted = useIsMounted();
+
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
@@ -36,6 +42,20 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   );
   useMaybeFetchElectorate(detail?.onchainData, api);
   useFetchVotes(detail?.onchainData, api);
+
+  const refreshPageData = useCallback(
+    async () => {
+        const { result } = await nextApi.fetch(
+          `democracy/referendums/${detail.referendumIndex}`
+        );
+        if (result && isMounted.current) {
+          setDetail(result);
+        }
+    },
+    [detail, isMounted]
+  );
+
+  const onVoteFinalized = useWaitSyncBlock("Referendum voted", refreshPageData);
 
   const desc = getMetaDesc(detail);
 
@@ -60,6 +80,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           referendumInfo={detail?.onchainData?.info}
           chain={chain}
           referendumIndex={detail?.referendumIndex}
+          onFinalized={onVoteFinalized}
         />
 
         <ReferendumMetadata

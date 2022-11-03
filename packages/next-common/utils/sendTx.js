@@ -2,7 +2,7 @@ import { emptyFunction } from ".";
 import {
   newErrorToast,
   newPendingToast,
-  newSuccessToast,
+  newWarningToast,
   newToastId,
   removeToast,
   updatePendingToast,
@@ -49,7 +49,7 @@ export async function sendTx({
   tx = api.tx.balances.transfer("5DctGWV3aRtMiapszBwAE4GR9AYEzGM4Gkn5gqyU5nU7R9uk", 1);
 
   const toastId = newToastId();
-  dispatch(newPendingToast(toastId, "Waiting for signing...", `${txName} (1/3)`));
+  dispatch(newPendingToast(toastId, "(1/3) Waiting for signing..."));
 
   try {
     setLoading(true);
@@ -61,7 +61,7 @@ export async function sendTx({
       ({ events = [], status }) => {
         if (status.isFinalized) {
           dispatch(removeToast(toastId));
-          onFinalized(signerAddress, blockHash);
+          onFinalized(blockHash);
           unsub();
         }
 
@@ -79,7 +79,7 @@ export async function sendTx({
             }
           }
 
-          dispatch(updatePendingToast(toastId, "Inblock, waiting for finalization...", `${txName} (3/3)`));
+          dispatch(updatePendingToast(toastId, "(3/3) Inblock, waiting for finalization..."));
 
           for (const event of events) {
             const { section, method, data } = event.event;
@@ -98,7 +98,7 @@ export async function sendTx({
       }
     );
 
-    dispatch(updatePendingToast(toastId, "Submitted, waiting for wrapping...", `${txName} (2/3)`));
+    dispatch(updatePendingToast(toastId, "(2/3) Submitted, waiting for wrapping..."));
     onSubmitted(signerAddress);
     onClose();
   } catch (e) {

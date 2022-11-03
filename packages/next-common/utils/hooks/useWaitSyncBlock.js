@@ -2,7 +2,8 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { sleep } from ".";
+import { sleep } from "..";
+// import useApi from "./useSelectedEnpointApi";
 import useApi from "./useApi";
 import { getBlockHeightFromHash } from "../chain";
 import { nodesHeightSelector } from "../../store/reducers/nodeSlice";
@@ -11,7 +12,9 @@ import { newPendingToast, newSuccessToast, newToastId, removeToast } from "../..
 export default function useWaitSyncBlock(toastMessage, callback) {
   const scanHeight = useSelector(nodesHeightSelector);
   const dispatch = useDispatch();
-  const api = useApi();
+  const chain = process.env.NEXT_PUBLIC_CHAIN;
+  // const api = useApi(chain);
+  const api = useApi("westend", "wss://westend-rpc.polkadot.io");
 
   const refScanHeight = useRef();
   useEffect(() => {
