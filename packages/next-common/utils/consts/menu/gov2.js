@@ -36,5 +36,10 @@ const gov2Menus = [
       },
     ],
   },
+  {
+    name: "FELLOWSHIP",
+    tip: "Upcoming",
+    items: [],
+  },
 ];
 export { gov2EntryItem, gov2Menus };

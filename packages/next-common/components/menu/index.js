@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import ExternalLink from "../icons/externalLink";
 import Flex from "../styled/flex";
+import { p_12_normal } from "../../styles/componentCss";
 
 const Wrapper = styled.div`
   padding-top: 41px;
@@ -14,6 +15,13 @@ const Wrapper = styled.div`
   a {
     display: block;
   }
+`;
+
+const TitleTip = styled.span`
+  color: ${(p) => p.theme.textPlaceholder};
+  letter-spacing: 0;
+  margin-left: 8px;
+  ${p_12_normal};
 `;
 
 const Title = styled.div`
@@ -106,7 +114,12 @@ export default function Menu({ menu, chain }) {
         }
         return (
           <div key={index}>
-            {menu.name && <Title>{menu.name}</Title>}
+            {menu.name && (
+              <Title>
+                {menu.name}
+                {menu.tip && <TitleTip>{menu.tip}</TitleTip>}
+              </Title>
+            )}
             {menu.items.map((item, index) => {
               const isExternalLink = (item.pathname || "").startsWith("http");
 
