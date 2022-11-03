@@ -16,9 +16,16 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
+import { useEffect, useState } from "react";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 
 export default withLoginUserRedux(
-  ({ loginUser, detail, referendum, comments, chain }) => {
+  ({ loginUser, detail: ssrDetail, referendum, comments, chain }) => {
+    const [detail, setDetail] = useState(ssrDetail);
+    useEffect(() => setDetail(ssrDetail), [ssrDetail]);
+    const isMounted = useIsMounted();
+
     const { CommentComponent, focusEditor } = useCommentComponent({
       detail,
       comments,
@@ -45,6 +52,20 @@ export default withLoginUserRedux(
 
     const referendumIndex = detail?.referendumIndex;
 
+    const refreshPageData = useCallback(
+      async () => {
+          const { result } = await nextApi.fetch(
+            `democracy/proposals/${detail.proposalIndex}`
+          );
+          if (result && isMounted.current) {
+            setDetail(result);
+          }
+      },
+      [detail, isMounted]
+    );
+
+    const onSecondFinalized = useWaitSyncBlock("Proposal seconded", refreshPageData);
+
     const desc = getMetaDesc(detail);
     return (
       <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_PROPOSAL}>
@@ -65,6 +86,7 @@ export default withLoginUserRedux(
             hasCanceled={hasCanceled}
             useAddressVotingBalance={useAddressVotingBalance}
             atBlockHeight={secondsAtBlockHeight}
+            onFinalized={onSecondFinalized}
           />
           <Business referendumIndex={referendumIndex} />
           <Metadata publicProposal={detail?.onchainData} chain={chain} />
