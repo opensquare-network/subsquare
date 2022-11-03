@@ -103,6 +103,7 @@ function PopupContent({
     const signerAddress = selectedAccount.address;
 
     await sendTx({
+      txName: "Endorse",
       tx,
       dispatch,
       setLoading: setTipping,

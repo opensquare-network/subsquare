@@ -89,6 +89,7 @@ function PopupContent({
     const signerAddress = signerAccount.address;
 
     await sendTx({
+      txName: "Propose Spend",
       tx,
       dispatch,
       setLoading,

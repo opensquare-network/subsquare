@@ -105,6 +105,7 @@ function PopupContent({
     const signerAddress = selectedAccount.address;
 
     await sendTx({
+      txName: "Vote Referendum",
       tx,
       dispatch,
       setLoading: (loading) => {
