@@ -21,6 +21,7 @@ import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 
 export default withLoginUserRedux(
   ({ loginUser, detail: ssrDetail, publicProposal, comments, chain }) => {

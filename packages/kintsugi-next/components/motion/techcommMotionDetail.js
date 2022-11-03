@@ -169,7 +169,7 @@ export default function TechcommMotionDetail({
       ],
       [
         "Beneficiary",
-        <User add={address} fontSize={14} />,
+        <User add={treasuryProposalMeta.beneficiary} fontSize={14} />,
       ],
       [
         "Value",
@@ -194,7 +194,7 @@ export default function TechcommMotionDetail({
         ["Hash", proposal.hash],
         [
           "Proposer",
-          <User add={address} fontSize={14} />,
+          <User add={proposal?.proposer} fontSize={14} />,
         ],
       ]);
     });

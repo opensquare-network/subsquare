@@ -15,13 +15,13 @@ export default function SubmitButton({ chain, onClick, depositRequired }) {
 
   return (
     <ButtonWrapper>
-      {balanceInsufficient ? (
+      {/* {balanceInsufficient ? (
         <SecondaryButton disabled>Submit</SecondaryButton>
-      ) : (
+      ) : ( */}
         <SecondaryButton isLoading={isSubmitting} onClick={onClick}>
           Submit
         </SecondaryButton>
-      )}
+      {/* )} */}
     </ButtonWrapper>
   );
 }

@@ -5,7 +5,7 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { toTreasuryProposalListItem } from "utils/viewfuncs";
 import Summary from "next-common/components/summary";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { Create } from "next-common/components/treasury/common/styled";
 import businessCategory from "next-common/utils/consts/business/category";
