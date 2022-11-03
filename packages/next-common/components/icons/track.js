@@ -1,4 +1,5 @@
 import TrackAllIcon from "../../assets/imgs/icons/track-all.svg";
+import TrackDefaultIcon from "../../assets/imgs/icons/track-default.svg";
 import Track0Icon from "../../assets/imgs/icons/track-0.svg";
 import Track1Icon from "../../assets/imgs/icons/track-1.svg";
 import Track10Icon from "../../assets/imgs/icons/track-10.svg";
@@ -17,6 +18,7 @@ import Track34Icon from "../../assets/imgs/icons/track-34.svg";
 
 const TrackIconMap = {
   TrackAllIcon,
+  TrackDefaultIcon,
   Track0Icon,
   Track1Icon,
   Track10Icon,
