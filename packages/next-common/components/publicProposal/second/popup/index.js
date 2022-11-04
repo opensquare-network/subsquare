@@ -51,7 +51,6 @@ function PopupContent({
     const signerAddress = signerAccount.address;
 
     await sendTx({
-      txName: "Second Proposal",
       tx,
       dispatch,
       setLoading: setIsSubmitting,

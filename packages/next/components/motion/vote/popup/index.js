@@ -62,7 +62,6 @@ function PopupContent({
     const signerAddress = selectedAccount.address;
 
     await sendTx({
-      txName: "Vote Motion",
       tx,
       dispatch,
       setLoading: (loading) => {

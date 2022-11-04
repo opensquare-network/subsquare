@@ -81,7 +81,6 @@ function PopupContent({
     const tx = api.tx.childBounties.claimChildBounty(childBounty.parentBountyId, childBounty.index);
 
     await sendTx({
-      txName: "Claim Rewards",
       tx,
       dispatch,
       setLoading: setClaiming,

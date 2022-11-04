@@ -7,8 +7,6 @@ import {
   removeToast,
   updatePendingToast,
 } from "../store/reducers/toastSlice";
-// import getApi from "../services/chain/api";
-// import { web3FromAddress } from "@polkadot/extension-dapp";
 
 export function getDispatchError(dispatchError) {
   let message = dispatchError.type;
@@ -30,7 +28,6 @@ export function getDispatchError(dispatchError) {
 }
 
 export async function sendTx({
-  txName = "Pending",
   tx,
   dispatch,
   setLoading = emptyFunction,
@@ -43,11 +40,6 @@ export async function sendTx({
   section: sectionName,
   method: methodName,
 }) {
-  // const api = await getApi("westend", "wss://westend-rpc.polkadot.io");
-  // const injector = await web3FromAddress(signerAddress);
-  // api.setSigner(injector.signer);
-  // tx = api.tx.balances.transfer("5DctGWV3aRtMiapszBwAE4GR9AYEzGM4Gkn5gqyU5nU7R9uk", 1);
-
   const toastId = newToastId();
   dispatch(newPendingToast(toastId, "(1/3) Waiting for signing..."));
 
