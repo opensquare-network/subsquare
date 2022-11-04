@@ -25,7 +25,7 @@ const settingsMap = {
   acala,
   altair,
   basilisk,
-  hydardx: hydradx,
+  hydradx,
   bifrost,
   calamari,
   centrifuge,
