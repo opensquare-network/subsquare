@@ -92,19 +92,15 @@ function getMotionState(item = {}) {
     return "Unknown";
   }
 
-  const voting = "Voting"
+  const voting = "Voting";
   if (item.state !== voting) {
     return item.state;
   }
 
-  const {
-    tally: {
-      yesVotes,
-    } = {},
-    voting: { ayes = [] } = {},
-  } = item.onchainData || {};
+  const { tally: { yesVotes } = {}, voting: { ayes = [] } = {} } =
+    item.onchainData || {};
   const ayeCount = isNil(yesVotes) ? ayes.length : yesVotes;
-  return isNil(yesVotes) ? voting : `${ voting } (${ ayeCount })`;
+  return isNil(yesVotes) ? voting : `${voting} (${ayeCount})`;
 }
 
 export const toCouncilMotionListItem = (chain, item) => {
@@ -228,3 +224,18 @@ export const toExternalProposalListItem = (chain, item) => ({
   status: item.state ?? "Unknown",
   detailLink: `/democracy/external/${item.indexer.blockHeight}_${item.externalProposalHash}`,
 });
+
+// FIXME: to gov2 list item
+export const toGov2ReferendaListItem = (_chain, item) => {
+  return {
+    ...item,
+    title: getTitle(item),
+    time: getPostUpdatedAt(item),
+    status: item.state ?? "Unknown",
+    index: item.referendumIndex,
+    author: item.author,
+    address: item.proposer,
+    detailLink: `/democracy/referendum/${item.referendumIndex}`,
+    gov2Name: item.name,
+  };
+};

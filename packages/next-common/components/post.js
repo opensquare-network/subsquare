@@ -2,11 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import User from "next-common/components/user";
-import {
-  bigNumber2Locale,
-  getNode,
-  toPrecision,
-} from "next-common/utils";
+import { bigNumber2Locale, getNode, toPrecision } from "next-common/utils";
 import Tag from "next-common/components/tags/state/tag";
 import ReasonLink from "next-common/components/reasonLink";
 import Flex from "next-common/components/styled/flex";
@@ -174,7 +170,13 @@ const BannerWrapper = styled.div`
 
 export default function Post({ data, chain, href, type }) {
   let stateArgs;
-  if ([businessCategory.councilMotions, businessCategory.collective, businessCategory.tcProposals].includes(type)) {
+  if (
+    [
+      businessCategory.councilMotions,
+      businessCategory.collective,
+      businessCategory.tcProposals,
+    ].includes(type)
+  ) {
     stateArgs = getMotionStateArgs(data.onchainData.state);
   }
   const duration = useDuration(data.time);
@@ -267,8 +269,17 @@ export default function Post({ data, chain, href, type }) {
                 </Anchor>
               </AutHideInfo>
             )}
+            {/* FIXME: gov2 name field */}
+            {data.gov2Name && <Info>{data.gov2Name}</Info>}
           </Footer>
-          {data.status && <Tag state={data.status} category={type} args={stateArgs} />}
+          {data.status && (
+            <Tag
+              state={data.status}
+              category={type}
+              args={stateArgs}
+              data={data}
+            />
+          )}
         </FooterWrapper>
       </ContentWrapper>
 

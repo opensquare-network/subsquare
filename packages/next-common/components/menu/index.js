@@ -86,7 +86,7 @@ const Item = styled.div`
       background: ${(props) => props.theme.grey200Border};
       color: ${(props) => props.theme.primaryPurple500};
 
-      > svg {
+      svg {
         &:first-child path {
           fill: ${(props) => props.theme.primaryPurple500};
         }
@@ -133,6 +133,7 @@ export default function Menu({ menu, chain }) {
                       <Item
                         active={
                           router.pathname === item.pathname ||
+                          router.asPath === item.pathname ||
                           (router.pathname === "/[chain]" &&
                             item.pathname === "/")
                         }

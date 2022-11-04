@@ -12,7 +12,7 @@ const gov2EntryItem = {
   itemRender: (icon, name) => <Gov2Button icon={icon} name={name} />,
 };
 
-const back = {
+const gov2BackMenu = {
   items: [
     {
       value: "gov1",
@@ -23,23 +23,22 @@ const back = {
   ],
 };
 
-const gov2Menus = [
-  back,
-  {
-    name: "REFERENDA",
-    items: [
-      {
-        value: "all",
-        name: "All",
-        pathname: "/gov2",
-        icon: TrackIconMap.All,
-      },
-    ],
-  },
-  {
-    name: "FELLOWSHIP",
-    tip: "Upcoming",
-    items: [],
-  },
-];
-export { gov2EntryItem, gov2Menus };
+const gov2ReferendaMenu = {
+  name: "REFERENDA",
+  items: [
+    {
+      value: "all",
+      name: "All",
+      pathname: "/gov2",
+      icon: TrackIconMap.All,
+    },
+  ],
+};
+
+const gov2FellowshipMenu = {
+  name: "FELLOWSHIP",
+  tip: "Upcoming",
+  items: [],
+};
+
+export { gov2EntryItem, gov2BackMenu, gov2ReferendaMenu, gov2FellowshipMenu };

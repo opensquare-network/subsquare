@@ -10,6 +10,7 @@ import {
   DemocracyProposalTag,
   DemocracyReferendumTag,
 } from "./democracy";
+import { Gov2ReferendaTag } from "./gov2";
 
 const categoryTagMap = {
   [businessCategory.treasuryProposals]: TreasuryTag,
@@ -37,9 +38,11 @@ const categoryTagMap = {
 
   [businessCategory.democracyReferenda]: DemocracyReferendumTag,
   [detailPageCategory.DEMOCRACY_REFERENDUM]: DemocracyReferendumTag,
+
+  gov2: Gov2ReferendaTag,
 };
 
-export default function Tag({ category, state, link, args }) {
+export default function Tag({ category, state, link, args, data }) {
   let element = state;
   if (link) {
     element = <a href={link}>{state}</a>;
@@ -48,7 +51,7 @@ export default function Tag({ category, state, link, args }) {
 
   const Tag = categoryTagMap[category];
   if (Tag) {
-    return <Tag state={element} args={args} />;
+    return <Tag state={element} args={args} data={data} />;
   }
   return <ClosedTag>{element}</ClosedTag>;
 }
