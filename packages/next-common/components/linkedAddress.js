@@ -18,7 +18,7 @@ import Popup from "./popup/wrapper/Popup";
 import SelectWallet from "./wallet/selectWallet";
 import { stringToHex } from "@polkadot/util";
 import { WALLETS } from "../utils/consts/connect";
-import { fetchAndUpdateUser, useUser } from "../context/user";
+import { fetchAndUpdateUser, useUser, useUserDispatch } from "../context/user";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -165,6 +165,7 @@ export default function LinkedAddress({ chain }) {
   const [accounts, setAccounts] = useState([]);
   const [activeChain, setActiveChain] = useState(chain);
   const dispatch = useDispatch();
+  const userDispatch = useUserDispatch();
 
   useEffect(() => {
     if (typeof injectedWeb3 === "undefined") {
@@ -180,7 +181,7 @@ export default function LinkedAddress({ chain }) {
 
   const unlinkAddress = async (chain, address) => {
     const { error, result } = await nextApi.delete(`user/linkaddr/${address}`);
-    await fetchAndUpdateUser();
+    await fetchAndUpdateUser(userDispatch);
 
     if (result) {
       dispatch(newSuccessToast("Unlink address successfully!"));
@@ -225,7 +226,7 @@ export default function LinkedAddress({ chain }) {
         { challengeAnswer: signature }
       );
 
-      await fetchAndUpdateUser();
+      await fetchAndUpdateUser(userDispatch);
       if (confirmResult) {
         dispatch(newSuccessToast("Link address successfully!"));
       }
