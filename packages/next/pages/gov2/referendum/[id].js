@@ -33,7 +33,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           referdumIndex={detail?.referendumIndex}
         />
 
-        <Gov2Sidebar />
+        <Gov2Sidebar chain={chain} />
       </DetailWithRightLayout>
     </PostProvider>
   );
