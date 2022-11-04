@@ -17,6 +17,7 @@ import litmus from "./consts/settings/litmus";
 import zeitgeist from "./consts/settings/zeitgeist";
 import altair from "./consts/settings/altair";
 import basilisk from "./consts/settings/basilisk";
+import hydradx from "./consts/settings/hydradx";
 
 export const nodes = [
   polkadot,
@@ -24,6 +25,7 @@ export const nodes = [
   acala,
   altair,
   basilisk,
+  hydradx,
   bifrost,
   // calamari,
   centrifuge,
