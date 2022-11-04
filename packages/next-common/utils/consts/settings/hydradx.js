@@ -18,7 +18,7 @@ const defaultHydradxEndpoints = [
 const hydradx = {
   value: Chains.hydradx,
   name: capitalize(Chains.hydradx),
-  identity: "hydardx",
+  identity: "hydradx",
   symbol: "HDX",
   decimals: 12,
   hasElections: true,
