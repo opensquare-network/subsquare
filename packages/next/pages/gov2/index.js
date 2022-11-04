@@ -8,7 +8,6 @@ import { toGov2ReferendaListItem } from "utils/viewfuncs";
 import mockGov2Posts from "next-common/utils/mocks/gov2-posts.json";
 import nextApi from "next-common/services/nextApi";
 import { gov2TracksApi } from "next-common/services/url";
-import { composeGov2TracksMenu } from "next-common/utils/gov2";
 
 export default withLoginUserRedux(
   ({ loginUser, chain, posts, title, tracks }) => {
