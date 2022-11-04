@@ -1,10 +1,11 @@
-import { useMemo } from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 
 const Wrapper = styled.div`
   position: relative;
   border-radius: 4px;
   height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
 `;
 
 const Bar = styled.div`
@@ -14,53 +15,43 @@ const Bar = styled.div`
   left: 0;
   right: 0;
   border-radius: 4px;
+  overflow: hidde;
 `;
 
 const Background = styled(Bar)`
   background-color: ${(p) => p.theme.grey100Bg};
-  overflow: hidden;
 `;
 
 const Percentage = styled(Bar)`
-  background-color: ${(p) => p.color ?? p.theme.secondaryBlue500};
+  background-color: ${(p) => p.fg ?? p.theme.secondaryBlue500};
   width: ${(p) => p.percentage}%;
-  left: ${(p) => p.offsetLeft}%;
-  right: ${(p) => p.offsetRight}%;
 `;
 const Total = styled(Bar)`
-  opacity: 0.1;
-  background-color: ${(p) => p.color ?? p.theme.secondaryBlue500};
+  background-color: ${(p) => p.bg ?? p.theme.secondaryBlue100};
+  width: ${(p) => 100 - p.offsetLeft - p.offsetRight}%;
   left: ${(p) => p.offsetLeft}%;
   right: ${(p) => p.offsetRight}%;
+  overflow: hidden;
 `;
 
 export default function Progress({
   percentage = 0,
   offsetLeft = 0,
   offsetRight = 0,
-  color,
+  fg,
+  bg,
 }) {
-  const calcPercentage = useMemo(() => {
-    let v = percentage;
-
-    if (offsetLeft || offsetRight) {
-      const offset = offsetLeft + offsetRight;
-      v = ((100 - offset) / 100) * percentage;
-    }
-
-    return v;
-  }, [offsetLeft, offsetRight, percentage]);
-
   return (
     <Wrapper>
       <Background />
-      <Total color={color} offsetLeft={offsetLeft} offsetRight={offsetRight} />
-      <Percentage
-        color={color}
-        percentage={calcPercentage}
-        offsetLeft={offsetLeft}
-        offsetRight={offsetRight}
-      />
+      <Total bg={bg} offsetLeft={offsetLeft} offsetRight={offsetRight}>
+        <Percentage
+          fg={fg}
+          percentage={percentage}
+          offsetLeft={offsetLeft}
+          offsetRight={offsetRight}
+        />
+      </Total>
     </Wrapper>
   );
 }
