@@ -20,6 +20,7 @@ const dark = {
   secondaryGreen100: light.secondaryGreen100,
   secondaryGreen300: light.secondaryGreen300,
   secondaryGreen500: light.secondaryGreen500,
+  secondaryBlue100: light.secondaryBlue100,
   secondaryBlue500: light.secondaryBlue500,
   secondaryAzure100: light.secondaryAzure100,
   secondaryAzure500: light.secondaryAzure500,
