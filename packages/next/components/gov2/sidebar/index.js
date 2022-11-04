@@ -48,11 +48,17 @@ const Tip = styled.a`
 // FIXME: gov2 sidebar href
 export default function Gov2Sidebar({ detail, chain }) {
   const { primaryPurple500 } = useTheme();
+  const { allAye = [], allNay = [] } = useSelector(votesSelector);
 
   return (
     <Wrapper>
       <Gov2Status detail={detail} />
-      <Gov2Tally chain={chain} detail={detail} />
+      <Gov2Tally
+        chain={chain}
+        detail={detail}
+        allNay={allNay}
+        allAye={allAye}
+      />
 
       <VoteButton>Vote</VoteButton>
 
