@@ -10,7 +10,6 @@ const chainSlice = createSlice({
     blockTime: getChainSettings(chain).blockTime || defaultBlockTime,
     latestHeight: null,
     nowHeight: 0,
-    // FIXME: not sure is the right way to place the flag here
     hasGov2: false,
   },
   reducers: {

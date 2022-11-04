@@ -235,7 +235,7 @@ export const toGov2ReferendaListItem = (_chain, item) => {
     index: item.referendumIndex,
     author: item.author,
     address: item.proposer,
-    detailLink: `/democracy/referendum/${item.referendumIndex}`,
+    detailLink: `/gov2/referendum/${item.referendumIndex}`,
     gov2Name: item.name,
   };
 };
