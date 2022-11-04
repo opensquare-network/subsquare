@@ -20,7 +20,8 @@ const treasury = {
       name: "Bounties",
       pathname: "/treasury/bounties",
       excludeToChains: [
-        "basilisk",
+        Chains.basilisk,
+        Chains.hydradx,
         Chains.kintsugi,
         Chains.interlay,
         Chains.litmus,

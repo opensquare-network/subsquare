@@ -7,6 +7,7 @@ const Chains = {
   khala: "khala",
   substrate: "substrate",
   basilisk: "basilisk",
+  hydradx: "hydradx",
   kabocha: "kabocha",
   bifrost: "bifrost",
   kintsugi: "kintsugi",
