@@ -16,8 +16,15 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
+import { useCallback, useEffect, useState } from "react";
+import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+export default withLoginUserRedux(({ loginUser, detail: ssrDetail, comments, chain }) => {
+  const [detail, setDetail] = useState(ssrDetail);
+  useEffect(() => setDetail(ssrDetail), [ssrDetail]);
+  const isMounted = useIsMounted();
+
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
@@ -40,6 +47,20 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     ? lastTimelineBlockHeight - 1
     : undefined;
 
+  const refreshPageData = useCallback(
+    async () => {
+        const { result } = await nextApi.fetch(
+          `democracy/proposals/${detail.proposalIndex}`
+        );
+        if (result && isMounted.current) {
+          setDetail(result);
+        }
+    },
+    [detail, isMounted]
+  );
+
+  const onSecondFinalized = useWaitSyncBlock("Proposal seconded", refreshPageData);
+
   const desc = getMetaDesc(detail);
   return (
     <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_PROPOSAL}>
@@ -60,6 +81,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           hasCanceled={hasCanceled}
           useAddressVotingBalance={useAddressBalance}
           atBlockHeight={secondsAtBlockHeight}
+          onFinalized={onSecondFinalized}
         />
         <Metadata publicProposal={detail?.onchainData} chain={chain} />
         <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />

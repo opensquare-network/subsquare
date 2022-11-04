@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import useCall from "next-common/utils/hooks/useCall";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { EmptyList } from "next-common/utils/constants";
@@ -28,6 +28,8 @@ import TreasuryCountDown from "next-common/components/treasury/common/countdown"
 import { getBannerUrl } from "next-common/utils/banner";
 import { isSameAddress } from "next-common/utils";
 import { PostProvider } from "next-common/context/post";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 
 const TipCountDown = ({ meta = {}, state }) => {
   const nowHeight = useSelector(latestHeightSelector);
@@ -53,6 +55,9 @@ const TipCountDown = ({ meta = {}, state }) => {
 export default withLoginUserRedux(
   ({ loginUser, detail: tip, comments, chain }) => {
     const [detail, setDetail] = useState(tip);
+    useEffect(() => setDetail(tip), [tip]);
+    const isMounted = useIsMounted();
+
     const chainData = detail?.onchainData ?? {};
     const { CommentComponent, focusEditor } = useUniversalComments({
       detail,
@@ -122,30 +127,19 @@ export default withLoginUserRedux(
       setTipsNeedUpdate(Date.now());
     };
 
-    const updateTimeline = (tipperAddress) => {
-      let times = 6;
-      const doUpdate = async () => {
-        const { result: newTipDetail } = await nextApi.fetch(
-          `treasury/tips/${ `${ detail._id }` }`
-        );
+    const refreshPageData = useCallback(
+      async () => {
+          const { result } = await nextApi.fetch(
+            `treasury/tips/${detail._id}`
+          );
+          if (result && isMounted.current) {
+            setDetail(result);
+          }
+      },
+      [detail, isMounted]
+    );
 
-        // Check if user's tip is present in DB
-        const tipFound = newTipDetail?.onchainData?.meta?.tips?.some(
-          ([address]) => address === tipperAddress
-        );
-        if (tipFound) {
-          setDetail(newTipDetail);
-          return;
-        }
-
-        // Do next update
-        times--;
-        if (times > 0) {
-          setTimeout(doUpdate, 10 * 1000);
-        }
-      };
-      setTimeout(doUpdate, 10 * 1000);
-    };
+    const onTipFinalized = useWaitSyncBlock("Tip endorsed", refreshPageData);
 
     const desc = getMetaDesc(detail);
     return (
@@ -169,10 +163,9 @@ export default withLoginUserRedux(
             tips={ tips }
             councilTippers={ councilTippers }
             tipHash={ tipHash }
-            updateTips={ updateTips }
-            updateTimeline={ updateTimeline }
+            onInBlock={ updateTips }
+            onFinalized={ onTipFinalized }
             isLoadingTip={ isLoadingTip }
-            setIsLoadingTip={ setIsLoadingTip }
           />
           <Metadata tip={ detail?.onchainData } chain={ chain } />
           <Timeline tip={ detail?.onchainData } chain={ chain } />

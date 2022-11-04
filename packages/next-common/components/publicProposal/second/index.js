@@ -105,6 +105,7 @@ export default function Second({
   hasCanceled,
   useAddressVotingBalance,
   atBlockHeight,
+  onFinalized = emptyFunction,
 }) {
   const [showPopup, setShowPopup] = useState(false);
   const [expand, setExpand] = useState(false);
@@ -208,7 +209,7 @@ export default function Second({
           depositRequired={depositRequired}
           onClose={() => setShowPopup(false)}
           onInBlock={() => setTriggerUpdate(Date.now())}
-          onFinalized={emptyFunction}
+          onFinalized={onFinalized}
           onSubmitted={emptyFunction}
           useAddressVotingBalance={useAddressVotingBalance}
         />

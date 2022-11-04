@@ -2,7 +2,7 @@ import { emptyFunction } from ".";
 import {
   newErrorToast,
   newPendingToast,
-  newSuccessToast,
+  newWarningToast,
   newToastId,
   removeToast,
   updatePendingToast,
@@ -41,34 +41,37 @@ export async function sendTx({
   method: methodName,
 }) {
   const toastId = newToastId();
-  dispatch(newPendingToast(toastId, "Waiting for signing..."));
+  dispatch(newPendingToast(toastId, "(1/3) Waiting for signing..."));
 
   try {
     setLoading(true);
+
+    let blockHash = null;
 
     const unsub = await tx.signAndSend(
       signerAddress,
       ({ events = [], status }) => {
         if (status.isFinalized) {
-          onFinalized(signerAddress);
+          dispatch(removeToast(toastId));
+          onFinalized(blockHash);
           unsub();
         }
 
         if (status.isInBlock) {
-          // Transaction went through
-          dispatch(removeToast(toastId));
+          blockHash = status.asInBlock.toString();
 
           for (const event of events) {
             const { section, method, data } = event.event;
             if (section === "system" && method === "ExtrinsicFailed") {
               const [dispatchError] = data;
               const message = getDispatchError(dispatchError);
+              dispatch(removeToast(toastId));
               dispatch(newErrorToast(`Extrinsic failed: ${message}`));
               return;
             }
           }
 
-          dispatch(newSuccessToast("InBlock"));
+          dispatch(updatePendingToast(toastId, "(3/3) Inblock, waiting for finalization..."));
 
           for (const event of events) {
             const { section, method, data } = event.event;
@@ -87,13 +90,17 @@ export async function sendTx({
       }
     );
 
-    dispatch(updatePendingToast(toastId, "Broadcasting"));
-
+    dispatch(updatePendingToast(toastId, "(2/3) Submitted, waiting for wrapping..."));
     onSubmitted(signerAddress);
     onClose();
   } catch (e) {
     dispatch(removeToast(toastId));
-    dispatch(newErrorToast(e.message));
+
+    if (e.message === "Cancelled") {
+      dispatch(newWarningToast(e.message));
+    } else {
+      dispatch(newErrorToast(e.message));
+    }
   } finally {
     if (isMounted.current) {
       setLoading(false);
