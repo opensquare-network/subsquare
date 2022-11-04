@@ -14,7 +14,6 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import Divider from "next-common/components/styled/layout/divider";
 import SettingsLayout from "next-common/components/layout/settingsLayout";
 import useTreasuryProposalOptions from "next-common/components/setting/notification/useTreasuryProposalOptions";
-import { fetchAndUpdateUser, useUserDispatch } from "next-common/context/user";
 import Cookies from "cookies";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { Label, Sections } from "next-common/components/setting/notification/styled";
@@ -83,11 +82,11 @@ const Info = styled.div`
   margin-bottom: 16px;
 `;
 
-export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe }) => {
+export default withLoginUserRedux(({ loginUser, chain, subscription: _subscription, unsubscribe }) => {
   const dispatch = useDispatch();
-  const userDispatch = useUserDispatch();
   const [saving, setSaving] = useState(false);
   const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
+  const [subscription, setSubscription] = useState(_subscription);
 
   const emailVerified =
     loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
@@ -121,6 +120,13 @@ export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe
     }
   }, [loginUser, router, unsubscribe]);
 
+  const fetchSubscriptionSetting = async () => {
+    const { result } = await nextApi.fetch(`user/subscription`);
+    if (result) {
+      setSubscription(result);
+    }
+  }
+
   const updateNotificationSetting = async () => {
     if (saving) {
       return;
@@ -134,8 +140,8 @@ export default withLoginUserRedux(({ loginUser, chain, subscription, unsubscribe
 
     const { result, error } = await nextApi.patch("user/subscription", data);
     if (result) {
-      await fetchAndUpdateUser(userDispatch);
       dispatch(newSuccessToast("Settings saved"));
+      await fetchSubscriptionSetting();
     } else if (error) {
       dispatch(newErrorToast(error.message));
     }
