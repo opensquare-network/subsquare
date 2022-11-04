@@ -17,6 +17,7 @@ import centrifuge from "./centrifuge";
 import litmus from "./litmus";
 import zeitgeist from "./zeitgeist";
 import altair from "./altair";
+import hydradx from "./hydradx";
 
 const settingsMap = {
   polkadot,
@@ -24,6 +25,7 @@ const settingsMap = {
   acala,
   altair,
   basilisk,
+  hydardx: hydradx,
   bifrost,
   calamari,
   centrifuge,

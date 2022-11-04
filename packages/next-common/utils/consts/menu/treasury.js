@@ -22,6 +22,7 @@ const treasury = {
       excludeToChains: [
         Chains.basilisk,
         Chains.hydradx,
+        Chains.hydradx,
         Chains.kintsugi,
         Chains.interlay,
         Chains.litmus,
