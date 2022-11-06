@@ -7,9 +7,9 @@ import {
   polkadexOptions,
   crustOptions,
   khalaOptions,
-  kintsugiOptions,
   zeitgeistOptions,
 } from "@osn/provider-options";
+import allOptions from "@osn/provider-options";
 import crabOptions from "./crab";
 
 const apiInstanceMap = new Map();
@@ -23,15 +23,13 @@ export default async function getApi(chain, endpoint) {
     const provider = new WsProvider(endpoint, 1000);
     let options = { provider };
 
-    let customizedOptions = {};
+    let customizedOptions;
     if ([Chains.karura, Chains.acala].includes(chain)) {
       customizedOptions = karuraOptions;
     } else if ([Chains.khala, Chains.phala].includes(chain)) {
       customizedOptions = khalaOptions;
     } else if (chain === "bifrost") {
       customizedOptions = bifrostOptions;
-    } else if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
-      customizedOptions = kintsugiOptions;
     } else if (chain === Chains.polkadex) {
       customizedOptions = polkadexOptions;
     } else if (chain === Chains.crust) {
@@ -42,6 +40,8 @@ export default async function getApi(chain, endpoint) {
       customizedOptions = zeitgeistOptions;
     } else if (chain === Chains.altair) {
       customizedOptions = altairOptions;
+    } else {
+      customizedOptions = allOptions[chain] || {};
     }
 
     const api = (
