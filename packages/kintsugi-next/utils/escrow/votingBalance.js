@@ -10,7 +10,7 @@ export async function getVotingBalance(api, address) {
 
   const nowHeight = await getFinalizedBlockNumber(api);
 
-  const rawBalance = await api.rpc.escrow.balanceAt(publicKey, nowHeight);
+  const rawBalance = await api.rpc.escrow.balanceAt(publicKey, nowHeight + 10);
   const balance = newMonetaryAmount(rawBalance.amount.toString(), monetary.VoteKintsugi);
   return balance.toString();
 }
