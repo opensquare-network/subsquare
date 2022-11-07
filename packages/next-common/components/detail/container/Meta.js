@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Link from "next/link";
 import Flex from "../../styled/flex";
 import User from "../../user";
 import TypeTag from "../common/TypeTag";
@@ -9,6 +10,7 @@ import Tag from "../../tags/state/tag";
 import isNil from "lodash.isnil";
 import { usePost, usePostState, usePostType } from "../../../context/post";
 import { useChain } from "../../../context/chain";
+import SubCategory from "./SubCategory";
 
 const FlexWrapper = styled(Flex)`
   justify-content: space-between;
@@ -49,6 +51,7 @@ export default function PostMeta() {
       <TypeTag type={detailType}/>
       <UpdatedTime post={ post } />
       {(!noCommentsCount && commentsCount > -1) && <Info>{`${commentsCount} Comments`}</Info>}
+      {<SubCategory />}
     </DividerWrapper>
     {postState && <Tag state={postState} category={detailType} />}
   </FlexWrapper>

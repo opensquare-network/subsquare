@@ -2,21 +2,28 @@ import Back from "next-common/components/back";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import { PostProvider } from "next-common/context/post";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import { to404 } from "next-common/utils/serverSideUtil";
-import mockDetail from "next-common/utils/mocks/gov2-detail.json";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import DetailItem from "components/detailItem";
 import Gov2Sidebar from "components/gov2/sidebar";
+import { ssrNextApi } from "next-common/services/nextApi";
+import useUniversalComments from "components/universalComments";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
-  const api = useApi(chain);
+  const { CommentComponent, focusEditor } = useUniversalComments({
+    detail,
+    comments,
+    loginUser,
+    chain,
+    type: detailPageCategory.GOV2_REFERENDUM,
+  });
 
   const desc = getMetaDesc(detail);
 
   return (
-    <PostProvider post={detail}>
+    <PostProvider post={detail} type={detailPageCategory.GOV2_REFERENDUM}>
       <DetailWithRightLayout
         user={loginUser}
         seoInfo={{
@@ -25,15 +32,16 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <Back href="/gov2" text="Back to Referenda" />
+        <Back href="/gov2" text="Back to Gov2/Referenda" />
 
         <DetailItem
+          onReply={focusEditor}
           chain={chain}
-          referendumInfo={detail?.onchainData?.info}
-          referdumIndex={detail?.referendumIndex}
+          type={detailPageCategory.GOV2_REFERENDUM}
         />
 
         <Gov2Sidebar chain={chain} />
+        {CommentComponent}
       </DetailWithRightLayout>
     </PostProvider>
   );
@@ -45,21 +53,25 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { id, page, page_size } = context.query;
   const pageSize = Math.min(page_size ?? 50, 100);
 
-  // FIXME: gov2 detail fetch
-  const detail = mockDetail;
+  const { result: detail } = await ssrNextApi.fetch(`gov2/referendums/${id}`);
 
   if (!detail) {
     return to404(context);
   }
 
-  // FIXME: gov2 detail fetch
   const postId = detail?._id;
-  const comments = [];
+  const { result: comments } = await ssrNextApi.fetch(
+    `gov2/referendums/${postId}/comments`,
+    {
+      page: page ?? "last",
+      pageSize,
+    }
+  );
 
   return {
     props: {
       detail,
-      comments,
+      comments: comments ?? EmptyList,
       chain,
     },
   };

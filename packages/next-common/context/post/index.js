@@ -47,5 +47,5 @@ export function usePostType() {
 
 export function usePostState() {
   const post = useContext(PostContext);
-  return post?.onchainData?.state?.state;
+  return post?.onchainData?.state?.state || post?.onchainData?.state?.name;
 }
