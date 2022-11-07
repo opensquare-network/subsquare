@@ -1,6 +1,6 @@
 import { withLoginUser } from "next-common/lib";
 import { EmptyList } from "next-common/utils/constants";
-import { parseGov2Name } from "next-common/utils/gov2";
+import { parseGov2TrackName } from "next-common/utils/gov2";
 import Gov2Page from ".";
 
 export default Gov2Page;
@@ -15,7 +15,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       chain,
       posts: EmptyList,
-      title: parseGov2Name(name),
+      title: parseGov2TrackName(name),
     },
   };
 });

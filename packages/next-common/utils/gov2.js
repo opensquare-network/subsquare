@@ -6,14 +6,14 @@ import {
 } from "./consts/menu/gov2";
 import TrackIconMap from "../components/icons/track";
 
-export const parseGov2Name = (name = "") =>
+export const parseGov2TrackName = (name = "") =>
   name.split("_").map(capitalize).join(" ");
 
 export function composeGov2TracksMenu(tracks = []) {
   const trackItems = tracks.map((track) => {
     return {
       value: track.id,
-      name: parseGov2Name(track.name),
+      name: parseGov2TrackName(track.name),
       pathname: `/gov2/${track.name}`,
       icon: TrackIconMap[track.id] ?? TrackIconMap.Default,
     };
