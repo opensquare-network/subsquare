@@ -1,4 +1,3 @@
-import TallyInfo from "components/referenda/tallyInfo";
 import ExternalLinkIcon from "next-common/components/icons/externalLink";
 import { votesSelector } from "next-common/store/reducers/referendumSlice";
 import { p_12_normal } from "next-common/styles/componentCss";
@@ -46,19 +45,14 @@ const Tip = styled.a`
 `;
 
 // FIXME: gov2 sidebar href
+// FIXME: vote button
 export default function Gov2Sidebar({ detail, chain }) {
   const { primaryPurple500 } = useTheme();
-  const { allAye = [], allNay = [] } = useSelector(votesSelector);
 
   return (
     <Wrapper>
       <Gov2Status detail={detail} />
-      <Gov2Tally
-        chain={chain}
-        detail={detail}
-        allNay={allNay}
-        allAye={allAye}
-      />
+      <Gov2Tally chain={chain} detail={detail} />
 
       <VoteButton>Vote</VoteButton>
 

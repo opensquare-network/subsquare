@@ -11,6 +11,10 @@ import AyeIcon from "public/imgs/icons/aye.svg";
 import NayIcon from "public/imgs/icons/nay.svg";
 import ElectorateIcon from "public/imgs/icons/electorate.svg";
 import DisplayValue from "next-common/components/displayValue";
+import { votesSelector } from "next-common/store/reducers/referendumSlice";
+import { useSelector } from "react-redux";
+import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
+import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -48,23 +52,22 @@ const Value = styled.span`
   color: ${(props) => props.theme.textPrimary};
 `;
 
-export default function Gov2Tally({
-  tally,
-  detail,
-  chain,
-  isLoadingVotes,
-  allAye,
-  allNay,
-}) {
+export default function Gov2Tally({ detail, chain, isLoadingVotes }) {
   const { width } = useWindowSize();
+  const { allAye = [], allNay = [] } = useSelector(votesSelector);
 
   const node = getNode(chain);
   if (!node) {
     return null;
   }
 
+  const api = useApi(chain);
+  useFetchVotes(detail?.onchainData, api);
+
   const decimals = node.decimals;
   const symbol = node.voteSymbol ?? node.symbol;
+
+  const { tally } = detail?.onchainData?.info;
 
   const nAyes = toPrecision(tally?.ayes ?? 0, decimals);
   const nNays = toPrecision(tally?.nays ?? 0, decimals);
@@ -111,7 +114,7 @@ export default function Gov2Tally({
               <ElectorateIcon />
               Support
             </Header>
-            <Value>12</Value>
+            <Value>{tally?.support}</Value>
           </Row>
         </div>
       </SecondaryCardDetail>
