@@ -92,7 +92,7 @@ export default function ArticleContent({
   return (
     <Wrapper>
       <Divider margin={16} />
-      {post.content === "" && (
+      {!post.content && (
         <NonEdited setIsEdit={setIsEdit} authors={post.authors}/>
       )}
       {bannerUrl && (
