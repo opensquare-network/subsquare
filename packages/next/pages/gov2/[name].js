@@ -1,5 +1,5 @@
 import { withLoginUser } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { ssrNextApi } from "next-common/services/nextApi";
 import {
   gov2ReferendumsTrackApi,
   gov2TracksApi,
@@ -15,10 +15,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   const { page = 1, page_size: pageSize = 50, name } = context.query;
 
-  const { result: tracks = [] } = await nextApi.fetch(gov2TracksApi);
+  const { result: tracks = [] } = await ssrNextApi.fetch(gov2TracksApi);
   const track = tracks.find((trackItem) => trackItem.name === name);
 
-  const { result: posts } = await nextApi.fetch(
+  const { result: posts } = await ssrNextApi.fetch(
     gov2ReferendumsTrackApi(track.id),
     {
       page,

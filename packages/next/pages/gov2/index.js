@@ -5,7 +5,7 @@ import PostList from "next-common/components/postList";
 // TODO: use this directly?
 import DemocracySummary from "next-common/components/summary/democracySummary";
 import { toGov2ReferendaListItem } from "utils/viewfuncs";
-import nextApi from "next-common/services/nextApi";
+import { ssrNextApi } from "next-common/services/nextApi";
 import { gov2ReferendumsApi, gov2TracksApi } from "next-common/services/url";
 
 export default withLoginUserRedux(
@@ -42,8 +42,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { page = 1, page_size: pageSize = 50 } = context.query;
 
   const [{ result: tracks }, { result: posts }] = await Promise.all([
-    nextApi.fetch(gov2TracksApi),
-    nextApi.fetch(gov2ReferendumsApi, {
+    ssrNextApi.fetch(gov2TracksApi),
+    ssrNextApi.fetch(gov2ReferendumsApi, {
       page,
       pageSize,
     }),
