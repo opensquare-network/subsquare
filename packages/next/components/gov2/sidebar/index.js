@@ -1,7 +1,5 @@
 import ExternalLinkIcon from "next-common/components/icons/externalLink";
-import { votesSelector } from "next-common/store/reducers/referendumSlice";
 import { p_12_normal } from "next-common/styles/componentCss";
-import { useSelector } from "react-redux";
 import styled, { useTheme } from "styled-components";
 import Gov2Status from "./status";
 import Gov2Tally from "./tally";
