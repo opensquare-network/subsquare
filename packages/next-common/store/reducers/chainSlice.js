@@ -10,7 +10,8 @@ const chainSlice = createSlice({
     blockTime: getChainSettings(chain).blockTime || defaultBlockTime,
     latestHeight: null,
     nowHeight: 0,
-    hasGov2: false,
+    // FIXME: production
+    hasGov2: true,
   },
   reducers: {
     setBlockTime(state, { payload }) {
