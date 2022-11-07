@@ -10,19 +10,19 @@ export default function SubCategory() {
   const detailType = usePostType();
   const post = usePost();
 
-  let subCategory = null;
-  if (detailType === detailPageCategory.GOV2_REFERENDUM) {
-    const trackName = post.onchainData?.trackInfo?.name;
-    subCategory = (
-      <Flex>
-        <Link href={`/gov2/${trackName}`} passHref>
-          <LinkInfo>
-            {parseGov2TrackName(trackName)}
-          </LinkInfo>
-        </Link>
-      </Flex>
-    );
+  if (detailType !== detailPageCategory.GOV2_REFERENDUM) {
+    return null;
   }
 
-  return subCategory;
+  const trackName = post.onchainData?.trackInfo?.name;
+
+  return (
+    <Flex>
+      <Link href={`/gov2/${trackName}`} passHref>
+        <LinkInfo>
+          {parseGov2TrackName(trackName)}
+        </LinkInfo>
+      </Link>
+    </Flex>
+  );
 }
