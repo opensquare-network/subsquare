@@ -2,7 +2,7 @@ import capitalize from "./capitalize";
 import {
   gov2BackMenu,
   gov2FellowshipMenu,
-  gov2ReferendaMenu,
+  gov2ReferendaMenu as gov2ReferendaMenuOrigin,
 } from "./consts/menu/gov2";
 import TrackIconMap from "../components/icons/track";
 
@@ -10,6 +10,9 @@ export const parseGov2TrackName = (name = "") =>
   name.split("_").map(capitalize).join(" ");
 
 export function composeGov2TracksMenu(tracks = []) {
+  // simply do a copy
+  const gov2ReferendaMenu = Object.assign({}, gov2ReferendaMenuOrigin);
+
   const trackItems = tracks.map((track) => {
     return {
       value: track.id,
