@@ -40,7 +40,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           type={detailPageCategory.GOV2_REFERENDUM}
         />
 
-        <Gov2Sidebar chain={chain} />
+        <Gov2Sidebar chain={chain} detail={detail} />
         {CommentComponent}
       </DetailWithRightLayout>
     </PostProvider>
