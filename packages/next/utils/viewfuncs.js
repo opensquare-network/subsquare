@@ -1,6 +1,7 @@
 import { addressEllipsis } from "next-common/utils";
 import { getMotionId } from "next-common/utils/motion";
 import isNil from "lodash.isnil";
+import { parseGov2TrackName } from "next-common/utils/gov2";
 
 export const TipStateMap = {
   NewTip: "Tipping",
@@ -226,16 +227,21 @@ export const toExternalProposalListItem = (chain, item) => ({
 });
 
 // FIXME: to gov2 list item
-export const toGov2ReferendaListItem = (_chain, item) => {
+export const toGov2ReferendaListItem = (_chain, item, tracks = []) => {
+  const track = tracks.find(
+    (trackItem) => trackItem.id === item.onchainData.track
+  );
+
   return {
     ...item,
     title: getTitle(item),
     time: getPostUpdatedAt(item),
-    status: item.state ?? "Unknown",
+    status: item.onchainData?.state?.name ?? "Unknown",
     index: item.referendumIndex,
     author: item.author,
     address: item.proposer,
     detailLink: `/gov2/referendum/${item.referendumIndex}`,
-    gov2Name: item.name,
+    commentsCount: item.commentsCount,
+    track: parseGov2TrackName(track?.name),
   };
 };

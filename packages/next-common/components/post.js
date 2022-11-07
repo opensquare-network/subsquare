@@ -269,8 +269,8 @@ export default function Post({ data, chain, href, type }) {
                 </Anchor>
               </AutHideInfo>
             )}
-            {/* FIXME: gov2 name field */}
-            {data.gov2Name && <Info>{data.gov2Name}</Info>}
+
+            {data.track && <Info>{data.track}</Info>}
           </Footer>
           {data.status && (
             <Tag

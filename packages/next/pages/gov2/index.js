@@ -5,16 +5,15 @@ import PostList from "next-common/components/postList";
 // TODO: use this directly?
 import DemocracySummary from "next-common/components/summary/democracySummary";
 import { toGov2ReferendaListItem } from "utils/viewfuncs";
-import mockGov2Posts from "next-common/utils/mocks/gov2-posts.json";
 import nextApi from "next-common/services/nextApi";
-import { gov2TracksApi } from "next-common/services/url";
+import { gov2ReferendumsApi, gov2TracksApi } from "next-common/services/url";
 
 export default withLoginUserRedux(
   ({ loginUser, chain, posts, title, tracks }) => {
     // FIXME: seo
     const seoInfo = { title: "", desc: "" };
     const items = (posts.items || []).map((item) =>
-      toGov2ReferendaListItem(chain, item)
+      toGov2ReferendaListItem(chain, item, tracks)
     );
 
     return (
@@ -40,18 +39,15 @@ export default withLoginUserRedux(
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
 
-  const { page, page_size: pageSize } = context.query;
-  // TODO: fetch posts
+  const { page = 1, page_size: pageSize = 50 } = context.query;
 
-  const [{ result: tracks }] = await Promise.all([
+  const [{ result: tracks }, { result: posts }] = await Promise.all([
     nextApi.fetch(gov2TracksApi),
+    nextApi.fetch(gov2ReferendumsApi, {
+      page,
+      pageSize,
+    }),
   ]);
-
-  const posts = {
-    items: mockGov2Posts,
-    page: 1,
-    pageSize: 50,
-  };
 
   return {
     props: {
