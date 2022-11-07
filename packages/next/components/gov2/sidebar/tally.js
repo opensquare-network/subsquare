@@ -56,13 +56,10 @@ export default function Gov2Tally({ detail, chain, isLoadingVotes }) {
   const { width } = useWindowSize();
   const { allAye = [], allNay = [] } = useSelector(votesSelector);
 
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-
   const api = useApi(chain);
   useFetchVotes(detail?.onchainData, api);
+
+  const node = getNode(chain);
 
   const decimals = node.decimals;
   const symbol = node.voteSymbol ?? node.symbol;
@@ -71,6 +68,10 @@ export default function Gov2Tally({ detail, chain, isLoadingVotes }) {
 
   const nAyes = toPrecision(tally?.ayes ?? 0, decimals);
   const nNays = toPrecision(tally?.nays ?? 0, decimals);
+
+  if (!node) {
+    return null;
+  }
 
   return (
     <div>
