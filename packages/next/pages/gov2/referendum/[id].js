@@ -10,6 +10,7 @@ import Gov2Sidebar from "components/gov2/sidebar";
 import { ssrNextApi } from "next-common/services/nextApi";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import { gov2ReferendumsCommentApi, gov2ReferendumsDetailApi } from "next-common/services/url";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -53,7 +54,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { id, page, page_size } = context.query;
   const pageSize = Math.min(page_size ?? 50, 100);
 
-  const { result: detail } = await ssrNextApi.fetch(`gov2/referendums/${id}`);
+  const { result: detail } = await ssrNextApi.fetch(gov2ReferendumsDetailApi(id));
 
   if (!detail) {
     return to404(context);
@@ -61,7 +62,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   const postId = detail?._id;
   const { result: comments } = await ssrNextApi.fetch(
-    `gov2/referendums/${postId}/comments`,
+    gov2ReferendumsCommentApi(postId),
     {
       page: page ?? "last",
       pageSize,
