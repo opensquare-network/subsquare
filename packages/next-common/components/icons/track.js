@@ -15,6 +15,17 @@ import Track31Icon from "../../assets/imgs/icons/track-31.svg";
 import Track32Icon from "../../assets/imgs/icons/track-32.svg";
 import Track33Icon from "../../assets/imgs/icons/track-33.svg";
 import Track34Icon from "../../assets/imgs/icons/track-34.svg";
+import styled from "styled-components";
+
+const IconWrapper = styled.span`
+  display: inline-flex;
+
+  svg {
+    path {
+      fill: ${(p) => p.theme.textSecondary};
+    }
+  }
+`;
 
 const TrackIconMap = {
   TrackAllIcon,
@@ -40,7 +51,11 @@ Object.keys(TrackIconMap).forEach((name) => {
   const id = name.replace("Track", "").replace("Icon", "");
   const Icon = TrackIconMap[name];
 
-  TrackIconMap[id] = <Icon />;
+  TrackIconMap[id] = (
+    <IconWrapper>
+      <Icon />
+    </IconWrapper>
+  );
 });
 
 export default TrackIconMap;
