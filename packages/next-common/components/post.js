@@ -270,7 +270,6 @@ export default function Post({ data, chain, href, type }) {
               </AutHideInfo>
             )}
 
-            {/* FIXME: gov2 name field */}
             {data.track && <Info>{data.track}</Info>}
           </Footer>
           {data.status && (
