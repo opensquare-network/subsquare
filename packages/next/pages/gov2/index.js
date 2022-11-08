@@ -2,11 +2,10 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { EmptyList } from "next-common/utils/constants";
 import Gov2Layout from "next-common/components/layout/Gov2Layout";
 import PostList from "next-common/components/postList";
-// TODO: use this directly?
-import DemocracySummary from "next-common/components/summary/democracySummary";
 import { toGov2ReferendaListItem } from "utils/viewfuncs";
 import { ssrNextApi } from "next-common/services/nextApi";
 import { gov2ReferendumsApi, gov2TracksApi } from "next-common/services/url";
+import Gov2Summary from "next-common/components/summary/gov2Summary";
 
 export default withLoginUserRedux(
   ({ loginUser, chain, posts, title, tracks }) => {
@@ -29,7 +28,7 @@ export default withLoginUserRedux(
             pageSize: posts.pageSize,
             total: posts.total,
           }}
-          summary={<DemocracySummary chain={chain} />}
+          summary={<Gov2Summary chain={chain} />}
         />
       </Gov2Layout>
     );
