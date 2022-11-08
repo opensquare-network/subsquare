@@ -7,3 +7,4 @@ export const gov2ReferendumsDetailApi = (index) =>
   gov2ReferendumsApi + `/${index}`;
 export const gov2ReferendumsCommentApi = (id) =>
   gov2ReferendumsApi + `/${id}/comments`;
+export const gov2ReferendumsSummaryApi = "gov2/referendums/summary";

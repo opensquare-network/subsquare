@@ -7,6 +7,8 @@ import { currentNodeSelector } from "../../store/reducers/nodeSlice";
 import useApi from "../../utils/hooks/useApi";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
 import Content from "./cardContent";
+import nextApi from "../../services/nextApi";
+import { gov2ReferendumsSummaryApi } from "../../services/url";
 
 const Wrapper = styled.div`
   display: flex;
@@ -54,34 +56,32 @@ export default function Gov2Summary({ chain }) {
     if (!api) {
       return;
     }
+
+    nextApi.fetch(gov2ReferendumsSummaryApi).then(({ result }) => {
+      setSummary(result);
+    });
   }, [chain, api]);
 
   return (
     <Wrapper>
       <Card>
+        <Title>Confirming</Title>
+        <Content>
+          <span>{summary.confirmingCount || 0}</span>
+        </Content>
+      </Card>
+      <Card>
         <Title>Deciding</Title>
         <Content>
-          <span>
-            {summary.decidingCount || 0}
-            <GreyText> / {summary.publicDecidingCount || 0}</GreyText>
-          </span>
+          <span>{summary.decidingCount || 0}</span>
         </Content>
       </Card>
       <Card>
-        <Title>Decision Period</Title>
+        <Title>Active</Title>
         <Content>
           <span>
-            {summary.decisionPeriodCount || 0}
-            <GreyText> / {summary.publicDecisionPeriodCount || 0}</GreyText>
-          </span>
-        </Content>
-      </Card>
-      <Card>
-        <Title>Confirming Period</Title>
-        <Content>
-          <span>
-            {summary.confirmingPeriodCount || 0}
-            <GreyText> / {summary.publicConfirmingPeriodCount || 0}</GreyText>
+            {summary.activeCount || 0}
+            <GreyText> / {summary.total || 0}</GreyText>
           </span>
         </Content>
       </Card>
