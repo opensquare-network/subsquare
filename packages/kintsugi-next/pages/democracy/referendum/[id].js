@@ -21,13 +21,17 @@ import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useDispatch } from "react-redux";
+import {
+  fetchReferendumStatus,
+  fetchVotes,
+} from "next-common/store/reducers/referendumSlice";
 
 export default withLoginUserRedux(
   ({ loginUser, detail: ssrDetail, publicProposal, comments, chain }) => {
     const [detail, setDetail] = useState(ssrDetail);
     useEffect(() => setDetail(ssrDetail), [ssrDetail]);
-    const isMounted = useIsMounted();
+    const dispatch = useDispatch();
 
     const { CommentComponent, focusEditor } = useCommentComponent({
       detail,
@@ -43,7 +47,7 @@ export default withLoginUserRedux(
       api
     );
     useMaybeFetchElectorate(detail?.onchainData, api);
-    useFetchVotes(detail?.onchainData, api);
+    useFetchVotes(detail?.onchainData);
 
     const proposalData = getDemocracyTimelineData(
       publicProposal?.onchainData?.timeline || [],
@@ -57,23 +61,25 @@ export default withLoginUserRedux(
     );
     const timelineData = proposalData.concat(referendumData);
 
-    const refreshPageData = useCallback(
-      async () => {
-          const { result } = await nextApi.fetch(
-            `democracy/referendums/${detail.referendumIndex}`
-          );
-          if (result && isMounted.current) {
-            setDetail(result);
-          }
-      },
-      [detail, isMounted]
-    );
+    const refreshPageData = useCallback(async () => {
+      const referendumIndex = detail?.onchainData.referendumIndex;
+      if (api) {
+        dispatch(fetchReferendumStatus(api, referendumIndex));
+        dispatch(fetchVotes(api, referendumIndex));
+      }
+    }, [api, detail]);
 
-    const onVoteFinalized = useWaitSyncBlock("Referendum voted", refreshPageData);
+    const onVoteFinalized = useWaitSyncBlock(
+      "Referendum voted",
+      refreshPageData
+    );
 
     const desc = getMetaDesc(detail);
     return (
-      <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_REFERENDUM}>
+      <PostProvider
+        post={detail}
+        type={detailPageCategory.DEMOCRACY_REFERENDUM}
+      >
         <DetailWithRightLayout
           user={loginUser}
           seoInfo={{
