@@ -3,18 +3,29 @@ import Toggle from "next-common/components/toggle";
 import { useCallback, useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
 
-export default function useTreasuryProposalOptions({ saving, disabled, ...data }) {
-  const [treasuryProposalProposed, setTreasuryProposalProposed] = useState(data.treasuryProposalProposed?.isOn);
-  const [treasuryProposalApproved, setTreasuryProposalApproved] = useState(data.treasuryProposalApproved?.isOn);
-  const [treasuryProposalAwarded, setTreasuryProposalAwarded] = useState(data.treasuryProposalAwarded?.isOn);
-  const [treasuryProposalRejected, setTreasuryProposalRejected] = useState(data.treasuryProposalRejected?.isOn);
+export default function useTreasuryProposalOptions({
+  saving,
+  disabled,
+  ...data
+}) {
+  const [treasuryProposalProposed, setTreasuryProposalProposed] = useState(
+    data.treasuryProposalProposed?.isOn
+  );
+  const [treasuryProposalApproved, setTreasuryProposalApproved] = useState(
+    data.treasuryProposalApproved?.isOn
+  );
+  const [treasuryProposalAwarded, setTreasuryProposalAwarded] = useState(
+    data.treasuryProposalAwarded?.isOn
+  );
+  const [treasuryProposalRejected, setTreasuryProposalRejected] = useState(
+    data.treasuryProposalRejected?.isOn
+  );
 
-  const isChanged = (
+  const isChanged =
     treasuryProposalProposed !== data.treasuryProposalProposed?.isOn ||
     treasuryProposalApproved !== data.treasuryProposalApproved?.isOn ||
     treasuryProposalAwarded !== data.treasuryProposalAwarded?.isOn ||
-    treasuryProposalRejected !== data.treasuryProposalRejected?.isOn
-  );
+    treasuryProposalRejected !== data.treasuryProposalRejected?.isOn;
 
   const changeGuard = (setter) => (data) => {
     if (!saving && !disabled) {
@@ -57,7 +68,7 @@ export default function useTreasuryProposalOptions({ saving, disabled, ...data }
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Proposals awareded or rejected</div>
+        <div>Proposals awarded or rejected</div>
         <Toggle
           disabled={disabled}
           isOn={treasuryProposalAwarded || treasuryProposalRejected}
