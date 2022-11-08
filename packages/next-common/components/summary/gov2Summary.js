@@ -1,12 +1,6 @@
 // bulk copied from `next-common/components/summary/democracySummary`
 
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { currentNodeSelector } from "../../store/reducers/nodeSlice";
-import useApi from "../../utils/hooks/useApi";
 import Content from "./cardContent";
-import nextApi from "../../services/nextApi";
-import { gov2ReferendumsSummaryApi } from "../../services/url";
 import {
   SummaryCard,
   SummaryGreyText,
@@ -14,21 +8,7 @@ import {
   SummaryWrapper,
 } from "./styled";
 
-export default function Gov2Summary({ chain }) {
-  const [summary, setSummary] = useState({});
-  const endpoint = useSelector(currentNodeSelector);
-  const api = useApi(chain, endpoint);
-
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    nextApi.fetch(gov2ReferendumsSummaryApi).then(({ result }) => {
-      setSummary(result);
-    });
-  }, [chain, api]);
-
+export default function Gov2Summary({ summary }) {
   return (
     <SummaryWrapper>
       <SummaryCard>
