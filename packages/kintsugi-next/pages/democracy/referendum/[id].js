@@ -67,7 +67,7 @@ export default withLoginUserRedux(
         dispatch(fetchReferendumStatus(api, referendumIndex));
         dispatch(fetchVotes(api, referendumIndex));
       }
-    }, [api, detail]);
+    }, [api, detail, dispatch]);
 
     const onVoteFinalized = useWaitSyncBlock(
       "Referendum voted",
