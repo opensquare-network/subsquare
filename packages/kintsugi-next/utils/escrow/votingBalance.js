@@ -24,7 +24,7 @@ export async function getVotingBalance(api, address) {
     userPointEpoch
   );
   const escrowPoint = parseEscrowPoint(lastPoint);
-  const rawBalance = rawBalanceAt(escrowPoint, new BN(nowHeight));
+  const rawBalance = rawBalanceAt(escrowPoint, new BN(nowHeight + 10));
 
   const balance = newMonetaryAmount(rawBalance, monetary.VoteKintsugi);
   return balance.toString();
