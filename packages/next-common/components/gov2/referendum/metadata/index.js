@@ -16,7 +16,7 @@ export default function Gov2ReferendumMetadata({
   const metadata = [
     ["Submission", <User add={proposer} fontSize={14} />],
     ["Decision", <User add={proposer} fontSize={14} />],
-    ["Decisiion Period", "todo"],
+    ["Decision Period", "todo"],
     ["Confirming Period", "todo"],
     ["Enact", "todo"],
     ["Proposal", detail?.title],
