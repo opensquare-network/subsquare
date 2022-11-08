@@ -8,7 +8,8 @@
   "author": "OpenSquare <https://www.opensquare.network/>",
   "scripts": {
     "scan": "yarn workspace @subsquare/scan scan",
-    "test": "yarn workspace @subsquare/scan test && yarn workspace @subsquare/scan-common test"
+    "test": "yarn workspace @subsquare/scan test && yarn workspace @subsquare/scan-common test",
+    "postinstall": "patch-package"
   },
   "devDependencies": {
     "husky": "^4.3.5",
@@ -20,6 +21,8 @@
     }
   },
   "dependencies": {
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "patch-package": "^6.5.0",
+    "postinstall-postinstall": "^2.1.0"
   }
 }

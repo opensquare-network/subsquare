@@ -1,0 +1,36 @@
+diff --git a/node_modules/@polkadot/api-derive/cjs/tx/signingInfo.js b/node_modules/@polkadot/api-derive/cjs/tx/signingInfo.js
+index 7873e2c..c90d83e 100644
+--- a/node_modules/@polkadot/api-derive/cjs/tx/signingInfo.js
++++ b/node_modules/@polkadot/api-derive/cjs/tx/signingInfo.js
+@@ -12,11 +12,11 @@ var _constants = require("./constants");
+ // SPDX-License-Identifier: Apache-2.0
+ 
+ function latestNonce(api, address) {
+-  return api.derive.balances.account(address).pipe((0, _rxjs.map)(_ref => {
++  return api.query.system.account(address).pipe((0, _rxjs.map)(_ref => {
+     let {
+-      accountNonce
++      nonce
+     } = _ref;
+-    return accountNonce;
++    return nonce;
+   }));
+ }
+ function nextNonce(api, address) {
+diff --git a/node_modules/@polkadot/api-derive/tx/signingInfo.js b/node_modules/@polkadot/api-derive/tx/signingInfo.js
+index b80ef6a..5f50450 100644
+--- a/node_modules/@polkadot/api-derive/tx/signingInfo.js
++++ b/node_modules/@polkadot/api-derive/tx/signingInfo.js
+@@ -6,9 +6,9 @@ import { isNumber, isUndefined } from '@polkadot/util';
+ import { unwrapBlockNumber } from "../util/index.js";
+ import { FALLBACK_MAX_HASH_COUNT, FALLBACK_PERIOD, MAX_FINALITY_LAG, MORTAL_PERIOD } from "./constants.js";
+ function latestNonce(api, address) {
+-  return api.derive.balances.account(address).pipe(map(({
+-    accountNonce
+-  }) => accountNonce));
++  return api.query.system.account(address).pipe(map(({
++    nonce
++  }) => nonce));
+ }
+ function nextNonce(api, address) {
+   var _api$rpc$system;
