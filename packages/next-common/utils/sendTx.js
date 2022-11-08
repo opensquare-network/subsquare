@@ -71,7 +71,12 @@ export async function sendTx({
             }
           }
 
-          dispatch(updatePendingToast(toastId, "(3/3) Inblock, waiting for finalization..."));
+          dispatch(
+            updatePendingToast(
+              toastId,
+              "(3/3) Inblock, waiting for finalization..."
+            )
+          );
 
           for (const event of events) {
             const { section, method, data } = event.event;
@@ -90,7 +95,9 @@ export async function sendTx({
       }
     );
 
-    dispatch(updatePendingToast(toastId, "(2/3) Submitted, waiting for wrapping..."));
+    dispatch(
+      updatePendingToast(toastId, "(2/3) Submitted, waiting for wrapping...")
+    );
     onSubmitted(signerAddress);
     onClose();
   } catch (e) {
