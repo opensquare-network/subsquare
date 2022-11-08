@@ -67,7 +67,7 @@ const Options = styled.div`
   ${shadow_200};
   border-radius: 4px;
   max-height: 320px;
-  overflow-y: overlay;
+  overflow-y: auto;
   z-index: 1;
 
   ${pretty_scroll_bar};
