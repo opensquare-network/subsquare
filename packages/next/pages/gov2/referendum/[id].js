@@ -10,9 +10,17 @@ import Gov2Sidebar from "components/gov2/sidebar";
 import { ssrNextApi } from "next-common/services/nextApi";
 import useUniversalComments from "components/universalComments";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import { gov2ReferendumsCommentApi, gov2ReferendumsDetailApi } from "next-common/services/url";
+import {
+  gov2ReferendumsCommentApi,
+  gov2ReferendumsDetailApi,
+} from "next-common/services/url";
+import Timeline from "components/referenda/timeline";
+import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metadata";
+import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+  const api = useApi(chain);
+
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
@@ -42,6 +50,15 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
         />
 
         <Gov2Sidebar chain={chain} detail={detail} />
+
+        <Gov2ReferendumMetadata api={api} detail={detail} />
+
+        <Timeline
+          timeline={detail?.onchainData?.timeline}
+          chain={chain}
+          type={detailPageCategory.GOV2_REFERENDUM}
+        />
+
         {CommentComponent}
       </DetailWithRightLayout>
     </PostProvider>
@@ -54,7 +71,9 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { id, page, page_size } = context.query;
   const pageSize = Math.min(page_size ?? 50, 100);
 
-  const { result: detail } = await ssrNextApi.fetch(gov2ReferendumsDetailApi(id));
+  const { result: detail } = await ssrNextApi.fetch(
+    gov2ReferendumsDetailApi(id)
+  );
 
   if (!detail) {
     return to404(context);
