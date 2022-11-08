@@ -69,17 +69,21 @@ export default function Gov2Summary({ chain }) {
       </Card>
       <Card>
         <Title>Decision Period</Title>
-        <span>
-          {summary.decisionPeriodCount || 0}
-          <GreyText> / {summary.publicDecisionPeriodCount || 0}</GreyText>
-        </span>
+        <Content>
+          <span>
+            {summary.decisionPeriodCount || 0}
+            <GreyText> / {summary.publicDecisionPeriodCount || 0}</GreyText>
+          </span>
+        </Content>
       </Card>
       <Card>
         <Title>Confirming Period</Title>
-        <span>
-          {summary.confirmingPeriodCount || 0}
-          <GreyText> / {summary.publicConfirmingPeriodCount || 0}</GreyText>
-        </span>
+        <Content>
+          <span>
+            {summary.confirmingPeriodCount || 0}
+            <GreyText> / {summary.publicConfirmingPeriodCount || 0}</GreyText>
+          </span>
+        </Content>
       </Card>
     </Wrapper>
   );
