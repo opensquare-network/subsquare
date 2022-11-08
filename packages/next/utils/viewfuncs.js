@@ -226,7 +226,6 @@ export const toExternalProposalListItem = (chain, item) => ({
   detailLink: `/democracy/external/${item.indexer.blockHeight}_${item.externalProposalHash}`,
 });
 
-// FIXME: to gov2 list item
 export const toGov2ReferendaListItem = (_chain, item, tracks = []) => {
   const track = tracks.find(
     (trackItem) => trackItem.id === item.onchainData.track
@@ -234,7 +233,7 @@ export const toGov2ReferendaListItem = (_chain, item, tracks = []) => {
 
   return {
     ...item,
-    title: getTitle(item),
+    title: item?.title ?? "Untitled",
     time: getPostUpdatedAt(item),
     status: item.onchainData?.state?.name ?? "Unknown",
     index: item.referendumIndex,
