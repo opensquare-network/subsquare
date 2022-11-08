@@ -46,15 +46,15 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   const { page = 1, page_size: pageSize = 50 } = context.query;
 
-  const [{ result: tracks }, { result: posts }] = await Promise.all([
-    ssrNextApi.fetch(gov2TracksApi),
-    ssrNextApi.fetch(gov2ReferendumsApi, {
-      page,
-      pageSize,
-    }),
-  ]);
-
-  const { result: summary } = await ssrNextApi.fetch(gov2ReferendumsSummaryApi);
+  const [{ result: tracks }, { result: posts }, { result: summary }] =
+    await Promise.all([
+      ssrNextApi.fetch(gov2TracksApi),
+      ssrNextApi.fetch(gov2ReferendumsApi, {
+        page,
+        pageSize,
+      }),
+      ssrNextApi.fetch(gov2ReferendumsSummaryApi),
+    ]);
 
   return {
     props: {
