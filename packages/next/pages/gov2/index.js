@@ -11,32 +11,45 @@ import {
 } from "next-common/services/url";
 import Gov2Summary from "next-common/components/summary/gov2Summary";
 
+export function Gov2Page({ loginUser, chain, posts, title, tracks, summary }) {
+  // FIXME: seo
+  const seoInfo = { title, desc: "" };
+  const items = (posts.items || []).map((item) =>
+    toGov2ReferendaListItem(chain, item, tracks)
+  );
+
+  return (
+    <Gov2Layout user={loginUser} seoInfo={seoInfo} tracks={tracks}>
+      <PostList
+        chain={chain}
+        title={title}
+        category="gov2"
+        create={null}
+        items={items}
+        pagination={{
+          page: posts.page,
+          pageSize: posts.pageSize,
+          total: posts.total,
+        }}
+        summary={summary}
+      />
+    </Gov2Layout>
+  );
+}
+
 export default withLoginUserRedux(
   ({ loginUser, chain, posts, title, tracks, summary }) => {
-    // FIXME: seo
-    const seoInfo = { title: "", desc: "" };
-    const items = (posts.items || []).map((item) =>
-      toGov2ReferendaListItem(chain, item, tracks)
-    );
-
-    console.log(posts);
+    const summaryComponent = <Gov2Summary summary={summary} />;
 
     return (
-      <Gov2Layout user={loginUser} seoInfo={seoInfo} tracks={tracks}>
-        <PostList
-          chain={chain}
-          title={title}
-          category="gov2"
-          create={null}
-          items={items}
-          pagination={{
-            page: posts.page,
-            pageSize: posts.pageSize,
-            total: posts.total,
-          }}
-          summary={<Gov2Summary chain={chain} summary={summary} />}
-        />
-      </Gov2Layout>
+      <Gov2Page
+        loginUser={loginUser}
+        chain={chain}
+        posts={posts}
+        title={title}
+        tracks={tracks}
+        summary={summaryComponent}
+      />
     );
   }
 );
