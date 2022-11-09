@@ -24,7 +24,7 @@ const Header = styled.div`
   font-size: 14px;
   line-height: 140%;
   flex: none;
-  flex: 0 0 120px;
+  flex: 0 0 ${(p) => p.headerWidth}px;
 `;
 
 const ArgsWrapper = styled.div`
@@ -128,10 +128,11 @@ function convertProposalForTableView(proposal, chain) {
 
             if (
               ((proposal.section === "system" &&
-                 ["remark", "remarkWithEvent"].includes(proposal.method)) ||
-               (proposal.section === "automationTime" &&
-                 proposal.method === "scheduleNotifyTask" &&
-                 arg.name === "message")) && hexIsValidUTF8(arg.value)
+                ["remark", "remarkWithEvent"].includes(proposal.method)) ||
+                (proposal.section === "automationTime" &&
+                  proposal.method === "scheduleNotifyTask" &&
+                  arg.name === "message")) &&
+              hexIsValidUTF8(arg.value)
             ) {
               return [arg.name, hexToString(arg.value)];
             }
@@ -187,9 +188,10 @@ function convertProposalForJsonView(proposal, chain) {
             if (
               ((proposal.section === "system" &&
                 ["remark", "remarkWithEvent"].includes(proposal.method)) ||
-              (proposal.section === "automationTime" &&
-                proposal.method === "scheduleNotifyTask" &&
-                arg.name === "message")) && hexIsValidUTF8(arg.value)
+                (proposal.section === "automationTime" &&
+                  proposal.method === "scheduleNotifyTask" &&
+                  arg.name === "message")) &&
+              hexIsValidUTF8(arg.value)
             ) {
               return hexToString(arg.value);
             }
@@ -216,6 +218,7 @@ export default function Proposal({
   proposalIndex,
   motionIndex,
   referendumIndex,
+  headerWidth = 120,
 }) {
   const [callType, setCallType] = useState("table");
 
@@ -255,7 +258,7 @@ export default function Proposal({
   return (
     <Wrapper>
       <HeaderWrapper>
-        <Header>Call</Header>
+        <Header headerWidth={headerWidth}>Call</Header>
         <TagWrapper>
           <TagItem
             className="tag"

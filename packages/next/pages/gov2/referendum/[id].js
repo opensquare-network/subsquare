@@ -51,7 +51,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
         <Gov2Sidebar chain={chain} detail={detail} />
 
-        <Gov2ReferendumMetadata api={api} detail={detail} />
+        <Gov2ReferendumMetadata api={api} detail={detail} chain={chain} />
 
         <Timeline
           timeline={detail?.onchainData?.timeline}
