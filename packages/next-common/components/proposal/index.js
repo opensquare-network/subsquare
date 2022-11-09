@@ -49,6 +49,10 @@ const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 12px;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
 `;
 
 const TagWrapper = styled.div`
@@ -57,6 +61,10 @@ const TagWrapper = styled.div`
 
   > :not(:first-child) {
     margin-left: 8px;
+  }
+
+  @media (max-width: 768px) {
+    margin-top: 8px;
   }
 `;
 
