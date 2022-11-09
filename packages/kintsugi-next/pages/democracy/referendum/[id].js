@@ -90,13 +90,11 @@ export default withLoginUserRedux(
           <Back href={`/democracy/referenda`} text="Back to Referenda" />
           <DetailItem
             onReply={focusEditor}
-            chain={chain}
             type={detailPageCategory.DEMOCRACY_REFERENDUM}
           />
 
           <Vote
             referendumInfo={detail?.onchainData?.info}
-            chain={chain}
             referendumIndex={detail?.referendumIndex}
             onFinalized={onVoteFinalized}
           />

@@ -156,7 +156,6 @@ export default withLoginUserRedux(
         >
           <Back href={`/treasury/tips`} text="Back to Tips" />
           <DetailItem
-            chain={chain}
             onReply={focusEditor}
             type={detailPageCategory.TREASURY_TIP}
             countDown={

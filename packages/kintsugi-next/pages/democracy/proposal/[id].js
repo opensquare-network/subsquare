@@ -78,7 +78,6 @@ export default withLoginUserRedux(
         >
           <Back href={`/democracy/proposals`} text="Back to Proposals" />
           <DetailItem
-            chain={chain}
             onReply={focusEditor}
             type={detailPageCategory.DEMOCRACY_PROPOSAL}
           />

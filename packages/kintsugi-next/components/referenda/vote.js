@@ -2,12 +2,7 @@ import React, { useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import BigNumber from "bignumber.js";
 import styled from "styled-components";
-import {
-  capitailize,
-  emptyFunction,
-  getNode,
-  toPrecision,
-} from "next-common/utils";
+import { capitailize, emptyFunction, toPrecision } from "next-common/utils";
 import Flex from "next-common/components/styled/flex";
 import {
   calcPassing,
@@ -41,6 +36,7 @@ import {
 } from "next-common/store/reducers/referendumSlice";
 import VotesCount from "next-common/components/democracy/referendum/votesCount";
 import SubLink from "next-common/components/styled/subLink";
+import { useChain, useChainSettings } from "next-common/context/chain";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -202,9 +198,9 @@ const ActionLink = styled(SubLink)`
 function Vote({
   referendumInfo,
   referendumIndex,
-  chain,
   onFinalized = emptyFunction,
 }) {
+  const chain = useChain();
   const dispatch = useDispatch();
   const [showVote, setShowVote] = useState(false);
   const [showVoteList, setShowVoteList] = useState(false);
@@ -224,11 +220,7 @@ function Vote({
   }, [dispatch, api, referendumIndex]);
 
   const { width } = useWindowSize();
-
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
+  const node = useChainSettings(chain);
   const decimals = node.decimals;
   const symbol = node.voteSymbol ?? node.symbol;
 
@@ -410,7 +402,6 @@ function Vote({
 
       {showVote && (
         <Popup
-          chain={chain}
           onClose={() => setShowVote(false)}
           referendumIndex={referendumIndex}
           onSubmitted={() => dispatch(setIsLoadingReferendumStatus(true))}
@@ -419,9 +410,7 @@ function Vote({
         />
       )}
 
-      {showVoteList && (
-        <VotesPopup setShowVoteList={setShowVoteList} chain={chain} />
-      )}
+      {showVoteList && <VotesPopup setShowVoteList={setShowVoteList} />}
     </Wrapper>
   );
 }

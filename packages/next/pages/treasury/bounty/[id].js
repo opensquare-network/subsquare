@@ -78,7 +78,6 @@ export default withLoginUserRedux(
         >
           <Back href={`/treasury/bounties`} text="Back to Bounties" />
           <DetailItem
-            chain={chain}
             onReply={focusEditor}
             type={detailPageCategory.TREASURY_BOUNTY}
             countDown={<BountyCountDown data={detail.onchainData} />}

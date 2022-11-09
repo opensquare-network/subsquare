@@ -8,7 +8,7 @@ import {
 } from "../../../store/reducers/referendumSlice";
 import VotersList from "./votesList";
 
-export default function VotesPopup({ setShowVoteList, chain }) {
+export default function VotesPopup({ setShowVoteList }) {
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const voters = useSelector(votesSelector);
   const loading = useSelector(isLoadingVotesSelector);
@@ -17,7 +17,6 @@ export default function VotesPopup({ setShowVoteList, chain }) {
     <Popup title="Votes" onClose={() => setShowVoteList(false)}>
       <VotesTab tabIndex={tabIndex} setTabIndex={setTabIndex} />
       <VotersList
-        chain={chain}
         items={tabIndex === tabs[0].tabId ? voters.allAye : voters.allNay}
         loading={loading}
       />

@@ -22,6 +22,7 @@ import SubLink from "next-common/components/styled/subLink";
 import VoteBar from "./voteBar";
 import TallyInfo from "./tallyInfo";
 import { emptyFunction } from "next-common/utils";
+import { useChain } from "next-common/context/chain";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -93,9 +94,9 @@ const VoteButton = styled.button`
 function Vote({
   referendumInfo,
   referendumIndex,
-  chain,
   onFinalized = emptyFunction,
 }) {
+  const chain = useChain();
   const dispatch = useDispatch();
   const [showVote, setShowVote] = useState(false);
   const [showVoteList, setShowVoteList] = useState(false);
@@ -158,7 +159,6 @@ function Vote({
           isLoadingVotes={isLoadingVotes}
           allAye={allAye}
           allNay={allNay}
-          chain={chain}
         />
 
         {finishedResult}
@@ -184,16 +184,13 @@ function Vote({
       )}
       {showVote && (
         <Popup
-          chain={chain}
           onClose={() => setShowVote(false)}
           referendumIndex={referendumIndex}
           onInBlock={updateVoteProgress}
           onFinalized={onFinalized}
         />
       )}
-      {showVoteList && (
-        <VotesPopup setShowVoteList={setShowVoteList} chain={chain} />
-      )}
+      {showVoteList && <VotesPopup setShowVoteList={setShowVoteList} />}
     </Wrapper>
   );
 }

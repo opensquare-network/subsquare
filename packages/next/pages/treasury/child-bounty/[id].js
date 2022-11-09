@@ -98,7 +98,6 @@ export default withLoginUserRedux(
             text="Back to Child Bounties"
           />
           <DetailItem
-            chain={chain}
             onReply={focusEditor}
             type={detailPageCategory.TREASURY_CHILD_BOUNTY}
             countDown={<ChildBountyCountDown data={detail.onchainData} />}

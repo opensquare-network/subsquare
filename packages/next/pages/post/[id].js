@@ -45,13 +45,16 @@ export default withLoginUserRedux(
         <DetailLayout
           user={loginUser}
           chain={chain}
-          seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
+          seoInfo={{
+            title: detail?.title,
+            desc,
+            ogImage: getBannerUrl(detail?.bannerCid),
+          }}
         >
           <Back href={`/discussions`} text="Back to Discussions" />
           <DetailItem
             votes={votes}
             myVote={myVote}
-            chain={chain}
             onReply={focusEditor}
             type={detailPageCategory.POST}
           />

@@ -41,7 +41,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       >
         <Back href={`/democracy/externals`} text="Back to Externals" />
         <DetailItem
-          chain={chain}
           onReply={focusEditor}
           type={detailPageCategory.DEMOCRACY_EXTERNAL}
         />

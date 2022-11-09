@@ -19,10 +19,10 @@ import Signer from "./signer";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import { sendTx } from "next-common/utils/sendTx";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
+import { useChainSettings } from "next-common/context/chain";
 
 function PopupContent({
   extensionAccounts,
-  chain,
   referendumIndex,
   onClose,
   onSubmitted = emptyFunction,
@@ -35,7 +35,7 @@ function PopupContent({
   const [selectedAccount, setSelectedAccount] = useState(null);
 
   const api = useApi();
-  const node = getNode(chain);
+  const node = useChainSettings();
 
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
@@ -126,8 +126,6 @@ function PopupContent({
   return (
     <>
       <Signer
-        chain={chain}
-        node={node}
         api={api}
         votingIsLoading={votingIsLoading}
         votingBalance={votingBalance}

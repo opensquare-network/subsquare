@@ -8,6 +8,7 @@ import ElectorateIcon from "public/imgs/icons/electorate.svg";
 import DisplayValue from "next-common/components/displayValue";
 import VotesCount from "next-common/components/democracy/referendum/votesCount";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useChainSettings } from "next-common/context/chain";
 
 const Row = styled(Flex)`
   height: 44px;
@@ -51,14 +52,13 @@ const Value = styled.span`
 export default function TallyInfo({
   tally,
   electorate,
-  chain,
   isLoadingVotes,
   allAye,
   allNay,
 }) {
   const { width } = useWindowSize();
 
-  const node = getNode(chain);
+  const node = useChainSettings();
   if (!node) {
     return null;
   }

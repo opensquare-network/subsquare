@@ -43,7 +43,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
         <DetailItem
           onReply={focusEditor}
-          chain={chain}
           type={detailPageCategory.GOV2_REFERENDUM}
         />
 
