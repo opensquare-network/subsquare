@@ -11,8 +11,12 @@ import {
 } from "next-common/services/url";
 import Gov2Summary from "next-common/components/summary/gov2Summary";
 import businessCategory from "next-common/utils/consts/business/category";
+import { useChain } from "next-common/context/chain";
+import { useUser } from "next-common/context/user";
 
-export function Gov2Page({ loginUser, chain, posts, title, tracks, summary }) {
+export function Gov2Page({ posts, title, tracks, summary }) {
+  const chain = useChain();
+  const loginUser = useUser();
   // FIXME: seo
   const seoInfo = { title, desc: "" };
   const items = (posts.items || []).map((item) =>
@@ -56,8 +60,6 @@ export default withLoginUserRedux(
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   const { page = 1, page_size: pageSize = 50 } = context.query;
 
   const [{ result: tracks }, { result: posts }, { result: summary }] =
@@ -72,7 +74,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      chain,
       posts: posts ?? EmptyList,
       title: "All Referenda",
       tracks: tracks ?? [],
