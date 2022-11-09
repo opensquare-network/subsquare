@@ -18,6 +18,10 @@ import zeitgeist from "./consts/settings/zeitgeist";
 import altair from "./consts/settings/altair";
 import basilisk from "./consts/settings/basilisk";
 import hydradx from "./consts/settings/hydradx";
+import development from "./consts/settings/development";
+
+const optionalNodes =
+  process.env.NODE_ENV === "development" ? [development] : [];
 
 export const nodes = [
   polkadot,
@@ -41,6 +45,7 @@ export const nodes = [
   // polkadex,
   turing,
   zeitgeist,
+  ...optionalNodes,
 ];
 
 export const EmptyList = {
