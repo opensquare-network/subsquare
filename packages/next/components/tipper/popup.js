@@ -53,7 +53,7 @@ function PopupContent({
 
   useEffect(() => {
     setSelectedAddress(encodeAddressToChain(selectedAccount?.address, chain));
-  }, [selectedAccount]);
+  }, [selectedAccount, chain]);
 
   useSetDefaultSigner(extensionAccounts, setSelectedAccount);
 
@@ -76,7 +76,7 @@ function PopupContent({
         }
       });
     }
-  }, [api, selectedAccount, node.decimals, isMounted]);
+  }, [api, selectedAddress, node.decimals, isMounted]);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
