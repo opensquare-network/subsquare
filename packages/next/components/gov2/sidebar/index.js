@@ -1,7 +1,8 @@
 import ExternalLink from "next-common/components/externalLink";
 import ExternalLinkIcon from "next-common/components/icons/externalLink";
 import { p_12_normal } from "next-common/styles/componentCss";
-import styled, { useTheme } from "styled-components";
+import { mdcss } from "next-common/utils/responsive";
+import styled, { useTheme, css } from "styled-components";
 import Gov2Status from "./status";
 import Gov2Tally from "./tally";
 
@@ -33,6 +34,10 @@ const VoteButton = styled.button`
   font-size: 14px;
   text-align: center;
   border-radius: 4px;
+
+  ${mdcss(css`
+    margin: 0 24px;
+  `)}
 `;
 
 const Link = styled(ExternalLink)`
@@ -41,6 +46,10 @@ const Link = styled(ExternalLink)`
   gap: 8px;
   color: ${(p) => p.theme.textTertiary};
   ${p_12_normal};
+
+  ${mdcss(css`
+    margin: 0 24px;
+  `)}
 `;
 
 // FIXME: status

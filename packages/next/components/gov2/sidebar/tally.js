@@ -23,9 +23,6 @@ const Row = styled(Flex)`
   justify-content: space-between;
   white-space: nowrap;
   font-size: 14px;
-  @media screen and (max-width: 1024px) {
-    justify-content: flex-start;
-  }
 `;
 
 const BorderedRow = styled(Row)`
