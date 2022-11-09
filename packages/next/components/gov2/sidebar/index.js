@@ -1,3 +1,4 @@
+import ExternalLink from "next-common/components/externalLink";
 import ExternalLinkIcon from "next-common/components/icons/externalLink";
 import { p_12_normal } from "next-common/styles/componentCss";
 import styled, { useTheme } from "styled-components";
@@ -34,7 +35,7 @@ const VoteButton = styled.button`
   border-radius: 4px;
 `;
 
-const Tip = styled.a`
+const Link = styled(ExternalLink)`
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -42,7 +43,7 @@ const Tip = styled.a`
   ${p_12_normal};
 `;
 
-// FIXME: gov2 sidebar href
+// FIXME: status
 // FIXME: vote button
 export default function Gov2Sidebar({ detail, chain }) {
   const { primaryPurple500 } = useTheme();
@@ -54,10 +55,11 @@ export default function Gov2Sidebar({ detail, chain }) {
 
       <VoteButton>Vote</VoteButton>
 
-      <Tip href="/">
+      {/* NOTE: link to polkadot gov2 blog */}
+      <Link href="https://polkadot.network/blog/gov2-polkadots-next-generation-of-decentralised-governance/">
         How Goverenance V2 Works
         <ExternalLinkIcon color={primaryPurple500} />
-      </Tip>
+      </Link>
     </Wrapper>
   );
 }
