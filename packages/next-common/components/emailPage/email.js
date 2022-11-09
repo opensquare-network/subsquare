@@ -82,7 +82,7 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
   }, [address, loginUser, router]);
 
   return (
-    <BaseLayout user={loginUser} chain={chain}>
+    <BaseLayout>
       <NextHead title={`Set Email`} desc={`Set Email`} />
       <Wrapper>
         <ContentCenterWrapper>

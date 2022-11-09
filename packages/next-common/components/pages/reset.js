@@ -29,7 +29,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
 `;
 
-const Reset = withLoginUserRedux(({ loginUser, chain }) => {
+const Reset = withLoginUserRedux(({}) => {
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -70,7 +70,7 @@ const Reset = withLoginUserRedux(({ loginUser, chain }) => {
   const { newPassword } = formData;
 
   return (
-    <BaseLayout user={loginUser} chain={chain}>
+    <BaseLayout>
       <NextHead title={`Reset password`} desc={`Reset password`} />
       <Wrapper>
         {!success && (

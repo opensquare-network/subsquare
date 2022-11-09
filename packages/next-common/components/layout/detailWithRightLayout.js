@@ -5,7 +5,7 @@ import MainCard from "../styled/mainCard";
 
 export default function DetailWithRightLayout({ user, children, seoInfo }) {
   return (
-    <BaseLayout user={user} seoInfo={seoInfo}>
+    <BaseLayout seoInfo={seoInfo}>
       <OutWrapper>
         <MainCard className="post-content">{children}</MainCard>
       </OutWrapper>

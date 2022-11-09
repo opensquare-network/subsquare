@@ -30,7 +30,7 @@ const Wrapper = styled.div`
   font-size: 14px;
 `;
 
-const Forget = withLoginUserRedux(({ loginUser, chain }) => {
+const Forget = withLoginUserRedux(({}) => {
   const dispatch = useDispatch();
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState();
@@ -63,7 +63,7 @@ const Forget = withLoginUserRedux(({ loginUser, chain }) => {
   const { email } = formData;
 
   return (
-    <BaseLayout user={loginUser} chain={chain}>
+    <BaseLayout>
       <NextHead title={`Forget password`} desc={`Forget password`} />
       <Wrapper>
         {!success && (

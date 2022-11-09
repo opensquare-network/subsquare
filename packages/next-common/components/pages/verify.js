@@ -24,7 +24,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
 `;
 
-export default withLoginUserRedux(({ loginUser, chain }) => {
+export default withLoginUserRedux(({ loginUser }) => {
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -63,7 +63,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   }, [email, token, router, isMounted, startCountdown]);
 
   return (
-    <BaseLayout user={loginUser} chain={chain}>
+    <BaseLayout>
       <NextHead title={`Verify email`} desc={`Verify email`} />
       <Wrapper>
         {!success && (
