@@ -1,10 +1,10 @@
-import capitalize from "./capitalize";
+import capitalize from "../capitalize";
 import {
   gov2BackMenu,
   gov2FellowshipMenu,
   gov2ReferendaMenu as gov2ReferendaMenuOrigin,
-} from "./consts/menu/gov2";
-import TrackIconMap from "../components/icons/track";
+} from "../consts/menu/gov2";
+import TrackIconMap from "../../components/icons/track";
 
 export const parseGov2TrackName = (name = "") =>
   name.split("_").map(capitalize).join(" ");

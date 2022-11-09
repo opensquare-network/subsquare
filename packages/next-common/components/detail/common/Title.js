@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import isNil from "lodash.isnil";
 import { usePost } from "../../../context/post";
+import { getGov2ReferendumTitle } from "../../../utils/gov2/title";
 
 const TitleWrapper = styled.div`
   margin-bottom: 8px;
@@ -41,7 +42,7 @@ export default function PostTitle() {
   return (
     <TitleWrapper>
       {!isNil(index) && <Index>{`#${index}`}</Index>}
-      <Title>{title?.trim() || "Untitled"}</Title>
+      <Title>{getGov2ReferendumTitle(title)}</Title>
     </TitleWrapper>
   );
 }

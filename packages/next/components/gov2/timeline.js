@@ -4,13 +4,23 @@ import User from "next-common/components/user";
 import { getNode, toPrecision } from "next-common/utils";
 import { parseGov2TrackName } from "next-common/utils/gov2";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
+import styled from "styled-components";
+
+const Info = styled.div`
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #1e2134;
+`;
 
 function TimelineTallyInfo({ decimals, symbol, ayes, nays, support }) {
   return (
     <div>
-      <div>Ayes ({`${toPrecision(ayes ?? 0, decimals)} ${symbol}`})</div>
-      <div>Nays ({`${toPrecision(nays ?? 0, decimals)} ${symbol}`})</div>
-      <div>Support ({`${toPrecision(support ?? 0, decimals)} ${symbol}`})</div>
+      <Info>Ayes ({`${toPrecision(ayes ?? 0, decimals)} ${symbol}`})</Info>
+      <Info>Nays ({`${toPrecision(nays ?? 0, decimals)} ${symbol}`})</Info>
+      <Info>
+        Support ({`${toPrecision(support ?? 0, decimals)} ${symbol}`})
+      </Info>
     </div>
   );
 }
