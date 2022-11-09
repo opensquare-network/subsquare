@@ -6,13 +6,10 @@ import Flex from "next-common/components/styled/flex";
 import { getNode, toPrecision } from "next-common/utils";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import styled from "styled-components";
-import VotesCount from "next-common/components/democracy/referendum/votesCount";
 import AyeIcon from "public/imgs/icons/aye.svg";
 import NayIcon from "public/imgs/icons/nay.svg";
 import ElectorateIcon from "public/imgs/icons/electorate.svg";
 import DisplayValue from "next-common/components/displayValue";
-import { votesSelector } from "next-common/store/reducers/referendumSlice";
-import { useSelector } from "react-redux";
 import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 
@@ -52,9 +49,8 @@ const Value = styled.span`
   color: ${(props) => props.theme.textPrimary};
 `;
 
-export default function Gov2Tally({ detail, chain, isLoadingVotes }) {
+export default function Gov2Tally({ detail, chain }) {
   const { width } = useWindowSize();
-  const { allAye = [], allNay = [] } = useSelector(votesSelector);
 
   const api = useApi(chain);
   useFetchVotes(detail?.onchainData, api);
@@ -64,7 +60,10 @@ export default function Gov2Tally({ detail, chain, isLoadingVotes }) {
   const decimals = node.decimals;
   const symbol = node.voteSymbol ?? node.symbol;
 
-  const { tally } = detail?.onchainData?.info;
+  // When the referendum is Cancelled or TimedOut,
+  // Then info.tally is not saving the latest status
+  const tally =
+    detail?.onchainData?.state?.args?.tally || detail?.onchainData?.info?.tally;
 
   const nAyes = toPrecision(tally?.ayes ?? 0, decimals);
   const nNays = toPrecision(tally?.nays ?? 0, decimals);
@@ -83,9 +82,6 @@ export default function Gov2Tally({ detail, chain, isLoadingVotes }) {
             <Header>
               <AyeIcon />
               Ayes
-              {/* {!isLoadingVotes ? (
-                <VotesCount>{allAye.length}</VotesCount>
-              ) : null} */}
             </Header>
             <Value>
               <DisplayValue
@@ -99,9 +95,6 @@ export default function Gov2Tally({ detail, chain, isLoadingVotes }) {
             <Header>
               <NayIcon />
               Nays
-              {/* {!isLoadingVotes ? (
-                <VotesCount>{allNay.length}</VotesCount>
-              ) : null} */}
             </Header>
             <Value>
               <DisplayValue
