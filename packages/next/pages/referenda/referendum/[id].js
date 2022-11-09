@@ -25,7 +25,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     detail,
     comments,
     loginUser,
-    chain,
     type: detailPageCategory.GOV2_REFERENDUM,
   });
 

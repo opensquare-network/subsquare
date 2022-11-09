@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import { useChain } from "next-common/context/chain";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -14,16 +15,20 @@ const Wrapper = styled.div`
 
 export default function PolkassemblyCommentButton({
   detail,
-  chain,
   paId,
   type,
   btnRef,
 }) {
+  const chain = useChain();
+
   // For external post, use the motion link if it is ref to a motion
   if (type === detailPageCategory.DEMOCRACY_EXTERNAL) {
     if (detail?.refToPost?.postType === "motion") {
       type = detailPageCategory.COUNCIL_MOTION;
-    } else if (detail?.refToPost?.postType === "democracy" && detail?.referendumIndex !== undefined) {
+    } else if (
+      detail?.refToPost?.postType === "democracy" &&
+      detail?.referendumIndex !== undefined
+    ) {
       type = detailPageCategory.DEMOCRACY_REFERENDUM;
     }
   }

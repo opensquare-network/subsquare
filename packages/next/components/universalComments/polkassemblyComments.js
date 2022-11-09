@@ -4,7 +4,6 @@ import PolkassemblyComments from "components/polkassembly/comment";
 
 export default function PolkassemblyCommentsWithData({
   detail,
-  chain,
   type,
   btnRef,
   tabs,
@@ -13,7 +12,6 @@ export default function PolkassemblyCommentsWithData({
 
   const { comments, loadingComments } = usePolkassemblyPostData({
     polkassemblyId,
-    chain,
   });
 
   return (
@@ -21,7 +19,6 @@ export default function PolkassemblyCommentsWithData({
       detail={detail}
       isLoading={loadingComments}
       comments={comments}
-      chain={chain}
       type={type}
       paId={polkassemblyId}
       tabs={tabs}

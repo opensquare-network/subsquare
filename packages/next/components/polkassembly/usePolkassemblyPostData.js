@@ -5,10 +5,12 @@ import {
   toPolkassemblyCommentListItem,
 } from "utils/viewfuncs";
 import { queryPostComments } from "utils/polkassembly";
+import { useChain } from "next-common/context/chain";
 
 const dataCache = {};
 
-export default function usePolkassemblyPostData({ polkassemblyId, chain }) {
+export default function usePolkassemblyPostData({ polkassemblyId }) {
+  const chain = useChain();
   const isMounted = useIsMounted();
   const [comments, setComments] = useState([]);
   const [postReactions, setPostReactions] = useState([]);

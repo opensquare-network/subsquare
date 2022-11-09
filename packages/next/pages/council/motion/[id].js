@@ -16,7 +16,6 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
     detail: motion,
     comments,
     loginUser,
-    chain,
     type: detailPageCategory.COUNCIL_MOTION,
   });
 

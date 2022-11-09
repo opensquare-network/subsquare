@@ -9,6 +9,7 @@ import { toPolkassemblyDiscussionAuthor } from "utils/viewfuncs";
 import useDuration from "next-common/utils/hooks/useDuration";
 import PostTitle from "next-common/components/detail/common/Title";
 import { usePost } from "next-common/context/post";
+import { useChain } from "next-common/context/chain";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -28,7 +29,8 @@ const FlexWrapper = styled(Flex)`
   flex-wrap: nowrap;
 `;
 
-export default function DetailItem({ chain, type, postReactions }) {
+export default function DetailItem({ type, postReactions }) {
+  const chain = useChain();
   const post = usePost();
   const postUpdateTime = post?.updatedAt || post?.createdAt;
   const duration = useDuration(postUpdateTime);
@@ -39,10 +41,13 @@ export default function DetailItem({ chain, type, postReactions }) {
 
   return (
     <EditablePanel>
-      <PostTitle post={post}/>
+      <PostTitle post={post} />
       <FlexWrapper>
         <DividerWrapper>
-          <User user={toPolkassemblyDiscussionAuthor(post.author, chain)} fontSize={12} />
+          <User
+            user={toPolkassemblyDiscussionAuthor(post.author, chain)}
+            fontSize={12}
+          />
           <Info>
             <UpdateIcon />
             <span>{duration}</span>

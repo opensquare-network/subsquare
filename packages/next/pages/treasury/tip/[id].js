@@ -70,7 +70,6 @@ export default withLoginUserRedux(
       detail,
       comments,
       loginUser,
-      chain,
       type: detailPageCategory.TREASURY_TIP,
     });
     const dispatch = useDispatch();

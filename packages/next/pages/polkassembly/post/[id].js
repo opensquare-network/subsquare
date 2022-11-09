@@ -11,11 +11,10 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 
-export default withLoginUserRedux(({ loginUser, detail, chain }) => {
+export default withLoginUserRedux(({ loginUser, detail }) => {
   const polkassemblyId = detail?.polkassemblyId;
   const { comments, postReactions, loadingComments } = usePolkassemblyPostData({
     polkassemblyId,
-    chain,
   });
 
   const desc = getMetaDesc(detail);
@@ -23,21 +22,23 @@ export default withLoginUserRedux(({ loginUser, detail, chain }) => {
     <PostProvider post={detail} type={detailPageCategory.PA_POST}>
       <DetailLayout
         user={loginUser}
-        seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
+        seoInfo={{
+          title: detail?.title,
+          desc,
+          ogImage: getBannerUrl(detail?.bannerCid),
+        }}
       >
         <Back
           href={`/polkassembly/discussions`}
           text="Back to Polkassembly Discussions"
         />
         <DetailItem
-          chain={chain}
           postReactions={postReactions}
           type={detailPageCategory.PA_POST}
         />
         <PolkassemblyComments
           isLoading={loadingComments}
           comments={comments}
-          chain={chain}
           type={detailPageCategory.PA_POST}
           paId={polkassemblyId}
         />

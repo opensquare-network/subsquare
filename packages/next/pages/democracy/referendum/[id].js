@@ -32,7 +32,6 @@ export default withLoginUserRedux(
       detail,
       comments,
       loginUser,
-      chain,
       type: detailPageCategory.DEMOCRACY_REFERENDUM,
     });
 

@@ -10,6 +10,7 @@ import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import Actions from "../actions";
 import RichTextStyleWrapper from "next-common/components/content/richTextStyleWrapper";
 import useDuration from "next-common/utils/hooks/useDuration";
+import { useChain } from "next-common/context/chain";
 
 const Wrapper = styled.div`
   position: relative;
@@ -83,7 +84,7 @@ const EditedLabel = styled.div`
   color: ${(props) => props.theme.textTertiary};
 `;
 
-export default function Item({ data, chain, isSecondLevel }) {
+export default function Item({ data, isSecondLevel }) {
   const comment = data;
 
   const [folded, setFolded] = React.useState(true);
@@ -106,7 +107,7 @@ export default function Item({ data, chain, isSecondLevel }) {
       </ContentWrapper>
       {!isSecondLevel && (
         <IndentWrapper>
-          <Actions chain={chain} reactions={comment.reactions} />
+          <Actions reactions={comment.reactions} />
         </IndentWrapper>
       )}
       {comment.replies?.length > 0 && (
@@ -121,12 +122,7 @@ export default function Item({ data, chain, isSecondLevel }) {
 
           {!folded
             ? (comment.replies || []).map((item) => (
-                <Item
-                  key={item.id}
-                  data={item}
-                  chain={chain}
-                  isSecondLevel={true}
-                />
+                <Item key={item.id} data={item} isSecondLevel={true} />
               ))
             : null}
         </IndentWrapper>
