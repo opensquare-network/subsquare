@@ -55,7 +55,6 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
   return (
     <HomeLayout seoInfo={seoInfo}>
       <PostList
-        chain={chain}
         category={category}
         create={create}
         items={items}

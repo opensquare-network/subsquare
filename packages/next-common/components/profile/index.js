@@ -151,7 +151,7 @@ const Category = ({ type, count, selected, onClick }) => {
   );
 };
 
-const DisplayUser = ({ id  }) => {
+const DisplayUser = ({ id }) => {
   if (isAddress(id)) {
     return <User add={id} showAvatar={false} fontSize={16} />;
   }
@@ -265,7 +265,6 @@ export default withLoginUserRedux(
         />
       ) : (
         <PostList
-          chain={chain}
           title={secondCategory.categoryName}
           category={secondCategory.categoryId}
           items={items}

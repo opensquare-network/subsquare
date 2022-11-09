@@ -16,7 +16,6 @@ export default withLoginUserRedux(({ motions, chain }) => {
   return (
     <HomeLayout seoInfo={seoInfo}>
       <PostList
-        chain={chain}
         category={category}
         create={null}
         items={items}
