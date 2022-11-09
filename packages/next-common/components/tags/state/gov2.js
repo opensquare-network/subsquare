@@ -44,7 +44,6 @@ const gov2ReferendaTagMap = {
   Confirmed: PositiveTag,
 };
 
-// FIXME: gov2 state type field
 export function Gov2ReferendaTag({ state, args }) {
   let Tag = gov2ReferendaTagMap[state] || ClosedTag;
 
