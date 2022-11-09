@@ -8,7 +8,7 @@ import usePrime from "next-common/utils/hooks/usePrime";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 
-export default withLoginUserRedux(({ loginUser, chain }) => {
+export default withLoginUserRedux(({ chain }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const api = useApi(chain);
@@ -43,7 +43,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <HomeLayout user={loginUser} seoInfo={seoInfo}>
+    <HomeLayout seoInfo={seoInfo}>
       <MembersList
         chain={chain}
         category={category}

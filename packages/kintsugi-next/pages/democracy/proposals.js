@@ -6,7 +6,7 @@ import { toPublicProposalListItem } from "utils/viewfuncs";
 import DemocracySummary from "next-common/components/summary/democracySummary";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 
-export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
+export default withLoginUserRedux(({ proposals, chain }) => {
   const items = (proposals.items || []).map((item) =>
     toPublicProposalListItem(chain, item)
   );
@@ -14,7 +14,7 @@ export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <HomeLayout user={loginUser} seoInfo={seoInfo}>
+    <HomeLayout seoInfo={seoInfo}>
       <PostList
         chain={chain}
         category={category}

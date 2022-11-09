@@ -15,7 +15,7 @@ import {
 } from "utils/viewfuncs";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 
-export default withLoginUserRedux(({ overview, loginUser, chain }) => {
+export default withLoginUserRedux(({ overview, chain }) => {
   let overviewData = [
     {
       category: "Referenda",
@@ -106,20 +106,17 @@ export default withLoginUserRedux(({ overview, loginUser, chain }) => {
   );
 
   return (
-    <HomeLayout user={loginUser}>
+    <HomeLayout>
       <Overview overviewData={filteredOverviewData} chain={chain} />
     </HomeLayout>
   );
 });
 
-export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
+export const getServerSideProps = withLoginUser(async () => {
   const { result } = await nextApi.fetch(`overview`);
 
   return {
     props: {
-      chain,
       overview: result ?? null,
     },
   };

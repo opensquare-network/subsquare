@@ -7,7 +7,7 @@ import DemocracySummary from "next-common/components/summary/democracySummary";
 import businessCategory from "next-common/utils/consts/business/category";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 
-export default withLoginUserRedux(({ loginUser, externals, chain }) => {
+export default withLoginUserRedux(({ externals, chain }) => {
   const items = (externals.items || []).map((item) =>
     toExternalProposalListItem(chain, item)
   );
@@ -15,7 +15,7 @@ export default withLoginUserRedux(({ loginUser, externals, chain }) => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <HomeLayout user={loginUser} seoInfo={seoInfo}>
+    <HomeLayout seoInfo={seoInfo}>
       <PostList
         chain={chain}
         category={category}

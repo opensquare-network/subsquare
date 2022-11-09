@@ -6,15 +6,15 @@ import { toCouncilMotionListItem } from "utils/viewfuncs";
 import businessCategory from "next-common/utils/consts/business/category";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 
-export default withLoginUserRedux(({ loginUser, motions, chain }) => {
-  const items = (motions.items || [])
-    .map((item) => toCouncilMotionListItem(chain, item)
+export default withLoginUserRedux(({ motions, chain }) => {
+  const items = (motions.items || []).map((item) =>
+    toCouncilMotionListItem(chain, item)
   );
   const category = businessCategory.councilMotions;
   const seoInfo = { title: category, desc: category };
 
   return (
-    <HomeLayout user={loginUser} seoInfo={seoInfo}>
+    <HomeLayout seoInfo={seoInfo}>
       <PostList
         chain={chain}
         category={category}
