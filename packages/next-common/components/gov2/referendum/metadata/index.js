@@ -9,12 +9,16 @@ import styled from "styled-components";
 import { SubScanAccountLink } from "../../../links/subscanLink";
 import Flex from "../../../styled/flex";
 import Tooltip from "../../../tooltip";
+import { p_12_normal } from "../../../../styles/componentCss";
 
 // submissionDeposit
 // decisionDeposit
-const DepositWrapper = styled(Flex)`
+// Decision Period
+// Confirming Period
+const ValueWrapper = styled(Flex)`
   gap: 8px;
 `;
+
 const BondValueWrapper = styled(Flex)`
   gap: 8px;
   &::before {
@@ -23,8 +27,11 @@ const BondValueWrapper = styled(Flex)`
   }
 `;
 
-const GreyText = styled.span`
+const GreyText = styled.div`
+  display: inline-flex;
+  align-items: center;
   color: ${(p) => p.theme.textTertiary};
+  ${p_12_normal};
 `;
 
 function BondValue({ deposit, decimals, symbol }) {
@@ -46,6 +53,8 @@ export default function Gov2ReferendumMetadata({ chain, detail }) {
     return null;
   }
 
+  console.log(detail);
+
   const decimals = node.decimals;
   const symbol = node.voteSymbol || node.symbol;
 
@@ -63,7 +72,7 @@ export default function Gov2ReferendumMetadata({ chain, detail }) {
   const metadata = [
     [
       "Submission",
-      <DepositWrapper>
+      <ValueWrapper>
         <User add={info?.submissionDeposit?.who} fontSize={14} />
         <SubScanAccountLink address={info?.submissionDeposit?.who} />
         <BondValue
@@ -71,12 +80,12 @@ export default function Gov2ReferendumMetadata({ chain, detail }) {
           decimals={decimals}
           symbol={symbol}
         />
-      </DepositWrapper>,
+      </ValueWrapper>,
     ],
     [
       "Decision",
       info?.decisionDeposit ? (
-        <DepositWrapper>
+        <ValueWrapper>
           <User add={info?.decisionDeposit?.who} fontSize={14} />
           <SubScanAccountLink address={info?.decisionDeposit?.who} />
           <BondValue
@@ -84,13 +93,33 @@ export default function Gov2ReferendumMetadata({ chain, detail }) {
             decimals={decimals}
             symbol={symbol}
           />
-        </DepositWrapper>
+        </ValueWrapper>
       ) : (
         <GreyText>--</GreyText>
       ),
     ],
-    ["Decision Period", `${decisionPeriod[0]} ${decisionPeriod[1]}`],
-    ["Confirming Period", `${confirmPeriod[0]} ${confirmPeriod[1]}`],
+    [
+      "Decision Period",
+      <ValueWrapper>
+        <div>
+          {decisionPeriod[0]} {decisionPeriod[1]}
+        </div>
+        <GreyText>
+          ({trackInfo?.decisionPeriod?.toLocaleString()} blocks)
+        </GreyText>
+      </ValueWrapper>,
+    ],
+    [
+      "Confirming Period",
+      <ValueWrapper>
+        <div>
+          {confirmPeriod[0]} {confirmPeriod[1]}
+        </div>
+        <GreyText>
+          ({trackInfo?.confirmPeriod?.toLocaleString()} blocks)
+        </GreyText>
+      </ValueWrapper>,
+    ],
     ["Enact", info?.enactment?.at],
     ["Proposal Hash", onchainData?.indexer?.blockHash],
   ];
