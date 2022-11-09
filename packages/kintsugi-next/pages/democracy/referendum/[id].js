@@ -81,7 +81,6 @@ export default withLoginUserRedux(
         type={detailPageCategory.DEMOCRACY_REFERENDUM}
       >
         <DetailWithRightLayout
-          user={loginUser}
           seoInfo={{
             title: detail?.title,
             desc,

@@ -34,7 +34,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   return (
     <PostProvider post={detail} type={detailPageCategory.GOV2_REFERENDUM}>
       <DetailWithRightLayout
-        user={loginUser}
         seoInfo={{
           title: detail?.title,
           desc,

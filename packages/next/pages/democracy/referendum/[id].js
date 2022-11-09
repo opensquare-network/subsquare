@@ -22,87 +22,93 @@ import { PostProvider } from "next-common/context/post";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 
-export default withLoginUserRedux(({ loginUser, detail: ssrDetail, comments, chain }) => {
-  const [detail, setDetail] = useState(ssrDetail);
-  useEffect(() => setDetail(ssrDetail), [ssrDetail]);
-  const isMounted = useIsMounted();
+export default withLoginUserRedux(
+  ({ loginUser, detail: ssrDetail, comments, chain }) => {
+    const [detail, setDetail] = useState(ssrDetail);
+    useEffect(() => setDetail(ssrDetail), [ssrDetail]);
+    const isMounted = useIsMounted();
 
-  const { CommentComponent, focusEditor } = useUniversalComments({
-    detail,
-    comments,
-    loginUser,
-    chain,
-    type: detailPageCategory.DEMOCRACY_REFERENDUM,
-  });
+    const { CommentComponent, focusEditor } = useUniversalComments({
+      detail,
+      comments,
+      loginUser,
+      chain,
+      type: detailPageCategory.DEMOCRACY_REFERENDUM,
+    });
 
-  const api = useApi(chain);
-  const { referendumStatus } = useMaybeFetchReferendumStatus(
-    detail?.onchainData,
-    api
-  );
-  useMaybeFetchElectorate(detail?.onchainData, api);
-  useFetchVotes(detail?.onchainData, api);
+    const api = useApi(chain);
+    const { referendumStatus } = useMaybeFetchReferendumStatus(
+      detail?.onchainData,
+      api
+    );
+    useMaybeFetchElectorate(detail?.onchainData, api);
+    useFetchVotes(detail?.onchainData, api);
 
-  const refreshPageData = useCallback(
-    async () => {
-        const { result } = await nextApi.fetch(
-          `democracy/referendums/${detail.referendumIndex}`
-        );
-        if (result && isMounted.current) {
-          setDetail(result);
-        }
-    },
-    [detail, isMounted]
-  );
+    const refreshPageData = useCallback(async () => {
+      const { result } = await nextApi.fetch(
+        `democracy/referendums/${detail.referendumIndex}`
+      );
+      if (result && isMounted.current) {
+        setDetail(result);
+      }
+    }, [detail, isMounted]);
 
-  const onVoteFinalized = useWaitSyncBlock("Referendum voted", refreshPageData);
+    const onVoteFinalized = useWaitSyncBlock(
+      "Referendum voted",
+      refreshPageData
+    );
 
-  const desc = getMetaDesc(detail);
+    const desc = getMetaDesc(detail);
 
-  return (
-    <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_REFERENDUM}>
-      <DetailWithRightLayout
-        user={loginUser}
-        seoInfo={{
-          title: detail?.title,
-          desc,
-          ogImage: getBannerUrl(detail?.bannerCid),
-        }}
+    return (
+      <PostProvider
+        post={detail}
+        type={detailPageCategory.DEMOCRACY_REFERENDUM}
       >
-        <Back href={`/democracy/referenda`} text="Back to Referenda" />
-        <DetailItem
-          onReply={focusEditor}
-          chain={chain}
-          type={detailPageCategory.DEMOCRACY_REFERENDUM}
-        />
+        <DetailWithRightLayout
+          seoInfo={{
+            title: detail?.title,
+            desc,
+            ogImage: getBannerUrl(detail?.bannerCid),
+          }}
+        >
+          <Back href={`/democracy/referenda`} text="Back to Referenda" />
+          <DetailItem
+            onReply={focusEditor}
+            chain={chain}
+            type={detailPageCategory.DEMOCRACY_REFERENDUM}
+          />
 
-        <Vote
-          referendumInfo={detail?.onchainData?.info}
-          chain={chain}
-          referendumIndex={detail?.referendumIndex}
-          onFinalized={onVoteFinalized}
-        />
+          <Vote
+            referendumInfo={detail?.onchainData?.info}
+            chain={chain}
+            referendumIndex={detail?.referendumIndex}
+            onFinalized={onVoteFinalized}
+          />
 
-        <ReferendumMetadata
-          api={api}
-          proposer={detail?.proposer}
-          status={referendumStatus ?? {}}
-          call={detail?.onchainData?.preImage?.call || detail?.onchainData?.call}
-          shorten={detail?.onchainData?.preImage?.shorten}
-          chain={chain}
-          onchainData={detail?.onchainData}
-        />
+          <ReferendumMetadata
+            api={api}
+            proposer={detail?.proposer}
+            status={referendumStatus ?? {}}
+            call={
+              detail?.onchainData?.preImage?.call || detail?.onchainData?.call
+            }
+            shorten={detail?.onchainData?.preImage?.shorten}
+            chain={chain}
+            onchainData={detail?.onchainData}
+          />
 
-        <Timeline
-          timeline={detail?.onchainData?.timeline}
-          chain={chain}
-          type={detailPageCategory.DEMOCRACY_REFERENDUM}
-        />
-        {CommentComponent}
-      </DetailWithRightLayout>
-    </PostProvider>
-  );
-});
+          <Timeline
+            timeline={detail?.onchainData?.timeline}
+            chain={chain}
+            type={detailPageCategory.DEMOCRACY_REFERENDUM}
+          />
+          {CommentComponent}
+        </DetailWithRightLayout>
+      </PostProvider>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;

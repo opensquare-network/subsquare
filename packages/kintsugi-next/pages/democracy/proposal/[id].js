@@ -52,26 +52,29 @@ export default withLoginUserRedux(
 
     const referendumIndex = detail?.referendumIndex;
 
-    const refreshPageData = useCallback(
-      async () => {
-          const { result } = await nextApi.fetch(
-            `democracy/proposals/${detail.proposalIndex}`
-          );
-          if (result && isMounted.current) {
-            setDetail(result);
-          }
-      },
-      [detail, isMounted]
-    );
+    const refreshPageData = useCallback(async () => {
+      const { result } = await nextApi.fetch(
+        `democracy/proposals/${detail.proposalIndex}`
+      );
+      if (result && isMounted.current) {
+        setDetail(result);
+      }
+    }, [detail, isMounted]);
 
-    const onSecondFinalized = useWaitSyncBlock("Proposal seconded", refreshPageData);
+    const onSecondFinalized = useWaitSyncBlock(
+      "Proposal seconded",
+      refreshPageData
+    );
 
     const desc = getMetaDesc(detail);
     return (
       <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_PROPOSAL}>
         <DetailWithRightLayout
-          user={loginUser}
-          seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
+          seoInfo={{
+            title: detail?.title,
+            desc,
+            ogImage: getBannerUrl(detail?.bannerCid),
+          }}
         >
           <Back href={`/democracy/proposals`} text="Back to Proposals" />
           <DetailItem

@@ -26,9 +26,11 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
   return (
     <PostProvider post={motion} type={detailPageCategory.FINANCIAL_MOTION}>
       <DetailWithRightLayout
-        user={loginUser}
-        chain={chain}
-        seoInfo={{ title: motion?.title, desc, ogImage: getBannerUrl(motion?.bannerCid) }}
+        seoInfo={{
+          title: motion?.title,
+          desc,
+          ogImage: getBannerUrl(motion?.bannerCid),
+        }}
       >
         <Back href={`/financial-council/motions`} text="Back to Motions" />
         <MotionDetail
