@@ -41,7 +41,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <Back href="/gov2" text="Back to Gov2/Referenda" />
+        <Back href="/gov2" text="Back to Referenda" />
 
         <DetailItem
           onReply={focusEditor}
