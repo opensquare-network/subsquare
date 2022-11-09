@@ -9,18 +9,29 @@ import styled from "styled-components";
 import { SubScanAccountLink } from "../../../links/subscanLink";
 import Flex from "../../../styled/flex";
 import Tooltip from "../../../tooltip";
+import { p_12_normal } from "../../../../styles/componentCss";
 
 // submissionDeposit
 // decisionDeposit
-const DepositWrapper = styled(Flex)`
+// Decision Period
+// Confirming Period
+const ValueWrapper = styled(Flex)`
   gap: 8px;
 `;
+
 const BondValueWrapper = styled(Flex)`
   gap: 8px;
   &::before {
     content: "·";
     color: ${(p) => p.theme.textTertiary};
   }
+`;
+
+const GreyText = styled.div`
+  display: inline-flex;
+  align-items: center;
+  color: ${(p) => p.theme.textTertiary};
+  ${p_12_normal};
 `;
 
 function BondValue({ deposit, decimals, symbol }) {
@@ -42,12 +53,15 @@ export default function Gov2ReferendumMetadata({ chain, detail }) {
     return null;
   }
 
+  console.log(detail);
+
   const decimals = node.decimals;
   const symbol = node.voteSymbol || node.symbol;
 
-  const info = detail?.onchainData?.info ?? {};
-  const proposal = detail?.onchainData?.proposal ?? {};
-  const trackInfo = detail?.onchainData?.trackInfo ?? {};
+  const onchainData = detail?.onchainData ?? {};
+  const info = onchainData?.info ?? {};
+  const proposal = onchainData?.proposal ?? {};
+  const trackInfo = onchainData?.trackInfo ?? {};
 
   const decisionPeriod = estimateBlocksTime(
     trackInfo.decisionPeriod,
@@ -58,7 +72,7 @@ export default function Gov2ReferendumMetadata({ chain, detail }) {
   const metadata = [
     [
       "Submission",
-      <DepositWrapper>
+      <ValueWrapper>
         <User add={info?.submissionDeposit?.who} fontSize={14} />
         <SubScanAccountLink address={info?.submissionDeposit?.who} />
         <BondValue
@@ -66,24 +80,48 @@ export default function Gov2ReferendumMetadata({ chain, detail }) {
           decimals={decimals}
           symbol={symbol}
         />
-      </DepositWrapper>,
+      </ValueWrapper>,
     ],
     [
       "Decision",
-      <DepositWrapper>
-        <User add={info?.decisionDeposit?.who} fontSize={14} />
-        <SubScanAccountLink address={info?.decisionDeposit?.who} />
-        <BondValue
-          deposit={info?.decisionDeposit?.amount}
-          decimals={decimals}
-          symbol={symbol}
-        />
-      </DepositWrapper>,
+      info?.decisionDeposit ? (
+        <ValueWrapper>
+          <User add={info?.decisionDeposit?.who} fontSize={14} />
+          <SubScanAccountLink address={info?.decisionDeposit?.who} />
+          <BondValue
+            deposit={info?.decisionDeposit?.amount}
+            decimals={decimals}
+            symbol={symbol}
+          />
+        </ValueWrapper>
+      ) : (
+        <GreyText>--</GreyText>
+      ),
     ],
-    ["Decision Period", `${decisionPeriod[0]} ${decisionPeriod[1]}`],
-    ["Confirming Period", `${confirmPeriod[0]} ${confirmPeriod[1]}`],
+    [
+      "Decision Period",
+      <ValueWrapper>
+        <div>
+          {decisionPeriod[0]} {decisionPeriod[1]}
+        </div>
+        <GreyText>
+          ({trackInfo?.decisionPeriod?.toLocaleString()} blocks)
+        </GreyText>
+      </ValueWrapper>,
+    ],
+    [
+      "Confirming Period",
+      <ValueWrapper>
+        <div>
+          {confirmPeriod[0]} {confirmPeriod[1]}
+        </div>
+        <GreyText>
+          ({trackInfo?.confirmPeriod?.toLocaleString()} blocks)
+        </GreyText>
+      </ValueWrapper>,
+    ],
     ["Enact", info?.enactment?.at],
-    ["Proposal", detail?.title ?? "Untitled"],
+    ["Proposal Hash", onchainData?.indexer?.blockHash],
   ];
 
   if (proposal?.args) {
