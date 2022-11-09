@@ -14,6 +14,7 @@ import SecondaryButton from "../../buttons/secondaryButton";
 import { GhostCard } from "../../styled/containers/ghostCard";
 import { TitleContainer } from "../../styled/containers/titleContainer";
 import SubLink from "../../styled/subLink";
+import { useChainSettings } from "../../../context/chain";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -99,7 +100,6 @@ const ListMore = styled(SubLink)`
 `;
 
 export default function Second({
-  chain,
   proposalIndex,
   hasTurnIntoReferendum,
   hasCanceled,
@@ -118,7 +118,7 @@ export default function Second({
     atBlockHeight,
     triggerUpdate
   );
-  const node = getNode(chain);
+  const node = useChainSettings();
   const secondsCount = countBy(seconds);
   const secondsAddress = Object.keys(secondsCount);
 
