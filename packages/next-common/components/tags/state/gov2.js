@@ -36,13 +36,19 @@ const gov2ReferendaTagMap = {
   [gov2State.Timeout]: ClosedTag,
   [gov2State.Rejected]: NegativeTag,
   // [gov2State.Executed] see below,
+
+  DecisionStarted: PositiveTag,
+  DecisionDepositPlaced: PositiveTag,
+  ConfirmStarted: PositiveTag,
+  ConfirmAborted: NegativeTag,
+  Confirmed: PositiveTag,
 };
 
 // FIXME: gov2 state type field
 export function Gov2ReferendaTag({ state, data }) {
   let Tag = gov2ReferendaTagMap[state] || ClosedTag;
   if (state === gov2State.Executed) {
-    Tag = data.stateType === "success" ? PositiveTag : NegativeTag;
+    Tag = data?.stateType === "err" ? NegativeTag : PositiveTag;
   }
   return <Tag>{state}</Tag>;
 }

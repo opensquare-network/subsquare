@@ -40,8 +40,7 @@ const categoryTagMap = {
   [detailPageCategory.DEMOCRACY_REFERENDUM]: DemocracyReferendumTag,
 
   gov2: Gov2ReferendaTag,
-  [detailPageCategory.GOV2_REFERENDUM]: DemocracyReferendumTag,
-
+  [detailPageCategory.GOV2_REFERENDUM]: Gov2ReferendaTag,
 };
 
 export default function Tag({ category, state, link, args, data }) {

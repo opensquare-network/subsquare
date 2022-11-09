@@ -14,7 +14,7 @@ import {
   gov2ReferendumsCommentApi,
   gov2ReferendumsDetailApi,
 } from "next-common/services/url";
-import Timeline from "components/referenda/timeline";
+import Timeline from "components/gov2/timeline";
 import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metadata";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 
@@ -55,6 +55,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
         <Timeline
           timeline={detail?.onchainData?.timeline}
+          trackInfo={detail?.onchainData?.trackInfo}
           chain={chain}
           type={detailPageCategory.GOV2_REFERENDUM}
         />
