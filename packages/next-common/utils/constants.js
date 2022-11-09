@@ -16,18 +16,21 @@ import crust from "./consts/settings/crust";
 import litmus from "./consts/settings/litmus";
 import zeitgeist from "./consts/settings/zeitgeist";
 import altair from "./consts/settings/altair";
+import basilisk from "./consts/settings/basilisk";
+import hydradx from "./consts/settings/hydradx";
 
 export const nodes = [
   polkadot,
   kusama,
   acala,
   altair,
-  // basilisk,
+  basilisk,
   bifrost,
   // calamari,
   centrifuge,
   crab,
   crust,
+  hydradx,
   interlay,
   // kabocha,
   karura,
