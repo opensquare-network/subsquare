@@ -55,8 +55,6 @@ export default function Gov2ReferendumMetadata({ chain, detail }) {
   );
   const confirmPeriod = estimateBlocksTime(trackInfo.confirmPeriod, blockTime);
 
-  console.log(detail);
-
   const metadata = [
     [
       "Submission",

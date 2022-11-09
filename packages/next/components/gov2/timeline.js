@@ -9,7 +9,7 @@ function TimelineTallyInfo({ decimals, symbol, ayes, nays, support }) {
     <div>
       <div>Ayes ({`${toPrecision(ayes ?? 0, decimals)} ${symbol}`})</div>
       <div>Nays ({`${toPrecision(nays ?? 0, decimals)} ${symbol}`})</div>
-      <div>Support ({support})</div>
+      <div>Support ({`${toPrecision(support ?? 0, decimals)} ${symbol}`})</div>
     </div>
   );
 }
