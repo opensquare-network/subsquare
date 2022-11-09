@@ -63,7 +63,7 @@ export default function Share() {
       "https://twitter.com/share?url=" +
       encodeURIComponent(window.location.href) +
       "&text=" +
-      encodeURIComponent(text ?? document.title);
+      encodeURIComponent(text ?? document.title ?? "");
     window.open(url, "_blank");
   };
 
