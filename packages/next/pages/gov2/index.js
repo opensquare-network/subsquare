@@ -1,8 +1,5 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { EmptyList } from "next-common/utils/constants";
-import Gov2Layout from "next-common/components/layout/Gov2Layout";
-import PostList from "next-common/components/postList";
-import { toGov2ReferendaListItem } from "utils/viewfuncs";
 import { ssrNextApi } from "next-common/services/nextApi";
 import {
   gov2ReferendumsApi,
@@ -10,37 +7,7 @@ import {
   gov2TracksApi,
 } from "next-common/services/url";
 import Gov2Summary from "next-common/components/summary/gov2Summary";
-import businessCategory from "next-common/utils/consts/business/category";
-import { useChain } from "next-common/context/chain";
-import { useUser } from "next-common/context/user";
-
-export function Gov2Page({ posts, title, tracks, summary }) {
-  const chain = useChain();
-  const loginUser = useUser();
-  // FIXME: seo
-  const seoInfo = { title, desc: "" };
-  const items = (posts.items || []).map((item) =>
-    toGov2ReferendaListItem(chain, item, tracks)
-  );
-
-  return (
-    <Gov2Layout user={loginUser} seoInfo={seoInfo} tracks={tracks}>
-      <PostList
-        chain={chain}
-        title={title}
-        category={businessCategory.gov2}
-        create={null}
-        items={items}
-        pagination={{
-          page: posts.page,
-          pageSize: posts.pageSize,
-          total: posts.total,
-        }}
-        summary={summary}
-      />
-    </Gov2Layout>
-  );
-}
+import Gov2Page from "components/gov2/gov2Page";
 
 export default withLoginUserRedux(
   ({ loginUser, chain, posts, title, tracks, summary }) => {
