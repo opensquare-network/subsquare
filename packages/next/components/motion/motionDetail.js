@@ -37,7 +37,7 @@ export default function MotionDetail({ user, onReply, chain, type }) {
   const blockHash = motionEnd
     ? post.onchainData?.state?.indexer?.blockHash
     : null;
-  const prime = usePrime({ blockHash, chain, type });
+  const prime = usePrime({ blockHash, type });
   const singleApprovalMotion = post.onchainData.threshold === 1;
 
   const dbVotes = useMemo(() => {

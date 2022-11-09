@@ -85,14 +85,7 @@ const RowSplitter = ({ backgroundColor, padding }) => (
   </tr>
 );
 
-function MembersList({
-  chain,
-  category,
-  items,
-  prime,
-  loading = false,
-  theme,
-}) {
+function MembersList({ category, items, prime, loading = false, theme }) {
   return (
     <Wrapper>
       <TitleContainer>{category}</TitleContainer>

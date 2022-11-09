@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import toApiCouncil from "../toApiCouncil";
 import useIsMounted from "./useIsMounted";
 import useApi from "./useApi";
+import { useChain } from "../../context/chain";
 
-export default function usePrime({ blockHash, chain, type }) {
+export default function usePrime({ blockHash, type }) {
+  const chain = useChain();
   const [prime, setPrime] = useState();
   const isMounted = useIsMounted();
   const api = useApi();

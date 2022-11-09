@@ -15,7 +15,7 @@ export default withLoginUserRedux(({ chain }) => {
   const node = getNode(chain);
   const electionsInfo = useCall(api?.derive?.elections?.info, []);
   const allVotes = useCall(api?.derive?.council?.votes, []);
-  const prime = usePrime({ chain, type: detailPageCategory.COUNCIL_MOTION });
+  const prime = usePrime({ type: detailPageCategory.COUNCIL_MOTION });
 
   useEffect(() => {
     if (electionsInfo) {
@@ -45,7 +45,6 @@ export default withLoginUserRedux(({ chain }) => {
   return (
     <HomeLayout seoInfo={seoInfo}>
       <MembersList
-        chain={chain}
         category={category}
         items={data}
         prime={prime}

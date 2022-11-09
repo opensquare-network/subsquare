@@ -18,6 +18,7 @@ import {
   StyledTh,
   StyledTr,
 } from "next-common/components/styled/table";
+import { useChain } from "next-common/context/chain";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -58,7 +59,6 @@ const Balance = ({ value, node }) => (
 );
 
 function MembersList({
-  chain,
   category,
   items,
   prime,
@@ -66,6 +66,7 @@ function MembersList({
   hasElections = false,
   theme,
 }) {
+  const chain = useChain();
   const [hideColumn, setHideColumn] = useState("votes");
   const node = getNode(chain);
   if (!node) {

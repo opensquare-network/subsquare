@@ -12,7 +12,7 @@ export default withLoginUserRedux(({ chain }) => {
   const [loading, setLoading] = useState(true);
   const api = useApi();
   const members = useCall(api?.query?.financialCouncil?.members, []);
-  const prime = usePrime({ chain, type: detailPageCategory.FINANCIAL_MOTION });
+  const prime = usePrime({ type: detailPageCategory.FINANCIAL_MOTION });
   useEffect(() => {
     if (members) {
       setData(members.toJSON() || []);
@@ -25,7 +25,6 @@ export default withLoginUserRedux(({ chain }) => {
   return (
     <HomeLayout seoInfo={seoInfo}>
       <MembersList
-        chain={chain}
         prime={prime}
         category={category}
         items={data}

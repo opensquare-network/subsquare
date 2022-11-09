@@ -7,12 +7,12 @@ import usePrime from "next-common/utils/hooks/usePrime";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 
-export default withLoginUserRedux(({ chain }) => {
+export default withLoginUserRedux(({}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const api = useApi();
   const members = useCall(api?.derive.technicalCommittee.members, []);
-  const prime = usePrime({ chain, type: detailPageCategory.TECH_COMM_MOTION });
+  const prime = usePrime({ type: detailPageCategory.TECH_COMM_MOTION });
   useEffect(() => {
     if (members) {
       setData(members.toJSON() || []);
@@ -25,7 +25,6 @@ export default withLoginUserRedux(({ chain }) => {
   return (
     <HomeLayout seoInfo={seoInfo}>
       <MembersList
-        chain={chain}
         prime={prime}
         category={category}
         items={data}
@@ -36,10 +35,7 @@ export default withLoginUserRedux(({ chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
   return {
-    props: {
-      chain,
-    },
+    props: {},
   };
 });
