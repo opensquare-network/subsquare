@@ -179,7 +179,7 @@ export default function Post({ data, chain, href, type }) {
     ].includes(type)
   ) {
     stateArgs = getMotionStateArgs(data.onchainData.state);
-  } else if ("gov2" === type) {
+  } else if (businessCategory.gov2 === type) {
     stateArgs = getGov2ReferendumStateArgs(data.onchainData.state);
   }
 
