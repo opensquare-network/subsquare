@@ -20,7 +20,7 @@ import businessCategory from "../utils/consts/business/category";
 import useDuration from "../utils/hooks/useDuration";
 import { getMotionStateArgs } from "../utils/collective/result";
 import { getGov2ReferendumStateArgs } from "../utils/gov2/result";
-import { useChain } from "../context/chain";
+import { useChain, useChainSettings } from "../context/chain";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -187,12 +187,7 @@ export default function Post({ data, href, type }) {
   }
 
   const duration = useDuration(data.time);
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
+  const { decimals, symbol } = useChainSettings();
   const method = data?.onchainData?.proposal?.method;
 
   let elapseIcon = null;

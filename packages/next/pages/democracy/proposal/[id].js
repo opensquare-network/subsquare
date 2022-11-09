@@ -77,7 +77,6 @@ export default withLoginUserRedux(
             type={detailPageCategory.DEMOCRACY_PROPOSAL}
           />
           <Second
-            chain={chain}
             proposalIndex={proposalIndex}
             hasTurnIntoReferendum={hasTurnIntoReferendum}
             hasCanceled={hasCanceled}

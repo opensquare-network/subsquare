@@ -3,7 +3,6 @@ import DetailItem from "components/detailItem";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import { getNode } from "next-common/utils";
 import { to404 } from "next-common/utils/serverSideUtil";
 import Business from "components/external/business";
 import Metadata from "components/external/metadata";
@@ -22,11 +21,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     loginUser,
     type: detailPageCategory.DEMOCRACY_EXTERNAL,
   });
-
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
 
   const desc = getMetaDesc(detail);
   return (

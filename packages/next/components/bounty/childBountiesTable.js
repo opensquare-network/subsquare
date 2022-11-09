@@ -9,6 +9,7 @@ import FlexBetween from "next-common/components/styled/flexBetween";
 import Divider from "next-common/components/styled/layout/divider";
 import businessCategory from "next-common/utils/consts/business/category";
 import ValueDisplay from "next-common/components/displayValue";
+import { useChainSettings } from "next-common/context/chain";
 
 const ChildBountyWrapper = styled.div`
   > div:first-child {
@@ -98,10 +99,12 @@ const DomesticLink = styled.a`
   cursor: pointer;
 `;
 
-function ChildBountiesTable({ childBounties, decimals, symbol }) {
+function ChildBountiesTable({ childBounties }) {
+  const { decimals, symbol } = useChainSettings();
   if (!childBounties?.items || !childBounties?.items?.length) {
     return null;
   }
+
   return (
     <Accordion title="Child Bounties">
       {childBounties.items.map((bounty, index) => {

@@ -3,16 +3,18 @@ import PopupLabelWithBalance from "../../../popup/balanceLabel";
 import SignerSelect from "../../../signerSelect";
 import { toPrecision } from "../../../../utils";
 import useSetDefaultSigner from "../../../../utils/hooks/useSetDefaultSigner";
+import { useChainSettings } from "../../../../context/chain";
+import useApi from "../../../../utils/hooks/useApi";
 
 export default function Signer({
-  api,
   extensionAccounts,
   signerAccount,
   setSignerAccount,
   balanceIsLoading,
   balance,
-  node,
 }) {
+  const api = useApi();
+  const { decimals, symbol } = useChainSettings();
   useSetDefaultSigner(extensionAccounts, setSignerAccount);
 
   return (
@@ -21,8 +23,8 @@ export default function Signer({
         text={"Address"}
         isLoading={balanceIsLoading}
         balanceName="Balance"
-        balance={toPrecision(balance ?? 0, node.decimals)}
-        symbol={node.symbol}
+        balance={toPrecision(balance ?? 0, decimals)}
+        symbol={symbol}
       />
       <SignerSelect
         api={api}

@@ -5,7 +5,7 @@ import isNil from "lodash.isnil";
 import { useAddressVote, useAddressVotingBalance } from "utils/hooks";
 import useApi from "next-common/utils/hooks/useApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { checkInputValue, emptyFunction, getNode } from "next-common/utils";
+import { checkInputValue, emptyFunction } from "next-common/utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Signer from "./signer";
@@ -14,7 +14,7 @@ import VotingStatus from "./votingStatus";
 import VoteButton from "next-common/components/popup/voteButton";
 import { sendTx } from "next-common/utils/sendTx";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
-import { useChain } from "next-common/context/chain";
+import { useChainSettings } from "next-common/context/chain";
 
 function PopupContent({
   extensionAccounts,
@@ -24,10 +24,9 @@ function PopupContent({
   onFinalized = emptyFunction,
   onInBlock = emptyFunction,
 }) {
-  const chain = useChain();
   const dispatch = useDispatch();
   const [selectedAccount, setSelectedAccount] = useState(null);
-  const node = getNode(chain);
+  const node = useChainSettings();
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
   const api = useApi();
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(

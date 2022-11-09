@@ -3,7 +3,6 @@ import DetailItem from "components/detailItem";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import { getNode } from "next-common/utils";
 import Timeline from "components/bounty/timeline";
 import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
@@ -58,13 +57,6 @@ export default withLoginUserRedux(
       type: detailPageCategory.TREASURY_BOUNTY,
     });
 
-    const node = getNode(chain);
-    if (!node) {
-      return null;
-    }
-    const decimals = node.decimals;
-    const symbol = node.symbol;
-
     const desc = getMetaDesc(detail);
     return (
       <PostProvider post={detail} type={detailPageCategory.TREASURY_BOUNTY}>
@@ -83,7 +75,7 @@ export default withLoginUserRedux(
             countDown={<BountyCountDown data={detail.onchainData} />}
           />
           <Metadata meta={detail.onchainData?.meta} chain={chain} />
-          <ChildBountiesTable {...{ childBounties, decimals, symbol }} />
+          <ChildBountiesTable {...{ childBounties }} />
           <Timeline bounty={detail?.onchainData} chain={chain} />
           {CommentComponent}
         </DetailLayout>

@@ -3,6 +3,7 @@ import Proposal from "../proposal";
 import KVList from "../listInfo/kvList";
 import { getNode, toPrecision } from "next-common/utils";
 import User from "../user";
+import { useChainSettings } from "../../context/chain";
 
 function getDeposit(scanDepositData) {
   if (!Array.isArray(scanDepositData)) {
@@ -21,21 +22,12 @@ export default function Metadata({ publicProposal, chain }) {
     return null;
   }
 
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.voteSymbol || node.symbol;
-
+  const { decimals, symbol } = useChainSettings();
   const deposit = publicProposal.deposit;
   const metadata = [
     ["hash", publicProposal?.hash],
     ["deposit", `${toPrecision(getDeposit(deposit), decimals)} ${symbol}`],
-    [
-      "proposer",
-      <User add={publicProposal?.proposer} fontSize={14}/>,
-    ],
+    ["proposer", <User add={publicProposal?.proposer} fontSize={14} />],
   ];
 
   let call = publicProposal?.preImage?.call || publicProposal?.call;

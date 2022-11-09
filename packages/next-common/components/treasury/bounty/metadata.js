@@ -1,8 +1,9 @@
 import React, { memo } from "react";
 import KVList from "../../listInfo/kvList";
-import { getNode, toPrecision } from "../../../utils";
+import { toPrecision } from "../../../utils";
 import Anchor from "../../styled/anchor";
 import User from "../../user";
+import { useChainSettings } from "../../../context/chain";
 
 /**
  *
@@ -11,12 +12,7 @@ import User from "../../user";
  * @constructor
  */
 function BountyMetadata({ meta, chain }) {
-  const node = getNode(chain);
-  if (!node) {
-    throw new Error(`Can not get node info for chain ${chain}`);
-  }
-  const { symbol, decimals } = node;
-
+  const { decimals, symbol } = useChainSettings();
   if (!meta) {
     return null;
   }
@@ -33,7 +29,7 @@ function BountyMetadata({ meta, chain }) {
         break;
       case "proposer":
       case "beneficiary":
-        normalizedValue = <User add={value} fontSize={14}/>;
+        normalizedValue = <User add={value} fontSize={14} />;
         break;
       case "value":
       case "fee":
