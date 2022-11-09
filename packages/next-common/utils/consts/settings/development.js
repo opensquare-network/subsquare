@@ -31,6 +31,7 @@ const development = {
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   group: MenuGroups.Solochain,
+  noSubscan: true,
 };
 
 export default development;

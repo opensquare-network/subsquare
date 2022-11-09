@@ -6,7 +6,6 @@ import { estimateBlocksTime, getNode, toPrecision } from "../../../../utils";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "../../../../store/reducers/chainSlice";
 import styled from "styled-components";
-import { SubScanAccountLink } from "../../../links/subscanLink";
 import Flex from "../../../styled/flex";
 import Tooltip from "../../../tooltip";
 import { p_12_normal } from "../../../../styles/componentCss";
@@ -73,7 +72,6 @@ export default function Gov2ReferendumMetadata({ chain, detail }) {
       "Submission",
       <ValueWrapper>
         <User add={info?.submissionDeposit?.who} fontSize={14} />
-        <SubScanAccountLink address={info?.submissionDeposit?.who} />
         <BondValue
           deposit={info?.submissionDeposit?.amount}
           decimals={decimals}
@@ -86,7 +84,6 @@ export default function Gov2ReferendumMetadata({ chain, detail }) {
       info?.decisionDeposit ? (
         <ValueWrapper>
           <User add={info?.decisionDeposit?.who} fontSize={14} />
-          <SubScanAccountLink address={info?.decisionDeposit?.who} />
           <BondValue
             deposit={info?.decisionDeposit?.amount}
             decimals={decimals}

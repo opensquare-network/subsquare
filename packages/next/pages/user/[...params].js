@@ -2,7 +2,6 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import React from "react";
 import Profile from "next-common/components/profile";
-import { isKeyRegisteredUser } from "next-common/utils";
 
 export default withLoginUserRedux(Profile);
 
