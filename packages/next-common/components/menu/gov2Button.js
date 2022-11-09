@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { p_12_medium, p_14_medium } from "../../styles/componentCss";
 import Flex from "../styled/flex";

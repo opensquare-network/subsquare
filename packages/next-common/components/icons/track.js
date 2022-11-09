@@ -1,3 +1,4 @@
+import React from "react";
 import TrackAllIcon from "../../assets/imgs/icons/track-all.svg";
 import TrackDefaultIcon from "../../assets/imgs/icons/track-default.svg";
 import Track0Icon from "../../assets/imgs/icons/track-0.svg";
