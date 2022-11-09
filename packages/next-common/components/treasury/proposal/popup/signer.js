@@ -27,7 +27,6 @@ export default function Signer({
       />
       <SignerSelect
         api={api}
-        chain={chain}
         selectedAccount={signerAccount}
         setSelectedAccount={setSignerAccount}
         extensionAccounts={extensionAccounts}

@@ -15,7 +15,6 @@ import { emptyFunction } from "../../../../utils";
 
 function PopupContent({
   extensionAccounts,
-  chain,
   proposalIndex,
   depositorUpperBound,
   depositRequired,
@@ -65,17 +64,12 @@ function PopupContent({
   return (
     <>
       <Signer
-        chain={chain}
         api={api}
         extensionAccounts={extensionAccounts}
         useAddressVotingBalance={useAddressVotingBalance}
       />
-      <DepositRequired chain={chain} depositRequired={depositRequired} />
-      <SubmitButton
-        chain={chain}
-        onClick={submit}
-        depositRequired={depositRequired}
-      />
+      <DepositRequired depositRequired={depositRequired} />
+      <SubmitButton onClick={submit} depositRequired={depositRequired} />
     </>
   );
 }

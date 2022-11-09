@@ -105,7 +105,6 @@ function PopupContent({
     <>
       <Signer
         api={api}
-        chain={chain}
         isLoading={loadingState !== VoteLoadingEnum.None}
         extensionAccounts={extensionAccounts}
         selectedAccount={selectedAccount}

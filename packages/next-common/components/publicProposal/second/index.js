@@ -203,7 +203,6 @@ export default function Second({
       </Wrapper>
       {showPopup && (
         <Popup
-          chain={chain}
           proposalIndex={proposalIndex}
           depositorUpperBound={seconds.length}
           depositRequired={depositRequired}

@@ -18,6 +18,7 @@ import { WarningMessage } from "../../../popup/styled";
 import useBond from "../../../../utils/hooks/useBond";
 import { sendTx } from "../../../../utils/sendTx";
 import SecondaryButton from "../../../buttons/secondaryButton";
+import { useChainSettings } from "../../../../context/chain";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -38,7 +39,7 @@ function PopupContent({
   const [inputValue, setInputValue] = useState();
   const [loading, setLoading] = useState(false);
 
-  const node = getNode(chain);
+  const node = useChainSettings();
   const api = useApi();
 
   const proposalValue = new BigNumber(inputValue).times(
@@ -70,10 +71,6 @@ function PopupContent({
 
     if (!beneficiary) {
       return showErrorToast("Please input a beneficiary");
-    }
-
-    if (!node) {
-      return;
     }
 
     let bnValue;

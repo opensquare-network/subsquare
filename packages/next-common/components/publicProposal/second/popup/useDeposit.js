@@ -5,7 +5,7 @@ import useApi from "../../../../utils/hooks/useApi";
 import { StateContext } from "./stateContext";
 import isNil from "lodash.isnil";
 
-export default function useDeposit(chain, depositRequired) {
+export default function useDeposit(depositRequired) {
   const api = useApi();
   const { signerBalance } = useContext(StateContext);
 

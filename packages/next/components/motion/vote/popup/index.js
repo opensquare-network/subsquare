@@ -84,7 +84,6 @@ function PopupContent({
     <>
       <Signer
         api={api}
-        chain={chain}
         extensionAccounts={extensionAccounts}
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}

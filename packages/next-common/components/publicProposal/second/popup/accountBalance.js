@@ -6,8 +6,9 @@ import Loading from "../../../loading";
 import { StateContext } from "./stateContext";
 import { BalanceWrapper } from "../../../popup/styled";
 import { formatBalance } from "../../../../utils/viewfuncs";
+import { useChainSettings } from "../../../../context/chain";
 
-export default function AccountBalance({ chain, useAddressVotingBalance }) {
+export default function AccountBalance({ useAddressVotingBalance }) {
   const { signerAccount, setSignerBalance } = useContext(StateContext);
 
   const api = useApi();
@@ -20,7 +21,7 @@ export default function AccountBalance({ chain, useAddressVotingBalance }) {
     setSignerBalance(balance);
   }, [balance]);
 
-  const node = getNode(chain);
+  const node = useChainSettings();
   if (!node) {
     return null;
   }

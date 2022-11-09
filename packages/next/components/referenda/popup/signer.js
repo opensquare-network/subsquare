@@ -4,7 +4,6 @@ import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
 import useSetDefaultSigner from "next-common/utils/hooks/useSetDefaultSigner";
 
 export default function Signer({
-  chain,
   node,
   api,
   votingIsLoading,
@@ -26,7 +25,6 @@ export default function Signer({
         symbol={node.symbol}
       />
       <SignerSelect
-        chain={chain}
         api={api}
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}
