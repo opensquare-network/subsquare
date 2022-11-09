@@ -21,10 +21,10 @@ const Wrapper = styled.div`
   justify-content: space-between;
 `;
 
-const Login = withLoginUserRedux(({ loginUser, chain }) => {
+const Login = withLoginUserRedux(({ chain }) => {
   const [web3, setWeb3] = useState(true);
   return (
-    <BaseLayout user={loginUser} chain={chain}>
+    <BaseLayout>
       <NextHead title={`Login`} desc={`Login`} />
       <Wrapper>
         <ContentCenterWrapper>

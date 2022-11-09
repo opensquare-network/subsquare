@@ -19,7 +19,7 @@ const Create = styled.a`
   cursor: pointer;
 `;
 
-export default withLoginUserRedux(({ loginUser, posts, chain }) => {
+export default withLoginUserRedux(({ posts, chain }) => {
   const items = (posts.items || []).map((item) =>
     toDiscussionListItem(chain, item)
   );
@@ -34,9 +34,8 @@ export default withLoginUserRedux(({ loginUser, posts, chain }) => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <HomeLayout user={loginUser} seoInfo={seoInfo}>
+    <HomeLayout seoInfo={seoInfo}>
       <PostList
-        chain={chain}
         category={"Discussions"}
         create={create}
         items={items}

@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { web3FromSource } from "@polkadot/extension-dapp";
 import AddressSelect from "./addressSelect";
+import { useChain } from "../context/chain";
 
 export default function SignerSelect({
-  chain,
   api,
   extensionAccounts,
   selectedAccount,
   setSelectedAccount,
   disabled,
 }) {
+  const chain = useChain();
   const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {

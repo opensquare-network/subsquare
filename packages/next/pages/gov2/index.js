@@ -9,22 +9,18 @@ import {
 import Gov2Summary from "next-common/components/summary/gov2Summary";
 import Gov2Page from "components/gov2/gov2Page";
 
-export default withLoginUserRedux(
-  ({ loginUser, chain, posts, title, tracks, summary }) => {
-    const summaryComponent = <Gov2Summary summary={summary} />;
+export default withLoginUserRedux(({ posts, title, tracks, summary }) => {
+  const summaryComponent = <Gov2Summary summary={summary} />;
 
-    return (
-      <Gov2Page
-        loginUser={loginUser}
-        chain={chain}
-        posts={posts}
-        title={title}
-        tracks={tracks}
-        summary={summaryComponent}
-      />
-    );
-  }
-);
+  return (
+    <Gov2Page
+      posts={posts}
+      title={title}
+      tracks={tracks}
+      summary={summaryComponent}
+    />
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { page = 1, page_size: pageSize = 50 } = context.query;

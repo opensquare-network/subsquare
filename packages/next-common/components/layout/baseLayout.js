@@ -1,13 +1,20 @@
 import React, { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { currentNodeSelector } from "../../store/reducers/nodeSlice";
 import useApi from "../../utils/hooks/useApi";
-import { useBlockTime, useChainHeight, useSubscribeChainHead, } from "../../utils/hooks";
+import {
+  useBlockTime,
+  useChainHeight,
+  useSubscribeChainHead,
+} from "../../utils/hooks";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import dark from "../styled/theme/dark";
 import light from "../styled/theme/light";
-import { setBlockTime, setLatestHeight, setNowHeight, } from "../../store/reducers/chainSlice";
+import {
+  setBlockTime,
+  setLatestHeight,
+  setNowHeight,
+} from "../../store/reducers/chainSlice";
 import SEO from "../SEO";
 import capitalize from "../../utils/capitalize";
 import { DEFAULT_SEO_INFO } from "../../utils/constants";
@@ -17,6 +24,7 @@ import Content from "./content";
 import Toast from "../toast";
 import { modeSelector } from "../../store/reducers/settingSlice";
 import useUpdateNodesDelay from "../../utils/hooks/useUpdateNodesDelay";
+import { useChain } from "../../context/chain";
 
 const Wrapper = styled.div`
   display: flex;
@@ -33,11 +41,10 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-export default function BaseLayout({ user, left, children, seoInfo }) {
-  const chain = process.env.NEXT_PUBLIC_CHAIN;
+export default function BaseLayout({ left, children, seoInfo }) {
+  const chain = useChain();
 
-  const endpoint = useSelector(currentNodeSelector);
-  const api = useApi(chain, endpoint);
+  const api = useApi();
   const blockTime = useBlockTime(api);
   const latestHeight = useSubscribeChainHead(api);
   const nowHeight = useChainHeight(api);

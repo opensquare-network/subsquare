@@ -16,7 +16,6 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
     detail: motion,
     comments,
     loginUser,
-    chain,
     type: detailPageCategory.TECH_COMM_MOTION,
   });
 
@@ -26,8 +25,11 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
   return (
     <PostProvider post={motion} type={detailPageCategory.TECH_COMM_MOTION}>
       <DetailWithRightLayout
-        user={loginUser}
-        seoInfo={{ title: motion?.title, desc, ogImage: getBannerUrl(motion?.bannerCid) }}
+        seoInfo={{
+          title: motion?.title,
+          desc,
+          ogImage: getBannerUrl(motion?.bannerCid),
+        }}
       >
         <Back href={`/techcomm/proposals`} text="Back to Proposals" />
         <MotionDetail

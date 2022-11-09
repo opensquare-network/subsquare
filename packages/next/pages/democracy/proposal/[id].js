@@ -20,76 +20,79 @@ import { useCallback, useEffect, useState } from "react";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 
-export default withLoginUserRedux(({ loginUser, detail: ssrDetail, comments, chain }) => {
-  const [detail, setDetail] = useState(ssrDetail);
-  useEffect(() => setDetail(ssrDetail), [ssrDetail]);
-  const isMounted = useIsMounted();
+export default withLoginUserRedux(
+  ({ loginUser, detail: ssrDetail, comments, chain }) => {
+    const [detail, setDetail] = useState(ssrDetail);
+    useEffect(() => setDetail(ssrDetail), [ssrDetail]);
+    const isMounted = useIsMounted();
 
-  const { CommentComponent, focusEditor } = useUniversalComments({
-    detail,
-    comments,
-    loginUser,
-    chain,
-    type: detailPageCategory.DEMOCRACY_PROPOSAL,
-  });
+    const { CommentComponent, focusEditor } = useUniversalComments({
+      detail,
+      comments,
+      loginUser,
+      type: detailPageCategory.DEMOCRACY_PROPOSAL,
+    });
 
-  const publicProposal = detail?.onchainData;
-  const proposalIndex = publicProposal?.proposalIndex;
-  const state = publicProposal?.state?.state;
-  const isEnded = ["Tabled", "Canceled", "Cleared"].includes(state);
-  const hasTurnIntoReferendum = !isNil(publicProposal.referendumIndex);
-  const hasCanceled = ["Canceled", "Cleared"].includes(state);
+    const publicProposal = detail?.onchainData;
+    const proposalIndex = publicProposal?.proposalIndex;
+    const state = publicProposal?.state?.state;
+    const isEnded = ["Tabled", "Canceled", "Cleared"].includes(state);
+    const hasTurnIntoReferendum = !isNil(publicProposal.referendumIndex);
+    const hasCanceled = ["Canceled", "Cleared"].includes(state);
 
-  const timeline = publicProposal?.timeline;
-  const lastTimelineBlockHeight =
-    timeline?.[timeline?.length - 1]?.indexer.blockHeight;
-  const secondsAtBlockHeight = isEnded
-    ? lastTimelineBlockHeight - 1
-    : undefined;
+    const timeline = publicProposal?.timeline;
+    const lastTimelineBlockHeight =
+      timeline?.[timeline?.length - 1]?.indexer.blockHeight;
+    const secondsAtBlockHeight = isEnded
+      ? lastTimelineBlockHeight - 1
+      : undefined;
 
-  const refreshPageData = useCallback(
-    async () => {
-        const { result } = await nextApi.fetch(
-          `democracy/proposals/${detail.proposalIndex}`
-        );
-        if (result && isMounted.current) {
-          setDetail(result);
-        }
-    },
-    [detail, isMounted]
-  );
+    const refreshPageData = useCallback(async () => {
+      const { result } = await nextApi.fetch(
+        `democracy/proposals/${detail.proposalIndex}`
+      );
+      if (result && isMounted.current) {
+        setDetail(result);
+      }
+    }, [detail, isMounted]);
 
-  const onSecondFinalized = useWaitSyncBlock("Proposal seconded", refreshPageData);
+    const onSecondFinalized = useWaitSyncBlock(
+      "Proposal seconded",
+      refreshPageData
+    );
 
-  const desc = getMetaDesc(detail);
-  return (
-    <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_PROPOSAL}>
-      <DetailWithRightLayout
-        user={loginUser}
-        seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
-      >
-        <Back href={`/democracy/proposals`} text="Back to Proposals" />
-        <DetailItem
-          chain={chain}
-          onReply={focusEditor}
-          type={detailPageCategory.DEMOCRACY_PROPOSAL}
-        />
-        <Second
-          chain={chain}
-          proposalIndex={proposalIndex}
-          hasTurnIntoReferendum={hasTurnIntoReferendum}
-          hasCanceled={hasCanceled}
-          useAddressVotingBalance={useAddressBalance}
-          atBlockHeight={secondsAtBlockHeight}
-          onFinalized={onSecondFinalized}
-        />
-        <Metadata publicProposal={detail?.onchainData} chain={chain} />
-        <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
-        {CommentComponent}
-      </DetailWithRightLayout>
-    </PostProvider>
-  );
-});
+    const desc = getMetaDesc(detail);
+    return (
+      <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_PROPOSAL}>
+        <DetailWithRightLayout
+          seoInfo={{
+            title: detail?.title,
+            desc,
+            ogImage: getBannerUrl(detail?.bannerCid),
+          }}
+        >
+          <Back href={`/democracy/proposals`} text="Back to Proposals" />
+          <DetailItem
+            onReply={focusEditor}
+            type={detailPageCategory.DEMOCRACY_PROPOSAL}
+          />
+          <Second
+            chain={chain}
+            proposalIndex={proposalIndex}
+            hasTurnIntoReferendum={hasTurnIntoReferendum}
+            hasCanceled={hasCanceled}
+            useAddressVotingBalance={useAddressBalance}
+            atBlockHeight={secondsAtBlockHeight}
+            onFinalized={onSecondFinalized}
+          />
+          <Metadata publicProposal={detail?.onchainData} chain={chain} />
+          <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
+          {CommentComponent}
+        </DetailWithRightLayout>
+      </PostProvider>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;

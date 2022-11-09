@@ -1,17 +1,17 @@
 import SignerSelect from "next-common/components/signerSelect";
 import Loading from "next-common/components/loading";
 import {
+  BalanceWrapper,
   Label,
   LabelWrapper,
-  BalanceWrapper,
 } from "next-common/components/popup/styled";
-import { getNode, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
 import { formatBalance } from "next-common/utils/viewfuncs";
 import useSetDefaultSigner from "next-common/utils/hooks/useSetDefaultSigner";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function Signer({
   api,
-  chain,
   isLoading,
   extensionAccounts,
   selectedAccount,
@@ -21,7 +21,7 @@ export default function Signer({
   votingBalance,
   symbol,
 }) {
-  const node = getNode(chain);
+  const node = useChainSettings();
   const balance = toPrecision(votingBalance, node.decimals);
 
   useSetDefaultSigner(extensionAccounts, setSelectedAccount);
@@ -45,7 +45,6 @@ export default function Signer({
       </LabelWrapper>
       <SignerSelect
         api={api}
-        chain={chain}
         extensionAccounts={extensionAccounts}
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}

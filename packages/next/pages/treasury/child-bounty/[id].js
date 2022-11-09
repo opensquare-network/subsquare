@@ -55,32 +55,36 @@ export default withLoginUserRedux(
       detail,
       comments,
       loginUser,
-      chain,
       type: detailPageCategory.TREASURY_CHILD_BOUNTY,
     });
 
-    const refreshPageData = useCallback(
-      async () => {
-          const { result } = await nextApi.fetch(
-            `treasury/child-bounties/${detail.parentBountyId}_${detail.index}`
-          );
-          if (result && isMounted.current) {
-            setDetail(result);
-          }
-      },
-      [detail, isMounted]
-    );
+    const refreshPageData = useCallback(async () => {
+      const { result } = await nextApi.fetch(
+        `treasury/child-bounties/${detail.parentBountyId}_${detail.index}`
+      );
+      if (result && isMounted.current) {
+        setDetail(result);
+      }
+    }, [detail, isMounted]);
 
-    const onClaimFinalized = useWaitSyncBlock("Child bounty claimed", refreshPageData);
+    const onClaimFinalized = useWaitSyncBlock(
+      "Child bounty claimed",
+      refreshPageData
+    );
 
     const desc = getMetaDesc(detail);
 
-    const showRightSidePanel = ["PendingPayout", "Claimed"].includes(detail?.onchainData?.state?.state);
+    const showRightSidePanel = ["PendingPayout", "Claimed"].includes(
+      detail?.onchainData?.state?.state
+    );
 
     const Layout = showRightSidePanel ? DetailWithRightLayout : DetailLayout;
 
     return (
-      <PostProvider post={detail} type={detailPageCategory.TREASURY_CHILD_BOUNTY}>
+      <PostProvider
+        post={detail}
+        type={detailPageCategory.TREASURY_CHILD_BOUNTY}
+      >
         <Layout
           user={loginUser}
           seoInfo={{
@@ -89,9 +93,11 @@ export default withLoginUserRedux(
             ogImage: getBannerUrl(detail?.bannerCid),
           }}
         >
-          <Back href={`/treasury/child-bounties`} text="Back to Child Bounties" />
+          <Back
+            href={`/treasury/child-bounties`}
+            text="Back to Child Bounties"
+          />
           <DetailItem
-            chain={chain}
             onReply={focusEditor}
             type={detailPageCategory.TREASURY_CHILD_BOUNTY}
             countDown={<ChildBountyCountDown data={detail.onchainData} />}

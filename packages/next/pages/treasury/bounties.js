@@ -6,7 +6,7 @@ import { toTreasuryBountyListItem } from "utils/viewfuncs";
 import Summary from "next-common/components/summary";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 
-export default withLoginUserRedux(({ loginUser, bounties, chain }) => {
+export default withLoginUserRedux(({ bounties, chain }) => {
   const items = (bounties.items || []).map((item) =>
     toTreasuryBountyListItem(chain, item)
   );
@@ -14,13 +14,12 @@ export default withLoginUserRedux(({ loginUser, bounties, chain }) => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <HomeLayout user={loginUser} seoInfo={seoInfo}>
+    <HomeLayout seoInfo={seoInfo}>
       <PostList
-        chain={chain}
         category={category}
         create={null}
         items={items}
-        summary={<Summary chain={chain} />}
+        summary={<Summary />}
         pagination={{
           page: bounties.page,
           pageSize: bounties.pageSize,

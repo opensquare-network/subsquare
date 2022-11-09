@@ -20,7 +20,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     detail,
     comments,
     loginUser,
-    chain,
     type: detailPageCategory.DEMOCRACY_EXTERNAL,
   });
 
@@ -34,11 +33,14 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
     <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_EXTERNAL}>
       <DetailLayout
         user={loginUser}
-        seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
+        seoInfo={{
+          title: detail?.title,
+          desc,
+          ogImage: getBannerUrl(detail?.bannerCid),
+        }}
       >
         <Back href={`/democracy/externals`} text="Back to Externals" />
         <DetailItem
-          chain={chain}
           onReply={focusEditor}
           type={detailPageCategory.DEMOCRACY_EXTERNAL}
         />

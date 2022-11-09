@@ -20,64 +20,61 @@ const Popup = dynamic(
   }
 );
 
-export default withLoginUserRedux(
-  ({ loginUser, proposals: ssrProposals, chain }) => {
-    const [showPopup, setShowPopup] = useState(false);
-    const [proposals, setProposals] = useState(ssrProposals);
-    useEffect(() => setProposals(ssrProposals), [ssrProposals]);
-    const isMounted = useIsMounted();
+export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
+  const [showPopup, setShowPopup] = useState(false);
+  const [proposals, setProposals] = useState(ssrProposals);
+  useEffect(() => setProposals(ssrProposals), [ssrProposals]);
+  const isMounted = useIsMounted();
 
-    const items = (proposals.items || []).map((item) =>
-      toTreasuryProposalListItem(chain, item)
-    );
+  const items = (proposals.items || []).map((item) =>
+    toTreasuryProposalListItem(chain, item)
+  );
 
-    const create = (
-      <Create onClick={() => setShowPopup(true)}>
-        <PlusIcon />
-        New Proposal
-      </Create>
-    );
+  const create = (
+    <Create onClick={() => setShowPopup(true)}>
+      <PlusIcon />
+      New Proposal
+    </Create>
+  );
 
-    const refreshPageData = useCallback(
-      async () => {
-          const { result } = await nextApi.fetch(`treasury/proposals`);
-          if (result && isMounted.current) {
-            setProposals(result);
-          }
-      },
-      [isMounted]
-    );
+  const refreshPageData = useCallback(async () => {
+    const { result } = await nextApi.fetch(`treasury/proposals`);
+    if (result && isMounted.current) {
+      setProposals(result);
+    }
+  }, [isMounted]);
 
-    const onProposeFinalized = useWaitSyncBlock("Proposal proposed", refreshPageData);
+  const onProposeFinalized = useWaitSyncBlock(
+    "Proposal proposed",
+    refreshPageData
+  );
 
-    const category = businessCategory.treasuryProposals;
-    const seoInfo = { title: category, desc: category };
+  const category = businessCategory.treasuryProposals;
+  const seoInfo = { title: category, desc: category };
 
-    return (
-      <HomeLayout user={loginUser} seoInfo={seoInfo}>
-        <PostList
+  return (
+    <HomeLayout seoInfo={seoInfo}>
+      <PostList
+        category={category}
+        create={create}
+        items={items}
+        summary={<Summary />}
+        pagination={{
+          page: proposals.page,
+          pageSize: proposals.pageSize,
+          total: proposals.total,
+        }}
+      />
+      {showPopup && (
+        <Popup
           chain={chain}
-          category={category}
-          create={create}
-          items={items}
-          summary={<Summary chain={chain} />}
-          pagination={{
-            page: proposals.page,
-            pageSize: proposals.pageSize,
-            total: proposals.total,
-          }}
+          onClose={() => setShowPopup(false)}
+          onFinalized={onProposeFinalized}
         />
-        {showPopup && (
-          <Popup
-            chain={chain}
-            onClose={() => setShowPopup(false)}
-            onFinalized={onProposeFinalized}
-          />
-        )}
-      </HomeLayout>
-    );
-  }
-);
+      )}
+    </HomeLayout>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;

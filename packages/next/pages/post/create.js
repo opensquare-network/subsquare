@@ -30,7 +30,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   }, [loginUser, router]);
 
   return (
-    <BaseLayout user={loginUser} chain={chain}>
+    <BaseLayout>
       <NextHead title={`Create post`} desc={``} />
       <Wrapper>
         <Back href={`/discussions`} text="Back to Discussions" />

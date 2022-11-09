@@ -20,6 +20,7 @@ import businessCategory from "../utils/consts/business/category";
 import useDuration from "../utils/hooks/useDuration";
 import { getMotionStateArgs } from "../utils/collective/result";
 import { getGov2ReferendumStateArgs } from "../utils/gov2/result";
+import { useChain } from "../context/chain";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -169,7 +170,9 @@ const BannerWrapper = styled.div`
   }
 `;
 
-export default function Post({ data, chain, href, type }) {
+export default function Post({ data, href, type }) {
+  const chain = useChain();
+
   let stateArgs;
   if (
     [

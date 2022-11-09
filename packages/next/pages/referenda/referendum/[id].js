@@ -16,16 +16,15 @@ import {
 } from "next-common/services/url";
 import Timeline from "components/gov2/timeline";
 import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metadata";
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
+import useApi from "next-common/utils/hooks/useApi";
 
 export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
-  const api = useApi(chain);
+  const api = useApi();
 
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
     loginUser,
-    chain,
     type: detailPageCategory.GOV2_REFERENDUM,
   });
 
@@ -34,7 +33,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   return (
     <PostProvider post={detail} type={detailPageCategory.GOV2_REFERENDUM}>
       <DetailWithRightLayout
-        user={loginUser}
         seoInfo={{
           title: detail?.title,
           desc,
@@ -45,7 +43,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 
         <DetailItem
           onReply={focusEditor}
-          chain={chain}
           type={detailPageCategory.GOV2_REFERENDUM}
         />
 

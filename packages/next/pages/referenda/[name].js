@@ -12,15 +12,13 @@ import Gov2Page from "components/gov2/gov2Page";
 import Gov2TrackSummary from "next-common/components/summary/gov2TrackSummary";
 
 export default withLoginUserRedux(
-  ({ loginUser, chain, posts, title, tracks, summary, period }) => {
+  ({ posts, title, tracks, summary, period }) => {
     const summaryComponent = (
       <Gov2TrackSummary summary={summary} period={period} />
     );
 
     return (
       <Gov2Page
-        loginUser={loginUser}
-        chain={chain}
         posts={posts}
         title={title}
         tracks={tracks}

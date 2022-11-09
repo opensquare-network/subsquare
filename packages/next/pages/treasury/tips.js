@@ -19,21 +19,18 @@ const Popup = dynamic(
   }
 );
 
-export default withLoginUserRedux(({ loginUser, tips: ssrTips, chain }) => {
+export default withLoginUserRedux(({ tips: ssrTips, chain }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [tips, setTips] = useState(ssrTips);
   useEffect(() => setTips(ssrTips), [ssrTips]);
   const isMounted = useIsMounted();
 
-  const refreshPageData = useCallback(
-    async () => {
-        const { result } = await nextApi.fetch(`treasury/tips`);
-        if (result && isMounted.current) {
-          setTips(result);
-        }
-    },
-    [isMounted]
-  );
+  const refreshPageData = useCallback(async () => {
+    const { result } = await nextApi.fetch(`treasury/tips`);
+    if (result && isMounted.current) {
+      setTips(result);
+    }
+  }, [isMounted]);
 
   const onNewTipFinalized = useWaitSyncBlock("Tip created", refreshPageData);
 
@@ -49,13 +46,12 @@ export default withLoginUserRedux(({ loginUser, tips: ssrTips, chain }) => {
   );
 
   return (
-    <HomeLayout user={loginUser} seoInfo={seoInfo}>
+    <HomeLayout seoInfo={seoInfo}>
       <PostList
-        chain={chain}
         category={category}
         create={create}
         items={items}
-        summary={<Summary chain={chain} />}
+        summary={<Summary />}
         pagination={{
           page: tips.page,
           pageSize: tips.pageSize,

@@ -104,7 +104,7 @@ const FormWrapper = styled.form`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser, chain }) => {
+export default withLoginUserRedux(({ loginUser }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [success, setSuccess] = useState(!!loginUser);
@@ -183,7 +183,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   }, [sendEmailState, countdown, isMounted, router]);
 
   return (
-    <BaseLayout user={loginUser} chain={chain}>
+    <BaseLayout>
       <NextHead title={`Signup`} desc={`Signup`} />
       <Wrapper>
         {!success && (
@@ -273,11 +273,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   return {
-    props: {
-      chain,
-    },
+    props: {},
   };
 });

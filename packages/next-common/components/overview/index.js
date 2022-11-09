@@ -46,7 +46,6 @@ export default function Overview({ overviewData, chain }) {
         if (item) {
           return (
             <PostList
-              chain={chain}
               key={index}
               category={item.category}
               items={item.items}

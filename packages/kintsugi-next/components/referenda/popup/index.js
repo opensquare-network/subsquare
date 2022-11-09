@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 import isNil from "lodash.isnil";
 import { useAddressVote, useAddressVotingBalance } from "utils/hooks";
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
+import useApi from "next-common/utils/hooks/useApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue, emptyFunction, getNode } from "next-common/utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
@@ -14,21 +14,22 @@ import VotingStatus from "./votingStatus";
 import VoteButton from "next-common/components/popup/voteButton";
 import { sendTx } from "next-common/utils/sendTx";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
+import { useChain } from "next-common/context/chain";
 
 function PopupContent({
   extensionAccounts,
-  chain,
   referendumIndex,
   onClose,
   onSubmitted = emptyFunction,
   onFinalized = emptyFunction,
   onInBlock = emptyFunction,
 }) {
+  const chain = useChain();
   const dispatch = useDispatch();
   const [selectedAccount, setSelectedAccount] = useState(null);
   const node = getNode(chain);
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
-  const api = useApi(chain);
+  const api = useApi();
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
     selectedAccount?.address
@@ -105,7 +106,6 @@ function PopupContent({
     <>
       <Signer
         api={api}
-        chain={chain}
         isLoading={loadingState !== VoteLoadingEnum.None}
         extensionAccounts={extensionAccounts}
         selectedAccount={selectedAccount}

@@ -3,9 +3,9 @@ import BaseLayout from "./baseLayout";
 import OutWrapper from "../styled/outWrapper";
 import MainCard from "../styled/mainCard";
 
-export default function DetailWithRightLayout({ user, children, seoInfo }) {
+export default function DetailWithRightLayout({ children, seoInfo }) {
   return (
-    <BaseLayout user={user} seoInfo={seoInfo}>
+    <BaseLayout seoInfo={seoInfo}>
       <OutWrapper>
         <MainCard className="post-content">{children}</MainCard>
       </OutWrapper>

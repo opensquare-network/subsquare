@@ -1,14 +1,20 @@
 import React from "react";
 import { createContext, useContext } from "react";
+import getChainSettings from "../utils/consts/settings";
 
 const ChainContext = createContext(process.env.NEXT_PUBLIC_CHAIN);
 
 export default function ChainProvider({ chain, children }) {
-  return <ChainContext.Provider value={ chain }>
-      { children }
-  </ChainContext.Provider>
+  return (
+    <ChainContext.Provider value={chain}>{children}</ChainContext.Provider>
+  );
 }
 
 export function useChain() {
   return useContext(ChainContext);
+}
+
+export function useChainSettings() {
+  const chain = useChain();
+  return getChainSettings(chain);
 }

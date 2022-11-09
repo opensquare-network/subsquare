@@ -5,7 +5,7 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { toFinancialMotionsListItem } from "utils/viewfuncs";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 
-export default withLoginUserRedux(({ loginUser, motions, chain }) => {
+export default withLoginUserRedux(({ motions, chain }) => {
   const items = (motions.items || []).map((item) =>
     toFinancialMotionsListItem(chain, item)
   );
@@ -13,9 +13,8 @@ export default withLoginUserRedux(({ loginUser, motions, chain }) => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <HomeLayout user={loginUser} seoInfo={seoInfo}>
+    <HomeLayout seoInfo={seoInfo}>
       <PostList
-        chain={chain}
         category={category}
         create={null}
         items={items}

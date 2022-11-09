@@ -7,7 +7,7 @@ import User from "../../user";
 import Loading from "../../loading";
 import { emptyFunction } from "../../../utils";
 import useDepositOf from "../../../utils/hooks/useDepositOf";
-import useApi from "../../../utils/hooks/useSelectedEnpointApi";
+import useApi from "../../../utils/hooks/useApi";
 import { getNode } from "next-common/utils";
 import Tooltip from "../../tooltip";
 import SecondaryButton from "../../buttons/secondaryButton";
@@ -110,7 +110,7 @@ export default function Second({
   const [showPopup, setShowPopup] = useState(false);
   const [expand, setExpand] = useState(false);
 
-  const api = useApi(chain);
+  const api = useApi();
   const [triggerUpdate, setTriggerUpdate] = useState(0);
   const [seconds, depositRequired, isLoadingSeconds] = useDepositOf(
     api,
@@ -203,7 +203,6 @@ export default function Second({
       </Wrapper>
       {showPopup && (
         <Popup
-          chain={chain}
           proposalIndex={proposalIndex}
           depositorUpperBound={seconds.length}
           depositRequired={depositRequired}

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
+import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
@@ -61,7 +61,7 @@ function PopupContent({
     selectedAddress,
     councilTippers
   );
-  const api = useApi(chain);
+  const api = useApi();
 
   useEffect(() => {
     if (balanceMap.has(selectedAddress)) {
@@ -138,7 +138,6 @@ function PopupContent({
         />
         <SignerSelect
           api={api}
-          chain={chain}
           selectedAccount={selectedAccount}
           setSelectedAccount={setSelectedAccount}
           extensionAccounts={extensionAccounts}

@@ -1,16 +1,17 @@
 import React, { useContext, useEffect } from "react";
 
-import useApi from "../../../../utils/hooks/useSelectedEnpointApi";
+import useApi from "../../../../utils/hooks/useApi";
 import { getNode, toPrecision } from "../../../../utils";
 import Loading from "../../../loading";
 import { StateContext } from "./stateContext";
 import { BalanceWrapper } from "../../../popup/styled";
 import { formatBalance } from "../../../../utils/viewfuncs";
+import { useChainSettings } from "../../../../context/chain";
 
-export default function AccountBalance({ chain, useAddressVotingBalance }) {
+export default function AccountBalance({ useAddressVotingBalance }) {
   const { signerAccount, setSignerBalance } = useContext(StateContext);
 
-  const api = useApi(chain);
+  const api = useApi();
   const [balance, loadingBalance] = useAddressVotingBalance(
     api,
     signerAccount?.address
@@ -20,7 +21,7 @@ export default function AccountBalance({ chain, useAddressVotingBalance }) {
     setSignerBalance(balance);
   }, [balance]);
 
-  const node = getNode(chain);
+  const node = useChainSettings();
   if (!node) {
     return null;
   }
