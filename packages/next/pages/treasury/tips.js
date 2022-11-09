@@ -52,7 +52,7 @@ export default withLoginUserRedux(({ tips: ssrTips, chain }) => {
         category={category}
         create={create}
         items={items}
-        summary={<Summary chain={chain} />}
+        summary={<Summary />}
         pagination={{
           page: tips.page,
           pageSize: tips.pageSize,

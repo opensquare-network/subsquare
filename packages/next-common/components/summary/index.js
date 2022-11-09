@@ -19,6 +19,7 @@ import BigNumber from "bignumber.js";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
 import Content from "./cardContent";
+import { useChainSettings } from "../../context/chain";
 
 const Wrapper = styled.div`
   display: flex;
@@ -59,17 +60,17 @@ const CountDownWrapper = styled.div`
   margin-top: 0 !important;
 `;
 
-export default function Summary({ chain }) {
+export default function Summary() {
   const [summary, setSummary] = useState({});
   const api = useApi();
-  const node = getNode(chain);
+  const node = useChainSettings();
   const blockTime = useSelector(blockTimeSelector);
   const blockHeight = useSelector(latestHeightSelector);
 
   const decimals = node?.decimals;
   const symbol = node?.symbol;
 
-  const free = useTreasuryFree(api, chain);
+  const free = useTreasuryFree(api);
   const nextBurn = useTreasuryBurn(api, free);
   const isMounted = useIsMountedBool();
 

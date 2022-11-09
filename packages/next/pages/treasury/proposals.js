@@ -58,7 +58,7 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
         category={category}
         create={create}
         items={items}
-        summary={<Summary chain={chain} />}
+        summary={<Summary />}
         pagination={{
           page: proposals.page,
           pageSize: proposals.pageSize,

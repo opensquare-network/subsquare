@@ -20,7 +20,7 @@ export default withLoginUserRedux(({ bounties, chain }) => {
         category={category}
         create={null}
         items={items}
-        summary={<Summary chain={chain} />}
+        summary={<Summary />}
         pagination={{
           page: bounties.page,
           pageSize: bounties.pageSize,
