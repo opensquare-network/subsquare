@@ -1,6 +1,6 @@
 import MembersList from "components/membersList/councilMembersList";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
+import useApi from "next-common/utils/hooks/useApi";
 import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
 import { getNode } from "next-common/utils";
@@ -11,7 +11,7 @@ import HomeLayout from "next-common/components/layout/HomeLayout";
 export default withLoginUserRedux(({ chain }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const api = useApi(chain);
+  const api = useApi();
   const node = getNode(chain);
   const electionsInfo = useCall(api?.derive?.elections?.info, []);
   const allVotes = useCall(api?.derive?.council?.votes, []);

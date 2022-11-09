@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import BigNumber from "bignumber.js";
 
-import useApi from "../../../../utils/hooks/useSelectedEnpointApi";
+import useApi from "../../../../utils/hooks/useApi";
 import useIsMounted from "../../../../utils/hooks/useIsMounted";
 import { newErrorToast } from "../../../../store/reducers/toastSlice";
 
@@ -39,8 +39,7 @@ function PopupContent({
   const [loading, setLoading] = useState(false);
 
   const node = getNode(chain);
-
-  const api = useApi(chain);
+  const api = useApi();
 
   const proposalValue = new BigNumber(inputValue).times(
     Math.pow(10, node.decimals)

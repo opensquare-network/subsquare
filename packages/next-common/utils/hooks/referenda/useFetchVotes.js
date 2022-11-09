@@ -5,15 +5,13 @@ import {
   fetchVotes,
   votesSelector,
 } from "../../../store/reducers/referendumSlice";
-import useApi from "../useSelectedEnpointApi";
-import { useChain } from "../../../context/chain";
+import useApi from "../useApi";
 
 export default function useFetchVotes(referendum) {
   const { allAye = [], allNay = [] } = useSelector(votesSelector);
   const { voteFinishedHeight } = extractVoteInfo(referendum?.timeline);
   const referendumIndex = referendum?.referendumIndex;
-  const chain = useChain();
-  const api = useApi(chain);
+  const api = useApi();
 
   const dispatch = useDispatch();
 

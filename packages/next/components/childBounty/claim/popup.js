@@ -2,14 +2,10 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
+import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import {
-  emptyFunction,
-  getNode,
-  toPrecision,
-} from "next-common/utils";
+import { emptyFunction, getNode, toPrecision } from "next-common/utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import SignerSelect from "next-common/components/signerSelect";
 import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
@@ -44,7 +40,7 @@ function PopupContent({
 
   useSetDefaultSigner(extensionAccounts, setSelectedAccount);
 
-  const api = useApi(chain);
+  const api = useApi();
 
   useEffect(() => {
     if (balanceMap.has(selectedAccount?.address)) {
@@ -78,7 +74,10 @@ function PopupContent({
       return;
     }
 
-    const tx = api.tx.childBounties.claimChildBounty(childBounty.parentBountyId, childBounty.index);
+    const tx = api.tx.childBounties.claimChildBounty(
+      childBounty.parentBountyId,
+      childBounty.index
+    );
 
     await sendTx({
       tx,
@@ -93,7 +92,10 @@ function PopupContent({
     });
   };
 
-  const showWarning = !isSameAddress(selectedAccount?.address, childBounty?.beneficiary);
+  const showWarning = !isSameAddress(
+    selectedAccount?.address,
+    childBounty?.beneficiary
+  );
   const warningContent = showWarning && (
     <WarningMessage danger>Only beneficiary can claim rewards.</WarningMessage>
   );
@@ -127,5 +129,11 @@ function PopupContent({
 }
 
 export default function Popup(props) {
-  return <PopupWithAddress title="Claim reward" Component={PopupContent} {...props} />;
+  return (
+    <PopupWithAddress
+      title="Claim reward"
+      Component={PopupContent}
+      {...props}
+    />
+  );
 }

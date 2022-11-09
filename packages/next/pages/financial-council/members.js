@@ -1,6 +1,6 @@
 import MembersList from "next-common/components/membersList/techCommMembersList";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
+import useApi from "next-common/utils/hooks/useApi";
 import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
 import usePrime from "next-common/utils/hooks/usePrime";
@@ -10,7 +10,7 @@ import HomeLayout from "next-common/components/layout/HomeLayout";
 export default withLoginUserRedux(({ chain }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const api = useApi(chain);
+  const api = useApi();
   const members = useCall(api?.query?.financialCouncil?.members, []);
   const prime = usePrime({ chain, type: detailPageCategory.FINANCIAL_MOTION });
   useEffect(() => {

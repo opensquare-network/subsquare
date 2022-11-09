@@ -1,7 +1,12 @@
 import styled from "styled-components";
 import { useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { emptyFunction, getNode, isSameAddress, toPrecision } from "next-common/utils";
+import {
+  emptyFunction,
+  getNode,
+  isSameAddress,
+  toPrecision,
+} from "next-common/utils";
 import Loading from "next-common/components/loading";
 import { GhostCard } from "next-common/components/styled/containers/ghostCard";
 import Flex from "next-common/components/styled/flex";
@@ -9,7 +14,7 @@ import { StatisticTitleContainer } from "next-common/components/styled/container
 import Anchor from "next-common/components/styled/anchor";
 import User from "next-common/components/user";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
+import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { shadow_100 } from "next-common/styles/componentCss";
 import ValueDisplay from "next-common/components/displayValue";
@@ -91,7 +96,12 @@ const ClaimInfoText = styled.div`
   }
 `;
 
-export default function Claim({ chain, childBounty, onInBlock = emptyFunction, onFinalized = emptyFunction }) {
+export default function Claim({
+  chain,
+  childBounty,
+  onInBlock = emptyFunction,
+  onFinalized = emptyFunction,
+}) {
   const user = useUser();
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -100,7 +110,7 @@ export default function Claim({ chain, childBounty, onInBlock = emptyFunction, o
   );
   const isMounted = useIsMounted();
 
-  const api = useApi(chain);
+  const api = useApi();
 
   const updateChildBountyStatus = useCallback(() => {
     setIsLoading(true);
@@ -148,10 +158,7 @@ export default function Claim({ chain, childBounty, onInBlock = emptyFunction, o
   const decimals = node.decimals;
   const symbol = node.symbol;
 
-  const isBeneficiary = isSameAddress(
-    user?.address,
-    childBounty?.beneficiary
-  );
+  const isBeneficiary = isSameAddress(user?.address, childBounty?.beneficiary);
 
   const hasBeenClaimedText = (
     <ClaimInfoText>This child bounty has been claimed.</ClaimInfoText>

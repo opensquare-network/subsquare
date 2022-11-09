@@ -4,8 +4,10 @@ import CountDown from "next-common/components/summary/countDown";
 import useApi from "../../utils/hooks/useApi";
 import { estimateBlocksTime } from "../../utils";
 import { useSelector } from "react-redux";
-import { currentNodeSelector } from "next-common/store/reducers/nodeSlice";
-import { blockTimeSelector, latestHeightSelector, } from "../../store/reducers/chainSlice";
+import {
+  blockTimeSelector,
+  latestHeightSelector,
+} from "../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
 import Content from "./cardContent";
@@ -68,8 +70,7 @@ async function referendumsActive(api) {
 
 export default function DemocracySummary({ chain }) {
   const [summary, setSummary] = useState({});
-  const endpoint = useSelector(currentNodeSelector);
-  const api = useApi(chain, endpoint);
+  const api = useApi();
   const blockTime = useSelector(blockTimeSelector);
   const blockHeight = useSelector(latestHeightSelector);
 

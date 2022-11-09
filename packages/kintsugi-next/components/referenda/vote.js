@@ -2,7 +2,12 @@ import React, { useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import BigNumber from "bignumber.js";
 import styled from "styled-components";
-import { capitailize, emptyFunction, getNode, toPrecision } from "next-common/utils";
+import {
+  capitailize,
+  emptyFunction,
+  getNode,
+  toPrecision,
+} from "next-common/utils";
 import Flex from "next-common/components/styled/flex";
 import {
   calcPassing,
@@ -10,7 +15,7 @@ import {
   getThresholdOfSuperMajorityAgainst,
   getThresholdOfSuperMajorityApprove,
 } from "utils/referendumUtil";
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
+import useApi from "next-common/utils/hooks/useApi";
 import useWindowSize from "next-common/utils/hooks/useWindowSize.js";
 import AyeIcon from "public/imgs/icons/aye.svg";
 import NayIcon from "public/imgs/icons/nay.svg";
@@ -203,14 +208,16 @@ function Vote({
   const dispatch = useDispatch();
   const [showVote, setShowVote] = useState(false);
   const [showVoteList, setShowVoteList] = useState(false);
-  const api = useApi(chain);
+  const api = useApi();
 
-  const electorate = useSelector(electorateSelector)
-  const isElectorateLoading = useSelector(isLoadingElectorateSelector)
+  const electorate = useSelector(electorateSelector);
+  const isElectorateLoading = useSelector(isLoadingElectorateSelector);
   const isLoadingVotes = useSelector(isLoadingVotesSelector);
   const { allAye = [], allNay = [] } = useSelector(votesSelector);
   const referendumStatus = useSelector(referendumStatusSelector);
-  const isLoadingReferendumStatus = useSelector(isLoadingReferendumStatusSelector);
+  const isLoadingReferendumStatus = useSelector(
+    isLoadingReferendumStatusSelector
+  );
 
   const updateVoteProgress = useCallback(() => {
     dispatch(fetchReferendumStatus(api, referendumIndex));

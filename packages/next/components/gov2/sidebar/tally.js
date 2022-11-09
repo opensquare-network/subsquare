@@ -11,7 +11,7 @@ import NayIcon from "public/imgs/icons/nay.svg";
 import ElectorateIcon from "public/imgs/icons/electorate.svg";
 import DisplayValue from "next-common/components/displayValue";
 import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
+import useApi from "next-common/utils/hooks/useApi";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -49,7 +49,7 @@ const Value = styled.span`
 export default function Gov2Tally({ detail, chain }) {
   const { width } = useWindowSize();
 
-  const api = useApi(chain);
+  const api = useApi();
   useFetchVotes(detail?.onchainData, api);
 
   const node = getNode(chain);

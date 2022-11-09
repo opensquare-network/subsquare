@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { useAddressVote, useAddressVotingBalance } from "utils/hooks";
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
+import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue, emptyFunction, getNode } from "next-common/utils";
@@ -34,7 +34,7 @@ function PopupContent({
 
   const [selectedAccount, setSelectedAccount] = useState(null);
 
-  const api = useApi(chain);
+  const api = useApi();
   const node = getNode(chain);
 
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 
-import useApi from "../../../../utils/hooks/useSelectedEnpointApi";
+import useApi from "../../../../utils/hooks/useApi";
 import useIsMounted from "../../../../utils/hooks/useIsMounted";
 import { newErrorToast } from "../../../../store/reducers/toastSlice";
 
@@ -40,7 +40,7 @@ function PopupContent({
 
   const node = getNode(chain);
 
-  const api = useApi(chain);
+  const api = useApi();
 
   const [beneficiary, setBeneficiary] = useState();
   const [balance, balanceIsLoading] = useAddressBalance(

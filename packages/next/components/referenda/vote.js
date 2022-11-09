@@ -2,7 +2,7 @@ import { memo, useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import styled from "styled-components";
 import { calcPassing } from "utils/referendumUtil";
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
+import useApi from "next-common/utils/hooks/useApi";
 import Loading from "next-common/components/loading";
 import Chains from "next-common/utils/consts/chains";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
@@ -90,11 +90,16 @@ const VoteButton = styled.button`
   border-radius: 4px;
 `;
 
-function Vote({ referendumInfo, referendumIndex, chain, onFinalized = emptyFunction }) {
+function Vote({
+  referendumInfo,
+  referendumIndex,
+  chain,
+  onFinalized = emptyFunction,
+}) {
   const dispatch = useDispatch();
   const [showVote, setShowVote] = useState(false);
   const [showVoteList, setShowVoteList] = useState(false);
-  const api = useApi(chain);
+  const api = useApi();
   const blockHeight = useSelector(latestHeightSelector);
 
   const electorate = useSelector(electorateSelector);

@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
+import useApi from "next-common/utils/hooks/useApi";
 import useCall from "next-common/utils/hooks/useCall";
 import { useCallback, useEffect, useState } from "react";
 
@@ -87,7 +87,7 @@ export default withLoginUserRedux(
     const [loading, setLoading] = useState(shouldGetTipsFromNode);
     const [tips, setTips] = useState(tipsInDb);
 
-    const api = useApi(chain);
+    const api = useApi();
     const councilMembers = useCall(
       (api?.query.council || api?.query.generalCouncil)?.members,
       []

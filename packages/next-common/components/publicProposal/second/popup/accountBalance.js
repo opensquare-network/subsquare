@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 
-import useApi from "../../../../utils/hooks/useSelectedEnpointApi";
+import useApi from "../../../../utils/hooks/useApi";
 import { getNode, toPrecision } from "../../../../utils";
 import Loading from "../../../loading";
 import { StateContext } from "./stateContext";
@@ -10,7 +10,7 @@ import { formatBalance } from "../../../../utils/viewfuncs";
 export default function AccountBalance({ chain, useAddressVotingBalance }) {
   const { signerAccount, setSignerBalance } = useContext(StateContext);
 
-  const api = useApi(chain);
+  const api = useApi();
   const [balance, loadingBalance] = useAddressVotingBalance(
     api,
     signerAccount?.address

@@ -7,7 +7,7 @@ import { EmptyList } from "next-common/utils/constants";
 import DetailItem from "components/detailItem";
 import Vote from "components/referenda/vote";
 import { to404 } from "next-common/utils/serverSideUtil";
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
+import useApi from "next-common/utils/hooks/useApi";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Timeline from "components/referenda/timeline";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
@@ -36,7 +36,7 @@ export default withLoginUserRedux(
       type: detailPageCategory.DEMOCRACY_REFERENDUM,
     });
 
-    const api = useApi(chain);
+    const api = useApi();
     const { referendumStatus } = useMaybeFetchReferendumStatus(
       detail?.onchainData,
       api

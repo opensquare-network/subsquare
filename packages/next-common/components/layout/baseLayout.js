@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { currentNodeSelector } from "../../store/reducers/nodeSlice";
 import useApi from "../../utils/hooks/useApi";
 import {
   useBlockTime,
@@ -25,6 +24,7 @@ import Content from "./content";
 import Toast from "../toast";
 import { modeSelector } from "../../store/reducers/settingSlice";
 import useUpdateNodesDelay from "../../utils/hooks/useUpdateNodesDelay";
+import { useChain } from "../../context/chain";
 
 const Wrapper = styled.div`
   display: flex;
@@ -42,10 +42,9 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 export default function BaseLayout({ left, children, seoInfo }) {
-  const chain = process.env.NEXT_PUBLIC_CHAIN;
+  const chain = useChain();
 
-  const endpoint = useSelector(currentNodeSelector);
-  const api = useApi(chain, endpoint);
+  const api = useApi();
   const blockTime = useBlockTime(api);
   const latestHeight = useSubscribeChainHead(api);
   const nowHeight = useChainHeight(api);

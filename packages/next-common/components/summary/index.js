@@ -2,12 +2,19 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import CountDown from "./countDown";
-import { abbreviateBigNumber, estimateBlocksTime, getNode, toPrecision, } from "../../utils";
-import { currentNodeSelector } from "next-common/store/reducers/nodeSlice";
+import {
+  abbreviateBigNumber,
+  estimateBlocksTime,
+  getNode,
+  toPrecision,
+} from "../../utils";
 import useApi from "../../utils/hooks/useApi";
 import useTreasuryFree from "../../utils/hooks/useTreasuryFree";
 import useTreasuryBurn from "../../utils/hooks/useTreasuryBurn";
-import { blockTimeSelector, latestHeightSelector, } from "../../store/reducers/chainSlice";
+import {
+  blockTimeSelector,
+  latestHeightSelector,
+} from "../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
@@ -54,8 +61,7 @@ const CountDownWrapper = styled.div`
 
 export default function Summary({ chain }) {
   const [summary, setSummary] = useState({});
-  const endpoint = useSelector(currentNodeSelector);
-  const api = useApi(chain, endpoint);
+  const api = useApi();
   const node = getNode(chain);
   const blockTime = useSelector(blockTimeSelector);
   const blockHeight = useSelector(latestHeightSelector);
@@ -70,9 +76,7 @@ export default function Summary({ chain }) {
   useEffect(() => {
     if (api && blockHeight) {
       const spendPeriod = api.consts.treasury.spendPeriod.toNumber();
-      const goneBlocks = new BigNumber(blockHeight)
-        .mod(spendPeriod)
-        .toNumber();
+      const goneBlocks = new BigNumber(blockHeight).mod(spendPeriod).toNumber();
       const progress = new BigNumber(goneBlocks)
         .div(spendPeriod)
         .multipliedBy(100)

@@ -9,7 +9,7 @@ import Metadata from "./metadata";
 import Timeline from "./timeline";
 import Head from "./head";
 import { isAddressInGroup, isMotionEnded } from "next-common/utils";
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
+import useApi from "next-common/utils/hooks/useApi";
 import toApiCouncil from "next-common/utils/toApiCouncil";
 import { EditablePanel } from "next-common/components/styled/panel";
 import Chains from "next-common/utils/consts/chains";
@@ -21,7 +21,7 @@ import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 
 export default function MotionDetail({ user, onReply, chain, type }) {
   const postDispatch = usePostDispatch();
-  const api = useApi(chain);
+  const api = useApi();
   const isMounted = useIsMounted();
   const post = usePost();
 
