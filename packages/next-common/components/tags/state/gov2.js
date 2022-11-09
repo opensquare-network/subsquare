@@ -45,10 +45,12 @@ const gov2ReferendaTagMap = {
 };
 
 // FIXME: gov2 state type field
-export function Gov2ReferendaTag({ state, data }) {
+export function Gov2ReferendaTag({ state, args }) {
   let Tag = gov2ReferendaTagMap[state] || ClosedTag;
+
   if (state === gov2State.Executed) {
-    Tag = data?.stateType === "err" ? NegativeTag : PositiveTag;
+    Tag = args?.isOk ? PositiveTag : NegativeTag;
   }
+
   return <Tag>{state}</Tag>;
 }
