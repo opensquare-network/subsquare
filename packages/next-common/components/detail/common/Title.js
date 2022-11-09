@@ -37,12 +37,11 @@ const Index = styled.div`
 export default function PostTitle() {
   const post = usePost();
   const index = post.index || post.motionIndex;
-  const title = post.title;
 
   return (
     <TitleWrapper>
       {!isNil(index) && <Index>{`#${index}`}</Index>}
-      <Title>{getGov2ReferendumTitle(title)}</Title>
+      <Title>{getGov2ReferendumTitle(post)}</Title>
     </TitleWrapper>
   );
 }
