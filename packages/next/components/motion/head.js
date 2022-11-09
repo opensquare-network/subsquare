@@ -5,10 +5,16 @@ import MotionEnd from "next-common/components/motionEnd";
 import Tag from "next-common/components/tags/state/tag";
 import Flex from "next-common/components/styled/flex";
 import DemocracyNavigate from "./democracyNavigate";
-import { DemocracyTag, TreasuryTag, } from "next-common/components/tags/business";
+import {
+  DemocracyTag,
+  TreasuryTag,
+} from "next-common/components/tags/business";
 import UpdatedTime from "next-common/components/detail/common/UpdatedTime";
 import PostTitle from "next-common/components/detail/common/Title";
-import { isDemocracyMotion, isTreasuryMotion } from "next-common/utils/viewfuncs/motion";
+import {
+  isDemocracyMotion,
+  isTreasuryMotion,
+} from "next-common/utils/viewfuncs/motion";
 import Info from "next-common/components/styled/info";
 import isNil from "lodash.isnil";
 import { getMotionStateArgs } from "next-common/utils/collective/result";
@@ -49,19 +55,19 @@ const DividerWrapper = styled(Flex)`
   }
 `;
 
-function MotionTag({motion}){
+function MotionTag({ motion }) {
   let tag = null;
   if (isTreasuryMotion(motion)) {
     tag = <TreasuryTag />;
   } else if (isDemocracyMotion(motion)) {
-    tag = <DemocracyTag />
+    tag = <DemocracyTag />;
   }
 
   if (!tag) {
-    return null
+    return null;
   }
 
-  return <div>{tag}</div>
+  return <div>{tag}</div>;
 }
 
 export default function MotionHead({ motion, chain, type }) {
@@ -73,7 +79,8 @@ export default function MotionHead({ motion, chain, type }) {
     </MotionEndHeader>
   ) : null;
 
-  const noCommentsCount = isNil(motion.commentsCount) && isNil(motion.polkassemblyCommentsCount);
+  const noCommentsCount =
+    isNil(motion.commentsCount) && isNil(motion.polkassemblyCommentsCount);
   const commentsCount =
     (motion.commentsCount || 0) + (motion.polkassemblyCommentsCount || 0);
 
@@ -81,8 +88,8 @@ export default function MotionHead({ motion, chain, type }) {
 
   return (
     <div>
-      <DemocracyNavigate motion={motion.onchainData} />
       {motionEndHeader}
+      <DemocracyNavigate motion={motion.onchainData} />
       <PostTitle />
       <FlexWrapper>
         <DividerWrapper>
@@ -92,11 +99,15 @@ export default function MotionHead({ motion, chain, type }) {
             chain={chain}
             fontSize={12}
           />
-          <MotionTag motion={motion.onchainData}/>
-          <UpdatedTime post={ motion } />
-          {(!noCommentsCount && commentsCount > -1) && <Info>{`${commentsCount} Comments`}</Info>}
+          <MotionTag motion={motion.onchainData} />
+          <UpdatedTime post={motion} />
+          {!noCommentsCount && commentsCount > -1 && (
+            <Info>{`${commentsCount} Comments`}</Info>
+          )}
         </DividerWrapper>
-        {motion.state && <Tag state={motion.state} category={type} args={stateArgs} />}
+        {motion.state && (
+          <Tag state={motion.state} category={type} args={stateArgs} />
+        )}
       </FlexWrapper>
     </div>
   );
