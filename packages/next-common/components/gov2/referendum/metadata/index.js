@@ -9,6 +9,7 @@ import styled from "styled-components";
 import Flex from "../../../styled/flex";
 import Tooltip from "../../../tooltip";
 import { p_12_normal } from "../../../../styles/componentCss";
+import { useChainSettings } from "../../../../context/chain";
 
 // submissionDeposit
 // decisionDeposit
@@ -46,12 +47,7 @@ function BondValue({ deposit, decimals, symbol }) {
 
 export default function Gov2ReferendumMetadata({ chain, detail }) {
   const blockTime = useSelector(blockTimeSelector);
-
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-
+  const node = useChainSettings();
   const decimals = node.decimals;
   const symbol = node.voteSymbol || node.symbol;
 

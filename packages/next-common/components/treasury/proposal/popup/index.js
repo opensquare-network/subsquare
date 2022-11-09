@@ -122,7 +122,7 @@ function PopupContent({
         extensionAccounts={extensionAccounts}
         setAddress={setBeneficiary}
       />
-      <ProposalValue chain={chain} setValue={setInputValue} />
+      <ProposalValue setValue={setInputValue} />
       <ProposalBond bond={bond} node={node} />
       {balanceInsufficient && (
         <WarningMessage danger>Insufficient balance</WarningMessage>

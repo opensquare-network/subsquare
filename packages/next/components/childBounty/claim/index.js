@@ -19,6 +19,7 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { shadow_100 } from "next-common/styles/componentCss";
 import ValueDisplay from "next-common/components/displayValue";
 import { useUser } from "next-common/context/user";
+import { useChainSettings } from "next-common/context/chain";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -103,6 +104,7 @@ export default function Claim({
   onFinalized = emptyFunction,
 }) {
   const user = useUser();
+  const { decimals, symbol } = useChainSettings();
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [isClaimed, setIsClaimed] = useState(
@@ -149,14 +151,6 @@ export default function Claim({
   if (!["PendingPayout", "Claimed"].includes(childBounty.state?.state)) {
     return null;
   }
-
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-
-  const decimals = node.decimals;
-  const symbol = node.symbol;
 
   const isBeneficiary = isSameAddress(user?.address, childBounty?.beneficiary);
 

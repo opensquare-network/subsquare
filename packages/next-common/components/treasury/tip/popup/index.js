@@ -6,7 +6,7 @@ import useApi from "../../../../utils/hooks/useApi";
 import useIsMounted from "../../../../utils/hooks/useIsMounted";
 import { newErrorToast } from "../../../../store/reducers/toastSlice";
 
-import { checkInputValue, emptyFunction, getNode } from "../../../../utils";
+import { checkInputValue, emptyFunction } from "../../../../utils";
 import PopupWithAddress from "../../../popupWithAddress";
 import Beneficiary from "../../common/beneficiary";
 import TipReason from "./tipReason";
@@ -16,6 +16,7 @@ import TipValue from "./tipValue";
 import useAddressBalance from "../../../../utils/hooks/useAddressBalance";
 import { sendTx } from "../../../../utils/sendTx";
 import SecondaryButton from "../../../buttons/secondaryButton";
+import { useChainSettings } from "../../../../context/chain";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -37,9 +38,7 @@ function PopupContent({
   const [loading, setLoading] = useState(false);
   const [tabIndex, setTabIndex] = useState(ReportAwesome);
   const [inputValue, setInputValue] = useState("0");
-
-  const node = getNode(chain);
-
+  const { decimals } = useChainSettings();
   const api = useApi();
 
   const [beneficiary, setBeneficiary] = useState();
@@ -67,16 +66,12 @@ function PopupContent({
       return showErrorToast("Please input a reason");
     }
 
-    if (!node) {
-      return;
-    }
-
     let tx;
 
     if (tabIndex === NewTip) {
       let bnValue;
       try {
-        bnValue = checkInputValue(inputValue, node.decimals, "tip value");
+        bnValue = checkInputValue(inputValue, decimals, "tip value");
       } catch (err) {
         return showErrorToast(err.message);
       }
@@ -112,12 +107,9 @@ function PopupContent({
         <Tab tabIndex={tabIndex} setTabIndex={setTabIndex} />
       </div>
       <Signer
-        api={api}
-        chain={chain}
         signerAccount={signerAccount}
         setSignerAccount={setSignerAccount}
         extensionAccounts={extensionAccounts}
-        node={node}
         balance={balance}
         balanceIsLoading={balanceIsLoading}
       />
@@ -127,9 +119,7 @@ function PopupContent({
         setAddress={setBeneficiary}
       />
       <TipReason setValue={setReason} />
-      {tabIndex === NewTip && (
-        <TipValue chain={chain} setValue={setInputValue} />
-      )}
+      {tabIndex === NewTip && <TipValue setValue={setInputValue} />}
       <ButtonWrapper>
         <SecondaryButton isLoading={loading} onClick={submit}>
           Submit

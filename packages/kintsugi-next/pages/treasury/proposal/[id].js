@@ -38,7 +38,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           onReply={focusEditor}
           type={detailPageCategory.TREASURY_PROPOSAL}
         />
-        <Metadata treasuryProposal={detail?.onchainData} chain={chain} />
+        <Metadata treasuryProposal={detail?.onchainData} />
         <Timeline treasuryProposal={detail?.onchainData} chain={chain} />
         {CommentComponent}
       </DetailLayout>
