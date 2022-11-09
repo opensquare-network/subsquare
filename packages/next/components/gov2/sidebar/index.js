@@ -50,10 +50,11 @@ export default function Gov2Sidebar({ detail, chain }) {
 
   return (
     <Wrapper>
-      <Gov2Status detail={detail} />
+      {false && <Gov2Status detail={detail} />}
+
       <Gov2Tally chain={chain} detail={detail} />
 
-      <VoteButton>Vote</VoteButton>
+      {false && <VoteButton>Vote</VoteButton>}
 
       {/* NOTE: link to polkadot gov2 blog */}
       <Link href="https://polkadot.network/blog/gov2-polkadots-next-generation-of-decentralised-governance/">
