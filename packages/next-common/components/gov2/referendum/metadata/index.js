@@ -23,6 +23,10 @@ const BondValueWrapper = styled(Flex)`
   }
 `;
 
+const GreyText = styled.span`
+  color: ${(p) => p.theme.textTertiary};
+`;
+
 function BondValue({ deposit, decimals, symbol }) {
   const value = `${toPrecision(deposit, decimals)} ${symbol}`;
 
@@ -71,15 +75,19 @@ export default function Gov2ReferendumMetadata({ chain, detail }) {
     ],
     [
       "Decision",
-      <DepositWrapper>
-        <User add={info?.decisionDeposit?.who} fontSize={14} />
-        <SubScanAccountLink address={info?.decisionDeposit?.who} />
-        <BondValue
-          deposit={info?.decisionDeposit?.amount}
-          decimals={decimals}
-          symbol={symbol}
-        />
-      </DepositWrapper>,
+      info?.decisionPeriod ? (
+        <DepositWrapper>
+          <User add={info?.decisionDeposit?.who} fontSize={14} />
+          <SubScanAccountLink address={info?.decisionDeposit?.who} />
+          <BondValue
+            deposit={info?.decisionDeposit?.amount}
+            decimals={decimals}
+            symbol={symbol}
+          />
+        </DepositWrapper>
+      ) : (
+        <GreyText>--</GreyText>
+      ),
     ],
     ["Decision Period", `${decisionPeriod[0]} ${decisionPeriod[1]}`],
     ["Confirming Period", `${confirmPeriod[0]} ${confirmPeriod[1]}`],
