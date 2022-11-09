@@ -53,8 +53,6 @@ export default function Gov2ReferendumMetadata({ chain, detail }) {
     return null;
   }
 
-  console.log(detail);
-
   const decimals = node.decimals;
   const symbol = node.voteSymbol || node.symbol;
 
@@ -131,12 +129,9 @@ export default function Gov2ReferendumMetadata({ chain, detail }) {
         call={proposal}
         chain={chain}
         referendumIndex={detail?.onchainData.referendumIndex}
-        headerWidth={160}
       />,
     ]);
   }
 
-  return (
-    <KVList KWidth={160} title={"Metadata"} data={metadata} showFold={true} />
-  );
+  return <KVList title={"Metadata"} data={metadata} showFold={true} />;
 }

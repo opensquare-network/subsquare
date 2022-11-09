@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import Accordion from "./accordion";
 import Row from "./row";
 
-function KVList({ data = [], title, showFold = true, KWidth }) {
+function KVList({ data = [], title, showFold = true }) {
   if (!data || data?.length === 0) {
     return null;
   }
@@ -10,7 +10,7 @@ function KVList({ data = [], title, showFold = true, KWidth }) {
   return (
     <Accordion title={title} showFold={showFold}>
       {data.map((row, index) => (
-        <Row headerWidth={KWidth} row={row} key={index} />
+        <Row row={row} key={index} />
       ))}
     </Accordion>
   );

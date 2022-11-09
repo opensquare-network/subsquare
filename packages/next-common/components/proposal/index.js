@@ -24,7 +24,7 @@ const Header = styled.div`
   font-size: 14px;
   line-height: 140%;
   flex: none;
-  flex: 0 0 ${(p) => p.headerWidth}px;
+  flex: 0 0 160px;
 `;
 
 const ArgsWrapper = styled.div`
@@ -218,7 +218,6 @@ export default function Proposal({
   proposalIndex,
   motionIndex,
   referendumIndex,
-  headerWidth = 120,
 }) {
   const [callType, setCallType] = useState("table");
 
@@ -258,7 +257,7 @@ export default function Proposal({
   return (
     <Wrapper>
       <HeaderWrapper>
-        <Header headerWidth={headerWidth}>Call</Header>
+        <Header>Call</Header>
         <TagWrapper>
           <TagItem
             className="tag"

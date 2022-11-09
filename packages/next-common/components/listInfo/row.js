@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   border-bottom: 1px solid ${(props) => props.theme.grey200Border};
 `;
 const Header = styled.div`
-  width: ${(p) => p.headerWidth}px;
+  width: 160px;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -41,7 +41,7 @@ const Content = styled.div`
   }
 `;
 
-function Row({ row = [], headerWidth = 120 }) {
+function Row({ row = [] }) {
   if (!row) {
     return null;
   }
@@ -51,7 +51,7 @@ function Row({ row = [], headerWidth = 120 }) {
       {row.length === 1 && row[0]}
       {row.length === 2 && (
         <>
-          <Header headerWidth={headerWidth}>{row[0]}</Header>
+          <Header>{row[0]}</Header>
           <Content>{row[1]}</Content>
         </>
       )}
