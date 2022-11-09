@@ -5,7 +5,12 @@ import MembersIcon from "../../../assets/imgs/icons/members.svg";
 
 const council = {
   name: "COUNCIL",
-  excludeToChains: [Chains.kabocha, Chains.kintsugi, Chains.interlay],
+  excludeToChains: [
+    Chains.kabocha,
+    Chains.kintsugi,
+    Chains.interlay,
+    Chains.development,
+  ],
   items: [
     {
       value: "motions",

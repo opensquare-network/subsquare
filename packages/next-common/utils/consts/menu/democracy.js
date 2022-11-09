@@ -5,7 +5,7 @@ import DemocracyProposalIcon from "../../../assets/imgs/icons/type-proposals.svg
 
 const democracy = {
   name: "DEMOCRACY",
-  excludeToChains: [Chains.kabocha],
+  excludeToChains: [Chains.kabocha, Chains.development],
   items: [
     {
       value: "referenda",
