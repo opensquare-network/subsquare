@@ -41,7 +41,7 @@ export default function PostTitle() {
   return (
     <TitleWrapper>
       {!isNil(index) && <Index>{`#${index}`}</Index>}
-      <Title>{title?.trim() || "--"}</Title>
+      <Title>{title?.trim() || "Untitled"}</Title>
     </TitleWrapper>
-  )
+  );
 }
