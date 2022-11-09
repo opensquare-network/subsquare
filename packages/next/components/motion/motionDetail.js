@@ -8,7 +8,7 @@ import Business from "./business";
 import Metadata from "./metadata";
 import Timeline from "./timeline";
 import Head from "./head";
-import { isMotionEnded, isSameAddress } from "next-common/utils";
+import { isAddressInGroup, isMotionEnded } from "next-common/utils";
 import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
 import toApiCouncil from "next-common/utils/toApiCouncil";
 import { EditablePanel } from "next-common/components/styled/panel";
@@ -31,9 +31,7 @@ export default function MotionDetail({ user, onReply, chain, type }) {
 
   const [isEdit, setIsEdit] = useState(false);
 
-  const userCanVote = voters?.some((address) =>
-    isSameAddress(user?.address, address)
-  );
+  const userCanVote = isAddressInGroup(user?.address, voters);
   const motionEnd = isMotionEnded(post.onchainData);
 
   const blockHash = motionEnd
@@ -48,18 +46,17 @@ export default function MotionDetail({ user, onReply, chain, type }) {
     }
 
     if (singleApprovalMotion) {
-      return [
-        [post.onchainData.authors[0], true]
-      ];
+      return [[post.onchainData.authors[0], true]];
     }
 
     const timeline = post.onchainData.timeline || [];
     const rawVoters = timeline
       .filter((item) => item.method === "Voted")
-      .map((item) => [item.args.voter, item.args.approve])
+      .map((item) => [item.args.voter, item.args.approve]);
     // special data, in kusama before motion 345, proposer has a default aye vote
-    if (Chains.kusama === chain && post.onchainData.index < 345 ||
-      Chains.polkadot === chain && post.onchainData.index <= 107
+    if (
+      (Chains.kusama === chain && post.onchainData.index < 345) ||
+      (Chains.polkadot === chain && post.onchainData.index <= 107)
     ) {
       const proposed = timeline.find((item) => item.method === "Proposed");
       rawVoters.unshift([proposed.args.proposer, true]);
@@ -108,21 +105,31 @@ export default function MotionDetail({ user, onReply, chain, type }) {
         }
       })
       .finally(() => setIsLoadingVote(false));
-  }, [votingMethod, readOnchainVotes, post, dbVotes, isMounted, singleApprovalMotion]);
+  }, [
+    votingMethod,
+    readOnchainVotes,
+    post,
+    dbVotes,
+    isMounted,
+    singleApprovalMotion,
+  ]);
 
   const updateVotes = useCallback(() => {
     setReadOnchainVotes(Date.now());
   }, []);
 
-  const refreshPageData = () => fetchAndUpdatePost(postDispatch, type, post._id)
+  const refreshPageData = () =>
+    fetchAndUpdatePost(postDispatch, type, post._id);
   const onVoteFinalized = useWaitSyncBlock("Motion voted", refreshPageData);
 
   if (isEdit) {
-    return <PostEdit
-      setIsEdit={ setIsEdit }
-      updatePost={ refreshPageData }
-      type={ type }
-    />
+    return (
+      <PostEdit
+        setIsEdit={setIsEdit}
+        updatePost={refreshPageData}
+        type={type}
+      />
+    );
   }
 
   return (

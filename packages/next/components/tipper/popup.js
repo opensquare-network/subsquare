@@ -11,6 +11,7 @@ import {
   checkInputValue,
   emptyFunction,
   getNode,
+  isAddressInGroup,
   toPrecision,
 } from "next-common/utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
@@ -56,9 +57,10 @@ function PopupContent({
   }, [selectedAccount, chain]);
 
   useSetDefaultSigner(extensionAccounts, setSelectedAccount);
-
-  const selectedAccountIsTipper = councilTippers.includes(selectedAddress);
-
+  const selectedAccountIsTipper = isAddressInGroup(
+    selectedAddress,
+    councilTippers
+  );
   const api = useApi(chain);
 
   useEffect(() => {

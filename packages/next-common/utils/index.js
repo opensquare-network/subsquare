@@ -18,7 +18,7 @@ export function hexEllipsis(hex, start = 6, end = 4) {
 }
 
 export function addressEllipsis(address, start = 4, end = 4) {
-  if (typeof address !== 'string') {
+  if (typeof address !== "string") {
     return address;
   }
 
@@ -259,4 +259,8 @@ export function isSameAddress(addr1, addr2) {
   } catch (e) {
     return false;
   }
+}
+
+export function isAddressInGroup(addr, addresses = []) {
+  return addresses.some((item) => isSameAddress(addr, item));
 }
