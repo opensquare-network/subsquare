@@ -10,6 +10,7 @@ import {
   gov2TracksApi,
 } from "next-common/services/url";
 import Gov2Summary from "next-common/components/summary/gov2Summary";
+import businessCategory from "next-common/utils/consts/business/category";
 
 export function Gov2Page({ loginUser, chain, posts, title, tracks, summary }) {
   // FIXME: seo
@@ -23,7 +24,7 @@ export function Gov2Page({ loginUser, chain, posts, title, tracks, summary }) {
       <PostList
         chain={chain}
         title={title}
-        category="gov2"
+        category={businessCategory.gov2}
         create={null}
         items={items}
         pagination={{

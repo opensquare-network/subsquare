@@ -3,6 +3,7 @@ import Timeline from "next-common/components/timeline";
 import User from "next-common/components/user";
 import { getNode, toPrecision } from "next-common/utils";
 import { parseGov2TrackName } from "next-common/utils/gov2";
+import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 
 function TimelineTallyInfo({ decimals, symbol, ayes, nays, support }) {
   return (
@@ -90,7 +91,11 @@ export function makeReferendumTimelineData(timeline, trackInfo, chain, type) {
     return {
       time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
       indexer: item.indexer,
-      status: { value: item.method ?? item.name, type },
+      status: {
+        value: item.method ?? item.name,
+        type,
+        args: getGov2ReferendumStateArgs(item),
+      },
       data: getTimelineData(
         item.args,
         item.method ?? item.name,

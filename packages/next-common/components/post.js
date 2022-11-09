@@ -19,6 +19,7 @@ import { getBannerUrl } from "../utils/banner";
 import businessCategory from "../utils/consts/business/category";
 import useDuration from "../utils/hooks/useDuration";
 import { getMotionStateArgs } from "../utils/collective/result";
+import { getGov2ReferendumStateArgs } from "../utils/gov2/result";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -178,7 +179,10 @@ export default function Post({ data, chain, href, type }) {
     ].includes(type)
   ) {
     stateArgs = getMotionStateArgs(data.onchainData.state);
+  } else if (businessCategory.gov2 === type) {
+    stateArgs = getGov2ReferendumStateArgs(data.onchainData.state);
   }
+
   const duration = useDuration(data.time);
   const node = getNode(chain);
   if (!node) {
