@@ -74,8 +74,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
       chain,
       posts: posts ?? EmptyList,
       title: "All Referenda",
-      tracks,
-      summary,
+      tracks: tracks ?? [],
+      summary: summary ?? {},
     },
   };
 });

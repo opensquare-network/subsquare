@@ -82,7 +82,7 @@ export default function Gov2Tally({ detail, chain, isLoadingVotes }) {
           <BorderedRow>
             <Header>
               <AyeIcon />
-              Aye
+              Ayes
               {!isLoadingVotes ? (
                 <VotesCount>{allAye.length}</VotesCount>
               ) : null}
@@ -98,7 +98,7 @@ export default function Gov2Tally({ detail, chain, isLoadingVotes }) {
           <BorderedRow>
             <Header>
               <NayIcon />
-              Nay
+              Nays
               {!isLoadingVotes ? (
                 <VotesCount>{allNay.length}</VotesCount>
               ) : null}
