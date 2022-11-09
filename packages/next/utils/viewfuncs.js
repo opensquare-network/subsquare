@@ -2,6 +2,7 @@ import { addressEllipsis } from "next-common/utils";
 import { getMotionId } from "next-common/utils/motion";
 import isNil from "lodash.isnil";
 import { parseGov2TrackName } from "next-common/utils/gov2";
+import { getGov2ReferendumTitle } from "next-common/utils/gov2/title";
 
 export const TipStateMap = {
   NewTip: "Tipping",
@@ -233,7 +234,7 @@ export const toGov2ReferendaListItem = (_chain, item, tracks = []) => {
 
   return {
     ...item,
-    title: item?.title ?? "Untitled",
+    title: getGov2ReferendumTitle(item),
     time: getPostUpdatedAt(item),
     status: item.onchainData?.state?.name ?? "Unknown",
     index: item.referendumIndex,
