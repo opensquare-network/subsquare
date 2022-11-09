@@ -10,9 +10,13 @@ const Wrapper = styled.div`
   padding-bottom: 12px;
   color: ${(props) => props.theme.textPrimary};
   border-bottom: 1px solid ${(props) => props.theme.grey200Border};
+
+  @media (max-width: 768px) {
+    display: block;
+  }
 `;
 const Header = styled.div`
-  width: ${(p) => p.headerWidth}px;
+  width: 160px;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -39,9 +43,13 @@ const Content = styled.div`
       text-decoration: underline;
     }
   }
+
+  @media (max-width: 768px) {
+    margin-top: 8px;
+  }
 `;
 
-function Row({ row = [], headerWidth = 120 }) {
+function Row({ row = [] }) {
   if (!row) {
     return null;
   }
@@ -51,7 +59,7 @@ function Row({ row = [], headerWidth = 120 }) {
       {row.length === 1 && row[0]}
       {row.length === 2 && (
         <>
-          <Header headerWidth={headerWidth}>{row[0]}</Header>
+          <Header>{row[0]}</Header>
           <Content>{row[1]}</Content>
         </>
       )}
