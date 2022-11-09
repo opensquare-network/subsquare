@@ -36,7 +36,7 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
       <DetailWithRightLayout
         user={loginUser}
         seoInfo={{
-          title: detail?.title,
+          title: detail?.title || "Untitled",
           desc,
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
