@@ -45,9 +45,10 @@ export default function Gov2ReferendumMetadata({ chain, detail }) {
   const decimals = node.decimals;
   const symbol = node.voteSymbol || node.symbol;
 
-  const info = detail?.onchainData?.info ?? {};
-  const proposal = detail?.onchainData?.proposal ?? {};
-  const trackInfo = detail?.onchainData?.trackInfo ?? {};
+  const onchainData = detail?.onchainData ?? {};
+  const info = onchainData?.info ?? {};
+  const proposal = onchainData?.proposal ?? {};
+  const trackInfo = onchainData?.trackInfo ?? {};
 
   const decisionPeriod = estimateBlocksTime(
     trackInfo.decisionPeriod,
@@ -83,7 +84,7 @@ export default function Gov2ReferendumMetadata({ chain, detail }) {
     ["Decision Period", `${decisionPeriod[0]} ${decisionPeriod[1]}`],
     ["Confirming Period", `${confirmPeriod[0]} ${confirmPeriod[1]}`],
     ["Enact", info?.enactment?.at],
-    ["Proposal", detail?.title ?? "Untitled"],
+    ["Proposal Hash", onchainData?.indexer?.blockHash],
   ];
 
   if (proposal?.args) {
