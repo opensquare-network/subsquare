@@ -1,4 +1,5 @@
 import BigNumber from "bignumber.js";
+import { LOCKS } from "../consts";
 
 export const emptyVotes = {
   allAye: [],
@@ -20,6 +21,18 @@ export function objectSpread(dest, ...sources) {
 export function sortVotes(votes = []) {
   return votes.sort((a, b) => {
     return new BigNumber(a.balance).gt(b.balance) ? -1 : 1;
+  });
+}
+
+export function sortVotesWithConviction(votes = []) {
+  return votes.sort((a, b) => {
+    const ta = new BigNumber(a.balance)
+      .multipliedBy(LOCKS[a.conviction])
+      .div(10);
+    const tb = new BigNumber(b.balance)
+      .multipliedBy(LOCKS[b.conviction])
+      .div(10);
+    return new BigNumber(ta).gt(tb) ? -1 : 1;
   });
 }
 
