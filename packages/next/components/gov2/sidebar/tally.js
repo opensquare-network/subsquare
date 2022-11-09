@@ -68,6 +68,7 @@ export default function Gov2Tally({ detail, chain, isLoadingVotes }) {
 
   const nAyes = toPrecision(tally?.ayes ?? 0, decimals);
   const nNays = toPrecision(tally?.nays ?? 0, decimals);
+  const nSupport = toPrecision(tally?.support ?? 0, decimals);
 
   if (!node) {
     return null;
@@ -115,7 +116,13 @@ export default function Gov2Tally({ detail, chain, isLoadingVotes }) {
               <ElectorateIcon />
               Support
             </Header>
-            <Value>{tally?.support}</Value>
+            <Value>
+              <DisplayValue
+                value={nSupport}
+                symbol={symbol}
+                noWrap={width <= 1024}
+              />
+            </Value>
           </Row>
         </div>
       </SecondaryCardDetail>
