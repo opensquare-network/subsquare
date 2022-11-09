@@ -75,7 +75,7 @@ export default function Gov2ReferendumMetadata({ chain, detail }) {
     ],
     [
       "Decision",
-      info?.decisionPeriod ? (
+      info?.decisionDeposit ? (
         <DepositWrapper>
           <User add={info?.decisionDeposit?.who} fontSize={14} />
           <SubScanAccountLink address={info?.decisionDeposit?.who} />
