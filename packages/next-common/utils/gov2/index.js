@@ -17,7 +17,7 @@ export function composeGov2TracksMenu(tracks = []) {
     return {
       value: track.id,
       name: parseGov2TrackName(track.name),
-      pathname: `/gov2/${track.name}`,
+      pathname: `/referenda/${track.name}`,
       icon: TrackIconMap[track.id] ?? TrackIconMap.Default,
     };
   });

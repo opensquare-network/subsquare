@@ -18,10 +18,8 @@ export default function SubCategory() {
 
   return (
     <Flex>
-      <Link href={`/gov2/${trackName}`} passHref>
-        <LinkInfo>
-          {parseGov2TrackName(trackName)}
-        </LinkInfo>
+      <Link href={`/referenda/${trackName}`} passHref>
+        <LinkInfo>{parseGov2TrackName(trackName)}</LinkInfo>
       </Link>
     </Flex>
   );
