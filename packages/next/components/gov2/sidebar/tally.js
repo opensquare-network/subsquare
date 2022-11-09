@@ -83,9 +83,9 @@ export default function Gov2Tally({ detail, chain, isLoadingVotes }) {
             <Header>
               <AyeIcon />
               Ayes
-              {!isLoadingVotes ? (
+              {/* {!isLoadingVotes ? (
                 <VotesCount>{allAye.length}</VotesCount>
-              ) : null}
+              ) : null} */}
             </Header>
             <Value>
               <DisplayValue
@@ -99,9 +99,9 @@ export default function Gov2Tally({ detail, chain, isLoadingVotes }) {
             <Header>
               <NayIcon />
               Nays
-              {!isLoadingVotes ? (
+              {/* {!isLoadingVotes ? (
                 <VotesCount>{allNay.length}</VotesCount>
-              ) : null}
+              ) : null} */}
             </Header>
             <Value>
               <DisplayValue
