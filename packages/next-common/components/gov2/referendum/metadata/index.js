@@ -60,6 +60,7 @@ export default function Gov2ReferendumMetadata({ chain, detail }) {
   const info = onchainData?.info ?? {};
   const proposal = onchainData?.proposal ?? {};
   const trackInfo = onchainData?.trackInfo ?? {};
+  const proposalHash = onchainData?.proposalHash;
 
   const decisionPeriod = estimateBlocksTime(
     trackInfo.decisionPeriod,
@@ -119,7 +120,7 @@ export default function Gov2ReferendumMetadata({ chain, detail }) {
       </ValueWrapper>,
     ],
     ["Enact", info?.enactment?.at],
-    ["Proposal Hash", onchainData?.indexer?.blockHash],
+    ["Proposal Hash", proposalHash],
   ];
 
   if (proposal?.args) {
