@@ -3,11 +3,9 @@ import PostList from "next-common/components/postList";
 import { toGov2ReferendaListItem } from "utils/viewfuncs";
 import businessCategory from "next-common/utils/consts/business/category";
 import { useChain } from "next-common/context/chain";
-import { useUser } from "next-common/context/user";
 
 export default function Gov2Page({ posts, title, tracks, summary }) {
   const chain = useChain();
-  const loginUser = useUser();
   // FIXME: seo
   const seoInfo = { title, desc: "" };
   const items = (posts.items || []).map((item) =>
@@ -15,9 +13,8 @@ export default function Gov2Page({ posts, title, tracks, summary }) {
   );
 
   return (
-    <Gov2Layout user={loginUser} seoInfo={seoInfo} tracks={tracks}>
+    <Gov2Layout seoInfo={seoInfo} tracks={tracks}>
       <PostList
-        chain={chain}
         title={title}
         category={businessCategory.gov2}
         create={null}
