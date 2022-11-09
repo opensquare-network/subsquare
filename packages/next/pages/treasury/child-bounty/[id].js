@@ -16,15 +16,9 @@ import DetailWithRightLayout from "next-common/components/layout/detailWithRight
 import Claim from "components/childBounty/claim";
 import { useCallback, useEffect, useState } from "react";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { sleep } from "next-common/utils";
-import {
-  newPendingToast,
-  newToastId,
-  removeToast,
-} from "next-common/store/reducers/toastSlice";
-import { useDispatch } from "react-redux";
 import { PostProvider } from "next-common/context/post";
 import DetailLayout from "next-common/components/layout/DetailLayout";
+import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 
 const ChildBountyCountDown = ({ data = {} }) => {
   if (data.state?.state !== "PendingPayout") {
@@ -53,11 +47,9 @@ const ChildBountyCountDown = ({ data = {} }) => {
 export default withLoginUserRedux(
   ({ loginUser, detail: ssrDetail, comments, chain }) => {
     const [detail, setDetail] = useState(ssrDetail);
-    const isMounted = useIsMounted();
-    const dispatch = useDispatch();
-    const toastId = newToastId();
-
     useEffect(() => setDetail(ssrDetail), [ssrDetail]);
+
+    const isMounted = useIsMounted();
 
     const { CommentComponent, focusEditor } = useUniversalComments({
       detail,
@@ -67,39 +59,19 @@ export default withLoginUserRedux(
       type: detailPageCategory.TREASURY_CHILD_BOUNTY,
     });
 
-    const updateDetailForState = useCallback(
-      async (endState) => {
-        let times = 6;
-
-        try {
-          while (times-- > 0) {
-            if (!isMounted.current) {
-              return;
-            }
-
-            await sleep(10000);
-
-            const { result } = await nextApi.fetch(
-              `treasury/child-bounties/${detail.parentBountyId}_${detail.index}`
-            );
-
-            if (result?.state?.state === endState) {
-              if (isMounted.current) {
-                setDetail(result);
-              }
-              return;
-            }
+    const refreshPageData = useCallback(
+      async () => {
+          const { result } = await nextApi.fetch(
+            `treasury/child-bounties/${detail.parentBountyId}_${detail.index}`
+          );
+          if (result && isMounted.current) {
+            setDetail(result);
           }
-        } finally {
-          dispatch(removeToast(toastId));
-        }
       },
-      [dispatch, toastId, detail, isMounted]
+      [detail, isMounted]
     );
 
-    const onClaimInBlock = useCallback(() => {
-      dispatch(newPendingToast(toastId, "Waiting to sync on-chain data..."));
-    }, [dispatch, toastId]);
+    const onClaimFinalized = useWaitSyncBlock("Child bounty claimed", refreshPageData);
 
     const desc = getMetaDesc(detail);
 
@@ -127,8 +99,7 @@ export default withLoginUserRedux(
           <Claim
             chain={chain}
             childBounty={detail?.onchainData}
-            onInBlock={onClaimInBlock}
-            onFinalized={() => updateDetailForState("Claimed")}
+            onFinalized={onClaimFinalized}
           />
           <Metadata meta={detail.onchainData?.meta} chain={chain} />
           <Timeline onchainData={detail.onchainData} chain={chain} />

@@ -11,6 +11,7 @@ import {
   checkInputValue,
   emptyFunction,
   getNode,
+  isAddressInGroup,
   toPrecision,
 } from "next-common/utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
@@ -21,6 +22,7 @@ import { WarningMessage } from "next-common/components/popup/styled";
 import { sendTx } from "next-common/utils/sendTx";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import useSetDefaultSigner from "next-common/utils/hooks/useSetDefaultSigner";
+import { encodeAddressToChain } from "next-common/services/address";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -46,31 +48,37 @@ function PopupContent({
   const [tipping, setTipping] = useState(false);
   const [balance, setBalance] = useState();
   const node = getNode(chain);
-
-  useSetDefaultSigner(extensionAccounts, setSelectedAccount);
-
-  const selectedAccountIsTipper = councilTippers.includes(
+  const [selectedAddress, setSelectedAddress] = useState(
     selectedAccount?.address
   );
 
+  useEffect(() => {
+    setSelectedAddress(encodeAddressToChain(selectedAccount?.address, chain));
+  }, [selectedAccount, chain]);
+
+  useSetDefaultSigner(extensionAccounts, setSelectedAccount);
+  const selectedAccountIsTipper = isAddressInGroup(
+    selectedAddress,
+    councilTippers
+  );
   const api = useApi(chain);
 
   useEffect(() => {
-    if (balanceMap.has(selectedAccount?.address)) {
-      setBalance(balanceMap.get(selectedAccount?.address));
+    if (balanceMap.has(selectedAddress)) {
+      setBalance(balanceMap.get(selectedAddress));
       return;
     }
     setBalance();
-    if (api && selectedAccount) {
-      api.query.system.account(selectedAccount.address).then((result) => {
+    if (api && selectedAddress) {
+      api.query.system.account(selectedAddress).then((result) => {
         if (isMounted.current) {
           const free = toPrecision(result.data.free, node.decimals);
           setBalance(free);
-          balanceMap.set(selectedAccount.address, free);
+          balanceMap.set(selectedAddress, free);
         }
       });
     }
-  }, [api, selectedAccount, node.decimals, isMounted]);
+  }, [api, selectedAddress, node.decimals, isMounted]);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -145,7 +153,7 @@ function PopupContent({
         />
       </div>
       <ButtonWrapper>
-        {selectedAccountIsTipper && api && inputTipValue ? (
+        {selectedAccountIsTipper ? (
           <SecondaryButton isLoading={tipping} onClick={doEndorse}>
             Endorse
           </SecondaryButton>

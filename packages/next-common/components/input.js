@@ -95,7 +95,7 @@ const PostWrapper = styled.div`
 
 const SymbolWrapper = styled.div`
   background: ${(props) => props.theme.grey100Bg};
-  padding: 0 16px;
+  padding: 11px 16px;
   display: flex;
   align-items: center;
   justify-content: center;

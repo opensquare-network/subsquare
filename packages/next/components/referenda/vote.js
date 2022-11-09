@@ -21,6 +21,7 @@ import {
 import SubLink from "next-common/components/styled/subLink";
 import VoteBar from "./voteBar";
 import TallyInfo from "./tallyInfo";
+import { emptyFunction } from "next-common/utils";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -89,7 +90,7 @@ const VoteButton = styled.button`
   border-radius: 4px;
 `;
 
-function Vote({ referendumInfo, referendumIndex, chain }) {
+function Vote({ referendumInfo, referendumIndex, chain, onFinalized = emptyFunction }) {
   const dispatch = useDispatch();
   const [showVote, setShowVote] = useState(false);
   const [showVoteList, setShowVoteList] = useState(false);
@@ -182,6 +183,7 @@ function Vote({ referendumInfo, referendumIndex, chain }) {
           onClose={() => setShowVote(false)}
           referendumIndex={referendumIndex}
           onInBlock={updateVoteProgress}
+          onFinalized={onFinalized}
         />
       )}
       {showVoteList && (

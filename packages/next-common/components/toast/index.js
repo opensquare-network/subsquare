@@ -33,13 +33,14 @@ const Toast = () => {
   return (
     <Wrapper>
       <ToastList>
-        {(toasts || []).map(({ type, message, id, sticky }) => (
+        {(toasts || []).map(({ type, message, id, sticky, timeout }) => (
           <ToastItem
             type={type}
             message={message}
             id={id}
             key={id}
             sticky={sticky}
+            timeout={timeout}
           />
         ))}
       </ToastList>

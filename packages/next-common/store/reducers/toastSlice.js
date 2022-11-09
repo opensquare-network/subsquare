@@ -51,16 +51,25 @@ export const updatePendingToast = (id, message) =>
     message,
   });
 
-export const newSuccessToast = (message) =>
+export const newSuccessToast = (message, timeout) =>
   addToast({
     type: "success",
     message,
+    timeout,
   });
 
-export const newErrorToast = (message) =>
+export const newWarningToast = (message, timeout) =>
+  addToast({
+    type: "warning",
+    message,
+    timeout,
+  });
+
+export const newErrorToast = (message, timeout) =>
   addToast({
     type: "error",
     message,
+    timeout,
   });
 
 export default toastSlice.reducer;

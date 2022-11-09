@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { getNode, isSameAddress, toPrecision } from "next-common/utils";
+import { emptyFunction, getNode, isSameAddress, toPrecision } from "next-common/utils";
 import Loading from "next-common/components/loading";
 import { GhostCard } from "next-common/components/styled/containers/ghostCard";
 import Flex from "next-common/components/styled/flex";
@@ -91,7 +91,7 @@ const ClaimInfoText = styled.div`
   }
 `;
 
-export default function Claim({ chain, childBounty, onInBlock, onFinalized }) {
+export default function Claim({ chain, childBounty, onInBlock = emptyFunction, onFinalized = emptyFunction }) {
   const user = useUser();
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);

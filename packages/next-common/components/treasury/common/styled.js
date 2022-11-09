@@ -12,13 +12,3 @@ export const Create = styled.div`
   }
   cursor: pointer;
 `;
-
-export const Pending = styled.div`
-  display: flex;
-  gap: 8px;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 100%;
-  color: ${(props) => props.theme.textTertiary};
-`;

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import User from "next-common/components/user";
-import { getNode, toPrecision } from "next-common/utils";
+import { emptyFunction, getNode, toPrecision } from "next-common/utils";
 import Loading from "next-common/components/loading";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { GhostCard } from "next-common/components/styled/containers/ghostCard";
@@ -83,10 +83,9 @@ export default function Tipper({
   tips = [],
   councilTippers = [],
   tipHash,
-  updateTips = () => {},
-  updateTimeline = () => {},
+  onInBlock = emptyFunction,
+  onFinalized = emptyFunction,
   isLoadingTip,
-  setIsLoadingTip = () => {},
 }) {
   const allTippersCount = councilTippers.length
   const threshold = useMemo(() => {
@@ -179,9 +178,8 @@ export default function Tipper({
           councilTippers={councilTippers}
           tipHash={tipHash}
           onClose={() => setShowPopup(false)}
-          onInBlock={updateTips}
-          onFinalized={updateTimeline}
-          onSubmitted={() => setIsLoadingTip(true)}
+          onInBlock={onInBlock}
+          onFinalized={onFinalized}
         />
       )}
     </>

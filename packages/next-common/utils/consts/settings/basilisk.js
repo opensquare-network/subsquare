@@ -1,13 +1,15 @@
+import Logo from "../../../assets/header-logos/basilisk.svg";
+import Avatar from "../../../assets/icons/chain/basilisk.png";
 import MenuGroups from "./menuGroups";
 
 const DEFAULT_BASILISK_NODES = [
   {
-    name: "OnFinality",
-    url: "wss://basilisk.api.onfinality.io/public-ws",
+    name: "Basilisk",
+    url: "wss://rpc.basilisk.cloud",
   },
   {
-    name: "HydraDX",
-    url: "wss://rpc-01.basilisk.hydradx.io",
+    name: "Dwellir",
+    url: "wss://basilisk-rpc.dwellir.com",
   },
 ];
 
@@ -20,6 +22,12 @@ const basilisk = {
   decimals: 12,
   hasElections: true,
   ss58Format: 10041,
+  snsCoverCid: "bafybeicxl7g3sjtq2bflm4itrxwlibbt3jhwybf24fex4hf3hyuwbbeawy",
+  headerBackgroundColor: "#000000",
+  loginButtonPrimary: true,
+  headerLogo: Logo,
+  darkHeaderLogo: Logo,
+  avatar: Avatar,
   endpoints: DEFAULT_BASILISK_NODES,
   group: MenuGroups.KusamaAndParachains,
 };

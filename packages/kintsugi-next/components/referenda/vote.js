@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import BigNumber from "bignumber.js";
 import styled from "styled-components";
-import { capitailize, getNode, toPrecision } from "next-common/utils";
+import { capitailize, emptyFunction, getNode, toPrecision } from "next-common/utils";
 import Flex from "next-common/components/styled/flex";
 import {
   calcPassing,
@@ -37,7 +37,7 @@ import {
 import VotesCount from "next-common/components/democracy/referendum/votesCount";
 import SubLink from "next-common/components/styled/subLink";
 
-const Popup = dynamic(() => import("components/referenda/popup"), {
+const Popup = dynamic(() => import("./popup"), {
   ssr: false,
 });
 
@@ -198,6 +198,7 @@ function Vote({
   referendumInfo,
   referendumIndex,
   chain,
+  onFinalized = emptyFunction,
 }) {
   const dispatch = useDispatch();
   const [showVote, setShowVote] = useState(false);
@@ -407,6 +408,7 @@ function Vote({
           referendumIndex={referendumIndex}
           onSubmitted={() => dispatch(setIsLoadingReferendumStatus(true))}
           onInBlock={updateVoteProgress}
+          onFinalized={onFinalized}
         />
       )}
 

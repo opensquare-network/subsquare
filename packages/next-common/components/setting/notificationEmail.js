@@ -10,7 +10,7 @@ import useCountdown from "../../utils/hooks/useCountdown";
 import CircleCheck from "../../assets/imgs/icons/circle-check.svg";
 import CircleWarning from "../../assets/imgs/icons/circle-warning.svg";
 import SecondaryButton from "../buttons/secondaryButton";
-import { fetchAndUpdateUser } from "../../context/user";
+import { fetchAndUpdateUser, useUserDispatch } from "../../context/user";
 
 const CountdownWrapper = styled.div`
   display: flex;
@@ -40,14 +40,15 @@ export default function NotificationEmail({ email, verified }) {
   const [inputEmail, setInputEmail] = useState(email);
   const { countdown, counting, startCountdown, resetCountdown } =
     useCountdown(60);
+  const userDispatch = useUserDispatch();
 
   useEffect(() => {
     if (counting && countdown % 5 === 0) {
-      fetchAndUpdateUser().then(() => {
+      fetchAndUpdateUser(userDispatch).then(() => {
         // todo: maybe log the count
       });
     }
-  }, [dispatch, counting, countdown]);
+  }, [userDispatch, counting, countdown]);
 
   if (counting && (countdown === 0 || (email === inputEmail && verified))) {
     resetCountdown();

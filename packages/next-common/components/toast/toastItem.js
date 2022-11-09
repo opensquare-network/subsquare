@@ -8,6 +8,7 @@ import { shadow_200 } from "../../styles/componentCss";
 import Loading from "../loading";
 import ToastSuccessIcon from "../../assets/imgs/icons/toast-success.svg";
 import ToastErrorIcon from "../../assets/imgs/icons/toast-error.svg";
+import ToastWarningIcon from "../../assets/imgs/icons/toast-warning.svg";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
@@ -62,7 +63,7 @@ const IconWrapper = styled.span`
   height: 20px;
 `;
 
-const ToastItem = ({ type, message, id, sticky }) => {
+const ToastItem = ({ type, message, id, sticky, timeout }) => {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const [tranClass, setTranClass] = useState("");
@@ -73,8 +74,8 @@ const ToastItem = ({ type, message, id, sticky }) => {
     }
     setTimeout(() => {
       dispatch(removeToast(id));
-    }, 5000);
-  }, [dispatch, id, sticky]);
+    }, timeout || 5000);
+  }, [dispatch, id, sticky, timeout]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -93,6 +94,8 @@ const ToastItem = ({ type, message, id, sticky }) => {
           <Loading size={16} />
         ) : type === "success" ? (
           <ToastSuccessIcon />
+        ) : type === "warning" ? (
+          <ToastWarningIcon />
         ) : type === "error" ? (
           <ToastErrorIcon />
         ) : null}
