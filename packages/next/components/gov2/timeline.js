@@ -26,7 +26,7 @@ function TimelineTallyInfo({ decimals, symbol, ayes, nays, support }) {
   );
 }
 
-const getTimelineData = (args, method, trackInfo, chain) => {
+const getTimelineData = (args, method, trackInfo) => {
   const { decimals, symbol } = useChainSettings();
 
   switch (method) {
@@ -92,7 +92,7 @@ const getTimelineData = (args, method, trackInfo, chain) => {
   return args;
 };
 
-export function makeReferendumTimelineData(timeline, trackInfo, chain, type) {
+export function makeReferendumTimelineData(timeline, trackInfo, type) {
   return (timeline || []).map((item) => {
     return {
       time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
@@ -102,28 +102,13 @@ export function makeReferendumTimelineData(timeline, trackInfo, chain, type) {
         type,
         args: getGov2ReferendumStateArgs(item),
       },
-      data: getTimelineData(
-        item.args,
-        item.method ?? item.name,
-        trackInfo,
-        chain
-      ),
+      data: getTimelineData(item.args, item.method ?? item.name, trackInfo),
     };
   });
 }
 
-export default function ReferendumTimeline({
-  timeline,
-  trackInfo,
-  chain,
-  type,
-}) {
-  const timelineData = makeReferendumTimelineData(
-    timeline,
-    trackInfo,
-    chain,
-    type
-  );
+export default function ReferendumTimeline({ timeline, trackInfo, type }) {
+  const timelineData = makeReferendumTimelineData(timeline, trackInfo, type);
 
   return <Timeline data={timelineData} />;
 }

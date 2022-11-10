@@ -251,7 +251,6 @@ export default function Proposal({
       ...call,
       args: (
         <LargeDataPlaceHolder
-          chain={chain}
           referendumIndex={referendumIndex}
           motionIndex={motionIndex}
           proposalIndex={proposalIndex}

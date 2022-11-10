@@ -47,7 +47,7 @@ const Value = styled.span`
   color: ${(props) => props.theme.textPrimary};
 `;
 
-export default function Gov2Tally({ detail, chain }) {
+export default function Gov2Tally({ detail }) {
   const { width } = useWindowSize();
 
   const api = useApi();
