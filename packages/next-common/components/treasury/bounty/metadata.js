@@ -8,10 +8,9 @@ import { useChainSettings } from "../../../context/chain";
 /**
  *
  * @param meta {proposer, beneficiary, value, bond, status}
- * @param chain {string}
  * @constructor
  */
-function BountyMetadata({ meta, chain }) {
+function BountyMetadata({ meta }) {
   const { decimals, symbol } = useChainSettings();
   if (!meta) {
     return null;

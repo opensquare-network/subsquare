@@ -59,135 +59,130 @@ const TipCountDown = ({ meta = {}, state }) => {
   );
 };
 
-export default withLoginUserRedux(
-  ({ loginUser, detail: tip, comments, chain }) => {
-    const [detail, setDetail] = useState(tip);
-    useEffect(() => setDetail(tip), [tip]);
-    const isMounted = useIsMounted();
+export default withLoginUserRedux(({ loginUser, detail: tip, comments }) => {
+  const [detail, setDetail] = useState(tip);
+  useEffect(() => setDetail(tip), [tip]);
+  const isMounted = useIsMounted();
 
-    const chainData = detail?.onchainData ?? {};
-    const { CommentComponent, focusEditor } = useUniversalComments({
-      detail,
-      comments,
-      type: detailPageCategory.TREASURY_TIP,
-    });
-    const dispatch = useDispatch();
+  const chainData = detail?.onchainData ?? {};
+  const { CommentComponent, focusEditor } = useUniversalComments({
+    detail,
+    comments,
+    type: detailPageCategory.TREASURY_TIP,
+  });
+  const dispatch = useDispatch();
 
-    const [tipIsFinal, setTipIsFinal] = useState(
-      ["TipClosed", "TipRetracted"].includes(detail?.onchainData?.state?.state)
-    );
+  const [tipIsFinal, setTipIsFinal] = useState(
+    ["TipClosed", "TipRetracted"].includes(detail?.onchainData?.state?.state)
+  );
 
-    // If the tip is not final, we'd need to look for tip state from the chain first.
-    const shouldGetTipsFromNode = !tipIsFinal;
-    const tipHash = detail?.onchainData?.hash;
-    const tipsInDb = detail?.onchainData?.meta?.tips || [];
+  // If the tip is not final, we'd need to look for tip state from the chain first.
+  const shouldGetTipsFromNode = !tipIsFinal;
+  const tipHash = detail?.onchainData?.hash;
+  const tipsInDb = detail?.onchainData?.meta?.tips || [];
 
-    const [loading, setLoading] = useState(shouldGetTipsFromNode);
-    const [tips, setTips] = useState(tipsInDb);
+  const [loading, setLoading] = useState(shouldGetTipsFromNode);
+  const [tips, setTips] = useState(tipsInDb);
 
-    const api = useApi();
-    const councilMembers = useCall(
-      (api?.query.council || api?.query.generalCouncil)?.members,
-      []
-    );
-    const councilTippers = councilMembers?.toJSON() || [];
-    const userIsTipper = councilTippers?.some((address) =>
-      isSameAddress(loginUser?.address, address)
-    );
-    // Used to trigger tips updating
-    const [tipsNeedUpdate, setTipsNeedUpdate] = useState(Date.now());
-    const [isLoadingTip, setIsLoadingTip] = useState(false);
+  const api = useApi();
+  const councilMembers = useCall(
+    (api?.query.council || api?.query.generalCouncil)?.members,
+    []
+  );
+  const councilTippers = councilMembers?.toJSON() || [];
+  const userIsTipper = councilTippers?.some((address) =>
+    isSameAddress(loginUser?.address, address)
+  );
+  // Used to trigger tips updating
+  const [tipsNeedUpdate, setTipsNeedUpdate] = useState(Date.now());
+  const [isLoadingTip, setIsLoadingTip] = useState(false);
 
-    useEffect(() => {
-      if (api) {
-        dispatch(
-          setTipCountDownBlockNum(api.consts.tips.tipCountdown.toNumber())
-        );
-      }
-    }, [api, dispatch]);
+  useEffect(() => {
+    if (api) {
+      dispatch(
+        setTipCountDownBlockNum(api.consts.tips.tipCountdown.toNumber())
+      );
+    }
+  }, [api, dispatch]);
 
-    useEffect(() => {
-      if ((shouldGetTipsFromNode || tipsNeedUpdate) && api) {
-        setIsLoadingTip(true);
-        api.query.tips
-          .tips(tipHash)
-          .then((tip) => {
-            const normalizedTip = tip.toJSON();
-            if (normalizedTip) {
-              // Repalce the tips read from db with the current on-chain state
-              setTips(normalizedTip?.tips);
-            } else {
-              // If the tip is null,
-              // It is considered to have been closed/retracted already
-              setTipIsFinal(true);
-            }
-            setLoading(false);
-          })
-          .finally(() => {
-            setIsLoadingTip(false);
-          });
-      }
-    }, [api, shouldGetTipsFromNode, tipHash, tipsNeedUpdate]);
+  useEffect(() => {
+    if ((shouldGetTipsFromNode || tipsNeedUpdate) && api) {
+      setIsLoadingTip(true);
+      api.query.tips
+        .tips(tipHash)
+        .then((tip) => {
+          const normalizedTip = tip.toJSON();
+          if (normalizedTip) {
+            // Repalce the tips read from db with the current on-chain state
+            setTips(normalizedTip?.tips);
+          } else {
+            // If the tip is null,
+            // It is considered to have been closed/retracted already
+            setTipIsFinal(true);
+          }
+          setLoading(false);
+        })
+        .finally(() => {
+          setIsLoadingTip(false);
+        });
+    }
+  }, [api, shouldGetTipsFromNode, tipHash, tipsNeedUpdate]);
 
-    const updateTips = () => {
-      // Trigger tips update
-      setTipsNeedUpdate(Date.now());
-    };
+  const updateTips = () => {
+    // Trigger tips update
+    setTipsNeedUpdate(Date.now());
+  };
 
-    const refreshPageData = useCallback(async () => {
-      const { result } = await nextApi.fetch(`treasury/tips/${detail._id}`);
-      if (result && isMounted.current) {
-        setDetail(result);
-      }
-    }, [detail, isMounted]);
+  const refreshPageData = useCallback(async () => {
+    const { result } = await nextApi.fetch(`treasury/tips/${detail._id}`);
+    if (result && isMounted.current) {
+      setDetail(result);
+    }
+  }, [detail, isMounted]);
 
-    const onTipFinalized = useWaitSyncBlock("Tip endorsed", refreshPageData);
+  const onTipFinalized = useWaitSyncBlock("Tip endorsed", refreshPageData);
 
-    const desc = getMetaDesc(detail);
-    return (
-      <PostProvider post={detail} type={detailPageCategory.TREASURY_TIP}>
-        <DetailWithRightLayout
-          seoInfo={{
-            title: detail?.title,
-            desc,
-            ogImage: getBannerUrl(detail?.bannerCid),
-          }}
-        >
-          <Back href={`/treasury/tips`} text="Back to Tips" />
-          <DetailItem
-            onReply={focusEditor}
-            type={detailPageCategory.TREASURY_TIP}
-            countDown={
-              <TipCountDown
-                meta={chainData.meta}
-                state={chainData.state?.state}
-              />
-            }
-          />
-          <Tipper
-            chain={chain}
-            tipIsFinal={tipIsFinal}
-            userIsTipper={userIsTipper}
-            loading={loading}
-            tips={tips}
-            councilTippers={councilTippers}
-            tipHash={tipHash}
-            onInBlock={updateTips}
-            onFinalized={onTipFinalized}
-            isLoadingTip={isLoadingTip}
-          />
-          <Metadata tip={detail?.onchainData} />
-          <Timeline tip={detail?.onchainData} />
-          {CommentComponent}
-        </DetailWithRightLayout>
-      </PostProvider>
-    );
-  }
-);
+  const desc = getMetaDesc(detail);
+  return (
+    <PostProvider post={detail} type={detailPageCategory.TREASURY_TIP}>
+      <DetailWithRightLayout
+        seoInfo={{
+          title: detail?.title,
+          desc,
+          ogImage: getBannerUrl(detail?.bannerCid),
+        }}
+      >
+        <Back href={`/treasury/tips`} text="Back to Tips" />
+        <DetailItem
+          onReply={focusEditor}
+          type={detailPageCategory.TREASURY_TIP}
+          countDown={
+            <TipCountDown
+              meta={chainData.meta}
+              state={chainData.state?.state}
+            />
+          }
+        />
+        <Tipper
+          tipIsFinal={tipIsFinal}
+          userIsTipper={userIsTipper}
+          loading={loading}
+          tips={tips}
+          councilTippers={councilTippers}
+          tipHash={tipHash}
+          onInBlock={updateTips}
+          onFinalized={onTipFinalized}
+          isLoadingTip={isLoadingTip}
+        />
+        <Metadata tip={detail?.onchainData} />
+        <Timeline tip={detail?.onchainData} />
+        {CommentComponent}
+      </DetailWithRightLayout>
+    </PostProvider>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   const { id, page, page_size } = context.query;
   const pageSize = Math.min(page_size ?? 50, 100);
 
@@ -211,7 +206,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       detail,
       comments: comments ?? EmptyList,
-      chain,
     },
   };
 });

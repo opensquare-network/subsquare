@@ -77,7 +77,6 @@ const LoadingDiv = styled.div`
 `;
 
 export default function Tipper({
-  chain,
   tipIsFinal = false,
   userIsTipper = false,
   loading = true,
@@ -118,7 +117,6 @@ export default function Tipper({
         {tips.map(([address, amount]) => (
           <TipperItem key={address}>
             <User
-              chain={chain}
               add={address}
               fontSize={12}
               {...(windowWidth > 1024 ? { maxWidth: 150 } : {})}
@@ -169,7 +167,6 @@ export default function Tipper({
       </Wrapper>
       {showPopup && (
         <Popup
-          chain={chain}
           councilTippers={councilTippers}
           tipHash={tipHash}
           onClose={() => setShowPopup(false)}

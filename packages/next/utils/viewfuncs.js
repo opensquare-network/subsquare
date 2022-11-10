@@ -68,7 +68,7 @@ export const convertPolkassemblyComment = (chain, comment) => ({
   author: convertPolkassemblyUser(chain, comment.author),
 });
 
-export const toPolkassemblyDiscussionAuthor = (author, chain) => ({
+export const toPolkassemblyDiscussionAuthor = (author) => ({
   username: addressEllipsis(author?.address) || author?.username,
   ...(author?.address
     ? {
@@ -80,7 +80,7 @@ export const toPolkassemblyDiscussionAuthor = (author, chain) => ({
 export const toPolkassemblyDiscussionListItem = (chain, item) => ({
   ...item,
   time: item.lastActivityAt,
-  author: toPolkassemblyDiscussionAuthor(item.author, chain),
+  author: toPolkassemblyDiscussionAuthor(item.author),
   detailLink: `/polkassembly/post/${item.polkassemblyId}`,
 });
 

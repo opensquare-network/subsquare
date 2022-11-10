@@ -29,7 +29,7 @@ const EditedLabel = styled.div`
   color: ${(props) => props.theme.textTertiary};
 `;
 
-export default function ArticleContent({ post, chain, type, postReactions }) {
+export default function ArticleContent({ post, type, postReactions }) {
   if (!post) {
     return null;
   }
@@ -45,7 +45,7 @@ export default function ArticleContent({ post, chain, type, postReactions }) {
       <MarkdownPreviewer content={post.content} />
       {post.createdAt !== post.updatedAt && <EditedLabel>Edited</EditedLabel>}
       <PostDataSource type={type} post={post} />
-      <Actions chain={chain} reactions={postReactions} />
+      <Actions reactions={postReactions} />
     </Wrapper>
   );
 }

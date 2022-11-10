@@ -28,7 +28,7 @@ import {
 } from "next-common/store/reducers/referendumSlice";
 
 export default withLoginUserRedux(
-  ({ loginUser, detail: ssrDetail, publicProposal, comments, chain }) => {
+  ({ detail: ssrDetail, publicProposal, comments, chain }) => {
     const [detail, setDetail] = useState(ssrDetail);
     useEffect(() => setDetail(ssrDetail), [ssrDetail]);
     const dispatch = useDispatch();
@@ -36,8 +36,6 @@ export default withLoginUserRedux(
     const { CommentComponent, focusEditor } = useCommentComponent({
       detail,
       comments,
-      loginUser,
-      chain,
       type: detailPageCategory.DEMOCRACY_REFERENDUM,
     });
 

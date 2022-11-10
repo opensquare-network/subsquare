@@ -4,15 +4,17 @@ import Comments from "next-common/components/comment/index";
 import Editor from "next-common/components/comment/editor";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
+import { useChain } from "../../context/chain";
+import { useUser } from "../../context/user";
 
 export default function useCommentComponent({
   detail,
   comments,
-  loginUser,
-  chain,
   type,
   tabs = null,
 }) {
+  const loginUser = useUser();
+  const chain = useChain();
   const postId = detail._id;
 
   const editorWrapperRef = useRef(null);

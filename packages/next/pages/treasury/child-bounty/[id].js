@@ -44,7 +44,7 @@ const ChildBountyCountDown = ({ data = {} }) => {
   );
 };
 
-export default withLoginUserRedux(({ detail: ssrDetail, comments, chain }) => {
+export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   const [detail, setDetail] = useState(ssrDetail);
   useEffect(() => setDetail(ssrDetail), [ssrDetail]);
 
@@ -94,12 +94,11 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments, chain }) => {
           countDown={<ChildBountyCountDown data={detail.onchainData} />}
         />
         <Claim
-          chain={chain}
           childBounty={detail?.onchainData}
           onFinalized={onClaimFinalized}
         />
-        <Metadata meta={detail.onchainData?.meta} chain={chain} />
-        <Timeline onchainData={detail.onchainData} chain={chain} />
+        <Metadata meta={detail.onchainData?.meta} />
+        <Timeline onchainData={detail.onchainData} />
         {CommentComponent}
       </Layout>
     </PostProvider>
@@ -107,8 +106,6 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   const { id, page, page_size } = context.query;
   const pageSize = Math.min(page_size ?? 50, 100);
 
@@ -132,7 +129,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       detail,
       comments: comments ?? EmptyList,
-      chain,
     },
   };
 });
