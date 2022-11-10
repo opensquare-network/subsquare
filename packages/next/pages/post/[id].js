@@ -26,7 +26,7 @@ export default withLoginUserRedux(
     const [contentType, setContentType] = useState(
       loginUser?.preference.editor || "markdown"
     );
-    const users = useMentionList(detail, comments, chain);
+    const users = useMentionList(detail, comments);
 
     const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
@@ -44,7 +44,6 @@ export default withLoginUserRedux(
       <PostProvider post={detail} type={detailPageCategory.POST}>
         <DetailLayout
           user={loginUser}
-          chain={chain}
           seoInfo={{
             title: detail?.title,
             desc,
@@ -59,16 +58,10 @@ export default withLoginUserRedux(
             type={detailPageCategory.POST}
           />
           <CommentsWrapper>
-            <Comments
-              data={comments}
-              user={loginUser}
-              chain={chain}
-              onReply={onReply}
-            />
+            <Comments data={comments} user={loginUser} onReply={onReply} />
             {loginUser && (
               <Editor
                 postId={postId}
-                chain={chain}
                 ref={editorWrapperRef}
                 setQuillRef={setQuillRef}
                 {...{ contentType, setContentType, content, setContent, users }}

@@ -24,7 +24,6 @@ const Title = styled(TitleContainer)`
 export default function Comments({
   user,
   data: { items, page, pageSize, total } = {},
-  chain,
   onReply,
   tabs = null,
 }) {
@@ -38,13 +37,7 @@ export default function Comments({
         <>
           <div>
             {(items || []).map((item) => (
-              <Item
-                key={item._id}
-                data={item}
-                user={user}
-                chain={chain}
-                onReply={onReply}
-              />
+              <Item key={item._id} data={item} user={user} onReply={onReply} />
             ))}
           </div>
           <Pagination page={page} pageSize={pageSize} total={total} />

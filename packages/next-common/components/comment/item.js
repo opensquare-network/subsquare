@@ -79,7 +79,7 @@ const EditedLabel = styled.div`
   color: ${(props) => props.theme.textTertiary};
 `;
 
-export default function Item({ user, data, chain, onReply }) {
+export default function Item({ user, data, onReply }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const ref = useRef();
@@ -183,7 +183,6 @@ export default function Item({ user, data, chain, onReply }) {
           </ContentWrapper>
           <div style={{ margin: "8px 0 0 28px" }}>
             <CommentActions
-              chain={chain}
               highlight={isLoggedIn && thumbUp}
               noHover={!isLoggedIn || ownComment}
               edit={ownComment}
