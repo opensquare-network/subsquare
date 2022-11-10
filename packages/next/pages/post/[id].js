@@ -58,7 +58,7 @@ export default withLoginUserRedux(
             type={detailPageCategory.POST}
           />
           <CommentsWrapper>
-            <Comments data={comments} user={loginUser} onReply={onReply} />
+            <Comments data={comments} onReply={onReply} />
             {loginUser && (
               <Editor
                 postId={postId}

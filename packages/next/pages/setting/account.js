@@ -26,14 +26,17 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
   return (
     <>
-      <SettingsLayout user={loginUser}>
+      <SettingsLayout>
         <NextHead title={`Settings`} desc={``} />
         <Wrapper>
           <TitleContainer>Account</TitleContainer>
           <ContentWrapper>
             <Username username={loginUser?.username} />
             <Divider margin={24} />
-            <Email email={loginUser?.email} verified={loginUser?.emailVerified} />
+            <Email
+              email={loginUser?.email}
+              verified={loginUser?.emailVerified}
+            />
             <Divider margin={24} />
             <Password />
             <Divider margin={24} />

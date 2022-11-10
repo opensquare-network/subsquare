@@ -3,7 +3,10 @@ import { useEffect, useState } from "react";
 
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
-import { newErrorToast, newSuccessToast, } from "next-common/store/reducers/toastSlice";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import NextHead from "next-common/components/nextHead";
 import { isKeyRegisteredUser } from "next-common/utils";
@@ -74,16 +77,13 @@ export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
     loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
   const isVerifiedUser = loginUser?.emailVerified;
 
-  const {
-    discussionOptionsComponent,
-    getDiscussionOptionValues,
-    isChanged,
-  } = useDiscussionOptions({
-    disabled: !isVerifiedUser,
-    saving,
-    reply: !!loginUser?.notification?.reply,
-    mention: !!loginUser?.notification?.mention,
-  });
+  const { discussionOptionsComponent, getDiscussionOptionValues, isChanged } =
+    useDiscussionOptions({
+      disabled: !isVerifiedUser,
+      saving,
+      reply: !!loginUser?.notification?.reply,
+      mention: !!loginUser?.notification?.mention,
+    });
 
   const router = useRouter();
 
@@ -122,7 +122,7 @@ export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
   };
 
   return (
-    <SettingsLayout user={loginUser}>
+    <SettingsLayout>
       <NextHead title={`Settings`} desc={``} />
       <Wrapper>
         <TitleContainer>Notification</TitleContainer>
@@ -138,9 +138,7 @@ export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
             </WarningMessage>
           )}
 
-          <Options>
-            {discussionOptionsComponent}
-          </Options>
+          <Options>{discussionOptionsComponent}</Options>
 
           <Divider margin={24} />
           <ButtonWrapper>
