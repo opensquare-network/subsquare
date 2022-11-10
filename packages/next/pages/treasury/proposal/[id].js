@@ -13,11 +13,10 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+export default withLoginUserRedux(({ detail, comments, chain }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
-    loginUser,
     type: detailPageCategory.TREASURY_PROPOSAL,
   });
 
@@ -25,7 +24,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   return (
     <PostProvider post={detail} type={detailPageCategory.TREASURY_PROPOSAL}>
       <DetailLayout
-        user={loginUser}
         seoInfo={{
           title: detail?.title,
           desc,

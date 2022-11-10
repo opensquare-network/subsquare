@@ -11,11 +11,10 @@ import DetailWithRightLayout from "next-common/components/layout/detailWithRight
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 
-export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
+export default withLoginUserRedux(({ motion, comments }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail: motion,
     comments,
-    loginUser,
     type: detailPageCategory.TECH_COMM_MOTION,
   });
 
@@ -33,8 +32,6 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
       >
         <Back href={`/techcomm/proposals`} text="Back to Proposals" />
         <MotionDetail
-          user={loginUser}
-          chain={chain}
           type={detailPageCategory.TECH_COMM_MOTION}
           onReply={focusEditor}
         />
@@ -45,8 +42,6 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   const { id, page, page_size } = context.query;
   const pageSize = Math.min(page_size ?? 50, 100);
   const { result: motion } = await nextApi.fetch(`tech-comm/motions/${id}`);
@@ -68,7 +63,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       motion: motion ?? null,
       comments: comments ?? EmptyList,
-      chain,
     },
   };
 });

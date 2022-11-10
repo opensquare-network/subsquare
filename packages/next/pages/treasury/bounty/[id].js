@@ -49,11 +49,10 @@ function BountyCountDown({ data = {} }) {
 }
 
 export default withLoginUserRedux(
-  ({ loginUser, detail, childBounties, comments, chain }) => {
+  ({ detail, childBounties, comments, chain }) => {
     const { CommentComponent, focusEditor } = useUniversalComments({
       detail,
       comments,
-      loginUser,
       type: detailPageCategory.TREASURY_BOUNTY,
     });
 
@@ -61,7 +60,6 @@ export default withLoginUserRedux(
     return (
       <PostProvider post={detail} type={detailPageCategory.TREASURY_BOUNTY}>
         <DetailLayout
-          user={loginUser}
           seoInfo={{
             title: detail?.title,
             desc,

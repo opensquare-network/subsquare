@@ -9,14 +9,11 @@ import PolkassemblyComments from "./polkassemblyComments";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import Chains from "next-common/utils/consts/chains";
 import { useChain } from "next-common/context/chain";
+import { useUser } from "next-common/context/user";
 
-export default function useUniversalComments({
-  detail,
-  comments,
-  loginUser,
-  type,
-}) {
+export default function useUniversalComments({ detail, comments, type }) {
   const chain = useChain();
+  const user = useUser();
   const defaultTabIndex =
     detail?.polkassemblyId !== undefined &&
     detail?.dataSource === "polkassembly" &&
