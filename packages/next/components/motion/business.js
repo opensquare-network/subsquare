@@ -7,7 +7,7 @@ import CapitalText from "../capitalText";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 
-export default function Business({ motion, chain }) {
+export default function Business({ motion }) {
   if (!motion) {
     return null;
   }
@@ -34,7 +34,6 @@ export default function Business({ motion, chain }) {
           <Flex key="proposal-beneficiary">
             <User add={proposal.meta.beneficiary} fontSize={14} />
             <ExtrinsicLinks
-              chain={chain}
               address={proposal.meta.beneficiary}
               style={{ marginLeft: 8 }}
             />
@@ -70,11 +69,7 @@ export default function Business({ motion, chain }) {
               </CapitalText>,
               <Flex key="bounty-beneficiary-value">
                 <User add={item[1]} fontSize={14} />
-                <ExtrinsicLinks
-                  chain={chain}
-                  address={item[1]}
-                  style={{ marginLeft: 8 }}
-                />
+                <ExtrinsicLinks address={item[1]} style={{ marginLeft: 8 }} />
               </Flex>,
             ]);
             break;

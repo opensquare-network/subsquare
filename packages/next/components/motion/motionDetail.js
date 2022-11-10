@@ -135,7 +135,7 @@ export default function MotionDetail({ user, onReply, chain, type }) {
   return (
     <div>
       <EditablePanel>
-        {!isEdit && <Head motion={post} chain={chain} type={type} />}
+        {!isEdit && <Head motion={post} type={type} />}
         <ArticleContent
           post={post}
           onReply={onReply}
@@ -158,7 +158,7 @@ export default function MotionDetail({ user, onReply, chain, type }) {
         onChainData={post.onchainData}
         type={type}
       />
-      <Business motion={post?.onchainData} chain={chain} />
+      <Business motion={post?.onchainData} />
       <Metadata />
       <Timeline />
     </div>

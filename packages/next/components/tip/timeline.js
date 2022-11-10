@@ -42,7 +42,7 @@ const getClosedTimelineData = (timeline = []) => {
   return [fd, ...notFoldItems];
 };
 
-export default function TipTimeline({ tip, chain }) {
+export default function TipTimeline({ tip }) {
   const { decimals, symbol } = useChainSettings();
 
   const getTimelineData = (args, method) => {
