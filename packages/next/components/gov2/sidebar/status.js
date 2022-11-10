@@ -6,6 +6,10 @@ import styled, { useTheme } from "styled-components";
 import Progress from "next-common/components/progress";
 import FlexBetween from "next-common/components/styled/flexBetween";
 import { p_14_normal } from "next-common/styles/componentCss";
+import TooltipOrigin from "next-common/components/tooltip";
+import { estimateBlocksTime } from "next-common/utils";
+import { useSelector } from "react-redux";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 
 const Wrapper = styled.div``;
 
@@ -41,10 +45,23 @@ const ProgressInfo = styled(FlexBetween)`
 `;
 const ProgressGroup = styled.div``;
 
-export default function Gov2Status({ detail = {} }) {
+const Tooltip = styled(TooltipOrigin)`
+  display: block;
+`;
+
+export default function Gov2Status({ detail }) {
   const { secondaryGreen500, secondaryGreen100 } = useTheme();
+  const blockTime = useSelector(blockTimeSelector);
 
   const isConfirming = true;
+
+  const onchainData = detail?.onchainData ?? {};
+  const trackInfo = onchainData?.trackInfo ?? {};
+  const decisionPeriod = estimateBlocksTime(
+    trackInfo.decisionPeriod,
+    blockTime
+  );
+  const confirmPeriod = estimateBlocksTime(trackInfo.confirmPeriod, blockTime);
 
   return (
     <Wrapper>
@@ -56,7 +73,7 @@ export default function Gov2Status({ detail = {} }) {
             <Progress percentage={10} />
             <ProgressInfo>
               <p>Decision Period</p>
-              <p>28 days</p>
+              <p>{decisionPeriod.join(" ")}</p>
             </ProgressInfo>
           </ProgressGroup>
 
@@ -70,7 +87,7 @@ export default function Gov2Status({ detail = {} }) {
             />
             <ProgressInfo>
               <p>Confirming Period</p>
-              <p>4 days</p>
+              <p>{confirmPeriod.join(" ")}</p>
             </ProgressInfo>
           </ProgressGroup>
         </div>
