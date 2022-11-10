@@ -1,13 +1,12 @@
 import { useMemo } from "react";
-import { useSelector } from "react-redux";
-import { hasGov2Selector } from "../../store/reducers/chainSlice";
 import homeMenusOrigin from "../consts/menu";
 import { gov2EntryItem } from "../consts/menu/gov2";
+import { useChainSettings } from "../../context/chain";
 
 export function useHomeMenus() {
-  const hasGov2 = useSelector(hasGov2Selector);
+  const { hasGov2 } = useChainSettings();
 
-  const menu = useMemo(() => {
+  return useMemo(() => {
     // copy
     const homeMenus = Array.from(homeMenusOrigin);
 
@@ -17,6 +16,4 @@ export function useHomeMenus() {
 
     return homeMenus;
   }, [hasGov2]);
-
-  return menu;
 }

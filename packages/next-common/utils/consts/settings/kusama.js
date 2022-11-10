@@ -42,6 +42,7 @@ const kusama = {
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   group: MenuGroups.KusamaAndParachains,
+  hasGov2: true,
 };
 
 export default kusama;

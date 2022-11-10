@@ -10,8 +10,6 @@ const chainSlice = createSlice({
     blockTime: getChainSettings(chain).blockTime || defaultBlockTime,
     latestHeight: null,
     nowHeight: 0,
-    // FIXME: production
-    hasGov2: true,
   },
   reducers: {
     setBlockTime(state, { payload }) {
@@ -23,18 +21,14 @@ const chainSlice = createSlice({
     setNowHeight(state, { payload }) {
       state.nowHeight = payload || 0;
     },
-    setHasGov2(state, { payload }) {
-      state.hasGov2 = payload;
-    },
   },
 });
 
-export const { setBlockTime, setLatestHeight, setNowHeight, setHasGov2 } =
+export const { setBlockTime, setLatestHeight, setNowHeight } =
   chainSlice.actions;
 
 export const blockTimeSelector = (state) => state.chain.blockTime;
 export const latestHeightSelector = (state) => state.chain.latestHeight;
 export const nowHeightSelector = (state) => state.chain.nowHeight;
-export const hasGov2Selector = (state) => state.chain.hasGov2;
 
 export default chainSlice.reducer;
