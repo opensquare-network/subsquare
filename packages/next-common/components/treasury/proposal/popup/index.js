@@ -109,7 +109,6 @@ function PopupContent({
     <>
       <Signer
         api={api}
-        chain={chain}
         signerAccount={signerAccount}
         setSignerAccount={setSignerAccount}
         extensionAccounts={extensionAccounts}
@@ -118,7 +117,6 @@ function PopupContent({
         balanceIsLoading={balanceIsLoading}
       />
       <Beneficiary
-        chain={chain}
         extensionAccounts={extensionAccounts}
         setAddress={setBeneficiary}
       />

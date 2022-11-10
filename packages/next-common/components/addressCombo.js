@@ -10,6 +10,7 @@ import { encodeAddressToChain } from "../services/address";
 import { isAddress } from "@polkadot/util-crypto";
 import Caret from "./icons/caret";
 import { addressEllipsis } from "../utils";
+import { useChain } from "../context/chain";
 
 const Wrapper = Relative;
 
@@ -92,7 +93,8 @@ const Input = styled.input`
   margin: 4px 16px;
 `;
 
-export default function AddressCombo({ chain, accounts, address, setAddress }) {
+export default function AddressCombo({ accounts, address, setAddress }) {
+  const chain = useChain();
   const [show, setShow] = useState(false);
   const [edit, setEdit] = useState(false);
   const [inputAddress, setInputAddress] = useState(address);

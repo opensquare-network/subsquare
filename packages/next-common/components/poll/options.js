@@ -100,7 +100,6 @@ const TotalVotes = styled.div`
 `;
 
 function Option({
-  chain,
   option,
   votes,
   myVote,
@@ -127,7 +126,7 @@ function Option({
           <VotesPrecent>{precent}%</VotesPrecent>
         </StatsNumbers>
       </OptionWrapper>
-      {!anonymous && <VoterList voters={votes} chain={chain} />}
+      {!anonymous && <VoterList voters={votes} />}
     </div>
   );
 }
@@ -140,7 +139,6 @@ export default function PollOptions({
   selectedOption,
   setSelectedOption,
   selectable,
-  chain,
 }) {
   const totalVotesCount = Object.values(votes)
     .map((item) => (anonymous ? item : item.length))
@@ -159,7 +157,6 @@ export default function PollOptions({
           onClick={setSelectedOption}
           selected={selectedOption === option}
           selectable={selectable}
-          chain={chain}
         />
       ))}
       <TotalVotes>{`Total ${totalVotesCount} votes`}</TotalVotes>

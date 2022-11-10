@@ -114,7 +114,6 @@ function PopupContent({
         balanceIsLoading={balanceIsLoading}
       />
       <Beneficiary
-        chain={chain}
         extensionAccounts={extensionAccounts}
         setAddress={setBeneficiary}
       />

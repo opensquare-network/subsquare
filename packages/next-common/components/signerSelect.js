@@ -39,7 +39,6 @@ export default function SignerSelect({
 
   return (
     <AddressSelect
-      chain={chain}
       accounts={accounts}
       selectedAccount={selectedAccount}
       onSelect={setSelectedAccount}
