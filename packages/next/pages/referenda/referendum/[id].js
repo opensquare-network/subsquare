@@ -18,13 +18,12 @@ import Timeline from "components/gov2/timeline";
 import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metadata";
 import useApi from "next-common/utils/hooks/useApi";
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+export default withLoginUserRedux(({ detail, comments, chain }) => {
   const api = useApi();
 
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
-    loginUser,
     type: detailPageCategory.GOV2_REFERENDUM,
   });
 

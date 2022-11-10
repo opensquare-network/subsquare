@@ -11,11 +11,10 @@ import DetailWithRightLayout from "next-common/components/layout/detailWithRight
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 
-export default withLoginUserRedux(({ loginUser, motion, comments }) => {
+export default withLoginUserRedux(({ motion, comments }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail: motion,
     comments,
-    loginUser,
     type: detailPageCategory.FINANCIAL_MOTION,
   });
 
@@ -33,7 +32,6 @@ export default withLoginUserRedux(({ loginUser, motion, comments }) => {
       >
         <Back href={`/financial-council/motions`} text="Back to Motions" />
         <MotionDetail
-          user={loginUser}
           type={detailPageCategory.FINANCIAL_MOTION}
           onReply={focusEditor}
         />

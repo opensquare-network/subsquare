@@ -19,9 +19,11 @@ import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import { useChain } from "next-common/context/chain";
+import { useUser } from "next-common/context/user";
 
-export default function MotionDetail({ user, onReply, type }) {
+export default function MotionDetail({ onReply, type }) {
   const chain = useChain();
+  const user = useUser();
   const postDispatch = usePostDispatch();
   const api = useApi();
   const isMounted = useIsMounted();
