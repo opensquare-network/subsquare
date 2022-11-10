@@ -34,7 +34,6 @@ export default withLoginUserRedux(
           <DetailItem
             votes={votes}
             myVote={myVote}
-            chain={chain}
             onReply={focusEditor}
             type={detailPageCategory.POST}
           />

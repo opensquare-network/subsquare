@@ -48,43 +48,39 @@ function BountyCountDown({ data = {} }) {
   );
 }
 
-export default withLoginUserRedux(
-  ({ detail, childBounties, comments, chain }) => {
-    const { CommentComponent, focusEditor } = useUniversalComments({
-      detail,
-      comments,
-      type: detailPageCategory.TREASURY_BOUNTY,
-    });
+export default withLoginUserRedux(({ detail, childBounties, comments }) => {
+  const { CommentComponent, focusEditor } = useUniversalComments({
+    detail,
+    comments,
+    type: detailPageCategory.TREASURY_BOUNTY,
+  });
 
-    const desc = getMetaDesc(detail);
-    return (
-      <PostProvider post={detail} type={detailPageCategory.TREASURY_BOUNTY}>
-        <DetailLayout
-          seoInfo={{
-            title: detail?.title,
-            desc,
-            ogImage: getBannerUrl(detail?.bannerCid),
-          }}
-        >
-          <Back href={`/treasury/bounties`} text="Back to Bounties" />
-          <DetailItem
-            onReply={focusEditor}
-            type={detailPageCategory.TREASURY_BOUNTY}
-            countDown={<BountyCountDown data={detail.onchainData} />}
-          />
-          <Metadata meta={detail.onchainData?.meta} />
-          <ChildBountiesTable {...{ childBounties }} />
-          <Timeline bounty={detail?.onchainData} chain={chain} />
-          {CommentComponent}
-        </DetailLayout>
-      </PostProvider>
-    );
-  }
-);
+  const desc = getMetaDesc(detail);
+  return (
+    <PostProvider post={detail} type={detailPageCategory.TREASURY_BOUNTY}>
+      <DetailLayout
+        seoInfo={{
+          title: detail?.title,
+          desc,
+          ogImage: getBannerUrl(detail?.bannerCid),
+        }}
+      >
+        <Back href={`/treasury/bounties`} text="Back to Bounties" />
+        <DetailItem
+          onReply={focusEditor}
+          type={detailPageCategory.TREASURY_BOUNTY}
+          countDown={<BountyCountDown data={detail.onchainData} />}
+        />
+        <Metadata meta={detail.onchainData?.meta} />
+        <ChildBountiesTable {...{ childBounties }} />
+        <Timeline bounty={detail?.onchainData} />
+        {CommentComponent}
+      </DetailLayout>
+    </PostProvider>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   const { id, page, page_size } = context.query;
   const pageSize = Math.min(page_size ?? 50, 100);
 
@@ -110,7 +106,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       childBounties: childBounties ?? EmptyList,
       comments: comments ?? EmptyList,
-      chain,
     },
   };
 });

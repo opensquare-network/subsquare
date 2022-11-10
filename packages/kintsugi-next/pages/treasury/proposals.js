@@ -67,7 +67,6 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
       />
       {showPopup && (
         <Popup
-          chain={chain}
           onClose={() => setShowPopup(false)}
           onFinalized={onProposeFinalized}
         />

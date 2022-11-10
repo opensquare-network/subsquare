@@ -38,9 +38,7 @@ const Login = withLoginUserRedux(({ chain }) => {
               </LinkWrapper>
             </Fragment>
           )}
-          {web3 && (
-            <AddressLogin chain={chain} setMailLogin={() => setWeb3(false)} />
-          )}
+          {web3 && <AddressLogin setMailLogin={() => setWeb3(false)} />}
         </ContentCenterWrapper>
       </Wrapper>
     </BaseLayout>

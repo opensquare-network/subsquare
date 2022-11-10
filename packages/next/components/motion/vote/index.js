@@ -80,7 +80,6 @@ const VoterAddr = styled.div`
 `;
 
 export default function Vote({
-  chain,
   motionIsFinal = false,
   userCanVote = false,
   loading = false,
@@ -122,7 +121,7 @@ export default function Vote({
               <User add={voter} fontSize={12} />
               {voter === prime && <PrimeAddressMark />}
             </VoterAddr>
-            <AyeNay isAye={approve}/>
+            <AyeNay isAye={approve} />
           </TipperItem>
         ))}
       </TipperList>
@@ -167,7 +166,6 @@ export default function Vote({
       </Wrapper>
       {showPopup && (
         <Popup
-          chain={chain}
           votes={votes}
           voters={voters}
           motionHash={motionHash}

@@ -58,7 +58,7 @@ export default withLoginUserRedux(({ overview, chain }) => {
 
   return (
     <HomeLayout>
-      <Overview overviewData={filteredOverviewData} chain={chain} />
+      <Overview overviewData={filteredOverviewData} />
     </HomeLayout>
   );
 });

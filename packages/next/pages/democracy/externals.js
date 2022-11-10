@@ -25,7 +25,7 @@ export default withLoginUserRedux(({ externals, chain }) => {
           pageSize: externals.pageSize,
           total: externals.total,
         }}
-        summary={<DemocracySummary chain={chain} />}
+        summary={<DemocracySummary />}
       />
     </HomeLayout>
   );

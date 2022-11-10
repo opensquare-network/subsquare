@@ -23,7 +23,7 @@ const Create = styled.a`
   cursor: pointer;
 `;
 
-export default function Overview({ overviewData, chain }) {
+export default function Overview({ overviewData }) {
   if (overviewData?.[0]?.items?.length === 0) {
     // All items are empty, show default empty page
     return (

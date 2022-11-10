@@ -148,7 +148,6 @@ export default function MotionDetail({ onReply, type }) {
         />
       </EditablePanel>
       <Vote
-        chain={chain}
         votes={votes}
         voters={voters}
         prime={prime}

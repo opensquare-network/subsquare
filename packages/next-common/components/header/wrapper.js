@@ -2,6 +2,7 @@ import React, { memo } from "react";
 import styled from "styled-components";
 import useWindowSize from "../../utils/hooks/useWindowSize";
 import getChainSettings from "../../utils/consts/settings";
+import { useChainSettings } from "../../context/chain";
 
 const Wrapper = styled.header`
   padding-left: 32px;
@@ -24,7 +25,8 @@ const Wrapper = styled.header`
   border-bottom: 1px solid ${(props) => props.theme.grey200Border};
 `;
 
-function HeaderWrapper({ chain, children }) {
+function HeaderWrapper({ children }) {
+  const setting = useChainSettings();
   let ChainWrapper = Wrapper;
 
   const { width } = useWindowSize();
@@ -32,7 +34,6 @@ function HeaderWrapper({ chain, children }) {
     return <ChainWrapper>{children}</ChainWrapper>;
   }
 
-  const setting = getChainSettings(chain);
   return (
     <ChainWrapper background={setting.headerBackgroundColor}>
       {children}

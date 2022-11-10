@@ -63,7 +63,6 @@ export default function PostMeta() {
         <User
           user={post.author}
           add={post.proposer || post.finder}
-          chain={chain}
           fontSize={12}
         />
         <TypeTag type={detailType} />

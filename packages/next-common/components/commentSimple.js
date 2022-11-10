@@ -14,6 +14,7 @@ import { getMotionId } from "../utils/motion";
 import IdentityOrAddr from "./IdentityOrAddr";
 import { prettyHTML } from "../utils/viewfuncs";
 import useDuration from "../utils/hooks/useDuration";
+import { useChain } from "../context/chain";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -210,7 +211,8 @@ const getCommentSource = (comment, chain) => {
   return ["Unknown"];
 };
 
-export default function CommentSimple({ data, chain }) {
+export default function CommentSimple({ data }) {
+  const chain = useChain();
   const [type, title, route] = getCommentSource(data, chain);
   const duration = useDuration(data.updatedAt);
   return (
@@ -252,9 +254,7 @@ export default function CommentSimple({ data, chain }) {
                 {title}
               </Anchor>
             </AutHideInfo>
-            {data.updatedAt && (
-              <Info>{duration}</Info>
-            )}
+            {data.updatedAt && <Info>{duration}</Info>}
           </Footer>
         </FooterWrapper>
       </ContentWrapper>

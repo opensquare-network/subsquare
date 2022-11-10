@@ -25,7 +25,7 @@ export default withLoginUserRedux(({ proposals, chain }) => {
           pageSize: proposals.pageSize,
           total: proposals.total,
         }}
-        summary={<DemocracySummary chain={chain} />}
+        summary={<DemocracySummary />}
       />
     </HomeLayout>
   );

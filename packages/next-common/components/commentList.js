@@ -22,7 +22,6 @@ const Wrapper = styled.div`
 `;
 
 export default function CommentList({
-  chain,
   category,
   items,
   pagination,
@@ -37,16 +36,9 @@ export default function CommentList({
       </TitleContainer>
       {summary}
       <MaybeEmpty items={items} type={category}>
-        {
-          items.map((item, index) => (
-            <CommentSimple
-              key={index}
-              data={item}
-              chain={chain}
-              type={category}
-            />
-          ))
-        }
+        {items.map((item, index) => (
+          <CommentSimple key={index} data={item} type={category} />
+        ))}
       </MaybeEmpty>
       {pagination && <Pagination {...pagination} />}
     </Wrapper>

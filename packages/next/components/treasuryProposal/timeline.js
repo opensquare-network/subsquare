@@ -7,9 +7,10 @@ import { createMotionTimelineData } from "utils/timeline/motion";
 import sortTimeline from "next-common/utils/timeline/sort";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { createReferendumTimelineData } from "utils/timeline/referendum";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 
-export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
+export default function TreasuryProposalTimeline({ treasuryProposal }) {
+  const chain = useChain();
   const { decimals, symbol } = useChainSettings();
   const getTimelineData = (args, method) => {
     switch (method) {

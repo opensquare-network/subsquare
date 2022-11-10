@@ -4,14 +4,11 @@ import useWindowSize from "../../../utils/hooks/useWindowSize";
 import SubSquare from "../../../assets/header-logos/logo.svg";
 import SubSquareDark from "../../../assets/header-logos/subsquare-dark.svg";
 import { withTheme } from "styled-components";
-import getChainSettings from "../../../utils/consts/settings";
+import { useChainSettings } from "../../../context/chain";
 
-function ChainLogo({ chain, theme }) {
+function ChainLogo({ theme }) {
   const { width } = useWindowSize();
-  const chainSetting = getChainSettings(chain);
-  if (!chainSetting) {
-    throw new Error(`Unsupported chain in ChainLogo: ${process.env.CHAIN}`);
-  }
+  const chainSetting = useChainSettings();
   const Element = chainSetting.headerLogo;
   let logo = <Element />;
   if (theme.isDark) {

@@ -11,6 +11,7 @@ import {
 import BigNumber from "bignumber.js";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
 import Content from "./cardContent";
+import { useChain } from "../../context/chain";
 
 const Wrapper = styled.div`
   display: flex;
@@ -68,7 +69,8 @@ async function referendumsActive(api) {
   });
 }
 
-export default function DemocracySummary({ chain }) {
+export default function DemocracySummary() {
+  const chain = useChain();
   const [summary, setSummary] = useState({});
   const api = useApi();
   const blockTime = useSelector(blockTimeSelector);

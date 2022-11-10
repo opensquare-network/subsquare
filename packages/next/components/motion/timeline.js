@@ -72,7 +72,7 @@ export default function MotionTimeline() {
 
   const motionEndInfo = showMotionEnd ? (
     <TimelineMotionEnd>
-      <MotionEnd type="simple" motion={motion} chain={chain} />
+      <MotionEnd type="simple" motion={motion} />
     </TimelineMotionEnd>
   ) : null;
 

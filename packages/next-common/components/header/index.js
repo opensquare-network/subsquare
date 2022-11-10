@@ -54,15 +54,13 @@ const NodeButton = styled(Flex)`
   }
 `;
 
-export default function Header({ left, chain }) {
+export default function Header({ left }) {
   const [show, setShow] = useState(false);
   const [position, setPosition] = useState("left");
   const [content, setContent] = useState();
 
-  const node = nodes.find((n) => n.value === chain) || nodes[0];
-
   return (
-    <HeaderWrapper chain={chain}>
+    <HeaderWrapper>
       <div>
         <FlexWrapper>
           <Left>
@@ -77,7 +75,7 @@ export default function Header({ left, chain }) {
                 <MenuLine />
               </MenuButton>
             )}
-            <ChainLogo chain={chain} />
+            <ChainLogo />
             <NodeButton
               onClick={() => {
                 setPosition("right");
@@ -85,16 +83,16 @@ export default function Header({ left, chain }) {
                 setShow(true);
               }}
             >
-              <ChainIcon chain={node.value} />
+              <ChainIcon />
             </NodeButton>
           </Left>
-          <HeaderRight chain={chain} />
+          <HeaderRight />
         </FlexWrapper>
       </div>
       {show && (
         <Sidebar onClose={() => setShow(false)} position={position}>
           {content === "left" && <>{left}</>}
-          {content === "right" && <SidebarAccount chain={chain} />}
+          {content === "right" && <SidebarAccount />}
         </Sidebar>
       )}
     </HeaderWrapper>

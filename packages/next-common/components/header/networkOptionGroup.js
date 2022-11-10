@@ -4,8 +4,7 @@ import ChainIcon from "./chainIcon";
 import { nodes } from "../../utils/constants";
 import Flex from "../styled/flex";
 
-const Wrapper = styled.div`
-`;
+const Wrapper = styled.div``;
 
 const GroupName = styled(Flex)`
   padding: 12px;
@@ -26,7 +25,6 @@ const GroupOptions = styled.div`
     grid-template-columns: 1fr;
   }
   padding: 0px;
-
 `;
 
 const Item = styled.a`
@@ -76,11 +74,11 @@ export default function NetworkOptionGroup({ groupName, activeNode, setShow }) {
                 : `https://${item.value}.subsquare.io`
             }
           >
-            <ChainIcon chain={item.value} />
+            <ChainIcon />
             <div>{item.name}</div>
           </Item>
         ))}
       </GroupOptions>
     </Wrapper>
-  )
+  );
 }

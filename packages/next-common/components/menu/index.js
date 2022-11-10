@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import ExternalLink from "../icons/externalLink";
 import Flex from "../styled/flex";
 import { p_12_medium, p_12_normal } from "../../styles/componentCss";
+import { useChain } from "../../context/chain";
 
 const Wrapper = styled.div`
   padding-top: 41px;
@@ -99,7 +100,8 @@ const Item = styled.div`
     `}
 `;
 
-export default function Menu({ menu, chain }) {
+export default function Menu({ menu }) {
+  const chain = useChain();
   const router = useRouter();
 
   function defaultItemRender(icon, name, count) {
