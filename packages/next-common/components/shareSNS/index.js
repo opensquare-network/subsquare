@@ -15,6 +15,11 @@ const Wrapper = styled.div`
   display: flex;
   padding-left: 16px;
   height: 14px;
+  color: ${(p) => p.theme.textTertiary};
+
+  &:hover {
+    color: ${(p) => p.theme.textSecondary};
+  }
 
   > div {
     gap: 8px;
