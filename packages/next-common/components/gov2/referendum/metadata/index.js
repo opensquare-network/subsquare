@@ -10,6 +10,7 @@ import Flex from "../../../styled/flex";
 import Tooltip from "../../../tooltip";
 import { p_12_normal } from "../../../../styles/componentCss";
 import { useChainSettings } from "../../../../context/chain";
+import isNil from "lodash.isnil";
 
 // submissionDeposit
 // decisionDeposit
@@ -43,6 +44,25 @@ function BondValue({ deposit, decimals, symbol }) {
       <Tooltip content={`Bond: ${value}`} />
     </BondValueWrapper>
   );
+}
+
+function getEnactmentValue(enactment = {}) {
+  let value = "";
+  let key;
+  if (!isNil(enactment.at)) {
+    key = "At";
+    value = enactment.at;
+  } else if (!isNil(enactment.after)) {
+    key = "After";
+    value = enactment.after;
+  }
+
+  if (!key) {
+    return "--";
+  }
+
+  const localeValue = Number(value).toLocaleString();
+  return `${key}: ${localeValue}`;
 }
 
 export default function Gov2ReferendumMetadata({ detail }) {
@@ -112,7 +132,7 @@ export default function Gov2ReferendumMetadata({ detail }) {
         </GreyText>
       </ValueWrapper>,
     ],
-    ["Enact", info?.enactment?.at],
+    ["Enact", getEnactmentValue(info?.enactment)],
     ["Proposal Hash", proposalHash],
   ];
 
