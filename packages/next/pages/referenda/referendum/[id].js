@@ -18,7 +18,7 @@ import Timeline from "components/gov2/timeline";
 import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metadata";
 import useApi from "next-common/utils/hooks/useApi";
 
-export default withLoginUserRedux(({ detail, comments, chain }) => {
+export default withLoginUserRedux(({ detail, comments }) => {
   const api = useApi();
 
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -47,7 +47,7 @@ export default withLoginUserRedux(({ detail, comments, chain }) => {
 
         <Gov2Sidebar detail={detail} />
 
-        <Gov2ReferendumMetadata api={api} detail={detail} chain={chain} />
+        <Gov2ReferendumMetadata api={api} detail={detail} />
 
         <Timeline
           timeline={detail?.onchainData?.timeline}
@@ -62,8 +62,6 @@ export default withLoginUserRedux(({ detail, comments, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   const { id, page, page_size } = context.query;
   const pageSize = Math.min(page_size ?? 50, 100);
 
@@ -88,7 +86,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       detail,
       comments: comments ?? EmptyList,
-      chain,
     },
   };
 });

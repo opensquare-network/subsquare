@@ -8,56 +8,66 @@ import { useChain } from "next-common/context/chain";
 
 export default function DemocracyNavigate({ motion }) {
   const chain = useChain();
-  if (motion?.externalProposals?.length !== 1 && motion?.operateExternals?.length !== 1) {
+  if (
+    motion?.externalProposals?.length !== 1 &&
+    motion?.operateExternals?.length !== 1
+  ) {
     return null;
   }
 
-  const motionId = getUniqueMotionId(motion, chain)
-  const external = motion.externalProposals?.[0] || motion.operateExternals?.[0];
+  const motionId = getUniqueMotionId(motion, chain);
+  const external =
+    motion.externalProposals?.[0] || motion.operateExternals?.[0];
 
   const motions = external.motions || [];
   const motionElements = motions.map((item, index) => {
-    return <div key={getUniqueMotionId(item, chain)}>
-      {
-        index <= 0 ? null : <TriangleRight />
-      }
-      <MotionNavigationItem
-        motion={ item }
-        type={ detailPageCategory.COUNCIL_MOTION }
-        pageMotionId={ motionId }
-        chain={ chain } />
-    </div>
+    return (
+      <div key={getUniqueMotionId(item, chain)}>
+        {index <= 0 ? null : <TriangleRight />}
+        <MotionNavigationItem
+          motion={item}
+          type={detailPageCategory.COUNCIL_MOTION}
+          pageMotionId={motionId}
+        />
+      </div>
+    );
   });
 
   const externalTechCommMotions = external.techCommMotions || [];
-  const externalTechCommMotionElements = externalTechCommMotions.map(item => {
-    return <div key={ getUniqueMotionId(item, chain) }>
-      <TriangleRight />
-      <MotionNavigationItem
-        motion={ item }
-        type={ detailPageCategory.TECH_COMM_MOTION }
-        pageMotionId={ motionId }
-        chain={ chain } />
-    </div>
-  })
+  const externalTechCommMotionElements = externalTechCommMotions.map((item) => {
+    return (
+      <div key={getUniqueMotionId(item, chain)}>
+        <TriangleRight />
+        <MotionNavigationItem
+          motion={item}
+          type={detailPageCategory.TECH_COMM_MOTION}
+          pageMotionId={motionId}
+        />
+      </div>
+    );
+  });
 
   const handleExternalCouncilMotions = external.councilMotions || [];
-  const handleExternalMotionElements = handleExternalCouncilMotions.map((item) => {
-    return <div key={ getUniqueMotionId(item, chain) }>
-      <TriangleRight />
-      <MotionNavigationItem
-        motion={ item }
-        type={ detailPageCategory.COUNCIL_MOTION }
-        pageMotionId={ motionId }
-        chain={ chain } />
-    </div>
-  });
+  const handleExternalMotionElements = handleExternalCouncilMotions.map(
+    (item) => {
+      return (
+        <div key={getUniqueMotionId(item, chain)}>
+          <TriangleRight />
+          <MotionNavigationItem
+            motion={item}
+            type={detailPageCategory.COUNCIL_MOTION}
+            pageMotionId={motionId}
+          />
+        </div>
+      );
+    }
+  );
 
   const referendumIndex = external.referendumIndex;
 
   return (
     <NavigationWrapper>
-      { motionElements }
+      {motionElements}
       <div>
         <TriangleRight />
         <Link
@@ -68,8 +78,12 @@ export default function DemocracyNavigate({ motion }) {
         </Link>
       </div>
 
-      { externalTechCommMotionElements.length > 0 ? externalTechCommMotionElements : null }
-      { handleExternalMotionElements.length > 0 ? handleExternalMotionElements : null }
+      {externalTechCommMotionElements.length > 0
+        ? externalTechCommMotionElements
+        : null}
+      {handleExternalMotionElements.length > 0
+        ? handleExternalMotionElements
+        : null}
       {referendumIndex !== undefined && (
         <div>
           <TriangleRight />

@@ -69,7 +69,6 @@ export default function ReferendumMetadata({
       <Proposal
         key="preimage"
         call={call}
-        chain={chain}
         shorten={shorten}
         referendumIndex={onchainData.referendumIndex}
       />,

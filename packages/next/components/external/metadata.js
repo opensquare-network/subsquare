@@ -2,7 +2,7 @@
 import KVList from "next-common/components/listInfo/kvList";
 import Proposal from "next-common/components/proposal";
 
-export default function Metadata({ external, chain }) {
+export default function Metadata({ external }) {
   if (!external) {
     return null;
   }
@@ -16,7 +16,6 @@ export default function Metadata({ external, chain }) {
     metadata.push([
       <Proposal
         call={external.preImage.call}
-        chain={chain}
         shorten={external.preImage.shorten}
         motionIndex={external.motionIndex}
         referendumIndex={external.referendumIndex}

@@ -17,16 +17,16 @@ const Right = styled(Flex)`
 
 const NetworkWrapper = styled.div``;
 
-function HeaderRight({ user, chain }) {
+function HeaderRight({ chain }) {
   const node = nodes.find((n) => n.value === chain) || nodes[0];
 
   return (
     <Right>
-      <HeaderAccount user={user} chain={chain} />
+      <HeaderAccount />
       <NetworkWrapper>
         <NetworkSwitch activeNode={node} />
       </NetworkWrapper>
-      <NodeSwitch small chain={chain} node={node} />
+      <NodeSwitch small />
     </Right>
   );
 }

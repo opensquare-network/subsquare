@@ -45,7 +45,7 @@ function BondValue({ deposit, decimals, symbol }) {
   );
 }
 
-export default function Gov2ReferendumMetadata({ chain, detail }) {
+export default function Gov2ReferendumMetadata({ detail }) {
   const blockTime = useSelector(blockTimeSelector);
   const node = useChainSettings();
   const decimals = node.decimals;
@@ -121,7 +121,6 @@ export default function Gov2ReferendumMetadata({ chain, detail }) {
       <Proposal
         key="preimage"
         call={proposal}
-        chain={chain}
         referendumIndex={detail?.onchainData.referendumIndex}
       />,
     ]);

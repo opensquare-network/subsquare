@@ -8,6 +8,7 @@ import { hexToString } from "@polkadot/util";
 import { hexEllipsis } from "../../utils";
 import LargeDataPlaceHolder from "./largeDataPlaceHolder";
 import { hexIsValidUTF8 } from "../../utils/utf8validate";
+import { useChain } from "../../context/chain";
 
 const LongText = dynamic(() => import("../longText"), {
   ssr: false,
@@ -221,12 +222,12 @@ function convertProposalForJsonView(proposal, chain) {
 
 export default function Proposal({
   call = {},
-  chain,
   shorten,
   proposalIndex,
   motionIndex,
   referendumIndex,
 }) {
+  const chain = useChain();
   const [callType, setCallType] = useState("table");
 
   useEffect(() => {

@@ -195,13 +195,13 @@ export default function TechcommMotionDetail({ motion, chain, onReply, type }) {
 
   const motionEndInfo = showMotionEnd ? (
     <TimelineMotionEnd>
-      <MotionEnd type="simple" motion={motion.onchainData} chain={chain} />
+      <MotionEnd type="simple" motion={motion.onchainData} />
     </TimelineMotionEnd>
   ) : null;
 
   const motionEndHeader = showMotionEnd ? (
     <MotionEndHeader>
-      <MotionEnd type="full" motion={motion.onchainData} chain={chain} />
+      <MotionEnd type="full" motion={motion.onchainData} />
     </MotionEndHeader>
   ) : null;
 
@@ -225,7 +225,6 @@ export default function TechcommMotionDetail({ motion, chain, onReply, type }) {
       <MultiKVList title="Business" data={business} />
 
       <CollectiveMetadata
-        chain={chain}
         index={motion?.motionIndex}
         proposer={motion?.onchainData?.proposer}
         threshold={motion?.onchainData?.threshold}

@@ -12,7 +12,7 @@ import LoginButton from "./loginButton";
 import { isKeyRegisteredUser } from "../../utils";
 import { accountMenu, accountMenuForKeyAccount } from "./consts";
 import Divider from "../styled/layout/divider";
-import { logoutUser, useUserDispatch } from "../../context/user";
+import { logoutUser, useUser, useUserDispatch } from "../../context/user";
 
 const Wrapper = Relative;
 
@@ -64,7 +64,8 @@ const Item = styled(Flex)`
   }
 `;
 
-export default function HeaderAccount({ user, chain }) {
+export default function HeaderAccount() {
+  const user = useUser();
   const router = useRouter();
   const [show, setShow] = useState(false);
   const ref = useRef();
@@ -81,7 +82,7 @@ export default function HeaderAccount({ user, chain }) {
 
   if (!user) {
     const isLoginPage = router.pathname === "/login";
-    return isLoginPage ? null : <LoginButton chain={chain} />;
+    return isLoginPage ? null : <LoginButton />;
   }
 
   const menu = isKeyRegisteredUser(user)

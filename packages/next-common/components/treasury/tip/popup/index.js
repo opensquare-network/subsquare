@@ -25,7 +25,6 @@ const ButtonWrapper = styled.div`
 
 function PopupContent({
   extensionAccounts,
-  chain,
   onClose,
   onInBlock = emptyFunction,
   onFinalized = emptyFunction,

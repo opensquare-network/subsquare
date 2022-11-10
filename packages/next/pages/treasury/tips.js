@@ -60,7 +60,6 @@ export default withLoginUserRedux(({ tips: ssrTips, chain }) => {
       />
       {showPopup && (
         <Popup
-          chain={chain}
           onClose={() => setShowPopup(false)}
           onFinalized={onNewTipFinalized}
         />
