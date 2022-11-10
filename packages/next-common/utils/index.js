@@ -277,11 +277,11 @@ export function estimateRemainBlockTime(blocks, blockTime, startTimeMs) {
   const now = dayjs();
   const endDate = dayjs(startTimeMs).add(dayjs.duration(time));
 
-  const diffMs = endDate.diff(now);
-  const remainTime = extractTime(diffMs);
+  const remainMs = endDate.diff(now);
+  const remainTime = extractTime(remainMs);
   const { days, hours, minutes } = remainTime;
 
-  const format = [
+  const text = [
     days ? `${days}d` : "",
     hours ? `${hours}hrs` : "",
     minutes ? `${minutes}mins` : "",
@@ -290,6 +290,7 @@ export function estimateRemainBlockTime(blocks, blockTime, startTimeMs) {
 
   return {
     ...remainTime,
+    remainMs,
     text,
   };
 }

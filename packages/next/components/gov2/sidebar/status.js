@@ -7,11 +7,12 @@ import Progress from "next-common/components/progress";
 import FlexBetween from "next-common/components/styled/flexBetween";
 import { p_14_normal } from "next-common/styles/componentCss";
 import TooltipOrigin from "next-common/components/tooltip";
-import { estimateBlocksTime } from "next-common/utils";
+import { estimateBlocksTime, estimateRemainBlockTime } from "next-common/utils";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { useMemo } from "react";
 import { gov2State } from "next-common/utils/consts/state";
+import BigNumber from "bignumber.js";
 
 const Wrapper = styled.div``;
 
@@ -51,8 +52,19 @@ const Tooltip = styled(TooltipOrigin)`
   display: block;
 `;
 
+function findDecisionStarted(timeline = []) {
+  return timeline.find((item) => ["DecisionStarted"].includes(item.name));
+}
+
+// means the latest one always is `ConfirmStarted`
+function filterConfirmStartedTimeline(timeline = []) {
+  return timeline.filter((item) => ["ConfirmStarted"].includes(item.name));
+}
+
 export default function Gov2Status({ detail }) {
-  const { secondaryGreen500, secondaryGreen100 } = useTheme();
+  console.log(detail);
+
+  const { secondaryGreen500, secondaryGreen300 } = useTheme();
   const blockTime = useSelector(blockTimeSelector);
 
   const onchainData = detail?.onchainData ?? {};
@@ -70,6 +82,36 @@ export default function Gov2Status({ detail }) {
     [state]
   );
 
+  const decisionStartedState = findDecisionStarted(onchainData.timeline);
+  const latestConfirmStartedState = filterConfirmStartedTimeline(
+    onchainData.timeline
+  ).pop();
+
+  const { text: remainDecisionPeriodTime, remainMs: remainDecisionMs } =
+    estimateRemainBlockTime(
+      trackInfo.decisionPeriod,
+      blockTime,
+      decisionStartedState?.indexer?.blockTime
+    );
+  const { text: remainConfirmPeriodTime, remainMs: remainConfirmMs } =
+    estimateRemainBlockTime(
+      trackInfo.confirmPeriod,
+      blockTime,
+      latestConfirmStartedState?.indexer?.blockTime
+    );
+
+  const decisionPeriodMs = new BigNumber(blockTime)
+    .multipliedBy(trackInfo.decisionPeriod)
+    .toNumber();
+  const confirmPeriodMs = new BigNumber(blockTime)
+    .multipliedBy(trackInfo.confirmPeriod)
+    .toNumber();
+
+  const decesionPeriodPercentage =
+    100 - Math.floor((remainDecisionMs / decisionPeriodMs) * 100);
+  const confirmPeriodPercentage =
+    100 - Math.floor((remainConfirmMs / confirmPeriodMs) * 100);
+
   return (
     <Wrapper>
       <SecondaryCardDetail>
@@ -77,8 +119,8 @@ export default function Gov2Status({ detail }) {
 
         <div>
           <ProgressGroup>
-            <Tooltip content="todo">
-              <Progress percentage={10} />
+            <Tooltip content={remainDecisionPeriodTime}>
+              <Progress percentage={decesionPeriodPercentage} />
             </Tooltip>
             <ProgressInfo>
               <p>Decision Period</p>
@@ -88,13 +130,13 @@ export default function Gov2Status({ detail }) {
 
           {isPositiveState && (
             <ProgressGroup>
-              <Tooltip content="todo">
+              <Tooltip content={remainConfirmPeriodTime}>
                 <Progress
-                  percentage={10}
+                  percentage={confirmPeriodPercentage}
                   offsetLeft={35}
                   offsetRight={50}
                   fg={secondaryGreen500}
-                  bg={secondaryGreen100}
+                  bg={secondaryGreen300}
                 />
               </Tooltip>
               <ProgressInfo>
