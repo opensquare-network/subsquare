@@ -282,11 +282,13 @@ export function estimateRemainBlockTime(blocks, blockTime, startTimeMs) {
   const { days, hours, minutes } = remainTime;
 
   const format = [
-    days ? `${days}d` : "",
-    hours ? `${hours}hrs` : "",
-    minutes ? `${minutes}mins` : "",
+    days && `${days}d`,
+    hours && `${hours}hrs`,
+    minutes && `${minutes}mins`,
     "remaining",
-  ].join(" ");
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return {
     ...remainTime,
