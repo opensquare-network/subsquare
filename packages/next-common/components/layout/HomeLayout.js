@@ -1,16 +1,14 @@
 import React from "react";
 import BaseLayout from "./baseLayout";
 import Menu from "../menu";
-import { useHomeMenus } from "../../utils/hooks/useHomeMenu";
+import homeMenus from "../../utils/consts/menu";
 
 export default function HomeLayout({ children, seoInfo }) {
-  const menus = useHomeMenus();
-
   return (
     <BaseLayout
       children={children}
       seoInfo={seoInfo}
-      left={<Menu menu={menus} />}
+      left={<Menu menu={homeMenus} />}
     />
   );
 }
