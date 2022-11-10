@@ -52,7 +52,7 @@ export default function useUniversalComments({ detail, comments, type }) {
   let { CommentComponent, focusEditor } = useCommentComponent({
     detail,
     comments,
-    loginUser: user,
+    loginUser,
     chain,
     type,
     tabs,
