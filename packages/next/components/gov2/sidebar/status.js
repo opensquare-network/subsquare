@@ -128,7 +128,7 @@ export default function Gov2Status({ detail }) {
 
           {isPositiveState && (
             <ProgressGroup>
-              <Tooltip content={remainConfirmPeriodTime}>
+              <Tooltip content={remainConfirmMs > 0 && remainConfirmPeriodTime}>
                 <Progress
                   percentage={confirmPeriodPercentage}
                   offsetLeft={35}
