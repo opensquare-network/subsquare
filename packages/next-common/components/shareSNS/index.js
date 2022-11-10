@@ -16,18 +16,25 @@ const Wrapper = styled.div`
   padding-left: 16px;
   height: 14px;
   color: ${(p) => p.theme.textTertiary};
-
-  &:hover {
-    color: ${(p) => p.theme.textSecondary};
-  }
+  cursor: pointer;
 
   > div {
     gap: 8px;
   }
 
-  cursor: pointer;
+  svg {
+    rect {
+      fill: ${(props) => props.theme.textTertiary};
+    }
 
-  > div:hover {
+    path {
+      fill: ${(props) => props.theme.textTertiary};
+    }
+  }
+
+  &:hover {
+    color: ${(p) => p.theme.textSecondary};
+
     svg {
       rect {
         fill: ${(props) => props.theme.textSecondary};
