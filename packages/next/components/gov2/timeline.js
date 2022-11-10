@@ -1,11 +1,11 @@
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import User from "next-common/components/user";
-import { toPrecision } from "next-common/utils";
+import { getNode, toPrecision } from "next-common/utils";
 import { parseGov2TrackName } from "next-common/utils/gov2";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import styled from "styled-components";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain } from "next-common/context/chain";
 
 const Info = styled.div`
   font-weight: 400;
@@ -26,8 +26,8 @@ function TimelineTallyInfo({ decimals, symbol, ayes, nays, support }) {
   );
 }
 
-const getTimelineData = (args, method, trackInfo) => {
-  const { decimals, symbol } = useChainSettings();
+const getTimelineData = (args, method, trackInfo, chain) => {
+  const { decimals, symbol } = getNode(chain);
 
   switch (method) {
     case "Submitted": {
@@ -92,7 +92,7 @@ const getTimelineData = (args, method, trackInfo) => {
   return args;
 };
 
-export function makeReferendumTimelineData(timeline, trackInfo, type) {
+export function makeReferendumTimelineData(timeline, trackInfo, type, chain) {
   return (timeline || []).map((item) => {
     return {
       time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
@@ -102,13 +102,24 @@ export function makeReferendumTimelineData(timeline, trackInfo, type) {
         type,
         args: getGov2ReferendumStateArgs(item),
       },
-      data: getTimelineData(item.args, item.method ?? item.name, trackInfo),
+      data: getTimelineData(
+        item.args,
+        item.method ?? item.name,
+        trackInfo,
+        chain
+      ),
     };
   });
 }
 
 export default function ReferendumTimeline({ timeline, trackInfo, type }) {
-  const timelineData = makeReferendumTimelineData(timeline, trackInfo, type);
+  const chain = useChain();
+  const timelineData = makeReferendumTimelineData(
+    timeline,
+    trackInfo,
+    type,
+    chain
+  );
 
   return <Timeline data={timelineData} />;
 }
