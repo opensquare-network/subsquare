@@ -29,34 +29,27 @@ const IconWrapper = styled.span`
 `;
 
 const TrackIconMap = {
-  TrackAllIcon,
-  TrackDefaultIcon,
-  Track0Icon,
-  Track1Icon,
-  Track10Icon,
-  Track11Icon,
-  Track12Icon,
-  Track13Icon,
-  Track14Icon,
-  Track15Icon,
-  Track20Icon,
-  Track21Icon,
-  Track30Icon,
-  Track31Icon,
-  Track32Icon,
-  Track33Icon,
-  Track34Icon,
+  All: wrapIcon(<TrackAllIcon />),
+  Default: wrapIcon(<TrackDefaultIcon />),
+  0: wrapIcon(<Track0Icon />),
+  1: wrapIcon(<Track1Icon />),
+  10: wrapIcon(<Track10Icon />),
+  11: wrapIcon(<Track11Icon />),
+  12: wrapIcon(<Track12Icon />),
+  13: wrapIcon(<Track13Icon />),
+  14: wrapIcon(<Track14Icon />),
+  15: wrapIcon(<Track15Icon />),
+  20: wrapIcon(<Track20Icon />),
+  21: wrapIcon(<Track21Icon />),
+  30: wrapIcon(<Track30Icon />),
+  31: wrapIcon(<Track31Icon />),
+  32: wrapIcon(<Track32Icon />),
+  33: wrapIcon(<Track33Icon />),
+  34: wrapIcon(<Track34Icon />),
 };
 
-Object.keys(TrackIconMap).forEach((name) => {
-  const id = name.replace("Track", "").replace("Icon", "");
-  const Icon = TrackIconMap[name];
-
-  TrackIconMap[id] = (
-    <IconWrapper>
-      <Icon />
-    </IconWrapper>
-  );
-});
+function wrapIcon(icon) {
+  return <IconWrapper>{icon}</IconWrapper>;
+}
 
 export default TrackIconMap;
