@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import ExternalLink from "../icons/externalLink";
 import Flex from "../styled/flex";
-import { p_12_normal } from "../../styles/componentCss";
+import { p_12_medium, p_12_normal } from "../../styles/componentCss";
 
 const Wrapper = styled.div`
   padding-top: 41px;
@@ -33,6 +33,11 @@ const Title = styled.div`
   color: ${(props) => props.theme.textTertiary};
 `;
 
+const ItemCount = styled.span`
+  margin-left: 8px;
+  color: ${(p) => p.theme.textTertiary};
+  ${p_12_medium};
+`;
 const ItemInner = styled(Flex)`
   height: inherit;
   width: inherit;
@@ -97,11 +102,14 @@ const Item = styled.div`
 export default function Menu({ menu, chain }) {
   const router = useRouter();
 
-  function defaultItemRender(icon, name) {
+  function defaultItemRender(icon, name, count) {
     return (
       <ItemInner>
         {icon}
-        <span>{name}</span>
+        <span>
+          {name}
+          {!!count && <ItemCount>{count}</ItemCount>}
+        </span>
       </ItemInner>
     );
   }
@@ -138,8 +146,8 @@ export default function Menu({ menu, chain }) {
                             item.pathname === "/")
                         }
                       >
-                        {item.itemRender?.(item.icon, item.name) ??
-                          defaultItemRender(item.icon, item.name)}
+                        {item.itemRender?.(item.icon, item.name, item.count) ??
+                          defaultItemRender(item.icon, item.name, item.count)}
                         {isExternalLink && <ExternalLink color="#D7DEE8" />}
                       </Item>
                     </a>
