@@ -10,6 +10,8 @@ import TooltipOrigin from "next-common/components/tooltip";
 import { estimateBlocksTime } from "next-common/utils";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
+import { useMemo } from "react";
+import { gov2State } from "next-common/utils/consts/state";
 
 const Wrapper = styled.div``;
 
@@ -53,15 +55,20 @@ export default function Gov2Status({ detail }) {
   const { secondaryGreen500, secondaryGreen100 } = useTheme();
   const blockTime = useSelector(blockTimeSelector);
 
-  const isConfirming = true;
-
   const onchainData = detail?.onchainData ?? {};
   const trackInfo = onchainData?.trackInfo ?? {};
+  const state = onchainData.state?.name;
   const decisionPeriod = estimateBlocksTime(
     trackInfo.decisionPeriod,
     blockTime
   );
   const confirmPeriod = estimateBlocksTime(trackInfo.confirmPeriod, blockTime);
+
+  // same logic: `show confirming period`
+  const isPositiveState = useMemo(
+    () => [gov2State.Confirming, gov2State.Approved].includes(state),
+    [state]
+  );
 
   return (
     <Wrapper>
@@ -70,33 +77,39 @@ export default function Gov2Status({ detail }) {
 
         <div>
           <ProgressGroup>
-            <Progress percentage={10} />
+            <Tooltip content="todo">
+              <Progress percentage={10} />
+            </Tooltip>
             <ProgressInfo>
               <p>Decision Period</p>
               <p>{decisionPeriod.join(" ")}</p>
             </ProgressInfo>
           </ProgressGroup>
 
-          <ProgressGroup>
-            <Progress
-              percentage={10}
-              offsetLeft={35}
-              offsetRight={50}
-              fg={secondaryGreen500}
-              bg={secondaryGreen100}
-            />
-            <ProgressInfo>
-              <p>Confirming Period</p>
-              <p>{confirmPeriod.join(" ")}</p>
-            </ProgressInfo>
-          </ProgressGroup>
+          {isPositiveState && (
+            <ProgressGroup>
+              <Tooltip content="todo">
+                <Progress
+                  percentage={10}
+                  offsetLeft={35}
+                  offsetRight={50}
+                  fg={secondaryGreen500}
+                  bg={secondaryGreen100}
+                />
+              </Tooltip>
+              <ProgressInfo>
+                <p>Confirming Period</p>
+                <p>{confirmPeriod.join(" ")}</p>
+              </ProgressInfo>
+            </ProgressGroup>
+          )}
         </div>
 
         <div>
-          {isConfirming ? (
-            <PositiveStatus>Confirm</PositiveStatus>
+          {isPositiveState ? (
+            <PositiveStatus>{state}</PositiveStatus>
           ) : (
-            <DecidingStatus>Deciding</DecidingStatus>
+            <DecidingStatus>{state}</DecidingStatus>
           )}
         </div>
       </SecondaryCardDetail>
