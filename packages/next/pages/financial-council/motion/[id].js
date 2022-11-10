@@ -11,7 +11,7 @@ import DetailWithRightLayout from "next-common/components/layout/detailWithRight
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 
-export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
+export default withLoginUserRedux(({ loginUser, motion, comments }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail: motion,
     comments,
@@ -34,7 +34,6 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
         <Back href={`/financial-council/motions`} text="Back to Motions" />
         <MotionDetail
           user={loginUser}
-          chain={chain}
           type={detailPageCategory.FINANCIAL_MOTION}
           onReply={focusEditor}
         />
@@ -45,8 +44,6 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   const { id, page, page_size } = context.query;
   const pageSize = Math.min(page_size ?? 50, 100);
 
@@ -69,7 +66,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       motion,
       comments: comments ?? EmptyList,
-      chain,
     },
   };
 });
