@@ -59,7 +59,7 @@ export default function Gov2Sidebar({ detail }) {
 
   return (
     <Wrapper>
-      {false && <Gov2Status detail={detail} />}
+      <Gov2Status detail={detail} />
 
       <Gov2Tally detail={detail} />
 
