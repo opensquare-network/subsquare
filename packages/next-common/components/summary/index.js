@@ -5,7 +5,6 @@ import CountDown from "./countDown";
 import {
   abbreviateBigNumber,
   estimateBlocksTime,
-  getNode,
   toPrecision,
 } from "../../utils";
 import useApi from "../../utils/hooks/useApi";

@@ -46,14 +46,13 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
           type={detailPageCategory.GOV2_REFERENDUM}
         />
 
-        <Gov2Sidebar chain={chain} detail={detail} />
+        <Gov2Sidebar detail={detail} />
 
         <Gov2ReferendumMetadata api={api} detail={detail} chain={chain} />
 
         <Timeline
           timeline={detail?.onchainData?.timeline}
           trackInfo={detail?.onchainData?.trackInfo}
-          chain={chain}
           type={detailPageCategory.GOV2_REFERENDUM}
         />
 

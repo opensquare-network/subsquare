@@ -22,7 +22,7 @@ export default function useCommentComponent({
     loginUser?.preference.editor || "markdown"
   );
 
-  const users = useMentionList(detail, comments, chain);
+  const users = useMentionList(detail, comments);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
@@ -40,14 +40,12 @@ export default function useCommentComponent({
       <Comments
         data={comments}
         user={loginUser}
-        chain={chain}
         onReply={onReply}
         tabs={tabs}
       />
       {loginUser && (
         <Editor
           postId={postId}
-          chain={chain}
           ref={editorWrapperRef}
           setQuillRef={setQuillRef}
           {...{

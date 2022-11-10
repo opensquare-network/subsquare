@@ -125,7 +125,7 @@ const LinkWrapper = styled(Flex)`
   margin-top: 8px;
 `;
 
-export default function Item({ data, foldable, isFold, setIsFold, chain }) {
+export default function Item({ data, foldable, isFold, setIsFold }) {
   return (
     <Wrapper foldable={foldable} isFold={isFold}>
       <Left>
@@ -172,7 +172,7 @@ export default function Item({ data, foldable, isFold, setIsFold, chain }) {
                 )))}
         </ContentWrapper>
         <LinkWrapper>
-          <ExtrinsicLinks chain={chain} indexer={data.indexer} />
+          <ExtrinsicLinks indexer={data.indexer} />
         </LinkWrapper>
       </Right>
     </Wrapper>

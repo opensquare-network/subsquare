@@ -7,7 +7,7 @@ import useApi from "../../../../utils/hooks/useApi";
 import useIsMounted from "../../../../utils/hooks/useIsMounted";
 import { newErrorToast } from "../../../../store/reducers/toastSlice";
 
-import { checkInputValue, emptyFunction, getNode } from "../../../../utils";
+import { checkInputValue, emptyFunction } from "../../../../utils";
 import PopupWithAddress from "../../../popupWithAddress";
 import ProposalBond from "./proposalBond";
 import Beneficiary from "../../common/beneficiary";
@@ -109,7 +109,6 @@ function PopupContent({
     <>
       <Signer
         api={api}
-        chain={chain}
         signerAccount={signerAccount}
         setSignerAccount={setSignerAccount}
         extensionAccounts={extensionAccounts}
@@ -118,7 +117,6 @@ function PopupContent({
         balanceIsLoading={balanceIsLoading}
       />
       <Beneficiary
-        chain={chain}
         extensionAccounts={extensionAccounts}
         setAddress={setBeneficiary}
       />

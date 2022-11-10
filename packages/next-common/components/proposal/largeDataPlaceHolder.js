@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import ExternalLink from "../../assets/imgs/icons/external-link.svg";
+import { useChain } from "../../context/chain";
 
 const LargeData = styled.div`
   display: flex;
@@ -13,11 +14,11 @@ const LargeData = styled.div`
 `;
 
 export default function LargeDataPlaceHolder({
-  chain,
   motionIndex,
   referendumIndex,
   proposalIndex,
 }) {
+  const chain = useChain();
   let subscanLink =
     referendumIndex !== undefined
       ? `https://${chain}.subscan.io/referenda/${referendumIndex}`

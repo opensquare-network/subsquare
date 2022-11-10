@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { getMemberId, getMentionList, getMentionName, } from "next-common/utils/post";
+import {
+  getMemberId,
+  getMentionList,
+  getMentionName,
+} from "next-common/utils/post";
 import uniqBy from "lodash.uniqby";
 import { useUser } from "../../context/user";
+import { useChain } from "../../context/chain";
 
-export default function useMentionList(post, comments, chain) {
+export default function useMentionList(post, comments) {
+  const chain = useChain();
   const [users, setUsers] = useState([]);
   const currentUser = useUser();
 

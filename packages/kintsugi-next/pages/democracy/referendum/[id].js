@@ -108,7 +108,7 @@ export default withLoginUserRedux(
             onchainData={detail.onchainData}
           />
 
-          <Timeline data={timelineData} chain={chain} />
+          <Timeline data={timelineData} />
           {CommentComponent}
         </DetailWithRightLayout>
       </PostProvider>

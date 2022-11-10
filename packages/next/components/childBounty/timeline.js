@@ -1,21 +1,16 @@
 import User from "next-common/components/user";
 import { getTimelineStatus } from "utils";
-import { getNode, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import sortTimeline from "next-common/utils/timeline/sort";
 import Anchor from "next-common/components/styled/anchor";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import TreasuryCountDown from "next-common/components/treasury/common/countdown";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function ChildBountyTimeline({ chain, onchainData }) {
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
-
+  const { decimals, symbol } = useChainSettings();
   const getTimelineData = (args, method, indexer) => {
     switch (method) {
       case "Added":
@@ -50,15 +45,13 @@ export default function ChildBountyTimeline({ chain, onchainData }) {
         };
       case "Awarded":
         const AwardedTimelineNode = {
-          Beneficiary: (
-            <User add={args.beneficiary} fontSize={14} />
-          ),
+          Beneficiary: <User add={args.beneficiary} fontSize={14} />,
         };
         if (onchainData?.state?.state === "PendingPayout") {
           AwardedTimelineNode.PendingPayout = (
             <TreasuryCountDown
-              startHeight={ indexer?.blockHeight }
-              targetHeight={ onchainData.unlockAt }
+              startHeight={indexer?.blockHeight}
+              targetHeight={onchainData.unlockAt}
               prefix="Claimable"
             />
           );
@@ -67,9 +60,7 @@ export default function ChildBountyTimeline({ chain, onchainData }) {
       case "BountyClaimed":
       case "Claimed":
         return {
-          Beneficiary: (
-            <User add={args.beneficiary} fontSize={14} />
-          ),
+          Beneficiary: <User add={args.beneficiary} fontSize={14} />,
           Payout: `${toPrecision(args.payout ?? 0, decimals)} ${symbol}`,
         };
     }
@@ -93,7 +84,6 @@ export default function ChildBountyTimeline({ chain, onchainData }) {
   return (
     <Timeline
       data={timelineData}
-      chain={chain}
       type={detailPageCategory.TREASURY_CHILD_BOUNTY}
     />
   );

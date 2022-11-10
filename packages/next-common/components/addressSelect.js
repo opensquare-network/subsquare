@@ -13,6 +13,7 @@ import Identity from "./Identity";
 import Caret from "./icons/caret";
 import { addressEllipsis } from "../utils";
 import PseudoAvatar from "../assets/imgs/pesudoAvatar.svg";
+import { useChain } from "../context/chain";
 
 const Wrapper = Relative;
 
@@ -104,7 +105,8 @@ const Item = styled(Flex)`
     `}
 `;
 
-function Account({ account, chain }) {
+function Account({ account }) {
+  const chain = useChain();
   const [identity, setIdentity] = useState(null);
   useEffect(() => {
     setIdentity(null);
@@ -145,7 +147,7 @@ function Account({ account, chain }) {
   );
 }
 
-function EmptyAccount({ chain }) {
+function EmptyAccount() {
   return (
     <>
       <PseudoAvatar />
@@ -154,26 +156,20 @@ function EmptyAccount({ chain }) {
           address: "--",
           name: "--",
         }}
-        chain={chain}
       />
     </>
   );
 }
 
-export function Option({ onClick, item, selected, chain }) {
+export function Option({ onClick, item, selected }) {
   return (
     <Item onClick={onClick} selected={selected}>
-      <Account account={item} chain={chain} />
+      <Account account={item} />
     </Item>
   );
 }
 
-export default function AddressSelect({
-  chain,
-  accounts,
-  selectedAccount,
-  onSelect,
-}) {
+export default function AddressSelect({ accounts, selectedAccount, onSelect }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
 
@@ -183,9 +179,9 @@ export default function AddressSelect({
     <Wrapper ref={ref}>
       <Select onClick={() => setShow(!show)} disabled={accounts?.length === 0}>
         {selectedAccount ? (
-          <Account account={selectedAccount} chain={chain} />
+          <Account account={selectedAccount} />
         ) : (
-          <EmptyAccount chain={chain} />
+          <EmptyAccount />
         )}
         <Caret down={!show} />
       </Select>
@@ -199,8 +195,10 @@ export default function AddressSelect({
                 setShow(false);
               }}
               item={item}
-              selected={item.address === selectedAccount?.address && item.meta?.source === selectedAccount.meta?.source}
-              chain={chain}
+              selected={
+                item.address === selectedAccount?.address &&
+                item.meta?.source === selectedAccount.meta?.source
+              }
             />
           ))}
         </Options>

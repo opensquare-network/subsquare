@@ -177,8 +177,8 @@ export default withLoginUserRedux(
             onFinalized={onTipFinalized}
             isLoadingTip={isLoadingTip}
           />
-          <Metadata tip={detail?.onchainData} chain={chain} />
-          <Timeline tip={detail?.onchainData} chain={chain} />
+          <Metadata tip={detail?.onchainData} />
+          <Timeline tip={detail?.onchainData} />
           {CommentComponent}
         </DetailWithRightLayout>
       </PostProvider>

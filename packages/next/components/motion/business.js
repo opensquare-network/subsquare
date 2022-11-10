@@ -4,19 +4,15 @@ import Flex from "next-common/components/styled/flex";
 import User from "next-common/components/user";
 import ExtrinsicLinks from "next-common/components/links";
 import CapitalText from "../capitalText";
-import { getNode, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
+import { useChainSettings } from "next-common/context/chain";
 
-export default function Business({ motion, chain }) {
+export default function Business({ motion }) {
   if (!motion) {
     return null;
   }
 
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
+  const { decimals, symbol } = useChainSettings();
 
   const business = [];
 
@@ -38,7 +34,6 @@ export default function Business({ motion, chain }) {
           <Flex key="proposal-beneficiary">
             <User add={proposal.meta.beneficiary} fontSize={14} />
             <ExtrinsicLinks
-              chain={chain}
               address={proposal.meta.beneficiary}
               style={{ marginLeft: 8 }}
             />
@@ -74,11 +69,7 @@ export default function Business({ motion, chain }) {
               </CapitalText>,
               <Flex key="bounty-beneficiary-value">
                 <User add={item[1]} fontSize={14} />
-                <ExtrinsicLinks
-                  chain={chain}
-                  address={item[1]}
-                  style={{ marginLeft: 8 }}
-                />
+                <ExtrinsicLinks address={item[1]} style={{ marginLeft: 8 }} />
               </Flex>,
             ]);
             break;

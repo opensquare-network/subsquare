@@ -12,6 +12,7 @@ import { addressEllipsis } from "../../utils";
 import SecondaryButton from "../buttons/secondaryButton";
 import GhostButton from "../buttons/ghostButton";
 import EditorWrapper from "../editor/editorWrapper";
+import { useChain } from "../../context/chain";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
@@ -50,7 +51,6 @@ function Editor(
     isEdit,
     onFinishedEdit,
     commentId,
-    chain,
     content,
     setContent,
     contentType,
@@ -61,6 +61,7 @@ function Editor(
   },
   ref
 ) {
+  const chain = useChain();
   const router = useRouter();
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);

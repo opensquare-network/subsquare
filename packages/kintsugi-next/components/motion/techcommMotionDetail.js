@@ -2,7 +2,7 @@
 import styled from "styled-components";
 import Link from "next/link";
 import Timeline from "next-common/components/timeline";
-import { getNode, isMotionEnded, toPrecision } from "next-common/utils";
+import { isMotionEnded, toPrecision } from "next-common/utils";
 import findLastIndex from "lodash.findlastindex";
 import ArticleContent from "next-common/components/articleContent";
 import { useState } from "react";
@@ -235,7 +235,6 @@ export default function TechcommMotionDetail({ motion, chain, onReply, type }) {
 
       <Timeline
         data={timelineData}
-        chain={chain}
         indent={false}
         motionEndInfo={motionEndInfo}
       />

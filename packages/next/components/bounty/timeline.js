@@ -1,20 +1,15 @@
 import User from "next-common/components/user";
 import { getTimelineStatus } from "utils";
-import { getNode, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import { createMotionTimelineData } from "utils/timeline/motion";
 import sortTimeline from "next-common/utils/timeline/sort";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function BountyTimeline({ chain, bounty }) {
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
-
+  const { decimals, symbol } = useChainSettings();
   const getTimelineData = (args, method) => {
     switch (method) {
       case "BountyExtended":
@@ -43,17 +38,13 @@ export default function BountyTimeline({ chain, bounty }) {
         };
       case "BountyClaimed":
         return {
-          Beneficiary: (
-            <User add={args.beneficiary} fontSize={14} />
-          ),
+          Beneficiary: <User add={args.beneficiary} fontSize={14} />,
           Payout: `${toPrecision(args.payout ?? 0, decimals)} ${symbol}`,
         };
       case "Awarded":
       case "BountyAwarded":
         return {
-          Beneficiary: (
-            <User add={args.beneficiary} fontSize={14} />
-          ),
+          Beneficiary: <User add={args.beneficiary} fontSize={14} />,
         };
     }
     return args;
@@ -78,5 +69,5 @@ export default function BountyTimeline({ chain, bounty }) {
   timelineData.push(...motions);
   sortTimeline(timelineData);
 
-  return <Timeline data={timelineData} chain={chain} />;
+  return <Timeline data={timelineData} />;
 }

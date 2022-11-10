@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { emptyFunction, getNode, toPrecision } from "next-common/utils";
+import { emptyFunction, isSameAddress, toPrecision } from "next-common/utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import SignerSelect from "next-common/components/signerSelect";
 import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
@@ -13,7 +13,7 @@ import { WarningMessage } from "next-common/components/popup/styled";
 import { sendTx } from "next-common/utils/sendTx";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import useSetDefaultSigner from "next-common/utils/hooks/useSetDefaultSigner";
-import { isSameAddress } from "next-common/utils";
+import { useChainSettings } from "next-common/context/chain";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -25,7 +25,6 @@ const balanceMap = new Map();
 function PopupContent({
   extensionAccounts,
   childBounty,
-  chain,
   onClose,
   onSubmitted = emptyFunction,
   onFinalized = emptyFunction,
@@ -36,7 +35,7 @@ function PopupContent({
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [balance, setBalance] = useState();
   const [claiming, setClaiming] = useState(false);
-  const node = getNode(chain);
+  const { decimals, symbol } = useChainSettings();
 
   useSetDefaultSigner(extensionAccounts, setSelectedAccount);
 
@@ -51,13 +50,13 @@ function PopupContent({
     if (api && selectedAccount) {
       api.query.system.account(selectedAccount.address).then((result) => {
         if (isMounted.current) {
-          const free = toPrecision(result.data.free, node.decimals);
+          const free = toPrecision(result.data.free, decimals);
           setBalance(free);
           balanceMap.set(selectedAccount.address, free);
         }
       });
     }
-  }, [api, selectedAccount, node.decimals, isMounted]);
+  }, [api, selectedAccount, decimals, isMounted]);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -68,10 +67,6 @@ function PopupContent({
 
     if (!selectedAccount) {
       return showErrorToast("Please select an account");
-    }
-
-    if (!node) {
-      return;
     }
 
     const tx = api.tx.childBounties.claimChildBounty(
@@ -108,7 +103,7 @@ function PopupContent({
           balanceName={"Balance"}
           balance={balance}
           isLoading={!balance}
-          symbol={node.symbol}
+          symbol={symbol}
         />
         <SignerSelect
           api={api}

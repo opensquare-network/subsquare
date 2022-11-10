@@ -273,7 +273,7 @@ export default withLoginUserRedux(
       );
 
     return (
-      <DetailLayout user={loginUser} chain={chain}>
+      <DetailLayout user={loginUser}>
         <Back href={`/`} text="Profile" />
         <Wrapper>
           <BioWrapper>

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { getNode, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
 import Flex from "next-common/components/styled/flex";
 import AyeIcon from "public/imgs/icons/aye.svg";
 import NayIcon from "public/imgs/icons/nay.svg";

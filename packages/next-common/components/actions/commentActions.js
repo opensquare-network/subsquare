@@ -6,7 +6,6 @@ import ThumbUpList from "./thumbUpList";
 import { Wrapper } from "./styled";
 
 export default function CommentActions({
-  chain,
   onReply,
   noHover,
   highlight,
@@ -43,10 +42,7 @@ export default function CommentActions({
           />
         )}
       </Wrapper>
-      <ThumbUpList
-        showThumbsUpList={showThumbsUpList}
-        reactions={reactions}
-      />
+      <ThumbUpList showThumbsUpList={showThumbsUpList} reactions={reactions} />
     </>
   );
 }

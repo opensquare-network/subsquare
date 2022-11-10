@@ -2,7 +2,7 @@ import KVList from "../../../listInfo/kvList";
 import React from "react";
 import Proposal from "../../../proposal";
 import User from "../../../user";
-import { estimateBlocksTime, getNode, toPrecision } from "../../../../utils";
+import { estimateBlocksTime, toPrecision } from "../../../../utils";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "../../../../store/reducers/chainSlice";
 import styled from "styled-components";

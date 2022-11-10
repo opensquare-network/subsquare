@@ -54,14 +54,14 @@ const Link = styled(ExternalLink)`
 
 // FIXME: status
 // FIXME: vote button
-export default function Gov2Sidebar({ detail, chain }) {
+export default function Gov2Sidebar({ detail }) {
   const { primaryPurple500 } = useTheme();
 
   return (
     <Wrapper>
       {false && <Gov2Status detail={detail} />}
 
-      <Gov2Tally chain={chain} detail={detail} />
+      <Gov2Tally detail={detail} />
 
       {false && <VoteButton>Vote</VoteButton>}
 

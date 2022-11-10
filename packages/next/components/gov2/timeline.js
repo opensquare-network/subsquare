@@ -5,6 +5,7 @@ import { getNode, toPrecision } from "next-common/utils";
 import { parseGov2TrackName } from "next-common/utils/gov2";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import styled from "styled-components";
+import { useChain } from "next-common/context/chain";
 
 const Info = styled.div`
   font-weight: 400;
@@ -26,12 +27,7 @@ function TimelineTallyInfo({ decimals, symbol, ayes, nays, support }) {
 }
 
 const getTimelineData = (args, method, trackInfo, chain) => {
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
+  const { decimals, symbol } = getNode(chain);
 
   switch (method) {
     case "Submitted": {
@@ -96,7 +92,7 @@ const getTimelineData = (args, method, trackInfo, chain) => {
   return args;
 };
 
-export function makeReferendumTimelineData(timeline, trackInfo, chain, type) {
+export function makeReferendumTimelineData(timeline, trackInfo, type, chain) {
   return (timeline || []).map((item) => {
     return {
       time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
@@ -116,18 +112,14 @@ export function makeReferendumTimelineData(timeline, trackInfo, chain, type) {
   });
 }
 
-export default function ReferendumTimeline({
-  timeline,
-  trackInfo,
-  chain,
-  type,
-}) {
+export default function ReferendumTimeline({ timeline, trackInfo, type }) {
+  const chain = useChain();
   const timelineData = makeReferendumTimelineData(
     timeline,
     trackInfo,
-    chain,
-    type
+    type,
+    chain
   );
 
-  return <Timeline data={timelineData} chain={chain} />;
+  return <Timeline data={timelineData} />;
 }

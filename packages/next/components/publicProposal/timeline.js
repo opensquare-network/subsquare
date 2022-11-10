@@ -6,14 +6,9 @@ import { getNode, toPrecision } from "next-common/utils";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export function makePublicProposalTimelineData(timeline, chain) {
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
+  const { decimals, symbol } = getNode(chain);
 
-  const getTimelineData = (args, method, chain) => {
+  const getTimelineData = (args, method) => {
     switch (method) {
       case "Proposed":
         return {
@@ -48,5 +43,5 @@ export function makePublicProposalTimelineData(timeline, chain) {
 export default function PublicProposalTimeline({ timeline, chain }) {
   const timelineData = makePublicProposalTimelineData(timeline, chain);
 
-  return <Timeline data={timelineData} chain={chain} />;
+  return <Timeline data={timelineData} />;
 }
