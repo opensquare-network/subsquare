@@ -44,5 +44,5 @@ export function makePublicProposalTimelineData(timeline, chain) {
 export default function PublicProposalTimeline({ timeline, chain }) {
   const timelineData = makePublicProposalTimelineData(timeline, chain);
 
-  return <Timeline data={timelineData} chain={chain} />;
+  return <Timeline data={timelineData} />;
 }

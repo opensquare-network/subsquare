@@ -99,5 +99,5 @@ export default function TipTimeline({ tip, chain }) {
     timeline = getClosedTimelineData(timeline);
   }
 
-  return <Timeline data={timeline} chain={chain} indent={false} />;
+  return <Timeline data={timeline} indent={false} />;
 }

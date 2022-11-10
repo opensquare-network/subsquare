@@ -125,5 +125,5 @@ export default function ReferendumTimeline({
     type
   );
 
-  return <Timeline data={timelineData} chain={chain} />;
+  return <Timeline data={timelineData} />;
 }

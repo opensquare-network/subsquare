@@ -84,7 +84,6 @@ export default function ChildBountyTimeline({ chain, onchainData }) {
   return (
     <Timeline
       data={timelineData}
-      chain={chain}
       type={detailPageCategory.TREASURY_CHILD_BOUNTY}
     />
   );

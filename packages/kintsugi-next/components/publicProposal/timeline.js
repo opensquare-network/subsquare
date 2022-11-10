@@ -18,5 +18,5 @@ export default function PublicProposalTimeline({
 
   sortTimeline(all);
 
-  return <Timeline data={all} chain={chain} />;
+  return <Timeline data={all} />;
 }

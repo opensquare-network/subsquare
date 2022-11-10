@@ -62,7 +62,10 @@ export default function MotionTimeline() {
   const motion = usePostOnChainData();
   const chain = useChain();
   const showMotionEnd = useShowMotionEnd(motion);
-  const timelineData = useMemo(() => makeMotionTimelineData(motion, chain), [motion, chain]);
+  const timelineData = useMemo(
+    () => makeMotionTimelineData(motion, chain),
+    [motion, chain]
+  );
   if (!motion) {
     return null;
   }
@@ -77,7 +80,6 @@ export default function MotionTimeline() {
     <Timeline
       motionEndInfo={motionEndInfo}
       data={timelineData}
-      chain={chain}
       indent={false}
     />
   );

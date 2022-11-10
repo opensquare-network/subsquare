@@ -235,7 +235,6 @@ export default function TechcommMotionDetail({ motion, chain, onReply, type }) {
 
       <Timeline
         data={timelineData}
-        chain={chain}
         indent={false}
         motionEndInfo={motionEndInfo}
       />
