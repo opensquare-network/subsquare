@@ -21,7 +21,7 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 
 export default withLoginUserRedux(
-  ({ loginUser, detail: ssrDetail, referendum, comments, chain }) => {
+  ({ detail: ssrDetail, referendum, comments, chain }) => {
     const [detail, setDetail] = useState(ssrDetail);
     useEffect(() => setDetail(ssrDetail), [ssrDetail]);
     const isMounted = useIsMounted();
@@ -29,8 +29,6 @@ export default withLoginUserRedux(
     const { CommentComponent, focusEditor } = useCommentComponent({
       detail,
       comments,
-      loginUser,
-      chain,
       type: detailPageCategory.DEMOCRACY_PROPOSAL,
     });
 

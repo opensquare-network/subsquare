@@ -72,7 +72,7 @@ export default withLoginUserRedux(
             type={detailPageCategory.TREASURY_BOUNTY}
             countDown={<BountyCountDown data={detail.onchainData} />}
           />
-          <Metadata meta={detail.onchainData?.meta} chain={chain} />
+          <Metadata meta={detail.onchainData?.meta} />
           <ChildBountiesTable {...{ childBounties }} />
           <Timeline bounty={detail?.onchainData} chain={chain} />
           {CommentComponent}

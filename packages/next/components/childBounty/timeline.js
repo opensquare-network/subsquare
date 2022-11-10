@@ -9,7 +9,7 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import TreasuryCountDown from "next-common/components/treasury/common/countdown";
 import { useChainSettings } from "next-common/context/chain";
 
-export default function ChildBountyTimeline({ chain, onchainData }) {
+export default function ChildBountyTimeline({ onchainData }) {
   const { decimals, symbol } = useChainSettings();
   const getTimelineData = (args, method, indexer) => {
     switch (method) {

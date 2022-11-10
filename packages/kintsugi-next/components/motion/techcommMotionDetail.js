@@ -21,7 +21,7 @@ import PostEdit from "next-common/components/post/postEdit";
 import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import User from "next-common/components/user";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -107,7 +107,8 @@ const getClosedTimelineData = (timeline = []) => {
   return [fd, ...notFoldItems];
 };
 
-export default function TechcommMotionDetail({ motion, chain, onReply, type }) {
+export default function TechcommMotionDetail({ motion, onReply, type }) {
+  const chain = useChain();
   const postDispatch = usePostDispatch();
   const { decimals, symbol } = useChainSettings();
   const post = usePost();

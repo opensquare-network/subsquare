@@ -22,7 +22,7 @@ import { sendTx } from "next-common/utils/sendTx";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import useSetDefaultSigner from "next-common/utils/hooks/useSetDefaultSigner";
 import { encodeAddressToChain } from "next-common/services/address";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -33,7 +33,6 @@ const balanceMap = new Map();
 
 function PopupContent({
   extensionAccounts,
-  chain,
   councilTippers,
   tipHash,
   onClose,
@@ -41,6 +40,7 @@ function PopupContent({
   onFinalized = emptyFunction,
   onInBlock = emptyFunction,
 }) {
+  const chain = useChain();
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const [selectedAccount, setSelectedAccount] = useState(null);

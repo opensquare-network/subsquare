@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import User from "next-common/components/user";
 import useThumbsUp from "next-common/components/thumbsUp";
-import { useChain } from "next-common/context/chain";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
@@ -35,7 +34,6 @@ const GreyItem = styled.div`
 `;
 
 export default function Actions({ reactions }) {
-  const chain = useChain();
   const count = reactions?.length;
 
   const { ThumbsUpComponent, showThumbsUpList } = useThumbsUp({
@@ -53,13 +51,7 @@ export default function Actions({ reactions }) {
             .filter((r) => r.user)
             .map((r, index) => (
               <GreyItem key={index}>
-                <User
-                  user={r.user}
-                  fontSize={12}
-                  chain={chain}
-                  showAvatar={false}
-                  noEvent
-                />
+                <User user={r.user} fontSize={12} showAvatar={false} noEvent />
               </GreyItem>
             ))}
         </GreyWrapper>

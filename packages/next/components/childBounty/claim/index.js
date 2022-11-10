@@ -93,7 +93,6 @@ const ClaimInfoText = styled.div`
 `;
 
 export default function Claim({
-  chain,
   childBounty,
   onInBlock = emptyFunction,
   onFinalized = emptyFunction,
@@ -191,11 +190,7 @@ export default function Claim({
             <InfoItem>
               <InfoItemName>Beneficiary</InfoItemName>
               <InfoItemValue>
-                <User
-                  chain={chain}
-                  add={childBounty.beneficiary}
-                  fontSize={14}
-                />
+                <User add={childBounty.beneficiary} fontSize={14} />
               </InfoItemValue>
             </InfoItem>
             <InfoItem>
