@@ -21,7 +21,7 @@ import hydradx from "./consts/settings/hydradx";
 import development from "./consts/settings/development";
 
 const optionalNodes =
-  process.env.NODE_ENV === "development" ? [development] : [];
+  process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
 
 export const nodes = [
   polkadot,

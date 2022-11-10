@@ -41,7 +41,7 @@ const settingsMap = {
   polkadex,
   turing,
   zeitgeist,
-  ...(process.env.NODE_ENV === "development" ? { development } : {}),
+  ...(process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? { development } : {}),
 };
 
 export default function getChainSettings(chain) {
