@@ -8,7 +8,7 @@ import TrackIconMap from "../../../components/icons/track";
 const gov2EntryItem = {
   value: "gov2",
   name: "Governance V2",
-  pathname: "/gov2",
+  pathname: "/referenda",
   icon: <Gov2Icon />,
   itemRender: (icon, name) => <Gov2Button icon={icon} name={name} />,
 };
@@ -30,7 +30,7 @@ const gov2ReferendaMenu = {
     {
       value: "all",
       name: "All",
-      pathname: "/gov2",
+      pathname: "/referenda",
       icon: TrackIconMap.All,
     },
   ],
