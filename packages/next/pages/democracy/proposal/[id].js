@@ -82,7 +82,7 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments, chain }) => {
           atBlockHeight={secondsAtBlockHeight}
           onFinalized={onSecondFinalized}
         />
-        <Metadata publicProposal={detail?.onchainData} chain={chain} />
+        <Metadata publicProposal={detail?.onchainData} />
         <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
         {CommentComponent}
       </DetailWithRightLayout>

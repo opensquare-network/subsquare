@@ -9,7 +9,6 @@ import HeaderWrapper from "next-common/components/header/wrapper";
 import ChainLogo from "next-common/components/header/left/chainLogo";
 import ChainIcon from "next-common/components/header/chainIcon";
 import MenuLine from "../../assets/imgs/icons/menu-line.svg";
-import { useUser } from "../../context/user";
 
 const FlexWrapper = styled(Flex)`
   max-width: 1184px;
@@ -56,7 +55,6 @@ const NodeButton = styled(Flex)`
 `;
 
 export default function Header({ left, chain }) {
-  const user = useUser();
   const [show, setShow] = useState(false);
   const [position, setPosition] = useState("left");
   const [content, setContent] = useState();
@@ -90,13 +88,13 @@ export default function Header({ left, chain }) {
               <ChainIcon chain={node.value} />
             </NodeButton>
           </Left>
-          <HeaderRight chain={chain} user={user} />
+          <HeaderRight chain={chain} />
         </FlexWrapper>
       </div>
       {show && (
         <Sidebar onClose={() => setShow(false)} position={position}>
           {content === "left" && <>{left}</>}
-          {content === "right" && <SidebarAccount user={user} chain={chain} />}
+          {content === "right" && <SidebarAccount chain={chain} />}
         </Sidebar>
       )}
     </HeaderWrapper>

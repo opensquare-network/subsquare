@@ -9,7 +9,7 @@ import Flex from "next-common/components/styled/flex";
 import { accountMenu } from "./consts";
 import GhostButton from "../buttons/ghostButton";
 import SecondaryButton from "../buttons/secondaryButton";
-import { logoutUser, useUserDispatch } from "../../context/user";
+import { logoutUser, useUser, useUserDispatch } from "../../context/user";
 
 const Wrapper = styled.div`
   padding: 32px 0 0;
@@ -61,7 +61,8 @@ const UserWrapper = styled(Flex)`
   }
 `;
 
-export default function SidebarAccount({ user, chain }) {
+export default function SidebarAccount({ chain }) {
+  const user = useUser();
   const router = useRouter();
   const node = nodes.find((n) => n.value === chain) || nodes[0];
   const userDispatch = useUserDispatch();
@@ -79,7 +80,7 @@ export default function SidebarAccount({ user, chain }) {
       <Title>NETWORK</Title>
       <NetworkSwitch activeNode={node} />
       {node?.hideHeight ? null : <Title>NODE</Title>}
-      <NodeSwitch chain={chain} node={node} />
+      <NodeSwitch />
       <Title>ACCOUNT</Title>
       {!user && (
         <ButtonWrapper>

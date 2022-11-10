@@ -90,7 +90,7 @@ export default withLoginUserRedux(
             onFinalized={onSecondFinalized}
           />
           <Business referendumIndex={referendumIndex} />
-          <Metadata publicProposal={detail?.onchainData} chain={chain} />
+          <Metadata publicProposal={detail?.onchainData} />
           <Timeline
             publicProposalTimeline={detail?.onchainData?.timeline}
             referendumTimeline={referendum?.onchainData?.timeline}

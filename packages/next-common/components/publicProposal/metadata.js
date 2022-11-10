@@ -17,7 +17,7 @@ function getDeposit(scanDepositData) {
   }
 }
 
-export default function Metadata({ publicProposal, chain }) {
+export default function Metadata({ publicProposal }) {
   if (!publicProposal) {
     return null;
   }
@@ -39,7 +39,6 @@ export default function Metadata({ publicProposal, chain }) {
         shorten={publicProposal.preImage?.shorten}
         proposalIndex={publicProposal.proposalIndex}
         referendumIndex={publicProposal.referendumIndex}
-        chain={chain}
       />,
     ]);
   }
