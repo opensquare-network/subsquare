@@ -16,11 +16,8 @@ import {
 } from "next-common/services/url";
 import Timeline from "components/gov2/timeline";
 import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metadata";
-import useApi from "next-common/utils/hooks/useApi";
 
 export default withLoginUserRedux(({ detail, comments }) => {
-  const api = useApi();
-
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
@@ -47,7 +44,7 @@ export default withLoginUserRedux(({ detail, comments }) => {
 
         <Gov2Sidebar detail={detail} />
 
-        <Gov2ReferendumMetadata api={api} detail={detail} />
+        <Gov2ReferendumMetadata detail={detail} />
 
         <Timeline
           timeline={detail?.onchainData?.timeline}
