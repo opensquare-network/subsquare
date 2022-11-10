@@ -281,7 +281,7 @@ export function estimateRemainBlockTime(blocks, blockTime, startTimeMs) {
   const remainTime = extractTime(diffMs);
   const { days, hours, minutes } = remainTime;
 
-  const format = [
+  const text = [
     days && `${days}d`,
     hours && `${hours}hrs`,
     minutes && `${minutes}mins`,
@@ -292,6 +292,6 @@ export function estimateRemainBlockTime(blocks, blockTime, startTimeMs) {
 
   return {
     ...remainTime,
-    format,
+    text,
   };
 }
