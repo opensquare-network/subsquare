@@ -10,14 +10,21 @@ export const parseGov2TrackName = (name = "") =>
   name.split("_").map(capitalize).join(" ");
 
 export function composeGov2TracksMenu(tracks = []) {
+  const totalActiveCount = tracks.reduce((count, item) => {
+    count += item.activeCount || 0;
+    return count;
+  }, 0);
+
   // simply do a copy
   const gov2ReferendaMenu = Object.assign({}, gov2ReferendaMenuOrigin);
+  gov2ReferendaMenu.items[0].count = totalActiveCount;
 
   const trackItems = tracks.map((track) => {
     return {
       value: track.id,
       name: parseGov2TrackName(track.name),
       pathname: `/referenda/${track.name}`,
+      count: track.activeCount,
       icon: TrackIconMap[track.id] ?? TrackIconMap.Default,
     };
   });
