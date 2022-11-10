@@ -14,8 +14,10 @@ import {
   toTreasuryProposalListItem,
 } from "utils/viewfuncs";
 import HomeLayout from "next-common/components/layout/HomeLayout";
+import { useChain } from "next-common/context/chain";
 
-export default withLoginUserRedux(({ overview, chain }) => {
+export default withLoginUserRedux(({ overview }) => {
+  const chain = useChain();
   let overviewData = [
     {
       category: "Referenda",
