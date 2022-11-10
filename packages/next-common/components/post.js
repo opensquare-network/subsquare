@@ -20,7 +20,7 @@ import businessCategory from "../utils/consts/business/category";
 import useDuration from "../utils/hooks/useDuration";
 import { getMotionStateArgs } from "../utils/collective/result";
 import { getGov2ReferendumStateArgs } from "../utils/gov2/result";
-import { useChain, useChainSettings } from "../context/chain";
+import { useChainSettings } from "../context/chain";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -171,8 +171,6 @@ const BannerWrapper = styled.div`
 `;
 
 export default function Post({ data, href, type }) {
-  const chain = useChain();
-
   let stateArgs;
   if (
     [
@@ -196,7 +194,7 @@ export default function Post({ data, href, type }) {
       type
     )
   ) {
-    elapseIcon = <MotionElapse motion={data.onchainData} chain={chain} />;
+    elapseIcon = <MotionElapse motion={data.onchainData} />;
   }
 
   const commentsCount =
@@ -237,7 +235,6 @@ export default function Post({ data, href, type }) {
             <User
               user={data?.author}
               add={data.address}
-              chain={chain}
               fontSize={12}
               noEvent={userNoClickEvent}
             />

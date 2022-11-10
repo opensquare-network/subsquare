@@ -21,7 +21,7 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 
 export default withLoginUserRedux(
-  ({ detail: ssrDetail, referendum, comments, chain }) => {
+  ({ detail: ssrDetail, referendum, comments }) => {
     const [detail, setDetail] = useState(ssrDetail);
     useEffect(() => setDetail(ssrDetail), [ssrDetail]);
     const isMounted = useIsMounted();
@@ -92,7 +92,6 @@ export default withLoginUserRedux(
           <Timeline
             publicProposalTimeline={detail?.onchainData?.timeline}
             referendumTimeline={referendum?.onchainData?.timeline}
-            chain={chain}
           />
           {CommentComponent}
         </DetailWithRightLayout>
@@ -102,7 +101,6 @@ export default withLoginUserRedux(
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
   const { id, page, page_size: pageSize } = context.query;
 
   const [{ result: detail }] = await Promise.all([
@@ -134,7 +132,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       referendum,
       comments: comments ?? EmptyList,
-      chain,
     },
   };
 });

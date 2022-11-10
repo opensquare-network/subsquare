@@ -54,7 +54,7 @@ export default function BaseLayout({ left, children, seoInfo }) {
   const mode = useSelector(modeSelector);
   const theme = mode === "dark" ? dark : light;
 
-  useUpdateNodesDelay(chain);
+  useUpdateNodesDelay();
 
   useEffect(() => {
     if (blockTime && isMounted()) {
@@ -79,7 +79,6 @@ export default function BaseLayout({ left, children, seoInfo }) {
         seoInfo?.title || `SubSquare | ${capitalize(chain)} governance platform`
       }
       desc={seoInfo?.desc || DEFAULT_SEO_INFO.desc}
-      chain={chain}
     />
   );
 
@@ -88,7 +87,7 @@ export default function BaseLayout({ left, children, seoInfo }) {
       <Wrapper>
         {seo}
         <GlobalStyle />
-        <Header left={left} chain={chain} />
+        <Header left={left} />
         <Content left={left}>{children}</Content>
         <Toast />
       </Wrapper>

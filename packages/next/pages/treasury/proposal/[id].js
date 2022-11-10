@@ -13,7 +13,7 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 
-export default withLoginUserRedux(({ detail, comments, chain }) => {
+export default withLoginUserRedux(({ detail, comments }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
@@ -36,7 +36,7 @@ export default withLoginUserRedux(({ detail, comments, chain }) => {
           type={detailPageCategory.TREASURY_PROPOSAL}
         />
         <Metadata treasuryProposal={detail?.onchainData} />
-        <Timeline treasuryProposal={detail?.onchainData} chain={chain} />
+        <Timeline treasuryProposal={detail?.onchainData} />
         {CommentComponent}
       </DetailLayout>
     </PostProvider>
@@ -44,8 +44,6 @@ export default withLoginUserRedux(({ detail, comments, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   const { id, page, page_size } = context.query;
   const pageSize = Math.min(page_size ?? 50, 100);
 
@@ -69,7 +67,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       detail,
       comments: comments ?? EmptyList,
-      chain,
     },
   };
 });

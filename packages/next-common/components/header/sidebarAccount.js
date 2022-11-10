@@ -10,6 +10,7 @@ import { accountMenu } from "./consts";
 import GhostButton from "../buttons/ghostButton";
 import SecondaryButton from "../buttons/secondaryButton";
 import { logoutUser, useUser, useUserDispatch } from "../../context/user";
+import { useChainSettings } from "../../context/chain";
 
 const Wrapper = styled.div`
   padding: 32px 0 0;
@@ -61,10 +62,10 @@ const UserWrapper = styled(Flex)`
   }
 `;
 
-export default function SidebarAccount({ chain }) {
+export default function SidebarAccount() {
   const user = useUser();
   const router = useRouter();
-  const node = nodes.find((n) => n.value === chain) || nodes[0];
+  const node = useChainSettings();
   const userDispatch = useUserDispatch();
 
   const handleAccountMenu = async (item) => {

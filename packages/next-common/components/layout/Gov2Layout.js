@@ -9,7 +9,7 @@ export default function Gov2Layout({ children, seoInfo, tracks }) {
     <BaseLayout
       children={children}
       seoInfo={seoInfo}
-      left={<Menu menu={menu} chain={process.env.NEXT_PUBLIC_CHAIN} />}
+      left={<Menu menu={menu} />}
     />
   );
 }

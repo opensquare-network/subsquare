@@ -22,7 +22,7 @@ import { PostProvider } from "next-common/context/post";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 
-export default withLoginUserRedux(({ detail: ssrDetail, comments, chain }) => {
+export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   const [detail, setDetail] = useState(ssrDetail);
   useEffect(() => setDetail(ssrDetail), [ssrDetail]);
   const isMounted = useIsMounted();
@@ -83,13 +83,11 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments, chain }) => {
             detail?.onchainData?.preImage?.call || detail?.onchainData?.call
           }
           shorten={detail?.onchainData?.preImage?.shorten}
-          chain={chain}
           onchainData={detail?.onchainData}
         />
 
         <Timeline
           timeline={detail?.onchainData?.timeline}
-          chain={chain}
           type={detailPageCategory.DEMOCRACY_REFERENDUM}
         />
         {CommentComponent}
@@ -99,8 +97,6 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   const { id, page, page_size } = context.query;
   const pageSize = Math.min(page_size ?? 50, 100);
 
@@ -126,7 +122,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       detail,
       comments: comments ?? EmptyList,
-      chain,
     },
   };
 });

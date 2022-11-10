@@ -27,7 +27,6 @@ const ButtonWrapper = styled.div`
 
 function PopupContent({
   extensionAccounts,
-  chain,
   onClose,
   onInBlock = emptyFunction,
   onFinalized = emptyFunction,
@@ -54,8 +53,7 @@ function PopupContent({
 
   const [balance, balanceIsLoading] = useAddressBalance(
     api,
-    signerAccount?.address,
-    chain
+    signerAccount?.address
   );
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));

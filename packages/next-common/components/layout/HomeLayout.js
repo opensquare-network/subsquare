@@ -10,7 +10,7 @@ export default function HomeLayout({ children, seoInfo }) {
     <BaseLayout
       children={children}
       seoInfo={seoInfo}
-      left={<Menu menu={menus} chain={process.env.NEXT_PUBLIC_CHAIN} />}
+      left={<Menu menu={menus} />}
     />
   );
 }

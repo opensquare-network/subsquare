@@ -13,10 +13,10 @@ import VoteButton from "next-common/components/popup/voteButton";
 import { sendTx } from "next-common/utils/sendTx";
 import { emptyFunction } from "next-common/utils";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
+import { useChain } from "next-common/context/chain";
 
 function PopupContent({
   extensionAccounts,
-  chain,
   votes,
   isLoadingVotes,
   voters,
@@ -28,6 +28,7 @@ function PopupContent({
   onInBlock = emptyFunction,
   type,
 }) {
+  const chain = useChain();
   const dispatch = useDispatch();
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);

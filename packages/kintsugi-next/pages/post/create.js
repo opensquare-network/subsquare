@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   margin: auto;
 `;
 
-export default withLoginUserRedux(({ loginUser, chain }) => {
+export default withLoginUserRedux(({ loginUser }) => {
   const router = useRouter();
 
   useEffect(() => {
@@ -34,18 +34,14 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
       <NextHead title={`Create post`} desc={``} />
       <Wrapper>
         <Back href={`/discussions`} text="Back to Discussions" />
-        <PostCreate chain={chain} loginUser={loginUser} />
+        <PostCreate loginUser={loginUser} />
       </Wrapper>
     </BaseLayout>
   );
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   return {
-    props: {
-      chain,
-    },
+    props: {},
   };
 });

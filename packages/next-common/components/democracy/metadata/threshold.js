@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { votingThreshold } from "../../../utils/consts/referendum";
 import ExternalLink from "../../../assets/imgs/icons/external-link.svg";
 import Chains from "../../../utils/consts/chains";
+import { useChain } from "../../../context/chain";
 
 const Wrapper = styled.span`
   font-weight: 400;
@@ -18,7 +19,8 @@ const Wrapper = styled.span`
   }
 `;
 
-export default function Threshold({ chain, threshold = "" }) {
+export default function Threshold({ threshold = "" }) {
+  const chain = useChain();
   const lowercase = threshold.toLowerCase();
   let link;
   if (Chains.kintsugi === chain) {

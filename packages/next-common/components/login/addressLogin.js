@@ -15,6 +15,7 @@ import SelectWallet from "../wallet/selectWallet";
 import { CACHE_KEY } from "../../utils/constants";
 import { WALLETS } from "../../utils/consts/connect";
 import { updateUser, useUserDispatch } from "../../context/user";
+import { useChain } from "../../context/chain";
 
 const Label = styled.div`
   font-weight: bold;
@@ -59,7 +60,8 @@ function rememberAccountName(account, chain) {
   localStorage.setItem(CACHE_KEY.accountMap, JSON.stringify(accountMap));
 }
 
-export default function AddressLogin({ chain, setMailLogin }) {
+export default function AddressLogin({ setMailLogin }) {
+  const chain = useChain();
   const [wallet, setWallet] = useState();
   const [accounts, setAccounts] = useState([]);
   const [selectedAccount, setSelectedAccount] = useState(null);

@@ -2,12 +2,13 @@ import sortTimeline from "next-common/utils/timeline/sort";
 import Timeline from "next-common/components/timeline";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import { useChain } from "next-common/context/chain";
 
 export default function PublicProposalTimeline({
   publicProposalTimeline = [],
   referendumTimeline = [],
-  chain,
 }) {
+  const chain = useChain();
   const proposal = getDemocracyTimelineData(publicProposalTimeline, chain);
   const referendum = getDemocracyTimelineData(
     referendumTimeline,

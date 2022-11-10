@@ -4,6 +4,7 @@ import sortTimeline from "next-common/utils/timeline/sort";
 import { getTimelineStatus } from "utils";
 import { getNode, toPrecision } from "next-common/utils";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import { useChain } from "next-common/context/chain";
 
 export function makePublicProposalTimelineData(timeline, chain) {
   const { decimals, symbol } = getNode(chain);
@@ -40,7 +41,8 @@ export function makePublicProposalTimelineData(timeline, chain) {
   return timelineData;
 }
 
-export default function PublicProposalTimeline({ timeline, chain }) {
+export default function PublicProposalTimeline({ timeline }) {
+  const chain = useChain();
   const timelineData = makePublicProposalTimelineData(timeline, chain);
 
   return <Timeline data={timelineData} />;
