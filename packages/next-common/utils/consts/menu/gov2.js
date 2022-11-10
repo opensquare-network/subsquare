@@ -3,14 +3,20 @@ import Gov2Icon from "../../../assets/imgs/icons/type-gov2.svg";
 import BackIcon from "../../../assets/imgs/icons/back.svg";
 import Gov2Button from "../../../components/menu/gov2Button";
 import TrackIconMap from "../../../components/icons/track";
+import { getExcludeChains } from "../../viewfuncs";
+import Chains from "../chains";
 
-// for v1 entry
-const gov2EntryItem = {
-  value: "gov2",
-  name: "Governance V2",
-  pathname: "/referenda",
-  icon: <Gov2Icon />,
-  itemRender: (icon, name) => <Gov2Button icon={icon} name={name} />,
+const gov2EntryMenu = {
+  items: [
+    {
+      value: "gov2",
+      name: "Governance V2",
+      pathname: "/referenda",
+      icon: <Gov2Icon />,
+      itemRender: (icon, name) => <Gov2Button icon={icon} name={name} />,
+    },
+  ],
+  excludeToChains: getExcludeChains([Chains.kusama, Chains.development]),
 };
 
 const gov2BackMenu = {
@@ -42,4 +48,4 @@ const gov2FellowshipMenu = {
   items: [],
 };
 
-export { gov2EntryItem, gov2BackMenu, gov2ReferendaMenu, gov2FellowshipMenu };
+export { gov2EntryMenu, gov2BackMenu, gov2ReferendaMenu, gov2FellowshipMenu };
