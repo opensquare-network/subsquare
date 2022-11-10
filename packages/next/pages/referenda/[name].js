@@ -50,7 +50,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       chain,
       posts: posts ?? EmptyList,
-      title: parseGov2TrackName(name),
+      title: "Referenda " + parseGov2TrackName(name),
       tracks,
       summary,
       period,

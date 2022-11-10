@@ -6,8 +6,7 @@ import { useChain } from "next-common/context/chain";
 
 export default function Gov2Page({ posts, title, tracks, summary }) {
   const chain = useChain();
-  // FIXME: seo
-  const seoInfo = { title, desc: "" };
+  const seoInfo = { title, desc: title };
   const items = (posts.items || []).map((item) =>
     toGov2ReferendaListItem(chain, item, tracks)
   );
