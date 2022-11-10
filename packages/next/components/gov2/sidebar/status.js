@@ -62,8 +62,6 @@ function filterConfirmStartedTimeline(timeline = []) {
 }
 
 export default function Gov2Status({ detail }) {
-  console.log(detail);
-
   const { secondaryGreen500, secondaryGreen300 } = useTheme();
   const blockTime = useSelector(blockTimeSelector);
 
