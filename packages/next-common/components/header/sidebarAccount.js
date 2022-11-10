@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import NetworkSwitch from "next-common/components/header/networkSwitch";
-import { nodes } from "next-common/utils/constants";
 import User from "next-common/components/user";
 import NodeSwitch from "next-common/components/header/nodeSwitch";
 import Flex from "next-common/components/styled/flex";

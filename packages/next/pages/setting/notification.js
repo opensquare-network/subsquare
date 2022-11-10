@@ -67,7 +67,7 @@ const Options = styled.div`
   gap: 24px;
 `;
 
-export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
+export default withLoginUserRedux(({ loginUser, unsubscribe }) => {
   const dispatch = useDispatch();
   const userDispatch = useUserDispatch();
   const [saving, setSaving] = useState(false);
@@ -157,12 +157,10 @@ export default withLoginUserRedux(({ loginUser, chain, unsubscribe }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
   const { unsubscribe } = context.query;
 
   return {
     props: {
-      chain,
       unsubscribe: unsubscribe ?? null,
     },
   };

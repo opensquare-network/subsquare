@@ -11,8 +11,10 @@ import { useEffect } from "react";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Divider from "next-common/components/styled/layout/divider";
 import SettingsLayout from "next-common/components/layout/settingsLayout";
+import { useChain } from "next-common/context/chain";
 
-export default withLoginUserRedux(({ loginUser, chain }) => {
+export default withLoginUserRedux(({ loginUser }) => {
+  const chain = useChain();
   const user = loginUser;
   const address = user?.publicKey
     ? encodeAddressToChain(Buffer.from(user?.publicKey, "hex"), chain)

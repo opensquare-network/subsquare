@@ -43,7 +43,6 @@ export default withLoginUserRedux(
     return (
       <PostProvider post={detail} type={detailPageCategory.POST}>
         <DetailLayout
-          user={loginUser}
           seoInfo={{
             title: detail?.title,
             desc,

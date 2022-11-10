@@ -11,7 +11,7 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 
-export default withLoginUserRedux(({ loginUser, detail }) => {
+export default withLoginUserRedux(({ detail }) => {
   const polkassemblyId = detail?.polkassemblyId;
   const { comments, postReactions, loadingComments } = usePolkassemblyPostData({
     polkassemblyId,
@@ -21,7 +21,6 @@ export default withLoginUserRedux(({ loginUser, detail }) => {
   return (
     <PostProvider post={detail} type={detailPageCategory.PA_POST}>
       <DetailLayout
-        user={loginUser}
         seoInfo={{
           title: detail?.title,
           desc,
@@ -48,7 +47,6 @@ export default withLoginUserRedux(({ loginUser, detail }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
   const { id } = context.query;
   const [{ result: detail }] = await Promise.all([
     nextApi.fetch(`polkassembly-discussions/${id}`),
@@ -61,7 +59,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       detail,
-      chain,
     },
   };
 });
