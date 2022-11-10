@@ -6,15 +6,16 @@ import {
   settingMenuOfKeyAccount,
 } from "../../utils/consts/menu/settings";
 import { isKeyRegisteredUser } from "../../utils";
+import { useUser } from "../../context/user";
 
-export default function SettingsLayout({ user, children, seoInfo }) {
+export default function SettingsLayout({ children, seoInfo }) {
+  const user = useUser();
   const menu = isKeyRegisteredUser(user)
     ? settingMenuOfKeyAccount
     : settingMenu;
 
   return (
     <BaseLayout
-      user={user}
       children={children}
       seoInfo={seoInfo}
       left={<Menu menu={menu} />}

@@ -34,7 +34,7 @@ export default withLoginUserRedux(({ loginUser }) => {
       <NextHead title={`Create post`} desc={``} />
       <Wrapper>
         <Back href={`/discussions`} text="Back to Discussions" />
-        <PostCreate loginUser={loginUser} />
+        <PostCreate />
       </Wrapper>
     </BaseLayout>
   );

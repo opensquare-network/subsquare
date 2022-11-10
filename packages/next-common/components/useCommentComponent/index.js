@@ -39,12 +39,7 @@ export default function useCommentComponent({
 
   const CommentComponent = (
     <CommentsWrapper>
-      <Comments
-        data={comments}
-        user={loginUser}
-        onReply={onReply}
-        tabs={tabs}
-      />
+      <Comments data={comments} onReply={onReply} tabs={tabs} />
       {loginUser && (
         <Editor
           postId={postId}

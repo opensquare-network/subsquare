@@ -5,6 +5,7 @@ import Pagination from "next-common/components/pagination/index.js";
 import NoComment from "./noComment";
 import LoginButtons from "./loginButtons";
 import { TitleContainer } from "../styled/containers/titleContainer";
+import { useIsLogin, useUser } from "../../context/user";
 
 const Header = styled.div`
   display: flex;
@@ -22,11 +23,12 @@ const Title = styled(TitleContainer)`
 `;
 
 export default function Comments({
-  user,
   data: { items, page, pageSize, total } = {},
   onReply,
   tabs = null,
 }) {
+  const isLogin = useIsLogin();
+
   return (
     <div>
       <Header>
@@ -37,14 +39,14 @@ export default function Comments({
         <>
           <div>
             {(items || []).map((item) => (
-              <Item key={item._id} data={item} user={user} onReply={onReply} />
+              <Item key={item._id} data={item} onReply={onReply} />
             ))}
           </div>
           <Pagination page={page} pageSize={pageSize} total={total} />
         </>
       )}
       {!items?.length > 0 && <NoComment />}
-      {!user && <LoginButtons />}
+      {!isLogin && <LoginButtons />}
     </div>
   );
 }

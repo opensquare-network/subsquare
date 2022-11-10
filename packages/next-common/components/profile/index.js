@@ -195,7 +195,7 @@ const getCategoryByRoute = (route) => {
   return [CATEGORIES[0], CATEGORIES[0].children[0]];
 };
 
-export default withLoginUserRedux(({ loginUser, route, summary, user, id }) => {
+export default withLoginUserRedux(({ route, summary, user, id }) => {
   const chain = useChain();
   const defaultPage = { page: 1, pageSize: 10, total: 0 };
   const address = isAddress(id) ? id : user?.address;
@@ -273,7 +273,7 @@ export default withLoginUserRedux(({ loginUser, route, summary, user, id }) => {
     );
 
   return (
-    <DetailLayout user={loginUser}>
+    <DetailLayout>
       <Back href={`/`} text="Profile" />
       <Wrapper>
         <BioWrapper>

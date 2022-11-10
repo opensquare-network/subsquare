@@ -3,7 +3,10 @@ import { useEffect, useState } from "react";
 
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import nextApi, { ssrNextApi } from "next-common/services/nextApi";
-import { newErrorToast, newSuccessToast, } from "next-common/store/reducers/toastSlice";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import NextHead from "next-common/components/nextHead";
 import { isKeyRegisteredUser } from "next-common/utils";
@@ -16,7 +19,10 @@ import SettingsLayout from "next-common/components/layout/settingsLayout";
 import useTreasuryProposalOptions from "next-common/components/setting/notification/useTreasuryProposalOptions";
 import Cookies from "cookies";
 import { CACHE_KEY } from "next-common/utils/constants";
-import { Label, Sections } from "next-common/components/setting/notification/styled";
+import {
+  Label,
+  Sections,
+} from "next-common/components/setting/notification/styled";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -70,96 +76,96 @@ const Info = styled.div`
   display: flex;
   padding: 10px 16px;
 
-  background: ${p => p.theme.grey100Bg};
+  background: ${(p) => p.theme.grey100Bg};
   border-radius: 4px;
 
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
 
-  color: ${p => p.theme.textSecondary};
+  color: ${(p) => p.theme.textSecondary};
 
   margin-bottom: 16px;
 `;
 
-export default withLoginUserRedux(({ loginUser, chain, subscription: _subscription, unsubscribe }) => {
-  const dispatch = useDispatch();
-  const [saving, setSaving] = useState(false);
-  const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
-  const [subscription, setSubscription] = useState(_subscription);
+export default withLoginUserRedux(
+  ({ loginUser, chain, subscription: _subscription, unsubscribe }) => {
+    const dispatch = useDispatch();
+    const [saving, setSaving] = useState(false);
+    const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
+    const [subscription, setSubscription] = useState(_subscription);
 
-  const emailVerified =
-    loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
-  const isVerifiedUser = loginUser?.emailVerified;
+    const emailVerified =
+      loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
+    const isVerifiedUser = loginUser?.emailVerified;
 
-  const {
-    treasuryProposalOptionsComponent,
-    getTreasuryProposalOptionValues,
-    isChanged,
-  } = useTreasuryProposalOptions({
-    disabled: !isVerifiedUser,
-    saving,
-    treasuryProposalProposed: subscription?.treasuryProposalProposed,
-    treasuryProposalApproved: subscription?.treasuryProposalApproved,
-    treasuryProposalAwarded: subscription?.treasuryProposalAwarded,
-    treasuryProposalRejected: subscription?.treasuryProposalRejected,
-  });
+    const {
+      treasuryProposalOptionsComponent,
+      getTreasuryProposalOptionValues,
+      isChanged,
+    } = useTreasuryProposalOptions({
+      disabled: !isVerifiedUser,
+      saving,
+      treasuryProposalProposed: subscription?.treasuryProposalProposed,
+      treasuryProposalApproved: subscription?.treasuryProposalApproved,
+      treasuryProposalAwarded: subscription?.treasuryProposalAwarded,
+      treasuryProposalRejected: subscription?.treasuryProposalRejected,
+    });
 
-  const router = useRouter();
+    const router = useRouter();
 
-  useEffect(() => {
-    if (unsubscribe) {
-      if (loginUser === null) {
-        setShowLoginToUnsubscribe(true);
+    useEffect(() => {
+      if (unsubscribe) {
+        if (loginUser === null) {
+          setShowLoginToUnsubscribe(true);
+        }
+        return;
       }
-      return;
-    }
 
-    if (loginUser === null) {
-      router.push("/login");
-    }
-  }, [loginUser, router, unsubscribe]);
+      if (loginUser === null) {
+        router.push("/login");
+      }
+    }, [loginUser, router, unsubscribe]);
 
-  const fetchSubscriptionSetting = async () => {
-    const { result } = await nextApi.fetch(`user/subscription`);
-    if (result) {
-      setSubscription(result);
-    }
-  }
-
-  const updateNotificationSetting = async () => {
-    if (saving) {
-      return;
-    }
-
-    setSaving(true);
-
-    const data = {
-      ...getTreasuryProposalOptionValues(),
+    const fetchSubscriptionSetting = async () => {
+      const { result } = await nextApi.fetch(`user/subscription`);
+      if (result) {
+        setSubscription(result);
+      }
     };
 
-    const { result, error } = await nextApi.patch("user/subscription", data);
-    if (result) {
-      dispatch(newSuccessToast("Settings saved"));
-      await fetchSubscriptionSetting();
-    } else if (error) {
-      dispatch(newErrorToast(error.message));
-    }
-    setSaving(false);
-  };
+    const updateNotificationSetting = async () => {
+      if (saving) {
+        return;
+      }
 
-  return (
-    <SettingsLayout user={loginUser}>
-      <NextHead title={`Settings`} desc={``} />
-      <Wrapper>
-        <TitleContainer>Subscription</TitleContainer>
-        <ContentWrapper>
-          {showLoginToUnsubscribe ? (
-            <WarningMessage>
-              Please login to unsubscribe notifications
-            </WarningMessage>
-          ) : (
-            emailVerified ? (
+      setSaving(true);
+
+      const data = {
+        ...getTreasuryProposalOptionValues(),
+      };
+
+      const { result, error } = await nextApi.patch("user/subscription", data);
+      if (result) {
+        dispatch(newSuccessToast("Settings saved"));
+        await fetchSubscriptionSetting();
+      } else if (error) {
+        dispatch(newErrorToast(error.message));
+      }
+      setSaving(false);
+    };
+
+    return (
+      <SettingsLayout>
+        <NextHead title={`Settings`} desc={``} />
+        <Wrapper>
+          <TitleContainer>Subscription</TitleContainer>
+          <ContentWrapper>
+            {showLoginToUnsubscribe ? (
+              <WarningMessage>
+                Please login to unsubscribe notifications
+              </WarningMessage>
+            ) : emailVerified ? (
               <WarningMessage>
                 Please set the email to receive notifications
               </WarningMessage>
@@ -167,33 +173,31 @@ export default withLoginUserRedux(({ loginUser, chain, subscription: _subscripti
               <Info>
                 Subscribe to messages to receive email from activity changes.
               </Info>
-            )
-          )}
+            )}
 
-          <Options>
-            <div>
-              <Label>Treasury</Label>
-              <Sections>
-                {treasuryProposalOptionsComponent}
-              </Sections>
-            </div>
-          </Options>
+            <Options>
+              <div>
+                <Label>Treasury</Label>
+                <Sections>{treasuryProposalOptionsComponent}</Sections>
+              </div>
+            </Options>
 
-          <Divider margin={24} />
-          <ButtonWrapper>
-            <SecondaryButton
-              disabled={!isVerifiedUser || !isChanged}
-              onClick={updateNotificationSetting}
-              isLoading={saving}
-            >
-              Save
-            </SecondaryButton>
-          </ButtonWrapper>
-        </ContentWrapper>
-      </Wrapper>
-    </SettingsLayout>
-  );
-});
+            <Divider margin={24} />
+            <ButtonWrapper>
+              <SecondaryButton
+                disabled={!isVerifiedUser || !isChanged}
+                onClick={updateNotificationSetting}
+                isLoading={saving}
+              >
+                Save
+              </SecondaryButton>
+            </ButtonWrapper>
+          </ContentWrapper>
+        </Wrapper>
+      </SettingsLayout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
@@ -210,7 +214,11 @@ export const getServerSideProps = withLoginUser(async (context) => {
     };
   }
 
-  const { result: subscription } = await ssrNextApi.fetch(`user/subscription`, {}, options);
+  const { result: subscription } = await ssrNextApi.fetch(
+    `user/subscription`,
+    {},
+    options
+  );
 
   return {
     props: {

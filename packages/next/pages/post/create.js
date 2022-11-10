@@ -6,6 +6,7 @@ import PostCreate from "next-common/components/post/postCreate";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import BaseLayout from "next-common/components/layout/baseLayout";
+import { useIsLogin } from "next-common/context/user";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -15,11 +16,12 @@ const Wrapper = styled.div`
   margin: auto;
 `;
 
-export default withLoginUserRedux(({ loginUser }) => {
+export default withLoginUserRedux(() => {
   const router = useRouter();
+  const isLogin = useIsLogin();
 
   useEffect(() => {
-    if (loginUser === null) {
+    if (!isLogin) {
       router.push({
         pathname: "/login",
         query: {
@@ -27,14 +29,14 @@ export default withLoginUserRedux(({ loginUser }) => {
         },
       });
     }
-  }, [loginUser, router]);
+  }, [isLogin, router]);
 
   return (
     <BaseLayout>
       <NextHead title={`Create post`} desc={``} />
       <Wrapper>
         <Back href={`/discussions`} text="Back to Discussions" />
-        <PostCreate loginUser={loginUser} />
+        <PostCreate />
       </Wrapper>
     </BaseLayout>
   );

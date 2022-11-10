@@ -43,7 +43,6 @@ export default withLoginUserRedux(
     return (
       <PostProvider post={detail} type={detailPageCategory.POST}>
         <DetailLayout
-          user={loginUser}
           seoInfo={{
             title: detail?.title,
             desc,
@@ -58,7 +57,7 @@ export default withLoginUserRedux(
             type={detailPageCategory.POST}
           />
           <CommentsWrapper>
-            <Comments data={comments} user={loginUser} onReply={onReply} />
+            <Comments data={comments} onReply={onReply} />
             {loginUser && (
               <Editor
                 postId={postId}
