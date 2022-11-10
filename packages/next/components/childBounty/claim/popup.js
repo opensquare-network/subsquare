@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { emptyFunction, getNode, toPrecision } from "next-common/utils";
+import { emptyFunction, isSameAddress, toPrecision } from "next-common/utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import SignerSelect from "next-common/components/signerSelect";
 import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
@@ -13,7 +13,6 @@ import { WarningMessage } from "next-common/components/popup/styled";
 import { sendTx } from "next-common/utils/sendTx";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import useSetDefaultSigner from "next-common/utils/hooks/useSetDefaultSigner";
-import { isSameAddress } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 
 const ButtonWrapper = styled.div`

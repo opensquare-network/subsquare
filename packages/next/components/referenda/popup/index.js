@@ -5,7 +5,7 @@ import { useAddressVote, useAddressVotingBalance } from "utils/hooks";
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { checkInputValue, emptyFunction, getNode } from "next-common/utils";
+import { checkInputValue, emptyFunction } from "next-common/utils";
 import StandardVoteStatus from "./standardVoteStatus";
 import SplitVoteStatus from "./splitVoteStatus";
 import DelegateVoteStatus from "./delegateVoteStatus";
