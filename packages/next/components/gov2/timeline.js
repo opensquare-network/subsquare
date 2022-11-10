@@ -6,12 +6,11 @@ import { parseGov2TrackName } from "next-common/utils/gov2";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import styled from "styled-components";
 import { useChain } from "next-common/context/chain";
+import { p_14_normal } from "next-common/styles/componentCss";
 
 const Info = styled.div`
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  color: #1e2134;
+  ${p_14_normal};
+  color: ${(p) => p.theme.textPrimary};
 `;
 
 function TimelineTallyInfo({ decimals, symbol, ayes, nays, support }) {
