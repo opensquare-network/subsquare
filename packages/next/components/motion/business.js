@@ -8,11 +8,11 @@ import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 
 export default function Business({ motion }) {
+  const { decimals, symbol } = useChainSettings();
+
   if (!motion) {
     return null;
   }
-
-  const { decimals, symbol } = useChainSettings();
 
   const business = [];
 
