@@ -1,10 +1,9 @@
 import React from "react";
 import { withTheme } from "styled-components";
-import { useChain, useChainSettings } from "../../context/chain";
+import getChainSettings from "../../utils/consts/settings";
 
-function ChainIcon({ theme }) {
-  const chain = useChain();
-  const chainSetting = useChainSettings();
+function ChainIcon({ chain, theme }) {
+  const chainSetting = getChainSettings(chain);
   let image = chainSetting.avatar;
   if (theme.isDark && chainSetting.darkAvatar) {
     image = chainSetting.darkAvatar;

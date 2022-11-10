@@ -75,7 +75,7 @@ export default function NetworkSwitch({ activeNode }) {
   return (
     <Wrapper ref={ref}>
       <Select onClick={() => setShow(!show)}>
-        <ChainIcon />
+        <ChainIcon chain={activeNode.value} />
         <NetworkBlock>
           {activeNode?.hideHeight ? (
             <div>{activeNode?.name}</div>

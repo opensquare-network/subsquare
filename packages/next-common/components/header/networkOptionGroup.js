@@ -74,7 +74,7 @@ export default function NetworkOptionGroup({ groupName, activeNode, setShow }) {
                 : `https://${item.value}.subsquare.io`
             }
           >
-            <ChainIcon />
+            <ChainIcon chain={item.value} />
             <div>{item.name}</div>
           </Item>
         ))}
