@@ -2,14 +2,13 @@ import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import sortTimeline from "next-common/utils/timeline/sort";
 import { getTimelineStatus } from "utils";
-import { toPrecision } from "next-common/utils";
+import { getNode, toPrecision } from "next-common/utils";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import { useChainSettings } from "next-common/context/chain";
 
 export function makePublicProposalTimelineData(timeline, chain) {
-  const { decimals, symbol } = useChainSettings();
+  const { decimals, symbol } = getNode(chain);
 
-  const getTimelineData = (args, method, chain) => {
+  const getTimelineData = (args, method) => {
     switch (method) {
       case "Proposed":
         return {
