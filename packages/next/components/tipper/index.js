@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import User from "next-common/components/user";
-import { emptyFunction, getNode, toPrecision } from "next-common/utils";
+import { emptyFunction, toPrecision } from "next-common/utils";
 import Loading from "next-common/components/loading";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { GhostCard } from "next-common/components/styled/containers/ghostCard";
@@ -11,6 +11,7 @@ import Flex from "next-common/components/styled/flex";
 import floor from "lodash.floor";
 import { StatisticTitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Statistics from "next-common/components/styled/paragraph/statistic";
+import { useChainSettings } from "next-common/context/chain";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -87,18 +88,13 @@ export default function Tipper({
   onFinalized = emptyFunction,
   isLoadingTip,
 }) {
-  const allTippersCount = councilTippers.length
+  const allTippersCount = councilTippers.length;
   const threshold = useMemo(() => {
-    return floor((allTippersCount + 1) / 2)
+    return floor((allTippersCount + 1) / 2);
   }, [allTippersCount]);
   const [showPopup, setShowPopup] = useState(false);
-  const node = getNode(chain);
+  const { decimals, symbol } = useChainSettings();
   const { width: windowWidth } = useWindowSize();
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
 
   let tipList;
 
@@ -159,12 +155,11 @@ export default function Tipper({
           <StatisticTitleContainer>
             <Flex>
               <span>Tippers</span>
-              {
-                !loading &&
+              {!loading && (
                 <Statistics>
-                  { tips.length }/{ threshold }
+                  {tips.length}/{threshold}
                 </Statistics>
-              }
+              )}
             </Flex>
             <div>{isLoadingTip && <Loading size={16} />}</div>
           </StatisticTitleContainer>

@@ -10,7 +10,6 @@ import TipInput from "./tipInput";
 import {
   checkInputValue,
   emptyFunction,
-  getNode,
   isAddressInGroup,
   toPrecision,
 } from "next-common/utils";
@@ -23,6 +22,7 @@ import { sendTx } from "next-common/utils/sendTx";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import useSetDefaultSigner from "next-common/utils/hooks/useSetDefaultSigner";
 import { encodeAddressToChain } from "next-common/services/address";
+import { useChainSettings } from "next-common/context/chain";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -47,7 +47,7 @@ function PopupContent({
   const [inputTipValue, setInputTipValue] = useState();
   const [tipping, setTipping] = useState(false);
   const [balance, setBalance] = useState();
-  const node = getNode(chain);
+  const { decimals, symbol } = useChainSettings();
   const [selectedAddress, setSelectedAddress] = useState(
     selectedAccount?.address
   );
@@ -72,13 +72,13 @@ function PopupContent({
     if (api && selectedAddress) {
       api.query.system.account(selectedAddress).then((result) => {
         if (isMounted.current) {
-          const free = toPrecision(result.data.free, node.decimals);
+          const free = toPrecision(result.data.free, decimals);
           setBalance(free);
           balanceMap.set(selectedAddress, free);
         }
       });
     }
-  }, [api, selectedAddress, node.decimals, isMounted]);
+  }, [api, selectedAddress, decimals, isMounted]);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -95,13 +95,9 @@ function PopupContent({
       return showErrorToast("Please select an account");
     }
 
-    if (!node) {
-      return;
-    }
-
     let bnTipValue;
     try {
-      bnTipValue = checkInputValue(inputTipValue, node.decimals, "tip value");
+      bnTipValue = checkInputValue(inputTipValue, decimals, "tip value");
     } catch (err) {
       return showErrorToast(err.message);
     }
@@ -134,7 +130,7 @@ function PopupContent({
           balanceName={"Balance"}
           balance={balance}
           isLoading={!balance}
-          symbol={node.symbol}
+          symbol={symbol}
         />
         <SignerSelect
           api={api}
@@ -148,7 +144,7 @@ function PopupContent({
         <TipInput
           value={inputTipValue}
           setValue={setInputTipValue}
-          symbol={node?.symbol}
+          symbol={symbol}
         />
       </div>
       <ButtonWrapper>

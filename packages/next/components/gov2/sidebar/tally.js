@@ -3,7 +3,7 @@
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Flex from "next-common/components/styled/flex";
-import { getNode, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import styled from "styled-components";
 import AyeIcon from "public/imgs/icons/aye.svg";
@@ -12,6 +12,7 @@ import ElectorateIcon from "public/imgs/icons/electorate.svg";
 import DisplayValue from "next-common/components/displayValue";
 import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 import useApi from "next-common/utils/hooks/useApi";
+import { useChainSettings } from "next-common/context/chain";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -52,8 +53,7 @@ export default function Gov2Tally({ detail, chain }) {
   const api = useApi();
   useFetchVotes(detail?.onchainData, api);
 
-  const node = getNode(chain);
-
+  const node = useChainSettings();
   const decimals = node.decimals;
   const symbol = node.voteSymbol ?? node.symbol;
 

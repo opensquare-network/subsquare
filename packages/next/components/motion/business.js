@@ -4,19 +4,15 @@ import Flex from "next-common/components/styled/flex";
 import User from "next-common/components/user";
 import ExtrinsicLinks from "next-common/components/links";
 import CapitalText from "../capitalText";
-import { getNode, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function Business({ motion, chain }) {
   if (!motion) {
     return null;
   }
 
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
+  const { decimals, symbol } = useChainSettings();
 
   const business = [];
 

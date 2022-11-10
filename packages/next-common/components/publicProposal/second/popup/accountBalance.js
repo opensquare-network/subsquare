@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 
 import useApi from "../../../../utils/hooks/useApi";
-import { getNode, toPrecision } from "../../../../utils";
+import { toPrecision } from "../../../../utils";
 import Loading from "../../../loading";
 import { StateContext } from "./stateContext";
 import { BalanceWrapper } from "../../../popup/styled";

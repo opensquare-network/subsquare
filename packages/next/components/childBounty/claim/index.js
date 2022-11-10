@@ -1,12 +1,7 @@
 import styled from "styled-components";
 import { useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import {
-  emptyFunction,
-  getNode,
-  isSameAddress,
-  toPrecision,
-} from "next-common/utils";
+import { emptyFunction, isSameAddress, toPrecision } from "next-common/utils";
 import Loading from "next-common/components/loading";
 import { GhostCard } from "next-common/components/styled/containers/ghostCard";
 import Flex from "next-common/components/styled/flex";
@@ -235,7 +230,6 @@ export default function Claim({
       </Wrapper>
       {showPopup && (
         <Popup
-          chain={chain}
           childBounty={childBounty}
           onClose={() => setShowPopup(false)}
           onInBlock={onClaimInBlock}

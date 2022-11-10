@@ -6,7 +6,8 @@ import Timeline from "next-common/components/timeline";
 import dayjs from "dayjs";
 import User from "next-common/components/user";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import { getNode, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
+import { useChainSettings } from "next-common/context/chain";
 
 const FlexEnd = styled.div`
   display: flex;
@@ -42,12 +43,7 @@ const getClosedTimelineData = (timeline = []) => {
 };
 
 export default function TipTimeline({ tip, chain }) {
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
+  const { decimals, symbol } = useChainSettings();
 
   const getTimelineData = (args, method) => {
     switch (method) {

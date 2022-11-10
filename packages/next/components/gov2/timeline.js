@@ -1,10 +1,11 @@
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import User from "next-common/components/user";
-import { getNode, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
 import { parseGov2TrackName } from "next-common/utils/gov2";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import styled from "styled-components";
+import { useChainSettings } from "next-common/context/chain";
 
 const Info = styled.div`
   font-weight: 400;
@@ -26,12 +27,7 @@ function TimelineTallyInfo({ decimals, symbol, ayes, nays, support }) {
 }
 
 const getTimelineData = (args, method, trackInfo, chain) => {
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
+  const { decimals, symbol } = useChainSettings();
 
   switch (method) {
     case "Submitted": {

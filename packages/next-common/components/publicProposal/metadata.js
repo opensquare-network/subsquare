@@ -1,7 +1,7 @@
 import React from "react";
 import Proposal from "../proposal";
 import KVList from "../listInfo/kvList";
-import { getNode, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
 import User from "../user";
 import { useChainSettings } from "../../context/chain";
 

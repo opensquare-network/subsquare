@@ -1,8 +1,7 @@
-import React from "react";
+import React, { Fragment } from "react";
 import styled, { withTheme } from "styled-components";
-import { getNode, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
 import User from "next-common/components/user";
-import { Fragment } from "react";
 import ValueDisplay from "../../displayValue";
 import Loading from "../../loading";
 
