@@ -1,11 +1,11 @@
 import moment from "moment";
 import BigNumber from "bignumber.js";
-import { nodes } from "./constants";
 import { extractTime } from "@polkadot/util";
 import { encodeAddress } from "@polkadot/util-crypto";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
+
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
 
@@ -28,22 +28,6 @@ export function addressEllipsis(address, start = 4, end = 4) {
   }
 
   return textEllipsis(address, start, end);
-}
-
-export function timeDuration(seconds, suffix = "remaining") {
-  if (!seconds) {
-    return "Unknown time";
-  }
-  // return moment.duration(seconds * 1000);
-  let duration = moment.duration(seconds, "seconds");
-  return (
-    duration
-      .toString()
-      .replace("PT", "")
-      .replace("H", "h ")
-      .replace("M", "m ")
-      .replace("S", "s ") + suffix
-  );
 }
 
 export function timeDurationFromNow(time) {
@@ -111,15 +95,6 @@ export function timeDurationFromNow(time) {
     return `${ii}min${ii > 1 ? "s" : ""} ago`;
   }
   return `${ss}s ago`;
-}
-
-export function getNode(chain) {
-  const target = nodes.find((n) => n.value === chain);
-  if (!target) {
-    throw new Error(`Not supported chain ${chain}`);
-  }
-
-  return target;
 }
 
 export function toPrecision(value, decimals) {

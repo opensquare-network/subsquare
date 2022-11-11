@@ -1,9 +1,9 @@
 import React, { memo } from "react";
 import KVList from "../../listInfo/kvList";
-import { toPrecision } from "../../../utils";
 import Anchor from "../../styled/anchor";
 import User from "../../user";
 import { useChainSettings } from "../../../context/chain";
+import SymbolBalance from "../../values/symbolBalance";
 
 /**
  *
@@ -34,7 +34,7 @@ function BountyMetadata({ meta }) {
       case "fee":
       case "curatorDeposit":
       case "bond":
-        normalizedValue = `${toPrecision(value ?? 0, decimals)} ${symbol}`;
+        normalizedValue = <SymbolBalance value={value} />;
         break;
       case "status":
         normalizedValue = Object.keys(value)[0];

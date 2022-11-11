@@ -2,7 +2,7 @@
 import styled from "styled-components";
 import Link from "next/link";
 import Timeline from "next-common/components/timeline";
-import { isMotionEnded, toPrecision } from "next-common/utils";
+import { isMotionEnded } from "next-common/utils";
 import findLastIndex from "lodash.findlastindex";
 import ArticleContent from "next-common/components/articleContent";
 import { useState } from "react";
@@ -21,7 +21,8 @@ import PostEdit from "next-common/components/post/postEdit";
 import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import User from "next-common/components/user";
-import { useChain, useChainSettings } from "next-common/context/chain";
+import { useChain } from "next-common/context/chain";
+import SymbolBalance from "next-common/components/values/symbolBalance";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -110,7 +111,6 @@ const getClosedTimelineData = (timeline = []) => {
 export default function TechcommMotionDetail({ motion, onReply, type }) {
   const chain = useChain();
   const postDispatch = usePostDispatch();
-  const { decimals, symbol } = useChainSettings();
   const post = usePost();
   const [isEdit, setIsEdit] = useState(false);
   const motionEndHeight = motion.onchainData?.voting?.end;
@@ -168,14 +168,8 @@ export default function TechcommMotionDetail({ motion, onReply, type }) {
         "Beneficiary",
         <User add={treasuryProposalMeta.beneficiary} fontSize={14} />,
       ],
-      [
-        "Value",
-        `${toPrecision(treasuryProposalMeta.value ?? 0, decimals)} ${symbol}`,
-      ],
-      [
-        "Bond",
-        `${toPrecision(treasuryProposalMeta.bond ?? 0, decimals)} ${symbol}`,
-      ],
+      ["Value", <SymbolBalance value={treasuryProposalMeta.value} />],
+      ["Bond", <SymbolBalance value={treasuryProposalMeta.bond} />],
     ]);
   }
 

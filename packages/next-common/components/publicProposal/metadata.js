@@ -1,9 +1,8 @@
 import React from "react";
 import Proposal from "../proposal";
 import KVList from "../listInfo/kvList";
-import { toPrecision } from "next-common/utils";
 import User from "../user";
-import { useChainSettings } from "../../context/chain";
+import SymbolBalance from "../values/symbolBalance";
 
 function getDeposit(scanDepositData) {
   if (!Array.isArray(scanDepositData)) {
@@ -22,11 +21,10 @@ export default function Metadata({ publicProposal }) {
     return null;
   }
 
-  const { decimals, symbol } = useChainSettings();
   const deposit = publicProposal.deposit;
   const metadata = [
     ["hash", publicProposal?.hash],
-    ["deposit", `${toPrecision(getDeposit(deposit), decimals)} ${symbol}`],
+    ["deposit", <SymbolBalance value={getDeposit(deposit)} />],
     ["proposer", <User add={publicProposal?.proposer} fontSize={14} />],
   ];
 

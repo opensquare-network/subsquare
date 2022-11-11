@@ -1,15 +1,13 @@
 import User from "next-common/components/user";
 import { getTimelineStatus } from "utils";
-import { toPrecision } from "next-common/utils";
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import { createMotionTimelineData } from "utils/timeline/motion";
 import sortTimeline from "next-common/utils/timeline/sort";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import { useChainSettings } from "next-common/context/chain";
+import SymbolBalance from "next-common/components/values/symbolBalance";
 
 export default function BountyTimeline({ bounty }) {
-  const { decimals, symbol } = useChainSettings();
   const getTimelineData = (args, method) => {
     switch (method) {
       case "BountyExtended":
@@ -25,12 +23,12 @@ export default function BountyTimeline({ bounty }) {
       case "proposeBounty":
         return {
           ...args,
-          value: `${toPrecision(args.value ?? 0, decimals)} ${symbol}`,
+          value: <SymbolBalance value={args.value} />,
         };
       case "BountyRejected":
         return {
           ...args,
-          slashed: `${toPrecision(args.slashed ?? 0, decimals)} ${symbol}`,
+          slashed: <SymbolBalance value={args.slashed} />,
         };
       case "Proposed":
         return {
@@ -39,7 +37,7 @@ export default function BountyTimeline({ bounty }) {
       case "BountyClaimed":
         return {
           Beneficiary: <User add={args.beneficiary} fontSize={14} />,
-          Payout: `${toPrecision(args.payout ?? 0, decimals)} ${symbol}`,
+          Payout: <SymbolBalance value={args.payout} />,
         };
       case "Awarded":
       case "BountyAwarded":
