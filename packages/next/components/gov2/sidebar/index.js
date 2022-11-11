@@ -1,6 +1,7 @@
 import ExternalLink from "next-common/components/externalLink";
 import ExternalLinkIcon from "next-common/components/icons/externalLink";
 import { p_12_normal } from "next-common/styles/componentCss";
+import { gov2State } from "next-common/utils/consts/state";
 import { mdcss } from "next-common/utils/responsive";
 import styled, { useTheme, css } from "styled-components";
 import Gov2Status from "./status";
@@ -52,14 +53,19 @@ const Link = styled(ExternalLink)`
   `)}
 `;
 
-// FIXME: status
 // FIXME: vote button
 export default function Gov2Sidebar({ detail }) {
   const { primaryPurple500 } = useTheme();
 
+  const shouldShowStatus = [
+    gov2State.Deciding,
+    gov2State.Confirming,
+    gov2State.Approved,
+  ].includes(detail?.state?.name);
+
   return (
     <Wrapper>
-      {false && <Gov2Status detail={detail} />}
+      {shouldShowStatus && <Gov2Status detail={detail} />}
 
       <Gov2Tally detail={detail} />
 

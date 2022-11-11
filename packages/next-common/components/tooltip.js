@@ -77,11 +77,11 @@ const ChildrenWrapper = styled.div`
   }
 `;
 
-export default function Tooltip({ content, children, label }) {
+export default function Tooltip({ content, children, label, className }) {
   return (
     <>
       {children ? (
-        <ChildrenWrapper>
+        <ChildrenWrapper className={className}>
           {children}
           {content && (
             <PopupWrapper>

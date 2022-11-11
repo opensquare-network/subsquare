@@ -6,6 +6,13 @@ import styled, { useTheme } from "styled-components";
 import Progress from "next-common/components/progress";
 import FlexBetween from "next-common/components/styled/flexBetween";
 import { p_14_normal } from "next-common/styles/componentCss";
+import TooltipOrigin from "next-common/components/tooltip";
+import { estimateBlocksTime, estimateRemainBlockTime } from "next-common/utils";
+import { useSelector } from "react-redux";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
+import { useMemo } from "react";
+import { gov2State } from "next-common/utils/consts/state";
+import BigNumber from "bignumber.js";
 
 const Wrapper = styled.div``;
 
@@ -41,10 +48,67 @@ const ProgressInfo = styled(FlexBetween)`
 `;
 const ProgressGroup = styled.div``;
 
-export default function Gov2Status({ detail = {} }) {
-  const { secondaryGreen500, secondaryGreen100 } = useTheme();
+const Tooltip = styled(TooltipOrigin)`
+  display: block;
+`;
 
-  const isConfirming = true;
+function findDecisionStarted(timeline = []) {
+  return timeline.find((item) => ["DecisionStarted"].includes(item.name));
+}
+
+// means the latest one always is `ConfirmStarted`
+function filterConfirmStartedTimeline(timeline = []) {
+  return timeline.filter((item) => ["ConfirmStarted"].includes(item.name));
+}
+
+export default function Gov2Status({ detail }) {
+  const { secondaryGreen500, secondaryGreen300 } = useTheme();
+  const blockTime = useSelector(blockTimeSelector);
+
+  const onchainData = detail?.onchainData ?? {};
+  const trackInfo = onchainData?.trackInfo ?? {};
+  const state = onchainData.state?.name;
+  const decisionPeriod = estimateBlocksTime(
+    trackInfo.decisionPeriod,
+    blockTime
+  );
+  const confirmPeriod = estimateBlocksTime(trackInfo.confirmPeriod, blockTime);
+
+  // same logic: `show confirming period`
+  const isPositiveState = useMemo(
+    () => [gov2State.Confirming, gov2State.Approved].includes(state),
+    [state]
+  );
+
+  const decisionStartedState = findDecisionStarted(onchainData.timeline);
+  const latestConfirmStartedState = filterConfirmStartedTimeline(
+    onchainData.timeline
+  ).pop();
+
+  const { text: remainDecisionPeriodTime, remainMs: remainDecisionMs } =
+    estimateRemainBlockTime(
+      trackInfo.decisionPeriod,
+      blockTime,
+      decisionStartedState?.indexer?.blockTime
+    );
+  const { text: remainConfirmPeriodTime, remainMs: remainConfirmMs } =
+    estimateRemainBlockTime(
+      trackInfo.confirmPeriod,
+      blockTime,
+      latestConfirmStartedState?.indexer?.blockTime
+    );
+
+  const decisionPeriodMs = new BigNumber(blockTime)
+    .multipliedBy(trackInfo.decisionPeriod)
+    .toNumber();
+  const confirmPeriodMs = new BigNumber(blockTime)
+    .multipliedBy(trackInfo.confirmPeriod)
+    .toNumber();
+
+  const decesionPeriodPercentage =
+    100 - Math.floor((remainDecisionMs / decisionPeriodMs) * 100);
+  const confirmPeriodPercentage =
+    100 - Math.floor((remainConfirmMs / confirmPeriodMs) * 100);
 
   return (
     <Wrapper>
@@ -53,33 +117,39 @@ export default function Gov2Status({ detail = {} }) {
 
         <div>
           <ProgressGroup>
-            <Progress percentage={10} />
+            <Tooltip content={remainDecisionPeriodTime}>
+              <Progress percentage={decesionPeriodPercentage} />
+            </Tooltip>
             <ProgressInfo>
               <p>Decision Period</p>
-              <p>28 days</p>
+              <p>{decisionPeriod.join(" ")}</p>
             </ProgressInfo>
           </ProgressGroup>
 
-          <ProgressGroup>
-            <Progress
-              percentage={10}
-              offsetLeft={35}
-              offsetRight={50}
-              fg={secondaryGreen500}
-              bg={secondaryGreen100}
-            />
-            <ProgressInfo>
-              <p>Confirming Period</p>
-              <p>4 days</p>
-            </ProgressInfo>
-          </ProgressGroup>
+          {isPositiveState && (
+            <ProgressGroup>
+              <Tooltip content={remainConfirmMs > 0 && remainConfirmPeriodTime}>
+                <Progress
+                  percentage={confirmPeriodPercentage}
+                  offsetLeft={35}
+                  offsetRight={50}
+                  fg={secondaryGreen500}
+                  bg={secondaryGreen300}
+                />
+              </Tooltip>
+              <ProgressInfo>
+                <p>Confirming Period</p>
+                <p>{confirmPeriod.join(" ")}</p>
+              </ProgressInfo>
+            </ProgressGroup>
+          )}
         </div>
 
         <div>
-          {isConfirming ? (
-            <PositiveStatus>Confirm</PositiveStatus>
+          {isPositiveState ? (
+            <PositiveStatus>{state}</PositiveStatus>
           ) : (
-            <DecidingStatus>Deciding</DecidingStatus>
+            <DecidingStatus>{state}</DecidingStatus>
           )}
         </div>
       </SecondaryCardDetail>
