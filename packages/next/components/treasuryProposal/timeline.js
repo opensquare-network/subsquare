@@ -7,10 +7,9 @@ import { createMotionTimelineData } from "utils/timeline/motion";
 import sortTimeline from "next-common/utils/timeline/sort";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { createReferendumTimelineData } from "utils/timeline/referendum";
-import { useChain, useChainSettings } from "next-common/context/chain";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function TreasuryProposalTimeline({ treasuryProposal }) {
-  const chain = useChain();
   const { decimals, symbol } = useChainSettings();
   const getTimelineData = (args, method) => {
     switch (method) {
@@ -41,14 +40,13 @@ export default function TreasuryProposalTimeline({ treasuryProposal }) {
   });
 
   const motions = treasuryProposal?.motions?.map((motion) => {
-    return createMotionTimelineData(motion, chain, true, "/council/motion");
+    return createMotionTimelineData(motion, true, "/council/motion");
   });
   timelineData.push(...motions);
 
   const referendums = treasuryProposal?.referendums?.map((referendum) => {
     return createReferendumTimelineData(
       referendum,
-      chain,
       true,
       "/democracy/referendum"
     );

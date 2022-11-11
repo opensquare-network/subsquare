@@ -6,10 +6,9 @@ import Timeline from "next-common/components/timeline";
 import { createMotionTimelineData } from "utils/timeline/motion";
 import sortTimeline from "next-common/utils/timeline/sort";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import { useChain, useChainSettings } from "next-common/context/chain";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function BountyTimeline({ bounty }) {
-  const chain = useChain();
   const { decimals, symbol } = useChainSettings();
   const getTimelineData = (args, method) => {
     switch (method) {
@@ -65,7 +64,7 @@ export default function BountyTimeline({ bounty }) {
   });
 
   const motions = bounty?.motions?.map((motion) => {
-    return createMotionTimelineData(motion, chain, true, "/council/motion");
+    return createMotionTimelineData(motion, true, "/council/motion");
   });
   timelineData.push(...motions);
   sortTimeline(timelineData);

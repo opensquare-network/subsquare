@@ -45,7 +45,6 @@ function getTimelineItemCommonData(item, motion, type) {
 
 export function createMotionTimelineData(
   motion = {},
-  chain,
   linkable = false,
   linkPrefix = ""
 ) {
@@ -83,7 +82,7 @@ export function createMotionTimelineData(
               data={{
                 proposer: proposer,
                 method: proposal.method,
-                args: createArgs(proposal.method, proposal.args, chain),
+                args: createArgs(proposal.method, proposal.args),
                 total: threshold || voting?.threshold,
                 ayes: tally?.yesVotes || (voting?.ayes || []).length,
                 nays: tally?.noVotes || (voting?.nays || []).length,
