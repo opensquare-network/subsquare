@@ -32,6 +32,7 @@ const development = {
   darkAvatar: DarkAvatar,
   group: MenuGroups.Solochain,
   noSubscan: true,
+  blockTime: 3000,
 };
 
 export default development;
