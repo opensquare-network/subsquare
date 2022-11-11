@@ -45,6 +45,7 @@ export const StatusWrapper = styled.div`
   justify-content: space-between;
   min-height: 38px;
   > div.value {
+    display: flex;
     font-size: 14px;
     line-height: 100%;
     font-weight: 500;

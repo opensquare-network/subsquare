@@ -24,6 +24,7 @@ import { useChainSettings } from "next-common/context/chain";
 function PopupContent({
   extensionAccounts,
   referendumIndex,
+  trackId,
   onClose,
   onSubmitted = emptyFunction,
   onFinalized = emptyFunction,
@@ -45,10 +46,10 @@ function PopupContent({
 
   const [addressVote, addressVoteIsLoading] = useGov2AddressVote(
     api,
+    trackId,
     referendumIndex,
     selectedAccount?.address
   );
-  console.log({ addressVote });
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
 

@@ -68,6 +68,10 @@ export default function Gov2Sidebar({
   const { primaryPurple500 } = useTheme();
   const [showVote, setShowVote] = useState(false);
   const referendumIndex = detail?.referendumIndex;
+  const trackId = detail?.track;
+  const showVoteButton = ["Deciding", "Confirming"].includes(
+    detail?.state?.name
+  );
 
   return (
     <Wrapper>
@@ -75,17 +79,20 @@ export default function Gov2Sidebar({
 
       <Gov2Tally detail={detail} />
 
-      <VoteButton
-        onClick={() => {
-          setShowVote(true);
-        }}
-      >
-        Vote
-      </VoteButton>
+      {showVoteButton && (
+        <VoteButton
+          onClick={() => {
+            setShowVote(true);
+          }}
+        >
+          Vote
+        </VoteButton>
+      )}
       {showVote && (
         <Popup
           onClose={() => setShowVote(false)}
           referendumIndex={referendumIndex}
+          trackId={trackId}
           onFinalized={onVoteFinalized}
         />
       )}
