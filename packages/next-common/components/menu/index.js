@@ -11,8 +11,8 @@ import MenuUnFoldIcon from "../icons/menuUnFold";
 import MenuFoldIcon from "../icons/menuFold";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  foldedMenusSelector,
-  setFoldedMenu,
+  homeFoldedMenusSelector,
+  setHomeFoldedMenu,
 } from "../../store/reducers/settingSlice";
 import { useLayoutEffect } from "react";
 
@@ -145,11 +145,11 @@ function defaultItemRender(icon, name, count) {
   );
 }
 
-function MenuGroup({ menu }) {
+function MenuGroup({ menu, foldable }) {
   const chain = useChain();
   const router = useRouter();
   const dispatch = useDispatch();
-  const foldedMenus = useSelector(foldedMenusSelector);
+  const foldedMenus = useSelector(homeFoldedMenusSelector);
 
   const hasMenuItems = !!menu?.items?.length;
 
@@ -166,19 +166,21 @@ function MenuGroup({ menu }) {
   function handleFoldMenu(name) {
     const v = !folded;
     setFolded(v);
-    dispatch(setFoldedMenu({ name, folded: v }));
+    dispatch(setHomeFoldedMenu({ name, folded: v }));
   }
 
   return (
     <div>
       {menu.name && (
         <TitleGroup>
-          <FoldableButton
-            disabled={!menu?.items?.length}
-            onClick={() => handleFoldMenu(menu.name)}
-          >
-            {folded ? <MenuFoldIcon /> : <MenuUnFoldIcon />}
-          </FoldableButton>
+          {foldable && (
+            <FoldableButton
+              disabled={!menu?.items?.length}
+              onClick={() => handleFoldMenu(menu.name)}
+            >
+              {folded ? <MenuFoldIcon /> : <MenuUnFoldIcon />}
+            </FoldableButton>
+          )}
 
           <Title>
             {menu.name}
@@ -219,7 +221,7 @@ function MenuGroup({ menu }) {
   );
 }
 
-export default function Menu({ menu }) {
+export default function Menu({ menu, foldable = true }) {
   const chain = useChain();
 
   return (
@@ -229,7 +231,7 @@ export default function Menu({ menu }) {
           return null;
         }
 
-        return <MenuGroup key={index} menu={menu} />;
+        return <MenuGroup key={index} menu={menu} foldable={foldable} />;
       })}
     </Wrapper>
   );
