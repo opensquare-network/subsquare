@@ -1,16 +1,14 @@
 import User from "next-common/components/user";
 import { getTimelineStatus } from "utils";
-import { toPrecision } from "next-common/utils";
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import { createMotionTimelineData } from "utils/timeline/motion";
 import sortTimeline from "next-common/utils/timeline/sort";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { createReferendumTimelineData } from "utils/timeline/referendum";
-import { useChainSettings } from "next-common/context/chain";
+import SymbolBalance from "next-common/components/values/symbolBalance";
 
 export default function TreasuryProposalTimeline({ treasuryProposal }) {
-  const { decimals, symbol } = useChainSettings();
   const getTimelineData = (args, method) => {
     switch (method) {
       case "Proposed":
@@ -20,7 +18,7 @@ export default function TreasuryProposalTimeline({ treasuryProposal }) {
       case "Awarded":
         return {
           Beneficiary: <User add={args.beneficiary} />,
-          Award: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
+          Award: <SymbolBalance value={args.award} />,
         };
     }
     return args;

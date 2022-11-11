@@ -6,8 +6,7 @@ import Timeline from "next-common/components/timeline";
 import dayjs from "dayjs";
 import User from "next-common/components/user";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import { toPrecision } from "next-common/utils";
-import { useChainSettings } from "next-common/context/chain";
+import SymbolBalance from "next-common/components/values/symbolBalance";
 
 const FlexEnd = styled.div`
   display: flex;
@@ -43,8 +42,6 @@ const getClosedTimelineData = (timeline = []) => {
 };
 
 export default function TipTimeline({ tip }) {
-  const { decimals, symbol } = useChainSettings();
-
   const getTimelineData = (args, method) => {
     switch (method) {
       case "tipNew":
@@ -70,7 +67,7 @@ export default function TipTimeline({ tip }) {
               <User add={args.tipper} />
             </FlexEnd>
           ),
-          Value: `${toPrecision(value ?? 0, decimals)} ${symbol}`,
+          Value: <SymbolBalance value={value} />,
         };
       case "TipClosed":
         return {
@@ -79,7 +76,7 @@ export default function TipTimeline({ tip }) {
               <User add={args.beneficiary} />
             </FlexEnd>
           ),
-          Payout: `${toPrecision(args.payout ?? 0, decimals)} ${symbol}`,
+          Payout: <SymbolBalance value={args.payout} />,
         };
     }
     return args;
