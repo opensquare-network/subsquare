@@ -2,7 +2,6 @@ import React, { memo } from "react";
 import KVList from "../../listInfo/kvList";
 import Anchor from "../../styled/anchor";
 import User from "../../user";
-import { useChainSettings } from "../../../context/chain";
 import SymbolBalance from "../../values/symbolBalance";
 
 /**
@@ -11,7 +10,6 @@ import SymbolBalance from "../../values/symbolBalance";
  * @constructor
  */
 function BountyMetadata({ meta }) {
-  const { decimals, symbol } = useChainSettings();
   if (!meta) {
     return null;
   }
