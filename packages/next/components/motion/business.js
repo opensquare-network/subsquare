@@ -36,8 +36,14 @@ export default function Business({ motion }) {
             />
           </Flex>,
         ],
-        ["Value", <SymbolBalance value={proposal.meta.value} />],
-        ["Bond", <SymbolBalance value={proposal.meta.bond} />],
+        [
+          "Value",
+          <SymbolBalance key="proposal-value" value={proposal.meta.value} />,
+        ],
+        [
+          "Bond",
+          <SymbolBalance key="proposal-bond" value={proposal.meta.bond} />,
+        ],
       ]);
     }
 
@@ -71,7 +77,7 @@ export default function Business({ motion }) {
           case "bond":
             kvData.push([
               <CapitalText key="bounty-bond-text">{item[0]}</CapitalText>,
-              <SymbolBalance value={item[1]} />,
+              <SymbolBalance key="bounty-bond-value" value={item[1]} />,
             ]);
             break;
         }
