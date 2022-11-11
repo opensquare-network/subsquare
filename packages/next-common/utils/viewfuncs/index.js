@@ -28,12 +28,11 @@ export function getEffectiveNumbers(n) {
 }
 
 export function abbreviateBigNumber(x, fixed = 2) {
-  const n = new BigNumber(x);
+  const value = new BigNumber(x);
   const fmt = {
     decimalSeparator: ".",
-    groupSeparator: ",",
-    groupSize: 3,
   };
+
   let divideBy = new BigNumber("1");
   const bigNumbers = [
     { bigNumber: new BigNumber("1000"), abbr: "K" },
@@ -43,13 +42,13 @@ export function abbreviateBigNumber(x, fixed = 2) {
     { bigNumber: new BigNumber("1000000000000000"), abbr: "Q" },
   ];
   bigNumbers.forEach((data) => {
-    if (n.isGreaterThan(data.bigNumber)) {
+    if (value.isGreaterThan(data.bigNumber)) {
       divideBy = data.bigNumber;
       fmt.suffix = data.abbr;
     }
   });
   BigNumber.config({ FORMAT: fmt });
-  return new BigNumber(n.dividedBy(divideBy).toFixed(fixed)).toFormat();
+  return new BigNumber(value.dividedBy(divideBy).toFixed(fixed)).toFormat();
 }
 
 export const getExcludeChains = (includeChains) => {
