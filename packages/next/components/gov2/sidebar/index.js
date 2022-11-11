@@ -1,5 +1,6 @@
 import ExternalLink from "next-common/components/externalLink";
 import ExternalLinkIcon from "next-common/components/icons/externalLink";
+import { gov2State } from "next-common/components/tags/state/gov2";
 import { p_12_normal } from "next-common/styles/componentCss";
 import { emptyFunction } from "next-common/utils";
 import { mdcss } from "next-common/utils/responsive";
@@ -60,7 +61,6 @@ const Link = styled(ExternalLink)`
 `;
 
 // FIXME: status
-// FIXME: vote button
 export default function Gov2Sidebar({
   detail,
   onVoteFinalized = emptyFunction,
@@ -69,7 +69,7 @@ export default function Gov2Sidebar({
   const [showVote, setShowVote] = useState(false);
   const referendumIndex = detail?.referendumIndex;
   const trackId = detail?.track;
-  const showVoteButton = ["Deciding", "Confirming"].includes(
+  const showVoteButton = [gov2State.Deciding, gov2State.Confirming].includes(
     detail?.state?.name
   );
 

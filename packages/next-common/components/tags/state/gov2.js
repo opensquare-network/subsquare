@@ -12,7 +12,7 @@ const QueueingTag = styled(BaseTag)`
   background-color: ${(p) => p.theme.secondaryYellow500};
 `;
 
-const gov2State = {
+export const gov2State = {
   Submitted: "Submitted",
   Queueing: "Queueing",
   Deciding: "Deciding",
