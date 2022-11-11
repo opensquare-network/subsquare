@@ -56,6 +56,10 @@ function findDecisionStarted(timeline = []) {
   return timeline.find((item) => ["DecisionStarted"].includes(item.name));
 }
 
+function findConfirmed(timeline = []) {
+  return timeline.find((item) => ["Confirmed"].includes(item.name));
+}
+
 // means the latest one always is `ConfirmStarted`
 function filterConfirmStartedTimeline(timeline = []) {
   return timeline.filter((item) => ["ConfirmStarted"].includes(item.name));
@@ -81,9 +85,17 @@ export default function Gov2Status({ detail }) {
   );
 
   const decisionStartedState = findDecisionStarted(onchainData.timeline);
+  const confirmedState = findConfirmed(onchainData.timeline);
   const latestConfirmStartedState = filterConfirmStartedTimeline(
     onchainData.timeline
   ).pop();
+
+  const decisionPeriodMs = new BigNumber(blockTime)
+    .multipliedBy(trackInfo.decisionPeriod)
+    .toNumber();
+  const confirmPeriodMs = new BigNumber(blockTime)
+    .multipliedBy(trackInfo.confirmPeriod)
+    .toNumber();
 
   const { text: remainDecisionPeriodTime, remainMs: remainDecisionMs } =
     estimateRemainBlockTime(
@@ -95,15 +107,12 @@ export default function Gov2Status({ detail }) {
     estimateRemainBlockTime(
       trackInfo.confirmPeriod,
       blockTime,
-      latestConfirmStartedState?.indexer?.blockTime
+      // if has `Confirmed` state, then remain start time
+      // is confirm period time
+      confirmedState
+        ? confirmPeriodMs
+        : latestConfirmStartedState?.indexer?.blockTime
     );
-
-  const decisionPeriodMs = new BigNumber(blockTime)
-    .multipliedBy(trackInfo.decisionPeriod)
-    .toNumber();
-  const confirmPeriodMs = new BigNumber(blockTime)
-    .multipliedBy(trackInfo.confirmPeriod)
-    .toNumber();
 
   const decesionPeriodPercentage =
     100 - Math.floor((remainDecisionMs / decisionPeriodMs) * 100);
