@@ -4,12 +4,9 @@ import Flex from "next-common/components/styled/flex";
 import User from "next-common/components/user";
 import ExtrinsicLinks from "next-common/components/links";
 import CapitalText from "../capitalText";
-import { toPrecision } from "next-common/utils";
-import { useChainSettings } from "next-common/context/chain";
+import SymbolBalance from "next-common/components/values/symbolBalance";
 
 export default function Business({ motion }) {
-  const { decimals, symbol } = useChainSettings();
-
   if (!motion) {
     return null;
   }
@@ -39,11 +36,8 @@ export default function Business({ motion }) {
             />
           </Flex>,
         ],
-        [
-          "Value",
-          `${toPrecision(proposal.meta.value ?? 0, decimals)} ${symbol}`,
-        ],
-        ["Bond", `${toPrecision(proposal.meta.bond ?? 0, decimals)} ${symbol}`],
+        ["Value", <SymbolBalance value={proposal.meta.value} />],
+        ["Bond", <SymbolBalance value={proposal.meta.bond} />],
       ]);
     }
 
@@ -77,7 +71,7 @@ export default function Business({ motion }) {
           case "bond":
             kvData.push([
               <CapitalText key="bounty-bond-text">{item[0]}</CapitalText>,
-              `${toPrecision(item[1] ?? 0, decimals)} ${symbol}`,
+              <SymbolBalance value={item[1]} />,
             ]);
             break;
         }

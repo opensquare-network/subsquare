@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import User from "next-common/components/user";
-import { emptyFunction, toPrecision } from "next-common/utils";
+import { emptyFunction } from "next-common/utils";
 import Loading from "next-common/components/loading";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { GhostCard } from "next-common/components/styled/containers/ghostCard";
@@ -12,6 +12,7 @@ import floor from "lodash.floor";
 import { StatisticTitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Statistics from "next-common/components/styled/paragraph/statistic";
 import { useChainSettings } from "next-common/context/chain";
+import SymbolBalance from "next-common/components/values/symbolBalance";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -121,7 +122,9 @@ export default function Tipper({
               fontSize={12}
               {...(windowWidth > 1024 ? { maxWidth: 150 } : {})}
             />
-            <div>{`${toPrecision(amount ?? 0, decimals)} ${symbol}`}</div>
+            <div>
+              <SymbolBalance value={amount} />
+            </div>
           </TipperItem>
         ))}
       </TipperList>

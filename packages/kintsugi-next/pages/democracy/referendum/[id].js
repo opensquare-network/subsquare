@@ -26,11 +26,9 @@ import {
   fetchReferendumStatus,
   fetchVotes,
 } from "next-common/store/reducers/referendumSlice";
-import { useChain } from "next-common/context/chain";
 
 export default withLoginUserRedux(
   ({ detail: ssrDetail, publicProposal, comments }) => {
-    const chain = useChain();
     const [detail, setDetail] = useState(ssrDetail);
     useEffect(() => setDetail(ssrDetail), [ssrDetail]);
     const dispatch = useDispatch();
@@ -51,12 +49,10 @@ export default withLoginUserRedux(
 
     const proposalData = getDemocracyTimelineData(
       publicProposal?.onchainData?.timeline || [],
-      chain,
       detailPageCategory.DEMOCRACY_PROPOSAL
     );
     const referendumData = getDemocracyTimelineData(
       detail?.onchainData?.timeline || [],
-      chain,
       detailPageCategory.DEMOCRACY_REFERENDUM
     );
     const timelineData = proposalData.concat(referendumData);

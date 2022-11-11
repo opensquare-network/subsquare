@@ -1,16 +1,14 @@
 import User from "next-common/components/user";
 import { getTimelineStatus } from "utils";
-import { toPrecision } from "next-common/utils";
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import sortTimeline from "next-common/utils/timeline/sort";
 import Anchor from "next-common/components/styled/anchor";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import TreasuryCountDown from "next-common/components/treasury/common/countdown";
-import { useChainSettings } from "next-common/context/chain";
+import SymbolBalance from "next-common/components/values/symbolBalance";
 
 export default function ChildBountyTimeline({ onchainData }) {
-  const { decimals, symbol } = useChainSettings();
   const getTimelineData = (args, method, indexer) => {
     switch (method) {
       case "Added":
@@ -22,7 +20,7 @@ export default function ChildBountyTimeline({ onchainData }) {
               {args.parentBountyId}{" "}
             </Anchor>
           ),
-          value: `${toPrecision(args.value, decimals)} ${symbol}`,
+          value: <SymbolBalance value={args.value} />,
         };
       case "proposeCurator":
       case "acceptCurator":
@@ -32,12 +30,12 @@ export default function ChildBountyTimeline({ onchainData }) {
       case "proposeBounty":
         return {
           ...args,
-          value: `${toPrecision(args.value ?? 0, decimals)} ${symbol}`,
+          value: <SymbolBalance value={args.value} />,
         };
       case "BountyRejected":
         return {
           ...args,
-          slashed: `${toPrecision(args.slashed ?? 0, decimals)} ${symbol}`,
+          slashed: <SymbolBalance value={args.slashed} />,
         };
       case "Proposed":
         return {
@@ -61,7 +59,7 @@ export default function ChildBountyTimeline({ onchainData }) {
       case "Claimed":
         return {
           Beneficiary: <User add={args.beneficiary} fontSize={14} />,
-          Payout: `${toPrecision(args.payout ?? 0, decimals)} ${symbol}`,
+          Payout: <SymbolBalance value={args.payout} />,
         };
     }
     return args;

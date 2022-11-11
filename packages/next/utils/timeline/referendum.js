@@ -5,7 +5,6 @@ import TimelineReferendumVote from "components/timelineReferendumVote";
 // used in treasury proposal timeline
 export function createReferendumTimelineData(
   referendum = {},
-  chain,
   linkable = false,
   linkPrefix = ""
 ) {

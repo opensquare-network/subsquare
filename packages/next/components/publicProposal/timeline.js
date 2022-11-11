@@ -2,13 +2,10 @@ import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import sortTimeline from "next-common/utils/timeline/sort";
 import { getTimelineStatus } from "utils";
-import { getNode, toPrecision } from "next-common/utils";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import { useChain } from "next-common/context/chain";
+import SymbolBalance from "next-common/components/values/symbolBalance";
 
-export function makePublicProposalTimelineData(timeline, chain) {
-  const { decimals, symbol } = getNode(chain);
-
+export function makePublicProposalTimelineData(timeline) {
   const getTimelineData = (args, method) => {
     switch (method) {
       case "Proposed":
@@ -18,7 +15,7 @@ export function makePublicProposalTimelineData(timeline, chain) {
       case "Tabled":
         return {
           "Referendum Index": `#${args.referendumIndex}`,
-          Deposit: `${toPrecision(args.deposit ?? 0, decimals)} ${symbol}`,
+          Deposit: <SymbolBalance value={args.deposit} />,
           Depositors: (args.depositors || []).length,
         };
     }
@@ -33,7 +30,7 @@ export function makePublicProposalTimelineData(timeline, chain) {
         detailPageCategory.DEMOCRACY_PROPOSAL,
         item.method ?? item.name
       ),
-      data: getTimelineData(item.args, item.method ?? item.name, chain),
+      data: getTimelineData(item.args, item.method ?? item.name),
     };
   });
   sortTimeline(timelineData);
@@ -42,8 +39,7 @@ export function makePublicProposalTimelineData(timeline, chain) {
 }
 
 export default function PublicProposalTimeline({ timeline }) {
-  const chain = useChain();
-  const timelineData = makePublicProposalTimelineData(timeline, chain);
+  const timelineData = makePublicProposalTimelineData(timeline);
 
   return <Timeline data={timelineData} />;
 }
