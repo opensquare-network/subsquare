@@ -57,8 +57,6 @@ export default function Gov2Tally({ detail }) {
   const decimals = node.decimals;
   const symbol = node.voteSymbol ?? node.symbol;
 
-  // When the referendum is Cancelled or TimedOut,
-  // Then info.tally is not saving the latest status
   const tally = detail?.onchainData?.info?.tally;
 
   const nAyes = toPrecision(tally?.ayes ?? 0, decimals);
