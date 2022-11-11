@@ -70,7 +70,7 @@ export default function PostMeta() {
         {!noCommentsCount && commentsCount > -1 && (
           <Info>{`${commentsCount} Comments`}</Info>
         )}
-        {<SubCategory />}
+        <SubCategory />
       </DividerWrapper>
       {postState && (
         <Tag state={postState} category={detailType} args={stateArgs} />
