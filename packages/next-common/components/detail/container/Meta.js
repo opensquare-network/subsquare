@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import Link from "next/link";
 import Flex from "../../styled/flex";
 import User from "../../user";
 import TypeTag from "../common/TypeTag";
@@ -9,7 +8,6 @@ import Info from "../../styled/info";
 import Tag from "../../tags/state/tag";
 import isNil from "lodash.isnil";
 import { usePost, usePostState, usePostType } from "../../../context/post";
-import { useChain } from "../../../context/chain";
 import SubCategory from "./SubCategory";
 import { getMotionStateArgs } from "../../../utils/collective/result";
 import { getGov2ReferendumStateArgs } from "../../../utils/gov2/result";
@@ -34,7 +32,6 @@ const DividerWrapper = styled(Flex)`
 `;
 
 export default function PostMeta() {
-  const chain = useChain();
   const postState = usePostState();
   const detailType = usePostType();
   const post = usePost();
