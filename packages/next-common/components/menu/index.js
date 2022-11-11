@@ -9,6 +9,12 @@ import { useChain } from "../../context/chain";
 import { useState } from "react";
 import MenuUnFoldIcon from "../icons/menuUnFold";
 import MenuFoldIcon from "../icons/menuFold";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  foldedMenusSelector,
+  setFoldedMenu,
+} from "../../store/reducers/settingSlice";
+import { useLayoutEffect } from "react";
 
 const Wrapper = styled.div`
   padding-top: 41px;
@@ -103,6 +109,15 @@ const Item = styled.div`
       }
     `}
 `;
+
+const ItemGroup = styled.div`
+  ${(p) =>
+    p.folded &&
+    css`
+      display: none;
+    `}
+`;
+
 const FoldableButton = styled.button`
   background: none;
   border: none;
@@ -124,17 +139,29 @@ function defaultItemRender(icon, name, count) {
   );
 }
 
-function MenuGroup({ menu, defaultFold = false }) {
+function MenuGroup({ menu }) {
   const chain = useChain();
   const router = useRouter();
+  const dispatch = useDispatch();
+  const foldedMenus = useSelector(foldedMenusSelector);
 
-  const [folded, setFolded] = useState(defaultFold);
+  const [folded, setFolded] = useState(false);
+
+  useLayoutEffect(() => {
+    setFolded(foldedMenus.includes(menu.name));
+  }, []);
+
+  function handleFoldMenu(name) {
+    const v = !folded;
+    setFolded(v);
+    dispatch(setFoldedMenu({ name, folded: v }));
+  }
 
   return (
     <div>
       {menu.name && (
         <TitleGroup>
-          <FoldableButton onClick={() => setFolded(!folded)}>
+          <FoldableButton onClick={() => handleFoldMenu(menu.name)}>
             {folded ? <MenuFoldIcon /> : <MenuUnFoldIcon />}
           </FoldableButton>
 
@@ -145,7 +172,7 @@ function MenuGroup({ menu, defaultFold = false }) {
         </TitleGroup>
       )}
 
-      <div style={{ display: folded ? "none" : "block" }}>
+      <ItemGroup folded={menu.name && folded}>
         {menu.items.map((item, index) => {
           const isExternalLink = (item.pathname || "").startsWith("http");
 
@@ -172,7 +199,7 @@ function MenuGroup({ menu, defaultFold = false }) {
             </Fragment>
           );
         })}
-      </div>
+      </ItemGroup>
     </div>
   );
 }
