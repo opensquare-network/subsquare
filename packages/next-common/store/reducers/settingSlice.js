@@ -22,11 +22,11 @@ export function getInitMode() {
 /**
  * @returns {string[]}
  */
-export function getFoldedMenusCookie() {
+export function getFoldedMenusCookie(key) {
   let foldedMenus = [];
 
   try {
-    foldedMenus = (getCookie(CACHE_KEY.foldedMenus) ?? "").split(",");
+    foldedMenus = (getCookie(key) ?? "").split(",");
   } catch (error) {}
 
   return foldedMenus.filter(Boolean);
@@ -36,7 +36,7 @@ const settingSlice = createSlice({
   name: "setting",
   initialState: {
     mode: getInitMode(),
-    foldedMenus: getFoldedMenusCookie(),
+    homeFoldedMenus: getFoldedMenusCookie(CACHE_KEY.homeFoldedMenus),
   },
   reducers: {
     toggleMode(state) {
@@ -55,8 +55,8 @@ const settingSlice = createSlice({
     /**
      * @description set single
      */
-    setFoldedMenu(state, { payload }) {
-      let foldedMenus = getFoldedMenusCookie();
+    setHomeFoldedMenu(state, { payload }) {
+      let foldedMenus = getFoldedMenusCookie(CACHE_KEY.homeFoldedMenus);
       const { name, folded } = payload ?? {};
 
       if (folded) {
@@ -65,16 +65,16 @@ const settingSlice = createSlice({
         foldedMenus = foldedMenus.filter((i) => i !== name);
       }
 
-      setCookie(CACHE_KEY.foldedMenus, foldedMenus.join(","));
+      setCookie(CACHE_KEY.homeFoldedMenus, foldedMenus.join(","));
 
-      state.foldedMenus = foldedMenus;
+      state.homeFoldedMenus = foldedMenus;
     },
   },
 });
 
 export const modeSelector = (state) => state.setting.mode;
-export const foldedMenusSelector = (state) => state.setting.foldedMenus;
+export const homeFoldedMenusSelector = (state) => state.setting.homeFoldedMenus;
 
-export const { toggleMode, setMode, setFoldedMenu } = settingSlice.actions;
+export const { toggleMode, setMode, setHomeFoldedMenu } = settingSlice.actions;
 
 export default settingSlice.reducer;
