@@ -22,8 +22,7 @@ export default function ValueDisplay({ value, symbol, noWrap }) {
     if (getEffectiveNumbers(abbreviated) !== getEffectiveNumbers(value)) {
       display = (
         <NotEqual>
-          <span className="figures">{abbreviated}</span>{" "}
-          <span className="symbol">{symbol}</span>
+          <span>{abbreviated}</span> <span>{symbol}</span>
         </NotEqual>
       );
     }
@@ -36,19 +35,20 @@ export default function ValueDisplay({ value, symbol, noWrap }) {
     return (
       <Tooltip content={`${value} ${symbol}`}>
         <NotEqual>
-          <span className="figures">
+          <span>
             {int}.{shortDecimal}
           </span>{" "}
-          <span className="symbol">{symbol}</span>
+          <span>{symbol}</span>
         </NotEqual>
       </Tooltip>
     );
   }
+
   return (
     <div>
-      <span className="figures">{value} </span>
+      <span>{value} </span>
       <span style={{ width: 4 }} />
-      <span className="symbol">{symbol}</span>
+      <span>{symbol}</span>
     </div>
   );
 }
