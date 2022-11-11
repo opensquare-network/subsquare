@@ -24,7 +24,7 @@ const Wrapper = styled(flexBetweenCenter)`
   height: 40px;
   background-image: linear-gradient(268.11deg, #7b0dc4 0%, #e6007a 100%);
   border-radius: 4px;
-  padding: 10px 12px;
+  padding: 10px 18px;
   gap: 8px;
 `;
 
