@@ -1,33 +1,34 @@
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import User from "next-common/components/user";
-import { getNode, toPrecision } from "next-common/utils";
 import { parseGov2TrackName } from "next-common/utils/gov2";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import styled from "styled-components";
-import { useChain } from "next-common/context/chain";
 import { p_14_normal } from "next-common/styles/componentCss";
+import SymbolBalance from "next-common/components/values/symbolBalance";
 
 const Info = styled.div`
   ${p_14_normal};
   color: ${(p) => p.theme.textPrimary};
 `;
 
-function TimelineTallyInfo({ decimals, symbol, ayes, nays, support }) {
+function TimelineTallyInfo({ ayes, nays, support }) {
   return (
     <div>
-      <Info>Ayes ({`${toPrecision(ayes ?? 0, decimals)} ${symbol}`})</Info>
-      <Info>Nays ({`${toPrecision(nays ?? 0, decimals)} ${symbol}`})</Info>
       <Info>
-        Support ({`${toPrecision(support ?? 0, decimals)} ${symbol}`})
+        Ayes (<SymbolBalance value={ayes} />)
+      </Info>
+      <Info>
+        Nays (<SymbolBalance value={nays} /> )
+      </Info>
+      <Info>
+        Support (<SymbolBalance value={support} />)
       </Info>
     </div>
   );
 }
 
-const getTimelineData = (args, method, trackInfo, chain) => {
-  const { decimals, symbol } = getNode(chain);
-
+const getTimelineData = (args, method, trackInfo) => {
   switch (method) {
     case "Submitted": {
       return {
@@ -39,23 +40,14 @@ const getTimelineData = (args, method, trackInfo, chain) => {
     }
     case "DecisionDepositPlaced": {
       return {
-        From: <User add={args.who} />,
-        "Final tip value": `${toPrecision(
-          args.amount ?? 0,
-          decimals
-        )} ${symbol}`,
+        Depositor: <User add={args.who} />,
+        Deposit: <SymbolBalance value={args.amount} />,
       };
     }
     case "DecisionStarted": {
       return {
         Track: parseGov2TrackName(trackInfo.name),
-        Tally: (
-          <TimelineTallyInfo
-            decimals={decimals}
-            symbol={symbol}
-            {...args.tally}
-          />
-        ),
+        Tally: <TimelineTallyInfo {...args.tally} />,
       };
     }
     case "Confirmed":
@@ -64,13 +56,7 @@ const getTimelineData = (args, method, trackInfo, chain) => {
     case "Rejected":
     case "TimedOut": {
       return {
-        Tally: (
-          <TimelineTallyInfo
-            decimals={decimals}
-            symbol={symbol}
-            {...args.tally}
-          />
-        ),
+        Tally: <TimelineTallyInfo {...args.tally} />,
       };
     }
     case "Executed": {
@@ -91,7 +77,7 @@ const getTimelineData = (args, method, trackInfo, chain) => {
   return args;
 };
 
-export function makeReferendumTimelineData(timeline, trackInfo, type, chain) {
+export function makeReferendumTimelineData(timeline, trackInfo, type) {
   return (timeline || []).map((item) => {
     return {
       time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
@@ -101,24 +87,13 @@ export function makeReferendumTimelineData(timeline, trackInfo, type, chain) {
         type,
         args: getGov2ReferendumStateArgs(item),
       },
-      data: getTimelineData(
-        item.args,
-        item.method ?? item.name,
-        trackInfo,
-        chain
-      ),
+      data: getTimelineData(item.args, item.method ?? item.name, trackInfo),
     };
   });
 }
 
 export default function ReferendumTimeline({ timeline, trackInfo, type }) {
-  const chain = useChain();
-  const timelineData = makeReferendumTimelineData(
-    timeline,
-    trackInfo,
-    type,
-    chain
-  );
+  const timelineData = makeReferendumTimelineData(timeline, trackInfo, type);
 
   return <Timeline data={timelineData} />;
 }
