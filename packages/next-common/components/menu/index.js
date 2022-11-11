@@ -4,8 +4,17 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import ExternalLink from "../icons/externalLink";
 import Flex from "../styled/flex";
-import { p_12_medium, p_12_normal } from "../../styles/componentCss";
+import { p_12_bold, p_12_medium, p_12_normal } from "../../styles/componentCss";
 import { useChain } from "../../context/chain";
+import { useState } from "react";
+import MenuUnFoldIcon from "../icons/menuUnFold";
+import MenuFoldIcon from "../icons/menuFold";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  homeFoldedMenusSelector,
+  setHomeFoldedMenu,
+} from "../../store/reducers/settingSlice";
+import { useLayoutEffect } from "react";
 
 const Wrapper = styled.div`
   padding-top: 41px;
@@ -26,12 +35,13 @@ const TitleTip = styled.span`
 `;
 
 const Title = styled.div`
-  height: 36px;
-  padding: 12px;
-  font-weight: bold;
-  font-size: 12px;
-  letter-spacing: 0.16em;
   color: ${(props) => props.theme.textTertiary};
+  letter-spacing: 2px;
+  ${p_12_bold};
+`;
+const TitleGroup = styled(Flex)`
+  gap: 8px;
+  padding: 12px 0;
 `;
 
 const ItemCount = styled.span`
@@ -43,7 +53,7 @@ const ItemInner = styled(Flex)`
   height: inherit;
   width: inherit;
   gap: 8px;
-  padding: 0 12px;
+  padding: 10px 18px;
 `;
 const Item = styled.div`
   height: 40px;
@@ -100,21 +110,119 @@ const Item = styled.div`
     `}
 `;
 
-export default function Menu({ menu }) {
+const ItemGroup = styled.div`
+  ${(p) =>
+    p.folded &&
+    css`
+      display: none;
+    `}
+`;
+
+const FoldableButton = styled.button`
+  background: none;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0;
+
+  ${(p) =>
+    p.disabled &&
+    css`
+      pointer-events: none;
+    `}
+`;
+
+function defaultItemRender(icon, name, count) {
+  return (
+    <ItemInner>
+      {icon}
+      <span>
+        {name}
+        {!!count && <ItemCount>{count}</ItemCount>}
+      </span>
+    </ItemInner>
+  );
+}
+
+function MenuGroup({ menu, foldable }) {
   const chain = useChain();
   const router = useRouter();
+  const dispatch = useDispatch();
+  const foldedMenus = useSelector(homeFoldedMenusSelector);
 
-  function defaultItemRender(icon, name, count) {
-    return (
-      <ItemInner>
-        {icon}
-        <span>
-          {name}
-          {!!count && <ItemCount>{count}</ItemCount>}
-        </span>
-      </ItemInner>
-    );
+  const hasMenuItems = !!menu?.items?.length;
+
+  const [folded, setFolded] = useState(false);
+
+  useLayoutEffect(() => {
+    if (hasMenuItems) {
+      setFolded(foldedMenus.includes(menu.name));
+    } else {
+      setFolded(true);
+    }
+  }, []);
+
+  function handleFoldMenu(name) {
+    const v = !folded;
+    setFolded(v);
+    dispatch(setHomeFoldedMenu({ name, folded: v }));
   }
+
+  return (
+    <div>
+      {menu.name && (
+        <TitleGroup>
+          {foldable && (
+            <FoldableButton
+              disabled={!menu?.items?.length}
+              onClick={() => handleFoldMenu(menu.name)}
+            >
+              {folded ? <MenuFoldIcon /> : <MenuUnFoldIcon />}
+            </FoldableButton>
+          )}
+
+          <Title>
+            {menu.name}
+            {menu.tip && <TitleTip>{menu.tip}</TitleTip>}
+          </Title>
+        </TitleGroup>
+      )}
+
+      <ItemGroup folded={menu.name && folded}>
+        {menu.items.map((item, index) => {
+          const isExternalLink = (item.pathname || "").startsWith("http");
+
+          if (item?.excludeToChains?.includes(chain)) {
+            return null;
+          }
+          return (
+            <Fragment key={index}>
+              <Link href={item?.pathname} passHref>
+                <a target={isExternalLink ? "_blank" : "_self"}>
+                  <Item
+                    active={
+                      router.pathname === item.pathname ||
+                      router.asPath === item.pathname ||
+                      (router.pathname === "/[chain]" && item.pathname === "/")
+                    }
+                  >
+                    {item.itemRender?.(item.icon, item.name, item.count) ??
+                      defaultItemRender(item.icon, item.name, item.count)}
+                    {isExternalLink && <ExternalLink color="#D7DEE8" />}
+                  </Item>
+                </a>
+              </Link>
+            </Fragment>
+          );
+        })}
+      </ItemGroup>
+    </div>
+  );
+}
+
+export default function Menu({ menu, foldable = true }) {
+  const chain = useChain();
 
   return (
     <Wrapper>
@@ -122,43 +230,8 @@ export default function Menu({ menu }) {
         if (menu?.excludeToChains?.includes(chain)) {
           return null;
         }
-        return (
-          <div key={index}>
-            {menu.name && (
-              <Title>
-                {menu.name}
-                {menu.tip && <TitleTip>{menu.tip}</TitleTip>}
-              </Title>
-            )}
-            {menu.items.map((item, index) => {
-              const isExternalLink = (item.pathname || "").startsWith("http");
 
-              if (item?.excludeToChains?.includes(chain)) {
-                return null;
-              }
-              return (
-                <Fragment key={index}>
-                  <Link href={item?.pathname} passHref>
-                    <a target={isExternalLink ? "_blank" : "_self"}>
-                      <Item
-                        active={
-                          router.pathname === item.pathname ||
-                          router.asPath === item.pathname ||
-                          (router.pathname === "/[chain]" &&
-                            item.pathname === "/")
-                        }
-                      >
-                        {item.itemRender?.(item.icon, item.name, item.count) ??
-                          defaultItemRender(item.icon, item.name, item.count)}
-                        {isExternalLink && <ExternalLink color="#D7DEE8" />}
-                      </Item>
-                    </a>
-                  </Link>
-                </Fragment>
-              );
-            })}
-          </div>
-        );
+        return <MenuGroup key={index} menu={menu} foldable={foldable} />;
       })}
     </Wrapper>
   );
