@@ -5,8 +5,10 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { toPublicProposalListItem } from "utils/viewfuncs";
 import DemocracySummary from "next-common/components/summary/democracySummary";
 import HomeLayout from "next-common/components/layout/HomeLayout";
+import { useChain } from "next-common/context/chain";
 
-export default withLoginUserRedux(({ proposals, chain }) => {
+export default withLoginUserRedux(({ proposals }) => {
+  const chain = useChain();
   const items = (proposals.items || []).map((item) =>
     toPublicProposalListItem(chain, item)
   );
@@ -31,7 +33,6 @@ export default withLoginUserRedux(({ proposals, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
   const { page, page_size: pageSize } = context.query;
 
   const [{ result: proposals }] = await Promise.all([
@@ -43,7 +44,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      chain,
       proposals: proposals ?? EmptyList,
     },
   };
