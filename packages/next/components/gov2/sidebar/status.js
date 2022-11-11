@@ -126,7 +126,7 @@ export default function Gov2Status({ detail }) {
 
         <div>
           <ProgressGroup>
-            <Tooltip content={remainDecisionPeriodTime}>
+            <Tooltip content={remainDecisionMs > 0 && remainDecisionPeriodTime}>
               <Progress percentage={decesionPeriodPercentage} />
             </Tooltip>
             <ProgressInfo>
