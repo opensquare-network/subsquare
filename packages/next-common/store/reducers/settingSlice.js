@@ -19,10 +19,24 @@ export function getInitMode() {
   return result;
 }
 
+/**
+ * @returns {string[]}
+ */
+export function getFoldedMenusCookie() {
+  let foldedMenus = [];
+
+  try {
+    foldedMenus = (getCookie(CACHE_KEY.foldedMenus) ?? "").split(",");
+  } catch (error) {}
+
+  return foldedMenus.filter(Boolean);
+}
+
 const settingSlice = createSlice({
   name: "setting",
   initialState: {
     mode: getInitMode(),
+    foldedMenus: getFoldedMenusCookie(),
   },
   reducers: {
     toggleMode(state) {
@@ -37,11 +51,30 @@ const settingSlice = createSlice({
       }
       state.mode = payload;
     },
+
+    /**
+     * @description set single
+     */
+    setFoldedMenu(state, { payload }) {
+      let foldedMenus = getFoldedMenusCookie();
+      const { name, folded } = payload ?? {};
+
+      if (folded) {
+        foldedMenus.push(name);
+      } else {
+        foldedMenus = foldedMenus.filter((i) => i !== name);
+      }
+
+      setCookie(CACHE_KEY.foldedMenus, foldedMenus.join(","));
+
+      state.foldedMenus = foldedMenus;
+    },
   },
 });
 
 export const modeSelector = (state) => state.setting.mode;
+export const foldedMenusSelector = (state) => state.setting.foldedMenus;
 
-export const { toggleMode, setMode } = settingSlice.actions;
+export const { toggleMode, setMode, setFoldedMenu } = settingSlice.actions;
 
 export default settingSlice.reducer;
