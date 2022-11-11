@@ -20,6 +20,7 @@ import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { useCallback, useEffect, useState } from "react";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
+import { EmptyList } from "next-common/components/emptyList";
 
 export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   const [detail, setDetail] = useState(ssrDetail);
@@ -65,7 +66,7 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
 
         <Gov2Sidebar detail={detail} onVoteFinalized={onVoteFinalized} />
 
-        <Gov2ReferendumMetadata api={api} detail={detail} />
+        <Gov2ReferendumMetadata detail={detail} />
 
         <Timeline
           timeline={detail?.onchainData?.timeline}

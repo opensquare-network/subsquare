@@ -89,7 +89,7 @@ const Info = styled.div`
 `;
 
 export default withLoginUserRedux(
-  ({ loginUser, chain, subscription: _subscription, unsubscribe }) => {
+  ({ loginUser, subscription: _subscription, unsubscribe }) => {
     const dispatch = useDispatch();
     const [saving, setSaving] = useState(false);
     const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
@@ -200,7 +200,6 @@ export default withLoginUserRedux(
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
   const { unsubscribe } = context.query;
 
   const cookies = new Cookies(context.req, context.res);
@@ -222,7 +221,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      chain,
       subscription: subscription ?? null,
       unsubscribe: unsubscribe ?? null,
     },

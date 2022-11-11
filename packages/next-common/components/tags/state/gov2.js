@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { gov2State } from "../../../utils/consts/state";
 import {
   ActiveTag,
   BaseTag,
@@ -12,19 +13,6 @@ const QueueingTag = styled(BaseTag)`
   background-color: ${(p) => p.theme.secondaryYellow500};
 `;
 
-export const gov2State = {
-  Submitted: "Submitted",
-  Queueing: "Queueing",
-  Deciding: "Deciding",
-  Confirming: "Confirming",
-  Approved: "Approved",
-  Cancelled: "Cancelled",
-  Killed: "Killed",
-  Timeout: "Timeout",
-  Rejected: "Rejected",
-  Executed: "Executed",
-};
-
 const gov2ReferendaTagMap = {
   [gov2State.Submitted]: StartTag,
   [gov2State.Queueing]: QueueingTag,
@@ -35,7 +23,6 @@ const gov2ReferendaTagMap = {
   [gov2State.Killed]: NegativeTag,
   [gov2State.Timeout]: ClosedTag,
   [gov2State.Rejected]: NegativeTag,
-  // [gov2State.Executed] see below,
 
   DecisionStarted: PositiveTag,
   DecisionDepositPlaced: PositiveTag,

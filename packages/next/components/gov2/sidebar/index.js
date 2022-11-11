@@ -1,8 +1,8 @@
 import ExternalLink from "next-common/components/externalLink";
 import ExternalLinkIcon from "next-common/components/icons/externalLink";
-import { gov2State } from "next-common/components/tags/state/gov2";
 import { p_12_normal } from "next-common/styles/componentCss";
 import { emptyFunction } from "next-common/utils";
+import { gov2State } from "next-common/utils/consts/state";
 import { mdcss } from "next-common/utils/responsive";
 import dynamic from "next/dynamic";
 import { useState } from "react";
@@ -60,7 +60,6 @@ const Link = styled(ExternalLink)`
   `)}
 `;
 
-// FIXME: status
 export default function Gov2Sidebar({
   detail,
   onVoteFinalized = emptyFunction,
@@ -73,9 +72,15 @@ export default function Gov2Sidebar({
     detail?.state?.name
   );
 
+  const shouldShowStatus = [
+    gov2State.Deciding,
+    gov2State.Confirming,
+    gov2State.Approved,
+  ].includes(detail?.state?.name);
+
   return (
     <Wrapper>
-      {false && <Gov2Status detail={detail} />}
+      {shouldShowStatus && <Gov2Status detail={detail} />}
 
       <Gov2Tally detail={detail} />
 

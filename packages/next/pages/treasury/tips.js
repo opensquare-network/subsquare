@@ -11,6 +11,7 @@ import PlusIcon from "public/imgs/icons/plusInCircle.svg";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
+import { useChain } from "next-common/context/chain";
 
 const Popup = dynamic(
   () => import("next-common/components/treasury/tip/popup"),
@@ -19,7 +20,8 @@ const Popup = dynamic(
   }
 );
 
-export default withLoginUserRedux(({ tips: ssrTips, chain }) => {
+export default withLoginUserRedux(({ tips: ssrTips }) => {
+  const chain = useChain();
   const [showPopup, setShowPopup] = useState(false);
   const [tips, setTips] = useState(ssrTips);
   useEffect(() => setTips(ssrTips), [ssrTips]);
@@ -69,8 +71,6 @@ export default withLoginUserRedux(({ tips: ssrTips, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   const { page, page_size: pageSize } = context.query;
 
   const [{ result: tips }] = await Promise.all([
@@ -82,7 +82,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      chain,
       tips: tips ?? EmptyList,
     },
   };

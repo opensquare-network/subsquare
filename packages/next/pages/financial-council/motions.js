@@ -4,8 +4,10 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { toFinancialMotionsListItem } from "utils/viewfuncs";
 import HomeLayout from "next-common/components/layout/HomeLayout";
+import { useChain } from "next-common/context/chain";
 
-export default withLoginUserRedux(({ motions, chain }) => {
+export default withLoginUserRedux(({ motions }) => {
+  const chain = useChain();
   const items = (motions.items || []).map((item) =>
     toFinancialMotionsListItem(chain, item)
   );
@@ -29,7 +31,6 @@ export default withLoginUserRedux(({ motions, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
   const { page, page_size: pageSize } = context.query;
 
   const [{ result: motions }] = await Promise.all([
@@ -41,7 +42,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      chain,
       motions: motions ?? EmptyList,
     },
   };

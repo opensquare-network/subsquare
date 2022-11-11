@@ -26,9 +26,11 @@ import {
   fetchReferendumStatus,
   fetchVotes,
 } from "next-common/store/reducers/referendumSlice";
+import { useChain } from "next-common/context/chain";
 
 export default withLoginUserRedux(
-  ({ detail: ssrDetail, publicProposal, comments, chain }) => {
+  ({ detail: ssrDetail, publicProposal, comments }) => {
+    const chain = useChain();
     const [detail, setDetail] = useState(ssrDetail);
     useEffect(() => setDetail(ssrDetail), [ssrDetail]);
     const dispatch = useDispatch();
@@ -114,7 +116,6 @@ export default withLoginUserRedux(
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
   const { id, page, page_size: pageSize } = context.query;
 
   const [{ result: detail }] = await Promise.all([
@@ -148,7 +149,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail: detail ?? {},
       publicProposal,
       comments: comments ?? EmptyList,
-      chain,
     },
   };
 });

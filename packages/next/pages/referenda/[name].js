@@ -29,8 +29,6 @@ export default withLoginUserRedux(
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   const { page = 1, page_size: pageSize = 50, name } = context.query;
 
   const { result: tracks = [] } = await ssrNextApi.fetch(gov2TracksApi);
@@ -48,7 +46,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      chain,
       posts: posts ?? EmptyList,
       title: "Referenda " + parseGov2TrackName(name),
       tracks,
