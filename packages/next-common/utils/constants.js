@@ -73,5 +73,5 @@ export const CACHE_KEY = {
   accountMap: "accountMap",
   themeMode: "theme-mode",
   authToken: "auth-token",
-  foldedMenus: "folded-menus",
+  homeFoldedMenus: "home-folded-menus",
 };
