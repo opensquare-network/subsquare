@@ -16,6 +16,7 @@ import {
 } from "next-common/services/url";
 import Timeline from "components/gov2/timeline";
 import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metadata";
+import { EmptyList } from "next-common/components/emptyList";
 
 export default withLoginUserRedux(({ detail, comments }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
