@@ -32,12 +32,12 @@ export default function ValueDisplay({ value, symbol, noWrap }) {
 
   const [int, decimal] = String(value).split(".");
   if (decimal?.length > 5) {
-    const shortDeciaml = decimal.substring(0, 5);
+    const shortDecimal = decimal.substring(0, 5);
     return (
       <Tooltip content={`${value} ${symbol}`}>
         <NotEqual>
           <span className="figures">
-            {int}.{shortDeciaml}
+            {int}.{shortDecimal}
           </span>{" "}
           <span className="symbol">{symbol}</span>
         </NotEqual>
