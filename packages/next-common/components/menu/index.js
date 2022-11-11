@@ -125,6 +125,12 @@ const FoldableButton = styled.button`
   align-items: center;
   cursor: pointer;
   padding: 0;
+
+  ${(p) =>
+    p.disabled &&
+    css`
+      pointer-events: none;
+    `}
 `;
 
 function defaultItemRender(icon, name, count) {
@@ -145,10 +151,16 @@ function MenuGroup({ menu }) {
   const dispatch = useDispatch();
   const foldedMenus = useSelector(foldedMenusSelector);
 
+  const hasMenuItems = !!menu?.items?.length;
+
   const [folded, setFolded] = useState(false);
 
   useLayoutEffect(() => {
-    setFolded(foldedMenus.includes(menu.name));
+    if (hasMenuItems) {
+      setFolded(foldedMenus.includes(menu.name));
+    } else {
+      setFolded(true);
+    }
   }, []);
 
   function handleFoldMenu(name) {
@@ -161,7 +173,10 @@ function MenuGroup({ menu }) {
     <div>
       {menu.name && (
         <TitleGroup>
-          <FoldableButton onClick={() => handleFoldMenu(menu.name)}>
+          <FoldableButton
+            disabled={!menu?.items?.length}
+            onClick={() => handleFoldMenu(menu.name)}
+          >
             {folded ? <MenuFoldIcon /> : <MenuUnFoldIcon />}
           </FoldableButton>
 
