@@ -15,6 +15,8 @@ const Popup = dynamic(() => import("../votePopup"), {
 });
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   position: absolute;
   right: 0;
   top: 32px;
@@ -34,7 +36,6 @@ const VoteButton = styled.button`
   all: unset;
   cursor: pointer;
   margin-top: 16px;
-  width: 100%;
   line-height: 38px;
   background-color: ${(props) => props.theme.primaryDarkBlue};
   color: ${(props) => props.theme.textContrast};
