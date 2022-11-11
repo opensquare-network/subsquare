@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import {
-  getAddressVotingBalance,
-  getAddressVote,
-} from "./referendumUtil";
+import { getAddressVotingBalance, getAddressVote } from "./referendumUtil";
 
 export function useAddressVotingBalance(api, address) {
   const [balance, setBalance] = useState(0);
@@ -39,6 +36,28 @@ export function useAddressVote(api, referendumIndex, address) {
         .then((vote) => {
           if (isMounted.current) {
             setVote(vote);
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  }, [api, referendumIndex, address, isMounted]);
+  return [vote, isLoading];
+}
+
+export function useGov2AddressVote(api, referendumIndex, address) {
+  const [vote, setVote] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const isMounted = useIsMounted();
+  useEffect(() => {
+    if (api && address) {
+      setIsLoading(true);
+      api.query.convictionVoting
+        .votingFor(address, referendumIndex)
+        .then((vote) => {
+          if (isMounted.current) {
+            setVote(vote.toJSON());
           }
         })
         .finally(() => {

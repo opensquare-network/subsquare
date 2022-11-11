@@ -1,10 +1,17 @@
 import ExternalLink from "next-common/components/externalLink";
 import ExternalLinkIcon from "next-common/components/icons/externalLink";
 import { p_12_normal } from "next-common/styles/componentCss";
+import { emptyFunction } from "next-common/utils";
 import { mdcss } from "next-common/utils/responsive";
+import dynamic from "next/dynamic";
+import { useState } from "react";
 import styled, { useTheme, css } from "styled-components";
 import Gov2Status from "./status";
 import Gov2Tally from "./tally";
+
+const Popup = dynamic(() => import("../votePopup"), {
+  ssr: false,
+});
 
 const Wrapper = styled.div`
   position: absolute;
@@ -54,8 +61,13 @@ const Link = styled(ExternalLink)`
 
 // FIXME: status
 // FIXME: vote button
-export default function Gov2Sidebar({ detail }) {
+export default function Gov2Sidebar({
+  detail,
+  onVoteFinalized = emptyFunction,
+}) {
   const { primaryPurple500 } = useTheme();
+  const [showVote, setShowVote] = useState(false);
+  const referendumIndex = detail?.referendumIndex;
 
   return (
     <Wrapper>
@@ -63,7 +75,20 @@ export default function Gov2Sidebar({ detail }) {
 
       <Gov2Tally detail={detail} />
 
-      {false && <VoteButton>Vote</VoteButton>}
+      <VoteButton
+        onClick={() => {
+          setShowVote(true);
+        }}
+      >
+        Vote
+      </VoteButton>
+      {showVote && (
+        <Popup
+          onClose={() => setShowVote(false)}
+          referendumIndex={referendumIndex}
+          onFinalized={onVoteFinalized}
+        />
+      )}
 
       {/* NOTE: link to polkadot gov2 blog */}
       <Link href="https://polkadot.network/blog/gov2-polkadots-next-generation-of-decentralised-governance/">
