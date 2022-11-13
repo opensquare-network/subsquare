@@ -13,33 +13,12 @@ import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { useMemo } from "react";
 import { gov2State } from "next-common/utils/consts/state";
 import BigNumber from "bignumber.js";
+import Status from "./status";
 
 const Wrapper = styled.div``;
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
-`;
-
-const Status = styled.div`
-  margin-top: 8px !important;
-  width: 100%;
-  line-height: 38px;
-  border-width: 0;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: default;
-  text-align: center;
-`;
-
-const DecidingStatus = styled(Status)`
-  color: ${(props) => props.theme.secondaryBlue500};
-  background: ${(props) => props.theme.secondaryBlue100};
-`;
-
-const PositiveStatus = styled(Status)`
-  color: ${(props) => props.theme.secondaryGreen500};
-  background: ${(props) => props.theme.secondaryGreen100};
 `;
 
 const ProgressInfo = styled(FlexBetween)`
@@ -80,7 +59,10 @@ export default function Gov2Status({ detail }) {
 
   // same logic: `show confirming period`
   const isPositiveState = useMemo(
-    () => [gov2State.Confirming, gov2State.Approved].includes(state),
+    () =>
+      [gov2State.Confirming, gov2State.Approved, gov2State.Executed].includes(
+        state
+      ),
     [state]
   );
 
@@ -114,7 +96,7 @@ export default function Gov2Status({ detail }) {
         : latestConfirmStartedState?.indexer?.blockTime
     );
 
-  const decesionPeriodPercentage =
+  const decisionPeriodPercentage =
     100 - Math.floor((remainDecisionMs / decisionPeriodMs) * 100);
   const confirmPeriodPercentage =
     100 - Math.floor((remainConfirmMs / confirmPeriodMs) * 100);
@@ -127,7 +109,7 @@ export default function Gov2Status({ detail }) {
         <div>
           <ProgressGroup>
             <Tooltip content={remainDecisionMs > 0 && remainDecisionPeriodTime}>
-              <Progress percentage={decesionPeriodPercentage} />
+              <Progress percentage={decisionPeriodPercentage} />
             </Tooltip>
             <ProgressInfo>
               <p>Decision Period</p>
@@ -154,13 +136,7 @@ export default function Gov2Status({ detail }) {
           )}
         </div>
 
-        <div>
-          {isPositiveState ? (
-            <PositiveStatus>{state}</PositiveStatus>
-          ) : (
-            <DecidingStatus>{state}</DecidingStatus>
-          )}
-        </div>
+        <Status state={state} />
       </SecondaryCardDetail>
     </Wrapper>
   );
