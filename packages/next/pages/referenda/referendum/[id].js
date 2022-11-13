@@ -25,8 +25,6 @@ import { EmptyList } from "next-common/components/emptyList";
 export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   const [detail, setDetail] = useState(ssrDetail);
   useEffect(() => setDetail(ssrDetail), [ssrDetail]);
-
-  const api = useApi();
   const isMounted = useIsMounted();
 
   const { CommentComponent, focusEditor } = useUniversalComments({
