@@ -80,7 +80,10 @@ export default function Gov2Status({ detail }) {
 
   // same logic: `show confirming period`
   const isPositiveState = useMemo(
-    () => [gov2State.Confirming, gov2State.Approved].includes(state),
+    () =>
+      [gov2State.Confirming, gov2State.Approved, gov2State.Executed].includes(
+        state
+      ),
     [state]
   );
 
@@ -114,7 +117,7 @@ export default function Gov2Status({ detail }) {
         : latestConfirmStartedState?.indexer?.blockTime
     );
 
-  const decesionPeriodPercentage =
+  const decisionPeriodPercentage =
     100 - Math.floor((remainDecisionMs / decisionPeriodMs) * 100);
   const confirmPeriodPercentage =
     100 - Math.floor((remainConfirmMs / confirmPeriodMs) * 100);
@@ -127,7 +130,7 @@ export default function Gov2Status({ detail }) {
         <div>
           <ProgressGroup>
             <Tooltip content={remainDecisionMs > 0 && remainDecisionPeriodTime}>
-              <Progress percentage={decesionPeriodPercentage} />
+              <Progress percentage={decisionPeriodPercentage} />
             </Tooltip>
             <ProgressInfo>
               <p>Decision Period</p>

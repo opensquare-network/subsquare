@@ -77,6 +77,7 @@ export default function Gov2Sidebar({
     gov2State.Deciding,
     gov2State.Confirming,
     gov2State.Approved,
+    gov2State.Executed,
   ].includes(detail?.state?.name);
 
   return (
