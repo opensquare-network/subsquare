@@ -17,6 +17,14 @@ const Hr = styled.hr`
   background: ${(p) => p.theme.grey200Border};
 `;
 
+const TitleGroup = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+const TitleTrackId = styled.span`
+  color: ${(p) => p.theme.textPlaceholder};
+  ${p_20_bold}
+`;
 const Title = styled.h2`
   margin: 0;
   color: ${(p) => p.theme.textPrimary};
@@ -46,7 +54,9 @@ export default function Gov2TrackSummary({ summary, period }) {
     preparePeriod,
     decisionPeriod,
     confirmPeriod,
+    id,
   } = period ?? {};
+  console.log(period);
 
   const blockTime = useSelector(blockTimeSelector);
   const decisionPeriodBlockTime = estimateBlocksTime(decisionPeriod, blockTime);
@@ -55,7 +65,10 @@ export default function Gov2TrackSummary({ summary, period }) {
   return (
     <Wrapper>
       <div>
-        <Title>Origin: {origin}</Title>
+        <TitleGroup>
+          <Title>Origin: {origin}</Title>
+          <TitleTrackId>#{id}</TitleTrackId>
+        </TitleGroup>
         {description && <Description>{description}</Description>}
       </div>
 
