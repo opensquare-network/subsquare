@@ -2,7 +2,6 @@ import Link from "next/link";
 import MultiKVList from "next-common/components/listInfo/multiKVList";
 import Flex from "next-common/components/styled/flex";
 import User from "next-common/components/user";
-import ExtrinsicLinks from "next-common/components/links";
 import CapitalText from "../capitalText";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 
@@ -30,10 +29,6 @@ export default function Business({ motion }) {
           "Beneficiary",
           <Flex key="proposal-beneficiary">
             <User add={proposal.meta.beneficiary} fontSize={14} />
-            <ExtrinsicLinks
-              address={proposal.meta.beneficiary}
-              style={{ marginLeft: 8 }}
-            />
           </Flex>,
         ],
         [
@@ -69,7 +64,6 @@ export default function Business({ motion }) {
               </CapitalText>,
               <Flex key="bounty-beneficiary-value">
                 <User add={item[1]} fontSize={14} />
-                <ExtrinsicLinks address={item[1]} style={{ marginLeft: 8 }} />
               </Flex>,
             ]);
             break;
