@@ -9,7 +9,7 @@ import styled from "styled-components";
 import Flex from "../../../styled/flex";
 import Tooltip from "../../../tooltip";
 import { p_12_normal } from "../../../../styles/componentCss";
-import { useChainSettings } from "../../../../context/chain";
+import { useDecimals, useVoteSymbol } from "../../../../context/chain";
 import isNil from "lodash.isnil";
 
 // submissionDeposit
@@ -67,9 +67,8 @@ function getEnactmentValue(enactment = {}) {
 
 export default function Gov2ReferendumMetadata({ detail }) {
   const blockTime = useSelector(blockTimeSelector);
-  const node = useChainSettings();
-  const decimals = node.decimals;
-  const symbol = node.voteSymbol || node.symbol;
+  const decimals = useDecimals();
+  const symbol = useVoteSymbol();
 
   const onchainData = detail?.onchainData ?? {};
   const info = onchainData?.info ?? {};

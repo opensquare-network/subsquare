@@ -18,3 +18,19 @@ export function useChainSettings() {
   const chain = useChain();
   return getChainSettings(chain);
 }
+
+export function useDecimals() {
+  const node = useChainSettings();
+  return node.decimals;
+}
+
+export function useSymbol() {
+  const node = useChainSettings();
+  return node.symbol;
+}
+
+// vote token symbol is different with system token symbol in some chains
+export function useVoteSymbol() {
+  const { symbol, voteSymbol } = useChainSettings();
+  return voteSymbol || symbol;
+}
