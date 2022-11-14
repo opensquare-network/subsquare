@@ -25,7 +25,8 @@ const Title = styled.h2`
 
 const Description = styled.p`
   margin: 0;
-  color: ${(p) => p.theme.textSecondary};
+  margin-top: 4px;
+  color: ${(p) => p.theme.textTertiary};
   ${p_14_normal};
 `;
 
