@@ -28,7 +28,7 @@ export const SummaryCard = styled(SecondaryCard)`
 export const SummaryTitle = styled.div`
   letter-spacing: 0.16em;
   color: ${(props) => props.theme.textTertiary};
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   text-transform: uppercase;
   ${p_12_bold};
 `;
