@@ -2,15 +2,17 @@ import KVList from "../../../listInfo/kvList";
 import React from "react";
 import Proposal from "../../../proposal";
 import User from "../../../user";
-import { estimateBlocksTime, toPrecision } from "../../../../utils";
+import { toPrecision } from "../../../../utils";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "../../../../store/reducers/chainSlice";
 import styled from "styled-components";
 import Flex from "../../../styled/flex";
 import Tooltip from "../../../tooltip";
-import { p_12_normal } from "../../../../styles/componentCss";
 import { useDecimals, useVoteSymbol } from "../../../../context/chain";
 import isNil from "lodash.isnil";
+import { useTrack } from "../../../../context/post";
+import { GreyText } from "./styled";
+import BlockPeriod from "./blockPeriod";
 
 // submissionDeposit
 // decisionDeposit
@@ -26,13 +28,6 @@ const BondValueWrapper = styled(Flex)`
     content: "·";
     color: ${(p) => p.theme.textTertiary};
   }
-`;
-
-const GreyText = styled.div`
-  display: inline-flex;
-  align-items: center;
-  color: ${(p) => p.theme.textTertiary};
-  ${p_12_normal};
 `;
 
 function BondValue({ deposit, decimals, symbol }) {
@@ -73,14 +68,8 @@ export default function Gov2ReferendumMetadata({ detail }) {
   const onchainData = detail?.onchainData ?? {};
   const info = onchainData?.info ?? {};
   const proposal = onchainData?.proposal ?? {};
-  const trackInfo = onchainData?.trackInfo ?? {};
+  const trackInfo = useTrack();
   const proposalHash = onchainData?.proposalHash;
-
-  const decisionPeriod = estimateBlocksTime(
-    trackInfo.decisionPeriod,
-    blockTime
-  );
-  const confirmPeriod = estimateBlocksTime(trackInfo.confirmPeriod, blockTime);
 
   const metadata = [
     [
@@ -109,28 +98,8 @@ export default function Gov2ReferendumMetadata({ detail }) {
         <GreyText>--</GreyText>
       ),
     ],
-    [
-      "Decision Period",
-      <ValueWrapper>
-        <div>
-          {decisionPeriod[0]} {decisionPeriod[1]}
-        </div>
-        <GreyText>
-          ({trackInfo?.decisionPeriod?.toLocaleString()} blocks)
-        </GreyText>
-      </ValueWrapper>,
-    ],
-    [
-      "Confirming Period",
-      <ValueWrapper>
-        <div>
-          {confirmPeriod[0]} {confirmPeriod[1]}
-        </div>
-        <GreyText>
-          ({trackInfo?.confirmPeriod?.toLocaleString()} blocks)
-        </GreyText>
-      </ValueWrapper>,
-    ],
+    ["Decision Period", <BlockPeriod block={trackInfo.decisionPeriod} />],
+    ["Confirming Period", <BlockPeriod block={trackInfo.confirmPeriod} />],
     ["Enact", getEnactmentValue(info?.enactment)],
     ["Proposal Hash", proposalHash],
   ];
