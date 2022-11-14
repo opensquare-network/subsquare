@@ -13,18 +13,17 @@ const Wrapper = styled(Flex)`
   }
 `;
 
-export default function ExtrinsicLinks({ indexer = {}, style = {} }) {
+export default function ExternalLinks({ indexer = {}, style = {} }) {
   if (isEmpty(indexer)) {
     return null;
   }
 
   return (
     <Wrapper style={style}>
-      <SubScanLink indexer={indexer}/>
+      <SubScanLink indexer={indexer} />
     </Wrapper>
   );
 }
-
 
 export function AccountLinks({ address }) {
   if (!address) {
@@ -33,8 +32,8 @@ export function AccountLinks({ address }) {
 
   return (
     <Wrapper>
-      <SubScanAccountLink address={address}/>
-      <DotreasuryAccountLink address={address}/>
+      <SubScanAccountLink address={address} />
+      <DotreasuryAccountLink address={address} />
     </Wrapper>
   );
 }
