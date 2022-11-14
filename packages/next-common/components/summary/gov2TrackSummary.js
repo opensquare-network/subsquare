@@ -13,7 +13,8 @@ const Wrapper = styled(SummaryCard)`
 const Hr = styled.hr`
   width: 100%;
   height: 1px;
-  background: ${(p) => p.theme.grey200};
+  border: none;
+  background: ${(p) => p.theme.grey200Border};
 `;
 
 const Title = styled.h2`
