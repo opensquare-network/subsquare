@@ -1,10 +1,11 @@
 import { useSelector } from "react-redux";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { blockTimeSelector } from "../../store/reducers/chainSlice";
 import { p_14_normal, p_20_bold } from "../../styles/componentCss";
 import { estimateBlocksTime } from "../../utils";
 import Content from "./cardContent";
 import { SummaryCard, SummaryGreyText, SummaryTitle } from "./styled";
+import { smcss } from "../../utils/responsive";
 
 const Wrapper = styled(SummaryCard)`
   height: auto;
@@ -14,6 +15,7 @@ const Hr = styled.hr`
   width: 100%;
   height: 1px;
   border: none;
+  margin: 16px 0;
   background: ${(p) => p.theme.grey200Border};
 `;
 
@@ -40,6 +42,10 @@ const Description = styled.p`
 
 const SummariesWrapper = styled.div`
   display: flex;
+  ${smcss(css`
+    flex-direction: column;
+    gap: 16px;
+  `)}
 `;
 
 const SummaryItem = styled.div`
@@ -56,7 +62,6 @@ export default function Gov2TrackSummary({ summary, period }) {
     confirmPeriod,
     id,
   } = period ?? {};
-  console.log(period);
 
   const blockTime = useSelector(blockTimeSelector);
   const decisionPeriodBlockTime = estimateBlocksTime(decisionPeriod, blockTime);
