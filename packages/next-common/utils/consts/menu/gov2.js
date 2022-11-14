@@ -23,7 +23,7 @@ const gov2EntryMenu = {
       itemRender: (icon, name) => <Gov2Button icon={icon} name={name} />,
     },
   ],
-  excludeToChains: getExcludeChains([Chains.kusama, Chains.development]),
+  excludeToChains: getExcludeChains([Chains.development]),
 };
 
 const gov2BackMenu = {
