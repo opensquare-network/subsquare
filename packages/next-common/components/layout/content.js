@@ -4,6 +4,10 @@ import { no_scroll_bar } from "next-common/styles/componentCss";
 import Main from "next-common/components/main";
 import Footer from "next-common/components/layout/footer";
 
+const leftWidth = 236;
+// the left and content `gap`
+const LeftPlaceHolderWidth = leftWidth + 32;
+
 const Wrapper = styled.div`
   width: 100%;
   flex-grow: 1;
@@ -31,16 +35,16 @@ const Left = styled.div`
   height: calc(100vh - 90px);
   overflow-y: scroll;
   ${no_scroll_bar};
-  width: 220px;
-  flex: 0 0 200px;
+  width: ${leftWidth}px;
+  flex: 0 0 ${leftWidth}px;
   @media screen and (max-width: 1024px) {
     display: none;
   }
 `;
 
 const LeftPlaceHolder = styled.div`
-  width: 252px;
-  flex: 0 0 252px;
+  width: ${LeftPlaceHolderWidth}px;
+  flex: 0 0 ${LeftPlaceHolderWidth}px;
   @media screen and (max-width: 1024px) {
     display: none;
   }
