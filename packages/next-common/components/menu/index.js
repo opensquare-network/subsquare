@@ -36,7 +36,7 @@ const TitleTip = styled.span`
 
 const Title = styled.div`
   color: ${(props) => props.theme.textTertiary};
-  letter-spacing: 2px;
+  letter-spacing: 0.16em;
   ${p_12_bold};
 `;
 const TitleGroup = styled(Flex)`
@@ -78,7 +78,7 @@ const Item = styled.div`
   :hover {
     color: ${(props) => props.theme.primaryPurple500};
 
-    > svg {
+    svg {
       &:first-child {
         path {
           fill: ${(props) => props.theme.primaryPurple500};

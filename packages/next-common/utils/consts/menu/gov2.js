@@ -1,10 +1,17 @@
 import React from "react";
-import Gov2Icon from "../../../assets/imgs/icons/type-gov2.svg";
+import Gov2IconOrigin from "../../../assets/imgs/icons/type-gov2.svg";
 import BackIcon from "../../../assets/imgs/icons/back.svg";
 import Gov2Button from "../../../components/menu/gov2Button";
 import TrackIconMap from "../../../components/icons/track";
 import { getExcludeChains } from "../../viewfuncs";
 import Chains from "../chains";
+import styled from "styled-components";
+
+const Gov2Icon = styled(Gov2IconOrigin)`
+  path {
+    fill: ${(p) => p.theme.textContrast} !important;
+  }
+`;
 
 const gov2EntryMenu = {
   items: [
