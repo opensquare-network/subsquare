@@ -1,45 +1,11 @@
 import KVList from "../../../listInfo/kvList";
 import React from "react";
 import Proposal from "../../../proposal";
-import User from "../../../user";
-import { toPrecision } from "../../../../utils";
-import { useSelector } from "react-redux";
-import { blockTimeSelector } from "../../../../store/reducers/chainSlice";
-import styled from "styled-components";
-import Flex from "../../../styled/flex";
-import Tooltip from "../../../tooltip";
-import { useDecimals, useVoteSymbol } from "../../../../context/chain";
 import isNil from "lodash.isnil";
 import { useTrack } from "../../../../context/post";
 import { GreyText } from "./styled";
 import BlockPeriod from "./blockPeriod";
-
-// submissionDeposit
-// decisionDeposit
-// Decision Period
-// Confirming Period
-const ValueWrapper = styled(Flex)`
-  gap: 8px;
-`;
-
-const BondValueWrapper = styled(Flex)`
-  gap: 8px;
-  &::before {
-    content: "·";
-    color: ${(p) => p.theme.textTertiary};
-  }
-`;
-
-function BondValue({ deposit, decimals, symbol }) {
-  const value = `${toPrecision(deposit, decimals)} ${symbol}`;
-
-  return (
-    <BondValueWrapper>
-      <span>{value}</span>
-      <Tooltip content={`Bond: ${value}`} />
-    </BondValueWrapper>
-  );
-}
+import UserBond from "./userBond";
 
 function getEnactmentValue(enactment = {}) {
   let value = "";
@@ -61,10 +27,6 @@ function getEnactmentValue(enactment = {}) {
 }
 
 export default function Gov2ReferendumMetadata({ detail }) {
-  const blockTime = useSelector(blockTimeSelector);
-  const decimals = useDecimals();
-  const symbol = useVoteSymbol();
-
   const onchainData = detail?.onchainData ?? {};
   const info = onchainData?.info ?? {};
   const proposal = onchainData?.proposal ?? {};
@@ -74,26 +36,18 @@ export default function Gov2ReferendumMetadata({ detail }) {
   const metadata = [
     [
       "Submission",
-      <ValueWrapper>
-        <User add={info?.submissionDeposit?.who} fontSize={14} />
-        <BondValue
-          deposit={info?.submissionDeposit?.amount}
-          decimals={decimals}
-          symbol={symbol}
-        />
-      </ValueWrapper>,
+      <UserBond
+        address={info?.submissionDeposit?.who}
+        bond={info?.submissionDeposit?.amount}
+      />,
     ],
     [
       "Decision",
       info?.decisionDeposit ? (
-        <ValueWrapper>
-          <User add={info?.decisionDeposit?.who} fontSize={14} />
-          <BondValue
-            deposit={info?.decisionDeposit?.amount}
-            decimals={decimals}
-            symbol={symbol}
-          />
-        </ValueWrapper>
+        <UserBond
+          address={info?.submissionDeposit?.who}
+          bond={info?.submissionDeposit?.amount}
+        />
       ) : (
         <GreyText>--</GreyText>
       ),
