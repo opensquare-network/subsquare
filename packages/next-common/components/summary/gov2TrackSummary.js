@@ -32,7 +32,6 @@ const Description = styled.p`
 
 const SummariesWrapper = styled.div`
   display: flex;
-  gap: 20px;
 `;
 
 const SummaryItem = styled.div`
