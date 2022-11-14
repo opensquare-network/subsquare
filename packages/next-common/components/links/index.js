@@ -4,6 +4,7 @@ import Flex from "../styled/flex";
 import DotreasuryAccountLink from "./dotreasuryLink";
 import SubScanLink, { SubScanAccountLink } from "./subscanLink";
 import isEmpty from "lodash.isempty";
+import Statescan from "./statescan";
 
 const Wrapper = styled(Flex)`
   height: 20px;
@@ -21,6 +22,7 @@ export default function ExternalLinks({ indexer = {}, style = {} }) {
   return (
     <Wrapper style={style}>
       <SubScanLink indexer={indexer} />
+      <Statescan indexer={indexer} />
     </Wrapper>
   );
 }

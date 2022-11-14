@@ -1,7 +1,7 @@
 import React from "react";
 import LinkSubScanIcon from "../../assets/imgs/icons/link-subscan.svg";
 import LinkSubScanIconActive from "../../assets/imgs/icons/link-subscan-active.svg";
-import ThirdPartyLink from "./thirdPartyLink";
+import { SubscanLinkWrapper } from "./thirdPartyLink";
 import { useChain, useChainSettings } from "../../context/chain";
 import getChainSettings from "../../utils/consts/settings";
 import isNil from "lodash.isnil";
@@ -22,10 +22,10 @@ function SubScanLink({ indexer = {} }) {
   }
 
   return (
-    <ThirdPartyLink href={url} target="_blank" rel="noreferrer">
+    <SubscanLinkWrapper href={url} target="_blank" rel="noreferrer">
       <LinkSubScanIcon />
       <LinkSubScanIconActive />
-    </ThirdPartyLink>
+    </SubscanLinkWrapper>
   );
 }
 
@@ -39,13 +39,13 @@ export function SubScanAccountLink({ address }) {
   }
 
   return (
-    <ThirdPartyLink
+    <SubscanLinkWrapper
       href={`https://${chain}.subscan.io/account/${address}`}
       target="_blank"
       rel="noreferrer"
     >
       <LinkSubScanIcon />
       <LinkSubScanIconActive />
-    </ThirdPartyLink>
+    </SubscanLinkWrapper>
   );
 }
