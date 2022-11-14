@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { p_12_bold } from "../../styles/componentCss";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
 
 export const SummaryWrapper = styled.div`
@@ -25,13 +26,11 @@ export const SummaryCard = styled(SecondaryCard)`
 `;
 
 export const SummaryTitle = styled.div`
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 100%;
   letter-spacing: 0.16em;
   color: ${(props) => props.theme.textTertiary};
   margin-bottom: 8px;
   text-transform: uppercase;
+  ${p_12_bold};
 `;
 
 export const SummaryGreyText = styled.span`
