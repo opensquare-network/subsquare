@@ -52,14 +52,3 @@ export function usePostState() {
   const post = useContext(PostContext);
   return post?.onchainData?.state?.state || post?.onchainData?.state?.name;
 }
-
-export function useTrack() {
-  const { trackInfo } = usePostOnChainData();
-  if (!trackInfo) {
-    throw new Error(
-      "No track info, make sure track existed before using `useTrack`"
-    );
-  }
-
-  return trackInfo;
-}
