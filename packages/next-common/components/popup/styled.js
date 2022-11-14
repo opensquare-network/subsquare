@@ -149,9 +149,6 @@ export const DelegatingValue = styled.div`
 
 export const ButtonWrapper = styled.div`
   display: flex;
-  > :first-child {
-    background: ${(props) => props.theme.secondaryGreen500};
-  }
   > * {
     flex-grow: 1 !important;
   }
