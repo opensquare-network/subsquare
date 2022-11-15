@@ -12,7 +12,7 @@ export default function TimeDuration({ blocks = 0 }) {
     const time = extractTime(Math.abs(value));
     const { days, hours } = time;
     return [
-      days ? (days > 1 ? `${days}d` : "1day") : null,
+      days ? `${days}d` : null,
       hours ? (hours > 1 ? `${hours}hrs` : "1hr") : null,
     ]
       .filter((s) => !!s)
