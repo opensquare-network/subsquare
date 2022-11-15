@@ -1,8 +1,4 @@
 import { usePostOnChainData } from "../index";
-import { estimateBlocksTime } from "../../../utils";
-import { useMemo } from "react";
-import { useSelector } from "react-redux";
-import { blockTimeSelector } from "../../../store/reducers/chainSlice";
 
 export function useTrack() {
   const { trackInfo } = usePostOnChainData();
@@ -25,24 +21,4 @@ export function useDecision() {
 export function useConfirm() {
   const track = useTrack();
   return track.confirmPeriod;
-}
-
-export function useDecisionTime() {
-  const blockTime = useSelector(blockTimeSelector);
-  const decision = useDecision();
-
-  return useMemo(() => {
-    const timeArr = estimateBlocksTime(decision, blockTime);
-    return timeArr.join(" ");
-  }, [decision, blockTime]);
-}
-
-export function useConfirmTime() {
-  const blockTime = useSelector(blockTimeSelector);
-  const confirm = useConfirm();
-
-  return useMemo(() => {
-    const timeArr = estimateBlocksTime(confirm, blockTime);
-    return timeArr.join(" ");
-  }, [confirm, blockTime]);
 }
