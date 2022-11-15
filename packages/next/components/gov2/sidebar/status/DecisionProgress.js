@@ -31,7 +31,7 @@ export default function DecisionProgress() {
 
     const gone = latestHeight - decidingSince;
     return Number((gone / decisionBlocks) * 100).toFixed(2);
-  }, [latestHeight, decidingSince, decisionBlocks]);
+  }, [latestHeight, decidingSince, decisionBlocks, decisionEnd]);
 
   return (
     <ProgressGroup>

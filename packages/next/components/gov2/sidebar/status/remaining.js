@@ -15,5 +15,5 @@ export default function Remaining({ blocks = 0 }) {
       minutes ? `${minutes}mins` : "",
       "remaining",
     ].join(" ");
-  }, [blocks, blockTime]);
+  }, [blocks, blockTime, days, hours, minutes]);
 }
