@@ -37,7 +37,7 @@ const Tooltip = styled(TooltipOrigin)`
   display: block;
 `;
 
-export default function Gov2Status({ detail }) {
+export default function Gov2Status() {
   const { secondaryGreen500, secondaryGreen300 } = useTheme();
   const state = usePostState();
   const decisionTime = useDecisionTime();
@@ -86,8 +86,8 @@ export default function Gov2Status({ detail }) {
               >
                 <Progress
                   percentage={confirmPercentage}
-                  offsetLeft={35}
-                  offsetRight={50}
+                  offsetLeft={50}
+                  offsetRight={35}
                   fg={secondaryGreen500}
                   bg={secondaryGreen300}
                 />

@@ -246,28 +246,3 @@ export function isSameAddress(addr1, addr2) {
 export function isAddressInGroup(addr, addresses = []) {
   return addresses.some((item) => isSameAddress(addr, item));
 }
-
-export function estimateRemainBlockTime(blocks, blockTime, startTimeMs) {
-  const value = new BigNumber(blockTime).multipliedBy(blocks).toNumber();
-  const time = extractTime(Math.abs(value));
-
-  const now = dayjs();
-  const endDate = dayjs(startTimeMs).add(dayjs.duration(time));
-
-  const remainMs = endDate.diff(now);
-  const remainTime = extractTime(remainMs);
-  const { days, hours, minutes } = remainTime;
-
-  const text = [
-    days ? `${days}d` : "",
-    hours ? `${hours}hrs` : "",
-    minutes ? `${minutes}mins` : "",
-    "remaining",
-  ].join(" ");
-
-  return {
-    ...remainTime,
-    remainMs,
-    text,
-  };
-}
