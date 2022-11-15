@@ -14,7 +14,7 @@ import {
   homeFoldedMenusSelector,
   setHomeFoldedMenu,
 } from "../../store/reducers/settingSlice";
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 
 const Wrapper = styled.div`
   padding-top: 41px;
@@ -110,14 +110,6 @@ const Item = styled.div`
     `}
 `;
 
-const ItemGroup = styled.div`
-  ${(p) =>
-    p.folded &&
-    css`
-      display: none;
-    `}
-`;
-
 const FoldableButton = styled.button`
   background: none;
   border: none;
@@ -155,7 +147,7 @@ function MenuGroup({ menu, foldable }) {
 
   const [folded, setFolded] = useState(false);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (hasMenuItems) {
       setFolded(foldedMenus.includes(menu.name));
     } else {
@@ -189,7 +181,10 @@ function MenuGroup({ menu, foldable }) {
         </TitleGroup>
       )}
 
-      <ItemGroup folded={menu.name && folded}>
+      <div
+        className="menu-item-group"
+        style={{ display: folded ? "none" : "block" }}
+      >
         {menu.items.map((item, index) => {
           const isExternalLink = (item.pathname || "").startsWith("http");
 
@@ -216,7 +211,7 @@ function MenuGroup({ menu, foldable }) {
             </Fragment>
           );
         })}
-      </ItemGroup>
+      </div>
     </div>
   );
 }
