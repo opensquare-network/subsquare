@@ -61,7 +61,7 @@ export const p_12_medium = css`
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
-  line-height: 12px;
+  line-height: 16px;
 `;
 
 export const p_12_normal = css`
