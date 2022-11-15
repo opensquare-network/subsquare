@@ -71,17 +71,17 @@ export default function useTechCommMotionOptions({
         <div>New vote on motions</div>
         <Toggle
           disabled={disabled}
-          isOn={tcMotionApproved}
-          onToggle={changeGuard(setTcMotionApproved)}
+          isOn={tcMotionVoted}
+          onToggle={changeGuard(setTcMotionVoted)}
         />
       </ToggleItem>
       <ToggleItem>
         <div>Motion approved or disapproved</div>
         <Toggle
           disabled={disabled}
-          isOn={tcMotionVoted || tcMotionDisApproved}
+          isOn={tcMotionApproved || tcMotionDisApproved}
           onToggle={changeGuard((isOn) => {
-            setTcMotionVoted(isOn);
+            setTcMotionApproved(isOn);
             setTcMotionDisApproved(isOn);
           })}
         />
