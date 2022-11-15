@@ -20,6 +20,8 @@ import {
   useDecisionTime,
   useTrack,
 } from "next-common/context/post/gov2/track";
+import useDecisionPercentage from "./useDecisionPercentage";
+import useConfirmPercentage from "./useConfirmPercentage";
 
 const Wrapper = styled.div``;
 
@@ -75,9 +77,6 @@ export default function Gov2Status({ detail }) {
     onchainData.timeline
   ).pop();
 
-  const decisionPeriodMs = new BigNumber(blockTime)
-    .multipliedBy(trackInfo.decisionPeriod)
-    .toNumber();
   const confirmPeriodMs = new BigNumber(blockTime)
     .multipliedBy(trackInfo.confirmPeriod)
     .toNumber();
@@ -99,10 +98,8 @@ export default function Gov2Status({ detail }) {
         : latestConfirmStartedState?.indexer?.blockTime
     );
 
-  const decisionPeriodPercentage =
-    100 - Math.floor((remainDecisionMs / decisionPeriodMs) * 100);
-  const confirmPeriodPercentage =
-    100 - Math.floor((remainConfirmMs / confirmPeriodMs) * 100);
+  const decisionPercentage = useDecisionPercentage();
+  const confirmPercentage = useConfirmPercentage();
 
   return (
     <Wrapper>
@@ -112,7 +109,7 @@ export default function Gov2Status({ detail }) {
         <div>
           <ProgressGroup>
             <Tooltip content={remainDecisionMs > 0 && remainDecisionPeriodTime}>
-              <Progress percentage={decisionPeriodPercentage} />
+              <Progress percentage={decisionPercentage} />
             </Tooltip>
             <ProgressInfo>
               <p>Decision Period</p>
@@ -124,7 +121,7 @@ export default function Gov2Status({ detail }) {
             <ProgressGroup>
               <Tooltip content={remainConfirmMs > 0 && remainConfirmPeriodTime}>
                 <Progress
-                  percentage={confirmPeriodPercentage}
+                  percentage={confirmPercentage}
                   offsetLeft={35}
                   offsetRight={50}
                   fg={secondaryGreen500}

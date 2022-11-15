@@ -52,3 +52,11 @@ export function usePostState() {
   const post = useContext(PostContext);
   return post?.onchainData?.state?.state || post?.onchainData?.state?.name;
 }
+
+export function useOnchainData() {
+  const post = useContext(PostContext);
+  if (!post.onchainData) {
+    throw new Error("No on chain data when call `useOnchainData`");
+  }
+  return post.onchainData;
+}
