@@ -3,7 +3,10 @@ import { useEffect, useState } from "react";
 
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import nextApi, { ssrNextApi } from "next-common/services/nextApi";
-import { newErrorToast, newSuccessToast, } from "next-common/store/reducers/toastSlice";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import NextHead from "next-common/components/nextHead";
 import { isKeyRegisteredUser } from "next-common/utils";
@@ -18,9 +21,15 @@ import useTreasuryTipOptions from "next-common/components/setting/notification/u
 import useCouncilMotionOptions from "next-common/components/setting/notification/useCouncilMotionOptions";
 import useTreasuryBountyOptions from "next-common/components/setting/notification/useTreasuryBountyOptions";
 import useTreasuryChildBountyOptions from "next-common/components/setting/notification/useTreasuryChildBountyOptions";
+import useTechCommMotionOptions from "next-common/components/setting/notification/useTechCommMotionOptions";
+import useDemocracyProposalOptions from "next-common/components/setting/notification/useDemocracyProposalOptions";
+import useDemocracyReferendumOptions from "next-common/components/setting/notification/useDemocracyReferendumOptions";
 import Cookies from "cookies";
 import { CACHE_KEY } from "next-common/utils/constants";
-import { Label, Sections } from "next-common/components/setting/notification/styled";
+import {
+  Label,
+  Sections,
+} from "next-common/components/setting/notification/styled";
 import homeMenus from "next-common/utils/consts/menu";
 
 const Wrapper = styled.div`
@@ -75,209 +84,337 @@ const Info = styled.div`
   display: flex;
   padding: 10px 16px;
 
-  background: ${p => p.theme.grey100Bg};
+  background: ${(p) => p.theme.grey100Bg};
   border-radius: 4px;
 
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
 
-  color: ${p => p.theme.textSecondary};
+  color: ${(p) => p.theme.textSecondary};
 
   margin-bottom: 16px;
 `;
 
 function checkSubMenu(menus, menuName) {
   const chain = process.env.NEXT_PUBLIC_CHAIN;
-  const menu = menus?.find(item => item.name === menuName);
+  const menu = menus?.find((item) => item.name === menuName);
   const hasMenu = menu && !menu.excludeToChains?.includes(chain);
   return { hasMenu, menu };
 }
 
-export default withLoginUserRedux(({ loginUser, chain, subscription: _subscription, unsubscribe }) => {
-  const dispatch = useDispatch();
-  const [saving, setSaving] = useState(false);
-  const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
-  const [subscription, setSubscription] = useState(_subscription);
+export default withLoginUserRedux(
+  ({ loginUser, chain, subscription: _subscription, unsubscribe }) => {
+    const dispatch = useDispatch();
+    const [saving, setSaving] = useState(false);
+    const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
+    const [subscription, setSubscription] = useState(_subscription);
 
-  const { hasMenu: hasTreasury, menu: treasuryMenu } = checkSubMenu(homeMenus, "TREASURY");
-  const { hasMenu: hasTreasuryProposal } = checkSubMenu(treasuryMenu?.items, "Proposals");
-  const { hasMenu: hasTreasuryTip } = checkSubMenu(treasuryMenu?.items, "Tips");
-  const { hasMenu: hasTreasuryBounty } = checkSubMenu(treasuryMenu?.items, "Bounties");
-  const { hasMenu: hasTreasuryChildBounty } = checkSubMenu(treasuryMenu?.items, "Child Bounties");
-  const { hasMenu: hasCouncil, menu: councilMenu } = checkSubMenu(homeMenus, "COUNCIL");
-  const { hasMenu: hasCouncilMotion } = checkSubMenu(councilMenu?.items, "Motions");
+    const { hasMenu: hasTreasury, menu: treasuryMenu } = checkSubMenu(
+      homeMenus,
+      "TREASURY"
+    );
+    const { hasMenu: hasTreasuryProposal } = checkSubMenu(
+      treasuryMenu?.items,
+      "Proposals"
+    );
+    const { hasMenu: hasTreasuryTip } = checkSubMenu(
+      treasuryMenu?.items,
+      "Tips"
+    );
+    const { hasMenu: hasTreasuryBounty } = checkSubMenu(
+      treasuryMenu?.items,
+      "Bounties"
+    );
+    const { hasMenu: hasTreasuryChildBounty } = checkSubMenu(
+      treasuryMenu?.items,
+      "Child Bounties"
+    );
+    const { hasMenu: hasCouncil, menu: councilMenu } = checkSubMenu(
+      homeMenus,
+      "COUNCIL"
+    );
+    const { hasMenu: hasCouncilMotion } = checkSubMenu(
+      councilMenu?.items,
+      "Motions"
+    );
+    const { hasMenu: hasTechComm, menu: techCommMenu } = checkSubMenu(
+      homeMenus,
+      "TECH.COMM."
+    );
+    const { hasMenu: hasTechCommMotion } = checkSubMenu(
+      techCommMenu?.items,
+      "Proposals"
+    );
+    const { hasMenu: hasDemocracy, menu: democracyMenu } = checkSubMenu(
+      homeMenus,
+      "DEMOCRACY"
+    );
+    const { hasMenu: hasDemocracyProposal } = checkSubMenu(
+      democracyMenu?.items,
+      "Proposals"
+    );
+    const { hasMenu: hasDemocracyReferenda } = checkSubMenu(
+      democracyMenu?.items,
+      "Referenda"
+    );
 
-  const emailVerified =
-    loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
-  const isVerifiedUser = loginUser?.emailVerified;
+    const emailVerified =
+      loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
+    const isVerifiedUser = loginUser?.emailVerified;
 
-  const {
-    treasuryProposalOptionsComponent,
-    getTreasuryProposalOptionValues,
-    isChanged: isTreasuryProposalOptionsChanged,
-  } = useTreasuryProposalOptions({
-    disabled: !isVerifiedUser,
-    saving,
-    treasuryProposalProposed: subscription?.treasuryProposalProposed,
-    treasuryProposalApproved: subscription?.treasuryProposalApproved,
-    treasuryProposalAwarded: subscription?.treasuryProposalAwarded,
-    treasuryProposalRejected: subscription?.treasuryProposalRejected,
-  });
+    const {
+      treasuryProposalOptionsComponent,
+      getTreasuryProposalOptionValues,
+      isChanged: isTreasuryProposalOptionsChanged,
+    } = useTreasuryProposalOptions({
+      disabled: !isVerifiedUser,
+      saving,
+      treasuryProposalProposed: subscription?.treasuryProposalProposed,
+      treasuryProposalApproved: subscription?.treasuryProposalApproved,
+      treasuryProposalAwarded: subscription?.treasuryProposalAwarded,
+      treasuryProposalRejected: subscription?.treasuryProposalRejected,
+    });
 
-  const {
-    treasuryTipOptionsComponent,
-    getTreasuryTipOptionValues,
-    isChanged: isTreasuryTipOptionsChanged,
-  } = useTreasuryTipOptions({
-    disabled: !isVerifiedUser,
-    saving,
-    treasuryTipNew: subscription?.treasuryTipNew,
-    treasuryTipTip: subscription?.treasuryTipTip,
-    treasuryTipClosed: subscription?.treasuryTipClosed,
-    treasuryTipRetracted: subscription?.treasuryTipRetracted
-  });
+    const {
+      treasuryTipOptionsComponent,
+      getTreasuryTipOptionValues,
+      isChanged: isTreasuryTipOptionsChanged,
+    } = useTreasuryTipOptions({
+      disabled: !isVerifiedUser,
+      saving,
+      treasuryTipNew: subscription?.treasuryTipNew,
+      treasuryTipTip: subscription?.treasuryTipTip,
+      treasuryTipClosed: subscription?.treasuryTipClosed,
+      treasuryTipRetracted: subscription?.treasuryTipRetracted,
+    });
 
-  const {
-    treasuryBountyOptionsComponent,
-    getTreasuryBountyOptionValues,
-    isChanged: isTreasuryBountyOptionsChanged,
-  } = useTreasuryBountyOptions({
-    disabled: !isVerifiedUser,
-    saving,
-    treasuryBountyProposed: subscription?.treasuryBountyProposed,
-    treasuryBountyAwarded: subscription?.treasuryBountyAwarded,
-    treasuryBountyApproved: subscription?.treasuryBountyApproved,
-    treasuryBountyCanceled: subscription?.treasuryBountyCanceled,
-    treasuryBountyClaimed: subscription?.treasuryBountyClaimed,
-    treasuryBountyRejected: subscription?.treasuryBountyRejected,
-  });
+    const {
+      treasuryBountyOptionsComponent,
+      getTreasuryBountyOptionValues,
+      isChanged: isTreasuryBountyOptionsChanged,
+    } = useTreasuryBountyOptions({
+      disabled: !isVerifiedUser,
+      saving,
+      treasuryBountyProposed: subscription?.treasuryBountyProposed,
+      treasuryBountyAwarded: subscription?.treasuryBountyAwarded,
+      treasuryBountyApproved: subscription?.treasuryBountyApproved,
+      treasuryBountyCanceled: subscription?.treasuryBountyCanceled,
+      treasuryBountyClaimed: subscription?.treasuryBountyClaimed,
+      treasuryBountyRejected: subscription?.treasuryBountyRejected,
+    });
 
-  const {
-    treasuryChildBountyOptionsComponent,
-    getTreasuryChildBountyOptionValues,
-    isChanged: isTreasuryChildBountyOptionsChanged,
-  } = useTreasuryChildBountyOptions({
-    disabled: !isVerifiedUser,
-    saving,
-    treasuryChildBountyAdded: subscription?.treasuryChildBountyAdded,
-    treasuryChildBountyAwarded: subscription?.treasuryChildBountyAwarded,
-    treasuryChildBountyCanceled: subscription?.treasuryChildBountyCanceled,
-    treasuryChildBountyClaimed: subscription?.treasuryChildBountyClaimed,
-  });
+    const {
+      treasuryChildBountyOptionsComponent,
+      getTreasuryChildBountyOptionValues,
+      isChanged: isTreasuryChildBountyOptionsChanged,
+    } = useTreasuryChildBountyOptions({
+      disabled: !isVerifiedUser,
+      saving,
+      treasuryChildBountyAdded: subscription?.treasuryChildBountyAdded,
+      treasuryChildBountyAwarded: subscription?.treasuryChildBountyAwarded,
+      treasuryChildBountyCanceled: subscription?.treasuryChildBountyCanceled,
+      treasuryChildBountyClaimed: subscription?.treasuryChildBountyClaimed,
+    });
 
-  const {
-    councilMotionOptionsComponent,
-    getCouncilMotionOptionValues,
-    isChanged: isCouncilMotionOptionsChanged,
-  } = useCouncilMotionOptions({
-    disabled: !isVerifiedUser,
-    saving,
-    councilMotionProposed: subscription?.councilMotionProposed,
-    councilMotionVoted: subscription?.councilMotionVoted,
-    councilMotionApproved: subscription?.councilMotionApproved,
-    councilMotionDisApproved: subscription?.councilMotionDisApproved,
-  });
+    const {
+      councilMotionOptionsComponent,
+      getCouncilMotionOptionValues,
+      isChanged: isCouncilMotionOptionsChanged,
+    } = useCouncilMotionOptions({
+      disabled: !isVerifiedUser,
+      saving,
+      councilMotionProposed: subscription?.councilMotionProposed,
+      councilMotionVoted: subscription?.councilMotionVoted,
+      councilMotionApproved: subscription?.councilMotionApproved,
+      councilMotionDisApproved: subscription?.councilMotionDisApproved,
+    });
 
-  const canSave = isVerifiedUser && (
-    isTreasuryProposalOptionsChanged ||
-    isTreasuryTipOptionsChanged ||
-    isCouncilMotionOptionsChanged ||
-    isTreasuryBountyOptionsChanged ||
-    isTreasuryChildBountyOptionsChanged
-  );
+    const {
+      techCommMotionOptionsComponent,
+      getTechCommMotionOptionValues,
+      isChanged: isTechCommMotionOptionsChanged,
+    } = useTechCommMotionOptions({
+      disabled: !isVerifiedUser,
+      saving,
+      tcMotionProposed: subscription?.tcMotionProposed,
+      tcMotionVoted: subscription?.tcMotionVoted,
+      tcMotionApproved: subscription?.tcMotionApproved,
+      tcMotionDisApproved: subscription?.tcMotionDisApproved,
+    });
 
-  const router = useRouter();
+    const {
+      democracyProposalOptionsComponent,
+      getDemocracyProposalOptionValues,
+      isChanged: isDemocracyProposalOptionsChanged,
+    } = useDemocracyProposalOptions({
+      disabled: !isVerifiedUser,
+      saving,
+      democracyProposalProposed: subscription?.democracyProposalProposed,
+      democracyProposalCanceled: subscription?.democracyProposalCanceled,
+    });
 
-  useEffect(() => {
-    if (unsubscribe) {
-      if (loginUser === null) {
-        setShowLoginToUnsubscribe(true);
+    const {
+      democracyReferendumOptionsComponent,
+      getDemocracyReferendumOptionValues,
+      isChanged: isDemocracyReferendumOptionsChanged,
+    } = useDemocracyReferendumOptions({
+      disabled: !isVerifiedUser,
+      saving,
+      democracyReferendumStarted: subscription?.democracyReferendumStarted,
+      democracyReferendumPassed: subscription?.democracyReferendumPassed,
+      democracyReferendumNotPassed: subscription?.democracyReferendumNotPassed,
+      democracyReferendumCancelled: subscription?.democracyReferendumCancelled,
+      democracyReferendumExecuted: subscription?.democracyReferendumExecuted,
+      democracyReferendumNotExecuted:
+        subscription?.democracyReferendumNotExecuted,
+      democracyReferendumFastTrack: subscription?.democracyReferendumFastTrack,
+    });
+
+    const canSave =
+      isVerifiedUser &&
+      (isTreasuryProposalOptionsChanged ||
+        isTreasuryTipOptionsChanged ||
+        isCouncilMotionOptionsChanged ||
+        isTreasuryBountyOptionsChanged ||
+        isTreasuryChildBountyOptionsChanged ||
+        isTechCommMotionOptionsChanged ||
+        isDemocracyProposalOptionsChanged ||
+        isDemocracyReferendumOptionsChanged);
+
+    const router = useRouter();
+
+    useEffect(() => {
+      if (unsubscribe) {
+        if (loginUser === null) {
+          setShowLoginToUnsubscribe(true);
+        }
+        return;
       }
-      return;
-    }
 
-    if (loginUser === null) {
-      router.push("/login");
-    }
-  }, [loginUser, router, unsubscribe]);
+      if (loginUser === null) {
+        router.push("/login");
+      }
+    }, [loginUser, router, unsubscribe]);
 
-  const fetchSubscriptionSetting = async () => {
-    const { result } = await nextApi.fetch(`user/subscription`);
-    if (result) {
-      setSubscription(result);
-    }
-  }
-
-  const updateNotificationSetting = async () => {
-    if (saving) {
-      return;
-    }
-
-    setSaving(true);
-
-    const data = {
-      ...(hasTreasury && hasTreasuryProposal ? getTreasuryProposalOptionValues() : {}),
-      ...(hasTreasury && hasTreasuryTip ? getTreasuryTipOptionValues() : {}),
-      ...(hasTreasury && hasTreasuryBounty ? getTreasuryBountyOptionValues() : {}),
-      ...(hasTreasury && hasTreasuryChildBounty ? getTreasuryChildBountyOptionValues() : {}),
-      ...(hasCouncil && hasCouncilMotion ? getCouncilMotionOptionValues() : {}),
+    const fetchSubscriptionSetting = async () => {
+      const { result } = await nextApi.fetch(`user/subscription`);
+      if (result) {
+        setSubscription(result);
+      }
     };
 
-    const { result, error } = await nextApi.patch("user/subscription", data);
-    if (result) {
-      dispatch(newSuccessToast("Settings saved"));
-      await fetchSubscriptionSetting();
-    } else if (error) {
-      dispatch(newErrorToast(error.message));
+    const updateNotificationSetting = async () => {
+      if (saving) {
+        return;
+      }
+
+      setSaving(true);
+
+      const data = {
+        ...(hasTreasury && hasTreasuryProposal
+          ? getTreasuryProposalOptionValues()
+          : {}),
+        ...(hasTreasury && hasTreasuryTip ? getTreasuryTipOptionValues() : {}),
+        ...(hasTreasury && hasTreasuryBounty
+          ? getTreasuryBountyOptionValues()
+          : {}),
+        ...(hasTreasury && hasTreasuryChildBounty
+          ? getTreasuryChildBountyOptionValues()
+          : {}),
+        ...(hasCouncil && hasCouncilMotion
+          ? getCouncilMotionOptionValues()
+          : {}),
+        ...(hasTechComm && hasTechCommMotion
+          ? getTechCommMotionOptionValues()
+          : {}),
+        ...(hasDemocracy && hasDemocracyProposal
+          ? getDemocracyProposalOptionValues()
+          : {}),
+        ...(hasDemocracy && hasDemocracyReferenda
+          ? getDemocracyReferendumOptionValues()
+          : {}),
+      };
+
+      const { result, error } = await nextApi.patch("user/subscription", data);
+      if (result) {
+        dispatch(newSuccessToast("Settings saved"));
+        await fetchSubscriptionSetting();
+      } else if (error) {
+        dispatch(newErrorToast(error.message));
+      }
+      setSaving(false);
+    };
+
+    let treasuryOptions = null;
+    if (
+      hasTreasury &&
+      (hasTreasuryProposal ||
+        hasTreasuryTip ||
+        hasTreasuryBounty ||
+        hasTreasuryChildBounty)
+    ) {
+      treasuryOptions = (
+        <div>
+          <Label>Treasury</Label>
+          <Sections>
+            {hasTreasuryProposal && treasuryProposalOptionsComponent}
+            {hasTreasuryTip && treasuryTipOptionsComponent}
+            {hasTreasuryBounty && treasuryBountyOptionsComponent}
+            {hasTreasuryChildBounty && treasuryChildBountyOptionsComponent}
+          </Sections>
+        </div>
+      );
     }
-    setSaving(false);
-  };
 
-  let treasuryOptions = null;
-  if (hasTreasury && (
-    hasTreasuryProposal ||
-    hasTreasuryTip ||
-    hasTreasuryBounty ||
-    hasTreasuryChildBounty
-  )) {
-    treasuryOptions = (
-      <div>
-        <Label>Treasury</Label>
-        <Sections>
-          {hasTreasuryProposal && treasuryProposalOptionsComponent}
-          {hasTreasuryTip && treasuryTipOptionsComponent}
-          {hasTreasuryBounty && treasuryBountyOptionsComponent}
-          {hasTreasuryChildBounty && treasuryChildBountyOptionsComponent}
-        </Sections>
-      </div>
-    );
-  }
+    let councilOptions = null;
+    if (hasCouncil && hasCouncilMotion) {
+      councilOptions = (
+        <div>
+          <Label>Council</Label>
+          <Sections>
+            {hasCouncilMotion && councilMotionOptionsComponent}
+          </Sections>
+        </div>
+      );
+    }
 
-  let councilOptions = null;
-  if (hasCouncil && hasCouncilMotion) {
-    councilOptions = (
-      <div>
-        <Label>Council</Label>
-        <Sections>
-          {hasCouncilMotion && councilMotionOptionsComponent}
-        </Sections>
-      </div>
-    );
-  }
+    let techCommOptions = null;
+    if (hasTechComm && hasTechCommMotion) {
+      techCommOptions = (
+        <div>
+          <Label>Tech-Comm.</Label>
+          <Sections>
+            {hasTechCommMotion && techCommMotionOptionsComponent}
+          </Sections>
+        </div>
+      );
+    }
 
-  return (
-    <SettingsLayout user={loginUser}>
-      <NextHead title={`Settings`} desc={``} />
-      <Wrapper>
-        <TitleContainer>Subscription</TitleContainer>
-        <ContentWrapper>
-          {showLoginToUnsubscribe ? (
-            <WarningMessage>
-              Please login to unsubscribe notifications
-            </WarningMessage>
-          ) : (
-            emailVerified ? (
+    let democracyOptions = null;
+    if (hasDemocracy && (hasDemocracyProposal || hasDemocracyReferenda)) {
+      democracyOptions = (
+        <div>
+          <Label>Democracy</Label>
+          <Sections>
+            {hasDemocracyProposal && democracyProposalOptionsComponent}
+            {hasDemocracyReferenda && democracyReferendumOptionsComponent}
+          </Sections>
+        </div>
+      );
+    }
+
+    return (
+      <SettingsLayout user={loginUser}>
+        <NextHead title={`Settings`} desc={``} />
+        <Wrapper>
+          <TitleContainer>Subscription</TitleContainer>
+          <ContentWrapper>
+            {showLoginToUnsubscribe ? (
+              <WarningMessage>
+                Please login to unsubscribe notifications
+              </WarningMessage>
+            ) : emailVerified ? (
               <WarningMessage>
                 Please set the email to receive notifications
               </WarningMessage>
@@ -285,29 +422,31 @@ export default withLoginUserRedux(({ loginUser, chain, subscription: _subscripti
               <Info>
                 Subscribe to messages to receive email from activity changes.
               </Info>
-            )
-          )}
+            )}
 
-          <Options>
-            {treasuryOptions}
-            {councilOptions}
-          </Options>
+            <Options>
+              {treasuryOptions}
+              {councilOptions}
+              {techCommOptions}
+              {democracyOptions}
+            </Options>
 
-          <Divider margin={24} />
-          <ButtonWrapper>
-            <SecondaryButton
-              disabled={!canSave}
-              onClick={updateNotificationSetting}
-              isLoading={saving}
-            >
-              Save
-            </SecondaryButton>
-          </ButtonWrapper>
-        </ContentWrapper>
-      </Wrapper>
-    </SettingsLayout>
-  );
-});
+            <Divider margin={24} />
+            <ButtonWrapper>
+              <SecondaryButton
+                disabled={!canSave}
+                onClick={updateNotificationSetting}
+                isLoading={saving}
+              >
+                Save
+              </SecondaryButton>
+            </ButtonWrapper>
+          </ContentWrapper>
+        </Wrapper>
+      </SettingsLayout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
@@ -324,7 +463,11 @@ export const getServerSideProps = withLoginUser(async (context) => {
     };
   }
 
-  const { result: subscription } = await ssrNextApi.fetch(`user/subscription`, {}, options);
+  const { result: subscription } = await ssrNextApi.fetch(
+    `user/subscription`,
+    {},
+    options
+  );
 
   return {
     props: {

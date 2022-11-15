@@ -4,17 +4,24 @@ import { useCallback, useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
 
 export default function useTreasuryTipOptions({ saving, disabled, ...data }) {
-  const [treasuryTipNew, setTreasuryTipNew] = useState(data.treasuryTipNew?.isOn);
-  const [treasuryTipTip, setTreasuryTipTip] = useState(data.treasuryTipTip?.isOn);
-  const [treasuryTipClosed, setTreasuryTipClosed] = useState(data.treasuryTipClosed?.isOn);
-  const [treasuryTipRetracted, setTreasuryTipRetracted] = useState(data.treasuryTipRetracted?.isOn);
-
-  const isChanged = (
-    treasuryTipNew !== data.treasuryTipNew?.isOn ||
-    treasuryTipTip !== data.treasuryTipTip?.isOn ||
-    treasuryTipClosed !== data.treasuryTipClosed?.isOn ||
-    treasuryTipRetracted !== data.treasuryTipRetracted?.isOn
+  const [treasuryTipNew, setTreasuryTipNew] = useState(
+    !!data.treasuryTipNew?.isOn
   );
+  const [treasuryTipTip, setTreasuryTipTip] = useState(
+    !!data.treasuryTipTip?.isOn
+  );
+  const [treasuryTipClosed, setTreasuryTipClosed] = useState(
+    !!data.treasuryTipClosed?.isOn
+  );
+  const [treasuryTipRetracted, setTreasuryTipRetracted] = useState(
+    !!data.treasuryTipRetracted?.isOn
+  );
+
+  const isChanged =
+    treasuryTipNew !== !!data.treasuryTipNew?.isOn ||
+    treasuryTipTip !== !!data.treasuryTipTip?.isOn ||
+    treasuryTipClosed !== !!data.treasuryTipClosed?.isOn ||
+    treasuryTipRetracted !== !!data.treasuryTipRetracted?.isOn;
 
   const changeGuard = (setter) => (data) => {
     if (!saving && !disabled) {
@@ -29,12 +36,7 @@ export default function useTreasuryTipOptions({ saving, disabled, ...data }) {
       treasuryTipClosed,
       treasuryTipRetracted,
     }),
-    [
-      treasuryTipNew,
-      treasuryTipTip,
-      treasuryTipClosed,
-      treasuryTipRetracted,
-    ]
+    [treasuryTipNew, treasuryTipTip, treasuryTipClosed, treasuryTipRetracted]
   );
 
   const treasuryTipOptionsComponent = (
