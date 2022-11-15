@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import ExternalLink from "../icons/externalLink";
@@ -14,7 +14,6 @@ import {
   homeFoldedMenusSelector,
   setHomeFoldedMenu,
 } from "../../store/reducers/settingSlice";
-import { useLayoutEffect } from "react";
 
 const Wrapper = styled.div`
   padding-top: 41px;
@@ -155,7 +154,7 @@ function MenuGroup({ menu, foldable }) {
 
   const [folded, setFolded] = useState(false);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (hasMenuItems) {
       setFolded(foldedMenus.includes(menu.name));
     } else {
