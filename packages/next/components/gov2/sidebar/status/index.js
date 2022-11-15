@@ -7,13 +7,19 @@ import Progress from "next-common/components/progress";
 import FlexBetween from "next-common/components/styled/flexBetween";
 import { p_14_normal } from "next-common/styles/componentCss";
 import TooltipOrigin from "next-common/components/tooltip";
-import { estimateBlocksTime, estimateRemainBlockTime } from "next-common/utils";
+import { estimateRemainBlockTime } from "next-common/utils";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { useMemo } from "react";
 import { gov2State } from "next-common/utils/consts/state";
 import BigNumber from "bignumber.js";
 import Status from "./status";
+import { usePostState } from "next-common/context/post";
+import {
+  useConfirmTime,
+  useDecisionTime,
+  useTrack,
+} from "next-common/context/post/gov2/track";
 
 const Wrapper = styled.div``;
 
@@ -49,13 +55,10 @@ export default function Gov2Status({ detail }) {
   const blockTime = useSelector(blockTimeSelector);
 
   const onchainData = detail?.onchainData ?? {};
-  const trackInfo = onchainData?.trackInfo ?? {};
-  const state = onchainData.state?.name;
-  const decisionPeriod = estimateBlocksTime(
-    trackInfo.decisionPeriod,
-    blockTime
-  );
-  const confirmPeriod = estimateBlocksTime(trackInfo.confirmPeriod, blockTime);
+  const trackInfo = useTrack();
+  const state = usePostState();
+  const decisionTime = useDecisionTime();
+  const confirmTime = useConfirmTime();
 
   // same logic: `show confirming period`
   const isPositiveState = useMemo(
@@ -113,7 +116,7 @@ export default function Gov2Status({ detail }) {
             </Tooltip>
             <ProgressInfo>
               <p>Decision Period</p>
-              <p>{decisionPeriod.join(" ")}</p>
+              <p>{decisionTime}</p>
             </ProgressInfo>
           </ProgressGroup>
 
@@ -130,7 +133,7 @@ export default function Gov2Status({ detail }) {
               </Tooltip>
               <ProgressInfo>
                 <p>Confirming Period</p>
-                <p>{confirmPeriod.join(" ")}</p>
+                <p>{confirmTime}</p>
               </ProgressInfo>
             </ProgressGroup>
           )}

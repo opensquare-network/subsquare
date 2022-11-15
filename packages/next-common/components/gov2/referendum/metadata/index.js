@@ -2,10 +2,10 @@ import KVList from "../../../listInfo/kvList";
 import React from "react";
 import Proposal from "../../../proposal";
 import isNil from "lodash.isnil";
-import { useTrack } from "../../../../context/post";
 import { GreyText } from "./styled";
 import BlockPeriod from "./blockPeriod";
 import UserBond from "./userBond";
+import { useTrack } from "../../../../context/post/gov2/track";
 
 function getEnactmentValue(enactment = {}) {
   let value = "";
