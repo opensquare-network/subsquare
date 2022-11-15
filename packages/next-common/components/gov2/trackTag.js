@@ -13,6 +13,7 @@ const Tag = styled.span`
 export default function Gov2TrackTag({ name = "" }) {
   const makeColorPair = (fg, bg) => ({ fg, bg });
 
+  // NOTE: these colors support dark mode
   const trackColor = {
     root: makeColorPair("#4caf91", "rgba(76, 175, 145, 0.1)"),
   };
