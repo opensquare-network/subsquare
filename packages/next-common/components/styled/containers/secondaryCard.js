@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 export const SecondaryCard = styled.div`
@@ -7,9 +6,6 @@ export const SecondaryCard = styled.div`
   box-shadow: ${(props) => props.theme.shadow100};
   border-radius: 8px;
   padding: 24px;
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
 `;
 
 export const HoverSecondaryCard = styled(SecondaryCard)`
