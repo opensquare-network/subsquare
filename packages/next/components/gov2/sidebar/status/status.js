@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { gov2State } from "next-common/utils/consts/state";
 import { useMemo } from "react";
+import { usePostState } from "next-common/context/post";
 
 const StatusBase = styled.div`
   margin-top: 8px !important;
@@ -24,7 +25,8 @@ const PositiveStatus = styled(StatusBase)`
   background: ${(props) => props.theme.secondaryGreen100};
 `;
 
-export default function Status({ state }) {
+export default function Status() {
+  const state = usePostState();
   // same logic: `show confirming period`
   const isPositiveState = useMemo(
     () =>
