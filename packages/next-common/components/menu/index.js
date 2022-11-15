@@ -110,6 +110,14 @@ const Item = styled.div`
     `}
 `;
 
+const ItemGroup = styled.div`
+  ${(p) =>
+    p.folded &&
+    css`
+      display: none;
+    `}
+`;
+
 const FoldableButton = styled.button`
   background: none;
   border: none;
@@ -181,10 +189,7 @@ function MenuGroup({ menu, foldable }) {
         </TitleGroup>
       )}
 
-      <div
-        className="menu-item-group"
-        style={{ display: folded ? "none" : "block" }}
-      >
+      <ItemGroup folded={menu.name && folded}>
         {menu.items.map((item, index) => {
           const isExternalLink = (item.pathname || "").startsWith("http");
 
@@ -211,7 +216,7 @@ function MenuGroup({ menu, foldable }) {
             </Fragment>
           );
         })}
-      </div>
+      </ItemGroup>
     </div>
   );
 }
