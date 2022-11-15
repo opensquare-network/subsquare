@@ -268,7 +268,6 @@ export default withLoginUserRedux(
       democracyReferendumExecuted: subscription?.democracyReferendumExecuted,
       democracyReferendumNotExecuted:
         subscription?.democracyReferendumNotExecuted,
-      democracyReferendumFastTrack: subscription?.democracyReferendumFastTrack,
     });
 
     const canSave =
