@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Link from "next/link";
 import User from "next-common/components/user";
 import { bigNumber2Locale, toPrecision } from "next-common/utils";
@@ -21,6 +21,7 @@ import useDuration from "../utils/hooks/useDuration";
 import { getMotionStateArgs } from "../utils/collective/result";
 import { getGov2ReferendumStateArgs } from "../utils/gov2/result";
 import { useChainSettings } from "../context/chain";
+import { smcss } from "../utils/responsive";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -118,39 +119,29 @@ const TitleWrapper = styled.div`
   color: ${(props) => props.theme.textPrimary};
 `;
 
+const TitleExtraValue = styled.span`
+  color: ${(props) => props.theme.textPrimary};
+`;
+const TitleExtraSymbol = styled.span`
+  color: ${(props) => props.theme.textTertiary};
+`;
+const TitleExtra = styled(Flex)`
+  align-items: center;
+  color: ${(props) => props.theme.textTertiary};
+  ${p_14_medium};
+
+  ${smcss(css`
+    margin-top: 4px;
+  `)}
+`;
+
 const HeadWrapper = styled.div`
   display: flex;
   justify-content: space-between;
 
-  > span {
+  ${smcss(css`
     display: block;
-    ${p_14_medium};
-    line-height: 22.4px;
-    color: ${(props) => props.theme.textPrimary};
-    white-space: nowrap;
-    flex-basis: 120px;
-    flex-grow: 0;
-    flex-shrink: 0;
-    text-align: right;
-  }
-
-  .symbol {
-    color: ${(props) => props.theme.textTertiary};
-  }
-
-  @media screen and (max-width: 768px) {
-    flex-wrap: wrap;
-    > span {
-      line-height: 21px;
-      flex-basis: 100%;
-    }
-  }
-`;
-
-const Method = styled.span`
-  font-size: 12px;
-  font-weight: 400 !important;
-  color: ${(props) => props.theme.textTertiary} !important;
+  `)};
 `;
 
 const ContentWrapper = styled.div`
@@ -220,13 +211,17 @@ export default function Post({ data, href, type }) {
             </Link>
             <ReasonLink text={data.title} hideText={true} />
           </TitleWrapper>
+
           {!isNil(data.value) && (
-            <span>
-              {bigNumber2Locale(toPrecision(data.value, decimals))}{" "}
-              <span className="symbol">{symbol}</span>
-            </span>
+            <TitleExtra>
+              <TitleExtraValue>
+                {bigNumber2Locale(toPrecision(data.value, decimals))}{" "}
+                <TitleExtraSymbol>{symbol}</TitleExtraSymbol>
+              </TitleExtraValue>
+            </TitleExtra>
           )}
-          {method && <Method>{method}</Method>}
+
+          {method && <TitleExtra>{method}</TitleExtra>}
         </HeadWrapper>
 
         <Divider margin={12} />
