@@ -97,7 +97,7 @@ export function timeDurationFromNow(time) {
   return `${ss}s ago`;
 }
 
-export function toPrecision(value, decimals) {
+export function toPrecision(value, decimals = 0) {
   return new BigNumber(value).dividedBy(Math.pow(10, decimals)).toString();
 }
 

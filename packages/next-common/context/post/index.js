@@ -60,3 +60,8 @@ export function useOnchainData() {
   }
   return post.onchainData;
 }
+
+export function useTimelineData() {
+  const onchainData = useOnchainData();
+  return onchainData.timeline;
+}

@@ -1,35 +1,31 @@
 import { useSelector } from "react-redux";
+import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import {
-  blockTimeSelector,
-  latestHeightSelector,
-} from "next-common/store/reducers/chainSlice";
-import { useDecidingSince } from "next-common/context/post/gov2/referendum";
+  useConfirming,
+  useDecidingSince,
+} from "next-common/context/post/gov2/referendum";
 import { useDecision } from "next-common/context/post/gov2/track";
 import isNil from "lodash.isnil";
 
-export default function useDecisionPercentage() {
-  const latestHeight = useSelector(latestHeightSelector);
+export function useDecisionEnd() {
+  const trackDecision = useDecision();
   const decidingSince = useDecidingSince();
-  const decisionPeriod = useDecision();
-  if (isNil(latestHeight) || latestHeight <= decidingSince) {
-    return 0;
-  }
+  const confirming = useConfirming();
 
-  const finishHeight = decidingSince + decisionPeriod;
-  if (latestHeight >= finishHeight) {
-    return 100;
-  }
-
-  const gone = latestHeight - decidingSince;
-  return (gone / decisionPeriod) * 100;
+  return Math.max(decidingSince + trackDecision, confirming || 0);
 }
 
-// get decision remaining time in ms
+export function useDecisionBlocks() {
+  const end = useDecisionEnd();
+  const decidingSince = useDecidingSince();
+  return end - decidingSince;
+}
+
+// get decision remaining blocks
 export function useDecisionRemaining() {
   const latestHeight = useSelector(latestHeightSelector);
   const decidingSince = useDecidingSince();
-  const decisionPeriod = useDecision();
-  const blockTime = useSelector(blockTimeSelector);
+  const decisionPeriod = useDecisionBlocks();
   if (isNil(latestHeight)) {
     return 0;
   }
@@ -38,6 +34,6 @@ export function useDecisionRemaining() {
   if (gone > decisionPeriod) {
     return 0;
   } else {
-    return (decisionPeriod - gone) * blockTime;
+    return decisionPeriod - gone;
   }
 }
