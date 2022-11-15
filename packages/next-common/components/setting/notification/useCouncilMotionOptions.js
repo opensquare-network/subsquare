@@ -59,17 +59,17 @@ export default function useCouncilMotionOptions({ saving, disabled, ...data }) {
         <div>New vote on motions</div>
         <Toggle
           disabled={disabled}
-          isOn={councilMotionApproved}
-          onToggle={changeGuard(setCouncilMotionApproved)}
+          isOn={councilMotionVoted}
+          onToggle={changeGuard(setCouncilMotionVoted)}
         />
       </ToggleItem>
       <ToggleItem>
         <div>Motion approved or disapproved</div>
         <Toggle
           disabled={disabled}
-          isOn={councilMotionVoted || councilMotionDisApproved}
+          isOn={councilMotionApproved || councilMotionDisApproved}
           onToggle={changeGuard((isOn) => {
-            setCouncilMotionVoted(isOn);
+            setCouncilMotionApproved(isOn);
             setCouncilMotionDisApproved(isOn);
           })}
         />
