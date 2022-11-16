@@ -37,7 +37,7 @@ export const p_14_medium = css`
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
-  line-height: 100%;
+  line-height: 20px;
 `;
 
 export const p_14_normal = css`
@@ -45,7 +45,7 @@ export const p_14_normal = css`
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  line-height: 19.6px;
+  line-height: 20px;
 `;
 
 export const p_12_bold = css`
