@@ -1,4 +1,3 @@
-import Back from "next-common/components/back";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import { PostProvider } from "next-common/context/post";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
@@ -20,6 +19,8 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { useCallback, useEffect, useState } from "react";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import { EmptyList } from "next-common/components/emptyList";
+import Breadcrumb from "next-common/components/_Breadcrumb";
+import Link from "next/link";
 
 export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   const [detail, setDetail] = useState(ssrDetail);
@@ -54,7 +55,14 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <Back href="/referenda" text="Back to Referenda" />
+        <Breadcrumb>
+          <Breadcrumb.Item>
+            <Link href="/referenda">Referenda</Link>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>
+            Referendum #{detail.referendumIndex}
+          </Breadcrumb.Item>
+        </Breadcrumb>
 
         <DetailItem
           onReply={focusEditor}
