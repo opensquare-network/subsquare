@@ -5,10 +5,13 @@ import SubSquare from "../../../assets/header-logos/logo.svg";
 import SubSquareDark from "../../../assets/header-logos/subsquare-dark.svg";
 import { withTheme } from "styled-components";
 import { useChainSettings } from "../../../context/chain";
+import { useIsGov2Page } from "../../../utils/hooks/useIsGov2Page";
 
 function ChainLogo({ theme }) {
   const { width } = useWindowSize();
   const chainSetting = useChainSettings();
+  const isGov2Page = useIsGov2Page();
+
   const Element = chainSetting.headerLogo;
   let logo = <Element />;
   if (theme.isDark) {
@@ -21,7 +24,7 @@ function ChainLogo({ theme }) {
   }
 
   return (
-    <Link href="/">
+    <Link href={isGov2Page ? "/referenda" : "/"}>
       <a
         style={{
           height: 63,
