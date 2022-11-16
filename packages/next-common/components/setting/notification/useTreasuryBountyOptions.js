@@ -3,22 +3,37 @@ import Toggle from "next-common/components/toggle";
 import { useCallback, useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
 
-export default function useTreasuryBountyOptions({ saving, disabled, ...data }) {
-  const [treasuryBountyProposed, setTreasuryBountyProposed] = useState(data.treasuryBountyProposed?.isOn);
-  const [treasuryBountyAwarded, setTreasuryBountyAwarded] = useState(data.treasuryBountyAwarded?.isOn);
-  const [treasuryBountyApproved, setTreasuryBountyApproved] = useState(data.treasuryBountyApproved?.isOn);
-  const [treasuryBountyCanceled, setTreasuryBountyCanceled] = useState(data.treasuryBountyCanceled?.isOn);
-  const [treasuryBountyClaimed, setTreasuryBountyClaimed] = useState(data.treasuryBountyClaimed?.isOn);
-  const [treasuryBountyRejected, setTreasuryBountyRejected] = useState(data.treasuryBountyRejected?.isOn);
-
-  const isChanged = (
-    treasuryBountyProposed !== data.treasuryBountyProposed?.isOn ||
-    treasuryBountyAwarded !== data.treasuryBountyAwarded?.isOn ||
-    treasuryBountyApproved !== data.treasuryBountyApproved?.isOn ||
-    treasuryBountyCanceled !== data.treasuryBountyCanceled?.isOn||
-    treasuryBountyClaimed !== data.treasuryBountyClaimed?.isOn||
-    treasuryBountyRejected !== data.treasuryBountyRejected?.isOn
+export default function useTreasuryBountyOptions({
+  saving,
+  disabled,
+  ...data
+}) {
+  const [treasuryBountyProposed, setTreasuryBountyProposed] = useState(
+    !!data.treasuryBountyProposed?.isOn
   );
+  const [treasuryBountyAwarded, setTreasuryBountyAwarded] = useState(
+    !!data.treasuryBountyAwarded?.isOn
+  );
+  const [treasuryBountyApproved, setTreasuryBountyApproved] = useState(
+    !!data.treasuryBountyApproved?.isOn
+  );
+  const [treasuryBountyCanceled, setTreasuryBountyCanceled] = useState(
+    !!data.treasuryBountyCanceled?.isOn
+  );
+  const [treasuryBountyClaimed, setTreasuryBountyClaimed] = useState(
+    !!data.treasuryBountyClaimed?.isOn
+  );
+  const [treasuryBountyRejected, setTreasuryBountyRejected] = useState(
+    !!data.treasuryBountyRejected?.isOn
+  );
+
+  const isChanged =
+    treasuryBountyProposed !== !!data.treasuryBountyProposed?.isOn ||
+    treasuryBountyAwarded !== !!data.treasuryBountyAwarded?.isOn ||
+    treasuryBountyApproved !== !!data.treasuryBountyApproved?.isOn ||
+    treasuryBountyCanceled !== !!data.treasuryBountyCanceled?.isOn ||
+    treasuryBountyClaimed !== !!data.treasuryBountyClaimed?.isOn ||
+    treasuryBountyRejected !== !!data.treasuryBountyRejected?.isOn;
 
   const changeGuard = (setter) => (data) => {
     if (!saving && !disabled) {
