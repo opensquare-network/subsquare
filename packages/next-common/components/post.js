@@ -90,7 +90,7 @@ const Info = styled.div`
   }
 `;
 
-const AutHideInfo = styled(Info)`
+const MobileHiddenInfo = styled(Info)`
   @media screen and (max-width: 768px) {
     display: none;
   }
@@ -256,20 +256,20 @@ export default function Post({ data, href, type }) {
               </Info>
             )}
             {commentsCount > -1 && (
-              <AutHideInfo>
+              <MobileHiddenInfo>
                 <CommentIcon />
                 {`${commentsCount}`}
-              </AutHideInfo>
+              </MobileHiddenInfo>
             )}
             {data.parentIndex !== undefined && (
-              <AutHideInfo>
+              <MobileHiddenInfo>
                 <Anchor href={`/treasury/bounty/${data.parentIndex}`} passHref>
                   {`Parent #${data.parentIndex}`}
                 </Anchor>
-              </AutHideInfo>
+              </MobileHiddenInfo>
             )}
 
-            {data.track && <Info>{data.track}</Info>}
+            {data.track && <MobileHiddenInfo>{data.track}</MobileHiddenInfo>}
           </Footer>
           {data.status && (
             <Tag
