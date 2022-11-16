@@ -126,12 +126,15 @@ const TitleExtraSymbol = styled.span`
   color: ${(props) => props.theme.textTertiary};
 `;
 const TitleExtra = styled(Flex)`
-  align-items: center;
+  align-items: flex-start;
   color: ${(props) => props.theme.textTertiary};
+  padding: 2px 0;
+  margin-left: 8px;
   ${p_14_medium};
 
   ${smcss(css`
     margin-top: 8px;
+    margin-left: 0;
   `)}
 `;
 
