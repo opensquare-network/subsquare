@@ -5,23 +5,23 @@ import { SubLabel, ToggleItem } from "./styled";
 
 export default function useCouncilMotionOptions({ saving, disabled, ...data }) {
   const [councilMotionProposed, setCouncilMotionProposed] = useState(
-    data.councilMotionProposed?.isOn
+    !!data.councilMotionProposed?.isOn
   );
   const [councilMotionVoted, setCouncilMotionVoted] = useState(
-    data.councilMotionVoted?.isOn
+    !!data.councilMotionVoted?.isOn
   );
   const [councilMotionApproved, setCouncilMotionApproved] = useState(
-    data.councilMotionApproved?.isOn
+    !!data.councilMotionApproved?.isOn
   );
   const [councilMotionDisApproved, setCouncilMotionDisApproved] = useState(
-    data.councilMotionDisApproved?.isOn
+    !!data.councilMotionDisApproved?.isOn
   );
 
   const isChanged =
-    councilMotionProposed !== data.councilMotionProposed?.isOn ||
-    councilMotionVoted !== data.councilMotionVoted?.isOn ||
-    councilMotionApproved !== data.councilMotionApproved?.isOn ||
-    councilMotionDisApproved !== data.councilMotionDisApproved?.isOn;
+    councilMotionProposed !== !!data.councilMotionProposed?.isOn ||
+    councilMotionVoted !== !!data.councilMotionVoted?.isOn ||
+    councilMotionApproved !== !!data.councilMotionApproved?.isOn ||
+    councilMotionDisApproved !== !!data.councilMotionDisApproved?.isOn;
 
   const changeGuard = (setter) => (data) => {
     if (!saving && !disabled) {
