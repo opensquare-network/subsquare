@@ -131,7 +131,7 @@ const TitleExtra = styled(Flex)`
   ${p_14_medium};
 
   ${smcss(css`
-    margin-top: 4px;
+    margin-top: 8px;
   `)}
 `;
 
