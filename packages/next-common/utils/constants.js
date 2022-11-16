@@ -20,6 +20,11 @@ import basilisk from "./consts/settings/basilisk";
 import hydradx from "./consts/settings/hydradx";
 import development from "./consts/settings/development";
 
+/**
+ * left + gap + main content
+ */
+export const pageMaxWidth = 1184;
+
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
 
