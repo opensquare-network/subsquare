@@ -10,9 +10,11 @@ import AyeIcon from "public/imgs/icons/aye.svg";
 import NayIcon from "public/imgs/icons/nay.svg";
 import ElectorateIcon from "public/imgs/icons/electorate.svg";
 import DisplayValue from "next-common/components/displayValue";
-import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
+import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
 import useApi from "next-common/utils/hooks/useApi";
 import { useChainSettings } from "next-common/context/chain";
+import { useState } from "react";
+import AllVotesPopup from "./allVotesPopup";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -47,11 +49,26 @@ const Value = styled.span`
   color: ${(props) => props.theme.textPrimary};
 `;
 
+const Footer = styled.div`
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+`;
+
+const Button = styled.div`
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #6848ff;
+`;
+
 export default function Gov2Tally({ detail }) {
+  const [showAllVotes, setShowAllVotes] = useState(false);
+  const [showVoteExtrinsic, setShowVoteExtrinsic] = useState(false);
   const { width } = useWindowSize();
 
-  const api = useApi();
-  useFetchVotes(detail?.onchainData, api);
+  useFetchVotes(detail?.onchainData);
 
   const node = useChainSettings();
   const decimals = node.decimals;
@@ -112,7 +129,17 @@ export default function Gov2Tally({ detail }) {
             </Value>
           </Row>
         </div>
+        <Footer>
+          <Button onClick={() => setShowAllVotes(true)}>All Votes</Button>
+          {/* <Button onClick={() => setShowVoteExtrinsic(true)}>
+            Vote Extrinsics
+          </Button> */}
+        </Footer>
       </SecondaryCardDetail>
+      {showAllVotes && <AllVotesPopup setShowVoteList={setShowAllVotes} />}
+      {/* {showVoteExtrinsic && (
+        <AllVotesPopup setShowVoteList={setShowVoteExtrinsic} />
+      )} */}
     </div>
   );
 }
