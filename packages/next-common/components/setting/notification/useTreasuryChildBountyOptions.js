@@ -3,18 +3,28 @@ import Toggle from "next-common/components/toggle";
 import { useCallback, useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
 
-export default function useTreasuryChildBountyOptions({ saving, disabled, ...data }) {
-  const [treasuryChildBountyAdded, setTreasuryChildBountyAdded] = useState(data.treasuryChildBountyAdded?.isOn);
-  const [treasuryChildBountyAwarded, setTreasuryChildBountyAwarded] = useState(data.treasuryChildBountyAwarded?.isOn);
-  const [treasuryChildBountyCanceled, setTreasuryChildBountyCanceled] = useState(data.treasuryChildBountyCanceled?.isOn);
-  const [treasuryChildBountyClaimed, setTreasuryChildBountyClaimed] = useState(data.treasuryChildBountyClaimed?.isOn);
-
-  const isChanged = (
-    treasuryChildBountyAdded !== data.treasuryChildBountyAdded?.isOn ||
-    treasuryChildBountyAwarded !== data.treasuryChildBountyAwarded?.isOn ||
-    treasuryChildBountyCanceled !== data.treasuryChildBountyCanceled?.isOn ||
-    treasuryChildBountyClaimed !== data.treasuryChildBountyClaimed?.isOn
+export default function useTreasuryChildBountyOptions({
+  saving,
+  disabled,
+  ...data
+}) {
+  const [treasuryChildBountyAdded, setTreasuryChildBountyAdded] = useState(
+    !!data.treasuryChildBountyAdded?.isOn
   );
+  const [treasuryChildBountyAwarded, setTreasuryChildBountyAwarded] = useState(
+    !!data.treasuryChildBountyAwarded?.isOn
+  );
+  const [treasuryChildBountyCanceled, setTreasuryChildBountyCanceled] =
+    useState(!!data.treasuryChildBountyCanceled?.isOn);
+  const [treasuryChildBountyClaimed, setTreasuryChildBountyClaimed] = useState(
+    !!data.treasuryChildBountyClaimed?.isOn
+  );
+
+  const isChanged =
+    treasuryChildBountyAdded !== !!data.treasuryChildBountyAdded?.isOn ||
+    treasuryChildBountyAwarded !== !!data.treasuryChildBountyAwarded?.isOn ||
+    treasuryChildBountyCanceled !== !!data.treasuryChildBountyCanceled?.isOn ||
+    treasuryChildBountyClaimed !== !!data.treasuryChildBountyClaimed?.isOn;
 
   const changeGuard = (setter) => (data) => {
     if (!saving && !disabled) {

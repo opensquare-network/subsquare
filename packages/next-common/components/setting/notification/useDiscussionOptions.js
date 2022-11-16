@@ -4,13 +4,10 @@ import Toggle from "../../toggle";
 import { useCallback, useState } from "react";
 
 export default function useDiscussionOptions({ saving, disabled, ...data }) {
-  const [reply, setReply] = useState(data.reply);
-  const [mention, setMention] = useState(data.mention);
+  const [reply, setReply] = useState(!!data.reply);
+  const [mention, setMention] = useState(!!data.mention);
 
-  const isChanged = (
-    data.reply !== reply ||
-    data.mention !== mention
-  );
+  const isChanged = !!data.reply !== reply || !!data.mention !== mention;
 
   const changeGuard = (setter) => (data) => {
     if (!saving && !disabled) {

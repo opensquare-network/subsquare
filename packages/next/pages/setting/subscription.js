@@ -21,6 +21,9 @@ import useTreasuryTipOptions from "next-common/components/setting/notification/u
 import useCouncilMotionOptions from "next-common/components/setting/notification/useCouncilMotionOptions";
 import useTreasuryBountyOptions from "next-common/components/setting/notification/useTreasuryBountyOptions";
 import useTreasuryChildBountyOptions from "next-common/components/setting/notification/useTreasuryChildBountyOptions";
+import useTechCommMotionOptions from "next-common/components/setting/notification/useTechCommMotionOptions";
+import useDemocracyProposalOptions from "next-common/components/setting/notification/useDemocracyProposalOptions";
+import useDemocracyReferendumOptions from "next-common/components/setting/notification/useDemocracyReferendumOptions";
 import Cookies from "cookies";
 import { CACHE_KEY } from "next-common/utils/constants";
 import {
@@ -135,6 +138,26 @@ export default withLoginUserRedux(
       councilMenu?.items,
       "Motions"
     );
+    const { hasMenu: hasTechComm, menu: techCommMenu } = checkSubMenu(
+      homeMenus,
+      "TECH.COMM."
+    );
+    const { hasMenu: hasTechCommMotion } = checkSubMenu(
+      techCommMenu?.items,
+      "Proposals"
+    );
+    const { hasMenu: hasDemocracy, menu: democracyMenu } = checkSubMenu(
+      homeMenus,
+      "DEMOCRACY"
+    );
+    const { hasMenu: hasDemocracyProposal } = checkSubMenu(
+      democracyMenu?.items,
+      "Proposals"
+    );
+    const { hasMenu: hasDemocracyReferenda } = checkSubMenu(
+      democracyMenu?.items,
+      "Referenda"
+    );
 
     const emailVerified =
       loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
@@ -207,13 +230,56 @@ export default withLoginUserRedux(
       councilMotionDisApproved: subscription?.councilMotionDisApproved,
     });
 
+    const {
+      techCommMotionOptionsComponent,
+      getTechCommMotionOptionValues,
+      isChanged: isTechCommMotionOptionsChanged,
+    } = useTechCommMotionOptions({
+      disabled: !isVerifiedUser,
+      saving,
+      tcMotionProposed: subscription?.tcMotionProposed,
+      tcMotionVoted: subscription?.tcMotionVoted,
+      tcMotionApproved: subscription?.tcMotionApproved,
+      tcMotionDisApproved: subscription?.tcMotionDisApproved,
+    });
+
+    const {
+      democracyProposalOptionsComponent,
+      getDemocracyProposalOptionValues,
+      isChanged: isDemocracyProposalOptionsChanged,
+    } = useDemocracyProposalOptions({
+      disabled: !isVerifiedUser,
+      saving,
+      democracyProposalProposed: subscription?.democracyProposalProposed,
+      democracyProposalCanceled: subscription?.democracyProposalCanceled,
+    });
+
+    const {
+      democracyReferendumOptionsComponent,
+      getDemocracyReferendumOptionValues,
+      isChanged: isDemocracyReferendumOptionsChanged,
+    } = useDemocracyReferendumOptions({
+      disabled: !isVerifiedUser,
+      saving,
+      democracyReferendumStarted: subscription?.democracyReferendumStarted,
+      democracyReferendumPassed: subscription?.democracyReferendumPassed,
+      democracyReferendumNotPassed: subscription?.democracyReferendumNotPassed,
+      democracyReferendumCancelled: subscription?.democracyReferendumCancelled,
+      democracyReferendumExecuted: subscription?.democracyReferendumExecuted,
+      democracyReferendumNotExecuted:
+        subscription?.democracyReferendumNotExecuted,
+    });
+
     const canSave =
       isVerifiedUser &&
       (isTreasuryProposalOptionsChanged ||
         isTreasuryTipOptionsChanged ||
         isCouncilMotionOptionsChanged ||
         isTreasuryBountyOptionsChanged ||
-        isTreasuryChildBountyOptionsChanged);
+        isTreasuryChildBountyOptionsChanged ||
+        isTechCommMotionOptionsChanged ||
+        isDemocracyProposalOptionsChanged ||
+        isDemocracyReferendumOptionsChanged);
 
     const router = useRouter();
 
@@ -257,6 +323,15 @@ export default withLoginUserRedux(
           : {}),
         ...(hasCouncil && hasCouncilMotion
           ? getCouncilMotionOptionValues()
+          : {}),
+        ...(hasTechComm && hasTechCommMotion
+          ? getTechCommMotionOptionValues()
+          : {}),
+        ...(hasDemocracy && hasDemocracyProposal
+          ? getDemocracyProposalOptionValues()
+          : {}),
+        ...(hasDemocracy && hasDemocracyReferenda
+          ? getDemocracyReferendumOptionValues()
           : {}),
       };
 
@@ -303,6 +378,31 @@ export default withLoginUserRedux(
       );
     }
 
+    let techCommOptions = null;
+    if (hasTechComm && hasTechCommMotion) {
+      techCommOptions = (
+        <div>
+          <Label>Tech-Comm.</Label>
+          <Sections>
+            {hasTechCommMotion && techCommMotionOptionsComponent}
+          </Sections>
+        </div>
+      );
+    }
+
+    let democracyOptions = null;
+    if (hasDemocracy && (hasDemocracyProposal || hasDemocracyReferenda)) {
+      democracyOptions = (
+        <div>
+          <Label>Democracy</Label>
+          <Sections>
+            {hasDemocracyProposal && democracyProposalOptionsComponent}
+            {hasDemocracyReferenda && democracyReferendumOptionsComponent}
+          </Sections>
+        </div>
+      );
+    }
+
     return (
       <SettingsLayout>
         <NextHead title={`Settings`} desc={``} />
@@ -326,6 +426,8 @@ export default withLoginUserRedux(
             <Options>
               {treasuryOptions}
               {councilOptions}
+              {techCommOptions}
+              {democracyOptions}
             </Options>
 
             <Divider margin={24} />

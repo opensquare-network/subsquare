@@ -4,17 +4,24 @@ import { useCallback, useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
 
 export default function useCouncilMotionOptions({ saving, disabled, ...data }) {
-  const [councilMotionProposed, setCouncilMotionProposed] = useState(data.councilMotionProposed?.isOn);
-  const [councilMotionVoted, setCouncilMotionVoted] = useState(data.councilMotionVoted?.isOn);
-  const [councilMotionApproved, setCouncilMotionApproved] = useState(data.councilMotionApproved?.isOn);
-  const [councilMotionDisApproved, setCouncilMotionDisApproved] = useState(data.councilMotionDisApproved?.isOn);
-
-  const isChanged = (
-    councilMotionProposed !== data.councilMotionProposed?.isOn ||
-    councilMotionVoted !== data.councilMotionVoted?.isOn ||
-    councilMotionApproved !== data.councilMotionApproved?.isOn ||
-    councilMotionDisApproved !== data.councilMotionDisApproved?.isOn
+  const [councilMotionProposed, setCouncilMotionProposed] = useState(
+    !!data.councilMotionProposed?.isOn
   );
+  const [councilMotionVoted, setCouncilMotionVoted] = useState(
+    !!data.councilMotionVoted?.isOn
+  );
+  const [councilMotionApproved, setCouncilMotionApproved] = useState(
+    !!data.councilMotionApproved?.isOn
+  );
+  const [councilMotionDisApproved, setCouncilMotionDisApproved] = useState(
+    !!data.councilMotionDisApproved?.isOn
+  );
+
+  const isChanged =
+    councilMotionProposed !== !!data.councilMotionProposed?.isOn ||
+    councilMotionVoted !== !!data.councilMotionVoted?.isOn ||
+    councilMotionApproved !== !!data.councilMotionApproved?.isOn ||
+    councilMotionDisApproved !== !!data.councilMotionDisApproved?.isOn;
 
   const changeGuard = (setter) => (data) => {
     if (!saving && !disabled) {
@@ -52,17 +59,17 @@ export default function useCouncilMotionOptions({ saving, disabled, ...data }) {
         <div>New vote on motions</div>
         <Toggle
           disabled={disabled}
-          isOn={councilMotionApproved}
-          onToggle={changeGuard(setCouncilMotionApproved)}
+          isOn={councilMotionVoted}
+          onToggle={changeGuard(setCouncilMotionVoted)}
         />
       </ToggleItem>
       <ToggleItem>
         <div>Motion approved or disapproved</div>
         <Toggle
           disabled={disabled}
-          isOn={councilMotionVoted || councilMotionDisApproved}
+          isOn={councilMotionApproved || councilMotionDisApproved}
           onToggle={changeGuard((isOn) => {
-            setCouncilMotionVoted(isOn);
+            setCouncilMotionApproved(isOn);
             setCouncilMotionDisApproved(isOn);
           })}
         />

@@ -17,6 +17,9 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import Divider from "next-common/components/styled/layout/divider";
 import SettingsLayout from "next-common/components/layout/settingsLayout";
 import useTreasuryProposalOptions from "next-common/components/setting/notification/useTreasuryProposalOptions";
+import useTechCommMotionOptions from "next-common/components/setting/notification/useTechCommMotionOptions";
+import useDemocracyProposalOptions from "next-common/components/setting/notification/useDemocracyProposalOptions";
+import useDemocracyReferendumOptions from "next-common/components/setting/notification/useDemocracyReferendumOptions";
 import Cookies from "cookies";
 import { CACHE_KEY } from "next-common/utils/constants";
 import {
@@ -102,7 +105,7 @@ export default withLoginUserRedux(
     const {
       treasuryProposalOptionsComponent,
       getTreasuryProposalOptionValues,
-      isChanged,
+      isChanged: isTreasuryProposalOptionsChanged,
     } = useTreasuryProposalOptions({
       disabled: !isVerifiedUser,
       saving,
@@ -111,6 +114,57 @@ export default withLoginUserRedux(
       treasuryProposalAwarded: subscription?.treasuryProposalAwarded,
       treasuryProposalRejected: subscription?.treasuryProposalRejected,
     });
+
+    const {
+      techCommMotionOptionsComponent,
+      getTechCommMotionOptionValues,
+      isChanged: isTechCommMotionOptionsChanged,
+    } = useTechCommMotionOptions({
+      isKintsugi: true,
+      disabled: !isVerifiedUser,
+      saving,
+      tcMotionProposed: subscription?.tcMotionProposed,
+      tcMotionVoted: subscription?.tcMotionVoted,
+      tcMotionApproved: subscription?.tcMotionApproved,
+      tcMotionDisApproved: subscription?.tcMotionDisApproved,
+      tcMotionExecuted: subscription?.tcMotionExecuted,
+    });
+
+    const {
+      democracyProposalOptionsComponent,
+      getDemocracyProposalOptionValues,
+      isChanged: isDemocracyProposalOptionsChanged,
+    } = useDemocracyProposalOptions({
+      disabled: !isVerifiedUser,
+      saving,
+      democracyProposalProposed: subscription?.democracyProposalProposed,
+      democracyProposalCanceled: subscription?.democracyProposalCanceled,
+    });
+
+    const {
+      democracyReferendumOptionsComponent,
+      getDemocracyReferendumOptionValues,
+      isChanged: isDemocracyReferendumOptionsChanged,
+    } = useDemocracyReferendumOptions({
+      isKintsugi: true,
+      disabled: !isVerifiedUser,
+      saving,
+      democracyReferendumStarted: subscription?.democracyReferendumStarted,
+      democracyReferendumPassed: subscription?.democracyReferendumPassed,
+      democracyReferendumNotPassed: subscription?.democracyReferendumNotPassed,
+      democracyReferendumCancelled: subscription?.democracyReferendumCancelled,
+      democracyReferendumExecuted: subscription?.democracyReferendumExecuted,
+      democracyReferendumNotExecuted:
+        subscription?.democracyReferendumNotExecuted,
+      democracyReferendumFastTrack: subscription?.democracyReferendumFastTrack,
+    });
+
+    const canSave =
+      isVerifiedUser &&
+      (isTreasuryProposalOptionsChanged ||
+        isTechCommMotionOptionsChanged ||
+        isDemocracyProposalOptionsChanged ||
+        isDemocracyReferendumOptionsChanged);
 
     const router = useRouter();
 
@@ -143,6 +197,9 @@ export default withLoginUserRedux(
 
       const data = {
         ...getTreasuryProposalOptionValues(),
+        ...getTechCommMotionOptionValues(),
+        ...getDemocracyProposalOptionValues(),
+        ...getDemocracyReferendumOptionValues(),
       };
 
       const { result, error } = await nextApi.patch("user/subscription", data);
@@ -180,12 +237,23 @@ export default withLoginUserRedux(
                 <Label>Treasury</Label>
                 <Sections>{treasuryProposalOptionsComponent}</Sections>
               </div>
+              <div>
+                <Label>Tech-Comm.</Label>
+                <Sections>{techCommMotionOptionsComponent}</Sections>
+              </div>
+              <div>
+                <Label>Democracy</Label>
+                <Sections>
+                  {democracyProposalOptionsComponent}
+                  {democracyReferendumOptionsComponent}
+                </Sections>
+              </div>
             </Options>
 
             <Divider margin={24} />
             <ButtonWrapper>
               <SecondaryButton
-                disabled={!isVerifiedUser || !isChanged}
+                disabled={!canSave}
                 onClick={updateNotificationSetting}
                 isLoading={saving}
               >

@@ -6,17 +6,10 @@ import { estimateBlocksTime } from "../../utils";
 import Content from "./cardContent";
 import { SummaryCard, SummaryGreyText, SummaryTitle } from "./styled";
 import { smcss } from "../../utils/responsive";
+import Divider from "../styled/layout/divider";
 
 const Wrapper = styled(SummaryCard)`
   height: auto;
-`;
-
-const Hr = styled.hr`
-  width: 100%;
-  height: 1px;
-  border: none;
-  margin: 16px 0;
-  background: ${(p) => p.theme.grey200Border};
 `;
 
 const TitleGroup = styled.div`
@@ -77,7 +70,7 @@ export default function Gov2TrackSummary({ summary, period }) {
         {description && <Description>{description}</Description>}
       </div>
 
-      <Hr />
+      <Divider margin={16} />
 
       <SummariesWrapper>
         <SummaryItem>

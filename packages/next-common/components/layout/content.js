@@ -3,10 +3,13 @@ import styled from "styled-components";
 import { no_scroll_bar } from "next-common/styles/componentCss";
 import Main from "next-common/components/main";
 import Footer from "next-common/components/layout/footer";
+import { pageMaxWidth } from "../../utils/constants";
 
 const leftWidth = 236;
-// the left and content `gap`
-const LeftPlaceHolderWidth = leftWidth + 32;
+const mainWidth = 916;
+const gap = 32;
+const leftPlaceHolderWidth = pageMaxWidth - gap - mainWidth;
+const offsetLeftCss = `max(calc((100vw - ${pageMaxWidth}px) / 2), 32px)`;
 
 const Wrapper = styled.div`
   width: 100%;
@@ -30,7 +33,7 @@ const ContentWrapper = styled.div`
 
 const Left = styled.div`
   position: fixed;
-  left: max(calc((100vw - 1184px) / 2), 32px);
+  left: ${offsetLeftCss};
   padding-bottom: 32px;
   height: calc(100vh - 90px);
   overflow-y: scroll;
@@ -43,8 +46,8 @@ const Left = styled.div`
 `;
 
 const LeftPlaceHolder = styled.div`
-  width: ${LeftPlaceHolderWidth}px;
-  flex: 0 0 ${LeftPlaceHolderWidth}px;
+  width: calc(${offsetLeftCss} + ${leftPlaceHolderWidth}px);
+  flex: 0 0 calc(${offsetLeftCss} + ${leftPlaceHolderWidth}px);
   @media screen and (max-width: 1024px) {
     display: none;
   }

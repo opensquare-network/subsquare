@@ -9,23 +9,23 @@ export default function useTreasuryProposalOptions({
   ...data
 }) {
   const [treasuryProposalProposed, setTreasuryProposalProposed] = useState(
-    data.treasuryProposalProposed?.isOn
+    !!data.treasuryProposalProposed?.isOn
   );
   const [treasuryProposalApproved, setTreasuryProposalApproved] = useState(
-    data.treasuryProposalApproved?.isOn
+    !!data.treasuryProposalApproved?.isOn
   );
   const [treasuryProposalAwarded, setTreasuryProposalAwarded] = useState(
-    data.treasuryProposalAwarded?.isOn
+    !!data.treasuryProposalAwarded?.isOn
   );
   const [treasuryProposalRejected, setTreasuryProposalRejected] = useState(
-    data.treasuryProposalRejected?.isOn
+    !!data.treasuryProposalRejected?.isOn
   );
 
   const isChanged =
-    treasuryProposalProposed !== data.treasuryProposalProposed?.isOn ||
-    treasuryProposalApproved !== data.treasuryProposalApproved?.isOn ||
-    treasuryProposalAwarded !== data.treasuryProposalAwarded?.isOn ||
-    treasuryProposalRejected !== data.treasuryProposalRejected?.isOn;
+    treasuryProposalProposed !== !!data.treasuryProposalProposed?.isOn ||
+    treasuryProposalApproved !== !!data.treasuryProposalApproved?.isOn ||
+    treasuryProposalAwarded !== !!data.treasuryProposalAwarded?.isOn ||
+    treasuryProposalRejected !== !!data.treasuryProposalRejected?.isOn;
 
   const changeGuard = (setter) => (data) => {
     if (!saving && !disabled) {

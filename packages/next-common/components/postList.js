@@ -6,11 +6,10 @@ import { TitleContainer } from "./styled/containers/titleContainer";
 import { EmptyList } from "./emptyList";
 
 const Wrapper = styled.div`
-  max-width: 932px;
+  max-width: 916px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }
-  margin: auto;
 
   > :not(:first-child) {
     margin-top: 16px;
