@@ -11,7 +11,6 @@ import NayIcon from "public/imgs/icons/nay.svg";
 import ElectorateIcon from "public/imgs/icons/electorate.svg";
 import DisplayValue from "next-common/components/displayValue";
 import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
-import useApi from "next-common/utils/hooks/useApi";
 import { useChainSettings } from "next-common/context/chain";
 import { useState } from "react";
 import AllVotesPopup from "./allVotesPopup";
@@ -65,7 +64,7 @@ const Button = styled.div`
 
 export default function Gov2Tally({ detail }) {
   const [showAllVotes, setShowAllVotes] = useState(false);
-  const [showVoteExtrinsic, setShowVoteExtrinsic] = useState(false);
+  // const [showVoteExtrinsic, setShowVoteExtrinsic] = useState(false);
   const { width } = useWindowSize();
 
   useFetchVotes(detail?.onchainData);
