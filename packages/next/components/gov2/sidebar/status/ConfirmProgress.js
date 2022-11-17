@@ -13,7 +13,7 @@ import { useMemo } from "react";
 import { useConfirmingStarted } from "next-common/context/post/gov2/referendum";
 import isNil from "lodash.isnil";
 import { useTheme } from "styled-components";
-import TimeDuration from "./TimeDuration";
+import TimeDuration from "next-common/components/TimeDuration";
 import { usePostState } from "next-common/context/post";
 import { gov2State } from "next-common/utils/consts/state";
 
