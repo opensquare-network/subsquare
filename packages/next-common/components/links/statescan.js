@@ -32,11 +32,16 @@ export default function Statescan({ indexer, children }) {
   }
 
   const isLight = mode === "light";
-  return children ? (
-    <a href={url} target="_blank" rel="noreferrer">
-      {children}
-    </a>
-  ) : (
+
+  if (children) {
+    return (
+      <a href={url} target="_blank" rel="noreferrer">
+        {children}
+      </a>
+    );
+  }
+
+  return (
     <StatescanLink href={url} target="_blank" rel="noreferrer">
       {isLight ? <LinkStatescanLightIcon /> : <LinkStatescanDarkIcon />}
       {isLight ? <LinkStatescanActiveLight /> : <LinkStatescanActiveDark />}

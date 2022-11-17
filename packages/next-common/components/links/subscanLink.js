@@ -21,11 +21,15 @@ function SubScanLink({ indexer = {}, children }) {
     url += `/block/${blockHeight}?tab=event&event=${blockHeight}-${eventIndex}`;
   }
 
-  return children ? (
-    <a href={url} target="_blank" rel="noreferrer">
-      {children}
-    </a>
-  ) : (
+  if (children) {
+    return (
+      <a href={url} target="_blank" rel="noreferrer">
+        {children}
+      </a>
+    );
+  }
+
+  return (
     <SubscanLinkWrapper href={url} target="_blank" rel="noreferrer">
       <LinkSubScanIcon />
       <LinkSubScanIconActive />
