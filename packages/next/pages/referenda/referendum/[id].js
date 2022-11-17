@@ -85,7 +85,6 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
         <Gov2ReferendumMetadata detail={detail} />
 
         <Timeline
-          timeline={detail?.onchainData?.timeline}
           trackInfo={detail?.onchainData?.trackInfo}
           type={detailPageCategory.GOV2_REFERENDUM}
         />
