@@ -44,6 +44,7 @@ export default function DecisionCountdown({ detail }) {
       numerator={decisionPercentage}
       foregroundColor={secondaryBlue500}
       backgroundColor={secondaryBlue100}
+      showTooltip={decisionRemaining > 0}
       tooltipContent={
         <span>
           Deciding end in <TimeDuration blocks={decisionRemaining} />, #
