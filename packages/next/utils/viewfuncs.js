@@ -242,6 +242,6 @@ export const toGov2ReferendaListItem = (item, tracks = []) => {
     address: item.proposer,
     detailLink: `/referenda/referendum/${item.referendumIndex}`,
     commentsCount: item.commentsCount,
-    track: <Gov2TrackTag name={track?.name} />,
+    track: track?.name && <Gov2TrackTag name={track?.name} />,
   };
 };
