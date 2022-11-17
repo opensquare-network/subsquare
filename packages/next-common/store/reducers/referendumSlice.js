@@ -88,7 +88,7 @@ export const fetchVotes =
   };
 
 export const fetchGov2Votes =
-  (api, referendumIndex, passedHeight) => async (dispatch) => {
+  (api, trackId, referendumIndex, passedHeight) => async (dispatch) => {
     dispatch(clearVotes());
     dispatch(setIsLoadingVotes(true));
     try {
@@ -99,6 +99,7 @@ export const fetchGov2Votes =
       }
       const votes = await getGov2ReferendumVotesFromVotingOf(
         blockApi,
+        trackId,
         referendumIndex
       );
 

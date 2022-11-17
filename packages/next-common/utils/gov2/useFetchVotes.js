@@ -36,13 +36,16 @@ export default function useFetchVotes(referendum) {
   const { allAye = [], allNay = [] } = useSelector(votesSelector);
   const { voteFinishedHeight } = extractVoteInfo(referendum?.timeline);
   const referendumIndex = referendum?.referendumIndex;
+  const trackId = referendum?.track;
   const api = useApi();
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (api) {
-      dispatch(fetchGov2Votes(api, referendumIndex, voteFinishedHeight));
+      dispatch(
+        fetchGov2Votes(api, trackId, referendumIndex, voteFinishedHeight)
+      );
     }
   }, [api, dispatch, referendumIndex, voteFinishedHeight]);
 
