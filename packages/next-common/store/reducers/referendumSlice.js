@@ -54,9 +54,11 @@ export const isLoadingElectorateSelector = (state) =>
 export const electorateSelector = (state) => state.referendum.electorate;
 export const isLoadingVotesSelector = (state) =>
   state.referendum.isLoadingVotes;
-  export const votesSelector = (state) => state.referendum.votes;
-  export const referendumStatusSelector = (state) => state.referendum.referendumStatus;
-  export const isLoadingReferendumStatusSelector = (state) => state.referendum.isLoadingReferendumStatus;
+export const votesSelector = (state) => state.referendum.votes;
+export const referendumStatusSelector = (state) =>
+  state.referendum.referendumStatus;
+export const isLoadingReferendumStatusSelector = (state) =>
+  state.referendum.isLoadingReferendumStatus;
 
 export const clearVotes = () => async (dispatch) => {
   dispatch(setVotes(emptyVotes));
@@ -84,37 +86,41 @@ export const fetchVotes =
     }
   };
 
-export const fetchElectorate = (api, height, possibleElectorate) => async (dispatch) => {
-  if (possibleElectorate) {
-    dispatch(setElectorate(possibleElectorate));
-    return
-  }
-
-  let electorate;
-  dispatch(setIsLoadingElectorate(true));
-  try {
-    if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
-      electorate = await getKintElectorate(api, height);
-    } else {
-      electorate = await getElectorate(api, height);
+export const fetchElectorate =
+  (api, height, possibleElectorate) => async (dispatch) => {
+    if (possibleElectorate) {
+      dispatch(setElectorate(possibleElectorate));
+      return;
     }
-    dispatch(setElectorate(electorate));
-  } finally {
-    dispatch(setIsLoadingElectorate(false));
-  }
-};
 
-export const fetchReferendumStatus = (api, referendumIndex) => async (dispatch) => {
-  dispatch(setIsLoadingReferendumStatus(true));
-  try {
-    const referendumInfo = await api?.query.democracy.referendumInfoOf(referendumIndex);
-    const data = referendumInfo?.toJSON();
-    if (data?.ongoing) {
-      dispatch(setReferendumStatus(data?.ongoing));
+    let electorate;
+    dispatch(setIsLoadingElectorate(true));
+    try {
+      if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
+        electorate = await getKintElectorate(api, height);
+      } else {
+        electorate = await getElectorate(api, height);
+      }
+      dispatch(setElectorate(electorate));
+    } finally {
+      dispatch(setIsLoadingElectorate(false));
     }
-  } finally {
-    dispatch(setIsLoadingReferendumStatus(false));
-  }
-};
+  };
+
+export const fetchReferendumStatus =
+  (api, referendumIndex) => async (dispatch) => {
+    dispatch(setIsLoadingReferendumStatus(true));
+    try {
+      const referendumInfo = await api?.query.democracy.referendumInfoOf(
+        referendumIndex
+      );
+      const data = referendumInfo?.toJSON();
+      if (data?.ongoing) {
+        dispatch(setReferendumStatus(data?.ongoing));
+      }
+    } finally {
+      dispatch(setIsLoadingReferendumStatus(false));
+    }
+  };
 
 export default referendumSlice.reducer;
