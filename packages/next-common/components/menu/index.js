@@ -1,19 +1,18 @@
 import styled, { css } from "styled-components";
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import ExternalLink from "../icons/externalLink";
 import Flex from "../styled/flex";
 import { p_12_bold, p_12_medium, p_12_normal } from "../../styles/componentCss";
 import { useChain } from "../../context/chain";
-import { useState } from "react";
 import MenuUnFoldIcon from "../icons/menuUnFold";
 import MenuFoldIcon from "../icons/menuFold";
-import { useDispatch, useSelector } from "react-redux";
 import {
-  homeFoldedMenusSelector,
-  setHomeFoldedMenu,
-} from "../../store/reducers/settingSlice";
+  updateHomeFoldItems,
+  useHomeFoldMenus,
+  useSettingsDispatch,
+} from "../../context/settings";
 
 const Wrapper = styled.div`
   padding-top: 41px;
@@ -147,13 +146,11 @@ function defaultItemRender(icon, name, count) {
 function MenuGroup({ menu, foldable }) {
   const chain = useChain();
   const router = useRouter();
-  const dispatch = useDispatch();
-  const foldedMenus = useSelector(homeFoldedMenusSelector);
-
+  const dispatch = useSettingsDispatch();
+  const foldedMenus = useHomeFoldMenus();
   const hasMenuItems = !!menu?.items?.length;
 
-  const [folded, setFolded] = useState(false);
-
+  const [folded, setFolded] = useState(foldedMenus.includes(menu.name));
   useEffect(() => {
     if (hasMenuItems) {
       setFolded(foldedMenus.includes(menu.name));
@@ -165,7 +162,7 @@ function MenuGroup({ menu, foldable }) {
   function handleFoldMenu(name) {
     const v = !folded;
     setFolded(v);
-    dispatch(setHomeFoldedMenu({ name, folded: v }));
+    updateHomeFoldItems(name, v, dispatch);
   }
 
   return (

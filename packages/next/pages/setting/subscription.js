@@ -26,11 +26,9 @@ import useDemocracyProposalOptions from "next-common/components/setting/notifica
 import useDemocracyReferendumOptions from "next-common/components/setting/notification/useDemocracyReferendumOptions";
 import Cookies from "cookies";
 import { CACHE_KEY } from "next-common/utils/constants";
-import {
-  Label,
-  Sections,
-} from "next-common/components/setting/notification/styled";
 import homeMenus from "next-common/utils/consts/menu";
+import FoldableSections from "next-common/components/setting/notification/foldableSections";
+import { Options } from "next-common/components/setting/notification/styled";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -72,12 +70,6 @@ const WarningMessage = styled.div`
   font-size: 14px;
   line-height: 140%;
   margin-bottom: 16px;
-`;
-
-const Options = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
 `;
 
 const Info = styled.div`
@@ -354,52 +346,40 @@ export default withLoginUserRedux(
         hasTreasuryChildBounty)
     ) {
       treasuryOptions = (
-        <div>
-          <Label>Treasury</Label>
-          <Sections>
-            {hasTreasuryProposal && treasuryProposalOptionsComponent}
-            {hasTreasuryTip && treasuryTipOptionsComponent}
-            {hasTreasuryBounty && treasuryBountyOptionsComponent}
-            {hasTreasuryChildBounty && treasuryChildBountyOptionsComponent}
-          </Sections>
-        </div>
+        <FoldableSections title="Treasury">
+          {hasTreasuryProposal && treasuryProposalOptionsComponent}
+          {hasTreasuryTip && treasuryTipOptionsComponent}
+          {hasTreasuryBounty && treasuryBountyOptionsComponent}
+          {hasTreasuryChildBounty && treasuryChildBountyOptionsComponent}
+        </FoldableSections>
       );
     }
 
     let councilOptions = null;
     if (hasCouncil && hasCouncilMotion) {
       councilOptions = (
-        <div>
-          <Label>Council</Label>
-          <Sections>
-            {hasCouncilMotion && councilMotionOptionsComponent}
-          </Sections>
-        </div>
+        <FoldableSections title="Council">
+          {hasCouncilMotion && councilMotionOptionsComponent}
+        </FoldableSections>
       );
     }
 
     let techCommOptions = null;
     if (hasTechComm && hasTechCommMotion) {
       techCommOptions = (
-        <div>
-          <Label>Tech-Comm.</Label>
-          <Sections>
-            {hasTechCommMotion && techCommMotionOptionsComponent}
-          </Sections>
-        </div>
+        <FoldableSections title="Tech-Comm.">
+          {hasTechCommMotion && techCommMotionOptionsComponent}
+        </FoldableSections>
       );
     }
 
     let democracyOptions = null;
     if (hasDemocracy && (hasDemocracyProposal || hasDemocracyReferenda)) {
       democracyOptions = (
-        <div>
-          <Label>Democracy</Label>
-          <Sections>
-            {hasDemocracyProposal && democracyProposalOptionsComponent}
-            {hasDemocracyReferenda && democracyReferendumOptionsComponent}
-          </Sections>
-        </div>
+        <FoldableSections title="Democracy">
+          {hasDemocracyProposal && democracyProposalOptionsComponent}
+          {hasDemocracyReferenda && democracyReferendumOptionsComponent}
+        </FoldableSections>
       );
     }
 
