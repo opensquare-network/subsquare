@@ -22,10 +22,8 @@ import useDemocracyProposalOptions from "next-common/components/setting/notifica
 import useDemocracyReferendumOptions from "next-common/components/setting/notification/useDemocracyReferendumOptions";
 import Cookies from "cookies";
 import { CACHE_KEY } from "next-common/utils/constants";
-import {
-  Label,
-  Sections,
-} from "next-common/components/setting/notification/styled";
+import FoldableSections from "next-common/components/setting/notification/foldableSections";
+import { Options } from "next-common/components/setting/notification/styled";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -67,12 +65,6 @@ const WarningMessage = styled.div`
   font-size: 14px;
   line-height: 140%;
   margin-bottom: 16px;
-`;
-
-const Options = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
 `;
 
 const Info = styled.div`
@@ -233,21 +225,16 @@ export default withLoginUserRedux(
             )}
 
             <Options>
-              <div>
-                <Label>Treasury</Label>
-                <Sections>{treasuryProposalOptionsComponent}</Sections>
-              </div>
-              <div>
-                <Label>Tech-Comm.</Label>
-                <Sections>{techCommMotionOptionsComponent}</Sections>
-              </div>
-              <div>
-                <Label>Democracy</Label>
-                <Sections>
-                  {democracyProposalOptionsComponent}
-                  {democracyReferendumOptionsComponent}
-                </Sections>
-              </div>
+              <FoldableSections title="Treasury">
+                {treasuryProposalOptionsComponent}
+              </FoldableSections>
+              <FoldableSections title="Tech-Comm.">
+                {techCommMotionOptionsComponent}
+              </FoldableSections>
+              <FoldableSections title="Democracy">
+                {democracyProposalOptionsComponent}
+                {democracyReferendumOptionsComponent}
+              </FoldableSections>
             </Options>
 
             <Divider margin={24} />
