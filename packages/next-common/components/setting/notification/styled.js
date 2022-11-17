@@ -10,7 +10,7 @@ const Label = styled.div`
 `;
 
 const Sections = styled.div`
-  display: flex;
+  display: ${(props) => (props.hide ? "none" : "flex")};
   flex-direction: column;
   gap: 16px;
   > div > :not(:first-child) {
@@ -40,6 +40,17 @@ const ToggleItem = styled.div`
   }
 `;
 
-export {
-  Label, Sections, SubLabel, ToggleItem,
-};
+const Options = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  > :not(:first-child):before {
+    content: "";
+    display: block;
+    margin-bottom: 24px;
+    height: 1px;
+    background-color: ${(props) => props.theme.grey200Border};
+  }
+`;
+
+export { Label, Sections, SubLabel, ToggleItem, Options };
