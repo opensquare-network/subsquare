@@ -63,5 +63,5 @@ export function useOnchainData() {
 
 export function useTimelineData() {
   const onchainData = useOnchainData();
-  return onchainData.timeline;
+  return onchainData.timeline || [];
 }

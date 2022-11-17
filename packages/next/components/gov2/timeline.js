@@ -6,6 +6,7 @@ import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import styled from "styled-components";
 import { p_14_normal } from "next-common/styles/componentCss";
 import SymbolBalance from "next-common/components/values/symbolBalance";
+import { useTimelineData } from "next-common/context/post";
 
 const Info = styled.div`
   ${p_14_normal};
@@ -92,8 +93,12 @@ export function makeReferendumTimelineData(timeline, trackInfo, type) {
   });
 }
 
-export default function ReferendumTimeline({ timeline, trackInfo, type }) {
-  const timelineData = makeReferendumTimelineData(timeline, trackInfo, type);
+export default function ReferendumTimeline({ trackInfo, type }) {
+  const timeline = useTimelineData();
+  const filtered = timeline.filter(
+    ({ name }) => name !== "DecisionDepositPlaced"
+  );
+  const timelineData = makeReferendumTimelineData(filtered, trackInfo, type);
 
   return <Timeline data={timelineData} />;
 }
