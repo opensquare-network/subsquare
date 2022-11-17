@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchGov2Votes,
+  fetchVotes,
   votesSelector,
-} from "../../store/reducers/referendumSlice";
+} from "../../store/reducers/gov2ReferendumSlice";
 import useApi from "../hooks/useApi";
 
 const referendumVoteFinishedStatusArray = [
@@ -43,9 +43,7 @@ export default function useFetchVotes(referendum) {
 
   useEffect(() => {
     if (api) {
-      dispatch(
-        fetchGov2Votes(api, trackId, referendumIndex, voteFinishedHeight)
-      );
+      dispatch(fetchVotes(api, trackId, referendumIndex, voteFinishedHeight));
     }
   }, [api, dispatch, referendumIndex, voteFinishedHeight]);
 

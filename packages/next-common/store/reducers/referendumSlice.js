@@ -5,7 +5,6 @@ import Chains from "../../utils/consts/chains";
 import getKintsugiReferendumVotes from "../../utils/democracy/votes/kintsugi";
 import getKintElectorate from "../../utils/democracy/electorate/kintsugi";
 import getElectorate from "../../utils/democracy/electorate";
-import { getGov2ReferendumVotesFromVotingOf } from "../../utils/gov2/allVotes";
 
 const chain = process.env.NEXT_PUBLIC_CHAIN;
 
@@ -80,28 +79,6 @@ export const fetchVotes =
       } else {
         votes = await getReferendumVotes(api, referendumIndex, passedHeight);
       }
-
-      dispatch(setVotes(votes));
-    } finally {
-      dispatch(setIsLoadingVotes(false));
-    }
-  };
-
-export const fetchGov2Votes =
-  (api, trackId, referendumIndex, passedHeight) => async (dispatch) => {
-    dispatch(clearVotes());
-    dispatch(setIsLoadingVotes(true));
-    try {
-      let blockApi = api;
-      if (passedHeight) {
-        const blockHash = await api.rpc.chain.getBlockHash(passedHeight - 1);
-        blockApi = await api.at(blockHash);
-      }
-      const votes = await getGov2ReferendumVotesFromVotingOf(
-        blockApi,
-        trackId,
-        referendumIndex
-      );
 
       dispatch(setVotes(votes));
     } finally {

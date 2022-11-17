@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import {
   isLoadingVotesSelector,
   votesSelector,
-} from "next-common/store/reducers/referendumSlice";
+} from "next-common/store/reducers/gov2ReferendumSlice";
 import Pagination from "next-common/components/pagination";
 
 export default function AllVotesPopup({ setShowVoteList }) {
