@@ -21,6 +21,8 @@ import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import { EmptyList } from "next-common/components/emptyList";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import Link from "next/link";
+import { getTrackName } from "next-common/utils/gov2/getTrackName";
+import { parseGov2TrackName } from "next-common/utils/gov2";
 
 export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   const [detail, setDetail] = useState(ssrDetail);
@@ -46,6 +48,8 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
 
   const onVoteFinalized = useWaitSyncBlock("Referendum voted", refreshPageData);
 
+  const trackName = getTrackName(detail);
+
   return (
     <PostProvider post={detail} type={detailPageCategory.GOV2_REFERENDUM}>
       <DetailWithRightLayout
@@ -59,6 +63,13 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
           <Breadcrumb.Item>
             <Link href="/referenda">Referenda</Link>
           </Breadcrumb.Item>
+          {trackName && (
+            <Breadcrumb.Item>
+              <Link href={`/referenda/${trackName}`}>
+                {parseGov2TrackName(trackName)}
+              </Link>
+            </Breadcrumb.Item>
+          )}
           <Breadcrumb.Item>
             Referendum #{detail.referendumIndex}
           </Breadcrumb.Item>
