@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   right: 0;
   top: 32px;
   width: 300px;
-  margin-top: 0 !important;
+  margin-top: 8px !important;
   > :not(:first-child) {
     margin-top: 16px;
   }
