@@ -23,6 +23,8 @@ import { getGov2ReferendumStateArgs } from "../utils/gov2/result";
 import { useChainSettings } from "../context/chain";
 import { smcss } from "../utils/responsive";
 import Gov2TrackTag from "../components/gov2/trackTag";
+import DecisionCountdown from "../components/gov2/postList/decisionCountdown";
+import { gov2State } from "../utils/consts/state";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -190,6 +192,15 @@ export default function Post({ data, href, type }) {
     )
   ) {
     elapseIcon = <MotionElapse motion={data.onchainData} />;
+  }
+
+  if (type === "gov2") {
+    if (data?.status === gov2State.Deciding) {
+      elapseIcon = <DecisionCountdown detail={data} />;
+    }
+    // TODO: implement confirm countdown
+    if (data?.status === gov2State.Confirming) {
+    }
   }
 
   const commentsCount =
