@@ -91,6 +91,25 @@ export const fetchVoteExtrinsics = (referendumIndex) => async (dispatch) => {
         } else {
           allNay.push(item);
         }
+      } else if (item.isSplit) {
+        allAye.push({
+          ...item,
+          vote: {
+            balance: item.vote.aye,
+            vote: {
+              isAye: true,
+            },
+          },
+        });
+        allNay.push({
+          ...item,
+          vote: {
+            balance: item.vote.nay,
+            vote: {
+              isAye: false,
+            },
+          },
+        });
       }
     }
 

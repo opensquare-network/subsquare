@@ -34,7 +34,7 @@ export default function AllVoteExtrinsicsPopup({ setShowVoteList }) {
   const sliceTo = sliceFrom + pageSize;
 
   return (
-    <Popup title="All Votes" onClose={() => setShowVoteList(false)}>
+    <Popup title="Vote Extrinsics" onClose={() => setShowVoteList(false)}>
       <VotesTab
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}
