@@ -25,6 +25,7 @@ import { smcss } from "../utils/responsive";
 import Gov2TrackTag from "../components/gov2/trackTag";
 import DecisionCountdown from "../components/gov2/postList/decisionCountdown";
 import { gov2State } from "../utils/consts/state";
+import ConfirmCountdown from "./gov2/postList/confirmCountdown";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -198,8 +199,8 @@ export default function Post({ data, href, type }) {
     if (data?.status === gov2State.Deciding) {
       elapseIcon = <DecisionCountdown detail={data} />;
     }
-    // TODO: implement confirm countdown
     if (data?.status === gov2State.Confirming) {
+      elapseIcon = <ConfirmCountdown detail={data} />;
     }
   }
 
