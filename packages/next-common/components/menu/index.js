@@ -150,8 +150,7 @@ function MenuGroup({ menu, foldable }) {
   const foldedMenus = useHomeFoldMenus();
   const hasMenuItems = !!menu?.items?.length;
 
-  const [folded, setFolded] = useState(false);
-
+  const [folded, setFolded] = useState(foldedMenus.includes(menu.name));
   useEffect(() => {
     if (hasMenuItems) {
       setFolded(foldedMenus.includes(menu.name));
