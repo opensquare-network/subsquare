@@ -14,15 +14,15 @@ const Wrapper = styled(Flex)`
   }
 `;
 
-export default function ExternalLinks({ indexer = {}, style = {} }) {
+export default function ExternalLinks({ indexer = {}, style = {}, children }) {
   if (isEmpty(indexer)) {
     return null;
   }
 
   return (
     <Wrapper style={style}>
-      <SubScanLink indexer={indexer} />
-      <Statescan indexer={indexer} />
+      <SubScanLink indexer={indexer}>{children}</SubScanLink>
+      <Statescan indexer={indexer}>{children}</Statescan>
     </Wrapper>
   );
 }

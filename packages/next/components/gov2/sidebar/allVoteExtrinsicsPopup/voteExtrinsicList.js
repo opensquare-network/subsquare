@@ -16,8 +16,8 @@ import { pretty_scroll_bar } from "next-common/styles/componentCss";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/displayValue";
 import VoteLabel from "next-common/components/democracy/votesPopup/voteLabel";
-import SubScanLink from "next-common/components/links/subscanLink";
 import dayjs from "dayjs";
+import ExternalLinks from "next-common/components/links";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -61,6 +61,8 @@ const VoteInfoValue = styled.div`
 `;
 
 const VoteTime = styled.div`
+  display: flex;
+  justify-content: right;
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -84,9 +86,9 @@ function VoteInfo({ item }) {
         />
       </VoteInfoValue>
       <VoteTime>
-        <SubScanLink indexer={item.indexer}>
+        <ExternalLinks indexer={item.indexer}>
           {dayjs(item.indexer.blockTime).format("YYYY-MM-DD hh:mm:ss")}
-        </SubScanLink>
+        </ExternalLinks>
       </VoteTime>
     </VoteInfoWrapper>
   );

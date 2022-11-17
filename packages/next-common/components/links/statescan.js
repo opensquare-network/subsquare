@@ -14,7 +14,7 @@ const statescanDomainMap = {
   [Chains.development]: "gov2",
 };
 
-export default function Statescan({ indexer }) {
+export default function Statescan({ indexer, children }) {
   const mode = useSelector(modeSelector);
   const chain = useChain();
   const { hasStatescan } = useChainSettings();
@@ -32,7 +32,11 @@ export default function Statescan({ indexer }) {
   }
 
   const isLight = mode === "light";
-  return (
+  return children ? (
+    <a href={url} target="_blank" rel="noreferrer">
+      {children}
+    </a>
+  ) : (
     <StatescanLink href={url} target="_blank" rel="noreferrer">
       {isLight ? <LinkStatescanLightIcon /> : <LinkStatescanDarkIcon />}
       {isLight ? <LinkStatescanActiveLight /> : <LinkStatescanActiveDark />}
