@@ -22,6 +22,7 @@ import { getMotionStateArgs } from "../utils/collective/result";
 import { getGov2ReferendumStateArgs } from "../utils/gov2/result";
 import { useChainSettings } from "../context/chain";
 import { smcss } from "../utils/responsive";
+import Gov2TrackTag from "../components/gov2/trackTag";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -267,7 +268,11 @@ export default function Post({ data, href, type }) {
               </MobileHiddenInfo>
             )}
 
-            {data.track && <MobileHiddenInfo>{data.track}</MobileHiddenInfo>}
+            {data.track && (
+              <MobileHiddenInfo>
+                <Gov2TrackTag name={data.track} />
+              </MobileHiddenInfo>
+            )}
           </Footer>
           {data.status && (
             <Tag
