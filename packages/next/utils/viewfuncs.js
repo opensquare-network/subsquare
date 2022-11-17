@@ -2,7 +2,6 @@ import { addressEllipsis } from "next-common/utils";
 import { getMotionId } from "next-common/utils/motion";
 import isNil from "lodash.isnil";
 import { getGov2ReferendumTitle } from "next-common/utils/gov2/title";
-import Gov2TrackTag from "next-common/components/gov2/trackTag";
 
 export const TipStateMap = {
   NewTip: "Tipping",
@@ -242,6 +241,6 @@ export const toGov2ReferendaListItem = (item, tracks = []) => {
     address: item.proposer,
     detailLink: `/referenda/referendum/${item.referendumIndex}`,
     commentsCount: item.commentsCount,
-    track: track?.name && <Gov2TrackTag name={track?.name} />,
+    track: track?.name,
   };
 };
