@@ -11,9 +11,11 @@ import NayIcon from "public/imgs/icons/nay.svg";
 import ElectorateIcon from "public/imgs/icons/electorate.svg";
 import DisplayValue from "next-common/components/displayValue";
 import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
+import useFetchVoteExtrinsics from "next-common/utils/gov2/useFetchVoteExtrinsics";
 import { useChainSettings } from "next-common/context/chain";
 import { useState } from "react";
 import AllVotesPopup from "./allVotesPopup";
+import AllVoteExtrinsicsPopup from "./allVoteExtrinsicsPopup";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -64,10 +66,11 @@ const Button = styled.div`
 
 export default function Gov2Tally({ detail }) {
   const [showAllVotes, setShowAllVotes] = useState(false);
-  // const [showVoteExtrinsic, setShowVoteExtrinsic] = useState(false);
+  const [showVoteExtrinsic, setShowVoteExtrinsic] = useState(false);
   const { width } = useWindowSize();
 
   useFetchVotes(detail?.onchainData);
+  useFetchVoteExtrinsics(detail?.onchainData);
 
   const node = useChainSettings();
   const decimals = node.decimals;
@@ -130,15 +133,15 @@ export default function Gov2Tally({ detail }) {
         </div>
         <Footer>
           <Button onClick={() => setShowAllVotes(true)}>All Votes</Button>
-          {/* <Button onClick={() => setShowVoteExtrinsic(true)}>
+          <Button onClick={() => setShowVoteExtrinsic(true)}>
             Vote Extrinsics
-          </Button> */}
+          </Button>
         </Footer>
       </SecondaryCardDetail>
       {showAllVotes && <AllVotesPopup setShowVoteList={setShowAllVotes} />}
-      {/* {showVoteExtrinsic && (
-        <AllVotesPopup setShowVoteList={setShowVoteExtrinsic} />
-      )} */}
+      {showVoteExtrinsic && (
+        <AllVoteExtrinsicsPopup setShowVoteList={setShowVoteExtrinsic} />
+      )}
     </div>
   );
 }
