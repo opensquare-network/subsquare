@@ -13,24 +13,29 @@ export default function AllVoteExtrinsicsPopup({ setShowVoteList }) {
   const { allAye = [], allNay = [] } = useSelector(voteExtrinsicsSelector);
   const isLoading = useSelector(isLoadingVoteExtrinsicsSelector);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
-  const [page, setPage] = useState(1);
-  const pageSize = 5;
+  const [ayePage, setAyePage] = useState(1);
+  const [nayPage, setNayPage] = useState(1);
+  const pageSize = 50;
 
   const votes = tabIndex === tabs[0].tabId ? allAye : allNay;
 
   const onPageChange = (e, target) => {
     e.preventDefault();
-    setPage(target);
+    if (tabIndex === "Aye") {
+      setAyePage(target);
+    } else {
+      setNayPage(target);
+    }
   };
 
   const pagination = {
-    page,
+    page: tabIndex === "Aye" ? ayePage : nayPage,
     pageSize,
     total: votes?.length || 0,
     onPageChange,
   };
 
-  const sliceFrom = (page - 1) * pageSize;
+  const sliceFrom = (pagination.page - 1) * pageSize;
   const sliceTo = sliceFrom + pageSize;
 
   return (

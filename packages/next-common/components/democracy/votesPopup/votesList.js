@@ -34,6 +34,8 @@ const Wrapper = styled.div`
     tbody {
       display: block;
       max-height: 400px;
+      overflow-y: auto;
+      overflow-x: hidden;
 
       ${pretty_scroll_bar};
     }
