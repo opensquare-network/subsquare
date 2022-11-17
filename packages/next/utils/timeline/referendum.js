@@ -5,7 +5,6 @@ import TimelineReferendumVote from "components/timelineReferendumVote";
 // used in treasury proposal timeline
 export function createReferendumTimelineData(
   referendum = {},
-  chain,
   linkable = false,
   linkPrefix = ""
 ) {
@@ -30,9 +29,7 @@ export function createReferendumTimelineData(
             type: businessCategory.collective,
           },
           method: item.method,
-          data: (
-            <TimelineReferendumVote referendum={referendum} chain={chain} />
-          ),
+          data: <TimelineReferendumVote referendum={referendum} />,
         };
       }
       default: {
@@ -40,7 +37,10 @@ export function createReferendumTimelineData(
           indexer: item.indexer,
           referendumIndex: referendum.referendumIndex,
           time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
-          status: { value: item.method, type: businessCategory.democracyReferenda },
+          status: {
+            value: item.method,
+            type: businessCategory.democracyReferenda,
+          },
           method: item.method,
         };
       }

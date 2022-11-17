@@ -25,7 +25,7 @@ export function withLoginUser(getServerSideProps) {
     }
     const profilePromise = nextApi.fetch("user/profile", {}, options);
 
-    const [props, { error, result: user }] = await Promise.all([
+    const [props, { result: user }] = await Promise.all([
       propsPromise,
       profilePromise,
     ]);

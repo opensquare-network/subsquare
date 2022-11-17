@@ -1,6 +1,8 @@
 import { addressEllipsis } from "next-common/utils";
 import { getMotionId } from "next-common/utils/motion";
 import isNil from "lodash.isnil";
+import { getGov2ReferendumTitle } from "next-common/utils/gov2/title";
+import Gov2TrackTag from "next-common/components/gov2/trackTag";
 
 export const TipStateMap = {
   NewTip: "Tipping",
@@ -66,7 +68,7 @@ export const convertPolkassemblyComment = (chain, comment) => ({
   author: convertPolkassemblyUser(chain, comment.author),
 });
 
-export const toPolkassemblyDiscussionAuthor = (author, chain) => ({
+export const toPolkassemblyDiscussionAuthor = (author) => ({
   username: addressEllipsis(author?.address) || author?.username,
   ...(author?.address
     ? {
@@ -78,7 +80,7 @@ export const toPolkassemblyDiscussionAuthor = (author, chain) => ({
 export const toPolkassemblyDiscussionListItem = (chain, item) => ({
   ...item,
   time: item.lastActivityAt,
-  author: toPolkassemblyDiscussionAuthor(item.author, chain),
+  author: toPolkassemblyDiscussionAuthor(item.author),
   detailLink: `/polkassembly/post/${item.polkassemblyId}`,
 });
 
@@ -92,19 +94,15 @@ function getMotionState(item = {}) {
     return "Unknown";
   }
 
-  const voting = "Voting"
+  const voting = "Voting";
   if (item.state !== voting) {
     return item.state;
   }
 
-  const {
-    tally: {
-      yesVotes,
-    } = {},
-    voting: { ayes = [] } = {},
-  } = item.onchainData || {};
+  const { tally: { yesVotes } = {}, voting: { ayes = [] } = {} } =
+    item.onchainData || {};
   const ayeCount = isNil(yesVotes) ? ayes.length : yesVotes;
-  return isNil(yesVotes) ? voting : `${ voting } (${ ayeCount })`;
+  return isNil(yesVotes) ? voting : `${voting} (${ayeCount})`;
 }
 
 export const toCouncilMotionListItem = (chain, item) => {
@@ -228,3 +226,22 @@ export const toExternalProposalListItem = (chain, item) => ({
   status: item.state ?? "Unknown",
   detailLink: `/democracy/external/${item.indexer.blockHeight}_${item.externalProposalHash}`,
 });
+
+export const toGov2ReferendaListItem = (item, tracks = []) => {
+  const track = tracks.find(
+    (trackItem) => trackItem.id === item.onchainData.track
+  );
+
+  return {
+    ...item,
+    title: getGov2ReferendumTitle(item),
+    time: getPostUpdatedAt(item),
+    status: item.onchainData?.state?.name ?? "Unknown",
+    index: item.referendumIndex,
+    author: item.author,
+    address: item.proposer,
+    detailLink: `/referenda/referendum/${item.referendumIndex}`,
+    commentsCount: item.commentsCount,
+    track: track?.name && <Gov2TrackTag name={track?.name} />,
+  };
+};

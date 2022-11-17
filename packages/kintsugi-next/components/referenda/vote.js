@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import BigNumber from "bignumber.js";
 import styled from "styled-components";
-import { capitailize, emptyFunction, getNode, toPrecision } from "next-common/utils";
+import { capitailize, emptyFunction, toPrecision } from "next-common/utils";
 import Flex from "next-common/components/styled/flex";
 import {
   calcPassing,
@@ -10,7 +10,7 @@ import {
   getThresholdOfSuperMajorityAgainst,
   getThresholdOfSuperMajorityApprove,
 } from "utils/referendumUtil";
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
+import useApi from "next-common/utils/hooks/useApi";
 import useWindowSize from "next-common/utils/hooks/useWindowSize.js";
 import AyeIcon from "public/imgs/icons/aye.svg";
 import NayIcon from "public/imgs/icons/nay.svg";
@@ -36,6 +36,7 @@ import {
 } from "next-common/store/reducers/referendumSlice";
 import VotesCount from "next-common/components/democracy/referendum/votesCount";
 import SubLink from "next-common/components/styled/subLink";
+import { useChain, useChainSettings } from "next-common/context/chain";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -197,31 +198,29 @@ const ActionLink = styled(SubLink)`
 function Vote({
   referendumInfo,
   referendumIndex,
-  chain,
   onFinalized = emptyFunction,
 }) {
+  const chain = useChain();
   const dispatch = useDispatch();
   const [showVote, setShowVote] = useState(false);
   const [showVoteList, setShowVoteList] = useState(false);
-  const api = useApi(chain);
+  const api = useApi();
 
-  const electorate = useSelector(electorateSelector)
-  const isElectorateLoading = useSelector(isLoadingElectorateSelector)
+  const electorate = useSelector(electorateSelector);
+  const isElectorateLoading = useSelector(isLoadingElectorateSelector);
   const isLoadingVotes = useSelector(isLoadingVotesSelector);
   const { allAye = [], allNay = [] } = useSelector(votesSelector);
   const referendumStatus = useSelector(referendumStatusSelector);
-  const isLoadingReferendumStatus = useSelector(isLoadingReferendumStatusSelector);
+  const isLoadingReferendumStatus = useSelector(
+    isLoadingReferendumStatusSelector
+  );
 
   const updateVoteProgress = useCallback(() => {
     dispatch(fetchReferendumStatus(api, referendumIndex));
   }, [dispatch, api, referendumIndex]);
 
   const { width } = useWindowSize();
-
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
+  const node = useChainSettings(chain);
   const decimals = node.decimals;
   const symbol = node.voteSymbol ?? node.symbol;
 
@@ -403,7 +402,6 @@ function Vote({
 
       {showVote && (
         <Popup
-          chain={chain}
           onClose={() => setShowVote(false)}
           referendumIndex={referendumIndex}
           onSubmitted={() => dispatch(setIsLoadingReferendumStatus(true))}
@@ -412,9 +410,7 @@ function Vote({
         />
       )}
 
-      {showVoteList && (
-        <VotesPopup setShowVoteList={setShowVoteList} chain={chain} />
-      )}
+      {showVoteList && <VotesPopup setShowVoteList={setShowVoteList} />}
     </Wrapper>
   );
 }

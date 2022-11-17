@@ -2,7 +2,6 @@ import styled, { withTheme } from "styled-components";
 import {
   bigNumber2Locale,
   decimalPlaces,
-  getNode,
   toPrecision,
 } from "next-common/utils";
 import User from "next-common/components/user";
@@ -18,6 +17,7 @@ import {
   StyledTh,
   StyledTr,
 } from "next-common/components/styled/table";
+import { useChainSettings } from "next-common/context/chain";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -44,21 +44,24 @@ const SymbolWrapper = styled.span`
   color: ${(props) => props.theme.textTertiary};
 `;
 
-const Balance = ({ value, node }) => (
-  <div>
-    <BalanceWrapper>
-      {bigNumber2Locale(
-        decimalPlaces(toPrecision(value ?? 0, node.decimals), 4)
-      )}
-    </BalanceWrapper>
-    <SymbolWrapper style={{ color: "#9DA9BB", marginLeft: "8px" }}>
-      {node.symbol}
-    </SymbolWrapper>
-  </div>
-);
+function Balance({ value }) {
+  const node = useChainSettings();
+
+  return (
+    <div>
+      <BalanceWrapper>
+        {bigNumber2Locale(
+          decimalPlaces(toPrecision(value ?? 0, node.decimals), 4)
+        )}
+      </BalanceWrapper>
+      <SymbolWrapper style={{ color: "#9DA9BB", marginLeft: "8px" }}>
+        {node.symbol}
+      </SymbolWrapper>
+    </div>
+  );
+}
 
 function MembersList({
-  chain,
   category,
   items,
   prime,
@@ -67,10 +70,6 @@ function MembersList({
   theme,
 }) {
   const [hideColumn, setHideColumn] = useState("votes");
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
 
   return (
     <Wrapper>
@@ -124,7 +123,7 @@ function MembersList({
                         className={hideColumn === "backing" ? "autohide" : ""}
                         style={{ textAlign: "right" }}
                       >
-                        <Balance value={item.backing} node={node} />
+                        <Balance value={item.backing} />
                       </StyledTd>
                       <StyledTd
                         className={hideColumn === "votes" ? "autohide" : ""}

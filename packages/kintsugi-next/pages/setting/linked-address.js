@@ -12,7 +12,7 @@ const LinkedAddressComp = dynamic(
   }
 );
 
-export default withLoginUserRedux(({ loginUser, chain }) => {
+export default withLoginUserRedux(({ loginUser }) => {
   const router = useRouter();
 
   useEffect(() => {
@@ -22,19 +22,15 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   }, [loginUser, router]);
 
   return (
-    <SettingsLayout user={loginUser}>
+    <SettingsLayout>
       <NextHead title={`Settings`} desc={``} />
-      <LinkedAddressComp chain={chain} />
+      <LinkedAddressComp />
     </SettingsLayout>
   );
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   return {
-    props: {
-      chain,
-    },
+    props: {},
   };
 });

@@ -31,8 +31,8 @@ export function makeReferendumTimelineData(timeline, type) {
   });
 }
 
-export default function ReferendumTimeline({ timeline, chain, type }) {
+export default function ReferendumTimeline({ timeline, type }) {
   const timelineData = makeReferendumTimelineData(timeline, type);
 
-  return <Timeline data={timelineData} chain={chain} />;
+  return <Timeline data={timelineData} />;
 }

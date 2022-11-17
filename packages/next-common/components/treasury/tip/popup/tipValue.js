@@ -1,14 +1,14 @@
 import React from "react";
 import BalanceInput from "../../../balanceInput";
-import { getNode } from "../../../../utils";
 import Labeled from "../../../Labeled";
+import { useChainSettings } from "../../../../context/chain";
 
-export default function TipValue({ chain, setValue }) {
-  const node = getNode(chain);
+export default function TipValue({ setValue }) {
+  const { symbol } = useChainSettings();
 
   return (
     <Labeled text={"Value"} tooltip={"The amount of tip value"}>
-      <BalanceInput setValue={setValue} symbol={node?.symbol} />
+      <BalanceInput setValue={setValue} symbol={symbol} />
     </Labeled>
   );
 }

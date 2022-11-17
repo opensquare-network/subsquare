@@ -6,7 +6,7 @@ import Timeline from "next-common/components/timeline";
 import dayjs from "dayjs";
 import User from "next-common/components/user";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import { getNode, toPrecision } from "next-common/utils";
+import SymbolBalance from "next-common/components/values/symbolBalance";
 
 const FlexEnd = styled.div`
   display: flex;
@@ -41,14 +41,7 @@ const getClosedTimelineData = (timeline = []) => {
   return [fd, ...notFoldItems];
 };
 
-export default function TipTimeline({ tip, chain }) {
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
-
+export default function TipTimeline({ tip }) {
   const getTimelineData = (args, method) => {
     switch (method) {
       case "tipNew":
@@ -74,7 +67,7 @@ export default function TipTimeline({ tip, chain }) {
               <User add={args.tipper} />
             </FlexEnd>
           ),
-          Value: `${toPrecision(value ?? 0, decimals)} ${symbol}`,
+          Value: <SymbolBalance value={value} />,
         };
       case "TipClosed":
         return {
@@ -83,7 +76,7 @@ export default function TipTimeline({ tip, chain }) {
               <User add={args.beneficiary} />
             </FlexEnd>
           ),
-          Payout: `${toPrecision(args.payout ?? 0, decimals)} ${symbol}`,
+          Payout: <SymbolBalance value={args.payout} />,
         };
     }
     return args;
@@ -103,5 +96,5 @@ export default function TipTimeline({ tip, chain }) {
     timeline = getClosedTimelineData(timeline);
   }
 
-  return <Timeline data={timeline} chain={chain} indent={false} />;
+  return <Timeline data={timeline} indent={false} />;
 }

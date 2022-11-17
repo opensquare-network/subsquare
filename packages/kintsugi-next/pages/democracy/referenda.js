@@ -6,7 +6,7 @@ import { toReferendaListItem } from "utils/viewfuncs";
 import DemocracySummary from "next-common/components/summary/democracySummary";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 
-export default withLoginUserRedux(({ loginUser, posts, chain }) => {
+export default withLoginUserRedux(({ posts, chain }) => {
   const items = (posts.items || []).map((item) =>
     toReferendaListItem(chain, item)
   );
@@ -14,9 +14,8 @@ export default withLoginUserRedux(({ loginUser, posts, chain }) => {
   const seoInfo = { title: `Democracy Referenda`, desc: `Democracy Referenda` };
 
   return (
-    <HomeLayout user={loginUser} seoInfo={seoInfo}>
+    <HomeLayout seoInfo={seoInfo}>
       <PostList
-        chain={chain}
         category={category}
         create={null}
         items={items}
@@ -25,7 +24,7 @@ export default withLoginUserRedux(({ loginUser, posts, chain }) => {
           pageSize: posts.pageSize,
           total: posts.total,
         }}
-        summary={<DemocracySummary chain={chain} />}
+        summary={<DemocracySummary />}
       />
     </HomeLayout>
   );

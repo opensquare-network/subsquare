@@ -6,17 +6,15 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 export default function PublicProposalTimeline({
   publicProposalTimeline = [],
   referendumTimeline = [],
-  chain,
 }) {
-  const proposal = getDemocracyTimelineData(publicProposalTimeline, chain);
+  const proposal = getDemocracyTimelineData(publicProposalTimeline);
   const referendum = getDemocracyTimelineData(
     referendumTimeline,
-    chain,
     detailPageCategory.DEMOCRACY_REFERENDUM
   );
   const all = [...proposal, ...referendum];
 
   sortTimeline(all);
 
-  return <Timeline data={all} chain={chain} />;
+  return <Timeline data={all} />;
 }

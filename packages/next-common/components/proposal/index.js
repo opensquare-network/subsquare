@@ -8,6 +8,7 @@ import { hexToString } from "@polkadot/util";
 import { hexEllipsis } from "../../utils";
 import LargeDataPlaceHolder from "./largeDataPlaceHolder";
 import { hexIsValidUTF8 } from "../../utils/utf8validate";
+import { useChain } from "../../context/chain";
 
 const LongText = dynamic(() => import("../longText"), {
   ssr: false,
@@ -24,7 +25,7 @@ const Header = styled.div`
   font-size: 14px;
   line-height: 140%;
   flex: none;
-  flex: 0 0 120px;
+  flex: 0 0 160px;
 `;
 
 const ArgsWrapper = styled.div`
@@ -49,6 +50,10 @@ const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 12px;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
 `;
 
 const TagWrapper = styled.div`
@@ -57,6 +62,10 @@ const TagWrapper = styled.div`
 
   > :not(:first-child) {
     margin-left: 8px;
+  }
+
+  @media (max-width: 768px) {
+    margin-top: 8px;
   }
 `;
 
@@ -128,10 +137,11 @@ function convertProposalForTableView(proposal, chain) {
 
             if (
               ((proposal.section === "system" &&
-                 ["remark", "remarkWithEvent"].includes(proposal.method)) ||
-               (proposal.section === "automationTime" &&
-                 proposal.method === "scheduleNotifyTask" &&
-                 arg.name === "message")) && hexIsValidUTF8(arg.value)
+                ["remark", "remarkWithEvent"].includes(proposal.method)) ||
+                (proposal.section === "automationTime" &&
+                  proposal.method === "scheduleNotifyTask" &&
+                  arg.name === "message")) &&
+              hexIsValidUTF8(arg.value)
             ) {
               return [arg.name, hexToString(arg.value)];
             }
@@ -187,9 +197,10 @@ function convertProposalForJsonView(proposal, chain) {
             if (
               ((proposal.section === "system" &&
                 ["remark", "remarkWithEvent"].includes(proposal.method)) ||
-              (proposal.section === "automationTime" &&
-                proposal.method === "scheduleNotifyTask" &&
-                arg.name === "message")) && hexIsValidUTF8(arg.value)
+                (proposal.section === "automationTime" &&
+                  proposal.method === "scheduleNotifyTask" &&
+                  arg.name === "message")) &&
+              hexIsValidUTF8(arg.value)
             ) {
               return hexToString(arg.value);
             }
@@ -211,12 +222,12 @@ function convertProposalForJsonView(proposal, chain) {
 
 export default function Proposal({
   call = {},
-  chain,
   shorten,
   proposalIndex,
   motionIndex,
   referendumIndex,
 }) {
+  const chain = useChain();
   const [callType, setCallType] = useState("table");
 
   useEffect(() => {
@@ -241,7 +252,6 @@ export default function Proposal({
       ...call,
       args: (
         <LargeDataPlaceHolder
-          chain={chain}
           referendumIndex={referendumIndex}
           motionIndex={motionIndex}
           proposalIndex={proposalIndex}

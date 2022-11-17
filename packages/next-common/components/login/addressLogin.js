@@ -15,6 +15,7 @@ import SelectWallet from "../wallet/selectWallet";
 import { CACHE_KEY } from "../../utils/constants";
 import { WALLETS } from "../../utils/consts/connect";
 import { updateUser, useUserDispatch } from "../../context/user";
+import { useChain } from "../../context/chain";
 
 const Label = styled.div`
   font-weight: bold;
@@ -55,15 +56,12 @@ function rememberAccountName(account, chain) {
   const accountMap = JSON.parse(
     localStorage.getItem(CACHE_KEY.accountMap) ?? "{}"
   );
-  accountMap[encodeAddressToChain(account.address, chain)] =
-    account.name;
-  localStorage.setItem(
-    CACHE_KEY.accountMap,
-    JSON.stringify(accountMap)
-  );
+  accountMap[encodeAddressToChain(account.address, chain)] = account.name;
+  localStorage.setItem(CACHE_KEY.accountMap, JSON.stringify(accountMap));
 }
 
-export default function AddressLogin({ chain, setMailLogin }) {
+export default function AddressLogin({ setMailLogin }) {
+  const chain = useChain();
   const [wallet, setWallet] = useState();
   const [accounts, setAccounts] = useState([]);
   const [selectedAccount, setSelectedAccount] = useState(null);
@@ -100,8 +98,10 @@ export default function AddressLogin({ chain, setMailLogin }) {
         if (loginResult) {
           updateUser(loginResult, userDispatch);
 
-          rememberLoginAddress(selectedAccount.address)
-          rememberLoginExtension(selectedAccount.meta?.source || selectedWallet);
+          rememberLoginAddress(selectedAccount.address);
+          rememberLoginExtension(
+            selectedAccount.meta?.source || selectedWallet
+          );
 
           if (loginResult.email) {
             router.replace(router.query?.redirect || "/");
@@ -142,19 +142,26 @@ export default function AddressLogin({ chain, setMailLogin }) {
     setWeb3Error();
   }, [selectedWallet, accounts]);
 
-  const onSelectAccount = useCallback(async (account) => {
-    setSelectedAccount(account);
+  const onSelectAccount = useCallback(
+    async (account) => {
+      setSelectedAccount(account);
 
-    if (!WALLETS.some(({ extensionName }) => extensionName === selectedWallet)) {
-      const extensionDapp = await import("@polkadot/extension-dapp");
-      await extensionDapp.web3Enable("subsquare");
-      const injector = await extensionDapp.web3FromSource(account.meta?.source);
-      setWallet(injector);
-    }
+      if (
+        !WALLETS.some(({ extensionName }) => extensionName === selectedWallet)
+      ) {
+        const extensionDapp = await import("@polkadot/extension-dapp");
+        await extensionDapp.web3Enable("subsquare");
+        const injector = await extensionDapp.web3FromSource(
+          account.meta?.source
+        );
+        setWallet(injector);
+      }
 
-    // Save account name for Email page
-    rememberAccountName(account, chain);
-  }, [selectedWallet, chain]);
+      // Save account name for Email page
+      rememberAccountName(account, chain);
+    },
+    [selectedWallet, chain]
+  );
 
   return (
     <>
@@ -175,7 +182,6 @@ export default function AddressLogin({ chain, setMailLogin }) {
         <div>
           <Label>Choose linked address</Label>
           <AddressSelect
-            chain={chain}
             accounts={accounts}
             selectedAccount={selectedAccount}
             onSelect={onSelectAccount}

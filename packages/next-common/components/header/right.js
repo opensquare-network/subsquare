@@ -5,6 +5,7 @@ import HeaderAccount from "./headerAccount";
 import NetworkSwitch from "./networkSwitch";
 import NodeSwitch from "./nodeSwitch";
 import { nodes } from "../../utils/constants";
+import { useChainSettings } from "../../context/chain";
 
 const Right = styled(Flex)`
   > :not(:first-child) {
@@ -17,16 +18,16 @@ const Right = styled(Flex)`
 
 const NetworkWrapper = styled.div``;
 
-function HeaderRight({ user, chain }) {
-  const node = nodes.find((n) => n.value === chain) || nodes[0];
+function HeaderRight() {
+  const node = useChainSettings();
 
   return (
     <Right>
-      <HeaderAccount user={user} chain={chain} />
+      <HeaderAccount />
       <NetworkWrapper>
         <NetworkSwitch activeNode={node} />
       </NetworkWrapper>
-      <NodeSwitch small chain={chain} node={node} />
+      <NodeSwitch small />
     </Right>
   );
 }

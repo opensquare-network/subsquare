@@ -38,13 +38,7 @@ const BannerImage = styled.img`
   width: 100%;
 `;
 
-export default function ArticleContent({
-  votes,
-  myVote,
-  chain,
-  onReply,
-  setIsEdit,
-}) {
+export default function ArticleContent({ votes, myVote, onReply, setIsEdit }) {
   const postDispatch = usePostDispatch();
   const dispatch = useDispatch();
   const post = usePost();
@@ -57,7 +51,7 @@ export default function ArticleContent({
 
   const toggleThumbUp = async () => {
     if (!isLogin || isAuthor || thumbUpLoading) {
-      return
+      return;
     }
 
     setThumbUpLoading(true);
@@ -92,25 +86,16 @@ export default function ArticleContent({
   return (
     <Wrapper>
       <Divider margin={16} />
-      {post.content === "" && (
-        <NonEdited setIsEdit={setIsEdit} authors={post.authors}/>
+      {!post.content && (
+        <NonEdited setIsEdit={setIsEdit} authors={post.authors} />
       )}
-      {bannerUrl && (
-        <BannerImage src={bannerUrl} alt="banner image" />
-      )}
+      {bannerUrl && <BannerImage src={bannerUrl} alt="banner image" />}
       <PostContent />
-      {post.createdAt !== post.updatedAt && (
-        <EditedLabel>Edited</EditedLabel>
-      )}
+      {post.createdAt !== post.updatedAt && <EditedLabel>Edited</EditedLabel>}
       {post.poll && (
         <>
           <Divider margin={16} />
-          <Poll
-            chain={chain}
-            poll={post.poll}
-            votes={votes}
-            myVote={myVote}
-          />
+          <Poll poll={post.poll} votes={votes} myVote={myVote} />
         </>
       )}
       <PostDataSource />

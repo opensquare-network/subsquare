@@ -5,7 +5,9 @@ import businessCategory from "next-common/utils/consts/business/category";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import AyeNay from "next-common/components/collective/AyeNay";
-import getMotionExecutedResult, { isMotionExecutedSucceed } from "next-common/utils/collective/result";
+import getMotionExecutedResult, {
+  isMotionExecutedSucceed,
+} from "next-common/utils/collective/result";
 
 const VoteResultWrapper = styled(Flex)`
   justify-content: space-between;
@@ -38,12 +40,11 @@ function getTimelineItemCommonData(item, motion, type) {
     time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
     method: item.method,
     status: { value: item.method, type },
-  }
+  };
 }
 
 export function createMotionTimelineData(
   motion = {},
-  chain,
   linkable = false,
   linkPrefix = ""
 ) {
@@ -81,12 +82,11 @@ export function createMotionTimelineData(
               data={{
                 proposer: proposer,
                 method: proposal.method,
-                args: createArgs(proposal.method, proposal.args, chain),
+                args: createArgs(proposal.method, proposal.args),
                 total: threshold || voting?.threshold,
                 ayes: tally?.yesVotes || (voting?.ayes || []).length,
                 nays: tally?.noVotes || (voting?.nays || []).length,
               }}
-              chain={chain}
             />
           ),
         };
@@ -98,7 +98,7 @@ export function createMotionTimelineData(
           data: (
             <VoteResultWrapper>
               <User add={item.args.voter} />
-              <AyeNay isAye={item.args.approve}/>
+              <AyeNay isAye={item.args.approve} />
             </VoteResultWrapper>
           ),
         };
@@ -107,8 +107,12 @@ export function createMotionTimelineData(
         return {
           ...getTimelineItemCommonData(item, motion, type),
           data: getMotionExecutedResult(item.args?.dispatchResult),
-          status: { value: "Executed", type, args: { isOk: isMotionExecutedSucceed(item.args?.dispatchResult) } },
-        }
+          status: {
+            value: "Executed",
+            type,
+            args: { isOk: isMotionExecutedSucceed(item.args?.dispatchResult) },
+          },
+        };
       }
       default: {
         return getTimelineItemCommonData(item, motion);

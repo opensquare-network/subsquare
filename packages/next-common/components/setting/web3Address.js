@@ -32,7 +32,7 @@ const ShortAddress = styled.div`
   }
 `;
 
-export default function Web3Address({ address, chain }) {
+export default function Web3Address({ address }) {
   return (
     <div>
       <Label>Web3 Address</Label>

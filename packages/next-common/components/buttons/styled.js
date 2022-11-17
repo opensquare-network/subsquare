@@ -27,7 +27,7 @@ const CommonButton = styled.button`
 
 // These kinds of button has a colored background, and the text color is contrast.
 export const BackgroundButton = styled(CommonButton)`
-  color: ${(props) => props.theme.textContrast};
+  color: ${(props) => props.theme.textContrast} !important;
 `;
 
 export const DisabledButton = styled(CommonButton)`

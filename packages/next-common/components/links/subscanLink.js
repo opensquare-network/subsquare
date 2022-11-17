@@ -1,33 +1,51 @@
 import React from "react";
 import LinkSubScanIcon from "../../assets/imgs/icons/link-subscan.svg";
 import LinkSubScanIconActive from "../../assets/imgs/icons/link-subscan-active.svg";
-import ThirdPartyLink from "./thirdPartyLink";
-import { useChain } from "../../context/chain";
+import { SubscanLinkWrapper } from "./thirdPartyLink";
+import { useChain, useChainSettings } from "../../context/chain";
+import getChainSettings from "../../utils/consts/settings";
+import isNil from "lodash.isnil";
 
-function SubScanLink({ indexer }) {
+function SubScanLink({ indexer = {} }) {
   const chain = useChain();
+  const { noSubscan } = useChainSettings();
+  if (noSubscan) {
+    return null;
+  }
 
-  return <ThirdPartyLink
-    href={`https://${chain}.subscan.io/extrinsic/${indexer.blockHeight}-${indexer.extrinsicIndex ?? indexer.index ?? 0}`}
-    target="_blank"
-    rel="noreferrer"
-  >
-    <LinkSubScanIcon/>
-    <LinkSubScanIconActive/>
-  </ThirdPartyLink>
+  const { blockHeight, extrinsicIndex, index, eventIndex } = indexer;
+  let url = `https://${chain}.subscan.io`;
+  if (!isNil(extrinsicIndex) || !isNil(index)) {
+    url += `/extrinsic/${blockHeight}-${extrinsicIndex ?? index}`;
+  } else {
+    url += `/block/${blockHeight}?tab=event&event=${blockHeight}-${eventIndex}`;
+  }
+
+  return (
+    <SubscanLinkWrapper href={url} target="_blank" rel="noreferrer">
+      <LinkSubScanIcon />
+      <LinkSubScanIconActive />
+    </SubscanLinkWrapper>
+  );
 }
 
 export default SubScanLink;
 
 export function SubScanAccountLink({ address }) {
   const chain = useChain();
+  const settings = getChainSettings(chain);
+  if (settings.noSubscan) {
+    return null;
+  }
 
-  return <ThirdPartyLink
-    href={`https://${chain}.subscan.io/account/${address}`}
-    target="_blank"
-    rel="noreferrer"
-  >
-    <LinkSubScanIcon/>
-    <LinkSubScanIconActive/>
-  </ThirdPartyLink>
+  return (
+    <SubscanLinkWrapper
+      href={`https://${chain}.subscan.io/account/${address}`}
+      target="_blank"
+      rel="noreferrer"
+    >
+      <LinkSubScanIcon />
+      <LinkSubScanIconActive />
+    </SubscanLinkWrapper>
+  );
 }

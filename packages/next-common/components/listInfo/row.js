@@ -10,9 +10,13 @@ const Wrapper = styled.div`
   padding-bottom: 12px;
   color: ${(props) => props.theme.textPrimary};
   border-bottom: 1px solid ${(props) => props.theme.grey200Border};
+
+  @media (max-width: 768px) {
+    display: block;
+  }
 `;
 const Header = styled.div`
-  width: 120px;
+  width: 160px;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -38,6 +42,10 @@ const Content = styled.div`
     &:hover {
       text-decoration: underline;
     }
+  }
+
+  @media (max-width: 768px) {
+    margin-top: 8px;
   }
 `;
 

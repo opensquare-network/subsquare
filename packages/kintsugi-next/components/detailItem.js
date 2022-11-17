@@ -10,29 +10,29 @@ import PostEdit from "next-common/components/post/postEdit";
 import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
 
-export default function DetailItem({
-  chain,
-  onReply,
-  votes,
-  myVote,
-  type,
-}) {
+export default function DetailItem({ onReply, votes, myVote, type }) {
   const postDispatch = usePostDispatch();
   const post = usePost();
   const [isEdit, setIsEdit] = useState(false);
 
   if (isEdit) {
-    return <PostEdit
-      setIsEdit={ setIsEdit }
-      updatePost={ () => fetchAndUpdatePost(postDispatch, type, post._id) }
-      type={ type }
-    />
+    return (
+      <PostEdit
+        setIsEdit={setIsEdit}
+        updatePost={() => fetchAndUpdatePost(postDispatch, type, post._id)}
+        type={type}
+      />
+    );
   }
 
   return (
     <EditablePanel>
-      {type === detailPageCategory.DEMOCRACY_PROPOSAL && <KintsugiDemocracyProposalNavigation post={post}/>}
-      { type === detailPageCategory.DEMOCRACY_REFERENDUM && <KintsugiReferendumNavigation post={ post } /> }
+      {type === detailPageCategory.DEMOCRACY_PROPOSAL && (
+        <KintsugiDemocracyProposalNavigation post={post} />
+      )}
+      {type === detailPageCategory.DEMOCRACY_REFERENDUM && (
+        <KintsugiReferendumNavigation post={post} />
+      )}
       <PostTitle />
       <PostMeta />
       <ArticleContent

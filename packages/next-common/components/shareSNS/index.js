@@ -15,14 +15,26 @@ const Wrapper = styled.div`
   display: flex;
   padding-left: 16px;
   height: 14px;
+  color: ${(p) => p.theme.textTertiary};
+  cursor: pointer;
 
   > div {
     gap: 8px;
   }
 
-  cursor: pointer;
+  svg {
+    rect {
+      fill: ${(props) => props.theme.textTertiary};
+    }
 
-  > div:hover {
+    path {
+      fill: ${(props) => props.theme.textTertiary};
+    }
+  }
+
+  &:hover {
+    color: ${(p) => p.theme.textSecondary};
+
     svg {
       rect {
         fill: ${(props) => props.theme.textSecondary};
@@ -63,7 +75,7 @@ export default function Share() {
       "https://twitter.com/share?url=" +
       encodeURIComponent(window.location.href) +
       "&text=" +
-      encodeURIComponent(text ?? document.title);
+      encodeURIComponent(text ?? document.title ?? "");
     window.open(url, "_blank");
   };
 

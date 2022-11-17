@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   gap: 16px;
 `;
 
-export default function Poll({ chain, poll, votes, myVote }) {
+export default function Poll({ poll, votes, myVote }) {
   const router = useRouter();
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState("");
@@ -55,7 +55,6 @@ export default function Poll({ chain, poll, votes, myVote }) {
         selectedOption={selectedOption}
         setSelectedOption={setSelectedOption}
         selectable={!expired}
-        chain={chain}
       />
       {!expired && (
         <VoteButton

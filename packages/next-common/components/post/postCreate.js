@@ -15,6 +15,8 @@ import SecondaryButton from "../buttons/secondaryButton";
 import EditorWrapper from "../editor/editorWrapper";
 import { shadow_100 } from "../../styles/componentCss";
 import { TitleContainer } from "../styled/containers/titleContainer";
+import { useChain } from "../../context/chain";
+import { useUser } from "../../context/user";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
@@ -78,7 +80,9 @@ const UploaderWrapper = styled.div`
   margin-top: 16px;
 `;
 
-export default function PostCreate({ chain, loginUser }) {
+export default function PostCreate() {
+  const loginUser = useUser();
+  const chain = useChain();
   const router = useRouter();
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");

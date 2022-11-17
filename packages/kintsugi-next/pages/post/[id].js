@@ -13,12 +13,10 @@ import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 
 export default withLoginUserRedux(
-  ({ loginUser, detail, comments, chain, votes, myVote }) => {
+  ({ detail, comments, chain, votes, myVote }) => {
     const { CommentComponent, focusEditor } = useCommentComponent({
       detail,
       comments,
-      loginUser,
-      chain,
       type: detailPageCategory.POST,
     });
 
@@ -26,14 +24,16 @@ export default withLoginUserRedux(
     return (
       <PostProvider post={detail} type={detailPageCategory.POST}>
         <DetailLayout
-          user={loginUser}
-          seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
+          seoInfo={{
+            title: detail?.title,
+            desc,
+            ogImage: getBannerUrl(detail?.bannerCid),
+          }}
         >
           <Back href={`/discussions`} text="Back to Discussions" />
           <DetailItem
             votes={votes}
             myVote={myVote}
-            chain={chain}
             onReply={focusEditor}
             type={detailPageCategory.POST}
           />

@@ -18,12 +18,26 @@ export const shadow_200_right = css`
     0.4px 0 1.46302px rgba(30, 33, 52, 0.0444282);
 `;
 
+export const p_20_bold = css`
+  font-family: Inter, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 28px;
+`;
+
+export const p_16_bold = css`
+  font-family: Inter, sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+`;
+
 export const p_14_medium = css`
   font-family: Inter, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
-  line-height: 100%;
+  line-height: 20px;
 `;
 
 export const p_14_normal = css`
@@ -31,7 +45,15 @@ export const p_14_normal = css`
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  line-height: 19.6px;
+  line-height: 20px;
+`;
+
+export const p_12_bold = css`
+  font-family: Inter, sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 12px;
 `;
 
 export const p_12_medium = css`
@@ -39,7 +61,7 @@ export const p_12_medium = css`
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
-  line-height: 12px;
+  line-height: 16px;
 `;
 
 export const p_12_normal = css`

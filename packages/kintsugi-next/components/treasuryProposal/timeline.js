@@ -1,17 +1,13 @@
 import User from "next-common/components/user";
 import { getTimelineStatus } from "utils";
-import { getNode, toPrecision } from "next-common/utils";
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import sortTimeline from "next-common/utils/timeline/sort";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import SymbolBalance from "next-common/components/values/symbolBalance";
 
-export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
-  const node = getNode(chain);
-  const decimals = node.decimals;
-  const symbol = node.symbol;
-
+export default function TreasuryProposalTimeline({ treasuryProposal }) {
   const getTimelineData = (args, method) => {
     switch (method) {
       case "Proposed":
@@ -21,7 +17,7 @@ export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
       case "Awarded":
         return {
           Beneficiary: <User add={args.beneficiary} />,
-          Award: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
+          Award: <SymbolBalance value={args.award} />,
         };
     }
     return args;
@@ -65,7 +61,6 @@ export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
       })),
       ...getDemocracyTimelineData(
         completeTimeline.slice(1),
-        chain,
         detailPageCategory.DEMOCRACY_REFERENDUM
       ),
     ];
@@ -73,5 +68,5 @@ export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
   });
   sortTimeline(timelineData);
 
-  return <Timeline data={timelineData} chain={chain} indent={false} />;
+  return <Timeline data={timelineData} indent={false} />;
 }

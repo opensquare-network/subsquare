@@ -3,6 +3,7 @@ import useIsMounted from "./useIsMounted";
 import { u8aConcat } from "@polkadot/util";
 import { Kintsugi, Interlay } from "@interlay/monetary-js";
 import Chains from "../consts/chains";
+import { useChain } from "../../context/chain";
 
 const EMPTY_U8A_32 = new Uint8Array(32);
 
@@ -27,7 +28,8 @@ export function useTreasuryAccount(api) {
   return account;
 }
 
-export default function useTreasuryFree(api, chain) {
+export default function useTreasuryFree(api) {
+  const chain = useChain();
   const [free, setFree] = useState("0");
   const isMounted = useIsMounted();
   const treasuryAccount = useTreasuryAccount(api);

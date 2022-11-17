@@ -18,6 +18,7 @@ import litmus from "./litmus";
 import zeitgeist from "./zeitgeist";
 import altair from "./altair";
 import hydradx from "./hydradx";
+import development from "./development";
 
 const settingsMap = {
   polkadot,
@@ -40,12 +41,13 @@ const settingsMap = {
   polkadex,
   turing,
   zeitgeist,
+  ...(process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? { development } : {}),
 };
 
 export default function getChainSettings(chain) {
   const settings = settingsMap[chain];
   if (!settings) {
-    throw `can not get chain settings of ${ chain }`;
+    throw `can not get chain settings of ${chain}`;
   }
 
   return settings;

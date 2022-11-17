@@ -19,6 +19,7 @@ import RichTextStyleWrapper from "../content/richTextStyleWrapper";
 import CommentActions from "../actions/commentActions";
 import copy from "copy-to-clipboard";
 import useDuration from "../../utils/hooks/useDuration";
+import { useUser } from "../../context/user";
 
 const Wrapper = styled.div`
   position: relative;
@@ -79,7 +80,8 @@ const EditedLabel = styled.div`
   color: ${(props) => props.theme.textTertiary};
 `;
 
-export default function Item({ user, data, chain, onReply }) {
+export default function Item({ data, onReply }) {
+  const user = useUser();
   const dispatch = useDispatch();
   const router = useRouter();
   const ref = useRef();
@@ -183,7 +185,6 @@ export default function Item({ user, data, chain, onReply }) {
           </ContentWrapper>
           <div style={{ margin: "8px 0 0 28px" }}>
             <CommentActions
-              chain={chain}
               highlight={isLoggedIn && thumbUp}
               noHover={!isLoggedIn || ownComment}
               edit={ownComment}

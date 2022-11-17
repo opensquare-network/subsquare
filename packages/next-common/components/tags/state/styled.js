@@ -33,3 +33,5 @@ export const NegativeTag = styled(Common)`
 export const ClosedTag = styled(Common)`
   background: ${(props) => props.theme.grey400Border};
 `;
+
+export const BaseTag = Common;

@@ -20,11 +20,12 @@ const chainSlice = createSlice({
     },
     setNowHeight(state, { payload }) {
       state.nowHeight = payload || 0;
-    }
+    },
   },
 });
 
-export const { setBlockTime, setLatestHeight, setNowHeight } = chainSlice.actions;
+export const { setBlockTime, setLatestHeight, setNowHeight } =
+  chainSlice.actions;
 
 export const blockTimeSelector = (state) => state.chain.blockTime;
 export const latestHeightSelector = (state) => state.chain.latestHeight;

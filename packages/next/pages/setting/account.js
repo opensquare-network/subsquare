@@ -12,7 +12,7 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import Divider from "next-common/components/styled/layout/divider";
 import SettingsLayout from "next-common/components/layout/settingsLayout";
 
-export default withLoginUserRedux(({ loginUser, chain }) => {
+export default withLoginUserRedux(({ loginUser }) => {
   const router = useRouter();
 
   useEffect(() => {
@@ -26,14 +26,17 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 
   return (
     <>
-      <SettingsLayout user={loginUser}>
+      <SettingsLayout>
         <NextHead title={`Settings`} desc={``} />
         <Wrapper>
           <TitleContainer>Account</TitleContainer>
           <ContentWrapper>
             <Username username={loginUser?.username} />
             <Divider margin={24} />
-            <Email email={loginUser?.email} verified={loginUser?.emailVerified} />
+            <Email
+              email={loginUser?.email}
+              verified={loginUser?.emailVerified}
+            />
             <Divider margin={24} />
             <Password />
             <Divider margin={24} />
@@ -46,11 +49,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   return {
-    props: {
-      chain,
-    },
+    props: {},
   };
 });

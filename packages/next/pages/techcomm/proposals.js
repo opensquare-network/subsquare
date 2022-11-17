@@ -6,7 +6,7 @@ import { toTechCommMotionListItem } from "utils/viewfuncs";
 import businessCategory from "next-common/utils/consts/business/category";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 
-export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
+export default withLoginUserRedux(({ proposals, chain }) => {
   const items = (proposals.items || []).map((item) =>
     toTechCommMotionListItem(chain, item)
   );
@@ -17,9 +17,8 @@ export default withLoginUserRedux(({ loginUser, proposals, chain }) => {
   };
 
   return (
-    <HomeLayout user={loginUser} seoInfo={seoInfo}>
+    <HomeLayout seoInfo={seoInfo}>
       <PostList
-        chain={chain}
         category={category}
         create={null}
         items={items}

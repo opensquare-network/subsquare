@@ -12,7 +12,6 @@ import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
 
 export default function DetailItem({
-  chain,
   onReply,
   type,
   votes,
@@ -27,23 +26,29 @@ export default function DetailItem({
   }
 
   if (isEdit) {
-    return <PostEdit
-      setIsEdit={ setIsEdit }
-      updatePost={ () => fetchAndUpdatePost(postDispatch, type, post._id) }
-      type={ type }
-    />
+    return (
+      <PostEdit
+        setIsEdit={setIsEdit}
+        updatePost={() => fetchAndUpdatePost(postDispatch, type, post._id)}
+        type={type}
+      />
+    );
   }
 
   return (
     <EditablePanel>
-      {type === detailPageCategory.DEMOCRACY_EXTERNAL && <ExternalNavigation post={post}/> }
-      {
-        type === detailPageCategory.DEMOCRACY_PROPOSAL && <DemocracyProposalNavigation
-          proposalIndex={ post.proposalIndex }
-          referendumIndex={ post?.referendumIndex }
+      {type === detailPageCategory.DEMOCRACY_EXTERNAL && (
+        <ExternalNavigation post={post} />
+      )}
+      {type === detailPageCategory.DEMOCRACY_PROPOSAL && (
+        <DemocracyProposalNavigation
+          proposalIndex={post.proposalIndex}
+          referendumIndex={post?.referendumIndex}
         />
-      }
-      {type === detailPageCategory.DEMOCRACY_REFERENDUM && <ReferendumNavigation post={post}/>}
+      )}
+      {type === detailPageCategory.DEMOCRACY_REFERENDUM && (
+        <ReferendumNavigation post={post} />
+      )}
       {countDown}
       <PostTitle />
       <PostMeta />

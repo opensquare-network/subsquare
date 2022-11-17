@@ -7,6 +7,7 @@ import {
   setNodesDelay,
 } from "../../store/reducers/nodeSlice";
 import { sleep } from "../index";
+import { useChain } from "../../context/chain";
 
 const TIMEOUT = 10000;
 let count = 0;
@@ -42,7 +43,8 @@ const updateNodeDelay = async (chain, url) => {
   }
 };
 
-const useUpdateNodesDelay = (chain) => {
+const useUpdateNodesDelay = () => {
+  const chain = useChain();
   const nodesSetting = useSelector(nodesSelector);
   const currentNode = useSelector(currentNodeSelector);
   const dispatch = useDispatch();

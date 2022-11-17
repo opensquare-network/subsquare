@@ -3,11 +3,11 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import BigNumber from "bignumber.js";
 
-import useApi from "../../../../utils/hooks/useSelectedEnpointApi";
+import useApi from "../../../../utils/hooks/useApi";
 import useIsMounted from "../../../../utils/hooks/useIsMounted";
 import { newErrorToast } from "../../../../store/reducers/toastSlice";
 
-import { checkInputValue, emptyFunction, getNode } from "../../../../utils";
+import { checkInputValue, emptyFunction } from "../../../../utils";
 import PopupWithAddress from "../../../popupWithAddress";
 import ProposalBond from "./proposalBond";
 import Beneficiary from "../../common/beneficiary";
@@ -18,6 +18,7 @@ import { WarningMessage } from "../../../popup/styled";
 import useBond from "../../../../utils/hooks/useBond";
 import { sendTx } from "../../../../utils/sendTx";
 import SecondaryButton from "../../../buttons/secondaryButton";
+import { useChainSettings } from "../../../../context/chain";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -26,7 +27,6 @@ const ButtonWrapper = styled.div`
 
 function PopupContent({
   extensionAccounts,
-  chain,
   onClose,
   onInBlock = emptyFunction,
   onFinalized = emptyFunction,
@@ -38,9 +38,8 @@ function PopupContent({
   const [inputValue, setInputValue] = useState();
   const [loading, setLoading] = useState(false);
 
-  const node = getNode(chain);
-
-  const api = useApi(chain);
+  const node = useChainSettings();
+  const api = useApi();
 
   const proposalValue = new BigNumber(inputValue).times(
     Math.pow(10, node.decimals)
@@ -54,8 +53,7 @@ function PopupContent({
 
   const [balance, balanceIsLoading] = useAddressBalance(
     api,
-    signerAccount?.address,
-    chain
+    signerAccount?.address
   );
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
@@ -71,10 +69,6 @@ function PopupContent({
 
     if (!beneficiary) {
       return showErrorToast("Please input a beneficiary");
-    }
-
-    if (!node) {
-      return;
     }
 
     let bnValue;
@@ -113,7 +107,6 @@ function PopupContent({
     <>
       <Signer
         api={api}
-        chain={chain}
         signerAccount={signerAccount}
         setSignerAccount={setSignerAccount}
         extensionAccounts={extensionAccounts}
@@ -122,11 +115,10 @@ function PopupContent({
         balanceIsLoading={balanceIsLoading}
       />
       <Beneficiary
-        chain={chain}
         extensionAccounts={extensionAccounts}
         setAddress={setBeneficiary}
       />
-      <ProposalValue chain={chain} setValue={setInputValue} />
+      <ProposalValue setValue={setInputValue} />
       <ProposalBond bond={bond} node={node} />
       {balanceInsufficient && (
         <WarningMessage danger>Insufficient balance</WarningMessage>

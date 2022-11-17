@@ -11,12 +11,10 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 
-export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
+export default withLoginUserRedux(({ motion, comments }) => {
   const { CommentComponent, focusEditor } = useCommentComponent({
     detail: motion,
     comments,
-    loginUser,
-    chain,
     type: detailPageCategory.TECH_COMM_MOTION,
   });
 
@@ -24,14 +22,15 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
   return (
     <PostProvider post={motion} type={detailPageCategory.TECH_COMM_MOTION}>
       <DetailLayout
-        user={loginUser}
-        seoInfo={{ title: motion?.title, desc, ogImage: getBannerUrl(motion?.bannerCid) }}
+        seoInfo={{
+          title: motion?.title,
+          desc,
+          ogImage: getBannerUrl(motion?.bannerCid),
+        }}
       >
         <Back href={`/techcomm/proposals`} text="Back to Proposals" />
         <TechcommMotionDetail
           motion={motion}
-          loginUser={loginUser}
-          chain={chain}
           onReply={focusEditor}
           type={detailPageCategory.TECH_COMM_MOTION}
         />
@@ -42,7 +41,6 @@ export default withLoginUserRedux(({ loginUser, motion, comments, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
   const { id, page, page_size: pageSize } = context.query;
 
   const [{ result: motion }] = await Promise.all([
@@ -67,7 +65,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       motion: motion ?? null,
       comments: comments ?? EmptyList,
-      chain,
     },
   };
 });

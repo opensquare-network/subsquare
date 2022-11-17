@@ -3,7 +3,6 @@ import DetailItem from "components/detailItem";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import { getNode } from "next-common/utils";
 import Timeline from "components/bounty/timeline";
 import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
@@ -27,81 +26,67 @@ function BountyCountDown({ data = {} }) {
     return null;
   }
 
-  const {
-    meta: {
-      status: {
-        pendingPayout: { unlockAt } = {}
-      } = {}
-    } = {}
-  } = data
+  const { meta: { status: { pendingPayout: { unlockAt } = {} } = {} } = {} } =
+    data;
 
   const timeline = data.timeline ?? [];
-  const awardedItem = [...timeline].reverse().find(((item) => [item.name, item.method].includes("BountyAwarded")));
+  const awardedItem = [...timeline]
+    .reverse()
+    .find((item) => [item.name, item.method].includes("BountyAwarded"));
   if (!awardedItem || !unlockAt) {
-    return null
+    return null;
   }
 
   return (
     <NoticeWrapper>
       <TreasuryCountDown
-        startHeight={ awardedItem.indexer?.blockHeight }
-        targetHeight={ unlockAt }
+        startHeight={awardedItem.indexer?.blockHeight}
+        targetHeight={unlockAt}
         prefix="Claimable"
       />
     </NoticeWrapper>
   );
 }
 
-export default withLoginUserRedux(
-  ({ loginUser, detail, childBounties, comments, chain }) => {
-    const { CommentComponent, focusEditor } = useUniversalComments({
-      detail,
-      comments,
-      loginUser,
-      chain,
-      type: detailPageCategory.TREASURY_BOUNTY,
-    });
+export default withLoginUserRedux(({ detail, childBounties, comments }) => {
+  const { CommentComponent, focusEditor } = useUniversalComments({
+    detail,
+    comments,
+    type: detailPageCategory.TREASURY_BOUNTY,
+  });
 
-    const node = getNode(chain);
-    if (!node) {
-      return null;
-    }
-    const decimals = node.decimals;
-    const symbol = node.symbol;
-
-    const desc = getMetaDesc(detail);
-    return (
-      <PostProvider post={detail} type={detailPageCategory.TREASURY_BOUNTY}>
-        <DetailLayout
-          user={ loginUser }
-          seoInfo={ { title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) } }
-        >
-          <Back href={ `/treasury/bounties` } text="Back to Bounties" />
-          <DetailItem
-            chain={ chain }
-            onReply={ focusEditor }
-            type={ detailPageCategory.TREASURY_BOUNTY }
-            countDown={ <BountyCountDown data={ detail.onchainData } /> }
-          />
-          <Metadata meta={ detail.onchainData?.meta } chain={ chain } />
-          <ChildBountiesTable { ...{ childBounties, decimals, symbol } } />
-          <Timeline bounty={ detail?.onchainData } chain={ chain } />
-          { CommentComponent }
-        </DetailLayout>
-      </PostProvider>
-    );
-  }
-);
+  const desc = getMetaDesc(detail);
+  return (
+    <PostProvider post={detail} type={detailPageCategory.TREASURY_BOUNTY}>
+      <DetailLayout
+        seoInfo={{
+          title: detail?.title,
+          desc,
+          ogImage: getBannerUrl(detail?.bannerCid),
+        }}
+      >
+        <Back href={`/treasury/bounties`} text="Back to Bounties" />
+        <DetailItem
+          onReply={focusEditor}
+          type={detailPageCategory.TREASURY_BOUNTY}
+          countDown={<BountyCountDown data={detail.onchainData} />}
+        />
+        <Metadata meta={detail.onchainData?.meta} />
+        <ChildBountiesTable {...{ childBounties }} />
+        <Timeline bounty={detail?.onchainData} />
+        {CommentComponent}
+      </DetailLayout>
+    </PostProvider>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   const { id, page, page_size } = context.query;
   const pageSize = Math.min(page_size ?? 50, 100);
 
   const [{ result: detail }, { result: childBounties }] = await Promise.all([
-    nextApi.fetch(`treasury/bounties/${ id }`),
-    nextApi.fetch(`treasury/bounties/${ id }/child-bounties`, { pageSize: 5 }),
+    nextApi.fetch(`treasury/bounties/${id}`),
+    nextApi.fetch(`treasury/bounties/${id}/child-bounties`, { pageSize: 5 }),
   ]);
 
   if (!detail) {
@@ -109,7 +94,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   }
 
   const { result: comments } = await nextApi.fetch(
-    `treasury/bounties/${ detail._id }/comments`,
+    `treasury/bounties/${detail._id}/comments`,
     {
       page: page ?? "last",
       pageSize,
@@ -121,7 +106,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       childBounties: childBounties ?? EmptyList,
       comments: comments ?? EmptyList,
-      chain,
     },
   };
 });

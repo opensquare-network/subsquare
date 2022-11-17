@@ -14,8 +14,10 @@ import {
   toTreasuryProposalListItem,
 } from "utils/viewfuncs";
 import HomeLayout from "next-common/components/layout/HomeLayout";
+import { useChain } from "next-common/context/chain";
 
-export default withLoginUserRedux(({ overview, loginUser, chain }) => {
+export default withLoginUserRedux(({ overview }) => {
+  const chain = useChain();
   let overviewData = [
     {
       category: "Referenda",
@@ -106,20 +108,17 @@ export default withLoginUserRedux(({ overview, loginUser, chain }) => {
   );
 
   return (
-    <HomeLayout user={loginUser}>
-      <Overview overviewData={filteredOverviewData} chain={chain} />
+    <HomeLayout>
+      <Overview overviewData={filteredOverviewData} />
     </HomeLayout>
   );
 });
 
-export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
+export const getServerSideProps = withLoginUser(async () => {
   const { result } = await nextApi.fetch(`overview`);
 
   return {
     props: {
-      chain,
       overview: result ?? null,
     },
   };

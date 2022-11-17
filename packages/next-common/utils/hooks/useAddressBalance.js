@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import useIsMounted from "./useIsMounted";
 import Chains from "../consts/chains";
 import BigNumber from "bignumber.js";
+import { useChain } from "../../context/chain";
 
 const balanceMap = new Map();
 
@@ -21,7 +22,8 @@ async function querySystemAccountBalance(api, address) {
     .toString();
 }
 
-export default function useAddressBalance(api, address, chain) {
+export default function useAddressBalance(api, address) {
+  const chain = useChain();
   const isMounted = useIsMounted();
   const [balance, setBalance] = useState(0);
   const [loadingBalance, setLoadingBalance] = useState(true);

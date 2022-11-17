@@ -36,9 +36,9 @@ const Title = styled.h1`
   margin-top: 0;
 `;
 
-const Privacy = withLoginUserRedux(({ loginUser, chain }) => {
+const Privacy = withLoginUserRedux(({}) => {
   return (
-    <BaseLayout user={loginUser} chain={chain}>
+    <BaseLayout>
       <NextHead title="Privacy Policy" desc="Privacy Policy" />
       <Wrapper>
         <Back text="Back" href="signup" />

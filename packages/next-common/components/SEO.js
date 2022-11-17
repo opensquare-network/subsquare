@@ -1,16 +1,16 @@
 import React from "react";
 import { useRouter } from "next/router";
 import NextSeo from "./nextSeo";
-import getChainSettings from "../utils/consts/settings";
+import { useChainSettings } from "../context/chain";
 
-export default function SEO({ title, desc, chain, ogImage }) {
+export default function SEO({ title, desc, ogImage }) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
   const route = useRouter();
   const endpoint =
     process.env.NEXT_PUBLIC_PREVIEW_IMG_ENDPOINT ||
     "https://ipfs.fleek.co/ipfs";
 
-  const settings = getChainSettings(chain);
+  const settings = useChainSettings();
   const images = [
     {
       url: ogImage || `${endpoint}/${settings.snsCoverCid}`,

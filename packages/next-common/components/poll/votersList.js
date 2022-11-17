@@ -32,7 +32,7 @@ const GreyItem = styled.div`
   }
 `;
 
-export default function VoterList({ voters, chain }) {
+export default function VoterList({ voters }) {
   if (!voters || voters?.length === 0) {
     return null;
   }
@@ -44,7 +44,6 @@ export default function VoterList({ voters, chain }) {
         <GreyItem key={index}>
           <User
             user={user}
-            chain={chain}
             showAvatar={false}
             fontSize={12}
             color={"#506176"}

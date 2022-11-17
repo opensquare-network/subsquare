@@ -2,7 +2,7 @@
 import styled from "styled-components";
 import Link from "next/link";
 import Timeline from "next-common/components/timeline";
-import { getNode, isMotionEnded, toPrecision, } from "next-common/utils";
+import { isMotionEnded } from "next-common/utils";
 import findLastIndex from "lodash.findlastindex";
 import ArticleContent from "next-common/components/articleContent";
 import { useState } from "react";
@@ -21,6 +21,8 @@ import PostEdit from "next-common/components/post/postEdit";
 import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import User from "next-common/components/user";
+import { useChain } from "next-common/context/chain";
+import SymbolBalance from "next-common/components/values/symbolBalance";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -106,14 +108,9 @@ const getClosedTimelineData = (timeline = []) => {
   return [fd, ...notFoldItems];
 };
 
-export default function TechcommMotionDetail({
-  motion,
-  chain,
-  onReply,
-  type,
-}) {
+export default function TechcommMotionDetail({ motion, onReply, type }) {
+  const chain = useChain();
   const postDispatch = usePostDispatch();
-  const node = getNode(chain);
   const post = usePost();
   const [isEdit, setIsEdit] = useState(false);
   const motionEndHeight = motion.onchainData?.voting?.end;
@@ -123,15 +120,15 @@ export default function TechcommMotionDetail({
   );
 
   if (isEdit) {
-    return <PostEdit
-      setIsEdit={ setIsEdit }
-      updatePost={ () => fetchAndUpdatePost(postDispatch, type, post._id) }
-      type={ type }
-    />
+    return (
+      <PostEdit
+        setIsEdit={setIsEdit}
+        updatePost={() => fetchAndUpdatePost(postDispatch, type, post._id)}
+        type={type}
+      />
+    );
   }
 
-  const decimals = node.decimals;
-  const symbol = node.symbol;
   const treasuryProposalMeta = motion.treasuryProposal?.meta;
   const timeline = createMotionTimelineData(motion.onchainData);
   const motionEnd = isMotionEnded(motion.onchainData);
@@ -171,14 +168,8 @@ export default function TechcommMotionDetail({
         "Beneficiary",
         <User add={treasuryProposalMeta.beneficiary} fontSize={14} />,
       ],
-      [
-        "Value",
-        `${toPrecision(treasuryProposalMeta.value ?? 0, decimals)} ${symbol}`,
-      ],
-      [
-        "Bond",
-        `${toPrecision(treasuryProposalMeta.bond ?? 0, decimals)} ${symbol}`,
-      ],
+      ["Value", <SymbolBalance value={treasuryProposalMeta.value} />],
+      ["Bond", <SymbolBalance value={treasuryProposalMeta.bond} />],
     ]);
   }
 
@@ -192,23 +183,20 @@ export default function TechcommMotionDetail({
           >{`Democracy Public Proposal #${proposal?.proposalIndex}`}</Link>,
         ],
         ["Hash", proposal.hash],
-        [
-          "Proposer",
-          <User add={proposal?.proposer} fontSize={14} />,
-        ],
+        ["Proposer", <User add={proposal?.proposer} fontSize={14} />],
       ]);
     });
   }
 
   const motionEndInfo = showMotionEnd ? (
     <TimelineMotionEnd>
-      <MotionEnd type="simple" motion={motion.onchainData} chain={chain} />
+      <MotionEnd type="simple" motion={motion.onchainData} />
     </TimelineMotionEnd>
   ) : null;
 
   const motionEndHeader = showMotionEnd ? (
     <MotionEndHeader>
-      <MotionEnd type="full" motion={motion.onchainData} chain={chain} />
+      <MotionEnd type="full" motion={motion.onchainData} />
     </MotionEndHeader>
   ) : null;
 
@@ -216,7 +204,7 @@ export default function TechcommMotionDetail({
     <div>
       <EditablePanel>
         <div>
-          <TechCommNavigation motion={motion}/>
+          <TechCommNavigation motion={motion} />
           {motionEndHeader}
           <PostTitle />
           <PostMeta />
@@ -232,7 +220,6 @@ export default function TechcommMotionDetail({
       <MultiKVList title="Business" data={business} />
 
       <CollectiveMetadata
-        chain={chain}
         index={motion?.motionIndex}
         proposer={motion?.onchainData?.proposer}
         threshold={motion?.onchainData?.threshold}
@@ -242,7 +229,6 @@ export default function TechcommMotionDetail({
 
       <Timeline
         data={timelineData}
-        chain={chain}
         indent={false}
         motionEndInfo={motionEndInfo}
       />

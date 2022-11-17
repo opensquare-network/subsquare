@@ -36,9 +36,9 @@ const Title = styled.h1`
   margin-top: 0;
 `;
 
-const Terms = withLoginUserRedux(({ loginUser, chain }) => {
+const Terms = withLoginUserRedux(({}) => {
   return (
-    <BaseLayout user={loginUser} chain={chain}>
+    <BaseLayout>
       <NextHead title="Terms of Service" desc="Terms of Service" />
       <Wrapper>
         <Back text="Back" href="signup" />

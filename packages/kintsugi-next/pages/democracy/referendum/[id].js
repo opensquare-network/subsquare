@@ -9,7 +9,7 @@ import Vote from "components/referenda/vote";
 import Timeline from "next-common/components/timeline";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
+import useApi from "next-common/utils/hooks/useApi";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
 import useCommentComponent from "next-common/components/useCommentComponent";
@@ -28,7 +28,7 @@ import {
 } from "next-common/store/reducers/referendumSlice";
 
 export default withLoginUserRedux(
-  ({ loginUser, detail: ssrDetail, publicProposal, comments, chain }) => {
+  ({ detail: ssrDetail, publicProposal, comments }) => {
     const [detail, setDetail] = useState(ssrDetail);
     useEffect(() => setDetail(ssrDetail), [ssrDetail]);
     const dispatch = useDispatch();
@@ -36,12 +36,10 @@ export default withLoginUserRedux(
     const { CommentComponent, focusEditor } = useCommentComponent({
       detail,
       comments,
-      loginUser,
-      chain,
       type: detailPageCategory.DEMOCRACY_REFERENDUM,
     });
 
-    const api = useApi(chain);
+    const api = useApi();
     const { referendumStatus } = useMaybeFetchReferendumStatus(
       detail?.onchainData,
       api
@@ -51,12 +49,10 @@ export default withLoginUserRedux(
 
     const proposalData = getDemocracyTimelineData(
       publicProposal?.onchainData?.timeline || [],
-      chain,
       detailPageCategory.DEMOCRACY_PROPOSAL
     );
     const referendumData = getDemocracyTimelineData(
       detail?.onchainData?.timeline || [],
-      chain,
       detailPageCategory.DEMOCRACY_REFERENDUM
     );
     const timelineData = proposalData.concat(referendumData);
@@ -81,7 +77,6 @@ export default withLoginUserRedux(
         type={detailPageCategory.DEMOCRACY_REFERENDUM}
       >
         <DetailWithRightLayout
-          user={loginUser}
           seoInfo={{
             title: detail?.title,
             desc,
@@ -91,13 +86,11 @@ export default withLoginUserRedux(
           <Back href={`/democracy/referenda`} text="Back to Referenda" />
           <DetailItem
             onReply={focusEditor}
-            chain={chain}
             type={detailPageCategory.DEMOCRACY_REFERENDUM}
           />
 
           <Vote
             referendumInfo={detail?.onchainData?.info}
-            chain={chain}
             referendumIndex={detail?.referendumIndex}
             onFinalized={onVoteFinalized}
           />
@@ -107,11 +100,10 @@ export default withLoginUserRedux(
             proposer={detail.proposer}
             status={referendumStatus ?? {}}
             call={detail?.onchainData?.preImage?.call}
-            chain={chain}
             onchainData={detail.onchainData}
           />
 
-          <Timeline data={timelineData} chain={chain} />
+          <Timeline data={timelineData} />
           {CommentComponent}
         </DetailWithRightLayout>
       </PostProvider>
@@ -120,7 +112,6 @@ export default withLoginUserRedux(
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
   const { id, page, page_size: pageSize } = context.query;
 
   const [{ result: detail }] = await Promise.all([
@@ -154,7 +145,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail: detail ?? {},
       publicProposal,
       comments: comments ?? EmptyList,
-      chain,
     },
   };
 });

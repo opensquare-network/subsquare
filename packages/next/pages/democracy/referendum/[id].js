@@ -7,7 +7,7 @@ import { EmptyList } from "next-common/utils/constants";
 import DetailItem from "components/detailItem";
 import Vote from "components/referenda/vote";
 import { to404 } from "next-common/utils/serverSideUtil";
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
+import useApi from "next-common/utils/hooks/useApi";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Timeline from "components/referenda/timeline";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
@@ -22,7 +22,7 @@ import { PostProvider } from "next-common/context/post";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 
-export default withLoginUserRedux(({ loginUser, detail: ssrDetail, comments, chain }) => {
+export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   const [detail, setDetail] = useState(ssrDetail);
   useEffect(() => setDetail(ssrDetail), [ssrDetail]);
   const isMounted = useIsMounted();
@@ -30,12 +30,10 @@ export default withLoginUserRedux(({ loginUser, detail: ssrDetail, comments, cha
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
-    loginUser,
-    chain,
     type: detailPageCategory.DEMOCRACY_REFERENDUM,
   });
 
-  const api = useApi(chain);
+  const api = useApi();
   const { referendumStatus } = useMaybeFetchReferendumStatus(
     detail?.onchainData,
     api
@@ -43,17 +41,14 @@ export default withLoginUserRedux(({ loginUser, detail: ssrDetail, comments, cha
   useMaybeFetchElectorate(detail?.onchainData, api);
   useFetchVotes(detail?.onchainData, api);
 
-  const refreshPageData = useCallback(
-    async () => {
-        const { result } = await nextApi.fetch(
-          `democracy/referendums/${detail.referendumIndex}`
-        );
-        if (result && isMounted.current) {
-          setDetail(result);
-        }
-    },
-    [detail, isMounted]
-  );
+  const refreshPageData = useCallback(async () => {
+    const { result } = await nextApi.fetch(
+      `democracy/referendums/${detail.referendumIndex}`
+    );
+    if (result && isMounted.current) {
+      setDetail(result);
+    }
+  }, [detail, isMounted]);
 
   const onVoteFinalized = useWaitSyncBlock("Referendum voted", refreshPageData);
 
@@ -62,7 +57,6 @@ export default withLoginUserRedux(({ loginUser, detail: ssrDetail, comments, cha
   return (
     <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_REFERENDUM}>
       <DetailWithRightLayout
-        user={loginUser}
         seoInfo={{
           title: detail?.title,
           desc,
@@ -72,13 +66,11 @@ export default withLoginUserRedux(({ loginUser, detail: ssrDetail, comments, cha
         <Back href={`/democracy/referenda`} text="Back to Referenda" />
         <DetailItem
           onReply={focusEditor}
-          chain={chain}
           type={detailPageCategory.DEMOCRACY_REFERENDUM}
         />
 
         <Vote
           referendumInfo={detail?.onchainData?.info}
-          chain={chain}
           referendumIndex={detail?.referendumIndex}
           onFinalized={onVoteFinalized}
         />
@@ -87,15 +79,15 @@ export default withLoginUserRedux(({ loginUser, detail: ssrDetail, comments, cha
           api={api}
           proposer={detail?.proposer}
           status={referendumStatus ?? {}}
-          call={detail?.onchainData?.preImage?.call || detail?.onchainData?.call}
+          call={
+            detail?.onchainData?.preImage?.call || detail?.onchainData?.call
+          }
           shorten={detail?.onchainData?.preImage?.shorten}
-          chain={chain}
           onchainData={detail?.onchainData}
         />
 
         <Timeline
           timeline={detail?.onchainData?.timeline}
-          chain={chain}
           type={detailPageCategory.DEMOCRACY_REFERENDUM}
         />
         {CommentComponent}
@@ -105,8 +97,6 @@ export default withLoginUserRedux(({ loginUser, detail: ssrDetail, comments, cha
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   const { id, page, page_size } = context.query;
   const pageSize = Math.min(page_size ?? 50, 100);
 
@@ -132,7 +122,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       detail,
       comments: comments ?? EmptyList,
-      chain,
     },
   };
 });

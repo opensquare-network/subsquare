@@ -2,14 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import NetworkSwitch from "next-common/components/header/networkSwitch";
-import { nodes } from "next-common/utils/constants";
 import User from "next-common/components/user";
 import NodeSwitch from "next-common/components/header/nodeSwitch";
 import Flex from "next-common/components/styled/flex";
 import { accountMenu } from "./consts";
 import GhostButton from "../buttons/ghostButton";
 import SecondaryButton from "../buttons/secondaryButton";
-import { logoutUser, useUserDispatch } from "../../context/user";
+import { logoutUser, useUser, useUserDispatch } from "../../context/user";
+import { useChainSettings } from "../../context/chain";
 
 const Wrapper = styled.div`
   padding: 32px 0 0;
@@ -61,9 +61,10 @@ const UserWrapper = styled(Flex)`
   }
 `;
 
-export default function SidebarAccount({ user, chain }) {
+export default function SidebarAccount() {
+  const user = useUser();
   const router = useRouter();
-  const node = nodes.find((n) => n.value === chain) || nodes[0];
+  const node = useChainSettings();
   const userDispatch = useUserDispatch();
 
   const handleAccountMenu = async (item) => {
@@ -79,7 +80,7 @@ export default function SidebarAccount({ user, chain }) {
       <Title>NETWORK</Title>
       <NetworkSwitch activeNode={node} />
       {node?.hideHeight ? null : <Title>NODE</Title>}
-      <NodeSwitch chain={chain} node={node} />
+      <NodeSwitch />
       <Title>ACCOUNT</Title>
       {!user && (
         <ButtonWrapper>

@@ -44,75 +44,68 @@ const ChildBountyCountDown = ({ data = {} }) => {
   );
 };
 
-export default withLoginUserRedux(
-  ({ loginUser, detail: ssrDetail, comments, chain }) => {
-    const [detail, setDetail] = useState(ssrDetail);
-    useEffect(() => setDetail(ssrDetail), [ssrDetail]);
+export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
+  const [detail, setDetail] = useState(ssrDetail);
+  useEffect(() => setDetail(ssrDetail), [ssrDetail]);
 
-    const isMounted = useIsMounted();
+  const isMounted = useIsMounted();
 
-    const { CommentComponent, focusEditor } = useUniversalComments({
-      detail,
-      comments,
-      loginUser,
-      chain,
-      type: detailPageCategory.TREASURY_CHILD_BOUNTY,
-    });
+  const { CommentComponent, focusEditor } = useUniversalComments({
+    detail,
+    comments,
+    type: detailPageCategory.TREASURY_CHILD_BOUNTY,
+  });
 
-    const refreshPageData = useCallback(
-      async () => {
-          const { result } = await nextApi.fetch(
-            `treasury/child-bounties/${detail.parentBountyId}_${detail.index}`
-          );
-          if (result && isMounted.current) {
-            setDetail(result);
-          }
-      },
-      [detail, isMounted]
+  const refreshPageData = useCallback(async () => {
+    const { result } = await nextApi.fetch(
+      `treasury/child-bounties/${detail.parentBountyId}_${detail.index}`
     );
+    if (result && isMounted.current) {
+      setDetail(result);
+    }
+  }, [detail, isMounted]);
 
-    const onClaimFinalized = useWaitSyncBlock("Child bounty claimed", refreshPageData);
+  const onClaimFinalized = useWaitSyncBlock(
+    "Child bounty claimed",
+    refreshPageData
+  );
 
-    const desc = getMetaDesc(detail);
+  const desc = getMetaDesc(detail);
 
-    const showRightSidePanel = ["PendingPayout", "Claimed"].includes(detail?.onchainData?.state?.state);
+  const showRightSidePanel = ["PendingPayout", "Claimed"].includes(
+    detail?.onchainData?.state?.state
+  );
 
-    const Layout = showRightSidePanel ? DetailWithRightLayout : DetailLayout;
+  const Layout = showRightSidePanel ? DetailWithRightLayout : DetailLayout;
 
-    return (
-      <PostProvider post={detail} type={detailPageCategory.TREASURY_CHILD_BOUNTY}>
-        <Layout
-          user={loginUser}
-          seoInfo={{
-            title: detail?.title,
-            desc,
-            ogImage: getBannerUrl(detail?.bannerCid),
-          }}
-        >
-          <Back href={`/treasury/child-bounties`} text="Back to Child Bounties" />
-          <DetailItem
-            chain={chain}
-            onReply={focusEditor}
-            type={detailPageCategory.TREASURY_CHILD_BOUNTY}
-            countDown={<ChildBountyCountDown data={detail.onchainData} />}
-          />
-          <Claim
-            chain={chain}
-            childBounty={detail?.onchainData}
-            onFinalized={onClaimFinalized}
-          />
-          <Metadata meta={detail.onchainData?.meta} chain={chain} />
-          <Timeline onchainData={detail.onchainData} chain={chain} />
-          {CommentComponent}
-        </Layout>
-      </PostProvider>
-    );
-  }
-);
+  return (
+    <PostProvider post={detail} type={detailPageCategory.TREASURY_CHILD_BOUNTY}>
+      <Layout
+        seoInfo={{
+          title: detail?.title,
+          desc,
+          ogImage: getBannerUrl(detail?.bannerCid),
+        }}
+      >
+        <Back href={`/treasury/child-bounties`} text="Back to Child Bounties" />
+        <DetailItem
+          onReply={focusEditor}
+          type={detailPageCategory.TREASURY_CHILD_BOUNTY}
+          countDown={<ChildBountyCountDown data={detail.onchainData} />}
+        />
+        <Claim
+          childBounty={detail?.onchainData}
+          onFinalized={onClaimFinalized}
+        />
+        <Metadata meta={detail.onchainData?.meta} />
+        <Timeline onchainData={detail.onchainData} />
+        {CommentComponent}
+      </Layout>
+    </PostProvider>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   const { id, page, page_size } = context.query;
   const pageSize = Math.min(page_size ?? 50, 100);
 
@@ -136,7 +129,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       detail,
       comments: comments ?? EmptyList,
-      chain,
     },
   };
 });

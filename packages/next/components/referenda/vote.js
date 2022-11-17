@@ -2,7 +2,7 @@ import { memo, useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import styled from "styled-components";
 import { calcPassing } from "utils/referendumUtil";
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
+import useApi from "next-common/utils/hooks/useApi";
 import Loading from "next-common/components/loading";
 import Chains from "next-common/utils/consts/chains";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
@@ -22,6 +22,7 @@ import SubLink from "next-common/components/styled/subLink";
 import VoteBar from "./voteBar";
 import TallyInfo from "./tallyInfo";
 import { emptyFunction } from "next-common/utils";
+import { useChain } from "next-common/context/chain";
 
 const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -90,11 +91,16 @@ const VoteButton = styled.button`
   border-radius: 4px;
 `;
 
-function Vote({ referendumInfo, referendumIndex, chain, onFinalized = emptyFunction }) {
+function Vote({
+  referendumInfo,
+  referendumIndex,
+  onFinalized = emptyFunction,
+}) {
+  const chain = useChain();
   const dispatch = useDispatch();
   const [showVote, setShowVote] = useState(false);
   const [showVoteList, setShowVoteList] = useState(false);
-  const api = useApi(chain);
+  const api = useApi();
   const blockHeight = useSelector(latestHeightSelector);
 
   const electorate = useSelector(electorateSelector);
@@ -153,7 +159,6 @@ function Vote({ referendumInfo, referendumIndex, chain, onFinalized = emptyFunct
           isLoadingVotes={isLoadingVotes}
           allAye={allAye}
           allNay={allNay}
-          chain={chain}
         />
 
         {finishedResult}
@@ -179,16 +184,13 @@ function Vote({ referendumInfo, referendumIndex, chain, onFinalized = emptyFunct
       )}
       {showVote && (
         <Popup
-          chain={chain}
           onClose={() => setShowVote(false)}
           referendumIndex={referendumIndex}
           onInBlock={updateVoteProgress}
           onFinalized={onFinalized}
         />
       )}
-      {showVoteList && (
-        <VotesPopup setShowVoteList={setShowVoteList} chain={chain} />
-      )}
+      {showVoteList && <VotesPopup setShowVoteList={setShowVoteList} />}
     </Wrapper>
   );
 }

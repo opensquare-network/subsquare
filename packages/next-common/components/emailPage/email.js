@@ -82,7 +82,7 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
   }, [address, loginUser, router]);
 
   return (
-    <BaseLayout user={loginUser} chain={chain}>
+    <BaseLayout>
       <NextHead title={`Set Email`} desc={`Set Email`} />
       <Wrapper>
         <ContentCenterWrapper>
@@ -90,11 +90,7 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
           <BorderRadiusWrapper>
             <Hint>Set email for receiving notifications</Hint>
             <Label>Web3 address</Label>
-            <Option
-              item={{ address, name: accountName }}
-              chain={chain}
-              selected
-            />
+            <Option item={{ address, name: accountName }} selected />
           </BorderRadiusWrapper>
           <EmailInput
             identity={identity}

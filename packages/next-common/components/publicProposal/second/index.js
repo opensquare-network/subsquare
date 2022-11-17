@@ -7,13 +7,13 @@ import User from "../../user";
 import Loading from "../../loading";
 import { emptyFunction } from "../../../utils";
 import useDepositOf from "../../../utils/hooks/useDepositOf";
-import useApi from "../../../utils/hooks/useSelectedEnpointApi";
-import { getNode } from "next-common/utils";
+import useApi from "../../../utils/hooks/useApi";
 import Tooltip from "../../tooltip";
 import SecondaryButton from "../../buttons/secondaryButton";
 import { GhostCard } from "../../styled/containers/ghostCard";
 import { TitleContainer } from "../../styled/containers/titleContainer";
 import SubLink from "../../styled/subLink";
+import { useChainSettings } from "../../../context/chain";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -99,7 +99,6 @@ const ListMore = styled(SubLink)`
 `;
 
 export default function Second({
-  chain,
   proposalIndex,
   hasTurnIntoReferendum,
   hasCanceled,
@@ -110,7 +109,7 @@ export default function Second({
   const [showPopup, setShowPopup] = useState(false);
   const [expand, setExpand] = useState(false);
 
-  const api = useApi(chain);
+  const api = useApi();
   const [triggerUpdate, setTriggerUpdate] = useState(0);
   const [seconds, depositRequired, isLoadingSeconds] = useDepositOf(
     api,
@@ -118,7 +117,7 @@ export default function Second({
     atBlockHeight,
     triggerUpdate
   );
-  const node = getNode(chain);
+  const node = useChainSettings();
   const secondsCount = countBy(seconds);
   const secondsAddress = Object.keys(secondsCount);
 
@@ -203,7 +202,6 @@ export default function Second({
       </Wrapper>
       {showPopup && (
         <Popup
-          chain={chain}
           proposalIndex={proposalIndex}
           depositorUpperBound={seconds.length}
           depositRequired={depositRequired}

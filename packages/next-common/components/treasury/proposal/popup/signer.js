@@ -7,7 +7,6 @@ import useSetDefaultSigner from "../../../../utils/hooks/useSetDefaultSigner";
 export default function Signer({
   api,
   extensionAccounts,
-  chain,
   signerAccount,
   setSignerAccount,
   balanceIsLoading,
@@ -27,7 +26,6 @@ export default function Signer({
       />
       <SignerSelect
         api={api}
-        chain={chain}
         selectedAccount={signerAccount}
         setSelectedAccount={setSignerAccount}
         extensionAccounts={extensionAccounts}

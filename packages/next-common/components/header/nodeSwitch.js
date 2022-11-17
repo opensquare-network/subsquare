@@ -20,6 +20,7 @@ import darkSignalFast from "../../assets/imgs/icons/dark-signal-fast.png";
 import light from "../styled/theme/light";
 import dark from "../styled/theme/dark";
 import { modeSelector } from "../../store/reducers/settingSlice";
+import { useChainSettings } from "../../context/chain";
 
 const SignalDefaultIcon = styled(SignalDefault)`
   path {
@@ -130,14 +131,15 @@ const Item = styled.div`
   }
 `;
 
-export default function NodeSwitch({ small, chain }) {
+export default function NodeSwitch({ small }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
   const windowSize = useWindowSize();
+  const chainSettings = useChainSettings();
   const currentNode = useSelector(currentNodeSelector);
   const nodes = useSelector(nodesSelector);
   const [currentNodeSetting, setCurrentNodeSetting] = useState(
-    getChainSettings(chain).endpoints
+    chainSettings.endpoints[0]
   );
   const dispatch = useDispatch();
   const mode = useSelector(modeSelector);
@@ -151,14 +153,12 @@ export default function NodeSwitch({ small, chain }) {
   }, [small, windowSize]);
 
   useEffect(() => {
-    if (chain) {
-      const url = currentNode;
-      if (url) {
-        const nodeSetting = (nodes || []).find((item) => item.url === url);
-        setCurrentNodeSetting(nodeSetting);
-      }
+    const url = currentNode;
+    if (url) {
+      const nodeSetting = (nodes || []).find((item) => item.url === url);
+      setCurrentNodeSetting(nodeSetting);
     }
-  }, [currentNode, nodes, chain]);
+  }, [currentNode, nodes]);
 
   const getSignalImg = (delay) => {
     let imgFile;

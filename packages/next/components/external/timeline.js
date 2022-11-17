@@ -36,8 +36,8 @@ export function makeExternalTimelineData(timeline) {
   });
 }
 
-export default function ExternalTimeline({ timeline, chain }) {
+export default function ExternalTimeline({ timeline }) {
   const timelineData = makeExternalTimelineData(timeline);
 
-  return <Timeline data={timelineData} chain={chain} />;
+  return <Timeline data={timelineData} />;
 }

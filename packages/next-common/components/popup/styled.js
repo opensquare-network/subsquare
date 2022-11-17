@@ -45,6 +45,7 @@ export const StatusWrapper = styled.div`
   justify-content: space-between;
   min-height: 38px;
   > div.value {
+    display: flex;
     font-size: 14px;
     line-height: 100%;
     font-weight: 500;
@@ -148,9 +149,6 @@ export const DelegatingValue = styled.div`
 
 export const ButtonWrapper = styled.div`
   display: flex;
-  > :first-child {
-    background: ${(props) => props.theme.secondaryGreen500};
-  }
   > * {
     flex-grow: 1 !important;
   }

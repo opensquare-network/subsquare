@@ -10,6 +10,7 @@ const businessCategory = {
   democracyReferenda: "Referenda",
   collective: "collective",
   polkassemblyDiscussions: "Polkassembly Discussions",
+  gov2: "gov2",
 };
 
 export const detailPageCategory = {
@@ -25,6 +26,7 @@ export const detailPageCategory = {
   TREASURY_BOUNTY: "treasury/bounty",
   TREASURY_CHILD_BOUNTY: "treasury/child-bounty",
   TREASURY_TIP: "treasury/tip",
+  GOV2_REFERENDUM: "gov2/referendum",
 };
 
 export default businessCategory;

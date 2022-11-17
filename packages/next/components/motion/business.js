@@ -2,21 +2,13 @@ import Link from "next/link";
 import MultiKVList from "next-common/components/listInfo/multiKVList";
 import Flex from "next-common/components/styled/flex";
 import User from "next-common/components/user";
-import ExtrinsicLinks from "next-common/components/links";
 import CapitalText from "../capitalText";
-import { getNode, toPrecision } from "next-common/utils";
+import SymbolBalance from "next-common/components/values/symbolBalance";
 
-export default function Business({ motion, chain }) {
+export default function Business({ motion }) {
   if (!motion) {
     return null;
   }
-
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
 
   const business = [];
 
@@ -37,18 +29,16 @@ export default function Business({ motion, chain }) {
           "Beneficiary",
           <Flex key="proposal-beneficiary">
             <User add={proposal.meta.beneficiary} fontSize={14} />
-            <ExtrinsicLinks
-              chain={chain}
-              address={proposal.meta.beneficiary}
-              style={{ marginLeft: 8 }}
-            />
           </Flex>,
         ],
         [
           "Value",
-          `${toPrecision(proposal.meta.value ?? 0, decimals)} ${symbol}`,
+          <SymbolBalance key="proposal-value" value={proposal.meta.value} />,
         ],
-        ["Bond", `${toPrecision(proposal.meta.bond ?? 0, decimals)} ${symbol}`],
+        [
+          "Bond",
+          <SymbolBalance key="proposal-bond" value={proposal.meta.bond} />,
+        ],
       ]);
     }
 
@@ -74,11 +64,6 @@ export default function Business({ motion, chain }) {
               </CapitalText>,
               <Flex key="bounty-beneficiary-value">
                 <User add={item[1]} fontSize={14} />
-                <ExtrinsicLinks
-                  chain={chain}
-                  address={item[1]}
-                  style={{ marginLeft: 8 }}
-                />
               </Flex>,
             ]);
             break;
@@ -86,7 +71,7 @@ export default function Business({ motion, chain }) {
           case "bond":
             kvData.push([
               <CapitalText key="bounty-bond-text">{item[0]}</CapitalText>,
-              `${toPrecision(item[1] ?? 0, decimals)} ${symbol}`,
+              <SymbolBalance key="bounty-bond-value" value={item[1]} />,
             ]);
             break;
         }

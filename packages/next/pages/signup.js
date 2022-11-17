@@ -111,7 +111,7 @@ const FormWrapper = styled.form`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser, chain }) => {
+export default withLoginUserRedux(({ loginUser }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [success, setSuccess] = useState(!!loginUser);
@@ -192,7 +192,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   });
 
   return (
-    <BaseLayout user={loginUser} chain={chain}>
+    <BaseLayout>
       <NextHead title={`Signup`} desc={`Signup`} />
       <Wrapper>
         {!success && (

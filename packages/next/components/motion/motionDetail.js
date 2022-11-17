@@ -9,7 +9,7 @@ import Metadata from "./metadata";
 import Timeline from "./timeline";
 import Head from "./head";
 import { isAddressInGroup, isMotionEnded } from "next-common/utils";
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
+import useApi from "next-common/utils/hooks/useApi";
 import toApiCouncil from "next-common/utils/toApiCouncil";
 import { EditablePanel } from "next-common/components/styled/panel";
 import Chains from "next-common/utils/consts/chains";
@@ -18,10 +18,14 @@ import PostEdit from "next-common/components/post/postEdit";
 import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
+import { useChain } from "next-common/context/chain";
+import { useUser } from "next-common/context/user";
 
-export default function MotionDetail({ user, onReply, chain, type }) {
+export default function MotionDetail({ onReply, type }) {
+  const chain = useChain();
+  const user = useUser();
   const postDispatch = usePostDispatch();
-  const api = useApi(chain);
+  const api = useApi();
   const isMounted = useIsMounted();
   const post = usePost();
 
@@ -37,7 +41,7 @@ export default function MotionDetail({ user, onReply, chain, type }) {
   const blockHash = motionEnd
     ? post.onchainData?.state?.indexer?.blockHash
     : null;
-  const prime = usePrime({ blockHash, chain, type });
+  const prime = usePrime({ blockHash, type });
   const singleApprovalMotion = post.onchainData.threshold === 1;
 
   const dbVotes = useMemo(() => {
@@ -135,7 +139,7 @@ export default function MotionDetail({ user, onReply, chain, type }) {
   return (
     <div>
       <EditablePanel>
-        {!isEdit && <Head motion={post} chain={chain} type={type} />}
+        {!isEdit && <Head motion={post} type={type} />}
         <ArticleContent
           post={post}
           onReply={onReply}
@@ -144,7 +148,6 @@ export default function MotionDetail({ user, onReply, chain, type }) {
         />
       </EditablePanel>
       <Vote
-        chain={chain}
         votes={votes}
         voters={voters}
         prime={prime}
@@ -158,7 +161,7 @@ export default function MotionDetail({ user, onReply, chain, type }) {
         onChainData={post.onchainData}
         type={type}
       />
-      <Business motion={post?.onchainData} chain={chain} />
+      <Business motion={post?.onchainData} />
       <Metadata />
       <Timeline />
     </div>

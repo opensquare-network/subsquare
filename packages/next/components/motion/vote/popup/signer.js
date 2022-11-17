@@ -12,7 +12,6 @@ const Wrapper = styled.div`
 
 export default function Signer({
   api,
-  chain,
   extensionAccounts,
   selectedAccount,
   setSelectedAccount,
@@ -25,7 +24,6 @@ export default function Signer({
       <PopupLabel text={"Address"} />
       <SignerSelect
         api={api}
-        chain={chain}
         extensionAccounts={extensionAccounts}
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}

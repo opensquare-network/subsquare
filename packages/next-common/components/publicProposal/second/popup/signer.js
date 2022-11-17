@@ -20,7 +20,6 @@ const Label = styled.div`
 
 export default function Signer({
   extensionAccounts,
-  chain,
   api,
   useAddressVotingBalance,
 }) {
@@ -32,14 +31,10 @@ export default function Signer({
     <div>
       <LabelWrapper>
         <Label>Address</Label>
-        <AccountBalance
-          chain={chain}
-          useAddressVotingBalance={useAddressVotingBalance}
-        />
+        <AccountBalance useAddressVotingBalance={useAddressVotingBalance} />
       </LabelWrapper>
       <SignerSelect
         api={api}
-        chain={chain}
         selectedAccount={signerAccount}
         setSelectedAccount={setSignerAccount}
         extensionAccounts={extensionAccounts}

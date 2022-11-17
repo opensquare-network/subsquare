@@ -13,7 +13,6 @@ const keys = {
 };
 
 export default function CollectiveMetadata({
-  chain,
   proposer,
   threshold,
   hash,
@@ -38,7 +37,7 @@ export default function CollectiveMetadata({
   );
 
   if (call) {
-    data.push([<Proposal call={call} chain={chain} />]);
+    data.push([<Proposal call={call} />]);
   }
 
   return <KVList title="Metadata" data={data} />;

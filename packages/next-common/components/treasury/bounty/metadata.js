@@ -1,22 +1,15 @@
 import React, { memo } from "react";
 import KVList from "../../listInfo/kvList";
-import { getNode, toPrecision } from "../../../utils";
 import Anchor from "../../styled/anchor";
 import User from "../../user";
+import SymbolBalance from "../../values/symbolBalance";
 
 /**
  *
  * @param meta {proposer, beneficiary, value, bond, status}
- * @param chain {string}
  * @constructor
  */
-function BountyMetadata({ meta, chain }) {
-  const node = getNode(chain);
-  if (!node) {
-    throw new Error(`Can not get node info for chain ${chain}`);
-  }
-  const { symbol, decimals } = node;
-
+function BountyMetadata({ meta }) {
   if (!meta) {
     return null;
   }
@@ -33,13 +26,13 @@ function BountyMetadata({ meta, chain }) {
         break;
       case "proposer":
       case "beneficiary":
-        normalizedValue = <User add={value} fontSize={14}/>;
+        normalizedValue = <User add={value} fontSize={14} />;
         break;
       case "value":
       case "fee":
       case "curatorDeposit":
       case "bond":
-        normalizedValue = `${toPrecision(value ?? 0, decimals)} ${symbol}`;
+        normalizedValue = <SymbolBalance value={value} />;
         break;
       case "status":
         normalizedValue = Object.keys(value)[0];

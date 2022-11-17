@@ -31,9 +31,7 @@ const LoadingDiv = styled.div`
 export default function PolkassemblyComments({
   detail,
   isLoading,
-  user,
   comments = [],
-  chain,
   paId,
   type,
   tabs = null,
@@ -54,7 +52,7 @@ export default function PolkassemblyComments({
           <>
             <div>
               {(comments || []).map((item) => (
-                <Item key={item.id} data={item} user={user} chain={chain} />
+                <Item key={item.id} data={item} />
               ))}
             </div>
           </>
@@ -63,7 +61,6 @@ export default function PolkassemblyComments({
         )}
         <PolkassemblyCommentButton
           detail={detail}
-          chain={chain}
           paId={paId}
           type={type}
           btnRef={btnRef}

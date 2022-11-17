@@ -13,12 +13,10 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 
-export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
+export default withLoginUserRedux(({ detail, comments }) => {
   const { CommentComponent, focusEditor } = useCommentComponent({
     detail,
     comments,
-    loginUser,
-    chain,
     type: detailPageCategory.TREASURY_PROPOSAL,
   });
 
@@ -26,17 +24,19 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
   return (
     <PostProvider post={detail} type={detailPageCategory.TREASURY_PROPOSAL}>
       <DetailLayout
-        user={loginUser}
-        seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
+        seoInfo={{
+          title: detail?.title,
+          desc,
+          ogImage: getBannerUrl(detail?.bannerCid),
+        }}
       >
         <Back href={`/treasury/proposals`} text="Back to Proposals" />
         <DetailItem
-          chain={chain}
           onReply={focusEditor}
           type={detailPageCategory.TREASURY_PROPOSAL}
         />
-        <Metadata treasuryProposal={detail?.onchainData} chain={chain} />
-        <Timeline treasuryProposal={detail?.onchainData} chain={chain} />
+        <Metadata treasuryProposal={detail?.onchainData} />
+        <Timeline treasuryProposal={detail?.onchainData} />
         {CommentComponent}
       </DetailLayout>
     </PostProvider>
@@ -44,8 +44,6 @@ export default withLoginUserRedux(({ loginUser, detail, comments, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   const { id, page, page_size: pageSize } = context.query;
 
   const [{ result: detail }] = await Promise.all([
@@ -68,7 +66,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       detail,
       comments: comments ?? EmptyList,
-      chain,
     },
   };
 });

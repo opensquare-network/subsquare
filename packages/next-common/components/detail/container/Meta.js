@@ -8,7 +8,10 @@ import Info from "../../styled/info";
 import Tag from "../../tags/state/tag";
 import isNil from "lodash.isnil";
 import { usePost, usePostState, usePostType } from "../../../context/post";
-import { useChain } from "../../../context/chain";
+import SubCategory from "./SubCategory";
+import { getMotionStateArgs } from "../../../utils/collective/result";
+import { getGov2ReferendumStateArgs } from "../../../utils/gov2/result";
+import { detailPageCategory } from "../../../utils/consts/business/category";
 
 const FlexWrapper = styled(Flex)`
   justify-content: space-between;
@@ -29,27 +32,46 @@ const DividerWrapper = styled(Flex)`
 `;
 
 export default function PostMeta() {
-  const chain = useChain();
   const postState = usePostState();
   const detailType = usePostType();
   const post = usePost();
   // fixme: kintsugi post has no commentsCount field
-  const noCommentsCount = isNil(post.commentsCount) && isNil(post.polkassemblyCommentsCount);
+  const noCommentsCount =
+    isNil(post.commentsCount) && isNil(post.polkassemblyCommentsCount);
   const commentsCount =
     (post.commentsCount || 0) + (post.polkassemblyCommentsCount || 0);
 
-  return <FlexWrapper>
-    <DividerWrapper>
-      <User
-        user={post.author}
-        add={post.proposer || post.finder}
-        chain={chain}
-        fontSize={12}
-      />
-      <TypeTag type={detailType}/>
-      <UpdatedTime post={ post } />
-      {(!noCommentsCount && commentsCount > -1) && <Info>{`${commentsCount} Comments`}</Info>}
-    </DividerWrapper>
-    {postState && <Tag state={postState} category={detailType} />}
-  </FlexWrapper>
+  let stateArgs;
+  if (
+    [
+      detailPageCategory.COUNCIL_MOTION,
+      detailPageCategory.TECH_COMM_MOTION,
+      detailPageCategory.DEMOCRACY_REFERENDUM,
+    ].includes(detailType)
+  ) {
+    stateArgs = getMotionStateArgs(post.onchainData.state);
+  } else if (detailPageCategory.GOV2_REFERENDUM === detailType) {
+    stateArgs = getGov2ReferendumStateArgs(post.onchainData.state);
+  }
+
+  return (
+    <FlexWrapper>
+      <DividerWrapper>
+        <User
+          user={post.author}
+          add={post.proposer || post.finder}
+          fontSize={12}
+        />
+        <TypeTag type={detailType} />
+        <UpdatedTime post={post} />
+        {!noCommentsCount && commentsCount > -1 && (
+          <Info>{`${commentsCount} Comments`}</Info>
+        )}
+        <SubCategory />
+      </DividerWrapper>
+      {postState && (
+        <Tag state={postState} category={detailType} args={stateArgs} />
+      )}
+    </FlexWrapper>
+  );
 }

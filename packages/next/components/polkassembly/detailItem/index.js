@@ -28,7 +28,7 @@ const FlexWrapper = styled(Flex)`
   flex-wrap: nowrap;
 `;
 
-export default function DetailItem({ chain, type, postReactions }) {
+export default function DetailItem({ type, postReactions }) {
   const post = usePost();
   const postUpdateTime = post?.updatedAt || post?.createdAt;
   const duration = useDuration(postUpdateTime);
@@ -39,10 +39,13 @@ export default function DetailItem({ chain, type, postReactions }) {
 
   return (
     <EditablePanel>
-      <PostTitle post={post}/>
+      <PostTitle post={post} />
       <FlexWrapper>
         <DividerWrapper>
-          <User user={toPolkassemblyDiscussionAuthor(post.author, chain)} fontSize={12} />
+          <User
+            user={toPolkassemblyDiscussionAuthor(post.author)}
+            fontSize={12}
+          />
           <Info>
             <UpdateIcon />
             <span>{duration}</span>
@@ -50,12 +53,7 @@ export default function DetailItem({ chain, type, postReactions }) {
           <Info>{`${post.commentsCount} Comments`}</Info>
         </DividerWrapper>
       </FlexWrapper>
-      <ArticleContent
-        chain={chain}
-        post={post}
-        type={type}
-        postReactions={postReactions}
-      />
+      <ArticleContent post={post} type={type} postReactions={postReactions} />
     </EditablePanel>
   );
 }

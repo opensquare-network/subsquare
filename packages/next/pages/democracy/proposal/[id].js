@@ -20,7 +20,7 @@ import { useCallback, useEffect, useState } from "react";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 
-export default withLoginUserRedux(({ loginUser, detail: ssrDetail, comments, chain }) => {
+export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   const [detail, setDetail] = useState(ssrDetail);
   useEffect(() => setDetail(ssrDetail), [ssrDetail]);
   const isMounted = useIsMounted();
@@ -28,8 +28,6 @@ export default withLoginUserRedux(({ loginUser, detail: ssrDetail, comments, cha
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
-    loginUser,
-    chain,
     type: detailPageCategory.DEMOCRACY_PROPOSAL,
   });
 
@@ -47,35 +45,36 @@ export default withLoginUserRedux(({ loginUser, detail: ssrDetail, comments, cha
     ? lastTimelineBlockHeight - 1
     : undefined;
 
-  const refreshPageData = useCallback(
-    async () => {
-        const { result } = await nextApi.fetch(
-          `democracy/proposals/${detail.proposalIndex}`
-        );
-        if (result && isMounted.current) {
-          setDetail(result);
-        }
-    },
-    [detail, isMounted]
-  );
+  const refreshPageData = useCallback(async () => {
+    const { result } = await nextApi.fetch(
+      `democracy/proposals/${detail.proposalIndex}`
+    );
+    if (result && isMounted.current) {
+      setDetail(result);
+    }
+  }, [detail, isMounted]);
 
-  const onSecondFinalized = useWaitSyncBlock("Proposal seconded", refreshPageData);
+  const onSecondFinalized = useWaitSyncBlock(
+    "Proposal seconded",
+    refreshPageData
+  );
 
   const desc = getMetaDesc(detail);
   return (
     <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_PROPOSAL}>
       <DetailWithRightLayout
-        user={loginUser}
-        seoInfo={{ title: detail?.title, desc, ogImage: getBannerUrl(detail?.bannerCid) }}
+        seoInfo={{
+          title: detail?.title,
+          desc,
+          ogImage: getBannerUrl(detail?.bannerCid),
+        }}
       >
         <Back href={`/democracy/proposals`} text="Back to Proposals" />
         <DetailItem
-          chain={chain}
           onReply={focusEditor}
           type={detailPageCategory.DEMOCRACY_PROPOSAL}
         />
         <Second
-          chain={chain}
           proposalIndex={proposalIndex}
           hasTurnIntoReferendum={hasTurnIntoReferendum}
           hasCanceled={hasCanceled}
@@ -83,8 +82,8 @@ export default withLoginUserRedux(({ loginUser, detail: ssrDetail, comments, cha
           atBlockHeight={secondsAtBlockHeight}
           onFinalized={onSecondFinalized}
         />
-        <Metadata publicProposal={detail?.onchainData} chain={chain} />
-        <Timeline timeline={detail?.onchainData?.timeline} chain={chain} />
+        <Metadata publicProposal={detail?.onchainData} />
+        <Timeline timeline={detail?.onchainData?.timeline} />
         {CommentComponent}
       </DetailWithRightLayout>
     </PostProvider>
@@ -92,8 +91,6 @@ export default withLoginUserRedux(({ loginUser, detail: ssrDetail, comments, cha
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   const { id, page, page_size } = context.query;
   const pageSize = Math.min(page_size ?? 50, 100);
 
@@ -117,7 +114,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       detail,
       comments: comments ?? EmptyList,
-      chain,
     },
   };
 });

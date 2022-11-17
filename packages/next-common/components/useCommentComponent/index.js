@@ -4,15 +4,17 @@ import Comments from "next-common/components/comment/index";
 import Editor from "next-common/components/comment/editor";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
+import { useChain } from "../../context/chain";
+import { useUser } from "../../context/user";
 
 export default function useCommentComponent({
   detail,
   comments,
-  loginUser,
-  chain,
   type,
   tabs = null,
 }) {
+  const loginUser = useUser();
+  const chain = useChain();
   const postId = detail._id;
 
   const editorWrapperRef = useRef(null);
@@ -22,7 +24,7 @@ export default function useCommentComponent({
     loginUser?.preference.editor || "markdown"
   );
 
-  const users = useMentionList(detail, comments, chain);
+  const users = useMentionList(detail, comments);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
@@ -37,17 +39,10 @@ export default function useCommentComponent({
 
   const CommentComponent = (
     <CommentsWrapper>
-      <Comments
-        data={comments}
-        user={loginUser}
-        chain={chain}
-        onReply={onReply}
-        tabs={tabs}
-      />
+      <Comments data={comments} onReply={onReply} tabs={tabs} />
       {loginUser && (
         <Editor
           postId={postId}
-          chain={chain}
           ref={editorWrapperRef}
           setQuillRef={setQuillRef}
           {...{

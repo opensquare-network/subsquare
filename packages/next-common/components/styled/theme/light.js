@@ -18,6 +18,7 @@ const light = {
   secondaryGreen100: "rgba(76, 175, 80, 0.1)",
   secondaryGreen300: "rgba(76, 175, 80, 0.35)",
   secondaryGreen500: "#4CAF50",
+  secondaryBlue100: "rgba(15, 111, 255, 0.1)",
   secondaryBlue500: "#0F6FFF",
   secondaryAzure100: "rgba(33, 150, 243, 0.1)",
   secondaryAzure500: "#2196F3",

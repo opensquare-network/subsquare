@@ -71,7 +71,7 @@ export async function getAddressVotingBalance(api, address) {
   return jsonAccount?.data?.free;
 }
 
-const Conviction = {
+export const Conviction = {
   None: 0,
   Locked1x: 1,
   Locked2x: 2,

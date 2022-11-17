@@ -5,9 +5,11 @@ import { withTheme } from "styled-components";
 import { emptyFunction } from "../../utils";
 import PrimaryButton from "../buttons/primaryButton";
 import SecondaryButton from "../buttons/secondaryButton";
+import { useChainSettings } from "../../context/chain";
 
-function LoginButton({ chain, theme }) {
+function LoginButton({ theme }) {
   const router = useRouter();
+  const setting = useChainSettings();
 
   const gotoLogin = () => {
     router
@@ -20,7 +22,6 @@ function LoginButton({ chain, theme }) {
       .then(emptyFunction);
   };
 
-  const setting = getChainSettings(chain);
   let isPrimaryInverse = setting.loginButtonPrimary;
 
   let TargetButton = SecondaryButton;

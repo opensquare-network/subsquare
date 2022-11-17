@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { emptyFunction, getNode, isSameAddress, toPrecision } from "next-common/utils";
+import { emptyFunction, isSameAddress, toPrecision } from "next-common/utils";
 import Loading from "next-common/components/loading";
 import { GhostCard } from "next-common/components/styled/containers/ghostCard";
 import Flex from "next-common/components/styled/flex";
@@ -9,11 +9,12 @@ import { StatisticTitleContainer } from "next-common/components/styled/container
 import Anchor from "next-common/components/styled/anchor";
 import User from "next-common/components/user";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import useApi from "next-common/utils/hooks/useSelectedEnpointApi";
+import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { shadow_100 } from "next-common/styles/componentCss";
 import ValueDisplay from "next-common/components/displayValue";
 import { useUser } from "next-common/context/user";
+import { useChainSettings } from "next-common/context/chain";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -91,8 +92,13 @@ const ClaimInfoText = styled.div`
   }
 `;
 
-export default function Claim({ chain, childBounty, onInBlock = emptyFunction, onFinalized = emptyFunction }) {
+export default function Claim({
+  childBounty,
+  onInBlock = emptyFunction,
+  onFinalized = emptyFunction,
+}) {
   const user = useUser();
+  const { decimals, symbol } = useChainSettings();
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [isClaimed, setIsClaimed] = useState(
@@ -100,7 +106,7 @@ export default function Claim({ chain, childBounty, onInBlock = emptyFunction, o
   );
   const isMounted = useIsMounted();
 
-  const api = useApi(chain);
+  const api = useApi();
 
   const updateChildBountyStatus = useCallback(() => {
     setIsLoading(true);
@@ -140,18 +146,7 @@ export default function Claim({ chain, childBounty, onInBlock = emptyFunction, o
     return null;
   }
 
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-
-  const decimals = node.decimals;
-  const symbol = node.symbol;
-
-  const isBeneficiary = isSameAddress(
-    user?.address,
-    childBounty?.beneficiary
-  );
+  const isBeneficiary = isSameAddress(user?.address, childBounty?.beneficiary);
 
   const hasBeenClaimedText = (
     <ClaimInfoText>This child bounty has been claimed.</ClaimInfoText>
@@ -195,11 +190,7 @@ export default function Claim({ chain, childBounty, onInBlock = emptyFunction, o
             <InfoItem>
               <InfoItemName>Beneficiary</InfoItemName>
               <InfoItemValue>
-                <User
-                  chain={chain}
-                  add={childBounty.beneficiary}
-                  fontSize={14}
-                />
+                <User add={childBounty.beneficiary} fontSize={14} />
               </InfoItemValue>
             </InfoItem>
             <InfoItem>
@@ -234,7 +225,6 @@ export default function Claim({ chain, childBounty, onInBlock = emptyFunction, o
       </Wrapper>
       {showPopup && (
         <Popup
-          chain={chain}
           childBounty={childBounty}
           onClose={() => setShowPopup(false)}
           onInBlock={onClaimInBlock}

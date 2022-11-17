@@ -5,7 +5,6 @@ import useShowMotionEnd from "./useShowMotionEnd";
 import MotionEnd from "next-common/components/motionEnd";
 import Timeline from "next-common/components/timeline";
 import { usePostOnChainData } from "next-common/context/post";
-import { useChain } from "next-common/context/chain";
 import { useMemo } from "react";
 
 const TimelineMotionEnd = styled.div`
@@ -43,12 +42,12 @@ const getClosedTimelineData = (timeline = []) => {
   return [foldItems, ...notFoldItems];
 };
 
-export function makeMotionTimelineData(motion, chain) {
+export function makeMotionTimelineData(motion) {
   if (!motion) {
     return null;
   }
 
-  const timeline = createMotionTimelineData(motion, chain);
+  const timeline = createMotionTimelineData(motion);
 
   let timelineData = timeline;
   if (isClosed(timeline)) {
@@ -60,16 +59,15 @@ export function makeMotionTimelineData(motion, chain) {
 
 export default function MotionTimeline() {
   const motion = usePostOnChainData();
-  const chain = useChain();
   const showMotionEnd = useShowMotionEnd(motion);
-  const timelineData = useMemo(() => makeMotionTimelineData(motion, chain), [motion, chain]);
+  const timelineData = useMemo(() => makeMotionTimelineData(motion), [motion]);
   if (!motion) {
     return null;
   }
 
   const motionEndInfo = showMotionEnd ? (
     <TimelineMotionEnd>
-      <MotionEnd type="simple" motion={motion} chain={chain} />
+      <MotionEnd type="simple" motion={motion} />
     </TimelineMotionEnd>
   ) : null;
 
@@ -77,7 +75,6 @@ export default function MotionTimeline() {
     <Timeline
       motionEndInfo={motionEndInfo}
       data={timelineData}
-      chain={chain}
       indent={false}
     />
   );

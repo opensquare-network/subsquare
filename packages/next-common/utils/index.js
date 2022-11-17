@@ -1,8 +1,13 @@
 import moment from "moment";
 import BigNumber from "bignumber.js";
-import { nodes } from "./constants";
 import { extractTime } from "@polkadot/util";
 import { encodeAddress } from "@polkadot/util-crypto";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(duration);
+dayjs.extend(relativeTime);
 
 BigNumber.config({ EXPONENTIAL_AT: 36 });
 
@@ -23,22 +28,6 @@ export function addressEllipsis(address, start = 4, end = 4) {
   }
 
   return textEllipsis(address, start, end);
-}
-
-export function timeDuration(seconds, suffix = "remaining") {
-  if (!seconds) {
-    return "Unknown time";
-  }
-  // return moment.duration(seconds * 1000);
-  let duration = moment.duration(seconds, "seconds");
-  return (
-    duration
-      .toString()
-      .replace("PT", "")
-      .replace("H", "h ")
-      .replace("M", "m ")
-      .replace("S", "s ") + suffix
-  );
 }
 
 export function timeDurationFromNow(time) {
@@ -108,16 +97,7 @@ export function timeDurationFromNow(time) {
   return `${ss}s ago`;
 }
 
-export function getNode(chain) {
-  const target = nodes.find((n) => n.value === chain);
-  if (!target) {
-    throw new Error(`Not supported chain ${chain}`);
-  }
-
-  return target;
-}
-
-export function toPrecision(value, decimals) {
+export function toPrecision(value, decimals = 0) {
   return new BigNumber(value).dividedBy(Math.pow(10, decimals)).toString();
 }
 
@@ -197,21 +177,23 @@ export function abbreviateBigNumber(x, fixed = 2) {
 }
 
 export const estimateBlocksTime = (blocks, blockTime) => {
-  if (blockTime) {
-    const value = new BigNumber(blockTime).multipliedBy(blocks).toNumber();
-    const time = extractTime(Math.abs(value));
-    const { days, hours, minutes, seconds } = time;
-    return [
-      days ? (days > 1 ? `${days} days` : "1 day") : null,
-      hours ? (hours > 1 ? `${hours} hrs` : "1 hr") : null,
-      minutes ? (minutes > 1 ? `${minutes} mins` : "1 min") : null,
-      seconds ? (seconds > 1 ? `${seconds} s` : "1 s") : null,
-    ]
-      .filter((s) => !!s)
-      .slice(0, 2)
-      .join(" ")
-      .split(" ");
+  if (!blockTime) {
+    return null;
   }
+
+  const value = new BigNumber(blockTime).multipliedBy(blocks).toNumber();
+  const time = extractTime(Math.abs(value));
+  const { days, hours, minutes, seconds } = time;
+  return [
+    days ? (days > 1 ? `${days} days` : "1 day") : null,
+    hours ? (hours > 1 ? `${hours} hrs` : "1 hr") : null,
+    minutes ? (minutes > 1 ? `${minutes} mins` : "1 min") : null,
+    seconds ? (seconds > 1 ? `${seconds} s` : "1 s") : null,
+  ]
+    .filter((s) => !!s)
+    .slice(0, 2)
+    .join(" ")
+    .split(" ");
 };
 
 export function isMotionEnded(motion) {

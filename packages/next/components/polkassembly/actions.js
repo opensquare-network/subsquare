@@ -33,7 +33,7 @@ const GreyItem = styled.div`
   }
 `;
 
-export default function Actions({ chain, reactions }) {
+export default function Actions({ reactions }) {
   const count = reactions?.length;
 
   const { ThumbsUpComponent, showThumbsUpList } = useThumbsUp({
@@ -51,13 +51,7 @@ export default function Actions({ chain, reactions }) {
             .filter((r) => r.user)
             .map((r, index) => (
               <GreyItem key={index}>
-                <User
-                  user={r.user}
-                  fontSize={12}
-                  chain={chain}
-                  showAvatar={false}
-                  noEvent
-                />
+                <User user={r.user} fontSize={12} showAvatar={false} noEvent />
               </GreyItem>
             ))}
         </GreyWrapper>

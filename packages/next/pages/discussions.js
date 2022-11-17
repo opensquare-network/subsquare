@@ -6,6 +6,7 @@ import styled from "styled-components";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
 import { toDiscussionListItem } from "utils/viewfuncs";
 import HomeLayout from "next-common/components/layout/HomeLayout";
+import { useChain } from "next-common/context/chain";
 
 const Create = styled.a`
   display: flex;
@@ -19,7 +20,8 @@ const Create = styled.a`
   cursor: pointer;
 `;
 
-export default withLoginUserRedux(({ loginUser, posts, chain }) => {
+export default withLoginUserRedux(({ posts }) => {
+  const chain = useChain();
   const items = (posts.items || []).map((item) =>
     toDiscussionListItem(chain, item)
   );
@@ -34,9 +36,8 @@ export default withLoginUserRedux(({ loginUser, posts, chain }) => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <HomeLayout user={loginUser} seoInfo={seoInfo}>
+    <HomeLayout seoInfo={seoInfo}>
       <PostList
-        chain={chain}
         category={category}
         create={create}
         items={items}
@@ -51,7 +52,6 @@ export default withLoginUserRedux(({ loginUser, posts, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
   const { page, page_size: pageSize } = context.query;
 
   const [{ result: posts }] = await Promise.all([
@@ -60,7 +60,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      chain,
       posts: posts ?? EmptyList,
     },
   };

@@ -11,7 +11,7 @@ import {
 } from "utils/viewfuncs";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 
-export default withLoginUserRedux(({ overview, loginUser, chain }) => {
+export default withLoginUserRedux(({ overview, chain }) => {
   let overviewData = [
     {
       category: "Discussions",
@@ -57,8 +57,8 @@ export default withLoginUserRedux(({ overview, loginUser, chain }) => {
   );
 
   return (
-    <HomeLayout user={loginUser}>
-      <Overview overviewData={filteredOverviewData} chain={chain} />
+    <HomeLayout>
+      <Overview overviewData={filteredOverviewData} />
     </HomeLayout>
   );
 });

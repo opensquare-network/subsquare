@@ -1,8 +1,7 @@
-import React from "react";
+import React, { Fragment } from "react";
 import styled, { withTheme } from "styled-components";
-import { getNode, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
 import User from "next-common/components/user";
-import { Fragment } from "react";
 import ValueDisplay from "../../displayValue";
 import Loading from "../../loading";
 
@@ -17,6 +16,7 @@ import {
 import VoteLabel from "./voteLabel";
 import Chains from "../../../utils/consts/chains";
 import { pretty_scroll_bar } from "../../../styles/componentCss";
+import { useChain, useChainSettings } from "../../../context/chain";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -49,11 +49,9 @@ const Wrapper = styled.div`
   }
 `;
 
-function VotesList({ chain, items, theme, loading = true }) {
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
+function VotesList({ items, theme, loading = true }) {
+  const chain = useChain();
+  const node = useChainSettings();
 
   const hasLabel = ![Chains.kintsugi, Chains.interlay].includes(chain);
 
@@ -87,7 +85,6 @@ function VotesList({ chain, items, theme, loading = true }) {
                   <StyledTd style={{ textAlign: "left", width: 176 }}>
                     <User
                       add={item.account}
-                      chain={chain}
                       fontSize={14}
                       maxWidth={132}
                       noTooltip={true}

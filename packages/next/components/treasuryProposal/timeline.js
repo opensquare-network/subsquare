@@ -1,21 +1,14 @@
 import User from "next-common/components/user";
 import { getTimelineStatus } from "utils";
-import { getNode, toPrecision } from "next-common/utils";
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import { createMotionTimelineData } from "utils/timeline/motion";
 import sortTimeline from "next-common/utils/timeline/sort";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { createReferendumTimelineData } from "utils/timeline/referendum";
+import SymbolBalance from "next-common/components/values/symbolBalance";
 
-export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
-
+export default function TreasuryProposalTimeline({ treasuryProposal }) {
   const getTimelineData = (args, method) => {
     switch (method) {
       case "Proposed":
@@ -25,7 +18,7 @@ export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
       case "Awarded":
         return {
           Beneficiary: <User add={args.beneficiary} />,
-          Award: `${toPrecision(args.award ?? 0, decimals)} ${symbol}`,
+          Award: <SymbolBalance value={args.award} />,
         };
     }
     return args;
@@ -45,14 +38,13 @@ export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
   });
 
   const motions = treasuryProposal?.motions?.map((motion) => {
-    return createMotionTimelineData(motion, chain, true, "/council/motion");
+    return createMotionTimelineData(motion, true, "/council/motion");
   });
   timelineData.push(...motions);
 
   const referendums = treasuryProposal?.referendums?.map((referendum) => {
     return createReferendumTimelineData(
       referendum,
-      chain,
       true,
       "/democracy/referendum"
     );
@@ -61,5 +53,5 @@ export default function TreasuryProposalTimeline({ chain, treasuryProposal }) {
 
   sortTimeline(timelineData);
 
-  return <Timeline data={timelineData} chain={chain} indent={false} />;
+  return <Timeline data={timelineData} indent={false} />;
 }

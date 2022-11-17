@@ -3,14 +3,13 @@ import styled from "styled-components";
 import Post from "next-common/components/post";
 import Pagination from "next-common/components/pagination/index.js";
 import { TitleContainer } from "./styled/containers/titleContainer";
-import MaybeEmpty, { EmptyList } from "./emptyList";
+import { EmptyList } from "./emptyList";
 
 const Wrapper = styled.div`
-  max-width: 932px;
+  max-width: 916px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }
-  margin: auto;
 
   > :not(:first-child) {
     margin-top: 16px;
@@ -22,7 +21,6 @@ const Wrapper = styled.div`
 `;
 
 export default function PostList({
-  chain,
   title,
   category,
   items,
@@ -37,18 +35,17 @@ export default function PostList({
         {create}
       </TitleContainer>
       {summary}
-      { items?.length > 0 ? (
+      {items?.length > 0 ? (
         items.map((item, index) => (
           <Post
-            key={ index }
-            data={ item }
-            chain={ chain }
-            href={ item.detailLink }
-            type={ category }
+            key={index}
+            data={item}
+            href={item.detailLink}
+            type={category}
           />
         ))
       ) : (
-        <EmptyList type={ category } />
+        <EmptyList type={category} />
       )}
       {pagination && <Pagination {...pagination} />}
     </Wrapper>

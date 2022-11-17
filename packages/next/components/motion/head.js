@@ -70,12 +70,12 @@ function MotionTag({ motion }) {
   return <div>{tag}</div>;
 }
 
-export default function MotionHead({ motion, chain, type }) {
+export default function MotionHead({ motion, type }) {
   const showMotionEnd = useShowMotionEnd(motion?.onchainData);
 
   const motionEndHeader = showMotionEnd ? (
     <MotionEndHeader>
-      <MotionEnd type="full" motion={motion.onchainData} chain={chain} />
+      <MotionEnd type="full" motion={motion.onchainData} />
     </MotionEndHeader>
   ) : null;
 
@@ -93,12 +93,7 @@ export default function MotionHead({ motion, chain, type }) {
       <PostTitle />
       <FlexWrapper>
         <DividerWrapper>
-          <User
-            user={motion?.author}
-            add={motion.proposer}
-            chain={chain}
-            fontSize={12}
-          />
+          <User user={motion?.author} add={motion.proposer} fontSize={12} />
           <MotionTag motion={motion.onchainData} />
           <UpdatedTime post={motion} />
           {!noCommentsCount && commentsCount > -1 && (

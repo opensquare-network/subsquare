@@ -104,7 +104,7 @@ function checkSubMenu(menus, menuName) {
 }
 
 export default withLoginUserRedux(
-  ({ loginUser, chain, subscription: _subscription, unsubscribe }) => {
+  ({ loginUser, subscription: _subscription, unsubscribe }) => {
     const dispatch = useDispatch();
     const [saving, setSaving] = useState(false);
     const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
@@ -404,7 +404,7 @@ export default withLoginUserRedux(
     }
 
     return (
-      <SettingsLayout user={loginUser}>
+      <SettingsLayout>
         <NextHead title={`Settings`} desc={``} />
         <Wrapper>
           <TitleContainer>Subscription</TitleContainer>
@@ -448,7 +448,6 @@ export default withLoginUserRedux(
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
   const { unsubscribe } = context.query;
 
   const cookies = new Cookies(context.req, context.res);
@@ -470,7 +469,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      chain,
       subscription: subscription ?? null,
       unsubscribe: unsubscribe ?? null,
     },

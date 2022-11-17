@@ -1,8 +1,8 @@
 import React from "react";
 import Proposal from "../proposal";
 import KVList from "../listInfo/kvList";
-import { getNode, toPrecision } from "next-common/utils";
 import User from "../user";
+import SymbolBalance from "../values/symbolBalance";
 
 function getDeposit(scanDepositData) {
   if (!Array.isArray(scanDepositData)) {
@@ -16,26 +16,16 @@ function getDeposit(scanDepositData) {
   }
 }
 
-export default function Metadata({ publicProposal, chain }) {
+export default function Metadata({ publicProposal }) {
   if (!publicProposal) {
     return null;
   }
 
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.voteSymbol || node.symbol;
-
   const deposit = publicProposal.deposit;
   const metadata = [
     ["hash", publicProposal?.hash],
-    ["deposit", `${toPrecision(getDeposit(deposit), decimals)} ${symbol}`],
-    [
-      "proposer",
-      <User add={publicProposal?.proposer} fontSize={14}/>,
-    ],
+    ["deposit", <SymbolBalance value={getDeposit(deposit)} />],
+    ["proposer", <User add={publicProposal?.proposer} fontSize={14} />],
   ];
 
   let call = publicProposal?.preImage?.call || publicProposal?.call;
@@ -47,7 +37,6 @@ export default function Metadata({ publicProposal, chain }) {
         shorten={publicProposal.preImage?.shorten}
         proposalIndex={publicProposal.proposalIndex}
         referendumIndex={publicProposal.referendumIndex}
-        chain={chain}
       />,
     ]);
   }

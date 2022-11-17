@@ -9,8 +9,8 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-export default function SubmitButton({ chain, onClick, depositRequired }) {
-  const { balanceInsufficient } = useDeposit(chain, depositRequired);
+export default function SubmitButton({ onClick, depositRequired }) {
+  const { balanceInsufficient } = useDeposit(depositRequired);
   const { isSubmitting } = useContext(StateContext);
 
   return (

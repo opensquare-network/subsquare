@@ -1,12 +1,8 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Link from "next/link";
 import User from "next-common/components/user";
-import {
-  bigNumber2Locale,
-  getNode,
-  toPrecision,
-} from "next-common/utils";
+import { bigNumber2Locale, toPrecision } from "next-common/utils";
 import Tag from "next-common/components/tags/state/tag";
 import ReasonLink from "next-common/components/reasonLink";
 import Flex from "next-common/components/styled/flex";
@@ -23,6 +19,9 @@ import { getBannerUrl } from "../utils/banner";
 import businessCategory from "../utils/consts/business/category";
 import useDuration from "../utils/hooks/useDuration";
 import { getMotionStateArgs } from "../utils/collective/result";
+import { getGov2ReferendumStateArgs } from "../utils/gov2/result";
+import { useChainSettings } from "../context/chain";
+import { smcss } from "../utils/responsive";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -92,7 +91,7 @@ const Info = styled.div`
   }
 `;
 
-const AutHideInfo = styled(Info)`
+const MobileHiddenInfo = styled(Info)`
   @media screen and (max-width: 768px) {
     display: none;
   }
@@ -120,39 +119,32 @@ const TitleWrapper = styled.div`
   color: ${(props) => props.theme.textPrimary};
 `;
 
+const TitleExtraValue = styled.span`
+  color: ${(props) => props.theme.textPrimary};
+`;
+const TitleExtraSymbol = styled.span`
+  color: ${(props) => props.theme.textTertiary};
+`;
+const TitleExtra = styled(Flex)`
+  align-items: flex-start;
+  color: ${(props) => props.theme.textTertiary};
+  padding: 2px 0;
+  margin-left: 8px;
+  ${p_14_medium};
+
+  ${smcss(css`
+    margin-top: 8px;
+    margin-left: 0;
+  `)}
+`;
+
 const HeadWrapper = styled.div`
   display: flex;
   justify-content: space-between;
 
-  > span {
+  ${smcss(css`
     display: block;
-    ${p_14_medium};
-    line-height: 22.4px;
-    color: ${(props) => props.theme.textPrimary};
-    white-space: nowrap;
-    flex-basis: 120px;
-    flex-grow: 0;
-    flex-shrink: 0;
-    text-align: right;
-  }
-
-  .symbol {
-    color: ${(props) => props.theme.textTertiary};
-  }
-
-  @media screen and (max-width: 768px) {
-    flex-wrap: wrap;
-    > span {
-      line-height: 21px;
-      flex-basis: 100%;
-    }
-  }
-`;
-
-const Method = styled.span`
-  font-size: 12px;
-  font-weight: 400 !important;
-  color: ${(props) => props.theme.textTertiary} !important;
+  `)};
 `;
 
 const ContentWrapper = styled.div`
@@ -172,18 +164,22 @@ const BannerWrapper = styled.div`
   }
 `;
 
-export default function Post({ data, chain, href, type }) {
+export default function Post({ data, href, type }) {
   let stateArgs;
-  if ([businessCategory.councilMotions, businessCategory.collective, businessCategory.tcProposals].includes(type)) {
+  if (
+    [
+      businessCategory.councilMotions,
+      businessCategory.collective,
+      businessCategory.tcProposals,
+    ].includes(type)
+  ) {
     stateArgs = getMotionStateArgs(data.onchainData.state);
+  } else if (businessCategory.gov2 === type) {
+    stateArgs = getGov2ReferendumStateArgs(data.onchainData.state);
   }
+
   const duration = useDuration(data.time);
-  const node = getNode(chain);
-  if (!node) {
-    return null;
-  }
-  const decimals = node.decimals;
-  const symbol = node.symbol;
+  const { decimals, symbol } = useChainSettings();
   const method = data?.onchainData?.proposal?.method;
 
   let elapseIcon = null;
@@ -192,7 +188,7 @@ export default function Post({ data, chain, href, type }) {
       type
     )
   ) {
-    elapseIcon = <MotionElapse motion={data.onchainData} chain={chain} />;
+    elapseIcon = <MotionElapse motion={data.onchainData} />;
   }
 
   const commentsCount =
@@ -218,13 +214,17 @@ export default function Post({ data, chain, href, type }) {
             </Link>
             <ReasonLink text={data.title} hideText={true} />
           </TitleWrapper>
+
           {!isNil(data.value) && (
-            <span>
-              {bigNumber2Locale(toPrecision(data.value, decimals))}{" "}
-              <span className="symbol">{symbol}</span>
-            </span>
+            <TitleExtra>
+              <TitleExtraValue>
+                {bigNumber2Locale(toPrecision(data.value, decimals))}{" "}
+                <TitleExtraSymbol>{symbol}</TitleExtraSymbol>
+              </TitleExtraValue>
+            </TitleExtra>
           )}
-          {method && <Method>{method}</Method>}
+
+          {method && <TitleExtra>{method}</TitleExtra>}
         </HeadWrapper>
 
         <Divider margin={12} />
@@ -233,7 +233,6 @@ export default function Post({ data, chain, href, type }) {
             <User
               user={data?.author}
               add={data.address}
-              chain={chain}
               fontSize={12}
               noEvent={userNoClickEvent}
             />
@@ -255,20 +254,29 @@ export default function Post({ data, chain, href, type }) {
               </Info>
             )}
             {commentsCount > -1 && (
-              <AutHideInfo>
+              <MobileHiddenInfo>
                 <CommentIcon />
                 {`${commentsCount}`}
-              </AutHideInfo>
+              </MobileHiddenInfo>
             )}
             {data.parentIndex !== undefined && (
-              <AutHideInfo>
+              <MobileHiddenInfo>
                 <Anchor href={`/treasury/bounty/${data.parentIndex}`} passHref>
                   {`Parent #${data.parentIndex}`}
                 </Anchor>
-              </AutHideInfo>
+              </MobileHiddenInfo>
             )}
+
+            {data.track && <MobileHiddenInfo>{data.track}</MobileHiddenInfo>}
           </Footer>
-          {data.status && <Tag state={data.status} category={type} args={stateArgs} />}
+          {data.status && (
+            <Tag
+              state={data.status}
+              category={type}
+              args={stateArgs}
+              data={data}
+            />
+          )}
         </FooterWrapper>
       </ContentWrapper>
 

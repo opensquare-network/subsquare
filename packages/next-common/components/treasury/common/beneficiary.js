@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import AddressCombo from "../../addressCombo";
 import { encodeAddressToChain } from "../../../services/address";
 import PopupLabel from "../../popup/label";
+import { useChain } from "../../../context/chain";
 
-export default function Beneficiary({ extensionAccounts, chain, setAddress }) {
+export default function Beneficiary({ extensionAccounts, setAddress }) {
+  const chain = useChain();
   const accounts = extensionAccounts.map((acc) => ({
     address: acc.address,
     name: acc.meta.name,
@@ -22,7 +24,6 @@ export default function Beneficiary({ extensionAccounts, chain, setAddress }) {
     <div>
       <PopupLabel text={"Beneficiary"} />
       <AddressCombo
-        chain={chain}
         address={beneficiary}
         setAddress={setBeneficiary}
         accounts={accounts}

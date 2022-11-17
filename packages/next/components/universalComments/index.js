@@ -8,14 +8,10 @@ import useCommentComponent from "next-common/components/useCommentComponent";
 import PolkassemblyComments from "./polkassemblyComments";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import Chains from "next-common/utils/consts/chains";
+import { useChain } from "next-common/context/chain";
 
-export default function useUniversalComments({
-  detail,
-  comments,
-  loginUser,
-  chain,
-  type,
-}) {
+export default function useUniversalComments({ detail, comments, type }) {
+  const chain = useChain();
   const defaultTabIndex =
     detail?.polkassemblyId !== undefined &&
     detail?.dataSource === "polkassembly" &&
@@ -54,8 +50,6 @@ export default function useUniversalComments({
   let { CommentComponent, focusEditor } = useCommentComponent({
     detail,
     comments,
-    loginUser,
-    chain,
     type,
     tabs,
   });
@@ -65,7 +59,6 @@ export default function useUniversalComments({
       <PolkassemblyComments
         tabs={tabs}
         detail={detail}
-        chain={chain}
         type={type}
         btnRef={paBtnRef}
       />

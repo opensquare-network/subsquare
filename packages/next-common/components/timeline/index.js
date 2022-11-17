@@ -6,7 +6,6 @@ import TimelineAccordion from "./timelineAccordion";
 
 export default function Timeline({
   data,
-  chain,
   indent = true,
   motionEndInfo = null,
 }) {
@@ -27,9 +26,9 @@ export default function Timeline({
       {data.map((item, index) => (
         <Fragment key={index}>
           {Array.isArray(item) ? (
-            <FoldableItem data={item} chain={chain} indent={indent} />
+            <FoldableItem data={item} indent={indent} />
           ) : (
-            <Item data={item} chain={chain} />
+            <Item data={item} />
           )}
         </Fragment>
       ))}

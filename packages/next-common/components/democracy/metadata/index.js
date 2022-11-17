@@ -19,7 +19,6 @@ export default function ReferendumMetadata({
   status = {},
   call,
   shorten,
-  chain,
   onchainData = {},
 }) {
   const isMounted = useIsMounted();
@@ -61,7 +60,7 @@ export default function ReferendumMetadata({
         isEstimated={isEndEstimated}
       />,
     ],
-    ["Threshold", <Threshold chain={chain} threshold={threshold} />],
+    ["Threshold", <Threshold threshold={threshold} />],
   ];
 
   if (call) {
@@ -69,7 +68,6 @@ export default function ReferendumMetadata({
       <Proposal
         key="preimage"
         call={call}
-        chain={chain}
         shorten={shorten}
         referendumIndex={onchainData.referendumIndex}
       />,

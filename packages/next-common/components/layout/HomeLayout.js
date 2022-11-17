@@ -1,15 +1,14 @@
 import React from "react";
 import BaseLayout from "./baseLayout";
-import homeMenus from "../../utils/consts/menu";
 import Menu from "../menu";
+import homeMenus from "../../utils/consts/menu";
 
-export default function HomeLayout({ user, children, seoInfo }) {
+export default function HomeLayout({ children, seoInfo }) {
   return (
     <BaseLayout
-      user={user}
       children={children}
       seoInfo={seoInfo}
-      left={<Menu menu={homeMenus} chain={process.env.NEXT_PUBLIC_CHAIN} />}
+      left={<Menu menu={homeMenus} />}
     />
   );
 }

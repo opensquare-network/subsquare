@@ -3,7 +3,10 @@ import styled, { css } from "styled-components";
 import { useDispatch } from "react-redux";
 import nextApi from "../services/nextApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { newErrorToast, newSuccessToast, } from "next-common/store/reducers/toastSlice";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "next-common/store/reducers/toastSlice";
 import { nodes } from "next-common/utils/constants";
 import Avatar from "./avatar";
 import DownloadExtension from "./downloadExtension";
@@ -19,6 +22,7 @@ import SelectWallet from "./wallet/selectWallet";
 import { stringToHex } from "@polkadot/util";
 import { WALLETS } from "../utils/consts/connect";
 import { fetchAndUpdateUser, useUser, useUserDispatch } from "../context/user";
+import { useChain } from "../context/chain";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -155,7 +159,8 @@ const EmptyList = styled.div`
   color: ${(props) => props.theme.textTertiary};
 `;
 
-export default function LinkedAddress({ chain }) {
+export default function LinkedAddress() {
+  const chain = useChain();
   const isMounted = useIsMounted();
   const user = useUser();
   const [wallet, setWallet] = useState();
@@ -245,10 +250,7 @@ export default function LinkedAddress({ chain }) {
     ...(accounts ?? []),
     ...(user?.address ? [user?.address] : [])
       .filter((item) =>
-        (accounts ?? []).every(
-          (acc) =>
-            !isSameAddress(acc.address, item)
-        )
+        (accounts ?? []).every((acc) => !isSameAddress(acc.address, item))
       )
       .map((address) => ({
         address,
@@ -318,7 +320,11 @@ export default function LinkedAddress({ chain }) {
                     ) : (
                       <LinkWrapper
                         onClick={() => {
-                          linkAddress(activeChain, activeChainAddress, item.meta?.source);
+                          linkAddress(
+                            activeChain,
+                            activeChainAddress,
+                            item.meta?.source
+                          );
                         }}
                       >
                         <UnLinkIcon />

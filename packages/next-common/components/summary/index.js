@@ -2,16 +2,23 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import CountDown from "./countDown";
-import { abbreviateBigNumber, estimateBlocksTime, getNode, toPrecision, } from "../../utils";
-import { currentNodeSelector } from "next-common/store/reducers/nodeSlice";
+import {
+  abbreviateBigNumber,
+  estimateBlocksTime,
+  toPrecision,
+} from "../../utils";
 import useApi from "../../utils/hooks/useApi";
 import useTreasuryFree from "../../utils/hooks/useTreasuryFree";
 import useTreasuryBurn from "../../utils/hooks/useTreasuryBurn";
-import { blockTimeSelector, latestHeightSelector, } from "../../store/reducers/chainSlice";
+import {
+  blockTimeSelector,
+  latestHeightSelector,
+} from "../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
 import Content from "./cardContent";
+import { useChainSettings } from "../../context/chain";
 
 const Wrapper = styled.div`
   display: flex;
@@ -52,27 +59,24 @@ const CountDownWrapper = styled.div`
   margin-top: 0 !important;
 `;
 
-export default function Summary({ chain }) {
+export default function Summary() {
   const [summary, setSummary] = useState({});
-  const endpoint = useSelector(currentNodeSelector);
-  const api = useApi(chain, endpoint);
-  const node = getNode(chain);
+  const api = useApi();
+  const node = useChainSettings();
   const blockTime = useSelector(blockTimeSelector);
   const blockHeight = useSelector(latestHeightSelector);
 
   const decimals = node?.decimals;
   const symbol = node?.symbol;
 
-  const free = useTreasuryFree(api, chain);
+  const free = useTreasuryFree(api);
   const nextBurn = useTreasuryBurn(api, free);
   const isMounted = useIsMountedBool();
 
   useEffect(() => {
     if (api && blockHeight) {
       const spendPeriod = api.consts.treasury.spendPeriod.toNumber();
-      const goneBlocks = new BigNumber(blockHeight)
-        .mod(spendPeriod)
-        .toNumber();
+      const goneBlocks = new BigNumber(blockHeight).mod(spendPeriod).toNumber();
       const progress = new BigNumber(goneBlocks)
         .div(spendPeriod)
         .multipliedBy(100)
