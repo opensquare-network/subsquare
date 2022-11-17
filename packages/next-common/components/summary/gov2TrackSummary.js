@@ -6,6 +6,8 @@ import { estimateBlocksTime } from "../../utils";
 import Content from "./cardContent";
 import { SummaryCard, SummaryGreyText, SummaryTitle } from "./styled";
 import { smcss } from "../../utils/responsive";
+import CountDown from "../_CountDown";
+import Flex from "../styled/flex";
 import Divider from "../styled/layout/divider";
 
 const Wrapper = styled(SummaryCard)`
@@ -45,6 +47,10 @@ const SummaryItem = styled.div`
   flex: 1;
 `;
 
+const CountDownWrapper = styled.div`
+  margin-left: 4px;
+`;
+
 export default function Gov2TrackSummary({ summary, period }) {
   const {
     origin,
@@ -76,10 +82,19 @@ export default function Gov2TrackSummary({ summary, period }) {
         <SummaryItem>
           <SummaryTitle>Capacity</SummaryTitle>
           <Content>
-            <span>
-              {summary.decidingCount || 0}
-              <SummaryGreyText> / {maxDeciding}</SummaryGreyText>
-            </span>
+            <Flex>
+              <span>
+                {summary.decidingCount || 0}
+                <SummaryGreyText> / {maxDeciding}</SummaryGreyText>
+              </span>
+              <CountDownWrapper>
+                <CountDown
+                  numerator={summary.decidingCount || 0}
+                  denominator={maxDeciding}
+                  showTooltip={false}
+                />
+              </CountDownWrapper>
+            </Flex>
           </Content>
         </SummaryItem>
 
