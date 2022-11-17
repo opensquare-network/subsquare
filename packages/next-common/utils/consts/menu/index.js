@@ -16,4 +16,11 @@ const homeMenus = [
   financialCouncil,
 ];
 
+export const allHomeMenuNames = homeMenus.reduce((result, menu) => {
+  if (menu.name) {
+    return [...result, menu.name];
+  }
+  return result;
+}, []);
+
 export default homeMenus;

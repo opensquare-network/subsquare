@@ -41,12 +41,13 @@ function MyApp({ Component, pageProps }) {
     connect();
   }, []);
 
-  const { loginUser, ...otherProps } = pageProps;
+  const { loginUser, homeFoldedMenus, ...otherProps } = pageProps;
   return (
     <Provider store={store}>
       <GlobalProvider
         user={loginUser}
         chain={process.env.NEXT_PUBLIC_CHAIN}
+        homeFoldedMenus={homeFoldedMenus}
       >
         <Component {...otherProps} />
       </GlobalProvider>
