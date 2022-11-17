@@ -1,7 +1,5 @@
 import React from "react";
 import Tab from "next-common/components/tab";
-import { useSelector } from "react-redux";
-import { votesSelector } from "next-common/store/reducers/referendumSlice";
 import AyeIcon from "public/imgs/icons/aye.svg";
 import NayIcon from "public/imgs/icons/nay.svg";
 import styled from "styled-components";
@@ -37,16 +35,19 @@ export const tabs = [
   },
 ];
 
-export default function VotesTab({ tabIndex, setTabIndex }) {
-  const { allAye = [], allNay = [] } = useSelector(votesSelector);
-
+export default function VotesTab({
+  tabIndex,
+  setTabIndex,
+  ayesCount,
+  naysCount,
+}) {
   const ayeTab = tabs.find((item) => item.tabId === "Aye");
   if (ayeTab) {
     ayeTab.tabTitle = (
       <Title
         name="Ayes"
         icon={<AyeIcon />}
-        num={allAye?.length || 0}
+        num={ayesCount || 0}
         active={tabIndex === "Aye"}
       />
     );
@@ -58,7 +59,7 @@ export default function VotesTab({ tabIndex, setTabIndex }) {
       <Title
         name="Nays"
         icon={<NayIcon />}
-        num={allNay?.length || 0}
+        num={naysCount || 0}
         active={tabIndex === "Nay"}
       />
     );

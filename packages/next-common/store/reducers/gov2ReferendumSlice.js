@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import nextApi from "../../services/nextApi";
+import { gov2ReferendumsVoteExtrinsicsApi } from "../../services/url";
 import { emptyVotes } from "../../utils/democracy/votes/passed/common";
 import { getGov2ReferendumVotesFromVotingOf } from "../../utils/gov2/allVotes";
 
@@ -7,6 +9,8 @@ const gov2ReferendumSlice = createSlice({
   initialState: {
     isLoadingVotes: true,
     votes: emptyVotes,
+    isLoadingVoteExtrinsics: true,
+    voteExtrinsics: emptyVotes,
   },
   reducers: {
     setIsLoadingVotes(state, { payload }) {
@@ -15,14 +19,29 @@ const gov2ReferendumSlice = createSlice({
     setVotes(state, { payload }) {
       state.votes = payload;
     },
+    setIsLoadingVoteExtrinsics(state, { payload }) {
+      state.isLoadingVoteExtrinsics = payload;
+    },
+    setVoteExtrinsics(state, { payload }) {
+      state.voteExtrinsics = payload;
+    },
   },
 });
 
-export const { setVotes, setIsLoadingVotes } = gov2ReferendumSlice.actions;
+export const {
+  setVotes,
+  setIsLoadingVotes,
+  setVoteExtrinsics,
+  setIsLoadingVoteExtrinsics,
+} = gov2ReferendumSlice.actions;
 
 export const isLoadingVotesSelector = (state) =>
   state.gov2Referendum.isLoadingVotes;
+export const isLoadingVoteExtrinsicsSelector = (state) =>
+  state.gov2Referendum.isLoadingVoteExtrinsics;
 export const votesSelector = (state) => state.gov2Referendum.votes;
+export const voteExtrinsicsSelector = (state) =>
+  state.gov2Referendum.voteExtrinsics;
 
 export const clearVotes = () => async (dispatch) => {
   dispatch(setVotes(emptyVotes));
@@ -49,5 +68,36 @@ export const fetchVotes =
       dispatch(setIsLoadingVotes(false));
     }
   };
+
+export const clearVoteExtrinsics = () => async (dispatch) => {
+  dispatch(setVoteExtrinsics(emptyVotes));
+};
+
+export const fetchVoteExtrinsics = (referendumIndex) => async (dispatch) => {
+  dispatch(clearVoteExtrinsics());
+  dispatch(setIsLoadingVoteExtrinsics(true));
+  try {
+    const { result } = await nextApi.fetch(
+      gov2ReferendumsVoteExtrinsicsApi(referendumIndex)
+    );
+
+    const allAye = [];
+    const allNay = [];
+
+    for (const item of result) {
+      if (item.isStandard) {
+        if (item.vote.vote.isAye) {
+          allAye.push(item);
+        } else {
+          allNay.push(item);
+        }
+      }
+    }
+
+    dispatch(setVoteExtrinsics({ allAye, allNay }));
+  } finally {
+    dispatch(setIsLoadingVoteExtrinsics(false));
+  }
+};
 
 export default gov2ReferendumSlice.reducer;

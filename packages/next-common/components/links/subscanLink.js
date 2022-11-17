@@ -6,7 +6,7 @@ import { useChain, useChainSettings } from "../../context/chain";
 import getChainSettings from "../../utils/consts/settings";
 import isNil from "lodash.isnil";
 
-function SubScanLink({ indexer = {} }) {
+function SubScanLink({ indexer = {}, children }) {
   const chain = useChain();
   const { noSubscan } = useChainSettings();
   if (noSubscan) {
@@ -23,8 +23,12 @@ function SubScanLink({ indexer = {} }) {
 
   return (
     <SubscanLinkWrapper href={url} target="_blank" rel="noreferrer">
-      <LinkSubScanIcon />
-      <LinkSubScanIconActive />
+      {children || (
+        <>
+          <LinkSubScanIcon />
+          <LinkSubScanIconActive />
+        </>
+      )}
     </SubscanLinkWrapper>
   );
 }

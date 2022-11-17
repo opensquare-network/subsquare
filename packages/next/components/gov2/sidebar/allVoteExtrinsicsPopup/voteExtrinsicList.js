@@ -2,8 +2,7 @@ import React, { Fragment } from "react";
 import styled, { withTheme } from "styled-components";
 import { toPrecision } from "next-common/utils";
 import User from "next-common/components/user";
-import ValueDisplay from "../../displayValue";
-import Loading from "../../loading";
+import Loading from "next-common/components/loading";
 
 import {
   EmptyTd,
@@ -13,10 +12,12 @@ import {
   StyledTh,
   StyledTr,
 } from "next-common/components/styled/table";
-import VoteLabel from "./voteLabel";
-import Chains from "../../../utils/consts/chains";
-import { pretty_scroll_bar } from "../../../styles/componentCss";
-import { useChain, useChainSettings } from "../../../context/chain";
+import { pretty_scroll_bar } from "next-common/styles/componentCss";
+import { useChainSettings } from "next-common/context/chain";
+import ValueDisplay from "next-common/components/displayValue";
+import VoteLabel from "next-common/components/democracy/votesPopup/voteLabel";
+import SubScanLink from "next-common/components/links/subscanLink";
+import dayjs from "dayjs";
 
 const Wrapper = styled.div`
   max-width: 932px;
@@ -47,12 +48,51 @@ const Wrapper = styled.div`
   }
 `;
 
-function VotesList({ items, theme, loading = true }) {
-  const chain = useChain();
+const VoteInfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
+
+const VoteInfoValue = styled.div`
+  display: flex;
+  gap: 4px;
+  justify-content: right;
+`;
+
+const VoteTime = styled.div`
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #9da9bb;
+  :hover {
+    text-decoration: underline;
+  }
+`;
+
+function VoteInfo({ item }) {
   const node = useChainSettings();
 
-  const hasLabel = ![Chains.kintsugi, Chains.interlay].includes(chain);
+  return (
+    <VoteInfoWrapper>
+      <VoteInfoValue>
+        <VoteLabel conviction={item.vote.vote.conviction} />
+        <ValueDisplay
+          value={toPrecision(item.vote.balance, node.decimals)}
+          symbol={node.symbol}
+        />
+      </VoteInfoValue>
+      <VoteTime>
+        <SubScanLink indexer={item.indexer}>
+          {dayjs(item.indexer.blockTime).format("YYYY-MM-DD hh:mm:ss")}
+        </SubScanLink>
+      </VoteTime>
+    </VoteInfoWrapper>
+  );
+}
 
+function VoteExtrinsicsList({ items, theme, loading = true }) {
   return (
     <Wrapper>
       <StyledTable>
@@ -61,12 +101,9 @@ function VotesList({ items, theme, loading = true }) {
             <StyledTh style={{ textAlign: "left", width: 176 }}>
               VOTERS
             </StyledTh>
-            {hasLabel && (
-              <StyledTh style={{ textAlign: "center", width: 40 }}>
-                LABEL
-              </StyledTh>
-            )}
-            <StyledTh style={{ textAlign: "right" }}>VOTES</StyledTh>
+            <StyledTh style={{ textAlign: "right", width: "100%" }}>
+              VALUE
+            </StyledTh>
           </StyledTr>
           <RowSpliter
             backgroundColor={
@@ -82,25 +119,14 @@ function VotesList({ items, theme, loading = true }) {
                 <StyledTr>
                   <StyledTd style={{ textAlign: "left", width: 176 }}>
                     <User
-                      add={item.account}
+                      add={item.voter}
                       fontSize={14}
                       maxWidth={132}
                       noTooltip={true}
                     />
                   </StyledTd>
-                  {hasLabel && (
-                    <StyledTd style={{ textAlign: "center", width: 40 }}>
-                      <VoteLabel
-                        conviction={item.conviction}
-                        isDelegating={item.isDelegating}
-                      />
-                    </StyledTd>
-                  )}
                   <StyledTd style={{ textAlign: "right" }}>
-                    <ValueDisplay
-                      value={toPrecision(item.balance, node.decimals)}
-                      symbol={node.symbol}
-                    />
+                    <VoteInfo item={item} />
                   </StyledTd>
                 </StyledTr>
                 {index !== items.length - 1 && (
@@ -125,4 +151,4 @@ function VotesList({ items, theme, loading = true }) {
   );
 }
 
-export default withTheme(VotesList);
+export default withTheme(VoteExtrinsicsList);
