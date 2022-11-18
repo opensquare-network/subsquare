@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import Remaining from "./remaining";
 import Progress from "next-common/components/progress";
-import TimeDuration from "./TimeDuration";
+import TimeDuration from "next-common/components/TimeDuration";
 import { ProgressGroup, ProgressInfo, Tooltip } from "./styled";
 
 export default function DecisionProgress() {
