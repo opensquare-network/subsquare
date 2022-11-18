@@ -16,6 +16,12 @@ import { useChainSettings } from "next-common/context/chain";
 import { useState } from "react";
 import AllVotesPopup from "./allVotesPopup";
 import AllVoteExtrinsicsPopup from "./allVoteExtrinsicsPopup";
+import {
+  isLoadingVotesSelector,
+  votesSelector,
+} from "next-common/store/reducers/gov2ReferendumSlice";
+import VotesCount from "next-common/components/democracy/referendum/votesCount";
+import { useSelector } from "react-redux";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -68,6 +74,8 @@ export default function Gov2Tally({ detail }) {
   const [showAllVotes, setShowAllVotes] = useState(false);
   const [showVoteExtrinsic, setShowVoteExtrinsic] = useState(false);
   const { width } = useWindowSize();
+  const { allAye = [], allNay = [] } = useSelector(votesSelector);
+  const isLoadingVotes = useSelector(isLoadingVotesSelector);
 
   useFetchVotes(detail?.onchainData);
   useFetchVoteExtrinsics(detail?.onchainData);
@@ -95,6 +103,9 @@ export default function Gov2Tally({ detail }) {
             <Header>
               <AyeIcon />
               Ayes
+              {!isLoadingVotes ? (
+                <VotesCount>{allAye.length}</VotesCount>
+              ) : null}
             </Header>
             <Value>
               <DisplayValue
@@ -108,6 +119,9 @@ export default function Gov2Tally({ detail }) {
             <Header>
               <NayIcon />
               Nays
+              {!isLoadingVotes ? (
+                <VotesCount>{allNay.length}</VotesCount>
+              ) : null}
             </Header>
             <Value>
               <DisplayValue
