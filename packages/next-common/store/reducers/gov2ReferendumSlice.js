@@ -98,6 +98,7 @@ export const fetchVoteExtrinsics = (referendumIndex) => async (dispatch) => {
             balance: item.vote.aye,
             vote: {
               isAye: true,
+              conviction: 0,
             },
           },
         });
@@ -107,6 +108,7 @@ export const fetchVoteExtrinsics = (referendumIndex) => async (dispatch) => {
             balance: item.vote.nay,
             vote: {
               isAye: false,
+              conviction: 0,
             },
           },
         });
