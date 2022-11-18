@@ -58,9 +58,9 @@ export default function useTechCommMotionOptions({
 
   const techCommMotionOptionsComponent = (
     <div>
-      <SubLabel>Motions</SubLabel>
+      <SubLabel>Proposals</SubLabel>
       <ToggleItem>
-        <div>New motions</div>
+        <div>New proposals</div>
         <Toggle
           disabled={disabled}
           isOn={tcMotionProposed}
@@ -68,7 +68,7 @@ export default function useTechCommMotionOptions({
         />
       </ToggleItem>
       <ToggleItem>
-        <div>New vote on motions</div>
+        <div>New vote on proposals</div>
         <Toggle
           disabled={disabled}
           isOn={tcMotionVoted}
@@ -76,7 +76,7 @@ export default function useTechCommMotionOptions({
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Motion approved or disapproved</div>
+        <div>Proposal approved or disapproved</div>
         <Toggle
           disabled={disabled}
           isOn={tcMotionApproved || tcMotionDisApproved}
@@ -88,7 +88,7 @@ export default function useTechCommMotionOptions({
       </ToggleItem>
       {isKintsugi && (
         <ToggleItem>
-          <div>Motion executed</div>
+          <div>Proposal executed</div>
           <Toggle
             disabled={disabled}
             isOn={tcMotionExecuted}
