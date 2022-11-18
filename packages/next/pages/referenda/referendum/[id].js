@@ -26,6 +26,11 @@ import { parseGov2TrackName } from "next-common/utils/gov2";
 import styled, { css } from "styled-components";
 import { smcss } from "next-common/utils/responsive";
 
+const BreadcrumbHideOnMobileText = styled.span`
+  ${smcss(css`
+    display: none;
+  `)}
+`;
 const BreadcrumbWrapper = styled.div`
   ${smcss(css`
     padding: 0 16px;
@@ -80,7 +85,10 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
               </Breadcrumb.Item>
             )}
             <Breadcrumb.Item>
-              Referendum #{detail.referendumIndex}
+              <BreadcrumbHideOnMobileText>
+                Referendum
+              </BreadcrumbHideOnMobileText>{" "}
+              #{detail.referendumIndex}
             </Breadcrumb.Item>
           </Breadcrumb>
         </BreadcrumbWrapper>
