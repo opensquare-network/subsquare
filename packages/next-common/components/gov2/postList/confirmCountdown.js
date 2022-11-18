@@ -11,14 +11,14 @@ export default function ConfirmCountdown({ detail }) {
 
   const latestHeight = useSelector(latestHeightSelector);
   const onchain = detail?.onchainData;
-  const info = onchain?.info;
   const trackInfo = onchain?.trackInfo;
+  const state = onchain?.state;
 
   const confirmPeriod = trackInfo?.confirmPeriod;
-  const confirmSince = info?.deciding?.confirming;
+  const confirmSince = state?.indexer?.blockHeight;
   const confirmEnd = confirmSince + confirmPeriod;
 
-  const confirmRemaining = getConfrimRemaining(
+  const confirmRemaining = getConfirmRemaining(
     latestHeight,
     confirmSince,
     confirmPeriod
@@ -54,8 +54,8 @@ export default function ConfirmCountdown({ detail }) {
   );
 }
 
-function getConfrimRemaining(latestHeight, confirmSince, confirmPeriod) {
-  if (isNil(latestHeight)) {
+function getConfirmRemaining(latestHeight, confirmSince, confirmPeriod) {
+  if (isNil(latestHeight) || latestHeight <= confirmSince) {
     return 0;
   }
 
