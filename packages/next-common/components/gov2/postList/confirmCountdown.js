@@ -18,7 +18,7 @@ export default function ConfirmCountdown({ detail }) {
   const confirmSince = info?.deciding?.confirming;
   const confirmEnd = confirmSince + confirmPeriod;
 
-  const confirmRemaining = getConfrimRemaining(
+  const confirmRemaining = getConfirmRemaining(
     latestHeight,
     confirmSince,
     confirmPeriod
@@ -54,7 +54,7 @@ export default function ConfirmCountdown({ detail }) {
   );
 }
 
-function getConfrimRemaining(latestHeight, confirmSince, confirmPeriod) {
+function getConfirmRemaining(latestHeight, confirmSince, confirmPeriod) {
   if (isNil(latestHeight) || latestHeight <= confirmSince) {
     return 0;
   }
