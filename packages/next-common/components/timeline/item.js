@@ -4,6 +4,8 @@ import ExternalLinks from "../links";
 import Tag from "../tags/state/tag";
 import Flex from "../styled/flex";
 import ArrowTriangleUp from "../../assets/imgs/icons/arrow-triangle-up.svg";
+import Tooltip from "../tooltip";
+import useDuration from "../../utils/hooks/useDuration";
 
 const Wrapper = styled.div`
   display: flex;
@@ -126,6 +128,9 @@ const LinkWrapper = styled(Flex)`
 `;
 
 export default function Item({ data, foldable, isFold, setIsFold }) {
+  const itemTime = data.time;
+  const itemAge = useDuration(itemTime);
+
   return (
     <Wrapper foldable={foldable} isFold={isFold}>
       <Left>
@@ -134,7 +139,9 @@ export default function Item({ data, foldable, isFold, setIsFold }) {
       </Left>
       <Right>
         <TitleWrapper>
-          <div>{data.time}</div>
+          <Tooltip content={itemAge}>
+            <div>{itemTime}</div>
+          </Tooltip>
           {data.status && data.status.value && (
             <TagWrapper>
               <Tag
