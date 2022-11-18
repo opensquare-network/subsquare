@@ -10,10 +10,12 @@ export default function TimeDuration({ blocks = 0 }) {
   return useMemo(() => {
     const value = new BigNumber(blockTime).multipliedBy(blocks).toNumber();
     const time = extractTime(Math.abs(value));
-    const { days, hours } = time;
+    const { days, hours, minutes, seconds } = time;
     return [
       days ? `${days}d` : null,
       hours ? (hours > 1 ? `${hours}hrs` : "1hr") : null,
+      minutes ? `${minutes}mins` : null,
+      seconds ? `${seconds}s` : null,
     ]
       .filter((s) => !!s)
       .join(" ");
