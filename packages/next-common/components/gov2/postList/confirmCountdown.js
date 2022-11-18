@@ -55,7 +55,7 @@ export default function ConfirmCountdown({ detail }) {
 }
 
 function getConfrimRemaining(latestHeight, confirmSince, confirmPeriod) {
-  if (isNil(latestHeight)) {
+  if (isNil(latestHeight) || latestHeight <= confirmSince) {
     return 0;
   }
 
