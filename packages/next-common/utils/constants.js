@@ -19,6 +19,7 @@ import altair from "./consts/settings/altair";
 import basilisk from "./consts/settings/basilisk";
 import hydradx from "./consts/settings/hydradx";
 import development from "./consts/settings/development";
+import rococo from "./consts/settings/rococo";
 
 /**
  * left + gap + main content
@@ -50,6 +51,7 @@ export const nodes = [
   // polkadex,
   turing,
   zeitgeist,
+  rococo,
   ...optionalNodes,
 ];
 
