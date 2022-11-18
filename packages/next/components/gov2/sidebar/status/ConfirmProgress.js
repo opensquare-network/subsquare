@@ -73,7 +73,7 @@ export default function ConfirmProgress() {
       <ProgressInfo>
         <p>Confirming Period</p>
         <p>
-          <TimeDuration blocks={confirmPeriod} />
+          <TimeDuration blocks={confirmPeriod} showMinutes={false} />
         </p>
       </ProgressInfo>
     </ProgressGroup>

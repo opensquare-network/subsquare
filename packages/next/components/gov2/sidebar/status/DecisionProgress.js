@@ -45,7 +45,11 @@ export default function DecisionProgress() {
       <ProgressInfo>
         <p>Decision Period</p>
         <p>
-          <TimeDuration blocks={decisionBlocks} />
+          <TimeDuration
+            blocks={decisionBlocks}
+            showHours={false}
+            showMinutes={false}
+          />
         </p>
       </ProgressInfo>
     </ProgressGroup>
