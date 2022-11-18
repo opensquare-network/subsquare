@@ -57,6 +57,7 @@ export default function Gov2TrackSummary({ summary, period }) {
   } = period ?? {};
 
   const blockTime = useSelector(blockTimeSelector);
+  const preparePeriodBlockTime = estimateBlocksTime(preparePeriod, blockTime);
   const decisionPeriodBlockTime = estimateBlocksTime(decisionPeriod, blockTime);
   const confirmPeriodBlockTime = estimateBlocksTime(confirmPeriod, blockTime);
 
@@ -94,8 +95,8 @@ export default function Gov2TrackSummary({ summary, period }) {
           <SummaryTitle>Prepare Period</SummaryTitle>
           <Content>
             <span>
-              {preparePeriod}
-              <SummaryGreyText> blocks</SummaryGreyText>
+              {preparePeriodBlockTime[0] || 0}
+              <SummaryGreyText> {preparePeriodBlockTime[1]}</SummaryGreyText>
             </span>
           </Content>
         </SummaryItem>
