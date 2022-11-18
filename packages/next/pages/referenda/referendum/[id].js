@@ -23,11 +23,23 @@ import Breadcrumb from "next-common/components/_Breadcrumb";
 import Link from "next/link";
 import { getTrackName } from "next-common/utils/gov2/getTrackName";
 import { parseGov2TrackName } from "next-common/utils/gov2";
+import styled, { css } from "styled-components";
+import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { smcss, SM_SIZE } from "next-common/utils/responsive";
+
+const BreadcrumbWrapper = styled.div`
+  ${smcss(css`
+    padding: 0 16px;
+  `)}
+`;
 
 export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   const [detail, setDetail] = useState(ssrDetail);
   useEffect(() => setDetail(ssrDetail), [ssrDetail]);
   const isMounted = useIsMounted();
+  const { width } = useWindowSize();
+
+  const shouldRenderFullBreadcrumb = width > SM_SIZE;
 
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
@@ -59,21 +71,23 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <Breadcrumb>
-          <Breadcrumb.Item>
-            <Link href="/referenda">Referenda</Link>
-          </Breadcrumb.Item>
-          {trackName && (
+        <BreadcrumbWrapper>
+          <Breadcrumb>
             <Breadcrumb.Item>
-              <Link href={`/referenda/${trackName}`}>
-                {parseGov2TrackName(trackName)}
-              </Link>
+              <Link href="/referenda">Referenda</Link>
             </Breadcrumb.Item>
-          )}
-          <Breadcrumb.Item>
-            Referendum #{detail.referendumIndex}
-          </Breadcrumb.Item>
-        </Breadcrumb>
+            {shouldRenderFullBreadcrumb && trackName && (
+              <Breadcrumb.Item>
+                <Link href={`/referenda/${trackName}`}>
+                  {parseGov2TrackName(trackName)}
+                </Link>
+              </Breadcrumb.Item>
+            )}
+            <Breadcrumb.Item>
+              Referendum #{detail.referendumIndex}
+            </Breadcrumb.Item>
+          </Breadcrumb>
+        </BreadcrumbWrapper>
 
         <DetailItem
           onReply={focusEditor}
