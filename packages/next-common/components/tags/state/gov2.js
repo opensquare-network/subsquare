@@ -17,7 +17,7 @@ const gov2ReferendaTagMap = {
   [gov2State.Submitted]: StartTag,
   [gov2State.Queueing]: QueueingTag,
   [gov2State.Deciding]: ActiveTag,
-  [gov2State.Confirming]: ActiveTag,
+  [gov2State.Confirming]: PositiveTag,
   [gov2State.Approved]: PositiveTag,
   [gov2State.Cancelled]: NegativeTag,
   [gov2State.Killed]: NegativeTag,
