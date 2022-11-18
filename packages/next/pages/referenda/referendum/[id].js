@@ -24,8 +24,7 @@ import Link from "next/link";
 import { getTrackName } from "next-common/utils/gov2/getTrackName";
 import { parseGov2TrackName } from "next-common/utils/gov2";
 import styled, { css } from "styled-components";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
-import { smcss, SM_SIZE } from "next-common/utils/responsive";
+import { smcss } from "next-common/utils/responsive";
 
 const BreadcrumbWrapper = styled.div`
   ${smcss(css`
@@ -37,9 +36,6 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   const [detail, setDetail] = useState(ssrDetail);
   useEffect(() => setDetail(ssrDetail), [ssrDetail]);
   const isMounted = useIsMounted();
-  const { width } = useWindowSize();
-
-  const shouldRenderFullBreadcrumb = width > SM_SIZE;
 
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
@@ -76,7 +72,7 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
             <Breadcrumb.Item>
               <Link href="/referenda">Referenda</Link>
             </Breadcrumb.Item>
-            {shouldRenderFullBreadcrumb && trackName && (
+            {trackName && (
               <Breadcrumb.Item>
                 <Link href={`/referenda/${trackName}`}>
                   {parseGov2TrackName(trackName)}
