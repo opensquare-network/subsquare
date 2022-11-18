@@ -106,7 +106,7 @@ export default function Gov2Sidebar({
 
       {/* NOTE: link to polkadot gov2 blog */}
       <Link href="https://polkadot.network/blog/gov2-polkadots-next-generation-of-decentralised-governance/">
-        How Goverenance V2 Works
+        How Governance V2 Works
         <ExternalLinkIcon color={primaryPurple500} />
       </Link>
     </Wrapper>
