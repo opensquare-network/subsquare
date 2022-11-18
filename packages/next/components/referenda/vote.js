@@ -41,9 +41,6 @@ const Wrapper = styled.div`
   top: 32px;
   width: 300px;
   margin-top: 0 !important;
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
   @media screen and (max-width: 1024px) {
     position: static;
     width: auto;
@@ -170,7 +167,12 @@ function Vote({
             <RejectStatus>Failing</RejectStatus>
           ))}
 
-        <SubLink onClick={() => setShowVoteList(true)}>Check all votes</SubLink>
+        <SubLink
+          style={{ marginTop: 16 }}
+          onClick={() => setShowVoteList(true)}
+        >
+          Check all votes
+        </SubLink>
       </SecondaryCardDetail>
 
       {!finished && (

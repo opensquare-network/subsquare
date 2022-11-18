@@ -2,7 +2,7 @@ import {
   objectSpread,
   sortVotesWithConviction,
 } from "../democracy/votes/passed/common";
-const { encodeAddress } = require("@polkadot/util-crypto");
+import { encodeAddress } from "@polkadot/util-crypto";
 
 // votingFor storage: (account, trackId, votingOf)
 // key u8a[] composition: section + method = 32; account twox64 hash = 8, account = 32;
@@ -13,7 +13,6 @@ const { encodeAddress } = require("@polkadot/util-crypto");
  * trackId twox64 hash = 8, trackId(u16) = 2;
  *
  * total: 32 + 40 + 10 = 82;
- * 42
  */
 
 function extractAddressAndTrackId(storageKey = [], api) {
