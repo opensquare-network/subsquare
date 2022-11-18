@@ -38,7 +38,6 @@ const Title = styled.div`
   ${p_12_bold};
 `;
 const TitleGroup = styled(Flex)`
-  gap: 8px;
   padding: 12px 0;
 `;
 
@@ -118,6 +117,7 @@ const ItemGroup = styled.div`
 
 const FoldableButton = styled.button`
   background: none;
+  margin-right: 8px;
   border: none;
   display: inline-flex;
   align-items: center;
