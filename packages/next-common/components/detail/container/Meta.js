@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Flex from "../../styled/flex";
 import User from "../../user";
 import TypeTag from "../common/TypeTag";
@@ -12,6 +12,7 @@ import SubCategory from "./SubCategory";
 import { getMotionStateArgs } from "../../../utils/collective/result";
 import { getGov2ReferendumStateArgs } from "../../../utils/gov2/result";
 import { detailPageCategory } from "../../../utils/consts/business/category";
+import { smcss } from "../../../utils/responsive";
 
 const FlexWrapper = styled(Flex)`
   justify-content: space-between;
@@ -29,6 +30,12 @@ const DividerWrapper = styled(Flex)`
       margin: 0 8px;
     }
   }
+`;
+
+const MobileHiddenDividerWrapper = styled(DividerWrapper)`
+  ${smcss(css`
+    display: none;
+  `)}
 `;
 
 export default function PostMeta() {
@@ -62,16 +69,21 @@ export default function PostMeta() {
           add={post.proposer || post.finder}
           fontSize={12}
         />
-        <TypeTag type={detailType} />
-        <UpdatedTime post={post} />
-        {!noCommentsCount && commentsCount > -1 && (
-          <Info>{`${commentsCount} Comments`}</Info>
-        )}
-        <SubCategory />
+        <MobileHiddenDividerWrapper>
+          <TypeTag type={detailType} />
+          <UpdatedTime post={post} />
+          {!noCommentsCount && commentsCount > -1 && (
+            <Info>{`${commentsCount} Comments`}</Info>
+          )}
+          <SubCategory />
+        </MobileHiddenDividerWrapper>
       </DividerWrapper>
-      {postState && (
-        <Tag state={postState} category={detailType} args={stateArgs} />
-      )}
+
+      <MobileHiddenDividerWrapper>
+        {postState && (
+          <Tag state={postState} category={detailType} args={stateArgs} />
+        )}
+      </MobileHiddenDividerWrapper>
     </FlexWrapper>
   );
 }
