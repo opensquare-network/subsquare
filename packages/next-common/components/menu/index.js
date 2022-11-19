@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled, { css, useTheme } from "styled-components";
 import React, { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -133,7 +133,9 @@ const FoldableButton = styled.button`
     `}
 `;
 
-function defaultItemRender(icon, name, count) {
+function defaultItemRender(icon, name, count, isExternalLink) {
+  const { textPlaceholder } = useTheme();
+
   return (
     <ItemInner>
       {icon}
@@ -141,6 +143,7 @@ function defaultItemRender(icon, name, count) {
         {name}
         {!!count && <ItemCount>{count}</ItemCount>}
       </span>
+      {isExternalLink && <ExternalLink color={textPlaceholder} />}
     </ItemInner>
   );
 }
@@ -207,8 +210,12 @@ function MenuGroup({ menu, foldable }) {
                     }
                   >
                     {item.itemRender?.(item.icon, item.name, item.count) ??
-                      defaultItemRender(item.icon, item.name, item.count)}
-                    {isExternalLink && <ExternalLink color="#D7DEE8" />}
+                      defaultItemRender(
+                        item.icon,
+                        item.name,
+                        item.count,
+                        isExternalLink
+                      )}
                   </Item>
                 </a>
               </Link>
