@@ -109,7 +109,7 @@ export default function useDemocracyReferendumOptions({
       </ToggleItem>
       {isKintsugi && (
         <ToggleItem>
-          <div>Referendum fast-track</div>
+          <div>Referendum fast-tracked</div>
           <Toggle
             disabled={disabled}
             isOn={democracyReferendumFastTrack}

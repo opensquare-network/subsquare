@@ -14,10 +14,12 @@ export default function SettingsProvider({ homeFoldItems = "", children }) {
   try {
     items = homeFoldItems
       .split("|")
+      .map(decodeURIComponent)
       .filter((item) => allHomeMenuNames.includes(item));
   } catch (e) {
     items = [];
   }
+
   const [initialItems, dispatch] = useReducer(foldItemsReducer, items);
 
   return (

@@ -39,65 +39,74 @@ export default function useTechCommMotionOptions({
     }
   };
 
-  const getTechCommMotionOptionValues = useCallback(
-    () => ({
+  const getTechCommMotionOptionValues = useCallback(() => {
+    if (isKintsugi) {
+      return { tcMotionExecuted };
+    }
+    return {
       tcMotionProposed,
       tcMotionVoted,
       tcMotionApproved,
       tcMotionDisApproved,
-      ...(isKintsugi ? { tcMotionExecuted } : {}),
-    }),
-    [
-      tcMotionProposed,
-      tcMotionVoted,
-      tcMotionApproved,
-      tcMotionDisApproved,
-      tcMotionExecuted,
-    ]
-  );
+    };
+  }, [
+    tcMotionProposed,
+    tcMotionVoted,
+    tcMotionApproved,
+    tcMotionDisApproved,
+    tcMotionExecuted,
+  ]);
 
-  const techCommMotionOptionsComponent = (
-    <div>
-      <SubLabel>Proposals</SubLabel>
-      <ToggleItem>
-        <div>New proposals</div>
-        <Toggle
-          disabled={disabled}
-          isOn={tcMotionProposed}
-          onToggle={changeGuard(setTcMotionProposed)}
-        />
-      </ToggleItem>
-      <ToggleItem>
-        <div>New vote on proposals</div>
-        <Toggle
-          disabled={disabled}
-          isOn={tcMotionVoted}
-          onToggle={changeGuard(setTcMotionVoted)}
-        />
-      </ToggleItem>
-      <ToggleItem>
-        <div>Proposal approved or disapproved</div>
-        <Toggle
-          disabled={disabled}
-          isOn={tcMotionApproved || tcMotionDisApproved}
-          onToggle={changeGuard((isOn) => {
-            setTcMotionApproved(isOn);
-            setTcMotionDisApproved(isOn);
-          })}
-        />
-      </ToggleItem>
-      {isKintsugi && (
+  let techCommMotionOptionsComponent = null;
+
+  if (isKintsugi) {
+    techCommMotionOptionsComponent = (
+      <div>
+        <SubLabel>Proposals</SubLabel>
         <ToggleItem>
-          <div>Proposal executed</div>
+          <div>Proposals executed</div>
           <Toggle
             disabled={disabled}
             isOn={tcMotionExecuted}
             onToggle={changeGuard(setTcMotionExecuted)}
           />
         </ToggleItem>
-      )}
-    </div>
-  );
+      </div>
+    );
+  } else {
+    techCommMotionOptionsComponent = (
+      <div>
+        <SubLabel>Proposals</SubLabel>
+        <ToggleItem>
+          <div>New proposals</div>
+          <Toggle
+            disabled={disabled}
+            isOn={tcMotionProposed}
+            onToggle={changeGuard(setTcMotionProposed)}
+          />
+        </ToggleItem>
+        <ToggleItem>
+          <div>New vote on proposals</div>
+          <Toggle
+            disabled={disabled}
+            isOn={tcMotionVoted}
+            onToggle={changeGuard(setTcMotionVoted)}
+          />
+        </ToggleItem>
+        <ToggleItem>
+          <div>Proposals approved or disapproved</div>
+          <Toggle
+            disabled={disabled}
+            isOn={tcMotionApproved || tcMotionDisApproved}
+            onToggle={changeGuard((isOn) => {
+              setTcMotionApproved(isOn);
+              setTcMotionDisApproved(isOn);
+            })}
+          />
+        </ToggleItem>
+      </div>
+    );
+  }
 
   return {
     techCommMotionOptionsComponent,

@@ -115,10 +115,6 @@ export default withLoginUserRedux(
       isKintsugi: true,
       disabled: !isVerifiedUser,
       saving,
-      tcMotionProposed: subscription?.tcMotionProposed,
-      tcMotionVoted: subscription?.tcMotionVoted,
-      tcMotionApproved: subscription?.tcMotionApproved,
-      tcMotionDisApproved: subscription?.tcMotionDisApproved,
       tcMotionExecuted: subscription?.tcMotionExecuted,
     });
 

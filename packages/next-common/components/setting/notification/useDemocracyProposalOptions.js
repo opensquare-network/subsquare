@@ -37,7 +37,7 @@ export default function useDemocracyProposalOptions({
     <div>
       <SubLabel>Public Proposals</SubLabel>
       <ToggleItem>
-        <div>New public proposal</div>
+        <div>New public proposals</div>
         <Toggle
           disabled={disabled}
           isOn={democracyProposalProposed}
@@ -45,7 +45,7 @@ export default function useDemocracyProposalOptions({
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Public proposal canceled</div>
+        <div>Public proposals canceled</div>
         <Toggle
           disabled={disabled}
           isOn={democracyProposalCanceled}
