@@ -192,6 +192,7 @@ function MenuGroup({ menu, foldable }) {
           if (item?.excludeToChains?.includes(chain)) {
             return null;
           }
+
           return (
             <Fragment key={index}>
               <Link href={item?.pathname} passHref>

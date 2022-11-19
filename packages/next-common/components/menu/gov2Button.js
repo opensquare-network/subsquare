@@ -9,7 +9,9 @@ const Label = styled.span`
   ${p_14_medium};
 `;
 const LabelWrapper = styled(Flex)`
-  gap: 8px;
+  & > :not(:last-child) {
+    margin-right: 8px;
+  }
 `;
 
 const Badge = styled(Flex)`
@@ -25,7 +27,10 @@ const Wrapper = styled(flexBetweenCenter)`
   background-image: linear-gradient(268.11deg, #7b0dc4 0%, #e6007a 100%);
   border-radius: 4px;
   padding: 10px 18px;
-  gap: 8px;
+
+  & > :not(:last-child) {
+    margin-right: 8px;
+  }
 `;
 
 export default function Gov2Button({ icon, name }) {
