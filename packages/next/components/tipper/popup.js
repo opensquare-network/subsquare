@@ -102,7 +102,7 @@ function PopupContent({
       return showErrorToast(err.message);
     }
 
-    const tx = api.tx.tips.tip(tipHash, bnTipValue.toNumber());
+    const tx = api.tx.tips.tip(tipHash, bnTipValue.toString());
 
     const signerAddress = selectedAccount.address;
 
