@@ -22,6 +22,7 @@ const Chains = {
   zeitgeist: "zeitgeist",
   altair: "altair",
   development: "development",
+  rococo: "rococo",
 };
 
 export default Chains;

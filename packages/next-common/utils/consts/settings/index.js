@@ -19,6 +19,7 @@ import zeitgeist from "./zeitgeist";
 import altair from "./altair";
 import hydradx from "./hydradx";
 import development from "./development";
+import rococo from "./rococo";
 
 const settingsMap = {
   polkadot,
@@ -41,6 +42,7 @@ const settingsMap = {
   polkadex,
   turing,
   zeitgeist,
+  rococo,
   ...(process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? { development } : {}),
 };
 
