@@ -49,8 +49,10 @@ const ItemCount = styled.span`
 const ItemInner = styled(Flex)`
   height: inherit;
   width: inherit;
-  gap: 8px;
   padding: 10px 18px;
+  & > :not(:last-child) {
+    margin-right: 8px;
+  }
 `;
 const Item = styled.div`
   height: 40px;
@@ -192,6 +194,7 @@ function MenuGroup({ menu, foldable }) {
           if (item?.excludeToChains?.includes(chain)) {
             return null;
           }
+
           return (
             <Fragment key={index}>
               <Link href={item?.pathname} passHref>
