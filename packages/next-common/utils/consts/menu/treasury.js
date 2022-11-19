@@ -36,7 +36,11 @@ const treasury = {
       value: "child-bounties",
       name: "Child Bounties",
       pathname: "/treasury/child-bounties",
-      excludeToChains: getExcludeChains([Chains.polkadot, Chains.kusama]),
+      excludeToChains: getExcludeChains([
+        Chains.polkadot,
+        Chains.kusama,
+        Chains.rococo,
+      ]),
       icon: <BountyIcon />,
     },
     {
