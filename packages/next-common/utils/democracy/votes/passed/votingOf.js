@@ -4,7 +4,7 @@ import {
   sortVotesWithConviction,
 } from "./common";
 
-function extractVotes(mapped, targetReferendumIndex) {
+function extractDirectVotes(mapped, targetReferendumIndex) {
   return mapped
     .filter(({ voting }) => voting.isDirect)
     .map(({ account, voting }) => {
@@ -47,7 +47,7 @@ function extractVotes(mapped, targetReferendumIndex) {
     }, []);
 }
 
-function extractDelegations(mapped, directVotes = [], blockApi) {
+function addDelegations(mapped, votes = [], blockApi) {
   const delegations = mapped
     .filter(({ voting }) => voting.isDelegating)
     .map(({ account, voting }) => {
@@ -57,19 +57,18 @@ function extractDelegations(mapped, directVotes = [], blockApi) {
       };
     });
 
-  let newVotes = [];
   delegations.forEach(
     ({ account, delegating: { balance, conviction, target } }) => {
       const toDelegator = delegations.find(
         ({ account }) => account === target.toString()
       );
-      const to = directVotes.find(
+      const to = votes.find(
         ({ account }) =>
           account === (toDelegator ? toDelegator.account : target.toString())
       );
 
       if (to) {
-        newVotes.push({
+        votes.push({
           account,
           balance: balance.toBigInt().toString(),
           isDelegating: true,
@@ -80,7 +79,7 @@ function extractDelegations(mapped, directVotes = [], blockApi) {
     }
   );
 
-  return newVotes;
+  return votes;
 }
 
 export async function getReferendumVotesFromVotingOf(
@@ -89,14 +88,12 @@ export async function getReferendumVotesFromVotingOf(
 ) {
   const voting = await blockApi.query.democracy.votingOf.entries();
   const mapped = voting.map((item) => normalizeVotingOfEntry(item, blockApi));
-  const directVotes = extractVotes(mapped, referendumIndex, blockApi);
-  const votesViaDelegating = extractDelegations(mapped, directVotes, blockApi);
-  const sorted = sortVotesWithConviction([
-    ...directVotes,
-    ...votesViaDelegating,
-  ]);
+  const directVotes = extractDirectVotes(mapped, referendumIndex, blockApi);
+  const votesDirectAndDelegating = addDelegations(mapped, directVotes, blockApi);
+  const sorted = sortVotesWithConviction(votesDirectAndDelegating);
 
   const allAye = sorted.filter((v) => v.aye);
   const allNay = sorted.filter((v) => !v.aye);
   return { allAye, allNay };
 }
+
