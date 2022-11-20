@@ -2,6 +2,51 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.4.4
+
+- Fix treasury new proposal/tip value with string arg.
+- Fix nested delegations votes bug.
+
+# 2.4.3
+
+- Support Rococo.
+- Fix referenda menu style in mobile.
+- Fix page layout of council/TC members and settings page.
+- Hotfix menu external link icon style.
+- Fix councilor tip extrinsic.
+
+# 2.4.2
+
+- Support gov 2.0.
+- Home menu foldable.
+- Support TC motion and democracy subscription and notification.
+
+# 2.4.1
+
+- Upgrade dependency of @polkadot/api to 9.6.2.
+- Use rpc to query total supply and escrow balance for kintsugi/interlay.
+
+# 2.4.0
+
+- Support treasury and motion notifications.
+- Refactor detail pages.
+- Add loading effect to thumb up action.
+- Set users link to domestic.
+- Refactor components.
+- Fix councilor check in tip.
+- Fix link/unlink address.
+- Style fixes and hotfixes.
+
+# 2.3.2
+
+- New network selection drop down menu.
+- Fix motion vote number.
+- Fix link identity icon.
+- Fix tip beneficiary, and tip/bounty timeline by polkadot/api upgrade.
+- Improve polkassembly democracy links.
+- Fix child bounty beneficiary checking.
+- Fix styles.
+
 # 2.3.1
 
 - Use the login web3 address as the default signer for actions.
@@ -33,6 +78,7 @@ All notable changes to this project will be documented in this file.
 - Fix tc and council motions on democracy navigation.
 
 # 2.2.3
+
 - Support login with talisman and subwallet.
 - Support share post to twitter.
 
