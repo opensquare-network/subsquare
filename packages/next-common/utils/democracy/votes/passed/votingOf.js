@@ -47,7 +47,7 @@ function extractDirectVotes(mapped, targetReferendumIndex) {
     }, []);
 }
 
-function addDelegations(mapped, votes = [], blockApi) {
+function addDelegations(mapped, votes = []) {
   const delegations = mapped
     .filter(({ voting }) => voting.isDelegating)
     .map(({ account, voting }) => {
@@ -89,11 +89,7 @@ export async function getReferendumVotesFromVotingOf(
   const voting = await blockApi.query.democracy.votingOf.entries();
   const mapped = voting.map((item) => normalizeVotingOfEntry(item, blockApi));
   const directVotes = extractDirectVotes(mapped, referendumIndex, blockApi);
-  const votesDirectAndDelegating = addDelegations(
-    mapped,
-    directVotes,
-    blockApi
-  );
+  const votesDirectAndDelegating = addDelegations(mapped, directVotes);
   const sorted = sortVotesWithConviction(votesDirectAndDelegating);
 
   const allAye = sorted.filter((v) => v.aye);

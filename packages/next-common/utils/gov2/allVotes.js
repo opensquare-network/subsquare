@@ -80,7 +80,7 @@ function extractVotes(mapped, targetReferendumIndex) {
     }, []);
 }
 
-function extractDelegations(mapped, track, directVotes = []) {
+function extractDelegations(mapped, track, votes = []) {
   const delegations = mapped
     .filter(({ trackId, voting }) => voting.isDelegating && trackId === track)
     .map(({ account, voting }) => {
@@ -90,19 +90,18 @@ function extractDelegations(mapped, track, directVotes = []) {
       };
     });
 
-  let newVotes = [];
   delegations.forEach(
     ({ account, delegating: { balance, conviction, target } }) => {
       const toDelegator = delegations.find(
         ({ account }) => account === target.toString()
       );
-      const to = directVotes.find(
+      const to = votes.find(
         ({ account }) =>
           account === (toDelegator ? toDelegator.account : target.toString())
       );
 
       if (to) {
-        newVotes.push({
+        votes.push({
           account,
           balance: balance.toBigInt().toString(),
           isDelegating: true,
@@ -113,7 +112,7 @@ function extractDelegations(mapped, track, directVotes = []) {
     }
   );
 
-  return newVotes;
+  return votes;
 }
 
 export async function getGov2ReferendumVotesFromVotingOf(
