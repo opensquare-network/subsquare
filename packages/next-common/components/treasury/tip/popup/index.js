@@ -75,7 +75,7 @@ function PopupContent({
         return showErrorToast(err.message);
       }
 
-      tx = api.tx.tips.tipNew(reason, beneficiary, bnValue.toNumber());
+      tx = api.tx.tips.tipNew(reason, beneficiary, bnValue.toString());
     } else {
       tx = api.tx.tips.reportAwesome(reason, beneficiary);
     }

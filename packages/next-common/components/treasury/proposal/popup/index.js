@@ -78,7 +78,7 @@ function PopupContent({
       return showErrorToast(err.message);
     }
 
-    const tx = api.tx.treasury.proposeSpend(bnValue.toNumber(), beneficiary);
+    const tx = api.tx.treasury.proposeSpend(bnValue.toString(), beneficiary);
 
     const signerAddress = signerAccount.address;
 
