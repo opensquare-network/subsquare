@@ -18,9 +18,10 @@ import {
   StyledTr,
 } from "next-common/components/styled/table";
 import { useChainSettings } from "next-common/context/chain";
+import { pageHomeLayoutMainContentWidth } from "next-common/utils/constants";
 
 const Wrapper = styled.div`
-  max-width: 932px;
+  max-width: ${pageHomeLayoutMainContentWidth}px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }

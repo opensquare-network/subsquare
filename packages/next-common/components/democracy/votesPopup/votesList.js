@@ -17,9 +17,10 @@ import VoteLabel from "./voteLabel";
 import Chains from "../../../utils/consts/chains";
 import { pretty_scroll_bar } from "../../../styles/componentCss";
 import { useChain, useChainSettings } from "../../../context/chain";
+import { pageHomeLayoutMainContentWidth } from "../../../utils/constants";
 
 const Wrapper = styled.div`
-  max-width: 932px;
+  max-width: ${pageHomeLayoutMainContentWidth}px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }

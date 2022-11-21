@@ -18,9 +18,10 @@ import { SecondaryCard } from "../styled/containers/secondaryCard";
 import { no_scroll_bar } from "../../styles/componentCss";
 import { useRouter } from "next/router";
 import { useChain } from "../../context/chain";
+import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
 
 const Wrapper = styled.div`
-  max-width: 932px;
+  max-width: ${pageHomeLayoutMainContentWidth}px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }
