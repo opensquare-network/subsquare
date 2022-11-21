@@ -8,6 +8,10 @@ export default function useTrackDelegating(api, trackId, address) {
   const isMounted = useIsMounted();
 
   const refresh = async () => {
+    if (!api || !address) {
+      return;
+    }
+
     setIsLoading(true);
     getGov2TrackDelegation(api, trackId, address)
       .then((delegating) => {
@@ -22,11 +26,6 @@ export default function useTrackDelegating(api, trackId, address) {
 
   useEffect(() => {
     setDelegating(null);
-
-    if (!api || !address) {
-      return;
-    }
-
     refresh();
   }, [api, trackId, address]);
 

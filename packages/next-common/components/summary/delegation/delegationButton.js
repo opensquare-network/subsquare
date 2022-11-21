@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import styled, { css } from "styled-components";
 import { useUser } from "../../../context/user";
 import useApi from "../../../utils/hooks/useApi";
+import { useRouter } from "next/router";
 import useIsMounted from "../../../utils/hooks/useIsMounted";
 import { getSigner, sendTx } from "../../../utils/sendTx";
 import DelegatePopup from "../../gov2/delegatePopup";
@@ -47,6 +48,7 @@ export default function DelegationButton({
   onUndelegateInBlock,
   onDelegateInBlock,
 }) {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [showDelegatePopup, setShowDelegatePopup] = useState(false);
 
@@ -90,12 +92,16 @@ export default function DelegationButton({
     }
   }, [api, dispatch, signerAddress, onUndelegateInBlock, isMounted]);
 
-  const addDelegating = useCallback(async () => {
+  const openDelegatePopup = useCallback(() => {
+    if (!loginUser) {
+      router.push(`/login?redirect=${router.asPath}`);
+      return;
+    }
     setShowDelegatePopup(true);
-  }, []);
+  }, [router, loginUser]);
 
   const addDelegationButton = (
-    <Button onClick={addDelegating}>
+    <Button onClick={openDelegatePopup}>
       <AddSVG />
       Delegate
     </Button>
@@ -115,7 +121,7 @@ export default function DelegationButton({
         <DelegatePopup
           trackId={trackId}
           onInBlock={onDelegateInBlock}
-          onClose={() => setShowDelegatePopup(false)}
+          onClose={setShowDelegatePopup}
         />
       )}
     </>
