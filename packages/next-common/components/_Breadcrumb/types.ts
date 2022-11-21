@@ -1,34 +1,21 @@
 import React from "react";
 
-export type Route = {
-  link: string;
-  name: string;
+type Item = {
+  content: React.ReactNode;
 };
 
 export type BreadcrumbProps = {
-  children?: React.ReactNode;
-  style?: React.CSSProperties;
+  items: Item[];
+
   className?: string;
-  routes?: Route[];
+
   /**
    * @default "/"
    */
   separator?: React.ReactNode;
-  itemRender?: (
-    route: Route,
-    index: number,
-    routes: Route[],
-    isLast: boolean
-  ) => React.ReactNode;
 };
 
-export type BreadcrumbItemProps = Pick<
-  BreadcrumbProps,
-  "children" | "separator" | "style" | "className"
-> & {
-  /**
-   * @default undefined
-   */
-  disabled?: boolean;
-  onClick?: (e: React.MouseEvent<HTMLSpanElement>) => void;
+export type BreadcrumbItemProps = {
+  separator: BreadcrumbProps["separator"];
+  children: React.ReactNode;
 };

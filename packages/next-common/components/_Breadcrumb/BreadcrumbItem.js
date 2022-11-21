@@ -1,17 +1,6 @@
 import React from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { p_16_bold } from "../../styles/componentCss";
-
-const Wrapper = styled.li`
-  list-style: none;
-  ${p_16_bold};
-
-  :last-child {
-    .separator {
-      display: none;
-    }
-  }
-`;
 
 const Item = styled.span`
   a {
@@ -22,19 +11,6 @@ const Item = styled.span`
       text-decoration: underline;
     }
   }
-
-  ${(p) =>
-    p.disabled &&
-    css`
-      color: ${(p) => p.theme.textTertiary};
-      a {
-        cursor: unset;
-
-        :hover {
-          text-decoration: none;
-        }
-      }
-    `}
 `;
 
 const Separator = styled.span`
@@ -42,25 +18,44 @@ const Separator = styled.span`
   color: ${(p) => p.theme.textPlaceholder};
 `;
 
+const Wrapper = styled.li`
+  list-style: none;
+  ${p_16_bold};
+
+  &:last-child {
+    ${Separator} {
+      display: none;
+    }
+
+    ${Item} {
+      color: ${(p) => p.theme.textTertiary};
+      pointer-events: none;
+      a {
+        cursor: unset;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+`;
+
 /**
  * @param {import('./types').BreadcrumbItemProps} props
  */
 function BreadcrumbItem(props) {
-  const {
-    children,
-    disabled,
-    separator = "/",
-    onClick = () => {},
-    ...rest
-  } = props;
+  const { children, separator = "/" } = props ?? {};
 
   if (children) {
     return (
       <Wrapper>
-        <Item disabled={disabled} onClick={onClick} {...rest}>
-          {children}
-        </Item>
-        {separator && <Separator className="separator">{separator}</Separator>}
+        <Item>{children}</Item>
+        {separator && (
+          <Separator className="osn-breadcrumb-separator">
+            {separator}
+          </Separator>
+        )}
       </Wrapper>
     );
   }
