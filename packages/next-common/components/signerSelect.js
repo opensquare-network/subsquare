@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { web3FromSource } from "@polkadot/extension-dapp";
 import AddressSelect from "./addressSelect";
 import { useChain } from "../context/chain";
 
@@ -31,8 +30,10 @@ export default function SignerSelect({
 
   useEffect(() => {
     if (api && selectedAccount) {
-      web3FromSource(selectedAccount.meta?.source).then((injector) => {
-        api.setSigner(injector.signer);
+      import("@polkadot/extension-dapp").then(({ web3FromSource }) => {
+        web3FromSource(selectedAccount.meta?.source).then((injector) => {
+          api.setSigner(injector.signer);
+        });
       });
     }
   }, [api, selectedAccount]);

@@ -5,6 +5,7 @@ import { useUser } from "../../../context/user";
 import useApi from "../../../utils/hooks/useApi";
 import useIsMounted from "../../../utils/hooks/useIsMounted";
 import { getSigner, sendTx } from "../../../utils/sendTx";
+import DelegatePopup from "../../gov2/delegatePopup";
 import AddSVG from "./add.svg";
 import RemoveSVG from "./remove.svg";
 
@@ -33,8 +34,14 @@ const Button = styled.div`
   }
 `;
 
-export default function DelegationButton({ delegating, trackId, onInBlock }) {
+export default function DelegationButton({
+  delegating,
+  trackId,
+  onUndelegateInBlock,
+  onDelegateInBlock,
+}) {
   const [isLoading, setIsLoading] = useState(false);
+  const [showDelegatePopup, setShowDelegatePopup] = useState(false);
 
   const loginUser = useUser();
   const signerAddress = loginUser?.address;
@@ -60,14 +67,18 @@ export default function DelegationButton({ delegating, trackId, onInBlock }) {
       tx,
       dispatch,
       setLoading: setIsLoading,
-      onInBlock,
+      onInBlock: onUndelegateInBlock,
       signerAddress,
       isMounted,
     });
-  }, [api, dispatch, signerAddress, onInBlock, isMounted]);
+  }, [api, dispatch, signerAddress, onUndelegateInBlock, isMounted]);
+
+  const addDelegating = useCallback(async () => {
+    setShowDelegatePopup(true);
+  }, []);
 
   const addDelegationButton = (
-    <Button>
+    <Button onClick={addDelegating}>
       <AddSVG />
       Delegate
     </Button>
@@ -81,5 +92,16 @@ export default function DelegationButton({ delegating, trackId, onInBlock }) {
     </Button>
   );
 
-  return delegating ? removeDelegationButton : addDelegationButton;
+  return (
+    <>
+      {delegating ? removeDelegationButton : addDelegationButton}
+      {showDelegatePopup && (
+        <DelegatePopup
+          trackId={trackId}
+          onInBlock={onDelegateInBlock}
+          onClose={() => setShowDelegatePopup(false)}
+        />
+      )}
+    </>
+  );
 }

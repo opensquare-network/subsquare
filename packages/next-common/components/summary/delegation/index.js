@@ -24,7 +24,12 @@ export default function Delegation({ trackId }) {
     loginUser?.address
   );
 
-  const onInBlock = useCallback(() => {
+  const onDelegateInBlock = useCallback(() => {
+    refresh();
+    dispatch(newSuccessToast(`Delegate success`));
+  }, [dispatch, refresh]);
+
+  const onUndelegateInBlock = useCallback(() => {
     refresh();
     dispatch(newSuccessToast(`Undelegated`));
   }, [dispatch, refresh]);
@@ -35,7 +40,8 @@ export default function Delegation({ trackId }) {
       <DelegationButton
         delegating={delegating}
         trackId={trackId}
-        onInBlock={onInBlock}
+        onDelegateInBlock={onDelegateInBlock}
+        onUndelegateInBlock={onUndelegateInBlock}
       />
     </Wrapper>
   );
