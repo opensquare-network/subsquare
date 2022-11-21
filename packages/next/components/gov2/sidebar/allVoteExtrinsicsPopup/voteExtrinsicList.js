@@ -15,7 +15,7 @@ import {
 import { pretty_scroll_bar } from "next-common/styles/componentCss";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/displayValue";
-import VoteLabel from "next-common/components/democracy/votesPopup/voteLabel";
+import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel";
 import dayjs from "dayjs";
 import ExternalLinks from "next-common/components/links";
 
