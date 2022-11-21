@@ -3,11 +3,15 @@ import styled from "styled-components";
 import { no_scroll_bar } from "next-common/styles/componentCss";
 import Main from "next-common/components/main";
 import Footer from "next-common/components/layout/footer";
-import { pageHomeMainContentWidth, pageMaxWidth } from "../../utils/constants";
+import {
+  pageHomeLayoutMainContentWidth,
+  pageMaxWidth,
+} from "../../utils/constants";
 
 const leftWidth = 236;
 const gap = 32;
-const leftPlaceHolderWidth = pageMaxWidth - gap - pageHomeMainContentWidth;
+const leftPlaceHolderWidth =
+  pageMaxWidth - gap - pageHomeLayoutMainContentWidth;
 const offsetLeftCss = `max(calc((100vw - ${pageMaxWidth}px) / 2), 32px)`;
 
 const Wrapper = styled.div`
