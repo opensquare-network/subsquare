@@ -25,13 +25,16 @@ import useTechCommMotionOptions from "next-common/components/setting/notificatio
 import useDemocracyProposalOptions from "next-common/components/setting/notification/useDemocracyProposalOptions";
 import useDemocracyReferendumOptions from "next-common/components/setting/notification/useDemocracyReferendumOptions";
 import Cookies from "cookies";
-import { CACHE_KEY } from "next-common/utils/constants";
+import {
+  CACHE_KEY,
+  pageHomeLayoutMainContentWidth,
+} from "next-common/utils/constants";
 import homeMenus from "next-common/utils/consts/menu";
 import FoldableSections from "next-common/components/setting/notification/foldableSections";
 import { Options } from "next-common/components/setting/notification/styled";
 
 const Wrapper = styled.div`
-  max-width: 932px;
+  max-width: ${pageHomeLayoutMainContentWidth}px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }

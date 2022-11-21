@@ -18,9 +18,10 @@ import ValueDisplay from "next-common/components/displayValue";
 import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel";
 import dayjs from "dayjs";
 import ExternalLinks from "next-common/components/links";
+import { pageHomeLayoutMainContentWidth } from "next-common/utils/constants";
 
 const Wrapper = styled.div`
-  max-width: 932px;
+  max-width: ${pageHomeLayoutMainContentWidth}px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }

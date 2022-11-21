@@ -3,9 +3,10 @@ import styled from "styled-components";
 import Link from "next/link";
 import Icon from "../../assets/imgs/icons/new-discussion.svg";
 import { TitleContainer } from "../styled/containers/titleContainer";
+import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
 
 const Wrapper = styled.div`
-  max-width: 932px;
+  max-width: ${pageHomeLayoutMainContentWidth}px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }
