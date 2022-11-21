@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.4.5
+
+- Remove @polkadot/api patch for account nonce.
+- Remove disabled status for tip endorse.
+- Fix nested delegation votes for gov2.
+- Fix styles.
+
 # 2.4.4
 
 - Fix treasury new proposal/tip value with string arg.
