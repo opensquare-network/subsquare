@@ -20,7 +20,6 @@ import { useCallback, useEffect, useState } from "react";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import { EmptyList } from "next-common/components/emptyList";
 import Breadcrumb from "next-common/components/_Breadcrumb";
-import Link from "next/link";
 import { getTrackName } from "next-common/utils/gov2/getTrackName";
 import { parseGov2TrackName } from "next-common/utils/gov2";
 import styled, { css } from "styled-components";
@@ -63,6 +62,25 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
 
   const trackName = getTrackName(detail);
 
+  const breadcrumbItems = [
+    {
+      path: "/referenda",
+      content: "Referenda",
+    },
+    {
+      path: `/referenda/${trackName}`,
+      content: parseGov2TrackName(trackName),
+    },
+    {
+      content: (
+        <>
+          <BreadcrumbHideOnMobileText>Referendum</BreadcrumbHideOnMobileText> #
+          {detail.referendumIndex}
+        </>
+      ),
+    },
+  ];
+
   return (
     <PostProvider post={detail} type={detailPageCategory.GOV2_REFERENDUM}>
       <DetailWithRightLayout
@@ -73,24 +91,7 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
         }}
       >
         <BreadcrumbWrapper>
-          <Breadcrumb>
-            <Breadcrumb.Item>
-              <Link href="/referenda">Referenda</Link>
-            </Breadcrumb.Item>
-            {trackName && (
-              <Breadcrumb.Item>
-                <Link href={`/referenda/${trackName}`}>
-                  {parseGov2TrackName(trackName)}
-                </Link>
-              </Breadcrumb.Item>
-            )}
-            <Breadcrumb.Item>
-              <BreadcrumbHideOnMobileText>
-                Referendum
-              </BreadcrumbHideOnMobileText>{" "}
-              #{detail.referendumIndex}
-            </Breadcrumb.Item>
-          </Breadcrumb>
+          <Breadcrumb items={breadcrumbItems} />
         </BreadcrumbWrapper>
 
         <DetailItem
