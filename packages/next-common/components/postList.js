@@ -4,9 +4,10 @@ import Post from "next-common/components/post";
 import Pagination from "next-common/components/pagination/index.js";
 import { TitleContainer } from "./styled/containers/titleContainer";
 import { EmptyList } from "./emptyList";
+import { pageHomeMainContentWidth } from "../utils/constants";
 
 const Wrapper = styled.div`
-  max-width: 916px;
+  max-width: ${pageHomeMainContentWidth}px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }

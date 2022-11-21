@@ -26,6 +26,11 @@ import rococo from "./consts/settings/rococo";
  */
 export const pageMaxWidth = 1184;
 
+/**
+ * home layout main content width
+ */
+export const pageHomeMainContentWidth = 916;
+
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
 
