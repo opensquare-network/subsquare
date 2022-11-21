@@ -45,8 +45,8 @@ export default function Gov2ReferendumMetadata({ detail }) {
       "Decision",
       info?.decisionDeposit ? (
         <UserBond
-          address={info?.submissionDeposit?.who}
-          bond={info?.submissionDeposit?.amount}
+          address={info?.decisionDeposit?.who}
+          bond={info?.decisionDeposit?.amount}
         />
       ) : (
         <GreyText>--</GreyText>
