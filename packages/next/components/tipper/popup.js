@@ -148,13 +148,9 @@ function PopupContent({
         />
       </div>
       <ButtonWrapper>
-        {selectedAccountIsTipper ? (
-          <SecondaryButton isLoading={tipping} onClick={doEndorse}>
-            Endorse
-          </SecondaryButton>
-        ) : (
-          <SecondaryButton disabled>Endorse</SecondaryButton>
-        )}
+        <SecondaryButton isLoading={tipping} onClick={doEndorse}>
+          Endorse
+        </SecondaryButton>
       </ButtonWrapper>
     </>
   );
