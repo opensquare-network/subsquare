@@ -40,8 +40,13 @@ export async function sendTx({
   section: sectionName,
   method: methodName,
 }) {
+  const noWaitForFinalized = onFinalized === emptyFunction;
+  const totalSteps = noWaitForFinalized ? 2 : 3;
+
   const toastId = newToastId();
-  dispatch(newPendingToast(toastId, "(1/3) Waiting for signing..."));
+  dispatch(
+    newPendingToast(toastId, `(1/${totalSteps}) Waiting for signing...`)
+  );
 
   try {
     setLoading(true);
@@ -71,12 +76,16 @@ export async function sendTx({
             }
           }
 
-          dispatch(
-            updatePendingToast(
-              toastId,
-              "(3/3) Inblock, waiting for finalization..."
-            )
-          );
+          if (noWaitForFinalized) {
+            dispatch(removeToast(toastId));
+          } else {
+            dispatch(
+              updatePendingToast(
+                toastId,
+                `(3/${totalSteps}) Inblock, waiting for finalization...`
+              )
+            );
+          }
 
           for (const event of events) {
             const { section, method, data } = event.event;
@@ -96,7 +105,10 @@ export async function sendTx({
     );
 
     dispatch(
-      updatePendingToast(toastId, "(2/3) Submitted, waiting for wrapping...")
+      updatePendingToast(
+        toastId,
+        `(2/${totalSteps}) Submitted, waiting for wrapping...`
+      )
     );
     onSubmitted(signerAddress);
     onClose();
