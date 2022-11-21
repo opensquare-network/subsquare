@@ -18,73 +18,21 @@ const CrumbsWrapper = styled.ul`
   margin: 0;
 `;
 
-function defaultItemRender(route, _routeIndex, _routes, isLast) {
-  return isLast ? (
-    <span>{route.name}</span>
-  ) : (
-    <a href={`#/${getRouteLink(route.link)}`}>{route.name}</a>
-  );
-}
-
-function getRouteLink(link) {
-  link = link.replace(/^\//, "");
-  return link;
-}
-
 /**
  * @param {import('./types').BreadcrumbProps} props
  */
 function Breadcrumb(props) {
-  const {
-    children,
-    routes,
-    separator = "/",
-    itemRender = defaultItemRender,
-    ...rest
-  } = props;
-
-  let crumbs;
-  if (routes && routes.length > 0) {
-    crumbs = routes.map((route, index) => {
-      const isLast = routes.indexOf(route) === routes.length - 1;
-
-      return (
-        <BreadcrumbItem
-          key={route.link || index}
-          disabled={isLast}
-          separator={separator}
-        >
-          {itemRender(route, index, routes, isLast)}
-        </BreadcrumbItem>
-      );
-    });
-  } else if (children) {
-    crumbs = React.Children.toArray(children).map(
-      (element, index, elements) => {
-        if (!element) {
-          return element;
-        }
-
-        const isLast = index === elements.length - 1;
-
-        const crumb = React.cloneElement(element, {
-          separator,
-          disabled: isLast,
-          key: index,
-        });
-
-        return crumb;
-      }
-    );
-  }
+  const { separator = "/", className, items, ...restProps } = props;
 
   return (
-    <Wrapper {...rest} className="breadcrumb">
-      <CrumbsWrapper>{crumbs}</CrumbsWrapper>
+    <Wrapper {...restProps} className={`osn-breadcrumb ${className}`}>
+      <CrumbsWrapper>
+        {items?.map((item, idx) => (
+          <BreadcrumbItem key={idx}>{item.content}</BreadcrumbItem>
+        ))}
+      </CrumbsWrapper>
     </Wrapper>
   );
 }
-
-Breadcrumb.Item = BreadcrumbItem;
 
 export default Breadcrumb;
