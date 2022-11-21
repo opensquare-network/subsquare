@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useUser } from "../../../context/user";
 import useApi from "../../../utils/hooks/useApi";
 import useIsMounted from "../../../utils/hooks/useIsMounted";
@@ -12,11 +12,17 @@ import RemoveSVG from "./remove.svg";
 const Button = styled.div`
   cursor: pointer;
 
+  ${(p) =>
+    p.disabled &&
+    css`
+      pointer-events: none;
+    `}
+
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
-  color: ${(p) => p.theme.textPrimary};
+  color: ${(p) => (p.disabled ? p.theme.textSecondary : p.theme.textPrimary)};
 
   display: flex;
   justify-content: center;
@@ -29,7 +35,8 @@ const Button = styled.div`
 
   svg {
     path {
-      stroke: ${(p) => p.theme.textPrimary};
+      stroke: ${(p) =>
+        p.disabled ? p.theme.textSecondary : p.theme.textPrimary};
     }
   }
 `;
@@ -51,6 +58,10 @@ export default function DelegationButton({
   const dispatch = useDispatch();
 
   const removeDelegating = useCallback(async () => {
+    if (isLoading) {
+      return;
+    }
+
     if (!api) {
       return showErrorToast("Chain network is not connected yet");
     }
@@ -63,14 +74,20 @@ export default function DelegationButton({
     api.setSigner(signer);
 
     const tx = api.tx.convictionVoting.undelegate(trackId);
-    await sendTx({
-      tx,
-      dispatch,
-      setLoading: setIsLoading,
-      onInBlock: onUndelegateInBlock,
-      signerAddress,
-      isMounted,
-    });
+
+    setIsLoading(true);
+    try {
+      await sendTx({
+        tx,
+        dispatch,
+        setLoading: setIsLoading,
+        onInBlock: onUndelegateInBlock,
+        signerAddress,
+        isMounted,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }, [api, dispatch, signerAddress, onUndelegateInBlock, isMounted]);
 
   const addDelegating = useCallback(async () => {
@@ -84,9 +101,8 @@ export default function DelegationButton({
     </Button>
   );
 
-  //TODO: button loading
   const removeDelegationButton = (
-    <Button onClick={removeDelegating}>
+    <Button disabled={isLoading} onClick={removeDelegating}>
       <RemoveSVG />
       Remove
     </Button>

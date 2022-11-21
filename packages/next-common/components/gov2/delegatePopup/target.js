@@ -16,8 +16,6 @@ export default function Target({ extensionAccounts, setAddress }) {
     accounts[0]?.address && encodeAddressToChain(accounts[0]?.address, chain)
   );
 
-  console.log({ target, accounts });
-
   useEffect(() => {
     setAddress(target);
   }, [setAddress, target]);
