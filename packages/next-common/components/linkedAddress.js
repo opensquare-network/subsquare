@@ -7,7 +7,10 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import { nodes } from "next-common/utils/constants";
+import {
+  nodes,
+  pageHomeLayoutMainContentWidth,
+} from "next-common/utils/constants";
 import Avatar from "./avatar";
 import DownloadExtension from "./downloadExtension";
 import { addressEllipsis, isSameAddress } from "../utils";
@@ -25,7 +28,7 @@ import { fetchAndUpdateUser, useUser, useUserDispatch } from "../context/user";
 import { useChain } from "../context/chain";
 
 const Wrapper = styled.div`
-  max-width: 932px;
+  max-width: ${pageHomeLayoutMainContentWidth}px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }

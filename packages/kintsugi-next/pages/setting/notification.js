@@ -18,9 +18,10 @@ import Divider from "next-common/components/styled/layout/divider";
 import SettingsLayout from "next-common/components/layout/settingsLayout";
 import useDiscussionOptions from "next-common/components/setting/notification/useDiscussionOptions";
 import { fetchAndUpdateUser, useUserDispatch } from "next-common/context/user";
+import { pageHomeLayoutMainContentWidth } from "next-common/utils/constants";
 
 const Wrapper = styled.div`
-  max-width: 932px;
+  max-width: ${pageHomeLayoutMainContentWidth}px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }

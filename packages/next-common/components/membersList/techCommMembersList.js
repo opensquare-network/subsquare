@@ -4,9 +4,10 @@ import React, { Fragment } from "react";
 import Loading from "../loading";
 import PrimeAddressMark from "../primeAddressMark";
 import { TitleContainer } from "../styled/containers/titleContainer";
+import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
 
 const Wrapper = styled.div`
-  max-width: 932px;
+  max-width: ${pageHomeLayoutMainContentWidth}px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }

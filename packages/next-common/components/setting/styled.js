@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
 import { PrimaryCard } from "../styled/containers/primaryCard";
 
 export const Wrapper = styled.div`
-  max-width: 932px;
+  max-width: ${pageHomeLayoutMainContentWidth}px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }
