@@ -8,6 +8,16 @@ import {
   updatePendingToast,
 } from "../store/reducers/toastSlice";
 
+export async function getSigner(signerAddress) {
+  const { web3Enable, web3FromAddress } = await import(
+    "@polkadot/extension-dapp"
+  );
+
+  await web3Enable("subsquare");
+  const injector = await web3FromAddress(signerAddress);
+  return injector.signer;
+}
+
 export function getDispatchError(dispatchError) {
   let message = dispatchError.type;
 

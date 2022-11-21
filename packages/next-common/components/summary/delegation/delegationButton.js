@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useUser } from "../../../context/user";
 import useApi from "../../../utils/hooks/useApi";
 import useIsMounted from "../../../utils/hooks/useIsMounted";
-import { sendTx } from "../../../utils/sendTx";
+import { getSigner, sendTx } from "../../../utils/sendTx";
 import AddSVG from "./add.svg";
 import RemoveSVG from "./remove.svg";
 
@@ -52,13 +52,8 @@ export default function DelegationButton({ delegating, trackId, onInBlock }) {
       return showErrorToast("Please login first");
     }
 
-    const { web3Enable, web3FromAddress } = await import(
-      "@polkadot/extension-dapp"
-    );
-
-    await web3Enable("subsquare");
-    const injector = await web3FromAddress(signerAddress);
-    api.setSigner(injector.signer);
+    const signer = await getSigner(signerAddress);
+    api.setSigner(signer);
 
     const tx = api.tx.convictionVoting.undelegate(trackId);
     await sendTx({
