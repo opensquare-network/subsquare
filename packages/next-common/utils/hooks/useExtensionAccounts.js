@@ -1,9 +1,5 @@
 import { useState, useEffect } from "react";
 import useIsMounted from "./useIsMounted";
-import {
-  isWeb3Injected,
-  web3Enable,
-} from "@polkadot/extension-dapp";
 import { polkadotWeb3Accounts } from "../extensionAccount";
 
 export default function useExtensionAccounts(appName) {
@@ -15,6 +11,10 @@ export default function useExtensionAccounts(appName) {
 
   useEffect(() => {
     (async () => {
+      const { isWeb3Injected, web3Enable } = await import(
+        "@polkadot/extension-dapp"
+      );
+
       const web3Apps = await web3Enable(appName);
       if (isMounted.current) {
         setHasExtension(isWeb3Injected);

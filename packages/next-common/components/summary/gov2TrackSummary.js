@@ -7,6 +7,7 @@ import Content from "./cardContent";
 import { SummaryCard, SummaryGreyText, SummaryTitle } from "./styled";
 import { smcss } from "../../utils/responsive";
 import Divider from "../styled/layout/divider";
+import Delegation from "./delegation";
 
 const Wrapper = styled(SummaryCard)`
   height: auto;
@@ -63,15 +64,13 @@ export default function Gov2TrackSummary({ summary, period }) {
 
   return (
     <Wrapper>
-      <div>
+      <div style={{ marginBottom: "16px" }}>
         <TitleGroup>
           <Title>Origin: {origin}</Title>
           <TitleTrackId>#{id}</TitleTrackId>
         </TitleGroup>
         {description && <Description>{description}</Description>}
       </div>
-
-      <Divider margin={16} />
 
       <SummariesWrapper>
         <SummaryItem>
@@ -120,6 +119,10 @@ export default function Gov2TrackSummary({ summary, period }) {
           </Content>
         </SummaryItem>
       </SummariesWrapper>
+
+      <Divider margin={16} />
+
+      <Delegation trackId={id} />
     </Wrapper>
   );
 }

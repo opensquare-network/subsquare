@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { useAddressVotingBalance, useGov2AddressVote } from "utils/hooks";
+import { useAddressVotingBalance } from "utils/hooks";
+import useAddressVote from "next-common/utils/hooks/referenda/useAddressVote";
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -44,7 +45,7 @@ function PopupContent({
     selectedAccount?.address
   );
 
-  const [addressVote, addressVoteIsLoading] = useGov2AddressVote(
+  const [addressVote, addressVoteIsLoading] = useAddressVote(
     api,
     trackId,
     referendumIndex,

@@ -1,4 +1,14 @@
-import { Conviction, isAye } from "./referendumUtil";
+import { Conviction, isAye } from "../referendumCommon";
+
+export async function getGov2TrackDelegation(api, trackId, address) {
+  const voting = await api.query.convictionVoting.votingFor(address, trackId);
+  const jsonVoting = voting?.toJSON();
+  if (!jsonVoting) {
+    return null;
+  }
+
+  return jsonVoting?.delegating;
+}
 
 export async function getGov2AddressVote(
   api,
