@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { p_16_bold } from "../../styles/componentCss";
+import Link from "next/link";
 
 const Item = styled.span`
   a {
@@ -45,12 +46,17 @@ const Wrapper = styled.li`
  * @param {import('./types').BreadcrumbItemProps} props
  */
 function BreadcrumbItem(props) {
-  const { children, separator = "/" } = props ?? {};
+  const { children, separator = "/", path } = props ?? {};
+
+  let content = children;
+  if (path) {
+    content = <Link href={path}>{content}</Link>;
+  }
 
   if (children) {
     return (
       <Wrapper>
-        <Item>{children}</Item>
+        <Item>{content}</Item>
         {separator && (
           <Separator className="osn-breadcrumb-separator">
             {separator}
