@@ -28,8 +28,8 @@ const Popup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
 });
 
-const VotesPopup = dynamic(
-  () => import("next-common/components/democracy/votesPopup"),
+const AllVotesPopup = dynamic(
+  () => import("next-common/components/democracy/allVotesPopup"),
   {
     ssr: false,
   }
@@ -192,7 +192,14 @@ function Vote({
           onFinalized={onFinalized}
         />
       )}
-      {showVoteList && <VotesPopup setShowVoteList={setShowVoteList} />}
+      {showVoteList && (
+        <AllVotesPopup
+          setShowVoteList={setShowVoteList}
+          allAye={allAye}
+          allNay={allNay}
+          isLoadingVotes={isLoadingVotes}
+        />
+      )}
     </Wrapper>
   );
 }
