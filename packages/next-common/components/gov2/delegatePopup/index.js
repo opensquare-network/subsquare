@@ -5,7 +5,7 @@ import { useAddressVotingBalance } from "utils/hooks";
 import useApi from "../../../utils/hooks/useApi";
 import useIsMounted from "../../../utils/hooks/useIsMounted";
 import { newErrorToast } from "../../../store/reducers/toastSlice";
-import { checkInputValue, emptyFunction } from "../../../utils";
+import { checkInputValue, emptyFunction, isSameAddress } from "../../../utils";
 import Signer from "./signer";
 
 import PopupWithAddress from "../../../components/popupWithAddress";
@@ -16,7 +16,6 @@ import VoteValue from "./voteValue";
 import Target from "./target";
 import SecondaryButton from "../../buttons/secondaryButton";
 import styled from "styled-components";
-import { encodeAddress } from "@polkadot/util-crypto";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -49,7 +48,7 @@ function PopupContent({
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
-  const doDelegate = async (aye) => {
+  const doDelegate = async () => {
     if (isLoading) {
       return;
     }
@@ -83,7 +82,7 @@ function PopupContent({
 
     const signerAddress = selectedAccount?.address;
 
-    if (targetAddress === signerAddress) {
+    if (isSameAddress(targetAddress, signerAddress)) {
       return showErrorToast(
         "Target address cannot be same with the signer address"
       );
