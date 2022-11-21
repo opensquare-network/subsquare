@@ -121,7 +121,7 @@ export default function DelegationButton({
         <DelegatePopup
           trackId={trackId}
           onInBlock={onDelegateInBlock}
-          onClose={setShowDelegatePopup}
+          onClose={() => setShowDelegatePopup(false)}
         />
       )}
     </>
