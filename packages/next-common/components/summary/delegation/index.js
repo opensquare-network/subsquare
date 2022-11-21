@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import DelegationInfo from "./delegationInfo";
 import DelegationButton from "./delegationButton";
-import { useGov2TrackDelegating } from "utils/hooks";
+import useTrackDelegating from "next-common/utils/hooks/referenda/useTrackDelegation";
 import useApi from "../../../utils/hooks/useApi";
 import { useUser } from "../../../context/user";
 import { useCallback } from "react";
@@ -18,7 +18,7 @@ export default function Delegation({ trackId }) {
   const dispatch = useDispatch();
   const api = useApi();
   const loginUser = useUser();
-  const { delegating, refresh } = useGov2TrackDelegating(
+  const { delegating, refresh } = useTrackDelegating(
     api,
     trackId,
     loginUser?.address
