@@ -4,8 +4,19 @@ import { useSelector } from "react-redux";
 import { currentNodeSelector } from "../../store/reducers/nodeSlice";
 import { useChain } from "../../context/chain";
 
+let api;
+
 export default function useApi() {
   const chain = useChain();
   const endpoint = useSelector(currentNodeSelector);
-  return useCall(getApi, [chain, endpoint]);
+  api = useCall(getApi, [chain, endpoint]);
+  return api;
+}
+
+export function getLastApi() {
+  if (!api) {
+    throw new Error(`Use getLastApi after api initialized`);
+  }
+
+  return api;
 }
