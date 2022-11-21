@@ -41,7 +41,12 @@ export default function VotesPopup({ setShowVoteList }) {
 
   return (
     <Popup title="Votes" onClose={() => setShowVoteList(false)}>
-      <VotesTab tabIndex={tabIndex} setTabIndex={setTabIndex} />
+      <VotesTab
+        tabIndex={tabIndex}
+        setTabIndex={setTabIndex}
+        ayesCount={allAye?.length || 0}
+        naysCount={allNay?.length || 0}
+      />
       <VotersList items={votes.slice(sliceFrom, sliceTo)} loading={loading} />
 
       <Pagination {...pagination} />
