@@ -7,6 +7,7 @@ import {
   removeToast,
   updatePendingToast,
 } from "../store/reducers/toastSlice";
+import { getLastApi } from "./hooks/useApi";
 
 export async function getSigner(signerAddress) {
   const { web3Enable, web3FromAddress } = await import(
@@ -61,10 +62,13 @@ export async function sendTx({
   try {
     setLoading(true);
 
-    let blockHash = null;
+    const api = getLastApi();
+    const account = await api.query.system.account(signerAddress);
 
+    let blockHash = null;
     const unsub = await tx.signAndSend(
       signerAddress,
+      { nonce: account.nonce },
       ({ events = [], status }) => {
         if (status.isFinalized) {
           dispatch(removeToast(toastId));
