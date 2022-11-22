@@ -6,7 +6,7 @@ import useOnClickOutside from "../utils/hooks/useOnClickOutside";
 import ArrowLeft from "../assets/imgs/icons/caret-left-16.svg";
 import ArrowRight from "../assets/imgs/icons/caret-right-16.svg";
 import Close from "../assets/imgs/icons/close-16.svg";
-import { p_14_medium, p_14_normal } from "../styles/componentCss";
+import { font_family, p_14_medium, p_14_normal } from "../styles/componentCss";
 import Flex from "./styled/flex";
 import FlexBetween from "./styled/flexBetween";
 import Input from "./input";
@@ -174,7 +174,7 @@ const DateWrapper = styled.div`
 
   .react-datepicker__day-name {
     width: 46.86px;
-    font-family: Inter, sans-serif;
+    ${font_family};
     ${p_14_medium};
     line-height: 32px;
     text-align: center;
@@ -193,7 +193,7 @@ const DateWrapper = styled.div`
 
   .react-datepicker__day {
     width: 46.86px;
-    font-family: Inter, sans-serif;
+    ${font_family};
     ${p_14_normal};
     line-height: 32px;
     color: ${(props) => props.theme.textPrimary};
@@ -289,7 +289,7 @@ const DateHeader = styled(Flex)`
   margin-bottom: 8px;
 
   > b {
-    font-family: Inter, sans-serif;
+    ${font_family};
     text-align: center;
     color: ${(props) => props.theme.textPrimary};
     flex: 1 1 auto;
