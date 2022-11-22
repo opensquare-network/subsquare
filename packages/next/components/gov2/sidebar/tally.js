@@ -14,7 +14,7 @@ import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
 import useFetchVoteExtrinsics from "next-common/utils/gov2/useFetchVoteExtrinsics";
 import { useChainSettings } from "next-common/context/chain";
 import { useState } from "react";
-import AllVotesPopup from "./allVotesPopup";
+import AllVotesPopup from "next-common/components/democracy/allVotesPopup";
 import AllVoteExtrinsicsPopup from "./allVoteExtrinsicsPopup";
 import {
   isLoadingVotesSelector,
@@ -154,7 +154,14 @@ export default function Gov2Tally({ detail }) {
           </Button>
         </Footer>
       </SecondaryCardDetail>
-      {showAllVotes && <AllVotesPopup setShowVoteList={setShowAllVotes} />}
+      {showAllVotes && (
+        <AllVotesPopup
+          setShowVoteList={setShowAllVotes}
+          allAye={allAye}
+          allNay={allNay}
+          isLoadingVotes={isLoadingVotes}
+        />
+      )}
       {showVoteExtrinsic && (
         <AllVoteExtrinsicsPopup setShowVoteList={setShowVoteExtrinsic} />
       )}

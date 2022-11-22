@@ -1,17 +1,15 @@
 import React, { useState } from "react";
-import Popup from "next-common/components/popup/wrapper/Popup";
-import VotesTab, { tabs } from "../tab";
-import VotersList from "next-common/components/democracy/votesPopup/votesList";
-import { useSelector } from "react-redux";
-import {
-  isLoadingVotesSelector,
-  votesSelector,
-} from "next-common/store/reducers/gov2ReferendumSlice";
+import Popup from "../../popup/wrapper/Popup";
+import VotesTab, { tabs } from "./tab";
+import VotersList from "./votesList";
 import Pagination from "next-common/components/pagination";
 
-export default function AllVotesPopup({ setShowVoteList }) {
-  const { allAye = [], allNay = [] } = useSelector(votesSelector);
-  const isLoading = useSelector(isLoadingVotesSelector);
+export default function VotesPopup({
+  setShowVoteList,
+  allAye,
+  allNay,
+  isLoadingVotes,
+}) {
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [ayePage, setAyePage] = useState(1);
   const [nayPage, setNayPage] = useState(1);
@@ -19,14 +17,14 @@ export default function AllVotesPopup({ setShowVoteList }) {
 
   const votes = tabIndex === tabs[0].tabId ? allAye : allNay;
 
-  const onPageChange = (e, target) => {
+  function onPageChange(e, target) {
     e.preventDefault();
     if (tabIndex === "Aye") {
       setAyePage(target);
     } else {
       setNayPage(target);
     }
-  };
+  }
 
   const pagination = {
     page: tabIndex === "Aye" ? ayePage : nayPage,
@@ -46,7 +44,10 @@ export default function AllVotesPopup({ setShowVoteList }) {
         ayesCount={allAye?.length || 0}
         naysCount={allNay?.length || 0}
       />
-      <VotersList items={votes.slice(sliceFrom, sliceTo)} loading={isLoading} />
+      <VotersList
+        items={votes.slice(sliceFrom, sliceTo)}
+        loading={isLoadingVotes}
+      />
       <Pagination {...pagination} />
     </Popup>
   );
