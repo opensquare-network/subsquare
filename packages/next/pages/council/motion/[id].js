@@ -1,4 +1,3 @@
-import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import MotionDetail from "components/motion/motionDetail";
@@ -10,6 +9,8 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
+import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
+import Breadcrumb from "next-common/components/_Breadcrumb";
 
 export default withLoginUserRedux(({ motion, comments }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -21,6 +22,21 @@ export default withLoginUserRedux(({ motion, comments }) => {
   motion.status = motion.state?.state;
 
   const desc = getMetaDesc(motion);
+
+  const breadcrumbItems = [
+    {
+      content: "Overview",
+      path: "/",
+    },
+    {
+      content: "Council Motions",
+      path: "/council/motions",
+    },
+    {
+      content: `Motion #${motion?.motionIndex}`,
+    },
+  ];
+
   return (
     <PostProvider post={motion} type={detailPageCategory.COUNCIL_MOTION}>
       <DetailWithRightLayout
@@ -30,7 +46,10 @@ export default withLoginUserRedux(({ motion, comments }) => {
           ogImage: getBannerUrl(motion?.bannerCid),
         }}
       >
-        <Back href={`/council/motions`} text="Back to Motions" />
+        <BreadcrumbWrapper>
+          <Breadcrumb items={breadcrumbItems} />
+        </BreadcrumbWrapper>
+
         <MotionDetail
           type={detailPageCategory.COUNCIL_MOTION}
           onReply={focusEditor}
