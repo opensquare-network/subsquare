@@ -1,4 +1,3 @@
-import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import TechcommMotionDetail from "components/motion/techcommMotionDetail";
@@ -10,6 +9,9 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
+import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
+import Breadcrumb from "next-common/components/_Breadcrumb";
+import { hashEllipsis } from "next-common/utils";
 
 export default withLoginUserRedux(({ motion, comments }) => {
   const { CommentComponent, focusEditor } = useCommentComponent({
@@ -19,6 +21,21 @@ export default withLoginUserRedux(({ motion, comments }) => {
   });
 
   const desc = getMetaDesc(motion);
+
+  const breadcrumbItems = [
+    {
+      content: "Overview",
+      path: "/",
+    },
+    {
+      content: "Tech.Comm. Proposals",
+      path: "/techcomm/proposals",
+    },
+    {
+      content: hashEllipsis(motion?.hash),
+    },
+  ];
+
   return (
     <PostProvider post={motion} type={detailPageCategory.TECH_COMM_MOTION}>
       <DetailLayout
@@ -28,7 +45,10 @@ export default withLoginUserRedux(({ motion, comments }) => {
           ogImage: getBannerUrl(motion?.bannerCid),
         }}
       >
-        <Back href={`/techcomm/proposals`} text="Back to Proposals" />
+        <BreadcrumbWrapper>
+          <Breadcrumb items={breadcrumbItems} />
+        </BreadcrumbWrapper>
+
         <TechcommMotionDetail
           motion={motion}
           onReply={focusEditor}
