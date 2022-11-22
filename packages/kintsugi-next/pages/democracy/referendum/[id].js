@@ -26,6 +26,8 @@ import {
   fetchReferendumStatus,
   fetchVotes,
 } from "next-common/store/reducers/referendumSlice";
+import Breadcrumb from "next-common/components/_Breadcrumb";
+import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 
 export default withLoginUserRedux(
   ({ detail: ssrDetail, publicProposal, comments }) => {
@@ -71,6 +73,21 @@ export default withLoginUserRedux(
     );
 
     const desc = getMetaDesc(detail);
+
+    const breadcrumbItems = [
+      {
+        content: "Overview",
+        path: "/",
+      },
+      {
+        content: "Democracy Referenda",
+        path: "/democracy/referenda",
+      },
+      {
+        content: `Referendum #${ssrDetail?.referendumIndex}`,
+      },
+    ];
+
     return (
       <PostProvider
         post={detail}
@@ -83,7 +100,10 @@ export default withLoginUserRedux(
             ogImage: getBannerUrl(detail?.bannerCid),
           }}
         >
-          <Back href={`/democracy/referenda`} text="Back to Referenda" />
+          <BreadcrumbWrapper>
+            <Breadcrumb items={breadcrumbItems} />
+          </BreadcrumbWrapper>
+
           <DetailItem
             onReply={focusEditor}
             type={detailPageCategory.DEMOCRACY_REFERENDUM}
