@@ -20,7 +20,7 @@ const Popup = dynamic(() => import("./popup"), {
 const Wrapper = styled.div`
   position: absolute;
   right: 0;
-  top: 32px;
+  top: 40px;
   width: 300px;
   margin-top: 0 !important;
   > :not(:first-child) {
