@@ -12,6 +12,8 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
 `;
 
 export default function Delegation({ trackId }) {

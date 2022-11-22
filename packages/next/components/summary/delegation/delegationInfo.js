@@ -13,6 +13,7 @@ const Wrapper = styled.div`
   color: ${(p) => p.theme.textTertiary};
 
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   padding: 4px 12px;
   gap: 8px;
