@@ -29,10 +29,12 @@ import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import Loading from "next-common/components/loading";
 import TreasuryCountDown from "next-common/components/treasury/common/countdown";
 import { getBannerUrl } from "next-common/utils/banner";
-import { isSameAddress } from "next-common/utils";
+import { hashEllipsis, isSameAddress } from "next-common/utils";
 import { PostProvider } from "next-common/context/post";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
+import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
+import Breadcrumb from "next-common/components/_Breadcrumb";
 
 const TipCountDown = ({ meta = {}, state }) => {
   const nowHeight = useSelector(latestHeightSelector);
@@ -143,6 +145,21 @@ export default withLoginUserRedux(({ loginUser, detail: tip, comments }) => {
   const onTipFinalized = useWaitSyncBlock("Tip endorsed", refreshPageData);
 
   const desc = getMetaDesc(detail);
+
+  const breadcrumbItems = [
+    {
+      content: "Overview",
+      path: "/",
+    },
+    {
+      content: "Treasury Tips",
+      path: "/treasury/tips",
+    },
+    {
+      content: hashEllipsis(detail?.hash),
+    },
+  ];
+
   return (
     <PostProvider post={detail} type={detailPageCategory.TREASURY_TIP}>
       <DetailWithRightLayout
@@ -152,7 +169,10 @@ export default withLoginUserRedux(({ loginUser, detail: tip, comments }) => {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <Back href={`/treasury/tips`} text="Back to Tips" />
+        <BreadcrumbWrapper>
+          <Breadcrumb items={breadcrumbItems} />
+        </BreadcrumbWrapper>
+
         <DetailItem
           onReply={focusEditor}
           type={detailPageCategory.TREASURY_TIP}
