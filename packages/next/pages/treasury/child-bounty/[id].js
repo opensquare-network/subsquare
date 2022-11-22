@@ -1,4 +1,3 @@
-import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import nextApi, { ssrNextApi } from "next-common/services/nextApi";
@@ -19,6 +18,8 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { PostProvider } from "next-common/context/post";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
+import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
+import Breadcrumb from "next-common/components/_Breadcrumb";
 
 const ChildBountyCountDown = ({ data = {} }) => {
   if (data.state?.state !== "PendingPayout") {
@@ -78,6 +79,20 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
 
   const Layout = showRightSidePanel ? DetailWithRightLayout : DetailLayout;
 
+  const breadcrumbItems = [
+    {
+      content: "Overview",
+      path: "/",
+    },
+    {
+      content: "Treasury Child Bounties",
+      path: "/treasury/child-bounties",
+    },
+    {
+      content: `Bounty #${detail?.index}`,
+    },
+  ];
+
   return (
     <PostProvider post={detail} type={detailPageCategory.TREASURY_CHILD_BOUNTY}>
       <Layout
@@ -87,7 +102,10 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <Back href={`/treasury/child-bounties`} text="Back to Child Bounties" />
+        <BreadcrumbWrapper>
+          <Breadcrumb items={breadcrumbItems} />
+        </BreadcrumbWrapper>
+
         <DetailItem
           onReply={focusEditor}
           type={detailPageCategory.TREASURY_CHILD_BOUNTY}
