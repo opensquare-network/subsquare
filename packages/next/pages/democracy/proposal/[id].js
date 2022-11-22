@@ -19,6 +19,8 @@ import { PostProvider } from "next-common/context/post";
 import { useCallback, useEffect, useState } from "react";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
+import Breadcrumb from "next-common/components/_Breadcrumb";
 
 export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   const [detail, setDetail] = useState(ssrDetail);
@@ -60,6 +62,21 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   );
 
   const desc = getMetaDesc(detail);
+
+  const breadcrumbItems = [
+    {
+      content: "Overview",
+      path: "/",
+    },
+    {
+      content: "Democracy Proposals",
+      path: "/democracy/proposals",
+    },
+    {
+      content: `Proposal #${detail?.proposalIndex}`,
+    },
+  ];
+
   return (
     <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_PROPOSAL}>
       <DetailWithRightLayout
@@ -69,7 +86,10 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <Back href={`/democracy/proposals`} text="Back to Proposals" />
+        <BreadcrumbWrapper>
+          <Breadcrumb items={breadcrumbItems} />
+        </BreadcrumbWrapper>
+
         <DetailItem
           onReply={focusEditor}
           type={detailPageCategory.DEMOCRACY_PROPOSAL}
