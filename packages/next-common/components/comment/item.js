@@ -20,6 +20,7 @@ import CommentActions from "../actions/commentActions";
 import copy from "copy-to-clipboard";
 import useDuration from "../../utils/hooks/useDuration";
 import { useUser } from "../../context/user";
+import useCommentsAnchor from "../../utils/hooks/useCommentsAnchor";
 
 const Wrapper = styled.div`
   position: relative;
@@ -92,14 +93,11 @@ export default function Item({ data, onReply }) {
   const [highlight, setHighlight] = useState(false);
   const isMounted = useIsMountedBool();
   const duration = useDuration(comment.createdAt);
+  const { hasAnchor, anchor } = useCommentsAnchor();
 
   useEffect(() => {
-    if (window?.location?.hash === "") {
-      return;
-    }
-    const height = parseInt(window.location.hash.substr(1));
-    setHighlight(height === comment.height);
-  }, [router, comment.height]);
+    setHighlight(hasAnchor && anchor === comment.height);
+  }, [hasAnchor, anchor])
 
   const commentId = comment._id;
   const isLoggedIn = !!user;
