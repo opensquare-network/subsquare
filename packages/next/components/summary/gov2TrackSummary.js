@@ -1,12 +1,16 @@
 import { useSelector } from "react-redux";
 import styled, { css } from "styled-components";
-import { blockTimeSelector } from "../../store/reducers/chainSlice";
-import { p_14_normal, p_20_bold } from "../../styles/componentCss";
-import { estimateBlocksTime } from "../../utils";
-import Content from "./cardContent";
-import { SummaryCard, SummaryGreyText, SummaryTitle } from "./styled";
-import { smcss } from "../../utils/responsive";
-import Divider from "../styled/layout/divider";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
+import { p_14_normal, p_20_bold } from "next-common/styles/componentCss";
+import { estimateBlocksTime } from "next-common/utils";
+import Content from "next-common/components/summary/cardContent";
+import {
+  SummaryCard,
+  SummaryGreyText,
+  SummaryTitle,
+} from "next-common/components/summary/styled";
+import { smcss } from "next-common/utils/responsive";
+import Divider from "next-common/components/styled/layout/divider";
 import Delegation from "./delegation";
 
 const Wrapper = styled(SummaryCard)`

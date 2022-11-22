@@ -6,13 +6,12 @@ export default function VoteValue({
   inputVoteBalance,
   setInputVoteBalance,
   node,
+  title = "Value",
+  titleTooltip = "The value is locked for the duration of the vote",
 }) {
   return (
     <div>
-      <PopupLabel
-        text={"Value"}
-        tooltip={"The value is locked for the duration of the vote"}
-      />
+      <PopupLabel text={title} tooltip={titleTooltip} />
       <Input
         type="text"
         placeholder="0"

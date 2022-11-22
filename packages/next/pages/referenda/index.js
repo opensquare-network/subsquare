@@ -6,7 +6,7 @@ import {
   gov2ReferendumsSummaryApi,
   gov2TracksApi,
 } from "next-common/services/url";
-import Gov2Summary from "next-common/components/summary/gov2Summary";
+import Gov2Summary from "components/summary/gov2Summary";
 import Gov2Page from "components/gov2/gov2Page";
 
 export default withLoginUserRedux(({ posts, title, tracks, summary }) => {

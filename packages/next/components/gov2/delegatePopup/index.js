@@ -2,19 +2,23 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { useAddressVotingBalance } from "utils/hooks";
-import useApi from "../../../utils/hooks/useApi";
-import useIsMounted from "../../../utils/hooks/useIsMounted";
-import { newErrorToast } from "../../../store/reducers/toastSlice";
-import { checkInputValue, emptyFunction, isSameAddress } from "../../../utils";
-import Signer from "./signer";
+import useApi from "next-common/utils/hooks/useApi";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import {
+  checkInputValue,
+  emptyFunction,
+  isSameAddress,
+} from "next-common/utils";
+import Signer from "../../referenda/popup/signer";
 
-import PopupWithAddress from "../../../components/popupWithAddress";
-import { sendTx } from "../../../utils/sendTx";
-import { useChainSettings } from "../../../context/chain";
-import VoteLock from "./voteLock";
-import VoteValue from "./voteValue";
+import PopupWithAddress from "next-common/components/popupWithAddress";
+import { sendTx } from "next-common/utils/sendTx";
+import { useChainSettings } from "next-common/context/chain";
+import VoteLock from "../../referenda/popup/voteLock";
+import VoteValue from "../../referenda/popup/voteValue";
 import Target from "./target";
-import SecondaryButton from "../../buttons/secondaryButton";
+import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import styled from "styled-components";
 
 const ButtonWrapper = styled.div`
@@ -123,12 +127,18 @@ function PopupContent({
         setAddress={setTargetAddress}
       />
       <VoteValue
+        title="Balance"
+        titleTooltip=""
         isLoading={isLoading}
         inputVoteBalance={inputVoteBalance}
         setInputVoteBalance={setInputVoteBalance}
         node={node}
       />
-      <VoteLock voteLock={voteLock} setVoteLock={setVoteLock} />
+      <VoteLock
+        title="Conviction"
+        voteLock={voteLock}
+        setVoteLock={setVoteLock}
+      />
       <ButtonWrapper>
         <SecondaryButton isLoading={isLoading} onClick={doDelegate}>
           Confirm

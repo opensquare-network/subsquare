@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import DelegationInfo from "./delegationInfo";
-import DelegationButton from "./delegationButton";
-import useTrackDelegating from "next-common/utils/hooks/referenda/useTrackDelegation";
-import useApi from "../../../utils/hooks/useApi";
-import { useUser } from "../../../context/user";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { newSuccessToast } from "../../../store/reducers/toastSlice";
+import styled from "styled-components";
+import useTrackDelegating from "next-common/utils/hooks/referenda/useTrackDelegation";
+import useApi from "next-common/utils/hooks/useApi";
+import { useUser } from "next-common/context/user";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import DelegationInfo from "./delegationInfo";
+import DelegationButton from "./delegationButton";
 
 const Wrapper = styled.div`
   display: flex;
