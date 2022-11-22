@@ -61,7 +61,7 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
       path: "/",
     },
     {
-      content: "Referenda",
+      content: "Democracy Referenda",
       path: "/democracy/referenda",
     },
     {
