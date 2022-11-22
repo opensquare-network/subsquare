@@ -3,6 +3,7 @@ import styled from "styled-components";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { useChain } from "next-common/context/chain";
+import { getPolkassemblyLink } from "next-common/utils/polkassembly";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -33,23 +34,9 @@ export default function PolkassemblyCommentButton({
     }
   }
 
-  let link = `https://${chain}.polkassembly.io/post/${paId}`;
-  if (type === detailPageCategory.COUNCIL_MOTION) {
-    link = `https://${chain}.polkassembly.io/motion/${detail?.motionIndex}`;
-  } else if (type === detailPageCategory.DEMOCRACY_PROPOSAL) {
-    link = `https://${chain}.polkassembly.io/proposal/${detail?.proposalIndex}`;
-  } else if (type === detailPageCategory.DEMOCRACY_REFERENDUM) {
-    link = `https://${chain}.polkassembly.io/referendum/${detail?.referendumIndex}`;
-  } else if (type === detailPageCategory.TECH_COMM_MOTION) {
-    link = `https://${chain}.polkassembly.io/tech/${detail?.motionIndex}`;
-  } else if (type === detailPageCategory.TREASURY_BOUNTY) {
-    link = `https://${chain}.polkassembly.io/bounty/${detail?.bountyIndex}`;
-  } else if (type === detailPageCategory.TREASURY_CHILD_BOUNTY) {
-    link = `https://${chain}.polkassembly.io/child_bounty/${detail?.index}`;
-  } else if (type === detailPageCategory.TREASURY_PROPOSAL) {
-    link = `https://${chain}.polkassembly.io/treasury/${detail?.proposalIndex}`;
-  } else if (type === detailPageCategory.TREASURY_TIP) {
-    link = `https://${chain}.polkassembly.io/tip/${detail?.hash}`;
+  let link = getPolkassemblyLink(type, detail);
+  if (!link) {
+    link = `https://${chain}.polkassembly.io/post/${paId}`;
   }
 
   return (
