@@ -3,7 +3,7 @@ import { shadow_200 } from "../../styles/componentCss";
 
 export const OptionWrapper = styled.div`
   position: absolute;
-  right: -60px;
+  right: 0;
   bottom: calc(100% + 10px);
   background: ${(props) => props.theme.neutral};
   width: 96px;
