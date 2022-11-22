@@ -58,7 +58,9 @@ const Value = styled.span`
 
 const Footer = styled.div`
   display: flex;
-  gap: 16px;
+  > :not(:first-child) {
+    margin-left: 16px;
+  }
   margin-top: 16px;
 `;
 

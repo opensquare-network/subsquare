@@ -63,10 +63,6 @@ export default function DelegationButton({
   const dispatch = useDispatch();
 
   const removeDelegating = useCallback(async () => {
-    if (isLoading) {
-      return;
-    }
-
     if (!api) {
       return showErrorToast("Chain network is not connected yet");
     }
@@ -93,7 +89,7 @@ export default function DelegationButton({
     } finally {
       setIsLoading(false);
     }
-  }, [api, dispatch, signerAddress, onUndelegateInBlock, isMounted]);
+  }, [api, dispatch, signerAddress, onUndelegateInBlock, isMounted, trackId]);
 
   const openDelegatePopup = useCallback(() => {
     if (!loginUser) {
