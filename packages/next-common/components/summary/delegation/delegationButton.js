@@ -33,6 +33,9 @@ const Button = styled.div`
   background: ${(p) => p.theme.neutral};
   border: 1px solid ${(p) => p.theme.grey300Border};
   border-radius: 4px;
+  :hover {
+    border-color: ${(p) => p.theme.grey400Border};
+  }
 
   svg {
     path {
