@@ -57,15 +57,14 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
 
   const breadcrumbItems = [
     {
-      content: "Overview",
-      path: "/",
+      content: "Democracy",
     },
     {
-      content: "Democracy Referenda",
+      content: "Referenda",
       path: "/democracy/referenda",
     },
     {
-      content: `Referendum #${ssrDetail?.referendumIndex}`,
+      content: `#${ssrDetail?.referendumIndex}`,
     },
   ];
 
