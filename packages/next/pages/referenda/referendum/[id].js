@@ -24,6 +24,7 @@ import { getTrackName } from "next-common/utils/gov2/getTrackName";
 import { parseGov2TrackName } from "next-common/utils/gov2";
 import styled, { css } from "styled-components";
 import { smcss } from "next-common/utils/responsive";
+import ReferendaBusiness from "../../../components/gov2/business";
 
 const BreadcrumbHideOnMobileText = styled.span`
   ${smcss(css`
@@ -101,6 +102,7 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
 
         <Gov2Sidebar detail={detail} onVoteFinalized={onVoteFinalized} />
 
+        <ReferendaBusiness />
         <Gov2ReferendumMetadata detail={detail} />
 
         <Timeline

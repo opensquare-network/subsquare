@@ -94,8 +94,8 @@ export default function Business({ motion }) {
             6
           )}`}</Link>,
         ],
-        ["hash", external.proposalHash],
-        ["voteThreshould", external.voteThreshold],
+        ["Hash", external.proposalHash],
+        ["Threshold", external.voteThreshold],
       ]);
     });
   }
@@ -113,8 +113,8 @@ export default function Business({ motion }) {
             6
           )}`}</Link>,
         ],
-        ["hash", external.proposalHash],
-        ["voteThreshould", external.voteThreshold],
+        ["Hash", external.proposalHash],
+        ["Threshold", external.voteThreshold],
       ]);
     });
   }
