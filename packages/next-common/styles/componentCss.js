@@ -1,5 +1,11 @@
 import { css } from "styled-components";
 
+export const font_family = css`
+  font-family: Inter, -apple-system, "Helvetica Neue", Helvetica, Arial,
+    "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei",
+    "WenQuanYi Micro Hei", sans-serif;
+`;
+
 export const shadow_100 = css`
   box-shadow: 0 6px 7px rgba(30, 33, 52, 0.02),
     0 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
@@ -19,21 +25,21 @@ export const shadow_200_right = css`
 `;
 
 export const p_20_bold = css`
-  font-family: Inter, sans-serif;
+  ${font_family};
   font-weight: 700;
   font-size: 20px;
   line-height: 28px;
 `;
 
 export const p_16_bold = css`
-  font-family: Inter, sans-serif;
+  ${font_family};
   font-weight: 700;
   font-size: 16px;
   line-height: 24px;
 `;
 
 export const p_14_medium = css`
-  font-family: Inter, sans-serif;
+  ${font_family};
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -41,7 +47,7 @@ export const p_14_medium = css`
 `;
 
 export const p_14_normal = css`
-  font-family: Inter, sans-serif;
+  ${font_family};
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -49,7 +55,7 @@ export const p_14_normal = css`
 `;
 
 export const p_12_bold = css`
-  font-family: Inter, sans-serif;
+  ${font_family};
   font-style: normal;
   font-weight: 700;
   font-size: 12px;
@@ -57,7 +63,7 @@ export const p_12_bold = css`
 `;
 
 export const p_12_medium = css`
-  font-family: Inter, sans-serif;
+  ${font_family};
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
@@ -65,7 +71,7 @@ export const p_12_medium = css`
 `;
 
 export const p_12_normal = css`
-  font-family: Inter, sans-serif;
+  ${font_family};
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -90,9 +96,4 @@ export const pretty_scroll_bar = css`
     background: ${(props) => props.theme.grey400Border};
     border-radius: 4px;
   }
-`;
-
-export const font_family_inter = css`
-  font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 `;
