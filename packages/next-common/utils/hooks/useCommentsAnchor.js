@@ -15,7 +15,7 @@ export default function useCommentsAnchor() {
     const height = parseInt(window.location.hash.substr(1));
     setAnchor({
       hasAnchor: !isNaN(height),
-      anchor: anchor || null,
+      anchor: height || null,
     });
   }, [router]);
 
