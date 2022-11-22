@@ -69,15 +69,14 @@ export default withLoginUserRedux(
 
     const breadcrumbItems = [
       {
-        content: "Overview",
-        path: "/",
+        content: "Democracy",
       },
       {
-        content: "Democracy Proposals",
+        content: "Proposals",
         path: "/democracy/proposals",
       },
       {
-        content: `Proposal #${detail?.proposalIndex}`,
+        content: `#${detail?.proposalIndex}`,
       },
     ];
 
