@@ -31,7 +31,7 @@ export default withLoginUserRedux(({ motion, comments }) => {
       path: "/techcomm/proposals",
     },
     {
-      content: hashEllipsis(motion?.hash),
+      content: `#${motion?.motionIndex ?? hashEllipsis(motion?.hash)}`,
     },
   ];
 
