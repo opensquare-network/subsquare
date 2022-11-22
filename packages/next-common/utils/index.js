@@ -30,12 +30,12 @@ export function addressEllipsis(address, start = 4, end = 4) {
   return textEllipsis(address, start, end);
 }
 
-export function hashEllipsis(hash, start = 6, end = 6) {
+export function hashEllipsis(hash = "") {
   if (!hash) {
     return hash;
   }
 
-  return textEllipsis(hash, start, end);
+  return hash.slice(0, 6);
 }
 
 export function timeDurationFromNow(time) {
