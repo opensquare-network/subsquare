@@ -89,7 +89,7 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
       path: "/treasury/child-bounties",
     },
     {
-      content: `Bounty #${detail?.index}`,
+      content: `Child #${detail?.index}`,
     },
   ];
 
