@@ -3,7 +3,7 @@ import NProgress from "nprogress";
 import { Provider } from "react-redux";
 
 import "nprogress/nprogress.css";
-import "../styles/globals.css";
+import "next-common/styles/globals.css";
 import { store } from "next-common/store";
 import "next-common/styles/richTextStyles.scss";
 // import "react-quill/dist/quill.snow.css";
