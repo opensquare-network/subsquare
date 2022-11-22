@@ -25,15 +25,14 @@ export default withLoginUserRedux(({ motion, comments }) => {
 
   const breadcrumbItems = [
     {
-      content: "Overview",
-      path: "/",
+      content: "Council",
     },
     {
-      content: "Council Motions",
+      content: "Motions",
       path: "/council/motions",
     },
     {
-      content: `Motion #${motion?.motionIndex}`,
+      content: `#${motion?.motionIndex}`,
     },
   ];
 
