@@ -15,8 +15,8 @@ import Signer from "../../referenda/popup/signer";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import { sendTx } from "next-common/utils/sendTx";
 import { useChainSettings } from "next-common/context/chain";
-import VoteLock from "../../referenda/popup/voteLock";
-import VoteValue from "../../referenda/popup/voteValue";
+import Conviction from "./conviction";
+import VoteValue from "./voteValue";
 import Target from "./target";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import styled from "styled-components";
@@ -48,7 +48,7 @@ function PopupContent({
   );
 
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
-  const [voteLock, setVoteLock] = useState(0);
+  const [conviction, setConviction] = useState(0);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -95,7 +95,7 @@ function PopupContent({
     const tx = api.tx.convictionVoting.delegate(
       trackId,
       targetAddress,
-      voteLock,
+      conviction,
       bnVoteBalance.toString()
     );
 
@@ -127,18 +127,12 @@ function PopupContent({
         setAddress={setTargetAddress}
       />
       <VoteValue
-        title="Balance"
-        titleTooltip=""
         isLoading={isLoading}
         inputVoteBalance={inputVoteBalance}
         setInputVoteBalance={setInputVoteBalance}
         node={node}
       />
-      <VoteLock
-        title="Conviction"
-        voteLock={voteLock}
-        setVoteLock={setVoteLock}
-      />
+      <Conviction conviction={conviction} setConviction={setConviction} />
       <ButtonWrapper>
         <SecondaryButton isLoading={isLoading} onClick={doDelegate}>
           Confirm

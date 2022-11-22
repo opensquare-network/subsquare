@@ -1,19 +1,11 @@
-import PopupLabel from "next-common/components/popup/label";
-import VoteLockSelect from "./voteLockSelect";
+import ConvictionField from "next-common/components/popup/fields/convictionField";
 
-export default function VoteLock({
-  voteLock,
-  setVoteLock,
-  title = "Vote lock",
-}) {
+export default function VoteLock({ voteLock, setVoteLock }) {
   return (
-    <div>
-      <PopupLabel text={title} />
-      <VoteLockSelect
-        value={voteLock}
-        setValue={setVoteLock}
-        disabled={false}
-      />
-    </div>
+    <ConvictionField
+      conviction={voteLock}
+      setConviction={setVoteLock}
+      title="Vote lock"
+    />
   );
 }
