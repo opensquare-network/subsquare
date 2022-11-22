@@ -8,7 +8,7 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue, emptyFunction } from "next-common/utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import Signer from "./signer";
+import Signer from "next-common/components/popup/fields/signerField";
 import VoteBalance from "./voteBalance";
 import VotingStatus from "./votingStatus";
 import VoteButton from "next-common/components/popup/voteButton";
@@ -104,26 +104,23 @@ function PopupContent({
   return (
     <>
       <Signer
-        api={api}
         isLoading={loadingState !== VoteLoadingEnum.None}
         extensionAccounts={extensionAccounts}
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}
-        votingIsLoading={votingIsLoading}
-        setInputVoteBalance={setInputVoteBalance}
-        votingBalance={votingBalance}
-        symbol={node.voteSymbol ?? node.symbol}
+        isBalanceLoading={votingIsLoading}
+        balance={votingBalance}
+        balanceName="Voting balance"
+        symbol={node.voteSymbol}
       />
       <VoteBalance
         isLoading={loadingState !== VoteLoadingEnum.None}
         inputVoteBalance={inputVoteBalance}
         setInputVoteBalance={setInputVoteBalance}
-        node={node}
       />
       <VotingStatus
         addressVoteIsLoading={addressVoteIsLoading}
         addressVote={addressVote}
-        node={node}
       />
       <VoteButton loadingState={loadingState} doVote={doVote} />
     </>

@@ -10,7 +10,7 @@ import {
   emptyFunction,
   isSameAddress,
 } from "next-common/utils";
-import Signer from "../../referenda/popup/signer";
+import Signer from "next-common/components/popup/fields/signerField";
 
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import { sendTx } from "next-common/utils/sendTx";
@@ -114,9 +114,9 @@ function PopupContent({
   return (
     <>
       <Signer
-        api={api}
-        votingIsLoading={votingIsLoading}
-        votingBalance={votingBalance}
+        isBalanceLoading={votingIsLoading}
+        balance={votingBalance}
+        balanceName="Voting balance"
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}
         isLoading={isLoading}

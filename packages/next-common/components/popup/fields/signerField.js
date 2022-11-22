@@ -5,13 +5,14 @@ import useSetDefaultSigner from "next-common/utils/hooks/useSetDefaultSigner";
 import { useChainSettings } from "next-common/context/chain";
 
 export default function Signer({
-  api,
-  votingIsLoading,
-  votingBalance,
+  isBalanceLoading,
+  balance,
+  balanceName = "Balance",
   selectedAccount,
   setSelectedAccount,
   isLoading,
   extensionAccounts,
+  symbol,
 }) {
   const node = useChainSettings();
   useSetDefaultSigner(extensionAccounts, setSelectedAccount);
@@ -20,13 +21,12 @@ export default function Signer({
     <div>
       <PopupLabelWithBalance
         text="Address"
-        isLoading={votingIsLoading}
-        balanceName="Voting balance"
-        balance={toPrecision(votingBalance ?? 0, node.decimals)}
-        symbol={node.symbol}
+        isLoading={isBalanceLoading}
+        balanceName={balanceName}
+        balance={toPrecision(balance ?? 0, node.decimals)}
+        symbol={symbol || node.symbol}
       />
       <SignerSelect
-        api={api}
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}
         disabled={isLoading}

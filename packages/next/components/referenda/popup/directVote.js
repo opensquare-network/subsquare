@@ -9,20 +9,18 @@ export default function DirectVote({
   setInputVoteBalance,
   voteLock,
   setVoteLock,
-  node,
 }) {
   const delegationsVotes = addressVoteDelegations?.votes;
 
   return (
     <>
       {delegationsVotes ? (
-        <Delegations delegationsVotes={delegationsVotes} node={node} />
+        <Delegations delegationsVotes={delegationsVotes} />
       ) : null}
       <VoteValue
         isLoading={isLoading}
         inputVoteBalance={inputVoteBalance}
         setInputVoteBalance={setInputVoteBalance}
-        node={node}
       />
       <VoteLock voteLock={voteLock} setVoteLock={setVoteLock} />
     </>

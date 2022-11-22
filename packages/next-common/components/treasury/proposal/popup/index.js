@@ -12,7 +12,7 @@ import PopupWithAddress from "../../../popupWithAddress";
 import ProposalBond from "./proposalBond";
 import Beneficiary from "../../common/beneficiary";
 import ProposalValue from "./proposalValue";
-import Signer from "./signer";
+import Signer from "next-common/components/popup/fields/signerField";
 import useAddressBalance from "../../../../utils/hooks/useAddressBalance";
 import { WarningMessage } from "../../../popup/styled";
 import useBond from "../../../../utils/hooks/useBond";
@@ -106,13 +106,12 @@ function PopupContent({
   return (
     <>
       <Signer
-        api={api}
-        signerAccount={signerAccount}
-        setSignerAccount={setSignerAccount}
+        isLoading={loading}
+        selectedAccount={signerAccount}
+        setSelectedAccount={setSignerAccount}
         extensionAccounts={extensionAccounts}
-        node={node}
         balance={balance}
-        balanceIsLoading={balanceIsLoading}
+        isBalanceLoading={balanceIsLoading}
       />
       <Beneficiary
         extensionAccounts={extensionAccounts}

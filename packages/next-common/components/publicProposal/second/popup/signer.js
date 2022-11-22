@@ -18,11 +18,7 @@ const Label = styled.div`
   margin-bottom: 8px;
 `;
 
-export default function Signer({
-  extensionAccounts,
-  api,
-  useAddressVotingBalance,
-}) {
+export default function Signer({ extensionAccounts, useAddressVotingBalance }) {
   const { signerAccount, setSignerAccount } = useContext(StateContext);
 
   useSetDefaultSigner(extensionAccounts, setSignerAccount);
@@ -34,7 +30,6 @@ export default function Signer({
         <AccountBalance useAddressVotingBalance={useAddressVotingBalance} />
       </LabelWrapper>
       <SignerSelect
-        api={api}
         selectedAccount={signerAccount}
         setSelectedAccount={setSignerAccount}
         extensionAccounts={extensionAccounts}

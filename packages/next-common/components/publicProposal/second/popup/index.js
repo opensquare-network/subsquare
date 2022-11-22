@@ -64,7 +64,6 @@ function PopupContent({
   return (
     <>
       <Signer
-        api={api}
         extensionAccounts={extensionAccounts}
         useAddressVotingBalance={useAddressVotingBalance}
       />
