@@ -148,11 +148,10 @@ export default withLoginUserRedux(({ loginUser, detail: tip, comments }) => {
 
   const breadcrumbItems = [
     {
-      content: "Overview",
-      path: "/",
+      content: "Treasury",
     },
     {
-      content: "Treasury Tips",
+      content: "Tips",
       path: "/treasury/tips",
     },
     {
