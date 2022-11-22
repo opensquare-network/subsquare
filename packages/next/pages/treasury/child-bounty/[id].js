@@ -81,15 +81,14 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
 
   const breadcrumbItems = [
     {
-      content: "Overview",
-      path: "/",
+      content: "Treasury",
     },
     {
-      content: "Treasury Child Bounties",
+      content: "Child Bounties",
       path: "/treasury/child-bounties",
     },
     {
-      content: `Child #${detail?.index}`,
+      content: `#${detail?.index}`,
     },
   ];
 
