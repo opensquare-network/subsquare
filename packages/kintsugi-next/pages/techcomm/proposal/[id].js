@@ -24,11 +24,10 @@ export default withLoginUserRedux(({ motion, comments }) => {
 
   const breadcrumbItems = [
     {
-      content: "Overview",
-      path: "/",
+      content: "Tech.Comm.",
     },
     {
-      content: "Tech.Comm. Proposals",
+      content: "Proposals",
       path: "/techcomm/proposals",
     },
     {
