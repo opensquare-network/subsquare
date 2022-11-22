@@ -25,15 +25,14 @@ export default withLoginUserRedux(({ detail, comments }) => {
 
   const breadcrumbItems = [
     {
-      content: "Ovewview",
-      path: "/",
+      content: "Treasury",
     },
     {
-      content: "Treasury Proposals",
+      content: "Proposals",
       path: "/treasury/proposals",
     },
     {
-      content: `Proposal #${detail?.proposalIndex}`,
+      content: `#${detail?.proposalIndex}`,
     },
   ];
 
