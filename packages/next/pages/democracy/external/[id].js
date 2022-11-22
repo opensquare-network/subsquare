@@ -27,11 +27,10 @@ export default withLoginUserRedux(({ detail, comments }) => {
 
   const breadcrumbItems = [
     {
-      content: "Overview",
-      path: "/",
+      content: "Democracy",
     },
     {
-      content: "Democracy Externals",
+      content: "Externals",
       path: "/democracy/externals",
     },
     {
