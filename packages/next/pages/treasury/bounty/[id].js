@@ -60,15 +60,14 @@ export default withLoginUserRedux(({ detail, childBounties, comments }) => {
 
   const breadcrumbItems = [
     {
-      content: "Overview",
-      path: "/",
+      content: "Treasury",
     },
     {
-      content: "Treasury Bounties",
+      content: "Bounties",
       path: "/treasury/bounties",
     },
     {
-      content: `Bounty #${detail?.bountyIndex}`,
+      content: `#${detail?.bountyIndex}`,
     },
   ];
 
