@@ -89,7 +89,12 @@ const DEFAULT_OPTIONS = [
   },
 ];
 
-export default function Select({ value, setValue, options, disabled }) {
+export default function ConvictionSelect({
+  value,
+  setValue,
+  options,
+  disabled,
+}) {
   const [show, setShow] = useState(false);
   const ref = useRef();
 

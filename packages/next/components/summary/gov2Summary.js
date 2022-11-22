@@ -1,12 +1,12 @@
 // bulk copied from `next-common/components/summary/democracySummary`
 
-import Content from "./cardContent";
+import Content from "next-common/components/summary/cardContent";
 import {
   SummaryCard,
   SummaryGreyText,
   SummaryTitle,
   SummaryWrapper,
-} from "./styled";
+} from "next-common/components/summary/styled";
 
 export default function Gov2Summary({ summary }) {
   return (

@@ -2,30 +2,34 @@ import React from "react";
 import { useEffect, useState } from "react";
 import AddressCombo from "../../addressCombo";
 import { encodeAddressToChain } from "../../../services/address";
-import PopupLabel from "../../popup/label";
+import PopupLabel from "../label";
 import { useChain } from "../../../context/chain";
 
-export default function Target({ extensionAccounts, setAddress }) {
+export default function AddressComboField({
+  extensionAccounts,
+  setAddress,
+  title = "Address",
+}) {
   const chain = useChain();
   const accounts = extensionAccounts.map((acc) => ({
     address: acc.address,
     name: acc.meta.name,
   }));
 
-  const [target, setTarget] = useState(
+  const [targetAddress, setTargetAddress] = useState(
     accounts[0]?.address && encodeAddressToChain(accounts[0]?.address, chain)
   );
 
   useEffect(() => {
-    setAddress(target);
-  }, [setAddress, target]);
+    setAddress(targetAddress);
+  }, [setAddress, targetAddress]);
 
   return (
     <div>
-      <PopupLabel text={"Target"} />
+      <PopupLabel text={title} />
       <AddressCombo
-        address={target}
-        setAddress={setTarget}
+        address={targetAddress}
+        setAddress={setTargetAddress}
         accounts={accounts}
       />
     </div>

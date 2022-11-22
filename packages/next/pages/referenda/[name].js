@@ -9,7 +9,7 @@ import {
 import { EmptyList } from "next-common/utils/constants";
 import { parseGov2TrackName } from "next-common/utils/gov2";
 import Gov2Page from "components/gov2/gov2Page";
-import Gov2TrackSummary from "next-common/components/summary/gov2TrackSummary";
+import Gov2TrackSummary from "components/summary/gov2TrackSummary";
 
 export default withLoginUserRedux(
   ({ posts, title, tracks, summary, period }) => {

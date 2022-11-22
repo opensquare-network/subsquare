@@ -1,12 +1,12 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled, { css } from "styled-components";
-import { useUser } from "../../../context/user";
-import useApi from "../../../utils/hooks/useApi";
 import { useRouter } from "next/router";
-import useIsMounted from "../../../utils/hooks/useIsMounted";
-import { getSigner, sendTx } from "../../../utils/sendTx";
-import DelegatePopup from "../../gov2/delegatePopup";
+import { useUser } from "next-common/context/user";
+import useApi from "next-common/utils/hooks/useApi";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { getSigner, sendTx } from "next-common/utils/sendTx";
+import DelegatePopup from "components/gov2/delegatePopup";
 import AddSVG from "./add.svg";
 import RemoveSVG from "./remove.svg";
 

@@ -8,8 +8,6 @@ export default function VoteValue({
 }) {
   return (
     <BalanceField
-      title="Value"
-      titleTooltip="The value is locked for the duration of the vote"
       isLoading={isLoading}
       inputBalance={inputVoteBalance}
       setInputBalance={setInputVoteBalance}
