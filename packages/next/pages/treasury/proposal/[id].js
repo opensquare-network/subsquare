@@ -1,4 +1,3 @@
-import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
@@ -12,6 +11,8 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
+import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
+import Breadcrumb from "next-common/components/_Breadcrumb";
 
 export default withLoginUserRedux(({ detail, comments }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -21,6 +22,20 @@ export default withLoginUserRedux(({ detail, comments }) => {
   });
 
   const desc = getMetaDesc(detail);
+
+  const breadcrumbItems = [
+    {
+      content: "Treasury",
+    },
+    {
+      content: "Proposals",
+      path: "/treasury/proposals",
+    },
+    {
+      content: `#${detail?.proposalIndex}`,
+    },
+  ];
+
   return (
     <PostProvider post={detail} type={detailPageCategory.TREASURY_PROPOSAL}>
       <DetailLayout
@@ -30,7 +45,10 @@ export default withLoginUserRedux(({ detail, comments }) => {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <Back href={`/treasury/proposals`} text="Back to Proposals" />
+        <BreadcrumbWrapper>
+          <Breadcrumb items={breadcrumbItems} />
+        </BreadcrumbWrapper>
+
         <DetailItem
           onReply={focusEditor}
           type={detailPageCategory.TREASURY_PROPOSAL}
