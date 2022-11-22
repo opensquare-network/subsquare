@@ -30,6 +30,14 @@ export function addressEllipsis(address, start = 4, end = 4) {
   return textEllipsis(address, start, end);
 }
 
+export function hashEllipsis(hash, start = 6, end = 6) {
+  if (!hash) {
+    return hash;
+  }
+
+  return textEllipsis(hash, start, end);
+}
+
 export function timeDurationFromNow(time) {
   if (!time) {
     return "Unknown time";
