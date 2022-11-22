@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-key */
 import React, { useCallback, useEffect, useState } from "react";
-import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
@@ -21,6 +20,8 @@ import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
+import Breadcrumb from "next-common/components/_Breadcrumb";
+import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 
 export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   const [detail, setDetail] = useState(ssrDetail);
@@ -54,6 +55,20 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
 
   const desc = getMetaDesc(detail);
 
+  const breadcrumbItems = [
+    {
+      content: "Overview",
+      path: "/",
+    },
+    {
+      content: "Referenda",
+      path: "/democracy/referenda",
+    },
+    {
+      content: `Referendum #${ssrDetail?.referendumIndex}`,
+    },
+  ];
+
   return (
     <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_REFERENDUM}>
       <DetailWithRightLayout
@@ -63,7 +78,10 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <Back href={`/democracy/referenda`} text="Back to Referenda" />
+        <BreadcrumbWrapper>
+          <Breadcrumb items={breadcrumbItems} />
+        </BreadcrumbWrapper>
+
         <DetailItem
           onReply={focusEditor}
           type={detailPageCategory.DEMOCRACY_REFERENDUM}
