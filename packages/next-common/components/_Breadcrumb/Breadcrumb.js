@@ -28,7 +28,7 @@ function Breadcrumb(props) {
     <Wrapper {...restProps} className={`osn-breadcrumb ${className}`}>
       <CrumbsWrapper>
         {items?.map((item, idx) => (
-          <BreadcrumbItem key={idx} {...item}>
+          <BreadcrumbItem separator={separator} path={item.path} key={idx}>
             {item.content}
           </BreadcrumbItem>
         ))}
