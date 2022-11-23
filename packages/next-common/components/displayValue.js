@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Tooltip from "./tooltip";
 import { abbreviateBigNumber, getEffectiveNumbers } from "../utils/viewfuncs";
 
-const NotEqual = styled.span`
+const NotEqual = styled.div`
   ::before {
     content: "≈";
     color: ${(props) => props.theme.textPrimary};
