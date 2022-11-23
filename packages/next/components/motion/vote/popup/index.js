@@ -7,13 +7,21 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import toApiCouncil from "next-common/utils/toApiCouncil";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import Signer from "./signer";
 import CurrentVote from "./currentVote";
 import VoteButton from "next-common/components/popup/voteButton";
 import { sendTx } from "next-common/utils/sendTx";
 import { emptyFunction } from "next-common/utils";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 import { useChain } from "next-common/context/chain";
+import Signer from "next-common/components/popup/fields/signerField";
+import { WarningMessage } from "next-common/components/popup/styled";
+import styled from "styled-components";
+
+const SignerWrapper = styled.div`
+  > :not(:first-child) {
+    margin-top: 8px;
+  }
+`;
 
 function PopupContent({
   extensionAccounts,
@@ -83,12 +91,19 @@ function PopupContent({
 
   return (
     <>
-      <Signer
-        extensionAccounts={extensionAccounts}
-        selectedAccount={selectedAccount}
-        setSelectedAccount={setSelectedAccount}
-        selectedAccountCanVote={selectedAccountCanVote}
-      />
+      <SignerWrapper>
+        <Signer
+          extensionAccounts={extensionAccounts}
+          selectedAccount={selectedAccount}
+          setSelectedAccount={setSelectedAccount}
+          isLoading={loadingState !== VoteLoadingEnum.None}
+        />
+        {!selectedAccountCanVote && (
+          <WarningMessage danger={!selectedAccountCanVote}>
+            Only council members can vote.
+          </WarningMessage>
+        )}
+      </SignerWrapper>
       <CurrentVote currentVote={currentVote} isLoadingVotes={isLoadingVotes} />
       <VoteButton doVote={doVote} loadingState={loadingState} />
     </>
