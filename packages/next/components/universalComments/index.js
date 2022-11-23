@@ -11,8 +11,9 @@ import useCommentsAnchor from "next-common/utils/hooks/useCommentsAnchor";
 
 export default function useUniversalComments({ detail, comments, type }) {
   const chain = useChain();
-  let defaultTabIndex = SubSquare;
-  if (detail.edited) {
+  const { commentsCount, polkassemblyCommentsCount } = detail;
+  let defaultTabIndex = Polkassembly;
+  if (commentsCount > 0 || polkassemblyCommentsCount <= 0) {
     defaultTabIndex = SubSquare;
   } else if (!isNil(detail?.polkassemblyId) && detail?.dataSource === "polkassembly") {
     defaultTabIndex = Polkassembly;
