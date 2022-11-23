@@ -7,15 +7,14 @@ import LinkStatescanDarkIcon from "../../assets/imgs/icons/link-statescan-dark.s
 import LinkStatescanActiveLight from "../../assets/imgs/icons/link-statescan-active-light.svg";
 import LinkStatescanActiveDark from "../../assets/imgs/icons/link-statescan-active-dark.svg";
 import React from "react";
-import { useSelector } from "react-redux";
-import { modeSelector } from "../../store/reducers/settingSlice";
+import { useThemeMode } from "../../context/theme";
 
 const statescanDomainMap = {
   [Chains.development]: "gov2",
 };
 
 export default function Statescan({ indexer, children }) {
-  const mode = useSelector(modeSelector);
+  const mode = useThemeMode();
   const chain = useChain();
   const { hasStatescan } = useChainSettings();
   if (!hasStatescan) {
