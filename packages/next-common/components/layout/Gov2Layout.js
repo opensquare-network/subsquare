@@ -9,7 +9,7 @@ export default function Gov2Layout({ children, seoInfo, tracks }) {
     <BaseLayout
       children={children}
       seoInfo={seoInfo}
-      left={<Menu menu={menu} foldable={false} />}
+      left={<Menu menu={menu} />}
     />
   );
 }
