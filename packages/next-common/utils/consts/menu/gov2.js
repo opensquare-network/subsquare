@@ -43,6 +43,16 @@ const governanceGroupIds = [12, 14, 20, 21];
 const treasuryGroupIds = [11, 30, 31, 32, 33, 34];
 const fellowShipGroupIds = [1, 13];
 
+const gov2GovernanceMenuName = "GOVERNANCE";
+const gov2TreasuryMenuName = "TREASURY";
+const gov2FellowshipMenuName = "FELLOWSHIP";
+
+export const allGov2HomeMenuNames = [
+  gov2GovernanceMenuName,
+  gov2TreasuryMenuName,
+  gov2FellowshipMenuName,
+];
+
 export function resolveGov2TracksMenu(tracks = []) {
   const totalActiveCount = tracks.reduce((count, item) => {
     count += item.activeCount || 0;
@@ -62,17 +72,17 @@ export function resolveGov2TracksMenu(tracks = []) {
   };
 
   const gov2GovernanceMenu = {
-    name: "GOVERNANCE",
+    name: gov2GovernanceMenuName,
     items: [],
   };
 
   const gov2TreasuryMenu = {
-    name: "TREASURY",
+    name: gov2TreasuryMenuName,
     items: [],
   };
 
   const gov2FellowshipMenu = {
-    name: "FELLOWSHIP",
+    name: gov2FellowshipMenuName,
     items: [],
   };
 
