@@ -1,7 +1,7 @@
 import * as React from "react";
 import Identicon from "@osn/polkadot-react-identicon";
 import styled from "styled-components";
-import { useTheme } from "../context/theme";
+import { useThemeSetting } from "../context/theme";
 
 const StyledIdenticon = styled(Identicon)`
   circle:first-child {
@@ -10,7 +10,7 @@ const StyledIdenticon = styled(Identicon)`
 `;
 
 export default function Avatar({ address, size = 24 }) {
-  const themeObj = useTheme();
+  const themeObj = useThemeSetting();
   const theme = "polkadot";
   return (
     <StyledIdenticon

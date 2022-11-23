@@ -2,7 +2,7 @@ import React from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { useRouter } from "next/router";
 import NextHead from "next-common/components/nextHead";
-import { useTheme } from "../../context/theme";
+import { useThemeSetting } from "../../context/theme";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -58,7 +58,7 @@ const P = styled.p`
 
 const Page404 = function Custom404() {
   const router = useRouter();
-  const theme = useTheme();
+  const theme = useThemeSetting();
   return (
     <ThemeProvider theme={theme}>
       <Wrapper>

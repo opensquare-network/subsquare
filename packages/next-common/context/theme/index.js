@@ -21,7 +21,7 @@ export function useThemeMode() {
   return themeMode;
 }
 
-export function useTheme() {
+export function useThemeSetting() {
   const themeMode = useThemeMode();
   return themeMode === "dark" ? dark : light;
 }

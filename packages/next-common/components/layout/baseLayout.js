@@ -22,7 +22,7 @@ import Content from "./content";
 import Toast from "../toast";
 import useUpdateNodesDelay from "../../utils/hooks/useUpdateNodesDelay";
 import { useChain } from "../../context/chain";
-import { useTheme } from "../../context/theme";
+import { useThemeSetting } from "../../context/theme";
 
 const Wrapper = styled.div`
   display: flex;
@@ -49,7 +49,7 @@ export default function BaseLayout({ left, children, seoInfo }) {
 
   const dispatch = useDispatch();
   const isMounted = useIsMountedBool();
-  const theme = useTheme();
+  const theme = useThemeSetting();
 
   useUpdateNodesDelay();
 
