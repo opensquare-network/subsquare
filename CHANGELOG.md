@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.4.6
+
+- Support gov 2.0 track delegation.
+- Turn on gov 2.0 for kusama.
+- Add breadcrumb various proposals.
+- Sync polkassembly content for gov 2.0 proposals.
+- Improve subsquare/polkassembly default comments tab choice.
+- Improve child bounty value display.
+- Fix page width for some pages including empty overview page, settings page, etc.
+
 # 2.4.5
 
 - Remove @polkadot/api patch for account nonce.
