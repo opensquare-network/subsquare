@@ -1,9 +1,9 @@
 import Menu from "../menu";
 import BaseLayout from "./baseLayout";
-import { composeGov2TracksMenu } from "../../utils/gov2";
+import { resolveGov2TracksMenu } from "../../utils/consts/menu/gov2";
 
 export default function Gov2Layout({ children, seoInfo, tracks }) {
-  const menu = composeGov2TracksMenu(tracks);
+  const menu = resolveGov2TracksMenu(tracks);
 
   return (
     <BaseLayout
