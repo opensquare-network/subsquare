@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import useApi from "../../utils/hooks/useApi";
 import {
   useBlockTime,
@@ -8,8 +8,6 @@ import {
   useSubscribeChainHead,
 } from "../../utils/hooks";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
-import dark from "../styled/theme/dark";
-import light from "../styled/theme/light";
 import {
   setBlockTime,
   setLatestHeight,
@@ -22,9 +20,9 @@ import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import Header from "../header";
 import Content from "./content";
 import Toast from "../toast";
-import { modeSelector } from "../../store/reducers/settingSlice";
 import useUpdateNodesDelay from "../../utils/hooks/useUpdateNodesDelay";
 import { useChain } from "../../context/chain";
+import { useThemeSetting } from "../../context/theme";
 
 const Wrapper = styled.div`
   display: flex;
@@ -51,8 +49,7 @@ export default function BaseLayout({ left, children, seoInfo }) {
 
   const dispatch = useDispatch();
   const isMounted = useIsMountedBool();
-  const mode = useSelector(modeSelector);
-  const theme = mode === "dark" ? dark : light;
+  const theme = useThemeSetting();
 
   useUpdateNodesDelay();
 
