@@ -26,6 +26,7 @@ import Gov2TrackTag from "../components/gov2/trackTag";
 import DecisionCountdown from "../components/gov2/postList/decisionCountdown";
 import { gov2State } from "../utils/consts/state";
 import ConfirmCountdown from "./gov2/postList/confirmCountdown";
+import ValueDisplay from "./displayValue";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -119,15 +120,17 @@ const FooterWrapper = styled(Flex)`
 `;
 
 const TitleWrapper = styled.div`
+  flex: 1;
   overflow: hidden;
   color: ${(props) => props.theme.textPrimary};
 `;
 
-const TitleExtraValue = styled.span`
+const TitleExtraValue = styled(Flex)`
   color: ${(props) => props.theme.textPrimary};
-`;
-const TitleExtraSymbol = styled.span`
-  color: ${(props) => props.theme.textTertiary};
+
+  .value-display-symbol {
+    color: ${(props) => props.theme.textTertiary};
+  }
 `;
 const TitleExtra = styled(Flex)`
   align-items: flex-start;
@@ -145,6 +148,7 @@ const TitleExtra = styled(Flex)`
 const HeadWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  gap: 8px;
 
   ${smcss(css`
     display: block;
@@ -231,8 +235,10 @@ export default function Post({ data, href, type }) {
           {!isNil(data.value) && (
             <TitleExtra>
               <TitleExtraValue>
-                {bigNumber2Locale(toPrecision(data.value, decimals))}{" "}
-                <TitleExtraSymbol>{symbol}</TitleExtraSymbol>
+                <ValueDisplay
+                  value={toPrecision(data.value, decimals)}
+                  symbol={symbol}
+                />
               </TitleExtraValue>
             </TitleExtra>
           )}

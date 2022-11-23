@@ -9,7 +9,7 @@ const Section = styled.div`
   }
 `;
 
-function MultiKVList({ data, title, showFold = true }) {
+function MultiKVList({ data = [], title, showFold = true }) {
   if (!data || data?.length === 0) {
     return null;
   }

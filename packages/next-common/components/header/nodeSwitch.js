@@ -8,7 +8,6 @@ import {
   nodesSelector,
   setCurrentNode,
 } from "../../store/reducers/nodeSlice";
-import getChainSettings from "../../utils/consts/settings";
 import Caret from "../icons/caret";
 import SignalDefault from "../../assets/imgs/icons/signal-default.svg";
 import signalMedium from "../../assets/imgs/icons/signal-medium.png";
@@ -19,8 +18,8 @@ import darkSignalSlow from "../../assets/imgs/icons/dark-signal-slow.png";
 import darkSignalFast from "../../assets/imgs/icons/dark-signal-fast.png";
 import light from "../styled/theme/light";
 import dark from "../styled/theme/dark";
-import { modeSelector } from "../../store/reducers/settingSlice";
 import { useChainSettings } from "../../context/chain";
+import { useThemeMode } from "../../context/theme";
 
 const SignalDefaultIcon = styled(SignalDefault)`
   path {
@@ -142,7 +141,7 @@ export default function NodeSwitch({ small }) {
     chainSettings.endpoints[0]
   );
   const dispatch = useDispatch();
-  const mode = useSelector(modeSelector);
+  const mode = useThemeMode();
 
   useOnClickOutside(ref, () => setShow(false));
 

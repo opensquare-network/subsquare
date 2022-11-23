@@ -1,6 +1,9 @@
 /* eslint-disable react/jsx-key */
 import { useEffect, useRef, useState } from "react";
-import SourceTabs, { Polkassembly, SubSquare, } from "next-common/components/comment/sourceTabs";
+import SourceTabs, {
+  Polkassembly,
+  SubSquare,
+} from "next-common/components/comment/sourceTabs";
 import useCommentComponent from "next-common/components/useCommentComponent";
 import PolkassemblyComments from "./polkassemblyComments";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
@@ -11,10 +14,14 @@ import useCommentsAnchor from "next-common/utils/hooks/useCommentsAnchor";
 
 export default function useUniversalComments({ detail, comments, type }) {
   const chain = useChain();
-  let defaultTabIndex = SubSquare;
-  if (detail.edited) {
+  const { commentsCount, polkassemblyCommentsCount } = detail;
+  let defaultTabIndex = Polkassembly;
+  if (commentsCount > 0 || polkassemblyCommentsCount <= 0) {
     defaultTabIndex = SubSquare;
-  } else if (!isNil(detail?.polkassemblyId) && detail?.dataSource === "polkassembly") {
+  } else if (
+    !isNil(detail?.polkassemblyId) &&
+    detail?.dataSource === "polkassembly"
+  ) {
     defaultTabIndex = Polkassembly;
   }
   const { hasAnchor } = useCommentsAnchor();
@@ -25,9 +32,9 @@ export default function useUniversalComments({ detail, comments, type }) {
 
   useEffect(() => {
     if (hasAnchor) {
-      setTabIndex(SubSquare)
+      setTabIndex(SubSquare);
     }
-  }, [hasAnchor])
+  }, [hasAnchor]);
 
   const isDotsama = [Chains.kusama, Chains.polkadot].includes(chain);
 

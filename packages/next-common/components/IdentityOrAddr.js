@@ -5,9 +5,6 @@ import { encodeAddressToChain } from "../services/address";
 import Identity from "./Identity";
 import styled from "styled-components";
 import { addressEllipsis } from "../utils";
-import { getInitMode } from "../store/reducers/settingSlice";
-import dark from "./styled/theme/dark";
-import light from "./styled/theme/light";
 import { isAddress } from "../utils/viewfuncs";
 
 const NameWrapper = styled.div`
@@ -27,8 +24,6 @@ const MentionBox = styled.a`
 
 function IdentityOrAddr({ address, network }) {
   const [identity, setIdentity] = useState(null);
-  const mode = getInitMode();
-  const theme = mode === "dark" ? dark : light;
 
   useEffect(() => {
     setIdentity(null);
@@ -52,7 +47,7 @@ function IdentityOrAddr({ address, network }) {
   }
 
   return (
-    <NameWrapper theme={theme}>
+    <NameWrapper>
       {identity && identity?.info?.status !== "NO_ID" ? (
         <MentionBox href={`/user/${address}`}>
           <span>@</span>

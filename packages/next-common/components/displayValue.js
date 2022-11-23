@@ -16,13 +16,16 @@ export default function ValueDisplay({ value, symbol, noWrap }) {
     return `${value} ${symbol}`;
   }
 
+  const symbolContent = <span className="value-display-symbol"> {symbol}</span>;
+
   if (Number(value) >= 1000000 || getEffectiveNumbers(value)?.length >= 11) {
     const abbreviated = abbreviateBigNumber(value, 2);
     let display = `${abbreviated} ${symbol}`;
     if (getEffectiveNumbers(abbreviated) !== getEffectiveNumbers(value)) {
       display = (
         <NotEqual>
-          <span>{abbreviated}</span> <span>{symbol}</span>
+          <span>{abbreviated}</span>
+          {symbolContent}
         </NotEqual>
       );
     }
@@ -37,8 +40,8 @@ export default function ValueDisplay({ value, symbol, noWrap }) {
         <NotEqual>
           <span>
             {int}.{shortDecimal}
-          </span>{" "}
-          <span>{symbol}</span>
+          </span>
+          {symbolContent}
         </NotEqual>
       </Tooltip>
     );
@@ -47,8 +50,7 @@ export default function ValueDisplay({ value, symbol, noWrap }) {
   return (
     <div>
       <span>{value} </span>
-      <span style={{ width: 4 }} />
-      <span>{symbol}</span>
+      {symbolContent}
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import React from "react";
 import Input from "next-common/components/input";
 import PopupLabel from "next-common/components/popup/label";
 import { useChainSettings } from "../../../context/chain";

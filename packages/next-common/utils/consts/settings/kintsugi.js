@@ -6,25 +6,21 @@ import MenuGroups from "./menuGroups";
 const DEFAULT_KINTSUGI_NODES =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true"
     ? [
-      {
-        name: "Kintsugi Test Endpoint",
-        url: "wss://api-dev-kintsugi.interlay.io/parachain",
-      },
-    ]
+        {
+          name: "Kintsugi Test Endpoint",
+          url: "wss://api-dev-kintsugi.interlay.io/parachain",
+        },
+      ]
     : [
-      {
-        name: "OnFinality",
-        url: "wss://kintsugi.api.onfinality.io/public-ws",
-      },
-      {
-        name: "Kintsugi Labs",
-        url: "wss://api-kusama.interlay.io/parachain",
-      },
-      {
-        name: "Dwellir",
-        url: "wss://kintsugi-rpc.dwellir.com",
-      },
-    ];
+        {
+          name: "OnFinality",
+          url: "wss://kintsugi.api.onfinality.io/public-ws",
+        },
+        {
+          name: "Kintsugi Labs",
+          url: "wss://api-kusama.interlay.io/parachain",
+        },
+      ];
 
 const kintsugi = {
   value: "kintsugi",

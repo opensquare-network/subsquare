@@ -20,13 +20,17 @@ const DEFAULT_ACALA_NODES = [
     name: "Acala Foundation 1",
     url: "wss://acala-rpc-1.aca-api.network/",
   },
-  {
-    name: "Acala Foundation 2",
-    url: "wss://acala-rpc-2.aca-api.network/ws",
-  },
+  // {
+  //   name: "Acala Foundation 2",
+  //   url: "wss://acala-rpc-2.aca-api.network/ws",
+  // },
   {
     name: "Acala Foundation 3",
     url: "wss://acala-rpc-3.aca-api.network/ws",
+  },
+  {
+    name: "Automata 1RPC",
+    url: "wss://1rpc.io/aca",
   },
 ];
 

@@ -1,9 +1,10 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import Background from "../../styled/backgroundShade";
 import useOnClickOutside from "../../../utils/hooks/useOnClickOutside";
 import ClosePanelIcon from "../../../assets/imgs/icons/close-panel.svg";
 import { emptyFunction } from "../../../utils";
+import { useScrollLock } from "../../../utils/hooks/useScrollLock";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -13,11 +14,11 @@ const Wrapper = styled.div`
   width: 400px;
   padding: 24px;
   transform: translate(-50%, -50%);
-  background: ${ (props) => props.theme.neutral };
-  border: 1px solid ${ (props) => props.theme.grey200Border };
-  box-shadow: ${ (props) => props.theme.shadow200 };
+  background: ${(props) => props.theme.neutral};
+  border: 1px solid ${(props) => props.theme.grey200Border};
+  box-shadow: ${(props) => props.theme.shadow200};
   border-radius: 6px;
-  color: ${ (props) => props.theme.textPrimary };
+  color: ${(props) => props.theme.textPrimary};
 
   > :not(:first-child) {
     margin-top: 16px;
@@ -39,18 +40,27 @@ const TopWrapper = styled.div`
   }
 `;
 
-export default function Popup({ children, title, onClose = emptyFunction, }) {
+export default function Popup({ children, title, onClose = emptyFunction }) {
   const ref = useRef();
   useOnClickOutside(ref, () => onClose());
 
-  return <Background>
-    <Wrapper ref={ref}>
-      <TopWrapper>
-        <h3>{title}</h3>
-        <ClosePanelIcon onClick={onClose} />
-      </TopWrapper>
-      { children }
-    </Wrapper>
-  </Background>
+  const [, setIsLocked] = useScrollLock();
 
+  useEffect(() => {
+    setIsLocked(true);
+
+    return () => setIsLocked(false);
+  });
+
+  return (
+    <Background>
+      <Wrapper ref={ref}>
+        <TopWrapper>
+          <h3>{title}</h3>
+          <ClosePanelIcon onClick={onClose} />
+        </TopWrapper>
+        {children}
+      </Wrapper>
+    </Background>
+  );
 }

@@ -9,16 +9,8 @@ const DEFAULT_BIFROST_NODES = [
     url: "wss://bifrost-parachain.api.onfinality.io/public-ws",
   },
   {
-    name: "Liebi 0",
+    name: "Liebi",
     url: "wss://bifrost-rpc.liebi.com/ws",
-  },
-  {
-    name: "Liebi 1",
-    url: "wss://us.bifrost-rpc.liebi.com/ws",
-  },
-  {
-    name: "Liebi 2",
-    url: "wss://us.bifrost-rpc.liebi.com/ws",
   },
   {
     name: "Dwellir",

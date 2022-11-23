@@ -6,8 +6,7 @@ import styled, { withTheme } from "styled-components";
 import Flex from "../styled/flex";
 import Sun from "../../assets/imgs/icons/sun.svg";
 import Moon from "../../assets/imgs/icons/moon.svg";
-import { useDispatch } from "react-redux";
-import { toggleMode } from "../../store/reducers/settingSlice";
+import { useToggleThemeMode } from "../../context/theme";
 
 const FlexWrapper = styled(Flex)`
   gap: 8px;
@@ -45,8 +44,7 @@ const ThemeToggle = styled.div`
 `;
 
 function Contacts({ theme }) {
-  const dispatch = useDispatch();
-  const toggle = () => dispatch(toggleMode());
+  const toggle = useToggleThemeMode();
 
   return (
     <FlexWrapper>

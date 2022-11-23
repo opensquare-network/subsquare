@@ -5,14 +5,6 @@ import MenuGroups from "./menuGroups";
 
 export const DEFAULT_KARURA_NODES = [
   {
-    name: "OnFinality",
-    url: "wss://karura.api.onfinality.io/public-ws",
-  },
-  {
-    name: "Polkawallet",
-    url: "wss://karura.polkawallet.io",
-  },
-  {
     name: "Acala Foundation 0",
     url: "wss://karura-rpc-0.aca-api.network",
   },
@@ -27,6 +19,18 @@ export const DEFAULT_KARURA_NODES = [
   {
     name: "Acala Foundation 3",
     url: "wss://karura-rpc-3.aca-api.network/ws",
+  },
+  {
+    name: "Polkawallet",
+    url: "wss://karura.polkawallet.io",
+  },
+  {
+    name: "OnFinality",
+    url: "wss://karura.api.onfinality.io/public-ws",
+  },
+  {
+    name: "Dwellir",
+    url: "wss://karura-rpc.dwellir.com",
   },
 ];
 
