@@ -16,7 +16,9 @@ const Right = styled(Flex)`
   }
 `;
 
-const NetworkWrapper = styled.div``;
+const NetworkWrapper = styled.div`
+  width: 220px;
+`;
 
 function HeaderRight() {
   const node = useChainSettings();
