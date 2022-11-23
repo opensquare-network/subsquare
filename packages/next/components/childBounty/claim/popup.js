@@ -1,19 +1,18 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { emptyFunction, isSameAddress, toPrecision } from "next-common/utils";
+import { emptyFunction, isSameAddress } from "next-common/utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
-import SignerSelect from "next-common/components/signerSelect";
-import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
 import { WarningMessage } from "next-common/components/popup/styled";
 import { sendTx } from "next-common/utils/sendTx";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import useSetDefaultSigner from "next-common/utils/hooks/useSetDefaultSigner";
-import { useChainSettings } from "next-common/context/chain";
+import Signer from "next-common/components/popup/fields/signerField";
+import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -33,30 +32,14 @@ function PopupContent({
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const [selectedAccount, setSelectedAccount] = useState(null);
-  const [balance, setBalance] = useState();
   const [claiming, setClaiming] = useState(false);
-  const { decimals, symbol } = useChainSettings();
+  const api = useApi();
+  const [balance, isBalanceLoading] = useAddressBalance(
+    api,
+    selectedAccount?.address
+  );
 
   useSetDefaultSigner(extensionAccounts, setSelectedAccount);
-
-  const api = useApi();
-
-  useEffect(() => {
-    if (balanceMap.has(selectedAccount?.address)) {
-      setBalance(balanceMap.get(selectedAccount?.address));
-      return;
-    }
-    setBalance();
-    if (api && selectedAccount) {
-      api.query.system.account(selectedAccount.address).then((result) => {
-        if (isMounted.current) {
-          const free = toPrecision(result.data.free, decimals);
-          setBalance(free);
-          balanceMap.set(selectedAccount.address, free);
-        }
-      });
-    }
-  }, [api, selectedAccount, decimals, isMounted]);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -97,21 +80,14 @@ function PopupContent({
 
   return (
     <>
-      <div>
-        <PopupLabelWithBalance
-          text="Address"
-          balanceName={"Balance"}
-          balance={balance}
-          isLoading={!balance}
-          symbol={symbol}
-        />
-        <SignerSelect
-          api={api}
-          selectedAccount={selectedAccount}
-          setSelectedAccount={setSelectedAccount}
-          extensionAccounts={extensionAccounts}
-        />
-      </div>
+      <Signer
+        balance={balance}
+        isBalanceLoading={isBalanceLoading}
+        isLoading={!balance}
+        selectedAccount={selectedAccount}
+        setSelectedAccount={setSelectedAccount}
+        extensionAccounts={extensionAccounts}
+      />
       {warningContent}
       <ButtonWrapper>
         <SecondaryButton isLoading={claiming} onClick={doClaim}>
