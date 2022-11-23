@@ -51,7 +51,6 @@ const gov2ReferendaMenu = {
 
 const gov2FellowshipMenu = {
   name: "FELLOWSHIP",
-  tip: "Upcoming",
   items: [],
 };
 
