@@ -237,7 +237,7 @@ export default function Post({ data, href, type }) {
               <TitleExtraValue>
                 <ValueDisplay
                   value={toPrecision(data.value, decimals)}
-                  symbol="KSM"
+                  symbol={symbol}
                 />
               </TitleExtraValue>
             </TitleExtra>
