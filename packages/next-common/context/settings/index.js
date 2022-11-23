@@ -3,6 +3,7 @@ import { emptyFunction } from "../../utils";
 import { setCookie } from "../../utils/viewfuncs/cookies";
 import { CACHE_KEY } from "../../utils/constants";
 import { allHomeMenuNames } from "../../utils/consts/menu";
+import { allGov2HomeMenuNames } from "../../utils/consts/menu/gov2";
 
 export const FOLD_ITEMS_UPDATE_ACTION = "UPDATE";
 
@@ -15,7 +16,9 @@ export default function SettingsProvider({ homeFoldItems = "", children }) {
     items = homeFoldItems
       .split("|")
       .map(decodeURIComponent)
-      .filter((item) => allHomeMenuNames.includes(item));
+      .filter((item) =>
+        [...allHomeMenuNames, ...allGov2HomeMenuNames].includes(item)
+      );
   } catch (e) {
     items = [];
   }
