@@ -3,7 +3,7 @@ import { isKeyRegisteredUser, isSameAddress } from "..";
 import { CACHE_KEY } from "../constants";
 import { useUser } from "../../context/user";
 
-export default function useSetDefaultSigner(
+export default function useSetSignerAccount(
   extensionAccounts,
   setSignerAccount
 ) {

@@ -10,24 +10,18 @@ const Wrapper = styled.div`
   padding: 12px 16px;
   gap: 16px;
 
-  background: #f6f7fa;
+  background: ${(p) => p.theme.grey100Bg};
   border-radius: 4px;
 `;
 
-export default function ConnectedSigner({ extensionAccounts }) {
-  const loginUser = useUser();
-  const account = extensionAccounts.find((item) =>
-    isSameAddress(item.address, loginUser?.address)
-  );
-
-  const accountData = {
-    address: account.address,
-    name: account.meta.name,
-  };
-
+export default function ConnectedSigner({ selectedAccount }) {
   return (
     <Wrapper>
-      {account ? <Account account={accountData} /> : <EmptyAccount />}
+      {selectedAccount ? (
+        <Account account={selectedAccount} />
+      ) : (
+        <EmptyAccount />
+      )}
     </Wrapper>
   );
 }

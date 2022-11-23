@@ -10,7 +10,7 @@ import PopupWithAddress from "next-common/components/popupWithAddress";
 import { WarningMessage } from "next-common/components/popup/styled";
 import { sendTx } from "next-common/utils/sendTx";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import useSetDefaultSigner from "next-common/utils/hooks/useSetDefaultSigner";
+import useSetSignerAccount from "next-common/utils/hooks/useSetSignerAccount";
 import Signer from "next-common/components/popup/fields/signerField";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 
@@ -39,7 +39,7 @@ function PopupContent({
     selectedAccount?.address
   );
 
-  useSetDefaultSigner(extensionAccounts, setSelectedAccount);
+  useSetSignerAccount(extensionAccounts, setSelectedAccount);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 

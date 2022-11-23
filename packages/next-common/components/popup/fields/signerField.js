@@ -1,7 +1,8 @@
+import React from "react";
 import isNil from "lodash.isnil";
 import { toPrecision } from "next-common/utils";
 import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
-import useSetDefaultSigner from "next-common/utils/hooks/useSetDefaultSigner";
+import useSetSignerAccount from "next-common/utils/hooks/useSetSignerAccount";
 import { useChainSettings } from "next-common/context/chain";
 import PopupLabel from "../label";
 import ConnectedSigner from "../../connectedSigner";
@@ -12,12 +13,11 @@ export default function Signer({
   balanceName = "Balance",
   selectedAccount,
   setSelectedAccount,
-  isLoading,
   extensionAccounts,
   symbol,
 }) {
   const node = useChainSettings();
-  useSetDefaultSigner(extensionAccounts, setSelectedAccount);
+  useSetSignerAccount(extensionAccounts, setSelectedAccount);
   const noBalance = isNil(balance) && isNil(isBalanceLoading);
 
   return (
@@ -33,7 +33,7 @@ export default function Signer({
           symbol={symbol || node.symbol}
         />
       )}
-      <ConnectedSigner extensionAccounts={extensionAccounts} />
+      <ConnectedSigner selectedAccount={selectedAccount} />
     </div>
   );
 }

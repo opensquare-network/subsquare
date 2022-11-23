@@ -18,7 +18,7 @@ import PopupLabel from "next-common/components/popup/label";
 import { WarningMessage } from "next-common/components/popup/styled";
 import { sendTx } from "next-common/utils/sendTx";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import useSetDefaultSigner from "next-common/utils/hooks/useSetDefaultSigner";
+import useSetSignerAccount from "next-common/utils/hooks/useSetSignerAccount";
 import { encodeAddressToChain } from "next-common/services/address";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import Signer from "next-common/components/popup/fields/signerField";
@@ -56,7 +56,7 @@ function PopupContent({
     setSelectedAddress(encodeAddressToChain(selectedAccount?.address, chain));
   }, [selectedAccount, chain]);
 
-  useSetDefaultSigner(extensionAccounts, setSelectedAccount);
+  useSetSignerAccount(extensionAccounts, setSelectedAccount);
   const selectedAccountIsTipper = isAddressInGroup(
     selectedAddress,
     councilTippers
