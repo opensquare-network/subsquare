@@ -1,7 +1,5 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
-import useDeposit from "./useDeposit";
-import { StateContext } from "./stateContext";
 import SecondaryButton from "../../../buttons/secondaryButton";
 
 const ButtonWrapper = styled.div`
@@ -9,10 +7,11 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-export default function SubmitButton({ onClick, depositRequired }) {
-  const { balanceInsufficient } = useDeposit(depositRequired);
-  const { isSubmitting } = useContext(StateContext);
-
+export default function SubmitButton({
+  onClick,
+  balanceInsufficient,
+  isSubmitting,
+}) {
   return (
     <ButtonWrapper>
       {balanceInsufficient ? (
