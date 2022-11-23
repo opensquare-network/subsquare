@@ -3,7 +3,10 @@ import { emptyFunction } from "../../utils";
 import { setCookie } from "../../utils/viewfuncs/cookies";
 import { CACHE_KEY } from "../../utils/constants";
 import { allHomeMenuNames } from "../../utils/consts/menu";
-import { allGov2HomeMenuNames } from "../../utils/consts/menu/gov2";
+import {
+  allGov2HomeMenuNames,
+  gov2FoldableMenuPrefix,
+} from "../../utils/consts/menu/gov2";
 
 export const FOLD_ITEMS_UPDATE_ACTION = "UPDATE";
 
@@ -17,7 +20,10 @@ export default function SettingsProvider({ homeFoldItems = "", children }) {
       .split("|")
       .map(decodeURIComponent)
       .filter((item) =>
-        [...allHomeMenuNames, ...allGov2HomeMenuNames].includes(item)
+        [
+          ...allHomeMenuNames,
+          ...allGov2HomeMenuNames.map((name) => gov2FoldableMenuPrefix + name),
+        ].includes(item)
       );
   } catch (e) {
     items = [];
