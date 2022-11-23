@@ -38,10 +38,10 @@ const gov2BackMenu = {
   ],
 };
 
-const referendaGroupIds = [0, 10, 15];
-const governanceGroupIds = [12, 14, 20, 21];
-const treasuryGroupIds = [11, 30, 31, 32, 33, 34];
-const fellowShipGroupIds = [1, 13];
+const gov2ReferendaGroupIds = [0, 10, 15];
+const gov2GovernanceGroupIds = [12, 14, 20, 21];
+const gov2TreasuryGroupIds = [11, 30, 31, 32, 33, 34];
+const gov2FellowShipGroupIds = [1, 13];
 
 const gov2GovernanceMenuName = "GOVERNANCE";
 const gov2TreasuryMenuName = "TREASURY";
@@ -102,13 +102,13 @@ export function resolveGov2TracksMenu(tracks = []) {
   for (let idx = 0; idx < tracks.length; idx++) {
     const track = tracks[idx];
 
-    if (assert(referendaGroupIds, track.id)) {
+    if (assert(gov2ReferendaGroupIds, track.id)) {
       gov2ReferendaMenu.items.push(resolveTrackItem(track));
-    } else if (assert(governanceGroupIds, track.id)) {
+    } else if (assert(gov2GovernanceGroupIds, track.id)) {
       gov2GovernanceMenu.items.push(resolveTrackItem(track));
-    } else if (assert(treasuryGroupIds, track.id)) {
+    } else if (assert(gov2TreasuryGroupIds, track.id)) {
       gov2TreasuryMenu.items.push(resolveTrackItem(track));
-    } else if (assert(fellowShipGroupIds, track.id)) {
+    } else if (assert(gov2FellowShipGroupIds, track.id)) {
       gov2FellowshipMenu.items.push(resolveTrackItem(track));
     }
   }
