@@ -47,7 +47,7 @@ const gov2GovernanceMenuName = "GOVERNANCE";
 const gov2TreasuryMenuName = "TREASURY";
 const gov2FellowshipMenuName = "FELLOWSHIP";
 
-export const gov2FoldableMenuPrefix = "GOV2_";
+export const gov2MenuFoldablePrefix = "GOV2_";
 
 export const allGov2HomeMenuNames = [
   gov2GovernanceMenuName,

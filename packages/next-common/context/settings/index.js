@@ -5,7 +5,7 @@ import { CACHE_KEY } from "../../utils/constants";
 import { allHomeMenuNames } from "../../utils/consts/menu";
 import {
   allGov2HomeMenuNames,
-  gov2FoldableMenuPrefix,
+  gov2MenuFoldablePrefix,
 } from "../../utils/consts/menu/gov2";
 
 export const FOLD_ITEMS_UPDATE_ACTION = "UPDATE";
@@ -22,7 +22,7 @@ export default function SettingsProvider({ homeFoldItems = "", children }) {
       .filter((item) =>
         [
           ...allHomeMenuNames,
-          ...allGov2HomeMenuNames.map((name) => gov2FoldableMenuPrefix + name),
+          ...allGov2HomeMenuNames.map((name) => gov2MenuFoldablePrefix + name),
         ].includes(item)
       );
   } catch (e) {
