@@ -1,9 +1,10 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import Background from "../../styled/backgroundShade";
 import useOnClickOutside from "../../../utils/hooks/useOnClickOutside";
 import ClosePanelIcon from "../../../assets/imgs/icons/close-panel.svg";
 import { emptyFunction } from "../../../utils";
+import { useScrollLock } from "../../../utils/hooks/useScrollLock";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -42,6 +43,14 @@ const TopWrapper = styled.div`
 export default function Popup({ children, title, onClose = emptyFunction, }) {
   const ref = useRef();
   useOnClickOutside(ref, () => onClose());
+
+  const [, setIsLocked] = useScrollLock();
+
+  useEffect(() => {
+    setIsLocked(true);
+
+    return () => setIsLocked(false);
+  });
 
   return <Background>
     <Wrapper ref={ref}>
