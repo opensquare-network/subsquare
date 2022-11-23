@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Tooltip from "./tooltip";
 import { abbreviateBigNumber, getEffectiveNumbers } from "../utils/viewfuncs";
 
-const NotEqual = styled.span`
+const NotEqual = styled.div`
   ::before {
     content: "≈";
     color: ${(props) => props.theme.textPrimary};
@@ -16,6 +16,8 @@ export default function ValueDisplay({ value, symbol, noWrap }) {
     return `${value} ${symbol}`;
   }
 
+  const symbolContent = <span className="value-display-symbol"> {symbol}</span>;
+
   if (Number(value) >= 1000000 || getEffectiveNumbers(value)?.length >= 11) {
     const abbreviated = abbreviateBigNumber(value, 2);
     let display = `${abbreviated} ${symbol}`;
@@ -23,7 +25,7 @@ export default function ValueDisplay({ value, symbol, noWrap }) {
       display = (
         <NotEqual>
           <span>{abbreviated}</span>
-          {symbol && <span> {symbol}</span>}
+          {symbolContent}
         </NotEqual>
       );
     }
@@ -39,16 +41,16 @@ export default function ValueDisplay({ value, symbol, noWrap }) {
           <span>
             {int}.{shortDecimal}
           </span>
-          {symbol && <span> {symbol}</span>}
+          {symbolContent}
         </NotEqual>
       </Tooltip>
     );
   }
 
   return (
-    <Tooltip content="">
-      <span>{value}</span>
-      {symbol && <span> {symbol}</span>}
-    </Tooltip>
+    <div>
+      <span>{value} </span>
+      {symbolContent}
+    </div>
   );
 }

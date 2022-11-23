@@ -125,11 +125,12 @@ const TitleWrapper = styled.div`
   color: ${(props) => props.theme.textPrimary};
 `;
 
-const TitleExtraValue = styled.span`
+const TitleExtraValue = styled(Flex)`
   color: ${(props) => props.theme.textPrimary};
-`;
-const TitleExtraSymbol = styled.span`
-  color: ${(props) => props.theme.textTertiary};
+
+  .value-display-symbol {
+    color: ${(props) => props.theme.textTertiary};
+  }
 `;
 const TitleExtra = styled(Flex)`
   align-items: flex-start;
@@ -236,9 +237,8 @@ export default function Post({ data, href, type }) {
               <TitleExtraValue>
                 <ValueDisplay
                   value={toPrecision(data.value, decimals)}
-                  symbol=""
+                  symbol={symbol}
                 />
-                <TitleExtraSymbol> {symbol}</TitleExtraSymbol>
               </TitleExtraValue>
             </TitleExtra>
           )}
