@@ -20,10 +20,6 @@ const DEFAULT_KINTSUGI_NODES =
         name: "Kintsugi Labs",
         url: "wss://api-kusama.interlay.io/parachain",
       },
-      {
-        name: "Dwellir",
-        url: "wss://kintsugi-rpc.dwellir.com",
-      },
     ];
 
 const kintsugi = {

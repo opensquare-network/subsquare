@@ -18,10 +18,6 @@ export const defaultNodes = [
     name: "Centrifuge",
     url: "wss://fullnode.parachain.centrifuge.io",
   },
-  {
-    name: "Dwellir",
-    url: "wss://centrifuge-rpc.dwellir.com",
-  },
 ];
 
 const centrifuge = {

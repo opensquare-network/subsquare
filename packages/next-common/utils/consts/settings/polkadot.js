@@ -21,6 +21,18 @@ export const defaultPolkadotNodes = [
     name: "Dwellir",
     url: "wss://polkadot-rpc.dwellir.com",
   },
+  {
+    name: "Pinknode",
+    url: "wss://public-rpc.pinknode.io/polkadot",
+  },
+  {
+    name: "RadiumBlock",
+    url: "wss://polkadot.public.curie.radiumblock.co/ws",
+  },
+  {
+    name: "Automata 1RPC",
+    url: "wss://1rpc.io/dot",
+  },
 ];
 
 const polkadot = {

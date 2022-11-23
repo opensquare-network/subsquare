@@ -15,10 +15,6 @@ const defaultNodes = [
     name: "Dwellir",
     url: "wss://zeitgeist-rpc.dwellir.com",
   },
-  {
-    name: "ZeitgeistPM",
-    url: "wss://rpc-0.zeitgeist.pm",
-  },
 ];
 
 const zeitgeist = {
