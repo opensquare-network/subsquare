@@ -43,12 +43,13 @@ export default function ConfirmCountdown({ detail }) {
       numerator={confirmPercentage}
       foregroundColor={secondaryGreen500}
       backgroundColor={secondaryGreen100}
-      showTooltip={confirmRemaining > 0}
       tooltipContent={
-        <span>
-          Confirming end in <TimeDuration blocks={confirmRemaining} /> #
-          {confirmEnd?.toLocaleString()}
-        </span>
+        confirmRemaining > 0 && (
+          <span>
+            Confirming end in <TimeDuration blocks={confirmRemaining} /> #
+            {confirmEnd?.toLocaleString()}
+          </span>
+        )
       }
     />
   );
