@@ -55,11 +55,15 @@ export const allGov2HomeMenuNames = [
   gov2FellowshipMenuName,
 ];
 
-export function resolveGov2TracksMenu(tracks = []) {
-  const totalActiveCount = tracks.reduce((count, item) => {
+function calcActiveCount(tracks = []) {
+  return tracks.reduce((count, item) => {
     count += item.activeCount || 0;
     return count;
   }, 0);
+}
+
+export function resolveGov2TracksMenu(tracks = []) {
+  const totalActiveCount = calcActiveCount(tracks);
 
   const gov2ReferendaMenu = {
     items: [
@@ -68,23 +72,26 @@ export function resolveGov2TracksMenu(tracks = []) {
         name: "All",
         pathname: "/referenda",
         icon: TrackIconMap.All,
-        count: totalActiveCount,
+        activeCount: totalActiveCount,
       },
     ],
   };
 
   const gov2GovernanceMenu = {
     name: gov2GovernanceMenuName,
+    activeCount: 0,
     items: [],
   };
 
   const gov2TreasuryMenu = {
     name: gov2TreasuryMenuName,
+    activeCount: 0,
     items: [],
   };
 
   const gov2FellowshipMenu = {
     name: gov2FellowshipMenuName,
+    activeCount: 0,
     items: [],
   };
 
@@ -94,7 +101,7 @@ export function resolveGov2TracksMenu(tracks = []) {
       value: track.id,
       name: parseGov2TrackName(track.name),
       pathname: `/referenda/${track.name}`,
-      count: track.activeCount,
+      activeCount: track.activeCount,
       icon: TrackIconMap[track.id] ?? TrackIconMap.Default,
     };
   };
@@ -106,10 +113,17 @@ export function resolveGov2TracksMenu(tracks = []) {
       gov2ReferendaMenu.items.push(resolveTrackItem(track));
     } else if (assert(gov2GovernanceGroupIds, track.id)) {
       gov2GovernanceMenu.items.push(resolveTrackItem(track));
+      gov2GovernanceMenu.activeCount = calcActiveCount(
+        gov2GovernanceMenu.items
+      );
     } else if (assert(gov2TreasuryGroupIds, track.id)) {
       gov2TreasuryMenu.items.push(resolveTrackItem(track));
+      gov2TreasuryMenu.activeCount = calcActiveCount(gov2TreasuryMenu.items);
     } else if (assert(gov2FellowShipGroupIds, track.id)) {
       gov2FellowshipMenu.items.push(resolveTrackItem(track));
+      gov2FellowshipMenu.activeCount = calcActiveCount(
+        gov2FellowshipMenu.items
+      );
     }
   }
 
