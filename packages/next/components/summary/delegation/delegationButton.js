@@ -63,7 +63,10 @@ export default function DelegationButton({
   const isMounted = useIsMounted();
   const dispatch = useDispatch();
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
+  const showErrorToast = useCallback(
+    (message) => dispatch(newErrorToast(message)),
+    [dispatch]
+  );
 
   const removeDelegating = useCallback(async () => {
     if (!api) {
@@ -100,7 +103,7 @@ export default function DelegationButton({
 
   const openDelegatePopup = useCallback(() => {
     setShowDelegatePopup(true);
-  }, [router, loginUser]);
+  }, [router]);
 
   const addDelegationButton = (
     <Button onClick={openDelegatePopup}>
