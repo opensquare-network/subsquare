@@ -1,3 +1,4 @@
+import React from "react";
 import Account from "./account";
 import PseudoAvatar from "../assets/imgs/pesudoAvatar.svg";
 

@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled, { css } from "styled-components";
-import { useRouter } from "next/router";
 import { useUser } from "next-common/context/user";
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
@@ -9,6 +8,7 @@ import { getSigner, sendTx } from "next-common/utils/sendTx";
 import DelegatePopup from "components/gov2/delegatePopup";
 import AddSVG from "./add.svg";
 import RemoveSVG from "./remove.svg";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 const Button = styled.div`
   cursor: pointer;
@@ -51,7 +51,6 @@ export default function DelegationButton({
   onUndelegateInBlock,
   onDelegateInBlock,
 }) {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [showDelegatePopup, setShowDelegatePopup] = useState(false);
 
@@ -62,6 +61,11 @@ export default function DelegationButton({
   const isMounted = useIsMounted();
   const dispatch = useDispatch();
 
+  const showErrorToast = useCallback(
+    (message) => dispatch(newErrorToast(message)),
+    [dispatch]
+  );
+
   const removeDelegating = useCallback(async () => {
     if (!api) {
       return showErrorToast("Chain network is not connected yet");
@@ -71,8 +75,12 @@ export default function DelegationButton({
       return showErrorToast("Please login first");
     }
 
-    const signer = await getSigner(signerAddress);
-    api.setSigner(signer);
+    try {
+      const signer = await getSigner(signerAddress);
+      api.setSigner(signer);
+    } catch (e) {
+      return showErrorToast(`Unable to find injected ${signerAddress}`);
+    }
 
     const tx = api.tx.convictionVoting.undelegate(trackId);
 
@@ -89,15 +97,19 @@ export default function DelegationButton({
     } finally {
       setIsLoading(false);
     }
-  }, [api, dispatch, signerAddress, onUndelegateInBlock, isMounted, trackId]);
+  }, [
+    api,
+    dispatch,
+    signerAddress,
+    onUndelegateInBlock,
+    isMounted,
+    trackId,
+    showErrorToast,
+  ]);
 
   const openDelegatePopup = useCallback(() => {
-    if (!loginUser) {
-      router.push(`/login?redirect=${router.asPath}`);
-      return;
-    }
     setShowDelegatePopup(true);
-  }, [router, loginUser]);
+  }, []);
 
   const addDelegationButton = (
     <Button onClick={openDelegatePopup}>

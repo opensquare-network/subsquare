@@ -19,8 +19,6 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-const balanceMap = new Map();
-
 function PopupContent({
   extensionAccounts,
   childBounty,

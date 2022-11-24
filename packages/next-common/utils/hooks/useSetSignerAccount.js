@@ -29,6 +29,11 @@ export default function useSetSignerAccount(
           isSameAddress(item.address, address) &&
           item.meta?.source === extensionName
       );
+      if (!account) {
+        account = extensionAccounts.find((item) =>
+          isSameAddress(item.address, address)
+        );
+      }
     }
 
     if (account) {

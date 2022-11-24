@@ -1,6 +1,5 @@
+import React from "react";
 import styled from "styled-components";
-import { useUser } from "../context/user";
-import { isSameAddress } from "../utils";
 import Account from "./account";
 import EmptyAccount from "./emptyAccount";
 

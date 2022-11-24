@@ -5,8 +5,7 @@ import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
 import useSetSignerAccount from "next-common/utils/hooks/useSetSignerAccount";
 import { useChainSettings } from "next-common/context/chain";
 import PopupLabel from "../label";
-// import ConnectedSigner from "../../connectedSigner";
-import SignerSelect from "../../signerSelect";
+import ConnectedSigner from "../../connectedSigner";
 
 export default function Signer({
   isBalanceLoading,
@@ -15,7 +14,6 @@ export default function Signer({
   selectedAccount,
   setSelectedAccount,
   extensionAccounts,
-  isLoading,
   symbol,
 }) {
   const node = useChainSettings();
@@ -35,13 +33,7 @@ export default function Signer({
           symbol={symbol || node.symbol}
         />
       )}
-      {/* <ConnectedSigner selectedAccount={selectedAccount} /> */}
-      <SignerSelect
-        extensionAccounts={extensionAccounts}
-        selectedAccount={selectedAccount}
-        setSelectedAccount={setSelectedAccount}
-        disabled={isLoading}
-      />
+      <ConnectedSigner selectedAccount={selectedAccount} />
     </div>
   );
 }

@@ -5,16 +5,18 @@ import NoExtension from "./noExtension";
 import Inaccessible from "./inaccessible";
 import NoAccounts from "./noAccounts";
 import Popup from "../popup/wrapper/Popup";
-// import { useUser } from "../../context/user/index.js";
-// import ConnectWallet from "../connectWallet";
+import { useUser } from "../../context/user/index.js";
+import ConnectWallet from "../connectWallet";
+import { emptyFunction, isSameAddress } from "../../utils/index.js";
 
 export default function PopupWithAddress({
   Component,
   title,
   onClose,
+  autoCloseAfterLogin,
   ...props
 }) {
-  // const loginUser = useUser();
+  const loginUser = useUser();
   const ref = useRef();
   useOnClickOutside(ref, () => onClose());
 
@@ -47,9 +49,19 @@ export default function PopupWithAddress({
     );
   }
 
-  // if (!loginUser?.address) {
-  //   return <ConnectWallet onClose={onClose} />;
-  // }
+  if (
+    !loginUser?.address ||
+    !extensionAccounts.find((acc) =>
+      isSameAddress(acc.address, loginUser.address)
+    )
+  ) {
+    return (
+      <ConnectWallet
+        onClose={onClose}
+        onLoggedIn={autoCloseAfterLogin ? onClose : emptyFunction}
+      />
+    );
+  }
 
   return (
     <Popup onClose={onClose} title={title}>
