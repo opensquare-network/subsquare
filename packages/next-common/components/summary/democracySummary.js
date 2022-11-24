@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import CountDown from "next-common/components/summary/countDown";
 import useApi from "../../utils/hooks/useApi";
 import { estimateBlocksTime } from "../../utils";
@@ -9,52 +9,50 @@ import {
   latestHeightSelector,
 } from "../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
-import { SecondaryCard } from "../styled/containers/secondaryCard";
 import Content from "./cardContent";
 import { useChain } from "../../context/chain";
+import {
+  SummaryCard,
+  SummaryGreyText,
+  SummaryTitle,
+} from "next-common/components/summary/styled";
+import { p_14_normal, p_20_bold } from "next-common/styles/componentCss";
+import { smcss } from "next-common/utils/responsive";
+import Divider from "next-common/components/styled/layout/divider";
+import FlexBetween from "../styled/flexBetween";
 
-const Wrapper = styled.div`
+const Wrapper = styled(SummaryCard)`
+  height: auto;
+`;
+
+const TitleGroup = styled.div`
   display: flex;
+  justify-content: space-between;
+`;
 
-  > :not(:first-child) {
-    margin-left: 16px;
-  }
+const Title = styled.h2`
+  margin: 0;
+  color: ${(p) => p.theme.textPrimary};
+  ${p_20_bold}
+`;
 
-  @media screen and (max-width: 768px) {
+const Description = styled.p`
+  margin: 0;
+  margin-top: 4px;
+  color: ${(p) => p.theme.textTertiary};
+  ${p_14_normal};
+`;
+
+const SummariesWrapper = styled.div`
+  display: flex;
+  ${smcss(css`
     flex-direction: column;
-    > :not(:first-child) {
-      margin-left: 0;
-      margin-top: 16px;
-    }
-  }
+    gap: 16px;
+  `)}
 `;
 
-const Card = styled(SecondaryCard)`
-  position: relative;
-  color: ${(props) => props.theme.textPrimary};
-  flex: 0 1 33.33%;
-  height: 88px;
-`;
-
-const Title = styled.div`
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 100%;
-  letter-spacing: 0.16em;
-  color: ${(props) => props.theme.textTertiary};
-  margin-bottom: 8px;
-  text-transform: uppercase;
-`;
-
-const CountDownWrapper = styled.div`
-  position: absolute;
-  top: 20px;
-  right: 24px;
-  margin-top: 0 !important;
-`;
-
-const GreyText = styled.span`
-  color: ${(props) => props.theme.textTertiary}; !important;
+const SummaryItem = styled.div`
+  flex: 1;
 `;
 
 async function referendumsActive(api) {
@@ -130,45 +128,75 @@ export default function DemocracySummary() {
 
   return (
     <Wrapper>
-      <Card>
-        <Title>Proposals</Title>
-        <Content>
-          <span>
-            {summary.activeProposalsCount || 0}
-            <GreyText> / {summary.publicPropCount || 0}</GreyText>
-          </span>
-        </Content>
-      </Card>
-      <Card>
-        <Title>Referenda</Title>
-        <Content>
-          <span>
-            {summary.referendumCount || 0}
-            <GreyText> / {summary.referendumTotal || 0}</GreyText>
-          </span>
-        </Content>
-      </Card>
-      <Card>
-        <Title>Launch period</Title>
-        <Content>
-          {(summary?.launchPeriod || []).map((item, index) => (
-            <span className={index % 2 === 1 ? "unit" : ""} key={index}>
-              {item}
+      <div>
+        <TitleGroup>
+          <Title>Referenda</Title>
+        </TitleGroup>
+        <Description>
+          Referenda are simple, inclusive, stake-based voting schemes.
+        </Description>
+      </div>
+
+      <Divider margin={16} />
+
+      <SummariesWrapper>
+        <SummaryItem>
+          <SummaryTitle>Proposals</SummaryTitle>
+          <Content>
+            <span>
+              {summary.activeProposalsCount || 0}
+              <SummaryGreyText>
+                {" "}
+                / {summary.publicPropCount || 0}
+              </SummaryGreyText>
             </span>
-          ))}
-          {(summary?.totalPeriod || []).map((item, index) => (
-            <span
-              className={index % 2 === 1 ? "unit total" : "total"}
-              key={index}
-            >
-              {item}
+          </Content>
+        </SummaryItem>
+
+        <SummaryItem>
+          <SummaryTitle>Referenda</SummaryTitle>
+          <Content>
+            <span>
+              {summary.referendumCount || 0}
+              <SummaryGreyText>
+                {" "}
+                / {summary.referendumTotal || 0}
+              </SummaryGreyText>
             </span>
-          ))}
-        </Content>
-        <CountDownWrapper>
-          <CountDown percent={summary?.progress ?? 0} />
-        </CountDownWrapper>
-      </Card>
+          </Content>
+        </SummaryItem>
+
+        <SummaryItem>
+          <FlexBetween>
+            <div>
+              <SummaryTitle>Launch Period</SummaryTitle>
+              <Content>
+                {(summary?.launchPeriod || []).map((item, index) => (
+                  <span className={index % 2 === 1 ? "unit" : ""} key={index}>
+                    {item}
+                  </span>
+                ))}
+                {(summary?.totalPeriod || []).map((item, index) => (
+                  <span
+                    className={index % 2 === 1 ? "unit total" : "total"}
+                    key={index}
+                  >
+                    {item}
+                  </span>
+                ))}
+              </Content>
+            </div>
+
+            <div>
+              <CountDown percent={summary?.progress ?? 0} />
+            </div>
+          </FlexBetween>
+        </SummaryItem>
+      </SummariesWrapper>
+
+      {/* <Divider margin={16} /> */}
+
+      {/* <Delegation trackId={id} /> */}
     </Wrapper>
   );
 }
