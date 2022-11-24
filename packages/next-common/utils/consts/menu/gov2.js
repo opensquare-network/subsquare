@@ -6,6 +6,7 @@ import TrackIconMap from "../../../components/icons/track";
 import { getExcludeChains } from "../../viewfuncs";
 import Chains from "../chains";
 import styled from "styled-components";
+import { parseGov2TrackName } from "../../gov2";
 
 const Gov2Icon = styled(Gov2IconOrigin)`
   path {
@@ -13,7 +14,7 @@ const Gov2Icon = styled(Gov2IconOrigin)`
   }
 `;
 
-const gov2EntryMenu = {
+export const gov2EntryMenu = {
   items: [
     {
       value: "gov2",
@@ -37,22 +38,86 @@ const gov2BackMenu = {
   ],
 };
 
-const gov2ReferendaMenu = {
-  name: "REFERENDA",
-  items: [
-    {
-      value: "all",
-      name: "All",
-      pathname: "/referenda",
-      icon: TrackIconMap.All,
-    },
-  ],
-};
+const gov2ReferendaGroupIds = [0, 10, 15];
+const gov2GovernanceGroupIds = [12, 14, 20, 21];
+const gov2TreasuryGroupIds = [11, 30, 31, 32, 33, 34];
+const gov2FellowShipGroupIds = [1, 13];
 
-const gov2FellowshipMenu = {
-  name: "FELLOWSHIP",
-  tip: "Upcoming",
-  items: [],
-};
+const gov2GovernanceMenuName = "GOVERNANCE";
+const gov2TreasuryMenuName = "TREASURY";
+const gov2FellowshipMenuName = "FELLOWSHIP";
 
-export { gov2EntryMenu, gov2BackMenu, gov2ReferendaMenu, gov2FellowshipMenu };
+export const gov2MenuFoldablePrefix = "GOV2_";
+
+export const allGov2HomeMenuNames = [
+  gov2GovernanceMenuName,
+  gov2TreasuryMenuName,
+  gov2FellowshipMenuName,
+];
+
+export function resolveGov2TracksMenu(tracks = []) {
+  const totalActiveCount = tracks.reduce((count, item) => {
+    count += item.activeCount || 0;
+    return count;
+  }, 0);
+
+  const gov2ReferendaMenu = {
+    items: [
+      {
+        value: "all",
+        name: "All",
+        pathname: "/referenda",
+        icon: TrackIconMap.All,
+        count: totalActiveCount,
+      },
+    ],
+  };
+
+  const gov2GovernanceMenu = {
+    name: gov2GovernanceMenuName,
+    items: [],
+  };
+
+  const gov2TreasuryMenu = {
+    name: gov2TreasuryMenuName,
+    items: [],
+  };
+
+  const gov2FellowshipMenu = {
+    name: gov2FellowshipMenuName,
+    items: [],
+  };
+
+  const assert = (ids = [], id) => ids.includes(id);
+  const resolveTrackItem = (track) => {
+    return {
+      value: track.id,
+      name: parseGov2TrackName(track.name),
+      pathname: `/referenda/${track.name}`,
+      count: track.activeCount,
+      icon: TrackIconMap[track.id] ?? TrackIconMap.Default,
+    };
+  };
+
+  for (let idx = 0; idx < tracks.length; idx++) {
+    const track = tracks[idx];
+
+    if (assert(gov2ReferendaGroupIds, track.id)) {
+      gov2ReferendaMenu.items.push(resolveTrackItem(track));
+    } else if (assert(gov2GovernanceGroupIds, track.id)) {
+      gov2GovernanceMenu.items.push(resolveTrackItem(track));
+    } else if (assert(gov2TreasuryGroupIds, track.id)) {
+      gov2TreasuryMenu.items.push(resolveTrackItem(track));
+    } else if (assert(gov2FellowShipGroupIds, track.id)) {
+      gov2FellowshipMenu.items.push(resolveTrackItem(track));
+    }
+  }
+
+  return [
+    gov2BackMenu,
+    gov2ReferendaMenu,
+    gov2GovernanceMenu,
+    gov2TreasuryMenu,
+    gov2FellowshipMenu,
+  ];
+}

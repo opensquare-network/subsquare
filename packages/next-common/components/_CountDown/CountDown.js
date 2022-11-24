@@ -1,31 +1,39 @@
-import React from "react";
-import { primary_yellow_100, primary_yellow_500 } from "./styles";
 import { select } from "d3-selection";
 import { arc } from "d3-shape";
 import { useEffect, useMemo, useRef } from "react";
-import { CountDownWrapper, PopperArrow, PopperContainer, SVG } from "./styled";
-import { usePopper } from "./usePopper";
+import Tooltip from "../tooltip";
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+  &,
+  /* tooltip component */
+  & > div {
+    display: inline-flex;
+  }
+`;
+
+const SVG = styled.svg`
+  g {
+    path:first-child {
+      fill: ${(p) => p.foregroundColor};
+    }
+    path:last-child {
+      fill: ${(p) => p.backgroundColor};
+    }
+  }
+`;
 
 export default function CountDown(props) {
   const {
     numerator = 0,
     denominator = 0,
     size = 12,
-    foregroundColor = primary_yellow_500,
-    backgroundColor = primary_yellow_100,
-    showTooltip = true,
+    foregroundColor = "#FFF2D9",
+    backgroundColor = "#F2B12F",
     tooltipContent,
   } = props ?? {};
 
   const svgElement = useRef(null);
-  const popperElement = useRef(null);
-  const arrowElement = useRef(null);
-
-  const { popperVisible, hidePopper, showPopper } = usePopper({
-    refRef: svgElement,
-    popperRef: popperElement,
-    showTooltip,
-  });
 
   const percent = useMemo(() => {
     const v = numerator / denominator;
@@ -64,26 +72,16 @@ export default function CountDown(props) {
   }, [percent, size, svgElement]);
 
   return (
-    <CountDownWrapper
-      onMouseEnter={showPopper}
-      onFocus={showPopper}
-      onMouseLeave={hidePopper}
-      onBlur={hidePopper}
-    >
-      <SVG
-        ref={svgElement}
-        width={size}
-        height={size}
-        foregroundColor={foregroundColor}
-        backgroundColor={backgroundColor}
-      />
-
-      {showTooltip && (
-        <PopperContainer ref={popperElement} data-show={popperVisible}>
-          {tooltipContent}
-          <PopperArrow ref={arrowElement} data-popper-arrow />
-        </PopperContainer>
-      )}
-    </CountDownWrapper>
+    <Wrapper>
+      <Tooltip content={tooltipContent}>
+        <SVG
+          ref={svgElement}
+          width={size}
+          height={size}
+          foregroundColor={foregroundColor}
+          backgroundColor={backgroundColor}
+        />
+      </Tooltip>
+    </Wrapper>
   );
 }
