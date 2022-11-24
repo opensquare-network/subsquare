@@ -1,22 +1,20 @@
 import React, { useRef } from "react";
-// import { useRouter } from "next/router";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside.js";
 import useExtensionAccounts from "../../utils/hooks/useExtensionAccounts";
 import NoExtension from "./noExtension";
 import Inaccessible from "./inaccessible";
 import NoAccounts from "./noAccounts";
 import Popup from "../popup/wrapper/Popup";
-// import { useUser } from "../../context/user/index.js";
+import { useUser } from "../../context/user/index.js";
+import ConnectWallet from "../connectWallet";
 
 export default function PopupWithAddress({
   Component,
   title,
   onClose,
-  // checkLogin = true,
   ...props
 }) {
-  // const router = useRouter();
-  // const loginUser = useUser();
+  const loginUser = useUser();
   const ref = useRef();
   useOnClickOutside(ref, () => onClose());
 
@@ -49,10 +47,9 @@ export default function PopupWithAddress({
     );
   }
 
-  // if (checkLogin && !loginUser) {
-  //   router.push(`/login?redirect=${router.asPath}`);
-  //   return null;
-  // }
+  if (!loginUser?.address) {
+    return <ConnectWallet onClose={onClose} />;
+  }
 
   return (
     <Popup onClose={onClose} title={title}>
