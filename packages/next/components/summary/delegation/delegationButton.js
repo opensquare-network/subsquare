@@ -111,7 +111,7 @@ export default function DelegationButton({
 
   const openDelegatePopup = useCallback(() => {
     setShowDelegatePopup(true);
-  }, [router]);
+  }, []);
 
   const addDelegationButton = (
     <Button onClick={openDelegatePopup}>
