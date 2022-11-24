@@ -25,8 +25,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const TitleTip = styled.span`
-  color: ${(p) => p.theme.textPlaceholder};
+const TitleActiveCount = styled.span`
   letter-spacing: 0;
   margin-left: 8px;
   ${p_12_normal};
@@ -41,7 +40,7 @@ const TitleGroup = styled(Flex)`
   padding: 12px 0;
 `;
 
-const ItemCount = styled.span`
+const ItemActiveCount = styled.span`
   margin-left: 8px;
   color: ${(p) => p.theme.textTertiary};
   ${p_12_medium};
@@ -133,7 +132,7 @@ const FoldableButton = styled.button`
     `}
 `;
 
-function defaultItemRender(icon, name, count, isExternalLink) {
+function defaultItemRender(icon, name, activeCount, isExternalLink) {
   const { textPlaceholder } = useTheme();
 
   return (
@@ -141,7 +140,7 @@ function defaultItemRender(icon, name, count, isExternalLink) {
       {icon}
       <span>
         {name}
-        {!!count && <ItemCount>{count}</ItemCount>}
+        {!!activeCount && <ItemActiveCount>{activeCount}</ItemActiveCount>}
       </span>
       {isExternalLink && <ExternalLink color={textPlaceholder} />}
     </ItemInner>
@@ -187,7 +186,9 @@ function MenuGroup({ menu, foldable, foldablePrefix = "" }) {
 
           <Title>
             {menu.name}
-            {menu.tip && <TitleTip>{menu.tip}</TitleTip>}
+            {!!menu.activeCount && (
+              <TitleActiveCount>{menu.activeCount}</TitleActiveCount>
+            )}
           </Title>
         </TitleGroup>
       )}
@@ -211,11 +212,15 @@ function MenuGroup({ menu, foldable, foldablePrefix = "" }) {
                       (router.pathname === "/[chain]" && item.pathname === "/")
                     }
                   >
-                    {item.itemRender?.(item.icon, item.name, item.count) ??
+                    {item.itemRender?.(
+                      item.icon,
+                      item.name,
+                      item.activeCount
+                    ) ??
                       defaultItemRender(
                         item.icon,
                         item.name,
-                        item.count,
+                        item.activeCount,
                         isExternalLink
                       )}
                   </Item>
