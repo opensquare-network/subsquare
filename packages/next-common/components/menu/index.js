@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import ExternalLink from "../icons/externalLink";
 import Flex from "../styled/flex";
-import { p_12_bold, p_12_medium, p_12_normal } from "../../styles/componentCss";
+import { p_12_bold, p_12_medium } from "../../styles/componentCss";
 import { useChain } from "../../context/chain";
 import MenuUnFoldIcon from "../icons/menuUnFold";
 import MenuFoldIcon from "../icons/menuFold";
@@ -28,7 +28,8 @@ const Wrapper = styled.div`
 const TitleActiveCount = styled.span`
   letter-spacing: 0;
   margin-left: 8px;
-  ${p_12_normal};
+  ${p_12_medium};
+  line-height: 12px;
 `;
 
 const Title = styled.div`
@@ -186,7 +187,7 @@ function MenuGroup({ menu, foldable, foldablePrefix = "" }) {
 
           <Title>
             {menu.name}
-            {!!menu.activeCount && (
+            {folded && !!menu.activeCount && (
               <TitleActiveCount>{menu.activeCount}</TitleActiveCount>
             )}
           </Title>
