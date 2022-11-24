@@ -6,7 +6,6 @@ import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
-import TipInput from "./tipInput";
 import {
   checkInputValue,
   emptyFunction,
@@ -14,7 +13,6 @@ import {
   toPrecision,
 } from "next-common/utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
-import PopupLabel from "next-common/components/popup/label";
 import { WarningMessage } from "next-common/components/popup/styled";
 import { sendTx } from "next-common/utils/sendTx";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
@@ -47,7 +45,7 @@ function PopupContent({
   const [inputTipValue, setInputTipValue] = useState();
   const [tipping, setTipping] = useState(false);
   const [balance, setBalance] = useState();
-  const { decimals, symbol } = useChainSettings();
+  const { decimals } = useChainSettings();
   const [selectedAddress, setSelectedAddress] = useState(
     selectedAccount?.address
   );
