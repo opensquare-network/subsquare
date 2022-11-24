@@ -9,6 +9,7 @@ import { getSigner, sendTx } from "next-common/utils/sendTx";
 import DelegatePopup from "components/gov2/delegatePopup";
 import AddSVG from "./add.svg";
 import RemoveSVG from "./remove.svg";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 const Button = styled.div`
   cursor: pointer;
@@ -62,6 +63,8 @@ export default function DelegationButton({
   const isMounted = useIsMounted();
   const dispatch = useDispatch();
 
+  const showErrorToast = (message) => dispatch(newErrorToast(message));
+
   const removeDelegating = useCallback(async () => {
     if (!api) {
       return showErrorToast("Chain network is not connected yet");
@@ -71,8 +74,12 @@ export default function DelegationButton({
       return showErrorToast("Please login first");
     }
 
-    const signer = await getSigner(signerAddress);
-    api.setSigner(signer);
+    try {
+      const signer = await getSigner(signerAddress);
+      api.setSigner(signer);
+    } catch (e) {
+      return showErrorToast(`Unable to find injected ${signerAddress}`);
+    }
 
     const tx = api.tx.convictionVoting.undelegate(trackId);
 
@@ -92,10 +99,6 @@ export default function DelegationButton({
   }, [api, dispatch, signerAddress, onUndelegateInBlock, isMounted, trackId]);
 
   const openDelegatePopup = useCallback(() => {
-    if (!loginUser) {
-      router.push(`/login?redirect=${router.asPath}`);
-      return;
-    }
     setShowDelegatePopup(true);
   }, [router, loginUser]);
 

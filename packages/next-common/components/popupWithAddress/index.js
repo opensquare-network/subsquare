@@ -7,12 +7,13 @@ import NoAccounts from "./noAccounts";
 import Popup from "../popup/wrapper/Popup";
 import { useUser } from "../../context/user/index.js";
 import ConnectWallet from "../connectWallet";
-import { isSameAddress } from "../../utils/index.js";
+import { emptyFunction, isSameAddress } from "../../utils/index.js";
 
 export default function PopupWithAddress({
   Component,
   title,
   onClose,
+  autoCloseAfterLogin,
   ...props
 }) {
   const loginUser = useUser();
@@ -54,7 +55,9 @@ export default function PopupWithAddress({
       isSameAddress(acc.address, loginUser.address)
     )
   ) {
-    return <ConnectWallet onClose={onClose} />;
+    return (
+      <ConnectWallet onClose={autoCloseAfterLogin ? onClose : emptyFunction} />
+    );
   }
 
   return (

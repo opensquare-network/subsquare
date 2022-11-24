@@ -144,6 +144,11 @@ function PopupContent({
 
 export default function DelegatePopup(props) {
   return (
-    <PopupWithAddress title="Delegate" Component={PopupContent} {...props} />
+    <PopupWithAddress
+      title="Delegate"
+      Component={PopupContent}
+      autoCloseAfterLogin={true}
+      {...props}
+    />
   );
 }

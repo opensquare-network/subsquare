@@ -111,6 +111,7 @@ export default function ConnectWallet({ onClose }) {
         );
 
         if (loginResult) {
+          onClose();
           updateUser(loginResult, userDispatch);
 
           rememberLoginAddress(selectedAccount.address);
@@ -171,7 +172,7 @@ export default function ConnectWallet({ onClose }) {
   return (
     <PopupWithoutTitle onClose={onClose}>
       <ContentWrapper>
-        <Title>Address Login</Title>
+        <Title>Login</Title>
         <SelectWallet
           selectedWallet={selectedWallet}
           setSelectWallet={setSelectWallet}
