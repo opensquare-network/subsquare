@@ -22,10 +22,6 @@ const DEFAULT_KUSAMA_NODES = [
     url: "wss://kusama.public.curie.radiumblock.co/ws",
   },
   {
-    name: "RadiumBlock",
-    url: "wss://kusama.public.curie.radiumblock.co/ws",
-  },
-  {
     name: "Pinknode",
     url: "wss://public-rpc.pinknode.io/kusama",
   },

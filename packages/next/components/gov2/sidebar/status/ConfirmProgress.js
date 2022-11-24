@@ -14,10 +14,37 @@ import { useConfirmingStarted } from "next-common/context/post/gov2/referendum";
 import isNil from "lodash.isnil";
 import { useTheme } from "styled-components";
 import TimeDuration from "next-common/components/TimeDuration";
-import { usePostState } from "next-common/context/post";
-import { gov2State } from "next-common/utils/consts/state";
 
-export default function ConfirmProgress() {
+function ConfirmationInfo() {
+  const confirmPeriod = useConfirm();
+
+  return (
+    <ProgressInfo>
+      <p>Confirmation</p>
+      <p>
+        <TimeDuration blocks={confirmPeriod} showMinutes={false} />
+      </p>
+    </ProgressInfo>
+  );
+}
+
+function Empty() {
+  const confirmStart = useConfirmingStarted();
+  if (confirmStart) {
+    return null;
+  }
+
+  return (
+    <ProgressGroup>
+      <Tooltip content="Not started yet">
+        <Progress percentage={0} />
+      </Tooltip>
+      <ConfirmationInfo />
+    </ProgressGroup>
+  );
+}
+
+function ConfirmationStarted() {
   const latestHeight = useSelector(latestHeightSelector);
   const { secondaryGreen500, secondaryGreen300 } = useTheme();
 
@@ -26,7 +53,6 @@ export default function ConfirmProgress() {
   const confirmStart = useConfirmingStarted();
   const offsetLeft = useConfirmOffsetLeftPercentage();
   const offsetRight = useConfirmOffsetRightPercentage();
-  const state = usePostState();
 
   const confirmPercentage = useMemo(() => {
     if (isNil(latestHeight) || latestHeight <= confirmStart) {
@@ -42,16 +68,7 @@ export default function ConfirmProgress() {
     return Number((gone / confirmPeriod) * 100).toFixed(2);
   }, [latestHeight, confirmStart, confirmPeriod]);
 
-  // same logic: `show confirming period`
-  const isPositiveState = useMemo(
-    () =>
-      [gov2State.Confirming, gov2State.Approved, gov2State.Executed].includes(
-        state
-      ),
-    [state]
-  );
-
-  if (!isPositiveState) {
+  if (isNil(confirmStart)) {
     return null;
   }
 
@@ -70,12 +87,16 @@ export default function ConfirmProgress() {
           bg={secondaryGreen300}
         />
       </Tooltip>
-      <ProgressInfo>
-        <p>Confirming Period</p>
-        <p>
-          <TimeDuration blocks={confirmPeriod} showMinutes={false} />
-        </p>
-      </ProgressInfo>
+      <ConfirmationInfo />
     </ProgressGroup>
   );
+}
+
+export default function ConfirmProgress() {
+  const confirmStart = useConfirmingStarted();
+  if (confirmStart) {
+    return <ConfirmationStarted />;
+  }
+
+  return <Empty />;
 }
