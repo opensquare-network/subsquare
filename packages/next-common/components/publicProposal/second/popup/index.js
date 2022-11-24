@@ -53,10 +53,14 @@ function PopupContent({
     }
 
     let tx = null;
-    if (chain === "kusama") {
-      tx = api.tx.democracy.second(proposalIndex);
-    } else {
-      tx = api.tx.democracy.second(proposalIndex, depositorUpperBound || 0);
+    try {
+      if (["kusama", "rococo"].includes(chain)) {
+        tx = api.tx.democracy.second(proposalIndex);
+      } else {
+        tx = api.tx.democracy.second(proposalIndex, depositorUpperBound || 0);
+      }
+    } catch (e) {
+      return showErrorToast(e.message);
     }
 
     const signerAddress = signerAccount.address;
