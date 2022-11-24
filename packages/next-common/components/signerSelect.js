@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import AddressSelect from "./addressSelect";
 import { useChain } from "../context/chain";
+import useApi from "../utils/hooks/useApi";
 
 export default function SignerSelect({
-  api,
   extensionAccounts,
   selectedAccount,
   setSelectedAccount,
   disabled,
 }) {
+  const api = useApi();
   const chain = useChain();
   const [accounts, setAccounts] = useState([]);
 

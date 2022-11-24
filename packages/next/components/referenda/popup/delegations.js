@@ -1,8 +1,10 @@
 import { DelegatingValue } from "next-common/components/popup/styled";
 import { toPrecision } from "next-common/utils";
 import PopupLabel from "next-common/components/popup/label";
+import { useChainSettings } from "next-common/context/chain";
 
-export default function Delegations({ delegationsVotes, node }) {
+export default function Delegations({ delegationsVotes }) {
+  const node = useChainSettings();
   return (
     <div>
       <PopupLabel

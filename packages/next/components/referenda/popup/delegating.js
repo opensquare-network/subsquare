@@ -2,10 +2,12 @@ import {
   DelegatingInfo,
   DelegatingValue,
 } from "next-common/components/popup/styled";
+import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import { convictionToLockX } from "utils/referendumUtil";
 
-export default function Delegating({ addressVoteDelegate, node }) {
+export default function Delegating({ addressVoteDelegate }) {
+  const node = useChainSettings();
   const addressVoteDelegateBalance = addressVoteDelegate?.balance;
   const addressVoteDelegateConviction = addressVoteDelegate?.conviction;
   const addressVoteDelegateTarget = addressVoteDelegate?.target;

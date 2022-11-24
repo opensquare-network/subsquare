@@ -169,7 +169,12 @@ export function Option({ onClick, item, selected }) {
   );
 }
 
-export default function AddressSelect({ accounts, selectedAccount, onSelect }) {
+export default function AddressSelect({
+  accounts,
+  selectedAccount,
+  onSelect,
+  disabled,
+}) {
   const [show, setShow] = useState(false);
   const ref = useRef();
 
@@ -177,7 +182,10 @@ export default function AddressSelect({ accounts, selectedAccount, onSelect }) {
 
   return (
     <Wrapper ref={ref}>
-      <Select onClick={() => setShow(!show)} disabled={accounts?.length === 0}>
+      <Select
+        onClick={() => setShow(!show)}
+        disabled={disabled || accounts?.length === 0}
+      >
         {selectedAccount ? (
           <Account account={selectedAccount} />
         ) : (

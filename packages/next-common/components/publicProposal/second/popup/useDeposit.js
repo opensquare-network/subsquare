@@ -1,13 +1,10 @@
 import React from "react";
 import BigNumber from "bignumber.js";
-import { useContext } from "react";
 import useApi from "../../../../utils/hooks/useApi";
-import { StateContext } from "./stateContext";
 import isNil from "lodash.isnil";
 
-export default function useDeposit(depositRequired) {
+export default function useDeposit(depositRequired, signerBalance) {
   const api = useApi();
-  const { signerBalance } = useContext(StateContext);
 
   const deposit =
     depositRequired || api?.consts?.democracy?.minimumDeposit?.toString();

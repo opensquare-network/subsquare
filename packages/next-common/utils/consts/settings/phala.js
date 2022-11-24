@@ -10,8 +10,8 @@ const DEFAULT_PHALA_NODES = [
   },
   {
     name: "OnFinality",
-    url: "wss://phala.api.onfinality.io/public-ws"
-  }
+    url: "wss://phala.api.onfinality.io/public-ws",
+  },
 ];
 
 const phala = {

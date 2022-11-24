@@ -14,15 +14,15 @@ import {
   toPrecision,
 } from "next-common/utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
-import SignerSelect from "next-common/components/signerSelect";
-import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
 import PopupLabel from "next-common/components/popup/label";
 import { WarningMessage } from "next-common/components/popup/styled";
 import { sendTx } from "next-common/utils/sendTx";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import useSetDefaultSigner from "next-common/utils/hooks/useSetDefaultSigner";
+import useSetSignerAccount from "next-common/utils/hooks/useSetSignerAccount";
 import { encodeAddressToChain } from "next-common/services/address";
 import { useChain, useChainSettings } from "next-common/context/chain";
+import Signer from "next-common/components/popup/fields/signerField";
+import BalanceField from "next-common/components/popup/fields/balanceField";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -56,7 +56,7 @@ function PopupContent({
     setSelectedAddress(encodeAddressToChain(selectedAccount?.address, chain));
   }, [selectedAccount, chain]);
 
-  useSetDefaultSigner(extensionAccounts, setSelectedAccount);
+  useSetSignerAccount(extensionAccounts, setSelectedAccount);
   const selectedAccountIsTipper = isAddressInGroup(
     selectedAddress,
     councilTippers
@@ -124,29 +124,20 @@ function PopupContent({
       <WarningMessage danger={!selectedAccountIsTipper}>
         Only council members can tip.
       </WarningMessage>
-      <div>
-        <PopupLabelWithBalance
-          text="Address"
-          balanceName={"Balance"}
-          balance={balance}
-          isLoading={!balance}
-          symbol={symbol}
-        />
-        <SignerSelect
-          api={api}
-          selectedAccount={selectedAccount}
-          setSelectedAccount={setSelectedAccount}
-          extensionAccounts={extensionAccounts}
-        />
-      </div>
-      <div>
-        <PopupLabel text={"Tip Value"} />
-        <TipInput
-          value={inputTipValue}
-          setValue={setInputTipValue}
-          symbol={symbol}
-        />
-      </div>
+      <Signer
+        isBalanceLoading={!balance}
+        balance={balance}
+        selectedAccount={selectedAccount}
+        setSelectedAccount={setSelectedAccount}
+        isLoading={tipping}
+        extensionAccounts={extensionAccounts}
+      />
+      <BalanceField
+        title="Tip Value"
+        isLoading={tipping}
+        inputBalance={inputTipValue}
+        setInputBalance={setInputTipValue}
+      />
       <ButtonWrapper>
         <SecondaryButton isLoading={tipping} onClick={doEndorse}>
           Endorse

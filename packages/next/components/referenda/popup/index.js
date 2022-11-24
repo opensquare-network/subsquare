@@ -14,7 +14,7 @@ import LoadingVoteStatus from "./loadingVoteStatus";
 import Delegating from "./delegating";
 import DirectVote from "./directVote";
 import VoteButton from "next-common/components/popup/voteButton";
-import Signer from "./signer";
+import Signer from "next-common/components/popup/fields/signerField";
 
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import { sendTx } from "next-common/utils/sendTx";
@@ -126,9 +126,9 @@ function PopupContent({
   return (
     <>
       <Signer
-        api={api}
-        votingIsLoading={votingIsLoading}
-        votingBalance={votingBalance}
+        isBalanceLoading={votingIsLoading}
+        balance={votingBalance}
+        balanceName="Voting balance"
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}
         isLoading={loadingState !== VoteLoadingEnum.None}
@@ -143,13 +143,12 @@ function PopupContent({
           setInputVoteBalance={setInputVoteBalance}
           voteLock={voteLock}
           setVoteLock={setVoteLock}
-          node={node}
         />
       )}
 
       {addressVote?.delegating && (
         // If the address has set to delegate mode, show the delegating setting instead
-        <Delegating addressVoteDelegate={addressVote?.delegating} node={node} />
+        <Delegating addressVoteDelegate={addressVote?.delegating} />
       )}
 
       {!addressVoteIsLoading &&
@@ -159,13 +158,10 @@ function PopupContent({
           <NoVoteRecord />
         )}
       {addressVote?.standard && (
-        <StandardVoteStatus
-          addressVoteStandard={addressVote?.standard}
-          node={node}
-        />
+        <StandardVoteStatus addressVoteStandard={addressVote?.standard} />
       )}
       {addressVote?.split && (
-        <SplitVoteStatus addressVoteSplit={addressVote?.split} node={node} />
+        <SplitVoteStatus addressVoteSplit={addressVote?.split} />
       )}
       {addressVote?.delegating && addressVoteDelegateVoted && (
         <DelegateVoteStatus addressVoteDelegate={addressVote?.delegating} />

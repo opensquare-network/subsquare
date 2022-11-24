@@ -6,8 +6,10 @@ import DisplayValue from "next-common/components/displayValue";
 import { toPrecision } from "next-common/utils";
 import PopupLabel from "next-common/components/popup/label";
 import VoteStatusBox from "next-common/components/popup/voteStatusBox";
+import { useChainSettings } from "next-common/context/chain";
 
-export default function SplitVoteStatus({ addressVoteSplit, node }) {
+export default function SplitVoteStatus({ addressVoteSplit }) {
+  const node = useChainSettings();
   const addressVoteSplitAye = addressVoteSplit?.aye;
   const addressVoteSplitNay = addressVoteSplit?.nay;
 

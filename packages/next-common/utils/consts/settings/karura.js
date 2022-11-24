@@ -31,7 +31,7 @@ export const DEFAULT_KARURA_NODES = [
   {
     name: "Dwellir",
     url: "wss://karura-rpc.dwellir.com",
-  }
+  },
 ];
 
 const karura = {

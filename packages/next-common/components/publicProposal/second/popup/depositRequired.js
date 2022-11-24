@@ -1,13 +1,11 @@
 import React from "react";
 import BalanceInput from "../../../balanceInput";
-import useDeposit from "./useDeposit";
 import PopupLabel from "../../../popup/label";
 import { WarningMessage } from "../../../popup/styled";
 import { toPrecision } from "../../../../utils";
 import { useChainSettings } from "../../../../context/chain";
 
-export default function DepositRequired({ depositRequired }) {
-  const { deposit, balanceInsufficient } = useDeposit(depositRequired);
+export default function DepositRequired({ deposit, balanceInsufficient }) {
   const node = useChainSettings();
 
   return (

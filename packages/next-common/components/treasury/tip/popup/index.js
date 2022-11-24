@@ -10,7 +10,7 @@ import { checkInputValue, emptyFunction } from "../../../../utils";
 import PopupWithAddress from "../../../popupWithAddress";
 import Beneficiary from "../../common/beneficiary";
 import TipReason from "./tipReason";
-import Signer from "./signer";
+import Signer from "next-common/components/popup/fields/signerField";
 import Tab, { NewTip, ReportAwesome } from "./tab";
 import TipValue from "./tipValue";
 import useAddressBalance from "../../../../utils/hooks/useAddressBalance";
@@ -106,11 +106,12 @@ function PopupContent({
         <Tab tabIndex={tabIndex} setTabIndex={setTabIndex} />
       </div>
       <Signer
-        signerAccount={signerAccount}
-        setSignerAccount={setSignerAccount}
+        isLoading={loading}
+        selectedAccount={signerAccount}
+        setSelectedAccount={setSignerAccount}
         extensionAccounts={extensionAccounts}
         balance={balance}
-        balanceIsLoading={balanceIsLoading}
+        isBalanceLoading={balanceIsLoading}
       />
       <Beneficiary
         extensionAccounts={extensionAccounts}

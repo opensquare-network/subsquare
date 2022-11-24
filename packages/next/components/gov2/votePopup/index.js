@@ -15,7 +15,7 @@ import LoadingVoteStatus from "components/referenda/popup/loadingVoteStatus";
 import Delegating from "components/referenda/popup/delegating";
 import DirectVote from "components/referenda/popup/directVote";
 import VoteButton from "next-common/components/popup/voteButton";
-import Signer from "components/referenda/popup/signer";
+import Signer from "next-common/components/popup/fields/signerField";
 
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import { sendTx } from "next-common/utils/sendTx";
@@ -129,9 +129,9 @@ function PopupContent({
   return (
     <>
       <Signer
-        api={api}
-        votingIsLoading={votingIsLoading}
-        votingBalance={votingBalance}
+        isBalanceLoading={votingIsLoading}
+        balance={votingBalance}
+        balanceName="Voting balance"
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}
         isLoading={loadingState !== VoteLoadingEnum.None}

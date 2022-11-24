@@ -12,7 +12,10 @@ export default function ReferendaBusiness() {
   }
 
   const { section, method, args = [] } = onchain.proposal;
-  if ("treasury" !== section || !["approveProposal", "rejectProposal"].includes(method)) {
+  if (
+    "treasury" !== section ||
+    !["approveProposal", "rejectProposal"].includes(method)
+  ) {
     return null;
   }
 
@@ -23,10 +26,10 @@ export default function ReferendaBusiness() {
         "Link to",
         <Link
           key="proposal-link"
-          href={ `/treasury/proposal/${ proposalId }` }
-        >{ `Treasury Proposal #${ proposalId }` }</Link>,
+          href={`/treasury/proposal/${proposalId}`}
+        >{`Treasury Proposal #${proposalId}`}</Link>,
       ],
-    ]
+    ],
   ];
 
   return <MultiKVList title="Business" data={business} />;

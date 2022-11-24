@@ -5,6 +5,8 @@ import NoExtension from "./noExtension";
 import Inaccessible from "./inaccessible";
 import NoAccounts from "./noAccounts";
 import Popup from "../popup/wrapper/Popup";
+// import { useUser } from "../../context/user/index.js";
+// import ConnectWallet from "../connectWallet";
 
 export default function PopupWithAddress({
   Component,
@@ -12,6 +14,7 @@ export default function PopupWithAddress({
   onClose,
   ...props
 }) {
+  // const loginUser = useUser();
   const ref = useRef();
   useOnClickOutside(ref, () => onClose());
 
@@ -43,6 +46,10 @@ export default function PopupWithAddress({
       />
     );
   }
+
+  // if (!loginUser?.address) {
+  //   return <ConnectWallet onClose={onClose} />;
+  // }
 
   return (
     <Popup onClose={onClose} title={title}>

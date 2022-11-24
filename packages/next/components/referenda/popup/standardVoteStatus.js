@@ -7,8 +7,10 @@ import { toPrecision } from "next-common/utils";
 import { convictionToLockX, getConviction, isAye } from "utils/referendumUtil";
 import PopupLabel from "next-common/components/popup/label";
 import VoteStatusBox from "next-common/components/popup/voteStatusBox";
+import { useChainSettings } from "next-common/context/chain";
 
-export default function StandardVoteStatus({ addressVoteStandard, node }) {
+export default function StandardVoteStatus({ addressVoteStandard }) {
+  const node = useChainSettings();
   const addressVoteStandardBalance = addressVoteStandard?.balance;
   const addressVoteStandardAye = isAye(addressVoteStandard?.vote);
   const addressVoteStandardConviction = getConviction(
