@@ -99,7 +99,15 @@ export default function DelegationButton({
     } finally {
       setIsLoading(false);
     }
-  }, [api, dispatch, signerAddress, onUndelegateInBlock, isMounted, trackId]);
+  }, [
+    api,
+    dispatch,
+    signerAddress,
+    onUndelegateInBlock,
+    isMounted,
+    trackId,
+    showErrorToast,
+  ]);
 
   const openDelegatePopup = useCallback(() => {
     setShowDelegatePopup(true);
