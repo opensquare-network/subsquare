@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled, { css } from "styled-components";
-import { useRouter } from "next/router";
 import { useUser } from "next-common/context/user";
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
@@ -52,7 +51,6 @@ export default function DelegationButton({
   onUndelegateInBlock,
   onDelegateInBlock,
 }) {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [showDelegatePopup, setShowDelegatePopup] = useState(false);
 

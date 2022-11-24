@@ -75,7 +75,7 @@ function rememberAccountName(account, chain) {
   localStorage.setItem(CACHE_KEY.accountMap, JSON.stringify(accountMap));
 }
 
-export default function ConnectWallet({ onClose }) {
+export default function ConnectWallet({ onClose, onLoggedIn }) {
   const chain = useChain();
   const [wallet, setWallet] = useState();
   const [accounts, setAccounts] = useState([]);
@@ -111,7 +111,7 @@ export default function ConnectWallet({ onClose }) {
         );
 
         if (loginResult) {
-          onClose();
+          onLoggedIn(true);
           updateUser(loginResult, userDispatch);
 
           rememberLoginAddress(selectedAccount.address);

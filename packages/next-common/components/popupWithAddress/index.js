@@ -56,7 +56,10 @@ export default function PopupWithAddress({
     )
   ) {
     return (
-      <ConnectWallet onClose={autoCloseAfterLogin ? onClose : emptyFunction} />
+      <ConnectWallet
+        onClose={onClose}
+        onLoggedIn={autoCloseAfterLogin ? onClose : emptyFunction}
+      />
     );
   }
 
