@@ -12,6 +12,8 @@ import SubmitButton from "./submitButton";
 import { StateContext, StateProvider } from "./stateContext";
 import { sendTx } from "../../../../utils/sendTx";
 import { emptyFunction } from "../../../../utils";
+import isNil from "lodash.isnil";
+import { useChain } from "../../../../context/chain";
 
 function PopupContent({
   extensionAccounts,
@@ -24,6 +26,7 @@ function PopupContent({
   onInBlock = emptyFunction,
   useAddressVotingBalance,
 }) {
+  const chain = useChain();
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const { signerAccount, setIsSubmitting } = useContext(StateContext);
@@ -36,7 +39,7 @@ function PopupContent({
       return showErrorToast("Chain network is not connected yet");
     }
 
-    if (!proposalIndex) {
+    if (isNil(proposalIndex)) {
       return;
     }
 
@@ -44,7 +47,12 @@ function PopupContent({
       return showErrorToast("Please select an account");
     }
 
-    const tx = api.tx.democracy.second(proposalIndex, depositorUpperBound || 0);
+    let tx = null;
+    if (chain === "kusama") {
+      tx = api.tx.democracy.second(proposalIndex);
+    } else {
+      tx = api.tx.democracy.second(proposalIndex, depositorUpperBound || 0);
+    }
 
     const signerAddress = signerAccount.address;
 
