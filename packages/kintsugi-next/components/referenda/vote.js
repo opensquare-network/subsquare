@@ -65,6 +65,10 @@ const Wrapper = styled.div`
   }
 `;
 
+const Title = styled(TitleContainer)`
+  margin-bottom: 16px;
+`;
+
 const Headers = styled(Flex)`
   justify-content: space-between;
   font-size: 12px;
@@ -96,6 +100,7 @@ const Status = styled.div`
   font-weight: 700;
   cursor: default;
   text-align: center;
+  margin-top: 8px;
 `;
 
 const PassStatus = styled(Status)`
@@ -191,10 +196,6 @@ const Guide = styled.p`
   }
 `;
 
-const ActionLink = styled(SubLink)`
-  margin-top: 8px !important;
-`;
-
 function Vote({
   referendumInfo,
   referendumIndex,
@@ -248,14 +249,14 @@ function Vote({
   return (
     <Wrapper>
       <SecondaryCardDetail>
-        <TitleContainer>
+        <Title>
           <span>Votes</span>
           <div>
             {isLoadingReferendumStatus || isElectorateLoading ? (
               <Loading size={16} />
             ) : null}
           </div>
-        </TitleContainer>
+        </Title>
 
         <BarWrapper>
           <BarContainer gap={gap}>
@@ -361,10 +362,6 @@ function Vote({
           </Row>
         </div>
 
-        <ActionLink onClick={() => setShowVoteList(true)}>
-          Check all votes
-        </ActionLink>
-
         {referendumInfo?.finished?.approved && <PassStatus>Passed</PassStatus>}
         {referendumInfo?.finished?.approved === false && (
           <RejectStatus>Failed</RejectStatus>
@@ -376,6 +373,13 @@ function Vote({
           ) : (
             <RejectStatus>Failing</RejectStatus>
           ))}
+
+        <SubLink
+          style={{ marginTop: 16 }}
+          onClick={() => setShowVoteList(true)}
+        >
+          Check all votes
+        </SubLink>
       </SecondaryCardDetail>
 
       {!referendumInfo?.finished && (
