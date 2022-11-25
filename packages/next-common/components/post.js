@@ -255,6 +255,13 @@ export default function Post({ data, href, type }) {
               fontSize={12}
               noEvent={userNoClickEvent}
             />
+
+            {data.track && (
+              <MobileHiddenInfo>
+                <Gov2TrackTag name={data.track} />
+              </MobileHiddenInfo>
+            )}
+
             {data.isTreasury && (
               <div>
                 <TreasuryTag />
@@ -283,12 +290,6 @@ export default function Post({ data, href, type }) {
                 <Anchor href={`/treasury/bounty/${data.parentIndex}`} passHref>
                   {`Parent #${data.parentIndex}`}
                 </Anchor>
-              </MobileHiddenInfo>
-            )}
-
-            {data.track && (
-              <MobileHiddenInfo>
-                <Gov2TrackTag name={data.track} />
               </MobileHiddenInfo>
             )}
           </Footer>
