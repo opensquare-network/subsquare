@@ -24,7 +24,7 @@ import TallyInfo from "./tallyInfo";
 import { emptyFunction } from "next-common/utils";
 import { useChain } from "next-common/context/chain";
 
-const Popup = dynamic(() => import("components/referenda/popup"), {
+const VotePopup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
 });
 
@@ -185,7 +185,7 @@ function Vote({
         </VoteButton>
       )}
       {showVote && (
-        <Popup
+        <VotePopup
           onClose={() => setShowVote(false)}
           referendumIndex={referendumIndex}
           onInBlock={updateVoteProgress}

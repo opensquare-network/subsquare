@@ -21,6 +21,7 @@ import { encodeAddressToChain } from "next-common/services/address";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import Signer from "next-common/components/popup/fields/signerField";
 import BalanceField from "next-common/components/popup/fields/balanceField";
+import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -31,7 +32,6 @@ const balanceMap = new Map();
 
 function PopupContent({
   extensionAccounts,
-  councilTippers,
   tipHash,
   onClose,
   onSubmitted = emptyFunction,
@@ -49,6 +49,7 @@ function PopupContent({
   const [selectedAddress, setSelectedAddress] = useState(
     selectedAccount?.address
   );
+  const councilTippers = useCouncilMembers();
 
   useEffect(() => {
     setSelectedAddress(encodeAddressToChain(selectedAccount?.address, chain));
