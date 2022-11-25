@@ -12,15 +12,25 @@ const NotEqual = styled.div`
 `;
 
 export default function ValueDisplay({ value, symbol, noWrap }) {
-  if (isNaN(value) || noWrap) {
-    return `${value} ${symbol}`;
-  }
-
   const symbolContent = <span className="value-display-symbol"> {symbol}</span>;
 
-  if (Number(value) >= 1000000 || getEffectiveNumbers(value)?.length >= 11) {
+  if (isNaN(value) || noWrap) {
+    return (
+      <span>
+        {value}
+        {symbolContent}
+      </span>
+    );
+  }
+
+  if (Number(value) >= 100000 || getEffectiveNumbers(value)?.length >= 11) {
     const abbreviated = abbreviateBigNumber(value, 2);
-    let display = `${abbreviated} ${symbol}`;
+    let display = (
+      <span>
+        {abbreviated}
+        {symbolContent}
+      </span>
+    );
     if (getEffectiveNumbers(abbreviated) !== getEffectiveNumbers(value)) {
       display = (
         <NotEqual>
@@ -49,7 +59,7 @@ export default function ValueDisplay({ value, symbol, noWrap }) {
 
   return (
     <div>
-      <span>{value} </span>
+      <span>{Number(value)?.toLocaleString()} </span>
       {symbolContent}
     </div>
   );
