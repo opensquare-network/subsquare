@@ -3,8 +3,15 @@ import CountDown from "next-common/components/_CountDown";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
-import { useTheme } from "styled-components";
+import styled, { useTheme } from "styled-components";
+import Flex from "../../styled/flex";
 import TimeDuration from "../../TimeDuration";
+
+const Wrapper = styled(Flex)`
+  svg {
+    margin-right: 0;
+  }
+`;
 
 export default function DecisionCountdown({ detail }) {
   const { secondaryBlue500, secondaryBlue100 } = useTheme();
@@ -39,20 +46,22 @@ export default function DecisionCountdown({ detail }) {
   }, [latestHeight]);
 
   return (
-    <CountDown
-      denominator={100}
-      numerator={decisionPercentage}
-      foregroundColor={secondaryBlue500}
-      backgroundColor={secondaryBlue100}
-      tooltipContent={
-        decisionRemaining > 0 && (
-          <span>
-            Deciding end in <TimeDuration blocks={decisionRemaining} />, #
-            {decisionEnd.toLocaleString()}
-          </span>
-        )
-      }
-    />
+    <Wrapper>
+      <CountDown
+        denominator={100}
+        numerator={decisionPercentage}
+        foregroundColor={secondaryBlue500}
+        backgroundColor={secondaryBlue100}
+        tooltipContent={
+          decisionRemaining > 0 && (
+            <span>
+              Deciding end in <TimeDuration blocks={decisionRemaining} />, #
+              {decisionEnd.toLocaleString()}
+            </span>
+          )
+        }
+      />
+    </Wrapper>
   );
 }
 
