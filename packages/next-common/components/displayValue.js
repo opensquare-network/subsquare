@@ -49,7 +49,7 @@ export default function ValueDisplay({ value, symbol, noWrap }) {
 
   return (
     <div>
-      <span>{value} </span>
+      <span>{Number(value)?.toLocaleString()} </span>
       {symbolContent}
     </div>
   );
