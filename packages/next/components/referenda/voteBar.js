@@ -87,16 +87,42 @@ function VoteBar({ tally, electorate, threshold, thin = false }) {
         <BarContainer thin={thin} gap={gap}>
           <AyesBar precent={ayesPercent} />
           <NaysBar precent={naysPercent} />
+
+          {(threshold || "").toLowerCase() === "simplemajority" && (
+            <Threshold thin={thin} threshold={getThresholdOfSimplyMajority()} />
+          )}
+
+          {(threshold || "").toLowerCase() === "supermajorityapprove" && (
+            <Threshold
+              thin={thin}
+              threshold={getThresholdOfSuperMajorityApprove(
+                turnout,
+                electorate
+              )}
+            />
+          )}
+
+          {(threshold || "").toLowerCase() === "supermajorityagainst" && (
+            <Threshold
+              thin={thin}
+              threshold={getThresholdOfSuperMajorityAgainst(
+                turnout,
+                electorate
+              )}
+            />
+          )}
         </BarContainer>
       </BarWrapper>
 
       <Headers>
         <span>Aye</span>
+        {threshold && <span>Passing threshold</span>}
         <span>Nay</span>
       </Headers>
 
       <Contents>
         <span>{ayesPercent}%</span>
+        {threshold && <span>{threshold}</span>}
         <span>{naysPercent}%</span>
       </Contents>
     </Wrapper>
