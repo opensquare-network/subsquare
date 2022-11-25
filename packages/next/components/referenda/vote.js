@@ -144,11 +144,7 @@ function Vote({
           </div>
         </Title>
 
-        <VoteBar
-          tally={referendumStatus?.tally}
-          electorate={electorate}
-          threshold={referendumStatus?.threshold}
-        />
+        <VoteBar tally={referendumStatus?.tally} electorate={electorate} />
 
         <TallyInfo
           tally={referendumStatus?.tally}
