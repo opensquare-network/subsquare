@@ -128,7 +128,6 @@ function PopupContent({
         balance={balance}
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}
-        isLoading={tipping}
         extensionAccounts={extensionAccounts}
       />
       <BalanceField
@@ -146,6 +145,6 @@ function PopupContent({
   );
 }
 
-export default function Popup(props) {
+export default function EndorsePopup(props) {
   return <PopupWithAddress title="Tip" Component={PopupContent} {...props} />;
 }

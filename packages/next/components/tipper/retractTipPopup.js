@@ -5,14 +5,12 @@ import { useDispatch } from "react-redux";
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { emptyFunction, isSameAddress } from "next-common/utils";
+import { emptyFunction } from "next-common/utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
-import { WarningMessage } from "next-common/components/popup/styled";
 import { sendTx } from "next-common/utils/sendTx";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import useSetSignerAccount from "next-common/utils/hooks/useSetSignerAccount";
 import Signer from "next-common/components/popup/fields/signerField";
-import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -21,7 +19,7 @@ const ButtonWrapper = styled.div`
 
 function PopupContent({
   extensionAccounts,
-  childBounty,
+  tipHash,
   onClose,
   onSubmitted = emptyFunction,
   onFinalized = emptyFunction,
@@ -30,18 +28,14 @@ function PopupContent({
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const [selectedAccount, setSelectedAccount] = useState(null);
-  const [claiming, setClaiming] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const api = useApi();
-  const [balance, isBalanceLoading] = useAddressBalance(
-    api,
-    selectedAccount?.address
-  );
 
   useSetSignerAccount(extensionAccounts, setSelectedAccount);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
-  const doClaim = async () => {
+  const doCloseTip = async () => {
     if (!api) {
       return showErrorToast("Chain network is not connected yet");
     }
@@ -50,15 +44,12 @@ function PopupContent({
       return showErrorToast("Please select an account");
     }
 
-    const tx = api.tx.childBounties.claimChildBounty(
-      childBounty.parentBountyId,
-      childBounty.index
-    );
+    const tx = api.tx.tips.retractTip(tipHash);
 
     await sendTx({
       tx,
       dispatch,
-      setLoading: setClaiming,
+      setLoading: setIsLoading,
       onFinalized,
       onInBlock,
       onSubmitted,
@@ -68,26 +59,15 @@ function PopupContent({
     });
   };
 
-  const showWarning = !isSameAddress(
-    selectedAccount?.address,
-    childBounty?.beneficiary
-  );
-  const warningContent = showWarning && (
-    <WarningMessage danger>Only beneficiary can claim rewards.</WarningMessage>
-  );
-
   return (
     <>
       <Signer
-        balance={balance}
-        isBalanceLoading={isBalanceLoading}
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}
         extensionAccounts={extensionAccounts}
       />
-      {warningContent}
       <ButtonWrapper>
-        <SecondaryButton isLoading={claiming} onClick={doClaim}>
+        <SecondaryButton isLoading={isLoading} onClick={doCloseTip}>
           Confirm
         </SecondaryButton>
       </ButtonWrapper>
@@ -95,12 +75,8 @@ function PopupContent({
   );
 }
 
-export default function Popup(props) {
+export default function RetractTipPopup(props) {
   return (
-    <PopupWithAddress
-      title="Claim reward"
-      Component={PopupContent}
-      {...props}
-    />
+    <PopupWithAddress title="Retract tip" Component={PopupContent} {...props} />
   );
 }

@@ -106,7 +106,6 @@ function PopupContent({
   return (
     <>
       <Signer
-        isLoading={loading}
         selectedAccount={signerAccount}
         setSelectedAccount={setSignerAccount}
         extensionAccounts={extensionAccounts}

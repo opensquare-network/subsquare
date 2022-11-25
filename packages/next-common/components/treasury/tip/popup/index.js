@@ -106,7 +106,6 @@ function PopupContent({
         <Tab tabIndex={tabIndex} setTabIndex={setTabIndex} />
       </div>
       <Signer
-        isLoading={loading}
         selectedAccount={signerAccount}
         setSelectedAccount={setSignerAccount}
         extensionAccounts={extensionAccounts}

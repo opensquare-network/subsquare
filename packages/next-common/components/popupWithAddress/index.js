@@ -5,9 +5,7 @@ import NoExtension from "./noExtension";
 import Inaccessible from "./inaccessible";
 import NoAccounts from "./noAccounts";
 import Popup from "../popup/wrapper/Popup";
-import { useUser } from "../../context/user/index.js";
-import ConnectWallet from "../connectWallet";
-import { emptyFunction, isSameAddress } from "../../utils/index.js";
+import MaybeLogin from "../maybeLogin";
 
 export default function PopupWithAddress({
   Component,
@@ -16,7 +14,6 @@ export default function PopupWithAddress({
   autoCloseAfterLogin,
   ...props
 }) {
-  const loginUser = useUser();
   const ref = useRef();
   useOnClickOutside(ref, () => onClose());
 
@@ -39,33 +36,29 @@ export default function PopupWithAddress({
     content = <Inaccessible />;
   } else if (!extensionAccounts || extensionAccounts.length === 0) {
     content = <NoAccounts />;
-  } else {
-    content = (
-      <Component
-        onClose={onClose}
-        extensionAccounts={extensionAccounts}
-        {...props}
-      />
-    );
   }
 
-  if (
-    !loginUser?.address ||
-    !extensionAccounts.find((acc) =>
-      isSameAddress(acc.address, loginUser.address)
-    )
-  ) {
+  if (content) {
     return (
-      <ConnectWallet
-        onClose={onClose}
-        onLoggedIn={autoCloseAfterLogin ? onClose : emptyFunction}
-      />
+      <Popup onClose={onClose} title={title}>
+        {content}
+      </Popup>
     );
   }
 
   return (
-    <Popup onClose={onClose} title={title}>
-      {content}
-    </Popup>
+    <MaybeLogin
+      extensionAccounts={extensionAccounts}
+      onClose={onClose}
+      autoCloseAfterLogin={autoCloseAfterLogin}
+    >
+      <Popup onClose={onClose} title={title}>
+        <Component
+          onClose={onClose}
+          extensionAccounts={extensionAccounts}
+          {...props}
+        />
+      </Popup>
+    </MaybeLogin>
   );
 }

@@ -1,13 +1,16 @@
 import styled from "styled-components";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import { emptyFunction } from "next-common/utils";
+import { emptyFunction, isSameAddress } from "next-common/utils";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import TipperList from "./tipperList";
 import useIsCouncilMember from "next-common/utils/hooks/useIsCouncilMember";
 import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
 import { useSelector } from "react-redux";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import CloseTipPopup from "./closeTipPopup";
+import { useUser } from "next-common/context/user";
+import RetractTipPopup from "./retractTipPopup";
 
 const EndorsePopup = dynamic(() => import("./endorsePopup"), {
   ssr: false,
@@ -37,10 +40,22 @@ const Description = styled.div`
     color: ${(props) => props.theme.primaryPurple500};
     cursor: pointer;
   }
+  > span.danger {
+    color: ${(props) => props.theme.secondaryRed500};
+  }
 `;
 
-export default function Tipper({ chainData, onFinalized = emptyFunction }) {
+export default function Tipper({
+  chainData,
+  onEndorseFinalized = emptyFunction,
+  onCloseTipFinalized = emptyFunction,
+  onRetractFinalized = emptyFunction,
+}) {
+  const loginUser = useUser();
   const [showEndorsePopup, setShowEndorsePopup] = useState(false);
+  const [showCloseTipPopup, setShowCloseTipPopup] = useState(false);
+  const [showRetractPopup, setShowRetractPopup] = useState(false);
+
   const userIsTipper = useIsCouncilMember();
   const scanHeight = useSelector(nodesHeightSelector);
 
@@ -52,11 +67,29 @@ export default function Tipper({ chainData, onFinalized = emptyFunction }) {
 
   const closeFromHeight = chainData.meta?.closes;
   const tipCanClose = !!closeFromHeight && scanHeight > closeFromHeight;
+  const tipCanRetract = isSameAddress(chainData.finder, loginUser?.address);
   const tipHash = chainData.hash;
 
   let closeTipAction = null;
   if (tipCanClose) {
-    closeTipAction = <PrimaryButton isFill>Close tip</PrimaryButton>;
+    closeTipAction = (
+      <PrimaryButton isFill onClick={() => setShowCloseTipPopup(true)}>
+        Close tip
+      </PrimaryButton>
+    );
+  }
+
+  let retractTipAction = null;
+  if (tipCanRetract) {
+    retractTipAction = (
+      <>
+        <br />
+        As a tip proposer, you can{" "}
+        <span className="danger" onClick={() => setShowRetractPopup(true)}>
+          Retract tip
+        </span>
+      </>
+    );
   }
 
   let action = null;
@@ -78,6 +111,7 @@ export default function Tipper({ chainData, onFinalized = emptyFunction }) {
         <Description>
           Only council members can tip, no account found from the council.{" "}
           <span onClick={() => setShowEndorsePopup(true)}>Still tip</span>
+          {retractTipAction}
         </Description>
       </>
     );
@@ -93,7 +127,21 @@ export default function Tipper({ chainData, onFinalized = emptyFunction }) {
         <EndorsePopup
           tipHash={tipHash}
           onClose={() => setShowEndorsePopup(false)}
-          onFinalized={onFinalized}
+          onFinalized={onEndorseFinalized}
+        />
+      )}
+      {showCloseTipPopup && (
+        <CloseTipPopup
+          tipHash={tipHash}
+          onClose={() => setShowCloseTipPopup(false)}
+          onFinalized={onCloseTipFinalized}
+        />
+      )}
+      {showRetractPopup && (
+        <RetractTipPopup
+          tipHash={tipHash}
+          onClose={() => setShowRetractPopup(false)}
+          onFinalized={onRetractFinalized}
         />
       )}
     </>

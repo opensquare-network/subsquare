@@ -96,7 +96,6 @@ function PopupContent({
           extensionAccounts={extensionAccounts}
           selectedAccount={selectedAccount}
           setSelectedAccount={setSelectedAccount}
-          isLoading={loadingState !== VoteLoadingEnum.None}
         />
         {!selectedAccountCanVote && (
           <WarningMessage danger={!selectedAccountCanVote}>

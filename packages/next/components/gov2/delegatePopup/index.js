@@ -119,7 +119,6 @@ function PopupContent({
         balanceName="Voting balance"
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}
-        isLoading={isLoading}
         extensionAccounts={extensionAccounts}
       />
       <Target

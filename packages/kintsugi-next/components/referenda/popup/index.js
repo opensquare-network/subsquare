@@ -104,7 +104,6 @@ function PopupContent({
   return (
     <>
       <Signer
-        isLoading={loadingState !== VoteLoadingEnum.None}
         extensionAccounts={extensionAccounts}
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}

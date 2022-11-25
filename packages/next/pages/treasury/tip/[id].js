@@ -88,7 +88,9 @@ export default withLoginUserRedux(({ detail: tip, comments }) => {
     }
   }, [detail, isMounted]);
 
-  const onTipFinalized = useWaitSyncBlock("Tip endorsed", refreshPageData);
+  const onEndorseFinalized = useWaitSyncBlock("Tip endorsed", refreshPageData);
+  const onCloseTipFinalized = useWaitSyncBlock("Tip closed", refreshPageData);
+  const onRetractFinalized = useWaitSyncBlock("Tip retracted", refreshPageData);
 
   const desc = getMetaDesc(detail);
 
@@ -128,7 +130,12 @@ export default withLoginUserRedux(({ detail: tip, comments }) => {
             />
           }
         />
-        <Tipper chainData={chainData} onFinalized={onTipFinalized} />
+        <Tipper
+          chainData={chainData}
+          onEndorseFinalized={onEndorseFinalized}
+          onCloseTipFinalized={onCloseTipFinalized}
+          onRetractFinalized={onRetractFinalized}
+        />
         <Metadata tip={detail?.onchainData} />
         <Timeline tip={detail?.onchainData} />
         {CommentComponent}
