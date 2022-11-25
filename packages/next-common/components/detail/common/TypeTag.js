@@ -1,8 +1,14 @@
 import React from "react";
+import { usePost } from "../../../context/post";
 import { detailPageCategory } from "../../../utils/consts/business/category";
 import { DemocracyTag, TreasuryTag } from "../../tags/business";
+import Link from "next/link";
+import Gov2TrackTag from "../../gov2/trackTag";
+import LinkInfo from "../../styled/linkInfo";
 
 export default function TypeTag({ type }) {
+  const post = usePost();
+
   let tag;
   if (
     [
@@ -11,7 +17,7 @@ export default function TypeTag({ type }) {
       detailPageCategory.DEMOCRACY_REFERENDUM,
     ].includes(type)
   ) {
-    tag = <DemocracyTag />
+    tag = <DemocracyTag />;
   } else if (
     [
       detailPageCategory.TREASURY_TIP,
@@ -20,14 +26,22 @@ export default function TypeTag({ type }) {
       detailPageCategory.TREASURY_CHILD_BOUNTY,
     ].includes(type)
   ) {
-    tag = <TreasuryTag/>
+    tag = <TreasuryTag />;
+  } else if ([detailPageCategory.GOV2_REFERENDUM].includes(type)) {
+    const trackName = post.onchainData?.trackInfo?.name;
+
+    tag = (
+      <Link href={`/referenda/${trackName}`} passHref>
+        <LinkInfo>
+          <Gov2TrackTag name={trackName} />
+        </LinkInfo>
+      </Link>
+    );
   }
 
   if (!tag) {
-    return null
+    return null;
   }
 
-  return (
-    <div>{ tag }</div>
-  )
+  return <div>{tag}</div>;
 }
