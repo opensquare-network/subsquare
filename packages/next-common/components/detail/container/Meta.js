@@ -8,7 +8,6 @@ import Info from "../../styled/info";
 import Tag from "../../tags/state/tag";
 import isNil from "lodash.isnil";
 import { usePost, usePostState, usePostType } from "../../../context/post";
-import SubCategory from "./SubCategory";
 import { getMotionStateArgs } from "../../../utils/collective/result";
 import { getGov2ReferendumStateArgs } from "../../../utils/gov2/result";
 import { detailPageCategory } from "../../../utils/consts/business/category";
@@ -75,7 +74,6 @@ export default function PostMeta() {
           {!noCommentsCount && commentsCount > -1 && (
             <Info>{`${commentsCount} Comments`}</Info>
           )}
-          <SubCategory />
         </MobileHiddenDividerWrapper>
       </DividerWrapper>
 
