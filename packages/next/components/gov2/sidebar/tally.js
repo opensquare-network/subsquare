@@ -8,7 +8,7 @@ import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import styled from "styled-components";
 import AyeIcon from "public/imgs/icons/aye.svg";
 import NayIcon from "public/imgs/icons/nay.svg";
-import ElectorateIcon from "public/imgs/icons/electorate.svg";
+import TurnoutIcon from "public/imgs/icons/turnout.svg";
 import DisplayValue from "next-common/components/displayValue";
 import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
 import useFetchVoteExtrinsics from "next-common/utils/gov2/useFetchVoteExtrinsics";
@@ -108,7 +108,7 @@ export default function Gov2Tally({ detail }) {
           <BorderedRow>
             <Header>
               <AyeIcon />
-              Ayes
+              Aye
               {!isLoadingVotes ? (
                 <VotesCount>{allAye.length}</VotesCount>
               ) : null}
@@ -124,7 +124,7 @@ export default function Gov2Tally({ detail }) {
           <BorderedRow>
             <Header>
               <NayIcon />
-              Nays
+              Nay
               {!isLoadingVotes ? (
                 <VotesCount>{allNay.length}</VotesCount>
               ) : null}
@@ -139,7 +139,7 @@ export default function Gov2Tally({ detail }) {
           </BorderedRow>
           <Row>
             <Header>
-              <ElectorateIcon />
+              <TurnoutIcon />
               Support
             </Header>
             <Value>
