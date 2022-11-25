@@ -11,6 +11,11 @@ export function useConfirming() {
   return onchain.info?.deciding?.confirming;
 }
 
+export function useTally() {
+  const onchain = useOnchainData();
+  return onchain?.info?.tally;
+}
+
 export function useConfirmingStarted() {
   const timeline = useTimelineData();
   const startedItem = findLast(
