@@ -15,7 +15,7 @@ import useFetchVoteExtrinsics from "next-common/utils/gov2/useFetchVoteExtrinsic
 import { useChainSettings } from "next-common/context/chain";
 import { useState } from "react";
 import AllVotesPopup from "next-common/components/democracy/allVotesPopup";
-import AllVoteExtrinsicsPopup from "./allVoteExtrinsicsPopup";
+import AllVoteExtrinsicsPopup from "../allVoteExtrinsicsPopup";
 import {
   isLoadingVotesSelector,
   votesSelector,
