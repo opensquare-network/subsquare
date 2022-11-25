@@ -38,7 +38,7 @@ const BarWrapper = styled.div`
 `;
 
 const BarContainer = styled.div`
-  margin: 8px 0;
+  margin-bottom: 1rem;
   display: flex;
   gap: ${(p) => p.gap}px;
   height: 8px;
@@ -116,13 +116,13 @@ function VoteBar({ tally, electorate, threshold, thin = false }) {
 
       <Headers>
         <span>Aye</span>
-        {threshold && <span>Passing threshold</span>}
+        <span>Passing threshold</span>
         <span>Nay</span>
       </Headers>
 
       <Contents>
         <span>{ayesPercent}%</span>
-        {threshold && <span>{threshold}</span>}
+        <span>{threshold}</span>
         <span>{naysPercent}%</span>
       </Contents>
     </Wrapper>
