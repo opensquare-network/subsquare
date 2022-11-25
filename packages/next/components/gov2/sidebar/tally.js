@@ -22,6 +22,7 @@ import {
 } from "next-common/store/reducers/gov2ReferendumSlice";
 import VotesCount from "next-common/components/democracy/referendum/votesCount";
 import { useSelector } from "react-redux";
+import VoteBar from "components/referenda/voteBar";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -100,6 +101,9 @@ export default function Gov2Tally({ detail }) {
     <div>
       <SecondaryCardDetail>
         <Title>Tally</Title>
+
+        <VoteBar tally={tally} />
+
         <div>
           <BorderedRow>
             <Header>
