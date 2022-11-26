@@ -26,7 +26,7 @@ export default function ReferendumMetadata({
   const blockHeight = useSelector(latestHeightSelector);
   const latestBlockTime = useLatestBlockTime(api, blockHeight, isMounted);
 
-  const { delay = 0, end = 0, threshold, proposalHash } = status;
+  const { delay = 0, end = 0, threshold, proposalHash, proposal } = status;
   const { state, timeline = [] } = onchainData;
 
   const { endTime, delayTime, isEndEstimated, isDelayEstimated } =
@@ -39,9 +39,14 @@ export default function ReferendumMetadata({
       latestBlockTime
     );
 
+  let hash = proposalHash;
+  if (!hash && proposal?.lookup?.hash) {
+    hash = proposal?.lookup?.hash;
+  }
+
   const metadata = [
     ["Proposer", <User add={proposer} fontSize={14} />],
-    ["Hash", proposalHash],
+    ["Hash", hash],
     [
       "Delay",
       <BlockValue
