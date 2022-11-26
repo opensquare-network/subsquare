@@ -1,5 +1,5 @@
-import TurnoutIcon from "../../../../../public/imgs/icons/turnout.svg";
-import { Header, Row } from "./styled";
+import ElectorateIcon from "../../../../../public/imgs/icons/electorate.svg";
+import { BorderedRow, Header } from "./styled";
 import { useTally } from "next-common/context/post/gov2/referendum";
 import SymbolValue from "./symbolValue";
 
@@ -7,12 +7,12 @@ export default function Support() {
   const tally = useTally();
 
   return (
-    <Row>
+    <BorderedRow>
       <Header>
-        <TurnoutIcon />
+        <ElectorateIcon />
         Support
       </Header>
       <SymbolValue value={tally?.support} />
-    </Row>
+    </BorderedRow>
   );
 }

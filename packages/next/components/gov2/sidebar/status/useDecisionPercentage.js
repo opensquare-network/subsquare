@@ -16,8 +16,12 @@ export function useDecisionEnd() {
 }
 
 export function useDecisionBlocks() {
+  const period = useDecision();
   const end = useDecisionEnd();
   const decidingSince = useDecidingSince();
+  if (!decidingSince) {
+    return period;
+  }
   return end - decidingSince;
 }
 

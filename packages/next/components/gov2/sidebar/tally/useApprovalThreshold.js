@@ -1,12 +1,12 @@
-import { useDecisionBlocks } from "../status/useDecisionPercentage";
 import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import { useSelector } from "react-redux";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { useApprovalCurve } from "next-common/context/post/gov2/curve";
 import { useEffect, useState } from "react";
+import { useDecision } from "next-common/context/post/gov2/track";
 
 export default function useApprovalThreshold() {
-  const decisionBlocks = useDecisionBlocks();
+  const decisionPeriod = useDecision();
   const decidingSince = useDecidingSince();
   const latestHeight = useSelector(latestHeightSelector);
   const approvalCurve = useApprovalCurve();
@@ -14,12 +14,12 @@ export default function useApprovalThreshold() {
 
   const gone = latestHeight - decidingSince;
   useEffect(() => {
-    if (gone < 0) {
+    if (!decidingSince || gone < 0) {
       return;
     }
 
-    setThreshold(approvalCurve(gone / decisionBlocks));
-  }, [gone, decisionBlocks, approvalCurve]);
+    setThreshold(approvalCurve(Math.min(gone / decisionPeriod, 1)));
+  }, [gone, decisionPeriod, approvalCurve, decidingSince]);
 
   return threshold;
 }
