@@ -40,8 +40,11 @@ export default function ReferendumMetadata({
     );
 
   let hash = proposalHash;
+  // todo: we should handle proposal inline type
   if (!hash && proposal?.lookup?.hash) {
     hash = proposal?.lookup?.hash;
+  } else if (proposal?.legacy?.hash) {
+    hash = proposal?.legacy?.hash;
   }
 
   const metadata = [
