@@ -41,7 +41,7 @@ export default function Gov2Tally({ detail }) {
       <VoteBar
         tally={tally}
         threshold="percentage"
-        percentage={`${(approvalThreshold * 100).toFixed(1)}%`}
+        percentage={approvalThreshold}
       />
 
       <Aye />

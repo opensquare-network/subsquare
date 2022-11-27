@@ -5,9 +5,9 @@ export default function Percentage({ perbill = 0 }) {
     return "0.0%";
   }
 
-  if (perbill > Math.pow(10, 7)) {
-    return (perbill / Math.pow(10, 9)).toFixed(1) + "%";
+  if (perbill > Math.pow(10, 8)) {
+    return ((perbill / Math.pow(10, 9)) * 100).toFixed(1) + "%";
   }
 
-  return (perbill / Math.pow(10, 6)).toFixed(1) + "‰";
+  return ((perbill / Math.pow(10, 8)) * 100).toFixed(1) + "‰";
 }

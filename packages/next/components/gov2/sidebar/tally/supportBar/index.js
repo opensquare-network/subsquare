@@ -74,7 +74,7 @@ export default function SupportBar({ issuance }) {
   const support = tally?.support;
 
   const barPercentage = useMemo(() => {
-    if (!issuance) {
+    if (!issuance || !progressMax) {
       return 0;
     }
 

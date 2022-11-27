@@ -8,6 +8,7 @@ import {
   getThresholdOfSuperMajorityApprove,
 } from "utils/referendumUtil";
 import Threshold from "./threshold";
+import isNil from "lodash.isnil";
 
 const Wrapper = styled.div``;
 
@@ -15,6 +16,10 @@ const Headers = styled(Flex)`
   justify-content: space-between;
   font-size: 12px;
   color: ${(props) => props.theme.textPrimary};
+
+  & > span {
+    font-weight: 500;
+  }
 
   span:nth-child(2) {
     text-align: center;
@@ -81,6 +86,8 @@ function VoteBar({ tally, electorate, threshold, percentage, thin = false }) {
     }
   }
 
+  const percentageStr = `${(percentage * 100).toFixed(1)}%`;
+
   return (
     <Wrapper>
       <BarWrapper>
@@ -112,13 +119,17 @@ function VoteBar({ tally, electorate, threshold, percentage, thin = false }) {
             />
           )}
 
-          {threshold === "percentage" && <Threshold thin={percentage} />}
+          {threshold === "percentage" && !isNil(percentage) && (
+            <Threshold threshold={percentageStr} />
+          )}
         </BarContainer>
       </BarWrapper>
 
       <Headers>
         <span>{ayesPercent}%</span>
-        {threshold === "percentage" && <span>{percentage}</span>}
+        {threshold === "percentage" && !isNil(percentage) && (
+          <span>{percentageStr}</span>
+        )}
         {threshold && threshold !== "percentage" && (
           <span>Passing threshold</span>
         )}
@@ -127,7 +138,9 @@ function VoteBar({ tally, electorate, threshold, percentage, thin = false }) {
 
       <Contents>
         <span>Aye</span>
-        {threshold === "percentage" && <span>Threshold</span>}
+        {threshold === "percentage" && !isNil(percentage) && (
+          <span>Threshold</span>
+        )}
         {threshold && threshold !== "percentage" && <span>{threshold}</span>}
         <span>Nay</span>
       </Contents>
