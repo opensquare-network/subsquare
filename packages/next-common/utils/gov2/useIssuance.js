@@ -8,10 +8,12 @@ import {
 } from "../../store/reducers/referendumSlice";
 import { useTimelineData } from "../../context/post";
 import { gov2State } from "../consts/state";
+import { latestHeightSelector } from "../../store/reducers/chainSlice";
 
 export default function useIssuance() {
   const api = useApi();
   const dispatch = useDispatch();
+  const latestHeight = useSelector(latestHeightSelector);
 
   const timeline = useTimelineData();
   const finishItem = (timeline || []).find((item) =>
@@ -29,10 +31,14 @@ export default function useIssuance() {
   const isLoading = useSelector(isLoadingElectorateSelector);
 
   useEffect(() => {
-    if (api) {
+    if (!api) {
+      return;
+    }
+
+    if (!issuance || latestHeight % 10 === 0) {
       dispatch(fetchElectorate(api, height));
     }
-  }, [height, api]);
+  }, [height, api, latestHeight, issuance]);
 
   return {
     issuance,
