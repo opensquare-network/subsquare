@@ -2,25 +2,20 @@ import { useDecision } from "next-common/context/post/gov2/track";
 import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import { useSelector } from "react-redux";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
-import { useSupportCurve } from "next-common/context/post/gov2/curve";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import isNil from "lodash.isnil";
 
-export default function useSupportThreshold() {
+export default function useDecidingPercentage() {
   const decisionPeriod = useDecision();
   const decidingSince = useDecidingSince();
   const latestHeight = useSelector(latestHeightSelector);
-  const supportCurve = useSupportCurve();
-  const [threshold, setThreshold] = useState(null);
 
-  useEffect(() => {
-    if (isNil(decidingSince)) {
-      return;
+  return useMemo(() => {
+    if (isNil(decidingSince) || isNil(latestHeight)) {
+      return null;
     }
 
     const gone = latestHeight - decidingSince;
-    setThreshold(supportCurve(Math.min(gone / decisionPeriod, 1)));
-  }, [latestHeight, decisionPeriod, supportCurve, decidingSince]);
-
-  return threshold;
+    return Math.min(gone / decisionPeriod, 1);
+  }, [decisionPeriod, decidingSince, latestHeight]);
 }

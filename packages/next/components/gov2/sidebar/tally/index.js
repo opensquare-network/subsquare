@@ -10,9 +10,9 @@ import Support from "./values/support";
 import AllVotes from "./allVotes";
 import VoteExtrinsics from "./voteExtrinsics";
 import { useTally } from "next-common/context/post/gov2/referendum";
-import useApprovalThreshold from "./useApprovalThreshold";
+import useApprovalThreshold from "./threshold/useApprovalThreshold";
 import Issuance from "./values/issuance";
-import useSupportThreshold from "./useSupportThreshold";
+import useSupportThreshold from "./threshold/useSupportThreshold";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
