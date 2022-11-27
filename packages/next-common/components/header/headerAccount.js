@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside.js";
 import useWindowSize from "../../utils/hooks/useWindowSize.js";
 import User from "../user";

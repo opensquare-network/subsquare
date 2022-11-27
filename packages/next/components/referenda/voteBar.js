@@ -14,7 +14,7 @@ const Wrapper = styled.div``;
 const Headers = styled(Flex)`
   justify-content: space-between;
   font-size: 12px;
-  color: ${(props) => props.theme.textSecondary};
+  color: ${(props) => props.theme.textPrimary};
 
   span:nth-child(2) {
     text-align: center;
@@ -28,7 +28,7 @@ const Headers = styled(Flex)`
 
 const Contents = styled(Headers)`
   font-weight: 500;
-  color: ${(props) => props.theme.textPrimary};
+  color: ${(props) => props.theme.textSecondary};
   margin-top: 8px !important;
   margin-bottom: 16px;
 `;
@@ -117,19 +117,19 @@ function VoteBar({ tally, electorate, threshold, percentage, thin = false }) {
       </BarWrapper>
 
       <Headers>
-        <span>Aye</span>
+        <span>{ayesPercent}%</span>
         {threshold === "percentage" && <span>{percentage}</span>}
         {threshold && threshold !== "percentage" && (
           <span>Passing threshold</span>
         )}
-        <span>Nay</span>
+        <span>{naysPercent}%</span>
       </Headers>
 
       <Contents>
-        <span>{ayesPercent}%</span>
+        <span>Aye</span>
         {threshold === "percentage" && <span>Threshold</span>}
         {threshold && threshold !== "percentage" && <span>{threshold}</span>}
-        <span>{naysPercent}%</span>
+        <span>Nay</span>
       </Contents>
     </Wrapper>
   );
