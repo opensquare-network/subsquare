@@ -29,6 +29,7 @@ function ConfirmationInfo() {
 }
 
 function Empty() {
+  const { grey100Bg } = useTheme();
   const confirmStart = useConfirmingStarted();
   if (confirmStart) {
     return null;
@@ -37,7 +38,7 @@ function Empty() {
   return (
     <ProgressGroup>
       <Tooltip content="Not started yet">
-        <Progress percentage={0} />
+        <Progress percentage={0} bg={grey100Bg} />
       </Tooltip>
       <ConfirmationInfo />
     </ProgressGroup>
