@@ -8,12 +8,12 @@ function common(track, filed) {
   }
 
   if (curve.reciprocal) {
-    const { factor, xOffset, yOffset } = track.minApproval.reciprocal;
+    const { factor, xOffset, yOffset } = curve.reciprocal;
     return makeReciprocalCurve(factor, xOffset, yOffset);
   }
 
   if (curve.linearDecreasing) {
-    const { length, floor, ceil } = track.minApproval.linearDecreasing;
+    const { length, floor, ceil } = curve.linearDecreasing;
     return makeLinearCurve(length, floor, ceil);
   }
 

@@ -12,6 +12,7 @@ import VoteExtrinsics from "./voteExtrinsics";
 import { useTally } from "next-common/context/post/gov2/referendum";
 import useApprovalThreshold from "./useApprovalThreshold";
 import Issuance from "./values/issuance";
+import useSupportThreshold from "./useSupportThreshold";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -29,8 +30,11 @@ export default function Gov2Tally({ detail }) {
   useFetchVotes(detail?.onchainData);
   useFetchVoteExtrinsics(detail?.onchainData);
   const tally = useTally();
-  const threshold = useApprovalThreshold();
-  console.log("threshold", threshold);
+  const approvalThreshold = useApprovalThreshold();
+  console.log("approvalThreshold:", approvalThreshold);
+
+  const supportThreshold = useSupportThreshold();
+  console.log("supportThreshold:", supportThreshold);
 
   return (
     <SecondaryCardDetail>
