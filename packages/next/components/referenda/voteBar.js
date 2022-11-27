@@ -64,7 +64,7 @@ const NaysBar = styled.div`
   height: 100%;
 `;
 
-function VoteBar({ tally, electorate, threshold, thin = false }) {
+function VoteBar({ tally, electorate, threshold, percentage, thin = false }) {
   const ayes = tally?.ayes ?? 0;
   const nays = tally?.nays ?? 0;
   const turnout = tally?.turnout ?? 0;
@@ -111,18 +111,24 @@ function VoteBar({ tally, electorate, threshold, thin = false }) {
               )}
             />
           )}
+
+          {threshold === "percentage" && <Threshold thin={percentage} />}
         </BarContainer>
       </BarWrapper>
 
       <Headers>
         <span>Aye</span>
-        {threshold && <span>Passing threshold</span>}
+        {threshold === "percentage" && <span>{percentage}</span>}
+        {threshold && threshold !== "percentage" && (
+          <span>Passing threshold</span>
+        )}
         <span>Nay</span>
       </Headers>
 
       <Contents>
         <span>{ayesPercent}%</span>
-        {threshold && <span>{threshold}</span>}
+        {threshold === "percentage" && <span>Threshold</span>}
+        {threshold && threshold !== "percentage" && <span>{threshold}</span>}
         <span>{naysPercent}%</span>
       </Contents>
     </Wrapper>

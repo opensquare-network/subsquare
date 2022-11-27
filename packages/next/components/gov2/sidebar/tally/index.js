@@ -31,7 +31,6 @@ export default function Gov2Tally({ detail }) {
   useFetchVoteExtrinsics(detail?.onchainData);
   const tally = useTally();
   const approvalThreshold = useApprovalThreshold();
-  console.log("approvalThreshold:", approvalThreshold);
 
   const supportThreshold = useSupportThreshold();
   console.log("supportThreshold:", supportThreshold);
@@ -39,7 +38,11 @@ export default function Gov2Tally({ detail }) {
   return (
     <SecondaryCardDetail>
       <Title>Tally</Title>
-      <VoteBar tally={tally} />
+      <VoteBar
+        tally={tally}
+        threshold="percentage"
+        percentage={`${(approvalThreshold * 100).toFixed(1)}%`}
+      />
 
       <Aye />
       <Nay />
