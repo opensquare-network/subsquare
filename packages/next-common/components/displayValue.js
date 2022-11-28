@@ -11,7 +11,13 @@ const NotEqual = styled.div`
   }
 `;
 
-export default function ValueDisplay({ value, symbol, noWrap }) {
+export default function ValueDisplay({
+  value,
+  symbol,
+  noWrap,
+  showTooltip = true,
+}) {
+  const tooltipContent = `${value} ${symbol}`;
   const symbolContent = <span className="value-display-symbol"> {symbol}</span>;
 
   if (isNaN(value) || noWrap) {
@@ -26,35 +32,39 @@ export default function ValueDisplay({ value, symbol, noWrap }) {
   if (Number(value) >= 100000 || getEffectiveNumbers(value)?.length >= 11) {
     const abbreviated = abbreviateBigNumber(value, 2);
     let display = (
-      <span>
+      <span title={!showTooltip && tooltipContent}>
         {abbreviated}
         {symbolContent}
       </span>
     );
     if (getEffectiveNumbers(abbreviated) !== getEffectiveNumbers(value)) {
-      display = (
-        <NotEqual>
-          <span>{abbreviated}</span>
-          {symbolContent}
-        </NotEqual>
-      );
+      display = <NotEqual>{display}</NotEqual>;
     }
-    return <Tooltip content={`${value} ${symbol}`}>{display}</Tooltip>;
+
+    if (showTooltip) {
+      display = <Tooltip content={tooltipContent}>{display}</Tooltip>;
+    }
+
+    return display;
   }
 
   const [int, decimal] = String(value).split(".");
   if (decimal?.length > 5) {
     const shortDecimal = decimal.substring(0, 5);
-    return (
-      <Tooltip content={`${value} ${symbol}`}>
-        <NotEqual>
-          <span>
-            {int}.{shortDecimal}
-          </span>
+    let display = (
+      <NotEqual>
+        <span title={!showTooltip && tooltipContent}>
+          {int}.{shortDecimal}
           {symbolContent}
-        </NotEqual>
-      </Tooltip>
+        </span>
+      </NotEqual>
     );
+
+    if (showTooltip) {
+      display = <Tooltip content={tooltipContent}>{display}</Tooltip>;
+    }
+
+    return display;
   }
 
   return (
