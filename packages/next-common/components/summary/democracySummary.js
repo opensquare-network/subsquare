@@ -20,6 +20,7 @@ import { p_14_normal, p_20_bold } from "next-common/styles/componentCss";
 import { smcss } from "next-common/utils/responsive";
 import Divider from "next-common/components/styled/layout/divider";
 import FlexBetween from "../styled/flexBetween";
+import DemocracySummaryDelegation from "./democracySummaryDelegation";
 
 const Wrapper = styled(SummaryCard)`
   height: auto;
@@ -194,9 +195,9 @@ export default function DemocracySummary() {
         </SummaryItem>
       </SummaryWrapper>
 
-      {/* <Divider margin={16} /> */}
+      <Divider margin={16} />
 
-      {/* <Delegation trackId={id} /> */}
+      <DemocracySummaryDelegation />
     </Wrapper>
   );
 }
