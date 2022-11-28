@@ -86,6 +86,7 @@ function VoteInfo({ item }) {
         <ValueDisplay
           value={toPrecision(item.vote.balance, node.decimals)}
           symbol={node.symbol}
+          showTooltip={false}
         />
       </VoteInfoValue>
       <VoteTime>
