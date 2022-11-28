@@ -43,7 +43,7 @@ const Description = styled.p`
   ${p_14_normal};
 `;
 
-const SummariesWrapper = styled.div`
+const SummaryWrapper = styled.div`
   display: flex;
   ${smcss(css`
     flex-direction: column;
@@ -139,7 +139,7 @@ export default function DemocracySummary() {
 
       <Divider margin={16} />
 
-      <SummariesWrapper>
+      <SummaryWrapper>
         <SummaryItem>
           <SummaryTitle>Proposals</SummaryTitle>
           <Content>
@@ -192,7 +192,7 @@ export default function DemocracySummary() {
             </div>
           </FlexBetween>
         </SummaryItem>
-      </SummariesWrapper>
+      </SummaryWrapper>
 
       {/* <Divider margin={16} /> */}
 
