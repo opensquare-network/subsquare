@@ -86,7 +86,6 @@ function PopupContent({
         balanceName="Voting balance"
         selectedAccount={signerAccount}
         setSelectedAccount={setSignerAccount}
-        isLoading={isSubmitting}
         extensionAccounts={extensionAccounts}
       />
       <DepositRequired

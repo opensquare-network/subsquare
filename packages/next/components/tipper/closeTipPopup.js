@@ -1,16 +1,17 @@
+import React from "react";
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { emptyFunction } from "next-common/utils";
-import { getSigner, sendTx } from "next-common/utils/sendTx";
 import MaybeLoginWithAction from "next-common/components/maybeLoginWithAction";
+import { getSigner, sendTx } from "next-common/utils/sendTx";
 import { useUser } from "next-common/context/user";
-import { useCallback } from "react";
 
-export default function ClaimPopup({
-  childBounty,
+export default function CloseTipPopup({
+  tipHash,
   onClose,
   onSubmitted = emptyFunction,
   onFinalized = emptyFunction,
@@ -26,7 +27,7 @@ export default function ClaimPopup({
     []
   );
 
-  const doClaim = useCallback(async () => {
+  const doCloseTip = useCallback(async () => {
     if (!api) {
       return showErrorToast("Chain network is not connected yet");
     }
@@ -44,10 +45,7 @@ export default function ClaimPopup({
       return showErrorToast(`Unable to find injected ${signerAddress}`);
     }
 
-    const tx = api.tx.childBounties.claimChildBounty(
-      childBounty.parentBountyId,
-      childBounty.index
-    );
+    const tx = api.tx.tips.closeTip(tipHash);
 
     await sendTx({
       tx,
@@ -71,5 +69,5 @@ export default function ClaimPopup({
     onClose,
   ]);
 
-  return <MaybeLoginWithAction actionCallback={doClaim} onClose={onClose} />;
+  return <MaybeLoginWithAction actionCallback={doCloseTip} onClose={onClose} />;
 }

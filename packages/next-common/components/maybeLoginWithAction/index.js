@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useExtensionAccounts from "../../utils/hooks/useExtensionAccounts";
-import Popup from "../popup/wrapper/Popup";
 import MaybeLogin from "../maybeLogin";
 
-export default function PopupWithAddress({
-  Component,
-  title,
+function ActionComponent({ actionCallback, onClose }) {
+  useEffect(() => {
+    onClose();
+    actionCallback();
+  }, []);
+
+  return null;
+}
+
+export default function MaybeLoginWithAction({
+  actionCallback,
   onClose,
   autoCloseAfterLogin,
-  ...props
 }) {
   const { accounts: extensionAccounts, detecting: extensionDetecting } =
     useExtensionAccounts("subsquare");
@@ -23,13 +29,7 @@ export default function PopupWithAddress({
       onClose={onClose}
       autoCloseAfterLogin={autoCloseAfterLogin}
     >
-      <Popup onClose={onClose} title={title}>
-        <Component
-          onClose={onClose}
-          extensionAccounts={extensionAccounts}
-          {...props}
-        />
-      </Popup>
+      <ActionComponent actionCallback={actionCallback} onClose={onClose} />
     </MaybeLogin>
   );
 }

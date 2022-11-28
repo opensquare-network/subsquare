@@ -1,6 +1,4 @@
 /* eslint-disable react/jsx-key */
-import useApi from "next-common/utils/hooks/useApi";
-import useCall from "next-common/utils/hooks/useCall";
 import { useCallback, useEffect, useState } from "react";
 
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
@@ -9,7 +7,6 @@ import { TipStateMap } from "utils/viewfuncs";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { to404 } from "next-common/utils/serverSideUtil";
 
-import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import Timeline from "components/tip/timeline";
@@ -29,12 +26,13 @@ import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import Loading from "next-common/components/loading";
 import TreasuryCountDown from "next-common/components/treasury/common/countdown";
 import { getBannerUrl } from "next-common/utils/banner";
-import { hashEllipsis, isSameAddress } from "next-common/utils";
+import { hashEllipsis } from "next-common/utils";
 import { PostProvider } from "next-common/context/post";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
+import useApi from "next-common/utils/hooks/useApi";
 
 const TipCountDown = ({ meta = {}, state }) => {
   const nowHeight = useSelector(latestHeightSelector);
@@ -61,10 +59,11 @@ const TipCountDown = ({ meta = {}, state }) => {
   );
 };
 
-export default withLoginUserRedux(({ loginUser, detail: tip, comments }) => {
+export default withLoginUserRedux(({ detail: tip, comments }) => {
   const [detail, setDetail] = useState(tip);
   useEffect(() => setDetail(tip), [tip]);
   const isMounted = useIsMounted();
+  const api = useApi();
 
   const chainData = detail?.onchainData ?? {};
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -74,31 +73,6 @@ export default withLoginUserRedux(({ loginUser, detail: tip, comments }) => {
   });
   const dispatch = useDispatch();
 
-  const [tipIsFinal, setTipIsFinal] = useState(
-    ["TipClosed", "TipRetracted"].includes(detail?.onchainData?.state?.state)
-  );
-
-  // If the tip is not final, we'd need to look for tip state from the chain first.
-  const shouldGetTipsFromNode = !tipIsFinal;
-  const tipHash = detail?.onchainData?.hash;
-  const tipsInDb = detail?.onchainData?.meta?.tips || [];
-
-  const [loading, setLoading] = useState(shouldGetTipsFromNode);
-  const [tips, setTips] = useState(tipsInDb);
-
-  const api = useApi();
-  const councilMembers = useCall(
-    (api?.query.council || api?.query.generalCouncil)?.members,
-    []
-  );
-  const councilTippers = councilMembers?.toJSON() || [];
-  const userIsTipper = councilTippers?.some((address) =>
-    isSameAddress(loginUser?.address, address)
-  );
-  // Used to trigger tips updating
-  const [tipsNeedUpdate, setTipsNeedUpdate] = useState(Date.now());
-  const [isLoadingTip, setIsLoadingTip] = useState(false);
-
   useEffect(() => {
     if (api) {
       dispatch(
@@ -107,34 +81,6 @@ export default withLoginUserRedux(({ loginUser, detail: tip, comments }) => {
     }
   }, [api, dispatch]);
 
-  useEffect(() => {
-    if ((shouldGetTipsFromNode || tipsNeedUpdate) && api) {
-      setIsLoadingTip(true);
-      api.query.tips
-        .tips(tipHash)
-        .then((tip) => {
-          const normalizedTip = tip.toJSON();
-          if (normalizedTip) {
-            // Repalce the tips read from db with the current on-chain state
-            setTips(normalizedTip?.tips);
-          } else {
-            // If the tip is null,
-            // It is considered to have been closed/retracted already
-            setTipIsFinal(true);
-          }
-          setLoading(false);
-        })
-        .finally(() => {
-          setIsLoadingTip(false);
-        });
-    }
-  }, [api, shouldGetTipsFromNode, tipHash, tipsNeedUpdate]);
-
-  const updateTips = () => {
-    // Trigger tips update
-    setTipsNeedUpdate(Date.now());
-  };
-
   const refreshPageData = useCallback(async () => {
     const { result } = await nextApi.fetch(`treasury/tips/${detail._id}`);
     if (result && isMounted.current) {
@@ -142,7 +88,9 @@ export default withLoginUserRedux(({ loginUser, detail: tip, comments }) => {
     }
   }, [detail, isMounted]);
 
-  const onTipFinalized = useWaitSyncBlock("Tip endorsed", refreshPageData);
+  const onEndorseFinalized = useWaitSyncBlock("Tip endorsed", refreshPageData);
+  const onCloseTipFinalized = useWaitSyncBlock("Tip closed", refreshPageData);
+  const onRetractFinalized = useWaitSyncBlock("Tip retracted", refreshPageData);
 
   const desc = getMetaDesc(detail);
 
@@ -183,15 +131,10 @@ export default withLoginUserRedux(({ loginUser, detail: tip, comments }) => {
           }
         />
         <Tipper
-          tipIsFinal={tipIsFinal}
-          userIsTipper={userIsTipper}
-          loading={loading}
-          tips={tips}
-          councilTippers={councilTippers}
-          tipHash={tipHash}
-          onInBlock={updateTips}
-          onFinalized={onTipFinalized}
-          isLoadingTip={isLoadingTip}
+          chainData={chainData}
+          onEndorseFinalized={onEndorseFinalized}
+          onCloseTipFinalized={onCloseTipFinalized}
+          onRetractFinalized={onRetractFinalized}
         />
         <Metadata tip={detail?.onchainData} />
         <Timeline tip={detail?.onchainData} />

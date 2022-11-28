@@ -1,20 +1,21 @@
 import styled from "styled-components";
-import { useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import dynamic from "next/dynamic";
-import User from "next-common/components/user";
-import { emptyFunction } from "next-common/utils";
-import Loading from "next-common/components/loading";
+import { emptyFunction, isSameAddress } from "next-common/utils";
+import PrimaryButton from "next-common/components/buttons/primaryButton";
+import TipperList from "./tipperList";
+import useIsCouncilMember from "next-common/utils/hooks/useIsCouncilMember";
+import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
+import { useDispatch, useSelector } from "react-redux";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import { GhostCard } from "next-common/components/styled/containers/ghostCard";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
-import Flex from "next-common/components/styled/flex";
-import floor from "lodash.floor";
-import { StatisticTitleContainer } from "next-common/components/styled/containers/titleContainer";
-import Statistics from "next-common/components/styled/paragraph/statistic";
-import { useChainSettings } from "next-common/context/chain";
-import SymbolBalance from "next-common/components/values/symbolBalance";
+import CloseTipPopup from "./closeTipPopup";
+import { useUser } from "next-common/context/user";
+import { getSigner, sendTx } from "next-common/utils/sendTx";
+import useApi from "next-common/utils/hooks/useApi";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
-const Popup = dynamic(() => import("./popup"), {
+const EndorsePopup = dynamic(() => import("./endorsePopup"), {
   ssr: false,
 });
 
@@ -34,13 +35,6 @@ const Wrapper = styled.div`
   }
 `;
 
-const NoTippers = styled.div`
-  text-align: center;
-  font-size: 12px;
-  line-height: 140%;
-  color: ${(props) => props.theme.textTertiary};
-`;
-
 const Description = styled.div`
   font-size: 12px;
   line-height: 140%;
@@ -49,132 +43,137 @@ const Description = styled.div`
     color: ${(props) => props.theme.primaryPurple500};
     cursor: pointer;
   }
-`;
-
-const TipperList = styled.div`
-  margin-top: 16px;
-  padding: 8px 0px;
-  > :not(:first-child) {
-    margin-top: 8px;
+  > span.danger {
+    color: ${(props) => props.theme.secondaryRed500};
   }
-`;
-
-const TipperItem = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 12px;
-  line-height: 100%;
-  color: ${(props) => props.theme.textSecondary};
-  > :last-child {
-    white-space: nowrap;
-  }
-`;
-
-const LoadingDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 export default function Tipper({
-  tipIsFinal = false,
-  userIsTipper = false,
-  loading = true,
-  tips = [],
-  councilTippers = [],
-  tipHash,
-  onInBlock = emptyFunction,
-  onFinalized = emptyFunction,
-  isLoadingTip,
+  chainData,
+  onEndorseFinalized = emptyFunction,
+  onCloseTipFinalized = emptyFunction,
+  onRetractFinalized = emptyFunction,
 }) {
-  const allTippersCount = councilTippers.length;
-  const threshold = useMemo(() => {
-    return floor((allTippersCount + 1) / 2);
-  }, [allTippersCount]);
-  const [showPopup, setShowPopup] = useState(false);
-  const { decimals, symbol } = useChainSettings();
-  const { width: windowWidth } = useWindowSize();
+  const dispatch = useDispatch();
+  const loginUser = useUser();
+  const isMounted = useIsMounted();
+  const api = useApi();
+  const [showEndorsePopup, setShowEndorsePopup] = useState(false);
+  const [showCloseTipPopup, setShowCloseTipPopup] = useState(false);
 
-  let tipList;
+  const userIsTipper = useIsCouncilMember();
+  const scanHeight = useSelector(nodesHeightSelector);
 
-  if (loading) {
-    tipList = (
-      <TipperList>
-        <LoadingDiv>
-          <Loading size={16} />
-        </LoadingDiv>
-      </TipperList>
-    );
-  } else if (tips.length === 0) {
-    tipList = (
-      <TipperList>
-        <NoTippers>No tippers</NoTippers>
-      </TipperList>
-    );
-  } else {
-    tipList = (
-      <TipperList>
-        {tips.map(([address, amount]) => (
-          <TipperItem key={address}>
-            <User
-              add={address}
-              fontSize={12}
-              {...(windowWidth > 1024 ? { maxWidth: 150 } : {})}
-            />
-            <div>
-              <SymbolBalance value={amount} />
-            </div>
-          </TipperItem>
-        ))}
-      </TipperList>
+  const tipIsFinal = chainData.isFinal;
+  const timeline = chainData.timeline;
+  const lastTimelineBlockHeight =
+    timeline?.[timeline?.length - 1]?.indexer.blockHeight;
+  const atBlockHeight = tipIsFinal ? lastTimelineBlockHeight - 1 : undefined;
+
+  const closeFromHeight = chainData.meta?.closes;
+  const tipCanClose = !!closeFromHeight && scanHeight > closeFromHeight;
+  const tipCanRetract = isSameAddress(chainData.finder, loginUser?.address);
+  const tipHash = chainData.hash;
+
+  const showErrorToast = useCallback(
+    (message) => dispatch(newErrorToast(message)),
+    []
+  );
+
+  const doRetractTip = useCallback(async () => {
+    if (!api) {
+      return showErrorToast("Chain network is not connected yet");
+    }
+
+    if (!loginUser) {
+      return showErrorToast("Please login first");
+    }
+
+    const signerAddress = loginUser.address;
+
+    try {
+      const signer = await getSigner(signerAddress);
+      api.setSigner(signer);
+    } catch (e) {
+      return showErrorToast(`Unable to find injected ${signerAddress}`);
+    }
+
+    const tx = api.tx.tips.retractTip(tipHash);
+
+    await sendTx({
+      tx,
+      dispatch,
+      onFinalized: onRetractFinalized,
+      signerAddress,
+      isMounted,
+    });
+  }, [dispatch, isMounted, api, loginUser, showErrorToast, onRetractFinalized]);
+
+  let closeTipAction = null;
+  if (tipCanClose) {
+    closeTipAction = (
+      <PrimaryButton isFill onClick={() => setShowCloseTipPopup(true)}>
+        Close tip
+      </PrimaryButton>
     );
   }
 
-  let action;
+  let retractTipAction = null;
+  if (tipCanRetract) {
+    retractTipAction = (
+      <>
+        <br />
+        As a tip proposer, you can{" "}
+        <span className="danger" onClick={doRetractTip}>
+          Retract tip
+        </span>
+      </>
+    );
+  }
+
+  let action = null;
   if (tipIsFinal) {
     action = <Description>This tip has been closed.</Description>;
   } else if (userIsTipper) {
     action = (
-      <SecondaryButton isFill onClick={() => setShowPopup(true)}>
-        Endorse
-      </SecondaryButton>
+      <>
+        {closeTipAction}
+        <SecondaryButton isFill onClick={() => setShowEndorsePopup(true)}>
+          Endorse
+        </SecondaryButton>
+      </>
     );
   } else {
     action = (
-      <Description>
-        Only council members can tip, no account found from the council.{" "}
-        <span onClick={() => setShowPopup(true)}>Still tip</span>
-      </Description>
+      <>
+        {closeTipAction}
+        <Description>
+          Only council members can tip, no account found from the council.{" "}
+          <span onClick={() => setShowEndorsePopup(true)}>Still tip</span>
+          {retractTipAction}
+        </Description>
+      </>
     );
   }
 
   return (
     <>
       <Wrapper>
-        <GhostCard>
-          <StatisticTitleContainer>
-            <Flex>
-              <span>Tippers</span>
-              {!loading && (
-                <Statistics>
-                  {tips.length}/{threshold}
-                </Statistics>
-              )}
-            </Flex>
-            <div>{isLoadingTip && <Loading size={16} />}</div>
-          </StatisticTitleContainer>
-          {tipList}
-        </GhostCard>
-        {!loading && action}
+        <TipperList tipHash={tipHash} atBlockHeight={atBlockHeight} />
+        {action}
       </Wrapper>
-      {showPopup && (
-        <Popup
-          councilTippers={councilTippers}
+      {showEndorsePopup && (
+        <EndorsePopup
           tipHash={tipHash}
-          onClose={() => setShowPopup(false)}
-          onInBlock={onInBlock}
-          onFinalized={onFinalized}
+          onClose={() => setShowEndorsePopup(false)}
+          onFinalized={onEndorseFinalized}
+        />
+      )}
+      {showCloseTipPopup && (
+        <CloseTipPopup
+          tipHash={tipHash}
+          onClose={() => setShowCloseTipPopup(false)}
+          onFinalized={onCloseTipFinalized}
         />
       )}
     </>
