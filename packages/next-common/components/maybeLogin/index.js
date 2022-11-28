@@ -13,7 +13,7 @@ export default function MaybeLogin({
 
   if (
     !loginUser?.address ||
-    !extensionAccounts.find((acc) =>
+    !extensionAccounts?.find((acc) =>
       isSameAddress(acc.address, loginUser.address)
     )
   ) {

@@ -5,6 +5,8 @@ import Flex from "../styled/flex";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import Loading from "../loading";
 import { emptyFunction } from "../../utils";
+import { useDispatch } from "react-redux";
+import { newErrorToast } from "../../store/reducers/toastSlice";
 
 const WalletOptions = styled.ul`
   all: unset;
@@ -107,7 +109,11 @@ const Wallet = ({ wallet, onClick, selected = false, loading = false }) => {
   }, [loadingInjectedWeb3, injectedWeb3, wallet?.extensionName, isMounted]);
 
   return (
-    <WalletOption selected={selected} onClick={() => onClick(wallet)} installed={installed}>
+    <WalletOption
+      selected={selected}
+      onClick={() => onClick(wallet)}
+      installed={installed}
+    >
       <Flex>
         <Logo className={wallet.title} alt={wallet.title} />
         <span className="wallet-title">{wallet.title}</span>
@@ -128,6 +134,7 @@ export default function SelectWallet({
   onSelect = emptyFunction,
   onAccessGranted = emptyFunction,
 }) {
+  const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const [waitingPermissionWallet, setWaitingPermissionWallet] = useState(null);
   const { injectedWeb3 } = useInjectedWeb3();
@@ -171,41 +178,54 @@ export default function SelectWallet({
     })();
   }, [injectedWeb3, setAccounts, setSelectWallet, setWallet, isMounted]);
 
-  const loadAccounts = useCallback(async (selectedWallet) => {
-    setAccounts(null);
-    const extension = injectedWeb3?.[selectedWallet];
-    if (!extension) {
-      return;
-    }
-
-    try {
-      setWaitingPermissionWallet(selectedWallet);
-      const wallet = await extension.enable("subsquare");
-      const extensionAccounts = await wallet.accounts?.get();
-      const excludeEthExtensionAccounts = extensionAccounts?.filter(
-        (acc) => acc.type !== "ethereum"
-      );
-
-      if (isMounted.current) {
-        setSelectWallet(selectedWallet);
-        setWallet(wallet);
-        setAccounts(excludeEthExtensionAccounts);
+  const loadAccounts = useCallback(
+    async (selectedWallet) => {
+      setAccounts(null);
+      const extension = injectedWeb3?.[selectedWallet];
+      if (!extension) {
+        return;
       }
 
-      onAccessGranted && onAccessGranted();
-    } catch (e) {
-      console.error(e);
-    } finally {
-      if (isMounted.current) {
-        setWaitingPermissionWallet(null);
-      }
-    }
-  }, [injectedWeb3, setAccounts, setSelectWallet, setWallet, onAccessGranted, isMounted]);
+      try {
+        setWaitingPermissionWallet(selectedWallet);
+        const wallet = await extension.enable("subsquare");
+        const extensionAccounts = await wallet.accounts?.get();
+        const excludeEthExtensionAccounts = extensionAccounts?.filter(
+          (acc) => acc.type !== "ethereum"
+        );
 
-  const onWalletClick = useCallback((wallet) => {
-    loadAccounts(wallet.extensionName);
-    onSelect && onSelect(wallet.extensionName);
-  }, [loadAccounts, onSelect]);
+        if (isMounted.current) {
+          setSelectWallet(selectedWallet);
+          setWallet(wallet);
+          setAccounts(excludeEthExtensionAccounts);
+        }
+
+        onAccessGranted && onAccessGranted();
+      } catch (e) {
+        dispatch(newErrorToast(e.message));
+      } finally {
+        if (isMounted.current) {
+          setWaitingPermissionWallet(null);
+        }
+      }
+    },
+    [
+      injectedWeb3,
+      setAccounts,
+      setSelectWallet,
+      setWallet,
+      onAccessGranted,
+      isMounted,
+    ]
+  );
+
+  const onWalletClick = useCallback(
+    (wallet) => {
+      loadAccounts(wallet.extensionName);
+      onSelect && onSelect(wallet.extensionName);
+    },
+    [loadAccounts, onSelect]
+  );
 
   return (
     <WalletOptions>

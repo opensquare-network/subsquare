@@ -1,26 +1,15 @@
-import styled from "styled-components";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { emptyFunction, isSameAddress } from "next-common/utils";
-import PopupWithAddress from "next-common/components/popupWithAddress";
-import { WarningMessage } from "next-common/components/popup/styled";
-import { sendTx } from "next-common/utils/sendTx";
-import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import useSetSignerAccount from "next-common/utils/hooks/useSetSignerAccount";
-import Signer from "next-common/components/popup/fields/signerField";
-import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
+import { emptyFunction } from "next-common/utils";
+import { getSigner, sendTx } from "next-common/utils/sendTx";
+import MaybeLoginWithAction from "next-common/components/maybeLoginWithAction";
+import { useUser } from "next-common/context/user";
+import { useCallback } from "react";
 
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
-
-function PopupContent({
-  extensionAccounts,
+export default function ClaimPopup({
   childBounty,
   onClose,
   onSubmitted = emptyFunction,
@@ -29,25 +18,30 @@ function PopupContent({
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
-  const [selectedAccount, setSelectedAccount] = useState(null);
-  const [claiming, setClaiming] = useState(false);
   const api = useApi();
-  const [balance, isBalanceLoading] = useAddressBalance(
-    api,
-    selectedAccount?.address
+  const loginUser = useUser();
+
+  const showErrorToast = useCallback(
+    (message) => dispatch(newErrorToast(message)),
+    []
   );
 
-  useSetSignerAccount(extensionAccounts, setSelectedAccount);
-
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
-
-  const doClaim = async () => {
+  const doClaim = useCallback(async () => {
     if (!api) {
       return showErrorToast("Chain network is not connected yet");
     }
 
-    if (!selectedAccount) {
-      return showErrorToast("Please select an account");
+    if (!loginUser) {
+      return showErrorToast("Please login first");
+    }
+
+    const signerAddress = loginUser.address;
+
+    try {
+      const signer = await getSigner(signerAddress);
+      api.setSigner(signer);
+    } catch (e) {
+      return showErrorToast(`Unable to find injected ${signerAddress}`);
     }
 
     const tx = api.tx.childBounties.claimChildBounty(
@@ -58,49 +52,24 @@ function PopupContent({
     await sendTx({
       tx,
       dispatch,
-      setLoading: setClaiming,
       onFinalized,
       onInBlock,
       onSubmitted,
       onClose,
-      signerAddress: selectedAccount.address,
+      signerAddress,
       isMounted,
     });
-  };
+  }, [
+    api,
+    dispatch,
+    isMounted,
+    showErrorToast,
+    loginUser,
+    onFinalized,
+    onInBlock,
+    onSubmitted,
+    onClose,
+  ]);
 
-  const showWarning = !isSameAddress(
-    selectedAccount?.address,
-    childBounty?.beneficiary
-  );
-  const warningContent = showWarning && (
-    <WarningMessage danger>Only beneficiary can claim rewards.</WarningMessage>
-  );
-
-  return (
-    <>
-      <Signer
-        balance={balance}
-        isBalanceLoading={isBalanceLoading}
-        selectedAccount={selectedAccount}
-        setSelectedAccount={setSelectedAccount}
-        extensionAccounts={extensionAccounts}
-      />
-      {warningContent}
-      <ButtonWrapper>
-        <SecondaryButton isLoading={claiming} onClick={doClaim}>
-          Confirm
-        </SecondaryButton>
-      </ButtonWrapper>
-    </>
-  );
-}
-
-export default function Popup(props) {
-  return (
-    <PopupWithAddress
-      title="Claim reward"
-      Component={PopupContent}
-      {...props}
-    />
-  );
+  return <MaybeLoginWithAction actionCallback={doClaim} onClose={onClose} />;
 }

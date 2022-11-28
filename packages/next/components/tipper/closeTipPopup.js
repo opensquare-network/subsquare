@@ -1,24 +1,16 @@
-import styled from "styled-components";
-import { useState } from "react";
+import React from "react";
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { emptyFunction } from "next-common/utils";
-import PopupWithAddress from "next-common/components/popupWithAddress";
-import { sendTx } from "next-common/utils/sendTx";
-import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import useSetSignerAccount from "next-common/utils/hooks/useSetSignerAccount";
-import Signer from "next-common/components/popup/fields/signerField";
+import MaybeLoginWithAction from "next-common/components/maybeLoginWithAction";
+import { getSigner, sendTx } from "next-common/utils/sendTx";
+import { useUser } from "next-common/context/user";
 
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
-
-function PopupContent({
-  extensionAccounts,
+export default function CloseTipPopup({
   tipHash,
   onClose,
   onSubmitted = emptyFunction,
@@ -27,21 +19,30 @@ function PopupContent({
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
-  const [selectedAccount, setSelectedAccount] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const api = useApi();
+  const loginUser = useUser();
 
-  useSetSignerAccount(extensionAccounts, setSelectedAccount);
+  const showErrorToast = useCallback(
+    (message) => dispatch(newErrorToast(message)),
+    []
+  );
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
-
-  const doCloseTip = async () => {
+  const doCloseTip = useCallback(async () => {
     if (!api) {
       return showErrorToast("Chain network is not connected yet");
     }
 
-    if (!selectedAccount) {
-      return showErrorToast("Please select an account");
+    if (!loginUser) {
+      return showErrorToast("Please login first");
+    }
+
+    const signerAddress = loginUser.address;
+
+    try {
+      const signer = await getSigner(signerAddress);
+      api.setSigner(signer);
+    } catch (e) {
+      return showErrorToast(`Unable to find injected ${signerAddress}`);
     }
 
     const tx = api.tx.tips.closeTip(tipHash);
@@ -49,34 +50,24 @@ function PopupContent({
     await sendTx({
       tx,
       dispatch,
-      setLoading: setIsLoading,
       onFinalized,
       onInBlock,
       onSubmitted,
       onClose,
-      signerAddress: selectedAccount.address,
+      signerAddress,
       isMounted,
     });
-  };
+  }, [
+    api,
+    dispatch,
+    isMounted,
+    showErrorToast,
+    loginUser,
+    onFinalized,
+    onInBlock,
+    onSubmitted,
+    onClose,
+  ]);
 
-  return (
-    <>
-      <Signer
-        selectedAccount={selectedAccount}
-        setSelectedAccount={setSelectedAccount}
-        extensionAccounts={extensionAccounts}
-      />
-      <ButtonWrapper>
-        <SecondaryButton isLoading={isLoading} onClick={doCloseTip}>
-          Confirm
-        </SecondaryButton>
-      </ButtonWrapper>
-    </>
-  );
-}
-
-export default function CloseTipPopup(props) {
-  return (
-    <PopupWithAddress title="Close tip" Component={PopupContent} {...props} />
-  );
+  return <MaybeLoginWithAction actionCallback={doCloseTip} onClose={onClose} />;
 }

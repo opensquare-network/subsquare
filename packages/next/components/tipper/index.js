@@ -1,16 +1,19 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import dynamic from "next/dynamic";
-import { emptyFunction, isSameAddress } from "next-common/utils";
+import { emptyFunction } from "next-common/utils";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import TipperList from "./tipperList";
 import useIsCouncilMember from "next-common/utils/hooks/useIsCouncilMember";
 import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import CloseTipPopup from "./closeTipPopup";
 import { useUser } from "next-common/context/user";
-import RetractTipPopup from "./retractTipPopup";
+import { getSigner, sendTx } from "next-common/utils/sendTx";
+import useApi from "next-common/utils/hooks/useApi";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 const EndorsePopup = dynamic(() => import("./endorsePopup"), {
   ssr: false,
@@ -51,10 +54,12 @@ export default function Tipper({
   onCloseTipFinalized = emptyFunction,
   onRetractFinalized = emptyFunction,
 }) {
+  const dispatch = useDispatch();
   const loginUser = useUser();
+  const isMounted = useIsMounted();
+  const api = useApi();
   const [showEndorsePopup, setShowEndorsePopup] = useState(false);
   const [showCloseTipPopup, setShowCloseTipPopup] = useState(false);
-  const [showRetractPopup, setShowRetractPopup] = useState(false);
 
   const userIsTipper = useIsCouncilMember();
   const scanHeight = useSelector(nodesHeightSelector);
@@ -69,6 +74,40 @@ export default function Tipper({
   const tipCanClose = !!closeFromHeight && scanHeight > closeFromHeight;
   const tipCanRetract = isSameAddress(chainData.finder, loginUser?.address);
   const tipHash = chainData.hash;
+
+  const showErrorToast = useCallback(
+    (message) => dispatch(newErrorToast(message)),
+    []
+  );
+
+  const doRetractTip = useCallback(async () => {
+    if (!api) {
+      return showErrorToast("Chain network is not connected yet");
+    }
+
+    if (!loginUser) {
+      return showErrorToast("Please login first");
+    }
+
+    const signerAddress = loginUser.address;
+
+    try {
+      const signer = await getSigner(signerAddress);
+      api.setSigner(signer);
+    } catch (e) {
+      return showErrorToast(`Unable to find injected ${signerAddress}`);
+    }
+
+    const tx = api.tx.tips.retractTip(tipHash);
+
+    await sendTx({
+      tx,
+      dispatch,
+      onFinalized: onRetractFinalized,
+      signerAddress,
+      isMounted,
+    });
+  }, [dispatch, isMounted, api, loginUser, showErrorToast, onRetractFinalized]);
 
   let closeTipAction = null;
   if (tipCanClose) {
@@ -85,7 +124,7 @@ export default function Tipper({
       <>
         <br />
         As a tip proposer, you can{" "}
-        <span className="danger" onClick={() => setShowRetractPopup(true)}>
+        <span className="danger" onClick={doRetractTip}>
           Retract tip
         </span>
       </>
@@ -135,13 +174,6 @@ export default function Tipper({
           tipHash={tipHash}
           onClose={() => setShowCloseTipPopup(false)}
           onFinalized={onCloseTipFinalized}
-        />
-      )}
-      {showRetractPopup && (
-        <RetractTipPopup
-          tipHash={tipHash}
-          onClose={() => setShowRetractPopup(false)}
-          onFinalized={onRetractFinalized}
         />
       )}
     </>

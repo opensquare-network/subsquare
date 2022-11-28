@@ -6,7 +6,7 @@ export default function useExtensionAccounts(appName) {
   const isMounted = useIsMounted();
   const [hasExtension, setHasExtension] = useState(false);
   const [accounts, setAccounts] = useState([]);
-  const [extensionAccessible, setExtensionAccessible] = useState(false);
+  const [accessible, seAccessible] = useState(false);
   const [detecting, setDetecting] = useState(true);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function useExtensionAccounts(appName) {
 
       const accessEnabled = web3Apps?.length > 0;
       if (isMounted.current) {
-        setExtensionAccessible(accessEnabled);
+        seAccessible(accessEnabled);
       }
       if (!accessEnabled) {
         if (isMounted.current) {
@@ -45,5 +45,5 @@ export default function useExtensionAccounts(appName) {
     })();
   }, [isMounted]);
 
-  return [accounts, hasExtension, extensionAccessible, detecting];
+  return { accounts, hasExtension, accessible, detecting };
 }
