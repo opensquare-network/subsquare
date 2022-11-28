@@ -4,6 +4,7 @@ import styled from "styled-components";
 import PostList from "next-common/components/postList";
 import PlusIcon from "../../assets/imgs/icons/plusInCircle.svg";
 import EmptyOverview from "./emptyOverview";
+import OverviewSummary from "../summary/overview";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -46,6 +47,8 @@ export default function Overview({ overviewData }) {
         if (item) {
           return (
             <PostList
+              title="Overview"
+              summary={<OverviewSummary />}
               key={index}
               category={item.category}
               items={item.items}
