@@ -9,6 +9,11 @@ import Nay from "./values/nay";
 import Support from "./values/support";
 import AllVotes from "./allVotes";
 import VoteExtrinsics from "./voteExtrinsics";
+import { useTally } from "next-common/context/post/gov2/referendum";
+import useApprovalThreshold from "./threshold/useApprovalThreshold";
+import Issuance from "./values/issuance";
+import SupportBar from "./supportBar";
+import useIssuance from "next-common/utils/gov2/useIssuance";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -25,17 +30,27 @@ const Footer = styled.div`
 export default function Gov2Tally({ detail }) {
   useFetchVotes(detail?.onchainData);
   useFetchVoteExtrinsics(detail?.onchainData);
+  const tally = useTally();
+  const approvalThreshold = useApprovalThreshold();
 
-  const tally = detail?.onchainData?.info?.tally;
+  const { issuance } = useIssuance();
 
   return (
     <SecondaryCardDetail>
       <Title>Tally</Title>
-      <VoteBar tally={tally} />
+      <VoteBar
+        tally={tally}
+        threshold="percentage"
+        percentage={approvalThreshold}
+      />
 
       <Aye />
       <Nay />
+
+      <SupportBar issuance={issuance} />
+
       <Support />
+      <Issuance issuance={issuance} />
 
       <Footer>
         <AllVotes />
