@@ -43,7 +43,7 @@ export default function DecisionProgress() {
         <Progress percentage={decisionPercentage} />
       </Tooltip>
       <ProgressInfo>
-        <p>Decision Period</p>
+        <p>Decision</p>
         <p>
           <TimeDuration
             blocks={decisionBlocks}

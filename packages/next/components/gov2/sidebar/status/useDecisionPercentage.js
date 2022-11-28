@@ -12,12 +12,18 @@ export function useDecisionEnd() {
   const decidingSince = useDecidingSince();
   const confirming = useConfirming();
 
+  // note: referendum can still be deciding even after decision period gone, when it's still confirming.
   return Math.max(decidingSince + trackDecision, confirming || 0);
 }
 
 export function useDecisionBlocks() {
+  const period = useDecision();
   const end = useDecisionEnd();
   const decidingSince = useDecidingSince();
+  if (!decidingSince) {
+    return period;
+  }
+
   return end - decidingSince;
 }
 

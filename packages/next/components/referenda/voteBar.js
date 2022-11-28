@@ -8,13 +8,18 @@ import {
   getThresholdOfSuperMajorityApprove,
 } from "utils/referendumUtil";
 import Threshold from "./threshold";
+import isNil from "lodash.isnil";
 
 const Wrapper = styled.div``;
 
 const Headers = styled(Flex)`
   justify-content: space-between;
   font-size: 12px;
-  color: ${(props) => props.theme.textSecondary};
+  color: ${(props) => props.theme.textPrimary};
+
+  & > span {
+    font-weight: 500;
+  }
 
   span:nth-child(2) {
     text-align: center;
@@ -28,7 +33,7 @@ const Headers = styled(Flex)`
 
 const Contents = styled(Headers)`
   font-weight: 500;
-  color: ${(props) => props.theme.textPrimary};
+  color: ${(props) => props.theme.textSecondary};
   margin-top: 8px !important;
   margin-bottom: 16px;
 `;
@@ -38,7 +43,7 @@ const BarWrapper = styled.div`
 `;
 
 const BarContainer = styled.div`
-  margin-bottom: 1rem;
+  margin: 8px 0;
   display: flex;
   gap: ${(p) => p.gap}px;
   height: 8px;
@@ -64,7 +69,7 @@ const NaysBar = styled.div`
   height: 100%;
 `;
 
-function VoteBar({ tally, electorate, threshold, thin = false }) {
+function VoteBar({ tally, electorate, threshold, percentage, thin = false }) {
   const ayes = tally?.ayes ?? 0;
   const nays = tally?.nays ?? 0;
   const turnout = tally?.turnout ?? 0;
@@ -80,6 +85,8 @@ function VoteBar({ tally, electorate, threshold, thin = false }) {
       gap = 0;
     }
   }
+
+  const percentageStr = `${(percentage * 100).toFixed(1)}%`;
 
   return (
     <Wrapper>
@@ -111,19 +118,31 @@ function VoteBar({ tally, electorate, threshold, thin = false }) {
               )}
             />
           )}
+
+          {threshold === "percentage" && !isNil(percentage) && (
+            <Threshold threshold={percentageStr} />
+          )}
         </BarContainer>
       </BarWrapper>
 
       <Headers>
-        <span>Aye</span>
-        <span>Passing threshold</span>
-        <span>Nay</span>
+        <span>{ayesPercent}%</span>
+        {threshold === "percentage" && !isNil(percentage) && (
+          <span>{percentageStr}</span>
+        )}
+        {threshold && threshold !== "percentage" && (
+          <span>Passing threshold</span>
+        )}
+        <span>{naysPercent}%</span>
       </Headers>
 
       <Contents>
-        <span>{ayesPercent}%</span>
-        <span>{threshold}</span>
-        <span>{naysPercent}%</span>
+        <span>Aye</span>
+        {threshold === "percentage" && !isNil(percentage) && (
+          <span>Threshold</span>
+        )}
+        {threshold && threshold !== "percentage" && <span>{threshold}</span>}
+        <span>Nay</span>
       </Contents>
     </Wrapper>
   );

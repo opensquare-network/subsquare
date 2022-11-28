@@ -4,7 +4,6 @@ const Wrapper = styled.div`
   position: relative;
   border-radius: 4px;
   height: 8px;
-  border-radius: 4px;
   overflow: hidden;
 `;
 
@@ -15,7 +14,7 @@ const Bar = styled.div`
   left: 0;
   right: 0;
   border-radius: 4px;
-  overflow: hidde;
+  overflow: hidden;
 `;
 
 const Background = styled(Bar)`

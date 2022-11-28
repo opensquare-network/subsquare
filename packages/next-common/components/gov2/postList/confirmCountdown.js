@@ -1,10 +1,17 @@
 import isNil from "lodash.isnil";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
-import { useTheme } from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { latestHeightSelector } from "../../../store/reducers/chainSlice";
+import Flex from "../../styled/flex";
 import TimeDuration from "../../TimeDuration";
 import CountDown from "../../_CountDown";
+
+const Wrapper = styled(Flex)`
+  svg {
+    margin-right: 0;
+  }
+`;
 
 export default function ConfirmCountdown({ detail }) {
   const { secondaryGreen500, secondaryGreen100 } = useTheme();
@@ -38,20 +45,22 @@ export default function ConfirmCountdown({ detail }) {
   }, [latestHeight]);
 
   return (
-    <CountDown
-      denominator={100}
-      numerator={confirmPercentage}
-      foregroundColor={secondaryGreen500}
-      backgroundColor={secondaryGreen100}
-      tooltipContent={
-        confirmRemaining > 0 && (
-          <span>
-            Confirming end in <TimeDuration blocks={confirmRemaining} /> #
-            {confirmEnd?.toLocaleString()}
-          </span>
-        )
-      }
-    />
+    <Wrapper>
+      <CountDown
+        denominator={100}
+        numerator={confirmPercentage}
+        foregroundColor={secondaryGreen500}
+        backgroundColor={secondaryGreen100}
+        tooltipContent={
+          confirmRemaining > 0 && (
+            <span>
+              Confirming end in <TimeDuration blocks={confirmRemaining} /> #
+              {confirmEnd?.toLocaleString()}
+            </span>
+          )
+        }
+      />
+    </Wrapper>
   );
 }
 
