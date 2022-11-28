@@ -86,11 +86,13 @@ export async function sendTx({
               const message = getDispatchError(dispatchError);
               dispatch(removeToast(toastId));
               dispatch(newErrorToast(`Extrinsic failed: ${message}`));
+              unsub();
               return;
             }
           }
 
           if (noWaitForFinalized) {
+            unsub();
             dispatch(removeToast(toastId));
           } else {
             dispatch(

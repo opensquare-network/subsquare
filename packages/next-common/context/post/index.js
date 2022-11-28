@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer } from "react";
+import React, { createContext, useContext, useEffect, useReducer } from "react";
 
 const PostContext = createContext(null);
 const PostDispatchContext = createContext(null);
@@ -7,6 +7,12 @@ export const POST_UPDATE_ACTION = "UPDATE";
 
 export function PostProvider({ children, post, type }) {
   const [detail, dispatch] = useReducer(postReducer, post);
+  useEffect(() => {
+    dispatch({
+      type: POST_UPDATE_ACTION,
+      post,
+    });
+  }, [post]);
 
   return (
     <PostContext.Provider value={detail}>
