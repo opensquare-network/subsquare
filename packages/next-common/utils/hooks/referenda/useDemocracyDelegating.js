@@ -1,3 +1,5 @@
+// copied from `useTrackDelegation`
+
 import { useEffect, useState } from "react";
 import { getDemocracyDelegation } from "../../democracy/getDemocracyDelegation";
 import useIsMounted from "../useIsMounted";
