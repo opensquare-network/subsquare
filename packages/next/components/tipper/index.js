@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useCallback, useState } from "react";
 import dynamic from "next/dynamic";
-import { emptyFunction } from "next-common/utils";
+import { emptyFunction, isSameAddress } from "next-common/utils";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import TipperList from "./tipperList";
 import useIsCouncilMember from "next-common/utils/hooks/useIsCouncilMember";
