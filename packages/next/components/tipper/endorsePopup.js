@@ -72,7 +72,7 @@ function PopupContent({
 
     let bnTipValue;
     try {
-      bnTipValue = checkInputValue(inputTipValue, decimals, "tip value");
+      bnTipValue = checkInputValue(inputTipValue, decimals, "tip value", true);
     } catch (err) {
       return showErrorToast(err.message);
     }

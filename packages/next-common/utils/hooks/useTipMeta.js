@@ -2,7 +2,11 @@ import React from "react";
 import { useEffect, useState } from "react";
 import useApi from "./useApi";
 
-export default function useTipMeta(tipHash, atBlockHeight) {
+export default function useTipMeta(
+  tipHash,
+  atBlockHeight,
+  forceToReadLastBlock = false
+) {
   const [isLoading, setIsLoading] = useState(true);
   const [tipMeta, setTipMeta] = useState();
   const api = useApi();
@@ -16,7 +20,7 @@ export default function useTipMeta(tipHash, atBlockHeight) {
 
     Promise.resolve(api)
       .then((api) => {
-        if (atBlockHeight) {
+        if (!forceToReadLastBlock && atBlockHeight) {
           return api.rpc.chain
             .getBlockHash(atBlockHeight)
             .then((blockHash) => api.at(blockHash));
@@ -30,7 +34,7 @@ export default function useTipMeta(tipHash, atBlockHeight) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [api, tipHash, atBlockHeight]);
+  }, [api, tipHash, atBlockHeight, forceToReadLastBlock]);
 
   return { isLoading, tipMeta };
 }

@@ -68,7 +68,7 @@ export default function Tipper({
   const timeline = chainData.timeline;
   const lastTimelineBlockHeight =
     timeline?.[timeline?.length - 1]?.indexer.blockHeight;
-  const atBlockHeight = lastTimelineBlockHeight;
+  const atBlockHeight = lastTimelineBlockHeight - 1;
 
   const closeFromHeight = chainData.meta?.closes;
   const tipCanClose = !!closeFromHeight && scanHeight > closeFromHeight;
@@ -168,7 +168,11 @@ export default function Tipper({
   return (
     <>
       <Wrapper>
-        <TipperList tipHash={tipHash} atBlockHeight={atBlockHeight} />
+        <TipperList
+          tipHash={tipHash}
+          tipIsFinal={tipIsFinal}
+          atBlockHeight={atBlockHeight}
+        />
         {action}
       </Wrapper>
       {showEndorsePopup && (
