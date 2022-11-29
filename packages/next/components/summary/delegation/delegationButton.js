@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import styled, { css } from "styled-components";
+import { Button } from "next-common/components/summary/styled";
 import { useUser } from "next-common/context/user";
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
@@ -9,41 +9,6 @@ import DelegatePopup from "components/gov2/delegatePopup";
 import AddSVG from "next-common/assets/imgs/icons/add.svg";
 import RemoveSVG from "next-common/assets/imgs/icons/remove.svg";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-
-const Button = styled.div`
-  cursor: pointer;
-
-  ${(p) =>
-    p.disabled &&
-    css`
-      pointer-events: none;
-    `}
-
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 16px;
-  color: ${(p) => (p.disabled ? p.theme.textSecondary : p.theme.textPrimary)};
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 4px 12px;
-  gap: 4px;
-  background: ${(p) => p.theme.neutral};
-  border: 1px solid ${(p) => p.theme.grey300Border};
-  border-radius: 4px;
-  :hover {
-    border-color: ${(p) => p.theme.grey400Border};
-  }
-
-  svg {
-    path {
-      stroke: ${(p) =>
-        p.disabled ? p.theme.textSecondary : p.theme.textPrimary};
-    }
-  }
-`;
 
 export default function DelegationButton({
   delegating,
