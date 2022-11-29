@@ -27,17 +27,6 @@ const Wrapper = styled(SummaryCard)`
   height: auto;
 `;
 
-const TitleGroup = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Title = styled.h2`
-  margin: 0;
-  color: ${(p) => p.theme.textPrimary};
-  ${p_20_bold}
-`;
-
 const Description = styled.p`
   margin: 0;
   margin-top: 4px;
@@ -130,14 +119,10 @@ export default function DemocracySummary() {
 
   return (
     <Wrapper>
-      <div>
-        <TitleGroup>
-          <Title>Referenda</Title>
-        </TitleGroup>
-        <Description>
-          Referenda are simple, inclusive, stake-based voting schemes.
-        </Description>
-      </div>
+      <Description>
+        Democracy uses public proposal, external proposal and referenda to mange
+        the governance process.
+      </Description>
 
       <Divider margin={16} />
 
