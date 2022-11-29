@@ -5,6 +5,7 @@ import { useTally } from "next-common/context/post/gov2/referendum";
 import { useEffect, useMemo, useState } from "react";
 import ThresholdComponent from "../../../../referenda/threshold";
 import Percentage from "./percentage";
+import isNil from "lodash.isnil";
 
 const Wrapper = styled.div`
   margin-top: 21px;
@@ -55,9 +56,9 @@ const Mark = styled(ThresholdComponent)`
 export default function SupportBar({ issuance }) {
   const supportThreshold = useSupportThreshold();
   // threshold in perbill
-  const [threshold, setThreshold] = useState(0);
+  const [threshold, setThreshold] = useState(null);
   // progress max value in perbill
-  const [progressMax, setProgressMax] = useState(0);
+  const [progressMax, setProgressMax] = useState(null);
   const { grey100Bg } = useTheme();
 
   useEffect(() => {
@@ -67,15 +68,23 @@ export default function SupportBar({ issuance }) {
   }, [supportThreshold]);
 
   useEffect(() => {
-    setProgressMax((threshold / 4) * 5);
+    if (!isNil(threshold)) {
+      setProgressMax((threshold / 4) * 5);
+    }
   }, [threshold]);
 
   const tally = useTally();
   const support = tally?.support;
 
   const barPercentage = useMemo(() => {
-    if (!issuance || !progressMax) {
+    if (!issuance || isNil(progressMax)) {
       return 0;
+    }
+
+    // when the decision period reach end, we show 100% for support bar,
+    // because support threshold require 0% at the end
+    if (progressMax <= 0) {
+      return 100;
     }
 
     const supportPercentage = (support / issuance) * Math.pow(10, 9);
