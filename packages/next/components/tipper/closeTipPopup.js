@@ -24,7 +24,7 @@ export default function CloseTipPopup({
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
-    []
+    [dispatch]
   );
 
   const doCloseTip = useCallback(async () => {
@@ -67,6 +67,7 @@ export default function CloseTipPopup({
     onInBlock,
     onSubmitted,
     onClose,
+    tipHash,
   ]);
 
   return <MaybeLoginWithAction actionCallback={doCloseTip} onClose={onClose} />;

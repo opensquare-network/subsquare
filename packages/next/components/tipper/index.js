@@ -77,7 +77,7 @@ export default function Tipper({
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
-    []
+    [dispatch]
   );
 
   const doRetractTip = useCallback(async () => {
@@ -107,7 +107,15 @@ export default function Tipper({
       signerAddress,
       isMounted,
     });
-  }, [dispatch, isMounted, api, loginUser, showErrorToast, onRetractFinalized]);
+  }, [
+    dispatch,
+    isMounted,
+    api,
+    loginUser,
+    showErrorToast,
+    onRetractFinalized,
+    tipHash,
+  ]);
 
   let closeTipAction = null;
   if (tipCanClose) {

@@ -23,7 +23,7 @@ export default function ClaimPopup({
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
-    []
+    [dispatch]
   );
 
   const doClaim = useCallback(async () => {
@@ -69,6 +69,7 @@ export default function ClaimPopup({
     onInBlock,
     onSubmitted,
     onClose,
+    childBounty,
   ]);
 
   return <MaybeLoginWithAction actionCallback={doClaim} onClose={onClose} />;
