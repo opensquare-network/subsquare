@@ -68,7 +68,7 @@ export default function Tipper({
   const timeline = chainData.timeline;
   const lastTimelineBlockHeight =
     timeline?.[timeline?.length - 1]?.indexer.blockHeight;
-  const atBlockHeight = tipIsFinal ? lastTimelineBlockHeight - 1 : undefined;
+  const atBlockHeight = lastTimelineBlockHeight;
 
   const closeFromHeight = chainData.meta?.closes;
   const tipCanClose = !!closeFromHeight && scanHeight > closeFromHeight;
@@ -130,7 +130,6 @@ export default function Tipper({
   if (tipCanRetract) {
     retractTipAction = (
       <>
-        <br />
         As a tip proposer, you can{" "}
         <span className="danger" onClick={doRetractTip}>
           Retract tip
@@ -149,6 +148,7 @@ export default function Tipper({
         <SecondaryButton isFill onClick={() => setShowEndorsePopup(true)}>
           Endorse
         </SecondaryButton>
+        <Description>{retractTipAction}</Description>
       </>
     );
   } else {
@@ -158,6 +158,7 @@ export default function Tipper({
         <Description>
           Only council members can tip, no account found from the council.{" "}
           <span onClick={() => setShowEndorsePopup(true)}>Still tip</span>
+          <br />
           {retractTipAction}
         </Description>
       </>
