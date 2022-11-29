@@ -11,11 +11,17 @@ export default function Delegating({ addressVoteDelegate }) {
   const addressVoteDelegateBalance = addressVoteDelegate?.balance;
   const addressVoteDelegateConviction = addressVoteDelegate?.conviction;
   const addressVoteDelegateTarget = addressVoteDelegate?.target;
+  const shortAddr = `${addressVoteDelegateTarget?.substr(
+    0,
+    4
+  )}...${addressVoteDelegateTarget?.substr(
+    addressVoteDelegateTarget?.length - 4
+  )}`;
 
   return (
     <div>
       <DelegatingInfo>
-        The address is set to proxy mode, the proxy address cannot vote
+        This address is delegating to {shortAddr}, and it can not vote directly.
       </DelegatingInfo>
       <DelegatingValue>
         <div className="vote">
@@ -28,19 +34,14 @@ export default function Delegating({ addressVoteDelegate }) {
           </div>
         </div>
         <div className="proxy">
-          <div className="proxy-label">Proxy</div>
+          <div className="proxy-label">Delegation</div>
           <a
             className="proxy-addr"
             href={`https://${node.value}.subscan.io/account/${addressVoteDelegateTarget}`}
             target="_blank"
             rel="noreferrer"
           >
-            {`${addressVoteDelegateTarget?.substr(
-              0,
-              4
-            )}...${addressVoteDelegateTarget?.substr(
-              addressVoteDelegateTarget?.length - 4
-            )}`}
+            {shortAddr}
           </a>
         </div>
       </DelegatingValue>
