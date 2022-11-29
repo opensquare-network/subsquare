@@ -74,6 +74,7 @@ export default function Progress({
       <Background />
       {items.map((item, idx) => (
         <TooltipWrapper
+          key={idx}
           start={Number(item.start) || 0}
           end={Math.abs(Number(item.end) || 100)}
           percentage={item.percentage}
@@ -81,7 +82,6 @@ export default function Progress({
         >
           <Tooltip content={item.tooltipContent}>
             <PercentageWrapper
-              key={idx}
               bg={item.bg}
               start={Number(item.start) || 0}
               end={Math.abs(Number(item.end) || 100)}
