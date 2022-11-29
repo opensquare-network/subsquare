@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -22,35 +23,53 @@ const Background = styled(Bar)`
 `;
 
 const Percentage = styled(Bar)`
-  background-color: ${(p) => p.fg ?? p.theme.secondaryBlue500};
+  background-color: ${(p) => p.fg};
   width: ${(p) => p.percentage}%;
 `;
-const Total = styled(Bar)`
-  background-color: ${(p) => p.bg ?? p.theme.secondaryBlue100};
-  width: ${(p) => 100 - p.offsetLeft - p.offsetRight}%;
-  left: ${(p) => p.offsetLeft}%;
-  right: ${(p) => p.offsetRight}%;
-  overflow: hidden;
+const PercentageWrapper = styled(Bar)`
+  left: ${(p) => p.start || 0}%;
+  width: ${(p) => (p.end >= 100 ? p.end - p.start : p.end)}%;
+  background-color: ${(p) => p.bg};
 `;
 
 export default function Progress({
   percentage = 0,
-  offsetLeft = 0,
-  offsetRight = 0,
+  start = 0,
+  end = 100,
   fg,
   bg,
+
+  progressItems = [],
 }) {
+  const items = useMemo(() => {
+    const p = progressItems;
+
+    if (!p.length) {
+      p.push({
+        percentage,
+        fg,
+        bg,
+        start,
+        end,
+      });
+    }
+
+    return p;
+  }, [progressItems]);
+
   return (
     <Wrapper>
       <Background />
-      <Total bg={bg} offsetLeft={offsetLeft} offsetRight={offsetRight}>
-        <Percentage
-          fg={fg}
-          percentage={percentage}
-          offsetLeft={offsetLeft}
-          offsetRight={offsetRight}
-        />
-      </Total>
+      {items.map((item, idx) => (
+        <PercentageWrapper
+          key={idx}
+          bg={item.bg}
+          start={Number(item.start) || 0}
+          end={Math.abs(Number(item.end) || 100)}
+        >
+          <Percentage fg={item.fg} percentage={item.percentage} />
+        </PercentageWrapper>
+      ))}
     </Wrapper>
   );
 }
