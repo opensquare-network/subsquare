@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { getBlockTimeByHeight } from "../blockTime";
+import useApi from "./useApi";
 
-export default function useLatestBlockTime(api, blockHeight, isMounted) {
+export default function useLatestBlockTime(blockHeight, isMounted) {
+  const api = useApi();
   const [time, setTime] = useState(0);
 
   useEffect(() => {

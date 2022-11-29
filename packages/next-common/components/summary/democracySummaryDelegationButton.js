@@ -47,7 +47,6 @@ const Button = styled.div`
 
 export default function DemocracySummaryDelegationButton({
   delegating,
-  trackId,
   onUndelegateInBlock,
   onDelegateInBlock,
 }) {
@@ -82,7 +81,7 @@ export default function DemocracySummaryDelegationButton({
       return showErrorToast(`Unable to find injected ${signerAddress}`);
     }
 
-    const tx = api.tx.convictionVoting.undelegate(trackId);
+    const tx = api.tx.democracy.undelegate();
 
     setIsLoading(true);
     try {
@@ -103,7 +102,6 @@ export default function DemocracySummaryDelegationButton({
     signerAddress,
     onUndelegateInBlock,
     isMounted,
-    trackId,
     showErrorToast,
   ]);
 
@@ -130,7 +128,6 @@ export default function DemocracySummaryDelegationButton({
       {delegating ? removeDelegationButton : addDelegationButton}
       {showDelegatePopup && (
         <DelegatePopup
-          trackId={trackId}
           onInBlock={onDelegateInBlock}
           onClose={() => setShowDelegatePopup(false)}
         />
