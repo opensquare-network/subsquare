@@ -93,7 +93,6 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
         />
 
         <ReferendumMetadata
-          api={api}
           proposer={detail?.proposer}
           status={referendumStatus ?? {}}
           call={

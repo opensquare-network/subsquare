@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   flex-wrap: wrap;
 `;
 
-export default function DemocracySummaryDelegation({ trackId }) {
+export default function DemocracySummaryDelegation() {
   const dispatch = useDispatch();
   const api = useApi();
   const loginUser = useUser();
@@ -40,7 +40,6 @@ export default function DemocracySummaryDelegation({ trackId }) {
       <DemocracySummaryDelegationInfo delegating={delegating} />
       <DemocracySummaryDelegationButton
         delegating={delegating}
-        trackId={trackId}
         onDelegateInBlock={onDelegateInBlock}
         onUndelegateInBlock={onUndelegateInBlock}
       />

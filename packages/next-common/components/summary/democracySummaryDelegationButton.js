@@ -5,7 +5,7 @@ import { useUser } from "next-common/context/user";
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getSigner, sendTx } from "next-common/utils/sendTx";
-import DelegatePopup from "components/gov2/delegatePopup";
+import DelegatePopup from "next-common/components/democracy/delegatePopup";
 import AddSVG from "next-common/assets/imgs/icons/add.svg";
 import RemoveSVG from "next-common/assets/imgs/icons/remove.svg";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -47,7 +47,6 @@ const Button = styled.div`
 
 export default function DemocracySummaryDelegationButton({
   delegating,
-  trackId,
   onUndelegateInBlock,
   onDelegateInBlock,
 }) {
@@ -82,7 +81,7 @@ export default function DemocracySummaryDelegationButton({
       return showErrorToast(`Unable to find injected ${signerAddress}`);
     }
 
-    const tx = api.tx.convictionVoting.undelegate(trackId);
+    const tx = api.tx.democracy.undelegate();
 
     setIsLoading(true);
     try {
@@ -103,7 +102,6 @@ export default function DemocracySummaryDelegationButton({
     signerAddress,
     onUndelegateInBlock,
     isMounted,
-    trackId,
     showErrorToast,
   ]);
 
@@ -130,7 +128,6 @@ export default function DemocracySummaryDelegationButton({
       {delegating ? removeDelegationButton : addDelegationButton}
       {showDelegatePopup && (
         <DelegatePopup
-          trackId={trackId}
           onInBlock={onDelegateInBlock}
           onClose={() => setShowDelegatePopup(false)}
         />
