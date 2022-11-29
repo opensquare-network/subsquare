@@ -35,6 +35,7 @@ const TooltipWrapper = styled.div`
   left: ${(p) => p.start || 0}%;
   width: ${(p) => (p.end >= 100 ? p.end - p.start : p.end)}%;
 
+  /* tooltip children wrapper */
   > div {
     width: ${(p) => p.percentage}%;
     background-color: ${(p) => p.fg};
