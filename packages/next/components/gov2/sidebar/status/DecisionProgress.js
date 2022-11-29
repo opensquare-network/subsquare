@@ -17,8 +17,10 @@ import {
   Tooltip,
   ProgressInfoLabel,
 } from "./styled";
+import { useTheme } from "styled-components";
 
 export default function DecisionProgress() {
+  const { secondaryBlue500, secondaryBlue100 } = useTheme();
   const latestHeight = useSelector(latestHeightSelector);
 
   const decisionBlocks = useDecisionBlocks();
@@ -45,7 +47,11 @@ export default function DecisionProgress() {
           decisionRemaining > 0 && <Remaining blocks={decisionRemaining} />
         }
       >
-        <Progress percentage={decisionPercentage} />
+        <Progress
+          percentage={decisionPercentage}
+          fg={secondaryBlue500}
+          bg={secondaryBlue100}
+        />
       </Tooltip>
       <ProgressInfo>
         <ProgressInfoLabel>Decision</ProgressInfoLabel>
