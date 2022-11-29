@@ -5,7 +5,7 @@ import { useUser } from "next-common/context/user";
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getSigner, sendTx } from "next-common/utils/sendTx";
-import DelegatePopup from "components/gov2/delegatePopup";
+import DelegatePopup from "next-common/components/democracy/delegatePopup";
 import AddSVG from "next-common/assets/imgs/icons/add.svg";
 import RemoveSVG from "next-common/assets/imgs/icons/remove.svg";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";

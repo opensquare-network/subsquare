@@ -28,7 +28,6 @@ const ButtonWrapper = styled.div`
 
 function PopupContent({
   extensionAccounts,
-  trackId,
   onClose,
   onInBlock = emptyFunction,
 }) {
@@ -92,8 +91,7 @@ function PopupContent({
       );
     }
 
-    const tx = api.tx.convictionVoting.delegate(
-      trackId,
+    const tx = api.tx.democracy.delegate(
       targetAddress,
       conviction,
       bnVoteBalance.toString()
