@@ -17,7 +17,8 @@ export function useDecidingEndPercentage() {
       gov2State.Approved,
       gov2State.Cancelled,
       gov2State.Rejected,
-      gov2State.Timeout,
+      gov2State.TimedOut,
+      gov2State.TimedOut,
       gov2State.Killed,
       "Confirmed",
     ].includes(item.name)
@@ -26,8 +27,12 @@ export function useDecidingEndPercentage() {
   const endHeight = endItem ? endItem.indexer.blockHeight : latestHeight;
 
   return useMemo(() => {
-    if (isNil(decidingSince) || isNil(endHeight)) {
+    if (isNil(endHeight)) {
       return null;
+    }
+
+    if (isNil(decidingSince)) {
+      return 0;
     }
 
     const gone = endHeight - decidingSince;
