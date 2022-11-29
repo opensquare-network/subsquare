@@ -34,11 +34,13 @@ const TooltipWrapper = styled.div`
   bottom: 0;
   left: ${(p) => p.start || 0}%;
   width: ${(p) => (p.end >= 100 ? p.end - p.start : p.end)}%;
+  background-color: ${(p) => p.bg};
+  border-radius: 4px;
 
   /* tooltip children wrapper */
   > div {
     width: ${(p) => p.percentage}%;
-    background-color: ${(p) => p.fg};
+    background-color: ${(p) => p.fg || p.theme.secondaryBlue500};
     ${bar_css};
   }
 `;
@@ -80,14 +82,11 @@ export default function Progress({
           end={Math.abs(Number(item.end) || 100)}
           percentage={item.percentage}
           fg={item.fg}
+          bg={item.bg}
         >
           <Tooltip content={item.tooltipContent}>
-            <PercentageWrapper
-              bg={item.bg}
-              start={Number(item.start) || 0}
-              end={Math.abs(Number(item.end) || 100)}
-            >
-              <Percentage fg={item.fg} percentage={item.percentage} />
+            <PercentageWrapper>
+              <Percentage />
             </PercentageWrapper>
           </Tooltip>
         </TooltipWrapper>
