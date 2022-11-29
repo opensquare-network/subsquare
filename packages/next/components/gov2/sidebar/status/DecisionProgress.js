@@ -38,12 +38,16 @@ export default function DecisionProgress() {
   return (
     <ProgressGroup>
       <Progress
-        tooltipContent={
-          decisionRemaining > 0 && <Remaining blocks={decisionRemaining} />
-        }
-        percentage={decisionPercentage}
-        fg={secondaryBlue500}
-        bg={secondaryBlue100}
+        progressItems={[
+          {
+            tooltipContent: decisionRemaining > 0 && (
+              <Remaining blocks={decisionRemaining} />
+            ),
+            percentage: decisionPercentage,
+            fg: secondaryBlue500,
+            bg: secondaryBlue100,
+          },
+        ]}
       />
       <ProgressInfo>
         <ProgressInfoLabel>Decision</ProgressInfoLabel>
