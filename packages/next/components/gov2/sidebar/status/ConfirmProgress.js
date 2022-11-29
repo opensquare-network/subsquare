@@ -2,6 +2,7 @@ import {
   ProgressGroup,
   ProgressInfo,
   ProgressInfoLabel,
+  ProgressTooltipFailContent,
   Tooltip,
 } from "./styled";
 import { useSelector } from "react-redux";
@@ -112,8 +113,14 @@ function ConfirmationStarted() {
         start,
         end,
         fg: grey400Border,
-        // TODO: duration
-        tooltipContent: `Started: ${startedHeight?.toLocaleString?.()}`,
+        tooltipContent: (
+          <ProgressTooltipFailContent>
+            <span>Started: {startedHeight?.toLocaleString?.()}</span>
+            <span>
+              Duration: <TimeDuration blocks={abortedHeight - startedHeight} />
+            </span>
+          </ProgressTooltipFailContent>
+        ),
       };
     });
 

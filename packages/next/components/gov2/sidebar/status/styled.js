@@ -16,3 +16,7 @@ export const ProgressInfo = styled(FlexBetween)`
 export const ProgressInfoLabel = styled.p`
   font-weight: 500;
 `;
+export const ProgressTooltipFailContent = styled.span`
+  display: inline-flex;
+  gap: 8px;
+`;
