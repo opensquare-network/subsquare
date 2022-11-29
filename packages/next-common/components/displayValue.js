@@ -32,7 +32,7 @@ export default function ValueDisplay({
   if (Number(value) >= 100000 || getEffectiveNumbers(value)?.length >= 11) {
     const abbreviated = abbreviateBigNumber(value, 2);
     let display = (
-      <span title={!showTooltip && tooltipContent}>
+      <span title={showTooltip ? "" : tooltipContent}>
         {abbreviated}
         {symbolContent}
       </span>
@@ -53,7 +53,7 @@ export default function ValueDisplay({
     const shortDecimal = decimal.substring(0, 5);
     let display = (
       <NotEqual>
-        <span title={!showTooltip && tooltipContent}>
+        <span title={showTooltip ? "" : tooltipContent}>
           {int}.{shortDecimal}
           {symbolContent}
         </span>
