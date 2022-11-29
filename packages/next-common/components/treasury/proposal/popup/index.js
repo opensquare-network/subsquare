@@ -19,6 +19,7 @@ import useBond from "../../../../utils/hooks/useBond";
 import { sendTx } from "../../../../utils/sendTx";
 import SecondaryButton from "../../../buttons/secondaryButton";
 import { useChainSettings } from "../../../../context/chain";
+import useSignerAccount from "../../../../utils/hooks/useSignerAccount";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -34,7 +35,7 @@ function PopupContent({
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
-  const [signerAccount, setSignerAccount] = useState(null);
+  const signerAccount = useSignerAccount(extensionAccounts);
   const [inputValue, setInputValue] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -106,9 +107,7 @@ function PopupContent({
   return (
     <>
       <Signer
-        selectedAccount={signerAccount}
-        setSelectedAccount={setSignerAccount}
-        extensionAccounts={extensionAccounts}
+        signerAccount={signerAccount}
         balance={balance}
         isBalanceLoading={balanceIsLoading}
       />

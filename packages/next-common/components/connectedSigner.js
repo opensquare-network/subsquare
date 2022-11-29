@@ -13,14 +13,10 @@ const Wrapper = styled.div`
   border-radius: 4px;
 `;
 
-export default function ConnectedSigner({ selectedAccount }) {
+export default function ConnectedSigner({ signerAccount }) {
   return (
     <Wrapper>
-      {selectedAccount ? (
-        <Account account={selectedAccount} />
-      ) : (
-        <EmptyAccount />
-      )}
+      {signerAccount ? <Account account={signerAccount} /> : <EmptyAccount />}
     </Wrapper>
   );
 }

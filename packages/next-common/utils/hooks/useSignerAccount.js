@@ -1,13 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { isKeyRegisteredUser, isSameAddress } from "..";
 import { CACHE_KEY } from "../constants";
 import { useUser } from "../../context/user";
 import useApi from "./useApi";
 
-export default function useSetSignerAccount(
-  extensionAccounts,
-  setSignerAccount
-) {
+export default function useSignerAccount(extensionAccounts) {
+  const [signerAccount, setSignerAccount] = useState();
   const api = useApi();
   const user = useUser();
   const isKeyUser = isKeyRegisteredUser(user);
@@ -48,5 +46,7 @@ export default function useSetSignerAccount(
         name: account.meta?.name,
       });
     }
-  }, [extensionAccounts, address, setSignerAccount, api]);
+  }, [extensionAccounts, address, isKeyUser, api]);
+
+  return signerAccount;
 }
