@@ -1,4 +1,9 @@
-import { ProgressGroup, ProgressInfo, Tooltip } from "./styled";
+import {
+  ProgressGroup,
+  ProgressInfo,
+  ProgressInfoLabel,
+  Tooltip,
+} from "./styled";
 import { useSelector } from "react-redux";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { useConfirm } from "next-common/context/post/gov2/track";
@@ -20,7 +25,7 @@ function ConfirmationInfo() {
 
   return (
     <ProgressInfo>
-      <p>Confirmation</p>
+      <ProgressInfoLabel>Confirmation</ProgressInfoLabel>
       <p>
         <TimeDuration blocks={confirmPeriod} showMinutes={false} />
       </p>

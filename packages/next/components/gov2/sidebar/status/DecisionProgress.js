@@ -11,7 +11,12 @@ import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import Remaining from "./remaining";
 import Progress from "next-common/components/progress";
 import TimeDuration from "next-common/components/TimeDuration";
-import { ProgressGroup, ProgressInfo, Tooltip } from "./styled";
+import {
+  ProgressGroup,
+  ProgressInfo,
+  Tooltip,
+  ProgressInfoLabel,
+} from "./styled";
 
 export default function DecisionProgress() {
   const latestHeight = useSelector(latestHeightSelector);
@@ -43,7 +48,7 @@ export default function DecisionProgress() {
         <Progress percentage={decisionPercentage} />
       </Tooltip>
       <ProgressInfo>
-        <p>Decision</p>
+        <ProgressInfoLabel>Decision</ProgressInfoLabel>
         <p>
           <TimeDuration
             blocks={decisionBlocks}
