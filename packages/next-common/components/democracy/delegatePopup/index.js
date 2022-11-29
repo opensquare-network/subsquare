@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -15,12 +16,11 @@ import Signer from "next-common/components/popup/fields/signerField";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import { sendTx } from "next-common/utils/sendTx";
 import { useChainSettings } from "next-common/context/chain";
-import Conviction from "next-common/components/democracy/delegatePopup/conviction";
-import VoteValue from "next-common/components/democracy/delegatePopup/voteValue";
-import Target from "next-common/components/democracy/delegatePopup/target";
+import Conviction from "./conviction";
+import VoteValue from "./voteValue";
+import Target from "./target";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import styled from "styled-components";
-import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -29,14 +29,13 @@ const ButtonWrapper = styled.div`
 
 function PopupContent({
   extensionAccounts,
-  trackId,
   onClose,
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
 
-  const signerAccount = useSignerAccount(extensionAccounts);
+  const [selectedAccount, setSelectedAccount] = useState(null);
   const [targetAddress, setTargetAddress] = useState("");
 
   const api = useApi();
@@ -45,7 +44,7 @@ function PopupContent({
   const [isLoading, setIsLoading] = useState(false);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.address
+    selectedAccount?.address
   );
 
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
@@ -73,7 +72,7 @@ function PopupContent({
       return showErrorToast("Insufficient voting balance");
     }
 
-    if (!signerAccount) {
+    if (!selectedAccount) {
       return showErrorToast("Please select an account");
     }
 
@@ -85,7 +84,7 @@ function PopupContent({
       return showErrorToast("Please input a target address");
     }
 
-    const signerAddress = signerAccount?.address;
+    const signerAddress = selectedAccount?.address;
 
     if (isSameAddress(targetAddress, signerAddress)) {
       return showErrorToast(
@@ -93,8 +92,7 @@ function PopupContent({
       );
     }
 
-    const tx = api.tx.convictionVoting.delegate(
-      trackId,
+    const tx = api.tx.democracy.delegate(
       targetAddress,
       conviction,
       bnVoteBalance.toString()
@@ -118,7 +116,10 @@ function PopupContent({
         isBalanceLoading={votingIsLoading}
         balance={votingBalance}
         balanceName="Voting balance"
-        signerAccount={signerAccount}
+        selectedAccount={selectedAccount}
+        setSelectedAccount={setSelectedAccount}
+        isLoading={isLoading}
+        extensionAccounts={extensionAccounts}
       />
       <Target
         extensionAccounts={extensionAccounts}

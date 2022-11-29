@@ -1,12 +1,13 @@
+import React from "react";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import useTrackDelegating from "next-common/utils/hooks/referenda/useTrackDelegation";
 import useApi from "next-common/utils/hooks/useApi";
 import { useUser } from "next-common/context/user";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
-import DelegationInfo from "next-common/components/summary/democracySummaryDelegationInfo";
-import DelegationButton from "./delegationButton";
+import DemocracySummaryDelegationInfo from "./democracySummaryDelegationInfo";
+import DemocracySummaryDelegationButton from "./democracySummaryDelegationButton";
+import useDemocracyDelegating from "../../utils/hooks/referenda/useDemocracyDelegating";
 
 const Wrapper = styled.div`
   display: flex;
@@ -16,13 +17,12 @@ const Wrapper = styled.div`
   flex-wrap: wrap;
 `;
 
-export default function Delegation({ trackId }) {
+export default function DemocracySummaryDelegation() {
   const dispatch = useDispatch();
   const api = useApi();
   const loginUser = useUser();
-  const { delegating, refresh } = useTrackDelegating(
+  const { delegating, refresh } = useDemocracyDelegating(
     api,
-    trackId,
     loginUser?.address
   );
 
@@ -38,10 +38,9 @@ export default function Delegation({ trackId }) {
 
   return (
     <Wrapper>
-      <DelegationInfo delegating={delegating} />
-      <DelegationButton
+      <DemocracySummaryDelegationInfo delegating={delegating} />
+      <DemocracySummaryDelegationButton
         delegating={delegating}
-        trackId={trackId}
         onDelegateInBlock={onDelegateInBlock}
         onUndelegateInBlock={onUndelegateInBlock}
       />

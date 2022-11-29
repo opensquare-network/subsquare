@@ -1,16 +1,18 @@
 import React from "react";
 import styled from "styled-components";
 
+const size = 40;
+
 const CircleWrapper = styled.div`
   position: relative;
-  width: 48px;
-  height: 48px;
+  width: ${size}px;
+  height: ${size}px;
 `;
 
 const BackCircle = styled.div`
   position: absolute;
-  width: 48px;
-  height: 48px;
+  width: ${size}px;
+  height: ${size}px;
   border-radius: 50%;
   border: 8px solid ${(props) => props.theme.primaryPurple100};
   background: ${(props) => props.theme.neutral};
@@ -18,14 +20,14 @@ const BackCircle = styled.div`
 
 const InnerCircleWrapper = styled.div`
   position: absolute;
-  width: 48px;
-  height: 48px;
+  width: ${size}px;
+  height: ${size}px;
 `;
 
 const InnerCircle = styled.div`
   position: absolute;
-  width: 46px;
-  height: 46px;
+  width: ${size - 2}px;
+  height: ${size - 2}px;
   left: 1px;
   top: 1px;
   background: ${(props) => props.theme.neutral};
@@ -57,8 +59,8 @@ const PercentLable = styled.div`
   transform: translate(-50%, -50%);
   top: 50%;
   left: 50%;
-  font-size: 12px;
-  font-weight: bold;
+  font-size: 10px;
+  font-weight: 700;
   color: ${(props) => props.theme.textPrimary};
 `;
 

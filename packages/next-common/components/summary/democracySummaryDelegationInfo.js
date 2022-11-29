@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { Conviction } from "utils/referendumUtil";
 import { useChainSettings } from "next-common/context/chain";
@@ -31,7 +32,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function DelegationInfo({ delegating }) {
+export default function DemocracySummaryDelegationInfo({ delegating }) {
   const node = useChainSettings();
   if (!delegating) {
     return <div />;

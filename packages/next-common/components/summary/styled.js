@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { p_12_bold } from "../../styles/componentCss";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
 
@@ -28,4 +28,39 @@ export const SummaryTitle = styled.div`
 
 export const SummaryGreyText = styled.span`
   color: ${(props) => props.theme.textTertiary}; !important;
+`;
+
+export const Button = styled.div`
+  cursor: pointer;
+
+  ${(p) =>
+    p.disabled &&
+    css`
+      pointer-events: none;
+    `}
+
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${(p) => (p.disabled ? p.theme.textSecondary : p.theme.textPrimary)};
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 12px;
+  gap: 4px;
+  background: ${(p) => p.theme.neutral};
+  border: 1px solid ${(p) => p.theme.grey300Border};
+  border-radius: 4px;
+  :hover {
+    border-color: ${(p) => p.theme.grey400Border};
+  }
+
+  svg {
+    path {
+      stroke: ${(p) =>
+        p.disabled ? p.theme.textSecondary : p.theme.textPrimary};
+    }
+  }
 `;
