@@ -81,11 +81,16 @@ function Items({ isLoading, tips, windowWidth }) {
   );
 }
 
-export default function TipperList({ tipHash, atBlockHeight }) {
+export default function TipperList({ tipHash, tipIsFinal, atBlockHeight }) {
   const { width: windowWidth } = useWindowSize();
   const councilTippers = useCouncilMembers();
   const threshold = floor((councilTippers.length + 1) / 2);
-  const { isLoading, tipMeta } = useTipMeta(tipHash, atBlockHeight);
+  const forceToReadLastBlock = !tipIsFinal;
+  const { isLoading, tipMeta } = useTipMeta(
+    tipHash,
+    atBlockHeight,
+    forceToReadLastBlock
+  );
   const tips = tipMeta?.tips || [];
 
   return (
