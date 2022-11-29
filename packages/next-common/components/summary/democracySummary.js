@@ -21,6 +21,7 @@ import { smcss } from "next-common/utils/responsive";
 import Divider from "next-common/components/styled/layout/divider";
 import FlexBetween from "../styled/flexBetween";
 import DemocracySummaryDelegation from "./democracySummaryDelegation";
+import Chains from "../../utils/consts/chains";
 
 const Wrapper = styled(SummaryCard)`
   height: auto;
@@ -195,9 +196,12 @@ export default function DemocracySummary() {
         </SummaryItem>
       </SummaryWrapper>
 
-      <Divider margin={16} />
-
-      <DemocracySummaryDelegation />
+      {chain !== Chains.kintsugi && (
+        <>
+          <Divider margin={16} />
+          <DemocracySummaryDelegation />
+        </>
+      )}
     </Wrapper>
   );
 }
