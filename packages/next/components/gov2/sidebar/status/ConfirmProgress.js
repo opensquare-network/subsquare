@@ -123,6 +123,9 @@ function ConfirmationStarted() {
       end: offsetRight,
       fg: secondaryGreen500,
       bg: secondaryGreen300,
+      tooltipContent: confirmRemaining > 0 && (
+        <Remaining blocks={confirmRemaining} />
+      ),
     });
 
     return items;
@@ -130,13 +133,7 @@ function ConfirmationStarted() {
 
   return (
     <ProgressGroup>
-      <Tooltip
-        content={
-          confirmRemaining > 0 && <Remaining blocks={confirmRemaining} />
-        }
-      >
-        <Progress progressItems={progressItems} />
-      </Tooltip>
+      <Progress progressItems={progressItems} />
       <ConfirmationInfo />
     </ProgressGroup>
   );
