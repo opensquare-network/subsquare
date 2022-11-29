@@ -23,6 +23,7 @@ export default function useIssuance() {
       gov2State.Timeout,
       gov2State.Cancelled,
       gov2State.Killed,
+      "Confirmed",
     ].includes(item.name)
   );
   const height = finishItem?.indexer?.blockHeight;
