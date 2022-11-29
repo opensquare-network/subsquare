@@ -9,10 +9,10 @@ import { useSelector } from "react-redux";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { useConfirm } from "next-common/context/post/gov2/track";
 import {
-  calcConfirmOffsetLeftPercentage,
-  calcConfirmOffsetRightPercentage,
-  useConfirmOffsetLeftPercentage,
-  useConfirmOffsetRightPercentage,
+  calcConfirmStartPercentage,
+  calcConfirmEndPercentage,
+  useConfirmStartPercentage,
+  useConfirmEndPercentage,
   useConfirmRemaining,
 } from "./useConfirmPercentage";
 import Remaining from "./remaining";
@@ -65,8 +65,8 @@ function ConfirmationStarted() {
   const confirmPeriod = useConfirm();
   const confirmRemaining = useConfirmRemaining();
   const confirmStart = useConfirmingStarted();
-  const offsetLeft = useConfirmOffsetLeftPercentage();
-  const offsetRight = useConfirmOffsetRightPercentage();
+  const confirmStartPercentage = useConfirmStartPercentage();
+  const confirmEndPercentage = useConfirmEndPercentage();
   const decisionBlocks = useDecisionBlocks();
   const decisionSince = useDecidingSince();
 
@@ -97,13 +97,13 @@ function ConfirmationStarted() {
       const startedHeight = started?.indexer?.blockHeight;
       const abortedHeight = aborted?.indexer?.blockHeight;
 
-      const start = calcConfirmOffsetLeftPercentage(
+      const start = calcConfirmStartPercentage(
         decisionSince,
         decisionBlocks,
         startedHeight
       );
-      const end = calcConfirmOffsetRightPercentage(
-        offsetLeft,
+      const end = calcConfirmEndPercentage(
+        confirmStartPercentage,
         abortedHeight,
         confirmPeriod
       );
@@ -126,8 +126,8 @@ function ConfirmationStarted() {
 
     items.push({
       percentage: confirmPercentage,
-      start: offsetLeft,
-      end: offsetRight,
+      start: confirmStartPercentage,
+      end: confirmEndPercentage,
       fg: secondaryGreen500,
       bg: secondaryGreen300,
       tooltipContent: confirmRemaining > 0 && (
