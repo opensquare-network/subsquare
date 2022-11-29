@@ -1,35 +1,45 @@
 import { useMemo } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import Tooltip from "../tooltip";
 
-const Wrapper = styled.div`
-  position: relative;
-  border-radius: 4px;
-  height: 8px;
-  overflow: hidden;
-`;
-
-const Bar = styled.div`
+const bar_css = css`
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   border-radius: 4px;
-  overflow: hidden;
+`;
+
+const Wrapper = styled.div`
+  position: relative;
+  border-radius: 4px;
+  height: 8px;
+`;
+
+const Bar = styled.div`
+  ${bar_css};
 `;
 
 const Background = styled(Bar)`
   background-color: ${(p) => p.theme.grey100Bg};
 `;
 
-const Percentage = styled(Bar)`
-  background-color: ${(p) => p.fg};
-  width: ${(p) => p.percentage}%;
-`;
-const PercentageWrapper = styled(Bar)`
+const Percentage = styled(Bar)``;
+const PercentageWrapper = styled(Bar)``;
+
+const TooltipWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
   left: ${(p) => p.start || 0}%;
   width: ${(p) => (p.end >= 100 ? p.end - p.start : p.end)}%;
-  background-color: ${(p) => p.bg};
+
+  > div {
+    width: ${(p) => p.percentage}%;
+    background-color: ${(p) => p.fg};
+    ${bar_css};
+  }
 `;
 
 export default function Progress({
@@ -38,6 +48,7 @@ export default function Progress({
   end = 100,
   fg,
   bg,
+  tooltipContent,
 
   progressItems = [],
 }) {
@@ -51,6 +62,7 @@ export default function Progress({
         bg,
         start,
         end,
+        tooltipContent,
       });
     }
 
@@ -61,14 +73,23 @@ export default function Progress({
     <Wrapper>
       <Background />
       {items.map((item, idx) => (
-        <PercentageWrapper
-          key={idx}
-          bg={item.bg}
+        <TooltipWrapper
           start={Number(item.start) || 0}
           end={Math.abs(Number(item.end) || 100)}
+          percentage={item.percentage}
+          fg={item.fg}
         >
-          <Percentage fg={item.fg} percentage={item.percentage} />
-        </PercentageWrapper>
+          <Tooltip content={item.tooltipContent}>
+            <PercentageWrapper
+              key={idx}
+              bg={item.bg}
+              start={Number(item.start) || 0}
+              end={Math.abs(Number(item.end) || 100)}
+            >
+              <Percentage fg={item.fg} percentage={item.percentage} />
+            </PercentageWrapper>
+          </Tooltip>
+        </TooltipWrapper>
       ))}
     </Wrapper>
   );
