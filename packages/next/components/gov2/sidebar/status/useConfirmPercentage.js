@@ -44,5 +44,34 @@ export function useConfirmOffsetRightPercentage() {
   const confirmPercentage = (confirmPeriod / period) * 100;
 
   const percentage = 100 - offsetLeft - confirmPercentage;
+  const endPercentage = Number(offsetLeft) + confirmPercentage;
+  return confirmPercentage;
+  return endPercentage;
+  return Number(percentage).toFixed(2);
+}
+
+// TODO: move to calc-related file
+export function calcConfirmOffsetLeftPercentage(
+  decidingSince,
+  decisionBlocks,
+  confirmingStarted
+) {
+  if (!decidingSince || !confirmingStarted) {
+    return 0;
+  }
+
+  const percentage =
+    ((confirmingStarted - decidingSince) / decisionBlocks) * 100;
+  return Number(percentage).toFixed(2);
+}
+
+export function calcConfirmOffsetRightPercentage(
+  offsetLeft,
+  decisionBlocks,
+  confirmPeriod
+) {
+  const confirmPercentage = (confirmPeriod / decisionBlocks) * 100;
+
+  const percentage = 100 - offsetLeft - confirmPercentage;
   return Number(percentage).toFixed(2);
 }
