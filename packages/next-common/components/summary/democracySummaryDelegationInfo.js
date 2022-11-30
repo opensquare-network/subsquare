@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { Conviction } from "utils/referendumUtil";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel";
 import ValueDisplay from "next-common/components/displayValue";
 import User from "next-common/components/user";
+import { Conviction } from "../../utils/referendumCommon";
 
 const Wrapper = styled.div`
   font-weight: 400;
