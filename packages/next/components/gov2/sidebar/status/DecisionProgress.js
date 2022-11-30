@@ -11,11 +11,14 @@ import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import Remaining from "./remaining";
 import Progress from "next-common/components/progress";
 import TimeDuration from "next-common/components/TimeDuration";
-import { ProgressGroup, ProgressInfo, ProgressInfoLabel } from "./styled";
-import { useTheme } from "styled-components";
+import {
+  ProgressGroup,
+  ProgressInfo,
+  Tooltip,
+  ProgressInfoLabel,
+} from "./styled";
 
 export default function DecisionProgress() {
-  const { secondaryBlue500, secondaryBlue100 } = useTheme();
   const latestHeight = useSelector(latestHeightSelector);
 
   const decisionBlocks = useDecisionBlocks();
@@ -37,18 +40,13 @@ export default function DecisionProgress() {
 
   return (
     <ProgressGroup>
-      <Progress
-        progressItems={[
-          {
-            tooltipContent: decisionRemaining > 0 && (
-              <Remaining blocks={decisionRemaining} />
-            ),
-            percentage: decisionPercentage,
-            fg: secondaryBlue500,
-            bg: secondaryBlue100,
-          },
-        ]}
-      />
+      <Tooltip
+        content={
+          decisionRemaining > 0 && <Remaining blocks={decisionRemaining} />
+        }
+      >
+        <Progress percentage={decisionPercentage} />
+      </Tooltip>
       <ProgressInfo>
         <ProgressInfoLabel>Decision</ProgressInfoLabel>
         <p>
