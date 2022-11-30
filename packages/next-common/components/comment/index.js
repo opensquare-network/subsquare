@@ -5,7 +5,7 @@ import Pagination from "next-common/components/pagination/index.js";
 import NoComment from "./noComment";
 import LoginButtons from "./loginButtons";
 import { TitleContainer } from "../styled/containers/titleContainer";
-import { useIsLogin, useUser } from "../../context/user";
+import { useIsLogin } from "../../context/user";
 
 const Header = styled.div`
   display: flex;

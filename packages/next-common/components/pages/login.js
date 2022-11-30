@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
 `;
 
-const Login = withLoginUserRedux(({ chain }) => {
+const Login = withLoginUserRedux(() => {
   const [web3, setWeb3] = useState(true);
   return (
     <BaseLayout>
