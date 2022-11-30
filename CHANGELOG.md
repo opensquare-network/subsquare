@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.5.0
+
+- Improve gov2 referenda tracks menu.
+- Use the login address to sign extrinsics, and remove address selection.
+- Show gov2 referendum tally approval and support threshold.
+- Support democracy pallet delegation and refactor democracy section panel.
+- Improve treasury list items value display.
+
+# 2.4.7
+
+- Disable background page scrolling when popup is shown.
+- Fix theme toggle with react context, while previously we use redux.
+- Fix democracy second api call with the latest version.
+- Always show gov2 referendum confirmation bar and improve the background color.
+- Fix democracy referendum hash introduced by the latest democracy pallet version.
+
 # 2.4.6
 
 - Support gov 2.0 track delegation.
