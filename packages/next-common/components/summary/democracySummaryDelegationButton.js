@@ -1,18 +1,18 @@
+import React from "react";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Button } from "next-common/components/summary/styled";
+import { Button } from "./styled";
 import { useUser } from "next-common/context/user";
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getSigner, sendTx } from "next-common/utils/sendTx";
-import DelegatePopup from "components/gov2/delegatePopup";
+import DelegatePopup from "next-common/components/democracy/delegatePopup";
 import AddSVG from "next-common/assets/imgs/icons/add.svg";
 import RemoveSVG from "next-common/assets/imgs/icons/remove.svg";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
-export default function DelegationButton({
+export default function DemocracySummaryDelegationButton({
   delegating,
-  trackId,
   onUndelegateInBlock,
   onDelegateInBlock,
 }) {
@@ -47,7 +47,7 @@ export default function DelegationButton({
       return showErrorToast(`Unable to find injected ${signerAddress}`);
     }
 
-    const tx = api.tx.convictionVoting.undelegate(trackId);
+    const tx = api.tx.democracy.undelegate();
 
     setIsLoading(true);
     try {
@@ -68,7 +68,6 @@ export default function DelegationButton({
     signerAddress,
     onUndelegateInBlock,
     isMounted,
-    trackId,
     showErrorToast,
   ]);
 
@@ -95,7 +94,6 @@ export default function DelegationButton({
       {delegating ? removeDelegationButton : addDelegationButton}
       {showDelegatePopup && (
         <DelegatePopup
-          trackId={trackId}
           onInBlock={onDelegateInBlock}
           onClose={() => setShowDelegatePopup(false)}
         />

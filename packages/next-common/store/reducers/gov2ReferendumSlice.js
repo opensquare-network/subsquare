@@ -3,6 +3,12 @@ import nextApi from "../../services/nextApi";
 import { gov2ReferendumsVoteExtrinsicsApi } from "../../services/url";
 import { emptyVotes } from "../../utils/democracy/votes/passed/common";
 import { getGov2ReferendumVotesFromVotingOf } from "../../utils/gov2/allVotes";
+import Chains from "../../utils/consts/chains";
+import getKintElectorate from "../../utils/democracy/electorate/kintsugi";
+import getElectorate from "../../utils/democracy/electorate";
+import { setElectorate } from "./referendumSlice";
+
+const chain = process.env.NEXT_PUBLIC_CHAIN;
 
 const gov2ReferendumSlice = createSlice({
   name: "gov2Referendum",
@@ -11,6 +17,7 @@ const gov2ReferendumSlice = createSlice({
     votes: emptyVotes,
     isLoadingVoteExtrinsics: true,
     voteExtrinsics: emptyVotes,
+    issuance: null,
   },
   reducers: {
     setIsLoadingVotes(state, { payload }) {
@@ -25,6 +32,9 @@ const gov2ReferendumSlice = createSlice({
     setVoteExtrinsics(state, { payload }) {
       state.voteExtrinsics = payload;
     },
+    setIssuance(state, { payload }) {
+      state.issuance = payload;
+    },
   },
 });
 
@@ -33,6 +43,7 @@ export const {
   setIsLoadingVotes,
   setVoteExtrinsics,
   setIsLoadingVoteExtrinsics,
+  setIssuance,
 } = gov2ReferendumSlice.actions;
 
 export const isLoadingVotesSelector = (state) =>
@@ -42,6 +53,7 @@ export const isLoadingVoteExtrinsicsSelector = (state) =>
 export const votesSelector = (state) => state.gov2Referendum.votes;
 export const voteExtrinsicsSelector = (state) =>
   state.gov2Referendum.voteExtrinsics;
+export const gov2IssuanceSelector = (state) => state.gov2Referendum.issuance;
 
 export const clearVotes = () => async (dispatch) => {
   dispatch(setVotes(emptyVotes));
@@ -119,6 +131,21 @@ export const fetchVoteExtrinsics = (referendumIndex) => async (dispatch) => {
   } finally {
     dispatch(setIsLoadingVoteExtrinsics(false));
   }
+};
+
+export const fetchIssuanceForGov2 = (api, height) => async (dispatch) => {
+  let issuance;
+  if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
+    issuance = await getKintElectorate(api, height);
+  } else {
+    issuance = await getElectorate(api, height);
+  }
+
+  dispatch(setIssuance(issuance));
+};
+
+export const unsetIssuance = () => (dispatch) => {
+  dispatch(setIssuance(null));
 };
 
 export default gov2ReferendumSlice.reducer;

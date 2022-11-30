@@ -20,6 +20,7 @@ import PopupWithAddress from "next-common/components/popupWithAddress";
 import { sendTx } from "next-common/utils/sendTx";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
+import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 
 function PopupContent({
   extensionAccounts,
@@ -32,7 +33,7 @@ function PopupContent({
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
 
-  const [selectedAccount, setSelectedAccount] = useState(null);
+  const signerAccount = useSignerAccount(extensionAccounts);
 
   const api = useApi();
   const node = useChainSettings();
@@ -40,13 +41,13 @@ function PopupContent({
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
-    selectedAccount?.address
+    signerAccount?.address
   );
 
   const [addressVote, addressVoteIsLoading] = useAddressVote(
     api,
     referendumIndex,
-    selectedAccount?.address
+    signerAccount?.address
   );
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
@@ -84,7 +85,7 @@ function PopupContent({
       return showErrorToast("Insufficient voting balance");
     }
 
-    if (!selectedAccount) {
+    if (!signerAccount) {
       return showErrorToast("Please select an account");
     }
 
@@ -102,7 +103,7 @@ function PopupContent({
       },
     });
 
-    const signerAddress = selectedAccount.address;
+    const signerAddress = signerAccount.address;
 
     await sendTx({
       tx,
@@ -129,9 +130,7 @@ function PopupContent({
         isBalanceLoading={votingIsLoading}
         balance={votingBalance}
         balanceName="Voting balance"
-        selectedAccount={selectedAccount}
-        setSelectedAccount={setSelectedAccount}
-        extensionAccounts={extensionAccounts}
+        signerAccount={signerAccount}
       />
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode

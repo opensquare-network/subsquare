@@ -6,7 +6,7 @@ import useWindowSize from "next-common/utils/hooks/useWindowSize";
 
 export default function SymbolValue({ value = 0 }) {
   const { decimals, symbol } = useChainSettings();
-  const nValue = toPrecision(value, decimals);
+  const nValue = toPrecision(value || 0, decimals);
   const { width } = useWindowSize();
 
   return (

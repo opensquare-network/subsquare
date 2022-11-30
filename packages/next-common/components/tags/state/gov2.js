@@ -22,6 +22,7 @@ const gov2ReferendaTagMap = {
   [gov2State.Cancelled]: NegativeTag,
   [gov2State.Killed]: NegativeTag,
   [gov2State.Timeout]: ClosedTag,
+  [gov2State.TimedOut]: ClosedTag,
   [gov2State.Rejected]: NegativeTag,
 
   DecisionStarted: PositiveTag,

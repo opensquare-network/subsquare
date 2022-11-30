@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -15,12 +16,12 @@ import Signer from "next-common/components/popup/fields/signerField";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import { sendTx } from "next-common/utils/sendTx";
 import { useChainSettings } from "next-common/context/chain";
-import Conviction from "next-common/components/democracy/delegatePopup/conviction";
-import VoteValue from "next-common/components/democracy/delegatePopup/voteValue";
-import Target from "next-common/components/democracy/delegatePopup/target";
+import Conviction from "./conviction";
+import VoteValue from "./voteValue";
+import Target from "./target";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import styled from "styled-components";
-import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
+import useSignerAccount from "../../../utils/hooks/useSignerAccount";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -29,7 +30,6 @@ const ButtonWrapper = styled.div`
 
 function PopupContent({
   extensionAccounts,
-  trackId,
   onClose,
   onInBlock = emptyFunction,
 }) {
@@ -93,8 +93,7 @@ function PopupContent({
       );
     }
 
-    const tx = api.tx.convictionVoting.delegate(
-      trackId,
+    const tx = api.tx.democracy.delegate(
       targetAddress,
       conviction,
       bnVoteBalance.toString()
@@ -119,6 +118,7 @@ function PopupContent({
         balance={votingBalance}
         balanceName="Voting balance"
         signerAccount={signerAccount}
+        isLoading={isLoading}
       />
       <Target
         extensionAccounts={extensionAccounts}

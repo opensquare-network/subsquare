@@ -15,7 +15,7 @@ import PopupWithAddress from "next-common/components/popupWithAddress";
 import { WarningMessage } from "next-common/components/popup/styled";
 import { sendTx } from "next-common/utils/sendTx";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import useSetSignerAccount from "next-common/utils/hooks/useSetSignerAccount";
+import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import { useChainSettings } from "next-common/context/chain";
 import Signer from "next-common/components/popup/fields/signerField";
 import BalanceField from "next-common/components/popup/fields/balanceField";
@@ -39,20 +39,18 @@ function PopupContent({
   const isMounted = useIsMounted();
   const api = useApi();
 
-  const [selectedAccount, setSelectedAccount] = useState(null);
+  const signerAccount = useSignerAccount(extensionAccounts);
   const [inputTipValue, setInputTipValue] = useState();
   const [tipping, setTipping] = useState(false);
   const { decimals } = useChainSettings();
   const [balance, loadingBalance] = useAddressBalance(
     api,
-    selectedAccount?.address
+    signerAccount?.address
   );
   const councilTippers = useCouncilMembers();
 
-  useSetSignerAccount(extensionAccounts, setSelectedAccount);
-
   const selectedAccountIsTipper = isAddressInGroup(
-    selectedAccount?.address,
+    signerAccount?.address,
     councilTippers
   );
   const showErrorToast = (message) => dispatch(newErrorToast(message));
@@ -66,7 +64,7 @@ function PopupContent({
       return;
     }
 
-    if (!selectedAccount) {
+    if (!signerAccount) {
       return showErrorToast("Please select an account");
     }
 
@@ -79,7 +77,7 @@ function PopupContent({
 
     const tx = api.tx.tips.tip(tipHash, bnTipValue.toString());
 
-    const signerAddress = selectedAccount.address;
+    const signerAddress = signerAccount.address;
 
     await sendTx({
       tx,
@@ -102,9 +100,7 @@ function PopupContent({
       <Signer
         isBalanceLoading={loadingBalance}
         balance={balance}
-        selectedAccount={selectedAccount}
-        setSelectedAccount={setSelectedAccount}
-        extensionAccounts={extensionAccounts}
+        signerAccount={signerAccount}
       />
       <BalanceField
         title="Tip Value"
