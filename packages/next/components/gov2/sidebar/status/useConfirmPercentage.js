@@ -57,16 +57,5 @@ export function calcConfirmStartPercentage(
 
   const percentage =
     ((confirmingStarted - decidingSince) / decisionBlocks) * 100;
-  return Number(percentage).toFixed(2);
-}
-
-export function calcConfirmEndPercentage(
-  offsetLeft,
-  decisionBlocks,
-  confirmPeriod
-) {
-  const confirmPercentage = (confirmPeriod / decisionBlocks) * 100;
-
-  const percentage = 100 - offsetLeft - confirmPercentage;
-  return Number(percentage).toFixed(2);
+  return percentage;
 }
