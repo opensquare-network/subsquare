@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 # 2.5.0
 
+date: 11/30/2022
+
 - Improve gov2 referenda tracks menu.
 - Use the login address to sign extrinsics, and remove address selection.
 - Show gov2 referendum tally approval and support threshold.
