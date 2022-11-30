@@ -55,8 +55,10 @@ export default function Progress({
 
   progressItems = [],
 }) {
+  const ensureMax100 = (n) => (Number(n) > 100 ? 100 : Number(n));
+
   const items = useMemo(() => {
-    const p = progressItems;
+    let p = progressItems;
 
     if (!p.length) {
       p.push({
@@ -68,6 +70,15 @@ export default function Progress({
         tooltipContent,
       });
     }
+
+    p = p.map((item) => {
+      return {
+        ...item,
+        percentage: ensureMax100(item.percentage),
+        start: ensureMax100(item.start),
+        end: ensureMax100(item.end),
+      };
+    });
 
     return p;
   }, [progressItems]);
