@@ -80,7 +80,7 @@ export default function Progress({
           key={idx}
           start={Number(item.start) || 0}
           end={Math.abs(Number(item.end) || 100)}
-          percentage={item.percentage}
+          percentage={item.percentage > 100 ? 100 : item.percentage}
           fg={item.fg}
           bg={item.bg}
         >
