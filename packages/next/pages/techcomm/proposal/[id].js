@@ -11,6 +11,7 @@ import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
+import { hashEllipsis } from "next-common/utils";
 
 export default withLoginUserRedux(({ motion, comments }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
