@@ -10,7 +10,6 @@ import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { useConfirm } from "next-common/context/post/gov2/track";
 import {
   calcConfirmStartPercentage,
-  calcConfirmEndPercentage,
   useConfirmStartPercentage,
   useConfirmEndPercentage,
   useConfirmRemaining,
@@ -102,16 +101,18 @@ function ConfirmationStarted() {
         decisionBlocks,
         startedHeight
       );
-      const end = calcConfirmEndPercentage(
-        confirmStartPercentage,
-        abortedHeight,
-        confirmPeriod
+      const abortedHeightStart = calcConfirmStartPercentage(
+        decisionSince,
+        decisionBlocks,
+        startedHeight + abortedHeight - startedHeight
       );
+
+      const end = abortedHeightStart - start;
 
       return {
         percentage: 100,
         start,
-        end,
+        end: end < 1 ? 1 : end,
         fg: grey400Border,
         tooltipContent: (
           <ProgressTooltipFailContent>
@@ -127,7 +128,7 @@ function ConfirmationStarted() {
     items.push({
       percentage: confirmPercentage,
       start: confirmStartPercentage,
-      end: confirmEndPercentage,
+      end: confirmEndPercentage < 1 ? 1 : confirmEndPercentage,
       fg: secondaryGreen500,
       bg: secondaryGreen300,
       tooltipContent: confirmRemaining > 0 && (
