@@ -34,7 +34,7 @@ const TooltipWrapper = styled.div`
   bottom: 0;
   left: ${(p) => p.start || 0}%;
   width: ${(p) => (p.end >= 100 ? p.end - p.start : p.end)}%;
-  background-color: ${(p) => p.bg};
+  background-color: ${(p) => p.bg || p.theme.secondaryBlue100};
   border-radius: 4px;
 
   /* tooltip children wrapper */
