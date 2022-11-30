@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import ExternalLink from "../../assets/imgs/icons/external-link.svg";
 import { useChain } from "../../context/chain";
