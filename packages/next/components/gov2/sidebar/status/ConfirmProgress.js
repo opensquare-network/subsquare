@@ -15,7 +15,7 @@ import {
   useConfirmRemaining,
 } from "./useConfirmPercentage";
 import Remaining from "./remaining";
-import Progress from "next-common/components/progress";
+import MultiProgress from "next-common/components/progress/multiProgress";
 import { useMemo } from "react";
 import {
   useConfirmingStarted,
@@ -141,7 +141,7 @@ function ConfirmationStarted() {
 
   return (
     <ProgressGroup>
-      <Progress progressItems={progressItems} />
+      <MultiProgress progressItems={progressItems} />
       <ConfirmationInfo />
     </ProgressGroup>
   );
