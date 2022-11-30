@@ -47,7 +47,7 @@ export default function ReferendumMetadata({
   }
 
   const metadata = [
-    ["Proposer", <User add={proposer} fontSize={14} />],
+    ["Proposer", <User add={proposer} fontSize={14} key="user" />],
     ["Hash", hash],
     [
       "Delay",
@@ -67,7 +67,7 @@ export default function ReferendumMetadata({
         isEstimated={isEndEstimated}
       />,
     ],
-    ["Threshold", <Threshold threshold={threshold} />],
+    ["Threshold", <Threshold threshold={threshold} key="threshold" />],
   ];
 
   if (call) {

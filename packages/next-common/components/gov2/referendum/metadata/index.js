@@ -39,6 +39,7 @@ export default function Gov2ReferendumMetadata({ detail }) {
       <UserBond
         address={info?.submissionDeposit?.who}
         bond={info?.submissionDeposit?.amount}
+        key="submission-bond"
       />,
     ],
     [
@@ -47,13 +48,20 @@ export default function Gov2ReferendumMetadata({ detail }) {
         <UserBond
           address={info?.decisionDeposit?.who}
           bond={info?.decisionDeposit?.amount}
+          key="decision-bond"
         />
       ) : (
         <GreyText>--</GreyText>
       ),
     ],
-    ["Decision Period", <BlockPeriod block={trackInfo.decisionPeriod} />],
-    ["Confirming Period", <BlockPeriod block={trackInfo.confirmPeriod} />],
+    [
+      "Decision Period",
+      <BlockPeriod block={trackInfo.decisionPeriod} key="decision-period" />,
+    ],
+    [
+      "Confirming Period",
+      <BlockPeriod block={trackInfo.confirmPeriod} key="confirmation-period" />,
+    ],
     ["Enact", getEnactmentValue(info?.enactment)],
     ["Proposal Hash", proposalHash],
   ];

@@ -30,7 +30,12 @@ export default function LargeDataPlaceHolder({
   return (
     <LargeData>
       Large data, please check it on subscan
-      <a target="_blank" href={subscanLink} style={{ display: "flex" }}>
+      <a
+        target="_blank"
+        rel="noreferrer"
+        href={subscanLink}
+        style={{ display: "flex" }}
+      >
         <ExternalLink />
       </a>
     </LargeData>

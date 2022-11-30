@@ -11,9 +11,10 @@ export default function Gov2Layout({ children, seoInfo, tracks }) {
 
   return (
     <BaseLayout
-      children={children}
       seoInfo={seoInfo}
       left={<Menu menu={menu} foldablePrefix={gov2MenuFoldablePrefix} />}
-    />
+    >
+      {children}
+    </BaseLayout>
   );
 }
