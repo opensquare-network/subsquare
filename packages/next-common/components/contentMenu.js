@@ -69,6 +69,7 @@ export default function ContentMenu({
                 try {
                   onCopy && onCopy();
                 } catch (e) {
+                  // fixme: we should not ignore
                 } finally {
                   setCopyState(true);
                 }

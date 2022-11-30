@@ -70,7 +70,9 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
       );
       const accountName = accountMap[address];
       setAccountName(accountName);
-    } catch (e) {}
+    } catch (e) {
+      // fixme: ignore
+    }
   }, []);
 
   useEffect(() => {
