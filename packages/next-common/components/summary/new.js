@@ -1,3 +1,4 @@
+import React from "react";
 import styled, { css } from "styled-components";
 import { p_14_normal, p_20_bold } from "../../styles/componentCss";
 import { smcss } from "../../utils/responsive";
