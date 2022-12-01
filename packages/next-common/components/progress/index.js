@@ -28,29 +28,15 @@ const Percentage = styled(Bar)`
 `;
 const Total = styled(Bar)`
   background-color: ${(p) => p.bg ?? p.theme.secondaryBlue100};
-  width: ${(p) => 100 - p.offsetLeft - p.offsetRight}%;
-  left: ${(p) => p.offsetLeft}%;
-  right: ${(p) => p.offsetRight}%;
   overflow: hidden;
 `;
 
-export default function Progress({
-  percentage = 0,
-  offsetLeft = 0,
-  offsetRight = 0,
-  fg,
-  bg,
-}) {
+export default function Progress({ percentage = 0, fg, bg }) {
   return (
     <Wrapper>
       <Background />
-      <Total bg={bg} offsetLeft={offsetLeft} offsetRight={offsetRight}>
-        <Percentage
-          fg={fg}
-          percentage={percentage}
-          offsetLeft={offsetLeft}
-          offsetRight={offsetRight}
-        />
+      <Total bg={bg}>
+        <Percentage fg={fg} percentage={percentage} />
       </Total>
     </Wrapper>
   );
