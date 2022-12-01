@@ -12,6 +12,7 @@ import { isKeyRegisteredUser } from "../../utils";
 import { accountMenu, accountMenuForKeyAccount } from "./consts";
 import Divider from "../styled/layout/divider";
 import { logoutUser, useUser, useUserDispatch } from "../../context/user";
+import useIsMounted from "../../utils/hooks/useIsMounted";
 
 const Wrapper = Relative;
 
@@ -70,6 +71,7 @@ export default function HeaderAccount() {
   const ref = useRef();
   const windowSize = useWindowSize();
   const userDispatch = useUserDispatch();
+  const isMounted = useIsMounted();
 
   useOnClickOutside(ref, () => setShow(false));
 
@@ -94,7 +96,10 @@ export default function HeaderAccount() {
     } else if (item.pathname) {
       await router.push(item.pathname);
     }
-    setShow(false);
+
+    if (isMounted.current) {
+      setShow(false);
+    }
   };
 
   return (
