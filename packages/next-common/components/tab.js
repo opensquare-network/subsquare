@@ -42,7 +42,7 @@ const Button = styled.div`
   ${(p) =>
     p.small
       ? css`
-          width: 116px;
+          width: 156px;
         `
       : css`
           width: 172px;

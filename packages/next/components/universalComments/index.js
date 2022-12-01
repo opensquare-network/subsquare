@@ -54,8 +54,8 @@ export default function useUniversalComments({ detail, comments, type }) {
       );
     } else if (isDotsama) {
       tabs = (
-        <div style={{ width: "240px", marginTop: "-6px" }}>
           <SourceTabs tabIndex={tabIndex} setTabIndex={setTabIndex} />
+        <div style={{ marginTop: "-6px" }}>
         </div>
       );
     }
