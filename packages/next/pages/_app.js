@@ -42,7 +42,13 @@ function MyApp({ Component, pageProps }) {
     connect();
   }, []);
 
-  const { loginUser, homeFoldedMenus, themeMode, ...otherProps } = pageProps;
+  const {
+    loginUser,
+    homeFoldedMenus,
+    themeMode,
+    pageProperties,
+    ...otherProps
+  } = pageProps;
   return (
     <Provider store={store}>
       <GlobalProvider
@@ -50,6 +56,7 @@ function MyApp({ Component, pageProps }) {
         chain={process.env.NEXT_PUBLIC_CHAIN}
         homeFoldedMenus={homeFoldedMenus}
         themeMode={themeMode}
+        pageProperties={pageProperties}
       >
         <Component {...otherProps} />
       </GlobalProvider>
