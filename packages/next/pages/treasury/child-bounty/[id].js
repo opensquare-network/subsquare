@@ -54,7 +54,6 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
-    type: detailPageCategory.TREASURY_CHILD_BOUNTY,
   });
 
   const refreshPageData = useCallback(async () => {

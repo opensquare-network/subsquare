@@ -30,7 +30,6 @@ export default withLoginUserRedux(
     const { CommentComponent, focusEditor } = useCommentComponent({
       detail,
       comments,
-      type: detailPageCategory.DEMOCRACY_PROPOSAL,
     });
 
     const publicProposal = detail?.onchainData;

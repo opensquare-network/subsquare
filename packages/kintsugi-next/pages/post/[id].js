@@ -12,37 +12,34 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 
-export default withLoginUserRedux(
-  ({ detail, comments, chain, votes, myVote }) => {
-    const { CommentComponent, focusEditor } = useCommentComponent({
-      detail,
-      comments,
-      type: detailPageCategory.POST,
-    });
+export default withLoginUserRedux(({ detail, comments, votes, myVote }) => {
+  const { CommentComponent, focusEditor } = useCommentComponent({
+    detail,
+    comments,
+  });
 
-    const desc = getMetaDesc(detail);
-    return (
-      <PostProvider post={detail} type={detailPageCategory.POST}>
-        <DetailLayout
-          seoInfo={{
-            title: detail?.title,
-            desc,
-            ogImage: getBannerUrl(detail?.bannerCid),
-          }}
-        >
-          <Back href={`/discussions`} text="Back to Discussions" />
-          <DetailItem
-            votes={votes}
-            myVote={myVote}
-            onReply={focusEditor}
-            type={detailPageCategory.POST}
-          />
-          {CommentComponent}
-        </DetailLayout>
-      </PostProvider>
-    );
-  }
-);
+  const desc = getMetaDesc(detail);
+  return (
+    <PostProvider post={detail} type={detailPageCategory.POST}>
+      <DetailLayout
+        seoInfo={{
+          title: detail?.title,
+          desc,
+          ogImage: getBannerUrl(detail?.bannerCid),
+        }}
+      >
+        <Back href={`/discussions`} text="Back to Discussions" />
+        <DetailItem
+          votes={votes}
+          myVote={myVote}
+          onReply={focusEditor}
+          type={detailPageCategory.POST}
+        />
+        {CommentComponent}
+      </DetailLayout>
+    </PostProvider>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;

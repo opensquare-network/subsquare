@@ -17,7 +17,6 @@ export default withLoginUserRedux(({ motion, comments }) => {
   const { CommentComponent, focusEditor } = useCommentComponent({
     detail: motion,
     comments,
-    type: detailPageCategory.TECH_COMM_MOTION,
   });
 
   const desc = getMetaDesc(motion);

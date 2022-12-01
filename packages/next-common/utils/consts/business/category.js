@@ -26,7 +26,7 @@ export const detailPageCategory = {
   TREASURY_BOUNTY: "treasury/bounty",
   TREASURY_CHILD_BOUNTY: "treasury/child-bounty",
   TREASURY_TIP: "treasury/tip",
-  GOV2_REFERENDUM: "gov2/referendum",
+  GOV2_REFERENDUM: "referenda/referendum",
 };
 
 export default businessCategory;

@@ -31,7 +31,6 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
-    type: detailPageCategory.DEMOCRACY_REFERENDUM,
   });
 
   const api = useApi();

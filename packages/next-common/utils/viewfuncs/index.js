@@ -22,6 +22,9 @@ export function toApiType(type) {
   if (type === detailPageCategory.COUNCIL_MOTION) {
     return "motions";
   }
+  if (type === detailPageCategory.GOV2_REFERENDUM) {
+    return "gov2/referendums";
+  }
   return `${type}s`;
 }
 

@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-key */
 import React, { useCallback, useEffect, useState } from "react";
-import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
@@ -38,7 +37,6 @@ export default withLoginUserRedux(
     const { CommentComponent, focusEditor } = useCommentComponent({
       detail,
       comments,
-      type: detailPageCategory.DEMOCRACY_REFERENDUM,
     });
 
     const api = useApi();

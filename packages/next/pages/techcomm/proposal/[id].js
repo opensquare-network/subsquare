@@ -17,7 +17,6 @@ export default withLoginUserRedux(({ motion, comments }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail: motion,
     comments,
-    type: detailPageCategory.TECH_COMM_MOTION,
   });
 
   motion.status = motion.state?.state;

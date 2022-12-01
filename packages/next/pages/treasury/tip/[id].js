@@ -69,7 +69,6 @@ export default withLoginUserRedux(({ detail: tip, comments }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
-    type: detailPageCategory.TREASURY_TIP,
   });
   const dispatch = useDispatch();
 

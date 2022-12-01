@@ -53,7 +53,6 @@ export default withLoginUserRedux(({ detail, childBounties, comments }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
-    type: detailPageCategory.TREASURY_BOUNTY,
   });
 
   const desc = getMetaDesc(detail);

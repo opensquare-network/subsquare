@@ -18,7 +18,6 @@ export default withLoginUserRedux(({ detail, comments }) => {
   const { CommentComponent, focusEditor } = useCommentComponent({
     detail,
     comments,
-    type: detailPageCategory.TREASURY_PROPOSAL,
   });
 
   const desc = getMetaDesc(detail);

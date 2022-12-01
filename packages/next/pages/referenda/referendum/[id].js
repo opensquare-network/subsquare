@@ -54,7 +54,6 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
-    type: detailPageCategory.GOV2_REFERENDUM,
   });
 
   const desc = getMetaDesc(detail);

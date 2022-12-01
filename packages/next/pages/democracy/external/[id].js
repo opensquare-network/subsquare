@@ -20,7 +20,6 @@ export default withLoginUserRedux(({ detail, comments }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
-    type: detailPageCategory.DEMOCRACY_EXTERNAL,
   });
 
   const desc = getMetaDesc(detail);
