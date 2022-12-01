@@ -14,7 +14,6 @@ import useIsMounted from "../../../utils/hooks/useIsMounted";
 import User from "../../user";
 
 export default function ReferendumMetadata({
-  api,
   proposer,
   status = {},
   call,
@@ -24,7 +23,7 @@ export default function ReferendumMetadata({
   const isMounted = useIsMounted();
   const oneBlockTime = useSelector(blockTimeSelector);
   const blockHeight = useSelector(latestHeightSelector);
-  const latestBlockTime = useLatestBlockTime(api, blockHeight, isMounted);
+  const latestBlockTime = useLatestBlockTime(blockHeight, isMounted);
 
   const { delay = 0, end = 0, threshold, proposalHash, proposal } = status;
   const { state, timeline = [] } = onchainData;
@@ -48,7 +47,7 @@ export default function ReferendumMetadata({
   }
 
   const metadata = [
-    ["Proposer", <User add={proposer} fontSize={14} />],
+    ["Proposer", <User add={proposer} fontSize={14} key="user" />],
     ["Hash", hash],
     [
       "Delay",
@@ -68,7 +67,7 @@ export default function ReferendumMetadata({
         isEstimated={isEndEstimated}
       />,
     ],
-    ["Threshold", <Threshold threshold={threshold} />],
+    ["Threshold", <Threshold threshold={threshold} key="threshold" />],
   ];
 
   if (call) {

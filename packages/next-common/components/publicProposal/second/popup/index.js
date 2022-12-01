@@ -13,6 +13,7 @@ import { emptyFunction } from "../../../../utils";
 import useDeposit from "./useDeposit";
 import isNil from "lodash.isnil";
 import { useChain } from "../../../../context/chain";
+import useSignerAccount from "../../../../utils/hooks/useSignerAccount";
 
 function PopupContent({
   extensionAccounts,
@@ -28,7 +29,7 @@ function PopupContent({
   const chain = useChain();
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
-  const [signerAccount, setSignerAccount] = useState(null);
+  const signerAccount = useSignerAccount(extensionAccounts);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const api = useApi();
   const [balance, loadingBalance] = useAddressVotingBalance(
@@ -84,10 +85,7 @@ function PopupContent({
         isBalanceLoading={loadingBalance}
         balance={balance}
         balanceName="Voting balance"
-        selectedAccount={signerAccount}
-        setSelectedAccount={setSignerAccount}
-        isLoading={isSubmitting}
-        extensionAccounts={extensionAccounts}
+        signerAccount={signerAccount}
       />
       <DepositRequired
         deposit={deposit}

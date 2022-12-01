@@ -21,7 +21,7 @@ export default function CollectiveMetadata({
 }) {
   const proposerItem = [
     capitalize(keys.proposer),
-    <User add={proposer} fontSize={14} />,
+    <User add={proposer} fontSize={14} key="proposer" />,
   ];
   const indexItem = Number.isInteger(index)
     ? [capitalize(keys.index), index]
@@ -37,7 +37,7 @@ export default function CollectiveMetadata({
   );
 
   if (call) {
-    data.push([<Proposal call={call} />]);
+    data.push([<Proposal call={call} key="proposal" />]);
   }
 
   return <KVList title="Metadata" data={data} />;

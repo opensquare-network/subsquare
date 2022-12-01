@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { p_12_medium } from "../../styles/componentCss";
 import { parseGov2TrackName } from "../../utils/gov2";

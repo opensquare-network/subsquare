@@ -15,10 +15,8 @@ export default function SettingsLayout({ children, seoInfo }) {
     : settingMenu;
 
   return (
-    <BaseLayout
-      children={children}
-      seoInfo={seoInfo}
-      left={<Menu menu={menu} />}
-    />
+    <BaseLayout seoInfo={seoInfo} left={<Menu menu={menu} />}>
+      {children}
+    </BaseLayout>
   );
 }

@@ -15,6 +15,7 @@ import VoteButton from "next-common/components/popup/voteButton";
 import { sendTx } from "next-common/utils/sendTx";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
+import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 
 function PopupContent({
   extensionAccounts,
@@ -25,18 +26,18 @@ function PopupContent({
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
-  const [selectedAccount, setSelectedAccount] = useState(null);
+  const signerAccount = useSignerAccount(extensionAccounts);
   const node = useChainSettings();
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
   const api = useApi();
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
-    selectedAccount?.address
+    signerAccount?.address
   );
   const [addressVote, addressVoteIsLoading] = useAddressVote(
     api,
     referendumIndex,
-    selectedAccount?.address
+    signerAccount?.address
   );
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const isMounted = useIsMounted();
@@ -67,7 +68,7 @@ function PopupContent({
       return showErrorToast("Insufficient voting balance");
     }
 
-    if (!selectedAccount) {
+    if (!signerAccount) {
       return showErrorToast("Please select an account");
     }
 
@@ -80,7 +81,7 @@ function PopupContent({
       balance: bnVoteBalance.toNumber(),
     });
 
-    const signerAddress = selectedAccount.address;
+    const signerAddress = signerAccount.address;
 
     await sendTx({
       tx,
@@ -104,10 +105,7 @@ function PopupContent({
   return (
     <>
       <Signer
-        isLoading={loadingState !== VoteLoadingEnum.None}
-        extensionAccounts={extensionAccounts}
-        selectedAccount={selectedAccount}
-        setSelectedAccount={setSelectedAccount}
+        signerAccount={signerAccount}
         isBalanceLoading={votingIsLoading}
         balance={votingBalance}
         balanceName="Voting balance"

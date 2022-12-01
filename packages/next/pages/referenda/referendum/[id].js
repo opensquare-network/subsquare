@@ -25,6 +25,8 @@ import { parseGov2TrackName } from "next-common/utils/gov2";
 import styled, { css } from "styled-components";
 import { smcss } from "next-common/utils/responsive";
 import ReferendaBusiness from "../../../components/gov2/business";
+import { unsetIssuance } from "next-common/store/reducers/gov2ReferendumSlice";
+import { useDispatch } from "react-redux";
 
 const BreadcrumbHideOnMobileText = styled.span`
   ${smcss(css`
@@ -41,6 +43,13 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   const [detail, setDetail] = useState(ssrDetail);
   useEffect(() => setDetail(ssrDetail), [ssrDetail]);
   const isMounted = useIsMounted();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(unsetIssuance());
+    };
+  }, [dispatch]);
 
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,

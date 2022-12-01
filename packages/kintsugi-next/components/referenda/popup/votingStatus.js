@@ -3,24 +3,17 @@ import LoadingVotingStatus from "next-common/components/popup/loadingVotingStatu
 import NoDataStatusBox from "next-common/components/popup/noDataStatusBox";
 import VoteStatus from "./voteStatus";
 
-export default function VotingStatus({ addressVote, addressVoteIsLoading, node }) {
+export default function VotingStatus({ addressVote, addressVoteIsLoading }) {
   return (
     <div>
       <PopupLabel text={"Voting status"} />
-      {
-        addressVoteIsLoading ? (
-          <LoadingVotingStatus />
-        ) : (
-          addressVote ? (
-            <VoteStatus
-              addressVote={addressVote}
-              node={node}
-            />
-          ) : (
-            <NoDataStatusBox text={"No voting record"} />
-          )
-        )
-      }
+      {addressVoteIsLoading ? (
+        <LoadingVotingStatus />
+      ) : addressVote ? (
+        <VoteStatus addressVote={addressVote} />
+      ) : (
+        <NoDataStatusBox text={"No voting record"} />
+      )}
     </div>
   );
 }

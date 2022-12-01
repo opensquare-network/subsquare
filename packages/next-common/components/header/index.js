@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Sidebar from "./sidebar";
 import SidebarAccount from "./sidebarAccount";
-import { nodes } from "next-common/utils/constants";
 import Flex from "next-common/components/styled/flex";
 import HeaderRight from "next-common/components/header/right";
 import HeaderWrapper from "next-common/components/header/wrapper";

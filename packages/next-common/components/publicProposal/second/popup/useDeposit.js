@@ -1,4 +1,3 @@
-import React from "react";
 import BigNumber from "bignumber.js";
 import useApi from "../../../../utils/hooks/useApi";
 import isNil from "lodash.isnil";

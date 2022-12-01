@@ -17,6 +17,7 @@ import useAddressBalance from "../../../../utils/hooks/useAddressBalance";
 import { sendTx } from "../../../../utils/sendTx";
 import SecondaryButton from "../../../buttons/secondaryButton";
 import { useChainSettings } from "../../../../context/chain";
+import useSignerAccount from "../../../../utils/hooks/useSignerAccount";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -32,7 +33,7 @@ function PopupContent({
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
-  const [signerAccount, setSignerAccount] = useState(null);
+  const signerAccount = useSignerAccount(extensionAccounts);
   const [reason, setReason] = useState("");
   const [loading, setLoading] = useState(false);
   const [tabIndex, setTabIndex] = useState(ReportAwesome);
@@ -106,10 +107,7 @@ function PopupContent({
         <Tab tabIndex={tabIndex} setTabIndex={setTabIndex} />
       </div>
       <Signer
-        isLoading={loading}
-        selectedAccount={signerAccount}
-        setSelectedAccount={setSignerAccount}
-        extensionAccounts={extensionAccounts}
+        signerAccount={signerAccount}
         balance={balance}
         isBalanceLoading={balanceIsLoading}
       />

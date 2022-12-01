@@ -9,6 +9,7 @@ export const gov2State = {
   Cancelled: "Cancelled",
   Killed: "Killed",
   Timeout: "Timeout",
+  TimedOut: "TimedOut",
   Rejected: "Rejected",
   Executed: "Executed",
 };

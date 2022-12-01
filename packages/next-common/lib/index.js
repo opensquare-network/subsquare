@@ -55,7 +55,7 @@ export function withLoginUser(getServerSideProps) {
 }
 
 export function withLoginUserRedux(fnComponent) {
-  return ({ themeMode, ...props }) => {
+  return ({ ...props }) => {
     const loginUser = useUser();
 
     return fnComponent({

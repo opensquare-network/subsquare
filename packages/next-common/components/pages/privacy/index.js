@@ -36,7 +36,7 @@ const Title = styled.h1`
   margin-top: 0;
 `;
 
-const Privacy = withLoginUserRedux(({}) => {
+const Privacy = withLoginUserRedux(() => {
   return (
     <BaseLayout>
       <NextHead title="Privacy Policy" desc="Privacy Policy" />

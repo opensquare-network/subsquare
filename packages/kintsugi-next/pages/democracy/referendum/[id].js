@@ -115,7 +115,6 @@ export default withLoginUserRedux(
           />
 
           <ReferendumMetadata
-            api={api}
             proposer={detail.proposer}
             status={referendumStatus ?? {}}
             call={detail?.onchainData?.preImage?.call}

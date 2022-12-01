@@ -16,6 +16,7 @@ import { useChain } from "next-common/context/chain";
 import Signer from "next-common/components/popup/fields/signerField";
 import { WarningMessage } from "next-common/components/popup/styled";
 import styled from "styled-components";
+import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -38,10 +39,10 @@ function PopupContent({
 }) {
   const chain = useChain();
   const dispatch = useDispatch();
-  const [selectedAccount, setSelectedAccount] = useState(null);
+  const signerAccount = useSignerAccount(extensionAccounts);
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
 
-  const selectedAddress = selectedAccount?.address;
+  const selectedAddress = signerAccount?.address;
   const selectedAccountCanVote = voters.includes(selectedAddress);
   const currentVote = votes.find((item) => item[0] === selectedAddress);
 
@@ -62,13 +63,13 @@ function PopupContent({
       return;
     }
 
-    if (!selectedAccount) {
+    if (!signerAccount) {
       return showErrorToast("Please select an account");
     }
 
     const tx = voteMethod(motionHash, motionIndex, approve);
 
-    const signerAddress = selectedAccount.address;
+    const signerAddress = signerAccount.address;
 
     await sendTx({
       tx,
@@ -92,12 +93,7 @@ function PopupContent({
   return (
     <>
       <SignerWrapper>
-        <Signer
-          extensionAccounts={extensionAccounts}
-          selectedAccount={selectedAccount}
-          setSelectedAccount={setSelectedAccount}
-          isLoading={loadingState !== VoteLoadingEnum.None}
-        />
+        <Signer signerAccount={signerAccount} />
         {!selectedAccountCanVote && (
           <WarningMessage danger={!selectedAccountCanVote}>
             Only council members can vote.

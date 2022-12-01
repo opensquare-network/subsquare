@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import useApi from "next-common/utils/hooks/useApi";
@@ -10,74 +10,49 @@ import {
   checkInputValue,
   emptyFunction,
   isAddressInGroup,
-  toPrecision,
 } from "next-common/utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import { WarningMessage } from "next-common/components/popup/styled";
 import { sendTx } from "next-common/utils/sendTx";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import useSetSignerAccount from "next-common/utils/hooks/useSetSignerAccount";
-import { encodeAddressToChain } from "next-common/services/address";
-import { useChain, useChainSettings } from "next-common/context/chain";
+import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
+import { useChainSettings } from "next-common/context/chain";
 import Signer from "next-common/components/popup/fields/signerField";
 import BalanceField from "next-common/components/popup/fields/balanceField";
+import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
+import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
 
-const balanceMap = new Map();
-
 function PopupContent({
   extensionAccounts,
-  councilTippers,
   tipHash,
   onClose,
   onSubmitted = emptyFunction,
   onFinalized = emptyFunction,
   onInBlock = emptyFunction,
 }) {
-  const chain = useChain();
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
-  const [selectedAccount, setSelectedAccount] = useState(null);
-  const [inputTipValue, setInputTipValue] = useState();
-  const [tipping, setTipping] = useState(false);
-  const [balance, setBalance] = useState();
-  const { decimals } = useChainSettings();
-  const [selectedAddress, setSelectedAddress] = useState(
-    selectedAccount?.address
-  );
-
-  useEffect(() => {
-    setSelectedAddress(encodeAddressToChain(selectedAccount?.address, chain));
-  }, [selectedAccount, chain]);
-
-  useSetSignerAccount(extensionAccounts, setSelectedAccount);
-  const selectedAccountIsTipper = isAddressInGroup(
-    selectedAddress,
-    councilTippers
-  );
   const api = useApi();
 
-  useEffect(() => {
-    if (balanceMap.has(selectedAddress)) {
-      setBalance(balanceMap.get(selectedAddress));
-      return;
-    }
-    setBalance();
-    if (api && selectedAddress) {
-      api.query.system.account(selectedAddress).then((result) => {
-        if (isMounted.current) {
-          const free = toPrecision(result.data.free, decimals);
-          setBalance(free);
-          balanceMap.set(selectedAddress, free);
-        }
-      });
-    }
-  }, [api, selectedAddress, decimals, isMounted]);
+  const signerAccount = useSignerAccount(extensionAccounts);
+  const [inputTipValue, setInputTipValue] = useState();
+  const [tipping, setTipping] = useState(false);
+  const { decimals } = useChainSettings();
+  const [balance, loadingBalance] = useAddressBalance(
+    api,
+    signerAccount?.address
+  );
+  const councilTippers = useCouncilMembers();
 
+  const selectedAccountIsTipper = isAddressInGroup(
+    signerAccount?.address,
+    councilTippers
+  );
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doEndorse = async () => {
@@ -89,20 +64,20 @@ function PopupContent({
       return;
     }
 
-    if (!selectedAccount) {
+    if (!signerAccount) {
       return showErrorToast("Please select an account");
     }
 
     let bnTipValue;
     try {
-      bnTipValue = checkInputValue(inputTipValue, decimals, "tip value");
+      bnTipValue = checkInputValue(inputTipValue, decimals, "tip value", true);
     } catch (err) {
       return showErrorToast(err.message);
     }
 
     const tx = api.tx.tips.tip(tipHash, bnTipValue.toString());
 
-    const signerAddress = selectedAccount.address;
+    const signerAddress = signerAccount.address;
 
     await sendTx({
       tx,
@@ -123,12 +98,9 @@ function PopupContent({
         Only council members can tip.
       </WarningMessage>
       <Signer
-        isBalanceLoading={!balance}
+        isBalanceLoading={loadingBalance}
         balance={balance}
-        selectedAccount={selectedAccount}
-        setSelectedAccount={setSelectedAccount}
-        isLoading={tipping}
-        extensionAccounts={extensionAccounts}
+        signerAccount={signerAccount}
       />
       <BalanceField
         title="Tip Value"
@@ -145,6 +117,6 @@ function PopupContent({
   );
 }
 
-export default function Popup(props) {
+export default function EndorsePopup(props) {
   return <PopupWithAddress title="Tip" Component={PopupContent} {...props} />;
 }

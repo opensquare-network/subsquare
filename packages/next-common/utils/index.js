@@ -218,7 +218,12 @@ export function emptyFunction() {}
 
 export const capitailize = (text) => text[0].toUpperCase() + text.slice(1);
 
-export function checkInputValue(inputValue, decimals, valueName = "value") {
+export function checkInputValue(
+  inputValue,
+  decimals,
+  valueName = "value",
+  allowZero = false
+) {
   if (!inputValue) {
     throw new Error(`Please input a ${valueName}`);
   }
@@ -228,8 +233,12 @@ export function checkInputValue(inputValue, decimals, valueName = "value") {
     throw new Error(`Invalid ${valueName}`);
   }
 
-  if (bnValue.lte(0)) {
-    throw new Error(`${capitailize(valueName)} must be greater than 0`);
+  if (bnValue.lt(0)) {
+    throw new Error(`${capitailize(valueName)} must not be less than 0`);
+  }
+
+  if (!allowZero && bnValue.isZero()) {
+    throw new Error(`${capitailize(valueName)} must not be 0`);
   }
 
   if (!bnValue.mod(1).isZero()) {

@@ -1,4 +1,3 @@
-import React from "react";
 import { useState, useEffect } from "react";
 import useIsMounted from "./useIsMounted";
 import Chains from "../consts/chains";

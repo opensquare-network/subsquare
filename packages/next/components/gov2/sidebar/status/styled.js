@@ -13,3 +13,10 @@ export const ProgressInfo = styled(FlexBetween)`
   color: ${(p) => p.theme.textPrimary};
   ${p_14_normal};
 `;
+export const ProgressInfoLabel = styled.p`
+  font-weight: 500;
+`;
+export const ProgressTooltipFailContent = styled.span`
+  display: inline-flex;
+  gap: 8px;
+`;

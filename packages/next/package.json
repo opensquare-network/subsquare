@@ -6,7 +6,7 @@
     "dev": "node server.mjs",
     "build": "next build",
     "start": "NODE_ENV=production node server.mjs",
-    "lint": "next lint"
+    "lint": "next lint --dir ."
   },
   "dependencies": {
     "@next/env": "^12.1.0",

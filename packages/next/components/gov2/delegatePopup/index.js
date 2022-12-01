@@ -15,11 +15,12 @@ import Signer from "next-common/components/popup/fields/signerField";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import { sendTx } from "next-common/utils/sendTx";
 import { useChainSettings } from "next-common/context/chain";
-import Conviction from "./conviction";
-import VoteValue from "./voteValue";
-import Target from "./target";
+import Conviction from "next-common/components/democracy/delegatePopup/conviction";
+import VoteValue from "next-common/components/democracy/delegatePopup/voteValue";
+import Target from "next-common/components/democracy/delegatePopup/target";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import styled from "styled-components";
+import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -35,7 +36,7 @@ function PopupContent({
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
 
-  const [selectedAccount, setSelectedAccount] = useState(null);
+  const signerAccount = useSignerAccount(extensionAccounts);
   const [targetAddress, setTargetAddress] = useState("");
 
   const api = useApi();
@@ -44,7 +45,7 @@ function PopupContent({
   const [isLoading, setIsLoading] = useState(false);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
-    selectedAccount?.address
+    signerAccount?.address
   );
 
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
@@ -72,7 +73,7 @@ function PopupContent({
       return showErrorToast("Insufficient voting balance");
     }
 
-    if (!selectedAccount) {
+    if (!signerAccount) {
       return showErrorToast("Please select an account");
     }
 
@@ -84,7 +85,7 @@ function PopupContent({
       return showErrorToast("Please input a target address");
     }
 
-    const signerAddress = selectedAccount?.address;
+    const signerAddress = signerAccount?.address;
 
     if (isSameAddress(targetAddress, signerAddress)) {
       return showErrorToast(
@@ -117,10 +118,7 @@ function PopupContent({
         isBalanceLoading={votingIsLoading}
         balance={votingBalance}
         balanceName="Voting balance"
-        selectedAccount={selectedAccount}
-        setSelectedAccount={setSelectedAccount}
-        isLoading={isLoading}
-        extensionAccounts={extensionAccounts}
+        signerAccount={signerAccount}
       />
       <Target
         extensionAccounts={extensionAccounts}

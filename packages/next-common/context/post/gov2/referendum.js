@@ -24,3 +24,35 @@ export function useConfirmingStarted() {
   );
   return startedItem?.indexer?.blockHeight;
 }
+
+export function useConfirmTimelineData() {
+  const timeline = useTimelineData();
+  return timeline.filter((item) => {
+    return ["ConfirmStarted", "ConfirmAborted", "Confirmed"].includes(
+      item.name
+    );
+  });
+}
+
+export function useConfirmTimelineFailPairs() {
+  let pairs = [];
+
+  const confirms = useConfirmTimelineData();
+  const lastAbortedIndex = confirms.findLastIndex(
+    (confirm) => confirm.name === "ConfirmAborted"
+  );
+
+  const arrStartedAndAborted = confirms.slice(
+    0,
+    lastAbortedIndex ? lastAbortedIndex + 1 : 0
+  );
+
+  pairs = arrStartedAndAborted.reduce((res, _value, idx, arr) => {
+    if (idx % 2 === 0) {
+      res.push(arr.slice(idx, idx + 2));
+    }
+    return res;
+  }, []);
+
+  return pairs;
+}
