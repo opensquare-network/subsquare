@@ -86,10 +86,6 @@ function ConfirmationStarted() {
     return Number((gone / confirmPeriod) * 100).toFixed(2);
   }, [latestHeight, confirmStart, confirmPeriod]);
 
-  if (isNil(confirmStart)) {
-    return null;
-  }
-
   const progressItems = useMemo(() => {
     const items = confirmFailPairs.map((pair) => {
       const [started, aborted] = pair ?? [];
@@ -138,7 +134,22 @@ function ConfirmationStarted() {
     });
 
     return items;
-  }, [confirmPercentage]);
+  }, [
+    confirmPercentage,
+    confirmEndPercentage,
+    confirmFailPairs,
+    confirmRemaining,
+    confirmStartPercentage,
+    decisionBlocks,
+    decisionSince,
+    grey400Border,
+    secondaryGreen300,
+    secondaryGreen500,
+  ]);
+
+  if (isNil(confirmStart)) {
+    return null;
+  }
 
   return (
     <ProgressGroup>
