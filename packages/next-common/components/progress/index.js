@@ -27,17 +27,15 @@ const Percentage = styled(Bar)`
 `;
 const Total = styled(Bar)`
   background-color: ${(p) => p.bg ?? p.theme.secondaryBlue100};
-  left: ${(p) => p.start || 0}%;
-  width: ${(p) => p.percentage}%;
   overflow: hidden;
 `;
 
-export default function Progress({ percentage = 0, start = 0, fg, bg }) {
+export default function Progress({ percentage = 0, fg, bg }) {
   return (
     <Wrapper>
       <Background />
-      <Total bg={bg} start={start}>
-        <Percentage fg={fg} percentage={percentage} start={start} />
+      <Total bg={bg}>
+        <Percentage fg={fg} percentage={percentage} />
       </Total>
     </Wrapper>
   );
