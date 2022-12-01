@@ -24,8 +24,11 @@ export default function Metadata({ publicProposal }) {
   const deposit = publicProposal.deposit;
   const metadata = [
     ["hash", publicProposal?.hash],
-    ["deposit", <SymbolBalance value={getDeposit(deposit)} />],
-    ["proposer", <User add={publicProposal?.proposer} fontSize={14} />],
+    ["deposit", <SymbolBalance value={getDeposit(deposit)} key="balance" />],
+    [
+      "proposer",
+      <User add={publicProposal?.proposer} fontSize={14} key="user" />,
+    ],
   ];
 
   let call = publicProposal?.preImage?.call || publicProposal?.call;

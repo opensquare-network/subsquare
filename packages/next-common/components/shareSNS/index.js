@@ -99,6 +99,7 @@ export default function Share() {
               try {
                 copy(window.location.href);
               } catch (e) {
+                // fixme: ignore
               } finally {
                 setCopyState(true);
               }

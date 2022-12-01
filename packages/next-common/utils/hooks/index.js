@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BN, BN_THOUSAND, BN_TWO, extractTime } from "@polkadot/util";
 import useIsMounted from "./useIsMounted";
 import { useSelector } from "react-redux";

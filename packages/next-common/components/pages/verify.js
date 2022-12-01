@@ -58,7 +58,6 @@ export default withLoginUserRedux(({ loginUser }) => {
         }
       };
       doVerify(email, token);
-    } else {
     }
   }, [email, token, router, isMounted, startCountdown]);
 

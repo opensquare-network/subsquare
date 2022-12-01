@@ -4,7 +4,6 @@ import Flex from "../styled/flex";
 import HeaderAccount from "./headerAccount";
 import NetworkSwitch from "./networkSwitch";
 import NodeSwitch from "./nodeSwitch";
-import { nodes } from "../../utils/constants";
 import { useChainSettings } from "../../context/chain";
 
 const Right = styled(Flex)`

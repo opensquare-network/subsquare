@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { nodes } from "../constants";
 import { encodeAddressToChain } from "../../services/address";
 

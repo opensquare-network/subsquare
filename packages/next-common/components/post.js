@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import Link from "next/link";
 import User from "next-common/components/user";
-import { bigNumber2Locale, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
 import Tag from "next-common/components/tags/state/tag";
 import ReasonLink from "next-common/components/reasonLink";
 import Flex from "next-common/components/styled/flex";

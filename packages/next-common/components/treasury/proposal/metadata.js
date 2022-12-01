@@ -15,9 +15,9 @@ export default function TreasuryProposalMetadata({ treasuryProposal }) {
   const metadata = Object.entries(treasuryProposal?.meta || {});
   const data = metadata.map(([key, value]) => {
     if ([keys.proposer, keys.beneficiary].includes(key)) {
-      return [capitalize(key), <User add={value} fontSize={14} />];
+      return [capitalize(key), <User add={value} fontSize={14} key="user" />];
     } else if ([keys.value, keys.bond].includes(key)) {
-      return [capitalize(key), <SymbolBalance value={value} />];
+      return [capitalize(key), <SymbolBalance value={value} key="balance" />];
     } else {
       return [capitalize(key), value];
     }

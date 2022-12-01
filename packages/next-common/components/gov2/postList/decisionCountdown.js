@@ -1,3 +1,4 @@
+import React from "react";
 import isNil from "lodash.isnil";
 import CountDown from "next-common/components/_CountDown";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";

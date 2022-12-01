@@ -1,3 +1,4 @@
+import React from "react";
 import BalanceField from "next-common/components/popup/fields/balanceField";
 import { useChainSettings } from "next-common/context/chain";
 

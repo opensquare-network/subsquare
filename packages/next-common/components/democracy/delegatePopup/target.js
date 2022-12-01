@@ -1,3 +1,4 @@
+import React from "react";
 import AddressComboField from "next-common/components/popup/fields/addressComboField";
 
 export default function Target(props) {

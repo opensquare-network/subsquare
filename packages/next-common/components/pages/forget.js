@@ -30,7 +30,7 @@ const Wrapper = styled.div`
   font-size: 14px;
 `;
 
-const Forget = withLoginUserRedux(({}) => {
+const Forget = withLoginUserRedux(() => {
   const dispatch = useDispatch();
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState();

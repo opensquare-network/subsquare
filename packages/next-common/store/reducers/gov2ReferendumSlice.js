@@ -6,7 +6,6 @@ import { getGov2ReferendumVotesFromVotingOf } from "../../utils/gov2/allVotes";
 import Chains from "../../utils/consts/chains";
 import getKintElectorate from "../../utils/democracy/electorate/kintsugi";
 import getElectorate from "../../utils/democracy/electorate";
-import { setElectorate } from "./referendumSlice";
 
 const chain = process.env.NEXT_PUBLIC_CHAIN;
 
