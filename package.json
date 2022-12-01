@@ -8,7 +8,7 @@
   "author": "OpenSquare <https://www.opensquare.network/>",
   "scripts": {
     "scan": "yarn workspace @subsquare/scan scan",
-    "test": "yarn workspace @subsquare/scan test && yarn workspace @subsquare/scan-common test",
+    "lint": "yarn workspace @subsquare/kintsugi-next lint && yarn workspace @subsquare/next lint && yarn workspace next-common lint",
     "postinstall": "patch-package"
   },
   "devDependencies": {
