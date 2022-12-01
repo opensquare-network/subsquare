@@ -92,10 +92,7 @@ export default withLoginUserRedux(
             <Breadcrumb items={breadcrumbItems} />
           </BreadcrumbWrapper>
 
-          <DetailItem
-            onReply={focusEditor}
-            type={detailPageCategory.DEMOCRACY_PROPOSAL}
-          />
+          <DetailItem onReply={focusEditor} />
           <Second
             proposalIndex={proposalIndex}
             hasTurnIntoReferendum={hasTurnIntoReferendum}

@@ -106,7 +106,6 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
 
         <DetailItem
           onReply={focusEditor}
-          type={detailPageCategory.TREASURY_CHILD_BOUNTY}
           countDown={<ChildBountyCountDown data={detail.onchainData} />}
         />
         <Claim

@@ -20,8 +20,10 @@ import fetchAndUpdatePost from "next-common/context/post/update";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import { useChain } from "next-common/context/chain";
 import { useUser } from "next-common/context/user";
+import { useDetailType } from "next-common/context/page";
 
-export default function MotionDetail({ onReply, type }) {
+export default function MotionDetail({ onReply }) {
+  const type = useDetailType();
   const chain = useChain();
   const user = useUser();
   const postDispatch = usePostDispatch();
@@ -127,25 +129,14 @@ export default function MotionDetail({ onReply, type }) {
   const onVoteFinalized = useWaitSyncBlock("Motion voted", refreshPageData);
 
   if (isEdit) {
-    return (
-      <PostEdit
-        setIsEdit={setIsEdit}
-        updatePost={refreshPageData}
-        type={type}
-      />
-    );
+    return <PostEdit setIsEdit={setIsEdit} updatePost={refreshPageData} />;
   }
 
   return (
     <div>
       <EditablePanel>
         {!isEdit && <Head motion={post} type={type} />}
-        <ArticleContent
-          post={post}
-          onReply={onReply}
-          type={type}
-          setIsEdit={setIsEdit}
-        />
+        <ArticleContent post={post} onReply={onReply} setIsEdit={setIsEdit} />
       </EditablePanel>
       <Vote
         votes={votes}

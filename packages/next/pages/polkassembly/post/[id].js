@@ -31,10 +31,7 @@ export default withLoginUserRedux(({ detail }) => {
           href={`/polkassembly/discussions`}
           text="Back to Polkassembly Discussions"
         />
-        <DetailItem
-          postReactions={postReactions}
-          type={detailPageCategory.PA_POST}
-        />
+        <DetailItem postReactions={postReactions} />
         <PolkassemblyComments
           isLoading={loadingComments}
           comments={comments}

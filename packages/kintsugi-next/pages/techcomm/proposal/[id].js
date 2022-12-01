@@ -47,11 +47,7 @@ export default withLoginUserRedux(({ motion, comments }) => {
           <Breadcrumb items={breadcrumbItems} />
         </BreadcrumbWrapper>
 
-        <TechcommMotionDetail
-          motion={motion}
-          onReply={focusEditor}
-          type={detailPageCategory.TECH_COMM_MOTION}
-        />
+        <TechcommMotionDetail motion={motion} onReply={focusEditor} />
         {CommentComponent}
       </DetailLayout>
     </PostProvider>

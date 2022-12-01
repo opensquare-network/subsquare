@@ -121,7 +121,6 @@ export default withLoginUserRedux(({ detail: tip, comments }) => {
 
         <DetailItem
           onReply={focusEditor}
-          type={detailPageCategory.TREASURY_TIP}
           countDown={
             <TipCountDown
               meta={chainData.meta}

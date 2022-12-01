@@ -30,10 +30,7 @@ export default withLoginUserRedux(({ motion, comments }) => {
         }}
       >
         <Back href={`/financial-council/motions`} text="Back to Motions" />
-        <MotionDetail
-          type={detailPageCategory.FINANCIAL_MOTION}
-          onReply={focusEditor}
-        />
+        <MotionDetail onReply={focusEditor} />
         {CommentComponent}
       </DetailWithRightLayout>
     </PostProvider>

@@ -23,6 +23,7 @@ import fetchAndUpdatePost from "next-common/context/post/update";
 import User from "next-common/components/user";
 import { useChain } from "next-common/context/chain";
 import SymbolBalance from "next-common/components/values/symbolBalance";
+import { useDetailType } from "next-common/context/page";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -108,7 +109,8 @@ const getClosedTimelineData = (timeline = []) => {
   return [fd, ...notFoldItems];
 };
 
-export default function TechcommMotionDetail({ motion, onReply, type }) {
+export default function TechcommMotionDetail({ motion, onReply }) {
+  const type = useDetailType();
   const chain = useChain();
   const postDispatch = usePostDispatch();
   const post = usePost();
@@ -124,7 +126,6 @@ export default function TechcommMotionDetail({ motion, onReply, type }) {
       <PostEdit
         setIsEdit={setIsEdit}
         updatePost={() => fetchAndUpdatePost(postDispatch, type, post._id)}
-        type={type}
       />
     );
   }
@@ -208,12 +209,7 @@ export default function TechcommMotionDetail({ motion, onReply, type }) {
           {motionEndHeader}
           <PostTitle />
           <PostMeta />
-          <ArticleContent
-            post={post}
-            onReply={onReply}
-            type={type}
-            setIsEdit={setIsEdit}
-          />
+          <ArticleContent post={post} onReply={onReply} setIsEdit={setIsEdit} />
         </div>
       </EditablePanel>
 

@@ -29,12 +29,7 @@ export default withLoginUserRedux(({ detail, comments, votes, myVote }) => {
         }}
       >
         <Back href={`/discussions`} text="Back to Discussions" />
-        <DetailItem
-          votes={votes}
-          myVote={myVote}
-          onReply={focusEditor}
-          type={detailPageCategory.POST}
-        />
+        <DetailItem votes={votes} myVote={myVote} onReply={focusEditor} />
         {CommentComponent}
       </DetailLayout>
     </PostProvider>

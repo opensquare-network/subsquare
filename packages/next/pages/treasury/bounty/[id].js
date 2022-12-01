@@ -85,7 +85,6 @@ export default withLoginUserRedux(({ detail, childBounties, comments }) => {
 
         <DetailItem
           onReply={focusEditor}
-          type={detailPageCategory.TREASURY_BOUNTY}
           countDown={<BountyCountDown data={detail.onchainData} />}
         />
         <Metadata meta={detail.onchainData?.meta} />

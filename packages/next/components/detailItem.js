@@ -10,14 +10,15 @@ import ReferendumNavigation from "next-common/components/detail/navigation/Refer
 import PostEdit from "next-common/components/post/postEdit";
 import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
+import { useDetailType } from "next-common/context/page";
 
 export default function DetailItem({
   onReply,
-  type,
   votes,
   myVote,
   countDown = null,
 }) {
+  const type = useDetailType();
   const postDispatch = usePostDispatch();
   const post = usePost();
   const [isEdit, setIsEdit] = useState(false);
@@ -30,7 +31,6 @@ export default function DetailItem({
       <PostEdit
         setIsEdit={setIsEdit}
         updatePost={() => fetchAndUpdatePost(postDispatch, type, post._id)}
-        type={type}
       />
     );
   }
@@ -56,7 +56,6 @@ export default function DetailItem({
         post={post}
         votes={votes}
         myVote={myVote}
-        type={type}
         onReply={onReply}
         setIsEdit={setIsEdit}
       />

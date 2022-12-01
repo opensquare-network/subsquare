@@ -80,10 +80,7 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
           <Breadcrumb items={breadcrumbItems} />
         </BreadcrumbWrapper>
 
-        <DetailItem
-          onReply={focusEditor}
-          type={detailPageCategory.DEMOCRACY_REFERENDUM}
-        />
+        <DetailItem onReply={focusEditor} />
 
         <Vote
           referendumInfo={detail?.onchainData?.info}

@@ -48,10 +48,7 @@ export default withLoginUserRedux(({ detail, comments }) => {
           <Breadcrumb items={breadcrumbItems} />
         </BreadcrumbWrapper>
 
-        <DetailItem
-          onReply={focusEditor}
-          type={detailPageCategory.TREASURY_PROPOSAL}
-        />
+        <DetailItem onReply={focusEditor} />
         <Metadata treasuryProposal={detail?.onchainData} />
         <Timeline treasuryProposal={detail?.onchainData} />
         {CommentComponent}

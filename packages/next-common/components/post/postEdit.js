@@ -11,6 +11,7 @@ import FlexBetweenCenter from "../styled/flexBetweenCenter";
 import { TitleContainer } from "../styled/containers/titleContainer";
 import { EditablePanel } from "../styled/panel";
 import { usePost } from "../../context/post";
+import { useDetailType } from "../../context/page";
 
 const Wrapper = styled(EditablePanel)`
   textarea:read-only,
@@ -32,11 +33,8 @@ const UploaderWrapper = styled.div`
   margin-top: 16px;
 `;
 
-export default function PostEdit({
-  setIsEdit,
-  updatePost,
-  type,
-}) {
+export default function PostEdit({ setIsEdit, updatePost }) {
+  const type = useDetailType();
   const post = usePost();
   const [title, setTitle] = useState(post.title);
   const [updating, setUpdating] = useState(false);
