@@ -27,13 +27,11 @@ export function useConfirmingStarted() {
 
 export function useConfirmTimelineData() {
   const timeline = useTimelineData();
-  const confirms = timeline.filter((item) => {
+  return timeline.filter((item) => {
     return ["ConfirmStarted", "ConfirmAborted", "Confirmed"].includes(
       item.name
     );
   });
-
-  return confirms;
 }
 
 export function useConfirmTimelineFailPairs() {

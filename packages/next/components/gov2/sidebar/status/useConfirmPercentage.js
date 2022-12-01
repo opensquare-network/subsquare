@@ -40,9 +40,7 @@ export function useConfirmStartPercentage() {
 export function useConfirmEndPercentage() {
   const period = useDecisionBlocks();
   const confirmPeriod = useConfirm();
-  const confirmPercentage = (confirmPeriod / period) * 100;
-
-  return confirmPercentage;
+  return (confirmPeriod / period) * 100;
 }
 
 // TODO: move to calc-related file
