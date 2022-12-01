@@ -46,6 +46,7 @@ export default function useUniversalComments({ detail, comments, type }) {
       tabs = (
         <div style={{ width: "100%" }}>
           <SourceTabs
+            detail={detail}
             small={false}
             tabIndex={tabIndex}
             setTabIndex={setTabIndex}
@@ -54,8 +55,12 @@ export default function useUniversalComments({ detail, comments, type }) {
       );
     } else if (isDotsama) {
       tabs = (
-          <SourceTabs tabIndex={tabIndex} setTabIndex={setTabIndex} />
         <div style={{ marginTop: "-6px" }}>
+          <SourceTabs
+            detail={detail}
+            tabIndex={tabIndex}
+            setTabIndex={setTabIndex}
+          />
         </div>
       );
     }
