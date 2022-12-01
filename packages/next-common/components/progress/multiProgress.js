@@ -17,6 +17,11 @@ const Wrapper = styled.div`
   height: 8px;
 `;
 
+const BarWrapper = styled.div`
+  overflow: hidden;
+  ${bar_css};
+`;
+
 const Bar = styled.div`
   ${bar_css};
 `;
@@ -25,8 +30,16 @@ const Background = styled(Bar)`
   background-color: ${(p) => p.theme.grey100Bg};
 `;
 
-const Percentage = styled(Bar)``;
-const PercentageWrapper = styled(Bar)``;
+const Percentage = styled(Bar)`
+  background-color: ${(p) => p.fg};
+  width: ${(p) => p.percentage}%;
+`;
+const Total = styled(Bar)`
+  background-color: ${(p) => p.bg};
+  left: ${(p) => p.start || 0}%;
+  width: ${(p) => (p.end >= 100 ? p.end - p.start : p.end)}%;
+  overflow: hidden;
+`;
 
 const TooltipWrapper = styled.div`
   position: absolute;
@@ -34,13 +47,11 @@ const TooltipWrapper = styled.div`
   bottom: 0;
   left: ${(p) => p.start || 0}%;
   width: ${(p) => (p.end >= 100 ? p.end - p.start : p.end)}%;
-  background-color: ${(p) => p.bg || p.theme.secondaryBlue100};
   border-radius: 4px;
 
   /* tooltip children wrapper */
   > div {
     width: ${(p) => p.percentage}%;
-    background-color: ${(p) => p.fg || p.theme.secondaryBlue500};
     ${bar_css};
   }
 `;
@@ -62,19 +73,25 @@ export default function MultiProgress({ progressItems = [] }) {
   return (
     <Wrapper>
       <Background />
+      <BarWrapper>
+        {items.map((item, idx) => (
+          <Total key={idx} start={item.start} end={item.end} bg={item.bg}>
+            <Percentage percentage={item.percentage} fg={item.fg} />
+          </Total>
+        ))}
+      </BarWrapper>
+
       {items.map((item, idx) => (
         <TooltipWrapper
           key={idx}
           start={Number(item.start) || 0}
           end={Math.abs(Number(item.end) || 100)}
           percentage={item.percentage > 100 ? 100 : item.percentage}
-          fg={item.fg}
-          bg={item.bg}
         >
           <Tooltip content={item.tooltipContent}>
-            <PercentageWrapper>
-              <Percentage />
-            </PercentageWrapper>
+            <Total start={item.start} end={item.end}>
+              <Percentage percentage={item.percentage} />
+            </Total>
           </Tooltip>
         </TooltipWrapper>
       ))}
