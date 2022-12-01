@@ -91,7 +91,7 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   ];
 
   return (
-    <PostProvider post={detail} type={detailPageCategory.GOV2_REFERENDUM}>
+    <PostProvider post={detail}>
       <DetailWithRightLayout
         seoInfo={{
           title: detail?.title,

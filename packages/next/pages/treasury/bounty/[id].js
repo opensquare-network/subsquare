@@ -8,7 +8,6 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Metadata from "next-common/components/treasury/bounty/metadata";
 import ChildBountiesTable from "../../../components/bounty/childBountiesTable";
 import useUniversalComments from "components/universalComments";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
 import TreasuryCountDown from "next-common/components/treasury/common/countdown";
@@ -71,7 +70,7 @@ export default withLoginUserRedux(({ detail, childBounties, comments }) => {
   ];
 
   return (
-    <PostProvider post={detail} type={detailPageCategory.TREASURY_BOUNTY}>
+    <PostProvider post={detail}>
       <DetailLayout
         seoInfo={{
           title: detail?.title,

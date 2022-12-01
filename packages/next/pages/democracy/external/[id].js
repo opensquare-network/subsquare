@@ -7,7 +7,6 @@ import Business from "components/external/business";
 import Metadata from "components/external/metadata";
 import Timeline from "components/external/timeline";
 import useUniversalComments from "components/universalComments";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
@@ -38,7 +37,7 @@ export default withLoginUserRedux(({ detail, comments }) => {
   ];
 
   return (
-    <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_EXTERNAL}>
+    <PostProvider post={detail}>
       <DetailLayout
         seoInfo={{
           title: detail?.title,

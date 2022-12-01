@@ -68,7 +68,7 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   ];
 
   return (
-    <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_REFERENDUM}>
+    <PostProvider post={detail}>
       <DetailWithRightLayout
         seoInfo={{
           title: detail?.title,

@@ -80,7 +80,7 @@ export default withLoginUserRedux(
     ];
 
     return (
-      <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_PROPOSAL}>
+      <PostProvider post={detail}>
         <DetailWithRightLayout
           seoInfo={{
             title: detail?.title,
