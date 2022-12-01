@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import styled, { css } from "styled-components";
 import Tooltip from "../tooltip";
 
