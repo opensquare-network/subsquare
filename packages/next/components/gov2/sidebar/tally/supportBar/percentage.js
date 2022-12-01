@@ -1,7 +1,7 @@
 import isNil from "lodash.isnil";
 
 export default function Percentage({ perbill = 0 }) {
-  if (isNil(perbill)) {
+  if (isNil(perbill) || perbill <= 0) {
     return "0.0%";
   }
 
