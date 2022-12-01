@@ -4,6 +4,8 @@ import styled from "styled-components";
 import Status from "./status";
 import DecisionProgress from "./DecisionProgress";
 import ConfirmProgress from "./ConfirmProgress";
+import { usePostState } from "next-common/context/post";
+import { gov2State } from "next-common/utils/consts/state";
 
 const Wrapper = styled.div``;
 
@@ -12,6 +14,20 @@ const Title = styled(TitleContainer)`
 `;
 
 export default function Gov2Status() {
+  const state = usePostState();
+
+  if (
+    ![
+      gov2State.Deciding,
+      gov2State.Confirming,
+      gov2State.Approved,
+      gov2State.Executed,
+      gov2State.Rejected,
+    ].includes(state)
+  ) {
+    return null;
+  }
+
   return (
     <Wrapper>
       <SecondaryCardDetail>

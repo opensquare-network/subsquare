@@ -73,16 +73,9 @@ export default function Gov2Sidebar({
     detail?.state?.name
   );
 
-  const shouldShowStatus = [
-    gov2State.Deciding,
-    gov2State.Confirming,
-    gov2State.Approved,
-    gov2State.Executed,
-  ].includes(detail?.state?.name);
-
   return (
     <Wrapper>
-      {shouldShowStatus && <Gov2Status />}
+      <Gov2Status />
 
       <Gov2Tally detail={detail} />
 
