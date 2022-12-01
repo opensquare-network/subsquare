@@ -33,7 +33,6 @@ export default function PolkassemblyComments({
   isLoading,
   comments = [],
   paId,
-  type,
   tabs = null,
   btnRef = null,
 }) {
@@ -62,7 +61,6 @@ export default function PolkassemblyComments({
         <PolkassemblyCommentButton
           detail={detail}
           paId={paId}
-          type={type}
           btnRef={btnRef}
         />
       </div>

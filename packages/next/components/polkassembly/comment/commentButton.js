@@ -4,6 +4,7 @@ import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { useChain } from "next-common/context/chain";
 import { getPolkassemblyLink } from "next-common/utils/polkassembly";
+import { useDetailType } from "next-common/context/page";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -14,13 +15,10 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function PolkassemblyCommentButton({
-  detail,
-  paId,
-  type,
-  btnRef,
-}) {
+export default function PolkassemblyCommentButton({ detail, paId, btnRef }) {
+  const detailType = useDetailType();
   const chain = useChain();
+  let type = detailType;
 
   // For external post, use the motion link if it is ref to a motion
   if (type === detailPageCategory.DEMOCRACY_EXTERNAL) {

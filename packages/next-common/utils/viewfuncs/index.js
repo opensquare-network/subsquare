@@ -1,13 +1,26 @@
 import BigNumber from "bignumber.js";
 import Chains from "../consts/chains";
 import { BalanceDecimals } from "../constants";
+import { detailPageCategory } from "../consts/business/category";
 
 export function toApiType(type) {
-  if (type === "treasury/bounty") {
+  if (type === detailPageCategory.TREASURY_BOUNTY) {
     return "treasury/bounties";
   }
-  if (type === "treasury/child-bounty") {
+  if (type === detailPageCategory.TREASURY_CHILD_BOUNTY) {
     return "treasury/child-bounties";
+  }
+  if (type === detailPageCategory.FINANCIAL_MOTION) {
+    return "financial-motions";
+  }
+  if (type === detailPageCategory.TECH_COMM_MOTION) {
+    return "tech-comm/motions";
+  }
+  if (type === detailPageCategory.PA_POST) {
+    return "polkassembly-discussions";
+  }
+  if (type === detailPageCategory.COUNCIL_MOTION) {
+    return "motions";
   }
   return `${type}s`;
 }

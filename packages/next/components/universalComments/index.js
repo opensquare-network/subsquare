@@ -11,12 +11,8 @@ import Chains from "next-common/utils/consts/chains";
 import { useChain } from "next-common/context/chain";
 import isNil from "lodash.isnil";
 import useCommentsAnchor from "next-common/utils/hooks/useCommentsAnchor";
-import { useDetailType } from "next-common/context/page";
 
-export default function useUniversalComments({ detail, comments, type }) {
-  const detailType = useDetailType();
-  console.log("detailType", detailType);
-
+export default function useUniversalComments({ detail, comments }) {
   const chain = useChain();
   const { commentsCount, polkassemblyCommentsCount } = detail;
   let defaultTabIndex = SubSquare;
@@ -73,18 +69,12 @@ export default function useUniversalComments({ detail, comments, type }) {
   let { CommentComponent, focusEditor } = useCommentComponent({
     detail,
     comments,
-    type,
     tabs,
   });
 
   if (tabIndex === Polkassembly) {
     CommentComponent = (
-      <PolkassemblyComments
-        tabs={tabs}
-        detail={detail}
-        type={type}
-        btnRef={paBtnRef}
-      />
+      <PolkassemblyComments tabs={tabs} detail={detail} btnRef={paBtnRef} />
     );
 
     focusEditor = () => {

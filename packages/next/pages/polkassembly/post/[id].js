@@ -38,7 +38,6 @@ export default withLoginUserRedux(({ detail }) => {
         <PolkassemblyComments
           isLoading={loadingComments}
           comments={comments}
-          type={detailPageCategory.PA_POST}
           paId={polkassemblyId}
         />
       </DetailLayout>
