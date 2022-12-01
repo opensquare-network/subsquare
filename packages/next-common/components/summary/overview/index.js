@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { p_14_normal, p_20_bold } from "../../../styles/componentCss";
+import { p_14_normal } from "../../../styles/componentCss";
 import { smcss } from "../../../utils/responsive";
 import Divider from "../../styled/layout/divider";
 import Content from "../cardContent";
@@ -8,17 +8,6 @@ import { SummaryCard, SummaryTitle } from "../styled";
 
 const Wrapper = styled(SummaryCard)`
   height: auto;
-`;
-
-const TitleGroup = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Title = styled.h2`
-  margin: 0;
-  color: ${(p) => p.theme.textPrimary};
-  ${p_20_bold};
 `;
 
 const Description = styled.p`
@@ -46,9 +35,6 @@ export default function OverviewSummary() {
   return (
     <Wrapper>
       <div>
-        <TitleGroup>
-          <Title>Overview</Title>
-        </TitleGroup>
         <Description>
           Due client synergize developing tentative strategic vec pushback.
         </Description>
