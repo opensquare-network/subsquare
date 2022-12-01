@@ -46,7 +46,9 @@ export function getCookie(key) {
       if (key === foundKey) {
         break;
       }
-    } catch (e) {}
+    } catch (e) {
+      // fixme: ignore
+    }
   }
 
   return key ? jar[key] : jar;

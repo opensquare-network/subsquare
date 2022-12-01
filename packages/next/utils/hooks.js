@@ -21,7 +21,7 @@ export function useAddressVotingBalance(api, address) {
           }
         });
     }
-  }, [api, address]);
+  }, [api, address, isMounted]);
   return [balance, isLoading];
 }
 

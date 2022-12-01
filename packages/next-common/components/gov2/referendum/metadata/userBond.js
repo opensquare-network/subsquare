@@ -1,3 +1,4 @@
+import React from "react";
 import User from "../../../user";
 import { ValueWrapper } from "./styled";
 import { toPrecision } from "../../../../utils";

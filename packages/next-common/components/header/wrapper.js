@@ -1,7 +1,6 @@
 import React, { memo } from "react";
 import styled from "styled-components";
 import useWindowSize from "../../utils/hooks/useWindowSize";
-import getChainSettings from "../../utils/consts/settings";
 import { useChainSettings } from "../../context/chain";
 
 const Wrapper = styled.header`

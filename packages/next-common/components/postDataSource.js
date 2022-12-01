@@ -49,7 +49,7 @@ export default function PostDataSource() {
   return (
     <ExternalReference>
       <span>Polkassembly</span>
-      <a href={paLink} target="_blank">
+      <a href={paLink} target="_blank" rel="noreferrer">
         <ExternalLinkIcon color="#6848FF" />
       </a>
     </ExternalReference>

@@ -145,7 +145,7 @@ function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
 
       <FormItem label="Setting">
         <PollFormAnonymousFormItem>
-          <div>Anonymous (Voters' names will not be displayed)</div>
+          <div>Anonymous (Voters&apos; names will not be displayed)</div>
           <Toggle
             disabled={disabled}
             isOn={value.anonymous}

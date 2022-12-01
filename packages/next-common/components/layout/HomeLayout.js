@@ -5,10 +5,8 @@ import homeMenus from "../../utils/consts/menu";
 
 export default function HomeLayout({ children, seoInfo }) {
   return (
-    <BaseLayout
-      children={children}
-      seoInfo={seoInfo}
-      left={<Menu menu={homeMenus} />}
-    />
+    <BaseLayout seoInfo={seoInfo} left={<Menu menu={homeMenus} />}>
+      {children}
+    </BaseLayout>
   );
 }

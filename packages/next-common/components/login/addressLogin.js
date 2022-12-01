@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import AddressSelect from "../addressSelect";
 import nextApi from "../../services/nextApi";
 import ErrorText from "../ErrorText";
-import { setUser } from "../../store/reducers/userSlice";
 import { newErrorToast } from "../../store/reducers/toastSlice";
 import { encodeAddressToChain } from "../../services/address";
 import SecondaryButton from "../buttons/secondaryButton";

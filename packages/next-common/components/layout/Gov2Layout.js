@@ -1,3 +1,4 @@
+import React from "react";
 import Menu from "../menu";
 import BaseLayout from "./baseLayout";
 import {
@@ -10,9 +11,10 @@ export default function Gov2Layout({ children, seoInfo, tracks }) {
 
   return (
     <BaseLayout
-      children={children}
       seoInfo={seoInfo}
       left={<Menu menu={menu} foldablePrefix={gov2MenuFoldablePrefix} />}
-    />
+    >
+      {children}
+    </BaseLayout>
   );
 }

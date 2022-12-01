@@ -14,7 +14,7 @@ class Api {
       url.searchParams.set(paramsKeyConvert(key), params[key]);
     }
 
-    return new Promise((resolve, reject) =>
+    return new Promise((resolve) =>
       fetch(url, options)
         .then((resp) =>
           resp.status !== 200

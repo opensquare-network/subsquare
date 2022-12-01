@@ -13,7 +13,7 @@ const A = styled.a`
   color: #6848ff;
 `;
 
-export default function LongText({ text, threshold = 200, fileName = "hex" }) {
+export default function LongText({ text, fileName = "hex" }) {
   if (text?.length <= 200) {
     return text;
   }

@@ -16,7 +16,7 @@ import {
   SummaryGreyText,
   SummaryTitle,
 } from "next-common/components/summary/styled";
-import { p_14_normal, p_20_bold } from "next-common/styles/componentCss";
+import { p_14_normal } from "next-common/styles/componentCss";
 import { smcss } from "next-common/utils/responsive";
 import Divider from "next-common/components/styled/layout/divider";
 import FlexBetween from "../styled/flexBetween";

@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import extractVoteInfo from "next-common/utils/democracy/referendum";
 import { nowHeightSelector } from "next-common/store/reducers/chainSlice";
 import getElectorate from "next-common/utils/democracy/electorate";
-import Chains from "next-common/utils/consts/chains";
 
 export default function useMaybeFetchElectorate(
   referendum,

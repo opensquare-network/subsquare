@@ -42,7 +42,7 @@ const ButtonWrapper = styled(Flex)`
 `;
 
 function escapeLinkText(text) {
-  return text.replace(/\\/g, "\\\\").replace(/([\[\]])/g, "\\$1");
+  return text.replace(/\\/g, "\\\\").replace(/([[\]])/g, "\\$1");
 }
 
 function Editor(

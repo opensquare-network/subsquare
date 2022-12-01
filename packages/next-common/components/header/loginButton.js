@@ -1,6 +1,5 @@
 import React from "react";
 import { useRouter } from "next/router";
-import getChainSettings from "../../utils/consts/settings";
 import { withTheme } from "styled-components";
 import { emptyFunction } from "../../utils";
 import PrimaryButton from "../buttons/primaryButton";

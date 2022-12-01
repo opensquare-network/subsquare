@@ -44,7 +44,7 @@ const Icon = styled.span`
 `;
 
 function createIcon(component, optionsProps) {
-  return (props) => {
+  return function TargetIcon(props) {
     const {
       fill = light_text_tertiary,
       hoverFill = light_text_secondary,

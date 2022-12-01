@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchReferendumStatus,
   isLoadingReferendumStatusSelector,
   referendumStatusSelector,
-  setReferendumStatus
+  setReferendumStatus,
 } from "../../../store/reducers/referendumSlice";
 import extractVoteInfo from "../../democracy/referendum";
 
@@ -12,10 +12,16 @@ export default function useMaybeFetchReferendumStatus(referendum, api) {
   const dispatch = useDispatch();
   const { voteFinished } = extractVoteInfo(referendum?.timeline);
   const referendumStatus = useSelector(referendumStatusSelector);
-  const isLoadingReferendumStatus = useSelector(isLoadingReferendumStatusSelector);
+  const isLoadingReferendumStatus = useSelector(
+    isLoadingReferendumStatusSelector
+  );
 
   useEffect(() => {
-      dispatch(setReferendumStatus(referendum?.status || referendum?.info?.ongoing || referendum?.meta));
+    dispatch(
+      setReferendumStatus(
+        referendum?.status || referendum?.info?.ongoing || referendum?.meta
+      )
+    );
   }, [referendum]);
 
   useEffect(() => {

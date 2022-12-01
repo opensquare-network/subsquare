@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
 import { PrimaryCard } from "../styled/containers/primaryCard";

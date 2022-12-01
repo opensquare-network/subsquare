@@ -1,3 +1,4 @@
+import React from "react";
 import { estimateBlocksTime } from "../../../../utils";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "../../../../store/reducers/chainSlice";

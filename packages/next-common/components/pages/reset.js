@@ -29,7 +29,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
 `;
 
-const Reset = withLoginUserRedux(({}) => {
+const Reset = withLoginUserRedux(() => {
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const router = useRouter();

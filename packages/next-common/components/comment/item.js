@@ -5,12 +5,11 @@ import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import User from "next-common/components/user";
 import EditInput from "next-common/components/editInput";
-import { useRouter } from "next/router";
 import Flex from "next-common/components/styled/flex";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import {
-  MarkdownPreviewer,
   HtmlPreviewer,
+  MarkdownPreviewer,
   renderMentionIdentityUserPlugin,
 } from "@osn/previewer";
 import IdentityOrAddr from "../IdentityOrAddr";
@@ -84,7 +83,6 @@ const EditedLabel = styled.div`
 export default function Item({ data, onReply }) {
   const user = useUser();
   const dispatch = useDispatch();
-  const router = useRouter();
   const ref = useRef();
   const [comment, setComment] = useState(data);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
@@ -97,7 +95,7 @@ export default function Item({ data, onReply }) {
 
   useEffect(() => {
     setHighlight(hasAnchor && anchor === comment.height);
-  }, [hasAnchor, anchor])
+  }, [hasAnchor, anchor]);
 
   const commentId = comment._id;
   const isLoggedIn = !!user;

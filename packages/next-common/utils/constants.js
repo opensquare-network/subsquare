@@ -1,4 +1,3 @@
-import React from "react";
 import polkadot from "./consts/settings/polkadot";
 import kusama from "./consts/settings/kusama";
 import crab from "./consts/settings/crab";

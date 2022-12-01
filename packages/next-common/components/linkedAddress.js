@@ -175,11 +175,11 @@ export default function LinkedAddress() {
   const userDispatch = useUserDispatch();
 
   useEffect(() => {
-    if (typeof injectedWeb3 === "undefined") {
+    if (typeof window.injectedWeb3 === "undefined") {
       setHasExtension(false);
       return;
     }
-    if (Object.keys(injectedWeb3 ?? {}).length > 0) {
+    if (Object.keys(window.injectedWeb3 ?? {}).length > 0) {
       setHasExtension(true);
     }
   }, [isMounted]);
