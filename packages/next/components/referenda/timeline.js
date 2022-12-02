@@ -1,5 +1,7 @@
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
+import { useTimelineData } from "next-common/context/post";
 
 const getTimelineData = (args, method) => {
   switch (method) {
@@ -20,19 +22,23 @@ const getTimelineData = (args, method) => {
   return args;
 };
 
-export function makeReferendumTimelineData(timeline, type) {
+export function makeReferendumTimelineData(timeline) {
   return (timeline || []).map((item) => {
     return {
       time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
       indexer: item.indexer,
-      status: { value: item.method ?? item.name, type },
+      status: {
+        value: item.method ?? item.name,
+        type: detailPageCategory.DEMOCRACY_REFERENDUM,
+      },
       data: getTimelineData(item.args, item.method ?? item.name),
     };
   });
 }
 
-export default function ReferendumTimeline({ timeline, type }) {
-  const timelineData = makeReferendumTimelineData(timeline, type);
+export default function ReferendumTimeline() {
+  const timeline = useTimelineData();
+  const timelineData = makeReferendumTimelineData(timeline);
 
   return <Timeline data={timelineData} />;
 }

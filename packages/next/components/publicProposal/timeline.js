@@ -4,6 +4,7 @@ import sortTimeline from "next-common/utils/timeline/sort";
 import { getTimelineStatus } from "utils";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import SymbolBalance from "next-common/components/values/symbolBalance";
+import { useTimelineData } from "next-common/context/post";
 
 export function makePublicProposalTimelineData(timeline) {
   const getTimelineData = (args, method) => {
@@ -38,7 +39,8 @@ export function makePublicProposalTimelineData(timeline) {
   return timelineData;
 }
 
-export default function PublicProposalTimeline({ timeline }) {
+export default function PublicProposalTimeline() {
+  const timeline = useTimelineData();
   const timelineData = makePublicProposalTimelineData(timeline);
 
   return <Timeline data={timelineData} />;

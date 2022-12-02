@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import { getTimelineStatus } from "utils/index";
 import Timeline from "next-common/components/timeline";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import { useTimelineData } from "next-common/context/post";
 
 function makeSingleExternalTimelineData(args, method) {
   switch (method) {
@@ -36,7 +37,8 @@ export function makeExternalTimelineData(timeline) {
   });
 }
 
-export default function ExternalTimeline({ timeline }) {
+export default function ExternalTimeline() {
+  const timeline = useTimelineData();
   const timelineData = makeExternalTimelineData(timeline);
 
   return <Timeline data={timelineData} />;
