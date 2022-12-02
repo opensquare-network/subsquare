@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import ThresholdComponent from "../../../../referenda/threshold";
 import Percentage from "./percentage";
 import isNil from "lodash.isnil";
+import TooltipOrigin from "next-common/components/tooltip";
 
 const Wrapper = styled.div`
   margin-top: 21px;
@@ -53,6 +54,10 @@ const Mark = styled(ThresholdComponent)`
   margin-top: 8px;
 `;
 
+const Tooltip = styled(TooltipOrigin)`
+  display: block;
+`;
+
 export default function SupportBar({ issuance }) {
   const supportThreshold = useSupportThreshold();
   // threshold in perbill
@@ -89,12 +94,16 @@ export default function SupportBar({ issuance }) {
 
     const supportPercentage = (support / issuance) * Math.pow(10, 9);
 
-    return (supportPercentage / progressMax) * 100;
+    return Number((supportPercentage / progressMax) * 100).toFixed(2);
   }, [issuance, support, progressMax]);
 
   return (
     <Wrapper>
-      <Progress percentage={barPercentage} bg={grey100Bg} />
+      <div>
+        <Tooltip content={`${barPercentage}%`}>
+          <Progress percentage={barPercentage} bg={grey100Bg} />
+        </Tooltip>
+      </div>
       <Mark threshold="80%" />
       <ul>
         <li>0.0%</li>
