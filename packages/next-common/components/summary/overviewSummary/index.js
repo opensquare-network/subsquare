@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { p_16_bold } from "../../../styles/componentCss";
+import { isKintsugiChain } from "../../../utils/constants";
 import Flex from "../../styled/flex";
 import Tooltip from "../../tooltip";
 import Summary from "../new";
@@ -37,6 +38,16 @@ const TypeValue = styled.span`
   ${p_16_bold};
 `;
 
+const showTreasuryBounties = !isKintsugiChain;
+const showTreasuryTips = !isKintsugiChain;
+
+const showCouncil = !isKintsugiChain;
+const showCouncilMotions = !isKintsugiChain;
+
+const showDemocracyExternalProposals = !isKintsugiChain;
+
+const showOpenGov = !isKintsugiChain;
+
 export default function OverviewSummary({ summaryData }) {
   const {
     activeBountiesCount,
@@ -63,38 +74,46 @@ export default function OverviewSummary({ summaryData }) {
               </Tooltip>
             </TypeGroup>
 
-            <TypeGroup>
-              <TypeLabel>B</TypeLabel>
-              <Tooltip content="Active bounties">
-                <TypeValue>{activeBountiesCount}</TypeValue>
-              </Tooltip>
-            </TypeGroup>
+            {showTreasuryBounties && (
+              <>
+                <TypeGroup>
+                  <TypeLabel>B</TypeLabel>
+                  <Tooltip content="Active bounties">
+                    <TypeValue>{activeBountiesCount}</TypeValue>
+                  </Tooltip>
+                </TypeGroup>
 
-            <TypeGroup>
-              <TypeLabel>b</TypeLabel>
-              <Tooltip content="Active child bounties">
-                <TypeValue>{activeChildBountiesCount}</TypeValue>
-              </Tooltip>
-            </TypeGroup>
+                <TypeGroup>
+                  <TypeLabel>b</TypeLabel>
+                  <Tooltip content="Active child bounties">
+                    <TypeValue>{activeChildBountiesCount}</TypeValue>
+                  </Tooltip>
+                </TypeGroup>
+              </>
+            )}
 
-            <TypeGroup>
-              <TypeLabel>T</TypeLabel>
-              <Tooltip content="Active tips">
-                <TypeValue>{activeTipsCount}</TypeValue>
-              </Tooltip>
-            </TypeGroup>
+            {showTreasuryTips && (
+              <TypeGroup>
+                <TypeLabel>T</TypeLabel>
+                <Tooltip content="Active tips">
+                  <TypeValue>{activeTipsCount}</TypeValue>
+                </Tooltip>
+              </TypeGroup>
+            )}
           </Content>
         </SummaryItem>
 
         <SummaryItem>
-          <SummaryItemTitle>Council / T.C.</SummaryItemTitle>
+          <SummaryItemTitle>{showCouncil && "Council / "}T.C.</SummaryItemTitle>
           <Content>
-            <TypeGroup separator="/">
-              <TypeLabel>M</TypeLabel>
-              <Tooltip content="Active council motions">
-                <TypeValue>{activeMotionsCount}</TypeValue>
-              </Tooltip>
-            </TypeGroup>
+            {showCouncilMotions && (
+              <TypeGroup separator="/">
+                <TypeLabel>M</TypeLabel>
+                <Tooltip content="Active council motions">
+                  <TypeValue>{activeMotionsCount}</TypeValue>
+                </Tooltip>
+              </TypeGroup>
+            )}
 
             <TypeGroup>
               <TypeLabel>M</TypeLabel>
@@ -115,12 +134,14 @@ export default function OverviewSummary({ summaryData }) {
               </Tooltip>
             </TypeGroup>
 
-            <TypeGroup>
-              <TypeLabel>E</TypeLabel>
-              <Tooltip content="Active external proposals">
-                <TypeValue>{activeExternalProposalsCount}</TypeValue>
-              </Tooltip>
-            </TypeGroup>
+            {showDemocracyExternalProposals && (
+              <TypeGroup>
+                <TypeLabel>E</TypeLabel>
+                <Tooltip content="Active external proposals">
+                  <TypeValue>{activeExternalProposalsCount}</TypeValue>
+                </Tooltip>
+              </TypeGroup>
+            )}
 
             <TypeGroup>
               <TypeLabel>R</TypeLabel>
@@ -131,17 +152,19 @@ export default function OverviewSummary({ summaryData }) {
           </Content>
         </SummaryItem>
 
-        <SummaryItem>
-          <SummaryItemTitle>Open Gov</SummaryItemTitle>
-          <Content>
-            <TypeGroup>
-              <TypeLabel>R</TypeLabel>
-              <Tooltip content="active">
-                {/* <TypeValue>{activeReferendumsCount}</TypeValue> */}
-              </Tooltip>
-            </TypeGroup>
-          </Content>
-        </SummaryItem>
+        {showOpenGov && (
+          <SummaryItem>
+            <SummaryItemTitle>Open Gov</SummaryItemTitle>
+            <Content>
+              <TypeGroup>
+                <TypeLabel>R</TypeLabel>
+                <Tooltip content="active">
+                  {/* <TypeValue>{activeReferendumsCount}</TypeValue> */}
+                </Tooltip>
+              </TypeGroup>
+            </Content>
+          </SummaryItem>
+        )}
       </SummaryItemWrapper>
     </Summary>
   );
