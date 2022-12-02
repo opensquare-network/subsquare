@@ -89,4 +89,4 @@ export const CACHE_KEY = {
 
 export const CHAIN = process.env.CHAIN;
 
-export const isKintsugi = CHAIN === "kintsugi";
+export const isKintsugiChain = CHAIN === "kintsugi";
