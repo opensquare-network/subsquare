@@ -35,11 +35,14 @@ export const SummaryItemWrapper = styled.div`
   display: flex;
   gap: 16px;
   ${smcss(css`
-    flex-direction: column;
+    flex-wrap: wrap;
   `)}
 `;
 export const SummaryItem = styled.div`
   flex: 1;
+  ${smcss(css`
+    max-width: calc(50% - 16px);
+  `)}
 `;
 export const SummaryItemTitle = SummaryTitle;
 
