@@ -52,7 +52,7 @@ export default withLoginUserRedux(({ detail, comments }) => {
         <DetailItem onReply={focusEditor} />
         <Business external={detail?.onchainData} />
         <Metadata external={detail?.onchainData} />
-        <Timeline timeline={detail?.onchainData?.timeline} />
+        <Timeline />
         {CommentComponent}
       </DetailLayout>
     </PostProvider>

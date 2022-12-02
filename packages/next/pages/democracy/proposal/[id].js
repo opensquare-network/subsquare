@@ -96,7 +96,7 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
           onFinalized={onSecondFinalized}
         />
         <Metadata publicProposal={detail?.onchainData} />
-        <Timeline timeline={detail?.onchainData?.timeline} />
+        <Timeline />
         {CommentComponent}
       </DetailWithRightLayout>
     </PostProvider>

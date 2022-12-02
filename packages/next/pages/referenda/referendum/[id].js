@@ -8,7 +8,6 @@ import DetailItem from "components/detailItem";
 import Gov2Sidebar from "components/gov2/sidebar";
 import nextApi, { ssrNextApi } from "next-common/services/nextApi";
 import useUniversalComments from "components/universalComments";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
 import {
   gov2ReferendumsCommentApi,
   gov2ReferendumsDetailApi,
@@ -110,10 +109,7 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
         <ReferendaBusiness />
         <Gov2ReferendumMetadata detail={detail} />
 
-        <Timeline
-          trackInfo={detail?.onchainData?.trackInfo}
-          type={detailPageCategory.GOV2_REFERENDUM}
-        />
+        <Timeline trackInfo={detail?.onchainData?.trackInfo} />
 
         {CommentComponent}
       </DetailWithRightLayout>
