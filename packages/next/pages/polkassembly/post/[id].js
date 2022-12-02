@@ -6,7 +6,6 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
@@ -19,7 +18,7 @@ export default withLoginUserRedux(({ detail }) => {
 
   const desc = getMetaDesc(detail);
   return (
-    <PostProvider post={detail} type={detailPageCategory.PA_POST}>
+    <PostProvider post={detail}>
       <DetailLayout
         seoInfo={{
           title: detail?.title,
@@ -31,14 +30,10 @@ export default withLoginUserRedux(({ detail }) => {
           href={`/polkassembly/discussions`}
           text="Back to Polkassembly Discussions"
         />
-        <DetailItem
-          postReactions={postReactions}
-          type={detailPageCategory.PA_POST}
-        />
+        <DetailItem postReactions={postReactions} />
         <PolkassemblyComments
           isLoading={loadingComments}
           comments={comments}
-          type={detailPageCategory.PA_POST}
           paId={polkassemblyId}
         />
       </DetailLayout>

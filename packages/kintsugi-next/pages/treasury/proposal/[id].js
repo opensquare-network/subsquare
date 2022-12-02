@@ -7,7 +7,6 @@ import Metadata from "next-common/components/treasury/proposal/metadata";
 import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import useCommentComponent from "next-common/components/useCommentComponent";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
@@ -18,7 +17,6 @@ export default withLoginUserRedux(({ detail, comments }) => {
   const { CommentComponent, focusEditor } = useCommentComponent({
     detail,
     comments,
-    type: detailPageCategory.TREASURY_PROPOSAL,
   });
 
   const desc = getMetaDesc(detail);
@@ -37,7 +35,7 @@ export default withLoginUserRedux(({ detail, comments }) => {
   ];
 
   return (
-    <PostProvider post={detail} type={detailPageCategory.TREASURY_PROPOSAL}>
+    <PostProvider post={detail}>
       <DetailLayout
         seoInfo={{
           title: detail?.title,
@@ -49,10 +47,7 @@ export default withLoginUserRedux(({ detail, comments }) => {
           <Breadcrumb items={breadcrumbItems} />
         </BreadcrumbWrapper>
 
-        <DetailItem
-          onReply={focusEditor}
-          type={detailPageCategory.TREASURY_PROPOSAL}
-        />
+        <DetailItem onReply={focusEditor} />
         <Metadata treasuryProposal={detail?.onchainData} />
         <Timeline treasuryProposal={detail?.onchainData} />
         {CommentComponent}

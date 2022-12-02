@@ -7,12 +7,7 @@ import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { useChain } from "../../context/chain";
 import { useUser } from "../../context/user";
 
-export default function useCommentComponent({
-  detail,
-  comments,
-  type,
-  tabs = null,
-}) {
+export default function useCommentComponent({ detail, comments, tabs = null }) {
   const loginUser = useUser();
   const chain = useChain();
   const postId = detail._id;
@@ -52,7 +47,6 @@ export default function useCommentComponent({
             setContent,
             users,
           }}
-          type={type}
         />
       )}
     </CommentsWrapper>

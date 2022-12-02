@@ -13,7 +13,6 @@ import Timeline from "components/tip/timeline";
 import Metadata from "components/tip/metadata";
 import Tipper from "components/tipper";
 import useUniversalComments from "components/universalComments";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,7 +68,6 @@ export default withLoginUserRedux(({ detail: tip, comments }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
-    type: detailPageCategory.TREASURY_TIP,
   });
   const dispatch = useDispatch();
 
@@ -108,7 +106,7 @@ export default withLoginUserRedux(({ detail: tip, comments }) => {
   ];
 
   return (
-    <PostProvider post={detail} type={detailPageCategory.TREASURY_TIP}>
+    <PostProvider post={detail}>
       <DetailWithRightLayout
         seoInfo={{
           title: detail?.title,
@@ -122,7 +120,6 @@ export default withLoginUserRedux(({ detail: tip, comments }) => {
 
         <DetailItem
           onReply={focusEditor}
-          type={detailPageCategory.TREASURY_TIP}
           countDown={
             <TipCountDown
               meta={chainData.meta}

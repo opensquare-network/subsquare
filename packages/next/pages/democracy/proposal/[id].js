@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-key */
-import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
@@ -12,7 +11,6 @@ import Second from "next-common/components/publicProposal/second";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 import isNil from "lodash.isnil";
 import useUniversalComments from "components/universalComments";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
@@ -30,7 +28,6 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
-    type: detailPageCategory.DEMOCRACY_PROPOSAL,
   });
 
   const publicProposal = detail?.onchainData;
@@ -77,7 +74,7 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   ];
 
   return (
-    <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_PROPOSAL}>
+    <PostProvider post={detail}>
       <DetailWithRightLayout
         seoInfo={{
           title: detail?.title,
@@ -89,10 +86,7 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
           <Breadcrumb items={breadcrumbItems} />
         </BreadcrumbWrapper>
 
-        <DetailItem
-          onReply={focusEditor}
-          type={detailPageCategory.DEMOCRACY_PROPOSAL}
-        />
+        <DetailItem onReply={focusEditor} />
         <Second
           proposalIndex={proposalIndex}
           hasTurnIntoReferendum={hasTurnIntoReferendum}

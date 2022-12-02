@@ -5,7 +5,6 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { to404 } from "next-common/utils/serverSideUtil";
 import { EmptyList } from "next-common/utils/constants";
 import useCommentComponent from "next-common/components/useCommentComponent";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
@@ -17,7 +16,6 @@ export default withLoginUserRedux(({ motion, comments }) => {
   const { CommentComponent, focusEditor } = useCommentComponent({
     detail: motion,
     comments,
-    type: detailPageCategory.TECH_COMM_MOTION,
   });
 
   const desc = getMetaDesc(motion);
@@ -36,7 +34,7 @@ export default withLoginUserRedux(({ motion, comments }) => {
   ];
 
   return (
-    <PostProvider post={motion} type={detailPageCategory.TECH_COMM_MOTION}>
+    <PostProvider post={motion}>
       <DetailLayout
         seoInfo={{
           title: motion?.title,
@@ -48,11 +46,7 @@ export default withLoginUserRedux(({ motion, comments }) => {
           <Breadcrumb items={breadcrumbItems} />
         </BreadcrumbWrapper>
 
-        <TechcommMotionDetail
-          motion={motion}
-          onReply={focusEditor}
-          type={detailPageCategory.TECH_COMM_MOTION}
-        />
+        <TechcommMotionDetail motion={motion} onReply={focusEditor} />
         {CommentComponent}
       </DetailLayout>
     </PostProvider>

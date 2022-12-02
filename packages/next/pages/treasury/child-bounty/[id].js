@@ -7,7 +7,6 @@ import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Metadata from "next-common/components/treasury/bounty/metadata";
 import useUniversalComments from "components/universalComments";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
 import TreasuryCountDown from "next-common/components/treasury/common/countdown";
 import { getBannerUrl } from "next-common/utils/banner";
@@ -54,7 +53,6 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
-    type: detailPageCategory.TREASURY_CHILD_BOUNTY,
   });
 
   const refreshPageData = useCallback(async () => {
@@ -93,7 +91,7 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   ];
 
   return (
-    <PostProvider post={detail} type={detailPageCategory.TREASURY_CHILD_BOUNTY}>
+    <PostProvider post={detail}>
       <Layout
         seoInfo={{
           title: detail?.title,
@@ -107,7 +105,6 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
 
         <DetailItem
           onReply={focusEditor}
-          type={detailPageCategory.TREASURY_CHILD_BOUNTY}
           countDown={<ChildBountyCountDown data={detail.onchainData} />}
         />
         <Claim

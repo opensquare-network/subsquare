@@ -2,9 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import ExternalLinkIcon from "next-common/components/icons/externalLink";
 import Chains from "../utils/consts/chains";
-import { usePost, usePostType } from "../context/post";
+import { usePost } from "../context/post";
 import { useChain } from "../context/chain";
 import { getPolkassemblyLink } from "next-common/utils/polkassembly";
+import { useDetailType } from "../context/page";
 
 const ExternalReference = styled.div`
   display: flex;
@@ -34,7 +35,7 @@ const ExternalReference = styled.div`
 
 export default function PostDataSource() {
   const post = usePost();
-  const type = usePostType();
+  const type = useDetailType();
   const chain = useChain();
 
   if (![Chains.kusama, Chains.polkadot].includes(chain)) {

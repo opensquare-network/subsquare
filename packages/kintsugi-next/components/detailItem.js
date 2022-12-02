@@ -9,8 +9,10 @@ import PostMeta from "next-common/components/detail/container/Meta";
 import PostEdit from "next-common/components/post/postEdit";
 import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
+import { useDetailType } from "next-common/context/page";
 
-export default function DetailItem({ onReply, votes, myVote, type }) {
+export default function DetailItem({ onReply, votes, myVote }) {
+  const type = useDetailType();
   const postDispatch = usePostDispatch();
   const post = usePost();
   const [isEdit, setIsEdit] = useState(false);
@@ -20,7 +22,6 @@ export default function DetailItem({ onReply, votes, myVote, type }) {
       <PostEdit
         setIsEdit={setIsEdit}
         updatePost={() => fetchAndUpdatePost(postDispatch, type, post._id)}
-        type={type}
       />
     );
   }
@@ -37,7 +38,6 @@ export default function DetailItem({ onReply, votes, myVote, type }) {
       <PostMeta />
       <ArticleContent
         post={post}
-        type={type}
         onReply={onReply}
         setIsEdit={setIsEdit}
         votes={votes}

@@ -3,6 +3,7 @@ import ChainProvider from "./chain";
 import UserProvider from "./user";
 import SettingsProvider from "./settings";
 import ThemeModeProvider from "./theme";
+import PageProvider from "./page";
 
 export default function GlobalProvider({
   user,
@@ -10,13 +11,16 @@ export default function GlobalProvider({
   homeFoldedMenus,
   themeMode,
   children,
+  pageProperties,
 }) {
   return (
     <ThemeModeProvider defaultThemeMode={themeMode}>
       <ChainProvider chain={chain}>
         <UserProvider user={user}>
           <SettingsProvider homeFoldItems={homeFoldedMenus}>
-            {children}
+            <PageProvider pageProperties={pageProperties}>
+              {children}
+            </PageProvider>
           </SettingsProvider>
         </UserProvider>
       </ChainProvider>

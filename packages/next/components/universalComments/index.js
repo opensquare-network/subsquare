@@ -12,7 +12,7 @@ import { useChain } from "next-common/context/chain";
 import isNil from "lodash.isnil";
 import useCommentsAnchor from "next-common/utils/hooks/useCommentsAnchor";
 
-export default function useUniversalComments({ detail, comments, type }) {
+export default function useUniversalComments({ detail, comments }) {
   const chain = useChain();
   const { commentsCount, polkassemblyCommentsCount } = detail;
   let defaultTabIndex = SubSquare;
@@ -46,6 +46,7 @@ export default function useUniversalComments({ detail, comments, type }) {
       tabs = (
         <div style={{ width: "100%" }}>
           <SourceTabs
+            detail={detail}
             small={false}
             tabIndex={tabIndex}
             setTabIndex={setTabIndex}
@@ -54,8 +55,12 @@ export default function useUniversalComments({ detail, comments, type }) {
       );
     } else if (isDotsama) {
       tabs = (
-        <div style={{ width: "240px", marginTop: "-6px" }}>
-          <SourceTabs tabIndex={tabIndex} setTabIndex={setTabIndex} />
+        <div style={{ marginTop: "-6px" }}>
+          <SourceTabs
+            detail={detail}
+            tabIndex={tabIndex}
+            setTabIndex={setTabIndex}
+          />
         </div>
       );
     }
@@ -64,18 +69,12 @@ export default function useUniversalComments({ detail, comments, type }) {
   let { CommentComponent, focusEditor } = useCommentComponent({
     detail,
     comments,
-    type,
     tabs,
   });
 
   if (tabIndex === Polkassembly) {
     CommentComponent = (
-      <PolkassemblyComments
-        tabs={tabs}
-        detail={detail}
-        type={type}
-        btnRef={paBtnRef}
-      />
+      <PolkassemblyComments tabs={tabs} detail={detail} btnRef={paBtnRef} />
     );
 
     focusEditor = () => {

@@ -2,10 +2,9 @@ import React, { createContext, useContext, useEffect, useReducer } from "react";
 
 const PostContext = createContext(null);
 const PostDispatchContext = createContext(null);
-const PostTypeContext = createContext(null);
 export const POST_UPDATE_ACTION = "UPDATE";
 
-export function PostProvider({ children, post, type }) {
+export function PostProvider({ children, post }) {
   const [detail, dispatch] = useReducer(postReducer, post);
   useEffect(() => {
     dispatch({
@@ -17,9 +16,7 @@ export function PostProvider({ children, post, type }) {
   return (
     <PostContext.Provider value={detail}>
       <PostDispatchContext.Provider value={dispatch}>
-        <PostTypeContext.Provider value={type}>
-          {children}
-        </PostTypeContext.Provider>
+        {children}
       </PostDispatchContext.Provider>
     </PostContext.Provider>
   );
@@ -48,10 +45,6 @@ export function usePostOnChainData() {
   }
 
   return post?.onchainData;
-}
-
-export function usePostType() {
-  return useContext(PostTypeContext);
 }
 
 export function usePostState() {
