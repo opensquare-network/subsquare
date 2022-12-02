@@ -6,7 +6,7 @@ import PlusIcon from "../../assets/imgs/icons/plusInCircle.svg";
 import EmptyOverview from "./emptyOverview";
 import OverviewSummary from "../summary/overviewSummary";
 import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
-import { mdcss } from "../../utils/responsive";
+import { mdcss, smcss } from "../../utils/responsive";
 import { TitleContainer as TitleContainerOrigin } from "../styled/containers/titleContainer";
 
 const Wrapper = styled.div`
@@ -35,6 +35,9 @@ const OverviewSummaryWrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
   ${mdcss(css`
     max-width: 960px;
+  `)}
+  ${smcss(css`
+    margin: 0 16px;
   `)}
 `;
 
