@@ -66,6 +66,8 @@ export default function SupportBar({ issuance }) {
   // progress max value in perbill
   const [progressMax, setProgressMax] = useState(null);
   const { grey100Bg } = useTheme();
+  // support percentage perbill value
+  const [percentage, setPercentage] = useState(null);
 
   useEffect(() => {
     if (supportThreshold) {
@@ -94,6 +96,7 @@ export default function SupportBar({ issuance }) {
     }
 
     const supportPercentage = (support / issuance) * Math.pow(10, 9);
+    setPercentage(supportPercentage);
 
     return Number((supportPercentage / progressMax) * 100).toFixed(2);
   }, [issuance, support, progressMax]);
@@ -101,7 +104,16 @@ export default function SupportBar({ issuance }) {
   return (
     <Wrapper>
       <div>
-        <Tooltip content={`${barPercentage}%`}>
+        <Tooltip
+          content={
+            isNil(support) ? null : (
+              <>
+                Support:&nbsp;
+                <Percentage perbill={percentage} />
+              </>
+            )
+          }
+        >
           <Progress percentage={barPercentage} bg={grey100Bg} />
         </Tooltip>
       </div>
