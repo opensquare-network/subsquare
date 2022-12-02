@@ -25,14 +25,17 @@ const TypeGroup = styled(Flex)`
       color: ${(p) => p.theme.textPlaceholder};
     }
   }
+`;
+
+const TypeLabel = styled(SummaryGreyText)`
   ${p_16_bold};
 `;
-const TypeLabel = styled(SummaryGreyText)``;
 const TypeValue = styled.span`
   margin-left: 4px;
   &:hover {
     text-decoration: underline;
   }
+  ${p_16_bold};
 `;
 
 export default function OverviewSummary({ summaryData }) {
