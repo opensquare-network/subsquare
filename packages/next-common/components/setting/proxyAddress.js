@@ -11,8 +11,16 @@ import {
   useUserDispatch,
 } from "../../context/user";
 import { ErrorMessage } from "../styled/errorMessage";
+import useApi from "../../utils/hooks/useApi";
+import { checkProxy } from "../../utils/proxy";
+import styled from "styled-components";
+
+const CustomErrorMessage = styled(ErrorMessage)`
+  margin-top: 9px;
+`;
 
 export default function ProxyAddress() {
+  const api = useApi();
   const dispatch = useDispatch();
   const loginUser = useUser();
   const [inputAddress, setInputAddres] = useState(
@@ -28,31 +36,53 @@ export default function ProxyAddress() {
   }, [loginUser?.proxyAddress]);
 
   const onSet = async () => {
+    setErrorMsg();
+
+    if (!inputAddress) {
+      setErrorMsg("Address can't be empty");
+      return;
+    }
+
     setIsLoading(true);
-    const { result, error } = await nextApi.put("user/proxyaddress", {
-      address: inputAddress,
-    });
-    if (result) {
-      fetchAndUpdateUser(userDispatch);
-      dispatch(newSuccessToast("The proxy address has been set."));
+
+    try {
+      const ok = await checkProxy(api, inputAddress, loginUser?.address);
+      if (!ok) {
+        setErrorMsg("Can't find the proxy setting on-chain");
+        return;
+      }
+
+      const { result, error } = await nextApi.put("user/proxyaddress", {
+        address: inputAddress,
+      });
+      if (result) {
+        fetchAndUpdateUser(userDispatch);
+        dispatch(newSuccessToast("The proxy address has been set."));
+      }
+      if (error) {
+        setErrorMsg(error.message);
+      }
+    } catch (e) {
+      setErrorMsg(e.message);
+    } finally {
+      setIsLoading(false);
     }
-    if (error) {
-      setErrorMsg(error.message);
-    }
-    setIsLoading(false);
   };
 
   const onUnset = async () => {
     setIsLoading(true);
-    const { result, error } = await nextApi.delete("user/proxyaddress");
-    if (result) {
-      fetchAndUpdateUser(userDispatch);
-      dispatch(newSuccessToast("The proxy address has been unset."));
+    try {
+      const { result, error } = await nextApi.delete("user/proxyaddress");
+      if (result) {
+        fetchAndUpdateUser(userDispatch);
+        dispatch(newSuccessToast("The proxy address has been unset."));
+      }
+      if (error) {
+        setErrorMsg(error.message);
+      }
+    } finally {
+      setIsLoading(false);
     }
-    if (error) {
-      setErrorMsg(error.message);
-    }
-    setIsLoading(false);
   };
 
   const disabled = isLoading || !inputAddress;
@@ -69,11 +99,15 @@ export default function ProxyAddress() {
           }}
           disabled={isSet}
         />
-        <SecondaryButton onClick={isSet ? onUnset : onSet} disabled={disabled}>
+        <SecondaryButton
+          onClick={isSet ? onUnset : onSet}
+          disabled={disabled}
+          isLoading={isLoading}
+        >
           {isSet ? "Unset" : "Set"}
         </SecondaryButton>
       </InputWrapper>
-      {errorMsg && <ErrorMessage>{errorMsg}</ErrorMessage>}
+      {errorMsg && <CustomErrorMessage>{errorMsg}</CustomErrorMessage>}
     </div>
   );
 }
