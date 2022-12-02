@@ -59,6 +59,7 @@ export default function OverviewSummary({ summaryData }) {
     activeTechCommMotionsCount,
     activeTipsCount,
     activeTreasuryProposalsCount,
+    activeGov2ReferendumsCount,
   } = summaryData ?? {};
 
   return (
@@ -159,7 +160,7 @@ export default function OverviewSummary({ summaryData }) {
               <TypeGroup>
                 <TypeLabel>R</TypeLabel>
                 <Tooltip content="active">
-                  {/* <TypeValue>{activeReferendumsCount}</TypeValue> */}
+                  <TypeValue>{activeGov2ReferendumsCount}</TypeValue>
                 </Tooltip>
               </TypeGroup>
             </Content>
