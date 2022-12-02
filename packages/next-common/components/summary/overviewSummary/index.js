@@ -61,28 +61,28 @@ export default function OverviewSummary({ summaryData }) {
           <Content>
             <TypeGroup>
               <TypeLabel>P</TypeLabel>
-              <Tooltip content="Active treasury proposal">
+              <Tooltip content="Active proposals">
                 <TypeValue>{activeTreasuryProposalsCount}</TypeValue>
               </Tooltip>
             </TypeGroup>
 
             <TypeGroup>
               <TypeLabel>B</TypeLabel>
-              <Tooltip content="Active treasury bounty">
+              <Tooltip content="Active bounties">
                 <TypeValue>{activeBountiesCount}</TypeValue>
               </Tooltip>
             </TypeGroup>
 
             <TypeGroup>
               <TypeLabel>b</TypeLabel>
-              <Tooltip content="Active treasury child bounty">
+              <Tooltip content="Active child bounties">
                 <TypeValue>{activeChildBountiesCount}</TypeValue>
               </Tooltip>
             </TypeGroup>
 
             <TypeGroup>
               <TypeLabel>T</TypeLabel>
-              <Tooltip content="Active treasury tip">
+              <Tooltip content="Active tips">
                 <TypeValue>{activeTipsCount}</TypeValue>
               </Tooltip>
             </TypeGroup>
@@ -94,14 +94,14 @@ export default function OverviewSummary({ summaryData }) {
           <Content>
             <TypeGroup separator="/">
               <TypeLabel>M</TypeLabel>
-              <Tooltip content="Active council motion">
+              <Tooltip content="Active council motions">
                 <TypeValue>{activeMotionsCount}</TypeValue>
               </Tooltip>
             </TypeGroup>
 
             <TypeGroup>
               <TypeLabel>M</TypeLabel>
-              <Tooltip content="Active tech. comm. motion">
+              <Tooltip content="Active T.C. motions">
                 <TypeValue>{activeTechCommMotionsCount}</TypeValue>
               </Tooltip>
             </TypeGroup>
@@ -113,14 +113,21 @@ export default function OverviewSummary({ summaryData }) {
           <Content>
             <TypeGroup>
               <TypeLabel>P</TypeLabel>
-              <Tooltip content="active">
+              <Tooltip content="Active public proposals">
+                <TypeValue>{activePublicProposalsCount}</TypeValue>
+              </Tooltip>
+            </TypeGroup>
+
+            <TypeGroup>
+              <TypeLabel>E</TypeLabel>
+              <Tooltip content="Active external proposals">
                 <TypeValue>{activeExternalProposalsCount}</TypeValue>
               </Tooltip>
             </TypeGroup>
 
             <TypeGroup>
               <TypeLabel>R</TypeLabel>
-              <Tooltip content="active">
+              <Tooltip content="Active referenda">
                 <TypeValue>{activeReferendumsCount}</TypeValue>
               </Tooltip>
             </TypeGroup>
