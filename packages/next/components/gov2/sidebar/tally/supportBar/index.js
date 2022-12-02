@@ -56,6 +56,7 @@ const Mark = styled(ThresholdComponent)`
 
 const Tooltip = styled(TooltipOrigin)`
   display: block;
+  z-index: 1;
 `;
 
 export default function SupportBar({ issuance }) {
