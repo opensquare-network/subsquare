@@ -9,27 +9,21 @@ import PolkassemblyComments from "./polkassemblyComments";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import Chains from "next-common/utils/consts/chains";
 import { useChain } from "next-common/context/chain";
-import isNil from "lodash.isnil";
 import useCommentsAnchor from "next-common/utils/hooks/useCommentsAnchor";
 
 export default function useUniversalComments({ detail, comments }) {
   const chain = useChain();
   const { commentsCount, polkassemblyCommentsCount } = detail;
   let defaultTabIndex = SubSquare;
-  if (commentsCount > 0 || polkassemblyCommentsCount <= 0) {
-    defaultTabIndex = SubSquare;
-  } else if (
-    !isNil(detail?.polkassemblyId) &&
-    detail?.dataSource === "polkassembly"
-  ) {
+  if (commentsCount <= 0 && polkassemblyCommentsCount > 0) {
     defaultTabIndex = Polkassembly;
   }
-  const { hasAnchor } = useCommentsAnchor();
 
   const paBtnRef = useRef();
   const [tabIndex, setTabIndex] = useState(defaultTabIndex);
   const { width } = useWindowSize();
 
+  const { hasAnchor } = useCommentsAnchor();
   useEffect(() => {
     if (hasAnchor) {
       setTabIndex(SubSquare);
