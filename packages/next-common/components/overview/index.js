@@ -1,9 +1,13 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import PostList from "next-common/components/postList";
 import PlusIcon from "../../assets/imgs/icons/plusInCircle.svg";
 import EmptyOverview from "./emptyOverview";
+import OverviewSummary from "../summary/overviewSummary";
+import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
+import { mdcss } from "../../utils/responsive";
+import { TitleContainer as TitleContainerOrigin } from "../styled/containers/titleContainer";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -21,6 +25,17 @@ const Create = styled.a`
     margin-right: 8px;
   }
   cursor: pointer;
+`;
+
+const TitleContainer = styled(TitleContainerOrigin)`
+  margin-bottom: 16px;
+`;
+
+const OverviewSummaryWrapper = styled.div`
+  max-width: ${pageHomeLayoutMainContentWidth}px;
+  ${mdcss(css`
+    max-width: 960px;
+  `)}
 `;
 
 export default function Overview({ overviewData }) {
@@ -42,6 +57,12 @@ export default function Overview({ overviewData }) {
 
   return (
     <Wrapper>
+      <OverviewSummaryWrapper>
+        <TitleContainer>Overview</TitleContainer>
+
+        <OverviewSummary />
+      </OverviewSummaryWrapper>
+
       {overviewData.map((item, index) => {
         if (item) {
           return (
