@@ -27,6 +27,7 @@ const Threshold = styled.div`
     `}
   background-color: ${(props) => props.theme.grey400Border};
   transform: translateX(-50%);
+  z-index: 1;
 `;
 
 export default function ThresholdComponent({ threshold, thin = false }) {
