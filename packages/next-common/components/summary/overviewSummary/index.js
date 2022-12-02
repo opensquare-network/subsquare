@@ -159,7 +159,7 @@ export default function OverviewSummary({ summaryData }) {
             <Content>
               <TypeGroup>
                 <TypeLabel>R</TypeLabel>
-                <Tooltip content="active">
+                <Tooltip content="Active referenda">
                   <TypeValue>{activeGov2ReferendumsCount}</TypeValue>
                 </Tooltip>
               </TypeGroup>
