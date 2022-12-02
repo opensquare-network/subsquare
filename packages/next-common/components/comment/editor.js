@@ -13,6 +13,7 @@ import SecondaryButton from "../buttons/secondaryButton";
 import GhostButton from "../buttons/ghostButton";
 import EditorWrapper from "../editor/editorWrapper";
 import { useChain } from "../../context/chain";
+import { useDetailType } from "../../context/page";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
@@ -57,11 +58,11 @@ function Editor(
     setContentType,
     setQuillRef = () => {},
     users = [],
-    type,
   },
   ref
 ) {
   const chain = useChain();
+  const type = useDetailType();
   const router = useRouter();
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);

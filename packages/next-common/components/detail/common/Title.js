@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import isNil from "lodash.isnil";
-import { usePost, usePostType } from "../../../context/post";
+import { usePost } from "../../../context/post";
 import { getGov2ReferendumTitle } from "../../../utils/gov2/title";
 import { detailPageCategory } from "../../../utils/consts/business/category";
+import { useDetailType } from "../../../context/page";
 
 const TitleWrapper = styled.div`
   margin-bottom: 8px;
@@ -37,7 +38,7 @@ const Index = styled.div`
 
 export default function PostTitle() {
   const post = usePost();
-  const postType = usePostType();
+  const postType = useDetailType();
   const index = post.index || post.motionIndex;
   let title = post.title || "--";
 

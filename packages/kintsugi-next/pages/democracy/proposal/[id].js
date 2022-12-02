@@ -30,7 +30,6 @@ export default withLoginUserRedux(
     const { CommentComponent, focusEditor } = useCommentComponent({
       detail,
       comments,
-      type: detailPageCategory.DEMOCRACY_PROPOSAL,
     });
 
     const publicProposal = detail?.onchainData;
@@ -81,7 +80,7 @@ export default withLoginUserRedux(
     ];
 
     return (
-      <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_PROPOSAL}>
+      <PostProvider post={detail}>
         <DetailWithRightLayout
           seoInfo={{
             title: detail?.title,
@@ -93,10 +92,7 @@ export default withLoginUserRedux(
             <Breadcrumb items={breadcrumbItems} />
           </BreadcrumbWrapper>
 
-          <DetailItem
-            onReply={focusEditor}
-            type={detailPageCategory.DEMOCRACY_PROPOSAL}
-          />
+          <DetailItem onReply={focusEditor} />
           <Second
             proposalIndex={proposalIndex}
             hasTurnIntoReferendum={hasTurnIntoReferendum}

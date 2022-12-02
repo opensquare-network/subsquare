@@ -2,12 +2,7 @@
 import usePolkassemblyPostData from "components/polkassembly/usePolkassemblyPostData";
 import PolkassemblyComments from "components/polkassembly/comment";
 
-export default function PolkassemblyCommentsWithData({
-  detail,
-  type,
-  btnRef,
-  tabs,
-}) {
+export default function PolkassemblyCommentsWithData({ detail, btnRef, tabs }) {
   const polkassemblyId = detail?.polkassemblyId;
 
   const { comments, loadingComments } = usePolkassemblyPostData({
@@ -19,7 +14,6 @@ export default function PolkassemblyCommentsWithData({
       detail={detail}
       isLoading={loadingComments}
       comments={comments}
-      type={type}
       paId={polkassemblyId}
       tabs={tabs}
       btnRef={btnRef}

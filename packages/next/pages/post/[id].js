@@ -12,7 +12,6 @@ import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Cookies from "cookies";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
@@ -41,7 +40,7 @@ export default withLoginUserRedux(
 
     const desc = getMetaDesc(detail);
     return (
-      <PostProvider post={detail} type={detailPageCategory.POST}>
+      <PostProvider post={detail}>
         <DetailLayout
           seoInfo={{
             title: detail?.title,
@@ -50,12 +49,7 @@ export default withLoginUserRedux(
           }}
         >
           <Back href={`/discussions`} text="Back to Discussions" />
-          <DetailItem
-            votes={votes}
-            myVote={myVote}
-            onReply={focusEditor}
-            type={detailPageCategory.POST}
-          />
+          <DetailItem votes={votes} myVote={myVote} onReply={focusEditor} />
           <CommentsWrapper>
             <Comments data={comments} onReply={onReply} />
             {loginUser && (
@@ -64,7 +58,6 @@ export default withLoginUserRedux(
                 ref={editorWrapperRef}
                 setQuillRef={setQuillRef}
                 {...{ contentType, setContentType, content, setContent, users }}
-                type={detailPageCategory.POST}
               />
             )}
           </CommentsWrapper>

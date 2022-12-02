@@ -7,11 +7,12 @@ import UpdatedTime from "../common/UpdatedTime";
 import Info from "../../styled/info";
 import Tag from "../../tags/state/tag";
 import isNil from "lodash.isnil";
-import { usePost, usePostState, usePostType } from "../../../context/post";
+import { usePost, usePostState } from "../../../context/post";
 import { getMotionStateArgs } from "../../../utils/collective/result";
 import { getGov2ReferendumStateArgs } from "../../../utils/gov2/result";
 import { detailPageCategory } from "../../../utils/consts/business/category";
 import { smcss } from "../../../utils/responsive";
+import { useDetailType } from "../../../context/page";
 
 const FlexWrapper = styled(Flex)`
   justify-content: space-between;
@@ -39,7 +40,7 @@ const MobileHiddenDividerWrapper = styled(DividerWrapper)`
 
 export default function PostMeta() {
   const postState = usePostState();
-  const detailType = usePostType();
+  const detailType = useDetailType();
   const post = usePost();
   // fixme: kintsugi post has no commentsCount field
   const noCommentsCount =

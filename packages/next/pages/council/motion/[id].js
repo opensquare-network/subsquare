@@ -5,7 +5,6 @@ import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { EmptyList } from "next-common/utils/constants";
 import useUniversalComments from "components/universalComments";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
@@ -17,7 +16,6 @@ export default withLoginUserRedux(({ motion, comments }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail: motion,
     comments,
-    type: detailPageCategory.COUNCIL_MOTION,
   });
 
   motion.status = motion.state?.state;
@@ -38,7 +36,7 @@ export default withLoginUserRedux(({ motion, comments }) => {
   ];
 
   return (
-    <PostProvider post={motion} type={detailPageCategory.COUNCIL_MOTION}>
+    <PostProvider post={motion}>
       <DetailWithRightLayout
         seoInfo={{
           title: motion?.title,
@@ -50,10 +48,7 @@ export default withLoginUserRedux(({ motion, comments }) => {
           <Breadcrumb items={breadcrumbItems} />
         </BreadcrumbWrapper>
 
-        <MotionDetail
-          type={detailPageCategory.COUNCIL_MOTION}
-          onReply={focusEditor}
-        />
+        <MotionDetail onReply={focusEditor} />
         {CommentComponent}
       </DetailWithRightLayout>
     </PostProvider>

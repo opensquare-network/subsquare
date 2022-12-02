@@ -31,7 +31,6 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
-    type: detailPageCategory.DEMOCRACY_REFERENDUM,
   });
 
   const api = useApi();
@@ -69,7 +68,7 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   ];
 
   return (
-    <PostProvider post={detail} type={detailPageCategory.DEMOCRACY_REFERENDUM}>
+    <PostProvider post={detail}>
       <DetailWithRightLayout
         seoInfo={{
           title: detail?.title,
@@ -81,10 +80,7 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
           <Breadcrumb items={breadcrumbItems} />
         </BreadcrumbWrapper>
 
-        <DetailItem
-          onReply={focusEditor}
-          type={detailPageCategory.DEMOCRACY_REFERENDUM}
-        />
+        <DetailItem onReply={focusEditor} />
 
         <Vote
           referendumInfo={detail?.onchainData?.info}

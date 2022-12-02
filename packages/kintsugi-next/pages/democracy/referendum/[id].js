@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-key */
 import React, { useCallback, useEffect, useState } from "react";
-import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
@@ -38,7 +37,6 @@ export default withLoginUserRedux(
     const { CommentComponent, focusEditor } = useCommentComponent({
       detail,
       comments,
-      type: detailPageCategory.DEMOCRACY_REFERENDUM,
     });
 
     const api = useApi();
@@ -88,10 +86,7 @@ export default withLoginUserRedux(
     ];
 
     return (
-      <PostProvider
-        post={detail}
-        type={detailPageCategory.DEMOCRACY_REFERENDUM}
-      >
+      <PostProvider post={detail}>
         <DetailWithRightLayout
           seoInfo={{
             title: detail?.title,
@@ -103,10 +98,7 @@ export default withLoginUserRedux(
             <Breadcrumb items={breadcrumbItems} />
           </BreadcrumbWrapper>
 
-          <DetailItem
-            onReply={focusEditor}
-            type={detailPageCategory.DEMOCRACY_REFERENDUM}
-          />
+          <DetailItem onReply={focusEditor} />
 
           <Vote
             referendumInfo={detail?.onchainData?.info}

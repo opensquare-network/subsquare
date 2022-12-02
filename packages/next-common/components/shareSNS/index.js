@@ -6,7 +6,8 @@ import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import copy from "copy-to-clipboard";
 import { OptionItem, OptionWrapper } from "../internalDropdown/styled";
 import { getShare2SNStext } from "../../utils/post/share";
-import { usePost, usePostType } from "../../context/post";
+import { usePost } from "../../context/post";
+import { useDetailType } from "../../context/page";
 
 const ShareIcon = styled(ShareSvg)``;
 
@@ -53,7 +54,7 @@ const ShareItem = styled.span`
 
 export default function Share() {
   const post = usePost();
-  const type = usePostType();
+  const type = useDetailType();
   const text = getShare2SNStext(post, type);
 
   const ref = useRef();

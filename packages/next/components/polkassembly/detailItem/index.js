@@ -28,7 +28,7 @@ const FlexWrapper = styled(Flex)`
   flex-wrap: nowrap;
 `;
 
-export default function DetailItem({ type, postReactions }) {
+export default function DetailItem({ postReactions }) {
   const post = usePost();
   const postUpdateTime = post?.updatedAt || post?.createdAt;
   const duration = useDuration(postUpdateTime);
@@ -53,7 +53,7 @@ export default function DetailItem({ type, postReactions }) {
           <Info>{`${post.commentsCount} Comments`}</Info>
         </DividerWrapper>
       </FlexWrapper>
-      <ArticleContent post={post} type={type} postReactions={postReactions} />
+      <ArticleContent post={post} postReactions={postReactions} />
     </EditablePanel>
   );
 }

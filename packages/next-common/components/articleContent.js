@@ -8,7 +8,7 @@ import Divider from "./styled/layout/divider";
 import NonEdited from "./detail/common/NonEdited";
 import PostContent from "./detail/common/PostContent";
 import { useDispatch } from "react-redux";
-import { usePost, usePostDispatch, usePostType } from "../context/post";
+import { usePost, usePostDispatch } from "../context/post";
 import { useIsPostAuthor } from "../context/post/useIsPostAuthor";
 import { getBannerUrl } from "../utils/banner";
 import { toApiType } from "../utils/viewfuncs";
@@ -17,6 +17,7 @@ import { useIsThumbUp } from "../context/post/isThumbUp";
 import { useIsLogin } from "../context/user";
 import nextApi from "next-common/services/nextApi";
 import fetchAndUpdatePost from "../context/post/update";
+import { useDetailType } from "../context/page";
 
 const Wrapper = styled(RichTextStyleWrapper)`
   :hover {
@@ -45,7 +46,7 @@ export default function ArticleContent({ votes, myVote, onReply, setIsEdit }) {
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
 
   const isLogin = useIsLogin();
-  const type = usePostType();
+  const type = useDetailType();
   const isAuthor = useIsPostAuthor();
   const thumbUp = useIsThumbUp();
 
