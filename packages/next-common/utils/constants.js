@@ -87,6 +87,6 @@ export const CACHE_KEY = {
   homeFoldedMenus: "home-folded-menus",
 };
 
-export const chain = process.env.CHAIN;
+export const chain = process.env.NEXT_PUBLIC_CHAIN;
 
 export const isKintsugiChain = chain === "kintsugi";
