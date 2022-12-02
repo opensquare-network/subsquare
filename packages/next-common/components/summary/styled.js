@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import { p_12_bold } from "../../styles/componentCss";
+import { smcss } from "../../utils/responsive";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
 
 export const SummaryWrapper = styled.div`
@@ -29,6 +30,18 @@ export const SummaryTitle = styled.div`
 export const SummaryGreyText = styled.span`
   color: ${(props) => props.theme.textTertiary}; !important;
 `;
+
+export const SummaryItemWrapper = styled.div`
+  display: flex;
+  gap: 16px;
+  ${smcss(css`
+    flex-direction: column;
+  `)}
+`;
+export const SummaryItem = styled.div`
+  flex: 1;
+`;
+export const SummaryItemTitle = SummaryTitle;
 
 export const Button = styled.div`
   cursor: pointer;

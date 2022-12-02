@@ -1,9 +1,7 @@
 import React from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { p_14_normal, p_20_bold } from "../../styles/componentCss";
-import { smcss } from "../../utils/responsive";
 import Divider from "../styled/layout/divider";
-import Content from "./cardContent";
 import { SummaryCard, SummaryTitle } from "./styled";
 
 const Wrapper = styled(SummaryCard)`
@@ -33,25 +31,12 @@ const Description = styled.p`
   ${p_14_normal};
 `;
 
-const SummaryWrapper = styled.div`
-  display: flex;
-  gap: 16px;
-  ${smcss(css`
-    flex-direction: column;
-    gap: 16px;
-  `)}
-`;
-
-const SummaryItem = styled.div`
-  flex: 1;
-`;
-
 export default function Summary({
   title,
   titleExtra,
   description,
-  items = [],
   footer,
+  children,
 }) {
   return (
     <Wrapper>
@@ -66,17 +51,10 @@ export default function Summary({
 
       {description && <Description>{description}</Description>}
 
-      {!!items?.length && (
+      {children && (
         <>
           <Divider margin={16} />
-          <SummaryWrapper>
-            {items.map((item, idx) => (
-              <SummaryItem key={idx}>
-                <SummaryTitle>{item.title}</SummaryTitle>
-                <Content>{item.content}</Content>
-              </SummaryItem>
-            ))}
-          </SummaryWrapper>
+          {children}
         </>
       )}
 
