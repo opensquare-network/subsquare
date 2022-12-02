@@ -38,7 +38,7 @@ const OverviewSummaryWrapper = styled.div`
   `)}
 `;
 
-export default function Overview({ overviewData }) {
+export default function Overview({ overviewData, summaryData }) {
   if (overviewData?.[0]?.items?.length === 0) {
     // All items are empty, show default empty page
     return (
@@ -60,7 +60,7 @@ export default function Overview({ overviewData }) {
       <OverviewSummaryWrapper>
         <TitleContainer>Overview</TitleContainer>
 
-        <OverviewSummary />
+        <OverviewSummary summaryData={summaryData} />
       </OverviewSummaryWrapper>
 
       {overviewData.map((item, index) => {
