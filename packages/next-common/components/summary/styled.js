@@ -40,6 +40,9 @@ export const SummaryItemWrapper = styled.div`
 `;
 export const SummaryItem = styled.div`
   flex: 1;
+  ${smcss(css`
+    min-width: calc(50% - 16px);
+  `)}
 `;
 export const SummaryItemTitle = SummaryTitle;
 
