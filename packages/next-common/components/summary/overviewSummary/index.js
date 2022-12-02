@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { p_16_bold } from "../../../styles/componentCss";
 import Flex from "../../styled/flex";
 import Tooltip from "../../tooltip";
-// import Content from "../cardContent";
 import Summary from "../new";
 import {
   SummaryGreyText,
@@ -50,8 +49,6 @@ export default function OverviewSummary({ summaryData }) {
     activeTipsCount,
     activeTreasuryProposalsCount,
   } = summaryData ?? {};
-
-  console.log(summaryData);
 
   return (
     <Summary description="Due client synergize developing tentative strategic vec pushback.">
