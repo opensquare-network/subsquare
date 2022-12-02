@@ -1,7 +1,7 @@
+import React from "react";
 import UserIcon from "../../../assets/imgs/icons/user.svg";
 import BellIcon from "../../../assets/imgs/icons/bell.svg";
 import SubscriptionIcon from "../../../assets/imgs/icons/subscription.svg";
-import React from "react";
 import AddressIcon from "../../../assets/imgs/icons/address.svg";
 
 const back = {
@@ -47,12 +47,20 @@ const linkAddressSetting = {
   icon: <AddressIcon />,
 };
 
+const proxySetting = {
+  value: "proxy",
+  name: "Proxy",
+  pathname: "/setting/proxy",
+  icon: <UserIcon />,
+};
+
 export const settingMenuOfKeyAccount = [
   back,
   {
     name: "SETTING",
     items: [
       keyAccountSetting,
+      proxySetting,
       notificationSetting,
       subscriptionSetting,
     ],
@@ -65,6 +73,7 @@ export const settingMenu = [
     name: "SETTING",
     items: [
       accountSetting,
+      proxySetting,
       linkAddressSetting,
       notificationSetting,
       subscriptionSetting,

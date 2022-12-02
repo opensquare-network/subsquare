@@ -58,7 +58,7 @@ const InputWrapper = styled.input`
   padding: 10px 16px;
   font-size: 14px;
   color: ${(props) => props.theme.textPrimary};
-  background: transparent;
+  background: transparent !important;
   ::placeholder {
     color: ${(props) => props.theme.textPlaceholder};
   }

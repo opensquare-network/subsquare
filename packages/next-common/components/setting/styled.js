@@ -83,3 +83,29 @@ export const EmailVerify = styled.div`
 export const ButtonWrapper = styled.div`
   max-width: 240px;
 `;
+
+export const WarningMessage = styled.div`
+  color: ${(props) => props.theme.secondaryRed500};
+  background: ${(props) => props.theme.secondaryRed100};
+  border-radius: 4px;
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 140%;
+  margin-bottom: 16px;
+`;
+
+export const InfoMessage = styled.div`
+  display: flex;
+  padding: 10px 16px;
+
+  background: ${(p) => p.theme.grey100Bg};
+  border-radius: 4px;
+
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+
+  color: ${(p) => p.theme.textSecondary};
+
+  margin-bottom: 16px;
+`;

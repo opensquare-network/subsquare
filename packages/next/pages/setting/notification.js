@@ -19,6 +19,7 @@ import SettingsLayout from "next-common/components/layout/settingsLayout";
 import useDiscussionOptions from "next-common/components/setting/notification/useDiscussionOptions";
 import { fetchAndUpdateUser, useUserDispatch } from "next-common/context/user";
 import { pageHomeLayoutMainContentWidth } from "next-common/utils/constants";
+import { WarningMessage } from "next-common/components/setting/styled";
 
 const Wrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
@@ -49,16 +50,6 @@ const ButtonWrapper = styled.div`
   > button {
     width: 80px;
   }
-`;
-
-const WarningMessage = styled.div`
-  color: ${(props) => props.theme.secondaryRed500};
-  background: ${(props) => props.theme.secondaryRed100};
-  border-radius: 4px;
-  padding: 12px 16px;
-  font-size: 14px;
-  line-height: 140%;
-  margin-bottom: 16px;
 `;
 
 const Options = styled.div`
