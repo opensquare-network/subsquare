@@ -86,3 +86,7 @@ export const CACHE_KEY = {
   authToken: "auth-token",
   homeFoldedMenus: "home-folded-menus",
 };
+
+export const CHAIN = process.env.CHAIN;
+
+export const IS_KINTSUGI = CHAIN === "kintsugi";
