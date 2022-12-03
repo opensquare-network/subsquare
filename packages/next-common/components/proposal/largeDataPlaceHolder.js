@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import ExternalLink from "../../assets/imgs/icons/external-link.svg";
 import { useChain } from "../../context/chain";
+import isNil from "lodash.isnil";
 
 const LargeData = styled.div`
   display: flex;
@@ -29,9 +30,11 @@ export default function LargeDataPlaceHolder({
   return (
     <LargeData>
       Large data, please check it on subscan
-      <a target="_blank" href={subscanLink} style={{ display: "flex" }}>
-        <ExternalLink />
-      </a>
+      {!isNil(referendumIndex) && (
+        <a target="_blank" href={subscanLink} style={{ display: "flex" }}>
+          <ExternalLink />
+        </a>
+      )}
     </LargeData>
   );
 }

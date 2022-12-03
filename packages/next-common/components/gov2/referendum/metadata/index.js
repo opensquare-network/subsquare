@@ -59,12 +59,12 @@ export default function Gov2ReferendumMetadata({ detail }) {
     ["Proposal Hash", proposalHash],
   ];
 
-  if (proposal?.args && referendumIndex !== 8) {
+  if (proposal?.call) {
     metadata.push([
       <Proposal
         key="preimage"
-        call={proposal}
-        referendumIndex={detail?.onchainData.referendumIndex}
+        call={proposal.call}
+        shorten={proposal.shorten}
       />,
     ]);
   }
