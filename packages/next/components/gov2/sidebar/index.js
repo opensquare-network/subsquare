@@ -69,9 +69,12 @@ export default function Gov2Sidebar({
   const [showVote, setShowVote] = useState(false);
   const referendumIndex = detail?.referendumIndex;
   const trackId = detail?.track;
-  const showVoteButton = [gov2State.Deciding, gov2State.Confirming].includes(
-    detail?.state?.name
-  );
+  const showVoteButton = [
+    gov2State.Submitted,
+    gov2State.Queueing,
+    gov2State.Deciding,
+    gov2State.Confirming,
+  ].includes(detail?.state?.name);
 
   const shouldShowStatus = [
     gov2State.Deciding,
