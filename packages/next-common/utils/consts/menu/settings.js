@@ -3,6 +3,7 @@ import UserIcon from "../../../assets/imgs/icons/user.svg";
 import BellIcon from "../../../assets/imgs/icons/bell.svg";
 import SubscriptionIcon from "../../../assets/imgs/icons/subscription.svg";
 import AddressIcon from "../../../assets/imgs/icons/address.svg";
+import Chains from "../chains";
 
 const back = {
   items: [
@@ -52,6 +53,7 @@ const proxySetting = {
   name: "Proxy",
   pathname: "/setting/proxy",
   icon: <UserIcon />,
+  excludeToChains: [Chains.kintsugi],
 };
 
 export const settingMenuOfKeyAccount = [

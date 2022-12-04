@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Input from "../input";
 import nextApi from "../../services/nextApi";
-import { newSuccessToast } from "../../store/reducers/toastSlice";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "../../store/reducers/toastSlice";
 import { InputWrapper, Label } from "./styled";
 import SecondaryButton from "../buttons/secondaryButton";
 import {
@@ -37,6 +40,11 @@ export default function ProxyAddress() {
 
   const onSet = async () => {
     setErrorMsg();
+
+    if (!api) {
+      dispatch(newErrorToast("Chain network is not connected yet"));
+      return;
+    }
 
     if (!inputAddress) {
       setErrorMsg("Address can't be empty");
