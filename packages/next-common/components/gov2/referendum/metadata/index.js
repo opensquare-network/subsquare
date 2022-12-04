@@ -32,7 +32,6 @@ export default function Gov2ReferendumMetadata({ detail }) {
   const proposal = onchainData?.proposal ?? {};
   const trackInfo = useTrack();
   const proposalHash = onchainData?.proposalHash;
-  const { referendumIndex } = detail;
 
   const metadata = [
     [
