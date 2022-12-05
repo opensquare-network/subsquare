@@ -2,7 +2,7 @@
 import { capitailize } from "../index";
 
 export default function getMotionExecutedResult(dispatchResult) {
-  if (typeof dispatchResult === 'boolean') {
+  if (typeof dispatchResult === "boolean") {
     return { Result: dispatchResult ? "Succeed" : "Fail" };
   }
 
@@ -11,12 +11,14 @@ export default function getMotionExecutedResult(dispatchResult) {
   }
 
   if (Object.keys(dispatchResult).includes("err")) {
-    return { Result: `Error: ${ capitailize(Object.keys(dispatchResult.err)[0]) }` }
+    return {
+      Result: `Error: ${capitailize(Object.keys(dispatchResult.err)[0])}`,
+    };
   }
 }
 
 export function isMotionExecutedSucceed(dispatchResult) {
-  if (typeof dispatchResult === 'boolean') {
+  if (typeof dispatchResult === "boolean") {
     return dispatchResult;
   } else {
     return Object.keys(dispatchResult).includes("ok");
@@ -25,7 +27,7 @@ export function isMotionExecutedSucceed(dispatchResult) {
 
 export function getMotionStateArgs(state = {}) {
   const { state: name, data } = state;
-  if (name !== "Executed") {
+  if (name !== "Executed" || !data) {
     return null;
   }
 
