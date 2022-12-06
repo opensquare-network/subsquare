@@ -9,33 +9,35 @@ import {
 } from "utils/referendumUtil";
 import Threshold from "./threshold";
 import isNil from "lodash.isnil";
+import { p_12_medium } from "next-common/styles/componentCss";
 
 const Wrapper = styled.div``;
 
-const Headers = styled(Flex)`
-  justify-content: space-between;
-  font-size: 12px;
-  color: ${(props) => props.theme.textPrimary};
-
-  & > span {
-    font-weight: 500;
-  }
-
-  span:nth-child(2) {
-    text-align: center;
-    white-space: nowrap;
-  }
-
-  span:nth-child(3) {
-    text-align: right;
-  }
-`;
-
-const Contents = styled(Headers)`
-  font-weight: 500;
-  color: ${(props) => props.theme.textSecondary};
-  margin-top: 8px !important;
+const ContentVoteBarInfoGroup = styled.div`
   margin-bottom: 16px;
+`;
+const ContentGroup = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`;
+const ContentPercentage = styled.span`
+  color: ${(props) => props.theme.textPrimary};
+  ${p_12_medium};
+`;
+const ContentDescription = styled.span`
+  color: ${(props) => props.theme.textSecondary};
+  ${p_12_medium};
+`;
+const ContentAyeGroup = styled(ContentGroup)`
+  text-align: left;
+`;
+const ContentThresholdGroup = styled(ContentGroup)`
+  text-align: center;
+  white-space: nowrap;
+`;
+const ContentNayGroup = styled(ContentGroup)`
+  text-align: right;
 `;
 
 const BarWrapper = styled.div`
@@ -125,25 +127,36 @@ function VoteBar({ tally, electorate, threshold, percentage, thin = false }) {
         </BarContainer>
       </BarWrapper>
 
-      <Headers>
-        <span>{ayesPercent}%</span>
-        {threshold === "percentage" && !isNil(percentage) && (
-          <span>{percentageStr}</span>
-        )}
-        {threshold && threshold !== "percentage" && (
-          <span>Passing threshold</span>
-        )}
-        <span>{naysPercent}%</span>
-      </Headers>
-
-      <Contents>
-        <span>Aye</span>
-        {threshold === "percentage" && !isNil(percentage) && (
-          <span>Threshold</span>
-        )}
-        {threshold && threshold !== "percentage" && <span>{threshold}</span>}
-        <span>Nay</span>
-      </Contents>
+      <ContentVoteBarInfoGroup>
+        <Flex>
+          <ContentAyeGroup>
+            <ContentPercentage>{ayesPercent}%</ContentPercentage>
+            <ContentDescription>Aye</ContentDescription>
+          </ContentAyeGroup>
+          <ContentThresholdGroup>
+            <ContentPercentage>
+              {threshold === "percentage" && !isNil(percentage) && (
+                <span>{percentageStr}</span>
+              )}
+              {threshold && threshold !== "percentage" && (
+                <span>Passing threshold</span>
+              )}
+            </ContentPercentage>
+            <ContentDescription>
+              {threshold === "percentage" && !isNil(percentage) && (
+                <span>Threshold</span>
+              )}
+              {threshold && threshold !== "percentage" && (
+                <span>{threshold}</span>
+              )}
+            </ContentDescription>
+          </ContentThresholdGroup>
+          <ContentNayGroup>
+            <ContentPercentage>{naysPercent}%</ContentPercentage>
+            <ContentDescription>Nay</ContentDescription>
+          </ContentNayGroup>
+        </Flex>
+      </ContentVoteBarInfoGroup>
     </Wrapper>
   );
 }
