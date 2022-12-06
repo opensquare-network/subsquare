@@ -4,7 +4,7 @@ import { Button } from "next-common/components/summary/styled";
 import { useUser } from "next-common/context/user";
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { getSigner, sendTx } from "next-common/utils/sendTx";
+import { getSigner, sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import DelegatePopup from "components/gov2/delegatePopup";
 import AddSVG from "next-common/assets/imgs/icons/add.svg";
 import RemoveSVG from "next-common/assets/imgs/icons/remove.svg";
@@ -21,6 +21,7 @@ export default function DelegationButton({
 
   const loginUser = useUser();
   const signerAddress = loginUser?.address;
+  const proxyAddress = loginUser?.proxyAddress;
 
   const api = useApi();
   const isMounted = useIsMounted();
@@ -47,7 +48,10 @@ export default function DelegationButton({
       return showErrorToast(`Unable to find injected ${signerAddress}`);
     }
 
-    const tx = api.tx.convictionVoting.undelegate(trackId);
+    let tx = api.tx.convictionVoting.undelegate(trackId);
+    if (proxyAddress) {
+      tx = wrapWithProxy(api, tx, proxyAddress);
+    }
 
     setIsLoading(true);
     try {

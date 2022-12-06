@@ -5,6 +5,7 @@ import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
 import { useChainSettings } from "next-common/context/chain";
 import PopupLabel from "../label";
 import ConnectedSigner from "../../connectedSigner";
+import ProxyInfo from "../proxyInfo";
 
 export default function Signer({
   isBalanceLoading,
@@ -12,6 +13,7 @@ export default function Signer({
   balanceName = "Balance",
   signerAccount,
   symbol,
+  proxyAddress,
 }) {
   const node = useChainSettings();
   const noBalance = isNil(balance) && isNil(isBalanceLoading);
@@ -30,6 +32,7 @@ export default function Signer({
         />
       )}
       <ConnectedSigner signerAccount={signerAccount} />
+      {proxyAddress && <ProxyInfo address={proxyAddress} />}
     </div>
   );
 }

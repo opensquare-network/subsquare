@@ -14,10 +14,11 @@ import Signer from "next-common/components/popup/fields/signerField";
 import Tab, { NewTip, ReportAwesome } from "./tab";
 import TipValue from "./tipValue";
 import useAddressBalance from "../../../../utils/hooks/useAddressBalance";
-import { sendTx } from "../../../../utils/sendTx";
+import { sendTx, wrapWithProxy } from "../../../../utils/sendTx";
 import SecondaryButton from "../../../buttons/secondaryButton";
 import { useChainSettings } from "../../../../context/chain";
 import useSignerAccount from "../../../../utils/hooks/useSignerAccount";
+import { useUser } from "../../../../context/user";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -34,6 +35,9 @@ function PopupContent({
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const signerAccount = useSignerAccount(extensionAccounts);
+  const loginUser = useUser();
+  const proxyAddress = loginUser?.proxyAddress;
+
   const [reason, setReason] = useState("");
   const [loading, setLoading] = useState(false);
   const [tabIndex, setTabIndex] = useState(ReportAwesome);
@@ -81,6 +85,10 @@ function PopupContent({
       tx = api.tx.tips.reportAwesome(reason, beneficiary);
     }
 
+    if (proxyAddress) {
+      tx = wrapWithProxy(api, tx, proxyAddress);
+    }
+
     const signerAddress = signerAccount.address;
 
     await sendTx({
@@ -110,6 +118,7 @@ function PopupContent({
         signerAccount={signerAccount}
         balance={balance}
         isBalanceLoading={balanceIsLoading}
+        proxyAddress={proxyAddress}
       />
       <Beneficiary
         extensionAccounts={extensionAccounts}

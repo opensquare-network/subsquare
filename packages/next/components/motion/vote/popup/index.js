@@ -9,7 +9,7 @@ import toApiCouncil from "next-common/utils/toApiCouncil";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import CurrentVote from "./currentVote";
 import VoteButton from "next-common/components/popup/voteButton";
-import { sendTx } from "next-common/utils/sendTx";
+import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { emptyFunction } from "next-common/utils";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 import { useChain } from "next-common/context/chain";
@@ -17,6 +17,7 @@ import Signer from "next-common/components/popup/fields/signerField";
 import { WarningMessage } from "next-common/components/popup/styled";
 import styled from "styled-components";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
+import { useUser } from "next-common/context/user";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -40,6 +41,9 @@ function PopupContent({
   const chain = useChain();
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount(extensionAccounts);
+  const loginUser = useUser();
+  const proxyAddress = loginUser?.proxyAddress;
+
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
 
   const selectedAddress = signerAccount?.address;
@@ -67,7 +71,11 @@ function PopupContent({
       return showErrorToast("Please select an account");
     }
 
-    const tx = voteMethod(motionHash, motionIndex, approve);
+    let tx = voteMethod(motionHash, motionIndex, approve);
+
+    if (proxyAddress) {
+      tx = wrapWithProxy(api, tx, proxyAddress);
+    }
 
     const signerAddress = signerAccount.address;
 
@@ -93,7 +101,7 @@ function PopupContent({
   return (
     <>
       <SignerWrapper>
-        <Signer signerAccount={signerAccount} />
+        <Signer signerAccount={signerAccount} proxyAddress={proxyAddress} />
         {!selectedAccountCanVote && (
           <WarningMessage danger={!selectedAccountCanVote}>
             Only council members can vote.

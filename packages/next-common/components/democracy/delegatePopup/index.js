@@ -14,7 +14,7 @@ import {
 import Signer from "next-common/components/popup/fields/signerField";
 
 import PopupWithAddress from "next-common/components/popupWithAddress";
-import { sendTx } from "next-common/utils/sendTx";
+import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { useChainSettings } from "next-common/context/chain";
 import Conviction from "./conviction";
 import VoteValue from "./voteValue";
@@ -22,6 +22,7 @@ import Target from "./target";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import styled from "styled-components";
 import useSignerAccount from "../../../utils/hooks/useSignerAccount";
+import { useUser } from "../../../context/user";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -37,6 +38,9 @@ function PopupContent({
   const isMounted = useIsMounted();
 
   const signerAccount = useSignerAccount(extensionAccounts);
+  const loginUser = useUser();
+  const proxyAddress = loginUser?.proxyAddress;
+
   const [targetAddress, setTargetAddress] = useState("");
 
   const api = useApi();
@@ -93,11 +97,15 @@ function PopupContent({
       );
     }
 
-    const tx = api.tx.democracy.delegate(
+    let tx = api.tx.democracy.delegate(
       targetAddress,
       conviction,
       bnVoteBalance.toString()
     );
+
+    if (proxyAddress) {
+      tx = wrapWithProxy(api, tx, proxyAddress);
+    }
 
     setIsLoading(true);
     await sendTx({
@@ -119,6 +127,7 @@ function PopupContent({
         balanceName="Voting balance"
         signerAccount={signerAccount}
         isLoading={isLoading}
+        proxyAddress={proxyAddress}
       />
       <Target
         extensionAccounts={extensionAccounts}

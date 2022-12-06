@@ -17,10 +17,11 @@ import VoteButton from "next-common/components/popup/voteButton";
 import Signer from "next-common/components/popup/fields/signerField";
 
 import PopupWithAddress from "next-common/components/popupWithAddress";
-import { sendTx } from "next-common/utils/sendTx";
+import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
+import { useUser } from "next-common/context/user";
 
 function PopupContent({
   extensionAccounts,
@@ -34,6 +35,8 @@ function PopupContent({
   const isMounted = useIsMounted();
 
   const signerAccount = useSignerAccount(extensionAccounts);
+  const loginUser = useUser();
+  const proxyAddress = loginUser?.proxyAddress;
 
   const api = useApi();
   const node = useChainSettings();
@@ -93,7 +96,7 @@ function PopupContent({
       return showErrorToast("Chain network is not connected yet");
     }
 
-    const tx = api.tx.democracy.vote(referendumIndex, {
+    let tx = api.tx.democracy.vote(referendumIndex, {
       Standard: {
         balance: bnVoteBalance.toString(),
         vote: {
@@ -102,6 +105,10 @@ function PopupContent({
         },
       },
     });
+
+    if (proxyAddress) {
+      tx = wrapWithProxy(api, tx, proxyAddress);
+    }
 
     const signerAddress = signerAccount.address;
 
@@ -131,6 +138,7 @@ function PopupContent({
         balance={votingBalance}
         balanceName="Voting balance"
         signerAccount={signerAccount}
+        proxyAddress={proxyAddress}
       />
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode

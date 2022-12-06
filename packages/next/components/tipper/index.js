@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import CloseTipPopup from "./closeTipPopup";
 import { useUser } from "next-common/context/user";
-import { getSigner, sendTx } from "next-common/utils/sendTx";
+import { getSigner, sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -56,6 +56,7 @@ export default function Tipper({
 }) {
   const dispatch = useDispatch();
   const loginUser = useUser();
+  const proxyAddress = loginUser?.proxyAddress;
   const isMounted = useIsMounted();
   const api = useApi();
   const [showEndorsePopup, setShowEndorsePopup] = useState(false);
@@ -98,7 +99,10 @@ export default function Tipper({
       return showErrorToast(`Unable to find injected ${signerAddress}`);
     }
 
-    const tx = api.tx.tips.retractTip(tipHash);
+    let tx = api.tx.tips.retractTip(tipHash);
+    if (proxyAddress) {
+      tx = wrapWithProxy(api, tx, proxyAddress);
+    }
 
     await sendTx({
       tx,

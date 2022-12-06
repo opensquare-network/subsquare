@@ -4,7 +4,7 @@ import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { emptyFunction } from "next-common/utils";
-import { getSigner, sendTx } from "next-common/utils/sendTx";
+import { getSigner, sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import MaybeLoginWithAction from "next-common/components/maybeLoginWithAction";
 import { useUser } from "next-common/context/user";
 import { useCallback } from "react";
@@ -20,6 +20,7 @@ export default function ClaimPopup({
   const isMounted = useIsMounted();
   const api = useApi();
   const loginUser = useUser();
+  const proxyAddress = loginUser?.proxyAddress;
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
@@ -44,10 +45,14 @@ export default function ClaimPopup({
       return showErrorToast(`Unable to find injected ${signerAddress}`);
     }
 
-    const tx = api.tx.childBounties.claimChildBounty(
+    let tx = api.tx.childBounties.claimChildBounty(
       childBounty.parentBountyId,
       childBounty.index
     );
+
+    if (proxyAddress) {
+      tx = wrapWithProxy(api, tx, proxyAddress);
+    }
 
     await sendTx({
       tx,

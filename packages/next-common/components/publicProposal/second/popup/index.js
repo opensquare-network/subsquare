@@ -8,12 +8,13 @@ import { newErrorToast } from "../../../../store/reducers/toastSlice";
 import PopupWithAddress from "../../../popupWithAddress";
 import DepositRequired from "./depositRequired";
 import SubmitButton from "./submitButton";
-import { sendTx } from "../../../../utils/sendTx";
+import { sendTx, wrapWithProxy } from "../../../../utils/sendTx";
 import { emptyFunction } from "../../../../utils";
 import useDeposit from "./useDeposit";
 import isNil from "lodash.isnil";
 import { useChain } from "../../../../context/chain";
 import useSignerAccount from "../../../../utils/hooks/useSignerAccount";
+import { useUser } from "../../../../context/user";
 
 function PopupContent({
   extensionAccounts,
@@ -30,6 +31,9 @@ function PopupContent({
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const signerAccount = useSignerAccount(extensionAccounts);
+  const loginUser = useUser();
+  const proxyAddress = loginUser?.proxyAddress;
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const api = useApi();
   const [balance, loadingBalance] = useAddressVotingBalance(
@@ -64,6 +68,10 @@ function PopupContent({
       return showErrorToast(e.message);
     }
 
+    if (proxyAddress) {
+      tx = wrapWithProxy(api, tx, proxyAddress);
+    }
+
     const signerAddress = signerAccount.address;
 
     await sendTx({
@@ -86,6 +94,7 @@ function PopupContent({
         balance={balance}
         balanceName="Voting balance"
         signerAccount={signerAccount}
+        proxyAddress={proxyAddress}
       />
       <DepositRequired
         deposit={deposit}

@@ -7,7 +7,7 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { emptyFunction } from "next-common/utils";
 import MaybeLoginWithAction from "next-common/components/maybeLoginWithAction";
-import { getSigner, sendTx } from "next-common/utils/sendTx";
+import { getSigner, sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { useUser } from "next-common/context/user";
 
 export default function CloseTipPopup({
@@ -21,6 +21,7 @@ export default function CloseTipPopup({
   const isMounted = useIsMounted();
   const api = useApi();
   const loginUser = useUser();
+  const proxyAddress = loginUser?.proxyAddress;
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
@@ -45,7 +46,10 @@ export default function CloseTipPopup({
       return showErrorToast(`Unable to find injected ${signerAddress}`);
     }
 
-    const tx = api.tx.tips.closeTip(tipHash);
+    let tx = api.tx.tips.closeTip(tipHash);
+    if (proxyAddress) {
+      tx = wrapWithProxy(api, tx, proxyAddress);
+    }
 
     await sendTx({
       tx,

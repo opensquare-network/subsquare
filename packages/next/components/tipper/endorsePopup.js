@@ -13,7 +13,7 @@ import {
 } from "next-common/utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import { WarningMessage } from "next-common/components/popup/styled";
-import { sendTx } from "next-common/utils/sendTx";
+import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import { useChainSettings } from "next-common/context/chain";
@@ -21,6 +21,7 @@ import Signer from "next-common/components/popup/fields/signerField";
 import BalanceField from "next-common/components/popup/fields/balanceField";
 import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
+import { useUser } from "next-common/context/user";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -40,6 +41,9 @@ function PopupContent({
   const api = useApi();
 
   const signerAccount = useSignerAccount(extensionAccounts);
+  const loginUser = useUser();
+  const proxyAddress = loginUser?.proxyAddress;
+
   const [inputTipValue, setInputTipValue] = useState();
   const [tipping, setTipping] = useState(false);
   const { decimals } = useChainSettings();
@@ -75,7 +79,11 @@ function PopupContent({
       return showErrorToast(err.message);
     }
 
-    const tx = api.tx.tips.tip(tipHash, bnTipValue.toString());
+    let tx = api.tx.tips.tip(tipHash, bnTipValue.toString());
+
+    if (proxyAddress) {
+      tx = wrapWithProxy(api, tx, proxyAddress);
+    }
 
     const signerAddress = signerAccount.address;
 
@@ -101,6 +109,7 @@ function PopupContent({
         isBalanceLoading={loadingBalance}
         balance={balance}
         signerAccount={signerAccount}
+        proxyAddress={proxyAddress}
       />
       <BalanceField
         title="Tip Value"

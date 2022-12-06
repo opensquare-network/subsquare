@@ -142,3 +142,7 @@ export async function sendTx({
     }
   }
 }
+
+export function wrapWithProxy(api, tx, proxyAddress) {
+  return api.tx.proxy.proxy(proxyAddress, null, tx);
+}
