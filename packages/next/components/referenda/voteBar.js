@@ -14,6 +14,7 @@ import { p_12_medium } from "next-common/styles/componentCss";
 const Wrapper = styled.div``;
 
 const ContentVoteBarInfoGroup = styled.div`
+  margin-top: 4px;
   margin-bottom: 16px;
 `;
 const ContentGroup = styled.div`
@@ -42,10 +43,10 @@ const ContentNayGroup = styled(ContentGroup)`
 
 const BarWrapper = styled.div`
   position: relative;
+  padding: 8px 0;
 `;
 
 const BarContainer = styled.div`
-  margin: 8px 0;
   display: flex;
   gap: ${(p) => p.gap}px;
   height: 8px;
