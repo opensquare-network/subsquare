@@ -57,6 +57,7 @@ export default function Tipper({
   const dispatch = useDispatch();
   const loginUser = useUser();
   const proxyAddress = loginUser?.proxyAddress;
+  const realAddress = proxyAddress || loginUser?.address;
   const isMounted = useIsMounted();
   const api = useApi();
   const [showEndorsePopup, setShowEndorsePopup] = useState(false);
@@ -73,7 +74,7 @@ export default function Tipper({
 
   const closeFromHeight = chainData.meta?.closes;
   const tipCanClose = !!closeFromHeight && scanHeight > closeFromHeight;
-  const tipCanRetract = isSameAddress(chainData.finder, loginUser?.address);
+  const tipCanRetract = isSameAddress(chainData.finder, realAddress);
   const tipHash = chainData.hash;
 
   const showErrorToast = useCallback(

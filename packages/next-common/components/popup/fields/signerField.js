@@ -13,7 +13,6 @@ export default function Signer({
   balanceName = "Balance",
   signerAccount,
   symbol,
-  proxyAddress,
 }) {
   const node = useChainSettings();
   const noBalance = isNil(balance) && isNil(isBalanceLoading);
@@ -32,7 +31,9 @@ export default function Signer({
         />
       )}
       <ConnectedSigner signerAccount={signerAccount} />
-      {proxyAddress && <ProxyInfo address={proxyAddress} />}
+      {signerAccount?.proxyAddress && (
+        <ProxyInfo address={signerAccount.proxyAddress} />
+      )}
     </div>
   );
 }

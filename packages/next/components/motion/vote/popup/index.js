@@ -17,7 +17,6 @@ import Signer from "next-common/components/popup/fields/signerField";
 import { WarningMessage } from "next-common/components/popup/styled";
 import styled from "styled-components";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
-import { useUser } from "next-common/context/user";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -41,14 +40,13 @@ function PopupContent({
   const chain = useChain();
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount(extensionAccounts);
-  const loginUser = useUser();
-  const proxyAddress = loginUser?.proxyAddress;
 
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
 
-  const selectedAddress = signerAccount?.address;
-  const selectedAccountCanVote = voters.includes(selectedAddress);
-  const currentVote = votes.find((item) => item[0] === selectedAddress);
+  const canVote = voters.includes(signerAccount?.realAddress);
+  const currentVote = votes.find(
+    (item) => item[0] === signerAccount?.realAddress
+  );
 
   const api = useApi();
   const voteMethod = api?.tx?.[toApiCouncil(chain, type)]?.vote;
@@ -72,9 +70,8 @@ function PopupContent({
     }
 
     let tx = voteMethod(motionHash, motionIndex, approve);
-
-    if (proxyAddress) {
-      tx = wrapWithProxy(api, tx, proxyAddress);
+    if (signerAccount?.proxyAddress) {
+      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
     const signerAddress = signerAccount.address;
@@ -101,9 +98,9 @@ function PopupContent({
   return (
     <>
       <SignerWrapper>
-        <Signer signerAccount={signerAccount} proxyAddress={proxyAddress} />
-        {!selectedAccountCanVote && (
-          <WarningMessage danger={!selectedAccountCanVote}>
+        <Signer signerAccount={signerAccount} />
+        {!canVote && (
+          <WarningMessage danger={!canVote}>
             Only council members can vote.
           </WarningMessage>
         )}

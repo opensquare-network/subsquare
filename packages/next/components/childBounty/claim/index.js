@@ -98,6 +98,7 @@ export default function Claim({
   onFinalized = emptyFunction,
 }) {
   const user = useUser();
+  const realAddress = user?.proxyAddress || user?.address;
   const { decimals, symbol } = useChainSettings();
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -146,7 +147,7 @@ export default function Claim({
     return null;
   }
 
-  const isBeneficiary = isSameAddress(user?.address, childBounty?.beneficiary);
+  const isBeneficiary = isSameAddress(realAddress, childBounty?.beneficiary);
 
   const hasBeenClaimedText = (
     <ClaimInfoText>This child bounty has been claimed.</ClaimInfoText>

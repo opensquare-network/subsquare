@@ -20,7 +20,6 @@ import { sendTx, wrapWithProxy } from "../../../../utils/sendTx";
 import SecondaryButton from "../../../buttons/secondaryButton";
 import { useChainSettings } from "../../../../context/chain";
 import useSignerAccount from "../../../../utils/hooks/useSignerAccount";
-import { useUser } from "../../../../context/user";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -37,8 +36,6 @@ function PopupContent({
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const signerAccount = useSignerAccount(extensionAccounts);
-  const loginUser = useUser();
-  const proxyAddress = loginUser?.proxyAddress;
 
   const [inputValue, setInputValue] = useState();
   const [loading, setLoading] = useState(false);
@@ -58,7 +55,7 @@ function PopupContent({
 
   const [balance, balanceIsLoading] = useAddressBalance(
     api,
-    signerAccount?.address
+    signerAccount?.realAddress
   );
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
@@ -85,8 +82,8 @@ function PopupContent({
 
     let tx = api.tx.treasury.proposeSpend(bnValue.toString(), beneficiary);
 
-    if (proxyAddress) {
-      tx = wrapWithProxy(api, tx, proxyAddress);
+    if (signerAccount?.proxyAddress) {
+      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
     const signerAddress = signerAccount.address;
@@ -118,7 +115,6 @@ function PopupContent({
         signerAccount={signerAccount}
         balance={balance}
         isBalanceLoading={balanceIsLoading}
-        proxyAddress={proxyAddress}
       />
       <Beneficiary
         extensionAccounts={extensionAccounts}

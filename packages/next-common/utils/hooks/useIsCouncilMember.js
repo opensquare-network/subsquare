@@ -4,8 +4,7 @@ import useCouncilMembers from "./useCouncilMembers";
 
 export default function useIsCouncilMember() {
   const loginUser = useUser();
+  const realAddress = loginUser?.proxyAddress || loginUser?.address;
   const councilTippers = useCouncilMembers();
-  return councilTippers?.some((address) =>
-    isSameAddress(loginUser?.address, address)
-  );
+  return councilTippers?.some((address) => isSameAddress(realAddress, address));
 }

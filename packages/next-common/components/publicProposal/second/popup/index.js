@@ -14,7 +14,6 @@ import useDeposit from "./useDeposit";
 import isNil from "lodash.isnil";
 import { useChain } from "../../../../context/chain";
 import useSignerAccount from "../../../../utils/hooks/useSignerAccount";
-import { useUser } from "../../../../context/user";
 
 function PopupContent({
   extensionAccounts,
@@ -31,14 +30,12 @@ function PopupContent({
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const signerAccount = useSignerAccount(extensionAccounts);
-  const loginUser = useUser();
-  const proxyAddress = loginUser?.proxyAddress;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const api = useApi();
   const [balance, loadingBalance] = useAddressVotingBalance(
     api,
-    signerAccount?.address
+    signerAccount?.realAddress
   );
   const { deposit, balanceInsufficient } = useDeposit(depositRequired, balance);
 
@@ -68,8 +65,8 @@ function PopupContent({
       return showErrorToast(e.message);
     }
 
-    if (proxyAddress) {
-      tx = wrapWithProxy(api, tx, proxyAddress);
+    if (signerAccount?.proxyAddress) {
+      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
     const signerAddress = signerAccount.address;
@@ -94,7 +91,6 @@ function PopupContent({
         balance={balance}
         balanceName="Voting balance"
         signerAccount={signerAccount}
-        proxyAddress={proxyAddress}
       />
       <DepositRequired
         deposit={deposit}

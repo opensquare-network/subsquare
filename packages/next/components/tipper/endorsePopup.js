@@ -21,7 +21,6 @@ import Signer from "next-common/components/popup/fields/signerField";
 import BalanceField from "next-common/components/popup/fields/balanceField";
 import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
-import { useUser } from "next-common/context/user";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -41,22 +40,17 @@ function PopupContent({
   const api = useApi();
 
   const signerAccount = useSignerAccount(extensionAccounts);
-  const loginUser = useUser();
-  const proxyAddress = loginUser?.proxyAddress;
 
   const [inputTipValue, setInputTipValue] = useState();
   const [tipping, setTipping] = useState(false);
   const { decimals } = useChainSettings();
   const [balance, loadingBalance] = useAddressBalance(
     api,
-    signerAccount?.address
+    signerAccount?.realAddress
   );
   const councilTippers = useCouncilMembers();
 
-  const selectedAccountIsTipper = isAddressInGroup(
-    signerAccount?.address,
-    councilTippers
-  );
+  const isTipper = isAddressInGroup(signerAccount?.realAddress, councilTippers);
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doEndorse = async () => {
@@ -81,8 +75,8 @@ function PopupContent({
 
     let tx = api.tx.tips.tip(tipHash, bnTipValue.toString());
 
-    if (proxyAddress) {
-      tx = wrapWithProxy(api, tx, proxyAddress);
+    if (signerAccount?.proxyAddress) {
+      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
     const signerAddress = signerAccount.address;
@@ -102,14 +96,13 @@ function PopupContent({
 
   return (
     <>
-      <WarningMessage danger={!selectedAccountIsTipper}>
+      <WarningMessage danger={!isTipper}>
         Only council members can tip.
       </WarningMessage>
       <Signer
         isBalanceLoading={loadingBalance}
         balance={balance}
         signerAccount={signerAccount}
-        proxyAddress={proxyAddress}
       />
       <BalanceField
         title="Tip Value"

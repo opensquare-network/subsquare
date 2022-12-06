@@ -21,7 +21,6 @@ import Target from "next-common/components/democracy/delegatePopup/target";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import styled from "styled-components";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
-import { useUser } from "next-common/context/user";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -38,8 +37,6 @@ function PopupContent({
   const isMounted = useIsMounted();
 
   const signerAccount = useSignerAccount(extensionAccounts);
-  const loginUser = useUser();
-  const proxyAddress = loginUser?.proxyAddress;
 
   const [targetAddress, setTargetAddress] = useState("");
 
@@ -49,7 +46,7 @@ function PopupContent({
   const [isLoading, setIsLoading] = useState(false);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.address
+    signerAccount?.realAddress
   );
 
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
@@ -104,8 +101,8 @@ function PopupContent({
       bnVoteBalance.toString()
     );
 
-    if (proxyAddress) {
-      tx = wrapWithProxy(api, tx, proxyAddress);
+    if (signerAccount?.proxyAddress) {
+      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
     setIsLoading(true);
@@ -127,7 +124,6 @@ function PopupContent({
         balance={votingBalance}
         balanceName="Voting balance"
         signerAccount={signerAccount}
-        proxyAddress={proxyAddress}
       />
       <Target
         extensionAccounts={extensionAccounts}

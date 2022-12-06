@@ -26,6 +26,7 @@ export default function MotionDetail({ onReply }) {
   const type = useDetailType();
   const chain = useChain();
   const user = useUser();
+  const realAddress = user?.proxyAddress || user?.address;
   const postDispatch = usePostDispatch();
   const api = useApi();
   const isMounted = useIsMounted();
@@ -37,7 +38,7 @@ export default function MotionDetail({ onReply }) {
 
   const [isEdit, setIsEdit] = useState(false);
 
-  const userCanVote = isAddressInGroup(user?.address, voters);
+  const userCanVote = isAddressInGroup(realAddress, voters);
   const motionEnd = isMotionEnded(post.onchainData);
 
   const blockHash = motionEnd

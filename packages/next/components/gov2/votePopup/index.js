@@ -22,7 +22,6 @@ import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
-import { useUser } from "next-common/context/user";
 
 function PopupContent({
   extensionAccounts,
@@ -37,8 +36,6 @@ function PopupContent({
   const isMounted = useIsMounted();
 
   const signerAccount = useSignerAccount(extensionAccounts);
-  const loginUser = useUser();
-  const proxyAddress = loginUser?.proxyAddress;
 
   const api = useApi();
   const node = useChainSettings();
@@ -46,14 +43,14 @@ function PopupContent({
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.address
+    signerAccount?.realAddress
   );
 
   const [addressVote, addressVoteIsLoading] = useAddressVote(
     api,
     trackId,
     referendumIndex,
-    signerAccount?.address
+    signerAccount?.realAddress
   );
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
@@ -109,8 +106,8 @@ function PopupContent({
       },
     });
 
-    if (proxyAddress) {
-      tx = wrapWithProxy(api, tx, proxyAddress);
+    if (signerAccount?.proxyAddress) {
+      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
     const signerAddress = signerAccount.address;
@@ -141,7 +138,6 @@ function PopupContent({
         balance={votingBalance}
         balanceName="Voting balance"
         signerAccount={signerAccount}
-        proxyAddress={proxyAddress}
       />
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode
