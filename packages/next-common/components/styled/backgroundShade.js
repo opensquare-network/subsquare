@@ -9,6 +9,7 @@ const Background = styled.div`
   top: 0;
   left: 0;
   margin-top: 0 !important;
+  margin-left: 0 !important;
 `;
 
 export default Background;
