@@ -75,7 +75,6 @@ export const settingMenu = [
     name: "SETTING",
     items: [
       accountSetting,
-      proxySetting,
       linkAddressSetting,
       notificationSetting,
       subscriptionSetting,
