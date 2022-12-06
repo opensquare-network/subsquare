@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 
 const ThresholdScope = styled.div`
   position: absolute;
-  top: 0;
+  top: 8px;
   right: 1px;
   bottom: 0;
   left: 1px;

@@ -7,6 +7,7 @@ import ThresholdComponent from "../../../../referenda/threshold";
 import Percentage from "./percentage";
 import isNil from "lodash.isnil";
 import TooltipOrigin from "next-common/components/tooltip";
+import { p_12_medium } from "next-common/styles/componentCss";
 
 const Wrapper = styled.div`
   margin-top: 21px;
@@ -25,7 +26,7 @@ const Wrapper = styled.div`
   }
 
   ul {
-    margin-top: 12px;
+    margin-top: 4px;
     display: flex;
     justify-content: space-between;
 
@@ -33,6 +34,7 @@ const Wrapper = styled.div`
     color: ${(props) => props.theme.textPrimary};
     li {
       width: 33.3%;
+      ${p_12_medium};
       &:last-child {
         text-align: right;
       }
@@ -46,7 +48,7 @@ const Wrapper = styled.div`
     margin: 0;
     text-align: center;
     color: ${(props) => props.theme.textSecondary};
-    font-weight: 500;
+    ${p_12_medium};
   }
 `;
 
@@ -57,6 +59,10 @@ const Mark = styled(ThresholdComponent)`
 const Tooltip = styled(TooltipOrigin)`
   display: block;
   z-index: 1;
+`;
+
+const ProgressBarWrapper = styled.div`
+  padding: 8px 0;
 `;
 
 export default function SupportBar({ issuance }) {
@@ -103,7 +109,7 @@ export default function SupportBar({ issuance }) {
 
   return (
     <Wrapper>
-      <div>
+      <ProgressBarWrapper>
         <Tooltip
           content={
             isNil(support) ? null : (
@@ -116,7 +122,7 @@ export default function SupportBar({ issuance }) {
         >
           <Progress percentage={barPercentage} bg={grey100Bg} />
         </Tooltip>
-      </div>
+      </ProgressBarWrapper>
       <Mark threshold="80%" />
       <ul>
         <li>0.0%</li>
