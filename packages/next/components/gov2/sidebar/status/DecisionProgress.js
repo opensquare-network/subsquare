@@ -12,10 +12,10 @@ import Remaining from "./remaining";
 import Progress from "next-common/components/progress";
 import TimeDuration from "next-common/components/TimeDuration";
 import {
+  ProgressBarWrapper,
   ProgressGroup,
   ProgressInfo,
   Tooltip,
-  ProgressInfoLabel,
 } from "./styled";
 
 export default function DecisionProgress() {
@@ -40,22 +40,25 @@ export default function DecisionProgress() {
 
   return (
     <ProgressGroup>
-      <Tooltip
-        content={
-          decisionRemaining > 0 && <Remaining blocks={decisionRemaining} />
-        }
-      >
-        <Progress percentage={decisionPercentage} />
-      </Tooltip>
+      <ProgressBarWrapper>
+        <Tooltip
+          content={
+            decisionRemaining > 0 && <Remaining blocks={decisionRemaining} />
+          }
+        >
+          <Progress percentage={decisionPercentage} />
+        </Tooltip>
+      </ProgressBarWrapper>
+
       <ProgressInfo>
-        <ProgressInfoLabel>Decision</ProgressInfoLabel>
-        <p>
+        <span>Decision</span>
+        <span>
           <TimeDuration
             blocks={decisionBlocks}
             showHours={false}
             showMinutes={false}
           />
-        </p>
+        </span>
       </ProgressInfo>
     </ProgressGroup>
   );
