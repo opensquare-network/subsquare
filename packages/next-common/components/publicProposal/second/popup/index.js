@@ -12,7 +12,6 @@ import { sendTx } from "../../../../utils/sendTx";
 import { emptyFunction } from "../../../../utils";
 import useDeposit from "./useDeposit";
 import isNil from "lodash.isnil";
-import { useChain } from "../../../../context/chain";
 import useSignerAccount from "../../../../utils/hooks/useSignerAccount";
 
 function PopupContent({
@@ -26,7 +25,6 @@ function PopupContent({
   onInBlock = emptyFunction,
   useAddressVotingBalance,
 }) {
-  const chain = useChain();
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const signerAccount = useSignerAccount(extensionAccounts);
@@ -55,10 +53,10 @@ function PopupContent({
 
     let tx = null;
     try {
-      if (["kusama", "rococo"].includes(chain)) {
+      if (api.tx.democracy?.second?.meta.args.length < 2) {
         tx = api.tx.democracy.second(proposalIndex);
       } else {
-        tx = api.tx.democracy.second(proposalIndex, depositorUpperBound || 0);
+        tx = api.tx.democracy.second(proposalIndex, depositorUpperBound || 1);
       }
     } catch (e) {
       return showErrorToast(e.message);
