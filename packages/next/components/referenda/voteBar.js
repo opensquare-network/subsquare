@@ -133,6 +133,7 @@ function VoteBar({ tally, electorate, threshold, percentage, thin = false }) {
             <ContentPercentage>{ayesPercent}%</ContentPercentage>
             <ContentDescription>Aye</ContentDescription>
           </ContentAyeGroup>
+
           <ContentThresholdGroup>
             <ContentPercentage>
               {threshold === "percentage" && !isNil(percentage) && (
@@ -151,6 +152,7 @@ function VoteBar({ tally, electorate, threshold, percentage, thin = false }) {
               )}
             </ContentDescription>
           </ContentThresholdGroup>
+
           <ContentNayGroup>
             <ContentPercentage>{naysPercent}%</ContentPercentage>
             <ContentDescription>Nay</ContentDescription>
