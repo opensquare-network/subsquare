@@ -1,4 +1,7 @@
 import React, { createContext, useContext, useEffect, useReducer } from "react";
+import { useDetailType } from "../page";
+import { detailPageCategory } from "../../utils/consts/business/category";
+import { getGov2ReferendumTitle } from "../../utils/gov2/title";
 
 const PostContext = createContext(null);
 const PostDispatchContext = createContext(null);
@@ -36,6 +39,23 @@ export function usePostDispatch() {
 
 export function usePost() {
   return useContext(PostContext);
+}
+
+export function usePostTitle() {
+  const post = usePost();
+  const type = useDetailType();
+
+  let title = post.title || "--";
+  if (
+    [
+      detailPageCategory.GOV2_REFERENDUM,
+      detailPageCategory.FELLOWSHIP_REFERENDUM,
+    ].includes(type)
+  ) {
+    title = getGov2ReferendumTitle(post);
+  }
+
+  return title;
 }
 
 export function usePostOnChainData() {
