@@ -22,6 +22,18 @@ const CustomErrorMessage = styled(ErrorMessage)`
   margin-top: 9px;
 `;
 
+const SuccessMessage = styled.div`
+  padding: 10px 16px;
+  margin-top: 9px;
+  //fixme: somehow theme won't work
+  background: rgba(76, 175, 80, 0.1);
+  color: #4caf50;
+  border-radius: 4px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+`;
+
 export default function ProxyAddress() {
   const api = useApi();
   const dispatch = useDispatch();
@@ -31,15 +43,39 @@ export default function ProxyAddress() {
   );
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState();
+  const [successMsg, setSuccessMsg] = useState();
   const userDispatch = useUserDispatch();
   const isSet = !!loginUser?.proxyAddress;
 
   useEffect(() => {
     setInputAddres(loginUser?.proxyAddress || "");
-  }, [loginUser?.proxyAddress]);
+    setErrorMsg();
+    setSuccessMsg();
+
+    if (api && loginUser?.proxyAddress) {
+      checkProxy(api, loginUser?.proxyAddress, loginUser?.address).then(
+        ({ success, proxyTypes }) => {
+          if (proxyTypes.length === 0) {
+            setErrorMsg("Can't find the proxy setting on-chain.");
+            return;
+          }
+          if (proxyTypes.length > 0 && !success) {
+            setErrorMsg(
+              `Proxy type: ${proxyTypes.join(
+                ","
+              )}. Proxy type should be Governance, NonTransfer, or Any.`
+            );
+            return;
+          }
+          setSuccessMsg(`Proxy type: ${proxyTypes.join(",")}`);
+        }
+      );
+    }
+  }, [api, loginUser?.proxyAddress]);
 
   const onSet = async () => {
     setErrorMsg();
+    setSuccessMsg();
 
     if (!api) {
       dispatch(newErrorToast("Chain network is not connected yet"));
@@ -54,9 +90,21 @@ export default function ProxyAddress() {
     setIsLoading(true);
 
     try {
-      const ok = await checkProxy(api, inputAddress, loginUser?.address);
-      if (!ok) {
-        setErrorMsg("Can't find the proxy setting on-chain");
+      const { success, proxyTypes } = await checkProxy(
+        api,
+        inputAddress,
+        loginUser?.address
+      );
+      if (proxyTypes.length === 0) {
+        setErrorMsg("Can't find the proxy setting on-chain.");
+        return;
+      }
+      if (proxyTypes.length > 0 && !success) {
+        setErrorMsg(
+          `Proxy type: ${proxyTypes.join(
+            ","
+          )}. Proxy type should be Governance, NonTransfer, or Any.`
+        );
         return;
       }
 
@@ -116,6 +164,7 @@ export default function ProxyAddress() {
         </SecondaryButton>
       </InputWrapper>
       {errorMsg && <CustomErrorMessage>{errorMsg}</CustomErrorMessage>}
+      {successMsg && <SuccessMessage>{successMsg}</SuccessMessage>}
     </div>
   );
 }
