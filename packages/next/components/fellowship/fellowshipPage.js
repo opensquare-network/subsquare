@@ -1,9 +1,9 @@
 import Gov2Layout from "next-common/components/layout/Gov2Layout";
 import PostList from "next-common/components/postList";
-import { toGov2ReferendaListItem } from "utils/viewfuncs";
+import { toFellowshipReferendaListItem } from "utils/viewfuncs";
 import businessCategory from "next-common/utils/consts/business/category";
 
-export default function Gov2Page({
+export default function FellowshipPage({
   posts,
   title,
   tracks,
@@ -12,7 +12,7 @@ export default function Gov2Page({
 }) {
   const seoInfo = { title, desc: title };
   const items = (posts.items || []).map((item) =>
-    toGov2ReferendaListItem(item, tracks)
+    toFellowshipReferendaListItem(item, tracks)
   );
 
   return (

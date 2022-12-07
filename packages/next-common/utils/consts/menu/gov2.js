@@ -38,22 +38,11 @@ const gov2BackMenu = {
   ],
 };
 
-const gov2ReferendaGroupIds = [0, 10, 15];
-const gov2GovernanceGroupIds = [12, 14, 20, 21];
-const gov2TreasuryGroupIds = [11, 30, 31, 32, 33, 34];
-const gov2FellowShipGroupIds = [1, 13];
-
-const gov2GovernanceMenuName = "GOVERNANCE";
-const gov2TreasuryMenuName = "TREASURY";
 const gov2FellowshipMenuName = "FELLOWSHIP";
 
 export const gov2MenuFoldablePrefix = "GOV2_";
 
-export const allGov2HomeMenuNames = [
-  gov2GovernanceMenuName,
-  gov2TreasuryMenuName,
-  gov2FellowshipMenuName,
-];
+export const allGov2HomeMenuNames = [gov2FellowshipMenuName];
 
 function calcActiveCount(tracks = []) {
   return tracks.reduce((count, item) => {
@@ -62,7 +51,7 @@ function calcActiveCount(tracks = []) {
   }, 0);
 }
 
-export function resolveGov2TracksMenu(tracks = []) {
+export function resolveGov2TracksMenu(tracks = [], fellowshipTracks = []) {
   const totalActiveCount = calcActiveCount(tracks);
 
   const gov2ReferendaMenu = {
@@ -77,25 +66,12 @@ export function resolveGov2TracksMenu(tracks = []) {
     ],
   };
 
-  const gov2GovernanceMenu = {
-    name: gov2GovernanceMenuName,
-    activeCount: 0,
-    items: [],
-  };
-
-  const gov2TreasuryMenu = {
-    name: gov2TreasuryMenuName,
-    activeCount: 0,
-    items: [],
-  };
-
   const gov2FellowshipMenu = {
     name: gov2FellowshipMenuName,
     activeCount: 0,
     items: [],
   };
 
-  const assert = (ids = [], id) => ids.includes(id);
   const resolveTrackItem = (track) => {
     return {
       value: track.id,
@@ -106,32 +82,28 @@ export function resolveGov2TracksMenu(tracks = []) {
     };
   };
 
+  const resolveFellowshipTrackItem = (track) => {
+    return {
+      value: track.id,
+      name: parseGov2TrackName(track.name),
+      pathname: `/fellowship/track/${track.name}`,
+      activeCount: track.activeCount,
+      icon: TrackIconMap[track.id] ?? TrackIconMap.Default,
+    };
+  };
+
   for (let idx = 0; idx < tracks.length; idx++) {
     const track = tracks[idx];
 
-    if (assert(gov2ReferendaGroupIds, track.id)) {
-      gov2ReferendaMenu.items.push(resolveTrackItem(track));
-    } else if (assert(gov2GovernanceGroupIds, track.id)) {
-      gov2GovernanceMenu.items.push(resolveTrackItem(track));
-      gov2GovernanceMenu.activeCount = calcActiveCount(
-        gov2GovernanceMenu.items
-      );
-    } else if (assert(gov2TreasuryGroupIds, track.id)) {
-      gov2TreasuryMenu.items.push(resolveTrackItem(track));
-      gov2TreasuryMenu.activeCount = calcActiveCount(gov2TreasuryMenu.items);
-    } else if (assert(gov2FellowShipGroupIds, track.id)) {
-      gov2FellowshipMenu.items.push(resolveTrackItem(track));
-      gov2FellowshipMenu.activeCount = calcActiveCount(
-        gov2FellowshipMenu.items
-      );
-    }
+    gov2ReferendaMenu.items.push(resolveTrackItem(track));
   }
 
-  return [
-    gov2BackMenu,
-    gov2ReferendaMenu,
-    gov2GovernanceMenu,
-    gov2TreasuryMenu,
-    gov2FellowshipMenu,
-  ];
+  for (let idx = 0; idx < fellowshipTracks.length; idx++) {
+    const track = fellowshipTracks[idx];
+
+    gov2FellowshipMenu.items.push(resolveFellowshipTrackItem(track));
+    // }
+  }
+
+  return [gov2BackMenu, gov2ReferendaMenu, gov2FellowshipMenu];
 }
