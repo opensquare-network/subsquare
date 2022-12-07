@@ -14,3 +14,10 @@ export const gov2ReferendumsTracksSummaryApi = (trackId) =>
   gov2TracksApi + `/${trackId}` + "/referendums/summary";
 export const gov2ReferendumsTracksApi = (trackId) =>
   gov2TracksApi + `/${trackId}`;
+
+// fellowship
+export const fellowshipReferenda = "fellowship/referenda/";
+
+export const getFellowshipReferendumUrl = (id) => `${fellowshipReferenda}${id}`;
+export const getFellowshipReferendumCommentsUrl = (id) =>
+  `${getFellowshipReferendumUrl(id)}/comments`;

@@ -42,7 +42,12 @@ export default function PostTitle() {
   const index = post.index || post.motionIndex;
   let title = post.title || "--";
 
-  if (postType === detailPageCategory.GOV2_REFERENDUM) {
+  if (
+    [
+      detailPageCategory.GOV2_REFERENDUM,
+      detailPageCategory.FELLOWSHIP_REFERENDUM,
+    ].includes(postType)
+  ) {
     title = getGov2ReferendumTitle(post);
   }
 

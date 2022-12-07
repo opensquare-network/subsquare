@@ -7,4 +7,10 @@ const BreadcrumbWrapper = styled.div`
   `)}
 `;
 
+export const BreadcrumbHideOnMobileText = styled.span`
+  ${smcss(css`
+    display: none;
+  `)}
+`;
+
 export default BreadcrumbWrapper;
