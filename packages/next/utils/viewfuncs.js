@@ -244,3 +244,22 @@ export const toGov2ReferendaListItem = (item, tracks = []) => {
     track: track?.name,
   };
 };
+
+export const toFellowshipReferendaListItem = (item, tracks = []) => {
+  const track = tracks.find(
+    (trackItem) => trackItem.id === item.onchainData.track
+  );
+
+  return {
+    ...item,
+    title: getGov2ReferendumTitle(item),
+    time: getPostUpdatedAt(item),
+    status: item.onchainData?.state?.name ?? "Unknown",
+    index: item.referendumIndex,
+    author: item.author,
+    address: item.proposer,
+    detailLink: `/fellowship/referendum/${item.referendumIndex}`,
+    commentsCount: item.commentsCount,
+    track: track?.name,
+  };
+};
