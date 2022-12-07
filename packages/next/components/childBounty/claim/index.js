@@ -13,8 +13,8 @@ import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { shadow_100 } from "next-common/styles/componentCss";
 import ValueDisplay from "next-common/components/displayValue";
-import { useUser } from "next-common/context/user";
 import { useChainSettings } from "next-common/context/chain";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -97,8 +97,7 @@ export default function Claim({
   onInBlock = emptyFunction,
   onFinalized = emptyFunction,
 }) {
-  const user = useUser();
-  const realAddress = user?.proxyAddress || user?.address;
+  const realAddress = useRealAddress();
   const { decimals, symbol } = useChainSettings();
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);

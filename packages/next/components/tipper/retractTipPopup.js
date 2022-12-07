@@ -5,10 +5,10 @@ import { useDispatch } from "react-redux";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { emptyFunction } from "next-common/utils";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SignerPopup from "next-common/components/signerPopup";
+import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 
-export default function CloseTipPopup({
+export default function RetractTipPopup({
   tipHash,
   onClose,
   isLoading,
@@ -25,7 +25,7 @@ export default function CloseTipPopup({
     [dispatch]
   );
 
-  const doCloseTip = useCallback(
+  const doRetractTip = useCallback(
     async (api, signerAccount) => {
       if (!api) {
         return showErrorToast("Chain network is not connected yet");
@@ -37,7 +37,7 @@ export default function CloseTipPopup({
 
       const signerAddress = signerAccount.address;
 
-      let tx = api.tx.tips.closeTip(tipHash);
+      let tx = api.tx.tips.retractTip(tipHash);
       if (signerAccount?.proxyAddress) {
         tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
       }
@@ -46,9 +46,9 @@ export default function CloseTipPopup({
         tx,
         setLoading: setIsLoading,
         dispatch,
-        onFinalized,
-        onInBlock,
         onSubmitted,
+        onInBlock,
+        onFinalized,
         onClose,
         signerAddress,
         isMounted,
@@ -59,9 +59,9 @@ export default function CloseTipPopup({
       isMounted,
       showErrorToast,
       onFinalized,
-      onInBlock,
       onSubmitted,
-      onClose,
+      onInBlock,
+      onFinalized,
       tipHash,
       setIsLoading,
     ]
@@ -69,8 +69,8 @@ export default function CloseTipPopup({
 
   return (
     <SignerPopup
-      title="Close Tip"
-      actionCallback={doCloseTip}
+      title="Retract Tip"
+      actionCallback={doRetractTip}
       onClose={onClose}
       isLoading={isLoading}
     />

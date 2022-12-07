@@ -18,7 +18,6 @@ import { sendTx, wrapWithProxy } from "../../../../utils/sendTx";
 import SecondaryButton from "../../../buttons/secondaryButton";
 import { useChainSettings } from "../../../../context/chain";
 import useSignerAccount from "../../../../utils/hooks/useSignerAccount";
-import { useUser } from "../../../../context/user";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -35,8 +34,6 @@ function PopupContent({
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const signerAccount = useSignerAccount(extensionAccounts);
-  const loginUser = useUser();
-  const proxyAddress = loginUser?.proxyAddress;
 
   const [reason, setReason] = useState("");
   const [loading, setLoading] = useState(false);
@@ -48,7 +45,7 @@ function PopupContent({
   const [beneficiary, setBeneficiary] = useState();
   const [balance, balanceIsLoading] = useAddressBalance(
     api,
-    signerAccount?.address
+    signerAccount?.realAddress
   );
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
@@ -59,7 +56,7 @@ function PopupContent({
     }
 
     if (!signerAccount) {
-      return showErrorToast("Please select an account");
+      return showErrorToast("Please login first");
     }
 
     if (!beneficiary) {
@@ -85,8 +82,8 @@ function PopupContent({
       tx = api.tx.tips.reportAwesome(reason, beneficiary);
     }
 
-    if (proxyAddress) {
-      tx = wrapWithProxy(api, tx, proxyAddress);
+    if (signerAccount?.proxyAddress) {
+      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
     const signerAddress = signerAccount.address;

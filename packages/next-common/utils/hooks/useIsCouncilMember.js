@@ -1,10 +1,9 @@
 import { isSameAddress } from "..";
-import { useUser } from "../../context/user";
 import useCouncilMembers from "./useCouncilMembers";
+import useRealAddress from "./useRealAddress";
 
 export default function useIsCouncilMember() {
-  const loginUser = useUser();
-  const realAddress = loginUser?.proxyAddress || loginUser?.address;
+  const realAddress = useRealAddress();
   const councilTippers = useCouncilMembers();
   return councilTippers?.some((address) => isSameAddress(realAddress, address));
 }

@@ -88,9 +88,9 @@ function PopupContent({
 
     const signerAddress = signerAccount?.address;
 
-    if (isSameAddress(targetAddress, signerAddress)) {
+    if (isSameAddress(targetAddress, signerAccount?.realAddress)) {
       return showErrorToast(
-        "Target address cannot be same with the signer address"
+        "Target address cannot be same with the delegator address"
       );
     }
 
