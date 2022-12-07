@@ -2,15 +2,15 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
 import {
   fellowshipTracksApi,
-  gov2ReferendumsTrackApi,
-  gov2ReferendumsTracksApi,
-  gov2ReferendumsTracksSummaryApi,
+  fellowshipReferendumsTrackApi,
+  fellowshipReferendumsTracksApi,
+  fellowshipReferendumsTracksSummaryApi,
   gov2TracksApi,
 } from "next-common/services/url";
 import { EmptyList } from "next-common/utils/constants";
 import { parseGov2TrackName } from "next-common/utils/gov2";
-import Gov2Page from "components/gov2/gov2Page";
 import Gov2TrackSummary from "components/summary/gov2TrackSummary";
+import FellowshipPage from "components/fellowship/fellowshipPage";
 
 export default withLoginUserRedux(
   ({ posts, title, tracks, fellowshipTracks, summary, period }) => {
@@ -19,7 +19,7 @@ export default withLoginUserRedux(
     );
 
     return (
-      <Gov2Page
+      <FellowshipPage
         posts={posts}
         title={title}
         tracks={tracks}
@@ -38,16 +38,16 @@ export const getServerSideProps = withLoginUser(async (context) => {
     fellowshipTracksApi
   );
 
-  const track = tracks.find((trackItem) => trackItem.name === name);
+  const track = fellowshipTracks.find((trackItem) => trackItem.name === name);
 
   const [{ result: posts }, { result: summary }, { result: period }] =
     await Promise.all([
-      ssrNextApi.fetch(gov2ReferendumsTrackApi(track?.id), {
+      ssrNextApi.fetch(fellowshipReferendumsTrackApi(track?.id), {
         page,
         pageSize,
       }),
-      ssrNextApi.fetch(gov2ReferendumsTracksSummaryApi(track?.id)),
-      ssrNextApi.fetch(gov2ReferendumsTracksApi(track?.id)),
+      ssrNextApi.fetch(fellowshipReferendumsTracksSummaryApi(track?.id)),
+      ssrNextApi.fetch(fellowshipReferendumsTracksApi(track?.id)),
     ]);
 
   return {
@@ -57,7 +57,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
       summary,
-      period,
+      period: period ?? null,
     },
   };
 });
