@@ -1,5 +1,6 @@
 import React from "react";
 import UserIcon from "../../../assets/imgs/icons/user.svg";
+import ProxyIcon from "../../../assets/imgs/icons/proxy.svg";
 import BellIcon from "../../../assets/imgs/icons/bell.svg";
 import SubscriptionIcon from "../../../assets/imgs/icons/subscription.svg";
 import AddressIcon from "../../../assets/imgs/icons/address.svg";
@@ -52,7 +53,7 @@ const proxySetting = {
   value: "proxy",
   name: "Proxy",
   pathname: "/setting/proxy",
-  icon: <UserIcon />,
+  icon: <ProxyIcon />,
   excludeToChains: [Chains.kintsugi],
 };
 
