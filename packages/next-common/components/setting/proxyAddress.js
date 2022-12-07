@@ -13,7 +13,7 @@ import {
   useUser,
   useUserDispatch,
 } from "../../context/user";
-import { ErrorMessage } from "../styled/errorMessage";
+import ErrorMessage from "../styled/errorMessage";
 import useApi from "../../utils/hooks/useApi";
 import { checkProxy } from "../../utils/proxy";
 import styled from "styled-components";
