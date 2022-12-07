@@ -8,13 +8,11 @@ import { emptyFunction } from "next-common/utils";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SignerPopup from "next-common/components/signerPopup";
 
-export default function CloseTipPopup({
-  tipHash,
+export default function UndelegatePopup({
+  trackId,
   onClose,
   isLoading,
   setIsLoading = emptyFunction,
-  onSubmitted = emptyFunction,
-  onFinalized = emptyFunction,
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
@@ -25,7 +23,7 @@ export default function CloseTipPopup({
     [dispatch]
   );
 
-  const doCloseTip = useCallback(
+  const removeDelegating = useCallback(
     async (api, signerAccount) => {
       if (!api) {
         return showErrorToast("Chain network is not connected yet");
@@ -35,42 +33,38 @@ export default function CloseTipPopup({
         return showErrorToast("Please login first");
       }
 
-      const signerAddress = signerAccount.address;
+      const signerAddress = signerAccount?.address;
 
-      let tx = api.tx.tips.closeTip(tipHash);
+      let tx = api.tx.convictionVoting.undelegate(trackId);
       if (signerAccount?.proxyAddress) {
         tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
       }
 
       await sendTx({
         tx,
-        setLoading: setIsLoading,
         dispatch,
-        onFinalized,
+        setLoading: setIsLoading,
         onInBlock,
-        onSubmitted,
-        onClose,
         signerAddress,
         isMounted,
+        onClose,
       });
     },
     [
       dispatch,
-      isMounted,
-      showErrorToast,
-      onFinalized,
       onInBlock,
-      onSubmitted,
-      onClose,
-      tipHash,
+      isMounted,
+      trackId,
+      showErrorToast,
       setIsLoading,
+      onClose,
     ]
   );
 
   return (
     <SignerPopup
-      title="Close Tip"
-      actionCallback={doCloseTip}
+      title="Undelegate"
+      actionCallback={removeDelegating}
       onClose={onClose}
       isLoading={isLoading}
     />

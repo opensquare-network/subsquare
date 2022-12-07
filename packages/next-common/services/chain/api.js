@@ -16,7 +16,7 @@ const apiInstanceMap = new Map();
 
 export default async function getApi(chain, endpoint) {
   if (!Object.keys(Chains).includes(chain)) {
-    throw new Error(`Invalid chain: ${ chain } to construct api`);
+    throw new Error(`Invalid chain: ${chain} to construct api`);
   }
 
   if (!apiInstanceMap.has(endpoint)) {
@@ -44,14 +44,13 @@ export default async function getApi(chain, endpoint) {
       customizedOptions = allOptions[chain] || {};
     }
 
-    const api = (
-      await ApiPromise.create({
-        ...customizedOptions,
-        ...options,
-      })
-    ).isReady;
+    const api = ApiPromise.create({
+      ...customizedOptions,
+      ...options,
+    });
 
     apiInstanceMap.set(endpoint, api);
   }
-  return apiInstanceMap.get(endpoint);
+
+  return await apiInstanceMap.get(endpoint);
 }

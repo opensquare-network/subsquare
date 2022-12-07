@@ -81,6 +81,17 @@ export async function sendTx({
 
           for (const event of events) {
             const { section, method, data } = event.event;
+            if (section === "proxy" && method === "ProxyExecuted") {
+              const [result] = data;
+              if (result.isErr) {
+                const message = getDispatchError(result.asErr);
+                dispatch(removeToast(toastId));
+                dispatch(newErrorToast(`Extrinsic failed: ${message}`));
+                unsub();
+                return;
+              }
+            }
+
             if (section === "system" && method === "ExtrinsicFailed") {
               const [dispatchError] = data;
               const message = getDispatchError(dispatchError);
@@ -141,4 +152,8 @@ export async function sendTx({
       setLoading(false);
     }
   }
+}
+
+export function wrapWithProxy(api, tx, proxyAddress) {
+  return api.tx.proxy.proxy(proxyAddress, null, tx);
 }

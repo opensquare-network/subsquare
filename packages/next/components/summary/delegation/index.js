@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import useTrackDelegating from "next-common/utils/hooks/referenda/useTrackDelegation";
 import useApi from "next-common/utils/hooks/useApi";
-import { useUser } from "next-common/context/user";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import DelegationInfo from "next-common/components/summary/democracySummaryDelegationInfo";
 import DelegationButton from "./delegationButton";
@@ -19,12 +19,8 @@ const Wrapper = styled.div`
 export default function Delegation({ trackId }) {
   const dispatch = useDispatch();
   const api = useApi();
-  const loginUser = useUser();
-  const { delegating, refresh } = useTrackDelegating(
-    api,
-    trackId,
-    loginUser?.address
-  );
+  const realAddress = useRealAddress();
+  const { delegating, refresh } = useTrackDelegating(api, trackId, realAddress);
 
   const onDelegateInBlock = useCallback(() => {
     refresh();

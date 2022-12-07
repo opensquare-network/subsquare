@@ -9,8 +9,11 @@ let api;
 export default function useApi() {
   const chain = useChain();
   const endpoint = useSelector(currentNodeSelector);
-  api = useCall(getApi, [chain, endpoint]);
-  return api;
+  const apiObj = useCall(getApi, [chain, endpoint]);
+  if (apiObj) {
+    api = apiObj;
+  }
+  return apiObj;
 }
 
 export function getLastApi() {
