@@ -1,6 +1,5 @@
 import Logo from "../../../assets/header-logos/hydradx.svg";
 import Chains from "../chains";
-import capitalize from "../../capitalize";
 import Avatar from "../../../assets/icons/chain/hydradx.png";
 import MenuGroups from "./menuGroups";
 
@@ -17,7 +16,7 @@ const defaultHydradxEndpoints = [
 
 const hydradx = {
   value: Chains.hydradx,
-  name: capitalize(Chains.hydradx),
+  name: "HydraDX",
   identity: "hydradx",
   symbol: "HDX",
   decimals: 12,
@@ -32,6 +31,6 @@ const hydradx = {
   darkAvatar: Avatar,
   endpoints: defaultHydradxEndpoints,
   group: MenuGroups.PolkadotAndParachains,
-}
+};
 
 export default hydradx;
