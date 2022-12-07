@@ -45,6 +45,10 @@ function PopupContent({
     api,
     signerAccount?.realAddress
   );
+  const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
+    api,
+    signerAccount?.address
+  );
 
   const [addressVote, addressVoteIsLoading] = useAddressVote(
     api,
@@ -138,6 +142,8 @@ function PopupContent({
         balance={votingBalance}
         balanceName="Voting balance"
         signerAccount={signerAccount}
+        signerBalance={signerBalance}
+        isSignerBalanceLoading={isSignerBalanceLoading}
       />
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode

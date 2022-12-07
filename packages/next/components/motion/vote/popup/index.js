@@ -17,6 +17,7 @@ import Signer from "next-common/components/popup/fields/signerField";
 import { WarningMessage } from "next-common/components/popup/styled";
 import styled from "styled-components";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
+import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -39,7 +40,16 @@ function PopupContent({
 }) {
   const chain = useChain();
   const dispatch = useDispatch();
+  const api = useApi();
   const signerAccount = useSignerAccount(extensionAccounts);
+  const [balance, loadingBalance] = useAddressBalance(
+    api,
+    signerAccount?.realAddress
+  );
+  const [signerBalance, loadingSignerBalance] = useAddressBalance(
+    api,
+    signerAccount?.address
+  );
 
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
 
@@ -48,7 +58,6 @@ function PopupContent({
     (item) => item[0] === signerAccount?.realAddress
   );
 
-  const api = useApi();
   const voteMethod = api?.tx?.[toApiCouncil(chain, type)]?.vote;
   const isMounted = useIsMounted();
 
@@ -98,7 +107,13 @@ function PopupContent({
   return (
     <>
       <SignerWrapper>
-        <Signer signerAccount={signerAccount} />
+        <Signer
+          signerAccount={signerAccount}
+          balance={balance}
+          isBalanceLoading={loadingBalance}
+          signerBalance={signerBalance}
+          isSignerBalanceLoading={loadingSignerBalance}
+        />
         {!canVote && (
           <WarningMessage danger={!canVote}>
             Only council members can vote.

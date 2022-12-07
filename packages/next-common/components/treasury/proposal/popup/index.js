@@ -57,6 +57,10 @@ function PopupContent({
     api,
     signerAccount?.realAddress
   );
+  const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
+    api,
+    signerAccount?.address
+  );
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -115,6 +119,8 @@ function PopupContent({
         signerAccount={signerAccount}
         balance={balance}
         isBalanceLoading={balanceIsLoading}
+        signerBalance={signerBalance}
+        isSignerBalanceLoading={isSignerBalanceLoading}
       />
       <Beneficiary
         extensionAccounts={extensionAccounts}

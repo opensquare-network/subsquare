@@ -8,8 +8,10 @@ export default function Delegations({ delegationsVotes }) {
   return (
     <div>
       <PopupLabel
-        text={"Total Proxy Value"}
-        tooltip={"Voting value for all proxy addresses"}
+        text={"Total Delegations"}
+        tooltip={
+          "The total amount of delegations that this account has received"
+        }
       />
       <DelegatingValue>
         <div className="vote">

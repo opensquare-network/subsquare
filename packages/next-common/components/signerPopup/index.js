@@ -25,13 +25,19 @@ function PopupContent({
     api,
     signerAccount?.realAddress
   );
+  const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
+    api,
+    signerAccount?.address
+  );
 
   return (
     <>
       <Signer
+        signerAccount={signerAccount}
         isBalanceLoading={loadingBalance}
         balance={balance}
-        signerAccount={signerAccount}
+        signerBalance={signerBalance}
+        isSignerBalanceLoading={isSignerBalanceLoading}
       />
       <ButtonWrapper>
         <SecondaryButton

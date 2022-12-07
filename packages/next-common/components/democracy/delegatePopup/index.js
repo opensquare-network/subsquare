@@ -48,6 +48,10 @@ function PopupContent({
     api,
     signerAccount?.realAddress
   );
+  const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
+    api,
+    signerAccount?.address
+  );
 
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const [conviction, setConviction] = useState(0);
@@ -124,6 +128,8 @@ function PopupContent({
         balanceName="Voting balance"
         signerAccount={signerAccount}
         isLoading={isLoading}
+        signerBalance={signerBalance}
+        isSignerBalanceLoading={isSignerBalanceLoading}
       />
       <Target
         extensionAccounts={extensionAccounts}

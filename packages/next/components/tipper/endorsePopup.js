@@ -48,6 +48,10 @@ function PopupContent({
     api,
     signerAccount?.realAddress
   );
+  const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
+    api,
+    signerAccount?.address
+  );
   const councilTippers = useCouncilMembers();
 
   const isTipper = isAddressInGroup(signerAccount?.realAddress, councilTippers);
@@ -100,9 +104,11 @@ function PopupContent({
         Only council members can tip.
       </WarningMessage>
       <Signer
+        signerAccount={signerAccount}
         isBalanceLoading={loadingBalance}
         balance={balance}
-        signerAccount={signerAccount}
+        signerBalance={signerBalance}
+        isSignerBalanceLoading={isSignerBalanceLoading}
       />
       <BalanceField
         title="Tip Value"

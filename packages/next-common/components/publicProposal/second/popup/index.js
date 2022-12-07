@@ -37,6 +37,10 @@ function PopupContent({
     api,
     signerAccount?.realAddress
   );
+  const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
+    api,
+    signerAccount?.address
+  );
   const { deposit, balanceInsufficient } = useDeposit(depositRequired, balance);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
@@ -87,10 +91,12 @@ function PopupContent({
   return (
     <>
       <Signer
-        isBalanceLoading={loadingBalance}
-        balance={balance}
-        balanceName="Voting balance"
         signerAccount={signerAccount}
+        balanceName="Voting balance"
+        balance={balance}
+        isBalanceLoading={loadingBalance}
+        signerBalance={signerBalance}
+        isSignerBalanceLoading={isSignerBalanceLoading}
       />
       <DepositRequired
         deposit={deposit}

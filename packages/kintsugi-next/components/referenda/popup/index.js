@@ -35,6 +35,10 @@ function PopupContent({
     api,
     signerAccount?.realAddress
   );
+  const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
+    api,
+    signerAccount?.address
+  );
   const [addressVote, addressVoteIsLoading] = useAddressVote(
     api,
     referendumIndex,
@@ -115,6 +119,8 @@ function PopupContent({
         balance={votingBalance}
         balanceName="Voting balance"
         symbol={node.voteSymbol}
+        signerBalance={signerBalance}
+        isSignerBalanceLoading={isSignerBalanceLoading}
       />
       <VoteBalance
         isLoading={loadingState !== VoteLoadingEnum.None}
