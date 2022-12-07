@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const ErrorMessage = styled.div`
+const ErrorMessage = styled.div`
   padding: 10px 16px;
   margin-top: 24px;
   //fixme: somehow theme won't work
@@ -11,3 +11,5 @@ export const ErrorMessage = styled.div`
   font-size: 14px;
   line-height: 20px;
 `;
+
+export default ErrorMessage;

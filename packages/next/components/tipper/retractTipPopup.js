@@ -64,6 +64,7 @@ export default function RetractTipPopup({
       onFinalized,
       tipHash,
       setIsLoading,
+      onClose,
     ]
   );
 
