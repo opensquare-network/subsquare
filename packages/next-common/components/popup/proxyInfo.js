@@ -6,7 +6,6 @@ import { addressEllipsis } from "../../utils";
 import { formatBalance } from "../../utils/viewfuncs";
 import Loading from "../loading";
 import Tooltip from "../tooltip";
-import { BalanceWrapper } from "./styled";
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,6 +25,14 @@ const Wrapper = styled.div`
   border-radius: 4px;
 `;
 
+const BalanceWrapper = styled.div`
+  display: flex;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${(props) => props.theme.textPrimary};
+  font-weight: bold;
+`;
+
 export default function ProxyInfo({ address, balance, isLoading, symbol }) {
   const noBalance = isNil(balance) && isNil(isLoading);
   const shortAddr = addressEllipsis(address);
@@ -37,7 +44,11 @@ export default function ProxyInfo({ address, balance, isLoading, symbol }) {
       </div>
       {!noBalance && (
         <BalanceWrapper>
-          {!isLoading && <div>{formatBalance(balance, symbol)}</div>}
+          {!isLoading && (
+            <div>
+              {formatBalance(balance, symbol)} {symbol}
+            </div>
+          )}
           {isLoading && <Loading />}
         </BalanceWrapper>
       )}
