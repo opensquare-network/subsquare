@@ -34,8 +34,8 @@ function PopupContent({
     <>
       <Signer
         signerAccount={signerAccount}
-        isBalanceLoading={loadingBalance}
         balance={balance}
+        isBalanceLoading={loadingBalance}
         signerBalance={signerBalance}
         isSignerBalanceLoading={isSignerBalanceLoading}
       />

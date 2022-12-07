@@ -115,12 +115,12 @@ function PopupContent({
     <>
       <Signer
         signerAccount={signerAccount}
-        isBalanceLoading={votingIsLoading}
-        balance={votingBalance}
         balanceName="Voting balance"
-        symbol={node.voteSymbol}
+        balance={votingBalance}
+        isBalanceLoading={votingIsLoading}
         signerBalance={signerBalance}
         isSignerBalanceLoading={isSignerBalanceLoading}
+        symbol={node.voteSymbol}
       />
       <VoteBalance
         isLoading={loadingState !== VoteLoadingEnum.None}

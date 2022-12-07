@@ -124,10 +124,10 @@ function PopupContent({
   return (
     <>
       <Signer
-        isBalanceLoading={votingIsLoading}
-        balance={votingBalance}
-        balanceName="Voting balance"
         signerAccount={signerAccount}
+        balanceName="Voting balance"
+        balance={votingBalance}
+        isBalanceLoading={votingIsLoading}
         signerBalance={signerBalance}
         isSignerBalanceLoading={isSignerBalanceLoading}
       />
