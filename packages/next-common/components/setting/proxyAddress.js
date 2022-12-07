@@ -64,7 +64,7 @@ export default function ProxyAddress() {
         address: inputAddress,
       });
       if (result) {
-        fetchAndUpdateUser(userDispatch);
+        await fetchAndUpdateUser(userDispatch);
         dispatch(newSuccessToast("The proxy address has been set."));
       }
       if (error) {
@@ -82,7 +82,7 @@ export default function ProxyAddress() {
     try {
       const { result, error } = await nextApi.delete("user/proxyaddress");
       if (result) {
-        fetchAndUpdateUser(userDispatch);
+        await fetchAndUpdateUser(userDispatch);
         dispatch(newSuccessToast("The proxy address has been unset."));
       }
       if (error) {
