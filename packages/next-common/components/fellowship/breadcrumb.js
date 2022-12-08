@@ -1,3 +1,4 @@
+import React from "react";
 import Breadcrumb from "../_Breadcrumb";
 import BreadcrumbWrapper, {
   BreadcrumbHideOnMobileText,

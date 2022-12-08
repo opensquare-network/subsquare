@@ -2,13 +2,11 @@ const paramsKeyConvert = (str = "") =>
   str.replace(/[A-Z]/g, ([s]) => `_${s.toLowerCase()}`);
 
 class Api {
-  endpoint = null;
-
   constructor(endpoint) {
     this.endpoint = endpoint;
   }
 
-  fetch = (path, params = {}, options) => {
+  fetch(path, params = {}, options) {
     const url = new URL(path, this.endpoint);
     for (const key of Object.keys(params)) {
       url.searchParams.set(paramsKeyConvert(key), params[key]);
@@ -38,9 +36,9 @@ class Api {
           })
         )
     );
-  };
+  }
 
-  post = async (path, body = null, options = null) => {
+  async post(path, body = null, options = null) {
     const result = await this.fetch(
       path,
       {},
@@ -53,9 +51,9 @@ class Api {
       }
     );
     return result;
-  };
+  }
 
-  put = async (path, body = null, options = null) => {
+  async put(path, body = null, options = null) {
     const result = await this.fetch(
       path,
       {},
@@ -68,9 +66,9 @@ class Api {
       }
     );
     return result;
-  };
+  }
 
-  patch = async (path, body = null) => {
+  async patch(path, body = null) {
     const result = await this.fetch(
       path,
       {},
@@ -82,9 +80,9 @@ class Api {
       }
     );
     return result;
-  };
+  }
 
-  delete = async (path) => {
+  async delete(path) {
     const result = await this.fetch(
       path,
       {},
@@ -95,9 +93,9 @@ class Api {
       }
     );
     return result;
-  };
+  }
 
-  postFormData = async (path, formData) => {
+  async postFormData(path, formData) {
     const result = await this.fetch(
       path,
       {},
@@ -110,7 +108,7 @@ class Api {
     );
 
     return result;
-  };
+  }
 }
 
 export default Api;
