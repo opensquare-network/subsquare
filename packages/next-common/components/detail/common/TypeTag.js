@@ -34,11 +34,12 @@ export default function TypeTag({ type }) {
     ].includes(type)
   ) {
     const trackName = post.onchainData?.trackInfo?.name;
+    const trackId = post.onchainData?.trackInfo?.id;
 
     let href =
       type === detailPageCategory.GOV2_REFERENDUM
-        ? `/referenda/${trackName}`
-        : `/fellowship/track/${trackName}`;
+        ? `/referenda/track/${trackId}`
+        : `/fellowship/track/${trackId}`;
     tag = (
       <Link href={href} passHref>
         <LinkInfo>
