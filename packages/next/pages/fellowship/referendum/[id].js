@@ -14,6 +14,7 @@ import FellowshipBreadcrumb from "next-common/components/fellowship/breadcrumb";
 import DetailItem from "../../../components/detailItem";
 import useUniversalComments from "../../../components/universalComments";
 import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metadata";
+import Timeline from "../../../components/gov2/timeline";
 
 export default withLoginUserRedux(({ detail, comments }) => {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -33,6 +34,7 @@ export default withLoginUserRedux(({ detail, comments }) => {
         <FellowshipBreadcrumb />
         <DetailItem onReply={focusEditor} />
         <Gov2ReferendumMetadata detail={detail} />
+        <Timeline trackInfo={detail?.onchainData?.trackInfo} />
         {CommentComponent}
       </DetailWithRightLayout>
     </PostProvider>
