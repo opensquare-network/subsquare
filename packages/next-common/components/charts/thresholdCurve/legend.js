@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Flex from "../../styled/flex";
 import { p_12_medium } from "../../../styles/componentCss";
+import light from "../../styled/theme/light";
+import dark from "../../styled/theme/dark";
 
 const Item = styled(Flex)`
   color: ${(p) => p.theme.textSecondary};
@@ -13,6 +15,7 @@ const Item = styled(Flex)`
     height: 0;
     margin-right: 8px;
     border-radius: 9999px;
+    border: 1px solid ${(p) => p.borderColor};
   }
 
   &:not(:last-child) {
@@ -20,22 +23,11 @@ const Item = styled(Flex)`
   }
 `;
 
-const SupportItem = styled(Item)`
-  &::before {
-    border: 1px solid ${(p) => p.theme.primaryDarkBlue};
-  }
-`;
-const ApprovalItem = styled(Item)`
-  &::before {
-    border: 1px solid ${(p) => p.theme.secondaryGreen500};
-  }
-`;
-
 export default function ThresholdCurvesLegend() {
   return (
     <Flex>
-      <SupportItem>Support</SupportItem>
-      <ApprovalItem>Approval</ApprovalItem>
+      <Item borderColor={dark.primaryDarkBlue}>Support</Item>
+      <Item borderColor={light.secondaryGreen500}>Approval</Item>
     </Flex>
   );
 }
