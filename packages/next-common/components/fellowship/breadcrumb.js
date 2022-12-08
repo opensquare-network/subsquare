@@ -6,15 +6,15 @@ import BreadcrumbWrapper, {
 import { parseGov2TrackName } from "../../utils/gov2";
 import { useTrack } from "../../context/post/gov2/track";
 
-function getBreadcrumbItems(trackName, referendumIndex) {
+function getBreadcrumbItems(track = {}, referendumIndex) {
   return [
     {
       path: "/fellowship",
       content: "Fellowship",
     },
     {
-      path: `/fellowship/track/${trackName}`,
-      content: parseGov2TrackName(trackName),
+      path: `/fellowship/track/${track.id}`,
+      content: parseGov2TrackName(track.name),
     },
     {
       content: (
@@ -28,10 +28,10 @@ function getBreadcrumbItems(trackName, referendumIndex) {
 }
 
 export default function FellowshipBreadcrumb() {
-  const { name } = useTrack();
+  const track = useTrack();
   return (
     <BreadcrumbWrapper>
-      <Breadcrumb items={getBreadcrumbItems(name, 3)} />
+      <Breadcrumb items={getBreadcrumbItems(track, 3)} />
     </BreadcrumbWrapper>
   );
 }
