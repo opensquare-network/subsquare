@@ -11,7 +11,11 @@ import Delegation from "./delegation";
 import Summary from "next-common/components/summary/new";
 import Content from "next-common/components/summary/cardContent";
 
-export default function Gov2TrackSummary({ summary, period }) {
+export default function Gov2TrackSummary({
+  summary,
+  period,
+  noDelegation = false,
+}) {
   const {
     origin,
     description,
@@ -27,12 +31,17 @@ export default function Gov2TrackSummary({ summary, period }) {
   const decisionPeriodBlockTime = estimateBlocksTime(decisionPeriod, blockTime);
   const confirmPeriodBlockTime = estimateBlocksTime(confirmPeriod, blockTime);
 
+  let footer = null;
+  if (!noDelegation) {
+    footer = <Delegation trackId={id} />;
+  }
+
   return (
     <Summary
       title={`Origin: ${origin}`}
       titleExtra={`#${id}`}
       description={description}
-      footer={<Delegation trackId={id} />}
+      footer={footer}
     >
       <SummaryItemWrapper>
         <SummaryItem>

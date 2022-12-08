@@ -199,7 +199,7 @@ export default function Post({ data, href, type }) {
     elapseIcon = <MotionElapse motion={data.onchainData} />;
   }
 
-  if (type === "gov2") {
+  if (businessCategory.gov2 === type) {
     if (data?.status === gov2State.Deciding) {
       elapseIcon = <DecisionCountdown detail={data} />;
     }

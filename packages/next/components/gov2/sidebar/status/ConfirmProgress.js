@@ -35,7 +35,7 @@ function ConfirmationInfo() {
     <ProgressInfo>
       <span>Confirmation</span>
       <span>
-        <TimeDuration blocks={confirmPeriod} showMinutes={false} />
+        <TimeDuration blocks={confirmPeriod} />
       </span>
     </ProgressInfo>
   );

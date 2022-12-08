@@ -30,7 +30,7 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function EditInput({
-  editContent,
+  editContent = "",
   editContentType,
   onFinishedEdit,
   update,

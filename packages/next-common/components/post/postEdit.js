@@ -10,7 +10,7 @@ import Uploader from "../uploadBanner/uploader";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
 import { TitleContainer } from "../styled/containers/titleContainer";
 import { EditablePanel } from "../styled/panel";
-import { usePost } from "../../context/post";
+import { usePost, usePostTitle } from "../../context/post";
 import { useDetailType } from "../../context/page";
 
 const Wrapper = styled(EditablePanel)`
@@ -36,7 +36,8 @@ const UploaderWrapper = styled.div`
 export default function PostEdit({ setIsEdit, updatePost }) {
   const type = useDetailType();
   const post = usePost();
-  const [title, setTitle] = useState(post.title);
+  const defaultTitle = usePostTitle();
+  const [title, setTitle] = useState(defaultTitle);
   const [updating, setUpdating] = useState(false);
   const editPost = async (content, contentType) => {
     const url = `${toApiType(type)}/${post._id}`;
@@ -71,7 +72,7 @@ export default function PostEdit({ setIsEdit, updatePost }) {
       </LabelWrapper>
       <Input
         disabled={updating}
-        value={title}
+        value={title || ""}
         onChange={(e) => setTitle(e.target.value)}
       />
 
@@ -90,7 +91,7 @@ export default function PostEdit({ setIsEdit, updatePost }) {
       </LabelWrapper>
 
       <EditInput
-        editContent={post.content}
+        editContent={post.content || ""}
         editContentType={post.contentType}
         onFinishedEdit={async (reload) => {
           if (reload) {

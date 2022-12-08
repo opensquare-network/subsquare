@@ -1,12 +1,24 @@
 import React from "react";
+import styled from "styled-components";
 import Gov2IconOrigin from "../../../assets/imgs/icons/type-gov2.svg";
 import BackIcon from "../../../assets/imgs/icons/back.svg";
 import Gov2Button from "../../../components/menu/gov2Button";
-import TrackIconMap from "../../../components/icons/track";
+import {
+  TrackIconMap,
+  FellowshipTrackIconMap,
+} from "../../../components/icons/track";
 import { getExcludeChains } from "../../viewfuncs";
 import Chains from "../chains";
-import styled from "styled-components";
 import { parseGov2TrackName } from "../../gov2";
+import MembersIcon from "../../../assets/imgs/icons/members.svg";
+
+const Splitter = styled.div`
+  display: block;
+  height: 1px;
+  width: 62px;
+  background: ${(p) => p.theme.grey200Border};
+  margin: 10px 0 10px 18px;
+`;
 
 const Gov2Icon = styled(Gov2IconOrigin)`
   path {
@@ -38,20 +50,13 @@ const gov2BackMenu = {
   ],
 };
 
-const gov2ReferendaGroupIds = [0, 10, 15];
-const gov2GovernanceGroupIds = [12, 14, 20, 21];
-const gov2TreasuryGroupIds = [11, 30, 31, 32, 33, 34];
-const gov2FellowShipGroupIds = [1, 13];
-
-const gov2GovernanceMenuName = "GOVERNANCE";
-const gov2TreasuryMenuName = "TREASURY";
 const gov2FellowshipMenuName = "FELLOWSHIP";
+const gov2ReferendaMenuName = "REFERENDA";
 
 export const gov2MenuFoldablePrefix = "GOV2_";
 
 export const allGov2HomeMenuNames = [
-  gov2GovernanceMenuName,
-  gov2TreasuryMenuName,
+  gov2ReferendaMenuName,
   gov2FellowshipMenuName,
 ];
 
@@ -62,10 +67,11 @@ function calcActiveCount(tracks = []) {
   }, 0);
 }
 
-export function resolveGov2TracksMenu(tracks = []) {
+export function resolveGov2TracksMenu(tracks = [], fellowshipTracks = []) {
   const totalActiveCount = calcActiveCount(tracks);
 
   const gov2ReferendaMenu = {
+    name: gov2ReferendaMenuName,
     items: [
       {
         value: "all",
@@ -77,61 +83,57 @@ export function resolveGov2TracksMenu(tracks = []) {
     ],
   };
 
-  const gov2GovernanceMenu = {
-    name: gov2GovernanceMenuName,
-    activeCount: 0,
-    items: [],
-  };
-
-  const gov2TreasuryMenu = {
-    name: gov2TreasuryMenuName,
-    activeCount: 0,
-    items: [],
-  };
-
   const gov2FellowshipMenu = {
     name: gov2FellowshipMenuName,
-    activeCount: 0,
-    items: [],
+    items: [
+      {
+        value: "fellowship-members",
+        name: "Members",
+        pathname: "/fellowship/members",
+        icon: <MembersIcon />,
+      },
+      {
+        component: <Splitter key="splitter" />,
+      },
+      {
+        value: "all",
+        name: "All",
+        pathname: "/fellowship",
+        icon: TrackIconMap.All,
+        activeCount: calcActiveCount(fellowshipTracks),
+      },
+    ],
   };
 
-  const assert = (ids = [], id) => ids.includes(id);
   const resolveTrackItem = (track) => {
     return {
       value: track.id,
       name: parseGov2TrackName(track.name),
-      pathname: `/referenda/${track.name}`,
+      pathname: `/referenda/track/${track.id}`,
       activeCount: track.activeCount,
       icon: TrackIconMap[track.id] ?? TrackIconMap.Default,
     };
   };
 
+  const resolveFellowshipTrackItem = (track) => {
+    return {
+      value: track.id,
+      name: parseGov2TrackName(track.name),
+      pathname: `/fellowship/track/${track.id}`,
+      activeCount: track.activeCount,
+      icon: FellowshipTrackIconMap[track.id] ?? FellowshipTrackIconMap.Default,
+    };
+  };
+
   for (let idx = 0; idx < tracks.length; idx++) {
     const track = tracks[idx];
-
-    if (assert(gov2ReferendaGroupIds, track.id)) {
-      gov2ReferendaMenu.items.push(resolveTrackItem(track));
-    } else if (assert(gov2GovernanceGroupIds, track.id)) {
-      gov2GovernanceMenu.items.push(resolveTrackItem(track));
-      gov2GovernanceMenu.activeCount = calcActiveCount(
-        gov2GovernanceMenu.items
-      );
-    } else if (assert(gov2TreasuryGroupIds, track.id)) {
-      gov2TreasuryMenu.items.push(resolveTrackItem(track));
-      gov2TreasuryMenu.activeCount = calcActiveCount(gov2TreasuryMenu.items);
-    } else if (assert(gov2FellowShipGroupIds, track.id)) {
-      gov2FellowshipMenu.items.push(resolveTrackItem(track));
-      gov2FellowshipMenu.activeCount = calcActiveCount(
-        gov2FellowshipMenu.items
-      );
-    }
+    gov2ReferendaMenu.items.push(resolveTrackItem(track));
   }
 
-  return [
-    gov2BackMenu,
-    gov2ReferendaMenu,
-    gov2GovernanceMenu,
-    gov2TreasuryMenu,
-    gov2FellowshipMenu,
-  ];
+  for (let idx = 0; idx < fellowshipTracks.length; idx++) {
+    const track = fellowshipTracks[idx];
+    gov2FellowshipMenu.items.push(resolveFellowshipTrackItem(track));
+  }
+
+  return [gov2BackMenu, gov2ReferendaMenu, gov2FellowshipMenu];
 }
