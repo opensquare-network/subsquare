@@ -202,6 +202,10 @@ function MenuGroup({ menu, foldable, foldablePrefix = "" }) {
             return null;
           }
 
+          if (item.component) {
+            return item.component;
+          }
+
           return (
             <Fragment key={index}>
               <Link href={item?.pathname} passHref>
