@@ -19,7 +19,6 @@ import { useCallback, useEffect, useState } from "react";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import { EmptyList } from "next-common/components/emptyList";
 import Breadcrumb from "next-common/components/_Breadcrumb";
-import { getTrackName } from "next-common/utils/gov2/getTrackName";
 import { parseGov2TrackName } from "next-common/utils/gov2";
 import ReferendaBusiness from "../../../components/gov2/business";
 import { unsetIssuance } from "next-common/store/reducers/gov2ReferendumSlice";
@@ -58,15 +57,14 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
 
   const onVoteFinalized = useWaitSyncBlock("Referendum voted", refreshPageData);
 
-  const trackName = getTrackName(detail);
-
+  const { id: trackId, name: trackName } = detail?.onchainData?.trackInfo;
   const breadcrumbItems = [
     {
       path: "/referenda",
       content: "Referenda",
     },
     {
-      path: `/referenda/${trackName}`,
+      path: `/referenda/track/${trackId}`,
       content: parseGov2TrackName(trackName),
     },
     {

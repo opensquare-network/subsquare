@@ -11,6 +11,7 @@ import { EmptyList } from "next-common/utils/constants";
 import { parseGov2TrackName } from "next-common/utils/gov2";
 import Gov2Page from "components/gov2/gov2Page";
 import Gov2TrackSummary from "components/summary/gov2TrackSummary";
+import { to404 } from "next-common/utils/serverSideUtil";
 
 export default withLoginUserRedux(
   ({ posts, title, tracks, fellowshipTracks, summary, period }) => {
@@ -31,14 +32,20 @@ export default withLoginUserRedux(
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { page = 1, page_size: pageSize = 50, name } = context.query;
+  const { page = 1, page_size: pageSize = 50, id } = context.query;
 
   const { result: tracks = [] } = await ssrNextApi.fetch(gov2TracksApi);
   const { result: fellowshipTracks = [] } = await ssrNextApi.fetch(
     fellowshipTracksApi
   );
 
-  const track = tracks.find((trackItem) => trackItem.name === name);
+  let track = tracks.find((trackItem) => trackItem.id === parseInt(id));
+  if (!track) {
+    track = tracks.find((item) => item.name === id);
+  }
+  if (!track) {
+    return to404(context);
+  }
 
   const [{ result: posts }, { result: summary }, { result: period }] =
     await Promise.all([
@@ -53,7 +60,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       posts: posts ?? EmptyList,
-      title: "Referenda " + parseGov2TrackName(name),
+      title: "Referenda " + parseGov2TrackName(track.name),
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
       summary,
