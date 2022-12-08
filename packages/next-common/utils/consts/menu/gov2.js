@@ -55,7 +55,10 @@ const gov2ReferendaMenuName = "REFERENDA";
 
 export const gov2MenuFoldablePrefix = "GOV2_";
 
-export const allGov2HomeMenuNames = [gov2FellowshipMenuName];
+export const allGov2HomeMenuNames = [
+  gov2ReferendaMenuName,
+  gov2FellowshipMenuName,
+];
 
 function calcActiveCount(tracks = []) {
   return tracks.reduce((count, item) => {
@@ -90,7 +93,7 @@ export function resolveGov2TracksMenu(tracks = [], fellowshipTracks = []) {
         icon: <MembersIcon />,
       },
       {
-        component: <Splitter />,
+        component: <Splitter key="splitter" />,
       },
       {
         value: "all",
