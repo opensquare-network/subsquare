@@ -47,7 +47,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       posts: posts ?? EmptyList,
-      title: "All Fellowship",
+      title: "All Fellowship Referenda",
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
       summary: summary ?? {},
