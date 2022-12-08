@@ -12,7 +12,7 @@ function getBreadcrumbItems(trackName, referendumIndex) {
       content: "Fellowship",
     },
     {
-      path: `/referenda/${trackName}`,
+      path: `/fellowship/track/${trackName}`,
       content: parseGov2TrackName(trackName),
     },
     {
