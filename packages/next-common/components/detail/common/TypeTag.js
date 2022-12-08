@@ -33,8 +33,7 @@ export default function TypeTag({ type }) {
       detailPageCategory.FELLOWSHIP_REFERENDUM,
     ].includes(type)
   ) {
-    const trackName = post.onchainData?.trackInfo?.name;
-    const trackId = post.onchainData?.trackInfo?.id;
+    const { name: trackName, id: trackId } = post.onchainData?.trackInfo || {};
 
     let href =
       type === detailPageCategory.GOV2_REFERENDUM
