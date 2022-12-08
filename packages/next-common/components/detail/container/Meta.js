@@ -57,7 +57,12 @@ export default function PostMeta() {
     ].includes(detailType)
   ) {
     stateArgs = getMotionStateArgs(post.onchainData.state);
-  } else if (detailPageCategory.GOV2_REFERENDUM === detailType) {
+  } else if (
+    [
+      detailPageCategory.GOV2_REFERENDUM,
+      detailPageCategory.FELLOWSHIP_REFERENDUM,
+    ].includes(detailType)
+  ) {
     stateArgs = getGov2ReferendumStateArgs(post.onchainData.state);
   }
 

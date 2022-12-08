@@ -25,6 +25,9 @@ export function toApiType(type) {
   if (type === detailPageCategory.GOV2_REFERENDUM) {
     return "gov2/referendums";
   }
+  if (type === detailPageCategory.FELLOWSHIP_REFERENDUM) {
+    return "fellowship/referenda";
+  }
   return `${type}s`;
 }
 
