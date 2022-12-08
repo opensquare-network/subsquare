@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import TrackAllIcon from "../../assets/imgs/icons/track-all.svg";
 import TrackDefaultIcon from "../../assets/imgs/icons/track-default.svg";
 import Track0Icon from "../../assets/imgs/icons/track-0.svg";
@@ -16,7 +17,16 @@ import Track31Icon from "../../assets/imgs/icons/track-31.svg";
 import Track32Icon from "../../assets/imgs/icons/track-32.svg";
 import Track33Icon from "../../assets/imgs/icons/track-33.svg";
 import Track34Icon from "../../assets/imgs/icons/track-34.svg";
-import styled from "styled-components";
+import FellowshipTrack0Icon from "../../assets/imgs/icons/fellowship-track-0.svg";
+import FellowshipTrack1Icon from "../../assets/imgs/icons/fellowship-track-1.svg";
+import FellowshipTrack2Icon from "../../assets/imgs/icons/fellowship-track-2.svg";
+import FellowshipTrack3Icon from "../../assets/imgs/icons/fellowship-track-3.svg";
+import FellowshipTrack4Icon from "../../assets/imgs/icons/fellowship-track-4.svg";
+import FellowshipTrack5Icon from "../../assets/imgs/icons/fellowship-track-5.svg";
+import FellowshipTrack6Icon from "../../assets/imgs/icons/fellowship-track-6.svg";
+import FellowshipTrack7Icon from "../../assets/imgs/icons/fellowship-track-7.svg";
+import FellowshipTrack8Icon from "../../assets/imgs/icons/fellowship-track-8.svg";
+import FellowshipTrack9Icon from "../../assets/imgs/icons/fellowship-track-9.svg";
 
 const IconWrapper = styled.span`
   display: inline-flex;
@@ -28,7 +38,11 @@ const IconWrapper = styled.span`
   }
 `;
 
-const TrackIconMap = {
+function wrapIcon(icon) {
+  return <IconWrapper>{icon}</IconWrapper>;
+}
+
+export const TrackIconMap = {
   All: wrapIcon(<TrackAllIcon />),
   Default: wrapIcon(<TrackDefaultIcon />),
   0: wrapIcon(<Track0Icon />),
@@ -48,8 +62,17 @@ const TrackIconMap = {
   34: wrapIcon(<Track34Icon />),
 };
 
-function wrapIcon(icon) {
-  return <IconWrapper>{icon}</IconWrapper>;
-}
-
-export default TrackIconMap;
+export const FellowshipTrackIconMap = {
+  All: wrapIcon(<TrackAllIcon />),
+  Default: wrapIcon(<TrackDefaultIcon />),
+  0: wrapIcon(<FellowshipTrack0Icon />),
+  1: wrapIcon(<FellowshipTrack1Icon />),
+  2: wrapIcon(<FellowshipTrack2Icon />),
+  3: wrapIcon(<FellowshipTrack3Icon />),
+  4: wrapIcon(<FellowshipTrack4Icon />),
+  5: wrapIcon(<FellowshipTrack5Icon />),
+  6: wrapIcon(<FellowshipTrack6Icon />),
+  7: wrapIcon(<FellowshipTrack7Icon />),
+  8: wrapIcon(<FellowshipTrack8Icon />),
+  9: wrapIcon(<FellowshipTrack9Icon />),
+};

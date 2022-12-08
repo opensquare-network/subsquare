@@ -15,7 +15,7 @@ import FellowshipPage from "components/fellowship/fellowshipPage";
 export default withLoginUserRedux(
   ({ posts, title, tracks, fellowshipTracks, summary, period }) => {
     const summaryComponent = (
-      <Gov2TrackSummary summary={summary} period={period} />
+      <Gov2TrackSummary summary={summary} period={period} noDelegation={true} />
     );
 
     return (
@@ -33,10 +33,11 @@ export default withLoginUserRedux(
 export const getServerSideProps = withLoginUser(async (context) => {
   const { page = 1, page_size: pageSize = 50, name } = context.query;
 
-  const { result: tracks = [] } = await ssrNextApi.fetch(gov2TracksApi);
-  const { result: fellowshipTracks = [] } = await ssrNextApi.fetch(
-    fellowshipTracksApi
-  );
+  const [{ result: tracks = [] }, { result: fellowshipTracks = [] }] =
+    await Promise.all([
+      ssrNextApi.fetch(gov2TracksApi),
+      ssrNextApi.fetch(fellowshipTracksApi),
+    ]);
 
   const track = fellowshipTracks.find((trackItem) => trackItem.name === name);
 
