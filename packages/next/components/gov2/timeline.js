@@ -47,10 +47,7 @@ const getTimelineData = (args, method, trackInfo) => {
       };
     }
     case "DecisionStarted": {
-      return {
-        Track: parseGov2TrackName(trackInfo.name),
-        Tally: <TimelineTallyInfo {...args.tally} />,
-      };
+      return {};
     }
     case "Confirmed":
     case "Cancelled":
