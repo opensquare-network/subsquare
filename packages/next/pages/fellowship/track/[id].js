@@ -40,9 +40,12 @@ export const getServerSideProps = withLoginUser(async (context) => {
       ssrNextApi.fetch(fellowshipTracksApi),
     ]);
 
-  const track = fellowshipTracks.find(
+  let track = fellowshipTracks.find(
     (trackItem) => trackItem.id === parseInt(id)
   );
+  if (!track) {
+    track = fellowshipTracks.find((item) => item.name === id);
+  }
   if (!track) {
     return to404(context);
   }
