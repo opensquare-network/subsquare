@@ -109,7 +109,7 @@ export function resolveGov2TracksMenu(tracks = [], fellowshipTracks = []) {
     return {
       value: track.id,
       name: parseGov2TrackName(track.name),
-      pathname: `/referenda/${track.name}`,
+      pathname: `/referenda/track/${track.id}`,
       activeCount: track.activeCount,
       icon: TrackIconMap[track.id] ?? TrackIconMap.Default,
     };
