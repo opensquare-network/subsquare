@@ -5,12 +5,27 @@ import SubSquare from "../../../assets/header-logos/logo.svg";
 import SubSquareDark from "../../../assets/header-logos/subsquare-dark.svg";
 import { withTheme } from "styled-components";
 import { useChainSettings } from "../../../context/chain";
-import { useIsGov2Page } from "../../../utils/hooks/useIsGov2Page";
+import { useRouter } from "next/router";
+
+const gov2Paths = ["/referenda", "/fellowship"];
+
+function useHeaderUrl() {
+  const router = useRouter();
+  const { pathname } = router;
+
+  for (const path of gov2Paths) {
+    if (pathname.startsWith(path)) {
+      return path;
+    }
+  }
+
+  return "/";
+}
 
 function ChainLogo({ theme }) {
   const { width } = useWindowSize();
   const chainSetting = useChainSettings();
-  const isGov2Page = useIsGov2Page();
+  const headerUrl = useHeaderUrl();
 
   const Element = chainSetting.headerLogo;
   let logo = <Element />;
@@ -24,7 +39,7 @@ function ChainLogo({ theme }) {
   }
 
   return (
-    <Link href={isGov2Page ? "/referenda" : "/"}>
+    <Link href={headerUrl}>
       <a
         style={{
           height: 63,
