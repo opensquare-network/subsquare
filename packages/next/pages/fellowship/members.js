@@ -17,23 +17,26 @@ export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
   );
 
   useEffect(() => {
-    if (members) {
-      const data = [];
-      for (const item of members) {
-        const [
-          {
-            args: [id],
-          },
-          option,
-        ] = item;
-        const address = id.toJSON();
-        const { rank } = option.toJSON();
-        data.push({ address, rank });
-      }
-      data.sort((a, b) => b.rank - a.rank);
-      setData(data);
-      setLoading(false);
+    if (!members) {
+      return;
     }
+
+    const data = [];
+    for (const item of members) {
+      const [
+        {
+          args: [id],
+        },
+        option,
+      ] = item;
+      const address = id.toJSON();
+      const { rank } = option.toJSON();
+      data.push({ address, rank });
+    }
+    data.sort((a, b) => b.rank - a.rank);
+
+    setData(data);
+    setLoading(false);
   }, [members]);
 
   const category = "Fellowship Members";
