@@ -48,6 +48,9 @@ export default function CurveChart({ width, height }) {
         display: false,
         ticks: {
           stepSize: 200,
+          callback(val) {
+            return val + "hs";
+          },
         },
       },
       y: {
