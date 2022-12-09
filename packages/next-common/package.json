@@ -29,6 +29,7 @@
     "lodash.countby": "^4.6.0",
     "lodash.debounce": "^4.0.8",
     "lodash.findlast": "^4.6.0",
+    "lodash.findlastindex": "^4.6.0",
     "lodash.isempty": "^4.4.0",
     "lodash.isnil": "^4.0.0",
     "md5": "^2.3.0",
