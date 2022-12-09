@@ -73,7 +73,8 @@ function ConfirmationStarted() {
   const decisionBlocks = useDecisionBlocks();
   const decisionSince = useDecidingSince();
 
-  const confirmFailPairs = useConfirmTimelineFailPairs();
+  // const confirmFailPairs = useConfirmTimelineFailPairs();
+  const confirmFailPairs = [];
 
   const confirmPercentage = useMemo(() => {
     if (isNil(latestHeight) || latestHeight <= confirmStart) {
