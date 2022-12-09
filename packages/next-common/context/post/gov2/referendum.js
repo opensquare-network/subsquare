@@ -38,7 +38,7 @@ export function useConfirmTimelineFailPairs() {
   let pairs = [];
 
   const confirms = useConfirmTimelineData();
-  const lastAbortedIndex = confirms.findLastIndex(
+  const lastAbortedIndex = (confirms || []).findLastIndex(
     (confirm) => confirm.name === "ConfirmAborted"
   );
 
