@@ -1,5 +1,6 @@
 import { useOnchainData, useTimelineData } from "../index";
 import findLast from "lodash.findlast";
+import findLastIndex from "lodash.findlastindex";
 
 export function useDecidingSince() {
   const onchain = useOnchainData();
@@ -38,7 +39,8 @@ export function useConfirmTimelineFailPairs() {
   let pairs = [];
 
   const confirms = useConfirmTimelineData();
-  const lastAbortedIndex = (confirms || []).findLastIndex(
+  const lastAbortedIndex = findLastIndex(
+    confirms || [],
     (confirm) => confirm.name === "ConfirmAborted"
   );
 
