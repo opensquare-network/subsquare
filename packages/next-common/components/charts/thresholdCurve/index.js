@@ -5,15 +5,9 @@ import "../globalConfig";
 import ThresholdCurvesLegend from "./legend";
 import light from "../../styled/theme/light";
 import dark from "../../styled/theme/dark";
+import { range } from "../../../utils/array";
 
 const Wrapper = styled.div``;
-
-// TODO: remove this mock
-function range(end) {
-  return Array.from({ length: end })
-    .fill(null)
-    .map((_, i) => i);
-}
 
 export default function CurveChart({ width, height }) {
   const chartData = {
