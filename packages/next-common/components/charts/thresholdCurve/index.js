@@ -8,7 +8,12 @@ import { range } from "../../../utils/array";
 
 const Wrapper = styled.div``;
 
-export default function ThresholdCurvesChart({ width, height }) {
+export default function ThresholdCurvesChart({
+  width,
+  height,
+  scalesX = true,
+  scalesY = true,
+}) {
   const chartData = {
     labels: range(600),
     datasets: [
@@ -38,7 +43,7 @@ export default function ThresholdCurvesChart({ width, height }) {
   const options = {
     scales: {
       x: {
-        display: false,
+        display: scalesX,
         ticks: {
           stepSize: 200,
           callback(val) {
@@ -47,7 +52,7 @@ export default function ThresholdCurvesChart({ width, height }) {
         },
       },
       y: {
-        display: false,
+        display: scalesY,
         ticks: {
           stepSize: 25,
           callback(val, _index, ticks) {
