@@ -2,14 +2,13 @@ import React from "react";
 import { Line } from "react-chartjs-2";
 import styled from "styled-components";
 import "../globalConfig";
-import ThresholdCurvesLegend from "./legend";
 import light from "../../styled/theme/light";
 import dark from "../../styled/theme/dark";
 import { range } from "../../../utils/array";
 
 const Wrapper = styled.div``;
 
-export default function CurveChart({ width, height }) {
+export default function ThresholdCurvesChart({ width, height }) {
   const chartData = {
     labels: range(600),
     datasets: [
@@ -101,8 +100,6 @@ export default function CurveChart({ width, height }) {
   return (
     <Wrapper>
       <Line data={chartData} options={options} height={height} width={width} />
-
-      <ThresholdCurvesLegend />
     </Wrapper>
   );
 }
