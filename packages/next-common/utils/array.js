@@ -8,7 +8,8 @@ export function range(...args) {
 
   if (args.length === 1) {
     start = 0;
-    step = (1)[stop] = args;
+    step = 1;
+    [stop] = args;
   } else {
     [start, stop, step = 1] = args;
   }
