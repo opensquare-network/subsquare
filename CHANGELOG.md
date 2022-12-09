@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.6.0
+
+date: 12/09/2022
+
+- Support fellowship, including referenda and members.
+- Support proxy setting, and all extrinsics will be wrapped in proxy call if a proxy address set.
+- Add eslint config to check next-common package errors.
+- Remove unnecessary timeline item parameters.
+- Fix css issues.
+
 # 2.5.0
 
 date: 11/30/2022
