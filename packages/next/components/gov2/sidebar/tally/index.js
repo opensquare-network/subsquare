@@ -12,6 +12,8 @@ import VoteExtrinsics from "./voteExtrinsics";
 import { useTally } from "next-common/context/post/gov2/referendum";
 import useApprovalThreshold from "./threshold/useApprovalThreshold";
 import useIssuance from "next-common/utils/gov2/useIssuance";
+import SupportBar from "./supportBar";
+import Issuance from "./values/issuance";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -45,10 +47,10 @@ export default function Gov2Tally({ detail }) {
       <Aye />
       <Nay />
 
-      {/*<SupportBar issuance={issuance} />*/}
+      <SupportBar issuance={issuance} />
 
       <Support />
-      {/*<Issuance issuance={issuance} />*/}
+      <Issuance issuance={issuance} />
 
       <Footer>
         <AllVotes />
