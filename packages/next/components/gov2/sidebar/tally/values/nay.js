@@ -4,19 +4,19 @@ import NayIcon from "../../../../../public/imgs/icons/nay.svg";
 import { useTally } from "next-common/context/post/gov2/referendum";
 import LoadingCount from "./loadingCount";
 import SymbolValue from "./symbolValue";
-import { Row } from "next-common/components/referenda/tally/styled";
+import { BorderedRow } from "next-common/components/referenda/tally/styled";
 
 export default function Nay() {
   const { allNay = [] } = useSelector(votesSelector);
   const tally = useTally();
 
   return (
-    <Row>
+    <BorderedRow>
       <LoadingCount count={allNay.length}>
         <NayIcon />
         Nay
       </LoadingCount>
       <SymbolValue value={tally?.nays} />
-    </Row>
+    </BorderedRow>
   );
 }
