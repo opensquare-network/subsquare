@@ -5,7 +5,7 @@ import { emptyVotes } from "../../utils/democracy/votes/passed/common";
 import { getGov2ReferendumVotesFromVotingOf } from "../../utils/gov2/allVotes";
 import Chains from "../../utils/consts/chains";
 import getKintElectorate from "../../utils/democracy/electorate/kintsugi";
-import getElectorate from "../../utils/democracy/electorate";
+import queryActiveBalance from "../../utils/democracy/electorate/active";
 
 const chain = process.env.NEXT_PUBLIC_CHAIN;
 
@@ -137,7 +137,7 @@ export const fetchIssuanceForGov2 = (api, height) => async (dispatch) => {
   if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
     issuance = await getKintElectorate(api, height);
   } else {
-    issuance = await getElectorate(api, height);
+    issuance = await queryActiveBalance(api, height);
   }
 
   dispatch(setIssuance(issuance));
