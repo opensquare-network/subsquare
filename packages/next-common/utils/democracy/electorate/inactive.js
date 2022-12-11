@@ -10,6 +10,10 @@ export default async function fetchInactive(api, height) {
   }
 
   const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
-  const value = await api.query.balances.inactiveIssuance.at(blockHash);
-  return value.toBigInt().toString();
+  try {
+    const value = await api.query.balances.inactiveIssuance.at(blockHash);
+    return value.toBigInt().toString();
+  } catch (e) {
+    return 0;
+  }
 }
