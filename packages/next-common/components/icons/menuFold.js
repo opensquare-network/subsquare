@@ -2,8 +2,8 @@ import styled from "styled-components";
 import MenuFold from "../../assets/imgs/icons/menu-fold.svg";
 
 const MenuFoldIcon = styled(MenuFold)`
-  path {
-    stroke: ${(p) => p.theme.textTeriary};
+  g {
+    stroke: ${(p) => p.theme.textTertiary};
   }
 
   &:hover {
