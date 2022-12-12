@@ -16,7 +16,7 @@ const Right = styled(Flex)`
 `;
 
 const NetworkWrapper = styled.div`
-  width: 220px;
+  width: 176px;
 `;
 
 function HeaderRight() {

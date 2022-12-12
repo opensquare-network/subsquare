@@ -72,6 +72,13 @@ export default function NetworkSwitch({ activeNode }) {
     }
   }, [windowSize]);
 
+  let heightComponent;
+  if (nodesHeight) {
+    heightComponent = <span>{`#${nodesHeight?.toLocaleString()}`}</span>;
+  } else {
+    heightComponent = <Loading size={16} />;
+  }
+
   return (
     <Wrapper ref={ref}>
       <Select onClick={() => setShow(!show)}>
@@ -80,14 +87,7 @@ export default function NetworkSwitch({ activeNode }) {
           {activeNode?.hideHeight ? (
             <div>{activeNode?.name}</div>
           ) : (
-            <>
-              <div>Block</div>
-              {nodesHeight ? (
-                <span>{`#${nodesHeight?.toLocaleString()}`}</span>
-              ) : (
-                <Loading size={16} />
-              )}
-            </>
+            heightComponent
           )}
         </NetworkBlock>
         <Caret />
