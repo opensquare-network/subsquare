@@ -54,7 +54,7 @@ const proxySetting = {
   name: "Proxy",
   pathname: "/setting/proxy",
   icon: <ProxyIcon />,
-  excludeToChains: [Chains.kintsugi],
+  excludeToChains: [Chains.kintsugi, Chains.interlay],
 };
 
 export const settingMenuOfKeyAccount = [

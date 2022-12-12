@@ -23,7 +23,7 @@ export default function Threshold({ threshold = "" }) {
   const chain = useChain();
   const lowercase = threshold.toLowerCase();
   let link;
-  if (Chains.kintsugi === chain) {
+  if (![Chains.kintsugi, Chains.interlay].includes(chain)) {
     link =
       "https://docs.interlay.io/#/kintsugi/governance?id=super-majority-against-negative-turnout-bias";
   } else if (votingThreshold.SimpleMajority === lowercase) {
