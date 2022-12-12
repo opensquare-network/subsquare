@@ -35,7 +35,7 @@ const Table = styled(StyledTable)`
   padding: 0;
   tbody {
     display: block;
-    max-height: 200px;
+    max-height: 180px;
     overflow-y: auto;
     overflow-x: hidden;
 
@@ -47,6 +47,16 @@ const Table = styled(StyledTable)`
     width: 100%;
     table-layout: fixed;
   }
+
+  tbody {
+    ${StyledTr} {
+      height: 44px;
+      &:not(:last-child) {
+        border-bottom: 1px solid ${(p) => p.theme.grey100Bg};
+      }
+    }
+  }
+
   box-shadow: none;
 `;
 
@@ -99,7 +109,7 @@ export default function ThresholdCurvesPopup({
             backgroundColor={
               theme.isDark ? theme.grey200Border : theme.grey100Bg
             }
-            padding={"16px 0 4px 0"}
+            padding={"16px 0 0 0"}
           />
         </thead>
         <tbody>
