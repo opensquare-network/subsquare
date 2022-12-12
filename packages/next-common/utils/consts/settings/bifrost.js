@@ -1,6 +1,6 @@
-import Logo from "../../../assets/header-logos/bifrost.svg";
+import Logo from "../../../assets/header-logos/bifrost-kusama.svg";
 import DarkModeLogo from "../../../assets/header-logos/bifrost-dark.svg";
-import Avatar from "../../../assets/icons/chain/bifrost.png";
+import Avatar from "../../../assets/icons/chain/bifrost-kusama.png";
 import MenuGroups from "./menuGroups";
 
 const DEFAULT_BIFROST_NODES = [
@@ -20,7 +20,7 @@ const DEFAULT_BIFROST_NODES = [
 
 const bifrost = {
   value: "bifrost",
-  name: "Bifrost",
+  name: "Bifrost Kusama",
   icon: "bifrost.svg",
   hideHeight: false,
   identity: "bifrost",
