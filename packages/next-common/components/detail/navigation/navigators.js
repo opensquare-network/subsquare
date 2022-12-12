@@ -7,87 +7,100 @@ import styled from "styled-components";
 import { NoticeWrapper } from "../../styled/containers/titleContainer";
 import { useChain } from "../../../context/chain";
 
-export function ReferendumLink({referendumIndex}) {
+export function ReferendumLink({ referendumIndex }) {
   return (
     <Link href={`/democracy/referendum/${referendumIndex}`}>
       {`Referendum #${referendumIndex}`}
     </Link>
-  )
+  );
 }
 
-export function ReferendumNavigationItem({referendumIndex, isLink = true}) {
+export function ReferendumNavigationItem({ referendumIndex, isLink = true }) {
   if (isNil(referendumIndex)) {
-    return null
+    return null;
   }
 
-  let item = <ReferendumLink referendumIndex={ referendumIndex } />;
+  let item = <ReferendumLink referendumIndex={referendumIndex} />;
   if (!isLink) {
     item = <div>{`Referendum #${referendumIndex}`}</div>;
   }
 
-  return <div>
-    <TriangleRight />
-    { item }
-  </div>
+  return (
+    <div>
+      <TriangleRight />
+      {item}
+    </div>
+  );
 }
 
-export function DemocracyProposalNavigator({proposalIndex, isLink = true}) {
+export function DemocracyProposalNavigator({ proposalIndex, isLink = true }) {
   if (!isLink) {
-    return <div>{`Proposal #${proposalIndex}`}</div>
+    return <div>{`Proposal #${proposalIndex}`}</div>;
   }
 
-  return <Link href={`/democracy/proposal/${proposalIndex}`}>
-    {`Proposal #${proposalIndex}`}
-  </Link>
+  return (
+    <Link href={`/democracy/proposal/${proposalIndex}`}>
+      {`Proposal #${proposalIndex}`}
+    </Link>
+  );
 }
 
-export function DemocracyExternalNavigator({blockHeight, hash = "", isLink = true}) {
-  let link = <Link
-    passHref={ true }
-    href={ `/democracy/external/${ blockHeight }_${ hash }` }
-  >
-    <a>
-      { `External #${ hash.slice(0, 6) }` }
-    </a>
-  </Link>
+export function DemocracyExternalNavigator({
+  blockHeight,
+  hash = "",
+  isLink = true,
+}) {
+  let link = (
+    <Link passHref={true} href={`/democracy/external/${blockHeight}_${hash}`}>
+      <a>{`External #${hash.slice(0, 6)}`}</a>
+    </Link>
+  );
 
   if (!isLink) {
-    link = `External #${hash?.slice(0, 6)}`
+    link = `External #${hash?.slice(0, 6)}`;
   }
 
-  return <div>
-    <TriangleRight />
-    {link}
-  </div>
+  return (
+    <div>
+      <TriangleRight />
+      {link}
+    </div>
+  );
 }
 
 export function CouncilMotionNavigator({ motion, hasTriangle = true }) {
   let triangle = hasTriangle ? <TriangleRight /> : null;
   const chain = useChain();
 
-  return <div>
-    {triangle}
-    <Link href={ `/council/motion/${ getMotionId(motion, chain) }` }>
-      { `Motion #${ shortMotionId(motion) }` }
-    </Link>
-  </div>
+  return (
+    <div>
+      {triangle}
+      <Link href={`/council/motion/${getMotionId(motion, chain)}`}>
+        {`Motion #${shortMotionId(motion)}`}
+      </Link>
+    </div>
+  );
 }
 
-export function TechCommMotionNavigator({motion = {}, isLink = true}) {
+export function TechCommMotionNavigator({ motion = {}, isLink = true }) {
   const chain = useChain();
 
-  let link = <Link href={ `/techcomm/proposal/${ getMotionId(motion, chain) }` }>
-    { `Tech. Comm. #${ shortMotionId(motion) }` }
-  </Link>
+  let link = (
+    <Link href={`/techcomm/proposal/${getMotionId(motion, chain)}`}>
+      {`Tech. Comm. #${shortMotionId(motion)}`}
+    </Link>
+  );
 
   if (!isLink) {
-    link = `External #${motion.hash?.slice(0, 6)}`
+    link = `Tech. Comm. #${shortMotionId(motion)}`;
   }
 
-  return <div>
-    <TriangleRight />
-    { link }
-  </div>
+  return (
+    <div>
+      <TriangleRight />
+      {link}
+    </div>
+  );
 }
 
 export const NavigationWrapper = styled(NoticeWrapper)`
