@@ -28,7 +28,7 @@ const bifrost = {
   decimals: 12,
   hasElections: true,
   ss58Format: 6,
-  snsCoverCid: "bafybeibu7lmjymi5x6gjixdawmc4rjufruc6qwazailfnpzpoaqtuq6khe",
+  snsCoverCid: "bafybeianzspawke2pll23iovv6jarictrqdpmptdp4o2eevmo2hnpe3lea",
   endpoints: DEFAULT_BIFROST_NODES,
   loginButtonPrimary: true,
   headerBackgroundColor: "#000000",
