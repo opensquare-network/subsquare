@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
-import { estimateBlocksTime } from "next-common/utils";
+import { estimateBlocksTime, toPrecision } from "next-common/utils";
 import {
   SummaryGreyText,
   SummaryItem,
@@ -17,6 +17,8 @@ import { useState } from "react";
 import ThresholdCurvesPopup from "next-common/components/charts/thresholdCurve/popup";
 import ThresholdCurvesLegend from "next-common/components/charts/thresholdCurve/legend";
 import _range from "lodash.range";
+import ValueDisplay from "next-common/components/displayValue";
+import { useChainSettings } from "next-common/context/chain";
 
 const SummaryContentWrapper = styled.div`
   display: flex;
@@ -50,6 +52,11 @@ const SummaryThresholdCurveItemTitle = styled(SummaryItemTitle)`
     cursor: pointer;
   }
 `;
+const SummaryDecisionDepositValueWrapper = styled.span`
+  .value-display-symbol {
+    color: ${(p) => p.theme.textTertiary};
+  }
+`;
 
 export default function Gov2TrackSummary({
   summary,
@@ -64,7 +71,10 @@ export default function Gov2TrackSummary({
     decisionPeriod,
     confirmPeriod,
     id,
+    decisionDeposit,
   } = period ?? {};
+
+  const { decimals, symbol } = useChainSettings();
 
   const [showThresholdCurveDetailPopup, setShowThresholdCurveDetailPopup] =
     useState(false);
@@ -147,6 +157,18 @@ export default function Gov2TrackSummary({
             <SummaryItemTitle>Total</SummaryItemTitle>
             <Content>
               <span>{summary.total}</span>
+            </Content>
+          </SummaryItem>
+
+          <SummaryItem>
+            <SummaryItemTitle>Decisoin Deposit</SummaryItemTitle>
+            <Content>
+              <SummaryDecisionDepositValueWrapper>
+                <ValueDisplay
+                  value={toPrecision(decisionDeposit, decimals)}
+                  symbol={symbol}
+                />
+              </SummaryDecisionDepositValueWrapper>
             </Content>
           </SummaryItem>
         </SummaryItemWrapper>
