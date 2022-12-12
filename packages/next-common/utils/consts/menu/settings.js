@@ -70,7 +70,7 @@ const proxySetting = {
   value: "proxy",
   name: "Proxy",
   pathname: "/setting/proxy",
-  excludeToChains: [Chains.kintsugi],
+  excludeToChains: [Chains.kintsugi, Chains.interlay],
   icon: (
     <MenuIconWrapper>
       <ProxyIcon />
