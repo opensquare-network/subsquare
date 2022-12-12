@@ -181,7 +181,7 @@ export default function DemocracySummary() {
         </SummaryItem>
       </SummaryWrapper>
 
-      {chain !== Chains.kintsugi && (
+      {![Chains.kintsugi, Chains.interlay].includes(chain) && (
         <>
           <Divider margin={16} />
           <DemocracySummaryDelegation />
