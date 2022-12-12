@@ -15,7 +15,7 @@ import {
 } from "../../styled/table";
 import { pretty_scroll_bar } from "../../../styles/componentCss";
 import Loading from "../../loading";
-import { range } from "../../../utils/array";
+import _range from "lodash.range";
 
 const Center = styled(Flex)`
   justify-content: center;
@@ -54,7 +54,7 @@ export default function ThresholdCurvesPopup({
 }) {
   const theme = useTheme();
 
-  const list = range(labels.length).map((n) => {
+  const list = _range(labels.length).map((n) => {
     const support = Number(supportData[n]).toFixed(2);
     const approval = Number(approvalData[n]).toFixed(2);
 
