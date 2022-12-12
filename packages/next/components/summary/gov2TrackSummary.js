@@ -76,9 +76,11 @@ export default function Gov2TrackSummary({
 
   const decisionPeriodHrs = Number(decisionPeriodBlockTime[0]) * 24;
   const chartLabels = range(decisionPeriodHrs + 1);
+  // FIXME: pass the correct support data
   const supportData = range(chartLabels.length + 1)
     .map((_, idx) => 58 - idx * 0.1)
     .sort((a, b) => b - a);
+  // FIXME: pass the correct approval data
   const approvalData = range(chartLabels.length + 1)
     .map((_, idx) => 100 - idx * 0.2)
     .sort((a, b) => b - a);
