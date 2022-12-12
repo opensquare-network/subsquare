@@ -173,7 +173,8 @@ export default function Gov2TrackSummary({
             </Content>
           </SummaryItem>
 
-          <SummaryItem>
+          {/* prevent title text wrap */}
+          <SummaryItem style={{ minWidth: 144 }}>
             <SummaryItemTitle>Decisoin Deposit</SummaryItemTitle>
             <Content>
               <SummaryDecisionDepositValueWrapper>
