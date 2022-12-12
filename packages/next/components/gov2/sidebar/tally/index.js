@@ -11,9 +11,9 @@ import AllVotes from "./allVotes";
 import VoteExtrinsics from "./voteExtrinsics";
 import { useTally } from "next-common/context/post/gov2/referendum";
 import useApprovalThreshold from "./threshold/useApprovalThreshold";
-import Issuance from "./values/issuance";
-import SupportBar from "./supportBar";
 import useIssuance from "next-common/utils/gov2/useIssuance";
+import SupportBar from "./supportBar";
+import Issuance from "./values/issuance";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;

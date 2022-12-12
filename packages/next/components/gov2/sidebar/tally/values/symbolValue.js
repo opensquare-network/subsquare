@@ -1,8 +1,8 @@
-import { Value } from "./styled";
 import DisplayValue from "next-common/components/displayValue";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { Value } from "next-common/components/referenda/tally/styled";
 
 export default function SymbolValue({ value = 0 }) {
   const { decimals, symbol } = useChainSettings();

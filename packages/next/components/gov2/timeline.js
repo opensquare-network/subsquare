@@ -3,32 +3,9 @@ import Timeline from "next-common/components/timeline";
 import User from "next-common/components/user";
 import { parseGov2TrackName } from "next-common/utils/gov2";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
-import styled from "styled-components";
-import { p_14_normal } from "next-common/styles/componentCss";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import { useTimelineData } from "next-common/context/post";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-
-const Info = styled.div`
-  ${p_14_normal};
-  color: ${(p) => p.theme.textPrimary};
-`;
-
-function TimelineTallyInfo({ ayes, nays, support }) {
-  return (
-    <div>
-      <Info>
-        Ayes (<SymbolBalance value={ayes} />)
-      </Info>
-      <Info>
-        Nays (<SymbolBalance value={nays} /> )
-      </Info>
-      <Info>
-        Support (<SymbolBalance value={support} />)
-      </Info>
-    </div>
-  );
-}
 
 const getTimelineData = (args, method, trackInfo) => {
   switch (method) {
@@ -46,20 +23,13 @@ const getTimelineData = (args, method, trackInfo) => {
         Deposit: <SymbolBalance value={args.amount} />,
       };
     }
-    case "DecisionStarted": {
-      return {
-        Track: parseGov2TrackName(trackInfo.name),
-        Tally: <TimelineTallyInfo {...args.tally} />,
-      };
-    }
+    case "DecisionStarted":
     case "Confirmed":
     case "Cancelled":
     case "Killed":
     case "Rejected":
     case "TimedOut": {
-      return {
-        Tally: <TimelineTallyInfo {...args.tally} />,
-      };
+      return {};
     }
     case "Executed": {
       const rawResult = args.result;

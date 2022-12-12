@@ -6,8 +6,13 @@ import {
   resolveGov2TracksMenu,
 } from "../../utils/consts/menu/gov2";
 
-export default function Gov2Layout({ children, seoInfo, tracks }) {
-  const menu = resolveGov2TracksMenu(tracks);
+export default function Gov2Layout({
+  children,
+  seoInfo,
+  tracks,
+  fellowshipTracks,
+}) {
+  const menu = resolveGov2TracksMenu(tracks, fellowshipTracks);
 
   return (
     <BaseLayout

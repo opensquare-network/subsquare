@@ -4,6 +4,6 @@ export function getGov2ReferendumStateArgs(state = {}) {
     return null;
   }
 
-  const isOk = !!args.result.ok;
+  const isOk = Object.keys(args.result).includes("ok");
   return { isOk };
 }

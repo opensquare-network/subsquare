@@ -51,7 +51,11 @@ const SummaryThresholdCurveItemTitle = styled(SummaryItemTitle)`
   }
 `;
 
-export default function Gov2TrackSummary({ summary, period }) {
+export default function Gov2TrackSummary({
+  summary,
+  period,
+  noDelegation = false,
+}) {
   const {
     origin,
     description,
@@ -80,6 +84,11 @@ export default function Gov2TrackSummary({ summary, period }) {
     .map((_, idx) => 100 - idx * 0.2)
     .sort((a, b) => b - a);
 
+  let footer = null;
+  if (!noDelegation) {
+    footer = <Delegation trackId={id} />;
+  }
+
   function showThresholdCurveDetail() {
     setShowThresholdCurveDetailPopup(true);
   }
@@ -89,7 +98,7 @@ export default function Gov2TrackSummary({ summary, period }) {
       title={`Origin: ${origin}`}
       titleExtra={`#${id}`}
       description={description}
-      footer={<Delegation trackId={id} />}
+      footer={footer}
     >
       <SummaryContentWrapper>
         <SummaryItemWrapper>

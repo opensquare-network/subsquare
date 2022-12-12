@@ -41,6 +41,7 @@ const categoryTagMap = {
 
   gov2: Gov2ReferendaTag,
   [detailPageCategory.GOV2_REFERENDUM]: Gov2ReferendaTag,
+  [detailPageCategory.FELLOWSHIP_REFERENDUM]: Gov2ReferendaTag,
 };
 
 export default function Tag({ category, state, link, args, data }) {
