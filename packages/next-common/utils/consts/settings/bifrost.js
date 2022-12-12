@@ -36,6 +36,7 @@ const bifrost = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
+  subscanDomain: "bifrost-kusama",
 };
 
 export default bifrost;
