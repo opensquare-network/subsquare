@@ -4,7 +4,6 @@ import styled from "styled-components";
 import "../globalConfig";
 import light from "../../styled/theme/light";
 import dark from "../../styled/theme/dark";
-import { range } from "../../../utils/array";
 
 const Wrapper = styled.div``;
 
@@ -13,13 +12,16 @@ export default function ThresholdCurvesChart({
   height,
   scalesX = true,
   scalesY = true,
+  labels = [],
+  supportData = [],
+  approvalData = [],
 }) {
   const chartData = {
-    labels: range(600),
+    labels,
     datasets: [
       {
         label: "Support",
-        data: range(600),
+        data: supportData,
         tension: 0.1,
         pointBorderColor: dark.primaryDarkBlue,
         pointRadius: 1,
@@ -28,9 +30,7 @@ export default function ThresholdCurvesChart({
       },
       {
         label: "Approval",
-        data: range(600)
-          .map((n) => (n -= 100))
-          .sort((a, b) => b - a),
+        data: approvalData,
         tension: 0.1,
         pointBorderColor: light.secondaryGreen500,
         pointRadius: 1,
@@ -43,22 +43,27 @@ export default function ThresholdCurvesChart({
   const options = {
     scales: {
       x: {
+        type: "linear",
         display: scalesX,
         ticks: {
-          stepSize: 200,
+          max: labels.length,
+          stepSize: Math.round(labels.length / 4),
           callback(val) {
             return val + "hs";
           },
         },
+        grid: {
+          display: false,
+        },
       },
       y: {
         display: scalesY,
+        min: 0,
+        max: 100,
         ticks: {
           stepSize: 25,
-          callback(val, _index, ticks) {
-            const max = ticks[ticks.length - 1].value;
-            const step = (val / max) * 100;
-            return step % 25 === 0 ? `${step}%` : "";
+          callback(val) {
+            return val + "%";
           },
         },
       },
@@ -79,21 +84,20 @@ export default function ThresholdCurvesChart({
           label(tooltipItem) {
             const { dataIndex, parsed, dataset } = tooltipItem;
 
-            // only display one
+            // only display one item
             if (dataset.label === "Approval") {
               return ``;
             }
 
-            const supportData = chartData.datasets[0].data[dataIndex];
-            const approvalData = chartData.datasets[1].data[dataIndex];
-
             const hs = parsed.x;
-            const percentage = 100;
+            const supportValue = Number(
+              chartData.datasets[0].data[dataIndex]
+            ).toFixed(2);
+            const approvalValue = Number(
+              chartData.datasets[1].data[dataIndex]
+            ).toFixed(2);
 
-            const supportPercentage = `TODO`;
-            const approvalPercentage = `TODO`;
-
-            const result = `Time: ${hs}hs Support: ${supportPercentage}% Approval: ${approvalPercentage}%`;
+            const result = `Time: ${hs}hs Support: ${supportValue}% Approval: ${approvalValue}%`;
 
             return result;
           },
