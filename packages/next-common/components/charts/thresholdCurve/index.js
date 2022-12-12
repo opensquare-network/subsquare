@@ -41,6 +41,7 @@ export default function ThresholdCurvesChart({
   };
 
   const options = {
+    clip: false,
     scales: {
       x: {
         type: "linear",
