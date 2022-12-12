@@ -67,11 +67,12 @@ function calcActiveCount(tracks = []) {
   }, 0);
 }
 
-export function resolveGov2TracksMenu(tracks = [], fellowshipTracks = []) {
+function resolveReferendaTrackMenu(tracks = []) {
   const totalActiveCount = calcActiveCount(tracks);
 
   const gov2ReferendaMenu = {
     name: gov2ReferendaMenuName,
+    activeCount: totalActiveCount,
     items: [
       {
         value: "all",
@@ -83,8 +84,30 @@ export function resolveGov2TracksMenu(tracks = [], fellowshipTracks = []) {
     ],
   };
 
+  const resolveTrackItem = (track) => {
+    return {
+      value: track.id,
+      name: parseGov2TrackName(track.name),
+      pathname: `/referenda/track/${track.id}`,
+      activeCount: track.activeCount,
+      icon: TrackIconMap[track.id] ?? TrackIconMap.Default,
+    };
+  };
+
+  for (let idx = 0; idx < tracks.length; idx++) {
+    const track = tracks[idx];
+    gov2ReferendaMenu.items.push(resolveTrackItem(track));
+  }
+
+  return gov2ReferendaMenu;
+}
+
+function resolveFellowshipTrackMenu(fellowshipTracks = []) {
+  const totalActiveCount = calcActiveCount(fellowshipTracks);
+
   const gov2FellowshipMenu = {
     name: gov2FellowshipMenuName,
+    activeCount: totalActiveCount,
     items: [
       {
         value: "fellowship-members",
@@ -100,19 +123,9 @@ export function resolveGov2TracksMenu(tracks = [], fellowshipTracks = []) {
         name: "All",
         pathname: "/fellowship",
         icon: TrackIconMap.All,
-        activeCount: calcActiveCount(fellowshipTracks),
+        activeCount: totalActiveCount,
       },
     ],
-  };
-
-  const resolveTrackItem = (track) => {
-    return {
-      value: track.id,
-      name: parseGov2TrackName(track.name),
-      pathname: `/referenda/track/${track.id}`,
-      activeCount: track.activeCount,
-      icon: TrackIconMap[track.id] ?? TrackIconMap.Default,
-    };
   };
 
   const resolveFellowshipTrackItem = (track) => {
@@ -125,15 +138,16 @@ export function resolveGov2TracksMenu(tracks = [], fellowshipTracks = []) {
     };
   };
 
-  for (let idx = 0; idx < tracks.length; idx++) {
-    const track = tracks[idx];
-    gov2ReferendaMenu.items.push(resolveTrackItem(track));
-  }
-
   for (let idx = 0; idx < fellowshipTracks.length; idx++) {
     const track = fellowshipTracks[idx];
     gov2FellowshipMenu.items.push(resolveFellowshipTrackItem(track));
   }
 
+  return gov2FellowshipMenu;
+}
+
+export function resolveGov2TracksMenu(tracks = [], fellowshipTracks = []) {
+  const gov2ReferendaMenu = resolveReferendaTrackMenu(tracks);
+  const gov2FellowshipMenu = resolveFellowshipTrackMenu(fellowshipTracks);
   return [gov2BackMenu, gov2ReferendaMenu, gov2FellowshipMenu];
 }
