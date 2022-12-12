@@ -11,6 +11,7 @@ import { getExcludeChains } from "../../viewfuncs";
 import Chains from "../chains";
 import { parseGov2TrackName } from "../../gov2";
 import MembersIcon from "../../../assets/imgs/icons/members.svg";
+import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
 
 const Splitter = styled.div`
   display: block;
@@ -45,7 +46,11 @@ const gov2BackMenu = {
       value: "gov1",
       name: "Back to Gov1",
       pathname: "/",
-      icon: <BackIcon />,
+      icon: (
+        <MenuIconWrapper>
+          <BackIcon />
+        </MenuIconWrapper>
+      ),
     },
   ],
 };
@@ -67,11 +72,12 @@ function calcActiveCount(tracks = []) {
   }, 0);
 }
 
-export function resolveGov2TracksMenu(tracks = [], fellowshipTracks = []) {
+function resolveReferendaTrackMenu(tracks = []) {
   const totalActiveCount = calcActiveCount(tracks);
 
   const gov2ReferendaMenu = {
     name: gov2ReferendaMenuName,
+    activeCount: totalActiveCount,
     items: [
       {
         value: "all",
@@ -79,28 +85,6 @@ export function resolveGov2TracksMenu(tracks = [], fellowshipTracks = []) {
         pathname: "/referenda",
         icon: TrackIconMap.All,
         activeCount: totalActiveCount,
-      },
-    ],
-  };
-
-  const gov2FellowshipMenu = {
-    name: gov2FellowshipMenuName,
-    items: [
-      {
-        value: "fellowship-members",
-        name: "Members",
-        pathname: "/fellowship/members",
-        icon: <MembersIcon />,
-      },
-      {
-        component: <Splitter key="splitter" />,
-      },
-      {
-        value: "all",
-        name: "All",
-        pathname: "/fellowship",
-        icon: TrackIconMap.All,
-        activeCount: calcActiveCount(fellowshipTracks),
       },
     ],
   };
@@ -115,6 +99,44 @@ export function resolveGov2TracksMenu(tracks = [], fellowshipTracks = []) {
     };
   };
 
+  for (let idx = 0; idx < tracks.length; idx++) {
+    const track = tracks[idx];
+    gov2ReferendaMenu.items.push(resolveTrackItem(track));
+  }
+
+  return gov2ReferendaMenu;
+}
+
+function resolveFellowshipTrackMenu(fellowshipTracks = []) {
+  const totalActiveCount = calcActiveCount(fellowshipTracks);
+
+  const gov2FellowshipMenu = {
+    name: gov2FellowshipMenuName,
+    activeCount: totalActiveCount,
+    items: [
+      {
+        value: "fellowship-members",
+        name: "Members",
+        pathname: "/fellowship/members",
+        icon: (
+          <MenuIconWrapper>
+            <MembersIcon />
+          </MenuIconWrapper>
+        ),
+      },
+      {
+        component: <Splitter key="splitter" />,
+      },
+      {
+        value: "all",
+        name: "All",
+        pathname: "/fellowship",
+        icon: TrackIconMap.All,
+        activeCount: totalActiveCount,
+      },
+    ],
+  };
+
   const resolveFellowshipTrackItem = (track) => {
     return {
       value: track.id,
@@ -125,15 +147,16 @@ export function resolveGov2TracksMenu(tracks = [], fellowshipTracks = []) {
     };
   };
 
-  for (let idx = 0; idx < tracks.length; idx++) {
-    const track = tracks[idx];
-    gov2ReferendaMenu.items.push(resolveTrackItem(track));
-  }
-
   for (let idx = 0; idx < fellowshipTracks.length; idx++) {
     const track = fellowshipTracks[idx];
     gov2FellowshipMenu.items.push(resolveFellowshipTrackItem(track));
   }
 
+  return gov2FellowshipMenu;
+}
+
+export function resolveGov2TracksMenu(tracks = [], fellowshipTracks = []) {
+  const gov2ReferendaMenu = resolveReferendaTrackMenu(tracks);
+  const gov2FellowshipMenu = resolveFellowshipTrackMenu(fellowshipTracks);
   return [gov2BackMenu, gov2ReferendaMenu, gov2FellowshipMenu];
 }

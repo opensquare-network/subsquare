@@ -26,6 +26,9 @@ export default function Threshold({ threshold = "" }) {
   if (Chains.kintsugi === chain) {
     link =
       "https://docs.interlay.io/#/kintsugi/governance?id=super-majority-against-negative-turnout-bias";
+  } else if (Chains.interlay === chain) {
+    link =
+      "https://docs.interlay.io/#/interlay/governance?id=super-majority-against-negative-turnout-bias";
   } else if (votingThreshold.SimpleMajority === lowercase) {
     link =
       "https://wiki.polkadot.network/docs/learn-governance#simple-majority";
