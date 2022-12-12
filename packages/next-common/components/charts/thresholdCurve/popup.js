@@ -54,7 +54,7 @@ export default function ThresholdCurvesPopup({
 }) {
   const theme = useTheme();
 
-  const list = range(labels.length + 1).map((n) => {
+  const list = range(labels.length).map((n) => {
     const support = Number(supportData[n]).toFixed(2);
     const approval = Number(approvalData[n]).toFixed(2);
 

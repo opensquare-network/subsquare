@@ -75,8 +75,7 @@ export default function Gov2TrackSummary({
   const confirmPeriodBlockTime = estimateBlocksTime(confirmPeriod, blockTime);
 
   const decisionPeriodHrs = Number(decisionPeriodBlockTime[0]) * 24;
-  // FIXME: mock threshold curves
-  const chartLabels = range(decisionPeriodHrs);
+  const chartLabels = range(decisionPeriodHrs + 1);
   const supportData = range(chartLabels.length + 1)
     .map((_, idx) => 58 - idx * 0.1)
     .sort((a, b) => b - a);
