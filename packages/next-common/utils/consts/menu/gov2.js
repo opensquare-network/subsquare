@@ -11,6 +11,7 @@ import { getExcludeChains } from "../../viewfuncs";
 import Chains from "../chains";
 import { parseGov2TrackName } from "../../gov2";
 import MembersIcon from "../../../assets/imgs/icons/members.svg";
+import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
 
 const Splitter = styled.div`
   display: block;
@@ -45,7 +46,11 @@ const gov2BackMenu = {
       value: "gov1",
       name: "Back to Gov1",
       pathname: "/",
-      icon: <BackIcon />,
+      icon: (
+        <MenuIconWrapper>
+          <BackIcon />
+        </MenuIconWrapper>
+      ),
     },
   ],
 };
@@ -113,7 +118,11 @@ function resolveFellowshipTrackMenu(fellowshipTracks = []) {
         value: "fellowship-members",
         name: "Members",
         pathname: "/fellowship/members",
-        icon: <MembersIcon />,
+        icon: (
+          <MenuIconWrapper>
+            <MembersIcon />
+          </MenuIconWrapper>
+        ),
       },
       {
         component: <Splitter key="splitter" />,

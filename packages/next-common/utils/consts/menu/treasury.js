@@ -4,6 +4,7 @@ import ProposalIcon from "../../../assets/imgs/icons/proposals.svg";
 import React from "react";
 import BountyIcon from "../../../assets/imgs/icons/bounties.svg";
 import TipIcon from "../../../assets/imgs/icons/tips.svg";
+import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
 
 const treasury = {
   name: "TREASURY",
@@ -13,7 +14,11 @@ const treasury = {
       value: "proposals",
       name: "Proposals",
       pathname: "/treasury/proposals",
-      icon: <ProposalIcon />,
+      icon: (
+        <MenuIconWrapper>
+          <ProposalIcon />
+        </MenuIconWrapper>
+      ),
     },
     {
       value: "bounties",
@@ -30,7 +35,11 @@ const treasury = {
         Chains.centrifuge,
         Chains.altair,
       ],
-      icon: <BountyIcon />,
+      icon: (
+        <MenuIconWrapper>
+          <BountyIcon />
+        </MenuIconWrapper>
+      ),
     },
     {
       value: "child-bounties",
@@ -41,7 +50,11 @@ const treasury = {
         Chains.kusama,
         Chains.rococo,
       ]),
-      icon: <BountyIcon />,
+      icon: (
+        <MenuIconWrapper>
+          <BountyIcon />
+        </MenuIconWrapper>
+      ),
     },
     {
       value: "tips",
@@ -55,7 +68,11 @@ const treasury = {
         Chains.centrifuge,
         Chains.altair,
       ],
-      icon: <TipIcon />,
+      icon: (
+        <MenuIconWrapper>
+          <TipIcon />
+        </MenuIconWrapper>
+      ),
     },
   ],
 };
