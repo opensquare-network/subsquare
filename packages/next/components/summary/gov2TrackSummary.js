@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { estimateBlocksTime, toPrecision } from "next-common/utils";
@@ -19,9 +19,14 @@ import ThresholdCurvesLegend from "next-common/components/charts/thresholdCurve/
 import _range from "lodash.range";
 import ValueDisplay from "next-common/components/displayValue";
 import { useChainSettings } from "next-common/context/chain";
+import { smcss } from "next-common/utils/responsive";
 
 const SummaryContentWrapper = styled.div`
   display: flex;
+
+  ${smcss(css`
+    display: block;
+  `)}
 `;
 
 const SummaryItemWrapper = styled(SummaryItemWrapperOrigin)`
@@ -32,9 +37,17 @@ const SummaryItemWrapper = styled(SummaryItemWrapperOrigin)`
     width: calc(50% - 16px);
     flex: unset;
   }
+
+  ${smcss(css`
+    flex-direction: row;
+  `)}
 `;
 const SummaryThresholdCurveWrapper = styled.div`
   flex: 1;
+
+  ${smcss(css`
+    margin-top: 16px;
+  `)}
 `;
 const SummaryThresholdCurveItem = styled(SummaryItem)`
   height: 100%;
