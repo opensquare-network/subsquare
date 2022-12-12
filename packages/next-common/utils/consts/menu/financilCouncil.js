@@ -3,6 +3,7 @@ import Chains from "../chains";
 import MotionIcon from "../../../assets/imgs/icons/type-motions.svg";
 import React from "react";
 import MembersIcon from "../../../assets/imgs/icons/members.svg";
+import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
 
 const financialCouncil = {
   name: "FINANCIAL COUNCIL",
@@ -11,13 +12,21 @@ const financialCouncil = {
       value: "financialMotions",
       name: "Motions",
       pathname: "/financial-council/motions",
-      icon: <MotionIcon />,
+      icon: (
+        <MenuIconWrapper>
+          <MotionIcon />
+        </MenuIconWrapper>
+      ),
     },
     {
       value: "financialCouncilMembers",
       name: "Members",
       pathname: "/financial-council/members",
-      icon: <MembersIcon />,
+      icon: (
+        <MenuIconWrapper>
+          <MembersIcon />
+        </MenuIconWrapper>
+      ),
     },
   ],
   excludeToChains: getExcludeChains([Chains.karura, Chains.acala]),

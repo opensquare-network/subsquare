@@ -2,8 +2,8 @@ import styled from "styled-components";
 import MenuUnFold from "../../assets/imgs/icons/menu-unfold.svg";
 
 const MenuUnFoldIcon = styled(MenuUnFold)`
-  path {
-    stroke: ${(p) => p.theme.textTeriary};
+  g {
+    stroke: ${(p) => p.theme.textTertiary};
   }
 
   &:hover {

@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import TrackAllIcon from "../../assets/imgs/icons/track-all.svg";
 import TrackDefaultIcon from "../../assets/imgs/icons/track-default.svg";
 import Track0Icon from "../../assets/imgs/icons/track-0.svg";
@@ -27,20 +26,7 @@ import FellowshipTrack6Icon from "../../assets/imgs/icons/fellowship-track-6.svg
 import FellowshipTrack7Icon from "../../assets/imgs/icons/fellowship-track-7.svg";
 import FellowshipTrack8Icon from "../../assets/imgs/icons/fellowship-track-8.svg";
 import FellowshipTrack9Icon from "../../assets/imgs/icons/fellowship-track-9.svg";
-
-const IconWrapper = styled.span`
-  display: inline-flex;
-
-  svg {
-    path {
-      fill: ${(p) => p.theme.textSecondary};
-    }
-  }
-`;
-
-function wrapIcon(icon) {
-  return <IconWrapper>{icon}</IconWrapper>;
-}
+import { wrapMenuIcon as wrapIcon } from "./menuIconWrapper";
 
 export const TrackIconMap = {
   All: wrapIcon(<TrackAllIcon />),
