@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { useTheme } from "styled-components";
+import styled, { css, useTheme } from "styled-components";
 import ThresholdCurvesChart from ".";
 import { emptyFunction } from "../../../utils";
 import PopupOrigin from "../../popup/wrapper/Popup";
@@ -16,6 +16,7 @@ import {
 import { pretty_scroll_bar } from "../../../styles/componentCss";
 import Loading from "../../loading";
 import _range from "lodash.range";
+import { smcss } from "../../../utils/responsive";
 
 const Center = styled(Flex)`
   justify-content: center;
@@ -23,6 +24,10 @@ const Center = styled(Flex)`
 
 const Popup = styled(PopupOrigin)`
   width: 480px;
+
+  ${smcss(css`
+    width: 100%;
+  `)}
 `;
 
 const Table = styled(StyledTable)`
