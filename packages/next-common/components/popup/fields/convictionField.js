@@ -42,7 +42,7 @@ export default function ConvictionField({
         </FlexCenter>
       </LockingPeriod>
     );
-  } else if (!!time) {
+  } else if (time !== "") {
     lockingPeriod = (
       <LockingPeriod>
         <span className="title">Locking Period</span>
