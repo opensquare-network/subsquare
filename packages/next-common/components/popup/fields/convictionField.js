@@ -32,15 +32,17 @@ export default function ConvictionField({
 }) {
   const [time, isLoading] = useVoteLockTime(conviction, module);
 
-  let lockingPeriod = (
-    <LockingPeriod>
-      <FlexCenter>
-        <Loading />
-      </FlexCenter>
-    </LockingPeriod>
-  );
+  let lockingPeriod = null;
 
-  if (!isLoading && !!time) {
+  if (isLoading) {
+    lockingPeriod = (
+      <LockingPeriod>
+        <FlexCenter>
+          <Loading />
+        </FlexCenter>
+      </LockingPeriod>
+    );
+  } else if (!!time) {
     lockingPeriod = (
       <LockingPeriod>
         <span className="title">Locking Period</span>
