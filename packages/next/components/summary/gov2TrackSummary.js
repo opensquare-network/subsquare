@@ -20,6 +20,7 @@ import _range from "lodash.range";
 import ValueDisplay from "next-common/components/displayValue";
 import { useChainSettings } from "next-common/context/chain";
 import { smcss } from "next-common/utils/responsive";
+import DividerOrigin from "next-common/components/styled/layout/divider";
 
 const SummaryContentWrapper = styled.div`
   display: flex;
@@ -53,8 +54,10 @@ const SummaryThresholdCurveItem = styled(SummaryItem)`
   height: 100%;
 `;
 const SummaryThresholdCurveContent = styled(Content)`
-  margin: 8px 0;
-  height: 108px;
+  margin: 0 -4px;
+`;
+const SummaryThresholdCurveLegendWrapper = styled.div`
+  margin-top: 8px;
 `;
 const SummaryThresholdCurveItemTitle = styled(SummaryItemTitle)`
   display: flex;
@@ -69,6 +72,14 @@ const SummaryDecisionDepositValueWrapper = styled.span`
   .value-display-symbol {
     color: ${(p) => p.theme.textTertiary};
   }
+`;
+// fix divider position
+const Divider = styled(DividerOrigin)`
+  margin-top: -6px;
+  margin-right: 4px;
+  ${smcss(css`
+    margin-right: 8px;
+  `)}
 `;
 
 export default function Gov2TrackSummary({
@@ -101,7 +112,7 @@ export default function Gov2TrackSummary({
   const chartLabels = _range(decisionPeriodHrs + 1);
   // FIXME: pass the correct support data
   const supportData = _range(chartLabels.length + 1)
-    .map((_, idx) => 58 - idx * 0.1)
+    .map((_, idx) => 34 - idx * 0.1)
     .sort((a, b) => b - a);
   // FIXME: pass the correct approval data
   const approvalData = _range(chartLabels.length + 1)
@@ -195,14 +206,19 @@ export default function Gov2TrackSummary({
             </SummaryThresholdCurveItemTitle>
             <SummaryThresholdCurveContent>
               <ThresholdCurvesChart
-                height={108}
+                height={104}
                 scalesX={false}
                 scalesY={false}
                 labels={chartLabels}
                 supportData={supportData}
                 approvalData={approvalData}
               />
-              <ThresholdCurvesLegend />
+
+              <Divider />
+
+              <SummaryThresholdCurveLegendWrapper>
+                <ThresholdCurvesLegend />
+              </SummaryThresholdCurveLegendWrapper>
             </SummaryThresholdCurveContent>
           </SummaryThresholdCurveItem>
         </SummaryThresholdCurveWrapper>
