@@ -6,6 +6,7 @@ import { toPublicProposalListItem } from "utils/viewfuncs";
 import DemocracySummary from "next-common/components/summary/democracySummary";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import { useChain } from "next-common/context/chain";
+import KintsugiDemocracyStacking from "components/summary/kintsugiDemocracyStacking";
 
 export default withLoginUserRedux(({ proposals }) => {
   const chain = useChain();
@@ -26,7 +27,7 @@ export default withLoginUserRedux(({ proposals }) => {
           pageSize: proposals.pageSize,
           total: proposals.total,
         }}
-        summary={<DemocracySummary />}
+        summary={<DemocracySummary footer={<KintsugiDemocracyStacking />} />}
       />
     </HomeLayout>
   );

@@ -6,6 +6,7 @@ import { toExternalProposalListItem } from "utils/viewfuncs";
 import DemocracySummary from "next-common/components/summary/democracySummary";
 import businessCategory from "next-common/utils/consts/business/category";
 import HomeLayout from "next-common/components/layout/HomeLayout";
+import DemocracySummaryDelegation from "next-common/components/summary/democracySummaryDelegation";
 
 export default withLoginUserRedux(({ externals, chain }) => {
   const items = (externals.items || []).map((item) =>
@@ -25,7 +26,7 @@ export default withLoginUserRedux(({ externals, chain }) => {
           pageSize: externals.pageSize,
           total: externals.total,
         }}
-        summary={<DemocracySummary />}
+        summary={<DemocracySummary footer={<DemocracySummaryDelegation />} />}
       />
     </HomeLayout>
   );

@@ -55,6 +55,7 @@ function VotesList({ items, theme, loading = true }) {
   const node = useChainSettings();
 
   const hasLabel = ![Chains.kintsugi, Chains.interlay].includes(chain);
+  const symbol = node.voteSymbol || node.symbol;
 
   return (
     <Wrapper>
@@ -102,7 +103,7 @@ function VotesList({ items, theme, loading = true }) {
                   <StyledTd style={{ textAlign: "right" }}>
                     <ValueDisplay
                       value={toPrecision(item.balance, node.decimals)}
-                      symbol={node.symbol}
+                      symbol={symbol}
                       showTooltip={false}
                     />
                   </StyledTd>
