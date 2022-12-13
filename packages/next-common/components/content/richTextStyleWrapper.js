@@ -13,7 +13,7 @@ const RichTextStyleWrapper = styled.div`
   div.markdown-body {
     word-break: break-all;
     hr {
-      background-color: ${(props) => props.theme.grey300Border};
+      background-color: ${(props) => props.theme.grey200Border};
     }
 
     span.mention,
