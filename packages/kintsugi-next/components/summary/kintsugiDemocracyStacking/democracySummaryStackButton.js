@@ -8,7 +8,7 @@ export default function DemocracySummaryStackButton() {
   const href =
     Chains.kintsugi === chain
       ? "https://kintsugi.interlay.io/staking"
-      : "https://kintsugi.interlay.io/staking";
+      : "https://app.interlay.io/staking";
 
   return (
     <a href={href} target="_blank">
