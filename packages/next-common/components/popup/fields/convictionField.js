@@ -28,8 +28,9 @@ export default function ConvictionField({
   setConviction,
   title = "Conviction",
   titleTooltip = "",
+  module,
 }) {
-  const [time, isLoading] = useVoteLockTime(conviction);
+  const [time, isLoading] = useVoteLockTime(conviction, module);
 
   return (
     <div>

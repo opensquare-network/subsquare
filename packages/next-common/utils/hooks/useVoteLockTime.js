@@ -4,7 +4,10 @@ import useApi from "./useApi";
 import { blockTimeSelector } from "../../store/reducers/chainSlice";
 import { estimateBlocksTime } from "..";
 
-export default function useVoteLockTime(conviction) {
+export default function useVoteLockTime(
+  conviction,
+  module = "convictionVoting"
+) {
   const api = useApi();
   const [time, setTime] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,12 +27,12 @@ export default function useVoteLockTime(conviction) {
     }
 
     const multiplier = Math.pow(2, conviction - 1);
-    const blocks = (api.consts?.democracy?.voteLockingPeriod || 0) * multiplier;
+    const blocks = (api.consts?.[module]?.voteLockingPeriod || 0) * multiplier;
     const timeArr = estimateBlocksTime(blocks, blockTime);
     setTime(timeArr.join(" "));
 
     setIsLoading(false);
-  }, [api, conviction, blockTime]);
+  }, [api, module, conviction, blockTime]);
 
   return [time, isLoading];
 }
