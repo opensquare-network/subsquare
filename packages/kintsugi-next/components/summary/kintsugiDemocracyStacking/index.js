@@ -1,9 +1,6 @@
 import React from "react";
-import { useCallback } from "react";
-import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import useApi from "next-common/utils/hooks/useApi";
-import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import DemocracySummaryStackInfo from "./democracySummaryStackInfo";
 import DemocracySummaryStackButton from "./democracySummaryStackButton";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
@@ -19,16 +16,10 @@ const Wrapper = styled.div`
 `;
 
 export default function KintsugiDemocracyStacking() {
-  const dispatch = useDispatch();
   const api = useApi();
   const realAddress = useRealAddress();
-  const [votingBalance, , refresh] = useAddressVotingBalance(api, realAddress);
+  const [votingBalance] = useAddressVotingBalance(api, realAddress);
   const [balance] = useAddressBalance(api, realAddress);
-
-  const onStackInBlock = useCallback(() => {
-    refresh();
-    dispatch(newSuccessToast(`Stack success`));
-  }, [dispatch, refresh]);
 
   return (
     <Wrapper>
@@ -36,7 +27,7 @@ export default function KintsugiDemocracyStacking() {
         votingBalance={votingBalance}
         balance={balance}
       />
-      <DemocracySummaryStackButton onStackInBlock={onStackInBlock} />
+      <DemocracySummaryStackButton />
     </Wrapper>
   );
 }

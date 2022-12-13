@@ -1,20 +1,18 @@
 import React from "react";
-import { useState } from "react";
 import { Button } from "next-common/components/summary/styled";
-import StackPopup from "next-common/components/democracy/delegatePopup";
+import { useChain } from "next-common/context/chain";
+import Chains from "next-common/utils/consts/chains";
 
-export default function DemocracySummaryStackButton({ onStackInBlock }) {
-  const [showStackPopup, setShowStackPopup] = useState(false);
+export default function DemocracySummaryStackButton() {
+  const chain = useChain();
+  const href =
+    Chains.kintsugi === chain
+      ? "https://kintsugi.interlay.io/staking"
+      : "https://kintsugi.interlay.io/staking";
 
   return (
-    <>
-      <Button onClick={() => setShowStackPopup(true)}>Stack</Button>
-      {showStackPopup && (
-        <StackPopup
-          onInBlock={onStackInBlock}
-          onClose={() => setShowStackPopup(false)}
-        />
-      )}
-    </>
+    <a href={href} target="_blank">
+      <Button>Stack</Button>
+    </a>
   );
 }
