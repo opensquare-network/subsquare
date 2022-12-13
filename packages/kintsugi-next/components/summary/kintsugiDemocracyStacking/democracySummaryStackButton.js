@@ -11,7 +11,7 @@ export default function DemocracySummaryStackButton() {
       : "https://app.interlay.io/staking";
 
   return (
-    <a href={href} target="_blank">
+    <a href={href} target="_blank" rel="noreferrer">
       <Button>Stack</Button>
     </a>
   );
