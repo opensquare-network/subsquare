@@ -4,7 +4,7 @@ import useApi from "next-common/utils/hooks/useApi";
 import DemocracySummaryStackInfo from "./democracySummaryStackInfo";
 import DemocracySummaryStackButton from "./democracySummaryStackButton";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useAddressVotingBalance } from "utils/hooks";
+import { useLatestAddressVotingBalance } from "utils/hooks";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 
 const Wrapper = styled.div`
@@ -18,7 +18,7 @@ const Wrapper = styled.div`
 export default function KintsugiDemocracyStacking() {
   const api = useApi();
   const realAddress = useRealAddress();
-  const [votingBalance] = useAddressVotingBalance(api, realAddress);
+  const [votingBalance] = useLatestAddressVotingBalance(api, realAddress);
   const [balance] = useAddressBalance(api, realAddress);
 
   return (

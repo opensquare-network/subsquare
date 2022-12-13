@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { getAddressVote } from "./referendumUtil";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getVotingBalance } from "./escrow/votingBalance";
+import { useSelector } from "react-redux";
+import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
 
 export function useAddressVotingBalance(api, address) {
   const [balance, setBalance] = useState(0);
@@ -30,6 +32,17 @@ export function useAddressVotingBalance(api, address) {
   useEffect(() => {
     refresh();
   }, [refresh]);
+
+  return [balance, isLoading, refresh];
+}
+
+export function useLatestAddressVotingBalance(api, address) {
+  const [balance, isLoading, refresh] = useAddressVotingBalance(api, address);
+  const scanHeight = useSelector(nodesHeightSelector);
+
+  useEffect(() => {
+    refresh();
+  }, [refresh, scanHeight]);
 
   return [balance, isLoading, refresh];
 }
