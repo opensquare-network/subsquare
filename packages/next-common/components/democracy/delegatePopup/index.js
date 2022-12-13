@@ -129,6 +129,7 @@ function PopupContent({
         isBalanceLoading={votingIsLoading}
         signerBalance={signerBalance}
         isSignerBalanceLoading={isSignerBalanceLoading}
+        symbol={node.voteSymbol || node.symbol}
       />
       <Target
         extensionAccounts={extensionAccounts}

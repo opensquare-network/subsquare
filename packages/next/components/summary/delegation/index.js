@@ -5,7 +5,7 @@ import useTrackDelegating from "next-common/utils/hooks/referenda/useTrackDelega
 import useApi from "next-common/utils/hooks/useApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
-import DelegationInfo from "next-common/components/summary/democracySummaryDelegationInfo";
+import DelegationInfo from "next-common/components/summary/democracySummaryDelegation/democracySummaryDelegationInfo";
 import DelegationButton from "./delegationButton";
 
 const Wrapper = styled.div`

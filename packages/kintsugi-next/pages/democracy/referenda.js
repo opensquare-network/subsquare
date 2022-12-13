@@ -5,6 +5,7 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { toReferendaListItem } from "utils/viewfuncs";
 import DemocracySummary from "next-common/components/summary/democracySummary";
 import HomeLayout from "next-common/components/layout/HomeLayout";
+import KintsugiDemocracyStacking from "components/summary/kintsugiDemocracyStacking";
 
 export default withLoginUserRedux(({ posts, chain }) => {
   const items = (posts.items || []).map((item) =>
@@ -24,7 +25,7 @@ export default withLoginUserRedux(({ posts, chain }) => {
           pageSize: posts.pageSize,
           total: posts.total,
         }}
-        summary={<DemocracySummary />}
+        summary={<DemocracySummary footer={<KintsugiDemocracyStacking />} />}
       />
     </HomeLayout>
   );

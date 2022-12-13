@@ -6,8 +6,8 @@ import useApi from "next-common/utils/hooks/useApi";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import DemocracySummaryDelegationInfo from "./democracySummaryDelegationInfo";
 import DemocracySummaryDelegationButton from "./democracySummaryDelegationButton";
-import useDemocracyDelegating from "../../utils/hooks/referenda/useDemocracyDelegating";
-import useRealAddress from "../../utils/hooks/useRealAddress";
+import useDemocracyDelegating from "../../../utils/hooks/referenda/useDemocracyDelegating";
+import useRealAddress from "../../../utils/hooks/useRealAddress";
 
 const Wrapper = styled.div`
   display: flex;

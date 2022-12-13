@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getAddressVote } from "./referendumUtil";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getVotingBalance } from "./escrow/votingBalance";
@@ -8,7 +8,7 @@ export function useAddressVotingBalance(api, address) {
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useIsMounted();
 
-  useEffect(() => {
+  const refresh = useCallback(() => {
     if (!api || !address) {
       return;
     }
@@ -27,7 +27,11 @@ export function useAddressVotingBalance(api, address) {
       });
   }, [api, address, isMounted]);
 
-  return [balance, isLoading];
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
+
+  return [balance, isLoading, refresh];
 }
 
 export function useAddressVote(api, referendumIndex, address) {
