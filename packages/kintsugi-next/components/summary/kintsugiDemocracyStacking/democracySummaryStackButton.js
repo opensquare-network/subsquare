@@ -5,6 +5,11 @@ import Chains from "next-common/utils/consts/chains";
 
 export default function DemocracySummaryStackButton() {
   const chain = useChain();
+
+  if (![Chains.kintsugi, Chains.interlay].includes(chain)) {
+    return null;
+  }
+
   const href =
     Chains.kintsugi === chain
       ? "https://kintsugi.interlay.io/staking"
