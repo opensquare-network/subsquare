@@ -32,6 +32,23 @@ export default function ConvictionField({
 }) {
   const [time, isLoading] = useVoteLockTime(conviction, module);
 
+  let lockingPeriod = (
+    <LockingPeriod>
+      <FlexCenter>
+        <Loading />
+      </FlexCenter>
+    </LockingPeriod>
+  );
+
+  if (!isLoading && !!time) {
+    lockingPeriod = (
+      <LockingPeriod>
+        <span className="title">Locking Period</span>
+        <span>≈ {time}</span>
+      </LockingPeriod>
+    );
+  }
+
   return (
     <div>
       <PopupLabel text={title} titleTooltip={titleTooltip} />
@@ -40,19 +57,7 @@ export default function ConvictionField({
         setValue={setConviction}
         disabled={false}
       />
-      {isLoading && (
-        <LockingPeriod>
-          <FlexCenter>
-            <Loading />
-          </FlexCenter>
-        </LockingPeriod>
-      )}
-      {!!time && (
-        <LockingPeriod>
-          <span className="title">Locking Period</span>
-          <span>≈ {time}</span>
-        </LockingPeriod>
-      )}
+      {lockingPeriod}
     </div>
   );
 }
