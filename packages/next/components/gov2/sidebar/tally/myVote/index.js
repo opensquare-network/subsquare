@@ -5,6 +5,7 @@ import StandardVoteStatus from "components/referenda/popup/standardVoteStatus";
 import SplitVoteStatus from "components/referenda/popup/splitVoteStatus";
 import DelegateVoteStatus from "./delegateVoteStatus";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import SplitAbstainVoteStatus from "components/gov2/votePopup/splitAbstainVoteStatus";
 
 const Wrapper = styled.div`
   color: ${(p) => p.theme.textPrimary};
@@ -41,7 +42,10 @@ export default function MyVote({ detail, isVoting }) {
 
   if (
     addressVoteIsLoading ||
-    (!addressVote?.standard && !addressVote?.split && !addressVoteDelegateVoted)
+    (!addressVote?.standard &&
+      !addressVote?.split &&
+      !addressVote?.splitAbstain &&
+      !addressVoteDelegateVoted)
   ) {
     return null;
   }
@@ -58,6 +62,12 @@ export default function MyVote({ detail, isVoting }) {
         <SplitVoteStatus
           title="My voting"
           addressVoteSplit={addressVote?.split}
+        />
+      )}
+      {addressVote?.splitAbstain && (
+        <SplitAbstainVoteStatus
+          title="My voting"
+          addressVoteSplit={addressVote?.splitAbstain}
         />
       )}
       {addressVoteDelegateVoted && (
