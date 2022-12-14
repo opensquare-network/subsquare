@@ -9,13 +9,13 @@ export default function useVoteLockTime(
   module = "convictionVoting"
 ) {
   const api = useApi();
-  const [time, setTime] = useState("");
+  const [time, setTime] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const blockTime = useSelector(blockTimeSelector);
 
   useEffect(() => {
     if (conviction === 0) {
-      setTime("");
+      setTime();
       setIsLoading(false);
       return;
     }

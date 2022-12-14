@@ -4,23 +4,10 @@ import PopupLabel from "next-common/components/popup/label";
 import ConvictionSelect from "next-common/components/convictionSelect";
 import useVoteLockTime from "next-common/utils/hooks/useVoteLockTime";
 import Loading from "../../loading";
-import FlexCenter from "../../styled/flexCenter";
+import { StatusWrapper } from "../styled";
 
-const LockingPeriod = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 16px;
-  background: ${(p) => p.theme.grey100Bg};
-  border-radius: 4px;
+const LockingPeriod = styled(StatusWrapper)`
   margin-top: 8px;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  .title {
-    font-weight: 500;
-    color: ${(p) => p.theme.textPrimary};
-  }
 `;
 
 export default function ConvictionField({
@@ -37,16 +24,16 @@ export default function ConvictionField({
   if (isLoading) {
     lockingPeriod = (
       <LockingPeriod>
-        <FlexCenter>
+        <div className="no-data">
           <Loading />
-        </FlexCenter>
+        </div>
       </LockingPeriod>
     );
-  } else if (time !== "") {
+  } else if (time) {
     lockingPeriod = (
       <LockingPeriod>
-        <span className="title">Locking Period</span>
-        <span>≈ {time}</span>
+        <div className="value">Locking Period</div>
+        <div className="result">≈ {time}</div>
       </LockingPeriod>
     );
   }
