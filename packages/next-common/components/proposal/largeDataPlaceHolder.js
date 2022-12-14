@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import ExternalLink from "../../assets/imgs/icons/external-link.svg";
-import { useChain } from "../../context/chain";
+import { useChain, useChainSettings } from "../../context/chain";
 import isNil from "lodash.isnil";
 
 const LargeData = styled.div`
@@ -21,17 +21,19 @@ export default function LargeDataPlaceHolder({
   proposalIndex,
 }) {
   const chain = useChain();
+  const { noSubscan, subscanDomain } = useChainSettings();
+  const domain = subscanDomain || chain;
   let subscanLink =
     referendumIndex !== undefined
-      ? `https://${chain}.subscan.io/referenda/${referendumIndex}`
+      ? `https://${domain}.subscan.io/referenda/${referendumIndex}`
       : motionIndex !== undefined
-      ? `https://${chain}.subscan.io/council/${motionIndex}`
-      : `https://${chain}.subscan.io/democracy_proposal/${proposalIndex}`;
+      ? `https://${domain}.subscan.io/council/${motionIndex}`
+      : `https://${domain}.subscan.io/democracy_proposal/${proposalIndex}`;
 
   return (
     <LargeData>
       Large data, please check it on subscan
-      {!isNil(referendumIndex) && (
+      {!isNil(referendumIndex) && !noSubscan && (
         <a
           target="_blank"
           rel="noreferrer"

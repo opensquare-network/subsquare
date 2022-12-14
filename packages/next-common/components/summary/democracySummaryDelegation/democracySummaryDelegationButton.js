@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Button } from "./styled";
+import { Button } from "../styled";
 import DelegatePopup from "next-common/components/democracy/delegatePopup";
 import AddSVG from "next-common/assets/imgs/icons/add.svg";
 import RemoveSVG from "next-common/assets/imgs/icons/remove.svg";

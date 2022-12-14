@@ -2,7 +2,7 @@ import {
   VotingStatusContent,
   WarningMessage,
 } from "next-common/components/popup/styled";
-import DisplayValue from "next-common/components/displayValue";
+import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { convictionToLockX, getConviction, isAye } from "utils/referendumUtil";
 import PopupLabel from "next-common/components/popup/label";
@@ -21,7 +21,7 @@ export default function StandardVoteStatus({ addressVoteStandard }) {
     <VotingStatusContent>
       <PopupLabel text={"Current voting"} status={"Standard"} />
       <VoteStatusBox aye={addressVoteStandardAye}>
-        <DisplayValue
+        <ValueDisplay
           value={toPrecision(addressVoteStandardBalance, node.decimals)}
           symbol={node?.voteSymbol || node?.symbol}
         />

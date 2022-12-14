@@ -5,7 +5,7 @@ import AyeIcon from "public/imgs/icons/aye.svg";
 import NayIcon from "public/imgs/icons/nay.svg";
 import TurnoutIcon from "public/imgs/icons/turnout.svg";
 import ElectorateIcon from "public/imgs/icons/electorate.svg";
-import DisplayValue from "next-common/components/displayValue";
+import ValueDisplay from "next-common/components/valueDisplay";
 import VotesCount from "next-common/components/democracy/referendum/votesCount";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { useChainSettings } from "next-common/context/chain";
@@ -79,7 +79,7 @@ export default function TallyInfo({
           {!isLoadingVotes ? <VotesCount>{allAye.length}</VotesCount> : null}
         </Header>
         <Value>
-          <DisplayValue value={nAyes} symbol={symbol} noWrap={width <= 1024} />
+          <ValueDisplay value={nAyes} symbol={symbol} noWrap={width <= 1024} />
         </Value>
       </BorderedRow>
       <BorderedRow>
@@ -89,7 +89,7 @@ export default function TallyInfo({
           {!isLoadingVotes ? <VotesCount>{allNay.length}</VotesCount> : null}
         </Header>
         <Value>
-          <DisplayValue value={nNays} symbol={symbol} noWrap={width <= 1024} />
+          <ValueDisplay value={nNays} symbol={symbol} noWrap={width <= 1024} />
         </Value>
       </BorderedRow>
       <BorderedRow>
@@ -98,7 +98,7 @@ export default function TallyInfo({
           Turnout
         </Header>
         <Value>
-          <DisplayValue
+          <ValueDisplay
             value={nTurnout}
             symbol={symbol}
             noWrap={width <= 1024}
@@ -111,7 +111,7 @@ export default function TallyInfo({
           Electorate
         </Header>
         <Value>
-          <DisplayValue
+          <ValueDisplay
             value={nElectorate}
             symbol={symbol}
             noWrap={width <= 1024}

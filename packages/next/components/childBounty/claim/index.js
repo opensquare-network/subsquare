@@ -12,7 +12,7 @@ import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { shadow_100 } from "next-common/styles/componentCss";
-import ValueDisplay from "next-common/components/displayValue";
+import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
