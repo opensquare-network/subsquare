@@ -8,7 +8,7 @@ import Flex from "next-common/components/styled/flex";
 import FlexBetween from "next-common/components/styled/flexBetween";
 import Divider from "next-common/components/styled/layout/divider";
 import businessCategory from "next-common/utils/consts/business/category";
-import ValueDisplay from "next-common/components/displayValue";
+import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 
 const ChildBountyWrapper = styled.div`

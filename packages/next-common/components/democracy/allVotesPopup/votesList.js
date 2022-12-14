@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import styled, { withTheme } from "styled-components";
 import { toPrecision } from "next-common/utils";
 import User from "next-common/components/user";
-import ValueDisplay from "../../displayValue";
+import ValueDisplay from "../../valueDisplay";
 import Loading from "../../loading";
 
 import {
