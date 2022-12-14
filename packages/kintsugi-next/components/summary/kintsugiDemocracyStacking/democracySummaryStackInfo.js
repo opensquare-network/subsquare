@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
-import ValueDisplay from "next-common/components/displayValue";
+import ValueDisplay from "next-common/components/valueDisplay";
 import Flex from "next-common/components/styled/flex";
 
 const Wrapper = styled.div`

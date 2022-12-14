@@ -1,6 +1,6 @@
 import VoteStatusBox from "next-common/components/popup/voteStatusBox";
 import { WarningMessage } from "next-common/components/popup/styled";
-import ValueDisplay from "next-common/components/displayValue";
+import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useDecimals, useVoteSymbol } from "next-common/context/chain";
 

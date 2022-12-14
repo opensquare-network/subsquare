@@ -1,4 +1,4 @@
-import DisplayValue from "next-common/components/displayValue";
+import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
@@ -11,7 +11,7 @@ export default function SymbolValue({ value = 0 }) {
 
   return (
     <Value>
-      <DisplayValue value={nValue} symbol={symbol} noWrap={width <= 1024} />
+      <ValueDisplay value={nValue} symbol={symbol} noWrap={width <= 1024} />
     </Value>
   );
 }
