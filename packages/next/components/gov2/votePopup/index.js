@@ -22,6 +22,8 @@ import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
+import { WarningMessage } from "next-common/components/popup/styled";
+import Column from "next-common/components/styled/column";
 
 function PopupContent({
   extensionAccounts,
@@ -169,14 +171,18 @@ function PopupContent({
         (!addressVote?.delegating || !addressVoteDelegateVoted) && (
           <NoVoteRecord />
         )}
-      {addressVote?.standard && (
-        <StandardVoteStatus
-          addressVoteStandard={addressVote?.standard}
-          node={node}
-        />
-      )}
-      {addressVote?.split && (
-        <SplitVoteStatus addressVoteSplit={addressVote?.split} node={node} />
+      {(addressVote?.standard || addressVote?.split) && (
+        <Column gap={8}>
+          {addressVote?.standard && (
+            <StandardVoteStatus addressVoteStandard={addressVote?.standard} />
+          )}
+          {addressVote?.split && (
+            <SplitVoteStatus addressVoteSplit={addressVote?.split} />
+          )}
+          <WarningMessage>
+            Resubmitting the vote will override the current voting record
+          </WarningMessage>
+        </Column>
       )}
       {addressVote?.delegating && addressVoteDelegateVoted && (
         <DelegateVoteStatus addressVoteDelegate={addressVote?.delegating} />

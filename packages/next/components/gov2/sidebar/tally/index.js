@@ -14,6 +14,7 @@ import useApprovalThreshold from "./threshold/useApprovalThreshold";
 import useIssuance from "next-common/utils/gov2/useIssuance";
 import SupportBar from "./supportBar";
 import Issuance from "./values/issuance";
+import MyVote from "./myVote";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -56,6 +57,11 @@ export default function Gov2Tally({ detail }) {
         <AllVotes />
         <VoteExtrinsics />
       </Footer>
+
+      <MyVote
+        trackId={detail?.track}
+        referendumIndex={detail?.referendumIndex}
+      />
     </SecondaryCardDetail>
   );
 }

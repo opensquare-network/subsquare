@@ -2,7 +2,7 @@ import { VotingStatusContent } from "next-common/components/popup/styled";
 import PopupLabel from "next-common/components/popup/label";
 import VoteStatusBox from "next-common/components/popup/voteStatusBox";
 
-export default function SplitVoteStatus({ addressVoteDelegate }) {
+export default function DelegateVoteStatus({ addressVoteDelegate }) {
   const addressVoteDelegateAye = addressVoteDelegate?.aye;
 
   return (
