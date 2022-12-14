@@ -11,7 +11,7 @@ const LockingPeriod = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 10px 16px;
-  background: #f6f7fa;
+  background: ${(p) => p.theme.grey100Bg};
   border-radius: 4px;
   margin-top: 8px;
   font-weight: 400;
@@ -19,7 +19,7 @@ const LockingPeriod = styled.div`
   line-height: 20px;
   .title {
     font-weight: 500;
-    color: #1e2134;
+    color: ${(p) => p.theme.textPrimary};
   }
 `;
 
