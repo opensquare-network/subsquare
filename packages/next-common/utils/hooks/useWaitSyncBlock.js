@@ -7,6 +7,7 @@ import useApi from "./useApi";
 import { getBlockHeightFromHash } from "../chain";
 import { nodesHeightSelector } from "../../store/reducers/nodeSlice";
 import {
+  newErrorToast,
   newPendingToast,
   newSuccessToast,
   newToastId,
@@ -49,7 +50,7 @@ export default function useWaitSyncBlock(toastMessage, callback) {
           const reachingFinalizedBlock = times >= 0;
           callback(reachingFinalizedBlock);
         } catch (e) {
-          console.error(e);
+          dispatch(newErrorToast(e.message));
         } finally {
           dispatch(removeToast(toastId));
         }
