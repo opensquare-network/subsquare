@@ -38,7 +38,7 @@ export default function useWaitSyncBlock(toastMessage, callback) {
         try {
           const targetHeight = await getBlockHeightFromHash(api, blockHash);
 
-          let times = 6;
+          let times = 12;
           while (times-- > 0) {
             await sleep(10000);
             if (refScanHeight.current >= targetHeight) {
