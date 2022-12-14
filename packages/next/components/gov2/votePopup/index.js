@@ -13,7 +13,7 @@ import DelegateVoteStatus from "components/referenda/popup/delegateVoteStatus";
 import NoVoteRecord from "components/referenda/popup/noVoteRecord";
 import LoadingVoteStatus from "components/referenda/popup/loadingVoteStatus";
 import Delegating from "components/referenda/popup/delegating";
-import DirectVote from "components/referenda/popup/directVote";
+import DirectVote from "./directVote";
 import VoteButton from "next-common/components/popup/voteButton";
 import Signer from "next-common/components/popup/fields/signerField";
 
