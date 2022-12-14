@@ -15,6 +15,7 @@ export default function getTreasurySpendBusiness(call = {}, decimals, symbol) {
     business[0].push([
       "Request",
       <ValueDisplay
+        key="request"
         value={toPrecision(valueArg.value, decimals)}
         symbol={symbol}
       />,
@@ -25,6 +26,7 @@ export default function getTreasurySpendBusiness(call = {}, decimals, symbol) {
     business[0].push([
       "Beneficiary",
       <User
+        key="beneficiary"
         add={beneficiaryArg.value.id || beneficiaryArg.value}
         fontSize={14}
       />,
