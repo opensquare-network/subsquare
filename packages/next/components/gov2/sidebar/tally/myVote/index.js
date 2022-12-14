@@ -50,19 +50,19 @@ export default function MyVote({ detail, isVoting }) {
     <Wrapper>
       {addressVote?.standard && (
         <StandardVoteStatus
-          title="My voting"
+          title="My vote"
           addressVoteStandard={addressVote?.standard}
         />
       )}
       {addressVote?.split && (
         <SplitVoteStatus
-          title="My voting"
+          title="My vote"
           addressVoteSplit={addressVote?.split}
         />
       )}
       {addressVoteDelegateVoted && (
         <DelegateVoteStatus
-          title="My voting"
+          title="My vote"
           addressVoteDelegate={addressVote?.delegating}
         />
       )}
