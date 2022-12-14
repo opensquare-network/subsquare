@@ -33,7 +33,7 @@ export default function getTreasurySpendBusiness(call = {}, decimals, symbol) {
     ]);
   }
 
-  if (business.length <= 0) {
+  if (business[0].length <= 0) {
     return null;
   }
 
