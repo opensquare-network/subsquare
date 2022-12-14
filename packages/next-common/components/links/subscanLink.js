@@ -12,7 +12,6 @@ function SubScanLink({ indexer = {}, children }) {
     return null;
   }
 
-  console.log("subscanDomain", subscanDomain);
   const { blockHeight, extrinsicIndex, index, eventIndex } = indexer;
   let url = `https://${subscanDomain || chain}.subscan.io`;
   if (!isNil(extrinsicIndex) || !isNil(index)) {
