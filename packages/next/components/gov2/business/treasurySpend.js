@@ -1,7 +1,7 @@
-import ValueDisplay from "next-common/components/displayValue";
 import { toPrecision } from "next-common/utils";
 import User from "next-common/components/user";
 import React from "react";
+import ValueDisplay from "next-common/components/valueDisplay";
 
 export default function getTreasurySpendBusiness(call = {}, decimals, symbol) {
   const { section, method, args = [] } = call;
