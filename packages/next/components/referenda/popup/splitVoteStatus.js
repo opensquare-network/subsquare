@@ -2,7 +2,7 @@ import {
   VotingStatusContent,
   WarningMessage,
 } from "next-common/components/popup/styled";
-import DisplayValue from "next-common/components/displayValue";
+import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import PopupLabel from "next-common/components/popup/label";
 import VoteStatusBox from "next-common/components/popup/voteStatusBox";
@@ -21,13 +21,13 @@ export default function SplitVoteStatus({ addressVoteSplit }) {
         tooltip={"Vote for both aye and nay"}
       />
       <VoteStatusBox aye={true}>
-        <DisplayValue
+        <ValueDisplay
           value={toPrecision(addressVoteSplitAye, node.decimals)}
           symbol={node?.voteSymbol || node?.symbol}
         />
       </VoteStatusBox>
       <VoteStatusBox aye={false}>
-        <DisplayValue
+        <ValueDisplay
           value={toPrecision(addressVoteSplitNay, node.decimals)}
           symbol={node?.voteSymbol || node?.symbol}
         />

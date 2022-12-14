@@ -19,7 +19,7 @@ import ElectorateIcon from "public/imgs/icons/electorate.svg";
 import Threshold from "./threshold";
 import Loading from "next-common/components/loading";
 import ExternalLink from "next-common/assets/imgs/icons/external-link.svg";
-import ValueDisplay from "next-common/components/displayValue";
+import ValueDisplay from "next-common/components/valueDisplay";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";

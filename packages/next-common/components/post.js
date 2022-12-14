@@ -26,7 +26,7 @@ import Gov2TrackTag from "../components/gov2/trackTag";
 import DecisionCountdown from "../components/gov2/postList/decisionCountdown";
 import { gov2State } from "../utils/consts/state";
 import ConfirmCountdown from "./gov2/postList/confirmCountdown";
-import ValueDisplay from "./displayValue";
+import ValueDisplay from "./valueDisplay";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
