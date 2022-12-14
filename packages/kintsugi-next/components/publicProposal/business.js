@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-key */
-import isNil from "lodash.isnil";
 import Link from "next/link";
 import KvList from "next-common/components/listInfo/kvList";
 import styled from "styled-components";
@@ -17,8 +16,9 @@ export default function Business({ treasuryProposals }) {
     business.push([
       "Link to",
       <LinkItems>
-        {treasuryProposals.map((item) => (
+        {treasuryProposals.map((item, idx) => (
           <Link
+            key={idx}
             href={`/treasury/proposal/${item.proposalIndex}`}
           >{`Treasury Proposal #${item.proposalIndex}`}</Link>
         ))}
