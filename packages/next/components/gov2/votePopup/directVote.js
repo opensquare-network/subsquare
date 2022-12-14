@@ -1,5 +1,5 @@
 import Delegations from "components/referenda/popup/delegations";
-import VoteValue from "components/referenda/popup//voteValue";
+import VoteValue from "components/referenda/popup/voteValue";
 import VoteLock from "./voteLock";
 
 export default function DirectVote({
