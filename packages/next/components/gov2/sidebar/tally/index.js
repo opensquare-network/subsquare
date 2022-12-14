@@ -14,6 +14,7 @@ import useApprovalThreshold from "./threshold/useApprovalThreshold";
 import useIssuance from "next-common/utils/gov2/useIssuance";
 import SupportBar from "./supportBar";
 import Issuance from "./values/issuance";
+import MyVote from "./myVote";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -27,7 +28,7 @@ const Footer = styled.div`
   margin-top: 16px;
 `;
 
-export default function Gov2Tally({ detail }) {
+export default function Gov2Tally({ detail, isVoting }) {
   useFetchVotes(detail?.onchainData);
   useFetchVoteExtrinsics(detail?.onchainData);
   const tally = useTally();
@@ -56,6 +57,8 @@ export default function Gov2Tally({ detail }) {
         <AllVotes />
         <VoteExtrinsics />
       </Footer>
+
+      <MyVote detail={detail} isVoting={isVoting} />
     </SecondaryCardDetail>
   );
 }
