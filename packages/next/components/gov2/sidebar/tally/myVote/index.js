@@ -1,21 +1,30 @@
+import styled from "styled-components";
 import useAddressVote from "next-common/utils/hooks/referenda/useAddressVote";
-import useApi from "next-common/utils/hooks/useApi";
+import useBlockApi from "next-common/utils/hooks/useBlockApi";
 import StandardVoteStatus from "components/referenda/popup/standardVoteStatus";
 import SplitVoteStatus from "components/referenda/popup/splitVoteStatus";
 import DelegateVoteStatus from "./delegateVoteStatus";
-import NoVoteRecord from "components/referenda/popup/noVoteRecord";
-import LoadingVoteStatus from "components/referenda/popup/loadingVoteStatus";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import styled from "styled-components";
 
 const Wrapper = styled.div`
   color: ${(p) => p.theme.textPrimary};
   margin-top: 24px;
 `;
 
-export default function MyVote({ referendumIndex, trackId }) {
-  const api = useApi();
+export default function MyVote({ detail, isVoting }) {
+  let atBlockHeight;
+  if (!isVoting) {
+    const timeline = detail?.onchainData?.timeline;
+    const lastTimelineHeight =
+      timeline[timeline.length - 1]?.indexer.blockHeight;
+    atBlockHeight = lastTimelineHeight - 1;
+  }
+
+  const api = useBlockApi(atBlockHeight);
   const realAddress = useRealAddress();
+
+  const referendumIndex = detail?.referendumIndex;
+  const trackId = detail?.track;
 
   const [addressVote, addressVoteIsLoading] = useAddressVote(
     api,
@@ -30,14 +39,15 @@ export default function MyVote({ referendumIndex, trackId }) {
     return null;
   }
 
+  if (
+    addressVoteIsLoading ||
+    (!addressVote?.standard && !addressVote?.split && !addressVoteDelegateVoted)
+  ) {
+    return null;
+  }
+
   return (
     <Wrapper>
-      {!addressVoteIsLoading &&
-        !addressVote?.standard &&
-        !addressVote?.split &&
-        (!addressVote?.delegating || !addressVoteDelegateVoted) && (
-          <NoVoteRecord />
-        )}
       {addressVote?.standard && (
         <StandardVoteStatus
           title="My voting"
@@ -50,13 +60,12 @@ export default function MyVote({ referendumIndex, trackId }) {
           addressVoteSplit={addressVote?.split}
         />
       )}
-      {addressVote?.delegating && addressVoteDelegateVoted && (
+      {addressVoteDelegateVoted && (
         <DelegateVoteStatus
           title="My voting"
           addressVoteDelegate={addressVote?.delegating}
         />
       )}
-      {addressVoteIsLoading && <LoadingVoteStatus />}
     </Wrapper>
   );
 }

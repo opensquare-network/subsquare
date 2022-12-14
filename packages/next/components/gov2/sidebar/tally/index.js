@@ -28,7 +28,7 @@ const Footer = styled.div`
   margin-top: 16px;
 `;
 
-export default function Gov2Tally({ detail }) {
+export default function Gov2Tally({ detail, isVoting }) {
   useFetchVotes(detail?.onchainData);
   useFetchVoteExtrinsics(detail?.onchainData);
   const tally = useTally();
@@ -58,10 +58,7 @@ export default function Gov2Tally({ detail }) {
         <VoteExtrinsics />
       </Footer>
 
-      <MyVote
-        trackId={detail?.track}
-        referendumIndex={detail?.referendumIndex}
-      />
+      <MyVote detail={detail} isVoting={isVoting} />
     </SecondaryCardDetail>
   );
 }

@@ -52,7 +52,7 @@ export default function Gov2Sidebar({
   const [showVote, setShowVote] = useState(false);
   const referendumIndex = detail?.referendumIndex;
   const trackId = detail?.track;
-  const showVoteButton = [
+  const isVoting = [
     gov2State.Submitted,
     gov2State.Queueing,
     gov2State.Deciding,
@@ -63,9 +63,9 @@ export default function Gov2Sidebar({
     <RightBarWrapper>
       <Gov2Status />
 
-      <Gov2Tally detail={detail} />
+      <Gov2Tally detail={detail} isVoting={isVoting} />
 
-      {showVoteButton && (
+      {isVoting && (
         <VoteButton
           onClick={() => {
             setShowVote(true);
