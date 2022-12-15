@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import { useCallback, useEffect, useState } from "react";
 
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";

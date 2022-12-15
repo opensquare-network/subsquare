@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import Link from "next/link";
 import KvList from "next-common/components/listInfo/kvList";
 import styled from "styled-components";
@@ -15,7 +14,7 @@ export default function Business({ treasuryProposals }) {
   if (treasuryProposals?.length > 0) {
     business.push([
       "Link to",
-      <LinkItems>
+      <LinkItems key="link-to">
         {treasuryProposals.map((item, idx) => (
           <Link
             key={idx}

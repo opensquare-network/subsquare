@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import usePolkassemblyPostData from "components/polkassembly/usePolkassemblyPostData";
 import PolkassemblyComments from "components/polkassembly/comment";
 

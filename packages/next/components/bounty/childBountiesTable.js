@@ -113,8 +113,7 @@ function ChildBountiesTable({ childBounties }) {
             <Row
               row={[
                 `#${bounty.index}`,
-                // eslint-disable-next-line react/jsx-key
-                <ChildBounty>
+                <ChildBounty key="child-bounty">
                   <Anchor
                     href={`/treasury/child-bounty/${bounty.parentBountyId}_${bounty.index}`}
                     title={bounty.title}
