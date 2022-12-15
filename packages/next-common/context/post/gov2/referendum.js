@@ -3,6 +3,8 @@ import findLast from "lodash.findlast";
 import findLastIndex from "lodash.findlastindex";
 import useApi from "../../../utils/hooks/useApi";
 import { useEffect, useState } from "react";
+import { useDetailType } from "../../page";
+import { detailPageCategory } from "../../../utils/consts/business/category";
 
 export function useDecidingSince() {
   const onchain = useOnchainData();
@@ -18,6 +20,7 @@ export function useTally() {
   const onchain = useOnchainData();
   const { referendumIndex } = onchain;
   const [tally, setTally] = useState(onchain?.info?.tally);
+  const pageType = useDetailType();
 
   const api = useApi();
 
@@ -26,7 +29,16 @@ export function useTally() {
       return;
     }
 
-    api.query.referenda
+    let palletName;
+    if (detailPageCategory.GOV2_REFERENDUM === pageType) {
+      palletName = "referenda";
+    } else if (detailPageCategory.FELLOWSHIP_REFERENDUM === pageType) {
+      palletName = "fellowshipReferenda";
+    } else {
+      return;
+    }
+
+    api.query[palletName]
       .referendumInfoFor(referendumIndex)
       .then((optionalInfo) => {
         if (!optionalInfo.isSome) {
@@ -40,7 +52,7 @@ export function useTally() {
 
         setTally(info.asOngoing.tally.toJSON());
       });
-  }, [api, referendumIndex]);
+  }, [api, referendumIndex, pageType]);
   return tally;
 }
 
