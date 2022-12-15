@@ -25,23 +25,27 @@ export function useAddressVotingBalance(api, address) {
   return [balance, isLoading];
 }
 
-export function useAddressVote(api, referendumIndex, address) {
+export function useAddressVote(api, referendumIndex, address, updateTime) {
   const [vote, setVote] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useIsMounted();
+
   useEffect(() => {
-    if (api && address) {
-      setIsLoading(true);
-      getAddressVote(api, referendumIndex, address)
-        .then((vote) => {
-          if (isMounted.current) {
-            setVote(vote);
-          }
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
+    if (!api || !address) {
+      return;
     }
-  }, [api, referendumIndex, address, isMounted]);
+
+    setIsLoading(true);
+    getAddressVote(api, referendumIndex, address)
+      .then((vote) => {
+        if (isMounted.current) {
+          setVote(vote);
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [api, referendumIndex, address, isMounted, updateTime]);
+
   return [vote, isLoading];
 }

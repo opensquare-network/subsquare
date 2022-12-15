@@ -111,8 +111,11 @@ function Vote({
     isLoadingReferendumStatusSelector
   );
 
+  const [updateTime, setUpdateTime] = useState(0);
+
   const updateVoteProgress = useCallback(() => {
     dispatch(fetchReferendumStatus(api, referendumIndex));
+    setUpdateTime(Date.now());
   }, [dispatch, api, referendumIndex]);
 
   const isPassing = calcPassing(referendumStatus, electorate);
@@ -176,7 +179,7 @@ function Vote({
           Check all votes
         </SubLink>
 
-        <MyVote detail={detail} />
+        <MyVote detail={detail} updateTime={updateTime} />
       </SecondaryCardDetail>
 
       {!finished && (

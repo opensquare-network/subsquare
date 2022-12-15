@@ -8,6 +8,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import findLast from "lodash.findlast";
 import { gov2FinalState } from "next-common/utils/consts/state";
 import { useTimelineData } from "next-common/context/post";
+import LoadingVoteStatus from "components/referenda/popup/loadingVoteStatus";
 
 const Wrapper = styled.div`
   color: ${(p) => p.theme.textPrimary};
@@ -30,12 +31,14 @@ export default function MyVote({ detail }) {
 
   const referendumIndex = detail?.referendumIndex;
   const trackId = detail?.track;
+  const updateTime = detail?.onchainData?.state?.indexer.blockTime;
 
   const [addressVote, addressVoteIsLoading] = useAddressVote(
     api,
     trackId,
     referendumIndex,
-    realAddress
+    realAddress,
+    updateTime
   );
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
@@ -45,10 +48,19 @@ export default function MyVote({ detail }) {
   }
 
   if (
-    addressVoteIsLoading ||
-    (!addressVote?.standard && !addressVote?.split && !addressVoteDelegateVoted)
+    !addressVote?.standard &&
+    !addressVote?.split &&
+    !addressVoteDelegateVoted
   ) {
     return null;
+  }
+
+  if (addressVoteIsLoading) {
+    return (
+      <Wrapper>
+        <LoadingVoteStatus title="My vote" />
+      </Wrapper>
+    );
   }
 
   return (
