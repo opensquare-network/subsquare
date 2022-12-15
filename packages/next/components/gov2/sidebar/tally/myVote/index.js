@@ -5,17 +5,24 @@ import StandardVoteStatus from "components/referenda/popup/standardVoteStatus";
 import SplitVoteStatus from "components/referenda/popup/splitVoteStatus";
 import DelegateVoteStatus from "components/referenda/myVote/delegateVoteStatus";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import findLast from "lodash.findlast";
+import { gov2FinalState } from "next-common/utils/consts/state";
+import { useTimelineData } from "next-common/context/post";
 
 const Wrapper = styled.div`
   color: ${(p) => p.theme.textPrimary};
   margin-top: 24px;
 `;
 
-export default function MyVote({ detail, isVoting }) {
+export default function MyVote({ detail }) {
   let atBlockHeight;
-  if (!isVoting) {
-    const timeline = detail?.onchainData?.timeline;
-    atBlockHeight = timeline[timeline.length - 1]?.indexer.blockHeight;
+  const timeline = useTimelineData();
+
+  const finalStateItem = findLast(timeline, ({ name }) =>
+    gov2FinalState.includes(name)
+  );
+  if (finalStateItem) {
+    atBlockHeight = finalStateItem?.indexer.blockHeight;
   }
 
   const api = useBlockApi(atBlockHeight);

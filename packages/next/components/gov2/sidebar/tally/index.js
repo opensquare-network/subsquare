@@ -28,7 +28,7 @@ const Footer = styled.div`
   margin-top: 16px;
 `;
 
-export default function Gov2Tally({ detail, isVoting }) {
+export default function Gov2Tally({ detail }) {
   useFetchVotes(detail?.onchainData);
   useFetchVoteExtrinsics(detail?.onchainData);
   const tally = useTally();
@@ -58,7 +58,7 @@ export default function Gov2Tally({ detail, isVoting }) {
         <VoteExtrinsics />
       </Footer>
 
-      <MyVote detail={detail} isVoting={isVoting} />
+      <MyVote detail={detail} />
     </SecondaryCardDetail>
   );
 }

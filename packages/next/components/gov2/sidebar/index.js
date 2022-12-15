@@ -63,7 +63,7 @@ export default function Gov2Sidebar({
     <RightBarWrapper>
       <Gov2Status />
 
-      <Gov2Tally detail={detail} isVoting={isVoting} />
+      <Gov2Tally detail={detail} />
 
       {isVoting && (
         <VoteButton
