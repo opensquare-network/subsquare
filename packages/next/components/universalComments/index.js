@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import { useEffect, useRef, useState } from "react";
 import SourceTabs, {
   Polkassembly,

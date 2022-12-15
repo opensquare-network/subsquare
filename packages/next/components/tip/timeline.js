@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import styled from "styled-components";
 import findLastIndex from "lodash.findlastindex";
 import { getTimelineStatus } from "utils";
