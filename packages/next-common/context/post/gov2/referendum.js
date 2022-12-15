@@ -3,6 +3,8 @@ import findLast from "lodash.findlast";
 import findLastIndex from "lodash.findlastindex";
 import useApi from "../../../utils/hooks/useApi";
 import { useEffect, useState } from "react";
+import { useDetailType } from "../../page";
+import { detailPageCategory } from "../../../utils/consts/business/category";
 
 export function useDecidingSince() {
   const onchain = useOnchainData();
@@ -18,6 +20,7 @@ export function useTally() {
   const onchain = useOnchainData();
   const { referendumIndex } = onchain;
   const [tally, setTally] = useState(onchain?.info?.tally);
+  const pageType = useDetailType();
 
   const api = useApi();
 
@@ -26,21 +29,23 @@ export function useTally() {
       return;
     }
 
-    api.query.referenda
-      .referendumInfoFor(referendumIndex)
-      .then((optionalInfo) => {
-        if (!optionalInfo.isSome) {
-          return;
-        }
+    if (detailPageCategory.GOV2_REFERENDUM === pageType) {
+      api.query.referenda
+        .referendumInfoFor(referendumIndex)
+        .then((optionalInfo) => {
+          if (!optionalInfo.isSome) {
+            return;
+          }
 
-        const info = optionalInfo.unwrap();
-        if (!info.isOngoing) {
-          return;
-        }
+          const info = optionalInfo.unwrap();
+          if (!info.isOngoing) {
+            return;
+          }
 
-        setTally(info.asOngoing.tally.toJSON());
-      });
-  }, [api, referendumIndex]);
+          setTally(info.asOngoing.tally.toJSON());
+        });
+    }
+  }, [api, referendumIndex, pageType]);
   return tally;
 }
 
