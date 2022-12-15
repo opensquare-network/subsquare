@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import useAddressVote from "next-common/utils/hooks/referenda/useAddressVote";
+import { useAddressVote } from "utils/hooks";
 import useBlockApi from "next-common/utils/hooks/useBlockApi";
 import StandardVoteStatus from "components/referenda/popup/standardVoteStatus";
 import SplitVoteStatus from "components/referenda/popup/splitVoteStatus";
-import DelegateVoteStatus from "components/referenda/myVote/delegateVoteStatus";
+import DelegateVoteStatus from "./delegateVoteStatus";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const Wrapper = styled.div`
@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   margin-top: 24px;
 `;
 
-export default function MyVote({ detail, isVoting }) {
+export default function MyVote({ detail, isVoting = true }) {
   let atBlockHeight;
   if (!isVoting) {
     const timeline = detail?.onchainData?.timeline;
@@ -22,11 +22,9 @@ export default function MyVote({ detail, isVoting }) {
   const realAddress = useRealAddress();
 
   const referendumIndex = detail?.referendumIndex;
-  const trackId = detail?.track;
 
   const [addressVote, addressVoteIsLoading] = useAddressVote(
     api,
-    trackId,
     referendumIndex,
     realAddress
   );

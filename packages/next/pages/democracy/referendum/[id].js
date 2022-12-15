@@ -82,6 +82,7 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
         <DetailItem onReply={focusEditor} />
 
         <Vote
+          detail={detail}
           referendumInfo={detail?.onchainData?.info}
           referendumIndex={detail?.referendumIndex}
           onFinalized={onVoteFinalized}

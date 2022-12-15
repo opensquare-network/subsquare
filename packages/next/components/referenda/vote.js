@@ -23,6 +23,7 @@ import VoteBar from "./voteBar";
 import TallyInfo from "./tallyInfo";
 import { emptyFunction } from "next-common/utils";
 import { useChain } from "next-common/context/chain";
+import MyVote from "./myVote";
 
 const VotePopup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -89,6 +90,7 @@ const VoteButton = styled.button`
 `;
 
 function Vote({
+  detail,
   referendumInfo,
   referendumIndex,
   onFinalized = emptyFunction,
@@ -173,6 +175,8 @@ function Vote({
         >
           Check all votes
         </SubLink>
+
+        <MyVote detail={detail} />
       </SecondaryCardDetail>
 
       {!finished && (
