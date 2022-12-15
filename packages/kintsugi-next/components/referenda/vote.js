@@ -203,7 +203,7 @@ function Vote({
 }) {
   const chain = useChain();
   const dispatch = useDispatch();
-  const [showVote, setShowVote] = useState(false);
+  const [showVote, setShowVote] = useState(true);
   const [showVoteList, setShowVoteList] = useState(false);
   const api = useApi();
 
