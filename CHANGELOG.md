@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.6.1
+
+date: 12/14/2022
+
+- Change bifrost to bifrost kusama, and fix subscan external link.
+- Show active referenda number when menu fold.
+- Show related `treasury#spend` business for OpenGov referendum.
+- Query on-chain tally for active referendum.
+
 # 2.6.0
 
 date: 12/09/2022
