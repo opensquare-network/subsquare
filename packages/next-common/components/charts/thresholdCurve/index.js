@@ -12,6 +12,7 @@ export default function ThresholdCurvesChart({
   height,
   scalesX = true,
   scalesY = true,
+  layoutPadding,
   labels = [],
   supportData = [],
   approvalData = [],
@@ -44,6 +45,9 @@ export default function ThresholdCurvesChart({
 
   const options = {
     clip: false,
+    layout: {
+      padding: layoutPadding,
+    },
     scales: {
       x: {
         type: "linear",
