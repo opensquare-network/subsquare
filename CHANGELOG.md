@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.6.2
+
+date: 12/15/2022
+
+- Bind kintsugi public proposal with treasury proposal.
+- Show kintsugi escrow value, and the staked balance.
+- Show my vote on democracy and OpenGov referendum detail page.
+- Increase the syncing time after submitting extrinsics.
+- Show the estimated token lock time for conviction voting.
+- Style fixes including markdown content hr element color.
+
 # 2.6.1
 
 date: 12/14/2022
