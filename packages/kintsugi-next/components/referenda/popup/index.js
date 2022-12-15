@@ -42,8 +42,7 @@ function PopupContent({
   const [addressVote, addressVoteIsLoading] = useAddressVote(
     api,
     referendumIndex,
-    // signerAccount?.realAddress
-    "a3dUyqEoBUVpRDgqePbTXVGPaZBCDC4rLmLec6Mvhnef5SJPS"
+    signerAccount?.realAddress
   );
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const isMounted = useIsMounted();

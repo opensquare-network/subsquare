@@ -2,11 +2,10 @@ import styled from "styled-components";
 import { useAddressVote } from "utils/hooks";
 import useBlockApi from "next-common/utils/hooks/useBlockApi";
 import { usePost, useTimelineData } from "next-common/context/post";
-import StandardVoteStatus from "../popup/standardVoteStatus";
-import SplitVoteStatus from "../popup/splitVoteStatus";
-import DelegateVoteStatus from "./delegateVoteStatus";
 import extractVoteInfo from "next-common/utils/democracy/referendum";
 import VoteStatus from "../popup/voteStatus";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import PopupLabel from "next-common/components/popup/label";
 
 const Wrapper = styled.div`
   color: ${(p) => p.theme.textPrimary};
@@ -26,8 +25,7 @@ export default function MyVote({ updateTime }) {
   const [addressVote] = useAddressVote(
     api,
     referendumIndex,
-    // realAddress,
-    "a3dUyqEoBUVpRDgqePbTXVGPaZBCDC4rLmLec6Mvhnef5SJPS",
+    realAddress,
     updateTime
   );
 
@@ -35,19 +33,13 @@ export default function MyVote({ updateTime }) {
     return null;
   }
 
-  if (
-    !addressVote?.standard &&
-    !addressVote?.split &&
-    !addressVoteDelegateVoted
-  ) {
+  if (!addressVote) {
     return null;
   }
 
-  const title = "My vote";
-
   return (
     <Wrapper>
-      <PopupLabel text={"Voting status"} />
+      <PopupLabel text="My vote" />
       <VoteStatus addressVote={addressVote} />
     </Wrapper>
   );

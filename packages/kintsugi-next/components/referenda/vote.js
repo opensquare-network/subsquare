@@ -37,6 +37,7 @@ import {
 import VotesCount from "next-common/components/democracy/referendum/votesCount";
 import SubLink from "next-common/components/styled/subLink";
 import { useChain, useChainSettings } from "next-common/context/chain";
+import MyVote from "./myVote";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -203,9 +204,10 @@ function Vote({
 }) {
   const chain = useChain();
   const dispatch = useDispatch();
-  const [showVote, setShowVote] = useState(true);
+  const [showVote, setShowVote] = useState(false);
   const [showVoteList, setShowVoteList] = useState(false);
   const api = useApi();
+  const [updateTime, setUpdateTime] = useState(0);
 
   const electorate = useSelector(electorateSelector);
   const isElectorateLoading = useSelector(isLoadingElectorateSelector);
@@ -218,6 +220,7 @@ function Vote({
 
   const updateVoteProgress = useCallback(() => {
     dispatch(fetchReferendumStatus(api, referendumIndex));
+    setUpdateTime(Date.now());
   }, [dispatch, api, referendumIndex]);
 
   const { width } = useWindowSize();
@@ -380,6 +383,7 @@ function Vote({
         >
           Check all votes
         </SubLink>
+        <MyVote updateTime={updateTime} />
       </SecondaryCardDetail>
 
       {!referendumInfo?.finished && (
