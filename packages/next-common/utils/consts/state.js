@@ -24,11 +24,8 @@ export const gov2FinalState = [
   gov2State.Rejected,
 ];
 
-export const democracyReferendumFinalState = [
+export const democracyReferendumVoteEndState = [
   referendumState.Cancelled,
-  referendumState.Executed,
   referendumState.NotPassed,
   referendumState.Passed,
-  referendumState.PreimageInvalid,
-  referendumState.PreimageMissing,
 ];

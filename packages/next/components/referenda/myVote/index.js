@@ -4,7 +4,7 @@ import useBlockApi from "next-common/utils/hooks/useBlockApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useTimelineData } from "next-common/context/post";
 import findLast from "lodash.findlast";
-import { democracyReferendumFinalState } from "next-common/utils/consts/state";
+import { democracyReferendumVoteEndState } from "next-common/utils/consts/state";
 import LoadingVoteStatus from "../popup/loadingVoteStatus";
 import StandardVoteStatus from "../popup/standardVoteStatus";
 import SplitVoteStatus from "../popup/splitVoteStatus";
@@ -20,7 +20,7 @@ export default function MyVote({ detail, updateTime }) {
   const timeline = useTimelineData();
 
   const finalStateItem = findLast(timeline, ({ name }) =>
-    democracyReferendumFinalState.includes(name)
+    democracyReferendumVoteEndState.includes(name)
   );
   if (finalStateItem) {
     atBlockHeight = finalStateItem?.indexer.blockHeight;
