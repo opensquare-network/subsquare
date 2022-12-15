@@ -92,7 +92,7 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
 
         <DetailItem onReply={focusEditor} />
 
-        <Gov2Sidebar detail={detail} onVoteFinalized={onVoteFinalized} />
+        <Gov2Sidebar onVoteFinalized={onVoteFinalized} />
 
         <ReferendaBusiness />
         <Gov2ReferendumMetadata detail={detail} />

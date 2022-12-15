@@ -1,43 +1,30 @@
 import styled from "styled-components";
-import useAddressVote from "next-common/utils/hooks/referenda/useAddressVote";
+import { useAddressVote } from "utils/hooks";
 import useBlockApi from "next-common/utils/hooks/useBlockApi";
-import StandardVoteStatus from "components/referenda/popup/standardVoteStatus";
-import SplitVoteStatus from "components/referenda/popup/splitVoteStatus";
-import DelegateVoteStatus from "components/referenda/myVote/delegateVoteStatus";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import SplitAbstainVoteStatus from "components/gov2/votePopup/splitAbstainVoteStatus";
-import findLast from "lodash.findlast";
-import { gov2FinalState } from "next-common/utils/consts/state";
 import { usePost, useTimelineData } from "next-common/context/post";
+import StandardVoteStatus from "../popup/standardVoteStatus";
+import SplitVoteStatus from "../popup/splitVoteStatus";
+import DelegateVoteStatus from "./delegateVoteStatus";
+import extractVoteInfo from "next-common/utils/democracy/referendum";
 
 const Wrapper = styled.div`
   color: ${(p) => p.theme.textPrimary};
   margin-top: 24px;
 `;
 
-export default function MyVote() {
+export default function MyVote({ updateTime }) {
   const detail = usePost();
-
-  let atBlockHeight;
   const timeline = useTimelineData();
+  const { voteFinishedHeight } = extractVoteInfo(timeline);
 
-  const finalStateItem = findLast(timeline, ({ name }) =>
-    gov2FinalState.includes(name)
-  );
-  if (finalStateItem) {
-    atBlockHeight = finalStateItem?.indexer.blockHeight;
-  }
-
-  const api = useBlockApi(atBlockHeight);
+  const api = useBlockApi(voteFinishedHeight);
   const realAddress = useRealAddress();
 
   const referendumIndex = detail?.referendumIndex;
-  const trackId = detail?.track;
-  const updateTime = detail?.onchainData?.state?.indexer.blockTime;
 
   const [addressVote] = useAddressVote(
     api,
-    trackId,
     referendumIndex,
     realAddress,
     updateTime
@@ -52,13 +39,12 @@ export default function MyVote() {
   if (
     !addressVote?.standard &&
     !addressVote?.split &&
-    !addressVote?.splitAbstain &&
     !addressVoteDelegateVoted
   ) {
     return null;
   }
 
-  const title = "My voting";
+  const title = "My vote";
 
   return (
     <Wrapper>
@@ -70,12 +56,6 @@ export default function MyVote() {
       )}
       {addressVote?.split && (
         <SplitVoteStatus title={title} addressVoteSplit={addressVote?.split} />
-      )}
-      {addressVote?.splitAbstain && (
-        <SplitAbstainVoteStatus
-          title={title}
-          addressVoteSplit={addressVote?.splitAbstain}
-        />
       )}
       {addressVoteDelegateVoted && (
         <DelegateVoteStatus

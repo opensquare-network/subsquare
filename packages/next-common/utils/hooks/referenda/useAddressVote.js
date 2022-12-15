@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import useIsMounted from "../useIsMounted";
 import { getGov2AddressVote } from "../../gov2/gov2ReferendumVote";
 
-export default function useAddressVote(api, trackId, referendumIndex, address) {
+export default function useAddressVote(
+  api,
+  trackId,
+  referendumIndex,
+  address,
+  updateTime
+) {
   const [vote, setVote] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useIsMounted();
@@ -21,6 +27,6 @@ export default function useAddressVote(api, trackId, referendumIndex, address) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [api, trackId, referendumIndex, address, isMounted]);
+  }, [api, trackId, referendumIndex, address, isMounted, updateTime]);
   return [vote, isLoading];
 }

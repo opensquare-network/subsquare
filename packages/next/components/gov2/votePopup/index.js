@@ -24,6 +24,7 @@ import { useChainSettings } from "next-common/context/chain";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import { WarningMessage } from "next-common/components/popup/styled";
 import Column from "next-common/components/styled/column";
+import SplitAbstainVoteStatus from "./splitAbstainVoteStatus";
 
 function PopupContent({
   extensionAccounts,
@@ -168,16 +169,24 @@ function PopupContent({
       {!addressVoteIsLoading &&
         !addressVote?.standard &&
         !addressVote?.split &&
+        !addressVote?.splitAbstain &&
         (!addressVote?.delegating || !addressVoteDelegateVoted) && (
           <NoVoteRecord />
         )}
-      {(addressVote?.standard || addressVote?.split) && (
+      {(addressVote?.standard ||
+        addressVote?.split ||
+        addressVote?.splitAbstain) && (
         <Column gap={8}>
           {addressVote?.standard && (
             <StandardVoteStatus addressVoteStandard={addressVote?.standard} />
           )}
           {addressVote?.split && (
             <SplitVoteStatus addressVoteSplit={addressVote?.split} />
+          )}
+          {addressVote?.splitAbstain && (
+            <SplitAbstainVoteStatus
+              addressVoteSplit={addressVote?.splitAbstain}
+            />
           )}
           <WarningMessage>
             Resubmitting the vote will override the current voting record
