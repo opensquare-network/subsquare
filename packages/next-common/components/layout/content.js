@@ -43,6 +43,7 @@ const Left = styled.div`
   ${no_scroll_bar};
   width: ${leftWidth}px;
   flex: 0 0 ${leftWidth}px;
+  overscroll-behavior: none;
   @media screen and (max-width: 1024px) {
     display: none;
   }
