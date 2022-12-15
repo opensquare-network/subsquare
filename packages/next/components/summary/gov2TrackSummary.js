@@ -21,6 +21,10 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { smcss } from "next-common/utils/responsive";
 import DividerOrigin from "next-common/components/styled/layout/divider";
+import {
+  getTrackApprovalCurve,
+  getTrackSupportCurve,
+} from "next-common/context/post/gov2/curve";
 
 const SummaryContentWrapper = styled.div`
   display: flex;
@@ -110,14 +114,16 @@ export default function Gov2TrackSummary({
 
   const decisionPeriodHrs = Number(decisionPeriodBlockTime[0]) * 24;
   const chartLabels = _range(decisionPeriodHrs + 1);
-  // FIXME: pass the correct support data
-  const supportData = _range(chartLabels.length + 1)
-    .map((_, idx) => 34 - idx * 0.1)
-    .sort((a, b) => b - a);
-  // FIXME: pass the correct approval data
-  const approvalData = _range(chartLabels.length + 1)
-    .map((_, idx) => 100 - idx * 0.2)
-    .sort((a, b) => b - a);
+
+  const supportCalculator = getTrackSupportCurve(period);
+  const supportData = chartLabels.map((i) =>
+    supportCalculator ? supportCalculator(i / decisionPeriodHrs) * 100 : 0
+  );
+
+  const approvalCalculator = getTrackApprovalCurve(period);
+  const approvalData = chartLabels.map((i) =>
+    approvalCalculator ? approvalCalculator(i / decisionPeriodHrs) * 100 : 0
+  );
 
   let footer = null;
   if (!noDelegation) {
