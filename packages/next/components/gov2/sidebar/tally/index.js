@@ -17,6 +17,8 @@ import Issuance from "./values/issuance";
 import CurveIconOrigin from "next-common/components/icons/curve";
 import ThresholdCurvesPopup from "next-common/components/charts/thresholdCurve/popup";
 import { useState } from "react";
+import { useTrack } from "next-common/context/post/gov2/track";
+import useGov2ThresholdCurveData from "next-common/utils/hooks/useGov2ThresholdCurveData";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -50,6 +52,10 @@ export default function Gov2Tally({ detail }) {
 
   const { issuance } = useIssuance();
 
+  const track = useTrack();
+  const { labels, supportData, approvalData } =
+    useGov2ThresholdCurveData(track);
+
   function showThresholdCurveDetail() {
     setShowThresholdCurveDetailPopup(true);
   }
@@ -80,7 +86,12 @@ export default function Gov2Tally({ detail }) {
       </Footer>
 
       {showThresholdCurveDetailPopup && (
-        <ThresholdCurvesPopup setShow={setShowThresholdCurveDetailPopup} />
+        <ThresholdCurvesPopup
+          labels={labels}
+          supportData={supportData}
+          approvalData={approvalData}
+          setShow={setShowThresholdCurveDetailPopup}
+        />
       )}
     </SecondaryCardDetail>
   );
