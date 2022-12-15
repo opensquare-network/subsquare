@@ -15,6 +15,7 @@ import useIssuance from "next-common/utils/gov2/useIssuance";
 import SupportBar from "./supportBar";
 import Issuance from "./values/issuance";
 import MyVote from "./myVote";
+import { usePost } from "next-common/context/post";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -28,7 +29,8 @@ const Footer = styled.div`
   margin-top: 16px;
 `;
 
-export default function Gov2Tally({ detail }) {
+export default function Gov2Tally() {
+  const detail = usePost();
   useFetchVotes(detail?.onchainData);
   useFetchVoteExtrinsics(detail?.onchainData);
   const tally = useTally();
@@ -58,7 +60,7 @@ export default function Gov2Tally({ detail }) {
         <VoteExtrinsics />
       </Footer>
 
-      <MyVote detail={detail} />
+      <MyVote />
     </SecondaryCardDetail>
   );
 }

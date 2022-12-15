@@ -90,7 +90,6 @@ const VoteButton = styled.button`
 `;
 
 function Vote({
-  detail,
   referendumInfo,
   referendumIndex,
   onFinalized = emptyFunction,
@@ -179,7 +178,7 @@ function Vote({
           Check all votes
         </SubLink>
 
-        <MyVote detail={detail} updateTime={updateTime} />
+        <MyVote updateTime={updateTime} />
       </SecondaryCardDetail>
 
       {!finished && (

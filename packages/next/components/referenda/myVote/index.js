@@ -2,10 +2,9 @@ import styled from "styled-components";
 import { useAddressVote } from "utils/hooks";
 import useBlockApi from "next-common/utils/hooks/useBlockApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useTimelineData } from "next-common/context/post";
+import { usePost, useTimelineData } from "next-common/context/post";
 import findLast from "lodash.findlast";
 import { democracyReferendumVoteEndState } from "next-common/utils/consts/state";
-import LoadingVoteStatus from "../popup/loadingVoteStatus";
 import StandardVoteStatus from "../popup/standardVoteStatus";
 import SplitVoteStatus from "../popup/splitVoteStatus";
 import DelegateVoteStatus from "./delegateVoteStatus";
@@ -15,7 +14,8 @@ const Wrapper = styled.div`
   margin-top: 24px;
 `;
 
-export default function MyVote({ detail, updateTime }) {
+export default function MyVote({ updateTime }) {
+  const detail = usePost();
   let atBlockHeight;
   const timeline = useTimelineData();
 
@@ -31,7 +31,7 @@ export default function MyVote({ detail, updateTime }) {
 
   const referendumIndex = detail?.referendumIndex;
 
-  const [addressVote, addressVoteIsLoading] = useAddressVote(
+  const [addressVote] = useAddressVote(
     api,
     referendumIndex,
     realAddress,
@@ -50,14 +50,6 @@ export default function MyVote({ detail, updateTime }) {
     !addressVoteDelegateVoted
   ) {
     return null;
-  }
-
-  if (addressVoteIsLoading) {
-    return (
-      <Wrapper>
-        <LoadingVoteStatus title="My vote" />
-      </Wrapper>
-    );
   }
 
   return (
