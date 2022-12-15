@@ -21,10 +21,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { smcss } from "next-common/utils/responsive";
 import DividerOrigin from "next-common/components/styled/layout/divider";
-import {
-  getTrackApprovalCurve,
-  getTrackSupportCurve,
-} from "next-common/context/post/gov2/curve";
+import useGov2ThresholdCurveData from "next-common/utils/hooks/useGov2ThresholdCurveData";
 
 const SummaryContentWrapper = styled.div`
   display: flex;
@@ -102,6 +99,12 @@ export default function Gov2TrackSummary({
     decisionDeposit,
   } = period ?? {};
 
+  const {
+    labels: chartLabels,
+    supportData,
+    approvalData,
+  } = useGov2ThresholdCurveData(period);
+
   const { decimals, symbol } = useChainSettings();
 
   const [showThresholdCurveDetailPopup, setShowThresholdCurveDetailPopup] =
@@ -111,19 +114,6 @@ export default function Gov2TrackSummary({
   const preparePeriodBlockTime = estimateBlocksTime(preparePeriod, blockTime);
   const decisionPeriodBlockTime = estimateBlocksTime(decisionPeriod, blockTime);
   const confirmPeriodBlockTime = estimateBlocksTime(confirmPeriod, blockTime);
-
-  const decisionPeriodHrs = Number(decisionPeriodBlockTime[0]) * 24;
-  const chartLabels = _range(decisionPeriodHrs + 1);
-
-  const supportCalculator = getTrackSupportCurve(period);
-  const supportData = chartLabels.map((i) =>
-    supportCalculator ? supportCalculator(i / decisionPeriodHrs) * 100 : 0
-  );
-
-  const approvalCalculator = getTrackApprovalCurve(period);
-  const approvalData = chartLabels.map((i) =>
-    approvalCalculator ? approvalCalculator(i / decisionPeriodHrs) * 100 : 0
-  );
 
   let footer = null;
   if (!noDelegation) {
