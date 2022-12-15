@@ -29,22 +29,29 @@ export function useTally() {
       return;
     }
 
+    let palletName;
     if (detailPageCategory.GOV2_REFERENDUM === pageType) {
-      api.query.referenda
-        .referendumInfoFor(referendumIndex)
-        .then((optionalInfo) => {
-          if (!optionalInfo.isSome) {
-            return;
-          }
-
-          const info = optionalInfo.unwrap();
-          if (!info.isOngoing) {
-            return;
-          }
-
-          setTally(info.asOngoing.tally.toJSON());
-        });
+      palletName = "referenda";
+    } else if (detailPageCategory.FELLOWSHIP_REFERENDUM === pageType) {
+      palletName = "fellowshipReferenda";
+    } else {
+      return;
     }
+
+    api.query[palletName]
+      .referendumInfoFor(referendumIndex)
+      .then((optionalInfo) => {
+        if (!optionalInfo.isSome) {
+          return;
+        }
+
+        const info = optionalInfo.unwrap();
+        if (!info.isOngoing) {
+          return;
+        }
+
+        setTally(info.asOngoing.tally.toJSON());
+      });
   }, [api, referendumIndex, pageType]);
   return tally;
 }
