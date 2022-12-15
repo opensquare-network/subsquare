@@ -17,7 +17,7 @@ import { useState } from "react";
 import ThresholdCurvesPopup from "next-common/components/charts/thresholdCurve/popup";
 import ThresholdCurvesLegend from "next-common/components/charts/thresholdCurve/legend";
 import _range from "lodash.range";
-import ValueDisplay from "next-common/components/displayValue";
+import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { smcss } from "next-common/utils/responsive";
 import DividerOrigin from "next-common/components/styled/layout/divider";
