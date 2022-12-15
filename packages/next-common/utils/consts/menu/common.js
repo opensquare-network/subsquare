@@ -33,6 +33,7 @@ const commonMenus = {
       value: "discussions",
       name: "Discussions",
       pathname: "/discussions",
+      excludeToChains: [Chains.centrifuge, Chains.altair],
       icon: (
         <MenuIconWrapper>
           <DiscussionIcon />

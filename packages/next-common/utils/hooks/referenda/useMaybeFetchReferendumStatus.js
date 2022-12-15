@@ -29,7 +29,7 @@ export default function useMaybeFetchReferendumStatus(referendum, api) {
       return;
     }
     dispatch(fetchReferendumStatus(api, referendum?.referendumIndex));
-  }, [api, referendum?.referendumIndex, voteFinished]);
+  }, [api, referendum, voteFinished]);
 
   return {
     referendumStatus,

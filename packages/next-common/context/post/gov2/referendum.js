@@ -1,6 +1,8 @@
 import { useOnchainData, useTimelineData } from "../index";
 import findLast from "lodash.findlast";
 import findLastIndex from "lodash.findlastindex";
+import useApi from "../../../utils/hooks/useApi";
+import { useEffect, useState } from "react";
 
 export function useDecidingSince() {
   const onchain = useOnchainData();
@@ -14,7 +16,32 @@ export function useConfirming() {
 
 export function useTally() {
   const onchain = useOnchainData();
-  return onchain?.info?.tally;
+  const { referendumIndex } = onchain;
+  const [tally, setTally] = useState(onchain?.info?.tally);
+
+  const api = useApi();
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    api.query.referenda
+      .referendumInfoFor(referendumIndex)
+      .then((optionalInfo) => {
+        if (!optionalInfo.isSome) {
+          return;
+        }
+
+        const info = optionalInfo.unwrap();
+        if (!info.isOngoing) {
+          return;
+        }
+
+        setTally(info.asOngoing.tally.toJSON());
+      });
+  }, [api, referendumIndex]);
+  return tally;
 }
 
 export function useConfirmingStarted() {
