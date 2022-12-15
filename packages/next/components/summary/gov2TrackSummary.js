@@ -26,6 +26,9 @@ import {
   getTrackSupportCurve,
 } from "next-common/context/post/gov2/curve";
 
+// used in `Divider` and `ThresholdCurvesChart`
+const THRESHOLD_CURVE_PADDING = 8;
+
 const SummaryContentWrapper = styled.div`
   display: flex;
 
@@ -58,7 +61,7 @@ const SummaryThresholdCurveItem = styled(SummaryItem)`
   height: 100%;
 `;
 const SummaryThresholdCurveContent = styled(Content)`
-  margin: 0 -4px;
+  margin: 0 -6px;
 `;
 const SummaryThresholdCurveLegendWrapper = styled.div`
   margin-top: 8px;
@@ -77,12 +80,12 @@ const SummaryDecisionDepositValueWrapper = styled.span`
     color: ${(p) => p.theme.textTertiary};
   }
 `;
-// fix divider position
+
 const Divider = styled(DividerOrigin)`
-  margin-top: -6px;
-  margin-right: 4px;
-  ${smcss(css`
-    margin-right: 8px;
+  margin-top: ${0 - THRESHOLD_CURVE_PADDING}px;
+  margin-right: ${THRESHOLD_CURVE_PADDING}px;
+  ${smcss(`
+    margin-right: ${4 + THRESHOLD_CURVE_PADDING}px;
   `)}
 `;
 
@@ -215,6 +218,7 @@ export default function Gov2TrackSummary({
                 height={104}
                 scalesX={false}
                 scalesY={false}
+                layoutPadding={THRESHOLD_CURVE_PADDING}
                 labels={chartLabels}
                 supportData={supportData}
                 approvalData={approvalData}
