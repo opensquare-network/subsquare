@@ -50,29 +50,28 @@ export default function MyVote({ detail, isVoting }) {
     return null;
   }
 
+  const title = "My voting";
+
   return (
     <Wrapper>
       {addressVote?.standard && (
         <StandardVoteStatus
-          title="My voting"
+          title={title}
           addressVoteStandard={addressVote?.standard}
         />
       )}
       {addressVote?.split && (
-        <SplitVoteStatus
-          title="My voting"
-          addressVoteSplit={addressVote?.split}
-        />
+        <SplitVoteStatus title={title} addressVoteSplit={addressVote?.split} />
       )}
       {addressVote?.splitAbstain && (
         <SplitAbstainVoteStatus
-          title="My voting"
+          title={title}
           addressVoteSplit={addressVote?.splitAbstain}
         />
       )}
       {addressVoteDelegateVoted && (
         <DelegateVoteStatus
-          title="My voting"
+          title={title}
           addressVoteDelegate={addressVote?.delegating}
         />
       )}
