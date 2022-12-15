@@ -44,23 +44,22 @@ export default function MyVote({ updateTime }) {
     return null;
   }
 
+  const title = "My vote";
+
   return (
     <Wrapper>
       {addressVote?.standard && (
         <StandardVoteStatus
-          title="My vote"
+          title={title}
           addressVoteStandard={addressVote?.standard}
         />
       )}
       {addressVote?.split && (
-        <SplitVoteStatus
-          title="My vote"
-          addressVoteSplit={addressVote?.split}
-        />
+        <SplitVoteStatus title={title} addressVoteSplit={addressVote?.split} />
       )}
       {addressVoteDelegateVoted && (
         <DelegateVoteStatus
-          title="My vote"
+          title={title}
           addressVoteDelegate={addressVote?.delegating}
         />
       )}
