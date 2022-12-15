@@ -3,11 +3,10 @@ import { useAddressVote } from "utils/hooks";
 import useBlockApi from "next-common/utils/hooks/useBlockApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { usePost, useTimelineData } from "next-common/context/post";
-import findLast from "lodash.findlast";
-import { democracyReferendumVoteEndState } from "next-common/utils/consts/state";
 import StandardVoteStatus from "../popup/standardVoteStatus";
 import SplitVoteStatus from "../popup/splitVoteStatus";
 import DelegateVoteStatus from "./delegateVoteStatus";
+import extractVoteInfo from "next-common/utils/democracy/referendum";
 
 const Wrapper = styled.div`
   color: ${(p) => p.theme.textPrimary};
@@ -16,17 +15,10 @@ const Wrapper = styled.div`
 
 export default function MyVote({ updateTime }) {
   const detail = usePost();
-  let atBlockHeight;
   const timeline = useTimelineData();
+  const { voteFinishedHeight } = extractVoteInfo(timeline);
 
-  const finalStateItem = findLast(timeline, ({ name }) =>
-    democracyReferendumVoteEndState.includes(name)
-  );
-  if (finalStateItem) {
-    atBlockHeight = finalStateItem?.indexer.blockHeight;
-  }
-
-  const api = useBlockApi(atBlockHeight);
+  const api = useBlockApi(voteFinishedHeight);
   const realAddress = useRealAddress();
 
   const referendumIndex = detail?.referendumIndex;

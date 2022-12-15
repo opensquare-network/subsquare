@@ -1,7 +1,5 @@
 // TODO: may move other state/status into here
 
-import { referendumState } from "./referendum";
-
 export const gov2State = {
   Submitted: "Submitted",
   Queueing: "Queueing",
@@ -22,10 +20,4 @@ export const gov2FinalState = [
   gov2State.Killed,
   gov2State.TimedOut,
   gov2State.Rejected,
-];
-
-export const democracyReferendumVoteEndState = [
-  referendumState.Cancelled,
-  referendumState.NotPassed,
-  referendumState.Passed,
 ];
