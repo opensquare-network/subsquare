@@ -8,8 +8,10 @@ import {
   SummaryItemTitle,
 } from "next-common/components/summary/styled";
 import Delegation from "./delegation";
+import BeenDelegated from "./beenDelegated";
 import Summary from "next-common/components/summary/new";
 import Content from "next-common/components/summary/cardContent";
+import Column from "next-common/components/styled/column";
 
 export default function Gov2TrackSummary({
   summary,
@@ -33,7 +35,12 @@ export default function Gov2TrackSummary({
 
   let footer = null;
   if (!noDelegation) {
-    footer = <Delegation trackId={id} />;
+    footer = (
+      <Column gap={8}>
+        <Delegation trackId={id} />
+        <BeenDelegated trackId={id} />
+      </Column>
+    );
   }
 
   return (
