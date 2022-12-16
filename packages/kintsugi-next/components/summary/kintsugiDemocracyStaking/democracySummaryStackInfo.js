@@ -36,7 +36,7 @@ const InfoItem = styled(Flex)`
   }
 `;
 
-export default function DemocracySummaryStackInfo({ votingBalance, balance }) {
+export default function DemocracySummaryStakeInfo({ votingBalance, balance }) {
   const node = useChainSettings();
 
   return (
