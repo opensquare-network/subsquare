@@ -4,6 +4,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import BigNumber from "bignumber.js";
+import { ConvictionSupport } from "next-common/utils/referendumCommon";
 
 const Wrapper = styled.div`
   font-weight: 400;
@@ -43,7 +44,7 @@ export default function BeenDelegatedInfo({ beenDelegatedList }) {
     new BigNumber(0)
   );
   const support = beenDelegatedList.reduce(
-    (acc, cur) => acc.plus(cur.balance),
+    (acc, cur) => acc.plus(cur.balance * ConvictionSupport[cur.conviction]),
     new BigNumber(0)
   );
 

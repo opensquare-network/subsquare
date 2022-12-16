@@ -7,6 +7,8 @@ import SupportSVG from "next-common/assets/imgs/icons/support.svg";
 import BalanceSVG from "next-common/assets/imgs/icons/balance.svg";
 import AddressesSVG from "next-common/assets/imgs/icons/addresses.svg";
 import Flex from "next-common/components/styled/flex";
+import ValueDisplay from "next-common/components/valueDisplay";
+import { ConvictionSupport } from "next-common/utils/referendumCommon";
 
 const Wrapper = styled.div`
   display: flex;
@@ -47,7 +49,7 @@ export default function DelegationSummary({ beenDelegatedList }) {
     new BigNumber(0)
   );
   const support = beenDelegatedList.reduce(
-    (acc, cur) => acc.plus(cur.balance),
+    (acc, cur) => acc.plus(cur.balance * ConvictionSupport[cur.conviction]),
     new BigNumber(0)
   );
 
@@ -60,7 +62,10 @@ export default function DelegationSummary({ beenDelegatedList }) {
             Balance
           </Title>
           <Value>
-            {toPrecision(balance, node.decimals)} {node.symbol}
+            <ValueDisplay
+              value={toPrecision(balance, node.decimals)}
+              symbol={node.symbol}
+            />
           </Value>
         </Item>
       </div>
@@ -71,7 +76,10 @@ export default function DelegationSummary({ beenDelegatedList }) {
             Support
           </Title>
           <Value>
-            {toPrecision(support, node.decimals)} {node.symbol}
+            <ValueDisplay
+              value={toPrecision(support, node.decimals)}
+              symbol={node.symbol}
+            />
           </Value>
         </Item>
       </div>
@@ -81,7 +89,7 @@ export default function DelegationSummary({ beenDelegatedList }) {
             <AddressesSVG />
             Address
           </Title>
-          <Value>{beenDelegatedList.length}</Value>
+          <Value>{(beenDelegatedList.length || 0).toLocaleString()}</Value>
         </Item>
       </div>
     </Wrapper>

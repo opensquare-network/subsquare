@@ -29,6 +29,10 @@ export default function BeenDelegated({ trackId }) {
     );
   }, [api, trackId, realAddress]);
 
+  if (beenDelegatedList?.length === 0) {
+    return null;
+  }
+
   return (
     <Wrapper>
       <BeenDelegatedInfo beenDelegatedList={beenDelegatedList} />

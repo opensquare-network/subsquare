@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Popup from "next-common/components/popup/wrapper/Popup";
 import ListTab, { tabs } from "./tab";
 import DelegationList from "./delegationList";
 import Pagination from "next-common/components/pagination";
