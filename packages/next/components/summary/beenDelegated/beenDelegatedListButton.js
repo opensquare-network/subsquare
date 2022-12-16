@@ -26,7 +26,7 @@ export default function BeenDelegatedListButton({ beenDelegatedList }) {
       </Tooltip>
       {showPopup && (
         <BeenDelegatedListPopup
-          directDelegationList={beenDelegatedList}
+          beenDelegatedList={beenDelegatedList}
           setShow={setShowPopup}
         />
       )}
