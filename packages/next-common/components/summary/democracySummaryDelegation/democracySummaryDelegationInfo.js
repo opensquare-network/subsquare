@@ -14,6 +14,7 @@ const Wrapper = styled.div`
   color: ${(p) => p.theme.textTertiary};
 
   display: flex;
+  flex-grow: 1;
   flex-wrap: wrap;
   align-items: center;
   padding: 4px 12px;
@@ -26,9 +27,12 @@ const Wrapper = styled.div`
     ::before {
       content: "·";
       margin-right: 8px;
-      color: ${(p) => p.theme.textTertiary};
     }
-    color: ${(p) => p.theme.textSecondary};
+    display: flex;
+    > .value {
+      margin-left: 4px;
+      color: ${(p) => p.theme.textSecondary};
+    }
   }
 `;
 
@@ -44,13 +48,21 @@ export default function DemocracySummaryDelegationInfo({ delegating }) {
     <Wrapper>
       <span>Delegating to</span>
       <User add={delegating.target} />
-      <span>
-        <VoteLabel conviction={conviction} />
-      </span>
-      <ValueDisplay
-        value={toPrecision(delegating.balance, node.decimals)}
-        symbol={node.symbol}
-      />
+      <div>
+        <span>Conviction</span>
+        <div className="value">
+          <VoteLabel conviction={conviction} />
+        </div>
+      </div>
+      <div>
+        <span>Support</span>
+        <div className="value">
+          <ValueDisplay
+            value={toPrecision(delegating.balance, node.decimals)}
+            symbol={node.symbol}
+          />
+        </div>
+      </div>
     </Wrapper>
   );
 }
