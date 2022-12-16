@@ -36,17 +36,8 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function BeenDelegatedInfo({ beenDelegatedList }) {
+export default function BeenDelegatedInfo({ delegations, addressesCount }) {
   const node = useChainSettings();
-
-  const balance = beenDelegatedList.reduce(
-    (acc, cur) => acc.plus(cur.balance),
-    new BigNumber(0)
-  );
-  const support = beenDelegatedList.reduce(
-    (acc, cur) => acc.plus(cur.balance * ConvictionSupport[cur.conviction]),
-    new BigNumber(0)
-  );
 
   return (
     <Wrapper>
@@ -55,7 +46,7 @@ export default function BeenDelegatedInfo({ beenDelegatedList }) {
         <span>Balance</span>
         <div className="value">
           <ValueDisplay
-            value={toPrecision(balance, node.decimals)}
+            value={toPrecision(delegations.capital, node.decimals)}
             symbol={node.symbol}
           />
         </div>
@@ -64,7 +55,7 @@ export default function BeenDelegatedInfo({ beenDelegatedList }) {
         <span>Support</span>
         <div className="value">
           <ValueDisplay
-            value={toPrecision(support, node.decimals)}
+            value={toPrecision(delegations.votes, node.decimals)}
             symbol={node.symbol}
           />
         </div>
@@ -72,8 +63,7 @@ export default function BeenDelegatedInfo({ beenDelegatedList }) {
       <div>
         <span>By</span>
         <div className="value">
-          {beenDelegatedList.length}{" "}
-          {beenDelegatedList.length === 1 ? "Address" : "Addresses"}
+          {addressesCount} {addressesCount === 1 ? "Address" : "Addresses"}
         </div>
       </div>
     </Wrapper>

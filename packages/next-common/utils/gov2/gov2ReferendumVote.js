@@ -103,3 +103,22 @@ export async function getGov2BeenDelegatedListByAddress(api, trackId, address) {
 
   return beenDelegated;
 }
+
+export async function getGov2BeenDelegatedByAddress(api, trackId, address) {
+  const voting = await api.query.convictionVoting.votingFor(address, trackId);
+
+  const jsonVoting = voting.toJSON();
+  if (!jsonVoting) {
+    return null;
+  }
+
+  if (jsonVoting.delegating) {
+    return jsonVoting.delegating.delegations;
+  }
+
+  if (jsonVoting.casting) {
+    return jsonVoting.casting.delegations;
+  }
+
+  return null;
+}
