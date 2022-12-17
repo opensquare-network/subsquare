@@ -118,6 +118,7 @@ export default function Gov2TrackSummary({
   const decisionPeriodHrs = Number(decisionPeriodBlockTime[0]) * 24;
   const chartLabels = _range(decisionPeriodHrs + 1);
 
+  // fixme: hide support/approve chart item when the corresponding calculator is null
   const supportCalculator = getTrackSupportCurve(period);
   const supportData = chartLabels.map((i) =>
     supportCalculator ? supportCalculator(i / decisionPeriodHrs) * 100 : 0
