@@ -156,9 +156,24 @@ export default function Gov2TrackSummary({
               </span>
             </Content>
           </SummaryItem>
+          <SummaryItem>
+            <SummaryItemTitle>Total</SummaryItemTitle>
+            <Content>
+              <span>{summary.total}</span>
+            </Content>
+          </SummaryItem>
 
           <SummaryItem>
-            <SummaryItemTitle>Confirm</SummaryItemTitle>
+            <SummaryItemTitle>Decision</SummaryItemTitle>
+            <Content>
+              <span>
+                {decisionPeriodBlockTime[0] || 0}
+                <SummaryGreyText> {decisionPeriodBlockTime[1]}</SummaryGreyText>
+              </span>
+            </Content>
+          </SummaryItem>
+          <SummaryItem>
+            <SummaryItemTitle>Confirmation</SummaryItemTitle>
             <Content>
               <span>
                 {confirmPeriodBlockTime[0] || 0}
@@ -174,23 +189,6 @@ export default function Gov2TrackSummary({
                 {preparePeriodBlockTime[0] || 0}
                 <SummaryGreyText> {preparePeriodBlockTime[1]}</SummaryGreyText>
               </span>
-            </Content>
-          </SummaryItem>
-
-          <SummaryItem>
-            <SummaryItemTitle>Decision</SummaryItemTitle>
-            <Content>
-              <span>
-                {decisionPeriodBlockTime[0] || 0}
-                <SummaryGreyText> {decisionPeriodBlockTime[1]}</SummaryGreyText>
-              </span>
-            </Content>
-          </SummaryItem>
-
-          <SummaryItem>
-            <SummaryItemTitle>Total</SummaryItemTitle>
-            <Content>
-              <span>{summary.total}</span>
             </Content>
           </SummaryItem>
 
