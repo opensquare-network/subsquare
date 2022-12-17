@@ -4,6 +4,7 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import Aye from "./aye";
 import Nay from "./nay";
 import BareAye from "./bareAye";
+import MaxVoters from "./maxVoters";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -17,6 +18,7 @@ export default function FellowshipTally() {
       <Aye />
       <Nay />
       <BareAye />
+      <MaxVoters />
     </SecondaryCardDetail>
   );
 }

@@ -1,6 +1,6 @@
 import {
+  BorderedRow,
   Header,
-  Row,
   Value,
 } from "next-common/components/referenda/tally/styled";
 import ElectorateIcon from "../../../../../public/imgs/icons/electorate.svg";
@@ -10,12 +10,12 @@ export default function BareAye() {
   const tally = useTally();
 
   return (
-    <Row>
+    <BorderedRow>
       <Header>
         <ElectorateIcon />
         Bare Aye
       </Header>
       <Value>{tally.bareAyes}</Value>
-    </Row>
+    </BorderedRow>
   );
 }
