@@ -1,13 +1,13 @@
 import styled, { useTheme } from "styled-components";
 import Progress from "next-common/components/progress";
 import useSupportThreshold from "../threshold/useSupportThreshold";
-import { useTally } from "next-common/context/post/gov2/referendum";
 import { useEffect, useMemo, useState } from "react";
 import ThresholdComponent from "../../../../referenda/threshold";
 import Percentage from "./percentage";
 import isNil from "lodash.isnil";
 import TooltipOrigin from "next-common/components/tooltip";
 import { p_12_medium } from "next-common/styles/componentCss";
+import BigNumber from "bignumber.js";
 
 const Wrapper = styled.div`
   margin-top: 21px;
@@ -65,7 +65,7 @@ const ProgressBarWrapper = styled.div`
   padding: 8px 0;
 `;
 
-export default function SupportBar({ issuance }) {
+export default function SupportBar({ support, issuance }) {
   const supportThreshold = useSupportThreshold();
   // threshold in perbill
   const [threshold, setThreshold] = useState(null);
@@ -76,22 +76,28 @@ export default function SupportBar({ issuance }) {
   const [percentage, setPercentage] = useState(null);
 
   useEffect(() => {
+    if (issuance) {
+      setPercentage((support / issuance) * Math.pow(10, 9));
+    }
+  }, [support, issuance]);
+
+  useEffect(() => {
     if (supportThreshold) {
       setThreshold(supportThreshold * Math.pow(10, 9));
     }
   }, [supportThreshold]);
 
   useEffect(() => {
-    if (!isNil(threshold)) {
-      setProgressMax((threshold / 4) * 5);
+    if (!isNil(threshold) && !isNil(percentage)) {
+      const value = BigNumber.max(percentage, threshold)
+        .multipliedBy(1.25)
+        .toNumber();
+      setProgressMax(value);
     }
-  }, [threshold]);
-
-  const tally = useTally();
-  const support = tally?.support;
+  }, [percentage, threshold]);
 
   const barPercentage = useMemo(() => {
-    if (!issuance || isNil(progressMax)) {
+    if (!percentage || isNil(progressMax)) {
       return 0;
     }
 
@@ -101,11 +107,16 @@ export default function SupportBar({ issuance }) {
       return 100;
     }
 
-    const supportPercentage = (support / issuance) * Math.pow(10, 9);
-    setPercentage(supportPercentage);
+    return Number((percentage / progressMax) * 100).toFixed(2);
+  }, [percentage, progressMax]);
 
-    return Number((supportPercentage / progressMax) * 100).toFixed(2);
-  }, [issuance, support, progressMax]);
+  const markPercentage = useMemo(() => {
+    if (!progressMax) {
+      return 0;
+    }
+
+    return `${Number((threshold / progressMax) * 100).toFixed(2)}%`;
+  }, [threshold, progressMax]);
 
   return (
     <Wrapper>
@@ -123,7 +134,7 @@ export default function SupportBar({ issuance }) {
           <Progress percentage={barPercentage} bg={grey100Bg} />
         </Tooltip>
       </ProgressBarWrapper>
-      <Mark threshold="80%" />
+      <Mark threshold={markPercentage} />
       <ul>
         <li>0.0%</li>
         <li>
