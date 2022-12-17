@@ -65,7 +65,7 @@ const ProgressBarWrapper = styled.div`
   padding: 8px 0;
 `;
 
-export default function SupportBar({ issuance }) {
+export default function SupportBar({ support, issuance }) {
   const supportThreshold = useSupportThreshold();
   // threshold in perbill
   const [threshold, setThreshold] = useState(null);
@@ -86,9 +86,6 @@ export default function SupportBar({ issuance }) {
       setProgressMax((threshold / 4) * 5);
     }
   }, [threshold]);
-
-  const tally = useTally();
-  const support = tally?.support;
 
   const barPercentage = useMemo(() => {
     if (!issuance || isNil(progressMax)) {
