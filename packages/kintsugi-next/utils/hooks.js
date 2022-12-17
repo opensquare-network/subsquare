@@ -79,7 +79,7 @@ export function useLockedBalance(api, address) {
   return [balance, isLoading, refresh];
 }
 
-export function useAddressVote(api, referendumIndex, address) {
+export function useAddressVote(api, referendumIndex, address, updateTime) {
   const [vote, setVote] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useIsMounted();
@@ -99,6 +99,7 @@ export function useAddressVote(api, referendumIndex, address) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [api, referendumIndex, address, isMounted]);
+  }, [api, referendumIndex, address, isMounted, updateTime]);
+
   return [vote, isLoading];
 }

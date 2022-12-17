@@ -8,8 +8,8 @@ import {
 
 export default function TechCommNavigation({ motion = {} }) {
   const publicProposal = motion.onchainData?.publicProposals?.[0];
-  const hasProposal = !isNil(publicProposal.proposalIndex);
-  const hasReferendum = !isNil(publicProposal.referendumIndex);
+  const hasProposal = !isNil(publicProposal?.proposalIndex);
+  const hasReferendum = !isNil(publicProposal?.referendumIndex);
 
   if (!hasProposal) {
     return null;

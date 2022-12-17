@@ -3,7 +3,7 @@ import { Button } from "next-common/components/summary/styled";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 
-export default function DemocracySummaryStackButton() {
+export default function DemocracySummaryStakeButton() {
   const chain = useChain();
 
   if (![Chains.kintsugi, Chains.interlay].includes(chain)) {
@@ -17,7 +17,7 @@ export default function DemocracySummaryStackButton() {
 
   return (
     <a href={href} target="_blank" rel="noreferrer">
-      <Button>Stack</Button>
+      <Button>Stake</Button>
     </a>
   );
 }
