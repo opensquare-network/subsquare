@@ -10,6 +10,9 @@ import { useTally } from "next-common/context/post/gov2/referendum";
 import useMaxVoters from "next-common/context/post/fellowship/useMaxVoters";
 import useApprovalThreshold from "../../../../gov2/sidebar/tally/threshold/useApprovalThreshold";
 import VoteBar from "../../../../referenda/voteBar";
+import useFellowshipVotes from "next-common/utils/hooks/fellowship/useFellowshipVotes";
+import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import { useOnchainData } from "next-common/context/post";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -19,6 +22,11 @@ export default function FellowshipTally() {
   const tally = useTally();
   const maxVoters = useMaxVoters();
   const approvalThreshold = useApprovalThreshold();
+
+  const votingFinishHeight = useReferendumVotingFinishHeight();
+  const { referendumIndex } = useOnchainData();
+  const votes = useFellowshipVotes(referendumIndex, votingFinishHeight);
+  console.log("votes", votes);
 
   return (
     <SecondaryCardDetail>
