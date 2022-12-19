@@ -19,44 +19,41 @@ const Wrapper = styled.div`
   background: ${(p) => p.theme.grey100Bg};
   border-radius: 4px;
 
+  > div {
+    display: inline-flex;
+    & > :last-child {
+      margin-left: 4px;
+      color: ${(p) => p.theme.textSecondary};
+    }
+  }
+
   > :nth-child(2),
-  > :nth-child(3),
-  > :nth-child(4) {
+  > :nth-child(3) {
     ::before {
       content: "·";
       margin-right: 8px;
-    }
-    display: flex;
-    > .value {
-      margin-left: 4px;
-      color: ${(p) => p.theme.textSecondary};
     }
   }
 `;
 
 export default function BeenDelegatedInfo({ delegations, addressesCount }) {
-  const node = useChainSettings();
+  const { decimals, symbol } = useChainSettings();
 
   return (
     <Wrapper>
-      <span>Been delegated</span>
       <div>
-        <span>Balance</span>
-        <div className="value">
-          <ValueDisplay
-            value={toPrecision(delegations?.capital || 0, node.decimals)}
-            symbol={node.symbol}
-          />
-        </div>
+        <span>Been delegated</span>
+        <ValueDisplay
+          value={toPrecision(delegations?.votes || 0, decimals)}
+          symbol={symbol}
+        />
       </div>
       <div>
-        <span>Support</span>
-        <div className="value">
-          <ValueDisplay
-            value={toPrecision(delegations?.votes || 0, node.decimals)}
-            symbol={node.symbol}
-          />
-        </div>
+        <span>Capital</span>
+        <ValueDisplay
+          value={toPrecision(delegations?.capital || 0, decimals)}
+          symbol={symbol}
+        />
       </div>
       <div>
         <span>By</span>
