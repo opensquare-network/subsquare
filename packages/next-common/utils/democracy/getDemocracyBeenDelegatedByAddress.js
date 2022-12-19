@@ -6,8 +6,6 @@ export async function getDemocracyBeenDelegatedByAddress(api, address) {
     return null;
   }
 
-  console.log({ jsonVoting });
-
   if (jsonVoting.delegating) {
     return jsonVoting.delegating.delegations;
   }
