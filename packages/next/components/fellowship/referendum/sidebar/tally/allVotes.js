@@ -1,15 +1,7 @@
 import { useState } from "react";
 import AllVotesPopup from "./allVotesPopup";
-import styled from "styled-components";
 import partition from "lodash.partition";
-
-const Button = styled.div`
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 16px;
-  color: #6848ff;
-`;
+import { Button } from "components/gov2/sidebar/tally/styled";
 
 export default function AllVotes({ votes, isLoadingVotes }) {
   const [showAllVotes, setShowAllVotes] = useState(false);
