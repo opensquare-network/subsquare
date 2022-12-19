@@ -46,7 +46,10 @@ export default function BeenDelegated({ trackId }) {
         delegations={delegations}
         addressesCount={beenDelegatedList?.length}
       />
-      <BeenDelegatedListButton beenDelegatedList={beenDelegatedList} />
+      <BeenDelegatedListButton
+        delegations={delegations}
+        beenDelegatedList={beenDelegatedList}
+      />
     </Wrapper>
   );
 }

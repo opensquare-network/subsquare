@@ -3,8 +3,6 @@ import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
-import BigNumber from "bignumber.js";
-import { ConvictionSupport } from "next-common/utils/referendumCommon";
 
 const Wrapper = styled.div`
   font-weight: 400;
@@ -46,7 +44,7 @@ export default function BeenDelegatedInfo({ delegations, addressesCount }) {
         <span>Balance</span>
         <div className="value">
           <ValueDisplay
-            value={toPrecision(delegations.capital, node.decimals)}
+            value={toPrecision(delegations?.capital || 0, node.decimals)}
             symbol={node.symbol}
           />
         </div>
@@ -55,7 +53,7 @@ export default function BeenDelegatedInfo({ delegations, addressesCount }) {
         <span>Support</span>
         <div className="value">
           <ValueDisplay
-            value={toPrecision(delegations.votes, node.decimals)}
+            value={toPrecision(delegations?.votes || 0, node.decimals)}
             symbol={node.symbol}
           />
         </div>

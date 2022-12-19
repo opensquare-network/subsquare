@@ -1,4 +1,3 @@
-import BigNumber from "bignumber.js";
 import { useChainSettings } from "next-common/context/chain";
 import { p_14_medium, p_14_normal } from "next-common/styles/componentCss";
 import { toPrecision } from "next-common/utils";
@@ -8,7 +7,6 @@ import BalanceSVG from "next-common/assets/imgs/icons/balance.svg";
 import AddressesSVG from "next-common/assets/imgs/icons/addresses.svg";
 import Flex from "next-common/components/styled/flex";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { ConvictionSupport } from "next-common/utils/referendumCommon";
 
 const Wrapper = styled.div`
   display: flex;
@@ -41,17 +39,8 @@ const Value = styled.div`
   color: ${(p) => p.theme.textPrimary};
 `;
 
-export default function DelegationSummary({ beenDelegatedList }) {
+export default function DelegationSummary({ delegations, beenDelegatedList }) {
   const node = useChainSettings();
-
-  const balance = beenDelegatedList.reduce(
-    (acc, cur) => acc.plus(cur.balance),
-    new BigNumber(0)
-  );
-  const support = beenDelegatedList.reduce(
-    (acc, cur) => acc.plus(cur.balance * ConvictionSupport[cur.conviction]),
-    new BigNumber(0)
-  );
 
   return (
     <Wrapper>
@@ -63,7 +52,7 @@ export default function DelegationSummary({ beenDelegatedList }) {
           </Title>
           <Value>
             <ValueDisplay
-              value={toPrecision(balance, node.decimals)}
+              value={toPrecision(delegations?.capital || 0, node.decimals)}
               symbol={node.symbol}
             />
           </Value>
@@ -77,7 +66,7 @@ export default function DelegationSummary({ beenDelegatedList }) {
           </Title>
           <Value>
             <ValueDisplay
-              value={toPrecision(support, node.decimals)}
+              value={toPrecision(delegations?.votes || 0, node.decimals)}
               symbol={node.symbol}
             />
           </Value>

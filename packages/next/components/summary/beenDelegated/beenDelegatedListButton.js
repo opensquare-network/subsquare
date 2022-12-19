@@ -10,7 +10,10 @@ const ListButton = styled(Button)`
   padding: 7px;
 `;
 
-export default function BeenDelegatedListButton({ beenDelegatedList }) {
+export default function BeenDelegatedListButton({
+  delegations,
+  beenDelegatedList,
+}) {
   const [showPopup, setShowPopup] = useState();
 
   const button = (
@@ -26,6 +29,7 @@ export default function BeenDelegatedListButton({ beenDelegatedList }) {
       </Tooltip>
       {showPopup && (
         <BeenDelegatedListPopup
+          delegations={delegations}
           beenDelegatedList={beenDelegatedList}
           setShow={setShowPopup}
         />
