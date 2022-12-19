@@ -4,21 +4,18 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import Flex from "next-common/components/styled/flex";
+import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 
-const Wrapper = styled.div`
+const Wrapper = styled(GreyPanel)`
   flex-grow: 1;
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
   color: ${(p) => p.theme.textTertiary};
 
-  display: flex;
   flex-wrap: wrap;
-  align-items: center;
   padding: 4px 12px;
   gap: 8px;
-  background: ${(p) => p.theme.grey100Bg};
-  border-radius: 4px;
 
   > :not(:first-child) {
     ::before {
