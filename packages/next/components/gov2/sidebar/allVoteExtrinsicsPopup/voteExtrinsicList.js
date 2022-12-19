@@ -12,44 +12,12 @@ import {
   StyledTh,
   StyledTr,
 } from "next-common/components/styled/table";
-import { pretty_scroll_bar } from "next-common/styles/componentCss";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel";
 import dayjs from "dayjs";
 import ExternalLinks from "next-common/components/links";
-import { pageHomeLayoutMainContentWidth } from "next-common/utils/constants";
-
-const Wrapper = styled.div`
-  max-width: ${pageHomeLayoutMainContentWidth}px;
-  @media screen and (max-width: 1024px) {
-    max-width: 960px;
-  }
-  margin: auto;
-
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-  table {
-    border: none;
-    padding: 0;
-    tbody {
-      display: block;
-      max-height: 400px;
-      overflow-y: auto;
-      overflow-x: hidden;
-
-      ${pretty_scroll_bar};
-    }
-    thead,
-    tbody tr {
-      display: table;
-      width: 100%;
-      table-layout: fixed;
-    }
-    box-shadow: none;
-  }
-`;
+import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 
 const VoteInfoWrapper = styled.div`
   display: flex;
@@ -100,7 +68,7 @@ function VoteInfo({ item }) {
 
 function VoteExtrinsicsList({ items, theme, loading = true }) {
   return (
-    <Wrapper>
+    <PopupListWrapper>
       <StyledTable>
         <thead>
           <StyledTr>
@@ -153,7 +121,7 @@ function VoteExtrinsicsList({ items, theme, loading = true }) {
           )}
         </tbody>
       </StyledTable>
-    </Wrapper>
+    </PopupListWrapper>
   );
 }
 

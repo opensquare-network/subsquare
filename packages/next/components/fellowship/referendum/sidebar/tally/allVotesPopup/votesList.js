@@ -11,43 +11,11 @@ import {
   StyledTh,
   StyledTr,
 } from "next-common/components/styled/table";
-import { pretty_scroll_bar } from "next-common/styles/componentCss";
-import { pageHomeLayoutMainContentWidth } from "next-common/utils/constants";
-
-const Wrapper = styled.div`
-  max-width: ${pageHomeLayoutMainContentWidth}px;
-  @media screen and (max-width: 1024px) {
-    max-width: 960px;
-  }
-  margin: auto;
-
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-  table {
-    border: none;
-    padding: 0;
-    tbody {
-      display: block;
-      max-height: 400px;
-      overflow-y: auto;
-      overflow-x: hidden;
-
-      ${pretty_scroll_bar};
-    }
-    thead,
-    tbody tr {
-      display: table;
-      width: 100%;
-      table-layout: fixed;
-    }
-    box-shadow: none;
-  }
-`;
+import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 
 function VotesList({ items, theme, loading = true }) {
   return (
-    <Wrapper>
+    <PopupListWrapper>
       <StyledTable>
         <thead>
           <StyledTr>
@@ -100,7 +68,7 @@ function VotesList({ items, theme, loading = true }) {
           )}
         </tbody>
       </StyledTable>
-    </Wrapper>
+    </PopupListWrapper>
   );
 }
 

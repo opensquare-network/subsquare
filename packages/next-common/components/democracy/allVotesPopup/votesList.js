@@ -15,40 +15,8 @@ import {
 } from "next-common/components/styled/table";
 import VoteLabel from "./voteLabel";
 import Chains from "../../../utils/consts/chains";
-import { pretty_scroll_bar } from "../../../styles/componentCss";
 import { useChain, useChainSettings } from "../../../context/chain";
-import { pageHomeLayoutMainContentWidth } from "../../../utils/constants";
-
-const Wrapper = styled.div`
-  max-width: ${pageHomeLayoutMainContentWidth}px;
-  @media screen and (max-width: 1024px) {
-    max-width: 960px;
-  }
-  margin: auto;
-
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-  table {
-    border: none;
-    padding: 0;
-    tbody {
-      display: block;
-      max-height: 400px;
-      overflow-y: auto;
-      overflow-x: hidden;
-
-      ${pretty_scroll_bar};
-    }
-    thead,
-    tbody tr {
-      display: table;
-      width: 100%;
-      table-layout: fixed;
-    }
-    box-shadow: none;
-  }
-`;
+import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 
 function VotesList({ items, theme, loading = true }) {
   const chain = useChain();
@@ -58,7 +26,7 @@ function VotesList({ items, theme, loading = true }) {
   const symbol = node.voteSymbol || node.symbol;
 
   return (
-    <Wrapper>
+    <PopupListWrapper>
       <StyledTable>
         <thead>
           <StyledTr>
@@ -126,7 +94,7 @@ function VotesList({ items, theme, loading = true }) {
           )}
         </tbody>
       </StyledTable>
-    </Wrapper>
+    </PopupListWrapper>
   );
 }
 

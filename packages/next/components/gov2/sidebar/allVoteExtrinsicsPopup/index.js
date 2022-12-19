@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import VotesTab, { tabs } from "../tab";
+import VotesTab, {
+  tabs,
+} from "next-common/components/democracy/allVotesPopup/tab";
 import { useSelector } from "react-redux";
 import {
   isLoadingVoteExtrinsicsSelector,
