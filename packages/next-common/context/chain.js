@@ -1,6 +1,11 @@
 import React from "react";
 import { createContext, useContext } from "react";
 import getChainSettings from "../utils/consts/settings";
+import democracy from "../utils/consts/menu/democracy";
+import treasury from "../utils/consts/menu/treasury";
+import council from "../utils/consts/menu/council";
+import techComm from "../utils/consts/menu/tc";
+import Chains from "../utils/consts/chains";
 
 const ChainContext = createContext(process.env.NEXT_PUBLIC_CHAIN);
 
@@ -33,4 +38,49 @@ export function useSymbol() {
 export function useVoteSymbol() {
   const { symbol, voteSymbol } = useChainSettings();
   return voteSymbol || symbol;
+}
+
+export function useMenuHasTreasuryBounties() {
+  const chain = useChain();
+  const bountiesConfig = treasury.items.find(
+    ({ value }) => value === "bounties"
+  );
+  return !bountiesConfig.excludeToChains.includes(chain);
+}
+
+export function useMenuHasTreasuryChildBounties() {
+  const chain = useChain();
+  const childBountiesConfig = treasury.items.find(
+    ({ value }) => value === "child-bounties"
+  );
+  return !childBountiesConfig.excludeToChains.includes(chain);
+}
+
+export function useMenuHasTreasuryTips() {
+  const chain = useChain();
+  const tipsConfig = treasury.items.find(({ value }) => value === "tips");
+  return !tipsConfig.excludeToChains.includes(chain);
+}
+
+export function useMenuHasDemocracyExternal() {
+  const chain = useChain();
+  const tipsConfig = democracy.items.find(
+    ({ value }) => value === "democracyExternals"
+  );
+  return !tipsConfig.excludeToChains.includes(chain);
+}
+
+export function useMenuHasCouncil() {
+  const chain = useChain();
+  return !council.excludeToChains.includes(chain);
+}
+
+export function useMenuHasTechComm() {
+  const chain = useChain();
+  return !techComm.excludeToChains.includes(chain);
+}
+
+export function useMenuHasGov2() {
+  const chain = useChain();
+  return [Chains.kusama].includes(chain);
 }

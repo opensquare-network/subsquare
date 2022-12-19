@@ -88,5 +88,3 @@ export const CACHE_KEY = {
 };
 
 export const chain = process.env.NEXT_PUBLIC_CHAIN;
-
-export const isKintsugiChain = chain === "kintsugi";
