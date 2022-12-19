@@ -58,7 +58,6 @@ export default function OverviewSummary({ summaryData }) {
     activeTechCommMotionsCount,
     activeTipsCount,
     activeTreasuryProposalsCount,
-    activeGov2ReferendumsCount,
     activeGov2ReferendaCount,
     activeFellowshipReferendaCount,
   } = summaryData ?? {};
