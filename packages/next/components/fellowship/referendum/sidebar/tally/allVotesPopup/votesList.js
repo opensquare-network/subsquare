@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import styled, { withTheme } from "styled-components";
+import { withTheme } from "styled-components";
 import User from "next-common/components/user";
 import Loading from "next-common/components/loading";
 
