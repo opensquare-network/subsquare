@@ -42,10 +42,20 @@ const OverviewSummaryWrapper = styled.div`
 `;
 
 export default function Overview({ overviewData, summaryData }) {
-  if (overviewData?.[0]?.items?.length === 0) {
+  const allCategoriesCount = (overviewData || []).reduce(
+    (result, category) => result + category.items?.length || 0,
+    0
+  );
+  if (allCategoriesCount <= 0) {
     // All items are empty, show default empty page
     return (
       <Wrapper>
+        <OverviewSummaryWrapper>
+          <TitleContainer>Overview</TitleContainer>
+
+          <OverviewSummary summaryData={summaryData} />
+        </OverviewSummaryWrapper>
+
         <EmptyOverview />
       </Wrapper>
     );
