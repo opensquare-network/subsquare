@@ -16,7 +16,11 @@ export function makeReciprocalCurve(factor, xOffset, yOffset) {
       .multipliedBy(Math.pow(10, 9))
       .toFixed(0, BigNumber.ROUND_DOWN);
 
-    return new BigNumber(v).plus(yOffset).div(Math.pow(10, 9)).toString();
+    const calcValue = new BigNumber(v)
+      .plus(yOffset)
+      .div(Math.pow(10, 9))
+      .toString();
+    return BigNumber.max(calcValue, 0).toString();
   };
 }
 
@@ -38,6 +42,7 @@ export function makeLinearCurve(length, floor, ceil) {
     const perbill = new BigNumber(ceil)
       .minus(deducted)
       .toFixed(0, BigNumber.ROUND_DOWN);
-    return new BigNumber(perbill).div(Math.pow(10, 9)).toString();
+    const calcValue = new BigNumber(perbill).div(Math.pow(10, 9)).toString();
+    return BigNumber.max(calcValue, 0).toString();
   };
 }

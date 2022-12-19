@@ -1,31 +1,18 @@
 import { useEffect } from "react";
 import useApi from "../hooks/useApi";
 import { useDispatch, useSelector } from "react-redux";
-import { useTimelineData } from "../../context/post";
-import { gov2State } from "../consts/state";
 import { latestHeightSelector } from "../../store/reducers/chainSlice";
 import {
   fetchIssuanceForGov2,
   gov2IssuanceSelector,
 } from "../../store/reducers/gov2ReferendumSlice";
+import useReferendumVotingFinishHeight from "../../context/post/referenda/useReferendumVotingFinishHeight";
 
 export default function useIssuance() {
   const api = useApi();
   const dispatch = useDispatch();
   const latestHeight = useSelector(latestHeightSelector);
-
-  const timeline = useTimelineData();
-  const finishItem = (timeline || []).find((item) =>
-    [
-      gov2State.Approved,
-      gov2State.Rejected,
-      gov2State.TimedOut,
-      gov2State.Cancelled,
-      gov2State.Killed,
-      "Confirmed",
-    ].includes(item.name)
-  );
-  const height = finishItem?.indexer?.blockHeight;
+  const votingFinishHeight = useReferendumVotingFinishHeight();
   const issuance = useSelector(gov2IssuanceSelector);
 
   useEffect(() => {
@@ -34,13 +21,13 @@ export default function useIssuance() {
     }
 
     if (!issuance) {
-      dispatch(fetchIssuanceForGov2(api, height));
+      dispatch(fetchIssuanceForGov2(api, votingFinishHeight));
     }
 
-    if (!height && latestHeight % 10 === 0) {
+    if (!votingFinishHeight && latestHeight % 10 === 0) {
       dispatch(fetchIssuanceForGov2(api));
     }
-  }, [height, api, latestHeight, issuance]);
+  }, [votingFinishHeight, api, latestHeight, issuance]);
 
   return {
     issuance,

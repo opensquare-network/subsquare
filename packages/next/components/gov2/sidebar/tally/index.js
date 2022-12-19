@@ -50,7 +50,7 @@ export default function Gov2Tally() {
       <Aye />
       <Nay />
 
-      <SupportBar issuance={issuance} />
+      <SupportBar support={tally?.support} issuance={issuance} />
 
       <Support />
       <Issuance issuance={issuance} />

@@ -5,6 +5,7 @@ import useApi from "../../../utils/hooks/useApi";
 import { useEffect, useState } from "react";
 import { useDetailType } from "../../page";
 import { detailPageCategory } from "../../../utils/consts/business/category";
+import useReferendumVotingFinishHeight from "../referenda/useReferendumVotingFinishHeight";
 
 export function useDecidingSince() {
   const onchain = useOnchainData();
@@ -16,11 +17,29 @@ export function useConfirming() {
   return onchain.info?.deciding?.confirming;
 }
 
+async function queryReferendumInfo(
+  api,
+  palletName,
+  referendumIndex,
+  votingFinishHeight
+) {
+  let blockApi = api;
+  if (votingFinishHeight) {
+    const blockHash = await api.rpc.chain.getBlockHash(votingFinishHeight - 1);
+    if (blockHash) {
+      blockApi = await api.at(blockHash);
+    }
+  }
+
+  return blockApi.query[palletName].referendumInfoFor(referendumIndex);
+}
+
 export function useTally() {
   const onchain = useOnchainData();
   const { referendumIndex } = onchain;
   const [tally, setTally] = useState(onchain?.info?.tally);
   const pageType = useDetailType();
+  const votingFinishHeight = useReferendumVotingFinishHeight();
 
   const api = useApi();
 
@@ -38,21 +57,24 @@ export function useTally() {
       return;
     }
 
-    api.query[palletName]
-      .referendumInfoFor(referendumIndex)
-      .then((optionalInfo) => {
-        if (!optionalInfo.isSome) {
-          return;
-        }
+    queryReferendumInfo(
+      api,
+      palletName,
+      referendumIndex,
+      votingFinishHeight
+    ).then((optionalInfo) => {
+      if (!optionalInfo.isSome) {
+        return;
+      }
 
-        const info = optionalInfo.unwrap();
-        if (!info.isOngoing) {
-          return;
-        }
+      const info = optionalInfo.unwrap();
+      if (!info.isOngoing) {
+        return;
+      }
 
-        setTally(info.asOngoing.tally.toJSON());
-      });
-  }, [api, referendumIndex, pageType]);
+      setTally(info.asOngoing.tally.toJSON());
+    });
+  }, [api, referendumIndex, pageType, votingFinishHeight]);
   return tally;
 }
 

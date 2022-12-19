@@ -1,5 +1,5 @@
 import {
-  BorderedRow,
+  Row,
   Header,
   Value,
 } from "next-common/components/referenda/tally/styled";
@@ -10,12 +10,12 @@ export default function Nay() {
   const tally = useTally();
 
   return (
-    <BorderedRow>
+    <Row>
       <Header>
         <NayIcon />
         Nay
       </Header>
       <Value>{tally.nays}</Value>
-    </BorderedRow>
+    </Row>
   );
 }

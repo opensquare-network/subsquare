@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.6.3
+
+date: 12/17/2022
+
+- Add curve chart on referenda track page.
+- Support threshold visualization of fellowship referendum .
+
 # 2.6.2
 
 date: 12/15/2022

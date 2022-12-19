@@ -22,10 +22,18 @@ function common(track, filed) {
 
 export function useApprovalCurve() {
   const track = useTrack();
-  return common(track, "minApproval");
+  return getTrackApprovalCurve(track);
 }
 
 export function useSupportCurve() {
   const track = useTrack();
+  return getTrackSupportCurve(track);
+}
+
+export function getTrackApprovalCurve(track) {
+  return common(track, "minApproval");
+}
+
+export function getTrackSupportCurve(track) {
   return common(track, "minSupport");
 }

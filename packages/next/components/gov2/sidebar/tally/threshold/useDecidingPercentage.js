@@ -4,27 +4,14 @@ import { useSelector } from "react-redux";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { useMemo } from "react";
 import isNil from "lodash.isnil";
-import { useTimelineData } from "next-common/context/post";
-import { gov2State } from "next-common/utils/consts/state";
+import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 export function useDecidingEndPercentage() {
   const decisionPeriod = useDecision();
   const decidingSince = useDecidingSince();
   const latestHeight = useSelector(latestHeightSelector);
-  const timeline = useTimelineData();
-  const endItem = (timeline || []).find((item) =>
-    [
-      gov2State.Approved,
-      gov2State.Cancelled,
-      gov2State.Rejected,
-      gov2State.TimedOut,
-      gov2State.TimedOut,
-      gov2State.Killed,
-      "Confirmed",
-    ].includes(item.name)
-  );
-
-  const endHeight = endItem ? endItem.indexer.blockHeight : latestHeight;
+  const votingFinishHeight = useReferendumVotingFinishHeight();
+  const endHeight = votingFinishHeight || latestHeight;
 
   return useMemo(() => {
     if (isNil(endHeight)) {
