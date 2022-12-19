@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Flex from "next-common/components/styled/flex";
+import Flex from "../../styled/flex";
 
 export const Row = styled(Flex)`
   height: 44px;

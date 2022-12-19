@@ -9,7 +9,7 @@ import toApiCouncil from "next-common/utils/toApiCouncil";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import CurrentVote from "./currentVote";
 import VoteButton from "next-common/components/popup/voteButton";
-import { sendTx } from "next-common/utils/sendTx";
+import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { emptyFunction } from "next-common/utils";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 import { useChain } from "next-common/context/chain";
@@ -17,6 +17,7 @@ import Signer from "next-common/components/popup/fields/signerField";
 import { WarningMessage } from "next-common/components/popup/styled";
 import styled from "styled-components";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
+import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -39,14 +40,24 @@ function PopupContent({
 }) {
   const chain = useChain();
   const dispatch = useDispatch();
+  const api = useApi();
   const signerAccount = useSignerAccount(extensionAccounts);
+  const [balance, loadingBalance] = useAddressBalance(
+    api,
+    signerAccount?.realAddress
+  );
+  const [signerBalance, loadingSignerBalance] = useAddressBalance(
+    api,
+    signerAccount?.address
+  );
+
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
 
-  const selectedAddress = signerAccount?.address;
-  const selectedAccountCanVote = voters.includes(selectedAddress);
-  const currentVote = votes.find((item) => item[0] === selectedAddress);
+  const canVote = voters.includes(signerAccount?.realAddress);
+  const currentVote = votes.find(
+    (item) => item[0] === signerAccount?.realAddress
+  );
 
-  const api = useApi();
   const voteMethod = api?.tx?.[toApiCouncil(chain, type)]?.vote;
   const isMounted = useIsMounted();
 
@@ -67,7 +78,10 @@ function PopupContent({
       return showErrorToast("Please select an account");
     }
 
-    const tx = voteMethod(motionHash, motionIndex, approve);
+    let tx = voteMethod(motionHash, motionIndex, approve);
+    if (signerAccount?.proxyAddress) {
+      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+    }
 
     const signerAddress = signerAccount.address;
 
@@ -93,9 +107,15 @@ function PopupContent({
   return (
     <>
       <SignerWrapper>
-        <Signer signerAccount={signerAccount} />
-        {!selectedAccountCanVote && (
-          <WarningMessage danger={!selectedAccountCanVote}>
+        <Signer
+          signerAccount={signerAccount}
+          balance={balance}
+          isBalanceLoading={loadingBalance}
+          signerBalance={signerBalance}
+          isSignerBalanceLoading={loadingSignerBalance}
+        />
+        {!canVote && (
+          <WarningMessage danger={!canVote}>
             Only council members can vote.
           </WarningMessage>
         )}

@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import React, { useCallback, useEffect, useState } from "react";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";

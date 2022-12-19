@@ -19,13 +19,13 @@ import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import { useChain } from "next-common/context/chain";
-import { useUser } from "next-common/context/user";
 import { useDetailType } from "next-common/context/page";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 export default function MotionDetail({ onReply }) {
   const type = useDetailType();
   const chain = useChain();
-  const user = useUser();
+  const realAddress = useRealAddress();
   const postDispatch = usePostDispatch();
   const api = useApi();
   const isMounted = useIsMounted();
@@ -37,7 +37,7 @@ export default function MotionDetail({ onReply }) {
 
   const [isEdit, setIsEdit] = useState(false);
 
-  const userCanVote = isAddressInGroup(user?.address, voters);
+  const userCanVote = isAddressInGroup(realAddress, voters);
   const motionEnd = isMotionEnded(post.onchainData);
 
   const blockHash = motionEnd

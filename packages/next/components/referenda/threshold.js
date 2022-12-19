@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 
 const ThresholdScope = styled.div`
   position: absolute;
-  top: 0;
+  top: 8px;
   right: 1px;
   bottom: 0;
   left: 1px;
@@ -27,6 +27,7 @@ const Threshold = styled.div`
     `}
   background-color: ${(props) => props.theme.grey400Border};
   transform: translateX(-50%);
+  z-index: 1;
 `;
 
 export default function ThresholdComponent({ threshold, thin = false }) {

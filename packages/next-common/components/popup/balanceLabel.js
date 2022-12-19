@@ -15,7 +15,11 @@ export default function PopupLabelWithBalance({
       <Label>{text}</Label>
       <BalanceWrapper>
         <div>{balanceName}</div>
-        {!isLoading && <div>{formatBalance(balance, symbol)}</div>}
+        {!isLoading && (
+          <div>
+            {formatBalance(balance, symbol)} {symbol}
+          </div>
+        )}
         {isLoading && <Loading />}
       </BalanceWrapper>
     </LabelWrapper>

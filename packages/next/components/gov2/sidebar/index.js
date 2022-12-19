@@ -9,28 +9,12 @@ import { useState } from "react";
 import styled, { useTheme, css } from "styled-components";
 import Gov2Status from "./status";
 import Gov2Tally from "./tally";
+import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
+import { usePost } from "next-common/context/post";
 
 const Popup = dynamic(() => import("../votePopup"), {
   ssr: false,
 });
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  right: 0;
-  top: 32px;
-  width: 300px;
-  margin-top: 8px !important;
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-  @media screen and (max-width: 1024px) {
-    position: static;
-    width: auto;
-    margin-top: 16px !important;
-  }
-`;
 
 const VoteButton = styled.button`
   all: unset;
@@ -61,25 +45,26 @@ const Link = styled(ExternalLink)`
   `)}
 `;
 
-export default function Gov2Sidebar({
-  detail,
-  onVoteFinalized = emptyFunction,
-}) {
+export default function Gov2Sidebar({ onVoteFinalized = emptyFunction }) {
+  const detail = usePost();
   const { primaryPurple500 } = useTheme();
   const [showVote, setShowVote] = useState(false);
   const referendumIndex = detail?.referendumIndex;
   const trackId = detail?.track;
-  const showVoteButton = [gov2State.Deciding, gov2State.Confirming].includes(
-    detail?.state?.name
-  );
+  const isVoting = [
+    gov2State.Submitted,
+    gov2State.Queueing,
+    gov2State.Deciding,
+    gov2State.Confirming,
+  ].includes(detail?.state?.name);
 
   return (
-    <Wrapper>
+    <RightBarWrapper>
       <Gov2Status />
 
-      <Gov2Tally detail={detail} />
+      <Gov2Tally />
 
-      {showVoteButton && (
+      {isVoting && (
         <VoteButton
           onClick={() => {
             setShowVote(true);
@@ -102,6 +87,6 @@ export default function Gov2Sidebar({
         How Governance V2 Works
         <ExternalLinkIcon color={primaryPurple500} />
       </Link>
-    </Wrapper>
+    </RightBarWrapper>
   );
 }

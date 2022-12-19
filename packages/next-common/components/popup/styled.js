@@ -42,10 +42,10 @@ export const StatusWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   min-height: 38px;
+  font-size: 14px;
+  line-height: 100%;
   > div.value {
     display: flex;
-    font-size: 14px;
-    line-height: 100%;
     font-weight: 500;
     > span {
       color: ${(props) => props.theme.textTertiary};

@@ -13,7 +13,7 @@ import {
 } from "next-common/utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import { WarningMessage } from "next-common/components/popup/styled";
-import { sendTx } from "next-common/utils/sendTx";
+import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import { useChainSettings } from "next-common/context/chain";
@@ -40,19 +40,21 @@ function PopupContent({
   const api = useApi();
 
   const signerAccount = useSignerAccount(extensionAccounts);
+
   const [inputTipValue, setInputTipValue] = useState();
   const [tipping, setTipping] = useState(false);
   const { decimals } = useChainSettings();
   const [balance, loadingBalance] = useAddressBalance(
     api,
+    signerAccount?.realAddress
+  );
+  const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
+    api,
     signerAccount?.address
   );
   const councilTippers = useCouncilMembers();
 
-  const selectedAccountIsTipper = isAddressInGroup(
-    signerAccount?.address,
-    councilTippers
-  );
+  const isTipper = isAddressInGroup(signerAccount?.realAddress, councilTippers);
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doEndorse = async () => {
@@ -75,7 +77,11 @@ function PopupContent({
       return showErrorToast(err.message);
     }
 
-    const tx = api.tx.tips.tip(tipHash, bnTipValue.toString());
+    let tx = api.tx.tips.tip(tipHash, bnTipValue.toString());
+
+    if (signerAccount?.proxyAddress) {
+      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+    }
 
     const signerAddress = signerAccount.address;
 
@@ -94,13 +100,15 @@ function PopupContent({
 
   return (
     <>
-      <WarningMessage danger={!selectedAccountIsTipper}>
+      <WarningMessage danger={!isTipper}>
         Only council members can tip.
       </WarningMessage>
       <Signer
-        isBalanceLoading={loadingBalance}
-        balance={balance}
         signerAccount={signerAccount}
+        balance={balance}
+        isBalanceLoading={loadingBalance}
+        signerBalance={signerBalance}
+        isSignerBalanceLoading={isSignerBalanceLoading}
       />
       <BalanceField
         title="Tip Value"

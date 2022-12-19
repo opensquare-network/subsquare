@@ -40,7 +40,12 @@ const TopWrapper = styled.div`
   }
 `;
 
-export default function Popup({ children, title, onClose = emptyFunction }) {
+export default function Popup({
+  children,
+  title,
+  onClose = emptyFunction,
+  className,
+}) {
   const ref = useRef();
   useOnClickOutside(ref, () => onClose());
 
@@ -54,7 +59,7 @@ export default function Popup({ children, title, onClose = emptyFunction }) {
 
   return (
     <Background>
-      <Wrapper ref={ref}>
+      <Wrapper ref={ref} className={className}>
         <TopWrapper>
           <h3>{title}</h3>
           <ClosePanelIcon onClick={onClose} />

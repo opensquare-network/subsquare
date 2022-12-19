@@ -13,3 +13,11 @@ export const gov2State = {
   Rejected: "Rejected",
   Executed: "Executed",
 };
+
+export const gov2FinalState = [
+  gov2State.Cancelled,
+  gov2State.Approved,
+  gov2State.Killed,
+  gov2State.TimedOut,
+  gov2State.Rejected,
+];

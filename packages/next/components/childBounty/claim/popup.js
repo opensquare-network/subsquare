@@ -1,76 +1,82 @@
+import React from "react";
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
-import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { emptyFunction } from "next-common/utils";
-import { getSigner, sendTx } from "next-common/utils/sendTx";
-import MaybeLoginWithAction from "next-common/components/maybeLoginWithAction";
-import { useUser } from "next-common/context/user";
-import { useCallback } from "react";
+import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
+import SignerPopup from "next-common/components/signerPopup";
 
 export default function ClaimPopup({
   childBounty,
   onClose,
+  isLoading,
+  setIsLoading = emptyFunction,
   onSubmitted = emptyFunction,
   onFinalized = emptyFunction,
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
-  const api = useApi();
-  const loginUser = useUser();
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
     [dispatch]
   );
 
-  const doClaim = useCallback(async () => {
-    if (!api) {
-      return showErrorToast("Chain network is not connected yet");
-    }
+  const doClaim = useCallback(
+    async (api, signerAccount) => {
+      if (!api) {
+        return showErrorToast("Chain network is not connected yet");
+      }
 
-    if (!loginUser) {
-      return showErrorToast("Please login first");
-    }
+      if (!signerAccount) {
+        return showErrorToast("Please login first");
+      }
 
-    const signerAddress = loginUser.address;
+      const signerAddress = signerAccount.address;
 
-    try {
-      const signer = await getSigner(signerAddress);
-      api.setSigner(signer);
-    } catch (e) {
-      return showErrorToast(`Unable to find injected ${signerAddress}`);
-    }
+      let tx = api.tx.childBounties.claimChildBounty(
+        childBounty.parentBountyId,
+        childBounty.index
+      );
 
-    const tx = api.tx.childBounties.claimChildBounty(
-      childBounty.parentBountyId,
-      childBounty.index
-    );
+      if (signerAccount?.proxyAddress) {
+        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+      }
 
-    await sendTx({
-      tx,
+      await sendTx({
+        tx,
+        setLoading: setIsLoading,
+        dispatch,
+        onFinalized,
+        onInBlock,
+        onSubmitted,
+        onClose,
+        signerAddress,
+        isMounted,
+      });
+    },
+    [
       dispatch,
+      isMounted,
+      showErrorToast,
       onFinalized,
       onInBlock,
       onSubmitted,
       onClose,
-      signerAddress,
-      isMounted,
-    });
-  }, [
-    api,
-    dispatch,
-    isMounted,
-    showErrorToast,
-    loginUser,
-    onFinalized,
-    onInBlock,
-    onSubmitted,
-    onClose,
-    childBounty,
-  ]);
+      childBounty,
+      setIsLoading,
+    ]
+  );
 
-  return <MaybeLoginWithAction actionCallback={doClaim} onClose={onClose} />;
+  return (
+    <SignerPopup
+      title="Claim Bounty"
+      actionCallback={doClaim}
+      onClose={onClose}
+      isLoading={isLoading}
+    />
+  );
 }

@@ -17,7 +17,7 @@ import VoteButton from "next-common/components/popup/voteButton";
 import Signer from "next-common/components/popup/fields/signerField";
 
 import PopupWithAddress from "next-common/components/popupWithAddress";
-import { sendTx } from "next-common/utils/sendTx";
+import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
@@ -41,13 +41,17 @@ function PopupContent({
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
+    signerAccount?.realAddress
+  );
+  const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
+    api,
     signerAccount?.address
   );
 
   const [addressVote, addressVoteIsLoading] = useAddressVote(
     api,
     referendumIndex,
-    signerAccount?.address
+    signerAccount?.realAddress
   );
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
@@ -93,7 +97,7 @@ function PopupContent({
       return showErrorToast("Chain network is not connected yet");
     }
 
-    const tx = api.tx.democracy.vote(referendumIndex, {
+    let tx = api.tx.democracy.vote(referendumIndex, {
       Standard: {
         balance: bnVoteBalance.toString(),
         vote: {
@@ -102,6 +106,10 @@ function PopupContent({
         },
       },
     });
+
+    if (signerAccount?.proxyAddress) {
+      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+    }
 
     const signerAddress = signerAccount.address;
 
@@ -127,10 +135,12 @@ function PopupContent({
   return (
     <>
       <Signer
-        isBalanceLoading={votingIsLoading}
-        balance={votingBalance}
-        balanceName="Voting balance"
         signerAccount={signerAccount}
+        balanceName="Voting balance"
+        balance={votingBalance}
+        isBalanceLoading={votingIsLoading}
+        signerBalance={signerBalance}
+        isSignerBalanceLoading={isSignerBalanceLoading}
       />
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode

@@ -35,7 +35,7 @@ export const CATEGORIES = [
         routePath: "democracy/external",
         apiPath: "external-proposals",
         formatter: toExternalProposalListItem,
-        excludeChains: [Chains.kintsugi],
+        excludeChains: [Chains.kintsugi, Chains.interlay],
       },
       {
         id: "proposals",
@@ -69,7 +69,7 @@ export const CATEGORIES = [
         routePath: "treasury/bounties",
         apiPath: "bounties",
         formatter: toTreasuryBountyListItem,
-        excludeChains: [Chains.kintsugi],
+        excludeChains: [Chains.kintsugi, Chains.interlay],
       },
       {
         id: "tips",
@@ -79,7 +79,7 @@ export const CATEGORIES = [
         routePath: "treasury/tips",
         apiPath: "tips",
         formatter: toTipListItem,
-        excludeChains: [Chains.kintsugi],
+        excludeChains: [Chains.kintsugi, Chains.interlay],
       },
     ],
   },
@@ -95,7 +95,7 @@ export const CATEGORIES = [
         routePath: "collective/council/motions",
         apiPath: "council-motions",
         formatter: toCouncilMotionListItem,
-        excludeChains: [Chains.kintsugi],
+        excludeChains: [Chains.kintsugi, Chains.interlay],
       },
       {
         id: "techCommProposals",

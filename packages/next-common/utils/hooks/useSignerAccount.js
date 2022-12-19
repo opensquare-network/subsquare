@@ -9,6 +9,7 @@ export default function useSignerAccount(extensionAccounts) {
   const api = useApi();
   const user = useUser();
   const address = user?.address;
+  const proxyAddress = user?.proxyAddress;
 
   useEffect(() => {
     if (!address) {
@@ -37,11 +38,13 @@ export default function useSignerAccount(extensionAccounts) {
       setSignerAccount({
         ...account,
         name: account.meta?.name,
+        proxyAddress,
+        realAddress: proxyAddress || address,
       });
     } else {
       setSignerAccount();
     }
-  }, [extensionAccounts, address, api]);
+  }, [extensionAccounts, address, proxyAddress, api]);
 
   return signerAccount;
 }

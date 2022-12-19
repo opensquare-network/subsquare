@@ -11,7 +11,6 @@ import Second from "next-common/components/publicProposal/second";
 import { useAddressVotingBalance } from "utils/hooks";
 import isNil from "lodash.isnil";
 import useCommentComponent from "next-common/components/useCommentComponent";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
@@ -48,8 +47,6 @@ export default withLoginUserRedux(
       ? lastTimelineBlockHeight - 1
       : undefined;
 
-    const referendumIndex = detail?.referendumIndex;
-
     const refreshPageData = useCallback(async () => {
       const { result } = await nextApi.fetch(
         `democracy/proposals/${detail.proposalIndex}`
@@ -79,6 +76,8 @@ export default withLoginUserRedux(
       },
     ];
 
+    const treasuryProposals = publicProposal?.treasuryProposals;
+
     return (
       <PostProvider post={detail}>
         <DetailWithRightLayout
@@ -101,7 +100,7 @@ export default withLoginUserRedux(
             atBlockHeight={secondsAtBlockHeight}
             onFinalized={onSecondFinalized}
           />
-          <Business referendumIndex={referendumIndex} />
+          <Business treasuryProposals={treasuryProposals} />
           <Metadata publicProposal={detail?.onchainData} />
           <Timeline
             publicProposalTimeline={detail?.onchainData?.timeline}
@@ -126,11 +125,11 @@ export const getServerSideProps = withLoginUser(async (context) => {
   }
 
   let referendum = null;
-  if ((detail.referendumIndex ?? null) !== null) {
-    const result = await nextApi.fetch(
+  if (!isNil(detail.referendumIndex)) {
+    const { result } = await nextApi.fetch(
       `democracy/referendums/${detail.referendumIndex}`
     );
-    referendum = result.result;
+    referendum = result;
   }
 
   const { result: comments } = await nextApi.fetch(
@@ -143,8 +142,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      detail,
-      referendum,
+      detail: detail,
+      referendum: referendum ?? null,
       comments: comments ?? EmptyList,
     },
   };

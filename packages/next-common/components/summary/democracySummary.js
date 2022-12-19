@@ -20,8 +20,6 @@ import { p_14_normal } from "next-common/styles/componentCss";
 import { smcss } from "next-common/utils/responsive";
 import Divider from "next-common/components/styled/layout/divider";
 import FlexBetween from "../styled/flexBetween";
-import DemocracySummaryDelegation from "./democracySummaryDelegation";
-import Chains from "../../utils/consts/chains";
 
 const Wrapper = styled(SummaryCard)`
   height: auto;
@@ -58,7 +56,7 @@ async function referendumsActive(api) {
   });
 }
 
-export default function DemocracySummary() {
+export default function DemocracySummary({ footer }) {
   const chain = useChain();
   const [summary, setSummary] = useState({});
   const api = useApi();
@@ -181,10 +179,10 @@ export default function DemocracySummary() {
         </SummaryItem>
       </SummaryWrapper>
 
-      {chain !== Chains.kintsugi && (
+      {footer && (
         <>
           <Divider margin={16} />
-          <DemocracySummaryDelegation />
+          {footer}
         </>
       )}
     </Wrapper>

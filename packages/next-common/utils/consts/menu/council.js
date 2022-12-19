@@ -2,6 +2,7 @@ import Chains from "../chains";
 import MotionIcon from "../../../assets/imgs/icons/type-motions.svg";
 import React from "react";
 import MembersIcon from "../../../assets/imgs/icons/members.svg";
+import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
 
 const council = {
   name: "COUNCIL",
@@ -16,13 +17,21 @@ const council = {
       value: "motions",
       name: "Motions",
       pathname: "/council/motions",
-      icon: <MotionIcon />,
+      icon: (
+        <MenuIconWrapper>
+          <MotionIcon />
+        </MenuIconWrapper>
+      ),
     },
     {
       value: "councilMembers",
       name: "Members",
       pathname: "/council/members",
-      icon: <MembersIcon />,
+      icon: (
+        <MenuIconWrapper>
+          <MembersIcon />
+        </MenuIconWrapper>
+      ),
     },
   ],
 };

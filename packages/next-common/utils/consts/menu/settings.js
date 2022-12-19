@@ -1,8 +1,11 @@
+import React from "react";
 import UserIcon from "../../../assets/imgs/icons/user.svg";
+import ProxyIcon from "../../../assets/imgs/icons/proxy.svg";
 import BellIcon from "../../../assets/imgs/icons/bell.svg";
 import SubscriptionIcon from "../../../assets/imgs/icons/subscription.svg";
-import React from "react";
 import AddressIcon from "../../../assets/imgs/icons/address.svg";
+import Chains from "../chains";
+import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
 
 const back = {
   items: [
@@ -18,7 +21,11 @@ const accountSetting = {
   value: "account",
   name: "Account",
   pathname: "/setting/account",
-  icon: <UserIcon />,
+  icon: (
+    <MenuIconWrapper>
+      <UserIcon />
+    </MenuIconWrapper>
+  ),
 };
 
 const keyAccountSetting = {
@@ -30,21 +37,45 @@ const notificationSetting = {
   value: "notification",
   name: "Notification",
   pathname: "/setting/notification",
-  icon: <BellIcon />,
+  icon: (
+    <MenuIconWrapper>
+      <BellIcon />
+    </MenuIconWrapper>
+  ),
 };
 
 const subscriptionSetting = {
   value: "subscription",
   name: "Subscription",
   pathname: "/setting/subscription",
-  icon: <SubscriptionIcon />,
+  icon: (
+    <MenuIconWrapper>
+      <SubscriptionIcon />
+    </MenuIconWrapper>
+  ),
 };
 
 const linkAddressSetting = {
   value: "linked-address",
   name: "Linked Address",
   pathname: "/setting/linked-address",
-  icon: <AddressIcon />,
+  icon: (
+    <MenuIconWrapper>
+      <AddressIcon />
+    </MenuIconWrapper>
+  ),
+};
+
+const proxySetting = {
+  value: "proxy",
+  name: "Proxy",
+  pathname: "/setting/proxy",
+  excludeToChains: [Chains.kintsugi, Chains.interlay],
+  icon: (
+    <MenuIconWrapper>
+      <ProxyIcon />
+    </MenuIconWrapper>
+  ),
 };
 
 export const settingMenuOfKeyAccount = [
@@ -53,6 +84,7 @@ export const settingMenuOfKeyAccount = [
     name: "SETTING",
     items: [
       keyAccountSetting,
+      proxySetting,
       notificationSetting,
       subscriptionSetting,
     ],

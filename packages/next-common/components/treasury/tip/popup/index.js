@@ -14,7 +14,7 @@ import Signer from "next-common/components/popup/fields/signerField";
 import Tab, { NewTip, ReportAwesome } from "./tab";
 import TipValue from "./tipValue";
 import useAddressBalance from "../../../../utils/hooks/useAddressBalance";
-import { sendTx } from "../../../../utils/sendTx";
+import { sendTx, wrapWithProxy } from "../../../../utils/sendTx";
 import SecondaryButton from "../../../buttons/secondaryButton";
 import { useChainSettings } from "../../../../context/chain";
 import useSignerAccount from "../../../../utils/hooks/useSignerAccount";
@@ -34,6 +34,7 @@ function PopupContent({
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const signerAccount = useSignerAccount(extensionAccounts);
+
   const [reason, setReason] = useState("");
   const [loading, setLoading] = useState(false);
   const [tabIndex, setTabIndex] = useState(ReportAwesome);
@@ -43,6 +44,10 @@ function PopupContent({
 
   const [beneficiary, setBeneficiary] = useState();
   const [balance, balanceIsLoading] = useAddressBalance(
+    api,
+    signerAccount?.realAddress
+  );
+  const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
     api,
     signerAccount?.address
   );
@@ -55,7 +60,7 @@ function PopupContent({
     }
 
     if (!signerAccount) {
-      return showErrorToast("Please select an account");
+      return showErrorToast("Please login first");
     }
 
     if (!beneficiary) {
@@ -79,6 +84,10 @@ function PopupContent({
       tx = api.tx.tips.tipNew(reason, beneficiary, bnValue.toString());
     } else {
       tx = api.tx.tips.reportAwesome(reason, beneficiary);
+    }
+
+    if (signerAccount?.proxyAddress) {
+      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
     const signerAddress = signerAccount.address;
@@ -110,6 +119,8 @@ function PopupContent({
         signerAccount={signerAccount}
         balance={balance}
         isBalanceLoading={balanceIsLoading}
+        signerBalance={signerBalance}
+        isSignerBalanceLoading={isSignerBalanceLoading}
       />
       <Beneficiary
         extensionAccounts={extensionAccounts}

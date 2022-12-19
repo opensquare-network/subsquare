@@ -7,11 +7,11 @@ import {
 import Loading from "next-common/components/loading";
 import LoadingStatus from "next-common/components/popup/loadingVotingStatus";
 
-export default function LoadingVoteStatus() {
+export default function LoadingVoteStatus({ title = "Current voting" }) {
   return (
     <VotingStatusContent>
       <TooltipWrapper>
-        <Label>Current voting</Label>
+        <Label>{title}</Label>
         <VotingStatusWrapper>
           <Loading size={10} />
         </VotingStatusWrapper>

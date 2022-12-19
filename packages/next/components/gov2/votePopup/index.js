@@ -13,15 +13,18 @@ import DelegateVoteStatus from "components/referenda/popup/delegateVoteStatus";
 import NoVoteRecord from "components/referenda/popup/noVoteRecord";
 import LoadingVoteStatus from "components/referenda/popup/loadingVoteStatus";
 import Delegating from "components/referenda/popup/delegating";
-import DirectVote from "components/referenda/popup/directVote";
+import DirectVote from "./directVote";
 import VoteButton from "next-common/components/popup/voteButton";
 import Signer from "next-common/components/popup/fields/signerField";
 
 import PopupWithAddress from "next-common/components/popupWithAddress";
-import { sendTx } from "next-common/utils/sendTx";
+import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
+import { WarningMessage } from "next-common/components/popup/styled";
+import Column from "next-common/components/styled/column";
+import SplitAbstainVoteStatus from "./splitAbstainVoteStatus";
 
 function PopupContent({
   extensionAccounts,
@@ -43,6 +46,10 @@ function PopupContent({
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
+    signerAccount?.realAddress
+  );
+  const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
+    api,
     signerAccount?.address
   );
 
@@ -50,7 +57,7 @@ function PopupContent({
     api,
     trackId,
     referendumIndex,
-    signerAccount?.address
+    signerAccount?.realAddress
   );
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
@@ -96,7 +103,7 @@ function PopupContent({
       return showErrorToast("Chain network is not connected yet");
     }
 
-    const tx = api.tx.convictionVoting.vote(referendumIndex, {
+    let tx = api.tx.convictionVoting.vote(referendumIndex, {
       Standard: {
         balance: bnVoteBalance.toString(),
         vote: {
@@ -105,6 +112,10 @@ function PopupContent({
         },
       },
     });
+
+    if (signerAccount?.proxyAddress) {
+      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+    }
 
     const signerAddress = signerAccount.address;
 
@@ -130,10 +141,12 @@ function PopupContent({
   return (
     <>
       <Signer
-        isBalanceLoading={votingIsLoading}
-        balance={votingBalance}
-        balanceName="Voting balance"
         signerAccount={signerAccount}
+        balanceName="Voting balance"
+        balance={votingBalance}
+        isBalanceLoading={votingIsLoading}
+        signerBalance={signerBalance}
+        isSignerBalanceLoading={isSignerBalanceLoading}
       />
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode
@@ -156,17 +169,29 @@ function PopupContent({
       {!addressVoteIsLoading &&
         !addressVote?.standard &&
         !addressVote?.split &&
+        !addressVote?.splitAbstain &&
         (!addressVote?.delegating || !addressVoteDelegateVoted) && (
           <NoVoteRecord />
         )}
-      {addressVote?.standard && (
-        <StandardVoteStatus
-          addressVoteStandard={addressVote?.standard}
-          node={node}
-        />
-      )}
-      {addressVote?.split && (
-        <SplitVoteStatus addressVoteSplit={addressVote?.split} node={node} />
+      {(addressVote?.standard ||
+        addressVote?.split ||
+        addressVote?.splitAbstain) && (
+        <Column gap={8}>
+          {addressVote?.standard && (
+            <StandardVoteStatus addressVoteStandard={addressVote?.standard} />
+          )}
+          {addressVote?.split && (
+            <SplitVoteStatus addressVoteSplit={addressVote?.split} />
+          )}
+          {addressVote?.splitAbstain && (
+            <SplitAbstainVoteStatus
+              addressVoteSplit={addressVote?.splitAbstain}
+            />
+          )}
+          <WarningMessage>
+            Resubmitting the vote will override the current voting record
+          </WarningMessage>
+        </Column>
       )}
       {addressVote?.delegating && addressVoteDelegateVoted && (
         <DelegateVoteStatus addressVoteDelegate={addressVote?.delegating} />

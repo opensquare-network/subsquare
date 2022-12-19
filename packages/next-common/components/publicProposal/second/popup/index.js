@@ -8,11 +8,10 @@ import { newErrorToast } from "../../../../store/reducers/toastSlice";
 import PopupWithAddress from "../../../popupWithAddress";
 import DepositRequired from "./depositRequired";
 import SubmitButton from "./submitButton";
-import { sendTx } from "../../../../utils/sendTx";
+import { sendTx, wrapWithProxy } from "../../../../utils/sendTx";
 import { emptyFunction } from "../../../../utils";
 import useDeposit from "./useDeposit";
 import isNil from "lodash.isnil";
-import { useChain } from "../../../../context/chain";
 import useSignerAccount from "../../../../utils/hooks/useSignerAccount";
 
 function PopupContent({
@@ -26,13 +25,17 @@ function PopupContent({
   onInBlock = emptyFunction,
   useAddressVotingBalance,
 }) {
-  const chain = useChain();
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const signerAccount = useSignerAccount(extensionAccounts);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const api = useApi();
   const [balance, loadingBalance] = useAddressVotingBalance(
+    api,
+    signerAccount?.realAddress
+  );
+  const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
     api,
     signerAccount?.address
   );
@@ -55,13 +58,17 @@ function PopupContent({
 
     let tx = null;
     try {
-      if (["kusama", "rococo"].includes(chain)) {
+      if (api.tx.democracy?.second?.meta.args.length < 2) {
         tx = api.tx.democracy.second(proposalIndex);
       } else {
-        tx = api.tx.democracy.second(proposalIndex, depositorUpperBound || 0);
+        tx = api.tx.democracy.second(proposalIndex, depositorUpperBound || 1);
       }
     } catch (e) {
       return showErrorToast(e.message);
+    }
+
+    if (signerAccount?.proxyAddress) {
+      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
     const signerAddress = signerAccount.address;
@@ -82,10 +89,12 @@ function PopupContent({
   return (
     <>
       <Signer
-        isBalanceLoading={loadingBalance}
-        balance={balance}
-        balanceName="Voting balance"
         signerAccount={signerAccount}
+        balanceName="Voting balance"
+        balance={balance}
+        isBalanceLoading={loadingBalance}
+        signerBalance={signerBalance}
+        isSignerBalanceLoading={isSignerBalanceLoading}
       />
       <DepositRequired
         deposit={deposit}

@@ -1,6 +1,6 @@
-import Logo from "../../../assets/header-logos/bifrost.svg";
+import Logo from "../../../assets/header-logos/bifrost-kusama.svg";
 import DarkModeLogo from "../../../assets/header-logos/bifrost-dark.svg";
-import Avatar from "../../../assets/icons/chain/bifrost.png";
+import Avatar from "../../../assets/icons/chain/bifrost-kusama.png";
 import MenuGroups from "./menuGroups";
 
 const DEFAULT_BIFROST_NODES = [
@@ -20,7 +20,7 @@ const DEFAULT_BIFROST_NODES = [
 
 const bifrost = {
   value: "bifrost",
-  name: "Bifrost",
+  name: "Bifrost Kusama",
   icon: "bifrost.svg",
   hideHeight: false,
   identity: "bifrost",
@@ -28,7 +28,7 @@ const bifrost = {
   decimals: 12,
   hasElections: true,
   ss58Format: 6,
-  snsCoverCid: "bafybeibu7lmjymi5x6gjixdawmc4rjufruc6qwazailfnpzpoaqtuq6khe",
+  snsCoverCid: "bafybeianzspawke2pll23iovv6jarictrqdpmptdp4o2eevmo2hnpe3lea",
   endpoints: DEFAULT_BIFROST_NODES,
   loginButtonPrimary: true,
   headerBackgroundColor: "#000000",
@@ -36,6 +36,7 @@ const bifrost = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
+  subscanDomain: "bifrost-kusama",
 };
 
 export default bifrost;

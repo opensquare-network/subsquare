@@ -12,6 +12,7 @@ export default function Delegating({ addressVoteDelegate }) {
   const addressVoteDelegateConviction = addressVoteDelegate?.conviction;
   const addressVoteDelegateTarget = addressVoteDelegate?.target;
   const shortAddr = addressEllipsis(addressVoteDelegateTarget);
+  const { subscanDomain } = node;
 
   return (
     <div>
@@ -32,7 +33,9 @@ export default function Delegating({ addressVoteDelegate }) {
           <div className="proxy-label">Delegation</div>
           <a
             className="proxy-addr"
-            href={`https://${node.value}.subscan.io/account/${addressVoteDelegateTarget}`}
+            href={`https://${
+              subscanDomain || node.value
+            }.subscan.io/account/${addressVoteDelegateTarget}`}
             target="_blank"
             rel="noreferrer"
           >

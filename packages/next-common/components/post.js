@@ -26,7 +26,7 @@ import Gov2TrackTag from "../components/gov2/trackTag";
 import DecisionCountdown from "../components/gov2/postList/decisionCountdown";
 import { gov2State } from "../utils/consts/state";
 import ConfirmCountdown from "./gov2/postList/confirmCountdown";
-import ValueDisplay from "./displayValue";
+import ValueDisplay from "./valueDisplay";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -199,7 +199,7 @@ export default function Post({ data, href, type }) {
     elapseIcon = <MotionElapse motion={data.onchainData} />;
   }
 
-  if (type === "gov2") {
+  if (businessCategory.gov2 === type) {
     if (data?.status === gov2State.Deciding) {
       elapseIcon = <DecisionCountdown detail={data} />;
     }

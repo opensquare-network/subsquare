@@ -16,7 +16,7 @@ import Signer from "next-common/components/popup/fields/signerField";
 import useAddressBalance from "../../../../utils/hooks/useAddressBalance";
 import { WarningMessage } from "../../../popup/styled";
 import useBond from "../../../../utils/hooks/useBond";
-import { sendTx } from "../../../../utils/sendTx";
+import { sendTx, wrapWithProxy } from "../../../../utils/sendTx";
 import SecondaryButton from "../../../buttons/secondaryButton";
 import { useChainSettings } from "../../../../context/chain";
 import useSignerAccount from "../../../../utils/hooks/useSignerAccount";
@@ -36,6 +36,7 @@ function PopupContent({
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const signerAccount = useSignerAccount(extensionAccounts);
+
   const [inputValue, setInputValue] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -53,6 +54,10 @@ function PopupContent({
   const [beneficiary, setBeneficiary] = useState();
 
   const [balance, balanceIsLoading] = useAddressBalance(
+    api,
+    signerAccount?.realAddress
+  );
+  const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
     api,
     signerAccount?.address
   );
@@ -79,7 +84,11 @@ function PopupContent({
       return showErrorToast(err.message);
     }
 
-    const tx = api.tx.treasury.proposeSpend(bnValue.toString(), beneficiary);
+    let tx = api.tx.treasury.proposeSpend(bnValue.toString(), beneficiary);
+
+    if (signerAccount?.proxyAddress) {
+      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+    }
 
     const signerAddress = signerAccount.address;
 
@@ -110,6 +119,8 @@ function PopupContent({
         signerAccount={signerAccount}
         balance={balance}
         isBalanceLoading={balanceIsLoading}
+        signerBalance={signerBalance}
+        isSignerBalanceLoading={isSignerBalanceLoading}
       />
       <Beneficiary
         extensionAccounts={extensionAccounts}

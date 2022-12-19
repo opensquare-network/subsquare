@@ -32,6 +32,10 @@ import {
 import homeMenus from "next-common/utils/consts/menu";
 import FoldableSections from "next-common/components/setting/notification/foldableSections";
 import { Options } from "next-common/components/setting/notification/styled";
+import {
+  InfoMessage,
+  WarningMessage,
+} from "next-common/components/setting/styled";
 
 const Wrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
@@ -62,32 +66,6 @@ const ButtonWrapper = styled.div`
   > button {
     width: 80px;
   }
-`;
-
-const WarningMessage = styled.div`
-  color: ${(props) => props.theme.secondaryRed500};
-  background: ${(props) => props.theme.secondaryRed100};
-  border-radius: 4px;
-  padding: 12px 16px;
-  font-size: 14px;
-  line-height: 140%;
-  margin-bottom: 16px;
-`;
-
-const Info = styled.div`
-  display: flex;
-  padding: 10px 16px;
-
-  background: ${(p) => p.theme.grey100Bg};
-  border-radius: 4px;
-
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-
-  color: ${(p) => p.theme.textSecondary};
-
-  margin-bottom: 16px;
 `;
 
 function checkSubMenu(menus, menuName) {
@@ -400,9 +378,9 @@ export default withLoginUserRedux(
                 Please set the email to receive notifications
               </WarningMessage>
             ) : (
-              <Info>
+              <InfoMessage>
                 Subscribe to messages to receive email from activity changes.
-              </Info>
+              </InfoMessage>
             )}
 
             <Options>

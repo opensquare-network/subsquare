@@ -6,6 +6,7 @@ import { toReferendaListItem } from "utils/viewfuncs";
 import DemocracySummary from "next-common/components/summary/democracySummary";
 import businessCategory from "next-common/utils/consts/business/category";
 import HomeLayout from "next-common/components/layout/HomeLayout";
+import DemocracySummaryDelegation from "next-common/components/summary/democracySummaryDelegation";
 
 export default withLoginUserRedux(({ posts, chain }) => {
   const items = (posts.items || []).map((item) =>
@@ -25,7 +26,7 @@ export default withLoginUserRedux(({ posts, chain }) => {
           pageSize: posts.pageSize,
           total: posts.total,
         }}
-        summary={<DemocracySummary />}
+        summary={<DemocracySummary footer={<DemocracySummaryDelegation />} />}
       />
     </HomeLayout>
   );

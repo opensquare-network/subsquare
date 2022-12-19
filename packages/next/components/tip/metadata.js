@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import User from "next-common/components/user";
 import KVList from "next-common/components/listInfo/kvList";
 import ReasonLink from "next-common/components/reasonLink";
@@ -7,7 +6,7 @@ export default function TipMetadata({ tip }) {
   const metadata = [
     [
       "Reason",
-      <div>
+      <div key="reason">
         <ReasonLink text={tip?.meta?.reason} />
       </div>,
     ],

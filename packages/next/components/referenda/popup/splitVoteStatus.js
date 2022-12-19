@@ -1,14 +1,14 @@
-import {
-  VotingStatusContent,
-  WarningMessage,
-} from "next-common/components/popup/styled";
-import DisplayValue from "next-common/components/displayValue";
+import { VotingStatusContent } from "next-common/components/popup/styled";
+import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import PopupLabel from "next-common/components/popup/label";
 import VoteStatusBox from "next-common/components/popup/voteStatusBox";
 import { useChainSettings } from "next-common/context/chain";
 
-export default function SplitVoteStatus({ addressVoteSplit }) {
+export default function SplitVoteStatus({
+  title = "Current voting",
+  addressVoteSplit,
+}) {
   const node = useChainSettings();
   const addressVoteSplitAye = addressVoteSplit?.aye;
   const addressVoteSplitNay = addressVoteSplit?.nay;
@@ -16,25 +16,22 @@ export default function SplitVoteStatus({ addressVoteSplit }) {
   return (
     <VotingStatusContent>
       <PopupLabel
-        text={"Current voting"}
+        text={title}
         status={"Split"}
         tooltip={"Vote for both aye and nay"}
       />
       <VoteStatusBox aye={true}>
-        <DisplayValue
+        <ValueDisplay
           value={toPrecision(addressVoteSplitAye, node.decimals)}
           symbol={node?.voteSymbol || node?.symbol}
         />
       </VoteStatusBox>
       <VoteStatusBox aye={false}>
-        <DisplayValue
+        <ValueDisplay
           value={toPrecision(addressVoteSplitNay, node.decimals)}
           symbol={node?.voteSymbol || node?.symbol}
         />
       </VoteStatusBox>
-      <WarningMessage>
-        Resubmitting the vote will override the current voting record
-      </WarningMessage>
     </VotingStatusContent>
   );
 }

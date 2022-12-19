@@ -13,9 +13,9 @@ import {
 import Signer from "next-common/components/popup/fields/signerField";
 
 import PopupWithAddress from "next-common/components/popupWithAddress";
-import { sendTx } from "next-common/utils/sendTx";
+import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { useChainSettings } from "next-common/context/chain";
-import Conviction from "next-common/components/democracy/delegatePopup/conviction";
+import Conviction from "./conviction";
 import VoteValue from "next-common/components/democracy/delegatePopup/voteValue";
 import Target from "next-common/components/democracy/delegatePopup/target";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
@@ -37,6 +37,7 @@ function PopupContent({
   const isMounted = useIsMounted();
 
   const signerAccount = useSignerAccount(extensionAccounts);
+
   const [targetAddress, setTargetAddress] = useState("");
 
   const api = useApi();
@@ -44,6 +45,10 @@ function PopupContent({
 
   const [isLoading, setIsLoading] = useState(false);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
+    api,
+    signerAccount?.realAddress
+  );
+  const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
     api,
     signerAccount?.address
   );
@@ -87,18 +92,22 @@ function PopupContent({
 
     const signerAddress = signerAccount?.address;
 
-    if (isSameAddress(targetAddress, signerAddress)) {
+    if (isSameAddress(targetAddress, signerAccount?.realAddress)) {
       return showErrorToast(
-        "Target address cannot be same with the signer address"
+        "Target address cannot be same with the delegator address"
       );
     }
 
-    const tx = api.tx.convictionVoting.delegate(
+    let tx = api.tx.convictionVoting.delegate(
       trackId,
       targetAddress,
       conviction,
       bnVoteBalance.toString()
     );
+
+    if (signerAccount?.proxyAddress) {
+      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+    }
 
     setIsLoading(true);
     await sendTx({
@@ -115,10 +124,12 @@ function PopupContent({
   return (
     <>
       <Signer
-        isBalanceLoading={votingIsLoading}
-        balance={votingBalance}
-        balanceName="Voting balance"
         signerAccount={signerAccount}
+        balanceName="Voting balance"
+        balance={votingBalance}
+        isBalanceLoading={votingIsLoading}
+        signerBalance={signerBalance}
+        isSignerBalanceLoading={isSignerBalanceLoading}
       />
       <Target
         extensionAccounts={extensionAccounts}

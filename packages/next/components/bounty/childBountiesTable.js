@@ -8,7 +8,7 @@ import Flex from "next-common/components/styled/flex";
 import FlexBetween from "next-common/components/styled/flexBetween";
 import Divider from "next-common/components/styled/layout/divider";
 import businessCategory from "next-common/utils/consts/business/category";
-import ValueDisplay from "next-common/components/displayValue";
+import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 
 const ChildBountyWrapper = styled.div`
@@ -113,8 +113,7 @@ function ChildBountiesTable({ childBounties }) {
             <Row
               row={[
                 `#${bounty.index}`,
-                // eslint-disable-next-line react/jsx-key
-                <ChildBounty>
+                <ChildBounty key="child-bounty">
                   <Anchor
                     href={`/treasury/child-bounty/${bounty.parentBountyId}_${bounty.index}`}
                     title={bounty.title}

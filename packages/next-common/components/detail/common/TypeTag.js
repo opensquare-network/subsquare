@@ -27,11 +27,20 @@ export default function TypeTag({ type }) {
     ].includes(type)
   ) {
     tag = <TreasuryTag />;
-  } else if ([detailPageCategory.GOV2_REFERENDUM].includes(type)) {
-    const trackName = post.onchainData?.trackInfo?.name;
+  } else if (
+    [
+      detailPageCategory.GOV2_REFERENDUM,
+      detailPageCategory.FELLOWSHIP_REFERENDUM,
+    ].includes(type)
+  ) {
+    const { name: trackName, id: trackId } = post.onchainData?.trackInfo || {};
 
+    let href =
+      type === detailPageCategory.GOV2_REFERENDUM
+        ? `/referenda/track/${trackId}`
+        : `/fellowship/track/${trackId}`;
     tag = (
-      <Link href={`/referenda/${trackName}`} passHref>
+      <Link href={href} passHref>
         <LinkInfo>
           <Gov2TrackTag name={trackName} />
         </LinkInfo>

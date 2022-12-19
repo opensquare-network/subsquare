@@ -1,7 +1,7 @@
 import {
+  ProgressBarWrapper,
   ProgressGroup,
   ProgressInfo,
-  ProgressInfoLabel,
   ProgressTooltipFailContent,
   Tooltip,
 } from "./styled";
@@ -33,10 +33,10 @@ function ConfirmationInfo() {
 
   return (
     <ProgressInfo>
-      <ProgressInfoLabel>Confirmation</ProgressInfoLabel>
-      <p>
-        <TimeDuration blocks={confirmPeriod} showMinutes={false} />
-      </p>
+      <span>Confirmation</span>
+      <span>
+        <TimeDuration blocks={confirmPeriod} />
+      </span>
     </ProgressInfo>
   );
 }
@@ -50,9 +50,12 @@ function Empty() {
 
   return (
     <ProgressGroup>
-      <Tooltip content="Not started yet">
-        <Progress percentage={0} bg={grey100Bg} />
-      </Tooltip>
+      <ProgressBarWrapper>
+        <Tooltip content="Not started yet">
+          <Progress percentage={0} bg={grey100Bg} />
+        </Tooltip>
+      </ProgressBarWrapper>
+
       <ConfirmationInfo />
     </ProgressGroup>
   );
@@ -153,7 +156,10 @@ function ConfirmationStarted() {
 
   return (
     <ProgressGroup>
-      <MultiProgress progressItems={progressItems} />
+      <ProgressBarWrapper>
+        <MultiProgress progressItems={progressItems} />
+      </ProgressBarWrapper>
+
       <ConfirmationInfo />
     </ProgressGroup>
   );

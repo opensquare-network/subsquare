@@ -3,11 +3,11 @@ import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import useApi from "next-common/utils/hooks/useApi";
-import { useUser } from "next-common/context/user";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import DemocracySummaryDelegationInfo from "./democracySummaryDelegationInfo";
 import DemocracySummaryDelegationButton from "./democracySummaryDelegationButton";
-import useDemocracyDelegating from "../../utils/hooks/referenda/useDemocracyDelegating";
+import useDemocracyDelegating from "../../../utils/hooks/referenda/useDemocracyDelegating";
+import useRealAddress from "../../../utils/hooks/useRealAddress";
 
 const Wrapper = styled.div`
   display: flex;
@@ -20,11 +20,8 @@ const Wrapper = styled.div`
 export default function DemocracySummaryDelegation() {
   const dispatch = useDispatch();
   const api = useApi();
-  const loginUser = useUser();
-  const { delegating, refresh } = useDemocracyDelegating(
-    api,
-    loginUser?.address
-  );
+  const realAddress = useRealAddress();
+  const { delegating, refresh } = useDemocracyDelegating(api, realAddress);
 
   const onDelegateInBlock = useCallback(() => {
     refresh();

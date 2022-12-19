@@ -5,6 +5,7 @@ import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
 import { useChainSettings } from "next-common/context/chain";
 import PopupLabel from "../label";
 import ConnectedSigner from "../../connectedSigner";
+import ProxyInfo from "../proxyInfo";
 
 export default function Signer({
   isBalanceLoading,
@@ -12,24 +13,38 @@ export default function Signer({
   balanceName = "Balance",
   signerAccount,
   symbol,
+  signerBalance,
+  isSignerBalanceLoading,
 }) {
   const node = useChainSettings();
-  const noBalance = isNil(balance) && isNil(isBalanceLoading);
+  const noSignerBalance = isNil(signerBalance) && isNil(isSignerBalanceLoading);
+  const noVotingBalance = isNil(balance) && isNil(isBalanceLoading);
 
   return (
     <div>
-      {noBalance ? (
+      {noSignerBalance ? (
         <PopupLabel text="Address" />
       ) : (
         <PopupLabelWithBalance
           text="Address"
-          isLoading={isBalanceLoading}
+          isLoading={isSignerBalanceLoading}
           balanceName={balanceName}
-          balance={toPrecision(balance ?? 0, node.decimals)}
+          balance={toPrecision(signerBalance ?? 0, node.decimals)}
           symbol={symbol || node.symbol}
         />
       )}
       <ConnectedSigner signerAccount={signerAccount} />
+      {signerAccount?.proxyAddress &&
+        (noVotingBalance ? (
+          <ProxyInfo address={signerAccount.proxyAddress} />
+        ) : (
+          <ProxyInfo
+            address={signerAccount.proxyAddress}
+            balance={toPrecision(balance ?? 0, node.decimals)}
+            isLoading={isBalanceLoading}
+            symbol={symbol || node.symbol}
+          />
+        ))}
     </div>
   );
 }

@@ -19,7 +19,7 @@ import ElectorateIcon from "public/imgs/icons/electorate.svg";
 import Threshold from "./threshold";
 import Loading from "next-common/components/loading";
 import ExternalLink from "next-common/assets/imgs/icons/external-link.svg";
-import ValueDisplay from "next-common/components/displayValue";
+import ValueDisplay from "next-common/components/valueDisplay";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
@@ -37,6 +37,7 @@ import {
 import VotesCount from "next-common/components/democracy/referendum/votesCount";
 import SubLink from "next-common/components/styled/subLink";
 import { useChain, useChainSettings } from "next-common/context/chain";
+import MyVote from "./myVote";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -206,6 +207,7 @@ function Vote({
   const [showVote, setShowVote] = useState(false);
   const [showVoteList, setShowVoteList] = useState(false);
   const api = useApi();
+  const [updateTime, setUpdateTime] = useState(0);
 
   const electorate = useSelector(electorateSelector);
   const isElectorateLoading = useSelector(isLoadingElectorateSelector);
@@ -218,6 +220,7 @@ function Vote({
 
   const updateVoteProgress = useCallback(() => {
     dispatch(fetchReferendumStatus(api, referendumIndex));
+    setUpdateTime(Date.now());
   }, [dispatch, api, referendumIndex]);
 
   const { width } = useWindowSize();
@@ -380,6 +383,7 @@ function Vote({
         >
           Check all votes
         </SubLink>
+        <MyVote updateTime={updateTime} />
       </SecondaryCardDetail>
 
       {!referendumInfo?.finished && (
