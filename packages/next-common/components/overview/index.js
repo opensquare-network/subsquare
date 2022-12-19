@@ -1,9 +1,13 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import PostList from "next-common/components/postList";
 import PlusIcon from "../../assets/imgs/icons/plusInCircle.svg";
 import EmptyOverview from "./emptyOverview";
+import OverviewSummary from "../summary/overviewSummary";
+import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
+import { mdcss, smcss } from "../../utils/responsive";
+import { TitleContainer as TitleContainerOrigin } from "../styled/containers/titleContainer";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -23,11 +27,35 @@ const Create = styled.a`
   cursor: pointer;
 `;
 
-export default function Overview({ overviewData }) {
-  if (overviewData?.[0]?.items?.length === 0) {
+const TitleContainer = styled(TitleContainerOrigin)`
+  margin-bottom: 16px;
+`;
+
+const OverviewSummaryWrapper = styled.div`
+  max-width: ${pageHomeLayoutMainContentWidth}px;
+  ${mdcss(css`
+    max-width: 960px;
+  `)}
+  ${smcss(css`
+    margin: 0 16px;
+  `)}
+`;
+
+export default function Overview({ overviewData, summaryData }) {
+  const allCategoriesCount = (overviewData || []).reduce(
+    (result, category) => result + category.items?.length || 0,
+    0
+  );
+  if (allCategoriesCount <= 0) {
     // All items are empty, show default empty page
     return (
       <Wrapper>
+        <OverviewSummaryWrapper>
+          <TitleContainer>Overview</TitleContainer>
+
+          <OverviewSummary summaryData={summaryData} />
+        </OverviewSummaryWrapper>
+
         <EmptyOverview />
       </Wrapper>
     );
@@ -42,6 +70,12 @@ export default function Overview({ overviewData }) {
 
   return (
     <Wrapper>
+      <OverviewSummaryWrapper>
+        <TitleContainer>Overview</TitleContainer>
+
+        <OverviewSummary summaryData={summaryData} />
+      </OverviewSummaryWrapper>
+
       {overviewData.map((item, index) => {
         if (item) {
           return (

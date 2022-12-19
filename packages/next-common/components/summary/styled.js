@@ -33,13 +33,16 @@ export const SummaryGreyText = styled.span`
 
 export const SummaryItemWrapper = styled.div`
   display: flex;
-  gap: 16px;
   ${smcss(css`
-    flex-direction: column;
+    gap: 16px;
+    flex-wrap: wrap;
   `)}
 `;
 export const SummaryItem = styled.div`
   flex: 1;
+  ${smcss(css`
+    min-width: calc(50% - 16px);
+  `)}
 `;
 export const SummaryItemTitle = SummaryTitle;
 
