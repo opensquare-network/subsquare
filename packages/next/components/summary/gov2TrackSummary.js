@@ -9,8 +9,10 @@ import {
   SummaryItemWrapper as SummaryItemWrapperOrigin,
 } from "next-common/components/summary/styled";
 import Delegation from "./delegation";
+import BeenDelegated from "./beenDelegated";
 import Summary from "next-common/components/summary/new";
 import Content from "next-common/components/summary/cardContent";
+import Column from "next-common/components/styled/column";
 import ThresholdCurvesChart from "next-common/components/charts/thresholdCurve";
 import ArrowOutSimpleIcon from "next-common/components/icons/arrowOutSimple";
 import { useState } from "react";
@@ -131,7 +133,12 @@ export default function Gov2TrackSummary({
 
   let footer = null;
   if (!noDelegation) {
-    footer = <Delegation trackId={id} />;
+    footer = (
+      <Column gap={8}>
+        <Delegation trackId={id} />
+        <BeenDelegated trackId={id} />
+      </Column>
+    );
   }
 
   function showThresholdCurveDetail() {

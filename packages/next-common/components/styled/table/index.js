@@ -54,7 +54,7 @@ export const EmptyTd = styled.td`
   color: ${(props) => props.theme.textTertiary};
 `;
 
-export const RowSpliter = ({ backgroundColor, padding }) => (
+export const RowSplitter = ({ backgroundColor, padding }) => (
   <tr>
     <td colSpan="3" style={{ padding }}>
       <div style={{ height: "1px", backgroundColor }} />

@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
-import { withTheme } from "styled-components";
+import styled, { withTheme } from "styled-components";
 import { toPrecision } from "next-common/utils";
 import User from "next-common/components/user";
-import ValueDisplay from "../../valueDisplay";
-import Loading from "../../loading";
+import ValueDisplay from "next-common/components/valueDisplay";
+import Loading from "next-common/components/loading";
 
 import {
   EmptyTd,
@@ -13,12 +13,45 @@ import {
   StyledTh,
   StyledTr,
 } from "next-common/components/styled/table";
-import VoteLabel from "./voteLabel";
-import Chains from "../../../utils/consts/chains";
-import { useChain, useChainSettings } from "../../../context/chain";
-import PopupListWrapper from "next-common/components/styled/popupListWrapper";
+import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel";
+import Chains from "next-common/utils/consts/chains";
+import { pretty_scroll_bar } from "next-common/styles/componentCss";
+import { useChain, useChainSettings } from "next-common/context/chain";
+import { pageHomeLayoutMainContentWidth } from "next-common/utils/constants";
+import { Conviction } from "utils/referendumUtil";
 
-function VotesList({ items, theme, loading = true }) {
+const Wrapper = styled.div`
+  max-width: ${pageHomeLayoutMainContentWidth}px;
+  @media screen and (max-width: 1024px) {
+    max-width: 960px;
+  }
+  margin: auto;
+
+  > :not(:first-child) {
+    margin-top: 16px;
+  }
+  table {
+    border: none;
+    padding: 0;
+    tbody {
+      display: block;
+      max-height: 400px;
+      overflow-y: auto;
+      overflow-x: hidden;
+
+      ${pretty_scroll_bar};
+    }
+    thead,
+    tbody tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+    box-shadow: none;
+  }
+`;
+
+function DelegationList({ items, theme, loading = true }) {
   const chain = useChain();
   const node = useChainSettings();
 
@@ -26,19 +59,19 @@ function VotesList({ items, theme, loading = true }) {
   const symbol = node.voteSymbol || node.symbol;
 
   return (
-    <PopupListWrapper>
+    <Wrapper>
       <StyledTable>
         <thead>
           <StyledTr>
             <StyledTh style={{ textAlign: "left", width: 176 }}>
-              VOTERS
+              ADDRESS
             </StyledTh>
             {hasLabel && (
               <StyledTh style={{ textAlign: "center", width: 40 }}>
                 LABEL
               </StyledTh>
             )}
-            <StyledTh style={{ textAlign: "right" }}>VOTES</StyledTh>
+            <StyledTh style={{ textAlign: "right" }}>CAPITAL</StyledTh>
           </StyledTr>
           <RowSplitter
             backgroundColor={
@@ -54,7 +87,7 @@ function VotesList({ items, theme, loading = true }) {
                 <StyledTr>
                   <StyledTd style={{ textAlign: "left", width: 176 }}>
                     <User
-                      add={item.account}
+                      add={item.delegator}
                       fontSize={14}
                       maxWidth={132}
                       noTooltip={true}
@@ -63,7 +96,7 @@ function VotesList({ items, theme, loading = true }) {
                   {hasLabel && (
                     <StyledTd style={{ textAlign: "center", width: 40 }}>
                       <VoteLabel
-                        conviction={item.conviction}
+                        conviction={Conviction[item.conviction]}
                         isDelegating={item.isDelegating}
                       />
                     </StyledTd>
@@ -88,14 +121,14 @@ function VotesList({ items, theme, loading = true }) {
           ) : (
             <StyledTr>
               <EmptyTd colSpan="3">
-                {loading ? <Loading size={16} /> : "No current votes"}
+                {loading ? <Loading size={16} /> : "No current delegations"}
               </EmptyTd>
             </StyledTr>
           )}
         </tbody>
       </StyledTable>
-    </PopupListWrapper>
+    </Wrapper>
   );
 }
 
-export default withTheme(VotesList);
+export default withTheme(DelegationList);

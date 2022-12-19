@@ -2,11 +2,10 @@ import styled, { withTheme } from "styled-components";
 import User from "next-common/components/user";
 import { Fragment } from "react";
 import Loading from "next-common/components/loading";
-import PrimeAddressMark from "next-common/components/primeAddressMark";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import {
   EmptyTd,
-  RowSpliter,
+  RowSplitter,
   StyledTable,
   StyledTd,
   StyledTh,
@@ -41,7 +40,7 @@ function MembersList({ category, items, loading = false, theme }) {
             <StyledTh style={{ textAlign: "left" }}>MEMBERS</StyledTh>
             <StyledTh style={{ textAlign: "right" }}>RANK</StyledTh>
           </StyledTr>
-          <RowSpliter
+          <RowSplitter
             backgroundColor={
               theme.isDark ? theme.grey200Border : theme.grey100Bg
             }
@@ -63,7 +62,7 @@ function MembersList({ category, items, loading = false, theme }) {
                   </StyledTd>
                 </StyledTr>
                 {index !== items.length - 1 && (
-                  <RowSpliter
+                  <RowSplitter
                     backgroundColor={
                       theme.isDark ? theme.grey200Border : theme.grey100Bg
                     }

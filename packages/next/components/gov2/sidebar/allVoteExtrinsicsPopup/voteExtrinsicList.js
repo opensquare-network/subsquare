@@ -6,7 +6,7 @@ import Loading from "next-common/components/loading";
 
 import {
   EmptyTd,
-  RowSpliter,
+  RowSplitter,
   StyledTable,
   StyledTd,
   StyledTh,
@@ -79,7 +79,7 @@ function VoteExtrinsicsList({ items, theme, loading = true }) {
               VALUE
             </StyledTh>
           </StyledTr>
-          <RowSpliter
+          <RowSplitter
             backgroundColor={
               theme.isDark ? theme.grey200Border : theme.grey100Bg
             }
@@ -104,7 +104,7 @@ function VoteExtrinsicsList({ items, theme, loading = true }) {
                   </StyledTd>
                 </StyledTr>
                 {index !== items.length - 1 && (
-                  <RowSpliter
+                  <RowSplitter
                     backgroundColor={
                       theme.isDark ? theme.grey200Border : theme.grey100Bg
                     }
