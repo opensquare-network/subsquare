@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { p_16_bold } from "../../../styles/componentCss";
 import { isKintsugiChain } from "../../../utils/constants";
 import Flex from "../../styled/flex";
-import Tooltip from "../../tooltip";
 import Summary from "../new";
 import {
   SummaryGreyText,
@@ -11,6 +10,7 @@ import {
   SummaryItemTitle,
   SummaryItemWrapper,
 } from "../styled";
+import ActiveValue from "./activeValue";
 
 const Content = styled(Flex)`
   margin-top: 4px;
@@ -28,13 +28,6 @@ const TypeGroup = styled(Flex)`
 `;
 
 const TypeLabel = styled(SummaryGreyText)`
-  ${p_16_bold};
-`;
-const TypeValue = styled.span`
-  margin-left: 4px;
-  &:hover {
-    text-decoration: underline;
-  }
   ${p_16_bold};
 `;
 
@@ -70,25 +63,31 @@ export default function OverviewSummary({ summaryData }) {
           <Content>
             <TypeGroup>
               <TypeLabel>P</TypeLabel>
-              <Tooltip content="Active proposals">
-                <TypeValue>{activeTreasuryProposalsCount}</TypeValue>
-              </Tooltip>
+              <ActiveValue
+                tooltip="Active proposals"
+                href="/treasury/proposals"
+                value={activeTreasuryProposalsCount}
+              />
             </TypeGroup>
 
             {showTreasuryBounties && (
               <>
                 <TypeGroup>
                   <TypeLabel>B</TypeLabel>
-                  <Tooltip content="Active bounties">
-                    <TypeValue>{activeBountiesCount}</TypeValue>
-                  </Tooltip>
+                  <ActiveValue
+                    tooltip="Active bounties"
+                    href="/treasury/bounties"
+                    value={activeBountiesCount}
+                  />
                 </TypeGroup>
 
                 <TypeGroup>
                   <TypeLabel>b</TypeLabel>
-                  <Tooltip content="Active child bounties">
-                    <TypeValue>{activeChildBountiesCount}</TypeValue>
-                  </Tooltip>
+                  <ActiveValue
+                    tooltip="Active child bounties"
+                    href="/treasury/child-bounties"
+                    value={activeChildBountiesCount}
+                  />
                 </TypeGroup>
               </>
             )}
@@ -96,9 +95,11 @@ export default function OverviewSummary({ summaryData }) {
             {showTreasuryTips && (
               <TypeGroup>
                 <TypeLabel>T</TypeLabel>
-                <Tooltip content="Active tips">
-                  <TypeValue>{activeTipsCount}</TypeValue>
-                </Tooltip>
+                <ActiveValue
+                  tooltip="Active tips"
+                  href="/treasury/tips"
+                  value={activeTipsCount}
+                />
               </TypeGroup>
             )}
           </Content>
@@ -110,17 +111,21 @@ export default function OverviewSummary({ summaryData }) {
             {showCouncilMotions && (
               <TypeGroup separator="/">
                 <TypeLabel>M</TypeLabel>
-                <Tooltip content="Active council motions">
-                  <TypeValue>{activeMotionsCount}</TypeValue>
-                </Tooltip>
+                <ActiveValue
+                  tooltip="Active council motions"
+                  href="/council/motions"
+                  value={activeMotionsCount}
+                />
               </TypeGroup>
             )}
 
             <TypeGroup>
               <TypeLabel>M</TypeLabel>
-              <Tooltip content="Active T.C. motions">
-                <TypeValue>{activeTechCommMotionsCount}</TypeValue>
-              </Tooltip>
+              <ActiveValue
+                tooltip="Active T.C. proposals"
+                href="/techcomm/proposals"
+                value={activeTechCommMotionsCount}
+              />
             </TypeGroup>
           </Content>
         </SummaryItem>
@@ -130,25 +135,31 @@ export default function OverviewSummary({ summaryData }) {
           <Content>
             <TypeGroup>
               <TypeLabel>P</TypeLabel>
-              <Tooltip content="Active public proposals">
-                <TypeValue>{activePublicProposalsCount}</TypeValue>
-              </Tooltip>
+              <ActiveValue
+                tooltip="Active public proposals"
+                href="/democracy/proposals"
+                value={activePublicProposalsCount}
+              />
             </TypeGroup>
 
             {showDemocracyExternalProposals && (
               <TypeGroup>
                 <TypeLabel>E</TypeLabel>
-                <Tooltip content="Active external proposals">
-                  <TypeValue>{activeExternalProposalsCount}</TypeValue>
-                </Tooltip>
+                <ActiveValue
+                  tooltip="Active external proposals"
+                  href="/democracy/externals"
+                  value={activeExternalProposalsCount}
+                />
               </TypeGroup>
             )}
 
             <TypeGroup>
               <TypeLabel>R</TypeLabel>
-              <Tooltip content="Active referenda">
-                <TypeValue>{activeReferendumsCount}</TypeValue>
-              </Tooltip>
+              <ActiveValue
+                tooltip="Active referenda"
+                href="/democracy/referenda"
+                value={activeReferendumsCount}
+              />
             </TypeGroup>
           </Content>
         </SummaryItem>
@@ -159,9 +170,11 @@ export default function OverviewSummary({ summaryData }) {
             <Content>
               <TypeGroup>
                 <TypeLabel>R</TypeLabel>
-                <Tooltip content="Active referenda">
-                  <TypeValue>{activeGov2ReferendumsCount}</TypeValue>
-                </Tooltip>
+                <ActiveValue
+                  tooltip="Active open gov referenda"
+                  href="/referenda"
+                  value={activeGov2ReferendumsCount}
+                />
               </TypeGroup>
             </Content>
           </SummaryItem>
