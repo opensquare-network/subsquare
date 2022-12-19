@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { pretty_scroll_bar } from "../../styles/componentCss";
 import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
