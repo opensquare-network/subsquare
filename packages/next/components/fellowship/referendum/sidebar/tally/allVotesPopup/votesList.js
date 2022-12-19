@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
-import styled, { withTheme } from "styled-components";
-import { toPrecision } from "next-common/utils";
+import { withTheme } from "styled-components";
 import User from "next-common/components/user";
 import Loading from "next-common/components/loading";
 
@@ -12,61 +11,9 @@ import {
   StyledTh,
   StyledTr,
 } from "next-common/components/styled/table";
-import { useChainSettings } from "next-common/context/chain";
-import ValueDisplay from "next-common/components/valueDisplay";
-import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel";
-import dayjs from "dayjs";
-import ExternalLinks from "next-common/components/links";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 
-const VoteInfoWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-`;
-
-const VoteInfoValue = styled.div`
-  display: flex;
-  gap: 4px;
-  justify-content: right;
-`;
-
-const VoteTime = styled.div`
-  display: flex;
-  justify-content: right;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
-  color: #9da9bb;
-  :hover {
-    text-decoration: underline;
-  }
-`;
-
-function VoteInfo({ item }) {
-  const node = useChainSettings();
-
-  return (
-    <VoteInfoWrapper>
-      <VoteInfoValue>
-        <VoteLabel conviction={item.vote.vote.conviction} />
-        <ValueDisplay
-          value={toPrecision(item.vote.balance, node.decimals)}
-          symbol={node.symbol}
-          showTooltip={false}
-        />
-      </VoteInfoValue>
-      <VoteTime>
-        <ExternalLinks indexer={item.indexer}>
-          {dayjs(item.indexer.blockTime).format("YYYY-MM-DD hh:mm:ss")}
-        </ExternalLinks>
-      </VoteTime>
-    </VoteInfoWrapper>
-  );
-}
-
-function VoteExtrinsicsList({ items, theme, loading = true }) {
+function VotesList({ items, theme, loading = true }) {
   return (
     <PopupListWrapper>
       <StyledTable>
@@ -75,8 +22,8 @@ function VoteExtrinsicsList({ items, theme, loading = true }) {
             <StyledTh style={{ textAlign: "left", width: 176 }}>
               VOTERS
             </StyledTh>
-            <StyledTh style={{ textAlign: "right", width: "100%" }}>
-              VALUE
+            <StyledTh style={{ width: "100%", textAlign: "right" }}>
+              VOTES
             </StyledTh>
           </StyledTr>
           <RowSpliter
@@ -93,14 +40,14 @@ function VoteExtrinsicsList({ items, theme, loading = true }) {
                 <StyledTr>
                   <StyledTd style={{ textAlign: "left", width: 176 }}>
                     <User
-                      add={item.voter}
+                      add={item.address}
                       fontSize={14}
                       maxWidth={132}
                       noTooltip={true}
                     />
                   </StyledTd>
                   <StyledTd style={{ textAlign: "right" }}>
-                    <VoteInfo item={item} />
+                    {item.votes}
                   </StyledTd>
                 </StyledTr>
                 {index !== items.length - 1 && (
@@ -125,4 +72,4 @@ function VoteExtrinsicsList({ items, theme, loading = true }) {
   );
 }
 
-export default withTheme(VoteExtrinsicsList);
+export default withTheme(VotesList);

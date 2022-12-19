@@ -25,6 +25,7 @@
     "lodash.findlastindex": "^4.6.0",
     "lodash.floor": "^4.0.4",
     "lodash.isnil": "^4.0.0",
+    "lodash.partition": "^4.6.0",
     "lodash.range": "^3.2.0",
     "lodash.uniqby": "^4.7.0",
     "moment": "^2.29.4",
