@@ -1,3 +1,4 @@
+import React from "react";
 import { useChainSettings } from "next-common/context/chain";
 import { p_14_medium, p_14_normal } from "next-common/styles/componentCss";
 import { toPrecision } from "next-common/utils";
