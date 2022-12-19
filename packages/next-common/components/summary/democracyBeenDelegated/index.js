@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import useApi from "next-common/utils/hooks/useApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getDemocracyBeenDelegatedByAddress } from "../../../utils/democracy/getDemocracyBeenDelegatedByAddress";
 import { getDemocracyBeenDelegatedListByAddress } from "../../../utils/democracy/getDemocracyBeenDelegatedListByAddress";
