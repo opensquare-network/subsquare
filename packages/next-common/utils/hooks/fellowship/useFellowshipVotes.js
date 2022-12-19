@@ -76,6 +76,7 @@ async function query(api, targetPollIndex, blockHeight) {
 
 export default function useFellowshipVotes(pollIndex, blockHeight) {
   const api = useApi();
+  const [isLoading, setIsLoading] = useState(false);
   const [votes, setVotes] = useState([]);
 
   useEffect(() => {
@@ -83,8 +84,11 @@ export default function useFellowshipVotes(pollIndex, blockHeight) {
       return;
     }
 
-    query(api, pollIndex, blockHeight).then((votes) => setVotes(votes));
+    setIsLoading(true);
+    query(api, pollIndex, blockHeight)
+      .then((votes) => setVotes(votes))
+      .finally(() => setIsLoading(false));
   }, [api, pollIndex, blockHeight]);
 
-  return votes;
+  return { votes, isLoading };
 }
