@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { p_16_bold } from "../../../styles/componentCss";
-import { isKintsugiChain } from "../../../utils/constants";
 import Flex from "../../styled/flex";
 import Summary from "../new";
 import {
@@ -11,6 +10,15 @@ import {
   SummaryItemWrapper,
 } from "../styled";
 import ActiveValue from "./activeValue";
+import {
+  useMenuHasCouncil,
+  useMenuHasDemocracyExternal,
+  useMenuHasGov2,
+  useMenuHasTechComm,
+  useMenuHasTreasuryBounties,
+  useMenuHasTreasuryChildBounties,
+  useMenuHasTreasuryTips,
+} from "../../../context/chain";
 
 const Content = styled(Flex)`
   margin-top: 4px;
@@ -31,28 +39,28 @@ const TypeLabel = styled(SummaryGreyText)`
   ${p_16_bold};
 `;
 
-const showTreasuryBounties = !isKintsugiChain;
-const showTreasuryTips = !isKintsugiChain;
-
-const showCouncil = !isKintsugiChain;
-const showCouncilMotions = !isKintsugiChain;
-
-const showDemocracyExternalProposals = !isKintsugiChain;
-
-const showOpenGov = !isKintsugiChain;
-
 export default function OverviewSummary({ summaryData }) {
+  const showTreasuryBounties = useMenuHasTreasuryBounties();
+  const showChildBounties = useMenuHasTreasuryChildBounties();
+  const showTips = useMenuHasTreasuryTips();
+  const showExternal = useMenuHasDemocracyExternal();
+  const showCouncil = useMenuHasCouncil();
+  const showTc = useMenuHasTechComm();
+  const showOpenGov = useMenuHasGov2();
+
   const {
     activeBountiesCount,
     activeChildBountiesCount,
     activeExternalProposalsCount,
     activeMotionsCount,
     activePublicProposalsCount,
-    activeReferendumsCount,
+    activeReferendaCount,
     activeTechCommMotionsCount,
     activeTipsCount,
     activeTreasuryProposalsCount,
     activeGov2ReferendumsCount,
+    activeGov2ReferendaCount,
+    activeFellowshipReferendaCount,
   } = summaryData ?? {};
 
   return (
@@ -71,28 +79,28 @@ export default function OverviewSummary({ summaryData }) {
             </TypeGroup>
 
             {showTreasuryBounties && (
-              <>
-                <TypeGroup>
-                  <TypeLabel>B</TypeLabel>
-                  <ActiveValue
-                    tooltip="Active bounties"
-                    href="/treasury/bounties"
-                    value={activeBountiesCount}
-                  />
-                </TypeGroup>
-
-                <TypeGroup>
-                  <TypeLabel>b</TypeLabel>
-                  <ActiveValue
-                    tooltip="Active child bounties"
-                    href="/treasury/child-bounties"
-                    value={activeChildBountiesCount}
-                  />
-                </TypeGroup>
-              </>
+              <TypeGroup>
+                <TypeLabel>B</TypeLabel>
+                <ActiveValue
+                  tooltip="Active bounties"
+                  href="/treasury/bounties"
+                  value={activeBountiesCount}
+                />
+              </TypeGroup>
             )}
 
-            {showTreasuryTips && (
+            {showChildBounties && (
+              <TypeGroup>
+                <TypeLabel>b</TypeLabel>
+                <ActiveValue
+                  tooltip="Active child bounties"
+                  href="/treasury/child-bounties"
+                  value={activeChildBountiesCount}
+                />
+              </TypeGroup>
+            )}
+
+            {showTips && (
               <TypeGroup>
                 <TypeLabel>T</TypeLabel>
                 <ActiveValue
@@ -108,7 +116,7 @@ export default function OverviewSummary({ summaryData }) {
         <SummaryItem>
           <SummaryItemTitle>{showCouncil && "Council / "}T.C.</SummaryItemTitle>
           <Content>
-            {showCouncilMotions && (
+            {showCouncil && (
               <TypeGroup separator="/">
                 <TypeLabel>M</TypeLabel>
                 <ActiveValue
@@ -119,14 +127,16 @@ export default function OverviewSummary({ summaryData }) {
               </TypeGroup>
             )}
 
-            <TypeGroup>
-              <TypeLabel>M</TypeLabel>
-              <ActiveValue
-                tooltip="Active T.C. proposals"
-                href="/techcomm/proposals"
-                value={activeTechCommMotionsCount}
-              />
-            </TypeGroup>
+            {showTc && (
+              <TypeGroup>
+                <TypeLabel>P</TypeLabel>
+                <ActiveValue
+                  tooltip="Active T.C. proposals"
+                  href="/techcomm/proposals"
+                  value={activeTechCommMotionsCount}
+                />
+              </TypeGroup>
+            )}
           </Content>
         </SummaryItem>
 
@@ -142,7 +152,7 @@ export default function OverviewSummary({ summaryData }) {
               />
             </TypeGroup>
 
-            {showDemocracyExternalProposals && (
+            {showExternal && (
               <TypeGroup>
                 <TypeLabel>E</TypeLabel>
                 <ActiveValue
@@ -156,9 +166,9 @@ export default function OverviewSummary({ summaryData }) {
             <TypeGroup>
               <TypeLabel>R</TypeLabel>
               <ActiveValue
-                tooltip="Active referenda"
+                tooltip="Active democracy referenda"
                 href="/democracy/referenda"
-                value={activeReferendumsCount}
+                value={activeReferendaCount}
               />
             </TypeGroup>
           </Content>
@@ -171,9 +181,17 @@ export default function OverviewSummary({ summaryData }) {
               <TypeGroup>
                 <TypeLabel>R</TypeLabel>
                 <ActiveValue
-                  tooltip="Active open gov referenda"
+                  tooltip="Active referenda"
                   href="/referenda"
-                  value={activeGov2ReferendumsCount}
+                  value={activeGov2ReferendaCount}
+                />
+              </TypeGroup>
+              <TypeGroup>
+                <TypeLabel>F</TypeLabel>
+                <ActiveValue
+                  tooltip="Active fellowship referenda"
+                  href="/fellowship"
+                  value={activeFellowshipReferendaCount}
                 />
               </TypeGroup>
             </Content>
