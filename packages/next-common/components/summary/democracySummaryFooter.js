@@ -1,3 +1,4 @@
+import React from "react";
 import Column from "../styled/column";
 import DemocracyBeenDelegated from "./democracyBeenDelegated";
 import DemocracySummaryDelegation from "./democracySummaryDelegation";
