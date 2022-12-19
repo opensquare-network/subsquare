@@ -19,7 +19,6 @@ import { pretty_scroll_bar } from "next-common/styles/componentCss";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { pageHomeLayoutMainContentWidth } from "next-common/utils/constants";
 import { Conviction } from "utils/referendumUtil";
-import { ConvictionSupport } from "next-common/utils/referendumCommon";
 
 const Wrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
@@ -72,7 +71,7 @@ function DelegationList({ items, theme, loading = true }) {
                 LABEL
               </StyledTh>
             )}
-            <StyledTh style={{ textAlign: "right" }}>SUPPORT</StyledTh>
+            <StyledTh style={{ textAlign: "right" }}>CAPITAL</StyledTh>
           </StyledTr>
           <RowSplitter
             backgroundColor={
@@ -104,10 +103,7 @@ function DelegationList({ items, theme, loading = true }) {
                   )}
                   <StyledTd style={{ textAlign: "right" }}>
                     <ValueDisplay
-                      value={toPrecision(
-                        item.balance * ConvictionSupport[item.conviction],
-                        node.decimals
-                      )}
+                      value={toPrecision(item.balance, node.decimals)}
                       symbol={symbol}
                       showTooltip={false}
                     />

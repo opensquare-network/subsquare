@@ -49,11 +49,11 @@ export default function DelegationSummary({ delegations, beenDelegatedList }) {
         <Item>
           <Title>
             <BalanceSVG />
-            Balance
+            Votes
           </Title>
           <Value>
             <ValueDisplay
-              value={toPrecision(delegations?.capital || 0, node.decimals)}
+              value={toPrecision(delegations?.votes || 0, node.decimals)}
               symbol={node.symbol}
             />
           </Value>
@@ -63,11 +63,11 @@ export default function DelegationSummary({ delegations, beenDelegatedList }) {
         <Item>
           <Title>
             <SupportSVG />
-            Support
+            Capital
           </Title>
           <Value>
             <ValueDisplay
-              value={toPrecision(delegations?.votes || 0, node.decimals)}
+              value={toPrecision(delegations?.capital || 0, node.decimals)}
               symbol={node.symbol}
             />
           </Value>

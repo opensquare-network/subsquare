@@ -13,11 +13,11 @@ export async function getDemocracyBeenDelegatedListByAddress(api, address) {
     if (!voting.isDelegating) {
       continue;
     }
+
     const delegating = voting.asDelegating.toJSON();
-    if (delegating.target !== address) {
-      continue;
+    if (delegating.target === address) {
+      beenDelegated.push({ delegator: account, ...delegating });
     }
-    beenDelegated.push({ delegator: account, ...delegating });
   }
 
   return beenDelegated;
