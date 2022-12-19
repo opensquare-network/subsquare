@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
-import { p_12_bold } from "../../styles/componentCss";
-import { smcss } from "../../utils/responsive";
-import { SecondaryCard } from "../styled/containers/secondaryCard";
+import { p_12_bold } from "../../../styles/componentCss";
+import { smcss } from "../../../utils/responsive";
+import { SecondaryCard } from "../../styled/containers/secondaryCard";
 
 export const SummaryWrapper = styled.div`
   display: flex;

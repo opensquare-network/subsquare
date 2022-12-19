@@ -3,19 +3,9 @@ import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { GreyPanel } from "../../styled/containers/greyPanel";
+import GreyInfoPanel from "../styled/greyInfoPanel";
 
-const Wrapper = styled(GreyPanel)`
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
-  color: ${(p) => p.theme.textTertiary};
-
-  flex-grow: 1;
-  flex-wrap: wrap;
-  padding: 4px 12px;
-  gap: 8px;
-
+const Wrapper = styled(GreyInfoPanel)`
   > div {
     display: inline-flex;
     & > :last-child {
