@@ -24,7 +24,8 @@ const Create = styled.a`
 `;
 
 export default function Overview({ overviewData }) {
-  if (overviewData?.[0]?.items?.length === 0) {
+  const allEmpty = !overviewData.some((list) => list.items.length > 0);
+  if (allEmpty) {
     // All items are empty, show default empty page
     return (
       <Wrapper>
