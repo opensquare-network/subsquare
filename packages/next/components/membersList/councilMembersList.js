@@ -11,7 +11,7 @@ import PrimeAddressMark from "next-common/components/primeAddressMark";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import {
   EmptyTd,
-  RowSpliter,
+  RowSplitter,
   StyledTable,
   StyledTd,
   StyledTh,
@@ -99,7 +99,7 @@ function MembersList({
               </>
             )}
           </StyledTr>
-          <RowSpliter
+          <RowSplitter
             backgroundColor={
               theme.isDark ? theme.grey200Border : theme.grey100Bg
             }
@@ -135,7 +135,7 @@ function MembersList({
                   )}
                 </StyledTr>
                 {index !== items.length - 1 && (
-                  <RowSpliter
+                  <RowSplitter
                     backgroundColor={
                       theme.isDark ? theme.grey200Border : theme.grey100Bg
                     }

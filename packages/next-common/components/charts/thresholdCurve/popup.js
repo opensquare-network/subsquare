@@ -7,7 +7,7 @@ import Flex from "../../styled/flex";
 import ThresholdCurvesLegend from "./legend";
 import {
   EmptyTd,
-  RowSpliter,
+  RowSplitter,
   StyledTable,
   StyledTd,
   StyledTh,
@@ -105,7 +105,7 @@ export default function ThresholdCurvesPopup({
             <StyledTh style={{ textAlign: "right" }}>SUPPORT</StyledTh>
             <StyledTh style={{ textAlign: "right" }}>APPROVAL</StyledTh>
           </StyledTr>
-          <RowSpliter
+          <RowSplitter
             backgroundColor={
               theme.isDark ? theme.grey200Border : theme.grey100Bg
             }

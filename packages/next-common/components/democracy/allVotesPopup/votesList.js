@@ -7,7 +7,7 @@ import Loading from "../../loading";
 
 import {
   EmptyTd,
-  RowSpliter,
+  RowSplitter,
   StyledTable,
   StyledTd,
   StyledTh,
@@ -72,7 +72,7 @@ function VotesList({ items, theme, loading = true }) {
             )}
             <StyledTh style={{ textAlign: "right" }}>VOTES</StyledTh>
           </StyledTr>
-          <RowSpliter
+          <RowSplitter
             backgroundColor={
               theme.isDark ? theme.grey200Border : theme.grey100Bg
             }
@@ -109,7 +109,7 @@ function VotesList({ items, theme, loading = true }) {
                   </StyledTd>
                 </StyledTr>
                 {index !== items.length - 1 && (
-                  <RowSpliter
+                  <RowSplitter
                     backgroundColor={
                       theme.isDark ? theme.grey200Border : theme.grey100Bg
                     }

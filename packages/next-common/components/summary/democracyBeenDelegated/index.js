@@ -1,13 +1,11 @@
-import {
-  getGov2BeenDelegatedByAddress,
-  getGov2BeenDelegatedListByAddress,
-} from "next-common/utils/gov2/gov2ReferendumVote";
 import useApi from "next-common/utils/hooks/useApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import BeenDelegatedInfo from "next-common/components/summary/democracyBeenDelegated/beenDelegatedInfo";
-import BeenDelegatedListButton from "next-common/components/summary/democracyBeenDelegated/beenDelegatedListButton";
+import { getDemocracyBeenDelegatedByAddress } from "../../../utils/democracy/getDemocracyBeenDelegatedByAddress";
+import { getDemocracyBeenDelegatedListByAddress } from "../../../utils/democracy/getDemocracyBeenDelegatedListByAddress";
+import BeenDelegatedInfo from "./beenDelegatedInfo";
+import BeenDelegatedListButton from "./beenDelegatedListButton";
 
 const Wrapper = styled.div`
   display: flex;
@@ -17,7 +15,7 @@ const Wrapper = styled.div`
   flex-wrap: wrap;
 `;
 
-export default function BeenDelegated({ trackId }) {
+export default function DemocracyBeenDelegated() {
   const api = useApi();
   const realAddress = useRealAddress();
   const [delegations, setDelegations] = useState();
@@ -30,15 +28,13 @@ export default function BeenDelegated({ trackId }) {
     if (!api || !realAddress) {
       return;
     }
-    getGov2BeenDelegatedByAddress(api, trackId, realAddress).then((result) => {
+    getDemocracyBeenDelegatedByAddress(api, realAddress).then((result) => {
       setDelegations(result);
     });
-    getGov2BeenDelegatedListByAddress(api, trackId, realAddress).then(
-      (result) => {
-        setBeenDelegatedList(result);
-      }
-    );
-  }, [api, trackId, realAddress]);
+    getDemocracyBeenDelegatedListByAddress(api, realAddress).then((result) => {
+      setBeenDelegatedList(result);
+    });
+  }, [api, realAddress]);
 
   if (!delegations || beenDelegatedList?.length === 0) {
     return null;

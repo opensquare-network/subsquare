@@ -7,7 +7,7 @@ import Loading from "next-common/components/loading";
 
 import {
   EmptyTd,
-  RowSpliter,
+  RowSplitter,
   StyledTable,
   StyledTd,
   StyledTh,
@@ -74,7 +74,7 @@ function DelegationList({ items, theme, loading = true }) {
             )}
             <StyledTh style={{ textAlign: "right" }}>SUPPORT</StyledTh>
           </StyledTr>
-          <RowSpliter
+          <RowSplitter
             backgroundColor={
               theme.isDark ? theme.grey200Border : theme.grey100Bg
             }
@@ -114,7 +114,7 @@ function DelegationList({ items, theme, loading = true }) {
                   </StyledTd>
                 </StyledTr>
                 {index !== items.length - 1 && (
-                  <RowSpliter
+                  <RowSplitter
                     backgroundColor={
                       theme.isDark ? theme.grey200Border : theme.grey100Bg
                     }
