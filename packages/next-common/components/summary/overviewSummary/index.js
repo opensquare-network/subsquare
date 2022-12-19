@@ -55,11 +55,12 @@ export default function OverviewSummary({ summaryData }) {
     activeExternalProposalsCount,
     activeMotionsCount,
     activePublicProposalsCount,
-    activeReferendumsCount,
+    activeReferendaCount,
     activeTechCommMotionsCount,
     activeTipsCount,
     activeTreasuryProposalsCount,
-    activeGov2ReferendumsCount,
+    activeGov2ReferendaCount,
+    activeFellowshipReferendaCount,
   } = summaryData ?? {};
 
   return (
@@ -147,7 +148,7 @@ export default function OverviewSummary({ summaryData }) {
             <TypeGroup>
               <TypeLabel>R</TypeLabel>
               <Tooltip content="Active referenda">
-                <TypeValue>{activeReferendumsCount}</TypeValue>
+                <TypeValue>{activeReferendaCount}</TypeValue>
               </Tooltip>
             </TypeGroup>
           </Content>
@@ -160,7 +161,13 @@ export default function OverviewSummary({ summaryData }) {
               <TypeGroup>
                 <TypeLabel>R</TypeLabel>
                 <Tooltip content="Active referenda">
-                  <TypeValue>{activeGov2ReferendumsCount}</TypeValue>
+                  <TypeValue>{activeGov2ReferendaCount}</TypeValue>
+                </Tooltip>
+              </TypeGroup>
+              <TypeGroup>
+                <TypeLabel>F</TypeLabel>
+                <Tooltip content="Active fellowship">
+                  <TypeValue>{activeFellowshipReferendaCount}</TypeValue>
                 </Tooltip>
               </TypeGroup>
             </Content>
