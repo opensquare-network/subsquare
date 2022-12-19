@@ -14,10 +14,7 @@ export default function BeenDelegatedListPopup({
         delegations={delegations}
         beenDelegatedList={beenDelegatedList}
       />
-      <DelegationTabList
-        directDelegationList={beenDelegatedList}
-        nestedDelegationList={[]}
-      />
+      <DelegationTabList beenDelegatedList={beenDelegatedList} />
     </Popup>
   );
 }
