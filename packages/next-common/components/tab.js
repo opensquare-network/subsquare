@@ -1,7 +1,8 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import { GreyPanel } from "./styled/containers/greyPanel";
 
-const Wrapper = styled.div`
+const Wrapper = styled(GreyPanel)`
   padding: 4px;
 
   ${(p) =>
