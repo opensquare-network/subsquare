@@ -84,7 +84,7 @@ export const clearVoteExtrinsics = () => async (dispatch) => {
   dispatch(setVoteExtrinsics(emptyVotes));
 };
 
-function getVoteExtrinsic(voteExtrinsic, balance) {
+function normalizeExtrinsic(voteExtrinsic, balance) {
   return {
     ...voteExtrinsic,
     vote: {
@@ -96,7 +96,7 @@ function getVoteExtrinsic(voteExtrinsic, balance) {
   };
 }
 
-function classifyOneVoteExtrinsic(voteExtrinsic) {
+function extractVoteElementsFromOneExtrinsic(voteExtrinsic) {
   if (voteExtrinsic.isStandard) {
     if (voteExtrinsic.vote.vote.isAye) {
       return { aye: voteExtrinsic };
@@ -106,15 +106,18 @@ function classifyOneVoteExtrinsic(voteExtrinsic) {
   }
 
   if (voteExtrinsic.isSplit) {
-    const aye = getVoteExtrinsic(voteExtrinsic, voteExtrinsic.vote.aye);
-    const nay = getVoteExtrinsic(voteExtrinsic, voteExtrinsic.vote.nay);
+    const aye = normalizeExtrinsic(voteExtrinsic, voteExtrinsic.vote.aye);
+    const nay = normalizeExtrinsic(voteExtrinsic, voteExtrinsic.vote.nay);
     return { aye, nay };
   }
 
   if (voteExtrinsic.isSplitAbstain) {
-    const aye = getVoteExtrinsic(voteExtrinsic, voteExtrinsic.vote.aye);
-    const nay = getVoteExtrinsic(voteExtrinsic, voteExtrinsic.vote.nay);
-    const abstain = getVoteExtrinsic(voteExtrinsic, voteExtrinsic.vote.abstain);
+    const aye = normalizeExtrinsic(voteExtrinsic, voteExtrinsic.vote.aye);
+    const nay = normalizeExtrinsic(voteExtrinsic, voteExtrinsic.vote.nay);
+    const abstain = normalizeExtrinsic(
+      voteExtrinsic,
+      voteExtrinsic.vote.abstain
+    );
     return { aye, nay, abstain };
   }
 
@@ -127,7 +130,7 @@ function classifyVoteExtrinsics(voteExtrinsics) {
   const allAbstain = [];
 
   for (const item of voteExtrinsics) {
-    const { aye, nay, abstain } = classifyOneVoteExtrinsic(item);
+    const { aye, nay, abstain } = extractVoteElementsFromOneExtrinsic(item);
 
     if (aye) allAye.push(aye);
     if (nay) allNay.push(nay);
