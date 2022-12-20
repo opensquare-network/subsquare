@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Flex from "../flex";
+import { GreyPanel } from "./greyPanel";
 
 // used for card titles, list page titles
 export const TitleContainer = styled.div`
@@ -38,12 +39,10 @@ export const PageTitleContainer = styled.title`
   color: ${(props) => props.theme.textPrimary};
 `;
 
-export const NoticeWrapper = styled(Flex)`
+export const NoticeWrapper = styled(GreyPanel)`
   justify-content: center;
   flex-wrap: wrap;
   padding: 12px;
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
   margin-bottom: 16px;
   font-weight: 500;
   color: ${(props) => props.theme.textSecondary};

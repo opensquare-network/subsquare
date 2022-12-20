@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import User from "next-common/components/user";
 import useThumbsUp from "next-common/components/thumbsUp";
+import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
@@ -11,16 +12,13 @@ const Wrapper = styled(Flex)`
   height: 22px;
 `;
 
-const GreyWrapper = styled.div`
-  display: flex;
+const GreyWrapper = styled(GreyPanel)`
   flex-flow: wrap;
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
   line-height: 22px;
   padding: 8px 12px;
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
   margin-top: 16px;
 `;
 

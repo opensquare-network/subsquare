@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import Flex from "../../styled/flex";
+import { GreyPanel } from "../../styled/containers/greyPanel";
 
 export const Wrapper = styled(Flex)`
   align-items: flex-start;
@@ -9,16 +10,13 @@ export const Wrapper = styled(Flex)`
   color: ${(props) => props.theme.textSecondary};
 `;
 
-export const GreyWrapper = styled.div`
-  display: flex;
+export const GreyWrapper = styled(GreyPanel)`
   flex-flow: wrap;
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
   line-height: 22px;
   padding: 8px 12px;
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
   margin-top: 16px;
 `;
 

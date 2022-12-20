@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import FlexBetween from "../styled/flexBetween";
+import { GreyPanel } from "../styled/containers/greyPanel";
 
 export const VotingStatusContent = styled.div`
   > :nth-child(n + 3) {
@@ -34,12 +35,8 @@ export const VotingStatusWrapper = styled.div`
   }
 `;
 
-export const StatusWrapper = styled.div`
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
+export const StatusWrapper = styled(GreyPanel)`
   padding: 12px 16px;
-  display: flex;
-  align-items: center;
   justify-content: space-between;
   min-height: 38px;
   font-size: 14px;
@@ -72,9 +69,7 @@ export const StatusWrapper = styled.div`
   }
 `;
 
-export const WarningMessage = styled.div`
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
+export const WarningMessage = styled(GreyPanel)`
   padding: 12px 16px;
   color: ${(props) => props.theme.textSecondary};
   font-size: 14px;
@@ -87,12 +82,9 @@ export const WarningMessage = styled.div`
     `}
 `;
 
-export const DelegatingInfo = styled.div`
-  display: flex;
+export const DelegatingInfo = styled(GreyPanel)`
   padding: 12px 16px;
   height: 64px;
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
 
   font-style: normal;
   font-weight: normal;
@@ -101,13 +93,10 @@ export const DelegatingInfo = styled.div`
   color: ${(props) => props.theme.textSecondary};
 `;
 
-export const DelegatingValue = styled.div`
-  display: flex;
+export const DelegatingValue = styled(GreyPanel)`
   justify-content: space-between;
   padding: 12px 16px;
   height: 38px;
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
   margin-top: 8px;
 
   > .vote {

@@ -4,6 +4,7 @@ import User from "../user";
 import Progress from "./progress";
 import Flex from "../styled/flex";
 import { Approve } from "../icons";
+import { GreyPanel } from "../styled/containers/greyPanel";
 
 const TitleWrapper = styled(Flex)`
   justify-content: space-between;
@@ -19,14 +20,10 @@ const TitleWrapper = styled(Flex)`
   }
 `;
 
-const ArgsWrapper = styled.div`
-  display: flex;
+const ArgsWrapper = styled(GreyPanel)`
   flex-direction: column;
   align-items: flex-start;
   padding: 8px 28px;
-
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
 `;
 
 const ArgItem = styled.div`
@@ -52,7 +49,7 @@ const ArgItem = styled.div`
   }
 `;
 
-export default function Voting({ data  }) {
+export default function Voting({ data }) {
   return (
     <div>
       <TitleWrapper>

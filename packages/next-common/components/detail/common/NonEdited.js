@@ -6,6 +6,7 @@ import PostEdit from "./PostEdit";
 import User from "../../user";
 import { useIsPostAuthor } from "../../../context/post/useIsPostAuthor";
 import { useDetailType } from "../../../context/page";
+import { GreyPanel } from "../../styled/containers/greyPanel";
 
 const PlaceHolder = styled.div`
   font-style: normal;
@@ -20,16 +21,13 @@ const PlaceHolder = styled.div`
   justify-content: center;
 `;
 
-const GreyWrapper = styled.div`
-  display: flex;
+const GreyWrapper = styled(GreyPanel)`
   flex-flow: wrap;
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
   line-height: 22px;
   padding: 8px 12px;
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
   margin-top: 16px;
 `;
 

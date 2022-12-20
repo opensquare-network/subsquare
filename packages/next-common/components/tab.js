@@ -2,7 +2,6 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 const Wrapper = styled.div`
-  display: flex;
   padding: 4px;
 
   ${(p) =>
@@ -15,9 +14,6 @@ const Wrapper = styled.div`
         `}
 
   flex-grow: 1;
-
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
 
   justify-content: space-between;
 `;

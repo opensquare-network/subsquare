@@ -2,6 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import CheckedSvg from "./checked.svg";
 import VoterList from "./votersList";
+import { GreyPanel } from "../styled/containers/greyPanel";
 
 const Wrapper = styled.div`
   display: flex;
@@ -9,12 +10,9 @@ const Wrapper = styled.div`
   gap: 8px;
 `;
 
-const OptionWrapper = styled.div`
-  display: flex;
+const OptionWrapper = styled(GreyPanel)`
   justify-content: space-between;
   padding: 12px 16px;
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
   color: ${(props) => props.theme.textPrimary};
   ${(p) =>
     p.selectable &&
