@@ -84,8 +84,8 @@ export const clearVoteExtrinsics = () => async (dispatch) => {
   dispatch(setVoteExtrinsics(emptyVotes));
 };
 
-function addVoteExtrinsicToList(voteExtrinsic, balance, list) {
-  list.push({
+function getVoteExtrinsic(voteExtrinsic, balance) {
+  return {
     ...voteExtrinsic,
     vote: {
       balance,
@@ -93,32 +93,48 @@ function addVoteExtrinsicToList(voteExtrinsic, balance, list) {
         conviction: 0,
       },
     },
-  });
+  };
 }
 
-function classifyVoteExtrinsic(voteExtrinsic, allAye, allNay, allAbstain) {
+function classifyOneVoteExtrinsic(voteExtrinsic) {
   if (voteExtrinsic.isStandard) {
     if (voteExtrinsic.vote.vote.isAye) {
-      allAye.push(voteExtrinsic);
+      return { aye: voteExtrinsic };
     } else {
-      allNay.push(voteExtrinsic);
+      return { nay: voteExtrinsic };
     }
   }
 
   if (voteExtrinsic.isSplit) {
-    addVoteExtrinsicToList(voteExtrinsic, voteExtrinsic.vote.aye, allAye);
-    addVoteExtrinsicToList(voteExtrinsic, voteExtrinsic.vote.nay, allNay);
+    const aye = getVoteExtrinsic(voteExtrinsic, voteExtrinsic.vote.aye);
+    const nay = getVoteExtrinsic(voteExtrinsic, voteExtrinsic.vote.nay);
+    return { aye, nay };
   }
 
   if (voteExtrinsic.isSplitAbstain) {
-    addVoteExtrinsicToList(voteExtrinsic, voteExtrinsic.vote.aye, allAye);
-    addVoteExtrinsicToList(voteExtrinsic, voteExtrinsic.vote.nay, allNay);
-    addVoteExtrinsicToList(
-      voteExtrinsic,
-      voteExtrinsic.vote.abstain,
-      allAbstain
-    );
+    const aye = getVoteExtrinsic(voteExtrinsic, voteExtrinsic.vote.aye);
+    const nay = getVoteExtrinsic(voteExtrinsic, voteExtrinsic.vote.nay);
+    const abstain = getVoteExtrinsic(voteExtrinsic, voteExtrinsic.vote.abstain);
+    return { aye, nay, abstain };
   }
+
+  return {};
+}
+
+function classifyVoteExtrinsics(voteExtrinsics) {
+  const allAye = [];
+  const allNay = [];
+  const allAbstain = [];
+
+  for (const item of voteExtrinsics) {
+    const { aye, nay, abstain } = classifyOneVoteExtrinsic(item);
+
+    if (aye) allAye.push(aye);
+    if (nay) allNay.push(nay);
+    if (abstain) allAbstain.push(abstain);
+  }
+
+  return { allAye, allNay, allAbstain };
 }
 
 export const fetchVoteExtrinsics = (referendumIndex) => async (dispatch) => {
@@ -129,13 +145,7 @@ export const fetchVoteExtrinsics = (referendumIndex) => async (dispatch) => {
       gov2ReferendumsVoteExtrinsicsApi(referendumIndex)
     );
 
-    const allAye = [];
-    const allNay = [];
-    const allAbstain = [];
-
-    for (const item of result) {
-      classifyVoteExtrinsic(item, allAye, allNay, allAbstain);
-    }
+    const { allAye, allNay, allAbstain } = classifyVoteExtrinsics(result);
 
     dispatch(setVoteExtrinsics({ allAye, allNay, allAbstain }));
   } finally {
