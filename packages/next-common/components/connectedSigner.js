@@ -2,15 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import Account from "./account";
 import EmptyAccount from "./emptyAccount";
+import { GreyPanel } from "./styled/containers/greyPanel";
 
-const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
+const Wrapper = styled(GreyPanel)`
   padding: 12px 16px;
   gap: 16px;
-
-  background: ${(p) => p.theme.grey100Bg};
-  border-radius: 4px;
 `;
 
 export default function ConnectedSigner({ signerAccount }) {

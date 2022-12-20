@@ -6,23 +6,19 @@ import { addressEllipsis } from "../../utils";
 import { formatBalance } from "../../utils/viewfuncs";
 import Loading from "../loading";
 import Tooltip from "../tooltip";
+import { GreyPanel } from "../styled/containers/greyPanel";
 
-const Wrapper = styled.div`
-  display: flex;
+const Wrapper = styled(GreyPanel)`
   margin-top: 8px;
-  align-items: center;
   padding: 10px 16px;
   justify-content: space-between;
 
-  ${p_14_normal}
+  ${p_14_normal};
   color: ${(p) => p.theme.textSecondary};
   .proxyaddr {
     font-weight: 500;
     color: ${(p) => p.theme.textPrimary};
   }
-
-  background: ${(p) => p.theme.grey100Bg};
-  border-radius: 4px;
 `;
 
 const BalanceWrapper = styled.div`
@@ -40,7 +36,7 @@ export default function ProxyInfo({ address, balance, isLoading, symbol }) {
     <Wrapper>
       <div>
         As proxy of <span className="proxyaddr">{shortAddr}</span>{" "}
-        <Tooltip content={"Extirinsic will be wrapped in a proxy call"} />
+        <Tooltip content={"Extrinsic will be wrapped in a proxy call"} />
       </div>
       {!noBalance && (
         <BalanceWrapper>

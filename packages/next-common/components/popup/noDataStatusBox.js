@@ -1,13 +1,10 @@
 import React from "react";
 
 import styled from "styled-components";
+import { GreyPanel } from "../styled/containers/greyPanel";
 
-const StatusWrapper = styled.div`
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
+const StatusWrapper = styled(GreyPanel)`
   padding: 12px 16px;
-  display: flex;
-  align-items: center;
   justify-content: space-between;
   min-height: 38px;
   > div.value {

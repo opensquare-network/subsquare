@@ -6,22 +6,9 @@ import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel"
 import ValueDisplay from "next-common/components/valueDisplay";
 import User from "next-common/components/user";
 import { Conviction, ConvictionSupport } from "../../../utils/referendumCommon";
+import GreyInfoPanel from "../styled/greyInfoPanel";
 
-const Wrapper = styled.div`
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
-  color: ${(p) => p.theme.textTertiary};
-
-  display: flex;
-  flex-grow: 1;
-  flex-wrap: wrap;
-  align-items: center;
-  padding: 4px 12px;
-  gap: 8px;
-  background: ${(p) => p.theme.grey100Bg};
-  border-radius: 4px;
-
+const Wrapper = styled(GreyInfoPanel)`
   > :nth-child(3) {
     color: ${(p) => p.theme.textSecondary};
   }
