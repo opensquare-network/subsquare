@@ -63,8 +63,66 @@ export default function OverviewSummary({ summaryData }) {
   } = summaryData ?? {};
 
   return (
-    <Summary description="Due client synergize developing tentative strategic vec pushback.">
+    <Summary description="Active proposal numbers of various governance processes.">
       <SummaryItemWrapper>
+        {showOpenGov && (
+          <SummaryItem>
+            <SummaryItemTitle>Open Gov</SummaryItemTitle>
+            <Content>
+              <TypeGroup>
+                <TypeLabel>R</TypeLabel>
+                <ActiveValue
+                  tooltip="Active referenda"
+                  href="/referenda"
+                  value={activeGov2ReferendaCount}
+                />
+              </TypeGroup>
+              <TypeGroup>
+                <TypeLabel>F</TypeLabel>
+                <ActiveValue
+                  tooltip="Active fellowship referenda"
+                  href="/fellowship"
+                  value={activeFellowshipReferendaCount}
+                />
+              </TypeGroup>
+            </Content>
+          </SummaryItem>
+        )}
+
+        <SummaryItem>
+          <SummaryItemTitle>Democracy</SummaryItemTitle>
+          <Content>
+            <TypeGroup>
+              <TypeLabel>R</TypeLabel>
+              <ActiveValue
+                tooltip="Active democracy referenda"
+                href="/democracy/referenda"
+                value={activeReferendaCount}
+              />
+            </TypeGroup>
+
+            <TypeGroup>
+              <TypeLabel>P</TypeLabel>
+              <ActiveValue
+                tooltip="Active public proposals"
+                href="/democracy/proposals"
+                value={activePublicProposalsCount}
+              />
+            </TypeGroup>
+
+            {showExternal && (
+              <TypeGroup>
+                <TypeLabel>E</TypeLabel>
+                <ActiveValue
+                  tooltip="Active external proposals"
+                  href="/democracy/externals"
+                  value={activeExternalProposalsCount}
+                />
+              </TypeGroup>
+            )}
+          </Content>
+        </SummaryItem>
+
         <SummaryItem>
           <SummaryItemTitle>Treasury</SummaryItemTitle>
           <Content>
@@ -138,64 +196,6 @@ export default function OverviewSummary({ summaryData }) {
             )}
           </Content>
         </SummaryItem>
-
-        <SummaryItem>
-          <SummaryItemTitle>Democracy</SummaryItemTitle>
-          <Content>
-            <TypeGroup>
-              <TypeLabel>P</TypeLabel>
-              <ActiveValue
-                tooltip="Active public proposals"
-                href="/democracy/proposals"
-                value={activePublicProposalsCount}
-              />
-            </TypeGroup>
-
-            {showExternal && (
-              <TypeGroup>
-                <TypeLabel>E</TypeLabel>
-                <ActiveValue
-                  tooltip="Active external proposals"
-                  href="/democracy/externals"
-                  value={activeExternalProposalsCount}
-                />
-              </TypeGroup>
-            )}
-
-            <TypeGroup>
-              <TypeLabel>R</TypeLabel>
-              <ActiveValue
-                tooltip="Active democracy referenda"
-                href="/democracy/referenda"
-                value={activeReferendaCount}
-              />
-            </TypeGroup>
-          </Content>
-        </SummaryItem>
-
-        {showOpenGov && (
-          <SummaryItem>
-            <SummaryItemTitle>Open Gov</SummaryItemTitle>
-            <Content>
-              <TypeGroup>
-                <TypeLabel>R</TypeLabel>
-                <ActiveValue
-                  tooltip="Active referenda"
-                  href="/referenda"
-                  value={activeGov2ReferendaCount}
-                />
-              </TypeGroup>
-              <TypeGroup>
-                <TypeLabel>F</TypeLabel>
-                <ActiveValue
-                  tooltip="Active fellowship referenda"
-                  href="/fellowship"
-                  value={activeFellowshipReferendaCount}
-                />
-              </TypeGroup>
-            </Content>
-          </SummaryItem>
-        )}
       </SummaryItemWrapper>
     </Summary>
   );
