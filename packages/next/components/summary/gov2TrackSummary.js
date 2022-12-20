@@ -27,6 +27,7 @@ import {
   getTrackApprovalCurve,
   getTrackSupportCurve,
 } from "next-common/context/post/gov2/curve";
+import FlexCenter from "next-common/components/styled/flexCenter";
 
 // used in `Divider` and `ThresholdCurvesChart`
 const THRESHOLD_CURVE_PADDING = 8;
@@ -65,7 +66,7 @@ const SummaryThresholdCurveItem = styled(SummaryItem)`
 const SummaryThresholdCurveContent = styled(Content)`
   margin: 0 -6px;
 `;
-const SummaryThresholdCurveLegendWrapper = styled.div`
+const SummaryThresholdCurveLegendWrapper = styled(FlexCenter)`
   margin-top: 8px;
 `;
 const SummaryThresholdCurveItemTitle = styled(SummaryItemTitle)`
