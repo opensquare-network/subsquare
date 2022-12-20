@@ -7,6 +7,7 @@ import Flex from "../styled/flex";
 import Sun from "../../assets/imgs/icons/sun.svg";
 import Moon from "../../assets/imgs/icons/moon.svg";
 import { useToggleThemeMode } from "../../context/theme";
+import GitHubIcon from "../../assets/imgs/icons/github-logo.svg";
 
 const FlexWrapper = styled(Flex)`
   gap: 8px;
@@ -59,6 +60,12 @@ function Contacts({ theme }) {
       </ExternalLink>
       <ExternalLink href="mailto:hi@opensquare.network" title="Send EMail">
         <MailIcon />
+      </ExternalLink>
+      <ExternalLink
+        href="https://github.com/opensquare-network/subsquare/issues"
+        title="GitHub Issues"
+      >
+        <GitHubIcon />
       </ExternalLink>
       <Divider />
       <ThemeToggle onClick={toggle}>
