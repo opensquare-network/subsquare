@@ -4,7 +4,6 @@ import Pagination from "next-common/components/pagination";
 import Column from "next-common/components/styled/column";
 
 export default function DelegationTabList({ beenDelegatedList }) {
-  console.log("beenDelegatedList", beenDelegatedList);
   const [page, setPage] = useState(1);
   const pageSize = 50;
 
