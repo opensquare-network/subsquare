@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Flex from "../flex";
 import { GreyPanel } from "./greyPanel";
 
 // used for card titles, list page titles
