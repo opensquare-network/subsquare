@@ -22,15 +22,6 @@ export default function AllVoteExtrinsicsPopup({ setShowVoteList }) {
   const [abstainPage, setAbstainPage] = useState(1);
   const pageSize = 50;
 
-  let votes = [];
-  if (tabIndex === "Aye") {
-    votes = allAye;
-  } else if (tabIndex === "Nay") {
-    votes = allNay;
-  } else if (tabIndex === "Abstain") {
-    votes = allAbstain;
-  }
-
   const onPageChange = (e, target) => {
     e.preventDefault();
     if (tabIndex === "Aye") {
@@ -42,12 +33,16 @@ export default function AllVoteExtrinsicsPopup({ setShowVoteList }) {
     }
   };
 
+  let votes = [];
   let page = 1;
   if (tabIndex === "Aye") {
+    votes = allAye;
     page = ayePage;
   } else if (tabIndex === "Nay") {
+    votes = allNay;
     page = nayPage;
   } else if (tabIndex === "Abstain") {
+    votes = allAbstain;
     page = abstainPage;
   }
 
