@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import styled, { withTheme } from "styled-components";
+import { withTheme } from "styled-components";
 import { toPrecision } from "next-common/utils";
 import User from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -15,41 +15,9 @@ import {
 } from "next-common/components/styled/table";
 import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel";
 import Chains from "next-common/utils/consts/chains";
-import { pretty_scroll_bar } from "next-common/styles/componentCss";
 import { useChain, useChainSettings } from "next-common/context/chain";
-import { pageHomeLayoutMainContentWidth } from "next-common/utils/constants";
 import { Conviction } from "utils/referendumUtil";
-
-const Wrapper = styled.div`
-  max-width: ${pageHomeLayoutMainContentWidth}px;
-  @media screen and (max-width: 1024px) {
-    max-width: 960px;
-  }
-  margin: auto;
-
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-  table {
-    border: none;
-    padding: 0;
-    tbody {
-      display: block;
-      max-height: 400px;
-      overflow-y: auto;
-      overflow-x: hidden;
-
-      ${pretty_scroll_bar};
-    }
-    thead,
-    tbody tr {
-      display: table;
-      width: 100%;
-      table-layout: fixed;
-    }
-    box-shadow: none;
-  }
-`;
+import PopupListWrapper from "../../../styled/popupListWrapper";
 
 function DelegationList({ items, theme, loading = true }) {
   const chain = useChain();
@@ -59,7 +27,7 @@ function DelegationList({ items, theme, loading = true }) {
   const symbol = node.voteSymbol || node.symbol;
 
   return (
-    <Wrapper>
+    <PopupListWrapper>
       <StyledTable>
         <thead>
           <StyledTr>
@@ -127,7 +95,7 @@ function DelegationList({ items, theme, loading = true }) {
           )}
         </tbody>
       </StyledTable>
-    </Wrapper>
+    </PopupListWrapper>
   );
 }
 
