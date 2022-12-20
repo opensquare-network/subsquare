@@ -1,25 +1,6 @@
 import React from "react";
-import styled from "styled-components";
 import Tab from "next-common/components/tab";
-
-const TitleWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  span.num {
-    color: ${(p) => (p.active ? p.theme.textSecondary : p.theme.textTertiary)};
-  }
-`;
-
-function Title({ name, num, active }) {
-  return (
-    <TitleWrapper active={active}>
-      <div>
-        {name} <span className="num">({num})</span>
-      </div>
-    </TitleWrapper>
-  );
-}
+import TabTitle from "next-common/components/tabTitle";
 
 export const tabs = [
   {
@@ -31,6 +12,7 @@ export const tabs = [
     tabTitle: "Nested",
   },
 ];
+
 export default function VotesTab({
   tabIndex,
   setTabIndex,
@@ -40,7 +22,7 @@ export default function VotesTab({
   const ayeTab = tabs.find((tab) => tab.tabId === "Direct");
   if (ayeTab) {
     ayeTab.tabTitle = (
-      <Title
+      <TabTitle
         name="Direct"
         num={directCount || 0}
         active={tabIndex === "Direct"}
@@ -51,7 +33,7 @@ export default function VotesTab({
   const nayTab = tabs.find((tab) => tab.tabId === "Nested");
   if (nayTab) {
     nayTab.tabTitle = (
-      <Title
+      <TabTitle
         name="Nested"
         num={nestedCount || 0}
         active={tabIndex === "Nested"}

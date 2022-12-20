@@ -84,6 +84,62 @@ export const clearVoteExtrinsics = () => async (dispatch) => {
   dispatch(setVoteExtrinsics(emptyVotes));
 };
 
+function normalizeExtrinsic(voteExtrinsic, balance) {
+  return {
+    ...voteExtrinsic,
+    vote: {
+      balance,
+      vote: {
+        conviction: 0,
+      },
+    },
+  };
+}
+
+function extractVoteElementsFromOneExtrinsic(voteExtrinsic) {
+  if (voteExtrinsic.isStandard) {
+    if (voteExtrinsic.vote.vote.isAye) {
+      return { aye: voteExtrinsic };
+    } else {
+      return { nay: voteExtrinsic };
+    }
+  }
+
+  if (voteExtrinsic.isSplit) {
+    const aye = normalizeExtrinsic(voteExtrinsic, voteExtrinsic.vote.aye);
+    const nay = normalizeExtrinsic(voteExtrinsic, voteExtrinsic.vote.nay);
+    return { aye, nay };
+  }
+
+  if (voteExtrinsic.isSplitAbstain) {
+    const aye = normalizeExtrinsic(voteExtrinsic, voteExtrinsic.vote.aye);
+    const nay = normalizeExtrinsic(voteExtrinsic, voteExtrinsic.vote.nay);
+    const abstain = normalizeExtrinsic(
+      voteExtrinsic,
+      voteExtrinsic.vote.abstain
+    );
+    return { aye, nay, abstain };
+  }
+
+  return {};
+}
+
+function classifyVoteExtrinsics(voteExtrinsics) {
+  const allAye = [];
+  const allNay = [];
+  const allAbstain = [];
+
+  for (const item of voteExtrinsics) {
+    const { aye, nay, abstain } = extractVoteElementsFromOneExtrinsic(item);
+
+    if (aye) allAye.push(aye);
+    if (nay) allNay.push(nay);
+    if (abstain) allAbstain.push(abstain);
+  }
+
+  return { allAye, allNay, allAbstain };
+}
+
 export const fetchVoteExtrinsics = (referendumIndex) => async (dispatch) => {
   dispatch(clearVoteExtrinsics());
   dispatch(setIsLoadingVoteExtrinsics(true));
@@ -92,41 +148,9 @@ export const fetchVoteExtrinsics = (referendumIndex) => async (dispatch) => {
       gov2ReferendumsVoteExtrinsicsApi(referendumIndex)
     );
 
-    const allAye = [];
-    const allNay = [];
+    const { allAye, allNay, allAbstain } = classifyVoteExtrinsics(result);
 
-    for (const item of result) {
-      if (item.isStandard) {
-        if (item.vote.vote.isAye) {
-          allAye.push(item);
-        } else {
-          allNay.push(item);
-        }
-      } else if (item.isSplit) {
-        allAye.push({
-          ...item,
-          vote: {
-            balance: item.vote.aye,
-            vote: {
-              isAye: true,
-              conviction: 0,
-            },
-          },
-        });
-        allNay.push({
-          ...item,
-          vote: {
-            balance: item.vote.nay,
-            vote: {
-              isAye: false,
-              conviction: 0,
-            },
-          },
-        });
-      }
-    }
-
-    dispatch(setVoteExtrinsics({ allAye, allNay }));
+    dispatch(setVoteExtrinsics({ allAye, allNay, allAbstain }));
   } finally {
     dispatch(setIsLoadingVoteExtrinsics(false));
   }
