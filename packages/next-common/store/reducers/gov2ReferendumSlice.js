@@ -94,6 +94,7 @@ export const fetchVoteExtrinsics = (referendumIndex) => async (dispatch) => {
 
     const allAye = [];
     const allNay = [];
+    const allAbstain = [];
 
     for (const item of result) {
       if (item.isStandard) {
@@ -123,10 +124,41 @@ export const fetchVoteExtrinsics = (referendumIndex) => async (dispatch) => {
             },
           },
         });
+      } else if (item.isSplitAbstain) {
+        allAye.push({
+          ...item,
+          vote: {
+            balance: item.vote.aye,
+            vote: {
+              isAye: true,
+              conviction: 0,
+            },
+          },
+        });
+        allNay.push({
+          ...item,
+          vote: {
+            balance: item.vote.nay,
+            vote: {
+              isAye: false,
+              conviction: 0,
+            },
+          },
+        });
+        allAbstain.push({
+          ...item,
+          vote: {
+            balance: item.vote.abstain,
+            vote: {
+              isAbstain: true,
+              conviction: 0,
+            },
+          },
+        });
       }
     }
 
-    dispatch(setVoteExtrinsics({ allAye, allNay }));
+    dispatch(setVoteExtrinsics({ allAye, allNay, allAbstain }));
   } finally {
     dispatch(setIsLoadingVoteExtrinsics(false));
   }
