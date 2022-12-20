@@ -6,7 +6,6 @@ import {
   SummaryGreyText,
   SummaryItem,
   SummaryItemTitle,
-  SummaryItemWrapper as SummaryItemWrapperOrigin,
 } from "next-common/components/summary/styled";
 import Delegation from "./delegation";
 import BeenDelegated from "./beenDelegated";
@@ -27,6 +26,8 @@ import {
   getTrackApprovalCurve,
   getTrackSupportCurve,
 } from "next-common/context/post/gov2/curve";
+import FlexCenter from "next-common/components/styled/flexCenter";
+import Grid from "next-common/components/styled/grid";
 
 // used in `Divider` and `ThresholdCurvesChart`
 const THRESHOLD_CURVE_PADDING = 8;
@@ -39,18 +40,9 @@ const SummaryContentWrapper = styled.div`
   `)}
 `;
 
-const SummaryItemWrapper = styled(SummaryItemWrapperOrigin)`
+const SummaryItemWrapper = styled.div`
   flex: 2;
-  flex-wrap: wrap;
-
-  ${SummaryItem} {
-    width: calc(50% - 16px);
-    flex: unset;
-  }
-
-  ${smcss(css`
-    flex-direction: row;
-  `)}
+  width: 100%;
 `;
 const SummaryThresholdCurveWrapper = styled.div`
   flex: 1;
@@ -65,12 +57,11 @@ const SummaryThresholdCurveItem = styled(SummaryItem)`
 const SummaryThresholdCurveContent = styled(Content)`
   margin: 0 -6px;
 `;
-const SummaryThresholdCurveLegendWrapper = styled.div`
+const SummaryThresholdCurveLegendWrapper = styled(FlexCenter)`
   margin-top: 8px;
 `;
 const SummaryThresholdCurveItemTitle = styled(SummaryItemTitle)`
   display: flex;
-  align-items: center;
   justify-content: space-between;
 
   ${ArrowOutSimpleIcon} {
@@ -154,63 +145,76 @@ export default function Gov2TrackSummary({
     >
       <SummaryContentWrapper>
         <SummaryItemWrapper>
-          <SummaryItem>
-            <SummaryItemTitle>Capacity</SummaryItemTitle>
-            <Content>
-              <span>
-                {summary.decidingCount || 0}
-                <SummaryGreyText> / {maxDeciding}</SummaryGreyText>
-              </span>
-            </Content>
-          </SummaryItem>
-          <SummaryItem>
-            <SummaryItemTitle>Total</SummaryItemTitle>
-            <Content>
-              <span>{summary.total}</span>
-            </Content>
-          </SummaryItem>
+          <Grid gap={16} columns={2}>
+            <SummaryItem>
+              <SummaryItemTitle>Capacity</SummaryItemTitle>
+              <Content>
+                <span>
+                  {summary.decidingCount || 0}
+                  <SummaryGreyText> / {maxDeciding}</SummaryGreyText>
+                </span>
+              </Content>
+            </SummaryItem>
 
-          <SummaryItem>
-            <SummaryItemTitle>Decision</SummaryItemTitle>
-            <Content>
-              <span>
-                {decisionPeriodBlockTime[0] || 0}
-                <SummaryGreyText> {decisionPeriodBlockTime[1]}</SummaryGreyText>
-              </span>
-            </Content>
-          </SummaryItem>
-          <SummaryItem>
-            <SummaryItemTitle>Confirmation</SummaryItemTitle>
-            <Content>
-              <span>
-                {confirmPeriodBlockTime[0] || 0}
-                <SummaryGreyText> {confirmPeriodBlockTime[1]}</SummaryGreyText>
-              </span>
-            </Content>
-          </SummaryItem>
+            <SummaryItem>
+              <SummaryItemTitle>Confirm</SummaryItemTitle>
+              <Content>
+                <span>
+                  {confirmPeriodBlockTime[0] || 0}
+                  <SummaryGreyText>
+                    {" "}
+                    {confirmPeriodBlockTime[1]}
+                  </SummaryGreyText>
+                </span>
+              </Content>
+            </SummaryItem>
 
-          <SummaryItem>
-            <SummaryItemTitle>Prepare Period</SummaryItemTitle>
-            <Content>
-              <span>
-                {preparePeriodBlockTime[0] || 0}
-                <SummaryGreyText> {preparePeriodBlockTime[1]}</SummaryGreyText>
-              </span>
-            </Content>
-          </SummaryItem>
+            <SummaryItem>
+              <SummaryItemTitle>Prepare Period</SummaryItemTitle>
+              <Content>
+                <span>
+                  {preparePeriodBlockTime[0] || 0}
+                  <SummaryGreyText>
+                    {" "}
+                    {preparePeriodBlockTime[1]}
+                  </SummaryGreyText>
+                </span>
+              </Content>
+            </SummaryItem>
 
-          {/* prevent title text wrap */}
-          <SummaryItem style={{ minWidth: 144 }}>
-            <SummaryItemTitle>Decision Deposit</SummaryItemTitle>
-            <Content>
-              <SummaryDecisionDepositValueWrapper>
-                <ValueDisplay
-                  value={toPrecision(decisionDeposit, decimals)}
-                  symbol={symbol}
-                />
-              </SummaryDecisionDepositValueWrapper>
-            </Content>
-          </SummaryItem>
+            <SummaryItem>
+              <SummaryItemTitle>Decision</SummaryItemTitle>
+              <Content>
+                <span>
+                  {decisionPeriodBlockTime[0] || 0}
+                  <SummaryGreyText>
+                    {" "}
+                    {decisionPeriodBlockTime[1]}
+                  </SummaryGreyText>
+                </span>
+              </Content>
+            </SummaryItem>
+
+            <SummaryItem>
+              <SummaryItemTitle>Total</SummaryItemTitle>
+              <Content>
+                <span>{summary.total}</span>
+              </Content>
+            </SummaryItem>
+
+            {/* prevent title text wrap */}
+            <SummaryItem style={{ minWidth: 146 }}>
+              <SummaryItemTitle>Decision Deposit</SummaryItemTitle>
+              <Content>
+                <SummaryDecisionDepositValueWrapper>
+                  <ValueDisplay
+                    value={toPrecision(decisionDeposit, decimals)}
+                    symbol={symbol}
+                  />
+                </SummaryDecisionDepositValueWrapper>
+              </Content>
+            </SummaryItem>
+          </Grid>
         </SummaryItemWrapper>
 
         <SummaryThresholdCurveWrapper>
@@ -221,7 +225,7 @@ export default function Gov2TrackSummary({
             </SummaryThresholdCurveItemTitle>
             <SummaryThresholdCurveContent>
               <ThresholdCurvesChart
-                height={104}
+                height={110}
                 scalesX={false}
                 scalesY={false}
                 layoutPadding={THRESHOLD_CURVE_PADDING}
