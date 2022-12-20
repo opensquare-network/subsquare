@@ -1,28 +1,8 @@
 import React from "react";
-import styled from "styled-components";
 import Tab from "../../tab";
+import TabTitle from "next-common/components/tabTitle";
 import AyeIcon from "public/imgs/icons/aye.svg";
 import NayIcon from "public/imgs/icons/nay.svg";
-
-const TitleWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  span.num {
-    color: ${(p) => (p.active ? p.theme.textSecondary : p.theme.textTertiary)};
-  }
-`;
-
-function Title({ name, icon, num, active }) {
-  return (
-    <TitleWrapper active={active}>
-      {icon}
-      <div>
-        {name} <span className="num">({num})</span>
-      </div>
-    </TitleWrapper>
-  );
-}
 
 export const tabs = [
   {
@@ -34,6 +14,7 @@ export const tabs = [
     tabTitle: "Nay",
   },
 ];
+
 export default function VotesTab({
   tabIndex,
   setTabIndex,
@@ -43,7 +24,7 @@ export default function VotesTab({
   const ayeTab = tabs.find((tab) => tab.tabId === "Aye");
   if (ayeTab) {
     ayeTab.tabTitle = (
-      <Title
+      <TabTitle
         name="Ayes"
         icon={<AyeIcon />}
         num={ayesCount || 0}
@@ -55,7 +36,7 @@ export default function VotesTab({
   const nayTab = tabs.find((tab) => tab.tabId === "Nay");
   if (nayTab) {
     nayTab.tabTitle = (
-      <Title
+      <TabTitle
         name="Nays"
         icon={<NayIcon />}
         num={naysCount || 0}
