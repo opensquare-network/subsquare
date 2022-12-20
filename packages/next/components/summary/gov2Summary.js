@@ -16,7 +16,7 @@ export default function Gov2Summary({ summary }) {
   return (
     <Summary
       title="Referenda"
-      description="Due client synergize developing tentative strategic vec pushback."
+      description="All active and history referenda of various tracks."
     >
       <Grid columns={sm ? 2 : 3} gap={16}>
         <SummaryItem>
