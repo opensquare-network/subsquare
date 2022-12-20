@@ -84,6 +84,43 @@ export const clearVoteExtrinsics = () => async (dispatch) => {
   dispatch(setVoteExtrinsics(emptyVotes));
 };
 
+function addVoteExtrinsicToList(voteExtrinsic, balance, list) {
+  list.push({
+    ...voteExtrinsic,
+    vote: {
+      balance,
+      vote: {
+        conviction: 0,
+      },
+    },
+  });
+}
+
+function classifyVoteExtrinsic(voteExtrinsic, allAye, allNay, allAbstain) {
+  if (voteExtrinsic.isStandard) {
+    if (voteExtrinsic.vote.vote.isAye) {
+      allAye.push(voteExtrinsic);
+    } else {
+      allNay.push(voteExtrinsic);
+    }
+  }
+
+  if (voteExtrinsic.isSplit) {
+    addVoteExtrinsicToList(voteExtrinsic, voteExtrinsic.vote.aye, allAye);
+    addVoteExtrinsicToList(voteExtrinsic, voteExtrinsic.vote.nay, allNay);
+  }
+
+  if (voteExtrinsic.isSplitAbstain) {
+    addVoteExtrinsicToList(voteExtrinsic, voteExtrinsic.vote.aye, allAye);
+    addVoteExtrinsicToList(voteExtrinsic, voteExtrinsic.vote.nay, allNay);
+    addVoteExtrinsicToList(
+      voteExtrinsic,
+      voteExtrinsic.vote.abstain,
+      allAbstain
+    );
+  }
+}
+
 export const fetchVoteExtrinsics = (referendumIndex) => async (dispatch) => {
   dispatch(clearVoteExtrinsics());
   dispatch(setIsLoadingVoteExtrinsics(true));
@@ -97,65 +134,7 @@ export const fetchVoteExtrinsics = (referendumIndex) => async (dispatch) => {
     const allAbstain = [];
 
     for (const item of result) {
-      if (item.isStandard) {
-        if (item.vote.vote.isAye) {
-          allAye.push(item);
-        } else {
-          allNay.push(item);
-        }
-      } else if (item.isSplit) {
-        allAye.push({
-          ...item,
-          vote: {
-            balance: item.vote.aye,
-            vote: {
-              isAye: true,
-              conviction: 0,
-            },
-          },
-        });
-        allNay.push({
-          ...item,
-          vote: {
-            balance: item.vote.nay,
-            vote: {
-              isAye: false,
-              conviction: 0,
-            },
-          },
-        });
-      } else if (item.isSplitAbstain) {
-        allAye.push({
-          ...item,
-          vote: {
-            balance: item.vote.aye,
-            vote: {
-              isAye: true,
-              conviction: 0,
-            },
-          },
-        });
-        allNay.push({
-          ...item,
-          vote: {
-            balance: item.vote.nay,
-            vote: {
-              isAye: false,
-              conviction: 0,
-            },
-          },
-        });
-        allAbstain.push({
-          ...item,
-          vote: {
-            balance: item.vote.abstain,
-            vote: {
-              isAbstain: true,
-              conviction: 0,
-            },
-          },
-        });
-      }
+      classifyVoteExtrinsic(item, allAye, allNay, allAbstain);
     }
 
     dispatch(setVoteExtrinsics({ allAye, allNay, allAbstain }));
