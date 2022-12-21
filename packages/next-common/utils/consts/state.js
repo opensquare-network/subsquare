@@ -21,3 +21,10 @@ export const gov2FinalState = [
   gov2State.TimedOut,
   gov2State.Rejected,
 ];
+
+export const gov2VotingState = [
+  gov2State.Submitted,
+  gov2State.Queueing,
+  gov2State.Deciding,
+  gov2State.Confirming,
+];

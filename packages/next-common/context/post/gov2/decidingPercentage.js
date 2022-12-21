@@ -1,10 +1,10 @@
-import { useDecision } from "next-common/context/post/gov2/track";
-import { useDecidingSince } from "next-common/context/post/gov2/referendum";
+import { useDecision } from "./track";
+import { useDecidingSince } from "./referendum";
 import { useSelector } from "react-redux";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
+import { latestHeightSelector } from "../../../store/reducers/chainSlice";
 import { useMemo } from "react";
 import isNil from "lodash.isnil";
-import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import useReferendumVotingFinishHeight from "../referenda/useReferendumVotingFinishHeight";
 
 export function useDecidingEndPercentage() {
   const decisionPeriod = useDecision();
