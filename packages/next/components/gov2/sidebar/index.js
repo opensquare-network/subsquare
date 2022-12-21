@@ -47,8 +47,7 @@ export default function Gov2Sidebar({ onVoteFinalized = emptyFunction }) {
         />
       )}
 
-      {/* NOTE: link to polkadot gov2 blog */}
-      <Link href="https://polkadot.network/blog/gov2-polkadots-next-generation-of-decentralised-governance/">
+      <Link href="https://wiki.polkadot.network/docs/learn-gov2/">
         How Governance V2 Works
         <ExternalLinkIcon color={primaryPurple500} />
       </Link>

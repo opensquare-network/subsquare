@@ -41,8 +41,7 @@ export default function FellowshipReferendumSideBar({
         />
       )}
 
-      {/* NOTE: link to polkadot gov2 blog */}
-      <Link href="https://polkadot.network/blog/gov2-polkadots-next-generation-of-decentralised-governance/">
+      <Link href="https://wiki.polkadot.network/docs/learn-gov2#polkadot-fellowship">
         How Governance V2 Works
         <ExternalLinkIcon color={primaryPurple500} />
       </Link>
