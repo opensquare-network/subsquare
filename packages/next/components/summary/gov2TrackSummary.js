@@ -6,7 +6,6 @@ import {
   SummaryGreyText,
   SummaryItem,
   SummaryItemTitle,
-  SummaryItemWrapper as SummaryItemWrapperOrigin,
 } from "next-common/components/summary/styled";
 import Delegation from "./delegation";
 import BeenDelegated from "./beenDelegated";
@@ -53,7 +52,7 @@ const SummaryThresholdCurveItem = styled(SummaryItem)`
   height: 100%;
 `;
 const SummaryThresholdCurveContent = styled(Content)`
-  margin: 0 -4px;
+  margin: 0 -6px;
 `;
 const SummaryThresholdCurveLegendWrapper = styled(FlexCenter)`
   margin-top: 8px;
@@ -72,7 +71,6 @@ const SummaryDecisionDepositValueWrapper = styled.span`
   }
 `;
 
-// fix divider position
 const Divider = styled(DividerOrigin)`
   margin-top: ${0 - THRESHOLD_CURVE_PADDING}px;
   margin-right: ${THRESHOLD_CURVE_PADDING}px;
