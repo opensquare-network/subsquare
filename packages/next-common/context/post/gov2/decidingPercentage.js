@@ -1,10 +1,10 @@
-import isNil from "lodash.isnil";
-import { useMemo } from "react";
+import { useDecision } from "./track";
+import { useDecidingSince } from "./referendum";
 import { useSelector } from "react-redux";
 import { latestHeightSelector } from "../../../store/reducers/chainSlice";
+import { useMemo } from "react";
+import isNil from "lodash.isnil";
 import useReferendumVotingFinishHeight from "../referenda/useReferendumVotingFinishHeight";
-import { useDecidingSince } from "./referendum";
-import { useDecision } from "./track";
 
 export function useDecidingEndPercentage() {
   const decisionPeriod = useDecision();
