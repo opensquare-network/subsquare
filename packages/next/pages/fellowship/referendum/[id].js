@@ -16,12 +16,34 @@ import useUniversalComments from "../../../components/universalComments";
 import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metadata";
 import Timeline from "../../../components/gov2/timeline";
 import FellowshipReferendumSideBar from "../../../components/fellowship/referendum/sidebar";
+import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
+import { useCallback, useEffect, useState } from "react";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 
-export default withLoginUserRedux(({ detail, comments }) => {
+export default withLoginUserRedux(({ detail: _detail, comments }) => {
+  const [detail, setDetail] = useState(_detail);
+  useEffect(() => setDetail(_detail), [_detail]);
+
+  const isMounted = useIsMounted();
+
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
   });
+
+  const refreshPageData = useCallback(async () => {
+    const { result } = await nextApi.fetch(
+      getFellowshipReferendumUrl(detail.referendumIndex)
+    );
+    if (result && isMounted.current) {
+      setDetail(result);
+    }
+  }, [detail, isMounted]);
+
+  const onVoteFinalized = useWaitSyncBlock(
+    "Fellowship referendum voted",
+    refreshPageData
+  );
 
   return (
     <PostProvider post={detail}>
@@ -35,7 +57,7 @@ export default withLoginUserRedux(({ detail, comments }) => {
         <FellowshipBreadcrumb />
         <DetailItem onReply={focusEditor} />
 
-        <FellowshipReferendumSideBar />
+        <FellowshipReferendumSideBar onVoteFinalized={onVoteFinalized} />
 
         <Gov2ReferendumMetadata detail={detail} />
         <Timeline trackInfo={detail?.onchainData?.trackInfo} />

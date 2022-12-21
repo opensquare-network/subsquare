@@ -4,41 +4,40 @@ import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarW
 import FellowshipTally from "./tally";
 import Gov2Status from "../../../gov2/sidebar/status";
 import { usePost } from "next-common/context/post";
-import { gov2State } from "next-common/utils/consts/state";
-import { VoteButton, Link } from "components/gov2/sidebar/styled";
+import { gov2VotingState } from "next-common/utils/consts/state";
+import { Link } from "next-common/components/detail/sidebar/styled";
 import ExternalLinkIcon from "next-common/components/icons/externalLink";
 import Popup from "../votePopup";
+import { emptyFunction } from "next-common/utils";
+import SecondaryButton from "next-common/components/buttons/secondaryButton";
 
-export default function FellowshipReferendumSideBar() {
+export default function FellowshipReferendumSideBar({
+  onVoteFinalized = emptyFunction,
+}) {
   const post = usePost();
   const { primaryPurple500 } = useTheme();
   const [showVote, setShowVote] = useState(false);
   const referendumIndex = post?.referendumIndex;
-  const isVoting = [
-    gov2State.Submitted,
-    gov2State.Queueing,
-    gov2State.Deciding,
-    gov2State.Confirming,
-  ].includes(post?.state?.name);
+  const isVoting = gov2VotingState.includes(post?.state?.name);
 
   return (
     <RightBarWrapper>
       <Gov2Status />
       <FellowshipTally />
       {isVoting && (
-        <VoteButton
+        <SecondaryButton
           onClick={() => {
             setShowVote(true);
           }}
         >
           Vote
-        </VoteButton>
+        </SecondaryButton>
       )}
       {showVote && (
         <Popup
           onClose={() => setShowVote(false)}
           referendumIndex={referendumIndex}
-          // onFinalized={onVoteFinalized}
+          onFinalized={onVoteFinalized}
         />
       )}
 

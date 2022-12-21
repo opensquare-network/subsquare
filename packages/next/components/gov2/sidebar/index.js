@@ -1,6 +1,6 @@
 import ExternalLinkIcon from "next-common/components/icons/externalLink";
 import { emptyFunction } from "next-common/utils";
-import { gov2State } from "next-common/utils/consts/state";
+import { gov2VotingState } from "next-common/utils/consts/state";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { useTheme } from "styled-components";
@@ -8,7 +8,8 @@ import Gov2Status from "./status";
 import Gov2Tally from "./tally";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import { usePost } from "next-common/context/post";
-import { VoteButton, Link } from "./styled";
+import { Link } from "next-common/components/detail/sidebar/styled";
+import SecondaryButton from "next-common/components/buttons/secondaryButton";
 
 const Popup = dynamic(() => import("../votePopup"), {
   ssr: false,
@@ -20,12 +21,7 @@ export default function Gov2Sidebar({ onVoteFinalized = emptyFunction }) {
   const [showVote, setShowVote] = useState(false);
   const referendumIndex = detail?.referendumIndex;
   const trackId = detail?.track;
-  const isVoting = [
-    gov2State.Submitted,
-    gov2State.Queueing,
-    gov2State.Deciding,
-    gov2State.Confirming,
-  ].includes(detail?.state?.name);
+  const isVoting = gov2VotingState.includes(detail?.state?.name);
 
   return (
     <RightBarWrapper>
@@ -34,13 +30,13 @@ export default function Gov2Sidebar({ onVoteFinalized = emptyFunction }) {
       <Gov2Tally />
 
       {isVoting && (
-        <VoteButton
+        <SecondaryButton
           onClick={() => {
             setShowVote(true);
           }}
         >
           Vote
-        </VoteButton>
+        </SecondaryButton>
       )}
       {showVote && (
         <Popup

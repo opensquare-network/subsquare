@@ -24,6 +24,7 @@ import TallyInfo from "./tallyInfo";
 import { emptyFunction } from "next-common/utils";
 import { useChain } from "next-common/context/chain";
 import MyVote from "./myVote";
+import SecondaryButton from "next-common/components/buttons/secondaryButton";
 
 const VotePopup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -37,6 +38,9 @@ const AllVotesPopup = dynamic(
 );
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   position: absolute;
   right: 0;
   top: 40px;
@@ -73,20 +77,6 @@ const PassStatus = styled(Status)`
 const RejectStatus = styled(Status)`
   color: ${(props) => props.theme.secondaryRed500};
   background: ${(props) => props.theme.secondaryRed100};
-`;
-
-const VoteButton = styled.button`
-  all: unset;
-  cursor: pointer;
-  margin-top: 16px;
-  width: 100%;
-  line-height: 38px;
-  background-color: ${(props) => props.theme.primaryDarkBlue};
-  color: ${(props) => props.theme.textContrast};
-  font-weight: 500;
-  font-size: 14px;
-  text-align: center;
-  border-radius: 4px;
 `;
 
 function Vote({
@@ -182,13 +172,13 @@ function Vote({
       </SecondaryCardDetail>
 
       {!finished && (
-        <VoteButton
+        <SecondaryButton
           onClick={() => {
             setShowVote(true);
           }}
         >
           Vote
-        </VoteButton>
+        </SecondaryButton>
       )}
       {showVote && (
         <VotePopup
