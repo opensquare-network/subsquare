@@ -1,6 +1,6 @@
 import styled, { useTheme } from "styled-components";
 import Progress from "next-common/components/progress";
-import useSupportThreshold from "../threshold/useSupportThreshold";
+import { useSupportThreshold } from "next-common/context/post/gov2/threshold";
 import { useEffect, useMemo, useState } from "react";
 import ThresholdComponent from "../../../../referenda/threshold";
 import Percentage from "./percentage";
