@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Loading from "next-common/components/loading";
 import { WarningMessage } from "next-common/components/popup/styled";
-import VoteStatusBox from "next-common/components/popup/voteStatusBox";
+import VoteStatusBox from "./voteStatusBox";
 import NoDataStatusBox from "next-common/components/popup/noDataStatusBox";
 import PopupLabel from "next-common/components/popup/label";
 
@@ -21,7 +21,6 @@ const CurrentVotingLoading = styled.div`
 `;
 
 export default function CurrentVote({ isLoadingVote, currentVote }) {
-  console.log({ currentVote });
   return (
     <CurrentVotingWrapper>
       <PopupLabel text={"Current Voting"} />
@@ -32,7 +31,9 @@ export default function CurrentVote({ isLoadingVote, currentVote }) {
       )}
       {!isLoadingVote &&
         (currentVote ? (
-          <VoteStatusBox aye={currentVote.aye}>Voting</VoteStatusBox>
+          <VoteStatusBox aye={currentVote.aye} nay={currentVote.nay}>
+            Voting
+          </VoteStatusBox>
         ) : (
           <NoDataStatusBox text={"No voting record"} />
         ))}
