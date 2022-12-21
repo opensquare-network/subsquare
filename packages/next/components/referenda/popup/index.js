@@ -70,10 +70,6 @@ function PopupContent({
       return;
     }
 
-    if (!node) {
-      return;
-    }
-
     let bnVoteBalance;
     try {
       bnVoteBalance = checkInputValue(
