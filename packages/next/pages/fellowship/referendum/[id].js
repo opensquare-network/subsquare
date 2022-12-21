@@ -1,5 +1,5 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import { ssrNextApi } from "next-common/services/nextApi";
+import nextApi, { ssrNextApi } from "next-common/services/nextApi";
 import {
   getFellowshipReferendumCommentsUrl,
   getFellowshipReferendumUrl,
