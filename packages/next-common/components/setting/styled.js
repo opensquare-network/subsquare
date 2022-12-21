@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
 import { PrimaryCard } from "../styled/containers/primaryCard";
+import { GreyPanel } from "../styled/containers/greyPanel";
 
 export const Wrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
@@ -94,12 +95,8 @@ export const WarningMessage = styled.div`
   margin-bottom: 16px;
 `;
 
-export const InfoMessage = styled.div`
-  display: flex;
+export const InfoMessage = styled(GreyPanel)`
   padding: 10px 16px;
-
-  background: ${(p) => p.theme.grey100Bg};
-  border-radius: 4px;
 
   font-weight: 400;
   font-size: 14px;

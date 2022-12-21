@@ -18,19 +18,15 @@ import {
 import Info from "next-common/components/styled/info";
 import isNil from "lodash.isnil";
 import { getMotionStateArgs } from "next-common/utils/collective/result";
+import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 
-const MotionEndHeader = styled.div`
-  display: flex;
+const MotionEndHeader = styled(GreyPanel)`
   justify-content: center;
-  align-items: center;
   padding: 12px;
   gap: 8px;
 
   position: static;
   height: 38px;
-
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
 
   margin-bottom: 16px;
   color: ${(props) => props.theme.textSecondary};

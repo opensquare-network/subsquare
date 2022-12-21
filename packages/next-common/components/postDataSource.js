@@ -6,18 +6,14 @@ import { usePost } from "../context/post";
 import { useChain } from "../context/chain";
 import { getPolkassemblyLink } from "next-common/utils/polkassembly";
 import { useDetailType } from "../context/page";
+import { GreyPanel } from "./styled/containers/greyPanel";
 
-const ExternalReference = styled.div`
-  display: flex;
-  align-items: center;
+const ExternalReference = styled(GreyPanel)`
   padding: 12px;
   margin-top: 16px;
   gap: 8px;
 
   height: 41px;
-
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
 
   span {
     font-style: normal;

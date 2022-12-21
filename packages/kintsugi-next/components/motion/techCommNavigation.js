@@ -1,13 +1,15 @@
 import isNil from "lodash.isnil";
 import {
   DemocracyProposalNavigator,
-  NavigationWrapper, ReferendumNavigationItem,
-  TechCommMotionNavigator
+  NavigationWrapper,
+  ReferendumNavigationItem,
+  TechCommMotionNavigator,
 } from "next-common/components/detail/navigation/navigators";
 
 export default function TechCommNavigation({ motion = {} }) {
-  const hasProposal = !isNil(motion.proposalIndex);
-  const hasReferendum = !isNil(motion.referendumIndex);
+  const publicProposal = motion.onchainData?.publicProposals?.[0];
+  const hasProposal = !isNil(publicProposal?.proposalIndex);
+  const hasReferendum = !isNil(publicProposal?.referendumIndex);
 
   if (!hasProposal) {
     return null;
@@ -15,12 +17,20 @@ export default function TechCommNavigation({ motion = {} }) {
 
   let referendum = null;
   if (hasReferendum) {
-    referendum = <ReferendumNavigationItem referendumIndex={motion.referendumIndex}/>
+    referendum = (
+      <ReferendumNavigationItem
+        referendumIndex={publicProposal.referendumIndex}
+      />
+    );
   }
 
-  return <NavigationWrapper>
-    <DemocracyProposalNavigator proposalIndex={ motion.proposalIndex } />
-    <TechCommMotionNavigator motion={motion} isLink={false}/>
-    { referendum }
-  </NavigationWrapper>
+  return (
+    <NavigationWrapper>
+      <DemocracyProposalNavigator
+        proposalIndex={publicProposal.proposalIndex}
+      />
+      <TechCommMotionNavigator motion={motion} isLink={false} />
+      {referendum}
+    </NavigationWrapper>
+  );
 }

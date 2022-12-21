@@ -10,6 +10,7 @@ import styled, { useTheme, css } from "styled-components";
 import Gov2Status from "./status";
 import Gov2Tally from "./tally";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
+import { usePost } from "next-common/context/post";
 
 const Popup = dynamic(() => import("../votePopup"), {
   ssr: false,
@@ -44,15 +45,13 @@ const Link = styled(ExternalLink)`
   `)}
 `;
 
-export default function Gov2Sidebar({
-  detail,
-  onVoteFinalized = emptyFunction,
-}) {
+export default function Gov2Sidebar({ onVoteFinalized = emptyFunction }) {
+  const detail = usePost();
   const { primaryPurple500 } = useTheme();
   const [showVote, setShowVote] = useState(false);
   const referendumIndex = detail?.referendumIndex;
   const trackId = detail?.track;
-  const showVoteButton = [
+  const isVoting = [
     gov2State.Submitted,
     gov2State.Queueing,
     gov2State.Deciding,
@@ -63,9 +62,9 @@ export default function Gov2Sidebar({
     <RightBarWrapper>
       <Gov2Status />
 
-      <Gov2Tally detail={detail} />
+      <Gov2Tally />
 
-      {showVoteButton && (
+      {isVoting && (
         <VoteButton
           onClick={() => {
             setShowVote(true);

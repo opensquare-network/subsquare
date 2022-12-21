@@ -12,6 +12,7 @@ export default function ThresholdCurvesChart({
   height,
   scalesX = true,
   scalesY = true,
+  layoutPadding,
   labels = [],
   supportData = [],
   approvalData = [],
@@ -23,9 +24,9 @@ export default function ThresholdCurvesChart({
         label: "Support",
         data: supportData,
         tension: 0.1,
-        backgroundColor: dark.primaryDarkBlue,
-        borderWidth: 0,
-        pointRadius: 1,
+        borderColor: dark.primaryDarkBlue,
+        borderWidth: 2,
+        pointRadius: 0,
         pointHitRadius: 10,
         pointHoverRadius: 5,
       },
@@ -33,9 +34,9 @@ export default function ThresholdCurvesChart({
         label: "Approval",
         data: approvalData,
         tension: 0.1,
-        backgroundColor: light.secondaryGreen500,
-        borderWidth: 0,
-        pointRadius: 1,
+        borderColor: light.secondaryGreen500,
+        borderWidth: 2,
+        pointRadius: 0,
         pointHitRadius: 10,
         pointHoverRadius: 5,
       },
@@ -44,6 +45,9 @@ export default function ThresholdCurvesChart({
 
   const options = {
     clip: false,
+    layout: {
+      padding: layoutPadding,
+    },
     scales: {
       x: {
         type: "linear",

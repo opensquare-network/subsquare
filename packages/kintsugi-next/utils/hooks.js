@@ -4,6 +4,7 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getVotingBalance } from "./escrow/votingBalance";
 import { useSelector } from "react-redux";
 import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
+import { getLockedBalance } from "./escrow/lockedBalance";
 
 export function useAddressVotingBalance(api, address) {
   const [balance, setBalance] = useState(0);
@@ -47,7 +48,38 @@ export function useLatestAddressVotingBalance(api, address) {
   return [balance, isLoading, refresh];
 }
 
-export function useAddressVote(api, referendumIndex, address) {
+export function useLockedBalance(api, address) {
+  const [balance, setBalance] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const isMounted = useIsMounted();
+
+  const refresh = useCallback(() => {
+    if (!api || !address) {
+      return;
+    }
+
+    setIsLoading(true);
+    getLockedBalance(api, address)
+      .then((value) => {
+        if (isMounted.current) {
+          setBalance(value);
+        }
+      })
+      .finally(() => {
+        if (isMounted.current) {
+          setIsLoading(false);
+        }
+      });
+  }, [api, address, isMounted]);
+
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
+
+  return [balance, isLoading, refresh];
+}
+
+export function useAddressVote(api, referendumIndex, address, updateTime) {
   const [vote, setVote] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useIsMounted();
@@ -67,6 +99,7 @@ export function useAddressVote(api, referendumIndex, address) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [api, referendumIndex, address, isMounted]);
+  }, [api, referendumIndex, address, isMounted, updateTime]);
+
   return [vote, isLoading];
 }

@@ -8,6 +8,16 @@ export const Conviction = {
   Locked6x: 6,
 };
 
+export const ConvictionSupport = {
+  None: 0.1,
+  Locked1x: 1,
+  Locked2x: 2,
+  Locked3x: 3,
+  Locked4x: 4,
+  Locked5x: 5,
+  Locked6x: 6,
+};
+
 const AYE_BITS = 0b10000000;
 const CON_MASK = 0b01111111;
 

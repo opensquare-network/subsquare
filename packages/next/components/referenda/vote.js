@@ -23,6 +23,7 @@ import VoteBar from "./voteBar";
 import TallyInfo from "./tallyInfo";
 import { emptyFunction } from "next-common/utils";
 import { useChain } from "next-common/context/chain";
+import MyVote from "./myVote";
 
 const VotePopup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -109,8 +110,11 @@ function Vote({
     isLoadingReferendumStatusSelector
   );
 
+  const [updateTime, setUpdateTime] = useState(0);
+
   const updateVoteProgress = useCallback(() => {
     dispatch(fetchReferendumStatus(api, referendumIndex));
+    setUpdateTime(Date.now());
   }, [dispatch, api, referendumIndex]);
 
   const isPassing = calcPassing(referendumStatus, electorate);
@@ -173,6 +177,8 @@ function Vote({
         >
           Check all votes
         </SubLink>
+
+        <MyVote updateTime={updateTime} />
       </SecondaryCardDetail>
 
       {!finished && (

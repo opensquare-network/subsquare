@@ -1,21 +1,31 @@
-/* eslint-disable react/jsx-key */
-import isNil from "lodash.isnil";
 import Link from "next/link";
-import KVList from "next-common/components/listInfo/kvList";
+import KvList from "next-common/components/listInfo/kvList";
+import styled from "styled-components";
 
-export default function Business({ referendumIndex }) {
-  const referendumData = [];
+const LinkItems = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
 
-  if (!isNil(referendumIndex)) {
-    referendumData.push([
+export default function Business({ treasuryProposals }) {
+  const business = [];
+
+  if (treasuryProposals?.length > 0) {
+    business.push([
       "Link to",
-      <Link
-        href={`/democracy/referendum/${referendumIndex}`}
-      >{`Democracy Referenda #${referendumIndex}`}</Link>,
+      <LinkItems key="link-to">
+        {treasuryProposals.map((item, idx) => (
+          <Link
+            key={idx}
+            href={`/treasury/proposal/${item.proposalIndex}`}
+          >{`Treasury Proposal #${item.proposalIndex}`}</Link>
+        ))}
+      </LinkItems>,
     ]);
   }
 
-  return referendumData.length > 0 ? (
-    <KVList title="Business" data={referendumData} showFold />
+  return business.length > 0 ? (
+    <KvList title="Business" data={business} showFold />
   ) : null;
 }

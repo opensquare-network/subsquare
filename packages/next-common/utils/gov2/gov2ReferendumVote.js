@@ -1,4 +1,5 @@
 import { Conviction, isAye } from "../referendumCommon";
+import { extractAddressAndTrackId } from "./utils";
 
 export async function getGov2TrackDelegation(api, trackId, address) {
   const voting = await api.query.convictionVoting.votingFor(address, trackId);
@@ -69,6 +70,54 @@ export async function getGov2AddressVote(
         aye,
       },
     };
+  }
+
+  return null;
+}
+
+let votingForEntries;
+
+export async function getGov2BeenDelegatedListByAddress(api, trackId, address) {
+  if (!votingForEntries) {
+    votingForEntries = await api.query.convictionVoting.votingFor.entries();
+  }
+
+  const beenDelegated = [];
+  for (const [storageKey, votingFor] of votingForEntries) {
+    const { address: delegator, trackId: _trackId } = extractAddressAndTrackId(
+      storageKey,
+      api
+    );
+    if (_trackId !== trackId) {
+      continue;
+    }
+    if (!votingFor.isDelegating) {
+      continue;
+    }
+    const voting = votingFor.asDelegating.toJSON();
+    if (voting.target !== address) {
+      continue;
+    }
+    beenDelegated.push({ delegator, ...voting });
+  }
+
+  return beenDelegated;
+}
+
+export async function getGov2BeenDelegatedByAddress(api, trackId, address) {
+  const voting = await api.query.convictionVoting.votingFor(address, trackId);
+
+  const jsonVoting = voting.toJSON();
+  if (!jsonVoting) {
+    return null;
+  }
+
+  if (jsonVoting.delegating) {
+    return jsonVoting.delegating.delegations;
+  }
+
+  if (jsonVoting.casting) {
+    return jsonVoting.casting.delegations;
   }
 
   return null;

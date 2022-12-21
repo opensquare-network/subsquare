@@ -2,35 +2,7 @@ import {
   objectSpread,
   sortVotesWithConviction,
 } from "../democracy/votes/passed/common";
-import { encodeAddress } from "@polkadot/util-crypto";
-
-// votingFor storage: (account, trackId, votingOf)
-// key u8a[] composition: section + method = 32; account twox64 hash = 8, account = 32;
-/**
- * key u8a[] composition:
- * section + method = 32;
- * account twox64 hash = 8, account = 32;
- * trackId twox64 hash = 8, trackId(u16) = 2;
- *
- * total: 32 + 40 + 10 = 82;
- */
-
-function extractAddressAndTrackId(storageKey = [], api) {
-  const sectionRemoved = storageKey.slice(32);
-  const accountHashRemoved = sectionRemoved.slice(8);
-  const accountU8a = accountHashRemoved.slice(0, 32);
-
-  const accountRemoved = accountHashRemoved.slice(32);
-  const classIdU8a = accountRemoved.slice(8);
-
-  const address = encodeAddress(accountU8a, api.registry.chainSS58);
-  const trackId = api.registry.createType("U16", classIdU8a).toNumber();
-
-  return {
-    address,
-    trackId,
-  };
-}
+import { extractAddressAndTrackId } from "./utils";
 
 function normalizeVotingOfEntry([storageKey, voting], blockApi) {
   const { address, trackId } = extractAddressAndTrackId(storageKey, blockApi);
@@ -80,7 +52,7 @@ function extractVotes(mapped, targetReferendumIndex) {
     }, []);
 }
 
-function extractDelegations(mapped, track, votes = []) {
+function extractDelegations(mapped, track, directVotes = []) {
   const delegations = mapped
     .filter(({ trackId, voting }) => voting.isDelegating && trackId === track)
     .map(({ account, voting }) => {
@@ -90,18 +62,15 @@ function extractDelegations(mapped, track, votes = []) {
       };
     });
 
+  const delegationVotes = [];
   delegations.forEach(
     ({ account, delegating: { balance, conviction, target } }) => {
-      const toDelegator = delegations.find(
+      const to = directVotes.find(
         ({ account }) => account === target.toString()
-      );
-      const to = votes.find(
-        ({ account }) =>
-          account === (toDelegator ? toDelegator.account : target.toString())
       );
 
       if (to) {
-        votes.push({
+        delegationVotes.push({
           account,
           balance: balance.toBigInt().toString(),
           isDelegating: true,
@@ -112,7 +81,7 @@ function extractDelegations(mapped, track, votes = []) {
     }
   );
 
-  return votes;
+  return delegationVotes;
 }
 
 export async function getGov2ReferendumVotesFromVotingOf(
@@ -124,8 +93,8 @@ export async function getGov2ReferendumVotesFromVotingOf(
   const mapped = voting.map((item) => normalizeVotingOfEntry(item, blockApi));
 
   const directVotes = extractVotes(mapped, referendumIndex, blockApi);
-  const allVotes = extractDelegations(mapped, trackId, directVotes);
-  const sorted = sortVotesWithConviction([...allVotes]);
+  const delegationVotes = extractDelegations(mapped, trackId, directVotes);
+  const sorted = sortVotesWithConviction([...directVotes, ...delegationVotes]);
 
   const allAye = sorted.filter((v) => v.aye);
   const allNay = sorted.filter((v) => !v.aye);

@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import styled from "styled-components";
 import Link from "next/link";
 import Timeline from "next-common/components/timeline";
@@ -24,6 +23,7 @@ import User from "next-common/components/user";
 import { useChain } from "next-common/context/chain";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import { useDetailType } from "next-common/context/page";
+import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -33,18 +33,13 @@ const TimelineMotionEnd = styled.div`
   }
 `;
 
-const MotionEndHeader = styled.div`
-  display: flex;
+const MotionEndHeader = styled(GreyPanel)`
   justify-content: center;
-  align-items: center;
   padding: 12px;
   gap: 8px;
 
   position: static;
   height: 38px;
-
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
 
   margin-bottom: 16px;
   color: ${(props) => props.theme.textSecondary};
@@ -56,6 +51,7 @@ function createMotionBusinessData(motion) {
     [
       "Link to",
       <Link
+        key="link-to"
         href={`/democracy/external/${height}_${motion.proposalHash}`}
       >{`External proposal ${motion.proposalHash.slice(0, 8)}`}</Link>,
     ],
@@ -162,15 +158,23 @@ export default function TechcommMotionDetail({ motion, onReply }) {
       [
         "Link to",
         <Link
+          key="treasury-link-to"
           href={`/treasury/proposal/${motion.treasuryProposalIndex}`}
         >{`Treasury Proposal #${motion.treasuryProposalIndex}`}</Link>,
       ],
       [
         "Beneficiary",
-        <User add={treasuryProposalMeta.beneficiary} fontSize={14} />,
+        <User
+          key="beneficiary"
+          add={treasuryProposalMeta.beneficiary}
+          fontSize={14}
+        />,
       ],
-      ["Value", <SymbolBalance value={treasuryProposalMeta.value} />],
-      ["Bond", <SymbolBalance value={treasuryProposalMeta.bond} />],
+      [
+        "Value",
+        <SymbolBalance key="value" value={treasuryProposalMeta.value} />,
+      ],
+      ["Bond", <SymbolBalance key="bond" value={treasuryProposalMeta.bond} />],
     ]);
   }
 
@@ -180,11 +184,15 @@ export default function TechcommMotionDetail({ motion, onReply }) {
         [
           "Link to",
           <Link
+            key="link-to"
             href={`/democracy/proposal/${proposal?.proposalIndex}`}
           >{`Democracy Public Proposal #${proposal?.proposalIndex}`}</Link>,
         ],
         ["Hash", proposal.hash],
-        ["Proposer", <User add={proposal?.proposer} fontSize={14} />],
+        [
+          "Proposer",
+          <User key="proposer" add={proposal?.proposer} fontSize={14} />,
+        ],
       ]);
     });
   }

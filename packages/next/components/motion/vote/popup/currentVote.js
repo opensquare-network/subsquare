@@ -4,6 +4,7 @@ import { WarningMessage } from "next-common/components/popup/styled";
 import VoteStatusBox from "next-common/components/popup/voteStatusBox";
 import NoDataStatusBox from "next-common/components/popup/noDataStatusBox";
 import PopupLabel from "next-common/components/popup/label";
+import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 
 const CurrentVotingWrapper = styled.div`
   > :not(:first-child) {
@@ -11,12 +12,8 @@ const CurrentVotingWrapper = styled.div`
   }
 `;
 
-const CurrentVotingLoading = styled.div`
+const CurrentVotingLoading = styled(GreyPanel)`
   height: 38px;
-  background: ${(props) => props.theme.grey100Bg};
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
   justify-content: center;
 `;
 

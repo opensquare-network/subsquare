@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import VotesTab, { tabs } from "../tab";
+import VotesTab, { tabs } from "./tab";
 import { useSelector } from "react-redux";
 import {
   isLoadingVoteExtrinsicsSelector,
@@ -10,26 +10,44 @@ import Pagination from "next-common/components/pagination";
 import VoteExtrinsicList from "./voteExtrinsicList";
 
 export default function AllVoteExtrinsicsPopup({ setShowVoteList }) {
-  const { allAye = [], allNay = [] } = useSelector(voteExtrinsicsSelector);
+  const {
+    allAye = [],
+    allNay = [],
+    allAbstain = [],
+  } = useSelector(voteExtrinsicsSelector);
   const isLoading = useSelector(isLoadingVoteExtrinsicsSelector);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [ayePage, setAyePage] = useState(1);
   const [nayPage, setNayPage] = useState(1);
+  const [abstainPage, setAbstainPage] = useState(1);
   const pageSize = 50;
-
-  const votes = tabIndex === tabs[0].tabId ? allAye : allNay;
 
   const onPageChange = (e, target) => {
     e.preventDefault();
     if (tabIndex === "Aye") {
       setAyePage(target);
-    } else {
+    } else if (tabIndex === "Nay") {
       setNayPage(target);
+    } else if (tabIndex === "Abstain") {
+      setAbstainPage(target);
     }
   };
 
+  let votes = [];
+  let page = 1;
+  if (tabIndex === "Aye") {
+    votes = allAye;
+    page = ayePage;
+  } else if (tabIndex === "Nay") {
+    votes = allNay;
+    page = nayPage;
+  } else if (tabIndex === "Abstain") {
+    votes = allAbstain;
+    page = abstainPage;
+  }
+
   const pagination = {
-    page: tabIndex === "Aye" ? ayePage : nayPage,
+    page,
     pageSize,
     total: votes?.length || 0,
     onPageChange,
@@ -45,6 +63,7 @@ export default function AllVoteExtrinsicsPopup({ setShowVoteList }) {
         setTabIndex={setTabIndex}
         ayesCount={allAye?.length || 0}
         naysCount={allNay?.length || 0}
+        abstainCount={allAbstain?.length || 0}
       />
       <VoteExtrinsicList
         items={votes.slice(sliceFrom, sliceTo)}

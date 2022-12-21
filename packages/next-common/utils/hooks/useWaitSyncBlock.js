@@ -7,6 +7,7 @@ import useApi from "./useApi";
 import { getBlockHeightFromHash } from "../chain";
 import { nodesHeightSelector } from "../../store/reducers/nodeSlice";
 import {
+  newErrorToast,
   newPendingToast,
   newSuccessToast,
   newToastId,
@@ -38,7 +39,7 @@ export default function useWaitSyncBlock(toastMessage, callback) {
         try {
           const targetHeight = await getBlockHeightFromHash(api, blockHash);
 
-          let times = 6;
+          let times = 12;
           while (times-- > 0) {
             await sleep(10000);
             if (refScanHeight.current >= targetHeight) {
@@ -49,7 +50,7 @@ export default function useWaitSyncBlock(toastMessage, callback) {
           const reachingFinalizedBlock = times >= 0;
           callback(reachingFinalizedBlock);
         } catch (e) {
-          console.error(e);
+          dispatch(newErrorToast(e.message));
         } finally {
           dispatch(removeToast(toastId));
         }

@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.6.3
+
+date: 12/17/2022
+
+- Add curve chart on referenda track page.
+- Support threshold visualization of fellowship referendum .
+
+# 2.6.2
+
+date: 12/15/2022
+
+- Bind kintsugi public proposal with treasury proposal.
+- Show kintsugi escrow value, and the staked balance.
+- Show my vote on democracy and OpenGov referendum detail page.
+- Increase the syncing time after submitting extrinsics.
+- Show the estimated token lock time for conviction voting.
+- Style fixes including markdown content hr element color.
+
+# 2.6.1
+
+date: 12/14/2022
+
+- Change bifrost to bifrost kusama, and fix subscan external link.
+- Show active referenda number when menu fold.
+- Show related `treasury#spend` business for OpenGov referendum.
+- Query on-chain tally for active referendum.
+
 # 2.6.0
 
 date: 12/09/2022

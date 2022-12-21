@@ -27,6 +27,7 @@ import {
 } from "next-common/utils/constants";
 import FoldableSections from "next-common/components/setting/notification/foldableSections";
 import { Options } from "next-common/components/setting/notification/styled";
+import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 
 const Wrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
@@ -69,12 +70,8 @@ const WarningMessage = styled.div`
   margin-bottom: 16px;
 `;
 
-const Info = styled.div`
-  display: flex;
+const Info = styled(GreyPanel)`
   padding: 10px 16px;
-
-  background: ${(p) => p.theme.grey100Bg};
-  border-radius: 4px;
 
   font-weight: 400;
   font-size: 14px;

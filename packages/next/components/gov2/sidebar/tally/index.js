@@ -19,6 +19,8 @@ import ThresholdCurvesPopup from "next-common/components/charts/thresholdCurve/p
 import { useState } from "react";
 import { useTrack } from "next-common/context/post/gov2/track";
 import useGov2ThresholdCurveData from "next-common/utils/hooks/useGov2ThresholdCurveData";
+import MyVote from "./myVote";
+import { usePost } from "next-common/context/post";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -42,7 +44,8 @@ const Footer = styled.div`
   margin-top: 16px;
 `;
 
-export default function Gov2Tally({ detail }) {
+export default function Gov2Tally() {
+  const detail = usePost();
   useFetchVotes(detail?.onchainData);
   useFetchVoteExtrinsics(detail?.onchainData);
   const tally = useTally();
@@ -75,7 +78,7 @@ export default function Gov2Tally({ detail }) {
       <Aye />
       <Nay />
 
-      <SupportBar issuance={issuance} />
+      <SupportBar support={tally?.support} issuance={issuance} />
 
       <Support />
       <Issuance issuance={issuance} />
@@ -84,6 +87,8 @@ export default function Gov2Tally({ detail }) {
         <AllVotes />
         <VoteExtrinsics />
       </Footer>
+
+      <MyVote />
 
       {showThresholdCurveDetailPopup && (
         <ThresholdCurvesPopup
