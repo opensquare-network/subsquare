@@ -25,7 +25,7 @@ export default function FellowshipReferendumSideBar() {
     <RightBarWrapper>
       <Gov2Status />
       <FellowshipTally />
-      {true && (
+      {isVoting && (
         <VoteButton
           onClick={() => {
             setShowVote(true);
