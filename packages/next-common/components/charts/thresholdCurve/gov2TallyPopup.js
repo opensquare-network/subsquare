@@ -14,6 +14,14 @@ import Grid from "../../styled/grid";
 import { GreyPanel } from "../../styled/containers/greyPanel";
 import FlexBetweenCenter from "../../styled/flexBetweenCenter";
 import { p_14_medium } from "../../../styles/componentCss";
+import { useSelector } from "react-redux";
+import {
+  blockTimeSelector,
+  latestHeightSelector,
+} from "../../../store/reducers/chainSlice";
+import BigNumber from "bignumber.js";
+import { extractTime } from "@polkadot/util";
+import { useDecidingSince } from "../../../context/post/gov2/referendum";
 
 const Popup = styled(PopupOrigin)`
   width: 480px;
@@ -28,6 +36,13 @@ const ThresholdInfo = styled(GreyPanel)`
   padding: 10px 16px;
   color: ${(p) => p.theme.textPrimary};
   ${p_14_medium};
+
+  ${(p) =>
+    p.positive &&
+    css`
+      background-color: ${p.theme.secondaryGreen100};
+      color: ${p.theme.secondaryGreen500};
+    `}
 `;
 
 export default function ThresholdCurvesGov2TallyPopup({
@@ -36,8 +51,24 @@ export default function ThresholdCurvesGov2TallyPopup({
   supportData = [],
   approvalData = [],
 }) {
+  const blockTime = useSelector(blockTimeSelector);
+  const latestHeight = useSelector(latestHeightSelector);
+
   const approvalThreshold = useApprovalThreshold();
   const supportThreshold = useSupportThreshold();
+
+  const decisionSince = useDecidingSince();
+
+  const gone = latestHeight - decisionSince;
+
+  const value = new BigNumber(blockTime).multipliedBy(gone).toNumber();
+  const { days, hours } = extractTime(value);
+  const currentHrs = days * 24 + hours;
+  // TODO: current time, add points
+
+  // normalize to threshold, devide 100
+  const currentApprovalData = approvalData[currentHrs] / 100;
+  const currentSupportData = supportData[currentHrs] / 100;
 
   return (
     <Popup
@@ -60,24 +91,24 @@ export default function ThresholdCurvesGov2TallyPopup({
       </FlexCenter>
 
       <Grid gap={16}>
-        <ThresholdInfo>
+        <ThresholdInfo positive={currentApprovalData < approvalThreshold}>
           <Grid gap={8}>
             <FlexBetweenCenter>
               <span>Current Approval</span>
-              <span>TODO</span>
+              <span>{currentApprovalData * 100}%</span>
             </FlexBetweenCenter>
             <FlexBetweenCenter>
               <span>Threshold</span>
-              <span>{(approvalThreshold * 100).toFixed(1)}%</span>
+              <span>{(approvalThreshold * 100).toFixed(9)}%</span>
             </FlexBetweenCenter>
           </Grid>
         </ThresholdInfo>
 
-        <ThresholdInfo>
+        <ThresholdInfo positive={currentSupportData < supportThreshold}>
           <Grid gap={8}>
             <FlexBetweenCenter>
               <span>Current Support</span>
-              <span>TODO</span>
+              <span>{currentSupportData * 100}%</span>
             </FlexBetweenCenter>
             <FlexBetweenCenter>
               <span>Threshold</span>
