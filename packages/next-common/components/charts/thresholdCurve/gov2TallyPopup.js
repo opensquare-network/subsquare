@@ -22,6 +22,15 @@ import {
 import BigNumber from "bignumber.js";
 import { extractTime } from "@polkadot/util";
 import { useDecidingSince } from "../../../context/post/gov2/referendum";
+import set from "lodash.set";
+import {
+  useApprovalInnerPoint,
+  useApprovalOuterPoint,
+  useApprovalThresholdLine,
+  useSupportInnerPoint,
+  useSupportOuterPoint,
+  useSupportThresholdLine,
+} from "./annotations";
 
 const Popup = styled(PopupOrigin)`
   width: 480px;
@@ -64,11 +73,63 @@ export default function ThresholdCurvesGov2TallyPopup({
   const value = new BigNumber(blockTime).multipliedBy(gone).toNumber();
   const { days, hours } = extractTime(value);
   const currentHrs = days * 24 + hours;
-  // TODO: current time, add points
 
   // normalize to threshold, devide 100
   const currentApprovalData = approvalData[currentHrs] / 100;
   const currentSupportData = supportData[currentHrs] / 100;
+
+  const supportThresholdLine = useSupportThresholdLine();
+  const approvalThresholdLine = useApprovalThresholdLine();
+  const supportOuterPoint = useSupportOuterPoint(
+    currentHrs,
+    supportData[currentHrs]
+  );
+  const supportInnerPoint = useSupportInnerPoint(
+    currentHrs,
+    supportData[currentHrs]
+  );
+  const approvalOuterPoint = useApprovalOuterPoint(
+    currentHrs,
+    approvalData[currentHrs]
+  );
+  const approvalInnerPoint = useApprovalInnerPoint(
+    currentHrs,
+    approvalData[currentHrs]
+  );
+
+  function beforeDrawOptions(options) {
+    set(
+      options,
+      "plugins.annotation.annotations.lineSupportThreshold",
+      supportThresholdLine
+    );
+    set(
+      options,
+      "plugins.annotation.annotations.lineApprovalThreshold",
+      approvalThresholdLine
+    );
+
+    set(
+      options,
+      "plugins.annotation.annotations.pointSupportOuter",
+      supportOuterPoint
+    );
+    set(
+      options,
+      "plugins.annotation.annotations.pointSupportInner",
+      supportInnerPoint
+    );
+    set(
+      options,
+      "plugins.annotation.annotations.pointApprovalOuter",
+      approvalOuterPoint
+    );
+    set(
+      options,
+      "plugins.annotation.annotations.pointApprovalInner",
+      approvalInnerPoint
+    );
+  }
 
   return (
     <Popup
@@ -84,7 +145,7 @@ export default function ThresholdCurvesGov2TallyPopup({
         approvalData={approvalData}
         supportThreshold={supportThreshold}
         approvalThreshold={approvalThreshold}
-        currentHrs={currentHrs}
+        beforeDrawOptions={beforeDrawOptions}
       />
 
       <FlexCenter>

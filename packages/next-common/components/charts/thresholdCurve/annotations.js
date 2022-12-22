@@ -1,6 +1,12 @@
+import { useTheme } from "styled-components";
+import {
+  useApprovalThreshold,
+  useSupportThreshold,
+} from "../../../context/post/gov2/threshold";
 import light from "../../styled/theme/light";
+import dark from "../../styled/theme/dark";
 
-function createThresholdAnnotationBase(threshold, borderColor) {
+function thresholdLineBase(threshold, borderColor) {
   return {
     type: "line",
     value: threshold * 100,
@@ -15,10 +21,45 @@ function createThresholdAnnotationBase(threshold, borderColor) {
   };
 }
 
-export function createSupportThresholdAnnotation(threshold) {
-  return createThresholdAnnotationBase(threshold, light.primaryPurple300);
+export function useSupportThresholdLine() {
+  const supportThreshold = useSupportThreshold();
+  return thresholdLineBase(supportThreshold, light.primaryPurple300);
+}
+export function useApprovalThresholdLine() {
+  const approvalThreshold = useApprovalThreshold();
+  return thresholdLineBase(approvalThreshold, light.secondaryGreen300);
 }
 
-export function createApprovalThresholdAnnotation(threshold) {
-  return createThresholdAnnotationBase(threshold, light.secondaryGreen300);
+function outerPointBase(backgroundColor, borderColor, x, y) {
+  return {
+    type: "point",
+    radius: 5,
+    backgroundColor,
+    borderColor,
+    xValue: x,
+    yValue: y,
+  };
+}
+function innerPointBase(backgroundColor, x, y) {
+  return {
+    type: "point",
+    radius: 2,
+    backgroundColor,
+    xValue: x,
+    yValue: y,
+  };
+}
+export function useSupportOuterPoint(x, y) {
+  const { neutral } = useTheme();
+  return outerPointBase(neutral, dark.primaryDarkBlue, x, y);
+}
+export function useSupportInnerPoint(x, y) {
+  return innerPointBase(dark.primaryDarkBlue, x, y);
+}
+export function useApprovalOuterPoint(x, y) {
+  const { neutral } = useTheme();
+  return outerPointBase(neutral, light.secondaryGreen500, x, y);
+}
+export function useApprovalInnerPoint(x, y) {
+  return innerPointBase(light.secondaryGreen500, x, y);
 }
