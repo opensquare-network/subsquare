@@ -54,7 +54,7 @@ export default function ThresholdCurvesChart({
         display: scalesX,
         ticks: {
           max: labels.length,
-          stepSize: Math.round(labels.length / 4),
+          stepSize: Math.round(labels.length / 3),
           callback(val) {
             return val + "hs";
           },
