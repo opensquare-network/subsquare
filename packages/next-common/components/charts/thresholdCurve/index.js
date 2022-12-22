@@ -1,6 +1,6 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import "../globalConfig";
 import light from "../../styled/theme/light";
 import dark from "../../styled/theme/dark";
@@ -22,7 +22,10 @@ export default function ThresholdCurvesChart({
   approvalData = [],
   supportThreshold,
   approvalThreshold,
+  currentHrs,
 }) {
+  const theme = useTheme();
+
   const chartData = {
     labels,
     datasets: [
@@ -57,6 +60,39 @@ export default function ThresholdCurvesChart({
   if (approvalThreshold) {
     annotations.approvalThreshold =
       createApprovalThresholdAnnotation(approvalThreshold);
+  }
+  if (currentHrs) {
+    annotations.currentSupportBg = {
+      type: "point",
+      radius: 5,
+      backgroundColor: theme.neutral,
+      borderColor: dark.primaryDarkBlue,
+      xValue: currentHrs,
+      yValue: supportData[currentHrs],
+    };
+    annotations.currentSupportFg = {
+      type: "point",
+      radius: 2,
+      backgroundColor: dark.primaryDarkBlue,
+      xValue: currentHrs,
+      yValue: supportData[currentHrs],
+    };
+
+    annotations.currentApprovalBg = {
+      type: "point",
+      radius: 5,
+      backgroundColor: theme.neutral,
+      borderColor: light.secondaryGreen500,
+      xValue: currentHrs,
+      yValue: approvalData[currentHrs],
+    };
+    annotations.currentApprovalFg = {
+      type: "point",
+      radius: 2,
+      backgroundColor: light.secondaryGreen500,
+      xValue: currentHrs,
+      yValue: approvalData[currentHrs],
+    };
   }
 
   const options = {

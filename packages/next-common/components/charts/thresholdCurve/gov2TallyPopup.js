@@ -84,6 +84,7 @@ export default function ThresholdCurvesGov2TallyPopup({
         approvalData={approvalData}
         supportThreshold={supportThreshold}
         approvalThreshold={approvalThreshold}
+        currentHrs={currentHrs}
       />
 
       <FlexCenter>
@@ -95,11 +96,11 @@ export default function ThresholdCurvesGov2TallyPopup({
           <Grid gap={8}>
             <FlexBetweenCenter>
               <span>Current Approval</span>
-              <span>{currentApprovalData * 100}%</span>
+              <span>{(currentApprovalData * 100).toFixed(2)}%</span>
             </FlexBetweenCenter>
             <FlexBetweenCenter>
               <span>Threshold</span>
-              <span>{(approvalThreshold * 100).toFixed(9)}%</span>
+              <span>{(approvalThreshold * 100).toFixed(2)}%</span>
             </FlexBetweenCenter>
           </Grid>
         </ThresholdInfo>
@@ -108,11 +109,11 @@ export default function ThresholdCurvesGov2TallyPopup({
           <Grid gap={8}>
             <FlexBetweenCenter>
               <span>Current Support</span>
-              <span>{currentSupportData * 100}%</span>
+              <span>{(currentSupportData * 100).toFixed(2)}%</span>
             </FlexBetweenCenter>
             <FlexBetweenCenter>
               <span>Threshold</span>
-              <span>{(supportThreshold * 100).toFixed(1)}%</span>
+              <span>{(supportThreshold * 100).toFixed(2)}%</span>
             </FlexBetweenCenter>
           </Grid>
         </ThresholdInfo>
