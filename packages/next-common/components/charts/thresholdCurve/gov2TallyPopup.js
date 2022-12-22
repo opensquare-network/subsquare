@@ -10,6 +10,10 @@ import {
   useApprovalThreshold,
   useSupportThreshold,
 } from "../../../context/post/gov2/threshold";
+import Grid from "../../styled/grid";
+import { GreyPanel } from "../../styled/containers/greyPanel";
+import FlexBetweenCenter from "../../styled/flexBetweenCenter";
+import { p_14_medium } from "../../../styles/componentCss";
 
 const Popup = styled(PopupOrigin)`
   width: 480px;
@@ -17,6 +21,13 @@ const Popup = styled(PopupOrigin)`
   ${smcss(css`
     width: 100%;
   `)}
+`;
+
+const ThresholdInfo = styled(GreyPanel)`
+  display: block;
+  padding: 10px 16px;
+  color: ${(p) => p.theme.textPrimary};
+  ${p_14_medium};
 `;
 
 export default function ThresholdCurvesGov2TallyPopup({
@@ -47,6 +58,34 @@ export default function ThresholdCurvesGov2TallyPopup({
       <FlexCenter>
         <ThresholdCurvesLegend />
       </FlexCenter>
+
+      <Grid gap={16}>
+        <ThresholdInfo>
+          <Grid gap={8}>
+            <FlexBetweenCenter>
+              <span>Current Approval</span>
+              <span>TODO</span>
+            </FlexBetweenCenter>
+            <FlexBetweenCenter>
+              <span>Threshold</span>
+              <span>{(approvalThreshold * 100).toFixed(1)}%</span>
+            </FlexBetweenCenter>
+          </Grid>
+        </ThresholdInfo>
+
+        <ThresholdInfo>
+          <Grid gap={8}>
+            <FlexBetweenCenter>
+              <span>Current Support</span>
+              <span>TODO</span>
+            </FlexBetweenCenter>
+            <FlexBetweenCenter>
+              <span>Threshold</span>
+              <span>{(supportThreshold * 100).toFixed(1)}%</span>
+            </FlexBetweenCenter>
+          </Grid>
+        </ThresholdInfo>
+      </Grid>
     </Popup>
   );
 }
