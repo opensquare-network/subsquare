@@ -15,7 +15,7 @@ import useIssuance from "next-common/utils/gov2/useIssuance";
 import SupportBar from "./supportBar";
 import Issuance from "./values/issuance";
 import CurveIconOrigin from "next-common/components/icons/curve";
-import ThresholdCurvesPopup from "next-common/components/charts/thresholdCurve/popup";
+import ThresholdCurvesGov2TallyPopup from "next-common/components/charts/thresholdCurve/gov2TallyPopup";
 import { useState } from "react";
 import { useTrack } from "next-common/context/post/gov2/track";
 import useGov2ThresholdCurveData from "next-common/utils/hooks/useGov2ThresholdCurveData";
@@ -91,7 +91,7 @@ export default function Gov2Tally() {
       <MyVote />
 
       {showThresholdCurveDetailPopup && (
-        <ThresholdCurvesPopup
+        <ThresholdCurvesGov2TallyPopup
           labels={labels}
           supportData={supportData}
           approvalData={approvalData}

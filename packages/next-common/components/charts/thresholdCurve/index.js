@@ -4,6 +4,10 @@ import styled from "styled-components";
 import "../globalConfig";
 import light from "../../styled/theme/light";
 import dark from "../../styled/theme/dark";
+import {
+  createApprovalThresholdAnnotation,
+  createSupportThresholdAnnotation,
+} from "./annotations";
 
 const Wrapper = styled.div``;
 
@@ -16,6 +20,8 @@ export default function ThresholdCurvesChart({
   labels = [],
   supportData = [],
   approvalData = [],
+  supportThreshold,
+  approvalThreshold,
 }) {
   const chartData = {
     labels,
@@ -42,6 +48,16 @@ export default function ThresholdCurvesChart({
       },
     ],
   };
+
+  const annotations = {};
+  if (supportThreshold) {
+    annotations.supportThreshold =
+      createSupportThresholdAnnotation(supportThreshold);
+  }
+  if (approvalThreshold) {
+    annotations.approvalThreshold =
+      createApprovalThresholdAnnotation(approvalThreshold);
+  }
 
   const options = {
     clip: false,
@@ -109,6 +125,9 @@ export default function ThresholdCurvesChart({
             return result;
           },
         },
+      },
+      annotation: {
+        annotations,
       },
     },
   };
