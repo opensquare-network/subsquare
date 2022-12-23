@@ -45,6 +45,7 @@ function innerPointBase(backgroundColor, x, y) {
     type: "point",
     radius: 2,
     backgroundColor,
+    borderWidth: 0,
     xValue: x,
     yValue: y,
   };
