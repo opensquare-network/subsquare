@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import Flex from "../../styled/flex";
-import { p_12_medium } from "../../../styles/componentCss";
-import light from "../../styled/theme/light";
-import dark from "../../styled/theme/dark";
+import Flex from "../../../styled/flex";
+import { p_12_medium } from "../../../../styles/componentCss";
+import light from "../../../styled/theme/light";
+import dark from "../../../styled/theme/dark";
 
 const Item = styled(Flex)`
   color: ${(p) => p.theme.textSecondary};
