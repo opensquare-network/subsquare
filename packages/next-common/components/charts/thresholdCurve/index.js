@@ -47,6 +47,9 @@ export default function ThresholdCurvesChart({
 
   const options = {
     clip: false,
+    animation: {
+      duration: 0,
+    },
     layout: {
       padding: layoutPadding,
     },
