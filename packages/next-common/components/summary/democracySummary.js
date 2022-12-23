@@ -21,9 +21,7 @@ import { smcss } from "next-common/utils/responsive";
 import Divider from "next-common/components/styled/layout/divider";
 import FlexBetween from "../styled/flexBetween";
 
-const Wrapper = styled(SummaryCard)`
-  height: auto;
-`;
+const Wrapper = SummaryCard;
 
 const Description = styled.p`
   margin: 0;
