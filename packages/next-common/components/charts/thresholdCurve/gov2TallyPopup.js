@@ -10,7 +10,6 @@ import {
   useApprovalThreshold,
   useSupportThreshold,
 } from "../../../context/post/gov2/threshold";
-import Grid from "../../styled/grid";
 import { GreyPanel } from "../../styled/containers/greyPanel";
 import FlexBetweenCenter from "../../styled/flexBetweenCenter";
 import { p_14_medium, p_14_normal } from "../../../styles/componentCss";
@@ -32,6 +31,7 @@ import {
   useSupportThresholdLine,
 } from "./annotations";
 import LearnGov2Link from "../../links/learnGov2Link";
+import VStack from "../../styled/vStack";
 
 const Popup = styled(PopupOrigin)`
   width: 480px;
@@ -158,9 +158,9 @@ export default function ThresholdCurvesGov2TallyPopup({
         <ThresholdCurvesLegend />
       </FlexCenter>
 
-      <Grid gap={16}>
+      <VStack space={16}>
         <ThresholdInfo positive={currentApprovalData < approvalThreshold}>
-          <Grid gap={8}>
+          <VStack space={8}>
             <FlexBetweenCenter>
               <ThresholdInfoLabel>Current Approval</ThresholdInfoLabel>
               <ThresholdInfoValue>
@@ -173,11 +173,11 @@ export default function ThresholdCurvesGov2TallyPopup({
                 {(approvalThreshold * 100).toFixed(2)}%
               </ThresholdInfoValue>
             </FlexBetweenCenter>
-          </Grid>
+          </VStack>
         </ThresholdInfo>
 
         <ThresholdInfo positive={currentSupportData < supportThreshold}>
-          <Grid gap={8}>
+          <VStack space={8}>
             <FlexBetweenCenter>
               <ThresholdInfoLabel>Current Support</ThresholdInfoLabel>
               <ThresholdInfoValue>
@@ -190,11 +190,11 @@ export default function ThresholdCurvesGov2TallyPopup({
                 {(supportThreshold * 100).toFixed(2)}%
               </ThresholdInfoValue>
             </FlexBetweenCenter>
-          </Grid>
+          </VStack>
         </ThresholdInfo>
 
         <LearnGov2Link />
-      </Grid>
+      </VStack>
     </Popup>
   );
 }
