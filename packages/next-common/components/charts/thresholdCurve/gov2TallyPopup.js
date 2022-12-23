@@ -13,7 +13,7 @@ import {
 import Grid from "../../styled/grid";
 import { GreyPanel } from "../../styled/containers/greyPanel";
 import FlexBetweenCenter from "../../styled/flexBetweenCenter";
-import { p_14_medium } from "../../../styles/componentCss";
+import { p_14_medium, p_14_normal } from "../../../styles/componentCss";
 import { useSelector } from "react-redux";
 import {
   blockTimeSelector,
@@ -44,7 +44,6 @@ const ThresholdInfo = styled(GreyPanel)`
   display: block;
   padding: 10px 16px;
   color: ${(p) => p.theme.textPrimary};
-  ${p_14_medium};
 
   ${(p) =>
     p.positive &&
@@ -52,6 +51,12 @@ const ThresholdInfo = styled(GreyPanel)`
       background-color: ${p.theme.secondaryGreen100};
       color: ${p.theme.secondaryGreen500};
     `}
+`;
+const ThresholdInfoLabel = styled.span`
+  ${p_14_medium};
+`;
+const ThresholdInfoValue = styled.span`
+  ${p_14_normal};
 `;
 
 export default function ThresholdCurvesGov2TallyPopup({
@@ -156,12 +161,16 @@ export default function ThresholdCurvesGov2TallyPopup({
         <ThresholdInfo positive={currentApprovalData < approvalThreshold}>
           <Grid gap={8}>
             <FlexBetweenCenter>
-              <span>Current Approval</span>
-              <span>{(currentApprovalData * 100).toFixed(2)}%</span>
+              <ThresholdInfoLabel>Current Approval</ThresholdInfoLabel>
+              <ThresholdInfoValue>
+                {(currentApprovalData * 100).toFixed(2)}%
+              </ThresholdInfoValue>
             </FlexBetweenCenter>
             <FlexBetweenCenter>
-              <span>Threshold</span>
-              <span>{(approvalThreshold * 100).toFixed(2)}%</span>
+              <ThresholdInfoLabel>Threshold</ThresholdInfoLabel>
+              <ThresholdInfoValue>
+                {(approvalThreshold * 100).toFixed(2)}%
+              </ThresholdInfoValue>
             </FlexBetweenCenter>
           </Grid>
         </ThresholdInfo>
@@ -169,12 +178,16 @@ export default function ThresholdCurvesGov2TallyPopup({
         <ThresholdInfo positive={currentSupportData < supportThreshold}>
           <Grid gap={8}>
             <FlexBetweenCenter>
-              <span>Current Support</span>
-              <span>{(currentSupportData * 100).toFixed(2)}%</span>
+              <ThresholdInfoLabel>Current Support</ThresholdInfoLabel>
+              <ThresholdInfoValue>
+                {(currentSupportData * 100).toFixed(2)}%
+              </ThresholdInfoValue>
             </FlexBetweenCenter>
             <FlexBetweenCenter>
-              <span>Threshold</span>
-              <span>{(supportThreshold * 100).toFixed(2)}%</span>
+              <ThresholdInfoLabel>Threshold</ThresholdInfoLabel>
+              <ThresholdInfoValue>
+                {(supportThreshold * 100).toFixed(2)}%
+              </ThresholdInfoValue>
             </FlexBetweenCenter>
           </Grid>
         </ThresholdInfo>
