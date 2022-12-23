@@ -5,7 +5,7 @@ import styled, { css } from "styled-components";
 import { smcss } from "next-common/utils/responsive";
 import ThresholdCurvesChart from ".";
 import FlexCenter from "next-common/components/styled/flexCenter";
-import ThresholdCurvesLegend from "./legend";
+import ThresholdCurvesGov2TallyLegend from "./legend/gov2TallyPopupLegend";
 import {
   useApprovalThreshold,
   useSupportThreshold,
@@ -155,7 +155,7 @@ export default function ThresholdCurvesGov2TallyPopup({
       />
 
       <FlexCenter>
-        <ThresholdCurvesLegend />
+        <ThresholdCurvesGov2TallyLegend />
       </FlexCenter>
 
       <VStack space={16}>
