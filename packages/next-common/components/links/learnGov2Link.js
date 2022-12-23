@@ -1,3 +1,4 @@
+import React from "react";
 import styled, { useTheme } from "styled-components";
 import ExternalLink from "../externalLink";
 import { p_12_normal } from "../../styles/componentCss";
