@@ -15,7 +15,6 @@ export const SummaryWrapper = styled.div`
 export const SummaryCard = styled(SecondaryCard)`
   position: relative;
   color: ${(props) => props.theme.textPrimary};
-  height: 88px;
   flex: 1;
 `;
 

@@ -4,9 +4,7 @@ import { p_14_normal, p_20_bold } from "../../styles/componentCss";
 import Divider from "../styled/layout/divider";
 import { SummaryCard } from "./styled";
 
-const Wrapper = styled(SummaryCard)`
-  height: auto;
-`;
+const Wrapper = SummaryCard;
 
 const TitleGroup = styled.div`
   display: flex;
