@@ -4,7 +4,7 @@ import ThresholdCurvesChart from ".";
 import { emptyFunction } from "../../../utils";
 import PopupOrigin from "../../popup/wrapper/Popup";
 import Flex from "../../styled/flex";
-import ThresholdCurvesLegend from "./legend";
+import ThresholdCurvesGov2TrackSummaryLegend from "./legend/gov2TrackSummaryLegend";
 import {
   EmptyTd,
   RowSplitter,
@@ -95,7 +95,7 @@ export default function ThresholdCurvesPopup({
       />
 
       <Center>
-        <ThresholdCurvesLegend />
+        <ThresholdCurvesGov2TrackSummaryLegend />
       </Center>
 
       <Table>

@@ -16,7 +16,7 @@ import ThresholdCurvesChart from "next-common/components/charts/thresholdCurve";
 import ArrowOutSimpleIcon from "next-common/components/icons/arrowOutSimple";
 import { useState } from "react";
 import ThresholdCurvesPopup from "next-common/components/charts/thresholdCurve/popup";
-import ThresholdCurvesLegend from "next-common/components/charts/thresholdCurve/legend";
+import ThresholdCurvesGov2TrackSummaryLegend from "next-common/components/charts/thresholdCurve/legend/gov2TrackSummaryLegend";
 import _range from "lodash.range";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
@@ -226,7 +226,7 @@ export default function Gov2TrackSummary({
               <Divider />
 
               <SummaryThresholdCurveLegendWrapper>
-                <ThresholdCurvesLegend />
+                <ThresholdCurvesGov2TrackSummaryLegend />
               </SummaryThresholdCurveLegendWrapper>
             </SummaryThresholdCurveContent>
           </SummaryThresholdCurveItem>

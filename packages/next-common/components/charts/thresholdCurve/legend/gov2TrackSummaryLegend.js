@@ -4,7 +4,7 @@ import light from "../../../styled/theme/light";
 import dark from "../../../styled/theme/dark";
 import Item from "./item";
 
-export default function ThresholdCurvesLegend() {
+export default function ThresholdCurvesGov2TrackSummaryLegend() {
   return (
     <Flex>
       <Item color={dark.primaryDarkBlue}>Support</Item>

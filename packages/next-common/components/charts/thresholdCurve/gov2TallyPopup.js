@@ -5,7 +5,7 @@ import styled, { css } from "styled-components";
 import { smcss } from "next-common/utils/responsive";
 import ThresholdCurvesChart from ".";
 import FlexCenter from "next-common/components/styled/flexCenter";
-import ThresholdCurvesGov2TallyLegend from "./legend/gov2TallyPopupLegend";
+import ThresholdCurvesGov2TallyLegend from "./legend/gov2TallyLegend";
 import {
   useApprovalThreshold,
   useSupportThreshold,
