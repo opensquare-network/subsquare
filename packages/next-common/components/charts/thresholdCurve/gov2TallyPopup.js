@@ -31,6 +31,7 @@ import {
   useSupportOuterPoint,
   useSupportThresholdLine,
 } from "./annotations";
+import LearnGov2Link from "../../links/learnGov2Link";
 
 const Popup = styled(PopupOrigin)`
   width: 480px;
@@ -191,6 +192,8 @@ export default function ThresholdCurvesGov2TallyPopup({
             </FlexBetweenCenter>
           </Grid>
         </ThresholdInfo>
+
+        <LearnGov2Link />
       </Grid>
     </Popup>
   );
