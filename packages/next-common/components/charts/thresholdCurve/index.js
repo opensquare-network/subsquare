@@ -118,6 +118,7 @@ export default function ThresholdCurvesChart({
     },
   };
 
+  // TODO: figure out a better way to modify the options
   beforeDrawOptions?.(options);
 
   return (
