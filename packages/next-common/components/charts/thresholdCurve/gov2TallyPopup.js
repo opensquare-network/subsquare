@@ -182,7 +182,7 @@ export default function ThresholdCurvesGov2TallyPopup({
           </VStack>
         </ThresholdInfo>
 
-        <ThresholdInfo positive={supportPercentage < supportThreshold}>
+        <ThresholdInfo positive={supportThreshold < supportPercentage}>
           <VStack space={8}>
             <FlexBetweenCenter>
               <ThresholdInfoLabel>Current Support</ThresholdInfoLabel>
