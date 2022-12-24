@@ -4,7 +4,6 @@ import { emptyFunction } from "next-common/utils";
 import styled, { css } from "styled-components";
 import { smcss } from "next-common/utils/responsive";
 import ThresholdCurvesChart from ".";
-import FlexCenter from "next-common/components/styled/flexCenter";
 import ThresholdCurvesGov2TallyLegend from "./legend/gov2TallyLegend";
 import {
   useApprovalThreshold,
@@ -163,9 +162,7 @@ export default function ThresholdCurvesGov2TallyPopup({
         beforeDrawOptions={beforeDrawOptions}
       />
 
-      <FlexCenter>
-        <ThresholdCurvesGov2TallyLegend />
-      </FlexCenter>
+      <ThresholdCurvesGov2TallyLegend />
 
       <VStack space={16}>
         <ThresholdInfo positive={currentApprovalData < approvalThreshold}>

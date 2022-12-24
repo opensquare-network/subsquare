@@ -1,12 +1,12 @@
 import React from "react";
-import Flex from "../../../styled/flex";
 import light from "../../../styled/theme/light";
 import dark from "../../../styled/theme/dark";
 import Item from "./item";
+import FlexCenter from "../../../styled/flexCenter";
 
 export default function ThresholdCurvesGov2TallyLegend() {
   return (
-    <Flex>
+    <FlexCenter>
       <Item color={dark.primaryDarkBlue}>Support</Item>
       <Item dashed color={light.primaryPurple300}>
         Current Support
@@ -15,6 +15,6 @@ export default function ThresholdCurvesGov2TallyLegend() {
       <Item dashed color={light.secondaryGreen300}>
         Current Approval
       </Item>
-    </Flex>
+    </FlexCenter>
   );
 }
