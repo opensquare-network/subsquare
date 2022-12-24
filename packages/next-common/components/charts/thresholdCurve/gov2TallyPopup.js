@@ -139,7 +139,7 @@ export default function ThresholdCurvesGov2TallyPopup({
 
   return (
     <Popup
-      title="Thoreshold Curves"
+      title="Threshold Curves"
       onClose={() => {
         setShow(false);
       }}
