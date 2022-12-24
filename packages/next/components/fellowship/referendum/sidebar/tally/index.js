@@ -13,6 +13,7 @@ import useFellowshipVotes from "next-common/utils/hooks/fellowship/useFellowship
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useOnchainData } from "next-common/context/post";
 import AllVotes from "./allVotes";
+import useSupportPerbill from "next-common/utils/gov2/tally/useSupportPerbill";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -36,6 +37,7 @@ export default function FellowshipTally() {
     referendumIndex,
     votingFinishHeight
   );
+  const supportPerbill = useSupportPerbill();
 
   return (
     <SecondaryCardDetail>
@@ -49,7 +51,7 @@ export default function FellowshipTally() {
       <Aye />
       <Nay />
 
-      <SupportBar />
+      <SupportBar supportPerbill={supportPerbill} />
       <BareAye />
       <MaxVoters />
 

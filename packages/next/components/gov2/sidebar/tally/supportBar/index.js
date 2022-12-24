@@ -8,7 +8,6 @@ import isNil from "lodash.isnil";
 import TooltipOrigin from "next-common/components/tooltip";
 import { p_12_medium } from "next-common/styles/componentCss";
 import BigNumber from "bignumber.js";
-import useSupportPerbill from "next-common/utils/gov2/tally/useSupportPerbill";
 
 const Wrapper = styled.div`
   margin-top: 21px;
@@ -66,15 +65,13 @@ const ProgressBarWrapper = styled.div`
   padding: 8px 0;
 `;
 
-export default function SupportBar() {
+export default function SupportBar({ supportPerbill }) {
   const supportThreshold = useSupportThreshold();
   // threshold in perbill
   const [threshold, setThreshold] = useState(null);
   // progress max value in perbill
   const [progressMax, setProgressMax] = useState(null);
   const { grey100Bg } = useTheme();
-  // support percentage perbill value
-  const supportPerbill = useSupportPerbill();
 
   useEffect(() => {
     if (supportThreshold) {

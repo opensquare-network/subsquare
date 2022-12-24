@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PopupOrigin from "../../popup/wrapper/Popup";
 import { emptyFunction } from "next-common/utils";
 import styled, { css } from "styled-components";
@@ -32,6 +32,7 @@ import {
 } from "./annotations";
 import LearnGov2Link from "../../links/learnGov2Link";
 import VStack from "../../styled/vStack";
+import Percentage from "@subsquare/next/components/gov2/sidebar/tally/supportBar/percentage";
 
 const Popup = styled(PopupOrigin)`
   width: 480px;
@@ -65,6 +66,7 @@ export default function ThresholdCurvesGov2TallyPopup({
   labels = [],
   supportData = [],
   approvalData = [],
+  supportPerbill = 0,
 }) {
   const blockTime = useSelector(blockTimeSelector);
   const latestHeight = useSelector(latestHeightSelector);
@@ -82,7 +84,14 @@ export default function ThresholdCurvesGov2TallyPopup({
 
   // normalize to threshold, divide 100
   const currentApprovalData = approvalData[currentHrs] / 100;
-  const currentSupportData = supportData[currentHrs] / 100;
+  const [supportPercentage, setSupportPercentage] = useState();
+  useEffect(() => {
+    if (supportPerbill) {
+      setSupportPercentage(
+        new BigNumber(supportPerbill).div(Math.pow(10, 9)).toNumber()
+      );
+    }
+  }, [supportPerbill]);
 
   const supportThresholdLine = useSupportThresholdLine();
   const approvalThresholdLine = useApprovalThresholdLine();
@@ -176,12 +185,12 @@ export default function ThresholdCurvesGov2TallyPopup({
           </VStack>
         </ThresholdInfo>
 
-        <ThresholdInfo positive={currentSupportData < supportThreshold}>
+        <ThresholdInfo positive={supportPercentage < supportThreshold}>
           <VStack space={8}>
             <FlexBetweenCenter>
               <ThresholdInfoLabel>Current Support</ThresholdInfoLabel>
               <ThresholdInfoValue>
-                {(currentSupportData * 100).toFixed(2)}%
+                <Percentage perbill={supportPerbill} />
               </ThresholdInfoValue>
             </FlexBetweenCenter>
             <FlexBetweenCenter>

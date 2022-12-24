@@ -21,6 +21,7 @@ import { useTrack } from "next-common/context/post/gov2/track";
 import useGov2ThresholdCurveData from "next-common/utils/hooks/useGov2ThresholdCurveData";
 import MyVote from "./myVote";
 import { usePost } from "next-common/context/post";
+import useSupportPerbill from "next-common/utils/gov2/tally/useSupportPerbill";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -52,6 +53,7 @@ export default function Gov2Tally() {
   const approvalThreshold = useApprovalThreshold();
   const [showThresholdCurveDetailPopup, setShowThresholdCurveDetailPopup] =
     useState(false);
+  const supportPerbill = useSupportPerbill();
 
   const { issuance } = useIssuance();
 
@@ -78,7 +80,7 @@ export default function Gov2Tally() {
       <Aye />
       <Nay />
 
-      <SupportBar />
+      <SupportBar supportPerbill={supportPerbill} />
 
       <Support />
       <Issuance issuance={issuance} />
@@ -94,6 +96,7 @@ export default function Gov2Tally() {
         <ThresholdCurvesGov2TallyPopup
           labels={labels}
           supportData={supportData}
+          supportPerbill={supportPerbill}
           approvalData={approvalData}
           setShow={setShowThresholdCurveDetailPopup}
         />
