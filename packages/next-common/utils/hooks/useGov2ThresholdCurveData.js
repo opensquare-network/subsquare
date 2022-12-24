@@ -1,11 +1,11 @@
 import _range from "lodash.range";
 import { useSelector } from "react-redux";
-import { estimateBlocksTime } from "../../utils";
 import {
   getTrackApprovalCurve,
   getTrackSupportCurve,
 } from "../../context/post/gov2/curve";
 import { blockTimeSelector } from "../../store/reducers/chainSlice";
+import { estimateBlocksTime } from "../index";
 
 export default function useGov2ThresholdCurveData(track) {
   const { decisionPeriod } = track ?? {};

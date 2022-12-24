@@ -80,7 +80,7 @@ export default function ThresholdCurvesGov2TallyPopup({
   const { days, hours } = extractTime(value);
   const currentHrs = days * 24 + hours;
 
-  // normalize to threshold, devide 100
+  // normalize to threshold, divide 100
   const currentApprovalData = approvalData[currentHrs] / 100;
   const currentSupportData = supportData[currentHrs] / 100;
 

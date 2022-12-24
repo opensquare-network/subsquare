@@ -7,7 +7,6 @@ import BareAye from "./bareAye";
 import MaxVoters from "./maxVoters";
 import SupportBar from "../../../../gov2/sidebar/tally/supportBar";
 import { useTally } from "next-common/context/post/gov2/referendum";
-import useMaxVoters from "next-common/context/post/fellowship/useMaxVoters";
 import { useApprovalThreshold } from "next-common/context/post/gov2/threshold";
 import VoteBar from "../../../../referenda/voteBar";
 import useFellowshipVotes from "next-common/utils/hooks/fellowship/useFellowshipVotes";
@@ -29,7 +28,6 @@ const Footer = styled.div`
 
 export default function FellowshipTally() {
   const tally = useTally();
-  const maxVoters = useMaxVoters();
   const approvalThreshold = useApprovalThreshold();
 
   const votingFinishHeight = useReferendumVotingFinishHeight();
@@ -51,7 +49,7 @@ export default function FellowshipTally() {
       <Aye />
       <Nay />
 
-      <SupportBar support={tally?.bareAyes} issuance={maxVoters} />
+      <SupportBar />
       <BareAye />
       <MaxVoters />
 

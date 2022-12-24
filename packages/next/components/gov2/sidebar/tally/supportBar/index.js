@@ -8,6 +8,7 @@ import isNil from "lodash.isnil";
 import TooltipOrigin from "next-common/components/tooltip";
 import { p_12_medium } from "next-common/styles/componentCss";
 import BigNumber from "bignumber.js";
+import useSupportPerbill from "next-common/utils/gov2/tally/useSupportPerbill";
 
 const Wrapper = styled.div`
   margin-top: 21px;
@@ -65,7 +66,7 @@ const ProgressBarWrapper = styled.div`
   padding: 8px 0;
 `;
 
-export default function SupportBar({ support, issuance }) {
+export default function SupportBar() {
   const supportThreshold = useSupportThreshold();
   // threshold in perbill
   const [threshold, setThreshold] = useState(null);
@@ -73,13 +74,7 @@ export default function SupportBar({ support, issuance }) {
   const [progressMax, setProgressMax] = useState(null);
   const { grey100Bg } = useTheme();
   // support percentage perbill value
-  const [percentage, setPercentage] = useState(null);
-
-  useEffect(() => {
-    if (issuance) {
-      setPercentage((support / issuance) * Math.pow(10, 9));
-    }
-  }, [support, issuance]);
+  const supportPerbill = useSupportPerbill();
 
   useEffect(() => {
     if (supportThreshold) {
@@ -88,16 +83,16 @@ export default function SupportBar({ support, issuance }) {
   }, [supportThreshold]);
 
   useEffect(() => {
-    if (!isNil(threshold) && !isNil(percentage)) {
-      const value = BigNumber.max(percentage, threshold)
+    if (!isNil(threshold) && !isNil(supportPerbill)) {
+      const value = BigNumber.max(supportPerbill, threshold)
         .multipliedBy(1.25)
         .toNumber();
       setProgressMax(value);
     }
-  }, [percentage, threshold]);
+  }, [supportPerbill, threshold]);
 
   const barPercentage = useMemo(() => {
-    if (!percentage || isNil(progressMax)) {
+    if (!supportPerbill || isNil(progressMax)) {
       return 0;
     }
 
@@ -107,8 +102,8 @@ export default function SupportBar({ support, issuance }) {
       return 100;
     }
 
-    return Number((percentage / progressMax) * 100).toFixed(2);
-  }, [percentage, progressMax]);
+    return Number((supportPerbill / progressMax) * 100).toFixed(2);
+  }, [supportPerbill, progressMax]);
 
   const markPercentage = useMemo(() => {
     if (!progressMax) {
@@ -123,10 +118,10 @@ export default function SupportBar({ support, issuance }) {
       <ProgressBarWrapper>
         <Tooltip
           content={
-            isNil(support) ? null : (
+            isNil(supportPerbill) ? null : (
               <>
                 Support:&nbsp;
-                <Percentage perbill={percentage} />
+                <Percentage perbill={supportPerbill} />
               </>
             )
           }
