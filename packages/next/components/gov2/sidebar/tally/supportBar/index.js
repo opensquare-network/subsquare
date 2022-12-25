@@ -3,11 +3,11 @@ import Progress from "next-common/components/progress";
 import { useSupportThreshold } from "next-common/context/post/gov2/threshold";
 import { useEffect, useMemo, useState } from "react";
 import ThresholdComponent from "../../../../referenda/threshold";
-import Percentage from "./percentage";
 import isNil from "lodash.isnil";
 import TooltipOrigin from "next-common/components/tooltip";
 import { p_12_medium } from "next-common/styles/componentCss";
 import BigNumber from "bignumber.js";
+import Percentage from "next-common/components/referenda/tally/support/percentage";
 
 const Wrapper = styled.div`
   margin-top: 21px;

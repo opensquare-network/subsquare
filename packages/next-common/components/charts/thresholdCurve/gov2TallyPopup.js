@@ -19,7 +19,10 @@ import {
 } from "../../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
 import { extractTime } from "@polkadot/util";
-import { useDecidingSince } from "../../../context/post/gov2/referendum";
+import {
+  useDecidingSince,
+  useTally,
+} from "../../../context/post/gov2/referendum";
 import set from "lodash.set";
 import {
   useApprovalInnerPoint,
@@ -31,7 +34,8 @@ import {
 } from "./annotations";
 import LearnGov2Link from "../../links/learnGov2Link";
 import VStack from "../../styled/vStack";
-import Percentage from "@subsquare/next/components/gov2/sidebar/tally/supportBar/percentage";
+import isNil from "lodash.isnil";
+import Percentage from "../../referenda/tally/support/percentage";
 
 const Popup = styled(PopupOrigin)`
   width: 480px;
@@ -69,8 +73,10 @@ export default function ThresholdCurvesGov2TallyPopup({
 }) {
   const blockTime = useSelector(blockTimeSelector);
   const latestHeight = useSelector(latestHeightSelector);
+  const tally = useTally();
 
   const approvalThreshold = useApprovalThreshold();
+  console.log("approvalThreshold", approvalThreshold);
   const supportThreshold = useSupportThreshold();
 
   const decisionSince = useDecidingSince();
@@ -81,8 +87,7 @@ export default function ThresholdCurvesGov2TallyPopup({
   const { days, hours } = extractTime(value);
   const currentHrs = days * 24 + hours;
 
-  // normalize to threshold, divide 100
-  const currentApprovalData = approvalData[currentHrs] / 100;
+  const [approvalPercentage, setApprovalPercentage] = useState();
   const [supportPercentage, setSupportPercentage] = useState();
   useEffect(() => {
     if (supportPerbill) {
@@ -91,6 +96,15 @@ export default function ThresholdCurvesGov2TallyPopup({
       );
     }
   }, [supportPerbill]);
+
+  useEffect(() => {
+    if (!tally || isNil(tally.ayes) || isNil(tally.nays)) {
+      return;
+    }
+
+    const nTotal = new BigNumber(tally.ayes).plus(tally.nays);
+    setApprovalPercentage(new BigNumber(tally.ayes).div(nTotal).toNumber());
+  }, [tally]);
 
   const supportThresholdLine = useSupportThresholdLine();
   const approvalThresholdLine = useApprovalThresholdLine();
@@ -165,12 +179,12 @@ export default function ThresholdCurvesGov2TallyPopup({
       <ThresholdCurvesGov2TallyLegend />
 
       <VStack space={16}>
-        <ThresholdInfo positive={currentApprovalData < approvalThreshold}>
+        <ThresholdInfo positive={approvalThreshold < approvalPercentage}>
           <VStack space={8}>
             <FlexBetweenCenter>
               <ThresholdInfoLabel>Current Approval</ThresholdInfoLabel>
               <ThresholdInfoValue>
-                {(currentApprovalData * 100).toFixed(2)}%
+                {(approvalPercentage * 100).toFixed(2)}%
               </ThresholdInfoValue>
             </FlexBetweenCenter>
             <FlexBetweenCenter>
