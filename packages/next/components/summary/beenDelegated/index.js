@@ -44,7 +44,7 @@ export default function BeenDelegated({ trackId }) {
         }
       }
     );
-  }, [api, trackId, realAddress]);
+  }, [api, trackId, realAddress, isMounted]);
 
   if (!delegations || beenDelegatedList?.length === 0) {
     return null;
