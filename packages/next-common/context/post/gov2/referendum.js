@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useDetailType } from "../../page";
 import { detailPageCategory } from "../../../utils/consts/business/category";
 import useReferendumVotingFinishHeight from "../referenda/useReferendumVotingFinishHeight";
+import useIsMounted from "../../../utils/hooks/useIsMounted";
 
 export function useDecidingSince() {
   const onchain = useOnchainData();
@@ -40,6 +41,7 @@ export function useTally() {
   const [tally, setTally] = useState(onchain?.info?.tally);
   const pageType = useDetailType();
   const votingFinishHeight = useReferendumVotingFinishHeight();
+  const isMounted = useIsMounted();
 
   const api = useApi();
 
@@ -63,7 +65,7 @@ export function useTally() {
       referendumIndex,
       votingFinishHeight
     ).then((optionalInfo) => {
-      if (!optionalInfo.isSome) {
+      if (!isMounted.current || !optionalInfo.isSome) {
         return;
       }
 

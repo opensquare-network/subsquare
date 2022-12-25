@@ -25,7 +25,9 @@ export default function useAddressVote(
         }
       })
       .finally(() => {
-        setIsLoading(false);
+        if (isMounted.current) {
+          setIsLoading(false);
+        }
       });
   }, [api, trackId, referendumIndex, address, isMounted, updateTime]);
   return [vote, isLoading];
