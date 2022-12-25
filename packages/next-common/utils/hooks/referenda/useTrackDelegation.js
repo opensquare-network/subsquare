@@ -20,7 +20,9 @@ export default function useTrackDelegating(api, trackId, address) {
         }
       })
       .finally(() => {
-        setIsLoading(false);
+        if (isMounted.current) {
+          setIsLoading(false);
+        }
       });
   };
 
