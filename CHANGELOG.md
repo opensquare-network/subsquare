@@ -2,12 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.7.0
+
+date: 12/26/2022
+
+- Add active proposals count panel on summary page.
+- Support fellowship voting and show all votes.
+- Show address/value list who has delegated their vote to login address.
+- Support show referenda `SplitAbstain` vote type.
+- Code refactor: extract `GreyPanel` component.
+
 # 2.6.3
 
 date: 12/17/2022
 
 - Add curve chart on referenda track page.
-- Support threshold visualization of fellowship referendum .
+- Support threshold visualization of fellowship referendum.
 
 # 2.6.2
 
