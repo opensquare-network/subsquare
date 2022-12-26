@@ -1,10 +1,10 @@
 import { useTheme } from "styled-components";
-import {
-  useApprovalThreshold,
-  useSupportThreshold,
-} from "../../../context/post/gov2/threshold";
 import light from "../../styled/theme/light";
 import dark from "../../styled/theme/dark";
+import {
+  useApprovalPercentage,
+  useSupportPercentage,
+} from "../../../context/post/gov2/percentage";
 
 function thresholdLineBase(threshold, borderColor) {
   return {
@@ -21,13 +21,13 @@ function thresholdLineBase(threshold, borderColor) {
   };
 }
 
-export function useSupportThresholdLine() {
-  const supportThreshold = useSupportThreshold();
-  return thresholdLineBase(supportThreshold, light.primaryPurple300);
+export function useSupportPercentageLine() {
+  const supportPercentage = useSupportPercentage();
+  return thresholdLineBase(supportPercentage, light.primaryPurple300);
 }
-export function useApprovalThresholdLine() {
-  const approvalThreshold = useApprovalThreshold();
-  return thresholdLineBase(approvalThreshold, light.secondaryGreen300);
+export function useApprovalPercentageLine() {
+  const approvalPercentage = useApprovalPercentage();
+  return thresholdLineBase(approvalPercentage, light.secondaryGreen300);
 }
 
 function outerPointBase(backgroundColor, borderColor, x, y) {

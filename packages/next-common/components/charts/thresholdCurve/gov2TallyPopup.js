@@ -21,10 +21,10 @@ import set from "lodash.set";
 import {
   useApprovalInnerPoint,
   useApprovalOuterPoint,
-  useApprovalThresholdLine,
+  useApprovalPercentageLine,
   useSupportInnerPoint,
   useSupportOuterPoint,
-  useSupportThresholdLine,
+  useSupportPercentageLine,
 } from "./annotations";
 import LearnGov2Link from "../../links/learnGov2Link";
 import VStack from "../../styled/vStack";
@@ -60,8 +60,8 @@ export default function ThresholdCurvesGov2TallyPopup({
   const { days, hours } = extractTime(value);
   const currentHrs = days * 24 + hours;
 
-  const supportThresholdLine = useSupportThresholdLine();
-  const approvalThresholdLine = useApprovalThresholdLine();
+  const supportThresholdLine = useSupportPercentageLine();
+  const approvalThresholdLine = useApprovalPercentageLine();
   const supportOuterPoint = useSupportOuterPoint(
     currentHrs,
     supportData[currentHrs]
