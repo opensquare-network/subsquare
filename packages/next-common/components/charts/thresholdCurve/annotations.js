@@ -6,7 +6,7 @@ import {
   useSupportPercentage,
 } from "../../../context/post/gov2/percentage";
 
-function thresholdLineBase(threshold, borderColor) {
+function percentageLineBase(threshold, borderColor) {
   return {
     type: "line",
     value: threshold * 100,
@@ -23,11 +23,11 @@ function thresholdLineBase(threshold, borderColor) {
 
 export function useSupportPercentageLine() {
   const supportPercentage = useSupportPercentage();
-  return thresholdLineBase(supportPercentage, light.primaryPurple300);
+  return percentageLineBase(supportPercentage, light.primaryPurple300);
 }
 export function useApprovalPercentageLine() {
   const approvalPercentage = useApprovalPercentage();
-  return thresholdLineBase(approvalPercentage, light.secondaryGreen300);
+  return percentageLineBase(approvalPercentage, light.secondaryGreen300);
 }
 
 function outerPointBase(backgroundColor, borderColor, x, y) {
