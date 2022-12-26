@@ -62,9 +62,14 @@ export default function ThresholdCurvesGov2TallyPopup({
 
   const supportThresholdLine = useSupportPercentageLine(supportPercentage);
   const approvalThresholdLine = useApprovalPercentageLine(approvalPercentage);
-  const [supportOuterPoint, supportInnerPoint] = useSupportPoints(currentHrs);
-  const [approvalOuterPoint, approvalInnerPoint] =
-    useApprovalPoints(currentHrs);
+  const [supportOuterPoint, supportInnerPoint] = useSupportPoints(
+    currentHrs,
+    supportThreshold
+  );
+  const [approvalOuterPoint, approvalInnerPoint] = useApprovalPoints(
+    currentHrs,
+    approvalThreshold
+  );
 
   function beforeDrawOptions(options) {
     set(

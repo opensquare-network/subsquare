@@ -1,10 +1,6 @@
 import { useTheme } from "styled-components";
 import light from "../../styled/theme/light";
 import dark from "../../styled/theme/dark";
-import {
-  useApprovalThreshold,
-  useSupportThreshold,
-} from "../../../context/post/gov2/threshold";
 
 function percentageLineBase(threshold, borderColor) {
   return {
@@ -35,7 +31,7 @@ function outerPointBase(backgroundColor, borderColor, x, y) {
     backgroundColor,
     borderColor,
     xValue: x,
-    yValue: y,
+    yValue: y * 100,
   };
 }
 function innerPointBase(backgroundColor, x, y) {
@@ -45,24 +41,22 @@ function innerPointBase(backgroundColor, x, y) {
     backgroundColor,
     borderWidth: 0,
     xValue: x,
-    yValue: y,
+    yValue: y * 100,
   };
 }
-export function useSupportPoints(x) {
+export function useSupportPoints(x, y) {
   const { neutral } = useTheme();
-  const y = useSupportThreshold();
 
   return [
-    outerPointBase(neutral, dark.primaryDarkBlue, x, y * 100),
-    innerPointBase(dark.primaryDarkBlue, x, y * 100),
+    outerPointBase(neutral, dark.primaryDarkBlue, x, y),
+    innerPointBase(dark.primaryDarkBlue, x, y),
   ];
 }
-export function useApprovalPoints(x) {
+export function useApprovalPoints(x, y) {
   const { neutral } = useTheme();
-  const y = useApprovalThreshold();
 
   return [
-    outerPointBase(neutral, light.secondaryGreen500, x, y * 100),
-    innerPointBase(light.secondaryGreen500, x, y * 100),
+    outerPointBase(neutral, light.secondaryGreen500, x, y),
+    innerPointBase(light.secondaryGreen500, x, y),
   ];
 }
