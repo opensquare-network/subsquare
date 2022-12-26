@@ -7,21 +7,12 @@ import {
 import VStack from "../../../styled/vStack";
 import FlexBetweenCenter from "../../../styled/flexBetweenCenter";
 import Percentage from "../../../referenda/tally/support/percentage";
-import BigNumber from "bignumber.js";
 
 export default function ThresholdSupportCard({
   supportThreshold,
   supportPerbill,
+  supportPercentage,
 }) {
-  const [supportPercentage, setSupportPercentage] = useState();
-  useEffect(() => {
-    if (supportPerbill) {
-      setSupportPercentage(
-        new BigNumber(supportPerbill).div(Math.pow(10, 9)).toNumber()
-      );
-    }
-  }, [supportPerbill]);
-
   const [threshold, setThreshold] = useState();
   useEffect(() => {
     if (supportThreshold) {

@@ -125,11 +125,15 @@ export default function ThresholdCurvesGov2TallyPopup({
       <ThresholdCurvesGov2TallyLegend />
 
       <VStack space={16}>
-        <ThresholdApprovalCard approvalThreshold={approvalThreshold} />
+        <ThresholdApprovalCard
+          approvalThreshold={approvalThreshold}
+          approvalPercentage={approvalPercentage}
+        />
 
         <ThresholdSupportCard
           supportThreshold={supportThreshold}
           supportPerbill={supportPerbill}
+          supportPercentage={supportPercentage}
         />
 
         <LearnGov2Link />
