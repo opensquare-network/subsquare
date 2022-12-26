@@ -43,6 +43,8 @@ export default function ThresholdCurvesGov2TallyPopup({
   supportData = [],
   approvalData = [],
   supportPerbill = 0,
+  supportPercentage = 0,
+  approvalPercentage = 0,
 }) {
   const blockTime = useSelector(blockTimeSelector);
   const latestHeight = useSelector(latestHeightSelector);
@@ -58,8 +60,8 @@ export default function ThresholdCurvesGov2TallyPopup({
   const { days, hours } = extractTime(value);
   const currentHrs = days * 24 + hours;
 
-  const supportThresholdLine = useSupportPercentageLine();
-  const approvalThresholdLine = useApprovalPercentageLine();
+  const supportThresholdLine = useSupportPercentageLine(supportPercentage);
+  const approvalThresholdLine = useApprovalPercentageLine(approvalPercentage);
   const [supportOuterPoint, supportInnerPoint] = useSupportPoints(currentHrs);
   const [approvalOuterPoint, approvalInnerPoint] =
     useApprovalPoints(currentHrs);
