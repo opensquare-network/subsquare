@@ -60,3 +60,21 @@ export function useApprovalPoints(x, y) {
     innerPointBase(light.secondaryGreen500, x, y),
   ];
 }
+
+export function usePointsLine(x) {
+  const { grey300Border } = useTheme();
+
+  return {
+    type: "line",
+    value: x,
+    pointStyle: false,
+    fill: false,
+    borderColor: grey300Border,
+    borderWidth: 1,
+    pointRadius: 0,
+    pointHoverRadius: 0,
+    scaleID: "x",
+    // put this line behind.
+    drawTime: "beforeDraw",
+  };
+}
