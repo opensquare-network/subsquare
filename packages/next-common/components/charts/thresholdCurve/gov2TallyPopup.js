@@ -50,7 +50,6 @@ export default function ThresholdCurvesGov2TallyPopup({
   const latestHeight = useSelector(latestHeightSelector);
 
   const approvalThreshold = useApprovalThreshold();
-  console.log("approvalThreshold", approvalThreshold);
   const supportThreshold = useSupportThreshold();
 
   const decisionSince = useDecidingSince();
