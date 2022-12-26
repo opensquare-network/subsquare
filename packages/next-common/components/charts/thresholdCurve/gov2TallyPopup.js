@@ -19,12 +19,10 @@ import { extractTime } from "@polkadot/util";
 import { useDecidingSince } from "../../../context/post/gov2/referendum";
 import set from "lodash.set";
 import {
-  useApprovalInnerPoint,
-  useApprovalOuterPoint,
   useApprovalPercentageLine,
-  useSupportInnerPoint,
-  useSupportOuterPoint,
+  useApprovalPoints,
   useSupportPercentageLine,
+  useSupportPoints,
 } from "./annotations";
 import LearnGov2Link from "../../links/learnGov2Link";
 import VStack from "../../styled/vStack";
@@ -62,22 +60,9 @@ export default function ThresholdCurvesGov2TallyPopup({
 
   const supportThresholdLine = useSupportPercentageLine();
   const approvalThresholdLine = useApprovalPercentageLine();
-  const supportOuterPoint = useSupportOuterPoint(
-    currentHrs,
-    supportThreshold * 100
-  );
-  const supportInnerPoint = useSupportInnerPoint(
-    currentHrs,
-    supportThreshold * 100
-  );
-  const approvalOuterPoint = useApprovalOuterPoint(
-    currentHrs,
-    approvalThreshold * 100
-  );
-  const approvalInnerPoint = useApprovalInnerPoint(
-    currentHrs,
-    approvalThreshold * 100
-  );
+  const [supportOuterPoint, supportInnerPoint] = useSupportPoints(currentHrs);
+  const [approvalOuterPoint, approvalInnerPoint] =
+    useApprovalPoints(currentHrs);
 
   function beforeDrawOptions(options) {
     set(
