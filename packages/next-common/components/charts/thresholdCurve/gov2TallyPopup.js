@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PopupOrigin from "../../popup/wrapper/Popup";
 import { emptyFunction } from "next-common/utils";
 import styled, { css } from "styled-components";
@@ -9,9 +9,6 @@ import {
   useApprovalThreshold,
   useSupportThreshold,
 } from "../../../context/post/gov2/threshold";
-import { GreyPanel } from "../../styled/containers/greyPanel";
-import FlexBetweenCenter from "../../styled/flexBetweenCenter";
-import { p_14_medium, p_14_normal } from "../../../styles/componentCss";
 import { useSelector } from "react-redux";
 import {
   blockTimeSelector,
@@ -19,10 +16,7 @@ import {
 } from "../../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
 import { extractTime } from "@polkadot/util";
-import {
-  useDecidingSince,
-  useTally,
-} from "../../../context/post/gov2/referendum";
+import { useDecidingSince } from "../../../context/post/gov2/referendum";
 import set from "lodash.set";
 import {
   useApprovalInnerPoint,
@@ -34,8 +28,8 @@ import {
 } from "./annotations";
 import LearnGov2Link from "../../links/learnGov2Link";
 import VStack from "../../styled/vStack";
-import isNil from "lodash.isnil";
-import Percentage from "../../referenda/tally/support/percentage";
+import ThresholdSupportCard from "./thresholdCards/support";
+import ThresholdApprovalCard from "./thresholdCards/approval";
 
 const Popup = styled(PopupOrigin)`
   width: 480px;
@@ -43,25 +37,6 @@ const Popup = styled(PopupOrigin)`
   ${smcss(css`
     width: 100%;
   `)}
-`;
-
-const ThresholdInfo = styled(GreyPanel)`
-  display: block;
-  padding: 10px 16px;
-  color: ${(p) => p.theme.textPrimary};
-
-  ${(p) =>
-    p.positive &&
-    css`
-      background-color: ${p.theme.secondaryGreen100};
-      color: ${p.theme.secondaryGreen500};
-    `}
-`;
-const ThresholdInfoLabel = styled.span`
-  ${p_14_medium};
-`;
-const ThresholdInfoValue = styled.span`
-  ${p_14_normal};
 `;
 
 export default function ThresholdCurvesGov2TallyPopup({
@@ -73,7 +48,6 @@ export default function ThresholdCurvesGov2TallyPopup({
 }) {
   const blockTime = useSelector(blockTimeSelector);
   const latestHeight = useSelector(latestHeightSelector);
-  const tally = useTally();
 
   const approvalThreshold = useApprovalThreshold();
   console.log("approvalThreshold", approvalThreshold);
@@ -86,25 +60,6 @@ export default function ThresholdCurvesGov2TallyPopup({
   const value = new BigNumber(blockTime).multipliedBy(gone).toNumber();
   const { days, hours } = extractTime(value);
   const currentHrs = days * 24 + hours;
-
-  const [approvalPercentage, setApprovalPercentage] = useState();
-  const [supportPercentage, setSupportPercentage] = useState();
-  useEffect(() => {
-    if (supportPerbill) {
-      setSupportPercentage(
-        new BigNumber(supportPerbill).div(Math.pow(10, 9)).toNumber()
-      );
-    }
-  }, [supportPerbill]);
-
-  useEffect(() => {
-    if (!tally || isNil(tally.ayes) || isNil(tally.nays)) {
-      return;
-    }
-
-    const nTotal = new BigNumber(tally.ayes).plus(tally.nays);
-    setApprovalPercentage(new BigNumber(tally.ayes).div(nTotal).toNumber());
-  }, [tally]);
 
   const supportThresholdLine = useSupportThresholdLine();
   const approvalThresholdLine = useApprovalThresholdLine();
@@ -179,39 +134,12 @@ export default function ThresholdCurvesGov2TallyPopup({
       <ThresholdCurvesGov2TallyLegend />
 
       <VStack space={16}>
-        <ThresholdInfo positive={approvalThreshold < approvalPercentage}>
-          <VStack space={8}>
-            <FlexBetweenCenter>
-              <ThresholdInfoLabel>Current Approval</ThresholdInfoLabel>
-              <ThresholdInfoValue>
-                {(approvalPercentage * 100).toFixed(2)}%
-              </ThresholdInfoValue>
-            </FlexBetweenCenter>
-            <FlexBetweenCenter>
-              <ThresholdInfoLabel>Threshold</ThresholdInfoLabel>
-              <ThresholdInfoValue>
-                {(approvalThreshold * 100).toFixed(2)}%
-              </ThresholdInfoValue>
-            </FlexBetweenCenter>
-          </VStack>
-        </ThresholdInfo>
+        <ThresholdApprovalCard approvalThreshold={approvalThreshold} />
 
-        <ThresholdInfo positive={supportThreshold < supportPercentage}>
-          <VStack space={8}>
-            <FlexBetweenCenter>
-              <ThresholdInfoLabel>Current Support</ThresholdInfoLabel>
-              <ThresholdInfoValue>
-                <Percentage perbill={supportPerbill} />
-              </ThresholdInfoValue>
-            </FlexBetweenCenter>
-            <FlexBetweenCenter>
-              <ThresholdInfoLabel>Threshold</ThresholdInfoLabel>
-              <ThresholdInfoValue>
-                {(supportThreshold * 100).toFixed(2)}%
-              </ThresholdInfoValue>
-            </FlexBetweenCenter>
-          </VStack>
-        </ThresholdInfo>
+        <ThresholdSupportCard
+          supportThreshold={supportThreshold}
+          supportPerbill={supportPerbill}
+        />
 
         <LearnGov2Link />
       </VStack>
