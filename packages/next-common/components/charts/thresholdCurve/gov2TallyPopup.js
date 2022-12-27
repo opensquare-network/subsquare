@@ -57,9 +57,8 @@ export default function ThresholdCurvesGov2TallyPopup({
   const gone = latestHeight - decisionSince;
 
   const value = new BigNumber(blockTime).multipliedBy(gone).toNumber();
-  // to second
-  const v = value / 1000;
-  const xValue = v / 3600;
+  const seconds = value / 1000;
+  const xValue = seconds / 3600;
 
   const supportThresholdLine = useSupportPercentageLine(supportPercentage);
   const approvalThresholdLine = useApprovalPercentageLine(approvalPercentage);
