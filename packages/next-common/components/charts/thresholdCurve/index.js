@@ -4,6 +4,7 @@ import styled from "styled-components";
 import "../globalConfig";
 import light from "../../styled/theme/light";
 import dark from "../../styled/theme/dark";
+import { emptyFunction } from "../../../utils";
 
 const Wrapper = styled.div``;
 
@@ -16,6 +17,7 @@ export default function ThresholdCurvesChart({
   labels = [],
   supportData = [],
   approvalData = [],
+  beforeDrawOptions = emptyFunction,
 }) {
   const chartData = {
     labels,
@@ -45,6 +47,9 @@ export default function ThresholdCurvesChart({
 
   const options = {
     clip: false,
+    animation: {
+      duration: 0,
+    },
     layout: {
       padding: layoutPadding,
     },
@@ -54,7 +59,7 @@ export default function ThresholdCurvesChart({
         display: scalesX,
         ticks: {
           max: labels.length,
-          stepSize: Math.round(labels.length / 4),
+          stepSize: Math.round(labels.length / 3),
           callback(val) {
             return val + "hs";
           },
@@ -112,6 +117,9 @@ export default function ThresholdCurvesChart({
       },
     },
   };
+
+  // TODO: figure out a better way to modify the options
+  beforeDrawOptions?.(options);
 
   return (
     <Wrapper>

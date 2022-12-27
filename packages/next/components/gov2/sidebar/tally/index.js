@@ -14,11 +14,31 @@ import { useApprovalThreshold } from "next-common/context/post/gov2/threshold";
 import useIssuance from "next-common/utils/gov2/useIssuance";
 import SupportBar from "./supportBar";
 import Issuance from "./values/issuance";
+import CurveIconOrigin from "next-common/components/icons/curve";
+import ThresholdCurvesGov2TallyPopup from "next-common/components/charts/thresholdCurve/gov2TallyPopup";
+import { useState } from "react";
+import { useTrack } from "next-common/context/post/gov2/track";
+import useGov2ThresholdCurveData from "next-common/utils/hooks/useGov2ThresholdCurveData";
 import MyVote from "./myVote";
 import { usePost } from "next-common/context/post";
+import useSupportPerbill from "next-common/utils/gov2/tally/useSupportPerbill";
+import {
+  useApprovalPercentage,
+  useSupportPercentage,
+} from "next-common/context/post/gov2/percentage";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
+`;
+
+const CurveIcon = styled(CurveIconOrigin)`
+  cursor: pointer;
+
+  &:hover {
+    path {
+      stroke: ${(p) => p.theme.textSecondary};
+    }
+  }
 `;
 
 const Footer = styled.div`
@@ -35,12 +55,28 @@ export default function Gov2Tally() {
   useFetchVoteExtrinsics(detail?.onchainData);
   const tally = useTally();
   const approvalThreshold = useApprovalThreshold();
+  const [showThresholdCurveDetailPopup, setShowThresholdCurveDetailPopup] =
+    useState(false);
+  const supportPerbill = useSupportPerbill();
+  const supportPercentage = useSupportPercentage();
+  const approvalPercentage = useApprovalPercentage();
 
   const { issuance } = useIssuance();
 
+  const track = useTrack();
+  const { labels, supportData, approvalData } =
+    useGov2ThresholdCurveData(track);
+
+  function showThresholdCurveDetail() {
+    setShowThresholdCurveDetailPopup(true);
+  }
+
   return (
     <SecondaryCardDetail>
-      <Title>Tally</Title>
+      <Title>
+        Tally
+        <CurveIcon role="button" onClick={showThresholdCurveDetail} />
+      </Title>
       <VoteBar
         tally={tally}
         threshold="percentage"
@@ -50,7 +86,7 @@ export default function Gov2Tally() {
       <Aye />
       <Nay />
 
-      <SupportBar support={tally?.support} issuance={issuance} />
+      <SupportBar supportPerbill={supportPerbill} />
 
       <Support />
       <Issuance issuance={issuance} />
@@ -61,6 +97,18 @@ export default function Gov2Tally() {
       </Footer>
 
       <MyVote />
+
+      {showThresholdCurveDetailPopup && (
+        <ThresholdCurvesGov2TallyPopup
+          labels={labels}
+          supportData={supportData}
+          supportPerbill={supportPerbill}
+          approvalData={approvalData}
+          setShow={setShowThresholdCurveDetailPopup}
+          supportPercentage={supportPercentage}
+          approvalPercentage={approvalPercentage}
+        />
+      )}
     </SecondaryCardDetail>
   );
 }
