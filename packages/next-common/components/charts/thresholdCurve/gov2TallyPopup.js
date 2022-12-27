@@ -17,7 +17,6 @@ import set from "lodash.set";
 import {
   useApprovalPercentageLine,
   useApprovalPoints,
-  usePointsLine,
   useSupportPercentageLine,
   useSupportPoints,
 } from "./annotations";
@@ -68,8 +67,6 @@ export default function ThresholdCurvesGov2TallyPopup({
     approvalThreshold
   );
 
-  const pointsLine = usePointsLine(xValue);
-
   function beforeDrawOptions(options) {
     set(
       options,
@@ -102,7 +99,6 @@ export default function ThresholdCurvesGov2TallyPopup({
       "plugins.annotation.annotations.pointApprovalInner",
       approvalInnerPoint
     );
-    set(options, "plugins.annotation.annotations.pointsLine", pointsLine);
   }
 
   return (
