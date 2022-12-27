@@ -1,10 +1,11 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import "../globalConfig";
 import light from "../../styled/theme/light";
 import dark from "../../styled/theme/dark";
 import { emptyFunction } from "../../../utils";
+import hoverLinePlugin from "../plugins/hoverLine";
 
 const Wrapper = styled.div``;
 
@@ -19,6 +20,8 @@ export default function ThresholdCurvesChart({
   approvalData = [],
   beforeDrawOptions = emptyFunction,
 }) {
+  const { grey300Border } = useTheme();
+
   const chartData = {
     labels,
     datasets: [
@@ -87,7 +90,6 @@ export default function ThresholdCurvesChart({
       tooltip: {
         mode: "index",
         intersect: false,
-        position: "nearest",
         displayColors: false,
         callbacks: {
           title() {
@@ -115,6 +117,10 @@ export default function ThresholdCurvesChart({
           },
         },
       },
+      hoverLine: {
+        lineColor: grey300Border,
+        lineWidth: 1,
+      },
     },
   };
 
@@ -123,7 +129,13 @@ export default function ThresholdCurvesChart({
 
   return (
     <Wrapper>
-      <Line data={chartData} options={options} height={height} width={width} />
+      <Line
+        data={chartData}
+        options={options}
+        height={height}
+        width={width}
+        plugins={[hoverLinePlugin]}
+      />
     </Wrapper>
   );
 }
