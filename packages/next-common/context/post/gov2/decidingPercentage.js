@@ -6,12 +6,16 @@ import { useMemo } from "react";
 import isNil from "lodash.isnil";
 import useReferendumVotingFinishHeight from "../referenda/useReferendumVotingFinishHeight";
 
+export function useDecidingEndHeight() {
+  const latestHeight = useSelector(latestHeightSelector);
+  const votingFinishHeight = useReferendumVotingFinishHeight();
+  return votingFinishHeight || latestHeight;
+}
+
 export function useDecidingEndPercentage() {
   const decisionPeriod = useDecision();
   const decidingSince = useDecidingSince();
-  const latestHeight = useSelector(latestHeightSelector);
-  const votingFinishHeight = useReferendumVotingFinishHeight();
-  const endHeight = votingFinishHeight || latestHeight;
+  const endHeight = useDecidingEndHeight();
 
   return useMemo(() => {
     if (isNil(endHeight)) {

@@ -10,10 +10,7 @@ import {
   useSupportThreshold,
 } from "../../../context/post/gov2/threshold";
 import { useSelector } from "react-redux";
-import {
-  blockTimeSelector,
-  latestHeightSelector,
-} from "../../../store/reducers/chainSlice";
+import { blockTimeSelector } from "../../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
 import { useDecidingSince } from "../../../context/post/gov2/referendum";
 import set from "lodash.set";
@@ -28,6 +25,7 @@ import LearnGov2Link from "../../links/learnGov2Link";
 import VStack from "../../styled/vStack";
 import ThresholdSupportCard from "./thresholdCards/support";
 import ThresholdApprovalCard from "./thresholdCards/approval";
+import { useDecidingEndHeight } from "../../../context/post/gov2/decidingPercentage";
 
 const Popup = styled(PopupOrigin)`
   width: 480px;
@@ -47,14 +45,13 @@ export default function ThresholdCurvesGov2TallyPopup({
   approvalPercentage = 0,
 }) {
   const blockTime = useSelector(blockTimeSelector);
-  const latestHeight = useSelector(latestHeightSelector);
+  const decidingEnd = useDecidingEndHeight();
 
   const approvalThreshold = useApprovalThreshold();
   const supportThreshold = useSupportThreshold();
 
   const decisionSince = useDecidingSince();
-
-  const gone = latestHeight - decisionSince;
+  const gone = decidingEnd - decisionSince;
 
   const value = new BigNumber(blockTime).multipliedBy(gone).toNumber();
   const seconds = value / 1000;
