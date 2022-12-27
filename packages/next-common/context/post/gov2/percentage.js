@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import isNil from "lodash.isnil";
 import { useMemo } from "react";
-import { useTally } from "../../../context/post/gov2/referendum";
+import { useTally } from "./referendum";
 import useSupportPerbill from "../../../utils/gov2/tally/useSupportPerbill";
 
 export function useApprovalPercentage() {
