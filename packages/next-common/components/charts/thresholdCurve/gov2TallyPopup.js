@@ -15,7 +15,6 @@ import {
   latestHeightSelector,
 } from "../../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
-import { extractTime } from "@polkadot/util";
 import { useDecidingSince } from "../../../context/post/gov2/referendum";
 import set from "lodash.set";
 import {
@@ -58,21 +57,22 @@ export default function ThresholdCurvesGov2TallyPopup({
   const gone = latestHeight - decisionSince;
 
   const value = new BigNumber(blockTime).multipliedBy(gone).toNumber();
-  const { days, hours } = extractTime(value);
-  const currentHrs = days * 24 + hours;
+  // to second
+  const v = value / 1000;
+  const xValue = v / 3600;
 
   const supportThresholdLine = useSupportPercentageLine(supportPercentage);
   const approvalThresholdLine = useApprovalPercentageLine(approvalPercentage);
   const [supportOuterPoint, supportInnerPoint] = useSupportPoints(
-    currentHrs,
+    xValue,
     supportThreshold
   );
   const [approvalOuterPoint, approvalInnerPoint] = useApprovalPoints(
-    currentHrs,
+    xValue,
     approvalThreshold
   );
 
-  const pointsLine = usePointsLine(currentHrs);
+  const pointsLine = usePointsLine(xValue);
 
   function beforeDrawOptions(options) {
     set(
