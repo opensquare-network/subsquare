@@ -1,4 +1,4 @@
-export const hoverLinePlugin = {
+const hoverLinePlugin = {
   id: "hoverLine",
   beforeDraw: (chart) => {
     const options = chart.config.options?.plugins?.hoverLine ?? {};
@@ -23,3 +23,4 @@ export const hoverLinePlugin = {
     }
   },
 };
+export default hoverLinePlugin;
