@@ -1,6 +1,6 @@
 import VStack from "../styled/vStack";
 import { BackgroundButton } from "../buttons/styled";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
 import { p_14_bold, p_14_normal } from "../../styles/componentCss";
 import ClosePanelIconOrigin from "../icons/closePanel";
@@ -8,13 +8,18 @@ import { useEffect, useState } from "react";
 import Flex from "../styled/flex";
 import OutWrapperOrigin from "../styled/outWrapper";
 import { getCookie, setCookie } from "../../utils/viewfuncs/cookies";
-import { CACHE_KEY } from "../../utils/constants";
+import { CACHE_KEY, pageMaxWidth } from "../../utils/constants";
+import { smcss } from "../../utils/responsive";
 
 const OutWrapper = styled(OutWrapperOrigin)`
   position: fixed;
   bottom: 32px;
-  right: 0;
-  left: 0;
+  right: max(calc((100vw - ${pageMaxWidth}px - 32px / 2) / 2), 32px);
+
+  ${smcss(css`
+    right: 16px;
+    left: 16px;
+  `)}
 `;
 
 const Wrapper = styled.div`
@@ -25,6 +30,10 @@ const Wrapper = styled.div`
   border: 1px solid ${(p) => p.theme.grey200Border};
   box-shadow: ${(p) => p.theme.shadow200};
   padding: 24px;
+
+  ${smcss(css`
+    width: 100%;
+  `)}
 `;
 
 const Button = styled(BackgroundButton)`
