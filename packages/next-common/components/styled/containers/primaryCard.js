@@ -1,13 +1,10 @@
 import styled from "styled-components";
 import { shadow_100 } from "../../../styles/componentCss";
+import { NeutralPanel } from "./neutralPanel";
 
-export const PrimaryCard = styled.div`
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey200Border};
-  ${shadow_100};
-  border-radius: 6px;
+export const PrimaryCard = styled(NeutralPanel)`
   padding: 48px;
-  color: ${(props) => props.theme.textPrimary};
+  ${shadow_100};
 
   @media screen and (max-width: 768px) {
     padding: 24px;
