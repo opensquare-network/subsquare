@@ -1,3 +1,4 @@
+import React from "react";
 import VStack from "../styled/vStack";
 import { BackgroundButton } from "../buttons/styled";
 import styled, { css } from "styled-components";
