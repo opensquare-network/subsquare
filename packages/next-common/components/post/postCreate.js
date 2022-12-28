@@ -17,19 +17,17 @@ import { shadow_100 } from "../../styles/componentCss";
 import { TitleContainer } from "../styled/containers/titleContainer";
 import { useChain } from "../../context/chain";
 import { useUser } from "../../context/user";
+import { NeutralPanel } from "../styled/containers/neutralPanel";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
   { ssr: false }
 );
 
-const Wrapper = styled.div`
+const Wrapper = styled(NeutralPanel)`
   padding: 48px;
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey200Border};
   color: ${(props) => props.theme.textPrimary};
   ${shadow_100};
-  border-radius: 6px;
   textarea:read-only,
   div.ql-disabled {
     background-color: ${(props) => props.theme.grey100Bg} !important;
