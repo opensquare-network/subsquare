@@ -96,9 +96,7 @@ export default function CookiesConsent() {
             </FlexBetweenCenter>
 
             <Description>
-              We uses cookies to gather information about the way users interact
-              with website ensure users can get best experience while navigate
-              through the website.
+              We use cookies to improve your experience on our site.
             </Description>
           </VStack>
 
