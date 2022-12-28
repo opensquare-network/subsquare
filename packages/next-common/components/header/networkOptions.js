@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import React from "react";
-import { shadow_200 } from "../../styles/componentCss";
 import NetworkOptionGroup from "./networkOptionGroup";
 import MenuGroups from "../../utils/consts/settings/menuGroups";
 import { NeutralPanel } from "../styled/containers/neutralPanel";
@@ -10,7 +9,6 @@ const Options = styled(NeutralPanel)`
   border-width: ${(props) => (props.theme.isDark ? 1 : 0)}px;
   border-style: ${(props) => (props.theme.isDark ? "solid" : "none")};
   color: ${(props) => props.theme.textPrimary};
-  ${shadow_200};
   border-radius: 4px;
   display: flex;
   gap: 8px;
