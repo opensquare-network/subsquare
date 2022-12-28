@@ -12,7 +12,7 @@ const leftWidth = 236;
 const gap = 32;
 const leftPlaceHolderWidth =
   pageMaxWidth - gap - pageHomeLayoutMainContentWidth;
-const offsetLeftCss = `max(calc((100vw - ${pageMaxWidth}px) / 2), 32px)`;
+const offsetLeftCss = `max(calc((100vw - ${pageMaxWidth}px - ${gap}px / 2) / 2), 32px)`;
 
 const Wrapper = styled.div`
   width: 100%;

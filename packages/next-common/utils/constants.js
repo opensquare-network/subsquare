@@ -85,6 +85,7 @@ export const CACHE_KEY = {
   themeMode: "theme-mode",
   authToken: "auth-token",
   homeFoldedMenus: "home-folded-menus",
+  acceptCookies: "accept-cookies",
 };
 
 export const chain = process.env.NEXT_PUBLIC_CHAIN;
