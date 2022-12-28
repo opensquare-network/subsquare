@@ -15,7 +15,10 @@ const converter = {
   },
 };
 
-export function setCookie(key, value) {
+export function setCookie(key, value, options) {
+  let { expires } = options ?? {};
+  let stringifiedOptions = "";
+
   if (typeof document === "undefined") {
     return;
   }
@@ -23,7 +26,15 @@ export function setCookie(key, value) {
     .replace(/%(2[346B]|5E|60|7C)/g, decodeURIComponent)
     .replace(/[()]/g, escape);
 
-  return (document.cookie = key + "=" + converter.write(value, key));
+  if (expires) {
+    if (typeof expires === "number") {
+      expires = new Date(Date.now() + expires * 864e5);
+    }
+    stringifiedOptions += `;expires=${expires.toUTCString()}`;
+  }
+
+  return (document.cookie =
+    key + "=" + converter.write(value, key) + stringifiedOptions);
 }
 
 export function getCookie(key) {

@@ -23,6 +23,7 @@ import Toast from "../toast";
 import useUpdateNodesDelay from "../../utils/hooks/useUpdateNodesDelay";
 import { useChain } from "../../context/chain";
 import { useThemeSetting } from "../../context/theme";
+import CookiesConsent from "../../components/cookiesConsent";
 
 const Wrapper = styled.div`
   display: flex;
@@ -88,6 +89,8 @@ export default function BaseLayout({ left, children, seoInfo }) {
         <Content left={left}>{children}</Content>
         <Toast />
       </Wrapper>
+
+      <CookiesConsent />
     </ThemeProvider>
   );
 }
