@@ -4,8 +4,9 @@ import Background from "../../styled/backgroundShade";
 import useOnClickOutside from "../../../utils/hooks/useOnClickOutside";
 import { emptyFunction } from "../../../utils";
 import { useScrollLock } from "../../../utils/hooks/useScrollLock";
+import { NeutralPanel } from "../../styled/containers/neutralPanel";
 
-const Wrapper = styled.div`
+const Wrapper = styled(NeutralPanel)`
   position: fixed;
   top: 50%;
   left: 50%;
@@ -13,11 +14,6 @@ const Wrapper = styled.div`
   width: 400px;
   padding: 48px;
   transform: translate(-50%, -50%);
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey200Border};
-  box-shadow: ${(props) => props.theme.shadow200};
-  border-radius: 6px;
-  color: ${(props) => props.theme.textPrimary};
 `;
 
 export default function PopupWithoutTitle({
