@@ -13,6 +13,7 @@ import { CACHE_KEY, pageMaxWidth } from "../../utils/constants";
 import { smcss } from "../../utils/responsive";
 
 const OutWrapper = styled(OutWrapperOrigin)`
+  z-index: 999;
   position: fixed;
   bottom: 32px;
   right: max(calc((100vw - ${pageMaxWidth}px - 32px / 2) / 2), 32px);
