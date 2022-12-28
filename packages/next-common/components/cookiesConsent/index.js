@@ -73,7 +73,7 @@ export default function CookiesConsent() {
     setShow(!isAcceptCookies);
   }, []);
 
-  function handleGotIt() {
+  function handleAccept() {
     setCookie(CACHE_KEY.acceptCookies, true, { expires: 30 });
     handleClose();
   }
@@ -103,7 +103,7 @@ export default function CookiesConsent() {
           </VStack>
 
           <ButtonWrapper>
-            <Button onClick={handleGotIt}>Got it</Button>
+            <Button onClick={handleAccept}>Got it</Button>
           </ButtonWrapper>
         </VStack>
       </Wrapper>
