@@ -15,6 +15,7 @@ const Wrapper = styled(NeutralPanel)`
   width: 400px;
   padding: 24px;
   transform: translate(-50%, -50%);
+  color: ${(props) => props.theme.textPrimary};
 
   > :not(:first-child) {
     margin-top: 16px;

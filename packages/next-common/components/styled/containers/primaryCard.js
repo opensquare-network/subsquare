@@ -4,6 +4,7 @@ import { NeutralPanel } from "./neutralPanel";
 
 export const PrimaryCard = styled(NeutralPanel)`
   padding: 48px;
+  color: ${(props) => props.theme.textPrimary};
   ${shadow_100};
 
   @media screen and (max-width: 768px) {

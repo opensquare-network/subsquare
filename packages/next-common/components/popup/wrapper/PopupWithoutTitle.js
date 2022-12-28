@@ -14,6 +14,7 @@ const Wrapper = styled(NeutralPanel)`
   width: 400px;
   padding: 48px;
   transform: translate(-50%, -50%);
+  color: ${(props) => props.theme.textPrimary};
 `;
 
 export default function PopupWithoutTitle({
