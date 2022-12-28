@@ -74,7 +74,7 @@ export default function CookiesConsent() {
   }, []);
 
   function handleGotIt() {
-    setCookie(CACHE_KEY.acceptCookies, true);
+    setCookie(CACHE_KEY.acceptCookies, true, { expires: 30 });
     handleClose();
   }
   function handleClose() {
