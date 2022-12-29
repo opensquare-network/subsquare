@@ -38,6 +38,14 @@ export const p_16_bold = css`
   line-height: 24px;
 `;
 
+export const p_14_bold = css`
+  ${font_family};
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+`;
+
 export const p_14_medium = css`
   ${font_family};
   font-style: normal;
