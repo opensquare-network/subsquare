@@ -3,7 +3,7 @@ import LoadingVotingStatus from "next-common/components/popup/loadingVotingStatu
 import NoDataStatusBox from "next-common/components/popup/noDataStatusBox";
 import VoteStatus from "./voteStatus";
 import { WarningMessage } from "next-common/components/popup/styled";
-import Column from "next-common/components/styled/column";
+import VStack from "next-common/components/styled/vStack";
 
 export default function VotingStatus({ addressVote, addressVoteIsLoading }) {
   return (
@@ -12,12 +12,12 @@ export default function VotingStatus({ addressVote, addressVoteIsLoading }) {
       {addressVoteIsLoading ? (
         <LoadingVotingStatus />
       ) : addressVote ? (
-        <Column gap={8}>
+        <VStack space={8}>
           <VoteStatus addressVote={addressVote} />
           <WarningMessage>
             Resubmitting the vote will override the current voting record
           </WarningMessage>
-        </Column>
+        </VStack>
       ) : (
         <NoDataStatusBox text={"No voting record"} />
       )}
