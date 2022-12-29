@@ -1,17 +1,14 @@
 import styled from "styled-components";
 import React from "react";
-import { shadow_200 } from "../../styles/componentCss";
 import NetworkOptionGroup from "./networkOptionGroup";
 import MenuGroups from "../../utils/consts/settings/menuGroups";
+import { NeutralPanel } from "../styled/containers/neutralPanel";
 
-const Options = styled.div`
+const Options = styled(NeutralPanel)`
   position: absolute;
-  background: ${(props) => props.theme.neutral};
   border-width: ${(props) => (props.theme.isDark ? 1 : 0)}px;
   border-style: ${(props) => (props.theme.isDark ? "solid" : "none")};
-  border-color: ${(props) => props.theme.grey200Border};
   color: ${(props) => props.theme.textPrimary};
-  ${shadow_200};
   border-radius: 4px;
   display: flex;
   gap: 8px;

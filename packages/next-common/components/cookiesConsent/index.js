@@ -11,6 +11,7 @@ import OutWrapperOrigin from "../styled/outWrapper";
 import { getCookie, setCookie } from "../../utils/viewfuncs/cookies";
 import { CACHE_KEY, pageMaxWidth } from "../../utils/constants";
 import { smcss } from "../../utils/responsive";
+import { NeutralPanel } from "../styled/containers/neutralPanel";
 
 const OutWrapper = styled(OutWrapperOrigin)`
   z-index: 999;
@@ -24,13 +25,10 @@ const OutWrapper = styled(OutWrapperOrigin)`
   `)}
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled(NeutralPanel)`
   margin-left: auto;
   width: 320px;
-  background-color: ${(p) => p.theme.neutral};
   border-radius: 8px;
-  border: 1px solid ${(p) => p.theme.grey200Border};
-  box-shadow: ${(p) => p.theme.shadow200};
   padding: 24px;
 
   ${smcss(css`

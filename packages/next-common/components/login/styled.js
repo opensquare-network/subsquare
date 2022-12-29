@@ -1,11 +1,9 @@
 import styled from "styled-components";
 import { shadow_100 } from "../../styles/componentCss";
+import { NeutralPanel } from "../styled/containers/neutralPanel";
 
-export const ContentCenterWrapper = styled.div`
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey200Border};
+export const ContentCenterWrapper = styled(NeutralPanel)`
   ${shadow_100};
-  border-radius: 6px;
   width: 400px;
   margin: 0 auto;
   padding: 48px;

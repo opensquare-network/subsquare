@@ -1,8 +1,7 @@
 import styled from "styled-components";
+import { NeutralPanel } from "./neutralPanel";
 
-export const SecondaryCard = styled.div`
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey200Border};
+export const SecondaryCard = styled(NeutralPanel)`
   box-shadow: ${(props) => props.theme.shadow100};
   border-radius: 8px;
   padding: 24px;

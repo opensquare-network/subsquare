@@ -4,6 +4,7 @@ import Link from "next/link";
 import Icon from "../../assets/imgs/icons/new-discussion.svg";
 import { TitleContainer } from "../styled/containers/titleContainer";
 import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
+import { NeutralPanel } from "../styled/containers/neutralPanel";
 
 const Wrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
@@ -20,17 +21,14 @@ const Wrapper = styled.div`
   }
 `;
 
-const EmptyPanel = styled.div`
+const EmptyPanel = styled(NeutralPanel)`
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   padding: 48px;
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey200Border};
   box-sizing: border-box;
   box-shadow: ${(props) => props.theme.shadow100};
-  border-radius: 6px;
 
   > .title {
     font-style: normal;

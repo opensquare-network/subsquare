@@ -1,19 +1,16 @@
 import styled from "styled-components";
-import { shadow_200 } from "../../styles/componentCss";
+import { NeutralPanel } from "../styled/containers/neutralPanel";
 
-export const OptionWrapper = styled.div`
+export const OptionWrapper = styled(NeutralPanel)`
   position: absolute;
   right: 0;
   bottom: calc(100% + 10px);
-  background: ${(props) => props.theme.neutral};
   width: 96px;
   padding: 8px 0;
   border-radius: 4px;
   border-width: ${(props) => (props.theme.isDark ? 1 : 0)}px;
   border-style: ${(props) => (props.theme.isDark ? "solid" : "none")};
-  border-color: ${(props) => props.theme.grey200Border};
   color: ${(props) => props.theme.textPrimary};
-  ${shadow_200};
 `;
 
 export const OptionItem = styled.div`

@@ -20,6 +20,7 @@ import light from "../styled/theme/light";
 import dark from "../styled/theme/dark";
 import { useChainSettings } from "../../context/chain";
 import { useThemeMode } from "../../context/theme";
+import { NeutralPanel } from "../styled/containers/neutralPanel";
 
 const SignalDefaultIcon = styled(SignalDefault)`
   path {
@@ -77,9 +78,7 @@ const Select = styled.div`
   }
 `;
 
-const Options = styled.div`
-  background: ${(props) => props.theme.neutral};
-  box-shadow: ${(props) => props.theme.shadow200};
+const Options = styled(NeutralPanel)`
   border-radius: 4px;
   position: absolute;
   right: 0;
@@ -87,7 +86,6 @@ const Options = styled.div`
   padding: 8px 0;
   width: 100%;
   z-index: 1;
-  background: ${(props) => props.theme.neutral};
   color: ${(props) => props.theme.textPrimary};
   border: 1px solid ${(props) => props.theme.grey300Border};
 
