@@ -16,7 +16,7 @@ import useFellowshipVote from "next-common/utils/hooks/fellowship/useFellowshipV
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import CurrentVote from "./currentVote";
 import Rank from "./rank";
-import Column from "next-common/components/styled/column";
+import VStack from "next-common/components/styled/vStack";
 
 function PopupContent({
   extensionAccounts,
@@ -94,7 +94,7 @@ function PopupContent({
 
   return (
     <>
-      <Column gap={8}>
+      <VStack space={8}>
         <Signer
           signerAccount={signerAccount}
           balance={votingBalance}
@@ -103,7 +103,7 @@ function PopupContent({
           isSignerBalanceLoading={isSignerBalanceLoading}
         />
         <Rank />
-      </Column>
+      </VStack>
       <CurrentVote currentVote={vote} isLoadingVote={isLoadingVote} />
       <VoteButton doVote={doVote} loadingState={loadingState} />
     </>
