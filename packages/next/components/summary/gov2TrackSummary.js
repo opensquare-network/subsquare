@@ -11,7 +11,6 @@ import Delegation from "./delegation";
 import BeenDelegated from "./beenDelegated";
 import Summary from "next-common/components/summary/new";
 import Content from "next-common/components/summary/cardContent";
-import Column from "next-common/components/styled/column";
 import ThresholdCurvesChart from "next-common/components/charts/thresholdCurve";
 import ArrowOutSimpleIcon from "next-common/components/icons/arrowOutSimple";
 import { useState } from "react";
@@ -25,6 +24,7 @@ import DividerOrigin from "next-common/components/styled/layout/divider";
 import useGov2ThresholdCurveData from "next-common/utils/hooks/useGov2ThresholdCurveData";
 import FlexCenter from "next-common/components/styled/flexCenter";
 import Grid from "next-common/components/styled/grid";
+import VStack from "next-common/components/styled/vStack";
 
 // used in `Divider` and `ThresholdCurvesChart`
 const THRESHOLD_CURVE_PADDING = 8;
@@ -114,10 +114,10 @@ export default function Gov2TrackSummary({
   let footer = null;
   if (!noDelegation) {
     footer = (
-      <Column gap={8}>
+      <VStack space={8}>
         <Delegation trackId={id} />
         <BeenDelegated trackId={id} />
-      </Column>
+      </VStack>
     );
   }
 
