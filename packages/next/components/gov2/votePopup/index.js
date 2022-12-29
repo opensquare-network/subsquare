@@ -23,8 +23,8 @@ import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import { WarningMessage } from "next-common/components/popup/styled";
-import Column from "next-common/components/styled/column";
 import SplitAbstainVoteStatus from "./splitAbstainVoteStatus";
+import VStack from "next-common/components/styled/vStack";
 
 function PopupContent({
   extensionAccounts,
@@ -176,7 +176,7 @@ function PopupContent({
       {(addressVote?.standard ||
         addressVote?.split ||
         addressVote?.splitAbstain) && (
-        <Column gap={8}>
+        <VStack space={8}>
           {addressVote?.standard && (
             <StandardVoteStatus addressVoteStandard={addressVote?.standard} />
           )}
@@ -191,7 +191,7 @@ function PopupContent({
           <WarningMessage>
             Resubmitting the vote will override the current voting record
           </WarningMessage>
-        </Column>
+        </VStack>
       )}
       {addressVote?.delegating && addressVoteDelegateVoted && (
         <DelegateVoteStatus addressVoteDelegate={addressVote?.delegating} />
