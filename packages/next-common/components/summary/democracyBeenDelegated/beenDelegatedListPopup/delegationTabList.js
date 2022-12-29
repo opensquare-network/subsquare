@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import DelegationList from "./delegationList";
 import Pagination from "next-common/components/pagination";
-import Column from "next-common/components/styled/column";
+import VStack from "../../../styled/vStack";
 
 export default function DelegationTabList({ beenDelegatedList }) {
   const [page, setPage] = useState(1);
@@ -23,9 +23,9 @@ export default function DelegationTabList({ beenDelegatedList }) {
   const sliceTo = sliceFrom + pageSize;
 
   return (
-    <Column gap={16}>
+    <VStack space={16}>
       <DelegationList items={beenDelegatedList.slice(sliceFrom, sliceTo)} />
       <Pagination {...pagination} />
-    </Column>
+    </VStack>
   );
 }
