@@ -256,7 +256,7 @@ export default function Post({ data, href, type }) {
               noEvent={userNoClickEvent}
             />
 
-            {data.track && (
+            {typeof data.track === "object" && (
               <MobileHiddenInfo>
                 <Gov2TrackTag name={data.track} />
               </MobileHiddenInfo>
