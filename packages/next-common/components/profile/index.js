@@ -19,6 +19,7 @@ import { no_scroll_bar } from "../../styles/componentCss";
 import { useRouter } from "next/router";
 import { useChain } from "../../context/chain";
 import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
+import VStack from "../styled/vStack";
 
 const Wrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
@@ -285,50 +286,52 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
           </Flex>
         </BioWrapper>
         <CategoryWrapper>
-          <CategoryList>
-            {CATEGORIES.map((c, index) => (
-              <Category
-                onClick={() => {
-                  setItems(null);
-                  setFirstCategory(c);
-                  setSecondCategory(
-                    c.children.find(
-                      (child) => !child?.excludeChains?.includes(chain)
-                    )
-                  );
-                  resetPage();
-                }}
-                key={index}
-                type={c.name}
-                count={getFirstCategoryCount(c.id, overview)}
-                selected={c.id === firstCategory.id}
-              />
-            ))}
-          </CategoryList>
-          <CategoryList>
-            {firstCategory.children.map((c, index) => {
-              if (c?.excludeChains?.includes(chain)) {
-                return null;
-              }
-              return (
+          <VStack space={16}>
+            <CategoryList>
+              {CATEGORIES.map((c, index) => (
                 <Category
                   onClick={() => {
-                    setIsLoading(true);
-                    setSecondCategory(c);
+                    setItems(null);
+                    setFirstCategory(c);
+                    setSecondCategory(
+                      c.children.find(
+                        (child) => !child?.excludeChains?.includes(chain)
+                      )
+                    );
                     resetPage();
                   }}
                   key={index}
                   type={c.name}
-                  count={getSecondCategoryCount(
-                    firstCategory.id,
-                    c.id,
-                    overview
-                  )}
-                  selected={c.id === secondCategory.id}
+                  count={getFirstCategoryCount(c.id, overview)}
+                  selected={c.id === firstCategory.id}
                 />
-              );
-            })}
-          </CategoryList>
+              ))}
+            </CategoryList>
+            <CategoryList>
+              {firstCategory.children.map((c, index) => {
+                if (c?.excludeChains?.includes(chain)) {
+                  return null;
+                }
+                return (
+                  <Category
+                    onClick={() => {
+                      setIsLoading(true);
+                      setSecondCategory(c);
+                      resetPage();
+                    }}
+                    key={index}
+                    type={c.name}
+                    count={getSecondCategoryCount(
+                      firstCategory.id,
+                      c.id,
+                      overview
+                    )}
+                    selected={c.id === secondCategory.id}
+                  />
+                );
+              })}
+            </CategoryList>
+          </VStack>
         </CategoryWrapper>
       </Wrapper>
 
