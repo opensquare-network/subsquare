@@ -22,6 +22,8 @@ export const StatescanLink = styled(ThirdPartyLink)`
   }
 `;
 
+export const DotreasuryLinkWrapper = StatescanLink;
+
 export const SubscanLinkWrapper = styled(ThirdPartyLink)`
   svg:first-child {
     path:first-child {
