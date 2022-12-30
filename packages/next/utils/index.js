@@ -32,6 +32,13 @@ export function getTimelineStatus(type, method) {
         case "clearPublicProposals":
           return { value: "Cleared", type };
       }
+      break;
+    case detailPageCategory.TREASURY_PROPOSAL:
+      switch (method) {
+        case "SpendApproved":
+          return { value: "Approved", type };
+      }
+      break;
   }
 
   return { value: method, type };
