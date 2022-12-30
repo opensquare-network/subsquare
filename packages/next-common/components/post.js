@@ -1,10 +1,8 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import Link from "next/link";
 import User from "next-common/components/user";
 import { toPrecision } from "next-common/utils";
 import Tag from "next-common/components/tags/state/tag";
-import ReasonLink from "next-common/components/reasonLink";
 import Flex from "next-common/components/styled/flex";
 import { p_14_medium } from "next-common/styles/componentCss";
 import MotionElapse from "next-common/components/motionElapse";
@@ -27,6 +25,7 @@ import DecisionCountdown from "../components/gov2/postList/decisionCountdown";
 import { gov2State } from "../utils/consts/state";
 import ConfirmCountdown from "./gov2/postList/confirmCountdown";
 import ValueDisplay from "./valueDisplay";
+import ListPostTitle from "./postList/postTitle";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -66,20 +65,6 @@ const Footer = styled(DividerWrapper)`
   }
 `;
 
-const Index = styled.div`
-  float: left;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 140%;
-  ::after {
-    content: "·";
-    font-size: 16px;
-    line-height: 22.4px;
-    color: ${(props) => props.theme.textTertiary};
-    margin: 0 8px;
-  }
-`;
-
 const Info = styled.div`
   display: flex;
   align-items: center;
@@ -102,27 +87,9 @@ const MobileHiddenInfo = styled(Info)`
   }
 `;
 
-const Title = styled.a`
-  word-break: break-word;
-  font-weight: 500;
-  font-size: 16px;
-  cursor: pointer;
-  line-height: 140%;
-
-  :hover {
-    text-decoration: underline;
-  }
-`;
-
 const FooterWrapper = styled(Flex)`
   justify-content: space-between;
   flex-wrap: nowrap;
-`;
-
-const TitleWrapper = styled.div`
-  flex: 1;
-  overflow: hidden;
-  color: ${(props) => props.theme.textPrimary};
 `;
 
 const TitleExtraValue = styled(Flex)`
@@ -224,13 +191,7 @@ export default function Post({ data, href, type }) {
     <Wrapper>
       <ContentWrapper>
         <HeadWrapper>
-          <TitleWrapper>
-            {!isNil(data?.index) && <Index>{`#${data.index}`}</Index>}
-            <Link href={href} passHref>
-              <Title>{data.title?.trim() || "--"}</Title>
-            </Link>
-            <ReasonLink text={data.title} hideText={true} />
-          </TitleWrapper>
+          <ListPostTitle data={data} href={href} />
 
           {!isNil(data.value) && (
             <TitleExtra>
@@ -256,9 +217,9 @@ export default function Post({ data, href, type }) {
               noEvent={userNoClickEvent}
             />
 
-            {data.track && (
+            {data.trackName && (
               <MobileHiddenInfo>
-                <Gov2TrackTag name={data.track} />
+                <Gov2TrackTag name={data.trackName} />
               </MobileHiddenInfo>
             )}
 
