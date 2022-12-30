@@ -12,6 +12,7 @@ import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import { useDetailType } from "next-common/context/page";
 import TreasuryProposalNavigation from "next-common/components/detail/navigation/treasuryProposalNavigation";
+import ReferendaReferendumNavigation from "next-common/components/detail/navigation/referendaReferendumNavigation";
 
 export default function DetailItem({
   onReply,
@@ -38,6 +39,10 @@ export default function DetailItem({
 
   return (
     <EditablePanel>
+      {type === detailPageCategory.GOV2_REFERENDUM && (
+        <ReferendaReferendumNavigation />
+      )}
+
       {type === detailPageCategory.TREASURY_PROPOSAL && (
         <TreasuryProposalNavigation />
       )}
