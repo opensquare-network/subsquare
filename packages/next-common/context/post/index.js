@@ -1,7 +1,10 @@
 import React, { createContext, useContext, useEffect, useReducer } from "react";
 import { useDetailType } from "../page";
 import { detailPageCategory } from "../../utils/consts/business/category";
-import { getGov2ReferendumTitle } from "../../utils/gov2/title";
+import {
+  getGov2ReferendumTitle,
+  getGov2TreasuryProposalTitle,
+} from "../../utils/gov2/title";
 
 const PostContext = createContext(null);
 const PostDispatchContext = createContext(null);
@@ -53,6 +56,8 @@ export function usePostTitle() {
     ].includes(type)
   ) {
     title = getGov2ReferendumTitle(post);
+  } else if (detailPageCategory.TREASURY_PROPOSAL) {
+    title = getGov2TreasuryProposalTitle(post);
   }
 
   return title;

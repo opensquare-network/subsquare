@@ -2,6 +2,7 @@ import { addressEllipsis } from "next-common/utils";
 import { getMotionId } from "next-common/utils/motion";
 import isNil from "lodash.isnil";
 import { getGov2ReferendumTitle } from "next-common/utils/gov2/title";
+import { parseGov2TrackName } from "next-common/utils/gov2";
 
 export const TipStateMap = {
   NewTip: "Tipping",
@@ -143,9 +144,24 @@ export const toTechCommMotionListItem = (chain, item) => ({
   isDemocracy: item?.onchainData?.externalProposals?.length > 0,
 });
 
+function getTreasuryProposalTitle(item) {
+  let title = item.title?.trim();
+  if (title) {
+    return title;
+  }
+
+  const trackName = item?.onchainData?.track?.name;
+  if (trackName) {
+    const parsedTrackName = parseGov2TrackName(trackName);
+    return `[${parsedTrackName}] Referendum #${item?.onchainData?.gov2Referendum}`;
+  }
+
+  return "--";
+}
+
 export const toTreasuryProposalListItem = (chain, item) => ({
   ...item,
-  title: getTitle(item),
+  title: getTreasuryProposalTitle(item),
   author: item.author,
   address: item.proposer,
   status: item.state ?? "Unknown",
@@ -241,7 +257,7 @@ export const toGov2ReferendaListItem = (item, tracks = []) => {
     address: item.proposer,
     detailLink: `/referenda/referendum/${item.referendumIndex}`,
     commentsCount: item.commentsCount,
-    track: track?.name,
+    trackName: track?.name,
   };
 };
 

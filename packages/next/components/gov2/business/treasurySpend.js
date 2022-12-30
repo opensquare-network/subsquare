@@ -2,8 +2,15 @@ import { toPrecision } from "next-common/utils";
 import User from "next-common/components/user";
 import React from "react";
 import ValueDisplay from "next-common/components/valueDisplay";
+import isNil from "lodash.isnil";
+import Link from "next/link";
 
-export default function getTreasurySpendBusiness(call = {}, decimals, symbol) {
+export default function getTreasurySpendBusiness(
+  onchain,
+  call = {},
+  decimals,
+  symbol
+) {
   const { section, method, args = [] } = call;
   if ("treasury" !== section && "spend" !== method) {
     return null;
@@ -30,6 +37,16 @@ export default function getTreasurySpendBusiness(call = {}, decimals, symbol) {
         add={beneficiaryArg.value.id || beneficiaryArg.value}
         fontSize={14}
       />,
+    ]);
+  }
+
+  if (!isNil(onchain.treasuryProposalIndex)) {
+    business[0].push([
+      "Link to",
+      <Link
+        key="proposal-link"
+        href={`/treasury/proposal/${onchain.treasuryProposalIndex}`}
+      >{`Treasury Proposal #${onchain.treasuryProposalIndex}`}</Link>,
     ]);
   }
 

@@ -15,6 +15,7 @@ export default function ReferendaBusiness() {
   }
 
   const spendBusiness = getTreasurySpendBusiness(
+    onchain,
     onchain.proposal?.call,
     decimals,
     symbol
