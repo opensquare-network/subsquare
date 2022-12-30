@@ -3,8 +3,6 @@ import isNil from "lodash.isnil";
 import React from "react";
 import ReasonLink from "../reasonLink";
 import Link from "next/link";
-import businessCategory from "../../utils/consts/business/category";
-import { parseGov2TrackName } from "../../utils/gov2";
 
 const TitleWrapper = styled.div`
   flex: 1;
