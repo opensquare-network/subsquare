@@ -2,13 +2,16 @@ import { toPrecision } from "next-common/utils";
 import User from "next-common/components/user";
 import React from "react";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { useOnchainData } from "next-common/context/post";
 import isNil from "lodash.isnil";
 import Link from "next/link";
 
-export default function getTreasurySpendBusiness(call = {}, decimals, symbol) {
+export default function getTreasurySpendBusiness(
+  onchain,
+  call = {},
+  decimals,
+  symbol
+) {
   const { section, method, args = [] } = call;
-  const onchain = useOnchainData();
   if ("treasury" !== section && "spend" !== method) {
     return null;
   }
