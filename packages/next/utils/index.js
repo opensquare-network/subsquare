@@ -3,10 +3,6 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 BigNumber.config({ EXPONENTIAL_AT: 36 });
 
-export function decimalPlaces(value, n) {
-  return new BigNumber(value).dp(n).toString();
-}
-
 export function getTimelineStatus(type, method) {
   switch (type) {
     case detailPageCategory.TREASURY_BOUNTY:
