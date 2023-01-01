@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.8.0
+
+date: 12/31/2022
+
+- Add track curve chart for each OpenGov referendum.
+- Add cookie consent modal.
+- Show treasury proposals by OpenGov referenda.
+- Fix styles: overview item href property, extract neutral panel, etc.
+
 # 2.7.0
 
 date: 12/26/2022
