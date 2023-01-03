@@ -5,7 +5,9 @@ import {
   toCouncilMotionListItem,
   toDiscussionListItem,
   toExternalProposalListItem,
+  toFellowshipReferendaListItem,
   toFinancialMotionsListItem,
+  toGov2ReferendaListItem,
   toPublicProposalListItem,
   toReferendaListItem,
   toTechCommMotionListItem,
@@ -15,13 +17,33 @@ import {
 } from "utils/viewfuncs";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import { useChain } from "next-common/context/chain";
+import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
-export default withLoginUserRedux(({ overview }) => {
+export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const chain = useChain();
+  const isKarura = ["karura", "acala"].includes(chain);
+  const hasGov2 = ["kusama", "development"].includes(chain);
+
   let overviewData = [
+    ...(hasGov2
+      ? [
+          {
+            category: "OpenGov Referenda",
+            items: (overview?.gov2?.referenda ?? []).map((item) =>
+              toGov2ReferendaListItem(item, tracks)
+            ),
+          },
+          {
+            category: "Fellowship",
+            items: (overview?.gov2?.fellowshipReferenda ?? []).map((item) =>
+              toFellowshipReferendaListItem(item, fellowshipTracks)
+            ),
+          },
+        ]
+      : []),
     {
       category: "Referenda",
-      items: (overview?.democracy?.referendums ?? []).map((item) =>
+      items: (overview?.democracy?.referenda ?? []).map((item) =>
         toReferendaListItem(chain, item)
       ),
     },
@@ -55,7 +77,7 @@ export default withLoginUserRedux(({ overview }) => {
         toTechCommMotionListItem(chain, item)
       ),
     },
-    ...(chain === "karura" || chain === "acala"
+    ...(isKarura
       ? [
           {
             category: "Financial Council Motions",
@@ -120,9 +142,16 @@ export default withLoginUserRedux(({ overview }) => {
 export const getServerSideProps = withLoginUser(async () => {
   const { result } = await nextApi.fetch(`overview`);
 
+  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
+    nextApi.fetch(gov2TracksApi),
+    nextApi.fetch(fellowshipTracksApi),
+  ]);
+
   return {
     props: {
       overview: result ?? null,
+      tracks: tracks ?? [],
+      fellowshipTracks: fellowshipTracks ?? [],
     },
   };
 });
