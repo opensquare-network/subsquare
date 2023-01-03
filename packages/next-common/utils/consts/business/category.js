@@ -10,7 +10,8 @@ const businessCategory = {
   democracyReferenda: "Referenda",
   collective: "collective",
   polkassemblyDiscussions: "Polkassembly Discussions",
-  gov2: "gov2",
+  openGovReferenda: "OpenGov Referenda",
+  fellowship: "Fellowship",
 };
 
 export const detailPageCategory = {

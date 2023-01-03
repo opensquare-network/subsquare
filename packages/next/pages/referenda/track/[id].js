@@ -63,8 +63,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
       title: "Referenda " + parseGov2TrackName(track.name),
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
-      summary,
-      period,
+      summary: summary ?? {},
+      period: period ?? {},
     },
   };
 });

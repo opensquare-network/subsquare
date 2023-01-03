@@ -23,7 +23,7 @@ export default function FellowshipPage({
     >
       <PostList
         title={title}
-        category={businessCategory.gov2}
+        category={businessCategory.fellowship}
         create={null}
         items={items}
         pagination={{

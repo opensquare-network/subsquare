@@ -39,8 +39,10 @@ const categoryTagMap = {
   [businessCategory.democracyReferenda]: DemocracyReferendumTag,
   [detailPageCategory.DEMOCRACY_REFERENDUM]: DemocracyReferendumTag,
 
-  gov2: Gov2ReferendaTag,
+  [businessCategory.openGovReferenda]: Gov2ReferendaTag,
   [detailPageCategory.GOV2_REFERENDUM]: Gov2ReferendaTag,
+
+  [businessCategory.fellowship]: Gov2ReferendaTag,
   [detailPageCategory.FELLOWSHIP_REFERENDUM]: Gov2ReferendaTag,
 };
 
