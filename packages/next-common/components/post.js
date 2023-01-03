@@ -140,16 +140,21 @@ const BannerWrapper = styled.div`
 `;
 
 export default function Post({ data, href, type }) {
+  const isDemocracyCollective = [
+    businessCategory.councilMotions,
+    businessCategory.collective,
+    businessCategory.tcProposals,
+  ].includes(type);
+
+  const isGov2Referendum = [
+    businessCategory.openGovReferenda,
+    businessCategory.fellowship,
+  ].includes(type);
+
   let stateArgs;
-  if (
-    [
-      businessCategory.councilMotions,
-      businessCategory.collective,
-      businessCategory.tcProposals,
-    ].includes(type)
-  ) {
+  if (isDemocracyCollective) {
     stateArgs = getMotionStateArgs(data.onchainData.state);
-  } else if (businessCategory.gov2 === type) {
+  } else if (isGov2Referendum) {
     stateArgs = getGov2ReferendumStateArgs(data.onchainData.state);
   }
 
@@ -166,7 +171,7 @@ export default function Post({ data, href, type }) {
     elapseIcon = <MotionElapse motion={data.onchainData} />;
   }
 
-  if (businessCategory.gov2 === type) {
+  if (isGov2Referendum) {
     if (data?.status === gov2State.Deciding) {
       elapseIcon = <DecisionCountdown detail={data} />;
     }
