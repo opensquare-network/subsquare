@@ -276,6 +276,6 @@ export const toFellowshipReferendaListItem = (item, tracks = []) => {
     address: item.proposer,
     detailLink: `/fellowship/referendum/${item.referendumIndex}`,
     commentsCount: item.commentsCount,
-    track: track?.name,
+    trackName: track?.name,
   };
 };
