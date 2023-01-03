@@ -24,88 +24,99 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const isKarura = ["karura", "acala"].includes(chain);
   const hasGov2 = ["kusama", "development"].includes(chain);
 
-  let overviewData = [
-    ...(hasGov2
-      ? [
-          {
-            category: "OpenGov Referenda",
-            items: (overview?.gov2?.referenda ?? []).map((item) =>
-              toGov2ReferendaListItem(item, tracks)
-            ),
-          },
-          {
-            category: "Fellowship",
-            items: (overview?.gov2?.fellowshipReferenda ?? []).map((item) =>
-              toFellowshipReferendaListItem(item, fellowshipTracks)
-            ),
-          },
-        ]
-      : []),
-    {
-      category: "Referenda",
-      items: (overview?.democracy?.referenda ?? []).map((item) =>
-        toReferendaListItem(chain, item)
+  let overviewData = [];
+
+  if (hasGov2) {
+    overviewData.push(
+      ...[
+        {
+          category: "OpenGov Referenda",
+          items: (overview?.gov2?.referenda ?? []).map((item) =>
+            toGov2ReferendaListItem(item, tracks)
+          ),
+        },
+        {
+          category: "Fellowship",
+          items: (overview?.gov2?.fellowshipReferenda ?? []).map((item) =>
+            toFellowshipReferendaListItem(item, fellowshipTracks)
+          ),
+        },
+      ]
+    );
+  }
+
+  overviewData.push(
+    ...[
+      {
+        category: "Referenda",
+        items: (overview?.democracy?.referenda ?? []).map((item) =>
+          toReferendaListItem(chain, item)
+        ),
+      },
+      {
+        category: "Democracy External Proposals",
+        items: (overview?.democracy?.externals ?? []).map((item) =>
+          toExternalProposalListItem(chain, item)
+        ),
+      },
+      {
+        category: "Democracy Public Proposals",
+        items: (overview?.democracy?.proposals ?? []).map((item) =>
+          toPublicProposalListItem(chain, item)
+        ),
+      },
+      {
+        category: "Discussions",
+        items: (overview?.discussions ?? []).map((item) =>
+          toDiscussionListItem(chain, item)
+        ),
+      },
+      {
+        category: "Council Motions",
+        items: (overview?.council?.motions ?? []).map((item) =>
+          toCouncilMotionListItem(chain, item)
+        ),
+      },
+      {
+        category: "Tech. Comm. Proposals",
+        items: (overview?.techComm?.motions ?? []).map((item) =>
+          toTechCommMotionListItem(chain, item)
+        ),
+      },
+    ]
+  );
+
+  if (isKarura) {
+    overviewData.push({
+      category: "Financial Council Motions",
+      items: (overview?.financialCouncil?.motions ?? []).map((item) =>
+        toFinancialMotionsListItem(chain, item)
       ),
-    },
-    {
-      category: "Democracy External Proposals",
-      items: (overview?.democracy?.externals ?? []).map((item) =>
-        toExternalProposalListItem(chain, item)
-      ),
-    },
-    {
-      category: "Democracy Public Proposals",
-      items: (overview?.democracy?.proposals ?? []).map((item) =>
-        toPublicProposalListItem(chain, item)
-      ),
-    },
-    {
-      category: "Discussions",
-      items: (overview?.discussions ?? []).map((item) =>
-        toDiscussionListItem(chain, item)
-      ),
-    },
-    {
-      category: "Council Motions",
-      items: (overview?.council?.motions ?? []).map((item) =>
-        toCouncilMotionListItem(chain, item)
-      ),
-    },
-    {
-      category: "Tech. Comm. Proposals",
-      items: (overview?.techComm?.motions ?? []).map((item) =>
-        toTechCommMotionListItem(chain, item)
-      ),
-    },
-    ...(isKarura
-      ? [
-          {
-            category: "Financial Council Motions",
-            items: (overview?.financialCouncil?.motions ?? []).map((item) =>
-              toFinancialMotionsListItem(chain, item)
-            ),
-          },
-        ]
-      : []),
-    {
-      category: "Treasury Proposals",
-      items: (overview?.treasury?.proposals ?? []).map((item) =>
-        toTreasuryProposalListItem(chain, item)
-      ),
-    },
-    {
-      category: "Treasury Bounties",
-      items: (overview?.treasury?.bounties ?? []).map((item) =>
-        toTreasuryBountyListItem(chain, item)
-      ),
-    },
-    {
-      category: "Tips",
-      items: (overview?.treasury?.tips ?? []).map((item) =>
-        toTipListItem(chain, item)
-      ),
-    },
-  ];
+    });
+  }
+
+  overviewData.push(
+    ...[
+      {
+        category: "Treasury Proposals",
+        items: (overview?.treasury?.proposals ?? []).map((item) =>
+          toTreasuryProposalListItem(chain, item)
+        ),
+      },
+      {
+        category: "Treasury Bounties",
+        items: (overview?.treasury?.bounties ?? []).map((item) =>
+          toTreasuryBountyListItem(chain, item)
+        ),
+      },
+      {
+        category: "Tips",
+        items: (overview?.treasury?.tips ?? []).map((item) =>
+          toTipListItem(chain, item)
+        ),
+      },
+    ]
+  );
 
   if (chain === "kabocha") {
     overviewData = [
