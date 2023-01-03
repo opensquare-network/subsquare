@@ -9,6 +9,21 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { createReferendumTimelineData } from "utils/timeline/referendum";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 
+function getTimelineData(args, method) {
+  switch (method) {
+    case "Proposed":
+      return {
+        Index: `#${args.index}`,
+      };
+    case "Awarded":
+      return {
+        Beneficiary: <User add={args.beneficiary} />,
+        Award: <SymbolBalance value={args.award} />,
+      };
+  }
+  return args;
+}
+
 function getGov2ReferendumTimeline(timelineItem, treasuryProposal) {
   const indexer = timelineItem.extrinsicIndexer ?? timelineItem.indexer;
 
@@ -33,21 +48,6 @@ function getGov2ReferendumTimeline(timelineItem, treasuryProposal) {
 }
 
 export default function TreasuryProposalTimeline({ treasuryProposal }) {
-  const getTimelineData = (args, method) => {
-    switch (method) {
-      case "Proposed":
-        return {
-          Index: `#${args.index}`,
-        };
-      case "Awarded":
-        return {
-          Beneficiary: <User add={args.beneficiary} />,
-          Award: <SymbolBalance value={args.award} />,
-        };
-    }
-    return args;
-  };
-
   const timelineData = flatten(
     (treasuryProposal?.timeline || []).map((item) => {
       const indexer = item.extrinsicIndexer ?? item.indexer;
