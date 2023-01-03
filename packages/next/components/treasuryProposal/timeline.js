@@ -1,13 +1,36 @@
-import User from "next-common/components/user";
 import { getTimelineStatus } from "utils";
 import dayjs from "dayjs";
+import flatten from "lodash.flatten";
+import User from "next-common/components/user";
 import Timeline from "next-common/components/timeline";
 import { createMotionTimelineData } from "utils/timeline/motion";
 import sortTimeline from "next-common/utils/timeline/sort";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { createReferendumTimelineData } from "utils/timeline/referendum";
 import SymbolBalance from "next-common/components/values/symbolBalance";
-import flatten from "lodash.flatten";
+
+function getGov2ReferendumTimeline(timelineItem, treasuryProposal) {
+  const indexer = timelineItem.extrinsicIndexer ?? timelineItem.indexer;
+
+  return [
+    {
+      indexer,
+      time: dayjs(indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+      status: {
+        value: `Referenda #${treasuryProposal.gov2Referendum}`,
+        link: `/referenda/referendum/${treasuryProposal.gov2Referendum}`,
+      },
+    },
+    {
+      indexer,
+      time: dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+      status: getTimelineStatus(
+        detailPageCategory.TREASURY_PROPOSAL,
+        "Approved"
+      ),
+    },
+  ];
+}
 
 export default function TreasuryProposalTimeline({ treasuryProposal }) {
   const getTimelineData = (args, method) => {
@@ -30,8 +53,10 @@ export default function TreasuryProposalTimeline({ treasuryProposal }) {
       const indexer = item.extrinsicIndexer ?? item.indexer;
 
       const method = item.method ?? item.name;
-      if (method === "SpendApprove" && treasuryProposal.isByGov2) {
-        return [{}];
+
+      // Handle Gov2 created treasury proposal
+      if (method === "SpendApproved" && treasuryProposal.isByGov2) {
+        return getGov2ReferendumTimeline(item, treasuryProposal);
       }
 
       return {
