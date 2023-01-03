@@ -1828,6 +1828,7 @@
     lodash.isempty "^4.4.0"
     lodash.isnil "^4.0.0"
     lodash.range "^3.2.0"
+    lodash.set "^4.3.2"
     md5 "^2.3.0"
     micromark "^3.0.10"
     micromark-extension-gfm "^2.0.0"
@@ -4718,6 +4719,11 @@ lodash.findlastindex@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.findlastindex/-/lodash.findlastindex-4.6.0.tgz#b8375ac0f02e9b926375cdf8dc3ea814abf9c6ac"
   integrity sha512-wghZXum6rpsr8XsE0U3PZNaLtj1Q8m8Vn/hAgHtlDlzh49ZXNpcZmVbyTFRRjkKhzPAZ4CSFyxctNIk1BLmRBg==
+
+lodash.flatten@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/lodash.flatten/-/lodash.flatten-4.4.0.tgz#f31c22225a9632d2bbf8e4addbef240aa765a61f"
+  integrity sha512-C5N2Z3DgnnKr0LOpv/hKCgKdb7ZZwafIrsesve6lmzvZIRZRGaZ/l6Q8+2W7NaT+ZwO3fFlSCzCzrDCFdJfZ4g==
 
 lodash.floor@^4.0.4:
   version "4.0.4"
