@@ -19,9 +19,9 @@ const OutWrapper = styled(OutWrapperOrigin)`
   position: fixed;
   bottom: 32px;
   ${(p) => css`
-    right: calc(
-      max(calc((100vw - ${pageMaxWidth}px) / 2), 32px) -
-        ${p.scrollbarWidth / 2}px
+    right: max(
+      calc(((100vw - ${pageMaxWidth}px) / 2) - ${p.scrollbarWidth / 2}px),
+      32px
     );
   `}
 
