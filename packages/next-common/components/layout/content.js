@@ -1,18 +1,14 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { no_scroll_bar } from "next-common/styles/componentCss";
 import Main from "next-common/components/main";
 import Footer from "next-common/components/layout/footer";
-import {
-  pageHomeLayoutMainContentWidth,
-  pageMaxWidth,
-} from "../../utils/constants";
+import { pageMaxWidth } from "../../utils/constants";
+import { mdcss } from "../../utils/responsive";
+import OutWrapper from "../styled/outWrapper";
 
 const leftWidth = 236;
 const gap = 32;
-const leftPlaceHolderWidth =
-  pageMaxWidth - gap - pageHomeLayoutMainContentWidth;
-const offsetLeftCss = `max(calc((100vw - ${pageMaxWidth}px - ${gap}px / 2) / 2), 32px)`;
 
 const Wrapper = styled.div`
   width: 100%;
@@ -36,7 +32,6 @@ const ContentWrapper = styled.div`
 
 const Left = styled.div`
   position: fixed;
-  left: ${offsetLeftCss};
   padding-bottom: 32px;
   height: calc(100vh - 90px);
   overflow-y: scroll;
@@ -44,14 +39,6 @@ const Left = styled.div`
   width: ${leftWidth}px;
   flex: 0 0 ${leftWidth}px;
   overscroll-behavior: none;
-  @media screen and (max-width: 1024px) {
-    display: none;
-  }
-`;
-
-const LeftPlaceHolder = styled.div`
-  width: calc(${offsetLeftCss} + ${leftPlaceHolderWidth}px);
-  flex: 0 0 calc(${offsetLeftCss} + ${leftPlaceHolderWidth}px);
   @media screen and (max-width: 1024px) {
     display: none;
   }
@@ -74,10 +61,27 @@ const MobileFooterWrapper = styled.div`
   text-align: center;
 `;
 
+const MainWrapper = styled.div`
+  flex-grow: 1;
+  margin: 0 auto;
+  max-width: 100%;
+
+  ${(p) =>
+    p.hasLeft &&
+    css`
+      padding-left: ${leftWidth + gap}px;
+      max-width: ${pageMaxWidth}px;
+
+      ${mdcss(css`
+        padding-left: 0;
+      `)}
+    `};
+`;
+
 export default function Content({ left, children }) {
   return (
     <Wrapper>
-      <div>
+      <OutWrapper>
         <ContentWrapper>
           {left && (
             <Left>
@@ -85,10 +89,13 @@ export default function Content({ left, children }) {
               <Footer />
             </Left>
           )}
-          {left && <LeftPlaceHolder />}
-          <Main>{children}</Main>
+
+          <MainWrapper hasLeft={!!left}>
+            <Main>{children}</Main>
+          </MainWrapper>
         </ContentWrapper>
-      </div>
+      </OutWrapper>
+
       <MobileFooterWrapper>
         <Footer />
       </MobileFooterWrapper>
