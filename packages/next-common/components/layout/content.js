@@ -23,6 +23,7 @@ const Wrapper = styled.div`
 `;
 
 const ContentWrapper = styled.div`
+  max-width: 100%;
   display: flex;
   flex-grow: 1;
   position: relative;
