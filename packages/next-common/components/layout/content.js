@@ -78,6 +78,10 @@ const MainWrapper = styled.div`
         padding-left: 0;
       `)}
     `};
+
+  ${mdcss(css`
+    margin: unset;
+  `)}
 `;
 
 export default function Content({ left, children }) {
