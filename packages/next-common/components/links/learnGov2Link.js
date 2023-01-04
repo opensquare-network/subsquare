@@ -15,11 +15,16 @@ const Link = styled(ExternalLink)`
 /**
  * @alias how gov2 works
  */
-export default function LearnGov2Link() {
+export default function LearnGov2Link({ anchor = "" }) {
   const { primaryPurple500 } = useTheme();
 
+  let link = "https://wiki.polkadot.network/docs/learn-gov2";
+  if (anchor) {
+    link += `#${anchor}`;
+  }
+
   return (
-    <Link href="https://wiki.polkadot.network/docs/learn-gov2/">
+    <Link href={link}>
       How Governance V2 Works
       <ExternalLinkIcon color={primaryPurple500} />
     </Link>
