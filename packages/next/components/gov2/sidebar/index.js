@@ -49,7 +49,7 @@ export default function Gov2Sidebar({ onVoteFinalized = emptyFunction }) {
       )}
 
       <InlineWrapper>
-        <LearnGov2Link />
+        <LearnGov2Link anchor="referenda" />
       </InlineWrapper>
     </RightBarWrapper>
   );
