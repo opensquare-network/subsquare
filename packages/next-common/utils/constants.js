@@ -28,7 +28,7 @@ export const pageMaxWidth = 1184;
 /**
  * home layout main content width
  */
-export const pageHomeLayoutMainContentWidth = 916;
+export const pageHomeLayoutMainContentWidth = 932;
 
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
