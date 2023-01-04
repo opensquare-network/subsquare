@@ -8,6 +8,7 @@ import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarW
 import { usePost } from "next-common/context/post";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import LearnGov2Link from "next-common/components/links/learnGov2Link";
+import { InlineWrapper } from "next-common/components/detail/sidebar/styled";
 
 const Popup = dynamic(() => import("../votePopup"), {
   ssr: false,
@@ -27,13 +28,16 @@ export default function Gov2Sidebar({ onVoteFinalized = emptyFunction }) {
       <Gov2Tally />
 
       {isVoting && (
-        <SecondaryButton
-          onClick={() => {
-            setShowVote(true);
-          }}
-        >
-          Vote
-        </SecondaryButton>
+        <InlineWrapper>
+          <SecondaryButton
+            style={{ width: "100%" }}
+            onClick={() => {
+              setShowVote(true);
+            }}
+          >
+            Vote
+          </SecondaryButton>
+        </InlineWrapper>
       )}
       {showVote && (
         <Popup
@@ -44,7 +48,9 @@ export default function Gov2Sidebar({ onVoteFinalized = emptyFunction }) {
         />
       )}
 
-      <LearnGov2Link />
+      <InlineWrapper>
+        <LearnGov2Link anchor="referenda" />
+      </InlineWrapper>
     </RightBarWrapper>
   );
 }
