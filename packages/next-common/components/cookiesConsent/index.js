@@ -12,12 +12,18 @@ import { getCookie, setCookie } from "../../utils/viewfuncs/cookies";
 import { CACHE_KEY, pageMaxWidth } from "../../utils/constants";
 import { smcss } from "../../utils/responsive";
 import { NeutralPanel } from "../styled/containers/neutralPanel";
+import { useScrollbarWidth } from "../../utils/hooks/useScrollbarWidth";
 
 const OutWrapper = styled(OutWrapperOrigin)`
   z-index: 999;
   position: fixed;
   bottom: 32px;
-  right: max(calc((100vw - ${pageMaxWidth}px - 32px / 2) / 2), 32px);
+  ${(p) => css`
+    right: calc(
+      max(calc((100vw - ${pageMaxWidth}px) / 2), 32px) -
+        ${p.scrollbarWidth / 2}px
+    );
+  `}
 
   ${smcss(css`
     right: 16px;
@@ -71,6 +77,8 @@ export default function CookiesConsent() {
     setShow(!isAcceptCookies);
   }, []);
 
+  const scrollbarWidth = useScrollbarWidth();
+
   function handleAccept() {
     setCookie(CACHE_KEY.acceptCookies, true, { expires: 30 });
     handleClose();
@@ -84,7 +92,7 @@ export default function CookiesConsent() {
   }
 
   return (
-    <OutWrapper>
+    <OutWrapper scrollbarWidth={scrollbarWidth}>
       <Wrapper>
         <VStack space={16}>
           <VStack space={8}>
