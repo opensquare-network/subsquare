@@ -23,6 +23,7 @@ const Wrapper = styled.div`
 `;
 
 const ContentWrapper = styled.div`
+  max-width: 100%;
   display: flex;
   flex-grow: 1;
   position: relative;
@@ -77,6 +78,10 @@ const MainWrapper = styled.div`
         padding-left: 0;
       `)}
     `};
+
+  ${mdcss(css`
+    margin: unset;
+  `)}
 `;
 
 export default function Content({ left, children }) {
