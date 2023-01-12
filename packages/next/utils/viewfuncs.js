@@ -244,7 +244,7 @@ export const toExternalProposalListItem = (chain, item) => ({
 
 export const toGov2ReferendaListItem = (item, tracks = []) => {
   const track = tracks.find(
-    (trackItem) => trackItem.id === item.onchainData.track
+    (trackItem) => trackItem.id === item.onchainData?.track
   );
 
   return {

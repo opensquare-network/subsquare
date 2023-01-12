@@ -155,7 +155,7 @@ export default function Post({ data, href, type }) {
   if (isDemocracyCollective) {
     stateArgs = getMotionStateArgs(data.onchainData.state);
   } else if (isGov2Referendum) {
-    stateArgs = getGov2ReferendumStateArgs(data.onchainData.state);
+    stateArgs = getGov2ReferendumStateArgs(data.onchainData?.state);
   }
 
   const duration = useDuration(data.time);
