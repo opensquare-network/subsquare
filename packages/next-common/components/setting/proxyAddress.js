@@ -145,7 +145,7 @@ export default function ProxyAddress() {
 
   return (
     <div>
-      <Label>Proxy Address</Label>
+      <Label>Proxied Address</Label>
       <InputWrapper>
         <Input
           placeholder="Please fill address..."
