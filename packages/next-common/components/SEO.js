@@ -8,7 +8,7 @@ export default function SEO({ title, desc, ogImage }) {
   const route = useRouter();
   const endpoint =
     process.env.NEXT_PUBLIC_PREVIEW_IMG_ENDPOINT ||
-    "https://ipfs.fleek.co/ipfs";
+    "https://subsquare.infura-ipfs.io/ipfs";
 
   const settings = useChainSettings();
   const images = [
