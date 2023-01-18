@@ -18,11 +18,23 @@ import {
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import { useChain } from "next-common/context/chain";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import Chains from "next-common/utils/consts/chains";
 
 export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const chain = useChain();
   const isKarura = ["karura", "acala"].includes(chain);
   const hasGov2 = ["kusama", "development"].includes(chain);
+  const isCentrifuge = [Chains.centrifuge, Chains.altair].includes(chain);
+  const discussions = isCentrifuge
+    ? []
+    : [
+        {
+          category: "Discussions",
+          items: (overview?.discussions ?? []).map((item) =>
+            toDiscussionListItem(chain, item)
+          ),
+        },
+      ];
 
   let overviewData = [];
 
@@ -65,12 +77,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
           toPublicProposalListItem(chain, item)
         ),
       },
-      {
-        category: "Discussions",
-        items: (overview?.discussions ?? []).map((item) =>
-          toDiscussionListItem(chain, item)
-        ),
-      },
+      ...discussions,
       {
         category: "Council Motions",
         items: (overview?.council?.motions ?? []).map((item) =>
