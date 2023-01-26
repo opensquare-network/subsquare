@@ -24,7 +24,7 @@ export default function ReferendaBusiness() {
     return <MultiKVList title="Business" data={spendBusiness} />;
   }
 
-  const { section, method, args = [] } = onchain.proposal?.call;
+  const { section, method, args = [] } = onchain.proposal?.call ?? {};
   if (
     "treasury" !== section ||
     !["approveProposal", "rejectProposal"].includes(method)
