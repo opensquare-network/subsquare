@@ -20,10 +20,9 @@ export default function ConfirmCountdown({ detail }) {
   const latestHeight = useSelector(latestHeightSelector);
   const onchain = detail?.onchainData;
   const trackInfo = onchain?.trackInfo;
-  const state = onchain?.state;
 
   const confirmPeriod = trackInfo?.confirmPeriod;
-  const confirmSince = state?.indexer?.blockHeight;
+  const confirmSince = onchain?.lastConfirmStartedAt?.blockHeight;
   const confirmEnd = confirmSince + confirmPeriod;
 
   const confirmRemaining = getConfirmRemaining(
