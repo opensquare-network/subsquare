@@ -14,7 +14,7 @@ const getTimelineData = (args, method, trackInfo) => {
         Proposer: <User add={args.proposer} />,
         Track: parseGov2TrackName(trackInfo.name),
         "Proposal Hash":
-          args.proposal?.legacy?.hash || args.proposal?.lookup?.hash,
+          args.proposal?.legacy?.hash || args.proposal?.lookup?.hash || args.proposalHash,
       };
     }
     case "DecisionDepositPlaced": {
