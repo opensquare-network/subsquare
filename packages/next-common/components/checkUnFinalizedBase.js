@@ -16,28 +16,28 @@ export default function CheckUnFinalizedBase({
   const [unFinalized, setIsUnFinalized] = useState(false);
   const [notFound, setNotFound] = useState(false);
 
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (!api) {
+  //     return;
+  //   }
 
-    if (onChainDataFetcher === noop) {
-      return;
-    }
+  //   if (onChainDataFetcher === noop) {
+  //     return;
+  //   }
 
-    // Check if the proposal is present on-chain
-    onChainDataFetcher(api).then((onchainData) => {
-      const data = onchainData.toJSON();
-      if (!data) {
-        // Proposal is not exist, show 404
-        setNotFound(true);
-        return;
-      }
+  //   // Check if the proposal is present on-chain
+  //   onChainDataFetcher(api).then((onchainData) => {
+  //     const data = onchainData.toJSON();
+  //     if (!data) {
+  //       // Proposal is not exist, show 404
+  //       setNotFound(true);
+  //       return;
+  //     }
 
-      // Proposal exists on-chain, show un-finalized
-      setIsUnFinalized(true);
-    });
-  }, [api, onChainDataFetcher, router]);
+  //     // Proposal exists on-chain, show un-finalized
+  //     setIsUnFinalized(true);
+  //   });
+  // }, [api, onChainDataFetcher, router]);
 
   const checkServerPostAvailable = useCallback(async () => {
     if (serverPostFetcher === noop) {
@@ -46,13 +46,12 @@ export default function CheckUnFinalizedBase({
 
     const { result } = await serverPostFetcher();
     if (result) {
-      // Server post is ready, refresh current page
-      router.replace(router.asPath);
+      // Server post is available
       return true;
     }
 
     return false;
-  }, [serverPostFetcher, router]);
+  }, [serverPostFetcher]);
 
   useEffect(() => {
     if (!unFinalized) {
@@ -63,6 +62,8 @@ export default function CheckUnFinalizedBase({
     const intervalId = setInterval(async () => {
       const available = await checkServerPostAvailable();
       if (available) {
+        // Refresh page once server post is available
+        router.replace(router.asPath);
         clearInterval(intervalId);
       }
     }, 6000);
@@ -70,7 +71,7 @@ export default function CheckUnFinalizedBase({
     return () => {
       clearInterval(intervalId);
     };
-  }, [unFinalized, checkServerPostAvailable]);
+  }, [unFinalized, checkServerPostAvailable, router]);
 
   if (notFound) {
     return <NotFound />;
