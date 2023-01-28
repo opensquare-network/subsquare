@@ -16,28 +16,28 @@ export default function CheckUnFinalizedBase({
   const [unFinalized, setIsUnFinalized] = useState(false);
   const [notFound, setNotFound] = useState(false);
 
-  // useEffect(() => {
-  //   if (!api) {
-  //     return;
-  //   }
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
 
-  //   if (onChainDataFetcher === noop) {
-  //     return;
-  //   }
+    if (onChainDataFetcher === noop) {
+      return;
+    }
 
-  //   // Check if the proposal is present on-chain
-  //   onChainDataFetcher(api).then((onchainData) => {
-  //     const data = onchainData.toJSON();
-  //     if (!data) {
-  //       // Proposal is not exist, show 404
-  //       setNotFound(true);
-  //       return;
-  //     }
+    // Check if the proposal is present on-chain
+    onChainDataFetcher(api).then((onchainData) => {
+      const data = onchainData.toJSON();
+      if (!data) {
+        // Proposal is not exist, show 404
+        setNotFound(true);
+        return;
+      }
 
-  //     // Proposal exists on-chain, show un-finalized
-  //     setIsUnFinalized(true);
-  //   });
-  // }, [api, onChainDataFetcher, router]);
+      // Proposal exists on-chain, show un-finalized
+      setIsUnFinalized(true);
+    });
+  }, [api, onChainDataFetcher, router]);
 
   const checkServerPostAvailable = useCallback(async () => {
     if (serverPostFetcher === noop) {
