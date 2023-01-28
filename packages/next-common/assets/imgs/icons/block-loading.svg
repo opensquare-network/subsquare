@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Keyshape -->
+<svg xmlns="http://www.w3.org/2000/svg" width="114" height="60" viewBox="0 0 114 60" fill="none">
+    <style>
+@keyframes a0_v { 0% { visibility: visible; animation-timing-function: steps(1); } 80% { visibility: hidden; animation-timing-function: steps(1); } 100% { visibility: hidden; animation-timing-function: steps(1); } }
+@keyframes a1_v { 0% { visibility: visible; animation-timing-function: steps(1); } 60% { visibility: hidden; animation-timing-function: steps(1); } 80% { visibility: visible; animation-timing-function: steps(1); } 100% { visibility: hidden; animation-timing-function: steps(1); } }
+@keyframes a2_v { 0% { visibility: visible; animation-timing-function: steps(1); } 40% { visibility: hidden; animation-timing-function: steps(1); } 60% { visibility: visible; animation-timing-function: steps(1); } 100% { visibility: hidden; animation-timing-function: steps(1); } }
+@keyframes a3_v { 0% { visibility: visible; animation-timing-function: steps(1); } 20% { visibility: hidden; animation-timing-function: steps(1); } 40% { visibility: visible; animation-timing-function: steps(1); } 100% { visibility: hidden; animation-timing-function: steps(1); } }
+@keyframes a4_v { 0% { visibility: hidden; animation-timing-function: steps(1); } 20% { visibility: visible; animation-timing-function: steps(1); } 100% { visibility: hidden; animation-timing-function: steps(1); } }
+    </style>
+    <path d="M44.0564,51.4286L35.4273,51.4286L35.4273,8.57143L44.0564,8.57143L44.0564,51.4286ZM78.5727,51.4286L69.9436,51.4286L69.9436,8.57143L78.5727,8.57143L78.5727,51.4286ZM69.9436,8.57143L44.0564,8.57143L44.0564,0L69.9436,0L69.9436,8.57143ZM69.9436,60L44.0564,60L44.0564,51.4286L69.9436,51.4286L69.9436,60Z" fill="#D7DEE8" transform="translate(57,30) translate(-57,-30)"/>
+    <path d="M61.3145,34.3151L52.6855,34.3151L52.6855,25.6851L61.3145,25.6851L61.3145,34.3151Z" fill="#D7DEE8" visibility="visible" fill-rule="nonzero" transform="translate(109.686,30.0001) translate(-57,-30.0001)" style="animation: 4s linear infinite forwards a0_v;"/>
+    <path d="M61.3145,34.3151L52.6855,34.3151L52.6855,25.6851L61.3145,25.6851L61.3145,34.3151Z" fill="#D7DEE8" visibility="visible" fill-rule="nonzero" transform="translate(91.686,30) translate(-57,-30.0001)" style="animation: 4s linear infinite forwards a1_v;"/>
+    <path d="M61.3145,34.3151L52.6855,34.3151L52.6855,25.6851L61.3145,25.6851L61.3145,34.3151Z" fill="#D7DEE8" visibility="visible" fill-rule="nonzero" transform="translate(57,30.0001) translate(-57,-30.0001)" style="animation: 4s linear infinite forwards a2_v;"/>
+    <path d="M61.3145,34.3151L52.6855,34.3151L52.6855,25.6851L61.3145,25.6851L61.3145,34.3151Z" fill="#D7DEE8" visibility="visible" fill-rule="nonzero" transform="translate(21.8145,30.0001) translate(-57,-30.0001)" style="animation: 4s linear infinite forwards a3_v;"/>
+    <path d="M61.3145,34.3151L52.6855,34.3151L52.6855,25.6851L61.3145,25.6851L61.3145,34.3151Z" fill="#D7DEE8" visibility="hidden" fill-rule="nonzero" transform="translate(4.3145,30.0001) translate(-57,-30.0001)" style="animation: 4s linear infinite forwards a4_v;"/>
+</svg>
