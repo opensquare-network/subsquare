@@ -20,6 +20,7 @@ import { p_14_normal } from "next-common/styles/componentCss";
 import { smcss } from "next-common/utils/responsive";
 import Divider from "next-common/components/styled/layout/divider";
 import FlexBetween from "../styled/flexBetween";
+import Chains from "../../utils/consts/chains";
 
 const Wrapper = SummaryCard;
 
@@ -60,9 +61,10 @@ export default function DemocracySummary({ footer }) {
   const api = useApi();
   const blockTime = useSelector(blockTimeSelector);
   const blockHeight = useSelector(latestHeightSelector);
+  const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
 
   const getLaunchPeriod = async function () {
-    if (api && blockHeight) {
+    if (api && blockHeight && api.consts.democracy.launchPeriod) {
       const launchPeriod = api.consts.democracy.launchPeriod.toNumber();
       const goneBlocks = new BigNumber(blockHeight)
         .mod(launchPeriod)
@@ -149,32 +151,34 @@ export default function DemocracySummary({ footer }) {
           </Content>
         </SummaryItem>
 
-        <SummaryItem>
-          <FlexBetween>
-            <div>
-              <SummaryTitle>Launch Period</SummaryTitle>
-              <Content>
-                {(summary?.launchPeriod || []).map((item, index) => (
-                  <span className={index % 2 === 1 ? "unit" : ""} key={index}>
-                    {item}
-                  </span>
-                ))}
-                {(summary?.totalPeriod || []).map((item, index) => (
-                  <span
-                    className={index % 2 === 1 ? "unit total" : "total"}
-                    key={index}
-                  >
-                    {item}
-                  </span>
-                ))}
-              </Content>
-            </div>
+        {
+          !isKintsugi && <SummaryItem>
+            <FlexBetween>
+              <div>
+                <SummaryTitle>Launch Period</SummaryTitle>
+                <Content>
+                  {(summary?.launchPeriod || []).map((item, index) => (
+                    <span className={index % 2 === 1 ? "unit" : ""} key={index}>
+                      {item}
+                    </span>
+                  ))}
+                  {(summary?.totalPeriod || []).map((item, index) => (
+                    <span
+                      className={index % 2 === 1 ? "unit total" : "total"}
+                      key={index}
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </Content>
+              </div>
 
-            <div>
-              <CountDown percent={summary?.progress ?? 0} />
-            </div>
-          </FlexBetween>
-        </SummaryItem>
+              <div>
+                <CountDown percent={summary?.progress ?? 0} />
+              </div>
+            </FlexBetween>
+          </SummaryItem>
+        }
       </SummaryWrapper>
 
       {footer && (
