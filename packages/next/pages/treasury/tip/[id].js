@@ -120,7 +120,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
     breadcrumbItemName = hashEllipsis(detail?.hash);
     postContent = <TreasuryTipContent comments={comments} />;
   } else {
-    const hash = id.split("_").pop();
+    const hash = id?.split("_").pop();
     breadcrumbItemName = `Tip ${hashEllipsis(hash)}`;
     postContent = <CheckUnFinalized id={hash} />;
   }

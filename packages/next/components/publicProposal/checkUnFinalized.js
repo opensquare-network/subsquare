@@ -6,8 +6,8 @@ export default function CheckUnFinalized({ id }) {
   const getPublicProposal = useCallback(
     async (api) => {
       const proposals = await api.query.democracy.publicProps();
-      return (proposals || []).find(
-        ([index]) => index.toNumber() === parseInt(id)
+      return (proposals?.toJSON() || []).find(
+        ([index]) => index === parseInt(id)
       );
     },
     [id]
