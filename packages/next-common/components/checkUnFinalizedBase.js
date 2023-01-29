@@ -24,7 +24,7 @@ export default function CheckUnFinalizedBase({
     // Check if the proposal is present on-chain
     onChainDataFetcher(api)
       .then((onchainData) => {
-        const data = onchainData.toJSON();
+        const data = onchainData?.toJSON();
         if (!data) {
           // Proposal is not exist, show 404
           setIsNotFound(true);
