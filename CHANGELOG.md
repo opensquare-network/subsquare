@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.8.2
+date: 01/28/2023
+
+- Hide democracy launch period for kintsugi/interlay.
+- Enable bounties for litmus.
+
+# 2.8.1
+
+date: 01/18/2023
+
+- Show OpenGov referenda on overview page.
+- Add timeline for treasury proposal approved by OpenGov.
+- Change default IPFS gateway to that of infura.
+- Remove discussions elements for centrifuge/altair.
+- Support OpenGov inline proposal call.
+- Fix confirmation countdown of OpenGov referenda on list page.
+- Fixes including layout, styles, typos.
+
 # 2.8.0
 
 date: 12/31/2022
