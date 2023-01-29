@@ -37,7 +37,7 @@ export default function CheckUnFinalizedBase({
       .catch(() => {
         setIsNotFound(true);
       });
-  }, [api, onChainDataFetcher, router]);
+  }, [api, onChainDataFetcher]);
 
   const checkServerPostAvailable = useCallback(async () => {
     if (serverPostFetcher === noop) {
