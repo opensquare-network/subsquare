@@ -13,30 +13,30 @@ export default function CheckUnFinalizedBase({
 }) {
   const api = useApi();
   const router = useRouter();
-  const [unFinalized, setIsUnFinalized] = useState(false);
-  const [notFound, setNotFound] = useState(false);
+  const [isUnFinalized, setIsUnFinalized] = useState(false);
+  const [isNotFound, setIsNotFound] = useState(false);
 
   useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    if (onChainDataFetcher === noop) {
+    if (!api || onChainDataFetcher === noop) {
       return;
     }
 
     // Check if the proposal is present on-chain
-    onChainDataFetcher(api).then((onchainData) => {
-      const data = onchainData.toJSON();
-      if (!data) {
-        // Proposal is not exist, show 404
-        setNotFound(true);
-        return;
-      }
+    onChainDataFetcher(api)
+      .then((onchainData) => {
+        const data = onchainData.toJSON();
+        if (!data) {
+          // Proposal is not exist, show 404
+          setIsNotFound(true);
+          return;
+        }
 
-      // Proposal exists on-chain, show un-finalized
-      setIsUnFinalized(true);
-    });
+        // Proposal exists on-chain, show un-finalized
+        setIsUnFinalized(true);
+      })
+      .catch(() => {
+        setIsNotFound(true);
+      });
   }, [api, onChainDataFetcher, router]);
 
   const checkServerPostAvailable = useCallback(async () => {
@@ -54,7 +54,7 @@ export default function CheckUnFinalizedBase({
   }, [serverPostFetcher]);
 
   useEffect(() => {
-    if (!unFinalized) {
+    if (!isUnFinalized) {
       return;
     }
 
@@ -71,16 +71,16 @@ export default function CheckUnFinalizedBase({
     return () => {
       clearInterval(intervalId);
     };
-  }, [unFinalized, checkServerPostAvailable, router]);
+  }, [isUnFinalized, checkServerPostAvailable, router]);
 
-  if (notFound) {
+  if (isNotFound) {
     return <NotFound />;
   }
 
   return (
     <Wrapper>
       <Loading />
-      {unFinalized && (
+      {isUnFinalized && (
         <>
           <H2>Waiting for block confirmation</H2>
           <P>
