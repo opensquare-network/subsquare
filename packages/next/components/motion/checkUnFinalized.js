@@ -4,6 +4,7 @@ import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
 import { useDetailType } from "next-common/context/page";
 import { useChain } from "next-common/context/chain";
 import toApiCouncil from "next-common/utils/toApiCouncil";
+import { toApiType } from "next-common/utils/viewfuncs";
 
 export default function CheckUnFinalized({ id }) {
   const type = useDetailType();
@@ -36,7 +37,7 @@ export default function CheckUnFinalized({ id }) {
   return (
     <CheckUnFinalizedBase
       onChainDataFetcher={findMotion}
-      serverPostFetcher={() => nextApi.fetch(`motions/${id}`)}
+      serverPostFetcher={() => nextApi.fetch(`${toApiType(type)}/${id}`)}
     />
   );
 }
