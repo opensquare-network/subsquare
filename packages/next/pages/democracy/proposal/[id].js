@@ -12,24 +12,30 @@ import isNil from "lodash.isnil";
 import useUniversalComments from "components/universalComments";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import { getBannerUrl } from "next-common/utils/banner";
-import { PostProvider } from "next-common/context/post";
-import { useCallback, useEffect, useState } from "react";
+import {
+  PostProvider,
+  usePost,
+  usePostDispatch,
+} from "next-common/context/post";
+import { useCallback } from "react";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
+import { useDetailType } from "next-common/context/page";
+import fetchAndUpdatePost from "next-common/context/post/update";
+import CheckUnFinalized from "components/publicProposal/checkUnFinalized";
 
-export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
-  const [detail, setDetail] = useState(ssrDetail);
-  useEffect(() => setDetail(ssrDetail), [ssrDetail]);
-  const isMounted = useIsMounted();
+function PublicProposalContent({ comments }) {
+  const post = usePost();
+  const type = useDetailType();
+  const postDispatch = usePostDispatch();
 
   const { CommentComponent, focusEditor } = useUniversalComments({
-    detail,
+    detail: post,
     comments,
   });
 
-  const publicProposal = detail?.onchainData;
+  const publicProposal = post?.onchainData;
   const proposalIndex = publicProposal?.proposalIndex;
   const state = publicProposal?.state?.state;
   const isEnded = ["Tabled", "Canceled", "Cleared"].includes(state);
@@ -44,18 +50,43 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
     : undefined;
 
   const refreshPageData = useCallback(async () => {
-    const { result } = await nextApi.fetch(
-      `democracy/proposals/${detail.proposalIndex}`
-    );
-    if (result && isMounted.current) {
-      setDetail(result);
-    }
-  }, [detail, isMounted]);
+    fetchAndUpdatePost(postDispatch, type, post?.proposalIndex);
+  }, [post, type, postDispatch]);
 
   const onSecondFinalized = useWaitSyncBlock(
     "Proposal seconded",
     refreshPageData
   );
+
+  return (
+    <>
+      <DetailItem onReply={focusEditor} />
+      <Second
+        proposalIndex={proposalIndex}
+        hasTurnIntoReferendum={hasTurnIntoReferendum}
+        hasCanceled={hasCanceled}
+        useAddressVotingBalance={useAddressBalance}
+        atBlockHeight={secondsAtBlockHeight}
+        onFinalized={onSecondFinalized}
+      />
+      <Metadata publicProposal={post?.onchainData} />
+      <Timeline />
+      {CommentComponent}
+    </>
+  );
+}
+
+export default withLoginUserRedux(({ id, detail, comments }) => {
+  let breadcrumbItemName = "";
+  let postContent = null;
+
+  if (detail) {
+    breadcrumbItemName = `#${detail?.proposalIndex}`;
+    postContent = <PublicProposalContent comments={comments} />;
+  } else {
+    breadcrumbItemName = `Proposal #${id}`;
+    postContent = <CheckUnFinalized id={id} />;
+  }
 
   const desc = getMetaDesc(detail);
 
@@ -68,7 +99,7 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
       path: "/democracy/proposals",
     },
     {
-      content: `#${detail?.proposalIndex}`,
+      content: breadcrumbItemName,
     },
   ];
 
@@ -85,18 +116,7 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
           <Breadcrumb items={breadcrumbItems} />
         </BreadcrumbWrapper>
 
-        <DetailItem onReply={focusEditor} />
-        <Second
-          proposalIndex={proposalIndex}
-          hasTurnIntoReferendum={hasTurnIntoReferendum}
-          hasCanceled={hasCanceled}
-          useAddressVotingBalance={useAddressBalance}
-          atBlockHeight={secondsAtBlockHeight}
-          onFinalized={onSecondFinalized}
-        />
-        <Metadata publicProposal={detail?.onchainData} />
-        <Timeline />
-        {CommentComponent}
+        {postContent}
       </DetailWithRightLayout>
     </PostProvider>
   );
@@ -106,12 +126,16 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { id, page, page_size } = context.query;
   const pageSize = Math.min(page_size ?? 50, 100);
 
-  const [{ result: detail }] = await Promise.all([
-    nextApi.fetch(`democracy/proposals/${id}`),
-  ]);
+  const { result: detail } = await nextApi.fetch(`democracy/proposals/${id}`);
 
   if (!detail) {
-    return to404(context);
+    return {
+      props: {
+        id,
+        detail: null,
+        comments: EmptyList,
+      },
+    };
   }
 
   const { result: comments } = await nextApi.fetch(
@@ -124,6 +148,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
+      id,
       detail,
       comments: comments ?? EmptyList,
     },
