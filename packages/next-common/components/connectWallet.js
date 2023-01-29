@@ -13,7 +13,7 @@ import { CACHE_KEY } from "../utils/constants";
 import { WALLETS } from "../utils/consts/connect";
 import { updateUser, useUserDispatch } from "../context/user";
 import { useChain } from "../context/chain";
-import PopupWithoutTitle from "./popup/wrapper/PopupWithoutTitle";
+import Popup from "./popup/wrapper/Popup";
 import ErrorMessage from "./styled/errorMessage";
 
 const Title = styled.div`
@@ -159,7 +159,7 @@ export default function ConnectWallet({ onClose, onLoggedIn }) {
   );
 
   return (
-    <PopupWithoutTitle onClose={onClose}>
+    <Popup onClose={onClose}>
       <ContentWrapper>
         <Title>Login</Title>
         <SelectWallet
@@ -200,6 +200,6 @@ export default function ConnectWallet({ onClose, onLoggedIn }) {
           )}
         </ButtonWrapper>
       </ContentWrapper>
-    </PopupWithoutTitle>
+    </Popup>
   );
 }
