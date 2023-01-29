@@ -63,7 +63,7 @@ function ChildBountyContent({ comments }) {
     fetchAndUpdatePost(
       postDispatch,
       type,
-      `${post.parentBountyId}_${post.index}`
+      `${post?.parentBountyId}_${post?.index}`
     );
   }, [post, type, postDispatch]);
 
