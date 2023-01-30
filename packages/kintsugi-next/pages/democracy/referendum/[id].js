@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import DetailItem from "components/detailItem";
 import Vote from "components/referenda/vote";
 import Timeline from "next-common/components/timeline";
-import { to404 } from "next-common/utils/serverSideUtil";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 import useApi from "next-common/utils/hooks/useApi";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
@@ -17,7 +16,7 @@ import useMaybeFetchReferendumStatus from "next-common/utils/hooks/referenda/use
 import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
 import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 import { getBannerUrl } from "next-common/utils/banner";
-import { PostProvider } from "next-common/context/post";
+import { PostProvider, usePost } from "next-common/context/post";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import { useDispatch } from "react-redux";
 import {
@@ -26,48 +25,86 @@ import {
 } from "next-common/store/reducers/referendumSlice";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
+import isNil from "lodash.isnil";
+import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
+
+function ReferendumContent({ publicProposal, comments }) {
+  const dispatch = useDispatch();
+  const post = usePost();
+
+  const { CommentComponent, focusEditor } = useCommentComponent({
+    detail: post,
+    comments,
+  });
+
+  const api = useApi();
+  const { referendumStatus } = useMaybeFetchReferendumStatus(
+    post?.onchainData,
+    api
+  );
+  useMaybeFetchElectorate(post?.onchainData, api);
+  useFetchVotes(post?.onchainData);
+
+  const proposalData = getDemocracyTimelineData(
+    publicProposal?.onchainData?.timeline || [],
+    detailPageCategory.DEMOCRACY_PROPOSAL
+  );
+  const referendumData = getDemocracyTimelineData(
+    post?.onchainData?.timeline || [],
+    detailPageCategory.DEMOCRACY_REFERENDUM
+  );
+  const timelineData = proposalData.concat(referendumData);
+
+  const refreshPageData = useCallback(async () => {
+    const referendumIndex = post?.onchainData.referendumIndex;
+    if (api) {
+      dispatch(fetchReferendumStatus(api, referendumIndex));
+      dispatch(fetchVotes(api, referendumIndex));
+    }
+  }, [api, post, dispatch]);
+
+  const onVoteFinalized = useWaitSyncBlock("Referendum voted", refreshPageData);
+
+  return (
+    <>
+      <DetailItem onReply={focusEditor} />
+
+      <Vote
+        referendumInfo={post?.onchainData?.info}
+        referendumIndex={post?.referendumIndex}
+        onFinalized={onVoteFinalized}
+      />
+
+      <ReferendumMetadata
+        proposer={post?.proposer}
+        status={referendumStatus ?? {}}
+        call={post?.onchainData?.preImage?.call}
+        onchainData={post?.onchainData}
+      />
+
+      <Timeline data={timelineData} />
+      {CommentComponent}
+    </>
+  );
+}
 
 export default withLoginUserRedux(
-  ({ detail: ssrDetail, publicProposal, comments }) => {
-    const [detail, setDetail] = useState(ssrDetail);
-    useEffect(() => setDetail(ssrDetail), [ssrDetail]);
-    const dispatch = useDispatch();
+  ({ id, detail, publicProposal, comments }) => {
+    let breadcrumbItemName = "";
+    let postContent = null;
 
-    const { CommentComponent, focusEditor } = useCommentComponent({
-      detail,
-      comments,
-    });
-
-    const api = useApi();
-    const { referendumStatus } = useMaybeFetchReferendumStatus(
-      detail?.onchainData,
-      api
-    );
-    useMaybeFetchElectorate(detail?.onchainData, api);
-    useFetchVotes(detail?.onchainData);
-
-    const proposalData = getDemocracyTimelineData(
-      publicProposal?.onchainData?.timeline || [],
-      detailPageCategory.DEMOCRACY_PROPOSAL
-    );
-    const referendumData = getDemocracyTimelineData(
-      detail?.onchainData?.timeline || [],
-      detailPageCategory.DEMOCRACY_REFERENDUM
-    );
-    const timelineData = proposalData.concat(referendumData);
-
-    const refreshPageData = useCallback(async () => {
-      const referendumIndex = detail?.onchainData.referendumIndex;
-      if (api) {
-        dispatch(fetchReferendumStatus(api, referendumIndex));
-        dispatch(fetchVotes(api, referendumIndex));
-      }
-    }, [api, detail, dispatch]);
-
-    const onVoteFinalized = useWaitSyncBlock(
-      "Referendum voted",
-      refreshPageData
-    );
+    if (detail) {
+      breadcrumbItemName = `#${detail?.referendumIndex}`;
+      postContent = (
+        <ReferendumContent
+          publicProposal={publicProposal}
+          comments={comments}
+        />
+      );
+    } else {
+      breadcrumbItemName = `#${id}`;
+      postContent = <CheckUnFinalized id={id} />;
+    }
 
     const desc = getMetaDesc(detail);
 
@@ -80,7 +117,7 @@ export default withLoginUserRedux(
         path: "/democracy/referenda",
       },
       {
-        content: `#${ssrDetail?.referendumIndex}`,
+        content: breadcrumbItemName,
       },
     ];
 
@@ -97,23 +134,7 @@ export default withLoginUserRedux(
             <Breadcrumb items={breadcrumbItems} />
           </BreadcrumbWrapper>
 
-          <DetailItem onReply={focusEditor} />
-
-          <Vote
-            referendumInfo={detail?.onchainData?.info}
-            referendumIndex={detail?.referendumIndex}
-            onFinalized={onVoteFinalized}
-          />
-
-          <ReferendumMetadata
-            proposer={detail.proposer}
-            status={referendumStatus ?? {}}
-            call={detail?.onchainData?.preImage?.call}
-            onchainData={detail.onchainData}
-          />
-
-          <Timeline data={timelineData} />
-          {CommentComponent}
+          {postContent}
         </DetailWithRightLayout>
       </PostProvider>
     );
@@ -123,26 +144,29 @@ export default withLoginUserRedux(
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id, page, page_size: pageSize } = context.query;
 
-  const [{ result: detail }] = await Promise.all([
-    nextApi.fetch(`democracy/referendums/${id}`),
-  ]);
+  const { result: detail } = await nextApi.fetch(`democracy/referendums/${id}`);
 
   if (!detail) {
-    return to404(context);
+    return {
+      props: {
+        id,
+        detail: null,
+        publicProposal: null,
+        comments: EmptyList,
+      },
+    };
   }
 
-  let publicProposal = null;
-  if ((detail.proposalIndex ?? null) !== null) {
-    const result = await nextApi.fetch(
+  let publicProposal;
+  if (!isNil(detail.proposalIndex)) {
+    const { result } = await nextApi.fetch(
       `democracy/proposals/${detail.proposalIndex}`
     );
-    publicProposal = result.result;
+    publicProposal = result;
   }
 
-  const postId = detail?._id;
-
   const { result: comments } = await nextApi.fetch(
-    `democracy/referendums/${postId}/comments`,
+    `democracy/referendums/${detail?._id}/comments`,
     {
       page: page ?? "last",
       pageSize: Math.min(pageSize ?? 50, 100),
@@ -151,8 +175,9 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      detail: detail ?? {},
-      publicProposal,
+      id,
+      detail: detail ?? null,
+      publicProposal: publicProposal ?? null,
       comments: comments ?? EmptyList,
     },
   };

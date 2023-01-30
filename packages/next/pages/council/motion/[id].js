@@ -10,7 +10,7 @@ import { PostProvider } from "next-common/context/post";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import { hashEllipsis } from "next-common/utils";
-import CheckUnFinalized from "components/motion/checkUnFinalized";
+import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 
 function MotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({

@@ -11,7 +11,7 @@ import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
-import CheckUnFinalized from "components/treasuryProposal/checkUnFinalized";
+import CheckUnFinalized from "next-common/components/treasury/proposal/checkUnFinalized";
 
 function TreasuryProposalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({

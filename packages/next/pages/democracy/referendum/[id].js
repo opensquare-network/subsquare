@@ -24,7 +24,7 @@ import Breadcrumb from "next-common/components/_Breadcrumb";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import { useDetailType } from "next-common/context/page";
 import fetchAndUpdatePost from "next-common/context/post/update";
-import CheckUnFinalized from "components/referenda/checkUnFinalized";
+import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
 
 function ReferendumContent({ comments }) {
   const post = usePost();

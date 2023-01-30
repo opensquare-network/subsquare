@@ -2,7 +2,6 @@ import DetailItem from "components/detailItem";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Metadata from "next-common/components/publicProposal/metadata";
 import Timeline from "components/publicProposal/timeline";
@@ -23,7 +22,7 @@ import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWr
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import { useDetailType } from "next-common/context/page";
 import fetchAndUpdatePost from "next-common/context/post/update";
-import CheckUnFinalized from "components/publicProposal/checkUnFinalized";
+import CheckUnFinalized from "next-common/components/democracy/publicProposal/checkUnFinalized";
 
 function PublicProposalContent({ comments }) {
   const post = usePost();
