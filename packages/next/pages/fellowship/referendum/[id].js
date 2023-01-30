@@ -92,9 +92,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 
   if (detail) {
     postContent = <FellowshipContent comments={comments} />;
-    breadcrumb = (
-      <FellowshipBreadcrumb referendumIndex={detail?.referendumIndex} />
-    );
+    breadcrumb = <FellowshipBreadcrumb />;
   } else {
     postContent = <CheckUnFinalized id={id} />;
     breadcrumb = <UnFinalizedBreadcrumb id={id} />;

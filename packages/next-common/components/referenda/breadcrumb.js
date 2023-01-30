@@ -5,6 +5,7 @@ import BreadcrumbWrapper, {
 } from "../detail/common/BreadcrumbWrapper";
 import { parseGov2TrackName } from "../../utils/gov2";
 import { useTrack } from "../../context/post/gov2/track";
+import { usePost } from "../../context/post";
 
 function getBreadcrumbItems(track = {}, referendumIndex) {
   return [
@@ -27,11 +28,12 @@ function getBreadcrumbItems(track = {}, referendumIndex) {
   ];
 }
 
-export default function ReferendaBreadcrumb({ referendumIndex }) {
+export default function ReferendaBreadcrumb() {
   const track = useTrack();
+  const post = usePost();
   return (
     <BreadcrumbWrapper>
-      <Breadcrumb items={getBreadcrumbItems(track, referendumIndex)} />
+      <Breadcrumb items={getBreadcrumbItems(track, post?.referendumIndex)} />
     </BreadcrumbWrapper>
   );
 }
