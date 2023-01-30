@@ -1,4 +1,3 @@
-import Back from "next-common/components/back";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import MotionDetail from "components/motion/motionDetail";
@@ -11,7 +10,7 @@ import { PostProvider } from "next-common/context/post";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import { hashEllipsis } from "next-common/utils";
-import CheckUnFinalized from "components/motion/checkUnFinalized";
+import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 
 function FinancialMotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
