@@ -57,10 +57,12 @@ export default function Popup({
   return (
     <Background>
       <Wrapper ref={ref} className={className}>
-        <TopWrapper>
-          <h3>{title}</h3>
-          <ClosePanelIcon onClick={onClose} />
-        </TopWrapper>
+        {title && (
+          <TopWrapper>
+            <h3>{title}</h3>
+            <ClosePanelIcon onClick={onClose} />
+          </TopWrapper>
+        )}
         {children}
       </Wrapper>
     </Background>
