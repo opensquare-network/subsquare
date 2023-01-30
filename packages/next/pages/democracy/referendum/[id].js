@@ -82,7 +82,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
     breadcrumbItemName = `#${detail?.referendumIndex}`;
     postContent = <ReferendumContent comments={comments} />;
   } else {
-    breadcrumbItemName = `Referenda #${id}`;
+    breadcrumbItemName = `#${id}`;
     postContent = <CheckUnFinalized id={id} />;
   }
 

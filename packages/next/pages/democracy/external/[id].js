@@ -37,13 +37,13 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
   let postContent = null;
 
   if (detail) {
-    breadcrumbItemName = hashEllipsis(detail?.externalProposalHash);
+    breadcrumbItemName = `#${hashEllipsis(detail?.externalProposalHash)}`;
     postContent = (
       <DemocracyExternalContent detail={detail} comments={comments} />
     );
   } else {
     const hash = id?.split("_").pop();
-    breadcrumbItemName = `External ${hashEllipsis(hash)}`;
+    breadcrumbItemName = `#${hashEllipsis(hash)}`;
     postContent = <CheckUnFinalized id={hash} />;
   }
 

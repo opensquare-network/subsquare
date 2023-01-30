@@ -39,7 +39,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
       <TreasuryProposalContent detail={detail} comments={comments} />
     );
   } else {
-    breadcrumbItemName = `Proposal #${id}`;
+    breadcrumbItemName = `#${id}`;
     postContent = <CheckUnFinalized id={id} />;
   }
 

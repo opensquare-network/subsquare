@@ -94,7 +94,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
     breadcrumbItemName = `#${detail?.index}`;
     postContent = <ChildBountyContent comments={comments} />;
   } else {
-    breadcrumbItemName = `Child Bounty #${id}`;
+    breadcrumbItemName = `#${id}`;
     postContent = <CheckUnFinalized id={id} />;
   }
 
