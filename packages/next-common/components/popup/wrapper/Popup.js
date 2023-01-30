@@ -6,6 +6,7 @@ import ClosePanelIcon from "../../../assets/imgs/icons/close-panel.svg";
 import { emptyFunction } from "../../../utils";
 import { useScrollLock } from "../../../utils/hooks/useScrollLock";
 import { NeutralPanel } from "../../styled/containers/neutralPanel";
+import { useKey } from "../../../utils/hooks/useKey";
 
 const Wrapper = styled(NeutralPanel)`
   position: fixed;
@@ -45,6 +46,7 @@ export default function Popup({
 }) {
   const ref = useRef();
   useOnClickOutside(ref, () => onClose());
+  useKey("Escape", onClose);
 
   const [, setIsLocked] = useScrollLock();
 
