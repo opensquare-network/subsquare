@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { p_14_normal } from "../../styles/componentCss";
 import { PrimaryCard } from "./containers/primaryCard";

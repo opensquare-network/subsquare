@@ -1,3 +1,4 @@
+import React from "react";
 import { Wrapper, H2, P } from "./styled/notFound";
 
 export default function NotFound() {
