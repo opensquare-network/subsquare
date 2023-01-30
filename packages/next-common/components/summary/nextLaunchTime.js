@@ -44,22 +44,19 @@ export default function SummaryNextLaunchTime({ nextLaunchTimestamp = 0 }) {
     <>
       <SummaryTitle>Next Launch Time</SummaryTitle>
 
-      <Content>
-        <Tooltip
-          content={
-            nextLaunchTimestamp &&
-            dayjs(nextLaunchTimestampMilliseconds).format("YYYY-MM-DD HH:MM:ss")
-          }
-        >
-          <span>
-            {nextLaunchTimestamp && (
-              <>
-                <SummaryGreyText>In</SummaryGreyText> {time}
-              </>
+      {!!nextLaunchTimestamp && !!latestBlockTime && (
+        <Content>
+          <Tooltip
+            content={dayjs(nextLaunchTimestampMilliseconds).format(
+              "YYYY-MM-DD HH:MM:ss"
             )}
-          </span>
-        </Tooltip>
-      </Content>
+          >
+            <span>
+              <SummaryGreyText>In</SummaryGreyText> {time}
+            </span>
+          </Tooltip>
+        </Content>
+      )}
     </>
   );
 }
