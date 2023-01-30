@@ -9,12 +9,12 @@ import dayjs from "dayjs";
 function useEstimateTime(ms) {
   const { days, hours, minutes, seconds } = extractTime(ms);
 
-  const render = (number, unit, plural = "s") => (
+  const render = (number, unit, suffix = "s") => (
     <>
       {number}{" "}
       <SummaryGreyText>
         {unit}
-        {number > 1 ? plural : ""}{" "}
+        {number > 1 ? suffix : ""}{" "}
       </SummaryGreyText>
     </>
   );
