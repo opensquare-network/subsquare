@@ -5,7 +5,7 @@ import {
   getFellowshipReferendumUrl,
 } from "next-common/services/url";
 import { to404 } from "next-common/utils/serverSideUtil";
-import { EmptyList } from "next-common/components/emptyList";
+import { EmptyList } from "next-common/utils/constants";
 import { PostProvider } from "next-common/context/post";
 import { getBannerUrl } from "next-common/utils/banner";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
