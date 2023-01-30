@@ -1,19 +1,49 @@
-import React from "react";
-import { SummaryTitle } from "./styled";
+import React, { useMemo } from "react";
+import { SummaryGreyText, SummaryTitle } from "./styled";
 import Content from "./cardContent";
 import Tooltip from "../tooltip";
 import { extractTime } from "@polkadot/util";
 import useLatestBlockTime from "../../utils/hooks/useBlockTime";
 import dayjs from "dayjs";
 
-export default function SummaryNextLaunchTime({ nextLaunchTimestamp }) {
+function useEstimateTime(ms) {
+  const { days, hours, minutes, seconds } = extractTime(ms);
+
+  const render = (number, unit, plural = "s") => (
+    <>
+      {number}{" "}
+      <SummaryGreyText>
+        {unit}
+        {number > 1 ? plural : ""}{" "}
+      </SummaryGreyText>
+    </>
+  );
+
+  return useMemo(
+    () =>
+      [
+        days && render(days, "day"),
+        hours && render(hours, "hr"),
+        minutes && render(minutes, "min"),
+        seconds && render(minutes, "s", ""),
+      ]
+        .filter(Boolean)
+        .slice(0, 2),
+    [ms]
+  );
+}
+
+export default function SummaryNextLaunchTime({ nextLaunchTimestamp = 0 }) {
   const latestBlockTime = useLatestBlockTime();
 
   const nextLaunchTimestampMilliseconds = nextLaunchTimestamp * 1000;
+  const offset = nextLaunchTimestampMilliseconds - latestBlockTime;
+  const time = useEstimateTime(offset);
 
   return (
     <>
       <SummaryTitle>Next Launch Time</SummaryTitle>
+
       <Content>
         <Tooltip
           content={
@@ -21,7 +51,13 @@ export default function SummaryNextLaunchTime({ nextLaunchTimestamp }) {
             dayjs(nextLaunchTimestampMilliseconds).format("YYYY-MM-DD HH:MM:ss")
           }
         >
-          <span>{nextLaunchTimestampMilliseconds}</span>
+          <span>
+            {nextLaunchTimestamp && (
+              <>
+                <SummaryGreyText>In</SummaryGreyText> {time}
+              </>
+            )}
+          </span>
         </Tooltip>
       </Content>
     </>
