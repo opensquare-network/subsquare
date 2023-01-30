@@ -10,7 +10,6 @@ import {
   blockTimeSelector,
   latestHeightSelector,
 } from "../../../store/reducers/chainSlice";
-import useIsMounted from "../../../utils/hooks/useIsMounted";
 import User from "../../user";
 
 export default function ReferendumMetadata({
@@ -20,10 +19,9 @@ export default function ReferendumMetadata({
   shorten,
   onchainData = {},
 }) {
-  const isMounted = useIsMounted();
   const oneBlockTime = useSelector(blockTimeSelector);
   const blockHeight = useSelector(latestHeightSelector);
-  const latestBlockTime = useLatestBlockTime(blockHeight, isMounted);
+  const latestBlockTime = useLatestBlockTime();
 
   const { delay = 0, end = 0, threshold, proposalHash, proposal } = status;
   const { state, timeline = [] } = onchainData;

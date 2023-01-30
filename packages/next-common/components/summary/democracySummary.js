@@ -20,6 +20,7 @@ import { p_14_normal } from "next-common/styles/componentCss";
 import { smcss } from "next-common/utils/responsive";
 import Divider from "next-common/components/styled/layout/divider";
 import Chains from "../../utils/consts/chains";
+import SummaryNextLaunchTime from "./nextLaunchTime";
 
 const Wrapper = SummaryCard;
 
@@ -99,6 +100,7 @@ export default function DemocracySummary({ footer }) {
       api?.query.democracy.publicPropCount(),
       api?.query.democracy.referendumCount(),
       getLaunchPeriod(),
+      api?.query.democracy?.nextLaunchTimestamp?.(),
     ]).then(
       ([
         activeProposals,
@@ -106,6 +108,7 @@ export default function DemocracySummary({ footer }) {
         publicPropCountResponse,
         referendumCountResponse,
         period,
+        nextLaunchTimestampResponse,
       ]) => {
         setSummary({
           ...summary,
@@ -114,6 +117,7 @@ export default function DemocracySummary({ footer }) {
           publicPropCount: publicPropCountResponse.toJSON(),
           referendumTotal: referendumCountResponse.toJSON(),
           ...period,
+          nextLaunchTimestamp: nextLaunchTimestampResponse?.toJSON?.(),
         });
       }
     );
@@ -181,6 +185,14 @@ export default function DemocracySummary({ footer }) {
                 <CountDown percent={summary?.progress ?? 0} />
               </div>
             </LaunchPeriod>
+          </SummaryItem>
+        )}
+
+        {isKintsugi && (
+          <SummaryItem>
+            <SummaryNextLaunchTime
+              nextLaunchTimestamp={summary.nextLaunchTimestamp}
+            />
           </SummaryItem>
         )}
       </SummaryWrapper>
