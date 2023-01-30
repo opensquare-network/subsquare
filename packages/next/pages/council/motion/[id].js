@@ -39,10 +39,10 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
     postContent = <MotionContent motion={motion} comments={comments} />;
   } else {
     if (id?.match(/^[0-9]+$/)) {
-      breadcrumbItemName = `Motion #${id}`;
+      breadcrumbItemName = `#${id}`;
     } else {
       const hash = id?.split("_").pop();
-      breadcrumbItemName = `Motion #${hashEllipsis(hash)}`;
+      breadcrumbItemName = `#${hashEllipsis(hash)}`;
     }
     postContent = <CheckUnFinalized id={id} />;
   }

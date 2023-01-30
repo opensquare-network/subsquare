@@ -84,7 +84,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
     breadcrumbItemName = `#${detail?.proposalIndex}`;
     postContent = <PublicProposalContent comments={comments} />;
   } else {
-    breadcrumbItemName = `Proposal #${id}`;
+    breadcrumbItemName = `#${id}`;
     postContent = <CheckUnFinalized id={id} />;
   }
 

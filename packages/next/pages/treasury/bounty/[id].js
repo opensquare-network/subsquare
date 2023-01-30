@@ -82,7 +82,7 @@ export default withLoginUserRedux(({ id, detail, childBounties, comments }) => {
       />
     );
   } else {
-    breadcrumbItemName = `Bounty #${id}`;
+    breadcrumbItemName = `#${id}`;
     postContent = <CheckUnFinalized id={id} />;
   }
 
