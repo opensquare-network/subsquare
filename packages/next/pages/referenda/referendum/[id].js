@@ -17,7 +17,7 @@ import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metad
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { useCallback, useEffect, useState } from "react";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
-import { EmptyList } from "next-common/components/emptyList";
+import { EmptyList } from "next-common/utils/constants";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import { parseGov2TrackName } from "next-common/utils/gov2";
 import ReferendaBusiness from "../../../components/gov2/business";
