@@ -21,6 +21,7 @@ import { smcss } from "next-common/utils/responsive";
 import Divider from "next-common/components/styled/layout/divider";
 import FlexBetween from "../styled/flexBetween";
 import Chains from "../../utils/consts/chains";
+import SummaryNextLaunchTime from "./nextLaunchTime";
 
 const Wrapper = SummaryCard;
 
@@ -95,6 +96,7 @@ export default function DemocracySummary({ footer }) {
       api?.query.democracy.publicPropCount(),
       api?.query.democracy.referendumCount(),
       getLaunchPeriod(),
+      api?.query.democracy?.nextLaunchTimestamp?.(),
     ]).then(
       ([
         activeProposals,
@@ -102,6 +104,7 @@ export default function DemocracySummary({ footer }) {
         publicPropCountResponse,
         referendumCountResponse,
         period,
+        nextLaunchTimestampResponse,
       ]) => {
         setSummary({
           ...summary,
@@ -110,6 +113,7 @@ export default function DemocracySummary({ footer }) {
           publicPropCount: publicPropCountResponse.toJSON(),
           referendumTotal: referendumCountResponse.toJSON(),
           ...period,
+          nextLaunchTimestamp: nextLaunchTimestampResponse?.toJSON?.(),
         });
       }
     );
@@ -151,8 +155,8 @@ export default function DemocracySummary({ footer }) {
           </Content>
         </SummaryItem>
 
-        {
-          !isKintsugi && <SummaryItem>
+        {!isKintsugi && (
+          <SummaryItem>
             <FlexBetween>
               <div>
                 <SummaryTitle>Launch Period</SummaryTitle>
@@ -178,7 +182,15 @@ export default function DemocracySummary({ footer }) {
               </div>
             </FlexBetween>
           </SummaryItem>
-        }
+        )}
+
+        {isKintsugi && (
+          <SummaryItem>
+            <SummaryNextLaunchTime
+              nextLaunchTimestamp={summary.nextLaunchTimestamp}
+            />
+          </SummaryItem>
+        )}
       </SummaryWrapper>
 
       {footer && (
